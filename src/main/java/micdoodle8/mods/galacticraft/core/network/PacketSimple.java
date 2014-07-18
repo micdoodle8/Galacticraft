@@ -1,10 +1,8 @@
 package micdoodle8.mods.galacticraft.core.network;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
@@ -73,7 +71,10 @@ import net.minecraftforge.common.DimensionManager;
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class PacketSimple extends Packet implements IPacket
 {
@@ -109,7 +110,8 @@ public class PacketSimple extends Packet implements IPacket
         C_UPDATE_DIMENSION_LIST(Side.CLIENT, String.class, String.class),
         C_SPAWN_SPARK_PARTICLES(Side.CLIENT, Integer.class, Integer.class, Integer.class),
         C_UPDATE_GEAR_SLOT(Side.CLIENT, String.class, Integer.class, Integer.class),
-        C_CLOSE_GUI(Side.CLIENT), C_RESET_THIRD_PERSON(Side.CLIENT, String.class),
+        C_CLOSE_GUI(Side.CLIENT),
+        C_RESET_THIRD_PERSON(Side.CLIENT),
         C_UPDATE_SPACESTATION_LIST(Side.CLIENT, Integer[].class),
         C_UPDATE_SPACESTATION_DATA(Side.CLIENT, Integer.class, NBTTagCompound.class),
         C_UPDATE_SPACESTATION_CLIENT_ID(Side.CLIENT, Integer.class),
@@ -159,7 +161,6 @@ public class PacketSimple extends Packet implements IPacket
 
 	public PacketSimple()
 	{
-
 	}
 
 	public PacketSimple(EnumSimplePacket packetType, Object[] data)
@@ -213,7 +214,7 @@ public class PacketSimple extends Packet implements IPacket
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
 	@Override
 	public void handleClientSide(EntityPlayer player)
 	{
@@ -225,7 +226,10 @@ public class PacketSimple extends Packet implements IPacket
 		}
 		else
 		{
-			return;
+            if (type != EnumSimplePacket.C_UPDATE_SPACESTATION_LIST && type != EnumSimplePacket.C_UPDATE_PLANETS_LIST)
+            {
+                return;
+            }
 		}
 
 		switch (this.type)
@@ -339,7 +343,7 @@ public class PacketSimple extends Packet implements IPacket
 					if (subtype != -1)
 					{
 						name = ItemParaChute.names[subtype];
-						gearData.setParachute(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/parachute/" + name + ".png"));
+						gearData.setParachute(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachute/" + name + ".png"));
 					}
 					break;
 				case REMOVE_PARACHUTE:
@@ -528,13 +532,13 @@ public class PacketSimple extends Packet implements IPacket
 			}
 			break;
 		case C_PLAY_SOUND_BOSS_DEATH:
-			player.playSound(GalacticraftCore.ASSET_PREFIX + "entity.bossdeath", 10.0F, 0.8F);
+			player.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.bossdeath", 10.0F, 0.8F);
 			break;
 		case C_PLAY_SOUND_EXPLODE:
 			player.playSound("random.explode", 10.0F, 0.7F);
 			break;
 		case C_PLAY_SOUND_BOSS_LAUGH:
-			player.playSound(GalacticraftCore.ASSET_PREFIX + "entity.bosslaugh", 10.0F, 0.2F);
+			player.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.bosslaugh", 10.0F, 0.2F);
 			break;
 		case C_PLAY_SOUND_BOW:
 			player.playSound("random.bow", 10.0F, 0.2F);
@@ -873,44 +877,44 @@ public class PacketSimple extends Packet implements IPacket
 			case 0:
 				if (tile1 instanceof TileEntityAirLockController)
 				{
-					TileEntityAirLockController launchController = (TileEntityAirLockController) tile1;
-					launchController.redstoneActivation = (Integer) this.data.get(4) == 1;
+					TileEntityAirLockController airlockController = (TileEntityAirLockController) tile1;
+					airlockController.redstoneActivation = (Integer) this.data.get(4) == 1;
 				}
 				break;
 			case 1:
 				if (tile1 instanceof TileEntityAirLockController)
 				{
-					TileEntityAirLockController launchController = (TileEntityAirLockController) tile1;
-					launchController.playerDistanceActivation = (Integer) this.data.get(4) == 1;
+					TileEntityAirLockController airlockController = (TileEntityAirLockController) tile1;
+					airlockController.playerDistanceActivation = (Integer) this.data.get(4) == 1;
 				}
 				break;
 			case 2:
 				if (tile1 instanceof TileEntityAirLockController)
 				{
-					TileEntityAirLockController launchController = (TileEntityAirLockController) tile1;
-					launchController.playerDistanceSelection = (Integer) this.data.get(4);
+					TileEntityAirLockController airlockController = (TileEntityAirLockController) tile1;
+					airlockController.playerDistanceSelection = (Integer) this.data.get(4);
 				}
 				break;
 			case 3:
 				if (tile1 instanceof TileEntityAirLockController)
 				{
-					TileEntityAirLockController launchController = (TileEntityAirLockController) tile1;
-					launchController.playerNameMatches = (Integer) this.data.get(4) == 1;
+					TileEntityAirLockController airlockController = (TileEntityAirLockController) tile1;
+					airlockController.playerNameMatches = (Integer) this.data.get(4) == 1;
 				}
 				break;
 			case 4:
 				if (tile1 instanceof TileEntityAirLockController)
 				{
-					TileEntityAirLockController launchController = (TileEntityAirLockController) tile1;
-					launchController.invertSelection = (Integer) this.data.get(4) == 1;
+					TileEntityAirLockController airlockController = (TileEntityAirLockController) tile1;
+					airlockController.invertSelection = (Integer) this.data.get(4) == 1;
 				}
 				break;
 			case 5:
 				if (tile1 instanceof TileEntityAirLockController)
 				{
-					TileEntityAirLockController launchController = (TileEntityAirLockController) tile1;
-					launchController.lastHorizontalModeEnabled = launchController.horizontalModeEnabled;
-					launchController.horizontalModeEnabled = (Integer) this.data.get(4) == 1;
+					TileEntityAirLockController airlockController = (TileEntityAirLockController) tile1;
+					airlockController.lastHorizontalModeEnabled = airlockController.horizontalModeEnabled;
+					airlockController.horizontalModeEnabled = (Integer) this.data.get(4) == 1;
 				}
 				break;
 			case 6:
@@ -932,8 +936,8 @@ public class PacketSimple extends Packet implements IPacket
 			case 0:
 				if (tile2 instanceof TileEntityAirLockController)
 				{
-					TileEntityAirLockController launchController = (TileEntityAirLockController) tile2;
-					launchController.playerToOpenFor = (String) this.data.get(4);
+					TileEntityAirLockController airlockController = (TileEntityAirLockController) tile2;
+					airlockController.playerToOpenFor = (String) this.data.get(4);
 				}
 				break;
 			default:

@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
+import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
@@ -17,9 +17,7 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
-//import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-
-public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical implements IPacketReceiver, ISidedInventory, IConnector
+public class TileEntityEnergyStorageModule extends TileEntityUniversalElectricalSource implements IPacketReceiver, ISidedInventory, IConnector
 {
 	private ItemStack[] containingItems = new ItemStack[2];
 
@@ -30,7 +28,8 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	public TileEntityEnergyStorageModule()
 	{
 		this.storage.setCapacity(500000);
-		this.storage.setMaxTransfer(100);
+		this.storage.setMaxExtract(300);  //Tier 1
+		//Designed so that Tier 1 Energy Storage can power up to 10 Tier 1 machines
 	}
 
 	@Override
@@ -211,7 +210,7 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
 	{
-		return itemstack.getItem() instanceof IItemElectric;
+		return ItemElectric.isElectricItem(itemstack.getItem());
 	}
 
 	@Override
@@ -223,15 +222,15 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	@Override
 	public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
 	{
-		if (this.isItemValidForSlot(slotID, itemstack))
+		if (itemstack.getItem() instanceof ItemElectric)
 		{
 			if (slotID == 0)
 			{
-				return ((IItemElectric) itemstack.getItem()).getTransfer(itemstack) > 0;
+				return ((ItemElectric) itemstack.getItem()).getTransfer(itemstack) > 0;
 			}
 			else if (slotID == 1)
 			{
-				return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) > 0;
+				return ((ItemElectric) itemstack.getItem()).getElectricityStored(itemstack) > 0;
 			}
 		}
 		return false;
@@ -240,15 +239,15 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	@Override
 	public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
 	{
-		if (this.isItemValidForSlot(slotID, itemstack))
+		if (itemstack.getItem() instanceof ItemElectric)
 		{
 			if (slotID == 0)
 			{
-				return ((IItemElectric) itemstack.getItem()).getTransfer(itemstack) <= 0;
+				return ((ItemElectric) itemstack.getItem()).getTransfer(itemstack) <= 0;
 			}
 			else if (slotID == 1)
 			{
-				return ((IItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || this.getEnergyStoredGC() >= this.getMaxEnergyStoredGC();
+				return ((ItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || this.getEnergyStoredGC() >= this.getMaxEnergyStoredGC();
 			}
 		}
 
@@ -261,23 +260,7 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	{
 		return this.getElectricalInputDirections().contains(direction) ? this.getMaxEnergyStored() - this.getEnergyStored() : 0;
 	}
-
-	@Override
-	public float getProvide(ForgeDirection direction)
-	{
-		if (direction == ForgeDirection.UNKNOWN && NetworkConfigHandler.isIndustrialCraft2Loaded())
-		{
-			BlockVec3 vec = new BlockVec3(this).modifyPositionFromSide(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine.STORAGE_MODULE_METADATA + 2), 1);
-			TileEntity tile = vec.getTileEntity(this.worldObj);
-			if (tile instanceof IConductor)
-				//No power provide to IC2 mod if it's a Galacticraft wire on the output.  Galacticraft network will provide the power.
-				return 0.0F;
-			else
-				return Math.min(3.75F, this.getEnergyStored());
-		}
-		//3.75kJ per tick = 75kW
-		return this.getElectricalOutputDirections().contains(direction) ? Math.min(3.75F, this.getEnergyStored()) : 0.0F;
-	}*/
+	*/
 
 	@Override
 	public EnumSet<ForgeDirection> getElectricalInputDirections()
@@ -292,6 +275,12 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	}
 
 	@Override
+	public ForgeDirection getElectricalOutputDirectionMain()
+	{
+		return ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine.STORAGE_MODULE_METADATA + 2);
+	}
+
+	@Override
 	public boolean canConnect(ForgeDirection direction, NetworkType type)
 	{
 		if (direction == null || direction.equals(ForgeDirection.UNKNOWN) || type != NetworkType.POWER)
@@ -301,7 +290,7 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 
 		int metadata = this.getBlockMetadata() - BlockMachine.STORAGE_MODULE_METADATA;
 
-		return direction == ForgeDirection.getOrientation(metadata + 2);
+		return direction == ForgeDirection.getOrientation(metadata + 2) || direction == ForgeDirection.getOrientation((metadata + 2) ^ 1);
 	}
 
 	//	@Override

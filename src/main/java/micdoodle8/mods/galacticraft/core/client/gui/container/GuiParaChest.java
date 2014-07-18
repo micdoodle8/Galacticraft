@@ -19,7 +19,7 @@ public class GuiParaChest extends GuiContainerGC
 	{
 		for (int i = 0; i < 4; i++)
 		{
-			GuiParaChest.parachestTexture[i] = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/chest_" + i * 18 + ".png");
+			GuiParaChest.parachestTexture[i] = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/chest_" + i * 18 + ".png");
 		}
 	}
 

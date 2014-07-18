@@ -31,7 +31,7 @@ public class ItemOilExtractor extends Item
 		super();
 		this.setMaxStackSize(1);
 		this.setUnlocalizedName(assetName);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 	}
 
 	@Override

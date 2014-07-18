@@ -25,7 +25,7 @@ public class BlockOxygenDetector extends BlockContainer implements ITileEntityPr
 		super(Material.iron);
 		this.setHardness(1.0F);
 		this.setStepSound(Block.soundTypeStone);
-		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 		this.setBlockName(assetName);
 	}
 
@@ -39,8 +39,8 @@ public class BlockOxygenDetector extends BlockContainer implements ITileEntityPr
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		this.iconTop = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
-		this.iconSide = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "detector_side");
+		this.iconTop = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
+		this.iconSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "detector_side");
 	}
 
 	@Override

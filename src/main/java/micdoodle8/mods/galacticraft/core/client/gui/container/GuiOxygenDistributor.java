@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import micdoodle8.mods.galacticraft.api.transmission.EnergyHelper;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox.ICheckBoxCallback;
@@ -20,12 +21,12 @@ import java.util.List;
 
 public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCallback
 {
-	private static final ResourceLocation distributorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/oxygen.png");
+	private static final ResourceLocation distributorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/oxygen.png");
 
 	private final TileEntityOxygenDistributor distributor;
 
-	private GuiElementInfoRegion oxygenInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 24, 56, 9, new ArrayList<String>(), this.width, this.height);
-	private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 37, 56, 9, new ArrayList<String>(), this.width, this.height);
+	private GuiElementInfoRegion oxygenInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 24, 56, 9, new ArrayList<String>(), this.width, this.height, this);
+	private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 37, 56, 9, new ArrayList<String>(), this.width, this.height, this);
 
 	private GuiElementCheckbox checkboxRenderBubble;
 
@@ -45,7 +46,7 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
 		List<String> batterySlotDesc = new ArrayList<String>();
 		batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
 		batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
-		this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 31, (this.height - this.ySize) / 2 + 26, 18, 18, batterySlotDesc, this.width, this.height));
+		this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 31, (this.height - this.ySize) / 2 + 26, 18, 18, batterySlotDesc, this.width, this.height, this));
 		List<String> oxygenDesc = new ArrayList<String>();
 		oxygenDesc.add(GCCoreUtil.translate("gui.oxygenStorage.desc.0"));
 		oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygenStorage.desc.1") + ": " + ((int) Math.floor(this.distributor.storedOxygen) + " / " + (int) Math.floor(this.distributor.maxOxygen)));
@@ -64,7 +65,7 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
 		this.electricInfoRegion.parentWidth = this.width;
 		this.electricInfoRegion.parentHeight = this.height;
 		this.infoRegions.add(this.electricInfoRegion);
-		this.checkboxRenderBubble = new GuiElementCheckbox(0, this, var5 + 85, var6 + 87, "Bubble Visible");
+		this.checkboxRenderBubble = new GuiElementCheckbox(0, this, var5 + 85, var6 + 87, GCCoreUtil.translate("gui.message.bubbleVisible.name"));
 		this.buttonList.add(this.checkboxRenderBubble);
 	}
 
@@ -133,10 +134,12 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
 
 			List<String> electricityDesc = new ArrayList<String>();
 			electricityDesc.add(GCCoreUtil.translate("gui.energyStorage.desc.0"));
-			electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energyStorage.desc.1") + ((int) Math.floor(this.distributor.getEnergyStoredGC()) + " / " + (int) Math.floor(this.distributor.getMaxEnergyStoredGC())));
+            EnergyHelper.getEnergyDisplayTooltip(this.distributor.getEnergyStoredGC(), this.distributor.getMaxEnergyStoredGC(), electricityDesc);
+//			electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energyStorage.desc.1") + ((int) Math.floor(this.distributor.getEnergyStoredGC()) + " / " + (int) Math.floor(this.distributor.getMaxEnergyStoredGC())));
 			this.electricInfoRegion.tooltipStrings = electricityDesc;
 
-			this.checkboxRenderBubble.isSelected = this.distributor.oxygenBubble.shouldRender();
+            if (this.distributor.oxygenBubble != null)
+			    this.checkboxRenderBubble.isSelected = this.distributor.oxygenBubble.shouldRender();
 		}
 	}
 
@@ -156,7 +159,7 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
 	@Override
 	public boolean getInitiallySelected(GuiElementCheckbox checkbox)
 	{
-		return this.distributor.oxygenBubble.shouldRender();
+		return this.distributor.oxygenBubble != null ? this.distributor.oxygenBubble.shouldRender() : false;
 	}
 
 	@Override

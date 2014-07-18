@@ -5,7 +5,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
+import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -29,45 +29,44 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.EnumSet;
-import java.util.HashSet;
 
-public class TileEntitySolar extends TileEntityUniversalElectrical implements IMultiBlock, IPacketReceiver, IDisableableMachine, IInventory, ISidedInventory, IConnector
+public class TileEntitySolar extends TileEntityUniversalElectricalSource implements IMultiBlock, IPacketReceiver, IDisableableMachine, IInventory, ISidedInventory, IConnector
 {
-	public HashSet<TileEntity> connectedTiles = new HashSet<TileEntity>();
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int solarStrength = 0;
 	public float targetAngle;
 	public float currentAngle;
 	@NetworkedField(targetSide = Side.CLIENT)
-	public boolean disabled = true;
+	public boolean disabled = false;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int disableCooldown = 0;
 	private ItemStack[] containingItems = new ItemStack[1];
-	public static final int MAX_GENERATE_WATTS = 1000;
+	public static final int MAX_GENERATE_WATTS = 200;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int generateWatts = 0;
-	public int capacityDynamic;
 
 	public TileEntitySolar()
 	{
-		this(0);
+		this(1);
 	}
 
-	public TileEntitySolar(int maxEnergy)
+	/*
+	 * @param tier: 1 = Basic Solar  2 = Advanced Solar
+	 */
+	public TileEntitySolar(int tier)
 	{
-		this.capacityDynamic = maxEnergy;
-		this.storage.setMaxExtract(1300);
+		this.storage.setMaxExtract(TileEntitySolar.MAX_GENERATE_WATTS);
 		this.storage.setMaxReceive(TileEntitySolar.MAX_GENERATE_WATTS);
+        if (tier == 2)
+        {
+        	this.storage.setCapacity(100000);
+        }
+        this.setTierGC(tier);
 	}
 
 	@Override
 	public void updateEntity()
 	{
-		if (this.storage.getCapacityGC() == 0)
-		{
-			this.storage.setCapacity(this.capacityDynamic);
-		}
-
 		this.receiveEnergyGC(null, this.generateWatts, false);
 
 		super.updateEntity();
@@ -95,7 +94,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 					{
 						for (int z = -1; z <= 1; z++)
 						{
-							if (this.isAdvancedSolar())
+							if (this.tier == 2)
 							{
 								if (this.worldObj.canBlockSeeTheSky(this.xCoord + x, this.yCoord + 2, this.zCoord + z))
 								{
@@ -151,7 +150,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 
 		celestialAngle %= 360;
 
-		if (this.isAdvancedSolar())
+		if (this.tier == 2)
 		{
 			if (!this.worldObj.isDaytime() || this.worldObj.isRaining() || this.worldObj.isThundering())
 			{
@@ -285,7 +284,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-		this.capacityDynamic = nbt.getInteger("capacityDynamic");
+        this.storage.setCapacity(nbt.getFloat("maxEnergy"));
 		this.currentAngle = nbt.getFloat("currentAngle");
 		this.targetAngle = nbt.getFloat("targetAngle");
 		this.setDisabled(0, nbt.getBoolean("disabled"));
@@ -310,7 +309,6 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	public void writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
-		nbt.setInteger("capacityDynamic", this.capacityDynamic);
 		nbt.setFloat("maxEnergy", this.getMaxEnergyStoredGC());
 		nbt.setFloat("currentAngle", this.currentAngle);
 		nbt.setFloat("targetAngle", this.targetAngle);
@@ -338,23 +336,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	{
 		return 0;
 	}
-
-	@Override
-	public float getProvide(ForgeDirection direction)
-	{
-		if (direction == ForgeDirection.UNKNOWN && NetworkConfigHandler.isIndustrialCraft2Loaded())
-		{
-			BlockVec3 vec = new BlockVec3(this).modifyPositionFromSide(ForgeDirection.getOrientation(this.getBlockMetadata() - GCCoreBlockMachine.STORAGE_MODULE_METADATA + 2), 1);
-			TileEntity tile = vec.getTileEntity(this.worldObj);
-			if (tile instanceof IConductor)
-				//No power provide to IC2 mod if it's a Galacticraft wire on the output.  Galacticraft network will provide the power.
-				return 0.0F;
-			else
-				return Math.min(Math.max(this.getEnergyStored(), 0F), 1300F);
-		}
-		
-		return this.getElectricalOutputDirections().contains(direction) ? Math.min(Math.max(this.getEnergyStored(), 0F), 1300F) : 0F;
-	}*/
+	*/
 
 	@Override
 	public EnumSet<ForgeDirection> getElectricalInputDirections()
@@ -367,12 +349,25 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	{
 		int metadata = this.getBlockMetadata();
 
-		if (!this.isAdvancedSolar())
+		if (this.tier == 1)
 		{
 			metadata -= BlockSolar.ADVANCED_METADATA;
 		}
 
-		return EnumSet.of(ForgeDirection.getOrientation(metadata + 2).getOpposite(), ForgeDirection.UNKNOWN);
+		return EnumSet.of(ForgeDirection.getOrientation((metadata + 2) ^ 1), ForgeDirection.UNKNOWN);
+	}
+	
+	@Override
+	public ForgeDirection getElectricalOutputDirectionMain()
+	{
+		int metadata = this.getBlockMetadata();
+
+		if (this.tier == 1)
+		{
+			metadata -= BlockSolar.ADVANCED_METADATA;
+		}
+
+		return ForgeDirection.getOrientation((metadata + 2) ^ 1);
 	}
 
 	@Override
@@ -391,7 +386,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	@Override
 	public String getInventoryName()
 	{
-		return GCCoreUtil.translate(this.isAdvancedSolar() ? "container.solarbasic.name" : "container.solaradvanced.name");
+		return GCCoreUtil.translate(this.tier == 1 ? "container.solarbasic.name" : "container.solaradvanced.name");
 	}
 
 	@Override
@@ -527,12 +522,7 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
 	{
-		return slotID == 0 && itemstack.getItem() instanceof IItemElectric;
-	}
-
-	public boolean isAdvancedSolar()
-	{
-		return this.getBlockMetadata() < BlockSolar.ADVANCED_METADATA;
+		return slotID == 0 && ItemElectric.isElectricItem(itemstack.getItem());
 	}
 
 	@Override
@@ -543,13 +533,6 @@ public class TileEntitySolar extends TileEntityUniversalElectrical implements IM
 			return false;
 		}
 
-		int metadata = this.getBlockMetadata();
-
-		if (!this.isAdvancedSolar())
-		{
-			metadata -= BlockSolar.ADVANCED_METADATA;
-		}
-
-		return direction == ForgeDirection.getOrientation(metadata + 2).getOpposite();
+		return direction == this.getElectricalOutputDirectionMain();
 	}
 }

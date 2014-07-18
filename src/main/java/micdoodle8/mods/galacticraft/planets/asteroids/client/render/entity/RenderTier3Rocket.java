@@ -42,7 +42,7 @@ public class RenderTier3Rocket extends Render
 		GL11.glTranslatef((float) par2, (float) par4 - 0.4F, (float) par6);
 		GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(-var24, 0.0F, 0.0F, 1.0F);
-		final float var28 = entity.rollAmplitude - par9;
+		final float var28 = entity.rollAmplitude / 3 - par9;
 		float var30 = entity.shipDamage - par9;
 
 		if (var30 < 0.0F)
@@ -63,7 +63,7 @@ public class RenderTier3Rocket extends Render
 
         this.rocketModelObj.renderOnly("Boosters", "Rocket");
         Vector3 teamColor = ClientUtil.updateTeamColor(FMLClientHandler.instance().getClient().thePlayer.getCommandSenderName(), true);
-        GL11.glColor3f(teamColor.floatX(), teamColor.floatY(), teamColor.floatZ());
+        if (teamColor != null) GL11.glColor3f(teamColor.floatX(), teamColor.floatY(), teamColor.floatZ());
         this.rocketModelObj.renderPart("NoseCone");
 
         if (FMLClientHandler.instance().getClient().thePlayer.ticksExisted / 10 % 2 < 1)

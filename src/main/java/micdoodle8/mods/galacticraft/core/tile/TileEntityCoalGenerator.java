@@ -2,11 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
-import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -17,22 +13,33 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.EnumSet;
 
-public class TileEntityCoalGenerator extends TileEntityUniversalElectrical implements IInventory, ISidedInventory, IPacketReceiver, IConnector
+public class TileEntityCoalGenerator extends TileEntityUniversalElectricalSource implements IInventory, ISidedInventory, IPacketReceiver, IConnector
 {
-	public static final int MAX_GENERATE_WATTS = 500;
-	public static final int MIN_GENERATE_WATTS = 100;
+	//New energy rates:
+	//
+	//Tier 1 machine typically consumes 600 gJ/s = 30 gJ/t
+	//(Electric furnace consumes maybe? three times that, t.b.d.)
+	//Coal generator on max heat can power up to 4 Tier 1 machines
+	//Basic solar gen in full sun can power 1 Tier 1 machine
+
+	//1 lump of coal is equivalent to 38400 gJ on max heat
+	//so produces 120 gJ/t over 320 ticks
+	
+	//Below the min_generate, all heat is wasted
+	//At max generate, 100% efficient conversion coal energy -> electric makes 120 gJ/t
+	public static final int MAX_GENERATE_GJ_PER_TICK = 150;
+	public static final int MIN_GENERATE_GJ_PER_TICK = 30;
 
 	private static final float BASE_ACCELERATION = 0.3f;
 
 	public float prevGenerateWatts = 0;
 
 	@NetworkedField(targetSide = Side.CLIENT)
-	public int generateWatts = 0;
+	public float heatGJperTick = 0;
 
 	/**
 	 * The number of ticks that a fresh copy of the currently-burning item would
@@ -48,14 +55,14 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 
 	public TileEntityCoalGenerator()
 	{
-		this.storage.setCapacity(50000);
-		this.storage.setMaxTransfer(TileEntityCoalGenerator.MAX_GENERATE_WATTS);
+		this.storage.setMaxExtract(TileEntityCoalGenerator.MAX_GENERATE_GJ_PER_TICK - TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK);
 	}
 
 	@Override
 	public void updateEntity()
 	{
-		this.receiveEnergyGC(null, this.generateWatts, false);
+		if (this.heatGJperTick - TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK > 0)
+			this.receiveEnergyGC(null, (this.heatGJperTick - TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK), false);
 
 		super.updateEntity();
 
@@ -67,7 +74,7 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 
 				if (this.getEnergyStoredGC() < this.getMaxEnergyStoredGC())
 				{
-					this.generateWatts = (int) Math.floor(Math.min(this.generateWatts + Math.min(this.generateWatts * 0.005F + TileEntityCoalGenerator.BASE_ACCELERATION, 0.005F), TileEntityCoalGenerator.MAX_GENERATE_WATTS));
+					this.heatGJperTick = Math.min(this.heatGJperTick + Math.max(this.heatGJperTick * 0.005F, TileEntityCoalGenerator.BASE_ACCELERATION), TileEntityCoalGenerator.MAX_GENERATE_GJ_PER_TICK);
 				}
 			}
 
@@ -87,10 +94,10 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 
 			if (this.itemCookTime <= 0)
 			{
-				this.generateWatts = (int) Math.floor(Math.max(this.generateWatts - 8, 0));
+				this.heatGJperTick = Math.max(this.heatGJperTick - 0.3F, 0);
 			}
 
-			this.generateWatts = (int) Math.floor(Math.min(Math.max(this.generateWatts, 0.0F), this.getMaxEnergyStoredGC()));
+			this.heatGJperTick = Math.min(Math.max(this.heatGJperTick, 0.0F), this.getMaxEnergyStoredGC());
 		}
 	}
 
@@ -112,7 +119,7 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 	{
 		super.readFromNBT(par1NBTTagCompound);
 		this.itemCookTime = par1NBTTagCompound.getInteger("itemCookTime");
-		this.generateWatts = par1NBTTagCompound.getInteger("generateRateInt");
+		this.heatGJperTick = par1NBTTagCompound.getInteger("generateRateInt");
 		NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
 		this.containingItems = new ItemStack[this.getSizeInventory()];
 
@@ -136,7 +143,7 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 	{
 		super.writeToNBT(par1NBTTagCompound);
 		par1NBTTagCompound.setInteger("itemCookTime", this.itemCookTime);
-		par1NBTTagCompound.setFloat("generateRate", this.generateWatts);
+		par1NBTTagCompound.setFloat("generateRate", this.heatGJperTick);
 		NBTTagList var2 = new NBTTagList();
 
 		for (int var3 = 0; var3 < this.containingItems.length; ++var3)
@@ -276,29 +283,14 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 		return 0;
 	}
 
+	/*
 	@Override
 	public float getRequest(ForgeDirection direction)
 	{
 		return 0;
 	}
-
-	@Override
-	public float getProvide(ForgeDirection direction)
-	{
-		if (direction == ForgeDirection.UNKNOWN && NetworkConfigHandler.isIndustrialCraft2Loaded())
-		{
-			BlockVec3 vec = new BlockVec3(this).modifyPositionFromSide(ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine.STORAGE_MODULE_METADATA + 2), 1);
-			TileEntity tile = vec.getTileEntity(this.worldObj);
-			if (tile instanceof IConductor)
-			{
-				//No power provide to IC2 mod if it's a Galacticraft wire on the output.  Galacticraft network will provide the power.
-				return 0.0F;
-			}
-		}
-
-		return this.generateWatts < TileEntityCoalGenerator.MIN_GENERATE_WATTS ? 0F : this.generateWatts;
-	}
-
+	*/
+	
 	@Override
 	public EnumSet<ForgeDirection> getElectricalInputDirections()
 	{
@@ -312,6 +304,12 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 	}
 
 	@Override
+	public ForgeDirection getElectricalOutputDirectionMain()
+	{
+		return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
+	}
+
+	@Override
 	public boolean canConnect(ForgeDirection direction, NetworkType type)
 	{
 		if (direction == null || direction.equals(ForgeDirection.UNKNOWN) || type != NetworkType.POWER)
@@ -319,6 +317,6 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectrical imple
 			return false;
 		}
 
-		return direction == ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
+		return direction == this.getElectricalOutputDirectionMain();
 	}
 }

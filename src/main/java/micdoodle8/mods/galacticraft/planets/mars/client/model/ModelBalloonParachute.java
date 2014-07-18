@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class ModelBalloonParachute extends ModelBase
 {
-	private static final ResourceLocation grayParachuteTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/parachute/gray.png");
+	private static final ResourceLocation grayParachuteTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachute/gray.png");
 
 	public ModelRenderer[] parachute = new ModelRenderer[3];
 	public ModelRenderer[] parachuteStrings = new ModelRenderer[4];

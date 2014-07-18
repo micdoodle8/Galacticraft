@@ -18,12 +18,12 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer
 {
-	public static final ResourceLocation receiverTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/misc/underoil.png");
+	public static final ResourceLocation receiverTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/misc/underoil.png");
 	public static IModelCustom receiverModel;
 
 	public TileEntityBeamReceiverRenderer()
 	{
-		TileEntityBeamReceiverRenderer.receiverModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/receiver.obj"));
+		TileEntityBeamReceiverRenderer.receiverModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/receiver.obj"));
 	}
 
 	public void renderModelAt(TileEntityBeamReceiver tileEntity, double d, double d1, double d2, float f)

@@ -1,0 +1,28 @@
+# Galacticraft Asteroids Language File = GERMANY GERMAN
+
+# GENERAL ITEMS
+item.itemTier3Rocket.t3Rocket.name=Rakete (Stufe 3)
+
+# TOOLS
+
+# ARMOR
+
+# BLOCKS
+tile.asteroidsBlock.asteroids1.name=Asteroidgestein
+tile.beamReflector.name=Strahlenreflektor
+tile.beamReceiver.name=Strahlenempfänger
+tile.telepadShort.name=Kurzreichweiten-Telepad
+
+# GUI
+planet.asteroids=Asteroiden
+
+itemGroup.GalacticraftAsteroids=Galacticraft: Asteroiden
+
+# Schematics
+
+# Entity
+entity.SmallAsteroidGC.name=Kleiner Asteroid
+entity.GrappleHookGC.name=Fanghaken
+entity.Tier3RocketGC.name=Rakete (Stufe 3)
+
+# Container

@@ -39,30 +39,33 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 			this.preLoadFacing = -1;
 		}
 
-		if (this.getTarget() != null && this.modeReceive == ReceiverMode.EXTRACT.ordinal() && this.facing != ForgeDirection.UNKNOWN.ordinal())
-		{
-			TileEntity tile = this.getAttachedTile();
+        if (!this.worldObj.isRemote)
+        {
+            if (this.getTarget() != null && this.modeReceive == ReceiverMode.EXTRACT.ordinal() && this.facing != ForgeDirection.UNKNOWN.ordinal())
+            {
+                TileEntity tile = this.getAttachedTile();
 
-			if (tile instanceof TileEntityUniversalElectrical)
-			{
-				TileEntityUniversalElectrical electricalTile = (TileEntityUniversalElectrical) tile;
-				EnergySourceAdjacent source = new EnergySourceAdjacent(ForgeDirection.getOrientation(this.facing).getOpposite());
-				float toSend = electricalTile.storage.getMaxExtract();
-				electricalTile.extractEnergyGC(source, this.getTarget().receiveEnergyGC(new EnergySourceWireless(Lists.newArrayList((ILaserNode) this)), toSend, false), false);
-			}
-		}
+                if (tile instanceof TileEntityUniversalElectrical)
+                {
+                    TileEntityUniversalElectrical electricalTile = (TileEntityUniversalElectrical) tile;
+                    EnergySourceAdjacent source = new EnergySourceAdjacent(ForgeDirection.getOrientation(this.facing).getOpposite());
+                    float toSend = electricalTile.storage.getMaxExtract();
+                    electricalTile.extractEnergyGC(source, this.getTarget().receiveEnergyGC(new EnergySourceWireless(Lists.newArrayList((ILaserNode) this)), toSend, false), false);
+                }
+            }
 
-		if (this.modeReceive == ReceiverMode.RECEIVE.ordinal() && this.storage.getEnergyStoredGC() > 0)
-		{
-			TileEntity tile = this.getAttachedTile();
+            if (this.modeReceive == ReceiverMode.RECEIVE.ordinal() && this.storage.getEnergyStoredGC() > 0)
+            {
+                TileEntity tile = this.getAttachedTile();
 
-			if (tile instanceof TileEntityUniversalElectrical)
-			{
-				TileEntityUniversalElectrical electricalTile = (TileEntityUniversalElectrical) tile;
-				EnergySourceAdjacent source = new EnergySourceAdjacent(ForgeDirection.getOrientation(this.facing).getOpposite());
-				this.storage.extractEnergyGC((int) electricalTile.receiveEnergyGC(source, this.storage.getEnergyStoredGC(), false), false);
-			}
-		}
+                if (tile instanceof TileEntityUniversalElectrical)
+                {
+                    TileEntityUniversalElectrical electricalTile = (TileEntityUniversalElectrical) tile;
+                    EnergySourceAdjacent source = new EnergySourceAdjacent(ForgeDirection.getOrientation(this.facing).getOpposite());
+                    this.storage.extractEnergyGC((int) electricalTile.receiveEnergyGC(source, this.storage.getEnergyStoredGC(), false), false);
+                }
+            }
+        }
 	}
 
 	@Override
@@ -128,9 +131,9 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 		if (tile instanceof EnergyStorageTile)
 		{
 			EnergyStorage attachedStorage = ((EnergyStorageTile) tile).storage;
-			this.storage.setCapacity(attachedStorage.getCapacityGC());
-			this.storage.setMaxReceive(attachedStorage.getMaxReceive());
+            this.storage.setCapacity(attachedStorage.getCapacityGC() - attachedStorage.getEnergyStoredGC());
 			this.storage.setMaxExtract(attachedStorage.getMaxExtract());
+			this.storage.setMaxReceive(attachedStorage.getMaxReceive());
 		}
 
 		return tile;

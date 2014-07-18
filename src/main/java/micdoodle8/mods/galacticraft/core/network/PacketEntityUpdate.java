@@ -6,7 +6,8 @@ import micdoodle8.mods.galacticraft.api.vector.Vector2;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
+
+import java.util.UUID;
 
 public class PacketEntityUpdate implements IPacket
 {
@@ -65,28 +66,33 @@ public class PacketEntityUpdate implements IPacket
 	@Override
 	public void handleClientSide(EntityPlayer player)
 	{
-		this.setEntityData(player.worldObj);
+		this.setEntityData(player);
 	}
 
 	@Override
 	public void handleServerSide(EntityPlayer player)
 	{
-		this.setEntityData(player.worldObj);
+		this.setEntityData(player);
 	}
 
-	private void setEntityData(World world)
+	private void setEntityData(EntityPlayer player)
 	{
-		Entity entity = world.getEntityByID(this.entityID);
+		Entity entity = player.worldObj.getEntityByID(this.entityID);
 
 		if (entity instanceof IEntityFullSync)
 		{
-			IEntityFullSync controllable = (IEntityFullSync) entity;
-			controllable.setPositionRotationAndMotion(this.position.x, this.position.y, this.position.z, this.rotationYaw, this.rotationPitch, this.motion.x, this.motion.y, this.motion.z, this.onGround);
+            if (player.worldObj.isRemote || player.getUniqueID().equals(((IEntityFullSync) entity).getOwnerUUID()) || ((IEntityFullSync) entity).getOwnerUUID() == null)
+            {
+                IEntityFullSync controllable = (IEntityFullSync) entity;
+                controllable.setPositionRotationAndMotion(this.position.x, this.position.y, this.position.z, this.rotationYaw, this.rotationPitch, this.motion.x, this.motion.y, this.motion.z, this.onGround);
+            }
 		}
 	}
 
 	public interface IEntityFullSync
 	{
 		public void setPositionRotationAndMotion(double x, double y, double z, float yaw, float pitch, double motX, double motY, double motZ, boolean onGround);
+
+        public UUID getOwnerUUID();
 	}
 }

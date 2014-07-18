@@ -56,7 +56,6 @@ public class TeleportTypeMars implements ITeleportType
 			}
 
 			EntityLandingBalloons lander = new EntityLandingBalloons(gcPlayer);
-			lander.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
 
 			if (!newWorld.isRemote)
 			{

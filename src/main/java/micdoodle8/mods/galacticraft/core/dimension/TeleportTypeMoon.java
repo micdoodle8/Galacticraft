@@ -63,11 +63,7 @@ public class TeleportTypeMoon implements ITeleportType
 			}
 
 			EntityLander lander = new EntityLander(gcPlayer);
-			lander.setWaitForPlayer(true);
-			lander.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
-
-			lander.riddenByEntity = player;
-			player.ridingEntity = lander;
+            lander.setPosition(gcPlayer.posX, gcPlayer.posY, gcPlayer.posZ);
 
 			if (!newWorld.isRemote)
 			{

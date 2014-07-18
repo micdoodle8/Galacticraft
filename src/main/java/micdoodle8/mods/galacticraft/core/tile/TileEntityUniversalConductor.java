@@ -1,20 +1,29 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import buildcraft.api.power.IPowerReceptor;
+import buildcraft.api.power.PowerHandler;
+import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cpw.mods.fml.common.eventhandler.Event;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import java.lang.reflect.Constructor;
 
 public abstract class TileEntityUniversalConductor extends TileEntityConductor
 {
 	protected boolean isAddedToEnergyNet;
-	public Object powerHandler;
+	protected Object powerHandlerBC;
 
 	//	public float buildcraftBuffer = NetworkConfigHandler.BC3_RATIO * 50;
-	//	private float IC2surplusJoules = 0F;
+	private float IC2surplusJoules = 0F;
 
 	public TileEntityUniversalConductor()
 	{
@@ -30,11 +39,11 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 	{
 		if (NetworkConfigHandler.isBuildcraftLoaded())
 		{
-			//			if (this instanceof IPowerReceptor)
-			//			{
-			//				this.powerHandler = new PowerHandler((IPowerReceptor) this, Type.PIPE);
-			//				((PowerHandler) this.powerHandler).configurePowerPerdition(0, 0);
-			//			}
+			if (this instanceof IPowerReceptor)
+			{
+				this.powerHandlerBC = new PowerHandler((IPowerReceptor) this, buildcraft.api.power.PowerHandler.Type.PIPE);
+				((PowerHandler) this.powerHandlerBC).configurePowerPerdition(0, 0);
+			}
 		}
 	}
 
@@ -72,7 +81,7 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 	@Override
 	public void invalidate()
 	{
-		//		this.IC2surplusJoules = 0F;
+		this.IC2surplusJoules = 0F;
 		this.unloadTileIC2();
 		super.invalidate();
 	}
@@ -134,99 +143,148 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 			this.isAddedToEnergyNet = false;
 		}
 	}
+	
+	//public double getDemandedEnergy() - will be for 1.7.10
 
-	//	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
-	//	public double demandedEnergyUnits()
-	//	{
-	//		if (this.getNetwork() == null)
-	//		{
-	//			return 0.0;
-	//		}
-	//
-	//		if (this.IC2surplusJoules < 0.001F)
-	//		{
-	//			this.IC2surplusJoules = 0F;
-	//			return ((IElectricityNetwork) this.getNetwork()).getRequest(this).getWatts() * NetworkConfigHandler.TO_IC2_RATIO;
-	//		}
-	//		
-	//		ElectricityPack toSend = ElectricityPack.getFromWatts(IC2surplusJoules, 120F);
-	//		this.IC2surplusJoules = ((IElectricityNetwork) this.getNetwork()).produce(toSend, true, this);
-	//		if (this.IC2surplusJoules < 0.001F)
-	//		{
-	//			this.IC2surplusJoules = 0F;
-	//			return ((IElectricityNetwork) this.getNetwork()).getRequest(this).getWatts() * NetworkConfigHandler.TO_IC2_RATIO;
-	//		}
-	//		return 0D;
-	//	}
-	//
-	//	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
-	//	public double injectEnergyUnits(ForgeDirection directionFrom, double amount)
-	//	{
-	//		TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, directionFrom);
-	//		float convertedEnergy = (float) amount * NetworkConfigHandler.IC2_RATIO;
-	//		ElectricityPack pack = ElectricityPack.getFromWatts(convertedEnergy, 120F);
-	//		float surplus = ((IElectricityNetwork) this.getNetwork()).produce(pack, true, this, tile);
-	//
-	//		if (surplus >= 0.001F) this.IC2surplusJoules = surplus;
-	//		else this.IC2surplusJoules = 0F;
-	//
-	//		return Math.round(this.IC2surplusJoules * NetworkConfigHandler.TO_IC2_RATIO);
-	//	}
-	//
-	//	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
-	//	public int getMaxSafeInput()
-	//	{
-	//		return Integer.MAX_VALUE;
-	//	}
-	//
-	//	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
-	//	public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction)
-	//	{
-	//		return true;
-	//	}
-	//
-	//	/**
-	//	 * BuildCraft functions
-	//	 */
-	//	@RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
-	//	public PowerReceiver getPowerReceiver(ForgeDirection side)
-	//	{
-	//		if (this.getNetwork() == null || ((IElectricityNetwork) this.getNetwork()).getRequest(this).getWatts() <= 0.0F)
-	//		{
-	//			return null;
-	//		}
-	//
-	//		return ((PowerHandler) this.powerHandler).getPowerReceiver();
-	//	}
-	//
-	//	public void reconfigureBC()
-	//	{
-	//		float requiredEnergy = ((IElectricityNetwork) this.getNetwork()).getRequest(this).getWatts() * NetworkConfigHandler.TO_BC_RATIO;
-	//		((PowerHandler) this.powerHandler).configure(1, requiredEnergy, 0, requiredEnergy);
-	//	}
-	//
-	//	@RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
-	//	public void doWork(PowerHandler workProvider)
-	//	{
-	//		if (((PowerHandler) this.powerHandler).getEnergyStored() > 0.0F)
-	//		{
-	//			if (this.getNetwork() != null)
-	//			{
-	//				ElectricityPack pack = ElectricityPack.getFromWatts(((PowerHandler) this.powerHandler).getEnergyStored() * NetworkConfigHandler.BC3_RATIO, 120);
-	//				((IElectricityNetwork) this.getNetwork()).produce(pack, true, this);
-	//			}
-	//		}
-	//
-	//		((PowerHandler) this.powerHandler).setEnergy(0.0F);
-	//		this.reconfigureBC();
-	//	}
-	//
-	//	@RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
-	//	public World getWorld()
-	//	{
-	//		return this.getWorldObj();
-	//	}
-	//
+	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
+	public double demandedEnergyUnits()
+	{
+		if (this.getNetwork() == null)
+		{
+			return 0.0;
+		}
+
+		if (this.IC2surplusJoules < 0.001F)
+		{
+			this.IC2surplusJoules = 0F;
+			return this.getNetwork().getRequest(this) * NetworkConfigHandler.TO_IC2_RATIO;
+		}
+
+		this.IC2surplusJoules = this.getNetwork().produce(this.IC2surplusJoules, true, this);
+		if (this.IC2surplusJoules < 0.001F)
+		{
+			this.IC2surplusJoules = 0F;
+			return this.getNetwork().getRequest(this) * NetworkConfigHandler.TO_IC2_RATIO;
+		}
+		return 0D;
+	}
+
+	//public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) - will be for 1.7.10
+	
+	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
+	public double injectEnergyUnits(ForgeDirection directionFrom, double amount)
+	{
+		TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, directionFrom);
+		float convertedEnergy = (float) amount * NetworkConfigHandler.IC2_RATIO;
+		float surplus = this.getNetwork().produce(convertedEnergy, true, this, tile);
+
+		if (surplus >= 0.001F) this.IC2surplusJoules = surplus;
+		else this.IC2surplusJoules = 0F;
+
+		return Math.round(this.IC2surplusJoules * NetworkConfigHandler.TO_IC2_RATIO);
+	}
+
+	//This will be for 1.7.10
+	/*@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
+	public int getSinkTier()
+	{
+		return 3;
+	}*/
+	
+	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
+	public double getMaxSafeInput()
+	{
+		return Integer.MAX_VALUE;
+	}
+
+	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyAcceptor", modID = "IC2")
+	public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction)
+	{
+		//Don't add connection to IC2 grid if it's a Galacticraft tile
+		if (emitter instanceof IElectrical || emitter instanceof IConductor)
+			return false;
+
+		//Don't make connection with IC2 wires [don't want risk of multiple connections + there is a graphical glitch in IC2]
+		try {
+			Class<?> conductorIC2 = Class.forName("ic2.api.energy.tile.IEnergyConductor");
+			if (conductorIC2.isInstance(emitter)) return false; 
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return true;
+	}
+
+	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyEmitter", modID = "IC2")
+	public boolean emitsEnergyTo(TileEntity receiver, ForgeDirection direction)
+	{
+		//Don't add connection to IC2 grid if it's a Galacticraft tile
+		if (receiver instanceof IElectrical || receiver instanceof IConductor)
+			return false;
+
+		//Don't make connection with IC2 wires [don't want risk of multiple connections + there is a graphical glitch in IC2]
+		try {
+			Class<?> conductorIC2 = Class.forName("ic2.api.energy.tile.IEnergyConductor");
+			if (conductorIC2.isInstance(receiver)) return false; 
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return true;
+	}
+
+	/**
+	 * BuildCraft functions
+	 */
+	@RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
+	public PowerReceiver getPowerReceiver(ForgeDirection side)
+	{
+		if (this.getNetwork() == null || this.getNetwork().getRequest(this) <= 0.0F)
+		{
+			return null;
+		}
+
+		return ((PowerHandler) this.powerHandlerBC).getPowerReceiver();
+	}
+
+	public void reconfigureBC()
+	{
+		double requiredEnergy = this.getNetwork().getRequest(this) * NetworkConfigHandler.TO_BC_RATIO;
+		((PowerHandler) this.powerHandlerBC).configure(1, requiredEnergy, 0, requiredEnergy);
+	}
+
+	@RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
+	public void doWork(PowerHandler workProvider)
+	{
+		PowerHandler handler = (PowerHandler) this.powerHandlerBC;
+		
+		if (handler.getEnergyStored() > 0.0F)
+		{
+			if (this.getNetwork() != null)
+			{
+				
+			}
+		}
+		
+		double energyBC = handler.getEnergyStored();
+		if (energyBC > 0D)
+		{
+			energyBC = this.getNetwork().produce((float) energyBC * NetworkConfigHandler.BC3_RATIO, true, this) * NetworkConfigHandler.TO_BC_RATIO;
+			if (energyBC < 0D) energyBC = 0D;
+			handler.setEnergy(energyBC);
+		}
+
+		this.reconfigureBC();
+	}
+
+	@RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
+	public World getWorld()
+	{
+		return this.getWorldObj();
+	}
+
 	//	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
 	//	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
 	//	{

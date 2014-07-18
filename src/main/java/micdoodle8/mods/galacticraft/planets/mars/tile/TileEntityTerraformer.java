@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.planets.mars.tile;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
-import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
+import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.entities.IBubble;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
@@ -57,8 +57,7 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 
 	public TileEntityTerraformer()
 	{
-		this.storage.setMaxExtract(200);
-		this.storage.setCapacity(50000);
+		this.storage.setMaxExtract(45);
 	}
 
 	public int getScaledWaterLevel(int i)
@@ -485,7 +484,7 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 	@Override
 	public String getInventoryName()
 	{
-		return GCCoreUtil.translate("container.oxygendistributor.name");
+		return GCCoreUtil.translate("container.tileTerraformer.name");
 	}
 
 	@Override
@@ -529,7 +528,7 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
 	{
-		return slotID == 1 && itemstack.getItem() instanceof IItemElectric;
+		return slotID == 1 && ItemElectric.isElectricItem(itemstack.getItem());
 	}
 
 	@Override

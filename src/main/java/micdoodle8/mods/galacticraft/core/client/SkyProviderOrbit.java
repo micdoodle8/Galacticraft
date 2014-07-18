@@ -19,7 +19,7 @@ import java.util.Random;
 public class SkyProviderOrbit extends IRenderHandler
 {
 	private static final ResourceLocation moonTexture = new ResourceLocation("textures/environment/moon_phases.png");
-	private static final ResourceLocation sunTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/orbitalsun.png");
+	private static final ResourceLocation sunTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/planets/orbitalsun.png");
 
 	public int starGLCallList = GLAllocation.generateDisplayLists(3);
 	public int glSkyList;

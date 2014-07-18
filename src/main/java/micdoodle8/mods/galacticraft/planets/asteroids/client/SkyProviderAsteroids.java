@@ -20,8 +20,8 @@ import java.util.Random;
 
 public class SkyProviderAsteroids extends IRenderHandler
 {
-	private static final ResourceLocation overworldTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/planets/overworld.png");
-	private static final ResourceLocation galaxyTexture = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/gui/planets/galaxy.png");
+	private static final ResourceLocation overworldTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/planets/overworld.png");
+	private static final ResourceLocation galaxyTexture = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/planets/galaxy.png");
 	private static final ResourceLocation sunTexture = new ResourceLocation("textures/environment/sun.png");
 
 	public int starGLCallList = GLAllocation.generateDisplayLists(3);
@@ -277,7 +277,7 @@ public class SkyProviderAsteroids extends IRenderHandler
 
 	private Vec3 getCustomSkyColor()
 	{
-		return Vec3.fakePool.getVecFromPool(0.26796875D, 0.1796875D, 0.0D);
+		return Vec3.createVectorHelper(0.26796875D, 0.1796875D, 0.0D);
 	}
 
 	public float getSkyBrightness(float par1)

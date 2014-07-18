@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class RefineryRecipeHandler extends TemplateRecipeHandler
 {
-	private static final ResourceLocation refineryGuiTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/refinery.png");
+	private static final ResourceLocation refineryGuiTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/refinery.png");
 	int ticksPassed;
 
 	public String getRecipeId()
@@ -173,6 +173,6 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler
 	@Override
 	public String getGuiTexture()
 	{
-		return GalacticraftCore.ASSET_PREFIX + "textures/gui/refinery.png";
+		return GalacticraftCore.TEXTURE_PREFIX + "textures/gui/refinery.png";
 	}
 }

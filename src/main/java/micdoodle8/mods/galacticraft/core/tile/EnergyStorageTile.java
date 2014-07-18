@@ -13,7 +13,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 public abstract class EnergyStorageTile extends TileEntityAdvanced implements IEnergyHandlerGC, IElectrical
 {
 	@NetworkedField(targetSide = Side.CLIENT)
-	public EnergyStorage storage = new EnergyStorage(50, 1000000);
+	public EnergyStorage storage = new EnergyStorage(50000, 30);
+	public int tier = 1;
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
@@ -64,7 +65,7 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
 
 	public float getEnergyStoredGC()
 	{
-		return this.getEnergyStoredGC(null);
+		return this.storage.getEnergyStoredGC();
 	}
 
 	@Override
@@ -75,7 +76,7 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
 
 	public float getMaxEnergyStoredGC()
 	{
-		return this.getMaxEnergyStoredGC(null);
+		return this.storage.getCapacityGC();
 	}
 
 	@Override
@@ -100,7 +101,7 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
 	@Override
 	public float getRequest(ForgeDirection direction)
 	{
-		return this.getMaxEnergyStoredGC() - this.getEnergyStoredGC();
+		return Math.min(this.storage.getCapacityGC() - this.storage.getEnergyStoredGC(), this.storage.getMaxReceive());
 	}
 
 	@Override
@@ -109,9 +110,13 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
 		return 0;
 	}
 
-	@Override
-	public float getVoltage()
+	public int getTierGC()
 	{
-		return 120F;
+		return this.tier;
+	}
+	
+	public void setTierGC(int newTier)
+	{
+		this.tier = newTier;
 	}
 }

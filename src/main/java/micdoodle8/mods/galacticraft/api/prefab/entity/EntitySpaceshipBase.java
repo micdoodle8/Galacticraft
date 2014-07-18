@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
@@ -26,7 +27,7 @@ import java.util.List;
 /**
  * Do not include this prefab class in your released mod download.
  */
-public abstract class EntitySpaceshipBase extends Entity implements IPacketReceiver {
+public abstract class EntitySpaceshipBase extends Entity implements IPacketReceiver, IIgnoreShift {
     public static enum EnumLaunchPhase {
         UNIGNITED, IGNITED, LAUNCHED
     }
@@ -134,7 +135,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
     @Override
     public boolean shouldRiderSit() {
-        return false;
+    	return false;
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -355,7 +356,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
     @Override
     public double getMountedYOffset() {
-        return -1.0D;
+        return -0.9D;
     }
 
     public void onLaunch() {
@@ -385,4 +386,10 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 	{
 		this.launchPhase = phase.ordinal();
 	}
+
+    @Override
+    public boolean shouldIgnoreShiftExit()
+    {
+        return this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal();
+    }
 }

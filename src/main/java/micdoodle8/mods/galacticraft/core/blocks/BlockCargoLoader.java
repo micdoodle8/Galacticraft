@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoLoader;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoUnloader;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalElectrical;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -38,7 +39,7 @@ public class BlockCargoLoader extends BlockAdvancedTile
 		super(Material.rock);
 		this.setHardness(1.0F);
 		this.setStepSound(Block.soundTypeMetal);
-		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 		this.setBlockName(assetName);
 	}
 
@@ -87,12 +88,12 @@ public class BlockCargoLoader extends BlockAdvancedTile
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_input");
-		this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
-		this.iconFrontLoader = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_cargoloader");
-		this.iconFrontUnloader = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_cargounloader");
-		this.iconItemInput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_item_input");
-		this.iconItemOutput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_item_output");
+		this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
+		this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
+		this.iconFrontLoader = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_cargoloader");
+		this.iconFrontUnloader = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_cargounloader");
+		this.iconItemInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_item_input");
+		this.iconItemOutput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_item_output");
 	}
 
 	@Override
@@ -198,6 +199,10 @@ public class BlockCargoLoader extends BlockAdvancedTile
 			change = 0;
 			break;
 		}
+		
+		TileEntity te = world.getTileEntity(x,  y,  z);
+		if (te instanceof TileEntityUniversalElectrical)
+			((TileEntityUniversalElectrical) te).updateFacing();
 
 		return world.setBlockMetadataWithNotify(x, y, z, baseMeta + change, 3);
 	}

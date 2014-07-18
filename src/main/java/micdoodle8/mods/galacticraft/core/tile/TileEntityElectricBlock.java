@@ -21,7 +21,7 @@ public abstract class TileEntityElectricBlock extends TileEntityUniversalElectri
 	//	private final float ueMaxEnergy;
 
 	@NetworkedField(targetSide = Side.CLIENT)
-	public boolean disabled = true;
+	public boolean disabled = false;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int disableCooldown = 0;
 	public boolean hasEnoughEnergyToRun = false;
@@ -144,7 +144,7 @@ public abstract class TileEntityElectricBlock extends TileEntityUniversalElectri
 		if (this.disableCooldown == 0)
 		{
 			this.disabled = disabled;
-			this.disableCooldown = 20;
+			this.disableCooldown = 10;
 		}
 	}
 

@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.util;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.util.ChatComponentText;
 
 import java.io.BufferedReader;
@@ -13,17 +13,21 @@ import java.net.URL;
 
 public class ThreadVersionCheck extends Thread
 {
-	public static ThreadVersionCheck instance = new ThreadVersionCheck();
+	public static ThreadVersionCheck INSTANCE = new ThreadVersionCheck();
 	private int count = 0;
+
+    public static int remoteMajVer;
+    public static int remoteMinVer;
+    public static int remoteBuildVer;
 
 	public ThreadVersionCheck()
 	{
 		super("Galacticraft Version Check Thread");
 	}
 
-	public static void startCheck(Side sideToCheck)
+	public static void startCheck()
 	{
-		final Thread thread = new Thread(ThreadVersionCheck.instance);
+		final Thread thread = new Thread(ThreadVersionCheck.INSTANCE);
 		thread.start();
 	}
 
@@ -37,7 +41,7 @@ public class ThreadVersionCheck extends Thread
 			return;
 		}
 
-		while (this.count < 3 && GalacticraftCore.remoteBuildVer == 0)
+		while (this.count < 3 && remoteBuildVer == 0)
 		{
 			try
 			{
@@ -57,24 +61,24 @@ public class ThreadVersionCheck extends Thread
 
 						str2 = str.split("#");
 
-						if (str2 != null && str2.length == 3)
+						if (str2.length == 3)
 						{
-							GalacticraftCore.remoteMajVer = Integer.parseInt(str2[0]);
-							GalacticraftCore.remoteMinVer = Integer.parseInt(str2[1]);
-							GalacticraftCore.remoteBuildVer = Integer.parseInt(str2[2]);
+							remoteMajVer = Integer.parseInt(str2[0]);
+							remoteMinVer = Integer.parseInt(str2[1]);
+							remoteBuildVer = Integer.parseInt(str2[2]);
 						}
 
-						if (GalacticraftCore.remoteMajVer > GalacticraftCore.LOCALMAJVERSION || GalacticraftCore.remoteMajVer == GalacticraftCore.LOCALMAJVERSION && GalacticraftCore.remoteMinVer > GalacticraftCore.LOCALMINVERSION || GalacticraftCore.remoteMajVer == GalacticraftCore.LOCALMAJVERSION && GalacticraftCore.remoteMinVer == GalacticraftCore.LOCALMINVERSION && GalacticraftCore.remoteBuildVer > GalacticraftCore.LOCALBUILDVERSION)
+						if (remoteMajVer > Constants.LOCALMAJVERSION || remoteMajVer == Constants.LOCALMAJVERSION && remoteMinVer > Constants.LOCALMINVERSION || remoteMajVer == Constants.LOCALMAJVERSION && remoteMinVer == Constants.LOCALMINVERSION && remoteBuildVer > Constants.LOCALBUILDVERSION)
 						{
 							Thread.sleep(5000);
 
 							if (sideToCheck.equals(Side.CLIENT))
 							{
-								FMLClientHandler.instance().getClient().thePlayer.addChatMessage(new ChatComponentText(EnumColor.GREY + "New " + EnumColor.DARK_AQUA + "Galacticraft" + EnumColor.GREY + " version available! v" + String.valueOf(GalacticraftCore.remoteMajVer) + "." + String.valueOf(GalacticraftCore.remoteMinVer) + "." + String.valueOf(GalacticraftCore.remoteBuildVer) + EnumColor.DARK_BLUE + " http://micdoodle8.com/"));
+								FMLClientHandler.instance().getClient().thePlayer.addChatMessage(new ChatComponentText(EnumColor.GREY + "New " + EnumColor.DARK_AQUA + "Galacticraft" + EnumColor.GREY + " version available! v" + String.valueOf(remoteMajVer) + "." + String.valueOf(remoteMinVer) + "." + String.valueOf(remoteBuildVer) + EnumColor.DARK_BLUE + " http://micdoodle8.com/"));
 							}
 							else if (sideToCheck.equals(Side.SERVER))
 							{
-								GCLog.severe("New Galacticraft version available! v" + String.valueOf(GalacticraftCore.remoteMajVer) + "." + String.valueOf(GalacticraftCore.remoteMinVer) + "." + String.valueOf(GalacticraftCore.remoteBuildVer) + " http://micdoodle8.com/");
+								GCLog.severe("New Galacticraft version available! v" + String.valueOf(remoteMajVer) + "." + String.valueOf(remoteMinVer) + "." + String.valueOf(remoteBuildVer) + " http://micdoodle8.com/");
 							}
 						}
 					}
@@ -84,7 +88,7 @@ public class ThreadVersionCheck extends Thread
 			{
 			}
 
-			if (GalacticraftCore.remoteBuildVer == 0)
+			if (remoteBuildVer == 0)
 			{
 				try
 				{
@@ -97,7 +101,7 @@ public class ThreadVersionCheck extends Thread
 			}
 			else
 			{
-				GCLog.info(GCCoreUtil.translate("newversion.success.name") + " " + GalacticraftCore.remoteMajVer + "." + GalacticraftCore.remoteMinVer + "." + GalacticraftCore.remoteBuildVer);
+				GCLog.info(GCCoreUtil.translate("newversion.success.name") + " " + remoteMajVer + "." + remoteMinVer + "." + remoteBuildVer);
 			}
 
 			this.count++;

@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
 {
-	private static final ResourceLocation ingotCompressorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/electric_IngotCompressor.png");
+	private static final ResourceLocation ingotCompressorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/electric_IngotCompressor.png");
 	public static int ticksPassed;
 
 	public String getRecipeId()
@@ -201,6 +201,6 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
 	@Override
 	public String getGuiTexture()
 	{
-        return GalacticraftCore.ASSET_PREFIX + "textures/gui/electric_IngotCompressor.png";
+        return GalacticraftCore.TEXTURE_PREFIX + "textures/gui/electric_IngotCompressor.png";
 	}
 }

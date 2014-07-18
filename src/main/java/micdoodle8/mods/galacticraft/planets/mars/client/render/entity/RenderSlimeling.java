@@ -20,7 +20,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderSlimeling extends RenderLiving
 {
-	private static final ResourceLocation landerTexture = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/model/slimeling/green.png");
+	private static final ResourceLocation landerTexture = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/model/slimeling/green.png");
 
 	public RenderSlimeling()
 	{

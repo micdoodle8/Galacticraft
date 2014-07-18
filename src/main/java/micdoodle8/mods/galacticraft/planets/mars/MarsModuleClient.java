@@ -88,8 +88,8 @@ public class MarsModuleClient implements IPlanetsModuleClient
 	@Override
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		IModelCustom chamberModel = AdvancedModelLoader.loadModel(new ResourceLocation(MarsModule.ASSET_DOMAIN, "models/chamber.obj"));
-		IModelCustom cargoRocketModel = AdvancedModelLoader.loadModel(new ResourceLocation(MarsModule.ASSET_DOMAIN, "models/cargoRocket.obj"));
+		IModelCustom chamberModel = AdvancedModelLoader.loadModel(new ResourceLocation(MarsModule.ASSET_PREFIX, "models/chamber.obj"));
+		IModelCustom cargoRocketModel = AdvancedModelLoader.loadModel(new ResourceLocation(MarsModule.ASSET_PREFIX, "models/cargoRocket.obj"));
 
 		// Tile Entity Renderers
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChestMars.class, new TileEntityTreasureChestRenderer());
@@ -99,7 +99,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
 		RenderingRegistry.registerEntityRenderingHandler(EntitySludgeling.class, new RenderSludgeling());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySlimeling.class, new RenderSlimeling());
 		RenderingRegistry.registerEntityRenderingHandler(EntityCreeperBoss.class, new RenderCreeperBoss());
-		RenderingRegistry.registerEntityRenderingHandler(EntityTier2Rocket.class, new RenderTier1Rocket(new ModelTier2Rocket(), MarsModule.ASSET_DOMAIN, "rocketT2"));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTier2Rocket.class, new RenderTier1Rocket(new ModelTier2Rocket(), MarsModule.ASSET_PREFIX, "rocketT2"));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTerraformBubble.class, new RenderBubble(0.25F, 1.0F, 0.25F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityProjectileTNT.class, new RenderProjectileTNT());
 		RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, new RenderLandingBalloons());
@@ -111,7 +111,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
 
 		// Item Renderers
 		MinecraftForgeClient.registerItemRenderer(MarsItems.spaceship, new ItemRendererTier2Rocket(cargoRocketModel));
-		MinecraftForgeClient.registerItemRenderer(MarsItems.key, new ItemRendererKey(new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/model/treasure.png")));
+		MinecraftForgeClient.registerItemRenderer(MarsItems.key, new ItemRendererKey(new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/model/treasure.png")));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(MarsBlocks.machine), new ItemRendererMachine(chamberModel));
 	}
 
@@ -166,7 +166,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
 	}
 
 	@Override
-	public void spawnParticle(String particleID, Vector3 position, Vector3 color)
+	public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Object... extraData)
 	{
 		Minecraft mc = FMLClientHandler.instance().getClient();
 
@@ -252,7 +252,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
 				//
 				//							if (eship.rocketSoundUpdater == null)
 				//							{
-				//								eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, eship, FMLClientHandler.instance().getClient().thePlayer);
+				//								eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.INSTANCE().getClient().sndManager, eship, FMLClientHandler.INSTANCE().getClient().thePlayer);
 				//							}
 				//						}
 				//						else if (e instanceof EntityCargoRocket)
@@ -261,7 +261,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
 				//
 				//							if (eship.rocketSoundUpdater == null)
 				//							{
-				//								eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.instance().getClient().sndManager, eship, FMLClientHandler.instance().getClient().thePlayer);
+				//								eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.INSTANCE().getClient().sndManager, eship, FMLClientHandler.INSTANCE().getClient().thePlayer);
 				//							}
 				//						}
 				//					}

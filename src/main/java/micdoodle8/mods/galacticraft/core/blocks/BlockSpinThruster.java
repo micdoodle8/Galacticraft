@@ -57,7 +57,7 @@ public class BlockSpinThruster extends BlockAdvanced
 	//	@SideOnly(Side.CLIENT)
 	//	public void registerBlockIcons(IIconRegister par1IconRegister)
 	//	{
-	//		BlockSpinThruster.thrusterIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "spinThruster");
+	//		BlockSpinThruster.thrusterIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "spinThruster");
 	//	}
 
 	@Override
@@ -333,7 +333,7 @@ public class BlockSpinThruster extends BlockAdvanced
 		//TODO - make sure throughout that Metadata bits 0,1 govern placement (side), bit 3 orientation (thrust direction left or right)
 		final int metadata = world.getBlockMetadata(x, y, z);
 		final int facing = metadata & 8;
-		final int change = facing ^ 8;
+		final int change = (facing + metadata) & 15;
 
 		world.setBlockMetadataWithNotify(x, y, z, change, 3);
 		if (world.provider instanceof WorldProviderOrbit && !world.isRemote)

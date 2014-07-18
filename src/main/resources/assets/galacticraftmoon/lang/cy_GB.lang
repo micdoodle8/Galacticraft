@@ -1,0 +1,18 @@
+# Galacticraft Moon Language File = BRITISH WELSH
+
+item.meteoricIronRaw.name=Raw Meteoric Iron ##NEEDS TRANSLATE##
+item.meteoric_iron_ingot.name=Meteoric Iron Ingot ##NEEDS TRANSLATE##
+item.compressedMeteoricIron.name=Compressed Meteoric Iron ##NEEDS TRANSLATE##
+item.cheeseCurd.name=Cheese Curd ##NEEDS TRANSLATE##
+item.cheeseBlock.name=Block of Cheese ##NEEDS TRANSLATE##
+tile.moonBlock.moonstone.name=Stone ##NEEDS TRANSLATE##
+tile.moonBlock.moondirt.name=Dirt ##NEEDS TRANSLATE##
+tile.moonBlock.moongrass.name=Moon Turf ##NEEDS TRANSLATE##
+tile.moonBlock.tinmoon.name=Tin Ore ##NEEDS TRANSLATE##
+tile.moonBlock.coppermoon.name=Copper Ore ##NEEDS TRANSLATE##
+tile.moonBlock.cheesestone.name=Cheese Ore ##NEEDS TRANSLATE##
+tile.moonBlock.bricks.name=Bricks ##NEEDS TRANSLATE##
+tile.cheeseBlock.name=Block of Cheese ##NEEDS TRANSLATE##
+gui.choosePlanet.desc.moon=Habitable#No Oxygen#Gravity: 18% ##NEEDS TRANSLATE##
+dimension.Moon.name=Moon ##NEEDS TRANSLATE##
+itemGroup.GalacticraftMoon=Galacticraft Moon ##NEEDS TRANSLATE##

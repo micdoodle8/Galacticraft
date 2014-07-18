@@ -10,7 +10,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,7 +19,6 @@ import net.minecraft.world.World;
 
 public class EntityFlag extends Entity
 {
-	public EntityLiving entityPlacedBy;
 	public double xPosition;
 	public double yPosition;
 	public double zPosition;
@@ -82,11 +80,6 @@ public class EntityFlag extends Entity
 		{
 			return true;
 		}
-	}
-
-	public void setIndestructable()
-	{
-		this.indestructable = true;
 	}
 
 	public int getWidth()

@@ -66,7 +66,7 @@ public class ItemFlag extends Item implements IHoldableItem
 			{
 				final EntityFlag flag = new EntityFlag(par2World, x + 0.5F, y + 1.0F, z + 0.5F, (int) (par3EntityPlayer.rotationYaw - 90));
 
-				if (par2World.getEntitiesWithinAABB(EntityFlag.class, AxisAlignedBB.getAABBPool().getAABB(x, y, z, x + 1, y + 3, z + 1)).isEmpty())
+				if (par2World.getEntitiesWithinAABB(EntityFlag.class, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 3, z + 1)).isEmpty())
 				{
 					par2World.spawnEntityInWorld(flag);
 					flag.setType(par1ItemStack.getItemDamage());

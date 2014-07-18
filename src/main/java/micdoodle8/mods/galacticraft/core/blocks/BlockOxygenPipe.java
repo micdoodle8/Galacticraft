@@ -33,7 +33,7 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
 		super(Material.glass);
 		this.setHardness(0.3F);
 		this.setStepSound(Block.soundTypeGlass);
-		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 		this.setBlockName(assetName);
 	}
 
@@ -159,7 +159,7 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
 
 		for (int count = 0; count < ItemDye.field_150923_a.length; count++)
 		{
-			this.pipeIcons[count] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "pipe_oxygen_" + ItemDye.field_150923_a[count]);
+			this.pipeIcons[count] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "pipe_oxygen_" + ItemDye.field_150923_a[count]);
 		}
 
 		this.blockIcon = this.pipeIcons[15];

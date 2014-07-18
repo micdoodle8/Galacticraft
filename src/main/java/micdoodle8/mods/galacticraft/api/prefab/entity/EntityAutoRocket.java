@@ -28,6 +28,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
@@ -96,12 +97,12 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 				if (!this.setFrequency())
 				{
 					this.destinationFrequency = -1;
-					this.statusMessage = "\u00a7cFrequency#\u00a7cNot Set";
+					this.statusMessage = "\u00a7c" + StatCollector.translateToLocal("gui.message.frequency.name") + "#\u00a7c" + StatCollector.translateToLocal("gui.message.notSet.name");
 					return false;
 				}
 				else
 				{
-					this.statusMessage = "\u00a7aSuccess";
+					this.statusMessage = "\u00a7a" + StatCollector.translateToLocal("gui.message.success.name");
 					return true;
 				}
 			}
@@ -109,7 +110,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 		else
 		{
 			this.destinationFrequency = -1;
-			this.statusMessage = "\u00a7cNot Enough#\u00a7cFuel";
+            this.statusMessage = "\u00a7c" + StatCollector.translateToLocal("gui.message.notEnough.name") + "#\u00a7c" + StatCollector.translateToLocal("gui.message.fuel.name");
 			return false;
 		}
 
@@ -1129,7 +1130,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 	public static enum EnumAutoLaunch
 	{
-		CARGO_IS_UNLOADED(0, "Cargo is Unloaded"), CARGO_IS_FULL(1, "Cargo is Full"), ROCKET_IS_FUELED(2, "Fully Fueled"), INSTANT(3, "Instantly"), TIME_10_SECONDS(4, "10 Seconds"), TIME_30_SECONDS(5, "30 Seconds"), TIME_1_MINUTE(6, "1 Minute"), REDSTONE_SIGNAL(7, "Redstone Signal");
+		CARGO_IS_UNLOADED(0, "cargoUnloaded"), CARGO_IS_FULL(1, "cargoFull"), ROCKET_IS_FUELED(2, "fullyFueled"), INSTANT(3, "instant"), TIME_10_SECONDS(4, "tenSec"), TIME_30_SECONDS(5, "thirtySec"), TIME_1_MINUTE(6, "oneMin"), REDSTONE_SIGNAL(7, "redstoneSig");
 
 		private final int index;
 		private String title;
@@ -1147,7 +1148,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 		public String getTitle()
 		{
-			return this.title;
+			return GCCoreUtil.translate("gui.message." + this.title + ".name");
 		}
 	}
 }

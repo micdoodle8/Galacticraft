@@ -1,10 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
+import micdoodle8.mods.galacticraft.core.tile.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -43,7 +40,7 @@ public class BlockMachine2 extends BlockTileGC
 		super(GCBlocks.machine);
 		this.setHardness(1.0F);
 		this.setStepSound(Block.soundTypeMetal);
-		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 		this.setBlockName(assetName);
 	}
 
@@ -56,19 +53,19 @@ public class BlockMachine2 extends BlockTileGC
 	@Override
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
-		this.blockIcon = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine");
-		this.iconOutput = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_output");
-		this.iconOxygenInput = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_oxygen_input");
-		this.iconOxygenOutput = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_oxygen_output");
+		this.blockIcon = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine");
+		this.iconOutput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_output");
+		this.iconOxygenInput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_oxygen_input");
+		this.iconOxygenOutput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_oxygen_output");
 
-		this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_side");
-		this.iconElectricCompressor = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "electric_compressor");
-		this.iconCircuitFabricator = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "circuit_fabricator");
+		this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_side");
+		this.iconElectricCompressor = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "electric_compressor");
+		this.iconCircuitFabricator = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "circuit_fabricator");
 		this.iconOxygenStorageModule = new IIcon[17];
 
 		for (int i = 0; i < this.iconOxygenStorageModule.length; i++)
 		{
-			this.iconOxygenStorageModule[i] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "oxygenStorageModule_" + i);
+			this.iconOxygenStorageModule[i] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oxygenStorageModule_" + i);
 		}
 	}
 
@@ -86,7 +83,7 @@ public class BlockMachine2 extends BlockTileGC
 		if (tile instanceof TileEntityCoalGenerator)
 		{
 			TileEntityCoalGenerator tileEntity = (TileEntityCoalGenerator) tile;
-			if (tileEntity.generateWatts > 0)
+			if (tileEntity.heatGJperTick > 0)
 			{
 				int metadata = par1World.getBlockMetadata(x, y, z);
 				float var7 = x + 0.5F;
@@ -275,6 +272,10 @@ public class BlockMachine2 extends BlockTileGC
 		else if (metadata >= BlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
 		{
 			original -= BlockMachine2.ELECTRIC_COMPRESSOR_METADATA;
+			
+			TileEntity te = par1World.getTileEntity(x,  y,  z);
+			if (te instanceof TileEntityUniversalElectrical)
+				((TileEntityUniversalElectrical) te).updateFacing();
 		}
 
 		// Re-orient the block

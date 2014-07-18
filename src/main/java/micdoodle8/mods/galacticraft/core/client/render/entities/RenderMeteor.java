@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderMeteor extends Render
 {
-	private static final ResourceLocation meteorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/meteor.png");
+	private static final ResourceLocation meteorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/meteor.png");
 
 	private final ModelMeteor modelMeteor;
 

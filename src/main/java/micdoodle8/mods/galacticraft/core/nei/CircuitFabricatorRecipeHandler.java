@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class CircuitFabricatorRecipeHandler extends TemplateRecipeHandler
 {
-	private static final ResourceLocation circuitFabricatorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/circuitFabricator.png");
+	private static final ResourceLocation circuitFabricatorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/circuitFabricator.png");
 	int ticksPassed;
 
 	public String getRecipeId()
@@ -172,6 +172,6 @@ public class CircuitFabricatorRecipeHandler extends TemplateRecipeHandler
 	@Override
 	public String getGuiTexture()
 	{
-        return GalacticraftCore.ASSET_PREFIX + "textures/gui/circuitFabricator.png";
+        return GalacticraftCore.TEXTURE_PREFIX + "textures/gui/circuitFabricator.png";
 	}
 }

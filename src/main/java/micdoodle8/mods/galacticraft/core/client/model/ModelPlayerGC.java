@@ -3,9 +3,11 @@ package micdoodle8.mods.galacticraft.core.client.model;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
+import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -17,6 +19,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
@@ -29,9 +32,9 @@ import java.util.List;
 
 public class ModelPlayerGC extends ModelBiped
 {
-	private static final ResourceLocation oxygenMaskTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/oxygen.png");
-	private static final ResourceLocation playerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/player.png");
-	private static final ResourceLocation frequencyModuleTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/frequencyModule.png");
+	private static final ResourceLocation oxygenMaskTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/oxygen.png");
+	private static final ResourceLocation playerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/player.png");
+	private static final ResourceLocation frequencyModuleTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/frequencyModule.png");
 
 	public ModelRenderer[] parachute = new ModelRenderer[3];
 	public ModelRenderer[] parachuteStrings = new ModelRenderer[4];
@@ -191,7 +194,7 @@ public class ModelPlayerGC extends ModelBiped
 		this.redOxygenTanks[1].setRotationPoint(-2F, 2F, 3.8F);
 		this.redOxygenTanks[1].mirror = true;
 
-		this.frequencyModule = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/frequencyModule.obj"));
+		this.frequencyModule = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/frequencyModule.obj"));
 	}
 
 	@Override
@@ -349,6 +352,9 @@ public class ModelPlayerGC extends ModelBiped
 	@Override
 	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
 	{
+		final EntityPlayer player = (EntityPlayer) par7Entity;
+		final ItemStack currentItemStack = player.inventory.getCurrentItem(); 
+
 		this.bipedHead.rotateAngleY = par4 / (180F / (float) Math.PI);
 		this.bipedHead.rotateAngleX = par5 / (180F / (float) Math.PI);
 		this.bipedHeadwear.rotateAngleY = this.bipedHead.rotateAngleY;
@@ -455,7 +461,8 @@ public class ModelPlayerGC extends ModelBiped
 			this.bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
 		}
 
-		if (!((EntityPlayer) par7Entity).onGround && ((EntityPlayer) par7Entity).worldObj.provider instanceof IGalacticraftWorldProvider && !(((EntityPlayer) par7Entity).inventory.getCurrentItem() != null && ((EntityPlayer) par7Entity).inventory.getCurrentItem().getItem() instanceof IHoldableItem))
+		//Slower arm and leg motion if airborne in Galacticraft Dimensions
+		if (!par7Entity.onGround && par7Entity.worldObj.provider instanceof IGalacticraftWorldProvider && !(currentItemStack != null && currentItemStack.getItem() instanceof IHoldableItem))
 		{
 			this.bipedHead.rotateAngleY = par4 / (180F / (float) Math.PI);
 			this.bipedHead.rotateAngleX = par5 / (180F / (float) Math.PI);
@@ -470,16 +477,7 @@ public class ModelPlayerGC extends ModelBiped
 			this.bipedRightLeg.rotateAngleY = 0.0F;
 			this.bipedLeftLeg.rotateAngleY = 0.0F;
 
-			float speedModifier = 0.0F;
-
-			if (par7Entity.onGround)
-			{
-				speedModifier = 0.1162F;
-			}
-			else
-			{
-				speedModifier = 0.1162F * 2;
-			}
+			float speedModifier = 0.1162F * 2;
 
 			this.bipedLeftLeg.rotateAngleX = MathHelper.cos(par1 * speedModifier + (float) Math.PI) * 1.45F * par2;
 			this.bipedRightLeg.rotateAngleX = MathHelper.cos(par1 * speedModifier) * 1.45F * par2;
@@ -587,6 +585,7 @@ public class ModelPlayerGC extends ModelBiped
 		this.oxygenMask.rotateAngleY = par4 / (180F / (float) Math.PI);
 		this.oxygenMask.rotateAngleX = par5 / (180F / (float) Math.PI);
 
+		//Render parachute
 		if (this.usingParachute)
 		{
 			this.parachute[0].rotateAngleZ = (float) (30F * (Math.PI / 180F));
@@ -609,6 +608,42 @@ public class ModelPlayerGC extends ModelBiped
 			this.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
 		}
 
+		//Hold rockets and other items above the player's head
+		if (currentItemStack != null && currentItemStack.getItem() instanceof IHoldableItem && !(par7Entity.ridingEntity instanceof EntityAutoRocket) && !(par7Entity.ridingEntity instanceof EntityLander))
+		{
+			IHoldableItem holdableItem = (IHoldableItem) currentItemStack.getItem();
+
+			if (holdableItem.shouldHoldLeftHandUp(player))
+			{
+				this.bipedLeftArm.rotateAngleX = 0;
+				this.bipedLeftArm.rotateAngleZ = 0;
+
+				this.bipedLeftArm.rotateAngleX += (float) Math.PI + 0.3;
+				this.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
+			}
+
+			if (holdableItem.shouldHoldRightHandUp(player))
+			{
+				this.bipedRightArm.rotateAngleX = 0;
+				this.bipedRightArm.rotateAngleZ = 0;
+
+				this.bipedRightArm.rotateAngleX += (float) Math.PI + 0.3;
+				this.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
+			}
+
+			if (holdableItem.shouldCrouch(player))
+			{
+				this.bipedBody.rotateAngleX = 0.5F;
+				this.bipedRightLeg.rotationPointZ = 4.0F;
+				this.bipedLeftLeg.rotationPointZ = 4.0F;
+				this.bipedRightLeg.rotationPointY = 9.0F;
+				this.bipedLeftLeg.rotationPointY = 9.0F;
+				this.bipedHead.rotationPointY = 1.0F;
+				this.bipedHeadwear.rotationPointY = 1.0F;
+			}
+		}
+
+		//Render the Oxygen Tanks etc
 		this.greenOxygenTanks[0].rotateAngleX = this.bipedBody.rotateAngleX;
 		this.greenOxygenTanks[0].rotateAngleY = this.bipedBody.rotateAngleY;
 		this.greenOxygenTanks[0].rotateAngleZ = this.bipedBody.rotateAngleZ;
@@ -628,45 +663,7 @@ public class ModelPlayerGC extends ModelBiped
 		this.redOxygenTanks[1].rotateAngleY = this.bipedBody.rotateAngleY;
 		this.redOxygenTanks[1].rotateAngleZ = this.bipedBody.rotateAngleZ;
 
-		if (par7Entity instanceof EntityPlayer)
-		{
-			final EntityPlayer player = (EntityPlayer) par7Entity;
-
-			if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof IHoldableItem)
-			{
-				IHoldableItem holdableItem = (IHoldableItem) player.inventory.getCurrentItem().getItem();
-
-				if (holdableItem.shouldHoldLeftHandUp(player))
-				{
-					this.bipedLeftArm.rotateAngleX = 0;
-					this.bipedLeftArm.rotateAngleZ = 0;
-
-					this.bipedLeftArm.rotateAngleX += (float) Math.PI + 0.3;
-					this.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
-				}
-
-				if (holdableItem.shouldHoldRightHandUp(player))
-				{
-					this.bipedRightArm.rotateAngleX = 0;
-					this.bipedRightArm.rotateAngleZ = 0;
-
-					this.bipedRightArm.rotateAngleX += (float) Math.PI + 0.3;
-					this.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
-				}
-
-				if (holdableItem.shouldCrouch(player))
-				{
-					this.bipedBody.rotateAngleX = 0.5F;
-					this.bipedRightLeg.rotationPointZ = 4.0F;
-					this.bipedLeftLeg.rotationPointZ = 4.0F;
-					this.bipedRightLeg.rotationPointY = 9.0F;
-					this.bipedLeftLeg.rotationPointY = 9.0F;
-					this.bipedHead.rotationPointY = 1.0F;
-					this.bipedHeadwear.rotationPointY = 1.0F;
-				}
-			}
-		}
-
+		//Attempt compatibility with SmartMoving mod
 		try
 		{
 			if (Class.forName("mod_SmartMoving") != null || Class.forName("net.minecraft.src.mod_SmartMoving") != null)
@@ -679,9 +676,7 @@ public class ModelPlayerGC extends ModelBiped
 		{
 		}
 
-		final EntityPlayer player = (EntityPlayer) par7Entity;
-
-		final List<?> l = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, AxisAlignedBB.getAABBPool().getAABB(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
+		final List<?> l = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, AxisAlignedBB.getBoundingBox(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
 
 		for (int i = 0; i < l.size(); i++)
 		{

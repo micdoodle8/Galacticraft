@@ -51,10 +51,10 @@ public interface IElectrical extends IConnector
 	public float getProvide(ForgeDirection direction);
 
 	/**
-	 * Gets the voltage of this TileEntity.
+	 * Gets the tier of this TileEntity.
 	 * 
-	 * @return The amount of volts. E.g 120v or 240v
+	 * @return The tier, should be 1 or 2
 	 */
-	public float getVoltage();
+	public int getTierGC();
 
 }

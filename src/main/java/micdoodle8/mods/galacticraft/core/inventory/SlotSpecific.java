@@ -1,8 +1,13 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
+import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
+import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Creates a slot with a specific amount of items that matches the slot's
@@ -32,6 +37,20 @@ public class SlotSpecific extends Slot
 	public SlotSpecific(IInventory par2IInventory, int par3, int par4, int par5, Class... validClasses)
 	{
 		super(par2IInventory, par3, par4, par5);
+		if (validClasses != null && Arrays.asList(validClasses).contains(ItemElectric.class))
+		{
+			if (NetworkConfigHandler.isIndustrialCraft2Loaded())
+			{
+				try {
+					Class<?> itemElectricIC2a = Class.forName("ic2.api.item.IElectricItem");
+					Class<?> itemElectricIC2b = Class.forName("ic2.api.item.ISpecialElectricItem");
+					ArrayList<Class> existing = new ArrayList(Arrays.asList(validClasses));
+					existing.add(itemElectricIC2a);
+					existing.add(itemElectricIC2b);
+					validClasses = existing.toArray(new Class[existing.size()]);
+				} catch (Exception e) { e.printStackTrace(); }
+			}
+		}
 		this.setClasses(validClasses);
 	}
 
@@ -83,7 +102,7 @@ public class SlotSpecific extends Slot
 		{
 			for (Class clazz : this.validClasses)
 			{
-				if (clazz.equals(compareStack.getItem().getClass()) || clazz.isInstance(compareStack.getItem()))
+				if (clazz.isInstance(compareStack.getItem()))
 				{
 					returnValue = true;
 					break;

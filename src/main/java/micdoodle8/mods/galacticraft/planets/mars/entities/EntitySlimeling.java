@@ -83,6 +83,12 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 		this.setRandomFavFood();
 	}
 
+    @Override
+    public boolean canBreatheUnderwater()
+    {
+        return true;
+    }
+
 	public float getSlimelingSize()
 	{
 		return this.getScale() * 2.0F;
@@ -233,7 +239,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 	@Override
 	protected String getDeathSound()
 	{
-		this.playSound(GalacticraftCore.ASSET_PREFIX + "entity.slime_death", this.getSoundVolume(), 0.8F);
+		this.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.slime_death", this.getSoundVolume(), 0.8F);
 		return "";
 	}
 

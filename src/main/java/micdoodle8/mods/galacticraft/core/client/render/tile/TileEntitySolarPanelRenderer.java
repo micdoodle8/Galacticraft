@@ -12,8 +12,8 @@ import org.lwjgl.opengl.GL12;
 
 public class TileEntitySolarPanelRenderer extends TileEntitySpecialRenderer
 {
-	private static final ResourceLocation solarPanelTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/solarPanelBasic.png");
-	private static final ResourceLocation solarPanelAdvTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/solarPanelAdvanced.png");
+	private static final ResourceLocation solarPanelTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/solarPanelBasic.png");
+	private static final ResourceLocation solarPanelAdvTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/solarPanelAdvanced.png");
 	public ModelSolarPanel model = new ModelSolarPanel();
 
 	@Override

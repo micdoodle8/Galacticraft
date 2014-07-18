@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalElectrical;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -37,7 +38,7 @@ public class BlockSolar extends BlockTileGC
 		super(Material.iron);
 		this.setHardness(1.0F);
 		this.setStepSound(Block.soundTypeMetal);
-		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 		this.setBlockName(assetName);
 	}
 
@@ -53,12 +54,12 @@ public class BlockSolar extends BlockTileGC
 	@Override
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		this.icons[0] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "solar_basic_0");
-		this.icons[1] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "solar_basic_1");
-		this.icons[2] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "solar_advanced_0");
-		this.icons[3] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "solar_advanced_1");
-		this.icons[4] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
-		this.icons[5] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_output");
+		this.icons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "solar_basic_0");
+		this.icons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "solar_basic_1");
+		this.icons[2] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "solar_advanced_0");
+		this.icons[3] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "solar_advanced_1");
+		this.icons[4] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
+		this.icons[5] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_output");
 		this.blockIcon = this.icons[0];
 	}
 
@@ -227,6 +228,10 @@ public class BlockSolar extends BlockTileGC
 		{
 			change += BlockSolar.ADVANCED_METADATA;
 		}
+		
+		TileEntity te = par1World.getTileEntity(x,  y,  z);
+		if (te instanceof TileEntityUniversalElectrical)
+			((TileEntityUniversalElectrical) te).updateFacing();
 
 		par1World.setBlockMetadataWithNotify(x, y, z, change, 3);
 		return true;
@@ -265,11 +270,11 @@ public class BlockSolar extends BlockTileGC
 	{
 		if (metadata >= BlockSolar.ADVANCED_METADATA)
 		{
-			return new TileEntitySolar(100000);
+			return new TileEntitySolar(2);
 		}
 		else
 		{
-			return new TileEntitySolar(50000);
+			return new TileEntitySolar(1);
 		}
 	}
 

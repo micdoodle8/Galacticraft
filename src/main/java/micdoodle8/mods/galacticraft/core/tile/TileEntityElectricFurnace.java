@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import cpw.mods.fml.relauncher.Side;
-import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
+import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -30,8 +30,7 @@ public class TileEntityElectricFurnace extends TileEntityElectricBlock implement
 
 	public TileEntityElectricFurnace()
 	{
-		this.storage.setMaxExtract(200);
-		this.storage.setCapacity(50000);
+		this.storage.setMaxExtract(90);
 	}
 
 	@Override
@@ -291,7 +290,7 @@ public class TileEntityElectricFurnace extends TileEntityElectricBlock implement
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
 	{
-		return slotID == 1 ? itemStack != null && FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null : slotID == 0 && itemStack.getItem() instanceof IItemElectric;
+		return slotID == 1 ? itemStack != null && FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null : slotID == 0 && ItemElectric.isElectricItem(itemStack.getItem());
 	}
 
 	/**

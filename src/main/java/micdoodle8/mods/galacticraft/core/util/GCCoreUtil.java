@@ -5,7 +5,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.EntityLander;
+import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggy;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerParaChest;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -18,6 +18,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class GCCoreUtil
 {
 	public static int to32BitColor(int a, int r, int g, int b)
@@ -27,11 +30,6 @@ public class GCCoreUtil
 		g = g << 8;
 
 		return a | r | g | b;
-	}
-
-	public static void checkVersion(Side side)
-	{
-		ThreadVersionCheck.startCheck(side);
 	}
 
 	public static void openBuggyInv(EntityPlayerMP player, IInventory buggyInv, int type)
@@ -45,7 +43,7 @@ public class GCCoreUtil
 		player.openContainer.addCraftingToCrafters(player);
 	}
 
-	public static void openParachestInv(EntityPlayerMP player, EntityLander landerInv)
+	public static void openParachestInv(EntityPlayerMP player, EntityLanderBase landerInv)
 	{
 		player.getNextWindowId();
 		player.closeContainer();
@@ -111,6 +109,12 @@ public class GCCoreUtil
 	{
 		return StatCollector.translateToLocal(key);
 	}
+
+    public static List<String> translateWithSplit(String key)
+    {
+        String translated = translate(key);
+        return Arrays.asList(translated.split("\\$"));
+    }
 
 	public static String translateWithFormat(String key, Object... values)
 	{

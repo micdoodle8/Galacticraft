@@ -16,7 +16,7 @@ import java.util.Set;
 
 public class CargoRocketRecipeHandler extends TemplateRecipeHandler
 {
-	private static final ResourceLocation cargoRocketTexture = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/gui/schematic_rocket_cargo.png");
+	private static final ResourceLocation cargoRocketTexture = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/schematic_rocket_cargo.png");
 
 	public String getRecipeId()
 	{

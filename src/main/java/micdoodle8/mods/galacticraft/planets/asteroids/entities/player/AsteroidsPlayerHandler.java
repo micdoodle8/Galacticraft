@@ -98,7 +98,9 @@ public class AsteroidsPlayerHandler
 
 					final EntitySmallAsteroid smallAsteroid = new EntitySmallAsteroid(player.worldObj);
 					smallAsteroid.setPosition(x, y, z);
-					smallAsteroid.setVelocity(motX, motY, motZ);
+                    smallAsteroid.motionX = motX;
+                    smallAsteroid.motionY = motY;
+                    smallAsteroid.motionZ = motZ;
 					smallAsteroid.spinYaw = player.worldObj.rand.nextFloat() * 4;
 					smallAsteroid.spinPitch = player.worldObj.rand.nextFloat() * 1;
 

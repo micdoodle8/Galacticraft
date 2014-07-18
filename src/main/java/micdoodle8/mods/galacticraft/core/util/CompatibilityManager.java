@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import java.lang.reflect.Method;
+
 import cpw.mods.fml.common.Loader;
 
 public class CompatibilityManager
@@ -11,6 +13,7 @@ public class CompatibilityManager
 	private static boolean modAetherIILoaded;
 	private static boolean modBasicComponentsLoaded;
 	private static boolean modAppEngLoaded;
+	public static Method methodBCBlockPipe_getPipe = null;
 
 	public static void checkForCompatibleMods()
 	{
@@ -32,6 +35,27 @@ public class CompatibilityManager
 		if (Loader.isModLoaded("BuildCraft|Core"))
 		{
 			CompatibilityManager.modBCraftLoaded = true;
+			
+			try
+			{
+				Class<?> clazzPipeBlock = Class.forName("buildcraft.transport.BlockGenericPipe");
+
+				for (Method m : clazzPipeBlock.getDeclaredMethods())
+				{
+					if (m.getName().equals("getPipe"))
+					{
+						CompatibilityManager.methodBCBlockPipe_getPipe = m;
+						break;
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+				
+			if (CompatibilityManager.methodBCBlockPipe_getPipe == null)
+				CompatibilityManager.modBCraftLoaded = false;
 		}
 
 		if (Loader.isModLoaded("Aether II"))

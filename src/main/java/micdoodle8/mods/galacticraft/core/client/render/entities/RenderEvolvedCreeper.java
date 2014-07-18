@@ -22,8 +22,8 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderEvolvedCreeper extends RenderCreeper
 {
-	private static final ResourceLocation creeperTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/creeper.png");
-	private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/power.png");
+	private static final ResourceLocation creeperTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/creeper.png");
+	private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/power.png");
 
 	private final ModelBase creeperModel = new ModelEvolvedCreeper(0.2F);
 

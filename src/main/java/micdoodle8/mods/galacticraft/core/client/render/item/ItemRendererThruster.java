@@ -19,17 +19,18 @@ public class ItemRendererThruster implements IItemRenderer
 		{
 		case INVENTORY:
 			GL11.glTranslatef(-0.4F, -0.1F, 0.0F);
-			GL11.glScalef(0.8F, 0.8F, 0.8F);
+			GL11.glScalef(0.6F, 0.6F, 0.6F);
 			break;
 		case EQUIPPED_FIRST_PERSON:
-			GL11.glTranslatef(-0.2F, 0.9F, 0.0F);
-			GL11.glRotatef(180, 0, 1, 0);
-			GL11.glScalef(0.8F, 0.8F, 0.8F);
+			GL11.glTranslatef(1.3F, 0.9F, 0.6F);
+			GL11.glRotatef(150, 0, 1, 0);
+			GL11.glScalef(0.7F, 0.7F, 0.7F);
 			break;
 		default:
 			break;
 		}
 
+		GL11.glRotatef(180, 1, 0, 0);
 		TileEntityThrusterRenderer.thrusterModel.renderAll();
 
 		GL11.glPopMatrix();

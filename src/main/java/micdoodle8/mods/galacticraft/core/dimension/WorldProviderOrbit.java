@@ -119,13 +119,13 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 //	@Override
 //	public Vec3 getFogColor(float var1, float var2)
 //	{
-//		return this.worldObj.getWorldVec3Pool().getVecFromPool((double) 0F / 255F, (double) 0F / 255F, (double) 0F / 255F);
+//		return Vec3.createVectorHelper((double) 0F / 255F, (double) 0F / 255F, (double) 0F / 255F);
 //	}
 
 //	@Override
 //	public Vec3 getSkyColor(Entity cameraEntity, float partialTicks)
 //	{
-//		return this.worldObj.getWorldVec3Pool().getVecFromPool(0, 0, 0);
+//		return Vec3.createVectorHelper(0, 0, 0);
 //	}
 
 //	@Override

@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.api.transmission.core.item.ItemElectric;
+import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.creativetab.CreativeTabs;
@@ -15,7 +15,7 @@ public class ItemBattery extends ItemElectric
 	{
 		super();
 		this.setUnlocalizedName(assetName);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 	}
 
 	@Override
@@ -35,11 +35,5 @@ public class ItemBattery extends ItemElectric
 	public float getMaxElectricityStored(ItemStack itemStack)
 	{
 		return 50000;
-	}
-
-	@Override
-	public float getVoltage(ItemStack itemStack)
-	{
-		return 120;
 	}
 }

@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class BuggyRecipeHandler extends TemplateRecipeHandler
 {
-	private static final ResourceLocation buggyGuiTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/buggybench.png");
+	private static final ResourceLocation buggyGuiTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/buggybench.png");
 
 	public String getRecipeId()
 	{
@@ -151,6 +151,6 @@ public class BuggyRecipeHandler extends TemplateRecipeHandler
 	@Override
 	public String getGuiTexture()
 	{
-        return GalacticraftCore.ASSET_PREFIX + "textures/gui/buggybench.png";
+        return GalacticraftCore.TEXTURE_PREFIX + "textures/gui/buggybench.png";
 	}
 }

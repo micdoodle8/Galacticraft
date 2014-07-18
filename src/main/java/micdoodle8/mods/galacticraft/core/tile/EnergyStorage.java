@@ -12,12 +12,12 @@ public class EnergyStorage implements IEnergyStorageGC
 
 	public EnergyStorage(float capacity)
 	{
-		this(capacity, capacity, capacity);
+		this(capacity, 60, 30);
 	}
 
 	public EnergyStorage(float capacity, float maxTransfer)
 	{
-		this(capacity, maxTransfer, maxTransfer);
+		this(capacity, 2 * maxTransfer, maxTransfer);
 	}
 
 	public EnergyStorage(float capacity, float maxReceive, float maxExtract)
@@ -60,20 +60,31 @@ public class EnergyStorage implements IEnergyStorageGC
 		}
 	}
 
-	public void setMaxTransfer(float maxTransfer)
-	{
-		this.setMaxReceive(maxTransfer);
-		this.setMaxExtract(maxTransfer);
-	}
-
+	/*
+	 * Sets the maximum energy transfer rate on input
+	 * Call this AFTER setMaxExtract().
+	 */
 	public void setMaxReceive(float maxReceive)
 	{
 		this.maxReceive = maxReceive;
 	}
 
+	/*
+	 * Sets the energy consumption rate in gJ/t
+	 * (For machines, this is the energy used per tick.)
+	 * (For energy sources, this is the maximum output.)
+	 * 
+	 * Also sets the receive rate at a default value
+	 * of 2 * the energy consumption rate - so the machine's
+	 * energy store can charge up even while it is working.
+	 * 
+	 * If that is not required, call setMaxReceive() AFTER
+	 * calling setMaxExtract().
+	 */
 	public void setMaxExtract(float maxExtract)
 	{
 		this.maxExtract = maxExtract;
+		this.maxReceive = 2 * maxExtract;
 	}
 
 	public void setEnergyStored(float energy)

@@ -15,12 +15,13 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Keyboard;
 
 public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback, IDropboxCallback, ITextBoxCallback
 {
 	private final int xSize;
 	private final int ySize;
-	private static final ResourceLocation airLockControllerGui = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/airLockController.png");
+	private static final ResourceLocation airLockControllerGui = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/airLockController.png");
 	private final TileEntityAirLockController controller;
 	private GuiElementCheckbox checkboxRedstoneSignal;
 	private GuiElementCheckbox checkboxPlayerDistance;
@@ -66,9 +67,10 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
 	@Override
 	protected void keyTyped(char keyChar, int keyID)
 	{
-		if (this.textBoxPlayerToOpenFor.keyTyped(keyChar, keyID))
+		if (keyID != Keyboard.KEY_ESCAPE && keyID != this.mc.gameSettings.keyBindInventory.getKeyCode())
 		{
-			return;
+			if (this.textBoxPlayerToOpenFor.keyTyped(keyChar, keyID))
+				return;
 		}
 
 		super.keyTyped(keyChar, keyID);
@@ -276,4 +278,10 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
 	{
 		this.cannotEditTimer = 50;
 	}
+
+    @Override
+    public void onIntruderInteraction(GuiElementTextBox textBox)
+    {
+        this.cannotEditTimer = 50;
+    }
 }

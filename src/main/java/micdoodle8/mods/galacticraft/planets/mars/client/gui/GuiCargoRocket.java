@@ -30,7 +30,7 @@ public class GuiCargoRocket extends GuiContainerGC
 	{
 		for (int i = 0; i < 4; i++)
 		{
-			GuiCargoRocket.rocketTextures[i] = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/rocket_" + i * 18 + ".png");
+			GuiCargoRocket.rocketTextures[i] = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/rocket_" + i * 18 + ".png");
 		}
 	}
 
@@ -79,7 +79,7 @@ public class GuiCargoRocket extends GuiContainerGC
 		List<String> oxygenDesc = new ArrayList<String>();
 		oxygenDesc.add("Rocket fuel tank. Requires");
 		oxygenDesc.add("fuel loader to fill");
-		this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + (this.rocket.rocketType.getInventorySpace() == 2 ? 70 : 71), (this.height - this.ySize) / 2 + 6, 36, 40, oxygenDesc, this.width, this.height));
+		this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + (this.rocket.rocketType.getInventorySpace() == 2 ? 70 : 71), (this.height - this.ySize) / 2 + 6, 36, 40, oxygenDesc, this.width, this.height, this));
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
+import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -155,6 +156,13 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 		return super.getTextureCape();
 	}
 
+    @Override
+    public boolean isEntityInsideOpaqueBlock()
+    {
+
+        return !(this.ridingEntity instanceof EntityLanderBase) && super.isEntityInsideOpaqueBlock();
+    }
+
 	@Override
 	public void onDeath(DamageSource var1)
 	{
@@ -231,7 +239,7 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 
 		if (!this.lastUsingParachute && this.usingParachute)
 		{
-			FMLClientHandler.instance().getClient().getSoundHandler().playSound(new PositionedSoundRecord(new ResourceLocation(GalacticraftCore.ASSET_PREFIX + "player.parachute"), (float) this.posX, (float) this.posY, (float) this.posZ, 0.95F + this.rand.nextFloat() * 0.1F, 1.0F));
+			FMLClientHandler.instance().getClient().getSoundHandler().playSound(new PositionedSoundRecord(new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "player.parachute"), (float) this.posX, (float) this.posY, (float) this.posZ, 0.95F + this.rand.nextFloat() * 0.1F, 1.0F));
 		}
 
 		this.lastUsingParachute = this.usingParachute;

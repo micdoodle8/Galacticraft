@@ -32,7 +32,7 @@ public class BlockMachineFrame extends Block
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.blockIcons = new IIcon[1];
-		this.blockIcons[0] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_DOMAIN + "machineframe");
+		this.blockIcons[0] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "machineframe");
 		this.blockIcon = this.blockIcons[0];
 	}
 

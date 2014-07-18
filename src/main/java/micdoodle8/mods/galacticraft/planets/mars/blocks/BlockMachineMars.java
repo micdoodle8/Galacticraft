@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.world.IChunkLoader;
@@ -58,10 +59,10 @@ public class BlockMachineMars extends BlockTileGC
 	@Override
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
-		this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_input");
+		this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
+		this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
 
-		this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_blank");
+		this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
 		this.iconTerraformer = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "terraformer_0");
 		this.iconLaunchController = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "launchController");
 		this.iconCryochamber = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "cryoDummy");
@@ -294,6 +295,13 @@ public class BlockMachineMars extends BlockTileGC
 		if (metadata >= BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
 		{
 			change += BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
+		}
+
+		if (metadata >= BlockMachineMars.LAUNCH_CONTROLLER_METADATA || metadata < BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
+		{
+			TileEntity te = par1World.getTileEntity(x, y, z);
+			if (te instanceof TileEntityUniversalElectrical)
+				((TileEntityUniversalElectrical) te).updateFacing();
 		}
 
 		par1World.setBlockMetadataWithNotify(x, y, z, change, 3);

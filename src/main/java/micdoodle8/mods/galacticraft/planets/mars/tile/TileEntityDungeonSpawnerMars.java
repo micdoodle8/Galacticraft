@@ -32,6 +32,6 @@ public class TileEntityDungeonSpawnerMars extends TileEntityDungeonSpawner
 	@Override
 	public void playSpawnSound(Entity entity)
 	{
-		this.worldObj.playSoundAtEntity(entity, GalacticraftCore.ASSET_PREFIX + "ambience.scaryscape", 9.0F, 1.4F);
+		this.worldObj.playSoundAtEntity(entity, GalacticraftCore.TEXTURE_PREFIX + "ambience.scaryscape", 9.0F, 1.4F);
 	}
 }

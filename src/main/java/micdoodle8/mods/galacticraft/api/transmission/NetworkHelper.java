@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.api.transmission;
 
-import micdoodle8.mods.galacticraft.api.transmission.core.grid.IElectricityNetwork;
-import micdoodle8.mods.galacticraft.api.transmission.core.grid.IOxygenNetwork;
+import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
+import micdoodle8.mods.galacticraft.api.transmission.grid.IOxygenNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;

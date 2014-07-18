@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.element;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.client.gui.container.GuiContainerGC;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.RenderHelper;
@@ -27,19 +28,21 @@ public class GuiElementInfoRegion extends Gui
 	protected static RenderItem itemRenderer = new RenderItem();
 	public int parentWidth;
 	public int parentHeight;
+    public GuiContainerGC parentGui;
 
-	public GuiElementInfoRegion(int par2, int par3, int par4, int par5, List<String> tooltipStrings, int parentWidth, int parentHeight)
+	public GuiElementInfoRegion(int xPos, int yPos, int width, int height, List<String> tooltipStrings, int parentWidth, int parentHeight, GuiContainerGC parentGui)
 	{
 		this.width = 200;
 		this.height = 20;
 		this.enabled = true;
-		this.xPosition = par2;
-		this.yPosition = par3;
-		this.width = par4;
-		this.height = par5;
+		this.xPosition = xPos;
+		this.yPosition = yPos;
+		this.width = width;
+		this.height = height;
 		this.tooltipStrings = tooltipStrings;
 		this.parentWidth = parentWidth;
 		this.parentHeight = parentHeight;
+        this.parentGui = parentGui;
 	}
 
 	protected int getHoverState(boolean par1)
@@ -60,6 +63,11 @@ public class GuiElementInfoRegion extends Gui
 
 	public void drawRegion(int par2, int par3)
 	{
+        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        RenderHelper.disableStandardItemLighting();
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+
 		this.withinRegion = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
 
 		if (this.drawRegion)
@@ -71,10 +79,6 @@ public class GuiElementInfoRegion extends Gui
 
 		if (this.tooltipStrings != null && !this.tooltipStrings.isEmpty() && this.withinRegion)
 		{
-			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-			RenderHelper.disableStandardItemLighting();
-			GL11.glDisable(GL11.GL_LIGHTING);
-			GL11.glDisable(GL11.GL_DEPTH_TEST);
 			int k = 0;
 			Iterator<String> iterator = this.tooltipStrings.iterator();
 
@@ -108,6 +112,8 @@ public class GuiElementInfoRegion extends Gui
 				j1 = this.parentHeight - k1 - 6;
 			}
 
+            j1 += this.parentGui.getTooltipOffset(par2, par3);
+
 			this.zLevel = 300.0F;
 			GuiElementInfoRegion.itemRenderer.zLevel = 300.0F;
 			int l1 = -267386864;
@@ -133,10 +139,11 @@ public class GuiElementInfoRegion extends Gui
 
 			this.zLevel = 0.0F;
 			GuiElementInfoRegion.itemRenderer.zLevel = 0.0F;
-			GL11.glEnable(GL11.GL_LIGHTING);
-			GL11.glEnable(GL11.GL_DEPTH_TEST);
-			RenderHelper.enableStandardItemLighting();
-			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		}
+
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        RenderHelper.enableStandardItemLighting();
+        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 	}
 }

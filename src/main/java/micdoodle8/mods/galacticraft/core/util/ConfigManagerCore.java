@@ -84,7 +84,6 @@ public class ConfigManagerCore
 	public static boolean enableSealerMultithreading;
 	public static boolean enableSealerEdgeChecks;
 	public static boolean alternateCanisterRecipe;
-	public static boolean enableSmallMoons;
 
 	public static void initialize(File file)
 	{
@@ -161,7 +160,6 @@ public class ConfigManagerCore
             ConfigManagerCore.disableCopperMoon = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Copper Ore Gen on Moon", false).getBoolean(false);
             ConfigManagerCore.disableMoonVillageGen = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Moon Village Gen", false).getBoolean(false);
             ConfigManagerCore.alternateCanisterRecipe = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Alternate recipe for canisters", false, "Enable this if the standard canister recipe causes a conflict.").getBoolean(false);
-            ConfigManagerCore.enableSmallMoons = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Enable Small Moons", true, "This will cause some dimensions to appear round, disable if render transformations cause a conflict.").getBoolean(true);
         }
         catch (final Exception e)
         {
@@ -195,11 +193,7 @@ public class ConfigManagerCore
 		{
 			int[] oldIDs = ConfigManagerCore.staticLoadDimensions;
 			ConfigManagerCore.staticLoadDimensions = new int[ConfigManagerCore.staticLoadDimensions.length + 1];
-
-			for (int i = 0; i < oldIDs.length; i++)
-			{
-				ConfigManagerCore.staticLoadDimensions[i] = oldIDs[i];
-			}
+            System.arraycopy(oldIDs, 0, staticLoadDimensions, 0, oldIDs.length);
 
 			ConfigManagerCore.staticLoadDimensions[ConfigManagerCore.staticLoadDimensions.length - 1] = newID;
 			String[] values = new String[ConfigManagerCore.staticLoadDimensions.length];

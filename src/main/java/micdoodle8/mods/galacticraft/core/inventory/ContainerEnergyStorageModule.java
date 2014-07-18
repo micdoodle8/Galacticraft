@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
+import micdoodle8.mods.galacticraft.api.transmission.item.IItemElectric;
+import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -16,9 +17,9 @@ public class ContainerEnergyStorageModule extends Container
 	{
 		this.tileEntity = batteryBox;
 		// Top slot for battery output
-		this.addSlotToContainer(new SlotSpecific(batteryBox, 0, 33, 24, IItemElectric.class));
+		this.addSlotToContainer(new SlotSpecific(batteryBox, 0, 33, 24, ItemElectric.class));
 		// Bottom slot for batter input
-		this.addSlotToContainer(new SlotSpecific(batteryBox, 1, 33, 48, IItemElectric.class));
+		this.addSlotToContainer(new SlotSpecific(batteryBox, 1, 33, 48, ItemElectric.class));
 		int var3;
 
 		for (var3 = 0; var3 < 3; ++var3)

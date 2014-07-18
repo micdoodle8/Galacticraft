@@ -120,7 +120,7 @@ public class ClientProxyCore extends CommonProxyCore
 
 	public static Document materialsTest;
 
-	private static final ResourceLocation underOilTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/misc/underoil.png");
+	private static final ResourceLocation underOilTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/misc/underoil.png");
 
 	private static float numbers[] = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 	private static FloatBuffer scaleup = BufferUtils.createFloatBuffer(16 * Float.SIZE);
@@ -147,7 +147,7 @@ public class ClientProxyCore extends CommonProxyCore
         {
                 {MusicTicker.MusicType.class, ResourceLocation.class, int.class, int.class},
         };
-        MUSIC_TYPE_MARS = EnumHelper.addEnum(commonTypes, MusicTicker.MusicType.class, "MARS_JC", new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "galacticraft.musicSpace"), 12000, 24000);
+        MUSIC_TYPE_MARS = EnumHelper.addEnum(commonTypes, MusicTicker.MusicType.class, "MARS_JC", new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "galacticraft.musicSpace"), 12000, 24000);
 		ClientProxyCore.registerHandlers();
 		ClientProxyCore.registerTileEntityRenderers();
 		ClientProxyCore.registerBlockHandlers();
@@ -206,7 +206,7 @@ public class ClientProxyCore extends CommonProxyCore
 
 	public static void registerEntityRenderers()
 	{
-		RenderingRegistry.registerEntityRenderingHandler(EntityTier1Rocket.class, new RenderTier1Rocket(new ModelRocketTier1(), GalacticraftCore.ASSET_DOMAIN, "rocketT1"));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTier1Rocket.class, new RenderTier1Rocket(new ModelRocketTier1(), GalacticraftCore.ASSET_PREFIX, "rocketT1"));
 		RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSpider.class, new RenderEvolvedSpider());
 		RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedZombie.class, new RenderEvolvedZombie());
 		RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedCreeper.class, new RenderEvolvedCreeper());
@@ -226,10 +226,10 @@ public class ClientProxyCore extends CommonProxyCore
 	public static void registerItemRenderers()
 	{
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(GCBlocks.unlitTorch), new ItemRendererUnlitTorch());
-		MinecraftForgeClient.registerItemRenderer(GCItems.rocketTier1, new ItemRendererTier1Rocket(new EntityTier1Rocket(FMLClientHandler.instance().getClient().theWorld), new ModelRocketTier1(), new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/rocketT1.png")));
+		MinecraftForgeClient.registerItemRenderer(GCItems.rocketTier1, new ItemRendererTier1Rocket(new EntityTier1Rocket(FMLClientHandler.instance().getClient().theWorld), new ModelRocketTier1(), new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/rocketT1.png")));
 		MinecraftForgeClient.registerItemRenderer(GCItems.buggy, new ItemRendererBuggy());
 		MinecraftForgeClient.registerItemRenderer(GCItems.flag, new ItemRendererFlag());
-		MinecraftForgeClient.registerItemRenderer(GCItems.key, new ItemRendererKey(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/treasure.png")));
+		MinecraftForgeClient.registerItemRenderer(GCItems.key, new ItemRendererKey(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/treasure.png")));
 		MinecraftForgeClient.registerItemRenderer(GCItems.meteorChunk, new ItemRendererMeteorChunk());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(GCBlocks.spinThruster), new ItemRendererThruster());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(GCBlocks.brightLamp), new ItemRendererArclamp());
@@ -237,7 +237,9 @@ public class ClientProxyCore extends CommonProxyCore
 
 	public static void registerHandlers()
 	{
-		FMLCommonHandler.instance().bus().register(new TickHandlerClient());
+        TickHandlerClient tickHandlerClient = new TickHandlerClient();
+		FMLCommonHandler.instance().bus().register(tickHandlerClient);
+        MinecraftForge.EVENT_BUS.register(tickHandlerClient);
 		FMLCommonHandler.instance().bus().register(new KeyHandlerClient());
 		ClientRegistry.registerKeyBinding(KeyHandlerClient.galaxyMap);
 		ClientRegistry.registerKeyBinding(KeyHandlerClient.openFuelGui);
@@ -524,10 +526,12 @@ public class ClientProxyCore extends CommonProxyCore
 		if (player.ridingEntity instanceof EntityAutoRocket)
 		{
 			EntityAutoRocket entity = (EntityAutoRocket) player.ridingEntity;
+			GL11.glTranslatef(0, - (float) entity.getMountedYOffset() - 1F, 0);
 			float anglePitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * event.partialRenderTick;
 			float angleYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * event.partialRenderTick;
 			GL11.glRotatef(-angleYaw, 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(anglePitch, 0.0F, 0.0F, 1.0F);
+			GL11.glTranslatef(0, (float) entity.getMountedYOffset() + 1F, 0);
 		}
 
 		//Gravity - freefall - jetpack changes in player model orientation can go here
@@ -539,6 +543,17 @@ public class ClientProxyCore extends CommonProxyCore
 		GL11.glPopMatrix();
 	}
 
+	@SubscribeEvent
+	public void onRenderPlayerEquipped(RenderPlayerEvent.Specials.Pre event)
+	{
+		final Entity ridden = event.entityPlayer.ridingEntity;
+		if (ridden instanceof EntityAutoRocket || ridden instanceof EntityLander)
+		{
+			event.setCanceled(true);
+		}		
+	}
+
+	
 	public static void adjustRenderPos(Entity entity, double offsetX, double offsetY, double offsetZ)
 	{
 		GL11.glPushMatrix();

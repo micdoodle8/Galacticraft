@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
-import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
+import micdoodle8.mods.galacticraft.api.transmission.item.IItemElectric;
+import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,7 +18,7 @@ public class ContainerLaunchController extends Container
 	{
 		this.tileEntity = tileEntity;
 
-		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 152, 105, IItemElectric.class));
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 152, 105, ItemElectric.class));
 
 		int var6;
 		int var7;

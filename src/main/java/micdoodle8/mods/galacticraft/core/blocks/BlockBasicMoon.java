@@ -48,7 +48,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 	{
 		if (world.getBlockMetadata(x, y, z) == 15)
 		{
-			return AxisAlignedBB.getAABBPool().getAABB(x, y, z, x, y, z);
+			return AxisAlignedBB.getBoundingBox(x, y, z, x, y, z);
 		}
 
 		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
@@ -59,7 +59,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 	{
 		if (world.getBlockMetadata(x, y, z) == 15)
 		{
-			return AxisAlignedBB.getAABBPool().getAABB(x, y, z, x, y, z);
+			return AxisAlignedBB.getBoundingBox(x, y, z, x, y, z);
 		}
 
 		return super.getSelectedBoundingBoxFromPool(world, x, y, z);
@@ -99,7 +99,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 		this.moonBlockIcons[13] = par1IconRegister.registerIcon("galacticraftmoon:moonore_tin");
 		this.moonBlockIcons[14] = par1IconRegister.registerIcon("galacticraftmoon:moonore_cheese");
 		this.moonBlockIcons[15] = par1IconRegister.registerIcon("galacticraftmoon:bottom");
-		this.moonBlockIcons[16] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "blank");
+		this.moonBlockIcons[16] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "blank");
 	}
 
 	@SideOnly(Side.CLIENT)

@@ -23,8 +23,8 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderEvolvedSkeletonBoss extends RenderLiving
 {
-	private static final ResourceLocation skeletonBossTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/skeletonboss.png");
-	private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/power.png");
+	private static final ResourceLocation skeletonBossTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/skeletonboss.png");
+	private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/power.png");
 
 	private final ModelEvolvedSkeletonBoss model = new ModelEvolvedSkeletonBoss();
 

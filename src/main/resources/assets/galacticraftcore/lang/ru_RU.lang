@@ -189,6 +189,8 @@ tile.gcBlockCore.aluminumBlock.name=Алюминиевый блок
 tile.fuel.name=Топливо
 tile.oxygenCompressor.0.name=Кислородный компрессор
 tile.oxygenCompressor.1.name=Кислородный декомпрессор
+tile.arclamp.name=Дуговая лампа
+tile.spinThruster.name=Spin Thruster ##NEEDS TRANSLATE##
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Эволюционировавший паук
@@ -214,6 +216,7 @@ schematic.rocketT2.name=Ракета 2-ого уровня
 # DEATH MESSAGES
 death.attack.spaceshipExplosion=%1$s погиб от сбоя в ракете!
 death.attack.spaceshipExplosionB=%1$s погиб в аварии на космическом корабле!
+death.attack.spaceshipCrash=Ракета %1$s разбила себя об землю. Ой.
 death.attack.oxygenSuffocation=%1$s задохнулся в космосе!
 
 # GALAXIES
@@ -263,8 +266,19 @@ gui.message.fuel.name=Топливо
 gui.message.full.name=осталось
 gui.message.page.name=Страница
 gui.message.addnewsch.name=Добавить новую схему
-gui.message.generating.name=Генерация
+gui.message.generating.name=Создание
 gui.message.environment.name=Ускорение окружающей среды
+gui.message.oil.name=Нефть
+gui.message.catalog.name=Каталог
+gui.message.back.name=Назад
+gui.message.daynightcycle.name=Цикл день-ночь
+gui.message.surfacegravity.name=Гравитация на поверхности
+gui.message.surfacecomposition.name=Состав поверхности
+gui.message.atmosphere.name=Атмосфера
+gui.message.meansurfacetemp.name=Средняя температура на поверхности
+gui.message.energy=Энергия
+gui.message.maxEnergy=Макс. энергия
+gui.message.bubbleVisible.name=Видимость пузырей
 
 gui.status.active.name=Активно
 gui.status.missingleaves.name=Отсутствуют блоки листвы
@@ -272,8 +286,8 @@ gui.status.missingpower.name=Отсутствует энергия
 gui.status.missingoxygen.name=Отсутствует кислород
 gui.status.missingtank.name=Отсутствует кислородный баллон
 gui.status.fulltank.name=Кислородный баллон заполнен
-gui.status.unsealed.name=Зона слишком большая/Неуплотнённый
-gui.status.sealed.name=Уплотнённый
+gui.status.unsealed.name=Зона слишком большая / Неуплотнённая
+gui.status.sealed.name=Уплотнённая
 gui.status.unknown.name=Неизвестно
 gui.status.disabled.name=Отключено
 gui.status.nofuel.name=Нет топлива для загрузки!
@@ -292,6 +306,19 @@ gui.status.blockedpartial.name=Солнце частично видимо
 gui.status.blockedfully.name=Солнце невидимо
 gui.status.collectingenergy.name=Сбор энергии
 gui.status.sealerblocked.name=Выходное вентиляционное отверстие заблокировано!
+gui.status.checkingSeal.name=Проверка уплотнения
+gui.status.checkStarting.name=Проверка начата
+gui.status.checkPending.name=Ожидание проверки
+gui.status.airLockClosed.name=Воздушный шлюз закрыт
+gui.status.airLockOpen.name=Воздушный шлюз открыт
+gui.status.running.name=Работа
+gui.status.generating.name=Создание
+gui.status.notGenerating.name=Not Generating ##NEEDS TRANSLATE##
+gui.status.hullHeat.name=Hull Heat ##NEEDS TRANSLATE##
+gui.status.compressing.name=Сжатие
+gui.status.collecting.name=Сбор
+gui.status.tankEmpty.name=Кислородный баллон пуст
+gui.status.sunVisible.name=Видимость Солнца
 
 gui.button.enableseal.name=Запустить уплотнитель
 gui.button.disableseal.name=Отключить уплотнитель
@@ -325,23 +352,145 @@ gui.chooseplanet.cannotcreate1.name=Невозможно создать косм
 gui.chooseplanet.cannotcreate2.name=станцию здесь!
 gui.chooseplanet.alreadycreated1.name=Космическая станция
 gui.chooseplanet.alreadycreated2.name=уже создана!
+gui.dockingRocket.warning.name.0=Нажмите %s, для замедления
+gui.dockingRocket.warning.name.1=Нажмите %s, для ускорения
+gui.dockingRocket.targetVel.name=Целевая скорость
+gui.dockingRocket.currentVel.name=Текущая скорость
+gui.dockingRocket.distanceFrom.name=Расстояние от цели
 
-gui.galaxymap.movemap.name=ASWD - Перемещение по карте
+gui.galaxymap.movemap.name=WASD - Перемещение по карте
 gui.galaxymap.zoom.name=Колёсико мыши - Увеличение
 gui.galaxymap.select.name=Кнопка мыши - Выбрать планету
 gui.galaxymap.exit.name=Esc - Отключить карту
+gui.galaxymap.moonOf.name=Луна
 
 gui.buggy.turn.name=Поверните влево, вправо.
 gui.buggy.accel.name=Ускориться
 gui.buggy.decel.name=Замедлиться
 gui.buggy.inv.name=Инвентарь / Топливо
 
+gui.rocket.launch.name=Запуск
+gui.rocket.turn.name=Повернуть влево-вправо
+gui.rocket.updown.name=Повернуть вверх-вниз
+gui.rocket.inv.name=Инвентарь / Топливо
+
+gui.rocket.warning.noparachute=У меня нет парашюта! Если я нажму запуск снова, пути назад не будет!
+gui.rocket.warning.nofuel=Сначала мне нужно залить немного топлива в ракету!
+gui.chest.warning.wrongkey=Мне нужен ключ от подземелья %s уровня, чтобы открыть это!
+gui.frequencymodule.warning0=Мне нужен
+gui.frequencymodule.warning1=если я хочу слышать нормально здесь.
+
+gui.rocketType.0=Размер хранилища: 18
+gui.rocketType.1=Размер хранилища: 36
+gui.rocketType.2=Размер хранилища: 56
+gui.rocketType.3=Заправленная
+
+gui.spacestation.typeCommand=Тип
+gui.spacestation.playername=<имя игрока>
+gui.spacestation.toAllowEntry=чтобы разрешить другому игроку заходить на эту космическую станцию!
+
+gui.skeletonBoss.message=Босс пропал, не покидайте комнату с боссом, когда сражаетесь с ним! Зайдите в комнату заново, чтобы босс снова появился.
+gui.warning.noroom=Недостаточно места!
+gui.flag.alreadyPlaced=Флаг уже стоит здесь!
+gui.receiver.cannotAttach=Нельзя поставить приёмник здесь!
+
+gui.tank.oxygenRemaining=Осталось кислорода
+gui.buggy.storageSpace=Размер хранилища
+gui.frequencyModule.desc.0=Может принимать слабые звуковые
+gui.frequencyModule.desc.1=волны и отдалённые сигналы
+gui.cheeseBlock.desc=Можно поставить
+gui.creativeOnly.desc=Только для творческого режима
+gui.requiresController.desc=Требуется контроллер запуска
+gui.fuelTank.desc.0=Топливный резервуар. Требуется
+gui.fuelTank.desc.1=загрузчик топлива, для заполнения
+gui.fuelTank.desc.2=Топливный резервуар может быть заполнен
+gui.fuelTank.desc.3=топливными канистрами
+gui.fuelTank.desc.4=Топливный резервуар
+gui.oilTank.desc.0=Нефтяной резервуар, может быть заполнен
+gui.oilTank.desc.1=нефтяными канистрами
+gui.infiniteBattery.desc=Бесконечный
+gui.batterySlot.desc.0=Слот для аккумулятора, поставьте аккумулятор сюда
+gui.batterySlot.desc.1=или используйте подключенный источник энергии
+gui.oxygenStorage.desc.0=Хранилище кислорода
+gui.oxygenStorage.desc.1=Кислород
+gui.energyStorage.desc.0=Хранилище энергии
+gui.energyStorage.desc.1=Энергия
+gui.oxygenUse.desc=Потребление кислорода
+gui.checkbox.redstoneSignal.name=Открывается по сигналу красного камня
+gui.checkbox.playerWithin.name=Игрок в пределах
+gui.checkbox.playerName.name=Имя игрока:
+gui.checkbox.invert.name=Инвертированный выбор
+gui.checkbox.horizontal.name=Горизонтальный режим
+gui.dropbox.playerDistance.name.0=1 метр
+gui.dropbox.playerDistance.name.1=2 метра
+gui.dropbox.playerDistance.name.2=5 метров
+gui.dropbox.playerDistance.name.3=10 метров
+gui.title.airLock.name=%s's Air Lock Controller ##NEEDS TRANSLATE##
+gui.fuelOutput.desc.0=Положите пустые жидкостные канистры в
+gui.fuelOutput.desc.1=этот слот, чтобы заполнить их из
+gui.fuelOutput.desc.2=топливного резервуара
+gui.newSchematic.slot.desc.0=Новый слот для схемы. Вы
+gui.newSchematic.slot.desc.1=можете найти новые схемы
+gui.newSchematic.slot.desc.2=в подземельях
+gui.newSchematic.slot.desc.3=на планетах и лунах
+gui.missingCore.name.0=MicdoodleCore не найден в папке модификаций
+gui.missingCore.name.1=Galacticraft не загрузился
+gui.missingCore.name.2=Закройте Minecraft и установите MicdoodleCore
+gui.missingCore.name.3=Нажмите здесь, чтобы открыть страницу загрузки
+
+gui.spaceRace.create.close.name=Закрыть
+gui.spaceRace.create.back.name=Назад
+gui.spaceRace.create.rename.name=Переименовать команду
+gui.spaceRace.create.brushRadius.name=Brush Rad ##NEEDS TRANSLATE##
+gui.spaceRace.create.eraserRadius.name=Eraser Rad ##NEEDS TRANSLATE##
+gui.spaceRace.create.brushSize.name=Brush Size ##NEEDS TRANSLATE##
+gui.spaceRace.create.eraserSize.name=Eraser Size ##NEEDS TRANSLATE##
+gui.spaceRace.create.title.name=Менеджер космической гонки
+gui.spaceRace.create.invitePlayer.name=Пригласить игрока
+gui.spaceRace.create.playerRadius.name=Примечание: Игроки должны быть в пределах диапазона! (25 блоков)
+gui.spaceRace.create.removePlayer.name=Убрать игрока
+gui.spaceRace.create.customize.name=Настроить флаг
+gui.spaceRace.create.changeColor.name.0=Сменить
+gui.spaceRace.create.changeColor.name.1=команду
+gui.spaceRace.create.changeColor.name.2=цвет
+gui.spaceRace.create.serverStats.name=Посмотреть статистику сервера
+gui.spaceRace.create.globalStats.name=Посмотреть глобальную статистику
+gui.spaceRace.create.addPlayers.name=Добавить игрока(ов)
+gui.spaceRace.create.remPlayers.name=Убрать игрока(ов)
+gui.spaceRace.create.sendInvite.name=Отправить приглашение
+gui.spaceRace.create.remove.name=Убрать
+gui.spaceRace.join.title.name=Присоединиться к космической гонке
+gui.spaceRace.join.owner.name=Владелец
+gui.spaceRace.join.memberCount.name=Участников: %d
+
 # DIMENSIONS
 dimension.Overworld.name=Земля
 dimension.Moon.name=Луна
 dimension.Sun.name=Солнце
+planet.overworld=Земля
+moon.moon=Луна
+
+gui.message.moon.daynightcycle.0.name=29.5 Земных дней
+gui.message.moon.daynightcycle.1.name=
+gui.message.moon.surfacegravity.0.name=0.1654g
+gui.message.moon.surfacegravity.1.name=(18% Земного)
+gui.message.moon.surfacecomposition.0.name=Базальтовый камень и
+gui.message.moon.surfacecomposition.1.name=следы сыра
+gui.message.moon.atmosphere.0.name=Нет
+gui.message.moon.atmosphere.1.name=
+gui.message.moon.meansurfacetemp.0.name=(Светлая сторона) 253C
+gui.message.moon.meansurfacetemp.1.name=(Тёмная сторона) -153C
+
+gui.message.overworld.daynightcycle.0.name=1 Земной день
+gui.message.overworld.daynightcycle.1.name=
+gui.message.overworld.surfacegravity.0.name=1.0g
+gui.message.overworld.surfacegravity.1.name=(100% Земного)
+gui.message.overworld.surfacecomposition.0.name=Камень, земля, 
+gui.message.overworld.surfacecomposition.1.name=гравий
+gui.message.overworld.atmosphere.0.name=Азот и кислород
+gui.message.overworld.atmosphere.1.name=Поддерживает жизнь
+gui.message.overworld.meansurfacetemp.0.name=14C
+gui.message.overworld.meansurfacetemp.1.name=
 
 # COMMANDS
 commands.dimensionteleport=%s был направлен в атмосферу%s
-
-# </file>

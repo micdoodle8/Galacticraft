@@ -32,7 +32,7 @@ import java.util.Random;
 @SideOnly(Side.CLIENT)
 public class GuiGalaxyMap extends GuiStarBackground
 {
-	private static final ResourceLocation guiTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/gui.png");
+	private static final ResourceLocation guiTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/gui.png");
 	private static final ResourceLocation vanillaSun = new ResourceLocation("textures/environment/sun.png");
 
 	private static int guiMapMinX;

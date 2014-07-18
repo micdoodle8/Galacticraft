@@ -49,7 +49,7 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
 
 		for (int i = 0; i < BlockAluminumWire.names.length; i++)
 		{
-			BlockAluminumWire.blockIcons[i] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + BlockAluminumWire.names[i]);
+			BlockAluminumWire.blockIcons[i] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + BlockAluminumWire.names[i]);
 		}
 	}
 

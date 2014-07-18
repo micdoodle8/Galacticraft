@@ -28,7 +28,7 @@ import java.util.List;
 
 public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, ITextBoxCallback
 {
-	protected static final ResourceLocation texture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/gui.png");
+	protected static final ResourceLocation texture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/gui.png");
 
 	private int ticksPassed;
 	private EntityPlayer thePlayer;
@@ -57,7 +57,7 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
 		{
 			List<String> playerList = new ArrayList<String>();
 			playerList.add(player.getGameProfile().getName());
-			this.spaceRaceData = new SpaceRace(playerList, "Unnamed Team", new FlagData(48, 32), new Vector3(1, 1, 1));
+			this.spaceRaceData = new SpaceRace(playerList, SpaceRace.DEFAULT_NAME, new FlagData(48, 32), new Vector3(1, 1, 1));
 		}
 	}
 
@@ -199,6 +199,11 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
 	public void onIntruderInteraction()
 	{
 	}
+
+    @Override
+    public void onIntruderInteraction(GuiElementTextBox textBox)
+    {
+    }
 
 	@Override
 	public boolean canPlayerEdit(GuiElementTextBox textBox, EntityPlayer player)

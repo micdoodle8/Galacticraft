@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
-import micdoodle8.mods.galacticraft.api.transmission.core.item.IItemElectric;
+import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
@@ -30,8 +30,9 @@ public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock i
 
 	public TileEntityElectricIngotCompressor()
 	{
-		this.storage.setMaxExtract(250);
-		this.storage.setCapacity(50000);
+		this.storage.setMaxExtract(75);
+		this.storage.setCapacity(100000);
+		this.setTierGC(2);
 	}
 
 	@Override
@@ -355,7 +356,7 @@ public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock i
 	{
 		if (slotID == 0)
 		{
-			return itemStack.getItem() instanceof IItemElectric;
+			return ItemElectric.isElectricItem(itemStack.getItem());
 		}
 		else if (slotID >= 3)
 		{

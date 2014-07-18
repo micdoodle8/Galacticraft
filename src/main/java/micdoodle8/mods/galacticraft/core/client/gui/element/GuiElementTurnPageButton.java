@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 public class GuiElementTurnPageButton extends GuiButton
 {
 	private final boolean nextPage;
-	private static final ResourceLocation background = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/bookleft.png");
+	private static final ResourceLocation background = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/bookleft.png");
 
 	public GuiElementTurnPageButton(int par1, int par2, int par3, boolean par4)
 	{

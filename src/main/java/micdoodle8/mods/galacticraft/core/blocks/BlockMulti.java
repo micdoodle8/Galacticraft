@@ -39,7 +39,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
 	{
 		super(GCBlocks.machine);
 		this.setStepSound(Block.soundTypeMetal);
-		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 		this.setBlockName(assetName);
 		this.setResistance(1000000000000000.0F);
 	}
@@ -49,9 +49,9 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.fakeIcons = new IIcon[4];
-		this.fakeIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "launch_pad");
-		this.fakeIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "workbench_nasa_top");
-		this.fakeIcons[2] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "solar_basic_0");
+		this.fakeIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "launch_pad");
+		this.fakeIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "workbench_nasa_top");
+		this.fakeIcons[2] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "solar_basic_0");
 
 		if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
 		{
@@ -111,6 +111,10 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
 		{
 			this.setBlockBounds(0.0F, 0.55F, 0.0F, 1.0F, 1.0F, 1.0F);
 		}
+        else if (meta == 7)
+        {
+            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.38F, 1.0F);
+        }
 		else
 		{
 			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
@@ -133,6 +137,11 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
 			this.setBlockBounds(0.0F, 0.55F, 0.0F, 1.0F, 1.0F, 1.0F);
 			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
 		}
+        else if (meta == 7)
+        {
+            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.38F, 1.0F);
+            super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
+        }
 		else
 		{
 			super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
@@ -168,7 +177,19 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
 	@Override
 	public float getBlockHardness(World par1World, int par2, int par3, int par4)
 	{
-		return par1World.getBlockMetadata(par2, par3, par4) == 1 ? -1.0F : this.blockHardness;
+        TileEntity tileEntity = par1World.getTileEntity(par2, par3, par4);
+
+        if (tileEntity != null)
+        {
+            BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
+
+            if (mainBlockPosition != null)
+            {
+                return mainBlockPosition.getBlock(par1World).getBlockHardness(par1World, par2, par3, par4);
+            }
+        }
+
+		return this.blockHardness;
 	}
 
 	@Override

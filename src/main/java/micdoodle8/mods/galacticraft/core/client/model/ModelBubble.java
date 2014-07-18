@@ -18,7 +18,7 @@ public class ModelBubble extends ModelBase
 
 	public ModelBubble(float par1)
 	{
-		this.sphere = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/sphere.obj"));
+		this.sphere = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/sphere.obj"));
 	}
 
 	@Override

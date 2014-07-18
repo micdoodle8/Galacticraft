@@ -33,6 +33,12 @@ public class EntitySludgeling extends EntityMob implements IEntityBreathable
 		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntitySlimeling.class, 200, false));
 	}
 
+    @Override
+    public boolean canBreatheUnderwater()
+    {
+        return true;
+    }
+
 	@Override
 	protected void applyEntityAttributes()
 	{

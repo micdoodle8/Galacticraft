@@ -3,8 +3,10 @@ package micdoodle8.mods.galacticraft.core.tile;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.UniversalNetwork;
-import micdoodle8.mods.galacticraft.api.transmission.core.grid.IGridNetwork;
+import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
+import micdoodle8.mods.galacticraft.api.transmission.grid.IGridNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
@@ -44,7 +46,7 @@ public abstract class TileEntityConductor extends TileEntityAdvanced implements 
 	}
 
 	@Override
-	public IGridNetwork getNetwork()
+	public IElectricityNetwork getNetwork()
 	{
 		if (this.network == null)
 		{
@@ -53,7 +55,7 @@ public abstract class TileEntityConductor extends TileEntityAdvanced implements 
 			this.setNetwork(network);
 		}
 
-		return this.network;
+		return (IElectricityNetwork) this.network;
 	}
 
 	@Override
@@ -85,10 +87,10 @@ public abstract class TileEntityConductor extends TileEntityAdvanced implements 
 				}
 			}
 
-			//if (NetworkConfigHandler.isBuildcraftLoaded())
-			//{
-			//	if (this instanceof TileEntityUniversalConductor) ((TileEntityUniversalConductor) this).reconfigureBC();
-			//}
+			if (NetworkConfigHandler.isBuildcraftLoaded())
+			{
+				if (this instanceof TileEntityUniversalConductor) ((TileEntityUniversalConductor) this).reconfigureBC();
+			}
 		}
 	}
 
@@ -131,7 +133,7 @@ public abstract class TileEntityConductor extends TileEntityAdvanced implements 
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getRenderBoundingBox()
 	{
-		return AxisAlignedBB.getAABBPool().getAABB(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1);
+		return AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1);
 	}
 
 	@Override

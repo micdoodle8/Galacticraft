@@ -170,7 +170,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
 
 		if (this.worldObj.getBlock(x, y, z) != GCBlocks.airLockSeal)
 		{
-			this.worldObj.playSoundEffect(x, y, z, GalacticraftCore.ASSET_PREFIX + "player.openairlock", 1.0F, 1.0F);
+			this.worldObj.playSoundEffect(x, y, z, GalacticraftCore.TEXTURE_PREFIX + "player.openairlock", 1.0F, 1.0F);
 		}
 
 		if (this.horizontalModeEnabled)
@@ -239,7 +239,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
 
 		if (this.worldObj.getBlock(x, y, z) != Blocks.air)
 		{
-			this.worldObj.playSoundEffect(x, y, z, GalacticraftCore.ASSET_PREFIX + "player.closeairlock", 1.0F, 1.0F);
+			this.worldObj.playSoundEffect(x, y, z, GalacticraftCore.TEXTURE_PREFIX + "player.closeairlock", 1.0F, 1.0F);
 		}
 
 		if (this.lastHorizontalModeEnabled)

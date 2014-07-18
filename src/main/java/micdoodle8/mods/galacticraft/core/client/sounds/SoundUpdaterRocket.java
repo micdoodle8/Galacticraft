@@ -87,7 +87,7 @@ package micdoodle8.mods.galacticraft.core.client.sounds;
 //
 //		else if (this.theSoundManager != null && this.theMinecart != null && this.theMinecart.posY < 250 && this.minecartMoveSoundVolume > 0.0F)
 //		{
-//			this.theSoundManager.playEntitySound(GalacticraftCore.ASSET_PREFIX + "shuttle.shuttle", this.theMinecart, 5.0F, this.minecartSoundPitch, false);
+//			this.theSoundManager.playEntitySound(GalacticraftCore.TEXTURE_PREFIX + "shuttle.shuttle", this.theMinecart, 5.0F, this.minecartSoundPitch, false);
 //			this.silent = false;
 //			var1 = true;
 //		}

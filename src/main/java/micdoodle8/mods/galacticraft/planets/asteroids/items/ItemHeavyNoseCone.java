@@ -22,7 +22,7 @@ public class ItemHeavyNoseCone extends Item
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 		this.setUnlocalizedName(assetName);
-		this.setTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 	}
 
     @Override
@@ -56,8 +56,8 @@ public class ItemHeavyNoseCone extends Item
 	public void registerIcons(IIconRegister iconRegister)
 	{
         this.icons = new IIcon[2];
-        this.icons[0] = iconRegister.registerIcon(AsteroidsModule.TEXTURE_DOMAIN + "heavyNoseCone");
-        this.icons[1] = iconRegister.registerIcon(AsteroidsModule.TEXTURE_DOMAIN + "heavyNoseCone.0");
+        this.icons[0] = iconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "heavyNoseCone");
+        this.icons[1] = iconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "heavyNoseCone.0");
 	}
 
 	@Override

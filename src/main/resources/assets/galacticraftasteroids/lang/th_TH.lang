@@ -1,0 +1,28 @@
+# Galacticraft Asteroids Language File = THAILAND
+
+# GENERAL ITEMS
+item.itemTier3Rocket.t3Rocket.name=จรวด เทียร์ 3
+
+# TOOLS
+
+# ARMOR
+
+# BLOCKS
+tile.asteroidsBlock.asteroids1.name=หินดาวเคราะห์น้อย
+tile.beamReflector.name=เครื่องสะท้อนลำแสง
+tile.beamReceiver.name=เครื่องรับลำแสง
+tile.telepadShort.name=เครื่องเทเลพอร์ตระยะใกล้
+
+# GUI
+planet.asteroids=ดาวเคราะห์น้อย
+
+itemGroup.GalacticraftAsteroids=กาแลคติคคราฟ ดาวเคราะห์น้อย
+
+# Schematics
+
+# Entity
+entity.SmallAsteroidGC.name=ดาวเคราะห์น้อยขนาดเล็ก
+entity.GrappleHookGC.name=ตะขอเกี่ยว
+entity.Tier3RocketGC.name=จรวด เทียร์ 3
+
+# Container

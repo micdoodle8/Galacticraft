@@ -35,7 +35,7 @@ import java.util.Map.Entry;
 
 public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITextBoxCallback
 {
-	protected static final ResourceLocation texture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/gui.png");
+	protected static final ResourceLocation texture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/gui.png");
 
 	public static enum EnumSpaceRaceGui
 	{
@@ -107,7 +107,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 		{
 			List<String> playerList = new ArrayList<String>();
 			playerList.add(player.getGameProfile().getName());
-			this.spaceRaceData = new SpaceRace(playerList, "Unnamed Team", new FlagData(48, 32), new Vector3(1, 1, 1));
+			this.spaceRaceData = new SpaceRace(playerList, SpaceRace.DEFAULT_NAME, new FlagData(48, 32), new Vector3(1, 1, 1));
 		}
 
         this.mc = FMLClientHandler.instance().getClient();
@@ -980,6 +980,12 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 	{
 
 	}
+
+    @Override
+    public void onIntruderInteraction(GuiElementTextBox textBox)
+    {
+
+    }
 
 	@Override
 	public boolean canPlayerEdit(GuiElementTextBox textBox, EntityPlayer player)

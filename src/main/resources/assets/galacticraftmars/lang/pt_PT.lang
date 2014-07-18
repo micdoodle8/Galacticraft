@@ -66,12 +66,41 @@ tile.tintedGlassPane.black.name=Painel de Vidro Preto
 # GUI
 gui.choosePlanet.desc.mars=Habitável#Sem Oxigénio#Gravidade: 38%
 item.deshPickSlime.description.name=Pode-se colher ovos de Slimeling
+gui.message.noEnergy.name=Not Enough Energy ##NEEDS TRANSLATE##
+gui.message.noWater.name=Not Enough Water ##NEEDS TRANSLATE##
+gui.message.noBonemeal.name=Not Enough Bonemeal ##NEEDS TRANSLATE##
+gui.message.noSeeds.name=Not Enough Seeds ##NEEDS TRANSLATE##
+gui.message.noSaplings.name=Not Enough Saplings ##NEEDS TRANSLATE##
+gui.message.bubbleExp.name=BubbleExpanding ##NEEDS TRANSLATE##
+gui.message.noValidBlocks.name=No Valid Blocks in Bubble ##NEEDS TRANSLATE##
+gui.message.terraforming.name=Terraforming ##NEEDS TRANSLATE##
+gui.message.enableTrees.name=Enable Trees ##NEEDS TRANSLATE##
+gui.message.enableGrass.name=Enable Grass ##NEEDS TRANSLATE##
+gui.message.trees.name=Trees ##NEEDS TRANSLATE##
+gui.message.grass.name=Grass ##NEEDS TRANSLATE##
+gui.message.invalidFreq.name=Invalid Frequency ##NEEDS TRANSLATE##
+gui.message.frequency.name=Frequency ##NEEDS TRANSLATE##
+gui.message.destFrequency.name=Destination Frequency ##NEEDS TRANSLATE##
+gui.message.removePad.name=Remove Pad ##NEEDS TRANSLATE##
+gui.message.launchWhen.name=Launch When ##NEEDS TRANSLATE##
+gui.message.cargoUnloaded.name=Cargo is Unloaded ##NEEDS TRANSLATE##
+gui.message.cargoFull.name=Cargo is Full ##NEEDS TRANSLATE##
+gui.message.fullyFueled.name=Fully Fueled ##NEEDS TRANSLATE##
+gui.message.instant.name=Instantly ##NEEDS TRANSLATE##
+gui.message.tenSec.name=10 Seconds ##NEEDS TRANSLATE##
+gui.message.thirtySec.name=30 Seconds ##NEEDS TRANSLATE##
+gui.message.oneMin.name=1 Minute ##NEEDS TRANSLATE##
+gui.message.redstoneSig.name=Redstone Signal ##NEEDS TRANSLATE##
+gui.message.notSet.name=Not Set ##NEEDS TRANSLATE##
+gui.message.notEnough.name=Not Enough ##NEEDS TRANSLATE##
+gui.message.success.name=Success ##NEEDS TRANSLATE##
 
 gui.desc.reinforcedPlateT2.name=Nível 2
 
 itemGroup.GalacticraftMars=Galacticraft - Marte
 
 dimension.Mars.name=Marte
+planet.mars=Mars ##NEEDS TRANSLATE##
 
 # Schematics
 schematic.rocketT3.name=Foguetão - Nível 3
@@ -81,6 +110,9 @@ schematic.cargoRocket.name=Foguetão de Carga Automático
 entity.Sludgeling.name=Sludgeling
 entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Creeper-Chefe Evoluído
+entity.SpaceshipT2.name=Tier 2 Rocket ##NEEDS TRANSLATE##
+entity.CargoRocket.name=Cargo Rocket ##NEEDS TRANSLATE##
 
 # Container
 container.launchcontroller.name=Controle de Lançamentos
+container.tileTerraformer.name=Terraformer ##NEEDS TRANSLATE##

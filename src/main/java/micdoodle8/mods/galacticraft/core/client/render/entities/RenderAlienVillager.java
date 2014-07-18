@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderAlienVillager extends RenderLiving
 {
-	private static final ResourceLocation villagerTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/model/villager.png");
+	private static final ResourceLocation villagerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/villager.png");
 
 	protected ModelAlienVillager villagerModel;
 

@@ -64,7 +64,7 @@ public class GuiElementTextBox extends GuiButton
 					else
 					{
 						this.incorrectUseTimer = 10;
-						this.parentGui.onIntruderInteraction();
+						this.parentGui.onIntruderInteraction(this);
 					}
 				}
 			}
@@ -87,7 +87,7 @@ public class GuiElementTextBox extends GuiButton
 					else
 					{
 						this.incorrectUseTimer = 10;
-						this.parentGui.onIntruderInteraction();
+						this.parentGui.onIntruderInteraction(this);
 					}
 				}
 			}
@@ -101,7 +101,7 @@ public class GuiElementTextBox extends GuiButton
 				else
 				{
 					this.incorrectUseTimer = 10;
-					this.parentGui.onIntruderInteraction();
+					this.parentGui.onIntruderInteraction(this);
 				}
 			}
 
@@ -152,7 +152,7 @@ public class GuiElementTextBox extends GuiButton
 					else if (!this.parentGui.canPlayerEdit(this, this.mc.thePlayer))
 					{
 						this.incorrectUseTimer = 10;
-						this.parentGui.onIntruderInteraction();
+						this.parentGui.onIntruderInteraction(this);
 					}
 				}
 				else
@@ -250,6 +250,6 @@ public class GuiElementTextBox extends GuiButton
 
 		public int getTextColor(GuiElementTextBox textBox);
 
-		public void onIntruderInteraction();
+		public void onIntruderInteraction(GuiElementTextBox textBox);
 	}
 }

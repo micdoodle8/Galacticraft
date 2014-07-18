@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderLandingBalloons extends Render
 {
-	private static final ResourceLocation landerTexture = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/model/landingBalloon.png");
+	private static final ResourceLocation landerTexture = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/model/landingBalloon.png");
 
 	protected IModelCustom landerModel;
 	protected ModelBalloonParachute parachuteModel = new ModelBalloonParachute();
@@ -23,7 +23,7 @@ public class RenderLandingBalloons extends Render
 	public RenderLandingBalloons()
 	{
 		this.shadowSize = 2F;
-		this.landerModel = AdvancedModelLoader.loadModel(new ResourceLocation(MarsModule.ASSET_DOMAIN, "models/landingBalloon.obj"));
+		this.landerModel = AdvancedModelLoader.loadModel(new ResourceLocation(MarsModule.ASSET_PREFIX, "models/landingBalloon.obj"));
 	}
 
 	protected ResourceLocation func_110779_a(EntityLandingBalloons par1EntityArrow)
@@ -41,7 +41,7 @@ public class RenderLandingBalloons extends Render
 	{
 		GL11.glPushMatrix();
 		final float var24 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * par9;
-		GL11.glTranslatef((float) par2, (float) par4 - 0.93F, (float) par6);
+		GL11.glTranslatef((float) par2, (float) par4 + 0.8F, (float) par6);
 		GL11.glRotatef(par8, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
 		GL11.glRotatef(var24, 0.0F, 0.0F, 1.0F);

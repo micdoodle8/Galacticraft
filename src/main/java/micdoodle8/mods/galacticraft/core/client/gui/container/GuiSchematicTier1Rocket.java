@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiSchematicTier1Rocket extends GuiContainerGC implements ISchematicResultPage
 {
-	private static final ResourceLocation rocketBenchTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/rocketbench.png");
+	private static final ResourceLocation rocketBenchTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/rocketbench.png");
 
 	private int pageIndex;
 

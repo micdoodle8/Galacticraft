@@ -2,8 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay;
-import micdoodle8.mods.galacticraft.api.transmission.ElectricityDisplay.ElectricUnit;
+import micdoodle8.mods.galacticraft.api.transmission.EnergyHelper;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
@@ -11,12 +10,13 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GuiEnergyStorageModule extends GuiContainer
 {
-	private static final ResourceLocation batteryBoxTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/energyStorageModule.png");
+	private static final ResourceLocation batteryBoxTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/energyStorageModule.png");
 
 	private TileEntityEnergyStorageModule tileEntity;
 
@@ -34,13 +34,12 @@ public class GuiEnergyStorageModule extends GuiContainer
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
 		this.fontRendererObj.drawString(this.tileEntity.getInventoryName(), this.xSize / 2 - this.fontRendererObj.getStringWidth(this.tileEntity.getInventoryName()) / 2, 6, 4210752);
-		String displayMJ = ElectricityDisplay.roundDecimals(this.tileEntity.getEnergyStoredGC() / 1000F, 2) + " of " + ElectricityDisplay.getDisplayShort(this.tileEntity.getMaxEnergyStoredGC(), ElectricUnit.JOULES);
-		//String displayVoltage = "Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F)+"V";
-		String displayOutput = "Max output: 75kW";
-
-		this.fontRendererObj.drawString(displayMJ, 122 - this.fontRendererObj.getStringWidth(displayMJ) / 2, 30, 4210752);
-		//this.fontRendererObj.drawString(displayVoltage, 122 - this.fontRendererObj.getStringWidth(displayVoltage) / 2, 40, 4210752);
-		this.fontRendererObj.drawString(displayOutput, 122 - this.fontRendererObj.getStringWidth(displayOutput) / 2, 60, 4210752);
+		String displayStr = EnergyHelper.getEnergyDisplayS(this.tileEntity.getEnergyStoredGC());
+		this.fontRendererObj.drawString(displayStr, 122 - this.fontRendererObj.getStringWidth(displayStr) / 2, 25, 4210752);
+        displayStr = "of " + EnergyHelper.getEnergyDisplayS(this.tileEntity.getMaxEnergyStoredGC());
+        this.fontRendererObj.drawString(displayStr, 122 - this.fontRendererObj.getStringWidth(displayStr) / 2, 34, 4210752);
+        displayStr = "Output: " + EnergyHelper.getEnergyDisplayS(this.tileEntity.storage.getMaxExtract())+"/t";
+		this.fontRendererObj.drawString(displayStr, 122 - this.fontRendererObj.getStringWidth(displayStr) / 2, 64, 4210752);
 		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 

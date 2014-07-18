@@ -34,7 +34,7 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
 		this.setLightLevel(lit ? 0.9375F : 0.2F);
 		this.setHardness(0.0F);
 		this.setStepSound(Block.soundTypeWood);
-		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 		this.setBlockName(assetName);
 	}
 
@@ -70,8 +70,8 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		BlockUnlitTorch.torchIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "unlitTorchLit");
-		BlockUnlitTorch.torchIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "unlitTorch");
+		BlockUnlitTorch.torchIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "unlitTorchLit");
+		BlockUnlitTorch.torchIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "unlitTorch");
 	}
 
 	@Override

@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiElementDropdown extends GuiButton
 {
-	protected static final ResourceLocation texture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/gui.png");
+	protected static final ResourceLocation texture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/gui.png");
 
 	public boolean dropdownClicked;
 	public String[] optionStrings;
@@ -49,9 +49,14 @@ public class GuiElementDropdown extends GuiButton
 
 		if (this.visible)
 		{
+//            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+//            RenderHelper.disableStandardItemLighting();
+//            GL11.glDisable(GL11.GL_LIGHTING);
+//            GL11.glDisable(GL11.GL_DEPTH_TEST);
 			GL11.glPushMatrix();
 
-			GL11.glTranslatef(0, 0, 200);
+            this.zLevel = 300.0F;
+			GL11.glTranslatef(0, 0, 500);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			this.field_146123_n = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
 			Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + (this.dropdownClicked ? this.height * this.optionStrings.length : this.height), GCCoreUtil.to32BitColor(255, 200, 200, 200));
@@ -78,6 +83,11 @@ public class GuiElementDropdown extends GuiButton
 			}
 
 			GL11.glPopMatrix();
+            this.zLevel = 0.0F;
+//            GL11.glEnable(GL11.GL_LIGHTING);
+//            GL11.glEnable(GL11.GL_DEPTH_TEST);
+//            RenderHelper.enableStandardItemLighting();
+//            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		}
 	}
 

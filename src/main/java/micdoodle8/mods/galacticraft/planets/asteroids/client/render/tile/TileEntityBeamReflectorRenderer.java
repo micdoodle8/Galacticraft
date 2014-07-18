@@ -16,12 +16,12 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class TileEntityBeamReflectorRenderer extends TileEntitySpecialRenderer
 {
-	public static final ResourceLocation reflectorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/misc/underoil.png");
+	public static final ResourceLocation reflectorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/misc/underoil.png");
 	public static IModelCustom reflectorModel;
 
 	public TileEntityBeamReflectorRenderer()
 	{
-		TileEntityBeamReflectorRenderer.reflectorModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "models/redirector.obj"));
+		TileEntityBeamReflectorRenderer.reflectorModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/redirector.obj"));
 	}
 
 	public void renderModelAt(TileEntityBeamReflector tileEntity, double d, double d1, double d2, float f)

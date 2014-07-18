@@ -24,7 +24,7 @@ public class ItemRendererShortRangeTelepad implements IItemRenderer
 
 		if (type == ItemRenderType.INVENTORY)
 		{
-			TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("Base");
+            TileEntityShortRangeTelepadRenderer.telepadModel.renderAll();
 		}
 		else
 		{
@@ -60,8 +60,8 @@ public class ItemRendererShortRangeTelepad implements IItemRenderer
 		{
 			if (type == ItemRenderType.INVENTORY)
 			{
-				GL11.glTranslatef(0.0F, 1.0F, -0.0F);
-				GL11.glScalef(2.0F, 2.0F, 2.0F);
+				GL11.glTranslatef(0.0F, 1.6F, -0.0F);
+				GL11.glScalef(0.5F, 0.5F, 0.5F);
 				GL11.glRotatef(10, 1, 0, 1);
 				GL11.glRotatef(180, 0, 0, 1);
 				GL11.glRotatef(-100, 0, 1, 0);

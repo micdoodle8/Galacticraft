@@ -52,6 +52,21 @@ public class ItemBlockAsteroids extends ItemBlock
 			name = "asteroid2";
 			break;
 		}
+        case 3:
+        {
+            name = "oreAluminum";
+            break;
+        }
+        case 4:
+        {
+            name = "oreIlmenite";
+            break;
+        }
+        case 5:
+        {
+            name = "oreIron";
+            break;
+        }
 		default:
 			name = "null";
 		}

@@ -23,8 +23,8 @@ import java.util.Iterator;
 @SideOnly(Side.CLIENT)
 public class OverlaySensorGlasses extends Overlay
 {
-	private static final ResourceLocation hudTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/hud.png");
-	private static final ResourceLocation indicatorTexture = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/indicator.png");
+	private static final ResourceLocation hudTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/hud.png");
+	private static final ResourceLocation indicatorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/indicator.png");
 
 	private static Minecraft minecraft = FMLClientHandler.instance().getClient();
 

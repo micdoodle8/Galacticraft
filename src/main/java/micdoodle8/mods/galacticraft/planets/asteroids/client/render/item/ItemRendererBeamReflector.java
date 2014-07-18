@@ -22,8 +22,6 @@ public class ItemRendererBeamReflector implements IItemRenderer
 
 	public void transform(ItemRenderType type)
 	{
-		final EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
-
 		if (type == ItemRenderType.EQUIPPED)
 		{
 			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
@@ -53,16 +51,12 @@ public class ItemRendererBeamReflector implements IItemRenderer
 			}
 			else
 			{
-				GL11.glTranslatef(0, -3.9F, 0);
 				GL11.glRotatef(Sys.getTime() / 90F % 360F, 0F, 1F, 0F);
+                GL11.glScalef(2F, -2F, 2F);
 			}
 
 			GL11.glScalef(1.3F, 1.3F, 1.3F);
 		}
-
-		//		GL11.glRotatef(30, 1, 0, 0);
-		//		GL11.glScalef(-1F, -1F, 1);
-		//		GL11.glTranslatef(-0.4F, 0.0F, 0.0F);
 	}
 
 	/** IItemRenderer implementation **/

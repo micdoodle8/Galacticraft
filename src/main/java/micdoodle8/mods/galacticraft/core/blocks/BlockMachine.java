@@ -1,10 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityIngotCompressor;
+import micdoodle8.mods.galacticraft.core.tile.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -45,7 +42,7 @@ public class BlockMachine extends BlockTileGC
 		this.setBlockName("basicMachine");
 		this.setHardness(1.0F);
 		this.setStepSound(Block.soundTypeMetal);
-		this.setBlockTextureName(GalacticraftCore.ASSET_PREFIX + assetName);
+		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 		this.setBlockName(assetName);
 	}
 
@@ -64,21 +61,21 @@ public class BlockMachine extends BlockTileGC
 	@Override
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
-		this.blockIcon = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine");
-		this.iconInput = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_input");
-		this.iconOutput = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_output");
+		this.blockIcon = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine");
+		this.iconInput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
+		this.iconOutput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_output");
 
-		this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "machine_side");
-		this.iconCoalGenerator = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "coalGenerator");
+		this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_side");
+		this.iconCoalGenerator = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "coalGenerator");
 		this.iconEnergyStorageModule = new IIcon[17];
 
 		for (int i = 0; i < this.iconEnergyStorageModule.length; i++)
 		{
-			this.iconEnergyStorageModule[i] = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "energyStorageModule_" + i);
+			this.iconEnergyStorageModule[i] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "energyStorageModule_" + i);
 		}
 
-		this.iconElectricFurnace = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "electricFurnace");
-		this.iconCompressor = iconRegister.registerIcon(GalacticraftCore.ASSET_PREFIX + "compressor");
+		this.iconElectricFurnace = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "electricFurnace");
+		this.iconCompressor = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "compressor");
 	}
 
 	@Override
@@ -89,7 +86,7 @@ public class BlockMachine extends BlockTileGC
 		if (tile instanceof TileEntityCoalGenerator)
 		{
 			TileEntityCoalGenerator tileEntity = (TileEntityCoalGenerator) tile;
-			if (tileEntity.generateWatts > 0)
+			if (tileEntity.heatGJperTick > 0)
 			{
 				int metadata = par1World.getBlockMetadata(x, y, z);
 				float var7 = x + 0.5F;
@@ -315,13 +312,20 @@ public class BlockMachine extends BlockTileGC
 		{
 			change += BlockMachine.COMPRESSOR_METADATA;
 		}
-		else if (metadata >= BlockMachine.ELECTRIC_FURNACE_METADATA)
+		else
 		{
-			change += BlockMachine.ELECTRIC_FURNACE_METADATA;
-		}
-		else if (metadata >= BlockMachine.STORAGE_MODULE_METADATA)
-		{
-			change += BlockMachine.STORAGE_MODULE_METADATA;
+			if (metadata >= BlockMachine.ELECTRIC_FURNACE_METADATA)
+			{
+				change += BlockMachine.ELECTRIC_FURNACE_METADATA;
+			}
+			else if (metadata >= BlockMachine.STORAGE_MODULE_METADATA)
+			{
+				change += BlockMachine.STORAGE_MODULE_METADATA;
+			}
+			
+			TileEntity te = par1World.getTileEntity(x,  y,  z);
+			if (te instanceof TileEntityUniversalElectrical)
+				((TileEntityUniversalElectrical) te).updateFacing();
 		}
 
 		par1World.setBlockMetadataWithNotify(x, y, z, change, 3);

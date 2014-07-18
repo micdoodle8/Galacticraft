@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiSchematicTier2Rocket extends GuiContainer implements ISchematicResultPage
 {
-	private static final ResourceLocation tier2SchematicTexture = new ResourceLocation(MarsModule.ASSET_DOMAIN, "textures/gui/schematic_rocket_T2.png");
+	private static final ResourceLocation tier2SchematicTexture = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/schematic_rocket_T2.png");
 
 	private int pageIndex;
 

@@ -1,14 +1,12 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
 import com.google.common.collect.Maps;
-import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
@@ -35,7 +33,7 @@ public class GuiCelestialSelection extends GuiScreen
 	private float planetZoom = 0.0F;
 	private boolean doneZooming = false;
 	private float preSelectZoom = 0.0F;
-	public static ResourceLocation guiMain = new ResourceLocation(GalacticraftCore.ASSET_DOMAIN, "textures/gui/celestialselection.png");
+	public static ResourceLocation guiMain = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialselection.png");
 	private int ticksSinceSelection = 0;
 	private int ticksSinceUnselection = -1;
 	private Vector2f position = new Vector2f(0, 0);
@@ -301,8 +299,8 @@ public class GuiCelestialSelection extends GuiScreen
 		Matrix4f camMatrix = new Matrix4f();
 		Matrix4f.translate(new Vector3f(0.0F, 0.0F, -2000.0F), camMatrix, camMatrix); // See EntityRenderer.java:setupOverlayRendering
 		Matrix4f viewMatrix = new Matrix4f();
-		viewMatrix.m00 = 2.0F / (float) width;
-		viewMatrix.m11 = 2.0F / (float) -height;
+		viewMatrix.m00 = 2.0F / width;
+		viewMatrix.m11 = 2.0F / -height;
 		viewMatrix.m22 = -2.0F / 2000.0F;
 		viewMatrix.m30 = -1.0F;
 		viewMatrix.m31 = 1.0F;

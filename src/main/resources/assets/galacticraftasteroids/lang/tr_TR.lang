@@ -1,0 +1,12 @@
+# Galacticraft Asteroids Language File = TURKEY TURKISH
+
+item.itemTier3Rocket.t3Rocket.name=Tier 3 Rocket ##NEEDS TRANSLATE##
+tile.asteroidsBlock.asteroids1.name=Asteroid Rock ##NEEDS TRANSLATE##
+tile.beamReflector.name=Beam Reflector ##NEEDS TRANSLATE##
+tile.beamReceiver.name=Beam Receiver ##NEEDS TRANSLATE##
+tile.telepadShort.name=Short Range Telepad ##NEEDS TRANSLATE##
+planet.asteroids=Asteroids ##NEEDS TRANSLATE##
+itemGroup.GalacticraftAsteroids=Galacticraft Asteroids ##NEEDS TRANSLATE##
+entity.SmallAsteroidGC.name=Small Asteroid ##NEEDS TRANSLATE##
+entity.GrappleHookGC.name=Grapple Hook ##NEEDS TRANSLATE##
+entity.Tier3RocketGC.name=Tier 3 Rocket ##NEEDS TRANSLATE##

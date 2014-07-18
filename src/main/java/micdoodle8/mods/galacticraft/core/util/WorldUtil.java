@@ -1,9 +1,15 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import buildcraft.api.mj.MjAPI;
+import buildcraft.api.power.IPowerReceptor;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ic2.api.energy.tile.IEnergyAcceptor;
+import ic2.api.energy.tile.IEnergyConductor;
+import ic2.api.energy.tile.IEnergyEmitter;
+import ic2.api.energy.tile.IEnergyTile;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
@@ -13,6 +19,7 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -857,8 +864,8 @@ public class WorldUtil
 
 		//boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 		//boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
-		//boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
-		//boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
+		boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
+		boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
 
 		BlockVec3 thisVec = new BlockVec3(tile);
 		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
@@ -871,6 +878,7 @@ public class WorldUtil
 				{
 					adjacentConnections[direction.ordinal()] = tileEntity;
 				}
+				continue;
 			}
 			/*else if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
 			{
@@ -885,9 +893,12 @@ public class WorldUtil
 				{
 					adjacentConnections[direction.ordinal()] = tileEntity;
 				}
-			}
+			}*/
 			else if (isIC2Loaded && tileEntity instanceof IEnergyTile)
 			{
+				if (tileEntity instanceof IEnergyConductor)
+					continue;
+				
 				if (tileEntity instanceof IEnergyAcceptor)
 				{
 					if (((IEnergyAcceptor) tileEntity).acceptsEnergyFrom(tile, direction.getOpposite()))
@@ -896,14 +907,44 @@ public class WorldUtil
 						continue;
 					}
 				}
+				if (tileEntity instanceof IEnergyEmitter)
+				{
+					if (((IEnergyEmitter) tileEntity).emitsEnergyTo(tile, direction.getOpposite()))
+					{
+						adjacentConnections[direction.ordinal()] = tileEntity;
+						continue;
+					}
+				}
 			}
-			else if (isBCLoaded && tileEntity instanceof IPowerReceptor)
+			else if (isBCLoaded)
 			{
-				if (((IPowerReceptor) tileEntity).getPowerReceiver(direction.getOpposite()) != null)
+				//Do not connect GC wires to BC wooden power pipes
+				try
+				{
+					Class<?> clazzPipeTile = Class.forName("buildcraft.transport.TileGenericPipe");
+					Class<?> clazzPipeWood = Class.forName("buildcraft.transport.pipes.PipePowerWood");
+					if (clazzPipeTile.isInstance(tileEntity))
+					{				
+						Object pipe = clazzPipeTile.getField("pipe").get(tileEntity);
+						if (clazzPipeWood.isInstance(pipe))
+							continue;
+					}
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+
+				//New BC API
+				if (MjAPI.getMjBattery(tileEntity, MjAPI.DEFAULT_POWER_FRAMEWORK, direction.getOpposite()) != null)
+					adjacentConnections[direction.ordinal()] = tileEntity;
+				
+				//Legacy BC API
+				if (tileEntity instanceof IPowerReceptor && ((IPowerReceptor) tileEntity).getPowerReceiver(direction.getOpposite()) != null)
 				{
 					adjacentConnections[direction.ordinal()] = tileEntity;
-				}
-			}*/
+				}			
+			}
 		}
 
 		return adjacentConnections;
