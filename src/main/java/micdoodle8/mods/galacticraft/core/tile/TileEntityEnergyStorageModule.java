@@ -28,7 +28,8 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	public TileEntityEnergyStorageModule()
 	{
 		this.storage.setCapacity(500000);
-		this.storage.setMaxTransfer(750);
+		this.storage.setMaxExtract(300);  //Tier 1
+		//Designed so that Tier 1 Energy Storage can power up to 10 Tier 1 machines
 	}
 
 	@Override

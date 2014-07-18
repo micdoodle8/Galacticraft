@@ -129,8 +129,8 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 		{
 			EnergyStorage attachedStorage = ((EnergyStorageTile) tile).storage;
 			this.storage.setCapacity(attachedStorage.getCapacityGC());
-			this.storage.setMaxReceive(attachedStorage.getMaxReceive());
 			this.storage.setMaxExtract(attachedStorage.getMaxExtract());
+			this.storage.setMaxReceive(attachedStorage.getMaxReceive());
 		}
 
 		return tile;

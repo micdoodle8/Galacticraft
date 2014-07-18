@@ -270,11 +270,11 @@ public class BlockSolar extends BlockTileGC
 	{
 		if (metadata >= BlockSolar.ADVANCED_METADATA)
 		{
-			return new TileEntitySolar(100000);
+			return new TileEntitySolar(2);
 		}
 		else
 		{
-			return new TileEntitySolar(50000);
+			return new TileEntitySolar(1);
 		}
 	}
 

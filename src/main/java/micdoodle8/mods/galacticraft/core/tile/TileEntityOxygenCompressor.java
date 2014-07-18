@@ -23,8 +23,6 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
 	public TileEntityOxygenCompressor()
 	{
 		super(1200, 16);
-		this.storage.setMaxExtract(200);
-		this.storage.setCapacity(50000);
 	}
 
 	@Override

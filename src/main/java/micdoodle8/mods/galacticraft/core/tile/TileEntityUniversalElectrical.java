@@ -206,11 +206,11 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 	{
 		super.updateEntity();
 
-		// Register to the IC2 Network
 		if (!this.worldObj.isRemote)
 		{
 			if (!this.isAddedToEnergyNet)
 			{
+				// Register to the IC2 Network
 				this.initIC();
 			}
 

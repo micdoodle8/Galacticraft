@@ -36,17 +36,17 @@ public class GuiCoalGenerator extends GuiContainer
 		String displayText = GCCoreUtil.translate("gui.status.generating.name");
 		this.fontRendererObj.drawString(displayText, 122 - this.fontRendererObj.getStringWidth(displayText) / 2, 33, 4210752);
 
-		if (this.tileEntity.generateWatts <= 0)
+		if (this.tileEntity.heatGJperTick <= 0)
 		{
 			displayText = GCCoreUtil.translate("gui.status.notGenerating.name");
 		}
-		else if (this.tileEntity.generateWatts < TileEntityCoalGenerator.MIN_GENERATE_WATTS)
+		else if (this.tileEntity.heatGJperTick < TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK)
 		{
-			displayText = GCCoreUtil.translate("gui.status.hullHeat.name") + ": " + this.tileEntity.generateWatts / TileEntityCoalGenerator.MIN_GENERATE_WATTS * 100 + "%";
+			displayText = GCCoreUtil.translate("gui.status.hullHeat.name") + ": " + (int) (this.tileEntity.heatGJperTick / TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK * 100) + "%";
 		}
 		else
 		{
-			displayText = EnergyHelper.getEnergyDisplayS(this.tileEntity.generateWatts) + "gJ/t";
+			displayText = EnergyHelper.getEnergyDisplayS(this.tileEntity.heatGJperTick - TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK) + "/t";
 		}
 
 		this.fontRendererObj.drawString(displayText, 122 - this.fontRendererObj.getStringWidth(displayText) / 2, 45, 4210752);

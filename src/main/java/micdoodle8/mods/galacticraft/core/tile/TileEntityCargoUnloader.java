@@ -33,8 +33,7 @@ public class TileEntityCargoUnloader extends TileEntityElectricBlock implements 
 
 	public TileEntityCargoUnloader()
 	{
-		this.storage.setMaxExtract(75);
-		this.storage.setCapacity(50000);
+		this.storage.setMaxExtract(45);
 	}
 
 	@Override

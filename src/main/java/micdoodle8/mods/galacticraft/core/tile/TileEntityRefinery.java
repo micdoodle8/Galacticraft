@@ -33,8 +33,7 @@ public class TileEntityRefinery extends TileEntityElectricBlock implements IInve
 
 	public TileEntityRefinery()
 	{
-		this.storage.setMaxExtract(400);
-		this.storage.setCapacity(50000);
+		this.storage.setMaxExtract(60);
 	}
 
 	@Override

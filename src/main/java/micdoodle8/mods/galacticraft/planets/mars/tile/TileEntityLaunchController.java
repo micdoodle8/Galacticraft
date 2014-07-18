@@ -63,8 +63,7 @@ public class TileEntityLaunchController extends TileEntityElectricBlock implemen
 
 	public TileEntityLaunchController()
 	{
-		this.storage.setMaxExtract(50);
-		this.storage.setCapacity(50000);
+		this.storage.setMaxExtract(10);
 	}
 
 	@Override

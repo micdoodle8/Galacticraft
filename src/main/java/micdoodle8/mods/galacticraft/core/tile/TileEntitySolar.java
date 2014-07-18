@@ -37,24 +37,31 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 	public float targetAngle;
 	public float currentAngle;
 	@NetworkedField(targetSide = Side.CLIENT)
-	public boolean disabled = true;
+	public boolean disabled = false;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int disableCooldown = 0;
 	private ItemStack[] containingItems = new ItemStack[1];
-	public static final int MAX_GENERATE_WATTS = 1000;
+	public static final int MAX_GENERATE_WATTS = 200;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int generateWatts = 0;
 
 	public TileEntitySolar()
 	{
-		this(0);
+		this(1);
 	}
 
-	public TileEntitySolar(int maxEnergy)
+	/*
+	 * @param tier: 1 = Basic Solar  2 = Advanced Solar
+	 */
+	public TileEntitySolar(int tier)
 	{
-		this.storage.setMaxExtract(1300);
+		this.storage.setMaxExtract(TileEntitySolar.MAX_GENERATE_WATTS);
 		this.storage.setMaxReceive(TileEntitySolar.MAX_GENERATE_WATTS);
-        this.storage.setCapacity(maxEnergy);
+        if (tier == 2)
+        {
+        	this.storage.setCapacity(100000);
+        }
+        this.setTierGC(tier);
 	}
 
 	@Override
@@ -87,7 +94,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 					{
 						for (int z = -1; z <= 1; z++)
 						{
-							if (this.isAdvancedSolar())
+							if (this.tier == 2)
 							{
 								if (this.worldObj.canBlockSeeTheSky(this.xCoord + x, this.yCoord + 2, this.zCoord + z))
 								{
@@ -143,7 +150,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 
 		celestialAngle %= 360;
 
-		if (this.isAdvancedSolar())
+		if (this.tier == 2)
 		{
 			if (!this.worldObj.isDaytime() || this.worldObj.isRaining() || this.worldObj.isThundering())
 			{
@@ -342,7 +349,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 	{
 		int metadata = this.getBlockMetadata();
 
-		if (!this.isAdvancedSolar())
+		if (this.tier == 1)
 		{
 			metadata -= BlockSolar.ADVANCED_METADATA;
 		}
@@ -355,7 +362,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 	{
 		int metadata = this.getBlockMetadata();
 
-		if (!this.isAdvancedSolar())
+		if (this.tier == 1)
 		{
 			metadata -= BlockSolar.ADVANCED_METADATA;
 		}
@@ -379,7 +386,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 	@Override
 	public String getInventoryName()
 	{
-		return GCCoreUtil.translate(this.isAdvancedSolar() ? "container.solarbasic.name" : "container.solaradvanced.name");
+		return GCCoreUtil.translate(this.tier == 1 ? "container.solarbasic.name" : "container.solaradvanced.name");
 	}
 
 	@Override
@@ -516,11 +523,6 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
 	{
 		return slotID == 0 && ItemElectric.isElectricItem(itemstack.getItem());
-	}
-
-	public boolean isAdvancedSolar()
-	{
-		return this.getBlockMetadata() < BlockSolar.ADVANCED_METADATA;
 	}
 
 	@Override

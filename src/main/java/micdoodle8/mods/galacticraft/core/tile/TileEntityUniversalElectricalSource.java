@@ -24,11 +24,29 @@ import buildcraft.api.power.PowerHandler.PowerReceiver;
 
 public class TileEntityUniversalElectricalSource extends TileEntityUniversalElectrical
 {
+	/*
+	 * The main function to output energy each tick from a source.
+	 * 
+	 * The source will attempt to produce into its outputDirections whatever energy
+	 * it has available, and will reduce its stored energy by the amount which is in fact used.
+	 * 
+	 * Max output = this.storage.maxExtract. 
+	 * 
+	 * @return The amount of energy that was used.
+	 */
 	public float produce()
 	{
 		return this.extractEnergyGC(null, this.produce(false), false);
 	}
 
+	/*
+	 * Function to produce energy each tick into the outputs of a source.
+	 * If simulate is true, no energy is in fact transferred.
+	 * 
+	 * Note: even if simulate is false this does NOT reduce the source's own
+	 * energy storage by the amount produced, that needs to be done elsewhere
+	 * See this.produce() for an example.
+	 */
 	public float produce(boolean simulate)
 	{
 		int amountProduced = 0;

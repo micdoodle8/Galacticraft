@@ -36,8 +36,6 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 	{
 		super(6000, 8);
 		this.oxygenBubble = null;
-		this.storage.setMaxExtract(200);
-		this.storage.setCapacity(50000);
 	}
 
 	@Override

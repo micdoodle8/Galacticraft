@@ -34,8 +34,6 @@ public class TileEntityFuelLoader extends TileEntityElectricBlock implements IIn
 
 	public TileEntityFuelLoader()
 	{
-		this.storage.setMaxExtract(250);
-		this.storage.setCapacity(50000);
 	}
 
 	public int getScaledFuelLevel(int i)

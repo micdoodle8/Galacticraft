@@ -30,8 +30,7 @@ public class TileEntityElectricFurnace extends TileEntityElectricBlock implement
 
 	public TileEntityElectricFurnace()
 	{
-		this.storage.setMaxExtract(200);
-		this.storage.setCapacity(50000);
+		this.storage.setMaxExtract(90);
 	}
 
 	@Override

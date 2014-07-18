@@ -32,7 +32,7 @@ public class ItemBatteryInfinite extends ItemElectric
 	@Override
 	public int getTierGC(ItemStack itemStack)
 	{
-		return 4;
+		return 2;
 	}
 
 	@Override
