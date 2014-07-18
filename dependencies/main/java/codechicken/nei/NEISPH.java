@@ -119,7 +119,7 @@ public class NEISPH implements IServerPacketHandler
             NEIServerConfig.disableAction(sender.dimension, name, packet.readBoolean());
     }
 
-    public static void processCreativeInv(EntityPlayerMP sender, boolean open) {
+    private void processCreativeInv(EntityPlayerMP sender, boolean open) {
         if (open) {
             ServerUtils.openSMPContainer(sender, new ContainerCreativeInv(sender, new ExtendedCreativeInv(NEIServerConfig.forPlayer(sender.getCommandSenderName()), Side.SERVER)), new IGuiPacketSender()
             {

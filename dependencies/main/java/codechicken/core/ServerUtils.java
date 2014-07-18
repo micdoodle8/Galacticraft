@@ -18,7 +18,7 @@ public class ServerUtils extends CommonUtils
     }
 
     public static EntityPlayerMP getPlayer(String playername) {
-        return mc().getConfigurationManager().func_152612_a(playername);
+        return mc().getConfigurationManager().getPlayerForUsername(playername);
     }
 
     public static List<EntityPlayerMP> getPlayers() {
@@ -44,7 +44,7 @@ public class ServerUtils extends CommonUtils
     }
 
     public static boolean isPlayerOP(String username) {
-        return mc().getConfigurationManager().func_152596_g(getPlayer(username).getGameProfile());
+        return mc().getConfigurationManager().isPlayerOpped(username);
     }
 
     public static boolean isPlayerOwner(String username) {

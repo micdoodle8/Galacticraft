@@ -33,8 +33,9 @@ public class GuiContainerWidget extends GuiContainer implements IGuiActionListen
     @Override
     public void setWorldAndResolution(Minecraft mc, int i, int j)
     {
+        boolean init = this.mc == null;
         super.setWorldAndResolution(mc, i, j);
-        if(widgets.isEmpty())
+        if(init)
             addWidgets();
     }
     
@@ -126,6 +127,7 @@ public class GuiContainerWidget extends GuiContainer implements IGuiActionListen
     @Override
     public void onGuiClosed() {
         super.onGuiClosed();
+        mc = null;
         widgets.clear();
     }
 }

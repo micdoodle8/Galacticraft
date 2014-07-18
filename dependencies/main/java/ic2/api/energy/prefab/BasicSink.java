@@ -9,6 +9,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import ic2.api.energy.EnergyNet;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergySink;
@@ -291,12 +292,12 @@ public class BasicSink extends TileEntity implements IEnergySink {
 	public boolean discharge(ItemStack stack, int limit) {
 		if (stack == null || !Info.isIc2Available()) return false;
 
-		double amount = capacity - energyStored;
+		int amount = (int) Math.floor(capacity - energyStored);
 		if (amount <= 0) return false;
 
 		if (limit > 0 && limit < amount) amount = limit;
 
-		amount = ElectricItem.manager.discharge(stack, amount, tier, limit > 0, true, false);
+		amount = ElectricItem.manager.discharge(stack, amount, tier, limit > 0, false);
 
 		energyStored += amount;
 
@@ -346,20 +347,20 @@ public class BasicSink extends TileEntity implements IEnergySink {
 	}
 
 	@Override
-	public double getDemandedEnergy() {
+	public double demandedEnergyUnits() {
 		return Math.max(0, capacity - energyStored);
 	}
 
 	@Override
-	public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
+	public double injectEnergyUnits(ForgeDirection directionFrom, double amount) {
 		energyStored += amount;
 
 		return 0;
 	}
 
 	@Override
-	public int getSinkTier() {
-		return tier;
+	public int getMaxSafeInput() {
+		return EnergyNet.instance.getPowerFromTier(tier);
 	}
 
 	// << energy net interface

@@ -19,7 +19,7 @@ import net.minecraft.item.ItemStack;
  */
 public interface IElectricItemManager {
 	/**
-	 * Charge an item with a specified amount of energy.
+	 * Charge an item with a specified amount of energy
 	 *
 	 * @param itemStack electric item's stack
 	 * @param amount amount of energy to charge in EU
@@ -28,28 +28,27 @@ public interface IElectricItemManager {
 	 * @param simulate don't actually change the item, just determine the return value
 	 * @return Energy transferred into the electric item
 	 */
-	double charge(ItemStack stack, double amount, int tier, boolean ignoreTransferLimit, boolean simulate);
+	int charge(ItemStack itemStack, int amount, int tier, boolean ignoreTransferLimit, boolean simulate);
 
 	/**
 	 * Discharge an item by a specified amount of energy
 	 *
 	 * @param itemStack electric item's stack
-	 * @param amount amount of energy to discharge in EU
+	 * @param amount amount of energy to charge in EU
 	 * @param tier tier of the discharging device, has to be at least as high as the item to discharge
 	 * @param ignoreTransferLimit ignore the transfer limit specified by getTransferLimit()
-	 * @param externally use the supplied item externally, i.e. to power something else as if it was a battery
 	 * @param simulate don't actually discharge the item, just determine the return value
 	 * @return Energy retrieved from the electric item
 	 */
-	double discharge(ItemStack stack, double amount, int tier, boolean ignoreTransferLimit, boolean externally, boolean simulate);
+	int discharge(ItemStack itemStack, int amount, int tier, boolean ignoreTransferLimit, boolean simulate);
 
 	/**
-	 * Determine the charge level for the specified item.
+	 * Determine the charge level for the specified item
 	 * 
 	 * @param itemStack ItemStack containing the electric item
 	 * @return charge level in EU
 	 */
-	double getCharge(ItemStack stack);
+	int getCharge(ItemStack itemStack);
 
 	/**
 	 * Determine if the specified electric item has at least a specific amount of EU.
@@ -60,7 +59,7 @@ public interface IElectricItemManager {
 	 * @param amount minimum amount of energy required
 	 * @return true if there's enough energy
 	 */
-	boolean canUse(ItemStack stack, double amount);
+	boolean canUse(ItemStack itemStack, int amount);
 
 	/**
 	 * Try to retrieve a specific amount of energy from an Item, and if applicable, a BatPack.
@@ -71,7 +70,7 @@ public interface IElectricItemManager {
 	 * @param entity entity holding the item
 	 * @return true if the operation succeeded
 	 */
-	boolean use(ItemStack stack, double amount, EntityLivingBase entity);
+	boolean use(ItemStack itemStack, int amount, EntityLivingBase entity);
 
 	/**
 	 * Charge an item from the BatPack a player is wearing.
@@ -81,7 +80,7 @@ public interface IElectricItemManager {
 	 * @param itemStack electric item's stack
 	 * @param entity entity holding the item
 	 */
-	void chargeFromArmor(ItemStack stack, EntityLivingBase entity);
+	void chargeFromArmor(ItemStack itemStack, EntityLivingBase entity);
 
 	/**
 	 * Get the tool tip to display for electric items.
@@ -89,5 +88,5 @@ public interface IElectricItemManager {
 	 * @param itemStack ItemStack to determine the tooltip for
 	 * @return tool tip string or null for none
 	 */
-	String getToolTip(ItemStack stack);
+	String getToolTip(ItemStack itemStack);
 }

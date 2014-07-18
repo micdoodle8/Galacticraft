@@ -4,7 +4,6 @@ import codechicken.nei.guihook.GuiContainerManager;
 
 import static codechicken.lib.gui.GuiDraw.drawRect;
 import static codechicken.lib.gui.GuiDraw.drawString;
-import static codechicken.lib.gui.GuiDraw.drawStringC;
 import static codechicken.nei.LayoutManager.*;
 
 public class LayoutStyleTMIOld extends LayoutStyleDefault
@@ -64,10 +63,10 @@ public class LayoutStyleTMIOld extends LayoutStyleDefault
             clickButtonCount++;
         }
         
-        button.h = 14;
-        button.w = button.contentWidth() + 2;
+        button.height = 14;
+        button.width = button.contentWidth() + 2;
         if((button.state & 0x4) != 0)
-            button.w += stateOff.width;
+            button.width += stateOff.width;
     }
     
     @Override
@@ -89,10 +88,10 @@ public class LayoutStyleTMIOld extends LayoutStyleDefault
         int cwidth = b.contentWidth();
         if((b.state & 0x4) != 0)
             cwidth += stateOff.width;
-        int textx = b.x + (b.w - cwidth) / 2;
-        int texty = b.y + (b.h - 8) / 2;
+        int textx = b.x + (b.width - cwidth) / 2;
+        int texty = b.y + (b.height - 8) / 2;
         
-        drawRect(b.x, b.y, b.w, b.h, b.contains(mousex, mousey) ? 0xee401008 : 0xee000000);
+        drawRect(b.x, b.y, b.width, b.height, b.contains(mousex, mousey) ? 0xee401008 : 0xee000000);
         
         Image icon = b.getRenderIcon();
         if(icon == null)
@@ -101,7 +100,7 @@ public class LayoutStyleTMIOld extends LayoutStyleDefault
         }
         else
         {
-            int icony = b.y + (b.h - icon.height) / 2;
+            int icony = b.y + (b.height - icon.height) / 2;
             LayoutManager.drawIcon(textx, icony, icon);
             if((b.state & 0x3) == 2)
                 drawRect(textx, icony, icon.width, icon.height, 0x80000000);
@@ -119,17 +118,10 @@ public class LayoutStyleTMIOld extends LayoutStyleDefault
             }
         }
     }
-
+    
     @Override
-    public void drawSubsetTag(String text, int x, int y, int w, int h, int state, boolean mouseover) {
-        drawRect(x, y, w, h, mouseover ? 0xFF401008 : 0xFF000000);
-        if(text != null) {
-            int colour = -1;
-            if (state == 0)
-                colour = 0xFF601010;
-            else if (state == 1)
-                colour = 0xFF807070;
-            drawStringC(text, x, y, w, h, colour, state == 0);
-        }
+    public boolean texturedButtons()
+    {
+        return false;
     }
 }

@@ -73,12 +73,8 @@ public class ObfMapping
             return FMLDeobfuscatingRemapper.INSTANCE.unmap(typeName);
         }
 
-        public String unmap(String typeName) {
-            return FMLDeobfuscatingRemapper.INSTANCE.map(typeName);
-        }
-
         public boolean isObf(String typeName) {
-            return !map(typeName).equals(typeName) || !unmap(typeName).equals(typeName);
+            return !map(typeName).equals(typeName);
         }
     }
 

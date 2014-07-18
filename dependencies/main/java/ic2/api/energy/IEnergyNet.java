@@ -43,7 +43,7 @@ public interface IEnergyNet {
 	 *
 	 * @param tileEntity energy emitter
 	 */
-	double getTotalEnergyEmitted(TileEntity tileEntity);
+	long getTotalEnergyEmitted(TileEntity tileEntity);
 
 	/**
 	 * determine how much energy has been sunken by the EnergySink specified
@@ -52,7 +52,7 @@ public interface IEnergyNet {
 	 *
 	 * @param tileEntity energy emitter
 	 */
-	double getTotalEnergySunken(TileEntity tileEntity);
+	long getTotalEnergySunken(TileEntity tileEntity);
 
 	/**
 	 * Determine the typical power used by the specific tier, e.g. 128 eu/t for tier 2.
@@ -60,13 +60,5 @@ public interface IEnergyNet {
 	 * @param tier tier
 	 * @return power in eu/t
 	 */
-	double getPowerFromTier(int tier);
-
-	/**
-	 * Determine minimum tier required to handle the specified power, e.g. tier 2 for 128 eu/t.
-	 * 
-	 * @param power in eu/t
-	 * @return tier
-	 */
-	int getTierFromPower(double power);
+	int getPowerFromTier(int tier);
 }

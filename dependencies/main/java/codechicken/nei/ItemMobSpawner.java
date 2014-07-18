@@ -26,7 +26,7 @@ public class ItemMobSpawner extends ItemBlock
     public static int idPig;
     private static boolean loaded;
 
-    public ItemMobSpawner() {
+    public ItemMobSpawner(World world) {
         super(Blocks.mob_spawner);
 
         hasSubtypes = true;
@@ -34,6 +34,7 @@ public class ItemMobSpawner extends ItemBlock
 
         entityHashMap = new HashMap<Integer, EntityLiving>();
         IDtoNameMap = new HashMap<Integer, String>();
+        loadSpawners(world);
     }
 
     /**
@@ -72,24 +73,26 @@ public class ItemMobSpawner extends ItemBlock
             meta = idPig;
         }
         Entity e = getEntity(meta);
+        if (e == null) return;
         list.add("\u00A7" + (e instanceof IMob ? "4" : "3") + IDtoNameMap.get(meta));
     }
 
     public static EntityLiving getEntity(int ID) {
-        EntityLiving e = entityHashMap.get(ID);
-        if (e == null) {
+        EntityLiving entityliving = entityHashMap.get(ID);
+        if (entityliving == null) {
             World world = NEIClientUtils.mc().theWorld;
             loadSpawners(world);
-            Class<?> clazz = (Class<?>) EntityList.IDtoClassMapping.get(ID);
             try {
-                e = (EntityLiving) clazz.getConstructor(new Class[]{World.class}).newInstance(world);
+                Class<?> class1 = (Class<?>) EntityList.IDtoClassMapping.get(ID);
+                if (class1 != null && EntityLiving.class.isAssignableFrom(class1)) {
+                    entityliving = (EntityLiving) class1.getConstructor(new Class[]{World.class}).newInstance(new Object[]{world});
+                }
             } catch (Throwable t) {
-                NEIClientConfig.logger.error("Error creating instance of entity: " + clazz.getName(), t);
-                e = getEntity(idPig);
+                t.printStackTrace();
             }
-            entityHashMap.put(ID, e);
+            entityHashMap.put(ID, entityliving);
         }
-        return e;
+        return entityliving;
     }
 
     private void setDefaultTag(ItemStack itemstack) {
@@ -100,27 +103,31 @@ public class ItemMobSpawner extends ItemBlock
     public static void loadSpawners(World world) {
         if (loaded) return;
         loaded = true;
-        HashMap<Class<Entity>, String> classToStringMapping = (HashMap<Class<Entity>, String>) EntityList.classToStringMapping;
-        HashMap<Class<Entity>, Integer> classToIDMapping = (HashMap<Class<Entity>, Integer>) EntityList.classToIDMapping;
-        for (Class<Entity> eclass : classToStringMapping.keySet()) {
-            if (!EntityLiving.class.isAssignableFrom(eclass))
-                continue;
-            try {
-                EntityLiving entityliving = (EntityLiving) eclass.getConstructor(new Class[]{World.class}).newInstance(world);
-                entityliving.isChild();
-
-                int id = classToIDMapping.get(eclass);
-                String name = classToStringMapping.get(eclass);
-
-                if (name.equals("EnderDragon"))
+        try {
+            HashMap<Class<Entity>, String> classToStringMapping = (HashMap<Class<Entity>, String>) EntityList.classToStringMapping;
+            HashMap<Class<Entity>, Integer> classToIDMapping = (HashMap<Class<Entity>, Integer>) EntityList.classToIDMapping;
+            for (Class<Entity> eclass : classToStringMapping.keySet()) {
+                if (!EntityLiving.class.isAssignableFrom(eclass))
                     continue;
+                try {
+                    EntityLiving entityliving = (EntityLiving) eclass.getConstructor(new Class[]{World.class}).newInstance(new Object[]{world});
+                    entityliving.isChild();
 
-                IDtoNameMap.put(id, name);
+                    int id = classToIDMapping.get(eclass);
+                    String name = classToStringMapping.get(eclass);
 
-                if (name.equals("Pig"))
-                    idPig = id;
-            } catch (Throwable ignored) {
+                    if (name.equals("EnderDragon"))
+                        continue;
+
+                    IDtoNameMap.put(id, name);
+
+                    if (name.equals("Pig"))
+                        idPig = id;
+                } catch (Throwable t) {
+                }
             }
+        } catch (Throwable t) {
+            t.printStackTrace();
         }
     }
 

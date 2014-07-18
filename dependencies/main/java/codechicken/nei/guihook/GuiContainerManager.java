@@ -442,7 +442,6 @@ public class GuiContainerManager
     public void renderSlotOverlay(Slot slot) {
         for (IContainerDrawHandler drawHandler : drawHandlers)
             drawHandler.renderSlotOverlay(window, slot);
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
     }
 
     /**

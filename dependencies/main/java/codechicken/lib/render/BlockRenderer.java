@@ -1,7 +1,6 @@
 package codechicken.lib.render;
 
 import codechicken.lib.lighting.LC;
-import codechicken.lib.render.CCRenderState.VertexAttribute;
 import codechicken.lib.vec.Cuboid6;
 
 public class BlockRenderer
@@ -105,39 +104,6 @@ public class BlockRenderer
             return this;
         }
     }
-
-    public static class FullBlock implements CCRenderState.IVertexSource
-    {
-        public Vertex5[] verts = CCModel.quadModel(24).generateBlock(0, Cuboid6.full).verts;
-        public LC[] lightCoords = new LC[24];
-
-        public FullBlock() {
-            for(int i = 0; i < 24; i++)
-                lightCoords[i] = new LC().compute(verts[i].vec, i/4);
-        }
-
-        @Override
-        public Vertex5[] getVertices() {
-            return verts;
-        }
-
-        @Override
-        public <T> T getAttributes(VertexAttribute<T> attr) {
-            return attr == CCRenderState.lightCoordAttrib ? (T) lightCoords : null;
-        }
-
-        @Override
-        public boolean hasAttribute(VertexAttribute<?> attr) {
-            return attr == CCRenderState.sideAttrib || attr == CCRenderState.lightCoordAttrib;
-        }
-
-        @Override
-        public void prepareVertex() {
-            CCRenderState.side = CCRenderState.vertexIndex>>2;
-        }
-    }
-
-    public static FullBlock fullBlock = new FullBlock();
 
     private static BlockFace face = new BlockFace();
 

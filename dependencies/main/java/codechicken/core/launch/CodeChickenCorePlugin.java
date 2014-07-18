@@ -4,6 +4,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
@@ -16,7 +17,9 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
 import codechicken.core.asm.*;
+import codechicken.lib.asm.ASMInit;
 import cpw.mods.fml.relauncher.CoreModManager;
+import net.minecraft.launchwrapper.Launch;
 
 import cpw.mods.fml.common.versioning.DefaultArtifactVersion;
 import cpw.mods.fml.common.versioning.VersionParser;
@@ -30,8 +33,7 @@ import org.apache.logging.log4j.Logger;
 @TransformerExclusions(value = {"codechicken.core.asm", "codechicken.obfuscator"})
 public class CodeChickenCorePlugin implements IFMLLoadingPlugin, IFMLCallHook
 {
-    public static final String mcVersion = "[1.7.10]";
-    public static final String version = "${mod_version}";
+    public static final String mcVersion = "[1.7.2]";
 
     public static File minecraftDir;
     public static String currentMcVersion;
@@ -57,7 +59,8 @@ public class CodeChickenCorePlugin implements IFMLLoadingPlugin, IFMLCallHook
             f_loadPlugins.setAccessible(true);
             ((List)f_loadPlugins.get(null)).add(2, wrapperConstructor.newInstance("CCCDeobfPlugin", new MCPDeobfuscationTransformer.LoadPlugin(), null, 0, new String[0]));
         } catch (Exception e) {
-            logger.error("Failed to inject MCPDeobfuscation Transformer", e);
+            System.err.println("Failed to inject MCPDeobfuscation Transformer");
+            e.printStackTrace();
         }
     }
 
@@ -65,7 +68,7 @@ public class CodeChickenCorePlugin implements IFMLLoadingPlugin, IFMLCallHook
         String mcVersion = (String) FMLInjectionData.data()[4];
         if (!VersionParser.parseRange(reqVersion).containsVersion(new DefaultArtifactVersion(mcVersion))) {
             String err = "This version of " + mod + " does not support minecraft version " + mcVersion;
-            logger.error(err);
+            System.err.println(err);
 
             JEditorPane ep = new JEditorPane("text/html",
                     "<html>" +
@@ -82,7 +85,7 @@ public class CodeChickenCorePlugin implements IFMLLoadingPlugin, IFMLCallHook
                     try {
                         if (event.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED))
                             Desktop.getDesktop().browse(event.getURL().toURI());
-                    } catch (Exception ignored) {}
+                    } catch (Exception e) {}
                 }
             });
 
@@ -164,7 +167,8 @@ public class CodeChickenCorePlugin implements IFMLLoadingPlugin, IFMLCallHook
                 jar.close();
             }
         } catch (Exception e) {
-            logger.error("CodeChickenCore: Failed to read jar file: " + file.getName(), e);
+            e.printStackTrace();
+            System.err.println("CodeChickenCore: Failed to read jar file: " + file.getName());
         }
     }
 }

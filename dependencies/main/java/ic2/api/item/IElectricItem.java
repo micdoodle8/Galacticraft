@@ -35,7 +35,7 @@ public interface IElectricItem {
 	 *
 	 * @return Maximum charge energy
 	 */
-	double getMaxCharge(ItemStack itemStack);
+	int getMaxCharge(ItemStack itemStack);
 
 	/**
 	 * Get the item's tier, lower tiers can't send energy to higher ones.
@@ -50,6 +50,6 @@ public interface IElectricItem {
 	 *
 	 * @return Transfer limit
 	 */
-	double getTransferLimit(ItemStack itemStack);
+	int getTransferLimit(ItemStack itemStack);
 }
 

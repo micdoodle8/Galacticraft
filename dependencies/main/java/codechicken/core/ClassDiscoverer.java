@@ -69,7 +69,8 @@ public class ClassDiscoverer
 
             addClass(classname);
         } catch (IOException e) {
-            CodeChickenCorePlugin.logger.error("Unable to load class: " + resource, e);
+            System.err.println("Unable to load class: " + resource);
+            e.printStackTrace();
         }
     }
 
@@ -78,7 +79,8 @@ public class ClassDiscoverer
             Class<?> class1 = Class.forName(classname, true, modClassLoader);
             classes.add(class1);
         } catch (Throwable t) {
-            CodeChickenCorePlugin.logger.error("Unable to load class: " + classname, t);
+            System.err.println("Unable to load class: " + classname);
+            t.printStackTrace();
         }
     }
 
@@ -99,7 +101,8 @@ public class ClassDiscoverer
                     try {
                         readFromZipFile(minecraftSource);
                     } catch (Exception e) {
-                        CodeChickenCorePlugin.logger.error("Failed to scan " + minecraftSource.getAbsolutePath() + ", the zip file is invalid", e);
+                        System.err.println("Failed to scan " + minecraftSource.getAbsolutePath() + ", the zip file is invalid");
+                        e.printStackTrace();
                     }
                 }
             } else if (minecraftSource.isDirectory()) {

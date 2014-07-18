@@ -38,7 +38,6 @@ public interface INEIGuiHandler
     
     /**
      * Used to prevent the item panel from drawing on top of other gui elements.
-     * This function will also be called with a 1x1 size rectangle on the mouse position for determining if the given coordinate should override item panel functions such as scrolling
      * @param x The x coordinate of the rectangle bounding the slot
      * @param y The y coordinate of the rectangle bounding the slot
      * @param w The w coordinate of the rectangle bounding the slot

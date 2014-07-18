@@ -1,10 +1,9 @@
 package codechicken.core.asm;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import codechicken.core.CCUpdateChecker;
 import codechicken.core.featurehack.LiquidTextures;
@@ -12,8 +11,6 @@ import codechicken.core.internal.CCCEventHandler;
 import codechicken.core.launch.CodeChickenCorePlugin;
 import codechicken.lib.config.ConfigFile;
 
-import codechicken.lib.config.ConfigTag;
-import com.google.common.base.Function;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
@@ -40,10 +37,11 @@ public class CodeChickenCoreModContainer extends DummyModContainer
     @Override
     public List<ArtifactVersion> getDependants() {
         LinkedList<ArtifactVersion> deps = new LinkedList<ArtifactVersion>();
-        if(!getVersion().contains("$")) {
-            deps.add(VersionParser.parseVersionReference("NotEnoughItems@[1.0.2,)"));
-            deps.add(VersionParser.parseVersionReference("EnderStorage@[1.4.4,)"));
-        }
+        deps.add(VersionParser.parseVersionReference("NotEnoughItems@[0,)"));
+        deps.add(VersionParser.parseVersionReference("EnderStorage@[1.4.3.6,)"));
+        deps.add(VersionParser.parseVersionReference("ChickenChunks@[1.3.3.4,)"));
+        deps.add(VersionParser.parseVersionReference("Translocator@[1.1.0.15,)"));
+        deps.add(VersionParser.parseVersionReference("WR-CBE|Core@[1.4.0.7,)"));
         return deps;
     }
 
@@ -64,36 +62,8 @@ public class CodeChickenCoreModContainer extends DummyModContainer
         if (event.getSide().isClient()) {
             if (config.getTag("checkUpdates").getBooleanValue(true))
                 CCUpdateChecker.updateCheck(getModId());
-            notificationCheck();
             FMLCommonHandler.instance().bus().register(new CCCEventHandler());
         }
-    }
-
-    private void notificationCheck() {
-        final ConfigTag tag = config.getTag("checkNotifications").setComment("The most recent notification number recieved. -1 to disable");
-        final int notify = tag.getIntValue(0);
-        if(notify < 0)
-            return;
-
-        CCUpdateChecker.updateCheck(
-                "http://www.chickenbones.net/Files/notification/general.php",
-                new Function<String, Void>()
-                {
-                    @Override
-                    public Void apply(String ret) {
-                        Matcher m = Pattern.compile("Ret \\((\\d+)\\): (.+)").matcher(ret);
-                        if (!m.matches()) {
-                            CodeChickenCorePlugin.logger.error("Failed to check notifications: " + ret);
-                            return null;
-                        }
-                        int index = Integer.parseInt(m.group(1));
-                        if(index > notify) {
-                            tag.setIntValue(index);
-                            CCUpdateChecker.addUpdateMessage(m.group(2));
-                        }
-                        return null;
-                    }
-                });
     }
 
     @Override

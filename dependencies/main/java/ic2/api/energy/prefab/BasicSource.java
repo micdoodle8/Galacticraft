@@ -100,8 +100,8 @@ public class BasicSource extends TileEntity implements IEnergySource {
 	 * @param capacity1 Maximum amount of eu to store.
 	 * @param tier1 IC2 tier, 1=LV, 2=MV, ...
 	 */
-	public BasicSource(TileEntity parent1, double capacity1, int tier1) {
-		double power = EnergyNet.instance.getPowerFromTier(tier1);
+	public BasicSource(TileEntity parent1, int capacity1, int tier1) {
+		int power = EnergyNet.instance.getPowerFromTier(tier1);
 
 		this.parent = parent1;
 		this.capacity = capacity1 < power ? power : capacity1;
@@ -205,7 +205,7 @@ public class BasicSource extends TileEntity implements IEnergySource {
 	 * 
 	 * @return Capacity in EU.
 	 */
-	public double getCapacity() {
+	public int getCapacity() {
 		return capacity;
 	}
 
@@ -214,8 +214,8 @@ public class BasicSource extends TileEntity implements IEnergySource {
 	 * 
 	 * @param capacity1 Capacity in EU.
 	 */
-	public void setCapacity(double capacity1) {
-		double power = EnergyNet.instance.getPowerFromTier(tier);
+	public void setCapacity(int capacity1) {
+		int power = EnergyNet.instance.getPowerFromTier(tier);
 
 		if (capacity1 < power) capacity1 = power;
 
@@ -237,7 +237,7 @@ public class BasicSource extends TileEntity implements IEnergySource {
 	 * @param tier1 IC2 Tier.
 	 */
 	public void setTier(int tier1) {
-		double power = EnergyNet.instance.getPowerFromTier(tier1);
+		int power = EnergyNet.instance.getPowerFromTier(tier1);
 
 		if (capacity < power) capacity = power;
 
@@ -299,7 +299,7 @@ public class BasicSource extends TileEntity implements IEnergySource {
 	public boolean charge(ItemStack stack) {
 		if (stack == null || !Info.isIc2Available()) return false;
 
-		double amount = ElectricItem.manager.charge(stack, energyStored, tier, false, false);
+		int amount = ElectricItem.manager.charge(stack, (int) energyStored, tier, false, false);
 
 		energyStored -= amount;
 
@@ -350,7 +350,12 @@ public class BasicSource extends TileEntity implements IEnergySource {
 
 	@Override
 	public double getOfferedEnergy() {
-		return energyStored;
+		int power = EnergyNet.instance.getPowerFromTier(tier);
+
+		if (energyStored >= power) {
+			return power;
+		}
+		return 0;
 	}
 
 	@Override
@@ -358,17 +363,12 @@ public class BasicSource extends TileEntity implements IEnergySource {
 		energyStored -= amount;
 	}
 
-	@Override
-	public int getSourceTier() {
-		return tier;
-	}
-
 	// << energy net interface
 
 
 	public final TileEntity parent;
 
-	protected double capacity;
+	protected int capacity;
 	protected int tier;
 	protected double energyStored;
 	protected boolean addedToEnet;

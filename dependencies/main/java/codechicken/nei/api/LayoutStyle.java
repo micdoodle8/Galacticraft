@@ -16,5 +16,5 @@ public abstract class LayoutStyle
     {
     }
     public abstract void drawButton(Button button, int mousex, int mousey);
-    public abstract void drawSubsetTag(String text, int x, int y, int w, int h, int state, boolean mouseover);
+    public abstract boolean texturedButtons();
 }

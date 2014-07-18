@@ -84,10 +84,10 @@ public class CCRenderPipeline
 
         if(CCRenderState.useNormals)
             addAttribute(CCRenderState.normalAttrib);
-        if(CCRenderState.useColour)
+        if(CCRenderState.baseColour != -1 || CCRenderState.alphaOverride >= 0)
             addAttribute(CCRenderState.colourAttrib);
-        if(CCRenderState.computeLighting)
-            addAttribute(CCRenderState.lightingAttrib);
+        else if(CCRenderState.hasColour)
+            CCRenderState.setColour(-1);
 
         for(int i = 0; i < ops.size(); i++) {
             IVertexOperation op = ops.get(i);

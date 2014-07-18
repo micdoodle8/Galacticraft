@@ -48,8 +48,8 @@ public class LayoutStyleMinecraft extends LayoutStyleDefault
             clickButtonCount++;
         }
 
-        button.h = 17;
-        button.w = button.contentWidth() + 6;
+        button.height = 17;
+        button.width = button.contentWidth() + 6;
     }
 
     @Override
@@ -65,31 +65,25 @@ public class LayoutStyleMinecraft extends LayoutStyleDefault
             tex = 2;
         else
             tex = 1;
-        LayoutManager.drawButtonBackground(b.x, b.y, b.w, b.h, true, tex);
+        LayoutManager.drawButtonBackground(b.x, b.y, b.width, b.height, true, tex);
 
         Image icon = b.getRenderIcon();
         if (icon == null) {
             int colour = tex == 2 ? 0xffffa0 :
                     tex == 0 ? 0x601010 : 0xe0e0e0;
 
-            drawStringC(b.getRenderLabel(), b.x + b.w / 2, b.y + (b.h - 8) / 2, colour);
+            drawStringC(b.getRenderLabel(), b.x + b.width / 2, b.y + (b.height - 8) / 2, colour);
         } else {
             GL11.glColor4f(1, 1, 1, 1);
 
-            int iconx = b.x + (b.w - icon.width) / 2;
-            int icony = b.y + (b.h - icon.height) / 2;
+            int iconx = b.x + (b.width - icon.width) / 2;
+            int icony = b.y + (b.height - icon.height) / 2;
             LayoutManager.drawIcon(iconx, icony, icon);
         }
     }
 
     @Override
-    public void drawSubsetTag(String text, int x, int y, int w, int h, int state, boolean mouseover) {
-        if(state == 1)
-            GL11.glColor4f(0.65F, 0.65F, 0.65F, 1.0F);
-        else
-            GL11.glColor4f(1, 1, 1, 1);
-        LayoutManager.drawButtonBackground(x, y, w, h, false, state == 0 ? 0 : 1);
-        if(text != null)
-            drawStringC(text, x, y, w, h, state == 2 ? 0xFFE0E0E0 : 0xFFA0A0A0);
+    public boolean texturedButtons() {
+        return true;
     }
 }

@@ -2,7 +2,6 @@ package codechicken.nei;
 
 import codechicken.core.CommonUtils;
 import codechicken.core.ServerUtils;
-import codechicken.lib.inventory.InventoryRange;
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.packet.PacketCustom;
 import net.minecraft.command.ICommandSender;
@@ -24,9 +23,9 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.WorldSettings.GameType;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.*;
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NEIServerUtils
 {
@@ -105,7 +104,7 @@ public class NEIServerUtils
     }
 
     public static boolean canItemFitInInventory(EntityPlayer player, ItemStack itemstack) {
-        return InventoryUtils.insertItem(new InventoryRange(player.inventory, 0, 36), itemstack, true) == 0;
+        return InventoryUtils.insertItem(player.inventory, itemstack, true) == 0;
     }
 
     public static void sendNotice(ICommandSender sender, IChatComponent msg, String permission) {
@@ -128,10 +127,10 @@ public class NEIServerUtils
      * @return whether the two items are the same in terms of damage and itemID.
      */
     public static boolean areStacksSameType(ItemStack stack1, ItemStack stack2) {
-        return stack1 != null && stack2 != null &&
-                (stack1.getItem() == stack2.getItem() &&
-                (!stack2.getHasSubtypes() || stack2.getItemDamage() == stack1.getItemDamage()) &&
-                ItemStack.areItemStackTagsEqual(stack2, stack1));
+        if (stack1 == null || stack2 == null)
+            return stack1 == stack2;
+
+        return InventoryUtils.canStack(stack1, stack2);
     }
 
     /**
@@ -142,8 +141,10 @@ public class NEIServerUtils
      * @return whether the two items are the same from the perspective of a crafting inventory.
      */
     public static boolean areStacksSameTypeCrafting(ItemStack stack1, ItemStack stack2) {
-        return stack1 != null && stack2 != null &&
-                stack1.getItem() == stack2.getItem() &&
+        if (stack1 == null || stack2 == null)
+            return false;
+
+        return stack1.getItem() == stack2.getItem() &&
                 (stack1.getItemDamage() == stack2.getItemDamage() || stack1.getItemDamage() == OreDictionary.WILDCARD_VALUE || stack2.getItemDamage() == OreDictionary.WILDCARD_VALUE || stack1.getItem().isDamageable());
     }
 
@@ -239,13 +240,9 @@ public class NEIServerUtils
                         !NEIServerConfig.canPlayerPerformAction(player.getCommandSenderName(), NEIActions.gameModes[mode]))
             return;
 
-        //creative+
-        NEIServerConfig.forPlayer(player.getCommandSenderName()).enableAction("creative+", mode == 2);
-        if(mode == 2 && !(player.openContainer instanceof ContainerCreativeInv))//open the container immediately for the client
-            NEISPH.processCreativeInv(player, true);
-
         //change it on the server
         player.theItemInWorldManager.setGameType(getGameType(mode));
+        NEIServerConfig.forPlayer(player.getCommandSenderName()).enableAction("creative+", mode == 2);
 
         //tell the client to change it
         new PacketCustom(NEISPH.channel, 14).writeByte(mode).sendToPlayer(player);
@@ -362,19 +359,5 @@ public class NEIServerUtils
         if(sb.charAt(sb.length()-1) == ',')
             sb.deleteCharAt(sb.length()-1);
         return sb;
-    }
-
-    public static void logOnce(Throwable t, Set<String> stackTraces, String message) {
-        logOnce(t, stackTraces, message, "");
-    }
-
-    public static void logOnce(Throwable t, Set<String> stackTraces, String message, String identifier) {
-        StringWriter sw = new StringWriter();
-        t.printStackTrace(new PrintWriter(sw));
-        String stackTrace = identifier + sw.toString();
-        if (!stackTraces.contains(stackTrace)) {
-            NEIServerConfig.logger.error(message, t);
-            stackTraces.add(stackTrace);
-        }
     }
 }

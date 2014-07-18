@@ -135,17 +135,4 @@ public interface IReactor {
 	 * @return Whether the reactor is active
 	 */
 	public boolean produceEnergy();
-	
-	/**
-	 * Set Redstone Signal without direct contact
-	 * 
-	 */
-	
-	public void setRedstoneSignal(boolean redstone);
-
-	/**
-	 * @return true if  the reactor is FluidCooled
-	 */
-	
-	public boolean isFluidCooled();
 }

@@ -22,10 +22,10 @@ public class GuiHighlightTips extends GuiScreenWidget
 {
     private String name;
     private GuiCCButton toggleButton;
-    private Option opt;
+    private OptionHighlightTips opt;
     private Point dragDown;
 
-    public GuiHighlightTips(Option opt) {
+    public GuiHighlightTips(OptionHighlightTips opt) {
         super(80, 20);
         this.opt = opt;
         name = opt.name;

@@ -101,7 +101,7 @@ public class GuiDraw
 
     public static Dimension displaySize() {
         Minecraft mc = Minecraft.getMinecraft();
-        ScaledResolution res = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+        ScaledResolution res = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
         return new Dimension(res.getScaledWidth(), res.getScaledHeight());
     }
 
@@ -177,10 +177,7 @@ public class GuiDraw
         }
 
         if (x < 8) x = 8;
-        else if (x > displaySize().width - w - 8) {
-            x -= 24 + w;//flip side of cursor
-            if(x < 8) x = 8;
-        }
+        else if (x > displaySize().width - w - 8) x -= 24 + w;//flip side of cursor
         y = (int) MathHelper.clip(y, 8, displaySize().height - 8 - h);
 
         gui.incZLevel(300);

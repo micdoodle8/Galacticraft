@@ -108,11 +108,18 @@ public class ClientHandler
         }
     }
 
-    public static void preInit() {
-        ItemInfo.preInit();
-    }
-
     public static void load() {
+        try {
+            TMIUninstaller.deleteTMIUninstaller();
+            if (TMIUninstaller.TMIInstalled()) {
+                TMIUninstaller.runTMIUninstaller();
+                NEIClientUtils.mc().shutdownMinecraftApplet();
+            }
+        } catch (Exception e) {
+            System.err.println("Error with TMI Uninstaller");
+            e.printStackTrace();
+        }
+
         instance = new ClientHandler();
 
         PacketCustom.assignHandler(NEICPH.channel, new NEICPH());
@@ -169,16 +176,16 @@ public class ClientHandler
     }
 
 
-    public void loadWorld(World world, boolean fromServer) {
+    public void loadWorld(World world, boolean remote) {
         if (world != lastworld) {
             SMPmagneticItems.clear();
             WorldOverlayRenderer.reset();
 
-            if (!fromServer) {
+            if (!remote) {
                 NEIClientConfig.setHasSMPCounterPart(false);
                 NEIClientConfig.setInternalEnabled(false);
 
-                if (!Minecraft.getMinecraft().isSingleplayer())//wait for server to initiate in singleplayer
+                if (!Minecraft.getMinecraft().isSingleplayer())//wait for server to initiate
                     NEIClientConfig.loadWorld("remote/" + ClientUtils.getServerIP().replace(':', '~'));
             }
 

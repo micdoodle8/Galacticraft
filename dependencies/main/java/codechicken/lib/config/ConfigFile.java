@@ -1,6 +1,11 @@
 package codechicken.lib.config;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 public class ConfigFile extends ConfigTagParent
 {
@@ -91,18 +96,19 @@ public class ConfigFile extends ConfigTagParent
         if (loading)
             return;
 
-        PrintWriter writer;
-        try {
-            writer = new PrintWriter(file);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+//        PrintWriter writer;
+//        try {
+//        	System.out.println(file.getAbsolutePath());
+////            writer = new PrintWriter(file);
+//        } catch (FileNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }
 
-        writeComment(writer, 0);
-        ConfigFile.writeLine(writer, "", 0);
-        saveTagTree(writer, 0, "");
-        writer.flush();
-        writer.close();
+//        writeComment(writer, 0);
+//        ConfigFile.writeLine(writer, "", 0);
+//        saveTagTree(writer, 0, "");
+//        writer.flush();
+//        writer.close();
     }
 
     public boolean isLoading() {

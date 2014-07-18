@@ -1,9 +1,18 @@
 package codechicken.core;
 
 import java.io.File;
+import java.lang.reflect.Array;
+import java.util.LinkedList;
+import java.util.List;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.FMLInjectionData;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModContainer;
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatAllowedCharacters;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
@@ -29,8 +38,12 @@ public class CommonUtils
         return world.provider.dimensionId;
     }
 
+    public static File getModsFolder() {
+        return new File(getMinecraftDir(), "mods");
+    }
+
     public static File getMinecraftDir() {
-        return (File) FMLInjectionData.data()[6];
+        return Minecraft.getMinecraft().mcDataDir;
     }
 
     public static String getRelativePath(File parent, File child) {
@@ -38,5 +51,13 @@ public class CommonUtils
             return null;
 
         return child.getPath().substring(parent.getPath().length() + 1);
+    }
+
+    public static ModContainer findModContainer(String modID) {
+        for (ModContainer mc : Loader.instance().getModList())
+            if (modID.equals(mc.getModId()))
+                return mc;
+
+        return null;
     }
 }

@@ -13,7 +13,6 @@ import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.MetadataCollection;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.versioning.ArtifactVersion;
 import cpw.mods.fml.common.versioning.VersionParser;
 import cpw.mods.fml.common.versioning.VersionRange;
@@ -34,7 +33,7 @@ public class NEIModContainer extends DummyModContainer
     @Override
     public Set<ArtifactVersion> getRequirements() {
         Set<ArtifactVersion> deps = new HashSet<ArtifactVersion>();
-        deps.add(VersionParser.parseVersionReference("CodeChickenCore@"+CodeChickenCorePlugin.version+",)"));
+        deps.add(VersionParser.parseVersionReference("CodeChickenCore@[0,)"));
         return deps;
     }
 
@@ -68,12 +67,6 @@ public class NEIModContainer extends DummyModContainer
     public boolean registerBus(EventBus bus, LoadController controller) {
         bus.register(this);
         return true;
-    }
-
-    @Subscribe
-    public void preInit(FMLPreInitializationEvent event) {
-        if (CommonUtils.isClient())
-            ClientHandler.preInit();
     }
 
     @Subscribe

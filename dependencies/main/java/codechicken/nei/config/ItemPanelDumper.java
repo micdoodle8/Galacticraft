@@ -2,6 +2,8 @@ package codechicken.nei.config;
 
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.nei.ItemPanel;
+import codechicken.nei.ItemPanel.ItemPanelObject;
+import codechicken.nei.ItemPanelStack;
 import codechicken.nei.guihook.GuiContainerManager;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -31,14 +33,17 @@ public class ItemPanelDumper extends DataDumper
     @Override
     public Iterable<String[]> dump(int mode) {
         LinkedList<String[]> list = new LinkedList<String[]>();
-        for (ItemStack stack : ItemPanel.items)
-            list.add(new String[]{
-                    Item.itemRegistry.getNameForObject(stack.getItem()),
-                    Integer.toString(Item.getIdFromItem(stack.getItem())),
-                    Integer.toString(InventoryUtils.actualDamage(stack)),
-                    stack.stackTagCompound == null ? "false" : "true",
-                    EnumChatFormatting.getTextWithoutFormattingCodes(GuiContainerManager.itemDisplayNameShort(stack))
-            });
+        for (ItemPanelObject obj : ItemPanel.visibleitems)
+            if (obj instanceof ItemPanelStack) {
+                ItemStack stack = ((ItemPanelStack) obj).item;
+                list.add(new String[]{
+                        Item.itemRegistry.getNameForObject(stack.getItem()),
+                        Integer.toString(Item.getIdFromItem(stack.getItem())),
+                        Integer.toString(InventoryUtils.actualDamage(stack)),
+                        stack.stackTagCompound == null ? "false" : "true",
+                        EnumChatFormatting.getTextWithoutFormattingCodes(GuiContainerManager.itemDisplayNameShort(stack))
+                });
+            }
 
         return list;
     }
@@ -80,8 +85,9 @@ public class ItemPanelDumper extends DataDumper
 
     public void dumpNBT(File file) throws IOException {
         NBTTagList list = new NBTTagList();
-        for (ItemStack stack : ItemPanel.items)
-            list.appendTag(stack.writeToNBT(new NBTTagCompound()));
+        for (ItemPanelObject obj : ItemPanel.visibleitems)
+            if (obj instanceof ItemPanelStack)
+                list.appendTag(((ItemPanelStack) obj).item.writeToNBT(new NBTTagCompound()));
 
         NBTTagCompound tag = new NBTTagCompound();
         tag.setTag("list", list);
@@ -91,11 +97,12 @@ public class ItemPanelDumper extends DataDumper
 
     public void dumpJson(File file) throws IOException {
         PrintWriter p = new PrintWriter(file);
-        for (ItemStack stack : ItemPanel.items) {
-            NBTTagCompound tag = stack.writeToNBT(new NBTTagCompound());
-            tag.removeTag("Count");
-            p.println(tag);
-        }
+        for (ItemPanelObject obj : ItemPanel.visibleitems)
+            if (obj instanceof ItemPanelStack) {
+                NBTTagCompound tag = ((ItemPanelStack) obj).item.writeToNBT(new NBTTagCompound());
+                tag.removeTag("Count");
+                p.println(tag);
+            }
 
         p.close();
     }

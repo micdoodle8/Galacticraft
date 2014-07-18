@@ -52,8 +52,8 @@ public class DefaultOverlayHandler implements IOverlayHandler
         this(5, 11);
     }
 
-    public int offsetx;
-    public int offsety;
+    int offsetx;
+    int offsety;
     
     @Override
     public void overlayRecipe(GuiContainer gui, IRecipeHandler recipe, int recipeIndex, boolean shift)
