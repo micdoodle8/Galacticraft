@@ -2,13 +2,23 @@ package codechicken.nei.api;
 
 import codechicken.core.featurehack.GameDataManipulator;
 import codechicken.nei.*;
+import codechicken.nei.ItemList.EverythingItemFilter;
+import codechicken.nei.ItemList.ItemsLoadedCallback;
+import codechicken.nei.api.ItemFilter.ItemFilterProvider;
 import codechicken.nei.config.ArrayDumper;
 import codechicken.nei.config.ItemPanelDumper;
 import codechicken.nei.config.RegistryDumper;
 import codechicken.nei.guihook.GuiContainerManager;
+import codechicken.nei.recipe.BrewingRecipeHandler;
 import codechicken.nei.recipe.RecipeItemInputHandler;
 import com.google.common.collect.ArrayListMultimap;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.ModContainer;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import net.minecraft.block.Block;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityList.EntityEggInfo;
@@ -18,9 +28,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.RegistryNamespaced;
 import net.minecraft.world.World;
@@ -30,6 +40,7 @@ import net.minecraftforge.common.IShearable;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * This is an internal class for storing information about items, to be accessed by the API
@@ -41,7 +52,7 @@ public class ItemInfo
         HEADER, BODY, FOOTER
     }
 
-    public static final HashMap<Layout, ArrayList<IHighlightHandler>> highlightHandlers = new HashMap<Layout, ArrayList<IHighlightHandler>>();
+    public static final ArrayListMultimap<Layout, IHighlightHandler> highlightHandlers = ArrayListMultimap.create();
     public static final ItemStackMap<String> nameOverrides = new ItemStackMap<String>();
     public static final ItemStackSet hiddenItems = new ItemStackSet();
     public static final ItemStackSet finiteItems = new ItemStackSet();
@@ -53,10 +64,8 @@ public class ItemInfo
 
     public static final HashMap<Item, String> itemOwners = new HashMap<Item, String>();
 
-    static {
-        for (Layout layout : Layout.values())
-            ItemInfo.highlightHandlers.put(layout, new ArrayList<IHighlightHandler>());
-    }
+    //lookup optimisation
+    public static final HashMap<ItemStack, String> itemSearchNames = new HashMap<ItemStack, String>();
 
     public static boolean isHidden(ItemStack stack) {
         return hiddenItems.contains(stack);
@@ -78,16 +87,47 @@ public class ItemInfo
         return itemOverrides.get(item);
     }
 
+    public static void preInit() {
+        addMobSpawnerItem();
+    }
+
     public static void load(World world) {
         addVanillaBlockProperties();
         addDefaultDropDowns();
         searchItems();
         parseModItems();
-        addMobSpawnerItem(world);
+        ItemMobSpawner.loadSpawners(world);
         addSpawnEggs();
         addInfiniteHandlers();
         addInputHandlers();
         addIDDumps();
+        addHiddenItemFilter();
+        addSearchOptimisation();
+    }
+
+    private static void addSearchOptimisation() {
+        ItemList.loadCallbacks.add(new ItemsLoadedCallback()
+        {
+            @Override public void itemsLoaded() {
+                itemSearchNames.clear();
+            }
+        });
+    }
+
+    private static void addHiddenItemFilter() {
+        API.addItemFilter(new ItemFilterProvider()
+        {
+            @Override
+            public ItemFilter getFilter() {
+                return new ItemFilter()
+                {
+                    @Override
+                    public boolean matches(ItemStack item) {
+                        return !hiddenItems.contains(item);
+                    }
+                };
+            }
+        });
     }
 
     private static void addIDDumps() {
@@ -219,7 +259,29 @@ public class ItemInfo
     }
 
     private static void parseModItems() {
-        //TODO GameRegistry.findUniqueIdentifierFor()
+        HashMap<String, ItemStackSet> modSubsets = new HashMap<String, ItemStackSet>();
+        for (Item item : (Iterable<Item>) Item.itemRegistry) {
+            UniqueIdentifier ident = GameRegistry.findUniqueIdentifierFor(item);
+            if(ident == null) {
+                NEIClientConfig.logger.error("Failed to find identifier for: "+item);
+                continue;
+            }
+            String modId = GameRegistry.findUniqueIdentifierFor(item).modId;
+            itemOwners.put(item, modId);
+            ItemStackSet itemset = modSubsets.get(modId);
+            if(itemset == null)
+                modSubsets.put(modId, itemset = new ItemStackSet());
+            itemset.with(item);
+        }
+
+        API.addSubset("Mod.Minecraft", modSubsets.remove("minecraft"));
+        for(Entry<String, ItemStackSet> entry : modSubsets.entrySet()) {
+            ModContainer mc = FMLCommonHandler.instance().findContainerFor(entry.getKey());
+            if(mc == null)
+                NEIClientConfig.logger.error("Missing container for "+entry.getKey());
+            else
+                API.addSubset("Mod."+mc.getName(), entry.getValue());
+        }
     }
 
     private static void addInputHandlers() {
@@ -227,8 +289,8 @@ public class ItemInfo
         GuiContainerManager.addInputHandler(new PopupInputHandler());
     }
 
-    private static void addMobSpawnerItem(World world) {
-        GameDataManipulator.replaceItem(Block.getIdFromBlock(Blocks.mob_spawner), new ItemMobSpawner(world));
+    private static void addMobSpawnerItem() {
+        GameDataManipulator.replaceItem(Block.getIdFromBlock(Blocks.mob_spawner), new ItemMobSpawner());
     }
 
     private static void addInfiniteHandlers() {
@@ -251,45 +313,36 @@ public class ItemInfo
     }
 
     private static void addDefaultDropDowns() {
-        /*API.addSetRange("Blocks", new MultiItemRange("[0-32000]")
+        API.addSubset("Items", new EverythingItemFilter());
+        API.addSubset("Blocks", new ItemFilter()
         {
             @Override
-            public void addItemIfInRange(int item, int damage, NBTTagCompound compound) {
-                if (item < Block.blocksList.length && (Block.blocksList[item] != null && Block.blocksList[item].blockMaterial != Material.air))
-                    super.addItemIfInRange(item, damage, compound);
+            public boolean matches(ItemStack item) {
+                return Block.getBlockFromItem(item.getItem()) != Blocks.air;
             }
         });
-        API.addSetRange("Items", new MultiItemRange("[0-32000]")
-        {
-            @Override
-            public void addItemIfInRange(int item, int damage, NBTTagCompound compound) {
-                if (item >= Block.blocksList.length || Block.blocksList[item] == null || Block.blocksList[item].blockMaterial == Material.air)
-                    super.addItemIfInRange(item, damage, compound);
-            }
-        });
-        API.addSetRange("Blocks.MobSpawners", new MultiItemRange("[52]"));*/
+        API.addSubset("Blocks.MobSpawners", ItemStackSet.of(Blocks.mob_spawner));
     }
 
-    //TODO
     private static void searchItems() {
-        /*MultiItemRange tools = new MultiItemRange();
-        MultiItemRange picks = new MultiItemRange();
-        MultiItemRange shovels = new MultiItemRange();
-        MultiItemRange axes = new MultiItemRange();
-        MultiItemRange hoes = new MultiItemRange();
-        MultiItemRange swords = new MultiItemRange();
-        MultiItemRange chest = new MultiItemRange();
-        MultiItemRange helmets = new MultiItemRange();
-        MultiItemRange legs = new MultiItemRange();
-        MultiItemRange boots = new MultiItemRange();
-        MultiItemRange other = new MultiItemRange();
-        MultiItemRange ranged = new MultiItemRange();
-        MultiItemRange food = new MultiItemRange();
-        MultiItemRange potioningredients = new MultiItemRange();
+        ItemStackSet tools = new ItemStackSet();
+        ItemStackSet picks = new ItemStackSet();
+        ItemStackSet shovels = new ItemStackSet();
+        ItemStackSet axes = new ItemStackSet();
+        ItemStackSet hoes = new ItemStackSet();
+        ItemStackSet swords = new ItemStackSet();
+        ItemStackSet chest = new ItemStackSet();
+        ItemStackSet helmets = new ItemStackSet();
+        ItemStackSet legs = new ItemStackSet();
+        ItemStackSet boots = new ItemStackSet();
+        ItemStackSet other = new ItemStackSet();
+        ItemStackSet ranged = new ItemStackSet();
+        ItemStackSet food = new ItemStackSet();
+        ItemStackSet potioningredients = new ItemStackSet();
 
-        MultiItemRange[] creativeTabRanges = new MultiItemRange[CreativeTabs.creativeTabArray.length];
+        ItemStackSet[] creativeTabRanges = new ItemStackSet[CreativeTabs.creativeTabArray.length];
         for (CreativeTabs tab : CreativeTabs.creativeTabArray)
-            creativeTabRanges[tab.getTabIndex()] = new MultiItemRange();
+            creativeTabRanges[tab.getTabIndex()] = new ItemStackSet();
 
         for (Item item : (Iterable<Item>) Item.itemRegistry) {
             if (item == null)
@@ -297,69 +350,77 @@ public class ItemInfo
 
             CreativeTabs itemTab = item.getCreativeTab();
             if (itemTab != null)
-                creativeTabRanges[itemTab.getTabIndex()].add(item);
+                creativeTabRanges[itemTab.getTabIndex()].with(item);
 
             if (item.isDamageable()) {
-                tools.add(item);
-                if (item instanceof ItemPickaxe) {
-                    picks.add(item);
-                } else if (item instanceof ItemSpade) {
-                    shovels.add(item);
-                } else if (item instanceof ItemAxe) {
-                    axes.add(item);
-                } else if (item instanceof ItemHoe) {
-                    hoes.add(item);
-                } else if (item instanceof ItemSword) {
-                    swords.add(item);
-                } else if (item instanceof ItemArmor) {
+                tools.with(item);
+                if (item instanceof ItemPickaxe)
+                    picks.with(item);
+                else if (item instanceof ItemSpade)
+                    shovels.with(item);
+                else if (item instanceof ItemAxe)
+                    axes.with(item);
+                else if (item instanceof ItemHoe)
+                    hoes.with(item);
+                else if (item instanceof ItemSword)
+                    swords.with(item);
+                else if (item instanceof ItemArmor)
                     switch (((ItemArmor) item).armorType) {
                         case 0:
-                            helmets.add(item);
+                            helmets.with(item);
                             break;
                         case 1:
-                            chest.add(item);
+                            chest.with(item);
                             break;
                         case 2:
-                            legs.add(item);
+                            legs.with(item);
                             break;
                         case 3:
-                            boots.add(item);
+                            boots.with(item);
                             break;
                     }
-                } else if (item == Items.arrow || item == Items.bow) {
-                    ranged.add(item);
-                } else if (item == Items.fishing_rod || item == Items.flint_and_steel || item == Items.shears) {
-                    other.add(item);
+                else if (item == Items.arrow || item == Items.bow)
+                    ranged.with(item);
+                else if (item == Items.fishing_rod || item == Items.flint_and_steel || item == Items.shears)
+                    other.with(item);
+            }
+
+            if (item instanceof ItemFood)
+                food.with(item);
+
+            try {
+                LinkedList<ItemStack> subItems = new LinkedList<ItemStack>();
+                item.getSubItems(item, null, subItems);
+                for(ItemStack stack : subItems) {
+                    if (item.isPotionIngredient(stack)) {
+                        BrewingRecipeHandler.ingredients.add(stack);
+                        potioningredients.add(stack);
+                    }
                 }
-            }
 
-            if (item instanceof ItemFood) {
-                food.add(item);
-            }
-
-            if (item.isPotionIngredient()) {
-                BrewingRecipeHandler.ingredients.add(item);
-                potioningredients.add(item);
+            } catch (Exception e) {
+                NEIClientConfig.logger.error("Error loading brewing ingredients for: "+item, e);
             }
         }
-        API.addSetRange("Items.Tools.Pickaxes", picks);
-        API.addSetRange("Items.Tools.Shovels", shovels);
-        API.addSetRange("Items.Tools.Axes", axes);
-        API.addSetRange("Items.Tools.Hoes", hoes);
-        API.addSetRange("Items.Tools.Other", other);
-        API.addSetRange("Items.Weapons.Swords", swords);
-        API.addSetRange("Items.Weapons.Ranged", ranged);
-        API.addSetRange("Items.Armor.ChestPlates", chest);
-        API.addSetRange("Items.Armor.Leggings", legs);
-        API.addSetRange("Items.Armor.Helmets", helmets);
-        API.addSetRange("Items.Armor.Boots", boots);
-        API.addSetRange("Items.Food", food);
-        API.addSetRange("Items.Potions.Ingredients", potioningredients);
+        API.addSubset("Items.Tools.Pickaxes", picks);
+        API.addSubset("Items.Tools.Shovels", shovels);
+        API.addSubset("Items.Tools.Axes", axes);
+        API.addSubset("Items.Tools.Hoes", hoes);
+        API.addSubset("Items.Tools.Other", other);
+        API.addSubset("Items.Weapons.Swords", swords);
+        API.addSubset("Items.Weapons.Ranged", ranged);
+        API.addSubset("Items.Armor.ChestPlates", chest);
+        API.addSubset("Items.Armor.Leggings", legs);
+        API.addSubset("Items.Armor.Helmets", helmets);
+        API.addSubset("Items.Armor.Boots", boots);
+        API.addSubset("Items.Food", food);
+        API.addSubset("Items.Potions.Ingredients", potioningredients);
 
-        for (CreativeTabs tab : CreativeTabs.creativeTabArray) {
-            if (creativeTabRanges[tab.getTabIndex()].ranges.size() > 0)
-                API.addSetRange("CreativeTabs." + LangUtil.translateG(tab.getTranslatedTabLabel()), creativeTabRanges[tab.getTabIndex()]);
-        }*/
+        for (CreativeTabs tab : CreativeTabs.creativeTabArray)
+            if (!creativeTabRanges[tab.getTabIndex()].isEmpty())
+                API.addSubset("CreativeTabs." + I18n.format(tab.getTranslatedTabLabel()), creativeTabRanges[tab.getTabIndex()]);
+
+        BrewingRecipeHandler.searchPotions();
     }
 
     private static void addSpawnEggs()
@@ -427,5 +488,14 @@ public class ItemInfo
                 retString = handler.handleTextData(itemStack, world, player, mop, retString, layout);
 
         return retString;
+    }
+
+    public static String getSearchName(ItemStack stack) {
+        String s = itemSearchNames.get(stack);
+        if(s == null) {
+            s = EnumChatFormatting.getTextWithoutFormattingCodes(GuiContainerManager.concatenatedDisplayName(stack, true).toLowerCase());
+            itemSearchNames.put(stack, s);
+        }
+        return s;
     }
 }

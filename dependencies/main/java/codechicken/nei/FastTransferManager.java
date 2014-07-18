@@ -94,7 +94,7 @@ public class FastTransferManager
         Integer fromZone = slotZoneMap.get(fromSlot);
         Integer toZone = slotZoneMap.get(toSlot);
 
-        if (fromZone == null || toZone == null || fromZone == toZone)
+        if (fromZone == null || toZone == null || fromZone.equals(toZone))
             return;
 
         if (NEIClientUtils.getHeldItem() != null && !areStacksSameType(heldStack, NEIClientUtils.getHeldItem()))
@@ -146,13 +146,10 @@ public class FastTransferManager
                 ItemStack before = compareBefore.get(i);
                 ItemStack after = compareAfter.get(i);
 
-                if (!areStacksIdentical(before, after) && after != null) {
-                    if ((before == null && areStacksSameType(stack, after)) ||//transfered into this empty slot
-                            (areStacksSameType(stack, after) &&
-                                    after.stackSize -
-                                            before.stackSize > 0))//it added to this stack
+                if (!areStacksIdentical(before, after) && after != null)
+                    if (before == null ? areStacksSameType(stack, after) ://transfered into this empty slot
+                            areStacksSameType(stack, after) && after.stackSize - before.stackSize > 0)//it added to this stack
                         return i;
-                }
             }
 
             return -1;

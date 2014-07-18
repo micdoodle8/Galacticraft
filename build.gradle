@@ -1,5 +1,5 @@
 
-def mcVersion = "1.7.2"
+def mcVersion = "1.7.10"
 def versionMajor = 3
 def versionMinor = 0
 def versionRev = 0
@@ -41,7 +41,7 @@ group= "micdoodle8.mods.galacticraft"
 archivesBaseName = "GalacticraftCoreAll"
 	
 minecraft {
-    version = "1.7.2-10.12.2.1147" // Forge version
+    version = "1.7.10-10.13.0.1180" // Forge version
     assetDir = "eclipse/assets" // This is where forge will download Minecraft assets
 }
 

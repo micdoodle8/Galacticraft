@@ -38,6 +38,8 @@ public class FuelRecipeHandler extends FurnaceRecipeHandler
         }
     }
 
+    private ArrayList<SmeltingPair> mfurnace = new ArrayList<FurnaceRecipeHandler.SmeltingPair>();
+
     public FuelRecipeHandler() {
         super();
         loadAllSmelting();
@@ -47,11 +49,7 @@ public class FuelRecipeHandler extends FurnaceRecipeHandler
         return NEIClientUtils.translate("recipe.fuel");
     }
 
-    public void loadAllSmelting() {
-        if (mfurnace != null)//already loaded;
-            return;
-
-        mfurnace = new ArrayList<FurnaceRecipeHandler.SmeltingPair>();
+    private void loadAllSmelting() {
         Map<ItemStack, ItemStack> recipes = (Map<ItemStack, ItemStack>) FurnaceRecipes.smelting().getSmeltingList();
 
         for (Entry<ItemStack, ItemStack> recipe : recipes.entrySet())
@@ -98,6 +96,4 @@ public class FuelRecipeHandler extends FurnaceRecipeHandler
 
         return currenttip;
     }
-
-    public static ArrayList<SmeltingPair> mfurnace;
 }

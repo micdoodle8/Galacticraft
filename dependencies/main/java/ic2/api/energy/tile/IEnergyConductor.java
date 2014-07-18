@@ -19,7 +19,7 @@ public interface IEnergyConductor extends IEnergyAcceptor, IEnergyEmitter {
 	 * 
 	 * @return Insulation energy absorption in EU
 	 */
-	int getInsulationEnergyAbsorption();
+	double getInsulationEnergyAbsorption();
 
 	/**
 	 * Amount of energy the insulation will handle before it is destroyed.
@@ -27,14 +27,14 @@ public interface IEnergyConductor extends IEnergyAcceptor, IEnergyEmitter {
 	 *
 	 * @return Insulation-destroying energy in EU
 	 */
-	int getInsulationBreakdownEnergy();
+	double getInsulationBreakdownEnergy();
 
 	/**
 	 * Amount of energy the conductor will handle before it melts.
 	 * 
 	 * @return Conductor-destroying energy in EU
 	 */
-	int getConductorBreakdownEnergy();
+	double getConductorBreakdownEnergy();
 
 	/**
 	 * Remove the conductor's insulation if the insulation breakdown energy was exceeded.

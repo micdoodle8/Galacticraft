@@ -38,7 +38,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
     private static TreeSet<Widget> controlWidgets;
 
     public static ItemPanel itemPanel;
-    public static Button dropDown;
+    public static SubsetWidget dropDown;
     public static TextField searchField;
 
     public static Button options;
@@ -121,11 +121,10 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
 
     @Override
     public boolean objectUnderMouse(GuiContainer gui, int mousex, int mousey) {
-        if (!isHidden() && isEnabled()) {
+        if (!isHidden() && isEnabled())
             for (Widget widget : controlWidgets)
                 if (widget.contains(mousex, mousey))
                     return true;
-        }
 
         return false;
     }
@@ -265,13 +264,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
 
     private static void init() {
         itemPanel = new ItemPanel();
-        dropDown = new Button("NEI Subsets")
-        {
-            @Override
-            public boolean onButtonPress(boolean rightclick) {
-                return false;
-            }
-        };
+        dropDown = new SubsetWidget();
         searchField = new SearchField("search");
 
         options = new Button("Options")
@@ -422,7 +415,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
             public String getButtonTip() {
                 if ((state & 0x3) != 2) {
                     if (shiftKey())
-                        return translate("inventory.delete.all");
+                        return translate("inventory.delete.inv");
                     if (NEIController.canUseDeleteMode())
                         return getStateTip("delete", state);
                 }
@@ -580,11 +573,8 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
 
         NEIController.load(gui);
 
-        if (checkCreativeInv(gui)) {
-            if (gui.mc.currentScreen instanceof GuiContainerCreative)//makes cycle transititions seemless. Only closes if we are opening from fresh
-                gui.mc.displayGuiScreen(null);
-            return;
-        }
+        if (checkCreativeInv(gui) && gui.mc.currentScreen instanceof GuiContainerCreative)//override creative with creative+
+            gui.mc.displayGuiScreen(null);//close the screen and wait for the server to open it for us
     }
 
     @Override
@@ -726,7 +716,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
     @Override
     public void renderSlotOverlay(GuiContainer window, Slot slot) {
         ItemStack item = slot.getStack();
-        if (world.nbt.getBoolean("searchinventories") && (item == null ? !getSearchExpression().equals("") : !ItemList.itemMatchesSearch(item))) {
+        if (world.nbt.getBoolean("searchinventories") && (item == null ? !getSearchExpression().equals("") : !ItemList.itemMatches(item))) {
             GL11.glDisable(GL11.GL_LIGHTING);
             GL11.glTranslatef(0, 0, 150);
             drawRect(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, 0x80000000);

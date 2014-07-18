@@ -8,12 +8,15 @@ import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.api.ItemInfo;
 import com.google.common.collect.Iterables;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
 import java.text.MessageFormat;
@@ -96,36 +99,34 @@ public class NEIClientUtils extends NEIServerUtils
     }
 
     /**
-     * @param typeStack
-     * @param button
      * @param mode      -1 = normal cheats, 0 = no infinites, 1 = replenish stack
      */
-    public static void cheatItem(ItemStack typeStack, int button, int mode) {
-        if (!canPerformAction("item") || typeStack.hasTagCompound() && !canPerformAction("itemnbt"))
+    public static void cheatItem(ItemStack stack, int button, int mode) {
+        if (!canCheatItem(stack))
             return;
 
-        if (mode == -1 && button == 0 && NEIClientUtils.shiftKey()) {
+        if (mode == -1 && button == 0 && shiftKey() && NEIClientConfig.hasSMPCounterPart()) {
             for (IInfiniteItemHandler handler : ItemInfo.infiniteHandlers) {
-                if (!handler.canHandleItem(typeStack))
+                if (!handler.canHandleItem(stack))
                     continue;
 
-                ItemStack stack = handler.getInfiniteItem(typeStack);
-                if (stack != null) {
-                    giveStack(stack, stack.stackSize, true);
+                ItemStack inf = handler.getInfiniteItem(stack);
+                if (inf != null) {
+                    giveStack(inf, inf.stackSize, true);
                     return;
                 }
             }
-            cheatItem(typeStack, button, 0);
+            cheatItem(stack, button, 0);
         } else if (button == 1) {
-            giveStack(typeStack, 1);
+            giveStack(stack, 1);
         } else {
-            if (mode == 1 && typeStack.stackSize < typeStack.getMaxStackSize()) {
-                giveStack(typeStack, typeStack.getMaxStackSize() - typeStack.stackSize);
+            if (mode == 1 && stack.stackSize < stack.getMaxStackSize()) {
+                giveStack(stack, stack.getMaxStackSize() - stack.stackSize);
             } else {
                 int amount = getItemQuantity();
                 if (amount == 0)
-                    amount = typeStack.getMaxStackSize();
-                giveStack(typeStack, amount);
+                    amount = stack.getMaxStackSize();
+                giveStack(stack, amount);
             }
         }
     }
@@ -138,11 +139,11 @@ public class NEIClientUtils extends NEIServerUtils
         giveStack(itemstack, i, false);
     }
 
-    public static void giveStack(ItemStack itemstack, int i, boolean infinite) {
-        ItemStack itemstack1 = copyStack(itemstack, i);
+    public static void giveStack(ItemStack base, int i, boolean infinite) {
+        ItemStack stack = copyStack(base, i);
         if (hasSMPCounterPart()) {
-            ItemStack typestack = copyStack(itemstack1, 1);
-            if (!infinite && !canItemFitInInventory(mc().thePlayer, itemstack1) && (mc().currentScreen instanceof GuiContainer)) {
+            ItemStack typestack = copyStack(stack, 1);
+            if (!infinite && !canItemFitInInventory(mc().thePlayer, stack) && (mc().currentScreen instanceof GuiContainer)) {
                 GuiContainer gui = getGuiContainer();
                 List<Iterable<Integer>> handlerSlots = new LinkedList<Iterable<Integer>>();
                 for(INEIGuiHandler handler : GuiInfo.guiHandlers)
@@ -155,7 +156,7 @@ public class NEIClientUtils extends NEIServerUtils
                     if(!slot.isItemValid(typestack) || !InventoryUtils.canStack(slot.getStack(), typestack))
                         continue;
 
-                    int qty = Math.min(itemstack1.stackSize - given, increment);
+                    int qty = Math.min(stack.stackSize - given, increment);
                     int current = slot.getHasStack() ? slot.getStack().stackSize : 0;
                     qty = Math.min(qty, slot.getSlotStackLimit() - current);
 
@@ -163,47 +164,26 @@ public class NEIClientUtils extends NEIServerUtils
                     slot.putStack(newStack);
                     setSlotContents(slotNo, newStack, true);
                     given += qty;
-                    if(given >= itemstack1.stackSize)
+                    if(given >= stack.stackSize)
                         break;
                 }
                 if(given > 0)
                     NEICPH.sendGiveItem(copyStack(typestack, given), false, false);
             } else
-                NEICPH.sendGiveItem(itemstack1, infinite, true);
+                NEICPH.sendGiveItem(stack, infinite, true);
         } else {
-            for (int given = 0; given < itemstack1.stackSize; ) {
-                int qty = Math.min(itemstack1.stackSize - given, itemstack1.getMaxStackSize());
-                sendCommand(getStringSetting("command.item"), mc().thePlayer.getCommandSenderName(), itemstack1.getItem().getUnlocalizedName(), qty, itemstack1.getItemDamage());
+            for (int given = 0; given < stack.stackSize; ) {
+                int qty = Math.min(stack.stackSize - given, stack.getMaxStackSize());
+                sendCommand(getStringSetting("command.item"),
+                        mc().thePlayer.getCommandSenderName(),
+                        Item.getIdFromItem(stack.getItem()),
+                        qty,
+                        stack.getItemDamage(),
+                        stack.hasTagCompound() ? stack.getTagCompound().toString() : "",
+                        Item.itemRegistry.getNameForObject(stack.getItem()));
                 given += qty;
             }
         }
-    }
-
-    public static void updateUnlimitedItems() {
-        ItemStack itemstack = getHeldItem();
-        if (itemstack != null && itemstack.stackSize > 64)
-            itemstack.stackSize = 1;
-
-        ItemStack aitemstack[] = mc().thePlayer.inventory.mainInventory;
-        for (int slot = 0; slot < aitemstack.length; slot++) {
-            ItemStack itemstack1 = aitemstack[slot];
-            if (itemstack1 == null)
-                continue;
-
-            if (itemstack1.stackSize < 0 || itemstack1.stackSize > 64)
-                itemstack1.stackSize = 111;
-
-            if (itemstack1.getItemDamage() > -32000 && itemstack1.getItemDamage() < -30000)
-                itemstack1.setItemDamage(-32000);
-        }
-    }
-
-    public static boolean itemListContains(ItemStack test) {
-        for (ItemStack stack : ItemList.itemMap.get(test.getItem()))
-            if (areStacksIdentical(stack, test))
-                return true;
-
-        return false;
     }
 
     public static boolean canItemFitInInventory(EntityPlayer player, ItemStack itemstack) {
@@ -367,5 +347,9 @@ public class NEIClientUtils extends NEIServerUtils
 
     public static boolean altKey() {
         return Keyboard.isKeyDown(Keyboard.KEY_LMENU) || Keyboard.isKeyDown(Keyboard.KEY_RMENU);
+    }
+
+    public static void playClickSound() {
+        mc().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
     }
 }

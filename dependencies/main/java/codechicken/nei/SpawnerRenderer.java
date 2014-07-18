@@ -28,9 +28,8 @@ public class SpawnerRenderer implements IItemRenderer
         int meta = item.getItemDamage();
         
         if(meta == 0)
-        {
             meta = ItemMobSpawner.idPig;
-        }
+
         String bossName = BossStatus.bossName;
         int bossTimeout = BossStatus.statusBarTime;
         try
@@ -42,21 +41,16 @@ public class SpawnerRenderer implements IItemRenderer
             GL11.glPushMatrix();
             
             Entity entity = ItemMobSpawner.getEntity(meta);
-            if(entity != null)
-            {
-                entity.setWorld(world);
-                float f1 = 0.4375F;
-                if(entity.getShadowSize() > 1.5)
-                {
-                    f1 = 0.1F;
-                }
-                GL11.glRotatef((float) (ClientUtils.getRenderTime()*10), 0.0F, 1.0F, 0.0F);
-                GL11.glRotatef(-20F, 1.0F, 0.0F, 0.0F);
-                GL11.glTranslatef(0.0F, -0.4F, 0.0F);
-                GL11.glScalef(f1, f1, f1);
-                entity.setLocationAndAngles(0, 0, 0, 0.0F, 0.0F);
-                RenderManager.instance.renderEntityWithPosYaw(entity, 0.0D, 0.0D, 0.0D, 0.0F, 0);
-            }
+            entity.setWorld(world);
+            float f1 = 0.4375F;
+            if(entity.getShadowSize() > 1.5)
+                f1 = 0.1F;
+            GL11.glRotatef((float) (ClientUtils.getRenderTime()*10), 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(-20F, 1.0F, 0.0F, 0.0F);
+            GL11.glTranslatef(0.0F, -0.4F, 0.0F);
+            GL11.glScalef(f1, f1, f1);
+            entity.setLocationAndAngles(0, 0, 0, 0.0F, 0.0F);
+            RenderManager.instance.renderEntityWithPosYaw(entity, 0.0D, 0.0D, 0.0D, 0.0F, 0);
             GL11.glPopMatrix();
     
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);

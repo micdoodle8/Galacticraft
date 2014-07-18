@@ -4,11 +4,8 @@ import codechicken.core.CommonUtils;
 import codechicken.lib.vec.Rectangle4i;
 import codechicken.nei.LayoutManager;
 import codechicken.nei.NEIClientUtils;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
-import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import java.io.File;
@@ -94,17 +91,17 @@ public abstract class DataDumper extends Option
     }
 
     public void drawPrefix() {
-        drawString(renderName(), 10, 8, -1);
+        drawString(renderName(), 10, 6, -1);
     }
 
     public Rectangle4i dumpButtonSize() {
         int width = 80;
-        return new Rectangle4i(slot.contentWidth() - width, 2, width, 20);
+        return new Rectangle4i(slot.slotWidth() - width, 0, width, 20);
     }
 
     public Rectangle4i modeButtonSize() {
         int width = 60;
-        return new Rectangle4i(slot.contentWidth() - width - 10 - dumpButtonSize().w, 2, width, 20);
+        return new Rectangle4i(slot.slotWidth() - width - 10 - dumpButtonSize().w, 0, width, 20);
     }
 
     public String dumpButtonText() {
@@ -146,10 +143,10 @@ public abstract class DataDumper extends Option
     @Override
     public void mouseClicked(int mousex, int mousey, int button) {
         if (modeCount() > 1 && modeButtonSize().contains(mousex, mousey)) {
-            Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+            NEIClientUtils.playClickSound();
             getTag().setIntValue((getMode() + 1) % modeCount());
         } else if (dumpButtonSize().contains(mousex, mousey)) {
-            Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+            NEIClientUtils.playClickSound();
             dumpFile();
         }
     }

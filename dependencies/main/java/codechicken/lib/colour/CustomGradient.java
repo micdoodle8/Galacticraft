@@ -13,6 +13,9 @@ public class CustomGradient
     public CustomGradient(ResourceLocation textureFile)
     {
         BufferedImage img = TextureUtils.loadBufferedImage(textureFile);
+        if(img == null)
+            throw new RuntimeException("File not found: "+textureFile.toString());
+
         int[] data = new int[img.getWidth()];
         img.getRGB(0, 0, img.getWidth(), 1, data, 0, img.getWidth());
         gradient = new int[img.getWidth()];

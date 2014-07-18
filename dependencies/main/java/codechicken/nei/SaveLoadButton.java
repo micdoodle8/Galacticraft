@@ -1,10 +1,7 @@
 package codechicken.nei;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ChatAllowedCharacters;
-import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
 import static codechicken.lib.gui.GuiDraw.drawString;
@@ -26,7 +23,7 @@ public abstract class SaveLoadButton extends Button
             label = "";
             onTextChange();
             focused = true;
-            Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+            NEIClientUtils.playClickSound();
             return true;
         }
         return super.handleClick(mousex, mousey, button);
@@ -106,7 +103,7 @@ public abstract class SaveLoadButton extends Button
     {    
         super.draw(mousex, mousey);
         if(focused && (cursorCounter / 6) % 2 == 0)
-            drawString("_", x + (width + getStringWidth(getRenderLabel())) / 2, y + (height - 8) / 2, 0xFFFFFFFF);
+            drawString("_", x + (w + getStringWidth(getRenderLabel())) / 2, y + (h - 8) / 2, 0xFFFFFFFF);
     }
     
     @Override
