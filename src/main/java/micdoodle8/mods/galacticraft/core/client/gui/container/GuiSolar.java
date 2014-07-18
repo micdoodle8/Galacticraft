@@ -135,8 +135,9 @@ public class GuiSolar extends GuiContainerGC
 		this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
 
 		List<String> electricityDesc = new ArrayList<String>();
-		electricityDesc.add(GCCoreUtil.translate("gui.energyStorage.desc.0"));
-		electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energyStorage.desc.1") + ((int) Math.floor(this.solarPanel.getEnergyStoredGC()) + " / " + (int) Math.floor(this.solarPanel.getMaxEnergyStoredGC())));
+        EnergyHelper.getEnergyDisplayTooltip(this.solarPanel.getEnergyStoredGC(), this.solarPanel.getMaxEnergyStoredGC(), electricityDesc);
+//		electricityDesc.add(GCCoreUtil.translate("gui.energyStorage.desc.0"));
+//		electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energyStorage.desc.1") + ((int) Math.floor(this.solarPanel.getEnergyStoredGC()) + " / " + (int) Math.floor(this.solarPanel.getMaxEnergyStoredGC())));
 		this.electricInfoRegion.tooltipStrings = electricityDesc;
 
 		if (this.solarPanel.getEnergyStoredGC() > 0)

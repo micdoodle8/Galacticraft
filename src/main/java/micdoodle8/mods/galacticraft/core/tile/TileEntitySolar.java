@@ -58,6 +58,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 		this.capacityDynamic = maxEnergy;
 		this.storage.setMaxExtract(1300);
 		this.storage.setMaxReceive(TileEntitySolar.MAX_GENERATE_WATTS);
+        this.storage.setCapacity(50000);
 	}
 
 	@Override
