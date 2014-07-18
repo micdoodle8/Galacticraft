@@ -152,9 +152,8 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
 			}
 
 			index = 1;
-			nodeCompare = 0;
 
-			while (index < this.nodeList.size() && (nodeCompare = this.nodeList.get(index).compareTo(node, new BlockVec3(this))) > 0)
+			while (index < this.nodeList.size())
 			{
 				index++;
 			}
