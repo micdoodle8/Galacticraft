@@ -29,11 +29,9 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.EnumSet;
-import java.util.HashSet;
 
 public class TileEntitySolar extends TileEntityUniversalElectricalSource implements IMultiBlock, IPacketReceiver, IDisableableMachine, IInventory, ISidedInventory, IConnector
 {
-	public HashSet<TileEntity> connectedTiles = new HashSet<TileEntity>();
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int solarStrength = 0;
 	public float targetAngle;
@@ -46,7 +44,6 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 	public static final int MAX_GENERATE_WATTS = 1000;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int generateWatts = 0;
-	public int capacityDynamic;
 
 	public TileEntitySolar()
 	{
@@ -55,20 +52,14 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 
 	public TileEntitySolar(int maxEnergy)
 	{
-		this.capacityDynamic = maxEnergy;
 		this.storage.setMaxExtract(1300);
 		this.storage.setMaxReceive(TileEntitySolar.MAX_GENERATE_WATTS);
-        this.storage.setCapacity(50000);
+        this.storage.setCapacity(maxEnergy);
 	}
 
 	@Override
 	public void updateEntity()
 	{
-		if (this.storage.getCapacityGC() == 0)
-		{
-			this.storage.setCapacity(this.capacityDynamic);
-		}
-
 		this.receiveEnergyGC(null, this.generateWatts, false);
 
 		super.updateEntity();
@@ -286,7 +277,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-		this.capacityDynamic = nbt.getInteger("capacityDynamic");
+        this.storage.setCapacity(nbt.getFloat("maxEnergy"));
 		this.currentAngle = nbt.getFloat("currentAngle");
 		this.targetAngle = nbt.getFloat("targetAngle");
 		this.setDisabled(0, nbt.getBoolean("disabled"));
@@ -311,7 +302,6 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 	public void writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
-		nbt.setInteger("capacityDynamic", this.capacityDynamic);
 		nbt.setFloat("maxEnergy", this.getMaxEnergyStoredGC());
 		nbt.setFloat("currentAngle", this.currentAngle);
 		nbt.setFloat("targetAngle", this.targetAngle);
