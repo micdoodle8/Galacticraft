@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -8,9 +8,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityBubble;
 import micdoodle8.mods.galacticraft.core.entities.IBubble;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -20,19 +18,19 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.EnumSet;
+import java.util.List;
 
 public class TileEntityOxygenDistributor extends TileEntityOxygen implements IInventory, ISidedInventory, IBubbleProvider
 {
 	public boolean active;
 	public boolean lastActive;
 
-	public static final int WATTS_PER_TICK = 1;
-
 	private ItemStack[] containingItems = new ItemStack[1];
-
 	public EntityBubble oxygenBubble;
-	@NetworkedField(targetSide = Side.CLIENT)
-	public int oxygenBubbleEntityID = -1;
+    /**
+     * Used for saving/loading old oxygen bubbles
+     */
+    private boolean hasValidBubble;
 
 	public TileEntityOxygenDistributor()
 	{
@@ -67,6 +65,29 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 		super.invalidate();
 	}
 
+    public void addExtraNetworkedData(List<Object> networkedList)
+    {
+        if (!this.worldObj.isRemote)
+        {
+            networkedList.add(this.oxygenBubble != null);
+            if (this.oxygenBubble != null)
+            {
+                networkedList.add(this.oxygenBubble.getEntityId());
+            }
+        }
+    }
+
+    public void readExtraNetworkedData(ByteBuf dataStream)
+    {
+        if (this.worldObj.isRemote)
+        {
+            if (dataStream.readBoolean())
+            {
+                this.oxygenBubble = (EntityBubble)worldObj.getEntityByID(dataStream.readInt());
+            }
+        }
+    }
+
 	public double getDistanceFromServer(double par1, double par3, double par5)
 	{
 		final double d3 = this.xCoord + 0.5D - par1;
@@ -80,42 +101,24 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 	{
 		super.updateEntity();
 
-		if (this.oxygenBubble == null || this.ticks < 25)
+		if (!hasValidBubble && !this.worldObj.isRemote && (this.oxygenBubble == null || this.ticks < 25))
 		{
-			if (this.oxygenBubbleEntityID != -1 && (this.oxygenBubble == null || this.oxygenBubbleEntityID != this.oxygenBubble.getEntityId()))
-			{
-				Entity entity = this.worldObj.getEntityByID(this.oxygenBubbleEntityID);
-
-				if (entity instanceof EntityBubble)
-				{
-					this.oxygenBubble = (EntityBubble) entity;
-				}
-			}
-
-			if (this.oxygenBubble == null)
-			{
-				this.oxygenBubble = new EntityBubble(this.worldObj, new Vector3(this), this);
-
-				if (!this.worldObj.isRemote)
-				{
-					this.worldObj.spawnEntityInWorld(this.oxygenBubble);
-				}
-			}
+            if (this.oxygenBubble == null)
+            {
+                this.oxygenBubble = new EntityBubble(this.worldObj, new Vector3(this), this);
+                this.hasValidBubble = true;
+                this.worldObj.spawnEntityInWorld(this.oxygenBubble);
+            }
 		}
 
-		if (!this.worldObj.isRemote)
-		{
-			this.oxygenBubbleEntityID = this.oxygenBubble.getEntityId();
-		}
-
-		if (!this.worldObj.isRemote)
+		if (!this.worldObj.isRemote && this.oxygenBubble != null)
 		{
             this.active = this.oxygenBubble.getSize() >= 1 && this.hasEnoughEnergyToRun;
 		}
 
 		if (!this.worldObj.isRemote && (this.active != this.lastActive || this.ticks % 20 == 0))
 		{
-			if (this.active)
+			if (this.active && this.oxygenBubble != null)
 			{
 				for (int x = (int) Math.floor(this.xCoord - this.oxygenBubble.getSize() - 4); x < Math.ceil(this.xCoord + this.oxygenBubble.getSize() + 4); x++)
 				{
@@ -150,6 +153,8 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 	{
 		super.readFromNBT(nbt);
 
+        this.hasValidBubble = nbt.getBoolean("hasValidBubble");
+
 		final NBTTagList var2 = nbt.getTagList("Items", 10);
 		this.containingItems = new ItemStack[this.getSizeInventory()];
 
@@ -170,7 +175,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 	{
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("BubbleEntityID", this.oxygenBubble == null ? -1 : this.oxygenBubble.getEntityId());
+        nbt.setBoolean("hasValidBubble", this.hasValidBubble);
 
 		final NBTTagList list = new NBTTagList();
 

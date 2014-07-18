@@ -138,7 +138,8 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
 //			electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energyStorage.desc.1") + ((int) Math.floor(this.distributor.getEnergyStoredGC()) + " / " + (int) Math.floor(this.distributor.getMaxEnergyStoredGC())));
 			this.electricInfoRegion.tooltipStrings = electricityDesc;
 
-			this.checkboxRenderBubble.isSelected = this.distributor.oxygenBubble.shouldRender();
+            if (this.distributor.oxygenBubble != null)
+			    this.checkboxRenderBubble.isSelected = this.distributor.oxygenBubble.shouldRender();
 		}
 	}
 
@@ -158,7 +159,7 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
 	@Override
 	public boolean getInitiallySelected(GuiElementCheckbox checkbox)
 	{
-		return this.distributor.oxygenBubble.shouldRender();
+		return this.distributor.oxygenBubble != null ? this.distributor.oxygenBubble.shouldRender() : false;
 	}
 
 	@Override

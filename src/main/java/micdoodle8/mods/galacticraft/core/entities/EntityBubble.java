@@ -29,6 +29,7 @@ public class EntityBubble extends EntityAdvanced implements IPacketReceiver, IBu
 		this.posY = mainBlockVec.y + 1.0D;
 		this.posZ = mainBlockVec.z + 0.5D;
 		this.distributor = distributor;
+        new Exception().printStackTrace();
 	}
 
 	public EntityBubble(World world)
@@ -84,26 +85,44 @@ public class EntityBubble extends EntityAdvanced implements IPacketReceiver, IBu
 
 		super.onEntityUpdate();
 
-		final TileEntity tileAt = this.worldObj.getTileEntity(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1.0), MathHelper.floor_double(this.posZ));
+        final TileEntity tileAt = this.worldObj.getTileEntity(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1.0), MathHelper.floor_double(this.posZ));
 
-		if (tileAt instanceof TileEntityOxygenDistributor)
-		{
-			this.distributor = (TileEntityOxygenDistributor) tileAt;
-		}
+        if (tileAt instanceof TileEntityOxygenDistributor)
+        {
+            this.distributor = (TileEntityOxygenDistributor) tileAt;
+        }
+        else if (tileAt == null)
+        {
+            if (this.distributor != null)
+            {
+                this.distributor.oxygenBubble = null;
+            }
 
-		if (this.distributor != null && (this.distributor.oxygenBubble == null || this.distributor.oxygenBubble.equals(this)) && !this.worldObj.isRemote)
-		{
-			this.distributor.oxygenBubble = this;
-		}
-		else if (!this.worldObj.isRemote)
-		{
-			this.setDead();
-		}
+            this.distributor = null;
 
-		if (tileAt == null && !this.worldObj.isRemote)
-		{
-			this.setDead();
-		}
+            if (!this.worldObj.isRemote)
+            {
+                this.setDead();
+            }
+        }
+
+        if (!this.worldObj.isRemote)
+        {
+            if (this.distributor != null && (this.distributor.oxygenBubble == null || !this.distributor.oxygenBubble.equals(this)))
+            {
+                this.distributor.oxygenBubble = this;
+            }
+
+            if (this.distributor == null)
+            {
+                this.setDead();
+            }
+
+            if (tileAt == null)
+            {
+                this.setDead();
+            }
+        }
 
 		if (!this.worldObj.isRemote && this.distributor != null)
 		{
@@ -127,11 +146,6 @@ public class EntityBubble extends EntityAdvanced implements IPacketReceiver, IBu
 			this.posY = vec.y + 1.0D;
 			this.posZ = vec.z + 0.5D;
 		}
-
-		//		if (!this.worldObj.isRemote && this.ticks % 5 == 0)
-		//		{
-		//			GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 50.0D));
-		//		}
 	}
 
 	@Override
@@ -172,6 +186,7 @@ public class EntityBubble extends EntityAdvanced implements IPacketReceiver, IBu
 		{
 			this.size = nbt.getFloat("bubbleSizeF");
 		}
+        System.err.println("READ " + size);
 
 		this.setShouldRender(nbt.getBoolean("ShouldRender"));
 	}
@@ -179,6 +194,7 @@ public class EntityBubble extends EntityAdvanced implements IPacketReceiver, IBu
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound nbt)
 	{
+        System.err.println("WRITE" + size);
 		nbt.setFloat("bubbleSizeF", this.size);
 		nbt.setBoolean("ShouldRender", this.shouldRender);
 	}
