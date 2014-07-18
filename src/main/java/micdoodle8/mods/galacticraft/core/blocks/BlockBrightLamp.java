@@ -36,7 +36,7 @@ public class BlockBrightLamp extends BlockAdvanced
 	{
 		double boundsMin = 0.2D;
 		double boundsMax = 0.8D;
-		return AxisAlignedBB.getAABBPool().getAABB(x + boundsMin, y + boundsMin, z + boundsMin, x + boundsMax, y + boundsMax, z + boundsMax);
+		return AxisAlignedBB.getBoundingBox(x + boundsMin, y + boundsMin, z + boundsMin, x + boundsMax, y + boundsMax, z + boundsMax);
 	}
 
 	@Override

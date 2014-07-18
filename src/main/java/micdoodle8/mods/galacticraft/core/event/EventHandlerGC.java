@@ -563,7 +563,7 @@ public class EventHandlerGC
 	//
 	//		for (PlayerGearData gearData2 : ClientProxyCore.playerItemData)
 	//		{
-	//			if (gearData2.getPlayer().getGameProfile().getName().equals(player.getGameProfile().getName()))
+	//			if (gearData2.getPlayer().getGameProfile().equals(player.getGameProfile()))
 	//			{
 	//				gearData = gearData2;
 	//				break;
