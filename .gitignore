@@ -45,6 +45,7 @@ local.properties
 .classpath
 .settings/
 .loadpath
+.gradle/
 
 # External tool builders
 .externalToolBuilders/
@@ -58,6 +59,14 @@ local.properties
 # PDT-specific
 .buildpath
 
+#################
+## IntelliJ IDEA
+#################
+
+.idea/
+*.iml
+*.ipr
+*.iws
 
 #################
 ## Visual Studio
@@ -190,4 +199,3 @@ pip-log.txt
 
 # Mac crap
 .DS_Store
-*.iml
