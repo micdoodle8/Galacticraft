@@ -48,7 +48,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 	{
 		if (world.getBlockMetadata(x, y, z) == 15)
 		{
-			return AxisAlignedBB.getAABBPool().getAABB(x, y, z, x, y, z);
+			return AxisAlignedBB.getBoundingBox(x, y, z, x, y, z);
 		}
 
 		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
@@ -59,7 +59,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 	{
 		if (world.getBlockMetadata(x, y, z) == 15)
 		{
-			return AxisAlignedBB.getAABBPool().getAABB(x, y, z, x, y, z);
+			return AxisAlignedBB.getBoundingBox(x, y, z, x, y, z);
 		}
 
 		return super.getSelectedBoundingBoxFromPool(world, x, y, z);

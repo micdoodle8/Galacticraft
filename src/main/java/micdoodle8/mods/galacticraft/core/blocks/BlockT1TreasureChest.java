@@ -451,7 +451,7 @@ public class BlockT1TreasureChest extends BlockContainer implements ITileEntityP
 	@SuppressWarnings("rawtypes")
 	public static boolean isOcelotBlockingChest(World par0World, int par1, int par2, int par3)
 	{
-		final Iterator var4 = par0World.getEntitiesWithinAABB(EntityOcelot.class, AxisAlignedBB.getAABBPool().getAABB(par1, par2 + 1, par3, par1 + 1, par2 + 2, par3 + 1)).iterator();
+		final Iterator var4 = par0World.getEntitiesWithinAABB(EntityOcelot.class, AxisAlignedBB.getBoundingBox(par1, par2 + 1, par3, par1 + 1, par2 + 2, par3 + 1)).iterator();
 		EntityOcelot var6;
 
 		do

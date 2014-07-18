@@ -77,7 +77,7 @@ public class OxygenUtil
 			}
 		}
 
-		return OxygenUtil.isInOxygenBlock(world, AxisAlignedBB.getAABBPool().getAABB(minVec.x, minVec.y, minVec.z, maxVec.x, maxVec.y, maxVec.z).contract(0.001D, 0.001D, 0.001D));
+		return OxygenUtil.isInOxygenBlock(world, AxisAlignedBB.getBoundingBox(minVec.x, minVec.y, minVec.z, maxVec.x, maxVec.y, maxVec.z).contract(0.001D, 0.001D, 0.001D));
 	}
 
 	public static boolean isInOxygenBlock(World world, AxisAlignedBB bb)

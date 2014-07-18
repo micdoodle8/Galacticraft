@@ -676,7 +676,7 @@ public class ModelPlayerGC extends ModelBiped
 		{
 		}
 
-		final List<?> l = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, AxisAlignedBB.getAABBPool().getAABB(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
+		final List<?> l = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, AxisAlignedBB.getBoundingBox(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
 
 		for (int i = 0; i < l.size(); i++)
 		{
