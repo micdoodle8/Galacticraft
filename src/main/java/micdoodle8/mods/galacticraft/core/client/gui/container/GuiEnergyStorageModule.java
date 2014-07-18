@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -37,7 +38,7 @@ public class GuiEnergyStorageModule extends GuiContainer
 		this.fontRendererObj.drawString(displayStr, 122 - this.fontRendererObj.getStringWidth(displayStr) / 2, 25, 4210752);
         displayStr = "of " + EnergyHelper.getEnergyDisplayS(this.tileEntity.getMaxEnergyStoredGC());
         this.fontRendererObj.drawString(displayStr, 122 - this.fontRendererObj.getStringWidth(displayStr) / 2, 34, 4210752);
-        displayStr = "Output: 15,000 gJ/s";
+        displayStr = "Output: " + EnergyHelper.getEnergyDisplayS(this.tileEntity.storage.getMaxExtract())+"/t";
 		this.fontRendererObj.drawString(displayStr, 122 - this.fontRendererObj.getStringWidth(displayStr) / 2, 64, 4210752);
 		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}

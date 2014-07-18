@@ -155,7 +155,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 		if (itemStack != null)
 		{
 			Item item = itemStack.getItem();
-			float energyToDischarge = Math.min(this.getRequest(ForgeDirection.UNKNOWN), this.storage.getMaxReceive());
+			float energyToDischarge = this.getRequest(ForgeDirection.UNKNOWN);
 
 			if (item instanceof IItemElectric)
 			{
@@ -206,11 +206,11 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 	{
 		super.updateEntity();
 
-		// Register to the IC2 Network
 		if (!this.worldObj.isRemote)
 		{
 			if (!this.isAddedToEnergyNet)
 			{
+				// Register to the IC2 Network
 				this.initIC();
 			}
 
@@ -390,7 +390,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 			this.powerHandlerBC = new PowerHandler((IPowerReceptor) this, buildcraft.api.power.PowerHandler.Type.MACHINE);
 		}
 
-		((PowerHandler) this.powerHandlerBC).configure(0D, 2 * this.storage.getMaxReceive() * NetworkConfigHandler.TO_BC_RATIO, 0, (int) Math.ceil(this.getMaxEnergyStoredGC() * NetworkConfigHandler.TO_BC_RATIO));
+		((PowerHandler) this.powerHandlerBC).configure(0D, this.storage.getMaxReceive() * NetworkConfigHandler.TO_BC_RATIO, 0, (int) Math.ceil(this.getMaxEnergyStoredGC() * NetworkConfigHandler.TO_BC_RATIO));
 		((PowerHandler) this.powerHandlerBC).configurePowerPerdition(1, 10);
 	}
 
@@ -470,7 +470,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 	@RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "BuildCraft|Energy")
 	public double minimumConsumption()
 	{
-		return 2 * this.storage.getMaxReceive() * NetworkConfigHandler.TO_BC_RATIO;
+		return this.storage.getMaxReceive() * NetworkConfigHandler.TO_BC_RATIO;
 	}
 
 	@RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "BuildCraft|Energy")

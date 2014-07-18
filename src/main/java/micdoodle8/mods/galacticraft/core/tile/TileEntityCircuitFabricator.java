@@ -32,7 +32,6 @@ public class TileEntityCircuitFabricator extends TileEntityElectricBlock impleme
 	public TileEntityCircuitFabricator()
 	{
 		this.storage.setMaxExtract(20);
-		this.storage.setCapacity(50000);
 	}
 
 	@Override

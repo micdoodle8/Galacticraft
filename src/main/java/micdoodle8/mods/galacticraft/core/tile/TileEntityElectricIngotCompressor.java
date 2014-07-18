@@ -30,8 +30,9 @@ public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock i
 
 	public TileEntityElectricIngotCompressor()
 	{
-		this.storage.setMaxExtract(250);
-		this.storage.setCapacity(50000);
+		this.storage.setMaxExtract(75);
+		this.storage.setCapacity(100000);
+		this.setTierGC(2);
 	}
 
 	@Override

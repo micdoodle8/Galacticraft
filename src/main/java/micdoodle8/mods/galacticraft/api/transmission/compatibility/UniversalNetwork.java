@@ -77,8 +77,8 @@ public class UniversalNetwork implements IElectricityNetwork
 
     private final Set<IConductor> conductors = new HashSet<IConductor>();
 
-	//This is the energy per tick corresponding to 12kW 
-	private final static float ENERGY_STORAGE_LEVEL = 0.6F;
+	//This is an energy per tick which exceeds what any normal machine will request, so the requester must be an energy storage - for example, a battery or an energy cube
+	private final static float ENERGY_STORAGE_LEVEL = 200F;
 
     @Override
     public Set<IConductor> getTransmitters()

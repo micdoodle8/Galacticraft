@@ -74,7 +74,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 	{
 		if (world.getBlockMetadata(x, y, z) == 10)
 		{
-			return AxisAlignedBB.getAABBPool().getAABB(x + 0.0D, y + 0.0D, z + 0.0D, x + 0.0D, y + 0.0D, z + 0.0D);
+			return AxisAlignedBB.getBoundingBox(x + 0.0D, y + 0.0D, z + 0.0D, x + 0.0D, y + 0.0D, z + 0.0D);
 		}
 
 		return super.getSelectedBoundingBoxFromPool(world, x, y, z);

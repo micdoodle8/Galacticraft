@@ -5,7 +5,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityThruster;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -59,8 +58,8 @@ public class TileEntityThrusterRenderer extends TileEntitySpecialRenderer
 				break;
 			}
 
-			if (reverseThruster)
-				GL11.glRotatef(180, 0, 1, 0);
+			if (!reverseThruster)
+				GL11.glRotatef(180, 1, 0, 0);
 			TileEntityThrusterRenderer.thrusterModel.renderAll();
 		}
 

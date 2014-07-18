@@ -23,7 +23,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
 	{
 		super(60000, 16);
 		this.storage.setCapacity(0);
-		this.storage.setMaxTransfer(0);
+		this.storage.setMaxExtract(0);
 	}
 
 	@Override

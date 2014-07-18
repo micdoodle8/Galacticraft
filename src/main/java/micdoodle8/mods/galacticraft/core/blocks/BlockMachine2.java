@@ -83,7 +83,7 @@ public class BlockMachine2 extends BlockTileGC
 		if (tile instanceof TileEntityCoalGenerator)
 		{
 			TileEntityCoalGenerator tileEntity = (TileEntityCoalGenerator) tile;
-			if (tileEntity.generateWatts > 0)
+			if (tileEntity.heatGJperTick > 0)
 			{
 				int metadata = par1World.getBlockMetadata(x, y, z);
 				float var7 = x + 0.5F;
