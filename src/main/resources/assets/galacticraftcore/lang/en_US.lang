@@ -424,8 +424,9 @@ gui.missingCore.name.0=MicdoodleCore not found in mods folder
 gui.missingCore.name.1=Galacticraft failed to load
 gui.missingCore.name.2=Close Minecraft and install MicdoodleCore
 gui.missingCore.name.3=Click here to open download page
-gui.electricFurnace.desc.0=gui.electricFurnace.desc.0
-gui.electricFurnace.desc.1=gui.electricFurnace.desc.1
+gui.electricFurnace.desc.0=Items to be smelted
+gui.electricFurnace.desc.1=Output slot
+gui.electricCompressor.desc.0=Progress
 gui.showBubble.desc.0=Show Bubble
 
 gui.spaceRace.create.close.name=Close
