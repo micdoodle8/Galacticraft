@@ -17,26 +17,26 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.util.List;
-import java.util.Random;
 
-public class BlockMachine extends BlockTileGC
+public class BlockMachineTiered extends BlockTileGC
 {
-	public static final int COAL_GENERATOR_METADATA = 0;
-	public static final int COMPRESSOR_METADATA = 12;
+	public static final int STORAGE_MODULE_METADATA = 0;
+	public static final int ELECTRIC_FURNACE_METADATA = 4;
 
 	private IIcon iconMachineSide;
 	private IIcon iconInput;
+	private IIcon iconOutput;
+	private IIcon iconTier2;
 
-	private IIcon iconCoalGenerator;
-	private IIcon iconCompressor;
+	private IIcon[] iconEnergyStorageModule;
+	private IIcon iconElectricFurnace;
 
-	public BlockMachine(String assetName)
+	public BlockMachineTiered(String assetName)
 	{
 		super(GCBlocks.machine);
-		this.setBlockName("basicMachine");
 		this.setHardness(1.0F);
 		this.setStepSound(Block.soundTypeMetal);
-		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + "machine");
 		this.setBlockName(assetName);
 	}
 
@@ -56,91 +56,101 @@ public class BlockMachine extends BlockTileGC
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
 		this.blockIcon = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine");
+		this.iconTier2 = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "space_station_top");
 		this.iconInput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
+		this.iconOutput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_output");
+
 		this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_side");
+		this.iconEnergyStorageModule = new IIcon[17];
 
-		this.iconCoalGenerator = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "coalGenerator");
-		this.iconCompressor = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "compressor");
-	}
-
-	@Override
-	public void randomDisplayTick(World par1World, int x, int y, int z, Random par5Random)
-	{
-		TileEntity tile = par1World.getTileEntity(x, y, z);
-
-		if (tile instanceof TileEntityCoalGenerator)
+		for (int i = 0; i < this.iconEnergyStorageModule.length; i++)
 		{
-			TileEntityCoalGenerator tileEntity = (TileEntityCoalGenerator) tile;
-			if (tileEntity.heatGJperTick > 0)
-			{
-				int metadata = par1World.getBlockMetadata(x, y, z);
-				float var7 = x + 0.5F;
-				float var8 = y + 0.0F + par5Random.nextFloat() * 6.0F / 16.0F;
-				float var9 = z + 0.5F;
-				float var10 = 0.52F;
-				float var11 = par5Random.nextFloat() * 0.6F - 0.3F;
-
-				if (metadata == 3)
-				{
-					par1World.spawnParticle("smoke", var7 - var10, var8, var9 + var11, 0.0D, 0.0D, 0.0D);
-					par1World.spawnParticle("flame", var7 - var10, var8, var9 + var11, 0.0D, 0.0D, 0.0D);
-				}
-				else if (metadata == 2)
-				{
-					par1World.spawnParticle("smoke", var7 + var10, var8, var9 + var11, 0.0D, 0.0D, 0.0D);
-					par1World.spawnParticle("flame", var7 + var10, var8, var9 + var11, 0.0D, 0.0D, 0.0D);
-				}
-				else if (metadata == 1)
-				{
-					par1World.spawnParticle("smoke", var7 + var11, var8, var9 - var10, 0.0D, 0.0D, 0.0D);
-					par1World.spawnParticle("flame", var7 + var11, var8, var9 - var10, 0.0D, 0.0D, 0.0D);
-				}
-				else if (metadata == 0)
-				{
-					par1World.spawnParticle("smoke", var7 + var11, var8, var9 + var10, 0.0D, 0.0D, 0.0D);
-					par1World.spawnParticle("flame", var7 + var11, var8, var9 + var10, 0.0D, 0.0D, 0.0D);
-				}
-			}
+			this.iconEnergyStorageModule[i] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "energyStorageModule_" + i);
 		}
+
+		this.iconElectricFurnace = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "electricFurnace");
 	}
 
 	@Override
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
 	{
 		int metadata = world.getBlockMetadata(x, y, z);
+		int type = metadata & 4;
+		int metaside = (metadata & 3) + 2;
 
-		return this.getIcon(side, world.getBlockMetadata(x, y, z));
+		//TODO: add icons for the Tier 2 versions
+		if (type == BlockMachineTiered.STORAGE_MODULE_METADATA)
+		{
+			if (side == 0 || side == 1)
+			{
+				if (metadata >= 8) return this.iconTier2;
+				return this.blockIcon;
+			}
+
+			// If it is the front side
+			if (side == metaside)
+			{
+				return this.iconOutput;
+			}
+			// If it is the back side
+			else if (side == (metaside ^ 1))
+			{
+				return this.iconInput;
+			}
+
+			TileEntity tile = world.getTileEntity(x, y, z);
+
+			if (tile instanceof TileEntityEnergyStorageModule)
+			{
+				return this.iconEnergyStorageModule[((TileEntityEnergyStorageModule) tile).scaledEnergyLevel];
+			}
+			else
+			{
+				return this.iconEnergyStorageModule[0];
+			}
+		}
+
+		return this.getIcon(side, metadata);
 	}
 
 	@Override
 	public IIcon getIcon(int side, int metadata)
 	{
+		int metaside = (metadata & 3) + 2;
+		
 		if (side == 0 || side == 1)
 		{
+			if (metadata >= 8) return this.iconTier2;
 			return this.blockIcon;
 		}
 
-		if (metadata >= BlockMachine.COMPRESSOR_METADATA)
+		if ((metadata & 4) == BlockMachineTiered.ELECTRIC_FURNACE_METADATA)
 		{
-			metadata -= BlockMachine.COMPRESSOR_METADATA;
-
-			if (metadata == 0 && side == 4 || metadata == 1 && side == 5 || metadata == 2 && side == 3 || metadata == 3 && side == 2)
+			// If it is the front side
+			if (side == metaside)
 			{
-				return this.iconCompressor;
+				return this.iconInput;
+			}
+			// If it is the back side
+			else if (metaside == 2 && side == 4 || metaside == 3 && side == 5 || metaside == 4 && side == 3 || metaside == 5 && side == 2)
+			{
+				return this.iconElectricFurnace;
 			}
 		}
 		else
 		{
 			// If it is the front side
-			if (side == metadata + 2)
+			if (side == metaside)
+			{
+				return this.iconOutput;
+			}
+			// If it is the back side
+			else if (side == (metaside ^ 1))
 			{
 				return this.iconInput;
 			}
-			// If it is the back side
-			if (metadata == 0 && side == 4 || metadata == 1 && side == 5 || metadata == 2 && side == 3 || metadata == 3 && side == 2)
-			{
-				return this.iconCoalGenerator;
-			}
+
+			return this.iconEnergyStorageModule[16];
 		}
 
 		return this.iconMachineSide;
@@ -200,12 +210,9 @@ public class BlockMachine extends BlockTileGC
 			break;
 		}
 
-		if (metadata < BlockMachine.COMPRESSOR_METADATA)
-		{
-			TileEntity te = par1World.getTileEntity(x,  y,  z);
-			if (te instanceof TileEntityUniversalElectrical)
-				((TileEntityUniversalElectrical) te).updateFacing();
-		}
+		TileEntity te = par1World.getTileEntity(x,  y,  z);
+		if (te instanceof TileEntityUniversalElectrical)
+			((TileEntityUniversalElectrical) te).updateFacing();
 
 		par1World.setBlockMetadataWithNotify(x, y, z, (metadata & 12) + change, 3);
 		return true;
@@ -217,20 +224,9 @@ public class BlockMachine extends BlockTileGC
 	@Override
 	public boolean onMachineActivated(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
 	{
-		int metadata = par1World.getBlockMetadata(x, y, z);
-
 		if (!par1World.isRemote)
 		{
-			if (metadata >= BlockMachine.COMPRESSOR_METADATA)
-			{
-				par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, x, y, z);
-				return true;
-			}
-			else
-			{
-				par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, x, y, z);
-				return true;
-			}
+			par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, x, y, z);
 		}
 
 		return true;
@@ -239,32 +235,40 @@ public class BlockMachine extends BlockTileGC
 	@Override
 	public TileEntity createTileEntity(World world, int metadata)
 	{
-		if (metadata >= BlockMachine.COMPRESSOR_METADATA)
+		int tier = metadata / 8 + 1;
+		
+		if ((metadata & 4) == BlockMachineTiered.ELECTRIC_FURNACE_METADATA)
 		{
-			return new TileEntityIngotCompressor();
+			return new TileEntityElectricFurnace(tier);
 		}
 		else
 		{
-			return new TileEntityCoalGenerator();
+			return new TileEntityEnergyStorageModule();
 		}
 	}
 
-	public ItemStack getCompressor()
+	public ItemStack getEnergyStorageModule()
 	{
-		return new ItemStack(this, 1, BlockMachine.COMPRESSOR_METADATA);
+		return new ItemStack(this, 1, BlockMachineTiered.STORAGE_MODULE_METADATA);
 	}
 
-	public ItemStack getCoalGenerator()
+	public ItemStack getElectricFurnace()
 	{
-		return new ItemStack(this, 1, BlockMachine.COAL_GENERATOR_METADATA);
+		return new ItemStack(this, 1, BlockMachineTiered.ELECTRIC_FURNACE_METADATA);
 	}
 
+	public ItemStack getElectricArcFurnace()
+	{
+		return new ItemStack(this, 1, 8 + BlockMachineTiered.ELECTRIC_FURNACE_METADATA);
+	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
-		par3List.add(this.getCoalGenerator());
-		par3List.add(this.getCompressor());
+		par3List.add(this.getEnergyStorageModule());
+		par3List.add(this.getElectricFurnace());
+		par3List.add(this.getElectricArcFurnace());
 	}
 
 	@Override

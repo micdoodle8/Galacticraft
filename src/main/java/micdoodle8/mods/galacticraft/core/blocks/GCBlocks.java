@@ -46,6 +46,7 @@ public class GCBlocks
 	public static Block solarPanel;
 	public static Block machineBase;
 	public static Block machineBase2;
+	public static Block machineTiered;
 	public static Block aluminumWire;
 	public static Block glowstoneTorch;
 	public static Block blockMoon;
@@ -87,8 +88,9 @@ public class GCBlocks
 		GCBlocks.parachest = new BlockParaChest("parachest");
 		GCBlocks.solarPanel = new BlockSolar("solar");
 		GCBlocks.machineBase = new BlockMachine("machine");
-		GCBlocks.aluminumWire = new BlockAluminumWire("aluminumWire");
 		GCBlocks.machineBase2 = new BlockMachine2("machine2");
+		GCBlocks.machineTiered = new BlockMachineTiered("machineTiered");
+		GCBlocks.aluminumWire = new BlockAluminumWire("aluminumWire");
 		GCBlocks.glowstoneTorch = new BlockGlowstoneTorch("glowstoneTorch");
 		GCBlocks.blockMoon = new BlockBasicMoon();
 		GCBlocks.cheeseBlock = new BlockCheese();
@@ -130,8 +132,9 @@ public class GCBlocks
 		GCCoreUtil.registerGalacticraftBlock("solarPanelAdvanced", GCBlocks.solarPanel, 4);
 		GCCoreUtil.registerGalacticraftBlock("copperWire", GCBlocks.aluminumWire);
 		GCCoreUtil.registerGalacticraftBlock("coalGenerator", GCBlocks.machineBase, 0);
-		GCCoreUtil.registerGalacticraftBlock("energyStorageModule", GCBlocks.machineBase, 4);
-		GCCoreUtil.registerGalacticraftBlock("electricFurnace", GCBlocks.machineBase, 8);
+		GCCoreUtil.registerGalacticraftBlock("energyStorageModule", GCBlocks.machineTiered, 0);
+		GCCoreUtil.registerGalacticraftBlock("electricFurnace", GCBlocks.machineTiered, 4);
+		GCCoreUtil.registerGalacticraftBlock("electricArcFurnace", GCBlocks.machineTiered, 12);
 		GCCoreUtil.registerGalacticraftBlock("ingotCompressor", GCBlocks.machineBase, 12);
 		GCCoreUtil.registerGalacticraftBlock("ingotCompressorElectric", GCBlocks.machineBase2, 0);
 		GCCoreUtil.registerGalacticraftBlock("circuitFabricator", GCBlocks.machineBase2, 4);
@@ -224,6 +227,7 @@ public class GCBlocks
 		GameRegistry.registerBlock(GCBlocks.solarPanel, ItemBlockSolar.class, GCBlocks.solarPanel.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.machineBase, ItemBlockMachine.class, GCBlocks.machineBase.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.machineBase2, ItemBlockMachine.class, GCBlocks.machineBase2.getUnlocalizedName());
+		GameRegistry.registerBlock(GCBlocks.machineTiered, ItemBlockMachine.class, GCBlocks.machineTiered.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.aluminumWire, ItemBlockAluminumWire.class, GCBlocks.aluminumWire.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.glowstoneTorch, ItemBlockGC.class, GCBlocks.glowstoneTorch.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.blockMoon, ItemBlockMoon.class, GCBlocks.blockMoon.getUnlocalizedName());

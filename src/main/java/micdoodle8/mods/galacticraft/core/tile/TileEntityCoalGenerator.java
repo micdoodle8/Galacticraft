@@ -22,12 +22,13 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectricalSource
 	//New energy rates:
 	//
 	//Tier 1 machine typically consumes 600 gJ/s = 30 gJ/t
-	//(Electric furnace consumes maybe? three times that, t.b.d.)
+
 	//Coal generator on max heat can power up to 4 Tier 1 machines
+	//(fewer if one of them is an Electric Furnace)
 	//Basic solar gen in full sun can power 1 Tier 1 machine
 
-	//1 lump of coal is equivalent to 38400 gJ on max heat
-	//so produces 120 gJ/t over 320 ticks
+	//1 lump of coal is equivalent to 38400 gJ
+	//because on max heat it produces 120 gJ/t over 320 ticks
 	
 	//Below the min_generate, all heat is wasted
 	//At max generate, 100% efficient conversion coal energy -> electric makes 120 gJ/t

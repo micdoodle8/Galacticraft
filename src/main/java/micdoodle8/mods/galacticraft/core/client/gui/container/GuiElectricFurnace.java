@@ -43,12 +43,6 @@ public class GuiElectricFurnace extends GuiContainerGC
         batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
         batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 7, (this.height - this.ySize) / 2 + 48, 18, 18, batterySlotDesc, this.width, this.height, this));
-        batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.add(GCCoreUtil.translate("gui.electricFurnace.desc.0"));
-        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 55, (this.height - this.ySize) / 2 + 24, 18, 18, batterySlotDesc, this.width, this.height, this));
-        batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.add(GCCoreUtil.translate("gui.electricFurnace.desc.1"));
-        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 108, (this.height - this.ySize) / 2 + 24, 18, 18, batterySlotDesc, this.width, this.height, this));
     }
 
     /**
@@ -98,7 +92,7 @@ public class GuiElectricFurnace extends GuiContainerGC
 
 		if (this.tileEntity.processTicks > 0)
 		{
-			scale = (int) ((double) this.tileEntity.processTicks / (double) TileEntityElectricFurnace.PROCESS_TIME_REQUIRED * 23);
+			scale = (int) ((double) this.tileEntity.processTicks / (double) this.tileEntity.processTimeRequired * 23);
 			this.drawTexturedModalRect(containerWidth + 78, containerHeight + 24, 176, 0, 23 - scale, 15);
 		}
 

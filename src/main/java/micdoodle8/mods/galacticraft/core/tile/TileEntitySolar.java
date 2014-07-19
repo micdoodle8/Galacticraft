@@ -354,12 +354,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 	@Override
 	public EnumSet<ForgeDirection> getElectricalOutputDirections()
 	{
-		int metadata = this.getBlockMetadata();
-
-		if (this.tierGC == 2)
-		{
-			metadata -= BlockSolar.ADVANCED_METADATA;
-		}
+		int metadata = this.getBlockMetadata() & 3;
 
 		return EnumSet.of(ForgeDirection.getOrientation((metadata + 2) ^ 1), ForgeDirection.UNKNOWN);
 	}
@@ -367,12 +362,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 	@Override
 	public ForgeDirection getElectricalOutputDirectionMain()
 	{
-		int metadata = this.getBlockMetadata();
-
-		if (this.tierGC == 2)
-		{
-			metadata -= BlockSolar.ADVANCED_METADATA;
-		}
+		int metadata = this.getBlockMetadata() & 3;
 
 		return ForgeDirection.getOrientation((metadata + 2) ^ 1);
 	}

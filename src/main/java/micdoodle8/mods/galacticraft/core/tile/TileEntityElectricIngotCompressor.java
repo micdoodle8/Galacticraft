@@ -54,7 +54,7 @@ public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock i
 					
 					this.processTimeRequired = TileEntityElectricIngotCompressor.PROCESS_TIME_REQUIRED_BASE * 2 / (1 + this.poweredByTierGC);
 
-					if (this.processTicks == this.processTimeRequired)
+					if (this.processTicks >= this.processTimeRequired)
 					{
 						this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "random.anvil_land", 0.2F, 0.5F);
 						this.processTicks = 0;

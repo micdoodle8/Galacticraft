@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
-import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.EntityPlayer;
@@ -265,19 +264,19 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	@Override
 	public EnumSet<ForgeDirection> getElectricalInputDirections()
 	{
-		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine.STORAGE_MODULE_METADATA + 2).getOpposite(), ForgeDirection.UNKNOWN);
+		return EnumSet.of(ForgeDirection.getOrientation((this.getBlockMetadata() & 3) + 2).getOpposite(), ForgeDirection.UNKNOWN);
 	}
 
 	@Override
 	public EnumSet<ForgeDirection> getElectricalOutputDirections()
 	{
-		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine.STORAGE_MODULE_METADATA + 2), ForgeDirection.UNKNOWN);
+		return EnumSet.of(ForgeDirection.getOrientation((this.getBlockMetadata() & 3) + 2), ForgeDirection.UNKNOWN);
 	}
 
 	@Override
 	public ForgeDirection getElectricalOutputDirectionMain()
 	{
-		return ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine.STORAGE_MODULE_METADATA + 2);
+		return ForgeDirection.getOrientation((this.getBlockMetadata() & 3) + 2);
 	}
 
 	@Override
@@ -288,7 +287,7 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 			return false;
 		}
 
-		int metadata = this.getBlockMetadata() - BlockMachine.STORAGE_MODULE_METADATA;
+		int metadata = this.getBlockMetadata() & 3;
 
 		return direction == ForgeDirection.getOrientation(metadata + 2) || direction == ForgeDirection.getOrientation((metadata + 2) ^ 1);
 	}
