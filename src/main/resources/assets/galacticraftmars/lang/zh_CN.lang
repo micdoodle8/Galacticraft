@@ -4,10 +4,9 @@
 item.rawDesh.name=未精炼戴斯矿
 item.deshStick.name=戴斯棍
 item.ingotDesh.name=戴斯锭
-item.spaceshipTier2.t2Rocket.name=Tier 2 Rocket ##NEEDS TRANSLATE##
-item.spaceshipTier2.name=2阶火箭
+item.spaceshipTier2.t2Rocket.name=二阶火箭
 item.reinforcedPlateT2.name=重装板
-item.tier2.desc=2阶
+item.tier2.desc=二阶
 item.slimelingCargo.name=黏滑物品背包
 item.key.T2.name=2阶地牢钥匙
 item.compressedDesh.name=致密戴斯
@@ -35,9 +34,9 @@ tile.mars.marscobblestone.name=圆石
 tile.mars.marsstone.name=火星石头
 tile.mars.marsdirt.name=火星地底岩石
 tile.mars.marsgrass.name=火星地表岩石
-tile.mars.marsdeco.name=Desh块
+tile.mars.marsdeco.name=戴斯块
 tile.mars.marsdungeon.name=地牢墙壁
-tile.treasureT2.name=2阶宝箱
+tile.treasureT2.name=二阶宝箱
 tile.slimelingEgg.redEgg.name=红色黏滑怪蛋
 tile.slimelingEgg.blueEgg.name=蓝色黏滑怪蛋
 tile.slimelingEgg.yellowEgg.name=黄色黏滑怪蛋
@@ -67,53 +66,56 @@ tile.tintedGlassPane.black.name=黑色玻璃板
 # GUI
 gui.choosePlanet.desc.mars=宜居#无氧气#重力:38%
 item.deshPickSlime.description.name=可用于回收黏滑怪蛋
-gui.message.noEnergy.name=Not Enough Energy ##NEEDS TRANSLATE##
-gui.message.noWater.name=Not Enough Water ##NEEDS TRANSLATE##
-gui.message.noBonemeal.name=Not Enough Bonemeal ##NEEDS TRANSLATE##
-gui.message.noSeeds.name=Not Enough Seeds ##NEEDS TRANSLATE##
-gui.message.noSaplings.name=Not Enough Saplings ##NEEDS TRANSLATE##
-gui.message.bubbleExp.name=BubbleExpanding ##NEEDS TRANSLATE##
-gui.message.noValidBlocks.name=No Valid Blocks in Bubble ##NEEDS TRANSLATE##
-gui.message.terraforming.name=Terraforming ##NEEDS TRANSLATE##
-gui.message.enableTrees.name=Enable Trees ##NEEDS TRANSLATE##
-gui.message.enableGrass.name=Enable Grass ##NEEDS TRANSLATE##
-gui.message.trees.name=Trees ##NEEDS TRANSLATE##
-gui.message.grass.name=Grass ##NEEDS TRANSLATE##
-gui.message.invalidFreq.name=Invalid Frequency ##NEEDS TRANSLATE##
-gui.message.frequency.name=Frequency ##NEEDS TRANSLATE##
-gui.message.destFrequency.name=Destination Frequency ##NEEDS TRANSLATE##
-gui.message.removePad.name=Remove Pad ##NEEDS TRANSLATE##
-gui.message.launchWhen.name=Launch When ##NEEDS TRANSLATE##
-gui.message.cargoUnloaded.name=Cargo is Unloaded ##NEEDS TRANSLATE##
-gui.message.cargoFull.name=Cargo is Full ##NEEDS TRANSLATE##
-gui.message.fullyFueled.name=Fully Fueled ##NEEDS TRANSLATE##
-gui.message.instant.name=Instantly ##NEEDS TRANSLATE##
-gui.message.tenSec.name=10 Seconds ##NEEDS TRANSLATE##
-gui.message.thirtySec.name=30 Seconds ##NEEDS TRANSLATE##
-gui.message.oneMin.name=1 Minute ##NEEDS TRANSLATE##
-gui.message.redstoneSig.name=Redstone Signal ##NEEDS TRANSLATE##
-gui.message.notSet.name=Not Set ##NEEDS TRANSLATE##
-gui.message.notEnough.name=Not Enough ##NEEDS TRANSLATE##
-gui.message.success.name=Success ##NEEDS TRANSLATE##
+gui.message.noEnergy.name=能力不足
+gui.message.noWater.name=水不足
+gui.message.noBonemeal.name=骨粉不足
+gui.message.noSeeds.name=种子不足
+gui.message.noSaplings.name=树苗不足
+gui.message.bubbleExp.name=气泡扩大
+gui.message.noValidBlocks.name=气泡内无有效方块
+gui.message.terraforming.name=正在地球化
+gui.message.enableTrees.name=启用树
+gui.message.enableGrass.name=启用草
+gui.message.trees.name=树
+gui.message.grass.name=草
+gui.message.invalidFreq.name=无效频率
+gui.message.frequency.name=频率
+gui.message.destFrequency.name=目标频率
+gui.message.removePad.name=移除平板
+gui.message.launchWhen.name=发射当
+gui.message.cargoUnloaded.name=货物未卸载时
+gui.message.cargoFull.name=货物已满
+gui.message.fullyFueled.name=燃料已装满
+gui.message.instant.name=立即
+gui.message.tenSec.name=10秒
+gui.message.thirtySec.name=30秒
+gui.message.oneMin.name=1分钟
+gui.message.redstoneSig.name=红石信号
+gui.message.notSet.name=未设置
+gui.message.notEnough.name=缺少
+gui.message.success.name=成功
 
-gui.desc.reinforcedPlateT2.name=2阶
-
-itemGroup.GalacticraftMars=Galacticraft|火星
-
+# Dollar sign ($) will split text onto a new line
+gui.launchController.desc.0=这是发射控制器的$唯一频率
+gui.launchController.desc.1=火箭发射频率,火箭前往
+gui.launchController.desc.2=发射台是否$在发射时移除
+gui.launchController.desc.3=当这个条件达到时,$火箭就会发射
+gui.terraformer.desc.0=水箱
+gui.desc.reinforcedPlateT2.name=二阶
 dimension.Mars.name=火星
-planet.mars=Mars ##NEEDS TRANSLATE##
+planet.mars=火星
 
 # Schematics
 schematic.rocketT3.name=3阶火箭
 schematic.cargoRocket.name=自动货运火箭
 
-# Entity
+# Entities
 entity.Sludgeling.name=泥浆怪
 entity.Slimeling.name=黏滑怪
 entity.CreeperBoss.name=进化爬行者之王
-entity.SpaceshipT2.name=Tier 2 Rocket ##NEEDS TRANSLATE##
-entity.CargoRocket.name=Cargo Rocket ##NEEDS TRANSLATE##
+entity.SpaceshipT2.name=二阶火箭
+entity.CargoRocket.name=货运火箭
 
 # Container
 container.launchcontroller.name=发射控制器
-container.tileTerraformer.name=Terraformer ##NEEDS TRANSLATE##
+container.tileTerraformer.name=地球化转换器

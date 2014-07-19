@@ -1,12 +1,62 @@
-# Galacticraft Asteroids Language File = Simplified Chinese
+# Galacticraft Asteroids Language File = SIMPLIFIED CHINESE
 
-item.itemTier3Rocket.t3Rocket.name=Tier 3 Rocket ##NEEDS TRANSLATE##
-tile.asteroidsBlock.asteroids1.name=Asteroid Rock ##NEEDS TRANSLATE##
-tile.beamReflector.name=Beam Reflector ##NEEDS TRANSLATE##
-tile.beamReceiver.name=Beam Receiver ##NEEDS TRANSLATE##
-tile.telepadShort.name=Short Range Telepad ##NEEDS TRANSLATE##
-planet.asteroids=Asteroids ##NEEDS TRANSLATE##
-itemGroup.GalacticraftAsteroids=Galacticraft Asteroids ##NEEDS TRANSLATE##
-entity.SmallAsteroidGC.name=Small Asteroid ##NEEDS TRANSLATE##
-entity.GrappleHookGC.name=Grapple Hook ##NEEDS TRANSLATE##
-entity.Tier3RocketGC.name=Tier 3 Rocket ##NEEDS TRANSLATE##
+# GENERAL ITEMS
+item.itemTier3Rocket.t3Rocket.name=三阶火箭
+item.heavyNoseCone.name=沉重前锥体
+item.compressedTitanium.name=压缩钛
+item.ingotTitanium.name=钛锭
+item.shardTitanium.name=钛碎片
+item.shardIron.name=铁碎片
+item.rocketFinsT2.name=沉重火箭鳍
+item.engineT2.name=沉重火箭引擎
+item.reinforcedPlateT3.name=高强度板
+item.grapple.name=吊钩
+item.thermalHelm.name=热力充能头盔
+item.thermalChestplate.name=热力充能胸甲
+item.thermalLeggings.name=热力充能护腿
+item.thermalBoots.name=热力充能护腿
+item.tier3.desc=三阶
+
+# TOOLS
+
+# ARMOR
+
+# BLOCKS
+tile.asteroidsBlock.asteroid0.name=行星岩
+tile.asteroidsBlock.asteroid1.name=行星岩
+tile.asteroidsBlock.asteroid2.name=行星岩
+tile.asteroidsBlock.oreIron.name=铁矿
+tile.asteroidsBlock.oreIlmenite.name=钛铁矿
+tile.asteroidsBlock.oreAluminum.name=铝矿
+tile.beamReflector.name=能量射束反射器
+tile.beamReceiver.name=能量射束接收器
+tile.telepadShort.name=短距离传送台
+tile.walkway.name=通道
+tile.walkwayWire.name=通道
+tile.walkwayOxygenPipe.name=通道
+
+# GUI
+planet.asteroids=行星
+
+# Dollar sign ($) will split text onto a new line
+gui.telepad.desc.0=这是传送台的's$唯一坐标
+gui.telepad.desc.1=另一个传送台的坐标.$实体会被传送到那里.
+container.shortRangeTelepad.name=短距离传送台
+gui.message.address.name=坐标
+gui.message.destAddress.name=目标坐标
+gui.message.invalidAddress.name=无效的唯一坐标
+gui.message.invalidTargetAddress.name=无效的目标坐标
+gui.message.receivingActive.name=激活接受
+gui.message.telepadTooFar.name=目标太远! (最远 %d)
+gui.message.telepadWrongDim.name=目标正在错误的维度!
+gui.message.telepadNotFound.name=未找到目标!
+gui.message.sendingActive.name=激活发送
+
+# Schematics
+
+# Entity
+entity.SmallAsteroidGC.name=小行星
+entity.GrappleHookGC.name=抓升钩
+entity.Tier3RocketGC.name=三阶火箭
+
+# Container
