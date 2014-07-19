@@ -14,6 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+import ic2.api.energy.tile.IEnergySource;
 
 import java.lang.reflect.Constructor;
 
@@ -160,7 +161,7 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 			return this.getNetwork().getRequest(this) * NetworkConfigHandler.TO_IC2_RATIO;
 		}
 
-		this.IC2surplusJoules = this.getNetwork().produce(this.IC2surplusJoules, true, this);
+		this.IC2surplusJoules = this.getNetwork().produce(this.IC2surplusJoules, true, 1, this);
 		if (this.IC2surplusJoules < 0.001F)
 		{
 			this.IC2surplusJoules = 0F;
@@ -175,8 +176,10 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 	public double injectEnergyUnits(ForgeDirection directionFrom, double amount)
 	{
 		TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, directionFrom);
+		int tier = 1;
+		if (tile instanceof IEnergySource && ((IEnergySource) tile).getOfferedEnergy() >= 128) tier = 2;
 		float convertedEnergy = (float) amount * NetworkConfigHandler.IC2_RATIO;
-		float surplus = this.getNetwork().produce(convertedEnergy, true, this, tile);
+		float surplus = this.getNetwork().produce(convertedEnergy, true, tier, this, tile);
 
 		if (surplus >= 0.001F) this.IC2surplusJoules = surplus;
 		else this.IC2surplusJoules = 0F;
@@ -271,7 +274,7 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 		double energyBC = handler.getEnergyStored();
 		if (energyBC > 0D)
 		{
-			energyBC = this.getNetwork().produce((float) energyBC * NetworkConfigHandler.BC3_RATIO, true, this) * NetworkConfigHandler.TO_BC_RATIO;
+			energyBC = this.getNetwork().produce((float) energyBC * NetworkConfigHandler.BC3_RATIO, true, 1, this) * NetworkConfigHandler.TO_BC_RATIO;
 			if (energyBC < 0D) energyBC = 0D;
 			handler.setEnergy(energyBC);
 		}

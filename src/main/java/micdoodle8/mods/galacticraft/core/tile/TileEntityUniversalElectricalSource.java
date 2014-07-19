@@ -71,7 +71,7 @@ public class TileEntityUniversalElectricalSource extends TileEntityUniversalElec
 						IElectricityNetwork network = ((IConductor) tileAdj).getNetwork();
 						if (network != null)
 						{
-                            amountProduced += (toSend - network.produce(toSend, true, this));
+                            amountProduced += (toSend - network.produce(toSend, true, this.tierGC, this));
 						}
 					}
 					else if (tileAdj instanceof IEnergyHandlerGC)

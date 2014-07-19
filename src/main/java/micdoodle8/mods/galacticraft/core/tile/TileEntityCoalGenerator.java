@@ -278,7 +278,7 @@ public class TileEntityCoalGenerator extends TileEntityUniversalElectricalSource
 	}
 
 	@Override
-	public float receiveElectricity(ForgeDirection from, float energy, boolean doReceive)
+	public float receiveElectricity(ForgeDirection from, float energy, int tier, boolean doReceive)
 	{
 		return 0;
 	}

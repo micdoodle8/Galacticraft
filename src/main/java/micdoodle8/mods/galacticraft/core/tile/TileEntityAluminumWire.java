@@ -4,46 +4,32 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEntityAluminumWire extends TileEntityUniversalConductor
 {
-	public float resistance;
-	public float amperage;
+	public int tier;
 
 	public TileEntityAluminumWire()
 	{
-		this(0.05F, 200.0F);
+		this(1);
 	}
 
-	public TileEntityAluminumWire(float resistance, float amperage)
+	public TileEntityAluminumWire(int theTier)
 	{
-		this.resistance = resistance;
-		this.amperage = amperage;
-	}
-
-	@Override
-	public float getResistance()
-	{
-		return this.resistance;
-	}
-
-	@Override
-	public float getCurrentCapacity()
-	{
-		return this.amperage;
+		this.tier = theTier;
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-		this.resistance = nbt.getFloat("resistance");
-		this.amperage = nbt.getFloat("amperage");
+		this.tier = nbt.getInteger("tier");
+		//For legacy worlds (e.g. converted from 1.6.4)
+		if (this.tier == 0) this.tier = 1;
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
-		nbt.setFloat("resistance", this.resistance);
-		nbt.setFloat("amperage", this.amperage);
+		nbt.setInteger("tier", this.tier);
 	}
 
 	@Override
@@ -62,5 +48,11 @@ public class TileEntityAluminumWire extends TileEntityUniversalConductor
 	public boolean isNetworkedTile()
 	{
 		return false;
+	}
+
+	@Override
+	public int getTierGC()
+	{
+		return this.tier;
 	}
 }

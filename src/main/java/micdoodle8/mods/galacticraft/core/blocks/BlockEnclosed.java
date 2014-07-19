@@ -422,11 +422,11 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 		}
 		else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata())
 		{
-			return new TileEntityAluminumWire();
+			return new TileEntityAluminumWire(1);
 		}
 		else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE_HEAVY.getMetadata())
 		{
-			return new TileEntityAluminumWire(0.025F, 400.0F);
+			return new TileEntityAluminumWire(2);
 		}
 
 		return null;

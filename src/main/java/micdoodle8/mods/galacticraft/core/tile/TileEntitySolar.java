@@ -94,7 +94,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 					{
 						for (int z = -1; z <= 1; z++)
 						{
-							if (this.tier == 2)
+							if (this.tierGC == 2)
 							{
 								if (this.worldObj.canBlockSeeTheSky(this.xCoord + x, this.yCoord + 2, this.zCoord + z))
 								{
@@ -150,7 +150,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 
 		celestialAngle %= 360;
 
-		if (this.tier == 2)
+		if (this.tierGC == 2)
 		{
 			if (!this.worldObj.isDaytime() || this.worldObj.isRaining() || this.worldObj.isThundering())
 			{
@@ -349,7 +349,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 	{
 		int metadata = this.getBlockMetadata();
 
-		if (this.tier == 1)
+		if (this.tierGC == 1)
 		{
 			metadata -= BlockSolar.ADVANCED_METADATA;
 		}
@@ -362,7 +362,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 	{
 		int metadata = this.getBlockMetadata();
 
-		if (this.tier == 1)
+		if (this.tierGC == 1)
 		{
 			metadata -= BlockSolar.ADVANCED_METADATA;
 		}
@@ -386,7 +386,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 	@Override
 	public String getInventoryName()
 	{
-		return GCCoreUtil.translate(this.tier == 1 ? "container.solarbasic.name" : "container.solaradvanced.name");
+		return GCCoreUtil.translate(this.tierGC == 1 ? "container.solarbasic.name" : "container.solaradvanced.name");
 	}
 
 	@Override

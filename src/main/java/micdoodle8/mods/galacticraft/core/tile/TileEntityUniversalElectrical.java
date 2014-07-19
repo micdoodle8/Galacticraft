@@ -6,6 +6,7 @@ import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cpw.mods.fml.common.eventhandler.Event;
+import ic2.api.energy.tile.IEnergySource;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.ISpecialElectricItem;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
@@ -337,7 +338,8 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 		if (direction == ForgeDirection.UNKNOWN || this.getElectricalInputDirections().contains(direction))
 		{
 			float convertedEnergy = (float) amount * NetworkConfigHandler.IC2_RATIO;
-			float receive = this.receiveElectricity(direction, convertedEnergy, true);
+			int tierFromIC2 = (amount >= 128) ? 2 : 1;
+			float receive = this.receiveElectricity(direction, convertedEnergy, tierFromIC2, true);
 
 			if (convertedEnergy > receive) this.IC2surplus = convertedEnergy - receive;
 			else this.IC2surplus = 0F;
@@ -437,7 +439,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 	public double addEnergy(double mj)
 	{
 		float convertedEnergy = (float) mj * NetworkConfigHandler.BC3_RATIO;
-		float used = this.receiveElectricity(ForgeDirection.UNKNOWN, convertedEnergy, true);
+		float used = this.receiveElectricity(ForgeDirection.UNKNOWN, convertedEnergy, 1, true);
 		return used * NetworkConfigHandler.TO_BC_RATIO;
 	}
 
@@ -445,7 +447,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 	public double addEnergy(double mj, boolean ignoreCycleLimit)
 	{
 		float convertedEnergy = (float) mj * NetworkConfigHandler.BC3_RATIO;
-		float used = this.receiveElectricity(ForgeDirection.UNKNOWN, convertedEnergy, true);
+		float used = this.receiveElectricity(ForgeDirection.UNKNOWN, convertedEnergy, 1, true);
 		return used * NetworkConfigHandler.TO_BC_RATIO;
 	}
 
