@@ -94,7 +94,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 					{
 						for (int z = -1; z <= 1; z++)
 						{
-							if (this.tierGC == 2)
+							if (this.tierGC == 1)
 							{
 								if (this.worldObj.canBlockSeeTheSky(this.xCoord + x, this.yCoord + 2, this.zCoord + z))
 								{
@@ -150,7 +150,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 
 		celestialAngle %= 360;
 
-		if (this.tierGC == 2)
+		if (this.tierGC == 1)
 		{
 			if (!this.worldObj.isDaytime() || this.worldObj.isRaining() || this.worldObj.isThundering())
 			{
@@ -303,6 +303,13 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 				this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
 			}
 		}
+		
+		int metadata = this.getBlockMetadata();
+		if (metadata >= BlockSolar.ADVANCED_METADATA)
+        {
+        	this.storage.setCapacity(100000);
+            this.setTierGC(2);
+        }
 	}
 
 	@Override
@@ -349,7 +356,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 	{
 		int metadata = this.getBlockMetadata();
 
-		if (this.tierGC == 1)
+		if (this.tierGC == 2)
 		{
 			metadata -= BlockSolar.ADVANCED_METADATA;
 		}
@@ -362,7 +369,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 	{
 		int metadata = this.getBlockMetadata();
 
-		if (this.tierGC == 1)
+		if (this.tierGC == 2)
 		{
 			metadata -= BlockSolar.ADVANCED_METADATA;
 		}

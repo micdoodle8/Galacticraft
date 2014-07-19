@@ -6,7 +6,6 @@ import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cpw.mods.fml.common.eventhandler.Event;
-import ic2.api.energy.tile.IEnergySource;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.ISpecialElectricItem;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;

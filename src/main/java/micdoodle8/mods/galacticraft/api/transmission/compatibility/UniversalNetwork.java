@@ -50,8 +50,8 @@ public class UniversalNetwork implements IElectricityNetwork
 	private boolean doneScheduled = false;
 	private boolean spamstop = false;
 	private boolean loopPrevention = false;
-	public int tierGC = 1;
-	public int producersTierGC = 1;
+	public int networkTierGC = 1;
+	private int producersTierGC = 1;
 
 	/*
 	 * connectedAcceptors is all the acceptors connected to this network
@@ -359,7 +359,7 @@ public class UniversalNetwork implements IElectricityNetwork
 
 			float currentSending;
 			float sentToAcceptor;
-			int tierProduced = Math.max(this.producersTierGC, this.tierGC);
+			int tierProduced = Math.min(this.producersTierGC, this.networkTierGC);
 
 			for (TileEntity tileEntity : this.availableAcceptors)
 			{
@@ -506,7 +506,7 @@ public class UniversalNetwork implements IElectricityNetwork
 		}
 		
 		//This will set the network tier to 2 if all the conductors are tier 2
-		this.tierGC = tierfound;
+		this.networkTierGC = tierfound;
 	}
 
     /**
