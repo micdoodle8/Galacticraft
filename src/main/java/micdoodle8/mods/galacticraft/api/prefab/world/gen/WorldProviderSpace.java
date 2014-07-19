@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
@@ -76,6 +77,12 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
 	public String getDimensionName()
 	{
 		return this.getCelestialBody().getLocalizedName();
+	}
+
+	@Override
+	public boolean isGasPresent(IAtmosphericGas gas)
+	{
+		return this.getCelestialBody().atmosphere.contains(gas);
 	}
 
 	@Override
@@ -192,7 +199,13 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
         return this.shouldForceRespawn();
     }
 
-    @Override
+	@Override
+	public boolean hasBreathableAtmosphere()
+	{
+		return this.isGasPresent(IAtmosphericGas.OXYGEN);
+	}
+
+   @Override
     public IChunkProvider createChunkGenerator()
     {
         try

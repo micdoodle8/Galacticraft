@@ -28,8 +28,8 @@ public class BiomeDecoratorMars extends BiomeDecoratorSpace
     @Override
     protected void decorate()
     {
-        this.generateOre(12, this.dirtGen, 0, 120);
-        this.generateOre(8, this.iceGen, 64, 96);
+        this.generateOre(4, this.iceGen, 60, 120);
+        this.generateOre(20, this.dirtGen, 0, 200);
         this.generateOre(15, this.deshGen, 20, 64);
         this.generateOre(26, this.copperGen, 0, 60);
         this.generateOre(23, this.tinGen, 0, 60);

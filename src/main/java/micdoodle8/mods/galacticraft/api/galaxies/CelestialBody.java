@@ -1,10 +1,13 @@
 package micdoodle8.mods.galacticraft.api.galaxies;
 
+import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.WorldProvider;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public abstract class CelestialBody
@@ -21,6 +24,8 @@ public abstract class CelestialBody
 	protected boolean autoRegisterDimension = false;
 	protected boolean isReachable = false;
 	protected boolean forceStaticLoad = true;
+
+	public ArrayList<IAtmosphericGas> atmosphere = new ArrayList();
 
 	protected ResourceLocation celestialBodyIcon;
 
@@ -169,6 +174,17 @@ public abstract class CelestialBody
 		return this.isReachable;
 	}
 
+	/*
+	 * Use this to list the atmospheric gases on the celestial body, starting with the most abundant
+	 * Do not include trace gases (anything less than 0.25%) 
+	 * (Do not use for stars!)
+	 */
+	public CelestialBody atmosphereComponent(IAtmosphericGas gas)
+	{
+		this.atmosphere.add(gas);
+		return this;
+	}
+	
 	public CelestialBody setRingColorRGB(float ringColorR, float ringColorG, float ringColorB)
 	{
 		this.ringColorR = ringColorR;

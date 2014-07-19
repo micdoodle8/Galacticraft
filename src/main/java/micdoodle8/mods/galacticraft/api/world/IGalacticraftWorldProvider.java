@@ -60,12 +60,19 @@ public interface IGalacticraftWorldProvider
 	public float getSoundVolReductionAmount();
 
 	/**
-	 * Whether or not the atmopshere of this dimension is valid for players to
+	 * Whether or not the atmosphere of this dimension is valid for players to
 	 * breathe
 	 * 
 	 * @return True if players can breathe here, False if not.
 	 */
 	public boolean hasBreathableAtmosphere();
+
+	/**
+	 * Whether or not the atmosphere of this dimension contains the specified gas
+	 * 
+	 * @return True if the gas is present in the atmosphere, False if not.
+	 */
+	public boolean isGasPresent(IAtmosphericGas gas);
 
 	/**
 	 * This value will affect player's thermal level, damaging them if it
