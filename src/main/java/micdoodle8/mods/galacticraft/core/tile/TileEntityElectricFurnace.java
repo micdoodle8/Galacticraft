@@ -158,12 +158,22 @@ public class TileEntityElectricFurnace extends TileEntityElectricBlock implement
 			if (this.containingItems[2] == null)
 			{
 				this.containingItems[2] = resultItemStack.copy();
-				if (this.tierGC > 1 && resultItemStack.getUnlocalizedName().contains("ingot") && this.containingItems[1].getUnlocalizedName().contains("ore")) this.containingItems[2].stackSize++; 
+				if (this.tierGC > 1)
+				{
+					String nameSmelted = this.containingItems[1].getUnlocalizedName().toLowerCase();
+					if (resultItemStack.getUnlocalizedName().toLowerCase().contains("ingot") && (nameSmelted.contains("raw") || nameSmelted.contains("ore")))
+						this.containingItems[2].stackSize++;
+				}
 			}
 			else if (this.containingItems[2].isItemEqual(resultItemStack))
 			{
 				this.containingItems[2].stackSize++;
-				if (this.tierGC > 1 && resultItemStack.getUnlocalizedName().contains("ingot") && this.containingItems[1].getUnlocalizedName().contains("ore")) this.containingItems[2].stackSize++; 
+				if (this.tierGC > 1)
+				{
+					String nameSmelted = this.containingItems[1].getUnlocalizedName().toLowerCase();
+					if (resultItemStack.getUnlocalizedName().toLowerCase().contains("ingot") && (nameSmelted.contains("raw") || nameSmelted.contains("ore")))
+						this.containingItems[2].stackSize++;
+				}
 			}
 
 			this.containingItems[1].stackSize--;
