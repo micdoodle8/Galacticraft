@@ -68,16 +68,16 @@ tile.tintedGlassPane.black.name=黑色玻璃板
 # GUI
 gui.choosePlanet.desc.mars=宜居#无氧气#重力:38%
 item.deshPickSlime.description.name=可用于回收黏滑怪蛋
-gui.message.noEnergy.name=能力不足
-gui.message.noWater.name=水不足
+gui.message.noEnergy.name=电力不足
+gui.message.noWater.name=水量不足
 gui.message.noBonemeal.name=骨粉不足
 gui.message.noSeeds.name=种子不足
 gui.message.noSaplings.name=树苗不足
 gui.message.bubbleExp.name=气泡扩大
 gui.message.noValidBlocks.name=气泡内无有效方块
-gui.message.terraforming.name=正在地球化
-gui.message.enableTrees.name=启用树
-gui.message.enableGrass.name=启用草
+gui.message.terraforming.name=正在进行环境改造
+gui.message.enableTrees.name=启用植树
+gui.message.enableGrass.name=启用种草
 gui.message.trees.name=树
 gui.message.grass.name=草
 gui.message.invalidFreq.name=无效频率
@@ -120,4 +120,4 @@ entity.CargoRocket.name=货运火箭
 
 # Container
 container.launchcontroller.name=发射控制器
-container.tileTerraformer.name=地球化转换器
+container.tileTerraformer.name=地形改造机
