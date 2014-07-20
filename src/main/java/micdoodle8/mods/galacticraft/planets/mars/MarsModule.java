@@ -21,6 +21,7 @@ import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.TeleportTypeMars;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
 import micdoodle8.mods.galacticraft.planets.mars.entities.*;
+import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerGasLiquefier;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerLaunchController;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerTerraformer;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
@@ -179,6 +180,10 @@ public class MarsModule implements IPlanetsModule
 				else if (tile instanceof TileEntityLaunchController)
 				{
 					return new ContainerLaunchController(player.inventory, (TileEntityLaunchController) tile);
+				}
+				else if (tile instanceof TileEntityGasLiquefier)
+				{
+					return new ContainerGasLiquefier(player.inventory, (TileEntityGasLiquefier) tile);
 				}
 			}
 		}
