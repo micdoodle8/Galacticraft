@@ -165,7 +165,7 @@ public class TileEntityElectricFurnace extends ElectricBlockWithInventory implem
 				if (this.tierGC > 1)
 				{
 					String nameSmelted = this.containingItems[1].getUnlocalizedName().toLowerCase();
-					if (resultItemStack.getUnlocalizedName().toLowerCase().contains("ingot") && (nameSmelted.contains("raw") || nameSmelted.contains("ore")))
+					if (resultItemStack.getUnlocalizedName().toLowerCase().contains("ingot") && (nameSmelted.contains("ore") || nameSmelted.contains("raw") || nameSmelted.contains("shard")))
 						this.containingItems[2].stackSize++;
 				}
 			}
@@ -175,7 +175,7 @@ public class TileEntityElectricFurnace extends ElectricBlockWithInventory implem
 				if (this.tierGC > 1)
 				{
 					String nameSmelted = this.containingItems[1].getUnlocalizedName().toLowerCase();
-					if (resultItemStack.getUnlocalizedName().toLowerCase().contains("ingot") && (nameSmelted.contains("raw") || nameSmelted.contains("ore")))
+					if (resultItemStack.getUnlocalizedName().toLowerCase().contains("ingot") && (nameSmelted.contains("ore") || nameSmelted.contains("raw") || nameSmelted.contains("shard")))
 						this.containingItems[2].stackSize++;
 				}
 			}
