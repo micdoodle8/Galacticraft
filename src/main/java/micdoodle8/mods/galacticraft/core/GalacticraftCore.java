@@ -111,7 +111,7 @@ public class GalacticraftCore
 		ChunkLoadingCallback.loadConfig(new File(event.getModConfigurationDirectory(), GalacticraftCore.CHUNKLOADER_CONFIG_FILE));
 
 		GalacticraftCore.gcFluidOil = new Fluid("oil").setDensity(800).setViscosity(1500);
-		GalacticraftCore.gcFluidFuel = new Fluid("fuel").setDensity(200).setViscosity(900);
+		GalacticraftCore.gcFluidFuel = new Fluid("fuel").setDensity(400).setViscosity(900);
 		FluidRegistry.registerFluid(GalacticraftCore.gcFluidOil);
 		FluidRegistry.registerFluid(GalacticraftCore.gcFluidFuel);
 		GalacticraftCore.fluidOil = FluidRegistry.getFluid("oil");

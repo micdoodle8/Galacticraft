@@ -38,6 +38,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 
 import java.io.File;
 import java.util.HashMap;
@@ -50,6 +52,14 @@ public class AsteroidsModule implements IPlanetsModule
 	public static final String ASSET_PREFIX = "galacticraftasteroids";
 	public static final String TEXTURE_PREFIX = AsteroidsModule.ASSET_PREFIX + ":";
 
+	public static Fluid gcFluidLiquidMethane;
+	public static Fluid gcFluidLiquidOxygen;
+	public static Fluid gcFluidLiquidNitrogen;
+	public static Fluid fluidLiquidMethane;
+	public static Fluid fluidLiquidOxygen;
+	public static Fluid fluidLiquidNitrogen;
+
+	
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
@@ -57,6 +67,17 @@ public class AsteroidsModule implements IPlanetsModule
 		AsteroidsPlayerHandler playerHandler = new AsteroidsPlayerHandler();
 		MinecraftForge.EVENT_BUS.register(playerHandler);
 		FMLCommonHandler.instance().bus().register(playerHandler);
+		
+		AsteroidsModule.gcFluidLiquidMethane = new Fluid("methane").setDensity(422).setViscosity(11);
+		AsteroidsModule.gcFluidLiquidOxygen = new Fluid("liquidOxygen").setDensity(1141).setViscosity(20);
+		AsteroidsModule.gcFluidLiquidNitrogen = new Fluid("liquidNitrogen").setDensity(808).setViscosity(18);
+		FluidRegistry.registerFluid(AsteroidsModule.gcFluidLiquidMethane);
+		FluidRegistry.registerFluid(AsteroidsModule.gcFluidLiquidOxygen);
+		FluidRegistry.registerFluid(AsteroidsModule.gcFluidLiquidNitrogen);
+		AsteroidsModule.fluidLiquidMethane = FluidRegistry.getFluid("methane");
+		AsteroidsModule.fluidLiquidOxygen = FluidRegistry.getFluid("liquidOxygen");
+		AsteroidsModule.fluidLiquidNitrogen = FluidRegistry.getFluid("liquidNitrogen");
+		
 		AsteroidBlocks.initBlocks();
 		AsteroidBlocks.registerBlocks();
 		AsteroidsItems.initItems();
