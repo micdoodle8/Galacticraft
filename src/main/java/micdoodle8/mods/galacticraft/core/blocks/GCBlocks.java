@@ -133,6 +133,7 @@ public class GCBlocks
 		GCCoreUtil.registerGalacticraftBlock("copperWire", GCBlocks.aluminumWire);
 		GCCoreUtil.registerGalacticraftBlock("coalGenerator", GCBlocks.machineBase, 0);
 		GCCoreUtil.registerGalacticraftBlock("energyStorageModule", GCBlocks.machineTiered, 0);
+		GCCoreUtil.registerGalacticraftBlock("energyStorageCluster", GCBlocks.machineTiered, 8);
 		GCCoreUtil.registerGalacticraftBlock("electricFurnace", GCBlocks.machineTiered, 4);
 		GCCoreUtil.registerGalacticraftBlock("electricArcFurnace", GCBlocks.machineTiered, 12);
 		GCCoreUtil.registerGalacticraftBlock("ingotCompressor", GCBlocks.machineBase, 12);

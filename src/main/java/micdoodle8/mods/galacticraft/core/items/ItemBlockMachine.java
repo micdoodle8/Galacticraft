@@ -46,16 +46,6 @@ public class ItemBlockMachine extends ItemBlock
 			{
 				index = 3;
 			}
-			//Legacy code
-			else if (typenum == 4)
-			{
-				return "tile.machine.1";
-			}
-			else if (typenum == 8)
-			{
-				return "tile.machine.2";
-			}
-				
 		}
 		else if (this.field_150939_a == GCBlocks.machineTiered)
 		{

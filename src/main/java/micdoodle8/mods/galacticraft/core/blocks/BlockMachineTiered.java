@@ -27,9 +27,14 @@ public class BlockMachineTiered extends BlockTileGC
 	private IIcon iconInput;
 	private IIcon iconOutput;
 	private IIcon iconTier2;
+	private IIcon iconMachineSideT2;
+	private IIcon iconInputT2;
+	private IIcon iconOutputT2;
 
 	private IIcon[] iconEnergyStorageModule;
+	private IIcon[] iconEnergyStorageModuleT2;
 	private IIcon iconElectricFurnace;
+	private IIcon iconElectricFurnaceT2;
 
 	public BlockMachineTiered(String assetName)
 	{
@@ -56,19 +61,26 @@ public class BlockMachineTiered extends BlockTileGC
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
 		this.blockIcon = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine");
-		this.iconTier2 = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "space_station_top");
 		this.iconInput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
 		this.iconOutput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_output");
-
 		this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_side");
+		
+		this.iconTier2 = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "space_station_top");
+		this.iconInputT2 = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
+		this.iconOutputT2 = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_output");
+		this.iconMachineSideT2 = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_side");
+
 		this.iconEnergyStorageModule = new IIcon[17];
+		this.iconEnergyStorageModuleT2 = new IIcon[17];
 
 		for (int i = 0; i < this.iconEnergyStorageModule.length; i++)
 		{
 			this.iconEnergyStorageModule[i] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "energyStorageModule_" + i);
+			this.iconEnergyStorageModuleT2[i] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "energyStorageModule_" + i);
 		}
 
 		this.iconElectricFurnace = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "electricFurnace");
+		this.iconElectricFurnaceT2 = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "electricFurnace");
 	}
 
 	@Override
@@ -90,24 +102,26 @@ public class BlockMachineTiered extends BlockTileGC
 			// If it is the front side
 			if (side == metaside)
 			{
+				if (metadata >= 8) return this.iconOutputT2;
 				return this.iconOutput;
 			}
 			// If it is the back side
 			else if (side == (metaside ^ 1))
 			{
+				if (metadata >= 8) return this.iconInputT2;
 				return this.iconInput;
 			}
 
 			TileEntity tile = world.getTileEntity(x, y, z);
 
+			int level = 0;
 			if (tile instanceof TileEntityEnergyStorageModule)
 			{
-				return this.iconEnergyStorageModule[((TileEntityEnergyStorageModule) tile).scaledEnergyLevel];
+				level = ((TileEntityEnergyStorageModule) tile).scaledEnergyLevel;
 			}
-			else
-			{
-				return this.iconEnergyStorageModule[0];
-			}
+
+			if (metadata >= 8) return this.iconEnergyStorageModuleT2[level];
+			return this.iconEnergyStorageModule[level];
 		}
 
 		return this.getIcon(side, metadata);
@@ -129,11 +143,13 @@ public class BlockMachineTiered extends BlockTileGC
 			// If it is the front side
 			if (side == metaside)
 			{
+				if (metadata >= 8) return this.iconInputT2;
 				return this.iconInput;
 			}
 			// If it is the back side
 			else if (metaside == 2 && side == 4 || metaside == 3 && side == 5 || metaside == 4 && side == 3 || metaside == 5 && side == 2)
 			{
+				if (metadata >= 8) return this.iconElectricFurnaceT2;
 				return this.iconElectricFurnace;
 			}
 		}
@@ -142,17 +158,21 @@ public class BlockMachineTiered extends BlockTileGC
 			// If it is the front side
 			if (side == metaside)
 			{
+				if (metadata >= 8) return this.iconOutputT2;
 				return this.iconOutput;
 			}
 			// If it is the back side
 			else if (side == (metaside ^ 1))
 			{
+				if (metadata >= 8) return this.iconInputT2;
 				return this.iconInput;
 			}
 
+			if (metadata >= 8) return this.iconEnergyStorageModuleT2[16];
 			return this.iconEnergyStorageModule[16];
 		}
 
+		if (metadata >= 8) return this.iconMachineSideT2;
 		return this.iconMachineSide;
 	}
 
@@ -243,13 +263,18 @@ public class BlockMachineTiered extends BlockTileGC
 		}
 		else
 		{
-			return new TileEntityEnergyStorageModule();
+			return new TileEntityEnergyStorageModule(tier);
 		}
 	}
 
 	public ItemStack getEnergyStorageModule()
 	{
 		return new ItemStack(this, 1, BlockMachineTiered.STORAGE_MODULE_METADATA);
+	}
+
+	public ItemStack getEnergyStorageCluster()
+	{
+		return new ItemStack(this, 1, 8 + BlockMachineTiered.STORAGE_MODULE_METADATA);
 	}
 
 	public ItemStack getElectricFurnace()
@@ -267,6 +292,7 @@ public class BlockMachineTiered extends BlockTileGC
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		par3List.add(this.getEnergyStorageModule());
+		par3List.add(this.getEnergyStorageCluster());
 		par3List.add(this.getElectricFurnace());
 		par3List.add(this.getElectricArcFurnace());
 	}

@@ -26,9 +26,26 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 
 	public TileEntityEnergyStorageModule()
 	{
-		this.storage.setCapacity(500000);
-		this.storage.setMaxExtract(300);  //Tier 1
-		//Designed so that Tier 1 Energy Storage can power up to 10 Tier 1 machines
+		this(1);
+	}
+
+	/*
+	 * @param tier: 1 = Electric Furnace  2 = Electric Arc Furnace
+	 */
+	public TileEntityEnergyStorageModule(int tier)
+	{
+		if (tier == 1)
+		{
+			//Designed so that Tier 1 Energy Storage can power up to 10 Tier 1 machines
+			this.storage.setCapacity(500000);
+			this.storage.setMaxExtract(300);
+			return;
+		}
+
+		//tier == 2
+		this.storage.setCapacity(2500000);
+		this.storage.setMaxExtract(1500);
+        this.setTierGC(2);
 	}
 
 	@Override
@@ -88,6 +105,14 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 				this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
 			}
 		}
+		
+		int metadata = this.getBlockMetadata();
+		if (metadata >= 8)
+        {
+			this.storage.setCapacity(2500000);
+			this.storage.setMaxExtract(1500);
+	        this.setTierGC(2);
+        }
 	}
 
 	/**
@@ -185,7 +210,7 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	@Override
 	public String getInventoryName()
 	{
-		return GCCoreUtil.translate("tile.machine.1.name");
+		return GCCoreUtil.translate(this.tierGC == 1 ? "tile.machine.1.name" : "tile.machine.8.name");
 	}
 
 	@Override
@@ -254,13 +279,6 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 
 	}
 
-	/*@Override
-	public float getRequest(ForgeDirection direction)
-	{
-		return this.getElectricalInputDirections().contains(direction) ? this.getMaxEnergyStored() - this.getEnergyStored() : 0;
-	}
-	*/
-
 	@Override
 	public EnumSet<ForgeDirection> getElectricalInputDirections()
 	{
@@ -291,11 +309,4 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 
 		return direction == ForgeDirection.getOrientation(metadata + 2) || direction == ForgeDirection.getOrientation((metadata + 2) ^ 1);
 	}
-
-	//	@Override
-	//	public float getMaxEnergyStored()
-	//	{
-	//		return 2500F;
-	//	}
-
 }
