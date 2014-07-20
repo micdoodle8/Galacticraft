@@ -37,6 +37,8 @@ public class TileEntityElectricFurnace extends TileEntityElectricBlock implement
 	private ItemStack[] containingItems = new ItemStack[3];
 	public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
 
+	private boolean initialised = false;
+
 	public TileEntityElectricFurnace()
 	{
 		this(1);
@@ -58,11 +60,25 @@ public class TileEntityElectricFurnace extends TileEntityElectricBlock implement
 		this.storage.setMaxExtract(60);
 		this.processTimeRequired = 100;
         this.setTierGC(2);
+        this.initialised = true;
 	}
 
 	@Override
 	public void updateEntity()
 	{
+		if (!this.initialised )
+		{
+			int metadata = this.getBlockMetadata();
+			if (metadata >= 8)
+	        {
+				this.storage.setCapacity(75000);
+				this.storage.setMaxExtract(60);
+				this.processTimeRequired = 100;
+		        this.setTierGC(2);
+	        }
+			this.initialised = true;
+		}
+
 		super.updateEntity();
 
 		if (!this.worldObj.isRemote)
@@ -207,14 +223,7 @@ public class TileEntityElectricFurnace extends TileEntityElectricBlock implement
 			}
 		}
 		
-		int metadata = this.getBlockMetadata();
-		if (metadata >= 8)
-        {
-			this.storage.setCapacity(75000);
-			this.storage.setMaxExtract(60);
-			this.processTimeRequired = 100;
-	        this.setTierGC(2);
-        }
+		this.initialised = false;
 	}
 
 	/**

@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,7 +28,7 @@ public class ItemMethaneCanister extends Item
 		this.setNoRepair();
 		this.setUnlocalizedName(assetName);
 		this.setContainerItem(this);
-		this.setTextureName(assetName);
+		this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
 	}
 
 	@Override

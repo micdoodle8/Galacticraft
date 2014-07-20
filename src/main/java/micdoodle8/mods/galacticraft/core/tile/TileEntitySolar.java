@@ -45,6 +45,8 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int generateWatts = 0;
 
+	private boolean initialised = false;
+
 	public TileEntitySolar()
 	{
 		this(1);
@@ -62,11 +64,23 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
         	this.storage.setCapacity(100000);
         }
         this.setTierGC(tier);
+        this.initialised = true;
 	}
 
 	@Override
 	public void updateEntity()
 	{
+		if (!this.initialised)
+		{
+			int metadata = this.getBlockMetadata();
+			if (metadata >= BlockSolar.ADVANCED_METADATA)
+	        {
+	        	this.storage.setCapacity(100000);
+	            this.setTierGC(2);
+	        }
+			this.initialised = true;
+		}
+		
 		this.receiveEnergyGC(null, this.generateWatts, false);
 
 		super.updateEntity();
@@ -304,12 +318,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 			}
 		}
 		
-		int metadata = this.getBlockMetadata();
-		if (metadata >= BlockSolar.ADVANCED_METADATA)
-        {
-        	this.storage.setCapacity(100000);
-            this.setTierGC(2);
-        }
+		this.initialised = false;
 	}
 
 	@Override

@@ -124,6 +124,7 @@ public class MarsModule implements IPlanetsModule
 		GameRegistry.registerTileEntity(TileEntityTreasureChestMars.class, "Tier 2 Treasure Chest");
 		GameRegistry.registerTileEntity(TileEntityTerraformer.class, "Planet Terraformer");
 		GameRegistry.registerTileEntity(TileEntityCryogenicChamber.class, "Cryogenic Chamber");
+		GameRegistry.registerTileEntity(TileEntityGasLiquefier.class, "Gas Liquefier");
 		GameRegistry.registerTileEntity(TileEntityDungeonSpawnerMars.class, "Mars Dungeon Spawner");
 		GameRegistry.registerTileEntity(TileEntityLaunchController.class, "Launch Controller");
 	}

@@ -15,6 +15,8 @@ item.thermalHelm.name=Themal Padding Helm
 item.thermalChestplate.name=Thermal Padding Chestpiece
 item.thermalLeggings.name=Thermal Padding Leggings
 item.thermalBoots.name=Thermal Padding Boots
+item.methaneCanisterPartial.name=Canister of Methane
+item.methaneCanister.name=Filled Canister of Methane
 item.tier3.desc=Tier 3
 
 # TOOLS
@@ -34,6 +36,11 @@ tile.telepadShort.name=Short Range Telepad
 tile.walkway.name=Walkway
 tile.walkwayWire.name=Walkway
 tile.walkwayOxygenPipe.name=Walkway
+
+# Fluids and gases
+fluid.methane.name=Methane
+fluid.liquidOxygen.name=Liquid Oxygen
+fluid.liquidNitrogen.name=Liquid Nitrogen
 
 # GUI
 planet.asteroids=Asteroids

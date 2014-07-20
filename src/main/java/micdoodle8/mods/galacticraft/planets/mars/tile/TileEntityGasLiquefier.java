@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemMethaneCanister;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -60,30 +61,36 @@ public class TileEntityGasLiquefier extends TileEntityElectricBlock implements I
 
 		if (!this.worldObj.isRemote)
 		{
-			if (this.containingItems[1] != null)
+			ItemStack inputCanister = this.containingItems[1];
+			if (inputCanister != null)
 			{
-				FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(this.containingItems[1]);
+				System.out.println("Gas liquefier - found canister");
+				FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(inputCanister);
+				FluidStack gcMethane = FluidRegistry.getFluidStack(AsteroidsModule.fluidLiquidMethane.getName(), liquid.amount);
 
-				if (liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("Methane"))
+				if (liquid != null && FluidRegistry.getFluidName(liquid).toLowerCase().contains("methane"))
 				{
+					System.out.println("Gas liquefier - found methane canister");
+
 					if (this.gasTank.getFluid() == null || this.gasTank.getFluid().amount + liquid.amount <= this.gasTank.getCapacity())
 					{
-						this.gasTank.fill(liquid, true);
+						System.out.println("Gas liquefier - transferring liquid: "+gcMethane.amount);
+						this.gasTank.fill(gcMethane, true);
 
-						if (this.containingItems[1].getItem() instanceof ItemMethaneCanister)
+						if (inputCanister.getItem() instanceof ItemMethaneCanister)
 						{
 							this.containingItems[1] = new ItemStack(AsteroidsItems.methaneCanister, 1, AsteroidsItems.methaneCanister.getMaxDamage());
 						}
-						else if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
+						else if (FluidContainerRegistry.isBucket(inputCanister) && FluidContainerRegistry.isFilledContainer(inputCanister))
 						{
-							final int amount = this.containingItems[1].stackSize;
+							final int amount = inputCanister.stackSize;
 							this.containingItems[1] = new ItemStack(Items.bucket, amount);
 						}
 						else
 						{
-							this.containingItems[1].stackSize--;
+							inputCanister.stackSize--;
 
-							if (this.containingItems[1].stackSize == 0)
+							if (inputCanister.stackSize == 0)
 							{
 								this.containingItems[1] = null;
 							}
@@ -313,7 +320,7 @@ public class TileEntityGasLiquefier extends TileEntityElectricBlock implements I
 	@Override
 	public String getInventoryName()
 	{
-		return GCCoreUtil.translate("container.tileTerraformer.name");
+		return GCCoreUtil.translate("tile.marsMachine.4.name");
 	}
 
 	@Override
@@ -327,19 +334,49 @@ public class TileEntityGasLiquefier extends TileEntityElectricBlock implements I
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return new int[] { 1 };
+		return new int[] { 0, 1, 2 };
 	}
 
 	@Override
 	public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
 	{
-		return this.isItemValidForSlot(slotID, itemstack);
+		if (this.isItemValidForSlot(slotID, itemstack))
+		{
+			switch (slotID)
+			{
+			case 0:
+				return itemstack.getItem() instanceof ItemElectric && ((ItemElectric) itemstack.getItem()).getElectricityStored(itemstack) > 0;
+			case 1:
+				FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(itemstack);
+				return stack != null && stack.getFluid() != null && stack.getFluid().getName().toLowerCase().contains("methane");
+			case 2:
+				return FluidContainerRegistry.isEmptyContainer(itemstack);
+			default:
+				return false;
+			}
+		}
+		return false;
 	}
 
 	@Override
 	public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
 	{
-		return slotID == 1;
+		if (this.isItemValidForSlot(slotID, itemstack))
+		{
+			switch (slotID)
+			{
+			case 0:
+				return itemstack.getItem() instanceof ItemElectric && ((ItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
+			case 1:
+				return FluidContainerRegistry.isEmptyContainer(itemstack);
+			case 2:
+				FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(itemstack);
+				return stack != null && stack.getFluid() != null && stack.getFluid().getName().equalsIgnoreCase("fuel");
+			default:
+				return false;
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -357,25 +394,35 @@ public class TileEntityGasLiquefier extends TileEntityElectricBlock implements I
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
 	{
-		return slotID == 1 && ItemElectric.isElectricItem(itemstack.getItem());
+		switch (slotID)
+		{
+		case 0:
+			return ItemElectric.isElectricItem(itemstack.getItem());
+		case 1:
+			FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(itemstack);
+			return stack != null && stack.getFluid() != null && stack.getFluid().getName().toLowerCase().contains("methane") || FluidContainerRegistry.isContainer(itemstack);
+		case 2:
+			FluidStack stack2 = FluidContainerRegistry.getFluidForFilledItem(itemstack);
+			return stack2 != null && stack2.getFluid() != null && stack2.getFluid().getName().equalsIgnoreCase("fuel") || FluidContainerRegistry.isContainer(itemstack);
+		}
+
+		return false;
 	}
 
 	@Override
 	public void openInventory()
 	{
-
 	}
 
 	@Override
 	public void closeInventory()
 	{
-
 	}
 
 	@Override
 	public boolean shouldUseEnergy()
 	{
-		return false;
+		return this.canProcess();
 	}
 
 	@Override
@@ -387,7 +434,7 @@ public class TileEntityGasLiquefier extends TileEntityElectricBlock implements I
 	@Override
 	public ForgeDirection getElectricInputDirection()
 	{
-		return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
+		return ForgeDirection.getOrientation((this.getBlockMetadata() & 3) + 2);
 	}
 
 	@Override

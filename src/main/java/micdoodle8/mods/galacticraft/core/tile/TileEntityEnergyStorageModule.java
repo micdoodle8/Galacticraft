@@ -25,6 +25,8 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	public int lastScaledEnergyLevel;
 	private float lastEnergy = 0;
 
+	private boolean initialised = false;
+
 	public TileEntityEnergyStorageModule()
 	{
 		this(1);
@@ -47,11 +49,24 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 		this.storage.setCapacity(2500000);
 		this.storage.setMaxExtract(1500);
         this.setTierGC(2);
+        this.initialised = true;
 	}
 
 	@Override
 	public void updateEntity()
 	{
+		if (!this.initialised )
+		{
+			int metadata = this.getBlockMetadata();
+			if (metadata >= 8)
+	        {
+				this.storage.setCapacity(2500000);
+				this.storage.setMaxExtract(1500);
+		        this.setTierGC(2);
+	        }
+			this.initialised = true;
+		}
+		
 		super.updateEntity();
 
 		this.scaledEnergyLevel = (int) Math.floor(this.getEnergyStoredGC() * 16 / this.getMaxEnergyStoredGC());
@@ -121,14 +136,8 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 				this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
 			}
 		}
-		
-		int metadata = this.getBlockMetadata();
-		if (metadata >= 8)
-        {
-			this.storage.setCapacity(2500000);
-			this.storage.setMaxExtract(1500);
-	        this.setTierGC(2);
-        }
+
+		this.initialised = false;
 	}
 
 	/**

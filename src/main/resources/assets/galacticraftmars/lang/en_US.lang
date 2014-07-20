@@ -104,8 +104,13 @@ gui.launchController.desc.2=Whether the launch pad should$be removed on launch
 gui.launchController.desc.3=When this criteria is met,$rocket will launch
 gui.terraformer.desc.0=Water Tank
 
-gui.desc.reinforcedPlateT2.name=Tier 2
+gui.gasTank.desc.0=Gas storage
+gui.message.gas.name=Gas
+gui.status.nogas.name=No gas
+gui.status.liquefying.name=Liquefying
+gui.button.liquefy.name=Process
 
+gui.desc.reinforcedPlateT2.name=Tier 2
 dimension.Mars.name=Mars
 planet.mars=Mars
 

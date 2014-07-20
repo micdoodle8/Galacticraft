@@ -39,7 +39,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 
 import java.io.File;
 import java.util.HashMap;
@@ -169,6 +172,11 @@ public class AsteroidsModule implements IPlanetsModule
         input2.put(20, new ItemStack(Blocks.chest));
         input2.put(21, new ItemStack(Blocks.chest));
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 3), input2));
+        
+		for (int i = AsteroidsItems.methaneCanister.getMaxDamage() - 1; i > 0; i--)
+		{
+			FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(AsteroidsModule.fluidLiquidMethane, AsteroidsItems.methaneCanister.getMaxDamage() - i), new ItemStack(AsteroidsItems.methaneCanister, 1, i), new ItemStack(AsteroidsItems.methaneCanister, 1, AsteroidsItems.methaneCanister.getMaxDamage())));
+		}
 	}
 
 	@Override
