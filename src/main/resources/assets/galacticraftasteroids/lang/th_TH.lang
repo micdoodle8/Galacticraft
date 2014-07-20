@@ -2,6 +2,20 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=จรวด เทียร์ 3
+item.heavyNoseCone.name=กรวยจรวดแบบทนทาน
+item.compressedTitanium.name=แผ่นไททาเนียม
+item.ingotTitanium.name=แท่งไททาเนียม
+item.shardTitanium.name=สะเก็ดไททาเนียม
+item.shardIron.name=สะเก็ดเหล็ก
+item.rocketFinsT2.name=ปีกจรวดแบบทนทาน
+item.engineT2.name=เครื่องยนต์จรวดแบบทนทาน
+item.reinforcedPlateT3.name=แผ่นโลหะแบบทนทาน
+item.grapple.name=ตะขอ
+item.thermalHelm.name=หมวกกันความร้อน
+item.thermalChestplate.name=เสื้อเกราะกันความร้อน
+item.thermalLeggings.name=กางเกงกันความร้อน
+item.thermalBoots.name=รองเท้ากันความร้อน
+item.tier3.desc=เทียร์ 3
 
 # TOOLS
 
@@ -16,7 +30,19 @@ tile.telepadShort.name=เครื่องเทเลพอร์ตระย
 # GUI
 planet.asteroids=ดาวเคราะห์น้อย
 
-itemGroup.GalacticraftAsteroids=กาแลคติคคราฟ ดาวเคราะห์น้อย
+	# Dollar sign ($) will split text onto a new line
+gui.telepad.desc.0=นี่คือเครื่องเทเลพอร์ต$unique address
+gui.telepad.desc.1=Address of another Telepad.$Entities จะถูกส่งที่นี่			#Todo for translate
+container.shortRangeTelepad.name=เครื่องเทเลพอร์ตระยะใกล้
+gui.message.address.name=Address											 			#Todo for translate
+gui.message.destAddress.name=Target Address 										#Todo for translate
+gui.message.invalidAddress.name=Invalid Unique Address 						#Todo for translate
+gui.message.invalidTargetAddress.name=Invalid Target Address 				#Todo for translate
+gui.message.receivingActive.name=Receiving Active 								#Todo for translate
+gui.message.telepadTooFar.name=เป้าหมายไกลเกินไป! (สูงสุด %d)
+gui.message.telepadWrongDim.name=เป้าหมายผิดมิติ!
+gui.message.telepadNotFound.name=ไม่เจอเครื่องเทเลพอร์ต!
+gui.message.sendingActive.name=Sending Active 	
 
 # Schematics
 
