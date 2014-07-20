@@ -17,7 +17,6 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.ShortRangeTelepadHandler;
-import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -341,7 +340,7 @@ public class TileEntityShortRangeTelepad extends TileEntityElectricBlock impleme
     @Override
     public ForgeDirection getElectricInputDirection()
     {
-        return ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachineMars.LAUNCH_CONTROLLER_METADATA + 2);
+        return ForgeDirection.getOrientation((this.getBlockMetadata() & 3) + 2);
     }
 
     @Override

@@ -13,7 +13,6 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.world.IChunkLoader;
 import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
-import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -392,7 +391,7 @@ public class TileEntityLaunchController extends TileEntityElectricBlock implemen
 	@Override
 	public ForgeDirection getElectricInputDirection()
 	{
-		return ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachineMars.LAUNCH_CONTROLLER_METADATA + 2);
+		return ForgeDirection.getOrientation((this.getBlockMetadata() & 3) + 2);
 	}
 
 	@Override

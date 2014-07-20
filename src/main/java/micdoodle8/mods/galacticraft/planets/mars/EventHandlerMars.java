@@ -175,7 +175,7 @@ public class EventHandlerMars
 			{
 				entity.rotationPitch = 0;
 
-				switch (tile.getBlockMetadata() - BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
+				switch (tile.getBlockMetadata() & 3)
 				{
 				case 0:
 					GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);

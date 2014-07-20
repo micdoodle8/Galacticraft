@@ -5,6 +5,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMarsT2;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -29,18 +31,28 @@ public class ItemBlockMachine extends ItemBlock implements IHoldableItem
 	@Override
 	public String getUnlocalizedName(ItemStack itemstack)
 	{
-		int metadata = 0;
+		int index = 0;
+		int typenum = itemstack.getItemDamage() & 12;
 
-		if (itemstack.getItemDamage() >= BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
+		if (this.field_150939_a == MarsBlocks.machine)
 		{
-			metadata = 2;
-		}
-		else if (itemstack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
+			if (typenum == BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
+			{
+				index = 2;
+			}
+			else if (typenum == BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
+			{
+				index = 1;
+			}
+		} else 	if (this.field_150939_a == MarsBlocks.machineT2)
 		{
-			metadata = 1;
+			if (typenum == BlockMachineMarsT2.GAS_LIQUEFIER)
+			{
+				return "tile.marsMachine.4";
+			}
 		}
-
-		return this.field_150939_a.getUnlocalizedName() + "." + metadata;
+		
+		return this.field_150939_a.getUnlocalizedName() + "." + index;
 	}
 
 	@Override

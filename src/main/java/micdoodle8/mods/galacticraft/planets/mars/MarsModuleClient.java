@@ -149,7 +149,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
 		{
 			return MarsModuleClient.eggRenderID;
 		}
-		else if (block == MarsBlocks.machine)
+		else if (block == MarsBlocks.machine || block == MarsBlocks.machineT2)
 		{
 			return MarsModuleClient.machineRenderID;
 		}
