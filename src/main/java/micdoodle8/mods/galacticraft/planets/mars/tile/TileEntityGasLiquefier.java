@@ -33,7 +33,7 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 	@NetworkedField(targetSide = Side.CLIENT)
 	public FluidTank fuelTank = new FluidTank(this.tankCapacity);
 
-	public static final int PROCESS_TIME_REQUIRED = 3;
+	public int processTimeRequired = 3;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int processTicks = 0;
 	private ItemStack[] containingItems = new ItemStack[3];
@@ -122,9 +122,12 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 
 			if (this.canProcess() && this.hasEnoughEnergyToRun)
 			{
+				//50% extra speed boost for Tier 2 machine if powered by Tier 2 power 
+				if (this.tierGC == 2) this.processTimeRequired = (this.poweredByTierGC == 2) ? 2 : 3;
+				
 				if (this.processTicks == 0)
 				{
-					this.processTicks = TileEntityGasLiquefier.PROCESS_TIME_REQUIRED;
+					this.processTicks = this.processTimeRequired;
 				}
 				else if (this.processTicks > 0)
 				{

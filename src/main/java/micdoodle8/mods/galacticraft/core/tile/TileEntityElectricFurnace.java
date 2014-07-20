@@ -54,7 +54,7 @@ public class TileEntityElectricFurnace extends ElectricBlockWithInventory implem
 		}
 
 		//tier == 2
-		this.storage.setCapacity(75000);
+		this.storage.setCapacity(25000);
 		this.storage.setMaxExtract(60);
 		this.processTimeRequired = 100;
         this.setTierGC(2);
@@ -69,7 +69,7 @@ public class TileEntityElectricFurnace extends ElectricBlockWithInventory implem
 			int metadata = this.getBlockMetadata();
 			if (metadata >= 8)
 	        {
-				this.storage.setCapacity(75000);
+				this.storage.setCapacity(25000);
 				this.storage.setMaxExtract(60);
 				this.processTimeRequired = 100;
 		        this.setTierGC(2);

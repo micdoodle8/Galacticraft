@@ -61,7 +61,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 		this.storage.setMaxReceive(TileEntitySolar.MAX_GENERATE_WATTS);
         if (tier == 2)
         {
-        	this.storage.setCapacity(100000);
+        	this.storage.setCapacity(30000);
         }
         this.setTierGC(tier);
         this.initialised = true;
@@ -75,7 +75,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 			int metadata = this.getBlockMetadata();
 			if (metadata >= BlockSolar.ADVANCED_METADATA)
 	        {
-	        	this.storage.setCapacity(100000);
+	        	this.storage.setCapacity(30000);
 	            this.setTierGC(2);
 	        }
 			this.initialised = true;

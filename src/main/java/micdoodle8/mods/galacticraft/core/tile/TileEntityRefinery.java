@@ -86,13 +86,15 @@ public class TileEntityRefinery extends ElectricBlockWithInventory implements IS
 						if (isCanister)
 						{
 							this.containingItems[2] = new ItemStack(GCItems.fuelCanister, 1, GCItems.fuelCanister.getMaxDamage() - amountToFill);
+							this.fuelTank.drain(amountToFill, true);
 						}
 						else
 						{
+							ItemStack originalContainer = this.containingItems[2];
 							this.containingItems[2] = FluidContainerRegistry.fillFluidContainer(liquid, this.containingItems[2]);
+							if (this.containingItems[2] == null) this.containingItems[2] = originalContainer;
+							else this.fuelTank.drain(amountToFill, true);
 						}
-
-						this.fuelTank.drain(amountToFill, true);
 					}
 				}
 			}

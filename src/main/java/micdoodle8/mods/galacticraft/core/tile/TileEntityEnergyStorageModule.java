@@ -67,6 +67,22 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 			this.initialised = true;
 		}
 		
+		float energy = this.storage.getEnergyStoredGC(); 
+		if (this.getTierGC() == 1)
+		{
+			if (this.lastEnergy == energy && energy > 0F)
+			{
+				//Slowly deplete if not being used
+				this.storage.extractEnergyGC(8, false);
+			}
+			else if (this.lastEnergy - energy > this.storage.getMaxExtract() - 1)
+			{
+				//Deplete faster if being drained at maximum output
+				this.storage.extractEnergyGC(50, false);
+			}
+		}
+		this.lastEnergy = energy;
+
 		super.updateEntity();
 
 		this.scaledEnergyLevel = (int) Math.floor(this.getEnergyStoredGC() * 16 / this.getMaxEnergyStoredGC());
@@ -88,21 +104,6 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 		}
 
 		this.lastScaledEnergyLevel = this.scaledEnergyLevel;
-		float energy = this.storage.getEnergyStoredGC(); 
-		if (this.getTierGC() == 1)
-		{
-			if (this.lastEnergy == energy && energy > 0F)
-			{
-				//Slowly deplete if not being used
-				this.storage.extractEnergyGC(8, false);
-			}
-			else if (this.lastEnergy - energy > this.storage.getMaxExtract() - 1)
-			{
-				//Deplete faster if being drained at maximum output
-				this.storage.extractEnergyGC(50, false);
-			}
-		}
-		this.lastEnergy = energy;
 	}
 
 	@Override
