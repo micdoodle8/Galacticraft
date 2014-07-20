@@ -2,14 +2,14 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=三阶火箭
-item.heavyNoseCone.name=沉重前锥体
-item.compressedTitanium.name=压缩钛
+item.heavyNoseCone.name=重型前锥体
+item.compressedTitanium.name=致密钛
 item.ingotTitanium.name=钛锭
 item.shardTitanium.name=钛碎片
 item.shardIron.name=铁碎片
-item.rocketFinsT2.name=沉重火箭鳍
-item.engineT2.name=沉重火箭引擎
-item.reinforcedPlateT3.name=高强度板
+item.rocketFinsT2.name=重型火箭鳍
+item.engineT2.name=重型火箭引擎
+item.reinforcedPlateT3.name=重型防护板
 item.grapple.name=吊钩
 item.thermalHelm.name=热力充能头盔
 item.thermalChestplate.name=热力充能胸甲
