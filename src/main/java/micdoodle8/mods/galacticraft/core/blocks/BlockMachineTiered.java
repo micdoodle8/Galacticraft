@@ -65,10 +65,10 @@ public class BlockMachineTiered extends BlockTileGC
 		this.iconOutput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_output");
 		this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_side");
 		
-		this.iconTier2 = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "space_station_top");
-		this.iconInputT2 = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
-		this.iconOutputT2 = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_output");
-		this.iconMachineSideT2 = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_side");
+		this.iconTier2 = iconRegister.registerIcon("galacticraftasteroids:machine");
+		this.iconInputT2 = iconRegister.registerIcon("galacticraftasteroids:machine_input");
+		this.iconOutputT2 = iconRegister.registerIcon("galacticraftasteroids:machine_output");
+		this.iconMachineSideT2 = iconRegister.registerIcon("galacticraftasteroids:machine_side");
 
 		this.iconEnergyStorageModule = new IIcon[17];
 		this.iconEnergyStorageModuleT2 = new IIcon[17];
@@ -76,11 +76,11 @@ public class BlockMachineTiered extends BlockTileGC
 		for (int i = 0; i < this.iconEnergyStorageModule.length; i++)
 		{
 			this.iconEnergyStorageModule[i] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "energyStorageModule_" + i);
-			this.iconEnergyStorageModuleT2[i] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "energyStorageModule_" + i);
+			this.iconEnergyStorageModuleT2[i] = iconRegister.registerIcon("galacticraftasteroids:energyStorageModule_" + i);
 		}
 
 		this.iconElectricFurnace = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "electricFurnace");
-		this.iconElectricFurnaceT2 = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "electricFurnace");
+		this.iconElectricFurnaceT2 = iconRegister.registerIcon("galacticraftasteroids:electricFurnace");
 	}
 
 	@Override
