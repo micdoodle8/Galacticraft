@@ -273,6 +273,7 @@ gui.message.clickAgain.0.name=Click again to zoom (view moons & satellites)
 gui.message.clickAgain.1.name=Click again to zoom (view moons)
 gui.message.clickAgain.2.name=Click again to zoom (view satellites)
 gui.message.clickAgain.3.name=Click again to zoom
+gui.message.exit.name=Exit
 
 gui.status.active.name=Active
 gui.status.missingleaves.name=Not Enough Leaf Blocks

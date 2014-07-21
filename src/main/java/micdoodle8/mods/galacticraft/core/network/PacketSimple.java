@@ -247,7 +247,7 @@ public class PacketSimple extends Packet implements IPacket
 
 				if (FMLClientHandler.instance().getClient().theWorld != null && !(FMLClientHandler.instance().getClient().currentScreen instanceof GuiCelestialSelection))
 				{
-					FMLClientHandler.instance().getClient().displayGuiScreen(new GuiCelestialSelection());
+					FMLClientHandler.instance().getClient().displayGuiScreen(new GuiCelestialSelection(false));
 				}
 			}
 			break;

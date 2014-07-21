@@ -56,8 +56,13 @@ public class GuiCelestialSelection extends GuiScreen
     private EnumSelectionState selectionState = EnumSelectionState.PREVIEW;
     private int selectionCount = 0;
     private int zoomTooltipPos = 0;
-    private String parentName;
     private Object selectedParent = GalacticraftCore.solarSystemSol;
+    private final boolean mapMode;
+
+    public GuiCelestialSelection(boolean mapMode)
+    {
+        this.mapMode = mapMode;
+    }
 
 	@Override
 	public void initGui()
@@ -302,6 +307,10 @@ public class GuiCelestialSelection extends GuiScreen
 	protected void keyTyped(char keyChar, int keyID)
 	{
 		// Override and do nothing, so it isn't possible to exit the GUI
+        if (this.mapMode)
+        {
+            super.keyTyped(keyChar, keyID);
+        }
 
 		if (keyID == 1)
 		{
@@ -407,7 +416,16 @@ public class GuiCelestialSelection extends GuiScreen
 			return;
 		}
 
-        if (this.selectedBody != null)
+        if (this.mapMode)
+        {
+            if (x > width - BORDER_WIDTH - BORDER_EDGE_WIDTH - 88 && x < width - BORDER_WIDTH - BORDER_EDGE_WIDTH && y > BORDER_WIDTH + BORDER_EDGE_WIDTH && y < BORDER_WIDTH + BORDER_EDGE_WIDTH + 13)
+            {
+                this.mc.displayGuiScreen(null);
+                this.mc.setIngameFocus();
+            }
+        }
+
+        if (this.selectedBody != null && !this.mapMode)
         {
             if (x > width - BORDER_WIDTH - BORDER_EDGE_WIDTH - 88 && x < width - BORDER_WIDTH - BORDER_EDGE_WIDTH && y > BORDER_WIDTH + BORDER_EDGE_WIDTH && y < BORDER_WIDTH + BORDER_EDGE_WIDTH + 13)
             {
@@ -1095,6 +1113,16 @@ public class GuiCelestialSelection extends GuiScreen
                 }
             }
 
+            if (this.mapMode)
+            {
+                this.mc.renderEngine.bindTexture(GuiCelestialSelection.guiMain);
+                GL11.glColor4f(1.0F, 0.0F, 0.0F, 1);
+                this.mc.renderEngine.bindTexture(GuiCelestialSelection.guiMain);
+                this.drawTexturedModalRect(width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 74, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH, 74, 11, 0, 392, 148, 22, true, false);
+                str = GCCoreUtil.translate("gui.message.exit.name").toUpperCase();
+                this.fontRendererObj.drawString(str, width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 40 - fontRendererObj.getStringWidth(str) / 2, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 1, GCCoreUtil.to32BitColor(255, 255, 255, 255));
+            }
+
             if (this.selectedBody != null)
             {
                 // Catalog overlay
@@ -1125,10 +1153,13 @@ public class GuiCelestialSelection extends GuiScreen
                     GL11.glColor4f(1.0F, 0.0F, 0.0F, 1);
                 }
 
-                this.mc.renderEngine.bindTexture(GuiCelestialSelection.guiMain);
-                this.drawTexturedModalRect(width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 74, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH, 74, 11, 0, 392, 148, 22, true, false);
-                str = GCCoreUtil.translate("gui.message.launch.name").toUpperCase();
-                this.fontRendererObj.drawString(str, width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 40 - fontRendererObj.getStringWidth(str) / 2, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 1, GCCoreUtil.to32BitColor(255, 255, 255, 255));
+                if (!this.mapMode)
+                {
+                    this.mc.renderEngine.bindTexture(GuiCelestialSelection.guiMain);
+                    this.drawTexturedModalRect(width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 74, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH, 74, 11, 0, 392, 148, 22, true, false);
+                    str = GCCoreUtil.translate("gui.message.launch.name").toUpperCase();
+                    this.fontRendererObj.drawString(str, width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 40 - fontRendererObj.getStringWidth(str) / 2, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 1, GCCoreUtil.to32BitColor(255, 255, 255, 255));
+                }
 
                 if (this.selectionCount == 1)
                 {
