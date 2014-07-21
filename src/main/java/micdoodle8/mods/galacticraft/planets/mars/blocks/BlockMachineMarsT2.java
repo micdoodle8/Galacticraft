@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalElectrical;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
-import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityGasLiquefier;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -44,11 +43,11 @@ public class BlockMachineMarsT2 extends BlockTileGC
 	@Override
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
-		this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "space_station_top");
-		this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
+		this.blockIcon = par1IconRegister.registerIcon("galacticraftasteroids:machine");
+		this.iconInput = par1IconRegister.registerIcon("galacticraftasteroids:machine_output");
 
-		this.iconMachineSide = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "machine_blank");
-		this.iconGasLiquefier = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "machine_blank");
+		this.iconMachineSide = par1IconRegister.registerIcon("galacticraftasteroids:machine_side");
+		this.iconGasLiquefier = par1IconRegister.registerIcon("galacticraftasteroids:gasLiquefier");
 		this.iconGasInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_oxygen_input");
 	}
 
