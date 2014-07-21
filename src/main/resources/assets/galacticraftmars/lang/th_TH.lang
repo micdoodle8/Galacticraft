@@ -98,7 +98,7 @@ gui.message.success.name=เสร็จสิ้น
 gui.desc.reinforcedPlateT2.name=เทียร์ 2
 
 	# Dollar sign ($) will split text onto a new line
-gui.launchController.desc.0=นี่คือเครื่องควบคุมการปล่อยจรวด$unique frequency
+gui.launchController.desc.0=นี่คือเครื่องควบคุมการปล่อยจรวด$ความถี่เฉพาะ
 gui.launchController.desc.1=ความถี่ที่ใกล้จะปล่อยจรวด
 gui.launchController.desc.2=หรือไม่ฐานปล่อยจรวดควร$ลบออกเมื่อจรวดถูกปล่อย
 gui.launchController.desc.3=When this criteria is met,$จรวดจะถูกปล่อย # Complete 80%
