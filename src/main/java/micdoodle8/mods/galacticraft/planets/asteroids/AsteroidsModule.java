@@ -78,8 +78,8 @@ public class AsteroidsModule implements IPlanetsModule
 		FluidRegistry.registerFluid(AsteroidsModule.gcFluidLiquidOxygen);
 		FluidRegistry.registerFluid(AsteroidsModule.gcFluidLiquidNitrogen);
 		AsteroidsModule.fluidLiquidMethane = FluidRegistry.getFluid("methane");
-		AsteroidsModule.fluidLiquidOxygen = FluidRegistry.getFluid("liquidOxygen");
-		AsteroidsModule.fluidLiquidNitrogen = FluidRegistry.getFluid("liquidNitrogen");
+		AsteroidsModule.fluidLiquidOxygen = FluidRegistry.getFluid("liquidoxygen");
+		AsteroidsModule.fluidLiquidNitrogen = FluidRegistry.getFluid("liquidnitrogen");
 		
 		AsteroidBlocks.initBlocks();
 		AsteroidBlocks.registerBlocks();
