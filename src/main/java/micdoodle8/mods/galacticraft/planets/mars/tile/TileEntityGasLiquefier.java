@@ -5,11 +5,12 @@ import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.tile.ElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
-import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemMethaneCanister;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemCanisterMethane;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
@@ -71,7 +72,7 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 					{
 						this.gasTank.fill(gcMethane, true);
 
-						if (inputCanister.getItem() instanceof ItemMethaneCanister)
+						if (inputCanister.getItem() instanceof ItemCanisterMethane)
 						{
 							this.containingItems[1] = new ItemStack(AsteroidsItems.methaneCanister, 1, AsteroidsItems.methaneCanister.getMaxDamage());
 						}
@@ -101,7 +102,8 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 				{
 					if (FluidContainerRegistry.isEmptyContainer(this.containingItems[2]))
 					{
-						boolean isCanister = this.containingItems[2].isItemEqual(new ItemStack(GCItems.fuelCanister, 1, GCItems.fuelCanister.getMaxDamage())) || this.containingItems[2].isItemEqual(new ItemStack(AsteroidsItems.methaneCanister, 1, AsteroidsItems.methaneCanister.getMaxDamage()));
+						ItemStack slotItem = this.containingItems[2];
+						boolean isCanister = slotItem.getItem() instanceof ItemCanisterGeneric && slotItem.getItemDamage() == GCItems.fuelCanister.getMaxDamage();
 						final int amountToFill = Math.min(liquid.amount, isCanister ? GCItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
 
 						if (isCanister)
@@ -111,9 +113,8 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 						}
 						else
 						{
-							ItemStack originalContainer = this.containingItems[2];
 							this.containingItems[2] = FluidContainerRegistry.fillFluidContainer(liquid, this.containingItems[2]);
-							if (this.containingItems[2] == null) this.containingItems[2] = originalContainer;
+							if (this.containingItems[2] == null) this.containingItems[2] = slotItem;
 							else this.fuelTank.drain(amountToFill, true);
 						}
 					}

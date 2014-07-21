@@ -15,8 +15,18 @@ item.thermalHelm.name=Themal Padding Helm
 item.thermalChestplate.name=Thermal Padding Chestpiece
 item.thermalLeggings.name=Thermal Padding Leggings
 item.thermalBoots.name=Thermal Padding Boots
+
 item.methaneCanisterPartial.name=Canister of Methane
 item.methaneCanister.name=Filled Canister of Methane
+item.canister.gas.name=Gas
+item.canister.LOX.partial=Canister of Liquid Oxygen
+item.canister.LOX.full=Filled Canister of Liquid Oxygen
+item.canister.LOX.name=LOX
+item.canister.liquidNitrogen.partial=Canister of Liquid Nitrogen
+item.canister.liquidNitrogen.full=Filled Canister of Liquid Nitrogen
+item.canister.liquidNitrogen.name=Liquid
+item.emptyGasCanister.name=Empty Gas Canister
+
 item.tier3.desc=Tier 3
 
 # TOOLS

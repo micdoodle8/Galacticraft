@@ -1,8 +1,11 @@
-package micdoodle8.mods.galacticraft.core.items;
+package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -10,15 +13,15 @@ import net.minecraft.util.IIcon;
 
 import java.util.List;
 
-public class ItemFuelCanister extends ItemCanisterGeneric
+public class ItemCanisterMethane extends ItemCanisterGeneric
 {
 	protected IIcon[] icons = new IIcon[7];
 
-	public ItemFuelCanister(String assetName)
+	public ItemCanisterMethane(String assetName)
 	{
 		super(assetName);
 		this.setContainerItem(GCItems.oilCanister);
-		this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+		this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
 	}
 
 	@Override
@@ -34,12 +37,17 @@ public class ItemFuelCanister extends ItemCanisterGeneric
 	@Override
 	public String getUnlocalizedName(ItemStack itemStack)
 	{
-		if (itemStack.getItemDamage() == 1)
+		if (itemStack.getMaxDamage() - itemStack.getItemDamage() == 0)
 		{
-			return "item.fuelCanister";
+			return "item.emptyGasCanister";
 		}
 
-		return "item.fuelCanisterPartial";
+		if (itemStack.getItemDamage() == 1)
+		{
+			return "item.methaneCanister";
+		}
+
+		return "item.methaneCanisterPartial";
 	}
 
 	@Override
@@ -62,7 +70,7 @@ public class ItemFuelCanister extends ItemCanisterGeneric
 	{
 		if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() > 0)
 		{
-			par3List.add("Fuel: " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
+			par3List.add(GCCoreUtil.translate("item.canister.gas.name") +  ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
 		}
 	}
 }
