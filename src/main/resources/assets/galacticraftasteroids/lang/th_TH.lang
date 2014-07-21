@@ -22,27 +22,35 @@ item.tier3.desc=เทียร์ 3
 # ARMOR
 
 # BLOCKS
-tile.asteroidsBlock.asteroids1.name=หินดาวเคราะห์น้อย
+tile.asteroidsBlock.asteroid0.name=หินดาวเคราะห์น้อย
+tile.asteroidsBlock.asteroid1.name=หินดาวเคราะห์น้อย
+tile.asteroidsBlock.asteroid2.name=หินดาวเคราะห์น้อย
+tile.asteroidsBlock.oreIron.name=แร่เหล็ก
+tile.asteroidsBlock.oreIlmenite.name=แร่อิลเมไนท์
+tile.asteroidsBlock.oreAluminum.name=แร่อลูมิเนียม
 tile.beamReflector.name=เครื่องสะท้อนลำแสง
 tile.beamReceiver.name=เครื่องรับลำแสง
 tile.telepadShort.name=เครื่องเทเลพอร์ตระยะใกล้
+tile.walkway.name=ทางเดิน
+tile.walkwayWire.name=ทางเดิน
+tile.walkwayOxygenPipe.name=ทางเดิน
 
 # GUI
 planet.asteroids=ดาวเคราะห์น้อย
 
 	# Dollar sign ($) will split text onto a new line
-gui.telepad.desc.0=นี่คือเครื่องเทเลพอร์ต$unique address
-gui.telepad.desc.1=Address of another Telepad.$Entities จะถูกส่งที่นี่			#Todo for translate
+gui.telepad.desc.0=นี่คือเครื่องเทเลพอร์ต$ที่อยู่เฉพาะ
+gui.telepad.desc.1=ที่อยู่ของเครื่องเทเลพอร์ตอื่นๆ$Entities จะถูกส่งที่นี่ #Complete 95%
 container.shortRangeTelepad.name=เครื่องเทเลพอร์ตระยะใกล้
-gui.message.address.name=Address											 			#Todo for translate
-gui.message.destAddress.name=Target Address 										#Todo for translate
-gui.message.invalidAddress.name=Invalid Unique Address 						#Todo for translate
-gui.message.invalidTargetAddress.name=Invalid Target Address 				#Todo for translate
-gui.message.receivingActive.name=Receiving Active 								#Todo for translate
+gui.message.address.name=ที่อยู่
+gui.message.destAddress.name=เป้าหมายของที่อยู่
+gui.message.invalidAddress.name=เป้าหมายของที่อยู่เฉพาะผิดพลาด
+gui.message.invalidTargetAddress.name=ที่อยู่ของเป้าหมายผิดพลาด
+gui.message.receivingActive.name=รับข้อมูลการทำงาน
 gui.message.telepadTooFar.name=เป้าหมายไกลเกินไป! (สูงสุด %d)
 gui.message.telepadWrongDim.name=เป้าหมายผิดมิติ!
 gui.message.telepadNotFound.name=ไม่เจอเครื่องเทเลพอร์ต!
-gui.message.sendingActive.name=Sending Active 	
+gui.message.sendingActive.name=กำลังส่งการทำงาน
 
 # Schematics
 
