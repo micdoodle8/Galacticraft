@@ -3,23 +3,18 @@ package micdoodle8.mods.galacticraft.core.tile;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
 import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
-import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Arrays;
 
-public class TileEntityCircuitFabricator extends TileEntityElectricBlock implements IInventory, ISidedInventory, IPacketReceiver
+public class TileEntityCircuitFabricator extends ElectricBlockWithInventory implements ISidedInventory, IPacketReceiver
 {
 	public static final int PROCESS_TIME_REQUIRED = 300;
 	@NetworkedField(targetSide = Side.CLIENT)
@@ -88,16 +83,6 @@ public class TileEntityCircuitFabricator extends TileEntityElectricBlock impleme
 		this.producingStack = CircuitFabricatorRecipes.getOutputForInput(Arrays.copyOfRange(this.containingItems, 1, 6));
 	}
 
-	@Override
-	public void openInventory()
-	{
-	}
-
-	@Override
-	public void closeInventory()
-	{
-	}
-
 	private boolean canCompress()
 	{
 		ItemStack itemstack = this.producingStack;
@@ -160,19 +145,7 @@ public class TileEntityCircuitFabricator extends TileEntityElectricBlock impleme
 	{
 		super.readFromNBT(par1NBTTagCompound);
 		this.processTicks = par1NBTTagCompound.getInteger("smeltingTicks");
-		NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
-		this.containingItems = new ItemStack[this.getSizeInventory()];
-
-		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
-		{
-			NBTTagCompound var4 = var2.getCompoundTagAt(var3);
-			byte var5 = var4.getByte("Slot");
-
-			if (var5 >= 0 && var5 < this.containingItems.length)
-			{
-				this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
-			}
-		}
+		this.containingItems = this.readStandardItemsFromNBT(par1NBTTagCompound);
 	}
 
 	@Override
@@ -180,107 +153,19 @@ public class TileEntityCircuitFabricator extends TileEntityElectricBlock impleme
 	{
 		super.writeToNBT(par1NBTTagCompound);
 		par1NBTTagCompound.setInteger("smeltingTicks", this.processTicks);
-		NBTTagList var2 = new NBTTagList();
-
-		for (int var3 = 0; var3 < this.containingItems.length; ++var3)
-		{
-			if (this.containingItems[var3] != null)
-			{
-				NBTTagCompound var4 = new NBTTagCompound();
-				var4.setByte("Slot", (byte) var3);
-				this.containingItems[var3].writeToNBT(var4);
-				var2.appendTag(var4);
-			}
-		}
-
-		par1NBTTagCompound.setTag("Items", var2);
+		this.writeStandardItemsToNBT(par1NBTTagCompound);
 	}
 
 	@Override
-	public int getSizeInventory()
+	protected ItemStack[] getContainingItems()
 	{
-		return this.containingItems.length;
-	}
-
-	@Override
-	public ItemStack getStackInSlot(int par1)
-	{
-		return this.containingItems[par1];
-	}
-
-	@Override
-	public ItemStack decrStackSize(int par1, int par2)
-	{
-		if (this.containingItems[par1] != null)
-		{
-			ItemStack var3;
-
-			if (this.containingItems[par1].stackSize <= par2)
-			{
-				var3 = this.containingItems[par1];
-				this.containingItems[par1] = null;
-				return var3;
-			}
-			else
-			{
-				var3 = this.containingItems[par1].splitStack(par2);
-
-				if (this.containingItems[par1].stackSize == 0)
-				{
-					this.containingItems[par1] = null;
-				}
-
-				return var3;
-			}
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	@Override
-	public ItemStack getStackInSlotOnClosing(int par1)
-	{
-		if (this.containingItems[par1] != null)
-		{
-			ItemStack var2 = this.containingItems[par1];
-			this.containingItems[par1] = null;
-			return var2;
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	@Override
-	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
-	{
-		this.containingItems[par1] = par2ItemStack;
-
-		if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
-		{
-			par2ItemStack.stackSize = this.getInventoryStackLimit();
-		}
+		return this.containingItems;
 	}
 
 	@Override
 	public String getInventoryName()
 	{
 		return GCCoreUtil.translate("tile.machine2.5.name");
-	}
-
-	@Override
-	public int getInventoryStackLimit()
-	{
-		return 64;
-	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer)
-	{
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && entityplayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -317,17 +202,5 @@ public class TileEntityCircuitFabricator extends TileEntityElectricBlock impleme
 	public boolean shouldUseEnergy()
 	{
 		return this.processTicks > 0;
-	}
-
-	@Override
-	public ForgeDirection getElectricInputDirection()
-	{
-		return ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine2.CIRCUIT_FABRICATOR_METADATA + 2);
-	}
-
-	@Override
-	public ItemStack getBatteryInSlot()
-	{
-		return this.getStackInSlot(0);
 	}
 }

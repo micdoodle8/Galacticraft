@@ -10,7 +10,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -165,7 +164,7 @@ public class TileEntityElectricFurnace extends ElectricBlockWithInventory implem
 				if (this.tierGC > 1)
 				{
 					String nameSmelted = this.containingItems[1].getUnlocalizedName().toLowerCase();
-					if (resultItemStack.getUnlocalizedName().toLowerCase().contains("ingot") && (nameSmelted.contains("ore") || nameSmelted.contains("raw") || nameSmelted.contains("shard")))
+					if (resultItemStack.getUnlocalizedName().toLowerCase().contains("ingot") && (nameSmelted.contains("ore") || nameSmelted.contains("raw") || nameSmelted.contains("moon") || nameSmelted.contains("mars") || nameSmelted.contains("shard")))
 						this.containingItems[2].stackSize++;
 				}
 			}
@@ -175,7 +174,7 @@ public class TileEntityElectricFurnace extends ElectricBlockWithInventory implem
 				if (this.tierGC > 1)
 				{
 					String nameSmelted = this.containingItems[1].getUnlocalizedName().toLowerCase();
-					if (resultItemStack.getUnlocalizedName().toLowerCase().contains("ingot") && (nameSmelted.contains("ore") || nameSmelted.contains("raw") || nameSmelted.contains("shard")))
+					if (resultItemStack.getUnlocalizedName().toLowerCase().contains("ingot") && (nameSmelted.contains("ore") || nameSmelted.contains("raw")  || nameSmelted.contains("moon") || nameSmelted.contains("mars") || nameSmelted.contains("shard")))
 						this.containingItems[2].stackSize++;
 				}
 			}
@@ -259,17 +258,5 @@ public class TileEntityElectricFurnace extends ElectricBlockWithInventory implem
 	public boolean shouldUseEnergy()
 	{
 		return this.canProcess();
-	}
-
-	@Override
-	public ForgeDirection getElectricInputDirection()
-	{
-		return ForgeDirection.getOrientation((this.getBlockMetadata() & 3) + 2);
-	}
-
-	@Override
-	public ItemStack getBatteryInSlot()
-	{
-		return this.containingItems[0];
 	}
 }

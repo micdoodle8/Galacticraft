@@ -298,12 +298,6 @@ public class TileEntityRefinery extends ElectricBlockWithInventory implements IS
 	}
 
 	@Override
-	public ItemStack getBatteryInSlot()
-	{
-		return this.getStackInSlot(0);
-	}
-
-	@Override
 	public boolean canDrain(ForgeDirection from, Fluid fluid)
 	{
 		if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2)))

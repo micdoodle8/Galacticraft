@@ -5,6 +5,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class ElectricBlockWithInventory extends TileEntityElectricBlock implements IInventory
 {
@@ -71,6 +72,7 @@ public abstract class ElectricBlockWithInventory extends TileEntityElectricBlock
 			{
 				var3 = containingItems[par1];
 				containingItems[par1] = null;
+				this.markDirty();
 				return var3;
 			}
 			else
@@ -82,6 +84,7 @@ public abstract class ElectricBlockWithInventory extends TileEntityElectricBlock
 					containingItems[par1] = null;
 				}
 
+				this.markDirty();
 				return var3;
 			}
 		}
@@ -99,6 +102,7 @@ public abstract class ElectricBlockWithInventory extends TileEntityElectricBlock
 		{
 			final ItemStack var2 = containingItems[par1];
 			containingItems[par1] = null;
+			this.markDirty();
 			return var2;
 		}
 		else
@@ -117,6 +121,8 @@ public abstract class ElectricBlockWithInventory extends TileEntityElectricBlock
 		{
 			par2ItemStack.stackSize = this.getInventoryStackLimit();
 		}
+		
+		this.markDirty();
 	}
 
 	@Override
@@ -141,6 +147,17 @@ public abstract class ElectricBlockWithInventory extends TileEntityElectricBlock
 	{
 	}
 	
+	@Override
+	public ForgeDirection getElectricInputDirection()
+	{
+		return ForgeDirection.getOrientation((this.getBlockMetadata() & 3) + 2);
+	}
+
+	@Override
+	public ItemStack getBatteryInSlot()
+	{
+		return this.getStackInSlot(0);
+	}
 
 	/*
 	 * Must be overridden by identical code, to get the actual containingItems
