@@ -11,10 +11,11 @@ item.rocketFinsT2.name=Heavy Rocket Fins
 item.engineT2.name=Heavy Rocket Engine
 item.reinforcedPlateT3.name=Heavy-Duty Plate
 item.grapple.name=Grapple
-item.thermalHelm.name=Themal Padding Helm
+item.thermalHelm.name=Thermal Padding Helm
 item.thermalChestplate.name=Thermal Padding Chestpiece
 item.thermalLeggings.name=Thermal Padding Leggings
 item.thermalBoots.name=Thermal Padding Boots
+item.atmosphericValve.name=Atmospheric Valve
 
 item.methaneCanisterPartial.name=Methane Gas Canister
 item.methaneCanister.name=Filled Methane Gas Canister

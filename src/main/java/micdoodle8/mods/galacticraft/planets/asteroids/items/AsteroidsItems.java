@@ -13,6 +13,7 @@ public class AsteroidsItems
     public static Item methaneCanister;
     public static Item canisterLOX;
     public static Item canisterLN2;
+    public static Item atmosphericValve;
     public static ItemHeavyNoseCone heavyNoseCone;
 
 	public static void initItems()
@@ -24,6 +25,7 @@ public class AsteroidsItems
         AsteroidsItems.methaneCanister = new ItemCanisterMethane("methaneCanisterPartial");
         AsteroidsItems.canisterLOX = new ItemCanisterLiquidOxygen("canisterPartialLOX");
         AsteroidsItems.canisterLN2 = new ItemCanisterLiquidNitrogen("canisterPartialLN2");
+        AsteroidsItems.atmosphericValve = new ItemAtmosphericValve("atmosphericValve");
         AsteroidsItems.heavyNoseCone = new ItemHeavyNoseCone("heavyNoseCone");
 
 		AsteroidsItems.registerItems();
@@ -38,6 +40,7 @@ public class AsteroidsItems
         registerItem(AsteroidsItems.methaneCanister);
         registerItem(AsteroidsItems.canisterLOX);
         registerItem(AsteroidsItems.canisterLN2);
+        registerItem(AsteroidsItems.atmosphericValve);
         registerItem(AsteroidsItems.heavyNoseCone);
 	}
 
