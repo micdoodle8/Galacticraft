@@ -31,7 +31,7 @@ public class GuiGasLiquefier extends GuiContainerGC
 	private static final ResourceLocation gasTextures = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/gui/gasesMethaneOxygenNitrogen.png");
 
 	private final TileEntityGasLiquefier tileEntity;
-
+	
 	private GuiButton buttonDisable;
 
 	private GuiElementInfoRegion fuelTankRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 153, (this.height - this.ySize) / 2 + 28, 16, 38, new ArrayList<String>(), this.width, this.height, this);
@@ -50,51 +50,43 @@ public class GuiGasLiquefier extends GuiContainerGC
 	public void initGui()
 	{
 		super.initGui();
-		List<String> gasTankDesc = new ArrayList<String>();
-		gasTankDesc.add(GCCoreUtil.translate("gui.gasTank.desc.0"));
-		FluidStack gasTankContents = this.tileEntity.gasTank != null ? this.tileEntity.gasTank.getFluid() : null;
-		if (gasTankContents != null)
-			gasTankDesc.add("("+gasTankContents.getFluid().getLocalizedName()+")");
-		else
-			gasTankDesc.add(" ");
-		int gasLevel = gasTankContents != null ? gasTankContents.amount : 0;
-		int gasCapacity = this.tileEntity.gasTank != null ? this.tileEntity.gasTank.getCapacity() : 0;
-		gasTankDesc.add(EnumColor.YELLOW + " " + gasLevel + " / " + gasCapacity);
-		this.gasTankRegion.tooltipStrings = gasTankDesc;
+
 		this.gasTankRegion.xPosition = (this.width - this.xSize) / 2 + 7;
 		this.gasTankRegion.yPosition = (this.height - this.ySize) / 2 + 28;
 		this.gasTankRegion.parentWidth = this.width;
 		this.gasTankRegion.parentHeight = this.height;
 		this.infoRegions.add(this.gasTankRegion);
+		
 		List<String> batterySlotDesc = new ArrayList<String>();
 		batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
 		batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
 		this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 49, (this.height - this.ySize) / 2 + 50, 18, 18, batterySlotDesc, this.width, this.height, this));
-		List<String> fuelTankDesc = new ArrayList<String>();
-		fuelTankDesc.add(GCCoreUtil.translate("gui.fuelTank.desc.4"));
-		int fuelLevel = this.tileEntity.fuelTank != null && this.tileEntity.fuelTank.getFluid() != null ? this.tileEntity.fuelTank.getFluid().amount : 0;
-		int fuelCapacity = this.tileEntity.fuelTank != null ? this.tileEntity.fuelTank.getCapacity() : 0;
-		fuelTankDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.message.fuel.name") + ": " + fuelLevel + " / " + fuelCapacity);
-		this.fuelTankRegion.tooltipStrings = fuelTankDesc;
+
 		this.fuelTankRegion.xPosition = (this.width - this.xSize) / 2 + 153;
 		this.fuelTankRegion.yPosition = (this.height - this.ySize) / 2 + 28;
 		this.fuelTankRegion.parentWidth = this.width;
 		this.fuelTankRegion.parentHeight = this.height;
 		this.infoRegions.add(this.fuelTankRegion);
+
 		List<String> fuelSlotDesc = new ArrayList<String>();
 		fuelSlotDesc.add(GCCoreUtil.translate("gui.fuelOutput.desc.0"));
 		fuelSlotDesc.add(GCCoreUtil.translate("gui.fuelOutput.desc.1"));
 		fuelSlotDesc.add(GCCoreUtil.translate("gui.fuelOutput.desc.2"));
 		this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 152, (this.height - this.ySize) / 2 + 6, 18, 18, fuelSlotDesc, this.width, this.height, this));
-		List<String> electricityDesc = new ArrayList<String>();
-		electricityDesc.add(GCCoreUtil.translate("gui.energyStorage.desc.0"));
-		electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energyStorage.desc.1") + ((int) Math.floor(this.tileEntity.getEnergyStoredGC()) + " / " + (int) Math.floor(this.tileEntity.getMaxEnergyStoredGC())));
-		this.electricInfoRegion.tooltipStrings = electricityDesc;
+
+		fuelSlotDesc = new ArrayList<String>();
+		fuelSlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.gasInput.desc.0"));
+		fuelSlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.gasInput.desc.1"));
+		this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 6, (this.height - this.ySize) / 2 + 6, 18, 18, fuelSlotDesc, this.width, this.height, this));
+
 		this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 62;
 		this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 16;
 		this.electricInfoRegion.parentWidth = this.width;
 		this.electricInfoRegion.parentHeight = this.height;
 		this.infoRegions.add(this.electricInfoRegion);
+
+		this.addToolTips();
+		
 		this.buttonList.add(this.buttonDisable = new GuiButton(0, this.width / 2 - 39, this.height / 2 - 56, 76, 20, GCCoreUtil.translate("gui.button.liquefy.name")));
 	}
 
@@ -124,9 +116,13 @@ public class GuiGasLiquefier extends GuiContainerGC
 		{
 			displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready.name");
 		}
-		else if (this.tileEntity.canProcess())
+		else if (this.tileEntity.canProcess() && this.tileEntity.hasEnoughEnergyToRun)
 		{
 			displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.liquefying.name");
+		}
+		else if (!this.tileEntity.hasEnoughEnergyToRun)
+		{
+			displayText = EnumColor.RED + GCCoreUtil.translate("gui.message.noEnergy.name");
 		}
 		else
 		{
@@ -160,30 +156,7 @@ public class GuiGasLiquefier extends GuiContainerGC
 		int gasType = 0;  //0 for methane, 1 for oxygen, 2 for nitrogen
 		this.drawTexturedModalRect((this.width - this.xSize) / 2 + 7, (this.height - this.ySize) / 2 + 17 + 49 - displayInt, gasType * 17, 38 - displayInt, 16, displayInt);
 
-		List<String> gasTankDesc = new ArrayList<String>();
-		gasTankDesc.add(GCCoreUtil.translate("gui.gasTank.desc.0"));
-		FluidStack gasTankContents = this.tileEntity.gasTank != null ? this.tileEntity.gasTank.getFluid() : null;
-		if (gasTankContents != null)
-			gasTankDesc.add("("+gasTankContents.getFluid().getLocalizedName()+")");
-		else
-			gasTankDesc.add(" ");
-		int gasLevel = gasTankContents != null ? gasTankContents.amount : 0;
-		int gasCapacity = this.tileEntity.gasTank != null ? this.tileEntity.gasTank.getCapacity() : 0;
-		gasTankDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.message.gas.name") + ": " + gasLevel + " / " + gasCapacity);
-		this.gasTankRegion.tooltipStrings = gasTankDesc;
-
-		List<String> fuelTankDesc = new ArrayList<String>();
-		fuelTankDesc.add(GCCoreUtil.translate("gui.fuelTank.desc.4"));
-		int fuelLevel = this.tileEntity.fuelTank != null && this.tileEntity.fuelTank.getFluid() != null ? this.tileEntity.fuelTank.getFluid().amount : 0;
-		int fuelCapacity = this.tileEntity.fuelTank != null ? this.tileEntity.fuelTank.getCapacity() : 0;
-		fuelTankDesc.add(EnumColor.YELLOW + " " + fuelLevel + " / " + fuelCapacity);
-		this.fuelTankRegion.tooltipStrings = fuelTankDesc;
-
-		List<String> electricityDesc = new ArrayList<String>();
-		electricityDesc.add(GCCoreUtil.translate("gui.energyStorage.desc.0"));
-//		electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energyStorage.desc.1") + ((int) Math.floor(this.tileEntity.getEnergyStoredGC()) + " / " + (int) Math.floor(this.tileEntity.getMaxEnergyStoredGC())));
-	    EnergyHelper.getEnergyDisplayTooltip(this.tileEntity.getEnergyStoredGC(), this.tileEntity.getMaxEnergyStoredGC(), electricityDesc);
-        this.electricInfoRegion.tooltipStrings = electricityDesc;
+		this.addToolTips();
 
 		this.mc.renderEngine.bindTexture(GuiGasLiquefier.refineryTexture);
 
@@ -193,5 +166,33 @@ public class GuiGasLiquefier extends GuiContainerGC
 		}
 
 		this.drawTexturedModalRect(containerWidth + 63, containerHeight + 17, 176, 38, Math.min(this.tileEntity.getScaledElecticalLevel(54), 54), 7);
+	}
+	
+	private void addToolTips()
+	{
+		List<String> gasTankDesc = new ArrayList<String>();
+		gasTankDesc.add(GCCoreUtil.translate("gui.gasTank.desc.0"));
+		FluidStack gasTankContents = this.tileEntity.gasTank != null ? this.tileEntity.gasTank.getFluid() : null;
+		if (gasTankContents != null)
+			gasTankDesc.add("("+gasTankContents.getFluid().getLocalizedName()+")");
+		else
+			gasTankDesc.add(" ");
+		int gasLevel = gasTankContents != null ? gasTankContents.amount : 0;
+		int gasCapacity = this.tileEntity.gasTank != null ? this.tileEntity.gasTank.getCapacity() : 0;
+		gasTankDesc.add(EnumColor.YELLOW + " " + gasLevel + " / " + gasCapacity);
+		this.gasTankRegion.tooltipStrings = gasTankDesc;
+
+		List<String> fuelTankDesc = new ArrayList<String>();
+		fuelTankDesc.add(GCCoreUtil.translate("gui.fuelTank.desc.4"));
+		int fuelLevel = this.tileEntity.fuelTank != null && this.tileEntity.fuelTank.getFluid() != null ? this.tileEntity.fuelTank.getFluid().amount : 0;
+		int fuelCapacity = this.tileEntity.fuelTank != null ? this.tileEntity.fuelTank.getCapacity() : 0;
+		fuelTankDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.message.fuel.name") + ": " + fuelLevel + " / " + fuelCapacity);
+		this.fuelTankRegion.tooltipStrings = fuelTankDesc;
+
+		List<String> electricityDesc = new ArrayList<String>();
+		electricityDesc.add(GCCoreUtil.translate("gui.energyStorage.desc.0"));
+//		electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energyStorage.desc.1") + ((int) Math.floor(this.tileEntity.getEnergyStoredGC()) + " / " + (int) Math.floor(this.tileEntity.getMaxEnergyStoredGC())));
+	    EnergyHelper.getEnergyDisplayTooltip(this.tileEntity.getEnergyStoredGC(), this.tileEntity.getMaxEnergyStoredGC(), electricityDesc);
+        this.electricInfoRegion.tooltipStrings = electricityDesc;
 	}
 }

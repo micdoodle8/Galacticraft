@@ -24,6 +24,7 @@ public abstract class TileEntityElectricBlock extends TileEntityUniversalElectri
 	public boolean disabled = false;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int disableCooldown = 0;
+	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean hasEnoughEnergyToRun = false;
 
 	public boolean shouldPullEnergy()

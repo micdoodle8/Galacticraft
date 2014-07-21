@@ -68,7 +68,7 @@ tile.tintedGlassPane.black.name=Black Tinted Glass Pane
 # GUI
 gui.choosePlanet.desc.mars=Habitable#No Oxygen#Gravity: 38%
 item.deshPickSlime.description.name=Can harvest Slimeling eggs
-gui.message.noEnergy.name=Not Enough Energy
+gui.message.noEnergy.name=No Energy!
 gui.message.noWater.name=Not Enough Water
 gui.message.noBonemeal.name=Not Enough Bonemeal
 gui.message.noSeeds.name=Not Enough Seeds
@@ -109,6 +109,8 @@ gui.status.nogas.name=No gas
 gui.status.liquefying.name=Liquefying
 gui.button.liquefy.name=Process
 gui.button.liquefyStop.name=Stop
+gui.gasInput.desc.0=Try placing a canister$of methane here.
+gui.gasInput.desc.1=(Perhaps alternatively,$an Atmospheric Valve.)
 
 gui.desc.reinforcedPlateT2.name=Tier 2
 dimension.Mars.name=Mars
