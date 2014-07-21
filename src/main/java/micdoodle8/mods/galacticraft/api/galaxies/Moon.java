@@ -27,8 +27,8 @@ public class Moon extends CelestialBody
 	}
 
 	@Override
-	public String getUnlocalizedNamePrefix()
-	{
-		return "moon";
-	}
+    public String getUnlocalizedNamePrefix()
+    {
+        return "moon";
+    }
 }

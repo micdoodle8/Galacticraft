@@ -24,7 +24,6 @@ import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiBuggy;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiParaChest;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
-import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiGalaxyMap;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
@@ -246,7 +245,7 @@ public class PacketSimple extends Packet implements IPacket
 			{
 				final String[] destinations = ((String) this.data.get(1)).split("\\.");
 
-				if (FMLClientHandler.instance().getClient().theWorld != null && !(FMLClientHandler.instance().getClient().currentScreen instanceof GuiCelestialSelection || FMLClientHandler.instance().getClient().currentScreen instanceof GuiGalaxyMap))
+				if (FMLClientHandler.instance().getClient().theWorld != null && !(FMLClientHandler.instance().getClient().currentScreen instanceof GuiCelestialSelection))
 				{
 					FMLClientHandler.instance().getClient().displayGuiScreen(new GuiCelestialSelection());
 				}

@@ -11,11 +11,13 @@ public class SolarSystem
 	protected String unlocalizedName;
 	protected Vector3 mapPosition = null;
 	protected Star mainStar = null;
+    protected String unlocalizedGalaxyName;
 
-	public SolarSystem(String solarSystem)
+	public SolarSystem(String solarSystem, String parentGalaxy)
 	{
 		this.systemName = solarSystem.toLowerCase(Locale.ENGLISH);
 		this.unlocalizedName = solarSystem;
+        this.unlocalizedGalaxyName = parentGalaxy;
 	}
 
 	public String getName()
@@ -60,4 +62,15 @@ public class SolarSystem
 		this.mainStar = star;
 		return this;
 	}
+
+    public String getLocalizedParentGalaxyName()
+    {
+        String s = this.getUnlocalizedParentGalaxyName();
+        return s == null ? "" : StatCollector.translateToLocal(s);
+    }
+
+    public String getUnlocalizedParentGalaxyName()
+    {
+        return "galaxy." + this.unlocalizedGalaxyName;
+    }
 }

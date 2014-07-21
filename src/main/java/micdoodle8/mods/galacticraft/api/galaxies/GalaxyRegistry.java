@@ -29,6 +29,7 @@ public class GalaxyRegistry
     static BiMap<String, Integer> satelliteIDs = HashBiMap.create();
 	static HashMap<Planet, List<Moon>> moonList = Maps.newHashMap();
     static HashMap<CelestialBody, List<Satellite>> satelliteList = Maps.newHashMap();
+    static HashMap<SolarSystem, List<Planet>> solarSystemList = Maps.newHashMap();
 
 	public static CelestialBody getCelestialBodyFromDimensionID(int dimensionID)
 	{
@@ -87,7 +88,31 @@ public class GalaxyRegistry
             satelliteList1.add(satellite);
             GalaxyRegistry.satelliteList.put(celestialBody, satelliteList1);
         }
+
+        for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
+        {
+            SolarSystem solarSystem = planet.getParentSolarSystem();
+            List<Planet> planetList = GalaxyRegistry.solarSystemList.get(solarSystem);
+            if (planetList == null)
+            {
+                planetList = new ArrayList<Planet>();
+            }
+            planetList.add(planet);
+            GalaxyRegistry.solarSystemList.put(solarSystem, planetList);
+        }
 	}
+
+    public static List<Planet> getPlanetsForSolarSystem(SolarSystem solarSystem)
+    {
+        List<Planet> solarSystemListLocal = GalaxyRegistry.solarSystemList.get(solarSystem);
+
+        if (solarSystemListLocal == null)
+        {
+            return new ArrayList<Planet>();
+        }
+
+        return ImmutableList.copyOf(solarSystemListLocal);
+    }
 
 	public static List<Moon> getMoonsForPlanet(Planet planet)
 	{

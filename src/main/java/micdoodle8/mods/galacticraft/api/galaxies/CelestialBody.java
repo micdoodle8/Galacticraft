@@ -7,13 +7,13 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import java.util.Locale;
 
-public abstract class CelestialBody
+public abstract class CelestialBody implements Comparable<CelestialBody>
 {
 	protected final String bodyName;
 	protected String unlocalizedName;
 
 	protected float relativeSize = 1.0F;
-	protected float relativeDistanceFromCenter = 1.0F;
+	protected ScalableDistance relativeDistanceFromCenter = new ScalableDistance(1.0F, 1.0F);
 	protected float relativeOrbitTime = 1.0F;
 	protected float phaseShift = 0.0F;
 	protected int dimensionID = 0;
@@ -21,6 +21,7 @@ public abstract class CelestialBody
 	protected boolean autoRegisterDimension = false;
 	protected boolean isReachable = false;
 	protected boolean forceStaticLoad = true;
+    protected boolean shouldRenderOnGUI = true;
 
 	protected ResourceLocation celestialBodyIcon;
 
@@ -75,7 +76,7 @@ public abstract class CelestialBody
 	 * 
 	 * @return Distance from the center of the map relative to earth.
 	 */
-	public float getRelativeDistanceFromCenter()
+	public ScalableDistance getRelativeDistanceFromCenter()
 	{
 		return this.relativeDistanceFromCenter;
 	}
@@ -111,13 +112,29 @@ public abstract class CelestialBody
 		return this.relativeOrbitTime;
 	}
 
+    public boolean getShouldRenderOnGUI()
+    {
+        return this.shouldRenderOnGUI;
+    }
+
+    /**
+     * Set whether this celestial body should render on the Celestial Selection GUI
+     *
+     * Set to false if you want it to appear in the list, but not render on main isometric view.
+     */
+    public CelestialBody setShouldRenderOnGUI(boolean shouldRender)
+    {
+        this.shouldRenderOnGUI = shouldRender;
+        return this;
+    }
+
 	public CelestialBody setRelativeSize(float relativeSize)
 	{
 		this.relativeSize = relativeSize;
 		return this;
 	}
 
-	public CelestialBody setRelativeDistanceFromCenter(float relativeDistanceFromCenter)
+	public CelestialBody setRelativeDistanceFromCenter(ScalableDistance relativeDistanceFromCenter)
 	{
 		this.relativeDistanceFromCenter = relativeDistanceFromCenter;
 		return this;
@@ -230,4 +247,24 @@ public abstract class CelestialBody
 
 		return false;
 	}
+
+    @Override
+    public int compareTo(CelestialBody other)
+    {
+        ScalableDistance thisDistance = this.getRelativeDistanceFromCenter();
+        ScalableDistance otherDistance = other.getRelativeDistanceFromCenter();
+        return otherDistance.unScaledDistance < thisDistance.unScaledDistance ? 1 : (otherDistance.unScaledDistance > thisDistance.unScaledDistance ? -1 : 0);
+    }
+
+    public static class ScalableDistance
+    {
+        public final float unScaledDistance;
+        public final float scaledDistance;
+
+        public ScalableDistance(float unScaledDistance, float scaledDistance)
+        {
+            this.unScaledDistance = unScaledDistance;
+            this.scaledDistance = unScaledDistance;
+        }
+    }
 }
