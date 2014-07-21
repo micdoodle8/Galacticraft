@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import com.mojang.authlib.GameProfile;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
@@ -11,6 +12,7 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -155,7 +157,8 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 	protected void checkCurrentItem()
 	{
 		ItemStack theCurrentItem = this.inventory.getCurrentItem();
-		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && theCurrentItem != null)
+		boolean noAtmosphericCombustion = this.worldObj.provider instanceof IGalacticraftWorldProvider && (!((IGalacticraftWorldProvider)this.worldObj.provider).isGasPresent(IAtmosphericGas.OXYGEN) || ((IGalacticraftWorldProvider)this.worldObj.provider).isGasPresent(IAtmosphericGas.CO2));
+		if (noAtmosphericCombustion && theCurrentItem != null)
 		{
 			final int var1 = theCurrentItem.stackSize;
 			final int var2 = theCurrentItem.getItemDamage();
@@ -166,7 +169,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 				this.inventory.mainInventory[this.inventory.currentItem] = stack;
 			}
 		}
-		else if (!(this.worldObj.provider instanceof IGalacticraftWorldProvider) && theCurrentItem != null)
+		else if (!noAtmosphericCombustion && theCurrentItem != null)
 		{
 			final int var1 = theCurrentItem.stackSize;
 			final int var2 = theCurrentItem.getItemDamage();

@@ -35,7 +35,7 @@ tile.mars.marsstone.name=หินดาวอังคาร
 tile.mars.marsdirt.name=หินดาวอังคารชั้นล่าง
 tile.mars.marsgrass.name=หินดาวอังคารชั้นบน
 tile.mars.marsdeco.name=บล็อกเดรช
-tile.mars.marsdungeon.name=กำแพงดันเจี้ยน
+tile.mars.marsdungeon.name=อิฐดันเจี้ยนดาวอังคาร
 tile.treasureT2.name=กล่องสมบัติ เทียร์ 2
 tile.slimelingEgg.redEgg.name=ไข่สไลม์ลิ่งสีแดง
 tile.slimelingEgg.blueEgg.name=ไข่สไลม์ลิ่งสีน้ำเงิน
@@ -97,7 +97,12 @@ gui.message.success.name=เสร็จสิ้น
 
 gui.desc.reinforcedPlateT2.name=เทียร์ 2
 
-itemGroup.GalacticraftMars=กาแลคติคคราฟ ดาวอังคาร
+	# Dollar sign ($) will split text onto a new line
+gui.launchController.desc.0=นี่คือเครื่องควบคุมการปล่อยจรวด$ความถี่เฉพาะ
+gui.launchController.desc.1=ความถี่ที่ใกล้จะปล่อยจรวด
+gui.launchController.desc.2=หรือไม่ฐานปล่อยจรวดควร$ลบออกเมื่อจรวดถูกปล่อย
+gui.launchController.desc.3=When this criteria is met,$จรวดจะถูกปล่อย # Complete 80%
+gui.terraformer.desc.0=ถังเก็บน้ำ
 
 dimension.Mars.name=ดาวอังคาร
 planet.mars=ดาวอังคาร

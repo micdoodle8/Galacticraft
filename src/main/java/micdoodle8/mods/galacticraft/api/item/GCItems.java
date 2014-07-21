@@ -46,6 +46,7 @@ public class GCItems
 	// "coalGenerator"
 	// "energyStorageModule"
 	// "electricFurnace"
+	// "electricArcFurnace"
 	// "ingotCompressor"
 	// "ingotCompressorElectric"
 	// "circuitFabricator"

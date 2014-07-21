@@ -45,6 +45,8 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int generateWatts = 0;
 
+	private boolean initialised = false;
+
 	public TileEntitySolar()
 	{
 		this(1);
@@ -59,14 +61,26 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 		this.storage.setMaxReceive(TileEntitySolar.MAX_GENERATE_WATTS);
         if (tier == 2)
         {
-        	this.storage.setCapacity(100000);
+        	this.storage.setCapacity(30000);
         }
         this.setTierGC(tier);
+        this.initialised = true;
 	}
 
 	@Override
 	public void updateEntity()
 	{
+		if (!this.initialised)
+		{
+			int metadata = this.getBlockMetadata();
+			if (metadata >= BlockSolar.ADVANCED_METADATA)
+	        {
+	        	this.storage.setCapacity(30000);
+	            this.setTierGC(2);
+	        }
+			this.initialised = true;
+		}
+		
 		this.receiveEnergyGC(null, this.generateWatts, false);
 
 		super.updateEntity();
@@ -94,7 +108,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 					{
 						for (int z = -1; z <= 1; z++)
 						{
-							if (this.tier == 2)
+							if (this.tierGC == 1)
 							{
 								if (this.worldObj.canBlockSeeTheSky(this.xCoord + x, this.yCoord + 2, this.zCoord + z))
 								{
@@ -150,7 +164,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 
 		celestialAngle %= 360;
 
-		if (this.tier == 2)
+		if (this.tierGC == 1)
 		{
 			if (!this.worldObj.isDaytime() || this.worldObj.isRaining() || this.worldObj.isThundering())
 			{
@@ -303,6 +317,8 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 				this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
 			}
 		}
+		
+		this.initialised = false;
 	}
 
 	@Override
@@ -347,12 +363,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 	@Override
 	public EnumSet<ForgeDirection> getElectricalOutputDirections()
 	{
-		int metadata = this.getBlockMetadata();
-
-		if (this.tier == 1)
-		{
-			metadata -= BlockSolar.ADVANCED_METADATA;
-		}
+		int metadata = this.getBlockMetadata() & 3;
 
 		return EnumSet.of(ForgeDirection.getOrientation((metadata + 2) ^ 1), ForgeDirection.UNKNOWN);
 	}
@@ -360,12 +371,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 	@Override
 	public ForgeDirection getElectricalOutputDirectionMain()
 	{
-		int metadata = this.getBlockMetadata();
-
-		if (this.tier == 1)
-		{
-			metadata -= BlockSolar.ADVANCED_METADATA;
-		}
+		int metadata = this.getBlockMetadata() & 3;
 
 		return ForgeDirection.getOrientation((metadata + 2) ^ 1);
 	}
@@ -386,7 +392,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 	@Override
 	public String getInventoryName()
 	{
-		return GCCoreUtil.translate(this.tier == 1 ? "container.solarbasic.name" : "container.solaradvanced.name");
+		return GCCoreUtil.translate(this.tierGC == 1 ? "container.solarbasic.name" : "container.solaradvanced.name");
 	}
 
 	@Override

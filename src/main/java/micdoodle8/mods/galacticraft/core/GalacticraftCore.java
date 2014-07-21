@@ -15,6 +15,7 @@ import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfig
 import micdoodle8.mods.galacticraft.api.transmission.grid.ChunkPowerHandler;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.atoolkit.ProcessGraphic;
 import micdoodle8.mods.galacticraft.core.blocks.BlockFluidGC;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -116,7 +117,7 @@ public class GalacticraftCore
 		ChunkLoadingCallback.loadConfig(new File(event.getModConfigurationDirectory(), GalacticraftCore.CHUNKLOADER_CONFIG_FILE));
 
 		GalacticraftCore.gcFluidOil = new Fluid("oil").setDensity(800).setViscosity(1500);
-		GalacticraftCore.gcFluidFuel = new Fluid("fuel").setDensity(200).setViscosity(900);
+		GalacticraftCore.gcFluidFuel = new Fluid("fuel").setDensity(400).setViscosity(900);
 		FluidRegistry.registerFluid(GalacticraftCore.gcFluidOil);
 		FluidRegistry.registerFluid(GalacticraftCore.gcFluidFuel);
 		GalacticraftCore.fluidOil = FluidRegistry.getFluid("oil");
@@ -175,6 +176,7 @@ public class GalacticraftCore
 		GalacticraftCore.planetOverworld = (Planet) new Planet("overworld").setParentSolarSystem(GalacticraftCore.solarSystemSol).setRingColorRGB(0.1F, 0.9F, 0.6F).setPhaseShift(0.0F);
 		GalacticraftCore.planetOverworld.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"));
 		GalacticraftCore.planetOverworld.setDimensionInfo(0, WorldProvider.class, false);
+        GalacticraftCore.planetOverworld.atmosphereComponent(IAtmosphericGas.NITROGEN).atmosphereComponent(IAtmosphericGas.OXYGEN).atmosphereComponent(IAtmosphericGas.ARGON).atmosphereComponent(IAtmosphericGas.WATER);
 
 		GalacticraftCore.planetJupiter = (Planet) new Planet("jupiter").setParentSolarSystem(GalacticraftCore.solarSystemSol).setRingColorRGB(0.1F, 0.9F, 0.6F).setPhaseShift((float)Math.PI).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(1.5F, 1.5F)).setRelativeOrbitTime(11.861993428258488499452354874042F);
 		GalacticraftCore.planetJupiter.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/jupiter.png"));
@@ -191,6 +193,7 @@ public class GalacticraftCore
 		GalacticraftCore.moonMoon = (Moon) new Moon("moon").setParentPlanet(GalacticraftCore.planetOverworld).setRelativeSize(0.2667F).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(13F, 13F)).setRelativeOrbitTime(1 / 0.01F);
 		GalacticraftCore.moonMoon.setDimensionInfo(ConfigManagerCore.idDimensionMoon, WorldProviderMoon.class);
 		GalacticraftCore.moonMoon.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/moon.png"));
+        
         GalacticraftCore.satelliteSpaceStation = new Satellite("spaceStation.overworld").setParentBody(GalacticraftCore.planetOverworld);
         GalacticraftCore.satelliteSpaceStation.setDimensionInfo(ConfigManagerCore.idDimensionOverworldOrbit, WorldProviderOrbit.class, false);
 

@@ -3,46 +3,42 @@ package micdoodle8.mods.galacticraft.core.items;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemOilCanister extends Item
+public class ItemOilCanister extends ItemCanisterGeneric
 {
 	protected IIcon[] icons = new IIcon[7];
 
 	public ItemOilCanister(String assetName)
 	{
-		super();
-		this.setMaxDamage(FluidContainerRegistry.BUCKET_VOLUME + 1);
-		this.setMaxStackSize(1);
-		this.setNoRepair();
-		this.setUnlocalizedName(assetName);
+		super(assetName);
 		this.setContainerItem(this);
 		this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack)
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
-		return ClientProxyCore.galacticraftItem;
+		par3List.add(new ItemStack(par1, 1, 1));
+		par3List.add(new ItemStack(par1, 1, this.getMaxDamage()));
 	}
 
 	@Override
-	public CreativeTabs getCreativeTab()
+	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5)
 	{
-		return GalacticraftCore.galacticraftItemsTab;
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister iconRegister)
@@ -72,7 +68,7 @@ public class ItemOilCanister extends Item
 	@Override
 	public IIcon getIconFromDamage(int par1)
 	{
-		final int damage = 6 * (int) Math.floor(par1 / this.getMaxDamage());
+		final int damage = 6 * par1 / this.getMaxDamage();
 
 		if (this.icons.length > damage)
 		{
@@ -85,31 +81,11 @@ public class ItemOilCanister extends Item
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-	{
-		par3List.add(new ItemStack(par1, 1, 1));
-		par3List.add(new ItemStack(par1, 1, this.getMaxDamage()));
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
 	{
 		if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() > 0)
 		{
 			par3List.add("Oil: " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
 		}
-	}
-
-	@Override
-	public ItemStack getContainerItem(ItemStack itemStack)
-	{
-		if (itemStack != null && itemStack.getItem() == this.getContainerItem() && itemStack.getItemDamage() == itemStack.getMaxDamage())
-		{
-			return null;
-		}
-
-		return new ItemStack(this.getContainerItem(), 1, this.getContainerItem().getMaxDamage());
 	}
 }

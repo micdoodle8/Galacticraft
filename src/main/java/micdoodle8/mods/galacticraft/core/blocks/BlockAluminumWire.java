@@ -98,9 +98,9 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
 		switch (metadata)
 		{
 		case 0:
-			return new TileEntityAluminumWire();
+			return new TileEntityAluminumWire(1);
 		case 1:
-			return new TileEntityAluminumWire(0.025F, 400.0F);
+			return new TileEntityAluminumWire(2);
 		default:
 			return null;
 		}

@@ -261,7 +261,7 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
 	@Override
 	public int getHeight()
 	{
-		return 800;
+		return 600;
 	}
 
 	@Override

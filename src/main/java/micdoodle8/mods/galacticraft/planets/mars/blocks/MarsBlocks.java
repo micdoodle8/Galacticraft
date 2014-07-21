@@ -16,6 +16,7 @@ public class MarsBlocks
 	public static Block rock;
 	public static Block tier2TreasureChest;
 	public static Block machine;
+	public static Block machineT2;
 	public static Block creeperEgg;
 	public static Block tintedGlassPane;
 
@@ -27,6 +28,7 @@ public class MarsBlocks
 		MarsBlocks.rock = new BlockSlimelingEgg().setHardness(0.75F).setBlockName("slimelingEgg");
 		MarsBlocks.tier2TreasureChest = new BlockTier2TreasureChest().setHardness(2.5F).setBlockName("treasureT2");
 		MarsBlocks.machine = new BlockMachineMars().setHardness(1.8F).setBlockName("marsMachine");
+		MarsBlocks.machineT2 = new BlockMachineMarsT2().setHardness(1.8F).setBlockName("marsMachineT2");
 		MarsBlocks.creeperEgg = new BlockCreeperEgg().setHardness(-1.0F).setBlockName("creeperEgg");
 		MarsBlocks.tintedGlassPane = new BlockTintedGlassPane().setHardness(0.6F).setBlockName("tintedGlassPane");
 	}
@@ -54,6 +56,7 @@ public class MarsBlocks
 		GameRegistry.registerBlock(MarsBlocks.rock, ItemBlockEgg.class, MarsBlocks.rock.getUnlocalizedName());
 		GameRegistry.registerBlock(MarsBlocks.tier2TreasureChest, ItemBlockGC.class, MarsBlocks.tier2TreasureChest.getUnlocalizedName());
 		GameRegistry.registerBlock(MarsBlocks.machine, ItemBlockMachine.class, MarsBlocks.machine.getUnlocalizedName());
+		GameRegistry.registerBlock(MarsBlocks.machineT2, ItemBlockMachine.class, MarsBlocks.machineT2.getUnlocalizedName());
 		GameRegistry.registerBlock(MarsBlocks.creeperEgg, ItemBlockGC.class, MarsBlocks.creeperEgg.getUnlocalizedName());
 		GameRegistry.registerBlock(MarsBlocks.tintedGlassPane, ItemBlockTintedGlassPane.class, MarsBlocks.tintedGlassPane.getUnlocalizedName());
 	}

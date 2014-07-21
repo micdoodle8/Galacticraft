@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.FlipPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.Unlock;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -149,7 +150,7 @@ public class EventHandlerGC
 				}
 			}
 
-			if (event.entityPlayer.worldObj.provider instanceof IGalacticraftWorldProvider && heldStack.getItem() instanceof ItemFlintAndSteel)
+			if (event.entityPlayer.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider)event.entityPlayer.worldObj.provider).isGasPresent(IAtmosphericGas.OXYGEN) && heldStack.getItem() instanceof ItemFlintAndSteel)
 			{
 				if (!event.entity.worldObj.isRemote && event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK))
 				{

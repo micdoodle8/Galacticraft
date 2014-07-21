@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -97,7 +96,7 @@ public class GuiCircuitFabricator extends GuiContainerGC
 
         if (this.tileEntity.processTicks > 0)
         {
-            scale = (int) ((double) this.tileEntity.processTicks / (double) TileEntityElectricIngotCompressor.PROCESS_TIME_REQUIRED * 100);
+            scale = (int) ((double) this.tileEntity.processTicks / (double) TileEntityCircuitFabricator.PROCESS_TIME_REQUIRED * 100);
         }
         else
         {

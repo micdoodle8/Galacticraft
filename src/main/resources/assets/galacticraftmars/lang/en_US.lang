@@ -43,6 +43,8 @@ tile.slimelingEgg.yellowEgg.name=Yellow Slimeling Egg
 tile.marsMachine.0.name=Terraformer
 tile.marsMachine.1.name=Cryogenic Chamber
 tile.marsMachine.2.name=Launch Controller
+tile.marsMachine.4.name=Gas Liquefier
+tile.marsMachine.5.name=Methane Synthesizer
 tile.sludge.name=Bacterial Sludge
 tile.creeperEgg.name=Creeper Egg
 tile.cavernVines.name=Cavernous Vines
@@ -66,7 +68,7 @@ tile.tintedGlassPane.black.name=Black Tinted Glass Pane
 # GUI
 gui.choosePlanet.desc.mars=Habitable#No Oxygen#Gravity: 38%
 item.deshPickSlime.description.name=Can harvest Slimeling eggs
-gui.message.noEnergy.name=Not Enough Energy
+gui.message.noEnergy.name=No Energy!
 gui.message.noWater.name=Not Enough Water
 gui.message.noBonemeal.name=Not Enough Bonemeal
 gui.message.noSeeds.name=Not Enough Seeds
@@ -102,8 +104,15 @@ gui.launchController.desc.2=Whether the launch pad should$be removed on launch
 gui.launchController.desc.3=When this criteria is met,$rocket will launch
 gui.terraformer.desc.0=Water Tank
 
-gui.desc.reinforcedPlateT2.name=Tier 2
+gui.gasTank.desc.0=Gas storage
+gui.status.nogas.name=No gas
+gui.status.liquefying.name=Liquefying
+gui.button.liquefy.name=Process
+gui.button.liquefyStop.name=Stop
+gui.gasInput.desc.0=Try placing a Methane$Gas Canister here.
+gui.gasInput.desc.1=(Perhaps alternatively,$an Atmospheric Valve.)
 
+gui.desc.reinforcedPlateT2.name=Tier 2
 dimension.Mars.name=Mars
 planet.mars=Mars
 

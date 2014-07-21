@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
-import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,20 +23,69 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
 	public int scaledEnergyLevel;
 	public int lastScaledEnergyLevel;
+	private float lastEnergy = 0;
+
+	private boolean initialised = false;
 
 	public TileEntityEnergyStorageModule()
 	{
-		this.storage.setCapacity(500000);
-		this.storage.setMaxExtract(300);  //Tier 1
-		//Designed so that Tier 1 Energy Storage can power up to 10 Tier 1 machines
+		this(1);
+	}
+
+	/*
+	 * @param tier: 1 = Electric Furnace  2 = Electric Arc Furnace
+	 */
+	public TileEntityEnergyStorageModule(int tier)
+	{
+		if (tier == 1)
+		{
+			//Designed so that Tier 1 Energy Storage can power up to 10 Tier 1 machines
+			this.storage.setCapacity(500000);
+			this.storage.setMaxExtract(300);
+			return;
+		}
+
+		//tier == 2
+		this.storage.setCapacity(2500000);
+		this.storage.setMaxExtract(1500);
+        this.setTierGC(2);
+        this.initialised = true;
 	}
 
 	@Override
 	public void updateEntity()
 	{
+		if (!this.initialised )
+		{
+			int metadata = this.getBlockMetadata();
+			if (metadata >= 8)
+	        {
+				this.storage.setCapacity(2500000);
+				this.storage.setMaxExtract(1500);
+		        this.setTierGC(2);
+	        }
+			this.initialised = true;
+		}
+		
+		float energy = this.storage.getEnergyStoredGC(); 
+		if (this.getTierGC() == 1)
+		{
+			if (this.lastEnergy == energy && energy > 0F)
+			{
+				//Slowly deplete if not being used
+				this.storage.extractEnergyGC(8, false);
+			}
+			else if (this.lastEnergy - energy > this.storage.getMaxExtract() - 1)
+			{
+				//Deplete faster if being drained at maximum output
+				this.storage.extractEnergyGC(50, false);
+			}
+		}
+		this.lastEnergy = energy;
+
 		super.updateEntity();
 
-		this.scaledEnergyLevel = (int) Math.floor(this.getEnergyStoredGC() * 16 / this.getMaxEnergyStoredGC());
+		this.scaledEnergyLevel = (int) Math.floor((this.getEnergyStoredGC() + 49) * 16 / this.getMaxEnergyStoredGC());
 
 		if (this.scaledEnergyLevel != this.lastScaledEnergyLevel)
 		{
@@ -89,6 +137,8 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 				this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
 			}
 		}
+
+		this.initialised = false;
 	}
 
 	/**
@@ -186,7 +236,7 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	@Override
 	public String getInventoryName()
 	{
-		return GCCoreUtil.translate("tile.machine.1.name");
+		return GCCoreUtil.translate(this.tierGC == 1 ? "tile.machine.1.name" : "tile.machine.8.name");
 	}
 
 	@Override
@@ -255,29 +305,22 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 
 	}
 
-	/*@Override
-	public float getRequest(ForgeDirection direction)
-	{
-		return this.getElectricalInputDirections().contains(direction) ? this.getMaxEnergyStored() - this.getEnergyStored() : 0;
-	}
-	*/
-
 	@Override
 	public EnumSet<ForgeDirection> getElectricalInputDirections()
 	{
-		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine.STORAGE_MODULE_METADATA + 2).getOpposite(), ForgeDirection.UNKNOWN);
+		return EnumSet.of(ForgeDirection.getOrientation((this.getBlockMetadata() & 3) + 2).getOpposite(), ForgeDirection.UNKNOWN);
 	}
 
 	@Override
 	public EnumSet<ForgeDirection> getElectricalOutputDirections()
 	{
-		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine.STORAGE_MODULE_METADATA + 2), ForgeDirection.UNKNOWN);
+		return EnumSet.of(ForgeDirection.getOrientation((this.getBlockMetadata() & 3) + 2), ForgeDirection.UNKNOWN);
 	}
 
 	@Override
 	public ForgeDirection getElectricalOutputDirectionMain()
 	{
-		return ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine.STORAGE_MODULE_METADATA + 2);
+		return ForgeDirection.getOrientation((this.getBlockMetadata() & 3) + 2);
 	}
 
 	@Override
@@ -288,15 +331,8 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 			return false;
 		}
 
-		int metadata = this.getBlockMetadata() - BlockMachine.STORAGE_MODULE_METADATA;
+		int metadata = this.getBlockMetadata() & 3;
 
 		return direction == ForgeDirection.getOrientation(metadata + 2) || direction == ForgeDirection.getOrientation((metadata + 2) ^ 1);
 	}
-
-	//	@Override
-	//	public float getMaxEnergyStored()
-	//	{
-	//		return 2500F;
-	//	}
-
 }

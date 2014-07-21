@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
+import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -28,6 +29,8 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 	@NetworkedField(targetSide = Side.CLIENT)
 	public float lastOxygenCollected;
 	private ItemStack[] containingItems = new ItemStack[1];
+	private boolean noAtmosphericOxygen = true;
+	private boolean isInitialised = false;
 
 	public TileEntityOxygenCollector()
 	{
@@ -94,7 +97,14 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 					// The later calculations are more efficient if power is a float, so
 					// there are fewer casts
 					float power = 0;
-					if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
+
+					if (!this.isInitialised)
+					{
+						this.noAtmosphericOxygen = (this.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider)this.worldObj.provider).isGasPresent(IAtmosphericGas.OXYGEN));
+						this.isInitialised = true;
+					}
+					
+					if (this.noAtmosphericOxygen)
 					{
 						// Pre-test to see if close to the map edges, so code
 						// doesn't have to continually test for map edges inside the

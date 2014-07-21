@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
-import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -19,7 +18,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock implements IInventory, ISidedInventory, IPacketReceiver
 {
-	public static final int PROCESS_TIME_REQUIRED = 200;
+	public static final int PROCESS_TIME_REQUIRED_BASE = 200;
+	@NetworkedField(targetSide = Side.CLIENT)
+	public int processTimeRequired = PROCESS_TIME_REQUIRED_BASE;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int processTicks = 0;
 	private ItemStack producingStack = null;
@@ -31,7 +32,6 @@ public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock i
 	public TileEntityElectricIngotCompressor()
 	{
 		this.storage.setMaxExtract(75);
-		this.storage.setCapacity(100000);
 		this.setTierGC(2);
 	}
 
@@ -49,8 +49,10 @@ public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock i
 				if (this.canCompress())
 				{
 					++this.processTicks;
+					
+					this.processTimeRequired = TileEntityElectricIngotCompressor.PROCESS_TIME_REQUIRED_BASE * 2 / (1 + this.poweredByTierGC);
 
-					if (this.processTicks == TileEntityElectricIngotCompressor.PROCESS_TIME_REQUIRED)
+					if (this.processTicks >= this.processTimeRequired)
 					{
 						this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "random.anvil_land", 0.2F, 0.5F);
 						this.processTicks = 0;
@@ -393,7 +395,7 @@ public class TileEntityElectricIngotCompressor extends TileEntityElectricBlock i
 	@Override
 	public ForgeDirection getElectricInputDirection()
 	{
-		return ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine2.ELECTRIC_COMPRESSOR_METADATA + 2);
+		return ForgeDirection.getOrientation((this.getBlockMetadata() & 3) + 2);
 	}
 
 	@Override

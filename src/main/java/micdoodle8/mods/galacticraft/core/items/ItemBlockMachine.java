@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.Block;
@@ -36,40 +37,54 @@ public class ItemBlockMachine extends ItemBlock
 	@Override
 	public String getUnlocalizedName(ItemStack itemstack)
 	{
-		int metadata = 0;
+		int index = 0;
+		int typenum = itemstack.getItemDamage() & 12;
 
 		if (this.field_150939_a == GCBlocks.machineBase)
 		{
-			if (itemstack.getItemDamage() >= BlockMachine.COMPRESSOR_METADATA)
+			if (typenum == BlockMachine.COMPRESSOR_METADATA)
 			{
-				metadata = 3;
+				index = 3;
 			}
-			else if (itemstack.getItemDamage() >= BlockMachine.ELECTRIC_FURNACE_METADATA)
+		}
+		else if (this.field_150939_a == GCBlocks.machineTiered)
+		{
+			if (typenum == BlockMachineTiered.ELECTRIC_FURNACE_METADATA)
 			{
-				metadata = 2;
+				return "tile.machine.2";
 			}
-			else if (itemstack.getItemDamage() >= BlockMachine.STORAGE_MODULE_METADATA)
+			else if (typenum == BlockMachineTiered.STORAGE_MODULE_METADATA)
 			{
-				metadata = 1;
+				return "tile.machine.1";
+			}		
+			
+			//Tier 2 versions of the same
+			if (typenum == 8 + BlockMachineTiered.ELECTRIC_FURNACE_METADATA)
+			{
+				return "tile.machine.7";
 			}
+			else if (typenum == 8 + BlockMachineTiered.STORAGE_MODULE_METADATA)
+			{
+				return "tile.machine.8";
+			}		
 		}
 		else
 		{
-			if (itemstack.getItemDamage() >= BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
+			if (typenum == BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
 			{
-				metadata = 6;
+				index = 6;
 			}
-			else if (itemstack.getItemDamage() >= BlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+			else if (typenum ==  BlockMachine2.CIRCUIT_FABRICATOR_METADATA)
 			{
-				metadata = 5;
+				index = 5;
 			}
-			else if (itemstack.getItemDamage() >= BlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
+			else if (typenum ==  BlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
 			{
-				metadata = 4;
+				index = 4;
 			}
 		}
 
-		return this.field_150939_a.getUnlocalizedName() + "." + metadata;
+		return this.field_150939_a.getUnlocalizedName() + "." + index;
 	}
 
 	@Override

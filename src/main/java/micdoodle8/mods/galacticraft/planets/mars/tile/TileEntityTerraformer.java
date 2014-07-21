@@ -7,21 +7,17 @@ import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.entities.IBubble;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricBlock;
+import micdoodle8.mods.galacticraft.core.tile.ElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityTerraformBubble;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.WorldGenTerraformTree;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -29,7 +25,7 @@ import net.minecraftforge.fluids.FluidTank;
 
 import java.util.ArrayList;
 
-public class TileEntityTerraformer extends TileEntityElectricBlock implements IInventory, ISidedInventory, IDisableableMachine, IBubbleProvider
+public class TileEntityTerraformer extends ElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IBubbleProvider
 {
 	private final int tankCapacity = 2000;
 	@NetworkedField(targetSide = Side.CLIENT)
@@ -355,20 +351,7 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-
-		final NBTTagList var2 = nbt.getTagList("Items", 10);
-		this.containingItems = new ItemStack[this.getSizeInventory()];
-
-		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
-		{
-			final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
-			final byte var5 = var4.getByte("Slot");
-
-			if (var5 >= 0 && var5 < this.containingItems.length)
-			{
-				this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
-			}
-		}
+		this.containingItems = this.readStandardItemsFromNBT(nbt);
 
 		this.size = nbt.getFloat("BubbleSize");
 		this.useCount = nbt.getIntArray("UseCountArray");
@@ -388,21 +371,7 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 	public void writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
-
-		final NBTTagList list = new NBTTagList();
-
-		for (int var3 = 0; var3 < this.containingItems.length; ++var3)
-		{
-			if (this.containingItems[var3] != null)
-			{
-				final NBTTagCompound var4 = new NBTTagCompound();
-				var4.setByte("Slot", (byte) var3);
-				this.containingItems[var3].writeToNBT(var4);
-				list.appendTag(var4);
-			}
-		}
-
-		nbt.setTag("Items", list);
+		this.writeStandardItemsToNBT(nbt);
 		nbt.setFloat("BubbleSize", this.size);
 		nbt.setIntArray("UseCountArray", this.useCount);
 
@@ -413,84 +382,15 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 	}
 
 	@Override
-	public int getSizeInventory()
+	public ItemStack[] getContainingItems()
 	{
-		return this.containingItems.length;
-	}
-
-	@Override
-	public ItemStack getStackInSlot(int par1)
-	{
-		return this.containingItems[par1];
-	}
-
-	@Override
-	public ItemStack decrStackSize(int par1, int par2)
-	{
-		if (this.containingItems[par1] != null)
-		{
-			ItemStack var3;
-
-			if (this.containingItems[par1].stackSize <= par2)
-			{
-				var3 = this.containingItems[par1];
-				this.containingItems[par1] = null;
-				return var3;
-			}
-			else
-			{
-				var3 = this.containingItems[par1].splitStack(par2);
-
-				if (this.containingItems[par1].stackSize == 0)
-				{
-					this.containingItems[par1] = null;
-				}
-
-				return var3;
-			}
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	@Override
-	public ItemStack getStackInSlotOnClosing(int par1)
-	{
-		if (this.containingItems[par1] != null)
-		{
-			final ItemStack var2 = this.containingItems[par1];
-			this.containingItems[par1] = null;
-			return var2;
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	@Override
-	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
-	{
-		this.containingItems[par1] = par2ItemStack;
-
-		if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
-		{
-			par2ItemStack.stackSize = this.getInventoryStackLimit();
-		}
+		return this.containingItems;
 	}
 
 	@Override
 	public String getInventoryName()
 	{
 		return GCCoreUtil.translate("container.tileTerraformer.name");
-	}
-
-	@Override
-	public int getInventoryStackLimit()
-	{
-		return 64;
 	}
 
 	// ISidedInventory Implementation:
@@ -514,12 +414,6 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer)
-	{
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && entityplayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
-	}
-
-	@Override
 	public boolean hasCustomInventoryName()
 	{
 		return true;
@@ -532,18 +426,6 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 	}
 
 	@Override
-	public void openInventory()
-	{
-
-	}
-
-	@Override
-	public void closeInventory()
-	{
-
-	}
-
-	@Override
 	public boolean shouldUseEnergy()
 	{
 		return !this.grassDisabled || !this.treesDisabled;
@@ -553,12 +435,6 @@ public class TileEntityTerraformer extends TileEntityElectricBlock implements II
 	public double getPacketRange()
 	{
 		return 320.0D;
-	}
-
-	@Override
-	public ForgeDirection getElectricInputDirection()
-	{
-		return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
 	}
 
 	@Override

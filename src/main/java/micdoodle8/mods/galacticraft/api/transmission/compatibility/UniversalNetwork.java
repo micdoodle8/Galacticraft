@@ -6,8 +6,6 @@ import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cpw.mods.fml.common.FMLLog;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergySink;
-import micdoodle8.mods.galacticraft.api.transmission.ElectricalEvent.ElectricityProductionEvent;
-import micdoodle8.mods.galacticraft.api.transmission.ElectricalEvent.ElectricityRequestEvent;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.grid.Pathfinder;
@@ -19,7 +17,6 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.*;
@@ -29,7 +26,7 @@ import java.util.*;
 //import mekanism.api.energy.IStrictEnergyAcceptor;
 
 /**
- * A universal network that words with multiple energy systems.
+ * A universal network that works with multiple energy systems.
  * 
  * @author radfast, micdoodle8, Calclavia, Aidancbrady
  * 
@@ -53,6 +50,8 @@ public class UniversalNetwork implements IElectricityNetwork
 	private boolean doneScheduled = false;
 	private boolean spamstop = false;
 	private boolean loopPrevention = false;
+	public int networkTierGC = 1;
+	private int producersTierGC = 1;
 
 	/*
 	 * connectedAcceptors is all the acceptors connected to this network
@@ -136,64 +135,60 @@ public class UniversalNetwork implements IElectricityNetwork
      * @return Amount of energy REMAINING from the passed energy parameter
      */
 	@Override
-	public float produce(float energy, boolean doReceive, TileEntity... ignoreTiles)
+	public float produce(float energy, boolean doReceive, int producerTier, TileEntity... ignoreTiles)
 	{
 		if (this.loopPrevention) return energy;
 
 		if (energy > 0F)
 		{
-			ElectricityProductionEvent evt = new ElectricityProductionEvent(this, energy, ignoreTiles);
-			MinecraftForge.EVENT_BUS.post(evt);
-
-			if (!evt.isCanceled())
+			if (UniversalNetwork.tickCount != this.tickDone)
 			{
-				if (UniversalNetwork.tickCount != this.tickDone)
-				{
-					this.tickDone = UniversalNetwork.tickCount;
-					//Start the new tick - initialise everything
-					this.ignoreAcceptors.clear();
-					this.ignoreAcceptors.addAll(Arrays.asList(ignoreTiles));
-					this.doTickStartCalc();
-				}
-				else
-					this.ignoreAcceptors.addAll(Arrays.asList(ignoreTiles));
-		
-				if (!this.doneScheduled && this.totalRequested > 0.0F)
-				{
-					try
-					{
-						Class<?> clazz = Class.forName("micdoodle8.mods.galacticraft.core.tick.TickHandlerServer");
-						clazz.getMethod("scheduleNetworkTick", this.getClass()).invoke(null, this);
-					}
-					catch (Exception e)
-					{
-						e.printStackTrace();
-					}
-
-					this.doneScheduled = true;
-				}
-
-				//On a regular mid-tick produce(), just figure out how much is totalEnergy this tick and return the used amount
-				//This will return 0 if totalRequested is 0 - for example a network with no acceptors
-				float totalEnergyLast = this.totalEnergy;
-
-				//Add the energy for distribution by this grid later this tick
-				//Note: totalEnergy cannot exceed totalRequested
-				if (doReceive)
-				{
-					this.totalEnergy += Math.min(energy, this.totalRequested - totalEnergyLast);
-				}
-
-				if (this.totalRequested >= totalEnergyLast + energy)
-				{
-					return 0F; //All the electricity will be used
-				}
-				if (totalEnergyLast >= this.totalRequested)
-				{
-					return energy; //None of the electricity will be used
-				}
-				return totalEnergyLast + energy - this.totalRequested; //Some of the electricity will be used
+				this.tickDone = UniversalNetwork.tickCount;
+				//Start the new tick - initialise everything
+				this.ignoreAcceptors.clear();
+				this.ignoreAcceptors.addAll(Arrays.asList(ignoreTiles));
+				this.producersTierGC = 1;
+				this.doTickStartCalc();
 			}
+			else
+				this.ignoreAcceptors.addAll(Arrays.asList(ignoreTiles));
+	
+			if (!this.doneScheduled && this.totalRequested > 0.0F)
+			{
+				try
+				{
+					Class<?> clazz = Class.forName("micdoodle8.mods.galacticraft.core.tick.TickHandlerServer");
+					clazz.getMethod("scheduleNetworkTick", this.getClass()).invoke(null, this);
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+
+				this.doneScheduled = true;
+			}
+
+			//On a regular mid-tick produce(), just figure out how much is totalEnergy this tick and return the used amount
+			//This will return 0 if totalRequested is 0 - for example a network with no acceptors
+			float totalEnergyLast = this.totalEnergy;
+
+			//Add the energy for distribution by this grid later this tick
+			//Note: totalEnergy cannot exceed totalRequested
+			if (doReceive)
+			{
+				this.totalEnergy += Math.min(energy, this.totalRequested - totalEnergyLast);
+				if (producerTier > 1) this.producersTierGC = 2; 
+			}
+
+			if (this.totalRequested >= totalEnergyLast + energy)
+			{
+				return 0F; //All the electricity will be used
+			}
+			if (totalEnergyLast >= this.totalRequested)
+			{
+				return energy; //None of the electricity will be used
+			}
+			return totalEnergyLast + energy - this.totalRequested; //Some of the electricity will be used
 		}
 		return energy;
 	}
@@ -321,12 +316,6 @@ public class UniversalNetwork implements IElectricityNetwork
 			}
 		}
 
-		//Finally, allow a Forge event to change the total requested
-		TileEntity[] ignoretiles = new TileEntity[this.ignoreAcceptors.size()];
-		ElectricityRequestEvent evt = new ElectricityRequestEvent(this, this.totalRequested, this.ignoreAcceptors.toArray(ignoretiles));
-		MinecraftForge.EVENT_BUS.post(evt);
-		this.totalRequested = evt.energy;
-		
 		this.loopPrevention = false;
 	}
 
@@ -370,6 +359,7 @@ public class UniversalNetwork implements IElectricityNetwork
 
 			float currentSending;
 			float sentToAcceptor;
+			int tierProduced = Math.min(this.producersTierGC, this.networkTierGC);
 
 			for (TileEntity tileEntity : this.availableAcceptors)
 			{
@@ -400,7 +390,7 @@ public class UniversalNetwork implements IElectricityNetwork
 
 				if (tileEntity instanceof IElectrical)
 				{
-					sentToAcceptor = ((IElectrical) tileEntity).receiveElectricity(sideFrom, currentSending, true);
+					sentToAcceptor = ((IElectrical) tileEntity).receiveElectricity(sideFrom, currentSending, tierProduced, true);
 				}
 //				else if (isTELoaded && tileEntity instanceof IEnergyHandler)
 //				{
@@ -478,6 +468,7 @@ public class UniversalNetwork implements IElectricityNetwork
 	@Override
 	public void refresh()
 	{
+		int tierfound = 2;
 		Iterator<IConductor> it = this.getTransmitters().iterator();
 		while (it.hasNext())
 		{
@@ -504,12 +495,18 @@ public class UniversalNetwork implements IElectricityNetwork
 				continue;
 			}
 
+			if (conductor.getTierGC() < 2)
+				tierfound = 1;
+			
 			if (conductor.getNetwork() != this)
 			{
 				conductor.setNetwork(this);
 				conductor.onNetworkChanged();
 			}
 		}
+		
+		//This will set the network tier to 2 if all the conductors are tier 2
+		this.networkTierGC = tierfound;
 	}
 
     /**

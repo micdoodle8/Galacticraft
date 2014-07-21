@@ -71,13 +71,16 @@ public class TileEntityUniversalElectricalSource extends TileEntityUniversalElec
 						IElectricityNetwork network = ((IConductor) tileAdj).getNetwork();
 						if (network != null)
 						{
-                            amountProduced += (toSend - network.produce(toSend, true, this));
+                            amountProduced += (toSend - network.produce(toSend, true, this.tierGC, this));
 						}
 					}
 					else if (tileAdj instanceof IEnergyHandlerGC)
 					{
 						EnergySourceAdjacent source = new EnergySourceAdjacent(direction.getOpposite());
-						amountProduced += ((IEnergyHandlerGC) tileAdj).receiveEnergyGC(source, toSend / outputDirections.size(), simulate);
+						float transferred = ((IEnergyHandlerGC) tileAdj).receiveEnergyGC(source, toSend / outputDirections.size(), simulate);
+						amountProduced += transferred;
+						if (this.tierGC > 1 && !simulate && transferred > 0F && tileAdj instanceof EnergyStorageTile)
+							((EnergyStorageTile) tileAdj).poweredByTierGC = this.tierGC;
 					}
 					else if (NetworkConfigHandler.isBuildcraftLoaded() && MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, direction.getOpposite()) != null)
 					//New BC API

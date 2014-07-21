@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Planet;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
+import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -21,6 +22,7 @@ import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.TeleportTypeMars;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
 import micdoodle8.mods.galacticraft.planets.mars.entities.*;
+import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerGasLiquefier;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerLaunchController;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerTerraformer;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
@@ -89,6 +91,7 @@ public class MarsModule implements IPlanetsModule
 		MarsModule.planetMars = (Planet) new Planet("mars").setParentSolarSystem(GalacticraftCore.solarSystemSol).setRingColorRGB(0.67F, 0.1F, 0.1F).setPhaseShift(0.1667F).setRelativeSize(0.5319F).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(1.25F, 1.25F)).setRelativeOrbitTime(1.8811610076670317634173055859803F);
 		MarsModule.planetMars.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/mars.png"));
 		MarsModule.planetMars.setDimensionInfo(ConfigManagerMars.dimensionIDMars, WorldProviderMars.class);
+		MarsModule.planetMars.atmosphereComponent(IAtmosphericGas.CO2).atmosphereComponent(IAtmosphericGas.ARGON).atmosphereComponent(IAtmosphericGas.NITROGEN);
 
 		GalaxyRegistry.registerPlanet(MarsModule.planetMars);
 		GalacticraftRegistry.registerTeleportType(WorldProviderMars.class, new TeleportTypeMars());
@@ -123,6 +126,7 @@ public class MarsModule implements IPlanetsModule
 		GameRegistry.registerTileEntity(TileEntityTreasureChestMars.class, "Tier 2 Treasure Chest");
 		GameRegistry.registerTileEntity(TileEntityTerraformer.class, "Planet Terraformer");
 		GameRegistry.registerTileEntity(TileEntityCryogenicChamber.class, "Cryogenic Chamber");
+		GameRegistry.registerTileEntity(TileEntityGasLiquefier.class, "Gas Liquefier");
 		GameRegistry.registerTileEntity(TileEntityDungeonSpawnerMars.class, "Mars Dungeon Spawner");
 		GameRegistry.registerTileEntity(TileEntityLaunchController.class, "Launch Controller");
 	}
@@ -177,6 +181,10 @@ public class MarsModule implements IPlanetsModule
 				else if (tile instanceof TileEntityLaunchController)
 				{
 					return new ContainerLaunchController(player.inventory, (TileEntityLaunchController) tile);
+				}
+				else if (tile instanceof TileEntityGasLiquefier)
+				{
+					return new ContainerGasLiquefier(player.inventory, (TileEntityGasLiquefier) tile);
 				}
 			}
 		}

@@ -15,7 +15,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 import java.util.Random;
@@ -23,17 +22,12 @@ import java.util.Random;
 public class BlockMachine extends BlockTileGC
 {
 	public static final int COAL_GENERATOR_METADATA = 0;
-	public static final int STORAGE_MODULE_METADATA = 4;
-	public static final int ELECTRIC_FURNACE_METADATA = 8;
 	public static final int COMPRESSOR_METADATA = 12;
 
 	private IIcon iconMachineSide;
 	private IIcon iconInput;
-	private IIcon iconOutput;
 
 	private IIcon iconCoalGenerator;
-	private IIcon[] iconEnergyStorageModule;
-	private IIcon iconElectricFurnace;
 	private IIcon iconCompressor;
 
 	public BlockMachine(String assetName)
@@ -63,18 +57,9 @@ public class BlockMachine extends BlockTileGC
 	{
 		this.blockIcon = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine");
 		this.iconInput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
-		this.iconOutput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_output");
-
 		this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_side");
+
 		this.iconCoalGenerator = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "coalGenerator");
-		this.iconEnergyStorageModule = new IIcon[17];
-
-		for (int i = 0; i < this.iconEnergyStorageModule.length; i++)
-		{
-			this.iconEnergyStorageModule[i] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "energyStorageModule_" + i);
-		}
-
-		this.iconElectricFurnace = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "electricFurnace");
 		this.iconCompressor = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "compressor");
 	}
 
@@ -124,38 +109,6 @@ public class BlockMachine extends BlockTileGC
 	{
 		int metadata = world.getBlockMetadata(x, y, z);
 
-		if (metadata >= BlockMachine.STORAGE_MODULE_METADATA && metadata < BlockMachine.ELECTRIC_FURNACE_METADATA)
-		{
-			TileEntity tile = world.getTileEntity(x, y, z);
-
-			metadata -= BlockMachine.STORAGE_MODULE_METADATA;
-
-			if (side == 0 || side == 1)
-			{
-				return this.blockIcon;
-			}
-
-			// If it is the front side
-			if (side == metadata + 2)
-			{
-				return this.iconOutput;
-			}
-			// If it is the back side
-			else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
-			{
-				return this.iconInput;
-			}
-
-			if (tile instanceof TileEntityEnergyStorageModule)
-			{
-				return this.iconEnergyStorageModule[((TileEntityEnergyStorageModule) tile).scaledEnergyLevel];
-			}
-			else
-			{
-				return this.iconEnergyStorageModule[0];
-			}
-		}
-
 		return this.getIcon(side, world.getBlockMetadata(x, y, z));
 	}
 
@@ -176,44 +129,12 @@ public class BlockMachine extends BlockTileGC
 				return this.iconCompressor;
 			}
 		}
-		else if (metadata >= BlockMachine.ELECTRIC_FURNACE_METADATA)
-		{
-			metadata -= BlockMachine.ELECTRIC_FURNACE_METADATA;
-
-			// If it is the front side
-			if (side == metadata + 2)
-			{
-				return this.iconInput;
-			}
-			// If it is the back side
-			else if (metadata == 0 && side == 4 || metadata == 1 && side == 5 || metadata == 2 && side == 3 || metadata == 3 && side == 2)
-			{
-				return this.iconElectricFurnace;
-			}
-		}
-		else if (metadata >= BlockMachine.STORAGE_MODULE_METADATA)
-		{
-			metadata -= BlockMachine.STORAGE_MODULE_METADATA;
-
-			// If it is the front side
-			if (side == metadata + 2)
-			{
-				return this.iconOutput;
-			}
-			// If it is the back side
-			else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
-			{
-				return this.iconInput;
-			}
-
-			return this.iconEnergyStorageModule[16];
-		}
 		else
 		{
 			// If it is the front side
 			if (side == metadata + 2)
 			{
-				return this.iconOutput;
+				return this.iconInput;
 			}
 			// If it is the back side
 			if (metadata == 0 && side == 4 || metadata == 1 && side == 5 || metadata == 2 && side == 3 || metadata == 3 && side == 2)
@@ -252,44 +173,15 @@ public class BlockMachine extends BlockTileGC
 			break;
 		}
 
-		if (metadata >= BlockMachine.COMPRESSOR_METADATA)
-		{
-			world.setBlockMetadataWithNotify(x, y, z, BlockMachine.COMPRESSOR_METADATA + change, 3);
-		}
-		else if (metadata >= BlockMachine.ELECTRIC_FURNACE_METADATA)
-		{
-			world.setBlockMetadataWithNotify(x, y, z, BlockMachine.ELECTRIC_FURNACE_METADATA + change, 3);
-		}
-		else if (metadata >= BlockMachine.STORAGE_MODULE_METADATA)
-		{
-			world.setBlockMetadataWithNotify(x, y, z, BlockMachine.STORAGE_MODULE_METADATA + change, 3);
-		}
-		else
-		{
-			world.setBlockMetadataWithNotify(x, y, z, BlockMachine.COAL_GENERATOR_METADATA + change, 3);
-		}
+		world.setBlockMetadataWithNotify(x, y, z, (metadata & 12) + change, 3);
 	}
 
 	@Override
 	public boolean onUseWrench(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
 	{
 		int metadata = par1World.getBlockMetadata(x, y, z);
-		int original = metadata;
-
+		int original = metadata & 3;
 		int change = 0;
-
-		if (metadata >= BlockMachine.COMPRESSOR_METADATA)
-		{
-			original -= BlockMachine.COMPRESSOR_METADATA;
-		}
-		else if (metadata >= BlockMachine.ELECTRIC_FURNACE_METADATA)
-		{
-			original -= BlockMachine.ELECTRIC_FURNACE_METADATA;
-		}
-		else if (metadata >= BlockMachine.STORAGE_MODULE_METADATA)
-		{
-			original -= BlockMachine.STORAGE_MODULE_METADATA;
-		}
 
 		// Re-orient the block
 		switch (original)
@@ -308,27 +200,14 @@ public class BlockMachine extends BlockTileGC
 			break;
 		}
 
-		if (metadata >= BlockMachine.COMPRESSOR_METADATA)
+		if (metadata < BlockMachine.COMPRESSOR_METADATA)
 		{
-			change += BlockMachine.COMPRESSOR_METADATA;
-		}
-		else
-		{
-			if (metadata >= BlockMachine.ELECTRIC_FURNACE_METADATA)
-			{
-				change += BlockMachine.ELECTRIC_FURNACE_METADATA;
-			}
-			else if (metadata >= BlockMachine.STORAGE_MODULE_METADATA)
-			{
-				change += BlockMachine.STORAGE_MODULE_METADATA;
-			}
-			
 			TileEntity te = par1World.getTileEntity(x,  y,  z);
 			if (te instanceof TileEntityUniversalElectrical)
 				((TileEntityUniversalElectrical) te).updateFacing();
 		}
 
-		par1World.setBlockMetadataWithNotify(x, y, z, change, 3);
+		par1World.setBlockMetadataWithNotify(x, y, z, (metadata & 12) + change, 3);
 		return true;
 	}
 
@@ -343,16 +222,6 @@ public class BlockMachine extends BlockTileGC
 		if (!par1World.isRemote)
 		{
 			if (metadata >= BlockMachine.COMPRESSOR_METADATA)
-			{
-				par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, x, y, z);
-				return true;
-			}
-			else if (metadata >= BlockMachine.ELECTRIC_FURNACE_METADATA)
-			{
-				par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, x, y, z);
-				return true;
-			}
-			else if (metadata >= BlockMachine.STORAGE_MODULE_METADATA)
 			{
 				par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, x, y, z);
 				return true;
@@ -374,14 +243,6 @@ public class BlockMachine extends BlockTileGC
 		{
 			return new TileEntityIngotCompressor();
 		}
-		else if (metadata >= BlockMachine.ELECTRIC_FURNACE_METADATA)
-		{
-			return new TileEntityElectricFurnace();
-		}
-		else if (metadata >= BlockMachine.STORAGE_MODULE_METADATA)
-		{
-			return new TileEntityEnergyStorageModule();
-		}
 		else
 		{
 			return new TileEntityCoalGenerator();
@@ -398,45 +259,18 @@ public class BlockMachine extends BlockTileGC
 		return new ItemStack(this, 1, BlockMachine.COAL_GENERATOR_METADATA);
 	}
 
-	public ItemStack getEnergyStorageModule()
-	{
-		return new ItemStack(this, 1, BlockMachine.STORAGE_MODULE_METADATA);
-	}
-
-	public ItemStack getElectricFurnace()
-	{
-		return new ItemStack(this, 1, BlockMachine.ELECTRIC_FURNACE_METADATA);
-	}
-
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		par3List.add(this.getCoalGenerator());
-		par3List.add(this.getEnergyStorageModule());
-		par3List.add(this.getElectricFurnace());
 		par3List.add(this.getCompressor());
 	}
 
 	@Override
 	public int damageDropped(int metadata)
 	{
-		if (metadata >= BlockMachine.COMPRESSOR_METADATA)
-		{
-			return BlockMachine.COMPRESSOR_METADATA;
-		}
-		else if (metadata >= BlockMachine.ELECTRIC_FURNACE_METADATA)
-		{
-			return BlockMachine.ELECTRIC_FURNACE_METADATA;
-		}
-		else if (metadata >= BlockMachine.STORAGE_MODULE_METADATA)
-		{
-			return BlockMachine.STORAGE_MODULE_METADATA;
-		}
-		else
-		{
-			return BlockMachine.COAL_GENERATOR_METADATA;
-		}
+		return metadata & 12;
 	}
 
 	@Override

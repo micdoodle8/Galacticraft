@@ -99,7 +99,7 @@ public class GuiElectricIngotCompressor extends GuiContainerGC
 
         if (this.tileEntity.processTicks > 0)
         {
-            scale = (int) ((double) this.tileEntity.processTicks / (double) TileEntityElectricIngotCompressor.PROCESS_TIME_REQUIRED * 100);
+            scale = (int) ((double) this.tileEntity.processTicks / (double) this.tileEntity.processTimeRequired * 100);
         }
         else
         {
@@ -113,7 +113,7 @@ public class GuiElectricIngotCompressor extends GuiContainerGC
 
 		if (this.tileEntity.processTicks > 0)
 		{
-			scale = (int) ((double) this.tileEntity.processTicks / (double) TileEntityElectricIngotCompressor.PROCESS_TIME_REQUIRED * 54);
+			scale = (int) ((double) this.tileEntity.processTicks / (double) this.tileEntity.processTimeRequired * 54);
 			this.drawTexturedModalRect(containerWidth + 77, containerHeight + 38, 176, 13, scale, 17);
 		}
 
@@ -124,7 +124,7 @@ public class GuiElectricIngotCompressor extends GuiContainerGC
 			this.drawTexturedModalRect(containerWidth + 4, containerHeight + 95, 176, 37, 11, 10);
 		}
 
-		if (this.tileEntity.processTicks > TileEntityElectricIngotCompressor.PROCESS_TIME_REQUIRED / 2)
+		if (this.tileEntity.processTicks > this.tileEntity.processTimeRequired / 2)
 		{
 			this.drawTexturedModalRect(containerWidth + 101, containerHeight + 30, 176, 0, 15, 13);
 		}

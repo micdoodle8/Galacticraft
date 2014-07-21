@@ -11,10 +11,23 @@ item.rocketFinsT2.name=Heavy Rocket Fins
 item.engineT2.name=Heavy Rocket Engine
 item.reinforcedPlateT3.name=Heavy-Duty Plate
 item.grapple.name=Grapple
-item.thermalHelm.name=Themal Padding Helm
+item.thermalHelm.name=Thermal Padding Helm
 item.thermalChestplate.name=Thermal Padding Chestpiece
 item.thermalLeggings.name=Thermal Padding Leggings
 item.thermalBoots.name=Thermal Padding Boots
+item.atmosphericValve.name=Atmospheric Valve
+
+item.methaneCanisterPartial.name=Methane Gas Canister
+item.methaneCanister.name=Filled Methane Gas Canister
+item.canister.gas.name=Gas
+item.canister.LOX.partial=Canister of Liquid Oxygen
+item.canister.LOX.full=Filled Canister of Liquid Oxygen
+item.canister.LOX.name=LOX
+item.canister.liquidNitrogen.partial=Canister of Liquid Nitrogen
+item.canister.liquidNitrogen.full=Filled Canister of Liquid Nitrogen
+item.canister.liquidNitrogen.name=Liquid
+item.emptyGasCanister.name=Empty Gas Canister
+
 item.tier3.desc=Tier 3
 
 # TOOLS
@@ -34,6 +47,12 @@ tile.telepadShort.name=Short Range Telepad
 tile.walkway.name=Walkway
 tile.walkwayWire.name=Walkway
 tile.walkwayOxygenPipe.name=Walkway
+
+# Fluids and gases
+fluid.methane.name=Methane Gas
+fluid.liquidmethane.name=Liquid Methane
+fluid.liquidoxygen.name=Liquid Oxygen
+fluid.liquidnitrogen.name=Liquid Nitrogen
 
 # GUI
 planet.asteroids=Asteroids

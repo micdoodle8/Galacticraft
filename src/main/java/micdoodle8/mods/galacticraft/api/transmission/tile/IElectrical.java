@@ -19,11 +19,13 @@ public interface IElectrical extends IConnector
 	 *            Orientation the electricity is sent in from.
 	 * @param receive
 	 *            Maximum amount of electricity to be sent into the block.
+	 * @param tierProduced
+	 * 			  The tier of electricity which is being provided (must be 1 or 2)
 	 * @param doReceive
 	 *            If false, the charge will only be simulated.
 	 * @return Amount of energy that was accepted by the block.
 	 */
-	public float receiveElectricity(ForgeDirection from, float receive, boolean doReceive);
+	public float receiveElectricity(ForgeDirection from, float receive, int tierProduced, boolean doReceive);
 
 	/**
 	 * Adds electricity to an block. Returns the ElectricityPack, the
