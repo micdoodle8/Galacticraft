@@ -55,9 +55,11 @@ public class AsteroidsModule implements IPlanetsModule
 	public static final String ASSET_PREFIX = "galacticraftasteroids";
 	public static final String TEXTURE_PREFIX = AsteroidsModule.ASSET_PREFIX + ":";
 
+	public static Fluid gcFluidMethaneGas;
 	public static Fluid gcFluidLiquidMethane;
 	public static Fluid gcFluidLiquidOxygen;
 	public static Fluid gcFluidLiquidNitrogen;
+	public static Fluid fluidMethaneGas;
 	public static Fluid fluidLiquidMethane;
 	public static Fluid fluidLiquidOxygen;
 	public static Fluid fluidLiquidNitrogen;
@@ -71,13 +73,17 @@ public class AsteroidsModule implements IPlanetsModule
 		MinecraftForge.EVENT_BUS.register(playerHandler);
 		FMLCommonHandler.instance().bus().register(playerHandler);
 		
-		AsteroidsModule.gcFluidLiquidMethane = new Fluid("methane").setDensity(422).setViscosity(11);
-		AsteroidsModule.gcFluidLiquidOxygen = new Fluid("liquidOxygen").setDensity(1141).setViscosity(20);
-		AsteroidsModule.gcFluidLiquidNitrogen = new Fluid("liquidNitrogen").setDensity(808).setViscosity(18);
+		AsteroidsModule.gcFluidMethaneGas = new Fluid("methane").setDensity(9).setViscosity(11);
+		AsteroidsModule.gcFluidLiquidMethane = new Fluid("liquidmethane").setDensity(450).setViscosity(120);
+		//Data source for liquid methane: http://science.nasa.gov/science-news/science-at-nasa/2005/25feb_titan2/
+		AsteroidsModule.gcFluidLiquidOxygen = new Fluid("liquidoxygen").setDensity(1141).setViscosity(13);
+		AsteroidsModule.gcFluidLiquidNitrogen = new Fluid("liquidnitrogen").setDensity(808).setViscosity(12);
+		FluidRegistry.registerFluid(AsteroidsModule.gcFluidMethaneGas);
 		FluidRegistry.registerFluid(AsteroidsModule.gcFluidLiquidMethane);
 		FluidRegistry.registerFluid(AsteroidsModule.gcFluidLiquidOxygen);
 		FluidRegistry.registerFluid(AsteroidsModule.gcFluidLiquidNitrogen);
-		AsteroidsModule.fluidLiquidMethane = FluidRegistry.getFluid("methane");
+		AsteroidsModule.fluidMethaneGas = FluidRegistry.getFluid("methane");
+		AsteroidsModule.fluidLiquidMethane = FluidRegistry.getFluid("liquidmethane");
 		AsteroidsModule.fluidLiquidOxygen = FluidRegistry.getFluid("liquidoxygen");
 		AsteroidsModule.fluidLiquidNitrogen = FluidRegistry.getFluid("liquidnitrogen");
 		
@@ -176,7 +182,7 @@ public class AsteroidsModule implements IPlanetsModule
         int canisterMaxDamage = AsteroidsItems.methaneCanister.getMaxDamage();
 		for (int i = canisterMaxDamage - 1; i > 0; i--)
 		{
-			FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(AsteroidsModule.fluidLiquidMethane, canisterMaxDamage - i), new ItemStack(AsteroidsItems.methaneCanister, 1, i), new ItemStack(AsteroidsItems.methaneCanister, 1, canisterMaxDamage)));
+			FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(AsteroidsModule.fluidMethaneGas, canisterMaxDamage - i), new ItemStack(AsteroidsItems.methaneCanister, 1, i), new ItemStack(AsteroidsItems.methaneCanister, 1, canisterMaxDamage)));
 			FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(AsteroidsModule.fluidLiquidOxygen, canisterMaxDamage - i), new ItemStack(AsteroidsItems.canisterLOX, 1, i), new ItemStack(AsteroidsItems.canisterLOX, 1, canisterMaxDamage)));
 			FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(AsteroidsModule.fluidLiquidNitrogen, canisterMaxDamage - i), new ItemStack(AsteroidsItems.canisterLN2, 1, i), new ItemStack(AsteroidsItems.canisterLN2, 1, canisterMaxDamage)));
 		}

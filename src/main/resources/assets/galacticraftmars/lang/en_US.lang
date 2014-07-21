@@ -109,7 +109,7 @@ gui.status.nogas.name=No gas
 gui.status.liquefying.name=Liquefying
 gui.button.liquefy.name=Process
 gui.button.liquefyStop.name=Stop
-gui.gasInput.desc.0=Try placing a canister$of methane here.
+gui.gasInput.desc.0=Try placing a Methane$Gas Canister here.
 gui.gasInput.desc.1=(Perhaps alternatively,$an Atmospheric Valve.)
 
 gui.desc.reinforcedPlateT2.name=Tier 2

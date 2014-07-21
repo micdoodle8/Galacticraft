@@ -62,10 +62,10 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 			if (inputCanister != null)
 			{
 				FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(inputCanister);
-				FluidStack gcMethane = FluidRegistry.getFluidStack(AsteroidsModule.fluidLiquidMethane.getName(), 1);
 
 				if (liquid != null && FluidRegistry.getFluidName(liquid).toLowerCase().contains("methane"))
 				{
+					FluidStack gcMethane = FluidRegistry.getFluidStack(AsteroidsModule.fluidMethaneGas.getName(), 1);
 					gcMethane.amount = liquid.amount;
 
 					if (this.gasTank.getFluid() == null || this.gasTank.getFluid().amount + liquid.amount <= this.gasTank.getCapacity())
@@ -180,7 +180,7 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 			final int gasAmount = this.gasTank.getFluid().amount;
 			final int fuelSpace = this.fuelTank.getCapacity() - (this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount);
 
-			final int amountToDrain = Math.min(Math.min(gasAmount, fuelSpace), 2);
+			final int amountToDrain = Math.min(Math.min(gasAmount, fuelSpace), 3);
 
 			this.gasTank.drain(amountToDrain, true);
 			this.fuelTank.fill(FluidRegistry.getFluidStack("fuel", amountToDrain), true);
@@ -325,12 +325,6 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 	public ForgeDirection getElectricInputDirection()
 	{
 		return ForgeDirection.getOrientation((this.getBlockMetadata() & 3) + 2);
-	}
-
-	@Override
-	public ItemStack getBatteryInSlot()
-	{
-		return this.getStackInSlot(1);
 	}
 
 	@Override

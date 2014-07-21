@@ -174,7 +174,12 @@ public class GuiGasLiquefier extends GuiContainerGC
 		gasTankDesc.add(GCCoreUtil.translate("gui.gasTank.desc.0"));
 		FluidStack gasTankContents = this.tileEntity.gasTank != null ? this.tileEntity.gasTank.getFluid() : null;
 		if (gasTankContents != null)
-			gasTankDesc.add("("+gasTankContents.getFluid().getLocalizedName()+")");
+		{
+			String gasname = gasTankContents.getFluid().getLocalizedName();
+			if (gasname == null || gasname.equals(gasTankContents.getFluid().getUnlocalizedName()))
+				gasname = GCCoreUtil.translate(gasTankContents.getFluid().getUnlocalizedName()+".name");
+			gasTankDesc.add("("+gasname+")");
+		}
 		else
 			gasTankDesc.add(" ");
 		int gasLevel = gasTankContents != null ? gasTankContents.amount : 0;

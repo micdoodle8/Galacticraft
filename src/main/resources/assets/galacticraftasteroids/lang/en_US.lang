@@ -16,8 +16,8 @@ item.thermalChestplate.name=Thermal Padding Chestpiece
 item.thermalLeggings.name=Thermal Padding Leggings
 item.thermalBoots.name=Thermal Padding Boots
 
-item.methaneCanisterPartial.name=Canister of Methane
-item.methaneCanister.name=Filled Canister of Methane
+item.methaneCanisterPartial.name=Methane Gas Canister
+item.methaneCanister.name=Filled Methane Gas Canister
 item.canister.gas.name=Gas
 item.canister.LOX.partial=Canister of Liquid Oxygen
 item.canister.LOX.full=Filled Canister of Liquid Oxygen
@@ -48,9 +48,10 @@ tile.walkwayWire.name=Walkway
 tile.walkwayOxygenPipe.name=Walkway
 
 # Fluids and gases
-fluid.methane.name=Methane
-fluid.liquidOxygen.name=Liquid Oxygen
-fluid.liquidNitrogen.name=Liquid Nitrogen
+fluid.methane.name=Methane Gas
+fluid.liquidmethane.name=Liquid Methane
+fluid.liquidoxygen.name=Liquid Oxygen
+fluid.liquidnitrogen.name=Liquid Nitrogen
 
 # GUI
 planet.asteroids=Asteroids
