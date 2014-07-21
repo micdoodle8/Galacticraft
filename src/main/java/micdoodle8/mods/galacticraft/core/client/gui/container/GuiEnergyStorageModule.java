@@ -35,7 +35,7 @@ public class GuiEnergyStorageModule extends GuiContainer
 	{
 		this.fontRendererObj.drawString(this.tileEntity.getInventoryName(), this.xSize / 2 - this.fontRendererObj.getStringWidth(this.tileEntity.getInventoryName()) / 2, 6, 4210752);
 		float energy = this.tileEntity.getEnergyStoredGC();
-		if (energy + 9 > this.tileEntity.getMaxEnergyStoredGC()) energy = this.tileEntity.getMaxEnergyStoredGC();
+		if (energy + 17 > this.tileEntity.getMaxEnergyStoredGC()) energy = this.tileEntity.getMaxEnergyStoredGC();
 		String displayStr = EnergyHelper.getEnergyDisplayS(energy);
 		this.fontRendererObj.drawString(displayStr, 122 - this.fontRendererObj.getStringWidth(displayStr) / 2, 25, 4210752);
         displayStr = "of " + EnergyHelper.getEnergyDisplayS(this.tileEntity.getMaxEnergyStoredGC());
@@ -60,7 +60,7 @@ public class GuiEnergyStorageModule extends GuiContainer
 		// Background energy bar
 		this.drawTexturedModalRect(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
 		// Foreground energy bar
-		int scale = (int) ((this.tileEntity.getEnergyStoredGC() + 9) / this.tileEntity.getMaxEnergyStoredGC() * 72);
+		int scale = (int) ((this.tileEntity.getEnergyStoredGC() + 17) / this.tileEntity.getMaxEnergyStoredGC() * 72);
 		this.drawTexturedModalRect(containerWidth + 87, containerHeight + 52, 176, 0, scale, 3);
 	}
 }

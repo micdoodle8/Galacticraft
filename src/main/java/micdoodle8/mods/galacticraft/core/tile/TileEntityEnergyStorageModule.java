@@ -85,7 +85,7 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 
 		super.updateEntity();
 
-		this.scaledEnergyLevel = (int) Math.floor((this.getEnergyStoredGC() + 9) * 16 / this.getMaxEnergyStoredGC());
+		this.scaledEnergyLevel = (int) Math.floor((this.getEnergyStoredGC() + 17) * 16 / this.getMaxEnergyStoredGC());
 
 		if (this.scaledEnergyLevel != this.lastScaledEnergyLevel)
 		{
