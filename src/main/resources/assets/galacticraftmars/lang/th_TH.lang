@@ -95,8 +95,6 @@ gui.message.notSet.name=ไมได้ตั้งไว้
 gui.message.notEnough.name=ไม่พอ
 gui.message.success.name=เสร็จสิ้น
 
-gui.desc.reinforcedPlateT2.name=เทียร์ 2
-
 	# Dollar sign ($) will split text onto a new line
 gui.launchController.desc.0=นี่คือเครื่องควบคุมการปล่อยจรวด$ความถี่เฉพาะ
 gui.launchController.desc.1=ความถี่ที่ใกล้จะปล่อยจรวด
@@ -104,6 +102,15 @@ gui.launchController.desc.2=หรือไม่ฐานปล่อยจร�
 gui.launchController.desc.3=When this criteria is met,$จรวดจะถูกปล่อย # Complete 80%
 gui.terraformer.desc.0=ถังเก็บน้ำ
 
+gui.gasTank.desc.0=ก๊าซที่เก็บไว้
+gui.status.nogas.name=ไม่มีก๊าซ
+gui.status.liquefying.name=ดำเนินการทำให้เป็นของเหลว
+gui.button.liquefy.name=กำลังทำงาน
+gui.button.liquefyStop.name=หยุดทำงาน
+gui.gasInput.desc.0=วางถังของ$มีเทนตรงนี้
+gui.gasInput.desc.1=(Perhaps alternatively,$an Atmospheric Valve.) #To do
+
+gui.desc.reinforcedPlateT2.name=เทียร์ 2
 dimension.Mars.name=ดาวอังคาร
 planet.mars=ดาวอังคาร
 

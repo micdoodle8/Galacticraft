@@ -15,6 +15,18 @@ item.thermalHelm.name=หมวกกันความร้อน
 item.thermalChestplate.name=เสื้อเกราะกันความร้อน
 item.thermalLeggings.name=กางเกงกันความร้อน
 item.thermalBoots.name=รองเท้ากันความร้อน
+
+item.methaneCanisterPartial.name=ถังมีเทน
+item.methaneCanister.name=Filled ถังมีเทน #Complete 95%
+item.canister.gas.name=ก๊าซ
+item.canister.LOX.partial=ถังออกซิเจนเหลว
+item.canister.LOX.full=Filled ถังออกซิเจนเหลว #Complete 95%
+item.canister.LOX.name=ออกซิเจนเหลว
+item.canister.liquidNitrogen.partial=ถังไนโตรเจนเหลว
+item.canister.liquidNitrogen.full=Filled ถังไนโตรเจนเหลว #Complete 95%
+item.canister.liquidNitrogen.name=ไนโตรเจนเหลว
+item.emptyGasCanister.name=ถังก๊าซเปล่า
+
 item.tier3.desc=เทียร์ 3
 
 # TOOLS
@@ -34,6 +46,11 @@ tile.telepadShort.name=เครื่องเทเลพอร์ตระย
 tile.walkway.name=ทางเดิน
 tile.walkwayWire.name=ทางเดิน
 tile.walkwayOxygenPipe.name=ทางเดิน
+
+# Fluids and gases
+fluid.methane.name=มีเทน
+fluid.liquidOxygen.name=ออกซิเจนเหลว
+fluid.liquidNitrogen.name=ไนโตรเจนเหลว
 
 # GUI
 planet.asteroids=ดาวเคราะห์น้อย
