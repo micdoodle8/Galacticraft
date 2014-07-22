@@ -148,13 +148,23 @@ public class GuiGasLiquefier extends GuiContainerGC
 		int containerHeight = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
 
-		int displayInt = this.tileEntity.getScaledFuelLevel(38);
-		this.drawTexturedModalRect((this.width - this.xSize) / 2 + 153, (this.height - this.ySize) / 2 + 17 + 49 - displayInt, 176 + 16, 38 - displayInt, 16, displayInt);
+		int liquidType = this.tileEntity.fluidTankType;  //0 for fuel, 1 for oxygen, 2 for atmospheric gases
 
+		if (liquidType == 0)
+		{
+			int displayInt = this.tileEntity.getScaledFuelLevel(38);
+			this.drawTexturedModalRect((this.width - this.xSize) / 2 + 153, (this.height - this.ySize) / 2 + 17 + 49 - displayInt, 176 + 16, 38 - displayInt, 16, displayInt);
+		}
+		
 		this.mc.renderEngine.bindTexture(GuiGasLiquefier.gasTextures);
-		displayInt = this.tileEntity.getScaledGasLevel(38);
-		int gasType = 0;  //0 for methane, 1 for oxygen, 2 for nitrogen
-		this.drawTexturedModalRect((this.width - this.xSize) / 2 + 7, (this.height - this.ySize) / 2 + 17 + 49 - displayInt, gasType * 17, 38 - displayInt, 16, displayInt);
+		int displayInt = this.tileEntity.getScaledGasLevel(38);
+		int gasType = this.tileEntity.gasTankType;  //0 for methane, 1 for oxygen, 2 for atmospheric gases
+		if (gasType >= 0) this.drawTexturedModalRect((this.width - this.xSize) / 2 + 7, (this.height - this.ySize) / 2 + 17 + 49 - displayInt, gasType * 17, 38 - displayInt, 16, displayInt);
+		if (liquidType > 0)
+		{
+			displayInt = this.tileEntity.getScaledFuelLevel(38);
+			this.drawTexturedModalRect((this.width - this.xSize) / 2 + 153, (this.height - this.ySize) / 2 + 17 + 49 - displayInt, (liquidType + 2) * 17, 38 - displayInt, 16, displayInt);
+		}
 
 		this.addToolTips();
 
