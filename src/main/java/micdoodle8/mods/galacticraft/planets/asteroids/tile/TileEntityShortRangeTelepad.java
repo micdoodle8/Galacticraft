@@ -436,7 +436,7 @@ public class TileEntityShortRangeTelepad extends TileEntityElectricBlock impleme
         if (this.address >= 0)
         {
             ShortRangeTelepadHandler.TelepadEntry entry = ShortRangeTelepadHandler.getLocationFromAddress(this.address);
-            this.addressValid = this.addressValid || (this.worldObj != null && (entry.dimensionID == this.worldObj.provider.dimensionId && entry.position.x == this.xCoord && entry.position.y == this.yCoord && entry.position.z == this.zCoord));
+            this.addressValid = entry == null || (this.worldObj != null && (entry.dimensionID == this.worldObj.provider.dimensionId && entry.position.x == this.xCoord && entry.position.y == this.yCoord && entry.position.z == this.zCoord));
         }
         else
         {
