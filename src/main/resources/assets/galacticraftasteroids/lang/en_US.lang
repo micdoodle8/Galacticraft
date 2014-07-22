@@ -60,6 +60,7 @@ fluid.liquidnitrogen.name=Liquid Nitrogen
 planet.asteroids=Asteroids
 
 	# Dollar sign ($) will split text onto a new line
+	# Do not remove %s or %d, since that will be replaced in-game
 gui.telepad.desc.0=This is the Telepad's$unique address
 gui.telepad.desc.1=Address of another Telepad.$Entities will be sent there.
 container.shortRangeTelepad.name=Short Range Telepad
@@ -72,6 +73,7 @@ gui.message.telepadTooFar.name=Target too far! (Max %d)
 gui.message.telepadWrongDim.name=Target is in wrong dimension!
 gui.message.telepadNotFound.name=Telepad Not Found!
 gui.message.sendingActive.name=Sending Active
+gui.message.range.name=Range: %dm
 
 # Schematics
 
