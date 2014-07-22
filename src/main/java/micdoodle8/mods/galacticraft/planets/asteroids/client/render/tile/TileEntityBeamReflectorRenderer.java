@@ -4,6 +4,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -16,20 +17,18 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class TileEntityBeamReflectorRenderer extends TileEntitySpecialRenderer
 {
-	public static final ResourceLocation reflectorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/misc/underoil.png");
+	public static final ResourceLocation reflectorTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/beamReflector.png");
 	public static IModelCustom reflectorModel;
 
 	public TileEntityBeamReflectorRenderer()
 	{
-		TileEntityBeamReflectorRenderer.reflectorModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/redirector.obj"));
+		TileEntityBeamReflectorRenderer.reflectorModel = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/reflector.obj"));
 	}
 
 	public void renderModelAt(TileEntityBeamReflector tileEntity, double d, double d1, double d2, float f)
 	{
 		// Texture file
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityBeamReflectorRenderer.reflectorTexture);
-
-		Tessellator tess = Tessellator.instance;
 
 		GL11.glPushMatrix();
 
