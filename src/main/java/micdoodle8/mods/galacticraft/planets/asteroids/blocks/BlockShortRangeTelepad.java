@@ -146,7 +146,7 @@ public class BlockShortRangeTelepad extends BlockTileGC
                 {
                     if (!(x == 0 && y == 0 && z == 0))
                     {
-                        if (world.getBlock(x0 + x, y0 + y, z0 + z) == GCBlocks.fakeBlock)
+                        if (world.getBlock(x0 + x, y0 + y, z0 + z) == AsteroidBlocks.fakeTelepad)
                         {
                             fakeBlockCount++;
                         }

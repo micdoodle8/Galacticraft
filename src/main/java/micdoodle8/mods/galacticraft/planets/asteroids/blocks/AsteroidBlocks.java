@@ -16,6 +16,7 @@ public class AsteroidBlocks
 	public static Block beamReflector;
 	public static Block beamReceiver;
 	public static Block shortRangeTelepad;
+    public static Block fakeTelepad;
 
 	public static void initBlocks()
 	{
@@ -27,6 +28,7 @@ public class AsteroidBlocks
 		AsteroidBlocks.beamReflector = new BlockBeamReflector("beamReflector");
 		AsteroidBlocks.beamReceiver = new BlockBeamReceiver("beamReceiver");
 		AsteroidBlocks.shortRangeTelepad = new BlockShortRangeTelepad("telepadShort");
+		AsteroidBlocks.fakeTelepad = new BlockTelepadFake("telepadFake");
 	}
 
 	public static void registerBlocks()
@@ -39,5 +41,6 @@ public class AsteroidBlocks
 		GameRegistry.registerBlock(AsteroidBlocks.beamReflector, ItemBlockGC.class, AsteroidBlocks.beamReflector.getUnlocalizedName());
 		GameRegistry.registerBlock(AsteroidBlocks.beamReceiver, ItemBlockGC.class, AsteroidBlocks.beamReceiver.getUnlocalizedName());
 		GameRegistry.registerBlock(AsteroidBlocks.shortRangeTelepad, ItemBlockShortRangeTelepad.class, AsteroidBlocks.shortRangeTelepad.getUnlocalizedName());
+		GameRegistry.registerBlock(AsteroidBlocks.fakeTelepad, ItemBlockGC.class, AsteroidBlocks.fakeTelepad.getUnlocalizedName());
 	}
 }

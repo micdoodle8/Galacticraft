@@ -8,14 +8,14 @@ import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricBlock;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
+import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
+import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockTelepadFake;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.ShortRangeTelepadHandler;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.EntityLivingBase;
@@ -244,7 +244,7 @@ public class TileEntityShortRangeTelepad extends TileEntityElectricBlock impleme
 
                     if (!vecToAdd.equals(placedPosition))
                     {
-                        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, y == 0 ? 7 : 6);
+                        ((BlockTelepadFake) AsteroidBlocks.fakeTelepad).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, y == 0 ? 1 : 0);
                     }
                 }
             }

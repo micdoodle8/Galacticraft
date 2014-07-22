@@ -30,6 +30,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceive
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
 import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerServer;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityTelepadFake;
 import micdoodle8.mods.galacticraft.planets.asteroids.util.AsteroidsUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -267,6 +268,7 @@ public class AsteroidsModule implements IPlanetsModule
 		GameRegistry.registerTileEntity(TileEntityBeamReflector.class, "Beam Reflector");
 		GameRegistry.registerTileEntity(TileEntityBeamReceiver.class, "Beam Receiver");
 		GameRegistry.registerTileEntity(TileEntityShortRangeTelepad.class, "Short Range Telepad");
+		GameRegistry.registerTileEntity(TileEntityTelepadFake.class, "Fake Short Range Telepad");
 	}
 
     @Override
