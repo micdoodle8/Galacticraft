@@ -10,10 +10,12 @@ import micdoodle8.mods.galacticraft.core.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -214,4 +216,17 @@ public class BlockBeamReceiver extends BlockTileGC
 	{
 		par3List.add(new ItemStack(par1, 1, 0));
 	}
+
+    @Override
+    public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
+    {
+        TileEntity tile = world.getTileEntity(x, y, z);
+
+        if (tile instanceof TileEntityBeamReceiver)
+        {
+            return ((TileEntityBeamReceiver) tile).onMachineActivated(world, x, y, z, entityPlayer, side, hitX, hitY, hitZ);
+        }
+
+        return false;
+    }
 }
