@@ -58,13 +58,16 @@ public class AsteroidsModule implements IPlanetsModule
 
 	public static Fluid gcFluidMethaneGas;
 	public static Fluid gcFluidLiquidMethane;
+	public static Fluid gcFluidOxygenGas;
 	public static Fluid gcFluidLiquidOxygen;
 	public static Fluid gcFluidLiquidNitrogen;
+	public static Fluid gcFluidAtmosphericGases;
 	public static Fluid fluidMethaneGas;
+	public static Fluid fluidOxygenGas;
 	public static Fluid fluidLiquidMethane;
 	public static Fluid fluidLiquidOxygen;
 	public static Fluid fluidLiquidNitrogen;
-
+	public static Fluid fluidAtmosphericGases;
 	
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
@@ -75,17 +78,23 @@ public class AsteroidsModule implements IPlanetsModule
 		FMLCommonHandler.instance().bus().register(playerHandler);
 		
 		AsteroidsModule.gcFluidMethaneGas = new Fluid("methane").setDensity(9).setViscosity(11);
+		AsteroidsModule.gcFluidAtmosphericGases = new Fluid("atmosphericgases").setDensity(12).setViscosity(13);
 		AsteroidsModule.gcFluidLiquidMethane = new Fluid("liquidmethane").setDensity(450).setViscosity(120);
 		//Data source for liquid methane: http://science.nasa.gov/science-news/science-at-nasa/2005/25feb_titan2/
 		AsteroidsModule.gcFluidLiquidOxygen = new Fluid("liquidoxygen").setDensity(1141).setViscosity(13);
+		AsteroidsModule.gcFluidOxygenGas = new Fluid("oxygen").setDensity(13).setViscosity(13);
 		AsteroidsModule.gcFluidLiquidNitrogen = new Fluid("liquidnitrogen").setDensity(808).setViscosity(12);
 		FluidRegistry.registerFluid(AsteroidsModule.gcFluidMethaneGas);
+		FluidRegistry.registerFluid(AsteroidsModule.gcFluidAtmosphericGases);
 		FluidRegistry.registerFluid(AsteroidsModule.gcFluidLiquidMethane);
 		FluidRegistry.registerFluid(AsteroidsModule.gcFluidLiquidOxygen);
+		FluidRegistry.registerFluid(AsteroidsModule.gcFluidOxygenGas);
 		FluidRegistry.registerFluid(AsteroidsModule.gcFluidLiquidNitrogen);
 		AsteroidsModule.fluidMethaneGas = FluidRegistry.getFluid("methane");
+		AsteroidsModule.fluidMethaneGas = FluidRegistry.getFluid("atmosphericgases");
 		AsteroidsModule.fluidLiquidMethane = FluidRegistry.getFluid("liquidmethane");
 		AsteroidsModule.fluidLiquidOxygen = FluidRegistry.getFluid("liquidoxygen");
+		AsteroidsModule.fluidOxygenGas = FluidRegistry.getFluid("oxygen");
 		AsteroidsModule.fluidLiquidNitrogen = FluidRegistry.getFluid("liquidnitrogen");
 		
 		AsteroidBlocks.initBlocks();

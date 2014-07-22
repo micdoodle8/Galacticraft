@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.*;
 import net.minecraft.block.Block;
@@ -17,6 +18,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.util.List;
+
+import cpw.mods.fml.common.Loader;
 
 public class BlockMachineTiered extends BlockTileGC
 {
@@ -65,22 +68,41 @@ public class BlockMachineTiered extends BlockTileGC
 		this.iconOutput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_output");
 		this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_side");
 		
-		this.iconTier2 = iconRegister.registerIcon("galacticraftasteroids:machine");
-		this.iconInputT2 = iconRegister.registerIcon("galacticraftasteroids:machine_input");
-		this.iconOutputT2 = iconRegister.registerIcon("galacticraftasteroids:machine_output");
-		this.iconMachineSideT2 = iconRegister.registerIcon("galacticraftasteroids:machine_side");
-
 		this.iconEnergyStorageModule = new IIcon[17];
-		this.iconEnergyStorageModuleT2 = new IIcon[17];
 
 		for (int i = 0; i < this.iconEnergyStorageModule.length; i++)
 		{
 			this.iconEnergyStorageModule[i] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "energyStorageModule_" + i);
-			this.iconEnergyStorageModuleT2[i] = iconRegister.registerIcon("galacticraftasteroids:energyStorageModule_" + i);
 		}
 
 		this.iconElectricFurnace = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "electricFurnace");
-		this.iconElectricFurnaceT2 = iconRegister.registerIcon("galacticraftasteroids:electricFurnace");
+
+		if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
+		{
+			this.iconTier2 = iconRegister.registerIcon("galacticraftasteroids:machine");
+			this.iconInputT2 = iconRegister.registerIcon("galacticraftasteroids:machine_input");
+			this.iconOutputT2 = iconRegister.registerIcon("galacticraftasteroids:machine_output");
+			this.iconMachineSideT2 = iconRegister.registerIcon("galacticraftasteroids:machine_side");
+			this.iconEnergyStorageModuleT2 = new IIcon[17];
+			for (int i = 0; i < this.iconEnergyStorageModule.length; i++)
+			{
+				this.iconEnergyStorageModuleT2[i] = iconRegister.registerIcon("galacticraftasteroids:energyStorageModule_" + i);
+			}
+			this.iconElectricFurnaceT2 = iconRegister.registerIcon("galacticraftasteroids:electricFurnace");
+		}
+		else
+		{
+			this.iconTier2 = iconRegister.registerIcon("void");
+			this.iconInputT2 = iconRegister.registerIcon("void");
+			this.iconOutputT2 = iconRegister.registerIcon("void");
+			this.iconMachineSideT2 = iconRegister.registerIcon("void");
+			this.iconEnergyStorageModuleT2 = new IIcon[17];
+			for (int i = 0; i < this.iconEnergyStorageModule.length; i++)
+			{
+				this.iconEnergyStorageModuleT2[i] = iconRegister.registerIcon("void");
+			}
+			this.iconElectricFurnaceT2 = iconRegister.registerIcon("void");
+		}
 	}
 
 	@Override
@@ -292,9 +314,12 @@ public class BlockMachineTiered extends BlockTileGC
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		par3List.add(this.getEnergyStorageModule());
-		par3List.add(this.getEnergyStorageCluster());
 		par3List.add(this.getElectricFurnace());
-		par3List.add(this.getElectricArcFurnace());
+		if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
+		{
+			par3List.add(this.getEnergyStorageCluster());
+			par3List.add(this.getElectricArcFurnace());
+		}
 	}
 
 	@Override

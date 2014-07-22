@@ -8,8 +8,9 @@ import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.tile.ElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemCanisterLiquidOxygen;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemCanisterMethane;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.init.Items;
@@ -39,6 +40,30 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 	public int processTicks = 0;
 	private ItemStack[] containingItems = new ItemStack[3];
 	
+	@NetworkedField(targetSide = Side.CLIENT)
+	public int gasTankType = -1;
+	@NetworkedField(targetSide = Side.CLIENT)
+	public int fluidTankType = -1;
+	
+	public enum TankGases
+	{
+		METHANE(0, "methane", "fuel"),
+		OXYGEN(1, "oxygen", "liquidoxygen"),
+		AIR(2, "atmosphericgases", "liquidnitrogen");
+
+		int index;
+		String gas;
+		String liquid;
+
+		TankGases(int id, String fluidname, String outputname)
+		{
+			this.index = id;
+			this.gas = new String(fluidname);
+			this.liquid = new String(outputname);
+		}
+	}
+
+	
 	public TileEntityGasLiquefier()
 	{
 		this.storage.setMaxExtract(60);
@@ -58,65 +83,158 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 
 		if (!this.worldObj.isRemote)
 		{
+			FluidStack currentgas = this.gasTank.getFluid();
+			if (currentgas == null || currentgas.amount <= 0) this.gasTankType = -1;
+			else this.gasTankType = this.getIdFromName(currentgas.getFluid().getName());
+
+			FluidStack currentLiquid = this.fuelTank.getFluid();
+			if (currentLiquid == null || currentLiquid.amount == 0) this.fluidTankType = -1;
+			else this.fluidTankType = this.getFluidIdFromName(currentLiquid.getFluid().getName());
+			
+			//First, see if any gas needs to be put into the gas storage
 			ItemStack inputCanister = this.containingItems[1];
 			if (inputCanister != null)
 			{
-				FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(inputCanister);
-
-				if (liquid != null && FluidRegistry.getFluidName(liquid).toLowerCase().contains("methane"))
+				if (inputCanister.getItem() instanceof ItemAtmosphericValve)
 				{
-					FluidStack gcMethane = FluidRegistry.getFluidStack(AsteroidsModule.fluidMethaneGas.getName(), 1);
-					gcMethane.amount = liquid.amount;
-
-					if (this.gasTank.getFluid() == null || this.gasTank.getFluid().amount + liquid.amount <= this.gasTank.getCapacity())
+					//Air -> Air tank
+					if (this.gasTankType == -1 || (this.gasTankType == 2 && this.gasTank.getFluid().amount < this.gasTank.getCapacity()))
 					{
-						this.gasTank.fill(gcMethane, true);
-
-						if (inputCanister.getItem() instanceof ItemCanisterMethane)
+						FluidStack gcAtmosphere = FluidRegistry.getFluidStack(TankGases.AIR.gas, 4);
+						this.gasTank.fill(gcAtmosphere, true);
+						this.gasTankType = 2;
+					}
+				}
+				else
+				{
+					FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(inputCanister);
+					if (liquid != null && liquid.amount > 0)
+					{
+						String inputName = FluidRegistry.getFluidName(liquid);
+						System.out.println("methanetest 2");
+						//Methane -> Methane tank
+						if (this.gasTankType <= 0 && inputName.contains("methane"))
 						{
-							this.containingItems[1] = new ItemStack(AsteroidsItems.methaneCanister, 1, AsteroidsItems.methaneCanister.getMaxDamage());
-						}
-						else if (FluidContainerRegistry.isBucket(inputCanister) && FluidContainerRegistry.isFilledContainer(inputCanister))
-						{
-							final int amount = inputCanister.stackSize;
-							this.containingItems[1] = new ItemStack(Items.bucket, amount);
-						}
-						else
-						{
-							inputCanister.stackSize--;
-
-							if (inputCanister.stackSize == 0)
+							System.out.println("methanetest 3");
+							if (currentgas == null || currentgas.amount + liquid.amount <= this.gasTank.getCapacity())
 							{
-								this.containingItems[1] = null;
+								System.out.println("methanetest 4");
+								FluidStack gcMethane = FluidRegistry.getFluidStack(TankGases.METHANE.gas, liquid.amount);	
+								this.gasTank.fill(gcMethane, true);
+								this.gasTankType = 0;
+		
+								if (inputCanister.getItem() instanceof ItemCanisterMethane)
+								{
+									this.containingItems[1] = new ItemStack(AsteroidsItems.methaneCanister, 1, AsteroidsItems.methaneCanister.getMaxDamage());
+								}
+								else if (FluidContainerRegistry.isBucket(inputCanister) && FluidContainerRegistry.isFilledContainer(inputCanister))
+								{
+									final int amount = inputCanister.stackSize;
+									this.containingItems[1] = new ItemStack(Items.bucket, amount);
+								}
+								else
+								{
+									inputCanister.stackSize--;
+		
+									if (inputCanister.stackSize == 0)
+									{
+										this.containingItems[1] = null;
+									}
+								}
+							}
+						}
+						else 						//Oxygen -> Oxygen tank
+						if ((this.gasTankType == 1 || this.gasTankType == -1) && inputName.contains("oxygen"))
+						{
+							if (currentgas == null || currentgas.amount + liquid.amount <= this.gasTank.getCapacity())
+							{
+								FluidStack gcOxygen = FluidRegistry.getFluidStack(TankGases.OXYGEN.gas, liquid.amount);	
+								this.gasTank.fill(gcOxygen, true);
+								this.gasTankType = 1;
+		
+								if (inputCanister.getItem() instanceof ItemCanisterLiquidOxygen)
+								{
+									this.containingItems[1] = new ItemStack(AsteroidsItems.canisterLOX, 1, AsteroidsItems.canisterLOX.getMaxDamage());
+								}
+								else if (FluidContainerRegistry.isBucket(inputCanister) && FluidContainerRegistry.isFilledContainer(inputCanister))
+								{
+									final int amount = inputCanister.stackSize;
+									this.containingItems[1] = new ItemStack(Items.bucket, amount);
+								}
+								else
+								{
+									inputCanister.stackSize--;
+		
+									if (inputCanister.stackSize == 0)
+									{
+										this.containingItems[1] = null;
+									}
+								}
 							}
 						}
 					}
 				}
 			}
 
-			if (this.containingItems[2] != null && FluidContainerRegistry.isContainer(this.containingItems[2]))
+			//Now see if any fuel from the fuel tank needs to be put into the output slot
+			if (this.containingItems[2] != null && FluidContainerRegistry.isEmptyContainer(this.containingItems[2]))
 			{
 				final FluidStack liquid = this.fuelTank.getFluid();
 
-				if (liquid != null && liquid.getFluid().getName().equalsIgnoreCase("fuel"))
+				if (liquid != null && liquid.getFluid().getName().equalsIgnoreCase(TankGases.METHANE.liquid))
 				{
-					if (FluidContainerRegistry.isEmptyContainer(this.containingItems[2]))
-					{
-						ItemStack slotItem = this.containingItems[2];
-						boolean isCanister = slotItem.getItem() instanceof ItemCanisterGeneric && slotItem.getItemDamage() == GCItems.fuelCanister.getMaxDamage();
-						final int amountToFill = Math.min(liquid.amount, isCanister ? GCItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
+					ItemStack slotItem = this.containingItems[2];
+					boolean isCanister = slotItem.getItem() instanceof ItemCanisterGeneric && slotItem.getItemDamage() == GCItems.fuelCanister.getMaxDamage();
+					final int amountToFill = Math.min(liquid.amount, isCanister ? GCItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
 
-						if (isCanister)
-						{
-							this.containingItems[2] = new ItemStack(GCItems.fuelCanister, 1, GCItems.fuelCanister.getMaxDamage() - amountToFill);
-							this.fuelTank.drain(amountToFill, true);
-						}
-						else
-						{
-							this.containingItems[2] = FluidContainerRegistry.fillFluidContainer(liquid, this.containingItems[2]);
-							if (this.containingItems[2] == null) this.containingItems[2] = slotItem;
-							else this.fuelTank.drain(amountToFill, true);
-						}
+					if (isCanister)
+					{
+						this.containingItems[2] = new ItemStack(GCItems.fuelCanister, 1, GCItems.fuelCanister.getMaxDamage() - amountToFill);
+						this.fuelTank.drain(amountToFill, true);
+					}
+					else
+					{
+						this.containingItems[2] = FluidContainerRegistry.fillFluidContainer(liquid, this.containingItems[2]);
+						if (this.containingItems[2] == null) this.containingItems[2] = slotItem;
+						else this.fuelTank.drain(amountToFill, true);
+					}
+				}
+				else
+				if (liquid != null && liquid.getFluid().getName().equalsIgnoreCase(TankGases.OXYGEN.liquid))
+				{
+					ItemStack slotItem = this.containingItems[2];
+					boolean isCanister = slotItem.getItem() instanceof ItemCanisterGeneric && slotItem.getItemDamage() == GCItems.fuelCanister.getMaxDamage();
+					final int amountToFill = Math.min(liquid.amount, isCanister ? GCItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
+
+					if (isCanister)
+					{
+						this.containingItems[2] = new ItemStack(AsteroidsItems.canisterLOX, 1, AsteroidsItems.canisterLOX.getMaxDamage() - amountToFill);
+						this.fuelTank.drain(amountToFill, true);
+					}
+					else
+					{
+						this.containingItems[2] = FluidContainerRegistry.fillFluidContainer(liquid, this.containingItems[2]);
+						if (this.containingItems[2] == null) this.containingItems[2] = slotItem;
+						else this.fuelTank.drain(amountToFill, true);
+					}
+				}
+				else
+				if (liquid != null && liquid.getFluid().getName().equalsIgnoreCase(TankGases.AIR.liquid))
+				{
+					ItemStack slotItem = this.containingItems[2];
+					boolean isCanister = slotItem.getItem() instanceof ItemCanisterGeneric && slotItem.getItemDamage() == GCItems.fuelCanister.getMaxDamage();
+					final int amountToFill = Math.min(liquid.amount, isCanister ? GCItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
+
+					if (isCanister)
+					{
+						this.containingItems[2] = new ItemStack(AsteroidsItems.canisterLN2, 1, AsteroidsItems.canisterLN2.getMaxDamage() - amountToFill);
+						this.fuelTank.drain(amountToFill, true);
+					}
+					else
+					{
+						this.containingItems[2] = FluidContainerRegistry.fillFluidContainer(liquid, this.containingItems[2]);
+						if (this.containingItems[2] == null) this.containingItems[2] = slotItem;
+						else this.fuelTank.drain(amountToFill, true);
 					}
 				}
 			}
@@ -152,6 +270,36 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 		}
 	}
 
+	public int getIdFromName(String gasname)
+	{
+		for (TankGases type : TankGases.values())
+		{
+			if (type.gas.equals(gasname))
+			{
+				return type.index;
+			}
+		}
+
+		return -1;
+	}
+
+	public int getFluidIdFromName(String gasname)
+	{
+		for (TankGases type : TankGases.values())
+		{
+			if (type.liquid.equals(gasname))
+			{
+				return type.index;
+			}
+		}
+
+		return -1;
+	}
+
+	//private boolean gasTankMatches(TankGases tankgas)
+	//{
+	//}
+
 	public int getScaledGasLevel(int i)
 	{
 		return this.gasTank.getFluid() != null ? this.gasTank.getFluid().amount * i / this.gasTank.getCapacity() : 0;
@@ -168,9 +316,11 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 		{
 			return false;
 		}
+		
+		if (this.gasTankType == this.fluidTankType || this.fluidTankType == -1)
+			return !this.getDisabled(0);
 
-        return !this.getDisabled(0);
-
+		return false;
     }
 
 	public void smeltItem()
@@ -183,7 +333,8 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 			final int amountToDrain = Math.min(Math.min(gasAmount, fuelSpace), 3);
 
 			this.gasTank.drain(amountToDrain, true);
-			this.fuelTank.fill(FluidRegistry.getFluidStack("fuel", amountToDrain), true);
+			this.fuelTank.fill(FluidRegistry.getFluidStack(TankGases.values()[this.gasTankType].liquid, amountToDrain), true);
+			this.fluidTankType = this.gasTankType;
 		}
 	}
 
