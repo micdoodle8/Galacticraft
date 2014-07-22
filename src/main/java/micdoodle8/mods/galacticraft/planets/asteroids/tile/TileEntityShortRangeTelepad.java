@@ -30,7 +30,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -66,10 +65,6 @@ public class TileEntityShortRangeTelepad extends TileEntityElectricBlock impleme
     private ItemStack[] containingItems = new ItemStack[1];
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean teleporting;
-    /**
-     * Sent from server to client for teleportation
-     */
-    private BlockVec3 targetPosition;
 
     public TileEntityShortRangeTelepad()
     {
@@ -111,7 +106,7 @@ public class TileEntityShortRangeTelepad extends TileEntityElectricBlock impleme
 
         if (!this.worldObj.isRemote)
         {
-            if (!this.worldObj.isRemote && this.targetAddressResult == EnumTelepadSearchResult.VALID && (this.ticks % 5 == 0 || teleporting))
+            if (this.targetAddressResult == EnumTelepadSearchResult.VALID && (this.ticks % 5 == 0 || teleporting))
             {
                 List<EntityLivingBase> containedEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 2, this.zCoord + 1));
 
@@ -122,7 +117,6 @@ public class TileEntityShortRangeTelepad extends TileEntityElectricBlock impleme
                     if (entry != null)
                     {
                         teleporting = true;
-                        this.targetPosition = entry.position;
                     }
                 }
                 else
@@ -131,26 +125,14 @@ public class TileEntityShortRangeTelepad extends TileEntityElectricBlock impleme
                 }
             }
 
-            if (this.teleporting && !this.worldObj.isRemote)
+            if (this.teleporting)
             {
                 this.teleportTime++;
 
                 if (teleportTime >= MAX_TELEPORT_TIME)
                 {
-                    BlockVec3 finalPos = null;
-
-                    if (this.worldObj.isRemote)
-                    {
-                        finalPos = this.targetPosition;
-                    }
-                    else
-                    {
-                        ShortRangeTelepadHandler.TelepadEntry entry = ShortRangeTelepadHandler.getLocationFromAddress(this.targetAddress);
-                        if (entry != null)
-                        {
-                            finalPos = entry.position;
-                        }
-                    }
+                    ShortRangeTelepadHandler.TelepadEntry entry = ShortRangeTelepadHandler.getLocationFromAddress(this.targetAddress);
+                    BlockVec3 finalPos = entry.position;
 
                     if (finalPos != null)
                     {
@@ -213,7 +195,6 @@ public class TileEntityShortRangeTelepad extends TileEntityElectricBlock impleme
 
                     this.teleportTime = 0;
                     this.teleporting = false;
-                    this.targetPosition = null;
                 }
             }
             else
@@ -277,13 +258,6 @@ public class TileEntityShortRangeTelepad extends TileEntityElectricBlock impleme
     {
         super.addExtraNetworkedData(networkedList);
         networkedList.add(targetAddressResult.ordinal());
-        networkedList.add(this.targetPosition != null);
-        if (this.targetPosition != null)
-        {
-            networkedList.add(targetPosition.x);
-            networkedList.add(targetPosition.y);
-            networkedList.add(targetPosition.z);
-        }
     }
 
     @Override
@@ -291,14 +265,6 @@ public class TileEntityShortRangeTelepad extends TileEntityElectricBlock impleme
     {
         super.readExtraNetworkedData(dataStream);
         targetAddressResult = EnumTelepadSearchResult.values()[dataStream.readInt()];
-        if (dataStream.readBoolean())
-        {
-            this.targetPosition = new BlockVec3(dataStream.readInt(), dataStream.readInt(), dataStream.readInt());
-        }
-        else
-        {
-            this.targetPosition = null;
-        }
     }
 
 	@Override
@@ -355,11 +321,6 @@ public class TileEntityShortRangeTelepad extends TileEntityElectricBlock impleme
 	{
 		return TileEntity.INFINITE_EXTENT_AABB;
 	}
-
-    public boolean onBlockActivated(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer)
-    {
-        return this.onActivated(par5EntityPlayer);
-    }
 
     @Override
     public String getInventoryName() {
@@ -475,22 +436,7 @@ public class TileEntityShortRangeTelepad extends TileEntityElectricBlock impleme
         if (this.address >= 0)
         {
             ShortRangeTelepadHandler.TelepadEntry entry = ShortRangeTelepadHandler.getLocationFromAddress(this.address);
-
-            if (entry == null)
-            {
-                this.addressValid = true;
-            }
-            else
-            {
-                if (this.worldObj != null)
-                {
-                    this.addressValid = (entry.dimensionID == this.worldObj.provider.dimensionId && entry.position.x == this.xCoord && entry.position.y == this.yCoord && entry.position.z == this.zCoord);
-                }
-                else
-                {
-                    this.addressValid = false;
-                }
-            }
+            this.addressValid = this.addressValid || (this.worldObj != null && (entry.dimensionID == this.worldObj.provider.dimensionId && entry.position.x == this.xCoord && entry.position.y == this.yCoord && entry.position.z == this.zCoord));
         }
         else
         {

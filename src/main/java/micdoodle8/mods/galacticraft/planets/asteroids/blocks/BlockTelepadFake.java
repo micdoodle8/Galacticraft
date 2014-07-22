@@ -153,7 +153,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
 	public boolean onBlockActivated(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
 	{
 		TileEntityTelepadFake tileEntity = (TileEntityTelepadFake) par1World.getTileEntity(x, y, z);
-		return tileEntity.onBlockActivated(par1World, x, y, z, par5EntityPlayer);
+		return tileEntity.onActivated(par5EntityPlayer);
 	}
 
 	@Override

@@ -9,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.lang.ref.WeakReference;
@@ -41,16 +40,10 @@ public class TileEntityTelepadFake extends TileEntityElectricBlock implements IP
         }
 	}
 
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer par5EntityPlayer)
+	public boolean onActivated(EntityPlayer par5EntityPlayer)
 	{
         TileEntityShortRangeTelepad telepad = this.getBaseTelepad();
-
-        if (telepad != null)
-        {
-            return telepad.onBlockActivated(world, x, y, z, par5EntityPlayer);
-        }
-
-        return false;
+        return telepad != null && telepad.onActivated(par5EntityPlayer);
 	}
 
     @Override
