@@ -3,41 +3,18 @@ package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 import micdoodle8.mods.galacticraft.api.power.EnergySource;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceWireless;
 import micdoodle8.mods.galacticraft.api.power.ILaserNode;
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.tile.EnergyStorage;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityBeamReflector extends TileEntityBeamOutput implements ILaserNode
 {
 	public Vector3 color = new Vector3(0, 1, 0);
 	private EnergyStorage storage = new EnergyStorage(10, 1);
-	private BlockVec3 preLoadTarget = null;
-	private BlockVec3 lastTargetVec = BlockVec3.INVALID_VECTOR;
 
 	@Override
 	public void updateEntity()
 	{
-		if (this.preLoadTarget != null)
-		{
-			TileEntity tileAtTarget = this.worldObj.getTileEntity(this.preLoadTarget.x, this.preLoadTarget.y, this.preLoadTarget.z);
-
-			if (tileAtTarget != null && tileAtTarget instanceof ILaserNode)
-			{
-				this.setTarget((ILaserNode) tileAtTarget);
-				this.preLoadTarget = null;
-			}
-		}
-
 		super.updateEntity();
-
-		if (!this.targetVec.equals(this.lastTargetVec))
-		{
-			this.markDirty();
-		}
-
-		this.lastTargetVec = this.targetVec;
 	}
 
 	@Override
@@ -133,32 +110,6 @@ public class TileEntityBeamReflector extends TileEntityBeamOutput implements ILa
 	public float getMaxEnergyStoredGC(EnergySource from)
 	{
 		return this.storage.getCapacityGC();
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound nbt)
-	{
-		super.readFromNBT(nbt);
-
-		if (nbt.getBoolean("HasTarget"))
-		{
-			this.preLoadTarget = new BlockVec3(nbt.getInteger("TargetX"), nbt.getInteger("TargetY"), nbt.getInteger("TargetZ"));
-		}
-	}
-
-	@Override
-	public void writeToNBT(NBTTagCompound nbt)
-	{
-		super.writeToNBT(nbt);
-
-		nbt.setBoolean("HasTarget", this.getTarget() != null);
-
-		if (this.getTarget() != null)
-		{
-			nbt.setInteger("TargetX", this.getTarget().getTile().xCoord);
-			nbt.setInteger("TargetY", this.getTarget().getTile().yCoord);
-			nbt.setInteger("TargetZ", this.getTarget().getTile().zCoord);
-		}
 	}
 
 	@Override

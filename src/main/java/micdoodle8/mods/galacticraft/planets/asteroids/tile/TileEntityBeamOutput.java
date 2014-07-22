@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -21,11 +22,31 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
 	public BlockVec3 targetVec = BlockVec3.INVALID_VECTOR;
 	public float pitch;
 	public float yaw;
+    private BlockVec3 preLoadTarget = null;
+    private BlockVec3 lastTargetVec = BlockVec3.INVALID_VECTOR;
 
 	@Override
 	public void updateEntity()
 	{
-		super.updateEntity();
+        if (this.preLoadTarget != null)
+        {
+            TileEntity tileAtTarget = this.worldObj.getTileEntity(this.preLoadTarget.x, this.preLoadTarget.y, this.preLoadTarget.z);
+
+            if (tileAtTarget != null && tileAtTarget instanceof ILaserNode)
+            {
+                this.setTarget((ILaserNode) tileAtTarget);
+                this.preLoadTarget = null;
+            }
+        }
+
+        super.updateEntity();
+
+        if (!this.targetVec.equals(this.lastTargetVec))
+        {
+            this.markDirty();
+        }
+
+        this.lastTargetVec = this.targetVec;
 
 		if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER && this.targetVec.equals(BlockVec3.INVALID_VECTOR))
 		{
@@ -241,14 +262,17 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
 		{
 			int index = -1;
 
-			for (int i = 0; i < this.nodeList.size(); i++)
-			{
-				if (new BlockVec3(this.nodeList.get(i).getTile()).equals(new BlockVec3(this.getTarget().getTile())))
-				{
-					index = i;
-					break;
-				}
-			}
+            if (this.getTarget() != null)
+            {
+                for (int i = 0; i < this.nodeList.size(); i++)
+                {
+                    if (new BlockVec3(this.nodeList.get(i).getTile()).equals(new BlockVec3(this.getTarget().getTile())))
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+            }
 
 			if (index == -1)
 			{
@@ -296,4 +320,30 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
 			this.targetVec = BlockVec3.INVALID_VECTOR;
 		}
 	}
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+
+        if (nbt.getBoolean("HasTarget"))
+        {
+            this.preLoadTarget = new BlockVec3(nbt.getInteger("TargetX"), nbt.getInteger("TargetY"), nbt.getInteger("TargetZ"));
+        }
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
+
+        nbt.setBoolean("HasTarget", this.getTarget() != null);
+
+        if (this.getTarget() != null)
+        {
+            nbt.setInteger("TargetX", this.getTarget().getTile().xCoord);
+            nbt.setInteger("TargetY", this.getTarget().getTile().yCoord);
+            nbt.setInteger("TargetZ", this.getTarget().getTile().zCoord);
+        }
+    }
 }
