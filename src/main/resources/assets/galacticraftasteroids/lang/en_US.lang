@@ -74,6 +74,8 @@ gui.message.telepadWrongDim.name=Target is in wrong dimension!
 gui.message.telepadNotFound.name=Telepad Not Found!
 gui.message.sendingActive.name=Sending Active
 gui.message.range.name=Range: %dm
+gui.message.notEnoughEnergy.name=Not Enough Energy!
+gui.message.targetNoEnergy.name=Target doesn't have enough Energy!
 
 # Schematics
 

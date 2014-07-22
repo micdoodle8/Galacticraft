@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.network.IPacket;
@@ -11,6 +12,8 @@ import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 
@@ -23,9 +26,9 @@ public class PacketSimpleAsteroids implements IPacket
 	public static enum EnumSimplePacketAsteroids
 	{
 		// SERVER
-		S_UPDATE_ADVANCED_GUI(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class)
+		S_UPDATE_ADVANCED_GUI(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
 		// CLIENT
-		;
+		C_TELEPAD_SEND(Side.CLIENT, BlockVec3.class, Integer.class);
 
 		private Side targetSide;
 		private Class<?>[] decodeAs;
@@ -110,6 +113,15 @@ public class PacketSimpleAsteroids implements IPacket
 
 		switch (this.type)
 		{
+        case C_TELEPAD_SEND:
+            Entity entity = playerBaseClient.worldObj.getEntityByID((Integer) this.data.get(1));
+
+            if (entity != null && entity instanceof EntityLivingBase)
+            {
+                BlockVec3 pos = (BlockVec3)this.data.get(0);
+                entity.setPosition(pos.x + 0.5, pos.y + 2.2, pos.z + 0.5);
+            }
+            break;
 		default:
 			break;
 		}
