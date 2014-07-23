@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.ibm.icu.text.ArabicShaping;
 import com.ibm.icu.text.ArabicShapingException;
 import com.ibm.icu.text.Bidi;
+import cpw.mods.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -382,7 +383,7 @@ public class GuiCelestialSelection extends GuiScreen
 
 		for (CelestialBody e : this.celestialBodyTicks.keySet())
 		{
-			if (!(e instanceof Planet && e == this.selectedBody) && !(e instanceof Planet && this.selectedBody instanceof Moon && GalaxyRegistry.getMoonsForPlanet((Planet) e).contains(this.selectedBody)))
+//			if (!(e instanceof Planet && e == this.selectedBody) && !(e instanceof Planet && this.selectedBody instanceof Moon && GalaxyRegistry.getMoonsForPlanet((Planet) e).contains(this.selectedBody)))
 			{
 				Integer i = this.celestialBodyTicks.get(e);
 
@@ -522,7 +523,7 @@ public class GuiCelestialSelection extends GuiScreen
                     continue;
                 }
 
-                int iconSize = (int) e.getValue().z; // Z value holds size on-screen
+                float iconSize = e.getValue().z; // Z value holds size on-screen
 
                 if (mouseX >= e.getValue().x - iconSize && mouseX <= e.getValue().x + iconSize && mouseY >= e.getValue().y - iconSize && mouseY <= e.getValue().y + iconSize)
                 {
@@ -656,7 +657,7 @@ public class GuiCelestialSelection extends GuiScreen
 			scaleVec.m11 = matrix0.m11;
 			scaleVec.m22 = matrix0.m22;
 			Vector4f newVec = Matrix4f.transform(scaleVec, new Vector4f(2, -2, 0, 0), null);
-			int iconSize = (int) (newVec.y * (Minecraft.getMinecraft().displayHeight / 2.0F)) * (e.getKey() instanceof Star ? 2 : 1);
+			float iconSize = (newVec.y * (Minecraft.getMinecraft().displayHeight / 2.0F)) * (e.getKey() instanceof Star ? 2 : 1) * (e.getKey() == this.selectedBody ? 1.5F : 1.0F);
 
 			this.planetPosMap.put(e.getKey(), new Vector3f(vec.x, vec.y, iconSize)); // Store size on-screen in Z-value for ease
 		}
@@ -696,16 +697,7 @@ public class GuiCelestialSelection extends GuiScreen
                 this.mc.renderEngine.bindTexture(GuiCelestialSelection.guiMain);
                 float colMod = this.getZoomAdvanced() < 4.9F ? (float) (Math.sin(this.ticksSinceSelection / 2.0F) * 0.5F + 0.5F) : 1.0F;
                 GL11.glColor4f(1.0F, 1.0F, 0.0F, 1 * colMod);
-                int width = 50;
-
-                if (this.selectedBody instanceof Star)
-                {
-                    width = 80;
-                }
-                else if (this.selectedBody instanceof Moon)
-                {
-                    width = 15;
-                }
+                int width = this.getWidthForCelestialBody(this.selectedBody) * 10;
 
                 this.drawTexturedModalRect(-width, -width, width * 2, width * 2, 266, 29, 100, 100, false, false);
                 GL11.glPopMatrix();
@@ -761,6 +753,16 @@ public class GuiCelestialSelection extends GuiScreen
 
 		return cBodyPos;
 	}
+
+    private int getWidthForCelestialBody(CelestialBody celestialBody)
+    {
+        if (celestialBody != this.selectedBody || this.selectionCount != 1)
+        {
+            return celestialBody instanceof Star ? 8 : (celestialBody instanceof Planet ? 4 : (celestialBody instanceof Moon ? 4 : 2));
+        }
+
+        return celestialBody instanceof Star ? 12 : (celestialBody instanceof Planet ? 6 : (celestialBody instanceof Moon ? 6 : 2));
+    }
 
 	public HashMap<CelestialBody, Matrix4f> drawCelestialBodies(Matrix4f worldMatrix)
 	{
@@ -819,7 +821,8 @@ public class GuiCelestialSelection extends GuiScreen
 
                     if (!preEvent.isCanceled())
                     {
-                        this.drawTexturedModalRect(-4, -4, 8, 8, 0, 0, preEvent.textureSize, preEvent.textureSize, false, false, preEvent.textureSize);
+                        int size = this.getWidthForCelestialBody(star);
+                        this.drawTexturedModalRect(-size / 2, -size / 2, size, size, 0, 0, preEvent.textureSize, preEvent.textureSize, false, false, preEvent.textureSize);
                         matrixMap.put(star, worldMatrix1);
                     }
 
@@ -853,18 +856,17 @@ public class GuiCelestialSelection extends GuiScreen
 
 				float alpha = 1.0F;
 
-				if (this.selectedBody != null && this.selectionCount >= 2)
-				{
-					if (!(planet == this.selectedBody) && !(this.selectedBody instanceof Moon && GalaxyRegistry.getMoonsForPlanet(planet).contains(this.selectedBody)))
-					{
-						alpha = 1.0F - Math.min(this.ticksSinceSelection / 25.0F, 1.0F);
-
-						if ((this.lastSelectedBody instanceof Moon && ((Moon) this.lastSelectedBody).getParentPlanet() != planet) || (this.lastSelectedBody instanceof Planet && this.lastSelectedBody != planet))
-						{
-							alpha = 0.0F;
-						}
-					}
-				}
+                if ((this.selectedBody instanceof Moon && ((Moon) this.selectedBody).getParentPlanet() != planet) || (this.selectedBody instanceof Planet && this.selectedBody != planet && this.selectionCount >= 2))
+                {
+                    if (this.lastSelectedBody == null && !(this.selectedBody instanceof Moon))
+                    {
+                        alpha = 1.0F - Math.min(this.ticksSinceSelection / 25.0F, 1.0F);
+                    }
+                    else
+                    {
+                        alpha = 0.0F;
+                    }
+                }
 
 				if (alpha != 0)
 				{
@@ -876,7 +878,8 @@ public class GuiCelestialSelection extends GuiScreen
 
                     if (!preEvent.isCanceled())
                     {
-                        this.drawTexturedModalRect(-2, -2, 4, 4, 0, 0, preEvent.textureSize, preEvent.textureSize, false, false, preEvent.textureSize);
+                        int size = this.getWidthForCelestialBody(planet);
+                        this.drawTexturedModalRect(-size / 2, -size / 2, size, size, 0, 0, preEvent.textureSize, preEvent.textureSize, false, false, preEvent.textureSize);
                         matrixMap.put(planet, worldMatrix1);
                     }
 
@@ -920,7 +923,8 @@ public class GuiCelestialSelection extends GuiScreen
 
                     if (!preEvent.isCanceled())
                     {
-                        this.drawTexturedModalRect(-2, -2, 4, 4, 0, 0, preEvent.textureSize, preEvent.textureSize, false, false, preEvent.textureSize);
+                        int size = this.getWidthForCelestialBody(moon);
+                        this.drawTexturedModalRect(-size / 2, -size / 2, size, size, 0, 0, preEvent.textureSize, preEvent.textureSize, false, false, preEvent.textureSize);
                         matrixMap.put(moon, worldMatrix1);
                     }
 
@@ -1364,69 +1368,66 @@ public class GuiCelestialSelection extends GuiScreen
         final float cos = (float) Math.cos(theta);
         final float sin = (float) Math.sin(theta);
 
-		if (!(this.selectedBody instanceof Moon))
-		{
-			for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
-			{
-				if (planet.getParentSolarSystem() != null)
-				{
-                    float x = this.getScale(planet);
-                    float y = 0;
+        for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
+        {
+            if (planet.getParentSolarSystem() != null)
+            {
+                float x = this.getScale(planet);
+                float y = 0;
 
-                    float alpha = 1.0F;
+                float alpha = 1.0F;
 
-                    if (this.selectedBody != null && this.selectionCount >= 2)
+                if ((this.selectedBody instanceof Moon && ((Moon) this.selectedBody).getParentPlanet() != planet) || (this.selectedBody instanceof Planet && this.selectedBody != planet && this.selectionCount >= 2))
+                {
+                    if (this.lastSelectedBody == null && !(this.selectedBody instanceof Moon))
                     {
-                        if (this.lastSelectedBody == null)
-                        {
-                            alpha = 1.0F - Math.min(this.ticksSinceSelection / 25.0F, 1.0F);
-                        }
-                        else
-                        {
-                            alpha = 0.0F;
-                        }
+                        alpha = 1.0F - Math.min(this.ticksSinceSelection / 25.0F, 1.0F);
+                    }
+                    else
+                    {
+                        alpha = 0.0F;
+                    }
+                }
+
+                if (alpha != 0)
+                {
+                    switch (count % 2)
+                    {
+                        case 0:
+                            GL11.glColor4f(0.0F / 1.4F, 0.6F / 1.4F, 1.0F / 1.4F, alpha / 1.4F);
+                            break;
+                        case 1:
+                            GL11.glColor4f(0.4F / 1.4F, 0.9F / 1.4F, 1.0F / 1.4F, alpha / 1.4F);
+                            break;
                     }
 
-                    if (alpha != 0)
+                    CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre preEvent = new CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre(planet);
+                    MinecraftForge.EVENT_BUS.post(preEvent);
+
+                    if (!preEvent.isCanceled())
                     {
-                        switch (count % 2)
+                        GL11.glBegin(GL11.GL_LINE_LOOP);
+
+                        float temp;
+                        for (int i = 0; i < 90; i++)
                         {
-                            case 0:
-                                GL11.glColor4f(0.0F, 0.6F, 1.0F, alpha);
-                                break;
-                            case 1:
-                                GL11.glColor4f(0.4F, 0.9F, 1.0F, alpha);
-                                break;
+                            GL11.glVertex2f(x, y);
+
+                            temp = x;
+                            x = cos * x - sin * y;
+                            y = sin * temp + cos * y;
                         }
 
-                        CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre preEvent = new CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre(planet);
-                        MinecraftForge.EVENT_BUS.post(preEvent);
+                        GL11.glEnd();
 
-                        if (!preEvent.isCanceled())
-                        {
-                            GL11.glBegin(GL11.GL_LINE_LOOP);
-
-                            float temp;
-                            for (int i = 0; i < 90; i++)
-                            {
-                                GL11.glVertex2f(x, y);
-
-                                temp = x;
-                                x = cos * x - sin * y;
-                                y = sin * temp + cos * y;
-                            }
-
-                            GL11.glEnd();
-
-                            count++;
-                        }
-
-                        CelestialBodyRenderEvent.CelestialRingRenderEvent.Post postEvent = new CelestialBodyRenderEvent.CelestialRingRenderEvent.Post(planet);
-                        MinecraftForge.EVENT_BUS.post(postEvent);
+                        count++;
                     }
-				}
-			}
-		}
+
+                    CelestialBodyRenderEvent.CelestialRingRenderEvent.Post postEvent = new CelestialBodyRenderEvent.CelestialRingRenderEvent.Post(planet);
+                    MinecraftForge.EVENT_BUS.post(postEvent);
+                }
+            }
+        }
 
 		count = 0;
 
