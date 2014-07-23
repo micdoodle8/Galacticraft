@@ -30,6 +30,9 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 	final byte ASTEROID_STONE_META_0 = 0;
 	final byte ASTEROID_STONE_META_1 = 1;
 	final byte ASTEROID_STONE_META_2 = 2;
+	
+	final Block DIRT = Blocks.dirt;
+	final byte DIRT_META = 0;
 
 	private final Random rand;
 
@@ -89,6 +92,11 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 	private static final int FADE_BLOCK_CHANCE = 5; //1 / n chance of a block being in the fade zone
 
 	private static final int NOISE_OFFSET_SIZE = 256;
+
+	private static final float MIN_HOLLOW_SIZE = .6F;
+	private static final float MAX_HOLLOW_SIZE = .8F;
+	private static final int HOLLOW_CHANCE = 15; //1 / n chance per asteroid
+	private static final int MIN_RADIUS_FOR_HOLLOW = 15;
 
 	public ChunkProviderAsteroids(World par1World, long par2, boolean par4)
 	{
@@ -188,7 +196,14 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 		{
 			shell = this.shellHandler.getBlock(rand);
 		}
-
+		
+		boolean isHollow = false;
+		final float hollowSize = rand.nextFloat() * (ChunkProviderAsteroids.MAX_HOLLOW_SIZE - ChunkProviderAsteroids.MIN_HOLLOW_SIZE) + ChunkProviderAsteroids.MIN_HOLLOW_SIZE;
+		if (rand.nextInt(ChunkProviderAsteroids.HOLLOW_CHANCE) == 0 && size <= ChunkProviderAsteroids.MIN_RADIUS_FOR_HOLLOW)
+		{
+			isHollow = true;
+		}
+		
 		final float noiseOffsetX = this.randFromPoint(asteroidX, asteroidY, asteroidZ) * ChunkProviderAsteroids.NOISE_OFFSET_SIZE;
 		final float noiseOffsetY = this.randFromPoint(asteroidX * 7, asteroidY * 11, asteroidZ * 13) * ChunkProviderAsteroids.NOISE_OFFSET_SIZE;
 		final float noiseOffsetZ = this.randFromPoint(asteroidX * 17, asteroidY * 23, asteroidZ * 29) * ChunkProviderAsteroids.NOISE_OFFSET_SIZE;
@@ -246,7 +261,8 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 			
 			for (int z = zMin; z < zMax; z++)
 			{
-				double sizeY = size + sizeYArray[indexXZ + z];
+				float sizeModY = sizeYArray[indexXZ + z];
+				float sizeY = size + sizeYArray[indexXZ + z];
 				sizeY *= sizeY;
 				int distanceZ = asteroidZ - (z + chunkZ);
 				distanceZ *= distanceZ;
@@ -254,20 +270,32 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 
 				for (int y = yMin; y < yMax; y++)
 				{
-					double sizeX = size + sizeXArray[(y - yMin) * zSize + z - zMin];
-					double sizeZ = size + sizeZArray[indexXY + y];
+					float sizeX = size + sizeXArray[(y - yMin) * zSize + z - zMin];
+					float sizeZ = size + sizeZArray[indexXY + y];
 					sizeX *= sizeX;
 					sizeZ *= sizeZ;
 					int distanceY = asteroidY - y;
 					distanceY *= distanceY;
-					double distance = distanceX / sizeX + distanceY / sizeY + distanceZ / sizeZ;
-
+					float distance = distanceX / sizeX + distanceY / sizeY + distanceZ / sizeZ;
 					distance += this.asteroidTurbulance.getNoise(x + chunkX, y, z + chunkZ);
 
 					if (distance <= 1)
 					{
 						int index = indexBase | y;
-						if (core != null && distance <= core.thickness)
+						if (isHollow && distance <= hollowSize)
+						{
+							if (y < (asteroidY - (size / 4)) - (-sizeModY * 1.5))
+							{
+								idArray[index] = this.DIRT;
+								metaArray[index] = this.DIRT_META;
+							}
+							else
+							{
+								idArray[index] = Blocks.air;
+								metaArray[index] = 0;
+							}
+						}
+						else if (core != null && distance <= core.thickness)
 						{
 							idArray[index] = core.block;
 							metaArray[index] = core.meta;
