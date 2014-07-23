@@ -34,6 +34,8 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
     {
         super(world, 0F);
         this.setSize(2.0F, 2.0F);
+        this.rotationPitchSpeed = this.rand.nextFloat();
+        this.rotationYawSpeed = this.rand.nextFloat();
     }
 
     public EntityLandingBalloons(GCEntityPlayerMP player)
@@ -132,25 +134,25 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
             return false;
         }
 
-        switch (key)
-        {
-            case 0: // Accelerate
-            {
-                this.rotationPitchSpeed -= 0.5F * TURN_FACTOR;
-                return true;
-            }
-            case 1: // Deccelerate
-            {
-                this.rotationPitchSpeed += 0.5F * TURN_FACTOR;
-                return true;
-            }
-            case 2: // Left
-                this.rotationYawSpeed -= 0.5F * TURN_FACTOR;
-                return true;
-            case 3: // Right
-                this.rotationYawSpeed += 0.5F * TURN_FACTOR;
-                return true;
-        }
+//        switch (key)
+//        {
+//            case 0: // Accelerate
+//            {
+//                this.rotationPitchSpeed -= 0.5F * TURN_FACTOR;
+//                return true;
+//            }
+//            case 1: // Deccelerate
+//            {
+//                this.rotationPitchSpeed += 0.5F * TURN_FACTOR;
+//                return true;
+//            }
+//            case 2: // Left
+//                this.rotationYawSpeed -= 0.5F * TURN_FACTOR;
+//                return true;
+//            case 3: // Right
+//                this.rotationYawSpeed += 0.5F * TURN_FACTOR;
+//                return true;
+//        }
 
         return false;
     }

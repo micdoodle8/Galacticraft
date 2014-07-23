@@ -89,8 +89,11 @@ public class ModelFlag extends ModelBase
 			{
 				int xPos = i % entity.flagData.getWidth();
 				GL11.glPushMatrix();
-				float offset = (float) (Math.sin(ticks / 2.0F + xPos * 50 + 3) / 25.0F) * xPos / (entity.worldObj.provider instanceof IGalacticraftWorldProvider ? 100.0F : 30.0F);
-				GL11.glTranslatef(0, offset, offset);
+                if (!(entity.worldObj.provider instanceof IGalacticraftWorldProvider))
+                {
+                    float offset = (float) (Math.sin(ticks / 2.0F + xPos * 50 + 3) / 25.0F) * xPos / 30.0F;
+                    GL11.glTranslatef(0, offset, offset);
+                }
 				GL11.glDisable(GL11.GL_TEXTURE_2D);
 				Vector3 col = entity.flagData.getColorAt(i % entity.flagData.getWidth(), i / entity.flagData.getWidth());
 				GL11.glColor3f(col.floatX(), col.floatY(), col.floatZ());
