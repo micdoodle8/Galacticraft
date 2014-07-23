@@ -11,7 +11,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
-import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -161,7 +161,7 @@ public class EntityTier3Rocket extends EntityTieredRocket
 			}
 
 			playerBase.getPlayerStats().rocketType = this.rocketType.getIndex();
-			playerBase.getPlayerStats().rocketItem = MarsItems.spaceship;
+			playerBase.getPlayerStats().rocketItem = AsteroidsItems.tier3Rocket;
 			playerBase.getPlayerStats().fuelLevel = this.fuelTank.getFluidAmount();
 		}
 	}
