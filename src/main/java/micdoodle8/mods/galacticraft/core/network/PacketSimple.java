@@ -243,11 +243,22 @@ public class PacketSimple extends Packet implements IPacket
 		case C_UPDATE_DIMENSION_LIST:
 			if (String.valueOf(this.data.get(0)).equals(FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName()))
 			{
-				final String[] destinations = ((String) this.data.get(1)).split("\\.");
+				final String[] destinations = ((String) this.data.get(1)).split("\\?");
+                List<CelestialBody> possibleCelestialBodies = Lists.newArrayList();
+
+                for (String str : destinations)
+                {
+                    CelestialBody celestialBody = WorldUtil.getReachableCelestialBodiesForName(str);
+
+                    if (celestialBody != null)
+                    {
+                        possibleCelestialBodies.add(celestialBody);
+                    }
+                }
 
 				if (FMLClientHandler.instance().getClient().theWorld != null && !(FMLClientHandler.instance().getClient().currentScreen instanceof GuiCelestialSelection))
 				{
-					FMLClientHandler.instance().getClient().displayGuiScreen(new GuiCelestialSelection(false));
+					FMLClientHandler.instance().getClient().displayGuiScreen(new GuiCelestialSelection(false, possibleCelestialBodies));
 				}
 			}
 			break;

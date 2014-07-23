@@ -1,9 +1,11 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
+import com.google.common.collect.Lists;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
@@ -23,6 +25,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
+
+import java.util.ArrayList;
 
 public class GuiHandler implements IGuiHandler
 {
@@ -153,7 +157,7 @@ public class GuiHandler implements IGuiHandler
 
 		if (ID == GuiIdsCore.GALAXY_MAP)
 		{
-			return new GuiCelestialSelection(true);
+			return new GuiCelestialSelection(true, null);
 		}
 		else if (ID == GuiIdsCore.ROCKET_INVENTORY && player.ridingEntity instanceof EntityTieredRocket)
 		{

@@ -2,8 +2,10 @@ package micdoodle8.mods.galacticraft.core.util;
 
 import buildcraft.api.mj.MjAPI;
 import buildcraft.api.power.IPowerReceptor;
+import com.google.common.collect.Lists;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.energy.tile.IEnergyAcceptor;
@@ -276,17 +278,61 @@ public class WorldUtil
 		return temp;
 	}
 
+    public static CelestialBody getReachableCelestialBodiesForDimensionID(int id)
+    {
+        List<CelestialBody> celestialBodyList = Lists.newArrayList();
+        celestialBodyList.addAll(GalaxyRegistry.getRegisteredMoons().values());
+        celestialBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());
+        celestialBodyList.addAll(GalaxyRegistry.getRegisteredSatellites().values());
+
+        for (CelestialBody cBody : celestialBodyList)
+        {
+            if (cBody.getReachable())
+            {
+                if (cBody.getDimensionID() == id)
+                {
+                    return cBody;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public static CelestialBody getReachableCelestialBodiesForName(String name)
+    {
+        List<CelestialBody> celestialBodyList = Lists.newArrayList();
+        celestialBodyList.addAll(GalaxyRegistry.getRegisteredMoons().values());
+        celestialBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());
+        celestialBodyList.addAll(GalaxyRegistry.getRegisteredSatellites().values());
+
+        for (CelestialBody cBody : celestialBodyList)
+        {
+            if (cBody.getReachable())
+            {
+                if (cBody.getName().equals(name))
+                {
+                    return cBody;
+                }
+            }
+        }
+
+        return null;
+    }
+
 	public static HashMap<String, Integer> getArrayOfPossibleDimensions(List<Integer> ids, GCEntityPlayerMP playerBase)
 	{
 		final HashMap<String, Integer> map = new HashMap<String, Integer>();
 
 		for (Integer id : ids)
 		{
-			if (WorldProvider.getProviderForDimension(id) != null)
+            CelestialBody celestialBody = getReachableCelestialBodiesForDimensionID(id);
+
+			if (celestialBody != null && WorldProvider.getProviderForDimension(id) != null)
 			{
 				if (WorldProvider.getProviderForDimension(id) instanceof IGalacticraftWorldProvider && !(WorldProvider.getProviderForDimension(id) instanceof IOrbitDimension) || WorldProvider.getProviderForDimension(id).dimensionId == 0)
 				{
-					map.put(WorldProvider.getProviderForDimension(id).getDimensionName(), WorldProvider.getProviderForDimension(id).dimensionId);
+                    map.put(celestialBody.getName(), WorldProvider.getProviderForDimension(id).dimensionId);
 				}
 				else if (playerBase != null && WorldProvider.getProviderForDimension(id) instanceof IOrbitDimension)
 				{
@@ -294,7 +340,7 @@ public class WorldUtil
 
 					if (!ConfigManagerCore.spaceStationsRequirePermission || data.getAllowedPlayers().contains(playerBase.getGameProfile().getName().toLowerCase()) || data.getAllowedPlayers().contains(playerBase.getGameProfile().getName()) || playerBase.mcServer.getConfigurationManager().isPlayerOpped(playerBase.getGameProfile().getName()))
 					{
-						map.put(WorldProvider.getProviderForDimension(id).getDimensionName() + "$" + data.getOwner() + "$" + data.getSpaceStationName(), WorldProvider.getProviderForDimension(id).dimensionId);
+                        map.put(celestialBody.getName() + "$" + data.getOwner() + "$" + data.getSpaceStationName(), WorldProvider.getProviderForDimension(id).dimensionId);
 					}
 				}
 			}

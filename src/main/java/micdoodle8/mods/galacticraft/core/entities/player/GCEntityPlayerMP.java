@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import com.mojang.authlib.GameProfile;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
@@ -191,7 +190,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 
 		for (Entry<String, Integer> entry : map.entrySet())
 		{
-			temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "." : ""));
+			temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "?" : ""));
 			count++;
 		}
 

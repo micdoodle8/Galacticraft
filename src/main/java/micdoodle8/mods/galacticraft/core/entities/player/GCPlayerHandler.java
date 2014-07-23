@@ -182,7 +182,7 @@ public class GCPlayerHandler
 
 		if (GCPlayer.usingPlanetSelectionGui)
 		{
-//			player.sendPlanetList();
+			player.sendPlanetList();
 		}
 
 		/*		if (isInGCDimension || player.usingPlanetSelectionGui)

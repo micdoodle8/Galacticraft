@@ -24,7 +24,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
 	protected boolean autoRegisterDimension = false;
 	protected boolean isReachable = false;
 	protected boolean forceStaticLoad = true;
-    protected boolean shouldRenderOnGUI = true;
+    protected int tierRequired = 0;
 
 	public ArrayList<IAtmosphericGas> atmosphere = new ArrayList();
 
@@ -89,10 +89,10 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
 	/**
 	 * Used for rendering planet's location on the map.
 	 * 
-	 * Value of 1440.0F would result in the planet being rendered directly
+	 * Value of 1π would result in the planet being rendered directly
 	 * accross from the original position
 	 * 
-	 * Value of 2880.0F is a full rotation and therefore would be rendered at
+	 * Value of 2π is a full rotation and therefore would be rendered at
 	 * the same spot as the original position
 	 * 
 	 * @return Phase shift of planet for planet's revolution around the sun.
@@ -117,19 +117,14 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
 		return this.relativeOrbitTime;
 	}
 
-    public boolean getShouldRenderOnGUI()
+    public int getTierRequirement()
     {
-        return this.shouldRenderOnGUI;
+        return this.tierRequired;
     }
 
-    /**
-     * Set whether this celestial body should render on the Celestial Selection GUI
-     *
-     * Set to false if you want it to appear in the list, but not render on main isometric view.
-     */
-    public CelestialBody setShouldRenderOnGUI(boolean shouldRender)
+    public CelestialBody setTierRequired(int tierRequired)
     {
-        this.shouldRenderOnGUI = shouldRender;
+        this.tierRequired = tierRequired;
         return this;
     }
 

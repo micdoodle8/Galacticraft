@@ -56,7 +56,7 @@ public class CommandPlanetTeleport extends CommandBase
 
 					for (Entry<String, Integer> entry : map.entrySet())
 					{
-						temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "." : ""));
+						temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "?" : ""));
 						count++;
 					}
 
