@@ -621,7 +621,7 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 	@Override
 	public ForgeDirection getElectricInputDirection()
 	{
-		return ForgeDirection.getOrientation((this.getBlockMetadata() & 3) + 2);
+		return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
 	}
 
 	@Override
@@ -651,7 +651,7 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 	{
 		if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2)))
 		{
-			return this.drain(from, new FluidStack(GalacticraftCore.fluidFuel, maxDrain), doDrain);
+			this.drain(from, new FluidStack(GalacticraftCore.fluidFuel, maxDrain), doDrain);
 		}
 
 		return null;
@@ -662,7 +662,8 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 	{
 		if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite()))
 		{
-			return this.gasTank.getFluid() == null || this.gasTank.getFluidAmount() < this.gasTank.getCapacity();
+			//Can fill with gases
+			return fluid != null && this.getIdFromName(fluid.getName()) > -1;
 		}
 
 		return false;
@@ -673,11 +674,11 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 	{
 		int used = 0;
 
-		if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite()))
+		if (resource != null && this.canFill(from, resource.getFluid()))
 		{
-			final String liquidName = FluidRegistry.getFluidName(resource);
-
-			if (liquidName != null && liquidName.toLowerCase().contains("methane"))
+			int type = this.getIdFromName(FluidRegistry.getFluidName(resource));
+			
+			if (this.gasTankType == -1 || (this.gasTankType == type && this.gasTank.getFluidAmount() < this.gasTank.getCapacity()))
 			{
 				used = this.gasTank.fill(resource, doFill);
 			}
@@ -702,4 +703,15 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 
 		return tankInfo;
 	}
+	
+	@Override
+    public int getBlockMetadata()
+    {
+        if (this.blockMetadata == -1)
+        {
+            this.blockMetadata = 3 & this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
+        }
+
+        return this.blockMetadata;
+    }
 }

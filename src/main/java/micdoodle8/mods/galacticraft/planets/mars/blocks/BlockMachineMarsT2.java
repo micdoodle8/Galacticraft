@@ -5,12 +5,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
-import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalElectrical;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityGasLiquefier;
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -50,19 +48,6 @@ public class BlockMachineMarsT2 extends BlockTileGC
 		this.iconMachineSide = par1IconRegister.registerIcon("galacticraftasteroids:machine_side");
 		this.iconGasLiquefier = par1IconRegister.registerIcon("galacticraftasteroids:gasLiquefier");
 		this.iconGasInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_oxygen_input");
-	}
-
-	@Override
-	public void breakBlock(World var1, int var2, int var3, int var4, Block var5, int var6)
-	{
-		final TileEntity z = var1.getTileEntity(var2, var3, var4);
-
-		if (z instanceof IMultiBlock)
-		{
-			((IMultiBlock) z).onDestroy(z);
-		}
-
-		super.breakBlock(var1, var2, var3, var4, var5, var6);
 	}
 
 	@SideOnly(Side.CLIENT)
