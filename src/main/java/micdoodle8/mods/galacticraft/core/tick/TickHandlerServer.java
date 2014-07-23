@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
@@ -10,6 +11,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.WorldDataSpaceRaces;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -44,6 +46,12 @@ public class TickHandlerServer
 		TickHandlerServer.edgeChecks.clear();
 		TickHandlerServer.networkTicks.clear();
 		TickHandlerServer.footprintList.clear();
+
+        for (SpaceRace race : SpaceRaceManager.getSpaceRaces())
+        {
+            SpaceRaceManager.removeSpaceRace(race);
+        }
+
 		TickHandlerServer.spaceRaceData = null;
 		TickHandlerServer.tickCount = 0L;
 	}
