@@ -51,6 +51,7 @@ tile.walkwayOxygenPipe.name=Walkway
 # Fluids and gases
 fluid.methane.name=Methane Gas
 fluid.oxygen.name=Oxygen Gas
+fluid.nitrogen.name=Nitrogen Gas
 fluid.atmosphericgases.name=Atmospheric Gases
 fluid.liquidmethane.name=Liquid Methane
 fluid.liquidoxygen.name=Liquid Oxygen

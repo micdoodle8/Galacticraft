@@ -133,8 +133,10 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 						//Methane -> Methane tank
 						if (this.gasTankType <= 0 && inputName.contains("methane"))
 						{
+							System.out.println("Methane 1");
 							if (currentgas == null || currentgas.amount + liquid.amount <= this.gasTank.getCapacity())
 							{
+								System.out.println("Methane 2");
 								FluidStack gcMethane = FluidRegistry.getFluidStack(TankGases.METHANE.gas, liquid.amount);	
 								this.gasTank.fill(gcMethane, true);
 								this.gasTankType = 0;
@@ -193,7 +195,7 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 						{
 							if (currentgas == null || currentgas.amount + liquid.amount <= this.gasTank.getCapacity())
 							{
-								FluidStack gcgas = FluidRegistry.getFluidStack(TankGases.NITROGEN.gas, liquid.amount);	
+								FluidStack gcgas = FluidRegistry.getFluidStack(TankGases.NITROGEN.gas, liquid.amount);
 								this.gasTank.fill(gcgas, true);
 								this.gasTankType = TankGases.NITROGEN.index;
 		
@@ -420,24 +422,26 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 
 	public void doLiquefaction()
 	{
+		//Can't be called if the gasTank fluid is null
 		final int gasAmount = this.gasTank.getFluid().amount;
 
 		if (this.gasTankType == TankGases.AIR.index)
 		{
 			int airProducts = this.airProducts;
-			int amountToDrain = Math.min(gasAmount, (airProducts > 15) ? 2 : 3);
+			int amountToDrain = Math.min(gasAmount / 2, (airProducts > 15) ? 2 : 3);
 
 			do
 			{
 				int thisProduct = (airProducts & 15) - 1;			
-				this.placeIntoFluidTanks(thisProduct, amountToDrain);
+				this.gasTank.drain(this.placeIntoFluidTanks(thisProduct, amountToDrain) * 2, true);
 				airProducts = airProducts >> 4;
 				amountToDrain = amountToDrain >> 1;
+				if (amountToDrain == 0) amountToDrain = 1;
 			}
 			while (airProducts > 0);
 		}
 		else
-			this.placeIntoFluidTanks(this.gasTankType, Math.min(gasAmount, 3));
+			this.gasTank.drain(this.placeIntoFluidTanks(this.gasTankType, Math.min(gasAmount / 2, 3)) * 2, true);
 	}
 	
 	private int placeIntoFluidTanks(int thisProduct, int amountToDrain)
@@ -448,7 +452,6 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 		if ((thisProduct == this.fluidTankType || this.fluidTankType == -1) && fuelSpace > 0)
 		{
 			if (amountToDrain > fuelSpace) amountToDrain = fuelSpace;
-			this.gasTank.drain(amountToDrain, true);
 			this.fuelTank.fill(FluidRegistry.getFluidStack(TankGases.values()[thisProduct].liquid, amountToDrain), true);
 			this.fluidTankType = thisProduct;
 		} else

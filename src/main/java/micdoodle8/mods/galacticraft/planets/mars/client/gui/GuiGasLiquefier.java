@@ -223,15 +223,35 @@ public class GuiGasLiquefier extends GuiContainerGC
 
 		List<String> fuelTankDesc = new ArrayList<String>();
 		fuelTankDesc.add(GCCoreUtil.translate("gui.fuelTank.desc.4"));
-		int fuelLevel = this.tileEntity.fuelTank != null && this.tileEntity.fuelTank.getFluid() != null ? this.tileEntity.fuelTank.getFluid().amount : 0;
+		gasTankContents = this.tileEntity.fuelTank != null ? this.tileEntity.fuelTank.getFluid() : null;
+		if (gasTankContents != null)
+		{
+			String gasname = gasTankContents.getFluid().getLocalizedName();
+			if (gasname == null || gasname.equals(gasTankContents.getFluid().getUnlocalizedName()))
+				gasname = GCCoreUtil.translate(gasTankContents.getFluid().getUnlocalizedName()+".name");
+			fuelTankDesc.add("("+gasname+")");
+		}
+		else
+			fuelTankDesc.add(" ");
+		int fuelLevel = gasTankContents != null ? gasTankContents.amount : 0;
 		int fuelCapacity = this.tileEntity.fuelTank != null ? this.tileEntity.fuelTank.getCapacity() : 0;
 		fuelTankDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.message.fuel.name") + ": " + fuelLevel + " / " + fuelCapacity);
 		this.fuelTankRegion.tooltipStrings = fuelTankDesc;
 
 		fuelTankDesc = new ArrayList<String>();
 		fuelTankDesc.add(GCCoreUtil.translate("gui.fuelTank.desc.4"));
-		fuelLevel = this.tileEntity.fuelTank != null && this.tileEntity.fuelTank.getFluid() != null ? this.tileEntity.fuelTank.getFluid().amount : 0;
-		fuelCapacity = this.tileEntity.fuelTank != null ? this.tileEntity.fuelTank.getCapacity() : 0;
+		gasTankContents = this.tileEntity.fuelTank2 != null ? this.tileEntity.fuelTank2.getFluid() : null;
+		if (gasTankContents != null)
+		{
+			String gasname = gasTankContents.getFluid().getLocalizedName();
+			if (gasname == null || gasname.equals(gasTankContents.getFluid().getUnlocalizedName()))
+				gasname = GCCoreUtil.translate(gasTankContents.getFluid().getUnlocalizedName()+".name");
+			fuelTankDesc.add("("+gasname+")");
+		}
+		else
+			fuelTankDesc.add(" ");
+		fuelLevel = gasTankContents != null ? gasTankContents.amount : 0;
+		fuelCapacity = this.tileEntity.fuelTank2 != null ? this.tileEntity.fuelTank2.getCapacity() : 0;
 		fuelTankDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.message.fuel.name") + ": " + fuelLevel + " / " + fuelCapacity);
 		this.fuelTank2Region.tooltipStrings = fuelTankDesc;
 

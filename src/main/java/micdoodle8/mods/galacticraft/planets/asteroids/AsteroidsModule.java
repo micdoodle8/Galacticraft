@@ -60,11 +60,13 @@ public class AsteroidsModule implements IPlanetsModule
 	public static Fluid gcFluidMethaneGas;
 	public static Fluid gcFluidLiquidMethane;
 	public static Fluid gcFluidOxygenGas;
+	public static Fluid gcFluidNitrogenGas;
 	public static Fluid gcFluidLiquidOxygen;
 	public static Fluid gcFluidLiquidNitrogen;
 	public static Fluid gcFluidAtmosphericGases;
 	public static Fluid fluidMethaneGas;
 	public static Fluid fluidOxygenGas;
+	public static Fluid fluidNitrogenGas;
 	public static Fluid fluidLiquidMethane;
 	public static Fluid fluidLiquidOxygen;
 	public static Fluid fluidLiquidNitrogen;
@@ -85,11 +87,13 @@ public class AsteroidsModule implements IPlanetsModule
 		AsteroidsModule.gcFluidLiquidOxygen = new Fluid("liquidoxygen").setDensity(1141).setViscosity(13);
 		AsteroidsModule.gcFluidOxygenGas = new Fluid("oxygen").setDensity(13).setViscosity(13);
 		AsteroidsModule.gcFluidLiquidNitrogen = new Fluid("liquidnitrogen").setDensity(808).setViscosity(12);
+		AsteroidsModule.gcFluidNitrogenGas = new Fluid("nitrogen").setDensity(12).setViscosity(12);
 		FluidRegistry.registerFluid(AsteroidsModule.gcFluidMethaneGas);
 		FluidRegistry.registerFluid(AsteroidsModule.gcFluidAtmosphericGases);
 		FluidRegistry.registerFluid(AsteroidsModule.gcFluidLiquidMethane);
 		FluidRegistry.registerFluid(AsteroidsModule.gcFluidLiquidOxygen);
 		FluidRegistry.registerFluid(AsteroidsModule.gcFluidOxygenGas);
+		FluidRegistry.registerFluid(AsteroidsModule.gcFluidNitrogenGas);
 		FluidRegistry.registerFluid(AsteroidsModule.gcFluidLiquidNitrogen);
 		AsteroidsModule.fluidMethaneGas = FluidRegistry.getFluid("methane");
 		AsteroidsModule.fluidMethaneGas = FluidRegistry.getFluid("atmosphericgases");
@@ -97,6 +101,7 @@ public class AsteroidsModule implements IPlanetsModule
 		AsteroidsModule.fluidLiquidOxygen = FluidRegistry.getFluid("liquidoxygen");
 		AsteroidsModule.fluidOxygenGas = FluidRegistry.getFluid("oxygen");
 		AsteroidsModule.fluidLiquidNitrogen = FluidRegistry.getFluid("liquidnitrogen");
+		AsteroidsModule.fluidNitrogenGas = FluidRegistry.getFluid("nitrogen");
 		
 		AsteroidBlocks.initBlocks();
 		AsteroidBlocks.registerBlocks();
