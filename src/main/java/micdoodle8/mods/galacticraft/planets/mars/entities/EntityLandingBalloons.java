@@ -227,7 +227,7 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
             if (this.groundHitCount < 14)
             {
                 this.groundHitCount++;
-                double mag = (1.0D / this.groundHitCount) * 12.0D;
+                double mag = (1.0D / this.groundHitCount) * 4.0D;
                 double mX = this.rand.nextDouble() - 0.5;
                 double mY = 1.0D;
                 double mZ = this.rand.nextDouble() - 0.5;
