@@ -91,19 +91,13 @@ public class TileEntityElectricFurnace extends ElectricBlockWithInventory implem
 					{
 						this.processTicks = this.processTimeRequired;
 					}
-					else if (this.processTicks > 0)
-					{
-						this.processTicks--;
-
-						if (this.processTicks < 1)
-						{
-							this.smeltItem();
-							this.processTicks = 0;
-						}
-					}
 					else
 					{
-						this.processTicks = 0;
+						if (--this.processTicks <= 0)
+						{
+							this.smeltItem();
+							this.processTicks = this.canProcess() ? this.processTimeRequired : 0;
+						}
 					}
 				}
 				else if (this.processTicks > 0 && this.processTicks < this.processTimeRequired)

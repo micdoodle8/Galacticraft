@@ -84,9 +84,9 @@ public class AsteroidsModule implements IPlanetsModule
 		AsteroidsModule.gcFluidAtmosphericGases = new Fluid("atmosphericgases").setDensity(12).setViscosity(13);
 		AsteroidsModule.gcFluidLiquidMethane = new Fluid("liquidmethane").setDensity(450).setViscosity(120);
 		//Data source for liquid methane: http://science.nasa.gov/science-news/science-at-nasa/2005/25feb_titan2/
-		AsteroidsModule.gcFluidLiquidOxygen = new Fluid("liquidoxygen").setDensity(1141).setViscosity(13);
+		AsteroidsModule.gcFluidLiquidOxygen = new Fluid("liquidoxygen").setDensity(1141).setViscosity(140);
 		AsteroidsModule.gcFluidOxygenGas = new Fluid("oxygen").setDensity(13).setViscosity(13);
-		AsteroidsModule.gcFluidLiquidNitrogen = new Fluid("liquidnitrogen").setDensity(808).setViscosity(12);
+		AsteroidsModule.gcFluidLiquidNitrogen = new Fluid("liquidnitrogen").setDensity(808).setViscosity(130);
 		AsteroidsModule.gcFluidNitrogenGas = new Fluid("nitrogen").setDensity(12).setViscosity(12);
 		FluidRegistry.registerFluid(AsteroidsModule.gcFluidMethaneGas);
 		FluidRegistry.registerFluid(AsteroidsModule.gcFluidAtmosphericGases);
@@ -96,7 +96,7 @@ public class AsteroidsModule implements IPlanetsModule
 		FluidRegistry.registerFluid(AsteroidsModule.gcFluidNitrogenGas);
 		FluidRegistry.registerFluid(AsteroidsModule.gcFluidLiquidNitrogen);
 		AsteroidsModule.fluidMethaneGas = FluidRegistry.getFluid("methane");
-		AsteroidsModule.fluidMethaneGas = FluidRegistry.getFluid("atmosphericgases");
+		AsteroidsModule.fluidAtmosphericGases = FluidRegistry.getFluid("atmosphericgases");
 		AsteroidsModule.fluidLiquidMethane = FluidRegistry.getFluid("liquidmethane");
 		AsteroidsModule.fluidLiquidOxygen = FluidRegistry.getFluid("liquidoxygen");
 		AsteroidsModule.fluidOxygenGas = FluidRegistry.getFluid("oxygen");

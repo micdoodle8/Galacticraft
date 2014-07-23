@@ -24,6 +24,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 import java.util.List;
+import java.util.Random;
 
 public class BlockMachineMarsT2 extends BlockTileGC
 {
@@ -54,11 +55,11 @@ public class BlockMachineMarsT2 extends BlockTileGC
 	@Override
 	public void breakBlock(World var1, int var2, int var3, int var4, Block var5, int var6)
 	{
-		final TileEntity var9 = var1.getTileEntity(var2, var3, var4);
+		final TileEntity z = var1.getTileEntity(var2, var3, var4);
 
-		if (var9 instanceof IMultiBlock)
+		if (z instanceof IMultiBlock)
 		{
-			((IMultiBlock) var9).onDestroy(var9);
+			((IMultiBlock) z).onDestroy(z);
 		}
 
 		super.breakBlock(var1, var2, var3, var4, var5, var6);
@@ -203,5 +204,33 @@ public class BlockMachineMarsT2 extends BlockTileGC
 		int metadata = this.getDamageValue(world, x, y, z);
 
 		return new ItemStack(this, 1, metadata);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random rand)
+	{
+		final TileEntity te = par1World.getTileEntity(par2, par3, par4);
+
+		if (te instanceof TileEntityGasLiquefier)
+		{
+			final TileEntityGasLiquefier tileEntity = (TileEntityGasLiquefier) te;
+
+			if (tileEntity.processTicks > 0)
+			{
+				//par1World.getBlockMetadata(par2, par3, par4);
+				final float x = par2 + 0.5F;
+				final float y = par3 + 0.1F + 0.05F * rand.nextInt(3);
+				final float z = par4 + 0.5F;
+
+				for (float i = -0.41F + 0.16F * rand.nextFloat(); i < 0.5F; i+= 0.167F)
+				{
+					if (rand.nextInt(4) == 0) par1World.spawnParticle("smoke", x + i, y, par2 - 0.01F, 0.0D, -0.01D, -0.005D);
+					if (rand.nextInt(4) == 0) par1World.spawnParticle("smoke", x + i, y, par2 + 1.01F, 0.0D, -0.01D, 0.005D);
+					if (rand.nextInt(4) == 0) par1World.spawnParticle("smoke", x - 0.01F, y, z + i, -0.005D, -0.01D, 0.0D);
+					if (rand.nextInt(4) == 0) par1World.spawnParticle("smoke", x + 1.01F, y, z + i, 0.005D, -0.01D, 0.0D);
+				}
+			}
+		}
 	}
 }

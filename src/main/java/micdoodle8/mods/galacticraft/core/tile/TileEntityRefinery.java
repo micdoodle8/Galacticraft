@@ -105,19 +105,13 @@ public class TileEntityRefinery extends ElectricBlockWithInventory implements IS
 				{
 					this.processTicks = TileEntityRefinery.PROCESS_TIME_REQUIRED;
 				}
-				else if (this.processTicks > 0)
-				{
-					this.processTicks--;
-
-					if (this.processTicks < 1)
-					{
-						this.smeltItem();
-						this.processTicks = 0;
-					}
-				}
 				else
 				{
-					this.processTicks = 0;
+					if (--this.processTicks <= 0)
+					{
+						this.smeltItem();
+						this.processTicks = this.canProcess() ? TileEntityRefinery.PROCESS_TIME_REQUIRED : 0;
+					}
 				}
 			}
 			else
