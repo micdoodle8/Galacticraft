@@ -20,11 +20,11 @@ item.atmosphericValve.name=Atmospheric Valve
 item.methaneCanisterPartial.name=Methane Gas Canister
 item.methaneCanister.name=Filled Methane Gas Canister
 item.canister.gas.name=Gas
-item.canister.LOX.partial=Canister of Liquid Oxygen
-item.canister.LOX.full=Filled Canister of Liquid Oxygen
+item.canister.LOX.partial.name=Canister of Liquid Oxygen
+item.canister.LOX.full.name=Filled Canister of Liquid Oxygen
 item.canister.LOX.name=LOX
-item.canister.liquidNitrogen.partial=Canister of Liquid Nitrogen
-item.canister.liquidNitrogen.full=Filled Canister of Liquid Nitrogen
+item.canister.liquidNitrogen.partial.name=Canister of Liquid Nitrogen
+item.canister.liquidNitrogen.full.name=Filled Canister of Liquid Nitrogen
 item.canister.liquidNitrogen.name=Liquid
 item.emptyGasCanister.name=Empty Gas Canister
 

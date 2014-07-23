@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.mars.inventory;
 import micdoodle8.mods.galacticraft.api.transmission.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityGasLiquefier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -10,7 +11,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class ContainerGasLiquefier extends Container
@@ -22,13 +22,14 @@ public class ContainerGasLiquefier extends Container
 		this.tileEntity = tileEntity;
 
 		// Electric Input Slot
-		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 50, 51, ItemElectric.class));
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 34, 50, ItemElectric.class));
 
-		// To be smelted
+		// Input slot
 		this.addSlotToContainer(new Slot(tileEntity, 1, 7, 7));
 
-		// Smelting result
-		this.addSlotToContainer(new Slot(tileEntity, 2, 153, 7));
+		// 2 output slots
+		this.addSlotToContainer(new Slot(tileEntity, 2, 132, 7));
+		this.addSlotToContainer(new Slot(tileEntity, 3, 153, 7));
 		int var3;
 
 		for (var3 = 0; var3 < 3; ++var3)
@@ -75,9 +76,9 @@ public class ContainerGasLiquefier extends Container
 			final ItemStack var4 = slot.getStack();
 			var2 = var4.copy();
 
-			if (par1 < 3)
+			if (par1 < 4)
 			{
-				if (!this.mergeItemStack(var4, 3, 39, true))
+				if (!this.mergeItemStack(var4, 4, 40, true))
 				{
 					return null;
 				}
@@ -96,7 +97,7 @@ public class ContainerGasLiquefier extends Container
 				else
 				{
 					FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(var4);
-					if (liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("methane"))
+					if (liquid != null || var4.getItem() instanceof ItemAtmosphericValve)
 					{
 						if (!this.mergeItemStack(var4, 1, 2, false))
 						{
@@ -105,19 +106,19 @@ public class ContainerGasLiquefier extends Container
 					}
 					else if (FluidContainerRegistry.isEmptyContainer(var4))
 					{
-						if (!this.mergeItemStack(var4, 2, 3, false))
+						if (!this.mergeItemStack(var4, 2, 4, false))
 						{
 							return null;
 						}				
 					}
-					else if (par1 < 30)
+					else if (par1 < 31)
 					{
-						if (!this.mergeItemStack(var4, 30, 39, false))
+						if (!this.mergeItemStack(var4, 31, 40, false))
 						{
 							return null;
 						}
 					}
-					else if (!this.mergeItemStack(var4, 3, 30, false))
+					else if (!this.mergeItemStack(var4, 4, 31, false))
 					{
 						return null;
 					}
