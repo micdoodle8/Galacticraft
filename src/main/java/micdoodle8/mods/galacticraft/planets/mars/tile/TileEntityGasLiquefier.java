@@ -143,7 +143,7 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 						{
 							if (currentgas == null || currentgas.amount + liquid.amount * 2  <= this.gasTank.getCapacity())
 							{
-								FluidStack gcMethane = FluidRegistry.getFluidStack(TankGases.METHANE.gas, liquid.amount * 2);	
+								FluidStack gcMethane = FluidRegistry.getFluidStack(TankGases.METHANE.gas, liquid.amount);	
 								this.gasTank.fill(gcMethane, true);
 								this.gasTankType = 0;
 		
@@ -172,7 +172,7 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 						{
 							if (currentgas == null || currentgas.amount + liquid.amount * 2 <= this.gasTank.getCapacity())
 							{
-								FluidStack gcgas = FluidRegistry.getFluidStack(TankGases.OXYGEN.gas, liquid.amount * 2);	
+								FluidStack gcgas = FluidRegistry.getFluidStack(TankGases.OXYGEN.gas, liquid.amount * (inputName.contains("liquid") ? 2 : 1));	
 								this.gasTank.fill(gcgas, true);
 								this.gasTankType = TankGases.OXYGEN.index;
 		
@@ -201,7 +201,7 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 						{
 							if (currentgas == null || currentgas.amount + liquid.amount * 2  <= this.gasTank.getCapacity())
 							{
-								FluidStack gcgas = FluidRegistry.getFluidStack(TankGases.NITROGEN.gas, liquid.amount * 2);
+								FluidStack gcgas = FluidRegistry.getFluidStack(TankGases.NITROGEN.gas, liquid.amount * (inputName.contains("liquid") ? 2 : 1));
 								this.gasTank.fill(gcgas, true);
 								this.gasTankType = TankGases.NITROGEN.index;
 		
@@ -322,7 +322,10 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 				}
 			}
 		}
-
+		else if (this.containingItems[slot] != null && this.containingItems[slot].getItem() instanceof ItemAtmosphericValve)
+		{
+			tank.drain(4, true);
+		}
 	}
 
 	public int getIdFromName(String gasname)
@@ -432,8 +435,9 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 
 			do
 			{
-				int thisProduct = (airProducts & 15) - 1;			
-				this.gasTank.drain(this.placeIntoFluidTanks(thisProduct, amountToDrain) * 2, true);
+				int thisProduct = (airProducts & 15) - 1;
+				if (thisProduct >= 0)
+					this.gasTank.drain(this.placeIntoFluidTanks(thisProduct, amountToDrain) * 2, true);
 				airProducts = airProducts >> 4;
 				amountToDrain = amountToDrain >> 1;
 				if (amountToDrain == 0) break;

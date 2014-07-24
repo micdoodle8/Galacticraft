@@ -28,6 +28,7 @@ public class BlockMachineMarsT2 extends BlockTileGC
 {
 	public static final int GAS_LIQUEFIER = 0;
 
+	private IIcon iconMachineSide;
 	private IIcon iconInput;
 
 	private IIcon iconGasLiquefier;
@@ -44,6 +45,7 @@ public class BlockMachineMarsT2 extends BlockTileGC
 		this.blockIcon = par1IconRegister.registerIcon("galacticraftasteroids:machine");
 		this.iconInput = par1IconRegister.registerIcon("galacticraftasteroids:machine_output");
 
+		//this.iconMachineSide = par1IconRegister.registerIcon("galacticraftasteroids:machine_side");
 		this.iconGasLiquefier = par1IconRegister.registerIcon("galacticraftasteroids:gasLiquefier");
 		this.iconGasInput = par1IconRegister.registerIcon("galacticraftasteroids:machine_oxygen_input");
 	}
