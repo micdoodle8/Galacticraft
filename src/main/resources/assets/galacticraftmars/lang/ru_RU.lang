@@ -4,11 +4,11 @@
 item.rawDesh.name=Необработанная деш
 item.deshStick.name=Палка из деш
 item.ingotDesh.name=Слиток деш
-item.spaceshipTier2.t2Rocket.name=Ракета 2-ого уровня
+item.spaceshipTier2.t2Rocket.name=Ракета 2-го уровня
 item.reinforcedPlateT2.name=Сверхпрочное покрытие
 item.tier2.desc=Tier 2
 item.slimelingCargo.name=Сумка слаймлинга
-item.key.T2.name=Ключ от подземелья 2-ого уровня
+item.key.T2.name=Ключ от подземелья 2-го уровня
 item.compressedDesh.name=Сжатая деш
 item.spaceshipTier2.cargoRocket.name=Грузовая ракета
 
@@ -36,7 +36,7 @@ tile.mars.marsdirt.name=Марсианский подповерхностный 
 tile.mars.marsgrass.name=Марсианский поверхностный камень
 tile.mars.marsdeco.name=Блок деш
 tile.mars.marsdungeon.name=Стена подземелья
-tile.treasureT2.name=Сундук с сокровищами 2-ого уровня
+tile.treasureT2.name=Сундук с сокровищами 2-го уровня
 tile.slimelingEgg.redEgg.name=Красное яйцо слаймлинга
 tile.slimelingEgg.blueEgg.name=Синее яйцо слаймлинга
 tile.slimelingEgg.yellowEgg.name=Жёлтое яйцо слаймлинга
@@ -103,14 +103,14 @@ dimension.Mars.name=Марс
 planet.mars=Марс
 
 # Schematics
-schematic.rocketT3.name=Ракета 3-его уровня
+schematic.rocketT3.name=Ракета 3-го уровня
 schematic.cargoRocket.name=Автоматическая грузовая ракета
 
 # Entities
 entity.Sludgeling.name=Сладжлинг
 entity.Slimeling.name=Слаймлинг
 entity.CreeperBoss.name=Эволюционировавший крипер-босс
-entity.SpaceshipT2.name=Ракета 2-ого уровня
+entity.SpaceshipT2.name=Ракета 2-го уровня
 entity.CargoRocket.name=Грузовая ракета
 
 # Container
