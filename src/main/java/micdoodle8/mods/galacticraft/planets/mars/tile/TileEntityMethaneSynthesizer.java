@@ -88,7 +88,7 @@ public class TileEntityMethaneSynthesizer extends ElectricBlockWithInventory imp
 					if (this.gasTank2.getFluidAmount() < this.gasTank2.getCapacity())
 					{
 						FluidStack gcAtmosphere = FluidRegistry.getFluidStack("carbondioxide", 4);
-						this.gasTank.fill(gcAtmosphere, true);
+						this.gasTank2.fill(gcAtmosphere, true);
 					}
 				}
 			}
@@ -236,7 +236,7 @@ public class TileEntityMethaneSynthesizer extends ElectricBlockWithInventory imp
 		if (fuelSpace > 0)
 		{
 			if (amountToDrain > fuelSpace) amountToDrain = fuelSpace;
-			this.liquidTank.fill(FluidRegistry.getFluidStack("carbondioxide", amountToDrain), true);
+			this.liquidTank.fill(FluidRegistry.getFluidStack("methane", amountToDrain), true);
 		} else
 			amountToDrain = 0;
 		

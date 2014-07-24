@@ -117,7 +117,7 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
-		this.fontRendererObj.drawString(this.tileEntity.getInventoryName(), 46, 5, 4210752);
+		this.fontRendererObj.drawString(this.tileEntity.getInventoryName(), 47, 5, 4210752);
 		String displayText = "";
 		int yOffset = -18;
 
@@ -199,6 +199,23 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
 		int gasCapacity = this.tileEntity.gasTank != null ? this.tileEntity.gasTank.getCapacity() : 0;
 		gasTankDesc.add(EnumColor.YELLOW + " " + gasLevel + " / " + gasCapacity);
 		this.gasTankRegion.tooltipStrings = gasTankDesc;
+
+		gasTankDesc = new ArrayList<String>();
+		gasTankDesc.add(GCCoreUtil.translate("gui.gasTank.desc.0"));
+		gasTankContents = this.tileEntity.gasTank2 != null ? this.tileEntity.gasTank2.getFluid() : null;
+		if (gasTankContents != null)
+		{
+			String gasname = FluidRegistry.getFluid("carbondioxide").getLocalizedName();
+			if (gasname == null || gasname.equals("fluid.carbondioxide"))
+				gasname = GCCoreUtil.translate(gasTankContents.getFluid().getUnlocalizedName()+".name");
+			gasTankDesc.add("("+gasname+")");
+		}
+		else
+			gasTankDesc.add(" ");
+		gasLevel = gasTankContents != null ? gasTankContents.amount : 0;
+		gasCapacity = this.tileEntity.gasTank2 != null ? this.tileEntity.gasTank2.getCapacity() : 0;
+		gasTankDesc.add(EnumColor.YELLOW + " " + gasLevel + " / " + gasCapacity);
+		this.gasTank2Region.tooltipStrings = gasTankDesc;
 
 		List<String> fuelTankDesc = new ArrayList<String>();
 		fuelTankDesc.add(GCCoreUtil.translate("gui.liquidTank.desc.0"));
