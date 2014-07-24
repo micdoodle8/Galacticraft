@@ -107,7 +107,7 @@ public class WorldUtil
 		if (e.worldObj.provider instanceof IGalacticraftWorldProvider)
 		{
 			final IGalacticraftWorldProvider customProvider = (IGalacticraftWorldProvider) e.worldObj.provider;
-			return 0.03999999910593033D - (customProvider instanceof IOrbitDimension ? 0.05999999910593033D : customProvider.getGravity()) / 1.75D;
+			return Math.max(0.002D, 0.03999999910593033D - (customProvider instanceof IOrbitDimension ? 0.05999999910593033D : customProvider.getGravity()) / 1.75D);
 		}
 		else
 		{
