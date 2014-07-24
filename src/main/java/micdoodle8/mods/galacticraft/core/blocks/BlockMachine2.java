@@ -27,7 +27,7 @@ public class BlockMachine2 extends BlockTileGC
 	public static final int OXYGEN_STORAGE_MODULE_METADATA = 8;
 
 	private IIcon iconMachineSide;
-	private IIcon iconOutput;
+	private IIcon iconInput;
 	private IIcon iconOxygenInput;
 	private IIcon iconOxygenOutput;
 
@@ -54,7 +54,7 @@ public class BlockMachine2 extends BlockTileGC
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
 		this.blockIcon = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine");
-		this.iconOutput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_output");
+		this.iconInput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
 		this.iconOxygenInput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_oxygen_input");
 		this.iconOxygenOutput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_oxygen_output");
 
@@ -191,7 +191,7 @@ public class BlockMachine2 extends BlockTileGC
 
 			if (side == ForgeDirection.getOrientation(metadata + 2).ordinal())
 			{
-				return this.iconOutput;
+				return this.iconInput;
 			}
 		}
 		else if (metadata >= BlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
@@ -205,7 +205,7 @@ public class BlockMachine2 extends BlockTileGC
 
 			if (side == ForgeDirection.getOrientation(metadata + 2).ordinal())
 			{
-				return this.iconOutput;
+				return this.iconInput;
 			}
 		}
 

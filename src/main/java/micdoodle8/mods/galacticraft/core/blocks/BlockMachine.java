@@ -25,7 +25,7 @@ public class BlockMachine extends BlockTileGC
 	public static final int COMPRESSOR_METADATA = 12;
 
 	private IIcon iconMachineSide;
-	private IIcon iconInput;
+	private IIcon iconOutput;
 
 	private IIcon iconCoalGenerator;
 	private IIcon iconCompressor;
@@ -56,7 +56,7 @@ public class BlockMachine extends BlockTileGC
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
 		this.blockIcon = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine");
-		this.iconInput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
+		this.iconOutput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_output");
 		this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_side");
 
 		this.iconCoalGenerator = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "coalGenerator");
@@ -134,7 +134,7 @@ public class BlockMachine extends BlockTileGC
 			// If it is the front side
 			if (side == metadata + 2)
 			{
-				return this.iconInput;
+				return this.iconOutput;
 			}
 			// If it is the back side
 			if (metadata == 0 && side == 4 || metadata == 1 && side == 5 || metadata == 2 && side == 3 || metadata == 3 && side == 2)
