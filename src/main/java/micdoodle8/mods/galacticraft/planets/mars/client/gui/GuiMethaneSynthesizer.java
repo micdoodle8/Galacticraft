@@ -165,7 +165,7 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
 		int displayInt = this.tileEntity.getScaledGasLevel(38);
 		this.drawTexturedModalRect(edgeLeft + 7, edgeTop + 17 + 49 - displayInt, 1 + 2 * 17, 38 - displayInt, 16, displayInt);
 		displayInt = this.tileEntity.getScaledGasLevel2(20);
-		this.drawTexturedModalRect(edgeLeft + 28, edgeTop + 17 + 49 - displayInt, 1 + 2 * 17, 38 - displayInt, 16, displayInt);
+		this.drawTexturedModalRect(edgeLeft + 28, edgeTop + 48 - displayInt, 1 + 2 * 17, 38 - displayInt, 16, displayInt);
 		displayInt = this.tileEntity.getScaledFuelLevel(38);
 		this.drawTexturedModalRect(edgeLeft + 153, edgeTop + 17 + 49 - displayInt, 1, 38 - displayInt, 16, displayInt);
 

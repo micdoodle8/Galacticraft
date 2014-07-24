@@ -105,7 +105,7 @@ public class ContainerMethaneSynthesizer extends Container
 					FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(var4);
 					if (liquid != null || var4.getItem() instanceof ItemAtmosphericValve)
 					{
-						if (!this.mergeItemStack(var4, 1, 3, false))
+						if (!this.mergeItemStack(var4, 2, 3, false))
 						{
 							return null;
 						}
