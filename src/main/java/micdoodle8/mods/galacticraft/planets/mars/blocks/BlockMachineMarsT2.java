@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -43,9 +44,9 @@ public class BlockMachineMarsT2 extends BlockTileGC
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.blockIcon = par1IconRegister.registerIcon("galacticraftasteroids:machine");
-		this.iconInput = par1IconRegister.registerIcon("galacticraftasteroids:machine_output");
+		this.iconInput = par1IconRegister.registerIcon("galacticraftasteroids:machine_input");
 
-		//this.iconMachineSide = par1IconRegister.registerIcon("galacticraftasteroids:machine_side");
+		this.iconMachineSide = par1IconRegister.registerIcon("galacticraftasteroids:machine_side");
 		this.iconGasLiquefier = par1IconRegister.registerIcon("galacticraftasteroids:gasLiquefier");
 		this.iconGasInput = par1IconRegister.registerIcon("galacticraftasteroids:machine_oxygen_input");
 	}
@@ -68,21 +69,20 @@ public class BlockMachineMarsT2 extends BlockTileGC
 	{
 		int metaside = (metadata & 3) + 2;
 		
-		if (side == 0 || side == 1)
-		{
+		if (side == 0)
+			return this.iconInput;
+
+		if (side == 1)
 			return this.blockIcon;
-		}
 
 		if (side == metaside)
-		{
-			return this.iconInput;
-		}
-		else if (side == (metaside ^ 1))
-		{
 			return this.iconGasInput;
-		}
+
+		//2->5 3->4 4->2 5->3
+		if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == side)
+			return this.iconGasLiquefier;
 		
-		return this.iconGasLiquefier;	
+		return this.iconMachineSide;	
 	}
 
 	/**
@@ -203,17 +203,16 @@ public class BlockMachineMarsT2 extends BlockTileGC
 
 			if (tileEntity.processTicks > 0)
 			{
-				//par1World.getBlockMetadata(par2, par3, par4);
 				final float x = par2 + 0.5F;
-				final float y = par3 + 0.1F + 0.05F * rand.nextInt(3);
+				final float y = par3 + 0.8F + 0.05F * rand.nextInt(3);
 				final float z = par4 + 0.5F;
 
 				for (float i = -0.41F + 0.16F * rand.nextFloat(); i < 0.5F; i+= 0.167F)
 				{
-					if (rand.nextInt(4) == 0) par1World.spawnParticle("smoke", x + i, y, par2 - 0.01F, 0.0D, -0.01D, -0.005D);
-					if (rand.nextInt(4) == 0) par1World.spawnParticle("smoke", x + i, y, par2 + 1.01F, 0.0D, -0.01D, 0.005D);
-					if (rand.nextInt(4) == 0) par1World.spawnParticle("smoke", x - 0.01F, y, z + i, -0.005D, -0.01D, 0.0D);
-					if (rand.nextInt(4) == 0) par1World.spawnParticle("smoke", x + 1.01F, y, z + i, 0.005D, -0.01D, 0.0D);
+					if (rand.nextInt(3) == 0) GalacticraftCore.proxy.spawnParticle("whiteSmokeTiny", new Vector3(x + i, y, z - 0.44F), new Vector3(0.0D, -0.015D, -0.0015D));
+					if (rand.nextInt(3) == 0) GalacticraftCore.proxy.spawnParticle("whiteSmokeTiny", new Vector3(x + i, y, z + 0.53F), new Vector3(0.0D, -0.015D, 0.0015D));
+					if (rand.nextInt(3) == 0) GalacticraftCore.proxy.spawnParticle("whiteSmokeTiny", new Vector3(x - 0.44F, y, z + i), new Vector3(-0.0015D, -0.015D, 0.0D));
+					if (rand.nextInt(3) == 0) GalacticraftCore.proxy.spawnParticle("whiteSmokeTiny", new Vector3(x + 0.53F, y, z + i), new Vector3(0.0015D, -0.015D, 0.0D));
 				}
 			}
 		}
