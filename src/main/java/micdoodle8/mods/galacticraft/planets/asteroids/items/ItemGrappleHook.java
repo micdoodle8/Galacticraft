@@ -38,29 +38,14 @@ public class ItemGrappleHook extends ItemBow
 	@Override
 	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)
 	{
-		int j = this.getMaxItemUseDuration(par1ItemStack) - par4;
-
 		boolean flag = par3EntityPlayer.capabilities.isCreativeMode;
 
 		if (flag)
 		{
-			float f = j / 20.0F;
-			f = (f * f + f * 2.0F) / 3.0F;
-
-			if (f < 0.1D)
-			{
-				return;
-			}
-
-			if (f > 1.0F)
-			{
-				f = 1.0F;
-			}
-
-			EntityGrapple grapple = new EntityGrapple(par2World, par3EntityPlayer, f * 2.0F);
+			EntityGrapple grapple = new EntityGrapple(par2World, par3EntityPlayer, 2.0F);
 
 			par1ItemStack.damageItem(1, par3EntityPlayer);
-			par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 1.0F, 1.0F / (Item.itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+			par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 1.0F, 1.0F / (Item.itemRand.nextFloat() * 0.4F + 1.2F) + 0.5F);
 
 			if (!par2World.isRemote)
 			{
