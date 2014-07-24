@@ -65,7 +65,7 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
 
         if (this.worldObj.isRemote) {
             if (!this.onGround) {
-                this.motionY -= 0.008D;
+                this.motionY -= 0.002D;
             }
         }
     }
