@@ -40,7 +40,7 @@ public class ItemGrappleHook extends ItemBow
 	{
         EntityGrapple grapple = new EntityGrapple(par2World, par3EntityPlayer, 2.0F);
 
-        par1ItemStack.damageItem(1, par3EntityPlayer);
+        par3EntityPlayer.inventory.consumeInventoryItem(AsteroidsItems.grapple);
         par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 1.0F, 1.0F / (Item.itemRand.nextFloat() * 0.4F + 1.2F) + 0.5F);
 
         if (!par2World.isRemote)
