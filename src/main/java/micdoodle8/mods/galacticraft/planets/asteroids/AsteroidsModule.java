@@ -57,13 +57,6 @@ public class AsteroidsModule implements IPlanetsModule
 	public static final String ASSET_PREFIX = "galacticraftasteroids";
 	public static final String TEXTURE_PREFIX = AsteroidsModule.ASSET_PREFIX + ":";
 
-	public static Fluid gcFluidMethaneGas;
-	public static Fluid gcFluidLiquidMethane;
-	public static Fluid gcFluidOxygenGas;
-	public static Fluid gcFluidNitrogenGas;
-	public static Fluid gcFluidLiquidOxygen;
-	public static Fluid gcFluidLiquidNitrogen;
-	public static Fluid gcFluidAtmosphericGases;
 	public static Fluid fluidMethaneGas;
 	public static Fluid fluidOxygenGas;
 	public static Fluid fluidNitrogenGas;
@@ -71,6 +64,7 @@ public class AsteroidsModule implements IPlanetsModule
 	public static Fluid fluidLiquidOxygen;
 	public static Fluid fluidLiquidNitrogen;
 	public static Fluid fluidAtmosphericGases;
+	//public static Fluid fluidCO2Gas;
 	
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
@@ -80,21 +74,16 @@ public class AsteroidsModule implements IPlanetsModule
 		MinecraftForge.EVENT_BUS.register(playerHandler);
 		FMLCommonHandler.instance().bus().register(playerHandler);
 		
-		AsteroidsModule.gcFluidMethaneGas = new Fluid("methane").setDensity(9).setViscosity(11);
-		AsteroidsModule.gcFluidAtmosphericGases = new Fluid("atmosphericgases").setDensity(12).setViscosity(13);
-		AsteroidsModule.gcFluidLiquidMethane = new Fluid("liquidmethane").setDensity(450).setViscosity(120);
+		FluidRegistry.registerFluid(new Fluid("methane").setDensity(1).setViscosity(11));
+		FluidRegistry.registerFluid(new Fluid("atmosphericgases").setDensity(1).setViscosity(13));
+		FluidRegistry.registerFluid(new Fluid("liquidmethane").setDensity(450).setViscosity(120));
 		//Data source for liquid methane: http://science.nasa.gov/science-news/science-at-nasa/2005/25feb_titan2/
-		AsteroidsModule.gcFluidLiquidOxygen = new Fluid("liquidoxygen").setDensity(1141).setViscosity(140);
-		AsteroidsModule.gcFluidOxygenGas = new Fluid("oxygen").setDensity(13).setViscosity(13);
-		AsteroidsModule.gcFluidLiquidNitrogen = new Fluid("liquidnitrogen").setDensity(808).setViscosity(130);
-		AsteroidsModule.gcFluidNitrogenGas = new Fluid("nitrogen").setDensity(12).setViscosity(12);
-		FluidRegistry.registerFluid(AsteroidsModule.gcFluidMethaneGas);
-		FluidRegistry.registerFluid(AsteroidsModule.gcFluidAtmosphericGases);
-		FluidRegistry.registerFluid(AsteroidsModule.gcFluidLiquidMethane);
-		FluidRegistry.registerFluid(AsteroidsModule.gcFluidLiquidOxygen);
-		FluidRegistry.registerFluid(AsteroidsModule.gcFluidOxygenGas);
-		FluidRegistry.registerFluid(AsteroidsModule.gcFluidNitrogenGas);
-		FluidRegistry.registerFluid(AsteroidsModule.gcFluidLiquidNitrogen);
+		FluidRegistry.registerFluid(new Fluid("liquidoxygen").setDensity(1141).setViscosity(140));
+		FluidRegistry.registerFluid(new Fluid("oxygen").setDensity(1).setViscosity(13));
+		FluidRegistry.registerFluid(new Fluid("liquidnitrogen").setDensity(808).setViscosity(130));
+		FluidRegistry.registerFluid(new Fluid("nitrogen").setDensity(1).setViscosity(12));
+		FluidRegistry.registerFluid(new Fluid("carbondioxide").setDensity(2).setViscosity(20));
+		FluidRegistry.registerFluid(new Fluid("hydrogen").setDensity(1).setViscosity(1));
 		AsteroidsModule.fluidMethaneGas = FluidRegistry.getFluid("methane");
 		AsteroidsModule.fluidAtmosphericGases = FluidRegistry.getFluid("atmosphericgases");
 		AsteroidsModule.fluidLiquidMethane = FluidRegistry.getFluid("liquidmethane");
@@ -102,6 +91,7 @@ public class AsteroidsModule implements IPlanetsModule
 		AsteroidsModule.fluidOxygenGas = FluidRegistry.getFluid("oxygen");
 		AsteroidsModule.fluidLiquidNitrogen = FluidRegistry.getFluid("liquidnitrogen");
 		AsteroidsModule.fluidNitrogenGas = FluidRegistry.getFluid("nitrogen");
+		//AsteroidsModule.fluidCO2Gas = FluidRegistry.getFluid("carbondioxide");
 		
 		AsteroidBlocks.initBlocks();
 		AsteroidBlocks.registerBlocks();

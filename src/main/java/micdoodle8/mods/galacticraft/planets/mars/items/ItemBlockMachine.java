@@ -50,6 +50,14 @@ public class ItemBlockMachine extends ItemBlock implements IHoldableItem
 			{
 				return "tile.marsMachine.4";
 			}
+			else if (typenum == BlockMachineMarsT2.METHANE_SYNTHESIZER)
+			{
+				return "tile.marsMachine.5";
+			}
+			else if (typenum == BlockMachineMarsT2.ELECTROLYZER)
+			{
+				return "tile.marsMachine.6";
+			}
 		}
 		
 		return this.field_150939_a.getUnlocalizedName() + "." + index;

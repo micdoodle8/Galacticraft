@@ -22,9 +22,11 @@ public class MarsItems
 	public static Item spaceship;
 	public static Item key;
 	public static Item schematic;
-
+	public static Item carbonFragments;
+	
 	public static ArmorMaterial ARMORDESH = EnumHelper.addArmorMaterial("DESH", 42, new int[] { 4, 9, 7, 4 }, 12);
 	public static ToolMaterial TOOLDESH = EnumHelper.addToolMaterial("DESH", 3, 1024, 5.0F, 2.5F, 8);
+	
 
 	public static void initItems()
 	{
@@ -41,7 +43,8 @@ public class MarsItems
 		MarsItems.spaceship = new ItemTier2Rocket().setUnlocalizedName("spaceshipTier2");
 		MarsItems.key = new ItemKeyMars().setUnlocalizedName("key");
 		MarsItems.schematic = new ItemSchematicTier2().setUnlocalizedName("schematic");
-
+		MarsItems.carbonFragments = new ItemCarbonFragments().setUnlocalizedName("carbonFragments");;
+		
 		MarsItems.registerItems();
 	}
 
@@ -67,6 +70,7 @@ public class MarsItems
 		MarsItems.registerItem(MarsItems.spaceship);
 		MarsItems.registerItem(MarsItems.key);
 		MarsItems.registerItem(MarsItems.schematic);
+		MarsItems.registerItem(MarsItems.carbonFragments);
 	}
 
 	private static void registerItem(Item item)

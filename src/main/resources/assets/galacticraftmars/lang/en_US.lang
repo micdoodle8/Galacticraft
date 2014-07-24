@@ -108,13 +108,17 @@ gui.gasTank.desc.0=Gas storage
 gui.liquidTank.desc.0=Liquid Tank
 gui.status.nogas.name=No gas
 gui.status.liquefying.name=Liquefying
+gui.status.needsCarbon.name=Needs carbon
 gui.message.lowEnergy.name=Low energy
 gui.button.liquefy.name=Process
 gui.button.liquefyStop.name=Stop
 gui.gasInput.desc.0=Try placing a Methane$Gas Canister here
 gui.gasInput.desc.1=(Perhaps alternatively,$an Atmospheric Valve)
+gui.hydrogenInput.desc.0=This takes a hydrogen tank
+gui.hydrogenInput.desc.1=or an Atmospheric Valve
 gui.liquidOutput.desc.2=liquefied gas tank
-
+gui.methaneOutput.desc.2=methane tank
+item.carbonFragments.name=Fragmented Carbon
 
 gui.desc.reinforcedPlateT2.name=Tier 2
 dimension.Mars.name=Mars

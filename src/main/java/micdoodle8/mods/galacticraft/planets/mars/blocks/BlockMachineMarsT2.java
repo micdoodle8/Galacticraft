@@ -9,7 +9,9 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalElectrical;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
+import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityElectrolyzer;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityGasLiquefier;
+import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityMethaneSynthesizer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -28,12 +30,17 @@ import java.util.Random;
 public class BlockMachineMarsT2 extends BlockTileGC
 {
 	public static final int GAS_LIQUEFIER = 0;
+	public static final int METHANE_SYNTHESIZER = 0;
+	public static final int ELECTROLYZER = 0;
 
 	private IIcon iconMachineSide;
 	private IIcon iconInput;
-
-	private IIcon iconGasLiquefier;
 	private IIcon iconGasInput;
+	private IIcon iconGasOutput;
+	
+	private IIcon iconGasLiquefier;
+	private IIcon iconMethaneSynthesizer;
+	private IIcon iconElectrolyzer;
 
 	public BlockMachineMarsT2()
 	{
@@ -47,8 +54,11 @@ public class BlockMachineMarsT2 extends BlockTileGC
 		this.iconInput = par1IconRegister.registerIcon("galacticraftasteroids:machine_input");
 
 		this.iconMachineSide = par1IconRegister.registerIcon("galacticraftasteroids:machine_side");
-		this.iconGasLiquefier = par1IconRegister.registerIcon("galacticraftasteroids:gasLiquefier");
 		this.iconGasInput = par1IconRegister.registerIcon("galacticraftasteroids:machine_oxygen_input");
+		this.iconGasOutput = par1IconRegister.registerIcon("galacticraftasteroids:machine_oxygen_output");
+		this.iconGasLiquefier = par1IconRegister.registerIcon("galacticraftasteroids:gasLiquefier");
+		this.iconMethaneSynthesizer = par1IconRegister.registerIcon("galacticraftasteroids:methaneSynthesizer");
+		this.iconElectrolyzer = par1IconRegister.registerIcon("galacticraftasteroids:electrolyzer");
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -67,20 +77,43 @@ public class BlockMachineMarsT2 extends BlockTileGC
 	@Override
 	public IIcon getIcon(int side, int metadata)
 	{
-		int metaside = (metadata & 3) + 2;
-		
 		if (side == 0)
 			return this.iconInput;
 
 		if (side == 1)
 			return this.blockIcon;
 
-		if (side == metaside)
-			return this.iconGasInput;
+		int metaside = (metadata & 3) + 2;
+		metadata &= 12;
+		
+		if (metadata == BlockMachineMarsT2.GAS_LIQUEFIER)
+		{
+			if (side == metaside)
+				return this.iconGasInput;
+	
+			//2->5 3->4 4->2 5->3
+			if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == side)
+				return this.iconGasLiquefier;
+		} else if (metadata == BlockMachineMarsT2.METHANE_SYNTHESIZER)
+		{
+			if (side == metaside)
+				return this.iconGasInput;
 
-		//2->5 3->4 4->2 5->3
-		if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == side)
-			return this.iconGasLiquefier;
+			if (side == (metaside ^ 1))
+				return this.iconGasOutput;
+
+			//2->5 3->4 4->2 5->3
+			if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == side)
+				return this.iconGasLiquefier;		
+		} else if (metadata == BlockMachineMarsT2.ELECTROLYZER)
+		{
+			if (side == (metaside ^ 1))
+				return this.iconGasOutput;
+	
+			//2->5 3->4 4->2 5->3
+			if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == side)
+				return this.iconGasLiquefier;
+		}	
 		
 		return this.iconMachineSide;	
 	}
@@ -162,19 +195,29 @@ public class BlockMachineMarsT2 extends BlockTileGC
 	@Override
 	public TileEntity createTileEntity(World world, int metadata)
 	{
-		return new TileEntityGasLiquefier();
-	}
+		metadata &= 12;
 
-	public ItemStack getGasLiquefier()
-	{
-		return new ItemStack(this, 1, BlockMachineMarsT2.GAS_LIQUEFIER);
+		if (metadata == BlockMachineMarsT2.GAS_LIQUEFIER)
+		{
+			return new TileEntityGasLiquefier();
+		} else if (metadata == BlockMachineMarsT2.METHANE_SYNTHESIZER)
+		{
+			return new TileEntityMethaneSynthesizer();
+		} else if (metadata == BlockMachineMarsT2.ELECTROLYZER)
+		{
+			return new TileEntityElectrolyzer();
+		}
+	
+		return null;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
-		par3List.add(this.getGasLiquefier());
+		par3List.add(new ItemStack(this, 1, BlockMachineMarsT2.GAS_LIQUEFIER));
+		par3List.add(new ItemStack(this, 1, BlockMachineMarsT2.METHANE_SYNTHESIZER));
+		par3List.add(new ItemStack(this, 1, BlockMachineMarsT2.ELECTROLYZER));
 	}
 
 	@Override

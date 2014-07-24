@@ -619,7 +619,7 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 			return this.liquidTank.getFluid() != null && this.liquidTank.getFluidAmount() > 0;
 
 		//2->5 3->4 4->2 5->3
-		if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == side)
+		if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
 			return this.liquidTank2.getFluid() != null && this.liquidTank2.getFluidAmount() > 0;
 
 		return false;
@@ -637,7 +637,7 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 		}
 
 		//2->5 3->4 4->2 5->3
-		if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == side)
+		if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
 		{
 			if (resource != null && resource.isFluidEqual(this.liquidTank2.getFluid()))
 				return this.liquidTank2.drain(resource.amount, doDrain);
@@ -657,7 +657,7 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 		}
 			
 		//2->5 3->4 4->2 5->3
-		if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == side)
+		if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
 		{
 			return this.liquidTank2.drain(maxDrain, doDrain);
 		}
@@ -668,7 +668,7 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid)
 	{
-		if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite()))
+		if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2)))
 		{
 			//Can fill with gases
 			return fluid != null && this.getIdFromName(fluid.getName()) > -1;
