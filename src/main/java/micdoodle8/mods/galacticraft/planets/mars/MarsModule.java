@@ -24,6 +24,7 @@ import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
 import micdoodle8.mods.galacticraft.planets.mars.entities.*;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerGasLiquefier;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerLaunchController;
+import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerMethaneSynthesizer;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerTerraformer;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
@@ -127,6 +128,8 @@ public class MarsModule implements IPlanetsModule
 		GameRegistry.registerTileEntity(TileEntityTerraformer.class, "Planet Terraformer");
 		GameRegistry.registerTileEntity(TileEntityCryogenicChamber.class, "Cryogenic Chamber");
 		GameRegistry.registerTileEntity(TileEntityGasLiquefier.class, "Gas Liquefier");
+		GameRegistry.registerTileEntity(TileEntityMethaneSynthesizer.class, "Methane Synthesizer");
+		GameRegistry.registerTileEntity(TileEntityElectrolyzer.class, "Water Electrolyzer");
 		GameRegistry.registerTileEntity(TileEntityDungeonSpawnerMars.class, "Mars Dungeon Spawner");
 		GameRegistry.registerTileEntity(TileEntityLaunchController.class, "Launch Controller");
 	}
@@ -185,6 +188,10 @@ public class MarsModule implements IPlanetsModule
 				else if (tile instanceof TileEntityGasLiquefier)
 				{
 					return new ContainerGasLiquefier(player.inventory, (TileEntityGasLiquefier) tile);
+				}
+				else if (tile instanceof TileEntityMethaneSynthesizer)
+				{
+					return new ContainerMethaneSynthesizer(player.inventory, (TileEntityMethaneSynthesizer) tile);
 				}
 			}
 		}
