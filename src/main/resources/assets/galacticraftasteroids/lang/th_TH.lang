@@ -20,9 +20,13 @@ item.atmosphericValve.name=วาล์วอากาศ
 item.methaneCanisterPartial.name=ถังมีเทน
 item.methaneCanister.name=กระป๋องที่เต็มไปด้วยมีเทน
 item.canister.gas.name=ก๊าซ
+item.canister.LOX.partial.name=Canister of Liquid Oxygen ##NEEDS TRANSLATE##
+item.canister.LOX.full.name=Filled Canister of Liquid Oxygen ##NEEDS TRANSLATE##
 item.canister.LOX.partial=ถังออกซิเจนเหลว
 item.canister.LOX.full=กระป๋องที่เต็มไปด้วยออกซิเจนเหลว
 item.canister.LOX.name=ออกซิเจนเหลว
+item.canister.liquidNitrogen.partial.name=Canister of Liquid Nitrogen ##NEEDS TRANSLATE##
+item.canister.liquidNitrogen.full.name=Filled Canister of Liquid Nitrogen ##NEEDS TRANSLATE##
 item.canister.liquidNitrogen.partial=ถังไนโตรเจนเหลว
 item.canister.liquidNitrogen.full=กระป๋องที่เต็มไปด้วยไนโตรเจนเหลว
 item.canister.liquidNitrogen.name=ไนโตรเจนเหลว
@@ -47,17 +51,40 @@ tile.telepadShort.name=เครื่องเทเลพอร์ตระย
 tile.walkway.name=ทางเดินพร้อมสายไฟ
 tile.walkwayWire.name=ทางเดินพร้อมสายไฟแรงสูง
 tile.walkwayOxygenPipe.name=ทางเดินพร้อมท่อออกซิเจน
+tile.treasureT3.name=Tier 3 Treasure Chest ##NEEDS TRANSLATE##
 
 # Fluids and gases
 fluid.methane.name=ก๊าซมีเทน
 fluid.oxygen.name=ก๊าซออกซิเจน
+fluid.nitrogen.name=Nitrogen Gas ##NEEDS TRANSLATE##
+fluid.hydrogen.name=Hydrogen Gas ##NEEDS TRANSLATE##
+fluid.carbondioxide.name=CO2 Gas ##NEEDS TRANSLATE##
 fluid.atmosphericgases.name=ก๊าซชั้นบรรยากาศ
 fluid.liquidmethane.name=มีเทนเหลว
 fluid.liquidoxygen.name=ออกซิเจนเหลว
 fluid.liquidnitrogen.name=ไนโตรเจนเหลว
+fluid.fuel.name=Fuel ##NEEDS TRANSLATE##
 
 # GUI
 planet.asteroids=ดาวเคราะห์น้อย
+gui.telepad.desc.0=This is the Telepad's$unique address ##NEEDS TRANSLATE##
+gui.telepad.desc.1=Address of another Telepad.$Entities will be sent there. ##NEEDS TRANSLATE##
+container.shortRangeTelepad.name=Short Range Telepad ##NEEDS TRANSLATE##
+gui.message.address.name=Address ##NEEDS TRANSLATE##
+gui.message.destAddress.name=Target Address ##NEEDS TRANSLATE##
+gui.message.invalidAddress.name=Invalid Unique Address ##NEEDS TRANSLATE##
+gui.message.invalidTargetAddress.name=Invalid Target Address ##NEEDS TRANSLATE##
+gui.message.receivingActive.name=Receiving Active ##NEEDS TRANSLATE##
+gui.message.telepadTooFar.name=Target too far! (Max %d) ##NEEDS TRANSLATE##
+gui.message.telepadWrongDim.name=Target is in wrong dimension! ##NEEDS TRANSLATE##
+gui.message.telepadNotFound.name=Telepad Not Found! ##NEEDS TRANSLATE##
+gui.message.sendingActive.name=Sending Active ##NEEDS TRANSLATE##
+gui.message.range.name=Range: %dm ##NEEDS TRANSLATE##
+gui.message.notEnoughEnergy.name=Not Enough Energy! ##NEEDS TRANSLATE##
+gui.message.targetNoEnergy.name=Target doesn't have enough Energy! ##NEEDS TRANSLATE##
+entity.SmallAsteroidGC.name=Small Asteroid ##NEEDS TRANSLATE##
+entity.GrappleHookGC.name=Grapple Hook ##NEEDS TRANSLATE##
+entity.Tier3RocketGC.name=Tier 3 Rocket ##NEEDS TRANSLATE##
 
 	# Dollar sign ($) will split text onto a new line
 gui.telepad.desc.0=นี่คือเครื่องเทเลพอร์ต$ที่อยู่เฉพาะ

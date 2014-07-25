@@ -2,6 +2,37 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=Fusée Niveau 3
+item.heavyNoseCone.name=Heavy Nose Cone ##NEEDS TRANSLATE##
+item.compressedTitanium.name=Compressed Titanium ##NEEDS TRANSLATE##
+item.ingotTitanium.name=Titanium Ingot ##NEEDS TRANSLATE##
+item.shardTitanium.name=Titanium Shard ##NEEDS TRANSLATE##
+item.shardIron.name=Iron Shard ##NEEDS TRANSLATE##
+item.rocketFinsT2.name=Heavy Rocket Fins ##NEEDS TRANSLATE##
+item.engineT2.name=Heavy Rocket Engine ##NEEDS TRANSLATE##
+item.reinforcedPlateT3.name=Heavy-Duty Plate ##NEEDS TRANSLATE##
+item.grapple.name=Grapple ##NEEDS TRANSLATE##
+item.thermalHelm.name=Thermal Padding Helm ##NEEDS TRANSLATE##
+item.thermalChestplate.name=Thermal Padding Chestpiece ##NEEDS TRANSLATE##
+item.thermalLeggings.name=Thermal Padding Leggings ##NEEDS TRANSLATE##
+item.thermalBoots.name=Thermal Padding Boots ##NEEDS TRANSLATE##
+item.atmosphericValve.name=Atmospheric Valve ##NEEDS TRANSLATE##
+item.methaneCanisterPartial.name=Methane Gas Canister ##NEEDS TRANSLATE##
+item.methaneCanister.name=Filled Methane Gas Canister ##NEEDS TRANSLATE##
+item.canister.gas.name=Gas ##NEEDS TRANSLATE##
+item.canister.LOX.partial.name=Canister of Liquid Oxygen ##NEEDS TRANSLATE##
+item.canister.LOX.full.name=Filled Canister of Liquid Oxygen ##NEEDS TRANSLATE##
+item.canister.LOX.name=LOX ##NEEDS TRANSLATE##
+item.canister.liquidNitrogen.partial.name=Canister of Liquid Nitrogen ##NEEDS TRANSLATE##
+item.canister.liquidNitrogen.full.name=Filled Canister of Liquid Nitrogen ##NEEDS TRANSLATE##
+item.canister.liquidNitrogen.name=Liquid ##NEEDS TRANSLATE##
+item.emptyGasCanister.name=Empty Gas Canister ##NEEDS TRANSLATE##
+item.tier3.desc=Tier 3 ##NEEDS TRANSLATE##
+tile.asteroidsBlock.asteroid0.name=Asteroid Rock ##NEEDS TRANSLATE##
+tile.asteroidsBlock.asteroid1.name=Asteroid Rock ##NEEDS TRANSLATE##
+tile.asteroidsBlock.asteroid2.name=Asteroid Rock ##NEEDS TRANSLATE##
+tile.asteroidsBlock.oreIron.name=Iron Ore ##NEEDS TRANSLATE##
+tile.asteroidsBlock.oreIlmenite.name=Ilmenite Ore ##NEEDS TRANSLATE##
+tile.asteroidsBlock.oreAluminum.name=Aluminum Ore ##NEEDS TRANSLATE##
 
 # TOOLS
 
@@ -12,9 +43,38 @@ tile.asteroidsBlock.asteroids1.name=Roche d'astéroïde
 tile.beamReflector.name=Réflecteur de faisceau
 tile.beamReceiver.name=Récepteur de faisceau
 tile.telepadShort.name=Système de téléportation à courte portée
+tile.walkway.name=Walkway ##NEEDS TRANSLATE##
+tile.walkwayWire.name=Walkway ##NEEDS TRANSLATE##
+tile.walkwayOxygenPipe.name=Walkway ##NEEDS TRANSLATE##
+tile.treasureT3.name=Tier 3 Treasure Chest ##NEEDS TRANSLATE##
+fluid.methane.name=Methane Gas ##NEEDS TRANSLATE##
+fluid.oxygen.name=Oxygen Gas ##NEEDS TRANSLATE##
+fluid.nitrogen.name=Nitrogen Gas ##NEEDS TRANSLATE##
+fluid.hydrogen.name=Hydrogen Gas ##NEEDS TRANSLATE##
+fluid.carbondioxide.name=CO2 Gas ##NEEDS TRANSLATE##
+fluid.atmosphericgases.name=Atmospheric Gases ##NEEDS TRANSLATE##
+fluid.liquidmethane.name=Liquid Methane ##NEEDS TRANSLATE##
+fluid.liquidoxygen.name=Liquid Oxygen ##NEEDS TRANSLATE##
+fluid.liquidnitrogen.name=Liquid Nitrogen ##NEEDS TRANSLATE##
+fluid.fuel.name=Fuel ##NEEDS TRANSLATE##
 
 # GUI
 planet.asteroids=Astéroïdes
+gui.telepad.desc.0=This is the Telepad's$unique address ##NEEDS TRANSLATE##
+gui.telepad.desc.1=Address of another Telepad.$Entities will be sent there. ##NEEDS TRANSLATE##
+container.shortRangeTelepad.name=Short Range Telepad ##NEEDS TRANSLATE##
+gui.message.address.name=Address ##NEEDS TRANSLATE##
+gui.message.destAddress.name=Target Address ##NEEDS TRANSLATE##
+gui.message.invalidAddress.name=Invalid Unique Address ##NEEDS TRANSLATE##
+gui.message.invalidTargetAddress.name=Invalid Target Address ##NEEDS TRANSLATE##
+gui.message.receivingActive.name=Receiving Active ##NEEDS TRANSLATE##
+gui.message.telepadTooFar.name=Target too far! (Max %d) ##NEEDS TRANSLATE##
+gui.message.telepadWrongDim.name=Target is in wrong dimension! ##NEEDS TRANSLATE##
+gui.message.telepadNotFound.name=Telepad Not Found! ##NEEDS TRANSLATE##
+gui.message.sendingActive.name=Sending Active ##NEEDS TRANSLATE##
+gui.message.range.name=Range: %dm ##NEEDS TRANSLATE##
+gui.message.notEnoughEnergy.name=Not Enough Energy! ##NEEDS TRANSLATE##
+gui.message.targetNoEnergy.name=Target doesn't have enough Energy! ##NEEDS TRANSLATE##
 
 itemGroup.GalacticraftAsteroids=Galacticraft Astéroïdes
 # Schematics

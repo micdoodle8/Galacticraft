@@ -4,6 +4,7 @@
 item.meteoricIronRaw.name=Rohes Meteorisches Eisen
 item.meteoric_iron_ingot.name=Meteorischer Eisenbarren
 item.compressedMeteoricIron.name=Gepresstes Meteorisches Eisen
+item.meteoricIronIngot.name=Meteoric Iron Ingot ##NEEDS TRANSLATE##
 
 # FOOD
 item.cheeseCurd.name=Quark

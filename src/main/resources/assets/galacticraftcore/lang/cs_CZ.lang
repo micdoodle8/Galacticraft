@@ -22,6 +22,7 @@ item.rocketFins.name=Raketové Křidélko
 item.noseCone.name=Špička rakety
 item.sensorLens.name=Senzorové čočky
 item.oxygenGear.name=Kyslíková výstroj
+item.flag.name=Flag ##NEEDS TRANSLATE##
 item.flag.american.name=Americká vlajka
 item.flag.black.name=Černá vlajka
 item.flag.blue.name=Světle modrá vlajka
@@ -171,6 +172,8 @@ tile.machine.3.name=Kompresor
 tile.machine2.4.name=Elektrický kompresor
 tile.machine2.5.name=Stroj na výrobu solárních waferů
 tile.machine2.6.name=Zásobárna kyslíku
+tile.machine.7.name=Electric Arc Furnace ##NEEDS TRANSLATE##
+tile.machine.8.name=Energy Storage Cluster ##NEEDS TRANSLATE##
 tile.aluminumWire.name=Hliníkový vodič
 tile.aluminumWireHeavy.name=Zesílený hliníkový vodič
 tile.glowstoneTorch.name=Pochodeň ze svítícího kamene
@@ -207,6 +210,8 @@ entity.GalacticraftCore.Flag.name=Vlajka
 entity.GalacticraftCore.ParaChest.name=Truhla na padáku
 entity.GalacticraftCore.OxygenBubble.name=Kyslíková bublina
 entity.GalacticraftCore.Lander.name=Přistávací modul
+entity.GalacticraftCore.GCFlag.name=Flag ##NEEDS TRANSLATE##
+entity.GalacticraftCore.MeteorChunk.name=Meteor Chunk ##NEEDS TRANSLATE##
 
 # Schematics
 schematic.moonbuggy.name=Bugina
@@ -236,6 +241,8 @@ keybind.vehicleleft.name=[GC] Jízda vlevo
 keybind.vehicleright.name=[GC] Jízda vpravo
 keybind.vehicleup.name=[GC] Jízda nehoru
 keybind.vehicledown.name=[GC] Jízda dolu
+itemGroup.GalacticraftBlocks=Galacticraft Blocks ##NEEDS TRANSLATE##
+itemGroup.GalacticraftItems=Galacticraft Items ##NEEDS TRANSLATE##
 
 # CREATIVE TABS
 itemGroup.GalacticraftCore=Galacticraft
@@ -279,6 +286,13 @@ gui.message.meansurfacetemp.name=Střední teplota na povrchu
 gui.message.energy=Energy ##NEEDS TRANSLATE##
 gui.message.maxEnergy=Max Energy ##NEEDS TRANSLATE##
 gui.message.bubbleVisible.name=Bubble Visible ##NEEDS TRANSLATE##
+gui.message.launch.name=Launch ##NEEDS TRANSLATE##
+gui.message.clickAgain.0.name=Click again to zoom (view moons & satellites) ##NEEDS TRANSLATE##
+gui.message.clickAgain.1.name=Click again to zoom (view moons) ##NEEDS TRANSLATE##
+gui.message.clickAgain.2.name=Click again to zoom (view satellites) ##NEEDS TRANSLATE##
+gui.message.clickAgain.3.name=Click again to zoom ##NEEDS TRANSLATE##
+gui.message.exit.name=Exit ##NEEDS TRANSLATE##
+gui.message.tier.name=Tier %d ##NEEDS TRANSLATE##
 
 gui.status.active.name=Aktivní
 gui.status.missingleaves.name=Nedostatek rostlin
@@ -437,6 +451,8 @@ gui.missingCore.name.0=MicdoodleCore nenalezeno ve složce módů.
 gui.missingCore.name.1=Chyba při načítání Galacticraftu
 gui.missingCore.name.2=Ukončete Minecraft a nainstalujte MicdoodleCore
 gui.missingCore.name.3=Klikněte zde pro stažení
+gui.electricCompressor.desc.0=Progress ##NEEDS TRANSLATE##
+gui.showBubble.desc.0=Show Bubble ##NEEDS TRANSLATE##
 
 gui.spaceRace.create.close.name=Zavřít
 gui.spaceRace.create.back.name=Zpět
@@ -469,6 +485,14 @@ dimension.Moon.name=Měsic
 dimension.Sun.name=Slunce
 planet.overworld=Zemský povrh
 moon.moon=Měsic
+galaxy.milkyWay=Milky Way ##NEEDS TRANSLATE##
+solarsystem.sol=Sol ##NEEDS TRANSLATE##
+planet.mercury=Mercury ##NEEDS TRANSLATE##
+planet.venus=Venus ##NEEDS TRANSLATE##
+planet.jupiter=Jupiter ##NEEDS TRANSLATE##
+planet.saturn=Saturn ##NEEDS TRANSLATE##
+planet.uranus=Uranus ##NEEDS TRANSLATE##
+planet.neptune=Neptune ##NEEDS TRANSLATE##
  
 gui.message.moon.daynightcycle.0.name=29,5 Pozemského dne
 gui.message.moon.daynightcycle.1.name=

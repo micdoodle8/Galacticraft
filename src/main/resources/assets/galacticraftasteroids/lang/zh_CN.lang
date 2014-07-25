@@ -20,9 +20,13 @@ item.atmosphericValve.name=气闸
 item.methaneCanisterPartial.name=甲烷气体罐
 item.methaneCanister.name=装满的甲烷气体罐
 item.canister.gas.name=气体
+item.canister.LOX.partial.name=Canister of Liquid Oxygen ##NEEDS TRANSLATE##
+item.canister.LOX.full.name=Filled Canister of Liquid Oxygen ##NEEDS TRANSLATE##
 item.canister.LOX.partial=罐装液态氧
 item.canister.LOX.full=装满的罐装液态氧
 item.canister.LOX.name=液态氧
+item.canister.liquidNitrogen.partial.name=Canister of Liquid Nitrogen ##NEEDS TRANSLATE##
+item.canister.liquidNitrogen.full.name=Filled Canister of Liquid Nitrogen ##NEEDS TRANSLATE##
 item.canister.liquidNitrogen.partial=灌装液氮
 item.canister.liquidNitrogen.full=装满的灌装液态氮
 item.canister.liquidNitrogen.name=液态氮
@@ -46,14 +50,19 @@ tile.telepadShort.name=短距离传送台
 tile.walkway.name=通道
 tile.walkwayWire.name=通道
 tile.walkwayOxygenPipe.name=通道
+tile.treasureT3.name=Tier 3 Treasure Chest ##NEEDS TRANSLATE##
 
 # Fluids and gases
 fluid.methane.name=甲烷
 fluid.oxygen.name=氧气
+fluid.nitrogen.name=Nitrogen Gas ##NEEDS TRANSLATE##
+fluid.hydrogen.name=Hydrogen Gas ##NEEDS TRANSLATE##
+fluid.carbondioxide.name=CO2 Gas ##NEEDS TRANSLATE##
 fluid.atmosphericgases.name=空气
 fluid.liquidmethane.name=液态甲烷
 fluid.liquidoxygen.name=液态氧
 fluid.liquidnitrogen.name=液态氮
+fluid.fuel.name=Fuel ##NEEDS TRANSLATE##
 
 # GUI
 planet.asteroids=小行星
@@ -71,6 +80,9 @@ gui.message.telepadTooFar.name=目标太远! (最远 %d)
 gui.message.telepadWrongDim.name=目标正在错误的维度!
 gui.message.telepadNotFound.name=未找到目标!
 gui.message.sendingActive.name=激活发送
+gui.message.range.name=Range: %dm ##NEEDS TRANSLATE##
+gui.message.notEnoughEnergy.name=Not Enough Energy! ##NEEDS TRANSLATE##
+gui.message.targetNoEnergy.name=Target doesn't have enough Energy! ##NEEDS TRANSLATE##
 
 # Schematics
 

@@ -4,6 +4,7 @@
 item.meteoricIronRaw.name=Ham Meteorik Demir
 item.meteoric_iron_ingot.name=Meteorik Demir Külçesi
 item.compressedMeteoricIron.name=Sıkıştırılmış Meteorik Demir
+item.meteoricIronIngot.name=Meteoric Iron Ingot ##NEEDS TRANSLATE##
 
 # FOOD
 item.cheeseCurd.name=Lor Peynir

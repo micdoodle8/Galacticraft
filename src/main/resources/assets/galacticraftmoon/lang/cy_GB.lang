@@ -3,6 +3,7 @@
 item.meteoricIronRaw.name=Raw Meteoric Iron ##NEEDS TRANSLATE##
 item.meteoric_iron_ingot.name=Meteoric Iron Ingot ##NEEDS TRANSLATE##
 item.compressedMeteoricIron.name=Compressed Meteoric Iron ##NEEDS TRANSLATE##
+item.meteoricIronIngot.name=Meteoric Iron Ingot ##NEEDS TRANSLATE##
 item.cheeseCurd.name=Cheese Curd ##NEEDS TRANSLATE##
 item.cheeseBlock.name=Block of Cheese ##NEEDS TRANSLATE##
 tile.moonBlock.moonstone.name=Stone ##NEEDS TRANSLATE##

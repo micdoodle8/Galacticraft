@@ -4,6 +4,7 @@
 item.meteoricIronRaw.name=Fer météorique brut
 item.meteoric_iron_ingot.name=Lingot de Fer météorique
 item.compressedMeteoricIron.name=Fer météorique comprimé
+item.meteoricIronIngot.name=Meteoric Iron Ingot ##NEEDS TRANSLATE##
 
 # FOOD
 item.cheeseCurd.name=Caillé

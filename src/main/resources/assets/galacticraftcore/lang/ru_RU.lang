@@ -22,6 +22,7 @@ item.rocketFins.name=Ракетный стабилизатор
 item.noseCone.name=Головной обтекатель
 item.sensorLens.name=Сенсорные линзы
 item.oxygenGear.name=Кислородное оборудование
+item.flag.name=Flag ##NEEDS TRANSLATE##
 item.flag.american.name=Американский флаг
 item.flag.black.name=Чёрный флаг
 item.flag.blue.name=Светло-синий флаг
@@ -171,6 +172,8 @@ tile.machine.3.name=Компрессор
 tile.machine2.4.name=Электрический компрессор
 tile.machine2.5.name=Производитель микросхем
 tile.machine2.6.name=Модуль хранения кислорода
+tile.machine.7.name=Electric Arc Furnace ##NEEDS TRANSLATE##
+tile.machine.8.name=Energy Storage Cluster ##NEEDS TRANSLATE##
 tile.aluminumWire.name=Алюминиевый провод
 tile.aluminumWireHeavy.name=Толстый алюминиевый провод
 tile.glowstoneTorch.name=Факел из светящегося камня
@@ -207,6 +210,8 @@ entity.GalacticraftCore.Flag.name=Флаг
 entity.GalacticraftCore.ParaChest.name=Сундук с парашютом
 entity.GalacticraftCore.OxygenBubble.name=Кислородный пузырь
 entity.GalacticraftCore.Lander.name=Посадочный модуль
+entity.GalacticraftCore.GCFlag.name=Flag ##NEEDS TRANSLATE##
+entity.GalacticraftCore.MeteorChunk.name=Meteor Chunk ##NEEDS TRANSLATE##
 
 # Schematics
 schematic.moonbuggy.name=Лунный багги
@@ -236,6 +241,8 @@ keybind.vehicleleft.name=[GC] "Влево" для техники
 keybind.vehicleright.name=[GC] "Вправо" для техники
 keybind.vehicleup.name=[GC] "Вверх" для техники
 keybind.vehicledown.name=[GC] "Вниз" для техники
+itemGroup.GalacticraftBlocks=Galacticraft Blocks ##NEEDS TRANSLATE##
+itemGroup.GalacticraftItems=Galacticraft Items ##NEEDS TRANSLATE##
 
 # CREATIVE TABS
 itemGroup.GalacticraftCore=Galacticraft
@@ -279,6 +286,13 @@ gui.message.meansurfacetemp.name=Средняя температура на по
 gui.message.energy=Энергия
 gui.message.maxEnergy=Макс. энергия
 gui.message.bubbleVisible.name=Видимость пузырей
+gui.message.launch.name=Launch ##NEEDS TRANSLATE##
+gui.message.clickAgain.0.name=Click again to zoom (view moons & satellites) ##NEEDS TRANSLATE##
+gui.message.clickAgain.1.name=Click again to zoom (view moons) ##NEEDS TRANSLATE##
+gui.message.clickAgain.2.name=Click again to zoom (view satellites) ##NEEDS TRANSLATE##
+gui.message.clickAgain.3.name=Click again to zoom ##NEEDS TRANSLATE##
+gui.message.exit.name=Exit ##NEEDS TRANSLATE##
+gui.message.tier.name=Tier %d ##NEEDS TRANSLATE##
 
 gui.status.active.name=Активно
 gui.status.missingleaves.name=Отсутствуют блоки листвы
@@ -437,6 +451,8 @@ gui.missingCore.name.0=MicdoodleCore не найден в папке модиф�
 gui.missingCore.name.1=Galacticraft не загрузился
 gui.missingCore.name.2=Закройте Minecraft и установите MicdoodleCore
 gui.missingCore.name.3=Нажмите здесь, чтобы открыть страницу загрузки
+gui.electricCompressor.desc.0=Progress ##NEEDS TRANSLATE##
+gui.showBubble.desc.0=Show Bubble ##NEEDS TRANSLATE##
 
 gui.spaceRace.create.close.name=Закрыть
 gui.spaceRace.create.back.name=Назад
@@ -469,6 +485,14 @@ dimension.Moon.name=Луна
 dimension.Sun.name=Солнце
 planet.overworld=Земля
 moon.moon=Луна
+galaxy.milkyWay=Milky Way ##NEEDS TRANSLATE##
+solarsystem.sol=Sol ##NEEDS TRANSLATE##
+planet.mercury=Mercury ##NEEDS TRANSLATE##
+planet.venus=Venus ##NEEDS TRANSLATE##
+planet.jupiter=Jupiter ##NEEDS TRANSLATE##
+planet.saturn=Saturn ##NEEDS TRANSLATE##
+planet.uranus=Uranus ##NEEDS TRANSLATE##
+planet.neptune=Neptune ##NEEDS TRANSLATE##
 
 gui.message.moon.daynightcycle.0.name=29.5 Земных дней
 gui.message.moon.daynightcycle.1.name=
