@@ -4,7 +4,7 @@
 item.meteoricIronRaw.name=Nezpracované meteorické železo
 item.meteoric_iron_ingot.name=Ingot meteorického železa
 item.compressedMeteoricIron.name=Stlačené meteorické železo
-item.meteoricIronIngot.name=Meteoric Iron Ingot ##NEEDS TRANSLATE##
+item.meteoricIronIngot.name=Ingot meteorického železa
 
 # FOOD
 item.cheeseCurd.name=Kousek sýra
