@@ -39,15 +39,15 @@ public class ItemArmorGC extends ItemArmor
 		{
 			if (stack.getItem() == GCItems.steelHelmet)
 			{
-				return "textures/model/armor/titanium_1.png";
+				return "textures/model/armor/steel_1.png";
 			}
 			else if (stack.getItem() == GCItems.steelChestplate || stack.getItem() == GCItems.steelBoots)
 			{
-				return "textures/model/armor/titanium_2.png";
+				return "textures/model/armor/steel_2.png";
 			}
 			else if (stack.getItem() == GCItems.steelLeggings)
 			{
-				return "textures/model/armor/titanium_3.png";
+				return "textures/model/armor/steel_3.png";
 			}
 		}
 
