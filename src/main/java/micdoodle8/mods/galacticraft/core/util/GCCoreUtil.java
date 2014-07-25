@@ -107,17 +107,23 @@ public class GCCoreUtil
 
 	public static String translate(String key)
 	{
-		return StatCollector.translateToLocal(key);
+		String result = StatCollector.translateToLocal(key);
+		int comment = result.indexOf('#');
+		return (comment > 0) ? result.substring(0, comment).trim() : result;
 	}
 
     public static List<String> translateWithSplit(String key)
     {
         String translated = translate(key);
+		int comment = translated.indexOf('#');
+        translated = (comment > 0) ? translated.substring(0, comment).trim() : translated;
         return Arrays.asList(translated.split("\\$"));
     }
 
 	public static String translateWithFormat(String key, Object... values)
 	{
-		return StatCollector.translateToLocalFormatted(key, values);
+		String result = StatCollector.translateToLocalFormatted(key, values);
+		int comment = result.indexOf('#');
+		return (comment > 0) ? result.substring(0, comment).trim() : result;
 	}
 }
