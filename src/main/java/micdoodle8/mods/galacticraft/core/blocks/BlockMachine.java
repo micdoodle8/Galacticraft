@@ -239,10 +239,15 @@ public class BlockMachine extends BlockTileGC
 	@Override
 	public TileEntity createTileEntity(World world, int metadata)
 	{
-		if (metadata >= BlockMachine.COMPRESSOR_METADATA)
+		metadata &= 12;
+		if (metadata == BlockMachine.COMPRESSOR_METADATA)
 		{
 			return new TileEntityIngotCompressor();
 		}
+		else if (metadata == 4)
+			return new TileEntityEnergyStorageModule();
+		else if (metadata == 8)
+			return new TileEntityElectricFurnace();
 		else
 		{
 			return new TileEntityCoalGenerator();

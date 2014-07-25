@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -42,10 +41,7 @@ public class ItemBlockMachine extends ItemBlock
 
 		if (this.field_150939_a == GCBlocks.machineBase)
 		{
-			if (typenum == BlockMachine.COMPRESSOR_METADATA)
-			{
-				index = 3;
-			}
+			index = typenum / 4;
 		}
 		else if (this.field_150939_a == GCBlocks.machineTiered)
 		{
