@@ -53,9 +53,9 @@ public class BlockMachineMarsT2 extends BlockTileGC
 		this.blockIcon = par1IconRegister.registerIcon("galacticraftasteroids:machine");
 		this.iconInput = par1IconRegister.registerIcon("galacticraftasteroids:machine_input");
 
-		this.iconMachineSide = par1IconRegister.registerIcon("galacticraftasteroids:machine_side");
-		this.iconGasInput = par1IconRegister.registerIcon("galacticraftasteroids:machine_oxygen_input");
-		this.iconGasOutput = par1IconRegister.registerIcon("galacticraftasteroids:machine_oxygen_output");
+		this.iconMachineSide = par1IconRegister.registerIcon("galacticraftasteroids:machine_side_warning");
+		this.iconGasInput = par1IconRegister.registerIcon("galacticraftasteroids:machine_oxygen_input_warning");
+		this.iconGasOutput = par1IconRegister.registerIcon("galacticraftasteroids:machine_oxygen_output_warning");
 		this.iconGasLiquefier = par1IconRegister.registerIcon("galacticraftasteroids:gasLiquefier");
 		this.iconMethaneSynthesizer = par1IconRegister.registerIcon("galacticraftasteroids:methaneSynthesizer");
 		this.iconElectrolyzer = par1IconRegister.registerIcon("galacticraftasteroids:electrolyzer");

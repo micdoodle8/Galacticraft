@@ -17,6 +17,7 @@ public class AsteroidBlocks
 	public static Block beamReceiver;
 	public static Block shortRangeTelepad;
     public static Block fakeTelepad;
+    public static Block treasureChestTier3;
 
 	public static void initBlocks()
 	{
@@ -29,6 +30,7 @@ public class AsteroidBlocks
 		AsteroidBlocks.beamReceiver = new BlockBeamReceiver("beamReceiver");
 		AsteroidBlocks.shortRangeTelepad = new BlockShortRangeTelepad("telepadShort");
 		AsteroidBlocks.fakeTelepad = new BlockTelepadFake("telepadFake");
+		AsteroidBlocks.treasureChestTier3 = new BlockTier3TreasureChest("treasureT3");
 	}
 
 	public static void registerBlocks()
@@ -42,5 +44,6 @@ public class AsteroidBlocks
 		GameRegistry.registerBlock(AsteroidBlocks.beamReceiver, ItemBlockGC.class, AsteroidBlocks.beamReceiver.getUnlocalizedName());
 		GameRegistry.registerBlock(AsteroidBlocks.shortRangeTelepad, ItemBlockShortRangeTelepad.class, AsteroidBlocks.shortRangeTelepad.getUnlocalizedName());
 		GameRegistry.registerBlock(AsteroidBlocks.fakeTelepad, ItemBlockGC.class, AsteroidBlocks.fakeTelepad.getUnlocalizedName());
+		GameRegistry.registerBlock(AsteroidBlocks.treasureChestTier3, ItemBlockGC.class, AsteroidBlocks.treasureChestTier3.getUnlocalizedName());
 	}
 }

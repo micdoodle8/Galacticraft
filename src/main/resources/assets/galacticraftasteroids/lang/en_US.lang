@@ -47,6 +47,7 @@ tile.telepadShort.name=Short Range Telepad
 tile.walkway.name=Walkway
 tile.walkwayWire.name=Walkway
 tile.walkwayOxygenPipe.name=Walkway
+tile.treasureT3.name=Tier 3 Treasure Chest
 
 # Fluids and gases
 fluid.methane.name=Methane Gas

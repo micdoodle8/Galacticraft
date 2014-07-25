@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.fx.EntityFXTeleport;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.gui.GuiShortRangeTelepad;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.block.BlockRendererTier3TreasureChest;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.block.BlockRendererWalkway;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity.RenderEntryPod;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity.RenderGrapple;
@@ -32,6 +33,8 @@ import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityTreasureChestAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEntityTreasureChestRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
@@ -50,6 +53,7 @@ import java.util.List;
 public class AsteroidsModuleClient implements IPlanetsModuleClient
 {
 	private static int walkwayRenderID;
+	private static int treasureChestID;
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
@@ -62,6 +66,8 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 	{
 		AsteroidsModuleClient.walkwayRenderID = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(new BlockRendererWalkway(AsteroidsModuleClient.walkwayRenderID));
+		AsteroidsModuleClient.treasureChestID = RenderingRegistry.getNextAvailableRenderId();
+		RenderingRegistry.registerBlockHandler(new BlockRendererTier3TreasureChest(AsteroidsModuleClient.treasureChestID));
 		AsteroidsEventHandlerClient clientEventHandler = new AsteroidsEventHandlerClient();
 		FMLCommonHandler.instance().bus().register(clientEventHandler);
 		MinecraftForge.EVENT_BUS.register(clientEventHandler);
@@ -87,6 +93,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReflector.class, new TileEntityBeamReflectorRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReceiver.class, new TileEntityBeamReceiverRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityShortRangeTelepad.class, new TileEntityShortRangeTelepadRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChestAsteroids.class, new TileEntityTreasureChestRenderer());
 	}
 
 	@Override
@@ -122,6 +129,11 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 		{
 			return AsteroidsModuleClient.walkwayRenderID;
 		}
+
+        if (block == AsteroidBlocks.treasureChestTier3)
+        {
+            return AsteroidsModuleClient.treasureChestID;
+        }
 
 		return 0;
 	}
