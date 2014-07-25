@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityTier3Rocket;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -143,7 +144,7 @@ public class ItemTier3Rocket extends Item implements IHoldableItem
 
 		if (type.getPreFueled())
 		{
-			par2List.add(EnumColor.RED + "\u00a7o" + "Creative Only");
+			par2List.add(EnumColor.RED + "\u00a7o" + GCCoreUtil.translate("gui.creativeOnly.desc"));
 		}
 	}
 
