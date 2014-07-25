@@ -63,6 +63,9 @@ fluid.fuel.name=Топливо
 
 # GUI
 planet.asteroids=Астероиды
+
+	# Dollar sign ($) will split text onto a new line
+	# Do not remove %s or %d, since that will be replaced in-game
 gui.telepad.desc.0=Это уникальный адрес$телепорта
 gui.telepad.desc.1=Адрес другого телепорта.$Сущности будут отправляться туда.
 gui.message.address.name=Адрес
@@ -77,9 +80,6 @@ gui.message.sendingActive.name=Отправка начата
 gui.message.range.name=Дальность: %dm
 gui.message.notEnoughEnergy.name=Недостаточно энергии!
 gui.message.targetNoEnergy.name=У цели не хватает энергии!
-
-# CREATIVE TAB
-itemGroup.GalacticraftAsteroids=Galacticraft: Астероиды
 
 # SCHEMATICS
 
