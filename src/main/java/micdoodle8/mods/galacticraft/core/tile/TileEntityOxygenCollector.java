@@ -23,7 +23,6 @@ import java.util.EnumSet;
 
 public class TileEntityOxygenCollector extends TileEntityOxygen implements IInventory, ISidedInventory
 {
-	public boolean active;
 	public static final int WATTS_PER_TICK = 1;
 	public static final int OUTPUT_PER_TICK = 100;
 	@NetworkedField(targetSide = Side.CLIENT)
