@@ -37,7 +37,7 @@ public class TileEntitySolar extends TileEntityUniversalElectricalSource impleme
 	public float targetAngle;
 	public float currentAngle;
 	@NetworkedField(targetSide = Side.CLIENT)
-	public boolean disabled = false;
+	public boolean disabled = true;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int disableCooldown = 0;
 	private ItemStack[] containingItems = new ItemStack[1];
