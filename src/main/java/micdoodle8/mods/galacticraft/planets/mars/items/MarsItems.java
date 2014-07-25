@@ -57,6 +57,7 @@ public class MarsItems
 
 	private static void registerItems()
 	{
+		MarsItems.registerItem(MarsItems.carbonFragments);
 		MarsItems.registerItem(MarsItems.marsItemBasic);
 		MarsItems.registerItem(MarsItems.deshPickaxe);
 		MarsItems.registerItem(MarsItems.deshAxe);
@@ -70,7 +71,6 @@ public class MarsItems
 		MarsItems.registerItem(MarsItems.spaceship);
 		MarsItems.registerItem(MarsItems.key);
 		MarsItems.registerItem(MarsItems.schematic);
-		MarsItems.registerItem(MarsItems.carbonFragments);
 	}
 
 	private static void registerItem(Item item)
