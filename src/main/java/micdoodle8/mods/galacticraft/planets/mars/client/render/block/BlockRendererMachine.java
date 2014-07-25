@@ -2,10 +2,12 @@ package micdoodle8.mods.galacticraft.planets.mars.client.render.block;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;
+
 import org.lwjgl.opengl.GL11;
 
 public class BlockRendererMachine implements ISimpleBlockRenderingHandler
@@ -22,17 +24,13 @@ public class BlockRendererMachine implements ISimpleBlockRenderingHandler
 		par1Block.setBlockBoundsBasedOnState(iblockaccess, x, y, z);
 		renderBlocks.setRenderBoundsFromBlock(par1Block);
 
-		int metadata = iblockaccess.getBlockMetadata(x, y, z);
+		int metadata = iblockaccess.getBlockMetadata(x, y, z) & 12;
 
-		if (metadata >= BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
+		if (metadata == BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && par1Block == MarsBlocks.machine)
 		{
-			renderBlocks.renderStandardBlock(par1Block, x, y, z);
+			
 		}
-		else if (metadata >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
-		{
-
-		}
-		else if (metadata >= BlockMachineMars.TERRAFORMER_METADATA)
+		else
 		{
 			renderBlocks.renderStandardBlock(par1Block, x, y, z);
 		}

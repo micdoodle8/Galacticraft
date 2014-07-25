@@ -88,14 +88,14 @@ public class TileEntityMethaneSynthesizer extends ElectricBlockWithInventory imp
 					if (this.gasTank2.getFluidAmount() < this.gasTank2.getCapacity())
 					{
 						FluidStack gcAtmosphere = FluidRegistry.getFluidStack("carbondioxide", 4);
-						this.gasTank.fill(gcAtmosphere, true);
+						this.gasTank2.fill(gcAtmosphere, true);
 					}
 				}
 			}
 			
 
 			//Now see if any methane from the methane tank needs to be put into the output slot
-			checkFluidTankTransfer(3, this.liquidTank);
+			checkFluidTankTransfer(4, this.liquidTank);
 
 			if (this.hasEnoughEnergyToRun && this.canProcess())
 			{
@@ -236,7 +236,7 @@ public class TileEntityMethaneSynthesizer extends ElectricBlockWithInventory imp
 		if (fuelSpace > 0)
 		{
 			if (amountToDrain > fuelSpace) amountToDrain = fuelSpace;
-			this.liquidTank.fill(FluidRegistry.getFluidStack("carbondioxide", amountToDrain), true);
+			this.liquidTank.fill(FluidRegistry.getFluidStack("methane", amountToDrain), true);
 		} else
 			amountToDrain = 0;
 		
@@ -312,7 +312,7 @@ public class TileEntityMethaneSynthesizer extends ElectricBlockWithInventory imp
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return new int[] { 0, 1, 2, 3 };
+		return new int[] { 0, 1, 2, 3, 4 };
 	}
 
 	@Override
@@ -461,11 +461,11 @@ public class TileEntityMethaneSynthesizer extends ElectricBlockWithInventory imp
 	{
 		FluidTankInfo[] tankInfo = new FluidTankInfo[] {};
 
-		if (from == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite())
+		if (from == ForgeDirection.getOrientation(this.getBlockMetadata() + 2))
 		{
 			tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.gasTank) };
 		}
-		else if (from == ForgeDirection.getOrientation(this.getBlockMetadata() + 2))
+		else if (from == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite())
 		{
 			tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.liquidTank) };
 		}

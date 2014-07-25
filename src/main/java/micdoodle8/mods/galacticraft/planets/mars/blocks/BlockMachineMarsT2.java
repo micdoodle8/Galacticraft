@@ -30,8 +30,8 @@ import java.util.Random;
 public class BlockMachineMarsT2 extends BlockTileGC
 {
 	public static final int GAS_LIQUEFIER = 0;
-	public static final int METHANE_SYNTHESIZER = 0;
-	public static final int ELECTROLYZER = 0;
+	public static final int METHANE_SYNTHESIZER = 4;
+	public static final int ELECTROLYZER = 8;
 
 	private IIcon iconMachineSide;
 	private IIcon iconInput;
@@ -104,7 +104,7 @@ public class BlockMachineMarsT2 extends BlockTileGC
 
 			//2->5 3->4 4->2 5->3
 			if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == side)
-				return this.iconGasLiquefier;		
+				return this.iconMethaneSynthesizer;		
 		} else if (metadata == BlockMachineMarsT2.ELECTROLYZER)
 		{
 			if (side == (metaside ^ 1))
@@ -112,7 +112,7 @@ public class BlockMachineMarsT2 extends BlockTileGC
 	
 			//2->5 3->4 4->2 5->3
 			if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == side)
-				return this.iconGasLiquefier;
+				return this.iconElectrolyzer;
 		}	
 		
 		return this.iconMachineSide;	

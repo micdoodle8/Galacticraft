@@ -2,22 +2,31 @@ package micdoodle8.mods.galacticraft.planets.mars.tile;
 
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
+import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.core.tile.ElectricBlockWithInventory;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileEntityElectrolyzer extends ElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandler
 {
+	private final int tankCapacity = 4000;
+
+	@NetworkedField(targetSide = Side.CLIENT)
+	public FluidTank gasTank = new FluidTank(this.tankCapacity);
+
 	public int processTimeRequired = 3;
 	@NetworkedField(targetSide = Side.CLIENT)
 	public int processTicks = 0;
-	
+	private ItemStack[] containingItems = new ItemStack[1];
+
 	public TileEntityElectrolyzer()
 	{
 		this.storage.setMaxExtract(60);
@@ -61,101 +70,144 @@ public class TileEntityElectrolyzer extends ElectricBlockWithInventory implement
 	}
 
 	@Override
-	public String getInventoryName()
+	protected ItemStack[] getContainingItems()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return this.containingItems;
 	}
 
 	@Override
 	public boolean hasCustomInventoryName()
 	{
-		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public String getInventoryName()
+	{
+		return GCCoreUtil.translate("tile.marsMachine.6.name");
+	}
+
+	// ISidedInventory Implementation:
+
+	@Override
+	public int[] getAccessibleSlotsFromSide(int side)
+	{
+		return new int[] { 0 };
+	}
+
+	@Override
+	public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
+	{
+		if (this.isItemValidForSlot(slotID, itemstack))
+		{
+			switch (slotID)
+			{
+			case 0:
+				return ItemElectric.isElectricItem(itemstack.getItem());
+			default:
+				return false;
+			}
+		}
 		return false;
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int var1, ItemStack var2)
+	public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
 	{
-		// TODO Auto-generated method stub
+		if (this.isItemValidForSlot(slotID, itemstack))
+		{
+			switch (slotID)
+			{
+			case 0:
+				return itemstack.getItem() instanceof ItemElectric && ((ItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
+			default:
+				return false;
+			}
+		}
 		return false;
 	}
 
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
+	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		switch (slotID)
+		{
+		case 0:
+			return ItemElectric.isElectricItem(itemstack.getItem());
+		}
+
+		return false;
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource,
-			boolean doDrain)
+	public boolean shouldUseEnergy()
 	{
-		// TODO Auto-generated method stub
+		return this.canProcess();
+	}
+
+	@Override
+	public double getPacketRange()
+	{
+		return 320.0D;
+	}
+
+	@Override
+	public ForgeDirection getElectricInputDirection()
+	{
+		return ForgeDirection.DOWN;
+	}
+
+	@Override
+	public boolean canDrain(ForgeDirection from, Fluid fluid)
+	{
+		return false;
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
+	{
 		return null;
 	}
 
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid)
 	{
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid)
+	public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
 	{
-		// TODO Auto-generated method stub
-		return false;
+		return 0;
 	}
 
 	@Override
 	public FluidTankInfo[] getTankInfo(ForgeDirection from)
 	{
-		// TODO Auto-generated method stub
-		return null;
-	}
+		FluidTankInfo[] tankInfo = new FluidTankInfo[] {};
 
-	@Override
-	public int[] getAccessibleSlotsFromSide(int var1)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
+		if (from == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite())
+		{
+			tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.gasTank) };
+		}
 
-	@Override
-	public boolean canInsertItem(int var1, ItemStack var2, int var3)
-	{
-		// TODO Auto-generated method stub
-		return false;
+		return tankInfo;
 	}
+	
+	@Override
+    public int getBlockMetadata()
+    {
+        if (this.blockMetadata == -1)
+        {
+            this.blockMetadata = 3 & this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
+        }
 
-	@Override
-	public boolean canExtractItem(int var1, ItemStack var2, int var3)
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	protected ItemStack[] getContainingItems()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean shouldUseEnergy()
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
+        return this.blockMetadata;
+    }
 }

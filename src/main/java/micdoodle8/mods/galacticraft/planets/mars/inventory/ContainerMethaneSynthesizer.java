@@ -23,7 +23,7 @@ public class ContainerMethaneSynthesizer extends Container
 		this.tileEntity = tileEntity;
 
 		// Electric Input Slot
-		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 54, 53, ItemElectric.class));
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 55, 53, ItemElectric.class));
 
 		// Input slot - hydrogen
 		this.addSlotToContainer(new Slot(tileEntity, 1, 7, 7));
@@ -105,7 +105,7 @@ public class ContainerMethaneSynthesizer extends Container
 					FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(var4);
 					if (liquid != null || var4.getItem() instanceof ItemAtmosphericValve)
 					{
-						if (!this.mergeItemStack(var4, 1, 3, false))
+						if (!this.mergeItemStack(var4, 2, 3, false))
 						{
 							return null;
 						}
