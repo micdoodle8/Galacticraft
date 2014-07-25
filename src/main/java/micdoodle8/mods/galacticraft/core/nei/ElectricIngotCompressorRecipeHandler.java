@@ -7,6 +7,7 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -203,4 +204,9 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
 	{
         return GalacticraftCore.TEXTURE_PREFIX + "textures/gui/electric_IngotCompressor.png";
 	}
+	
+	@Override
+    public void drawForeground(int recipe)
+	{
+    }
 }

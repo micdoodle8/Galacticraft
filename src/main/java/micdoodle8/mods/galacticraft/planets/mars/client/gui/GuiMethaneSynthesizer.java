@@ -90,7 +90,17 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
 		fuelSlotDesc = new ArrayList<String>();
 		fuelSlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.hydrogenInput.desc.0"));
 		fuelSlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.hydrogenInput.desc.1"));
+		fuelSlotDesc.add("(" + GCCoreUtil.translate("gui.message.withAtmosphere0.name"));
+		fuelSlotDesc.add(GCCoreUtil.translate("fluid.hydrogen.name"));
+		fuelSlotDesc.add(GCCoreUtil.translate("gui.message.withAtmosphere1.name")+")");
 		this.infoRegions.add(new GuiElementInfoRegion(edgeLeft + 6, edgeTop + 6, 18, 18, fuelSlotDesc, this.width, this.height, this));
+
+		fuelSlotDesc = new ArrayList<String>();
+		fuelSlotDesc.add(GCCoreUtil.translate("item.atmosphericValve.name"));
+		fuelSlotDesc.add("(" + GCCoreUtil.translate("gui.message.withAtmosphere0.name"));
+		fuelSlotDesc.add(GCCoreUtil.translate("gas.carbondioxide.name"));
+		fuelSlotDesc.add(GCCoreUtil.translate("gui.message.withAtmosphere1.name")+")");
+		this.infoRegions.add(new GuiElementInfoRegion(edgeLeft + 27, edgeTop + 6, 18, 18, fuelSlotDesc, this.width, this.height, this));
 
 		this.electricInfoRegion.xPosition = edgeLeft + 66;
 		this.electricInfoRegion.yPosition = edgeTop + 16;
@@ -201,6 +211,7 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
 		this.gasTankRegion.tooltipStrings = gasTankDesc;
 
 		gasTankDesc = new ArrayList<String>();
+		gasTankDesc.add(GCCoreUtil.translate("gas.carbondioxide.name"));
 		gasTankDesc.add(GCCoreUtil.translate("gui.gasTank.desc.0"));
 		gasTankContents = this.tileEntity.gasTank2 != null ? this.tileEntity.gasTank2.getFluid() : null;
 		if (gasTankContents != null)
@@ -218,7 +229,7 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
 		this.gasTank2Region.tooltipStrings = gasTankDesc;
 
 		List<String> fuelTankDesc = new ArrayList<String>();
-		fuelTankDesc.add(GCCoreUtil.translate("gui.liquidTank.desc.0"));
+		fuelTankDesc.add(GCCoreUtil.translate("gui.gasTank.desc.0"));
 		gasTankContents = this.tileEntity.liquidTank != null ? this.tileEntity.liquidTank.getFluid() : null;
 		if (gasTankContents != null)
 		{

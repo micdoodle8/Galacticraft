@@ -55,7 +55,7 @@ public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
 		GuiDraw.changeTexture(MethaneSynthesizerRecipeHandler.synthesizerGuiTexture);
-		GuiDraw.drawTexturedModalRect(-2, 0, 3, 4, 168, 64);
+		GuiDraw.drawTexturedModalRect(-2, 0, 3, 4, 168, 66);
 
 		if (progress <= 40)
 		{
@@ -84,9 +84,11 @@ public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
 		{
 			String gasname = GCCoreUtil.translate("gas.carbondioxide.name");
 			String text1 = " * " + GCCoreUtil.translate("gui.message.withAtmosphere0.name");
-			String text2 = gasname + " " + GCCoreUtil.translate("gui.message.withAtmosphere1.name");
-			this.fontRendererObj.drawString(text1, 16, 93, 4210752);
-			this.fontRendererObj.drawString(text2, 16, 103, 4210752);
+			String text2 = " " + gasname;
+			String text3 = GCCoreUtil.translate("gui.message.withAtmosphere1.name");
+			this.fontRendererObj.drawString(text1, 0, 83, 4210752);
+			this.fontRendererObj.drawString(text2, 14, 93, 4210752);
+			this.fontRendererObj.drawString(text3, 14, 103, 4210752);
 		}
 	}
 
@@ -219,6 +221,11 @@ public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
 	@Override
 	public String getGuiTexture()
 	{
-		return MarsModule.ASSET_PREFIX + "textures/gui/methaneSynthesizer.png";
+		return MarsModule.ASSET_PREFIX + "/textures/gui/methaneSynthesizer.png";
 	}
+
+	@Override
+    public void drawForeground(int recipe)
+	{
+    }
 }

@@ -5,9 +5,9 @@ import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
-import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -144,4 +144,9 @@ public class RocketT3RecipeHandler extends TemplateRecipeHandler
 	{
 		return AsteroidsModule.TEXTURE_PREFIX + "textures/gui/schematic_rocket_T3.png";
 	}
+	
+	@Override
+    public void drawForeground(int recipe)
+	{
+    }
 }

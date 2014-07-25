@@ -7,6 +7,7 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -143,4 +144,9 @@ public class RocketT2RecipeHandler extends TemplateRecipeHandler
 	{
 		return MarsModule.TEXTURE_PREFIX + "textures/gui/schematic_rocket_T2.png";
 	}
+	
+	@Override
+    public void drawForeground(int recipe)
+	{
+    }
 }

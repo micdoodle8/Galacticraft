@@ -25,9 +25,9 @@ public class EntityFXSmokeSmall extends EntityFX
 		this.motionZ += motion.z;
 		this.particleAlpha = 0.8F;
 		this.particleRed = this.particleGreen = this.particleBlue = (float) (Math.random() * 0.2D) + 0.7F;
-		this.particleScale *= 0.4F;
+		this.particleScale *= 0.3F;
 		this.smokeParticleScale = this.particleScale;
-		this.particleMaxAge = 90;
+		this.particleMaxAge = 110;
 		this.noClip = false;
 	}
 
