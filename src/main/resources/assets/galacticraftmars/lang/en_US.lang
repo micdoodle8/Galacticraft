@@ -131,17 +131,17 @@ gui.desc.reinforcedPlateT2.name=Tier 2
 dimension.Mars.name=Mars
 planet.mars=Mars
 
-# Schematics
+# SCHEMATICS
 schematic.rocketT3.name=Tier 3 Rocket
 schematic.cargoRocket.name=Automatic Cargo Rocket
 
-# Entities
+# ENTITIES
 entity.Sludgeling.name=Sludgeling
 entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Evolved Creeper Boss
 entity.SpaceshipT2.name=Tier 2 Rocket
 entity.CargoRocket.name=Cargo Rocket
 
-# Container
+# CONTAINERS
 container.launchcontroller.name=Launch Controller
 container.tileTerraformer.name=Terraformer
