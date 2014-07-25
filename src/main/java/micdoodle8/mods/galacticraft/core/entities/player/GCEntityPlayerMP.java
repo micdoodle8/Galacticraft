@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import com.mojang.authlib.GameProfile;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
@@ -30,6 +31,8 @@ import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
+import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemArmorAsteroids;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -837,6 +840,38 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 	{
 		return GCPlayerStats.get(this);
 	}
+
+	@Override
+	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
+    {
+		if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
+		{
+			if (par1DamageSource == DamageSource.outOfWorld)
+	    	{
+	    		if (this.worldObj.provider instanceof WorldProviderAsteroids)
+	    		{
+	    			if (this.posY > -120D) return false;
+	    			if (this.posY > -180D) par2 /= 2;
+	    		}
+	    	}          	
+	    	else if (par1DamageSource == DamageSource.fall || par1DamageSource == DamageSourceGC.spaceshipCrash)
+	    	{
+	    		int titaniumCount = 0;
+	    		for (int i = 0; i < 4; i++)
+	    		{
+	    			Item armorPiece = this.inventory.armorInventory[i].getItem();
+	    			if (armorPiece instanceof ItemArmorAsteroids)
+	    			{
+	    				titaniumCount++;
+	    			}
+	    		}
+	    		if (titaniumCount == 4) titaniumCount = 5;
+	    		par2 *= (1 - 0.15D * titaniumCount);
+	    	}
+		}
+
+        return super.attackEntityFrom(par1DamageSource, par2);
+    }
 
 	public static enum EnumModelPacket
 	{
