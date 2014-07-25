@@ -63,12 +63,6 @@ public class TileEntityElectricFurnace extends ElectricBlockWithInventory implem
 	}
 
 	@Override
-	public void validate()
-	{
-		super.validate();
-	}
-
-	@Override
 	public void updateEntity()
 	{
 		if (!this.initialised )
@@ -79,7 +73,6 @@ public class TileEntityElectricFurnace extends ElectricBlockWithInventory implem
 			if (b == GCBlocks.machineBase)
 			{
 				this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, GCBlocks.machineTiered, 4, 2);
-				//TickHandlerServer.scheduleNewBlockChange(this.worldObj.provider.dimensionId, new ScheduledBlockChange(new BlockVec3(this.xCoord, this.yCoord, this.zCoord), GCBlocks.machineTiered, 4));
 			}
 			else if (metadata >= 8)
 	        {
