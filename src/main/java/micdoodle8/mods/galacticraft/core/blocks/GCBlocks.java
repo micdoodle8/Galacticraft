@@ -1,8 +1,12 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.items.*;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockTier3TreasureChest;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockTier2TreasureChest;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -19,6 +23,8 @@ public class GCBlocks
 	public static Block brightBreatheableAir;
 	public static Block brightLamp;
 	public static Block treasureChestTier1;
+	public static Block treasureChestTier2;
+	public static Block treasureChestTier3;
 	public static Block landingPad;
 	public static Block unlitTorch;
 	public static Block unlitTorchLit;
@@ -64,6 +70,11 @@ public class GCBlocks
 		GCBlocks.brightBreatheableAir = new BlockBrightBreathableAir("brightBreathableAir");
 		GCBlocks.brightLamp = new BlockBrightLamp("arclamp");
 		GCBlocks.treasureChestTier1 = new BlockT1TreasureChest("treasureChest");
+		if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
+		{
+			GCBlocks.treasureChestTier2 = new BlockTier2TreasureChest("treasureT2");
+			GCBlocks.treasureChestTier3 = new BlockTier3TreasureChest("treasureT3");
+		}
 		GCBlocks.landingPad = new BlockLandingPad("landingPad");
 		GCBlocks.landingPadFull = new BlockLandingPadFull("landingPadFull");
 		GCBlocks.unlitTorch = new BlockUnlitTorch(false, "unlitTorch");

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockEgg;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMachine;
@@ -26,7 +27,7 @@ public class MarsBlocks
 		MarsBlocks.blockSludge = new BlockSludge().setBlockName("sludge");
 		MarsBlocks.vine = new BlockCavernousVine().setHardness(0.1F).setBlockName("cavernVines");
 		MarsBlocks.rock = new BlockSlimelingEgg().setHardness(0.75F).setBlockName("slimelingEgg");
-		MarsBlocks.tier2TreasureChest = new BlockTier2TreasureChest().setHardness(2.5F).setBlockName("treasureT2");
+		MarsBlocks.tier2TreasureChest = GCBlocks.treasureChestTier2;
 		MarsBlocks.machine = new BlockMachineMars().setHardness(1.8F).setBlockName("marsMachine");
 		MarsBlocks.machineT2 = new BlockMachineMarsT2().setHardness(1.8F).setBlockName("marsMachineT2");
 		MarsBlocks.creeperEgg = new BlockCreeperEgg().setHardness(-1.0F).setBlockName("creeperEgg");

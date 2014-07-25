@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockShortRangeTelepad;
@@ -30,7 +31,7 @@ public class AsteroidBlocks
 		AsteroidBlocks.beamReceiver = new BlockBeamReceiver("beamReceiver");
 		AsteroidBlocks.shortRangeTelepad = new BlockShortRangeTelepad("telepadShort");
 		AsteroidBlocks.fakeTelepad = new BlockTelepadFake("telepadFake");
-		AsteroidBlocks.treasureChestTier3 = new BlockTier3TreasureChest("treasureT3");
+		AsteroidBlocks.treasureChestTier3 = GCBlocks.treasureChestTier3;
 	}
 
 	public static void registerBlocks()

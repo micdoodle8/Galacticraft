@@ -34,11 +34,13 @@ public class BlockTier2TreasureChest extends BlockContainer implements ITileEnti
 {
 	private final Random random = new Random();
 
-	protected BlockTier2TreasureChest()
+	public BlockTier2TreasureChest(String assetName)
 	{
 		super(Material.rock);
+        this.setHardness(2.5F);
 		this.setResistance(10.0F);
 		this.setStepSound(Block.soundTypeStone);
+        this.setBlockName(assetName);
 	}
 
 	@Override

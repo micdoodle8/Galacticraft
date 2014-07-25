@@ -36,10 +36,11 @@ public class BlockT1TreasureChest extends BlockContainer implements ITileEntityP
 	protected BlockT1TreasureChest(String assetName)
 	{
 		super(Material.rock);
+		this.setHardness(2.5F);
 		this.setResistance(10.0F);
 		this.setStepSound(Block.soundTypeStone);
-		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 		this.setBlockName(assetName);
+		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
 	}
 
 	@Override
