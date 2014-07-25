@@ -1147,7 +1147,7 @@ public class GuiCelestialSelection extends GuiScreen
                 if (this.selectedBody.getTierRequirement() >= 0)
                 {
                     boolean canReach;
-                    if (!this.selectedBody.getReachable() || !this.possibleBodies.contains(this.selectedBody))
+                    if (!this.selectedBody.getReachable() || (this.possibleBodies != null && !this.possibleBodies.contains(this.selectedBody)))
                     {
                         canReach = false;
                         GL11.glColor4f(1.0F, 0.0F, 0.0F, 1);
@@ -1172,7 +1172,7 @@ public class GuiCelestialSelection extends GuiScreen
 
                 if (!this.mapMode)
                 {
-                    if (!this.selectedBody.getReachable() || !this.possibleBodies.contains(this.selectedBody))
+                    if (!this.selectedBody.getReachable() || (this.possibleBodies != null && !this.possibleBodies.contains(this.selectedBody)))
                     {
                         GL11.glColor4f(1.0F, 0.0F, 0.0F, 1);
                     }
