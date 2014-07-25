@@ -49,7 +49,7 @@ tile.walkwayWire.name=Walkway
 tile.walkwayOxygenPipe.name=Walkway
 tile.treasureT3.name=Tier 3 Treasure Chest
 
-# Fluids and gases
+# Fluids and Gases
 fluid.methane.name=Methane Gas
 fluid.oxygen.name=Oxygen Gas
 fluid.nitrogen.name=Nitrogen Gas
@@ -68,7 +68,6 @@ planet.asteroids=Asteroids
 	# Do not remove %s or %d, since that will be replaced in-game
 gui.telepad.desc.0=This is the Telepad's$unique address
 gui.telepad.desc.1=Address of another Telepad.$Entities will be sent there.
-container.shortRangeTelepad.name=Short Range Telepad
 gui.message.address.name=Address
 gui.message.destAddress.name=Target Address
 gui.message.invalidAddress.name=Invalid Unique Address
@@ -82,11 +81,12 @@ gui.message.range.name=Range: %dm
 gui.message.notEnoughEnergy.name=Not Enough Energy!
 gui.message.targetNoEnergy.name=Target doesn't have enough Energy!
 
-# Schematics
+# SCHEMATICS
 
-# Entity
+# ENTITIES
 entity.SmallAsteroidGC.name=Small Asteroid
 entity.GrappleHookGC.name=Grapple Hook
 entity.Tier3RocketGC.name=Tier 3 Rocket
 
-# Container
+# CONTAINERS
+container.shortRangeTelepad.name=Short Range Telepad
