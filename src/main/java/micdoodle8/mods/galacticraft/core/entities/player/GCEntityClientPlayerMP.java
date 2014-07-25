@@ -12,7 +12,6 @@ import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockLandingPad;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
@@ -26,7 +25,6 @@ import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
@@ -244,15 +242,6 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 
 		this.lastUsingParachute = this.usingParachute;
 		this.lastOnGround = this.onGround;
-
-		ItemStack gs = this.inventory.getStackInSlot(0);
-		if (gs != null && gs.getItem() instanceof ItemBlockLandingPad && this.worldObj.provider instanceof WorldProviderOrbit)
-		{
-			if (gs.stackSize <= 6)
-			{
-				this.setGravity(Gravity.GDirections[gs.stackSize - 1]);
-			}
-		}
 	}
 
 	@Override

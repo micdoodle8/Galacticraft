@@ -16,7 +16,6 @@ import micdoodle8.mods.galacticraft.api.transmission.grid.ChunkPowerHandler;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
-import micdoodle8.mods.galacticraft.core.atoolkit.ProcessGraphic;
 import micdoodle8.mods.galacticraft.core.blocks.BlockFluidGC;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiHandler;
@@ -286,7 +285,6 @@ public class GalacticraftCore
 		RecipeManagerGC.loadRecipes();
 		NetworkRegistry.INSTANCE.registerGuiHandler(GalacticraftCore.instance, new GuiHandler());
 		FMLCommonHandler.instance().bus().register(new TickHandlerServer());
-		ProcessGraphic.go();
 		GalaxyRegistry.refreshGalaxies();
 	}
 

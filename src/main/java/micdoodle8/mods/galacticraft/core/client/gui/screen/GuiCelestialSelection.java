@@ -5,7 +5,6 @@ import com.google.common.collect.Maps;
 import com.ibm.icu.text.ArabicShaping;
 import com.ibm.icu.text.ArabicShapingException;
 import com.ibm.icu.text.Bidi;
-import cpw.mods.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -336,7 +335,7 @@ public class GuiCelestialSelection extends GuiScreen
 			return;
 		}
 		
-		// Temporarily allow to get to Space Station by pressing 'X'
+/*		// Temporarily allow to get to Space Station by pressing 'X'
 		if (keyID == 45)
 		{
 			final String dimension = WorldProvider.getProviderForDimension(2).getDimensionName();
@@ -347,7 +346,7 @@ public class GuiCelestialSelection extends GuiScreen
 			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_TELEPORT_ENTITY, new Object[] { dimension }));
             this.mc.displayGuiScreen(null);
             this.mc.setIngameFocus();
-		}
+		}*/
 	}
 
 	private void unselectCelestialBody()
