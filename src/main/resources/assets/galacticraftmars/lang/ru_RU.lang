@@ -6,7 +6,7 @@ item.deshStick.name=Палка из деш
 item.ingotDesh.name=Слиток деш
 item.spaceshipTier2.t2Rocket.name=Ракета 2-го уровня
 item.reinforcedPlateT2.name=Сверхпрочное покрытие
-item.tier2.desc=Tier 2
+item.tier2.desc=2-ой уровень
 item.slimelingCargo.name=Сумка слаймлинга
 item.key.T2.name=Ключ от подземелья 2-го уровня
 item.compressedDesh.name=Сжатая деш
@@ -43,9 +43,9 @@ tile.slimelingEgg.yellowEgg.name=Жёлтое яйцо слаймлинга
 tile.marsMachine.0.name=Терраформер
 tile.marsMachine.1.name=Криогенная камера
 tile.marsMachine.2.name=Контроллер запуска
-tile.marsMachine.4.name=Gas Liquefier ##NEEDS TRANSLATE##
-tile.marsMachine.5.name=Methane Synthesizer ##NEEDS TRANSLATE##
-tile.marsMachine.6.name=Water Electrolyzer ##NEEDS TRANSLATE##
+tile.marsMachine.4.name=Сжижитель газа
+tile.marsMachine.5.name=Синтезатор метана
+tile.marsMachine.6.name=Электролизёр воды
 tile.sludge.name=Бактериальный осадок
 tile.creeperEgg.name=Яйцо крипера
 tile.cavernVines.name=Пещерные лианы
@@ -97,50 +97,51 @@ gui.message.redstoneSig.name=сигнал красного камня
 gui.message.notSet.name=не указано
 gui.message.notEnough.name=Недостаточно
 gui.message.success.name=Успех
-gui.launchController.desc.0=This is the Launch Controller's$unique frequency ##NEEDS TRANSLATE##
-gui.launchController.desc.1=Frequency to launch rockets towards ##NEEDS TRANSLATE##
-gui.launchController.desc.2=Whether the launch pad should$be removed on launch ##NEEDS TRANSLATE##
-gui.launchController.desc.3=When this criteria is met,$rocket will launch ##NEEDS TRANSLATE##
-gui.terraformer.desc.0=Water Tank ##NEEDS TRANSLATE##
-gui.gasTank.desc.0=Gas storage ##NEEDS TRANSLATE##
-gui.liquidTank.desc.0=Liquid Tank ##NEEDS TRANSLATE##
-gui.status.nogas.name=No gas ##NEEDS TRANSLATE##
-gui.status.liquefying.name=Liquefying ##NEEDS TRANSLATE##
-gui.status.needsCarbon.name=Needs carbon ##NEEDS TRANSLATE##
-gui.message.lowEnergy.name=Low energy ##NEEDS TRANSLATE##
-gui.button.liquefy.name=Process ##NEEDS TRANSLATE##
-gui.button.liquefyStop.name=Stop ##NEEDS TRANSLATE##
-gui.gasInput.desc.0=Try placing a Methane$Gas Canister here ##NEEDS TRANSLATE##
-gui.gasInput.desc.1=(Perhaps alternatively,$an Atmospheric Valve) ##NEEDS TRANSLATE##
-gui.hydrogenInput.desc.0=This takes a hydrogen tank ##NEEDS TRANSLATE##
-gui.hydrogenInput.desc.1=or an Atmospheric Valve ##NEEDS TRANSLATE##
-gui.liquidOutput.desc.2=liquefied gas tank ##NEEDS TRANSLATE##
-gui.methaneOutput.desc.2=methane tank ##NEEDS TRANSLATE##
-gui.message.withAtmosphere0.name=on a planet with plenty of ##NEEDS TRANSLATE##
-gui.message.withAtmosphere1.name=in the atmosphere ##NEEDS TRANSLATE##
-item.carbonFragments.name=Fragmented Carbon ##NEEDS TRANSLATE##
-gas.carbondioxide.name=Carbon Dioxide ##NEEDS TRANSLATE##
-gas.oxygen.name=Oxygen ##NEEDS TRANSLATE##
-gas.nitrogen.name=Nitrogen ##NEEDS TRANSLATE##
 
-gui.desc.reinforcedPlateT2.name=2 уровень
+	# Dollar sign ($) will split text onto a new line
+gui.launchController.desc.0=Это уникальная частота$контроллера запуска
+gui.launchController.desc.1=Частота для запуска ракет по направлению
+gui.launchController.desc.2=Взлётная площадка должна быть$удалена при запуске
+gui.launchController.desc.3=Когда это условие выполняется,$ракета запускается
 
-itemGroup.GalacticraftMars=Galacticraft: Марс
+gui.terraformer.desc.0=Водный резервуар
+gui.gasTank.desc.0=Хранилище газа
+gui.liquidTank.desc.0=Жидкостный резервуар
+gui.status.nogas.name=Нет газа
+gui.status.liquefying.name=Сжижение
+gui.status.needsCarbon.name=Нужен уголь
+gui.message.lowEnergy.name=Мало энергии
+gui.button.liquefy.name=Запуск
+gui.button.liquefyStop.name=Стоп
+gui.gasInput.desc.0=Попробуйте поместить сюда$канистру с метаном
+gui.gasInput.desc.1=(Или в качестве альтернативы,$атмосферный клапан)
+gui.hydrogenInput.desc.0=Сюда помещается резервуар с водородом
+gui.hydrogenInput.desc.1=или атмосферный клапан
+gui.liquidOutput.desc.2=резервуар сжиженного газа
+gui.methaneOutput.desc.2=резервуар метана
+gui.message.withAtmosphere0.name=на планете с большим количеством
+gui.message.withAtmosphere1.name=в атмосфере
+item.carbonFragments.name=Раздробленный уголь
 
+gas.carbondioxide.name=Углекислый газ
+gas.oxygen.name=Кислород
+gas.nitrogen.name=Азот
+
+gui.desc.reinforcedPlateT2.name=2-ой уровень
 dimension.Mars.name=Марс
 planet.mars=Марс
 
-# Schematics
+# SCHEMATICS
 schematic.rocketT3.name=Ракета 3-го уровня
 schematic.cargoRocket.name=Автоматическая грузовая ракета
 
-# Entities
+# ENTITIES
 entity.Sludgeling.name=Сладжлинг
 entity.Slimeling.name=Слаймлинг
 entity.CreeperBoss.name=Эволюционировавший крипер-босс
 entity.SpaceshipT2.name=Ракета 2-го уровня
 entity.CargoRocket.name=Грузовая ракета
 
-# Container
+# CONTAINERS
 container.launchcontroller.name=Контроллер запуска
 container.tileTerraformer.name=Терраформер
