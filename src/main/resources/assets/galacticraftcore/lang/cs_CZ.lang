@@ -22,7 +22,7 @@ item.rocketFins.name=Raketové Křidélko
 item.noseCone.name=Špička rakety
 item.sensorLens.name=Senzorové čočky
 item.oxygenGear.name=Kyslíková výstroj
-item.flag.name=Flag ##NEEDS TRANSLATE##
+item.flag.name=Vlajka
 item.flag.american.name=Americká vlajka
 item.flag.black.name=Černá vlajka
 item.flag.blue.name=Světle modrá vlajka
@@ -78,12 +78,12 @@ item.basicItem.ingotTin.name=Cínový ingot
 item.basicItem.ingotAluminum.name=Hliníkový ingot
 item.basicItem.ingotSteel.name=Ocelový ingot
 item.basicItem.ingotBronze.name=Bronzový ingot
-item.basicItem.compressedCopper.name=Stlačená měď
-item.basicItem.compressedTin.name=Stlačený cín
-item.basicItem.compressedAluminum.name=Stlačený hliník
-item.basicItem.compressedSteel.name=Stlačená ocel
-item.basicItem.compressedBronze.name=Stlačený bronz
-item.basicItem.compressedIron.name=Stlačené železo
+item.basicItem.compressedCopper.name=Válcovaná měď
+item.basicItem.compressedTin.name=Válcovaný cín
+item.basicItem.compressedAluminum.name=Válcovaný hliník
+item.basicItem.compressedSteel.name=Válcovaná ocel
+item.basicItem.compressedBronze.name=Válcovaný bronz
+item.basicItem.compressedIron.name=Válcované železo
 item.basicItem.waferSolar.name=Modrý solární wafer
 item.basicItem.waferBasic.name=Základní wafer
 item.basicItem.waferAdvanced.name=Pokročilý Wafer
@@ -103,17 +103,17 @@ item.basicItem.frequencyModule.name=Frekvenční modul
 item.standardWrench.name=Standardní klíč
 
 # TOOLS
-item.steel_pickaxe.name=Zesílený krumpáč
-item.steel_axe.name=Zesílená sekera
-item.steel_hoe.name=Zesílená motyka
-item.steel_shovel.name=Zesílená lopata
-item.steel_sword.name=Zesílený meč
+item.steel_pickaxe.name=Ocelový krumpáč
+item.steel_axe.name=Ocelová sekera
+item.steel_hoe.name=Ocelová motyka
+item.steel_shovel.name=Ocelová lopata
+item.steel_sword.name=Ocelový meč
 
 # ARMOR
-item.steel_helmet.name=Zesílená helma
-item.steel_chestplate.name=Zesílený hrudní chránič
-item.steel_leggings.name=Zesílené kalhoty
-item.steel_boots.name=Zesílené boty
+item.steel_helmet.name=Ocelová helma
+item.steel_chestplate.name=Ocelový hrudní chránič
+item.steel_leggings.name=Ocelové kalhoty
+item.steel_boots.name=Ocelové boty
 
 # BLOCKS
 tile.treasureChest.name=Pokladnice
@@ -172,8 +172,8 @@ tile.machine.3.name=Kompresor
 tile.machine2.4.name=Elektrický kompresor
 tile.machine2.5.name=Stroj na výrobu solárních waferů
 tile.machine2.6.name=Zásobárna kyslíku
-tile.machine.7.name=Electric Arc Furnace ##NEEDS TRANSLATE##
-tile.machine.8.name=Energy Storage Cluster ##NEEDS TRANSLATE##
+tile.machine.7.name=Elektrická oblouková pec
+tile.machine.8.name=Energetický Cluster
 tile.aluminumWire.name=Hliníkový vodič
 tile.aluminumWireHeavy.name=Zesílený hliníkový vodič
 tile.glowstoneTorch.name=Pochodeň ze svítícího kamene
@@ -210,8 +210,8 @@ entity.GalacticraftCore.Flag.name=Vlajka
 entity.GalacticraftCore.ParaChest.name=Truhla na padáku
 entity.GalacticraftCore.OxygenBubble.name=Kyslíková bublina
 entity.GalacticraftCore.Lander.name=Přistávací modul
-entity.GalacticraftCore.GCFlag.name=Flag ##NEEDS TRANSLATE##
-entity.GalacticraftCore.MeteorChunk.name=Meteor Chunk ##NEEDS TRANSLATE##
+entity.GalacticraftCore.GCFlag.name=Vlajka
+entity.GalacticraftCore.MeteorChunk.name=Úlomek meteoritu
 
 # Schematics
 schematic.moonbuggy.name=Bugina
@@ -241,8 +241,8 @@ keybind.vehicleleft.name=[GC] Jízda vlevo
 keybind.vehicleright.name=[GC] Jízda vpravo
 keybind.vehicleup.name=[GC] Jízda nehoru
 keybind.vehicledown.name=[GC] Jízda dolu
-itemGroup.GalacticraftBlocks=Galacticraft Blocks ##NEEDS TRANSLATE##
-itemGroup.GalacticraftItems=Galacticraft Items ##NEEDS TRANSLATE##
+itemGroup.GalacticraftBlocks=Galacticraft Bloky
+itemGroup.GalacticraftItems=Galacticraft Předměty
 
 # CREATIVE TABS
 itemGroup.GalacticraftCore=Galacticraft
@@ -283,16 +283,16 @@ gui.message.surfacegravity.name=Gravitace na povrchu
 gui.message.surfacecomposition.name=Složení povrchu
 gui.message.atmosphere.name=Atmosféra
 gui.message.meansurfacetemp.name=Střední teplota na povrchu
-gui.message.energy=Energy ##NEEDS TRANSLATE##
-gui.message.maxEnergy=Max Energy ##NEEDS TRANSLATE##
-gui.message.bubbleVisible.name=Bubble Visible ##NEEDS TRANSLATE##
-gui.message.launch.name=Launch ##NEEDS TRANSLATE##
-gui.message.clickAgain.0.name=Click again to zoom (view moons & satellites) ##NEEDS TRANSLATE##
-gui.message.clickAgain.1.name=Click again to zoom (view moons) ##NEEDS TRANSLATE##
-gui.message.clickAgain.2.name=Click again to zoom (view satellites) ##NEEDS TRANSLATE##
-gui.message.clickAgain.3.name=Click again to zoom ##NEEDS TRANSLATE##
-gui.message.exit.name=Exit ##NEEDS TRANSLATE##
-gui.message.tier.name=Tier %d ##NEEDS TRANSLATE##
+gui.message.energy=Energie
+gui.message.maxEnergy=Plná energie
+gui.message.bubbleVisible.name=Viditelné bubliny
+gui.message.launch.name=Start
+gui.message.clickAgain.0.name=Klikněte znovu pro přiblížení (měsíce a satelity)
+gui.message.clickAgain.1.name=Klikněte znovu pro přiblížení (měsíce)
+gui.message.clickAgain.2.name=Klikněte znovu pro přiblížení (satelity)
+gui.message.clickAgain.3.name=Klikněte znovu pro přiblížení
+gui.message.exit.name=Ukončit
+gui.message.tier.name=Typ %d
 
 gui.status.active.name=Aktivní
 gui.status.missingleaves.name=Nedostatek rostlin
@@ -405,7 +405,7 @@ gui.spacestation.toAllowEntry=aby jste mu umožnil/a vstup na stanici!
 
 gui.skeletonBoss.message=Boss zmizel, neopouštějte místnost během boje! Vstupem do místnosti se boss znovu objeví.
 gui.warning.noroom=Nedostatek místa!
-gui.flag.alreadyPlaced=FVlajka již umístěna!
+gui.flag.alreadyPlaced=Vlajka již umístěna!
 gui.receiver.cannotAttach=Nemohu sem umístit přijímač!
 
 gui.tank.oxygenRemaining=Zásoba kyslíku
@@ -451,8 +451,8 @@ gui.missingCore.name.0=MicdoodleCore nenalezeno ve složce módů.
 gui.missingCore.name.1=Chyba při načítání Galacticraftu
 gui.missingCore.name.2=Ukončete Minecraft a nainstalujte MicdoodleCore
 gui.missingCore.name.3=Klikněte zde pro stažení
-gui.electricCompressor.desc.0=Progress ##NEEDS TRANSLATE##
-gui.showBubble.desc.0=Show Bubble ##NEEDS TRANSLATE##
+gui.electricCompressor.desc.0=Postup
+gui.showBubble.desc.0=Zobrazit bubliny
 
 gui.spaceRace.create.close.name=Zavřít
 gui.spaceRace.create.back.name=Zpět
@@ -485,14 +485,14 @@ dimension.Moon.name=Měsic
 dimension.Sun.name=Slunce
 planet.overworld=Zemský povrh
 moon.moon=Měsic
-galaxy.milkyWay=Milky Way ##NEEDS TRANSLATE##
-solarsystem.sol=Sol ##NEEDS TRANSLATE##
-planet.mercury=Mercury ##NEEDS TRANSLATE##
-planet.venus=Venus ##NEEDS TRANSLATE##
-planet.jupiter=Jupiter ##NEEDS TRANSLATE##
-planet.saturn=Saturn ##NEEDS TRANSLATE##
-planet.uranus=Uranus ##NEEDS TRANSLATE##
-planet.neptune=Neptune ##NEEDS TRANSLATE##
+galaxy.milkyWay=Mléčná dráha
+solarsystem.sol=Solární soustava
+planet.mercury=Merkur
+planet.venus=Venuše
+planet.jupiter=Jupiter
+planet.saturn=Saturn
+planet.uranus=Uran
+planet.neptune=Neptun
  
 gui.message.moon.daynightcycle.0.name=29,5 Pozemského dne
 gui.message.moon.daynightcycle.1.name=
