@@ -119,7 +119,13 @@ gui.hydrogenInput.desc.0=This takes a hydrogen tank
 gui.hydrogenInput.desc.1=or an Atmospheric Valve
 gui.liquidOutput.desc.2=liquefied gas tank
 gui.methaneOutput.desc.2=methane tank
+gui.message.withAtmosphere0.name=on a planet with plenty of
+gui.message.withAtmosphere1.name=in the atmosphere
 item.carbonFragments.name=Fragmented Carbon
+
+gas.carbondioxide.name=Carbon Dioxide
+gas.oxygen.name=Oxygen
+gas.nitrogen.name=Nitrogen
 
 gui.desc.reinforcedPlateT2.name=Tier 2
 dimension.Mars.name=Mars

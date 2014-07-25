@@ -300,7 +300,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 		{
 			final FluidStack liquid = this.fuelTank.getFluid();
 
-			if (liquid != null && this.fuelTank.getFluid() != null && this.fuelTank.getFluid().getFluid().getName().equalsIgnoreCase("Fuel"))
+			if (liquid != null && liquid.getFluid().getName().equalsIgnoreCase("Fuel"))
 			{
 				if (FluidContainerRegistry.isEmptyContainer(this.chestContents[this.chestContents.length - 1]))
 				{

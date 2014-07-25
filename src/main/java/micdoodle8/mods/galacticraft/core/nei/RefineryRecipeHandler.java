@@ -39,18 +39,19 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler
 	@Override
 	public void drawBackground(int i)
 	{
+		int progress = this.ticksPassed % 144; 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GuiDraw.changeTexture(RefineryRecipeHandler.refineryGuiTexture);
 		GuiDraw.drawTexturedModalRect(-2, 0, 3, 4, 168, 64);
-		if (this.ticksPassed % 144 < 124 && this.ticksPassed % 144 > 10)
+		if (progress < 104 && progress > 40)
 		{
 			GuiDraw.drawTexturedModalRect(2, 42, 176, 6, 16, 20);
 		}
-		else if (this.ticksPassed % 144 < 134)
+		else if (progress < 124)
 		{
 			GuiDraw.drawTexturedModalRect(148, 42, 176 + 16, 6, 16, 20);
 		}
-		GuiDraw.drawTexturedModalRect(21, 21, 0, 186, this.ticksPassed % 144, 20);
+		GuiDraw.drawTexturedModalRect(21, 21, 0, 186, progress, 20);
 	}
 
 	@Override
@@ -109,7 +110,7 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler
 	@Override
 	public ArrayList<PositionedStack> getIngredientStacks(int recipe)
 	{
-		if (this.ticksPassed % 144 > 10)
+		if (this.ticksPassed % 144 > 20)
 		{
 			ArrayList<PositionedStack> stacks = new ArrayList<PositionedStack>();
 			stacks.add(new PositionedStack(new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage()), this.arecipes.get(recipe).getIngredients().get(0).relx, this.arecipes.get(recipe).getIngredients().get(0).rely));
@@ -124,7 +125,7 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler
 	@Override
 	public PositionedStack getResultStack(int recipe)
 	{
-		if (this.ticksPassed % 144 < 134)
+		if (this.ticksPassed % 144 < 124)
 		{
 			return new PositionedStack(new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage()), this.arecipes.get(recipe).getResult().relx, this.arecipes.get(recipe).getResult().rely);
 		}
