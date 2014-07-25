@@ -144,7 +144,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace
 	@Override
 	public float getFallDamageModifier()
 	{
-		return 0.38F;
+		return 0.1F;
 	}
 
 	@Override
