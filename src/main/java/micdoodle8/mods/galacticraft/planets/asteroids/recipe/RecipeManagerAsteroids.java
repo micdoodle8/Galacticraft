@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.recipe;
 
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
@@ -57,6 +56,8 @@ public class RecipeManagerAsteroids
         RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 1), new Object[] { "VY ", "XWX", "XZX", 'V', Blocks.stone_button, 'W', new ItemStack(GCItems.canister, 1, 0), 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', Items.flint_and_steel, 'Z', GCItems.oxygenVent });
 
         RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.grapple, 2), new Object[] { "X", "Y", "Z", 'X', Items.iron_ingot, 'Y', Blocks.planks, 'Z', Items.string });
+
+        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.atmosphericValve, 1, 0), new Object[] { "   ", "XYX", " X ", 'X', new ItemStack(MarsItems.marsItemBasic, 1, 2), 'Y', GCItems.oxygenVent });
 
         if (OreDictionary.getOres("ingotTitanium").size() > 0)
         {
