@@ -3,8 +3,13 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -52,13 +57,29 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
         this.initialised = true;
 	}
 
+
+	@Override
+	public void validate()
+	{
+		super.validate();
+	}
+
 	@Override
 	public void updateEntity()
 	{
 		if (!this.initialised )
 		{
 			int metadata = this.getBlockMetadata();
-			if (metadata >= 8)
+			
+			//for version update compatibility
+			Block b = this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord);
+			if (b == GCBlocks.machineBase)
+			{
+				this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, GCBlocks.machineTiered, 0, 2);
+				//TickHandlerServer.scheduleNewBlockChange(this.worldObj.provider.dimensionId, new ScheduledBlockChange(new BlockVec3(this.xCoord, this.yCoord, this.zCoord), GCBlocks.machineTiered, 0));
+			}
+
+			else if (metadata >= 8)
 	        {
 				this.storage.setCapacity(2500000);
 				this.storage.setMaxExtract(1500);
