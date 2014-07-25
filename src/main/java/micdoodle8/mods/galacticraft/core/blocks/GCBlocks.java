@@ -1,12 +1,8 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
-import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.items.*;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockTier3TreasureChest;
-import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockTier2TreasureChest;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -23,8 +19,6 @@ public class GCBlocks
 	public static Block brightBreatheableAir;
 	public static Block brightLamp;
 	public static Block treasureChestTier1;
-	public static Block treasureChestTier2;
-	public static Block treasureChestTier3;
 	public static Block landingPad;
 	public static Block unlitTorch;
 	public static Block unlitTorchLit;
@@ -70,11 +64,6 @@ public class GCBlocks
 		GCBlocks.brightBreatheableAir = new BlockBrightBreathableAir("brightBreathableAir");
 		GCBlocks.brightLamp = new BlockBrightLamp("arclamp");
 		GCBlocks.treasureChestTier1 = new BlockT1TreasureChest("treasureChest");
-		if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
-		{
-			GCBlocks.treasureChestTier2 = new BlockTier2TreasureChest("treasureT2");
-			GCBlocks.treasureChestTier3 = new BlockTier3TreasureChest("treasureT3");
-		}
 		GCBlocks.landingPad = new BlockLandingPad("landingPad");
 		GCBlocks.landingPadFull = new BlockLandingPadFull("landingPadFull");
 		GCBlocks.unlitTorch = new BlockUnlitTorch(false, "unlitTorch");
@@ -137,12 +126,6 @@ public class GCBlocks
 		GCCoreUtil.registerGalacticraftBlock("sealableStonePipePower", GCBlocks.sealableBlock, 11);
 		GCCoreUtil.registerGalacticraftBlock("sealableGoldPipePower", GCBlocks.sealableBlock, 12);
 		GCCoreUtil.registerGalacticraftBlock("copperWire", GCBlocks.aluminumWire);
-		GCCoreUtil.registerGalacticraftBlock("treasureChestTier1", GCBlocks.treasureChestTier1);
-		if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
-		{
-			GCCoreUtil.registerGalacticraftBlock("treasureChestTier2", GCBlocks.treasureChestTier2);
-			GCCoreUtil.registerGalacticraftBlock("treasureChestTier3", GCBlocks.treasureChestTier3);
-		}
 		GCCoreUtil.registerGalacticraftBlock("parachest", GCBlocks.parachest);
 		GCCoreUtil.registerGalacticraftBlock("coalGenerator", GCBlocks.machineBase, 0);
 		GCCoreUtil.registerGalacticraftBlock("solarPanelBasic", GCBlocks.solarPanel, 0);
@@ -164,6 +147,7 @@ public class GCBlocks
 		GCCoreUtil.registerGalacticraftBlock("wireAluminumHeavy", GCBlocks.aluminumWire, 1);
 		GCCoreUtil.registerGalacticraftBlock("spinThruster", GCBlocks.spinThruster);
 		GCCoreUtil.registerGalacticraftBlock("arclamp", GCBlocks.brightLamp);
+		GCCoreUtil.registerGalacticraftBlock("treasureChestTier1", GCBlocks.treasureChestTier1);
 
 		// Hide certain items from NEI
 		GCBlocks.hiddenBlocks.add(GCBlocks.airLockSeal);
@@ -239,12 +223,6 @@ public class GCBlocks
 		GameRegistry.registerBlock(GCBlocks.spaceStationBase, ItemBlockGC.class, GCBlocks.spaceStationBase.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.fakeBlock, ItemBlockDummy.class, GCBlocks.fakeBlock.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.parachest, ItemBlockGC.class, GCBlocks.parachest.getUnlocalizedName());
-		GameRegistry.registerBlock(GCBlocks.treasureChestTier1, ItemBlockGC.class, GCBlocks.treasureChestTier1.getUnlocalizedName());
-		if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
-		{
-			GameRegistry.registerBlock(GCBlocks.treasureChestTier2, ItemBlockGC.class, GCBlocks.treasureChestTier2.getUnlocalizedName());
-			GameRegistry.registerBlock(GCBlocks.treasureChestTier3, ItemBlockGC.class, GCBlocks.treasureChestTier3.getUnlocalizedName());
-		}
 		GameRegistry.registerBlock(GCBlocks.solarPanel, ItemBlockSolar.class, GCBlocks.solarPanel.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.machineBase, ItemBlockMachine.class, GCBlocks.machineBase.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.machineBase2, ItemBlockMachine.class, GCBlocks.machineBase2.getUnlocalizedName());
@@ -256,5 +234,6 @@ public class GCBlocks
 		GameRegistry.registerBlock(GCBlocks.cheeseBlock, ItemBlock.class, GCBlocks.cheeseBlock.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.spinThruster, ItemBlockThruster.class, GCBlocks.spinThruster.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.brightLamp, ItemBlockArclamp.class, GCBlocks.brightLamp.getUnlocalizedName());
+		GameRegistry.registerBlock(GCBlocks.treasureChestTier1, ItemBlockGC.class, GCBlocks.treasureChestTier1.getUnlocalizedName());
 	}
 }

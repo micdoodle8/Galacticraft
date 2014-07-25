@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockShortRangeTelepad;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockTier2TreasureChest;
 import net.minecraft.block.Block;
 
 public class AsteroidBlocks
@@ -18,10 +19,13 @@ public class AsteroidBlocks
 	public static Block beamReceiver;
 	public static Block shortRangeTelepad;
     public static Block fakeTelepad;
+    public static Block treasureChestTier2;
     public static Block treasureChestTier3;
 
 	public static void initBlocks()
 	{
+		AsteroidBlocks.treasureChestTier2 = new BlockTier2TreasureChest("treasureT2");
+		AsteroidBlocks.treasureChestTier3 = new BlockTier3TreasureChest("treasureT3");
 		AsteroidBlocks.blockWalkway = new BlockWalkway("walkway");
 		AsteroidBlocks.blockWalkwayWire = new BlockWalkway("walkwayWire");
 		AsteroidBlocks.blockWalkwayOxygenPipe = new BlockWalkway("walkwayOxygenPipe");
@@ -31,13 +35,14 @@ public class AsteroidBlocks
 		AsteroidBlocks.beamReceiver = new BlockBeamReceiver("beamReceiver");
 		AsteroidBlocks.shortRangeTelepad = new BlockShortRangeTelepad("telepadShort");
 		AsteroidBlocks.fakeTelepad = new BlockTelepadFake("telepadFake");
-		AsteroidBlocks.treasureChestTier3 = GCBlocks.treasureChestTier3;
 		
 		GCBlocks.hiddenBlocks.add(AsteroidBlocks.fakeTelepad);
 	}
 
 	public static void registerBlocks()
 	{
+		GameRegistry.registerBlock(AsteroidBlocks.treasureChestTier2, ItemBlockGC.class, AsteroidBlocks.treasureChestTier2.getUnlocalizedName());
+		GameRegistry.registerBlock(AsteroidBlocks.treasureChestTier3, ItemBlockGC.class, AsteroidBlocks.treasureChestTier3.getUnlocalizedName());
 		GameRegistry.registerBlock(AsteroidBlocks.blockWalkway, ItemBlockGC.class, AsteroidBlocks.blockWalkway.getUnlocalizedName());
 		GameRegistry.registerBlock(AsteroidBlocks.blockWalkwayWire, ItemBlockGC.class, AsteroidBlocks.blockWalkwayWire.getUnlocalizedName());
 		GameRegistry.registerBlock(AsteroidBlocks.blockWalkwayOxygenPipe, ItemBlockGC.class, AsteroidBlocks.blockWalkwayOxygenPipe.getUnlocalizedName());
