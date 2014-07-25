@@ -55,10 +55,9 @@ public class MarsBlocks
 		GameRegistry.registerBlock(MarsBlocks.blockSludge, ItemBlockGC.class, MarsBlocks.blockSludge.getUnlocalizedName());
 		GameRegistry.registerBlock(MarsBlocks.vine, ItemBlockGC.class, MarsBlocks.vine.getUnlocalizedName());
 		GameRegistry.registerBlock(MarsBlocks.rock, ItemBlockEgg.class, MarsBlocks.rock.getUnlocalizedName());
-		GameRegistry.registerBlock(MarsBlocks.tier2TreasureChest, ItemBlockGC.class, MarsBlocks.tier2TreasureChest.getUnlocalizedName());
-		GameRegistry.registerBlock(MarsBlocks.machine, ItemBlockMachine.class, MarsBlocks.machine.getUnlocalizedName());
-		GameRegistry.registerBlock(MarsBlocks.machineT2, ItemBlockMachine.class, MarsBlocks.machineT2.getUnlocalizedName());
 		GameRegistry.registerBlock(MarsBlocks.creeperEgg, ItemBlockGC.class, MarsBlocks.creeperEgg.getUnlocalizedName());
 		GameRegistry.registerBlock(MarsBlocks.tintedGlassPane, ItemBlockTintedGlassPane.class, MarsBlocks.tintedGlassPane.getUnlocalizedName());
+		GameRegistry.registerBlock(MarsBlocks.machine, ItemBlockMachine.class, MarsBlocks.machine.getUnlocalizedName());
+		GameRegistry.registerBlock(MarsBlocks.machineT2, ItemBlockMachine.class, MarsBlocks.machineT2.getUnlocalizedName());
 	}
 }

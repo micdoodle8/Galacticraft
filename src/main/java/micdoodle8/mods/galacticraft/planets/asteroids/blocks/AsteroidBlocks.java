@@ -32,6 +32,8 @@ public class AsteroidBlocks
 		AsteroidBlocks.shortRangeTelepad = new BlockShortRangeTelepad("telepadShort");
 		AsteroidBlocks.fakeTelepad = new BlockTelepadFake("telepadFake");
 		AsteroidBlocks.treasureChestTier3 = GCBlocks.treasureChestTier3;
+		
+		GCBlocks.hiddenBlocks.add(AsteroidBlocks.fakeTelepad);
 	}
 
 	public static void registerBlocks()
@@ -45,6 +47,5 @@ public class AsteroidBlocks
 		GameRegistry.registerBlock(AsteroidBlocks.beamReceiver, ItemBlockGC.class, AsteroidBlocks.beamReceiver.getUnlocalizedName());
 		GameRegistry.registerBlock(AsteroidBlocks.shortRangeTelepad, ItemBlockShortRangeTelepad.class, AsteroidBlocks.shortRangeTelepad.getUnlocalizedName());
 		GameRegistry.registerBlock(AsteroidBlocks.fakeTelepad, ItemBlockGC.class, AsteroidBlocks.fakeTelepad.getUnlocalizedName());
-		GameRegistry.registerBlock(AsteroidBlocks.treasureChestTier3, ItemBlockGC.class, AsteroidBlocks.treasureChestTier3.getUnlocalizedName());
 	}
 }
