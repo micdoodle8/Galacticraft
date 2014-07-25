@@ -2,87 +2,91 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=Ракета 3-го уровня
-item.heavyNoseCone.name=Heavy Nose Cone ##NEEDS TRANSLATE##
-item.compressedTitanium.name=Compressed Titanium ##NEEDS TRANSLATE##
-item.ingotTitanium.name=Titanium Ingot ##NEEDS TRANSLATE##
-item.shardTitanium.name=Titanium Shard ##NEEDS TRANSLATE##
-item.shardIron.name=Iron Shard ##NEEDS TRANSLATE##
-item.rocketFinsT2.name=Heavy Rocket Fins ##NEEDS TRANSLATE##
-item.engineT2.name=Heavy Rocket Engine ##NEEDS TRANSLATE##
-item.reinforcedPlateT3.name=Heavy-Duty Plate ##NEEDS TRANSLATE##
-item.grapple.name=Grapple ##NEEDS TRANSLATE##
-item.thermalHelm.name=Thermal Padding Helm ##NEEDS TRANSLATE##
-item.thermalChestplate.name=Thermal Padding Chestpiece ##NEEDS TRANSLATE##
-item.thermalLeggings.name=Thermal Padding Leggings ##NEEDS TRANSLATE##
-item.thermalBoots.name=Thermal Padding Boots ##NEEDS TRANSLATE##
-item.atmosphericValve.name=Atmospheric Valve ##NEEDS TRANSLATE##
-item.methaneCanisterPartial.name=Methane Gas Canister ##NEEDS TRANSLATE##
-item.methaneCanister.name=Filled Methane Gas Canister ##NEEDS TRANSLATE##
-item.canister.gas.name=Gas ##NEEDS TRANSLATE##
-item.canister.LOX.partial.name=Canister of Liquid Oxygen ##NEEDS TRANSLATE##
-item.canister.LOX.full.name=Filled Canister of Liquid Oxygen ##NEEDS TRANSLATE##
-item.canister.LOX.name=LOX ##NEEDS TRANSLATE##
-item.canister.liquidNitrogen.partial.name=Canister of Liquid Nitrogen ##NEEDS TRANSLATE##
-item.canister.liquidNitrogen.full.name=Filled Canister of Liquid Nitrogen ##NEEDS TRANSLATE##
-item.canister.liquidNitrogen.name=Liquid ##NEEDS TRANSLATE##
-item.emptyGasCanister.name=Empty Gas Canister ##NEEDS TRANSLATE##
-item.tier3.desc=Tier 3 ##NEEDS TRANSLATE##
-tile.asteroidsBlock.asteroid0.name=Asteroid Rock ##NEEDS TRANSLATE##
-tile.asteroidsBlock.asteroid1.name=Asteroid Rock ##NEEDS TRANSLATE##
-tile.asteroidsBlock.asteroid2.name=Asteroid Rock ##NEEDS TRANSLATE##
-tile.asteroidsBlock.oreIron.name=Iron Ore ##NEEDS TRANSLATE##
-tile.asteroidsBlock.oreIlmenite.name=Ilmenite Ore ##NEEDS TRANSLATE##
-tile.asteroidsBlock.oreAluminum.name=Aluminum Ore ##NEEDS TRANSLATE##
+item.heavyNoseCone.name=Прочный головной обтекатель
+item.compressedTitanium.name=Сжатый титан
+item.ingotTitanium.name=Титановый слиток
+item.shardTitanium.name=Титановый осколок
+item.shardIron.name=Железный осколок
+item.rocketFinsT2.name=Прочный ракетный стабилизатор
+item.engineT2.name=Прочный ракетный двигатель
+item.reinforcedPlateT3.name=Сверхпрочное покрытие
+item.grapple.name=Крюк
+item.thermalHelm.name=Теплоустойчивый шлем
+item.thermalChestplate.name=Теплоустойчивая кираса
+item.thermalLeggings.name=Теплоустойчивые поножи
+item.thermalBoots.name=Теплоустойчивые ботинки
+item.atmosphericValve.name=Атмосферный клапан
+
+item.methaneCanisterPartial.name=Канистра для метана
+item.methaneCanister.name=Канистра метана
+item.canister.gas.name=Газ
+item.canister.LOX.partial.name=Канистра жидкого кислорода
+item.canister.LOX.full.name=Заполненная канистра жидкого кислорода
+item.canister.LOX.name=ЖК
+item.canister.liquidNitrogen.partial.name=Канистра жидкого азота
+item.canister.liquidNitrogen.full.name=Заполненная канистра жидкого азота
+item.canister.liquidNitrogen.name=Жидкий азот
+item.emptyGasCanister.name=Пустая канистра для газа
+
+item.tier3.desc=3-ий уровень
 
 # TOOLS
 
 # ARMOR
 
 # BLOCKS
-tile.asteroidsBlock.asteroids1.name=Астероидный камень
+tile.asteroidsBlock.asteroid0.name=Астероидный камень
+tile.asteroidsBlock.asteroid1.name=Астероидный камень
+tile.asteroidsBlock.asteroid2.name=Астероидный камень
+tile.asteroidsBlock.oreIron.name=Железная руда
+tile.asteroidsBlock.oreIlmenite.name=Ильменитовая руда
+tile.asteroidsBlock.oreAluminum.name=Алюминиевая руда
 tile.beamReflector.name=Лучевой отражатель
-tile.beamReceiver.name=Лучевой приемник
+tile.beamReceiver.name=Лучевой приёмник
 tile.telepadShort.name=Короткодистанционный телепорт
-tile.walkway.name=Walkway ##NEEDS TRANSLATE##
-tile.walkwayWire.name=Walkway ##NEEDS TRANSLATE##
-tile.walkwayOxygenPipe.name=Walkway ##NEEDS TRANSLATE##
-tile.treasureT3.name=Tier 3 Treasure Chest ##NEEDS TRANSLATE##
-fluid.methane.name=Methane Gas ##NEEDS TRANSLATE##
-fluid.oxygen.name=Oxygen Gas ##NEEDS TRANSLATE##
-fluid.nitrogen.name=Nitrogen Gas ##NEEDS TRANSLATE##
-fluid.hydrogen.name=Hydrogen Gas ##NEEDS TRANSLATE##
-fluid.carbondioxide.name=CO2 Gas ##NEEDS TRANSLATE##
-fluid.atmosphericgases.name=Atmospheric Gases ##NEEDS TRANSLATE##
-fluid.liquidmethane.name=Liquid Methane ##NEEDS TRANSLATE##
-fluid.liquidoxygen.name=Liquid Oxygen ##NEEDS TRANSLATE##
-fluid.liquidnitrogen.name=Liquid Nitrogen ##NEEDS TRANSLATE##
-fluid.fuel.name=Fuel ##NEEDS TRANSLATE##
+tile.walkway.name=Дорожка
+tile.walkwayWire.name=Дорожка
+tile.walkwayOxygenPipe.name=Дорожка
+tile.treasureT3.name=Сундук с сокровищами 3-го уровня
+
+# Fluids and gases
+fluid.methane.name=Метан
+fluid.oxygen.name=Кислород
+fluid.nitrogen.name=Азот
+fluid.hydrogen.name=Водород
+fluid.carbondioxide.name=Углекислый газ
+fluid.atmosphericgases.name=Атмосферные газы
+fluid.liquidmethane.name=Жидкий метан
+fluid.liquidoxygen.name=Жидкий кислород
+fluid.liquidnitrogen.name=Жидкий азот
+fluid.fuel.name=Топливо
 
 # GUI
 planet.asteroids=Астероиды
-gui.telepad.desc.0=This is the Telepad's$unique address ##NEEDS TRANSLATE##
-gui.telepad.desc.1=Address of another Telepad.$Entities will be sent there. ##NEEDS TRANSLATE##
-container.shortRangeTelepad.name=Short Range Telepad ##NEEDS TRANSLATE##
-gui.message.address.name=Address ##NEEDS TRANSLATE##
-gui.message.destAddress.name=Target Address ##NEEDS TRANSLATE##
-gui.message.invalidAddress.name=Invalid Unique Address ##NEEDS TRANSLATE##
-gui.message.invalidTargetAddress.name=Invalid Target Address ##NEEDS TRANSLATE##
-gui.message.receivingActive.name=Receiving Active ##NEEDS TRANSLATE##
-gui.message.telepadTooFar.name=Target too far! (Max %d) ##NEEDS TRANSLATE##
-gui.message.telepadWrongDim.name=Target is in wrong dimension! ##NEEDS TRANSLATE##
-gui.message.telepadNotFound.name=Telepad Not Found! ##NEEDS TRANSLATE##
-gui.message.sendingActive.name=Sending Active ##NEEDS TRANSLATE##
-gui.message.range.name=Range: %dm ##NEEDS TRANSLATE##
-gui.message.notEnoughEnergy.name=Not Enough Energy! ##NEEDS TRANSLATE##
-gui.message.targetNoEnergy.name=Target doesn't have enough Energy! ##NEEDS TRANSLATE##
+gui.telepad.desc.0=Это уникальный адрес$телепорта
+gui.telepad.desc.1=Адрес другого телепорта.$Сущности будут отправляться туда.
+gui.message.address.name=Адрес
+gui.message.destAddress.name=Целевой адрес
+gui.message.invalidAddress.name=Неверный уникальный адрес
+gui.message.invalidTargetAddress.name=Неверный целевой адрес
+gui.message.receivingActive.name=Приём начат
+gui.message.telepadTooFar.name=Цель слишком далеко! (Макс.: %d)
+gui.message.telepadWrongDim.name=Цель в другом измерении!
+gui.message.telepadNotFound.name=Телепорт не найден!
+gui.message.sendingActive.name=Отправка начата
+gui.message.range.name=Дальность: %dm
+gui.message.notEnoughEnergy.name=Недостаточно энергии!
+gui.message.targetNoEnergy.name=У цели не хватает энергии!
 
+# CREATIVE TAB
 itemGroup.GalacticraftAsteroids=Galacticraft: Астероиды
 
-# Schematics
+# SCHEMATICS
 
-# Entity
+# ENTITIES
 entity.SmallAsteroidGC.name=Малый астероид
 entity.GrappleHookGC.name=Абордажный крюк
 entity.Tier3RocketGC.name=Ракета 3-го уровня
 
-# Container
+# CONTAINERS
+container.shortRangeTelepad.name=Короткодистанционный телепорт
