@@ -88,7 +88,7 @@ public class GalacticraftCore
     public static Satellite satelliteSpaceStation;
 
 	public static final String CONFIG_FILE = "Galacticraft/core.conf";
-	public static final String POWER_CONFIG_FILE = "Galacticraft/power.conf";
+	public static final String POWER_CONFIG_FILE = "Galacticraft/power-GC3.conf";
 	public static final String CHUNKLOADER_CONFIG_FILE = "Galacticraft/chunkloading.conf";
 
 	public static String ASSET_PREFIX = "galacticraftcore";
