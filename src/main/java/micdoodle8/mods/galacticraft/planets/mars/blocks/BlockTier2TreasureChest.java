@@ -37,6 +37,8 @@ public class BlockTier2TreasureChest extends BlockContainer implements ITileEnti
 	protected BlockTier2TreasureChest()
 	{
 		super(Material.rock);
+		this.setResistance(10.0F);
+		this.setStepSound(Block.soundTypeStone);
 	}
 
 	@Override
