@@ -271,7 +271,7 @@ public class RecipeManagerGC
 
 		RecipeUtil.addRecipe(new ItemStack(GCBlocks.basicBlock, 4, 4), new Object[] { "   ", " X ", " Y ", 'X', new ItemStack(Blocks.stone, 4, 0), 'Y', "compressedTin" });
 
-		RecipeUtil.addRecipe(new ItemStack(GCItems.flag, 1, 16), new Object[] { "XYY", "XYY", "X  ", 'X', GCItems.flagPole, 'Y', GCItems.canvas });
+		RecipeUtil.addRecipe(new ItemStack(GCItems.flag), new Object[] { "XYY", "XYY", "X  ", 'X', GCItems.flagPole, 'Y', GCItems.canvas });
 
 		for (int var2 = 0; var2 < 16; ++var2)
 		{

@@ -18,7 +18,7 @@ import java.util.List;
 
 public class ItemBasicAsteroids extends Item
 {
-	public static String[] names = { "reinforcedPlateT3", "engineT2", "rocketFinsT2", "shardIron", "shardTitanium", "ingotTitanium", "compressedTitanium" };
+	public static String[] names = { "reinforcedPlateT3", "engineT2", "rocketFinsT2", "shardIron", "shardTitanium", "ingotTitanium", "compressedTitanium", "thermalCloth" };
 	protected IIcon[] icons = new IIcon[ItemBasicAsteroids.names.length];
 
 	public ItemBasicAsteroids()

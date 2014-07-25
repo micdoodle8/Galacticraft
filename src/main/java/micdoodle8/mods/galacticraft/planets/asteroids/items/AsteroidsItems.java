@@ -4,7 +4,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class AsteroidsItems
 {
@@ -52,6 +54,11 @@ public class AsteroidsItems
         AsteroidsItems.titaniumSword = new ItemSwordAsteroids("titanium_sword");
 
 		AsteroidsItems.registerItems();
+
+        OreDictionary.registerOre("plateTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 6));
+        OreDictionary.registerOre("ingotTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 5));
+        OreDictionary.registerOre("shardTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 4));
+        OreDictionary.registerOre("shardIron", new ItemStack(AsteroidsItems.basicItem, 1, 3));
 	}
 
 	private static void registerItems()

@@ -18,7 +18,7 @@ import java.util.List;
 
 public class ItemBasicMars extends Item
 {
-	public static String[] names = { "rawDesh", "deshStick", "ingotDesh", "reinforcedPlateT2", "slimelingCargo", "compressedDesh" };
+	public static String[] names = { "rawDesh", "deshStick", "ingotDesh", "reinforcedPlateT2", "slimelingCargo", "compressedDesh", "fluidManip" };
 	protected IIcon[] icons = new IIcon[ItemBasicMars.names.length];
 
 	public ItemBasicMars()

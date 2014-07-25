@@ -25,6 +25,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.entities.player.AsteroidsP
 import micdoodle8.mods.galacticraft.planets.asteroids.inventory.ContainerShortRangeTelepad;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.recipe.RecipeManagerAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.schematic.SchematicTier3Rocket;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.*;
 import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerServer;
@@ -107,6 +108,8 @@ public class AsteroidsModule implements IPlanetsModule
         MinecraftForge.EVENT_BUS.register(eventHandler);
 
 		this.registerEntities();
+
+        RecipeManagerAsteroids.loadRecipes();
 
 		AsteroidsModule.planetAsteroids = new Planet("asteroids").setParentSolarSystem(GalacticraftCore.solarSystemSol);
 		AsteroidsModule.planetAsteroids.setDimensionInfo(ConfigManagerAsteroids.dimensionIDAsteroids, WorldProviderAsteroids.class).setTierRequired(3);
