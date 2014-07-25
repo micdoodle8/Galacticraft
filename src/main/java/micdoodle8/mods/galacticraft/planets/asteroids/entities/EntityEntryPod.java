@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
+import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
@@ -16,7 +17,7 @@ import net.minecraft.world.World;
 import java.util.Map;
 import java.util.Random;
 
-public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLevel, ICameraZoomEntity
+public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLevel, ICameraZoomEntity, IIgnoreShift
 {
     public EntityEntryPod(World var1) {
         super(var1, 0.0F);
@@ -172,5 +173,11 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
         {
             return true;
         }
+    }
+
+    @Override
+    public boolean shouldIgnoreShiftExit()
+    {
+        return !this.onGround;
     }
 }
