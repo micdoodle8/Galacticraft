@@ -12,6 +12,7 @@ item.slimelingCargo.name=黏滑物品背包
 item.key.T2.name=二階地牢鑰匙
 item.compressedDesh.name=緻密戴斯
 item.spaceshipTier2.cargoRocket.name=貨運火箭
+item.fluidManip.name=Fluid Manipulator ##NEEDS TRANSLATE##
 
 # TOOLS
 item.deshPick.name=戴斯鎬

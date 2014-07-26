@@ -11,6 +11,7 @@ item.slimelingCargo.name=Batoh pro slizouna
 item.key.T2.name=Klíč typ 2
 item.compressedDesh.name=Stlačený frikční kov
 item.spaceshipTier2.cargoRocket.name=Nákladní raketa
+item.fluidManip.name=Fluid Manipulator ##NEEDS TRANSLATE##
 
 # TOOLS
 item.deshPick.name=Krumpáč z frikčního kovu

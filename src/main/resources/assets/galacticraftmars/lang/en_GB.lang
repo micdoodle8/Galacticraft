@@ -11,6 +11,7 @@ item.slimelingCargo.name=Slimeling Inventory Bag
 item.key.T2.name=Tier 2 Dungeon Key
 item.compressedDesh.name=Compressed Desh
 item.spaceshipTier2.cargoRocket.name=Cargo Rocket
+item.fluidManip.name=Fluid Manipulator ##NEEDS TRANSLATE##
 
 # TOOLS
 item.deshPick.name=Desh Pickaxe

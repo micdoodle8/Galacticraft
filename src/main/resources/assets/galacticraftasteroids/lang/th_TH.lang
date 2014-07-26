@@ -15,7 +15,13 @@ item.thermalHelm.name=หมวกกันความร้อน
 item.thermalChestplate.name=เสื้อเกราะกันความร้อน
 item.thermalLeggings.name=กางเกงกันความร้อน
 item.thermalBoots.name=รองเท้ากันความร้อน
+item.titanium_helmet.name=Titanium Helmet ##NEEDS TRANSLATE##
+item.titanium_chestplate.name=Titanium Chestplate ##NEEDS TRANSLATE##
+item.titanium_leggings.name=Titanium Leggings ##NEEDS TRANSLATE##
+item.titanium_boots.name=Titanium Boots ##NEEDS TRANSLATE##
 item.atmosphericValve.name=วาล์วอากาศ
+item.thermalCloth.name=Thermal Cloth ##NEEDS TRANSLATE##
+item.beamCore.name=Beam Core ##NEEDS TRANSLATE##
 
 item.methaneCanisterPartial.name=กระป๋องมีเทน
 item.methaneCanister.name=กระป๋องที่เต็มไปด้วยมีเทน
@@ -30,9 +36,17 @@ item.canister.liquidNitrogen.full.name=กระป๋องที่เต็�
 item.canister.liquidNitrogen.partial=ถังไนโตรเจนเหลว
 item.canister.liquidNitrogen.full=กระป๋องที่เต็มไปด้วยไนโตรเจนเหลว
 item.canister.liquidNitrogen.name=ไนโตรเจนเหลว
+item.canister.liquidArgon.partial.name=Canister of Liquid Argon ##NEEDS TRANSLATE##
+item.canister.liquidArgon.full.name=Filled Canister of Liquid Argon ##NEEDS TRANSLATE##
+item.canister.liquidArgon.name=Liquid       #short name for Liquid Argon contents level ##NEEDS TRANSLATE##
 item.emptyGasCanister.name=กระป๋องก๊าซเปล่า
 
 item.tier3.desc=เทียร์ 3
+item.titanium_pickaxe.name=Titanium Pickaxe ##NEEDS TRANSLATE##
+item.titanium_axe.name=Titanium Axe ##NEEDS TRANSLATE##
+item.titanium_hoe.name=Titanium Hoe ##NEEDS TRANSLATE##
+item.titanium_shovel.name=Titanium Shovel ##NEEDS TRANSLATE##
+item.titanium_sword.name=Titanium Sword ##NEEDS TRANSLATE##
 
 # TOOLS
 
@@ -59,10 +73,13 @@ fluid.oxygen.name=ก๊าซออกซิเจน
 fluid.nitrogen.name=ก๊าซไนโตรเจน
 fluid.hydrogen.name=ก๊าซไฮโดรเจน
 fluid.carbondioxide.name=ก๊าซคาร์บอนไดออกไซด์
+fluid.helium.name=Helium Gas ##NEEDS TRANSLATE##
+fluid.argon.name=Argon Gas ##NEEDS TRANSLATE##
 fluid.atmosphericgases.name=ก๊าซชั้นบรรยากาศ
 fluid.liquidmethane.name=มีเทนเหลว
 fluid.liquidoxygen.name=ออกซิเจนเหลว
 fluid.liquidnitrogen.name=ไนโตรเจนเหลว
+fluid.liquidargon.name=Liquid Argon ##NEEDS TRANSLATE##
 fluid.fuel.name=เชื้อเพลิง
 
 # GUI

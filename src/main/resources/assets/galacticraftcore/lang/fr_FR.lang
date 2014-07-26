@@ -293,6 +293,9 @@ gui.message.clickAgain.2.name=Click again to zoom (view satellites) ##NEEDS TRAN
 gui.message.clickAgain.3.name=Click again to zoom ##NEEDS TRANSLATE##
 gui.message.exit.name=Exit ##NEEDS TRANSLATE##
 gui.message.tier.name=Tier %d ##NEEDS TRANSLATE##
+gui.message.canCreateSpaceStation.name=A Space Station can be created here! ##NEEDS TRANSLATE##
+gui.message.cannotCreateSpaceStation.name=A Space Station cannot be created here. ##NEEDS TRANSLATE##
+gui.message.createSS.name=Create ##NEEDS TRANSLATE##
 
 gui.status.active.name=Actif
 gui.status.missingleaves.name=Pas assez de blocs de feuilles
