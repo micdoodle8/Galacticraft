@@ -11,12 +11,29 @@ item.rocketFinsT2.name=Прочный ракетный стабилизатор
 item.engineT2.name=Прочный ракетный двигатель
 item.reinforcedPlateT3.name=Сверхпрочное покрытие
 item.grapple.name=Крюк
+item.atmosphericValve.name=Атмосферный клапан Теплоустойчивая
+item.thermalCloth.name=Теплоустойчивая ткань
+item.beamCore.name=Лучевое ядро
+item.tier3.desc=3-ий уровень
+
+# TOOLS
+item.titanium_pickaxe.name=Титановая кирка
+item.titanium_axe.name=Титановый топор
+item.titanium_hoe.name=Титановая мотыга
+item.titanium_shovel.name=Титановая лопата
+item.titanium_sword.name=Титановый меч
+
+# ARMOR
 item.thermalHelm.name=Теплоустойчивый шлем
 item.thermalChestplate.name=Теплоустойчивая кираса
 item.thermalLeggings.name=Теплоустойчивые поножи
 item.thermalBoots.name=Теплоустойчивые ботинки
-item.atmosphericValve.name=Атмосферный клапан
+item.titanium_helmet.name=Титановый шлем
+item.titanium_chestplate.name=Титановая кираса
+item.titanium_leggings.name=Титановые поножи
+item.titanium_boots.name=Титановые ботинки
 
+# CANISTERS ETC
 item.methaneCanisterPartial.name=Канистра для метана
 item.methaneCanister.name=Канистра метана
 item.canister.gas.name=Газ
@@ -25,14 +42,26 @@ item.canister.LOX.full.name=Заполненная канистра жидког
 item.canister.LOX.name=ЖК
 item.canister.liquidNitrogen.partial.name=Канистра жидкого азота
 item.canister.liquidNitrogen.full.name=Заполненная канистра жидкого азота
-item.canister.liquidNitrogen.name=Жидкость
+item.canister.liquidNitrogen.name=Жидкий азот
+item.canister.liquidArgon.partial.name=Канистра жидкого аргона
+item.canister.liquidArgon.full.name=Заполненная канистра жидкого аргона
+item.canister.liquidArgon.name=Жидкий аргон
 item.emptyGasCanister.name=Пустая канистра для газа
 
-item.tier3.desc=3-ий уровень
-
-# TOOLS
-
-# ARMOR
+# Fluids and Gases
+fluid.methane.name=Метан
+fluid.oxygen.name=Кислород
+fluid.nitrogen.name=Азот
+fluid.hydrogen.name=Водород
+fluid.carbondioxide.name=Углекислый газ
+fluid.helium.name=Гелий
+fluid.argon.name=Аргон
+fluid.atmosphericgases.name=Атмосферные газы
+fluid.liquidmethane.name=Жидкий метан
+fluid.liquidoxygen.name=Жидкий кислород
+fluid.liquidnitrogen.name=Жидкий азот
+fluid.liquidargon.name=Жидкий аргон
+fluid.fuel.name=Топливо
 
 # BLOCKS
 tile.asteroidsBlock.asteroid0.name=Астероидный камень
@@ -48,18 +77,6 @@ tile.walkway.name=Дорожка
 tile.walkwayWire.name=Дорожка
 tile.walkwayOxygenPipe.name=Дорожка
 tile.treasureT3.name=Сундук с сокровищами 3-го уровня
-
-# Fluids and Gases
-fluid.methane.name=Метан
-fluid.oxygen.name=Кислород
-fluid.nitrogen.name=Азот
-fluid.hydrogen.name=Водород
-fluid.carbondioxide.name=Углекислый газ
-fluid.atmosphericgases.name=Атмосферные газы
-fluid.liquidmethane.name=Жидкий метан
-fluid.liquidoxygen.name=Жидкий кислород
-fluid.liquidnitrogen.name=Жидкий азот
-fluid.fuel.name=Топливо
 
 # GUI
 planet.asteroids=Астероиды
