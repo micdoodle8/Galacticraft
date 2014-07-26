@@ -857,14 +857,17 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 	    	else if (par1DamageSource == DamageSource.fall || par1DamageSource == DamageSourceGC.spaceshipCrash)
 	    	{
 	    		int titaniumCount = 0;
-	    		for (int i = 0; i < 4; i++)
-	    		{
-	    			ItemStack armorPiece = this.inventory.armorInventory[i];
-	    			if (armorPiece != null && armorPiece.getItem() instanceof ItemArmorAsteroids)
-	    			{
-	    				titaniumCount++;
-	    			}
-	    		}
+                if (this.inventory != null)
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        ItemStack armorPiece = this.getCurrentArmor(i);
+                        if (armorPiece != null && armorPiece.getItem() instanceof ItemArmorAsteroids)
+                        {
+                            titaniumCount++;
+                        }
+                    }
+                }
 	    		if (titaniumCount == 4) titaniumCount = 5;
 	    		par2 *= (1 - 0.15D * titaniumCount);
 	    	}
