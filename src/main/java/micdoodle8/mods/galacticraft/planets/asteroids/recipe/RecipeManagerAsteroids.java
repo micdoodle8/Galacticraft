@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -64,9 +65,11 @@ public class RecipeManagerAsteroids
 
         RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 2), new Object[] { " Y ", "XYX", "X X", 'X', new ItemStack(AsteroidsItems.basicItem), 'Y', "compressedTitanium" });
 
-        RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.blockWalkway, 3), new Object[] { "XXX", " X ", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6) });
-        RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.blockWalkwayWire, 3), new Object[] { "XXX", "YXY", " Y ", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', new ItemStack(GCBlocks.aluminumWire) });
-        RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.blockWalkwayOxygenPipe, 3), new Object[] { "XXX", "YXY", " Y ", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', new ItemStack(GCBlocks.oxygenPipe) });
+        RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.blockWalkway, 5), new Object[] { "XXX", " X ", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6) });
+        RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.blockWalkwayWire, 5), new Object[] { "XXX", "YXY", "YYY", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', new ItemStack(GCBlocks.aluminumWire, 1, 1) });
+        RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.blockWalkwayOxygenPipe, 5), new Object[] { "XXX", "YXY", "YYY", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', new ItemStack(GCBlocks.oxygenPipe) });
+        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(AsteroidBlocks.blockWalkwayWire, 1), new ItemStack(AsteroidBlocks.blockWalkway, 1), new ItemStack(GCBlocks.aluminumWire, 1, 1));
+        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(AsteroidBlocks.blockWalkwayOxygenPipe, 1), new ItemStack(AsteroidBlocks.blockWalkway, 1), new ItemStack(GCBlocks.oxygenPipe, 1));
 
         RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.shortRangeTelepad), new Object[] { "XWX", "ZYZ", "XXX", 'W', new ItemStack(GCBlocks.aluminumWire), 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', Items.redstone, 'Z', Items.ender_pearl });
         RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.shortRangeTelepad), new Object[] { "XWX", "ZYZ", "XXX", 'W', new ItemStack(GCBlocks.aluminumWire, 1, 1), 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', Items.redstone, 'Z', Items.ender_pearl });
@@ -74,8 +77,8 @@ public class RecipeManagerAsteroids
         RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 8), new Object[] { "XYX", "YZY", "XYX", 'X', Items.redstone, 'Y', "compressedIron", 'Z', Blocks.glass_pane });
 
         RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.beamReceiver), new Object[] { " X ", "XYX", " X ", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', new ItemStack(AsteroidsItems.basicItem, 1, 8) });
-        RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.beamReflector), new Object[] { " ZY", " X ", "XXX", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', new ItemStack(AsteroidsItems.basicItem, 1, 8), 'Z', Blocks.lever });
-        RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.beamReflector), new Object[] { "YZ ", " X ", "XXX", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', new ItemStack(AsteroidsItems.basicItem, 1, 8), 'Z', Blocks.lever });
+        RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.beamReflector), new Object[] { " Y ", "ZX ", "XXX", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', new ItemStack(AsteroidsItems.basicItem, 1, 8), 'Z', Blocks.lever });
+        RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.beamReflector), new Object[] { " Y ", " XZ", "XXX", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', new ItemStack(AsteroidsItems.basicItem, 1, 8), 'Z', Blocks.lever });
 
         if (OreDictionary.getOres("ingotTitanium").size() > 0)
         {

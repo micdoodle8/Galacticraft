@@ -98,7 +98,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 
 		if (this == AsteroidBlocks.blockWalkwayWire)
 		{
-			return new TileEntityAluminumWire();
+			return new TileEntityAluminumWire(2);
 		}
 
 		return null;
