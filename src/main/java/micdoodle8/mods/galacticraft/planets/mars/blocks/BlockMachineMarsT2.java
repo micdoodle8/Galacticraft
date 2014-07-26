@@ -253,9 +253,9 @@ public class BlockMachineMarsT2 extends BlockTileGC
 				for (float i = -0.41F + 0.16F * rand.nextFloat(); i < 0.5F; i+= 0.167F)
 				{
 					if (rand.nextInt(3) == 0) GalacticraftCore.proxy.spawnParticle("whiteSmokeTiny", new Vector3(x + i, y, z - 0.41F), new Vector3(0.0D, -0.015D, -0.0015D));
-					if (rand.nextInt(3) == 0) GalacticraftCore.proxy.spawnParticle("whiteSmokeTiny", new Vector3(x + i, y, z + 0.533F), new Vector3(0.0D, -0.015D, 0.0015D));
+					if (rand.nextInt(3) == 0) GalacticraftCore.proxy.spawnParticle("whiteSmokeTiny", new Vector3(x + i, y, z + 0.537F), new Vector3(0.0D, -0.015D, 0.0015D));
 					if (rand.nextInt(3) == 0) GalacticraftCore.proxy.spawnParticle("whiteSmokeTiny", new Vector3(x - 0.41F, y, z + i), new Vector3(-0.0015D, -0.015D, 0.0D));
-					if (rand.nextInt(3) == 0) GalacticraftCore.proxy.spawnParticle("whiteSmokeTiny", new Vector3(x + 0.533F, y, z + i), new Vector3(0.0015D, -0.015D, 0.0D));
+					if (rand.nextInt(3) == 0) GalacticraftCore.proxy.spawnParticle("whiteSmokeTiny", new Vector3(x + 0.537F, y, z + i), new Vector3(0.0015D, -0.015D, 0.0D));
 				}
 			}
 		}

@@ -135,7 +135,7 @@ public class GuiGasLiquefier extends GuiContainerGC
 		}
 		else if (this.tileEntity.liquidTank.getFluidAmount() == this.tileEntity.liquidTank.getCapacity() && this.tileEntity.liquidTank2.getFluidAmount() == this.tileEntity.liquidTank2.getCapacity())
 		{
-			displayText = EnumColor.RED + GCCoreUtil.translate("gui.message.full.name");
+			displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.tanksfull.name");
 		}
 		else
 		{
