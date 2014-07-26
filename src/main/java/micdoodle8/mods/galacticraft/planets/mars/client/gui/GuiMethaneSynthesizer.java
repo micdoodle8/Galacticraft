@@ -147,6 +147,10 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
 		{
 			displayText = EnumColor.RED + GCCoreUtil.translate("gui.message.lowEnergy.name");
 		}
+		else if (this.tileEntity.liquidTank.getFluidAmount() == this.tileEntity.liquidTank.getCapacity())
+		{
+			displayText = EnumColor.RED + GCCoreUtil.translate("gui.message.full.name");
+		}
 		else
 		{
 			displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.needsCarbon.name");
