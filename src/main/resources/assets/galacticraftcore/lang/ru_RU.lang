@@ -209,6 +209,7 @@ death.attack.oxygenSuffocation=%1$s задохнулся в космосе!
 
 # GALAXIES
 galaxy.blockyway.name=Блочный путь
+galaxy.milkyWay=Млечный Путь
 
 # OTHER
 newversion.failed.name=Проверка обновлений для Galacticraft провалилась! Следующая попытка через 15 секунд.
@@ -230,22 +231,6 @@ itemGroup.GalacticraftBlocks=Galacticraft: Блоки
 itemGroup.GalacticraftItems=Galacticraft: Предметы
 
 # GUI
-container.cargoloader.name=Загрузчик
-container.cargounloader.name=Разгрузчик
-container.fuelloader.name=Загрузчик топлива
-container.oxygencollector.name=Кислородный сборщик
-container.oxygencompressor.name=Кислородный компрессор
-container.oxygendistributor.name=Распределитель кислорода
-container.oxygensealer.name=Уплотнитель кислорода
-container.parachest.name=Сундук с парашютом
-container.refinery.name=Очистительный завод
-container.treasurechest.name=Сундук с сокровищами
-container.lander.name=Посадочный модуль
-container.spaceship.name=Ракета 1-го уровня
-container.solarbasic.name=Основная солнечная панель
-container.solaradvanced.name=Продвинутая солнечная панель
-container.oxygendecompressor.name=Кислородный декомпрессор
-
 gui.message.out.name=Вывод
 gui.message.in.name=Ввод
 gui.message.status.name=Статус
@@ -275,6 +260,9 @@ gui.message.clickAgain.2.name=Нажмите ещё раз для увеличе
 gui.message.clickAgain.3.name=Нажмите ещё раз для увеличения
 gui.message.exit.name=Выход
 gui.message.tier.name=Уровень %d
+gui.message.canCreateSpaceStation.name=Космическая станция может быть создана здесь!
+gui.message.cannotCreateSpaceStation.name=Космическая станция не может быть создана здесь.
+gui.message.createSS.name=Создать
 
 gui.status.active.name=Активно
 gui.status.missingleaves.name=Отсутствуют блоки листвы
@@ -461,21 +449,6 @@ gui.spaceRace.join.title.name=Присоединиться к космическ
 gui.spaceRace.join.owner.name=Владелец
 gui.spaceRace.join.memberCount.name=Участников: %d
 
-# DIMENSIONS
-dimension.Overworld.name=Земля
-dimension.Moon.name=Луна
-dimension.Sun.name=Солнце
-planet.overworld=Земля
-moon.moon=Луна
-galaxy.milkyWay=Млечный Путь
-solarsystem.sol=Солнце
-planet.mercury=Меркурий
-planet.venus=Венера
-planet.jupiter=Юпитер
-planet.saturn=Сатурн
-planet.uranus=Уран
-planet.neptune=Нептун
-
 gui.message.moon.daynightcycle.0.name=29.5 Земных дней
 gui.message.moon.daynightcycle.1.name=
 gui.message.moon.surfacegravity.0.name=0.1654g
@@ -497,6 +470,37 @@ gui.message.overworld.atmosphere.0.name=Азот и кислород
 gui.message.overworld.atmosphere.1.name=Поддерживает жизнь
 gui.message.overworld.meansurfacetemp.0.name=14C
 gui.message.overworld.meansurfacetemp.1.name=
+
+# CONTAINERS
+container.cargoloader.name=Загрузчик
+container.cargounloader.name=Разгрузчик
+container.fuelloader.name=Загрузчик топлива
+container.oxygencollector.name=Кислородный сборщик
+container.oxygencompressor.name=Кислородный компрессор
+container.oxygendistributor.name=Распределитель кислорода
+container.oxygensealer.name=Уплотнитель кислорода
+container.parachest.name=Сундук с парашютом
+container.refinery.name=Очистительный завод
+container.treasurechest.name=Сундук с сокровищами
+container.lander.name=Посадочный модуль
+container.spaceship.name=Ракета 1-го уровня
+container.solarbasic.name=Основная солнечная панель
+container.solaradvanced.name=Продвинутая солнечная панель
+container.oxygendecompressor.name=Кислородный декомпрессор
+
+# DIMENSIONS
+dimension.Overworld.name=Земля
+dimension.Moon.name=Луна
+dimension.Sun.name=Солнце
+planet.overworld=Земля
+planet.mercury=Меркурий
+planet.venus=Венера
+planet.jupiter=Юпитер
+planet.saturn=Сатурн
+planet.uranus=Уран
+planet.neptune=Нептун
+moon.moon=Луна
+solarsystem.sol=Солнце
 
 # COMMANDS
 commands.dimensionteleport=%s был направлен в атмосферу%s
