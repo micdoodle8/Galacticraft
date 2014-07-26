@@ -40,6 +40,8 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 	final byte DIRT_META = 0;
 	final Block GRASS = Blocks.grass;
 	final byte GRASS_META = 0;
+	final Block LIGHT = Blocks.glowstone;
+	final byte LIGHT_META = 0;
 	final Block TALL_GRASS = Blocks.tallgrass;
 	final byte TALL_GRASS_META = 1;
 	final Block FLOWER = Blocks.red_flower;
@@ -124,7 +126,8 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 	private static final int FLOWER_CHANCE = 2;
 	private static final int WATER_CHANCE = 2;
 	private static final int LAVA_CHANCE = 2;
-	
+	private static final int GLOWSTONE_CHANCE = 20;
+
 	//Used in populate to get the y level of the terrain
 	private ArrayList<float[]> sizeYArray;
 	private ArrayList<Integer> xMinArray;
@@ -343,6 +346,22 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 					distanceY *= distanceY;
 					float distance = distanceX / sizeX + distanceY / sizeY + distanceZ / sizeZ;
 					distance += this.asteroidTurbulance.getNoise(x + chunkX, y, z + chunkZ);
+                    float distanceAbove = distanceX / sizeX + distanceY / sizeY + distanceZ / sizeZ;
+                    distanceAbove += this.asteroidTurbulance.getNoise(x + chunkX, y + 1, z + chunkZ);
+
+                    if (distanceAbove <= 1)
+                    {
+                        int index = indexBase | (y + 1);
+                        if (isHollow && distance <= hollowSize)
+                        {
+                            final int terrainY = this.getTerrainHeightFor(sizeModY, asteroidY - 1, size);
+                            if ((y - 1) == terrainY)
+                            {
+                                blockArray[index] = this.LIGHT;
+                                metaArray[index] = this.LIGHT_META;
+                            }
+                        }
+                    }
 
 					if (distance <= 1)
 					{
@@ -352,8 +371,8 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 							final int terrainY = this.getTerrainHeightFor(sizeModY, asteroidY, size);
 							if (y == terrainY)
 							{
-								blockArray[index] = this.GRASS;
-								metaArray[index] = this.GRASS_META;
+                                blockArray[index] = this.GRASS;
+                                metaArray[index] = this.GRASS_META;
 							}
 							else if (y < terrainY)
 							{
@@ -385,7 +404,56 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 				}
 			}
 		}
-		
+
+        shellThickness = 0;
+        if (shell != null) shellThickness = 1.0 - shell.thickness;
+		for (int x = xMin; x < xMax; x++)
+		{
+			int indexXY = (x - xMin) * ySize - yMin;
+			int indexXZ = (x - xMin) * zSize - zMin;
+			int distanceX = asteroidX - (x + chunkX);
+			distanceX *= distanceX;
+
+			for (int z = zMin; z < zMax; z++)
+			{
+				float sizeModY = sizeYArray[indexXZ + z];
+				float sizeY = size + sizeYArray[indexXZ + z];
+				sizeY *= sizeY;
+				int distanceZ = asteroidZ - (z + chunkZ);
+				distanceZ *= distanceZ;
+				int indexBase = x * ChunkProviderAsteroids.CHUNK_SIZE_Y * 16 | z * ChunkProviderAsteroids.CHUNK_SIZE_Y;
+
+				for (int y = yMin; y < yMax; y++)
+				{
+					float sizeX = size + sizeXArray[(y - yMin) * zSize + z - zMin];
+					float sizeZ = size + sizeZArray[indexXY + y];
+					sizeX *= sizeX;
+					sizeZ *= sizeZ;
+					int distanceY = asteroidY - y;
+					distanceY *= distanceY;
+					float distance = distanceX / sizeX + distanceY / sizeY + distanceZ / sizeZ;
+					distance += this.asteroidTurbulance.getNoise(x + chunkX, y, z + chunkZ);
+
+					if (distance <= 1)
+					{
+						int index = indexBase | y;
+                        int indexAbove = indexBase | (y + 1);
+						if (isHollow)
+						{
+                            if (blockArray[indexAbove] == Blocks.air && (blockArray[index] == ASTEROID_STONE || blockArray[index] == GRASS))
+                            {
+                                if (this.rand.nextInt(GLOWSTONE_CHANCE) == 0)
+                                {
+                                    blockArray[index] = this.LIGHT;
+                                    metaArray[index] = this.LIGHT_META;
+                                }
+                            }
+						}
+					}
+				}
+			}
+		}
+
 		if(isHollow)
 		{
 			this.sizeYArray.add(sizeYArray);
@@ -441,7 +509,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 	{
 		return (int)(((asteroidY - (asteroidSize / 4)) - (-yMod * 1.5)));
 	}
-    
+
     private final int getTerrainHeightAt(int x, int z, float[] yModArray, int xMin, int zMin, int zSize, int asteroidY, int asteroidSize)
     {
     	final int index = (x - xMin) * zSize - zMin;
@@ -451,7 +519,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
     	}
     	return 1;
     }
-	
+
 	@Override
 	public Chunk provideChunk(int par1, int par2)
 	{
@@ -593,10 +661,10 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 		if (par1EnumCreatureType == EnumCreatureType.monster)
 		{
 			final List monsters = new ArrayList();
-			monsters.add(new SpawnListEntry(EntityEvolvedZombie.class, 8, 2, 3));
-			monsters.add(new SpawnListEntry(EntityEvolvedSpider.class, 8, 2, 3));
-			monsters.add(new SpawnListEntry(EntityEvolvedSkeleton.class, 8, 2, 3));
-			monsters.add(new SpawnListEntry(EntityEvolvedCreeper.class, 8, 2, 3));
+			monsters.add(new SpawnListEntry(EntityEvolvedZombie.class, 2000, 1, 1));
+			monsters.add(new SpawnListEntry(EntityEvolvedSpider.class, 2000, 1, 1));
+			monsters.add(new SpawnListEntry(EntityEvolvedSkeleton.class, 2000, 1, 1));
+			monsters.add(new SpawnListEntry(EntityEvolvedCreeper.class, 2000, 1, 1));
 			return monsters;
 		}
 		else
