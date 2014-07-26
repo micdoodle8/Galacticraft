@@ -56,7 +56,7 @@ public class RecipeManagerGC
 		FurnaceRecipes.smelting().func_151394_a(new ItemStack(GCBlocks.blockMoon, 1, 1), new ItemStack(GCItems.basicItem, 1, 4), 1.0F);
 		FurnaceRecipes.smelting().func_151394_a(new ItemStack(GCBlocks.blockMoon, 1, 2), new ItemStack(GCItems.cheeseCurd), 1.0F);
 
-		RecipeUtil.addRecipe(new ItemStack(GCItems.rocketEngine, 1, 1), new Object[] { "ZYZ", "ZWZ", "XVX", 'V', GCItems.oxygenVent, 'W', new ItemStack(GCItems.canister, 1, 0), 'X', GCItems.heavyPlatingTier1, 'Y', new ItemStack(Blocks.wool, 1, 4), 'Z', new ItemStack(GCItems.meteoricIronIngot, 1, 1) });
+		RecipeUtil.addRecipe(new ItemStack(GCItems.rocketEngine, 1, 1), new Object[] { "ZYZ", "ZWZ", "XVX", 'V', GCItems.oxygenVent, 'W', new ItemStack(GCItems.fuelCanister, 1, 1), 'X', GCItems.heavyPlatingTier1, 'Y', new ItemStack(Blocks.wool, 1, 4), 'Z', new ItemStack(GCItems.meteoricIronIngot, 1, 1) });
 
 		HashMap<Integer, ItemStack> input = new HashMap<Integer, ItemStack>();
 		input.put(1, new ItemStack(GCItems.partNoseCone));

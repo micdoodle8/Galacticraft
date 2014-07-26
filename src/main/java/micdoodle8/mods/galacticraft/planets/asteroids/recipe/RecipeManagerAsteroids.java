@@ -29,7 +29,7 @@ public class RecipeManagerAsteroids
         FurnaceRecipes.smelting().func_151394_a(new ItemStack(AsteroidsItems.basicItem, 1, 3), new ItemStack(Items.iron_ingot), 0.5F);
         FurnaceRecipes.smelting().func_151394_a(new ItemStack(AsteroidsItems.basicItem, 1, 4), new ItemStack(AsteroidsItems.basicItem, 1, 5), 0.5F);
 
-        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.heavyNoseCone, 1), new Object[]{" Y ", " X ", "X X", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', Blocks.redstone_torch});
+        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.heavyNoseCone, 1), new Object[]{" Y ", " X ", "X X", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 0), 'Y', Blocks.redstone_torch});
 
         RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 7), new Object[]{" X ", "XYX", " X ", 'X', Blocks.wool, 'Y', Items.redstone});
 
@@ -51,11 +51,13 @@ public class RecipeManagerAsteroids
         RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.titaniumSpade, 1), new Object[] { " Y ", " X ", " X ", 'Y', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'X', Items.stick });
         RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.titaniumSword, 1), new Object[] { " Y ", " Y ", " X ", 'Y', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'X', Items.stick });
 
-        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 1), new Object[] { " YV", "XWX", "XZX", 'V', Blocks.stone_button, 'W', new ItemStack(GCItems.canister, 1, 0), 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', Items.flint_and_steel, 'Z', GCItems.oxygenVent });
+        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 1), new Object[] { " YV", "XWX", "XZX", 'V', Blocks.stone_button, 'W', new ItemStack(GCItems.canister, 1, 0), 'X', new ItemStack(AsteroidsItems.basicItem, 1, 0), 'Y', Items.flint_and_steel, 'Z', GCItems.oxygenVent });
 
-        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 1), new Object[] { "VY ", "XWX", "XZX", 'V', Blocks.stone_button, 'W', new ItemStack(GCItems.canister, 1, 0), 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', Items.flint_and_steel, 'Z', GCItems.oxygenVent });
+        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 1), new Object[] { "VY ", "XWX", "XZX", 'V', Blocks.stone_button, 'W', new ItemStack(GCItems.canister, 1, 0), 'X', new ItemStack(AsteroidsItems.basicItem, 1, 0), 'Y', Items.flint_and_steel, 'Z', GCItems.oxygenVent });
 
-        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.grapple, 2), new Object[] { "X", "Y", "Z", 'X', Items.iron_ingot, 'Y', Blocks.planks, 'Z', Items.string });
+        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 2), new Object[] { " Y ", "XYX", "X X", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 0), 'Y', new ItemStack(MarsItems.marsItemBasic, 1, 3) });
+        
+        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.grapple, 4), new Object[] { "  Z", "XZ ", "XX ", 'X', Items.iron_ingot, 'Z', Items.string });
 
         RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.atmosphericValve, 1, 0), new Object[] { "   ", "XYX", " X ", 'X', new ItemStack(MarsItems.marsItemBasic, 1, 2), 'Y', GCItems.oxygenVent });
 
