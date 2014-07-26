@@ -24,6 +24,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
@@ -339,17 +340,9 @@ public class GuiCelestialSelection extends GuiScreen
 		}
 
 		// Keyboard shortcut - teleport to dimension by pressing 'Enter'
-		if (keyID == 28 && this.selectedBody != null && this.selectedBody.getReachable())
+		if (keyID == Keyboard.KEY_RETURN)
 		{
-			final String dimension = WorldProvider.getProviderForDimension(this.selectedBody.getDimensionID()).getDimensionName();
-			if (dimension.contains("$"))
-			{
-				this.mc.gameSettings.thirdPersonView = 0;
-			}
-			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_TELEPORT_ENTITY, new Object[] { dimension }));
-            this.mc.displayGuiScreen(null);
-            this.mc.setIngameFocus();
-			return;
+            this.teleportToSelectedBody();
 		}
 
 /*		// Temporarily allow to get to Space Station by pressing 'X'
@@ -433,6 +426,40 @@ public class GuiCelestialSelection extends GuiScreen
 		}
 	}
 
+    private void teleportToSelectedBody()
+    {
+        if (this.selectedBody != null)
+        {
+            if (this.selectedBody.getReachable())
+            {
+                try
+                {
+                    String dimension;
+
+                    if (this.selectedBody == GalacticraftCore.satelliteSpaceStation)
+                    {
+                        dimension = WorldProvider.getProviderForDimension(this.spaceStationIDs.get(this.mc.thePlayer.getGameProfile().getName())).getDimensionName();
+                    }
+                    else
+                    {
+                        dimension = WorldProvider.getProviderForDimension(this.selectedBody.getDimensionID()).getDimensionName();
+                    }
+
+                    if (dimension.contains("$"))
+                    {
+                        this.mc.gameSettings.thirdPersonView = 0;
+                    }
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_TELEPORT_ENTITY, new Object[] { dimension }));
+                    mc.displayGuiScreen(null);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 	@Override
 	protected void mouseClicked(int x, int y, int button)
 	{
@@ -477,36 +504,7 @@ public class GuiCelestialSelection extends GuiScreen
         {
             if (x > width - BORDER_WIDTH - BORDER_EDGE_WIDTH - 88 && x < width - BORDER_WIDTH - BORDER_EDGE_WIDTH && y > BORDER_WIDTH + BORDER_EDGE_WIDTH && y < BORDER_WIDTH + BORDER_EDGE_WIDTH + 13)
             {
-                if (this.selectedBody.getReachable())
-                {
-                    try
-                    {
-                        String dimension;
-
-                        if (this.selectedBody == GalacticraftCore.satelliteSpaceStation)
-                        {
-                            dimension = WorldProvider.getProviderForDimension(this.spaceStationIDs.get(this.mc.thePlayer.getGameProfile().getName())).getDimensionName();
-                        }
-                        else
-                        {
-                            dimension = WorldProvider.getProviderForDimension(this.selectedBody.getDimensionID()).getDimensionName();
-                        }
-
-                        if (dimension.contains("$"))
-                        {
-                            this.mc.gameSettings.thirdPersonView = 0;
-                        }
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_TELEPORT_ENTITY, new Object[] { dimension }));
-                        mc.displayGuiScreen(null);
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-
-                    return;
-                }
-
+                this.teleportToSelectedBody();
                 clickHandled = true;
             }
         }
