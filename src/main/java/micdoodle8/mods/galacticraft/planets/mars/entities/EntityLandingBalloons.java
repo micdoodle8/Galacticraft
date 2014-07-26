@@ -25,7 +25,6 @@ import java.util.Random;
 
 public class EntityLandingBalloons extends EntityLanderBase implements IInventorySettable, IPacketReceiver, IScaleableFuelLevel, IIgnoreShift, ICameraZoomEntity
 {
-    private static final float TURN_FACTOR = 0.2F;
     private int groundHitCount;
     private float rotationPitchSpeed;
     private float rotationYawSpeed;
@@ -47,7 +46,7 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
     @Override
     public double getMountedYOffset()
     {
-        return super.getMountedYOffset() - 1.5;
+        return super.getMountedYOffset() - 0.9;
     }
 
     @Override
