@@ -104,7 +104,7 @@ public class GasLiquefierRecipeHandler extends TemplateRecipeHandler
 	public void onUpdate()
 	{
 		this.ticksPassed += 1 + this.extra;
-		this.extra = 1 - this.extra;
+		//this.extra = 1 - this.extra;
 		super.onUpdate();
 	}
 

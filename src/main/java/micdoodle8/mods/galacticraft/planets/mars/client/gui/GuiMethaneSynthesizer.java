@@ -154,8 +154,8 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
 
 		this.buttonDisable.enabled = this.tileEntity.disableCooldown == 0;
 		this.buttonDisable.displayString = this.tileEntity.processTicks == 0 ? GCCoreUtil.translate("gui.button.liquefy.name") : GCCoreUtil.translate("gui.button.liquefyStop.name");
-		this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.status.name") + ":", 77, 45 + 23 + yOffset, 4210752);
-		this.fontRendererObj.drawString(displayText, 83, 45 + 33 + yOffset, 4210752);
+		this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.status.name") + ":", 72, 45 + 23 + yOffset, 4210752);
+		this.fontRendererObj.drawString(displayText, 75, 45 + 33 + yOffset, 4210752);
 		//		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.tileEntity.ueWattsPerTick * 20, ElectricUnit.WATT), 72, 56 + 23 + yOffset, 4210752);
 		//		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE), 72, 68 + 23 + yOffset, 4210752);
 		this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 118 + 2 + 23, 4210752);

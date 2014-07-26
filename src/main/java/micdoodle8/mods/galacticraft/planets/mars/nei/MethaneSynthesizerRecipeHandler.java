@@ -86,9 +86,9 @@ public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
 			String text1 = " * " + GCCoreUtil.translate("gui.message.withAtmosphere0.name");
 			String text2 = " " + gasname;
 			String text3 = GCCoreUtil.translate("gui.message.withAtmosphere1.name");
-			this.fontRendererObj.drawString(text1, 0, 83, 4210752);
-			this.fontRendererObj.drawString(text2, 14, 93, 4210752);
-			this.fontRendererObj.drawString(text3, 14, 103, 4210752);
+			this.fontRendererObj.drawString(text1, 4, 85, 4210752);
+			this.fontRendererObj.drawString(text2, 18, 95, 4210752);
+			this.fontRendererObj.drawString(text3, 18, 105, 4210752);
 		}
 	}
 
@@ -96,7 +96,7 @@ public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
 	public void onUpdate()
 	{
 		this.ticksPassed += 1 + this.extra;
-		this.extra = 1 - this.extra;
+		//this.extra = 1 - this.extra;
 		super.onUpdate();
 	}
 

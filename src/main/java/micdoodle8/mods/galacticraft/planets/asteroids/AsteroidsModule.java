@@ -61,6 +61,7 @@ public class AsteroidsModule implements IPlanetsModule
 	public static Fluid fluidLiquidMethane;
 	public static Fluid fluidLiquidOxygen;
 	public static Fluid fluidLiquidNitrogen;
+	public static Fluid fluidLiquidArgon;
 	public static Fluid fluidAtmosphericGases;
 	//public static Fluid fluidCO2Gas;
 	
@@ -82,12 +83,16 @@ public class AsteroidsModule implements IPlanetsModule
 		FluidRegistry.registerFluid(new Fluid("nitrogen").setDensity(1).setViscosity(12));
 		FluidRegistry.registerFluid(new Fluid("carbondioxide").setDensity(2).setViscosity(20));
 		FluidRegistry.registerFluid(new Fluid("hydrogen").setDensity(1).setViscosity(1));
+		FluidRegistry.registerFluid(new Fluid("argon").setDensity(1).setViscosity(4));
+		FluidRegistry.registerFluid(new Fluid("liquidargon").setDensity(900).setViscosity(100));
+		FluidRegistry.registerFluid(new Fluid("helium").setDensity(1).setViscosity(1));
 		AsteroidsModule.fluidMethaneGas = FluidRegistry.getFluid("methane");
 		AsteroidsModule.fluidAtmosphericGases = FluidRegistry.getFluid("atmosphericgases");
 		AsteroidsModule.fluidLiquidMethane = FluidRegistry.getFluid("liquidmethane");
 		AsteroidsModule.fluidLiquidOxygen = FluidRegistry.getFluid("liquidoxygen");
 		AsteroidsModule.fluidOxygenGas = FluidRegistry.getFluid("oxygen");
 		AsteroidsModule.fluidLiquidNitrogen = FluidRegistry.getFluid("liquidnitrogen");
+		AsteroidsModule.fluidLiquidArgon = FluidRegistry.getFluid("liquidargon");
 		AsteroidsModule.fluidNitrogenGas = FluidRegistry.getFluid("nitrogen");
 		//AsteroidsModule.fluidCO2Gas = FluidRegistry.getFluid("carbondioxide");
 		
