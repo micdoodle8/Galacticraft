@@ -11,7 +11,7 @@ item.slimelingCargo.name=กระเป๋าเก็บของสไลม�
 item.key.T2.name=กุญแจดันเจี้ยน เทียร์ 2
 item.compressedDesh.name=แผ่นเดรช
 item.spaceshipTier2.cargoRocket.name=จรวดขนส่ง
-item.carbonFragments.name=Fragmented Carbon ##NEEDS TRANSLATE##
+item.carbonFragments.name=สะเก็ดคาร์บอน
 
 # TOOLS
 item.deshPick.name=อีเต้อเดรช
@@ -116,12 +116,12 @@ gui.button.liquefyStop.name=หยุดทำงาน
 gui.gasInput.desc.0=วางกระป๋องของมีเทนตรงนี้
 gui.gasInput.desc.1=และอีกทางเลือกสามารถ$ใช้วาล์วอากาศได้
 gui.message.lowEnergy.name=พลังงานต่ำ
-gui.hydrogenInput.desc.0=This takes a hydrogen tank ##NEEDS TRANSLATE##
-gui.hydrogenInput.desc.1=or an Atmospheric Valve ##NEEDS TRANSLATE##
-gui.liquidOutput.desc.2=liquefied gas tank ##NEEDS TRANSLATE##
+gui.hydrogenInput.desc.0=This takes a ถังไฮโดรเจน #WIP
+gui.hydrogenInput.desc.1=หรือวาว์ลอากาศ
+gui.liquidOutput.desc.2=ถังก๊าซเหลว
 gui.methaneOutput.desc.2=ถังมีเทน
-gui.message.withAtmosphere0.name=on a planet with plenty of ##NEEDS TRANSLATE##
-gui.message.withAtmosphere1.name=in the atmosphere ##NEEDS TRANSLATE##
+gui.message.withAtmosphere0.name=บนดาวเคราะห์เต็มไปด้วย
+gui.message.withAtmosphere1.name=ในชั้นบรรยากาศ
 
 gas.carbondioxide.name=คาร์บอนไดออกไซด์
 gas.oxygen.name=ออกซิเจน
