@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.network;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -70,10 +71,7 @@ import net.minecraftforge.common.DimensionManager;
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class PacketSimple extends Packet implements IPacket
 {
@@ -245,10 +243,22 @@ public class PacketSimple extends Packet implements IPacket
 			{
 				final String[] destinations = ((String) this.data.get(1)).split("\\?");
                 List<CelestialBody> possibleCelestialBodies = Lists.newArrayList();
+                Map<String, String> spaceStationNames = Maps.newHashMap();
+                Map<String, Integer> spaceStationIDs = Maps.newHashMap();
 
                 for (String str : destinations)
                 {
                     CelestialBody celestialBody = WorldUtil.getReachableCelestialBodiesForName(str);
+
+                    if (celestialBody == null && str.contains("$"))
+                    {
+                        celestialBody = GalacticraftCore.satelliteSpaceStation;
+
+                        String[] values = str.split("\\$");
+
+                        spaceStationNames.put(values[1], values[2]);
+                        spaceStationIDs.put(values[1], Integer.parseInt(values[3]));
+                    }
 
                     if (celestialBody != null)
                     {
@@ -256,9 +266,21 @@ public class PacketSimple extends Packet implements IPacket
                     }
                 }
 
-				if (FMLClientHandler.instance().getClient().theWorld != null && !(FMLClientHandler.instance().getClient().currentScreen instanceof GuiCelestialSelection))
+				if (FMLClientHandler.instance().getClient().theWorld != null)
 				{
-					FMLClientHandler.instance().getClient().displayGuiScreen(new GuiCelestialSelection(false, possibleCelestialBodies));
+                    if (!(FMLClientHandler.instance().getClient().currentScreen instanceof GuiCelestialSelection))
+                    {
+                        GuiCelestialSelection gui = new GuiCelestialSelection(false, possibleCelestialBodies);
+                        gui.spaceStationNames = spaceStationNames;
+                        gui.spaceStationIDs = spaceStationIDs;
+                        FMLClientHandler.instance().getClient().displayGuiScreen(gui);
+                    }
+                    else
+                    {
+                        ((GuiCelestialSelection) FMLClientHandler.instance().getClient().currentScreen).possibleBodies = possibleCelestialBodies;
+                        ((GuiCelestialSelection) FMLClientHandler.instance().getClient().currentScreen).spaceStationNames = spaceStationNames;
+                        ((GuiCelestialSelection) FMLClientHandler.instance().getClient().currentScreen).spaceStationIDs = spaceStationIDs;
+                    }
 				}
 			}
 			break;

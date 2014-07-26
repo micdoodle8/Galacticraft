@@ -5,7 +5,6 @@ import buildcraft.api.power.IPowerReceptor;
 import com.google.common.collect.Lists;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.energy.tile.IEnergyAcceptor;
@@ -328,6 +327,11 @@ public class WorldUtil
 		{
             CelestialBody celestialBody = getReachableCelestialBodiesForDimensionID(id);
 
+            if (id > 0 && celestialBody == null)
+            {
+                celestialBody = GalacticraftCore.satelliteSpaceStation;
+            }
+
 			if (celestialBody != null && WorldProvider.getProviderForDimension(id) != null)
 			{
 				if (WorldProvider.getProviderForDimension(id) instanceof IGalacticraftWorldProvider && !(WorldProvider.getProviderForDimension(id) instanceof IOrbitDimension) || WorldProvider.getProviderForDimension(id).dimensionId == 0)
@@ -340,7 +344,7 @@ public class WorldUtil
 
 					if (!ConfigManagerCore.spaceStationsRequirePermission || data.getAllowedPlayers().contains(playerBase.getGameProfile().getName().toLowerCase()) || data.getAllowedPlayers().contains(playerBase.getGameProfile().getName()) || playerBase.mcServer.getConfigurationManager().isPlayerOpped(playerBase.getGameProfile().getName()))
 					{
-                        map.put(celestialBody.getName() + "$" + data.getOwner() + "$" + data.getSpaceStationName(), WorldProvider.getProviderForDimension(id).dimensionId);
+                        map.put(celestialBody.getName() + "$" + data.getOwner() + "$" + data.getSpaceStationName() + "$" + WorldProvider.getProviderForDimension(id).dimensionId, WorldProvider.getProviderForDimension(id).dimensionId);
 					}
 				}
 			}

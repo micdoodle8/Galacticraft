@@ -67,7 +67,7 @@ public class GalaxyRegistry
 
 		for (Moon moon : GalaxyRegistry.getRegisteredMoons().values())
 		{
-			Planet planet = moon.getParentPlanet();
+			Planet planet = (Planet)moon.getParentPlanet();
 			List<Moon> listOfMoons = GalaxyRegistry.moonList.get(planet);
 			if (listOfMoons == null)
 			{
@@ -79,7 +79,7 @@ public class GalaxyRegistry
 
         for (Satellite satellite : GalaxyRegistry.getRegisteredSatellites().values())
         {
-            CelestialBody celestialBody = satellite.getParentBody();
+            CelestialBody celestialBody = satellite.getParentPlanet();
             List<Satellite> satelliteList1 = GalaxyRegistry.satelliteList.get(celestialBody);
             if (satelliteList1 == null)
             {

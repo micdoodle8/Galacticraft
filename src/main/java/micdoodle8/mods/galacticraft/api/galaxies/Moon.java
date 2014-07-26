@@ -1,17 +1,12 @@
 package micdoodle8.mods.galacticraft.api.galaxies;
 
-public class Moon extends CelestialBody
+public class Moon extends CelestialBody implements IChildBody
 {
 	protected Planet parentPlanet = null;
 
 	public Moon(String moonName)
 	{
 		super(moonName);
-	}
-
-	public Planet getParentPlanet()
-	{
-		return this.parentPlanet;
 	}
 
 	public Moon setParentPlanet(Planet planet)
@@ -30,5 +25,11 @@ public class Moon extends CelestialBody
     public String getUnlocalizedNamePrefix()
     {
         return "moon";
+    }
+
+    @Override
+    public Planet getParentPlanet()
+    {
+        return this.parentPlanet;
     }
 }
