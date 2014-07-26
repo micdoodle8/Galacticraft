@@ -859,8 +859,8 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 	    		int titaniumCount = 0;
 	    		for (int i = 0; i < 4; i++)
 	    		{
-	    			Item armorPiece = this.inventory.armorInventory[i].getItem();
-	    			if (armorPiece instanceof ItemArmorAsteroids)
+	    			ItemStack armorPiece = this.inventory.armorInventory[i];
+	    			if (armorPiece != null && armorPiece.getItem() instanceof ItemArmorAsteroids)
 	    			{
 	    				titaniumCount++;
 	    			}

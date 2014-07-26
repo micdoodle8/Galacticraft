@@ -396,6 +396,10 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 			{	
 				result += 16 * (this.getIdFromName(atmos.get(1).name().toLowerCase()) + 1);
 			}
+			if (atmos.size() > 2)
+			{	
+				result += 256 * (this.getIdFromName(atmos.get(2).name().toLowerCase()) + 1);
+			}
 			
 			return result;
 		}	
@@ -425,8 +429,10 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 				amountToDrain = amountToDrain >> 1;
 				if (amountToDrain == 0)
 				{	
-					if (thisProduct == -1) break;
-					amountToDrain = 1;
+					if (thisProduct == -1)
+						amountToDrain = 1;
+					else
+						break;
 				}
 			}
 			while (airProducts > 0);

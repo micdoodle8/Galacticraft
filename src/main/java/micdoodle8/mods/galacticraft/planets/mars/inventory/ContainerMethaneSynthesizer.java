@@ -23,7 +23,7 @@ public class ContainerMethaneSynthesizer extends Container
 		this.tileEntity = tileEntity;
 
 		// Electric Input Slot
-		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 55, 53, ItemElectric.class));
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 53, 53, ItemElectric.class));
 
 		// Input slot - hydrogen
 		this.addSlotToContainer(new Slot(tileEntity, 1, 7, 7));

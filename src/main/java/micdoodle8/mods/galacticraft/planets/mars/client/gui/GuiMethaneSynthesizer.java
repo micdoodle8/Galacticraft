@@ -72,7 +72,7 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
 		List<String> batterySlotDesc = new ArrayList<String>();
 		batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
 		batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
-		this.infoRegions.add(new GuiElementInfoRegion(edgeLeft + 55, edgeTop + 53, 18, 18, batterySlotDesc, this.width, this.height, this));
+		this.infoRegions.add(new GuiElementInfoRegion(edgeLeft + 53, edgeTop + 53, 18, 18, batterySlotDesc, this.width, this.height, this));
 
 		this.fuelTankRegion.xPosition = edgeLeft + 153;
 		this.fuelTankRegion.yPosition = edgeTop + 28;
@@ -141,7 +141,7 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
 		}
 		else if (this.tileEntity.canProcess() && this.tileEntity.hasEnoughEnergyToRun)
 		{
-			displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.liquefying.name");
+			displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.processing.name");
 		}
 		else if (!this.tileEntity.hasEnoughEnergyToRun)
 		{
@@ -149,7 +149,7 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
 		}
 		else if (this.tileEntity.liquidTank.getFluidAmount() == this.tileEntity.liquidTank.getCapacity())
 		{
-			displayText = EnumColor.RED + GCCoreUtil.translate("gui.message.full.name");
+			displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.tankfull.name");
 		}
 		else
 		{
