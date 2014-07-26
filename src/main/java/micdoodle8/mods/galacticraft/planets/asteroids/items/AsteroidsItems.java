@@ -55,7 +55,7 @@ public class AsteroidsItems
 
 		AsteroidsItems.registerItems();
 
-        OreDictionary.registerOre("plateTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 6));
+        OreDictionary.registerOre("compressedTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 6));
         OreDictionary.registerOre("ingotTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 5));
         OreDictionary.registerOre("shardTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 4));
         OreDictionary.registerOre("shardIron", new ItemStack(AsteroidsItems.basicItem, 1, 3));

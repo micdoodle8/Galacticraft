@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.recipe;
 
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
@@ -58,6 +59,21 @@ public class RecipeManagerAsteroids
         RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.grapple, 2), new Object[] { "X", "Y", "Z", 'X', Items.iron_ingot, 'Y', Blocks.planks, 'Z', Items.string });
 
         RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.atmosphericValve, 1, 0), new Object[] { "   ", "XYX", " X ", 'X', new ItemStack(MarsItems.marsItemBasic, 1, 2), 'Y', GCItems.oxygenVent });
+
+        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 2), new Object[] { " Y ", "XYX", "X X", 'X', new ItemStack(AsteroidsItems.basicItem), 'Y', "compressedTitanium" });
+
+        RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.blockWalkway, 3), new Object[] { "XXX", " X ", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6) });
+        RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.blockWalkwayWire, 3), new Object[] { "XXX", "YXY", " Y ", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', new ItemStack(GCBlocks.aluminumWire) });
+        RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.blockWalkwayOxygenPipe, 3), new Object[] { "XXX", "YXY", " Y ", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', new ItemStack(GCBlocks.oxygenPipe) });
+
+        RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.shortRangeTelepad), new Object[] { "XWX", "ZYZ", "XXX", 'W', new ItemStack(GCBlocks.aluminumWire), 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', Items.redstone, 'Z', Items.ender_pearl });
+        RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.shortRangeTelepad), new Object[] { "XWX", "ZYZ", "XXX", 'W', new ItemStack(GCBlocks.aluminumWire, 1, 1), 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', Items.redstone, 'Z', Items.ender_pearl });
+
+        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 8), new Object[] { "XYX", "YZY", "XYX", 'X', Items.redstone, 'Y', "compressedIron", 'Z', Blocks.glass_pane });
+
+        RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.beamReceiver), new Object[] { " X ", "XYX", " X ", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', new ItemStack(AsteroidsItems.basicItem, 1, 8) });
+        RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.beamReflector), new Object[] { " ZY", " X ", "XXX", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', new ItemStack(AsteroidsItems.basicItem, 1, 8), 'Z', Blocks.lever });
+        RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.beamReflector), new Object[] { "YZ ", " X ", "XXX", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', new ItemStack(AsteroidsItems.basicItem, 1, 8), 'Z', Blocks.lever });
 
         if (OreDictionary.getOres("ingotTitanium").size() > 0)
         {
