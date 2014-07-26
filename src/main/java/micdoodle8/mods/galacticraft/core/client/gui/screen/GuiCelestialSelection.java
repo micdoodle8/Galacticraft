@@ -5,7 +5,6 @@ import com.google.common.collect.Maps;
 import com.ibm.icu.text.ArabicShaping;
 import com.ibm.icu.text.ArabicShapingException;
 import com.ibm.icu.text.Bidi;
-import cpw.mods.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
@@ -477,7 +476,7 @@ public class GuiCelestialSelection extends GuiScreen
         {
             if (x > width - BORDER_WIDTH - BORDER_EDGE_WIDTH - 88 && x < width - BORDER_WIDTH - BORDER_EDGE_WIDTH && y > BORDER_WIDTH + BORDER_EDGE_WIDTH && y < BORDER_WIDTH + BORDER_EDGE_WIDTH + 13)
             {
-                if (this.selectedBody.getReachable() && this.possibleBodies.contains(this.selectedBody))
+                if (this.selectedBody.getReachable())
                 {
                     try
                     {
@@ -1028,7 +1027,6 @@ public class GuiCelestialSelection extends GuiScreen
                     if (!preEvent.isCanceled())
                     {
                         int size = this.getWidthForCelestialBody(satellite);
-                        FMLLog.info("" + size);
                         this.drawTexturedModalRect(-size / 2, -size / 2, size, size, 0, 0, preEvent.textureSize, preEvent.textureSize, false, false, preEvent.textureSize);
                         matrixMap.put(satellite, worldMatrix1);
                     }
