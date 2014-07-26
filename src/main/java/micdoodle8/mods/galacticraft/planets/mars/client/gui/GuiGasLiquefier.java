@@ -133,6 +133,10 @@ public class GuiGasLiquefier extends GuiContainerGC
 		{
 			displayText = EnumColor.RED + GCCoreUtil.translate("gui.message.lowEnergy.name");
 		}
+		else if (this.tileEntity.liquidTank.getFluidAmount() == this.tileEntity.liquidTank.getCapacity() && this.tileEntity.liquidTank2.getFluidAmount() == this.tileEntity.liquidTank2.getCapacity())
+		{
+			displayText = EnumColor.RED + GCCoreUtil.translate("gui.message.full.name");
+		}
 		else
 		{
 			displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.unknown.name");

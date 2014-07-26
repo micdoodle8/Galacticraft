@@ -418,11 +418,16 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 			do
 			{
 				int thisProduct = (airProducts & 15) - 1;
+				//-1 indicates a gas which can't be liquefied (e.g. Carbon Dioxide)
 				if (thisProduct >= 0)
 					this.gasTank.drain(this.placeIntoFluidTanks(thisProduct, amountToDrain) * 2, true);
 				airProducts = airProducts >> 4;
 				amountToDrain = amountToDrain >> 1;
-				if (amountToDrain == 0) break;
+				if (amountToDrain == 0)
+				{	
+					if (thisProduct == -1) break;
+					amountToDrain = 1;
+				}
 			}
 			while (airProducts > 0);
 		}

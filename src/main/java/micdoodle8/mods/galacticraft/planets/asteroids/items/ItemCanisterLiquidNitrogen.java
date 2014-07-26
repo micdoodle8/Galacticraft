@@ -6,10 +6,15 @@ import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
 
 import java.util.List;
 
@@ -73,4 +78,83 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric
 			par3List.add(GCCoreUtil.translate("item.canister.liquidNitrogen.name") +  ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
 		}
 	}
+/*	
+	public boolean onItemUse(ItemStack i, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
+	{
+		int damage = i.getItemDamage() + 125;
+		if (damage > i.getMaxDamage()) return false;
+
+		Block b = world.getBlock(x, y, z);
+		int meta = world.getBlockMetadata(x, y, z);
+		Block result =  this.canFreeze(b, meta);
+		if (result != null)
+		{
+			i.setItemDamage(damage);
+			world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "fire.ignite", 1.0F, Item.itemRand.nextFloat() * 0.4F + 0.8F);
+			world.setBlock(x, y, z, result, 0, 3);
+			return true;
+		}
+
+		return false;
+	}
+*/
+	private Block canFreeze(Block b, int meta)
+	{
+		if (b == Blocks.water)
+		{
+			return Blocks.ice;
+		}
+		if (b == Blocks.lava)
+		{
+			return Blocks.obsidian;
+		}
+		return null;
+	}
+
+    public ItemStack onItemRightClick(ItemStack itemStack, World par2World, EntityPlayer par3EntityPlayer)
+    {
+		int damage = itemStack.getItemDamage() + 125;
+		if (damage > itemStack.getMaxDamage()) return itemStack;
+    	
+    	MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, true);
+
+        if (movingobjectposition == null)
+        {
+            return itemStack;
+        }
+        else
+        {
+            if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
+            {
+                int x = movingobjectposition.blockX;
+                int y = movingobjectposition.blockY;
+                int z = movingobjectposition.blockZ;
+
+                if (!par2World.canMineBlock(par3EntityPlayer, x, y, z))
+                {
+                    return itemStack;
+                }
+
+                if (!par3EntityPlayer.canPlayerEdit(x, y, z, movingobjectposition.sideHit, itemStack))
+                {
+                    return itemStack;
+                }
+
+                //Material material = par2World.getBlock(i, j, k).getMaterial();
+                Block b = par2World.getBlock(x, y, z);
+                int meta = par2World.getBlockMetadata(x, y, z);
+
+        		Block result =  this.canFreeze(b, meta);
+        		if (result != null)
+        		{
+        			itemStack.setItemDamage(damage);
+        			par2World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "fire.ignite", 1.0F, Item.itemRand.nextFloat() * 0.4F + 0.8F);
+        			par2World.setBlock(x, y, z, result, 0, 3);
+        			return itemStack;
+        		}
+            }
+
+            return itemStack;
+        }
+    }
 }
