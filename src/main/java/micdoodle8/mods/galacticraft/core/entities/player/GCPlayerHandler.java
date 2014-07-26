@@ -221,7 +221,11 @@ public class GCPlayerHandler
 				//Set spawn point here if just descended from a lander for the first time
 				if (player.getBedLocation(player.worldObj.provider.dimensionId) == null)
 				{
-					ChunkCoordinates coords = new ChunkCoordinates(MathHelper.floor_double(player.posX + 0.5D), MathHelper.floor_double(player.posY + 0.5D), MathHelper.floor_double(player.posZ + 0.5D));
+                    int i = 30000000;
+                    int j = Math.min(i, Math.max(-i, MathHelper.floor_double(player.posX + 0.5D)));
+                    int k = Math.min(256, Math.max(0, MathHelper.floor_double(player.posY + 1.5D)));
+                    int l = Math.min(i, Math.max(-i, MathHelper.floor_double(player.posZ + 0.5D)));
+					ChunkCoordinates coords = new ChunkCoordinates(j, k, l);
 					player.setSpawnChunk(coords, true, player.worldObj.provider.dimensionId);
 				}
 				
