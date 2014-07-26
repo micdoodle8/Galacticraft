@@ -3,12 +3,12 @@ package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -152,7 +152,6 @@ public class EntityGrapple extends Entity implements IProjectile
 					if (deltaPositionSqrd < 0.01 && this.pullingPlayer)
 					{
 						this.updatePullingEntity(false);
-						this.setDead();
 					}
 
 					this.pullingPlayer = true;
@@ -420,7 +419,7 @@ public class EntityGrapple extends Entity implements IProjectile
 		{
 			boolean flag = this.canBePickedUp == 1 || this.canBePickedUp == 2 && par1EntityPlayer.capabilities.isCreativeMode;
 
-			if (this.canBePickedUp == 1 && !par1EntityPlayer.inventory.addItemStackToInventory(new ItemStack(AsteroidsItems.grapple, 1)))
+			if (this.canBePickedUp == 1 && !par1EntityPlayer.inventory.addItemStackToInventory(new ItemStack(Items.string, 1)))
 			{
 				flag = false;
 			}

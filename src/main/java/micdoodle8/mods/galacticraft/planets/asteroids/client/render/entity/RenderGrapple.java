@@ -19,7 +19,7 @@ public class RenderGrapple extends Render
 		Vec3 vec3 = Vec3.createVectorHelper(0.0D, -0.2D, 0.0D);
 		EntityPlayer shootingEntity = grapple.getShootingEntity();
 
-		if (shootingEntity != null)
+		if (shootingEntity != null && grapple.getPullingEntity())
 		{
 			double d3 = shootingEntity.prevPosX + (shootingEntity.posX - shootingEntity.prevPosX) * partialTicks + vec3.xCoord;
 			double d4 = shootingEntity.prevPosY + (shootingEntity.posY - shootingEntity.prevPosY) * partialTicks + vec3.yCoord;
