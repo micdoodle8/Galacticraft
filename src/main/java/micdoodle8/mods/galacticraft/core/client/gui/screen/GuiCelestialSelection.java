@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.ibm.icu.text.ArabicShaping;
 import com.ibm.icu.text.ArabicShapingException;
 import com.ibm.icu.text.Bidi;
+import cpw.mods.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
@@ -1001,41 +1002,44 @@ public class GuiCelestialSelection extends GuiScreen
 
 			for (Satellite satellite : GalaxyRegistry.getRegisteredSatellites().values())
 			{
-				if ((satellite == this.selectedBody || (satellite.getParentPlanet() == this.selectedBody && this.selectionCount != 1)) && (this.ticksSinceSelection > 35 || this.selectedBody == satellite || (this.lastSelectedBody instanceof Satellite && GalaxyRegistry.getSatellitesForCelestialBody(((Satellite) this.lastSelectedBody).getParentPlanet()).contains(satellite))))
-				{
-					GL11.glPushMatrix();
-					Matrix4f worldMatrix1 = new Matrix4f(worldMatrix0);
-					Matrix4f.translate(this.getCelestialBodyPosition(satellite), worldMatrix1, worldMatrix1);
-
-					Matrix4f worldMatrix2 = new Matrix4f();
-					Matrix4f.rotate((float) Math.toRadians(45), new Vector3f(0, 0, 1), worldMatrix2, worldMatrix2);
-					Matrix4f.rotate((float) Math.toRadians(-55), new Vector3f(1, 0, 0), worldMatrix2, worldMatrix2);
-					Matrix4f.scale(new Vector3f(0.25F, 0.25F, 1.0F), worldMatrix2, worldMatrix2);
-					worldMatrix2 = Matrix4f.mul(worldMatrix1, worldMatrix2, worldMatrix2);
-
-					fb.rewind();
-					worldMatrix2.store(fb);
-					fb.flip();
-					GL11.glMultMatrix(fb);
-
-                    CelestialBodyRenderEvent.Pre preEvent = new CelestialBodyRenderEvent.Pre(satellite, satellite.getBodyIcon(), 8);
-                    MinecraftForge.EVENT_BUS.post(preEvent);
-
-                    GL11.glColor4f(1, 1, 1, 1);
-                    this.mc.renderEngine.bindTexture(preEvent.celestialBodyTexture);
-
-                    if (!preEvent.isCanceled())
+                if (this.possibleBodies.contains(satellite))
+                {
+                    if ((satellite == this.selectedBody || (satellite.getParentPlanet() == this.selectedBody && this.selectionCount != 1)) && (this.ticksSinceSelection > 35 || this.selectedBody == satellite || (this.lastSelectedBody instanceof Satellite && GalaxyRegistry.getSatellitesForCelestialBody(((Satellite) this.lastSelectedBody).getParentPlanet()).contains(satellite))))
                     {
-                        int size = this.getWidthForCelestialBody(satellite);
-                        this.drawTexturedModalRect(-size / 2, -size / 2, size, size, 0, 0, preEvent.textureSize, preEvent.textureSize, false, false, preEvent.textureSize);
-                        matrixMap.put(satellite, worldMatrix1);
-                    }
+                        GL11.glPushMatrix();
+                        Matrix4f worldMatrix1 = new Matrix4f(worldMatrix0);
+                        Matrix4f.translate(this.getCelestialBodyPosition(satellite), worldMatrix1, worldMatrix1);
 
-                    CelestialBodyRenderEvent.Post postEvent = new CelestialBodyRenderEvent.Post(satellite);
-                    MinecraftForge.EVENT_BUS.post(postEvent);
-                    fb.clear();
-					GL11.glPopMatrix();
-				}
+                        Matrix4f worldMatrix2 = new Matrix4f();
+                        Matrix4f.rotate((float) Math.toRadians(45), new Vector3f(0, 0, 1), worldMatrix2, worldMatrix2);
+                        Matrix4f.rotate((float) Math.toRadians(-55), new Vector3f(1, 0, 0), worldMatrix2, worldMatrix2);
+                        Matrix4f.scale(new Vector3f(0.25F, 0.25F, 1.0F), worldMatrix2, worldMatrix2);
+                        worldMatrix2 = Matrix4f.mul(worldMatrix1, worldMatrix2, worldMatrix2);
+
+                        fb.rewind();
+                        worldMatrix2.store(fb);
+                        fb.flip();
+                        GL11.glMultMatrix(fb);
+
+                        CelestialBodyRenderEvent.Pre preEvent = new CelestialBodyRenderEvent.Pre(satellite, satellite.getBodyIcon(), 8);
+                        MinecraftForge.EVENT_BUS.post(preEvent);
+
+                        GL11.glColor4f(1, 1, 1, 1);
+                        this.mc.renderEngine.bindTexture(preEvent.celestialBodyTexture);
+
+                        if (!preEvent.isCanceled())
+                        {
+                            int size = this.getWidthForCelestialBody(satellite);
+                            this.drawTexturedModalRect(-size / 2, -size / 2, size, size, 0, 0, preEvent.textureSize, preEvent.textureSize, false, false, preEvent.textureSize);
+                            matrixMap.put(satellite, worldMatrix1);
+                        }
+
+                        CelestialBodyRenderEvent.Post postEvent = new CelestialBodyRenderEvent.Post(satellite);
+                        MinecraftForge.EVENT_BUS.post(postEvent);
+                        fb.clear();
+                        GL11.glPopMatrix();
+                    }
+                }
 			}
 		}
 
@@ -1662,62 +1666,65 @@ public class GuiCelestialSelection extends GuiScreen
 
 			for (Satellite satellite : GalaxyRegistry.getRegisteredSatellites().values())
 			{
-				if ((satellite.getParentPlanet() == this.selectedBody && this.selectionCount != 1) && this.ticksSinceSelection > 24 || satellite == this.selectedBody || this.lastSelectedBody instanceof IChildBody)
-				{
-                    float x = this.getScale(satellite);
-                    float y = 0;
-
-                    float alpha = 1;
-
-                    if (this.selectionCount >= 2)
+                if (this.possibleBodies.contains(satellite))
+                {
+                    if ((satellite.getParentPlanet() == this.selectedBody && this.selectionCount != 1) && this.ticksSinceSelection > 24 || satellite == this.selectedBody || this.lastSelectedBody instanceof IChildBody)
                     {
-                        alpha = this.selectedBody instanceof IChildBody ? 1.0F : Math.min(Math.max((this.ticksSinceSelection - 30) / 15.0F, 0.0F), 1.0F);
+                        float x = this.getScale(satellite);
+                        float y = 0;
 
-                        if (this.lastSelectedBody instanceof Satellite)
+                        float alpha = 1;
+
+                        if (this.selectionCount >= 2)
                         {
-                            if (GalaxyRegistry.getSatellitesForCelestialBody(((Satellite) this.lastSelectedBody).getParentPlanet()).contains(satellite))
+                            alpha = this.selectedBody instanceof IChildBody ? 1.0F : Math.min(Math.max((this.ticksSinceSelection - 30) / 15.0F, 0.0F), 1.0F);
+
+                            if (this.lastSelectedBody instanceof Satellite)
                             {
-                                alpha = 1.0F;
+                                if (GalaxyRegistry.getSatellitesForCelestialBody(((Satellite) this.lastSelectedBody).getParentPlanet()).contains(satellite))
+                                {
+                                    alpha = 1.0F;
+                                }
                             }
                         }
-                    }
 
-                    if (alpha != 0)
-                    {
-                        switch (count % 2)
+                        if (alpha != 0)
                         {
-                            case 0:
-                                GL11.glColor4f(0.0F, 0.6F, 1.0F, alpha);
-                                break;
-                            case 1:
-                                GL11.glColor4f(0.4F, 0.9F, 1.0F, alpha);
-                                break;
-                        }
-
-                        CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre preEvent = new CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre(satellite);
-                        MinecraftForge.EVENT_BUS.post(preEvent);
-
-                        if (!preEvent.isCanceled())
-                        {
-                            GL11.glBegin(GL11.GL_LINE_LOOP);
-
-                            float temp;
-                            for (int i = 0; i < 90; i++)
+                            switch (count % 2)
                             {
-                                GL11.glVertex2f(x, y);
-
-                                temp = x;
-                                x = cos * x - sin * y;
-                                y = sin * temp + cos * y;
+                                case 0:
+                                    GL11.glColor4f(0.0F, 0.6F, 1.0F, alpha);
+                                    break;
+                                case 1:
+                                    GL11.glColor4f(0.4F, 0.9F, 1.0F, alpha);
+                                    break;
                             }
 
-                            GL11.glEnd();
+                            CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre preEvent = new CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre(satellite);
+                            MinecraftForge.EVENT_BUS.post(preEvent);
 
-                            count++;
+                            if (!preEvent.isCanceled())
+                            {
+                                GL11.glBegin(GL11.GL_LINE_LOOP);
+
+                                float temp;
+                                for (int i = 0; i < 90; i++)
+                                {
+                                    GL11.glVertex2f(x, y);
+
+                                    temp = x;
+                                    x = cos * x - sin * y;
+                                    y = sin * temp + cos * y;
+                                }
+
+                                GL11.glEnd();
+
+                                count++;
+                            }
+
+                            CelestialBodyRenderEvent.CelestialRingRenderEvent.Post postEvent = new CelestialBodyRenderEvent.CelestialRingRenderEvent.Post(satellite);
+                            MinecraftForge.EVENT_BUS.post(postEvent);
                         }
-
-                        CelestialBodyRenderEvent.CelestialRingRenderEvent.Post postEvent = new CelestialBodyRenderEvent.CelestialRingRenderEvent.Post(satellite);
-                        MinecraftForge.EVENT_BUS.post(postEvent);
                     }
                 }
 			}
