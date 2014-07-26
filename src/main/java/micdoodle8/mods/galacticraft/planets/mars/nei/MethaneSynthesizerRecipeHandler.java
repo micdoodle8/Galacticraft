@@ -78,6 +78,12 @@ public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
 			GuiDraw.drawTexturedModalRect(2, 62 - yoffset, 35, 26 - yoffset, 16, yoffset );
 			if (this.fillAtmos) GuiDraw.drawTexturedModalRect(23, 44 - yoffset, 35, 26 - yoffset, 16, yoffset );
 			GuiDraw.drawTexturedModalRect(148, 62 - level, 1, 26 - level, 16, level);
+
+			//Offsets from GUI: x - 5,  y - 4
+			int powerlevel = 53 - (progress - 41) / 6;  
+			GuiDraw.changeTexture(MethaneSynthesizerRecipeHandler.synthesizerGuiTexture);
+			GuiDraw.drawTexturedModalRect(61, 13, 176, 38, powerlevel, 7);
+			GuiDraw.drawTexturedModalRect(47, 12, 208, 0, 11, 10);
 		}
 		
 		if (this.fillAtmos)
@@ -159,6 +165,11 @@ public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
 		{
 			ArrayList<PositionedStack> stacks = new ArrayList<PositionedStack>();
 			if (inputItem != MarsItems.carbonFragments) stacks.add(new PositionedStack(new ItemStack(inputItem, 1, inputItem.getMaxDamage()), input.relx, input.rely));
+			else if ((this.ticksPassed % 144) < 104)
+			{	
+				int number = 24 - ((this.ticksPassed % 144) - 40) * 3 / 8;
+				stacks.add(new PositionedStack(new ItemStack(inputItem, number, 0), input.relx, input.rely));
+			}
 			return stacks;
 		}
 		else

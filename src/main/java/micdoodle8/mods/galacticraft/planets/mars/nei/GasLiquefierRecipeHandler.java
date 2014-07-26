@@ -87,7 +87,15 @@ public class GasLiquefierRecipeHandler extends TemplateRecipeHandler
 				GuiDraw.drawTexturedModalRect(127, 62 - level, 176 + 16, 26 - level, 16, level);
 			}
 			else
+			{
 				GuiDraw.drawTexturedModalRect(127 + ((this.outputGas == 3) ? 21 : 0), 62 - level, 1 + this.outputGas * 17, 26 - level, 16, level);
+				GuiDraw.changeTexture(GasLiquefierRecipeHandler.liquefierGuiTexture);
+			}
+			
+			//Offsets from GUI: x - 5,  y - 4
+			int powerlevel = 53 - (progress - 41) / 6;  
+			GuiDraw.drawTexturedModalRect(37, 13, 176, 38, powerlevel, 7);
+			GuiDraw.drawTexturedModalRect(23, 12, 208, 0, 11, 10);
 		}
 		
 		if (this.fillAtmos)

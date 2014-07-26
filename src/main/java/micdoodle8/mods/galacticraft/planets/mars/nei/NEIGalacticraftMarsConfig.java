@@ -204,6 +204,6 @@ public class NEIGalacticraftMarsConfig implements IConfigureNEI
 		this.registerLiquefierRecipe(new PositionedStack(new ItemStack(AsteroidsItems.canisterLN2, 1, 501), 2, 3), new PositionedStack(new ItemStack(AsteroidsItems.canisterLN2, 1, 1), 127, 3));
 		this.registerLiquefierRecipe(new PositionedStack(new ItemStack(AsteroidsItems.canisterLOX, 1, 501), 2, 3), new PositionedStack(new ItemStack(AsteroidsItems.canisterLOX, 1, 1), 148, 3));
 		this.registerSynthesizerRecipe(new PositionedStack(new ItemStack(AsteroidsItems.atmosphericValve, 1, 0), 23, 3), new PositionedStack(new ItemStack(AsteroidsItems.methaneCanister, 1, 1), 148, 3));
-		this.registerSynthesizerRecipe(new PositionedStack(new ItemStack(MarsItems.carbonFragments, 1, 0), 23, 49), new PositionedStack(new ItemStack(AsteroidsItems.methaneCanister, 1, 1), 148, 3));
+		this.registerSynthesizerRecipe(new PositionedStack(new ItemStack(MarsItems.carbonFragments, 25, 0), 23, 49), new PositionedStack(new ItemStack(AsteroidsItems.methaneCanister, 1, 1), 148, 3));
     }
 }
