@@ -30,7 +30,14 @@ public class GuiElementGradientButton extends GuiButton
 
 			if (!this.enabled)
 			{
-				color = GCCoreUtil.to32BitColor(150, 30, 30, 30);
+                if (this.field_146123_n)
+                {
+                    color = GCCoreUtil.to32BitColor(150, 30, 30, 30);
+                }
+                else
+                {
+                    color = GCCoreUtil.to32BitColor(150, 32, 32, 32);
+                }
 			}
 			else if (this.field_146123_n)
 			{

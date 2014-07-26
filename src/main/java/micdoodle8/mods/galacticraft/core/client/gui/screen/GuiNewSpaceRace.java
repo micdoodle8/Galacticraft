@@ -161,8 +161,13 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
                     this.buttonList.add(new GuiElementGradientButton(2, this.width / 2 - 120, this.textBoxRename.yPosition + this.height / 10, 100, this.height / 10, GCCoreUtil.translate("gui.spaceRace.create.addPlayers.name")));
                     this.buttonList.add(new GuiElementGradientButton(3, this.width / 2 - 120, this.textBoxRename.yPosition + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, GCCoreUtil.translate("gui.spaceRace.create.remPlayers.name")));
                 }
-				this.buttonList.add(new GuiElementGradientButton(4, this.width / 2 + (this.canEdit ? 20 : -50), this.textBoxRename.yPosition + this.height / 10, 100, this.height / 10, GCCoreUtil.translate("gui.spaceRace.create.serverStats.name")));
-				this.buttonList.add(new GuiElementGradientButton(5, this.width / 2 + (this.canEdit ? 20 : -50), this.textBoxRename.yPosition + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, GCCoreUtil.translate("gui.spaceRace.create.globalStats.name")));
+
+                GuiElementGradientButton localStats = new GuiElementGradientButton(4, this.width / 2 + (this.canEdit ? 20 : -50), this.textBoxRename.yPosition + this.height / 10, 100, this.height / 10, GCCoreUtil.translate("gui.spaceRace.create.serverStats.name"));
+                GuiElementGradientButton serverStats = new GuiElementGradientButton(5, this.width / 2 + (this.canEdit ? 20 : -50), this.textBoxRename.yPosition + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, GCCoreUtil.translate("gui.spaceRace.create.globalStats.name"));
+				localStats.enabled = false;
+                serverStats.enabled = false;
+                this.buttonList.add(localStats);
+				this.buttonList.add(serverStats);
 				break;
 			case ADD_PLAYER:
 				this.buttonList.add(new GuiElementGradientButton(2, this.width / 2 - this.width / 3 + 7, this.height / 2 + this.height / 4 - 15, 64, 15, GCCoreUtil.translate("gui.spaceRace.create.sendInvite.name")));
@@ -638,6 +643,28 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 				this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.spaceRace.create.title.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
 				this.drawFlagButton();
 				this.drawColorButton();
+
+                GuiElementGradientButton serverStats = (GuiElementGradientButton)this.buttonList.get(4);
+                GuiElementGradientButton localStats = (GuiElementGradientButton)this.buttonList.get(5);
+
+                if (par1 > serverStats.xPosition && par1 < serverStats.xPosition + serverStats.width && par2 > serverStats.yPosition && par2 < serverStats.yPosition + serverStats.height)
+                {
+                    serverStats.displayString = "Coming Soon";
+                }
+                else
+                {
+                    serverStats.displayString = GCCoreUtil.translate("gui.spaceRace.create.serverStats.name");
+                }
+
+                if (par1 > localStats.xPosition && par1 < localStats.xPosition + localStats.width && par2 > localStats.yPosition && par2 < localStats.yPosition + localStats.height)
+                {
+                    localStats.displayString = "Coming Soon";
+                }
+                else
+                {
+                    localStats.displayString = GCCoreUtil.translate("gui.spaceRace.create.globalStats.name");
+                }
+
 				break;
 			case ADD_PLAYER:
 				this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.spaceRace.create.invitePlayer.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
