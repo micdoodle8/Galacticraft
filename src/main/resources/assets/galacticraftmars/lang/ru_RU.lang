@@ -11,7 +11,7 @@ item.slimelingCargo.name=Сумка слаймлинга
 item.key.T2.name=Ключ от подземелья 2-го уровня
 item.compressedDesh.name=Сжатая деш
 item.spaceshipTier2.cargoRocket.name=Грузовая ракета
-item.fluidManip.name=Fluid Manipulator ##NEEDS TRANSLATE##
+item.fluidManip.name=Манипулятор жидкости
 
 # TOOLS
 item.deshPick.name=Кирка из деш
