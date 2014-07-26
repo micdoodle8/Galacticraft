@@ -128,17 +128,20 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 
 		if (tileEntity != null)
 		{
-			switch (this.getNetworkType())
-			{
-			case OXYGEN:
-				connectable = WorldUtil.getAdjacentOxygenConnections(tileEntity);
-				break;
-			case POWER:
-				connectable = WorldUtil.getAdjacentPowerConnections(tileEntity);
-				break;
-			default:
-				break;
-			}
+            if (this.getNetworkType() != null)
+            {
+                switch (this.getNetworkType())
+                {
+                    case OXYGEN:
+                        connectable = WorldUtil.getAdjacentOxygenConnections(tileEntity);
+                        break;
+                    case POWER:
+                        connectable = WorldUtil.getAdjacentPowerConnections(tileEntity);
+                        break;
+                    default:
+                        break;
+                }
+            }
 
 			float minX = 0.0F;
 			float minY = 0.32F;
