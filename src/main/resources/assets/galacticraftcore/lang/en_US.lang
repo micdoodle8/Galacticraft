@@ -196,7 +196,7 @@ entity.GalacticraftCore.Lander.name=Space Lander
 entity.GalacticraftCore.GCFlag.name=Flag
 entity.GalacticraftCore.MeteorChunk.name=Meteor Chunk
 
-# Schematics
+# SCHEMATICS
 schematic.moonbuggy.name=Moon Buggy
 schematic.rocketT1.name=Tier 1 Rocket
 schematic.rocketT2.name=Tier 2 Rocket
@@ -209,6 +209,7 @@ death.attack.oxygenSuffocation=%1$s ran out of oxygen!
 
 # GALAXIES
 galaxy.blockyway.name=The Blocky Way
+galaxy.milkyWay=Milky Way
 
 # OTHER
 newversion.failed.name=Galacticraft update check failed! Trying again in 15 seconds
@@ -230,22 +231,6 @@ itemGroup.GalacticraftBlocks=Galacticraft Blocks
 itemGroup.GalacticraftItems=Galacticraft Items
 
 # GUI
-container.cargoloader.name=Cargo Loader
-container.cargounloader.name=Cargo Unloader
-container.fuelloader.name=Fuel Loader
-container.oxygencollector.name=Oxygen Collector
-container.oxygencompressor.name=Oxygen Compressor
-container.oxygendistributor.name=Oxygen Distributor
-container.oxygensealer.name=Oxygen Sealer
-container.parachest.name=Para-chest
-container.refinery.name=Refinery
-container.treasurechest.name=Treasure Chest
-container.lander.name=Space Lander
-container.spaceship.name=Tier 1 Rocket
-container.solarbasic.name=Basic Solar Panel
-container.solaradvanced.name=Advanced Solar Panel
-container.oxygendecompressor.name=Oxygen Decompressor
-
 gui.message.out.name=Out
 gui.message.in.name=In
 gui.message.status.name=Status
@@ -464,21 +449,6 @@ gui.spaceRace.join.title.name=Join Space Race
 gui.spaceRace.join.owner.name=Owner
 gui.spaceRace.join.memberCount.name=%d members
 
-# DIMENSIONS
-dimension.Overworld.name=Overworld
-dimension.Moon.name=Moon
-dimension.Sun.name=Sun
-planet.overworld=Overworld
-moon.moon=Moon
-galaxy.milkyWay=Milky Way
-solarsystem.sol=Sol
-planet.mercury=Mercury
-planet.venus=Venus
-planet.jupiter=Jupiter
-planet.saturn=Saturn
-planet.uranus=Uranus
-planet.neptune=Neptune
-
 gui.message.moon.daynightcycle.0.name=29.5 Earth Days
 gui.message.moon.daynightcycle.1.name=
 gui.message.moon.surfacegravity.0.name=0.1654g
@@ -500,6 +470,37 @@ gui.message.overworld.atmosphere.0.name=Nitrogen and Oxygen
 gui.message.overworld.atmosphere.1.name=Supports life
 gui.message.overworld.meansurfacetemp.0.name=14C
 gui.message.overworld.meansurfacetemp.1.name=
+
+# CONTAINERS
+container.cargoloader.name=Cargo Loader
+container.cargounloader.name=Cargo Unloader
+container.fuelloader.name=Fuel Loader
+container.oxygencollector.name=Oxygen Collector
+container.oxygencompressor.name=Oxygen Compressor
+container.oxygendistributor.name=Oxygen Distributor
+container.oxygensealer.name=Oxygen Sealer
+container.parachest.name=Para-chest
+container.refinery.name=Refinery
+container.treasurechest.name=Treasure Chest
+container.lander.name=Space Lander
+container.spaceship.name=Tier 1 Rocket
+container.solarbasic.name=Basic Solar Panel
+container.solaradvanced.name=Advanced Solar Panel
+container.oxygendecompressor.name=Oxygen Decompressor
+
+# DIMENSIONS
+dimension.Overworld.name=Overworld
+dimension.Moon.name=Moon
+dimension.Sun.name=Sun
+planet.overworld=Overworld
+planet.mercury=Mercury
+planet.venus=Venus
+planet.jupiter=Jupiter
+planet.saturn=Saturn
+planet.uranus=Uranus
+planet.neptune=Neptune
+moon.moon=Moon
+solarsystem.sol=Sol
 
 # COMMANDS
 commands.dimensionteleport=%s was sent into the atmosphere%s
