@@ -46,7 +46,6 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 	public long tick;
 	public boolean oxygenSetupValid = true;
 	AxisAlignedBB boundingBoxBefore;
-	public boolean touchedGround = false;
 	public boolean lastOnGround;
 	private ResourceLocation galacticraftCape;
 	private ThreadDownloadImageData galacticraftCapeImageData;
@@ -209,11 +208,6 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 		}
 
 		this.lastRidingCameraZoomEntity = ridingThirdPersonEntity;
-
-		if (!this.onGround && this.lastOnGround)
-		{
-			this.touchedGround = true;
-		}
 
 		if (this.getParachute())
 		{

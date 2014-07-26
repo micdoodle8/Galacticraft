@@ -74,26 +74,7 @@ public class WorldUtil
 		if (entity.worldObj.provider instanceof IGalacticraftWorldProvider)
 		{
 			final IGalacticraftWorldProvider customProvider = (IGalacticraftWorldProvider) entity.worldObj.provider;
-
-			if (entity instanceof EntityPlayer)
-			{
-				if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && entity instanceof GCEntityClientPlayerMP)
-				{
-					return ((GCEntityClientPlayerMP) entity).touchedGround ? 0.08D - customProvider.getGravity() : 0.08D;
-				}
-				else if (entity instanceof GCEntityPlayerMP)
-				{
-					return ((GCEntityPlayerMP) entity).getPlayerStats().touchedGround ? 0.08D - customProvider.getGravity() : 0.08D;
-				}
-				else
-				{
-					return 0.08D;
-				}
-			}
-			else
-			{
-				return 0.08D - customProvider.getGravity();
-			}
+            return 0.08D - customProvider.getGravity();
 		}
 		else
 		{
