@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.core.command;
 
+import micdoodle8.mods.galacticraft.api.entity.IRocketType;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
@@ -11,6 +13,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.item.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -49,6 +52,11 @@ public class CommandPlanetTeleport extends CommandBase
 
 				if (playerBase != null)
 				{
+                    playerBase.getPlayerStats().rocketStacks = new ItemStack[2];
+                    playerBase.getPlayerStats().rocketType = IRocketType.EnumRocketType.DEFAULT.ordinal();
+                    playerBase.getPlayerStats().rocketItem = GCItems.rocketTier1;
+                    playerBase.getPlayerStats().fuelLevel = 1000;
+
 					HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(Integer.MAX_VALUE), playerBase);
 
 					String temp = "";
