@@ -36,10 +36,12 @@ public class RecipeManagerMars
 
 		RecipeUtil.addRecipe(new ItemStack(MarsBlocks.machine, 1, 4), new Object[] { "XYX", "XZX", "XYX", 'X', "plateDesh", 'Y', new ItemStack(MarsItems.marsItemBasic, 1, 3), 'Z', Items.bed });
 		//Gas liquefier
-		RecipeUtil.addRecipe(new ItemStack(MarsBlocks.machineT2, 1, 0), new Object[] { "TCT", "XWX", "OCP", 'T', GCItems.oxTankHeavy, 'C', GCItems.oxygenConcentrator, 'X', "plateDesh", 'W', "advancedWafer", 'O', new ItemStack(GCBlocks.oxygenCompressor, 1, 0), 'P', new ItemStack(GCBlocks.oxygenCompressor, 1, 4) });
+		RecipeUtil.addRecipe(new ItemStack(MarsBlocks.machineT2, 1, 0), new Object[] { "TVS", "FWS", "PXO", 'T', GCItems.oxTankHeavy, 'V', GCItems.oxygenVent, 'F', new ItemStack(GCBlocks.oxygenPipe, 1, 0), 'X', new ItemStack(GCItems.basicItem, 1, 10), 'W', new ItemStack(MarsItems.marsItemBasic, 1, 6), 'O', new ItemStack(GCBlocks.oxygenCompressor, 1, 0), 'P', new ItemStack(GCBlocks.oxygenCompressor, 1, 4), 'S', GCItems.oxTankMedium });
 		//Methane Synthesizer
-		RecipeUtil.addRecipe(new ItemStack(MarsBlocks.machineT2, 1, 4), new Object[] { "TXT", "FWF", "OCP", 'T', GCItems.oxTankHeavy, 'C', GCItems.oxygenConcentrator, 'X', "plateDesh", 'F', new ItemStack(GCBlocks.machineTiered, 1, 4), 'W', "advancedWafer", 'O', new ItemStack(GCBlocks.oxygenCollector, 1, 0), 'P', new ItemStack(GCBlocks.oxygenCompressor, 1, 4) });
-
+		RecipeUtil.addRecipe(new ItemStack(MarsBlocks.machineT2, 1, 4), new Object[] { "TVT", "FWF", "CXO", 'T', GCItems.oxTankHeavy, 'V', GCItems.oxygenVent, 'F', new ItemStack(GCBlocks.oxygenPipe, 1, 0), 'X', new ItemStack(GCItems.basicItem, 1, 10), 'W', new ItemStack(MarsItems.marsItemBasic, 1, 6), 'O', new ItemStack(GCBlocks.oxygenCompressor, 1, 0), 'C', new ItemStack(GCBlocks.machineTiered, 1, 4) });
+		//Fluid Manipulator - crafting item
+		RecipeUtil.addRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 6), new Object[] { "MXM", "SWS", "MXM", 'S', Items.slime_ball, 'X', GCItems.oxygenFan, 'M', new ItemStack(GCItems.meteoricIronIngot, 1, 0), 'W', new ItemStack(GCItems.basicItem, 1, 14) });
+		
 		RecipeUtil.addRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 1), new Object[] { "X", "X", 'X', "ingotDesh" });
 
 		RecipeUtil.addRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 4), new Object[] { "XWX", "XYX", " Z ", 'W', Items.diamond, 'X', Items.leather, 'Y', Items.slime_ball, 'Z', Blocks.chest });
@@ -66,6 +68,12 @@ public class RecipeManagerMars
 
 		RecipeUtil.addRecipe(new ItemStack(MarsItems.marsItemBasic, 9, 2), new Object[] { "X", 'X', new ItemStack(MarsBlocks.marsBlock, 1, 8) });
 
+		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(MarsItems.carbonFragments, 8, 0), new ItemStack(Items.coal, 1, 0));
+		
+		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(MarsItems.carbonFragments, 4, 0), new ItemStack(Items.coal, 1, 1));
+		
+		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(MarsItems.carbonFragments, 64, 0), new ItemStack(Blocks.coal_block, 1, 0));
+		
 		for (int var2 = 0; var2 < 16; ++var2)
 		{
 			CraftingManager.getInstance().addShapelessRecipe(new ItemStack(MarsBlocks.tintedGlassPane, 1, 15 - var2), new Object[] { new ItemStack(Items.dye, 1, var2), Blocks.glass_pane, OreDictionary.getOres("plateDesh").get(0) });
@@ -206,7 +214,5 @@ public class RecipeManagerMars
 		MarsUtil.adCargoRocketRecipe(new ItemStack(MarsItems.spaceship, 1, 13), input2);
 
 		RecipeUtil.addRecipe(new ItemStack(MarsBlocks.machine, 1, BlockMachineMars.LAUNCH_CONTROLLER_METADATA), new Object[] { "ZVZ", "YXY", "ZWZ", 'V', new ItemStack(GCItems.basicItem, 1, 19), 'W', new ItemStack(GCBlocks.aluminumWire, 1, 0), 'X', new ItemStack(GCItems.basicItem, 1, 14), 'Y', "plateDesh", 'Z', "ingotDesh" });
-
-		RecipeUtil.addRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 6), new Object[] { "XXX", "ZYZ", " X ", 'X', "plateDesh", 'Z', Items.redstone, 'Y', new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage()) });
     }
 }
