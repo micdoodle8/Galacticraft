@@ -264,6 +264,10 @@ public class PacketSimple extends Packet implements IPacket
 
                         spaceStationNames.put(values[1], values[2]);
                         spaceStationIDs.put(values[1], Integer.parseInt(values[3]));
+        				if (ConfigManagerCore.enableDebug)
+        				{
+        					GCLog.info("DEBUG info: found reachable spacestation dim "+ Integer.parseInt(values[3]) + " for player " + values[1]);
+        				}
                     }
 
                     if (celestialBody != null)

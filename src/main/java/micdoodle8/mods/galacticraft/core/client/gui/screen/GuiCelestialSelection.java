@@ -440,7 +440,17 @@ public class GuiCelestialSelection extends GuiScreen
 
                     if (this.selectedBody == GalacticraftCore.satelliteSpaceStation)
                     {
-                        int spacestationID = this.spaceStationIDs.get(this.mc.thePlayer.getGameProfile().getName());
+                        if (this.spaceStationIDs == null)
+                        {
+                    		GCLog.severe("Please report as a BUG: spaceStationIDs was null.");
+                    		return false;               	
+                        }
+                        if (this.mc.thePlayer.getGameProfile() == null)
+                        {
+                    		GCLog.severe("Please report as a BUG: player name profile problem.");
+                    		return false;               	                      	
+                        }
+                    	int spacestationID = this.spaceStationIDs.get(this.mc.thePlayer.getGameProfile().getName());
                     	WorldProvider spacestation = WorldProvider.getProviderForDimension(spacestationID); 
                     	if (spacestation != null) dimension = spacestation.getDimensionName();
                     	else
