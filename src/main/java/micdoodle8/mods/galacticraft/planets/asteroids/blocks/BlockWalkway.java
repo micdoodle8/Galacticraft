@@ -80,13 +80,18 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 
 	public int getWalkwayOrientation(World world, int x, int y, int z)
 	{
-		int connectedNorth = world.getBlock(x, y, z - 1).isBlockNormalCube() || world.getBlock(x, y, z - 1) instanceof BlockWalkway ? 1 : 0;
-		int connectedEast = world.getBlock(x + 1, y, z).isBlockNormalCube() || world.getBlock(x + 1, y, z) instanceof BlockWalkway ? 2 : 0;
-		int connectedSouth = world.getBlock(x, y, z + 1).isBlockNormalCube() || world.getBlock(x, y, z + 1) instanceof BlockWalkway ? 4 : 0;
-		int connectedWest = world.getBlock(x - 1, y, z).isBlockNormalCube() || world.getBlock(x - 1, y, z) instanceof BlockWalkway ? 8 : 0;
+		int connectedNorth = isBlockNormalCube(world.getBlock(x, y, z - 1)) || world.getBlock(x, y, z - 1) instanceof BlockWalkway ? 1 : 0;
+		int connectedEast = isBlockNormalCube(world.getBlock(x + 1, y, z)) || world.getBlock(x + 1, y, z) instanceof BlockWalkway ? 2 : 0;
+		int connectedSouth = isBlockNormalCube(world.getBlock(x, y, z + 1)) || world.getBlock(x, y, z + 1) instanceof BlockWalkway ? 4 : 0;
+		int connectedWest = isBlockNormalCube(world.getBlock(x - 1, y, z)) || world.getBlock(x - 1, y, z) instanceof BlockWalkway ? 8 : 0;
 
 		return connectedNorth | connectedEast | connectedSouth | connectedWest;
 	}
+
+    public boolean isBlockNormalCube(Block block)
+    {
+        return block.getMaterial().blocksMovement() && block.renderAsNormalBlock();
+    }
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata)
