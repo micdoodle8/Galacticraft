@@ -66,7 +66,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     @Override
     public String getInventoryName()
     {
-        return "Landing Balloons";
+        return "Lander";
     }
 
     @Override
