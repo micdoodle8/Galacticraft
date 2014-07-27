@@ -199,7 +199,7 @@ class AirLockProtocol
 			}
 		}
 
-		if (this.airLocksHorizontalMax == 0 || this.airLocksHorizontalMin == 0 || this.airLocksVerticalMin == 0 || this.airLocksVerticalMax == 0 || this.airLocksHorizontalMax != this.airLocksHorizontalMin || this.airLocksVerticalMax != this.airLocksVerticalMin)
+		if (this.airLocksHorizontalMax == 0 || this.airLocksHorizontalMin == 0 || (!this.horizontal && (this.airLocksVerticalMin == 0 || this.airLocksVerticalMax == 0)) || this.airLocksHorizontalMax != this.airLocksHorizontalMin || this.airLocksVerticalMax != this.airLocksVerticalMin)
 		{
 			return null;
 		}
