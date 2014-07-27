@@ -230,6 +230,8 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 		{
 			return 0;
 		}
+		else if (meta == 2 && fortune >= 1)
+			return (random.nextFloat() < fortune * 0.29F - 0.25F) ? 2: 1;
 
 		return 1;
 	}

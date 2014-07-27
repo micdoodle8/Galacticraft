@@ -260,6 +260,10 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 	{
 		switch (meta)
 		{
+		case 2:
+			if (fortune >= 1)
+				return (random.nextFloat() < fortune * 0.29F - 0.25F) ? 2: 1;
+			return 1;
 		case 15:
 			return 0;
 		default:

@@ -15,6 +15,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
@@ -91,6 +92,10 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
             for(int i = 0; i < count; i++)
             {
                 ret.add(new ItemStack(AsteroidsItems.basicItem, 1, 3));
+            }                
+            count = quantityDropped(metadata, fortune, world.rand);
+            for(int i = 0; i < count; i++)
+            {
                 ret.add(new ItemStack(AsteroidsItems.basicItem, 1, 4));
             }
             return ret;
@@ -116,6 +121,9 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
 	{
 		switch (meta)
 		{
+		case 4:
+			if (fortune >= 1)
+				return (random.nextFloat() < fortune * 0.29F - 0.25F) ? 2: 1;
 		default:
 			return 1;
 		}
@@ -167,4 +175,17 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
 	{
 		return false;
 	}
+	
+	@Override
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+	{
+		int metadata = world.getBlockMetadata(x, y, z);
+		if (metadata == 4)
+		{
+			return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
+		}
+
+		return super.getPickBlock(target, world, x, y, z);
+	}
+
 }
