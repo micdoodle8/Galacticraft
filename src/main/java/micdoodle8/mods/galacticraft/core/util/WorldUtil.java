@@ -69,7 +69,6 @@ public class WorldUtil
 {
 	public static List<Integer> registeredSpaceStations;
 	public static List<Integer> registeredPlanets;
-	public static List<String> registeredPlanetNames;
 
 	public static double getGravityForEntity(Entity entity)
 	{
@@ -94,18 +93,6 @@ public class WorldUtil
 		else
 		{
 			return 0.03999999910593033D;
-		}
-	}
-
-	public static double getItemGravity2(EntityItem e)
-	{
-		if (e.worldObj.provider instanceof IGalacticraftWorldProvider)
-		{
-			return 1.0D;
-		}
-		else
-		{
-			return 0.9800000190734863D;
 		}
 	}
 
@@ -348,47 +335,23 @@ public class WorldUtil
 		return map;
 	}
 
-	public static List<String> getPlayersOnPlanet(CelestialBody planet)
-	{
-		final List<String> list = new ArrayList<String>();
-
-		for (final WorldServer world : DimensionManager.getWorlds())
-		{
-			if (world != null && world.provider instanceof WorldProviderSpace)
-			{
-				if (planet.getLocalizedName().equals(world.provider.getDimensionName()))
-				{
-					for (int j = 0; j < world.getLoadedEntityList().size(); j++)
-					{
-						if (world.getLoadedEntityList().get(j) != null && world.getLoadedEntityList().get(j) instanceof EntityPlayer)
-						{
-							list.add(((EntityPlayer) world.getLoadedEntityList().get(j)).getGameProfile().getName());
-						}
-					}
-				}
-			}
-		}
-
-		return list;
-	}
-
 	private static List<Integer> getExistingSpaceStationList(File var0)
 	{
 		final ArrayList<Integer> var1 = new ArrayList<Integer>();
 		final File[] var2 = var0.listFiles();
-		final int var3 = var2.length;
 
-		for (int var4 = 0; var4 < var3; ++var4)
-		{
-			final File var5 = var2[var4];
-
-			if (var5.getName().contains("spacestation_"))
-			{
-				String var6 = var5.getName();
-				var6 = var6.substring(13, var6.length() - 4);
-				var1.add(Integer.valueOf(Integer.parseInt(var6)));
-			}
-		}
+        if (var2 != null)
+        {
+            for (File var5 : var2)
+            {
+                if (var5.getName().contains("spacestation_"))
+                {
+                    String var6 = var5.getName();
+                    var6 = var6.substring(13, var6.length() - 4);
+                    var1.add(Integer.parseInt(var6));
+                }
+            }
+        }
 
 		return var1;
 	}
@@ -412,16 +375,16 @@ public class WorldUtil
 
 		for (Integer registeredID : WorldUtil.registeredSpaceStations)
 		{
-			int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, registeredID.intValue());
+			int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, registeredID);
 
 			if (id >= 0)
 			{
-				DimensionManager.registerDimension(registeredID.intValue(), ConfigManagerCore.idDimensionOverworldOrbitStatic);
-				FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(registeredID.intValue());
+				DimensionManager.registerDimension(registeredID, ConfigManagerCore.idDimensionOverworldOrbitStatic);
+				FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(registeredID);
 			}
 			else
 			{
-				DimensionManager.registerDimension(registeredID.intValue(), ConfigManagerCore.idDimensionOverworldOrbit);
+				DimensionManager.registerDimension(registeredID, ConfigManagerCore.idDimensionOverworldOrbit);
 			}
 		}
 	}
@@ -449,13 +412,10 @@ public class WorldUtil
 	{
 		if (WorldUtil.registeredPlanets != null)
 		{
-			final Iterator<Integer> var0 = WorldUtil.registeredPlanets.iterator();
-
-			while (var0.hasNext())
+			for (Integer var1 : WorldUtil.registeredPlanets)
 			{
-				final Integer var1 = var0.next();
-				DimensionManager.unregisterDimension(var1.intValue());
-				GCLog.info("Unregistered Dimension: " + var1.intValue());
+				DimensionManager.unregisterDimension(var1);
+				GCLog.info("Unregistered Dimension: " + var1);
 			}
 
 			WorldUtil.registeredPlanets = null;
@@ -663,10 +623,10 @@ public class WorldUtil
 				player.theItemInWorldManager.setWorld((WorldServer) worldNew);
 				player.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(player, (WorldServer) worldNew);
 				player.mcServer.getConfigurationManager().syncPlayerInventory(player);
-				final Iterator<?> var9 = player.getActivePotionEffects().iterator();
-				while (var9.hasNext())
+
+				for (Object o : player.getActivePotionEffects())
 				{
-					final PotionEffect var10 = (PotionEffect) var9.next();
+					PotionEffect var10 = (PotionEffect) o;
 					player.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(player.getEntityId(), var10));
 				}
 
@@ -707,8 +667,9 @@ public class WorldUtil
 				player.getPlayerStats().usingPlanetSelectionGui = false;
 	
 				worldNew.updateEntityWithOptionalForce(entity, false);
-	
-				player.playerNetServerHandler.setPlayerLocation(type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity).x, type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity).y, type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity).z, entity.rotationYaw, entity.rotationPitch);
+
+                micdoodle8.mods.galacticraft.api.vector.Vector3 spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity);
+				player.playerNetServerHandler.setPlayerLocation(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
 	
 				GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " within same dimension " + worldNew.provider.dimensionId);
 			}
@@ -727,8 +688,7 @@ public class WorldUtil
 				player.setUsingParachute(false);
 			}
 
-			micdoodle8.mods.galacticraft.api.vector.Vector3 spawnPos = null;
-			spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity);
+			micdoodle8.mods.galacticraft.api.vector.Vector3 spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity);
 			entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
 
 			if (player.getPlayerStats().rocketStacks != null && player.getPlayerStats().rocketStacks.length > 0)
