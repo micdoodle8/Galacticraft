@@ -5,8 +5,8 @@ item.itemTier3Rocket.t3Rocket.name=Fusée Niveau 3
 item.heavyNoseCone.name=Coiffe de fusée lourde
 item.compressedTitanium.name=Titane compréssé
 item.ingotTitanium.name=Lingot de titane
-item.shardTitanium.name=Titanium Shard ##NEEDS TRANSLATE##
-item.shardIron.name=Iron Shard ##NEEDS TRANSLATE##
+item.shardTitanium.name=Pointe de titane
+item.shardIron.name=Pointe de fer
 item.rocketFinsT2.name=Aileron de fusée lourd
 item.engineT2.name=Réacteur lourd
 item.reinforcedPlateT3.name=Plaquage lourd
@@ -27,7 +27,7 @@ item.methaneCanister.name=Réservoir de méthane plein
 item.canister.gas.name=Gas
 item.canister.LOX.partial.name=Réservoir d'oxygène liquide
 item.canister.LOX.full.name=Réservoir d'oxygène liquide plein
-item.canister.LOX.name=LOX ##NEEDS TRANSLATE##
+item.canister.LOX.name=OL
 item.canister.liquidNitrogen.partial.name=Réservoir d'azote liquide
 item.canister.liquidNitrogen.full.name=Réservoir d'azote liquide plein
 item.canister.liquidNitrogen.name=Liquide
@@ -93,7 +93,7 @@ gui.message.range.name=Range: %dm
 gui.message.notEnoughEnergy.name=Pas assez d'énergie
 gui.message.targetNoEnergy.name=La cible ne possède pas assez d'énergie
 
-itemGroup.GalacticraftAsteroids=Galacticraft Astéroïdes
+itemGroup.GalacticraftAsteroids=Astéroïdes Galacticraft
 # Schematics
 
 # Entity
