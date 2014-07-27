@@ -241,6 +241,8 @@ public class PacketSimple extends Packet implements IPacket
 		case C_UPDATE_DIMENSION_LIST:
 			if (String.valueOf(this.data.get(0)).equals(FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName()))
 			{
+				GCLog.info("DEBUG info: destination list follows ------------------");
+				GCLog.info((String) this.data.get(1));
 				final String[] destinations = ((String) this.data.get(1)).split("\\?");
                 List<CelestialBody> possibleCelestialBodies = Lists.newArrayList();
                 Map<String, String> spaceStationNames = Maps.newHashMap();

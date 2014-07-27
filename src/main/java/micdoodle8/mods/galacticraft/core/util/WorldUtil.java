@@ -2,7 +2,9 @@ package micdoodle8.mods.galacticraft.core.util;
 
 import buildcraft.api.mj.MjAPI;
 import buildcraft.api.power.IPowerReceptor;
+
 import com.google.common.collect.Lists;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -32,7 +34,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -53,6 +54,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.*;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -565,61 +567,7 @@ public class WorldUtil
 		entity.worldObj.updateEntityWithOptionalForce(entity, false);
 		GCEntityPlayerMP player = null;
 		int oldDimID = entity.worldObj.provider.dimensionId;
-
-		if (entity instanceof GCEntityPlayerMP)
-		{
-			player = (GCEntityPlayerMP) entity;
-			player.closeScreen();
-
-			if (dimChange)
-			{
-				player.dimension = dimID;
-				player.playerNetServerHandler.sendPacket(new S07PacketRespawn(player.dimension, player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
-
-				if (worldNew.provider instanceof WorldProviderOrbit)
-				{
-					((WorldProviderOrbit) worldNew.provider).sendPacketsToClient(player);
-					if (WorldUtil.registeredSpaceStations.contains(dimID))
-					//TODO This has never been effective before due to the earlier bug - what does it actually do?
-					{
-						NBTTagCompound var2 = new NBTTagCompound();
-						SpaceStationWorldData.getStationData(worldNew, dimID, player).writeToNBT(var2);
-						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_DATA, new Object[] { dimID, var2 }), player);
-					}
-				}
-
-				((WorldServer) entity.worldObj).getPlayerManager().removePlayer(player);
-			}
-
-			player.getPlayerStats().usingPlanetSelectionGui = false;
-		}
-
-		if (dimChange)
-		{
-			if (ridingRocket == null)
-			{
-				WorldUtil.removeEntityFromWorld(entity.worldObj, entity, true);
-			}
-			else
-			{
-				WorldUtil.removeEntityFromWorld(entity.worldObj, entity, true);
-			}
-		}
-
-		if (dimChange)
-		{
-			if (entity instanceof EntityPlayerMP)
-			{
-				player = (GCEntityPlayerMP) entity;
-				micdoodle8.mods.galacticraft.api.vector.Vector3 spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, player);
-				entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
-				ChunkCoordIntPair pair = worldNew.getChunkFromChunkCoords(spawnPos.intX(), spawnPos.intZ()).getChunkCoordIntPair();
-				((WorldServer) worldNew).theChunkProviderServer.loadChunk(pair.chunkXPos, pair.chunkZPos);
-
-				entity.setPosition(spawnPos.x, spawnPos.y, spawnPos.z);
-			}
-		}
-
+		
 		if (ridingRocket != null)
 		{
 			NBTTagCompound nbt = new NBTTagCompound();
@@ -643,11 +591,80 @@ public class WorldUtil
 				}
 			}
 		}
-
+		
 		if (dimChange)
 		{
-			if (!(entity instanceof EntityPlayer))
+			if (entity instanceof GCEntityPlayerMP)
 			{
+				player = (GCEntityPlayerMP) entity;
+				World worldOld = player.worldObj;
+				System.out.println("DEBUG: Attempting to remove player from old dimension "+oldDimID); //radtemp
+				((WorldServer) worldOld).getPlayerManager().removePlayer(player);
+				System.out.println("DEBUG: Successfully removed player from old dimension "+oldDimID); //radtemp
+				player.closeScreen();
+				player.getPlayerStats().usingPlanetSelectionGui = false;
+				
+				player.dimension = dimID;
+				System.out.println("DEBUG: Sending respawn packet to player for dim "+dimID); //radtemp
+				player.playerNetServerHandler.sendPacket(new S07PacketRespawn(dimID, player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
+
+				if (worldNew.provider instanceof WorldProviderOrbit)
+				{
+					((WorldProviderOrbit) worldNew.provider).sendPacketsToClient(player);
+					if (WorldUtil.registeredSpaceStations.contains(dimID))
+						//TODO This has never been effective before due to the earlier bug - what does it actually do?
+					{
+						NBTTagCompound var2 = new NBTTagCompound();
+						SpaceStationWorldData.getStationData(worldNew, dimID, player).writeToNBT(var2);
+						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_DATA, new Object[] { dimID, var2 }), player);
+					}
+				}
+
+				worldOld.playerEntities.remove(player);
+				worldOld.updateAllPlayersSleepingFlag();
+				if (player.addedToChunk && worldOld.getChunkProvider().chunkExists(player.chunkCoordX, player.chunkCoordZ))
+				{
+					Chunk chunkOld = worldOld.getChunkFromChunkCoords(player.chunkCoordX, player.chunkCoordZ); 
+					chunkOld.removeEntity(player);
+					chunkOld.isModified = true;
+				}
+				worldOld.loadedEntityList.remove(player);
+				worldOld.onEntityRemoved(player);
+
+				Vector3 spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, player);
+				entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
+				ChunkCoordIntPair pair = worldNew.getChunkFromChunkCoords(spawnPos.intX(), spawnPos.intZ()).getChunkCoordIntPair();
+				System.out.println("DEBUG: Loading first chunk in new dimension.");  //radtemp
+				((WorldServer) worldNew).theChunkProviderServer.loadChunk(pair.chunkXPos, pair.chunkZPos);
+
+				worldNew.spawnEntityInWorld(entity);
+				entity.setWorld(worldNew);
+				//entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
+				worldNew.updateEntityWithOptionalForce(entity, false);
+				entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
+
+				player.mcServer.getConfigurationManager().func_72375_a(player, (WorldServer) worldNew);
+				player.playerNetServerHandler.setPlayerLocation(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
+				//worldNew.updateEntityWithOptionalForce(entity, false);
+
+				GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " to dimension " + worldNew.provider.dimensionId);
+
+				player.theItemInWorldManager.setWorld((WorldServer) worldNew);
+				player.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(player, (WorldServer) worldNew);
+				player.mcServer.getConfigurationManager().syncPlayerInventory(player);
+				final Iterator<?> var9 = player.getActivePotionEffects().iterator();
+				while (var9.hasNext())
+				{
+					final PotionEffect var10 = (PotionEffect) var9.next();
+					player.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(player.getEntityId(), var10));
+				}
+
+				//	player.playerNetServerHandler.sendPacketToPlayer(new Packet43Experience(player.experience, player.experienceTotal, player.experienceLevel));
+			}
+			else
+			{
+				WorldUtil.removeEntityFromWorld(entity.worldObj, entity, true);
+
 				NBTTagCompound nbt = new NBTTagCompound();
 				entity.isDead = false;
 				entity.writeToNBTOptional(nbt);
@@ -663,50 +680,33 @@ public class WorldUtil
 				{
 					((IWorldTransferCallback) entity).onWorldTransferred(worldNew);
 				}
-			}
 
-			worldNew.spawnEntityInWorld(entity);
-			entity.setWorld(worldNew);
+				worldNew.spawnEntityInWorld(entity);
+				entity.setWorld(worldNew);
+
+				worldNew.updateEntityWithOptionalForce(entity, false);
+			}			
 		}
-
-		if (dimChange)
+		else
 		{
-			if (entity instanceof EntityPlayer)
+			if (entity instanceof GCEntityPlayerMP)
 			{
-				entity.setLocationAndAngles(type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity).x, type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity).y, type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity).z, entity.rotationYaw, entity.rotationPitch);
+				player = (GCEntityPlayerMP) entity;
+				player.closeScreen();
+				player.getPlayerStats().usingPlanetSelectionGui = false;
+	
+				worldNew.updateEntityWithOptionalForce(entity, false);
+	
+				player.playerNetServerHandler.setPlayerLocation(type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity).x, type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity).y, type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity).z, entity.rotationYaw, entity.rotationPitch);
+	
+				GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " within same dimension " + worldNew.provider.dimensionId);
 			}
+	
+			worldNew.updateEntityWithOptionalForce(entity, false);
 		}
 
-		worldNew.updateEntityWithOptionalForce(entity, false);
-
-		if (dimChange)
+		if (player != null)
 		{
-			if (entity instanceof EntityPlayer)
-			{
-				entity.setLocationAndAngles(type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity).x, type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity).y, type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity).z, entity.rotationYaw, entity.rotationPitch);
-			}
-		}
-
-		if (entity instanceof GCEntityPlayerMP)
-		{
-			player = (GCEntityPlayerMP) entity;
-
-			if (dimChange)
-			{
-				player.mcServer.getConfigurationManager().func_72375_a(player, (WorldServer) worldNew);
-			}
-
-			player.playerNetServerHandler.setPlayerLocation(type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity).x, type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity).y, type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity).z, entity.rotationYaw, entity.rotationPitch);
-
-			GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " to dimension " + worldNew.provider.dimensionId);
-		}
-
-		worldNew.updateEntityWithOptionalForce(entity, false);
-
-		if (entity instanceof GCEntityPlayerMP)
-		{
-			player = (GCEntityPlayerMP) entity;
-
 			if (ridingRocket == null && type.useParachute() && player.getPlayerStats().extendedInventory.getStackInSlot(4) != null && player.getPlayerStats().extendedInventory.getStackInSlot(4).getItem() instanceof ItemParaChute)
 			{
 				player.setUsingParachute(true);
@@ -715,44 +715,10 @@ public class WorldUtil
 			{
 				player.setUsingParachute(false);
 			}
-		}
 
-		if (entity instanceof GCEntityPlayerMP && dimChange)
-		{
-			player = (GCEntityPlayerMP) entity;
-			player.theItemInWorldManager.setWorld((WorldServer) worldNew);
-			player.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(player, (WorldServer) worldNew);
-			player.mcServer.getConfigurationManager().syncPlayerInventory(player);
-			final Iterator<?> var9 = player.getActivePotionEffects().iterator();
-
-			while (var9.hasNext())
-			{
-				final PotionEffect var10 = (PotionEffect) var9.next();
-				player.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(player.getEntityId(), var10));
-			}
-
-			//			player.playerNetServerHandler.sendPacketToPlayer(new Packet43Experience(player.experience, player.experienceTotal, player.experienceLevel));
-		}
-
-		if (entity instanceof GCEntityPlayerMP)
-		{
 			micdoodle8.mods.galacticraft.api.vector.Vector3 spawnPos = null;
-
-			if (player != null)
-			{
-				spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity);
-				entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
-			}
-			else
-			{
-				spawnPos = type.getEntitySpawnLocation((WorldServer) entity.worldObj, entity);
-				entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
-			}
-		}
-
-		if (entity instanceof GCEntityPlayerMP)
-		{
-			player = (GCEntityPlayerMP) entity;
+			spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity);
+			entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
 
 			if (player.getPlayerStats().rocketStacks != null && player.getPlayerStats().rocketStacks.length > 0)
 			{

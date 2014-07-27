@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.ibm.icu.text.ArabicShaping;
 import com.ibm.icu.text.ArabicShapingException;
 import com.ibm.icu.text.Bidi;
+
 import cpw.mods.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
@@ -14,6 +15,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -23,6 +25,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.MinecraftForge;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -426,7 +429,7 @@ public class GuiCelestialSelection extends GuiScreen
 		}
 	}
 
-    private void teleportToSelectedBody()
+    private boolean teleportToSelectedBody()
     {
         if (this.selectedBody != null)
         {
@@ -438,7 +441,14 @@ public class GuiCelestialSelection extends GuiScreen
 
                     if (this.selectedBody == GalacticraftCore.satelliteSpaceStation)
                     {
-                        dimension = WorldProvider.getProviderForDimension(this.spaceStationIDs.get(this.mc.thePlayer.getGameProfile().getName())).getDimensionName();
+                        int spacestationID = this.spaceStationIDs.get(this.mc.thePlayer.getGameProfile().getName());
+                    	WorldProvider spacestation = WorldProvider.getProviderForDimension(spacestationID); 
+                    	if (spacestation != null) dimension = spacestation.getDimensionName();
+                    	else
+                    	{
+                    		GCLog.severe("Failed to find a spacestation with dimension " + spacestationID);
+                    		return false;
+                    	}
                     }
                     else
                     {
@@ -451,6 +461,7 @@ public class GuiCelestialSelection extends GuiScreen
                     }
                     GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_TELEPORT_ENTITY, new Object[] { dimension }));
                     mc.displayGuiScreen(null);
+                    return true;
                 }
                 catch (Exception e)
                 {
@@ -458,6 +469,7 @@ public class GuiCelestialSelection extends GuiScreen
                 }
             }
         }
+        return false;
     }
 
 	@Override
