@@ -7,6 +7,8 @@ import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
+import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
+import micdoodle8.mods.galacticraft.api.galaxies.Planet;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
@@ -88,6 +90,17 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 	{
 		if (!this.worldObj.isRemote && this.launchCooldown <= 0)
 		{
+			//TODO - do not do this if there is a launch controller with a valid destination set
+			//and generally it might be better to use the ITeleportType.getPlayerSpawnLocation()
+			for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
+			{
+				if (planet.getDimensionID() == this.dimension) continue;
+				if (planet.getReachable() && planet.getTierRequirement() <= this.getRocketTier())
+				{
+					planet.initiatePreGen(this.chunkCoordX, this.chunkCoordZ);
+				}
+			}
+
 			this.ignite();
 		}
 	}
