@@ -234,7 +234,7 @@ public class TileEntityArclamp extends TileEntity
 							else
 							{
 								allAir = false;
-								if (b.getLightOpacity(world, sideVec.x, sideVec.y, sideVec.z) == 0)
+								if (b != null && b.getLightOpacity(world, sideVec.x, sideVec.y, sideVec.z) == 0)
 								{
 									if (side != sideskip1 && side != sideskip2)
 									{
