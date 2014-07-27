@@ -97,7 +97,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 				if (planet.getDimensionID() == this.dimension) continue;
 				if (planet.getReachable() && planet.getTierRequirement() <= this.getRocketTier())
 				{
-					planet.initiatePreGen(this.chunkCoordX, this.chunkCoordZ);
+					//planet.initiatePreGen(this.chunkCoordX, this.chunkCoordZ);
 				}
 			}
 
