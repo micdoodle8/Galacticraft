@@ -65,7 +65,6 @@ public class MarsModuleClient implements IPlanetsModuleClient
 	private static int eggRenderID;
 	private static int treasureRenderID;
 	private static int machineRenderID;
-	private static int tintedGlassRenderID;
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
@@ -85,8 +84,6 @@ public class MarsModuleClient implements IPlanetsModuleClient
 		RenderingRegistry.registerBlockHandler(new BlockRendererTier2TreasureChest(MarsModuleClient.treasureRenderID));
 		MarsModuleClient.machineRenderID = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(new BlockRendererMachine(MarsModuleClient.machineRenderID));
-		MarsModuleClient.tintedGlassRenderID = RenderingRegistry.getNextAvailableRenderId();
-		RenderingRegistry.registerBlockHandler(new BlockRendererTintedGlassPane(MarsModuleClient.tintedGlassRenderID));
 	}
 
 	@Override
@@ -164,10 +161,6 @@ public class MarsModuleClient implements IPlanetsModuleClient
 		else if (block == MarsBlocks.machine || block == MarsBlocks.machineT2)
 		{
 			return MarsModuleClient.machineRenderID;
-		}
-		else if (block == MarsBlocks.tintedGlassPane)
-		{
-			return MarsModuleClient.tintedGlassRenderID;
 		}
 		else if (block == MarsBlocks.tier2TreasureChest)
 		{

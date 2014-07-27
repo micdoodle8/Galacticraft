@@ -74,11 +74,6 @@ public class RecipeManagerMars
 		
 		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(MarsItems.carbonFragments, 64, 0), new ItemStack(Blocks.coal_block, 1, 0));
 		
-		for (int var2 = 0; var2 < 16; ++var2)
-		{
-			CraftingManager.getInstance().addShapelessRecipe(new ItemStack(MarsBlocks.tintedGlassPane, 1, 15 - var2), new Object[] { new ItemStack(Items.dye, 1, var2), Blocks.glass_pane, OreDictionary.getOres("plateDesh").get(0) });
-		}
-
 		// Smelting
 		FurnaceRecipes.smelting().func_151394_a(new ItemStack(MarsItems.marsItemBasic, 1, 0), new ItemStack(MarsItems.marsItemBasic, 1, 2), 0.2F);
 		FurnaceRecipes.smelting().func_151394_a(new ItemStack(MarsBlocks.marsBlock, 1, 4), new ItemStack(MarsBlocks.marsBlock, 1, 9), 0.0F);
