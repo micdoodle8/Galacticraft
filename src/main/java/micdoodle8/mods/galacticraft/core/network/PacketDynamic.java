@@ -99,12 +99,15 @@ public class PacketDynamic implements IPacket
 			this.data = new Object[1];
 			this.data[0] = buffer.readInt();
 
-			Entity entity = world.getEntityByID((Integer) this.data[0]);
+            if (world != null)
+            {
+                Entity entity = world.getEntityByID((Integer) this.data[0]);
 
-			if (entity instanceof IPacketReceiver)
-			{
-				((IPacketReceiver) entity).decodePacketdata(buffer);
-			}
+                if (entity instanceof IPacketReceiver)
+                {
+                    ((IPacketReceiver) entity).decodePacketdata(buffer);
+                }
+            }
 
 			break;
 		case 1:
@@ -113,12 +116,15 @@ public class PacketDynamic implements IPacket
 			this.data[1] = buffer.readInt();
 			this.data[2] = buffer.readInt();
 
-			TileEntity tile = world.getTileEntity((Integer) this.data[0], (Integer) this.data[1], (Integer) this.data[2]);
+            if (world != null)
+            {
+                TileEntity tile = world.getTileEntity((Integer) this.data[0], (Integer) this.data[1], (Integer) this.data[2]);
 
-			if (tile instanceof IPacketReceiver)
-			{
-				((IPacketReceiver) tile).decodePacketdata(buffer);
-			}
+                if (tile instanceof IPacketReceiver)
+                {
+                    ((IPacketReceiver) tile).decodePacketdata(buffer);
+                }
+            }
 
 			break;
 		}
