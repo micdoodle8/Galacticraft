@@ -148,8 +148,8 @@ public class GalacticraftCore
 			GCBlocks.fuelStill = GalacticraftCore.fluidFuel.getBlock();
 		}
 
-		GCItems.initItems();
 		GCBlocks.initBlocks();
+		GCItems.initItems();
 	}
 
 	@EventHandler
