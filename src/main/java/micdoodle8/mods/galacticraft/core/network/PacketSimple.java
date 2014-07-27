@@ -157,7 +157,7 @@ public class PacketSimple extends Packet implements IPacket
 
 	private EnumSimplePacket type;
 	private List<Object> data;
-	private String spamCheckString;
+	static private String spamCheckString;
 
 	public PacketSimple()
 	{
@@ -247,10 +247,10 @@ public class PacketSimple extends Packet implements IPacket
 				String dimensionList = (String) this.data.get(1);
 				if (ConfigManagerCore.enableDebug)
 				{
-					if (!dimensionList.equals(this.spamCheckString))
+					if (!dimensionList.equals(PacketSimple.spamCheckString))
 					{
 						GCLog.info("DEBUG info: " + dimensionList);
-						this.spamCheckString = new String(dimensionList);
+						PacketSimple.spamCheckString = new String(dimensionList);
 					}
 				}
 				final String[] destinations = dimensionList.split("\\?");
