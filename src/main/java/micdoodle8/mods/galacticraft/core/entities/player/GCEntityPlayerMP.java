@@ -140,7 +140,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 							break;
 						}
 
-						TickHandlerServer.addFootprint(new Footprint(pos, this.rotationYaw), this.worldObj.provider.dimensionId);
+						TickHandlerServer.addFootprint(new Footprint(this.worldObj.provider.dimensionId, pos, this.rotationYaw), this.worldObj.provider.dimensionId);
 
 						// Increment and cap step counter at 1
 						this.getPlayerStats().lastStep++;

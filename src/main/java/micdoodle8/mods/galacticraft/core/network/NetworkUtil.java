@@ -147,6 +147,7 @@ public class NetworkUtil
 
 				for (int i = 0; i < array.length; i++)
 				{
+                    buffer.writeInt(array[i].dimension);
 					buffer.writeFloat((float) array[i].position.x);
 					buffer.writeFloat((float) array[i].position.y + 1);
 					buffer.writeFloat((float) array[i].position.z);
@@ -268,7 +269,7 @@ public class NetworkUtil
 
 				for (int i = 0; i < size; i++)
 				{
-					objList.add(new Footprint(new Vector3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat()), buffer.readFloat(), buffer.readShort()));
+					objList.add(new Footprint(buffer.readInt(), new Vector3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat()), buffer.readFloat(), buffer.readShort()));
 				}
 			}
 		}

@@ -43,32 +43,34 @@ public class FootprintRenderer
 		float f10 = 0.4F;
 		GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
 
-		for (int i = 0; i < this.footprints.size(); i++)
+		for (Footprint footprint : this.footprints)
 		{
-			GL11.glPushMatrix();
-			Footprint footprint = this.footprints.get(i);
-			float ageScale = footprint.age / (float) Footprint.MAX_AGE;
-			tessellator.startDrawingQuads();
+            if (footprint.dimension == player.worldObj.provider.dimensionId)
+            {
+                GL11.glPushMatrix();
+                float ageScale = footprint.age / (float) Footprint.MAX_AGE;
+                tessellator.startDrawingQuads();
 
-			float f11 = (float) (footprint.position.x - interpPosX);
-			float f12 = (float) (footprint.position.y - interpPosY) + 0.001F;
-			float f13 = (float) (footprint.position.z - interpPosZ);
+                float f11 = (float) (footprint.position.x - interpPosX);
+                float f12 = (float) (footprint.position.y - interpPosY) + 0.001F;
+                float f13 = (float) (footprint.position.z - interpPosZ);
 
-			GL11.glTranslatef(f11, f12, f13);
-			GL11.glRotatef(-footprint.rotation + 90, 0, 1, 0);
-			GL11.glTranslatef(-f11, -f12, -f13);
+                GL11.glTranslatef(f11, f12, f13);
+                GL11.glRotatef(-footprint.rotation + 90, 0, 1, 0);
+                GL11.glTranslatef(-f11, -f12, -f13);
 
-			GL11.glTranslatef(f11, f12, f13);
+                GL11.glTranslatef(f11, f12, f13);
 
-			tessellator.setBrightness((int) (100 + ageScale * 155));
-			GL11.glColor4f(1 - ageScale, 1 - ageScale, 1 - ageScale, 1 - ageScale);
-			tessellator.addVertexWithUV(0 - f10, 0, 0 + f10, f7, f9);
-			tessellator.addVertexWithUV(0 + f10, 0, 0 + f10, f7, f8);
-			tessellator.addVertexWithUV(0 + f10, 0, 0 - f10, f6, f8);
-			tessellator.addVertexWithUV(0 - f10, 0, 0 - f10, f6, f9);
+                tessellator.setBrightness((int) (100 + ageScale * 155));
+                GL11.glColor4f(1 - ageScale, 1 - ageScale, 1 - ageScale, 1 - ageScale);
+                tessellator.addVertexWithUV(0 - f10, 0, 0 + f10, f7, f9);
+                tessellator.addVertexWithUV(0 + f10, 0, 0 + f10, f7, f8);
+                tessellator.addVertexWithUV(0 + f10, 0, 0 - f10, f6, f8);
+                tessellator.addVertexWithUV(0 - f10, 0, 0 - f10, f6, f9);
 
-			tessellator.draw();
-			GL11.glPopMatrix();
+                tessellator.draw();
+                GL11.glPopMatrix();
+            }
 		}
 
 		GL11.glDisable(GL11.GL_BLEND);
@@ -76,9 +78,9 @@ public class FootprintRenderer
 		GL11.glPopMatrix();
 	}
 
-	public void addFootprint(Vector3 position, float rotation)
+	public void addFootprint(int dimension, Vector3 position, float rotation)
 	{
-		this.addFootprint(new Footprint(position, rotation));
+		this.addFootprint(new Footprint(dimension, position, rotation));
 	}
 
 	public void addFootprint(Footprint print)

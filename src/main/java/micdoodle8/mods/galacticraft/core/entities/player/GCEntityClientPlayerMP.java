@@ -280,7 +280,7 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 							break;
 						}
 
-						ClientProxyCore.footprintRenderer.addFootprint(pos, this.rotationYaw);
+						ClientProxyCore.footprintRenderer.addFootprint(this.worldObj.provider.dimensionId, pos, this.rotationYaw);
 
 						// Increment and cap step counter at 1
 						this.lastStep++;
