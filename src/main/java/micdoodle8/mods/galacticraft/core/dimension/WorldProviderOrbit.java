@@ -550,6 +550,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 		return 50.0F;
 	}
 
+    @SideOnly(Side.CLIENT)
 	public void spinUpdate(GCEntityClientPlayerMP p)
 	{
 		boolean freefall = true;
