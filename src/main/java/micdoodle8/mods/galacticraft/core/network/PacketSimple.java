@@ -157,6 +157,7 @@ public class PacketSimple extends Packet implements IPacket
 
 	private EnumSimplePacket type;
 	private List<Object> data;
+	private String spamCheckString;
 
 	public PacketSimple()
 	{
@@ -243,11 +244,16 @@ public class PacketSimple extends Packet implements IPacket
 		case C_UPDATE_DIMENSION_LIST:
 			if (String.valueOf(this.data.get(0)).equals(FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName()))
 			{
+				String dimensionList = (String) this.data.get(1);
 				if (ConfigManagerCore.enableDebug)
 				{
-					GCLog.info("DEBUG info: " + (String) this.data.get(1));
+					if (!dimensionList.equals(this.spamCheckString))
+					{
+						GCLog.info("DEBUG info: " + dimensionList);
+						this.spamCheckString = new String(dimensionList);
+					}
 				}
-				final String[] destinations = ((String) this.data.get(1)).split("\\?");
+				final String[] destinations = dimensionList.split("\\?");
                 List<CelestialBody> possibleCelestialBodies = Lists.newArrayList();
                 Map<String, String> spaceStationNames = Maps.newHashMap();
                 Map<String, Integer> spaceStationIDs = Maps.newHashMap();
@@ -264,10 +270,6 @@ public class PacketSimple extends Packet implements IPacket
 
                         spaceStationNames.put(values[1], values[2]);
                         spaceStationIDs.put(values[1], Integer.parseInt(values[3]));
-        				if (ConfigManagerCore.enableDebug)
-        				{
-        					GCLog.info("DEBUG info: found reachable spacestation dim "+ Integer.parseInt(values[3]) + " for player " + values[1]);
-        				}
                     }
 
                     if (celestialBody != null)

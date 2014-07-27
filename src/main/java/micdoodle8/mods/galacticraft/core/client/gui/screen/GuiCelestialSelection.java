@@ -450,7 +450,13 @@ public class GuiCelestialSelection extends GuiScreen
                     		GCLog.severe("Please report as a BUG: player name profile problem.");
                     		return false;               	                      	
                         }
-                    	int spacestationID = this.spaceStationIDs.get(this.mc.thePlayer.getGameProfile().getName());
+                    	Integer mapping = this.spaceStationIDs.get(this.mc.thePlayer.getGameProfile().getName().toLowerCase());
+                    	if (mapping == null)
+                    	{
+                    		GCLog.severe("Problem matching player name in space station check: " + this.mc.thePlayer.getGameProfile().getName().toLowerCase());
+                    		return false;               	                      	                   		
+                    	}
+                    	int spacestationID = mapping; 
                     	WorldProvider spacestation = WorldProvider.getProviderForDimension(spacestationID); 
                     	if (spacestation != null) dimension = spacestation.getDimensionName();
                     	else
