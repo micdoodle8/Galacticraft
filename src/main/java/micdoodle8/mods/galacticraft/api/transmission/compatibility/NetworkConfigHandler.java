@@ -79,6 +79,7 @@ public class NetworkConfigHandler
 	private static boolean cachedIC2LoadedValue = false;
 	private static boolean cachedBCLoaded = false;
 	private static boolean cachedBCLoadedValue = false;
+	private static int cachedBCVersion = -1;
 
 
 	/** You must call this function to enable the Universal Network module. */
@@ -148,6 +149,39 @@ public class NetworkConfigHandler
 	
 		return cachedBCLoadedValue;
 	}
+
+    public static int getBuildcraftVersion()
+    {
+        if (cachedBCVersion != -1)
+        {
+            return cachedBCVersion;
+        }
+
+        if (cachedBCLoaded)
+        {
+            boolean bc6Found = true;
+
+            try
+            {
+                Class.forName("buildcraft.api.mj.MjAPI");
+            }
+            catch (Throwable t)
+            {
+                bc6Found = false;
+            }
+
+            if (bc6Found)
+            {
+                cachedBCVersion = 6;
+            }
+            else
+            {
+                cachedBCVersion = 5;
+            }
+        }
+
+        return cachedBCVersion;
+    }
 
 	public static boolean isThermalExpansionLoaded()
 	{

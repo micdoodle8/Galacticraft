@@ -82,7 +82,7 @@ public class TileEntityUniversalElectricalSource extends TileEntityUniversalElec
 						if (this.tierGC > 1 && !simulate && transferred > 0F && tileAdj instanceof EnergyStorageTile)
 							((EnergyStorageTile) tileAdj).poweredByTierGC = this.tierGC;
 					}
-					else if (NetworkConfigHandler.isBuildcraftLoaded() && MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, direction.getOpposite()) != null)
+					else if (NetworkConfigHandler.isBuildcraftLoaded() && NetworkConfigHandler.getBuildcraftVersion() == 6 && MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, direction.getOpposite()) != null)
 					//New BC API
 					{
 						double toSendBC = Math.min(toSend * NetworkConfigHandler.TO_BC_RATIO, MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, direction.getOpposite()).getEnergyRequested());

@@ -288,7 +288,7 @@ public class UniversalNetwork implements IElectricityNetwork
 						//For 1.7.10 - e = ((float) ((IEnergySink) acceptor).getDemandedEnergy()) * NetworkConfigHandler.IC2_RATIO;
 						e = (float) ((IEnergySink) acceptor).demandedEnergyUnits() * NetworkConfigHandler.IC2_RATIO;
 					}
-					else if (isBCLoaded && MjAPI.getMjBattery(acceptor, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom) != null)
+					else if (isBCLoaded && NetworkConfigHandler.getBuildcraftVersion() == 6 && MjAPI.getMjBattery(acceptor, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom) != null)
 					//New BC API
 					{
 						e = (float) MjAPI.getMjBattery(acceptor, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom).getEnergyRequested() * NetworkConfigHandler.BC3_RATIO;
@@ -409,7 +409,7 @@ public class UniversalNetwork implements IElectricityNetwork
 					} else
 						sentToAcceptor = 0F;
 				}
-				else if (isBCLoaded && MjAPI.getMjBattery(tileEntity, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom) != null)
+				else if (isBCLoaded && NetworkConfigHandler.getBuildcraftVersion() == 6 && MjAPI.getMjBattery(tileEntity, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom) != null)
 				//New BC API
 				{
 					sentToAcceptor = (float) MjAPI.getMjBattery(tileEntity, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom).addEnergy(currentSending * NetworkConfigHandler.TO_BC_RATIO) * NetworkConfigHandler.BC3_RATIO;
@@ -574,7 +574,7 @@ public class UniversalNetwork implements IElectricityNetwork
 								this.connectedDirections.add(sideFrom);
 							}
 						}
-						else if (isBCLoaded && MjAPI.getMjBattery(acceptor, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom) != null)
+						else if (isBCLoaded && NetworkConfigHandler.getBuildcraftVersion() == 6 && MjAPI.getMjBattery(acceptor, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom) != null)
 						{
 							this.connectedAcceptors.add(acceptor);
 							this.connectedDirections.add(sideFrom);						

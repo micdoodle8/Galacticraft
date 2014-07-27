@@ -904,7 +904,7 @@ public class WorldUtil
 				}
 
 				//New BC API
-				if (MjAPI.getMjBattery(tileEntity, MjAPI.DEFAULT_POWER_FRAMEWORK, direction.getOpposite()) != null)
+				if (NetworkConfigHandler.getBuildcraftVersion() == 6 && MjAPI.getMjBattery(tileEntity, MjAPI.DEFAULT_POWER_FRAMEWORK, direction.getOpposite()) != null)
 					adjacentConnections[direction.ordinal()] = tileEntity;
 				
 				//Legacy BC API
