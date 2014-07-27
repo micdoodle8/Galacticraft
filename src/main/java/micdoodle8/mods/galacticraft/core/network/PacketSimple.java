@@ -755,7 +755,7 @@ public class PacketSimple extends Packet implements IPacket
 					}
 				}
 
-				playerBase.getPlayerStats().teleportCooldown = 300;
+				playerBase.getPlayerStats().teleportCooldown = 10;
 				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_CLOSE_GUI, new Object[] {}), playerBase);
 			}
 			catch (final Exception e)

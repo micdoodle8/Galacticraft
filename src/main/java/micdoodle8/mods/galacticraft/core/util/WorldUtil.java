@@ -640,17 +640,16 @@ public class WorldUtil
 				worldOld.loadedEntityList.remove(player);
 				worldOld.onEntityRemoved(player);
 
-				Vector3 spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, player);
-				entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
-				ChunkCoordIntPair pair = worldNew.getChunkFromChunkCoords(spawnPos.intX(), spawnPos.intZ()).getChunkCoordIntPair();
-				if (ConfigManagerCore.enableDebug)
-				{
-					GCLog.info("DEBUG: Loading first chunk in new dimension.");
-				}
-				((WorldServer) worldNew).theChunkProviderServer.loadChunk(pair.chunkXPos, pair.chunkZPos);
-
 				worldNew.spawnEntityInWorld(entity);
 				entity.setWorld(worldNew);
+
+                Vector3 spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, player);
+                ChunkCoordIntPair pair = worldNew.getChunkFromChunkCoords(spawnPos.intX(), spawnPos.intZ()).getChunkCoordIntPair();
+                if (ConfigManagerCore.enableDebug)
+                {
+                    GCLog.info("DEBUG: Loading first chunk in new dimension.");
+                }
+                ((WorldServer) worldNew).theChunkProviderServer.loadChunk(pair.chunkXPos, pair.chunkZPos);
 				//entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
 				worldNew.updateEntityWithOptionalForce(entity, false);
 				entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
