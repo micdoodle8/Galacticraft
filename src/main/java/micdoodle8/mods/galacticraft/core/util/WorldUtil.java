@@ -598,14 +598,23 @@ public class WorldUtil
 			{
 				player = (GCEntityPlayerMP) entity;
 				World worldOld = player.worldObj;
-				System.out.println("DEBUG: Attempting to remove player from old dimension "+oldDimID); //radtemp
-				((WorldServer) worldOld).getPlayerManager().removePlayer(player);
-				System.out.println("DEBUG: Successfully removed player from old dimension "+oldDimID); //radtemp
+				if (ConfigManagerCore.enableDebug)
+				{
+					GCLog.info("DEBUG: Attempting to remove player from old dimension "+oldDimID);
+					((WorldServer) worldOld).getPlayerManager().removePlayer(player);
+					GCLog.info("DEBUG: Successfully removed player from old dimension "+oldDimID);
+				}
+				else
+					((WorldServer) worldOld).getPlayerManager().removePlayer(player);
+
 				player.closeScreen();
 				player.getPlayerStats().usingPlanetSelectionGui = false;
 				
 				player.dimension = dimID;
-				System.out.println("DEBUG: Sending respawn packet to player for dim "+dimID); //radtemp
+				if (ConfigManagerCore.enableDebug)
+				{
+					GCLog.info("DEBUG: Sending respawn packet to player for dim "+dimID);
+				}
 				player.playerNetServerHandler.sendPacket(new S07PacketRespawn(dimID, player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
 
 				if (worldNew.provider instanceof WorldProviderOrbit)
@@ -634,7 +643,10 @@ public class WorldUtil
 				Vector3 spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, player);
 				entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
 				ChunkCoordIntPair pair = worldNew.getChunkFromChunkCoords(spawnPos.intX(), spawnPos.intZ()).getChunkCoordIntPair();
-				System.out.println("DEBUG: Loading first chunk in new dimension.");  //radtemp
+				if (ConfigManagerCore.enableDebug)
+				{
+					GCLog.info("DEBUG: Loading first chunk in new dimension.");
+				}
 				((WorldServer) worldNew).theChunkProviderServer.loadChunk(pair.chunkXPos, pair.chunkZPos);
 
 				worldNew.spawnEntityInWorld(entity);

@@ -186,7 +186,8 @@ public class TileEntityArclamp extends TileEntity
 			if (i != sideskip1 && i != sideskip2 && i != (sideskip1 ^ 1) && i != (sideskip2 ^ 1))
 			{
 				BlockVec3 onEitherSide = thisvec.newVecSide(i);
-				if (onEitherSide.getBlockIDsafe_noChunkLoad(world).getLightOpacity() < 15)
+				Block b = onEitherSide.getBlockIDsafe_noChunkLoad(world); 
+				if (b != null && b.getLightOpacity() < 15)
 				{
 					currentLayer.add(onEitherSide);
 				}
@@ -196,7 +197,8 @@ public class TileEntityArclamp extends TileEntity
 		for (int i = 0; i < 5; i++)
 		{
 			inFront = inFront.newVecSide(this.facingSide).newVecSide(sideskip1 ^ 1);
-			if (inFront.getBlockIDsafe_noChunkLoad(world).getLightOpacity() < 15)
+			Block b = inFront.getBlockIDsafe_noChunkLoad(world); 
+			if (b != null && b.getLightOpacity() < 15)
 			{
 				currentLayer.add(inFront);
 			}

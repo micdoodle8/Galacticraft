@@ -149,11 +149,12 @@ public class ThreadFindSeal
 			}
 			else
 			{
-				if (this.head.getBlockIDsafe_noChunkLoad(this.world) == Blocks.air)
+				Block headblock = this.head.getBlockIDsafe_noChunkLoad(this.world); 
+				if (headblock == Blocks.air)
 				{
 					this.airToReplace.add(this.head.clone());
 				}
-				if (this.head.getBlockIDsafe_noChunkLoad(this.world) == GCBlocks.brightAir)
+				if (headblock == GCBlocks.brightAir)
 				{
 					this.airToReplaceBright.add(this.head.clone());
 				}
