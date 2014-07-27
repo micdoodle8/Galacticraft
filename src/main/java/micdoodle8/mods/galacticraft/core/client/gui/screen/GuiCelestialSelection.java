@@ -1011,7 +1011,7 @@ public class GuiCelestialSelection extends GuiScreen
 
 			for (Satellite satellite : GalaxyRegistry.getRegisteredSatellites().values())
 			{
-                if (this.possibleBodies.contains(satellite))
+                if (this.possibleBodies != null && this.possibleBodies.contains(satellite))
                 {
                     if ((satellite == this.selectedBody || (satellite.getParentPlanet() == this.selectedBody && this.selectionCount != 1)) && (this.ticksSinceSelection > 35 || this.selectedBody == satellite || (this.lastSelectedBody instanceof Satellite && GalaxyRegistry.getSatellitesForCelestialBody(((Satellite) this.lastSelectedBody).getParentPlanet()).contains(satellite))))
                     {
@@ -1675,7 +1675,7 @@ public class GuiCelestialSelection extends GuiScreen
 
 			for (Satellite satellite : GalaxyRegistry.getRegisteredSatellites().values())
 			{
-                if (this.possibleBodies.contains(satellite))
+                if (this.possibleBodies != null && this.possibleBodies.contains(satellite))
                 {
                     if ((satellite.getParentPlanet() == this.selectedBody && this.selectionCount != 1) && this.ticksSinceSelection > 24 || satellite == this.selectedBody || this.lastSelectedBody instanceof IChildBody)
                     {
