@@ -29,7 +29,6 @@ public class EntityBubble extends EntityAdvanced implements IPacketReceiver, IBu
 		this.posY = mainBlockVec.y + 1.0D;
 		this.posZ = mainBlockVec.z + 0.5D;
 		this.distributor = distributor;
-        new Exception().printStackTrace();
 	}
 
 	public EntityBubble(World world)
