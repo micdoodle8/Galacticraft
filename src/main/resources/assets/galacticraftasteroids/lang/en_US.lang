@@ -77,6 +77,7 @@ tile.walkway.name=Walkway
 tile.walkwayWire.name=Walkway
 tile.walkwayOxygenPipe.name=Walkway
 tile.treasureT3.name=Tier 3 Treasure Chest
+tile.denseIce.name=Dense Ice
 
 # GUI
 planet.asteroids=Asteroids

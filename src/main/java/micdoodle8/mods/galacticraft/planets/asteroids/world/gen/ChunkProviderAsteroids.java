@@ -169,7 +169,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 		this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, this.ASTEROID_STONE_META_0, 1, .15));
 		this.shellHandler = new SpecialAsteroidBlockHandler();
 		this.shellHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, this.ASTEROID_STONE_META_1, 5, .15));
-		this.shellHandler.addBlock(new SpecialAsteroidBlock(Blocks.ice, (byte) 0, 1, .15));
+		this.shellHandler.addBlock(new SpecialAsteroidBlock(AsteroidBlocks.blockDenseIce, (byte) 0, 1, .15));
 	}
 
 	public void generateTerrain(int chunkX, int chunkZ, Block[] idArray, byte[] metaArray)
@@ -269,7 +269,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 		if (rand.nextInt(ChunkProviderAsteroids.HOLLOW_CHANCE) == 0 && size >= ChunkProviderAsteroids.MIN_RADIUS_FOR_HOLLOW)
 		{
 			isHollow = true;
-			shell = new SpecialAsteroidBlock(Blocks.ice, (byte) 0, 1, .15);
+			shell = new SpecialAsteroidBlock(AsteroidBlocks.blockDenseIce, (byte) 0, 1, .15);
 		}
 		
 		final float noiseOffsetX = this.randFromPoint(asteroidX, asteroidY, asteroidZ) * ChunkProviderAsteroids.NOISE_OFFSET_SIZE;
