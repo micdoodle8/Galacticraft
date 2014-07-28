@@ -28,13 +28,13 @@ item.methaneCanister.name=กระป๋องที่เต็มไปด้
 item.canister.gas.name=ก๊าซ
 item.canister.LOX.partial.name=กระป๋องออกซิเจนเหลว
 item.canister.LOX.full.name=กระป๋องที่เต็มไปด้วยออกซิเจนเหลว
-item.canister.LOX.partial=กระป๋องออกซิเจนเหลว
-item.canister.LOX.full=กระป๋องที่เต็มไปด้วยออกซิเจนเหลว
+item.canister.LOX.partial.name=กระป๋องออกซิเจนเหลว
+item.canister.LOX.full.name=กระป๋องที่เต็มไปด้วยออกซิเจนเหลว
 item.canister.LOX.name=ออกซิเจนเหลว
 item.canister.liquidNitrogen.partial.name=กระป๋องไนโตรเจนเหลว
 item.canister.liquidNitrogen.full.name=กระป๋องที่เต็มไปด้วยไนโตรเจนเหลว
-item.canister.liquidNitrogen.partial=ถังไนโตรเจนเหลว
-item.canister.liquidNitrogen.full=กระป๋องที่เต็มไปด้วยไนโตรเจนเหลว
+item.canister.liquidNitrogen.partial.name=ถังไนโตรเจนเหลว
+item.canister.liquidNitrogen.full.name=กระป๋องที่เต็มไปด้วยไนโตรเจนเหลว
 item.canister.liquidNitrogen.name=ไนโตรเจนเหลว
 item.canister.liquidArgon.partial.name=กระป๋องอาร์กอนเหลว
 item.canister.liquidArgon.full.name=กระป๋องที่เต็มไปด้วยอาร์กอนเหลว
@@ -87,12 +87,12 @@ planet.asteroids=ดาวเคราะห์น้อย
 
 
 # Dollar sign ($) will split text onto a new line
-gui.telepad.desc.0=นี่คือเครื่องเทเลพอร์ต$ที่อยู่เฉพาะ
-gui.telepad.desc.1=ที่อยู่ของเครื่องเทเลพอร์ตอื่นๆ$สิ่งมีชีวิตจะถูกส่งที่นี่
+gui.telepad.desc.0=นี่คือที่อยู่ของเครื่องเทเลพอร์ต
+gui.telepad.desc.1=ที่อยู่ของเครื่องเทเลพอร์ตอื่นๆ$สิ่งมีชีวิตจะถูกส่งไปยังเป้าหมาย
 container.shortRangeTelepad.name=เครื่องเทเลพอร์ตระยะใกล้
 gui.message.address.name=ที่อยู่
 gui.message.destAddress.name=เป้าหมายของที่อยู่
-gui.message.invalidAddress.name=เป้าหมายของที่อยู่เฉพาะผิดพลาด
+gui.message.invalidAddress.name=ที่อยู่ผิดพลาด
 gui.message.invalidTargetAddress.name=ที่อยู่ของเป้าหมายผิดพลาด
 gui.message.receivingActive.name=รับข้อมูลการทำงาน
 gui.message.telepadTooFar.name=เป้าหมายไกลเกินไป! (สูงสุด %d)
