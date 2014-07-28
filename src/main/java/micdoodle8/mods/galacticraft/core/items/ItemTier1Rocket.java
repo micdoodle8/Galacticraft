@@ -59,8 +59,9 @@ public class ItemTier1Rocket extends Item implements IHoldableItem
 				for (int j = -1; j < 2; j++)
 				{
 					final Block id = par3World.getBlock(par4 + i, par5, par6 + j);
+					int meta = par3World.getBlockMetadata(par4 + i, par5, par6 + j);
 
-					if (id == GCBlocks.landingPadFull)
+					if (id == GCBlocks.landingPadFull && meta == 0)
 					{
 						amountOfCorrectBlocks = 9;
 
