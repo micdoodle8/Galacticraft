@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.event;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -41,6 +42,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -49,6 +51,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.ZombieEvent.SummonAidEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -92,6 +95,23 @@ public class EventHandlerGC
 			ChunkLoadingCallback.load((WorldServer) event.world);
 		}
 	}
+
+    @SubscribeEvent
+    public void onEntityDamaged(LivingHurtEvent event)
+    {
+        if (event.source.damageType.equals(DamageSource.onFire.damageType))
+        {
+            if (event.entityLiving.worldObj.provider instanceof IGalacticraftWorldProvider)
+            {
+                if (event.entityLiving.worldObj instanceof WorldServer)
+                {
+                    ((WorldServer) event.entityLiving.worldObj).func_147487_a("smoke", event.entityLiving.posX, event.entityLiving.posY + event.entityLiving.boundingBox.maxY - event.entityLiving.boundingBox.minY, event.entityLiving.posZ, 50, 0.0, 0.05, 0.0, 0.001);
+                }
+
+                event.entityLiving.extinguish();
+            }
+        }
+    }
 
 	@SubscribeEvent
 	public void onEntityFall(LivingFallEvent event)
@@ -176,24 +196,27 @@ public class EventHandlerGC
 	@SubscribeEvent
 	public void entityLivingEvent(LivingUpdateEvent event)
 	{
-		if (event.entityLiving.worldObj.provider instanceof IGalacticraftWorldProvider && !(event.entityLiving instanceof EntityPlayer) && !OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving))
+		if (event.entityLiving.worldObj.provider instanceof IGalacticraftWorldProvider)
 		{
-			if ((!(event.entityLiving instanceof IEntityBreathable) || event.entityLiving instanceof IEntityBreathable && !((IEntityBreathable) event.entityLiving).canBreath()) && event.entityLiving.ticksExisted % 100 == 0)
-			{
-				GCCoreOxygenSuffocationEvent suffocationEvent = new GCCoreOxygenSuffocationEvent.Pre(event.entityLiving);
-				MinecraftForge.EVENT_BUS.post(suffocationEvent);
+            if (!(event.entityLiving instanceof EntityPlayer) && !OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving))
+            {
+                if ((!(event.entityLiving instanceof IEntityBreathable) || !((IEntityBreathable) event.entityLiving).canBreath()) && event.entityLiving.ticksExisted % 100 == 0)
+                {
+                    GCCoreOxygenSuffocationEvent suffocationEvent = new GCCoreOxygenSuffocationEvent.Pre(event.entityLiving);
+                    MinecraftForge.EVENT_BUS.post(suffocationEvent);
 
-				if (suffocationEvent.isCanceled())
-				{
-					return;
-				}
+                    if (suffocationEvent.isCanceled())
+                    {
+                        return;
+                    }
 
-				event.entityLiving.attackEntityFrom(DamageSourceGC.oxygenSuffocation, 1);
+                    event.entityLiving.attackEntityFrom(DamageSourceGC.oxygenSuffocation, 1);
 
-				GCCoreOxygenSuffocationEvent suffocationEventPost = new GCCoreOxygenSuffocationEvent.Post(event.entityLiving);
-				MinecraftForge.EVENT_BUS.post(suffocationEventPost);
-			}
-		}
+                    GCCoreOxygenSuffocationEvent suffocationEventPost = new GCCoreOxygenSuffocationEvent.Post(event.entityLiving);
+                    MinecraftForge.EVENT_BUS.post(suffocationEventPost);
+                }
+            }
+        }
 	}
 
 	@SubscribeEvent

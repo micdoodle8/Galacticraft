@@ -41,6 +41,8 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -95,6 +97,16 @@ public class WorldUtil
 			return 0.03999999910593033D;
 		}
 	}
+
+    public static boolean shouldRenderFire(Entity entity)
+    {
+        if (!(entity instanceof EntityLivingBase))
+        {
+            return entity.isBurning();
+        }
+
+        return !(entity.worldObj.provider instanceof IGalacticraftWorldProvider) && entity.isBurning();
+    }
 
 	public static Vector3 getWorldColor(World world)
 	{
