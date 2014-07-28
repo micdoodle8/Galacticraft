@@ -216,7 +216,7 @@ public class ModelPlayerGC extends ModelBiped
 		this.wearingFrequencyModule = false;
 
 		final EntityPlayer player = (EntityPlayer) var1;
-		PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getUniqueID());
+		PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getCommandSenderName());
 
 		if (gearData != null)
 		{

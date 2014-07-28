@@ -214,7 +214,7 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 			this.fallDistance = 0.0F;
 		}
 
-		PlayerGearData gearData = ClientProxyCore.playerItemData.get(this.getPersistentID());
+		PlayerGearData gearData = ClientProxyCore.playerItemData.get(this.getCommandSenderName());
 
 		this.usingParachute = false;
 

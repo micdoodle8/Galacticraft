@@ -96,7 +96,7 @@ public class ClientProxyCore extends CommonProxyCore
 	public static Set<Vector3> valueableBlocks = Sets.newHashSet();
 	public static HashSet<BlockMetaList> detectableBlocks = Sets.newHashSet();
 
-	public static Map<UUID, PlayerGearData> playerItemData = Maps.newHashMap();
+	public static Map<String, PlayerGearData> playerItemData = Maps.newHashMap();
 
 	public static double playerPosX;
 	public static double playerPosY;

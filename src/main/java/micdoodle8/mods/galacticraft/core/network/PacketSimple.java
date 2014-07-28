@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.network;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -69,7 +68,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
-
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
@@ -334,7 +332,7 @@ public class PacketSimple extends Packet implements IPacket
 
 			if (gearDataPlayer != null)
 			{
-				PlayerGearData gearData = ClientProxyCore.playerItemData.get(gearDataPlayer.getPersistentID());
+				PlayerGearData gearData = ClientProxyCore.playerItemData.get(gearDataPlayer.getGameProfile().getName());
 
 				if (gearData == null)
 				{
@@ -427,7 +425,7 @@ public class PacketSimple extends Packet implements IPacket
 					break;
 				}
 
-				ClientProxyCore.playerItemData.put(playerBaseClient.getPersistentID(), gearData);
+				ClientProxyCore.playerItemData.put((String)this.data.get(0), gearData);
 			}
 
 			break;
