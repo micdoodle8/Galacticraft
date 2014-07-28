@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
@@ -85,4 +86,11 @@ public class BlockCreeperEgg extends BlockDragonEgg
 		world.setBlockToAir(x, y, z);
 		this.onBlockDestroyedByExplosion(world, x, y, z, explosion);
 	}
+	
+	@SideOnly(Side.CLIENT)
+    	@Override
+    	public Item getItem(World par1World, int par2, int par3, int par4)
+    	{
+        	return Item.getItemFromBlock(this);
+    	}
 }

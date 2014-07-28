@@ -1,0 +1,151 @@
+# Galacticraft Mars Language File = UNITED STATES ENGLISH
+
+# GENERAL ITEMS
+item.rawDesh.name=Ne Refinirani Desh
+item.deshStick.name=Stapic od Desha
+item.ingotDesh.name=Desh Poliga
+item.spaceshipTier2.t2Rocket.name=Tier 2 Raketa
+item.reinforcedPlateT2.name=Jaka Ploca
+item.tier2.desc=Tier 2
+item.slimelingCargo.name=Slimelingova Inventory Torba
+item.key.T2.name=Tier 2 Tamnicki Kljuc
+item.compressedDesh.name=Preradeni Desh
+item.spaceshipTier2.cargoRocket.name=Raketa s Teretom
+item.fluidManip.name=Manipulator Tekucinom
+
+# TOOLS
+item.deshPick.name=Desh Kramp
+item.deshAxe.name=Desh Sjekira
+item.deshHoe.name=Desh Motika
+item.deshSpade.name=Desh Lopata
+item.deshSword.name=Desh Mac
+
+# ARMOR
+item.deshHelmet.name=Desh Sljem
+item.deshChestplate.name=Desh Prsni Oklop
+item.deshLeggings.name=Desh Gamase
+item.deshBoots.name=Desh Cizme
+
+# BLOCKS
+tile.mars.deshmars.name=Desh Ruda
+tile.mars.coppermars.name=Copper Ruda
+tile.mars.tinmars.name=Tin Ruda
+tile.mars.ironmars.name=Iron Ruda
+tile.mars.marscobblestone.name=Preradeni Kamen
+tile.mars.marsstone.name=Mars Kamen
+tile.mars.marsdirt.name=Mars Trava
+tile.mars.marsgrass.name=Mars Povrsina
+tile.mars.marsdeco.name=Blok od Desha
+tile.mars.marsdungeon.name=Zid od Tamnice
+tile.treasureT2.name=Tier 2 Skrinja sa Blagom
+tile.slimelingEgg.redEgg.name=Crveno Slimeling Jaje
+tile.slimelingEgg.blueEgg.name=Plavo Slimeling Jaje
+tile.slimelingEgg.yellowEgg.name=Zuto Slimeling Jaje
+tile.marsMachine.0.name=Terraformer
+tile.marsMachine.1.name=Komora Kriogena
+tile.marsMachine.2.name=Kontrola Leta
+tile.marsMachine.4.name=Gas liqufier
+tile.marsMachine.5.name=Metan Sintisajzer
+tile.marsMachine.6.name=Vodeni Elektrizer
+tile.sludge.name=Bakterijska Sluz
+tile.creeperEgg.name=Kreper Jaje
+tile.cavernVines.name=Cavernous Vine
+tile.tintedGlassPane.white.name=Bijelo Staklo
+tile.tintedGlassPane.orange.name=Narandasto Staklo
+tile.tintedGlassPane.magenta.name=Purpurno Crveno Staklo
+tile.tintedGlassPane.light_blue.name=Svijetlo Plavo Staklo
+tile.tintedGlassPane.yellow.name=Zuto Staklo
+tile.tintedGlassPane.lime.name=Zelenkasto Staklo
+tile.tintedGlassPane.pink.name=Rozo Staklo
+tile.tintedGlassPane.gray.name=Sivo Staklo
+tile.tintedGlassPane.silver.name=Srebrno Staklo
+tile.tintedGlassPane.cyan.name=Plavkasto Staklo
+tile.tintedGlassPane.purple.name=Ljubicasto Staklo
+tile.tintedGlassPane.blue.name=Plavo Staklo
+tile.tintedGlassPane.brown.name=Smede Staklo
+tile.tintedGlassPane.green.name=Zeleno Staklo
+tile.tintedGlassPane.red.name=Crveno Staklo
+tile.tintedGlassPane.black.name=Crno Staklo
+
+# GUI
+gui.choosePlanet.desc.mars=Pogodno za Zivot#Nema Zraka#Gravitacija: 38%
+item.deshPickSlime.description.name=Moze Uzeti Slimeling Jaja
+gui.message.noEnergy.name=Nema Energije!
+gui.message.noWater.name=Nema Dovoljno Vode
+gui.message.noBonemeal.name=Nema Dovoljno Smrskanih Kosti
+gui.message.noSeeds.name=Nema Dovoljno Sjemenki
+gui.message.noSaplings.name=Nema Dovoljno Sjemenka Drveta
+gui.message.bubbleExp.name=Balon se Rasiruje
+gui.message.noValidBlocks.name=Nema pravih blokova u Balonu
+gui.message.terraforming.name=Terraformiram
+gui.message.enableTrees.name=Dozvoli Drva
+gui.message.enableGrass.name=Dozvoli Travu
+gui.message.trees.name=Drva
+gui.message.grass.name=Trava
+gui.message.invalidFreq.name=Nepoznata Frekvencija
+gui.message.frequency.name=Frekvencija
+gui.message.destFrequency.name=Odredisna Frekvencija
+gui.message.removePad.name=Obrisi Pad
+gui.message.launchWhen.name=Lansiraj Kada
+gui.message.cargoUnloaded.name=Je sve Izvadeno
+gui.message.cargoFull.name=Je sve Puno
+gui.message.fullyFueled.name=Puno Goriva
+gui.message.instant.name=Odmah
+gui.message.tenSec.name=10 Sekundi
+gui.message.thirtySec.name=30 Sekundi
+gui.message.oneMin.name=1 Minuta
+gui.message.redstoneSig.name=Redstone Signal
+gui.message.notSet.name=Nije Postavljeno
+gui.message.notEnough.name=Nema Dovoljno
+gui.message.success.name=Uspjesno
+
+	# Dollar sign ($) will split text onto a new line
+gui.launchController.desc.0=This is the Launch Controller's$unique frequency
+gui.launchController.desc.1=Frequency to launch rockets towards
+gui.launchController.desc.2=Whether the launch pad should$be removed on launch
+gui.launchController.desc.3=When this criteria is met,$rocket will launch
+gui.terraformer.desc.0=Vodeni Tank
+
+gui.gasTank.desc.0=Gas Skladiste
+gui.liquidTank.desc.0=Vodeni Tank
+gui.status.nogas.name=Nema Gasa
+gui.status.liquefying.name=Punim
+gui.status.processing.name=Sintiziram
+gui.status.needsCarbon.name=Treba Carbona
+gui.status.tankfull.name=Tank Pun
+gui.status.tanksfull.name=Tankovi Puni
+gui.message.lowEnergy.name=Malo Energije
+gui.button.liquefy.name=Processiram
+gui.button.liquefyStop.name=Stani
+gui.gasInput.desc.0=Probaj Postaviti Methan$Gas Karnister tamo
+gui.gasInput.desc.1=(Mozda Altrenativno,$jedan Atmosferni Ventil)
+gui.hydrogenInput.desc.0=To Uzima Hydrogen Tank
+gui.hydrogenInput.desc.1=ili jedan Atmosferni Ventil
+gui.liquidOutput.desc.2=Vodeni Gas Tank
+gui.methaneOutput.desc.2=Methane Tank
+gui.message.withAtmosphere0.name=Na Planetu s Puno
+gui.message.withAtmosphere1.name=u Atmosferi
+item.carbonFragments.name=Fragmirani Carbon
+
+gas.carbondioxide.name=Dioksid Carboon
+gas.oxygen.name=Zrak
+gas.nitrogen.name=Nitrogen
+
+gui.desc.reinforcedPlateT2.name=Tier 2
+dimension.Mars.name=Mars
+planet.mars=Mars
+
+# SCHEMATICS
+schematic.rocketT3.name=Tier 3 Raketa
+schematic.cargoRocket.name=Automatska Teret Raketa
+
+# ENTITIES
+entity.Sludgeling.name=Sludgeling
+entity.Slimeling.name=Slimeling
+entity.CreeperBoss.name=Evoulirani Kriper Sed
+entity.SpaceshipT2.name=Tier 2 Raketa
+entity.CargoRocket.name=Teretna Raketa
+
+# CONTAINERS
+container.launchcontroller.name=Kontroler Lansiranja
+container.tileTerraformer.name=Teraformer

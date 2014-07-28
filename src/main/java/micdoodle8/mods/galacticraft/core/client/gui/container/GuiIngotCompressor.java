@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityIngotCompressor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -38,11 +39,11 @@ public class GuiIngotCompressor extends GuiContainer
 
 		if (this.tileEntity.processTicks > 0)
 		{
-			displayText = GCCoreUtil.translate("gui.status.compressing.name");
+			displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.compressing.name");
 		}
 		else
 		{
-			displayText = GCCoreUtil.translate("gui.status.idle.name");
+			displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.idle.name");
 		}
 
 		String str = GCCoreUtil.translate("gui.message.status.name") + ":";

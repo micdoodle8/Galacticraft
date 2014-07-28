@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -161,5 +162,25 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider
 	public TileEntity createNewTileEntity(World world, int meta)
 	{
 		return new TileEntitySlimelingEgg();
+	}
+	
+	@Override
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+	{
+		int metadata = world.getBlockMetadata(x, y, z);
+		
+		if (metadata == 3)
+		{
+			return new ItemStack(Item.getItemFromBlock(this), 1, 0);
+		}
+		if (metadata == 4)
+		{
+			return new ItemStack(Item.getItemFromBlock(this), 1, 1);
+		}
+		if (metadata == 5)
+		{
+			return new ItemStack(Item.getItemFromBlock(this), 1, 2);
+		}
+		return super.getPickBlock(target, world, x, y, z);
 	}
 }
