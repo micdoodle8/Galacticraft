@@ -332,6 +332,10 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 		{
 			return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
 		}
+		if (metadata == 9)
+		{
+			return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
+		}
 		if (metadata == 10)
 		{
 			return null;
