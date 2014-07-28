@@ -1,4 +1,4 @@
-# Galacticraft Asteroids Language File = SIMPLIFIED CHINESE
+# Galacticraft Asteroids Language File = Traditional Chinese
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=三階火箭
@@ -17,11 +17,11 @@ item.beamCore.name=光束核心
 item.tier3.desc=三階
 
 # TOOLS
-item.titanium_pickaxe.name=Titanium Pickaxe ##NEEDS TRANSLATE##
-item.titanium_axe.name=Titanium Axe ##NEEDS TRANSLATE##
-item.titanium_hoe.name=Titanium Hoe ##NEEDS TRANSLATE##
-item.titanium_shovel.name=Titanium Shovel ##NEEDS TRANSLATE##
-item.titanium_sword.name=Titanium Sword ##NEEDS TRANSLATE##
+item.titanium_pickaxe.name=鈦金十字鎬
+item.titanium_axe.name=鈦金斧
+item.titanium_hoe.name=鈦金鋤
+item.titanium_shovel.name=鈦金鏟
+item.titanium_sword.name=鈦金屬劍
 
 # ARMOR
 item.thermalHelm.name=熱力充能頭盔
