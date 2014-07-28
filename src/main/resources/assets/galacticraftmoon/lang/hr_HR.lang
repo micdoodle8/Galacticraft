@@ -1,12 +1,12 @@
 # Galacticraft Moon Language File = CROATIAN
 
 # GENERAL ITEMS
-item.meteoricIronRaw.name=Meteorsko Osteceno Zeljezo
-item.compressedMeteoricIron.name=Kompresirano Meteorsko Zeljezo
-item.meteoricIronIngot.name=Meteorsko Zeljezo
+item.meteoricIronRaw.name=Meteorsko Ošteceno Željezo
+item.compressedMeteoricIron.name=Prerađeno Meteorsko Željezo
+item.meteoricIronIngot.name=Meteorsko Željezo
 
 # FOOD
-item.cheeseCurd.name=Sir Curd
+item.cheeseCurd.name=Komad Sira
 item.cheeseBlock.name=Sir
 
 # TOOLS
@@ -16,14 +16,14 @@ item.cheeseBlock.name=Sir
 # BLOCKS
 tile.moonBlock.moonstone.name=Kamen
 tile.moonBlock.moondirt.name=Trava
-tile.moonBlock.moongrass.name=Povrsina Mjeseca
+tile.moonBlock.moongrass.name=Površina Mjeseca
 tile.moonBlock.tinmoon.name=Ruda Lima
 tile.moonBlock.coppermoon.name=Ruda Bakra
 tile.moonBlock.cheesestone.name=Ruda Sira
 tile.moonBlock.bricks.name=Kamenje
-tile.cheeseBlock.name=Block Sira
+tile.cheeseBlock.name=Blok Sira
 
 # GUI
-gui.choosePlanet.desc.moon=Pogodan za zivot#Nema Zraka#Gravitacija: 18%
+gui.choosePlanet.desc.moon=Pogodan za život#Nema Zraka#Gravitacija: 18%
 
 dimension.Moon.name=Mjesec
