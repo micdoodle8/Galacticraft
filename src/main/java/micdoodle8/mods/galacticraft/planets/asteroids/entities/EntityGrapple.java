@@ -28,7 +28,6 @@ public class EntityGrapple extends Entity implements IProjectile
 	public int canBePickedUp;
 	public int arrowShake;
 	public EntityPlayer shootingEntity;
-	public int shootingEntityID;
 	private int ticksInGround;
 	private int ticksInAir;
 	public float rotationRoll;
@@ -198,7 +197,9 @@ public class EntityGrapple extends Entity implements IProjectile
 				{
 					if (this.shootingEntity != null)
 					{
-						this.shootingEntity.setVelocity((this.posX - this.shootingEntity.posX) / 16.0F, (this.posY - this.shootingEntity.posY) / 16.0F, (this.posZ - this.shootingEntity.posZ) / 16.0F);
+                        this.shootingEntity.motionX = (this.posX - this.shootingEntity.posX) / 16.0F;
+                        this.shootingEntity.motionY = (this.posY - this.shootingEntity.posY) / 16.0F;
+                        this.shootingEntity.motionZ = (this.posZ - this.shootingEntity.posZ) / 16.0F;
 					}
 
 					if (!this.worldObj.isRemote)
