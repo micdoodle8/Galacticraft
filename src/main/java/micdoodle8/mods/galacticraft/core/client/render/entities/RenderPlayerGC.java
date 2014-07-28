@@ -18,6 +18,7 @@ import org.lwjgl.opengl.GL11;
 public class RenderPlayerGC extends RenderPlayer
 {
 	public ModelBiped modelThermalPadding;
+    public ModelBiped modelThermalPaddingHelmet;
 	private static ResourceLocation thermalPaddingTexture0;
 	private static ResourceLocation thermalPaddingTexture1;
 
@@ -29,6 +30,7 @@ public class RenderPlayerGC extends RenderPlayer
 		this.modelArmorChestplate = new ModelPlayerGC(1.0F);
 		this.modelArmor = new ModelPlayerGC(0.5F);
 		this.modelThermalPadding = new ModelPlayerGC(0.25F);
+		this.modelThermalPaddingHelmet = new ModelPlayerGC(0.9F);
 
 		if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
 		{
@@ -59,33 +61,44 @@ public class RenderPlayerGC extends RenderPlayer
 
 			if (gearData != null)
 			{
+                ModelBiped modelBiped;
+                
 				for (int i = 0; i < 4; ++i)
 				{
+                    if (i == 0)
+                    {
+                        modelBiped = this.modelThermalPaddingHelmet;
+                    }
+                    else
+                    {
+                        modelBiped = this.modelThermalPadding;
+                    }
+
 					int padding = gearData.getThermalPadding(i);
 
 					if (padding >= 0)
 					{
 						GL11.glColor4f(1, 1, 1, 1);
 						this.bindTexture(RenderPlayerGC.thermalPaddingTexture1);
-						this.modelThermalPadding.bipedHead.showModel = i == 0;
-						this.modelThermalPadding.bipedHeadwear.showModel = i == 0;
-						this.modelThermalPadding.bipedBody.showModel = i == 1 || i == 2;
-						this.modelThermalPadding.bipedRightArm.showModel = i == 1;
-						this.modelThermalPadding.bipedLeftArm.showModel = i == 1;
-						this.modelThermalPadding.bipedRightLeg.showModel = i == 2 || i == 3;
-						this.modelThermalPadding.bipedLeftLeg.showModel = i == 2 || i == 3;
-						this.modelThermalPadding.onGround = this.mainModel.onGround;
-						this.modelThermalPadding.isRiding = this.mainModel.isRiding;
-						this.modelThermalPadding.isChild = this.mainModel.isChild;
+						modelBiped.bipedHead.showModel = i == 0;
+						modelBiped.bipedHeadwear.showModel = i == 0;
+						modelBiped.bipedBody.showModel = i == 1 || i == 2;
+						modelBiped.bipedRightArm.showModel = i == 1;
+						modelBiped.bipedLeftArm.showModel = i == 1;
+						modelBiped.bipedRightLeg.showModel = i == 2 || i == 3;
+						modelBiped.bipedLeftLeg.showModel = i == 2 || i == 3;
+						modelBiped.onGround = this.mainModel.onGround;
+						modelBiped.isRiding = this.mainModel.isRiding;
+						modelBiped.isChild = this.mainModel.isChild;
 						if (this.mainModel instanceof ModelBiped)
 						{
-							this.modelThermalPadding.heldItemLeft = ((ModelBiped) this.mainModel).heldItemLeft;
-							this.modelThermalPadding.heldItemRight = ((ModelBiped) this.mainModel).heldItemRight;
-							this.modelThermalPadding.isSneak = ((ModelBiped) this.mainModel).isSneak;
-							this.modelThermalPadding.aimedBow = ((ModelBiped) this.mainModel).aimedBow;
+							modelBiped.heldItemLeft = ((ModelBiped) this.mainModel).heldItemLeft;
+							modelBiped.heldItemRight = ((ModelBiped) this.mainModel).heldItemRight;
+							modelBiped.isSneak = ((ModelBiped) this.mainModel).isSneak;
+							modelBiped.aimedBow = ((ModelBiped) this.mainModel).aimedBow;
 						}
-						this.modelThermalPadding.setLivingAnimations(par1EntityLivingBase, par2, par3, 0.0F);
-						this.modelThermalPadding.render(par1EntityLivingBase, par2, par3, par4, par5, par6, par7);
+						modelBiped.setLivingAnimations(par1EntityLivingBase, par2, par3, 0.0F);
+						modelBiped.render(par1EntityLivingBase, par2, par3, par4, par5, par6, par7);
 
 						// Start alpha render
 						GL11.glDisable(GL11.GL_LIGHTING);
@@ -118,7 +131,7 @@ public class RenderPlayerGC extends RenderPlayer
 						}
 
 						GL11.glColor4f(r, g, b, 0.4F * sTime);
-						this.modelThermalPadding.render(par1EntityLivingBase, par2, par3, par4, par5, par6, par7);
+						modelBiped.render(par1EntityLivingBase, par2, par3, par4, par5, par6, par7);
 						GL11.glDisable(GL11.GL_BLEND);
 						GL11.glEnable(GL11.GL_ALPHA_TEST);
 						GL11.glColor4f(1, 1, 1, 1);
