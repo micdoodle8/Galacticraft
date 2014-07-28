@@ -123,7 +123,12 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 	{
 		final int meta = par1World.getBlockMetadata(par2, par3, par4);
 
-		if (meta == 10 || meta == 7)
+        if (meta == 7)
+        {
+            return 4.0F;
+        }
+
+		if (meta == 10)
 		{
 			return -1.0F;
 		}
@@ -151,7 +156,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 	@Override
 	public boolean canHarvestBlock(EntityPlayer player, int meta)
 	{
-		if (meta == 10 || meta == 7)
+		if (meta == 10)
 		{
 			return false;
 		}
@@ -198,7 +203,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 		{
 			return MarsItems.marsItemBasic;
 		}
-		else if (meta == 10 || meta == 7)
+		else if (meta == 10)
 		{
 			return Item.getItemFromBlock(Blocks.air);
 		}
@@ -226,7 +231,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 	@Override
 	public int quantityDropped(int meta, int fortune, Random random)
 	{
-		if (meta == 10 || meta == 7)
+		if (meta == 10)
 		{
 			return 0;
 		}

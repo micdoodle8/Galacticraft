@@ -130,6 +130,11 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 			return 0.5F;
 		}
 
+        if (meta == 14)
+        {
+            return 4.0F;
+        }
+
 		if (meta > 13)
 		{
 			return -1F;
