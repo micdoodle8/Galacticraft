@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
@@ -919,12 +920,22 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 	{
 		this.angularVelocityRadians = angle;
 		this.skyAngularVelocity = angle * 180F / 3.1415927F;
-		IRenderHandler sky = this.getSkyRenderer();
-		if (sky instanceof SkyProviderOrbit)
-		{
-			((SkyProviderOrbit) sky).spinDeltaPerTick = this.skyAngularVelocity;
-		}
+
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        {
+            this.updateSkyProviderSpinRate();
+        }
 	}
+
+    @SideOnly(Side.CLIENT)
+    private void updateSkyProviderSpinRate()
+    {
+        IRenderHandler sky = this.getSkyRenderer();
+        if (sky instanceof SkyProviderOrbit)
+        {
+            ((SkyProviderOrbit) sky).spinDeltaPerTick = this.skyAngularVelocity;
+        }
+    }
 
 	public void setSpinRate(float angle, boolean firing)
 	{
