@@ -38,11 +38,11 @@ public class GuiIngotCompressor extends GuiContainer
 
 		if (this.tileEntity.processTicks > 0)
 		{
-			displayText = GCCoreUtil.translate("gui.status.compressing.name");
+			displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.compressing.name");
 		}
 		else
 		{
-			displayText = GCCoreUtil.translate("gui.status.idle.name");
+			displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.idle.name");
 		}
 
 		String str = GCCoreUtil.translate("gui.message.status.name") + ":";

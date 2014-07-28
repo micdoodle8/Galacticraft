@@ -149,7 +149,7 @@ public class WorldGenTaigaGC extends WorldGenerator
 
 							if (block.isAir(par1World, par3, par4 + var16, par5) || block.isLeaves(par1World, par3, par4 + var16, par5))
 							{
-								this.setBlockAndNotifyAdequately(par1World, par3, par4 + var16, par5, Blocks.planks, 1);
+								this.setBlockAndNotifyAdequately(par1World, par3, par4 + var16, par5, Blocks.log, 1);
 							}
 						}
 

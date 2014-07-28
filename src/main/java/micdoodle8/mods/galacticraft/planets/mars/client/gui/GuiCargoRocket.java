@@ -74,12 +74,12 @@ public class GuiCargoRocket extends GuiContainerGC
 		super.initGui();
 		final int var6 = (this.height - this.ySize) / 2;
 		final int var7 = (this.width - this.xSize) / 2;
-		this.launchButton = new GuiButton(0, var7 + 116, var6 + 26, 50, 20, "Launch");
+		this.launchButton = new GuiButton(0, var7 + 116, var6 + 26, 50, 20, GCCoreUtil.translate("gui.message.launch.name"));
 		this.buttonList.add(this.launchButton);
-		List<String> oxygenDesc = new ArrayList<String>();
-		oxygenDesc.add("Rocket fuel tank. Requires");
-		oxygenDesc.add("fuel loader to fill");
-		this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + (this.rocket.rocketType.getInventorySpace() == 2 ? 70 : 71), (this.height - this.ySize) / 2 + 6, 36, 40, oxygenDesc, this.width, this.height, this));
+		List<String> fuelTankDesc = new ArrayList<String>();
+		fuelTankDesc.add(GCCoreUtil.translate("gui.fuelTank.desc.0"));
+		fuelTankDesc.add(GCCoreUtil.translate("gui.fuelTank.desc.1"));
+		this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + (this.rocket.rocketType.getInventorySpace() == 2 ? 70 : 71), (this.height - this.ySize) / 2 + 6, 36, 40, fuelTankDesc, this.width, this.height, this));
 	}
 
 	@Override

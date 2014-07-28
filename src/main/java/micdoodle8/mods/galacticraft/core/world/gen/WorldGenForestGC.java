@@ -125,7 +125,7 @@ public class WorldGenForestGC extends WorldGenerator
 
 						if (block == Blocks.air || block.isLeaves(par1World, par3, par4 + var16, par5))
 						{
-							this.setBlockAndNotifyAdequately(par1World, par3, par4 + var16, par5, Blocks.planks, 2);
+							this.setBlockAndNotifyAdequately(par1World, par3, par4 + var16, par5, Blocks.log, 2);
 						}
 					}
 
