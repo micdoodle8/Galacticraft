@@ -257,11 +257,13 @@ public class TileEntityArclamp extends TileEntity
 						{
 							world.setBlock(vec.x, vec.y, vec.z, brightAir, 0, 2);
 							this.airToRestore.add(vec);
+							this.markDirty();
 						}
 						else if (id == breatheableAirID)
 						{
 							world.setBlock(vec.x, vec.y, vec.z, brightBreatheableAir, 0, 2);
 							this.airToRestore.add(vec);
+							this.markDirty();
 						}
 					}
 				}
@@ -329,6 +331,7 @@ public class TileEntityArclamp extends TileEntity
 			this.thisAABB = null;
 			this.revertAir();
 		}
+		this.markDirty();
 	}
 
 	private void revertAir()
