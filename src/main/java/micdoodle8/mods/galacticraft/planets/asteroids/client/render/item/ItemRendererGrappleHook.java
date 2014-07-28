@@ -59,6 +59,7 @@ public class ItemRendererGrappleHook implements IItemRenderer
 			GL11.glRotatef(40, 0, 1, 0);
 			GL11.glRotatef(-70, 0, 0, 1);
 			GL11.glScalef(3.2F, 3.2F, 3.2F);
+            GL11.glTranslatef(0.0F, 0.2F, 0.0F);
 		}
 
 		if (type == ItemRenderType.EQUIPPED_FIRST_PERSON)
