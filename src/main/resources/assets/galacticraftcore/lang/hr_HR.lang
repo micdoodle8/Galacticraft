@@ -53,7 +53,8 @@ item.fuel.name=Raketsko Gorivo
 item.key.T1.name=Tier 1 Tamnicki Ključ
 item.buggymat.wheel.name=Roverov Kotač
 item.buggymat.seat.name=Roverovo Sjedalo
-item.buggymat.storage.name=Roverova Kutija za Pohranu item.basicItem.solar_module_0.name=Jedan Solarni Modul
+item.buggymat.storage.name=Roverova Kutija za Pohranu 
+item.basicItem.solar_module_0.name=Jedan Solarni Modul
 item.basicItem.solar_module_1.name=Cijeli Solarni Modul
 item.basicItem.ingotCopper.name=Poluga Bakra
 item.basicItem.ingotTin.name=Poluga Lima
