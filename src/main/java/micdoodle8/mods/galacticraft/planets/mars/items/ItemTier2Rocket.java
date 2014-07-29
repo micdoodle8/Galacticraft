@@ -64,6 +64,7 @@ public class ItemTier2Rocket extends Item implements IHoldableItem
 			float centerX = -1;
 			float centerY = -1;
 			float centerZ = -1;
+			int meta = par3World.getBlockMetadata(par4, par5, par6);
 
 			for (int i = -1; i < 2; i++)
 			{
@@ -71,7 +72,7 @@ public class ItemTier2Rocket extends Item implements IHoldableItem
 				{
 					final Block id = par3World.getBlock(par4 + i, par5, par6 + j);
 
-					if (id == GCBlocks.landingPadFull)
+					if (id == GCBlocks.landingPadFull && meta == 0)
 					{
 						amountOfCorrectBlocks = 9;
 
