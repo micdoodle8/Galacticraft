@@ -10,23 +10,28 @@ import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Planet;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map.Entry;
 
 /**
@@ -37,7 +42,10 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 	public EnumRocketType rocketType;
 	public float rumble;
 	public int launchCooldown;
-
+	private ArrayList<BlockVec3> preGenList = new ArrayList();
+	private Iterator<BlockVec3> preGenIterator = null;
+	private MinecraftServer mcserver = FMLCommonHandler.instance().getMinecraftServerInstance();
+	
 	public EntityTieredRocket(World par1World)
 	{
 		super(par1World);
@@ -90,21 +98,56 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 	{
 		if (!this.worldObj.isRemote && this.launchCooldown <= 0)
 		{
-			//TODO - do not do this if there is a launch controller with a valid destination set
-			//and generally it might be better to use the ITeleportType.getPlayerSpawnLocation()
-			for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
-			{
-				if (planet.getDimensionID() == this.dimension) continue;
-				if (planet.getReachable() && planet.getTierRequirement() <= this.getRocketTier())
-				{
-					//planet.initiatePreGen(this.chunkCoordX, this.chunkCoordZ);
-				}
-			}
+			this.initiatePlanetsPreGen();
 
 			this.ignite();
 		}
 	}
 
+	private void initiatePlanetsPreGen()
+	{
+		//TODO - use different coordinates if there is a launch controller with a valid destination set
+		//and generally it might be better to use the ITeleportType.getPlayerSpawnLocation()?
+		ArrayList<Integer> toPreGen = new ArrayList();
+		this.preGenList.clear();
+		for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
+		{
+			if (planet.getDimensionID() == this.dimension) continue;
+			if (planet.getReachable() && planet.getTierRequirement() <= this.getRocketTier())
+			{
+				toPreGen.add(planet.getDimensionID());
+			}
+		}
+		
+		if (toPreGen.size() > 0)
+		{
+			for (Integer dimID : toPreGen)
+			{
+				this.preGenList.add(new BlockVec3(this.chunkCoordX, dimID, this.chunkCoordZ));
+				if (ConfigManagerCore.enableDebug)
+					GCLog.info("Starting terrain pregen for dimension " + dimID + " at " + (this.chunkCoordX * 16 + 8) + ", " + (this.chunkCoordZ * 16 + 8));
+			}
+			for (int r = 1; r < 12; r++)
+			{
+				int xmin = this.chunkCoordX - r;
+				int xmax = this.chunkCoordX + r;
+				int zmin = this.chunkCoordZ - r;
+				int zmax = this.chunkCoordZ + r;
+				for (int i = -r; i < r; i++)
+				{
+					for (Integer dimID : toPreGen)
+					{
+						this.preGenList.add(new BlockVec3(xmin, dimID, this.chunkCoordZ + i));
+						this.preGenList.add(new BlockVec3(xmax, dimID, this.chunkCoordZ - i));
+						this.preGenList.add(new BlockVec3(this.chunkCoordX - i, dimID, zmin));
+						this.preGenList.add(new BlockVec3(this.chunkCoordX + i, dimID, zmax));
+					}
+				}
+			}
+			this.preGenIterator = this.preGenList.iterator();
+		}
+	}
+	
 	@Override
 	public void onUpdate()
 	{
@@ -150,6 +193,19 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 			{
 				this.launchCooldown--;
 			}
+			
+			if (this.preGenIterator != null)
+			{
+				if (this.preGenIterator.hasNext())
+				{
+					BlockVec3 coords = this.preGenIterator.next();
+					int dimID = coords.y;
+					World w = this.mcserver.worldServerForDimension(dimID);
+					w.getChunkFromChunkCoords(coords.x, coords.z);
+				}
+				else
+					this.preGenIterator = null;
+			}
 		}
 
 		if (!this.worldObj.isRemote && this.getLandingPad() != null && this.getLandingPad().getConnectedTiles() != null)
@@ -173,7 +229,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 		{
 			this.rumble--;
 		}
-
+		else
 		if (this.rumble < 0)
 		{
 			this.rumble++;

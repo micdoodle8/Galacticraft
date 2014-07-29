@@ -105,7 +105,7 @@ public class GuiCircuitFabricator extends GuiContainerGC
 
         List<String> processDesc = new ArrayList<String>();
         processDesc.clear();
-        processDesc.add(GCCoreUtil.translate("gui.circuitFabricator.desc.0") + ": " + scale + "%");
+        processDesc.add(GCCoreUtil.translate("gui.electricCompressor.desc.0") + ": " + scale + "%");
         this.processInfoRegion.tooltipStrings = processDesc;
 
 		if (this.tileEntity.processTicks > 0)
