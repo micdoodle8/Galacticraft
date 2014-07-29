@@ -68,7 +68,7 @@ public class RenderEvolvedSkeleton extends RenderBiped
 		{
 			if (par1EntityLiving.getDataWatcher().getWatchedObject(RenderEvolvedSkeleton.isBG2Loaded) == null)
 			{
-				par1EntityLiving.getDataWatcher().addObject(RenderEvolvedSkeleton.isBG2Loaded, Byte.valueOf((byte) -1));
+				par1EntityLiving.getDataWatcher().addObject(RenderEvolvedSkeleton.isBG2Loaded, (byte) -1);
 			}
 		}
 
@@ -150,4 +150,11 @@ public class RenderEvolvedSkeleton extends RenderBiped
 
 		return super.shouldRenderPass(par1EntityLiving, par2, par3);
 	}
+    protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2)
+    {
+        ItemStack stack = par1EntityLiving.getLastActiveItems()[0];
+        par1EntityLiving.getLastActiveItems()[0] = null;
+        super.renderEquippedItems(par1EntityLiving, par2);
+        par1EntityLiving.getLastActiveItems()[0] = stack;
+    }
 }
