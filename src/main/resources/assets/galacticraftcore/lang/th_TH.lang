@@ -196,7 +196,7 @@ entity.GalacticraftCore.Lander.name=ยานลงจอด
 entity.GalacticraftCore.GCFlag.name=ธง
 entity.GalacticraftCore.MeteorChunk.name=เศษอุกกาบาต
 
-# Schematics
+# SCHEMATICS
 schematic.moonbuggy.name=บักกี้ดวงจันทร์
 schematic.rocketT1.name=จรวด เทียร์ 1
 schematic.rocketT2.name=จรวด เทียร์ 2
@@ -209,6 +209,7 @@ death.attack.oxygenSuffocation=%1$s ขาดออกซิเจน!
 
 # GALAXIES
 galaxy.blockyway.name=กาแลคซีบล็อกกี้เวย์
+galaxy.milkyWay=ทางช้างเผือก
 
 # OTHER
 newversion.failed.name=ตรวจสอบการอัพเดทกาแลคติคคราฟล้มเหลว! ลองอีกครั้งใน 15 วินาที
@@ -230,22 +231,6 @@ itemGroup.GalacticraftBlocks=บล็อกกาแลคติคคราฟ
 itemGroup.GalacticraftItems=ไอเท็มกาแลคติคคราฟ
 
 # GUI
-container.cargoloader.name=เครื่องขนสินค้า
-container.cargounloader.name=เครื่องขนถ่ายสินค้า
-container.fuelloader.name=เครื่องเติมเชื้อเพลิง
-container.oxygencollector.name=เครื่องกักเก็บออกซิเจน
-container.oxygencompressor.name=เครื่องบีบอัดออกซิเจน
-container.oxygendistributor.name=เครื่องกระจายฟองออกซิเจน
-container.oxygensealer.name=เครื่องผนึกออกซิเจน
-container.parachest.name=Para-chest
-container.refinery.name=เครื่องกลั่นน้ำมัน
-container.treasurechest.name=กล่องสมบัติ
-container.lander.name=ยานลงจอด
-container.spaceship.name=จรวด เทียร์ 1
-container.solarbasic.name=แผงโซลาร์
-container.solaradvanced.name=แผงโซลาร์ขั้นสูง
-container.oxygendecompressor.name=เครื่องลดความดันออกซิเจน
-
 gui.message.out.name=ออก
 gui.message.in.name=เข้า
 gui.message.status.name=สถานะ
@@ -426,7 +411,7 @@ gui.dropbox.playerDistance.name.2=5 บล็อก
 gui.dropbox.playerDistance.name.3=10 บล็อก
 gui.title.airLock.name=%s's เครื่องควบคุมแอร์ล็อค
 gui.fuelOutput.desc.0=วางกระป๋องของเหลวเปล่าลงใน
-gui.fuelOutput.desc.1=ช่องนี้เพื่อเติมเชื้อเพลิงจาก
+gui.fuelOutput.desc.1=ช่องนี้เพื่อเติมของเหลวจาก
 gui.fuelOutput.desc.2=ถังเชื้อเพลิง
 gui.newSchematic.slot.desc.0=ช่องแผนผังใหม่
 gui.newSchematic.slot.desc.1=คุณสามารถหาแผนผังใหม่
@@ -464,21 +449,6 @@ gui.spaceRace.join.title.name=เข้าร่วมการแข่งข�
 gui.spaceRace.join.owner.name=เจ้าของ
 gui.spaceRace.join.memberCount.name=%d สมาชิก
 
-# DIMENSIONS
-dimension.Overworld.name=โลก
-dimension.Moon.name=ดวงจันทร์
-dimension.Sun.name=ดวงอาทิตย์
-planet.overworld=โลก
-moon.moon=ดวงจันทร์
-galaxy.milkyWay=ทางช้างเผือก
-solarsystem.sol=ระบบสุริยะ
-planet.mercury=ดาวพุธ
-planet.venus=ดาวศุกร์
-planet.jupiter=ดาวพฤหัส
-planet.saturn=ดาวเสาร์
-planet.uranus=ดาวยูเรนัส
-planet.neptune=ดาวเนปจูน
-
 gui.message.moon.daynightcycle.0.name=29.5 วันโลก
 gui.message.moon.daynightcycle.1.name=
 gui.message.moon.surfacegravity.0.name=0.1654g
@@ -500,6 +470,37 @@ gui.message.overworld.atmosphere.0.name=ไนโตรเจนและออ�
 gui.message.overworld.atmosphere.1.name=เอื้ออำนวยต่อสิ่งมีชีวิต
 gui.message.overworld.meansurfacetemp.0.name=14C
 gui.message.overworld.meansurfacetemp.1.name=
+
+# CONTAINERS
+container.cargoloader.name=เครื่องขนสินค้า
+container.cargounloader.name=เครื่องขนถ่ายสินค้า
+container.fuelloader.name=เครื่องเติมเชื้อเพลิง
+container.oxygencollector.name=เครื่องกักเก็บออกซิเจน
+container.oxygencompressor.name=เครื่องบีบอัดออกซิเจน
+container.oxygendistributor.name=เครื่องกระจายฟองออกซิเจน
+container.oxygensealer.name=เครื่องผนึกออกซิเจน
+container.parachest.name=Para-chest
+container.refinery.name=เครื่องกลั่นน้ำมัน
+container.treasurechest.name=กล่องสมบัติ
+container.lander.name=ยานลงจอด
+container.spaceship.name=จรวด เทียร์ 1
+container.solarbasic.name=แผงโซลาร์
+container.solaradvanced.name=แผงโซลาร์ขั้นสูง
+container.oxygendecompressor.name=เครื่องลดความดันออกซิเจน
+
+# DIMENSIONS
+dimension.Overworld.name=โลก
+dimension.Moon.name=ดวงจันทร์
+dimension.Sun.name=ดวงอาทิตย์
+planet.overworld=โลก
+planet.mercury=ดาวพุธ
+planet.venus=ดาวศุกร์
+planet.jupiter=ดาวพฤหัส
+planet.saturn=ดาวเสาร์
+planet.uranus=ดาวยูเรนัส
+planet.neptune=ดาวเนปจูน
+moon.moon=ดวงจันทร์
+solarsystem.sol=ระบบสุริยะ
 
 # COMMANDS
 commands.dimensionteleport=%s ถูกส่งไปยังชั้นบรรยากาศ %s
