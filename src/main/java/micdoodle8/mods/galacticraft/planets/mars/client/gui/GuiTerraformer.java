@@ -223,6 +223,11 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
 	@Override
 	public boolean getInitiallySelected(GuiElementCheckbox checkbox)
 	{
+        if (this.terraformer.terraformBubble == null)
+        {
+            return false;
+        }
+
 		return this.terraformer.terraformBubble.shouldRender();
 	}
 
