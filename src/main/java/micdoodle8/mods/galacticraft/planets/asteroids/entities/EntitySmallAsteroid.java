@@ -16,6 +16,7 @@ public class EntitySmallAsteroid extends Entity
 	public EntitySmallAsteroid(World world)
 	{
 		super(world);
+        this.isImmuneToFire = true;
 	}
 
 	@Override
