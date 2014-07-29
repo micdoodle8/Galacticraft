@@ -52,7 +52,9 @@ public class OrbitSpinSaveData extends WorldSavedData
 		{
 			worldData.dim = world.provider.dimensionId;
 			
-			worldData.datacompound = worldData.alldata.getCompoundTag("" + worldData.dim);
+			worldData.datacompound = null;
+			if (worldData.alldata != null) worldData.datacompound = worldData.alldata.getCompoundTag("" + worldData.dim);
+			if (worldData.datacompound == null) worldData.datacompound = new NBTTagCompound();
 		}
 
 		return worldData;
