@@ -11,6 +11,19 @@ item.rocketFinsT2.name=ปีกจรวดแบบทนทาน
 item.engineT2.name=เครื่องยนต์จรวดแบบทนทาน
 item.reinforcedPlateT3.name=แผ่นโลหะแบบทนทาน
 item.grapple.name=ตะขอ
+item.atmosphericValve.name=วาล์วอากาศ
+item.thermalCloth.name=ผ้ากันความร้อน
+item.beamCore.name=แกนลำแสง
+item.tier3.desc=เทียร์ 3
+
+# TOOLS
+item.titanium_pickaxe.name=อีเต้อไททาเนียม
+item.titanium_axe.name=ขวานไททาเนียม
+item.titanium_hoe.name=จอบไททาเนียม
+item.titanium_shovel.name=พลั่วไททาเนียม
+item.titanium_sword.name=ดาบไททาเนียม
+
+# ARMOR
 item.thermalHelm.name=หมวกกันความร้อน
 item.thermalChestplate.name=เสื้อเกราะกันความร้อน
 item.thermalLeggings.name=กางเกงกันความร้อน
@@ -19,21 +32,15 @@ item.titanium_helmet.name=หมวกไททาเนียม
 item.titanium_chestplate.name=เสื้อเกราะไททาเนียม
 item.titanium_leggings.name=กางเกงไททาเนียม
 item.titanium_boots.name=รองเท้าไททาเนียม
-item.atmosphericValve.name=วาล์วอากาศ
-item.thermalCloth.name=ผ้ากันความร้อน
-item.beamCore.name=แกนลำแสง
 
+# CANISTERS ETC
 item.methaneCanisterPartial.name=กระป๋องมีเทน
 item.methaneCanister.name=กระป๋องที่เต็มไปด้วยมีเทน
 item.canister.gas.name=ก๊าซ
 item.canister.LOX.partial.name=กระป๋องออกซิเจนเหลว
 item.canister.LOX.full.name=กระป๋องที่เต็มไปด้วยออกซิเจนเหลว
-item.canister.LOX.partial.name=กระป๋องออกซิเจนเหลว
-item.canister.LOX.full.name=กระป๋องที่เต็มไปด้วยออกซิเจนเหลว
 item.canister.LOX.name=ออกซิเจนเหลว
 item.canister.liquidNitrogen.partial.name=กระป๋องไนโตรเจนเหลว
-item.canister.liquidNitrogen.full.name=กระป๋องที่เต็มไปด้วยไนโตรเจนเหลว
-item.canister.liquidNitrogen.partial.name=ถังไนโตรเจนเหลว
 item.canister.liquidNitrogen.full.name=กระป๋องที่เต็มไปด้วยไนโตรเจนเหลว
 item.canister.liquidNitrogen.name=ไนโตรเจนเหลว
 item.canister.liquidArgon.partial.name=กระป๋องอาร์กอนเหลว
@@ -41,16 +48,20 @@ item.canister.liquidArgon.full.name=กระป๋องที่เต็ม�
 item.canister.liquidArgon.name=อาร์กอนเหลว
 item.emptyGasCanister.name=กระป๋องก๊าซเปล่า
 
-item.tier3.desc=เทียร์ 3
-item.titanium_pickaxe.name=อีเต้อไททาเนียม
-item.titanium_axe.name=ขวานไททาเนียม
-item.titanium_hoe.name=จอบไททาเนียม
-item.titanium_shovel.name=พลั่วไททาเนียม
-item.titanium_sword.name=ดาบไททาเนียม
-
-# TOOLS
-
-# ARMOR
+# FLUIDS AND GASES
+fluid.methane.name=ก๊าซมีเทน
+fluid.oxygen.name=ก๊าซออกซิเจน
+fluid.nitrogen.name=ก๊าซไนโตรเจน
+fluid.hydrogen.name=ก๊าซไฮโดรเจน
+fluid.carbondioxide.name=ก๊าซคาร์บอนไดออกไซด์
+fluid.helium.name=ก๊าซฮีเลียม
+fluid.argon.name=ก๊าซอาร์กอน
+fluid.atmosphericgases.name=ก๊าซชั้นบรรยากาศ
+fluid.liquidmethane.name=มีเทนเหลว
+fluid.liquidoxygen.name=ออกซิเจนเหลว
+fluid.liquidnitrogen.name=ไนโตรเจนเหลว
+fluid.liquidargon.name=อาร์กอนเหลว
+fluid.fuel.name=เชื้อเพลิง
 
 # BLOCKS
 tile.asteroidsBlock.asteroid0.name=หินดาวเคราะห์น้อย
@@ -67,29 +78,13 @@ tile.walkwayWire.name=ทางเดินพร้อมสายไฟแร�
 tile.walkwayOxygenPipe.name=ทางเดินพร้อมท่อออกซิเจน
 tile.treasureT3.name=กล่องสมบัติ เทียร์ 3
 
-# Fluids and gases
-fluid.methane.name=ก๊าซมีเทน
-fluid.oxygen.name=ก๊าซออกซิเจน
-fluid.nitrogen.name=ก๊าซไนโตรเจน
-fluid.hydrogen.name=ก๊าซไฮโดรเจน
-fluid.carbondioxide.name=ก๊าซคาร์บอนไดออกไซด์
-fluid.helium.name=ก๊าซฮีเลียม
-fluid.argon.name=ก๊าซอาร์กอน
-fluid.atmosphericgases.name=ก๊าซชั้นบรรยากาศ
-fluid.liquidmethane.name=มีเทนเหลว
-fluid.liquidoxygen.name=ออกซิเจนเหลว
-fluid.liquidnitrogen.name=ไนโตรเจนเหลว
-fluid.liquidargon.name=อาร์กอนเหลว
-fluid.fuel.name=เชื้อเพลิง
-
 # GUI
 planet.asteroids=ดาวเคราะห์น้อย
 
-
-# Dollar sign ($) will split text onto a new line
+	# Dollar sign ($) will split text onto a new line
+	# Do not remove %s or %d, since that will be replaced in-game
 gui.telepad.desc.0=นี่คือที่อยู่ของเครื่องเทเลพอร์ต
 gui.telepad.desc.1=ที่อยู่ของเครื่องเทเลพอร์ตอื่นๆ$สิ่งมีชีวิตจะถูกส่งไปยังเป้าหมาย
-container.shortRangeTelepad.name=เครื่องเทเลพอร์ตระยะใกล้
 gui.message.address.name=ที่อยู่
 gui.message.destAddress.name=เป้าหมายของที่อยู่
 gui.message.invalidAddress.name=ที่อยู่ผิดพลาด
@@ -103,11 +98,12 @@ gui.message.range.name=ระยะ: %d เมตร
 gui.message.notEnoughEnergy.name=พลังงานไม่พอ!
 gui.message.targetNoEnergy.name=เป้าหมายพลังงานไม่พอ!
 
-# Schematics
+# SCHEMATICS
 
-# Entity
+# ENTITIES
 entity.SmallAsteroidGC.name=ดาวเคราะห์น้อยขนาดเล็ก
 entity.GrappleHookGC.name=ตะขอเกี่ยว
 entity.Tier3RocketGC.name=จรวด เทียร์ 3
 
-# Container
+# CONTAINERS
+container.shortRangeTelepad.name=เครื่องเทเลพอร์ตระยะใกล้
