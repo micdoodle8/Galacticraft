@@ -117,6 +117,13 @@ public class GuiSlimelingInventory extends GuiContainer
 		GuiSlimeling.renderingOnGui = false;
 	}
 
+    public void drawScreen(int par1, int par2, float par3)
+    {
+        GL11.glPushMatrix();
+        super.drawScreen(par1, par2, par3);
+        GL11.glPopMatrix();
+    }
+
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j)
 	{
@@ -131,8 +138,10 @@ public class GuiSlimelingInventory extends GuiContainer
 
 		GuiSlimelingInventory.drawSlimelingOnGui(this, this.slimeling, this.width / 2, var6 + 62 - yOffset, 70, var5 + 51 - i, var6 + 75 - 50 - j);
 
+
+        GL11.glTranslatef(0, 0, 100);
+
 		GL11.glPushMatrix();
-		GL11.glTranslatef(0, 0, 100.0F);
 		this.mc.renderEngine.bindTexture(GuiSlimelingInventory.slimelingPanelGui);
 		this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
 		this.drawTexturedModalRect(var5 + this.xSize - 15, var6 + 9, 176, 0, 9, 9);
