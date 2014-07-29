@@ -12,7 +12,6 @@ item.key.T2.name=กุญแจดันเจี้ยน เทียร์ 2
 item.compressedDesh.name=แผ่นเดรช
 item.spaceshipTier2.cargoRocket.name=จรวดขนส่ง
 item.fluidManip.name=เครื่องจัดการของเหลว
-item.carbonFragments.name=สะเก็ดคาร์บอน
 
 # TOOLS
 item.deshPick.name=อีเต้อเดรช
@@ -83,7 +82,7 @@ gui.message.enableTrees.name=เปิดใช้งานต้นไม้
 gui.message.enableGrass.name=เปิดใช้งานหญ้า
 gui.message.trees.name=ต้นไม้
 gui.message.grass.name=หญ้า
-gui.message.invalidFreq.name=ความถี่$ไม่ถูกต้อง
+gui.message.invalidFreq.name=ความถี่ไม่ถูกต้อง
 gui.message.frequency.name=ความถี่
 gui.message.destFrequency.name=เป้าหมายความถี่
 gui.message.removePad.name=ลบฐานปล่อยจรวด
@@ -111,18 +110,22 @@ gui.gasTank.desc.0=ก๊าซที่เก็บไว้
 gui.liquidTank.desc.0=ถังของเหลว
 gui.status.nogas.name=ไม่มีก๊าซ
 gui.status.liquefying.name=ทำให้เป็นของเหลว
+gui.status.processing.name=กำลังสังเคราะห์
 gui.status.needsCarbon.name=ต้องการคาร์บอน
+gui.status.tankfull.name=ถังเก็บเต็ม
+gui.status.tanksfull.name=ถังเก็บเต็ม
+gui.message.lowEnergy.name=พลังงานต่ำ
 gui.button.liquefy.name=เริ่มทำงาน
 gui.button.liquefyStop.name=หยุดทำงาน
 gui.gasInput.desc.0=วางกระป๋องของมีเทนตรงนี้
 gui.gasInput.desc.1=และอีกทางเลือกสามารถ$ใช้วาล์วอากาศได้
-gui.message.lowEnergy.name=พลังงานต่ำ
 gui.hydrogenInput.desc.0=วางถังไฮโดรเจน
 gui.hydrogenInput.desc.1=หรือวาล์วอากาศ
 gui.liquidOutput.desc.2=ถังก๊าซเหลว
 gui.methaneOutput.desc.2=ถังมีเทน
 gui.message.withAtmosphere0.name=ถ้าบนดาวเคราะห์เต็มไปด้วย
 gui.message.withAtmosphere1.name=ในชั้นบรรยากาศ
+item.carbonFragments.name=สะเก็ดคาร์บอน
 
 gas.carbondioxide.name=คาร์บอนไดออกไซด์
 gas.oxygen.name=ออกซิเจน
@@ -132,17 +135,17 @@ gui.desc.reinforcedPlateT2.name=เทียร์ 2
 dimension.Mars.name=ดาวอังคาร
 planet.mars=ดาวอังคาร
 
-# Schematics
+# SCHEMATICS
 schematic.rocketT3.name=จรวด เทียร์ 3
 schematic.cargoRocket.name=จรวดขนส่งอัตโนมัติ
 
-# Entities
+# ENTITIES
 entity.Sludgeling.name=หนอนแบคทีเรีย
 entity.Slimeling.name=สไลม์ลิ่ง
-entity.CreeperBoss.name=คริปเปอร์บอสกลายพันธุ์
+entity.CreeperBoss.name=คริปเปอร์บอสอวกาศ
 entity.SpaceshipT2.name=จรวด เทียร์ 2
 entity.CargoRocket.name=จรวดขนส่ง
 
-# Container
+# CONTAINERS
 container.launchcontroller.name=เครื่องควบคุมการปล่อยจรวด
 container.tileTerraformer.name=เทอราฟอร์มเมอร์
