@@ -21,10 +21,13 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+import cpw.mods.fml.relauncher.Side;
+
 public class TileEntityArclamp extends TileEntity
 {
 	private int ticks = 0;
 	private int sideRear = 0;
+	@NetworkedField(targetSide = Side.CLIENT)
 	public int facing = 0;
 	private HashSet<BlockVec3> airToRestore = new HashSet();
 	private boolean isActive = false;
