@@ -29,7 +29,7 @@ public class ContainerSlimeling extends Container
 
 	public static void addSlots(ContainerSlimeling container, InventoryPlayer playerInventory, EntitySlimeling slimeling)
 	{
-		Slot slot = new SlotSpecific(slimeling.slimelingInventory, 1, 9, 8, new ItemStack(MarsItems.marsItemBasic, 1, 4));
+		Slot slot = new SlotSpecific(slimeling.slimelingInventory, 1, 9, 30, new ItemStack(MarsItems.marsItemBasic, 1, 4));
 		container.addSlotToContainer(slot);
 
 		int var3;
@@ -38,14 +38,14 @@ public class ContainerSlimeling extends Container
 		{
 			for (int var4 = 0; var4 < 9; ++var4)
 			{
-				slot = new Slot(playerInventory, var4 + var3 * 9 + 9, 8 + var4 * 18, 107 + var3 * 18);
+				slot = new Slot(playerInventory, var4 + var3 * 9 + 9, 8 + var4 * 18, 129 + var3 * 18);
 				container.addSlotToContainer(slot);
 			}
 		}
 
 		for (var3 = 0; var3 < 9; ++var3)
 		{
-			slot = new Slot(playerInventory, var3, 8 + var3 * 18, 165);
+			slot = new Slot(playerInventory, var3, 8 + var3 * 18, 187);
 			container.addSlotToContainer(slot);
 		}
 	}
@@ -65,7 +65,7 @@ public class ContainerSlimeling extends Container
 			{
 				for (int var4 = 0; var4 < 9; ++var4)
 				{
-					Slot slot = new Slot(slimeling.slimelingInventory, var4 + var3 * 9 + 2, 8 + var4 * 18, 32 + var3 * 18);
+					Slot slot = new Slot(slimeling.slimelingInventory, var4 + var3 * 9 + 2, 8 + var4 * 18, 54 + var3 * 18);
 					slot.slotNumber = container.inventorySlots.size();
 					container.inventorySlots.add(slot);
 					container.inventoryItemStacks.add((Object) null);
