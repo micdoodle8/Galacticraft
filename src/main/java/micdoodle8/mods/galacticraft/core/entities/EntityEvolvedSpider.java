@@ -30,6 +30,6 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
 	@Override
 	protected boolean isAIEnabled()
 	{
-		return true;
+		return false;
 	}
 }
