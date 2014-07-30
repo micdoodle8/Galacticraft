@@ -701,6 +701,9 @@ public class WorldUtil
 				player.setUsingParachute(false);
 			}
 
+            spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity);
+            entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
+
 			if (player.getPlayerStats().rocketStacks != null && player.getPlayerStats().rocketStacks.length > 0)
 			{
 				for (int stack = 0; stack < player.getPlayerStats().rocketStacks.length; stack++)
