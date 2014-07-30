@@ -105,13 +105,15 @@ public class GCCoreTileEntityRefinery extends GCCoreTileEntityElectricBlock impl
 						if (isCanister)
 						{
 							this.containingItems[2] = new ItemStack(GCCoreItems.fuelCanister, 1, GCCoreItems.fuelCanister.getMaxDamage() - amountToFill);
+							this.fuelTank.drain(amountToFill, true);
 						}
 						else
 						{
+							ItemStack originalContainer = this.containingItems[2];
 							this.containingItems[2] = FluidContainerRegistry.fillFluidContainer(liquid, this.containingItems[2]);
+							if (this.containingItems[2] == null) this.containingItems[2] = originalContainer;
+							else this.fuelTank.drain(amountToFill, true);
 						}
-
-						this.fuelTank.drain(amountToFill, true);
 					}
 				}
 			}
