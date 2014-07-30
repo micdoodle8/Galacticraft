@@ -244,7 +244,7 @@ public class BlockRendererWalkway implements ISimpleBlockRenderingHandler
 		renderBlocks.renderStandardBlock(block, x, y, z);
 
 		// Middle
-		renderBlocks.setRenderBounds(0.4F, 0.9F, 0.4F, 0.6F, 1.0F, 0.6F);
+		renderBlocks.setRenderBounds(0.395F, 0.9F, 0.395F, 0.605F, 0.999F, 0.605F);
 		renderBlocks.renderStandardBlock(block, x, y, z);
 		renderBlocks.setRenderBounds(0.35F, 0.35F, 0.35F, 0.65F, 0.65F, 0.65F);
 		renderBlocks.renderStandardBlock(block, x, y, z);
@@ -291,7 +291,7 @@ public class BlockRendererWalkway implements ISimpleBlockRenderingHandler
 						switch (side)
 						{
 						case 0: // DOWN
-							renderBlocks.setRenderBounds(minX, 0.0F, minZ, maxX, 0.15F, maxZ);
+							renderBlocks.setRenderBounds(minX, 0.0F, minZ, maxX, 0.4F, maxZ);
 							renderBlocks.renderStandardBlock(block, x, y, z);
 							break;
 						case 1: // UP
