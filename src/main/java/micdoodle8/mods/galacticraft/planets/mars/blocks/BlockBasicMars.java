@@ -7,12 +7,14 @@ import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityDungeonSpawnerMars;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -35,22 +37,21 @@ import java.util.Random;
 
 public class BlockBasicMars extends Block implements IDetectableResource, IPlantableBlock, ITileEntityProvider, ITerraformableBlock
 {
-	/*Metadata:
-	  	0 = "coppermars"
-		1 = "tinmars"
-		2 = "deshmars"
-		3 = "ironmars"
-		4 = "marscobblestone"
-		5 = "marsgrass"
-		6 = "marsdirt"
-		7 = "marsdungeon";  (brick)
-		8 = "marsdeco"  (desh decoration block)
-		9 = "marsstone"
-		10 = mars dungeon spawner
-	*/
-
 	@SideOnly(Side.CLIENT)
 	private IIcon[] marsBlockIcons;
+
+    public MapColor getMapColor(int meta)
+    {
+        switch (meta)
+        {
+        case 7:
+            return MapColor.greenColor;
+        case 5:
+            return MapColor.dirtColor;
+        default:
+            return MapColor.redColor;
+        }
+    }
 
 	public BlockBasicMars()
 	{
