@@ -19,7 +19,6 @@ import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
-import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
@@ -41,7 +40,6 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -538,6 +536,7 @@ public class WorldUtil
 		boolean dimChange = entity.worldObj != worldNew;
 		entity.worldObj.updateEntityWithOptionalForce(entity, false);
 		GCEntityPlayerMP player = null;
+		Vector3 spawnPos = null; 
 		int oldDimID = entity.worldObj.provider.dimensionId;
 		
 		if (ridingRocket != null)
@@ -615,7 +614,7 @@ public class WorldUtil
 				worldNew.spawnEntityInWorld(entity);
 				entity.setWorld(worldNew);
 
-                Vector3 spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, player);
+				spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, player);
                 ChunkCoordIntPair pair = worldNew.getChunkFromChunkCoords(spawnPos.intX(), spawnPos.intZ()).getChunkCoordIntPair();
                 if (ConfigManagerCore.enableDebug)
                 {
@@ -680,15 +679,17 @@ public class WorldUtil
 	
 				worldNew.updateEntityWithOptionalForce(entity, false);
 
-                micdoodle8.mods.galacticraft.api.vector.Vector3 spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity);
+                spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity);
 				player.playerNetServerHandler.setPlayerLocation(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
-	
+				entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
+				
 				GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " within same dimension " + worldNew.provider.dimensionId);
 			}
 	
 			worldNew.updateEntityWithOptionalForce(entity, false);
 		}
 
+		//Update PlayerStatsGC
 		if (player != null)
 		{
 			if (ridingRocket == null && type.useParachute() && player.getPlayerStats().extendedInventory.getStackInSlot(4) != null && player.getPlayerStats().extendedInventory.getStackInSlot(4).getItem() instanceof ItemParaChute)
@@ -699,9 +700,6 @@ public class WorldUtil
 			{
 				player.setUsingParachute(false);
 			}
-
-			micdoodle8.mods.galacticraft.api.vector.Vector3 spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity);
-			entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
 
 			if (player.getPlayerStats().rocketStacks != null && player.getPlayerStats().rocketStacks.length > 0)
 			{
@@ -739,6 +737,7 @@ public class WorldUtil
 			}
 		}
 
+		//If in a rocket (e.g. with launch controller) set the player to the rocket's position instead of the player's spawn position
 		if (ridingRocket != null)
 		{
 			entity.setPositionAndRotation(ridingRocket.posX, ridingRocket.posY, ridingRocket.posZ, 0, 0);
@@ -750,12 +749,14 @@ public class WorldUtil
 			worldNew.updateEntityWithOptionalForce(ridingRocket, true);
 		}
 
+		//Spawn in a lander if appropriate
 		if (entity instanceof EntityPlayerMP)
 		{
 			FMLCommonHandler.instance().firePlayerChangedDimensionEvent((EntityPlayerMP) entity, oldDimID, dimID);
 			type.onSpaceDimensionChanged(worldNew, (EntityPlayerMP) entity, ridingRocket != null);
 		}
 
+		//If still riding a rocket after those events, set the player riding the rocket.
 		if (ridingRocket != null)
 		{
 			entity.ridingEntity = ridingRocket;

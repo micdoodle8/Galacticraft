@@ -180,14 +180,30 @@ public class WorldProviderAsteroids extends WorldProviderSpace
 		BlockVec3 coords = new BlockVec3(x, y, z);
 		if (!this.asteroidCentres.contains(coords))
 		{
-			this.asteroidCentres.add(coords);
+			if (this.dataNotLoaded)
+			{
+				this.loadAsteroidSavedData();
+			}
+			if (!this.asteroidCentres.contains(coords))
+			{
+				this.addToNBT(this.datafile.datacompound, coords);
+				this.asteroidCentres.add(coords);
+			}
+		}
+	}
+
+	public void removeAsteroid(int x, int y, int z)
+	{
+		BlockVec3 coords = new BlockVec3(x, y, z);
+		if (this.asteroidCentres.contains(coords))
+		{
+			this.asteroidCentres.remove(coords);
 	
 			if (this.dataNotLoaded)
 			{
 				this.loadAsteroidSavedData();
 			}
-			this.addToNBT(this.datafile.datacompound, coords);
-			this.datafile.markDirty();
+			this.writeToNBT(this.datafile.datacompound);
 		}
 	}
 
@@ -200,7 +216,6 @@ public class WorldProviderAsteroids extends WorldProviderSpace
 			this.datafile = new AsteroidSaveData("");
 			this.worldObj.setItemData(AsteroidSaveData.saveDataID, this.datafile);
 			this.writeToNBT(this.datafile.datacompound);
-			this.datafile.markDirty();
 		}
 		else
 			this.readFromNBT(this.datafile.datacompound);
@@ -208,19 +223,6 @@ public class WorldProviderAsteroids extends WorldProviderSpace
 		this.dataNotLoaded = false;
 	}
 	
-	public HashSet<BlockVec3> getAsteroidSet()
-	{
-		if (!this.worldObj.isRemote)
-		{
-			if (this.dataNotLoaded)
-			{
-				this.loadAsteroidSavedData();
-			}
-		}
-
-		return this.asteroidCentres; 
-	}
-
 	private void readFromNBT(NBTTagCompound nbt)
 	{
 		NBTTagList coordList = nbt.getTagList("coords", 10);
@@ -247,7 +249,8 @@ public class WorldProviderAsteroids extends WorldProviderSpace
 			coords.writeToNBT(tag);
 			coordList.appendTag(tag);
 		}
-		nbt.setTag("coords", coordList);		
+		nbt.setTag("coords", coordList);
+		this.datafile.markDirty();
 	}
 
 	private void addToNBT(NBTTagCompound nbt, BlockVec3 coords)
@@ -256,6 +259,30 @@ public class WorldProviderAsteroids extends WorldProviderSpace
 		NBTTagCompound tag = new NBTTagCompound();
 		coords.writeToNBT(tag);
 		coordList.appendTag(tag);
-		nbt.setTag("coords", coordList);		
+		nbt.setTag("coords", coordList);
+		this.datafile.markDirty();
+	}
+	
+	public BlockVec3 getClosestAsteroidXZ(int x, int y, int z)
+	{
+		BlockVec3 target = new BlockVec3(x, y, z);
+		if (this.asteroidCentres.size() == 0) return null;
+		
+		BlockVec3 result = null;
+		int lowestDistance = Integer.MAX_VALUE;
+		
+		for (BlockVec3 test : this.asteroidCentres)
+		{
+			int dx = target.x - test.x;
+			int dz = target.z - test.z;
+			int a = dx * dx + dz * dz;
+			if (a < lowestDistance)
+			{
+				lowestDistance = a;
+				result = test.clone();
+			}
+		}
+		
+		return result;
 	}
 }

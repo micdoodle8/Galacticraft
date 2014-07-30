@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -529,7 +530,15 @@ public class BlockVec3 implements Cloneable
 		int var2 = vector.x - this.x;
 		int var4 = vector.y - this.y;
 		int var6 = vector.z - this.z;
-		return (int) Math.floor(Math.sqrt(var2 * var2 + var4 * var4 + var6 * var6));
+		return MathHelper.floor_double(Math.sqrt(var2 * var2 + var4 * var4 + var6 * var6));
+	}
+
+	public int distanceSquared(BlockVec3 vector)
+	{
+		int var2 = vector.x - this.x;
+		int var4 = vector.y - this.y;
+		int var6 = vector.z - this.z;
+		return var2 * var2 + var4 * var4 + var6 * var6;
 	}
 
 	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)

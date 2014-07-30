@@ -98,54 +98,66 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 	{
 		if (!this.worldObj.isRemote && this.launchCooldown <= 0)
 		{
-			this.initiatePlanetsPreGen();
+			this.initiatePlanetsPreGen(this.chunkCoordX, this.chunkCoordZ);
 
 			this.ignite();
 		}
 	}
 
-	private void initiatePlanetsPreGen()
+	private void initiatePlanetsPreGen(int cx, int cz)
 	{
-		//TODO - use different coordinates if there is a launch controller with a valid destination set
-		//and generally it might be better to use the ITeleportType.getPlayerSpawnLocation()?
-		ArrayList<Integer> toPreGen = new ArrayList();
 		this.preGenList.clear();
-		for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
-		{
-			if (planet.getDimensionID() == this.dimension) continue;
-			if (planet.getReachable() && planet.getTierRequirement() <= this.getRocketTier())
-			{
-				toPreGen.add(planet.getDimensionID());
-			}
-		}
 		
-		if (toPreGen.size() > 0)
+		//Pre-generate terrain on all possible destination planets if the destination is not being controlled by a Launch Controller
+		//(note: this does NOT include the Moon!)
+		
+		//This generates with a chunk radius of 12: so for 2 planets that's 1250 chunks to pregen
+		//It starts at the centre and generates in circles radiating out in case it doesn't have time to finish
+		//These will be done: 2 chunks per tick during IGNITE phase (so 800 chunks during the 20 second launch countdown)
+		//then the ones that are left 1 chunk per tick during flight (normally flight will last more than 450 ticks)
+		//If the server is at less than 20tps then maybe some of the outermost chunks won't be pre-generated but that's probably OK
+		if (this.destinationFrequency == -1)
 		{
-			for (Integer dimID : toPreGen)
+			ArrayList<Integer> toPreGen = new ArrayList();
+			for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
 			{
-				this.preGenList.add(new BlockVec3(this.chunkCoordX, dimID, this.chunkCoordZ));
-				if (ConfigManagerCore.enableDebug)
-					GCLog.info("Starting terrain pregen for dimension " + dimID + " at " + (this.chunkCoordX * 16 + 8) + ", " + (this.chunkCoordZ * 16 + 8));
-			}
-			for (int r = 1; r < 12; r++)
-			{
-				int xmin = this.chunkCoordX - r;
-				int xmax = this.chunkCoordX + r;
-				int zmin = this.chunkCoordZ - r;
-				int zmax = this.chunkCoordZ + r;
-				for (int i = -r; i < r; i++)
+				if (planet.getDimensionID() == this.dimension) continue;
+				if (planet.getReachable() && planet.getTierRequirement() <= this.getRocketTier())
 				{
-					for (Integer dimID : toPreGen)
-					{
-						this.preGenList.add(new BlockVec3(xmin, dimID, this.chunkCoordZ + i));
-						this.preGenList.add(new BlockVec3(xmax, dimID, this.chunkCoordZ - i));
-						this.preGenList.add(new BlockVec3(this.chunkCoordX - i, dimID, zmin));
-						this.preGenList.add(new BlockVec3(this.chunkCoordX + i, dimID, zmax));
-					}
+					toPreGen.add(planet.getDimensionID());
 				}
 			}
-			this.preGenIterator = this.preGenList.iterator();
+			
+			if (toPreGen.size() > 0)
+			{
+				for (Integer dimID : toPreGen)
+				{
+					this.preGenList.add(new BlockVec3(cx, dimID, cz));
+					if (ConfigManagerCore.enableDebug)
+						GCLog.info("Starting terrain pregen for dimension " + dimID + " at " + (cx * 16 + 8) + ", " + (cz * 16 + 8));
+				}
+				for (int r = 1; r < 12; r++)
+				{
+					int xmin = cx - r;
+					int xmax = cx + r;
+					int zmin = cz - r;
+					int zmax = cz + r;
+					for (int i = -r; i < r; i++)
+					{
+						for (Integer dimID : toPreGen)
+						{
+							this.preGenList.add(new BlockVec3(xmin, dimID, cz + i));
+							this.preGenList.add(new BlockVec3(xmax, dimID, cz - i));
+							this.preGenList.add(new BlockVec3(cx - i, dimID, zmin));
+							this.preGenList.add(new BlockVec3(cx + i, dimID, zmax));
+						}
+					}
+				}
+				this.preGenIterator = this.preGenList.iterator();
+			}
 		}
+		else
+			this.preGenIterator = null;
 	}
 	
 	@Override
@@ -199,9 +211,15 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 				if (this.preGenIterator.hasNext())
 				{
 					BlockVec3 coords = this.preGenIterator.next();
-					int dimID = coords.y;
-					World w = this.mcserver.worldServerForDimension(dimID);
+					World w = this.mcserver.worldServerForDimension(coords.y);
 					w.getChunkFromChunkCoords(coords.x, coords.z);
+					//Pregen a second chunk if still on launchpad (low strain on server)
+					if (this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal() && this.preGenIterator.hasNext())
+					{
+						coords = this.preGenIterator.next();
+						w = this.mcserver.worldServerForDimension(coords.y);
+						w.getChunkFromChunkCoords(coords.x, coords.z);						
+					}
 				}
 				else
 					this.preGenIterator = null;
