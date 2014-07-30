@@ -6,7 +6,6 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -231,7 +230,7 @@ public class GCBlocks
 		GameRegistry.registerBlock(GCBlocks.glowstoneTorch, ItemBlockGC.class, GCBlocks.glowstoneTorch.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.fallenMeteor, ItemBlockGC.class, GCBlocks.fallenMeteor.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.blockMoon, ItemBlockMoon.class, GCBlocks.blockMoon.getUnlocalizedName());
-		GameRegistry.registerBlock(GCBlocks.cheeseBlock, ItemBlock.class, GCBlocks.cheeseBlock.getUnlocalizedName());
+		GameRegistry.registerBlock(GCBlocks.cheeseBlock, ItemBlockGC.class, GCBlocks.cheeseBlock.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.spinThruster, ItemBlockThruster.class, GCBlocks.spinThruster.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.brightLamp, ItemBlockArclamp.class, GCBlocks.brightLamp.getUnlocalizedName());
 		GameRegistry.registerBlock(GCBlocks.treasureChestTier1, ItemBlockGC.class, GCBlocks.treasureChestTier1.getUnlocalizedName());
