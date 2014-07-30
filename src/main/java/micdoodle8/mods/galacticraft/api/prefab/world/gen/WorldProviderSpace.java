@@ -266,4 +266,10 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
             }
         }
     }
+
+    @Override
+    public boolean shouldMapSpin(String entity, double x, double y, double z)
+    {
+        return false;
+    }
 }
