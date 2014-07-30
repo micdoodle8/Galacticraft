@@ -30,12 +30,6 @@ public class EnergyStorage implements IEnergyStorageGC
 	public EnergyStorage readFromNBT(NBTTagCompound nbt)
 	{
 		this.energy = nbt.getFloat("EnergyF");
-
-		if (this.energy > this.capacity)
-		{
-			this.energy = this.capacity;
-		}
-
 		return this;
 	}
 
@@ -46,7 +40,7 @@ public class EnergyStorage implements IEnergyStorageGC
 			this.energy = 0;
 		}
 
-		nbt.setFloat("EnergyF", this.energy);
+		nbt.setFloat("EnergyF", Math.min(this.energy, this.capacity));
 		return nbt;
 	}
 

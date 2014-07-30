@@ -1,25 +1,35 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.dimension;
 
+import java.util.HashSet;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.WorldChunkManagerAsteroids;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
 
 public class WorldProviderAsteroids extends WorldProviderSpace
 {
-//	@Override
+	//Used to list asteroid centres to external code that needs to know them
+	private HashSet<BlockVec3> asteroidCentres = new HashSet();
+	private boolean dataNotLoaded = true;
+	private AsteroidSaveData datafile;
+	
+	//	@Override
 //	public void registerWorldChunkManager()
 //	{
 //		this.worldChunkMgr = new WorldChunkManagerAsteroids(this.worldObj, 0F);
 //	}
-
+	
     @Override
     public CelestialBody getCelestialBody()
     {
@@ -163,5 +173,89 @@ public class WorldProviderAsteroids extends WorldProviderSpace
 	public float getThermalLevelModifier()
 	{
 		return -1.5F;
+	}
+	
+	public void addAsteroid(int x, int y, int z)
+	{
+		BlockVec3 coords = new BlockVec3(x, y, z);
+		if (!this.asteroidCentres.contains(coords))
+		{
+			this.asteroidCentres.add(coords);
+	
+			if (this.dataNotLoaded)
+			{
+				this.loadAsteroidSavedData();
+			}
+			this.addToNBT(this.datafile.datacompound, coords);
+			this.datafile.markDirty();
+		}
+	}
+
+	private void loadAsteroidSavedData()
+	{
+		this.datafile = (AsteroidSaveData) this.worldObj.loadItemData(AsteroidSaveData.class, AsteroidSaveData.saveDataID);
+
+		if (this.datafile == null)
+		{
+			this.datafile = new AsteroidSaveData("");
+			this.worldObj.setItemData(AsteroidSaveData.saveDataID, this.datafile);
+			this.writeToNBT(this.datafile.datacompound);
+			this.datafile.markDirty();
+		}
+		else
+			this.readFromNBT(this.datafile.datacompound);
+		
+		this.dataNotLoaded = false;
+	}
+	
+	public HashSet<BlockVec3> getAsteroidSet()
+	{
+		if (!this.worldObj.isRemote)
+		{
+			if (this.dataNotLoaded)
+			{
+				this.loadAsteroidSavedData();
+			}
+		}
+
+		return this.asteroidCentres; 
+	}
+
+	private void readFromNBT(NBTTagCompound nbt)
+	{
+		NBTTagList coordList = nbt.getTagList("coords", 10);
+		if (coordList.tagCount() > 0)
+		{
+			for (int j = 0; j < coordList.tagCount(); j++)
+			{
+				NBTTagCompound tag1 = coordList.getCompoundTagAt(j);
+
+				if (tag1 != null)
+				{
+					this.asteroidCentres.add(BlockVec3.readFromNBT(tag1));
+				}
+			}
+		}
+	}
+
+	private void writeToNBT(NBTTagCompound nbt)
+	{
+		NBTTagList coordList = new NBTTagList();
+		for(BlockVec3 coords : this.asteroidCentres)
+		{
+			NBTTagCompound tag = new NBTTagCompound();
+			coords.writeToNBT(tag);
+			coordList.appendTag(tag);
+		}
+		nbt.setTag("coords", coordList);		
+	}
+
+	private void addToNBT(NBTTagCompound nbt, BlockVec3 coords)
+	{
+		NBTTagList coordList = nbt.getTagList("coords", 10);
+		NBTTagCompound tag = new NBTTagCompound();
+		coords.writeToNBT(tag);
+		coordList.appendTag(tag);
+		nbt.setTag("coords", coordList);		
 	}
 }

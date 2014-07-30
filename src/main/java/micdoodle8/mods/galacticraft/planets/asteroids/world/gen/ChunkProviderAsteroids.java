@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Billowed;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
+import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
@@ -137,7 +138,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 	private ArrayList<Integer> asteroidXArray;
 	private ArrayList<Integer> asteroidYArray;
 	private ArrayList<Integer> asteroidZArray;
-
+	
 	public ChunkProviderAsteroids(World par1World, long par2, boolean par4)
 	{
 		super(par1World, par2, par4);
@@ -203,6 +204,8 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 							int y = random.nextInt(ChunkProviderAsteroids.MAX_ASTEROID_Y - ChunkProviderAsteroids.MIN_ASTEROID_Y) + ChunkProviderAsteroids.MIN_ASTEROID_Y;
 							int size = random.nextInt(ChunkProviderAsteroids.MAX_ASTEROID_RADIUS - ChunkProviderAsteroids.MIN_ASTEROID_RADIUS) + ChunkProviderAsteroids.MIN_ASTEROID_RADIUS;
 
+							//Add to the list of asteroids for external use
+							((WorldProviderAsteroids) this.worldObj.provider).addAsteroid(x, y, z);
 							//Generate the parts of the asteroid which are in this chunk
 							this.generateAsteroid(random, x, y, z, chunkX * 16, chunkZ * 16, size, idArray, metaArray);
 						}

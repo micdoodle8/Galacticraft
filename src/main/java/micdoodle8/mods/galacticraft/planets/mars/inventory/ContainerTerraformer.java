@@ -23,7 +23,7 @@ public class ContainerTerraformer extends Container
 	{
 		this.tileEntity = tileEntity;
 
-		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 25, 19, new ItemStack(Items.bucket)));
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 25, 19, new ItemStack(Items.water_bucket), new ItemStack(Items.bucket)));
 
 		this.addSlotToContainer(new SlotSpecific(tileEntity, 1, 25, 39, ItemElectric.class));
 

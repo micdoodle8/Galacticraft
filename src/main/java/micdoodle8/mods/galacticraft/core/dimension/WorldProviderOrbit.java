@@ -237,7 +237,8 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 			{
 				this.savefile = OrbitSpinSaveData.initWorldData(this.worldObj);
 				this.readFromNBT(this.savefile.datacompound);
-				System.out.println("Loading data from save: " + this.savefile.datacompound.getFloat("omegaSky"));
+				if (ConfigManagerCore.enableDebug)
+					System.out.println("Loading data from save: " + this.savefile.datacompound.getFloat("omegaSky"));
 				this.dataNotLoaded = false;
 			}
 
@@ -955,7 +956,8 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 		this.spinCentreZ = z;
 		if (this.worldObj.isRemote)
 		{
-			System.out.println("Clientside update to spin centre: " + x + "," + z);
+			if (ConfigManagerCore.enableDebug)
+				System.out.println("Clientside update to spin centre: " + x + "," + z);
 		}
 	}
 
@@ -1147,7 +1149,8 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 			if (foundThrusters.size() > 0)
 			{
 				//The thruster was not placed on the existing contiguous space station: it must be.
-				System.out.println("Returning false: oneSSBlock was " + this.oneSSBlock.x + "," + this.oneSSBlock.y + "," + this.oneSSBlock.z + " - baseBlock was " + baseBlock.x + "," + baseBlock.y + "," + baseBlock.z + " - found " + foundThrusters.size());
+				if (ConfigManagerCore.enableDebug)
+					System.out.println("Returning false: oneSSBlock was " + this.oneSSBlock.x + "," + this.oneSSBlock.y + "," + this.oneSSBlock.z + " - baseBlock was " + baseBlock.x + "," + baseBlock.y + "," + baseBlock.z + " - found " + foundThrusters.size());
 				return false;
 			}
 
@@ -1211,7 +1214,8 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 		// TODO break blocks which are outside SS (not in checked)
 		// TODO prevent spin if there is a huge number of blocks outside SS
 
-		System.out.println("MoI = " + this.momentOfInertia + " CoMx = " + this.massCentreX + " CoMz = " + this.massCentreZ);
+		if (ConfigManagerCore.enableDebug)
+			System.out.println("MoI = " + this.momentOfInertia + " CoMx = " + this.massCentreX + " CoMz = " + this.massCentreZ);
 
 		//Send packets to clients in this dimension			
 		List<Object> objList = new ArrayList<Object>();
@@ -1293,7 +1297,8 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 					this.angularVelocityTarget = spinCap;
 				}
 
-				System.out.println("MaxR = " + maxR + " Angular vel = " + this.angularVelocityTarget + " Angular accel = " + this.angularVelocityAccel);
+				if (ConfigManagerCore.enableDebug)
+					System.out.println("MaxR = " + maxR + " Angular vel = " + this.angularVelocityTarget + " Angular accel = " + this.angularVelocityAccel);
 			}
 		}
 
