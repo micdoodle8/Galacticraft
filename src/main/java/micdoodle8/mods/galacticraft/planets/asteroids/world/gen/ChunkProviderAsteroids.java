@@ -193,7 +193,8 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 			for (int k = chunkZ - 3; k < chunkZ + 3; k++)
 			{	
 				int zz = k * 16;
-				
+
+				//NOTE: IF UPDATING THIS CODE also update addLargeAsteroids() which is the same algorithm 
 				for (int x = xx; x < xx + ChunkProviderAsteroids.CHUNK_SIZE_X; x+=2)
 				{
 					for (int z = zz; z < zz + ChunkProviderAsteroids.CHUNK_SIZE_Z; z+=2)
@@ -738,4 +739,42 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
         return false;
     }
     
+	public void addLargeAsteroids(int chunkX, int chunkZ)
+	{
+		this.sizeYArray = new ArrayList<float[]>();
+		this.xMinArray = new ArrayList<Integer>();
+		this.zMinArray = new ArrayList<Integer>();
+		this.zSizeArray = new ArrayList<Integer>();
+		this.asteroidSizeArray = new ArrayList<Integer>();
+		this.asteroidXArray = new ArrayList<Integer>();
+		this.asteroidYArray = new ArrayList<Integer>();
+		this.asteroidZArray = new ArrayList<Integer>();
+		
+		final Random random = new Random();
+
+		//If there is an asteroid centre nearby, it might need to generate some asteroid parts in this chunk
+		for (int i = chunkX - 3; i < chunkX + 3; i++)
+		{
+			int xx = i * 16;
+			for (int k = chunkZ - 3; k < chunkZ + 3; k++)
+			{	
+				int zz = k * 16;
+				
+				for (int x = xx; x < xx + ChunkProviderAsteroids.CHUNK_SIZE_X; x+=2)
+				{
+					for (int z = zz; z < zz + ChunkProviderAsteroids.CHUNK_SIZE_Z; z+=2)
+					{
+						if (Math.abs(this.randFromPoint(x, z)) < (this.asteroidDensity.getNoise(x, z) + .4) / ChunkProviderAsteroids.ASTEROID_CHANCE)
+						{
+							random.setSeed(x + z * 3067);
+							int y = random.nextInt(ChunkProviderAsteroids.MAX_ASTEROID_Y - ChunkProviderAsteroids.MIN_ASTEROID_Y) + ChunkProviderAsteroids.MIN_ASTEROID_Y;
+
+							//Add to the list of asteroids for external use
+							((WorldProviderAsteroids) this.worldObj.provider).addAsteroid(x, y, z);
+						}
+					}
+				}
+			}
+		}
+	}
 }
