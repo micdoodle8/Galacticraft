@@ -146,11 +146,11 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
 	{
 		GL11.glPushMatrix();
 		GL11.glTranslatef(this.buttonFlag_xPosition + 2.9F, this.buttonFlag_yPosition + this.buttonFlag_height + 1 - 4, 0);
-		GL11.glScalef(49.0F, 47.5F, 1F);
-		GL11.glTranslatef(0.0F, 0.0F, 1.0F);
-		GL11.glScalef(1.0F, 1.0F, -1F);
+        GL11.glScalef(74.0F, 74.0F, 1F);
+        GL11.glTranslatef(0.0F, 0.36F, 1.0F);
+        GL11.glScalef(1.0F, 1.0F, -1F);
 		this.dummyFlag.flagData = this.spaceRaceData.getFlagData();
-		this.dummyModel.renderFlag(this.dummyFlag, 0.0625F, this.ticksPassed);
+		this.dummyModel.renderFlag(this.dummyFlag, this.ticksPassed);
 		GL11.glColor3f(1, 1, 1);
 		GL11.glPopMatrix();
 	}
