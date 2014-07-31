@@ -214,7 +214,7 @@ public class EntityTier2Rocket extends EntityTieredRocket
 	@Override
 	protected void onRocketLand(int x, int y, int z)
 	{
-		super.onRocketLand(x, y, z);
+		this.setPositionAndRotation(x + 0.5, y + 2.0D, z + 0.5, this.rotationYaw, 0.0F);
 
 		//		if (this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
 		//		{
