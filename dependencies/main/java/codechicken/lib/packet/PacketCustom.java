@@ -542,7 +542,7 @@ public final class PacketCustom implements MCDataInput, MCDataOutput
 
     public static void sendToOps(Packet packet) {
         for (EntityPlayerMP player : (List<EntityPlayerMP>) MinecraftServer.getServer().getConfigurationManager().playerEntityList)
-            if (MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(player.getCommandSenderName()))
+            if (MinecraftServer.getServer().getConfigurationManager().func_152596_g(player.getGameProfile()))
                 sendToPlayer(packet, player);
     }
 

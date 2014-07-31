@@ -2,7 +2,6 @@ package codechicken.lib.asm;
 
 import codechicken.lib.config.ConfigFile;
 import codechicken.lib.config.DefaultingConfigFile;
-import cpw.mods.fml.relauncher.FMLInjectionData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.ClassReader;
@@ -25,11 +24,16 @@ public class ASMHelper
     public static Logger logger = LogManager.getLogger("CCL ASM");
 
     private static ConfigFile loadConfig() {
-        File file = new File((File) FMLInjectionData.data()[6], "config/CodeChickenLib.cfg");
-        if(ObfMapping.obfuscated)
-            return new DefaultingConfigFile(file);
-        else
-            return new ConfigFile(file).setComment("CodeChickenLib development configuration file.");
+        try {//weak reference for environments without FML
+            File mcDir = (File)((Object[])Class.forName("cpw.mods.fml.relauncher.FMLInjectionData").getMethod("data").invoke(null))[6];
+            File file = new File(mcDir, "config/CodeChickenLib.cfg");
+            if(ObfMapping.obfuscated)
+                return new DefaultingConfigFile(file);
+            else
+                return new ConfigFile(file).setComment("CodeChickenLib development configuration file.");
+        } catch (Exception ignored) {
+            return null;//no config for these systems
+        }
     }
 
     public static interface Acceptor

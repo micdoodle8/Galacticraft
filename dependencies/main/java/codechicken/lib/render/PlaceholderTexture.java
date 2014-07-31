@@ -6,14 +6,17 @@ import net.minecraft.util.ResourceLocation;
 
 public class PlaceholderTexture extends TextureAtlasSprite
 {
-    protected PlaceholderTexture(String par1)
-    {
+    protected PlaceholderTexture(String par1) {
         super(par1);
     }
-    
+
     @Override
-    public boolean load(IResourceManager manager, ResourceLocation location)
-    {
-        return false;
+    public boolean hasCustomLoader(IResourceManager manager, ResourceLocation location) {
+        return true;
+    }
+
+    @Override
+    public boolean load(IResourceManager manager, ResourceLocation location) {
+        return true;
     }
 }
