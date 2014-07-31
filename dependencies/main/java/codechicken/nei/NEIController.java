@@ -49,7 +49,8 @@ public class NEIController implements IContainerSlotClickHandler, IContainerInpu
     }
 
     public static boolean isSpreading(GuiContainer gui) {
-        return gui.field_147007_t && gui.field_147008_s.size() > 1;
+        return true;
+//        return gui.field_147007_t && gui.field_147008_s.size() > 1;
     }
 
     public static void updateUnlimitedItems(InventoryPlayer inventory) {
