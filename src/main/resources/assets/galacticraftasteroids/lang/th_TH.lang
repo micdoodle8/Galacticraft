@@ -77,6 +77,7 @@ tile.walkway.name=ทางเดินพร้อมสายไฟ
 tile.walkwayWire.name=ทางเดินพร้อมสายไฟแรงสูง
 tile.walkwayOxygenPipe.name=ทางเดินพร้อมท่อออกซิเจน
 tile.treasureT3.name=กล่องสมบัติ เทียร์ 3
+tile.denseIce.name=ก้อนน้ำแข็งหนาทึบ
 
 # GUI
 planet.asteroids=ดาวเคราะห์น้อย

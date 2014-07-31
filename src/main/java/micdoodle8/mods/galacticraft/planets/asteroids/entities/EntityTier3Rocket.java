@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
+import java.util.List;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
@@ -227,7 +229,7 @@ public class EntityTier3Rocket extends EntityTieredRocket
 	@Override
 	protected void onRocketLand(int x, int y, int z)
 	{
-		super.onRocketLand(x, y, z);
+		this.setPositionAndRotation(x + 0.5, y + 1.6D, z + 0.5, this.rotationYaw, 0.0F);
 
 		//		if (this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
 		//		{
@@ -328,5 +330,13 @@ public class EntityTier3Rocket extends EntityTieredRocket
 	public boolean defaultThirdPerson()
 	{
 		return true;
+	}
+	
+	@Override
+	public List<ItemStack> getItemsDropped(List<ItemStack> droppedItems)
+	{
+		super.getItemsDropped(droppedItems);
+		droppedItems.add(new ItemStack(AsteroidsItems.tier3Rocket, 1, this.rocketType.getIndex()));
+		return droppedItems;
 	}
 }

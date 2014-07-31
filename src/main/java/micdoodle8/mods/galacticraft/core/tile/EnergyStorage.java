@@ -17,7 +17,7 @@ public class EnergyStorage implements IEnergyStorageGC
 
 	public EnergyStorage(float capacity, float maxTransfer)
 	{
-		this(capacity, 2 * maxTransfer, maxTransfer);
+		this(capacity, 2.5F * maxTransfer, maxTransfer);
 	}
 
 	public EnergyStorage(float capacity, float maxReceive, float maxExtract)
@@ -78,7 +78,7 @@ public class EnergyStorage implements IEnergyStorageGC
 	public void setMaxExtract(float maxExtract)
 	{
 		this.maxExtract = maxExtract;
-		this.maxReceive = 2 * maxExtract;
+		this.maxReceive = 2.5F * maxExtract;
 	}
 
 	public void setEnergyStored(float energy)

@@ -69,7 +69,7 @@ public class ContainerEnergyStorageModule extends Container
 
 			if (slotID != 0 && slotID != 1)
 			{
-				if (this.getSlot(0).isItemValid(itemStack))
+				if (itemStack.getItem() instanceof IItemElectric)
 				{
 					if (((IItemElectric) itemStack.getItem()).getElectricityStored(itemStack) > 0)
 					{

@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.planets.mars.tile;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
+import micdoodle8.mods.galacticraft.api.entity.IDockable;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -54,6 +56,7 @@ public class TileEntityLaunchController extends ElectricBlockWithInventory imple
 	@NetworkedField(targetSide = Side.CLIENT)
 	public boolean launchSchedulingEnabled;
 	public boolean requiresClientUpdate;
+	public Object attachedDock = null;
 
 	public TileEntityLaunchController()
 	{
@@ -201,6 +204,7 @@ public class TileEntityLaunchController extends ElectricBlockWithInventory imple
 		this.launchDropdownSelection = nbt.getInteger("LaunchSelection");
 		this.frequency = nbt.getInteger("ControllerFrequency");
 		this.destFrequency = nbt.getInteger("TargetFrequency");
+		this.checkDestFrequencyValid();
 		this.launchPadRemovalDisabled = nbt.getBoolean("LaunchPadRemovalDisabled");
 		this.launchSchedulingEnabled = nbt.getBoolean("LaunchPadSchedulingEnabled");
 		this.requiresClientUpdate = true;
@@ -350,13 +354,19 @@ public class TileEntityLaunchController extends ElectricBlockWithInventory imple
 
 	public void setDestinationFrequency(int frequency)
 	{
-		this.destFrequency = frequency;
-
+		if (frequency != this.destFrequency)
+		{
+			this.destFrequency = frequency;
+			this.checkDestFrequencyValid();
+			this.updateRocketOnDockSettings();
+		}
+	}
+	
+	private void checkDestFrequencyValid()
+	{
+		this.destFrequencyValid = false;
 		if (this.destFrequency >= 0)
 		{
-			this.destFrequencyValid = false;
-
-			worldLoop:
 			for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
 			{
 				WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
@@ -376,21 +386,50 @@ public class TileEntityLaunchController extends ElectricBlockWithInventory imple
 							if (launchController2.frequency == this.destFrequency)
 							{
 								this.destFrequencyValid = true;
-								break worldLoop;
+								return;
 							}
 						}
 					}
 				}
 			}
 		}
-		else
-		{
-			this.destFrequencyValid = false;
-		}
 	}
 
 	public boolean validFrequency()
 	{
 		return !this.getDisabled(0) && this.hasEnoughEnergyToRun && this.frequencyValid && this.destFrequencyValid;
+	}
+
+	public void setLaunchDropdownSelection(int newvalue)
+	{
+		if (newvalue != this.launchDropdownSelection)
+		{
+			this.launchDropdownSelection = newvalue;
+			this.checkDestFrequencyValid();
+			this.updateRocketOnDockSettings();
+		}
+	}
+	
+	public void setLaunchSchedulingEnabled(boolean newvalue)
+	{
+		if (newvalue != this.launchSchedulingEnabled)
+		{
+			this.launchSchedulingEnabled = newvalue;
+			this.checkDestFrequencyValid();
+			this.updateRocketOnDockSettings();
+		}
+	}
+
+	public void updateRocketOnDockSettings()
+	{
+		if (this.attachedDock instanceof TileEntityLandingPad)
+		{
+			TileEntityLandingPad pad = ((TileEntityLandingPad) this.attachedDock); 
+			IDockable rocket = pad.getDockedEntity();
+			if (rocket instanceof EntityAutoRocket)
+			{
+				((EntityAutoRocket) rocket).updateControllerSettings(pad);
+			}
+		}
 	}
 }

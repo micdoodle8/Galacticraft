@@ -34,6 +34,7 @@ public class BlockIceAsteroids extends BlockBreakable
         this.setCreativeTab(CreativeTabs.tabBlock);
         this.setBlockTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
         this.setBlockName(assetName);
+        this.setStepSound(soundTypeGlass);
     }
 
     @SideOnly(Side.CLIENT)

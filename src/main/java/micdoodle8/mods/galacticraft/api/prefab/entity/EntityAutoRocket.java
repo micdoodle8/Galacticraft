@@ -342,9 +342,17 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 				this.autoLaunch();
 			}
 
-			if (EntityAutoRocket.marsLoaded && this.autoLaunchSetting == EnumAutoLaunch.REDSTONE_SIGNAL)
+			if (this.autoLaunchSetting == EnumAutoLaunch.INSTANT)
 			{
-				if (this.ticks % 5 == 0)
+				if (this.autoLaunchCountdown == 0)
+				{
+					this.autoLaunch();
+				}
+			}
+					
+			if (this.autoLaunchSetting == EnumAutoLaunch.REDSTONE_SIGNAL)
+			{
+				if (this.ticks % 25 == 0)
 				{
 					if (this.getLandingPad() != null && this.getLandingPad().getConnectedTiles() != null)
 					{
@@ -384,9 +392,10 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 			{
 				if (this.landing && this.targetVec != null && this.worldObj.getTileEntity(this.targetVec.intX(), this.targetVec.intY(), this.targetVec.intZ()) instanceof IFuelDock && this.posY - this.targetVec.y < 5)
 				{
+					this.motionY *= 0.99D;
 					for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
 					{
-						for (int y = MathHelper.floor_double(this.posY - 1D); y <= MathHelper.floor_double(this.posY) + 1; y++)
+						for (int y = MathHelper.floor_double(this.posY - this.height / 2 + 0.3D); y <= MathHelper.floor_double(this.posY) + 1; y++)
 						{
 							for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
 							{
@@ -490,7 +499,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 		}
 	}
 
-	private void updateControllerSettings(IFuelDock dock)
+	public void updateControllerSettings(IFuelDock dock)
 	{
 		HashSet<ILandingPadAttachable> connectedTiles = dock.getConnectedTiles();
 
@@ -513,23 +522,19 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 						continue;
 					}
 
+					controllerClass.getField("attachedDock").set(updatedTile, dock);
+					
 					Boolean autoLaunchEnabled = controllerClass.getField("launchSchedulingEnabled").getBoolean(updatedTile);
 
 					if (autoLaunchEnabled)
 					{
 						this.autoLaunchSetting = EnumAutoLaunch.values()[controllerClass.getField("launchDropdownSelection").getInt(updatedTile)];
-					}
-					else
-					{
-						this.autoLaunchSetting = null;
-					}
 
-					if (this.autoLaunchSetting != null)
-					{
 						switch (this.autoLaunchSetting)
 						{
 						case INSTANT:
-							this.autoLaunch();
+							//Small countdown to give player a moment to jump out of the rocket
+							this.autoLaunchCountdown = 12;
 							break;
 						case TIME_10_SECONDS:
 							this.autoLaunchCountdown = 200;
@@ -544,6 +549,10 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 							break;
 						}
 					}
+					else
+					{
+						this.autoLaunchSetting = null;
+					}
 
 					break;
 				}
@@ -557,7 +566,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 	protected void onRocketLand(int x, int y, int z)
 	{
-		this.setPositionAndRotation(x + 0.5, y + 0.3D, z + 0.5, this.rotationYaw, 0.0F);
+		this.setPositionAndRotation(x + 0.5, y + 0.4D, z + 0.5, this.rotationYaw, 0.0F);
 	}
 
 	@Override
