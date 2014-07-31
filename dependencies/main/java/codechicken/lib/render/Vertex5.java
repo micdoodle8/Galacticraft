@@ -30,8 +30,13 @@ public class Vertex5 implements Copyable<Vertex5>
     {
         this(vert, new UV(u, v));
     }
-    
+
     public Vertex5(double x, double y, double z, double u, double v)
+    {
+        this(x, y, z, u, v, 0);
+    }
+
+    public Vertex5(double x, double y, double z, double u, double v, int tex)
     {
         this(new Vector3(x, y, z), new UV(u, v));
     }

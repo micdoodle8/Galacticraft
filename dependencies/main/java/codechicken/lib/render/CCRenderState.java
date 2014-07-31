@@ -102,7 +102,7 @@ public class CCRenderState
 
     public static <T> T copyOf(VertexAttribute<T> attr, T src, int length) {
         T dst = attr.newArray(length);
-        arrayCopy(src, 0, dst, 0, length);
+        arrayCopy(src, 0, dst, 0, ((Object[])src).length);
         return dst;
     }
 
@@ -180,6 +180,32 @@ public class CCRenderState
                 setColour(baseColour);
         }
     };
+    public static VertexAttribute<int[]> lightingAttrib = new VertexAttribute<int[]>() {
+        private int[] colourRef;
+
+        @Override
+        public int[] newArray(int length) {
+            return new int[length];
+        }
+
+        @Override
+        public boolean load() {
+            if(!computeLighting || !useColour || !model.hasAttribute(this))
+                return false;
+
+            colourRef = model.getAttributes(this);
+            if(colourRef != null) {
+                pipeline.addDependency(colourAttrib);
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void operate() {
+            setColour(ColourRGBA.multiply(colour, colourRef[vertexIndex]));
+        }
+    };
     public static VertexAttribute<int[]> sideAttrib = new VertexAttribute<int[]>() {
         private int[] sideRef;
 
@@ -251,6 +277,8 @@ public class CCRenderState
     public static int baseColour;
     public static int alphaOverride;
     public static boolean useNormals;
+    public static boolean computeLighting;
+    public static boolean useColour;
     public static LightMatrix lightMatrix = new LightMatrix();
 
     //vertex outputs
@@ -269,7 +297,8 @@ public class CCRenderState
     public static void reset() {
         model = null;
         pipeline.reset();
-        hasNormal = hasColour = hasBrightness = false;
+        useNormals = hasNormal = hasBrightness = hasColour = false;
+        useColour = computeLighting = true;
         baseColour = alphaOverride = -1;
     }
 
@@ -296,6 +325,10 @@ public class CCRenderState
 
     public static void setModel(IVertexSource source, int start, int end) {
         bindModel(source);
+        setVertexRange(start, end);
+    }
+
+    public static void setVertexRange(int start, int end) {
         firstVertexIndex = start;
         lastVertexIndex = end;
     }
@@ -357,6 +390,14 @@ public class CCRenderState
         setBrightness((int)OpenGlHelper.lastBrightnessY << 16 | (int)OpenGlHelper.lastBrightnessX);
     }
 
+    /**
+     * Compact helper for setting dynamic rendering context. Uses normals and doesn't compute lighting
+     */
+    public static void setDynamic() {
+        useNormals = true;
+        computeLighting = false;
+    }
+
     public static void changeTexture(String texture) {
         changeTexture(new ResourceLocation(texture));
     }
@@ -369,7 +410,7 @@ public class CCRenderState
         startDrawing(7);
     }
 
-    private static void startDrawing(int mode) {
+    public static void startDrawing(int mode) {
         Tessellator.instance.startDrawing(mode);
         if(hasColour)
             Tessellator.instance.setColorRGBA(colour>>>24, colour>>16 & 0xFF, colour>>8 & 0xFF, alphaOverride >= 0 ? alphaOverride : colour & 0xFF);

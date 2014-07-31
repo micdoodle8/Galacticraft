@@ -34,6 +34,13 @@ public class Rectangle4i
     public int y2() {
         return y+h-1;
     }
+
+    public void set(int x, int y, int w, int h) {
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+    }
     
     public Rectangle4i offset(int dx, int dy)
     {

@@ -34,7 +34,8 @@ public class ServerHandler
 
     @SubscribeEvent
     public void tickEvent(TickEvent.WorldTickEvent event) {
-        if (event.phase == Phase.START)
+        if (event.phase == Phase.START && !event.world.isRemote &&
+                NEIServerConfig.dimTags.containsKey(CommonUtils.getDimension(event.world)))//fake worlds that don't call Load
             processDisabledProperties(event.world);
     }
 

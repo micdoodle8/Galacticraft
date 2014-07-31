@@ -206,55 +206,55 @@ public class CCModel implements CCRenderState.IVertexSource, Copyable<CCModel>
         if((mask&1) == 0) {//bottom face
             u1 = x1; v1 = z1;
             u2 = x2; v2 = z2;
-            verts[i++] = new Vertex5(x1, y1, z2, u1, v2);
-            verts[i++] = new Vertex5(x1, y1, z1, u1, v1);
-            verts[i++] = new Vertex5(x2, y1, z1, u2, v1);
-            verts[i++] = new Vertex5(x2, y1, z2, u2, v2);
+            verts[i++] = new Vertex5(x1, y1, z2, u1, v2, 0);
+            verts[i++] = new Vertex5(x1, y1, z1, u1, v1, 0);
+            verts[i++] = new Vertex5(x2, y1, z1, u2, v1, 0);
+            verts[i++] = new Vertex5(x2, y1, z2, u2, v2, 0);
         }
 
         if((mask&2) == 0) {//top face
-            u1 = x1+2; v1 = z1;
-            u2 = x2+2; v2 = z2;
-            verts[i++] = new Vertex5(x2, y2, z2, u2, v2);
-            verts[i++] = new Vertex5(x2, y2, z1, u2, v1);
-            verts[i++] = new Vertex5(x1, y2, z1, u1, v1);
-            verts[i++] = new Vertex5(x1, y2, z2, u1, v2);
+            u1 = x1; v1 = z1;
+            u2 = x2; v2 = z2;
+            verts[i++] = new Vertex5(x2, y2, z2, u2, v2, 1);
+            verts[i++] = new Vertex5(x2, y2, z1, u2, v1, 1);
+            verts[i++] = new Vertex5(x1, y2, z1, u1, v1, 1);
+            verts[i++] = new Vertex5(x1, y2, z2, u1, v2, 1);
         }
 
         if((mask&4) == 0) {//east face
-            u1 = 1-x1+4; v1 = 1-y2;
-            u2 = 1-x2+4; v2 = 1-y1;
-            verts[i++] = new Vertex5(x1, y1, z1, u1, v2);
-            verts[i++] = new Vertex5(x1, y2, z1, u1, v1);
-            verts[i++] = new Vertex5(x2, y2, z1, u2, v1);
-            verts[i++] = new Vertex5(x2, y1, z1, u2, v2);
+            u1 = 1-x1; v1 = 1-y2;
+            u2 = 1-x2; v2 = 1-y1;
+            verts[i++] = new Vertex5(x1, y1, z1, u1, v2, 2);
+            verts[i++] = new Vertex5(x1, y2, z1, u1, v1, 2);
+            verts[i++] = new Vertex5(x2, y2, z1, u2, v1, 2);
+            verts[i++] = new Vertex5(x2, y1, z1, u2, v2, 2);
         }
 
         if((mask&8) == 0) {//west face
-            u1 = x1+6; v1 = 1-y2;
-            u2 = x2+6; v2 = 1-y1;
-            verts[i++] = new Vertex5(x2, y1, z2, u2, v2);
-            verts[i++] = new Vertex5(x2, y2, z2, u2, v1);
-            verts[i++] = new Vertex5(x1, y2, z2, u1, v1);
-            verts[i++] = new Vertex5(x1, y1, z2, u1, v2);
+            u1 = x1; v1 = 1-y2;
+            u2 = x2; v2 = 1-y1;
+            verts[i++] = new Vertex5(x2, y1, z2, u2, v2, 3);
+            verts[i++] = new Vertex5(x2, y2, z2, u2, v1, 3);
+            verts[i++] = new Vertex5(x1, y2, z2, u1, v1, 3);
+            verts[i++] = new Vertex5(x1, y1, z2, u1, v2, 3);
         }
 
         if((mask&0x10) == 0) {//north face
-            u1 = z1+8; v1 = 1-y2;
-            u2 = z2+8; v2 = 1-y1;
-            verts[i++] = new Vertex5(x1, y1, z2, u2, v2);
-            verts[i++] = new Vertex5(x1, y2, z2, u2, v1);
-            verts[i++] = new Vertex5(x1, y2, z1, u1, v1);
-            verts[i++] = new Vertex5(x1, y1, z1, u1, v2);
+            u1 = z1; v1 = 1-y2;
+            u2 = z2; v2 = 1-y1;
+            verts[i++] = new Vertex5(x1, y1, z2, u2, v2, 4);
+            verts[i++] = new Vertex5(x1, y2, z2, u2, v1, 4);
+            verts[i++] = new Vertex5(x1, y2, z1, u1, v1, 4);
+            verts[i++] = new Vertex5(x1, y1, z1, u1, v2, 4);
         }
 
         if((mask&0x20) == 0) {//south face
-            u1 = 1-z1+10; v1 = 1-y2;
-            u2 = 1-z2+10; v2 = 1-y1;
-            verts[i++] = new Vertex5(x2, y1, z1, u1, v2);
-            verts[i++] = new Vertex5(x2, y2, z1, u1, v1);
-            verts[i++] = new Vertex5(x2, y2, z2, u2, v1);
-            verts[i++] = new Vertex5(x2, y1, z2, u2, v2);
+            u1 = 1-z1; v1 = 1-y2;
+            u2 = 1-z2; v2 = 1-y1;
+            verts[i++] = new Vertex5(x2, y1, z1, u1, v2, 5);
+            verts[i++] = new Vertex5(x2, y2, z1, u1, v1, 5);
+            verts[i++] = new Vertex5(x2, y2, z2, u2, v1, 5);
+            verts[i++] = new Vertex5(x2, y1, z2, u2, v2, 5);
         }
 
         return this;
@@ -299,10 +299,10 @@ public class CCModel implements CCRenderState.IVertexSource, Copyable<CCModel>
     public CCModel computeLighting(LightModel light)
     {
         Vector3[] normals = normals();
-        int[] colours = getAttributes(CCRenderState.colourAttrib);
+        int[] colours = getAttributes(CCRenderState.lightingAttrib);
         if(colours == null) {
-            setColour(-1);
-            colours = getAttributes(CCRenderState.colourAttrib);
+            colours = getOrAllocate(CCRenderState.lightingAttrib);
+            Arrays.fill(colours, -1);
         }
         for(int k = 0; k < verts.length; k++)
             colours[k] = light.apply(colours[k], normals[k]);
@@ -396,11 +396,6 @@ public class CCModel implements CCRenderState.IVertexSource, Copyable<CCModel>
                 attributes.set(i, CCRenderState.copyOf((CCRenderState.VertexAttribute)CCRenderState.getAttribute(i), attributes.get(i), newLen));
 
         return this;
-    }
-
-    public void render()
-    {
-        render(0, verts.length, null, null, null);
     }
 
     public void render(double x, double y, double z, double u, double v)
@@ -795,9 +790,7 @@ public class CCModel implements CCRenderState.IVertexSource, Copyable<CCModel>
      */
     public CCModel sidedCopy(int side1, int side2, Vector3 point)
     {
-        CCModel model = newModel(vertexMode, verts.length);
-        copy(this, 0, model, 0, model.verts.length);
-        return model.apply(new TransformationList(sideRotations[side1].inverse(), sideRotations[side2]).at(point));
+        return copy().apply(new TransformationList(sideRotations[side1].inverse(), sideRotations[side2]).at(point));
     }
 
     /**
