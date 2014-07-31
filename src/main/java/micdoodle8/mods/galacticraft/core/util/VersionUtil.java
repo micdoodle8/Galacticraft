@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.util;
 
 import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
+
 import cpw.mods.fml.common.versioning.DefaultArtifactVersion;
 import cpw.mods.fml.common.versioning.VersionParser;
 import cpw.mods.fml.relauncher.FMLInjectionData;
@@ -29,6 +30,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
 
+@SuppressWarnings("resource")
 public class VersionUtil
 {
     private static DefaultArtifactVersion mcVersion = null;
