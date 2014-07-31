@@ -11,7 +11,7 @@ item.slimelingCargo.name=Batoh pro slizouna
 item.key.T2.name=Klíč typ 2
 item.compressedDesh.name=Stlačený frikční kov
 item.spaceshipTier2.cargoRocket.name=Nákladní raketa
-item.fluidManip.name=Fluid Manipulator ##NEEDS TRANSLATE##
+item.fluidManip.name=Kapalinový manipulator
 
 # TOOLS
 item.deshPick.name=Krumpáč z frikčního kovu
@@ -85,7 +85,7 @@ gui.message.grass.name=Tráva
 gui.message.invalidFreq.name=Neplatná frekvence
 gui.message.frequency.name=Frekvence
 gui.message.destFrequency.name=Cílová frekvence
-gui.message.removePad.name=Odstranit ##Pad##
+gui.message.removePad.name=Odstranit
 gui.message.launchWhen.name=Odstartovat když
 gui.message.cargoUnloaded.name=Náklad vyložen
 gui.message.cargoFull.name=Plně naloženo
