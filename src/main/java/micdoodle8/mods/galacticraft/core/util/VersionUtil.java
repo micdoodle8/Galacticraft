@@ -69,40 +69,52 @@ public class VersionUtil
 
         if (mcVersionMatches("1.7.10"))
         {
-            nodemap.put(KEY_CLASS_COMPRESSED_STREAM_TOOLS, new ObfuscationEntry("net/minecraft/nbt/CompressedStreamTools", "du"));
-            nodemap.put(KEY_CLASS_NBT_SIZE_TRACKER, new ObfuscationEntry("net/minecraft/nbt/NBTSizeTracker", "ds"));
-            nodemap.put(KEY_CLASS_YGG_CONVERTER, new ObfuscationEntry("net/minecraft/server/management/PreYggdrasilConverter", "nz"));
-            nodemap.put(KEY_CLASS_TEXTURE_UTIL, new ObfuscationEntry("net/minecraft/client/renderer/texture/TextureUtil", "bqi"));
-            nodemap.put(KEY_CLASS_COMMAND_BASE, new ObfuscationEntry("net/minecraft/command/CommandBase", "y"));
-            nodemap.put(KEY_CLASS_SCALED_RES, new ObfuscationEntry("net/minecraft/client/gui/ScaledResolution", "bca"));
+//            nodemap.put(KEY_CLASS_COMPRESSED_STREAM_TOOLS, new ObfuscationEntry("net/minecraft/nbt/CompressedStreamTools", "du"));
+//            nodemap.put(KEY_CLASS_NBT_SIZE_TRACKER, new ObfuscationEntry("net/minecraft/nbt/NBTSizeTracker", "ds"));
+//            nodemap.put(KEY_CLASS_YGG_CONVERTER, new ObfuscationEntry("net/minecraft/server/management/PreYggdrasilConverter", "nz"));
+//            nodemap.put(KEY_CLASS_TEXTURE_UTIL, new ObfuscationEntry("net/minecraft/client/renderer/texture/TextureUtil", "bqi"));
+//            nodemap.put(KEY_CLASS_COMMAND_BASE, new ObfuscationEntry("net/minecraft/command/CommandBase", "y"));
+//            nodemap.put(KEY_CLASS_SCALED_RES, new ObfuscationEntry("net/minecraft/client/gui/ScaledResolution", "bca"));
+            nodemap.put(KEY_CLASS_COMPRESSED_STREAM_TOOLS, new ObfuscationEntry("net/minecraft/nbt/CompressedStreamTools"));
+            nodemap.put(KEY_CLASS_NBT_SIZE_TRACKER, new ObfuscationEntry("net/minecraft/nbt/NBTSizeTracker"));
+            nodemap.put(KEY_CLASS_YGG_CONVERTER, new ObfuscationEntry("net/minecraft/server/management/PreYggdrasilConverter"));
+            nodemap.put(KEY_CLASS_TEXTURE_UTIL, new ObfuscationEntry("net/minecraft/client/renderer/texture/TextureUtil"));
+            nodemap.put(KEY_CLASS_COMMAND_BASE, new ObfuscationEntry("net/minecraft/command/CommandBase"));
+            nodemap.put(KEY_CLASS_SCALED_RES, new ObfuscationEntry("net/minecraft/client/gui/ScaledResolution"));
 
             // Method descriptions are empty, since they are not needed for reflection.
-            nodemap.put(KEY_METHOD_SET_OWNER, new MethodObfuscationEntry("func_152115_b", "b", ""));
-            nodemap.put(KEY_METHOD_GET_OWNER, new MethodObfuscationEntry("func_152113_b", "b", ""));
-            nodemap.put(KEY_METHOD_CONVERT_UUID, new MethodObfuscationEntry("func_152719_a", "a", ""));
-            nodemap.put(KEY_METHOD_DECOMPRESS_NBT, new MethodObfuscationEntry("func_152457_a", "a", ""));
-            nodemap.put(KEY_METHOD_SET_MIPMAP, new MethodObfuscationEntry("func_152777_a", "a", ""));
-            nodemap.put(KEY_METHOD_NOTIFY_ADMINS, new MethodObfuscationEntry("func_152373_a", "a", ""));
-            nodemap.put(KEY_METHOD_PLAYER_FOR_NAME, new MethodObfuscationEntry("func_152612_a", "a", ""));
-            nodemap.put(KEY_METHOD_PLAYER_IS_OPPED, new MethodObfuscationEntry("func_152596_g", "g", ""));
+            nodemap.put(KEY_METHOD_SET_OWNER, new MethodObfuscationEntry("func_152115_b", "func_152115_b", ""));
+            nodemap.put(KEY_METHOD_GET_OWNER, new MethodObfuscationEntry("func_152113_b", "func_152113_b", ""));
+            nodemap.put(KEY_METHOD_CONVERT_UUID, new MethodObfuscationEntry("func_152719_a", "func_152719_a", ""));
+            nodemap.put(KEY_METHOD_DECOMPRESS_NBT, new MethodObfuscationEntry("func_152457_a", "func_152457_a", ""));
+            nodemap.put(KEY_METHOD_SET_MIPMAP, new MethodObfuscationEntry("func_152777_a", "func_152777_a", ""));
+            nodemap.put(KEY_METHOD_NOTIFY_ADMINS, new MethodObfuscationEntry("func_152373_a", "func_152373_a", ""));
+            nodemap.put(KEY_METHOD_PLAYER_FOR_NAME, new MethodObfuscationEntry("func_152612_a", "func_152612_a", ""));
+            nodemap.put(KEY_METHOD_PLAYER_IS_OPPED, new MethodObfuscationEntry("func_152596_g", "func_152596_g", ""));
         }
         else if (mcVersionMatches("1.7.2"))
         {
-            nodemap.put(KEY_CLASS_COMPRESSED_STREAM_TOOLS, new ObfuscationEntry("net/minecraft/nbt/CompressedStreamTools", "du"));
+//            nodemap.put(KEY_CLASS_COMPRESSED_STREAM_TOOLS, new ObfuscationEntry("net/minecraft/nbt/CompressedStreamTools", "dr"));
+//            nodemap.put(KEY_CLASS_NBT_SIZE_TRACKER, new ObfuscationEntry("", "")); // Not part of 1.7.2
+//            nodemap.put(KEY_CLASS_YGG_CONVERTER, new ObfuscationEntry("", "")); // Not part of 1.7.2
+//            nodemap.put(KEY_CLASS_TEXTURE_UTIL, new ObfuscationEntry("net/minecraft/client/renderer/texture/TextureUtil", "bqa"));
+//            nodemap.put(KEY_CLASS_COMMAND_BASE, new ObfuscationEntry("net/minecraft/command/CommandBase", "y"));
+//            nodemap.put(KEY_CLASS_SCALED_RES, new ObfuscationEntry("net/minecraft/client/gui/ScaledResolution", "bam"));
+            nodemap.put(KEY_CLASS_COMPRESSED_STREAM_TOOLS, new ObfuscationEntry("net/minecraft/nbt/CompressedStreamTools"));
             nodemap.put(KEY_CLASS_NBT_SIZE_TRACKER, new ObfuscationEntry("", "")); // Not part of 1.7.2
             nodemap.put(KEY_CLASS_YGG_CONVERTER, new ObfuscationEntry("", "")); // Not part of 1.7.2
-            nodemap.put(KEY_CLASS_TEXTURE_UTIL, new ObfuscationEntry("net/minecraft/client/renderer/texture/TextureUtil", "bqi"));
-            nodemap.put(KEY_CLASS_COMMAND_BASE, new ObfuscationEntry("net/minecraft/command/CommandBase", "y"));
-            nodemap.put(KEY_CLASS_SCALED_RES, new ObfuscationEntry("net/minecraft/client/gui/ScaledResolution", "bca"));
+            nodemap.put(KEY_CLASS_TEXTURE_UTIL, new ObfuscationEntry("net/minecraft/client/renderer/texture/TextureUtil"));
+            nodemap.put(KEY_CLASS_COMMAND_BASE, new ObfuscationEntry("net/minecraft/command/CommandBase"));
+            nodemap.put(KEY_CLASS_SCALED_RES, new ObfuscationEntry("net/minecraft/client/gui/ScaledResolution"));
 
-            nodemap.put(KEY_METHOD_SET_OWNER, new MethodObfuscationEntry("setOwner", "b", ""));
-            nodemap.put(KEY_METHOD_GET_OWNER, new MethodObfuscationEntry("getOwnerName", "b", ""));
+            nodemap.put(KEY_METHOD_SET_OWNER, new MethodObfuscationEntry("setOwner", "func_70910_a", ""));
+            nodemap.put(KEY_METHOD_GET_OWNER, new MethodObfuscationEntry("getOwnerName", "func_70905_p", ""));
             nodemap.put(KEY_METHOD_CONVERT_UUID, new MethodObfuscationEntry("", "", "")); // Not part of 1.7.2
-            nodemap.put(KEY_METHOD_DECOMPRESS_NBT, new MethodObfuscationEntry("decompress", "a", ""));
-            nodemap.put(KEY_METHOD_SET_MIPMAP, new MethodObfuscationEntry("func_147950_a", "a", ""));
-            nodemap.put(KEY_METHOD_NOTIFY_ADMINS, new MethodObfuscationEntry("notifyAdmins", "a", ""));
-            nodemap.put(KEY_METHOD_PLAYER_FOR_NAME, new MethodObfuscationEntry("getPlayerForUsername", "e", ""));
-            nodemap.put(KEY_METHOD_PLAYER_IS_OPPED, new MethodObfuscationEntry("isPlayerOpped", "d", ""));
+            nodemap.put(KEY_METHOD_DECOMPRESS_NBT, new MethodObfuscationEntry("decompress", "func_74792_a", ""));
+            nodemap.put(KEY_METHOD_SET_MIPMAP, new MethodObfuscationEntry("func_147950_a", "func_147950_a", ""));
+            nodemap.put(KEY_METHOD_NOTIFY_ADMINS, new MethodObfuscationEntry("notifyAdmins", "func_71522_a", ""));
+            nodemap.put(KEY_METHOD_PLAYER_FOR_NAME, new MethodObfuscationEntry("getPlayerForUsername", "func_72361_f", ""));
+            nodemap.put(KEY_METHOD_PLAYER_IS_OPPED, new MethodObfuscationEntry("isPlayerOpped", "func_72353_e", ""));
         }
     }
 
@@ -119,7 +131,7 @@ public class VersionUtil
 
             if (m == null)
             {
-                m = slimeling.getClass().getMethod(getNameDynamic(KEY_METHOD_SET_OWNER), new Class[] { String.class });
+                m = slimeling.getClass().getSuperclass().getMethod(getNameDynamic(KEY_METHOD_SET_OWNER), new Class[] { String.class });
                 reflectionCache.put(0, m);
             }
 
