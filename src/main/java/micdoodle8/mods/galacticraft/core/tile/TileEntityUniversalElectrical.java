@@ -315,7 +315,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 		if (this.IC2surplus < 0.001F)
 		{
 			this.IC2surplus = 0F;
-			return Math.ceil(this.getRequest(ForgeDirection.UNKNOWN) * NetworkConfigHandler.TO_IC2_RATIO);
+			return Math.ceil((this.storage.getCapacityGC() - this.storage.getEnergyStoredGC()) * NetworkConfigHandler.TO_IC2_RATIO);
 		}
 
 		float received = this.storage.receiveEnergyGC(this.IC2surplus, true);
@@ -323,7 +323,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 		if (this.IC2surplus < 0.001F)
 		{
 			this.IC2surplus = 0F;
-			return Math.ceil(this.getRequest(ForgeDirection.UNKNOWN) * NetworkConfigHandler.TO_IC2_RATIO);
+			return Math.ceil((this.storage.getCapacityGC() - this.storage.getEnergyStoredGC()) * NetworkConfigHandler.TO_IC2_RATIO);
 		}
 		} catch (Exception e) { e.printStackTrace(); }
 		return 0D;
