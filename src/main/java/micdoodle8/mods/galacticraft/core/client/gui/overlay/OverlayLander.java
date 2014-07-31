@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -24,7 +25,7 @@ public class OverlayLander extends Overlay
 	public static void renderLanderOverlay()
 	{
 		OverlayLander.screenTicks++;
-		final ScaledResolution scaledresolution = new ScaledResolution(OverlayLander.minecraft.gameSettings, OverlayLander.minecraft.displayWidth, OverlayLander.minecraft.displayHeight);
+		final ScaledResolution scaledresolution = ClientUtil.getScaledRes(minecraft, OverlayLander.minecraft.displayWidth, OverlayLander.minecraft.displayHeight);
 		final int width = scaledresolution.getScaledWidth();
 		final int height = scaledresolution.getScaledHeight();
 		OverlayLander.minecraft.entityRenderer.setupOverlayRendering();

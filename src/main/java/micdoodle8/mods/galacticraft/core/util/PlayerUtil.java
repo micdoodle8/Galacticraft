@@ -6,12 +6,19 @@ import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import sun.misc.Version;
 
 import java.util.Iterator;
 
 public class PlayerUtil
 {
+    public static EntityPlayerMP getPlayerForUsernameVanilla(MinecraftServer server, String username)
+    {
+        return VersionUtil.getPlayerForUsername(server, username);
+    }
+
 	public static GCEntityPlayerMP getPlayerBaseServerFromPlayerUsername(String username, boolean ignoreCase)
 	{
 		MinecraftServer server = MinecraftServer.getServer();
@@ -20,7 +27,7 @@ public class PlayerUtil
 		{
 			if (ignoreCase)
 			{
-				return (GCEntityPlayerMP) server.getConfigurationManager().getPlayerForUsername(username);
+				return (GCEntityPlayerMP) getPlayerForUsernameVanilla(server, username);
 			}
 			else
 			{

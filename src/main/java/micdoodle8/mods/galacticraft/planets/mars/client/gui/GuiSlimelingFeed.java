@@ -71,7 +71,7 @@ public class GuiSlimelingFeed extends GuiScreen
 				GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, new Object[] { this.slimeling.getEntityId(), 2, "" }));
 				break;
 			case 1:
-				if (!this.slimeling.isInLove() && this.mc.thePlayer.getGameProfile().getName().equals(this.slimeling.getOwnerName()) && this.slimeling.worldObj.isRemote)
+				if (!this.slimeling.isInLove() && this.slimeling.isOwner(this.mc.thePlayer) && this.slimeling.worldObj.isRemote)
 				{
 					this.slimeling.func_146082_f(this.mc.thePlayer);
 				}

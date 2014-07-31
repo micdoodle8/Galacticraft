@@ -180,7 +180,7 @@ public class PacketSimpleMars implements IPacket
 				switch (subType)
 				{
 				case 0:
-					if (player.getCommandSenderName().equalsIgnoreCase(slimeling.getOwnerName()) && !slimeling.worldObj.isRemote)
+					if (player == slimeling.getOwner() && !slimeling.worldObj.isRemote)
 					{
 						slimeling.getAiSit().setSitting(!slimeling.isSitting());
 						slimeling.setJumping(false);
@@ -190,37 +190,37 @@ public class PacketSimpleMars implements IPacket
 					}
 					break;
 				case 1:
-					if (player.getCommandSenderName().equalsIgnoreCase(slimeling.getOwnerName()) && !slimeling.worldObj.isRemote)
+					if (player == slimeling.getOwner() && !slimeling.worldObj.isRemote)
 					{
 						slimeling.slimelingName = (String) this.data.get(2);
 					}
 					break;
 				case 2:
-					if (player.getCommandSenderName().equalsIgnoreCase(slimeling.getOwnerName()) && !slimeling.worldObj.isRemote)
+					if (player == slimeling.getOwner() && !slimeling.worldObj.isRemote)
 					{
 						slimeling.age += 5000;
 					}
 					break;
 				case 3:
-					if (!slimeling.isInLove() && player.getCommandSenderName().equalsIgnoreCase(slimeling.getOwnerName()) && !slimeling.worldObj.isRemote)
+					if (!slimeling.isInLove() && player == slimeling.getOwner() && !slimeling.worldObj.isRemote)
 					{
 						slimeling.func_146082_f(playerBase);
 					}
 					break;
 				case 4:
-					if (player.getCommandSenderName().equalsIgnoreCase(slimeling.getOwnerName()) && !slimeling.worldObj.isRemote)
+					if (player == slimeling.getOwner() && !slimeling.worldObj.isRemote)
 					{
 						slimeling.attackDamage = Math.min(slimeling.attackDamage + 0.1F, 1.0F);
 					}
 					break;
 				case 5:
-					if (player.getCommandSenderName().equalsIgnoreCase(slimeling.getOwnerName()) && !slimeling.worldObj.isRemote)
+					if (player == slimeling.getOwner() && !slimeling.worldObj.isRemote)
 					{
 						slimeling.setHealth(slimeling.getHealth() + 5.0F);
 					}
 					break;
 				case 6:
-					if (player.getCommandSenderName().equalsIgnoreCase(slimeling.getOwnerName()) && !slimeling.worldObj.isRemote)
+					if (player == slimeling.getOwner() && !slimeling.worldObj.isRemote)
 					{
 						MarsUtil.openSlimelingInventory(playerBase, slimeling);
 					}

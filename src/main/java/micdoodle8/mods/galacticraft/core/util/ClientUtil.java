@@ -10,10 +10,17 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 
 @SideOnly(Side.CLIENT)
 public class ClientUtil
 {
+    public static ScaledResolution getScaledRes(Minecraft minecraft, int width, int height)
+    {
+        return VersionUtil.getScaledRes(minecraft, width, height);
+    }
+
 	public static FlagData updateFlagData(String playerName, boolean sendPacket)
 	{
 		SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(playerName);

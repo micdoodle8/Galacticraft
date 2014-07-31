@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModuleClient;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.InventorySlimeling;
 import net.minecraft.entity.Entity;
@@ -30,6 +31,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.world.World;
+import sun.misc.Version;
 
 public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 {
@@ -82,6 +84,11 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 
 		this.setRandomFavFood();
 	}
+
+    public boolean isOwner(EntityLivingBase entityLivingBase)
+    {
+        return entityLivingBase == this.getOwner();
+    }
 
     @Override
     public boolean canBreatheUnderwater()
@@ -361,7 +368,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 			{
 				if (itemstack.getItem() == this.getFavoriteFood())
 				{
-					if (par1EntityPlayer.getGameProfile().getName().equals(this.getOwnerName()))
+					if (this.isOwner(par1EntityPlayer))
 					{
 						--itemstack.stackSize;
 
@@ -431,7 +438,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 					this.setAttackTarget((EntityLivingBase) null);
 					this.aiSit.setSitting(true);
 					this.setHealth(20.0F);
-					this.setOwner(par1EntityPlayer.getCommandSenderName());
+                    VersionUtil.setSlimelingOwner(this, VersionUtil.mcVersionMatches("1.7.10") ? par1EntityPlayer.getUniqueID().toString() : (VersionUtil.mcVersionMatches("1.7.2") ? par1EntityPlayer.getCommandSenderName() : ""));
 					this.playTameEffect(true);
 					this.worldObj.setEntityState(this, (byte) 7);
 				}
@@ -462,11 +469,11 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 
 			EntitySlimeling newSlimeling = new EntitySlimeling(this.worldObj, (this.getColorRed() + otherSlimeling.getColorRed()) / 2, (this.getColorGreen() + otherSlimeling.getColorGreen()) / 2, (this.getColorBlue() + otherSlimeling.getColorBlue()) / 2);
 
-			String s = this.getOwnerName();
+			String s = VersionUtil.getSlimelingOwner(this);
 
 			if (s != null && s.trim().length() > 0)
 			{
-				newSlimeling.setOwner(s);
+                VersionUtil.setSlimelingOwner(newSlimeling, s);
 				newSlimeling.setTamed(true);
 			}
 

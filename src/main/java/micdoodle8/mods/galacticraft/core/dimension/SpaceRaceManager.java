@@ -180,7 +180,7 @@ public class SpaceRaceManager
 	{
 		for (String member : race.getPlayerNames())
 		{
-			EntityPlayerMP memberObj = MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(member);
+			EntityPlayerMP memberObj = PlayerUtil.getPlayerForUsernameVanilla(MinecraftServer.getServer(), member);
 
 			if (memberObj != null)
 			{

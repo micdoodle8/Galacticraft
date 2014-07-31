@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.mars.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntitySlimelingEgg;
@@ -74,8 +75,8 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider
 
 			if (tile instanceof TileEntitySlimelingEgg)
 			{
-				((TileEntitySlimelingEgg) tile).timeToHatch = world.rand.nextInt(500) + 100;
-				((TileEntitySlimelingEgg) tile).lastTouchedPlayer = player.getGameProfile().getName();
+				((TileEntitySlimelingEgg) tile).timeToHatch = world.rand.nextInt(50) + 20;
+				((TileEntitySlimelingEgg) tile).lastTouchedPlayerUUID = VersionUtil.mcVersionMatches("1.7.2") ? player.getCommandSenderName() : player.getUniqueID().toString();
 			}
 
 			return false;

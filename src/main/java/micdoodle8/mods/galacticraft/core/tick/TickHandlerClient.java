@@ -168,7 +168,7 @@ public class TickHandlerClient
 					f = 1F;
 				}
 
-				final ScaledResolution scaledresolution = new ScaledResolution(minecraft.gameSettings, minecraft.displayWidth, minecraft.displayHeight);
+				final ScaledResolution scaledresolution = ClientUtil.getScaledRes(minecraft, minecraft.displayWidth, minecraft.displayHeight);
 				scaledresolution.getScaledWidth();
 				scaledresolution.getScaledHeight();
 				minecraft.entityRenderer.setupOverlayRendering();

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
+import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,7 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 public class TileEntitySlimelingEgg extends TileEntity
 {
 	public int timeToHatch = -1;
-	public String lastTouchedPlayer = "NoPlayer";
+	public String lastTouchedPlayerUUID = "";
 
 	@Override
 	public void updateEntity()
@@ -22,7 +23,7 @@ public class TileEntitySlimelingEgg extends TileEntity
 			{
 				this.timeToHatch--;
 			}
-			else if (this.timeToHatch == 0)
+			else if (this.timeToHatch == 0 && lastTouchedPlayerUUID != null && lastTouchedPlayerUUID.length() > 0)
 			{
 				int metadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord) % 3;
 
@@ -47,7 +48,7 @@ public class TileEntitySlimelingEgg extends TileEntity
 				EntitySlimeling slimeling = new EntitySlimeling(this.worldObj, colorRed, colorGreen, colorBlue);
 
 				slimeling.setPosition(this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord + 0.5);
-				slimeling.setOwner(this.lastTouchedPlayer);
+                VersionUtil.setSlimelingOwner(slimeling, this.lastTouchedPlayerUUID);
 
 				if (!this.worldObj.isRemote)
 				{
@@ -58,7 +59,6 @@ public class TileEntitySlimelingEgg extends TileEntity
 				slimeling.setPathToEntity((PathEntity) null);
 				slimeling.setAttackTarget((EntityLivingBase) null);
 				slimeling.setHealth(20.0F);
-				slimeling.setOwner(this.lastTouchedPlayer);
 
 				this.worldObj.setBlockToAir(this.xCoord, this.yCoord, this.zCoord);
 			}
@@ -70,7 +70,7 @@ public class TileEntitySlimelingEgg extends TileEntity
 	{
 		super.readFromNBT(nbt);
 		this.timeToHatch = nbt.getInteger("TimeToHatch");
-		this.lastTouchedPlayer = nbt.getString("Owner");
+        VersionUtil.readSlimelingEggFromNBT(this, nbt);
 	}
 
 	@Override
@@ -78,6 +78,6 @@ public class TileEntitySlimelingEgg extends TileEntity
 	{
 		super.writeToNBT(nbt);
 		nbt.setInteger("TimeToHatch", this.timeToHatch);
-		nbt.setString("Owner", this.lastTouchedPlayer);
+		nbt.setString("OwnerUUID", this.lastTouchedPlayerUUID);
 	}
 }

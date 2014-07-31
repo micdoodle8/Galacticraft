@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
@@ -17,7 +18,7 @@ public abstract class GuiStarBackground extends GuiScreen
 
 	public void drawBlackBackground()
 	{
-		final ScaledResolution var5 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
+		final ScaledResolution var5 = ClientUtil.getScaledRes(this.mc, this.mc.displayWidth, this.mc.displayHeight);
 		final int var6 = var5.getScaledWidth();
 		final int var7 = var5.getScaledHeight();
 		GL11.glDisable(GL11.GL_DEPTH_TEST);

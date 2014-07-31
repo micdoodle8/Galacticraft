@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
@@ -60,7 +61,7 @@ public class GuiSlimeling extends GuiScreen
 		final int var5 = (this.width - this.xSize) / 2;
 		final int var6 = (this.height - this.ySize) / 2;
 		this.stayButton = new GuiButton(0, var5 + 120, var6 + 122, 50, 20, "Stay");
-		this.stayButton.enabled = this.mc.thePlayer.getGameProfile().getName().equals(this.slimeling.getOwnerName());
+		this.stayButton.enabled = slimeling.isOwner(this.mc.thePlayer);
 		this.buttonList.add(this.stayButton);
 		this.invX = var5 + 151;
 		this.invY = var6 + 76;
@@ -85,7 +86,7 @@ public class GuiSlimeling extends GuiScreen
 		{
 			if (this.slimeling.getName().length() > 0)
 			{
-				if (this.mc.thePlayer.getGameProfile().getName().equals(this.slimeling.getOwnerName()))
+				if (this.slimeling.isOwner(this.mc.thePlayer))
 				{
 					this.slimeling.setName(this.slimeling.getName().substring(0, this.slimeling.getName().length() - 1));
 					this.timeBackspacePressed = System.currentTimeMillis();
@@ -107,7 +108,7 @@ public class GuiSlimeling extends GuiScreen
 
 			if (this.isValid(this.slimeling.getName() + pastestring))
 			{
-				if (this.mc.thePlayer.getGameProfile().getName().equals(this.slimeling.getOwnerName()))
+				if (this.slimeling.isOwner(this.mc.thePlayer))
 				{
 					this.slimeling.setName(this.slimeling.getName() + pastestring);
 					this.slimeling.setName(this.slimeling.getName().substring(0, Math.min(this.slimeling.getName().length(), 16)));
@@ -120,7 +121,7 @@ public class GuiSlimeling extends GuiScreen
 		}
 		else if (this.isValid(this.slimeling.getName() + keyChar))
 		{
-			if (this.mc.thePlayer.getGameProfile().getName().equals(this.slimeling.getOwnerName()))
+			if (this.mc.thePlayer.getGameProfile().getName().equals(this.slimeling.getOwner().getCommandSenderName()))
 			{
 				this.slimeling.setName(this.slimeling.getName() + keyChar);
 				this.slimeling.setName(this.slimeling.getName().substring(0, Math.min(this.slimeling.getName().length(), 16)));
@@ -224,14 +225,14 @@ public class GuiSlimeling extends GuiScreen
 		{
 			if (Keyboard.isKeyDown(Keyboard.KEY_BACK) && this.slimeling.getName().length() > 0)
 			{
-				if (System.currentTimeMillis() - this.timeBackspacePressed > 200 / (1 + this.backspacePressed * 0.3F) && this.mc.thePlayer.getGameProfile().getName().equals(this.slimeling.getOwnerName()))
+				if (System.currentTimeMillis() - this.timeBackspacePressed > 200 / (1 + this.backspacePressed * 0.3F) && this.slimeling.isOwner(this.mc.thePlayer))
 				{
 					this.slimeling.setName(this.slimeling.getName().substring(0, this.slimeling.getName().length() - 1));
 					GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, new Object[] { this.slimeling.getEntityId(), 1, this.slimeling.getName() }));
 					this.timeBackspacePressed = System.currentTimeMillis();
 					this.backspacePressed++;
 				}
-				else if (!this.mc.thePlayer.getGameProfile().getName().equals(this.slimeling.getOwnerName()))
+				else if (!this.slimeling.isOwner(this.mc.thePlayer))
 				{
 					this.incorrectUseTimer = 10;
 				}
@@ -262,7 +263,7 @@ public class GuiSlimeling extends GuiScreen
 		this.stayButton.displayString = this.slimeling.isSitting() ? "Follow" : "Sit";
 
 		this.fontRendererObj.drawString("Name: ", dX + var5 + 55, dY + var6 - 6, 0x404040);
-		this.fontRendererObj.drawString("Owner: " + this.slimeling.getOwnerName(), dX + var5 + 55, dY + var6 + 7, 0x404040);
+		this.fontRendererObj.drawString("Owner: " + this.slimeling.getOwner().getCommandSenderName(), dX + var5 + 55, dY + var6 + 7, 0x404040);
 		this.fontRendererObj.drawString("Kills: " + this.slimeling.getKillCount(), dX + var5 + 55, dY + var6 + 20, 0x404040);
 		this.fontRendererObj.drawString("Scale: " + Math.round(this.slimeling.getAge() / (float) this.slimeling.MAX_AGE * 1000.0F) / 10.0F + "%", dX + var5 + 55, dY + var6 + 33, 0x404040);
 		str = "" + (this.slimeling.isSitting() ? "Sitting" : "Following");

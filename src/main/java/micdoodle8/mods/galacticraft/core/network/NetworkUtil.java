@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.tile.EnergyStorage;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.entity.Entity;
@@ -410,7 +411,7 @@ public class NetworkUtil
 		{
 			byte[] compressedNBT = new byte[dataLength];
 			buffer.readBytes(compressedNBT);
-			return CompressedStreamTools.decompress(compressedNBT);
+			return VersionUtil.decompressNBT(compressedNBT);
 		}
 	}
 

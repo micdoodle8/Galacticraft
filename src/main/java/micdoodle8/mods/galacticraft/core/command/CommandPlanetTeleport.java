@@ -8,12 +8,14 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.item.ItemStack;
+import sun.misc.Version;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -73,7 +75,7 @@ public class CommandPlanetTeleport extends CommandBase
 					playerBase.getPlayerStats().usingPlanetSelectionGui = true;
 					playerBase.mountEntity(null);
 
-					CommandBase.notifyAdmins(icommandsender, "commands.dimensionteleport", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getCommandSenderName()), "]" });
+                    VersionUtil.notifyAdmins(icommandsender, this, "commands.dimensionteleport", new Object[]{String.valueOf(EnumColor.GREY + "[" + playerBase.getCommandSenderName()), "]"});
 				}
 				else
 				{

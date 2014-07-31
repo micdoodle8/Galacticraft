@@ -323,7 +323,7 @@ public class PacketSimple extends Packet implements IPacket
 
 			if (server != null)
 			{
-				gearDataPlayer = server.getConfigurationManager().getPlayerForUsername((String) this.data.get(0));
+                gearDataPlayer = PlayerUtil.getPlayerForUsernameVanilla(server, (String) this.data.get(0));
 			}
 			else
 			{
@@ -1092,7 +1092,7 @@ public class PacketSimple extends Packet implements IPacket
 
 					for (String member : spaceRaceToAddPlayer.getPlayerNames())
 					{
-						EntityPlayerMP memberObj = MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(member);
+						EntityPlayerMP memberObj = PlayerUtil.getPlayerForUsernameVanilla(MinecraftServer.getServer(), member);
 
 						if (memberObj != null)
 						{

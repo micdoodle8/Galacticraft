@@ -4,6 +4,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
+import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -52,7 +53,7 @@ public class ItemRendererHeavyNoseCone implements IItemRenderer
 			}
 
 			FMLClientHandler.instance().getClient().getTextureManager().bindTexture(FMLClientHandler.instance().getClient().getTextureManager().getResourceLocation(item.getItemSpriteNumber()));
-			TextureUtil.func_147950_a(false, false);
+            VersionUtil.setMipMap(false, false);
 			Tessellator tessellator = Tessellator.instance;
 			float f = iicon.getMinU();
 			float f1 = iicon.getMaxU();

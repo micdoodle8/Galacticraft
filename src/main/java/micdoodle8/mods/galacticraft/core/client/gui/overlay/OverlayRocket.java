@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.ScaledResolution;
@@ -29,7 +30,7 @@ public class OverlayRocket extends Overlay
 			return;
 		}
 
-		final ScaledResolution scaledresolution = new ScaledResolution(OverlayRocket.minecraft.gameSettings, OverlayRocket.minecraft.displayWidth, OverlayRocket.minecraft.displayHeight);
+		final ScaledResolution scaledresolution = ClientUtil.getScaledRes(OverlayRocket.minecraft, OverlayRocket.minecraft.displayWidth, OverlayRocket.minecraft.displayHeight);
 		scaledresolution.getScaledWidth();
 		final int height = scaledresolution.getScaledHeight();
 		OverlayRocket.minecraft.entityRenderer.setupOverlayRendering();
