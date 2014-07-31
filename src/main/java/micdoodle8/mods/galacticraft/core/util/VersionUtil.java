@@ -176,24 +176,27 @@ public class VersionUtil
             }
             else
             {
-                Class<?> c = (Class)reflectionCache.get(2);
-
-                if (c == null)
+                if (mcVersionMatches("1.7.10"))
                 {
-                    c = Class.forName(getNameDynamic(KEY_CLASS_YGG_CONVERTER).replace('/', '.'));
-                    reflectionCache.put(2, c);
-                }
-
-                Method m = (Method)reflectionCache.get(3);
-
-                if (m == null)
-                {
-                    m = c.getMethod(getNameDynamic(KEY_METHOD_CONVERT_UUID), new Class[] { String.class });
-                    reflectionCache.put(3, m);
-                }
-
-                String s1 = nbt.getString("Owner");
-                    s = (String)m.invoke(null, s1);
+	                Class<?> c = (Class)reflectionCache.get(2);
+	
+	                if (c == null)
+	                {
+	                    c = Class.forName(getNameDynamic(KEY_CLASS_YGG_CONVERTER).replace('/', '.'));
+	                    reflectionCache.put(2, c);
+	                }
+	
+	                Method m = (Method)reflectionCache.get(3);
+	
+	                if (m == null)
+	                {
+	                    m = c.getMethod(getNameDynamic(KEY_METHOD_CONVERT_UUID), new Class[] { String.class });
+	                    reflectionCache.put(3, m);
+	                }
+	
+	                String s1 = nbt.getString("Owner");
+	                    s = (String)m.invoke(null, s1);
+	            }
             }
 
             if (s.length() > 0)
