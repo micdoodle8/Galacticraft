@@ -11,7 +11,6 @@ import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityEntryPod;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -90,7 +89,7 @@ public class TeleportTypeAsteroids implements ITeleportType
             {
             	if (Math.abs(k - yorig) > 20) continue;
             	//Clear the downward path of small asteroids and any other asteroid rock
-            	for (int y = k + 1; y < 256; y++)
+            	for (int y = k + 2; y < 256; y++)
             	{
             		if (world.getBlock(x, y, z) == AsteroidBlocks.blockBasic) world.setBlockToAir(x, y, z);
             		if (world.getBlock(x - 1, y, z) == AsteroidBlocks.blockBasic) world.setBlockToAir(x - 1, y, z);

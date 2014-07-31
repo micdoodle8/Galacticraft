@@ -538,7 +538,7 @@ public class WorldUtil
 		GCEntityPlayerMP player = null;
 		Vector3 spawnPos = null; 
 		int oldDimID = entity.worldObj.provider.dimensionId;
-		
+
 		if (ridingRocket != null)
 		{
 			NBTTagCompound nbt = new NBTTagCompound();
@@ -644,6 +644,7 @@ public class WorldUtil
 				//	player.playerNetServerHandler.sendPacketToPlayer(new Packet43Experience(player.experience, player.experienceTotal, player.experienceLevel));
 			}
 			else
+			//Non-player entity transfer i.e. it's an EntityCargoRocket
 			{
 				WorldUtil.removeEntityFromWorld(entity.worldObj, entity, true);
 
@@ -671,6 +672,7 @@ public class WorldUtil
 		}
 		else
 		{
+			//Same dimension player transfer
 			if (entity instanceof GCEntityPlayerMP)
 			{
 				player = (GCEntityPlayerMP) entity;
@@ -681,12 +683,13 @@ public class WorldUtil
 
                 spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity);
 				player.playerNetServerHandler.setPlayerLocation(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
-				entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
-				
+				entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);	
+				worldNew.updateEntityWithOptionalForce(entity, false);
+
 				GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " within same dimension " + worldNew.provider.dimensionId);
 			}
-	
-			worldNew.updateEntityWithOptionalForce(entity, false);
+			
+			//Cargo rocket does not needs its location setting here, it will do that itself
 		}
 
 		//Update PlayerStatsGC
@@ -701,10 +704,7 @@ public class WorldUtil
 				player.setUsingParachute(false);
 			}
 
-            spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity);
-            entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
-
-			if (player.getPlayerStats().rocketStacks != null && player.getPlayerStats().rocketStacks.length > 0)
+            if (player.getPlayerStats().rocketStacks != null && player.getPlayerStats().rocketStacks.length > 0)
 			{
 				for (int stack = 0; stack < player.getPlayerStats().rocketStacks.length; stack++)
 				{
@@ -750,20 +750,16 @@ public class WorldUtil
 			ridingRocket.setWorld(worldNew);
 
 			worldNew.updateEntityWithOptionalForce(ridingRocket, true);
-		}
+			entity.ridingEntity = ridingRocket;
+			ridingRocket.riddenByEntity = entity;
+		} else
+			if (spawnPos != null) entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
 
 		//Spawn in a lander if appropriate
 		if (entity instanceof EntityPlayerMP)
 		{
 			FMLCommonHandler.instance().firePlayerChangedDimensionEvent((EntityPlayerMP) entity, oldDimID, dimID);
 			type.onSpaceDimensionChanged(worldNew, (EntityPlayerMP) entity, ridingRocket != null);
-		}
-
-		//If still riding a rocket after those events, set the player riding the rocket.
-		if (ridingRocket != null)
-		{
-			entity.ridingEntity = ridingRocket;
-			ridingRocket.riddenByEntity = entity;
 		}
 
 		return entity;

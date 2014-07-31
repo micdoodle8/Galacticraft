@@ -247,7 +247,7 @@ public class PacketSimpleMars implements IPacket
 				if (tile instanceof TileEntityLaunchController)
 				{
 					TileEntityLaunchController launchController = (TileEntityLaunchController) tile;
-					launchController.launchDropdownSelection = (Integer) this.data.get(4);
+					launchController.setLaunchDropdownSelection((Integer) this.data.get(4));
 				}
 				break;
 			case 2:
@@ -268,7 +268,7 @@ public class PacketSimpleMars implements IPacket
 				if (tile instanceof TileEntityLaunchController)
 				{
 					TileEntityLaunchController launchController = (TileEntityLaunchController) tile;
-					launchController.launchSchedulingEnabled = (Integer) this.data.get(4) == 1;
+					launchController.setLaunchSchedulingEnabled((Integer) this.data.get(4) == 1);
 				}
 				break;
 			case 5:

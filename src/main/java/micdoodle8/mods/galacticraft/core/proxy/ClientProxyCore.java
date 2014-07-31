@@ -62,7 +62,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-import org.w3c.dom.Document;
 import tconstruct.client.tabs.InventoryTabVanilla;
 import tconstruct.client.tabs.TabRegistry;
 
@@ -504,7 +503,7 @@ public class ClientProxyCore extends CommonProxyCore
 	public void onRenderPlayerEquipped(RenderPlayerEvent.Specials.Pre event)
 	{
 		final Entity ridden = event.entityPlayer.ridingEntity;
-		if (ridden instanceof EntityAutoRocket || ridden instanceof EntityLander)
+		if (ridden instanceof EntityAutoRocket || ridden instanceof EntityLanderBase)
 		{
 			event.setCanceled(true);
 		}		
