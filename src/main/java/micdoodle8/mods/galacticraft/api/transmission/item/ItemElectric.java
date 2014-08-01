@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.api.transmission.EnergyHelper;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.ElectricItemManagerIC2;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
+import micdoodle8.mods.miccore.Annotations.VersionSpecific;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -186,44 +187,49 @@ public abstract class ItemElectric extends Item implements IItemElectric
 
 	//All the following methods are for IC2 compatibility
 	
+	@VersionSpecific(versions = "1.7.2")
 	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
 	public IElectricItemManager getManager(ItemStack itemstack)
 	{
 		return (IElectricItemManager) ItemElectric.itemManagerIC2;
 	}
 
+	@VersionSpecific(versions = "1.7.2")
 	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
 	public boolean canProvideEnergy(ItemStack itemStack)
 	{
 		return true;
 	}
 
+	@VersionSpecific(versions = "1.7.2")
 	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
 	public Item getChargedItem(ItemStack itemStack)
 	{
 		return itemStack.getItem();
 	}
 
+	@VersionSpecific(versions = "1.7.2")
 	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
 	public Item getEmptyItem(ItemStack itemStack)
 	{
 		return itemStack.getItem();	
 	}
 
+	@VersionSpecific(versions = "1.7.2")
 	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
 	public int getMaxCharge(ItemStack itemStack)
 	{
 		return (int) (this.getMaxElectricityStored(itemStack) * NetworkConfigHandler.TO_IC2_RATIO);
 	}
 
+	@VersionSpecific(versions = "1.7.2")
 	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
 	public int getTier(ItemStack itemStack)
 	{
-		//Infinite battery is Tier 4
-		//Regular GC battery is Tier 2
-		return this.getTierGC(itemStack) == 2 ? 4 : 2;
+		return 1;
 	}
 	
+	@VersionSpecific(versions = "1.7.2")
 	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
 	public int getTransferLimit(ItemStack itemStack)
 	{

@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
+import micdoodle8.mods.miccore.Annotations.VersionSpecific;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -145,8 +146,7 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 		}
 	}
 	
-	//public double getDemandedEnergy() - will be for 1.7.10
-
+	@VersionSpecific(versions = "1.7.2")
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 	public double demandedEnergyUnits()
 	{
@@ -170,8 +170,31 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 		return 0D;
 	}
 
-	//public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) - will be for 1.7.10
-	
+	@VersionSpecific(versions = "1.7.10")
+	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
+	public double getDemandedEnergy()
+	{
+		if (this.getNetwork() == null)
+		{
+			return 0.0;
+		}
+
+		if (this.IC2surplusJoules < 0.001F)
+		{
+			this.IC2surplusJoules = 0F;
+			return this.getNetwork().getRequest(this) * NetworkConfigHandler.TO_IC2_RATIO;
+		}
+
+		this.IC2surplusJoules = this.getNetwork().produce(this.IC2surplusJoules, true, 1, this);
+		if (this.IC2surplusJoules < 0.001F)
+		{
+			this.IC2surplusJoules = 0F;
+			return this.getNetwork().getRequest(this) * NetworkConfigHandler.TO_IC2_RATIO;
+		}
+		return 0D;
+	}
+
+	@VersionSpecific(versions = "1.7.2")
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 	public double injectEnergyUnits(ForgeDirection directionFrom, double amount)
 	{
@@ -187,13 +210,30 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 		return Math.round(this.IC2surplusJoules * NetworkConfigHandler.TO_IC2_RATIO);
 	}
 
-	//This will be for 1.7.10
-	/*@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
+	@VersionSpecific(versions = "1.7.10")
+	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
+	public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage)
+	{
+		TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, directionFrom);
+		int tier = ((int) voltage > 120) ? 2 : 1;
+		if (tile instanceof IEnergySource && ((IEnergySource) tile).getOfferedEnergy() >= 128) tier = 2;
+		float convertedEnergy = (float) amount * NetworkConfigHandler.IC2_RATIO;
+		float surplus = this.getNetwork().produce(convertedEnergy, true, tier, this, tile);
+
+		if (surplus >= 0.001F) this.IC2surplusJoules = surplus;
+		else this.IC2surplusJoules = 0F;
+
+		return Math.round(this.IC2surplusJoules * NetworkConfigHandler.TO_IC2_RATIO);
+	}
+
+	@VersionSpecific(versions = "1.7.10")
+	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 	public int getSinkTier()
 	{
 		return 3;
-	}*/
+	}
 	
+	@VersionSpecific(versions = "1.7.2")
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 	public double getMaxSafeInput()
 	{
