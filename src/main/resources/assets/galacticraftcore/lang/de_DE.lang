@@ -1,4 +1,4 @@
-﻿# Galacticraft Core Language File = GERMANY GERMAN
+# Galacticraft Core Language File = GERMANY GERMAN
 
 # GENERAL ITEMS
 item.oxygenTankLightFull.name=Kleiner Sauerstofftank
@@ -17,29 +17,12 @@ item.airFan.name=Ventilator
 item.oxygenConcentrator.name=Sauerstoffkonzentrator
 item.heavyPlating.name=Hochleistungsplatte
 item.engine.tier1engine.name=Raketentriebwerk (Stufe 1)
-item.engine.tier1booster.name=Booster (Stufe 1)
+item.engine.tier1booster.name=Hilfstriebwerk (Stufe 1)
 item.rocketFins.name=Raketenfinne
 item.noseCone.name=Raketennase
 item.sensorLens.name=Sensorlinse
 item.oxygenGear.name=Sauerstoffausrüstung
-item.flag.name=Flag ##NEEDS TRANSLATE##
-item.flag.american.name=Amerikanische Flagge
-item.flag.black.name=Schwarze Flagge
-item.flag.blue.name=Hellblaue Flagge
-item.flag.green.name=Hellgrüne Flagge
-item.flag.brown.name=Braune Flagge
-item.flag.darkblue.name=Blaue Flagge
-item.flag.darkgray.name=Graue Flagge
-item.flag.darkgreen.name=Grüne Flagge
-item.flag.gray.name=Hellgraue Flagge
-item.flag.magenta.name=Magenta Flag
-item.flag.orange.name=Orangene Flagge
-item.flag.pink.name=Pinke Flagge
-item.flag.purple.name=Violette Flagge
-item.flag.red.name=Rote Flagge
-item.flag.teal.name=Türkise Flagge
-item.flag.yellow.name=Gelbe Flagge
-item.flag.white.name=Flagge
+item.flag.name=Flagge
 item.parachute_plain.name=Fallschirm
 item.parachute_black.name=Schwarzer Fallschirm
 item.parachute_blue.name=Hellblauer Fallschirm
@@ -49,7 +32,7 @@ item.parachute_darkblue.name=Blauer Fallschirm
 item.parachute_darkgray.name=Grauer Fallschirm
 item.parachute_darkgreen.name=Grüner Fallschirm
 item.parachute_gray.name=Hellgrauer Fallschirm
-item.parachute_magenta.name=Magenta Parachute
+item.parachute_magenta.name=Magenta Fallschirm
 item.parachute_orange.name=Orangener Fallschirm
 item.parachute_pink.name=Pinker Fallschirm
 item.parachute_purple.name=Violetter Fallschirm
@@ -205,7 +188,7 @@ entity.GalacticraftCore.AlienVillager.name=Alien-Dorfbewohner
 entity.GalacticraftCore.Spaceship.name=Raumschiff
 entity.GalacticraftCore.GravityArrow.name=Pfeil
 entity.GalacticraftCore.Meteor.name=Meteor
-entity.GalacticraftCore.Buggy.name=Buggy
+entity.GalacticraftCore.Buggy.name=Mondrover
 entity.GalacticraftCore.Flag.name=Flagge
 entity.GalacticraftCore.ParaChest.name=Parakiste
 entity.GalacticraftCore.OxygenBubble.name=Sauerstoffblase
@@ -213,8 +196,8 @@ entity.GalacticraftCore.Lander.name=Weltraum-Landekapsel
 entity.GalacticraftCore.GCFlag.name=Flag ##NEEDS TRANSLATE##
 entity.GalacticraftCore.MeteorChunk.name=Meteor Chunk ##NEEDS TRANSLATE##
 
-# Schematics
-schematic.moonbuggy.name=Mond-Buggy
+# SCHEMATICS
+schematic.moonbuggy.name=Mondrover
 schematic.rocketT1.name=Rakete (Stufe 1)
 schematic.rocketT2.name=Rakete (Stufe 2)
 
@@ -226,6 +209,7 @@ death.attack.oxygenSuffocation=%1$s ist der Sauerstoff ausgegangen!
 
 # GALAXIES
 galaxy.blockyway.name=The Blocky Way
+galaxy.milkyWay=Milchstrasse
 
 # OTHER
 newversion.failed.name=Galacticraft-Update-Check fehlgeschlagen! Veruche es in 15 Sekunden erneut...
@@ -241,34 +225,17 @@ keybind.vehicleleft.name=[GC] Vehikel-Links-Taste
 keybind.vehicleright.name=[GC] Vehikel-Rechts-Taste
 keybind.vehicleup.name=[GC] Vehikel-Hoch-Taste
 keybind.vehicledown.name=[GC] Vehikel-Runter-Taste
-itemGroup.GalacticraftBlocks=Galacticraft Blocks ##NEEDS TRANSLATE##
-itemGroup.GalacticraftItems=Galacticraft Items ##NEEDS TRANSLATE##
 
 # CREATIVE TABS
-itemGroup.GalacticraftCore=Galacticraft
+itemGroup.GalacticraftBlocks=Galacticraft Blöcke
+itemGroup.GalacticraftItems=Galacticraft Items
 
 # GUI
-container.cargoloader.name=Cargo-Lader
-container.cargounloader.name=Cargo-Entlader
-container.fuelloader.name=Treibstofflader
-container.oxygencollector.name=Sauerstoffsammler
-container.oxygencompressor.name=Sauerstoffkompressor
-container.oxygendistributor.name=Sauerstoffverteiler
-container.oxygensealer.name=Sauerstoff-Versiegeler
-container.parachest.name=Paratruhe
-container.refinery.name=Raffinerie
-container.treasurechest.name=Schatztruhe
-container.lander.name=Weltraum-Lander
-container.spaceship.name=Rakete (Stufe 1)
-container.solarbasic.name=Basis-Solarmodul
-container.solaradvanced.name=Fortgeschrittenes Solarmodul
-container.oxygendecompressor.name=Sauerstoffdekompressor
-
 gui.message.out.name=Out
 gui.message.in.name=In
 gui.message.status.name=Status
-gui.message.oxoutput.name=Sauerstoff-Output
-gui.message.oxinput.name=-Sauerstoff-Input
+gui.message.oxoutput.name=Sauerstoff-Ausgang
+gui.message.oxinput.name=-Sauerstoff-Eingang
 gui.message.fuel.name=Treibstoff
 gui.message.full.name=voll
 gui.message.page.name=Seite
@@ -286,16 +253,16 @@ gui.message.meansurfacetemp.name=Oberflächen-Durchschnittstemp.
 gui.message.energy=Energie
 gui.message.maxEnergy=Max. Energie
 gui.message.bubbleVisible.name=Blase Sichtbar
-gui.message.launch.name=Launch ##NEEDS TRANSLATE##
-gui.message.clickAgain.0.name=Click again to zoom (view moons & satellites) ##NEEDS TRANSLATE##
-gui.message.clickAgain.1.name=Click again to zoom (view moons) ##NEEDS TRANSLATE##
-gui.message.clickAgain.2.name=Click again to zoom (view satellites) ##NEEDS TRANSLATE##
-gui.message.clickAgain.3.name=Click again to zoom ##NEEDS TRANSLATE##
-gui.message.exit.name=Exit ##NEEDS TRANSLATE##
-gui.message.tier.name=Tier %d ##NEEDS TRANSLATE##
-gui.message.canCreateSpaceStation.name=A Space Station can be created here! ##NEEDS TRANSLATE##
-gui.message.cannotCreateSpaceStation.name=A Space Station cannot be created here. ##NEEDS TRANSLATE##
-gui.message.createSS.name=Create ##NEEDS TRANSLATE##
+gui.message.launch.name=Starten
+gui.message.clickAgain.0.name=Zum Zoomen erneut klicken (Monde & Satelliten sehen)
+gui.message.clickAgain.1.name=Zum Zoomen erneut klicken (Monde sehen)
+gui.message.clickAgain.2.name=Zum Zoomen erneut klicken (Satelliten sehen)
+gui.message.clickAgain.3.name=Zum Zoomen erneut klicken
+gui.message.exit.name=Ausgang
+gui.message.tier.name=Stufe %d
+gui.message.canCreateSpaceStation.name=Hier kann eine Raumstation errichtet werden!
+gui.message.canCreateSpaceStation.name=Hier kann keine Raumstation errichtet werden!
+gui.message.createSS.name=Erstelle
 
 gui.status.active.name=Aktiv
 gui.status.missingleaves.name=Nicht genug Blätter
@@ -350,7 +317,7 @@ gui.button.loadfuel.name=Lade Treibstoff
 gui.button.refine.name=Raffiniere
 gui.button.back.name=Zurück
 gui.button.next.name=Weiter
-gui.button.unlockschematic.name=Unlock Schematic
+gui.button.unlockschematic.name=Schematic freischalten
 gui.button.stoprefine.name=Stoppe Raffinieren
 gui.button.enable.name=Aktiviere
 gui.button.disable.name=Deaktiviere
@@ -454,8 +421,8 @@ gui.missingCore.name.0=MicdoodleCore nicht gefunden im Mods-Ordner
 gui.missingCore.name.1=Galacticraft konnte nicht laden
 gui.missingCore.name.2=Schließe Minecraft und installiere MicdoodleCore
 gui.missingCore.name.3=Klicke hier, um die Download-Seite zu öffnen
-gui.electricCompressor.desc.0=Progress ##NEEDS TRANSLATE##
-gui.showBubble.desc.0=Show Bubble ##NEEDS TRANSLATE##
+gui.electricCompressor.desc.0=Fortschritt
+gui.showBubble.desc.0=Zeige Blase
 
 gui.spaceRace.create.close.name=Schließen
 gui.spaceRace.create.back.name=Zurück
@@ -482,21 +449,6 @@ gui.spaceRace.join.title.name=Am Weltraumrennen teilnehmen
 gui.spaceRace.join.owner.name=Eigentümer
 gui.spaceRace.join.memberCount.name=%d Teilnehmer
 
-# DIMENSIONS
-dimension.Overworld.name=Overworld
-dimension.Moon.name=Mond
-dimension.Sun.name=Sonne
-planet.overworld=Overworld
-moon.moon=Mond
-galaxy.milkyWay=Milky Way ##NEEDS TRANSLATE##
-solarsystem.sol=Sol ##NEEDS TRANSLATE##
-planet.mercury=Mercury ##NEEDS TRANSLATE##
-planet.venus=Venus ##NEEDS TRANSLATE##
-planet.jupiter=Jupiter ##NEEDS TRANSLATE##
-planet.saturn=Saturn ##NEEDS TRANSLATE##
-planet.uranus=Uranus ##NEEDS TRANSLATE##
-planet.neptune=Neptune ##NEEDS TRANSLATE##
-
 gui.message.moon.daynightcycle.0.name=29.5 Erdtage
 gui.message.moon.daynightcycle.1.name=
 gui.message.moon.surfacegravity.0.name=0.1654g
@@ -518,6 +470,37 @@ gui.message.overworld.atmosphere.0.name=Stickstoff und Sauerstoff
 gui.message.overworld.atmosphere.1.name=Ermöglicht Leben
 gui.message.overworld.meansurfacetemp.0.name=14C
 gui.message.overworld.meansurfacetemp.1.name=
+
+# CONTAINERS
+container.cargoloader.name=Cargo-Lader
+container.cargounloader.name=Cargo-Entlader
+container.fuelloader.name=Treibstofflader
+container.oxygencollector.name=Sauerstoffsammler
+container.oxygencompressor.name=Sauerstoffkompressor
+container.oxygendistributor.name=Sauerstoffverteiler
+container.oxygensealer.name=Sauerstoff-Versiegeler
+container.parachest.name=Paratruhe
+container.refinery.name=Raffinerie
+container.treasurechest.name=Schatztruhe
+container.lander.name=Weltraum-Lander
+container.spaceship.name=Rakete (Stufe 1)
+container.solarbasic.name=Basis-Solarmodul
+container.solaradvanced.name=Fortgeschrittenes Solarmodul
+container.oxygendecompressor.name=Sauerstoffdekompressor
+
+# DIMENSIONS
+dimension.Overworld.name=Erde
+dimension.Moon.name=Mond
+dimension.Sun.name=Sonne
+planet.overworld=Erde
+planet.mercury=Merkur
+planet.venus=Venus
+planet.jupiter=Jupiter
+planet.saturn=Saturn
+planet.uranus=Uranus
+planet.neptune=Neptun
+moon.moon=Mond
+solarsystem.sol=Sol
 
 # COMMANDS
 commands.dimensionteleport=%s wurde in die Atmosphäre geschickt%s
