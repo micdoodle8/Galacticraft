@@ -1069,7 +1069,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
             }
             if (success)
             {
-                directory = new File(directory, "capeCache");
+                directory = new File(directory, "flagCache");
                 if (!directory.exists())
                 {
                     success = directory.mkdir();
