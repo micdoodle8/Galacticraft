@@ -63,6 +63,13 @@ public class ModelFlag extends ModelBase
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glDisable(GL11.GL_CULL_FACE);
 
+            float windLevel = 1.0F;
+
+            if (entity.worldObj.provider instanceof IGalacticraftWorldProvider)
+            {
+                windLevel = ((IGalacticraftWorldProvider) entity.worldObj.provider).getWindLevel();
+            }
+
             for (int i = 0; i < entity.flagData.getWidth(); i++) {
                 for (int j = 0; j < entity.flagData.getHeight(); j++) {
                     GL11.glPushMatrix();
@@ -70,10 +77,12 @@ public class ModelFlag extends ModelBase
                     float offset = 0.0F;
                     float offsetAhead = 0.0F;
 
-                    if (!(entity.worldObj.provider instanceof IGalacticraftWorldProvider))
+                    if (windLevel > 0)
                     {
                         offset = (float) (Math.sin(ticks / 2.0F + i * 50 + 3) / 25.0F) * i / 30.0F;
                         offsetAhead = (float) (Math.sin(ticks / 2.0F + (i + 1) * 50 + 3) / 25.0F) * (i + 1) / 30.0F;
+                        offset *= windLevel;
+                        offsetAhead *= windLevel;
                     }
 
                     Vector3 col = entity.flagData.getColorAt(i, j);

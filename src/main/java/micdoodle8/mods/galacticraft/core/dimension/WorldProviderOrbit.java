@@ -1411,5 +1411,11 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 		return 0;
 	}
 
+    @Override
+    public float getWindLevel()
+    {
+        return 0.1F;
+    }
+
 	//TODO Occasional call to checkSS to update centre of mass etc (in case the player has been building)
 }

@@ -317,4 +317,10 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
 	{
 		return 0;
 	}
+
+    @Override
+    public float getWindLevel()
+    {
+        return 0;
+    }
 }

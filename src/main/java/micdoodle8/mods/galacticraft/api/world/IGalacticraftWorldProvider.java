@@ -82,4 +82,13 @@ public interface IGalacticraftWorldProvider
 	 *         Zero for neutral
 	 */
 	public float getThermalLevelModifier();
+
+    /**
+     * Amount of wind on this world. Used for flag waving.
+     *
+     * Earth has a value of 1.0F, Luna (Moon) has a value of 0.0F.
+     *
+     * @return Flag movement magnitude. Relative to earth's value of 1.0F
+     */
+    public float getWindLevel();
 }

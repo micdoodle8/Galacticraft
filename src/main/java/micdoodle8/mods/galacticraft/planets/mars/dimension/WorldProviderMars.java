@@ -293,4 +293,10 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
 	{
 		return -1;
 	}
+
+    @Override
+    public float getWindLevel()
+    {
+        return 0.3F;
+    }
 }

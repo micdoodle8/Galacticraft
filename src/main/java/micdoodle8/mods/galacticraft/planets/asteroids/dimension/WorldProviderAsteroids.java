@@ -285,4 +285,10 @@ public class WorldProviderAsteroids extends WorldProviderSpace
 		
 		return result;
 	}
+
+    @Override
+    public float getWindLevel()
+    {
+        return 0.05F;
+    }
 }
