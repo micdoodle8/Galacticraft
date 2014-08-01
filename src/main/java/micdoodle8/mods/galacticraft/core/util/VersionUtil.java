@@ -3,11 +3,13 @@ package micdoodle8.mods.galacticraft.core.util;
 import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
 
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.versioning.DefaultArtifactVersion;
 import cpw.mods.fml.common.versioning.VersionParser;
 import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntitySlimelingEgg;
@@ -125,6 +127,7 @@ public class VersionUtil
         return VersionParser.parseRange("[" + version + "]").containsVersion(mcVersion);
     }
 
+    @Optional.Method(modid = Constants.MOD_ID_PLANETS)
     public static void setSlimelingOwner(EntitySlimeling slimeling, String ownerName)
     {
         try
