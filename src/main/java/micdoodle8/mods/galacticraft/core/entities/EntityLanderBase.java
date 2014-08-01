@@ -32,6 +32,8 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     protected boolean hasReceivedPacket;
     private boolean lastShouldMove;
     private UUID persistantRiderUUID;
+    private Boolean shouldMoveClient;
+    private Boolean shouldMoveServer;
 
     public EntityLanderBase(World var1, float yOffset)
     {
@@ -46,6 +48,16 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
         {
             this.riddenByEntity.setPosition(this.posX, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ);
         }
+    }
+
+    @Override
+    public boolean shouldSendAdvancedMotionPacket() {
+        return this.shouldMoveClient != null && this.shouldMoveServer != null;
+    }
+
+    @Override
+    public boolean canSetPositionClient() {
+        return this.shouldSendAdvancedMotionPacket();
     }
 
     @Override
@@ -243,6 +255,11 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     @Override
     public boolean shouldMove()
     {
+        if (this.shouldMoveClient == null || this.shouldMoveServer == null)
+        {
+            return false;
+        }
+
         if (this.ticks < 40)
         {
             return false;
@@ -284,6 +301,17 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
             objList.add(this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount);
         }
 
+        if (this.worldObj.isRemote)
+        {
+            this.shouldMoveClient = this.shouldMove();
+            objList.add(this.shouldMoveClient);
+        }
+        else
+        {
+            this.shouldMoveServer = this.shouldMove();
+            objList.add(this.shouldMoveServer);
+        }
+
         return objList;
     }
 
@@ -321,6 +349,12 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
                 }
 
                 this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, buffer.readInt()));
+
+                this.shouldMoveServer = buffer.readBoolean();
+            }
+            else
+            {
+                this.shouldMoveClient = buffer.readBoolean();
             }
         }
         catch (final Exception e)

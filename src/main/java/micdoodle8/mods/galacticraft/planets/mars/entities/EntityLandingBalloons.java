@@ -244,6 +244,11 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
             this.motionY = this.getInitialMotionY();
         }
 
+        if (!this.shouldMove())
+        {
+            return new Vector3(0, 0, 0);
+        }
+
         return new Vector3(this.motionX, this.ticks < 40 ? 0 : this.motionY, this.motionZ);
     }
 

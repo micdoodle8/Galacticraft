@@ -274,6 +274,10 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
 		}
 	}
 
+    public abstract boolean canSetPositionClient();
+
+    public abstract boolean shouldSendAdvancedMotionPacket();
+
 	@Override
 	public void onUpdate()
 	{
@@ -286,7 +290,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
 
 		super.onUpdate();
 
-		if (this.worldObj.isRemote && (this.riddenByEntity == null || !(this.riddenByEntity instanceof EntityPlayer) || !FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity)))
+		if (this.canSetPositionClient() && this.worldObj.isRemote && (this.riddenByEntity == null || !(this.riddenByEntity instanceof EntityPlayer) || !FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity)))
 		{
 			double x;
 			double y;
@@ -310,17 +314,6 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
 				y = this.posY + this.motionY;
 				z = this.posZ + this.motionZ;
 				this.setPosition(x, y, z);
-
-//				if (this.onGround)
-//				{
-//					this.motionX *= 0.5D;
-//					this.motionY *= 0.5D;
-//					this.motionZ *= 0.5D;
-//				}
-//
-//				this.motionX *= 0.9900000095367432D;
-//				this.motionY *= 0.949999988079071D;
-//				this.motionZ *= 0.9900000095367432D;
 			}
 		}
 
@@ -362,15 +355,18 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
 			this.onGroundHit();
 		}
 
-		if (this.worldObj.isRemote)
-		{
-			GalacticraftCore.packetPipeline.sendToServer(new PacketEntityUpdate(this));
-		}
+        if (shouldSendAdvancedMotionPacket())
+        {
+            if (this.worldObj.isRemote)
+            {
+                GalacticraftCore.packetPipeline.sendToServer(new PacketEntityUpdate(this));
+            }
 
-		if (!this.worldObj.isRemote && this.ticks % 5 == 0)
-		{
-			GalacticraftCore.packetPipeline.sendToAllAround(new PacketEntityUpdate(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 50.0D));
-		}
+            if (!this.worldObj.isRemote && this.ticks % 5 == 0)
+            {
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketEntityUpdate(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 50.0D));
+            }
+        }
 
 		if (!this.worldObj.isRemote && this.ticks % 5 == 0)
 		{
