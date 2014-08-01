@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -193,7 +194,7 @@ public class EntityBubble extends EntityAdvanced implements IPacketReceiver, IBu
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound nbt)
 	{
-        System.err.println("WRITE" + size);
+        if (ConfigManagerCore.enableDebug) System.err.println("Terraformer debug: writing bubble size " + size);
 		nbt.setFloat("bubbleSizeF", this.size);
 		nbt.setBoolean("ShouldRender", this.shouldRender);
 	}
