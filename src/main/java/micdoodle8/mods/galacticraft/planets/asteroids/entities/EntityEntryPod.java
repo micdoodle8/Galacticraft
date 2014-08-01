@@ -108,7 +108,7 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
 
     @Override
     public String getInventoryName() {
-        return "EntryPodAsteroids";
+        return GCCoreUtil.translate("container.entryPod.name");
     }
 
     @Override
