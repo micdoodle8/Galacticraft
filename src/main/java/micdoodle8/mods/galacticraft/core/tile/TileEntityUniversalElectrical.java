@@ -162,7 +162,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 
 			if (item instanceof IItemElectric)
 			{
-				this.storage.receiveEnergyGC(ElectricItemHelper.dischargeItem(itemStack, energyToDischarge), false);
+				this.storage.receiveEnergyGC(ElectricItemHelper.dischargeItem(itemStack, energyToDischarge));
 			}
 			else if (NetworkConfigHandler.isIndustrialCraft2Loaded())
 			{
@@ -175,7 +175,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 						{
 							//For 1.7.10 - float energyDischarged = (float) ic2.api.item.ElectricItem.manager.discharge(itemStack, energyToDischarge * NetworkConfigHandler.TO_IC2_RATIO, 4, false, false, false) * NetworkConfigHandler.IC2_RATIO;
 							float energyDischarged = ic2.api.item.ElectricItem.manager.discharge(itemStack, (int) (energyToDischarge * NetworkConfigHandler.TO_IC2_RATIO), 4, false, false) * NetworkConfigHandler.IC2_RATIO;
-							this.storage.receiveEnergyGC(energyDischarged, false);
+							this.storage.receiveEnergyGC(energyDischarged);
 						}
 					} else if (item instanceof ISpecialElectricItem)
 					{
@@ -184,7 +184,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 						{
 							//For 1.7.10 - float energyDischarged = (float) electricItem.getManager(itemStack).discharge(itemStack, energyToDischarge * NetworkConfigHandler.TO_IC2_RATIO, 4, false, false, false) * NetworkConfigHandler.IC2_RATIO;
 							float energyDischarged = electricItem.getManager(itemStack).discharge(itemStack, (int) (energyToDischarge * NetworkConfigHandler.TO_IC2_RATIO), 4, false, false) * NetworkConfigHandler.IC2_RATIO;
-							this.storage.receiveEnergyGC(energyDischarged, false);
+							this.storage.receiveEnergyGC(energyDischarged);
 						}
 					}
 				}
@@ -222,7 +222,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 
 			if (NetworkConfigHandler.isIndustrialCraft2Loaded() && this.IC2surplusInGJ >= 0.001F)
 			{
-				this.IC2surplusInGJ -= this.storage.receiveEnergyGC(this.IC2surplusInGJ, true);
+				this.IC2surplusInGJ -= this.storage.receiveEnergyGC(this.IC2surplusInGJ);
 				if (this.IC2surplusInGJ < 0.001F) this.IC2surplusInGJ = 0;
 			}
 			
@@ -238,7 +238,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 				double energyBC = handler.getEnergyStored();
 				if (energyBC > 0D)
 				{
-					float usedBC = this.storage.receiveEnergyGC((float) energyBC * NetworkConfigHandler.BC3_RATIO, false) * NetworkConfigHandler.TO_BC_RATIO;
+					float usedBC = this.storage.receiveEnergyGC((float) energyBC * NetworkConfigHandler.BC3_RATIO) * NetworkConfigHandler.TO_BC_RATIO;
 					energyBC -= usedBC;
 					if (energyBC < 0D) energyBC = 0D;
 					handler.setEnergy(energyBC);
@@ -329,7 +329,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 			return Math.ceil((this.storage.getCapacityGC() - this.storage.getEnergyStoredGC()) * NetworkConfigHandler.TO_IC2_RATIO);
 		}
 
-		float received = this.storage.receiveEnergyGC(this.IC2surplusInGJ, true);
+		float received = this.storage.receiveEnergyGC(this.IC2surplusInGJ);
 		this.IC2surplusInGJ -= received;
 		if (this.IC2surplusInGJ < 0.001F)
 		{
@@ -351,7 +351,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 			return Math.ceil((this.storage.getCapacityGC() - this.storage.getEnergyStoredGC()) * NetworkConfigHandler.TO_IC2_RATIO);
 		}
 
-		float received = this.storage.receiveEnergyGC(this.IC2surplusInGJ, true);
+		float received = this.storage.receiveEnergyGC(this.IC2surplusInGJ);
 		this.IC2surplusInGJ -= received;
 		if (this.IC2surplusInGJ < 0.001F)
 		{

@@ -109,6 +109,13 @@ public class EnergyStorage implements IEnergyStorageGC
 		return energyReceived;
 	}
 
+	public float receiveEnergyGC(float maxReceive)
+	{
+		float energyReceived = Math.min(this.capacity - this.energy, Math.min(this.maxReceive, maxReceive));
+		this.energy += energyReceived;
+		return energyReceived;
+	}
+
 	@Override
 	public float extractEnergyGC(float maxExtract, boolean simulate)
 	{
