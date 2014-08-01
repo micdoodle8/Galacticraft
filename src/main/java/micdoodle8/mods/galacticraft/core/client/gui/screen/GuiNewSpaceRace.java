@@ -1061,9 +1061,27 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
         try
         {
             String dirName = Minecraft.getMinecraft().mcDataDir.getAbsolutePath();
-            File file = new File(dirName, this.spaceRaceData.getTeamName() + "-" + System.currentTimeMillis() + ".png");
-            ImageIO.write(this.spaceRaceData.getFlagData().toBufferedImage(), "png", file);
-            return file;
+            File directory = new File(dirName, "assets");
+            boolean success = true;
+            if (!directory.exists())
+            {
+                success = directory.mkdir();
+            }
+            if (success)
+            {
+                directory = new File(directory, "capeCache");
+                if (!directory.exists())
+                {
+                    success = directory.mkdir();
+                }
+
+                if (success)
+                {
+                    File file = new File(directory, this.spaceRaceData.getSpaceRaceID() + ".png");
+                    ImageIO.write(this.spaceRaceData.getFlagData().toBufferedImage(), "png", file);
+                    return file;
+                }
+            }
         }
         catch (IOException e)
         {
