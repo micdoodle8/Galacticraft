@@ -1,7 +1,7 @@
 # Galacticraft Moon Language File = Polski
+
 # GENERAL ITEMS
 item.meteoricIronRaw.name=Surowe Meteorytowe ¯elazo
-item.meteoric_iron_ingot.name=Meteoric Iron Ingot ##NEEDS TRANSLATE##
 item.compressedMeteoricIron.name=Compressed Meteoric Iron ##NEEDS TRANSLATE##
 item.meteoricIronIngot.name=Sztabka Meteorytowego ¯elaza
 
@@ -23,9 +23,7 @@ tile.moonBlock.cheesestone.name=Z³o¿e Sera
 tile.moonBlock.bricks.name=Ksiê¿ycowe Ceg³y
 tile.cheeseBlock.name=Blok Sera
 
-dimension.Moon.name=Moon
-
 # GUI
 gui.choosePlanet.desc.moon=Nadaj¹cy siê do Zamieszkania#Brak Tlenu#Grawitacja: 18%
 
-itemGroup.GalacticraftMoon=Galacticraft Ksiê¿yc
+dimension.Moon.name=Ksiê¿yc

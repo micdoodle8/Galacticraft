@@ -2,7 +2,6 @@
 
 # GENERAL ITEMS
 item.meteoricIronRaw.name=Fer météorique brut
-item.meteoric_iron_ingot.name=Lingot de Fer météorique
 item.compressedMeteoricIron.name=Fer météorique comprimé
 item.meteoricIronIngot.name=Lingot de Fer météorique
 
@@ -28,5 +27,3 @@ tile.cheeseBlock.name=Bloc de fromage
 gui.choosePlanet.desc.moon=Habitable#Pas d'oxygène#Gravité: 18%
 
 dimension.Moon.name=Lune
-
-itemGroup.GalacticraftMoon=Galacticraft Lune
