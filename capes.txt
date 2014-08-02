@@ -56,3 +56,4 @@ MattRockSolid:capeBlue
 kelvinxj:capeRainbow
 BCQX:capeCyan
 Shamrocker101:capeRainbow
+Truman04:capeLightGray
