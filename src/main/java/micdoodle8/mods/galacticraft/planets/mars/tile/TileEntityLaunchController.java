@@ -57,6 +57,7 @@ public class TileEntityLaunchController extends ElectricBlockWithInventory imple
 	public boolean launchSchedulingEnabled;
 	public boolean requiresClientUpdate;
 	public Object attachedDock = null;
+	private boolean frequencyCheckNeeded = false;
 
 	public TileEntityLaunchController()
 	{
@@ -70,6 +71,12 @@ public class TileEntityLaunchController extends ElectricBlockWithInventory imple
 
 		if (!this.worldObj.isRemote)
 		{
+			if (this.frequencyCheckNeeded)
+			{	
+				this.checkDestFrequencyValid();
+				this.frequencyCheckNeeded = false;
+			}
+			
 			if (this.requiresClientUpdate)
 			{
 				// PacketDispatcher.sendPacketToAllPlayers(this.getPacket());
@@ -204,7 +211,7 @@ public class TileEntityLaunchController extends ElectricBlockWithInventory imple
 		this.launchDropdownSelection = nbt.getInteger("LaunchSelection");
 		this.frequency = nbt.getInteger("ControllerFrequency");
 		this.destFrequency = nbt.getInteger("TargetFrequency");
-		this.checkDestFrequencyValid();
+		this.frequencyCheckNeeded = true;
 		this.launchPadRemovalDisabled = nbt.getBoolean("LaunchPadRemovalDisabled");
 		this.launchSchedulingEnabled = nbt.getBoolean("LaunchPadSchedulingEnabled");
 		this.requiresClientUpdate = true;

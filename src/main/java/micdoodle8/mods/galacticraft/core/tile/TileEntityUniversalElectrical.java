@@ -323,19 +323,17 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 	public double getDemandedEnergy()
 	{
 		try {
-		if (this.IC2surplusInGJ < 0.001F)
-		{
-			this.IC2surplusInGJ = 0F;
-			return Math.ceil((this.storage.getCapacityGC() - this.storage.getEnergyStoredGC()) * NetworkConfigHandler.TO_IC2_RATIO);
-		}
-
-		float received = this.storage.receiveEnergyGC(this.IC2surplusInGJ);
-		this.IC2surplusInGJ -= received;
-		if (this.IC2surplusInGJ < 0.001F)
-		{
-			this.IC2surplusInGJ = 0F;
-			return Math.ceil((this.storage.getCapacityGC() - this.storage.getEnergyStoredGC()) * NetworkConfigHandler.TO_IC2_RATIO);
-		}
+			if (this.IC2surplusInGJ < 0.001F)
+			{
+				this.IC2surplusInGJ = 0F;
+				return Math.ceil((this.storage.receiveEnergyGC(Integer.MAX_VALUE, true)) * NetworkConfigHandler.TO_IC2_RATIO);
+			}
+	
+			float received = this.storage.receiveEnergyGC(this.IC2surplusInGJ, true);
+			if (received == this.IC2surplusInGJ)
+			{
+				return Math.ceil((this.storage.receiveEnergyGC(Integer.MAX_VALUE, true) - this.IC2surplusInGJ) * NetworkConfigHandler.TO_IC2_RATIO);
+			}
 		} catch (Exception e) { e.printStackTrace(); }
 		return 0D;
 	}
@@ -345,19 +343,17 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 	public double demandedEnergyUnits()
 	{
 		try {
-		if (this.IC2surplusInGJ < 0.001F)
-		{
-			this.IC2surplusInGJ = 0F;
-			return Math.ceil((this.storage.getCapacityGC() - this.storage.getEnergyStoredGC()) * NetworkConfigHandler.TO_IC2_RATIO);
-		}
-
-		float received = this.storage.receiveEnergyGC(this.IC2surplusInGJ);
-		this.IC2surplusInGJ -= received;
-		if (this.IC2surplusInGJ < 0.001F)
-		{
-			this.IC2surplusInGJ = 0F;
-			return Math.ceil((this.storage.getCapacityGC() - this.storage.getEnergyStoredGC()) * NetworkConfigHandler.TO_IC2_RATIO);
-		}
+			if (this.IC2surplusInGJ < 0.001F)
+			{
+				this.IC2surplusInGJ = 0F;
+				return Math.ceil((this.storage.receiveEnergyGC(Integer.MAX_VALUE, true)) * NetworkConfigHandler.TO_IC2_RATIO);
+			}
+	
+			float received = this.storage.receiveEnergyGC(this.IC2surplusInGJ, true);
+			if (received == this.IC2surplusInGJ)
+			{
+				return Math.ceil((this.storage.receiveEnergyGC(Integer.MAX_VALUE, true) - this.IC2surplusInGJ) * NetworkConfigHandler.TO_IC2_RATIO);
+			}
 		} catch (Exception e) { e.printStackTrace(); }
 		return 0D;
 	}
