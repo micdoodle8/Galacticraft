@@ -2,21 +2,16 @@
 
 # GENERAL ITEMS
 item.meteoricIronRaw.name=Raaka meteorimainen rauta
-item.meteoric_iron_ingot.name=Meteoric Iron Ingot ##NEEDS TRANSLATE##
 item.compressedMeteoricIron.name=Compressed Meteoric Iron ##NEEDS TRANSLATE##
 item.meteoricIronIngot.name=Meteorimainen rautaharkko
-
 
 # FOOD
 item.cheeseCurd.name=Juustomassa
 item.cheeseBlock.name=Juustokuutio
 
-
 # TOOLS
 
-
 # ARMOR
-
 
 # BLOCKS
 tile.moonBlock.moonstone.name=Kivi
@@ -28,11 +23,7 @@ tile.moonBlock.cheesestone.name=Juustomalmi
 tile.moonBlock.bricks.name=Tiiliä
 tile.cheeseBlock.name=Juustokuutio
 
-dimension.Moon.name=Moon
-
-
 # GUI
 gui.choosePlanet.desc.moon=Asuttava#Ei happea#Painovoima: 18%
 
-
-itemGroup.GalacticraftMoon=Galacticraft Kuu
+dimension.Moon.name=Kuu

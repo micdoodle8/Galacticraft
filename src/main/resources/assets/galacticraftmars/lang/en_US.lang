@@ -106,7 +106,7 @@ gui.launchController.desc.2=Whether the launch pad should$be removed on launch
 gui.launchController.desc.3=When this criteria is met,$rocket will launch
 gui.terraformer.desc.0=Water Tank
 
-gui.gasTank.desc.0=Gas storage
+gui.gasTank.desc.0=Gas Storage
 gui.liquidTank.desc.0=Liquid Tank
 gui.status.nogas.name=No gas
 gui.status.liquefying.name=Liquefying
