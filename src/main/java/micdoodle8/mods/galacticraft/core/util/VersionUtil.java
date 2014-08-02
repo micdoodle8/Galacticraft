@@ -22,6 +22,7 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -62,9 +63,7 @@ public class VersionUtil
 
         try
         {
-            final URLClassLoader loader = new LaunchClassLoader(((URLClassLoader) GalacticraftCore.instance.getClass().getClassLoader()).getURLs());
-            URL classResource = loader.findResource(String.valueOf("net.minecraft.world.World").replace('.', '/').concat(".class"));
-            deobfuscated = classResource != null;
+            deobfuscated = Launch.classLoader.getClassBytes("net.minecraft.world.World") != null;
         }
         catch (final Exception e)
         {
