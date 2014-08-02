@@ -11,7 +11,7 @@ item.slimelingCargo.name=Schleimling-Inventarbeutel
 item.key.T2.name=Dungeonschlüssel (Stufe 2)
 item.compressedDesh.name=Gepresstes Desh
 item.spaceshipTier2.cargoRocket.name=Güterrakete
-item.fluidManip.name=Flüssigkeit Manipulator
+item.fluidManip.name=Flüssigkeitsmanipulator
 
 # TOOLS
 item.deshPick.name=Desh-Spitzhacke
@@ -23,7 +23,7 @@ item.deshSword.name=Desh-Schwert
 # ARMOR
 item.deshHelmet.name=Desh-Helm
 item.deshChestplate.name=Desh-Brustpanzer
-item.deshLeggings.name=Desh-Hose
+item.deshLeggings.name=Desh-Beinschutz
 item.deshBoots.name=Desh-Stiefel
 
 # BLOCKS
@@ -44,9 +44,9 @@ tile.slimelingEgg.yellowEgg.name=Gelbes Schleimling-Ei
 tile.marsMachine.0.name=Terraformer
 tile.marsMachine.1.name=Kryogene Kammer
 tile.marsMachine.2.name=Start-Controller
-tile.marsMachine.4.name=Gas Verflüssiger
-tile.marsMachine.5.name=Methan-Synthesizer
-tile.marsMachine.6.name=Wasser-Elektrolyseur
+tile.marsMachine.4.name=Gasverflüssiger
+tile.marsMachine.5.name=Methansynthesegerät
+tile.marsMachine.6.name=Wasser-Elektolysegerät
 tile.sludge.name=Bakterieller Schlamm
 tile.creeperEgg.name=Creeper-Ei
 tile.cavernVines.name=Kavernöse Weinranken
@@ -68,7 +68,7 @@ tile.tintedGlassPane.red.name=Rot getönte Glasscheibe
 tile.tintedGlassPane.black.name=Schwarz getönte Glasscheibe
 
 # GUI
-gui.choosePlanet.desc.mars=Bewohnbar#Kein SauerstoffSchwerkraft: 38%
+gui.choosePlanet.desc.mars=Bewohnbar#Kein Sauerstoff#Schwerkraft: 38%
 item.deshPickSlime.description.name=Kann Schleimling-Eier ernten
 gui.message.noEnergy.name=Nicht genügend Energie
 gui.message.noWater.name=Nicht genügend Wasser
@@ -98,50 +98,54 @@ gui.message.redstoneSig.name=Redstone-Signal
 gui.message.notSet.name=Nicht eingestellt
 gui.message.notEnough.name=Nicht genug
 gui.message.success.name=Erfolg
-gui.launchController.desc.0=Das ist der Start-Controller's$einmalige frequenz
-gui.launchController.desc.1=Frequenz fuer die Raketen zu starten
-gui.launchController.desc.2=Ob die rampe being start enfernt werden soll
-gui.launchController.desc.3=Wenn die Kriterien erfüllt sind,$Rakete wird starten
+
+	# Dollar sign ($) will split text onto a new line
+gui.launchController.desc.0=Dies ist die spezifische Frequenz$des Start-Controllers
+gui.launchController.desc.1=Frequenz, zu welcher die Raketen fliegen
+gui.launchController.desc.2=Ob die Rampe beim Start$enfernt werden soll
+gui.launchController.desc.3=Wenn die Kriterien erfüllt sind,$wird die Rakete starten
 gui.terraformer.desc.0=Wasser Tank
-gui.gasTank.desc.0=Gas Speicher
-gui.liquidTank.desc.0=Flüssigkeit Tank
+
+gui.gasTank.desc.0=Gasspeicher
+gui.liquidTank.desc.0=Flüssigkeitstank
 gui.status.nogas.name=Kein Gas
 gui.status.liquefying.name=Verflüssigen
-gui.status.needsCarbon.name=Braucht Karbon
-gui.message.lowEnergy.name=Geringe Energie
+gui.status.processing.name=Synthetisieren
+gui.status.needsCarbon.name=Benötigt Kohlenstoff
+gui.status.tankfull.name=Tank voll
+gui.status.tanksfull.name=Tanks voll
+gui.message.lowEnergy.name=Zu wenig Energie
 gui.button.liquefy.name=Prozess
-gui.button.liquefyStop.name=Stop
-gui.gasInput.desc.0=Versuche einen Methan$Gas Kanister hier zu platzieren 
-gui.gasInput.desc.1=(Villeicht alternativ,$einen Atmosphärenventil)
-gui.hydrogenInput.desc.0=Dies nimmt einen wasserstoff-tank
-gui.hydrogenInput.desc.1=oder einen Atmosphärenventil
-gui.liquidOutput.desc.2=flüssiggastank
-gui.methaneOutput.desc.2=methan-tank
-gui.message.withAtmosphere0.name=auf einen planeten mit reichlich
-gui.message.withAtmosphere1.name=in der atmosphäre
-item.carbonFragments.name=Fragmentierte Karbon
-gas.carbondioxide.name=Kohlendioxid
+gui.button.liquefyStop.name=Stopp
+gui.gasInput.desc.0=Versuche, einen Methangaskanister$ hier zu platzieren 
+gui.gasInput.desc.1=(Villeicht alternativ$ein Luftventil)
+gui.hydrogenInput.desc.0=Dies nimmt einen Wasserstofftank
+gui.hydrogenInput.desc.1=oder ein Atmosphärenventil auf
+gui.liquidOutput.desc.2=Flüssiggastank
+gui.methaneOutput.desc.2=Methantank
+gui.message.withAtmosphere0.name=auf einen Planeten mit reichlich
+gui.message.withAtmosphere1.name=in der Atmosphäre
+item.carbonFragments.name=Fragmentierter Kohlenstoff
+
+gas.carbondioxide.name=Kohlenstoffdioxid
 gas.oxygen.name=Sauerstoff
 gas.nitrogen.name=Stickstoff
 
 gui.desc.reinforcedPlateT2.name=Stufe 2
-
-itemGroup.GalacticraftMars=Galacticraft Mars
-
 dimension.Mars.name=Mars
 planet.mars=Mars
 
-# Schematics
+# SCHEMATICS
 schematic.rocketT3.name=Rakete (Stufe 3)
-schematic.cargoRocket.name=Automatische Güterrakete 
+schematic.cargoRocket.name=Automatische Güterrakete
 
-# Entities
+# ENTITIES
 entity.Sludgeling.name=Schlammling
 entity.Slimeling.name=Schleimling
 entity.CreeperBoss.name=Entwickelter Creeper-Boss
 entity.SpaceshipT2.name=Stufe 2 Rackete
 entity.CargoRocket.name=Automatische Güterrakete
 
-# Container
+# CONTAINERS
 container.launchcontroller.name=Start-Controller
-container.tileTerraformer.name=Landschaft Bearbeiter
+container.tileTerraformer.name=Terraformer

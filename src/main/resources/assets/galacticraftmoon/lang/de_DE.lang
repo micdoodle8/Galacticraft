@@ -2,7 +2,6 @@
 
 # GENERAL ITEMS
 item.meteoricIronRaw.name=Rohes Meteorisches Eisen
-item.meteoric_iron_ingot.name=Meteorischer Eisenbarren
 item.compressedMeteoricIron.name=Gepresstes Meteorisches Eisen
 item.meteoricIronIngot.name=Meteorischer Eisenbarren
 
@@ -28,5 +27,3 @@ tile.cheeseBlock.name=Käseblock
 gui.choosePlanet.desc.moon=Bewohnbar#Kein Sauerstoff#Schwerkraft: 18%
 
 dimension.Moon.name=Mond
-
-itemGroup.GalacticraftMoon=Galacticraft Mond
