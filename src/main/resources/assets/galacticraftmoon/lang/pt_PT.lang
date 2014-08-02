@@ -2,9 +2,8 @@
 
 # GENERAL ITEMS
 item.meteoricIronRaw.name=Minério de Ferro Meteórico
-item.meteoric_iron_ingot.name=Barra de Ferro Meteórico
 item.compressedMeteoricIron.name=Ferro Meteórico Prensado
-item.meteoricIronIngot.name=Meteoric Iron Ingot ##NEEDS TRANSLATE##
+item.meteoricIronIngot.name=Barra de Ferro Meteórico
 
 # FOOD
 item.cheeseCurd.name=Grão de Queijo
@@ -28,5 +27,3 @@ tile.cheeseBlock.name=Bloco de Queijo
 gui.choosePlanet.desc.moon=Habitável#Sem Oxigénio#Gravidade: 18%
 
 dimension.Moon.name=Lua
-
-itemGroup.GalacticraftMoon=Galacticraft - Lua

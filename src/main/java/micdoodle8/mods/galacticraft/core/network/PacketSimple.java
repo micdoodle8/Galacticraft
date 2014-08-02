@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.network;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -25,6 +26,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiBuggy;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiParaChest;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
+import micdoodle8.mods.galacticraft.core.command.CommandGCEnergyUnits;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
@@ -68,6 +70,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
+
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
@@ -131,7 +134,8 @@ public class PacketSimple extends Packet implements IPacket
         C_UPDATE_STATION_BOX(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
         C_UPDATE_THERMAL_LEVEL(Side.CLIENT, Integer.class),
         C_DISPLAY_ROCKET_CONTROLS(Side.CLIENT),
-        C_GET_CELESTIAL_BODY_LIST(Side.CLIENT);
+        C_GET_CELESTIAL_BODY_LIST(Side.CLIENT),
+		C_UPDATE_ENERGYUNITS(Side.CLIENT, Integer.class);
 
 		private Side targetSide;
 		private Class<?>[] decodeAs;
@@ -713,6 +717,9 @@ public class PacketSimple extends Packet implements IPacket
 
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_COMPLETE_CBODY_HANDSHAKE, new Object[] { str }));
             break;
+        case C_UPDATE_ENERGYUNITS:
+        	CommandGCEnergyUnits.handleParamClientside((Integer) this.data.get(0));
+        	break;
 		default:
 			break;
 		}

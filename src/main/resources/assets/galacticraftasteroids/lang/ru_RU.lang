@@ -77,6 +77,7 @@ tile.walkway.name=Дорожка
 tile.walkwayWire.name=Дорожка
 tile.walkwayOxygenPipe.name=Дорожка
 tile.treasureT3.name=Сундук с сокровищами 3-го уровня
+tile.denseIce.name=Плотный лёд
 
 # GUI
 planet.asteroids=Астероиды
@@ -107,3 +108,4 @@ entity.Tier3RocketGC.name=Ракета 3-го уровня
 
 # CONTAINERS
 container.shortRangeTelepad.name=Короткодистанционный телепорт
+container.entryPod.name=Entry Pod
