@@ -253,7 +253,7 @@ public class UniversalNetwork implements IElectricityNetwork
 		this.totalStorageExcess = 0F;
 
 		//boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
-		boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
+		boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded() && (VersionUtil.mcVersionMatches("1.7.2"));
 		boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
 		//boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 
@@ -331,7 +331,7 @@ public class UniversalNetwork implements IElectricityNetwork
 		if (!this.availableAcceptors.isEmpty())
 		{
 			//boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
-			boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
+			boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded && (VersionUtil.mcVersionMatches("1.7.2"));
 			boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
 			//boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 
@@ -522,7 +522,7 @@ public class UniversalNetwork implements IElectricityNetwork
 		try
 		{
 			//boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
-			boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
+			boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded() && (VersionUtil.mcVersionMatches("1.7.2"));
 			boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
 			//boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 
