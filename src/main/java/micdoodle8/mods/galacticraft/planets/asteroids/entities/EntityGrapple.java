@@ -2,7 +2,10 @@ package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.entities.EntityAdvanced;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -19,7 +22,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class EntityGrapple extends Entity implements IProjectile
+public class EntityGrapple extends EntityAdvanced implements IProjectile
 {
 	private BlockVec3 hitVec;
 	private Block hitBlock;
@@ -33,6 +36,7 @@ public class EntityGrapple extends Entity implements IProjectile
 	public float rotationRoll;
 	public float prevRotationRoll;
 	public boolean pullingPlayer;
+	public Vector3 hitPositionServer;
 
 	public EntityGrapple(World par1World)
 	{
@@ -71,6 +75,7 @@ public class EntityGrapple extends Entity implements IProjectile
 	{
 		this.dataWatcher.addObject(10, 0);
 		this.dataWatcher.addObject(11, 0);
+		this.dataWatcher.addObject(12, 0);
 	}
 
 	@Override
@@ -133,6 +138,15 @@ public class EntityGrapple extends Entity implements IProjectile
 		if (!this.worldObj.isRemote)
 		{
 			this.updateShootingEntity();
+
+            if (this.inGround)
+            {
+                this.hitPositionServer = new Vector3(this.posX, this.posY, this.posZ);
+            }
+            else
+            {
+                this.hitPositionServer = null;
+            }
 		}
 		else
 		{
@@ -148,7 +162,7 @@ public class EntityGrapple extends Entity implements IProjectile
 					double deltaPositionZ = shootingEntity.posZ - shootingEntity.lastTickPosZ;
 					double deltaPositionSqrd = deltaPositionX * deltaPositionX + deltaPositionY * deltaPositionY + deltaPositionZ * deltaPositionZ;
 
-					if (deltaPositionSqrd < 0.01 && this.pullingPlayer)
+					if (deltaPositionSqrd < 0.000001 && this.pullingPlayer && this.getPullingEntityLast())
 					{
 						this.updatePullingEntity(false);
 					}
@@ -377,6 +391,18 @@ public class EntityGrapple extends Entity implements IProjectile
 			this.setPosition(this.posX, this.posY, this.posZ);
 			this.func_145775_I();
 		}
+
+        if (this.worldObj.isRemote)
+        {
+            this.updatePullingEntityLast(this.getPullingEntity());
+
+            if (this.hitPositionServer != null)
+            {
+                this.posX = this.hitPositionServer.x;
+                this.posY = this.hitPositionServer.y;
+                this.posZ = this.hitPositionServer.z;
+            }
+        }
 	}
 
 	@Override
@@ -410,27 +436,6 @@ public class EntityGrapple extends Entity implements IProjectile
 		else if (par1NBTTagCompound.hasKey("player", 99))
 		{
 			this.canBePickedUp = par1NBTTagCompound.getBoolean("player") ? 1 : 0;
-		}
-	}
-
-	@Override
-	public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
-	{
-		if (!this.worldObj.isRemote && this.inGround && this.arrowShake <= 0)
-		{
-			boolean flag = this.canBePickedUp == 1 || this.canBePickedUp == 2 && par1EntityPlayer.capabilities.isCreativeMode;
-
-			if (this.canBePickedUp == 1 && !par1EntityPlayer.inventory.addItemStackToInventory(new ItemStack(Items.string, 1)))
-			{
-				flag = false;
-			}
-
-			if (flag)
-			{
-				this.playSound("random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-				par1EntityPlayer.onItemPickup(this, 1);
-				this.setDead();
-			}
 		}
 	}
 
@@ -482,4 +487,64 @@ public class EntityGrapple extends Entity implements IProjectile
 	{
 		return this.dataWatcher.getWatchableObjectInt(11) == 1;
 	}
+
+	public void updatePullingEntityLast(boolean pulling)
+	{
+		this.dataWatcher.updateObject(12, pulling ? 1 : 0);
+	}
+
+	public boolean getPullingEntityLast()
+	{
+		return this.dataWatcher.getWatchableObjectInt(12) == 1;
+	}
+
+    @Override
+    public boolean isNetworkedEntity() {
+        return true;
+    }
+
+    @Override
+    public int getPacketCooldown(Side side) {
+        return 5;
+    }
+
+    @Override
+    public void onPacketClient(EntityPlayer player) {
+
+    }
+
+    @Override
+    public void onPacketServer(EntityPlayer player) {
+
+    }
+
+    @Override
+    public double getPacketRange() {
+        return 32;
+    }
+
+    @Override
+    public void addExtraNetworkedData(List<Object> networkedList)
+    {
+        if (!this.worldObj.isRemote)
+        {
+            networkedList.add(this.hitPositionServer != null);
+            if (this.hitPositionServer != null)
+            {
+                networkedList.add(this.hitPositionServer);
+            }
+        }
+    }
+
+    @Override
+    public void readExtraNetworkedData(ByteBuf stream)
+    {
+        if (this.worldObj.isRemote)
+        {
+            if (stream.readBoolean())
+            {
+                this.hitPositionServer = new Vector3(stream.readDouble(), stream.readDouble(), stream.readDouble());
+            }
+        }
+    }
 }

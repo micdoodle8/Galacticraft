@@ -208,38 +208,43 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
 			}
 		}
 
+        boolean handle = true;
+
 		if (this.worldObj.isRemote && this.fieldCacheClient.size() == 0)
 		{
-			return;
+            handle = false;
 		}
 		else if (!this.worldObj.isRemote && this.fieldCacheServer.size() == 0)
 		{
-			return;
+            handle = false;
 		}
 
-		Set<Field> fieldSet = null;
+        if (handle)
+        {
+            Set<Field> fieldSet = null;
 
-		if (this.worldObj.isRemote)
-		{
-			fieldSet = this.fieldCacheClient;
-		}
-		else
-		{
-			fieldSet = this.fieldCacheServer;
-		}
+            if (this.worldObj.isRemote)
+            {
+                fieldSet = this.fieldCacheClient;
+            }
+            else
+            {
+                fieldSet = this.fieldCacheServer;
+            }
 
-		for (Field field : fieldSet)
-		{
-			try
-			{
-				Object obj = NetworkUtil.getFieldValueFromStream(field, buffer, this.worldObj);
-				field.set(this, obj);
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
+            for (Field field : fieldSet)
+            {
+                try
+                {
+                    Object obj = NetworkUtil.getFieldValueFromStream(field, buffer, this.worldObj);
+                    field.set(this, obj);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
 
 		this.readExtraNetworkedData(buffer);
 	}
