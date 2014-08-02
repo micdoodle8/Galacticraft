@@ -151,7 +151,7 @@ class AirLockProtocol
 			return null;
 		}
 		
-		if (horizontal && this.maxX - this.minX <= 1 || this.maxZ - this.minZ <= 1)
+		if (horizontal && (this.maxX - this.minX <= 1 || this.maxZ - this.minZ <= 1))
 		{
 			return null;
 		}
