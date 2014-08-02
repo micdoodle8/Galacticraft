@@ -332,7 +332,7 @@ public class UniversalNetwork implements IElectricityNetwork
 		if (!this.availableAcceptors.isEmpty())
 		{
 			//boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
-			boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded && (VersionUtil.mcVersionMatches("1.7.2"));
+			boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded() && (VersionUtil.mcVersionMatches("1.7.2"));
 			boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
 			//boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 
