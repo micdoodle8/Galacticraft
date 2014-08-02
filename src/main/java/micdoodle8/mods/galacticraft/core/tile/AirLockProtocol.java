@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -31,7 +30,7 @@ class AirLockProtocol
 		this.adjacentAirLocks = new ArrayList<TileEntityAirLock>();
 		this.worldObj = head.getWorldObj();
 		this.head = head;
-		this.maxLoops = 40;
+		this.maxLoops = 26;
 	}
 
 	public void loopThrough(TileEntity tile2, int loops)
@@ -44,22 +43,43 @@ class AirLockProtocol
 				{
 					for (int z = -1; z <= 1; z++)
 					{
-						final TileEntity tile = this.worldObj.getTileEntity(tile2.xCoord + x, tile2.yCoord + y, tile2.zCoord + z);
-						new Vector3(this.head).translate(new Vector3(x, y, z));
-
 						if (!(x == 0 && y == 0 && z == 0))
 						{
-							if (tile != null && tile instanceof TileEntityAirLock && !this.adjacentAirLocks.contains(tile))
+							if (tile2.xCoord + x == this.head.xCoord || tile2.zCoord + z == this.head.zCoord)
 							{
-								if (this.horizontal && tile.yCoord == this.head.yCoord)
+								final TileEntity tile = this.worldObj.getTileEntity(tile2.xCoord + x, tile2.yCoord + y, tile2.zCoord + z);
+								if (tile instanceof TileEntityAirLock && !this.adjacentAirLocks.contains(tile))
 								{
 									this.adjacentAirLocks.add((TileEntityAirLock) tile);
 									this.loopThrough(tile, loops - 1);
 								}
-								else if (!this.horizontal && tile.xCoord == this.head.xCoord || tile.zCoord == this.head.zCoord)
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public void loopThroughHorizontal(TileEntity tile2, int loops)
+	{
+		if (loops > 0)
+		{
+			for (int y = -1; y <= 1; y++)
+			{
+				for (int x = -1; x <= 1; x++)
+				{
+					for (int z = -1; z <= 1; z++)
+					{
+						if (!(x == 0 && y == 0 && z == 0))
+						{
+							if (tile2.yCoord + y == this.head.yCoord)
+							{
+								final TileEntity tile = this.worldObj.getTileEntity(tile2.xCoord + x, tile2.yCoord + y, tile2.zCoord + z);
+								if (tile instanceof TileEntityAirLock && !this.adjacentAirLocks.contains(tile))
 								{
 									this.adjacentAirLocks.add((TileEntityAirLock) tile);
-									this.loopThrough(tile, loops - 1);
+									this.loopThroughHorizontal(tile, loops - 1);
 								}
 							}
 						}
@@ -85,46 +105,53 @@ class AirLockProtocol
 		this.adjacentAirLocks = new ArrayList<TileEntityAirLock>();
 
 		this.horizontal = horizontal;
-		this.loopThrough(this.head, this.maxLoops);
-
+		
+		if (horizontal)
+			this.loopThroughHorizontal(this.head, this.maxLoops);
+		else 
+			this.loopThrough(this.head, this.maxLoops);
+			
 		for (final TileEntityAirLock airLock : this.adjacentAirLocks)
 		{
-			final Vector3 vecAt = new Vector3(airLock);
-
-			if (vecAt.intX() < this.minX)
+			if (airLock.xCoord < this.minX)
 			{
-				this.minX = vecAt.intX();
+				this.minX = airLock.xCoord;
 			}
 
-			if (vecAt.intX() > this.maxX)
+			if (airLock.xCoord > this.maxX)
 			{
-				this.maxX = vecAt.intX();
+				this.maxX = airLock.xCoord;
 			}
 
-			if (vecAt.intY() < this.minY)
+			if (airLock.yCoord < this.minY)
 			{
-				this.minY = vecAt.intY();
+				this.minY = airLock.yCoord;
 			}
 
-			if (vecAt.intY() > this.maxY)
+			if (airLock.yCoord > this.maxY)
 			{
-				this.maxY = vecAt.intY();
+				this.maxY = airLock.yCoord;
 			}
 
-			if (vecAt.intZ() < this.minZ)
+			if (airLock.zCoord < this.minZ)
 			{
-				this.minZ = vecAt.intZ();
+				this.minZ = airLock.zCoord;
 			}
 
-			if (vecAt.intZ() > this.maxZ)
+			if (airLock.zCoord > this.maxZ)
 			{
-				this.maxZ = vecAt.intZ();
+				this.maxZ = airLock.zCoord;
 			}
 		}
 
 		final int count = this.maxX - this.minX + this.maxZ - this.minZ + this.maxY - this.minY;
 
-		if (count > 16 || this.maxX - this.minX == 0 && this.maxZ - this.minZ == 0)
+		if (count > 24 || this.maxX - this.minX <= 1 && this.maxZ - this.minZ <= 1 || !horizontal && this.maxY - this.minY <=1)
+		{
+			return null;
+		}
+		
+		if (horizontal && this.maxX - this.minX <= 1 || this.maxZ - this.minZ <= 1)
 		{
 			return null;
 		}
@@ -136,7 +163,7 @@ class AirLockProtocol
 
 		for (int y = this.minY; y <= this.maxY; y++)
 		{
-			final TileEntity tileAt = new Vector3(this.minX, y, this.minZ).getTileEntity(this.worldObj);
+			final TileEntity tileAt = this.worldObj.getTileEntity(this.minX, y, this.minZ);
 
 			if (tileAt instanceof TileEntityAirLock)
 			{
@@ -146,7 +173,7 @@ class AirLockProtocol
 
 		for (int y = this.minY; y <= this.maxY; y++)
 		{
-			final TileEntity tileAt = new Vector3(this.maxX, y, this.maxZ).getTileEntity(this.worldObj);
+			final TileEntity tileAt = this.worldObj.getTileEntity(this.maxX, y, this.maxZ);
 
 			if (tileAt instanceof TileEntityAirLock)
 			{
@@ -158,7 +185,7 @@ class AirLockProtocol
 		{
 			for (int x = this.minX; x <= this.maxX; x++)
 			{
-				final TileEntity tileAt = new Vector3(x, this.maxY, this.maxZ).getTileEntity(this.worldObj);
+				final TileEntity tileAt = this.worldObj.getTileEntity(x, this.maxY, this.maxZ);
 
 				if (tileAt instanceof TileEntityAirLock)
 				{
@@ -168,7 +195,7 @@ class AirLockProtocol
 
 			for (int x = this.minX; x <= this.maxX; x++)
 			{
-				final TileEntity tileAt = new Vector3(x, this.minY, this.maxZ).getTileEntity(this.worldObj);
+				final TileEntity tileAt = this.worldObj.getTileEntity(x, this.minY, this.maxZ);
 
 				if (tileAt instanceof TileEntityAirLock)
 				{
@@ -180,7 +207,7 @@ class AirLockProtocol
 		{
 			for (int z = this.minZ; z <= this.maxZ; z++)
 			{
-				final TileEntity tileAt = new Vector3(this.maxX, this.maxY, z).getTileEntity(this.worldObj);
+				final TileEntity tileAt = this.worldObj.getTileEntity(this.maxX, this.maxY, z);
 
 				if (tileAt instanceof TileEntityAirLock)
 				{
@@ -190,7 +217,7 @@ class AirLockProtocol
 
 			for (int z = this.minZ; z <= this.maxZ; z++)
 			{
-				final TileEntity tileAt = new Vector3(this.maxX, this.minY, z).getTileEntity(this.worldObj);
+				final TileEntity tileAt = this.worldObj.getTileEntity(this.maxX, this.minY, z);
 
 				if (tileAt instanceof TileEntityAirLock)
 				{
