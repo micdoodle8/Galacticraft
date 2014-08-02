@@ -32,8 +32,8 @@ item.parachute_darkblue.name=Blauer Fallschirm
 item.parachute_darkgray.name=Grauer Fallschirm
 item.parachute_darkgreen.name=Grüner Fallschirm
 item.parachute_gray.name=Hellgrauer Fallschirm
-item.parachute_magenta.name=Magenta Fallschirm
-item.parachute_orange.name=Orangener Fallschirm
+item.parachute_magenta.name=Magentafarbener Fallschirm
+item.parachute_orange.name=Oranger Fallschirm
 item.parachute_pink.name=Pinker Fallschirm
 item.parachute_purple.name=Violetter Fallschirm
 item.parachute_red.name=Roter Fallschirm
@@ -156,7 +156,7 @@ tile.machine2.4.name=Elektrischer Kompressor
 tile.machine2.5.name=Schaltkreisfabrikator
 tile.machine2.6.name=Sauerstoff-Speichermodul
 tile.machine.7.name=Electric Arc Furnace ##NEEDS TRANSLATE##
-tile.machine.8.name=Energy Storage Cluster ##NEEDS TRANSLATE##
+tile.machine.8.name=Energiespeicher-Cluster
 tile.aluminumWire.name=Aluminiumkabel
 tile.aluminumWireHeavy.name=Schweres Aluminiumkabel
 tile.glowstoneTorch.name=Glowstonefackel
@@ -194,7 +194,7 @@ entity.GalacticraftCore.ParaChest.name=Parakiste
 entity.GalacticraftCore.OxygenBubble.name=Sauerstoffblase
 entity.GalacticraftCore.Lander.name=Weltraum-Landekapsel
 entity.GalacticraftCore.GCFlag.name=Flagge
-entity.GalacticraftCore.MeteorChunk.name=Meteor brocken
+entity.GalacticraftCore.MeteorChunk.name=Meteorbrocken
 
 # SCHEMATICS
 schematic.moonbuggy.name=Mondrover
@@ -209,7 +209,7 @@ death.attack.oxygenSuffocation=%1$s ist der Sauerstoff ausgegangen!
 
 # GALAXIES
 galaxy.blockyway.name=The Blocky Way
-galaxy.milkyWay=Milchstrasse
+galaxy.milkyWay=Milchstraße
 
 # OTHER
 newversion.failed.name=Galacticraft-Update-Check fehlgeschlagen! Veruche es in 15 Sekunden erneut...
@@ -227,8 +227,8 @@ keybind.vehicleup.name=[GC] Vehikel-Hoch-Taste
 keybind.vehicledown.name=[GC] Vehikel-Runter-Taste
 
 # CREATIVE TABS
-itemGroup.GalacticraftBlocks=Galacticraft Blocks
-itemGroup.GalacticraftItems=Galacticraft Gegenstände
+itemGroup.GalacticraftBlocks=Galacticraft: Blöcke
+itemGroup.GalacticraftItems=Galacticraft: Items
 
 # GUI
 gui.message.out.name=Out
@@ -239,8 +239,8 @@ gui.message.oxinput.name=-Sauerstoff-Eingang
 gui.message.fuel.name=Treibstoff
 gui.message.full.name=voll
 gui.message.page.name=Seite
-gui.message.addnewsch.name=Füge neue Schematic hinzu
-gui.message.generating.name=Generiere
+gui.message.addnewsch.name=Neues Schema hinzufügen
+gui.message.generating.name=Generieren
 gui.message.environment.name=Ökologischer Boost
 gui.message.oil.name=Öl
 gui.message.catalog.name=Katalog
@@ -254,14 +254,14 @@ gui.message.energy=Energie
 gui.message.maxEnergy=Max. Energie
 gui.message.bubbleVisible.name=Blase Sichtbar
 gui.message.launch.name=Starten
-gui.message.clickAgain.0.name=Nochmal klicken um zu zoomen (sehe moone & satelliten)
-gui.message.clickAgain.1.name=Nochmal klicken um zu zoomen (sehe moone)
-gui.message.clickAgain.2.name=Nochmal klicken um zu zoomen (sehe satelliten)
-gui.message.clickAgain.3.name=Nochmal klicken um zu zoomen
+gui.message.clickAgain.0.name=Nochmal klicken zum Zoomen (sehe Monde & Satelliten)
+gui.message.clickAgain.1.name=Nochmal klicken zum Zoomen (sehe Monde)
+gui.message.clickAgain.2.name=Nochmal klicken zum Zoomen (sehe Satelliten)
+gui.message.clickAgain.3.name=Nochmal klicken zum Zoomen
 gui.message.exit.name=Ausgang
 gui.message.tier.name=Stufe %d
-gui.message.canCreateSpaceStation.name=Eine raumstation kann hier erstellt werden!
-gui.message.cannotCreateSpaceStation.name=Eine raumstation kann hier leider nicht erstellt werden
+gui.message.canCreateSpaceStation.name=Eine Raumstation kann hier erstellt werden!
+gui.message.cannotCreateSpaceStation.name=Eine Raumstation kann hier leider nicht erstellt werden
 gui.message.createSS.name=Erstellen
 
 gui.status.active.name=Aktiv
@@ -317,7 +317,7 @@ gui.button.loadfuel.name=Lade Treibstoff
 gui.button.refine.name=Raffiniere
 gui.button.back.name=Zurück
 gui.button.next.name=Weiter
-gui.button.unlockschematic.name=Schematic freischalten
+gui.button.unlockschematic.name=Schema freischalten
 gui.button.stoprefine.name=Stoppe Raffinieren
 gui.button.enable.name=Aktiviere
 gui.button.disable.name=Deaktiviere
@@ -335,14 +335,14 @@ gui.sensor.advancedoff=AUS
 gui.chooseplanet.cannotcreate1.name=Kann die Raumstation
 gui.chooseplanet.cannotcreate2.name=hier nicht erstellen!
 gui.chooseplanet.alreadycreated1.name=Raumstation bereits
-gui.chooseplanet.alreadycreated2.name=ertellt!
+gui.chooseplanet.alreadycreated2.name=erstellt!
 gui.dockingRocket.warning.name.0=Drücke %s zum Verlangsamen
 gui.dockingRocket.warning.name.1=Drücke %s zum Beschleunigen
 gui.dockingRocket.targetVel.name=Zielgeschw.
 gui.dockingRocket.currentVel.name=Momentangeschw.
 gui.dockingRocket.distanceFrom.name=Entfernung vom Ziel
 
-gui.galaxymap.movemap.name=ASWD - Bewege Karte
+gui.galaxymap.movemap.name=WASD - Bewege Karte
 gui.galaxymap.zoom.name=Mausrad - Zoom
 gui.galaxymap.select.name=Maus 1 - Wähle Planeten
 gui.galaxymap.exit.name=Esc - Schließe Karte
