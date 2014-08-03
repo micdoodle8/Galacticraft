@@ -33,7 +33,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
 
-@SuppressWarnings("resource")
 public class VersionUtil
 {
     private static DefaultArtifactVersion mcVersion = null;

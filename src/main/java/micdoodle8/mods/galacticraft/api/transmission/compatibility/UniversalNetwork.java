@@ -15,11 +15,14 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.util.VersionUtil;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 //import buildcraft.api.power.PowerHandler.Type;
@@ -79,6 +82,11 @@ public class UniversalNetwork implements IElectricityNetwork
 
 	//This is an energy per tick which exceeds what any normal machine will request, so the requester must be an energy storage - for example, a battery or an energy cube
 	private final static float ENERGY_STORAGE_LEVEL = 200F;
+	
+	private Method demandedEnergyIC2 = null;
+	private Method injectEnergyIC2 = null;
+	private boolean initialisedIC2Methods = false;
+	private boolean voltageParameterIC2 = false;
 
     @Override
     public Set<IConductor> getTransmitters()
@@ -120,7 +128,7 @@ public class UniversalNetwork implements IElectricityNetwork
 				}
 				catch (Exception e)
 				{
-					e.printStackTrace();
+					if (ConfigManagerCore.enableDebug) e.printStackTrace();
 				}
 			}
 		}
@@ -239,6 +247,9 @@ public class UniversalNetwork implements IElectricityNetwork
 	{
 		this.totalSent = 0F;
 		this.refreshAcceptors();
+		
+		if (!this.initialisedIC2Methods)
+			this.initialiseIC2Methods();
 
 		if (this.getTransmitters().size() == 0)
 		{
@@ -254,7 +265,7 @@ public class UniversalNetwork implements IElectricityNetwork
 		this.totalStorageExcess = 0F;
 
 		//boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
-		boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded() && (VersionUtil.mcVersionMatches("1.7.2"));
+		boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
 		boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
 		//boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 
@@ -286,8 +297,13 @@ public class UniversalNetwork implements IElectricityNetwork
 					}*/
 					else if (isIC2Loaded && acceptor instanceof IEnergySink)
 					{
-						//For 1.7.10 - e = ((float) ((IEnergySink) acceptor).getDemandedEnergy()) * NetworkConfigHandler.IC2_RATIO;
-						e = (float) ((IEnergySink) acceptor).demandedEnergyUnits() * NetworkConfigHandler.IC2_RATIO;
+						double result = 0;
+						try {
+							result = (Double) this.demandedEnergyIC2.invoke((IEnergySink) acceptor);
+						} catch (Exception ex) {
+							if (ConfigManagerCore.enableDebug) ex.printStackTrace();
+						}
+						e = (float) result * NetworkConfigHandler.IC2_RATIO;
 					}
 					else if (isBCLoaded && NetworkConfigHandler.getBuildcraftVersion() == 6 && MjAPI.getMjBattery(acceptor, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom) != null)
 					//New BC API
@@ -320,7 +336,7 @@ public class UniversalNetwork implements IElectricityNetwork
 		this.loopPrevention = false;
 	}
 
-    /**
+	/**
      * Complete the energy transfer. Called internally on server tick end.
      *
      * @return Amount of energy SENT to all acceptors
@@ -332,7 +348,7 @@ public class UniversalNetwork implements IElectricityNetwork
 		if (!this.availableAcceptors.isEmpty())
 		{
 			//boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
-			boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded() && (VersionUtil.mcVersionMatches("1.7.2"));
+			boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
 			boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
 			//boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 
@@ -404,8 +420,16 @@ public class UniversalNetwork implements IElectricityNetwork
 					double energySendingIC2 = currentSending * NetworkConfigHandler.TO_IC2_RATIO;
 					if (energySendingIC2 >= 1D)
 					{
-						//For 1.7.10 - sentToAcceptor = currentSending - ((float) ((IEnergySink) tileEntity).injectEnergy(sideFrom, energySendingIC2, 120)) * NetworkConfigHandler.IC2_RATIO;
-						sentToAcceptor = currentSending - (float) ((IEnergySink) tileEntity).injectEnergyUnits(sideFrom, energySendingIC2) * NetworkConfigHandler.IC2_RATIO;
+						double result = 0;
+						try {
+							if (this.voltageParameterIC2)
+								result = (Double) this.injectEnergyIC2.invoke((IEnergySink) tileEntity, sideFrom, energySendingIC2, 120D);
+							else
+								result = (Double) this.injectEnergyIC2.invoke((IEnergySink) tileEntity, sideFrom, energySendingIC2);
+						} catch (Exception ex) {
+							if (ConfigManagerCore.enableDebug) ex.printStackTrace();
+						}
+						sentToAcceptor = currentSending - (float) result * NetworkConfigHandler.IC2_RATIO;
 						if (sentToAcceptor < 0F) sentToAcceptor = 0F;
 					} else
 						sentToAcceptor = 0F;
@@ -523,7 +547,7 @@ public class UniversalNetwork implements IElectricityNetwork
 		try
 		{
 			//boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
-			boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded() && (VersionUtil.mcVersionMatches("1.7.2"));
+			boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
 			boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
 			//boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 
@@ -741,5 +765,50 @@ public class UniversalNetwork implements IElectricityNetwork
 	public String toString()
 	{
 		return "EnergyNetwork[" + this.hashCode() + "|Wires:" + this.getTransmitters().size() + "|Acceptors:" + this.connectedAcceptors.size() + "]";
+	}
+	
+    private void initialiseIC2Methods()
+    {
+		if (NetworkConfigHandler.isIndustrialCraft2Loaded())
+		{
+			if (ConfigManagerCore.enableDebug) GCLog.info("Debug UN: Initialising IC2 methods");
+			try
+			{
+				Class<?> clazz = Class.forName("ic2.api.energy.tile.IEnergySink");
+
+				if (ConfigManagerCore.enableDebug) GCLog.info("Debug UN: Found IC2 IEnergySink class");
+				try {
+					//1.7.2 version
+					this.demandedEnergyIC2 = clazz.getMethod("demandedEnergyUnits");
+				} catch (Exception e)
+				{
+					//if that fails, try 1.7.10 version
+					try {
+						this.demandedEnergyIC2 = clazz.getMethod("getDemandedEnergy");
+					} catch (Exception ee) { ee.printStackTrace(); }				
+				}
+
+				if (ConfigManagerCore.enableDebug) GCLog.info("Debug UN: Set IC2 demandedEnergy method");
+
+				try {
+					//1.7.2 version
+					this.injectEnergyIC2 = clazz.getMethod("injectEnergyUnits", ForgeDirection.class, double.class);
+					if (ConfigManagerCore.enableDebug) GCLog.info("Debug UN: IC2 inject 1.7.2 succeeded");
+				} catch (Exception e)
+				{
+					//if that fails, try 1.7.10 version
+					try {
+						this.injectEnergyIC2 = clazz.getMethod("injectEnergy", ForgeDirection.class, double.class, double.class);
+						this.voltageParameterIC2 = true;
+						if (ConfigManagerCore.enableDebug) GCLog.info("Debug UN: IC2 inject 1.7.10 succeeded");
+					} catch (Exception ee) { ee.printStackTrace(); }				
+				}
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+    	this.initialisedIC2Methods = true;
 	}
 }
