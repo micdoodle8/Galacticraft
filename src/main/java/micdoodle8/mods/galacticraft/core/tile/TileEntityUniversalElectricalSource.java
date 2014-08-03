@@ -121,6 +121,8 @@ public class TileEntityUniversalElectricalSource extends TileEntityUniversalElec
 		if (itemStack != null)
 		{
 			Item item = itemStack.getItem();
+			float maxExtractSave = this.storage.getMaxExtract();
+			if (this.tierGC > 1) this.storage.setMaxExtract(maxExtractSave * 2.5F);
 			float energyToCharge = this.storage.extractEnergyGC(this.storage.getMaxExtract(), true);
 
 			if (item instanceof IItemElectric)
@@ -129,41 +131,52 @@ public class TileEntityUniversalElectricalSource extends TileEntityUniversalElec
 			}
 			else if (NetworkConfigHandler.isIndustrialCraft2Loaded())
 			{
-				if (VersionUtil.mcVersionMatches("1.7.2"))
-				{
-					try {
-						Class<?> itemElectricIC2 = Class.forName("ic2.api.item.ISpecialElectricItem");
-						Class<?> itemElectricIC2B = Class.forName("ic2.api.item.IElectricItem");
-						Class<?> itemManagerIC2 = Class.forName("ic2.api.item.IElectricItemManager");
-						if (itemElectricIC2.isInstance(item))
-						{
-							Object IC2item = itemElectricIC2.cast(item);
-							Method getMan = itemElectricIC2.getMethod("getManager", ItemStack.class);
-							Object IC2manager = getMan.invoke(IC2item, itemStack);
-							//For 1.7.10 - Method methodCharge = itemManagerIC2.getMethod("charge", ItemStack.class, double.class, int.class, boolean.class, boolean.class);
-							//For 1.7.10 - double result = (Double) methodCharge.invoke(IC2manager, itemStack, energyToCharge * NetworkConfigHandler.TO_IC2_RATIO, 4, false, false);
-							Method methodCharge = itemManagerIC2.getMethod("charge", ItemStack.class, int.class, int.class, boolean.class, boolean.class);
-							int result = (Integer) methodCharge.invoke(IC2manager, itemStack, (int) (energyToCharge * NetworkConfigHandler.TO_IC2_RATIO), 4, false, false);
-							//float energy = (float) ((ISpecialElectricItem)item).getManager(itemStack).charge(itemStack, energyToCharge * NetworkConfigHandler.TO_IC2_RATIO, 4, false, false) * NetworkConfigHandler.IC2_RATIO;
-							float energy = result * NetworkConfigHandler.IC2_RATIO;
-							this.storage.extractEnergyGC(energy, false);
-						}
-						else if (itemElectricIC2B.isInstance(item))
-						{
-							Class<?> electricItemIC2 = Class.forName("ic2.api.item.ElectricItem");
-							Object IC2manager = electricItemIC2.getField("manager").get(null);
-							//For 1.7.10 - Method methodCharge = itemManagerIC2.getMethod("charge", ItemStack.class, double.class, int.class, boolean.class, boolean.class);
-							//For 1.7.10 - double result = (Double) methodCharge.invoke(IC2manager, itemStack, energyToCharge * NetworkConfigHandler.TO_IC2_RATIO, 4, false, false);
-							Method methodCharge = itemManagerIC2.getMethod("charge", ItemStack.class, int.class, int.class, boolean.class, boolean.class);
-							int result = (Integer) methodCharge.invoke(IC2manager, itemStack, (int) (energyToCharge * NetworkConfigHandler.TO_IC2_RATIO), 4, false, false);
-							//float energy = (float) ((ISpecialElectricItem)item).getManager(itemStack).charge(itemStack, energyToCharge * NetworkConfigHandler.TO_IC2_RATIO, 4, false, false) * NetworkConfigHandler.IC2_RATIO;
-							float energy = result * NetworkConfigHandler.IC2_RATIO;
-							this.storage.extractEnergyGC(energy, false);				
-						}
-					} catch (Exception e)
+				try {
+					Class<?> itemElectricIC2 = Class.forName("ic2.api.item.ISpecialElectricItem");
+					Class<?> itemElectricIC2B = Class.forName("ic2.api.item.IElectricItem");
+					Class<?> itemManagerIC2 = Class.forName("ic2.api.item.IElectricItemManager");
+					if (itemElectricIC2.isInstance(item))
 					{
-						e.printStackTrace();
+						//Implement by reflection:
+						//float energy = (float) ((ISpecialElectricItem)item).getManager(itemStack).charge(itemStack, energyToCharge * NetworkConfigHandler.TO_IC2_RATIO, 4, false, false) * NetworkConfigHandler.IC2_RATIO;
+						Object IC2item = itemElectricIC2.cast(item);
+						Method getMan = itemElectricIC2.getMethod("getManager", ItemStack.class);
+						Object IC2manager = getMan.invoke(IC2item, itemStack);
+						double result;
+						if (VersionUtil.mcVersionMatches("1.7.2"))
+						{
+							Method methodCharge = itemManagerIC2.getMethod("charge", ItemStack.class, int.class, int.class, boolean.class, boolean.class);
+							result = (Integer) methodCharge.invoke(IC2manager, itemStack, (int) (energyToCharge * NetworkConfigHandler.TO_IC2_RATIO), this.tierGC + 1, false, false);
+						}
+						else
+						{
+							Method methodCharge = itemManagerIC2.getMethod("charge", ItemStack.class, double.class, int.class, boolean.class, boolean.class);
+							result = (Double) methodCharge.invoke(IC2manager, itemStack, (double) (energyToCharge * NetworkConfigHandler.TO_IC2_RATIO), this.tierGC + 1, false, false);
+						}
+						float energy = (float) result * NetworkConfigHandler.IC2_RATIO;
+						this.storage.extractEnergyGC(energy, false);
 					}
+					else if (itemElectricIC2B.isInstance(item))
+					{
+						Class<?> electricItemIC2 = Class.forName("ic2.api.item.ElectricItem");
+						Object IC2manager = electricItemIC2.getField("manager").get(null);
+						double result;
+						if (VersionUtil.mcVersionMatches("1.7.2"))
+						{
+							Method methodCharge = itemManagerIC2.getMethod("charge", ItemStack.class, int.class, int.class, boolean.class, boolean.class);
+							result = (Integer) methodCharge.invoke(IC2manager, itemStack, (int) (energyToCharge * NetworkConfigHandler.TO_IC2_RATIO), this.tierGC + 1, false, false);
+						}
+						else
+						{
+							Method methodCharge = itemManagerIC2.getMethod("charge", ItemStack.class, double.class, int.class, boolean.class, boolean.class);
+							result = (Double) methodCharge.invoke(IC2manager, itemStack, (double) (energyToCharge * NetworkConfigHandler.TO_IC2_RATIO), this.tierGC + 1, false, false);				
+						}
+						float energy = (float) result * NetworkConfigHandler.IC2_RATIO;
+						this.storage.extractEnergyGC(energy, false);				
+					}
+				} catch (Exception e)
+				{
+					e.printStackTrace();
 				}
 			}
 			//			else if (GCCoreCompatibilityManager.isTELoaded() && itemStack.getItem() instanceof IEnergyContainerItem)
@@ -171,6 +184,8 @@ public class TileEntityUniversalElectricalSource extends TileEntityUniversalElec
 			//				int accepted = ((IEnergyContainerItem) itemStack.getItem()).receiveEnergy(itemStack, (int) Math.floor(this.getProvide(ForgeDirection.UNKNOWN) * NetworkConfigHandler.TO_TE_RATIO), false);
 			//				this.provideElectricity(accepted * NetworkConfigHandler.TE_RATIO, true);
 			//			}
+			
+			if (this.tierGC > 1) this.storage.setMaxExtract(maxExtractSave);
 		}
 	}
 

@@ -19,12 +19,12 @@ public class ElectricItemManagerIC2_1710
 		if (itemStack.getItem() instanceof ItemElectric)
 		{
 			ItemElectric item = (ItemElectric)itemStack.getItem();
+			if (amount > item.getMaxCharge(itemStack)) amount = item.getMaxCharge(itemStack);
 			float energy = (float) amount * NetworkConfigHandler.IC2_RATIO;
 			float rejectedElectricity = Math.max(item.getElectricityStored(itemStack) + energy - item.getMaxElectricityStored(itemStack), 0);
 			float energyToReceive = energy - rejectedElectricity;
 			if (!ignoreTransferLimit && energyToReceive > item.transferMax)
 			{
-				rejectedElectricity += energyToReceive - item.transferMax;
 				energyToReceive = item.transferMax;
 			}
 

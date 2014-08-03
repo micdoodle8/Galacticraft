@@ -49,7 +49,7 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 
 		//tier == 2
 		this.storage.setCapacity(2500000);
-		this.storage.setMaxExtract(1500);
+		this.storage.setMaxExtract(1800);
         this.setTierGC(2);
         this.initialised = true;
 	}

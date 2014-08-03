@@ -28,6 +28,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.EnumSet;
 
 public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //implements IElectrical, IElectricalStorage
@@ -169,24 +170,21 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 			}
 			else if (NetworkConfigHandler.isIndustrialCraft2Loaded())
 			{
-				if (VersionUtil.mcVersionMatches("1.7.2"))
+				if (item instanceof IElectricItem)
 				{
-					if (item instanceof IElectricItem)
+					IElectricItem electricItem = (IElectricItem) item;
+					if (electricItem.canProvideEnergy(itemStack))
 					{
-						IElectricItem electricItem = (IElectricItem) item;
-						if (electricItem.canProvideEnergy(itemStack))
-						{
-							float energyDischarged = ic2.api.item.ElectricItem.manager.discharge(itemStack, (int) (energyToDischarge * NetworkConfigHandler.TO_IC2_RATIO), 4, false, false) * NetworkConfigHandler.IC2_RATIO;
-							this.storage.receiveEnergyGC(energyDischarged);
-						}
-					} else if (item instanceof ISpecialElectricItem)
+						float energyDischarged = ic2.api.item.ElectricItem.manager.discharge(itemStack, (int) (energyToDischarge * NetworkConfigHandler.TO_IC2_RATIO), 4, false, false) * NetworkConfigHandler.IC2_RATIO;
+						this.storage.receiveEnergyGC(energyDischarged);
+					}
+				} else if (item instanceof ISpecialElectricItem)
+				{
+					ISpecialElectricItem electricItem = (ISpecialElectricItem) item;
+					if (electricItem.canProvideEnergy(itemStack))
 					{
-						ISpecialElectricItem electricItem = (ISpecialElectricItem) item;
-						if (electricItem.canProvideEnergy(itemStack))
-						{
-							float energyDischarged = electricItem.getManager(itemStack).discharge(itemStack, (int) (energyToDischarge * NetworkConfigHandler.TO_IC2_RATIO), 4, false, false) * NetworkConfigHandler.IC2_RATIO;
-							this.storage.receiveEnergyGC(energyDischarged);
-						}
+						float energyDischarged = electricItem.getManager(itemStack).discharge(itemStack, (int) (energyToDischarge * NetworkConfigHandler.TO_IC2_RATIO), 4, false, false) * NetworkConfigHandler.IC2_RATIO;
+						this.storage.receiveEnergyGC(energyDischarged);
 					}
 				}
 			}
@@ -212,50 +210,49 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 			}
 			else if (NetworkConfigHandler.isIndustrialCraft2Loaded())
 			{
-				if (VersionUtil.mcVersionMatches("1.7.2"))
+				if (item instanceof IElectricItem)
 				{
-					if (item instanceof IElectricItem)
+					IElectricItem electricItem = (IElectricItem) item;
+					if (electricItem.canProvideEnergy(itemStack))
 					{
-						IElectricItem electricItem = (IElectricItem) item;
-						if (electricItem.canProvideEnergy(itemStack))
+						double result = 0;
+						double energyDischargeIC2 = energyToDischarge * NetworkConfigHandler.TO_IC2_RATIO;
+						//Do this by reflection:
+						//result = ic2.api.item.ElectricItem.manager.discharge(itemStack, energyDischargeIC2, 4, false, false, false)
+						try
 						{
-							double result = 0;
-							double energyDischargeIC2 = energyToDischarge * NetworkConfigHandler.TO_IC2_RATIO;
-							//Do this by reflection:
-							//result = ic2.api.item.ElectricItem.manager.discharge(itemStack, energyDischargeIC2, 4, false, false, false)
-							try
-							{
-								Class<?> clazz = Class.forName("ic2.api.item.IElectricItemManager");
-								result = (Double) clazz.getMethod("discharge").invoke(ic2.api.item.ElectricItem.manager, itemStack, energyDischargeIC2, 4, false, false, false);
-							}
-							catch (Exception e)
-							{
-								e.printStackTrace();
-							}						
-							float energyDischarged = (float) result * NetworkConfigHandler.IC2_RATIO;
-							this.storage.receiveEnergyGC(energyDischarged);
+							Class<?> clazz = Class.forName("ic2.api.item.IElectricItemManager");
+							Method dischargeMethod = clazz.getMethod("discharge", ItemStack.class, double.class, int.class, boolean.class, boolean.class, boolean.class);
+							result = (Double) dischargeMethod.invoke(ic2.api.item.ElectricItem.manager, itemStack, energyDischargeIC2, 4, false, false, false);
 						}
-					} else if (item instanceof ISpecialElectricItem)
+						catch (Exception e)
+						{
+							e.printStackTrace();
+						}						
+						float energyDischarged = (float) result * NetworkConfigHandler.IC2_RATIO;
+						this.storage.receiveEnergyGC(energyDischarged);
+					}
+				} else if (item instanceof ISpecialElectricItem)
+				{
+					ISpecialElectricItem electricItem = (ISpecialElectricItem) item;
+					if (electricItem.canProvideEnergy(itemStack))
 					{
-						ISpecialElectricItem electricItem = (ISpecialElectricItem) item;
-						if (electricItem.canProvideEnergy(itemStack))
+						double result = 0;
+						double energyDischargeIC2 = energyToDischarge * NetworkConfigHandler.TO_IC2_RATIO;
+						//Do this by reflection:
+						//result = electricItem.getManager(itemStack).discharge(itemStack, energyDischargeIC2, 4, false, false, false)
+						try
 						{
-							double result = 0;
-							double energyDischargeIC2 = energyToDischarge * NetworkConfigHandler.TO_IC2_RATIO;
-							//Do this by reflection:
-							//result = electricItem.getManager(itemStack).discharge(itemStack, energyDischargeIC2, 4, false, false, false)
-							try
-							{
-								Class<?> clazz = Class.forName("ic2.api.item.IElectricItemManager");
-								result = (Double) clazz.getMethod("discharge").invoke(electricItem.getManager(itemStack), itemStack, energyDischargeIC2, 4, false, false, false);
-							}
-							catch (Exception e)
-							{
-								e.printStackTrace();
-							}						
-							float energyDischarged = (float) result * NetworkConfigHandler.IC2_RATIO;
-							this.storage.receiveEnergyGC(energyDischarged);
+							Class<?> clazz = Class.forName("ic2.api.item.IElectricItemManager");
+							Method dischargeMethod = clazz.getMethod("discharge", ItemStack.class, double.class, int.class, boolean.class, boolean.class, boolean.class);
+							result = (Double) dischargeMethod.invoke(electricItem.getManager(itemStack), itemStack, energyDischargeIC2, 4, false, false, false);
 						}
+						catch (Exception e)
+						{
+							e.printStackTrace();
+						}						
+						float energyDischarged = (float) result * NetworkConfigHandler.IC2_RATIO;
+						this.storage.receiveEnergyGC(energyDischarged);
 					}
 				}
 			}
