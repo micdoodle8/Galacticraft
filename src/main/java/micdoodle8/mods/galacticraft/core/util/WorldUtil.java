@@ -183,25 +183,20 @@ public class WorldUtil
 
 	public static WorldProvider getProviderForName(String par1String)
 	{
-		final Integer[] var1 = WorldUtil.getArrayOfPossibleDimensions();
-
-		for (final Integer element : var1)
+		String nameToFind = par1String;
+		if (par1String.contains("$"))
 		{
-			if (WorldProvider.getProviderForDimension(element) != null && WorldProvider.getProviderForDimension(element).getDimensionName() != null)
-			{
-				if (par1String.contains("$"))
-				{
-					final String[] twoDimensions = par1String.split("\\$");
+			final String[] twoDimensions = par1String.split("\\$");
+			nameToFind = twoDimensions[0];
+		}
+		if (nameToFind == null) return null;
 
-					if (WorldProvider.getProviderForDimension(element).getDimensionName().equals(twoDimensions[0]))
-					{
-						return WorldProvider.getProviderForDimension(element);
-					}
-				}
-				else if (WorldProvider.getProviderForDimension(element).getDimensionName().equals(par1String))
-				{
-					return WorldProvider.getProviderForDimension(element);
-				}
+		for (final Integer element : WorldUtil.getArrayOfPossibleDimensions())
+		{
+			WorldProvider elementProvider = WorldProvider.getProviderForDimension(element);
+			if (elementProvider != null && nameToFind.equals(elementProvider.getDimensionName()))
+			{
+				return elementProvider;
 			}
 		}
 

@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Planet;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -27,6 +28,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 
 import java.util.ArrayList;
@@ -307,6 +309,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 	@Override
 	public void onReachAtmosphere()
 	{
+		//Launch controlled
 		if (this.destinationFrequency != -1)
 		{
 			if (this.worldObj.isRemote)
@@ -320,15 +323,24 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 			{
 				if (this.targetDimension != this.worldObj.provider.dimensionId)
 				{
-					WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(this.targetDimension);
+					WorldProvider targetDim = WorldProvider.getProviderForDimension(this.targetDimension);
 
-					if (!this.worldObj.isRemote && worldServer != null)
-					{
-						if (this.riddenByEntity != null)
+					//No rocket flight to non-Galacticraft dimensions other than the Overworld allowed 
+					if (targetDim != null && (this.targetDimension == 0 || targetDim instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider)targetDim).canSpaceshipTierPass(this.getRocketTier())))
+					{				
+						WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(this.targetDimension);
+
+						if (worldServer != null)
 						{
-							WorldUtil.transferEntityToDimension(this.riddenByEntity, this.targetDimension, worldServer, false, this);
+							if (this.riddenByEntity != null)
+							{
+								WorldUtil.transferEntityToDimension(this.riddenByEntity, this.targetDimension, worldServer, false, this);
+							}
+
+							return;
 						}
 					}
+ 					//No return - in this situation continue into regular take-off
 				}
 				else
 				{
@@ -338,43 +350,46 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 						this.setWaitForPlayer(true);
 					}
 					this.landing = true;
+					return;
 				}
 			}
 			else
 			{
 				this.setDead();
+				return;
 			}
+			
+			return;
 		}
-		else
+
+		//Not launch controlled
+		if (this.riddenByEntity != null)
 		{
-			if (this.riddenByEntity != null)
+			if (this.riddenByEntity instanceof GCEntityPlayerMP)
 			{
-				if (this.riddenByEntity instanceof GCEntityPlayerMP)
+				GCEntityPlayerMP player = (GCEntityPlayerMP) this.riddenByEntity;
+
+				HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(this.getRocketTier()), player);
+
+				String temp = "";
+				int count = 0;
+
+				for (Entry<String, Integer> entry : map.entrySet())
 				{
-					GCEntityPlayerMP player = (GCEntityPlayerMP) this.riddenByEntity;
+					temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "?" : ""));
+					count++;
+				}
 
-					HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(this.getRocketTier()), player);
+				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { player.getGameProfile().getName(), temp }), player);
+				player.getPlayerStats().spaceshipTier = this.getRocketTier();
+				player.getPlayerStats().usingPlanetSelectionGui = true;
 
-					String temp = "";
-					int count = 0;
+				this.onTeleport(player);
+				player.mountEntity(this);
 
-					for (Entry<String, Integer> entry : map.entrySet())
-					{
-						temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "?" : ""));
-						count++;
-					}
-
-					GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { player.getGameProfile().getName(), temp }), player);
-					player.getPlayerStats().spaceshipTier = this.getRocketTier();
-					player.getPlayerStats().usingPlanetSelectionGui = true;
-
-					this.onTeleport(player);
-					player.mountEntity(this);
-
-					if (!this.isDead)
-					{
-						this.setDead();
-					}
+				if (!this.isDead)
+				{
+					this.setDead();
 				}
 			}
 		}

@@ -8,7 +8,7 @@ import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -47,7 +47,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 {
 	public FluidTank fuelTank = new FluidTank(this.getFuelTankCapacity());
 	public int destinationFrequency = -1;
-	public Vector3 targetVec;
+	public BlockVec3 targetVec;
 	public int targetDimension;
 	protected ItemStack[] cargoItems;
 	private IFuelDock landingPad;
@@ -259,7 +259,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 									{
 										if (doSet)
 										{
-											this.targetVec = new Vector3(tile.xCoord + x, tile.yCoord, tile.zCoord + z);
+											this.targetVec = new BlockVec3(tile.xCoord + x, tile.yCoord, tile.zCoord + z);
 										}
 
 										targetSet = true;
@@ -579,7 +579,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 		if (buffer.readBoolean())
 		{
-			this.targetVec = new Vector3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
+			this.targetVec = new BlockVec3(buffer.readInt(), buffer.readInt(), buffer.readInt());
 		}
 
 		this.motionX = buffer.readDouble() / 8000.0D;
@@ -809,7 +809,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 		if (nbt.getBoolean("TargetValid") && nbt.hasKey("targetTileX"))
 		{
-			this.targetVec = new Vector3(nbt.getDouble("targetTileX"), nbt.getDouble("targetTileY"), nbt.getDouble("targetTileZ"));
+			this.targetVec = new BlockVec3(MathHelper.floor_double(nbt.getDouble("targetTileX")), MathHelper.floor_double(nbt.getDouble("targetTileY")), MathHelper.floor_double(nbt.getDouble("targetTileZ")));
 		}
 
 		this.setWaitForPlayer(nbt.getBoolean("WaitingForPlayer"));
