@@ -6,9 +6,11 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -686,6 +688,14 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	@Override
 	public void onLaunch()
 	{
+		if (!(this.dimension == 0 || this.worldObj.provider instanceof IGalacticraftWorldProvider))
+		{
+			//No rocket flight in the Nether, the End etc
+			this.setLaunchPhase(EnumLaunchPhase.UNIGNITED);
+			this.timeUntilLaunch = 0;
+			return;
+		}
+		
 		super.onLaunch();
 
 		if (!this.worldObj.isRemote)
