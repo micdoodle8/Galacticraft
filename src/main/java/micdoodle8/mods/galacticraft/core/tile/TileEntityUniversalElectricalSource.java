@@ -203,7 +203,7 @@ public class TileEntityUniversalElectricalSource extends TileEntityUniversalElec
 		this.storage.extractEnergyGC((float) amount * NetworkConfigHandler.IC2_RATIO, false);
 	}
 
-	@VersionSpecific(versions = "1.7.10")
+	@VersionSpecific(version = "[1.7.10]")
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySource", modID = "IC2")
 	public int getSourceTier()
 	{

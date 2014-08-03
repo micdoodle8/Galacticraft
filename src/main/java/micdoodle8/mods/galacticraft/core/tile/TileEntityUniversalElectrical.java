@@ -13,7 +13,10 @@ import micdoodle8.mods.galacticraft.api.transmission.item.ElectricItemHelper;
 import micdoodle8.mods.galacticraft.api.transmission.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.VersionUtil;
+import micdoodle8.mods.miccore.Annotations.AltForVersion;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import micdoodle8.mods.miccore.Annotations.VersionSpecific;
 import net.minecraft.item.Item;
@@ -152,7 +155,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 	/**
 	 * Discharges electric item.
 	 */
-	@VersionSpecific(versions = "1.7.2")
+	@VersionSpecific(version = "[1.7.2]")
 	public void discharge(ItemStack itemStack)
 	{
 		if (itemStack != null)
@@ -173,7 +176,6 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 						IElectricItem electricItem = (IElectricItem) item;
 						if (electricItem.canProvideEnergy(itemStack))
 						{
-							//For 1.7.10 - float energyDischarged = (float) ic2.api.item.ElectricItem.manager.discharge(itemStack, energyToDischarge * NetworkConfigHandler.TO_IC2_RATIO, 4, false, false, false) * NetworkConfigHandler.IC2_RATIO;
 							float energyDischarged = ic2.api.item.ElectricItem.manager.discharge(itemStack, (int) (energyToDischarge * NetworkConfigHandler.TO_IC2_RATIO), 4, false, false) * NetworkConfigHandler.IC2_RATIO;
 							this.storage.receiveEnergyGC(energyDischarged);
 						}
@@ -182,8 +184,76 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 						ISpecialElectricItem electricItem = (ISpecialElectricItem) item;
 						if (electricItem.canProvideEnergy(itemStack))
 						{
-							//For 1.7.10 - float energyDischarged = (float) electricItem.getManager(itemStack).discharge(itemStack, energyToDischarge * NetworkConfigHandler.TO_IC2_RATIO, 4, false, false, false) * NetworkConfigHandler.IC2_RATIO;
 							float energyDischarged = electricItem.getManager(itemStack).discharge(itemStack, (int) (energyToDischarge * NetworkConfigHandler.TO_IC2_RATIO), 4, false, false) * NetworkConfigHandler.IC2_RATIO;
+							this.storage.receiveEnergyGC(energyDischarged);
+						}
+					}
+				}
+			}
+			//			else if (GCCoreCompatibilityManager.isTELoaded() && itemStack.getItem() instanceof IEnergyContainerItem)
+			//			{
+			//				float given = ((IEnergyContainerItem) itemStack.getItem()).extractEnergy(itemStack, (int) Math.floor(this.getRequest(ForgeDirection.UNKNOWN) * NetworkConfigHandler.TO_TE_RATIO), false);
+			//				this.receiveElectricity(given * NetworkConfigHandler.TE_RATIO, true);
+			//			}
+		}
+	}
+
+	@AltForVersion(version = "[1.7.10]")
+	public void dischargeB(ItemStack itemStack)
+	{
+		if (itemStack != null)
+		{
+			Item item = itemStack.getItem();
+			float energyToDischarge = this.getRequest(ForgeDirection.UNKNOWN);
+
+			if (item instanceof IItemElectric)
+			{
+				this.storage.receiveEnergyGC(ElectricItemHelper.dischargeItem(itemStack, energyToDischarge));
+			}
+			else if (NetworkConfigHandler.isIndustrialCraft2Loaded())
+			{
+				if (VersionUtil.mcVersionMatches("1.7.2"))
+				{
+					if (item instanceof IElectricItem)
+					{
+						IElectricItem electricItem = (IElectricItem) item;
+						if (electricItem.canProvideEnergy(itemStack))
+						{
+							double result = 0;
+							double energyDischargeIC2 = energyToDischarge * NetworkConfigHandler.TO_IC2_RATIO;
+							//Do this by reflection:
+							//result = ic2.api.item.ElectricItem.manager.discharge(itemStack, energyDischargeIC2, 4, false, false, false)
+							try
+							{
+								Class<?> clazz = Class.forName("ic2.api.item.IElectricItemManager");
+								result = (Double) clazz.getMethod("discharge").invoke(ic2.api.item.ElectricItem.manager, itemStack, energyDischargeIC2, 4, false, false, false);
+							}
+							catch (Exception e)
+							{
+								e.printStackTrace();
+							}						
+							float energyDischarged = (float) result * NetworkConfigHandler.IC2_RATIO;
+							this.storage.receiveEnergyGC(energyDischarged);
+						}
+					} else if (item instanceof ISpecialElectricItem)
+					{
+						ISpecialElectricItem electricItem = (ISpecialElectricItem) item;
+						if (electricItem.canProvideEnergy(itemStack))
+						{
+							double result = 0;
+							double energyDischargeIC2 = energyToDischarge * NetworkConfigHandler.TO_IC2_RATIO;
+							//Do this by reflection:
+							//result = electricItem.getManager(itemStack).discharge(itemStack, energyDischargeIC2, 4, false, false, false)
+							try
+							{
+								Class<?> clazz = Class.forName("ic2.api.item.IElectricItemManager");
+								result = (Double) clazz.getMethod("discharge").invoke(electricItem.getManager(itemStack), itemStack, energyDischargeIC2, 4, false, false, false);
+							}
+							catch (Exception e)
+							{
+								e.printStackTrace();
+							}						
+							float energyDischarged = (float) result * NetworkConfigHandler.IC2_RATIO;
 							this.storage.receiveEnergyGC(energyDischarged);
 						}
 					}
@@ -318,7 +388,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 		}
 	}
 
-	@VersionSpecific(versions = "1.7.10")
+	@VersionSpecific(version = "[1.7.10]")
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 	public double getDemandedEnergy()
 	{
@@ -338,7 +408,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 		return 0D;
 	}
 	
-	@VersionSpecific(versions = "1.7.2")
+	@VersionSpecific(version = "[1.7.2]")
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 	public double demandedEnergyUnits()
 	{
@@ -358,7 +428,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 		return 0D;
 	}
 
-	@VersionSpecific(versions = "1.7.10")
+	@VersionSpecific(version = "[1.7.10]")
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 	public double injectEnergy(ForgeDirection direction, double amount, double voltage)
 	{
@@ -379,7 +449,7 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 		return amount;
 	}
 	
-	@VersionSpecific(versions = "1.7.2")
+	@VersionSpecific(version = "[1.7.2]")
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 	public double injectEnergyUnits(ForgeDirection direction, double amount)
 	{
@@ -400,14 +470,14 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 		return amount;
 	}
 
-	@VersionSpecific(versions = "1.7.10")
+	@VersionSpecific(version = "[1.7.10]")
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 	public int getSinkTier()
 	{
 		return 3;
 	}
 
-	@VersionSpecific(versions = "1.7.2")
+	@VersionSpecific(version = "[1.7.2]")
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 	public double getMaxSafeInput()
 	{

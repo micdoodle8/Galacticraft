@@ -146,7 +146,7 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 		}
 	}
 	
-	@VersionSpecific(versions = "1.7.2")
+	@VersionSpecific(version = "[1.7.2]")
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 	public double demandedEnergyUnits()
 	{
@@ -170,7 +170,7 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 		return 0D;
 	}
 
-	@VersionSpecific(versions = "1.7.10")
+	@VersionSpecific(version = "[1.7.10]")
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 	public double getDemandedEnergy()
 	{
@@ -194,7 +194,7 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 		return 0D;
 	}
 
-	@VersionSpecific(versions = "1.7.2")
+	@VersionSpecific(version = "[1.7.2]")
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 	public double injectEnergyUnits(ForgeDirection directionFrom, double amount)
 	{
@@ -210,7 +210,7 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 		return Math.round(this.IC2surplusJoules * NetworkConfigHandler.TO_IC2_RATIO);
 	}
 
-	@VersionSpecific(versions = "1.7.10")
+	@VersionSpecific(version = "[1.7.10]")
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 	public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage)
 	{
@@ -226,14 +226,14 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 		return Math.round(this.IC2surplusJoules * NetworkConfigHandler.TO_IC2_RATIO);
 	}
 
-	@VersionSpecific(versions = "1.7.10")
+	@VersionSpecific(version = "[1.7.10]")
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 	public int getSinkTier()
 	{
 		return 3;
 	}
 	
-	@VersionSpecific(versions = "1.7.2")
+	@VersionSpecific(version = "[1.7.2]")
 	@RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 	public double getMaxSafeInput()
 	{

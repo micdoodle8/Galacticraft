@@ -3,7 +3,9 @@ package micdoodle8.mods.galacticraft.api.transmission.item;
 import ic2.api.item.IElectricItemManager;
 import micdoodle8.mods.galacticraft.api.transmission.EnergyHelper;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.ElectricItemManagerIC2;
+import micdoodle8.mods.galacticraft.api.transmission.compatibility.ElectricItemManagerIC2_1710;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
+import micdoodle8.mods.miccore.Annotations.AltForVersion;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import micdoodle8.mods.miccore.Annotations.VersionSpecific;
 import net.minecraft.creativetab.CreativeTabs;
@@ -18,10 +20,15 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
+import cpw.mods.fml.common.versioning.DefaultArtifactVersion;
+import cpw.mods.fml.common.versioning.VersionParser;
+import cpw.mods.fml.relauncher.FMLInjectionData;
+
 public abstract class ItemElectric extends Item implements IItemElectric
 {
 	private static Object itemManagerIC2;
 	public float transferMax;
+	private DefaultArtifactVersion mcVersion = null;
 	
 	public ItemElectric()
 	{
@@ -31,9 +38,14 @@ public abstract class ItemElectric extends Item implements IItemElectric
 		this.setNoRepair();
 		this.setMaxTransfer();
 		
+        this.mcVersion = new DefaultArtifactVersion((String) FMLInjectionData.data()[4]);
+		
 		if (NetworkConfigHandler.isIndustrialCraft2Loaded())
 		{
-			itemManagerIC2 = new ElectricItemManagerIC2();
+			if (VersionParser.parseRange("[1.7.2]").containsVersion(mcVersion))
+				itemManagerIC2 = new ElectricItemManagerIC2();
+			else
+				itemManagerIC2 = new ElectricItemManagerIC2_1710();
 		}
 	}
 
@@ -187,51 +199,60 @@ public abstract class ItemElectric extends Item implements IItemElectric
 
 	//All the following methods are for IC2 compatibility
 	
-	@VersionSpecific(versions = "1.7.2")
 	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
 	public IElectricItemManager getManager(ItemStack itemstack)
 	{
 		return (IElectricItemManager) ItemElectric.itemManagerIC2;
 	}
 
-	@VersionSpecific(versions = "1.7.2")
 	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
 	public boolean canProvideEnergy(ItemStack itemStack)
 	{
 		return true;
 	}
 
-	@VersionSpecific(versions = "1.7.2")
 	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
 	public Item getChargedItem(ItemStack itemStack)
 	{
 		return itemStack.getItem();
 	}
 
-	@VersionSpecific(versions = "1.7.2")
 	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
 	public Item getEmptyItem(ItemStack itemStack)
 	{
 		return itemStack.getItem();	
 	}
 
-	@VersionSpecific(versions = "1.7.2")
-	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
-	public int getMaxCharge(ItemStack itemStack)
-	{
-		return (int) (this.getMaxElectricityStored(itemStack) * NetworkConfigHandler.TO_IC2_RATIO);
-	}
-
-	@VersionSpecific(versions = "1.7.2")
 	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
 	public int getTier(ItemStack itemStack)
 	{
 		return 1;
 	}
-	
-	@VersionSpecific(versions = "1.7.2")
+
+	@VersionSpecific(version = "[1.7.10]")
 	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
-	public int getTransferLimit(ItemStack itemStack)
+	public double getMaxCharge(ItemStack itemStack)
+	{
+		return this.getMaxElectricityStored(itemStack) * NetworkConfigHandler.TO_IC2_RATIO;
+	}
+
+	@AltForVersion(version = "[1.7.2]")
+	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+	public int getMaxChargeB(ItemStack itemStack)
+	{
+		return (int) (this.getMaxElectricityStored(itemStack) * NetworkConfigHandler.TO_IC2_RATIO);
+	}
+
+	@VersionSpecific(version = "[1.7.10]")
+	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+	public double getTransferLimit(ItemStack itemStack)
+	{
+		return this.transferMax * NetworkConfigHandler.TO_IC2_RATIO;
+	}
+
+	@VersionSpecific(version = "[1.7.2]")
+	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+	public int getTransferLimitB(ItemStack itemStack)
 	{
 		return (int) (this.transferMax * NetworkConfigHandler.TO_IC2_RATIO);
 	}
