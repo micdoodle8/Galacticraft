@@ -53,7 +53,7 @@ tile.cavernVines.name=เถาวัลย์ถ้ำ
 
 # GUI
 gui.choosePlanet.desc.mars=อาศัยอยู่ได้#ไม่มีออกซิเจน#แรงโน้มถ่วง: 38%
-item.deshPickSlime.description.name=ไม่สามารถขุดไข่สไลม์ลิ่งได้
+item.deshPickSlime.description.name=สามารถขุดไข่สไลม์ลิ่งได้
 gui.message.noEnergy.name=พลังงานไฟฟ้าไม่พอ
 gui.message.noWater.name=น้ำไม่พอ
 gui.message.noBonemeal.name=ผงกระดูกไม่พอ
