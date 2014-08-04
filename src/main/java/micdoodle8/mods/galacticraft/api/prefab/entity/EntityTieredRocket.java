@@ -358,8 +358,6 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 				this.setDead();
 				return;
 			}
-			
-			return;
 		}
 
 		//Not launch controlled

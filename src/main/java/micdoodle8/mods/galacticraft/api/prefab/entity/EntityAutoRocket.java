@@ -29,6 +29,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -693,6 +694,10 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 			//No rocket flight in the Nether, the End etc
 			this.setLaunchPhase(EnumLaunchPhase.UNIGNITED);
 			this.timeUntilLaunch = 0;
+			if (!this.worldObj.isRemote && this.riddenByEntity instanceof GCEntityPlayerMP)
+			{
+				((GCEntityPlayerMP)this.riddenByEntity).addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.rocket.warning.nogyroscope")));
+			}
 			return;
 		}
 		
