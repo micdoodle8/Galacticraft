@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
+import mekanism.api.energy.IEnergizedItem;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import net.minecraft.inventory.IInventory;
@@ -47,6 +48,15 @@ public class SlotSpecific extends Slot
 					ArrayList<Class> existing = new ArrayList(Arrays.asList(validClasses));
 					existing.add(itemElectricIC2a);
 					existing.add(itemElectricIC2b);
+					validClasses = existing.toArray(new Class[existing.size()]);
+				} catch (Exception e) { e.printStackTrace(); }
+			}
+			if (NetworkConfigHandler.isMekanismLoaded())
+			{
+				try {
+					Class<?> itemElectricMek = Class.forName("mekanism.api.energy.IEnergizedItem");
+					ArrayList<Class> existing = new ArrayList(Arrays.asList(validClasses));
+					existing.add(itemElectricMek);
 					validClasses = existing.toArray(new Class[existing.size()]);
 				} catch (Exception e) { e.printStackTrace(); }
 			}

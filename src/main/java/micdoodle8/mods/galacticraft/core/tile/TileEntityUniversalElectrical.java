@@ -8,6 +8,8 @@ import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cpw.mods.fml.common.eventhandler.Event;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.ISpecialElectricItem;
+import mekanism.api.energy.EnergizedItemManager;
+import mekanism.api.energy.IEnergizedItem;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.item.ElectricItemHelper;
 import micdoodle8.mods.galacticraft.api.transmission.item.IItemElectric;
@@ -207,6 +209,10 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 			if (item instanceof IItemElectric)
 			{
 				this.storage.receiveEnergyGC(ElectricItemHelper.dischargeItem(itemStack, energyToDischarge));
+			}
+			else if (NetworkConfigHandler.isMekanismLoaded() && item instanceof IEnergizedItem && ((IEnergizedItem)item).canSend(itemStack))
+			{
+				this.storage.receiveEnergyGC((float) EnergizedItemManager.discharge(itemStack, energyToDischarge * NetworkConfigHandler.TO_MEKANISM_RATIO) * NetworkConfigHandler.MEKANISM_RATIO);
 			}
 			else if (NetworkConfigHandler.isIndustrialCraft2Loaded())
 			{
