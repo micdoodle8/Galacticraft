@@ -494,12 +494,12 @@ public class PacketSimple extends Packet implements IPacket
 						}
 					}
 				}
-				break;
 			}
 			catch (final Exception e)
 			{
 				e.printStackTrace();
 			}
+			break;
 		case C_UPDATE_SPACESTATION_DATA:
 			SpaceStationWorldData var4 = SpaceStationWorldData.getMPSpaceStationData(player.worldObj, (Integer) this.data.get(0), player);
 			var4.readFromNBT((NBTTagCompound) this.data.get(1));
@@ -554,6 +554,7 @@ public class PacketSimple extends Packet implements IPacket
 			{
 				e.printStackTrace();
 			}
+			break;
 		case C_ADD_NEW_SCHEMATIC:
 			final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) this.data.get(0));
 			if (!playerBaseClient.unlockedSchematics.contains(page))

@@ -229,20 +229,21 @@ public class VersionUtil
             if (c0 == null)
             {
                 c0 = Class.forName(getNameDynamic(KEY_CLASS_NBT_SIZE_TRACKER).replace('/', '.'));
-                reflectionCache.put(5, c0);
+                reflectionCache.put(5, c0);              
             }
-
+            
             if (mcVersionMatches("1.7.10"))
             {
                 Method m = (Method)reflectionCache.get(6);
 
                 if (m == null)
                 {
-                    m = c.getMethod(getNameDynamic(KEY_METHOD_DECOMPRESS_NBT), new Class[] { byte[].class, c0 });
+                    m = c.getMethod(getNameDynamic(KEY_METHOD_DECOMPRESS_NBT), byte[].class, c0);
                     reflectionCache.put(6, m);
                 }
 
-                return (NBTTagCompound)m.invoke(null, compressedNBT, c0.getConstructor(new Class[] { Long.class }).newInstance(2097152L));
+                Object nbtSizeTracker = c0.getConstructor(long.class).newInstance(2097152L);
+                return (NBTTagCompound)m.invoke(null, compressedNBT, nbtSizeTracker);
             }
             else if (mcVersionMatches("1.7.2"))
             {
@@ -250,7 +251,7 @@ public class VersionUtil
 
                 if (m == null)
                 {
-                    m = c.getMethod(getNameDynamic(KEY_METHOD_DECOMPRESS_NBT), new Class[] { byte[].class });
+                    m = c.getMethod(getNameDynamic(KEY_METHOD_DECOMPRESS_NBT), byte[].class);
                     reflectionCache.put(6, m);
                 }
 
