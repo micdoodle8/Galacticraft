@@ -649,41 +649,41 @@ public abstract class TileEntityUniversalElectrical extends EnergyStorageTile //
 	//	{
 	//		return (int) Math.floor(this.getMaxEnergyStored() * NetworkConfigHandler.TO_TE_RATIO);
 	//	}
-	/*
-		@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-		public double transferEnergyToAcceptor(ForgeDirection from, double amount)
+	
+	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+	public double transferEnergyToAcceptor(ForgeDirection from, double amount)
+	{
+		if (!this.getElectricalInputDirections().contains(from))
 		{
-			if (!this.getElectricalInputDirections().contains(from))
-			{
-				return 0;
-			}
-
-			return this.receiveElectricity((float)amount * NetworkConfigHandler.MEKANISM_RATIO, true) * NetworkConfigHandler.TO_MEKANISM_RATIO;
+			return 0;
 		}
 
-		@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-		public boolean canReceiveEnergy(ForgeDirection side)
-		{
-			return this.getElectricalInputDirections().contains(side) || this.getElectricalOutputDirections().contains(side);
-		}
+		return this.receiveElectricity(from, (float)amount * NetworkConfigHandler.MEKANISM_RATIO, 1, true) * NetworkConfigHandler.TO_MEKANISM_RATIO;
+	}
 
-		@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-		public double getEnergy()
-		{
-			return this.getEnergyStored() * NetworkConfigHandler.TO_MEKANISM_RATIO;
-		}
+	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+	public boolean canReceiveEnergy(ForgeDirection side)
+	{
+		return this.getElectricalInputDirections().contains(side);
+	}
 
-		@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-		public void setEnergy(double energy)
-		{
-			this.setEnergyStored((float) (energy * NetworkConfigHandler.MEKANISM_RATIO));
-		}
+	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+	public double getEnergy()
+	{
+		return this.getEnergyStoredGC() * NetworkConfigHandler.TO_MEKANISM_RATIO;
+	}
 
-		@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-		public double getMaxEnergy()
-		{
-			return this.getMaxEnergyStored() * NetworkConfigHandler.TO_MEKANISM_RATIO;
-		}*/
+	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+	public void setEnergy(double energy)
+	{
+		this.storage.setEnergyStored((float) energy * NetworkConfigHandler.MEKANISM_RATIO);
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+	public double getMaxEnergy()
+	{
+		return this.getMaxEnergyStoredGC() * NetworkConfigHandler.TO_MEKANISM_RATIO;
+	}
 
 	@Override
 	public ReceiverMode getModeFromDirection(ForgeDirection direction)

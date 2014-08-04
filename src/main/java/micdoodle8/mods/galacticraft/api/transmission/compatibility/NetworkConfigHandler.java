@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.api.transmission.compatibility;
 
 import cpw.mods.fml.common.Loader;
+import mekanism.api.gas.Gas;
+import mekanism.api.gas.GasRegistry;
 import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
@@ -48,7 +50,7 @@ public class NetworkConfigHandler
 	 */
 	public static float IC2_RATIO = NetworkConfigHandler.BC3_RATIO / 2.44F;
 
-	public static float MEKANISM_RATIO = NetworkConfigHandler.IC2_RATIO / 100F;
+	public static float MEKANISM_RATIO = NetworkConfigHandler.IC2_RATIO / 10F;
 
 	/**
 	 * Convert kJ back to Buildcraft MJ
@@ -80,6 +82,8 @@ public class NetworkConfigHandler
 	private static boolean cachedBCLoaded = false;
 	private static boolean cachedBCLoadedValue = false;
 	private static int cachedBCVersion = -1;
+	private static boolean cachedMekLoaded = false;
+	private static boolean cachedMekLoadedValue = false;
 
 
 	/** You must call this function to enable the Universal Network module. */
@@ -94,7 +98,7 @@ public class NetworkConfigHandler
 		NetworkConfigHandler.IC2_RATIO = (float) NetworkConfigHandler.config.get("Compatibility", "IndustrialCraft Conversion Ratio", NetworkConfigHandler.IC2_RATIO).getDouble(NetworkConfigHandler.IC2_RATIO);
 		//NetworkConfigHandler.TE_RATIO = (float) NetworkConfigHandler.config.get("Compatibility", "Thermal Expansion Conversion Ratio", NetworkConfigHandler.TE_RATIO).getDouble(NetworkConfigHandler.TE_RATIO);
 		NetworkConfigHandler.BC3_RATIO = (float) NetworkConfigHandler.config.get("Compatibility", "BuildCraft Conversion Ratio", NetworkConfigHandler.BC3_RATIO).getDouble(NetworkConfigHandler.BC3_RATIO);
-		//NetworkConfigHandler.MEKANISM_RATIO = (float) NetworkConfigHandler.config.get("Compatibility", "Mekanism Conversion Ratio", NetworkConfigHandler.MEKANISM_RATIO).getDouble(NetworkConfigHandler.MEKANISM_RATIO);
+		NetworkConfigHandler.MEKANISM_RATIO = (float) NetworkConfigHandler.config.get("Compatibility", "Mekanism Conversion Ratio", NetworkConfigHandler.MEKANISM_RATIO).getDouble(NetworkConfigHandler.MEKANISM_RATIO);
 		NetworkConfigHandler.TO_IC2_RATIO = 1 / NetworkConfigHandler.IC2_RATIO;
 		NetworkConfigHandler.TO_BC_RATIO = 1 / NetworkConfigHandler.BC3_RATIO;
 		NetworkConfigHandler.TO_TE_RATIO = 1 / NetworkConfigHandler.TE_RATIO;
@@ -111,19 +115,19 @@ public class NetworkConfigHandler
 
 	public static void initGas()
 	{
-		//		if (NetworkConfigHandler.isMekanismLoaded())
-		//		{
-		//			Gas oxygen = GasRegistry.getGas("oxygen");
-		//
-		//			if (oxygen == null)
-		//			{
-		//				NetworkConfigHandler.gasOxygen = GasRegistry.register(new Gas("oxygen")).registerFluid();
-		//			}
-		//			else
-		//			{
-		//				NetworkConfigHandler.gasOxygen = oxygen;
-		//			}
-		//		} TODO
+		if (NetworkConfigHandler.isMekanismLoaded())
+		{
+			Gas oxygen = GasRegistry.getGas("oxygen");
+
+			if (oxygen == null)
+			{
+				NetworkConfigHandler.gasOxygen = GasRegistry.register(new Gas("oxygen")).registerFluid();
+			}
+			else
+			{
+				NetworkConfigHandler.gasOxygen = oxygen;
+			}
+		}
 	}
 
 	/** Checks using the FML loader too see if IC2 is loaded */
@@ -190,34 +194,12 @@ public class NetworkConfigHandler
 
 	public static boolean isMekanismLoaded()
 	{
-		return Loader.isModLoaded("Mekanism");
-	}
-
-	private static Boolean mekanismOldClassFound;
-
-	public static boolean isMekanismV6Loaded()
-	{
-		if (!NetworkConfigHandler.isMekanismLoaded())
+		if (!cachedMekLoaded)
 		{
-			return false;
+			cachedMekLoaded = true;
+			cachedMekLoadedValue = Loader.isModLoaded("Mekanism");
 		}
-
-		if (NetworkConfigHandler.mekanismOldClassFound != null)
-		{
-			return !NetworkConfigHandler.mekanismOldClassFound;
-		}
-
-		try
-		{
-			Class.forName("mekanism.api.gas.IGasAcceptor");
-		}
-		catch (ClassNotFoundException e)
-		{
-			NetworkConfigHandler.mekanismOldClassFound = false;
-			return true;
-		}
-
-		NetworkConfigHandler.mekanismOldClassFound = true;
-		return false;
+	
+		return cachedMekLoadedValue;
 	}
 }

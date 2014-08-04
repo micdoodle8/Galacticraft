@@ -147,7 +147,7 @@ public class EntityAlienVillager extends EntityAgeable implements IEntityBreatha
 	@Override
 	protected String getLivingSound()
 	{
-        	return "mob.villager.idle";
+		return "mob.villager.idle";
 	}
 
 	/**
@@ -156,7 +156,7 @@ public class EntityAlienVillager extends EntityAgeable implements IEntityBreatha
 	@Override
 	protected String getHurtSound()
 	{
-        	return "mob.villager.hit";
+		return "mob.villager.hit";
 	}
 
 	/**
@@ -165,7 +165,7 @@ public class EntityAlienVillager extends EntityAgeable implements IEntityBreatha
 	@Override
 	protected String getDeathSound()
 	{
-        	return "mob.villager.death";
+		return "mob.villager.death";
 	}
 
 	public void setProfession(int par1)

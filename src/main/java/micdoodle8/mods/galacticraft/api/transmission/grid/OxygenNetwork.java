@@ -1,7 +1,11 @@
 package micdoodle8.mods.galacticraft.api.transmission.grid;
 
 import cpw.mods.fml.common.FMLLog;
+import mekanism.api.gas.Gas;
+import mekanism.api.gas.GasStack;
+import mekanism.api.gas.IGasHandler;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.tile.*;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import net.minecraft.tileentity.TileEntity;
@@ -63,44 +67,25 @@ public class OxygenNetwork implements IOxygenNetwork
 								}
 							}
 						}
-						//						else if (NetworkConfigHandler.isMekanismV6Loaded() && tileEntity instanceof IGasHandler)
-						//						{
-						//							IGasHandler gasHandler = (IGasHandler) tileEntity;
-						//
-						//							for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
-						//							{
-						//								TileEntity tile = new Vector3(tileEntity).modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
-						//
-						//								if (gasHandler.canReceiveGas(direction, (Gas) NetworkConfigHandler.gasOxygen) && this.getTransmitters().contains(tile))
-						//								{
-						//									int oxygenToSend = (int) Math.floor(totalOxygen / this.oxygenTiles.size());
-						//
-						//									if (oxygenToSend > 0)
-						//									{
-						//										remainingUsableOxygen -= gasHandler.receiveGas(direction, (new GasStack((Gas) NetworkConfigHandler.gasOxygen, oxygenToSend)));
-						//									}
-						//								}
-						//							}
-						//						}
-						//						else if (NetworkConfigHandler.isMekanismLoaded() && tileEntity instanceof IGasAcceptor)
-						//						{
-						//							IGasAcceptor gasAcceptor = (IGasAcceptor) tileEntity;
-						//
-						//							for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
-						//							{
-						//								TileEntity tile = new Vector3(tileEntity).modifyPositionFromSide(direction).getTileEntity(tileEntity.worldObj);
-						//
-						//								if (gasAcceptor.canReceiveGas(direction, (Gas) NetworkConfigHandler.gasOxygen) && this.getTransmitters().contains(tile))
-						//								{
-						//									int oxygenToSend = (int) Math.floor(totalOxygen / this.oxygenTiles.size());
-						//
-						//									if (oxygenToSend > 0)
-						//									{
-						//										remainingUsableOxygen -= gasAcceptor.receiveGas(new GasStack((Gas) NetworkConfigHandler.gasOxygen, oxygenToSend));
-						//									}
-						//								}
-						//							}
-						//						}
+						else if (NetworkConfigHandler.isMekanismLoaded() && tileEntity instanceof IGasHandler)
+						{
+							IGasHandler gasHandler = (IGasHandler) tileEntity;
+
+							for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+							{
+								TileEntity tile = new BlockVec3(tileEntity).getTileEntityOnSide(tileEntity.getWorldObj(), direction);
+
+								if (gasHandler.canReceiveGas(direction, (Gas) NetworkConfigHandler.gasOxygen) && this.getTransmitters().contains(tile))
+								{
+									int oxygenToSend = (int) Math.floor(totalOxygen / this.oxygenTiles.size());
+
+									if (oxygenToSend > 0)
+									{
+										remainingUsableOxygen -= gasHandler.receiveGas(direction, (new GasStack((Gas) NetworkConfigHandler.gasOxygen, oxygenToSend)));
+									}
+								}
+							}
+						}
 					}
 				}
 			}

@@ -3,9 +3,12 @@ package micdoodle8.mods.galacticraft.api.transmission.compatibility;
 import buildcraft.api.mj.MjAPI;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
+//import buildcraft.api.power.PowerHandler.Type;
+//import cofh.api.energy.IEnergyHandler;
 import cpw.mods.fml.common.FMLLog;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergySink;
+import mekanism.api.energy.IStrictEnergyAcceptor;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.grid.Pathfinder;
@@ -25,9 +28,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
-//import buildcraft.api.power.PowerHandler.Type;
-//import cofh.api.energy.IEnergyHandler;
-//import mekanism.api.energy.IStrictEnergyAcceptor;
 
 /**
  * A universal network that works with multiple energy systems.
@@ -267,7 +267,7 @@ public class UniversalNetwork implements IElectricityNetwork
 		//boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
 		boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
 		boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
-		//boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
+		boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 
 		if (!this.connectedAcceptors.isEmpty())
 		{
@@ -287,11 +287,11 @@ public class UniversalNetwork implements IElectricityNetwork
 					{
 						e = ((IElectrical) acceptor).getRequest(sideFrom);
 					}
-					/*else if (isMekLoaded && acceptor instanceof IStrictEnergyAcceptor)
+					else if (isMekLoaded && acceptor instanceof IStrictEnergyAcceptor)
 					{
 						e = (float) ((((IStrictEnergyAcceptor) acceptor).getMaxEnergy() - ((IStrictEnergyAcceptor) acceptor).getEnergy()) * NetworkConfigHandler.MEKANISM_RATIO);
 					}
-					else if (isTELoaded && acceptor instanceof IEnergyHandler)
+					/*else if (isTELoaded && acceptor instanceof IEnergyHandler)
 					{
 						e = ((IEnergyHandler) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) * NetworkConfigHandler.TE_RATIO;
 					}*/
@@ -350,7 +350,7 @@ public class UniversalNetwork implements IElectricityNetwork
 			//boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
 			boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
 			boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
-			//boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
+			boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 
 			float energyNeeded = this.totalRequested;
 			float energyAvailable = this.totalEnergy;
@@ -408,6 +408,10 @@ public class UniversalNetwork implements IElectricityNetwork
 				if (tileEntity instanceof IElectrical)
 				{
 					sentToAcceptor = ((IElectrical) tileEntity).receiveElectricity(sideFrom, currentSending, tierProduced, true);
+				}
+				else if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
+				{
+					sentToAcceptor = (float) ((IStrictEnergyAcceptor) tileEntity).transferEnergyToAcceptor(sideFrom, currentSending * NetworkConfigHandler.TO_MEKANISM_RATIO) * NetworkConfigHandler.MEKANISM_RATIO;
 				}
 //				else if (isTELoaded && tileEntity instanceof IEnergyHandler)
 //				{
@@ -549,7 +553,7 @@ public class UniversalNetwork implements IElectricityNetwork
 			//boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
 			boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
 			boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
-			//boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
+			boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
 
 			LinkedList<IConductor> conductors = new LinkedList();
 			conductors.addAll(this.getTransmitters());
@@ -575,7 +579,7 @@ public class UniversalNetwork implements IElectricityNetwork
 								this.connectedDirections.add(sideFrom);
 							}
 						}
-						/*else if (isMekLoaded && acceptor instanceof IStrictEnergyAcceptor)
+						else if (isMekLoaded && acceptor instanceof IStrictEnergyAcceptor)
 						{
 							if (((IStrictEnergyAcceptor) acceptor).canReceiveEnergy(sideFrom))
 							{
@@ -583,7 +587,7 @@ public class UniversalNetwork implements IElectricityNetwork
 								this.connectedDirections.add(sideFrom);
 							}
 						}
-						else if (isTELoaded && acceptor instanceof IEnergyHandler)
+						/*else if (isTELoaded && acceptor instanceof IEnergyHandler)
 						{
 							if (((IEnergyHandler) acceptor).canInterface(sideFrom))
 							{

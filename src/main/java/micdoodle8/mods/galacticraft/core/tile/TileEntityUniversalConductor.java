@@ -364,48 +364,48 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 	//
 	//		return (int) Math.floor(((IElectricityNetwork) this.getNetwork()).getRequest(this).getWatts() * NetworkConfigHandler.TO_TE_RATIO);
 	//	}
-	//
-	//	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-	//	public double transferEnergyToAcceptor(ForgeDirection side, double amount)
-	//	{
-	//		if (!this.canReceiveEnergy(side))
-	//		{
-	//			return 0;
-	//		}
-	//
-	//		return amount - ((IElectricityNetwork) this.getNetwork()).produce(ElectricityPack.getFromWatts((float) (amount * NetworkConfigHandler.MEKANISM_RATIO), 120), true, this) * NetworkConfigHandler.TO_MEKANISM_RATIO;
-	//	}
-	//
-	//	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-	//	public boolean canReceiveEnergy(ForgeDirection side)
-	//	{
-	//		if (this.getNetwork() == null)
-	//		{
-	//			return false;
-	//		}
-	//
-	//		return true;
-	//	}
-	//
-	//	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-	//	public double getEnergy()
-	//	{
-	//		return 0;
-	//	}
-	//
-	//	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-	//	public void setEnergy(double energy)
-	//	{
-	//		;
-	//	}
-	//
-	//	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-	//	public double getMaxEnergy()
-	//	{
-	//		if (this.getNetwork() == null)
-	//		{
-	//			return 0;
-	//		}
-	//		return ((IElectricityNetwork) this.getNetwork()).getRequest(this).getWatts() * NetworkConfigHandler.TO_MEKANISM_RATIO;
-	//	}
+
+	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+	public double transferEnergyToAcceptor(ForgeDirection side, double amount)
+	{
+		if (!this.canReceiveEnergy(side))
+		{
+			return 0;
+		}
+
+		return amount - this.getNetwork().produce((float) amount * NetworkConfigHandler.MEKANISM_RATIO, true, 1, this) * NetworkConfigHandler.TO_MEKANISM_RATIO;
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+	public boolean canReceiveEnergy(ForgeDirection side)
+	{
+		if (this.getNetwork() == null)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+	public double getEnergy()
+	{
+		return 0;
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+	public void setEnergy(double energy)
+	{
+		;
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+	public double getMaxEnergy()
+	{
+		if (this.getNetwork() == null)
+		{
+			return 0;
+		}
+		return this.getNetwork().getRequest(this) * NetworkConfigHandler.TO_MEKANISM_RATIO;
+	}
 }
