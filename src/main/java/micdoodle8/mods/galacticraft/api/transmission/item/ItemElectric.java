@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.api.transmission.EnergyHelper;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.ElectricItemManagerIC2;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.ElectricItemManagerIC2_1710;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
+import micdoodle8.mods.galacticraft.core.items.ItemBatteryInfinite;
 import micdoodle8.mods.miccore.Annotations.AltForVersion;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import micdoodle8.mods.miccore.Annotations.VersionSpecific;
@@ -197,6 +198,48 @@ public abstract class ItemElectric extends Item implements IItemElectric
 		return false;
 	}
 
+	//The following seven methods are for Mekanism compatibility 
+
+	@RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
+	public double getEnergy(ItemStack itemStack)
+	{
+		return this.getElectricityStored(itemStack) * NetworkConfigHandler.TO_MEKANISM_RATIO;
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
+	public void setEnergy(ItemStack itemStack, double amount)
+	{
+		this.setElectricity(itemStack, (float) amount * NetworkConfigHandler.MEKANISM_RATIO);
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
+	public double getMaxEnergy(ItemStack itemStack)
+	{
+		return this.getMaxElectricityStored(itemStack) * NetworkConfigHandler.TO_MEKANISM_RATIO;
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
+	public double getMaxTransfer(ItemStack itemStack)
+	{
+		return this.getTransfer(itemStack) * NetworkConfigHandler.TO_MEKANISM_RATIO;
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
+	public boolean canReceive(ItemStack itemStack)
+	{
+		return (itemStack != null && !(itemStack.getItem() instanceof ItemBatteryInfinite));
+	}
+
+	public boolean canSend(ItemStack itemStack)
+	{
+		return true;
+	}
+
+	public boolean isMetadataSpecific(ItemStack itemStack)
+	{
+		return false;
+	}
+	
 	//All the following methods are for IC2 compatibility
 	
 	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
