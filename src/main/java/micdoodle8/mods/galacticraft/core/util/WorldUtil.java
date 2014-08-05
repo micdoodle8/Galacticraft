@@ -60,6 +60,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.io.File;
 import java.util.*;
+
+import mekanism.api.energy.ICableOutputter;
 import mekanism.api.energy.IStrictEnergyAcceptor;
 import mekanism.api.gas.IGasTransmitter;
 import mekanism.api.gas.ITubeConnection;
@@ -858,6 +860,13 @@ public class WorldUtil
 			else if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
 			{
 				if (((IStrictEnergyAcceptor) tileEntity).canReceiveEnergy(direction.getOpposite()))
+				{
+					adjacentConnections[direction.ordinal()] = tileEntity;
+				}
+			}
+			else if (isMekLoaded && tileEntity instanceof ICableOutputter)
+			{
+				if (((ICableOutputter) tileEntity).canOutputTo(direction.getOpposite()))
 				{
 					adjacentConnections[direction.ordinal()] = tileEntity;
 				}

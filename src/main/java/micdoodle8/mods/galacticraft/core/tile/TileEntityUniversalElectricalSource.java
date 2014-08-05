@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import mekanism.api.energy.EnergizedItemManager;
 import mekanism.api.energy.IEnergizedItem;
+import mekanism.api.energy.IStrictEnergyAcceptor;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
@@ -67,7 +68,7 @@ public class TileEntityUniversalElectricalSource extends TileEntityUniversalElec
 
 				if (tileAdj != null)
 				{
-                    float toSend = this.extractEnergyGC(null, this.getEnergyStoredGC() - amountProduced, true);
+                    float toSend = this.extractEnergyGC(null, Math.min(this.getEnergyStoredGC() - amountProduced, this.getEnergyStoredGC() / outputDirections.size()), true);
                     if (toSend <= 0) continue;
                     
 					if (tileAdj instanceof TileEntityConductor)
@@ -81,10 +82,19 @@ public class TileEntityUniversalElectricalSource extends TileEntityUniversalElec
 					else if (tileAdj instanceof IEnergyHandlerGC)
 					{
 						EnergySourceAdjacent source = new EnergySourceAdjacent(direction.getOpposite());
-						float transferred = ((IEnergyHandlerGC) tileAdj).receiveEnergyGC(source, toSend / outputDirections.size(), simulate);
+						float transferred = ((IEnergyHandlerGC) tileAdj).receiveEnergyGC(source, toSend, simulate);
 						amountProduced += transferred;
 						if (this.tierGC > 1 && !simulate && transferred > 0F && tileAdj instanceof EnergyStorageTile)
 							((EnergyStorageTile) tileAdj).poweredByTierGC = this.tierGC;
+					}
+					else if (NetworkConfigHandler.isMekanismLoaded() && tileAdj instanceof IStrictEnergyAcceptor)
+					{
+						IStrictEnergyAcceptor tileMek = (IStrictEnergyAcceptor) tileAdj;
+						if (tileMek.canReceiveEnergy(direction.getOpposite()))
+						{
+							float transferredMek = (float) tileMek.transferEnergyToAcceptor(direction.getOpposite(), toSend * NetworkConfigHandler.TO_MEKANISM_RATIO);
+							amountProduced += transferredMek * NetworkConfigHandler.MEKANISM_RATIO;
+						}
 					}
 					else if (NetworkConfigHandler.isBuildcraftLoaded() && NetworkConfigHandler.getBuildcraftVersion() == 6 && MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, direction.getOpposite()) != null)
 					//New BC API
@@ -230,7 +240,12 @@ public class TileEntityUniversalElectricalSource extends TileEntityUniversalElec
 	{
 		return this.tierGC + 1;
 	}
-	
+
+	@RuntimeInterface(clazz = "mekanism.api.energy.ICableOutputter", modID = "Mekanism")
+	public boolean canOutputTo(ForgeDirection side)
+	{
+		return this.getElectricalOutputDirections().contains(side);
+	}
 	
 	//	@Override
 	//	public ElectricityPack provideElectricity(ForgeDirection from, ElectricityPack request, boolean doProvide)
