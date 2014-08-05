@@ -361,7 +361,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 		}
 
 		//Not launch controlled
-		if (this.riddenByEntity != null)
+		if (this.riddenByEntity != null && !this.worldObj.isRemote)
 		{
 			if (this.riddenByEntity instanceof GCEntityPlayerMP)
 			{

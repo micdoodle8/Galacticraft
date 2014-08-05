@@ -209,7 +209,7 @@ public class WorldUtil
 	{
 		List<Integer> temp = new ArrayList<Integer>();
 
-		temp.add(0);
+		if (!ConfigManagerCore.disableRocketsToOverworld) temp.add(0);
 
 		for (Integer element : WorldUtil.registeredPlanets)
 		{

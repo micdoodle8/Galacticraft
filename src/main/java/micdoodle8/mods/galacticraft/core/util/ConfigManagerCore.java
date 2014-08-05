@@ -84,6 +84,7 @@ public class ConfigManagerCore
 	public static boolean enableSealerMultithreading;
 	public static boolean enableSealerEdgeChecks;
 	public static boolean alternateCanisterRecipe;
+	public static boolean disableRocketsToOverworld;
 
 	public static void initialize(File file)
 	{
@@ -104,7 +105,8 @@ public class ConfigManagerCore
             ConfigManagerCore.idDimensionOverworldOrbit = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "idDimensionOverworldOrbit", -27).getInt(-27);
             ConfigManagerCore.idDimensionOverworldOrbitStatic = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "idDimensionOverworldOrbitStatic", -26, "Static Space Station ID").getInt(-26);
             ConfigManagerCore.staticLoadDimensions = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "Static Loaded Dimensions", ConfigManagerCore.staticLoadDimensions, "IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded").getIntList();
-
+            ConfigManagerCore.disableRocketsToOverworld = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "Disable rockets from returning to Overworld", false, "If this is true on a server, rockets will not be able to reach the Overworld (only use this in special modpacks!)").getBoolean(false);
+            
             ConfigManagerCore.idSchematicRocketT1 = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_SCHEMATIC, "idSchematicRocketT1", 0).getInt(0);
             ConfigManagerCore.idSchematicMoonBuggy = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_SCHEMATIC, "idSchematicMoonBuggy", 1).getInt(1);
             ConfigManagerCore.idSchematicAddSchematic = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_SCHEMATIC, "idSchematicAddSchematic", Integer.MAX_VALUE).getInt(Integer.MAX_VALUE);

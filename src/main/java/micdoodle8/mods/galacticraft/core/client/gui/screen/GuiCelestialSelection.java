@@ -432,7 +432,7 @@ public class GuiCelestialSelection extends GuiScreen
     {
         if (this.selectedBody != null)
         {
-            if (this.selectedBody.getReachable())
+            if (this.selectedBody.getReachable() && this.possibleBodies != null && this.possibleBodies.contains(this.selectedBody))
             {
                 try
                 {
