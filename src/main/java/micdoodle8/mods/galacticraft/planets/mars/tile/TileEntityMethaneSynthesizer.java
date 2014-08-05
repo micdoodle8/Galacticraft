@@ -481,16 +481,17 @@ public class TileEntityMethaneSynthesizer extends ElectricBlockWithInventory imp
     {
         if (this.blockMetadata == -1)
         {
-            this.blockMetadata = 3 & this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
+            this.blockMetadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
         }
 
-        return this.blockMetadata;
+        return this.blockMetadata & 3;
     }
 	
 	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
 	public int receiveGas(ForgeDirection side, GasStack stack)
 	{
 		int used = 0;
+		//System.out.println("Giving gas amount "+stack.amount);
 		if (this.gasTank.getFluidAmount() < this.gasTank.getCapacity())
 		{
 			used = this.gasTank.fill(FluidRegistry.getFluidStack("hydrogen", stack.amount), true);
@@ -507,6 +508,7 @@ public class TileEntityMethaneSynthesizer extends ElectricBlockWithInventory imp
 	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
 	public boolean canReceiveGas(ForgeDirection side, Gas type)
 	{
+		//System.out.println("Testing receipt of gas "+type.getName());
 		return type.getName().equals("hydrogen") && side.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2));
 	}
 

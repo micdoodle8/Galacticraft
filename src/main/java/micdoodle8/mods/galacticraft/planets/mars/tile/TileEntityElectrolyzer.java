@@ -205,9 +205,9 @@ public class TileEntityElectrolyzer extends ElectricBlockWithInventory implement
     {
         if (this.blockMetadata == -1)
         {
-            this.blockMetadata = 3 & this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
+            this.blockMetadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
         }
 
-        return this.blockMetadata;
+        return this.blockMetadata & 3;
     }
 }
