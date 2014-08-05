@@ -76,6 +76,8 @@ public class NetworkConfigHandler
 	
 	public static boolean displayEnergyUnitsBC = false;
 	public static boolean displayEnergyUnitsIC2 = false;
+	public static boolean displayEnergyUnitsMek = false;
+	public static boolean displayEnergyUnitsRF = false;
 	
 	private static boolean cachedIC2Loaded = false;
 	private static boolean cachedIC2LoadedValue = false;

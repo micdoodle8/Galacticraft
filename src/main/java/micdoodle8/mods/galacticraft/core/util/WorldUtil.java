@@ -857,16 +857,20 @@ public class WorldUtil
 				}
 				continue;
 			}
-			else if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
+			else if (isMekLoaded && (tileEntity instanceof IStrictEnergyAcceptor || tileEntity instanceof ICableOutputter))
 			{
-				if (((IStrictEnergyAcceptor) tileEntity).canReceiveEnergy(direction.getOpposite()))
+				//Do not connect GC wires directly to Mek Universal Cables
+				try
+				{
+					if (Class.forName("codechicken.multipart.TileMultipart").isInstance(tileEntity))
+						continue;
+				} catch (Exception e) { e.printStackTrace(); }
+
+				if (tileEntity instanceof IStrictEnergyAcceptor && ((IStrictEnergyAcceptor) tileEntity).canReceiveEnergy(direction.getOpposite()))
 				{
 					adjacentConnections[direction.ordinal()] = tileEntity;
 				}
-			}
-			else if (isMekLoaded && tileEntity instanceof ICableOutputter)
-			{
-				if (((ICableOutputter) tileEntity).canOutputTo(direction.getOpposite()))
+				else if (tileEntity instanceof ICableOutputter && ((ICableOutputter) tileEntity).canOutputTo(direction.getOpposite()))
 				{
 					adjacentConnections[direction.ordinal()] = tileEntity;
 				}
@@ -906,18 +910,14 @@ public class WorldUtil
 				try
 				{
 					Class<?> clazzPipeTile = Class.forName("buildcraft.transport.TileGenericPipe");
-					Class<?> clazzPipeWood = Class.forName("buildcraft.transport.pipes.PipePowerWood");
 					if (clazzPipeTile.isInstance(tileEntity))
 					{				
+						Class<?> clazzPipeWood = Class.forName("buildcraft.transport.pipes.PipePowerWood");
 						Object pipe = clazzPipeTile.getField("pipe").get(tileEntity);
 						if (clazzPipeWood.isInstance(pipe))
 							continue;
 					}
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
+				} catch (Exception e) { e.printStackTrace(); }
 
 				//New BC API
 				if (NetworkConfigHandler.getBuildcraftVersion() == 6 && MjAPI.getMjBattery(tileEntity, MjAPI.DEFAULT_POWER_FRAMEWORK, direction.getOpposite()) != null)

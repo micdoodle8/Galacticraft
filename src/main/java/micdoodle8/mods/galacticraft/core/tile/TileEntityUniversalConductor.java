@@ -384,6 +384,13 @@ public abstract class TileEntityUniversalConductor extends TileEntityConductor
 			return false;
 		}
 
+		TileEntity te = new BlockVec3(this).getTileEntityOnSide(this.worldObj, side);
+		try
+		{
+			if (Class.forName("codechicken.multipart.TileMultipart").isInstance(te))
+				return false;
+		} catch (Exception e) { e.printStackTrace(); }
+
 		return true;
 	}
 

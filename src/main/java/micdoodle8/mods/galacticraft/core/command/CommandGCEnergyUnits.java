@@ -19,6 +19,8 @@ public class CommandGCEnergyUnits extends CommandBase
 		String options = " [gJ";
 		if (NetworkConfigHandler.isBuildcraftLoaded()) options = options + "/MJ";
 		if (NetworkConfigHandler.isIndustrialCraft2Loaded()) options = options + "/EU";
+		if (NetworkConfigHandler.isMekanismLoaded()) options = options + "/J";
+		if (NetworkConfigHandler.isThermalExpansionLoaded()) options = options + "/RF";
 		return "/" + this.getCommandName() + options + "]";
 	}
 
@@ -49,7 +51,7 @@ public class CommandGCEnergyUnits extends CommandBase
 		if (astring.length == 1)
 		{
 			String param = astring[0].toLowerCase();
-			if (param.length() == 2)
+			if (param.length() <= 2)
 			{
 				int paramvalue = 0;
 				if ("gj".equals(param))
@@ -58,6 +60,10 @@ public class CommandGCEnergyUnits extends CommandBase
 					paramvalue = 2;
 				else if ("eu".equals(param) && NetworkConfigHandler.isIndustrialCraft2Loaded())
 					paramvalue = 3;
+				else if ("j".equals(param) && NetworkConfigHandler.isMekanismLoaded())
+					paramvalue = 4;
+				else if ("rf".equals(param) && NetworkConfigHandler.isThermalExpansionLoaded())
+					paramvalue = 5;
 				
 				if (paramvalue > 0)
 				{
@@ -80,6 +86,8 @@ public class CommandGCEnergyUnits extends CommandBase
 		{
 			NetworkConfigHandler.displayEnergyUnitsBC = false;
 			NetworkConfigHandler.displayEnergyUnitsIC2 = false;
+			NetworkConfigHandler.displayEnergyUnitsMek = false;
+			NetworkConfigHandler.displayEnergyUnitsRF = false;
 			return;
 		}
 		
@@ -87,6 +95,8 @@ public class CommandGCEnergyUnits extends CommandBase
 		{
 			NetworkConfigHandler.displayEnergyUnitsBC = true;
 			NetworkConfigHandler.displayEnergyUnitsIC2 = false;
+			NetworkConfigHandler.displayEnergyUnitsMek = false;
+			NetworkConfigHandler.displayEnergyUnitsRF = false;
 			return;
 		}
 
@@ -94,6 +104,26 @@ public class CommandGCEnergyUnits extends CommandBase
 		{
 			NetworkConfigHandler.displayEnergyUnitsBC = false;
 			NetworkConfigHandler.displayEnergyUnitsIC2 = true;
+			NetworkConfigHandler.displayEnergyUnitsMek = false;
+			NetworkConfigHandler.displayEnergyUnitsRF = false;
+			return;
+		}	
+
+		if (param == 4 && NetworkConfigHandler.isMekanismLoaded())
+		{
+			NetworkConfigHandler.displayEnergyUnitsBC = false;
+			NetworkConfigHandler.displayEnergyUnitsIC2 = false;
+			NetworkConfigHandler.displayEnergyUnitsMek = true;
+			NetworkConfigHandler.displayEnergyUnitsRF = false;
+			return;
+		}	
+
+		if (param == 5 && NetworkConfigHandler.isThermalExpansionLoaded())
+		{
+			NetworkConfigHandler.displayEnergyUnitsBC = false;
+			NetworkConfigHandler.displayEnergyUnitsIC2 = false;
+			NetworkConfigHandler.displayEnergyUnitsMek = false;
+			NetworkConfigHandler.displayEnergyUnitsRF = true;
 			return;
 		}	
 	}

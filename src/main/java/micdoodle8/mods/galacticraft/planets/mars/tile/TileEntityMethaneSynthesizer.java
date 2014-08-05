@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.planets.mars.tile;
 import java.util.ArrayList;
 
 import cpw.mods.fml.relauncher.Side;
+import mekanism.api.gas.Gas;
+import mekanism.api.gas.GasStack;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
@@ -14,6 +16,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -72,7 +75,7 @@ public class TileEntityMethaneSynthesizer extends ElectricBlockWithInventory imp
 			}
 			
 			//First, see if any gas needs to be put into the hydogen storage
-			//TODO - in 1.7.10 implement support for Mekanism hydrogen tanks
+			//TODO - in 1.7.10 implement support for Mekanism internal hydrogen tanks
 
 			//TODO TEMPORARY
 			this.gasTank.fill(FluidRegistry.getFluidStack("hydrogen", 4), true);
@@ -483,4 +486,39 @@ public class TileEntityMethaneSynthesizer extends ElectricBlockWithInventory imp
 
         return this.blockMetadata;
     }
+	
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+	public int receiveGas(ForgeDirection side, GasStack stack)
+	{
+		int used = 0;
+		if (this.gasTank.getFluidAmount() < this.gasTank.getCapacity())
+		{
+			used = this.gasTank.fill(FluidRegistry.getFluidStack("hydrogen", stack.amount), true);
+		}
+		return used;
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+	public GasStack drawGas(ForgeDirection side, int amount)
+	{
+		return null;
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+	public boolean canReceiveGas(ForgeDirection side, Gas type)
+	{
+		return type.getName().equals("hydrogen") && side.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2));
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+	public boolean canDrawGas(ForgeDirection side, Gas type)
+	{
+		return false;
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
+	public boolean canTubeConnect(ForgeDirection side)
+	{
+		return side.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2));
+	}
 }

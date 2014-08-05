@@ -221,7 +221,7 @@ public abstract class ItemElectric extends Item implements IItemElectric
 	@RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
 	public double getMaxTransfer(ItemStack itemStack)
 	{
-		return this.getTransfer(itemStack) * NetworkConfigHandler.TO_MEKANISM_RATIO;
+		return this.transferMax * NetworkConfigHandler.TO_MEKANISM_RATIO;
 	}
 
 	@RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")

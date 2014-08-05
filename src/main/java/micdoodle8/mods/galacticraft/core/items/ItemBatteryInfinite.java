@@ -26,7 +26,7 @@ public class ItemBatteryInfinite extends ItemElectric
 	@Override
 	protected void setMaxTransfer()
 	{
-		this.transferMax = 400;
+		this.transferMax = 1000;
 	}
 
 	@Override

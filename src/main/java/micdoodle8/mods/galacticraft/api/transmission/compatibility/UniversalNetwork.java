@@ -24,7 +24,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -299,7 +298,7 @@ public class UniversalNetwork implements IElectricityNetwork
 					{
 						double result = 0;
 						try {
-							result = (Double) this.demandedEnergyIC2.invoke((IEnergySink) acceptor);
+							result = (Double) this.demandedEnergyIC2.invoke(acceptor);
 						} catch (Exception ex) {
 							if (ConfigManagerCore.enableDebug) ex.printStackTrace();
 						}
@@ -427,9 +426,9 @@ public class UniversalNetwork implements IElectricityNetwork
 						double result = 0;
 						try {
 							if (this.voltageParameterIC2)
-								result = (Double) this.injectEnergyIC2.invoke((IEnergySink) tileEntity, sideFrom, energySendingIC2, 120D);
+								result = (Double) this.injectEnergyIC2.invoke(tileEntity, sideFrom, energySendingIC2, 120D);
 							else
-								result = (Double) this.injectEnergyIC2.invoke((IEnergySink) tileEntity, sideFrom, energySendingIC2);
+								result = (Double) this.injectEnergyIC2.invoke(tileEntity, sideFrom, energySendingIC2);
 						} catch (Exception ex) {
 							if (ConfigManagerCore.enableDebug) ex.printStackTrace();
 						}

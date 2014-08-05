@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 import cpw.mods.fml.relauncher.Side;
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
-import mekanism.api.gas.GasTransmission;
 import mekanism.api.gas.IGasHandler;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkHelper;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
@@ -126,14 +125,11 @@ public abstract class TileEntityOxygen extends TileEntityElectricBlock implement
 			return false;
 		}
 
-		switch (type)
-		{
-		case OXYGEN:
+		if (type == NetworkType.OXYGEN)
 			return this.getOxygenInputDirections().contains(direction) || this.getOxygenOutputDirections().contains(direction);
-		case POWER:
+		if (type == NetworkType.POWER)
 			//			return this.nodeAvailable(new EnergySourceAdjacent(direction));
 			return super.canConnect(direction, type);
-		}
 
 		return false;
 	}

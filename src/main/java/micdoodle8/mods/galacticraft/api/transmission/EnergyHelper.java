@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.api.transmission;
 
 import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 
 import java.util.List;
@@ -23,6 +24,14 @@ public class EnergyHelper
     	else if (NetworkConfigHandler.displayEnergyUnitsBC)
     	{
     		return getEnergyDisplayBC(energyVal * NetworkConfigHandler.TO_BC_RATIO);
+    	}
+    	else if (NetworkConfigHandler.displayEnergyUnitsMek)
+    	{
+    		return getEnergyDisplayMek(energyVal * NetworkConfigHandler.TO_MEKANISM_RATIO);
+    	}
+    	else if (NetworkConfigHandler.displayEnergyUnitsRF)
+    	{
+    		return getEnergyDisplayRF(energyVal * NetworkConfigHandler.TO_TE_RATIO);
     	}
         String val = String.valueOf(getEnergyDisplayI(energyVal));
         String newVal = "";
@@ -63,8 +72,39 @@ public class EnergyHelper
         return val + " MJ";
     }
     
+    public static String getEnergyDisplayMek(float energyVal)
+    {
+        if (energyVal < 1000)
+        {
+	    	String val = String.valueOf(getEnergyDisplayI(energyVal));
+	        return val + " J";
+        }
+        else if (energyVal < 1000000)
+        {
+	    	String val = getEnergyDisplay1DP(energyVal / 1000);
+	        return val + " kJ";        	
+        }
+        else
+        {
+	    	String val = getEnergyDisplay1DP(energyVal / 1000000);
+	        return val + " MJ";        	
+        }
+    }
+    
+    public static String getEnergyDisplayRF(float energyVal)
+    {
+        String val = String.valueOf(getEnergyDisplayI(energyVal));
+
+        return val + " RF";
+    }
+
     public static int getEnergyDisplayI(float energyVal)
     {
-        return (int)Math.floor(energyVal);
+        return MathHelper.floor_float(energyVal);
+    }
+    
+    public static String getEnergyDisplay1DP(float energyVal)
+    {
+        return "" + MathHelper.floor_float(energyVal) + "." + (MathHelper.floor_float(energyVal * 10) % 10) + (MathHelper.floor_float(energyVal * 100) % 10);
     }
 }
