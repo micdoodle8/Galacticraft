@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.event;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -316,22 +315,22 @@ public class EventHandlerGC
 			return;
 		}
 
-		final double randMod = Math.min(0.5D, 0.2D * ConfigManagerCore.oilGenFactor);
+		final double randMod = Math.min(0.2D, 0.08D * ConfigManagerCore.oilGenFactor);
 
 		final boolean flag1 = rand.nextDouble() <= randMod;
 		final boolean flag2 = rand.nextDouble() <= randMod;
 
 		if (flag1 || flag2)
 		{
-            int cy = 20 + rand.nextInt(11);
+            int cy = 17 + rand.nextInt(15);
 
-			final int r = 2 + rand.nextInt(2);
-
+			final int r = 3 + rand.nextInt(3);
+			
 			final int r2 = r * r;
 
 			for (int bx = -r; bx <= r; bx++)
 			{
-				for (int by = -r; by <= r; by++)
+				for (int by = -r + 1; by <= r - 1; by++)
 				{
 					for (int bz = -r; bz <= r; bz++)
 					{
@@ -339,7 +338,7 @@ public class EventHandlerGC
 
 						if (d2 <= r2)
 						{
-							world.setBlock(bx + x, by + cy, bz + z, GCBlocks.crudeOilStill, 0, 2);
+							if (world.getBlock(bx + x, by + cy, bz + z) == Blocks.air) world.setBlock(bx + x, by + cy, bz + z, GCBlocks.crudeOilStill, 0, 2);
 						}
 					}
 				}
