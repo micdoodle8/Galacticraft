@@ -339,7 +339,7 @@ public class EventHandlerGC
 				{
 					for (int bz = -r; bz <= r; bz++)
 					{
-						final int d2 = bx * bx + by * by + bz * bz;
+						final int d2 = bx * bx + by * by * 2 + bz * bz;
 
 						if (d2 <= r2)
 						{
