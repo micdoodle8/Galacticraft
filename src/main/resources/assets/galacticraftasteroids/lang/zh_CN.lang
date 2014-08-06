@@ -11,41 +11,57 @@ item.rocketFinsT2.name=重型火箭鳍
 item.engineT2.name=重型火箭引擎
 item.reinforcedPlateT3.name=重型防护板
 item.grapple.name=吊钩
+item.atmosphericValve.name=气闸
+item.thermalCloth.name=热力布匹
+item.beamCore.name=粒子束核心
+item.tier3.desc=3阶
+
+# TOOLS
+item.titanium_pickaxe.name=钛镐
+item.titanium_axe.name=钛斧
+item.titanium_hoe.name=钛锄
+item.titanium_shovel.name=钛铲
+item.titanium_sword.name=钛剑
+
+# ARMOR
 item.thermalHelm.name=热力充能头盔
 item.thermalChestplate.name=热力充能胸甲
 item.thermalLeggings.name=热力充能护腿
-item.thermalBoots.name=热力充能护腿
-item.titanium_helmet.name=Titanium Helmet ##NEEDS TRANSLATE##
-item.titanium_chestplate.name=Titanium Chestplate ##NEEDS TRANSLATE##
-item.titanium_leggings.name=Titanium Leggings ##NEEDS TRANSLATE##
-item.titanium_boots.name=Titanium Boots ##NEEDS TRANSLATE##
-item.atmosphericValve.name=气闸
-item.thermalCloth.name=Thermal Cloth ##NEEDS TRANSLATE##
-item.beamCore.name=Beam Core ##NEEDS TRANSLATE##
+item.thermalBoots.name=热力充能靴子
+item.titanium_helmet.name=钛头盔
+item.titanium_chestplate.name=钛胸甲
+item.titanium_leggings.name=钛护腿
+item.titanium_boots.name=钛靴子
 
+# CANISTERS ETC
 item.methaneCanisterPartial.name=甲烷气体罐
-item.methaneCanister.name=装满的甲烷气体罐
+item.methaneCanister.name=甲烷气体罐(满)
 item.canister.gas.name=气体
 item.canister.LOX.partial.name=罐装液态氧
-item.canister.LOX.full.name=装满的罐装液态氧
+item.canister.LOX.full.name=罐装液态氧(满)
 item.canister.LOX.name=液态氧
-item.canister.liquidNitrogen.partial.name=灌装液氮
-item.canister.liquidNitrogen.full.name=装满的灌装液态氮
+item.canister.liquidNitrogen.partial.name=灌装液态氮
+item.canister.liquidNitrogen.full.name=灌装液态氮(满)
 item.canister.liquidNitrogen.name=液态氮
-item.canister.liquidArgon.partial.name=Canister of Liquid Argon ##NEEDS TRANSLATE##
-item.canister.liquidArgon.full.name=Filled Canister of Liquid Argon ##NEEDS TRANSLATE##
-item.canister.liquidArgon.name=Liquid       #short name for Liquid Argon contents level ##NEEDS TRANSLATE##
-item.emptyGasCanister.name=空的气体罐
-item.tier3.desc=三阶
-item.titanium_pickaxe.name=Titanium Pickaxe ##NEEDS TRANSLATE##
-item.titanium_axe.name=Titanium Axe ##NEEDS TRANSLATE##
-item.titanium_hoe.name=Titanium Hoe ##NEEDS TRANSLATE##
-item.titanium_shovel.name=Titanium Shovel ##NEEDS TRANSLATE##
-item.titanium_sword.name=Titanium Sword ##NEEDS TRANSLATE##
+item.canister.liquidArgon.partial.name=灌装液态氩
+item.canister.liquidArgon.full.name=灌装液态氩(满)
+item.canister.liquidArgon.name=氩      #液态氩缩写
+item.emptyGasCanister.name=气体罐(空)
 
-# TOOLS
-
-# ARMOR
+# Fluids and gases
+fluid.methane.name=甲烷
+fluid.oxygen.name=氧气
+fluid.nitrogen.name=氮气
+fluid.hydrogen.name=氢气
+fluid.carbondioxide.name=二氧化碳
+fluid.helium.name=氦气
+fluid.argon.name=氩气
+fluid.atmosphericgases.name=空气
+fluid.liquidmethane.name=液态甲烷
+fluid.liquidoxygen.name=液态氧
+fluid.liquidnitrogen.name=液态氮
+fluid.liquidargon.name=液态氩
+fluid.fuel.name=燃油
 
 # BLOCKS
 tile.asteroidsBlock.asteroid0.name=行星岩
@@ -60,22 +76,8 @@ tile.telepadShort.name=短距离传送台
 tile.walkway.name=通道
 tile.walkwayWire.name=通道
 tile.walkwayOxygenPipe.name=通道
-tile.treasureT3.name=三阶宝箱
-
-# Fluids and gases
-fluid.methane.name=甲烷
-fluid.oxygen.name=氧气
-fluid.nitrogen.name=氮气
-fluid.hydrogen.name=氢气
-fluid.carbondioxide.name=二氧化碳
-fluid.helium.name=Helium Gas ##NEEDS TRANSLATE##
-fluid.argon.name=Argon Gas ##NEEDS TRANSLATE##
-fluid.atmosphericgases.name=空气
-fluid.liquidmethane.name=液态甲烷
-fluid.liquidoxygen.name=液态氧
-fluid.liquidnitrogen.name=液态氮
-fluid.liquidargon.name=Liquid Argon ##NEEDS TRANSLATE##
-fluid.fuel.name=燃油
+tile.treasureT3.name=3阶宝箱
+tile.denseIce.name=坚冰
 
 # GUI
 planet.asteroids=小行星
@@ -105,3 +107,5 @@ entity.GrappleHookGC.name=抓升钩
 entity.Tier3RocketGC.name=三阶火箭
 
 # Container
+container.shortRangeTelepad.name=短程传送平台
+container.entryPod.name=Entry Pod
