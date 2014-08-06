@@ -46,6 +46,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.BiomeGenDesert;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -315,7 +316,11 @@ public class EventHandlerGC
 			return;
 		}
 
-		final double randMod = Math.min(0.2D, 0.08D * ConfigManagerCore.oilGenFactor);
+		double randMod = Math.min(0.2D, 0.08D * ConfigManagerCore.oilGenFactor);
+		
+		if (biomegenbase.rootHeight >= 0.45F) randMod /= 2;
+		if (biomegenbase.rootHeight < 0F) randMod *= 1.5;
+		if (biomegenbase instanceof BiomeGenDesert) randMod *= 1.5;
 
 		final boolean flag1 = rand.nextDouble() <= randMod;
 		final boolean flag2 = rand.nextDouble() <= randMod;
