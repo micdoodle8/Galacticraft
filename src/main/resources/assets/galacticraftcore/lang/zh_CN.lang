@@ -23,7 +23,6 @@ item.noseCone.name=鼻锥
 item.sensorLens.name=探测镜片
 item.oxygenGear.name=供氧设备
 item.flag.name=旗
-
 item.parachute_plain.name=降落伞
 item.parachute_black.name=黑色降落伞
 item.parachute_blue.name=浅蓝色降落伞
@@ -49,7 +48,6 @@ item.fuelCanisterPartial.name=部分灌满的燃料罐
 item.oilCanister.name=灌满的油罐
 item.fuelCanister.name=灌满的燃料罐
 item.oilExtractor.name=便携抽油器
-
 item.schematic.name=NASA工作台图纸
 item.fuel.name=火箭燃料
 item.key.T1.name=地牢钥匙(1级)
@@ -199,9 +197,9 @@ entity.GalacticraftCore.GCFlag.name=旗
 entity.GalacticraftCore.MeteorChunk.name=陨石块
 
 # Schematics
-schematic.moonbuggy.name=探月车
-schematic.rocketT1.name=火箭(1级)
-schematic.rocketT2.name=火箭(2级)
+schematic.moonbuggy.name=星球车
+schematic.rocketT1.name=火箭(1阶)
+schematic.rocketT2.name=火箭(2阶)
 
 # DEATH MESSAGES
 death.attack.spaceshipExplosion=%1$s的火箭出故障了!
@@ -211,6 +209,7 @@ death.attack.oxygenSuffocation=%1$s因氧气消耗殆尽而死!
 
 # GALAXIES
 galaxy.blockyway.name=方块银河
+galaxy.milkyWay=银河系
 
 # OTHER
 newversion.failed.name=星系mod新版本检查失败! 15秒后重试
@@ -232,22 +231,6 @@ itemGroup.GalacticraftBlocks=星系|方块
 itemGroup.GalacticraftItems=星系|物品
 
 # GUI
-container.cargoloader.name=货物装载器
-container.cargounloader.name=货物卸载器
-container.fuelloader.name=燃料注入器
-container.oxygencollector.name=氧气收集器
-container.oxygencompressor.name=氧气压缩机
-container.oxygendistributor.name=氧气分配器
-container.oxygensealer.name=气密装置
-container.parachest.name=伞降箱
-container.refinery.name=精炼器
-container.treasurechest.name=珍品箱
-container.lander.name=登陆舱
-container.spaceship.name=一阶火箭
-container.solarbasic.name=基础太阳能板
-container.solaradvanced.name=高级太阳能板
-container.oxygendecompressor.name=氧气解压机
-
 gui.message.out.name=输出
 gui.message.in.name=输入
 gui.message.status.name=状态
@@ -273,13 +256,13 @@ gui.message.bubbleVisible.name=可看见气泡
 gui.message.launch.name=发射
 gui.message.clickAgain.0.name=再次点击放大 (赏月或是观测卫星) 
 gui.message.clickAgain.1.name=再次点击放大 (赏月)
-gui.message.clickAgain.2.name=再次点击放大 观测卫星)
+gui.message.clickAgain.2.name=再次点击放大 (观测卫星)
 gui.message.clickAgain.3.name=再次点击放大
-gui.message.exit.name=Exit ##NEEDS TRANSLATE##
-gui.message.tier.name=Tier %d ##NEEDS TRANSLATE##
-gui.message.canCreateSpaceStation.name=A Space Station can be created here! ##NEEDS TRANSLATE##
-gui.message.cannotCreateSpaceStation.name=A Space Station cannot be created here. ##NEEDS TRANSLATE##
-gui.message.createSS.name=Create ##NEEDS TRANSLATE##
+gui.message.exit.name=离开
+gui.message.tier.name=%d 阶
+gui.message.canCreateSpaceStation.name=这里可以创建空间站
+gui.message.cannotCreateSpaceStation.name=这里不能创建空间站
+gui.message.createSS.name=创建
 
 gui.status.active.name=活动的
 gui.status.missingleaves.name=树叶不足
@@ -369,26 +352,33 @@ gui.buggy.turn.name=左转-右转
 gui.buggy.accel.name=加速
 gui.buggy.decel.name=减速
 gui.buggy.inv.name=物品栏/燃料
+
 gui.rocket.launch.name=发射
 gui.rocket.turn.name=左-右转
 gui.rocket.updown.name=上-下转
 gui.rocket.inv.name=物品栏 / 燃料
+
+gui.rocket.warning.nogyroscope=神秘的力量在起作用, 陀螺仪疯狂旋转!
 gui.rocket.warning.noparachute=我没有降落伞! 如果你再次按发射, 就没法回去了!
 gui.rocket.warning.nofuel=我需要先装入一些火箭燃料!
-gui.chest.warning.wrongkey=我可能需要一个等级 %s的地牢钥匙来解锁这个!
+gui.chest.warning.wrongkey=我可能需要一个%s阶的地牢钥匙来解锁这个宝箱!
 gui.frequencymodule.warning0=我可能需要一个
 gui.frequencymodule.warning1=如果我想在这清楚的听到声音.
+
 gui.rocketType.0=存储空间: 18
 gui.rocketType.1=存储空间: 36
 gui.rocketType.2=存储空间: 56
-gui.rocketType.3=装入燃料前
+gui.rocketType.3=已装填燃料
+
 gui.spacestation.typeCommand=输入
 gui.spacestation.playername=<玩家名字>
-gui.spacestation.toAllowEntry=可运行其他玩家进入这个空间站!
+gui.spacestation.toAllowEntry=允许其他玩家进入这个空间站!
+
 gui.skeletonBoss.message=Boss消失, 战斗时不要离开这个Boss的房间! 重新进入这个房间会重新生成Boss. 
 gui.warning.noroom=空间不足!
 gui.flag.alreadyPlaced=旗帜已经放置于此!
 gui.receiver.cannotAttach=这里无法放置接收器! 
+
 gui.tank.oxygenRemaining=氧气剩余
 gui.buggy.storageSpace=存储空间
 gui.frequencyModule.desc.0=可以收到微弱的声波
@@ -434,6 +424,7 @@ gui.missingCore.name.2=关闭Minecraft然后安装MicdoodleCore
 gui.missingCore.name.3=点击这里打开下载页面
 gui.electricCompressor.desc.0=进度
 gui.showBubble.desc.0=显示气泡
+
 gui.spaceRace.create.close.name=关闭
 gui.spaceRace.create.back.name=后退
 gui.spaceRace.create.rename.name=重命名队伍
@@ -457,22 +448,7 @@ gui.spaceRace.create.sendInvite.name=发送邀请
 gui.spaceRace.create.remove.name=移除
 gui.spaceRace.join.title.name=加入太空竞赛
 gui.spaceRace.join.owner.name=拥有者
-gui.spaceRace.join.memberCount.name=%d成员
-
-# DIMENSIONS
-dimension.Overworld.name=主世界(地球)
-dimension.Moon.name=月球
-dimension.Sun.name=太阳
-planet.overworld=主世界
-moon.moon=月球
-galaxy.milkyWay=银河系
-solarsystem.sol=太阳系
-planet.mercury=水星
-planet.venus=金星
-planet.jupiter=木星
-planet.saturn=土星
-planet.uranus=天王星
-planet.neptune=海王星
+gui.spaceRace.join.memberCount.name=成员%d
 
 gui.message.moon.daynightcycle.0.name=29.5个地球日
 gui.message.moon.daynightcycle.1.name= 
@@ -484,6 +460,7 @@ gui.message.moon.atmosphere.0.name=无
 gui.message.moon.atmosphere.1.name= 
 gui.message.moon.meansurfacetemp.0.name=(光亮面) 253C 
 gui.message.moon.meansurfacetemp.1.name=(黑暗面) -153C 
+
 gui.message.overworld.daynightcycle.0.name=1个地球日
 gui.message.overworld.daynightcycle.1.name=
 gui.message.overworld.surfacegravity.0.name=1.0g 
@@ -494,6 +471,37 @@ gui.message.overworld.atmosphere.0.name=氮气与氧气
 gui.message.overworld.atmosphere.1.name=适合生物生存
 gui.message.overworld.meansurfacetemp.0.name=14C 
 gui.message.overworld.meansurfacetemp.1.name= 
+
+# CONTAINERS
+container.cargoloader.name=货物装载器
+container.cargounloader.name=货物卸载器
+container.fuelloader.name=燃料注入器
+container.oxygencollector.name=氧气收集器
+container.oxygencompressor.name=氧气压缩机
+container.oxygendistributor.name=氧气分配器
+container.oxygensealer.name=气密装置
+container.parachest.name=伞降箱
+container.refinery.name=精炼器
+container.treasurechest.name=珍品箱
+container.lander.name=登陆舱
+container.spaceship.name=一阶火箭
+container.solarbasic.name=基础太阳能板
+container.solaradvanced.name=高级太阳能板
+container.oxygendecompressor.name=氧气解压机
+
+# DIMENSIONS
+dimension.Overworld.name=主世界(地球)
+dimension.Moon.name=月球
+dimension.Sun.name=太阳
+planet.overworld=主世界
+planet.mercury=水星
+planet.venus=金星
+planet.jupiter=木星
+planet.saturn=土星
+planet.uranus=天王星
+planet.neptune=海王星
+moon.moon=月球
+solarsystem.sol=太阳系
 
 # COMMANDS
 commands.dimensionteleport=%s被传送到%s附近.
