@@ -400,6 +400,7 @@ public class ThreadFindSeal
 		Block breatheableAirID = GCBlocks.breatheableAir;
 		Block breatheableAirIDBright = GCBlocks.brightBreatheableAir;
 		Block oxygenSealerID = GCBlocks.oxygenSealer;
+		Block fireBlock = Blocks.fire;
 		HashSet<BlockVec3> checkedLocal = this.checked;
 		LinkedList nextLayer = new LinkedList<BlockVec3>();
 
@@ -433,6 +434,11 @@ public class ThreadFindSeal
 								// blocks - this now can't jump through walls etc
 								nextLayer.add(sideVec);
 								checkedLocal.add(sideVec);
+							}
+							else if (id == fireBlock)
+							{
+								nextLayer.add(sideVec);
+								this.breatheableToReplace.add(sideVec);
 							}
 							else if (id == oxygenSealerID)
 							{
@@ -481,6 +487,7 @@ public class ThreadFindSeal
 		Block breatheableAirID = GCBlocks.breatheableAir;
 		Block breatheableAirIDBright = GCBlocks.brightBreatheableAir;
 		Block oxygenSealerID = GCBlocks.oxygenSealer;
+		Block fireBlock = Blocks.fire;
 		HashSet<BlockVec3> checkedLocal = this.checked;
 		LinkedList nextLayer = new LinkedList<BlockVec3>();
 
@@ -515,6 +522,11 @@ public class ThreadFindSeal
 							// blocks - this now can't jump through walls etc
 							nextLayer.add(sideVec);
 							checkedLocal.add(sideVec);
+						}
+						else if (id == fireBlock)
+						{
+							nextLayer.add(sideVec);
+							this.breatheableToReplace.add(sideVec);
 						}
 						else if (id == oxygenSealerID)
 						{
