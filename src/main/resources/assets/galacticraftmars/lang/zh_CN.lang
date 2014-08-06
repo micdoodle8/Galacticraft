@@ -4,14 +4,14 @@
 item.rawDesh.name=未精炼戴斯矿
 item.deshStick.name=戴斯棍
 item.ingotDesh.name=戴斯锭
-item.spaceshipTier2.t2Rocket.name=二阶火箭
+item.spaceshipTier2.t2Rocket.name=2阶火箭
 item.reinforcedPlateT2.name=重装板
-item.tier2.desc=二阶
+item.tier2.desc=2阶
 item.slimelingCargo.name=黏滑物品背包
 item.key.T2.name=2阶地牢钥匙
 item.compressedDesh.name=致密戴斯
 item.spaceshipTier2.cargoRocket.name=货运火箭
-item.fluidManip.name=Fluid Manipulator ##NEEDS TRANSLATE##
+item.fluidManip.name=流体操纵器
 
 # TOOLS
 item.deshPick.name=戴斯镐
@@ -105,6 +105,7 @@ gui.launchController.desc.1=火箭发射频率,火箭前往
 gui.launchController.desc.2=发射台是否$在发射时移除
 gui.launchController.desc.3=当这个条件达到时,$火箭就会发射
 gui.terraformer.desc.0=水箱
+
 gui.gasTank.desc.0=气体贮存模块
 gui.liquidTank.desc.0=液罐
 gui.status.nogas.name=没有气体
@@ -125,7 +126,7 @@ item.carbonFragments.name=碳片
 gas.carbondioxide.name=二氧化碳
 gas.oxygen.name=氧气
 gas.nitrogen.name=氮气
-gui.desc.reinforcedPlateT2.name=二阶
+gui.desc.reinforcedPlateT2.name=2阶
 dimension.Mars.name=火星
 planet.mars=火星
 
