@@ -369,7 +369,7 @@ public class TileEntityLaunchController extends ElectricBlockWithInventory imple
 		}
 	}
 	
-	private void checkDestFrequencyValid()
+	public void checkDestFrequencyValid()
 	{
 		this.destFrequencyValid = false;
 		if (this.destFrequency >= 0)
@@ -404,6 +404,7 @@ public class TileEntityLaunchController extends ElectricBlockWithInventory imple
 
 	public boolean validFrequency()
 	{
+		this.checkDestFrequencyValid();
 		return !this.getDisabled(0) && this.hasEnoughEnergyToRun && this.frequencyValid && this.destFrequencyValid;
 	}
 

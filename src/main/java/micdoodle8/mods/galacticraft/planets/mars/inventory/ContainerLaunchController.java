@@ -17,6 +17,7 @@ public class ContainerLaunchController extends Container
 	public ContainerLaunchController(InventoryPlayer par1InventoryPlayer, TileEntityLaunchController tileEntity)
 	{
 		this.tileEntity = tileEntity;
+		tileEntity.checkDestFrequencyValid();
 
 		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 152, 105, ItemElectric.class));
 
