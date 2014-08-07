@@ -569,6 +569,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 			{
 				freefall = false;
 				p.onGround = true;
+				p.posY -= p.boundingBox.minY - blockYmax; 
 			}
 			else
 			{
@@ -855,16 +856,17 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 		else
 		//Not freefall - within arm's length of something
 		{
+			if (p.motionY != 0) p.motionY = this.pPrevMotionY;
 			if (p.movementInput.jump)
 			{
 				if (p.onGround)
 				{
-					p.motionY += 0.09D;
-					this.pjumpticks = 6;
+					p.motionY += 0.05D;
+					this.pjumpticks = 5;
 				}
 				else
 				{
-					p.motionY += 0.01D;
+					p.motionY += 0.01D * (this.pjumpticks + 1);
 				}
 			}
 			else if (p.movementInput.sneak)
@@ -875,15 +877,8 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 				}
 				this.pjumpticks = 0;
 			}
-			else
-			{
-				p.motionY = this.pPrevMotionY;
-				if (this.pjumpticks > 0)
-				{
-					p.motionY += 0.01D * this.pjumpticks;
-					this.pjumpticks--;
-				}
-			}
+
+			this.pjumpticks--;
 		}
 
 		//Artificial gravity
