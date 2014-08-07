@@ -556,118 +556,9 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
     @SideOnly(Side.CLIENT)
 	public void spinUpdate(GCEntityClientPlayerMP p)
 	{
-		boolean freefall = true;
-
-		//This is an "on the ground" check
-		int playerFeetOnY = (int) (p.boundingBox.minY - 0.001D);
-		Block b = this.worldObj.getBlock(MathHelper.floor_double(p.posX), playerFeetOnY, MathHelper.floor_double(p.posX));
-		double blockYmax = b.getBlockBoundsMaxY() + playerFeetOnY;
-		if (b != Blocks.air && p.boundingBox.minY - blockYmax < 0.001D)
-		{
-			freefall = false;
-			p.onGround = true;
-			p.posY -= p.boundingBox.minY - blockYmax; 
-		}
- 		else if (this.pjumpticks > 0)
- 		{
- 			freefall = false;
- 		}
- 		else if (p.boundingBox.maxX >= this.ssBoundsMinX && p.boundingBox.minX <= this.ssBoundsMaxX && p.boundingBox.maxY >= this.ssBoundsMinY && p.boundingBox.minY <= this.ssBoundsMaxY && p.boundingBox.maxZ >= this.ssBoundsMinZ && p.boundingBox.minZ <= this.ssBoundsMaxZ)
-		//Player is somewhere within the space station boundaries
-		{
-			//Check if the player's bounding box is in the same block coordinates as any non-vacuum block (including torches etc)
-			//If so, it's assumed the player has something close enough to grab onto, so is not in freefall
-			//Note: breatheable air here means the player is definitely not in freefall
-			int xmx = MathHelper.floor_double(p.boundingBox.maxX);
-			int ym = MathHelper.floor_double(p.boundingBox.minY);
-			int yy = MathHelper.floor_double(p.boundingBox.maxY);
-			int zm = MathHelper.floor_double(p.boundingBox.minZ);
-			int zz = MathHelper.floor_double(p.boundingBox.maxZ);
-			BLOCKCHECK:
-			for (int x = MathHelper.floor_double(p.boundingBox.minX); x <= xmx; x++)
-			{
-				for (int y = ym; y <= yy; y++)
-				{
-					for (int z = zm; z <= zz; z++)
-					{
-						if (this.worldObj.getBlock(x, y, z) != Blocks.air)
-						{
-							freefall = false;
-							break BLOCKCHECK;
-						}
-					}
-				}
-			}
-		}
-
-		/*
-		if (freefall)
-		{
-			//If that check didn't produce a result, see if the player is inside the walls
-			//TODO: could apply special weightless movement here like Coriolis force - the player is inside the walls,  not touching them, and in a vacuum
-			int quadrant = 0;
-			double xd = p.posX - this.spinCentreX;
-			double zd = p.posZ - this.spinCentreZ;
-			if (xd<0)
-			{
-				if (xd<-Math.abs(zd))
-				{
-					quadrant = 2;
-				} else
-					quadrant = (zd<0) ? 3 : 1;
-			} else
-				if (xd>Math.abs(zd))
-				{
-					quadrant = 0;
-				} else
-					quadrant = (zd<0) ? 3 : 1;
-			
-			int ymin = MathHelper.floor_double(p.boundingBox.minY)-1;
-			int ymax = MathHelper.floor_double(p.boundingBox.maxY);
-			int xmin, xmax, zmin, zmax;
-
-			switch (quadrant)
-			{
-			case 0:
-				xmin = MathHelper.floor_double(p.boundingBox.maxX);
-				xmax = this.ssBoundsMaxX - 1;
-				zmin = MathHelper.floor_double(p.boundingBox.minZ)-1;
-				zmax = MathHelper.floor_double(p.boundingBox.maxZ)+1;
-				break;
-			case 1:
-				xmin = MathHelper.floor_double(p.boundingBox.minX)-1;
-				xmax = MathHelper.floor_double(p.boundingBox.maxX)+1;
-				zmin = MathHelper.floor_double(p.boundingBox.maxZ);
-				zmax = this.ssBoundsMaxZ - 1;
-				break;
-			case 2:
-				zmin = MathHelper.floor_double(p.boundingBox.minZ)-1;
-				zmax = MathHelper.floor_double(p.boundingBox.maxZ)+1;
-				xmin = this.ssBoundsMinX;
-				xmax = MathHelper.floor_double(p.boundingBox.minX);
-				break;
-			case 3:
-			default:
-				xmin = MathHelper.floor_double(p.boundingBox.minX)-1;
-				xmax = MathHelper.floor_double(p.boundingBox.maxX)+1;
-				zmin = this.ssBoundsMinZ;
-				zmax = MathHelper.floor_double(p.boundingBox.minZ);
-				break;
-			}
-			
-			//This block search could cost a lot of CPU (but client side) - maybe optimise later
-			BLOCKCHECK0:
-			for(int x = xmin; x <= xmax; x++)
-				for (int z = zmin; z <= zmax; z++)
-					for (int y = ymin; y <= ymax; y++)
-						if (this.worldObj.getBlock(x, y, z) != Blocks.air)
-						{
-							freefall = false;
-							break BLOCKCHECK0;
-						}
-		}*/
-
+		boolean freefall = this.testFreefall(p);
 		boolean doGravity = true;
+		
 		if (freefall)
 		{
 			doGravity = false;
@@ -857,13 +748,14 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 		else
 		//Not freefall - within arm's length of something or jumping
 		{
+			if (p.motionY < 0 && this.pPrevMotionY >= 0) p.posY -= p.motionY;
 			if (p.motionY != 0) p.motionY = this.pPrevMotionY;
 			if (p.movementInput.jump)
 			{
 				if (p.onGround)
 				{
 					p.motionY += 0.05D;
-					this.pjumpticks = 5;
+					this.pjumpticks = 6;
 					p.onGround = false;
 				}
 				else
@@ -880,7 +772,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 				this.pjumpticks = 0;
 			}
 
-			this.pjumpticks--;
+			if (this.pjumpticks > 0) this.pjumpticks--;
 		}
 
 		//Artificial gravity
@@ -935,6 +827,119 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 		this.pPrevMotionZ = p.motionZ;
 	}
 
+    @SideOnly(Side.CLIENT)
+    private boolean testFreefall(GCEntityClientPlayerMP p)
+    {
+		//This is an "on the ground" check
+		int playerFeetOnY = (int) (p.boundingBox.minY - 0.001D);
+		Block b = this.worldObj.getBlock(MathHelper.floor_double(p.posX), playerFeetOnY, MathHelper.floor_double(p.posX));
+		double blockYmax = b.getBlockBoundsMaxY() + playerFeetOnY;
+		if (b != Blocks.air && p.boundingBox.minY - blockYmax < 0.001D)
+		{
+			p.onGround = true;
+			p.posY -= p.boundingBox.minY - blockYmax;
+			return false;
+		}
+ 		else if (this.pjumpticks > 0)
+ 		{
+ 			return false;
+ 		}
+ 		else if (p.boundingBox.maxX >= this.ssBoundsMinX && p.boundingBox.minX <= this.ssBoundsMaxX && p.boundingBox.maxY >= this.ssBoundsMinY && p.boundingBox.minY <= this.ssBoundsMaxY && p.boundingBox.maxZ >= this.ssBoundsMinZ && p.boundingBox.minZ <= this.ssBoundsMaxZ)
+		//Player is somewhere within the space station boundaries
+		{
+			//Check if the player's bounding box is in the same block coordinates as any non-vacuum block (including torches etc)
+			//If so, it's assumed the player has something close enough to grab onto, so is not in freefall
+			//Note: breatheable air here means the player is definitely not in freefall
+			int xmx = MathHelper.floor_double(p.boundingBox.maxX);
+			int ym = MathHelper.floor_double(p.boundingBox.minY);
+			int yy = MathHelper.floor_double(p.boundingBox.maxY);
+			int zm = MathHelper.floor_double(p.boundingBox.minZ);
+			int zz = MathHelper.floor_double(p.boundingBox.maxZ);
+			for (int x = MathHelper.floor_double(p.boundingBox.minX); x <= xmx; x++)
+			{
+				for (int y = ym; y <= yy; y++)
+				{
+					for (int z = zm; z <= zz; z++)
+					{
+						if (this.worldObj.getBlock(x, y, z) != Blocks.air)
+						{
+							return false;
+						}
+					}
+				}
+			}
+		}
+
+		/*
+		if (freefall)
+		{
+			//If that check didn't produce a result, see if the player is inside the walls
+			//TODO: could apply special weightless movement here like Coriolis force - the player is inside the walls,  not touching them, and in a vacuum
+			int quadrant = 0;
+			double xd = p.posX - this.spinCentreX;
+			double zd = p.posZ - this.spinCentreZ;
+			if (xd<0)
+			{
+				if (xd<-Math.abs(zd))
+				{
+					quadrant = 2;
+				} else
+					quadrant = (zd<0) ? 3 : 1;
+			} else
+				if (xd>Math.abs(zd))
+				{
+					quadrant = 0;
+				} else
+					quadrant = (zd<0) ? 3 : 1;
+			
+			int ymin = MathHelper.floor_double(p.boundingBox.minY)-1;
+			int ymax = MathHelper.floor_double(p.boundingBox.maxY);
+			int xmin, xmax, zmin, zmax;
+
+			switch (quadrant)
+			{
+			case 0:
+				xmin = MathHelper.floor_double(p.boundingBox.maxX);
+				xmax = this.ssBoundsMaxX - 1;
+				zmin = MathHelper.floor_double(p.boundingBox.minZ)-1;
+				zmax = MathHelper.floor_double(p.boundingBox.maxZ)+1;
+				break;
+			case 1:
+				xmin = MathHelper.floor_double(p.boundingBox.minX)-1;
+				xmax = MathHelper.floor_double(p.boundingBox.maxX)+1;
+				zmin = MathHelper.floor_double(p.boundingBox.maxZ);
+				zmax = this.ssBoundsMaxZ - 1;
+				break;
+			case 2:
+				zmin = MathHelper.floor_double(p.boundingBox.minZ)-1;
+				zmax = MathHelper.floor_double(p.boundingBox.maxZ)+1;
+				xmin = this.ssBoundsMinX;
+				xmax = MathHelper.floor_double(p.boundingBox.minX);
+				break;
+			case 3:
+			default:
+				xmin = MathHelper.floor_double(p.boundingBox.minX)-1;
+				xmax = MathHelper.floor_double(p.boundingBox.maxX)+1;
+				zmin = this.ssBoundsMinZ;
+				zmax = MathHelper.floor_double(p.boundingBox.minZ);
+				break;
+			}
+			
+			//This block search could cost a lot of CPU (but client side) - maybe optimise later
+			BLOCKCHECK0:
+			for(int x = xmin; x <= xmax; x++)
+				for (int z = zmin; z <= zmax; z++)
+					for (int y = ymin; y <= ymax; y++)
+						if (this.worldObj.getBlock(x, y, z) != Blocks.air)
+						{
+							freefall = false;
+							break BLOCKCHECK0;
+						}
+		}*/
+		
+		return true;
+    }
+    
 	public float getSpinRate()
 	{
 		return this.skyAngularVelocity;
