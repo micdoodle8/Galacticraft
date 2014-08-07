@@ -84,6 +84,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 	private double pPrevMotionX = 0D;
 	private double pPrevMotionY = 0D;
 	private double pPrevMotionZ = 0D;
+	private int pjumpticks = 0;
 
 	@Override
 	public void setDimension(int var1)
@@ -567,6 +568,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 			if (b != Blocks.air && p.boundingBox.minY - blockYmax < 0.001D)
 			{
 				freefall = false;
+				p.onGround = true;
 			}
 			else
 			{
@@ -667,6 +669,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 		if (freefall)
 		{
 			doGravity = false;
+			this.pjumpticks = 0;
 			//Do spinning
 			if (this.doSpinning && this.angularVelocityRadians != 0F)
 			{
@@ -774,12 +777,12 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 
 				if (p.movementInput.sneak)
 				{
-					p.motionY -= 0.0015D;
+					p.motionY -= 0.0016D;
 				}
 
 				if (p.movementInput.jump)
 				{
-					p.motionY += 0.0015D;
+					p.motionY += 0.0016D;
 				}
 
 				if (p.motionX > 0.7F)
@@ -809,6 +812,14 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 			}
 			else
 			{
+				//Half the normal acceleration in Creative mode
+				double dx = p.motionX - this.pPrevMotionX;
+				double dy = p.motionY - this.pPrevMotionY;
+				double dz = p.motionZ - this.pPrevMotionZ;
+				p.motionX -= dx / 2;
+				p.motionY -= dy / 2;
+				p.motionZ -= dz / 2;
+
 				if (p.motionX > 1.2F)
 				{
 					p.motionX = 1.2F;
@@ -816,6 +827,14 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 				if (p.motionX < -1.2F)
 				{
 					p.motionX = -1.2F;
+				}
+				if (p.motionY > 0.5F)
+				{
+					p.motionY = 0.5F;
+				}
+				if (p.motionY < -0.5F)
+				{
+					p.motionY = -0.5F;
 				}
 				if (p.motionZ > 1.2F)
 				{
@@ -834,12 +853,14 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 			//Arm and leg movements could start tumbling the player?
 		}
 		else
+		//Not freefall - within arm's length of something
 		{
 			if (p.movementInput.jump)
 			{
 				if (p.onGround)
 				{
-					p.motionY += 0.15D;
+					p.motionY += 0.09D;
+					this.pjumpticks = 6;
 				}
 				else
 				{
@@ -851,6 +872,16 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 				if (!p.onGround)
 				{
 					p.motionY -= 0.01D;
+				}
+				this.pjumpticks = 0;
+			}
+			else
+			{
+				p.motionY = this.pPrevMotionY;
+				if (this.pjumpticks > 0)
+				{
+					p.motionY += 0.01D * this.pjumpticks;
+					this.pjumpticks--;
 				}
 			}
 		}
