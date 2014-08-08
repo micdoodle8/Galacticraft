@@ -502,6 +502,7 @@ planet.uranus=Uranus
 planet.neptune=Neptune
 moon.moon=Moon
 solarsystem.sol=Sol
+star.sol=Sol
 
 # COMMANDS
 commands.dimensionteleport=%s was sent into the atmosphere%s
