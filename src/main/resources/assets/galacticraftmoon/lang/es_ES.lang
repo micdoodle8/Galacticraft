@@ -1,9 +1,9 @@
 # Galacticraft Moon Language File = SPAIN SPANISH
 
 # GENERAL ITEMS
-item.meteoricIronRaw.name=Hierro Meteórico Crudo
-item.compressedMeteoricIron.name=Hierro Meteórico Comprimido
-item.meteoricIronIngot.name=Lingote de Hierro Meteórico
+item.meteoricIronRaw.name=Hierro de Meteorito Crudo
+item.compressedMeteoricIron.name=Hierro de Meteorito Comprimido
+item.meteoricIronIngot.name=Lingote de Hierro de Meteorito
 
 # FOOD
 item.cheeseCurd.name=Queso en Grano
@@ -24,6 +24,6 @@ tile.moonBlock.bricks.name=Ladrillos
 tile.cheeseBlock.name=Bloque de Queso
 
 # GUI
-gui.choosePlanet.desc.moon=Habitable#Sin Oxígeno#Gravedad: 18%
+gui.choosePlanet.desc.moon=Habitable#Sin Oxigeno#Gravedad: 18%
 
 dimension.Moon.name=Luna
