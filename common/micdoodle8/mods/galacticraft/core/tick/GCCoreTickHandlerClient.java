@@ -51,6 +51,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProviderSurface;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import tconstruct.client.tabs.TabRegistry;
@@ -375,7 +376,11 @@ public class GCCoreTickHandlerClient implements ITickHandler
 
 		if (type.equals(EnumSet.of(TickType.CLIENT)))
 		{
-			boolean invKeyPressed = Keyboard.isKeyDown(minecraft.gameSettings.keyBindInventory.keyCode);
+			boolean invKeyPressed = false;
+			if (minecraft.gameSettings.keyBindInventory.keyCode < 0)
+				invKeyPressed = Mouse.isButtonDown(minecraft.gameSettings.keyBindInventory.keyCode);
+			else
+				invKeyPressed = Keyboard.isKeyDown(minecraft.gameSettings.keyBindInventory.keyCode);
 
 			if (!GCCoreTickHandlerClient.lastInvKeyPressed && invKeyPressed && minecraft.currentScreen != null && minecraft.currentScreen.getClass() == GuiInventory.class)
 			{
