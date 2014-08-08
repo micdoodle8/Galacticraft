@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.tile.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -274,8 +275,8 @@ public class BlockMachine2 extends BlockTileGC
 			original -= BlockMachine2.ELECTRIC_COMPRESSOR_METADATA;
 			
 			TileEntity te = par1World.getTileEntity(x,  y,  z);
-			if (te instanceof TileEntityUniversalElectrical)
-				((TileEntityUniversalElectrical) te).updateFacing();
+			if (te instanceof TileBaseUniversalElectrical)
+				((TileBaseUniversalElectrical) te).updateFacing();
 		}
 
 		// Re-orient the block

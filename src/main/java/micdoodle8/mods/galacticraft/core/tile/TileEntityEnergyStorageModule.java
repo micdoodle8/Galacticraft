@@ -1,9 +1,10 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
@@ -18,7 +19,7 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TileEntityEnergyStorageModule extends TileEntityUniversalElectricalSource implements IPacketReceiver, ISidedInventory, IConnector
+public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSource implements IPacketReceiver, ISidedInventory, IConnector
 {
 	private ItemStack[] containingItems = new ItemStack[2];
 
@@ -264,7 +265,7 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
 	{
-		return ItemElectric.isElectricItem(itemstack.getItem());
+		return ItemElectricBase.isElectricItem(itemstack.getItem());
 	}
 
 	@Override
@@ -276,15 +277,15 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	@Override
 	public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
 	{
-		if (itemstack.getItem() instanceof ItemElectric)
+		if (itemstack.getItem() instanceof ItemElectricBase)
 		{
 			if (slotID == 0)
 			{
-				return ((ItemElectric) itemstack.getItem()).getTransfer(itemstack) > 0;
+				return ((ItemElectricBase) itemstack.getItem()).getTransfer(itemstack) > 0;
 			}
 			else if (slotID == 1)
 			{
-				return ((ItemElectric) itemstack.getItem()).getElectricityStored(itemstack) > 0;
+				return ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) > 0;
 			}
 		}
 		return false;
@@ -293,15 +294,15 @@ public class TileEntityEnergyStorageModule extends TileEntityUniversalElectrical
 	@Override
 	public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
 	{
-		if (itemstack.getItem() instanceof ItemElectric)
+		if (itemstack.getItem() instanceof ItemElectricBase)
 		{
 			if (slotID == 0)
 			{
-				return ((ItemElectric) itemstack.getItem()).getTransfer(itemstack) <= 0;
+				return ((ItemElectricBase) itemstack.getItem()).getTransfer(itemstack) <= 0;
 			}
 			else if (slotID == 1)
 			{
-				return ((ItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || this.getEnergyStoredGC() >= this.getMaxEnergyStoredGC();
+				return ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || this.getEnergyStoredGC() >= this.getMaxEnergyStoredGC();
 			}
 		}
 

@@ -7,10 +7,10 @@ import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
-import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
+import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
-import micdoodle8.mods.galacticraft.core.tile.ElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
@@ -31,7 +31,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileEntityMethaneSynthesizer extends ElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandler
+public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandler
 {
 	private final int tankCapacity = 4000;
 
@@ -326,7 +326,7 @@ public class TileEntityMethaneSynthesizer extends ElectricBlockWithInventory imp
 			switch (slotID)
 			{
 			case 0:
-				return ItemElectric.isElectricItem(itemstack.getItem());
+				return ItemElectricBase.isElectricItem(itemstack.getItem());
 			case 3:
 				return itemstack.getItem() == MarsItems.carbonFragments;
 			case 4:
@@ -346,7 +346,7 @@ public class TileEntityMethaneSynthesizer extends ElectricBlockWithInventory imp
 			switch (slotID)
 			{
 			case 0:
-				return itemstack.getItem() instanceof ItemElectric && ((ItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
+				return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
 			case 4:
 				return FluidContainerRegistry.isFilledContainer(itemstack);
 			default:
@@ -362,7 +362,7 @@ public class TileEntityMethaneSynthesizer extends ElectricBlockWithInventory imp
 		switch (slotID)
 		{
 		case 0:
-			return ItemElectric.isElectricItem(itemstack.getItem());
+			return ItemElectricBase.isElectricItem(itemstack.getItem());
 		case 1:
 			return false;
 		case 2:

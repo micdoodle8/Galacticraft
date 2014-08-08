@@ -6,8 +6,8 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.world.IChunkLoader;
@@ -300,8 +300,8 @@ public class BlockMachineMars extends BlockTileGC
 		if (metadata >= BlockMachineMars.LAUNCH_CONTROLLER_METADATA || metadata < BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
 		{
 			TileEntity te = par1World.getTileEntity(x, y, z);
-			if (te instanceof TileEntityUniversalElectrical)
-				((TileEntityUniversalElectrical) te).updateFacing();
+			if (te instanceof TileBaseUniversalElectrical)
+				((TileBaseUniversalElectrical) te).updateFacing();
 		}
 
 		par1World.setBlockMetadataWithNotify(x, y, z, change, 3);

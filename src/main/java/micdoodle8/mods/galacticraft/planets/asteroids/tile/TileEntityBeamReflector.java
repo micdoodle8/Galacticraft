@@ -4,7 +4,7 @@ import micdoodle8.mods.galacticraft.api.power.EnergySource;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceWireless;
 import micdoodle8.mods.galacticraft.api.power.ILaserNode;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.tile.EnergyStorage;
+import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorage;
 
 public class TileEntityBeamReflector extends TileEntityBeamOutput implements ILaserNode
 {

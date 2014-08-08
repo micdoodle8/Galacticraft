@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.inventory;
 
-import micdoodle8.mods.galacticraft.api.transmission.item.IItemElectric;
-import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
+import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
@@ -19,7 +19,7 @@ public class ContainerShortRangeTelepad extends Container
 	{
 		this.tileEntity = tileEntity;
 
-		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 152, 105, ItemElectric.class));
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 152, 105, ItemElectricBase.class));
 
 		int var6;
 		int var7;

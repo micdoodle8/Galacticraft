@@ -4,8 +4,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenCollector;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalElectrical;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -83,8 +83,8 @@ public class BlockOxygenCollector extends BlockAdvancedTile
 		}
 
 		TileEntity te = par1World.getTileEntity(x,  y,  z);
-		if (te instanceof TileEntityUniversalElectrical)
-			((TileEntityUniversalElectrical) te).updateFacing();
+		if (te instanceof TileBaseUniversalElectrical)
+			((TileBaseUniversalElectrical) te).updateFacing();
 
 		par1World.setBlockMetadataWithNotify(x, y, z, change, 3);
 		return true;

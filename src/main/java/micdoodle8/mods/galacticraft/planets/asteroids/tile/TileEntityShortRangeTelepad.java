@@ -5,12 +5,12 @@ import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
-import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricBlock;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
@@ -37,7 +37,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
 
-public class TileEntityShortRangeTelepad extends TileEntityElectricBlock implements IMultiBlock, IInventory, ISidedInventory
+public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implements IMultiBlock, IInventory, ISidedInventory
 {
     public static enum EnumTelepadSearchResult
     {
@@ -348,7 +348,7 @@ public class TileEntityShortRangeTelepad extends TileEntityElectricBlock impleme
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
     {
-        return slotID == 0 && ItemElectric.isElectricItem(itemStack.getItem());
+        return slotID == 0 && ItemElectricBase.isElectricItem(itemStack.getItem());
     }
 
     @Override

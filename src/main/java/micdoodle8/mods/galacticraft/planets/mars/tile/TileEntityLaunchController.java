@@ -5,11 +5,11 @@ import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
-import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
-import micdoodle8.mods.galacticraft.core.tile.ElectricBlockWithInventory;
+import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
@@ -33,7 +33,7 @@ import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileEntityLaunchController extends ElectricBlockWithInventory implements IChunkLoader, ISidedInventory, ILandingPadAttachable
+public class TileEntityLaunchController extends TileBaseElectricBlockWithInventory implements IChunkLoader, ISidedInventory, ILandingPadAttachable
 {
 	public static final int WATTS_PER_TICK = 1;
 	private ItemStack[] containingItems = new ItemStack[1];
@@ -251,7 +251,7 @@ public class TileEntityLaunchController extends ElectricBlockWithInventory imple
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
 	{
-		return slotID == 0 && ItemElectric.isElectricItem(itemStack.getItem());
+		return slotID == 0 && ItemElectricBase.isElectricItem(itemStack.getItem());
 	}
 
 	@Override

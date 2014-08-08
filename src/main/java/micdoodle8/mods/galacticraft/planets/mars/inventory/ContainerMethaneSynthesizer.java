@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
-import micdoodle8.mods.galacticraft.api.transmission.item.IItemElectric;
-import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
+import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
@@ -23,7 +23,7 @@ public class ContainerMethaneSynthesizer extends Container
 		this.tileEntity = tileEntity;
 
 		// Electric Input Slot
-		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 53, 53, ItemElectric.class));
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 53, 53, ItemElectricBase.class));
 
 		// Input slot - hydrogen
 		this.addSlotToContainer(new Slot(tileEntity, 1, 7, 7));

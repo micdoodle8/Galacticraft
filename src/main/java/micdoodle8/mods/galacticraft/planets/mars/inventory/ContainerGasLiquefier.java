@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
-import micdoodle8.mods.galacticraft.api.transmission.item.IItemElectric;
-import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
+import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityGasLiquefier;
@@ -22,7 +22,7 @@ public class ContainerGasLiquefier extends Container
 		this.tileEntity = tileEntity;
 
 		// Electric Input Slot
-		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 34, 50, ItemElectric.class));
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 34, 50, ItemElectricBase.class));
 
 		// Input slot
 		this.addSlotToContainer(new Slot(tileEntity, 1, 7, 7));

@@ -6,7 +6,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
-import micdoodle8.mods.galacticraft.api.transmission.compatibility.UniversalNetwork;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -14,6 +13,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.WorldDataSpaceRaces;
+import micdoodle8.mods.galacticraft.core.energy.grid.EnergyNetwork;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.oxygen.ThreadFindSeal;
@@ -34,7 +34,7 @@ public class TickHandlerServer
 	private static Map<Integer, CopyOnWriteArrayList<ScheduledBlockChange>> scheduledBlockChanges = new ConcurrentHashMap<Integer, CopyOnWriteArrayList<ScheduledBlockChange>>();
 	private static Map<Integer, CopyOnWriteArrayList<BlockVec3>> scheduledTorchUpdates = new ConcurrentHashMap<Integer, CopyOnWriteArrayList<BlockVec3>>();
 	private static Map<Integer, List<BlockVec3>> edgeChecks = new HashMap<Integer, List<BlockVec3>>();
-	private static LinkedList<UniversalNetwork> networkTicks = new LinkedList<UniversalNetwork>();
+	private static LinkedList<EnergyNetwork> networkTicks = new LinkedList<EnergyNetwork>();
 	private static Map<Integer, List<Footprint>> footprintList = new HashMap<Integer, List<Footprint>>();
 	public static WorldDataSpaceRaces spaceRaceData = null;
 	private static long tickCount;
@@ -138,12 +138,12 @@ public class TickHandlerServer
 		return false;
 	}
 
-	public static void scheduleNetworkTick(UniversalNetwork grid)
+	public static void scheduleNetworkTick(EnergyNetwork grid)
 	{
 		TickHandlerServer.networkTicks.add(grid);
 	}
 
-	public static void removeNetworkTick(UniversalNetwork grid)
+	public static void removeNetworkTick(EnergyNetwork grid)
 	{
 		TickHandlerServer.networkTicks.remove(grid);
 	}
@@ -204,17 +204,17 @@ public class TickHandlerServer
 				TickHandlerServer.tickCount = 0;
 			}
 
-			UniversalNetwork.tickCount++;
+			EnergyNetwork.tickCount++;
 		}
 		else if (event.phase == Phase.END)
 		{
 			int maxPasses = 10;
 			while (!TickHandlerServer.networkTicks.isEmpty())
 			{
-				LinkedList<UniversalNetwork> pass = new LinkedList();
+				LinkedList<EnergyNetwork> pass = new LinkedList();
 				pass.addAll(TickHandlerServer.networkTicks);
 				TickHandlerServer.networkTicks.clear();
-				for (UniversalNetwork grid : pass)
+				for (EnergyNetwork grid : pass)
 				{
 					grid.tickEnd();
 				}

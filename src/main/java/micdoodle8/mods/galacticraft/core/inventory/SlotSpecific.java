@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import mekanism.api.energy.IEnergizedItem;
-import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
-import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
+import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
+import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -38,9 +38,9 @@ public class SlotSpecific extends Slot
 	public SlotSpecific(IInventory par2IInventory, int par3, int par4, int par5, Class... validClasses)
 	{
 		super(par2IInventory, par3, par4, par5);
-		if (validClasses != null && Arrays.asList(validClasses).contains(ItemElectric.class))
+		if (validClasses != null && Arrays.asList(validClasses).contains(ItemElectricBase.class))
 		{
-			if (NetworkConfigHandler.isIndustrialCraft2Loaded())
+			if (EnergyConfigHandler.isIndustrialCraft2Loaded())
 			{
 				try {
 					Class<?> itemElectricIC2a = Class.forName("ic2.api.item.IElectricItem");
@@ -51,7 +51,7 @@ public class SlotSpecific extends Slot
 					validClasses = existing.toArray(new Class[existing.size()]);
 				} catch (Exception e) { e.printStackTrace(); }
 			}
-			if (NetworkConfigHandler.isMekanismLoaded())
+			if (EnergyConfigHandler.isMekanismLoaded())
 			{
 				try {
 					Class<?> itemElectricMek = Class.forName("mekanism.api.energy.IEnergizedItem");

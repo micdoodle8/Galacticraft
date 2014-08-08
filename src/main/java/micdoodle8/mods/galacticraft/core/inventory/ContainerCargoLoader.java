@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import micdoodle8.mods.galacticraft.api.transmission.item.IItemElectric;
-import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricBlock;
+import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -12,12 +12,12 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerCargoLoader extends Container
 {
-	private TileEntityElectricBlock tileEntity;
+	private TileBaseElectricBlock tileEntity;
 
 	public ContainerCargoLoader(InventoryPlayer par1InventoryPlayer, IInventory cargoLoader)
 	{
-		this.tileEntity = (TileEntityElectricBlock) cargoLoader;
-		this.addSlotToContainer(new SlotSpecific(cargoLoader, 0, 10, 27, ItemElectric.class));
+		this.tileEntity = (TileBaseElectricBlock) cargoLoader;
+		this.addSlotToContainer(new SlotSpecific(cargoLoader, 0, 10, 27, ItemElectricBase.class));
 
 		int var6;
 		int var7;

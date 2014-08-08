@@ -1,8 +1,9 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import cpw.mods.fml.relauncher.Side;
-import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemOilCanister;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -14,7 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-public class TileEntityRefinery extends ElectricBlockWithInventory implements ISidedInventory, IFluidHandler
+public class TileEntityRefinery extends TileBaseElectricBlockWithInventory implements ISidedInventory, IFluidHandler
 {
 	private final int tankCapacity = 24000;
 	@NetworkedField(targetSide = Side.CLIENT)
@@ -227,7 +228,7 @@ public class TileEntityRefinery extends ElectricBlockWithInventory implements IS
 			switch (slotID)
 			{
 			case 0:
-				return itemstack.getItem() instanceof ItemElectric && ((ItemElectric) itemstack.getItem()).getElectricityStored(itemstack) > 0;
+				return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) > 0;
 			case 1:
 				FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(itemstack);
 				return stack != null && stack.getFluid() != null && stack.getFluid().getName().equalsIgnoreCase("oil");
@@ -248,7 +249,7 @@ public class TileEntityRefinery extends ElectricBlockWithInventory implements IS
 			switch (slotID)
 			{
 			case 0:
-				return itemstack.getItem() instanceof ItemElectric && ((ItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
+				return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
 			case 1:
 				return FluidContainerRegistry.isEmptyContainer(itemstack);
 			case 2:
@@ -267,7 +268,7 @@ public class TileEntityRefinery extends ElectricBlockWithInventory implements IS
 		switch (slotID)
 		{
 		case 0:
-			return ItemElectric.isElectricItem(itemstack.getItem());
+			return ItemElectricBase.isElectricItem(itemstack.getItem());
 		case 1:
 			FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(itemstack);
 			return stack != null && stack.getFluid() != null && stack.getFluid().getName().equalsIgnoreCase("oil") || FluidContainerRegistry.isContainer(itemstack);

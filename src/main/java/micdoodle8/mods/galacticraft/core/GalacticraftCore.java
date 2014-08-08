@@ -11,8 +11,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
-import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
-import micdoodle8.mods.galacticraft.api.transmission.grid.ChunkPowerHandler;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
@@ -21,6 +19,8 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiHandler;
 import micdoodle8.mods.galacticraft.core.command.*;
 import micdoodle8.mods.galacticraft.core.dimension.*;
+import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
+import micdoodle8.mods.galacticraft.core.energy.grid.ChunkPowerHandler;
 import micdoodle8.mods.galacticraft.core.entities.*;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
@@ -112,7 +112,7 @@ public class GalacticraftCore
 
 		ConfigManagerCore.initialize(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
         FMLCommonHandler.instance().bus().register(new ConfigManagerCore());
-		NetworkConfigHandler.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.POWER_CONFIG_FILE));
+		EnergyConfigHandler.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.POWER_CONFIG_FILE));
 		ChunkLoadingCallback.loadConfig(new File(event.getModConfigurationDirectory(), GalacticraftCore.CHUNKLOADER_CONFIG_FILE));
 
 		GalacticraftCore.gcFluidOil = new Fluid("oil").setDensity(800).setViscosity(1500);
@@ -214,7 +214,7 @@ public class GalacticraftCore
 		SchematicRegistry.registerSchematicRecipe(new SchematicMoonBuggy());
 		SchematicRegistry.registerSchematicRecipe(new SchematicAdd());
 		ChunkPowerHandler.initiate();
-		NetworkConfigHandler.initGas();
+		EnergyConfigHandler.initGas();
 
 		this.registerCreatures();
 		this.registerOtherEntities();
@@ -310,7 +310,7 @@ public class GalacticraftCore
 		event.registerServerCommand(new CommandPlanetTeleport());
 		event.registerServerCommand(new CommandKeepDim());
 		event.registerServerCommand(new CommandGCInv());
-		if (NetworkConfigHandler.isBuildcraftLoaded() || NetworkConfigHandler.isIndustrialCraft2Loaded() || NetworkConfigHandler.isMekanismLoaded() || NetworkConfigHandler.isThermalExpansionLoaded())
+		if (EnergyConfigHandler.isBuildcraftLoaded() || EnergyConfigHandler.isIndustrialCraft2Loaded() || EnergyConfigHandler.isMekanismLoaded() || EnergyConfigHandler.isThermalExpansionLoaded())
 		{
 			event.registerServerCommand(new CommandGCEnergyUnits());
 		}

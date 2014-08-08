@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
-import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
+import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
-import micdoodle8.mods.galacticraft.core.tile.ElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
@@ -32,7 +32,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileEntityGasLiquefier extends ElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandler
+public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandler
 {
 	private final int tankCapacity = 2000;
 
@@ -547,7 +547,7 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 			switch (slotID)
 			{
 			case 0:
-				return itemstack.getItem() instanceof ItemElectric && ((ItemElectric) itemstack.getItem()).getElectricityStored(itemstack) > 0;
+				return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) > 0;
 			case 1:
 				FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(itemstack);
 				return stack != null && stack.getFluid() != null && stack.getFluid().getName().toLowerCase().contains("methane");
@@ -570,7 +570,7 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 			switch (slotID)
 			{
 			case 0:
-				return itemstack.getItem() instanceof ItemElectric && ((ItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
+				return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
 			case 1:
 				return FluidContainerRegistry.isEmptyContainer(itemstack);
 			case 2:
@@ -590,7 +590,7 @@ public class TileEntityGasLiquefier extends ElectricBlockWithInventory implement
 		switch (slotID)
 		{
 		case 0:
-			return ItemElectric.isElectricItem(itemstack.getItem());
+			return ItemElectricBase.isElectricItem(itemstack.getItem());
 		case 1:
 			FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(itemstack);
 			return stack != null && stack.getFluid() != null && this.getIdFromName(stack.getFluid().getName()) > -1;
