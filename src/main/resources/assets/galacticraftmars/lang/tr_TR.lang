@@ -11,7 +11,7 @@ item.slimelingCargo.name=Slimeling Envanter Çantası
 item.key.T2.name=Tier 2 Zindan Anahtarı
 item.compressedDesh.name=Sıkıştırılmış Desh
 item.spaceshipTier2.cargoRocket.name=Kargo Roketi
-item.fluidManip.name=Fluid Manipulator ##NEEDS TRANSLATE##
+item.fluidManip.name=Sıvı Manipülatör
 
 # TOOLS
 item.deshPick.name=Desh Kazma
@@ -44,9 +44,9 @@ tile.slimelingEgg.yellowEgg.name=Sarı Slimeling Yumurtası
 tile.marsMachine.0.name=Terraformer
 tile.marsMachine.1.name=Kriyojenik Odası
 tile.marsMachine.2.name=Fırlatma Kontrollü
-tile.marsMachine.4.name=Gas Liquefier ##NEEDS TRANSLATE##
-tile.marsMachine.5.name=Methane Synthesizer ##NEEDS TRANSLATE##
-tile.marsMachine.6.name=Water Electrolyzer ##NEEDS TRANSLATE##
+tile.marsMachine.4.name=Gaz Sıvılaştırıcı
+tile.marsMachine.5.name=Metan Birleştirici
+tile.marsMachine.6.name=Su Elektroliz Cihazı
 tile.sludge.name=Bakteriyelli Çamur
 tile.creeperEgg.name=Creeper Yumurtası
 tile.cavernVines.name=Cavernous Vines
@@ -70,78 +70,81 @@ tile.tintedGlassPane.black.name=Siyah Renkli İnce Cam
 # GUI
 gui.choosePlanet.desc.mars=Yaşanabilir#Oksijen Bulunmuyor#Yerçekimi: %38
 item.deshPickSlime.description.name=Slimeling yumurtası hasat edebilirsiniz.
-gui.message.noEnergy.name=Not Enough Energy ##NEEDS TRANSLATE##
-gui.message.noWater.name=Not Enough Water ##NEEDS TRANSLATE##
-gui.message.noBonemeal.name=Not Enough Bonemeal ##NEEDS TRANSLATE##
-gui.message.noSeeds.name=Not Enough Seeds ##NEEDS TRANSLATE##
-gui.message.noSaplings.name=Not Enough Saplings ##NEEDS TRANSLATE##
-gui.message.bubbleExp.name=BubbleExpanding ##NEEDS TRANSLATE##
-gui.message.noValidBlocks.name=No Valid Blocks in Bubble ##NEEDS TRANSLATE##
-gui.message.terraforming.name=Terraforming ##NEEDS TRANSLATE##
-gui.message.enableTrees.name=Enable Trees ##NEEDS TRANSLATE##
-gui.message.enableGrass.name=Enable Grass ##NEEDS TRANSLATE##
-gui.message.trees.name=Trees ##NEEDS TRANSLATE##
-gui.message.grass.name=Grass ##NEEDS TRANSLATE##
-gui.message.invalidFreq.name=Invalid Frequency ##NEEDS TRANSLATE##
-gui.message.frequency.name=Frequency ##NEEDS TRANSLATE##
-gui.message.destFrequency.name=Destination Frequency ##NEEDS TRANSLATE##
-gui.message.removePad.name=Remove Pad ##NEEDS TRANSLATE##
-gui.message.launchWhen.name=Launch When ##NEEDS TRANSLATE##
-gui.message.cargoUnloaded.name=Cargo is Unloaded ##NEEDS TRANSLATE##
-gui.message.cargoFull.name=Cargo is Full ##NEEDS TRANSLATE##
-gui.message.fullyFueled.name=Fully Fueled ##NEEDS TRANSLATE##
-gui.message.instant.name=Instantly ##NEEDS TRANSLATE##
-gui.message.tenSec.name=10 Seconds ##NEEDS TRANSLATE##
-gui.message.thirtySec.name=30 Seconds ##NEEDS TRANSLATE##
-gui.message.oneMin.name=1 Minute ##NEEDS TRANSLATE##
-gui.message.redstoneSig.name=Redstone Signal ##NEEDS TRANSLATE##
-gui.message.notSet.name=Not Set ##NEEDS TRANSLATE##
-gui.message.notEnough.name=Not Enough ##NEEDS TRANSLATE##
-gui.message.success.name=Success ##NEEDS TRANSLATE##
-gui.launchController.desc.0=This is the Launch Controller's$unique frequency ##NEEDS TRANSLATE##
-gui.launchController.desc.1=Frequency to launch rockets towards ##NEEDS TRANSLATE##
-gui.launchController.desc.2=Whether the launch pad should$be removed on launch ##NEEDS TRANSLATE##
-gui.launchController.desc.3=When this criteria is met,$rocket will launch ##NEEDS TRANSLATE##
-gui.terraformer.desc.0=Water Tank ##NEEDS TRANSLATE##
-gui.gasTank.desc.0=Gas storage ##NEEDS TRANSLATE##
-gui.liquidTank.desc.0=Liquid Tank ##NEEDS TRANSLATE##
-gui.status.nogas.name=No gas ##NEEDS TRANSLATE##
-gui.status.liquefying.name=Liquefying ##NEEDS TRANSLATE##
-gui.status.needsCarbon.name=Needs carbon ##NEEDS TRANSLATE##
-gui.message.lowEnergy.name=Low energy ##NEEDS TRANSLATE##
-gui.button.liquefy.name=Process ##NEEDS TRANSLATE##
-gui.button.liquefyStop.name=Stop ##NEEDS TRANSLATE##
-gui.gasInput.desc.0=Try placing a Methane$Gas Canister here ##NEEDS TRANSLATE##
-gui.gasInput.desc.1=(Perhaps alternatively,$an Atmospheric Valve) ##NEEDS TRANSLATE##
-gui.hydrogenInput.desc.0=This takes a hydrogen tank ##NEEDS TRANSLATE##
-gui.hydrogenInput.desc.1=or an Atmospheric Valve ##NEEDS TRANSLATE##
-gui.liquidOutput.desc.2=liquefied gas tank ##NEEDS TRANSLATE##
-gui.methaneOutput.desc.2=methane tank ##NEEDS TRANSLATE##
-gui.message.withAtmosphere0.name=on a planet with plenty of ##NEEDS TRANSLATE##
-gui.message.withAtmosphere1.name=in the atmosphere ##NEEDS TRANSLATE##
-item.carbonFragments.name=Fragmented Carbon ##NEEDS TRANSLATE##
-gas.carbondioxide.name=Carbon Dioxide ##NEEDS TRANSLATE##
-gas.oxygen.name=Oxygen ##NEEDS TRANSLATE##
-gas.nitrogen.name=Nitrogen ##NEEDS TRANSLATE##
+gui.message.noEnergy.name=Yeterli Enerji Yok
+gui.message.noWater.name=Yeterli Su Yok
+gui.message.noBonemeal.name=Yeterli Kemik Tozu Yok
+gui.message.noSeeds.name=Yeterli Tohum Yok
+gui.message.noSaplings.name=Yeterli Fidan Yok
+gui.message.bubbleExp.name=Genişleyen Kabarcık
+gui.message.noValidBlocks.name=Kabarcık İçindeki Blok Doğrulanamadı
+gui.message.terraforming.name=Dünyalaştırıcı
+gui.message.enableTrees.name=Ağaçları Etkinleştir
+gui.message.enableGrass.name=Çimleri Etkinleştir
+gui.message.trees.name=Ağaçlar
+gui.message.grass.name=Çimler
+gui.message.invalidFreq.name=Yanlış Frekans
+gui.message.frequency.name=Frekans 
+gui.message.destFrequency.name=Frekans Hedefi
+gui.message.removePad.name=Pedi Sil
+gui.message.launchWhen.name=Fırlatmak için
+gui.message.cargoUnloaded.name=Kargo Boşalınca
+gui.message.cargoFull.name=Kargo Dolunca
+gui.message.fullyFueled.name=Yakıt Dolunca
+gui.message.instant.name=Anında
+gui.message.tenSec.name=10 Saniyede
+gui.message.thirtySec.name=30 Saniyede
+gui.message.oneMin.name=1 Dakikada
+gui.message.redstoneSig.name=Kızıltaş Sinyali
+gui.message.notSet.name=Belirtilmemiş
+gui.message.notEnough.name=Yeterli Değil
+gui.message.success.name=Başarılı
+
+gui.launchController.desc.0=Fırlatıcı kontrollünün frekansı
+gui.launchController.desc.1=Fırlatılacak roketin karşı frekansı
+gui.launchController.desc.2=Roket fırlatma pedi$kalkışta silinecek.
+gui.launchController.desc.3=Roket fırlatmak için,$ayarlar
+gui.terraformer.desc.0=Su Tankı
+
+gui.gasTank.desc.0=Gaz Deposu
+gui.liquidTank.desc.0=Sıvı Tankı
+gui.status.nogas.name=Gaz Yok
+gui.status.liquefying.name=Sıvılaştırılıyor
+gui.status.processing.name=Sentezleme
+gui.status.needsCarbon.name=Karbon Gerekiyor
+gui.status.tankfull.name=Tank Dolu
+gui.status.tanksfull.name=Tanklar Dolu
+gui.message.lowEnergy.name=Düşük Enerji
+gui.button.liquefy.name=Başlat
+gui.button.liquefyStop.name=Dur
+gui.gasInput.desc.0=Buraya Metan Gazı Bidonu$Koyun 
+gui.gasInput.desc.1=(Alternatif olarak Atmosferik $Valf kullanabilirsiniz) 
+gui.hydrogenInput.desc.0=Hidrojen Tankı veya
+gui.hydrogenInput.desc.1=Atmosferik Valf gerekir
+gui.liquidOutput.desc.2=sıvılaştırılmış gaz tankı
+gui.methaneOutput.desc.2=metan gazı tankı
+gui.message.withAtmosphere0.name=gezegenin atmosferinde
+gui.message.withAtmosphere1.name=bulunabilir
+item.carbonFragments.name=Parçalanmış Karbon
+
+gas.carbondioxide.name=Karbondioksit
+gas.oxygen.name=Oksijen
+gas.nitrogen.name=Nitrojen
 
 gui.desc.reinforcedPlateT2.name=Tier 2
-
-itemGroup.GalacticraftMars=Galacticraft Mars
-
 dimension.Mars.name=Mars
-planet.mars=Mars ##NEEDS TRANSLATE##
+planet.mars=Mars
 
-# Schematics
+# SCHEMATICS
 schematic.rocketT3.name=Tier 3 Roketi
 schematic.cargoRocket.name=Otomatik Kargo Roketi
 
-# Entity
+# ENTITIES
 entity.Sludgeling.name=Sludgeling
 entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Evrimleşmiş Creeper Patronu
-entity.SpaceshipT2.name=Tier 2 Rocket ##NEEDS TRANSLATE##
-entity.CargoRocket.name=Cargo Rocket ##NEEDS TRANSLATE##
+entity.SpaceshipT2.name=Tier 2 Roketi
+entity.CargoRocket.name=Kargo Roketi
 
-# Container
+# CONTAINERS
 container.launchcontroller.name=Fırlatma Kontrollü
-container.tileTerraformer.name=Terraformer ##NEEDS TRANSLATE##
+container.tileTerraformer.name=Terraformer
