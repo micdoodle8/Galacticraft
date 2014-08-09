@@ -32,6 +32,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -688,7 +689,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	@Override
 	public void onLaunch()
 	{
-		if (!(this.dimension == 0 || this.worldObj.provider instanceof IGalacticraftWorldProvider))
+		if (!(this.worldObj.provider instanceof WorldProviderSurface || this.worldObj.provider instanceof IGalacticraftWorldProvider))
 		{
 			//No rocket flight in the Nether, the End etc
 			this.setLaunchPhase(EnumLaunchPhase.UNIGNITED);
