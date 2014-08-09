@@ -371,29 +371,32 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 	
 	public void checkDestFrequencyValid()
 	{
-		this.destFrequencyValid = false;
-		if (this.destFrequency >= 0)
+		if (!this.worldObj.isRemote)
 		{
-			for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
+			this.destFrequencyValid = false;
+			if (this.destFrequency >= 0)
 			{
-				WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
-
-				for (int j = 0; j < world.loadedTileEntityList.size(); j++)
+				for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
 				{
-					TileEntity tile2 = (TileEntity) world.loadedTileEntityList.get(j);
-
-					if (this != tile2)
+					WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
+	
+					for (int j = 0; j < world.loadedTileEntityList.size(); j++)
 					{
-						tile2 = world.getTileEntity(tile2.xCoord, tile2.yCoord, tile2.zCoord);
-
-						if (tile2 instanceof TileEntityLaunchController)
+						TileEntity tile2 = (TileEntity) world.loadedTileEntityList.get(j);
+	
+						if (this != tile2)
 						{
-							TileEntityLaunchController launchController2 = (TileEntityLaunchController) tile2;
-
-							if (launchController2.frequency == this.destFrequency)
+							tile2 = world.getTileEntity(tile2.xCoord, tile2.yCoord, tile2.zCoord);
+	
+							if (tile2 instanceof TileEntityLaunchController)
 							{
-								this.destFrequencyValid = true;
-								return;
+								TileEntityLaunchController launchController2 = (TileEntityLaunchController) tile2;
+	
+								if (launchController2.frequency == this.destFrequency)
+								{
+									this.destFrequencyValid = true;
+									return;
+								}
 							}
 						}
 					}
