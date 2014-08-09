@@ -8,6 +8,7 @@ import mekanism.api.gas.GasStack;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
@@ -17,6 +18,8 @@ import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -90,8 +93,12 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
 					//CO2 -> CO2 tank
 					if (this.gasTank2.getFluidAmount() < this.gasTank2.getCapacity())
 					{
-						FluidStack gcAtmosphere = FluidRegistry.getFluidStack("carbondioxide", 4);
-						this.gasTank2.fill(gcAtmosphere, true);
+						Block blockAbove = this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord);
+						if (blockAbove != null && blockAbove.getMaterial() == Material.air && blockAbove!=GCBlocks.breatheableAir && blockAbove!=GCBlocks.brightBreatheableAir)
+						{
+							FluidStack gcAtmosphere = FluidRegistry.getFluidStack("carbondioxide", 4);
+							this.gasTank2.fill(gcAtmosphere, true);
+						}
 					}
 				}
 			}

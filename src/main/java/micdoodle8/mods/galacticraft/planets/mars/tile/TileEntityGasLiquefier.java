@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
@@ -17,6 +18,8 @@ import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemCanisterLiquidNi
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemCanisterLiquidOxygen;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemCanisterMethane;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
@@ -128,9 +131,13 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 					//Air -> Air tank
 					if (this.gasTankType == -1 || (this.gasTankType == TankGases.AIR.index && this.gasTank.getFluid().amount < this.gasTank.getCapacity()))
 					{
-						FluidStack gcAtmosphere = FluidRegistry.getFluidStack(TankGases.AIR.gas, 4);
-						this.gasTank.fill(gcAtmosphere, true);
-						this.gasTankType = TankGases.AIR.index;
+						Block blockAbove = this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord);
+						if (blockAbove != null && blockAbove.getMaterial() == Material.air && blockAbove!=GCBlocks.breatheableAir && blockAbove!=GCBlocks.brightBreatheableAir)
+						{
+							FluidStack gcAtmosphere = FluidRegistry.getFluidStack(TankGases.AIR.gas, 4);
+							this.gasTank.fill(gcAtmosphere, true);
+							this.gasTankType = TankGases.AIR.index;
+						}
 					}
 				}
 				else
