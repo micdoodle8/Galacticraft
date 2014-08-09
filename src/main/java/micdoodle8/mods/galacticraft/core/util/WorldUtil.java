@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import com.google.common.collect.Lists;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
@@ -47,6 +49,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.*;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -852,4 +855,14 @@ public class WorldUtil
 		objList.add(iArray);
 		return objList;
 	}
+	
+    public static void otherModGenerate(int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
+    {
+    	if (world.provider instanceof IGalacticraftWorldProvider)
+    		return;
+    	//TODO:  Add back config option to enable or disable this
+    		
+    	GameRegistry.generateWorld(chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+    }
+
 }
