@@ -502,6 +502,7 @@ planet.uranus=ดาวยูเรนัส
 planet.neptune=ดาวเนปจูน
 moon.moon=ดวงจันทร์
 solarsystem.sol=ระบบสุริยะ
+star.sol=ดวงอาทิตย์
 
 # COMMANDS
 commands.dimensionteleport=%s ถูกส่งไปยังชั้นบรรยากาศ %s
