@@ -20,7 +20,7 @@ public class CommandGCEnergyUnits extends CommandBase
 		if (EnergyConfigHandler.isBuildcraftLoaded()) options = options + "/MJ";
 		if (EnergyConfigHandler.isIndustrialCraft2Loaded()) options = options + "/EU";
 		if (EnergyConfigHandler.isMekanismLoaded()) options = options + "/J";
-		if (EnergyConfigHandler.isThermalExpansionLoaded()) options = options + "/RF";
+		options = options + "/RF";
 		return "/" + this.getCommandName() + options + "]";
 	}
 
@@ -62,7 +62,7 @@ public class CommandGCEnergyUnits extends CommandBase
 					paramvalue = 3;
 				else if ("j".equals(param) && EnergyConfigHandler.isMekanismLoaded())
 					paramvalue = 4;
-				else if ("rf".equals(param) && EnergyConfigHandler.isThermalExpansionLoaded())
+				else if ("rf".equals(param))
 					paramvalue = 5;
 				
 				if (paramvalue > 0)
@@ -118,7 +118,7 @@ public class CommandGCEnergyUnits extends CommandBase
 			return;
 		}	
 
-		if (param == 5 && EnergyConfigHandler.isThermalExpansionLoaded())
+		if (param == 5)
 		{
 			EnergyConfigHandler.displayEnergyUnitsBC = false;
 			EnergyConfigHandler.displayEnergyUnitsIC2 = false;

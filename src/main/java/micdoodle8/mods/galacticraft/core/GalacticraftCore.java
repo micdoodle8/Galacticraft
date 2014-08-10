@@ -310,10 +310,7 @@ public class GalacticraftCore
 		event.registerServerCommand(new CommandPlanetTeleport());
 		event.registerServerCommand(new CommandKeepDim());
 		event.registerServerCommand(new CommandGCInv());
-		if (EnergyConfigHandler.isBuildcraftLoaded() || EnergyConfigHandler.isIndustrialCraft2Loaded() || EnergyConfigHandler.isMekanismLoaded() || EnergyConfigHandler.isThermalExpansionLoaded())
-		{
-			event.registerServerCommand(new CommandGCEnergyUnits());
-		}
+		event.registerServerCommand(new CommandGCEnergyUnits());
 		event.registerServerCommand(new CommandJoinSpaceRace());
 
 		WorldUtil.registerSpaceStations(event.getServer().worldServerForDimension(0).getSaveHandler().getMapFileFromName("dummy").getParentFile());
