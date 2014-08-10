@@ -832,9 +832,9 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
     {
 		//This is an "on the ground" check
 		int playerFeetOnY = (int) (p.boundingBox.minY - 0.001D);
-		Block b = this.worldObj.getBlock(MathHelper.floor_double(p.posX), playerFeetOnY, MathHelper.floor_double(p.posX));
+		Block b = this.worldObj.getBlock(MathHelper.floor_double(p.posX), playerFeetOnY, MathHelper.floor_double(p.posZ));
 		double blockYmax = b.getBlockBoundsMaxY() + playerFeetOnY;
-		if (b != Blocks.air && p.boundingBox.minY - blockYmax < 0.001D)
+		if (b.getMaterial() != Material.air && p.boundingBox.minY - blockYmax < 0.001D)
 		{
 			p.onGround = true;
 			p.posY -= p.boundingBox.minY - blockYmax;
@@ -861,6 +861,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 				{
 					for (int z = zm; z <= zz; z++)
 					{
+						//Blocks.air is hard vacuum - we want to check for that, here
 						if (this.worldObj.getBlock(x, y, z) != Blocks.air)
 						{
 							return false;
