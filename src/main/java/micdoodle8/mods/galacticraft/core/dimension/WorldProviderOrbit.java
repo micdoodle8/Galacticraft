@@ -721,13 +721,13 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 				{
 					p.motionX = -1.2F;
 				}
-				if (p.motionY > 0.5F)
+				if (p.motionY > 0.7F)
 				{
-					p.motionY = 0.5F;
+					p.motionY = 0.7F;
 				}
-				if (p.motionY < -0.5F)
+				if (p.motionY < -0.7F)
 				{
-					p.motionY = -0.5F;
+					p.motionY = -0.7F;
 				}
 				if (p.motionZ > 1.2F)
 				{
@@ -749,18 +749,24 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 		//Not freefall - within arm's length of something or jumping
 		{
 			if (p.motionY < 0 && this.pPrevMotionY >= 0) p.posY -= p.motionY;
-			if (p.motionY != 0) p.motionY = this.pPrevMotionY;
+			//if (p.motionY != 0) p.motionY = this.pPrevMotionY;
 			if (p.movementInput.jump)
 			{
 				if (p.onGround)
 				{
 					p.motionY += 0.05D;
-					this.pjumpticks = 6;
+					this.pjumpticks = 10;
 					p.onGround = false;
 				}
 				else
 				{
-					p.motionY += 0.01D * (this.pjumpticks + 1);
+					p.motionY += 0.01D;
+					//reduce size of jump if key held down longer
+					if (this.pjumpticks > 0)
+					{
+						p.motionY += 0.01D;
+						this.pjumpticks--;
+					}
 				}
 			}
 			else if (p.movementInput.sneak)
@@ -772,7 +778,11 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 				this.pjumpticks = 0;
 			}
 
-			if (this.pjumpticks > 0) this.pjumpticks--;
+			if (this.pjumpticks > 0)
+			{
+				this.pjumpticks--;
+				p.motionY += 0.005D * this.pjumpticks;
+			}
 		}
 
 		//Artificial gravity

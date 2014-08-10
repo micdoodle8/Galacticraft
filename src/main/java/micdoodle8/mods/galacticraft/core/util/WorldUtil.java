@@ -858,9 +858,8 @@ public class WorldUtil
 	
     public static void otherModGenerate(int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
     {
-    	if (world.provider instanceof IGalacticraftWorldProvider)
+    	if (world.provider instanceof WorldProviderOrbit || (world.provider instanceof IGalacticraftWorldProvider && !ConfigManagerCore.enableOtherModsFeatures))
     		return;
-    	//TODO:  Add back config option to enable or disable this
     		
     	GameRegistry.generateWorld(chunkX, chunkZ, world, chunkGenerator, chunkProvider);
     }
