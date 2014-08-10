@@ -132,7 +132,8 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                 if (teleportTime >= MAX_TELEPORT_TIME)
                 {
                     ShortRangeTelepadHandler.TelepadEntry entry = ShortRangeTelepadHandler.getLocationFromAddress(this.targetAddress);
-                    BlockVec3 finalPos = entry.position;
+                    
+                    BlockVec3 finalPos = (entry == null) ? null : entry.position;
 
                     if (finalPos != null)
                     {
