@@ -11,11 +11,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric
 {
 	protected IIcon[] icons = new IIcon[7];
+	private static HashMap<ItemStack, Integer> craftingvalues = new HashMap();
 
 	public ItemCanisterLiquidOxygen(String assetName)
 	{
@@ -72,5 +74,31 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric
 		{
 			par3List.add(GCCoreUtil.translate("item.canister.LOX.name") +  ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
 		}
+	}
+	
+	public static void saveDamage(ItemStack itemstack, int damage)
+	{
+		ItemCanisterLiquidOxygen.craftingvalues.put(itemstack, Integer.valueOf(damage));
+	}
+	
+	public ItemStack getContainerItem(ItemStack itemstack)
+	{
+		Integer saved = ItemCanisterLiquidOxygen.craftingvalues.get(itemstack); 
+		if (saved != null)
+		{
+			ItemCanisterLiquidOxygen.craftingvalues.remove(itemstack);
+			itemstack.setItemDamage(saved);
+			return itemstack;
+		}
+		
+		int content = itemstack.getMaxDamage() - itemstack.getItemDamage(); 
+		if (content < 250)
+		{
+			content = 250;	
+		}
+			
+		itemstack.setItemDamage(itemstack.getMaxDamage() - (content - 250));	
+			
+		return itemstack;
 	}
 }

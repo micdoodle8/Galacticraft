@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.recipe;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
@@ -88,5 +91,19 @@ public class RecipeManagerAsteroids
         }
 
         CompressorRecipes.addShapelessRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 0), new ItemStack(MarsItems.marsItemBasic, 1, 3), new ItemStack(MarsItems.marsItemBasic, 1, 5));
+        
+        //All this is for NEI's benefit
+        List<ItemStack> list1 = new ArrayList();
+        List<ItemStack> list2 = new ArrayList();
+        List<ItemStack> list3 = new ArrayList();
+        list1.add(new ItemStack(AsteroidsItems.canisterLOX, 1, 751));
+        list2.add(new ItemStack(AsteroidsItems.canisterLOX, 1, 834));
+        list3.add(new ItemStack(AsteroidsItems.canisterLOX, 1, 918));
+        list1.add(new ItemStack(GCItems.oxTankHeavy, 1, 2700));
+        list2.add(new ItemStack(GCItems.oxTankMedium, 1, 1800));
+        list3.add(new ItemStack(GCItems.oxTankLight, 1, 900));
+        CraftingManager.getInstance().getRecipeList().add(new CanisterRecipes(new ItemStack(GCItems.oxTankHeavy, 1, 0), list1));
+        CraftingManager.getInstance().getRecipeList().add(new CanisterRecipes(new ItemStack(GCItems.oxTankMedium, 1, 0), list2));
+        CraftingManager.getInstance().getRecipeList().add(new CanisterRecipes(new ItemStack(GCItems.oxTankLight, 1, 0), list3));
     }
 }
