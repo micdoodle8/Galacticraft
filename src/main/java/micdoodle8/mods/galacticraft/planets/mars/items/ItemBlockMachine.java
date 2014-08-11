@@ -11,7 +11,6 @@ import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 public class ItemBlockMachine extends ItemBlockDesc implements IHoldableItem
@@ -82,7 +81,7 @@ public class ItemBlockMachine extends ItemBlockDesc implements IHoldableItem
 	{
 		ItemStack currentStack = player.getCurrentEquippedItem();
 
-        return currentStack != null && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
+        return currentStack != null && this.field_150939_a == MarsBlocks.machine && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
 
     }
 
@@ -91,7 +90,7 @@ public class ItemBlockMachine extends ItemBlockDesc implements IHoldableItem
 	{
 		ItemStack currentStack = player.getCurrentEquippedItem();
 
-        return currentStack != null && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
+        return currentStack != null && this.field_150939_a == MarsBlocks.machine && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
 
     }
 
