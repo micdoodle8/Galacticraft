@@ -99,6 +99,14 @@ gui.message.range.name=Reichweite: %dm
 gui.message.notEnoughEnergy.name=Night genug Energie!
 gui.message.targetNoEnergy.name=Ziel hat nicht genügend Energie! 
 
+tile.treasureT3.description=Tier 3 Treasure Chests are currently unused.
+tile.walkway.description=Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme.
+tile.walkwayAluminumWire.description=Aluminum Wire Walkways are used for running wire underneath a fully solid walkable surface.
+tile.walkwayOxygenPipe.description=Oxygen Pipe Walkways are used for running pipes underneath a fully solid walkable surface.
+tile.beamReflector.description=Beam Reflectors are used to redirect energy beams from source to destination. Can be right-clicked to cycle through targets.
+tile.beamReceiver.description=Beam Receivers are connected to energy machine input and output, to transfer energy using beams.
+tile.telepadShort.description=Short Range Telepads are used to transfer players and other living creatures short distances (250 Blocks) when linked to other telepads.
+
 # SCHEMATICS
 
 # ENTITIES
