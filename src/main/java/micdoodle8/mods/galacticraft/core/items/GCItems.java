@@ -242,9 +242,9 @@ public class GCItems
 
 	public static void registerHarvestLevels()
 	{
-		//		MinecraftForge.setToolClass(GCCoreItems.steelPickaxe, "pickaxe", 4);
-		//		MinecraftForge.setToolClass(GCCoreItems.steelAxe, "axe", 4);
-		//		MinecraftForge.setToolClass(GCCoreItems.steelSpade, "shovel", 4); TODO Set harvest levels
+		GCItems.steelPickaxe.setHarvestLevel("pickaxe", 4);
+		GCItems.steelAxe.setHarvestLevel("axe", 4);
+		GCItems.steelSpade.setHarvestLevel("shovel", 4);
 	}
 
 	public static void registerItems()
