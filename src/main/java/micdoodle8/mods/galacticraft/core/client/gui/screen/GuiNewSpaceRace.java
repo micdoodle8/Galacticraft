@@ -644,8 +644,8 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 				this.drawFlagButton();
 				this.drawColorButton();
 
-                GuiElementGradientButton serverStats = (GuiElementGradientButton)this.buttonList.get(4);
-                GuiElementGradientButton localStats = (GuiElementGradientButton)this.buttonList.get(5);
+                GuiElementGradientButton serverStats = (GuiElementGradientButton)this.buttonList.get(this.canEdit ? 4 : 2);
+                GuiElementGradientButton localStats = (GuiElementGradientButton)this.buttonList.get(this.canEdit ? 5 : 3);
 
                 if (par1 > serverStats.xPosition && par1 < serverStats.xPosition + serverStats.width && par2 > serverStats.yPosition && par2 < serverStats.yPosition + serverStats.height)
                 {
