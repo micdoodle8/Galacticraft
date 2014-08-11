@@ -310,7 +310,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
             {
                 for (int z = -1; z <= 1; z++)
                 {
-                    this.worldObj.func_147480_a(this.xCoord + x, this.yCoord + y, this.zCoord + z, false);
+                    this.worldObj.func_147480_a(this.xCoord + x, this.yCoord + y, this.zCoord + z, y == 0 && x == 0 && z == 0);
                 }
             }
         }

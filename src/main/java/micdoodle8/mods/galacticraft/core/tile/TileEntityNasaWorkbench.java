@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -74,7 +75,14 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
 								FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.x + x, thisBlock.y + y, thisBlock.z + z, GCBlocks.nasaWorkbench, Block.getIdFromBlock(GCBlocks.nasaWorkbench) >> 12 & 255);
 							}
 
-							this.worldObj.setBlockToAir(thisBlock.x + x, thisBlock.y + y, thisBlock.z + z);
+                            if (y == 0)
+                            {
+                                this.worldObj.func_147480_a(thisBlock.x, thisBlock.y, thisBlock.z, true);
+                            }
+                            else
+                            {
+                                this.worldObj.setBlockToAir(thisBlock.x + x, thisBlock.y + y, thisBlock.z + z);
+                            }
 						}
 						else if (y != 0 && y != 3)
 						{
