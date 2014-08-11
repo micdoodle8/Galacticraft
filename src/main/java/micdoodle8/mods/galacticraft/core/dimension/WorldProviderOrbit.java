@@ -748,14 +748,15 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 		else
 		//Not freefall - within arm's length of something or jumping
 		{
+			double dy = p.motionY - this.pPrevMotionY;
 			if (p.motionY < 0 && this.pPrevMotionY >= 0) p.posY -= p.motionY;
 			//if (p.motionY != 0) p.motionY = this.pPrevMotionY;
 			if (p.movementInput.jump)
 			{
 				if (p.onGround)
 				{
-					p.motionY += 0.05D;
-					this.pjumpticks = 10;
+					p.motionY += 0.05D - dy;
+					this.pjumpticks = 30;
 					p.onGround = false;
 				}
 				else
@@ -764,7 +765,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 					//reduce size of jump if key held down longer
 					if (this.pjumpticks > 0)
 					{
-						p.motionY += 0.01D;
+						p.motionY += 0.01D - dy;
 						this.pjumpticks--;
 					}
 				}
@@ -781,7 +782,9 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 			if (this.pjumpticks > 0)
 			{
 				this.pjumpticks--;
-				p.motionY += 0.005D * this.pjumpticks;
+				p.motionY -= dy;
+				if (this.pjumpticks > 10)
+					p.motionY += 0.0025D * (this.pjumpticks - 10);
 			}
 		}
 
