@@ -8,7 +8,8 @@ import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -27,9 +28,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -47,7 +50,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 {
 	public FluidTank fuelTank = new FluidTank(this.getFuelTankCapacity());
 	public int destinationFrequency = -1;
-	public Vector3 targetVec;
+	public BlockVec3 targetVec;
 	public int targetDimension;
 	protected ItemStack[] cargoItems;
 	private IFuelDock landingPad;
@@ -259,7 +262,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 									{
 										if (doSet)
 										{
-											this.targetVec = new Vector3(tile.xCoord + x, tile.yCoord, tile.zCoord + z);
+											this.targetVec = new BlockVec3(tile.xCoord + x, tile.yCoord, tile.zCoord + z);
 										}
 
 										targetSet = true;
@@ -579,7 +582,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 		if (buffer.readBoolean())
 		{
-			this.targetVec = new Vector3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
+			this.targetVec = new BlockVec3(buffer.readInt(), buffer.readInt(), buffer.readInt());
 		}
 
 		this.motionX = buffer.readDouble() / 8000.0D;
@@ -686,6 +689,18 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	@Override
 	public void onLaunch()
 	{
+		if (!(this.worldObj.provider instanceof WorldProviderSurface || this.worldObj.provider instanceof IGalacticraftWorldProvider))
+		{
+			//No rocket flight in the Nether, the End etc
+			this.setLaunchPhase(EnumLaunchPhase.UNIGNITED);
+			this.timeUntilLaunch = 0;
+			if (!this.worldObj.isRemote && this.riddenByEntity instanceof GCEntityPlayerMP)
+			{
+				((GCEntityPlayerMP)this.riddenByEntity).addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.rocket.warning.nogyroscope")));
+			}
+			return;
+		}
+		
 		super.onLaunch();
 
 		if (!this.worldObj.isRemote)
@@ -809,7 +824,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 		if (nbt.getBoolean("TargetValid") && nbt.hasKey("targetTileX"))
 		{
-			this.targetVec = new Vector3(nbt.getDouble("targetTileX"), nbt.getDouble("targetTileY"), nbt.getDouble("targetTileZ"));
+			this.targetVec = new BlockVec3(MathHelper.floor_double(nbt.getDouble("targetTileX")), MathHelper.floor_double(nbt.getDouble("targetTileY")), MathHelper.floor_double(nbt.getDouble("targetTileZ")));
 		}
 
 		this.setWaitForPlayer(nbt.getBoolean("WaitingForPlayer"));

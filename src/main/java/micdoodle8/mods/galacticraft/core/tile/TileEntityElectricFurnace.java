@@ -1,8 +1,9 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import cpw.mods.fml.relauncher.Side;
-import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -16,7 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TileEntityElectricFurnace extends ElectricBlockWithInventory implements ISidedInventory, IPacketReceiver
+public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventory implements ISidedInventory, IPacketReceiver
 {
 	//The electric furnace is 50% faster than a vanilla Furnace
 	//but at a cost of some inefficiency:
@@ -232,7 +233,7 @@ public class TileEntityElectricFurnace extends ElectricBlockWithInventory implem
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
 	{
-		return slotID == 1 ? itemStack != null && FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null : slotID == 0 && ItemElectric.isElectricItem(itemStack.getItem());
+		return slotID == 1 ? itemStack != null && FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null : slotID == 0 && ItemElectricBase.isElectricItem(itemStack.getItem());
 	}
 
 	/**

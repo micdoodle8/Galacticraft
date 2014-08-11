@@ -358,6 +358,7 @@ gui.rocket.turn.name=ไปทางซ้าย-ขวา
 gui.rocket.updown.name=ขึ้นข้างบน-ลงข้างล่าง
 gui.rocket.inv.name=ช่องเก็บของ / เชื้อเพลิง
 
+gui.rocket.warning.nogyroscope=กองกำลังปริศนาจะมาขณะคุณกำลังหมุนอย่างบ้าคลั่ง!
 gui.rocket.warning.noparachute=ฉันไม่มีร่มชูชีพ! ถ้ากดปล่อยจรวดอีกครั้ง เราจะหยุดมันไม่ได้!
 gui.rocket.warning.nofuel=ฉันจะต้องการที่จะเติมเชื้อเพลิงก่อน เป็นอันดับแรก!
 gui.chest.warning.wrongkey=ฉันต้องการกุญแจดันเจี้ยน เทียร์ %s เพื่อปลดล็อคกล่องสมบัติ!

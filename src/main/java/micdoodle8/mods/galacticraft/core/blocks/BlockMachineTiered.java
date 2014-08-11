@@ -1,9 +1,12 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
-import micdoodle8.mods.galacticraft.core.tile.*;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -20,8 +23,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.util.List;
-
-import cpw.mods.fml.common.Loader;
 
 public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBlockShiftDesc
 {
@@ -254,8 +255,8 @@ public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBl
 		}
 
 		TileEntity te = par1World.getTileEntity(x,  y,  z);
-		if (te instanceof TileEntityUniversalElectrical)
-			((TileEntityUniversalElectrical) te).updateFacing();
+		if (te instanceof TileBaseUniversalElectrical)
+			((TileBaseUniversalElectrical) te).updateFacing();
 
 		par1World.setBlockMetadataWithNotify(x, y, z, (metadata & 12) + change, 3);
 		return true;

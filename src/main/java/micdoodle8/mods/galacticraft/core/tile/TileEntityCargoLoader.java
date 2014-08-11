@@ -5,8 +5,9 @@ import micdoodle8.mods.galacticraft.api.entity.ICargoEntity;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.EnumCargoLoadingState;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.RemovalResult;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
-import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.inventory.ISidedInventory;
@@ -16,7 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityCargoLoader extends ElectricBlockWithInventory implements ISidedInventory, ILandingPadAttachable
+public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory implements ISidedInventory, ILandingPadAttachable
 {
 	private ItemStack[] containingItems = new ItemStack[15];
 	public boolean outOfItems;
@@ -161,7 +162,7 @@ public class TileEntityCargoLoader extends ElectricBlockWithInventory implements
 		{
 			if (slotID == 0)
 			{
-				return ItemElectric.isElectricItem(itemstack.getItem());
+				return ItemElectricBase.isElectricItem(itemstack.getItem());
 			}
 			else
 			{
@@ -183,7 +184,7 @@ public class TileEntityCargoLoader extends ElectricBlockWithInventory implements
 	{
 		if (slotID == 0)
 		{
-			return ItemElectric.isElectricItem(itemstack.getItem());
+			return ItemElectricBase.isElectricItem(itemstack.getItem());
 		}
 		else
 		{

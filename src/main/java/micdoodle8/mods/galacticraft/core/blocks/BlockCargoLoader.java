@@ -3,10 +3,10 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoLoader;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoUnloader;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -203,8 +203,8 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
 		}
 		
 		TileEntity te = world.getTileEntity(x,  y,  z);
-		if (te instanceof TileEntityUniversalElectrical)
-			((TileEntityUniversalElectrical) te).updateFacing();
+		if (te instanceof TileBaseUniversalElectrical)
+			((TileBaseUniversalElectrical) te).updateFacing();
 
 		return world.setBlockMetadataWithNotify(x, y, z, baseMeta + change, 3);
 	}

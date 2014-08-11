@@ -1,8 +1,12 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
-import micdoodle8.mods.galacticraft.core.tile.*;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityIngotCompressor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -205,8 +209,8 @@ public class BlockMachine extends BlockTileGC implements ItemBlockDesc.IBlockShi
 		if (metadata < BlockMachine.COMPRESSOR_METADATA)
 		{
 			TileEntity te = par1World.getTileEntity(x,  y,  z);
-			if (te instanceof TileEntityUniversalElectrical)
-				((TileEntityUniversalElectrical) te).updateFacing();
+			if (te instanceof TileBaseUniversalElectrical)
+				((TileBaseUniversalElectrical) te).updateFacing();
 		}
 
 		par1World.setBlockMetadataWithNotify(x, y, z, (metadata & 12) + change, 3);

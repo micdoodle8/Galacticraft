@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTransmitter;
+import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenPipe;
@@ -143,7 +144,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
                         connectable = WorldUtil.getAdjacentOxygenConnections(tileEntity);
                         break;
                     case POWER:
-                        connectable = WorldUtil.getAdjacentPowerConnections(tileEntity);
+                        connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
                         break;
                     default:
                         break;
@@ -191,7 +192,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 				connectable = WorldUtil.getAdjacentOxygenConnections(tileEntity);
 				break;
 			case POWER:
-				connectable = WorldUtil.getAdjacentPowerConnections(tileEntity);
+				connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
 				break;
 			default:
 				break;

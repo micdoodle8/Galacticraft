@@ -10,7 +10,6 @@ import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntitySlimelingEgg;
 import micdoodle8.mods.miccore.MicdoodleTransformer;
@@ -23,17 +22,13 @@ import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.launchwrapper.Launch;
-import net.minecraft.launchwrapper.LaunchClassLoader;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.HashMap;
 
-@SuppressWarnings("resource")
 public class VersionUtil
 {
     private static DefaultArtifactVersion mcVersion = null;
@@ -219,7 +214,6 @@ public class VersionUtil
         try
         {
             Class<?> c = (Class<?>)reflectionCache.get(4);
-            Class<?> c0 = (Class<?>)reflectionCache.get(5);
 
             if (c == null)
             {
@@ -227,23 +221,25 @@ public class VersionUtil
                 reflectionCache.put(4, c);
             }
 
-            if (c0 == null)
-            {
-                c0 = Class.forName(getNameDynamic(KEY_CLASS_NBT_SIZE_TRACKER).replace('/', '.'));
-                reflectionCache.put(5, c0);
-            }
-
             if (mcVersionMatches("1.7.10"))
             {
+                Class<?> c0 = (Class<?>)reflectionCache.get(5);
                 Method m = (Method)reflectionCache.get(6);
 
+                if (c0 == null)
+                {
+                    c0 = Class.forName(getNameDynamic(KEY_CLASS_NBT_SIZE_TRACKER).replace('/', '.'));
+                    reflectionCache.put(5, c0);              
+                }
+                
                 if (m == null)
                 {
-                    m = c.getMethod(getNameDynamic(KEY_METHOD_DECOMPRESS_NBT), new Class[] { byte[].class, c0 });
+                    m = c.getMethod(getNameDynamic(KEY_METHOD_DECOMPRESS_NBT), byte[].class, c0);
                     reflectionCache.put(6, m);
                 }
 
-                return (NBTTagCompound)m.invoke(null, compressedNBT, c0.getConstructor(new Class[] { Long.class }).newInstance(2097152L));
+                Object nbtSizeTracker = c0.getConstructor(long.class).newInstance(2097152L);
+                return (NBTTagCompound)m.invoke(null, compressedNBT, nbtSizeTracker);
             }
             else if (mcVersionMatches("1.7.2"))
             {
@@ -251,7 +247,7 @@ public class VersionUtil
 
                 if (m == null)
                 {
-                    m = c.getMethod(getNameDynamic(KEY_METHOD_DECOMPRESS_NBT), new Class[] { byte[].class });
+                    m = c.getMethod(getNameDynamic(KEY_METHOD_DECOMPRESS_NBT), byte[].class);
                     reflectionCache.put(6, m);
                 }
 

@@ -5,11 +5,11 @@ import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
-import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
-import micdoodle8.mods.galacticraft.core.tile.ElectricBlockWithInventory;
+import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
@@ -33,7 +33,7 @@ import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileEntityLaunchController extends ElectricBlockWithInventory implements IChunkLoader, ISidedInventory, ILandingPadAttachable
+public class TileEntityLaunchController extends TileBaseElectricBlockWithInventory implements IChunkLoader, ISidedInventory, ILandingPadAttachable
 {
 	public static final int WATTS_PER_TICK = 1;
 	private ItemStack[] containingItems = new ItemStack[1];
@@ -251,7 +251,7 @@ public class TileEntityLaunchController extends ElectricBlockWithInventory imple
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
 	{
-		return slotID == 0 && ItemElectric.isElectricItem(itemStack.getItem());
+		return slotID == 0 && ItemElectricBase.isElectricItem(itemStack.getItem());
 	}
 
 	@Override
@@ -369,31 +369,34 @@ public class TileEntityLaunchController extends ElectricBlockWithInventory imple
 		}
 	}
 	
-	private void checkDestFrequencyValid()
+	public void checkDestFrequencyValid()
 	{
-		this.destFrequencyValid = false;
-		if (this.destFrequency >= 0)
+		if (!this.worldObj.isRemote)
 		{
-			for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
+			this.destFrequencyValid = false;
+			if (this.destFrequency >= 0)
 			{
-				WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
-
-				for (int j = 0; j < world.loadedTileEntityList.size(); j++)
+				for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
 				{
-					TileEntity tile2 = (TileEntity) world.loadedTileEntityList.get(j);
-
-					if (this != tile2)
+					WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
+	
+					for (int j = 0; j < world.loadedTileEntityList.size(); j++)
 					{
-						tile2 = world.getTileEntity(tile2.xCoord, tile2.yCoord, tile2.zCoord);
-
-						if (tile2 instanceof TileEntityLaunchController)
+						TileEntity tile2 = (TileEntity) world.loadedTileEntityList.get(j);
+	
+						if (this != tile2)
 						{
-							TileEntityLaunchController launchController2 = (TileEntityLaunchController) tile2;
-
-							if (launchController2.frequency == this.destFrequency)
+							tile2 = world.getTileEntity(tile2.xCoord, tile2.yCoord, tile2.zCoord);
+	
+							if (tile2 instanceof TileEntityLaunchController)
 							{
-								this.destFrequencyValid = true;
-								return;
+								TileEntityLaunchController launchController2 = (TileEntityLaunchController) tile2;
+	
+								if (launchController2.frequency == this.destFrequency)
+								{
+									this.destFrequencyValid = true;
+									return;
+								}
 							}
 						}
 					}
@@ -404,6 +407,7 @@ public class TileEntityLaunchController extends ElectricBlockWithInventory imple
 
 	public boolean validFrequency()
 	{
+		this.checkDestFrequencyValid();
 		return !this.getDisabled(0) && this.hasEnoughEnergyToRun && this.frequencyValid && this.destFrequencyValid;
 	}
 

@@ -3,9 +3,10 @@ package micdoodle8.mods.galacticraft.core.tile;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.entity.IFuelable;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
-import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemFuelCanister;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -19,7 +20,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-public class TileEntityFuelLoader extends ElectricBlockWithInventory implements ISidedInventory, IFluidHandler, ILandingPadAttachable
+public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory implements ISidedInventory, IFluidHandler, ILandingPadAttachable
 {
 	private final int tankCapacity = 12000;
 	@NetworkedField(targetSide = Side.CLIENT)
@@ -85,7 +86,7 @@ public class TileEntityFuelLoader extends ElectricBlockWithInventory implements 
 
 				for (final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
 				{
-					final TileEntity pad = new BlockVec3(this).modifyPositionFromSide(dir, 1).getTileEntity(this.worldObj);
+					final TileEntity pad = new BlockVec3(this).getTileEntityOnSide(this.worldObj, dir);
 
 					if (pad instanceof TileEntityMulti)
 					{
@@ -192,7 +193,7 @@ public class TileEntityFuelLoader extends ElectricBlockWithInventory implements 
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
 	{
-		return slotID == 1 || (slotID == 0 ? ItemElectric.isElectricItem(itemstack.getItem()) : false);
+		return slotID == 1 || (slotID == 0 ? ItemElectricBase.isElectricItem(itemstack.getItem()) : false);
 	}
 
 	@Override

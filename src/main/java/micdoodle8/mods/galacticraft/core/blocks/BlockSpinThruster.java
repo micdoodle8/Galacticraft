@@ -200,7 +200,7 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
 	{
 		if (this.dropTorchIfCantStay(par1World, x, y, z))
 		{
-			final int var6 = par1World.getBlockMetadata(x, y, z);
+			final int var6 = par1World.getBlockMetadata(x, y, z) & 7;
 			boolean var7 = false;
 
 			if (!BlockSpinThruster.isBlockSolidOnSide(par1World, x - 1, y, z, ForgeDirection.EAST, true) && var6 == 1)
@@ -302,7 +302,7 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
 		{
 			if (((WorldProviderOrbit) par1World.provider).thrustersFiring || par5Random.nextInt(80) == 0)
 			{
-				final int var6 = par1World.getBlockMetadata(x, y, z);
+				final int var6 = par1World.getBlockMetadata(x, y, z) & 7;
 				final double var7 = x + 0.5F;
 				final double var9 = y + 0.7F;
 				final double var11 = z + 0.5F;
@@ -332,16 +332,14 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
 	@Override
 	public boolean onUseWrench(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
 	{
-		//TODO - make sure throughout that Metadata bits 0,1 govern placement (side), bit 3 orientation (thrust direction left or right)
 		final int metadata = world.getBlockMetadata(x, y, z);
 		final int facing = metadata & 8;
-		final int change = (facing + metadata) & 15;
+		final int change = (8 + metadata) & 15;
 
-		world.setBlockMetadataWithNotify(x, y, z, change, 3);
 		if (world.provider instanceof WorldProviderOrbit && !world.isRemote)
 		{
 			WorldProviderOrbit worldOrbital = (WorldProviderOrbit) world.provider;
-			worldOrbital.addThruster(new BlockVec3(x, y, z), change == 0);
+			worldOrbital.addThruster(new BlockVec3(x, y, z), facing == 8);
 		}
 		return true;
 	}

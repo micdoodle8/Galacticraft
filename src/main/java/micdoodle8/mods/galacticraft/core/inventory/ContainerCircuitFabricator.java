@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
+import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
-import micdoodle8.mods.galacticraft.api.transmission.item.IItemElectric;
-import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
+import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,7 +27,7 @@ public class ContainerCircuitFabricator extends Container
 		this.tileEntity = tileEntity;
 
 		// Energy slot
-		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 6, 69, ItemElectric.class));
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 6, 69, ItemElectricBase.class));
 
 		// Diamond
 		ArrayList<ItemStack> slotContentsList = CircuitFabricatorRecipes.slotValidItems.get(0);

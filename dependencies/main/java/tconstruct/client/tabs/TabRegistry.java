@@ -27,7 +27,6 @@ public class TabRegistry
 		if (gui.getClass() == GuiInventory.class)
 		{
 			// Values are public at runtime.
-
 			int cornerX = gui.guiLeft;
 			int cornerY = gui.guiTop;
 			List bList = gui.buttonList;
@@ -43,6 +42,7 @@ public class TabRegistry
 
 	public static void openInventoryGui()
 	{
+		TabRegistry.mc.thePlayer.closeScreen();
 		GuiInventory inventory = new GuiInventory(TabRegistry.mc.thePlayer);
 		TabRegistry.mc.displayGuiScreen(inventory);
 		TabRegistry.addTabsToInventory(inventory);
@@ -66,13 +66,13 @@ public class TabRegistry
 		}
 	}
 
-	public static void addTabsToList(List field_146292_n)
+	public static void addTabsToList(List buttonList)
 	{
 		for (AbstractTab tab : TabRegistry.tabList)
 		{
 			if (tab.shouldAddToList())
 			{
-				field_146292_n.add(tab);
+				buttonList.add(tab);
 			}
 		}
 	}

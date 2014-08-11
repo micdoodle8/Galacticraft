@@ -1,18 +1,12 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import buildcraft.api.mj.MjAPI;
-import buildcraft.api.power.IPowerReceptor;
-
 import com.google.common.collect.Lists;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import ic2.api.energy.tile.IEnergyAcceptor;
-import ic2.api.energy.tile.IEnergyConductor;
-import ic2.api.energy.tile.IEnergyEmitter;
-import ic2.api.energy.tile.IEnergyTile;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
@@ -21,7 +15,6 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -33,6 +26,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
+import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -55,15 +49,16 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.*;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.io.File;
 import java.util.*;
-//import mekanism.api.energy.IStrictEnergyAcceptor;
-//import mekanism.api.gas.IGasTransmitter;
-//import mekanism.api.gas.ITubeConnection;
-//import mekanism.api.transmitters.TransmissionType;
+
+import mekanism.api.gas.IGasTransmitter;
+import mekanism.api.gas.ITubeConnection;
+import mekanism.api.transmitters.TransmissionType;
 
 public class WorldUtil
 {
@@ -183,25 +178,20 @@ public class WorldUtil
 
 	public static WorldProvider getProviderForName(String par1String)
 	{
-		final Integer[] var1 = WorldUtil.getArrayOfPossibleDimensions();
-
-		for (final Integer element : var1)
+		String nameToFind = par1String;
+		if (par1String.contains("$"))
 		{
-			if (WorldProvider.getProviderForDimension(element) != null && WorldProvider.getProviderForDimension(element).getDimensionName() != null)
-			{
-				if (par1String.contains("$"))
-				{
-					final String[] twoDimensions = par1String.split("\\$");
+			final String[] twoDimensions = par1String.split("\\$");
+			nameToFind = twoDimensions[0];
+		}
+		if (nameToFind == null) return null;
 
-					if (WorldProvider.getProviderForDimension(element).getDimensionName().equals(twoDimensions[0]))
-					{
-						return WorldProvider.getProviderForDimension(element);
-					}
-				}
-				else if (WorldProvider.getProviderForDimension(element).getDimensionName().equals(par1String))
-				{
-					return WorldProvider.getProviderForDimension(element);
-				}
+		for (final Integer element : WorldUtil.getArrayOfPossibleDimensions())
+		{
+			WorldProvider elementProvider = WorldProvider.getProviderForDimension(element);
+			if (elementProvider != null && nameToFind.equals(elementProvider.getDimensionName()))
+			{
+				return elementProvider;
 			}
 		}
 
@@ -212,7 +202,7 @@ public class WorldUtil
 	{
 		List<Integer> temp = new ArrayList<Integer>();
 
-		temp.add(0);
+		if (!ConfigManagerCore.disableRocketsToOverworld) temp.add(0);
 
 		for (Integer element : WorldUtil.registeredPlanets)
 		{
@@ -809,7 +799,7 @@ public class WorldUtil
 	{
 		TileEntity[] adjacentConnections = new TileEntity[ForgeDirection.VALID_DIRECTIONS.length];
 
-		//boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
+		boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
 
 		BlockVec3 thisVec = new BlockVec3(tile);
 		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
@@ -823,7 +813,7 @@ public class WorldUtil
 					adjacentConnections[direction.ordinal()] = tileEntity;
 				}
 			}
-			/*else if (isMekLoaded)
+			else if (isMekLoaded)
 			{
 				if (tileEntity instanceof ITubeConnection && (!(tileEntity instanceof IGasTransmitter) || TransmissionType.checkTransmissionType(tileEntity, TransmissionType.GAS, tileEntity)))
 				{
@@ -832,98 +822,6 @@ public class WorldUtil
 						adjacentConnections[direction.ordinal()] = tileEntity;
 					}
 				}
-			}*/
-		}
-
-		return adjacentConnections;
-	}
-
-	public static TileEntity[] getAdjacentPowerConnections(TileEntity tile)
-	{
-		TileEntity[] adjacentConnections = new TileEntity[6];
-
-		//boolean isMekLoaded = NetworkConfigHandler.isMekanismLoaded();
-		//boolean isTELoaded = NetworkConfigHandler.isThermalExpansionLoaded();
-		boolean isIC2Loaded = NetworkConfigHandler.isIndustrialCraft2Loaded();
-		boolean isBCLoaded = NetworkConfigHandler.isBuildcraftLoaded();
-
-		BlockVec3 thisVec = new BlockVec3(tile);
-		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
-		{
-			TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorldObj(), direction);
-
-			if (tileEntity instanceof IConnector)
-			{
-				if (((IConnector) tileEntity).canConnect(direction.getOpposite(), NetworkType.POWER))
-				{
-					adjacentConnections[direction.ordinal()] = tileEntity;
-				}
-				continue;
-			}
-			/*else if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
-			{
-				if (((IStrictEnergyAcceptor) tileEntity).canReceiveEnergy(direction.getOpposite()))
-				{
-					adjacentConnections[direction.ordinal()] = tileEntity;
-				}
-			}
-			else if (isTELoaded && tileEntity instanceof IEnergyHandler)
-			{
-				if (((IEnergyHandler) tileEntity).canInterface(direction.getOpposite()))
-				{
-					adjacentConnections[direction.ordinal()] = tileEntity;
-				}
-			}*/
-			else if (isIC2Loaded && tileEntity instanceof IEnergyTile)
-			{
-				if (tileEntity instanceof IEnergyConductor)
-					continue;
-				
-				if (tileEntity instanceof IEnergyAcceptor)
-				{
-					if (((IEnergyAcceptor) tileEntity).acceptsEnergyFrom(tile, direction.getOpposite()))
-					{
-						adjacentConnections[direction.ordinal()] = tileEntity;
-						continue;
-					}
-				}
-				if (tileEntity instanceof IEnergyEmitter)
-				{
-					if (((IEnergyEmitter) tileEntity).emitsEnergyTo(tile, direction.getOpposite()))
-					{
-						adjacentConnections[direction.ordinal()] = tileEntity;
-						continue;
-					}
-				}
-			}
-			else if (isBCLoaded)
-			{
-				//Do not connect GC wires to BC wooden power pipes
-				try
-				{
-					Class<?> clazzPipeTile = Class.forName("buildcraft.transport.TileGenericPipe");
-					Class<?> clazzPipeWood = Class.forName("buildcraft.transport.pipes.PipePowerWood");
-					if (clazzPipeTile.isInstance(tileEntity))
-					{				
-						Object pipe = clazzPipeTile.getField("pipe").get(tileEntity);
-						if (clazzPipeWood.isInstance(pipe))
-							continue;
-					}
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-
-				//New BC API
-				if (NetworkConfigHandler.getBuildcraftVersion() == 6 && MjAPI.getMjBattery(tileEntity, MjAPI.DEFAULT_POWER_FRAMEWORK, direction.getOpposite()) != null)
-					adjacentConnections[direction.ordinal()] = tileEntity;
-				
-				//Legacy BC API
-				if (tileEntity instanceof IPowerReceptor && ((IPowerReceptor) tileEntity).getPowerReceiver(direction.getOpposite()) != null)
-				{
-					adjacentConnections[direction.ordinal()] = tileEntity;
-				}			
 			}
 		}
 
@@ -957,4 +855,13 @@ public class WorldUtil
 		objList.add(iArray);
 		return objList;
 	}
+	
+    public static void otherModGenerate(int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
+    {
+    	if (world.provider instanceof WorldProviderOrbit || (world.provider instanceof IGalacticraftWorldProvider && !ConfigManagerCore.enableOtherModsFeatures))
+    		return;
+    		
+    	GameRegistry.generateWorld(chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+    }
+
 }

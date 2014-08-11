@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModuleClient;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.InventorySlimeling;
+import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
@@ -31,7 +32,6 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.world.World;
-import sun.misc.Version;
 
 public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 {
@@ -646,4 +646,20 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 			this.dataWatcher.setObjectWatched(27);
 		}
 	}
+	
+	@Override
+    public void onDeath(DamageSource p_70645_1_)
+    {
+        super.onDeath(p_70645_1_);
+
+        if (!this.worldObj.isRemote)
+        {
+            ItemStack bag = this.getCargoSlot();
+            if (bag != null && bag.getItem() == MarsItems.marsItemBasic && bag.getItemDamage() == 4)
+            {
+                this.slimelingInventory.decrStackSize(1, 64);
+                this.entityDropItem(bag, 0.5F);          	
+            }
+        }
+    }
 }

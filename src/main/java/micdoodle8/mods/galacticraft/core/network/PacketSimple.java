@@ -31,6 +31,7 @@ import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
@@ -43,7 +44,6 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityConductor;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
@@ -494,12 +494,12 @@ public class PacketSimple extends Packet implements IPacket
 						}
 					}
 				}
-				break;
 			}
 			catch (final Exception e)
 			{
 				e.printStackTrace();
 			}
+			break;
 		case C_UPDATE_SPACESTATION_DATA:
 			SpaceStationWorldData var4 = SpaceStationWorldData.getMPSpaceStationData(player.worldObj, (Integer) this.data.get(0), player);
 			var4.readFromNBT((NBTTagCompound) this.data.get(1));
@@ -554,6 +554,7 @@ public class PacketSimple extends Packet implements IPacket
 			{
 				e.printStackTrace();
 			}
+			break;
 		case C_ADD_NEW_SCHEMATIC:
 			final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) this.data.get(0));
 			if (!playerBaseClient.unlockedSchematics.contains(page))
@@ -618,9 +619,9 @@ public class PacketSimple extends Packet implements IPacket
 		case C_UPDATE_WIRE_BOUNDS:
 			TileEntity tile = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
 
-			if (tile instanceof TileEntityConductor)
+			if (tile instanceof TileBaseConductor)
 			{
-				((TileEntityConductor) tile).adjacentConnections = null;
+				((TileBaseConductor) tile).adjacentConnections = null;
 				player.worldObj.getBlock(tile.xCoord, tile.yCoord, tile.zCoord).setBlockBoundsBasedOnState(player.worldObj, tile.xCoord, tile.yCoord, tile.zCoord);
 			}
 			break;

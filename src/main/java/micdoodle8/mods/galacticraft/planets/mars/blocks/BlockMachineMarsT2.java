@@ -6,8 +6,8 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
@@ -175,8 +175,8 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
 		}
 
 		TileEntity te = par1World.getTileEntity(x, y, z);
-		if (te instanceof TileEntityUniversalElectrical)
-				((TileEntityUniversalElectrical) te).updateFacing();
+		if (te instanceof TileBaseUniversalElectrical)
+				((TileBaseUniversalElectrical) te).updateFacing();
 
 		par1World.setBlockMetadataWithNotify(x, y, z, (metadata & 12) + change, 3);
 		return true;

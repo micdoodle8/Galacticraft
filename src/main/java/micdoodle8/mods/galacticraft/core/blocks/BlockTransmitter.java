@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -96,7 +97,7 @@ public abstract class BlockTransmitter extends BlockContainer
 				connectable = WorldUtil.getAdjacentOxygenConnections(tileEntity);
 				break;
 			case POWER:
-				connectable = WorldUtil.getAdjacentPowerConnections(tileEntity);
+				connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
 				break;
 			default:
 				break;
@@ -162,7 +163,7 @@ public abstract class BlockTransmitter extends BlockContainer
 				connectable = WorldUtil.getAdjacentOxygenConnections(tileEntity);
 				break;
 			case POWER:
-				connectable = WorldUtil.getAdjacentPowerConnections(tileEntity);
+				connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
 				break;
 			default:
 				connectable = new TileEntity[6];

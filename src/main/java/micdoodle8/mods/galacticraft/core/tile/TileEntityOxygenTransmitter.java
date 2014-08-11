@@ -2,13 +2,17 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import mekanism.api.gas.Gas;
+import mekanism.api.gas.GasStack;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IGridNetwork;
-import micdoodle8.mods.galacticraft.api.transmission.grid.OxygenNetwork;
+import micdoodle8.mods.galacticraft.api.transmission.grid.IOxygenNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.oxygen.OxygenNetwork;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -141,57 +145,33 @@ public abstract class TileEntityOxygenTransmitter extends TileEntityAdvanced imp
 		return NetworkType.OXYGEN;
 	}
 
-	//	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-	//	public int receiveGas(ForgeDirection side, GasStack stack)
-	//	{
-	//		return stack.amount - (int) Math.floor(((IOxygenNetwork) this.getNetwork()).produce(stack.amount, this));
-	//	}
-	//
-	//	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-	//	public GasStack drawGas(ForgeDirection side, int amount)
-	//	{
-	//		return null;
-	//	}
-	//
-	//	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-	//	public boolean canDrawGas(ForgeDirection side, Gas type)
-	//	{
-	//		return false;
-	//	}
-	//
-	//	@RuntimeInterface(clazz = "mekanism.api.gas.IGasAcceptor", modID = "Mekanism")
-	//	public int receiveGas(GasStack stack)
-	//	{
-	//		return (int) Math.floor(((IOxygenNetwork) this.getNetwork()).produce(stack.amount, this));
-	//	}
-	//
-	//	@RuntimeInterface(clazz = "mekanism.api.gas.IGasAcceptor", altClasses = { "mekanism.api.gas.IGasHandler" }, modID = "Mekanism")
-	//	public boolean canReceiveGas(ForgeDirection side, Gas type)
-	//	{
-	//		return type.getName().equals("oxygen");
-	//	}
-	//
-	//	@RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
-	//	public boolean canTubeConnect(ForgeDirection side)
-	//	{
-	//		return this.canConnect(side, NetworkType.OXYGEN);
-	//	}
-	//
-	//	@RuntimeInterface(clazz = "mekanism.api.gas.IGasStorage", modID = "Mekanism")
-	//	public GasStack getGas(Object... data)
-	//	{
-	//		return new GasStack((Gas) NetworkConfigHandler.gasOxygen, 0);
-	//	}
-	//
-	//	@RuntimeInterface(clazz = "mekanism.api.gas.IGasStorage", modID = "Mekanism")
-	//	public void setGas(GasStack stack, Object... data)
-	//	{
-	//		;
-	//	}
-	//
-	//	@RuntimeInterface(clazz = "mekanism.api.gas.IGasStorage", modID = "Mekanism")
-	//	public int getMaxGas(Object... data)
-	//	{
-	//		return 1;
-	//	}
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+	public int receiveGas(ForgeDirection side, GasStack stack)
+	{
+		return stack.amount - (int) Math.floor(((IOxygenNetwork) this.getNetwork()).produce(stack.amount, this));
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+	public GasStack drawGas(ForgeDirection side, int amount)
+	{
+		return null;
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+	public boolean canDrawGas(ForgeDirection side, Gas type)
+	{
+		return false;
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+	public boolean canReceiveGas(ForgeDirection side, Gas type)
+	{
+		return type.getName().equals("oxygen");
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
+	public boolean canTubeConnect(ForgeDirection side)
+	{
+		return this.canConnect(side, NetworkType.OXYGEN);
+	}
 }

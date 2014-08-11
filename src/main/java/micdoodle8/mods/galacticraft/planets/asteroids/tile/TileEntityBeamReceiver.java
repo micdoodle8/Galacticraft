@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
 import com.google.common.collect.Lists;
+
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.power.EnergySource;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
@@ -9,10 +10,10 @@ import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 import micdoodle8.mods.galacticraft.api.power.ILaserNode;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.tile.EnergyStorage;
-import micdoodle8.mods.galacticraft.core.tile.EnergyStorageTile;
+import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorage;
+import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.tile.ReceiverMode;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalElectrical;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -45,9 +46,9 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
             {
                 TileEntity tile = this.getAttachedTile();
 
-                if (tile instanceof TileEntityUniversalElectrical)
+                if (tile instanceof TileBaseUniversalElectrical)
                 {
-                    TileEntityUniversalElectrical electricalTile = (TileEntityUniversalElectrical) tile;
+                    TileBaseUniversalElectrical electricalTile = (TileBaseUniversalElectrical) tile;
 
                     if (electricalTile.storage.getEnergyStoredGC() > 0)
                     {
@@ -62,9 +63,9 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
             {
                 TileEntity tile = this.getAttachedTile();
 
-                if (tile instanceof TileEntityUniversalElectrical)
+                if (tile instanceof TileBaseUniversalElectrical)
                 {
-                    TileEntityUniversalElectrical electricalTile = (TileEntityUniversalElectrical) tile;
+                    TileBaseUniversalElectrical electricalTile = (TileBaseUniversalElectrical) tile;
                     EnergySourceAdjacent source = new EnergySourceAdjacent(ForgeDirection.getOrientation(this.facing).getOpposite());
                     this.storage.extractEnergyGC((int) electricalTile.receiveEnergyGC(source, this.storage.getEnergyStoredGC(), false), false);
                 }

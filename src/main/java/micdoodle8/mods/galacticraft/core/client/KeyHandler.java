@@ -1,11 +1,15 @@
 package micdoodle8.mods.galacticraft.core.client;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.Type;
 import cpw.mods.fml.relauncher.Side;
+import net.minecraft.client.gui.GuiChat;
+import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.settings.KeyBinding;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
@@ -59,11 +63,13 @@ public abstract class KeyHandler
 
 	public void keyTick(Type type, boolean tickEnd)
 	{
+		boolean inChat = FMLClientHandler.instance().getClient().currentScreen instanceof GuiChat;
+
 		for (int i = 0; i < this.keyBindings.length; i++)
 		{
 			KeyBinding keyBinding = this.keyBindings[i];
 			int keyCode = keyBinding.getKeyCode();
-			boolean state = keyCode < 0 ? Mouse.isButtonDown(keyCode + 100) : Keyboard.isKeyDown(keyCode);
+			boolean state = inChat ? false : (keyCode < 0 ? Mouse.isButtonDown(keyCode + 100) : Keyboard.isKeyDown(keyCode));
 			if (state != this.keyDown[i] || state && this.repeatings[i])
 			{
 				if (state)

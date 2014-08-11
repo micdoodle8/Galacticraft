@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.command;
 
-import micdoodle8.mods.galacticraft.api.transmission.compatibility.NetworkConfigHandler;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -17,8 +17,10 @@ public class CommandGCEnergyUnits extends CommandBase
 	public String getCommandUsage(ICommandSender var1)
 	{
 		String options = " [gJ";
-		if (NetworkConfigHandler.isBuildcraftLoaded()) options = options + "/MJ";
-		if (NetworkConfigHandler.isIndustrialCraft2Loaded()) options = options + "/EU";
+		if (EnergyConfigHandler.isBuildcraftLoaded()) options = options + "/MJ";
+		if (EnergyConfigHandler.isIndustrialCraft2Loaded()) options = options + "/EU";
+		if (EnergyConfigHandler.isMekanismLoaded()) options = options + "/J";
+		options = options + "/RF";
 		return "/" + this.getCommandName() + options + "]";
 	}
 
@@ -49,15 +51,19 @@ public class CommandGCEnergyUnits extends CommandBase
 		if (astring.length == 1)
 		{
 			String param = astring[0].toLowerCase();
-			if (param.length() == 2)
+			if (param.length() <= 2)
 			{
 				int paramvalue = 0;
 				if ("gj".equals(param))
 					paramvalue = 1;
-				else if ("mj".equals(param) && NetworkConfigHandler.isBuildcraftLoaded())
+				else if ("mj".equals(param) && EnergyConfigHandler.isBuildcraftLoaded())
 					paramvalue = 2;
-				else if ("eu".equals(param) && NetworkConfigHandler.isIndustrialCraft2Loaded())
+				else if ("eu".equals(param) && EnergyConfigHandler.isIndustrialCraft2Loaded())
 					paramvalue = 3;
+				else if ("j".equals(param) && EnergyConfigHandler.isMekanismLoaded())
+					paramvalue = 4;
+				else if ("rf".equals(param))
+					paramvalue = 5;
 				
 				if (paramvalue > 0)
 				{
@@ -78,22 +84,46 @@ public class CommandGCEnergyUnits extends CommandBase
 	{
 		if (param == 1)
 		{
-			NetworkConfigHandler.displayEnergyUnitsBC = false;
-			NetworkConfigHandler.displayEnergyUnitsIC2 = false;
+			EnergyConfigHandler.displayEnergyUnitsBC = false;
+			EnergyConfigHandler.displayEnergyUnitsIC2 = false;
+			EnergyConfigHandler.displayEnergyUnitsMek = false;
+			EnergyConfigHandler.displayEnergyUnitsRF = false;
 			return;
 		}
 		
-		if (param == 2 && NetworkConfigHandler.isBuildcraftLoaded())
+		if (param == 2 && EnergyConfigHandler.isBuildcraftLoaded())
 		{
-			NetworkConfigHandler.displayEnergyUnitsBC = true;
-			NetworkConfigHandler.displayEnergyUnitsIC2 = false;
+			EnergyConfigHandler.displayEnergyUnitsBC = true;
+			EnergyConfigHandler.displayEnergyUnitsIC2 = false;
+			EnergyConfigHandler.displayEnergyUnitsMek = false;
+			EnergyConfigHandler.displayEnergyUnitsRF = false;
 			return;
 		}
 
-		if (param == 3 && NetworkConfigHandler.isIndustrialCraft2Loaded())
+		if (param == 3 && EnergyConfigHandler.isIndustrialCraft2Loaded())
 		{
-			NetworkConfigHandler.displayEnergyUnitsBC = false;
-			NetworkConfigHandler.displayEnergyUnitsIC2 = true;
+			EnergyConfigHandler.displayEnergyUnitsBC = false;
+			EnergyConfigHandler.displayEnergyUnitsIC2 = true;
+			EnergyConfigHandler.displayEnergyUnitsMek = false;
+			EnergyConfigHandler.displayEnergyUnitsRF = false;
+			return;
+		}	
+
+		if (param == 4 && EnergyConfigHandler.isMekanismLoaded())
+		{
+			EnergyConfigHandler.displayEnergyUnitsBC = false;
+			EnergyConfigHandler.displayEnergyUnitsIC2 = false;
+			EnergyConfigHandler.displayEnergyUnitsMek = true;
+			EnergyConfigHandler.displayEnergyUnitsRF = false;
+			return;
+		}	
+
+		if (param == 5)
+		{
+			EnergyConfigHandler.displayEnergyUnitsBC = false;
+			EnergyConfigHandler.displayEnergyUnitsIC2 = false;
+			EnergyConfigHandler.displayEnergyUnitsMek = false;
+			EnergyConfigHandler.displayEnergyUnitsRF = true;
 			return;
 		}	
 	}

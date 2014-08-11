@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import micdoodle8.mods.galacticraft.api.transmission.item.IItemElectric;
-import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricBlock;
+import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -12,12 +12,12 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerOxygenDistributor extends Container
 {
-	private TileEntityElectricBlock tileEntity;
+	private TileBaseElectricBlock tileEntity;
 
 	public ContainerOxygenDistributor(InventoryPlayer par1InventoryPlayer, TileEntityOxygenDistributor distributor)
 	{
 		this.tileEntity = distributor;
-		this.addSlotToContainer(new SlotSpecific(distributor, 0, 32, 27, ItemElectric.class));
+		this.addSlotToContainer(new SlotSpecific(distributor, 0, 32, 27, ItemElectricBase.class));
 
 		int var6;
 		int var7;

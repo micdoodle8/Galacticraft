@@ -3,11 +3,11 @@ package micdoodle8.mods.galacticraft.planets.mars.tile;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
-import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.entities.IBubble;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
-import micdoodle8.mods.galacticraft.core.tile.ElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityTerraformBubble;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.WorldGenTerraformTree;
@@ -25,7 +25,7 @@ import net.minecraftforge.fluids.FluidTank;
 
 import java.util.ArrayList;
 
-public class TileEntityTerraformer extends ElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IBubbleProvider
+public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IBubbleProvider
 {
 	private final int tankCapacity = 2000;
 	@NetworkedField(targetSide = Side.CLIENT)
@@ -422,7 +422,7 @@ public class TileEntityTerraformer extends ElectricBlockWithInventory implements
 	@Override
 	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
 	{
-		return slotID == 1 && ItemElectric.isElectricItem(itemstack.getItem());
+		return slotID == 1 && ItemElectricBase.isElectricItem(itemstack.getItem());
 	}
 
 	@Override

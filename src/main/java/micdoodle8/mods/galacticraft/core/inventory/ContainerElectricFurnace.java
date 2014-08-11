@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import micdoodle8.mods.galacticraft.api.transmission.item.IItemElectric;
-import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
+import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -20,7 +20,7 @@ public class ContainerElectricFurnace extends Container
 		this.tileEntity = tileEntity;
 
 		// Electric Input Slot
-		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 8, 49, ItemElectric.class));
+		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 8, 49, ItemElectricBase.class));
 
 		// To be smelted
 		this.addSlotToContainer(new Slot(tileEntity, 1, 56, 25));

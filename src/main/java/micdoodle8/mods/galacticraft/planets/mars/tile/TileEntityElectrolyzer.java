@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.planets.mars.tile;
 
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
-import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
-import micdoodle8.mods.galacticraft.core.tile.ElectricBlockWithInventory;
+import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.inventory.ISidedInventory;
@@ -15,7 +15,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileEntityElectrolyzer extends ElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandler
+public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandler
 {
 	private final int tankCapacity = 4000;
 
@@ -103,7 +103,7 @@ public class TileEntityElectrolyzer extends ElectricBlockWithInventory implement
 			switch (slotID)
 			{
 			case 0:
-				return ItemElectric.isElectricItem(itemstack.getItem());
+				return ItemElectricBase.isElectricItem(itemstack.getItem());
 			default:
 				return false;
 			}
@@ -119,7 +119,7 @@ public class TileEntityElectrolyzer extends ElectricBlockWithInventory implement
 			switch (slotID)
 			{
 			case 0:
-				return itemstack.getItem() instanceof ItemElectric && ((ItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
+				return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
 			default:
 				return false;
 			}
@@ -133,7 +133,7 @@ public class TileEntityElectrolyzer extends ElectricBlockWithInventory implement
 		switch (slotID)
 		{
 		case 0:
-			return ItemElectric.isElectricItem(itemstack.getItem());
+			return ItemElectricBase.isElectricItem(itemstack.getItem());
 		}
 
 		return false;
@@ -205,9 +205,9 @@ public class TileEntityElectrolyzer extends ElectricBlockWithInventory implement
     {
         if (this.blockMetadata == -1)
         {
-            this.blockMetadata = 3 & this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
+            this.blockMetadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
         }
 
-        return this.blockMetadata;
+        return this.blockMetadata & 3;
     }
 }

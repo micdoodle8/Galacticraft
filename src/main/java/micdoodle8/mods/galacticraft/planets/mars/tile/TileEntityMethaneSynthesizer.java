@@ -3,17 +3,23 @@ package micdoodle8.mods.galacticraft.planets.mars.tile;
 import java.util.ArrayList;
 
 import cpw.mods.fml.relauncher.Side;
+import mekanism.api.gas.Gas;
+import mekanism.api.gas.GasStack;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
-import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
-import micdoodle8.mods.galacticraft.core.tile.ElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,7 +34,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileEntityMethaneSynthesizer extends ElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandler
+public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandler
 {
 	private final int tankCapacity = 4000;
 
@@ -72,7 +78,7 @@ public class TileEntityMethaneSynthesizer extends ElectricBlockWithInventory imp
 			}
 			
 			//First, see if any gas needs to be put into the hydogen storage
-			//TODO - in 1.7.10 implement support for Mekanism hydrogen tanks
+			//TODO - in 1.7.10 implement support for Mekanism internal hydrogen tanks
 
 			//TODO TEMPORARY
 			this.gasTank.fill(FluidRegistry.getFluidStack("hydrogen", 4), true);
@@ -87,8 +93,12 @@ public class TileEntityMethaneSynthesizer extends ElectricBlockWithInventory imp
 					//CO2 -> CO2 tank
 					if (this.gasTank2.getFluidAmount() < this.gasTank2.getCapacity())
 					{
-						FluidStack gcAtmosphere = FluidRegistry.getFluidStack("carbondioxide", 4);
-						this.gasTank2.fill(gcAtmosphere, true);
+						Block blockAbove = this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord);
+						if (blockAbove != null && blockAbove.getMaterial() == Material.air && blockAbove!=GCBlocks.breatheableAir && blockAbove!=GCBlocks.brightBreatheableAir)
+						{
+							FluidStack gcAtmosphere = FluidRegistry.getFluidStack("carbondioxide", 4);
+							this.gasTank2.fill(gcAtmosphere, true);
+						}
 					}
 				}
 			}
@@ -323,7 +333,7 @@ public class TileEntityMethaneSynthesizer extends ElectricBlockWithInventory imp
 			switch (slotID)
 			{
 			case 0:
-				return ItemElectric.isElectricItem(itemstack.getItem());
+				return ItemElectricBase.isElectricItem(itemstack.getItem());
 			case 3:
 				return itemstack.getItem() == MarsItems.carbonFragments;
 			case 4:
@@ -343,7 +353,7 @@ public class TileEntityMethaneSynthesizer extends ElectricBlockWithInventory imp
 			switch (slotID)
 			{
 			case 0:
-				return itemstack.getItem() instanceof ItemElectric && ((ItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
+				return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
 			case 4:
 				return FluidContainerRegistry.isFilledContainer(itemstack);
 			default:
@@ -359,7 +369,7 @@ public class TileEntityMethaneSynthesizer extends ElectricBlockWithInventory imp
 		switch (slotID)
 		{
 		case 0:
-			return ItemElectric.isElectricItem(itemstack.getItem());
+			return ItemElectricBase.isElectricItem(itemstack.getItem());
 		case 1:
 			return false;
 		case 2:
@@ -478,9 +488,46 @@ public class TileEntityMethaneSynthesizer extends ElectricBlockWithInventory imp
     {
         if (this.blockMetadata == -1)
         {
-            this.blockMetadata = 3 & this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
+            this.blockMetadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
         }
 
-        return this.blockMetadata;
+        return this.blockMetadata & 3;
     }
+	
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+	public int receiveGas(ForgeDirection side, GasStack stack)
+	{
+		int used = 0;
+		//System.out.println("Giving gas amount "+stack.amount);
+		if (this.gasTank.getFluidAmount() < this.gasTank.getCapacity())
+		{
+			used = this.gasTank.fill(FluidRegistry.getFluidStack("hydrogen", stack.amount), true);
+		}
+		return used;
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+	public GasStack drawGas(ForgeDirection side, int amount)
+	{
+		return null;
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+	public boolean canReceiveGas(ForgeDirection side, Gas type)
+	{
+		//System.out.println("Testing receipt of gas "+type.getName());
+		return type.getName().equals("hydrogen") && side.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2));
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+	public boolean canDrawGas(ForgeDirection side, Gas type)
+	{
+		return false;
+	}
+
+	@RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
+	public boolean canTubeConnect(ForgeDirection side)
+	{
+		return side.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2));
+	}
 }

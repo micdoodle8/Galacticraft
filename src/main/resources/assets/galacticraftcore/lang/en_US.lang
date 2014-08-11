@@ -359,6 +359,7 @@ gui.rocket.turn.name=Turn left-right
 gui.rocket.updown.name=Turn up-down
 gui.rocket.inv.name=Inventory / Fuel
 
+gui.rocket.warning.nogyroscope=Mysterious forces are at play and the gyroscopes are spinning wildly!
 gui.rocket.warning.noparachute=I don't have a parachute! If I press launch again, there's no going back!
 gui.rocket.warning.nofuel=I'll need to load in some rocket fuel first!
 gui.chest.warning.wrongkey=I'll probably need a Tier %s Dungeon key to unlock this!
@@ -540,6 +541,7 @@ planet.uranus=Uranus
 planet.neptune=Neptune
 moon.moon=Moon
 solarsystem.sol=Sol
+star.sol=Sol
 
 # COMMANDS
 commands.dimensionteleport=%s was sent into the atmosphere%s

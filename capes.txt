@@ -58,3 +58,12 @@ BCQX:capeCyan
 Shamrocker101:capeRainbow
 Truman04:capeLightGray
 OWNSyouAll:capeRainbow
+eggsandbaon:capeLime
+Charmealion:capeRainbow
+iron_force_a:capeOrange
+vigilantecow:capeCyan
+nanatorium:capeRainbow
+Phlonk:capeOrange
+AquaBarnes:capeRainbow
+CmdrPineapple:capeLime
+MadCast_Maday:capeLightBlue
