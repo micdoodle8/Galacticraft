@@ -148,6 +148,11 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
     @Override
     public ForgeDirection getElectricInputDirection()
     {
+        if (this.getBlockMetadata() != 0)
+        {
+            return null;
+        }
+
         return ForgeDirection.UP;
     }
 
