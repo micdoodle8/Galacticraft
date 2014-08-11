@@ -84,7 +84,10 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 	private double pPrevMotionX = 0D;
 	private double pPrevMotionY = 0D;
 	private double pPrevMotionZ = 0D;
+    @SideOnly(Side.CLIENT)
 	private int pjumpticks = 0;
+    @SideOnly(Side.CLIENT)
+	private boolean pWasOnGround = false;
 
 	@Override
 	public void setDimension(int var1)
@@ -629,9 +632,22 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 				}
 
 				p.rotationYaw += this.skyAngularVelocity;
+				p.prevRotationYaw += this.skyAngularVelocity;
 				while (p.rotationYaw > 360F)
 				{
 					p.rotationYaw -= 360F;
+				}
+				while (p.rotationYaw < 0F)
+				{
+					p.rotationYaw += 360F;
+				}
+				while (p.prevRotationYaw > 360F)
+				{
+					p.prevRotationYaw -= 360F;
+				}
+				while (p.prevRotationYaw < 0F)
+				{
+					p.prevRotationYaw += 360F;
 				}
 
 				/*				//Just started freefall - give some impulse
@@ -653,9 +669,27 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 				double dx = p.motionX - this.pPrevMotionX;
 				double dy = p.motionY - this.pPrevMotionY;
 				double dz = p.motionZ - this.pPrevMotionZ;
-				double dyaw = p.rotationYaw - p.prevRotationYaw;
+/*				double dyaw = p.rotationYaw - p.prevRotationYaw;
 				p.rotationYaw -= dyaw * 0.8D;
-
+				double dyawh = p.rotationYawHead - p.prevRotationYawHead;
+				p.rotationYawHead -= dyawh * 0.8D;
+				while (p.rotationYaw > 360F)
+				{
+					p.rotationYaw -= 360F;
+				}
+				while (p.rotationYaw < 0F)
+				{
+					p.rotationYaw += 360F;
+				}
+				while (p.rotationYawHead > 360F)
+				{
+					p.rotationYawHead -= 360F;
+				}
+				while (p.rotationYawHead < 0F)
+				{
+					p.rotationYawHead += 360F;
+				}
+*/
 				//if (p.capabilities.isFlying)
 				///Undo whatever vanilla tried to do to our y motion
 				p.motionY -= dy;
@@ -748,32 +782,30 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 		else
 		//Not freefall - within arm's length of something or jumping
 		{
-			if (p.motionY < 0 && this.pPrevMotionY >= 0) p.posY -= p.motionY;
+			double dy = p.motionY - this.pPrevMotionY;
+			//if (p.motionY < 0 && this.pPrevMotionY >= 0) p.posY -= p.motionY;
 			//if (p.motionY != 0) p.motionY = this.pPrevMotionY;
 			if (p.movementInput.jump)
 			{
-				if (p.onGround)
+				if (p.onGround || this.pWasOnGround)
 				{
-					p.motionY += 0.05D;
-					this.pjumpticks = 10;
+					this.pjumpticks = 20;
+					p.motionY -= 0.015D;
 					p.onGround = false;
+					p.posY -= 0.1D;
+					p.boundingBox.offset(0, -0.1D, 0);
 				}
 				else
 				{
-					p.motionY += 0.01D;
-					//reduce size of jump if key held down longer
-					if (this.pjumpticks > 0)
-					{
-						p.motionY += 0.01D;
-						this.pjumpticks--;
-					}
+					p.motionY += 0.003D;
+					if (this.pjumpticks == 0) p.motionY -= dy;
 				}
 			}
 			else if (p.movementInput.sneak)
 			{
 				if (!p.onGround)
 				{
-					p.motionY -= 0.01D;
+					p.motionY -= 0.003D;
 				}
 				this.pjumpticks = 0;
 			}
@@ -781,7 +813,8 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 			if (this.pjumpticks > 0)
 			{
 				this.pjumpticks--;
-				p.motionY += 0.005D * this.pjumpticks;
+				p.motionY -= dy;
+				if (this.pjumpticks >= 17) p.motionY += 0.03D;
 			}
 		}
 
@@ -835,12 +868,18 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 		this.pPrevMotionX = p.motionX;
 		this.pPrevMotionY = p.motionY;
 		this.pPrevMotionZ = p.motionZ;
+		this.pWasOnGround = p.onGround;
 	}
 
     @SideOnly(Side.CLIENT)
     private boolean testFreefall(GCEntityClientPlayerMP p)
     {
-		//This is an "on the ground" check
+ 		if (this.pjumpticks > 0 || (this.pWasOnGround && p.movementInput.jump))
+ 		{
+ 			return false;
+ 		}
+
+ 		//This is an "on the ground" check
 		int playerFeetOnY = (int) (p.boundingBox.minY - 0.001D);
 		Block b = this.worldObj.getBlock(MathHelper.floor_double(p.posX), playerFeetOnY, MathHelper.floor_double(p.posZ));
 		double blockYmax = b.getBlockBoundsMaxY() + playerFeetOnY;
@@ -850,10 +889,6 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 			p.posY -= p.boundingBox.minY - blockYmax;
 			return false;
 		}
- 		else if (this.pjumpticks > 0)
- 		{
- 			return false;
- 		}
  		else if (p.boundingBox.maxX >= this.ssBoundsMinX && p.boundingBox.minX <= this.ssBoundsMaxX && p.boundingBox.maxY >= this.ssBoundsMinY && p.boundingBox.minY <= this.ssBoundsMaxY && p.boundingBox.maxZ >= this.ssBoundsMinZ && p.boundingBox.minZ <= this.ssBoundsMaxZ)
 		//Player is somewhere within the space station boundaries
 		{

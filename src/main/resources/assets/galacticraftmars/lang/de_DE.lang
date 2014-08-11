@@ -135,6 +135,14 @@ gui.desc.reinforcedPlateT2.name=Stufe 2
 dimension.Mars.name=Mars
 planet.mars=Mars
 
+tile.treasureT2.description=Tier 2 Treasure Chests will generate in Mars Dungeons. They are unlockable after defeating the final boss.
+tile.cavernVines.description=Cavernous Vines are dangerous to living creatures, entangling them and dragging them upwards.
+tile.slimelingEgg.description=Slimeling Eggs, once cracked with a player's bare hands, will soon hatch into a pet.
+tile.cryoChamber.description=Cryogenic Chambers will allow a player to sleep during the day, healing a small amount of health, but has a cooldown.
+tile.launchController.description=Launch Controllers are used to customize launch behaviour, including launch criteria and destination launch pad for auto launches.
+tile.terraformer.description=Terraformers are used to add some greenery to distant planets, adding grass, trees and water when given the correct materials.
+tile.creeperEgg.description=Creeper Eggs will spawn in Mars dungeons, spawning a sneaky predator upon exploding.
+
 # SCHEMATICS
 schematic.rocketT3.name=Rakete (Stufe 3)
 schematic.cargoRocket.name=Automatische Güterrakete
