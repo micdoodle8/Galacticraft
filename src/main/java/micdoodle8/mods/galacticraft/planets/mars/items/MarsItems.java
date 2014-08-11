@@ -46,13 +46,14 @@ public class MarsItems
 		MarsItems.carbonFragments = new ItemCarbonFragments().setUnlocalizedName("carbonFragments");;
 		
 		MarsItems.registerItems();
+		MarsItems.registerHarvestLevels();
 	}
 
 	public static void registerHarvestLevels()
 	{
-		//		MinecraftForge.setToolClass(GCMarsItems.deshPickaxe, "pickaxe", 4);
-		//		MinecraftForge.setToolClass(GCMarsItems.deshAxe, "axe", 4);
-		//		MinecraftForge.setToolClass(GCMarsItems.deshSpade, "shovel", 4); TODO Fix harvest levels
+		MarsItems.deshPickaxe.setHarvestLevel("pickaxe", 4);
+		MarsItems.deshAxe.setHarvestLevel("axe", 4);
+		MarsItems.deshSpade.setHarvestLevel("shovel", 4);
 	}
 
 	private static void registerItems()
