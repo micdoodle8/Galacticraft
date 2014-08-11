@@ -12,6 +12,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
@@ -190,5 +191,17 @@ public class BlockBasic extends Block implements IDetectableResource
 		}
 
 		return super.getPickBlock(target, world, x, y, z);
+	}
+	
+	@Override
+	public void dropBlockAsItemWithChance(World world, int par2, int par3, int par4, int par5, float par6, int par7)
+	{
+		super.dropBlockAsItemWithChance(world, par2, par3, par4, par5, par6, par7);
+
+		if (this.getItemDropped(par5, world.rand, par7) != Item.getItemFromBlock(this))
+		{
+			int var8 =  MathHelper.getRandomIntegerInRange(world.rand, 3, 5);
+			this.dropXpOnBlockBreak(world, par2, par3, par4, var8);
+		}
 	}
 }
