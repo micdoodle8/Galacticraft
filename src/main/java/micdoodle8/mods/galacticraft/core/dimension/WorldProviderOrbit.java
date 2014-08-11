@@ -1322,6 +1322,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 		{
 			float netTorque = 0F;
 			int countThrusters = 0;
+			int countThrustersReverse = 0;
 
 			for (BlockVec3 thruster : this.thrustersPlus)
 			{
@@ -1335,16 +1336,17 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 				float xx = thruster.x - this.massCentreX;
 				float zz = thruster.z - this.massCentreZ;
 				netTorque -= MathHelper.sqrt_float(xx * xx + zz * zz);
-				countThrusters++;
+				countThrustersReverse++;
 			}
 
-			if (countThrusters == 0)
+			if (countThrusters == 0 || countThrusters == countThrustersReverse)
 			{
 				this.angularVelocityAccel = 0.001F;
 				this.angularVelocityTarget = 0F;
 			}
 			else
 			{
+				countThrusters += countThrustersReverse;
 				if (countThrusters > 4)
 				{
 					countThrusters = 4;

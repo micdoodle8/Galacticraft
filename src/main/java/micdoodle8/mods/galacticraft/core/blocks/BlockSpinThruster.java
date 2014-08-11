@@ -335,11 +335,12 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
 		final int metadata = world.getBlockMetadata(x, y, z);
 		final int facing = metadata & 8;
 		final int change = (8 + metadata) & 15;
+		world.setBlockMetadataWithNotify(x, y, z, change, 2);
 
 		if (world.provider instanceof WorldProviderOrbit && !world.isRemote)
 		{
 			WorldProviderOrbit worldOrbital = (WorldProviderOrbit) world.provider;
-			worldOrbital.addThruster(new BlockVec3(x, y, z), facing == 8);
+			worldOrbital.checkSS(new BlockVec3(x, y, z), true);
 		}
 		return true;
 	}
