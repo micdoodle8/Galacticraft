@@ -40,15 +40,15 @@ public class ItemArmorAsteroids extends ItemArmor
 		{
 			if (stack.getItem() == AsteroidsItems.titaniumHelmet)
 			{
-				return "textures/model/armor/titanium_1.png";
+				return AsteroidsModule.TEXTURE_PREFIX + "textures/model/armor/titanium_1.png";
 			}
 			else if (stack.getItem() == AsteroidsItems.titaniumChestplate || stack.getItem() == AsteroidsItems.titaniumBoots)
 			{
-				return "textures/model/armor/titanium_2.png";
+				return AsteroidsModule.TEXTURE_PREFIX + "textures/model/armor/titanium_2.png";
 			}
 			else if (stack.getItem() == AsteroidsItems.titaniumLeggings)
 			{
-				return "textures/model/armor/titanium_3.png";
+				return AsteroidsModule.TEXTURE_PREFIX + "textures/model/armor/titanium_3.png";
 			}
 		}
 

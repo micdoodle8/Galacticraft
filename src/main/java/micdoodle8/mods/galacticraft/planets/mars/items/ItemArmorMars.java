@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -37,15 +38,15 @@ public class ItemArmorMars extends ItemArmor
 		{
 			if (stack.getItem() == MarsItems.deshHelmet)
 			{
-				return "textures/model/armor/desh_1.png";
+				return MarsModule.TEXTURE_PREFIX + "textures/model/armor/desh_1.png";
 			}
 			else if (stack.getItem() == MarsItems.deshChestplate || stack.getItem() == MarsItems.deshBoots)
 			{
-				return "textures/model/armor/desh_2.png";
+				return MarsModule.TEXTURE_PREFIX + "textures/model/armor/desh_2.png";
 			}
 			else if (stack.getItem() == MarsItems.deshLeggings)
 			{
-				return "textures/model/armor/desh_3.png";
+				return MarsModule.TEXTURE_PREFIX + "textures/model/armor/desh_3.png";
 			}
 		}
 
