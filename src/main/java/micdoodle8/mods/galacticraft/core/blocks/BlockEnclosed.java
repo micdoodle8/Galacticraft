@@ -6,9 +6,11 @@ import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenPipe;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
@@ -26,7 +28,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.List;
 
-public class BlockEnclosed extends BlockContainer implements IPartialSealableBlock, ITileEntityProvider
+public class BlockEnclosed extends BlockContainer implements IPartialSealableBlock, ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {
 	private IIcon[] enclosedIcons;
 
@@ -437,4 +439,16 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 	{
 		return true;
 	}
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
+    }
 }

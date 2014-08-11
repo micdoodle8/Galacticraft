@@ -18,7 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class ItemBlockEnclosed extends ItemBlock
+public class ItemBlockEnclosed extends ItemBlockDesc
 {
 	public ItemBlockEnclosed(Block block)
 	{
@@ -30,7 +30,7 @@ public class ItemBlockEnclosed extends ItemBlock
 	@Override
 	public String getUnlocalizedName(ItemStack par1ItemStack)
 	{
-		String name = "";
+		String name;
 
 		switch (par1ItemStack.getItemDamage())
 		{
@@ -126,11 +126,7 @@ public class ItemBlockEnclosed extends ItemBlock
 				return false;
 			}
 
-			if (itemstack.stackSize == 0)
-			{
-				return false;
-			}
-			else if (!entityplayer.canPlayerEdit(i, j, k, side, itemstack))
+			if (!entityplayer.canPlayerEdit(i, j, k, side, itemstack))
 			{
 				return false;
 			}

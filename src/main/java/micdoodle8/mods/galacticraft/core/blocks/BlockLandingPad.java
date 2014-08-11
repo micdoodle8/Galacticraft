@@ -4,8 +4,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFuelerSingle;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPadSingle;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -19,7 +21,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
-public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealableBlock
+public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealableBlock, ItemBlockDesc.IBlockShiftDesc
 {
 	private IIcon[] icons = new IIcon[3];
 
@@ -152,4 +154,16 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
 	{
 		return meta;
 	}
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
+    }
 }

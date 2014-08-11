@@ -2,7 +2,9 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.*;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -21,7 +23,7 @@ import java.util.List;
 
 import cpw.mods.fml.common.Loader;
 
-public class BlockMachineTiered extends BlockTileGC
+public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBlockShiftDesc
 {
 	public static final int STORAGE_MODULE_METADATA = 0;
 	public static final int ELECTRIC_FURNACE_METADATA = 4;
@@ -112,7 +114,6 @@ public class BlockMachineTiered extends BlockTileGC
 		int type = metadata & 4;
 		int metaside = (metadata & 3) + 2;
 
-		//TODO: add icons for the Tier 2 versions
 		if (type == BlockMachineTiered.STORAGE_MODULE_METADATA)
 		{
 			if (side == 0 || side == 1)
@@ -335,4 +336,24 @@ public class BlockMachineTiered extends BlockTileGC
 
 		return new ItemStack(this, 1, metadata);
 	}
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        int tier = (meta >= 8 ? 2 : 1);
+        switch (meta & 4)
+        {
+            case ELECTRIC_FURNACE_METADATA:
+                return GCCoreUtil.translate("tile.electricFurnaceTier" + tier + ".description");
+            case STORAGE_MODULE_METADATA:
+                return GCCoreUtil.translate("tile.energyStorageModuleTier" + tier + ".description");
+        }
+        return "";
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
+    }
 }

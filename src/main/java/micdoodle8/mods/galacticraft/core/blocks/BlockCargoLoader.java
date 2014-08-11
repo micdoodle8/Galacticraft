@@ -3,9 +3,11 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoLoader;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoUnloader;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalElectrical;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -22,7 +24,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
-public class BlockCargoLoader extends BlockAdvancedTile
+public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc.IBlockShiftDesc
 {
 	private IIcon iconMachineSide;
 	private IIcon iconInput;
@@ -31,8 +33,8 @@ public class BlockCargoLoader extends BlockAdvancedTile
 	private IIcon iconItemInput;
 	private IIcon iconItemOutput;
 
-	public static int METADATA_CARGO_LOADER = 0;
-	public static int METADATA_CARGO_UNLOADER = 4;
+	public static final int METADATA_CARGO_LOADER = 0;
+	public static final int METADATA_CARGO_UNLOADER = 4;
 
 	public BlockCargoLoader(String assetName)
 	{
@@ -289,4 +291,23 @@ public class BlockCargoLoader extends BlockAdvancedTile
 
 		return 0;
 	}
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        switch (meta)
+        {
+            case METADATA_CARGO_LOADER:
+                return GCCoreUtil.translate("tile.cargoLoader.description");
+            case METADATA_CARGO_UNLOADER:
+                return GCCoreUtil.translate("tile.cargoUnloader.description");
+        }
+        return "";
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
+    }
 }

@@ -5,7 +5,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -19,7 +21,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class BlockAluminumWire extends BlockTransmitter implements ITileEntityProvider
+public class BlockAluminumWire extends BlockTransmitter implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {
 	public static final String[] names = { "aluminumWire", "aluminumWireHeavy" };
 	private static IIcon[] blockIcons;
@@ -120,4 +122,23 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
 	{
 		return NetworkType.POWER;
 	}
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        switch (meta)
+        {
+            case 0:
+                return GCCoreUtil.translate("tile.aluminumWire.description");
+            case 1:
+                return GCCoreUtil.translate("tile.aluminumWireHeavy.description");
+        }
+        return "";
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
+    }
 }

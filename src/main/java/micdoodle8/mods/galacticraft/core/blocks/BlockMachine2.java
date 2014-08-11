@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.*;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -20,7 +22,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.List;
 import java.util.Random;
 
-public class BlockMachine2 extends BlockTileGC
+public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockShiftDesc
 {
 	public static final int ELECTRIC_COMPRESSOR_METADATA = 0;
 	public static final int CIRCUIT_FABRICATOR_METADATA = 4;
@@ -400,4 +402,25 @@ public class BlockMachine2 extends BlockTileGC
 
 		return new ItemStack(this, 1, metadata);
 	}
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        switch (meta)
+        {
+            case CIRCUIT_FABRICATOR_METADATA:
+                return GCCoreUtil.translate("tile.circuitFabricator.description");
+            case ELECTRIC_COMPRESSOR_METADATA:
+                return GCCoreUtil.translate("tile.compressorElectric.description");
+            case OXYGEN_STORAGE_MODULE_METADATA:
+                return GCCoreUtil.translate("tile.oxygenStorageModule.description");
+        }
+        return "";
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
+    }
 }

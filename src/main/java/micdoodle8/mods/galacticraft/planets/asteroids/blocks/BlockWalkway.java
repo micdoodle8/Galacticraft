@@ -6,8 +6,10 @@ import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTransmitter;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenPipe;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
@@ -23,7 +25,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class BlockWalkway extends BlockTransmitter implements ITileEntityProvider
+public class BlockWalkway extends BlockTransmitter implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {
 	protected BlockWalkway(String assetName)
 	{
@@ -240,4 +242,29 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 
 		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        if (this == AsteroidBlocks.blockWalkway)
+        {
+            return GCCoreUtil.translate("tile.walkway.description");
+        }
+        else if (this == AsteroidBlocks.blockWalkwayWire)
+        {
+            return GCCoreUtil.translate("tile.walkwayAluminumWire.description");
+        }
+        else if (this == AsteroidBlocks.blockWalkwayOxygenPipe)
+        {
+            return GCCoreUtil.translate("tile.walkwayOxygenPipe.description");
+        }
+
+        return "";
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
+    }
 }

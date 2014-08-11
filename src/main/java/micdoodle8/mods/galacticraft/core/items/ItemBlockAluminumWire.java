@@ -10,7 +10,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-public class ItemBlockAluminumWire extends ItemBlock
+public class ItemBlockAluminumWire extends ItemBlockDesc
 {
 	public ItemBlockAluminumWire(Block block)
 	{

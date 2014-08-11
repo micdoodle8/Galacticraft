@@ -3,7 +3,9 @@ package micdoodle8.mods.galacticraft.planets.asteroids.items;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,7 +14,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemBlockWalkway extends ItemBlockGC
+public class ItemBlockWalkway extends ItemBlockDesc
 {
     public ItemBlockWalkway(Block block)
     {
@@ -25,11 +27,13 @@ public class ItemBlockWalkway extends ItemBlockGC
     {
         if (itemStack.getItem() == Item.getItemFromBlock(AsteroidBlocks.blockWalkwayWire))
         {
-            list.add(GCBlocks.aluminumWire.getLocalizedName());
+            list.add(EnumColor.AQUA + GCBlocks.aluminumWire.getLocalizedName());
         }
         else if (itemStack.getItem() == Item.getItemFromBlock(AsteroidBlocks.blockWalkwayOxygenPipe))
         {
-            list.add(GCBlocks.oxygenPipe.getLocalizedName());
+            list.add(EnumColor.AQUA + GCBlocks.oxygenPipe.getLocalizedName());
         }
+
+        super.addInformation(itemStack, entityPlayer, list, advanced);
     }
 }

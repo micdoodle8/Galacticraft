@@ -31,7 +31,7 @@ public class ItemSensorGlasses extends ItemArmor
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
 	{
-		return "textures/model/armor/sensor_1.png";
+		return GalacticraftCore.TEXTURE_PREFIX + "textures/model/armor/sensor_1.png";
 	}
 
 	@Override

@@ -8,7 +8,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockCargoLoader extends ItemBlock
+public class ItemBlockCargoLoader extends ItemBlockDesc
 {
 	public ItemBlockCargoLoader(Block block)
 	{
@@ -32,13 +32,6 @@ public class ItemBlockCargoLoader extends ItemBlock
 		}
 
 		return this.field_150939_a.getUnlocalizedName() + "." + name;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack)
-	{
-		return ClientProxyCore.galacticraftItem;
 	}
 
 	@Override

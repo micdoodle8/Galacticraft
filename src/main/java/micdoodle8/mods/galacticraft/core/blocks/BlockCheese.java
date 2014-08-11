@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -18,7 +20,7 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class BlockCheese extends Block
+public class BlockCheese extends Block implements ItemBlockDesc.IBlockShiftDesc
 {
 	IIcon[] cheeseIcons;
 
@@ -217,10 +219,22 @@ public class BlockCheese extends Block
 		return Item.getItemFromBlock(Blocks.air);
 	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
-	{
-		return new ItemStack(GCItems.cheeseBlock);
-	}
+//	@Override
+//	@SideOnly(Side.CLIENT)
+//	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+//	{
+//		return new ItemStack(GCItems.cheeseBlock);
+//	}
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
+    }
 }

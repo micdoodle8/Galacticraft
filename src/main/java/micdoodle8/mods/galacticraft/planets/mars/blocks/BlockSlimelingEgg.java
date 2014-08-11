@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.planets.mars.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
@@ -26,7 +28,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.List;
 import java.util.Random;
 
-public class BlockSlimelingEgg extends Block implements ITileEntityProvider
+public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {
 	private IIcon[] icons;
 	public static String[] names = { "redEgg", "blueEgg", "yellowEgg" };
@@ -184,4 +186,16 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider
 		}
 		return super.getPickBlock(target, world, x, y, z);
 	}
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
+    }
 }

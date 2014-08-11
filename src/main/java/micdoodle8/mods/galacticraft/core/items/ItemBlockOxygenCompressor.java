@@ -9,7 +9,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockOxygenCompressor extends ItemBlock
+public class ItemBlockOxygenCompressor extends ItemBlockDesc
 {
 	public ItemBlockOxygenCompressor(Block block)
 	{
@@ -22,13 +22,6 @@ public class ItemBlockOxygenCompressor extends ItemBlock
 	public int getMetadata(int damage)
 	{
 		return damage;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack)
-	{
-		return ClientProxyCore.galacticraftItem;
 	}
 
 	@Override

@@ -1,6 +1,9 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -14,7 +17,7 @@ import java.util.Random;
 
 import static net.minecraftforge.common.util.ForgeDirection.*;
 
-public class BlockGlowstoneTorch extends Block
+public class BlockGlowstoneTorch extends Block implements ItemBlockDesc.IBlockShiftDesc
 {
 	protected BlockGlowstoneTorch(String assetName)
 	{
@@ -243,4 +246,16 @@ public class BlockGlowstoneTorch extends Block
 
 		return super.collisionRayTrace(par1World, par2, par3, par4, par5Vec3, par6Vec3);
 	}
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
+    }
 }

@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -27,7 +28,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
-public class BlockBeamReceiver extends BlockTileGC
+public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlockShiftDesc
 {
 	public BlockBeamReceiver(String assetName)
 	{
@@ -228,5 +229,17 @@ public class BlockBeamReceiver extends BlockTileGC
         }
 
         return false;
+    }
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
     }
 }

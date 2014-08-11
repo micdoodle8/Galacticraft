@@ -4,8 +4,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalElectrical;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -21,7 +23,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Random;
 
-public class BlockOxygenCollector extends BlockAdvancedTile
+public class BlockOxygenCollector extends BlockAdvancedTile implements ItemBlockDesc.IBlockShiftDesc
 {
 	@SideOnly(Side.CLIENT)
 	private IIcon[] collectorIcons;
@@ -182,4 +184,16 @@ public class BlockOxygenCollector extends BlockAdvancedTile
 			}
 		}
 	}
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
+    }
 }

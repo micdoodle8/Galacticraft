@@ -547,7 +547,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 
 					if (Math.abs(this.getPlayerStats().thermalLevel) >= 22)
 					{
-						this.damageEntity(DamageSource.onFire, 1.5F); // TODO New thermal damage source
+						this.damageEntity(DamageSourceGC.thermal, 1.5F); // TODO New thermal damage source
 					}
 				}
 

@@ -9,7 +9,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockSolar extends ItemBlock
+public class ItemBlockSolar extends ItemBlockDesc
 {
 	public ItemBlockSolar(Block block)
 	{

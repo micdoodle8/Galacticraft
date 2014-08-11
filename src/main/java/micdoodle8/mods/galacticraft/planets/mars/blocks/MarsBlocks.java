@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockEgg;
@@ -50,10 +51,10 @@ public class MarsBlocks
 	public static void registerBlocks()
 	{
 		GameRegistry.registerBlock(MarsBlocks.marsBlock, ItemBlockMars.class, MarsBlocks.marsBlock.getUnlocalizedName());
-		GameRegistry.registerBlock(MarsBlocks.blockSludge, ItemBlockGC.class, MarsBlocks.blockSludge.getUnlocalizedName());
-		GameRegistry.registerBlock(MarsBlocks.vine, ItemBlockGC.class, MarsBlocks.vine.getUnlocalizedName());
+		GameRegistry.registerBlock(MarsBlocks.blockSludge, ItemBlockDesc.class, MarsBlocks.blockSludge.getUnlocalizedName());
+		GameRegistry.registerBlock(MarsBlocks.vine, ItemBlockDesc.class, MarsBlocks.vine.getUnlocalizedName());
 		GameRegistry.registerBlock(MarsBlocks.rock, ItemBlockEgg.class, MarsBlocks.rock.getUnlocalizedName());
-		GameRegistry.registerBlock(MarsBlocks.creeperEgg, ItemBlockGC.class, MarsBlocks.creeperEgg.getUnlocalizedName());
+		GameRegistry.registerBlock(MarsBlocks.creeperEgg, ItemBlockDesc.class, MarsBlocks.creeperEgg.getUnlocalizedName());
 		GameRegistry.registerBlock(MarsBlocks.machine, ItemBlockMachine.class, MarsBlocks.machine.getUnlocalizedName());
 		GameRegistry.registerBlock(MarsBlocks.machineT2, ItemBlockMachine.class, MarsBlocks.machineT2.getUnlocalizedName());
 	}

@@ -59,7 +59,7 @@ public class GCItems
 	public static Item cheeseCurd;
 	public static Item meteoricIronRaw;
 	public static Item meteoricIronIngot;
-	public static Item cheeseBlock;
+//	public static Item cheeseBlock;
 
 	public static ArmorMaterial ARMOR_SENSOR_GLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] { 0, 0, 0, 0 }, 0);
 	public static ArmorMaterial ARMOR_STEEL = EnumHelper.addArmorMaterial("steel", 30, new int[] { 3, 8, 6, 3 }, 12);
@@ -111,7 +111,7 @@ public class GCItems
 		GCItems.meteorChunk = new ItemMeteorChunk("meteorChunk");
 		GCItems.wrench = new ItemUniversalWrench("standardWrench");
 		GCItems.cheeseCurd = new ItemCheese(1, 0.1F, false);
-		GCItems.cheeseBlock = new ItemBlockCheese(GCBlocks.cheeseBlock, "cheeseBlock");
+//		GCItems.cheeseBlock = new ItemBlockCheese(GCBlocks.cheeseBlock, "cheeseBlock");
 		GCItems.meteoricIronRaw = new ItemMeteoricIron("meteoricIronRaw");
 		GCItems.meteoricIronIngot = new ItemMoon("meteoricIronIngot");
 
@@ -291,7 +291,7 @@ public class GCItems
 		GCItems.registerItem(GCItems.cheeseCurd);
 		GCItems.registerItem(GCItems.meteoricIronRaw);
 		GCItems.registerItem(GCItems.meteoricIronIngot);
-		GCItems.registerItem(GCItems.cheeseBlock);
+//		GCItems.registerItem(GCItems.cheeseBlock);
 		GCItems.registerItem(GCItems.flag);
 		GCItems.registerItem(GCItems.parachute);
 	}

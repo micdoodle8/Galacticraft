@@ -8,7 +8,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockLandingPad extends ItemBlock
+public class ItemBlockLandingPad extends ItemBlockDesc
 {
 	public ItemBlockLandingPad(Block block)
 	{

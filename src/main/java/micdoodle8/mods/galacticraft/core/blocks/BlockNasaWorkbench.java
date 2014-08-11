@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityNasaWorkbench;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
@@ -28,7 +29,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class BlockNasaWorkbench extends BlockContainer implements ITileEntityProvider
+public class BlockNasaWorkbench extends BlockContainer implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {
 	IIcon[] iconBuffer;
 
@@ -246,4 +247,16 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
 	{
 		return new TileEntityNasaWorkbench();
 	}
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
+    }
 }

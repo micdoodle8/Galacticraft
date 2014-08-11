@@ -4,8 +4,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalElectrical;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -24,7 +26,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
-public class BlockSolar extends BlockTileGC
+public class BlockSolar extends BlockTileGC implements ItemBlockDesc.IBlockShiftDesc
 {
 	public static final int BASIC_METADATA = 0;
 	public static final int ADVANCED_METADATA = 4;
@@ -289,4 +291,23 @@ public class BlockSolar extends BlockTileGC
 	{
 		return false;
 	}
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        switch (meta)
+        {
+        case BASIC_METADATA:
+            return GCCoreUtil.translate("tile.solarBasic.description");
+        case ADVANCED_METADATA:
+            return GCCoreUtil.translate("tile.solarAdv.description");
+        }
+        return "";
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
+    }
 }

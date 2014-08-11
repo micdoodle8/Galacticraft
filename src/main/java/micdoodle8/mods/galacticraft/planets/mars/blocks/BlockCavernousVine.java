@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.planets.mars.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.block.Block;
@@ -29,7 +31,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class BlockCavernousVine extends Block implements IShearable
+public class BlockCavernousVine extends Block implements IShearable, ItemBlockDesc.IBlockShiftDesc
 {
 	@SideOnly(Side.CLIENT)
 	private IIcon[] vineIcons;
@@ -253,4 +255,16 @@ public class BlockCavernousVine extends Block implements IShearable
 	{
 		return true;
 	}
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
+    }
 }

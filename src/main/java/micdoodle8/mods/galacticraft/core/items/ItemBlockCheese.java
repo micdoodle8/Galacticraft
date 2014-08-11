@@ -15,13 +15,12 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemBlockCheese extends ItemReed
+public class ItemBlockCheese extends ItemBlockDesc
 {
-	public ItemBlockCheese(Block par2Block, String assetName)
+	public ItemBlockCheese(Block par2Block)
 	{
 		super(par2Block);
 		this.setMaxStackSize(1);
-		this.setUnlocalizedName(assetName);
 	}
 
 	@Override
@@ -42,13 +41,5 @@ public class ItemBlockCheese extends ItemReed
 	public EnumRarity getRarity(ItemStack par1ItemStack)
 	{
 		return ClientProxyCore.galacticraftItem;
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
-	{
-		par3List.add(GCCoreUtil.translate("gui.cheeseBlock.desc"));
 	}
 }

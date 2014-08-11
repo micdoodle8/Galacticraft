@@ -3,7 +3,9 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
@@ -29,7 +31,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 @SuppressWarnings("SimplifiableConditionalExpression")
-public class BlockT1TreasureChest extends BlockContainer implements ITileEntityProvider
+public class BlockT1TreasureChest extends BlockContainer implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {
 	private final Random random = new Random();
 
@@ -468,4 +470,16 @@ public class BlockT1TreasureChest extends BlockContainer implements ITileEntityP
 
 		return true;
 	}
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
+    }
 }

@@ -3,9 +3,11 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDecompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalElectrical;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -23,7 +25,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
-public class BlockOxygenCompressor extends BlockAdvancedTile
+public class BlockOxygenCompressor extends BlockAdvancedTile implements ItemBlockDesc.IBlockShiftDesc
 {
 	public static final int OXYGEN_COMPRESSOR_METADATA = 0;
 	public static final int OXYGEN_DECOMPRESSOR_METADATA = 4;
@@ -267,4 +269,23 @@ public class BlockOxygenCompressor extends BlockAdvancedTile
 
 		return new ItemStack(this, 1, metadata);
 	}
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        switch (meta)
+        {
+            case OXYGEN_COMPRESSOR_METADATA:
+                return GCCoreUtil.translate("tile.oxygenCompressor.description");
+            case OXYGEN_DECOMPRESSOR_METADATA:
+                return GCCoreUtil.translate("tile.oxygenDecompressor.description");
+        }
+        return "";
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
+    }
 }

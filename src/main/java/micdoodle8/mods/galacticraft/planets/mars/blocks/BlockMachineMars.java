@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
@@ -38,7 +39,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
-public class BlockMachineMars extends BlockTileGC
+public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBlockShiftDesc
 {
 	public static final int TERRAFORMER_METADATA = 0;
 	public static final int CRYOGENIC_CHAMBER_METADATA = 4;
@@ -568,4 +569,25 @@ public class BlockMachineMars extends BlockTileGC
 	{
 		return 0;
 	}
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        switch (meta)
+        {
+            case CRYOGENIC_CHAMBER_METADATA:
+                return GCCoreUtil.translate("tile.cryoChamber.description");
+            case LAUNCH_CONTROLLER_METADATA:
+                return GCCoreUtil.translate("tile.launchController.description");
+            case TERRAFORMER_METADATA:
+                return GCCoreUtil.translate("tile.terraformer.description");
+        }
+        return "";
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
+    }
 }

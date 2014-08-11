@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.planets.mars.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.block.BlockDragonEgg;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -15,7 +17,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-public class BlockCreeperEgg extends BlockDragonEgg
+public class BlockCreeperEgg extends BlockDragonEgg implements ItemBlockDesc.IBlockShiftDesc
 {
 	public BlockCreeperEgg()
 	{
@@ -93,4 +95,16 @@ public class BlockCreeperEgg extends BlockDragonEgg
     	{
         	return Item.getItemFromBlock(this);
     	}
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
+    }
 }

@@ -3,7 +3,9 @@ package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityTreasureChestAsteroids;
 import net.minecraft.block.Block;
@@ -30,7 +32,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.Iterator;
 import java.util.Random;
 
-public class BlockTier3TreasureChest extends BlockContainer implements ITileEntityProvider
+public class BlockTier3TreasureChest extends BlockContainer implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {
 	private final Random random = new Random();
 
@@ -476,4 +478,16 @@ public class BlockTier3TreasureChest extends BlockContainer implements ITileEnti
 
 		return true;
 	}
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
+    }
 }

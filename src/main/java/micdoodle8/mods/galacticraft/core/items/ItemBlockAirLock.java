@@ -8,7 +8,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockAirLock extends ItemBlock
+public class ItemBlockAirLock extends ItemBlockDesc
 {
 	public ItemBlockAirLock(Block block)
 	{

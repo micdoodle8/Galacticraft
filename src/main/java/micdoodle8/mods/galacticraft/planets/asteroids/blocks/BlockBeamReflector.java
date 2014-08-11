@@ -4,6 +4,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -18,7 +20,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class BlockBeamReflector extends BlockTileGC
+public class BlockBeamReflector extends BlockTileGC implements ItemBlockDesc.IBlockShiftDesc
 {
 	public BlockBeamReflector(String assetName)
 	{
@@ -98,4 +100,16 @@ public class BlockBeamReflector extends BlockTileGC
 
 		return false;
 	}
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
+    }
 }

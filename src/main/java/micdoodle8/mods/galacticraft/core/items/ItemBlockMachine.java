@@ -11,7 +11,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockMachine extends ItemBlock
+public class ItemBlockMachine extends ItemBlockDesc
 {
 	public ItemBlockMachine(Block block)
 	{

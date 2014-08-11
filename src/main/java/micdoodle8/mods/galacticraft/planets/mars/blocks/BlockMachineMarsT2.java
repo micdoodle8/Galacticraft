@@ -6,7 +6,9 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityUniversalElectrical;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityElectrolyzer;
@@ -27,7 +29,7 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Random;
 
-public class BlockMachineMarsT2 extends BlockTileGC
+public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBlockShiftDesc
 {
 	public static final int GAS_LIQUEFIER = 0;
 	public static final int METHANE_SYNTHESIZER = 4;
@@ -260,4 +262,25 @@ public class BlockMachineMarsT2 extends BlockTileGC
 			}
 		}
 	}
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        switch (meta)
+        {
+            case ELECTROLYZER:
+                return GCCoreUtil.translate("tile.electrolyzer.description");
+            case GAS_LIQUEFIER:
+                return GCCoreUtil.translate("tile.gasLiquefier.description");
+            case METHANE_SYNTHESIZER:
+                return GCCoreUtil.translate("tile.methaneSynthesizer.description");
+        }
+        return "";
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
+    }
 }

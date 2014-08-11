@@ -8,7 +8,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockBase extends ItemBlock
+public class ItemBlockBase extends ItemBlockDesc
 {
 	public ItemBlockBase(Block block)
 	{

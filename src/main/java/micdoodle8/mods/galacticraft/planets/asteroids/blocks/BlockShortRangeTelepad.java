@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -29,7 +30,7 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Random;
 
-public class BlockShortRangeTelepad extends BlockTileGC
+public class BlockShortRangeTelepad extends BlockTileGC implements ItemBlockDesc.IBlockShiftDesc
 {
 	protected BlockShortRangeTelepad(String assetName)
 	{
@@ -201,4 +202,16 @@ public class BlockShortRangeTelepad extends BlockTileGC
             }
         }
 	}
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
+    }
 }
