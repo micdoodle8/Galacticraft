@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.FluidTexturesGC;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.fx.EntityFXTeleport;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.gui.GuiShortRangeTelepad;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.block.BlockRendererTier3TreasureChest;
@@ -57,8 +58,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
-	{
-
+	{	
 	}
 
 	@Override
@@ -71,6 +71,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 		AsteroidsEventHandlerClient clientEventHandler = new AsteroidsEventHandlerClient();
 		FMLCommonHandler.instance().bus().register(clientEventHandler);
 		MinecraftForge.EVENT_BUS.register(clientEventHandler);
+		FluidTexturesGC.init();
 	}
 
 	@Override
