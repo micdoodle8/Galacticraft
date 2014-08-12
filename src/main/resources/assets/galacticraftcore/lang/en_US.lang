@@ -473,7 +473,7 @@ gui.message.overworld.atmosphere.1.name=Supports life
 gui.message.overworld.meansurfacetemp.0.name=14C
 gui.message.overworld.meansurfacetemp.1.name=
 
-itemDesc.powerdraw.name=Power required: %s
+itemDesc.powerdraw.name=Power required: %s/s
 itemDesc.shift.name=Press %s for more info
 
 tile.oxygenDetector.description=Oxygen Detector will emit a redstone signal when surrounded by oxygen.

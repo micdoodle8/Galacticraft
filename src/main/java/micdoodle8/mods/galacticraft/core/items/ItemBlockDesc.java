@@ -46,7 +46,7 @@ public class ItemBlockDesc extends ItemBlockGC
                 	if (te instanceof TileBaseElectricBlock)
                 	{
                 		float powerDrawn = ((TileBaseElectricBlock)te).storage.getMaxExtract();
-                		if (powerDrawn > 0) info.add(EnumChatFormatting.GREEN + GCCoreUtil.translateWithFormat("itemDesc.powerdraw.name", EnergyDisplayHelper.getEnergyDisplayS(powerDrawn)));
+                		if (powerDrawn > 0) info.add(EnumChatFormatting.GREEN + GCCoreUtil.translateWithFormat("itemDesc.powerdraw.name", EnergyDisplayHelper.getEnergyDisplayS(powerDrawn * 20)));
                 	}
                 }
             	info.add(GCCoreUtil.translateWithFormat("itemDesc.shift.name", Keyboard.getKeyName(FMLClientHandler.instance().getClient().gameSettings.keyBindSneak.getKeyCode())));
