@@ -99,6 +99,14 @@ gui.message.range.name=范围: %dm
 gui.message.notEnoughEnergy.name=能量不足
 gui.message.targetNoEnergy.name=目标没有足够的能量
 
+tile.treasureT3.description=3阶宝箱目前无法使用.
+tile.walkway.description=通道现作为装饰,用于在维持空布置时连接方块.
+tile.walkwayAluminumWire.description=铝线通道用于在完全固体且可行走的表面下布置线缆.
+tile.walkwayOxygenPipe.description=氧气管通道用于在完全固体且可行走的表面下布置管道.
+tile.beamReflector.description=能量射束反射器用于改变源头来的激光束的方向.右击以在不同目标间循环切换.
+tile.beamReceiver.description=能量射束接收器连接到机器以输入和输出能量,使用激光束传输能量.
+tile.telepadShort.description=短距离传送台用于在连接到其他传送台时将玩家和其他生物短距离传送(250格).
+
 # Schematics
 
 # Entity
