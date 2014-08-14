@@ -34,19 +34,19 @@ item.titanium_leggings.name=Grebas de Titanio
 item.titanium_boots.name=Botas de Titanio
 
 # CANISTERS ETC
-item.methaneCanisterPartial.name=Tanque de Metano
-item.methaneCanister.name=Tanque de Metano Lleno
+item.methaneCanisterPartial.name=Bote de Metano
+item.methaneCanister.name=Bote de Metano Lleno
 item.canister.gas.name=Gas                  #short name for Methane Gas contents level
-item.canister.LOX.partial.name=Tanque de Oxígeno Líquido
-item.canister.LOX.full.name=Tanque de Oxígeno Líquido Lleno
+item.canister.LOX.partial.name=Bote de Oxígeno Líquido
+item.canister.LOX.full.name=Bote de Oxígeno Líquido Lleno
 item.canister.LOX.name=LOX                  #short name for Liquid Oxygen contents level
-item.canister.liquidNitrogen.partial.name=Tanque de Nitrógeno Líquido
-item.canister.liquidNitrogen.full.name=Tanque de Nitrógeno Líquido Lleno
+item.canister.liquidNitrogen.partial.name=Bote de Nitrógeno Líquido
+item.canister.liquidNitrogen.full.name=Bote de Nitrógeno Líquido Lleno
 item.canister.liquidNitrogen.name=Líquido    #short name for Liquid Nitrogen contents level
-item.canister.liquidArgon.partial.name=Tanque de Argón Líquido
-item.canister.liquidArgon.full.name=Tanque de Argón Líquido Lleno
+item.canister.liquidArgon.partial.name=Bote de Argón Líquido
+item.canister.liquidArgon.full.name=Bote de Argón Líquido Lleno
 item.canister.liquidArgon.name=Líquido       #short name for Liquid Argon contents level
-item.emptyGasCanister.name=Tanque de Gas Vacío
+item.emptyGasCanister.name=Bote de Gas Vacío
 
 # FLUIDS AND GASES
 fluid.methane.name=Metano
