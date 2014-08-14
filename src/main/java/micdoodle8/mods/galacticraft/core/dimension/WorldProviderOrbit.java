@@ -1339,7 +1339,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 				countThrustersReverse++;
 			}
 
-			if (countThrusters == 0 || countThrusters == countThrustersReverse)
+			if (countThrusters == countThrustersReverse)
 			{
 				this.angularVelocityAccel = 0.001F;
 				this.angularVelocityTarget = 0F;
