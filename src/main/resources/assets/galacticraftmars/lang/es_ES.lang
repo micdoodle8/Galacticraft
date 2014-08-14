@@ -117,12 +117,12 @@ gui.status.tanksfull.name=Tanques Llenos
 gui.message.lowEnergy.name=Energía Baja
 gui.button.liquefy.name=Procesar
 gui.button.liquefyStop.name=Parar
-gui.gasInput.desc.0=Trata de colocar un$Tanque de Metano aquí
+gui.gasInput.desc.0=Trata de colocar un$Bote de Metano aquí
 gui.gasInput.desc.1=(Como alternativa,$una Válvula Atmosférica)
-gui.hydrogenInput.desc.0=Esto consume un Tanque de Hidrógeno
+gui.hydrogenInput.desc.0=Esto consume un Bote de Hidrógeno
 gui.hydrogenInput.desc.1=o una Válvula Atmosférica
-gui.liquidOutput.desc.2=Tanque de Gas Licuado
-gui.methaneOutput.desc.2=Tanque de Metano
+gui.liquidOutput.desc.2=Bote de Gas Licuado
+gui.methaneOutput.desc.2=Bote de Metano
 gui.message.withAtmosphere0.name=en un planeta lleno de
 gui.message.withAtmosphere1.name=en la atmósfera
 item.carbonFragments.name=Carbón Fragmentado
@@ -142,7 +142,7 @@ tile.cryoChamber.description=Las Cámaras Criogénicas permiten al jugador dormi
 tile.launchController.description=El Controlador de Lanzamiento personaliza el lanzamiento, tanto el destino, como las condiciones para un lanzamiento automático.
 tile.terraformer.description=Los Terraformadores añaden hierba, árboles y agua en planetas distantes, cuando se le da los materiales correctos.
 tile.creeperEgg.description=Los Huevos de Creeper harán spawn en las Mazmorras de Marte, spawneando un astuto depredador después de una explosión.
-tile.gasLiquefier.description=Licua los gases, ya sean de la atmósfera o de los tanques. !El metano líquido hace un buen combustible!
+tile.gasLiquefier.description=Licua los gases, ya sean de la atmósfera o de los botes. !El metano líquido hace un buen combustible!
 tile.methaneSynthesizer.description=Con una fuente de hidrógeno y de carbono fabrica metano para un posterior procesamiento en el Condesador de Gas .
 
 # SCHEMATICS
