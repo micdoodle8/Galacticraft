@@ -473,7 +473,7 @@ gui.message.overworld.atmosphere.1.name=适合生物生存
 gui.message.overworld.meansurfacetemp.0.name=14C 
 gui.message.overworld.meansurfacetemp.1.name= 
 
-itemDesc.powerdraw.name=能量需求: %s/s
+itemDesc.powerdraw.name=能量需求: %s /s
 itemDesc.shift.name=按住%s查看详情
 
 tile.oxygenDetector.description=氧气探测器会在被氧气包围时发出红石信号.

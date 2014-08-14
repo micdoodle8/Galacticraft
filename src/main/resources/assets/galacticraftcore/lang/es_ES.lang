@@ -473,7 +473,7 @@ gui.message.overworld.atmosphere.1.name=Soporta la Vida
 gui.message.overworld.meansurfacetemp.0.name=14C
 gui.message.overworld.meansurfacetemp.1.name=
 
-itemDesc.powerdraw.name=Energía necesaria: %s/s
+itemDesc.powerdraw.name=Energía necesaria: %s /s
 itemDesc.shift.name=Pulsa %s para mas info
 
 tile.oxygenDetector.description=El Detector de Oxígeno emite una señal de redstone cuando esta rodeado de oxígeno.
