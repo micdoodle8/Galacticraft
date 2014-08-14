@@ -1,12 +1,12 @@
 # Galacticraft Core Language File = SPAIN SPANISH
 
 # GENERAL ITEMS
-item.oxygenTankLightFull.name=Bote de Oxígeno Pequeño
-item.oxygenTankLightEmpty.name=Bote de Oxígeno Pequeño Vacío
-item.oxygenTankMedFull.name=Bote de Oxígeno Mediano
-item.oxygenTankMedEmpty.name=Bote de Oxígeno Mediano Vacío
-item.oxygenTankHeavyFull.name=Bote de Oxígeno Grande
-item.oxygenTankHeavyEmpty.name=Bote de Oxígeno Grande Vacío
+item.oxygenTankLightFull.name=Tanque de Oxígeno Pequeño
+item.oxygenTankLightEmpty.name=Tanque de Oxígeno Pequeño Vacío
+item.oxygenTankMedFull.name=Tanque de Oxígeno Mediano
+item.oxygenTankMedEmpty.name=Tanque de Oxígeno Mediano Vacío
+item.oxygenTankHeavyFull.name=Tanque de Oxígeno Grande
+item.oxygenTankHeavyEmpty.name=Tanque de Oxígeno Grande Vacío
 item.oxygenMask.name=Máscara de Oxígeno
 item.spaceship.name=Cohete Nivel 1
 item.sensorGlasses.name=Gafas con Sensores
@@ -302,7 +302,7 @@ gui.status.notGenerating.name=No Generando
 gui.status.hullHeat.name=Calor del Casco
 gui.status.compressing.name=Comprimiendo
 gui.status.collecting.name=Recolectando
-gui.status.tankEmpty.name=Bote de Oxígeno Vacío
+gui.status.tankEmpty.name=Tanque de Oxígeno Vacío
 gui.status.sunVisible.name=Sol Visible
 
 gui.button.enableseal.name=Activar Sellado
