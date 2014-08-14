@@ -50,6 +50,22 @@ tile.marsMachine.6.name=เครื่องแยกน้ำด้วยไ�
 tile.sludge.name=ตะกอนแบคทีเรีย
 tile.creeperEgg.name=ไข่คริปเปอร์
 tile.cavernVines.name=เถาวัลย์ถ้ำ
+tile.tintedGlassPane.white.name=White Tinted Glass Pane ##NEEDS TRANSLATE##
+tile.tintedGlassPane.orange.name=Orange Tinted Glass Pane ##NEEDS TRANSLATE##
+tile.tintedGlassPane.magenta.name=Magenta Tinted Glass Pane ##NEEDS TRANSLATE##
+tile.tintedGlassPane.light_blue.name=Light Blue Tinted Glass Pane ##NEEDS TRANSLATE##
+tile.tintedGlassPane.yellow.name=Yellow Tinted Glass Pane ##NEEDS TRANSLATE##
+tile.tintedGlassPane.lime.name=Lime Tinted Glass Pane ##NEEDS TRANSLATE##
+tile.tintedGlassPane.pink.name=Pink Tinted Glass Pane ##NEEDS TRANSLATE##
+tile.tintedGlassPane.gray.name=Gray Tinted Glass Pane ##NEEDS TRANSLATE##
+tile.tintedGlassPane.silver.name=Silver Tinted Glass Pane ##NEEDS TRANSLATE##
+tile.tintedGlassPane.cyan.name=Cyan Tinted Glass Pane ##NEEDS TRANSLATE##
+tile.tintedGlassPane.purple.name=Purple Tinted Glass Pane ##NEEDS TRANSLATE##
+tile.tintedGlassPane.blue.name=Blue Tinted Glass Pane ##NEEDS TRANSLATE##
+tile.tintedGlassPane.brown.name=Brown Tinted Glass Pane ##NEEDS TRANSLATE##
+tile.tintedGlassPane.green.name=Green Tinted Glass Pane ##NEEDS TRANSLATE##
+tile.tintedGlassPane.red.name=Red Tinted Glass Pane ##NEEDS TRANSLATE##
+tile.tintedGlassPane.black.name=Black Tinted Glass Pane ##NEEDS TRANSLATE##
 
 # GUI
 gui.choosePlanet.desc.mars=อาศัยอยู่ได้#ไม่มีออกซิเจน#แรงโน้มถ่วง: 38%
@@ -118,6 +134,15 @@ gas.nitrogen.name=ไนโตรเจน
 gui.desc.reinforcedPlateT2.name=เทียร์ 2
 dimension.Mars.name=ดาวอังคาร
 planet.mars=ดาวอังคาร
+tile.treasureT2.description=Tier 2 Treasure Chests will generate in Mars Dungeons. They are unlockable after defeating the final boss. ##NEEDS TRANSLATE##
+tile.cavernVines.description=Cavernous Vines are dangerous to living creatures, entangling them and dragging them upwards. ##NEEDS TRANSLATE##
+tile.slimelingEgg.description=Slimeling Eggs, once cracked with a player's bare hands, will soon hatch into a pet. ##NEEDS TRANSLATE##
+tile.cryoChamber.description=Cryogenic Chambers will allow a player to sleep during the day, healing a small amount of health, but has a cooldown. ##NEEDS TRANSLATE##
+tile.launchController.description=Launch Controllers are used to customize launch behaviour, including launch criteria and destination launch pad for auto launches. ##NEEDS TRANSLATE##
+tile.terraformer.description=Terraformers are used to add some greenery to distant planets, adding grass, trees and water when given the correct materials. ##NEEDS TRANSLATE##
+tile.creeperEgg.description=Creeper Eggs will spawn in Mars dungeons, spawning a sneaky predator upon exploding. ##NEEDS TRANSLATE##
+tile.gasLiquefier.description=Liquefies gases, either from the atmosphere or from canisters. Liquefied methane makes a good rocket fuel! ##NEEDS TRANSLATE##
+tile.methaneSynthesizer.description=With a source of hydrogen and a source of carbon, this manufactures Methane for further processing in a Gas Liquefier. ##NEEDS TRANSLATE##
 
 # SCHEMATICS
 schematic.rocketT3.name=จรวด เทียร์ 3

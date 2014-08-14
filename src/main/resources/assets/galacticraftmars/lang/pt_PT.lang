@@ -107,7 +107,10 @@ gui.gasTank.desc.0=Gas storage ##NEEDS TRANSLATE##
 gui.liquidTank.desc.0=Liquid Tank ##NEEDS TRANSLATE##
 gui.status.nogas.name=No gas ##NEEDS TRANSLATE##
 gui.status.liquefying.name=Liquefying ##NEEDS TRANSLATE##
+gui.status.processing.name=Synthesizing ##NEEDS TRANSLATE##
 gui.status.needsCarbon.name=Needs carbon ##NEEDS TRANSLATE##
+gui.status.tankfull.name=Tank full ##NEEDS TRANSLATE##
+gui.status.tanksfull.name=Tanks full ##NEEDS TRANSLATE##
 gui.message.lowEnergy.name=Low energy ##NEEDS TRANSLATE##
 gui.button.liquefy.name=Process ##NEEDS TRANSLATE##
 gui.button.liquefyStop.name=Stop ##NEEDS TRANSLATE##
@@ -130,6 +133,15 @@ itemGroup.GalacticraftMars=Galacticraft - Marte
 
 dimension.Mars.name=Marte
 planet.mars=Mars ##NEEDS TRANSLATE##
+tile.treasureT2.description=Tier 2 Treasure Chests will generate in Mars Dungeons. They are unlockable after defeating the final boss. ##NEEDS TRANSLATE##
+tile.cavernVines.description=Cavernous Vines are dangerous to living creatures, entangling them and dragging them upwards. ##NEEDS TRANSLATE##
+tile.slimelingEgg.description=Slimeling Eggs, once cracked with a player's bare hands, will soon hatch into a pet. ##NEEDS TRANSLATE##
+tile.cryoChamber.description=Cryogenic Chambers will allow a player to sleep during the day, healing a small amount of health, but has a cooldown. ##NEEDS TRANSLATE##
+tile.launchController.description=Launch Controllers are used to customize launch behaviour, including launch criteria and destination launch pad for auto launches. ##NEEDS TRANSLATE##
+tile.terraformer.description=Terraformers are used to add some greenery to distant planets, adding grass, trees and water when given the correct materials. ##NEEDS TRANSLATE##
+tile.creeperEgg.description=Creeper Eggs will spawn in Mars dungeons, spawning a sneaky predator upon exploding. ##NEEDS TRANSLATE##
+tile.gasLiquefier.description=Liquefies gases, either from the atmosphere or from canisters. Liquefied methane makes a good rocket fuel! ##NEEDS TRANSLATE##
+tile.methaneSynthesizer.description=With a source of hydrogen and a source of carbon, this manufactures Methane for further processing in a Gas Liquefier. ##NEEDS TRANSLATE##
 
 # Schematics
 schematic.rocketT3.name=Foguetão - Nível 3
