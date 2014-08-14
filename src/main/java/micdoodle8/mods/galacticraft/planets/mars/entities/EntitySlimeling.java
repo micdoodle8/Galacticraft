@@ -475,6 +475,14 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 			{
                 VersionUtil.setSlimelingOwner(newSlimeling, s);
 				newSlimeling.setTamed(true);
+			} else
+			{
+				s = VersionUtil.getSlimelingOwner(otherSlimeling);
+				if (s != null && s.trim().length() > 0)
+				{
+	                VersionUtil.setSlimelingOwner(newSlimeling, s);
+					newSlimeling.setTamed(true);
+				}				
 			}
 
 			return newSlimeling;
