@@ -1,12 +1,12 @@
 # Galacticraft Core Language File = SPAIN SPANISH
 
 # GENERAL ITEMS
-item.oxygenTankLightFull.name=Tanque de Oxígeno Pequeño
-item.oxygenTankLightEmpty.name=Tanque de Oxígeno Pequeño Vacío
-item.oxygenTankMedFull.name=Tanque de Oxígeno Mediano
-item.oxygenTankMedEmpty.name=Tanque de Oxígeno Mediano Vacío
-item.oxygenTankHeavyFull.name=Tanque de Oxígeno Grande
-item.oxygenTankHeavyEmpty.name=Tanque de Oxígeno Grande Vacío
+item.oxygenTankLightFull.name=Bote de Oxígeno Pequeño
+item.oxygenTankLightEmpty.name=Bote de Oxígeno Pequeño Vacío
+item.oxygenTankMedFull.name=Bote de Oxígeno Mediano
+item.oxygenTankMedEmpty.name=Bote de Oxígeno Mediano Vacío
+item.oxygenTankHeavyFull.name=Bote de Oxígeno Grande
+item.oxygenTankHeavyEmpty.name=Bote de Oxígeno Grande Vacío
 item.oxygenMask.name=Máscara de Oxígeno
 item.spaceship.name=Cohete Nivel 1
 item.sensorGlasses.name=Gafas con Sensores
@@ -269,7 +269,7 @@ gui.status.active.name=Activo
 gui.status.missingleaves.name=No hay Suficiente Hojas
 gui.status.missingpower.name=No hay Suficiente Energía
 gui.status.missingoxygen.name=No hay Suficiente Oxígeno
-gui.status.missingtank.name=Sin Tanque de Oxígeno Válido
+gui.status.missingtank.name=Sin Bote de Oxígeno Válido
 gui.status.fulltank.name=Tanque de Oxígeno Lleno
 gui.status.unsealed.name=Area Demasiado Grande / Sin Sellar
 gui.status.sealed.name=Sellado
@@ -302,7 +302,7 @@ gui.status.notGenerating.name=No Generando
 gui.status.hullHeat.name=Calor del Casco
 gui.status.compressing.name=Comprimiendo
 gui.status.collecting.name=Recolectando
-gui.status.tankEmpty.name=Tanque de Oxígeno Vacío
+gui.status.tankEmpty.name=Bote de Oxígeno Vacío
 gui.status.sunVisible.name=Sol Visible
 
 gui.button.enableseal.name=Activar Sellado
@@ -412,7 +412,7 @@ gui.dropbox.playerDistance.name.1=2 Metros
 gui.dropbox.playerDistance.name.2=5 Metros
 gui.dropbox.playerDistance.name.3=10 Metros
 gui.title.airLock.name=%s Controlador de la Esclusa de Aire
-gui.fuelOutput.desc.0=Pon tanques vacios
+gui.fuelOutput.desc.0=Pon Bote vacios
 gui.fuelOutput.desc.1=en esta ranura para llenarlos
 gui.fuelOutput.desc.2=del tanque de combustible
 gui.newSchematic.slot.desc.0=Nueva ranura de planos. 
@@ -478,8 +478,8 @@ itemDesc.shift.name=Pulsa %s para mas info
 
 tile.oxygenDetector.description=El Detector de Oxígeno emite una señal de redstone cuando esta rodeado de oxígeno.
 tile.oxygenCollector.description=El Recolector de Oxígeno almacena el oxígeno obtenido de las hojas del area cercana.
-tile.oxygenCompressor.description=El Compresor de Oxígeno llena un tanque con el oxigeno almacenado internamente.
-tile.oxygenDecompressor.description=El Descompresor de Oxígeno vacía un tanque de oxígeno en el almacenamiento interno.
+tile.oxygenCompressor.description=El Compresor de Oxígeno llena un Bote con el oxigeno almacenado internamente.
+tile.oxygenDecompressor.description=El Descompresor de Oxígeno vacía un Bote de oxígeno en el almacenamiento interno.
 tile.distributor.description=El Distribuidor de Oxígeno emite una burbuja de oxígeno desde el bloque central, usando un almacenamiento interno. Esto permite respirar de forma segura dentro de la burbuja.
 tile.sealer.description=El Sellador de Oxígeno comprobara que hay un espacio cerrado. Si lo encuentra el espacio se llenará con aire respirable.
 tile.oxygenPipe.description=El Tubo de Oxígeno transfiere oxígeno del almacenamiento interno de una máquina a otra.
