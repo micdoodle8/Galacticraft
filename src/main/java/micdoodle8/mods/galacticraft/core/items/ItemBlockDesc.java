@@ -1,9 +1,11 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import micdoodle8.mods.galacticraft.core.blocks.BlockAdvancedTile;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,6 +45,15 @@ public class ItemBlockDesc extends ItemBlockGC
                 if (this.field_150939_a instanceof BlockTileGC)
                 {
                 	TileEntity te = ((BlockTileGC)this.field_150939_a).createTileEntity(null, stack.getItemDamage() & 12);
+                	if (te instanceof TileBaseElectricBlock && !(te instanceof TileEntityEnergyStorageModule))
+                	{
+                		float powerDrawn = ((TileBaseElectricBlock)te).storage.getMaxExtract();
+                		if (powerDrawn > 0) info.add(EnumChatFormatting.GREEN + GCCoreUtil.translateWithFormat("itemDesc.powerdraw.name", EnergyDisplayHelper.getEnergyDisplayS(powerDrawn * 20)));
+                	}
+                }
+                else if (this.field_150939_a instanceof BlockAdvancedTile)
+                {
+                	TileEntity te = ((BlockAdvancedTile)this.field_150939_a).createTileEntity(null, stack.getItemDamage() & 12);
                 	if (te instanceof TileBaseElectricBlock)
                 	{
                 		float powerDrawn = ((TileBaseElectricBlock)te).storage.getMaxExtract();

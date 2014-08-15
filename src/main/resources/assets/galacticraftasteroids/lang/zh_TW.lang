@@ -77,6 +77,7 @@ tile.walkway.name=通道
 tile.walkwayWire.name=通道
 tile.walkwayOxygenPipe.name=通道
 tile.treasureT3.name=三階寶箱
+tile.denseIce.name=Dense Ice ##NEEDS TRANSLATE##
 
 # GUI
 planet.asteroids=小行星
@@ -97,6 +98,13 @@ gui.message.sendingActive.name=啟動發送
 gui.message.range.name=範圍: %dm
 gui.message.notEnoughEnergy.name=能量不足
 gui.message.targetNoEnergy.name=目標沒有足夠的能量
+tile.treasureT3.description=Tier 3 Treasure Chests are currently unused. ##NEEDS TRANSLATE##
+tile.walkway.description=Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme. ##NEEDS TRANSLATE##
+tile.walkwayAluminumWire.description=Aluminum Wire Walkways are used for running wire underneath a fully solid walkable surface. ##NEEDS TRANSLATE##
+tile.walkwayOxygenPipe.description=Oxygen Pipe Walkways are used for running pipes underneath a fully solid walkable surface. ##NEEDS TRANSLATE##
+tile.beamReflector.description=Beam Reflectors are used to redirect energy beams from source to destination. Can be right-clicked to cycle through targets. ##NEEDS TRANSLATE##
+tile.beamReceiver.description=Beam Receivers are connected to energy machine input and output, to transfer energy using beams. ##NEEDS TRANSLATE##
+tile.telepadShort.description=Short Range Telepads are used to transfer players and other living creatures short distances (250 Blocks) when linked to other telepads. ##NEEDS TRANSLATE##
 
 # Schematics
 
@@ -107,3 +115,4 @@ entity.Tier3RocketGC.name=三階火箭
 
 # Container
 container.shortRangeTelepad.name=短距離傳送臺
+container.entryPod.name=Entry Pod ##NEEDS TRANSLATE##

@@ -34,6 +34,7 @@ item.thermalLeggings.name=Termalne Gamaše
 item.thermalBoots.name=Termalne Čizme
 item.titanium_helmet.name=Titanium Šljem
 item.titanium_chestplate.name=Titanium 
+item.titanium_leggings.name=Titanium Leggings ##NEEDS TRANSLATE##
 Prsni Oklop item.titanium_leggings.name=Titanium Gamaše
 item.titanium_boots.name=Titanium Čizme
 
@@ -89,6 +90,7 @@ tile.walkway.name=Staza
 tile.walkwayWire.name=Staza s Cijevima za Strujom
 tile.walkwayOxygenPipe.name=Staza s Cijevima za Zrakom
 tile.treasureT3.name=Tier 3 Škrinja sa Blagom
+tile.denseIce.name=Dense Ice ##NEEDS TRANSLATE##
 
 # GUI
 planet.asteroids=Asteroidi
@@ -109,6 +111,13 @@ gui.message.sendingActive.name=Šaljem aktivaciju
 gui.message.range.name=Daleko: %dm
 gui.message.notEnoughEnergy.name=Nema Dovoljno Energije!
 gui.message.targetNoEnergy.name=Meta nema Energije!
+tile.treasureT3.description=Tier 3 Treasure Chests are currently unused. ##NEEDS TRANSLATE##
+tile.walkway.description=Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme. ##NEEDS TRANSLATE##
+tile.walkwayAluminumWire.description=Aluminum Wire Walkways are used for running wire underneath a fully solid walkable surface. ##NEEDS TRANSLATE##
+tile.walkwayOxygenPipe.description=Oxygen Pipe Walkways are used for running pipes underneath a fully solid walkable surface. ##NEEDS TRANSLATE##
+tile.beamReflector.description=Beam Reflectors are used to redirect energy beams from source to destination. Can be right-clicked to cycle through targets. ##NEEDS TRANSLATE##
+tile.beamReceiver.description=Beam Receivers are connected to energy machine input and output, to transfer energy using beams. ##NEEDS TRANSLATE##
+tile.telepadShort.description=Short Range Telepads are used to transfer players and other living creatures short distances (250 Blocks) when linked to other telepads. ##NEEDS TRANSLATE##
 
 # SCHEMATICS
 
@@ -119,3 +128,4 @@ entity.Tier3RocketGC.name=Tier 3 Raketa
 
 # CONTAINERS
 container.shortRangeTelepad.name=Teleporter s Malom Daljinom
+container.entryPod.name=Entry Pod ##NEEDS TRANSLATE##

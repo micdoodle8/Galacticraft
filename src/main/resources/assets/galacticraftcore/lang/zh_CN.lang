@@ -206,6 +206,7 @@ death.attack.spaceshipExplosion=%1$s的火箭出故障了!
 death.attack.spaceshipExplosionB=%1$s不走运地丧生于一次太空事故!
 death.attack.spaceshipCrash=%1$s's 火箭坠毁于地面. Oops.
 death.attack.oxygenSuffocation=%1$s因氧气消耗殆尽而死!
+death.attack.thermal=%1$s忘记了高温保护
 
 # GALAXIES
 galaxy.blockyway.name=方块银河
@@ -472,6 +473,45 @@ gui.message.overworld.atmosphere.1.name=适合生物生存
 gui.message.overworld.meansurfacetemp.0.name=14C 
 gui.message.overworld.meansurfacetemp.1.name= 
 
+itemDesc.powerdraw.name=能量需求: %s /s
+itemDesc.shift.name=按住%s查看详情
+
+tile.oxygenDetector.description=氧气探测器会在被氧气包围时发出红石信号.
+tile.oxygenCollector.description=氧气收集器会储存从附近的树叶收集到的氧气.
+tile.oxygenCompressor.description=氧气压缩机会从内部储存将氧气充入氧气罐中.
+tile.oxygenDecompressor.description=氧气解压机会从氧气罐中提取氧气转入内部储存.
+tile.distributor.description=氧气分配器使用内部气罐会从中心方块放出一个氧气泡.在气泡内呼吸是安全的.
+tile.sealer.description=氧气密封器会检测密闭空间.如果找到了的话区域内就会充满可呼吸的空气.
+tile.oxygenPipe.description=氧气管道会将氧气从一个机器内部的气体储存输送至另一个机器中.
+tile.refinery.description=精炼器可输入油和能量输出火箭与载具使用的燃料.
+tile.fuelLoader.description=连接到发射平台后,燃料注入器可将燃料注入连接的火箭或其他载具中.
+tile.landingPad.description=发射平台在3x3布置时可放置火箭.可连接燃料注入器,货物加载器和发射控制器.
+tile.treasureChest.description=一阶宝箱会在月球地牢生成.直到打败了最终boss后才能解锁.
+tile.rocketWorkbench.description=NASA工作台用于制作许多高级部件和载具.可添加新发现的设计图.
+tile.fallenMeteor.description=陨石可在许多拥有稀薄大气层或无大气层的行星或卫星发现.破坏后会掉落陨铁.
+tile.airLockFrame.description=气密框架,以近似传送门的形式布置,且某个方块被替换为控制器时,会作为运行的气闸工作.
+tile.enclosed.description=可密封方块用于空气无法通过的地方如空间基地的墙壁.
+tile.cargoLoader.description=货物加载器会将方块和物品装入拥有储货空间的火箭和其他载具.必须连接到发射平台或燃料注入器.
+tile.cargoUnloader.description=货物卸载器会将方块和物品取出拥有储货空间的火箭和其他载具.必须连接到发射平台或燃料注入器.
+tile.parachest.description=伞降箱会在登陆某行星(如地球)或卫星时从天而降.包含了之前发射的火箭,燃料和货物.
+tile.solarBasic.description=基础太阳能板会从太阳收集能量,为进一步使用而储存.在正午收集能量最多(不可调).
+tile.solarAdv.description=高级太阳能板会从太阳收集能量,为进一步使用而储存.自动调节角度以保证最优的能量收集效果.
+tile.coalGenerator.description=燃煤发电机燃烧煤炭来收集能量.这是最简单也是最低效的能量收集途径.
+tile.compressor.description=压缩机会将锭加工为它们对应的压缩品.
+tile.compressorElectric.description=电动压缩机会将锭加工为它们对应的压缩品.一次两个,因而比前版要高效.
+tile.circuitFabricator.description=元件制造台会将基础的材料加工为硅晶片,用于高级机器.
+tile.oxygenStorageModule.description=储氧模块用于为日后需要储存大量氧气.
+tile.energyStorageModuleTier1.description=储能模块用于为日后需要储存大量能量.
+tile.energyStorageModuleTier2.description=储能簇用于为日后需要储存大量能量.比前版储存和输出更多的能量.
+tile.electricFurnaceTier1.description=电炉以更快的速度而取代传统的炭炉.
+tile.electricFurnaceTier2.description=电弧炉以更快的速度而取代传统炭炉和电炉.
+tile.aluminumWire.description=铝线用于连接能量源和耗能的机器.
+tile.aluminumWireHeavy.description=重质铝线用于连接能量源和耗能的机器.拥有比前版更快的传输速度.
+tile.glowstoneTorch.description=萤石火把最好用于在无氧使得火把无法燃烧的条件下照明区域.
+tile.cheeseBlock.description=奶酪块由月球的奶酪制成,可放置并且可食用.
+tile.spinThruster.description=旋转推进器用于使空间站旋转.
+tile.arclamp.description=弧光灯用于给大片区域提供强光,也会使大部分怪物逃离.
+
 # CONTAINERS
 container.cargoloader.name=货物装载器
 container.cargounloader.name=货物卸载器
@@ -502,6 +542,7 @@ planet.uranus=天王星
 planet.neptune=海王星
 moon.moon=月球
 solarsystem.sol=太阳系
+star.sol=太阳系
 
 # COMMANDS
 commands.dimensionteleport=%s被传送到%s附近.

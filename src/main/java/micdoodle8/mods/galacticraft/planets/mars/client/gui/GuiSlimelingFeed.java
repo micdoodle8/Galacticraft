@@ -103,6 +103,6 @@ public class GuiSlimelingFeed extends GuiScreen
 		this.buttonHealSlimeling.enabled = this.slimeling.getHealth() < Math.floor(this.slimeling.getMaxHealth());
 		this.buttonGrowSlimeling.enabled = this.slimeling.getScale() < 1.0F;
 		this.buttonStrengthenSlimeling.enabled = this.slimeling.getAttackDamage() < 1.0;
-		this.buttonBreedSlimeling.enabled = !this.slimeling.isInLove() && this.slimeling.getGrowingAge() == 0;
+		this.buttonBreedSlimeling.enabled = !this.slimeling.isInLove() && !this.slimeling.isChild();
 	}
 }

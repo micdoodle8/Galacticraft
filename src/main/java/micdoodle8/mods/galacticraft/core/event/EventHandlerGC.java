@@ -34,6 +34,8 @@ import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockGravel;
+import net.minecraft.block.BlockSand;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -319,8 +321,8 @@ public class EventHandlerGC
 		double randMod = Math.min(0.2D, 0.08D * ConfigManagerCore.oilGenFactor);
 		
 		if (biomegenbase.rootHeight >= 0.45F) randMod /= 2;
-		if (biomegenbase.rootHeight < 0F) randMod *= 1.5;
-		if (biomegenbase instanceof BiomeGenDesert) randMod *= 1.5;
+		if (biomegenbase.rootHeight < -0.5F) randMod *= 1.8;
+		if (biomegenbase instanceof BiomeGenDesert) randMod *= 1.8;
 
 		final boolean flag1 = rand.nextDouble() <= randMod;
 		final boolean flag2 = rand.nextDouble() <= randMod;
@@ -329,26 +331,50 @@ public class EventHandlerGC
 		{
             int cy = 17 + rand.nextInt(15);
 
-			final int r = 3 + rand.nextInt(3);
+			final int r = 3 + rand.nextInt(5);
 			
 			final int r2 = r * r;
 
 			for (int bx = -r; bx <= r; bx++)
 			{
-				for (int by = -r + 1; by <= r - 1; by++)
+				for (int by = -r + 2; by <= r - 2; by++)
 				{
 					for (int bz = -r; bz <= r; bz++)
 					{
-						final int d2 = bx * bx + by * by * 2 + bz * bz;
+						final int d2 = bx * bx + by * by * 3 + bz * bz;
 
 						if (d2 <= r2)
 						{
-							if (world.getBlock(bx + x, by + cy, bz + z) == Blocks.air) world.setBlock(bx + x, by + cy, bz + z, GCBlocks.crudeOilStill, 0, 2);
+							if (EventHandlerGC.checkBlock(world, bx + x - 1, by + cy, bz + z)) continue;
+							if (EventHandlerGC.checkBlock(world, bx + x + 1, by + cy, bz + z)) continue;
+							if (EventHandlerGC.checkBlock(world, bx + x, by + cy - 1, bz + z)) continue;
+							if (EventHandlerGC.checkBlock(world, bx + x, by + cy, bz + z - 1)) continue;
+							if (EventHandlerGC.checkBlock(world, bx + x, by + cy, bz + z + 1)) continue;
+							if (EventHandlerGC.checkBlockAbove(world, bx + x, by + cy + 1, bz + z)) continue;
+							
+							world.setBlock(bx + x, by + cy, bz + z, GCBlocks.crudeOilStill, 0, 2);
 						}
 					}
 				}
 			}
 		}
+	}
+	
+	private static boolean checkBlock(World w, int x, int y, int z)
+	{
+		Block b = w.getBlock(x, y, z);
+		if (b == Blocks.air) return true;
+		if (b == Blocks.water || b == Blocks.flowing_water) return true;
+		if (b == Blocks.lava || b == Blocks.flowing_lava) return true;
+		return false;
+	}
+
+	private static boolean checkBlockAbove(World w, int x, int y, int z)
+	{
+		Block b = w.getBlock(x, y, z);
+		if (b instanceof BlockSand) return true;
+		if (b instanceof BlockGravel) return true;
+		return false;
 	}
 
 	@SubscribeEvent

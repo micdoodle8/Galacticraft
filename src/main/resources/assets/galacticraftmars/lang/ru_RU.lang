@@ -113,7 +113,10 @@ gui.gasTank.desc.0=Хранилище газа
 gui.liquidTank.desc.0=Жидкостный резервуар
 gui.status.nogas.name=Нет газа
 gui.status.liquefying.name=Сжижение
+gui.status.processing.name=Synthesizing ##NEEDS TRANSLATE##
 gui.status.needsCarbon.name=Нужен уголь
+gui.status.tankfull.name=Tank full ##NEEDS TRANSLATE##
+gui.status.tanksfull.name=Tanks full ##NEEDS TRANSLATE##
 gui.message.lowEnergy.name=Мало энергии
 gui.button.liquefy.name=Запуск
 gui.button.liquefyStop.name=Стоп
@@ -134,6 +137,15 @@ gas.nitrogen.name=Азот
 gui.desc.reinforcedPlateT2.name=2-ой уровень
 dimension.Mars.name=Марс
 planet.mars=Марс
+tile.treasureT2.description=Tier 2 Treasure Chests will generate in Mars Dungeons. They are unlockable after defeating the final boss. ##NEEDS TRANSLATE##
+tile.cavernVines.description=Cavernous Vines are dangerous to living creatures, entangling them and dragging them upwards. ##NEEDS TRANSLATE##
+tile.slimelingEgg.description=Slimeling Eggs, once cracked with a player's bare hands, will soon hatch into a pet. ##NEEDS TRANSLATE##
+tile.cryoChamber.description=Cryogenic Chambers will allow a player to sleep during the day, healing a small amount of health, but has a cooldown. ##NEEDS TRANSLATE##
+tile.launchController.description=Launch Controllers are used to customize launch behaviour, including launch criteria and destination launch pad for auto launches. ##NEEDS TRANSLATE##
+tile.terraformer.description=Terraformers are used to add some greenery to distant planets, adding grass, trees and water when given the correct materials. ##NEEDS TRANSLATE##
+tile.creeperEgg.description=Creeper Eggs will spawn in Mars dungeons, spawning a sneaky predator upon exploding. ##NEEDS TRANSLATE##
+tile.gasLiquefier.description=Liquefies gases, either from the atmosphere or from canisters. Liquefied methane makes a good rocket fuel! ##NEEDS TRANSLATE##
+tile.methaneSynthesizer.description=With a source of hydrogen and a source of carbon, this manufactures Methane for further processing in a Gas Liquefier. ##NEEDS TRANSLATE##
 
 # SCHEMATICS
 schematic.rocketT3.name=Ракета 3-го уровня

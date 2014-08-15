@@ -61,7 +61,7 @@ fluid.liquidmethane.name=Metano Líquido
 fluid.liquidoxygen.name=Oxígeno Líquido
 fluid.liquidnitrogen.name=Nítrogeno Líquido
 fluid.liquidargon.name=Argón Líquido
-fluid.fuel.name=Fuel
+fluid.fuel.name=Combustible
 
 # BLOCKS
 tile.asteroidsBlock.asteroid0.name=Roca de Asteroide
@@ -72,7 +72,7 @@ tile.asteroidsBlock.oreIlmenite.name=Mena de Ilmenita
 tile.asteroidsBlock.oreAluminum.name=Mena de Aluminio
 tile.beamReflector.name=Reflector Láser
 tile.beamReceiver.name=Receptor Láser
-tile.telepadShort.name=Teletransporte de Corto Alcance
+tile.telepadShort.name=Teletransportador de Corto Alcance
 tile.walkway.name=Pasarela
 tile.walkwayWire.name=Pasarela
 tile.walkwayOxygenPipe.name=Pasarela
@@ -84,8 +84,8 @@ planet.asteroids=Asteroides
 
 	# Dollar sign ($) will split text onto a new line
 	# Do not remove %s or %d, since that will be replaced in-game
-gui.telepad.desc.0=Esta es la única dirección$del Teletransporte
-gui.telepad.desc.1=Dirección de otro Teletransporte.$Las entidades se enviarán allí.
+gui.telepad.desc.0=Esta es la única dirección$del Teletransportador
+gui.telepad.desc.1=Dirección de otro Teletransportador.$Las entidades se enviarán allí.
 gui.message.address.name=Dirección
 gui.message.destAddress.name=Dirección de Destino
 gui.message.invalidAddress.name=Dirección Única Invalida
@@ -93,11 +93,19 @@ gui.message.invalidTargetAddress.name=Dirección de Destino Invalida
 gui.message.receivingActive.name=Recepción Activa
 gui.message.telepadTooFar.name=Objetivo muy Lejos! (Max %d)
 gui.message.telepadWrongDim.name=Destino en otra Dimensión
-gui.message.telepadNotFound.name=Teletransporte No Encontrado
+gui.message.telepadNotFound.name=Teletransportador No Encontrado
 gui.message.sendingActive.name=Envío Activo
 gui.message.range.name=Alcance: %dm
 gui.message.notEnoughEnergy.name=Energía Insuficiente
 gui.message.targetNoEnergy.name=El Objetivo no tiene suficiente Energía
+
+tile.treasureT3.description=Los Cofres del Tesoro Nivel 3 están actualmente sin utilizar.
+tile.walkway.description=Las Pasarelas se usan para finalidades decorativas, usado para unir bloques y andar sobre ellos manteniendo la tématica espacial.
+tile.walkwayAluminumWire.description=Las Pasarelas con Cable de Aluminio se usan para tener un cable funcional por debajo de una superficie sólida por la que andar.
+tile.walkwayOxygenPipe.description=Las Pasarelas con Tubos de Oxígeno se usan para tener un tubo funcional por debajo de una superficie sólida por la que andar.
+tile.beamReflector.description=Los Refletores se usan para redirigir ráyos de energía del emisor al receptor. Se puede hacer click derecho para pasar a través de objetivos.
+tile.beamReceiver.description=Los Receptores se conectan en la entrada o salida de energía de una máquina, para transferir energía por medio del ráyo.
+tile.telepadShort.description=Los Teletransportadores se usan para enviar a jugadores y otras criaturas a cortas distancias (250 Bloques) cuando esta conectado a otro teletransportador.
 
 # SCHEMATICS
 
@@ -107,5 +115,5 @@ entity.GrappleHookGC.name=Gancho
 entity.Tier3RocketGC.name=Cohete Nivel 3
 
 # CONTAINERS
-container.shortRangeTelepad.name=Teletransporte de Corto Alcance
-container.entryPod.name=Vaina de Entrada
+container.shortRangeTelepad.name=Teletransportador de Corto Alcance
+container.entryPod.name=Cápsula de Entrada
