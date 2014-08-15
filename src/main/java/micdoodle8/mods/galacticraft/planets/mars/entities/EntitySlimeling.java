@@ -1,11 +1,12 @@
 package micdoodle8.mods.galacticraft.planets.mars.entities;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModuleClient;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.InventorySlimeling;
@@ -111,7 +112,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 	@Override
 	public boolean isChild()
 	{
-		return this.getAge() / (float) this.MAX_AGE < 0.4F;
+		return this.getAge() / (float) this.MAX_AGE < 0.33F;
 	}
 
 	private void setRandomFavFood()
@@ -383,7 +384,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 							MarsModuleClient.openSlimelingGui(this, 1);
 						}
 
-						if (this.rand.nextInt(2) == 0)
+						if (this.rand.nextInt(3) == 0)
 						{
 							this.setRandomFavFood();
 						}
@@ -473,7 +474,10 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 		{
 			EntitySlimeling otherSlimeling = (EntitySlimeling) par1EntityAgeable;
 
-			EntitySlimeling newSlimeling = new EntitySlimeling(this.worldObj, (this.getColorRed() + otherSlimeling.getColorRed()) / 2, (this.getColorGreen() + otherSlimeling.getColorGreen()) / 2, (this.getColorBlue() + otherSlimeling.getColorBlue()) / 2);
+			Vector3 colorParentA = new Vector3(this.getColorRed(), this.getColorGreen(), this.getColorBlue());
+			Vector3 colorParentB = new Vector3(otherSlimeling.getColorRed(), otherSlimeling.getColorGreen(), otherSlimeling.getColorBlue());
+			Vector3 newColor = ColorUtil.addColorsRealistically(colorParentA, colorParentB);
+			EntitySlimeling newSlimeling = new EntitySlimeling(this.worldObj, (float) newColor.x, (float) newColor.y, (float) newColor.z);
 
 			String s = VersionUtil.getSlimelingOwner(this);
 
