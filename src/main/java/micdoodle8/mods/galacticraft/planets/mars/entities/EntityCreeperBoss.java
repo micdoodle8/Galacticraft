@@ -136,20 +136,20 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
 	@Override
 	protected String getLivingSound()
 	{
-		return "";
+		return null;
 	}
 
 	@Override
 	protected String getHurtSound()
 	{
 		this.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.bossliving", this.getSoundVolume(), this.getSoundPitch() + 6.0F);
-		return "";
+		return null;
 	}
 
 	@Override
 	protected String getDeathSound()
 	{
-		return "";
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")

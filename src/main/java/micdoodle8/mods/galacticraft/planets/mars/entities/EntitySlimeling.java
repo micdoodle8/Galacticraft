@@ -236,20 +236,20 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 	@Override
 	protected String getLivingSound()
 	{
-		return "";
+		return null;
 	}
 
 	@Override
 	protected String getHurtSound()
 	{
-		return "";
+		return null;
 	}
 
 	@Override
 	protected String getDeathSound()
 	{
 		this.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.slime_death", this.getSoundVolume(), 0.8F);
-		return "";
+		return null;
 	}
 
 	@Override
