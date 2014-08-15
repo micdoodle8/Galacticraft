@@ -1,19 +1,31 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import com.google.common.collect.Maps;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
+import micdoodle8.mods.galacticraft.core.client.render.CapeUtils;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.IImageBuffer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import org.lwjgl.opengl.GL11;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.Map;
 
 public class RenderPlayerGC extends RenderPlayer
 {
@@ -21,6 +33,7 @@ public class RenderPlayerGC extends RenderPlayer
     public ModelBiped modelThermalPaddingHelmet;
 	private static ResourceLocation thermalPaddingTexture0;
 	private static ResourceLocation thermalPaddingTexture1;
+    private static Map<String, ResourceLocation> capesMap = Maps.newHashMap();
 
 	public RenderPlayerGC()
 	{
@@ -37,6 +50,7 @@ public class RenderPlayerGC extends RenderPlayer
 			RenderPlayerGC.thermalPaddingTexture0 = new ResourceLocation("galacticraftasteroids", "textures/misc/thermalPadding_0.png");
 			RenderPlayerGC.thermalPaddingTexture1 = new ResourceLocation("galacticraftasteroids", "textures/misc/thermalPadding_1.png");
 		}
+        MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	public ModelBiped getModel()
@@ -49,6 +63,120 @@ public class RenderPlayerGC extends RenderPlayer
 	{
 		return super.shouldRenderPass(par1AbstractClientPlayer, par2, par3);
 	}
+
+    @SubscribeEvent
+    public void onPostRender(RenderPlayerEvent.Specials.Post event)
+    {
+        AbstractClientPlayer player = (AbstractClientPlayer)event.entityPlayer;
+        boolean flag = ClientProxyCore.capeMap.containsKey(event.entityPlayer.getCommandSenderName());
+        float f4;
+
+        if (flag && !player.isInvisible() && !player.getHideCape())
+        {
+            String url = ClientProxyCore.capeMap.get(player.getCommandSenderName());
+            ResourceLocation capeLoc = capesMap.get(url);
+            if (!capesMap.containsKey(url))
+            {
+                try
+                {
+                    String dirName = Minecraft.getMinecraft().mcDataDir.getAbsolutePath();
+                    File directory = new File(dirName, "assets");
+                    boolean success = true;
+                    if (!directory.exists())
+                    {
+                        success = directory.mkdir();
+                    }
+                    if (success)
+                    {
+                        directory = new File(directory, "gcCapes");
+                        if (!directory.exists())
+                        {
+                            success = directory.mkdir();
+                        }
+
+                        if (success)
+                        {
+                            String hash = String.valueOf(player.getCommandSenderName().hashCode());
+                            File file1 = new File(directory, hash.substring(0, 2));
+                            File file2 = new File(file1, hash);
+                            final ResourceLocation resourcelocation = new ResourceLocation("gcCapes/" + hash);
+                            final CapeUtils.ImageBufferDownloadGC imagebufferdownload = new CapeUtils.ImageBufferDownloadGC();
+                            CapeUtils.ThreadDownloadImageDataGC threaddownloadimagedata = new CapeUtils.ThreadDownloadImageDataGC(file2, url, null, new IImageBuffer()
+                            {
+                                public BufferedImage parseUserSkin(BufferedImage p_78432_1_)
+                                {
+                                    p_78432_1_ = imagebufferdownload.parseUserSkin(p_78432_1_);
+                                    return p_78432_1_;
+                                }
+                                public void func_152634_a()
+                                {
+                                    imagebufferdownload.func_152634_a();
+                                }
+                            });
+
+                            if (FMLClientHandler.instance().getClient().getTextureManager().loadTexture(resourcelocation, threaddownloadimagedata))
+                            {
+                                capeLoc = resourcelocation;
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+                capesMap.put(url, capeLoc);
+            }
+
+            if (capeLoc != null)
+            {
+                this.bindTexture(capeLoc);
+                GL11.glPushMatrix();
+                GL11.glTranslatef(0.0F, 0.0F, 0.125F);
+                double d3 = player.field_71091_bM + (player.field_71094_bP - player.field_71091_bM) * (double)event.partialRenderTick - (player.prevPosX + (player.posX - player.prevPosX) * (double)event.partialRenderTick);
+                double d4 = player.field_71096_bN + (player.field_71095_bQ - player.field_71096_bN) * (double)event.partialRenderTick - (player.prevPosY + (player.posY - player.prevPosY) * (double)event.partialRenderTick);
+                double d0 = player.field_71097_bO + (player.field_71085_bR - player.field_71097_bO) * (double)event.partialRenderTick - (player.prevPosZ + (player.posZ - player.prevPosZ) * (double)event.partialRenderTick);
+                f4 = player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset) * event.partialRenderTick;
+                double d1 = (double) MathHelper.sin(f4 * (float) Math.PI / 180.0F);
+                double d2 = (double)(-MathHelper.cos(f4 * (float)Math.PI / 180.0F));
+                float f5 = (float)d4 * 10.0F;
+
+                if (f5 < -6.0F)
+                {
+                    f5 = -6.0F;
+                }
+
+                if (f5 > 32.0F)
+                {
+                    f5 = 32.0F;
+                }
+
+                float f6 = (float)(d3 * d1 + d0 * d2) * 100.0F;
+                float f7 = (float)(d3 * d2 - d0 * d1) * 100.0F;
+
+                if (f6 < 0.0F)
+                {
+                    f6 = 0.0F;
+                }
+
+                float f8 = player.prevCameraYaw + (player.cameraYaw - player.prevCameraYaw) * event.partialRenderTick;
+                f5 += MathHelper.sin((player.prevDistanceWalkedModified + (player.distanceWalkedModified - player.prevDistanceWalkedModified) * event.partialRenderTick) * 6.0F) * 32.0F * f8;
+
+                if (player.isSneaking())
+                {
+                    f5 += 25.0F;
+                }
+
+                GL11.glRotatef(6.0F + f6 / 2.0F + f5, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(f7 / 2.0F, 0.0F, 0.0F, 1.0F);
+                GL11.glRotatef(-f7 / 2.0F, 0.0F, 1.0F, 0.0F);
+                GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
+                this.modelBipedMain.renderCloak(0.0625F);
+                GL11.glPopMatrix();
+            }
+        }
+    }
 
 	@Override
 	protected void renderModel(EntityLivingBase par1EntityLivingBase, float par2, float par3, float par4, float par5, float par6, float par7)
