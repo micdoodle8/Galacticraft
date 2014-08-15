@@ -125,19 +125,21 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
             {
                 if (FluidContainerRegistry.isEmptyContainer(this.containedItems[this.containedItems.length - 1]))
                 {
-                    boolean isCanister = this.containedItems[this.containedItems.length - 1].isItemEqual(new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage()));
+					ItemStack slotItem = this.containedItems[this.containedItems.length - 1];
+                	boolean isCanister = slotItem.isItemEqual(new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage()));
                     final int amountToFill = Math.min(liquid.amount, isCanister ? GCItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
 
                     if (isCanister)
                     {
                         this.containedItems[this.containedItems.length - 1] = new ItemStack(GCItems.fuelCanister, 1, GCItems.fuelCanister.getMaxDamage() - amountToFill);
+                        this.fuelTank.drain(amountToFill, true);
                     }
                     else
                     {
-                        this.containedItems[this.containedItems.length - 1] = FluidContainerRegistry.fillFluidContainer(liquid, this.containedItems[this.containedItems.length - 1]);
+                        this.containedItems[this.containedItems.length - 1] = FluidContainerRegistry.fillFluidContainer(liquid, slotItem);
+						if (this.containedItems[this.containedItems.length - 1] == null) this.containedItems[this.containedItems.length - 1] = slotItem;
+						else fuelTank.drain(amountToFill, true);
                     }
-
-                    this.fuelTank.drain(amountToFill, true);
                 }
             }
         }

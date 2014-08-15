@@ -304,19 +304,21 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 			{
 				if (FluidContainerRegistry.isEmptyContainer(this.chestContents[this.chestContents.length - 1]))
 				{
-					boolean isCanister = this.chestContents[this.chestContents.length - 1].isItemEqual(new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage()));
+					ItemStack slotItem = this.chestContents[this.chestContents.length - 1];
+					boolean isCanister = slotItem.isItemEqual(new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage()));
 					final int amountToFill = Math.min(liquid.amount, isCanister ? GCItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
 
 					if (isCanister)
 					{
 						this.chestContents[this.chestContents.length - 1] = new ItemStack(GCItems.fuelCanister, 1, GCItems.fuelCanister.getMaxDamage() - amountToFill);
+						this.fuelTank.drain(amountToFill, true);
 					}
 					else
 					{
-						this.chestContents[this.chestContents.length - 1] = FluidContainerRegistry.fillFluidContainer(liquid, this.chestContents[this.chestContents.length - 1]);
+						this.chestContents[this.chestContents.length - 1] = FluidContainerRegistry.fillFluidContainer(liquid, slotItem);
+						if (this.chestContents[this.chestContents.length - 1] == null) this.chestContents[this.chestContents.length - 1] = slotItem;
+						else fuelTank.drain(amountToFill, true);
 					}
-
-					this.fuelTank.drain(amountToFill, true);
 				}
 			}
 		}
