@@ -7,7 +7,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
-import micdoodle8.mods.galacticraft.core.client.render.CapeUtils;
+import micdoodle8.mods.galacticraft.core.client.render.ThreadDownloadImageDataGC;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.Minecraft;
@@ -23,6 +23,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Map;
@@ -100,17 +101,26 @@ public class RenderPlayerGC extends RenderPlayer
                             File file1 = new File(directory, hash.substring(0, 2));
                             File file2 = new File(file1, hash);
                             final ResourceLocation resourcelocation = new ResourceLocation("gcCapes/" + hash);
-                            final CapeUtils.ImageBufferDownloadGC imagebufferdownload = new CapeUtils.ImageBufferDownloadGC();
-                            CapeUtils.ThreadDownloadImageDataGC threaddownloadimagedata = new CapeUtils.ThreadDownloadImageDataGC(file2, url, null, new IImageBuffer()
+                            ThreadDownloadImageDataGC threaddownloadimagedata = new ThreadDownloadImageDataGC(file2, url, null, new IImageBuffer()
                             {
                                 public BufferedImage parseUserSkin(BufferedImage p_78432_1_)
                                 {
-                                    p_78432_1_ = imagebufferdownload.parseUserSkin(p_78432_1_);
+                                    if (p_78432_1_ == null)
+                                    {
+                                        return null;
+                                    }
+                                    else
+                                    {
+                                        BufferedImage bufferedimage1 = new BufferedImage(512, 256, 2);
+                                        Graphics graphics = bufferedimage1.getGraphics();
+                                        graphics.drawImage(p_78432_1_, 0, 0, null);
+                                        graphics.dispose();
+                                        p_78432_1_ = bufferedimage1;
+                                    }
                                     return p_78432_1_;
                                 }
                                 public void func_152634_a()
                                 {
-                                    imagebufferdownload.func_152634_a();
                                 }
                             });
 
