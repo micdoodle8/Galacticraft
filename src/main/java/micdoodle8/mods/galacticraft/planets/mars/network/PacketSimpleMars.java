@@ -182,11 +182,15 @@ public class PacketSimpleMars implements IPacket
 				case 0:
 					if (player == slimeling.getOwner() && !slimeling.worldObj.isRemote)
 					{
-						slimeling.getAiSit().setSitting(!slimeling.isSitting());
-						slimeling.setJumping(false);
-						slimeling.setPathToEntity((PathEntity) null);
-						slimeling.setTarget((Entity) null);
-						slimeling.setAttackTarget((EntityLivingBase) null);
+                        if (slimeling.getGrowingAge() > 0)
+                        {
+                            slimeling.setGrowingAge(0);
+                        }
+                        slimeling.setSittingAI(!slimeling.isSitting());
+                        slimeling.setJumping(false);
+                        slimeling.setPathToEntity(null);
+                        slimeling.setTarget(null);
+                        slimeling.setAttackTarget(null);
 					}
 					break;
 				case 1:

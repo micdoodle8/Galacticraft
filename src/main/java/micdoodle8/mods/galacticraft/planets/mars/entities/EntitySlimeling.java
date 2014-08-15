@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.entities;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -327,7 +328,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 		else
 		{
 			Entity entity = par1DamageSource.getEntity();
-			this.aiSit.setSitting(false);
+			this.setSittingAI(false);
 
 			if (entity != null && !(entity instanceof EntityPlayer) && !(entity instanceof EntityArrow))
 			{
@@ -436,7 +437,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 					this.setTamed(true);
 					this.setPathToEntity((PathEntity) null);
 					this.setAttackTarget((EntityLivingBase) null);
-					this.aiSit.setSitting(true);
+					this.setSittingAI(true);
 					this.setHealth(20.0F);
                     VersionUtil.setSlimelingOwner(this, VersionUtil.mcVersionMatches("1.7.10") ? par1EntityPlayer.getUniqueID().toString() : (VersionUtil.mcVersionMatches("1.7.2") ? par1EntityPlayer.getCommandSenderName() : ""));
 					this.playTameEffect(true);
@@ -454,6 +455,11 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 
 		return super.interact(par1EntityPlayer);
 	}
+
+    public void setSittingAI(boolean sitting)
+    {
+        this.aiSit.setSitting(sitting);
+    }
 
 	@Override
 	public boolean isBreedingItem(ItemStack par1ItemStack)
