@@ -117,7 +117,6 @@ public class ColorUtil
 		double hue2 = ColorUtil.rgb_to_hue(color2);
 		if (hue1 - hue2 > 180D) hue2+=360D;
 		if (hue2 - hue1 > 180D) hue1+=360D;
-		System.out.println("Hue1 is "+hue1+", hue2 is "+hue2);
 		double hueresult = (hue1+hue2) / 2;
 		if (hueresult > 360D) hueresult -= 360D;
 		//TODO: if hue1 and hue2 differ by close to 180degrees, add in some 'mud' color
