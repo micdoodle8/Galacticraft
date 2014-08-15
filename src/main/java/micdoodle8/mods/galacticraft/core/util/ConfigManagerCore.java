@@ -77,6 +77,7 @@ public class ConfigManagerCore
 	public static boolean enableAluminumOreGen;
 	public static boolean enableSiliconOreGen;
 	public static int[] staticLoadDimensions = {};
+	public static int[] disableRocketLaunchDimensions = { -1, 1 };
 	public static boolean disableCheeseMoon;
 	public static boolean disableTinMoon;
 	public static boolean disableCopperMoon;
@@ -106,6 +107,7 @@ public class ConfigManagerCore
             ConfigManagerCore.idDimensionOverworldOrbit = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "idDimensionOverworldOrbit", -27).getInt(-27);
             ConfigManagerCore.idDimensionOverworldOrbitStatic = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "idDimensionOverworldOrbitStatic", -26, "Static Space Station ID").getInt(-26);
             ConfigManagerCore.staticLoadDimensions = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "Static Loaded Dimensions", ConfigManagerCore.staticLoadDimensions, "IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded").getIntList();
+            ConfigManagerCore.disableRocketLaunchDimensions = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "Dimensions where rockets cannot launch", ConfigManagerCore.disableRocketLaunchDimensions, "IDs of magical or roofed dimensions where rockets should not launch - this should always include the Nether.").getIntList();
             ConfigManagerCore.disableRocketsToOverworld = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "Disable rockets from returning to Overworld", false, "If this is true on a server, rockets will not be able to reach the Overworld (only use this in special modpacks!)").getBoolean(false);
             ConfigManagerCore.forceOverworldRespawn = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Force Overworld Spawn", false, "By default, you will respawn on galacticraft dimensions if you die. If you set this to true, you will respawn back on earth.").getBoolean(false);
             
