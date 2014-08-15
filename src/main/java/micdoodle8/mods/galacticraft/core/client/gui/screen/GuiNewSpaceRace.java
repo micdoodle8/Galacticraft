@@ -477,8 +477,8 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 					}
 					else if (this.checkboxPaintbrush.isSelected != null && this.checkboxPaintbrush.isSelected)
 					{
-						this.setColorWithBrushSize(unScaledX, unScaledY, new Vector3(this.sliderColorR.getNormalizedValue() * 256, this.sliderColorG.getNormalizedValue() * 256, this.sliderColorB.getNormalizedValue() * 256), (int) Math.floor(this.sliderBrushSize.getNormalizedValue() * 10) + 1);
-					}
+						this.setColorWithBrushSize(unScaledX, unScaledY, new Vector3(this.sliderColorR.getColorValueD(), this.sliderColorG.getColorValueD(), this.sliderColorB.getColorValueD()), (int) Math.floor(this.sliderBrushSize.getNormalizedValue() * 10) + 1);
+                    }
 				}
 			}
 
