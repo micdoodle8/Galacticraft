@@ -68,11 +68,18 @@ public class ThreadDownloadImageDataGC extends SimpleTexture
         this.bufferedImage = p_147641_1_;
     }
 
-    public void loadTexture(IResourceManager p_110551_1_) throws IOException
+    public void loadTexture(IResourceManager p_110551_1_)
     {
-        if (this.bufferedImage == null && this.textureLocation != null)
+        try
         {
-            super.loadTexture(p_110551_1_);
+            if (this.bufferedImage == null && this.textureLocation != null)
+            {
+                super.loadTexture(p_110551_1_);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
 
         if (this.imageThread == null)
