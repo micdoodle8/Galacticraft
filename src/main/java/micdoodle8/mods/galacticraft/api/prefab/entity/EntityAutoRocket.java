@@ -20,6 +20,7 @@ import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -691,14 +692,21 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	{
 		if (!(this.worldObj.provider instanceof WorldProviderSurface || this.worldObj.provider instanceof IGalacticraftWorldProvider))
 		{
-			//No rocket flight in the Nether, the End etc
-			this.setLaunchPhase(EnumLaunchPhase.UNIGNITED);
-			this.timeUntilLaunch = 0;
-			if (!this.worldObj.isRemote && this.riddenByEntity instanceof GCEntityPlayerMP)
-			{
-				((GCEntityPlayerMP)this.riddenByEntity).addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.rocket.warning.nogyroscope")));
+			for (int i = ConfigManagerCore.disableRocketLaunchDimensions.length - 1; i >=0; i--)
+			{	
+				if (ConfigManagerCore.disableRocketLaunchDimensions[i] == this.worldObj.provider.dimensionId)
+				{
+					//No rocket flight in the Nether, the End etc
+					this.setLaunchPhase(EnumLaunchPhase.UNIGNITED);
+					this.timeUntilLaunch = 0;
+					if (!this.worldObj.isRemote && this.riddenByEntity instanceof GCEntityPlayerMP)
+					{
+						((GCEntityPlayerMP)this.riddenByEntity).addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.rocket.warning.nogyroscope")));
+					}
+					return;
+				}
 			}
-			return;
+
 		}
 		
 		super.onLaunch();
