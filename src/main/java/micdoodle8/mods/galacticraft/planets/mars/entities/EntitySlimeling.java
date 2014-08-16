@@ -56,6 +56,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 		this.setSize(0.25F, 0.7F);
 		this.getNavigator().setAvoidsWater(true);
 		this.tasks.addTask(1, new EntityAISwimming(this));
+        this.aiSit = new EntityAISitGC(this);
 		this.tasks.addTask(2, this.aiSit);
 		this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
 		this.tasks.addTask(4, new EntityAIAttackOnCollide(this, 1.0D, true));
@@ -678,6 +679,52 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
                 this.slimelingInventory.decrStackSize(1, 64);
                 this.entityDropItem(bag, 0.5F);          	
             }
+        }
+    }
+
+    public static class EntityAISitGC extends EntityAISit
+    {
+        private EntityTameable theEntity;
+        private boolean isSitting;
+
+        public EntityAISitGC(EntityTameable theEntity)
+        {
+            super(theEntity);
+            this.theEntity = theEntity;
+            this.setMutexBits(5);
+        }
+
+        public boolean shouldExecute()
+        {
+            if (!this.theEntity.isTamed())
+            {
+                return false;
+            }
+            else if (this.theEntity.isInWater())
+            {
+                return false;
+            }
+            else
+            {
+                EntityLivingBase entitylivingbase = this.theEntity.getOwner();
+                return entitylivingbase == null ? true : (this.theEntity.getDistanceSqToEntity(entitylivingbase) < 144.0D && entitylivingbase.getAITarget() != null ? false : this.isSitting);
+            }
+        }
+
+        public void startExecuting()
+        {
+            this.theEntity.getNavigator().clearPathEntity();
+            this.theEntity.setSitting(true);
+        }
+
+        public void resetTask()
+        {
+            this.theEntity.setSitting(false);
+        }
+
+        public void setSitting(boolean isSitting)
+        {
+            this.isSitting = isSitting;
         }
     }
 }
