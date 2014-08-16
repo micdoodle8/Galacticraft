@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
@@ -15,20 +16,20 @@ import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.client.renderer.ThreadDownloadImageData;
-import net.minecraft.client.renderer.texture.ITextureObject;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -169,9 +170,28 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 	@Override
 	public void onLivingUpdate()
 	{
-		if (this.worldObj.provider instanceof WorldProviderOrbit)
+		if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
 		{
-			((WorldProviderOrbit) this.worldObj.provider).spinUpdate(this);
+			//Test whether feet are on a block, also stops the login glitch
+			boolean flag = true;
+			int playerFeetOnY = (int) (this.boundingBox.minY - 0.001D);
+			Block b = this.worldObj.getBlock(MathHelper.floor_double(this.posX), playerFeetOnY, MathHelper.floor_double(this.posZ));
+			if (b.getMaterial() != Material.air && !(b instanceof BlockLiquid))
+			{
+				double blockYmax = playerFeetOnY + b.getBlockBoundsMaxY();
+				if (this.boundingBox.minY - blockYmax < 0.001D && this.boundingBox.minY - blockYmax > -0.5D)
+				{
+					this.onGround = true;
+					this.posY -= this.boundingBox.minY - blockYmax;
+					this.boundingBox.offset(0, blockYmax - this.boundingBox.minY, 0);
+					flag = false;
+				}
+			}
+	
+			if (this.worldObj.provider instanceof WorldProviderOrbit)
+			{
+				((WorldProviderOrbit) this.worldObj.provider).spinUpdate(this, flag);
+			}
 		}
 
 		if (this.boundingBox != null && this.boundingBoxBefore == null)

@@ -555,9 +555,9 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 	}
 
     @SideOnly(Side.CLIENT)
-	public void spinUpdate(GCEntityClientPlayerMP p)
+	public void spinUpdate(GCEntityClientPlayerMP p, boolean flag)
 	{
-		boolean freefall = this.testFreefall(p);
+		boolean freefall = this.testFreefall(p, flag);
 		boolean doGravity = true;
 		
 		if (freefall)
@@ -870,7 +870,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 	}
 
     @SideOnly(Side.CLIENT)
-    private boolean testFreefall(GCEntityClientPlayerMP p)
+    private boolean testFreefall(GCEntityClientPlayerMP p, boolean flag)
     {
  		if (this.pjumpticks > 0 || (this.pWasOnGround && p.movementInput.jump))
  		{
@@ -878,15 +878,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
  		}
 
  		//This is an "on the ground" check
-		int playerFeetOnY = (int) (p.boundingBox.minY - 0.001D);
-		Block b = this.worldObj.getBlock(MathHelper.floor_double(p.posX), playerFeetOnY, MathHelper.floor_double(p.posZ));
-		double blockYmax = b.getBlockBoundsMaxY() + playerFeetOnY;
-		if (b.getMaterial() != Material.air && p.boundingBox.minY - blockYmax < 0.001D)
-		{
-			p.onGround = true;
-			p.posY -= p.boundingBox.minY - blockYmax;
-			return false;
-		}
+ 		if (!flag) return false;
  		else if (p.boundingBox.maxX >= this.ssBoundsMinX && p.boundingBox.minX <= this.ssBoundsMaxX && p.boundingBox.maxY >= this.ssBoundsMinY && p.boundingBox.minY <= this.ssBoundsMaxY && p.boundingBox.maxZ >= this.ssBoundsMinZ && p.boundingBox.minZ <= this.ssBoundsMaxZ)
 		//Player is somewhere within the space station boundaries
 		{
