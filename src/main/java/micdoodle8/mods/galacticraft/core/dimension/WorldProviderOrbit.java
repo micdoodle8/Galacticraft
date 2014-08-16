@@ -84,9 +84,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 	private double pPrevMotionX = 0D;
 	private double pPrevMotionY = 0D;
 	private double pPrevMotionZ = 0D;
-    @SideOnly(Side.CLIENT)
 	private int pjumpticks = 0;
-    @SideOnly(Side.CLIENT)
 	private boolean pWasOnGround = false;
 
 	@Override
