@@ -22,6 +22,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAsteroid;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityTier3Rocket;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.player.AsteroidsPlayerHandler;
+import micdoodle8.mods.galacticraft.planets.asteroids.event.AsteroidsEventHandler;
 import micdoodle8.mods.galacticraft.planets.asteroids.inventory.ContainerShortRangeTelepad;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids;
@@ -72,6 +73,9 @@ public class AsteroidsModule implements IPlanetsModule
 		AsteroidsPlayerHandler playerHandler = new AsteroidsPlayerHandler();
 		MinecraftForge.EVENT_BUS.register(playerHandler);
 		FMLCommonHandler.instance().bus().register(playerHandler);
+        AsteroidsEventHandler eventHandler = new AsteroidsEventHandler();
+		MinecraftForge.EVENT_BUS.register(eventHandler);
+		FMLCommonHandler.instance().bus().register(eventHandler);
 
 		FluidRegistry.registerFluid(new Fluid("methane").setDensity(1).setViscosity(11).setGaseous(true));
 		FluidRegistry.registerFluid(new Fluid("atmosphericgases").setDensity(1).setViscosity(13).setGaseous(true));

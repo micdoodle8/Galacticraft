@@ -136,23 +136,4 @@ public class AsteroidsEventHandlerClient
 	{
 		NetworkRenderer.renderNetworks(FMLClientHandler.instance().getClient().theWorld, event.partialTicks);
 	}
-
-	@SideOnly(Side.CLIENT)
-	@SubscribeEvent
-	public void onThermalArmorEvent(ThermalArmorEvent event)
-	{
-		if (event.armorStack == null)
-		{
-			event.setArmorAddResult(ArmorAddResult.REMOVE);
-			return;
-		}
-
-		if (event.armorStack.getItem() == AsteroidsItems.thermalPadding && event.armorStack.getItemDamage() == event.armorIndex)
-		{
-			event.setArmorAddResult(ArmorAddResult.ADD);
-			return;
-		}
-
-		event.setArmorAddResult(ArmorAddResult.NOTHING);
-	}
 }
