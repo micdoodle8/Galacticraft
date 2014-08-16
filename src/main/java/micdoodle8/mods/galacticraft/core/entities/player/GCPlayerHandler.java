@@ -11,6 +11,9 @@ import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.EntityParachest;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP.EnumModelPacket;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP.ThermalArmorEvent;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP.ThermalArmorEvent.ArmorAddResult;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -20,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
@@ -103,6 +107,262 @@ public class GCPlayerHandler
 		stats.player = new WeakReference<GCEntityPlayerMP>(player);
 	}
 
+	protected void checkGear(GCEntityPlayerMP player, GCPlayerStats GCPlayer)
+	{
+		GCPlayer.maskInSlot = GCPlayer.extendedInventory.getStackInSlot(0);
+		GCPlayer.gearInSlot = GCPlayer.extendedInventory.getStackInSlot(1);
+		GCPlayer.tankInSlot1 = GCPlayer.extendedInventory.getStackInSlot(2);
+		GCPlayer.tankInSlot2 = GCPlayer.extendedInventory.getStackInSlot(3);
+		GCPlayer.parachuteInSlot = GCPlayer.extendedInventory.getStackInSlot(4);
+		GCPlayer.frequencyModuleInSlot = GCPlayer.extendedInventory.getStackInSlot(5);
+		GCPlayer.thermalHelmetInSlot = GCPlayer.extendedInventory.getStackInSlot(6);
+		GCPlayer.thermalChestplateInSlot = GCPlayer.extendedInventory.getStackInSlot(7);
+		GCPlayer.thermalLeggingsInSlot = GCPlayer.extendedInventory.getStackInSlot(8);
+		GCPlayer.thermalBootsInSlot = GCPlayer.extendedInventory.getStackInSlot(9);
+
+		//
+
+		if (GCPlayer.frequencyModuleInSlot != GCPlayer.lastFrequencyModuleInSlot)
+		{
+			if (GCPlayer.frequencyModuleInSlot == null)
+			{
+				player.sendGearUpdatePacket(EnumModelPacket.REMOVE_FREQUENCY_MODULE);
+			}
+			else if (GCPlayer.frequencyModuleInSlot.getItem() == GCItems.basicItem && GCPlayer.frequencyModuleInSlot.getItemDamage() == 19 && GCPlayer.lastFrequencyModuleInSlot == null)
+			{
+				player.sendGearUpdatePacket(EnumModelPacket.ADD_FREQUENCY_MODULE);
+			}
+
+			GCPlayer.lastFrequencyModuleInSlot = GCPlayer.frequencyModuleInSlot;
+		}
+
+		//
+
+		if (GCPlayer.maskInSlot != GCPlayer.lastMaskInSlot)
+		{
+			if (GCPlayer.maskInSlot == null)
+			{
+				player.sendGearUpdatePacket(EnumModelPacket.REMOVEMASK);
+			}
+			else if (GCPlayer.maskInSlot.getItem() == GCItems.oxMask && GCPlayer.lastMaskInSlot == null)
+			{
+				player.sendGearUpdatePacket(EnumModelPacket.ADDMASK);
+			}
+
+			GCPlayer.lastMaskInSlot = GCPlayer.maskInSlot;
+		}
+
+		//
+
+		if (GCPlayer.gearInSlot != GCPlayer.lastGearInSlot)
+		{
+			if (GCPlayer.gearInSlot == null)
+			{
+				player.sendGearUpdatePacket(EnumModelPacket.REMOVEGEAR);
+			}
+			else if (GCPlayer.gearInSlot.getItem() == GCItems.oxygenGear && GCPlayer.lastGearInSlot == null)
+			{
+				player.sendGearUpdatePacket(EnumModelPacket.ADDGEAR);
+			}
+
+			GCPlayer.lastGearInSlot = GCPlayer.gearInSlot;
+		}
+
+		//
+
+		if (GCPlayer.tankInSlot1 != GCPlayer.lastTankInSlot1)
+		{
+			if (GCPlayer.tankInSlot1 == null)
+			{
+				player.sendGearUpdatePacket(EnumModelPacket.REMOVE_LEFT_TANK);
+			}
+			else if (GCPlayer.lastTankInSlot1 == null)
+			{
+				if (GCPlayer.tankInSlot1.getItem() == GCItems.oxTankLight)
+				{
+					player.sendGearUpdatePacket(EnumModelPacket.ADDLEFTGREENTANK);
+				}
+				else if (GCPlayer.tankInSlot1.getItem() == GCItems.oxTankMedium)
+				{
+					player.sendGearUpdatePacket(EnumModelPacket.ADDLEFTORANGETANK);
+				}
+				else if (GCPlayer.tankInSlot1.getItem() == GCItems.oxTankHeavy)
+				{
+					player.sendGearUpdatePacket(EnumModelPacket.ADDLEFTREDTANK);
+				}
+			}
+			//if the else is reached then both tankInSlot and lastTankInSlot are non-null
+			else if (GCPlayer.tankInSlot1.getItem() != GCPlayer.lastTankInSlot1.getItem())
+			{
+				if (GCPlayer.tankInSlot1.getItem() == GCItems.oxTankLight)
+				{
+					player.sendGearUpdatePacket(EnumModelPacket.ADDLEFTGREENTANK);
+				}
+				else if (GCPlayer.tankInSlot1.getItem() == GCItems.oxTankMedium)
+				{
+					player.sendGearUpdatePacket(EnumModelPacket.ADDLEFTORANGETANK);
+				}
+				else if (GCPlayer.tankInSlot1.getItem() == GCItems.oxTankHeavy)
+				{
+					player.sendGearUpdatePacket(EnumModelPacket.ADDLEFTREDTANK);
+				}
+			}
+
+			GCPlayer.lastTankInSlot1 = GCPlayer.tankInSlot1;
+		}
+
+		//
+
+		if (GCPlayer.tankInSlot2 != GCPlayer.lastTankInSlot2)
+		{
+			if (GCPlayer.tankInSlot2 == null)
+			{
+				player.sendGearUpdatePacket(EnumModelPacket.REMOVE_RIGHT_TANK);
+			}
+			else if (GCPlayer.lastTankInSlot2 == null)
+			{
+				if (GCPlayer.tankInSlot2.getItem() == GCItems.oxTankLight)
+				{
+					player.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTGREENTANK);
+				}
+				else if (GCPlayer.tankInSlot2.getItem() == GCItems.oxTankMedium)
+				{
+					player.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTORANGETANK);
+				}
+				else if (GCPlayer.tankInSlot2.getItem() == GCItems.oxTankHeavy)
+				{
+					player.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTREDTANK);
+				}
+			}
+			//if the else is reached then both tankInSlot and lastTankInSlot are non-null
+			else if (GCPlayer.tankInSlot2.getItem() != GCPlayer.lastTankInSlot2.getItem())
+			{
+				if (GCPlayer.tankInSlot2.getItem() == GCItems.oxTankLight)
+				{
+					player.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTGREENTANK);
+				}
+				else if (GCPlayer.tankInSlot2.getItem() == GCItems.oxTankMedium)
+				{
+					player.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTORANGETANK);
+				}
+				else if (GCPlayer.tankInSlot2.getItem() == GCItems.oxTankHeavy)
+				{
+					player.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTREDTANK);
+				}
+			}
+
+			GCPlayer.lastTankInSlot2 = GCPlayer.tankInSlot2;
+		}
+		
+		//
+
+		if (GCPlayer.parachuteInSlot != GCPlayer.lastParachuteInSlot)
+		{
+			if (GCPlayer.parachuteInSlot == null)
+			{
+				if (GCPlayer.usingParachute)
+				{
+					player.sendGearUpdatePacket(EnumModelPacket.REMOVE_PARACHUTE);
+				}
+			}
+			else if (GCPlayer.lastParachuteInSlot == null)
+			{
+				if (GCPlayer.usingParachute)
+				{
+					player.sendGearUpdatePacket(EnumModelPacket.ADD_PARACHUTE);
+				}
+			}
+			else if (GCPlayer.parachuteInSlot.getItemDamage() != GCPlayer.lastParachuteInSlot.getItemDamage())
+			{
+				player.sendGearUpdatePacket(EnumModelPacket.ADD_PARACHUTE);
+			}
+
+			GCPlayer.lastParachuteInSlot = GCPlayer.parachuteInSlot;
+		}
+		
+		//
+
+		if (GCPlayer.thermalHelmetInSlot != GCPlayer.lastThermalHelmetInSlot)
+		{
+			ThermalArmorEvent armorEvent = new ThermalArmorEvent(0, GCPlayer.thermalHelmetInSlot);
+			MinecraftForge.EVENT_BUS.post(armorEvent);
+
+			if (armorEvent.armorResult != ArmorAddResult.NOTHING)
+			{
+				if (GCPlayer.thermalHelmetInSlot == null || armorEvent.armorResult == ArmorAddResult.REMOVE)
+				{
+					player.sendGearUpdatePacket(EnumModelPacket.REMOVE_THERMAL_HELMET);
+				}
+				else if (armorEvent.armorResult == ArmorAddResult.ADD && GCPlayer.lastThermalHelmetInSlot == null)
+				{
+					player.sendGearUpdatePacket(EnumModelPacket.ADD_THERMAL_HELMET);
+				}
+			}
+
+			GCPlayer.lastThermalHelmetInSlot = GCPlayer.thermalHelmetInSlot;
+		}
+
+		if (GCPlayer.thermalChestplateInSlot != GCPlayer.lastThermalChestplateInSlot)
+		{
+			ThermalArmorEvent armorEvent = new ThermalArmorEvent(1, GCPlayer.thermalChestplateInSlot);
+			MinecraftForge.EVENT_BUS.post(armorEvent);
+
+			if (armorEvent.armorResult != ArmorAddResult.NOTHING)
+			{
+				if (GCPlayer.thermalChestplateInSlot == null || armorEvent.armorResult == ArmorAddResult.REMOVE)
+				{
+					player.sendGearUpdatePacket(EnumModelPacket.REMOVE_THERMAL_CHESTPLATE);
+				}
+				else if (armorEvent.armorResult == ArmorAddResult.ADD && GCPlayer.lastThermalChestplateInSlot == null)
+				{
+					player.sendGearUpdatePacket(EnumModelPacket.ADD_THERMAL_CHESTPLATE);
+				}
+			}
+
+			GCPlayer.lastThermalChestplateInSlot = GCPlayer.thermalChestplateInSlot;
+		}
+
+		if (GCPlayer.thermalLeggingsInSlot != GCPlayer.lastThermalLeggingsInSlot)
+		{
+			ThermalArmorEvent armorEvent = new ThermalArmorEvent(2, GCPlayer.thermalLeggingsInSlot);
+			MinecraftForge.EVENT_BUS.post(armorEvent);
+
+			if (armorEvent.armorResult != ArmorAddResult.NOTHING)
+			{
+				if (GCPlayer.thermalLeggingsInSlot == null || armorEvent.armorResult == ArmorAddResult.REMOVE)
+				{
+					player.sendGearUpdatePacket(EnumModelPacket.REMOVE_THERMAL_LEGGINGS);
+				}
+				else if (armorEvent.armorResult == ArmorAddResult.ADD && GCPlayer.lastThermalLeggingsInSlot == null)
+				{
+					player.sendGearUpdatePacket(EnumModelPacket.ADD_THERMAL_LEGGINGS);
+				}
+			}
+
+			GCPlayer.lastThermalLeggingsInSlot = GCPlayer.thermalLeggingsInSlot;
+		}
+
+		if (GCPlayer.thermalBootsInSlot != GCPlayer.lastThermalBootsInSlot)
+		{
+			ThermalArmorEvent armorEvent = new ThermalArmorEvent(3, GCPlayer.thermalBootsInSlot);
+			MinecraftForge.EVENT_BUS.post(armorEvent);
+
+			if (armorEvent.armorResult != ArmorAddResult.NOTHING)
+			{
+				if (GCPlayer.thermalBootsInSlot == null || armorEvent.armorResult == ArmorAddResult.REMOVE)
+				{
+					player.sendGearUpdatePacket(EnumModelPacket.REMOVE_THERMAL_BOOTS);
+				}
+				else if (armorEvent.armorResult == ArmorAddResult.ADD && GCPlayer.lastThermalBootsInSlot == null)
+				{
+					player.sendGearUpdatePacket(EnumModelPacket.ADD_THERMAL_BOOTS);
+				}
+			}
+
+			GCPlayer.lastThermalBootsInSlot = GCPlayer.thermalBootsInSlot;
+		}
+	}
+	
 	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent event)
 	{
@@ -237,7 +497,7 @@ public class GCPlayerHandler
 				player.fallDistance = 0.0F;
 		}
 
-		player.checkGear();
+		this.checkGear(player, GCPlayer);
 
 		if (GCPlayer.chestSpawnCooldown > 0)
 		{

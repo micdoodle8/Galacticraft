@@ -20,9 +20,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteor;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP.ThermalArmorEvent.ArmorAddResult;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
@@ -197,261 +195,9 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { this.getGameProfile().getName(), temp }), this);
 	}
 
-	protected void checkGear()
-	{
-		this.getPlayerStats().maskInSlot = this.getPlayerStats().extendedInventory.getStackInSlot(0);
-		this.getPlayerStats().gearInSlot = this.getPlayerStats().extendedInventory.getStackInSlot(1);
-		this.getPlayerStats().tankInSlot1 = this.getPlayerStats().extendedInventory.getStackInSlot(2);
-		this.getPlayerStats().tankInSlot2 = this.getPlayerStats().extendedInventory.getStackInSlot(3);
-		this.getPlayerStats().parachuteInSlot = this.getPlayerStats().extendedInventory.getStackInSlot(4);
-		this.getPlayerStats().frequencyModuleInSlot = this.getPlayerStats().extendedInventory.getStackInSlot(5);
-		this.getPlayerStats().thermalHelmetInSlot = this.getPlayerStats().extendedInventory.getStackInSlot(6);
-		this.getPlayerStats().thermalChestplateInSlot = this.getPlayerStats().extendedInventory.getStackInSlot(7);
-		this.getPlayerStats().thermalLeggingsInSlot = this.getPlayerStats().extendedInventory.getStackInSlot(8);
-		this.getPlayerStats().thermalBootsInSlot = this.getPlayerStats().extendedInventory.getStackInSlot(9);
-
-		//
-
-		if (this.getPlayerStats().frequencyModuleInSlot != this.getPlayerStats().lastFrequencyModuleInSlot)
-		{
-			if (this.getPlayerStats().frequencyModuleInSlot == null)
-			{
-				this.sendGearUpdatePacket(EnumModelPacket.REMOVE_FREQUENCY_MODULE);
-			}
-			else if (this.getPlayerStats().frequencyModuleInSlot.getItem() == GCItems.basicItem && this.getPlayerStats().frequencyModuleInSlot.getItemDamage() == 19 && this.getPlayerStats().lastFrequencyModuleInSlot == null)
-			{
-				this.sendGearUpdatePacket(EnumModelPacket.ADD_FREQUENCY_MODULE);
-			}
-
-			this.getPlayerStats().lastFrequencyModuleInSlot = this.getPlayerStats().frequencyModuleInSlot;
-		}
-
-		//
-
-		if (this.getPlayerStats().maskInSlot != this.getPlayerStats().lastMaskInSlot)
-		{
-			if (this.getPlayerStats().maskInSlot == null)
-			{
-				this.sendGearUpdatePacket(EnumModelPacket.REMOVEMASK);
-			}
-			else if (this.getPlayerStats().maskInSlot.getItem() == GCItems.oxMask && this.getPlayerStats().lastMaskInSlot == null)
-			{
-				this.sendGearUpdatePacket(EnumModelPacket.ADDMASK);
-			}
-
-			this.getPlayerStats().lastMaskInSlot = this.getPlayerStats().maskInSlot;
-		}
-
-		//
-
-		if (this.getPlayerStats().gearInSlot != this.getPlayerStats().lastGearInSlot)
-		{
-			if (this.getPlayerStats().gearInSlot == null)
-			{
-				this.sendGearUpdatePacket(EnumModelPacket.REMOVEGEAR);
-			}
-			else if (this.getPlayerStats().gearInSlot.getItem() == GCItems.oxygenGear && this.getPlayerStats().lastGearInSlot == null)
-			{
-				this.sendGearUpdatePacket(EnumModelPacket.ADDGEAR);
-			}
-
-			this.getPlayerStats().lastGearInSlot = this.getPlayerStats().gearInSlot;
-		}
-
-		//
-
-		if (this.getPlayerStats().tankInSlot1 != this.getPlayerStats().lastTankInSlot1)
-		{
-			if (this.getPlayerStats().tankInSlot1 == null)
-			{
-				this.sendGearUpdatePacket(EnumModelPacket.REMOVE_LEFT_TANK);
-			}
-			else if (this.getPlayerStats().lastTankInSlot1 == null)
-			{
-				if (this.getPlayerStats().tankInSlot1.getItem() == GCItems.oxTankLight)
-				{
-					this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTGREENTANK);
-				}
-				else if (this.getPlayerStats().tankInSlot1.getItem() == GCItems.oxTankMedium)
-				{
-					this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTORANGETANK);
-				}
-				else if (this.getPlayerStats().tankInSlot1.getItem() == GCItems.oxTankHeavy)
-				{
-					this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTREDTANK);
-				}
-			}
-			//if the else is reached then both tankInSlot and lastTankInSlot are non-null
-			else if (this.getPlayerStats().tankInSlot1.getItem() != this.getPlayerStats().lastTankInSlot1.getItem())
-			{
-				if (this.getPlayerStats().tankInSlot1.getItem() == GCItems.oxTankLight)
-				{
-					this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTGREENTANK);
-				}
-				else if (this.getPlayerStats().tankInSlot1.getItem() == GCItems.oxTankMedium)
-				{
-					this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTORANGETANK);
-				}
-				else if (this.getPlayerStats().tankInSlot1.getItem() == GCItems.oxTankHeavy)
-				{
-					this.sendGearUpdatePacket(EnumModelPacket.ADDLEFTREDTANK);
-				}
-			}
-
-			this.getPlayerStats().lastTankInSlot1 = this.getPlayerStats().tankInSlot1;
-		}
-
-		//
-
-		if (this.getPlayerStats().tankInSlot2 != this.getPlayerStats().lastTankInSlot2)
-		{
-			if (this.getPlayerStats().tankInSlot2 == null)
-			{
-				this.sendGearUpdatePacket(EnumModelPacket.REMOVE_RIGHT_TANK);
-			}
-			else if (this.getPlayerStats().lastTankInSlot2 == null)
-			{
-				if (this.getPlayerStats().tankInSlot2.getItem() == GCItems.oxTankLight)
-				{
-					this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTGREENTANK);
-				}
-				else if (this.getPlayerStats().tankInSlot2.getItem() == GCItems.oxTankMedium)
-				{
-					this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTORANGETANK);
-				}
-				else if (this.getPlayerStats().tankInSlot2.getItem() == GCItems.oxTankHeavy)
-				{
-					this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTREDTANK);
-				}
-			}
-			//if the else is reached then both tankInSlot and lastTankInSlot are non-null
-			else if (this.getPlayerStats().tankInSlot2.getItem() != this.getPlayerStats().lastTankInSlot2.getItem())
-			{
-				if (this.getPlayerStats().tankInSlot2.getItem() == GCItems.oxTankLight)
-				{
-					this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTGREENTANK);
-				}
-				else if (this.getPlayerStats().tankInSlot2.getItem() == GCItems.oxTankMedium)
-				{
-					this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTORANGETANK);
-				}
-				else if (this.getPlayerStats().tankInSlot2.getItem() == GCItems.oxTankHeavy)
-				{
-					this.sendGearUpdatePacket(EnumModelPacket.ADDRIGHTREDTANK);
-				}
-			}
-
-			this.getPlayerStats().lastTankInSlot2 = this.getPlayerStats().tankInSlot2;
-		}
-
-		if (this.getPlayerStats().parachuteInSlot != this.getPlayerStats().lastParachuteInSlot)
-		{
-			if (this.getPlayerStats().parachuteInSlot == null)
-			{
-				if (this.getPlayerStats().usingParachute)
-				{
-					this.sendGearUpdatePacket(EnumModelPacket.REMOVE_PARACHUTE);
-				}
-			}
-			else if (this.getPlayerStats().lastParachuteInSlot == null)
-			{
-				if (this.getPlayerStats().usingParachute)
-				{
-					this.sendGearUpdatePacket(EnumModelPacket.ADD_PARACHUTE);
-				}
-			}
-			else if (this.getPlayerStats().parachuteInSlot.getItemDamage() != this.getPlayerStats().lastParachuteInSlot.getItemDamage())
-			{
-				this.sendGearUpdatePacket(EnumModelPacket.ADD_PARACHUTE);
-			}
-
-			this.getPlayerStats().lastParachuteInSlot = this.getPlayerStats().parachuteInSlot;
-		}
-
-		if (this.getPlayerStats().thermalHelmetInSlot != this.getPlayerStats().lastThermalHelmetInSlot)
-		{
-			ThermalArmorEvent armorEvent = new ThermalArmorEvent(0, this.getPlayerStats().thermalHelmetInSlot);
-			MinecraftForge.EVENT_BUS.post(armorEvent);
-
-			if (armorEvent.armorResult != ArmorAddResult.NOTHING)
-			{
-				if (this.getPlayerStats().thermalHelmetInSlot == null || armorEvent.armorResult == ArmorAddResult.REMOVE)
-				{
-					this.sendGearUpdatePacket(EnumModelPacket.REMOVE_THERMAL_HELMET);
-				}
-				else if (armorEvent.armorResult == ArmorAddResult.ADD && this.getPlayerStats().lastThermalHelmetInSlot == null)
-				{
-					this.sendGearUpdatePacket(EnumModelPacket.ADD_THERMAL_HELMET);
-				}
-			}
-
-			this.getPlayerStats().lastThermalHelmetInSlot = this.getPlayerStats().thermalHelmetInSlot;
-		}
-
-		if (this.getPlayerStats().thermalChestplateInSlot != this.getPlayerStats().lastThermalChestplateInSlot)
-		{
-			ThermalArmorEvent armorEvent = new ThermalArmorEvent(1, this.getPlayerStats().thermalChestplateInSlot);
-			MinecraftForge.EVENT_BUS.post(armorEvent);
-
-			if (armorEvent.armorResult != ArmorAddResult.NOTHING)
-			{
-				if (this.getPlayerStats().thermalChestplateInSlot == null || armorEvent.armorResult == ArmorAddResult.REMOVE)
-				{
-					this.sendGearUpdatePacket(EnumModelPacket.REMOVE_THERMAL_CHESTPLATE);
-				}
-				else if (armorEvent.armorResult == ArmorAddResult.ADD && this.getPlayerStats().lastThermalChestplateInSlot == null)
-				{
-					this.sendGearUpdatePacket(EnumModelPacket.ADD_THERMAL_CHESTPLATE);
-				}
-			}
-
-			this.getPlayerStats().lastThermalChestplateInSlot = this.getPlayerStats().thermalChestplateInSlot;
-		}
-
-		if (this.getPlayerStats().thermalLeggingsInSlot != this.getPlayerStats().lastThermalLeggingsInSlot)
-		{
-			ThermalArmorEvent armorEvent = new ThermalArmorEvent(2, this.getPlayerStats().thermalLeggingsInSlot);
-			MinecraftForge.EVENT_BUS.post(armorEvent);
-
-			if (armorEvent.armorResult != ArmorAddResult.NOTHING)
-			{
-				if (this.getPlayerStats().thermalLeggingsInSlot == null || armorEvent.armorResult == ArmorAddResult.REMOVE)
-				{
-					this.sendGearUpdatePacket(EnumModelPacket.REMOVE_THERMAL_LEGGINGS);
-				}
-				else if (armorEvent.armorResult == ArmorAddResult.ADD && this.getPlayerStats().lastThermalLeggingsInSlot == null)
-				{
-					this.sendGearUpdatePacket(EnumModelPacket.ADD_THERMAL_LEGGINGS);
-				}
-			}
-
-			this.getPlayerStats().lastThermalLeggingsInSlot = this.getPlayerStats().thermalLeggingsInSlot;
-		}
-
-		if (this.getPlayerStats().thermalBootsInSlot != this.getPlayerStats().lastThermalBootsInSlot)
-		{
-			ThermalArmorEvent armorEvent = new ThermalArmorEvent(3, this.getPlayerStats().thermalBootsInSlot);
-			MinecraftForge.EVENT_BUS.post(armorEvent);
-
-			if (armorEvent.armorResult != ArmorAddResult.NOTHING)
-			{
-				if (this.getPlayerStats().thermalBootsInSlot == null || armorEvent.armorResult == ArmorAddResult.REMOVE)
-				{
-					this.sendGearUpdatePacket(EnumModelPacket.REMOVE_THERMAL_BOOTS);
-				}
-				else if (armorEvent.armorResult == ArmorAddResult.ADD && this.getPlayerStats().lastThermalBootsInSlot == null)
-				{
-					this.sendGearUpdatePacket(EnumModelPacket.ADD_THERMAL_BOOTS);
-				}
-			}
-
-			this.getPlayerStats().lastThermalBootsInSlot = this.getPlayerStats().thermalBootsInSlot;
-		}
-	}
-
 	public static class ThermalArmorEvent extends cpw.mods.fml.common.eventhandler.Event
 	{
-		private ArmorAddResult armorResult = ArmorAddResult.NOTHING;
+		public ArmorAddResult armorResult = ArmorAddResult.NOTHING;
 		public final int armorIndex;
 		public final ItemStack armorStack;
 
@@ -494,18 +240,18 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 				{
 					if (thermalPaddingHelm != null && thermalPaddingChestplate != null && thermalPaddingLeggings != null && thermalPaddingBoots != null)
 					{
-						int last = this.getPlayerStats().thermalLevel;
+						int last = playerStats.thermalLevel;
 
-						if (this.getPlayerStats().thermalLevel < 0)
+						if (playerStats.thermalLevel < 0)
 						{
-							this.getPlayerStats().thermalLevel += 1;
+							playerStats.thermalLevel += 1;
 						}
-						else if (this.getPlayerStats().thermalLevel > 0)
+						else if (playerStats.thermalLevel > 0)
 						{
-							this.getPlayerStats().thermalLevel -= 1;
+							playerStats.thermalLevel -= 1;
 						}
 
-						if (this.getPlayerStats().thermalLevel != last)
+						if (playerStats.thermalLevel != last)
 						{
 							this.sendThermalLevelPacket();
 						}
@@ -537,26 +283,26 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 
 				if ((this.ticksExisted - 1) % thermalLevelTickCooldown == 0)
 				{
-					int last = this.getPlayerStats().thermalLevel;
-					this.getPlayerStats().thermalLevel = (int) Math.min(Math.max(this.getPlayerStats().thermalLevel + thermalLevelMod, -22), 22);
+					int last = playerStats.thermalLevel;
+					playerStats.thermalLevel = (int) Math.min(Math.max(playerStats.thermalLevel + thermalLevelMod, -22), 22);
 
-					if (this.getPlayerStats().thermalLevel != last)
+					if (playerStats.thermalLevel != last)
 					{
 						this.sendThermalLevelPacket();
 					}
 
-					if (Math.abs(this.getPlayerStats().thermalLevel) >= 22)
+					if (Math.abs(playerStats.thermalLevel) >= 22)
 					{
 						this.damageEntity(DamageSourceGC.thermal, 1.5F); // TODO New thermal damage source
 					}
 				}
 
-				if (this.getPlayerStats().thermalLevel < -15)
+				if (playerStats.thermalLevel < -15)
 				{
 					this.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 5, 2, true));
 				}
 
-				if (this.getPlayerStats().thermalLevel > 15)
+				if (playerStats.thermalLevel > 15)
 				{
 					this.addPotionEffect(new PotionEffect(Potion.confusion.id, 5, 2, true));
 
@@ -574,19 +320,21 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 
 		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider) this.worldObj.provider).hasBreathableAtmosphere() && !this.capabilities.isCreativeMode && !(this.ridingEntity instanceof EntityLanderBase) && !(this.ridingEntity instanceof EntityAutoRocket))
 		{
+			GCPlayerStats playerStats = this.getPlayerStats();
+
 			if (tankInSlot == null)
 			{
-				this.getPlayerStats().airRemaining = 0;
+				playerStats.airRemaining = 0;
 			}
 
 			if (tankInSlot2 == null)
 			{
-				this.getPlayerStats().airRemaining2 = 0;
+				playerStats.airRemaining2 = 0;
 			}
 
 			if (drainSpacing > 0)
 			{
-				if ((this.ticksExisted - 1) % drainSpacing == 0 && !OxygenUtil.isAABBInBreathableAirBlock(this) && !this.getPlayerStats().usingPlanetSelectionGui)
+				if ((this.ticksExisted - 1) % drainSpacing == 0 && !OxygenUtil.isAABBInBreathableAirBlock(this) && !playerStats.usingPlanetSelectionGui)
 				{
 					if (tankInSlot != null && tankInSlot.getMaxDamage() - tankInSlot.getItemDamage() > 0)
 					{
@@ -601,12 +349,12 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 
 				if (tankInSlot != null)
 				{
-					this.getPlayerStats().airRemaining = tankInSlot.getMaxDamage() - tankInSlot.getItemDamage();
+					playerStats.airRemaining = tankInSlot.getMaxDamage() - tankInSlot.getItemDamage();
 				}
 
 				if (tankInSlot2 != null)
 				{
-					this.getPlayerStats().airRemaining2 = tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage();
+					playerStats.airRemaining2 = tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage();
 				}
 			}
 			else
@@ -615,45 +363,45 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 				{
 					if (OxygenUtil.isAABBInBreathableAirBlock(this))
 					{
-						if (this.getPlayerStats().airRemaining < 90 && tankInSlot != null)
+						if (playerStats.airRemaining < 90 && tankInSlot != null)
 						{
-							this.getPlayerStats().airRemaining = Math.min(this.getPlayerStats().airRemaining + 1, tankInSlot.getMaxDamage() - tankInSlot.getItemDamage());
+							playerStats.airRemaining = Math.min(playerStats.airRemaining + 1, tankInSlot.getMaxDamage() - tankInSlot.getItemDamage());
 						}
 
-						if (this.getPlayerStats().airRemaining2 < 90 && tankInSlot2 != null)
+						if (playerStats.airRemaining2 < 90 && tankInSlot2 != null)
 						{
-							this.getPlayerStats().airRemaining2 = Math.min(this.getPlayerStats().airRemaining2 + 1, tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage());
+							playerStats.airRemaining2 = Math.min(playerStats.airRemaining2 + 1, tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage());
 						}
 					}
 					else
 					{
-						if (this.getPlayerStats().airRemaining > 0)
+						if (playerStats.airRemaining > 0)
 						{
-							this.getPlayerStats().airRemaining = Math.max(this.getPlayerStats().airRemaining - 1, 0);
+							playerStats.airRemaining = Math.max(playerStats.airRemaining - 1, 0);
 						}
 
-						if (this.getPlayerStats().airRemaining2 > 0)
+						if (playerStats.airRemaining2 > 0)
 						{
-							this.getPlayerStats().airRemaining2 = Math.max(this.getPlayerStats().airRemaining2 - 1, 0);
+							playerStats.airRemaining2 = Math.max(playerStats.airRemaining2 - 1, 0);
 						}
 					}
 				}
 			}
 
-			final boolean airEmpty = this.getPlayerStats().airRemaining <= 0 && this.getPlayerStats().airRemaining2 <= 0;
+			final boolean airEmpty = playerStats.airRemaining <= 0 && playerStats.airRemaining2 <= 0;
 
 			if (this.isOnLadder())
 			{
-				this.getPlayerStats().oxygenSetupValid = this.getPlayerStats().lastOxygenSetupValid;
+				playerStats.oxygenSetupValid = playerStats.lastOxygenSetupValid;
 			}
 			else
-                this.getPlayerStats().oxygenSetupValid = !((!OxygenUtil.hasValidOxygenSetup(this) || airEmpty) && !OxygenUtil.isAABBInBreathableAirBlock(this));
+                playerStats.oxygenSetupValid = !((!OxygenUtil.hasValidOxygenSetup(this) || airEmpty) && !OxygenUtil.isAABBInBreathableAirBlock(this));
 
-			if (!this.getPlayerStats().oxygenSetupValid && !this.worldObj.isRemote && this.isEntityAlive())
+			if (!playerStats.oxygenSetupValid && !this.worldObj.isRemote && this.isEntityAlive())
 			{
-				if (this.getPlayerStats().damageCounter == 0)
+				if (playerStats.damageCounter == 0)
 				{
-					this.getPlayerStats().damageCounter = ConfigManagerCore.suffocationCooldown;
+					playerStats.damageCounter = ConfigManagerCore.suffocationCooldown;
 
 					GCCoreOxygenSuffocationEvent suffocationEvent = new GCCoreOxygenSuffocationEvent.Pre(this);
 					MinecraftForge.EVENT_BUS.post(suffocationEvent);
@@ -784,7 +532,8 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 
 	private void sendGearUpdatePacket(EnumModelPacket gearType, int subtype)
 	{
-		if (FMLCommonHandler.instance().getMinecraftServerInstance() != null && PlayerUtil.getPlayerForUsernameVanilla(FMLCommonHandler.instance().getMinecraftServerInstance(), this.getGameProfile().getName()) != null)
+		MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
+		if (theServer != null && PlayerUtil.getPlayerForUsernameVanilla(theServer, this.getGameProfile().getName()) != null)
 		{
 			GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, new Object[] { this.getGameProfile().getName(), gearType.ordinal(), subtype }), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 50.0D));
 		}

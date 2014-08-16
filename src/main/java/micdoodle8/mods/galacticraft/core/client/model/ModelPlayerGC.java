@@ -464,8 +464,8 @@ public class ModelPlayerGC extends ModelBiped
 		//Slower arm and leg motion if airborne in Galacticraft Dimensions
 		if (!par7Entity.onGround && par7Entity.worldObj.provider instanceof IGalacticraftWorldProvider && !(currentItemStack != null && currentItemStack.getItem() instanceof IHoldableItem))
 		{
-			this.bipedHead.rotateAngleY = par4 / (180F / (float) Math.PI);
-			this.bipedHead.rotateAngleX = par5 / (180F / (float) Math.PI);
+			this.bipedHead.rotateAngleY = par4 / 57.29578F;
+			this.bipedHead.rotateAngleX = par5 / 57.29578F;
 			this.bipedHeadwear.rotateAngleY = this.bipedHead.rotateAngleY;
 			this.bipedHeadwear.rotateAngleX = this.bipedHead.rotateAngleX;
 			this.bipedRightArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 2.0F * par2 * 0.5F;
