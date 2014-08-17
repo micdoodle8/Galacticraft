@@ -83,6 +83,8 @@ public class EnergyConfigHandler
 	private static boolean cachedIC2LoadedValue = false;
 	private static boolean cachedBCLoaded = false;
 	private static boolean cachedBCLoadedValue = false;
+	private static boolean cachedBCReallyLoaded = false;
+	private static boolean cachedBCReallyLoadedValue = false;
 	private static int cachedBCVersion = -1;
 	private static boolean cachedMekLoaded = false;
 	private static boolean cachedMekLoadedValue = false;
@@ -158,16 +160,27 @@ public class EnergyConfigHandler
 		return cachedIC2LoadedValue;		
 	}
 
-	/** Checks using the FML loader too see if BC3 is loaded */
+	/** Checks using the FML loader to see if BC (or EnderIO) is loaded */
 	public static boolean isBuildcraftLoaded()
 	{
 		if (!cachedBCLoaded)
 		{
 			cachedBCLoaded = true;
-			cachedBCLoadedValue = Loader.isModLoaded("BuildCraft|Energy");
+			cachedBCLoadedValue = Loader.isModLoaded("BuildCraft|Energy") || Loader.isModLoaded("EnderIO");
 		}
 	
 		return cachedBCLoadedValue;
+	}
+
+	public static boolean isBuildcraftReallyLoaded()
+	{
+		if (!cachedBCReallyLoaded)
+		{
+			cachedBCReallyLoaded = true;
+			cachedBCReallyLoadedValue = Loader.isModLoaded("BuildCraft|Energy");
+		}
+	
+		return cachedBCReallyLoadedValue;
 	}
 
     public static int getBuildcraftVersion()

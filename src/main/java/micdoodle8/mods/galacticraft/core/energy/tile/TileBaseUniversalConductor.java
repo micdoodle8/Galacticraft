@@ -305,7 +305,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
 		((PowerHandler) this.powerHandlerBC).configure(1, requiredEnergy, 0, requiredEnergy);
 	}
 
-	@RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
+	@RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "EnderIO")
 	public void doWork(PowerHandler workProvider)
 	{
 		PowerHandler handler = (PowerHandler) this.powerHandlerBC;

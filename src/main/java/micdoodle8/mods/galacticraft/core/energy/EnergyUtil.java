@@ -25,6 +25,7 @@ public class EnergyUtil
 		//boolean isTELoaded = EnergyConfigHandler.isThermalExpansionLoaded();
 		boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded();
 		boolean isBCLoaded = EnergyConfigHandler.isBuildcraftLoaded();
+		boolean isBCReallyLoaded = EnergyConfigHandler.isBuildcraftReallyLoaded();
 
 		BlockVec3 thisVec = new BlockVec3(tile);
 		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
@@ -88,18 +89,21 @@ public class EnergyUtil
 			}
 			else if (isBCLoaded)
 			{
-				//Do not connect GC wires to BC wooden power pipes
-				try
+				if (isBCReallyLoaded)
 				{
-					Class<?> clazzPipeTile = Class.forName("buildcraft.transport.TileGenericPipe");
-					if (clazzPipeTile.isInstance(tileEntity))
-					{				
-						Class<?> clazzPipeWood = Class.forName("buildcraft.transport.pipes.PipePowerWood");
-						Object pipe = clazzPipeTile.getField("pipe").get(tileEntity);
-						if (clazzPipeWood.isInstance(pipe))
-							continue;
-					}
-				} catch (Exception e) { e.printStackTrace(); }
+					//Do not connect GC wires to BC wooden power pipes
+					try
+					{
+						Class<?> clazzPipeTile = Class.forName("buildcraft.transport.TileGenericPipe");
+						if (clazzPipeTile.isInstance(tileEntity))
+						{				
+							Class<?> clazzPipeWood = Class.forName("buildcraft.transport.pipes.PipePowerWood");
+							Object pipe = clazzPipeTile.getField("pipe").get(tileEntity);
+							if (clazzPipeWood.isInstance(pipe))
+								continue;
+						}
+					} catch (Exception e) { e.printStackTrace(); }
+				}
 
 				//New BC API
 				if (EnergyConfigHandler.getBuildcraftVersion() == 6 && MjAPI.getMjBattery(tileEntity, MjAPI.DEFAULT_POWER_FRAMEWORK, direction.getOpposite()) != null)
