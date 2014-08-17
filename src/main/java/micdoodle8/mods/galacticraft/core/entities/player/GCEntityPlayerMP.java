@@ -2,18 +2,13 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 
 import com.mojang.authlib.GameProfile;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
@@ -30,9 +25,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
-
-import java.util.HashMap;
-import java.util.Map.Entry;
 
 public class GCEntityPlayerMP extends EntityPlayerMP
 {
@@ -139,48 +131,6 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 		}
 	}
 	
-	protected void sendPlanetList()
-	{
-		HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(this.getPlayerStats().spaceshipTier), this);
-
-		String temp = "";
-		int count = 0;
-
-		for (Entry<String, Integer> entry : map.entrySet())
-		{
-			temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "?" : ""));
-			count++;
-		}
-
-		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { this.getGameProfile().getName(), temp }), this);
-	}
-
-	protected void sendAirRemainingPacket()
-	{
-		final float f1 = Float.valueOf(this.getPlayerStats().tankInSlot1 == null ? 0.0F : this.getPlayerStats().tankInSlot1.getMaxDamage() / 90.0F);
-		final float f2 = Float.valueOf(this.getPlayerStats().tankInSlot2 == null ? 0.0F : this.getPlayerStats().tankInSlot2.getMaxDamage() / 90.0F);
-		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_AIR_REMAINING, new Object[] { MathHelper.floor_float(this.getPlayerStats().airRemaining / f1), MathHelper.floor_float(this.getPlayerStats().airRemaining2 / f2), this.getGameProfile().getName() }), this);
-	}
-
-	protected void sendThermalLevelPacket()
-	{
-		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_THERMAL_LEVEL, new Object[] { this.getPlayerStats().thermalLevel }), this);
-	}
-
-	protected void sendGearUpdatePacket(EnumModelPacket gearType)
-	{
-		this.sendGearUpdatePacket(gearType, -1);
-	}
-
-	private void sendGearUpdatePacket(EnumModelPacket gearType, int subtype)
-	{
-		MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
-		if (theServer != null && PlayerUtil.getPlayerForUsernameVanilla(theServer, this.getGameProfile().getName()) != null)
-		{
-			GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, new Object[] { this.getGameProfile().getName(), gearType.ordinal(), subtype }), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 50.0D));
-		}
-	}
-
 	@Override
 	public void wakeUpPlayer(boolean par1, boolean par2, boolean par3)
 	{
@@ -200,27 +150,6 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 			{
 				super.wakeUpPlayer(par1, par2, par3);
 			}
-		}
-	}
-
-	public void setUsingParachute(boolean tf)
-	{
-		this.getPlayerStats().usingParachute = tf;
-
-		if (tf)
-		{
-			int subtype = -1;
-
-			if (this.getPlayerStats().parachuteInSlot != null)
-			{
-				subtype = this.getPlayerStats().parachuteInSlot.getItemDamage();
-			}
-
-			this.sendGearUpdatePacket(EnumModelPacket.ADD_PARACHUTE, subtype);
-		}
-		else
-		{
-			this.sendGearUpdatePacket(EnumModelPacket.REMOVE_PARACHUTE);
 		}
 	}
 
@@ -263,9 +192,4 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 
         return super.attackEntityFrom(par1DamageSource, par2);
     }
-
-	public static enum EnumModelPacket
-	{
-		ADDMASK, REMOVEMASK, ADDGEAR, REMOVEGEAR, ADDLEFTREDTANK, ADDLEFTORANGETANK, ADDLEFTGREENTANK, REMOVE_LEFT_TANK, ADDRIGHTREDTANK, ADDRIGHTORANGETANK, ADDRIGHTGREENTANK, REMOVE_RIGHT_TANK, ADD_PARACHUTE, REMOVE_PARACHUTE, ADD_FREQUENCY_MODULE, REMOVE_FREQUENCY_MODULE, ADD_THERMAL_HELMET, ADD_THERMAL_CHESTPLATE, ADD_THERMAL_LEGGINGS, ADD_THERMAL_BOOTS, REMOVE_THERMAL_HELMET, REMOVE_THERMAL_CHESTPLATE, REMOVE_THERMAL_LEGGINGS, REMOVE_THERMAL_BOOTS
-	}
 }
