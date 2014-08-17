@@ -108,9 +108,23 @@ public class EnergyConfigHandler
 
 		EnergyConfigHandler.displayEnergyUnitsBC = EnergyConfigHandler.config.get("Display", "If BuildCraft is loaded, show Galacticraft machines energy as MJ instead of gJ?", false).getBoolean(false);
 		EnergyConfigHandler.displayEnergyUnitsIC2 = EnergyConfigHandler.config.get("Display", "If IndustrialCraft2 is loaded, show Galacticraft machines energy as EU instead of gJ?", false).getBoolean(false);
+		EnergyConfigHandler.displayEnergyUnitsMek = EnergyConfigHandler.config.get("Display", "If Mekanism is loaded, show Galacticraft machines energy as Joules (J) instead of gJ?", false).getBoolean(false);
+		EnergyConfigHandler.displayEnergyUnitsRF = EnergyConfigHandler.config.get("Display", "Show Galacticraft machines energy in RF instead of gJ?", false).getBoolean(false);
 		if (!EnergyConfigHandler.isBuildcraftLoaded()) EnergyConfigHandler.displayEnergyUnitsBC = false;
 		if (!EnergyConfigHandler.isIndustrialCraft2Loaded()) EnergyConfigHandler.displayEnergyUnitsIC2 = false;
-		if (EnergyConfigHandler.isIndustrialCraft2Loaded()) EnergyConfigHandler.displayEnergyUnitsBC = false;
+		if (!EnergyConfigHandler.isMekanismLoaded()) EnergyConfigHandler.displayEnergyUnitsMek = false;
+		if (EnergyConfigHandler.displayEnergyUnitsIC2) EnergyConfigHandler.displayEnergyUnitsBC = false;
+		if (EnergyConfigHandler.displayEnergyUnitsMek)
+		{
+			EnergyConfigHandler.displayEnergyUnitsBC = false;
+			EnergyConfigHandler.displayEnergyUnitsIC2 = false;
+		}
+		if (EnergyConfigHandler.displayEnergyUnitsRF)
+		{
+			EnergyConfigHandler.displayEnergyUnitsBC = false;
+			EnergyConfigHandler.displayEnergyUnitsIC2 = false;
+			EnergyConfigHandler.displayEnergyUnitsMek = false;
+		}
 		
 		EnergyConfigHandler.config.save();
 	}
