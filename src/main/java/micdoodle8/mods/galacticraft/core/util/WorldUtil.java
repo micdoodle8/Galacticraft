@@ -197,6 +197,7 @@ public class WorldUtil
 			}
 		}
 
+		GCLog.info("Failed to find matching world for '"+par1String+"'");
 		return null;
 	}
 
