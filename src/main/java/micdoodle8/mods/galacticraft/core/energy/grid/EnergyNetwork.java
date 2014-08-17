@@ -295,6 +295,8 @@ public class EnergyNetwork implements IElectricityNetwork
 						} catch (Exception ex) {
 							if (ConfigManagerCore.enableDebug) ex.printStackTrace();
 						}
+						//Cap IC2 power transfer at 128EU/t for standard Alu wire, 256EU/t for heavy Alu wire
+						result = Math.max(result, (this.networkTierGC == 2) ? 256D : 128D);
 						e = (float) result * EnergyConfigHandler.IC2_RATIO;
 					}
 					else if (isBCLoaded && EnergyConfigHandler.getBuildcraftVersion() == 6 && MjAPI.getMjBattery(acceptor, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom) != null)
