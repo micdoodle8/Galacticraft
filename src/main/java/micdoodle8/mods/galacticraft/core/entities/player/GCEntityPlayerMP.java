@@ -5,21 +5,12 @@ import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
-import micdoodle8.mods.galacticraft.api.event.oxygen.GCCoreOxygenSuffocationEvent;
-import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
-import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
-import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
-import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
-import micdoodle8.mods.galacticraft.core.entities.EntityMeteor;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -31,11 +22,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemArmorAsteroids;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ItemInWorldManager;
 import net.minecraft.util.ChunkCoordinates;
@@ -44,10 +31,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map.Entry;
 
 public class GCEntityPlayerMP extends EntityPlayerMP
@@ -95,15 +79,18 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 	public void moveEntity(double par1, double par3, double par5)
 	{
 		super.moveEntity(par1, par3, par5);
-		this.updateFeet(par1, par5);
+
+		// If the player is on the moon, not airbourne and not riding anything
+		if (this.worldObj.provider instanceof WorldProviderMoon && !this.worldObj.isRemote && this.ridingEntity == null)
+		{	
+			this.updateFeet(par1, par5);
+		}
 	}
 
 	private void updateFeet(double motionX, double motionZ)
 	{
 		double motionSqrd = motionX * motionX + motionZ * motionZ;
-
-		// If the player is on the moon, not airbourne and not riding anything
-		if (this.worldObj.provider instanceof WorldProviderMoon && motionSqrd > 0.001D && this.ridingEntity == null)
+		if (motionSqrd > 0.001D)
 		{
 			int iPosX = MathHelper.floor_double(this.posX);
 			int iPosY = MathHelper.floor_double(this.posY) - 1;
@@ -115,15 +102,16 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 				// And is the correct metadata (moon turf)
 				if (this.worldObj.getBlockMetadata(iPosX, iPosY, iPosZ) == 5)
 				{
+					GCPlayerStats playerStats = this.getPlayerStats(); 
 					// If it has been long enough since the last step
-					if (this.getPlayerStats().distanceSinceLastStep > 0.35D)
+					if (playerStats.distanceSinceLastStep > 0.35D)
 					{
 						Vector3 pos = new Vector3(this);
 						// Set the footprint position to the block below and add random number to stop z-fighting
 						pos.y = MathHelper.floor_double(this.posY - 1D) + this.rand.nextFloat() / 100.0F;
 
 						// Adjust footprint to left or right depending on step count
-						switch (this.getPlayerStats().lastStep)
+						switch (playerStats.lastStep)
 						{
 						case 0:
 							float a = (-this.rotationYaw + 90F) / 57.295779513F;
@@ -138,47 +126,19 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 						TickHandlerServer.addFootprint(new Footprint(this.worldObj.provider.dimensionId, pos, this.rotationYaw), this.worldObj.provider.dimensionId);
 
 						// Increment and cap step counter at 1
-						this.getPlayerStats().lastStep++;
-						this.getPlayerStats().lastStep %= 2;
-						this.getPlayerStats().distanceSinceLastStep = 0;
+						playerStats.lastStep++;
+						playerStats.lastStep %= 2;
+						playerStats.distanceSinceLastStep = 0;
 					}
 					else
 					{
-						this.getPlayerStats().distanceSinceLastStep += motionSqrd;
+						playerStats.distanceSinceLastStep += motionSqrd;
 					}
 				}
 			}
 		}
 	}
-
-	protected void checkCurrentItem()
-	{
-		ItemStack theCurrentItem = this.inventory.getCurrentItem();
-		boolean noAtmosphericCombustion = this.worldObj.provider instanceof IGalacticraftWorldProvider && (!((IGalacticraftWorldProvider)this.worldObj.provider).isGasPresent(IAtmosphericGas.OXYGEN) || ((IGalacticraftWorldProvider)this.worldObj.provider).isGasPresent(IAtmosphericGas.CO2));
-		if (noAtmosphericCombustion && theCurrentItem != null)
-		{
-			final int var1 = theCurrentItem.stackSize;
-			final int var2 = theCurrentItem.getItemDamage();
-
-			if (this.inventory.getCurrentItem().getItem() == Item.getItemFromBlock(Blocks.torch))
-			{
-				final ItemStack stack = new ItemStack(GCBlocks.unlitTorch, var1, 0);
-				this.inventory.mainInventory[this.inventory.currentItem] = stack;
-			}
-		}
-		else if (!noAtmosphericCombustion && theCurrentItem != null)
-		{
-			final int var1 = theCurrentItem.stackSize;
-			final int var2 = theCurrentItem.getItemDamage();
-
-			if (this.inventory.getCurrentItem().getItem() == Item.getItemFromBlock(GCBlocks.unlitTorch))
-			{
-				final ItemStack stack = new ItemStack(Blocks.torch, var1, 0);
-				this.inventory.mainInventory[this.inventory.currentItem] = stack;
-			}
-		}
-	}
-
+	
 	protected void sendPlanetList()
 	{
 		HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(this.getPlayerStats().spaceshipTier), this);
@@ -193,324 +153,6 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 		}
 
 		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { this.getGameProfile().getName(), temp }), this);
-	}
-
-	public static class ThermalArmorEvent extends cpw.mods.fml.common.eventhandler.Event
-	{
-		public ArmorAddResult armorResult = ArmorAddResult.NOTHING;
-		public final int armorIndex;
-		public final ItemStack armorStack;
-
-		public ThermalArmorEvent(int armorIndex, ItemStack armorStack)
-		{
-			this.armorIndex = armorIndex;
-			this.armorStack = armorStack;
-		}
-
-		public void setArmorAddResult(ArmorAddResult result)
-		{
-			this.armorResult = result;
-		}
-
-		public enum ArmorAddResult
-		{
-			ADD, REMOVE, NOTHING
-		}
-	}
-
-	protected void checkThermalStatus()
-	{
-		GCPlayerStats playerStats = this.getPlayerStats();
-		ItemStack thermalPaddingHelm = playerStats.extendedInventory.getStackInSlot(6);
-		ItemStack thermalPaddingChestplate = playerStats.extendedInventory.getStackInSlot(7);
-		ItemStack thermalPaddingLeggings = playerStats.extendedInventory.getStackInSlot(8);
-		ItemStack thermalPaddingBoots = playerStats.extendedInventory.getStackInSlot(9);
-
-		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && !this.capabilities.isCreativeMode)
-		{
-			IGalacticraftWorldProvider provider = (IGalacticraftWorldProvider) this.worldObj.provider;
-			float thermalLevelMod = provider.getThermalLevelModifier();
-
-			if (thermalLevelMod != 0)
-			{
-				int thermalLevelCooldownBase = (int) Math.floor(1 / (thermalLevelMod * (thermalLevelMod > 0 ? 1 : -1)) * 200);
-				int thermalLevelTickCooldown = thermalLevelCooldownBase;
-
-				if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
-				{
-					if (thermalPaddingHelm != null && thermalPaddingChestplate != null && thermalPaddingLeggings != null && thermalPaddingBoots != null)
-					{
-						int last = playerStats.thermalLevel;
-
-						if (playerStats.thermalLevel < 0)
-						{
-							playerStats.thermalLevel += 1;
-						}
-						else if (playerStats.thermalLevel > 0)
-						{
-							playerStats.thermalLevel -= 1;
-						}
-
-						if (playerStats.thermalLevel != last)
-						{
-							this.sendThermalLevelPacket();
-						}
-
-						// Player is wearing all required thermal padding items
-						return;
-					}
-
-					if (thermalPaddingHelm != null)
-					{
-						thermalLevelTickCooldown += thermalLevelCooldownBase;
-					}
-
-					if (thermalPaddingChestplate != null)
-					{
-						thermalLevelTickCooldown += thermalLevelCooldownBase;
-					}
-
-					if (thermalPaddingLeggings != null)
-					{
-						thermalLevelTickCooldown += thermalLevelCooldownBase;
-					}
-
-					if (thermalPaddingBoots != null)
-					{
-						thermalLevelTickCooldown += thermalLevelCooldownBase;
-					}
-				}
-
-				if ((this.ticksExisted - 1) % thermalLevelTickCooldown == 0)
-				{
-					int last = playerStats.thermalLevel;
-					playerStats.thermalLevel = (int) Math.min(Math.max(playerStats.thermalLevel + thermalLevelMod, -22), 22);
-
-					if (playerStats.thermalLevel != last)
-					{
-						this.sendThermalLevelPacket();
-					}
-
-					if (Math.abs(playerStats.thermalLevel) >= 22)
-					{
-						this.damageEntity(DamageSourceGC.thermal, 1.5F); // TODO New thermal damage source
-					}
-				}
-
-				if (playerStats.thermalLevel < -15)
-				{
-					this.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 5, 2, true));
-				}
-
-				if (playerStats.thermalLevel > 15)
-				{
-					this.addPotionEffect(new PotionEffect(Potion.confusion.id, 5, 2, true));
-
-				}
-			}
-		}
-	}
-
-	protected void checkOxygen()
-	{
-		final ItemStack tankInSlot = this.getPlayerStats().extendedInventory.getStackInSlot(2);
-		final ItemStack tankInSlot2 = this.getPlayerStats().extendedInventory.getStackInSlot(3);
-
-		final int drainSpacing = OxygenUtil.getDrainSpacing(tankInSlot, tankInSlot2);
-
-		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider) this.worldObj.provider).hasBreathableAtmosphere() && !this.capabilities.isCreativeMode && !(this.ridingEntity instanceof EntityLanderBase) && !(this.ridingEntity instanceof EntityAutoRocket))
-		{
-			GCPlayerStats playerStats = this.getPlayerStats();
-
-			if (tankInSlot == null)
-			{
-				playerStats.airRemaining = 0;
-			}
-
-			if (tankInSlot2 == null)
-			{
-				playerStats.airRemaining2 = 0;
-			}
-
-			if (drainSpacing > 0)
-			{
-				if ((this.ticksExisted - 1) % drainSpacing == 0 && !OxygenUtil.isAABBInBreathableAirBlock(this) && !playerStats.usingPlanetSelectionGui)
-				{
-					if (tankInSlot != null && tankInSlot.getMaxDamage() - tankInSlot.getItemDamage() > 0)
-					{
-						tankInSlot.damageItem(1, this);
-					}
-
-					if (tankInSlot2 != null && tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage() > 0)
-					{
-						tankInSlot2.damageItem(1, this);
-					}
-				}
-
-				if (tankInSlot != null)
-				{
-					playerStats.airRemaining = tankInSlot.getMaxDamage() - tankInSlot.getItemDamage();
-				}
-
-				if (tankInSlot2 != null)
-				{
-					playerStats.airRemaining2 = tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage();
-				}
-			}
-			else
-			{
-				if ((this.ticksExisted - 1) % 60 == 0)
-				{
-					if (OxygenUtil.isAABBInBreathableAirBlock(this))
-					{
-						if (playerStats.airRemaining < 90 && tankInSlot != null)
-						{
-							playerStats.airRemaining = Math.min(playerStats.airRemaining + 1, tankInSlot.getMaxDamage() - tankInSlot.getItemDamage());
-						}
-
-						if (playerStats.airRemaining2 < 90 && tankInSlot2 != null)
-						{
-							playerStats.airRemaining2 = Math.min(playerStats.airRemaining2 + 1, tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage());
-						}
-					}
-					else
-					{
-						if (playerStats.airRemaining > 0)
-						{
-							playerStats.airRemaining = Math.max(playerStats.airRemaining - 1, 0);
-						}
-
-						if (playerStats.airRemaining2 > 0)
-						{
-							playerStats.airRemaining2 = Math.max(playerStats.airRemaining2 - 1, 0);
-						}
-					}
-				}
-			}
-
-			final boolean airEmpty = playerStats.airRemaining <= 0 && playerStats.airRemaining2 <= 0;
-
-			if (this.isOnLadder())
-			{
-				playerStats.oxygenSetupValid = playerStats.lastOxygenSetupValid;
-			}
-			else
-                playerStats.oxygenSetupValid = !((!OxygenUtil.hasValidOxygenSetup(this) || airEmpty) && !OxygenUtil.isAABBInBreathableAirBlock(this));
-
-			if (!playerStats.oxygenSetupValid && !this.worldObj.isRemote && this.isEntityAlive())
-			{
-				if (playerStats.damageCounter == 0)
-				{
-					playerStats.damageCounter = ConfigManagerCore.suffocationCooldown;
-
-					GCCoreOxygenSuffocationEvent suffocationEvent = new GCCoreOxygenSuffocationEvent.Pre(this);
-					MinecraftForge.EVENT_BUS.post(suffocationEvent);
-
-					if (!suffocationEvent.isCanceled())
-					{
-						this.attackEntityFrom(DamageSourceGC.oxygenSuffocation, ConfigManagerCore.suffocationDamage);
-
-						GCCoreOxygenSuffocationEvent suffocationEventPost = new GCCoreOxygenSuffocationEvent.Post(this);
-						MinecraftForge.EVENT_BUS.post(suffocationEventPost);
-					}
-				}
-			}
-		}
-		else if ((this.ticksExisted - 1) % 20 == 0 && !this.capabilities.isCreativeMode && this.getPlayerStats().airRemaining < 90)
-		{
-			this.getPlayerStats().airRemaining += 1;
-			this.getPlayerStats().airRemaining2 += 1;
-		}
-		else if (this.capabilities.isCreativeMode)
-		{
-			this.getPlayerStats().airRemaining = 90;
-			this.getPlayerStats().airRemaining2 = 90;
-		}
-		else
-		{
-			this.getPlayerStats().oxygenSetupValid = true;
-		}
-	}
-
-	protected void throwMeteors()
-	{
-		if (this.worldObj.provider instanceof IGalacticraftWorldProvider && FMLCommonHandler.instance().getEffectiveSide() != Side.CLIENT)
-		{
-			if (((IGalacticraftWorldProvider) this.worldObj.provider).getMeteorFrequency() > 0)
-			{
-				final int f = (int) (((IGalacticraftWorldProvider) this.worldObj.provider).getMeteorFrequency() * 1000D);
-
-				if (this.worldObj.rand.nextInt(f) == 0)
-				{
-					final EntityPlayer closestPlayer = this.worldObj.getClosestPlayerToEntity(this, 100);
-
-					if (closestPlayer == null || closestPlayer.getEntityId() <= this.getEntityId())
-					{
-						int x, y, z;
-						double motX, motZ;
-						x = this.worldObj.rand.nextInt(20) - 10;
-						y = this.worldObj.rand.nextInt(20) + 200;
-						z = this.worldObj.rand.nextInt(20) - 10;
-						motX = this.worldObj.rand.nextDouble() * 5;
-						motZ = this.worldObj.rand.nextDouble() * 5;
-
-						final EntityMeteor meteor = new EntityMeteor(this.worldObj, this.posX + x, this.posY + y, this.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 1);
-
-						if (!this.worldObj.isRemote)
-						{
-							this.worldObj.spawnEntityInWorld(meteor);
-						}
-					}
-				}
-
-				if (this.worldObj.rand.nextInt(f * 3) == 0)
-				{
-					final EntityPlayer closestPlayer = this.worldObj.getClosestPlayerToEntity(this, 100);
-
-					if (closestPlayer == null || closestPlayer.getEntityId() <= this.getEntityId())
-					{
-						int x, y, z;
-						double motX, motZ;
-						x = this.worldObj.rand.nextInt(20) - 10;
-						y = this.worldObj.rand.nextInt(20) + 200;
-						z = this.worldObj.rand.nextInt(20) - 10;
-						motX = this.worldObj.rand.nextDouble() * 5;
-						motZ = this.worldObj.rand.nextDouble() * 5;
-
-						final EntityMeteor meteor = new EntityMeteor(this.worldObj, this.posX + x, this.posY + y, this.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 6);
-
-						if (!this.worldObj.isRemote)
-						{
-							this.worldObj.spawnEntityInWorld(meteor);
-						}
-					}
-				}
-			}
-		}
-	}
-
-	protected void updateSchematics()
-	{
-		SchematicRegistry.addUnlockedPage(this, SchematicRegistry.getMatchingRecipeForID(0));
-		SchematicRegistry.addUnlockedPage(this, SchematicRegistry.getMatchingRecipeForID(Integer.MAX_VALUE));
-
-		Collections.sort(this.getPlayerStats().unlockedSchematics);
-
-		if (this.playerNetServerHandler != null && (this.getPlayerStats().unlockedSchematics.size() != this.getPlayerStats().lastUnlockedSchematics.size() || (this.ticksExisted - 1) % 100 == 0))
-		{
-			Integer[] iArray = new Integer[this.getPlayerStats().unlockedSchematics.size()];
-
-			for (int i = 0; i < iArray.length; i++)
-			{
-				ISchematicPage page = this.getPlayerStats().unlockedSchematics.get(i);
-				iArray[i] = page == null ? -2 : page.getPageID();
-			}
-
-			List<Object> objList = new ArrayList<Object>();
-			objList.add(iArray);
-
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SCHEMATIC_LIST, objList), this);
-		}
 	}
 
 	protected void sendAirRemainingPacket()
