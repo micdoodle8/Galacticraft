@@ -76,7 +76,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
 	@Override
 	public String getDimensionName()
 	{
-		return this.getCelestialBody().getLocalizedName();
+		return this.getCelestialBody().getUnlocalizedName();
 	}
 
 	@Override
