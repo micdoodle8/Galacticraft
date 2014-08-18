@@ -277,7 +277,9 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
 				{
 					this.markDirty();
 				}
-				return new RemovalResult(EnumCargoLoadingState.SUCCESS, new ItemStack(stackAt.getItem(), 1, stackAt.getItemDamage()));
+				ItemStack resultStack = stackAt.copy();
+				resultStack.stackSize = 1;
+				return new RemovalResult(EnumCargoLoadingState.SUCCESS, resultStack);
 			}
 		}
 
