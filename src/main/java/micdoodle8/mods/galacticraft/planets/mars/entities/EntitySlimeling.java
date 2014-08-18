@@ -306,7 +306,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 	{
 		if (this.isTamed())
 		{
-			return 20 + 30.0 * ((double) this.age / (double) this.MAX_AGE);
+			return 20.001D + 30.0 * ((double) this.age / (double) this.MAX_AGE);
 		}
 		else
 		{
