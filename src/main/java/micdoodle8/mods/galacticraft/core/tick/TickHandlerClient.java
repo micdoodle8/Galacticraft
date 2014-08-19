@@ -108,24 +108,24 @@ public class TickHandlerClient
 				continue;
 			}
 
-			List<Integer> metaList = Lists.newArrayList();
-			metaList.add(meta == -1 ? 0 : meta);
+			List<Integer> metaList;
 
 			for (BlockMetaList blockMetaList : ClientProxyCore.detectableBlocks)
 			{
 				if (blockMetaList.getBlock() == block)
 				{
-					metaList.addAll(blockMetaList.getMetaList());
+					metaList = blockMetaList.getMetaList();
 					break;
 				}
 			}
-
-			if (metaList.size() == 0)
-			{
-				metaList.add(0);
-			}
-
-			ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
+            
+            if (metaList == null) {
+                metaList = Lists.newArrayList();
+                metaList.add(meta == -1 ? 0 : meta);
+                ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
+            } else {
+                metaList.add(meta == -1 ? 0 : meta);
+            }
 		}
 	}
 
