@@ -79,6 +79,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, Ite
 			{
 				((TileEntitySlimelingEgg) tile).timeToHatch = world.rand.nextInt(50) + 20;
 				((TileEntitySlimelingEgg) tile).lastTouchedPlayerUUID = VersionUtil.mcVersionMatches("1.7.2") ? player.getCommandSenderName() : player.getUniqueID().toString();
+				((TileEntitySlimelingEgg) tile).lastTouchedPlayerName = player.getCommandSenderName();
 			}
 
 			return false;

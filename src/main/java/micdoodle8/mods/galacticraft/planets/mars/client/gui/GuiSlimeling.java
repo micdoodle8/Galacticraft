@@ -262,7 +262,7 @@ public class GuiSlimeling extends GuiScreen
 		this.stayButton.displayString = this.slimeling.isSitting() ? "Follow" : "Sit";
 
 		this.fontRendererObj.drawString("Name: ", dX + var5 + 55, dY + var6 - 6, 0x404040);
-		this.fontRendererObj.drawString("Owner: " + this.slimeling.getOwner().getCommandSenderName(), dX + var5 + 55, dY + var6 + 7, 0x404040);
+		this.fontRendererObj.drawString("Owner: " + this.slimeling.getOwnerUsername(), dX + var5 + 55, dY + var6 + 7, 0x404040);
 		this.fontRendererObj.drawString("Kills: " + this.slimeling.getKillCount(), dX + var5 + 55, dY + var6 + 20, 0x404040);
 		this.fontRendererObj.drawString("Scale: " + Math.round(this.slimeling.getAge() / (float) this.slimeling.MAX_AGE * 1000.0F) / 10.0F + "%", dX + var5 + 55, dY + var6 + 33, 0x404040);
 		str = "" + (this.slimeling.isSitting() ? "Sitting" : "Following");

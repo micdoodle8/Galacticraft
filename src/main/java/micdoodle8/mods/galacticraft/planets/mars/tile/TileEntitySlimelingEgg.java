@@ -11,6 +11,7 @@ public class TileEntitySlimelingEgg extends TileEntity
 {
 	public int timeToHatch = -1;
 	public String lastTouchedPlayerUUID = "";
+	public String lastTouchedPlayerName = "";
 
 	@Override
 	public void updateEntity()
@@ -49,6 +50,7 @@ public class TileEntitySlimelingEgg extends TileEntity
 
 				slimeling.setPosition(this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord + 0.5);
                 VersionUtil.setSlimelingOwner(slimeling, this.lastTouchedPlayerUUID);
+                slimeling.setOwnerUsername(this.lastTouchedPlayerName);
 
 				if (!this.worldObj.isRemote)
 				{
@@ -71,6 +73,7 @@ public class TileEntitySlimelingEgg extends TileEntity
 		super.readFromNBT(nbt);
 		this.timeToHatch = nbt.getInteger("TimeToHatch");
         VersionUtil.readSlimelingEggFromNBT(this, nbt);
+        this.lastTouchedPlayerName = nbt.getString("OwnerUsername");
 	}
 
 	@Override
@@ -79,5 +82,6 @@ public class TileEntitySlimelingEgg extends TileEntity
 		super.writeToNBT(nbt);
 		nbt.setInteger("TimeToHatch", this.timeToHatch);
 		nbt.setString("OwnerUUID", this.lastTouchedPlayerUUID);
+		nbt.setString("OwnerUsername", this.lastTouchedPlayerName);
 	}
 }

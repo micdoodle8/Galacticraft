@@ -195,6 +195,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 		this.dataWatcher.addObject(25, new Float(this.attackDamage));
 		this.dataWatcher.addObject(26, new Integer(this.kills));
 		this.dataWatcher.addObject(27, new ItemStack(Blocks.stone));
+		this.dataWatcher.addObject(28, "");
 		this.setName("Unnamed");
 	}
 
@@ -211,6 +212,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 		nbt.setInteger("FavFoodID", this.favFoodID);
 		nbt.setFloat("SlimelingDamage", this.attackDamage);
 		nbt.setInteger("SlimelingKills", this.kills);
+        nbt.setString("OwnerUsername", this.getOwnerUsername());
 	}
 
 	@Override
@@ -226,6 +228,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 		this.favFoodID = nbt.getInteger("FavFoodID");
 		this.attackDamage = nbt.getFloat("SlimelingDamage");
 		this.kills = nbt.getInteger("SlimelingKills");
+        this.setOwnerUsername(nbt.getString("OwnerUsername"));
 		this.setColorRed(this.colorRed);
 		this.setColorGreen(this.colorGreen);
 		this.setColorBlue(this.colorBlue);
@@ -299,6 +302,16 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 		if (!this.worldObj.isRemote)
 		{
 			this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.getMaxHealthSlimeling());
+
+            if (this.getOwnerUsername().isEmpty())
+            {
+                EntityLivingBase owner = this.getOwner();
+
+                if (owner != null)
+                {
+                    this.setOwnerUsername(owner.getCommandSenderName());
+                }
+            }
 		}
 	}
 
@@ -442,6 +455,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 					this.setSittingAI(true);
 					this.setHealth(20.0F);
                     VersionUtil.setSlimelingOwner(this, VersionUtil.mcVersionMatches("1.7.10") ? par1EntityPlayer.getUniqueID().toString() : (VersionUtil.mcVersionMatches("1.7.2") ? par1EntityPlayer.getCommandSenderName() : ""));
+                    this.setOwnerUsername(par1EntityPlayer.getCommandSenderName());
 					this.playTameEffect(true);
 					this.worldObj.setEntityState(this, (byte) 7);
 				}
@@ -461,6 +475,17 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
     public void setSittingAI(boolean sitting)
     {
         this.aiSit.setSitting(sitting);
+    }
+
+    public String getOwnerUsername()
+    {
+        String s = this.dataWatcher.getWatchableObjectString(28);
+        return s == null || s.length() == 0 ? s : "";
+    }
+
+    public void setOwnerUsername(String username)
+    {
+        this.dataWatcher.updateObject(28, username);
     }
 
 	@Override
@@ -485,6 +510,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 			if (s != null && s.trim().length() > 0)
 			{
                 VersionUtil.setSlimelingOwner(newSlimeling, s);
+                newSlimeling.setOwnerUsername(this.getOwnerUsername());
 				newSlimeling.setTamed(true);
 			} else
 			{
@@ -492,6 +518,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 				if (s != null && s.trim().length() > 0)
 				{
 	                VersionUtil.setSlimelingOwner(newSlimeling, s);
+                    newSlimeling.setOwnerUsername(this.getOwnerUsername());
 					newSlimeling.setTamed(true);
 				}				
 			}
