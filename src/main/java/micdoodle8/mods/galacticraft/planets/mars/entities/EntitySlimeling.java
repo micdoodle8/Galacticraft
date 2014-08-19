@@ -480,7 +480,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
     public String getOwnerUsername()
     {
         String s = this.dataWatcher.getWatchableObjectString(28);
-        return s == null || s.length() == 0 ? s : "";
+        return s == null || s.length() == 0 ? "" : s;
     }
 
     public void setOwnerUsername(String username)
