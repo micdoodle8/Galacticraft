@@ -30,12 +30,16 @@ public class OxygenPressureProtocol
 				String name = null;
 				
 				int meta = -1;
-				try {
-					meta = Integer.parseInt(s.substring(s.lastIndexOf(':') + 1, s.length()));
-				} catch (NumberFormatException ex) {}
-				
-				if (meta == -1) name = s;
-				else name = s.substring(0, s.lastIndexOf(':'));
+                if (s.indexOf(':') != -1) {
+                    try {
+                        meta = Integer.parseInt(s.substring(s.lastIndexOf(':') + 1, s.length()));
+                    } catch (NumberFormatException ex) {}
+                    
+                    if (meta == -1) name = s;
+                    else name = s.substring(0, s.lastIndexOf(':'));
+                } else {
+                    name = s;
+                }
 				
 				Block b = Block.getBlockFromName(name);
 				if (b == null)
