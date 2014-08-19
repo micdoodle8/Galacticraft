@@ -25,20 +25,20 @@ public class OxygenPressureProtocol
 		{
 			try
 			{
-                String name = null;
-                int meta = -1;
-                try {
-                    meta = Integer.parseInt(s.substring(s.lastIndexOf(':') + 1, s.length()));
-                } catch (NumberFormatException ex) {}
+				String name = null;
+				int meta = -1;
+				try {
+					meta = Integer.parseInt(s.substring(s.lastIndexOf(':') + 1, s.length()));
+				} catch (NumberFormatException ex) {}
 				if (meta == -1) name = s;
-                else name = s.substring(0, s.lastIndexOf(':'));
-                Block b = Block.getBlockFromName(name);
-                if (Block.getIdFromBlock(b) == 0) continue;
-                try {
-                    Integer.parseInt(name);
-                    String bName = GameData.blockRegistry.getNameForObject(b);
-                    System.out.println("Galacticraft config External Sealable IDs: the use of numeric IDs is highly discouraged, please use " + bName + " instead of " + name);
-                } catch (NumberFormatException ex) {}
+				else name = s.substring(0, s.lastIndexOf(':'));
+				Block b = Block.getBlockFromName(name);
+				if (Block.getIdFromBlock(b) == 0) continue;
+				try {
+					Integer.parseInt(name);
+					String bName = GameData.blockRegistry.getNameForObject(b);
+					System.out.println("Galacticraft config External Sealable IDs: the use of numeric IDs is highly discouraged, please use " + bName + " instead of " + name);
+				} catch (NumberFormatException ex) {}
 
 				if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(b))
 				{
@@ -92,9 +92,9 @@ public class OxygenPressureProtocol
 
 		if (block.isOpaqueCube())
 		{
-            return block instanceof BlockGravel || block.getMaterial() == Material.cloth || block instanceof BlockSponge;
+			return block instanceof BlockGravel || block.getMaterial() == Material.cloth || block instanceof BlockSponge;
 
-        }
+		}
 
 		if (block instanceof BlockGlass || block instanceof BlockStainedGlass)
 		{
