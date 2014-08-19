@@ -6,8 +6,10 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -26,19 +28,31 @@ public class OxygenPressureProtocol
 			try
 			{
 				String name = null;
+				
 				int meta = -1;
 				try {
 					meta = Integer.parseInt(s.substring(s.lastIndexOf(':') + 1, s.length()));
 				} catch (NumberFormatException ex) {}
+				
 				if (meta == -1) name = s;
 				else name = s.substring(0, s.lastIndexOf(':'));
+				
 				Block b = Block.getBlockFromName(name);
-				if (Block.getIdFromBlock(b) == 0) continue;
+				if (b == null)
+				{
+					GCLog.severe("[config] External Sealable IDs: unrecognised block name '" + name + "'.");
+					continue;					
+				}
 				try {
 					Integer.parseInt(name);
-					String bName = GameData.blockRegistry.getNameForObject(b);
-					System.out.println("Galacticraft config External Sealable IDs: the use of numeric IDs is highly discouraged, please use " + bName + " instead of " + name);
+					String bName = GameData.getBlockRegistry().getNameForObject(b);
+					GCLog.info("[config] External Sealable IDs: the use of numeric IDs is discouraged, please use " + bName + " instead of " + name);
 				} catch (NumberFormatException ex) {}
+				if (b == Blocks.air)
+				{	
+					GCLog.info("[config] External Sealable IDs: not a good idea to make air sealable, skipping that!");
+					continue;
+				}
 
 				if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(b))
 				{
@@ -48,14 +62,14 @@ public class OxygenPressureProtocol
 				}
 				else
 				{
-					final ArrayList<Integer> a = new ArrayList<Integer>();
-					a.add(meta);
-					OxygenPressureProtocol.nonPermeableBlocks.put(b, a);
+					final ArrayList<Integer> list = new ArrayList<Integer>();
+					list.add(meta);
+					OxygenPressureProtocol.nonPermeableBlocks.put(b, list);
 				}
 			}
 			catch (final Exception e)
 			{
-				System.err.println("Galacticraft config External Sealable IDs: error parsing '" + s + "'  Must be in the form ID#:Metadata");
+				GCLog.severe("[config] External Sealable IDs: error parsing '" + s + "'  Must be in the form Blockname or BlockName:metadata");
 			}
 		}
 	}

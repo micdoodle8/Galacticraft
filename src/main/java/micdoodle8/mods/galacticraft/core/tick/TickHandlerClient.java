@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -57,9 +58,11 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+
 import tconstruct.client.tabs.TabRegistry;
 
 import java.util.List;
@@ -81,32 +84,42 @@ public class TickHandlerClient
 		for (final String s : ConfigManagerCore.detectableIDs)
 		{
 			String name = s.substring(0, s.lastIndexOf(':'));
+			
 			Block block = Block.getBlockFromName(name);
-			Block blockID = Block.getIdFromBlock(block);
-			if (blockID == 0) continue;
-			List<Integer> metaList = Lists.newArrayList();
-			metaList.add(Integer.parseInt(s.substring(s.lastIndexOf(':') + 1, s.length())));
+			if (block == null)
+			{
+				GCLog.severe("[config] External Detectable IDs: unrecognised block name '" + name + "'.");
+				continue;					
+			}
 			try {
 				Integer.parseInt(name);
-				String bName = GameData.blockRegistry.getNameForObject(block);
-				System.out.println("Galacticraft config External Detectable IDs: the use of numeric IDs is highly discouraged, please use " + bName + " instead of " + name);
+				String bName = GameData.getBlockRegistry().getNameForObject(block);
+				GCLog.info("[config] External Detectable IDs: the use of numeric IDs is discouraged, please use " + bName + " instead of " + name);
 			} catch (NumberFormatException ex) {}
+			if (block == Blocks.air)
+			{	
+				GCLog.info("[config] External Detectable IDs: not a good idea to make air detectable, skipping that!");
+				continue;
+			}
+
+			List<Integer> metaList = Lists.newArrayList();
+			metaList.add(Integer.parseInt(s.substring(s.lastIndexOf(':') + 1, s.length())));
 
 			for (BlockMetaList blockMetaList : ClientProxyCore.detectableBlocks)
 			{
-				if (blockMetaList.getBlock() == blockID)
+				if (blockMetaList.getBlock() == block)
 				{
 					metaList.addAll(blockMetaList.getMetaList());
 					break;
 				}
 			}
 
-			if (!metaList.contains(0))
+			if (metaList.size() == 0)
 			{
 				metaList.add(0);
 			}
 
-			ClientProxyCore.detectableBlocks.add(new BlockMetaList(blockID, metaList));
+			ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
 		}
 	}
 
