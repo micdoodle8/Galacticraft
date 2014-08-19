@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
@@ -79,10 +80,17 @@ public class TickHandlerClient
 	{
 		for (final String s : ConfigManagerCore.detectableIDs)
 		{
-			final String[] split = s.split(":");
-			Block blockID = Block.getBlockById(Integer.parseInt(split[0]));
+            String name = s.substring(0, s.lastIndexOf(':'));
+            Block block = Block.getBlockFromName(name);
+			Block blockID = Block.getIdFromBlock(block);
+            if (blockID == 0) continue;
 			List<Integer> metaList = Lists.newArrayList();
-			metaList.add(Integer.parseInt(split[1]));
+			metaList.add(Integer.parseInt(s.substring(s.lastIndexOf(':') + 1, s.length())));
+            try {
+                Integer.parseInt(name);
+                String bName = GameData.blockRegistry.getNameForObject(block);
+                System.out.println("Galacticraft config External Detectable IDs: the use of numeric IDs is highly discouraged, please use " + bName + " instead of " + name);
+            } catch (NumberFormatException ex) {}
 
 			for (BlockMetaList blockMetaList : ClientProxyCore.detectableBlocks)
 			{
