@@ -73,7 +73,7 @@ public class OxygenPressureProtocol
 			}
 			catch (final Exception e)
 			{
-				GCLog.severe("[config] External Sealable IDs: error parsing '" + s + "'	 Must be in the form Blockname or BlockName:metadata");
+				GCLog.severe("[config] External Sealable IDs: error parsing '" + s + "' Must be in the form Blockname or BlockName:metadata");
 			}
 		}
 	}
