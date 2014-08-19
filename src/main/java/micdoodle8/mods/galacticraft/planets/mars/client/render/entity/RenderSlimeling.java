@@ -88,21 +88,22 @@ public class RenderSlimeling extends RenderLiving
 		if (!mc.gameSettings.hideGUI && !par1EntityLivingBase.isInvisible() && (mc.currentScreen == null || !((mc.currentScreen instanceof GuiSlimeling || mc.currentScreen instanceof GuiSlimelingInventory) && GuiSlimeling.renderingOnGui)))
 		{
 			this.renderLivingLabelWithColor(par1EntityLivingBase, ((EntitySlimeling) par1EntityLivingBase).getName(), par2, par4 + 0.33, par6, 64, 0, 0, 0);
-			double health = ((EntitySlimeling) par1EntityLivingBase).getHealth();
-			double maxHealth = ((EntitySlimeling) par1EntityLivingBase).getMaxHealth();
-			double difference = health / maxHealth;
+			int health = (int) Math.floor(((EntitySlimeling) par1EntityLivingBase).getHealth() + 0.6D);
+			int maxHealth = (int) ((EntitySlimeling) par1EntityLivingBase).getMaxHealth();
+			if (health > maxHealth) health = maxHealth;
+			float difference = health / maxHealth;
 
-			if (difference < 0.33333)
+			if (difference < 0.33333F)
 			{
-				this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int) Math.ceil(health) + " / " + (int) Math.ceil(maxHealth), par2, par4, par6, 64, 1, 0, 0);
+				this.renderLivingLabelWithColor(par1EntityLivingBase, "" + health + " / " + maxHealth, par2, par4, par6, 64, 1, 0, 0);
 			}
-			else if (difference < 0.66666)
+			else if (difference < 0.66666F)
 			{
-				this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int) Math.ceil(health - 0.5D) + " / " + (int) Math.ceil(maxHealth), par2, par4, par6, 64, 1, 1, 0);
+				this.renderLivingLabelWithColor(par1EntityLivingBase, "" + health + " / " + maxHealth, par2, par4, par6, 64, 1, 1, 0);
 			}
 			else
 			{
-				this.renderLivingLabelWithColor(par1EntityLivingBase, "" + (int) Math.ceil(health - 0.5D) + " / " + (int) Math.ceil(maxHealth), par2, par4, par6, 64, 0, 1, 0);
+				this.renderLivingLabelWithColor(par1EntityLivingBase, "" + health + " / " + maxHealth, par2, par4, par6, 64, 0, 1, 0);
 			}
 		}
 

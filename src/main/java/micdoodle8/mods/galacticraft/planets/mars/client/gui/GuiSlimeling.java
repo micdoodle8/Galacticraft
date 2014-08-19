@@ -272,6 +272,7 @@ public class GuiSlimeling extends GuiScreen
 		str = "Favorite Food: ";
 		this.fontRendererObj.drawString(str, dX + var5 + 55, dY + var6 + 46 + 13, 0x404040);
 
+        RenderHelper.enableGUIStandardItemLighting();
 		GuiSlimeling.drawItems.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.renderEngine, new ItemStack(this.slimeling.getFavoriteFood()), dX + var5 + 55 + this.fontRendererObj.getStringWidth(str), dY + var6 + 41 + 14);
 
 		GL11.glPopMatrix();

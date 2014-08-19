@@ -28,6 +28,8 @@ import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -195,6 +197,7 @@ public class WorldUtil
 			}
 		}
 
+		GCLog.info("Failed to find matching world for '"+par1String+"'");
 		return null;
 	}
 
@@ -685,48 +688,49 @@ public class WorldUtil
 		//Update PlayerStatsGC
 		if (player != null)
 		{
-			if (ridingRocket == null && type.useParachute() && player.getPlayerStats().extendedInventory.getStackInSlot(4) != null && player.getPlayerStats().extendedInventory.getStackInSlot(4).getItem() instanceof ItemParaChute)
+			GCPlayerStats playerStats = player.getPlayerStats();
+			if (ridingRocket == null && type.useParachute() && playerStats.extendedInventory.getStackInSlot(4) != null && playerStats.extendedInventory.getStackInSlot(4).getItem() instanceof ItemParaChute)
 			{
-				player.setUsingParachute(true);
+				GCPlayerHandler.setUsingParachute(player, playerStats, true);
 			}
 			else
 			{
-				player.setUsingParachute(false);
+				GCPlayerHandler.setUsingParachute(player, playerStats, false);
 			}
 
-            if (player.getPlayerStats().rocketStacks != null && player.getPlayerStats().rocketStacks.length > 0)
+            if (playerStats.rocketStacks != null && playerStats.rocketStacks.length > 0)
 			{
-				for (int stack = 0; stack < player.getPlayerStats().rocketStacks.length; stack++)
+				for (int stack = 0; stack < playerStats.rocketStacks.length; stack++)
 				{
 					if (transferInv)
 					{
-						if (player.getPlayerStats().rocketStacks[stack] == null)
+						if (playerStats.rocketStacks[stack] == null)
 						{
-							if (stack == player.getPlayerStats().rocketStacks.length - 1)
+							if (stack == playerStats.rocketStacks.length - 1)
 							{
-								if (player.getPlayerStats().rocketItem != null)
+								if (playerStats.rocketItem != null)
 								{
-									player.getPlayerStats().rocketStacks[stack] = new ItemStack(player.getPlayerStats().rocketItem, 1, player.getPlayerStats().rocketType);
+									playerStats.rocketStacks[stack] = new ItemStack(playerStats.rocketItem, 1, playerStats.rocketType);
 								}
 							}
-							else if (stack == player.getPlayerStats().rocketStacks.length - 2)
+							else if (stack == playerStats.rocketStacks.length - 2)
 							{
-								player.getPlayerStats().rocketStacks[stack] = player.getPlayerStats().launchpadStack;
-								player.getPlayerStats().launchpadStack = null;
+								playerStats.rocketStacks[stack] = playerStats.launchpadStack;
+								playerStats.launchpadStack = null;
 							}
 						}
 					}
 					else
 					{
-						player.getPlayerStats().rocketStacks[stack] = null;
+						playerStats.rocketStacks[stack] = null;
 					}
 				}
 			}
 
-			if (transferInv && player.getPlayerStats().chestSpawnCooldown == 0)
+			if (transferInv && playerStats.chestSpawnCooldown == 0)
 			{
-				player.getPlayerStats().chestSpawnVector = type.getParaChestSpawnLocation((WorldServer) entity.worldObj, player, new Random());
-				player.getPlayerStats().chestSpawnCooldown = 200;
+				playerStats.chestSpawnVector = type.getParaChestSpawnLocation((WorldServer) entity.worldObj, player, new Random());
+				playerStats.chestSpawnCooldown = 200;
 			}
 		}
 

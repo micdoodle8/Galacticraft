@@ -529,7 +529,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
 		return null;
 	}
 
-	@RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
+	@RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "EnderIO")
 	public void doWork(PowerHandler workProvider)
 	{
 

@@ -10,6 +10,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
@@ -44,6 +45,8 @@ public class ContainerTerraformer extends Container
 					stacks.add(new ItemStack(Blocks.sapling, 1, 1));
 					stacks.add(new ItemStack(Blocks.sapling, 1, 2));
 					stacks.add(new ItemStack(Blocks.sapling, 1, 3));
+					stacks.add(new ItemStack(Blocks.sapling, 1, 4));
+					stacks.add(new ItemStack(Blocks.sapling, 1, 5));
 				}
 				else if (var6 == 2)
 				{
@@ -121,7 +124,7 @@ public class ContainerTerraformer extends Container
 					if (!this.mergeItemStack(var4, 2, 6, false))
 						return null;
 				}
-				else if (var4.getItem() == new ItemStack(Blocks.sapling, 1, 0).getItem())
+				else if (var4.getItem() == Item.getItemFromBlock(Blocks.sapling))
 				{
 					if (!this.mergeItemStack(var4, 6, 10, false))
 						return null;

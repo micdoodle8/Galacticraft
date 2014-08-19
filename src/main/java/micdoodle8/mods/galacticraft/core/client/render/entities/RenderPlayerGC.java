@@ -144,12 +144,12 @@ public class RenderPlayerGC extends RenderPlayer
                 this.bindTexture(capeLoc);
                 GL11.glPushMatrix();
                 GL11.glTranslatef(0.0F, 0.0F, 0.125F);
-                double d3 = player.field_71091_bM + (player.field_71094_bP - player.field_71091_bM) * (double)event.partialRenderTick - (player.prevPosX + (player.posX - player.prevPosX) * (double)event.partialRenderTick);
-                double d4 = player.field_71096_bN + (player.field_71095_bQ - player.field_71096_bN) * (double)event.partialRenderTick - (player.prevPosY + (player.posY - player.prevPosY) * (double)event.partialRenderTick);
-                double d0 = player.field_71097_bO + (player.field_71085_bR - player.field_71097_bO) * (double)event.partialRenderTick - (player.prevPosZ + (player.posZ - player.prevPosZ) * (double)event.partialRenderTick);
-                f4 = player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset) * event.partialRenderTick;
-                double d1 = (double) MathHelper.sin(f4 * (float) Math.PI / 180.0F);
-                double d2 = (double)(-MathHelper.cos(f4 * (float)Math.PI / 180.0F));
+                double d3 = player.field_71091_bM + (player.field_71094_bP - player.field_71091_bM) * event.partialRenderTick - (player.prevPosX + (player.posX - player.prevPosX) * event.partialRenderTick);
+                double d4 = player.field_71096_bN + (player.field_71095_bQ - player.field_71096_bN) * event.partialRenderTick - (player.prevPosY + (player.posY - player.prevPosY) * event.partialRenderTick);
+                double d0 = player.field_71097_bO + (player.field_71085_bR - player.field_71097_bO) * event.partialRenderTick - (player.prevPosZ + (player.posZ - player.prevPosZ) * event.partialRenderTick);
+                f4 = (player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset) * event.partialRenderTick) / 57.29578F;
+                double d1 = MathHelper.sin(f4);
+                double d2 = -MathHelper.cos(f4);
                 float f5 = (float)d4 * 10.0F;
 
                 if (f5 < -6.0F)

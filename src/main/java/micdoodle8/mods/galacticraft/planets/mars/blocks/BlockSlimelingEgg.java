@@ -36,6 +36,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, Ite
 	public BlockSlimelingEgg()
 	{
 		super(Material.rock);
+		this.setBlockBounds(0.17F, 0.0F, 0.11F, 0.83F, 0.70F, 0.89F);
 	}
 
 	@Override
@@ -53,6 +54,12 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, Ite
 	}
 
 	@Override
+	public boolean renderAsNormalBlock()
+	{
+		return false;
+	}
+	
+	@Override
 	public boolean canBlockStay(World par1World, int par2, int par3, int par4)
 	{
 		Block block = par1World.getBlock(par2, par3 - 1, par4);
@@ -66,6 +73,10 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, Ite
 		int l = world.getBlockMetadata(x, y, z);
 
 		if (currentStack != null && currentStack.getItem() instanceof ItemPickaxe)
+		{
+			return world.setBlockToAir(x, y, z);
+		}
+		else if (player.capabilities.isCreativeMode)
 		{
 			return world.setBlockToAir(x, y, z);
 		}
@@ -83,10 +94,6 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, Ite
 			}
 
 			return false;
-		}
-		else if (player.capabilities.isCreativeMode)
-		{
-			return world.setBlockToAir(x, y, z);
 		}
 		else
 		{

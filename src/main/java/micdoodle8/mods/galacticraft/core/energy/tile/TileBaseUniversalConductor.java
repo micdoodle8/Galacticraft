@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
+import micdoodle8.mods.galacticraft.core.energy.grid.EnergyNetwork;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import micdoodle8.mods.miccore.Annotations.VersionSpecific;
 import net.minecraft.tileentity.TileEntity;
@@ -158,14 +159,20 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
 		if (this.IC2surplusJoules < 0.001F)
 		{
 			this.IC2surplusJoules = 0F;
-			return this.getNetwork().getRequest(this) * EnergyConfigHandler.TO_IC2_RATIO;
+			float result = this.getNetwork().getRequest(this) * EnergyConfigHandler.TO_IC2_RATIO;
+			//Cap energy which IC2 can put into Alu Wire at 128 EU/t for regular, 256 EU/t for heavy
+			result = Math.max(((EnergyNetwork)this.getNetwork()).networkTierGC == 2 ? 256F : 128F, result);
+			return result;
 		}
 
 		this.IC2surplusJoules = this.getNetwork().produce(this.IC2surplusJoules, true, 1, this);
 		if (this.IC2surplusJoules < 0.001F)
 		{
 			this.IC2surplusJoules = 0F;
-			return this.getNetwork().getRequest(this) * EnergyConfigHandler.TO_IC2_RATIO;
+			float result = this.getNetwork().getRequest(this) * EnergyConfigHandler.TO_IC2_RATIO;
+			//Cap energy which IC2 can put into Alu Wire at 128 EU/t for regular, 256 EU/t for heavy
+			result = Math.max(((EnergyNetwork)this.getNetwork()).networkTierGC == 2 ? 256F : 128F, result);
+			return result;
 		}
 		return 0D;
 	}
@@ -298,7 +305,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
 		((PowerHandler) this.powerHandlerBC).configure(1, requiredEnergy, 0, requiredEnergy);
 	}
 
-	@RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
+	@RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "EnderIO")
 	public void doWork(PowerHandler workProvider)
 	{
 		PowerHandler handler = (PowerHandler) this.powerHandlerBC;

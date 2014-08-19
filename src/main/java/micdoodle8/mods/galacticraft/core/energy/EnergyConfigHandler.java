@@ -83,6 +83,8 @@ public class EnergyConfigHandler
 	private static boolean cachedIC2LoadedValue = false;
 	private static boolean cachedBCLoaded = false;
 	private static boolean cachedBCLoadedValue = false;
+	private static boolean cachedBCReallyLoaded = false;
+	private static boolean cachedBCReallyLoadedValue = false;
 	private static int cachedBCVersion = -1;
 	private static boolean cachedMekLoaded = false;
 	private static boolean cachedMekLoadedValue = false;
@@ -108,9 +110,23 @@ public class EnergyConfigHandler
 
 		EnergyConfigHandler.displayEnergyUnitsBC = EnergyConfigHandler.config.get("Display", "If BuildCraft is loaded, show Galacticraft machines energy as MJ instead of gJ?", false).getBoolean(false);
 		EnergyConfigHandler.displayEnergyUnitsIC2 = EnergyConfigHandler.config.get("Display", "If IndustrialCraft2 is loaded, show Galacticraft machines energy as EU instead of gJ?", false).getBoolean(false);
+		EnergyConfigHandler.displayEnergyUnitsMek = EnergyConfigHandler.config.get("Display", "If Mekanism is loaded, show Galacticraft machines energy as Joules (J) instead of gJ?", false).getBoolean(false);
+		EnergyConfigHandler.displayEnergyUnitsRF = EnergyConfigHandler.config.get("Display", "Show Galacticraft machines energy in RF instead of gJ?", false).getBoolean(false);
 		if (!EnergyConfigHandler.isBuildcraftLoaded()) EnergyConfigHandler.displayEnergyUnitsBC = false;
 		if (!EnergyConfigHandler.isIndustrialCraft2Loaded()) EnergyConfigHandler.displayEnergyUnitsIC2 = false;
-		if (EnergyConfigHandler.isIndustrialCraft2Loaded()) EnergyConfigHandler.displayEnergyUnitsBC = false;
+		if (!EnergyConfigHandler.isMekanismLoaded()) EnergyConfigHandler.displayEnergyUnitsMek = false;
+		if (EnergyConfigHandler.displayEnergyUnitsIC2) EnergyConfigHandler.displayEnergyUnitsBC = false;
+		if (EnergyConfigHandler.displayEnergyUnitsMek)
+		{
+			EnergyConfigHandler.displayEnergyUnitsBC = false;
+			EnergyConfigHandler.displayEnergyUnitsIC2 = false;
+		}
+		if (EnergyConfigHandler.displayEnergyUnitsRF)
+		{
+			EnergyConfigHandler.displayEnergyUnitsBC = false;
+			EnergyConfigHandler.displayEnergyUnitsIC2 = false;
+			EnergyConfigHandler.displayEnergyUnitsMek = false;
+		}
 		
 		EnergyConfigHandler.config.save();
 	}
@@ -144,16 +160,27 @@ public class EnergyConfigHandler
 		return cachedIC2LoadedValue;		
 	}
 
-	/** Checks using the FML loader too see if BC3 is loaded */
+	/** Checks using the FML loader to see if BC (or EnderIO) is loaded */
 	public static boolean isBuildcraftLoaded()
 	{
 		if (!cachedBCLoaded)
 		{
 			cachedBCLoaded = true;
-			cachedBCLoadedValue = Loader.isModLoaded("BuildCraft|Energy");
+			cachedBCLoadedValue = Loader.isModLoaded("BuildCraft|Energy") || Loader.isModLoaded("EnderIO");
 		}
 	
 		return cachedBCLoadedValue;
+	}
+
+	public static boolean isBuildcraftReallyLoaded()
+	{
+		if (!cachedBCReallyLoaded)
+		{
+			cachedBCReallyLoaded = true;
+			cachedBCReallyLoadedValue = Loader.isModLoaded("BuildCraft|Energy");
+		}
+	
+		return cachedBCReallyLoadedValue;
 	}
 
     public static int getBuildcraftVersion()
