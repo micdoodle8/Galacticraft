@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.oxygen;
 
+import cpw.mods.fml.common.registry.GameData;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
@@ -24,33 +25,31 @@ public class OxygenPressureProtocol
 		{
 			try
 			{
-				final String[] split = s.split(":");
-				Block b = Block.getBlockById(Integer.parseInt(split[0]));
+				String name = null;
+				int meta = -1;
+				try {
+					meta = Integer.parseInt(s.substring(s.lastIndexOf(':') + 1, s.length()));
+				} catch (NumberFormatException ex) {}
+				if (meta == -1) name = s;
+				else name = s.substring(0, s.lastIndexOf(':'));
+				Block b = Block.getBlockFromName(name);
+				if (Block.getIdFromBlock(b) == 0) continue;
+				try {
+					Integer.parseInt(name);
+					String bName = GameData.blockRegistry.getNameForObject(b);
+					System.out.println("Galacticraft config External Sealable IDs: the use of numeric IDs is highly discouraged, please use " + bName + " instead of " + name);
+				} catch (NumberFormatException ex) {}
 
 				if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(b))
 				{
 					final ArrayList<Integer> list = OxygenPressureProtocol.nonPermeableBlocks.get(b);
-					if (split.length > 1)
-					{
-						list.add(Integer.parseInt(split[1]));
-					}
-					else
-					{
-						list.add(Integer.valueOf(-1));
-					}
+					list.add(meta);
 					OxygenPressureProtocol.nonPermeableBlocks.put(b, list);
 				}
 				else
 				{
 					final ArrayList<Integer> a = new ArrayList<Integer>();
-					if (split.length > 1)
-					{
-						a.add(Integer.parseInt(split[1]));
-					}
-					else
-					{
-						a.add(Integer.valueOf(-1));
-					}
+					a.add(meta);
 					OxygenPressureProtocol.nonPermeableBlocks.put(b, a);
 				}
 			}
@@ -93,9 +92,9 @@ public class OxygenPressureProtocol
 
 		if (block.isOpaqueCube())
 		{
-            return block instanceof BlockGravel || block.getMaterial() == Material.cloth || block instanceof BlockSponge;
+			return block instanceof BlockGravel || block.getMaterial() == Material.cloth || block instanceof BlockSponge;
 
-        }
+		}
 
 		if (block instanceof BlockGlass || block instanceof BlockStainedGlass)
 		{
