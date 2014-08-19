@@ -83,7 +83,13 @@ public class TickHandlerClient
 	{
 		for (final String s : ConfigManagerCore.detectableIDs)
 		{
-			String name = s.substring(0, s.lastIndexOf(':'));
+			String name = null;
+			int meta = -1;
+			try {
+				meta = Integer.parseInt(s.substring(s.lastIndexOf(':') + 1, s.length()));
+			} catch (NumberFormatException ex) {}
+			if (meta == -1) name = s;
+			else name = s.substring(0, s.lastIndexOf(':'));
 			
 			Block block = Block.getBlockFromName(name);
 			if (block == null)
@@ -103,7 +109,7 @@ public class TickHandlerClient
 			}
 
 			List<Integer> metaList = Lists.newArrayList();
-			metaList.add(Integer.parseInt(s.substring(s.lastIndexOf(':') + 1, s.length())));
+			metaList.add(meta == -1 ? 0 : meta);
 
 			for (BlockMetaList blockMetaList : ClientProxyCore.detectableBlocks)
 			{
