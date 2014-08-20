@@ -126,8 +126,8 @@ public class TickHandlerClient
 			} else if (!metaList.contains(metadata)) {
 				metaList.add(meta == -1 ? 0 : meta);
 			} else {
-                GCLog.info("[config] External Detectable IDs: skipping duplicate entry '" + s + "'.");
-            }
+				GCLog.info("[config] External Detectable IDs: skipping duplicate entry '" + s + "'.");
+			}
 		}
 	}
 
