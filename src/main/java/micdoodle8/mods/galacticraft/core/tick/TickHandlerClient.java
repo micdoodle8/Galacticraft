@@ -83,50 +83,54 @@ public class TickHandlerClient
 	{
 		for (final String s : ConfigManagerCore.detectableIDs)
 		{
-			String name = null;
-			int meta = -1;
 			try {
-				meta = Integer.parseInt(s.substring(s.lastIndexOf(':') + 1, s.length()));
-			} catch (NumberFormatException ex) {}
-			if (meta == -1) name = s;
-			else name = s.substring(0, s.lastIndexOf(':'));
-			
-			Block block = Block.getBlockFromName(name);
-			if (block == null)
-			{
-				GCLog.severe("[config] External Detectable IDs: unrecognised block name '" + name + "'.");
-				continue;					
-			}
-			try {
-				Integer.parseInt(name);
-				String bName = GameData.getBlockRegistry().getNameForObject(block);
-				GCLog.info("[config] External Detectable IDs: the use of numeric IDs is discouraged, please use " + bName + " instead of " + name);
-			} catch (NumberFormatException ex) {}
-			if (block == Blocks.air)
-			{	
-				GCLog.info("[config] External Detectable IDs: not a good idea to make air detectable, skipping that!");
-				continue;
-			}
-
-			List<Integer> metaList;
-
-			for (BlockMetaList blockMetaList : ClientProxyCore.detectableBlocks)
-			{
-				if (blockMetaList.getBlock() == block)
+				String name = null;
+				int meta = -1;
+				try {
+					meta = Integer.parseInt(s.substring(s.lastIndexOf(':') + 1, s.length()));
+				} catch (NumberFormatException ex) {}
+				if (meta == -1) name = s;
+				else name = s.substring(0, s.lastIndexOf(':'));
+				
+				Block block = Block.getBlockFromName(name);
+				if (block == null)
 				{
-					metaList = blockMetaList.getMetaList();
-					break;
+					GCLog.severe("[config] External Detectable IDs: unrecognised block name '" + name + "'.");
+					continue;					
 				}
-			}
-			
-			if (metaList == null) {
-				metaList = Lists.newArrayList();
-				metaList.add(meta == -1 ? 0 : meta);
-				ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
-			} else if (!metaList.contains(metadata)) {
-				metaList.add(meta == -1 ? 0 : meta);
-			} else {
-				GCLog.info("[config] External Detectable IDs: skipping duplicate entry '" + s + "'.");
+				try {
+					Integer.parseInt(name);
+					String bName = GameData.getBlockRegistry().getNameForObject(block);
+					GCLog.info("[config] External Detectable IDs: the use of numeric IDs is discouraged, please use " + bName + " instead of " + name);
+				} catch (NumberFormatException ex) {}
+				if (block == Blocks.air)
+				{	
+					GCLog.info("[config] External Detectable IDs: not a good idea to make air detectable, skipping that!");
+					continue;
+				}
+
+				List<Integer> metaList;
+
+				for (BlockMetaList blockMetaList : ClientProxyCore.detectableBlocks)
+				{
+					if (blockMetaList.getBlock() == block)
+					{
+						metaList = blockMetaList.getMetaList();
+						break;
+					}
+				}
+				
+				if (metaList == null) {
+					metaList = Lists.newArrayList();
+					metaList.add(meta == -1 ? 0 : meta);
+					ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
+				} else if (!metaList.contains(metadata)) {
+					metaList.add(meta == -1 ? 0 : meta);
+				} else {
+					GCLog.info("[config] External Detectable IDs: skipping duplicate entry '" + s + "'.");
+				}
+			} catch (final Exception ex) {
+				GCLog.severe("[config] External Detectable IDs: error parsing '" + s + "' Must be in the form Blockname or BlockName:metadata");
 			}
 		}
 	}
