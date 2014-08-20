@@ -340,19 +340,24 @@ public class TickHandlerClient
 											ClientProxyCore.valueableBlocks.add(new Vector3(x, y, z));
 										}
 
-										List<Integer> metaList = Lists.newArrayList();
-										metaList.add(metadata);
+										List<Integer> metaList;
 
 										for (BlockMetaList blockMetaList : ClientProxyCore.detectableBlocks)
 										{
 											if (blockMetaList.getBlock() == block)
 											{
-												metaList.addAll(blockMetaList.getMetaList());
+												metaList = blockMetaList.getMetaList();
 												break;
 											}
 										}
-
-										ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
+										
+										if (metaList == null) {
+											metaList = Lists.newArrayList();
+											metaList.add(metadata);
+											ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
+										} else {
+											metaList.add(metadata);
+										}
 									}
 								}
 							}
