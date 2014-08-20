@@ -83,43 +83,55 @@ public class TickHandlerClient
 	{
 		for (final String s : ConfigManagerCore.detectableIDs)
 		{
-			String name = s.substring(0, s.lastIndexOf(':'));
-			
-			Block block = Block.getBlockFromName(name);
-			if (block == null)
-			{
-				GCLog.severe("[config] External Detectable IDs: unrecognised block name '" + name + "'.");
-				continue;					
-			}
 			try {
-				Integer.parseInt(name);
-				String bName = GameData.getBlockRegistry().getNameForObject(block);
-				GCLog.info("[config] External Detectable IDs: the use of numeric IDs is discouraged, please use " + bName + " instead of " + name);
-			} catch (NumberFormatException ex) {}
-			if (block == Blocks.air)
-			{	
-				GCLog.info("[config] External Detectable IDs: not a good idea to make air detectable, skipping that!");
-				continue;
-			}
-
-			List<Integer> metaList = Lists.newArrayList();
-			metaList.add(Integer.parseInt(s.substring(s.lastIndexOf(':') + 1, s.length())));
-
-			for (BlockMetaList blockMetaList : ClientProxyCore.detectableBlocks)
-			{
-				if (blockMetaList.getBlock() == block)
+				String name = null;
+				int meta = -1;
+				try {
+					meta = Integer.parseInt(s.substring(s.lastIndexOf(':') + 1, s.length()));
+				} catch (NumberFormatException ex) {}
+				if (meta == -1) name = s;
+				else name = s.substring(0, s.lastIndexOf(':'));
+				
+				Block block = Block.getBlockFromName(name);
+				if (block == null)
 				{
-					metaList.addAll(blockMetaList.getMetaList());
-					break;
+					GCLog.severe("[config] External Detectable IDs: unrecognised block name '" + name + "'.");
+					continue;					
 				}
-			}
+				try {
+					Integer.parseInt(name);
+					String bName = GameData.getBlockRegistry().getNameForObject(block);
+					GCLog.info("[config] External Detectable IDs: the use of numeric IDs is discouraged, please use " + bName + " instead of " + name);
+				} catch (NumberFormatException ex) {}
+				if (block == Blocks.air)
+				{	
+					GCLog.info("[config] External Detectable IDs: not a good idea to make air detectable, skipping that!");
+					continue;
+				}
 
-			if (metaList.size() == 0)
-			{
-				metaList.add(0);
-			}
+				List<Integer> metaList;
 
-			ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
+				for (BlockMetaList blockMetaList : ClientProxyCore.detectableBlocks)
+				{
+					if (blockMetaList.getBlock() == block)
+					{
+						metaList = blockMetaList.getMetaList();
+						break;
+					}
+				}
+				
+				if (metaList == null) {
+					metaList = Lists.newArrayList();
+					metaList.add(meta == -1 ? 0 : meta);
+					ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
+				} else if (!metaList.contains(metadata)) {
+					metaList.add(meta == -1 ? 0 : meta);
+				} else {
+					GCLog.info("[config] External Detectable IDs: skipping duplicate entry '" + s + "'.");
+				}
+			} catch (final Exception ex) {
+				GCLog.severe("[config] External Detectable IDs: error parsing '" + s + "' Must be in the form Blockname or BlockName:metadata");
+			}
 		}
 	}
 
@@ -334,19 +346,24 @@ public class TickHandlerClient
 											ClientProxyCore.valueableBlocks.add(new Vector3(x, y, z));
 										}
 
-										List<Integer> metaList = Lists.newArrayList();
-										metaList.add(metadata);
+										List<Integer> metaList;
 
 										for (BlockMetaList blockMetaList : ClientProxyCore.detectableBlocks)
 										{
 											if (blockMetaList.getBlock() == block)
 											{
-												metaList.addAll(blockMetaList.getMetaList());
+												metaList = blockMetaList.getMetaList();
 												break;
 											}
 										}
-
-										ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
+										
+										if (metaList == null) {
+											metaList = Lists.newArrayList();
+											metaList.add(metadata);
+											ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
+										} else if (!metaList.contains(metadata)) {
+											metaList.add(metadata);
+										}
 									}
 								}
 							}
