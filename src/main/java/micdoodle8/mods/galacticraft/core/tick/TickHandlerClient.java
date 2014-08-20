@@ -123,9 +123,11 @@ public class TickHandlerClient
 				metaList = Lists.newArrayList();
 				metaList.add(meta == -1 ? 0 : meta);
 				ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
-			} else {
+			} else if (!metaList.contains(metadata)) {
 				metaList.add(meta == -1 ? 0 : meta);
-			}
+			} else {
+                GCLog.info("[config] External Detectable IDs: skipping duplicate entry '" + s + "'.");
+            }
 		}
 	}
 

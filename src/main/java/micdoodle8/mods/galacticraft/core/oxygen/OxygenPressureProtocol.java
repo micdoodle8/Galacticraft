@@ -61,8 +61,9 @@ public class OxygenPressureProtocol
 				if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(b))
 				{
 					final ArrayList<Integer> list = OxygenPressureProtocol.nonPermeableBlocks.get(b);
-					list.add(meta);
-					OxygenPressureProtocol.nonPermeableBlocks.put(b, list);
+					if (!list.contains(meta)) list.add(meta);
+					else GCLog.info("[config] External Sealable IDs: skipping duplicate entry '" + s + "'.");
+					//OxygenPressureProtocol.nonPermeableBlocks.put(b, list); // This is redundant as objects are passed by reference
 				}
 				else
 				{
