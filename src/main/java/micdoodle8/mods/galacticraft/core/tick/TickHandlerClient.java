@@ -355,7 +355,7 @@ public class TickHandlerClient
 											metaList = Lists.newArrayList();
 											metaList.add(metadata);
 											ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
-										} else {
+										} else if (!metaList.contains(metadata)) {
 											metaList.add(metadata);
 										}
 									}
