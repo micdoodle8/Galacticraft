@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.client.render.item;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,11 +33,14 @@ public class ItemRendererGrappleHook implements IItemRenderer
 			GL11.glPushMatrix();
 			GL11.glScalef(0.7F, 0.75F, 0.5F);
 			GL11.glTranslatef(0.5F, -0.2F, -0.5F);
-			GL11.glDisable(GL11.GL_LIGHTING);
+            OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
             GL11.glEnable(GL11.GL_BLEND);
+            GL11.glDisable(GL11.GL_LIGHTING);
+            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 			RenderManager.instance.itemRenderer.renderItem(FMLClientHandler.instance().getClientPlayerEntity(), new ItemStack(Items.string, 1), 0, ItemRenderType.INVENTORY);
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 			GL11.glEnable(GL11.GL_LIGHTING);
+            GL11.glDisable(GL11.GL_BLEND);
 			GL11.glPopMatrix();
 		}
 
