@@ -27,15 +27,15 @@ public class OxygenPressureProtocol
 		{
 			try
 			{
-				String name = null;
+				String name = s.substring(0, s.lastIndexOf(':'));
 				
 				int meta = -1;
-				try {
-					meta = Integer.parseInt(s.substring(s.lastIndexOf(':') + 1, s.length()));
-				} catch (NumberFormatException ex) {}
+				if (name.length() > 0)
+					try {
+						meta = Integer.parseInt(s.substring(s.lastIndexOf(':') + 1, s.length()));
+					} catch (NumberFormatException ex) {}
 				
 				if (meta == -1) name = s;
-				else name = s.substring(0, s.lastIndexOf(':'));
 				
 				Block b = Block.getBlockFromName(name);
 				if (b == null)
@@ -57,8 +57,7 @@ public class OxygenPressureProtocol
 				if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(b))
 				{
 					final ArrayList<Integer> list = OxygenPressureProtocol.nonPermeableBlocks.get(b);
-					list.add(meta);
-					OxygenPressureProtocol.nonPermeableBlocks.put(b, list);
+					if (!list.contains(meta)) list.add(meta);
 				}
 				else
 				{
@@ -69,7 +68,7 @@ public class OxygenPressureProtocol
 			}
 			catch (final Exception e)
 			{
-				GCLog.severe("[config] External Sealable IDs: error parsing '" + s + "'  Must be in the form Blockname or BlockName:metadata");
+				GCLog.severe("[config] External Sealable IDs: error parsing '" + s + "'. Must be in the form Blockname or BlockName:metadata");
 			}
 		}
 	}

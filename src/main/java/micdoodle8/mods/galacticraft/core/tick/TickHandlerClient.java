@@ -85,10 +85,22 @@ public class TickHandlerClient
 		{
 			String name = s.substring(0, s.lastIndexOf(':'));
 			
+			int meta = -1;
+			if (name.length() > 0)
+				try {
+					meta = Integer.parseInt(s.substring(s.lastIndexOf(':') + 1, s.length()));
+				} catch (NumberFormatException ex) {}
+			
+			if (meta == -1)
+			{	
+				name = s;
+				meta = 0;
+			}
+			
 			Block block = Block.getBlockFromName(name);
 			if (block == null)
 			{
-				GCLog.severe("[config] External Detectable IDs: unrecognised block name '" + name + "'.");
+				GCLog.severe("[config] External Detectable IDs: unrecognised block name '" + s + "'.");
 				continue;					
 			}
 			try {
@@ -102,24 +114,23 @@ public class TickHandlerClient
 				continue;
 			}
 
-			List<Integer> metaList = Lists.newArrayList();
-			metaList.add(Integer.parseInt(s.substring(s.lastIndexOf(':') + 1, s.length())));
-
+			boolean flag = false;
 			for (BlockMetaList blockMetaList : ClientProxyCore.detectableBlocks)
 			{
 				if (blockMetaList.getBlock() == block)
 				{
-					metaList.addAll(blockMetaList.getMetaList());
+					if (!blockMetaList.getMetaList().contains(meta)) blockMetaList.getMetaList().add(meta);
+					flag = true;
 					break;
 				}
 			}
 
-			if (metaList.size() == 0)
+			if (!flag)
 			{
-				metaList.add(0);
-			}
-
-			ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
+				List<Integer> metaList = Lists.newArrayList();
+				metaList.add(meta);
+				ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
+			}		
 		}
 	}
 
