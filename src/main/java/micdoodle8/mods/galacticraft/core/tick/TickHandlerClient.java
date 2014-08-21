@@ -9,6 +9,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
+import cpw.mods.fml.common.registry.GameData;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
@@ -106,6 +107,17 @@ public class TickHandlerClient
 				GCLog.severe("[config] External Detectable IDs: unrecognised block name '" + s + "'.");
 				continue;					
 			}
+			try {
+				Integer.parseInt(name);
+				String bName = GameData.getBlockRegistry().getNameForObject(block);
+				GCLog.info("[config] External Detectable IDs: the use of numeric IDs is discouraged, please use " + bName + " instead of " + name);
+			} catch (NumberFormatException ex) {}
+			if (block == Blocks.air)
+			{
+				GCLog.info("[config] External Detectable IDs: not a good idea to make air detectable, skipping that!");
+				continue;
+			}
+
 
 			boolean flag = false;
 			for (BlockMetaList blockMetaList : ClientProxyCore.detectableBlocks)
