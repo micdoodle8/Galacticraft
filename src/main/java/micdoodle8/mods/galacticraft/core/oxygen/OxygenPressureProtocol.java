@@ -27,15 +27,19 @@ public class OxygenPressureProtocol
 		{
 			try
 			{
-				String name = s.substring(0, s.lastIndexOf(':'));
-				
+				int lastColon = s.lastIndexOf(':');
 				int meta = -1;
-				if (name.length() > 0)
+				String name;
+				
+				if (lastColon > 0)
+				{
 					try {
-						meta = Integer.parseInt(s.substring(s.lastIndexOf(':') + 1, s.length()));
+						meta = Integer.parseInt(s.substring(lastColon + 1, s.length()));
 					} catch (NumberFormatException ex) {}
+				}
 				
 				if (meta == -1) name = s;
+				else name = s.substring(0, lastColon); 
 				
 				Block b = Block.getBlockFromName(name);
 				if (b == null)
