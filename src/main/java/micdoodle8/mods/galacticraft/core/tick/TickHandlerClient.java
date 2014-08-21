@@ -5,11 +5,11 @@ import com.google.common.collect.Lists;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
+import cpw.mods.fml.common.registry.GameData;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
@@ -83,12 +83,28 @@ public class TickHandlerClient
 	{
 		for (final String s : ConfigManagerCore.detectableIDs)
 		{
-			String name = s.substring(0, s.lastIndexOf(':'));
+			int lastColon = s.lastIndexOf(':');
+			int meta = -1;
+			String name;
+			
+			if (lastColon > 0)
+			{
+				try {
+					meta = Integer.parseInt(s.substring(lastColon + 1, s.length()));
+				} catch (NumberFormatException ex) {}
+			}
+			
+			if (meta == -1)
+			{	
+				name = s;
+				meta = 0;
+			}
+			else name = s.substring(0, lastColon); 
 			
 			Block block = Block.getBlockFromName(name);
 			if (block == null)
 			{
-				GCLog.severe("[config] External Detectable IDs: unrecognised block name '" + name + "'.");
+				GCLog.severe("[config] External Detectable IDs: unrecognised block name '" + s + "'.");
 				continue;					
 			}
 			try {
@@ -97,29 +113,29 @@ public class TickHandlerClient
 				GCLog.info("[config] External Detectable IDs: the use of numeric IDs is discouraged, please use " + bName + " instead of " + name);
 			} catch (NumberFormatException ex) {}
 			if (block == Blocks.air)
-			{	
+			{
 				GCLog.info("[config] External Detectable IDs: not a good idea to make air detectable, skipping that!");
 				continue;
 			}
 
-			List<Integer> metaList = Lists.newArrayList();
-			metaList.add(Integer.parseInt(s.substring(s.lastIndexOf(':') + 1, s.length())));
 
+			boolean flag = false;
 			for (BlockMetaList blockMetaList : ClientProxyCore.detectableBlocks)
 			{
 				if (blockMetaList.getBlock() == block)
 				{
-					metaList.addAll(blockMetaList.getMetaList());
+					if (!blockMetaList.getMetaList().contains(meta)) blockMetaList.getMetaList().add(meta);
+					flag = true;
 					break;
 				}
 			}
 
-			if (metaList.size() == 0)
+			if (!flag)
 			{
-				metaList.add(0);
-			}
-
-			ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
+				List<Integer> metaList = Lists.newArrayList();
+				metaList.add(meta);
+				ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
+			}		
 		}
 	}
 
@@ -334,19 +350,23 @@ public class TickHandlerClient
 											ClientProxyCore.valueableBlocks.add(new Vector3(x, y, z));
 										}
 
-										List<Integer> metaList = Lists.newArrayList();
-										metaList.add(metadata);
+										List<Integer> metaList = null;
 
 										for (BlockMetaList blockMetaList : ClientProxyCore.detectableBlocks)
 										{
 											if (blockMetaList.getBlock() == block)
 											{
-												metaList.addAll(blockMetaList.getMetaList());
+												metaList = blockMetaList.getMetaList();
+												if (!metaList.contains(metadata)) metaList.add(metadata);
 												break;
 											}
 										}
-
-										ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
+										
+										if (metaList == null) {
+											metaList = Lists.newArrayList();
+											metaList.add(metadata);
+											ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
+										}
 									}
 								}
 							}
