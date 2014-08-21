@@ -1,9 +1,11 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
@@ -56,9 +58,11 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+
 import tconstruct.client.tabs.TabRegistry;
 
 import java.util.List;
@@ -79,26 +83,43 @@ public class TickHandlerClient
 	{
 		for (final String s : ConfigManagerCore.detectableIDs)
 		{
-			final String[] split = s.split(":");
-			Block blockID = Block.getBlockById(Integer.parseInt(split[0]));
+			String name = s.substring(0, s.lastIndexOf(':'));
+			
+			Block block = Block.getBlockFromName(name);
+			if (block == null)
+			{
+				GCLog.severe("[config] External Detectable IDs: unrecognised block name '" + name + "'.");
+				continue;					
+			}
+			try {
+				Integer.parseInt(name);
+				String bName = GameData.getBlockRegistry().getNameForObject(block);
+				GCLog.info("[config] External Detectable IDs: the use of numeric IDs is discouraged, please use " + bName + " instead of " + name);
+			} catch (NumberFormatException ex) {}
+			if (block == Blocks.air)
+			{	
+				GCLog.info("[config] External Detectable IDs: not a good idea to make air detectable, skipping that!");
+				continue;
+			}
+
 			List<Integer> metaList = Lists.newArrayList();
-			metaList.add(Integer.parseInt(split[1]));
+			metaList.add(Integer.parseInt(s.substring(s.lastIndexOf(':') + 1, s.length())));
 
 			for (BlockMetaList blockMetaList : ClientProxyCore.detectableBlocks)
 			{
-				if (blockMetaList.getBlock() == blockID)
+				if (blockMetaList.getBlock() == block)
 				{
 					metaList.addAll(blockMetaList.getMetaList());
 					break;
 				}
 			}
 
-			if (!metaList.contains(0))
+			if (metaList.size() == 0)
 			{
 				metaList.add(0);
 			}
 
-			ClientProxyCore.detectableBlocks.add(new BlockMetaList(blockID, metaList));
+			ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
 		}
 	}
 
@@ -231,25 +252,25 @@ public class TickHandlerClient
 		}
 	}
 
-    @SubscribeEvent
-    public void onPreGuiRender(RenderGameOverlayEvent.Pre event)
-    {
-        final Minecraft minecraft = FMLClientHandler.instance().getClient();
-        final EntityClientPlayerMP player = minecraft.thePlayer;
+	@SubscribeEvent
+	public void onPreGuiRender(RenderGameOverlayEvent.Pre event)
+	{
+		final Minecraft minecraft = FMLClientHandler.instance().getClient();
+		final EntityClientPlayerMP player = minecraft.thePlayer;
 
-        if (event.type == RenderGameOverlayEvent.ElementType.ALL)
-        {
-            if (player != null && player.ridingEntity != null && player.ridingEntity instanceof IIgnoreShift && ((IIgnoreShift) player.ridingEntity).shouldIgnoreShiftExit())
-            {
-                // Remove "Press shift to dismount" message when shift-exiting is disabled (not ideal, but the only option)
-                String str = I18n.format("mount.onboard", new Object[]{GameSettings.getKeyDisplayString(minecraft.gameSettings.keyBindSneak.getKeyCode())});
-                if (minecraft.ingameGUI.recordPlaying.equals(str))
-                {
-                    minecraft.ingameGUI.recordPlaying = "";
-                }
-            }
-        }
-    }
+		if (event.type == RenderGameOverlayEvent.ElementType.ALL)
+		{
+			if (player != null && player.ridingEntity != null && player.ridingEntity instanceof IIgnoreShift && ((IIgnoreShift) player.ridingEntity).shouldIgnoreShiftExit())
+			{
+				// Remove "Press shift to dismount" message when shift-exiting is disabled (not ideal, but the only option)
+				String str = I18n.format("mount.onboard", new Object[]{GameSettings.getKeyDisplayString(minecraft.gameSettings.keyBindSneak.getKeyCode())});
+				if (minecraft.ingameGUI.recordPlaying.equals(str))
+				{
+					minecraft.ingameGUI.recordPlaying = "";
+				}
+			}
+		}
+	}
 
 	@SubscribeEvent
 	public void onClientTick(ClientTickEvent event)
@@ -363,7 +384,7 @@ public class TickHandlerClient
 
 			if (world != null && TickHandlerClient.checkedVersion)
 			{
-                ThreadVersionCheck.startCheck();
+				ThreadVersionCheck.startCheck();
 				TickHandlerClient.checkedVersion = false;
 			}
 

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.proxy;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -38,6 +39,7 @@ import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
@@ -60,8 +62,10 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+
 import tconstruct.client.tabs.InventoryTabVanilla;
 import tconstruct.client.tabs.TabRegistry;
 
@@ -685,7 +689,8 @@ public class ClientProxyCore extends CommonProxyCore
 
 	public static void orientCamera(float partialTicks)
 	{
-		((GCEntityClientPlayerMP) FMLClientHandler.instance().getClient().thePlayer).reOrientCamera(partialTicks);
+		EntityClientPlayerMP player = FMLClientHandler.instance().getClient().thePlayer;
+		if (player instanceof GCEntityClientPlayerMP) ((GCEntityClientPlayerMP) player).reOrientCamera(partialTicks);
 	}
 
 	public static void adjustRenderCamera()
