@@ -236,13 +236,11 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
 		return slotID == 1 ? itemStack != null && FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null : slotID == 0 && ItemElectricBase.isElectricItem(itemStack.getItem());
 	}
 
-	/**
-	 * Get the size of the side inventory.
-	 */
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return side == 0 ? new int[] { 2 } : side == 1 ? new int[] { 0, 1 } : new int[] { 0 };
+		if (side == 0) return new int[] { 2 };
+		return new int[] { 0, 1 };
 	}
 
 	@Override

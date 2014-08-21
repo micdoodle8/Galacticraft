@@ -158,7 +158,8 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
     @Override
     public String getShiftDescription(int meta)
     {
-        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+        if (meta == 0) return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+        return GCCoreUtil.translate("tile.buggyPad.description");
     }
 
     @Override
