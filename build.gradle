@@ -50,6 +50,9 @@ ext.dependencies = ['codechicken/**',
 					'**/nei_at.cfg']
 					
 // Keep a list of core files/directories for easy jar packing
+ext.apiFiles = ['micdoodle8/mods/galacticraft/api/**']
+					
+// Keep a list of core files/directories for easy jar packing
 ext.coreFiles = ['micdoodle8/mods/galacticraft/api/**',
 					'micdoodle8/mods/galacticraft/core/**',
 					'tconstruct/**',
@@ -242,10 +245,28 @@ task packMicCoreJarDev(type: Jar, dependsOn: "classes") {
 	}
 }
 
+task packApi(type: Jar, dependsOn: "classes") {
+	// Jar will always be updated
+	outputs.upToDateWhen {false}
+	// Set the jar's base name
+	baseName = "Galacticraft-API"
+	
+	from (sourceSets.main.allSource) {
+		// Add necessary files, remove unnecessary ones.
+		includes.addAll(project.ext.apiFiles)
+		excludes.addAll(project.ext.micdoodleCoreFiles)
+		excludes.addAll(project.ext.planetsFiles)
+		excludes.addAll(project.ext.coreFiles)
+		excludes.addAll(project.ext.dependencies)
+		excludes.addAll('**/*.info')
+		excludes.addAll('assets')
+	}
+}
+
 task cleanOldJar(type: Delete, dependsOn: "packMicCoreJar") {
 	delete 'temporary', project.ext.coreJar
 }
 
-task cleanOldJarDev(type: Delete, dependsOn: "packMicCoreJarDev") {
+task cleanOldJarDev(type: Delete, dependsOn: "packApi") {
 	delete 'temporary', project.ext.coreJar
 }
