@@ -130,9 +130,9 @@ public class BlockSolar extends BlockTileGC implements ItemBlockDesc.IBlockShift
 			{
 				for (int z = -1; z <= 1; z++)
 				{
-					Block block = world.getBlock(x1 + (y == 2 ? x : 0), y1 + 2, z1 + (y == 2 ? z : 0));
+					Block block = world.getBlock(x1 + (y == 2 ? x : 0), y1 + y, z1 + (y == 2 ? z : 0));
 
-					if (block != Blocks.air && !block.isReplaceable(world, x1 + x, y1 + 2, z1 + z))
+					if (block != Blocks.air && !block.isReplaceable(world, x1 + x, y1 + y, z1 + z))
 					{
 						return false;
 					}
