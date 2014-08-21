@@ -155,6 +155,97 @@ task packMicCoreJar(type: Jar, dependsOn: "reobf") {
 	}
 }
 
+task packCoreJarDev(type: Jar, dependsOn: "classes") {
+	from (sourceSets.main.output) {
+		includes.addAll(project.ext.coreFiles)
+		includes.addAll('mcmod.info')
+		excludes.addAll(project.ext.planetsFiles)
+		excludes.addAll(project.ext.dependencies)
+		excludes.addAll(project.ext.micdoodleCoreFiles)
+	}
+	
+	from (sourceSets.main.allSource) {
+		includes.addAll(project.ext.coreFiles)
+		includes.addAll('mcmod.info')
+		excludes.addAll(project.ext.planetsFiles)
+		excludes.addAll(project.ext.dependencies)
+		excludes.addAll(project.ext.micdoodleCoreFiles)
+		excludes.addAll('assets')
+		into 'src'
+	}
+	
+	// Jar will always be updated
+	outputs.upToDateWhen {false}
+	// Set the jar's base name
+	baseName = "GalacticraftCore-Dev"
+}
+
+task packPlanetsJarDev(type: Jar, dependsOn: "classes") {
+	// Jar will always be updated
+	outputs.upToDateWhen {false}
+	// Set the jar's base name
+	baseName = "Galacticraft-Planets-Dev"
+	
+	from (sourceSets.main.output) {
+		// Add necessary files, remove unnecessary ones.
+		includes.addAll(project.ext.planetsFiles)
+		includes.addAll('mcmod.info')
+		excludes.addAll(project.ext.coreFiles)
+		excludes.addAll(project.ext.dependencies)
+		excludes.addAll(project.ext.micdoodleCoreFiles)
+	}
+	
+	from (sourceSets.main.allSource) {
+		// Add necessary files, remove unnecessary ones.
+		includes.addAll(project.ext.planetsFiles)
+		includes.addAll('mcmod.info')
+		excludes.addAll(project.ext.coreFiles)
+		excludes.addAll(project.ext.dependencies)
+		excludes.addAll(project.ext.micdoodleCoreFiles)
+		excludes.addAll('assets')
+		into 'src'
+	}
+}
+
+task packMicCoreJarDev(type: Jar, dependsOn: "classes") {
+	// Jar will always be updated
+	outputs.upToDateWhen {false}
+	// Set the jar's base name
+	baseName = "MicdoodleCore-Dev"
+	
+	from (sourceSets.main.output) {
+		// Add necessary files, remove unnecessary ones.
+		includes.addAll(project.ext.micdoodleCoreFiles)
+		excludes.addAll(project.ext.planetsFiles)
+		excludes.addAll(project.ext.coreFiles)
+		excludes.addAll(project.ext.dependencies)
+		excludes.addAll('**/*.info')
+	}
+	
+	from (sourceSets.main.allSource) {
+		// Add necessary files, remove unnecessary ones.
+		includes.addAll(project.ext.micdoodleCoreFiles)
+		excludes.addAll(project.ext.planetsFiles)
+		excludes.addAll(project.ext.coreFiles)
+		excludes.addAll(project.ext.dependencies)
+		excludes.addAll('**/*.info')
+		excludes.addAll('assets')
+		into 'src'
+	}
+	
+	// Configure manifest attributes
+	manifest
+	{
+		// Add required coremod manifest attributes
+		attributes.put("FMLCorePlugin", "micdoodle8.mods.miccore.MicdoodlePlugin")
+		attributes.put("AccessTransformer", "micdoodlecore_at.cfg")
+	}
+}
+
 task cleanOldJar(type: Delete, dependsOn: "packMicCoreJar") {
+	delete 'temporary', project.ext.coreJar
+}
+
+task cleanOldJarDev(type: Delete, dependsOn: "packMicCoreJarDev") {
 	delete 'temporary', project.ext.coreJar
 }
