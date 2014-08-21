@@ -215,7 +215,7 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
 			}
 		}
 
-		if (fakeBlockCount > 0 && var9 instanceof IMultiBlock)
+		if (fakeBlockCount >= 11 && var9 instanceof IMultiBlock)
 		{
 			((IMultiBlock) var9).onDestroy(var9);
 		}
