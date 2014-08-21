@@ -9,10 +9,12 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,6 +24,23 @@ public class CommandGCInv extends CommandBase
 	private static final Set<String> dontload = new HashSet<String>();
 	private static boolean firstuse = true;
 	private static GCInvSaveData savefile;
+	
+	@Override
+    	public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
+    	{
+	    	return par2ArrayOfStr.length == 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, new String[] {"save", "restore", "drop", "clear"}) : (par2ArrayOfStr.length == 2 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, this.getPlayers()): null);
+    	}
+    	
+    	protected String[] getPlayers()
+    	{
+        	return MinecraftServer.getServer().getAllUsernames();
+    	}
+    	
+    	@Override
+    	public boolean isUsernameIndex(String[] par1ArrayOfStr, int par2)
+    	{
+        	return par2 == 0;
+    	}
 
 	@Override
 	public String getCommandUsage(ICommandSender var1)
