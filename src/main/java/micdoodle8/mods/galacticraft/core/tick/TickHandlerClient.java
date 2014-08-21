@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
@@ -106,16 +105,6 @@ public class TickHandlerClient
 			{
 				GCLog.severe("[config] External Detectable IDs: unrecognised block name '" + s + "'.");
 				continue;					
-			}
-			try {
-				Integer.parseInt(name);
-				String bName = GameData.getBlockRegistry().getNameForObject(block);
-				GCLog.info("[config] External Detectable IDs: the use of numeric IDs is discouraged, please use " + bName + " instead of " + name);
-			} catch (NumberFormatException ex) {}
-			if (block == Blocks.air)
-			{	
-				GCLog.info("[config] External Detectable IDs: not a good idea to make air detectable, skipping that!");
-				continue;
 			}
 
 			boolean flag = false;
@@ -349,19 +338,23 @@ public class TickHandlerClient
 											ClientProxyCore.valueableBlocks.add(new Vector3(x, y, z));
 										}
 
-										List<Integer> metaList = Lists.newArrayList();
-										metaList.add(metadata);
+										List<Integer> metaList = null;
 
 										for (BlockMetaList blockMetaList : ClientProxyCore.detectableBlocks)
 										{
 											if (blockMetaList.getBlock() == block)
 											{
-												metaList.addAll(blockMetaList.getMetaList());
+												metaList = blockMetaList.getMetaList();
+												if (!metaList.contains(metadata)) metaList.add(metadata);
 												break;
 											}
 										}
-
-										ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
+										
+										if (metaList == null) {
+											metaList = Lists.newArrayList();
+											metaList.add(metadata);
+											ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
+										}
 									}
 								}
 							}

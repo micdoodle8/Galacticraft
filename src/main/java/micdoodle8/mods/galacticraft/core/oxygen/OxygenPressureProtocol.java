@@ -62,6 +62,7 @@ public class OxygenPressureProtocol
 				{
 					final ArrayList<Integer> list = OxygenPressureProtocol.nonPermeableBlocks.get(b);
 					if (!list.contains(meta)) list.add(meta);
+					else GCLog.info("[config] External Sealable IDs: skipping duplicate entry '" + s + "'.");
 				}
 				else
 				{
