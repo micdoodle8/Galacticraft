@@ -610,32 +610,36 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 	public void reOrientCamera(float par1)
 	{
 		EntityLivingBase entityLivingBase = this.mc.renderViewEntity;
-		float f1 = entityLivingBase.yOffset - 1.62F;
-		float pitch = entityLivingBase.prevRotationPitch + (entityLivingBase.rotationPitch - entityLivingBase.prevRotationPitch) * par1;
-		float yaw = entityLivingBase.prevRotationYaw + (entityLivingBase.rotationYaw - entityLivingBase.prevRotationYaw) * par1 + 180.0F;
-		float eyeHeightChange = entityLivingBase.yOffset - entityLivingBase.width / 2.0F;
 
-		GL11.glTranslatef(0.0F, -f1, 0.0F);
-		GL11.glRotatef(-yaw, 0.0F, 1.0F, 0.0F);
-		GL11.glRotatef(-pitch, 1.0F, 0.0F, 0.0F);
-		GL11.glTranslatef(0.0F, 0.0F, 0.1F);
+        if (entityLivingBase.worldObj.provider instanceof WorldProviderOrbit && !entityLivingBase.isPlayerSleeping())
+        {
+            float f1 = entityLivingBase.yOffset - 1.62F;
+            float pitch = entityLivingBase.prevRotationPitch + (entityLivingBase.rotationPitch - entityLivingBase.prevRotationPitch) * par1;
+            float yaw = entityLivingBase.prevRotationYaw + (entityLivingBase.rotationYaw - entityLivingBase.prevRotationYaw) * par1 + 180.0F;
+            float eyeHeightChange = entityLivingBase.yOffset - entityLivingBase.width / 2.0F;
 
-		GL11.glRotatef(180.0F * this.gdir.thetaX, 1.0F, 0.0F, 0.0F);
-		GL11.glRotatef(180.0F * this.gdir.thetaZ, 0.0F, 0.0F, 1.0F);
-		GL11.glRotatef(pitch * this.gdir.pitchGravityX, 1.0F, 0.0F, 0.0F);
-		GL11.glRotatef(pitch * this.gdir.pitchGravityY, 0.0F, 1.0F, 0.0F);
-		GL11.glRotatef(yaw * this.gdir.yawGravityX, 1.0F, 0.0F, 0.0F);
-		GL11.glRotatef(yaw * this.gdir.yawGravityY, 0.0F, 1.0F, 0.0F);
-		GL11.glRotatef(yaw * this.gdir.yawGravityZ, 0.0F, 0.0F, 1.0F);
+            GL11.glTranslatef(0.0F, -f1, 0.0F);
+            GL11.glRotatef(-yaw, 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(-pitch, 1.0F, 0.0F, 0.0F);
+            GL11.glTranslatef(0.0F, 0.0F, 0.1F);
 
-		GL11.glTranslatef(entityLivingBase.ySize * this.gdir.sneakVecX, entityLivingBase.ySize * this.gdir.sneakVecY, entityLivingBase.ySize * this.gdir.sneakVecZ);
+            GL11.glRotatef(180.0F * this.gdir.thetaX, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(180.0F * this.gdir.thetaZ, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(pitch * this.gdir.pitchGravityX, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(pitch * this.gdir.pitchGravityY, 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(yaw * this.gdir.yawGravityX, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(yaw * this.gdir.yawGravityY, 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(yaw * this.gdir.yawGravityZ, 0.0F, 0.0F, 1.0F);
 
-		GL11.glTranslatef(eyeHeightChange * this.gdir.eyeVecX, eyeHeightChange * this.gdir.eyeVecY, eyeHeightChange * this.gdir.eyeVecZ);
+            GL11.glTranslatef(entityLivingBase.ySize * this.gdir.sneakVecX, entityLivingBase.ySize * this.gdir.sneakVecY, entityLivingBase.ySize * this.gdir.sneakVecZ);
 
-		if (this.gravityTurnRate < 1.0F)
-		{
-			GL11.glRotatef(90.0F * (this.gravityTurnRatePrev + (this.gravityTurnRate - this.gravityTurnRatePrev) * par1), this.gravityTurnVecX, this.gravityTurnVecY, this.gravityTurnVecZ);
-		}
+            GL11.glTranslatef(eyeHeightChange * this.gdir.eyeVecX, eyeHeightChange * this.gdir.eyeVecY, eyeHeightChange * this.gdir.eyeVecZ);
+
+            if (this.gravityTurnRate < 1.0F)
+            {
+                GL11.glRotatef(90.0F * (this.gravityTurnRatePrev + (this.gravityTurnRate - this.gravityTurnRatePrev) * par1), this.gravityTurnVecX, this.gravityTurnVecY, this.gravityTurnVecZ);
+            }
+        }
 
 		//omit this for interesting 3P views
 		//GL11.glTranslatef(0.0F, 0.0F, -0.1F);
