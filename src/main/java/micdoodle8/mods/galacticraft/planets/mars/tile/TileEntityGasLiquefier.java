@@ -543,7 +543,24 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return new int[] { 0, 1, 2, 3 };
+		int metaside = this.getBlockMetadata() + 2;
+		if (side == (metaside ^ 1))
+		{
+			return new int [] { 2 };
+		}
+			
+		//2->5 3->4 4->2 5->3
+		if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
+		{
+			return new int [] { 3 };
+		}
+
+		if (side == metaside)
+		{
+			return new int [] { 1 };
+		}
+		
+		return new int[] { 0 };
 	}
 
 	@Override

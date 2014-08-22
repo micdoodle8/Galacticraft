@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import com.google.common.primitives.Ints;
+
 import cpw.mods.fml.client.config.IConfigElement;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameData;
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.init.Blocks;
@@ -165,7 +167,11 @@ public class ConfigManagerCore
             ConfigManagerCore.disableSpaceStationCreation = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Space Station creation", false, "If set to true on a server, players will be completely unable to create space stations.").getBoolean(false);
             ConfigManagerCore.overrideCapes = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Override Capes", true, "By default, Galacticraft will override capes with the mod's donor cape. Set to false to disable.").getBoolean(true);
             ConfigManagerCore.spaceStationEnergyScalar = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Space Station Solar Energy Multiplier", 2.0, "Solar panels will work (default 2x) more effective on space stations.").getDouble(2.0);
-            ConfigManagerCore.sealableIDs = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "External Sealable IDs", new String[] { GameData.getBlockRegistry().getNameForObject(Blocks.glass_pane) + ":0" }, "List non-opaque blocks from other mods (for example, special types of glass) that the Oxygen Sealer should recognize as solid seals. Format is BlockName or BlockName:metadata").getStringList();
+            try {
+            	ConfigManagerCore.sealableIDs = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "External Sealable IDs", new String[] { GameData.getBlockRegistry().getNameForObject(Blocks.glass_pane) + ":0" }, "List non-opaque blocks from other mods (for example, special types of glass) that the Oxygen Sealer should recognize as solid seals. Format is BlockName or BlockName:metadata").getStringList();
+            } catch (Exception e) {
+            	FMLLog.severe("[Galacticraft] It appears you have installed the 'Dev' version of Galacticraft instead of the regular version (or vice versa).  Please re-install.");
+            }
             ConfigManagerCore.detectableIDs = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "External Detectable IDs", new String[] { GameData.getBlockRegistry().getNameForObject(Blocks.coal_ore), GameData.getBlockRegistry().getNameForObject(Blocks.diamond_ore), GameData.getBlockRegistry().getNameForObject(Blocks.gold_ore), GameData.getBlockRegistry().getNameForObject(Blocks.iron_ore), GameData.getBlockRegistry().getNameForObject(Blocks.lapis_ore), GameData.getBlockRegistry().getNameForObject(Blocks.redstone_ore), GameData.getBlockRegistry().getNameForObject(Blocks.lit_redstone_ore) }, "List blocks from other mods that the Sensor Glasses should recognize as solid blocks. Format is BlockName or BlockName:metadata").getStringList();
             ConfigManagerCore.dungeonBossHealthMod = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Dungeon Boss Health Modifier", 1.0D, "Change this is you wish to balance the mod (if you have more powerful weapon mods)").getDouble(1.0D);
             ConfigManagerCore.suffocationCooldown = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Suffocation Cooldown", 100, "Lower/Raise this value to change time between suffocation damage ticks").getInt(100);
