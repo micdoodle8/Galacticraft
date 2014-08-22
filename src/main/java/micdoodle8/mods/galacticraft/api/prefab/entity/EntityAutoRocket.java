@@ -864,6 +864,30 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	public void setPad(IFuelDock pad)
 	{
 		this.landingPad = pad;
+
+        if (this.landing)
+        {
+            if (pad instanceof TileEntity)
+            {
+                int x = ((TileEntity) pad).xCoord;
+                int y = ((TileEntity) pad).yCoord;
+                int z = ((TileEntity) pad).zCoord;
+
+                if (!this.worldObj.isRemote)
+                {
+                    this.setLaunchPhase(EnumLaunchPhase.UNIGNITED);
+                    this.landing = false;
+                    this.targetVec = null;
+
+                    if (EntityAutoRocket.marsLoaded)
+                    {
+                        this.updateControllerSettings(pad);
+                    }
+                }
+
+                this.onRocketLand(x, y, z);
+            }
+        }
 	}
 
 	@Override
@@ -884,19 +908,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 		//Called either when a rocket lands or when one is placed
 		if (dock instanceof TileEntityLandingPad)
 		{
-			if (!this.worldObj.isRemote)
-			{
-				this.setLaunchPhase(EnumLaunchPhase.UNIGNITED);
-				this.landing = false;
-				this.targetVec = null;
-				this.setPad(dock);
-
-				if (EntityAutoRocket.marsLoaded)
-				{
-					this.updateControllerSettings(dock);
-				}
-			}
-
 			return true;
 		}
 		return false;
