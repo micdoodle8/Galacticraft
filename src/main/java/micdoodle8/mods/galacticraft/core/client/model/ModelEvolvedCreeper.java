@@ -6,6 +6,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
+import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class ModelEvolvedCreeper extends ModelBase
@@ -195,31 +196,71 @@ public class ModelEvolvedCreeper extends ModelBase
 	@Override
 	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7)
 	{
-		this.setRotationAngles(par2, par3, par4, par5, par6, par7);
-		this.leftOxygenTank.render(par7);
-		this.rightOxygenTank.render(par7);
-		this.tubeRight2.render(par7);
-		this.tubeLeft1.render(par7);
-		this.tubeRight3.render(par7);
-		this.tubeRight4.render(par7);
-		this.tubeRight5.render(par7);
-		this.tubeLeft6.render(par7);
-		this.tubeRight7.render(par7);
-		this.tubeRight1.render(par7);
-		this.tubeLeft2.render(par7);
-		this.tubeLeft3.render(par7);
-		this.tubeLeft4.render(par7);
-		this.tubeLeft5.render(par7);
-		this.tubeLeft7.render(par7);
-		this.tubeRight6.render(par7);
-		this.tubeLeft8.render(par7);
-		this.oxygenMask.render(par7);
-		this.head.render(par7);
-		this.body.render(par7);
-		this.leg1.render(par7);
-		this.leg2.render(par7);
-		this.leg3.render(par7);
-		this.leg4.render(par7);
+        this.setRotationAngles(par2, par3, par4, par5, par6, par7);
+
+        if (this.isChild)
+        {
+            float f6 = 2.0F;
+            GL11.glPushMatrix();
+            GL11.glScalef(1.5F / f6, 1.5F / f6, 1.5F / f6);
+            GL11.glTranslatef(0.0F, 16.0F * par7, 0.0F);
+            this.head.render(par7);
+            this.oxygenMask.render(par7);
+            GL11.glPopMatrix();
+            GL11.glPushMatrix();
+            GL11.glScalef(1.0F / f6, 1.0F / f6, 1.0F / f6);
+            GL11.glTranslatef(0.0F, 24.0F * par7, 0.0F);
+            this.leftOxygenTank.render(par7);
+            this.rightOxygenTank.render(par7);
+            this.tubeRight2.render(par7);
+            this.tubeLeft1.render(par7);
+            this.tubeRight3.render(par7);
+            this.tubeRight4.render(par7);
+            this.tubeRight5.render(par7);
+            this.tubeLeft6.render(par7);
+            this.tubeRight7.render(par7);
+            this.tubeRight1.render(par7);
+            this.tubeLeft2.render(par7);
+            this.tubeLeft3.render(par7);
+            this.tubeLeft4.render(par7);
+            this.tubeLeft5.render(par7);
+            this.tubeLeft7.render(par7);
+            this.tubeRight6.render(par7);
+            this.tubeLeft8.render(par7);
+            this.body.render(par7);
+            this.leg1.render(par7);
+            this.leg2.render(par7);
+            this.leg3.render(par7);
+            this.leg4.render(par7);
+            GL11.glPopMatrix();
+        }
+        else
+        {
+            this.leftOxygenTank.render(par7);
+            this.rightOxygenTank.render(par7);
+            this.tubeRight2.render(par7);
+            this.tubeLeft1.render(par7);
+            this.tubeRight3.render(par7);
+            this.tubeRight4.render(par7);
+            this.tubeRight5.render(par7);
+            this.tubeLeft6.render(par7);
+            this.tubeRight7.render(par7);
+            this.tubeRight1.render(par7);
+            this.tubeLeft2.render(par7);
+            this.tubeLeft3.render(par7);
+            this.tubeLeft4.render(par7);
+            this.tubeLeft5.render(par7);
+            this.tubeLeft7.render(par7);
+            this.tubeRight6.render(par7);
+            this.tubeLeft8.render(par7);
+            this.oxygenMask.render(par7);
+            this.head.render(par7);
+            this.body.render(par7);
+            this.leg1.render(par7);
+            this.leg2.render(par7);
+            this.leg3.render(par7);
+            this.leg4.render(par7);
+        }
 	}
 
 	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6)
