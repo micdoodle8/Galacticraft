@@ -157,7 +157,7 @@ public class PacketSimple extends Packet implements IPacket
 		}
 	}
 
-	public EnumSimplePacket type;
+	private EnumSimplePacket type;
 	private List<Object> data;
 	static private String spamCheckString;
 
