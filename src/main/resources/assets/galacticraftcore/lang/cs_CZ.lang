@@ -533,6 +533,7 @@ tile.oxygenPipe.description=Kyslíková trubka tvoří rozvody kterými je možn
 tile.refinery.description=Vytváří z ropy a energie palivo, které je možné použít pro rakety a buginy.
 tile.fuelLoader.description=Po připojení ke startovací rampě nebo čerpací stanici pro buginu umožní natankování rakety nebo vozidla.
 tile.landingPad.description=Startovací rampa, pokud je postavena ve formaci 3x3, umožňuje start rakety, která je na ní umístěna. Mohou k ní být přidány palivová čerpadla, nakladače a odpalovače.
+tile.buggyPad.description=Čerpací stanice pro buginu umožňuje natankování buginy která je na ní umístěna. Musí k ní však být připojeno palivové čerpadlo a plošina musí být umístěna ve formaci 3x3. Nelze použít ke startu raket!
 tile.treasureChest.description=Pokladnice typu 1 lze objevit v měsíčních dungeonech. Lze je odemknout po zabití bosse.
 tile.rocketWorkbench.description=Raketové konstrukční pracoviště slouží k vytváření mnoha pokročilých součástek a zařízení. Nová schémata mohou být nalezena a přidána.
 tile.fallenMeteor.description=Meteority mohou být nalazeny na mnoha planetách a měsících které mají řídkou nebo žádnou atmosféru. Obsahují meteorické železo.
