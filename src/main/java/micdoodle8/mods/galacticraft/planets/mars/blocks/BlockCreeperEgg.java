@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.mars.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
@@ -80,8 +81,9 @@ public class BlockCreeperEgg extends BlockDragonEgg implements ItemBlockDesc.IBl
 	{
 		if (!world.isRemote)
 		{
-			EntityCreeper creeper = new EntityCreeper(world);
-			creeper.setPosition(x + 0.5, y + 1, z + 0.5);
+			EntityEvolvedCreeper creeper = new EntityEvolvedCreeper(world);
+			creeper.setPosition(x + 0.5, y + 3, z + 0.5);
+            creeper.setChild(true);
 			world.spawnEntityInWorld(creeper);
 		}
 
