@@ -472,7 +472,7 @@ gui.message.overworld.atmosphere.0.name=Stickstoff und Sauerstoff
 gui.message.overworld.atmosphere.1.name=Ermöglicht Leben
 gui.message.overworld.meansurfacetemp.0.name=14C
 gui.message.overworld.meansurfacetemp.1.name=
-itemDesc.powerdraw.name=Power required: %s /s ##NEEDS TRANSLATE##
+itemDesc.powerdraw.name=Energie benötigt: %s /s
 
 itemDesc.shift.name=Drücke %s für mehr Info
 
@@ -485,7 +485,8 @@ tile.sealer.description=Oxygen Sealer will check for an enclosed space. If one i
 tile.oxygenPipe.description=Oxygen Pipe will transfer oxygen from one machine's internal gas storage to another.
 tile.refinery.description=Refinery will take an input of oil and energy, and output fuel used for rockets and vehicles.
 tile.fuelLoader.description=After being connected to a launch pad, a Fuel Loader will allow fuel to passed into the connected Rocket or other vehicle.
-tile.landingPad.description=Landing Pads will allow placement of Rockets if set up in a 3x3 square. Fuel Loaders, Cargo Loaders, and Launch Controllers can be attached.
+tile.landingPad.description=Launch Pads will allow placement of Rockets if set up in a 3x3 square. Fuel Loaders, Cargo Loaders, and Launch Controllers can be attached.
+tile.buggyPad.description=Fueling Pads will allow a buggy on the pad to be refueled by an attached Fuel Loaders if set up in a 3x3 square. Cannot be used to launch rockets!
 tile.treasureChest.description=Tier 1 Treasure Chests will generate in Moon Dungeons. They are unlockable after defeating the final boss.
 tile.rocketWorkbench.description=The NASA Workbench is used to create many advanced parts and vehicles. New schematics can be added as they are found.
 tile.fallenMeteor.description=Fallen Meteors can be found in many planets/moons which have little or no atmosphere. Will drop Meteoric Iron when broken.
