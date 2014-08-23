@@ -87,7 +87,6 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
     protected final void setSize(float sizeX, float sizeY)
     {
         boolean flag = this.sizeXBase > 0.0F && this.sizeYBase > 0.0F;
-        new Exception().printStackTrace();
         this.sizeXBase = sizeX;
         this.sizeYBase = sizeY;
 
@@ -112,7 +111,7 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
     {
         if (this.isChild())
         {
-            this.experienceValue = (int)((float)this.experienceValue * 2.5F);
+            this.experienceValue = ( this.experienceValue * 5 ) / 2;
         }
 
         return super.getExperiencePoints(p_70693_1_);
