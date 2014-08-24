@@ -15,6 +15,7 @@ item.fluidManip.name=Flüssigkeitsmanipulator
 
 # TOOLS
 item.deshPick.name=Desh-Spitzhacke
+item.deshPickSlime.name=Klebrige Desh-Spitzhacke
 item.deshAxe.name=Desh-Axt
 item.deshHoe.name=Desh-Hacke
 item.deshSpade.name=Desh-Schaufel
@@ -31,12 +32,12 @@ tile.mars.deshmars.name=Desh-Erz
 tile.mars.coppermars.name=Kupfererz
 tile.mars.tinmars.name=Zinnerz
 tile.mars.ironmars.name=Eisenerz
-tile.mars.marscobblestone.name=Pflasterstein
+tile.mars.marscobblestone.name=Marspflasterstein
 tile.mars.marsstone.name=Marsgestein
 tile.mars.marsdirt.name=Marsniederoberflächengestein
 tile.mars.marsgrass.name=Marsoberflächengestein
 tile.mars.marsdeco.name=Desh-Dekorationsblock
-tile.mars.marsdungeon.name=Dungeonwand
+tile.mars.marsdungeon.name=Mars-Dungeonziegel
 tile.treasureT2.name=Schatztruhe (Stufe 2)
 tile.slimelingEgg.redEgg.name=Rotes Schleimling-Ei
 tile.slimelingEgg.blueEgg.name=Blaues Schleimling-Ei
@@ -50,22 +51,6 @@ tile.marsMachine.6.name=Wasser-Elektolysegerät
 tile.sludge.name=Bakterieller Schlamm
 tile.creeperEgg.name=Creeper-Ei
 tile.cavernVines.name=Kavernöse Weinranken
-tile.tintedGlassPane.white.name=Weiß getönte Glasscheibe
-tile.tintedGlassPane.orange.name=Orange getönte Glasscheibe
-tile.tintedGlassPane.magenta.name=Magenta getönte Glasscheibe
-tile.tintedGlassPane.light_blue.name=Hellblau getönte Glasscheibe
-tile.tintedGlassPane.yellow.name=Gelb getönte Glasscheibe
-tile.tintedGlassPane.lime.name=Hellgrün getönte Glasscheibe
-tile.tintedGlassPane.pink.name=Pink getönte Glasscheibe
-tile.tintedGlassPane.gray.name=Grau getönte Glasscheibe
-tile.tintedGlassPane.silver.name=Hellgrau getönte Glasscheibe
-tile.tintedGlassPane.cyan.name=Türkis getönte Glasscheibe
-tile.tintedGlassPane.purple.name=Violett getönte Glasscheibe
-tile.tintedGlassPane.blue.name=Blau getönte Glasscheibe
-tile.tintedGlassPane.brown.name=Braun getönte Glasscheibe
-tile.tintedGlassPane.green.name=Grün getönte Glasscheibe
-tile.tintedGlassPane.red.name=Rot getönte Glasscheibe
-tile.tintedGlassPane.black.name=Schwarz getönte Glasscheibe
 
 # GUI
 gui.choosePlanet.desc.mars=Bewohnbar#Kein Sauerstoff#Schwerkraft: 38%
