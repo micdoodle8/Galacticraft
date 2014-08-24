@@ -9,10 +9,12 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -45,6 +47,25 @@ public class CommandGCInv extends CommandBase
 	public String getCommandName()
 	{
 		return "gcinv";
+	}
+	
+	@Override
+	public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
+	{
+		if (par2ArrayOfStr.length == 1) return getListOfStringsMatchingLastWord(par2ArrayOfStr, "save", "restore", "drop", "clear");
+		if (par2ArrayOfStr.length == 2) return getListOfStringsMatchingLastWord(par2ArrayOfStr, this.getPlayers());
+		return null;
+	}
+
+	protected String[] getPlayers()
+	{
+		return MinecraftServer.getServer().getAllUsernames();
+	}
+
+	@Override
+	public boolean isUsernameIndex(String[] par1ArrayOfStr, int par2)
+	{
+		return par2 == 1;
 	}
 
 	@Override

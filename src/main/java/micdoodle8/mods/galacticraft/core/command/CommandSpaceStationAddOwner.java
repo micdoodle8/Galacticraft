@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.command;
 
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -7,6 +9,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 
 public class CommandSpaceStationAddOwner extends CommandBase
@@ -83,5 +86,22 @@ public class CommandSpaceStationAddOwner extends CommandBase
 		{
 			playerBase.addChatMessage(new ChatComponentText("Successfully added " + var3 + " to Space Station list!"));
 		}
+	}
+	
+	@Override
+	public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
+	{
+		return par2ArrayOfStr.length == 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, this.getPlayers()) : null;
+	}
+
+	protected String[] getPlayers()
+	{
+		return MinecraftServer.getServer().getAllUsernames();
+	}
+
+	@Override
+	public boolean isUsernameIndex(String[] par1ArrayOfStr, int par2)
+	{
+		return par2 == 0;
 	}
 }

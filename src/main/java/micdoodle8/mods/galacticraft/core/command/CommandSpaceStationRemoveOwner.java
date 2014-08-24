@@ -1,5 +1,9 @@
 package micdoodle8.mods.galacticraft.core.command;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -7,6 +11,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 
 public class CommandSpaceStationRemoveOwner extends CommandBase
@@ -80,5 +85,54 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
 		{
 			playerBase.addChatMessage(new ChatComponentText("Successfully removed " + var3 + " from Space Station list!"));
 		}
+	}
+	
+	
+	@Override
+	public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
+	{
+		return par2ArrayOfStr.length == 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, this.getPlayers(par1ICommandSender)) : null;
+	}
+
+	protected String[] getPlayers(ICommandSender icommandsender)
+	{
+		GCEntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(icommandsender.getCommandSenderName(), false);
+		
+		if (playerBase != null)
+		{
+			int ssdim = playerBase.getPlayerStats().spaceStationDimensionID;
+			if (ssdim > 0)
+			{
+				final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, ssdim, playerBase);
+				String[] allNames = MinecraftServer.getServer().getAllUsernames();
+				ArrayList<String> allowedNames = data.getAllowedPlayers();
+				Iterator<String> itName = allowedNames.iterator();
+				ArrayList<String> replaceNames = new ArrayList();
+				while (itName.hasNext())
+				{
+					String name = itName.next();
+					for (int j = 0; j < allNames.length; j++)
+					{
+						if (name.equalsIgnoreCase(allNames[j]))
+						{
+							itName.remove();
+							replaceNames.add(allNames[j]);
+						}
+					}
+				}
+				allowedNames.addAll(replaceNames);
+				String[] rvsize = new String[allowedNames.size()];
+				return allowedNames.toArray(rvsize);
+			}
+		}
+	
+		String[] returnvalue = { "" };
+		return returnvalue;		
+	}
+
+	@Override
+	public boolean isUsernameIndex(String[] par1ArrayOfStr, int par2)
+	{
+		return par2 == 0;
 	}
 }
