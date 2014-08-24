@@ -93,4 +93,21 @@ public class GCCoreCommandSpaceStationAddOwner extends CommandBase
 			playerBase.sendChatToPlayer(ChatMessageComponent.createFromText("Successfully added " + var3 + " to Space Station list!"));
 		}
 	}
+	
+		@Override
+    public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
+    {
+        return par2ArrayOfStr.length == 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, this.getPlayers()) : null;
+    }
+	
+    protected String[] getPlayers()
+    {
+        return MinecraftServer.getServer().getAllUsernames();
+    }
+    
+	@Override
+    public boolean isUsernameIndex(String[] par1ArrayOfStr, int par2)
+    {
+        return par2 == 0;
+    }
 }
