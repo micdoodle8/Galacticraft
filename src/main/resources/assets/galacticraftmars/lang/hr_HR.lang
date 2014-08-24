@@ -4,11 +4,11 @@
 item.rawDesh.name=Nerefinirani Desh
 item.deshStick.name=Štapić od Desha
 item.ingotDesh.name=Desh Poluga
-item.spaceshipTier2.t2Rocket.name=Tier 2 Raketa
-item.reinforcedPlateT2.name=Tier 2 Snažna Ploča
-item.tier2.desc=Tier 2
+item.spaceshipTier2.t2Rocket.name=Raketa Ranga 2
+item.reinforcedPlateT2.name=Snažna Ploča Ranga 2
+item.tier2.desc=Rang 2
 item.slimelingCargo.name=Slimelingova Inventory Torba
-item.key.T2.name=Tier 2 Tamnicki Ključ
+item.key.T2.name=Tamnički Ključ Ranga 2
 item.compressedDesh.name=Prerađeni Desh
 item.spaceshipTier2.cargoRocket.name=Raketa s Teretom
 item.fluidManip.name=Manipulator Tekučinom
@@ -49,7 +49,7 @@ tile.marsMachine.5.name=Metan Sintisajzer
 tile.marsMachine.6.name=Vodeni Elektrizer
 tile.sludge.name=Bakterijska Sluz
 tile.creeperEgg.name=Jaje Kripera
-tile.cavernVines.name=Cavernous Vine
+tile.cavernVines.name=Kavernozni Vine
 tile.tintedGlassPane.white.name=Bijelo Staklo
 tile.tintedGlassPane.orange.name=Naranđasto Staklo
 tile.tintedGlassPane.magenta.name=Purpurno Crveno Staklo
@@ -130,28 +130,28 @@ gas.carbondioxide.name=Dioksid Carboon
 gas.oxygen.name=Zrak
 gas.nitrogen.name=Nitrogen
 
-gui.desc.reinforcedPlateT2.name=Tier 2
+gui.desc.reinforcedPlateT2.name=Rang 2
 dimension.Mars.name=Mars
 planet.mars=Mars
-tile.treasureT2.description=Tier 2 Treasure Chests will generate in Mars Dungeons. They are unlockable after defeating the final boss. ##NEEDS TRANSLATE##
-tile.cavernVines.description=Cavernous Vines are dangerous to living creatures, entangling them and dragging them upwards. ##NEEDS TRANSLATE##
-tile.slimelingEgg.description=Slimeling Eggs, once cracked with a player's bare hands, will soon hatch into a pet. ##NEEDS TRANSLATE##
-tile.cryoChamber.description=Cryogenic Chambers will allow a player to sleep during the day, healing a small amount of health, but has a cooldown. ##NEEDS TRANSLATE##
-tile.launchController.description=Launch Controllers are used to customize launch behaviour, including launch criteria and destination launch pad for auto launches. ##NEEDS TRANSLATE##
-tile.terraformer.description=Terraformers are used to add some greenery to distant planets, adding grass, trees and water when given the correct materials. ##NEEDS TRANSLATE##
-tile.creeperEgg.description=Creeper Eggs will spawn in Mars dungeons, spawning a sneaky predator upon exploding. ##NEEDS TRANSLATE##
-tile.gasLiquefier.description=Liquefies gases, either from the atmosphere or from canisters. Liquefied methane makes a good rocket fuel! ##NEEDS TRANSLATE##
-tile.methaneSynthesizer.description=With a source of hydrogen and a source of carbon, this manufactures Methane for further processing in a Gas Liquefier. ##NEEDS TRANSLATE##
+tile.treasureT2.description=Rang 2 Tamnički Ključ se može pronači u tamnicama na Marsu, ali prvo moraš pobijediti šefa.
+tile.cavernVines.description=Kavernozni Vines su opasne za živa biča mogu te ubiti.
+tile.slimelingEgg.description=Slimeling Jaja, nakon što su strgane s rukama nekoliko puta onda če stvoriti ljubimca.
+tile.cryoChamber.description=Kriogenska Kapsula će omogućiti igraču da spava tijekom dana, liječeći malu količinu zdravlja, ali ima čekanje.
+tile.launchController.description=Kontroleri Lansiranja se koriste za prilagodbu ponašanja pri pokretanju, uključujući kriterije za lansiranje i odredište za pokretanje na automatsku raketsku rampu.
+tile.terraformer.description=Teraformeri se koriste da dodaju malo zelenila na planet kao što je trava, voda i drveče.
+tile.creeperEgg.description=Kriperska jaja će se stvarati u Marsovskim tamnicama, stvarajuči predatora koji explodira.
+tile.gasLiquefier.description=Ukapljeni plinovi, bilo od atmosfere ili iz spremnika. Ukapljeni metan čini dobro raketno gorivo!
+tile.methaneSynthesizer.description=S izvorom vodika i izvora ugljika, to proizvodi metan za daljnju obradu u ukapljenom plinu.
 
 # SCHEMATICS
-schematic.rocketT3.name=Tier 3 Raketa
+schematic.rocketT3.name=Raketa Ranga 3
 schematic.cargoRocket.name=Automatska Teret Raketa
 
 # ENTITIES
 entity.Sludgeling.name=Sludgeling
 entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Evoulirani Kriper Šef
-entity.SpaceshipT2.name=Tier 2 Raketa
+entity.SpaceshipT2.name=Raketa Ranga 2
 entity.CargoRocket.name=Teretna Raketa
 
 # CONTAINERS
