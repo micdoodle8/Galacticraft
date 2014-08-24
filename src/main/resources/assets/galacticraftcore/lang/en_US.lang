@@ -507,7 +507,8 @@ tile.energyStorageModuleTier2.description=Energy Storage Cluster is used to stor
 tile.electricFurnaceTier1.description=Electric Furnace is used as a faster alternative to traditional coal furnaces.
 tile.electricFurnaceTier2.description=Arc Furnace is used as a faster alternative to both traditional coal and electric furnaces.
 tile.aluminumWire.description=Aluminum Wire is used to connect energy sources to energy consuming machines.
-tile.aluminumWireHeavy.description=Heavy Aluminum Wire is used to connect energy sources to energy consuming machines. Its higher capacity boosts efficiency for Tier 2 machines.tile.glowstoneTorch.description=Glowstone Torches are best used to light areas when there is no oxygen for wood torches to burn.
+tile.aluminumWireHeavy.description=Heavy Aluminum Wire is used to connect energy sources to energy consuming machines. Its higher capacity boosts efficiency for Tier 2 machines.
+tile.glowstoneTorch.description=Glowstone Torches are best used to light areas when there is no oxygen for wood torches to burn.
 tile.cheeseBlock.description=Cheese Blocks are created from the cheeses of the Moon, place-able and edible.
 tile.spinThruster.description=Spin Thrusters are used to make space stations rotate.
 tile.arclamp.description=Arc Lamps are used to provide strong light to a large area, also causing most mobs to flee.
