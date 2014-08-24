@@ -15,6 +15,7 @@ item.fluidManip.name=Fluid Manipulator
 
 # TOOLS
 item.deshPick.name=Desh Pickaxe
+item.deshPickSlime.name=Sticky Desh Pickaxe
 item.deshAxe.name=Desh Axe
 item.deshHoe.name=Desh Hoe
 item.deshSpade.name=Desh Shovel
@@ -69,7 +70,7 @@ tile.tintedGlassPane.black.name=Black Tinted Glass Pane
 
 # GUI
 gui.choosePlanet.desc.mars=Habitable#No Oxygen#Gravity: 38%
-item.deshPickSlime.description.name=Can harvest Slimeling eggs
+item.deshPickSlime.description.name=Can harvest Creeper eggs
 gui.message.noEnergy.name=No Energy!
 gui.message.noWater.name=Not Enough Water
 gui.message.noBonemeal.name=Not Enough Bonemeal

@@ -8,16 +8,19 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
+import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntitySlimelingEgg;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -111,6 +114,15 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, Ite
 			par2EntityPlayer.addStat(StatList.mineBlockStatArray[Block.getIdFromBlock(this)], 1);
 			par2EntityPlayer.addExhaustion(0.025F);
 			this.dropBlockAsItem(world, x, y, z, par6 % 3, 0);
+			if (currentStack.getItem() == MarsItems.deshPickaxe && EnchantmentHelper.getSilkTouchModifier(par2EntityPlayer))
+			{
+				ItemStack itemstack = new ItemStack(MarsItems.deshPickSlime, 1, currentStack.getItemDamage());
+		        if (currentStack.stackTagCompound != null)
+		        {
+		            itemstack.stackTagCompound = (NBTTagCompound)currentStack.stackTagCompound.copy();
+		        }
+		        par2EntityPlayer.setCurrentItemOrArmor(0, itemstack);
+			}
 		}
 	}
 

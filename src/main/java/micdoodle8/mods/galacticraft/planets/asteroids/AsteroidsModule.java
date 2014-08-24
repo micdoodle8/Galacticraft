@@ -80,7 +80,7 @@ public class AsteroidsModule implements IPlanetsModule
 		MinecraftForge.EVENT_BUS.register(eventHandler);
 		FMLCommonHandler.instance().bus().register(eventHandler);
 		RecipeSorter.register("canisterRecipe", CanisterRecipes.class, Category.SHAPELESS, "after:GalacticraftMars");
-
+		
 		FluidRegistry.registerFluid(new Fluid("methane").setDensity(1).setViscosity(11).setGaseous(true));
 		FluidRegistry.registerFluid(new Fluid("atmosphericgases").setDensity(1).setViscosity(13).setGaseous(true));
 		FluidRegistry.registerFluid(new Fluid("liquidmethane").setDensity(450).setViscosity(120));

@@ -11,6 +11,7 @@ public class MarsItems
 {
 	public static Item marsItemBasic;
 	public static Item deshPickaxe;
+	public static Item deshPickSlime;
 	public static Item deshAxe;
 	public static Item deshHoe;
 	public static Item deshSpade;
@@ -32,6 +33,7 @@ public class MarsItems
 	{
 		MarsItems.marsItemBasic = new ItemBasicMars();
 		MarsItems.deshPickaxe = new ItemPickaxeMars(MarsItems.TOOLDESH).setUnlocalizedName("deshPick");
+		MarsItems.deshPickSlime = new ItemPickaxeStickyMars(MarsItems.TOOLDESH).setUnlocalizedName("deshPickSlime");
 		MarsItems.deshAxe = new ItemAxeMars(MarsItems.TOOLDESH).setUnlocalizedName("deshAxe");
 		MarsItems.deshHoe = new ItemHoeMars(MarsItems.TOOLDESH).setUnlocalizedName("deshHoe");
 		MarsItems.deshSpade = new ItemSpadeMars(MarsItems.TOOLDESH).setUnlocalizedName("deshSpade");
@@ -52,6 +54,7 @@ public class MarsItems
 	public static void registerHarvestLevels()
 	{
 		MarsItems.deshPickaxe.setHarvestLevel("pickaxe", 4);
+		MarsItems.deshPickSlime.setHarvestLevel("pickaxe", 4);
 		MarsItems.deshAxe.setHarvestLevel("axe", 4);
 		MarsItems.deshSpade.setHarvestLevel("shovel", 4);
 	}
@@ -61,6 +64,7 @@ public class MarsItems
 		MarsItems.registerItem(MarsItems.carbonFragments);
 		MarsItems.registerItem(MarsItems.marsItemBasic);
 		MarsItems.registerItem(MarsItems.deshPickaxe);
+		MarsItems.registerItem(MarsItems.deshPickSlime);
 		MarsItems.registerItem(MarsItems.deshAxe);
 		MarsItems.registerItem(MarsItems.deshHoe);
 		MarsItems.registerItem(MarsItems.deshSpade);

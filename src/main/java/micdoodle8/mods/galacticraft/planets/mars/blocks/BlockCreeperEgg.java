@@ -7,16 +7,18 @@ import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
+import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockDragonEgg;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 
 public class BlockCreeperEgg extends BlockDragonEgg implements ItemBlockDesc.IBlockShiftDesc
 {
@@ -91,7 +93,28 @@ public class BlockCreeperEgg extends BlockDragonEgg implements ItemBlockDesc.IBl
 		this.onBlockDestroyedByExplosion(world, x, y, z, explosion);
 	}
 	
-	@SideOnly(Side.CLIENT)
+    public boolean canDropFromExplosion(Explosion explose)
+    {
+        return false;
+    }
+
+    //Can only be harvested with a Sticky Desh Pickaxe
+    public static boolean canHarvestBlock(Block block, EntityPlayer player, int metadata)
+    {
+        ItemStack stack = player.inventory.getCurrentItem();
+        if (stack == null)
+            return player.canHarvestBlock(block);
+        return stack.getItem() == MarsItems.deshPickSlime;
+    }
+
+    public float getPlayerRelativeBlockHardness(EntityPlayer player, World p_149737_2_, int p_149737_3_, int p_149737_4_, int p_149737_5_)
+    {
+        ItemStack stack = player.inventory.getCurrentItem();
+        if (stack != null && stack.getItem() == MarsItems.deshPickSlime) return 0.2F;
+    	return ForgeHooks.blockStrength(this, player, p_149737_2_, p_149737_3_, p_149737_4_, p_149737_5_);
+    }
+
+    @SideOnly(Side.CLIENT)
     	@Override
     	public Item getItem(World par1World, int par2, int par3, int par4)
     	{

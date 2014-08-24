@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockSlimelingEgg;
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 public class ItemBlockEgg extends ItemBlockDesc
