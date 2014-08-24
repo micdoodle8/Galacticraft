@@ -148,7 +148,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace
 	@Override
 	public boolean canSpaceshipTierPass(int tier)
 	{
-		return tier >= 2;
+		return tier >= 3;
 	}
 
 	@Override

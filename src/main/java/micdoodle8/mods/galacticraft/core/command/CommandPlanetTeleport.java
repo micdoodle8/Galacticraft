@@ -15,7 +15,6 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.item.ItemStack;
-import sun.misc.Version;
 
 import java.util.HashMap;
 import java.util.Map.Entry;

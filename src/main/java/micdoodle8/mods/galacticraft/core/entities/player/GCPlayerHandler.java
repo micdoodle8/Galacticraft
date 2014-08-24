@@ -60,6 +60,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class GCPlayerHandler
 {
 	private ConcurrentHashMap<UUID, GCPlayerStats> playerStatsMap = new ConcurrentHashMap<UUID, GCPlayerStats>();
+	private String savedPlanetList;
 
 	public ConcurrentHashMap<UUID, GCPlayerStats> getServerStatList()
 	{
@@ -764,7 +765,7 @@ public class GCPlayerHandler
 	}
 	
 	
-	protected void sendPlanetList(GCEntityPlayerMP player, GCPlayerStats playerStats)
+	protected void sendPlanetList(GCEntityPlayerMP player, GCPlayerStats playerStats, boolean alreadyUsing)
 	{
 		HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(playerStats.spaceshipTier), player);
 
@@ -777,7 +778,11 @@ public class GCPlayerHandler
 			count++;
 		}
 
-		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { player.getGameProfile().getName(), temp }), player);
+		if (!alreadyUsing || !temp.equals(this.savedPlanetList))
+		{
+			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { player.getGameProfile().getName(), temp }), player);
+			this.savedPlanetList = new String(temp);
+		}
 	}
 
 	protected void sendAirRemainingPacket(GCEntityPlayerMP player, GCPlayerStats playerStats)
@@ -860,7 +865,7 @@ public class GCPlayerHandler
 
 			if (GCPlayer.openPlanetSelectionGuiCooldown == 1 && !GCPlayer.hasOpenedPlanetSelectionGui)
 			{
-				this.sendPlanetList(player, GCPlayer);
+				this.sendPlanetList(player, GCPlayer, false);
 				GCPlayer.usingPlanetSelectionGui = true;
 				GCPlayer.hasOpenedPlanetSelectionGui = true;
 			}
@@ -882,7 +887,7 @@ public class GCPlayerHandler
 
 		if (GCPlayer.usingPlanetSelectionGui)
 		{
-			this.sendPlanetList(player, GCPlayer);
+			this.sendPlanetList(player, GCPlayer, true);
 		}
 
 		/*		if (isInGCDimension || player.usingPlanetSelectionGui)

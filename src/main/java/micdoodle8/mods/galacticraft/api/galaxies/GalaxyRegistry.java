@@ -67,7 +67,7 @@ public class GalaxyRegistry
 
 		for (Moon moon : GalaxyRegistry.getRegisteredMoons().values())
 		{
-			Planet planet = (Planet)moon.getParentPlanet();
+			Planet planet = moon.getParentPlanet();
 			List<Moon> listOfMoons = GalaxyRegistry.moonList.get(planet);
 			if (listOfMoons == null)
 			{
