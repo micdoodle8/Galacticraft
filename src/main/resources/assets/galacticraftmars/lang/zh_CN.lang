@@ -15,6 +15,7 @@ item.fluidManip.name=流体操纵器
 
 # TOOLS
 item.deshPick.name=戴斯镐
+item.deshPickSlime.name=粘性戴斯镐
 item.deshAxe.name=戴斯斧
 item.deshHoe.name=戴斯锄
 item.deshSpade.name=戴斯铲
@@ -69,7 +70,7 @@ tile.tintedGlassPane.black.name=黑色玻璃板
 
 # GUI
 gui.choosePlanet.desc.mars=宜居#无氧气#重力:38%
-item.deshPickSlime.description.name=可用于回收黏滑怪蛋
+item.deshPickSlime.description.name=可用于回收苦力怕怪蛋
 gui.message.noEnergy.name=电力不足
 gui.message.noWater.name=水量不足
 gui.message.noBonemeal.name=骨粉不足
