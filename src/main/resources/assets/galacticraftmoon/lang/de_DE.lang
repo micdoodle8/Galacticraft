@@ -1,4 +1,4 @@
-﻿# Galacticraft Moon Language File = GERMANY GERMAN
+# Galacticraft Moon Language File = GERMANY GERMAN
 
 # GENERAL ITEMS
 item.meteoricIronRaw.name=Rohes Meteorisches Eisen
@@ -14,13 +14,13 @@ item.cheeseBlock.name=Käseblock
 # ARMOR
 
 # BLOCKS
-tile.moonBlock.moonstone.name=Stein
-tile.moonBlock.moondirt.name=Erde
+tile.moonBlock.moonstone.name=Mondgetein
+tile.moonBlock.moondirt.name=Monderde
 tile.moonBlock.moongrass.name=Mondrasen
 tile.moonBlock.tinmoon.name=Zinnerz
 tile.moonBlock.coppermoon.name=Kupfererz
 tile.moonBlock.cheesestone.name=Käseerz
-tile.moonBlock.bricks.name=Ziegel
+tile.moonBlock.bricks.name=Monddungeonziegel
 tile.cheeseBlock.name=Käseblock
 
 # GUI
