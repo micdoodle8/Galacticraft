@@ -15,7 +15,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
@@ -72,13 +71,6 @@ public class BlockCreeperEgg extends BlockDragonEgg implements ItemBlockDesc.IBl
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
-	{
-		return null;
-	}
-
-	@Override
 	public void onBlockExploded(World world, int x, int y, int z, Explosion explosion)
 	{
 		if (!world.isRemote)
@@ -93,26 +85,35 @@ public class BlockCreeperEgg extends BlockDragonEgg implements ItemBlockDesc.IBl
 		this.onBlockDestroyedByExplosion(world, x, y, z, explosion);
 	}
 	
-    public boolean canDropFromExplosion(Explosion explose)
-    {
-        return false;
-    }
+	@Override
+    	public boolean canDropFromExplosion(Explosion explose)
+    	{
+        	return false;
+    	}
 
-    //Can only be harvested with a Sticky Desh Pickaxe
-    public static boolean canHarvestBlock(Block block, EntityPlayer player, int metadata)
-    {
-        ItemStack stack = player.inventory.getCurrentItem();
-        if (stack == null)
-            return player.canHarvestBlock(block);
-        return stack.getItem() == MarsItems.deshPickSlime;
-    }
+    	//Can only be harvested with a Sticky Desh Pickaxe
+    	@Override
+    	public boolean canHarvestBlock(EntityPlayer player, int metadata)
+    	{
+        	ItemStack stack = player.inventory.getCurrentItem();
+        	if (stack == null)
+        	{
+            		return player.canHarvestBlock(this);
+        	}
+        	return stack.getItem() == MarsItems.deshPickSlime;
+    	}
 
-    public float getPlayerRelativeBlockHardness(EntityPlayer player, World p_149737_2_, int p_149737_3_, int p_149737_4_, int p_149737_5_)
-    {
-        ItemStack stack = player.inventory.getCurrentItem();
-        if (stack != null && stack.getItem() == MarsItems.deshPickSlime) return 0.2F;
-    	return ForgeHooks.blockStrength(this, player, p_149737_2_, p_149737_3_, p_149737_4_, p_149737_5_);
-    }
+	@Override
+	public float getPlayerRelativeBlockHardness(EntityPlayer player, World p_149737_2_, int p_149737_3_, int p_149737_4_, int p_149737_5_)
+    	{
+        	ItemStack stack = player.inventory.getCurrentItem();
+
+        	if (stack != null && stack.getItem() == MarsItems.deshPickSlime)
+        	{
+        		return 0.2F;
+        	}
+    		return ForgeHooks.blockStrength(this, player, p_149737_2_, p_149737_3_, p_149737_4_, p_149737_5_);
+    	}
 
     @SideOnly(Side.CLIENT)
     	@Override
