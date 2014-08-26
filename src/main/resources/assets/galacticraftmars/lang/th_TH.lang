@@ -15,6 +15,7 @@ item.fluidManip.name=ตัวจัดการของเหลว
 
 # TOOLS
 item.deshPick.name=อีเต้อเดรช
+item.deshPickSlime.name=อีเต้อเดรชเหนียว
 item.deshAxe.name=ขวานเดรช
 item.deshHoe.name=จอบเดรช
 item.deshSpade.name=พลั่วเดรช
@@ -50,26 +51,10 @@ tile.marsMachine.6.name=เครื่องแยกน้ำด้วยไ�
 tile.sludge.name=ตะกอนแบคทีเรีย
 tile.creeperEgg.name=ไข่คริปเปอร์
 tile.cavernVines.name=เถาวัลย์ถ้ำ
-tile.tintedGlassPane.white.name=White Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.orange.name=Orange Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.magenta.name=Magenta Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.light_blue.name=Light Blue Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.yellow.name=Yellow Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.lime.name=Lime Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.pink.name=Pink Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.gray.name=Gray Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.silver.name=Silver Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.cyan.name=Cyan Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.purple.name=Purple Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.blue.name=Blue Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.brown.name=Brown Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.green.name=Green Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.red.name=Red Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.black.name=Black Tinted Glass Pane ##NEEDS TRANSLATE##
 
 # GUI
 gui.choosePlanet.desc.mars=อาศัยอยู่ได้#ไม่มีออกซิเจน#แรงโน้มถ่วง: 38%
-item.deshPickSlime.description.name=สามารถขุดไข่สไลม์ลิ่งได้
+item.deshPickSlime.description.name=สามารถขุดไข่คริปเปอร์ได้
 gui.message.noEnergy.name=พลังงานไฟฟ้าไม่พอ
 gui.message.noWater.name=น้ำไม่พอ
 gui.message.noBonemeal.name=ผงกระดูกไม่พอ
@@ -134,15 +119,16 @@ gas.nitrogen.name=ไนโตรเจน
 gui.desc.reinforcedPlateT2.name=เทียร์ 2
 dimension.Mars.name=ดาวอังคาร
 planet.mars=ดาวอังคาร
-tile.treasureT2.description=Tier 2 Treasure Chests will generate in Mars Dungeons. They are unlockable after defeating the final boss. ##NEEDS TRANSLATE##
-tile.cavernVines.description=Cavernous Vines are dangerous to living creatures, entangling them and dragging them upwards. ##NEEDS TRANSLATE##
-tile.slimelingEgg.description=Slimeling Eggs, once cracked with a player's bare hands, will soon hatch into a pet. ##NEEDS TRANSLATE##
-tile.cryoChamber.description=Cryogenic Chambers will allow a player to sleep during the day, healing a small amount of health, but has a cooldown. ##NEEDS TRANSLATE##
-tile.launchController.description=Launch Controllers are used to customize launch behaviour, including launch criteria and destination launch pad for auto launches. ##NEEDS TRANSLATE##
-tile.terraformer.description=Terraformers are used to add some greenery to distant planets, adding grass, trees and water when given the correct materials. ##NEEDS TRANSLATE##
-tile.creeperEgg.description=Creeper Eggs will spawn in Mars dungeons, spawning a sneaky predator upon exploding. ##NEEDS TRANSLATE##
-tile.gasLiquefier.description=Liquefies gases, either from the atmosphere or from canisters. Liquefied methane makes a good rocket fuel! ##NEEDS TRANSLATE##
-tile.methaneSynthesizer.description=With a source of hydrogen and a source of carbon, this manufactures Methane for further processing in a Gas Liquefier. ##NEEDS TRANSLATE##
+
+tile.treasureT2.description=กล่องสมบัติ เทียร์ 2 จะอยู่ในดันเจี้ยนดาวอังคาร สามารถปลดล็อคกล่องได้เมื่อสู้กับบอสชนะ
+tile.cavernVines.description=เถาวัลย์ถ้ำอันตรายสำหรับสิ่งมีชีวิต มันจะเกี่ยวพันตัวเราและดึงขึ้นสู่ข้างบน
+tile.slimelingEgg.description=ไข่สไลม์ลิ่ง ทุบหนึ่งครั้งโดยการใช้มือของผู้เล่น จะทำให้ออกมาเป็นสัตว์เลี้ยง
+tile.cryoChamber.description=ตู้ไคโยเจนนิค จะให้ผู้เล่นสามารถนอนได้ระหว่างวัน เพิ่มเลือดได้จำนวนเล็กน้อย แต่มีการจำกัดการใช้งาน
+tile.launchController.description=เครื่องควบคุมการปล่อยจรวด ใช้สำหรับการปล่อยจรวดในรูปแบบต่างๆ รวมถึงการปล่อยจรวดไปยังจุดหมาย สำหรับการปล่อยจรวดอัตโนมัติ
+tile.terraformer.description=เทอราฟอร์มเมอร์ ใช้สำหรับเพิ่มพื้นที่สีเขียวในดาวเคราะห์ที่ห่างไกล เพิ่มหญ้า ต้นไม้ น้ำ เมื่อใส่วัสดุที่ถูกต้อง
+tile.creeperEgg.description=ไข่คริปเปอร์ จะอยู่ในดันเจี้ยนดาวอังคาร จะสปอนคริปเปอร์อวกาศเมื่อไข่ถูกระเบิด
+tile.gasLiquefier.description=เครื่องเปลี่ยนสถานะก๊าซ เก็บก๊าซจากชั้นบรรยากาศหรือจากกระป๋องของเหลว ส่วนมีเทนเหลวสามารถใช้เป็นเชื้อเพลิงจรวดได้
+tile.methaneSynthesizer.description=เครื่องสังเคราะห์มีเทน โดยแหล่งของไฮโดรเจนและคาร์บอน สิ่งนี้จะผลิตมีเทนสำหรับใช้ในเครื่องเปลี่ยนสถานะก๊าซ
 
 # SCHEMATICS
 schematic.rocketT3.name=จรวด เทียร์ 3
