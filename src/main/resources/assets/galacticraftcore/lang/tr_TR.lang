@@ -125,7 +125,7 @@ tile.sapling2.oak.name=Meşe Fidanı
 tile.sapling2.spruce.name=Ladin Ağacı Fidanı
 tile.sapling2.birch.name=Huş Ağacı Fidanı
 tile.sapling2.jungle.name=Orman Ağacı Fidanı
-tile.sealer.name=Oksijen Verici
+tile.sealer.name=Oksijen Mühürleyen
 tile.enclosed.oxygenPipe.name=Mühürlenebilir Oksijen Borusu
 tile.oxygenDetector.name=Oksijen Dedektörü
 tile.cargo.loader.name=Kargo Yükleyici
@@ -140,7 +140,7 @@ tile.enclosed.lvCable.name=Mühürlenebilir Ultra Düşük Akım Kablosu
 tile.enclosed.PipeItemsCobblestone.name=Mühürlenebilir Kırıktaş Taşıma Borusu
 tile.enclosed.PipeItemsStone.name=Mühürlenebilir Taş Taşıma Boru
 tile.enclosed.PipeFluidsCobblestone.name=Mühürlenebilir Kırıktaş Sıvı Borusu
-tile.enclosed.PipeFluidsStone.name=Mühürlenebilir Stone Sıvı Borusu
+tile.enclosed.PipeFluidsStone.name=Mühürlenebilir Taş Sıvı Borusu
 tile.enclosed.PipePowerStone.name=Mühürlenebilir Taş İletken Borusu
 tile.enclosed.PipePowerGold.name=Mühürlenebilir Altın İletken Borusu
 tile.solar.basic.name=Basit Güneş Paneli
@@ -206,6 +206,7 @@ death.attack.spaceshipExplosion=%1$s's roket havaya uçtu!
 death.attack.spaceshipExplosionB=%1$s talihsiz bir uzay gemisi kazasında öldü!
 death.attack.spaceshipCrash=%1$s's roket sert bir kaza yaptı.
 death.attack.oxygenSuffocation=%1$s oksijen yetersizliğinden öldü!
+death.attack.thermal=%1$s termal koruması olmadığı için öldü.
 
 # GALAXIES
 galaxy.blockyway.name=Bloklaşmış Yol
@@ -362,8 +363,8 @@ gui.rocket.warning.nogyroscope=Jiroskop çılgınca dönerken gizemli güçler d
 gui.rocket.warning.noparachute=Paraşütünüz bulunmuyor. Fırlat tuşuna tekrar basarak uçabilirsiniz ama sorun olabilir! 
 gui.rocket.warning.nofuel=Yakıtınız bulunmuyor. En yakın zamanda yakıt doldurun.
 gui.chest.warning.wrongkey=Tier %s için zindandan yeni bir şematik bulun!
-gui.frequencymodule.warning0=Burada düzgün duymak 
-gui.frequencymodule.warning1=için gerekir. 
+gui.frequencymodule.warning0=Burada düzgün duymak için
+gui.frequencymodule.warning1=gerekir. 
 
 gui.rocketType.0=Depolama Alanı: 18
 gui.rocketType.1=Depolama Alanı: 36
@@ -472,6 +473,46 @@ gui.message.overworld.atmosphere.1.name=Hayat Desteği
 gui.message.overworld.meansurfacetemp.0.name=14C
 gui.message.overworld.meansurfacetemp.1.name=
 
+itemDesc.powerdraw.name=Gereken enerji: %s /s
+itemDesc.shift.name=%s tuşuna basarak daha detaylı bilgi
+
+tile.oxygenDetector.description=Oksijen Dedektörü, etrafta oksijen varsa kızıltaş sinyali yayar. 
+tile.oxygenCollector.description=Oksijen Toplayıcısı, etrafta yaprak veya oksijen varsa oksijen toplar.
+tile.oxygenCompressor.description=Oksijen Kompresörü oksijen tanklarına oksijen doldurur.
+tile.oxygenDecompressor.description=Oksijen Açıcı oksijen tankındaki oksijeni alır.
+tile.distributor.description=Oksijen Kabarcık Distribütörünü ortaya koyarak oksijen dolu bir balon yapabilirsiniz.
+tile.sealer.description=Oksijen Mühürleyen, bir odaya oksijen vermek amaçıyla kullanılır.
+tile.oxygenPipe.description=Oksijen Borusu, oksijeni makinalara götürmek için kullanılır.
+tile.refinery.description=Rafineri, petrolü yakıta dönüştür. Araç ve roket için yakıt gereklidir.
+tile.fuelLoader.description=Yakıt Yükleyicisi, fırlatma pedini veya akaryakıt pedini kullanarak araçlara ve roketlere yakıt yükler.
+tile.buggyPad.description=Buggy Akaryakıt Pedine yakıt doldurmak için Yakıt Yükleyicisi kullanın. Pedleri 3x3 şeklinde yerleştirin. Bununla roket uçuramazsınız.
+tile.landingPad.description=Pedler roket için gereklidir. Pedleri 3x3 şeklinde yerleştirin. Yakıt Yükleyicisi, Kargo Yükleyicisi ve Fırlatma Kontrollü buna bağlanır.
+tile.treasureChest.description=Tier 1 Hazine Sandığı Ay zindanın da bulunuyor. Açılması için sondaki Patron canavarı öldürün.
+tile.rocketWorkbench.description=NASA Çalışma Masası gelişmiş roket ve araçları yapmak içindir. Yeni şematikleri buldukça ekleyin.
+tile.fallenMeteor.description=Düşmüş Meteor bulmak için gezegenlere/aylara veya atmosferi olmayan yerlere bakın. Kırılınca Meteroik Demir verir.
+tile.airLockFrame.description=Hava Kilidi Çerçevesi, Hava Kilidi Kontrollü ile uyumlu çalışır ve tam bir hava kilidi oluşturur.
+tile.enclosed.description=Mühürlenebilir bloklar hava geçirmezdir. Duvarlarda rahatlıkla kullanılabilir.
+tile.cargoLoader.description=Kargo Yükleyicisi, pedlere bağlanarak roket veya araçlara kargo yükler.
+tile.cargoUnloader.description=Kargo Boşaltıcı, pedlere bağlanarak roket veya araçlara kargo boşaltır.
+tile.parachest.description=Para Sandık, gezegenden veya aydan gelirken roketin malzemelerini taşır.
+tile.solarBasic.description=Basit Güneş Paneli, güneşin olduğu zamanlar enerji toplar.
+tile.solarAdv.description=Gelişmiş Güneş Paneli, güneşin olduğu zamanlar enerji toplar. Basitine göre daha fazla toplar ve otomatiktir.
+tile.coalGenerator.description=Kömür Jeneratörü, en basit elektrik üretmenin yoludur. Kömür ile çalışır.
+tile.compressor.description=Kompresör, külçeleri şıkıştır.
+tile.compressorElectric.description=Elektrikli Kompresör, külçeleri şıkıştır. Normal Kompresörden daha hızlıdır.
+tile.circuitFabricator.description=Devre Fabrikatörü basit malzemeleri yapmak için Ham Silikon gereklidir. Gelişmiş makineler için gereklidir.
+tile.oxygenStorageModule.description=Oksijen Depolama Modülü, büyük miktarlarda oksijen depolar.
+tile.energyStorageModuleTier1.description=Enerji Depolama Modülü, enerji depolar.
+tile.energyStorageModuleTier2.description=Enerji Depolama Makinesi, büyük miktarda enerji depolar ve daha güçlü çıkışı vardır.
+tile.electricFurnaceTier1.description=Elektrikli Ocak, kömür ocağından daha hızlı ve daha iyidir.
+tile.electricFurnaceTier2.description=Ark Ocağı, Elektrikli ve kömür ocaklarından daha hızlı ve iyidir.
+tile.aluminumWire.description=Alüminyum Tel, enerjiyi uzak mesafelere taşır.
+tile.aluminumWireHeavy.description=Ağır Alüminyum Tel, normal Alüminyum Telden daha iyidir ve hızlıdır.
+tile.glowstoneTorch.description=Işık Taşı Meşale, oksijen bulunmayan ortamlarda yanar.
+tile.cheeseBlock.description=Peynir bloğu, yenilebilir. Peynir Ayda bulunur. 
+tile.spinThruster.description=Dönüş Pervanesi uzay istasyonu için kullanılır.
+tile.arclamp.description=Ark Lambası büyük alanları aydınlatmak için kullanılır.
+
 # CONTAINERS
 container.cargoloader.name=Kargo Yükleyici
 container.cargounloader.name=Kargo Boşaltıcı
@@ -502,6 +543,7 @@ planet.uranus=Uranüs
 planet.neptune=Neptün
 moon.moon=Ay
 solarsystem.sol=sol
+star.sol=Sol
 
 # COMMANDS
 commands.dimensionteleport=%s şu atmosfere gönderildi%s

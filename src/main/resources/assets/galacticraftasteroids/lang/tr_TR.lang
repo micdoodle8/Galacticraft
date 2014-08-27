@@ -81,6 +81,9 @@ tile.denseIce.name=Yoğun Buz
 
 # GUI
 planet.asteroids=Asteroit
+
+    # Dollar sign ($) will split text onto a new line
+	# Do not remove %s or %d, since that will be replaced in-game
 gui.telepad.desc.0=Telepadın adres numarası$farklı olması gerekir.
 gui.telepad.desc.1=Başka bir Telepadın adres numarası.$250m içinde olmalı. 
 gui.message.address.name=Adres Numarası
@@ -95,6 +98,14 @@ gui.message.sendingActive.name=Gönderme Aktif
 gui.message.range.name=Menzil: %dm
 gui.message.notEnoughEnergy.name=Enerji Yetersiz!
 gui.message.targetNoEnergy.name=Hedefin Enerjisi Yetersiz!
+
+tile.treasureT3.description=Tier 3 Hazine Sandığı şu anlık kullanılmıyor.
+tile.walkway.description=Yürüme Bloğu dekoratif amaçlıdır, diğer bloklara bağlanarak uzay teması oluşur.
+tile.walkwayAluminumWire.description=Alüminyum Tel Yürüme Bloğu kabloların altan geçerek, güvenli bir yürüyüş sağlar.
+tile.walkwayOxygenPipe.description=Oksijen Borusu Yürüme Bloğu boruların altan geçerek, güvenli bir yürüyüş sağlar.
+tile.beamReflector.description=Işın Reflektörü ışın enerjisini kaynaktan gönderir. Sağ tıklayarak hedefi değiştirebilirsiniz.
+tile.beamReceiver.description=Işın alıcısı enerji makinelerin giriş ve çıkışına bağlanarak enerjiyi transfer etmekte kullanılır.
+tile.telepadShort.description=Kısa Menzilli Telepad oyuncuları ışınlamaya ve kısa mesafe (250 blok) gitmeye yarar.
 
 # SCHEMATICS
 
