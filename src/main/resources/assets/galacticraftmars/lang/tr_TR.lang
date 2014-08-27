@@ -15,6 +15,7 @@ item.fluidManip.name=Sıvı Manipülatör
 
 # TOOLS
 item.deshPick.name=Desh Kazma
+item.deshPickSlime.name=Yapışkan Desh Kazma
 item.deshAxe.name=Desh Balta
 item.deshHoe.name=Desh Çapa
 item.deshSpade.name=Desh Kürek
@@ -50,22 +51,6 @@ tile.marsMachine.6.name=Su Elektroliz Cihazı
 tile.sludge.name=Bakteriyelli Çamur
 tile.creeperEgg.name=Creeper Yumurtası
 tile.cavernVines.name=Cavernous Vines
-tile.tintedGlassPane.white.name=Beyaz Renkli İnce Cam
-tile.tintedGlassPane.orange.name=Turuncu Renkli İnce Cam
-tile.tintedGlassPane.magenta.name=Eflatun Renkli İnce Cam
-tile.tintedGlassPane.light_blue.name=Açık Mavi Renkli İnce Cam
-tile.tintedGlassPane.yellow.name=Sarı Renkli İnce Cam
-tile.tintedGlassPane.lime.name=Açık Yeşil Renkli İnce Cam
-tile.tintedGlassPane.pink.name=Pembe Renkli İnce Cam
-tile.tintedGlassPane.gray.name=Gri Renkli İnce Cam
-tile.tintedGlassPane.silver.name=Açık Gri Renkli İnce Cam
-tile.tintedGlassPane.cyan.name=Turkuaz Renkli İnce Cam
-tile.tintedGlassPane.purple.name=Mor Renkli İnce Cam
-tile.tintedGlassPane.blue.name=Mavi Renkli İnce Cam
-tile.tintedGlassPane.brown.name=Kahverengi Renkli İnce Cam
-tile.tintedGlassPane.green.name=Yeşil Renkli İnce Cam
-tile.tintedGlassPane.red.name=Kırmızı Renkli İnce Cam
-tile.tintedGlassPane.black.name=Siyah Renkli İnce Cam
 
 # GUI
 gui.choosePlanet.desc.mars=Yaşanabilir#Oksijen Bulunmuyor#Yerçekimi: %38
@@ -99,6 +84,7 @@ gui.message.notSet.name=Belirtilmemiş
 gui.message.notEnough.name=Yeterli Değil
 gui.message.success.name=Başarılı
 
+    # Dollar sign ($) will split text onto a new line
 gui.launchController.desc.0=Fırlatıcı kontrollünün frekansı
 gui.launchController.desc.1=Fırlatılacak roketin karşı frekansı
 gui.launchController.desc.2=Roket fırlatma pedi$kalkışta silinecek.
@@ -133,15 +119,16 @@ gas.nitrogen.name=Nitrojen
 gui.desc.reinforcedPlateT2.name=Tier 2
 dimension.Mars.name=Mars
 planet.mars=Mars
-tile.treasureT2.description=Tier 2 Treasure Chests will generate in Mars Dungeons. They are unlockable after defeating the final boss. ##NEEDS TRANSLATE##
-tile.cavernVines.description=Cavernous Vines are dangerous to living creatures, entangling them and dragging them upwards. ##NEEDS TRANSLATE##
-tile.slimelingEgg.description=Slimeling Eggs, once cracked with a player's bare hands, will soon hatch into a pet. ##NEEDS TRANSLATE##
-tile.cryoChamber.description=Cryogenic Chambers will allow a player to sleep during the day, healing a small amount of health, but has a cooldown. ##NEEDS TRANSLATE##
-tile.launchController.description=Launch Controllers are used to customize launch behaviour, including launch criteria and destination launch pad for auto launches. ##NEEDS TRANSLATE##
-tile.terraformer.description=Terraformers are used to add some greenery to distant planets, adding grass, trees and water when given the correct materials. ##NEEDS TRANSLATE##
-tile.creeperEgg.description=Creeper Eggs will spawn in Mars dungeons, spawning a sneaky predator upon exploding. ##NEEDS TRANSLATE##
-tile.gasLiquefier.description=Liquefies gases, either from the atmosphere or from canisters. Liquefied methane makes a good rocket fuel! ##NEEDS TRANSLATE##
-tile.methaneSynthesizer.description=With a source of hydrogen and a source of carbon, this manufactures Methane for further processing in a Gas Liquefier. ##NEEDS TRANSLATE##
+
+tile.treasureT2.description=Tier 2 Hazine Sandığı Mars zindanın da bulunur. Açılması için sondaki Patron canavarı öldürün.
+tile.cavernVines.description=Cavernous Vines canlılar için tehlikelidir, bunu kırarak hediyenizi alın.
+tile.slimelingEgg.description=Slimeling Yumurtasını elle kırarak bir evcil hayvana sahip olabilirsiniz.
+tile.cryoChamber.description=Kriyojenik Odası oyuncunun uyumasını sağlar, ufak bir can verir, fakat bekleme süresi vardır.
+tile.launchController.description=Fırlatma Kontrollü kullanarak fırlatmaları özelleştirebilirsiniz, otomatik olarak başka yere roket gidebilir.
+tile.terraformer.description=Terraformer gezegenlere yeşillik katar, çim, ağaç ve su ile basit bir alan oluşturur.
+tile.creeperEgg.description=Creeper Yumurtası Mars zindanlarında bulunur, spawnlanınca büyük bir patlama oluşur. 
+tile.gasLiquefier.description=Gaz Sıvılaştırıcı, metan gazını atmosferden veya teneke kutudan alarak iyi bir roket yakıtı yapın.
+tile.methaneSynthesizer.description=Karbon ve hidrojenin ana kaynağı. Gaz sıvılaştırıcı için metan gazı sağlar.
 
 # SCHEMATICS
 schematic.rocketT3.name=Tier 3 Roketi
