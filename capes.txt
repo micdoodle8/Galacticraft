@@ -69,3 +69,5 @@ CmdrPineapple:capeLime
 MadCast_Maday:capeLightBlue
 wurble000:capeLightBlue
 lancewalker:capeDarkGray
+LordLington:capeYellow
+MoonRaven:capeDarkGray
