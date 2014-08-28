@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.util;
 import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.item.IBreathableArmor;
 import micdoodle8.mods.galacticraft.api.item.IBreathableArmor.EnumGearType;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenGear;
@@ -14,7 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
@@ -45,17 +44,20 @@ public class OxygenUtil
 
     }
 
-	public static boolean isAABBInBreathableAirBlock(Entity entity)
+	public static boolean isAABBInBreathableAirBlock(EntityLivingBase entity)
 	{
-		return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, new Vector3(entity.boundingBox.minX - 1, entity.boundingBox.minY - 1, entity.boundingBox.minZ - 1), new Vector3(entity.boundingBox.maxX + 1, entity.boundingBox.maxY + 1, entity.boundingBox.maxZ + 1));
+		return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, entity.boundingBox);
 	}
 
 	@SuppressWarnings("rawtypes")
-	public static boolean isAABBInBreathableAirBlock(World world, Vector3 minVec, Vector3 maxVec)
+	public static boolean isAABBInBreathableAirBlock(World world, AxisAlignedBB bb)
 	{
-		final double avgX = (minVec.x + maxVec.x) / 2.0D;
-		final double avgY = (minVec.y + maxVec.y) / 2.0D;
-		final double avgZ = (minVec.z + maxVec.z) / 2.0D;
+		if (!world.isRemote)
+		{
+		
+		final double avgX = (bb.minX + bb.maxX) / 2.0D;
+		final double avgY = (bb.minY + bb.maxY) / 2.0D;
+		final double avgZ = (bb.minZ + bb.maxZ) / 2.0D;
 
 		final List l = world.loadedTileEntityList;
 
@@ -65,11 +67,12 @@ public class OxygenUtil
 			{
 				final TileEntityOxygenDistributor distributor = (TileEntityOxygenDistributor) o;
 
-				if (!distributor.getWorldObj().isRemote && distributor.oxygenBubble != null)
+				if (distributor.oxygenBubble != null)
 				{
 					final double dist = distributor.getDistanceFromServer(avgX, avgY, avgZ);
+					double r = distributor.oxygenBubble.getSize();
 
-					if (dist < Math.pow(distributor.oxygenBubble.getSize(), 2))
+					if (dist < r * r)
 					{
 						return true;
 					}
@@ -77,7 +80,8 @@ public class OxygenUtil
 			}
 		}
 
-		return OxygenUtil.isInOxygenBlock(world, AxisAlignedBB.getBoundingBox(minVec.x, minVec.y, minVec.z, maxVec.x, maxVec.y, maxVec.z).contract(0.001D, 0.001D, 0.001D));
+		}
+		return OxygenUtil.isInOxygenBlock(world, bb.copy().expand(0.999D, 0.999D, 0.999D));
 	}
 
 	public static boolean isInOxygenBlock(World world, AxisAlignedBB bb)
@@ -91,18 +95,18 @@ public class OxygenUtil
 
 		if (world.checkChunksExist(i, k, i1, j, l, j1))
 		{
-			for (int k1 = i; k1 <= j; ++k1)
+			for (int x = i; x <= j; ++x)
 			{
-				for (int l1 = k; l1 <= l; ++l1)
+				for (int y = k; y <= l; ++y)
 				{
-					for (int i2 = i1; i2 <= j1; ++i2)
+					for (int z = i1; z <= j1; ++z)
 					{
-						Block j2 = world.getBlock(k1, l1, i2);
+						Block block = world.getBlock(x, y, z);
 
-						if (j2 == GCBlocks.breatheableAir || j2 == GCBlocks.brightBreatheableAir)
+						if (block == GCBlocks.breatheableAir || block == GCBlocks.brightBreatheableAir)
 						{
 							return true;
-						}
+						}				
 					}
 				}
 			}

@@ -16,7 +16,6 @@ import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.FlipPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.Unlock;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
@@ -43,6 +42,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -176,7 +176,7 @@ public class EventHandlerGC
 			{
 				if (!event.entity.worldObj.isRemote && event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK))
 				{
-					if (idClicked != Blocks.tnt && !OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, new Vector3(event.x, event.y, event.z), new Vector3(event.x + 1, event.y + 2, event.z + 1)))
+					if (idClicked != Blocks.tnt && !OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, AxisAlignedBB.getBoundingBox(event.x, event.y, event.z, event.x + 1, event.y + 2, event.z + 1)))
 					{
 						event.setCanceled(true);
 					}
@@ -200,22 +200,25 @@ public class EventHandlerGC
 	{
 		if (event.entityLiving.worldObj.provider instanceof IGalacticraftWorldProvider)
 		{
-            if (!(event.entityLiving instanceof EntityPlayer) && !OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving))
+            if (!(event.entityLiving instanceof EntityPlayer))
             {
                 if ((!(event.entityLiving instanceof IEntityBreathable) || !((IEntityBreathable) event.entityLiving).canBreath()) && event.entityLiving.ticksExisted % 100 == 0)
                 {
-                    GCCoreOxygenSuffocationEvent suffocationEvent = new GCCoreOxygenSuffocationEvent.Pre(event.entityLiving);
-                    MinecraftForge.EVENT_BUS.post(suffocationEvent);
-
-                    if (suffocationEvent.isCanceled())
-                    {
-                        return;
-                    }
-
-                    event.entityLiving.attackEntityFrom(DamageSourceGC.oxygenSuffocation, 1);
-
-                    GCCoreOxygenSuffocationEvent suffocationEventPost = new GCCoreOxygenSuffocationEvent.Post(event.entityLiving);
-                    MinecraftForge.EVENT_BUS.post(suffocationEventPost);
+                	if (!OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving))
+                	{
+	                	GCCoreOxygenSuffocationEvent suffocationEvent = new GCCoreOxygenSuffocationEvent.Pre(event.entityLiving);
+	                    MinecraftForge.EVENT_BUS.post(suffocationEvent);
+	
+	                    if (suffocationEvent.isCanceled())
+	                    {
+	                        return;
+	                    }
+	
+	                    event.entityLiving.attackEntityFrom(DamageSourceGC.oxygenSuffocation, 1);
+	
+	                    GCCoreOxygenSuffocationEvent suffocationEventPost = new GCCoreOxygenSuffocationEvent.Post(event.entityLiving);
+	                    MinecraftForge.EVENT_BUS.post(suffocationEventPost);
+                	}
                 }
             }
         }
