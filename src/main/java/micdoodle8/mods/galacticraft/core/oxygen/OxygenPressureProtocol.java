@@ -98,7 +98,6 @@ public class OxygenPressureProtocol
 		}
 	}
 
-	// Note this will NPE if id==0, so don't call this with id==0
 	public static boolean canBlockPassAir(World world, Block block, BlockVec3 vec, int side)
 	{
 		//Check leaves first, because their isOpaqueCube() test depends on graphics settings

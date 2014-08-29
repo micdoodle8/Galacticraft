@@ -3,9 +3,9 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -252,20 +252,7 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
 	{
 		if (world.provider instanceof IGalacticraftWorldProvider)
 		{
-			boolean hasOxygen = false;
-
-			for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
-			{
-				Block blockID = new Vector3(x, y, z).modifyPositionFromSide(direction).getBlock(world);
-
-				if (blockID == GCBlocks.breatheableAir || blockID == GCBlocks.brightBreatheableAir)
-				{
-					hasOxygen = true;
-					break;
-				}
-			}
-
-			if (hasOxygen)
+			if (OxygenUtil.checkTorchHasOxygen(world, this, x, y, z))
 			{
 				this.onOxygenAdded(world, x, y, z);
 			}

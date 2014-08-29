@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.item.IBreathableArmor;
 import micdoodle8.mods.galacticraft.api.item.IBreathableArmor.EnumGearType;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -12,10 +13,14 @@ import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockEnchantmentTable;
+import net.minecraft.block.BlockFarmland;
 import net.minecraft.block.BlockGlass;
 import net.minecraft.block.BlockGravel;
 import net.minecraft.block.BlockLeavesBase;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.BlockPistonBase;
+import net.minecraft.block.BlockSlab;
 import net.minecraft.block.BlockSponge;
 import net.minecraft.block.BlockStainedGlass;
 import net.minecraft.block.material.Material;
@@ -28,6 +33,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -118,6 +124,7 @@ public class OxygenUtil
 		int i1 = MathHelper.floor_double(bb.minZ);
 		int j1 = MathHelper.floor_double(bb.maxZ);
 
+		OxygenUtil.checked = new HashSet();
 		if (world.checkChunksExist(i, k, i1, j, l, j1))
 		{
 			for (int x = i; x <= j; ++x)
@@ -127,7 +134,6 @@ public class OxygenUtil
 					for (int z = i1; z <= j1; ++z)
 					{
 						Block block = world.getBlock(x, y, z);
-						OxygenUtil.checked = new HashSet();
 						if (OxygenUtil.testContactWithBreathableAir(world, block, x, y, z, 0))
 							return true;
 					}
@@ -138,6 +144,32 @@ public class OxygenUtil
 		return false;
 	}
 
+	/*
+	 * A simplified version of the breathable air check which checks
+	 * all 6 sides of the given block (because a torch can pass air on all sides)
+	 * Used in BlockUnlitTorch.  
+	 */
+	public static boolean checkTorchHasOxygen(World world, Block block, int x, int y, int z)
+	{	
+		OxygenUtil.checked = new HashSet();
+		BlockVec3 vec = new BlockVec3(x, y, z);
+		for (int side = 0; side < 6; side++)
+		{
+			BlockVec3 sidevec = vec.newVecSide(side);
+			Block newblock = sidevec.getBlockID_noChunkLoad(world);
+			if (OxygenUtil.testContactWithBreathableAir(world, newblock, sidevec.x, sidevec.y, sidevec.z, 1)) return true;
+		}
+		return false;
+	}
+	
+	/*
+	 * Test whether the given block at (x,y,z) coordinates is either:
+	 * - breathable air (returns true)
+	 * - solid, or air which is not breathable (returns false)
+	 * - an air-permeable block, for example a torch, in which case test the surrounding
+	 * air-reachable blocks (up to 5 blocks away) and return true if breathable air is found
+	 * in one of them, or false if not.
+	 */
 	public static boolean testContactWithBreathableAir(World world, Block block, int x, int y, int z, int limitCount)
 	{
 		BlockVec3 vec = new BlockVec3(x, y, z);
@@ -151,13 +183,17 @@ public class OxygenUtil
 		{
 			return false;							
 		}
-		
+
+		//Test for non-sided permeable or solid blocks first
+		boolean permeableFlag = false;
 		if (!(block instanceof BlockLeavesBase))
 		{
 			if (block.isOpaqueCube())
 			{
-				if  (!(block instanceof BlockGravel || block.getMaterial() == Material.cloth || block instanceof BlockSponge))
-					return false;
+				if  (block instanceof BlockGravel || block.getMaterial() == Material.cloth || block instanceof BlockSponge)
+					permeableFlag = true;
+				else
+					return false;			
 			}
 			else if (block instanceof BlockGlass || block instanceof BlockStainedGlass)
 			{
@@ -176,13 +212,13 @@ public class OxygenUtil
 				}
 			}
 		}
+		else permeableFlag = true;
 
-		//TODO this can be slow, add performance increase here
 		//Testing a non-air, permeable block (for example a torch or a ladder)
 		if (limitCount < 5)
 		{
 			for (int side = 0; side < 6; side++)
-				if (OxygenPressureProtocol.canBlockPassAir(world, block, vec, side))
+				if (permeableFlag || OxygenUtil.canBlockPassAirOnSide(world, block, vec, side))
 				{
 					BlockVec3 sidevec = vec.newVecSide(side);
 					if (!checked.contains(sidevec))
@@ -194,6 +230,42 @@ public class OxygenUtil
 		}
 		
 		return false;
+	}
+	//TODO - performance, could add a 'safe' version of this code (inside world borders)
+
+	//TODO - add more performance increase, these sided checks could be done once only
+	private static boolean canBlockPassAirOnSide(World world, Block block, BlockVec3 vec, int side)
+	{
+		if (block instanceof IPartialSealableBlock)
+		{
+			return !((IPartialSealableBlock) block).isSealed(world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side));
+		}
+
+		//Half slab seals on the top side or the bottom side according to its metadata
+		if (block instanceof BlockSlab)
+		{
+			return !(side == 0 && (vec.getBlockMetadata(world) & 8) == 8 || side == 1 && (vec.getBlockMetadata(world) & 8) == 0);
+		}
+
+		//Farmland etc only seals on the solid underside
+		if (block instanceof BlockFarmland || block instanceof BlockEnchantmentTable || block instanceof BlockLiquid)
+		{
+			return side != 1;
+		}
+
+		if (block instanceof BlockPistonBase)
+		{
+			BlockPistonBase piston = (BlockPistonBase) block;
+			int meta = vec.getBlockMetadata(world);
+			if (BlockPistonBase.isExtended(meta))
+			{
+				int facing = BlockPistonBase.getPistonOrientation(meta);
+				return side != facing;
+			}
+			return false;
+		}
+
+		return !block.isSideSolid(world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side ^ 1));
 	}
 	
 	public static int getDrainSpacing(ItemStack tank, ItemStack tank2)
