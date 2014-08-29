@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -94,7 +94,7 @@ public abstract class BlockTransmitter extends BlockContainer
 			switch (this.getNetworkType())
 			{
 			case OXYGEN:
-				connectable = WorldUtil.getAdjacentOxygenConnections(tileEntity);
+				connectable = OxygenUtil.getAdjacentOxygenConnections(tileEntity);
 				break;
 			case POWER:
 				connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
@@ -160,7 +160,7 @@ public abstract class BlockTransmitter extends BlockContainer
 			switch (this.getNetworkType())
 			{
 			case OXYGEN:
-				connectable = WorldUtil.getAdjacentOxygenConnections(tileEntity);
+				connectable = OxygenUtil.getAdjacentOxygenConnections(tileEntity);
 				break;
 			case POWER:
 				connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);

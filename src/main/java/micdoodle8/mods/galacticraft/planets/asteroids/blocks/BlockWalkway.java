@@ -11,7 +11,7 @@ import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenPipe;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import net.minecraft.block.Block;
@@ -141,7 +141,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
                 switch (this.getNetworkType())
                 {
                     case OXYGEN:
-                        connectable = WorldUtil.getAdjacentOxygenConnections(tileEntity);
+                        connectable = OxygenUtil.getAdjacentOxygenConnections(tileEntity);
                         break;
                     case POWER:
                         connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
@@ -189,7 +189,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 			switch (this.getNetworkType())
 			{
 			case OXYGEN:
-				connectable = WorldUtil.getAdjacentOxygenConnections(tileEntity);
+				connectable = OxygenUtil.getAdjacentOxygenConnections(tileEntity);
 				break;
 			case POWER:
 				connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);

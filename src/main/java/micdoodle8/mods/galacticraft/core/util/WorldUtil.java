@@ -14,9 +14,6 @@ import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
-import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
@@ -26,7 +23,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
-import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -46,21 +42,15 @@ import net.minecraft.network.play.server.S07PacketRespawn;
 import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.*;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.io.File;
 import java.util.*;
-
-import mekanism.api.gas.IGasTransmitter;
-import mekanism.api.gas.ITubeConnection;
-import mekanism.api.transmitters.TransmissionType;
 
 public class WorldUtil
 {
@@ -797,39 +787,6 @@ public class WorldUtil
 		}
 
 		return null;
-	}
-
-	public static TileEntity[] getAdjacentOxygenConnections(TileEntity tile)
-	{
-		TileEntity[] adjacentConnections = new TileEntity[ForgeDirection.VALID_DIRECTIONS.length];
-
-		boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
-
-		BlockVec3 thisVec = new BlockVec3(tile);
-		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
-		{
-			TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorldObj(), direction);
-
-			if (tileEntity instanceof IConnector)
-			{
-				if (((IConnector) tileEntity).canConnect(direction.getOpposite(), NetworkType.OXYGEN))
-				{
-					adjacentConnections[direction.ordinal()] = tileEntity;
-				}
-			}
-			else if (isMekLoaded)
-			{
-				if (tileEntity instanceof ITubeConnection && (!(tileEntity instanceof IGasTransmitter) || TransmissionType.checkTransmissionType(tileEntity, TransmissionType.GAS, tileEntity)))
-				{
-					if (((ITubeConnection) tileEntity).canTubeConnect(direction))
-					{
-						adjacentConnections[direction.ordinal()] = tileEntity;
-					}
-				}
-			}
-		}
-
-		return adjacentConnections;
 	}
 
 	public static List<Object> getPlanetList()

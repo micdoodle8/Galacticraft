@@ -1,11 +1,17 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import mekanism.api.gas.IGasTransmitter;
+import mekanism.api.gas.ITubeConnection;
+import mekanism.api.transmitters.TransmissionType;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.item.IBreathableArmor;
 import micdoodle8.mods.galacticraft.api.item.IBreathableArmor.EnumGearType;
+import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenGear;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenMask;
@@ -30,6 +36,7 @@ import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -394,5 +401,38 @@ public class OxygenUtil
 		}
 
 		return false;
+	}
+	
+	public static TileEntity[] getAdjacentOxygenConnections(TileEntity tile)
+	{
+		TileEntity[] adjacentConnections = new TileEntity[ForgeDirection.VALID_DIRECTIONS.length];
+
+		boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
+
+		BlockVec3 thisVec = new BlockVec3(tile);
+		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+		{
+			TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorldObj(), direction);
+
+			if (tileEntity instanceof IConnector)
+			{
+				if (((IConnector) tileEntity).canConnect(direction.getOpposite(), NetworkType.OXYGEN))
+				{
+					adjacentConnections[direction.ordinal()] = tileEntity;
+				}
+			}
+			else if (isMekLoaded)
+			{
+				if (tileEntity instanceof ITubeConnection && (!(tileEntity instanceof IGasTransmitter) || TransmissionType.checkTransmissionType(tileEntity, TransmissionType.GAS, tileEntity)))
+				{
+					if (((ITubeConnection) tileEntity).canTubeConnect(direction))
+					{
+						adjacentConnections[direction.ordinal()] = tileEntity;
+					}
+				}
+			}
+		}
+
+		return adjacentConnections;
 	}
 }

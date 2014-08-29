@@ -11,7 +11,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenNetwork;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -103,7 +103,7 @@ public abstract class TileEntityOxygenTransmitter extends TileEntityAdvanced imp
 		 */
 		if (this.adjacentConnections == null)
 		{
-			this.adjacentConnections = WorldUtil.getAdjacentOxygenConnections(this);
+			this.adjacentConnections = OxygenUtil.getAdjacentOxygenConnections(this);
 			// this.adjacentConnections = new TileEntity[6];
 			//
 			// for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
