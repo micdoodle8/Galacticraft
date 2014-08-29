@@ -197,12 +197,20 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
 	{
 		int metadata = world.getBlockMetadata(x, y, z);
 
+		//Landing pad and refueling pad
+		if (metadata == 2)
+		{
+			return direction == ForgeDirection.DOWN;
+		}
+
+		//Basic solar panel fixed top
 		if (metadata == 4)
 		{
 			return direction == ForgeDirection.UP;
 		}
-
-		return true;
+		
+		//Space station base is 1, NASA workbench is 3, Cryogenic chamber is 5, Solar panel other parts are 0
+		return false;
 	}
 
 	@Override
