@@ -4,9 +4,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityTreasureChestAsteroids;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -49,6 +49,7 @@ public class BlockTier3TreasureChest extends BlockContainer implements ITileEnti
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
+		this.blockIcon = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "treasureChestAsteroids");
 	}
 
 	@Override
@@ -329,7 +330,7 @@ public class BlockTier3TreasureChest extends BlockContainer implements ITileEnti
 	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5)
 	{
 		super.onNeighborBlockChange(par1World, par2, par3, par4, par5);
-		final TileEntityTreasureChest var6 = (TileEntityTreasureChest) par1World.getTileEntity(par2, par3, par4);
+		final TileEntityTreasureChestAsteroids var6 = (TileEntityTreasureChestAsteroids) par1World.getTileEntity(par2, par3, par4);
 
 		if (var6 != null)
 		{
@@ -340,7 +341,7 @@ public class BlockTier3TreasureChest extends BlockContainer implements ITileEnti
 	@Override
 	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6)
 	{
-		final TileEntityTreasureChest var7 = (TileEntityTreasureChest) par1World.getTileEntity(par2, par3, par4);
+		final TileEntityTreasureChestAsteroids var7 = (TileEntityTreasureChestAsteroids) par1World.getTileEntity(par2, par3, par4);
 
 		if (var7 != null)
 		{
@@ -422,22 +423,22 @@ public class BlockTier3TreasureChest extends BlockContainer implements ITileEnti
 		{
 			if (par1World.getBlock(par2 - 1, par3, par4) == this)
 			{
-				var10 = new InventoryLargeChest("container.chestDouble", (TileEntityTreasureChest) par1World.getTileEntity(par2 - 1, par3, par4), (IInventory) var10);
+				var10 = new InventoryLargeChest("container.chestDouble", (TileEntityTreasureChestAsteroids) par1World.getTileEntity(par2 - 1, par3, par4), (IInventory) var10);
 			}
 
 			if (par1World.getBlock(par2 + 1, par3, par4) == this)
 			{
-				var10 = new InventoryLargeChest("container.chestDouble", (IInventory) var10, (TileEntityTreasureChest) par1World.getTileEntity(par2 + 1, par3, par4));
+				var10 = new InventoryLargeChest("container.chestDouble", (IInventory) var10, (TileEntityTreasureChestAsteroids) par1World.getTileEntity(par2 + 1, par3, par4));
 			}
 
 			if (par1World.getBlock(par2, par3, par4 - 1) == this)
 			{
-				var10 = new InventoryLargeChest("container.chestDouble", (TileEntityTreasureChest) par1World.getTileEntity(par2, par3, par4 - 1), (IInventory) var10);
+				var10 = new InventoryLargeChest("container.chestDouble", (TileEntityTreasureChestAsteroids) par1World.getTileEntity(par2, par3, par4 - 1), (IInventory) var10);
 			}
 
 			if (par1World.getBlock(par2, par3, par4 + 1) == this)
 			{
-				var10 = new InventoryLargeChest("container.chestDouble", (IInventory) var10, (TileEntityTreasureChest) par1World.getTileEntity(par2, par3, par4 + 1));
+				var10 = new InventoryLargeChest("container.chestDouble", (IInventory) var10, (TileEntityTreasureChestAsteroids) par1World.getTileEntity(par2, par3, par4 + 1));
 			}
 
 			if (par1World.isRemote)
