@@ -6,7 +6,6 @@ import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
@@ -17,6 +16,7 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -32,9 +32,9 @@ import java.util.List;
 
 public class ModelPlayerGC extends ModelBiped
 {
-	private static final ResourceLocation oxygenMaskTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/oxygen.png");
-	private static final ResourceLocation playerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/player.png");
-	private static final ResourceLocation frequencyModuleTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/frequencyModule.png");
+    public static final ResourceLocation oxygenMaskTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/oxygen.png");
+	public static final ResourceLocation playerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/player.png");
+    public static final ResourceLocation frequencyModuleTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/frequencyModule.png");
 
 	public ModelRenderer[] parachute = new ModelRenderer[3];
 	public ModelRenderer[] parachuteStrings = new ModelRenderer[4];
@@ -44,18 +44,9 @@ public class ModelPlayerGC extends ModelBiped
 	public ModelRenderer[] redOxygenTanks = new ModelRenderer[2];
 	public ModelRenderer oxygenMask;
 
-	private IModelCustom frequencyModule;
+    private boolean usingParachute;
 
-	boolean wearingFrequencyModule = false;
-	boolean usingParachute = false;
-	boolean wearingMask = false;
-	boolean wearingGear = false;
-	boolean wearingLeftTankRed = false;
-	boolean wearingLeftTankOrange = false;
-	boolean wearingLeftTankGreen = false;
-	boolean wearingRightTankRed = false;
-	boolean wearingRightTankOrange = false;
-	boolean wearingRightTankGreen = false;
+	private IModelCustom frequencyModule;
 
 	private static boolean crossbowModLoaded = false;
 
@@ -202,34 +193,34 @@ public class ModelPlayerGC extends ModelBiped
 	{
 		final Class<?> entityClass = GCEntityClientPlayerMP.class;
 		final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
-		final ModelBiped modelBipedMain = ((RenderPlayerGC) render).getModel();
+		final ModelBiped modelBipedMain = ((RenderPlayer) render).modelBipedMain;
 
 		this.usingParachute = false;
-		this.wearingMask = false;
-		this.wearingGear = false;
-		this.wearingLeftTankGreen = false;
-		this.wearingLeftTankOrange = false;
-		this.wearingLeftTankRed = false;
-		this.wearingRightTankGreen = false;
-		this.wearingRightTankOrange = false;
-		this.wearingRightTankRed = false;
-		this.wearingFrequencyModule = false;
+        boolean wearingMask = false;
+        boolean wearingGear = false;
+        boolean wearingLeftTankGreen = false;
+        boolean wearingLeftTankOrange = false;
+        boolean wearingLeftTankRed = false;
+        boolean wearingRightTankGreen = false;
+        boolean wearingRightTankOrange = false;
+        boolean wearingRightTankRed = false;
+        boolean wearingFrequencyModule = false;
 
 		final EntityPlayer player = (EntityPlayer) var1;
 		PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getCommandSenderName());
 
 		if (gearData != null)
 		{
-			this.usingParachute = gearData.getParachute() != null;
-			this.wearingMask = gearData.getMask() > -1;
-			this.wearingGear = gearData.getGear() > -1;
-			this.wearingLeftTankGreen = gearData.getLeftTank() == 0;
-			this.wearingLeftTankOrange = gearData.getLeftTank() == 1;
-			this.wearingLeftTankRed = gearData.getLeftTank() == 2;
-			this.wearingRightTankGreen = gearData.getRightTank() == 0;
-			this.wearingRightTankOrange = gearData.getRightTank() == 1;
-			this.wearingRightTankRed = gearData.getRightTank() == 2;
-			this.wearingFrequencyModule = gearData.getFrequencyModule() > -1;
+			usingParachute = gearData.getParachute() != null;
+			wearingMask = gearData.getMask() > -1;
+			wearingGear = gearData.getGear() > -1;
+			wearingLeftTankGreen = gearData.getLeftTank() == 0;
+			wearingLeftTankOrange = gearData.getLeftTank() == 1;
+			wearingLeftTankRed = gearData.getLeftTank() == 2;
+			wearingRightTankGreen = gearData.getRightTank() == 0;
+			wearingRightTankOrange = gearData.getRightTank() == 1;
+			wearingRightTankRed = gearData.getRightTank() == 2;
+			wearingFrequencyModule = gearData.getFrequencyModule() > -1;
 		}
 
 		this.setRotationAngles(var2, var3, var4, var5, var6, var7, var1);
@@ -238,7 +229,7 @@ public class ModelPlayerGC extends ModelBiped
 		{
 			if (gearData != null)
 			{
-				if (this.wearingMask)
+				if (wearingMask)
 				{
 					FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.oxygenMaskTexture);
 					GL11.glPushMatrix();
@@ -250,7 +241,7 @@ public class ModelPlayerGC extends ModelBiped
 
 				//
 
-				if (this.wearingFrequencyModule)
+				if (wearingFrequencyModule)
 				{
 					FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.frequencyModuleTexture);
 					GL11.glPushMatrix();
@@ -273,7 +264,7 @@ public class ModelPlayerGC extends ModelBiped
 
 				FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.playerTexture);
 
-				if (this.wearingGear)
+				if (wearingGear)
 				{
 					for (int i = 0; i < 7; i++)
 					{
@@ -286,49 +277,49 @@ public class ModelPlayerGC extends ModelBiped
 
 				//
 
-				if (this.wearingLeftTankRed)
+				if (wearingLeftTankRed)
 				{
 					this.redOxygenTanks[0].render(var7);
 				}
 
 				//
 
-				if (this.wearingLeftTankOrange)
+				if (wearingLeftTankOrange)
 				{
 					this.orangeOxygenTanks[0].render(var7);
 				}
 
 				//
 
-				if (this.wearingLeftTankGreen)
+				if (wearingLeftTankGreen)
 				{
 					this.greenOxygenTanks[0].render(var7);
 				}
 
 				//
 
-				if (this.wearingRightTankRed)
+				if (wearingRightTankRed)
 				{
 					this.redOxygenTanks[1].render(var7);
 				}
 
 				//
 
-				if (this.wearingRightTankOrange)
+				if (wearingRightTankOrange)
 				{
 					this.orangeOxygenTanks[1].render(var7);
 				}
 
 				//
 
-				if (this.wearingRightTankGreen)
+				if (wearingRightTankGreen)
 				{
 					this.greenOxygenTanks[1].render(var7);
 				}
 
 				//
 
-				if (this.usingParachute)
+				if (usingParachute)
 				{
 					FMLClientHandler.instance().getClient().renderEngine.bindTexture(gearData.getParachute());
 
@@ -484,7 +475,7 @@ public class ModelPlayerGC extends ModelBiped
 		this.bipedLeftArm.rotateAngleX -= partialAngleX;
 
 		//Render parachute
-		if (this.usingParachute)
+		if (usingParachute)
 		{
 			this.parachute[0].rotateAngleZ = (float) (30F * (Math.PI / 180F));
 			this.parachute[2].rotateAngleZ = (float) -(30F * (Math.PI / 180F));

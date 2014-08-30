@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.proxy;
 
+import api.player.model.ModelPlayerAPI;
+import api.player.render.RenderPlayerAPI;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
@@ -16,12 +18,15 @@ import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
 import micdoodle8.mods.galacticraft.core.client.fx.EffectHandler;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
+import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerBaseGC;
 import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
+import micdoodle8.mods.galacticraft.core.client.render.ThreadDownloadImageDataGC;
 import micdoodle8.mods.galacticraft.core.client.render.block.*;
 import micdoodle8.mods.galacticraft.core.client.render.entities.*;
 import micdoodle8.mods.galacticraft.core.client.render.item.*;
@@ -39,8 +44,10 @@ import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.IImageBuffer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.entity.Entity;
@@ -69,13 +76,17 @@ import org.lwjgl.opengl.GL11;
 import tconstruct.client.tabs.InventoryTabVanilla;
 import tconstruct.client.tabs.TabRegistry;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.FloatBuffer;
 import java.util.*;
+import java.util.List;
 import java.util.Map.Entry;
 
 public class ClientProxyCore extends CommonProxyCore
@@ -128,6 +139,7 @@ public class ClientProxyCore extends CommonProxyCore
 	public static double offsetY = 0D;
 	public static float terrainHeight = Float.MAX_VALUE;
 	private static boolean smallMoonActive = false;
+    private static Map<String, ResourceLocation> capesMap = Maps.newHashMap();
 
 	//private static int playerList;
 
@@ -177,10 +189,19 @@ public class ClientProxyCore extends CommonProxyCore
 		RenderingRegistry.registerEntityRenderingHandler(EntityMeteorChunk.class, new RenderMeteorChunk());
 		RenderingRegistry.registerEntityRenderingHandler(EntityFlag.class, new RenderFlag());
 		RenderingRegistry.registerEntityRenderingHandler(EntityParachest.class, new RenderParaChest());
-		RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new RenderPlayerGC());
 		RenderingRegistry.registerEntityRenderingHandler(EntityAlienVillager.class, new RenderAlienVillager());
 		RenderingRegistry.registerEntityRenderingHandler(EntityBubble.class, new RenderBubble(0.25F, 0.25F, 1.0F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityLander.class, new RenderLander());
+
+        if (Loader.isModLoaded("RenderPlayerAPI"))
+        {
+            ModelPlayerAPI.register(Constants.MOD_ID_CORE, ModelPlayerBaseGC.class);
+            RenderPlayerAPI.register(Constants.MOD_ID_CORE, RenderPlayerBaseGC.class);
+        }
+        else
+        {
+            RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new RenderPlayerGC());
+        }
 	}
 
 	public static void registerItemRenderers()
@@ -512,6 +533,129 @@ public class ClientProxyCore extends CommonProxyCore
 			event.setCanceled(true);
 		}		
 	}
+
+    @SubscribeEvent
+    public void onPostRender(RenderPlayerEvent.Specials.Post event)
+    {
+        AbstractClientPlayer player = (AbstractClientPlayer)event.entityPlayer;
+        boolean flag = ClientProxyCore.capeMap.containsKey(event.entityPlayer.getCommandSenderName());
+        float f4;
+
+        if (flag && !player.isInvisible() && !player.getHideCape())
+        {
+            String url = ClientProxyCore.capeMap.get(player.getCommandSenderName());
+            ResourceLocation capeLoc = capesMap.get(url);
+            if (!capesMap.containsKey(url))
+            {
+                try
+                {
+                    String dirName = Minecraft.getMinecraft().mcDataDir.getAbsolutePath();
+                    File directory = new File(dirName, "assets");
+                    boolean success = true;
+                    if (!directory.exists())
+                    {
+                        success = directory.mkdir();
+                    }
+                    if (success)
+                    {
+                        directory = new File(directory, "gcCapes");
+                        if (!directory.exists())
+                        {
+                            success = directory.mkdir();
+                        }
+
+                        if (success)
+                        {
+                            String hash = String.valueOf(player.getCommandSenderName().hashCode());
+                            File file1 = new File(directory, hash.substring(0, 2));
+                            File file2 = new File(file1, hash);
+                            final ResourceLocation resourcelocation = new ResourceLocation("gcCapes/" + hash);
+                            ThreadDownloadImageDataGC threaddownloadimagedata = new ThreadDownloadImageDataGC(file2, url, null, new IImageBuffer()
+                            {
+                                public BufferedImage parseUserSkin(BufferedImage p_78432_1_)
+                                {
+                                    if (p_78432_1_ == null)
+                                    {
+                                        return null;
+                                    }
+                                    else
+                                    {
+                                        BufferedImage bufferedimage1 = new BufferedImage(512, 256, 2);
+                                        Graphics graphics = bufferedimage1.getGraphics();
+                                        graphics.drawImage(p_78432_1_, 0, 0, null);
+                                        graphics.dispose();
+                                        p_78432_1_ = bufferedimage1;
+                                    }
+                                    return p_78432_1_;
+                                }
+                                public void func_152634_a()
+                                {
+                                }
+                            });
+
+                            if (FMLClientHandler.instance().getClient().getTextureManager().loadTexture(resourcelocation, threaddownloadimagedata))
+                            {
+                                capeLoc = resourcelocation;
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+                capesMap.put(url, capeLoc);
+            }
+
+            if (capeLoc != null)
+            {
+                FMLClientHandler.instance().getClient().getTextureManager().bindTexture(capeLoc);
+                GL11.glPushMatrix();
+                GL11.glTranslatef(0.0F, 0.0F, 0.125F);
+                double d3 = player.field_71091_bM + (player.field_71094_bP - player.field_71091_bM) * event.partialRenderTick - (player.prevPosX + (player.posX - player.prevPosX) * event.partialRenderTick);
+                double d4 = player.field_71096_bN + (player.field_71095_bQ - player.field_71096_bN) * event.partialRenderTick - (player.prevPosY + (player.posY - player.prevPosY) * event.partialRenderTick);
+                double d0 = player.field_71097_bO + (player.field_71085_bR - player.field_71097_bO) * event.partialRenderTick - (player.prevPosZ + (player.posZ - player.prevPosZ) * event.partialRenderTick);
+                f4 = (player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset) * event.partialRenderTick) / 57.29578F;
+                double d1 = MathHelper.sin(f4);
+                double d2 = -MathHelper.cos(f4);
+                float f5 = (float)d4 * 10.0F;
+
+                if (f5 < -6.0F)
+                {
+                    f5 = -6.0F;
+                }
+
+                if (f5 > 32.0F)
+                {
+                    f5 = 32.0F;
+                }
+
+                float f6 = (float)(d3 * d1 + d0 * d2) * 100.0F;
+                float f7 = (float)(d3 * d2 - d0 * d1) * 100.0F;
+
+                if (f6 < 0.0F)
+                {
+                    f6 = 0.0F;
+                }
+
+                float f8 = player.prevCameraYaw + (player.cameraYaw - player.prevCameraYaw) * event.partialRenderTick;
+                f5 += MathHelper.sin((player.prevDistanceWalkedModified + (player.distanceWalkedModified - player.prevDistanceWalkedModified) * event.partialRenderTick) * 6.0F) * 32.0F * f8;
+
+                if (player.isSneaking())
+                {
+                    f5 += 25.0F;
+                }
+
+                GL11.glRotatef(6.0F + f6 / 2.0F + f5, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(f7 / 2.0F, 0.0F, 0.0F, 1.0F);
+                GL11.glRotatef(-f7 / 2.0F, 0.0F, 1.0F, 0.0F);
+                GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
+                event.renderer.modelBipedMain.renderCloak(0.0625F);
+                GL11.glPopMatrix();
+            }
+        }
+    }
 
 	
 	public static void adjustRenderPos(Entity entity, double offsetX, double offsetY, double offsetZ)
