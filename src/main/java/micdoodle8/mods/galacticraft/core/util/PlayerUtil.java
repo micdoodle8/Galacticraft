@@ -8,7 +8,6 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import sun.misc.Version;
 
 import java.util.Iterator;
 

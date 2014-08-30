@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;

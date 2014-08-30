@@ -19,9 +19,7 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityCryogenicChamber
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
 import micdoodle8.mods.galacticraft.planets.mars.util.MarsUtil;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.tileentity.TileEntity;
 
 import java.io.IOException;

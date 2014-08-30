@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import mekanism.api.energy.IEnergizedItem;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import net.minecraft.inventory.IInventory;

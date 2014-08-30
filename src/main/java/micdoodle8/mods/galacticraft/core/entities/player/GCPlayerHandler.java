@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.api.event.oxygen.GCCoreOxygenSuffocationEven
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
@@ -26,6 +27,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityParachest;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
@@ -33,6 +35,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -717,6 +720,58 @@ public class GCPlayerHandler
 		}
 	}
 
+	protected static void updateFeet(GCEntityPlayerMP player, double motionX, double motionZ)
+	{
+		double motionSqrd = motionX * motionX + motionZ * motionZ;
+		if (motionSqrd > 0.001D)
+		{
+			int iPosX = MathHelper.floor_double(player.posX);
+			int iPosY = MathHelper.floor_double(player.posY) - 1;
+			int iPosZ = MathHelper.floor_double(player.posZ);
+
+			// If the block below is the moon block
+			if (player.worldObj.getBlock(iPosX, iPosY, iPosZ) == GCBlocks.blockMoon)
+			{
+				// And is the correct metadata (moon turf)
+				if (player.worldObj.getBlockMetadata(iPosX, iPosY, iPosZ) == 5)
+				{
+					GCPlayerStats playerStats = player.getPlayerStats(); 
+					// If it has been long enough since the last step
+					if (playerStats.distanceSinceLastStep > 0.35D)
+					{
+						Vector3 pos = new Vector3(player);
+						// Set the footprint position to the block below and add random number to stop z-fighting
+						pos.y = MathHelper.floor_double(player.posY - 1D) + player.worldObj.rand.nextFloat() / 100.0F;
+
+						// Adjust footprint to left or right depending on step count
+						switch (playerStats.lastStep)
+						{
+						case 0:
+							float a = (-player.rotationYaw + 90F) / 57.295779513F;
+							pos.translate(new Vector3(MathHelper.sin(a) * 0.25F, 0, MathHelper.cos(a) * 0.25F));
+							break;
+						case 1:
+							a = (-player.rotationYaw - 90F) / 57.295779513F;
+							pos.translate(new Vector3(MathHelper.sin(a) * 0.25, 0, MathHelper.cos(a) * 0.25));
+							break;
+						}
+
+						TickHandlerServer.addFootprint(new Footprint(player.worldObj.provider.dimensionId, pos, player.rotationYaw), player.worldObj.provider.dimensionId);
+
+						// Increment and cap step counter at 1
+						playerStats.lastStep++;
+						playerStats.lastStep %= 2;
+						playerStats.distanceSinceLastStep = 0;
+					}
+					else
+					{
+						playerStats.distanceSinceLastStep += motionSqrd;
+					}
+				}
+			}
+		}
+	}
+	
 	protected void updateSchematics(GCEntityPlayerMP player, GCPlayerStats playerStats)
 	{
 		SchematicRegistry.addUnlockedPage(player, SchematicRegistry.getMatchingRecipeForID(0));

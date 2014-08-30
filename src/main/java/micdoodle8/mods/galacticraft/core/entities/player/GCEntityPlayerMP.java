@@ -4,14 +4,10 @@ import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
-import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.util.*;
-import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemArmorAsteroids;
 import net.minecraft.entity.Entity;
@@ -22,7 +18,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ItemInWorldManager;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -75,62 +70,10 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 		// If the player is on the moon, not airbourne and not riding anything
 		if (this.worldObj.provider instanceof WorldProviderMoon && !this.worldObj.isRemote && this.ridingEntity == null)
 		{	
-			this.updateFeet(par1, par5);
+			GCPlayerHandler.updateFeet(this, par1, par5);
 		}
 	}
 
-	private void updateFeet(double motionX, double motionZ)
-	{
-		double motionSqrd = motionX * motionX + motionZ * motionZ;
-		if (motionSqrd > 0.001D)
-		{
-			int iPosX = MathHelper.floor_double(this.posX);
-			int iPosY = MathHelper.floor_double(this.posY) - 1;
-			int iPosZ = MathHelper.floor_double(this.posZ);
-
-			// If the block below is the moon block
-			if (this.worldObj.getBlock(iPosX, iPosY, iPosZ) == GCBlocks.blockMoon)
-			{
-				// And is the correct metadata (moon turf)
-				if (this.worldObj.getBlockMetadata(iPosX, iPosY, iPosZ) == 5)
-				{
-					GCPlayerStats playerStats = this.getPlayerStats(); 
-					// If it has been long enough since the last step
-					if (playerStats.distanceSinceLastStep > 0.35D)
-					{
-						Vector3 pos = new Vector3(this);
-						// Set the footprint position to the block below and add random number to stop z-fighting
-						pos.y = MathHelper.floor_double(this.posY - 1D) + this.rand.nextFloat() / 100.0F;
-
-						// Adjust footprint to left or right depending on step count
-						switch (playerStats.lastStep)
-						{
-						case 0:
-							float a = (-this.rotationYaw + 90F) / 57.295779513F;
-							pos.translate(new Vector3(MathHelper.sin(a) * 0.25F, 0, MathHelper.cos(a) * 0.25F));
-							break;
-						case 1:
-							a = (-this.rotationYaw - 90F) / 57.295779513F;
-							pos.translate(new Vector3(MathHelper.sin(a) * 0.25, 0, MathHelper.cos(a) * 0.25));
-							break;
-						}
-
-						TickHandlerServer.addFootprint(new Footprint(this.worldObj.provider.dimensionId, pos, this.rotationYaw), this.worldObj.provider.dimensionId);
-
-						// Increment and cap step counter at 1
-						playerStats.lastStep++;
-						playerStats.lastStep %= 2;
-						playerStats.distanceSinceLastStep = 0;
-					}
-					else
-					{
-						playerStats.distanceSinceLastStep += motionSqrd;
-					}
-				}
-			}
-		}
-	}
-	
 	@Override
 	public void wakeUpPlayer(boolean par1, boolean par2, boolean par3)
 	{

@@ -39,7 +39,7 @@ public class EntityFXTeleport extends EntityFX
 
     public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7)
     {
-        float f6 = ((float)this.particleAge + par2) / (float)this.particleMaxAge;
+        float f6 = (this.particleAge + par2) / this.particleMaxAge;
         f6 = 1.0F - f6;
         f6 *= f6;
         f6 = 1.0F - f6;
@@ -92,9 +92,9 @@ public class EntityFXTeleport extends EntityFX
         float f1 = f;
         f = -f + f * f * 2.0F;
         f = 1.0F - f;
-        this.posX = this.portalPosX + this.motionX * (double)f;
-        this.posY = this.portalPosY + this.motionY * (double)f + (double)(1.0F - f1);
-        this.posZ = this.portalPosZ + this.motionZ * (double)f;
+        this.posX = this.portalPosX + this.motionX * f;
+        this.posY = this.portalPosY + this.motionY * f + (1.0F - f1);
+        this.posZ = this.portalPosZ + this.motionZ * f;
 
         if (this.particleAge++ >= this.particleMaxAge)
         {
