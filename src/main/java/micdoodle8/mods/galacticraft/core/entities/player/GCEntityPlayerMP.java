@@ -10,7 +10,9 @@ import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemArmorAsteroids;
+import micdoodle8.mods.galacticraft.planets.mars.items.ItemArmorMars;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -18,6 +20,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ItemInWorldManager;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -134,5 +137,41 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 		}
 
         return super.attackEntityFrom(par1DamageSource, par2);
+    }
+	
+	@Override
+    public void knockBack(Entity p_70653_1_, float p_70653_2_, double impulseX, double impulseZ)
+    {
+		int deshCount = 0;
+        if (this.inventory != null && Loader.isModLoaded(Constants.MOD_ID_PLANETS)) 
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                ItemStack armorPiece = this.getCurrentArmor(i);
+                if (armorPiece != null && armorPiece.getItem() instanceof ItemArmorMars)
+                {
+                    deshCount++;
+                }
+            }
+		}
+
+        if (this.rand.nextDouble() >= this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getAttributeValue())
+        {
+            this.isAirBorne = deshCount < 2;
+            float f1 = MathHelper.sqrt_double(impulseX * impulseX + impulseZ * impulseZ);
+            float f2 = 0.4F - deshCount * 0.05F;
+            double d1 = 2.0D - deshCount * 0.15D;
+            this.motionX /= d1;
+            this.motionY /= d1;
+            this.motionZ /= d1;
+            this.motionX -= f2 * impulseX / f1;
+            this.motionY += f2;
+            this.motionZ -= f2 * impulseZ / f1;
+
+            if (this.motionY > 0.4D)
+            {
+                this.motionY = 0.4D;
+            }
+        }
     }
 }
