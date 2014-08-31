@@ -1,18 +1,20 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.client.model.block.ModelTreasureChest;
 import micdoodle8.mods.galacticraft.core.client.model.block.ModelTreasureChestLarge;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockTier3TreasureChest;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityTreasureChestAsteroids;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer
@@ -23,7 +25,7 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer
 	private final ModelTreasureChest chestModel = new ModelTreasureChest();
 	private final ModelTreasureChestLarge largeChestModel = new ModelTreasureChestLarge();
 
-	public void renderGCTileEntityTreasureChestAt(TileEntityTreasureChest par1GCTileEntityTreasureChest, double par2, double par4, double par6, float par8)
+	public void renderGCTileEntityTreasureChestAt(TileEntityTreasureChestAsteroids par1GCTileEntityTreasureChest, double par2, double par4, double par6, float par8)
 	{
 		int var9;
 
@@ -149,6 +151,6 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer
 	@Override
 	public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8)
 	{
-		this.renderGCTileEntityTreasureChestAt((TileEntityTreasureChest) par1TileEntity, par2, par4, par6, par8);
+		this.renderGCTileEntityTreasureChestAt((TileEntityTreasureChestAsteroids) par1TileEntity, par2, par4, par6, par8);
 	}
 }

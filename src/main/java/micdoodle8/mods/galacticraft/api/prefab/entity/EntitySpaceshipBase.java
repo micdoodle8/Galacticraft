@@ -95,7 +95,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
                 if (this.shipDamage > 90 && !this.worldObj.isRemote) {
                     if (this.riddenByEntity != null) {
-                        this.riddenByEntity.mountEntity(this);
+                        this.riddenByEntity.mountEntity(null);
                     }
 
                     this.setDead();
