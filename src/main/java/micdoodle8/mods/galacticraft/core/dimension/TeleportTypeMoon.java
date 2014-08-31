@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -23,9 +24,10 @@ public class TeleportTypeMoon implements ITeleportType
 	@Override
 	public Vector3 getPlayerSpawnLocation(WorldServer world, EntityPlayerMP player)
 	{
-		if (player instanceof GCEntityPlayerMP)
+		if (player instanceof EntityPlayerMP)
 		{
-			return new Vector3(((GCEntityPlayerMP) player).getPlayerStats().coordsTeleportedFromX, ConfigManagerCore.disableLander ? 250.0 : 900.0, ((GCEntityPlayerMP) player).getPlayerStats().coordsTeleportedFromZ);
+            GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(player);
+			return new Vector3(stats.coordsTeleportedFromX, ConfigManagerCore.disableLander ? 250.0 : 900.0, stats.coordsTeleportedFromZ);
 		}
 
 		return null;
@@ -53,24 +55,23 @@ public class TeleportTypeMoon implements ITeleportType
 	@Override
 	public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player, boolean ridingAutoRocket)
 	{
-		if (!ridingAutoRocket && !ConfigManagerCore.disableLander && player instanceof GCEntityPlayerMP && ((GCEntityPlayerMP) player).getPlayerStats().teleportCooldown <= 0)
+        GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(player);
+		if (!ridingAutoRocket && !ConfigManagerCore.disableLander && stats.teleportCooldown <= 0)
 		{
-			final GCEntityPlayerMP gcPlayer = (GCEntityPlayerMP) player;
-
-			if (gcPlayer.capabilities.isFlying)
+			if (player.capabilities.isFlying)
 			{
-				gcPlayer.capabilities.isFlying = false;
+                player.capabilities.isFlying = false;
 			}
 
-			EntityLander lander = new EntityLander(gcPlayer);
-            lander.setPosition(gcPlayer.posX, gcPlayer.posY, gcPlayer.posZ);
+			EntityLander lander = new EntityLander(player);
+            lander.setPosition(player.posX, player.posY, player.posZ);
 
 			if (!newWorld.isRemote)
 			{
 				newWorld.spawnEntityInWorld(lander);
 			}
 
-			gcPlayer.getPlayerStats().teleportCooldown = 10;
+            stats.teleportCooldown = 10;
 		}
 	}
 }

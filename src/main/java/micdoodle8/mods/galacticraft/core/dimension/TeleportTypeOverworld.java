@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.dimension;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
@@ -21,9 +22,10 @@ public class TeleportTypeOverworld implements ITeleportType
 	@Override
 	public Vector3 getPlayerSpawnLocation(WorldServer world, EntityPlayerMP player)
 	{
-		if (player instanceof GCEntityPlayerMP)
+		if (player instanceof EntityPlayerMP)
 		{
-			return new Vector3(((GCEntityPlayerMP) player).getPlayerStats().coordsTeleportedFromX, 250.0, ((GCEntityPlayerMP) player).getPlayerStats().coordsTeleportedFromZ);
+            GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(player);
+			return new Vector3(stats.coordsTeleportedFromX, 250.0, stats.coordsTeleportedFromZ);
 		}
 
 		return null;

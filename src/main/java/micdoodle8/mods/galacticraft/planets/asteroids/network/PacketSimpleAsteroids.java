@@ -5,8 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.network.IPacket;
 import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
@@ -15,6 +14,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeT
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 
 import java.io.IOException;
@@ -104,11 +104,11 @@ public class PacketSimpleAsteroids implements IPacket
 	@Override
 	public void handleClientSide(EntityPlayer player)
 	{
-		GCEntityClientPlayerMP playerBaseClient = null;
+		EntityClientPlayerMP playerBaseClient = null;
 
-		if (player instanceof GCEntityClientPlayerMP)
+		if (player instanceof EntityClientPlayerMP)
 		{
-			playerBaseClient = (GCEntityClientPlayerMP) player;
+			playerBaseClient = (EntityClientPlayerMP) player;
 		}
 
 		switch (this.type)
@@ -130,7 +130,7 @@ public class PacketSimpleAsteroids implements IPacket
 	@Override
 	public void handleServerSide(EntityPlayer player)
 	{
-		GCEntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
+		EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
 
 		switch (this.type)
 		{

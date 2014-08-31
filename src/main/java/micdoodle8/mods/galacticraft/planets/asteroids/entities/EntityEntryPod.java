@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
@@ -24,7 +23,7 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
         this.setSize(1.5F, 3.0F);
     }
 
-    public EntityEntryPod(GCEntityPlayerMP player) {
+    public EntityEntryPod(EntityPlayerMP player) {
         super(player, 0.0F);
         this.setSize(1.5F, 3.0F);
     }

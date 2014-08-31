@@ -7,7 +7,6 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;

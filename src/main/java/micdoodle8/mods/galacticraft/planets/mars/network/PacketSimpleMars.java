@@ -5,8 +5,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.network.IPacket;
 import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
@@ -20,7 +22,10 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController
 import micdoodle8.mods.galacticraft.planets.mars.util.MarsUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -109,11 +114,11 @@ public class PacketSimpleMars implements IPacket
 	@Override
 	public void handleClientSide(EntityPlayer player)
 	{
-		GCEntityClientPlayerMP playerBaseClient = null;
+		EntityClientPlayerMP playerBaseClient = null;
 
-		if (player instanceof GCEntityClientPlayerMP)
+		if (player instanceof EntityClientPlayerMP)
 		{
-			playerBaseClient = (GCEntityClientPlayerMP) player;
+			playerBaseClient = (EntityClientPlayerMP) player;
 		}
 
 		switch (this.type)
@@ -162,7 +167,8 @@ public class PacketSimpleMars implements IPacket
 	@Override
 	public void handleServerSide(EntityPlayer player)
 	{
-		GCEntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
+		EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
+        GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(playerBase);
 
 		switch (this.type)
 		{
@@ -227,7 +233,14 @@ public class PacketSimpleMars implements IPacket
 			}
 			break;
 		case S_WAKE_PLAYER:
-			playerBase.wakeUpPlayer(false, true, true, true);
+            ChunkCoordinates c = playerBase.playerLocation;
+
+            if (c != null)
+            {
+                EventWakePlayer event = new EventWakePlayer(playerBase, c.posX, c.posY, c.posZ, false, true, true, true);
+                MinecraftForge.EVENT_BUS.post(event);
+                playerBase.wakeUpPlayer(false, true, true);
+            }
 			break;
 		case S_UPDATE_ADVANCED_GUI:
 			TileEntity tile = player.worldObj.getTileEntity((Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3));

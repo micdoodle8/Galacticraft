@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import com.google.common.collect.Lists;
-
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -282,7 +281,7 @@ public class WorldUtil
         return null;
     }
 
-	public static HashMap<String, Integer> getArrayOfPossibleDimensions(List<Integer> ids, GCEntityPlayerMP playerBase)
+	public static HashMap<String, Integer> getArrayOfPossibleDimensions(List<Integer> ids, EntityPlayerMP playerBase)
 	{
 		final HashMap<String, Integer> map = new HashMap<String, Integer>();
 
@@ -447,16 +446,17 @@ public class WorldUtil
 		return finalArray;
 	}
 
-	public static SpaceStationWorldData bindSpaceStationToNewDimension(World world, GCEntityPlayerMP player)
+	public static SpaceStationWorldData bindSpaceStationToNewDimension(World world, EntityPlayerMP player)
 	{
 		int newID = DimensionManager.getNextFreeDimId();
 		SpaceStationWorldData data = WorldUtil.createSpaceStation(world, newID, player);
-		player.getPlayerStats().spaceStationDimensionID = newID;
+        GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(player);
+		stats.spaceStationDimensionID = newID;
 		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, new Object[] { newID }), player);
 		return data;
 	}
 
-	public static SpaceStationWorldData createSpaceStation(World world, int dimID, GCEntityPlayerMP player)
+	public static SpaceStationWorldData createSpaceStation(World world, int dimID, EntityPlayerMP player)
 	{
 		WorldUtil.registeredSpaceStations.add(dimID);
 		int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, dimID);
@@ -518,7 +518,7 @@ public class WorldUtil
 
 		boolean dimChange = entity.worldObj != worldNew;
 		entity.worldObj.updateEntityWithOptionalForce(entity, false);
-		GCEntityPlayerMP player = null;
+		EntityPlayerMP player = null;
 		Vector3 spawnPos = null; 
 		int oldDimID = entity.worldObj.provider.dimensionId;
 
@@ -548,9 +548,9 @@ public class WorldUtil
 		
 		if (dimChange)
 		{
-			if (entity instanceof GCEntityPlayerMP)
+			if (entity instanceof EntityPlayerMP)
 			{
-				player = (GCEntityPlayerMP) entity;
+				player = (EntityPlayerMP) entity;
 				World worldOld = player.worldObj;
 				if (ConfigManagerCore.enableDebug)
 				{
@@ -562,7 +562,8 @@ public class WorldUtil
 					((WorldServer) worldOld).getPlayerManager().removePlayer(player);
 
 				player.closeScreen();
-				player.getPlayerStats().usingPlanetSelectionGui = false;
+                GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(player);
+				stats.usingPlanetSelectionGui = false;
 				
 				player.dimension = dimID;
 				if (ConfigManagerCore.enableDebug)
@@ -656,11 +657,12 @@ public class WorldUtil
 		else
 		{
 			//Same dimension player transfer
-			if (entity instanceof GCEntityPlayerMP)
+			if (entity instanceof EntityPlayerMP)
 			{
-				player = (GCEntityPlayerMP) entity;
+				player = (EntityPlayerMP) entity;
 				player.closeScreen();
-				player.getPlayerStats().usingPlanetSelectionGui = false;
+                GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(player);
+				stats.usingPlanetSelectionGui = false;
 	
 				worldNew.updateEntityWithOptionalForce(entity, false);
 
@@ -678,7 +680,7 @@ public class WorldUtil
 		//Update PlayerStatsGC
 		if (player != null)
 		{
-			GCPlayerStats playerStats = player.getPlayerStats();
+            GCPlayerStats playerStats = GCEntityPlayerMP.getPlayerStats(player);
 			if (ridingRocket == null && type.useParachute() && playerStats.extendedInventory.getStackInSlot(4) != null && playerStats.extendedInventory.getStackInSlot(4).getItem() instanceof ItemParaChute)
 			{
 				GCPlayerHandler.setUsingParachute(player, playerStats, true);

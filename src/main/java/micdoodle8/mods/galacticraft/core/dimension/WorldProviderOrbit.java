@@ -13,7 +13,8 @@ import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSpinThruster;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOrbit;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -22,6 +23,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityLivingBase;
@@ -555,7 +557,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 	}
 
     @SideOnly(Side.CLIENT)
-	public void spinUpdate(GCEntityClientPlayerMP p, boolean flag)
+	public void spinUpdate(EntityPlayerSP p, boolean flag)
 	{
 		boolean freefall = this.testFreefall(p, flag);
 		boolean doGravity = true;
@@ -861,8 +863,9 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 			}
 		}
 
-		p.inFreefall = freefall;
-		p.inFreefallFirstCheck = true;
+        GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
+        stats.inFreefall = freefall;
+        stats.inFreefallFirstCheck = true;
 		this.pPrevMotionX = p.motionX;
 		this.pPrevMotionY = p.motionY;
 		this.pPrevMotionZ = p.motionZ;
@@ -870,7 +873,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 	}
 
     @SideOnly(Side.CLIENT)
-    private boolean testFreefall(GCEntityClientPlayerMP p, boolean flag)
+    private boolean testFreefall(EntityPlayerSP p, boolean flag)
     {
  		if (this.pjumpticks > 0 || (this.pWasOnGround && p.movementInput.jump))
  		{

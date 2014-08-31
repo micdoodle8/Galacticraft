@@ -4,11 +4,11 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAsteroid;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
@@ -17,65 +17,63 @@ public class AsteroidsPlayerHandler
 	@SubscribeEvent
 	public void onPlayerLogin(PlayerLoggedInEvent event)
 	{
-		if (event.player instanceof GCEntityPlayerMP)
+		if (event.player instanceof EntityPlayerMP)
 		{
-			this.onPlayerLogin((GCEntityPlayerMP) event.player);
+			this.onPlayerLogin((EntityPlayerMP) event.player);
 		}
 	}
 
 	@SubscribeEvent
 	public void onPlayerLogout(PlayerLoggedOutEvent event)
 	{
-		if (event.player instanceof GCEntityPlayerMP)
+		if (event.player instanceof EntityPlayerMP)
 		{
-			this.onPlayerLogout((GCEntityPlayerMP) event.player);
+			this.onPlayerLogout((EntityPlayerMP) event.player);
 		}
 	}
 
 	@SubscribeEvent
 	public void onPlayerRespawn(PlayerRespawnEvent event)
 	{
-		if (event.player instanceof GCEntityPlayerMP)
+		if (event.player instanceof EntityPlayerMP)
 		{
-			this.onPlayerRespawn((GCEntityPlayerMP) event.player);
+			this.onPlayerRespawn((EntityPlayerMP) event.player);
 		}
 	}
 
 	@SubscribeEvent
 	public void onEntityConstructing(EntityEvent.EntityConstructing event)
 	{
-		if (event.entity instanceof GCEntityPlayerMP && GCPlayerStats.get((GCEntityPlayerMP) event.entity) == null)
+		if (event.entity instanceof EntityPlayerMP && GCPlayerStats.get((EntityPlayerMP) event.entity) == null)
 		{
-			GCPlayerStats.register((GCEntityPlayerMP) event.entity);
+			GCPlayerStats.register((EntityPlayerMP) event.entity);
 		}
 	}
 
-	private void onPlayerLogin(GCEntityPlayerMP player)
+	private void onPlayerLogin(EntityPlayerMP player)
 	{
 	}
 
-	private void onPlayerLogout(GCEntityPlayerMP player)
+	private void onPlayerLogout(EntityPlayerMP player)
 	{
 
 	}
 
-	private void onPlayerRespawn(GCEntityPlayerMP player)
+	private void onPlayerRespawn(EntityPlayerMP player)
 	{
 	}
 
 	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent event)
 	{
-		if (event.entityLiving instanceof GCEntityPlayerMP)
+		if (event.entityLiving instanceof EntityPlayerMP)
 		{
-			this.onPlayerUpdate((GCEntityPlayerMP) event.entityLiving);
+			this.onPlayerUpdate((EntityPlayerMP) event.entityLiving);
 		}
 	}
 
-	private void onPlayerUpdate(GCEntityPlayerMP player)
+	private void onPlayerUpdate(EntityPlayerMP player)
 	{
-		int tick = player.ticksExisted - 1;
-
 		if (!player.worldObj.isRemote && player.worldObj.provider instanceof WorldProviderAsteroids)
 		{
 			final int f = 50;

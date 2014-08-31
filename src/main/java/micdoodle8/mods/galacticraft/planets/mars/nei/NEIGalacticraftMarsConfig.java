@@ -14,8 +14,8 @@ import net.minecraft.item.ItemStack;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 public class NEIGalacticraftMarsConfig implements IConfigureNEI
 {

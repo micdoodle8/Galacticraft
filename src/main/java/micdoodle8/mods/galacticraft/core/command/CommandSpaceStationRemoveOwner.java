@@ -1,18 +1,20 @@
 package micdoodle8.mods.galacticraft.core.command;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class CommandSpaceStationRemoveOwner extends CommandBase
 {
@@ -38,7 +40,7 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
 	public void processCommand(ICommandSender icommandsender, String[] astring)
 	{
 		String var3 = null;
-		GCEntityPlayerMP playerBase = null;
+		EntityPlayerMP playerBase = null;
 
 		if (astring.length > 0)
 		{
@@ -50,13 +52,15 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
 
 				if (playerBase != null)
 				{
-					if (playerBase.getPlayerStats().spaceStationDimensionID <= 0)
+                    GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(playerBase);
+
+					if (stats.spaceStationDimensionID <= 0)
 					{
 						throw new WrongUsageException("Could not find space station for your username, you need to travel there first!", new Object[0]);
 					}
 					else
 					{
-						final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, playerBase.getPlayerStats().spaceStationDimensionID, playerBase);
+						final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, stats.spaceStationDimensionID, playerBase);
 
 						if (data.getAllowedPlayers().contains(var3.toLowerCase()))
 						{
@@ -96,11 +100,12 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
 
 	protected String[] getPlayers(ICommandSender icommandsender)
 	{
-		GCEntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(icommandsender.getCommandSenderName(), false);
+		EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(icommandsender.getCommandSenderName(), false);
 		
 		if (playerBase != null)
 		{
-			int ssdim = playerBase.getPlayerStats().spaceStationDimensionID;
+            GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(playerBase);
+			int ssdim = stats.spaceStationDimensionID;
 			if (ssdim > 0)
 			{
 				final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, ssdim, playerBase);

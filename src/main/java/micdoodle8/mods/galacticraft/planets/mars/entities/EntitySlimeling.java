@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModuleClient;
@@ -22,6 +23,7 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -405,12 +407,13 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 					}
 					else
 					{
-						if (par1EntityPlayer instanceof GCEntityPlayerMP)
+						if (par1EntityPlayer instanceof EntityPlayerMP)
 						{
-							if (((GCEntityPlayerMP) par1EntityPlayer).getPlayerStats().chatCooldown == 0)
+                            GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats((EntityPlayerMP)par1EntityPlayer);
+							if (stats.chatCooldown == 0)
 							{
 								par1EntityPlayer.addChatMessage(new ChatComponentText("This isn't my Slimeling!"));
-								((GCEntityPlayerMP) par1EntityPlayer).getPlayerStats().chatCooldown = 100;
+                                stats.chatCooldown = 100;
 							}
 						}
 					}

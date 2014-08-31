@@ -19,7 +19,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;

@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
@@ -24,6 +25,7 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -699,9 +701,9 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 					//No rocket flight in the Nether, the End etc
 					this.setLaunchPhase(EnumLaunchPhase.UNIGNITED);
 					this.timeUntilLaunch = 0;
-					if (!this.worldObj.isRemote && this.riddenByEntity instanceof GCEntityPlayerMP)
+					if (!this.worldObj.isRemote && this.riddenByEntity instanceof EntityPlayerMP)
 					{
-						((GCEntityPlayerMP)this.riddenByEntity).addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.rocket.warning.nogyroscope")));
+						((EntityPlayerMP)this.riddenByEntity).addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.rocket.warning.nogyroscope")));
 					}
 					return;
 				}
@@ -713,10 +715,12 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
 		if (!this.worldObj.isRemote)
 		{
-			if (!(this.worldObj.provider instanceof IOrbitDimension) && this.riddenByEntity != null && this.riddenByEntity instanceof GCEntityPlayerMP)
+            GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats((EntityPlayerMP) this.riddenByEntity);
+
+			if (!(this.worldObj.provider instanceof IOrbitDimension) && this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
 			{
-				((GCEntityPlayerMP) this.riddenByEntity).getPlayerStats().coordsTeleportedFromX = this.riddenByEntity.posX;
-				((GCEntityPlayerMP) this.riddenByEntity).getPlayerStats().coordsTeleportedFromZ = this.riddenByEntity.posZ;
+                stats.coordsTeleportedFromX = this.riddenByEntity.posX;
+                stats.coordsTeleportedFromZ = this.riddenByEntity.posZ;
 			}
 
 			int amountRemoved = 0;
@@ -750,9 +754,9 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 			}
 
 			//Set the player's launchpad item for return on landing - or null if launchpads not removed
-			if (this.riddenByEntity != null && this.riddenByEntity instanceof GCEntityPlayerMP)
+			if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
 			{
-				((GCEntityPlayerMP) this.riddenByEntity).getPlayerStats().launchpadStack = amountRemoved == 9 ? new ItemStack(GCBlocks.landingPad, 9, 0) : null;
+                stats.launchpadStack = amountRemoved == 9 ? new ItemStack(GCBlocks.landingPad, 9, 0) : null;
 			}
 
 			this.playSound("random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);

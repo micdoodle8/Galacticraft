@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.proxy;
 
+import api.player.client.ClientPlayerAPI;
 import api.player.model.ModelPlayerAPI;
 import api.player.render.RenderPlayerAPI;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -32,8 +32,9 @@ import micdoodle8.mods.galacticraft.core.client.render.entities.*;
 import micdoodle8.mods.galacticraft.core.client.render.item.*;
 import micdoodle8.mods.galacticraft.core.client.render.tile.*;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.*;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.*;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
@@ -69,10 +70,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
-
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-
 import tconstruct.client.tabs.InventoryTabVanilla;
 import tconstruct.client.tabs.TabRegistry;
 
@@ -141,6 +140,8 @@ public class ClientProxyCore extends CommonProxyCore
 	private static boolean smallMoonActive = false;
     private static Map<String, ResourceLocation> capesMap = Maps.newHashMap();
 
+    public static IPlayerClient playerClientHandler = new PlayerClient();
+
 	//private static int playerList;
 
 	@Override
@@ -150,6 +151,11 @@ public class ClientProxyCore extends CommonProxyCore
 
 		ClientProxyCore.renderIndexSensorGlasses = RenderingRegistry.addNewArmourRendererPrefix("sensor");
 		ClientProxyCore.renderIndexHeavyArmor = RenderingRegistry.addNewArmourRendererPrefix("titanium");
+
+        if (Loader.isModLoaded("PlayerAPI"))
+        {
+            ClientPlayerAPI.register(Constants.MOD_ID_CORE, GCPlayerBaseSP.class);
+        }
 	}
 
 	@Override
@@ -834,7 +840,45 @@ public class ClientProxyCore extends CommonProxyCore
 	public static void orientCamera(float partialTicks)
 	{
 		EntityClientPlayerMP player = FMLClientHandler.instance().getClient().thePlayer;
-		if (player instanceof GCEntityClientPlayerMP) ((GCEntityClientPlayerMP) player).reOrientCamera(partialTicks);
+        GCPlayerStatsClient stats = GCEntityClientPlayerMP.getPlayerStats(player);
+
+        EntityLivingBase entityLivingBase = FMLClientHandler.instance().getClient().renderViewEntity;
+
+        if (entityLivingBase.worldObj.provider instanceof WorldProviderOrbit && !entityLivingBase.isPlayerSleeping())
+        {
+            float f1 = entityLivingBase.yOffset - 1.62F;
+            float pitch = entityLivingBase.prevRotationPitch + (entityLivingBase.rotationPitch - entityLivingBase.prevRotationPitch) * partialTicks;
+            float yaw = entityLivingBase.prevRotationYaw + (entityLivingBase.rotationYaw - entityLivingBase.prevRotationYaw) * partialTicks + 180.0F;
+            float eyeHeightChange = entityLivingBase.yOffset - entityLivingBase.width / 2.0F;
+
+            GL11.glTranslatef(0.0F, -f1, 0.0F);
+            GL11.glRotatef(-yaw, 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(-pitch, 1.0F, 0.0F, 0.0F);
+            GL11.glTranslatef(0.0F, 0.0F, 0.1F);
+
+            GL11.glRotatef(180.0F * stats.gdir.thetaX, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(180.0F * stats.gdir.thetaZ, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(pitch * stats.gdir.pitchGravityX, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(pitch * stats.gdir.pitchGravityY, 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(yaw * stats.gdir.yawGravityX, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(yaw * stats.gdir.yawGravityY, 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(yaw * stats.gdir.yawGravityZ, 0.0F, 0.0F, 1.0F);
+
+            GL11.glTranslatef(entityLivingBase.ySize * stats.gdir.sneakVecX, entityLivingBase.ySize * stats.gdir.sneakVecY, entityLivingBase.ySize * stats.gdir.sneakVecZ);
+
+            GL11.glTranslatef(eyeHeightChange * stats.gdir.eyeVecX, eyeHeightChange * stats.gdir.eyeVecY, eyeHeightChange * stats.gdir.eyeVecZ);
+
+            if (stats.gravityTurnRate < 1.0F)
+            {
+                GL11.glRotatef(90.0F * (stats.gravityTurnRatePrev + (stats.gravityTurnRate - stats.gravityTurnRatePrev) * partialTicks), stats.gravityTurnVecX, stats.gravityTurnVecY, stats.gravityTurnVecZ);
+            }
+        }
+
+        //omit this for interesting 3P views
+        //GL11.glTranslatef(0.0F, 0.0F, -0.1F);
+        //GL11.glRotatef(pitch, 1.0F, 0.0F, 0.0F);
+        //GL11.glRotatef(yaw, 0.0F, 1.0F, 0.0F);
+        //GL11.glTranslatef(0.0F, f1, 0.0F);
 	}
 
 	public static void adjustRenderCamera()

@@ -13,27 +13,19 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenGear;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenMask;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEnchantmentTable;
-import net.minecraft.block.BlockFarmland;
-import net.minecraft.block.BlockGlass;
-import net.minecraft.block.BlockGravel;
-import net.minecraft.block.BlockLeavesBase;
-import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.BlockPistonBase;
-import net.minecraft.block.BlockSlab;
-import net.minecraft.block.BlockSponge;
-import net.minecraft.block.BlockStainedGlass;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -293,11 +285,13 @@ public class OxygenUtil
 		return 18;
 	}
 
-	public static boolean hasValidOxygenSetup(GCEntityPlayerMP player)
+	public static boolean hasValidOxygenSetup(EntityPlayerMP player)
 	{
 		boolean missingComponent = false;
 
-		if (player.getPlayerStats().extendedInventory.getStackInSlot(0) == null || !OxygenUtil.isItemValidForPlayerTankInv(0, player.getPlayerStats().extendedInventory.getStackInSlot(0)))
+        GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(player);
+
+		if (stats.extendedInventory.getStackInSlot(0) == null || !OxygenUtil.isItemValidForPlayerTankInv(0, stats.extendedInventory.getStackInSlot(0)))
 		{
 			boolean handled = false;
 
@@ -323,7 +317,7 @@ public class OxygenUtil
 			}
 		}
 
-		if (player.getPlayerStats().extendedInventory.getStackInSlot(1) == null || !OxygenUtil.isItemValidForPlayerTankInv(1, player.getPlayerStats().extendedInventory.getStackInSlot(1)))
+		if (stats.extendedInventory.getStackInSlot(1) == null || !OxygenUtil.isItemValidForPlayerTankInv(1, stats.extendedInventory.getStackInSlot(1)))
 		{
 			boolean handled = false;
 
@@ -349,7 +343,7 @@ public class OxygenUtil
 			}
 		}
 
-		if ((player.getPlayerStats().extendedInventory.getStackInSlot(2) == null || !OxygenUtil.isItemValidForPlayerTankInv(2, player.getPlayerStats().extendedInventory.getStackInSlot(2))) && (player.getPlayerStats().extendedInventory.getStackInSlot(3) == null || !OxygenUtil.isItemValidForPlayerTankInv(3, player.getPlayerStats().extendedInventory.getStackInSlot(3))))
+		if ((stats.extendedInventory.getStackInSlot(2) == null || !OxygenUtil.isItemValidForPlayerTankInv(2, stats.extendedInventory.getStackInSlot(2))) && (stats.extendedInventory.getStackInSlot(3) == null || !OxygenUtil.isItemValidForPlayerTankInv(3, stats.extendedInventory.getStackInSlot(3))))
 		{
 			boolean handled = false;
 

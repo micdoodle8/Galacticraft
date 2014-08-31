@@ -25,6 +25,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.*;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEntityBeamReceiverRenderer;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEntityBeamReflectorRenderer;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEntityShortRangeTelepadRenderer;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEntityTreasureChestRenderer;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityEntryPod;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAsteroid;
@@ -35,7 +36,6 @@ import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceive
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityTreasureChestAsteroids;
-import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEntityTreasureChestRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;

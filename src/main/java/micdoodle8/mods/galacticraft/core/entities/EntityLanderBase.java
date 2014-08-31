@@ -2,13 +2,14 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -74,18 +75,19 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
         this.setPosition(var2, var4 + this.yOffset, var6);
     }
 
-    public EntityLanderBase(GCEntityPlayerMP player, float yOffset)
+    public EntityLanderBase(EntityPlayerMP player, float yOffset)
     {
         this(player.worldObj, player.posX, player.posY, player.posZ, yOffset);
 
-        this.containedItems = new ItemStack[player.getPlayerStats().rocketStacks.length + 1];
-        this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, player.getPlayerStats().fuelLevel));
+        GCPlayerStats stats = GCPlayerStats.get(player);
+        this.containedItems = new ItemStack[stats.rocketStacks.length + 1];
+        this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, stats.fuelLevel));
 
-        for (int i = 0; i < player.getPlayerStats().rocketStacks.length; i++)
+        for (int i = 0; i < stats.rocketStacks.length; i++)
         {
-            if (player.getPlayerStats().rocketStacks[i] != null)
+            if (stats.rocketStacks[i] != null)
             {
-                this.containedItems[i] = player.getPlayerStats().rocketStacks[i].copy();
+                this.containedItems[i] = stats.rocketStacks[i].copy();
             }
             else
             {

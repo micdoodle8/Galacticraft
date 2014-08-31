@@ -3,8 +3,8 @@ package micdoodle8.mods.galacticraft.core.util;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -18,7 +18,7 @@ public class PlayerUtil
         return VersionUtil.getPlayerForUsername(server, username);
     }
 
-	public static GCEntityPlayerMP getPlayerBaseServerFromPlayerUsername(String username, boolean ignoreCase)
+	public static EntityPlayerMP getPlayerBaseServerFromPlayerUsername(String username, boolean ignoreCase)
 	{
 		MinecraftServer server = MinecraftServer.getServer();
 
@@ -26,12 +26,12 @@ public class PlayerUtil
 		{
 			if (ignoreCase)
 			{
-				return (GCEntityPlayerMP) getPlayerForUsernameVanilla(server, username);
+				return (EntityPlayerMP) getPlayerForUsernameVanilla(server, username);
 			}
 			else
 			{
 				Iterator iterator = server.getConfigurationManager().playerEntityList.iterator();
-				GCEntityPlayerMP entityplayermp;
+				EntityPlayerMP entityplayermp;
 
 				do
 				{
@@ -40,7 +40,7 @@ public class PlayerUtil
 						return null;
 					}
 
-					entityplayermp = (GCEntityPlayerMP) iterator.next();
+					entityplayermp = (EntityPlayerMP) iterator.next();
 				}
 				while (!entityplayermp.getCommandSenderName().equalsIgnoreCase(username));
 
@@ -53,25 +53,25 @@ public class PlayerUtil
 		return null;
 	}
 
-	public static GCEntityPlayerMP getPlayerBaseServerFromPlayer(EntityPlayer player, boolean ignoreCase)
+	public static EntityPlayerMP getPlayerBaseServerFromPlayer(EntityPlayer player, boolean ignoreCase)
 	{
 		if (player == null)
 		{
 			return null;
 		}
 
-		if (player instanceof GCEntityPlayerMP)
+		if (player instanceof EntityPlayerMP)
 		{
-			return (GCEntityPlayerMP) player;
+			return (EntityPlayerMP) player;
 		}
 
 		return PlayerUtil.getPlayerBaseServerFromPlayerUsername(player.getCommandSenderName(), ignoreCase);
 	}
 
 	@SideOnly(Side.CLIENT)
-	public static GCEntityClientPlayerMP getPlayerBaseClientFromPlayer(EntityPlayer player, boolean ignoreCase)
+	public static EntityClientPlayerMP getPlayerBaseClientFromPlayer(EntityPlayer player, boolean ignoreCase)
 	{
-		GCEntityClientPlayerMP clientPlayer = (GCEntityClientPlayerMP) FMLClientHandler.instance().getClientPlayerEntity();
+		EntityClientPlayerMP clientPlayer = (EntityClientPlayerMP) FMLClientHandler.instance().getClientPlayerEntity();
 
 		if (clientPlayer == null && player != null)
 		{

@@ -39,7 +39,7 @@ public class GCEntityOtherPlayerMP extends EntityOtherPlayerMP
 //		if (ClientProxyCore.capeMap.containsKey(this.getGameProfile().getName()))
 //		{
 //			this.galacticraftCape = GCEntityOtherPlayerMP.getLocationCape2(this.getGameProfile().getName());
-//			this.galacticraftCapeImageData = GCEntityOtherPlayerMP.getDownloadImage(this.galacticraftCape, GCEntityClientPlayerMP.getCapeURL(this.getGameProfile().getName()));
+//			this.galacticraftCapeImageData = GCEntityOtherPlayerMP.getDownloadImage(this.galacticraftCape, EntityClientPlayerMP.getCapeURL(this.getGameProfile().getName()));
 //		}
 //	}
 //

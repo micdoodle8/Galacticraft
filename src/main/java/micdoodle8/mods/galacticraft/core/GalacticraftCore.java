@@ -1,6 +1,9 @@
 package micdoodle8.mods.galacticraft.core;
 
+import api.player.client.ClientPlayerAPI;
+import api.player.server.ServerPlayerAPI;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -22,6 +25,8 @@ import micdoodle8.mods.galacticraft.core.dimension.*;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.grid.ChunkPowerHandler;
 import micdoodle8.mods.galacticraft.core.entities.*;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerBaseMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerBaseSP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
@@ -147,6 +152,11 @@ public class GalacticraftCore
 		{
 			GCBlocks.fuelStill = GalacticraftCore.fluidFuel.getBlock();
 		}
+
+        if (Loader.isModLoaded("PlayerAPI"))
+        {
+            ServerPlayerAPI.register(Constants.MOD_ID_CORE, GCPlayerBaseMP.class);
+        }
 
 		GCBlocks.initBlocks();
 		GCItems.initItems();

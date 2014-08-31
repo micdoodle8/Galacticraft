@@ -10,7 +10,7 @@ import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC.RotatePlayerEvent;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC.OrientCameraEvent;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
@@ -30,6 +30,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayer.EnumStatus;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
@@ -91,7 +92,7 @@ public class EventHandlerMars
 			{
 				event.result = EnumStatus.NOT_POSSIBLE_HERE;
 
-				if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && event.bypassed && event.entityPlayer instanceof GCEntityClientPlayerMP)
+				if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && event.bypassed && event.entityPlayer instanceof EntityClientPlayerMP)
 				{
 					GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_WAKE_PLAYER, new Object[] {}));
 				}
@@ -101,7 +102,7 @@ public class EventHandlerMars
 				if (!event.entityPlayer.worldObj.isRemote)
 				{
 					event.entityPlayer.heal(5.0F);
-					((GCEntityPlayerMP) event.entityPlayer).getPlayerStats().cryogenicChamberCooldown = 6000;
+                    GCEntityPlayerMP.getPlayerStats((EntityPlayerMP) event.entityPlayer).cryogenicChamberCooldown = 6000;
 
 					for (WorldServer worldServer : MinecraftServer.getServer().worldServers)
 					{

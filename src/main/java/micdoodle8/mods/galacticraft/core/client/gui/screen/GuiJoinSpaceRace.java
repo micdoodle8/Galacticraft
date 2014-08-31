@@ -12,7 +12,8 @@ import micdoodle8.mods.galacticraft.core.client.model.ModelFlag;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -43,11 +44,12 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
 
 	private SpaceRace spaceRaceData;
 
-	public GuiJoinSpaceRace(GCEntityClientPlayerMP player)
+	public GuiJoinSpaceRace(EntityClientPlayerMP player)
 	{
 		this.thePlayer = player;
+        GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
-		SpaceRace race = SpaceRaceManager.getSpaceRaceFromID(player.spaceRaceInviteTeamID);
+		SpaceRace race = SpaceRaceManager.getSpaceRaceFromID(stats.spaceRaceInviteTeamID);
 
 		if (race != null)
 		{

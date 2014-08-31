@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
@@ -363,9 +364,9 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 		//Not launch controlled
 		if (this.riddenByEntity != null && !this.worldObj.isRemote)
 		{
-			if (this.riddenByEntity instanceof GCEntityPlayerMP)
+			if (this.riddenByEntity instanceof EntityPlayerMP)
 			{
-				GCEntityPlayerMP player = (GCEntityPlayerMP) this.riddenByEntity;
+				EntityPlayerMP player = (EntityPlayerMP) this.riddenByEntity;
 
 				HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(this.getRocketTier()), player);
 
@@ -379,8 +380,9 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 				}
 
 				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { player.getGameProfile().getName(), temp }), player);
-				player.getPlayerStats().spaceshipTier = this.getRocketTier();
-				player.getPlayerStats().usingPlanetSelectionGui = true;
+                GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(player);
+                stats.spaceshipTier = this.getRocketTier();
+                stats.usingPlanetSelectionGui = true;
 
 				this.onTeleport(player);
 				player.mountEntity(this);
@@ -431,23 +433,25 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 			return false;
 		}
 
-		if (this.riddenByEntity != null && this.riddenByEntity instanceof GCEntityPlayerMP)
+		if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
 		{
 			if (!this.worldObj.isRemote)
 			{
 				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, new Object[] {}), (EntityPlayerMP) par1EntityPlayer);
-				((GCEntityPlayerMP) par1EntityPlayer).getPlayerStats().chatCooldown = 0;
+                GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats((EntityPlayerMP) par1EntityPlayer);
+                stats.chatCooldown = 0;
 				par1EntityPlayer.mountEntity(null);
 			}
 
 			return true;
 		}
-		else if (par1EntityPlayer instanceof GCEntityPlayerMP)
+		else if (par1EntityPlayer instanceof EntityPlayerMP)
 		{
 			if (!this.worldObj.isRemote)
 			{
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_DISPLAY_ROCKET_CONTROLS, new Object[] {}), (GCEntityPlayerMP)par1EntityPlayer);
-				((GCEntityPlayerMP) par1EntityPlayer).getPlayerStats().chatCooldown = 0;
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_DISPLAY_ROCKET_CONTROLS, new Object[] {}), (EntityPlayerMP)par1EntityPlayer);
+                GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats((EntityPlayerMP) par1EntityPlayer);
+                stats.chatCooldown = 0;
 				par1EntityPlayer.mountEntity(this);
 			}
 

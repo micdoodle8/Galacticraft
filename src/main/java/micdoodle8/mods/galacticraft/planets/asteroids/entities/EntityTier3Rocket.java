@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
-import java.util.List;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
@@ -10,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -21,6 +20,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class EntityTier3Rocket extends EntityTieredRocket
 {
@@ -149,22 +150,24 @@ public class EntityTier3Rocket extends EntityTieredRocket
 	@Override
 	public void onTeleport(EntityPlayerMP player)
 	{
-		GCEntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
+		EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
 
 		if (playerBase != null)
 		{
+            GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(playerBase);
+
 			if (this.cargoItems == null || this.cargoItems.length == 0)
 			{
-				playerBase.getPlayerStats().rocketStacks = new ItemStack[2];
+				stats.rocketStacks = new ItemStack[2];
 			}
 			else
 			{
-				playerBase.getPlayerStats().rocketStacks = this.cargoItems;
+				stats.rocketStacks = this.cargoItems;
 			}
 
-			playerBase.getPlayerStats().rocketType = this.rocketType.getIndex();
-			playerBase.getPlayerStats().rocketItem = AsteroidsItems.tier3Rocket;
-			playerBase.getPlayerStats().fuelLevel = this.fuelTank.getFluidAmount();
+			stats.rocketType = this.rocketType.getIndex();
+			stats.rocketItem = AsteroidsItems.tier3Rocket;
+			stats.fuelLevel = this.fuelTank.getFluidAmount();
 		}
 	}
 

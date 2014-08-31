@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -191,7 +191,7 @@ public class ModelPlayerGC extends ModelBiped
 	@Override
 	public void render(Entity var1, float var2, float var3, float var4, float var5, float var6, float var7)
 	{
-		final Class<?> entityClass = GCEntityClientPlayerMP.class;
+		final Class<?> entityClass = EntityClientPlayerMP.class;
 		final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
 		final ModelBiped modelBipedMain = ((RenderPlayer) render).modelBipedMain;
 

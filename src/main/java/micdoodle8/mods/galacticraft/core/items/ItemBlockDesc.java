@@ -12,7 +12,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;

@@ -5,7 +5,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -93,11 +94,12 @@ public class OverlaySensorGlasses extends Overlay
 
 			boolean var2 = false;
 
-			final GCEntityClientPlayerMP client = PlayerUtil.getPlayerBaseClientFromPlayer(OverlaySensorGlasses.minecraft.thePlayer, false);
+			final EntityClientPlayerMP client = PlayerUtil.getPlayerBaseClientFromPlayer(OverlaySensorGlasses.minecraft.thePlayer, false);
 
 			if (client != null)
 			{
-				var2 = client.getUsingGoggles();
+                GCPlayerStatsClient stats = GCPlayerStatsClient.get(client);
+				var2 = stats.usingAdvancedGoggles = true;
 			}
 
 			OverlaySensorGlasses.minecraft.fontRenderer.drawString(GCCoreUtil.translate("gui.sensor.advanced") + ": " + (var2 ? GCCoreUtil.translate("gui.sensor.advancedon") : GCCoreUtil.translate("gui.sensor.advancedoff")), var6 / 2 - 50, 4, 0x03b88f);

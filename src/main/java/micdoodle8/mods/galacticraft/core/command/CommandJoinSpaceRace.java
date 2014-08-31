@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.command;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -10,6 +11,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.entity.player.EntityPlayerMP;
 
 public class CommandJoinSpaceRace extends CommandBase
 {
@@ -34,7 +36,7 @@ public class CommandJoinSpaceRace extends CommandBase
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring)
 	{
-		GCEntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(icommandsender.getCommandSenderName(), true);
+		EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(icommandsender.getCommandSenderName(), true);
 
 		if (astring.length == 0)
 		{
@@ -42,10 +44,12 @@ public class CommandJoinSpaceRace extends CommandBase
 			{
 				if (playerBase != null)
 				{
-					if (playerBase.getPlayerStats().spaceRaceInviteTeamID > 0)
+                    GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(playerBase);
+
+					if (stats.spaceRaceInviteTeamID > 0)
 					{
-						SpaceRaceManager.sendSpaceRaceData(playerBase, SpaceRaceManager.getSpaceRaceFromID(playerBase.getPlayerStats().spaceRaceInviteTeamID));
-						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_JOIN_RACE_GUI, new Object[] { playerBase.getPlayerStats().spaceRaceInviteTeamID }), playerBase);
+						SpaceRaceManager.sendSpaceRaceData(playerBase, SpaceRaceManager.getSpaceRaceFromID(stats.spaceRaceInviteTeamID));
+						GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_JOIN_RACE_GUI, new Object[] { stats.spaceRaceInviteTeamID }), playerBase);
 					}
 					else
 					{

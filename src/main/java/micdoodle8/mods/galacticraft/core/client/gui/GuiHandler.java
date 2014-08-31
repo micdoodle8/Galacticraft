@@ -12,14 +12,17 @@ import micdoodle8.mods.galacticraft.core.client.gui.container.*;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiJoinSpaceRace;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiNewSpaceRace;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.inventory.*;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
@@ -29,7 +32,8 @@ public class GuiHandler implements IGuiHandler
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		GCEntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
+		EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
+        GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(playerBase);
 
 		if (playerBase == null)
 		{
@@ -43,7 +47,7 @@ public class GuiHandler implements IGuiHandler
 		}
 		else if (ID == GuiIdsCore.EXTENDED_INVENTORY)
 		{
-			return new ContainerExtendedInventory(player, playerBase.getPlayerStats().extendedInventory);
+			return new ContainerExtendedInventory(player, stats.extendedInventory);
 		}
 
 		TileEntity tile = world.getTileEntity(x, y, z);
@@ -124,7 +128,7 @@ public class GuiHandler implements IGuiHandler
 			}
 		}
 
-		for (ISchematicPage page : playerBase.getPlayerStats().unlockedSchematics)
+		for (ISchematicPage page : stats.unlockedSchematics)
 		{
 			if (ID == page.getGuiID())
 			{
@@ -149,7 +153,7 @@ public class GuiHandler implements IGuiHandler
 	@SideOnly(Side.CLIENT)
 	private Object getClientGuiElement(int ID, EntityPlayer player, World world, Vector3 position)
 	{
-		GCEntityClientPlayerMP playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
+		EntityClientPlayerMP playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
 
 		if (ID == GuiIdsCore.GALAXY_MAP)
 		{
@@ -256,7 +260,8 @@ public class GuiHandler implements IGuiHandler
 
 		if (playerClient != null)
 		{
-			for (ISchematicPage page : playerClient.unlockedSchematics)
+            GCPlayerStatsClient stats = GCPlayerStatsClient.get(playerClient);
+			for (ISchematicPage page : stats.unlockedSchematics)
 			{
 				if (ID == page.getGuiID())
 				{

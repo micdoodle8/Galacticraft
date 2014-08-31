@@ -9,6 +9,7 @@ import cpw.mods.fml.common.network.FMLNetworkEvent.ServerConnectionFromClientEve
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
@@ -37,9 +38,10 @@ public class ConnectionEvents
 	{
 		ChunkLoadingCallback.onPlayerLogin(event.player);
 
-		if (event.player instanceof GCEntityPlayerMP)
+		if (event.player instanceof EntityPlayerMP)
 		{
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, new Object[] { ((GCEntityPlayerMP) event.player).getPlayerStats().spaceStationDimensionID }), (EntityPlayerMP) event.player);
+            GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats((EntityPlayerMP) event.player);
+			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, new Object[] { stats.spaceStationDimensionID }), (EntityPlayerMP) event.player);
 		}
 
 		if (event.player.worldObj.provider instanceof WorldProviderOrbit && event.player instanceof EntityPlayerMP)

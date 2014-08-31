@@ -8,7 +8,6 @@ import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.planets.mars.util.MarsUtil;
@@ -37,7 +36,7 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
         this.rotationYawSpeed = this.rand.nextFloat();
     }
 
-    public EntityLandingBalloons(GCEntityPlayerMP player)
+    public EntityLandingBalloons(EntityPlayerMP player)
     {
         super(player, 0F);
         this.setSize(2.0F, 2.0F);

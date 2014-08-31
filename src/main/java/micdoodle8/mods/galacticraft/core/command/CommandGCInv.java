@@ -2,21 +2,19 @@ package micdoodle8.mods.galacticraft.core.command;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class CommandGCInv extends CommandBase
 {
@@ -81,21 +79,21 @@ public class CommandGCInv extends CommandBase
 		{
 			try
 			{
-				GCEntityPlayerMP thePlayer = null;
-				thePlayer = PlayerUtil.getPlayerBaseServerFromPlayerUsername(astring[1], true);
+				EntityPlayerMP thePlayer = PlayerUtil.getPlayerBaseServerFromPlayerUsername(astring[1], true);
 				if (thePlayer != null && !thePlayer.isDead && thePlayer.worldObj != null)
 				{
+                    GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(thePlayer);
 
 					if (astring[0].equalsIgnoreCase("drop"))
 					{
-						InventoryExtended gcInventory = thePlayer.getPlayerStats().extendedInventory;
+						InventoryExtended gcInventory = stats.extendedInventory;
 						gcInventory.dropExtendedItems(thePlayer);
 					}
 					else
 
 					if (astring[0].equalsIgnoreCase("save"))
 					{
-						InventoryExtended gcInventory = thePlayer.getPlayerStats().extendedInventory;
+						InventoryExtended gcInventory = stats.extendedInventory;
 						ItemStack[] saveinv = new ItemStack[gcInventory.getSizeInventory()];
 						for (int i = 0; i < gcInventory.getSizeInventory(); i++)
 						{
@@ -126,7 +124,7 @@ public class CommandGCInv extends CommandBase
 
 					if (astring[0].equalsIgnoreCase("clear"))
 					{
-						InventoryExtended gcInventory = thePlayer.getPlayerStats().extendedInventory;
+						InventoryExtended gcInventory = stats.extendedInventory;
 						for (int i = 0; i < gcInventory.getSizeInventory(); i++)
 						{
 							gcInventory.setInventorySlotContents(i, null);
@@ -183,7 +181,7 @@ public class CommandGCInv extends CommandBase
 		}
 	}
 
-	public static void doLoad(GCEntityPlayerMP thePlayer)
+	public static void doLoad(EntityPlayerMP thePlayer)
 	{
 		String theName = thePlayer.getGameProfile().getName().toLowerCase();
 		if (!CommandGCInv.dontload.contains(theName)) // This is a simple
@@ -196,7 +194,7 @@ public class CommandGCInv extends CommandBase
 		// auto-restore on a server restart.
 		{
 			ItemStack[] saveinv = CommandGCInv.savedata.get(theName);
-			InventoryExtended gcInventory = thePlayer.getPlayerStats().extendedInventory;
+			InventoryExtended gcInventory = GCEntityPlayerMP.getPlayerStats(thePlayer).extendedInventory;
 			for (int i = 0; i < gcInventory.getSizeInventory(); i++)
 			{
 				gcInventory.setInventorySlotContents(i, saveinv[i]);

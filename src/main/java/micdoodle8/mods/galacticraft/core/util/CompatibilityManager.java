@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import java.lang.reflect.Method;
-
 import cpw.mods.fml.common.Loader;
+
+import java.lang.reflect.Method;
 
 public class CompatibilityManager
 {

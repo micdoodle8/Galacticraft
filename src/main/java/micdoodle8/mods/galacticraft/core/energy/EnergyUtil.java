@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.energy;
 
+import buildcraft.api.mj.MjAPI;
+import buildcraft.api.power.IPowerReceptor;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergyConductor;
 import ic2.api.energy.tile.IEnergyEmitter;
@@ -11,8 +13,6 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.mj.MjAPI;
-import buildcraft.api.power.IPowerReceptor;
 
 public class EnergyUtil
 {

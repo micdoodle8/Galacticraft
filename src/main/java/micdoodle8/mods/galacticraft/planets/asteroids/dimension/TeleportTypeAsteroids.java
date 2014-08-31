@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityEntryPod;
@@ -30,10 +31,11 @@ public class TeleportTypeAsteroids implements ITeleportType
 	@Override
 	public Vector3 getPlayerSpawnLocation(WorldServer world, EntityPlayerMP player)
 	{
-		if (player instanceof GCEntityPlayerMP)
+		if (player instanceof EntityPlayerMP)
 		{
-            int x = MathHelper.floor_double(((GCEntityPlayerMP) player).getPlayerStats().coordsTeleportedFromX);
-            int z = MathHelper.floor_double(((GCEntityPlayerMP) player).getPlayerStats().coordsTeleportedFromZ);
+            GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(player);
+            int x = MathHelper.floor_double(stats.coordsTeleportedFromX);
+            int z = MathHelper.floor_double(stats.coordsTeleportedFromZ);
             
             int attemptCount = 0;
 
@@ -77,7 +79,7 @@ public class TeleportTypeAsteroids implements ITeleportType
             return new Vector3(x, 310, z);
 		}
 
-        FMLLog.severe("Failed to cast player to GCEntityPlayerMP!");
+        FMLLog.severe("Failed to cast player to EntityPlayerMP!");
         return new Vector3(player.posX, 310,  player.posZ);
 	}
 
@@ -224,9 +226,10 @@ public class TeleportTypeAsteroids implements ITeleportType
 	@Override
 	public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player, boolean ridingAutoRocket)
 	{
-        if (!ridingAutoRocket && player instanceof GCEntityPlayerMP && ((GCEntityPlayerMP) player).getPlayerStats().teleportCooldown <= 0)
+        GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(player);
+        if (!ridingAutoRocket && player instanceof EntityPlayerMP && stats.teleportCooldown <= 0)
         {
-            GCEntityPlayerMP gcPlayer = (GCEntityPlayerMP) player;
+            EntityPlayerMP gcPlayer = (EntityPlayerMP) player;
 
             if (gcPlayer.capabilities.isFlying)
             {
@@ -240,7 +243,7 @@ public class TeleportTypeAsteroids implements ITeleportType
                 newWorld.spawnEntityInWorld(entryPod);
             }
             
-            gcPlayer.getPlayerStats().teleportCooldown = 10;
+            stats.teleportCooldown = 10;
         }
 	}
 }

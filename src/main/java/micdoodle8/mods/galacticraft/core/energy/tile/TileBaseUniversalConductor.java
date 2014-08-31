@@ -4,6 +4,7 @@ import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cpw.mods.fml.common.eventhandler.Event;
+import ic2.api.energy.tile.IEnergySource;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -16,7 +17,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
-import ic2.api.energy.tile.IEnergySource;
 
 import java.lang.reflect.Constructor;
 

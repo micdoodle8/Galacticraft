@@ -16,7 +16,6 @@ import net.minecraft.block.BlockAir;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;

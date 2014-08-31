@@ -2,13 +2,13 @@ package micdoodle8.mods.galacticraft.core.command;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.entity.player.EntityPlayerMP;
 
 public class CommandGCEnergyUnits extends CommandBase
 {
@@ -45,7 +45,7 @@ public class CommandGCEnergyUnits extends CommandBase
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring)
 	{
-		GCEntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(icommandsender.getCommandSenderName(), true);
+		EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(icommandsender.getCommandSenderName(), true);
 		if (playerBase == null) return;
 
 		if (astring.length == 1)

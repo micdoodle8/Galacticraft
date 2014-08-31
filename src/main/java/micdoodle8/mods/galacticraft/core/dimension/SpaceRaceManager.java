@@ -6,7 +6,6 @@ import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
@@ -191,7 +190,7 @@ public class SpaceRaceManager
 		List<String> playerList = new ArrayList<String>();
 		playerList.add(player);
 		SpaceRace newRace = SpaceRaceManager.addSpaceRace(new SpaceRace(playerList, "Unnamed Team", new FlagData(48, 32), new Vector3(1, 1, 1)));
-		GCEntityPlayerMP playerToRemove = PlayerUtil.getPlayerBaseServerFromPlayerUsername(player, true);
+		EntityPlayerMP playerToRemove = PlayerUtil.getPlayerBaseServerFromPlayerUsername(player, true);
 
 		if (playerToRemove != null)
 		{

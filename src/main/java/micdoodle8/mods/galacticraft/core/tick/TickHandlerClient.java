@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
-
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -31,6 +30,8 @@ import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.items.ItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.network.PacketRotateRocket;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -58,11 +59,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-
 import tconstruct.client.tabs.TabRegistry;
 
 import java.util.List;
@@ -144,7 +143,13 @@ public class TickHandlerClient
 	{
 		final Minecraft minecraft = FMLClientHandler.instance().getClient();
 		final EntityPlayerSP player = minecraft.thePlayer;
-		final GCEntityClientPlayerMP playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
+		final EntityClientPlayerMP playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
+        GCPlayerStatsClient stats = null;
+
+        if (player != null)
+        {
+            stats = GCEntityClientPlayerMP.getPlayerStats(playerBaseClient);
+        }
 
 		if (event.phase == Phase.END)
 		{
@@ -257,11 +262,11 @@ public class TickHandlerClient
 					var7 = 90;
 				}
 
-				int thermalLevel = ((GCEntityClientPlayerMP) FMLClientHandler.instance().getClientPlayerEntity()).thermalLevel + 22;
+				int thermalLevel = stats.thermalLevel + 22;
 				OverlayOxygenTanks.renderOxygenTankIndicator(thermalLevel, var6, var7, !ConfigManagerCore.oxygenIndicatorLeft, !ConfigManagerCore.oxygenIndicatorBottom, Math.abs(thermalLevel - 22) >= 10);
 			}
 
-			if (playerBaseClient != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && !playerBaseClient.oxygenSetupValid && minecraft.currentScreen == null && !playerBaseClient.capabilities.isCreativeMode)
+			if (playerBaseClient != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && !stats.oxygenSetupValid && minecraft.currentScreen == null && !playerBaseClient.capabilities.isCreativeMode)
 			{
 				OverlayOxygenWarning.renderOxygenWarningOverlay();
 			}
@@ -432,7 +437,7 @@ public class TickHandlerClient
 					{
 						world.provider.setSkyRenderer(new SkyProviderOrbit(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"), true, true));
 						((SkyProviderOrbit) world.provider.getSkyRenderer()).spinDeltaPerTick = ((WorldProviderOrbit) world.provider).getSpinRate();
-						((GCEntityClientPlayerMP) player).inFreefallFirstCheck = false;
+						GCEntityClientPlayerMP.getPlayerStats(player).inFreefallFirstCheck = false;
 					}
 
 					if (world.provider.getCloudRenderer() == null)

@@ -6,7 +6,6 @@ import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.client.fx.EntityFXLanderFlame;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
@@ -30,7 +29,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
         this.setSize(3.0F, 3.0F);
     }
 
-    public EntityLander(GCEntityPlayerMP player)
+    public EntityLander(EntityPlayerMP player)
     {
         super(player, 0.0F);
     }

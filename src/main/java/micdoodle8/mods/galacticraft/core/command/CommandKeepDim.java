@@ -1,12 +1,14 @@
 package micdoodle8.mods.galacticraft.core.command;
 
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
 
 public class CommandKeepDim extends CommandBase
@@ -32,7 +34,7 @@ public class CommandKeepDim extends CommandBase
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring)
 	{
-		GCEntityPlayerMP playerBase = null;
+		EntityPlayerMP playerBase;
 
 		if (astring.length > 1)
 		{

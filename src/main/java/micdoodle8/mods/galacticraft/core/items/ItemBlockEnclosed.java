@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import java.lang.reflect.Method;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
@@ -16,6 +14,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
+import java.lang.reflect.Method;
 
 public class ItemBlockEnclosed extends ItemBlockDesc
 {

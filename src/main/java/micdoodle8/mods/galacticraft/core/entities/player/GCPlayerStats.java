@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.command.CommandGCInv;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,7 +22,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
 {
 	public static final String GC_PLAYER_PROP = "GCPlayerStats";
 
-	public WeakReference<GCEntityPlayerMP> player;
+	public WeakReference<EntityPlayerMP> player;
 
 	public InventoryExtended extendedInventory = new InventoryExtended();
 
@@ -110,10 +111,11 @@ public class GCPlayerStats implements IExtendedEntityProperties
 	public int cryogenicChamberCooldown;
 
 	public boolean receivedSoundWarning;
+    public boolean openedSpaceRaceManager = false;
 
-	public GCPlayerStats(GCEntityPlayerMP player)
+	public GCPlayerStats(EntityPlayerMP player)
 	{
-		this.player = new WeakReference<GCEntityPlayerMP>(player);
+		this.player = new WeakReference<EntityPlayerMP>(player);
 	}
 
 	@Override
@@ -282,12 +284,12 @@ public class GCPlayerStats implements IExtendedEntityProperties
 	{
 	}
 
-	public static void register(GCEntityPlayerMP player)
+	public static void register(EntityPlayerMP player)
 	{
 		player.registerExtendedProperties(GCPlayerStats.GC_PLAYER_PROP, new GCPlayerStats(player));
 	}
 
-	public static GCPlayerStats get(GCEntityPlayerMP player)
+	public static GCPlayerStats get(EntityPlayerMP player)
 	{
 		return (GCPlayerStats) player.getExtendedProperties(GCPlayerStats.GC_PLAYER_PROP);
 	}
@@ -302,6 +304,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
 		this.spaceStationDimensionID = oldData.spaceStationDimensionID;
 		this.unlockedSchematics = oldData.unlockedSchematics;
 		this.receivedSoundWarning = oldData.receivedSoundWarning;
+        this.openedSpaceRaceManager = oldData.openedSpaceRaceManager;
 		this.spaceRaceInviteTeamID = oldData.spaceRaceInviteTeamID;
 	}
 }

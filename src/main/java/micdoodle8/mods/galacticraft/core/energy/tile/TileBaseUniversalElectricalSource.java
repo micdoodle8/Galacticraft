@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
+import buildcraft.api.mj.MjAPI;
+import buildcraft.api.power.IPowerReceptor;
+import buildcraft.api.power.PowerHandler.PowerReceiver;
 import mekanism.api.energy.EnergizedItemManager;
 import mekanism.api.energy.IEnergizedItem;
 import mekanism.api.energy.IStrictEnergyAcceptor;
@@ -22,10 +25,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.lang.reflect.Method;
 import java.util.EnumSet;
-
-import buildcraft.api.mj.MjAPI;
-import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
 
 public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectrical
 {

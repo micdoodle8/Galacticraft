@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -145,17 +145,19 @@ public class EntityTier1Rocket extends EntityTieredRocket
 	@Override
 	public void onTeleport(EntityPlayerMP player)
 	{
-		final GCEntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
+		final EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
 
 		if (playerBase != null)
 		{
+            GCPlayerStats stats = GCPlayerStats.get(player);
+
 			if (this.cargoItems == null || this.cargoItems.length == 0)
 			{
-				playerBase.getPlayerStats().rocketStacks = new ItemStack[2];
+				stats.rocketStacks = new ItemStack[2];
 			}
 			else
 			{
-				playerBase.getPlayerStats().rocketStacks = this.cargoItems;
+				stats.rocketStacks = this.cargoItems;
 				if ((this.cargoItems.length - 2) % 18 != 0)
 				{
 					System.out.println("Strange rocket inventory size " + this.cargoItems.length);
@@ -163,9 +165,9 @@ public class EntityTier1Rocket extends EntityTieredRocket
 				}
 			}
 
-			playerBase.getPlayerStats().rocketType = this.rocketType.getIndex();
-			playerBase.getPlayerStats().rocketItem = GCItems.rocketTier1;
-			playerBase.getPlayerStats().fuelLevel = this.fuelTank.getFluidAmount();
+			stats.rocketType = this.rocketType.getIndex();
+			stats.rocketItem = GCItems.rocketTier1;
+			stats.fuelLevel = this.fuelTank.getFluidAmount();
 		}
 	}
 

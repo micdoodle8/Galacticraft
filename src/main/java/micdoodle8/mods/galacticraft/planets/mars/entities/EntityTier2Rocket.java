@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -143,22 +144,24 @@ public class EntityTier2Rocket extends EntityTieredRocket
 	@Override
 	public void onTeleport(EntityPlayerMP player)
 	{
-		GCEntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
+		EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
 
 		if (playerBase != null)
 		{
+            GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(playerBase);
+
 			if (this.cargoItems == null || this.cargoItems.length == 0)
 			{
-				playerBase.getPlayerStats().rocketStacks = new ItemStack[2];
+				stats.rocketStacks = new ItemStack[2];
 			}
 			else
 			{
-				playerBase.getPlayerStats().rocketStacks = this.cargoItems;
+				stats.rocketStacks = this.cargoItems;
 			}
 
-			playerBase.getPlayerStats().rocketType = this.rocketType.getIndex();
-			playerBase.getPlayerStats().rocketItem = MarsItems.spaceship;
-			playerBase.getPlayerStats().fuelLevel = this.fuelTank.getFluidAmount();
+			stats.rocketType = this.rocketType.getIndex();
+			stats.rocketItem = MarsItems.spaceship;
+			stats.fuelLevel = this.fuelTank.getFluidAmount();
 		}
 	}
 

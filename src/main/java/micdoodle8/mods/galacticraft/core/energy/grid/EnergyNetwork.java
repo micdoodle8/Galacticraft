@@ -3,8 +3,6 @@ package micdoodle8.mods.galacticraft.core.energy.grid;
 import buildcraft.api.mj.MjAPI;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
-//import buildcraft.api.power.PowerHandler.Type;
-//import cofh.api.energy.IEnergyHandler;
 import cpw.mods.fml.common.FMLLog;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergySink;
@@ -28,6 +26,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.lang.reflect.Method;
 import java.util.*;
+
+//import buildcraft.api.power.PowerHandler.Type;
+//import cofh.api.energy.IEnergyHandler;
 
 
 /**

@@ -29,8 +29,8 @@ import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAstero
 import micdoodle8.mods.galacticraft.planets.asteroids.recipe.CanisterRecipes;
 import micdoodle8.mods.galacticraft.planets.asteroids.recipe.RecipeManagerAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.schematic.SchematicTier3Rocket;
-import micdoodle8.mods.galacticraft.planets.asteroids.tile.*;
 import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerServer;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.*;
 import micdoodle8.mods.galacticraft.planets.asteroids.util.AsteroidsUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -42,9 +42,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
 

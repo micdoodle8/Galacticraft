@@ -9,6 +9,8 @@ import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.IControllableEntity;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -53,7 +55,8 @@ public class KeyHandlerClient extends KeyHandler
 	{
 		if (KeyHandlerClient.mc.thePlayer != null && tickEnd)
 		{
-			GCEntityClientPlayerMP playerBase = PlayerUtil.getPlayerBaseClientFromPlayer(KeyHandlerClient.mc.thePlayer, false);
+			EntityClientPlayerMP playerBase = PlayerUtil.getPlayerBaseClientFromPlayer(KeyHandlerClient.mc.thePlayer, false);
+            GCPlayerStatsClient stats = GCEntityClientPlayerMP.getPlayerStats(playerBase);
 
 			if (kb.getKeyCode() == KeyHandlerClient.galaxyMap.getKeyCode())
 			{
@@ -73,7 +76,7 @@ public class KeyHandlerClient extends KeyHandler
 			{
 				if (playerBase != null)
 				{
-					playerBase.toggleGoggles();
+					stats.usingAdvancedGoggles = !stats.usingAdvancedGoggles;
 				}
 			}
 		}
