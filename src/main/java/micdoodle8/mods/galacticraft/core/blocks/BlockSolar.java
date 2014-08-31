@@ -281,12 +281,6 @@ public class BlockSolar extends BlockTileGC implements ItemBlockDesc.IBlockShift
 	}
 
 	@Override
-	public boolean isOpaqueCube()
-	{
-		return false;
-	}
-
-	@Override
 	public boolean renderAsNormalBlock()
 	{
 		return false;

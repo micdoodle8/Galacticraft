@@ -75,12 +75,6 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
 		return AxisAlignedBB.getBoundingBox((double) i + -0.0F, (double) j + 0.0F, (double) k + -0.0F, (double) i + 1.0F, (double) j + 1.4F, (double) k + 1.0F);
 	}
 
-	@Override
-	public boolean isOpaqueCube()
-	{
-		return false;
-	}
-
 	@SideOnly(Side.CLIENT)
 	@Override
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k)
