@@ -29,7 +29,7 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
 
 		for (int x = -1; x < 2; x++)
 		{
-			for (int y = 0; y < 4; y++)
+			for (int y = 1; y < 3; y++)
 			{
 				for (int z = -1; z < 2; z++)
 				{
@@ -39,19 +39,15 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
 					{
 						if (Math.abs(x) != 1 || Math.abs(z) != 1)
 						{
-							if ((y == 0 || y == 3) && x == 0 && z == 0)
-							{
-								((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);
-							}
-							else if (y != 0 && y != 3)
-							{
-								((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);
-							}
+							((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);
 						}
 					}
 				}
 			}
 		}
+
+		final BlockVec3 vecToAdd = new BlockVec3(placedPosition.x, placedPosition.y + 3, placedPosition.z);
+		((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);
 	}
 
 	@Override
