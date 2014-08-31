@@ -56,7 +56,6 @@ ext.apiFiles = ['micdoodle8/mods/galacticraft/api/**']
 ext.coreFiles = ['micdoodle8/mods/galacticraft/api/**',
 					'micdoodle8/mods/galacticraft/core/**',
 					'tconstruct/**',
-					'api/**',
 					'assets/minecraft/**',
 					'assets/galacticraftmoon/**',
 					'assets/galacticraftcore/**']
@@ -79,6 +78,7 @@ jar
 	// Add necessary files, remove unnecessary ones.
 	includes.addAll(project.ext.coreFiles)
 	includes.addAll('mcmod.info')
+	includes.addAll('api/player/**')
 	includes.addAll(project.ext.dependencies)
 	includes.addAll(project.ext.planetsFiles)
 	includes.addAll(project.ext.micdoodleCoreFiles)
