@@ -5,6 +5,8 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.entities.player.IPlayerServer;
+import micdoodle8.mods.galacticraft.core.entities.player.PlayerServer;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetHandler;
@@ -13,6 +15,8 @@ import net.minecraft.world.World;
 
 public class CommonProxyCore
 {
+    public IPlayerServer player = new PlayerServer();
+
 	public void preInit(FMLPreInitializationEvent event)
 	{
 	}
