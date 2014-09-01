@@ -8,6 +8,7 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.event.oxygen.GCCoreOxygenSuffocationEvent;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
@@ -97,6 +98,15 @@ public class GCPlayerHandler
 			GCPlayerStats.register((EntityPlayerMP) event.entity);
 		}
 
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        {
+            this.onEntityConstructingClient(event);
+        }
+	}
+
+    @SideOnly(Side.CLIENT)
+	public void onEntityConstructingClient(EntityEvent.EntityConstructing event)
+	{
         if (event.entity instanceof EntityClientPlayerMP && GCPlayerStatsClient.get((EntityClientPlayerMP) event.entity) == null)
         {
             GCPlayerStatsClient.register((EntityClientPlayerMP) event.entity);
