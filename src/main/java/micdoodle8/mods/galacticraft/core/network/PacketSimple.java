@@ -209,6 +209,8 @@ public class PacketSimple extends Packet implements IPacket
 			{
 				this.data = NetworkUtil.decodeData(this.type.getDecodeClasses(), buffer);
 			}
+			if (buffer.readableBytes() > 0)
+				GCLog.severe("Galacticraft packet length problem for packet type "+this.type.toString());
 		}
 		catch (Exception e)
 		{
