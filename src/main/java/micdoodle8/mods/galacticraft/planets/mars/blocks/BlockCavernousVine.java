@@ -41,6 +41,7 @@ public class BlockCavernousVine extends Block implements IShearable, ItemBlockDe
 		super(Material.vine);
 		this.setLightLevel(1.0F);
 		this.setTickRandomly(true);
+		this.setStepSound(soundTypeGrass);
 	}
 
 	@Override
