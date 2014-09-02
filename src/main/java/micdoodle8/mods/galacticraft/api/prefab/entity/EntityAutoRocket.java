@@ -51,7 +51,7 @@ import java.util.List;
  */
 public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IDockable, IInventory, IPacketReceiver
 {
-	public FluidTank fuelTank = new FluidTank(this.getFuelTankCapacity());
+	public FluidTank fuelTank = new FluidTank(this.getFuelTankCapacity() * ConfigManagerCore.rocketFuelFactor);
 	public int destinationFrequency = -1;
 	public BlockVec3 targetVec;
 	public int targetDimension;
@@ -313,7 +313,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 			return 0;
 		}
 
-		return this.fuelTank.getFluidAmount() * scale / this.getFuelTankCapacity();
+		return this.fuelTank.getFluidAmount() * scale / this.getFuelTankCapacity() / ConfigManagerCore.rocketFuelFactor;
 	}
 
 	@Override
@@ -861,7 +861,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	@Override
 	public FluidStack removeFuel(int amount)
 	{
-		return this.fuelTank.drain(amount, true);
+		return this.fuelTank.drain(amount * ConfigManagerCore.rocketFuelFactor, true);
 	}
 
 	@Override

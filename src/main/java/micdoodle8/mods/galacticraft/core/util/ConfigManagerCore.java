@@ -88,6 +88,7 @@ public class ConfigManagerCore
 	public static boolean enableSealerEdgeChecks;
 	public static boolean alternateCanisterRecipe;
 	public static boolean disableRocketsToOverworld;
+	public static int rocketFuelFactor;
 
 	public static void initialize(File file)
 	{
@@ -179,6 +180,7 @@ public class ConfigManagerCore
             ConfigManagerCore.enableSealerMultithreading = false; // Temporarily override config value due to non-functional multithreading
             ConfigManagerCore.enableSealerEdgeChecks = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Enable Sealed edge checks", true, "If this is enabled, areas sealed by Oxygen Sealers will run a seal check when the player breaks or places a block (or on block updates).  This should be enabled for a 100% accurate sealed status, but can be disabled on servers for performance reasons.").getBoolean(true);
             ConfigManagerCore.alternateCanisterRecipe = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Alternate recipe for canisters", false, "Enable this if the standard canister recipe causes a conflict.").getBoolean(false);
+            ConfigManagerCore.rocketFuelFactor = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Rocket fuel factor", 1, "The normal factor is 1.  Increase this to 2 - 5 if other mods with a lot of oil (e.g. BuildCraft) are installed to increase GC rocket fuel requirement.").getInt(1);
         }
         catch (final Exception e)
         {
