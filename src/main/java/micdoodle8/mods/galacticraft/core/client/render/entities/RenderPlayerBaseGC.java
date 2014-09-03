@@ -77,12 +77,12 @@ public class RenderPlayerBaseGC extends RenderPlayerBase
                         modelBiped.onGround = this.renderPlayer.modelBipedMain.onGround;
                         modelBiped.isRiding = this.renderPlayer.modelBipedMain.isRiding;
                         modelBiped.isChild = this.renderPlayer.modelBipedMain.isChild;
-                        if (this.renderPlayer.modelBipedMain instanceof ModelBiped)
+                        if (this.renderPlayer.modelBipedMain != null)
                         {
-                            modelBiped.heldItemLeft = ((ModelBiped) this.renderPlayer.modelBipedMain).heldItemLeft;
-                            modelBiped.heldItemRight = ((ModelBiped) this.renderPlayer.modelBipedMain).heldItemRight;
-                            modelBiped.isSneak = ((ModelBiped) this.renderPlayer.modelBipedMain).isSneak;
-                            modelBiped.aimedBow = ((ModelBiped) this.renderPlayer.modelBipedMain).aimedBow;
+                            modelBiped.heldItemLeft = this.renderPlayer.modelBipedMain.heldItemLeft;
+                            modelBiped.heldItemRight = this.renderPlayer.modelBipedMain.heldItemRight;
+                            modelBiped.isSneak = this.renderPlayer.modelBipedMain.isSneak;
+                            modelBiped.aimedBow = this.renderPlayer.modelBipedMain.aimedBow;
                         }
                         modelBiped.setLivingAnimations(par1EntityLivingBase, par2, par3, 0.0F);
                         modelBiped.render(par1EntityLivingBase, par2, par3, par4, par5, par6, par7);

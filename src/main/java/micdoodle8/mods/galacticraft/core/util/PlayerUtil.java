@@ -25,7 +25,7 @@ public class PlayerUtil
         {
             if (ignoreCase)
             {
-                return (EntityPlayerMP) getPlayerForUsernameVanilla(server, username);
+                return getPlayerForUsernameVanilla(server, username);
             }
             else
             {
@@ -70,7 +70,7 @@ public class PlayerUtil
     @SideOnly(Side.CLIENT)
     public static EntityClientPlayerMP getPlayerBaseClientFromPlayer(EntityPlayer player, boolean ignoreCase)
     {
-        EntityClientPlayerMP clientPlayer = (EntityClientPlayerMP) FMLClientHandler.instance().getClientPlayerEntity();
+        EntityClientPlayerMP clientPlayer = FMLClientHandler.instance().getClientPlayerEntity();
 
         if (clientPlayer == null && player != null)
         {

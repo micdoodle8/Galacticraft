@@ -31,7 +31,7 @@ public class TeleportTypeAsteroids implements ITeleportType
     @Override
     public Vector3 getPlayerSpawnLocation(WorldServer world, EntityPlayerMP player)
     {
-        if (player instanceof EntityPlayerMP)
+        if (player != null)
         {
             GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(player);
             int x = MathHelper.floor_double(stats.coordsTeleportedFromX);
@@ -104,8 +104,8 @@ public class TeleportTypeAsteroids implements ITeleportType
             return new Vector3(x, 310, z);
         }
 
-        FMLLog.severe("Failed to cast player to EntityPlayerMP!");
-        return new Vector3(player.posX, 310, player.posZ);
+        FMLLog.severe("Null player when teleporting to Asteroids!");
+        return new Vector3(0, 310, 0);
     }
 
     private boolean goodAsteroidEntry(World world, int x, int yorig, int z)
@@ -288,18 +288,16 @@ public class TeleportTypeAsteroids implements ITeleportType
     public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player, boolean ridingAutoRocket)
     {
         GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(player);
-        if (!ridingAutoRocket && player instanceof EntityPlayerMP && stats.teleportCooldown <= 0)
+        if (!ridingAutoRocket && player != null && stats.teleportCooldown <= 0)
         {
-            EntityPlayerMP gcPlayer = (EntityPlayerMP) player;
-
-            if (gcPlayer.capabilities.isFlying)
+            if (player.capabilities.isFlying)
             {
-                gcPlayer.capabilities.isFlying = false;
+                player.capabilities.isFlying = false;
             }
 
             if (!newWorld.isRemote)
             {
-                EntityEntryPod entryPod = new EntityEntryPod(gcPlayer);
+                EntityEntryPod entryPod = new EntityEntryPod(player);
 
                 newWorld.spawnEntityInWorld(entryPod);
             }

@@ -50,14 +50,12 @@ public class TeleportTypeMars implements ITeleportType
     {
         if (!ridingAutoRocket && player != null && GCEntityPlayerMP.getPlayerStats(player).teleportCooldown <= 0)
         {
-            final EntityPlayerMP gcPlayer = (EntityPlayerMP) player;
-
-            if (gcPlayer.capabilities.isFlying)
+            if (player.capabilities.isFlying)
             {
-                gcPlayer.capabilities.isFlying = false;
+                player.capabilities.isFlying = false;
             }
 
-            EntityLandingBalloons lander = new EntityLandingBalloons(gcPlayer);
+            EntityLandingBalloons lander = new EntityLandingBalloons(player);
 
             if (!newWorld.isRemote)
             {
