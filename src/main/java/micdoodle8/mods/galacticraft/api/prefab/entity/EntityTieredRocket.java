@@ -33,9 +33,7 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map.Entry;
 
 /**
  * Do not include this prefab class in your released mod download.
@@ -376,21 +374,8 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             {
                 EntityPlayerMP player = (EntityPlayerMP) this.riddenByEntity;
 
-                HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(this.getRocketTier()), player);
-
-                String temp = "";
-                int count = 0;
-
-                for (Entry<String, Integer> entry : map.entrySet())
-                {
-                    temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "?" : ""));
-                    count++;
-                }
-
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { player.getGameProfile().getName(), temp }), player);
                 GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(player);
-                stats.spaceshipTier = this.getRocketTier();
-                stats.usingPlanetSelectionGui = true;
+                WorldUtil.toCelestialSelection(player, stats, this.getRocketTier());
 
                 this.onTeleport(player);
                 player.mountEntity(this);

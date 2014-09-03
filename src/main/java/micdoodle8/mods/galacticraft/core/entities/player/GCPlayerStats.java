@@ -78,7 +78,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
     public int spaceRaceInviteTeamID;
 
     public boolean usingPlanetSelectionGui;
-
+    public String savedPlanetList = "";
     public int openPlanetSelectionGuiCooldown;
     public boolean hasOpenedPlanetSelectionGui = false;
 

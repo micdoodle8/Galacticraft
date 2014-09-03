@@ -1,12 +1,9 @@
 package micdoodle8.mods.galacticraft.core.command;
 
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.VersionUtil;
@@ -17,9 +14,6 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-
-import java.util.HashMap;
-import java.util.Map.Entry;
 
 public class CommandPlanetTeleport extends CommandBase
 {
@@ -61,21 +55,7 @@ public class CommandPlanetTeleport extends CommandBase
                     stats.rocketItem = GCItems.rocketTier1;
                     stats.fuelLevel = 1000;
 
-                    HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(Integer.MAX_VALUE), playerBase);
-
-                    String temp = "";
-                    int count = 0;
-
-                    for (Entry<String, Integer> entry : map.entrySet())
-                    {
-                        temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "?" : ""));
-                        count++;
-                    }
-
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { playerBase.getGameProfile().getName(), temp }), playerBase);
-                    stats.spaceshipTier = Integer.MAX_VALUE;
-                    stats.usingPlanetSelectionGui = true;
-                    playerBase.mountEntity(null);
+                    WorldUtil.toCelestialSelection(playerBase, stats, Integer.MAX_VALUE);
 
                     VersionUtil.notifyAdmins(icommandsender, this, "commands.dimensionteleport", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getCommandSenderName()), "]" });
                 }

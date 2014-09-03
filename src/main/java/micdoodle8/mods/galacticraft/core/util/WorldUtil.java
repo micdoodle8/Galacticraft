@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import com.google.common.collect.Lists;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -49,6 +50,7 @@ import net.minecraftforge.common.DimensionManager;
 
 import java.io.File;
 import java.util.*;
+import java.util.Map.Entry;
 
 public class WorldUtil
 {
@@ -839,4 +841,22 @@ public class WorldUtil
         GameRegistry.generateWorld(chunkX, chunkZ, world, chunkGenerator, chunkProvider);
     }
 
+    public static void toCelestialSelection(EntityPlayerMP player, GCPlayerStats stats, int tier)
+    {
+        stats.spaceshipTier = tier;
+
+        HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(tier), player);
+        String dimensionList = "";
+        int count = 0;
+        for (Entry<String, Integer> entry : map.entrySet())
+        {
+        	dimensionList = dimensionList.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "?" : ""));
+            count++;
+        }
+
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { player.getGameProfile().getName(), dimensionList }), player);
+        stats.usingPlanetSelectionGui = true;
+        stats.savedPlanetList = new String(dimensionList);
+        player.mountEntity(null);
+    }
 }
