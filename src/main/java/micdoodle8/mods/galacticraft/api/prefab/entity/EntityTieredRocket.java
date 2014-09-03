@@ -374,11 +374,9 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             {
                 EntityPlayerMP player = (EntityPlayerMP) this.riddenByEntity;
 
+                this.onTeleport(player);
                 GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(player);
                 WorldUtil.toCelestialSelection(player, stats, this.getRocketTier());
-
-                this.onTeleport(player);
-                player.mountEntity(this);
 
                 if (!this.isDead)
                 {
