@@ -2,7 +2,7 @@
 def mcVersion = "1.7"
 def versionMajor = 3
 def versionMinor = 0
-def versionRev = 1
+def versionRev = 2
 
 buildscript {
     repositories {
@@ -68,7 +68,6 @@ ext.planetsFiles = ['micdoodle8/mods/galacticraft/planets/**',
 // Keep a list of coremod files/directories for easy jar packing
 ext.micdoodleCoreFiles = ['**/micdoodlecore_at.cfg',
 					'micdoodle8/mods/miccore/**']
-
 
 ext.coreJar = "build/libs/" + archivesBaseName + "-" + version + ".jar"
 
