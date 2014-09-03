@@ -9,45 +9,45 @@ import java.io.File;
 
 public class ConfigManagerMars
 {
-	public static boolean loaded;
+    public static boolean loaded;
 
-	static Configuration configuration;
+    static Configuration configuration;
 
-	public ConfigManagerMars(File file)
-	{
-		if (!ConfigManagerMars.loaded)
-		{
-			ConfigManagerMars.configuration = new Configuration(file);
-			this.setDefaultValues();
-		}
-	}
+    public ConfigManagerMars(File file)
+    {
+        if (!ConfigManagerMars.loaded)
+        {
+            ConfigManagerMars.configuration = new Configuration(file);
+            this.setDefaultValues();
+        }
+    }
 
-	// DIMENSIONS
-	public static int dimensionIDMars;
+    // DIMENSIONS
+    public static int dimensionIDMars;
 
-	// ENTITIES
-	public static int idEntityCreeperBoss;
-	public static int idEntityProjectileTNT;
-	public static int idEntitySpaceshipTier2;
-	public static int idEntitySludgeling;
-	public static int idEntitySlimeling;
-	public static int idEntityTerraformBubble;
-	public static int idEntityLandingBalloons;
-	public static int idEntityCargoRocket;
+    // ENTITIES
+    public static int idEntityCreeperBoss;
+    public static int idEntityProjectileTNT;
+    public static int idEntitySpaceshipTier2;
+    public static int idEntitySludgeling;
+    public static int idEntitySlimeling;
+    public static int idEntityTerraformBubble;
+    public static int idEntityLandingBalloons;
+    public static int idEntityCargoRocket;
 
-	// SCHEMATIC
-	public static int idSchematicRocketT2;
-	public static int idSchematicCargoRocket;
+    // SCHEMATIC
+    public static int idSchematicRocketT2;
+    public static int idSchematicCargoRocket;
 
-	// GENERAL
-	public static boolean generateOtherMods;
-	public static boolean launchControllerChunkLoad;
+    // GENERAL
+    public static boolean generateOtherMods;
+    public static boolean launchControllerChunkLoad;
 
-	private void setDefaultValues()
-	{
+    private void setDefaultValues()
+    {
         ConfigManagerMars.configuration.load();
         ConfigManagerMars.syncConfig();
-	}
+    }
 
     public static void syncConfig()
     {
@@ -77,7 +77,9 @@ public class ConfigManagerMars
         finally
         {
             if (ConfigManagerMars.configuration.hasChanged())
+            {
                 ConfigManagerMars.configuration.save();
+            }
             ConfigManagerMars.loaded = true;
         }
     }

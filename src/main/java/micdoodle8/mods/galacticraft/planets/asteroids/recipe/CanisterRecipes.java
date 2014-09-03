@@ -16,8 +16,8 @@ public class CanisterRecipes extends ShapelessRecipes
     {
         super(stack, list);
     }
-	
-	/**
+
+    /**
      * Used to check if a recipe matches current crafting inventory
      */
     public boolean matches(InventoryCrafting p_77569_1_, World p_77569_2_)
@@ -32,12 +32,12 @@ public class CanisterRecipes extends ShapelessRecipes
             if (itemstack1 != null)
             {
                 Item testItem = itemstack1.getItem();
-            	if (testItem instanceof ItemCanisterLiquidOxygen)
+                if (testItem instanceof ItemCanisterLiquidOxygen)
                 {
                     if (itemCanister != null)
                     {
                         //Two canisters
-                    	return false;
+                        return false;
                     }
 
                     itemCanister = itemstack1;
@@ -47,7 +47,7 @@ public class CanisterRecipes extends ShapelessRecipes
                     if (!(testItem instanceof ItemOxygenTank) || itemTank != null)
                     {
                         //Something other than an oxygen tank
-                    	return false;
+                        return false;
                     }
 
                     itemTank = itemstack1;
@@ -56,14 +56,23 @@ public class CanisterRecipes extends ShapelessRecipes
         }
 
         //Need one canister + one tank
-        if (itemCanister == null || itemTank == null) return false;
-        
+        if (itemCanister == null || itemTank == null)
+        {
+            return false;
+        }
+
         //Empty canister
-        if (itemCanister.getItemDamage() >= itemCanister.getMaxDamage()) return false;
-        
+        if (itemCanister.getItemDamage() >= itemCanister.getMaxDamage())
+        {
+            return false;
+        }
+
         //Full tank
-        if (itemTank.getItemDamage() <= 0) return false;
-        
+        if (itemTank.getItemDamage() <= 0)
+        {
+            return false;
+        }
+
         return true;
     }
 
@@ -72,7 +81,7 @@ public class CanisterRecipes extends ShapelessRecipes
      */
     public ItemStack getCraftingResult(InventoryCrafting inv)
     {
-    	ItemStack itemTank = null;
+        ItemStack itemTank = null;
         ItemStack itemCanister = null;
 
         for (int i = 0; i < inv.getSizeInventory(); ++i)
@@ -82,12 +91,12 @@ public class CanisterRecipes extends ShapelessRecipes
             if (itemstack1 != null)
             {
                 Item testItem = itemstack1.getItem();
-            	if (testItem instanceof ItemCanisterLiquidOxygen)
+                if (testItem instanceof ItemCanisterLiquidOxygen)
                 {
                     if (itemCanister != null)
                     {
                         //Two canisters
-                    	return null;
+                        return null;
                     }
 
                     itemCanister = itemstack1;
@@ -97,7 +106,7 @@ public class CanisterRecipes extends ShapelessRecipes
                     if (!(testItem instanceof ItemOxygenTank) || itemTank != null)
                     {
                         //Something other than an oxygen tank
-                    	return null;
+                        return null;
                     }
 
                     itemTank = itemstack1;
@@ -106,35 +115,44 @@ public class CanisterRecipes extends ShapelessRecipes
         }
 
         //Need one canister + one tank
-        if (itemCanister == null || itemTank == null) return null;
-        
+        if (itemCanister == null || itemTank == null)
+        {
+            return null;
+        }
+
         //Empty canister
-        if (itemCanister.getItemDamage() >= itemCanister.getMaxDamage()) return null;
-        
+        if (itemCanister.getItemDamage() >= itemCanister.getMaxDamage())
+        {
+            return null;
+        }
+
         //Full tank
-        if (itemTank.getItemDamage() <= 0) return null;
-        
+        if (itemTank.getItemDamage() <= 0)
+        {
+            return null;
+        }
+
         int oxygenAvail = itemCanister.getMaxDamage() - itemCanister.getItemDamage();
         int oxygenToFill = itemTank.getItemDamage() * 5 / 54;
-        
+
         if (oxygenAvail >= oxygenToFill)
         {
-        	ItemStack result = itemTank.copy();
-        	result.setItemDamage(0);
-        	ItemCanisterLiquidOxygen.saveDamage(itemCanister, itemCanister.getItemDamage() + oxygenToFill);
-        	return result;
+            ItemStack result = itemTank.copy();
+            result.setItemDamage(0);
+            ItemCanisterLiquidOxygen.saveDamage(itemCanister, itemCanister.getItemDamage() + oxygenToFill);
+            return result;
         }
-  
+
         int tankDamageNew = (oxygenToFill - oxygenAvail) * 54 / 5;
-    	ItemStack result = itemTank.copy();
-    	result.setItemDamage(tankDamageNew);
-    	ItemCanisterLiquidOxygen.saveDamage(itemCanister, itemCanister.getMaxDamage());
+        ItemStack result = itemTank.copy();
+        result.setItemDamage(tankDamageNew);
+        ItemCanisterLiquidOxygen.saveDamage(itemCanister, itemCanister.getMaxDamage());
         return result;
     }
 
-	@Override
-	public int getRecipeSize()
-	{
-		return 2;
-	}
+    @Override
+    public int getRecipeSize()
+    {
+        return 2;
+    }
 }

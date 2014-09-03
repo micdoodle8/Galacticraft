@@ -20,305 +20,307 @@ import java.util.EnumSet;
 
 public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource implements IInventory, ISidedInventory, IPacketReceiver, IConnector
 {
-	//New energy rates:
-	//
-	//Tier 1 machine typically consumes 600 gJ/s = 30 gJ/t
+    //New energy rates:
+    //
+    //Tier 1 machine typically consumes 600 gJ/s = 30 gJ/t
 
-	//Coal generator on max heat can power up to 4 Tier 1 machines
-	//(fewer if one of them is an Electric Furnace)
-	//Basic solar gen in full sun can power 1 Tier 1 machine
+    //Coal generator on max heat can power up to 4 Tier 1 machines
+    //(fewer if one of them is an Electric Furnace)
+    //Basic solar gen in full sun can power 1 Tier 1 machine
 
-	//1 lump of coal is equivalent to 38400 gJ
-	//because on max heat it produces 120 gJ/t over 320 ticks
-	
-	//Below the min_generate, all heat is wasted
-	//At max generate, 100% efficient conversion coal energy -> electric makes 120 gJ/t
-	public static final int MAX_GENERATE_GJ_PER_TICK = 150;
-	public static final int MIN_GENERATE_GJ_PER_TICK = 30;
+    //1 lump of coal is equivalent to 38400 gJ
+    //because on max heat it produces 120 gJ/t over 320 ticks
 
-	private static final float BASE_ACCELERATION = 0.3f;
+    //Below the min_generate, all heat is wasted
+    //At max generate, 100% efficient conversion coal energy -> electric makes 120 gJ/t
+    public static final int MAX_GENERATE_GJ_PER_TICK = 150;
+    public static final int MIN_GENERATE_GJ_PER_TICK = 30;
 
-	public float prevGenerateWatts = 0;
+    private static final float BASE_ACCELERATION = 0.3f;
 
-	@NetworkedField(targetSide = Side.CLIENT)
-	public float heatGJperTick = 0;
+    public float prevGenerateWatts = 0;
 
-	/**
-	 * The number of ticks that a fresh copy of the currently-burning item would
-	 * keep the furnace burning for
-	 */
-	@NetworkedField(targetSide = Side.CLIENT)
-	public int itemCookTime = 0;
-	/**
-	 * The ItemStacks that hold the items currently being used in the battery
-	 * box
-	 */
-	private ItemStack[] containingItems = new ItemStack[1];
+    @NetworkedField(targetSide = Side.CLIENT)
+    public float heatGJperTick = 0;
 
-	public TileEntityCoalGenerator()
-	{
-		this.storage.setMaxExtract(TileEntityCoalGenerator.MAX_GENERATE_GJ_PER_TICK - TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK);
-	}
+    /**
+     * The number of ticks that a fresh copy of the currently-burning item would
+     * keep the furnace burning for
+     */
+    @NetworkedField(targetSide = Side.CLIENT)
+    public int itemCookTime = 0;
+    /**
+     * The ItemStacks that hold the items currently being used in the battery
+     * box
+     */
+    private ItemStack[] containingItems = new ItemStack[1];
 
-	@Override
-	public void updateEntity()
-	{
-		if (this.heatGJperTick - TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK > 0)
-			this.receiveEnergyGC(null, (this.heatGJperTick - TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK), false);
+    public TileEntityCoalGenerator()
+    {
+        this.storage.setMaxExtract(TileEntityCoalGenerator.MAX_GENERATE_GJ_PER_TICK - TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK);
+    }
 
-		super.updateEntity();
+    @Override
+    public void updateEntity()
+    {
+        if (this.heatGJperTick - TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK > 0)
+        {
+            this.receiveEnergyGC(null, (this.heatGJperTick - TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK), false);
+        }
 
-		if (!this.worldObj.isRemote)
-		{
-			if (this.itemCookTime > 0)
-			{
-				this.itemCookTime--;
+        super.updateEntity();
 
-				if (this.getEnergyStoredGC() < this.getMaxEnergyStoredGC())
-				{
-					this.heatGJperTick = Math.min(this.heatGJperTick + Math.max(this.heatGJperTick * 0.005F, TileEntityCoalGenerator.BASE_ACCELERATION), TileEntityCoalGenerator.MAX_GENERATE_GJ_PER_TICK);
-				}
-			}
+        if (!this.worldObj.isRemote)
+        {
+            if (this.itemCookTime > 0)
+            {
+                this.itemCookTime--;
 
-			if (this.containingItems[0] != null)
-			{
-				if (this.containingItems[0].getItem() == Items.coal)
-				{
-					if (this.itemCookTime <= 0)
-					{
-						this.itemCookTime = 320;
-						this.decrStackSize(0, 1);
-					}
-				}
-			}
+                if (this.getEnergyStoredGC() < this.getMaxEnergyStoredGC())
+                {
+                    this.heatGJperTick = Math.min(this.heatGJperTick + Math.max(this.heatGJperTick * 0.005F, TileEntityCoalGenerator.BASE_ACCELERATION), TileEntityCoalGenerator.MAX_GENERATE_GJ_PER_TICK);
+                }
+            }
 
-			this.produce();
+            if (this.containingItems[0] != null)
+            {
+                if (this.containingItems[0].getItem() == Items.coal)
+                {
+                    if (this.itemCookTime <= 0)
+                    {
+                        this.itemCookTime = 320;
+                        this.decrStackSize(0, 1);
+                    }
+                }
+            }
 
-			if (this.itemCookTime <= 0)
-			{
-				this.heatGJperTick = Math.max(this.heatGJperTick - 0.3F, 0);
-			}
+            this.produce();
 
-			this.heatGJperTick = Math.min(Math.max(this.heatGJperTick, 0.0F), this.getMaxEnergyStoredGC());
-		}
-	}
+            if (this.itemCookTime <= 0)
+            {
+                this.heatGJperTick = Math.max(this.heatGJperTick - 0.3F, 0);
+            }
 
-	@Override
-	public void openInventory()
-	{
-	}
+            this.heatGJperTick = Math.min(Math.max(this.heatGJperTick, 0.0F), this.getMaxEnergyStoredGC());
+        }
+    }
 
-	@Override
-	public void closeInventory()
-	{
-	}
+    @Override
+    public void openInventory()
+    {
+    }
 
-	/**
-	 * Reads a tile entity from NBT.
-	 */
-	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
-	{
-		super.readFromNBT(par1NBTTagCompound);
-		this.itemCookTime = par1NBTTagCompound.getInteger("itemCookTime");
-		this.heatGJperTick = par1NBTTagCompound.getInteger("generateRateInt");
-		NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
-		this.containingItems = new ItemStack[this.getSizeInventory()];
+    @Override
+    public void closeInventory()
+    {
+    }
 
-		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
-		{
-			NBTTagCompound var4 = var2.getCompoundTagAt(var3);
-			byte var5 = var4.getByte("Slot");
+    /**
+     * Reads a tile entity from NBT.
+     */
+    @Override
+    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        super.readFromNBT(par1NBTTagCompound);
+        this.itemCookTime = par1NBTTagCompound.getInteger("itemCookTime");
+        this.heatGJperTick = par1NBTTagCompound.getInteger("generateRateInt");
+        NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
+        this.containingItems = new ItemStack[this.getSizeInventory()];
 
-			if (var5 >= 0 && var5 < this.containingItems.length)
-			{
-				this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
-			}
-		}
-	}
+        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+        {
+            NBTTagCompound var4 = var2.getCompoundTagAt(var3);
+            byte var5 = var4.getByte("Slot");
 
-	/**
-	 * Writes a tile entity to NBT.
-	 */
-	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
-	{
-		super.writeToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("itemCookTime", this.itemCookTime);
-		par1NBTTagCompound.setFloat("generateRate", this.heatGJperTick);
-		NBTTagList var2 = new NBTTagList();
+            if (var5 >= 0 && var5 < this.containingItems.length)
+            {
+                this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
+            }
+        }
+    }
 
-		for (int var3 = 0; var3 < this.containingItems.length; ++var3)
-		{
-			if (this.containingItems[var3] != null)
-			{
-				NBTTagCompound var4 = new NBTTagCompound();
-				var4.setByte("Slot", (byte) var3);
-				this.containingItems[var3].writeToNBT(var4);
-				var2.appendTag(var4);
-			}
-		}
+    /**
+     * Writes a tile entity to NBT.
+     */
+    @Override
+    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        super.writeToNBT(par1NBTTagCompound);
+        par1NBTTagCompound.setInteger("itemCookTime", this.itemCookTime);
+        par1NBTTagCompound.setFloat("generateRate", this.heatGJperTick);
+        NBTTagList var2 = new NBTTagList();
 
-		par1NBTTagCompound.setTag("Items", var2);
-	}
+        for (int var3 = 0; var3 < this.containingItems.length; ++var3)
+        {
+            if (this.containingItems[var3] != null)
+            {
+                NBTTagCompound var4 = new NBTTagCompound();
+                var4.setByte("Slot", (byte) var3);
+                this.containingItems[var3].writeToNBT(var4);
+                var2.appendTag(var4);
+            }
+        }
 
-	@Override
-	public int getSizeInventory()
-	{
-		return this.containingItems.length;
-	}
+        par1NBTTagCompound.setTag("Items", var2);
+    }
 
-	@Override
-	public ItemStack getStackInSlot(int par1)
-	{
-		return this.containingItems[par1];
-	}
+    @Override
+    public int getSizeInventory()
+    {
+        return this.containingItems.length;
+    }
 
-	@Override
-	public ItemStack decrStackSize(int par1, int par2)
-	{
-		if (this.containingItems[par1] != null)
-		{
-			ItemStack var3;
+    @Override
+    public ItemStack getStackInSlot(int par1)
+    {
+        return this.containingItems[par1];
+    }
 
-			if (this.containingItems[par1].stackSize <= par2)
-			{
-				var3 = this.containingItems[par1];
-				this.containingItems[par1] = null;
-				return var3;
-			}
-			else
-			{
-				var3 = this.containingItems[par1].splitStack(par2);
+    @Override
+    public ItemStack decrStackSize(int par1, int par2)
+    {
+        if (this.containingItems[par1] != null)
+        {
+            ItemStack var3;
 
-				if (this.containingItems[par1].stackSize == 0)
-				{
-					this.containingItems[par1] = null;
-				}
+            if (this.containingItems[par1].stackSize <= par2)
+            {
+                var3 = this.containingItems[par1];
+                this.containingItems[par1] = null;
+                return var3;
+            }
+            else
+            {
+                var3 = this.containingItems[par1].splitStack(par2);
 
-				return var3;
-			}
-		}
-		else
-		{
-			return null;
-		}
-	}
+                if (this.containingItems[par1].stackSize == 0)
+                {
+                    this.containingItems[par1] = null;
+                }
 
-	@Override
-	public ItemStack getStackInSlotOnClosing(int par1)
-	{
-		if (this.containingItems[par1] != null)
-		{
-			ItemStack var2 = this.containingItems[par1];
-			this.containingItems[par1] = null;
-			return var2;
-		}
-		else
-		{
-			return null;
-		}
-	}
+                return var3;
+            }
+        }
+        else
+        {
+            return null;
+        }
+    }
 
-	@Override
-	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
-	{
-		this.containingItems[par1] = par2ItemStack;
+    @Override
+    public ItemStack getStackInSlotOnClosing(int par1)
+    {
+        if (this.containingItems[par1] != null)
+        {
+            ItemStack var2 = this.containingItems[par1];
+            this.containingItems[par1] = null;
+            return var2;
+        }
+        else
+        {
+            return null;
+        }
+    }
 
-		if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
-		{
-			par2ItemStack.stackSize = this.getInventoryStackLimit();
-		}
-	}
+    @Override
+    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+    {
+        this.containingItems[par1] = par2ItemStack;
 
-	@Override
-	public String getInventoryName()
-	{
-		return GCCoreUtil.translate("tile.machine.0.name");
-	}
+        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
+        {
+            par2ItemStack.stackSize = this.getInventoryStackLimit();
+        }
+    }
 
-	@Override
-	public int getInventoryStackLimit()
-	{
-		return 64;
-	}
+    @Override
+    public String getInventoryName()
+    {
+        return GCCoreUtil.translate("tile.machine.0.name");
+    }
 
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
-	{
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
-	}
+    @Override
+    public int getInventoryStackLimit()
+    {
+        return 64;
+    }
 
-	@Override
-	public boolean hasCustomInventoryName()
-	{
-		return true;
-	}
+    @Override
+    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    {
+        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+    }
 
-	@Override
-	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
-	{
-		return itemstack.getItem() == Items.coal;
-	}
+    @Override
+    public boolean hasCustomInventoryName()
+    {
+        return true;
+    }
 
-	@Override
-	public int[] getAccessibleSlotsFromSide(int var1)
-	{
-		return new int[] { 0 };
-	}
+    @Override
+    public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
+    {
+        return itemstack.getItem() == Items.coal;
+    }
 
-	@Override
-	public boolean canInsertItem(int slotID, ItemStack itemstack, int j)
-	{
-		return this.isItemValidForSlot(slotID, itemstack);
-	}
+    @Override
+    public int[] getAccessibleSlotsFromSide(int var1)
+    {
+        return new int[] { 0 };
+    }
 
-	@Override
-	public boolean canExtractItem(int slotID, ItemStack itemstack, int j)
-	{
-		return slotID == 0;
-	}
+    @Override
+    public boolean canInsertItem(int slotID, ItemStack itemstack, int j)
+    {
+        return this.isItemValidForSlot(slotID, itemstack);
+    }
 
-	@Override
-	public float receiveElectricity(ForgeDirection from, float energy, int tier, boolean doReceive)
-	{
-		return 0;
-	}
+    @Override
+    public boolean canExtractItem(int slotID, ItemStack itemstack, int j)
+    {
+        return slotID == 0;
+    }
+
+    @Override
+    public float receiveElectricity(ForgeDirection from, float energy, int tier, boolean doReceive)
+    {
+        return 0;
+    }
 
 	/*
-	@Override
+    @Override
 	public float getRequest(ForgeDirection direction)
 	{
 		return 0;
 	}
 	*/
-	
-	@Override
-	public EnumSet<ForgeDirection> getElectricalInputDirections()
-	{
-		return EnumSet.noneOf(ForgeDirection.class);
-	}
 
-	@Override
-	public EnumSet<ForgeDirection> getElectricalOutputDirections()
-	{
-		return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() + 2));
-	}
+    @Override
+    public EnumSet<ForgeDirection> getElectricalInputDirections()
+    {
+        return EnumSet.noneOf(ForgeDirection.class);
+    }
 
-	@Override
-	public ForgeDirection getElectricalOutputDirectionMain()
-	{
-		return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
-	}
+    @Override
+    public EnumSet<ForgeDirection> getElectricalOutputDirections()
+    {
+        return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() + 2));
+    }
 
-	@Override
-	public boolean canConnect(ForgeDirection direction, NetworkType type)
-	{
-		if (direction == null || direction.equals(ForgeDirection.UNKNOWN) || type != NetworkType.POWER)
-		{
-			return false;
-		}
+    @Override
+    public ForgeDirection getElectricalOutputDirectionMain()
+    {
+        return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
+    }
 
-		return direction == this.getElectricalOutputDirectionMain();
-	}
+    @Override
+    public boolean canConnect(ForgeDirection direction, NetworkType type)
+    {
+        if (direction == null || direction.equals(ForgeDirection.UNKNOWN) || type != NetworkType.POWER)
+        {
+            return false;
+        }
+
+        return direction == this.getElectricalOutputDirectionMain();
+    }
 }

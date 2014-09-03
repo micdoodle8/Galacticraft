@@ -51,12 +51,12 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     public static final int TELEPORTER_RANGE = 256;
     public static final int ENERGY_USE_ON_TELEPORT = 2500;
 
-	@NetworkedField(targetSide = Side.CLIENT)
-	public int address = -1;
+    @NetworkedField(targetSide = Side.CLIENT)
+    public int address = -1;
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean addressValid = false;
-	@NetworkedField(targetSide = Side.CLIENT)
-	public int targetAddress = -1;
+    @NetworkedField(targetSide = Side.CLIENT)
+    public int targetAddress = -1;
     public EnumTelepadSearchResult targetAddressResult = EnumTelepadSearchResult.NOT_FOUND;
     @NetworkedField(targetSide = Side.CLIENT)
     public int teleportTime = 0;
@@ -96,8 +96,8 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     }
 
     @Override
-	public void updateEntity()
-	{
+    public void updateEntity()
+    {
         if (this.ticks % 40 == 0 && !worldObj.isRemote)
         {
             this.setAddress(this.address);
@@ -132,7 +132,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                 if (teleportTime >= MAX_TELEPORT_TIME)
                 {
                     ShortRangeTelepadHandler.TelepadEntry entry = ShortRangeTelepadHandler.getLocationFromAddress(this.targetAddress);
-                    
+
                     BlockVec3 finalPos = (entry == null) ? null : entry.position;
 
                     if (finalPos != null)
@@ -207,9 +207,9 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         super.updateEntity();
     }
 
-	@Override
-	public void readFromNBT(NBTTagCompound nbt)
-	{
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
         super.readFromNBT(nbt);
         NBTTagList var2 = nbt.getTagList("Items", 10);
         this.containingItems = new ItemStack[this.getSizeInventory()];
@@ -225,15 +225,15 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
             }
         }
 
-		this.setAddress(nbt.getInteger("Address"));
-		this.targetAddress = nbt.getInteger("TargetAddress");
-        this.owner  = nbt.getString("Owner");
-	}
+        this.setAddress(nbt.getInteger("Address"));
+        this.targetAddress = nbt.getInteger("TargetAddress");
+        this.owner = nbt.getString("Owner");
+    }
 
-	@Override
-	public void writeToNBT(NBTTagCompound nbt)
-	{
-		super.writeToNBT(nbt);
+    @Override
+    public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
         NBTTagList var2 = new NBTTagList();
 
         for (int var3 = 0; var3 < this.containingItems.length; ++var3)
@@ -249,8 +249,8 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
 
         nbt.setTag("Items", var2);
 
-		nbt.setInteger("TargetAddress", this.targetAddress);
-		nbt.setInteger("Address", this.address);
+        nbt.setInteger("TargetAddress", this.targetAddress);
+        nbt.setInteger("Address", this.address);
         nbt.setString("Owner", this.owner);
     }
 
@@ -268,22 +268,22 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         targetAddressResult = EnumTelepadSearchResult.values()[dataStream.readInt()];
     }
 
-	@Override
-	public double getPacketRange()
-	{
-		return 24.0D;
-	}
+    @Override
+    public double getPacketRange()
+    {
+        return 24.0D;
+    }
 
-	@Override
-	public boolean onActivated(EntityPlayer entityPlayer)
-	{
+    @Override
+    public boolean onActivated(EntityPlayer entityPlayer)
+    {
         entityPlayer.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_ASTEROIDS, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	public void onCreate(BlockVec3 placedPosition)
-	{
+    @Override
+    public void onCreate(BlockVec3 placedPosition)
+    {
         for (int y = 0; y < 3; y += 2)
         {
             for (int x = -1; x <= 1; x++)
@@ -299,11 +299,11 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                 }
             }
         }
-	}
+    }
 
-	@Override
-	public void onDestroy(TileEntity callingBlock)
-	{
+    @Override
+    public void onDestroy(TileEntity callingBlock)
+    {
         for (int y = 0; y < 3; y += 2)
         {
             for (int x = -1; x <= 1; x++)
@@ -314,17 +314,18 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                 }
             }
         }
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public AxisAlignedBB getRenderBoundingBox()
-	{
-		return TileEntity.INFINITE_EXTENT_AABB;
-	}
+    }
 
     @Override
-    public String getInventoryName() {
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return TileEntity.INFINITE_EXTENT_AABB;
+    }
+
+    @Override
+    public String getInventoryName()
+    {
         return GCCoreUtil.translate("container.shortRangeTelepad.name");
     }
 
@@ -401,12 +402,12 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         {
             switch (index)
             {
-                case 0:
-                    this.disabled = disabled;
-                    this.disableCooldown = 10;
-                    break;
-                default:
-                    break;
+            case 0:
+                this.disabled = disabled;
+                this.disableCooldown = 10;
+                break;
+            default:
+                break;
             }
         }
     }
@@ -416,10 +417,10 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     {
         switch (index)
         {
-            case 0:
-                return this.disabled;
-            default:
-                break;
+        case 0:
+            return this.disabled;
+        default:
+            break;
         }
 
         return true;
@@ -471,11 +472,14 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                 }
                 else
                 {
-                    if (this != tile2) {
-                        if (tile2 instanceof TileEntityShortRangeTelepad) {
+                    if (this != tile2)
+                    {
+                        if (tile2 instanceof TileEntityShortRangeTelepad)
+                        {
                             TileEntityShortRangeTelepad launchController2 = (TileEntityShortRangeTelepad) tile2;
 
-                            if (launchController2.address == this.targetAddress && launchController2.addressValid) {
+                            if (launchController2.address == this.targetAddress && launchController2.addressValid)
+                            {
                                 foundTelepad = launchController2;
                             }
                         }
@@ -526,12 +530,14 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     }
 
     @Override
-    public void openInventory() {
+    public void openInventory()
+    {
 
     }
 
     @Override
-    public void closeInventory() {
+    public void closeInventory()
+    {
 
     }
 
@@ -684,7 +690,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     @SideOnly(Side.CLIENT)
     public Vector3 getParticleColor(Random rand, boolean sending)
     {
-        float teleportTimeScaled = Math.min(1.0F, this.teleportTime / (float)TileEntityShortRangeTelepad.MAX_TELEPORT_TIME);
+        float teleportTimeScaled = Math.min(1.0F, this.teleportTime / (float) TileEntityShortRangeTelepad.MAX_TELEPORT_TIME);
         float f;
         f = rand.nextFloat() * 0.6F + 0.4F;
 

@@ -12,42 +12,42 @@ import net.minecraft.util.IIcon;
 
 public class ItemBlockTintedGlassPane extends ItemBlock
 {
-	public ItemBlockTintedGlassPane(Block block)
-	{
-		super(block);
-		this.setMaxDamage(0);
-		this.setHasSubtypes(true);
-	}
+    public ItemBlockTintedGlassPane(Block block)
+    {
+        super(block);
+        this.setMaxDamage(0);
+        this.setHasSubtypes(true);
+    }
 
-	@Override
-	public int getMetadata(int damage)
-	{
-		return damage;
-	}
+    @Override
+    public int getMetadata(int damage)
+    {
+        return damage;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public IIcon getIconFromDamage(int par1)
-	{
-		return this.field_150939_a.getIcon(0, par1);
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIconFromDamage(int par1)
+    {
+        return this.field_150939_a.getIcon(0, par1);
+    }
 
-	@Override
-	public String getUnlocalizedName(ItemStack itemstack)
-	{
-		return this.field_150939_a.getUnlocalizedName() + "." + ItemDye.field_150921_b[~itemstack.getItemDamage() & 15];
-	}
+    @Override
+    public String getUnlocalizedName(ItemStack itemstack)
+    {
+        return this.field_150939_a.getUnlocalizedName() + "." + ItemDye.field_150921_b[~itemstack.getItemDamage() & 15];
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack)
-	{
-		return ClientProxyCore.galacticraftItem;
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
 
-	@Override
-	public String getUnlocalizedName()
-	{
-		return this.field_150939_a.getUnlocalizedName() + ".0";
-	}
+    @Override
+    public String getUnlocalizedName()
+    {
+        return this.field_150939_a.getUnlocalizedName() + ".0";
+    }
 }

@@ -16,76 +16,76 @@ import java.util.List;
 
 public class ItemOilCanister extends ItemCanisterGeneric
 {
-	protected IIcon[] icons = new IIcon[7];
+    protected IIcon[] icons = new IIcon[7];
 
-	public ItemOilCanister(String assetName)
-	{
-		super(assetName);
-		this.setContainerItem(this);
-		this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
-	}
+    public ItemOilCanister(String assetName)
+    {
+        super(assetName);
+        this.setContainerItem(this);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+    }
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-	{
-		par3List.add(new ItemStack(par1, 1, 1));
-		par3List.add(new ItemStack(par1, 1, this.getMaxDamage()));
-	}
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    {
+        par3List.add(new ItemStack(par1, 1, 1));
+        par3List.add(new ItemStack(par1, 1, this.getMaxDamage()));
+    }
 
-	@Override
-	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5)
-	{
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister iconRegister)
-	{
-		for (int i = 0; i < this.icons.length; i++)
-		{
-			this.icons[i] = iconRegister.registerIcon(this.getIconString() + "_" + i);
-		}
-	}
+    @Override
+    public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5)
+    {
+    }
 
-	@Override
-	public String getUnlocalizedName(ItemStack itemStack)
-	{
-		if (itemStack.getMaxDamage() - itemStack.getItemDamage() == 0)
-		{
-			return "item.emptyLiquidCanister";
-		}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister iconRegister)
+    {
+        for (int i = 0; i < this.icons.length; i++)
+        {
+            this.icons[i] = iconRegister.registerIcon(this.getIconString() + "_" + i);
+        }
+    }
 
-		if (itemStack.getItemDamage() == 1)
-		{
-			return "item.oilCanister";
-		}
+    @Override
+    public String getUnlocalizedName(ItemStack itemStack)
+    {
+        if (itemStack.getMaxDamage() - itemStack.getItemDamage() == 0)
+        {
+            return "item.emptyLiquidCanister";
+        }
 
-		return "item.oilCanisterPartial";
-	}
+        if (itemStack.getItemDamage() == 1)
+        {
+            return "item.oilCanister";
+        }
 
-	@Override
-	public IIcon getIconFromDamage(int par1)
-	{
-		final int damage = 6 * par1 / this.getMaxDamage();
+        return "item.oilCanisterPartial";
+    }
 
-		if (this.icons.length > damage)
-		{
-			return this.icons[this.icons.length - damage - 1];
-		}
+    @Override
+    public IIcon getIconFromDamage(int par1)
+    {
+        final int damage = 6 * par1 / this.getMaxDamage();
 
-		return super.getIconFromDamage(damage);
-	}
+        if (this.icons.length > damage)
+        {
+            return this.icons[this.icons.length - damage - 1];
+        }
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
-	{
-		if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() > 0)
-		{
-			par3List.add("Oil: " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
-		}
-	}
+        return super.getIconFromDamage(damage);
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+    {
+        if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() > 0)
+        {
+            par3List.add("Oil: " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
+        }
+    }
 }

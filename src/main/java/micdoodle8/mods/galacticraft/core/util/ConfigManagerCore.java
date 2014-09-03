@@ -17,89 +17,89 @@ import java.util.List;
 
 public class ConfigManagerCore
 {
-	public static boolean loaded;
+    public static boolean loaded;
 
-	static Configuration configuration;
+    static Configuration configuration;
 
-	public static int idDimensionOverworldOrbit;
-	public static int idDimensionOverworldOrbitStatic;
-	public static int idDimensionMoon;
+    public static int idDimensionOverworldOrbit;
+    public static int idDimensionOverworldOrbitStatic;
+    public static int idDimensionMoon;
 
-	// SCHEMATICS
-	public static int idSchematicRocketT1;
-	public static int idSchematicMoonBuggy;
-	public static int idSchematicAddSchematic;
+    // SCHEMATICS
+    public static int idSchematicRocketT1;
+    public static int idSchematicMoonBuggy;
+    public static int idSchematicAddSchematic;
 
-	// ACHIEVEMENTS
-	public static int idAchievBase;
+    // ACHIEVEMENTS
+    public static int idAchievBase;
 
-	public static int idEntityEvolvedSpider;
-	public static int idEntityEvolvedCreeper;
-	public static int idEntityEvolvedZombie;
-	public static int idEntityEvolvedSkeleton;
-	public static int idEntityEvolvedSkeletonBoss;
-	public static int idEntitySpaceship;
-	public static int idEntityAntiGravityArrow;
-	public static int idEntityMeteor;
-	public static int idEntityBuggy;
-	public static int idEntityFlag;
-	public static int idEntityAstroOrb;
-	public static int idEntityParaChest;
-	public static int idEntityAlienVillager;
-	public static int idEntityOxygenBubble;
-	public static int idEntityLander;
-	public static int idEntityLanderChest;
-	public static int idEntityMeteorChunk;
+    public static int idEntityEvolvedSpider;
+    public static int idEntityEvolvedCreeper;
+    public static int idEntityEvolvedZombie;
+    public static int idEntityEvolvedSkeleton;
+    public static int idEntityEvolvedSkeletonBoss;
+    public static int idEntitySpaceship;
+    public static int idEntityAntiGravityArrow;
+    public static int idEntityMeteor;
+    public static int idEntityBuggy;
+    public static int idEntityFlag;
+    public static int idEntityAstroOrb;
+    public static int idEntityParaChest;
+    public static int idEntityAlienVillager;
+    public static int idEntityOxygenBubble;
+    public static int idEntityLander;
+    public static int idEntityLanderChest;
+    public static int idEntityMeteorChunk;
 
-	// GENERAL
-	public static boolean moreStars;
-	public static boolean wasdMapMovement;
-	public static String[] sealableIDs;
-	public static String[] detectableIDs;
-	public static boolean disableSpaceshipParticles;
-	public static boolean disableSpaceshipGrief;
-	public static boolean oxygenIndicatorLeft;
-	public static boolean oxygenIndicatorBottom;
-	public static double oilGenFactor;
-	public static boolean disableLeafDecay;
-	public static boolean spaceStationsRequirePermission;
-	public static boolean disableSpaceStationCreation;
-	public static boolean overrideCapes;
-	public static double spaceStationEnergyScalar;
-	public static boolean disableLander;
-	public static double dungeonBossHealthMod;
-	public static int suffocationCooldown;
-	public static int suffocationDamage;
-	public static int[] externalOilGen;
-	public static boolean forceOverworldRespawn;
-	public static boolean enableDebug;
-	public static boolean enableCopperOreGen;
-	public static boolean enableTinOreGen;
-	public static boolean enableAluminumOreGen;
-	public static boolean enableSiliconOreGen;
-	public static int[] staticLoadDimensions = {};
-	public static int[] disableRocketLaunchDimensions = { -1, 1 };
-	public static boolean disableCheeseMoon;
-	public static boolean disableTinMoon;
-	public static boolean disableCopperMoon;
-	public static boolean disableMoonVillageGen;
-	public static boolean enableOtherModsFeatures;
-	public static boolean enableSealerMultithreading;
-	public static boolean enableSealerEdgeChecks;
-	public static boolean alternateCanisterRecipe;
-	public static boolean disableRocketsToOverworld;
-	public static int rocketFuelFactor;
+    // GENERAL
+    public static boolean moreStars;
+    public static boolean wasdMapMovement;
+    public static String[] sealableIDs;
+    public static String[] detectableIDs;
+    public static boolean disableSpaceshipParticles;
+    public static boolean disableSpaceshipGrief;
+    public static boolean oxygenIndicatorLeft;
+    public static boolean oxygenIndicatorBottom;
+    public static double oilGenFactor;
+    public static boolean disableLeafDecay;
+    public static boolean spaceStationsRequirePermission;
+    public static boolean disableSpaceStationCreation;
+    public static boolean overrideCapes;
+    public static double spaceStationEnergyScalar;
+    public static boolean disableLander;
+    public static double dungeonBossHealthMod;
+    public static int suffocationCooldown;
+    public static int suffocationDamage;
+    public static int[] externalOilGen;
+    public static boolean forceOverworldRespawn;
+    public static boolean enableDebug;
+    public static boolean enableCopperOreGen;
+    public static boolean enableTinOreGen;
+    public static boolean enableAluminumOreGen;
+    public static boolean enableSiliconOreGen;
+    public static int[] staticLoadDimensions = { };
+    public static int[] disableRocketLaunchDimensions = { -1, 1 };
+    public static boolean disableCheeseMoon;
+    public static boolean disableTinMoon;
+    public static boolean disableCopperMoon;
+    public static boolean disableMoonVillageGen;
+    public static boolean enableOtherModsFeatures;
+    public static boolean enableSealerMultithreading;
+    public static boolean enableSealerEdgeChecks;
+    public static boolean alternateCanisterRecipe;
+    public static boolean disableRocketsToOverworld;
+    public static int rocketFuelFactor;
 
-	public static void initialize(File file)
-	{
-		if (!ConfigManagerCore.loaded)
-		{
-			ConfigManagerCore.configuration = new Configuration(file);
-		}
+    public static void initialize(File file)
+    {
+        if (!ConfigManagerCore.loaded)
+        {
+            ConfigManagerCore.configuration = new Configuration(file);
+        }
 
         ConfigManagerCore.configuration.load();
         ConfigManagerCore.syncConfig();
-	}
+    }
 
     public static void syncConfig()
     {
@@ -112,7 +112,7 @@ public class ConfigManagerCore
             ConfigManagerCore.disableRocketLaunchDimensions = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "Dimensions where rockets cannot launch", ConfigManagerCore.disableRocketLaunchDimensions, "IDs of magical or roofed dimensions where rockets should not launch - this should always include the Nether.").getIntList();
             ConfigManagerCore.disableRocketsToOverworld = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "Disable rockets from returning to Overworld", false, "If this is true on a server, rockets will not be able to reach the Overworld (only use this in special modpacks!)").getBoolean(false);
             ConfigManagerCore.forceOverworldRespawn = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Force Overworld Spawn", false, "By default, you will respawn on galacticraft dimensions if you die. If you set this to true, you will respawn back on earth.").getBoolean(false);
-            
+
             ConfigManagerCore.idSchematicRocketT1 = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_SCHEMATIC, "idSchematicRocketT1", 0).getInt(0);
             ConfigManagerCore.idSchematicMoonBuggy = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_SCHEMATIC, "idSchematicMoonBuggy", 1).getInt(1);
             ConfigManagerCore.idSchematicAddSchematic = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_SCHEMATIC, "idSchematicAddSchematic", Integer.MAX_VALUE).getInt(Integer.MAX_VALUE);
@@ -156,7 +156,7 @@ public class ConfigManagerCore
             ConfigManagerCore.disableCopperMoon = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Copper Ore Gen on Moon", false).getBoolean(false);
             ConfigManagerCore.disableMoonVillageGen = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Moon Village Gen", false).getBoolean(false);
             ConfigManagerCore.enableOtherModsFeatures = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Generate other mods features on planets", false, "If this is enabled, other mods' ores and all other features (eg. plants) can generate on the Moon and planets. Default: false").getBoolean(false);
-            
+
 //Debug
             ConfigManagerCore.enableDebug = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Enable Debug Messages", false, "If this is enabled, debug messages will appear in the console. This is useful for finding bugs in the mod.").getBoolean(false);
 
@@ -167,10 +167,13 @@ public class ConfigManagerCore
             ConfigManagerCore.disableSpaceStationCreation = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Space Station creation", false, "If set to true on a server, players will be completely unable to create space stations.").getBoolean(false);
             ConfigManagerCore.overrideCapes = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Override Capes", true, "By default, Galacticraft will override capes with the mod's donor cape. Set to false to disable.").getBoolean(true);
             ConfigManagerCore.spaceStationEnergyScalar = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Space Station Solar Energy Multiplier", 2.0, "Solar panels will work (default 2x) more effective on space stations.").getDouble(2.0);
-            try {
-            	ConfigManagerCore.sealableIDs = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "External Sealable IDs", new String[] { GameData.getBlockRegistry().getNameForObject(Blocks.glass_pane) + ":0" }, "List non-opaque blocks from other mods (for example, special types of glass) that the Oxygen Sealer should recognize as solid seals. Format is BlockName or BlockName:metadata").getStringList();
-            } catch (Exception e) {
-            	FMLLog.severe("[Galacticraft] It appears you have installed the 'Dev' version of Galacticraft instead of the regular version (or vice versa).  Please re-install.");
+            try
+            {
+                ConfigManagerCore.sealableIDs = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "External Sealable IDs", new String[] { GameData.getBlockRegistry().getNameForObject(Blocks.glass_pane) + ":0" }, "List non-opaque blocks from other mods (for example, special types of glass) that the Oxygen Sealer should recognize as solid seals. Format is BlockName or BlockName:metadata").getStringList();
+            }
+            catch (Exception e)
+            {
+                FMLLog.severe("[Galacticraft] It appears you have installed the 'Dev' version of Galacticraft instead of the regular version (or vice versa).  Please re-install.");
             }
             ConfigManagerCore.detectableIDs = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "External Detectable IDs", new String[] { GameData.getBlockRegistry().getNameForObject(Blocks.coal_ore), GameData.getBlockRegistry().getNameForObject(Blocks.diamond_ore), GameData.getBlockRegistry().getNameForObject(Blocks.gold_ore), GameData.getBlockRegistry().getNameForObject(Blocks.iron_ore), GameData.getBlockRegistry().getNameForObject(Blocks.lapis_ore), GameData.getBlockRegistry().getNameForObject(Blocks.redstone_ore), GameData.getBlockRegistry().getNameForObject(Blocks.lit_redstone_ore) }, "List blocks from other mods that the Sensor Glasses should recognize as solid blocks. Format is BlockName or BlockName:metadata").getStringList();
             ConfigManagerCore.dungeonBossHealthMod = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Dungeon Boss Health Modifier", 1.0D, "Change this is you wish to balance the mod (if you have more powerful weapon mods)").getDouble(1.0D);
@@ -197,79 +200,79 @@ public class ConfigManagerCore
         }
     }
 
-	public static boolean setLoaded(int newID)
-	{
-		boolean found = false;
+    public static boolean setLoaded(int newID)
+    {
+        boolean found = false;
 
-		for (int staticLoadDimension : ConfigManagerCore.staticLoadDimensions)
-		{
-			if (staticLoadDimension == newID)
-			{
-				found = true;
-				break;
-			}
-		}
+        for (int staticLoadDimension : ConfigManagerCore.staticLoadDimensions)
+        {
+            if (staticLoadDimension == newID)
+            {
+                found = true;
+                break;
+            }
+        }
 
-		if (!found)
-		{
-			int[] oldIDs = ConfigManagerCore.staticLoadDimensions;
-			ConfigManagerCore.staticLoadDimensions = new int[ConfigManagerCore.staticLoadDimensions.length + 1];
+        if (!found)
+        {
+            int[] oldIDs = ConfigManagerCore.staticLoadDimensions;
+            ConfigManagerCore.staticLoadDimensions = new int[ConfigManagerCore.staticLoadDimensions.length + 1];
             System.arraycopy(oldIDs, 0, staticLoadDimensions, 0, oldIDs.length);
 
-			ConfigManagerCore.staticLoadDimensions[ConfigManagerCore.staticLoadDimensions.length - 1] = newID;
-			String[] values = new String[ConfigManagerCore.staticLoadDimensions.length];
-			Arrays.sort(ConfigManagerCore.staticLoadDimensions);
+            ConfigManagerCore.staticLoadDimensions[ConfigManagerCore.staticLoadDimensions.length - 1] = newID;
+            String[] values = new String[ConfigManagerCore.staticLoadDimensions.length];
+            Arrays.sort(ConfigManagerCore.staticLoadDimensions);
 
-			for (int i = 0; i < values.length; i++)
-			{
-				values[i] = String.valueOf(ConfigManagerCore.staticLoadDimensions[i]);
-			}
+            for (int i = 0; i < values.length; i++)
+            {
+                values[i] = String.valueOf(ConfigManagerCore.staticLoadDimensions[i]);
+            }
 
-			ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "Static Loaded Dimensions", ConfigManagerCore.staticLoadDimensions, "IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded").set(values);
-			ConfigManagerCore.configuration.save();
-		}
+            ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "Static Loaded Dimensions", ConfigManagerCore.staticLoadDimensions, "IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded").set(values);
+            ConfigManagerCore.configuration.save();
+        }
 
-		return !found;
-	}
+        return !found;
+    }
 
-	public static boolean setUnloaded(int idToRemove)
-	{
-		int foundCount = 0;
+    public static boolean setUnloaded(int idToRemove)
+    {
+        int foundCount = 0;
 
-		for (int staticLoadDimension : ConfigManagerCore.staticLoadDimensions)
-		{
-			if (staticLoadDimension == idToRemove)
-			{
-				foundCount++;
-			}
-		}
+        for (int staticLoadDimension : ConfigManagerCore.staticLoadDimensions)
+        {
+            if (staticLoadDimension == idToRemove)
+            {
+                foundCount++;
+            }
+        }
 
-		if (foundCount > 0)
-		{
-			List<Integer> idArray = new ArrayList<Integer>(Ints.asList(ConfigManagerCore.staticLoadDimensions));
-			idArray.removeAll(Collections.singleton(idToRemove));
+        if (foundCount > 0)
+        {
+            List<Integer> idArray = new ArrayList<Integer>(Ints.asList(ConfigManagerCore.staticLoadDimensions));
+            idArray.removeAll(Collections.singleton(idToRemove));
 
-			ConfigManagerCore.staticLoadDimensions = new int[idArray.size()];
+            ConfigManagerCore.staticLoadDimensions = new int[idArray.size()];
 
-			for (int i = 0; i < idArray.size(); i++)
-			{
-				ConfigManagerCore.staticLoadDimensions[i] = idArray.get(i);
-			}
+            for (int i = 0; i < idArray.size(); i++)
+            {
+                ConfigManagerCore.staticLoadDimensions[i] = idArray.get(i);
+            }
 
-			String[] values = new String[ConfigManagerCore.staticLoadDimensions.length];
-			Arrays.sort(ConfigManagerCore.staticLoadDimensions);
+            String[] values = new String[ConfigManagerCore.staticLoadDimensions.length];
+            Arrays.sort(ConfigManagerCore.staticLoadDimensions);
 
-			for (int i = 0; i < values.length; i++)
-			{
-				values[i] = String.valueOf(ConfigManagerCore.staticLoadDimensions[i]);
-			}
+            for (int i = 0; i < values.length; i++)
+            {
+                values[i] = String.valueOf(ConfigManagerCore.staticLoadDimensions[i]);
+            }
 
-			ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "Static Loaded Dimensions", ConfigManagerCore.staticLoadDimensions, "IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded").set(values);
-			ConfigManagerCore.configuration.save();
-		}
+            ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "Static Loaded Dimensions", ConfigManagerCore.staticLoadDimensions, "IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded").set(values);
+            ConfigManagerCore.configuration.save();
+        }
 
-		return foundCount > 0;
-	}
+        return foundCount > 0;
+    }
 
     public static List<IConfigElement> getConfigElements()
     {

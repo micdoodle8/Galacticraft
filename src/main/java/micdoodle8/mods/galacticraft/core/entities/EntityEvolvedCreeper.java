@@ -20,21 +20,21 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
     private static final UUID babySpeedBoostUUID = UUID.fromString("ef67a435-32a4-4efd-b218-e7431438b109");
     private static final AttributeModifier babySpeedBoostModifier = new AttributeModifier(babySpeedBoostUUID, "Baby speed boost evolved creeper", 0.5D, 1);
 
-	public EntityEvolvedCreeper(World par1World)
-	{
-		super(par1World);
-		this.tasks.taskEntries.clear();
-		this.tasks.addTask(1, new EntityAISwimming(this));
-		this.tasks.addTask(2, new EntityAICreeperSwell(this));
-		this.tasks.addTask(3, new EntityAIAvoidEntity(this, EntityOcelot.class, 6.0F, 0.25F, 0.3F));
-		this.tasks.addTask(4, new EntityAIAttackOnCollide(this, 0.25F, false));
-		this.tasks.addTask(5, new EntityAIWander(this, 0.2F));
-		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(6, new EntityAILookIdle(this));
-		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
-		this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
+    public EntityEvolvedCreeper(World par1World)
+    {
+        super(par1World);
+        this.tasks.taskEntries.clear();
+        this.tasks.addTask(1, new EntityAISwimming(this));
+        this.tasks.addTask(2, new EntityAICreeperSwell(this));
+        this.tasks.addTask(3, new EntityAIAvoidEntity(this, EntityOcelot.class, 6.0F, 0.25F, 0.3F));
+        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, 0.25F, false));
+        this.tasks.addTask(5, new EntityAIWander(this, 0.2F));
+        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(6, new EntityAILookIdle(this));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+        this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
         this.setSize(0.6F, 1.8F);
-	}
+    }
 
     protected void entityInit()
     {
@@ -42,13 +42,13 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
         this.getDataWatcher().addObject(12, Byte.valueOf((byte) 0));
     }
 
-	@Override
-	protected void applyEntityAttributes()
-	{
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(25.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1.0F);
-	}
+    @Override
+    protected void applyEntityAttributes()
+    {
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(25.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1.0F);
+    }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt)
@@ -72,11 +72,11 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
         }
     }
 
-	@Override
-	public boolean canBreath()
-	{
-		return true;
-	}
+    @Override
+    public boolean canBreath()
+    {
+        return true;
+    }
 
     public void setChildSize(boolean isChild)
     {
@@ -110,7 +110,7 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
     {
         if (this.isChild())
         {
-            this.experienceValue = ( this.experienceValue * 5 ) / 2;
+            this.experienceValue = (this.experienceValue * 5) / 2;
         }
 
         return super.getExperiencePoints(p_70693_1_);
@@ -118,7 +118,7 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
 
     public void setChild(boolean isChild)
     {
-        this.getDataWatcher().updateObject(12, Byte.valueOf((byte)(isChild ? 1 : 0)));
+        this.getDataWatcher().updateObject(12, Byte.valueOf((byte) (isChild ? 1 : 0)));
 
         if (this.worldObj != null && !this.worldObj.isRemote)
         {

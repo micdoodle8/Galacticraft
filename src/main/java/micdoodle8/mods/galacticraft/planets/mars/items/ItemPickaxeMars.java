@@ -15,42 +15,42 @@ import java.util.List;
 
 public class ItemPickaxeMars extends ItemPickaxe
 {
-	public ItemPickaxeMars(ToolMaterial par2EnumToolMaterial)
-	{
-		super(par2EnumToolMaterial);
-	}
+    public ItemPickaxeMars(ToolMaterial par2EnumToolMaterial)
+    {
+        super(par2EnumToolMaterial);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack)
-	{
-		return ClientProxyCore.galacticraftItem;
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public CreativeTabs getCreativeTab()
-	{
-		return GalacticraftCore.galacticraftItemsTab;
-	}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftCore.galacticraftItemsTab;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IconRegister)
-	{
-		this.itemIcon = par1IconRegister.registerIcon(this.getUnlocalizedName().replace("item.", "galacticraftmars:"));
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister par1IconRegister)
+    {
+        this.itemIcon = par1IconRegister.registerIcon(this.getUnlocalizedName().replace("item.", "galacticraftmars:"));
+    }
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-	{
-		par3List.add(new ItemStack(par1, 1, 0));
-	}
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    {
+        par3List.add(new ItemStack(par1, 1, 0));
+    }
 
-	@Override
-	public int getMetadata(int par1)
-	{
-		return par1;
-	}
+    @Override
+    public int getMetadata(int par1)
+    {
+        return par1;
+    }
 }

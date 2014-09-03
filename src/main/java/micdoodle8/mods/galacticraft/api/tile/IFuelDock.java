@@ -7,9 +7,9 @@ import java.util.HashSet;
 
 public interface IFuelDock
 {
-	public HashSet<ILandingPadAttachable> getConnectedTiles();
+    public HashSet<ILandingPadAttachable> getConnectedTiles();
 
-	public boolean isBlockAttachable(IBlockAccess world, int x, int y, int z);
+    public boolean isBlockAttachable(IBlockAccess world, int x, int y, int z);
 
-	public IDockable getDockedEntity();
+    public IDockable getDockedEntity();
 }

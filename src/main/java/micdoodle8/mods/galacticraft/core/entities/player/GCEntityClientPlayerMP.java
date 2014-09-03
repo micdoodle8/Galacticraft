@@ -12,24 +12,24 @@ import net.minecraft.world.World;
 
 public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 {
-	public GCEntityClientPlayerMP(Minecraft minecraft, World world, Session session, NetHandlerPlayClient netHandler, StatFileWriter statFileWriter)
-	{
-		super(minecraft, world, session, netHandler, statFileWriter);
-	}
+    public GCEntityClientPlayerMP(Minecraft minecraft, World world, Session session, NetHandlerPlayClient netHandler, StatFileWriter statFileWriter)
+    {
+        super(minecraft, world, session, netHandler, statFileWriter);
+    }
 
     private IPlayerClient getClientHandler()
     {
         return ClientProxyCore.playerClientHandler;
     }
 
-	@Override
-	public void wakeUpPlayer(boolean par1, boolean par2, boolean par3)
-	{
-		if (!this.getClientHandler().wakeUpPlayer(this, par1, par2, par3))
+    @Override
+    public void wakeUpPlayer(boolean par1, boolean par2, boolean par3)
+    {
+        if (!this.getClientHandler().wakeUpPlayer(this, par1, par2, par3))
         {
             super.wakeUpPlayer(par1, par2, par3);
         }
-	}
+    }
 
     @Override
     public boolean isEntityInsideOpaqueBlock()
@@ -37,34 +37,34 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
         return this.getClientHandler().isEntityInsideOpaqueBlock(this, super.isEntityInsideOpaqueBlock());
     }
 
-	@Override
-	public void onLivingUpdate()
-	{
+    @Override
+    public void onLivingUpdate()
+    {
         this.getClientHandler().onLivingUpdatePre(this);
-		super.onLivingUpdate();
+        super.onLivingUpdate();
         this.getClientHandler().onLivingUpdatePost(this);
-	}
+    }
 
-	@Override
-	public void moveEntity(double par1, double par3, double par5)
-	{
-		super.moveEntity(par1, par3, par5);
+    @Override
+    public void moveEntity(double par1, double par3, double par5)
+    {
+        super.moveEntity(par1, par3, par5);
         this.getClientHandler().moveEntity(this, par1, par3, par5);
-	}
+    }
 
-	@Override
-	public void onUpdate()
-	{
+    @Override
+    public void onUpdate()
+    {
         this.getClientHandler().onUpdate(this);
-		super.onUpdate();
-	}
+        super.onUpdate();
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public float getBedOrientationInDegrees()
-	{
-		return this.getClientHandler().getBedOrientationInDegrees(this, super.getBedOrientationInDegrees());
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public float getBedOrientationInDegrees()
+    {
+        return this.getClientHandler().getBedOrientationInDegrees(this, super.getBedOrientationInDegrees());
+    }
 
     public final GCPlayerStatsClient getPlayerStats()
     {

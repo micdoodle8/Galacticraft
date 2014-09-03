@@ -80,8 +80,14 @@ public class PlayerServer implements IPlayerServer
             {
                 if (player.worldObj.provider instanceof WorldProviderAsteroids)
                 {
-                    if (player.posY > -120D) return -1;
-                    if (player.posY > -180D) par2 /= 2;
+                    if (player.posY > -120D)
+                    {
+                        return -1;
+                    }
+                    if (player.posY > -180D)
+                    {
+                        par2 /= 2;
+                    }
                 }
             }
             else if (par1DamageSource == DamageSource.fall || par1DamageSource == DamageSourceGC.spaceshipCrash)
@@ -98,7 +104,10 @@ public class PlayerServer implements IPlayerServer
                         }
                     }
                 }
-                if (titaniumCount == 4) titaniumCount = 5;
+                if (titaniumCount == 4)
+                {
+                    titaniumCount = 5;
+                }
                 par2 *= (1 - 0.15D * titaniumCount);
             }
         }

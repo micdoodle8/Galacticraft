@@ -19,29 +19,29 @@ import org.lwjgl.opengl.GL11;
 
 public class AsteroidsEventHandlerClient
 {
-	@SideOnly(Side.CLIENT)
-	@SubscribeEvent
-	public void onClientTick(ClientTickEvent event)
-	{
-		Minecraft minecraft = Minecraft.getMinecraft();
-		WorldClient world = minecraft.theWorld;
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void onClientTick(ClientTickEvent event)
+    {
+        Minecraft minecraft = Minecraft.getMinecraft();
+        WorldClient world = minecraft.theWorld;
 
-		if (world != null)
-		{
-			if (world.provider instanceof WorldProviderAsteroids)
-			{
-				if (world.provider.getSkyRenderer() == null)
-				{
-					world.provider.setSkyRenderer(new SkyProviderAsteroids());
-				}
+        if (world != null)
+        {
+            if (world.provider instanceof WorldProviderAsteroids)
+            {
+                if (world.provider.getSkyRenderer() == null)
+                {
+                    world.provider.setSkyRenderer(new SkyProviderAsteroids());
+                }
 
-				if (world.provider.getCloudRenderer() == null)
-				{
-					world.provider.setCloudRenderer(new CloudRenderer());
-				}
-			}
-		}
-	}
+                if (world.provider.getCloudRenderer() == null)
+                {
+                    world.provider.setCloudRenderer(new CloudRenderer());
+                }
+            }
+        }
+    }
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
@@ -127,10 +127,10 @@ public class AsteroidsEventHandlerClient
         }
     }
 
-	@SideOnly(Side.CLIENT)
-	@SubscribeEvent
-	public void onSpecialRender(EventSpecialRender event)
-	{
-		NetworkRenderer.renderNetworks(FMLClientHandler.instance().getClient().theWorld, event.partialTicks);
-	}
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void onSpecialRender(EventSpecialRender event)
+    {
+        NetworkRenderer.renderNetworks(FMLClientHandler.instance().getClient().theWorld, event.partialTicks);
+    }
 }

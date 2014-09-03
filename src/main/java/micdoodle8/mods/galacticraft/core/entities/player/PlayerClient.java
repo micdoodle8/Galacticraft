@@ -171,14 +171,14 @@ public class PlayerClient implements IPlayerClient
 //                int j = player.worldObj.getBlock(x, y, z).getBedDirection(player.worldObj, x, y, z);
                 switch (player.worldObj.getBlockMetadata(x, y, z) - 4)
                 {
-                    case 0:
-                        return 90.0F;
-                    case 1:
-                        return 270.0F;
-                    case 2:
-                        return 180.0F;
-                    case 3:
-                        return 0.0F;
+                case 0:
+                    return 90.0F;
+                case 1:
+                    return 270.0F;
+                case 2:
+                    return 180.0F;
+                case 3:
+                    return 0.0F;
                 }
             }
             else
@@ -218,12 +218,12 @@ public class PlayerClient implements IPlayerClient
                         // Adjust footprint to left or right depending on step count
                         switch (stats.lastStep)
                         {
-                            case 0:
-                                pos.translate(new Vector3(Math.sin(Math.toRadians(-player.rotationYaw + 90)) * 0.25, 0, Math.cos(Math.toRadians(-player.rotationYaw + 90)) * 0.25));
-                                break;
-                            case 1:
-                                pos.translate(new Vector3(Math.sin(Math.toRadians(-player.rotationYaw - 90)) * 0.25, 0, Math.cos(Math.toRadians(-player.rotationYaw - 90)) * 0.25));
-                                break;
+                        case 0:
+                            pos.translate(new Vector3(Math.sin(Math.toRadians(-player.rotationYaw + 90)) * 0.25, 0, Math.cos(Math.toRadians(-player.rotationYaw + 90)) * 0.25));
+                            break;
+                        case 1:
+                            pos.translate(new Vector3(Math.sin(Math.toRadians(-player.rotationYaw - 90)) * 0.25, 0, Math.cos(Math.toRadians(-player.rotationYaw - 90)) * 0.25));
+                            break;
                         }
 
                         ClientProxyCore.footprintRenderer.addFootprint(player.worldObj.provider.dimensionId, pos, player.rotationYaw);

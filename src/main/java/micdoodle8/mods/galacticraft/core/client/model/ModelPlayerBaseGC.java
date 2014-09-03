@@ -6,10 +6,10 @@ import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.Render;
@@ -338,7 +338,7 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
 
             float angularSwingArm = MathHelper.cos(par1 * (speedModifier / 2));
             float angularSwingLeg = MathHelper.cos(par1 * speedModifier);
-            this.modelPlayer.bipedRightArm.rotateAngleX = - angularSwingArm * 4.0F * par2 * 0.5F;
+            this.modelPlayer.bipedRightArm.rotateAngleX = -angularSwingArm * 4.0F * par2 * 0.5F;
             this.modelPlayer.bipedLeftArm.rotateAngleX = angularSwingArm * 4.0F * par2 * 0.5F;
             this.modelPlayer.bipedRightArm.rotateAngleZ = (float) (5 * (Math.PI / 180));
             this.modelPlayer.bipedLeftArm.rotateAngleZ = (float) (-5 * (Math.PI / 180));
@@ -348,7 +348,7 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
 
         this.oxygenMask.rotateAngleY = this.modelPlayer.bipedHead.rotateAngleY;
         this.oxygenMask.rotateAngleX = this.modelPlayer.bipedHead.rotateAngleX;
-        
+
         if (usingParachute)
         {
             this.parachute[0].rotateAngleZ = (float) (30F * (Math.PI / 180F));
@@ -370,7 +370,7 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
             this.modelPlayer.bipedRightArm.rotateAngleX += (float) Math.PI;
             this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
         }
-        
+
         this.greenOxygenTanks[0].rotateAngleX = this.modelPlayer.bipedBody.rotateAngleX;
         this.greenOxygenTanks[0].rotateAngleY = this.modelPlayer.bipedBody.rotateAngleY;
         this.greenOxygenTanks[0].rotateAngleZ = this.modelPlayer.bipedBody.rotateAngleZ;

@@ -9,44 +9,44 @@ import net.minecraft.item.ItemStack;
 
 public class ItemBlockLandingPad extends ItemBlockDesc
 {
-	public ItemBlockLandingPad(Block block)
-	{
-		super(block);
-		this.setMaxDamage(0);
-		this.setHasSubtypes(true);
-	}
+    public ItemBlockLandingPad(Block block)
+    {
+        super(block);
+        this.setMaxDamage(0);
+        this.setHasSubtypes(true);
+    }
 
-	@Override
-	public String getUnlocalizedName(ItemStack par1ItemStack)
-	{
-		String name = "";
+    @Override
+    public String getUnlocalizedName(ItemStack par1ItemStack)
+    {
+        String name = "";
 
-		switch (par1ItemStack.getItemDamage())
-		{
-		case 0:
-			name = "landingPad";
-			break;
-		case 1:
-			name = "buggyFueler";
-			break;
-		case 2:
-			name = "cargoPad";
-			break;
-		}
+        switch (par1ItemStack.getItemDamage())
+        {
+        case 0:
+            name = "landingPad";
+            break;
+        case 1:
+            name = "buggyFueler";
+            break;
+        case 2:
+            name = "cargoPad";
+            break;
+        }
 
-		return this.field_150939_a.getUnlocalizedName() + "." + name;
-	}
+        return this.field_150939_a.getUnlocalizedName() + "." + name;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack)
-	{
-		return ClientProxyCore.galacticraftItem;
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
 
-	@Override
-	public int getMetadata(int damage)
-	{
-		return damage;
-	}
+    @Override
+    public int getMetadata(int damage)
+    {
+        return damage;
+    }
 }

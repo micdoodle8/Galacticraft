@@ -11,51 +11,51 @@ import net.minecraft.util.IIcon;
 
 public class ItemBlockAluminumWire extends ItemBlockDesc
 {
-	public ItemBlockAluminumWire(Block block)
-	{
-		super(block);
-		this.setMaxDamage(0);
-		this.setHasSubtypes(true);
-	}
+    public ItemBlockAluminumWire(Block block)
+    {
+        super(block);
+        this.setMaxDamage(0);
+        this.setHasSubtypes(true);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public IIcon getIconFromDamage(int par1)
-	{
-		return this.field_150939_a.getIcon(0, par1);
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIconFromDamage(int par1)
+    {
+        return this.field_150939_a.getIcon(0, par1);
+    }
 
-	@Override
-	public String getUnlocalizedName(ItemStack par1ItemStack)
-	{
-		String name = "";
+    @Override
+    public String getUnlocalizedName(ItemStack par1ItemStack)
+    {
+        String name = "";
 
-		switch (par1ItemStack.getItemDamage())
-		{
-		case 0:
-			name = BlockAluminumWire.names[0];
-			break;
-		case 1:
-			name = BlockAluminumWire.names[1];
-			break;
-		default:
-			name = "null";
-			break;
-		}
+        switch (par1ItemStack.getItemDamage())
+        {
+        case 0:
+            name = BlockAluminumWire.names[0];
+            break;
+        case 1:
+            name = BlockAluminumWire.names[1];
+            break;
+        default:
+            name = "null";
+            break;
+        }
 
-		return "tile." + name;
-	}
+        return "tile." + name;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack)
-	{
-		return ClientProxyCore.galacticraftItem;
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
 
-	@Override
-	public int getMetadata(int damage)
-	{
-		return damage;
-	}
+    @Override
+    public int getMetadata(int damage)
+    {
+        return damage;
+    }
 }

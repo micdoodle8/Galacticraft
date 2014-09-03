@@ -19,287 +19,286 @@ import java.util.*;
 /**
  * An Oxygen Network specifies a wire connection. Each wire connection line will
  * have its own oxygen network.
- * 
+ * <p/>
  * !! Do not include this class if you do not intend to have custom wires in
  * your mod. This will increase future compatibility. !!
- * 
+ *
  * @author Calclavia
- * 
  */
 public class OxygenNetwork implements IOxygenNetwork
 {
-	public Map<TileEntity, ForgeDirection> oxygenTiles = new HashMap<TileEntity, ForgeDirection>();
+    public Map<TileEntity, ForgeDirection> oxygenTiles = new HashMap<TileEntity, ForgeDirection>();
 
-	private final Set<ITransmitter> pipes = new HashSet<ITransmitter>();
+    private final Set<ITransmitter> pipes = new HashSet<ITransmitter>();
 
-	@Override
-	public float produce(float totalOxygen, TileEntity... ignoreTiles)
-	{
-		float remainingUsableOxygen = totalOxygen;
+    @Override
+    public float produce(float totalOxygen, TileEntity... ignoreTiles)
+    {
+        float remainingUsableOxygen = totalOxygen;
 
-		if (!this.oxygenTiles.isEmpty())
-		{
-			final float totalOxygenRequest = this.getRequest(ignoreTiles);
+        if (!this.oxygenTiles.isEmpty())
+        {
+            final float totalOxygenRequest = this.getRequest(ignoreTiles);
 
-			if (totalOxygenRequest > 0)
-			{
-				List<TileEntity> ignoreTilesList = Arrays.asList(ignoreTiles);
-				for (TileEntity tileEntity : new HashSet<TileEntity>(this.oxygenTiles.keySet()))
-				{
-					if (!ignoreTilesList.contains(tileEntity))
-					{
-						if (tileEntity instanceof IOxygenReceiver)
-						{
-							IOxygenReceiver oxygenTile = (IOxygenReceiver) tileEntity;
+            if (totalOxygenRequest > 0)
+            {
+                List<TileEntity> ignoreTilesList = Arrays.asList(ignoreTiles);
+                for (TileEntity tileEntity : new HashSet<TileEntity>(this.oxygenTiles.keySet()))
+                {
+                    if (!ignoreTilesList.contains(tileEntity))
+                    {
+                        if (tileEntity instanceof IOxygenReceiver)
+                        {
+                            IOxygenReceiver oxygenTile = (IOxygenReceiver) tileEntity;
 
-							if (oxygenTile.shouldPullOxygen())
-							{
-								for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
-								{
-									TileEntity tile = new BlockVec3(tileEntity).modifyPositionFromSide(direction, 1).getTileEntity(tileEntity.getWorldObj());
+                            if (oxygenTile.shouldPullOxygen())
+                            {
+                                for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+                                {
+                                    TileEntity tile = new BlockVec3(tileEntity).modifyPositionFromSide(direction, 1).getTileEntity(tileEntity.getWorldObj());
 
-									if (oxygenTile.canConnect(direction, NetworkType.OXYGEN) && this.pipes.contains(tile))
-									{
-										float oxygenToSend = Math.max(totalOxygen, totalOxygen * (oxygenTile.getOxygenRequest(direction) / totalOxygenRequest));
+                                    if (oxygenTile.canConnect(direction, NetworkType.OXYGEN) && this.pipes.contains(tile))
+                                    {
+                                        float oxygenToSend = Math.max(totalOxygen, totalOxygen * (oxygenTile.getOxygenRequest(direction) / totalOxygenRequest));
 
-										if (oxygenToSend > 0)
-										{
-											remainingUsableOxygen -= oxygenTile.receiveOxygen(direction, oxygenToSend, true);
-										}
-									}
-								}
-							}
-						}
-						else if (EnergyConfigHandler.isMekanismLoaded() && tileEntity instanceof IGasHandler)
-						{
-							IGasHandler gasHandler = (IGasHandler) tileEntity;
-
-							for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
-							{
-								TileEntity tile = new BlockVec3(tileEntity).getTileEntityOnSide(tileEntity.getWorldObj(), direction);
-
-								if (gasHandler.canReceiveGas(direction, (Gas) EnergyConfigHandler.gasOxygen) && this.getTransmitters().contains(tile))
-								{
-									int oxygenToSend = (int) Math.floor(totalOxygen / this.oxygenTiles.size());
-
-									if (oxygenToSend > 0)
-									{
-										remainingUsableOxygen -= gasHandler.receiveGas(direction, (new GasStack((Gas) EnergyConfigHandler.gasOxygen, oxygenToSend)));
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-		return remainingUsableOxygen;
-	}
-
-	/**
-	 * @return How much oxygen this network needs.
-	 */
-	@Override
-	public float getRequest(TileEntity... ignoreTiles)
-	{
-		List<Float> requests = new ArrayList<Float>();
-
-		List<TileEntity> ignoreTilesList = Arrays.asList(ignoreTiles);
-		for (TileEntity tileEntity : new HashSet<TileEntity>(this.oxygenTiles.keySet()))
-		{
-			if (ignoreTilesList.contains(tileEntity))
-			{
-				continue;
-			}
-
-			if (tileEntity instanceof IOxygenReceiver && ((IOxygenReceiver) tileEntity).shouldPullOxygen())
-			{
-				if (!tileEntity.isInvalid())
-				{
-					if (tileEntity.getWorldObj().getTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord) == tileEntity)
-					{
-						for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
-						{
-							BlockVec3 tileVec = new BlockVec3(tileEntity);
-							TileEntity tile = tileVec.modifyPositionFromSide(direction, 1).getTileEntity(tileEntity.getWorldObj());
-
-							if (((IOxygenReceiver) tileEntity).canConnect(direction, NetworkType.OXYGEN) && this.pipes.contains(tile))
-							{
-								requests.add(((IOxygenReceiver) tileEntity).getOxygenRequest(direction));
+                                        if (oxygenToSend > 0)
+                                        {
+                                            remainingUsableOxygen -= oxygenTile.receiveOxygen(direction, oxygenToSend, true);
+                                        }
+                                    }
+                                }
                             }
-						}
-					}
-				}
-			}
-		}
+                        }
+                        else if (EnergyConfigHandler.isMekanismLoaded() && tileEntity instanceof IGasHandler)
+                        {
+                            IGasHandler gasHandler = (IGasHandler) tileEntity;
 
-		float total = 0.0F;
+                            for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+                            {
+                                TileEntity tile = new BlockVec3(tileEntity).getTileEntityOnSide(tileEntity.getWorldObj(), direction);
 
-		for (Float f : requests)
-		{
-			total += f;
-		}
+                                if (gasHandler.canReceiveGas(direction, (Gas) EnergyConfigHandler.gasOxygen) && this.getTransmitters().contains(tile))
+                                {
+                                    int oxygenToSend = (int) Math.floor(totalOxygen / this.oxygenTiles.size());
 
-		return total;
-	}
+                                    if (oxygenToSend > 0)
+                                    {
+                                        remainingUsableOxygen -= gasHandler.receiveGas(direction, (new GasStack((Gas) EnergyConfigHandler.gasOxygen, oxygenToSend)));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-	/**
-	 * This function is called to refresh all conductors in this network
-	 */
-	@Override
-	public void refresh()
-	{
-		this.oxygenTiles.clear();
+        return remainingUsableOxygen;
+    }
 
-		try
-		{
-			Iterator<ITransmitter> it = this.pipes.iterator();
+    /**
+     * @return How much oxygen this network needs.
+     */
+    @Override
+    public float getRequest(TileEntity... ignoreTiles)
+    {
+        List<Float> requests = new ArrayList<Float>();
 
-			while (it.hasNext())
-			{
-				ITransmitter transmitter = it.next();
+        List<TileEntity> ignoreTilesList = Arrays.asList(ignoreTiles);
+        for (TileEntity tileEntity : new HashSet<TileEntity>(this.oxygenTiles.keySet()))
+        {
+            if (ignoreTilesList.contains(tileEntity))
+            {
+                continue;
+            }
 
-				if (transmitter == null)
-				{
-					it.remove();
-					continue;
-				}
+            if (tileEntity instanceof IOxygenReceiver && ((IOxygenReceiver) tileEntity).shouldPullOxygen())
+            {
+                if (!tileEntity.isInvalid())
+                {
+                    if (tileEntity.getWorldObj().getTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord) == tileEntity)
+                    {
+                        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+                        {
+                            BlockVec3 tileVec = new BlockVec3(tileEntity);
+                            TileEntity tile = tileVec.modifyPositionFromSide(direction, 1).getTileEntity(tileEntity.getWorldObj());
 
-				transmitter.onNetworkChanged();
+                            if (((IOxygenReceiver) tileEntity).canConnect(direction, NetworkType.OXYGEN) && this.pipes.contains(tile))
+                            {
+                                requests.add(((IOxygenReceiver) tileEntity).getOxygenRequest(direction));
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-				if (((TileEntity) transmitter).isInvalid() || ((TileEntity) transmitter).getWorldObj() == null)
-				{
-					it.remove();
-					continue;
-				}
-				else if (((TileEntity) transmitter).getWorldObj().getTileEntity(((TileEntity) transmitter).xCoord, ((TileEntity) transmitter).yCoord, ((TileEntity) transmitter).zCoord) != transmitter)
-				{
-					it.remove();
-					continue;
-				}
-				else
-				{
-					transmitter.setNetwork(this);
-				}
+        float total = 0.0F;
 
-				for (int i = 0; i < transmitter.getAdjacentConnections().length; i++)
-				{
-					TileEntity acceptor = transmitter.getAdjacentConnections()[i];
+        for (Float f : requests)
+        {
+            total += f;
+        }
 
-					if (!(acceptor instanceof ITransmitter) && acceptor instanceof IConnector)
-					{
-						this.oxygenTiles.put(acceptor, ForgeDirection.getOrientation(i));
-					}
-				}
-			}
-		}
-		catch (Exception e)
-		{
-			FMLLog.severe("Failed to refresh oxygen pipe network.");
-			e.printStackTrace();
-		}
-	}
+        return total;
+    }
 
-	@Override
-	public Set<ITransmitter> getTransmitters()
-	{
-		return this.pipes;
-	}
+    /**
+     * This function is called to refresh all conductors in this network
+     */
+    @Override
+    public void refresh()
+    {
+        this.oxygenTiles.clear();
 
-	@Override
-	public IOxygenNetwork merge(IOxygenNetwork network)
-	{
-		if (network != null && network != this)
-		{
-			OxygenNetwork newNetwork = new OxygenNetwork();
-			newNetwork.pipes.addAll(this.pipes);
-			newNetwork.pipes.addAll(network.getTransmitters());
-			newNetwork.refresh();
-			return newNetwork;
-		}
+        try
+        {
+            Iterator<ITransmitter> it = this.pipes.iterator();
 
-		return this;
-	}
+            while (it.hasNext())
+            {
+                ITransmitter transmitter = it.next();
 
-	@Override
-	public void split(ITransmitter splitPoint)
-	{
-		if (splitPoint instanceof TileEntity)
-		{
-			this.pipes.remove(splitPoint);
+                if (transmitter == null)
+                {
+                    it.remove();
+                    continue;
+                }
 
-			/**
-			 * Loop through the connected blocks and attempt to see if there are
-			 * connections between the two points elsewhere.
-			 */
-			TileEntity[] connectedBlocks = splitPoint.getAdjacentConnections();
+                transmitter.onNetworkChanged();
 
-			for (TileEntity connectedBlockA : connectedBlocks)
-			{
-				if (connectedBlockA instanceof INetworkConnection)
-				{
-					for (final TileEntity connectedBlockB : connectedBlocks)
-					{
-						if (connectedBlockA != connectedBlockB && connectedBlockB instanceof INetworkConnection)
-						{
-							Pathfinder finder = new PathfinderChecker(((TileEntity) splitPoint).getWorldObj(), (INetworkConnection) connectedBlockB, NetworkType.OXYGEN, splitPoint);
-							finder.init(new BlockVec3(connectedBlockA));
+                if (((TileEntity) transmitter).isInvalid() || ((TileEntity) transmitter).getWorldObj() == null)
+                {
+                    it.remove();
+                    continue;
+                }
+                else if (((TileEntity) transmitter).getWorldObj().getTileEntity(((TileEntity) transmitter).xCoord, ((TileEntity) transmitter).yCoord, ((TileEntity) transmitter).zCoord) != transmitter)
+                {
+                    it.remove();
+                    continue;
+                }
+                else
+                {
+                    transmitter.setNetwork(this);
+                }
 
-							if (finder.results.size() > 0)
-							{
-								/**
-								 * The connections A and B are still intact
-								 * elsewhere. Set all references of wire
-								 * connection into one network.
-								 */
+                for (int i = 0; i < transmitter.getAdjacentConnections().length; i++)
+                {
+                    TileEntity acceptor = transmitter.getAdjacentConnections()[i];
 
-								for (BlockVec3 node : finder.closedSet)
-								{
-									TileEntity nodeTile = node.getTileEntity(((TileEntity) splitPoint).getWorldObj());
+                    if (!(acceptor instanceof ITransmitter) && acceptor instanceof IConnector)
+                    {
+                        this.oxygenTiles.put(acceptor, ForgeDirection.getOrientation(i));
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            FMLLog.severe("Failed to refresh oxygen pipe network.");
+            e.printStackTrace();
+        }
+    }
 
-									if (nodeTile instanceof INetworkProvider)
-									{
-										if (nodeTile != splitPoint)
-										{
-											((INetworkProvider) nodeTile).setNetwork(this);
-										}
-									}
-								}
-							}
-							else
-							{
-								/**
-								 * The connections A and B are not connected
-								 * anymore. Give both of them a new network.
-								 */
-								IOxygenNetwork newNetwork = new OxygenNetwork();
+    @Override
+    public Set<ITransmitter> getTransmitters()
+    {
+        return this.pipes;
+    }
 
-								for (BlockVec3 node : finder.closedSet)
-								{
-									TileEntity nodeTile = node.getTileEntity(((TileEntity) splitPoint).getWorldObj());
+    @Override
+    public IOxygenNetwork merge(IOxygenNetwork network)
+    {
+        if (network != null && network != this)
+        {
+            OxygenNetwork newNetwork = new OxygenNetwork();
+            newNetwork.pipes.addAll(this.pipes);
+            newNetwork.pipes.addAll(network.getTransmitters());
+            newNetwork.refresh();
+            return newNetwork;
+        }
 
-									if (nodeTile instanceof INetworkProvider)
-									{
-										if (nodeTile != splitPoint)
-										{
-											newNetwork.getTransmitters().add((ITransmitter) nodeTile);
-										}
-									}
-								}
+        return this;
+    }
 
-								newNetwork.refresh();
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+    @Override
+    public void split(ITransmitter splitPoint)
+    {
+        if (splitPoint instanceof TileEntity)
+        {
+            this.pipes.remove(splitPoint);
 
-	@Override
-	public String toString()
-	{
-		return "OxygenNetwork[" + this.hashCode() + "|Pipes:" + this.pipes.size() + "|Acceptors:" + this.oxygenTiles.size() + "]";
-	}
+            /**
+             * Loop through the connected blocks and attempt to see if there are
+             * connections between the two points elsewhere.
+             */
+            TileEntity[] connectedBlocks = splitPoint.getAdjacentConnections();
+
+            for (TileEntity connectedBlockA : connectedBlocks)
+            {
+                if (connectedBlockA instanceof INetworkConnection)
+                {
+                    for (final TileEntity connectedBlockB : connectedBlocks)
+                    {
+                        if (connectedBlockA != connectedBlockB && connectedBlockB instanceof INetworkConnection)
+                        {
+                            Pathfinder finder = new PathfinderChecker(((TileEntity) splitPoint).getWorldObj(), (INetworkConnection) connectedBlockB, NetworkType.OXYGEN, splitPoint);
+                            finder.init(new BlockVec3(connectedBlockA));
+
+                            if (finder.results.size() > 0)
+                            {
+                                /**
+                                 * The connections A and B are still intact
+                                 * elsewhere. Set all references of wire
+                                 * connection into one network.
+                                 */
+
+                                for (BlockVec3 node : finder.closedSet)
+                                {
+                                    TileEntity nodeTile = node.getTileEntity(((TileEntity) splitPoint).getWorldObj());
+
+                                    if (nodeTile instanceof INetworkProvider)
+                                    {
+                                        if (nodeTile != splitPoint)
+                                        {
+                                            ((INetworkProvider) nodeTile).setNetwork(this);
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                /**
+                                 * The connections A and B are not connected
+                                 * anymore. Give both of them a new network.
+                                 */
+                                IOxygenNetwork newNetwork = new OxygenNetwork();
+
+                                for (BlockVec3 node : finder.closedSet)
+                                {
+                                    TileEntity nodeTile = node.getTileEntity(((TileEntity) splitPoint).getWorldObj());
+
+                                    if (nodeTile instanceof INetworkProvider)
+                                    {
+                                        if (nodeTile != splitPoint)
+                                        {
+                                            newNetwork.getTransmitters().add((ITransmitter) nodeTile);
+                                        }
+                                    }
+                                }
+
+                                newNetwork.refresh();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public String toString()
+    {
+        return "OxygenNetwork[" + this.hashCode() + "|Pipes:" + this.pipes.size() + "|Acceptors:" + this.oxygenTiles.size() + "]";
+    }
 }

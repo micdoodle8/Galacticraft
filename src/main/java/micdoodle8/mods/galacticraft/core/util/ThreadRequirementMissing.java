@@ -9,15 +9,15 @@ import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiMissingCore;
 
 public class ThreadRequirementMissing extends Thread
 {
-	private static Side threadSide;
+    private static Side threadSide;
     public static ThreadRequirementMissing INSTANCE;
 
-	public ThreadRequirementMissing(Side threadSide)
-	{
-		super("Galacticraft Requirement Check Thread");
-		this.setDaemon(true);
-		ThreadRequirementMissing.threadSide = threadSide;
-	}
+    public ThreadRequirementMissing(Side threadSide)
+    {
+        super("Galacticraft Requirement Check Thread");
+        this.setDaemon(true);
+        ThreadRequirementMissing.threadSide = threadSide;
+    }
 
     public static void beginCheck(Side threadSide)
     {
@@ -25,27 +25,27 @@ public class ThreadRequirementMissing extends Thread
         INSTANCE.start();
     }
 
-	@Override
-	public void run()
-	{
-		if (!Loader.isModLoaded("Micdoodlecore"))
-		{
-			if (ThreadRequirementMissing.threadSide.isServer())
-			{
-				FMLCommonHandler.instance().getMinecraftServerInstance().logSevere("===================================================================");
-				FMLCommonHandler.instance().getMinecraftServerInstance().logSevere("MicdoodleCore not found in mods folder. Galacticraft will not load.");
-				FMLCommonHandler.instance().getMinecraftServerInstance().logSevere("===================================================================");
-			}
-			else
-			{
-				ThreadRequirementMissing.openGuiClient();
-			}
-		}
-	}
+    @Override
+    public void run()
+    {
+        if (!Loader.isModLoaded("Micdoodlecore"))
+        {
+            if (ThreadRequirementMissing.threadSide.isServer())
+            {
+                FMLCommonHandler.instance().getMinecraftServerInstance().logSevere("===================================================================");
+                FMLCommonHandler.instance().getMinecraftServerInstance().logSevere("MicdoodleCore not found in mods folder. Galacticraft will not load.");
+                FMLCommonHandler.instance().getMinecraftServerInstance().logSevere("===================================================================");
+            }
+            else
+            {
+                ThreadRequirementMissing.openGuiClient();
+            }
+        }
+    }
 
-	@SideOnly(Side.CLIENT)
-	private static void openGuiClient()
-	{
-		FMLClientHandler.instance().getClient().displayGuiScreen(new GuiMissingCore());
-	}
+    @SideOnly(Side.CLIENT)
+    private static void openGuiClient()
+    {
+        FMLClientHandler.instance().getClient().displayGuiScreen(new GuiMissingCore());
+    }
 }

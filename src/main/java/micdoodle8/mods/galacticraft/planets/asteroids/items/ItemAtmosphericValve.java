@@ -13,30 +13,30 @@ import net.minecraft.item.ItemStack;
 
 public class ItemAtmosphericValve extends Item
 {
-	public ItemAtmosphericValve(String assetName)
-	{
-		super();
-		this.setMaxDamage(0);
-		this.setUnlocalizedName(assetName);
-		this.setMaxStackSize(64);
-		this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
-	}
+    public ItemAtmosphericValve(String assetName)
+    {
+        super();
+        this.setMaxDamage(0);
+        this.setUnlocalizedName(assetName);
+        this.setMaxStackSize(64);
+        this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public CreativeTabs getCreativeTab()
-	{
-		return GalacticraftCore.galacticraftItemsTab;
-	}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftCore.galacticraftItemsTab;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack)
-	{
-		return ClientProxyCore.galacticraftItem;
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
 
-   @SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
         this.itemIcon = iconRegister.registerIcon(this.getIconString());

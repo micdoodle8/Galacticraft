@@ -19,189 +19,189 @@ import java.util.Set;
 
 public abstract class TileEntityAdvanced extends TileEntity implements IPacketReceiver
 {
-	public long ticks = 0;
-	private LinkedHashSet<Field> fieldCacheClient;
-	private LinkedHashSet<Field> fieldCacheServer;
+    public long ticks = 0;
+    private LinkedHashSet<Field> fieldCacheClient;
+    private LinkedHashSet<Field> fieldCacheServer;
 
-	@Override
-	public void updateEntity()
-	{
-		if (this.ticks == 0)
-		{
-			this.initiate();
-		}
+    @Override
+    public void updateEntity()
+    {
+        if (this.ticks == 0)
+        {
+            this.initiate();
+        }
 
-		if (this.ticks >= Long.MAX_VALUE)
-		{
-			this.ticks = 1;
-		}
+        if (this.ticks >= Long.MAX_VALUE)
+        {
+            this.ticks = 1;
+        }
 
-		this.ticks++;
+        this.ticks++;
 
-		if (this.isNetworkedTile() && this.ticks % this.getPacketCooldown() == 0)
-		{
-			if (this.fieldCacheClient == null || this.fieldCacheServer == null)
-			{
-				try
-				{
-					this.initFieldCache();
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
+        if (this.isNetworkedTile() && this.ticks % this.getPacketCooldown() == 0)
+        {
+            if (this.fieldCacheClient == null || this.fieldCacheServer == null)
+            {
+                try
+                {
+                    this.initFieldCache();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
 
-			if (this.worldObj.isRemote && this.fieldCacheServer.size() > 0)
-			{
-				GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
-			}
-			else if (!this.worldObj.isRemote && this.fieldCacheClient.size() > 0)
-			{
-				GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, this.getPacketRange()));
-			}
-		}
-	}
+            if (this.worldObj.isRemote && this.fieldCacheServer.size() > 0)
+            {
+                GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
+            }
+            else if (!this.worldObj.isRemote && this.fieldCacheClient.size() > 0)
+            {
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, this.getPacketRange()));
+            }
+        }
+    }
 
-	private void initFieldCache() throws IllegalArgumentException, IllegalAccessException
-	{
-		this.fieldCacheClient = new LinkedHashSet<Field>();
-		this.fieldCacheServer = new LinkedHashSet<Field>();
+    private void initFieldCache() throws IllegalArgumentException, IllegalAccessException
+    {
+        this.fieldCacheClient = new LinkedHashSet<Field>();
+        this.fieldCacheServer = new LinkedHashSet<Field>();
 
-		for (Field field : this.getClass().getFields())
-		{
-			if (field.isAnnotationPresent(NetworkedField.class))
-			{
-				NetworkedField f = field.getAnnotation(NetworkedField.class);
+        for (Field field : this.getClass().getFields())
+        {
+            if (field.isAnnotationPresent(NetworkedField.class))
+            {
+                NetworkedField f = field.getAnnotation(NetworkedField.class);
 
-				if (f.targetSide() == Side.CLIENT)
-				{
-					this.fieldCacheClient.add(field);
-				}
-				else
-				{
-					this.fieldCacheServer.add(field);
-				}
-			}
-		}
-	}
+                if (f.targetSide() == Side.CLIENT)
+                {
+                    this.fieldCacheClient.add(field);
+                }
+                else
+                {
+                    this.fieldCacheServer.add(field);
+                }
+            }
+        }
+    }
 
-	public abstract double getPacketRange();
+    public abstract double getPacketRange();
 
-	public abstract int getPacketCooldown();
+    public abstract int getPacketCooldown();
 
-	public abstract boolean isNetworkedTile();
+    public abstract boolean isNetworkedTile();
 
-	public void addExtraNetworkedData(List<Object> networkedList)
-	{
+    public void addExtraNetworkedData(List<Object> networkedList)
+    {
 
-	}
+    }
 
-	public void readExtraNetworkedData(ByteBuf dataStream)
-	{
+    public void readExtraNetworkedData(ByteBuf dataStream)
+    {
 
-	}
+    }
 
-	public void initiate()
-	{
-	}
+    public void initiate()
+    {
+    }
 
-	@Override
-	public void getNetworkedData(ArrayList<Object> sendData)
-	{
-		Set<Field> fieldList = null;
+    @Override
+    public void getNetworkedData(ArrayList<Object> sendData)
+    {
+        Set<Field> fieldList = null;
 
-		if (this.fieldCacheClient == null || this.fieldCacheServer == null)
-		{
-			try
-			{
-				this.initFieldCache();
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
+        if (this.fieldCacheClient == null || this.fieldCacheServer == null)
+        {
+            try
+            {
+                this.initFieldCache();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
 
-		if (this.worldObj.isRemote)
-		{
-			fieldList = this.fieldCacheServer;
-		}
-		else
-		{
-			fieldList = this.fieldCacheClient;
-		}
+        if (this.worldObj.isRemote)
+        {
+            fieldList = this.fieldCacheServer;
+        }
+        else
+        {
+            fieldList = this.fieldCacheClient;
+        }
 
-		for (Field f : fieldList)
-		{
-			try
-			{
-				sendData.add(f.get(this));
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
+        for (Field f : fieldList)
+        {
+            try
+            {
+                sendData.add(f.get(this));
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
 
-		this.addExtraNetworkedData(sendData);
-	}
+        this.addExtraNetworkedData(sendData);
+    }
 
-	@Override
-	public void decodePacketdata(ByteBuf buffer)
-	{
-		if (this.fieldCacheClient == null || this.fieldCacheServer == null)
-		{
-			try
-			{
-				this.initFieldCache();
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
+    @Override
+    public void decodePacketdata(ByteBuf buffer)
+    {
+        if (this.fieldCacheClient == null || this.fieldCacheServer == null)
+        {
+            try
+            {
+                this.initFieldCache();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
 
-		if (this.worldObj.isRemote && this.fieldCacheClient.size() == 0)
-		{
-			return;
-		}
-		else if (!this.worldObj.isRemote && this.fieldCacheServer.size() == 0)
-		{
-			return;
-		}
+        if (this.worldObj.isRemote && this.fieldCacheClient.size() == 0)
+        {
+            return;
+        }
+        else if (!this.worldObj.isRemote && this.fieldCacheServer.size() == 0)
+        {
+            return;
+        }
 
-		Set<Field> fieldSet = null;
+        Set<Field> fieldSet = null;
 
-		if (this.worldObj.isRemote)
-		{
-			fieldSet = this.fieldCacheClient;
-		}
-		else
-		{
-			fieldSet = this.fieldCacheServer;
-		}
+        if (this.worldObj.isRemote)
+        {
+            fieldSet = this.fieldCacheClient;
+        }
+        else
+        {
+            fieldSet = this.fieldCacheServer;
+        }
 
-		for (Field field : fieldSet)
-		{
-			try
-			{
-				Object obj = NetworkUtil.getFieldValueFromStream(field, buffer, this.worldObj);
-				field.set(this, obj);
-			}
-			catch (Exception e)
-			{
-				System.err.println("Error reading dynamic packet in " + this.getClass().getSimpleName());
-				e.printStackTrace();
-			}
-		}
+        for (Field field : fieldSet)
+        {
+            try
+            {
+                Object obj = NetworkUtil.getFieldValueFromStream(field, buffer, this.worldObj);
+                field.set(this, obj);
+            }
+            catch (Exception e)
+            {
+                System.err.println("Error reading dynamic packet in " + this.getClass().getSimpleName());
+                e.printStackTrace();
+            }
+        }
 
-		this.readExtraNetworkedData(buffer);
-	}
+        this.readExtraNetworkedData(buffer);
+    }
 
-	@Override
-	public void handlePacketData(Side side, EntityPlayer player)
-	{
+    @Override
+    public void handlePacketData(Side side, EntityPlayer player)
+    {
 
-	}
+    }
 }

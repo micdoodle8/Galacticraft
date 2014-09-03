@@ -12,29 +12,29 @@ import net.minecraft.item.ItemStack;
 
 public class ItemBlockCheese extends ItemBlockDesc
 {
-	public ItemBlockCheese(Block par2Block)
-	{
-		super(par2Block);
-		this.setMaxStackSize(1);
-	}
+    public ItemBlockCheese(Block par2Block)
+    {
+        super(par2Block);
+        this.setMaxStackSize(1);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister iconRegister)
-	{
-		this.itemIcon = iconRegister.registerIcon("galacticraftmoon:cheese_block");
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister iconRegister)
+    {
+        this.itemIcon = iconRegister.registerIcon("galacticraftmoon:cheese_block");
+    }
 
-	@Override
-	public CreativeTabs getCreativeTab()
-	{
-		return GalacticraftCore.galacticraftBlocksTab;
-	}
+    @Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftCore.galacticraftBlocksTab;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack)
-	{
-		return ClientProxyCore.galacticraftItem;
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
 }

@@ -8,22 +8,22 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class BiomeDecoratorMars extends BiomeDecoratorSpace
 {
-	private WorldGenerator dirtGen;
-	private WorldGenerator deshGen;
-	private WorldGenerator tinGen;
-	private WorldGenerator copperGen;
-	private WorldGenerator ironGen;
-	private WorldGenerator iceGen;
+    private WorldGenerator dirtGen;
+    private WorldGenerator deshGen;
+    private WorldGenerator tinGen;
+    private WorldGenerator copperGen;
+    private WorldGenerator ironGen;
+    private WorldGenerator iceGen;
 
-	public BiomeDecoratorMars()
-	{
-		this.copperGen = new WorldGenMinableMeta(MarsBlocks.marsBlock, 4, 0, true, MarsBlocks.marsBlock, 9);
-		this.tinGen = new WorldGenMinableMeta(MarsBlocks.marsBlock, 4, 1, true, MarsBlocks.marsBlock, 9);
-		this.deshGen = new WorldGenMinableMeta(MarsBlocks.marsBlock, 6, 2, true, MarsBlocks.marsBlock, 9);
-		this.ironGen = new WorldGenMinableMeta(MarsBlocks.marsBlock, 8, 3, true, MarsBlocks.marsBlock, 9);
-		this.dirtGen = new WorldGenMinableMeta(MarsBlocks.marsBlock, 32, 6, true, MarsBlocks.marsBlock, 9);
-		this.iceGen = new WorldGenMinableMeta(Blocks.ice, 18, 0, true, MarsBlocks.marsBlock, 6);
-	}
+    public BiomeDecoratorMars()
+    {
+        this.copperGen = new WorldGenMinableMeta(MarsBlocks.marsBlock, 4, 0, true, MarsBlocks.marsBlock, 9);
+        this.tinGen = new WorldGenMinableMeta(MarsBlocks.marsBlock, 4, 1, true, MarsBlocks.marsBlock, 9);
+        this.deshGen = new WorldGenMinableMeta(MarsBlocks.marsBlock, 6, 2, true, MarsBlocks.marsBlock, 9);
+        this.ironGen = new WorldGenMinableMeta(MarsBlocks.marsBlock, 8, 3, true, MarsBlocks.marsBlock, 9);
+        this.dirtGen = new WorldGenMinableMeta(MarsBlocks.marsBlock, 32, 6, true, MarsBlocks.marsBlock, 9);
+        this.iceGen = new WorldGenMinableMeta(Blocks.ice, 18, 0, true, MarsBlocks.marsBlock, 6);
+    }
 
     @Override
     protected void decorate()

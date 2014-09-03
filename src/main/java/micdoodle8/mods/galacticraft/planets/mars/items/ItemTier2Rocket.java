@@ -28,180 +28,180 @@ import java.util.List;
 
 public class ItemTier2Rocket extends Item implements IHoldableItem
 {
-	public ItemTier2Rocket()
-	{
-		super();
-		this.setMaxDamage(0);
-		this.setHasSubtypes(true);
-		this.setMaxStackSize(1);
-	}
+    public ItemTier2Rocket()
+    {
+        super();
+        this.setMaxDamage(0);
+        this.setHasSubtypes(true);
+        this.setMaxStackSize(1);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack)
-	{
-		return ClientProxyCore.galacticraftItem;
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public CreativeTabs getCreativeTab()
-	{
-		return GalacticraftCore.galacticraftItemsTab;
-	}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftCore.galacticraftItemsTab;
+    }
 
-	@Override
-	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
-	{
-		int amountOfCorrectBlocks = 0;
+    @Override
+    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
+    {
+        int amountOfCorrectBlocks = 0;
 
-		if (par3World.isRemote)
-		{
-			return false;
-		}
-		else
-		{
-			float centerX = -1;
-			float centerY = -1;
-			float centerZ = -1;
-			int meta = par3World.getBlockMetadata(par4, par5, par6);
+        if (par3World.isRemote)
+        {
+            return false;
+        }
+        else
+        {
+            float centerX = -1;
+            float centerY = -1;
+            float centerZ = -1;
+            int meta = par3World.getBlockMetadata(par4, par5, par6);
 
-			for (int i = -1; i < 2; i++)
-			{
-				for (int j = -1; j < 2; j++)
-				{
-					final Block id = par3World.getBlock(par4 + i, par5, par6 + j);
+            for (int i = -1; i < 2; i++)
+            {
+                for (int j = -1; j < 2; j++)
+                {
+                    final Block id = par3World.getBlock(par4 + i, par5, par6 + j);
 
-					if (id == GCBlocks.landingPadFull && meta == 0)
-					{
-						amountOfCorrectBlocks = 9;
+                    if (id == GCBlocks.landingPadFull && meta == 0)
+                    {
+                        amountOfCorrectBlocks = 9;
 
-						centerX = par4 + i + 0.5F;
-						centerY = par5 - 2.2F;
-						centerZ = par6 + j + 0.5F;
-					}
-				}
-			}
+                        centerX = par4 + i + 0.5F;
+                        centerY = par5 - 2.2F;
+                        centerZ = par6 + j + 0.5F;
+                    }
+                }
+            }
 
-			if (amountOfCorrectBlocks == 9)
-			{
-				EntitySpaceshipBase rocket = null;
+            if (amountOfCorrectBlocks == 9)
+            {
+                EntitySpaceshipBase rocket = null;
 
-				if (par1ItemStack.getItemDamage() < 10)
-				{
-					rocket = new EntityTier2Rocket(par3World, centerX, centerY + 4.2D, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
-				}
-				else
-				{
-					rocket = new EntityCargoRocket(par3World, centerX, centerY + 4.2D - 1.6D, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage() - 10]);
-				}
+                if (par1ItemStack.getItemDamage() < 10)
+                {
+                    rocket = new EntityTier2Rocket(par3World, centerX, centerY + 4.2D, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
+                }
+                else
+                {
+                    rocket = new EntityCargoRocket(par3World, centerX, centerY + 4.2D - 1.6D, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage() - 10]);
+                }
 
-				par3World.spawnEntityInWorld(rocket);
+                par3World.spawnEntityInWorld(rocket);
 
-				if (!par2EntityPlayer.capabilities.isCreativeMode)
-				{
-					par1ItemStack.stackSize--;
+                if (!par2EntityPlayer.capabilities.isCreativeMode)
+                {
+                    par1ItemStack.stackSize--;
 
-					if (par1ItemStack.stackSize <= 0)
-					{
-						par1ItemStack = null;
-					}
-				}
+                    if (par1ItemStack.stackSize <= 0)
+                    {
+                        par1ItemStack = null;
+                    }
+                }
 
-				if (rocket instanceof IRocketType && ((IRocketType) rocket).getType().getPreFueled())
-				{
-					if (rocket instanceof EntityTieredRocket)
-					{
-						((EntityTieredRocket) rocket).fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, rocket.getMaxFuel()), true);
-					}
-					else if (rocket instanceof EntityCargoRocket)
-					{
-						((EntityCargoRocket) rocket).fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, rocket.getMaxFuel()), true);
-					}
-				}
-			}
-			else
-			{
-				return false;
-			}
-		}
-		return true;
-	}
+                if (rocket instanceof IRocketType && ((IRocketType) rocket).getType().getPreFueled())
+                {
+                    if (rocket instanceof EntityTieredRocket)
+                    {
+                        ((EntityTieredRocket) rocket).fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, rocket.getMaxFuel()), true);
+                    }
+                    else if (rocket instanceof EntityCargoRocket)
+                    {
+                        ((EntityCargoRocket) rocket).fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, rocket.getMaxFuel()), true);
+                    }
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-	{
-		for (int i = 0; i < EnumRocketType.values().length; i++)
-		{
-			par3List.add(new ItemStack(par1, 1, i));
-		}
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    {
+        for (int i = 0; i < EnumRocketType.values().length; i++)
+        {
+            par3List.add(new ItemStack(par1, 1, i));
+        }
 
-		for (int i = 11; i < 10 + EnumRocketType.values().length; i++)
-		{
-			par3List.add(new ItemStack(par1, 1, i));
-		}
-	}
+        for (int i = 11; i < 10 + EnumRocketType.values().length; i++)
+        {
+            par3List.add(new ItemStack(par1, 1, i));
+        }
+    }
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b)
-	{
-		EnumRocketType type = null;
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b)
+    {
+        EnumRocketType type = null;
 
-		if (par1ItemStack.getItemDamage() < 10)
-		{
-			type = EnumRocketType.values()[par1ItemStack.getItemDamage()];
-		}
-		else
-		{
-			type = EnumRocketType.values()[par1ItemStack.getItemDamage() - 10];
-		}
+        if (par1ItemStack.getItemDamage() < 10)
+        {
+            type = EnumRocketType.values()[par1ItemStack.getItemDamage()];
+        }
+        else
+        {
+            type = EnumRocketType.values()[par1ItemStack.getItemDamage() - 10];
+        }
 
-		if (!type.getTooltip().isEmpty())
-		{
-			par2List.add(type.getTooltip());
-		}
+        if (!type.getTooltip().isEmpty())
+        {
+            par2List.add(type.getTooltip());
+        }
 
-		if (type.getPreFueled())
-		{
-			par2List.add(EnumColor.RED + "\u00a7o" + GCCoreUtil.translate("gui.creativeOnly.desc"));
-		}
+        if (type.getPreFueled())
+        {
+            par2List.add(EnumColor.RED + "\u00a7o" + GCCoreUtil.translate("gui.creativeOnly.desc"));
+        }
 
-		if (par1ItemStack.getItemDamage() >= 10)
-		{
-			par2List.add(EnumColor.AQUA + GCCoreUtil.translate("gui.requiresController.desc"));
-		}
-	}
+        if (par1ItemStack.getItemDamage() >= 10)
+        {
+            par2List.add(EnumColor.AQUA + GCCoreUtil.translate("gui.requiresController.desc"));
+        }
+    }
 
-	@Override
-	public String getUnlocalizedName(ItemStack par1ItemStack)
-	{
-		return super.getUnlocalizedName(par1ItemStack) + (par1ItemStack.getItemDamage() < 10 ? ".t2Rocket" : ".cargoRocket");
-	}
+    @Override
+    public String getUnlocalizedName(ItemStack par1ItemStack)
+    {
+        return super.getUnlocalizedName(par1ItemStack) + (par1ItemStack.getItemDamage() < 10 ? ".t2Rocket" : ".cargoRocket");
+    }
 
-	@Override
-	public boolean shouldHoldLeftHandUp(EntityPlayer player)
-	{
-		return true;
-	}
+    @Override
+    public boolean shouldHoldLeftHandUp(EntityPlayer player)
+    {
+        return true;
+    }
 
-	@Override
-	public boolean shouldHoldRightHandUp(EntityPlayer player)
-	{
-		return true;
-	}
+    @Override
+    public boolean shouldHoldRightHandUp(EntityPlayer player)
+    {
+        return true;
+    }
 
-	@Override
-	public boolean shouldCrouch(EntityPlayer player)
-	{
-		return true;
-	}
+    @Override
+    public boolean shouldCrouch(EntityPlayer player)
+    {
+        return true;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IconRegister)
-	{
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister par1IconRegister)
+    {
+    }
 }

@@ -34,19 +34,19 @@ public class RecipeManagerAsteroids
         FurnaceRecipes.smelting().func_151394_a(new ItemStack(AsteroidsItems.basicItem, 1, 3), new ItemStack(Items.iron_ingot), 0.5F);
         FurnaceRecipes.smelting().func_151394_a(new ItemStack(AsteroidsItems.basicItem, 1, 4), new ItemStack(AsteroidsItems.basicItem, 1, 5), 0.5F);
 
-        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.heavyNoseCone, 1), new Object[]{" Y ", " X ", "X X", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 0), 'Y', Blocks.redstone_torch});
+        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.heavyNoseCone, 1), new Object[] { " Y ", " X ", "X X", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 0), 'Y', Blocks.redstone_torch });
 
-        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 7), new Object[]{" X ", "XYX", " X ", 'X', Blocks.wool, 'Y', Items.redstone});
+        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 7), new Object[] { " X ", "XYX", " X ", 'X', Blocks.wool, 'Y', Items.redstone });
 
-        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.thermalPadding, 1, 0), new Object[]{"XXX", "X X", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 7)});
-        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.thermalPadding, 1, 1), new Object[]{"X X", "XXX", "XXX", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 7)});
-        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.thermalPadding, 1, 2), new Object[]{"XXX", "X X", "X X", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 7)});
-        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.thermalPadding, 1, 3), new Object[]{"X X", "X X", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 7)});
+        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.thermalPadding, 1, 0), new Object[] { "XXX", "X X", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 7) });
+        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.thermalPadding, 1, 1), new Object[] { "X X", "XXX", "XXX", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 7) });
+        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.thermalPadding, 1, 2), new Object[] { "XXX", "X X", "X X", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 7) });
+        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.thermalPadding, 1, 3), new Object[] { "X X", "X X", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 7) });
 
-        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.titaniumHelmet, 1), new Object[]{"XXX", "X X", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6)});
-        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.titaniumChestplate, 1), new Object[]{"X X", "XXX", "XXX", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6)});
-        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.titaniumLeggings, 1), new Object[]{"XXX", "X X", "X X", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6)});
-        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.titaniumBoots, 1), new Object[]{"X X", "X X", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6)});
+        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.titaniumHelmet, 1), new Object[] { "XXX", "X X", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6) });
+        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.titaniumChestplate, 1), new Object[] { "X X", "XXX", "XXX", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6) });
+        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.titaniumLeggings, 1), new Object[] { "XXX", "X X", "X X", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6) });
+        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.titaniumBoots, 1), new Object[] { "X X", "X X", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6) });
 
         RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.titaniumPickaxe, 1), new Object[] { "YYY", " X ", " X ", 'Y', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'X', Items.stick });
         RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.titaniumAxe, 1), new Object[] { "YY ", "YX ", " X ", 'Y', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'X', Items.stick });
@@ -61,7 +61,7 @@ public class RecipeManagerAsteroids
         RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 1), new Object[] { "VY ", "XWX", "XZX", 'V', Blocks.stone_button, 'W', new ItemStack(GCItems.canister, 1, 0), 'X', new ItemStack(AsteroidsItems.basicItem, 1, 0), 'Y', Items.flint_and_steel, 'Z', GCItems.oxygenVent });
 
         RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 2), new Object[] { " Y ", "XYX", "X X", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 0), 'Y', new ItemStack(MarsItems.marsItemBasic, 1, 3) });
-        
+
         RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.grapple, 1), new Object[] { "  Z", "XZ ", "XX ", 'X', Items.iron_ingot, 'Z', Items.string });
 
         RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.atmosphericValve, 1, 0), new Object[] { "   ", "XYX", " X ", 'X', new ItemStack(MarsItems.marsItemBasic, 1, 2), 'Y', GCItems.oxygenVent });
@@ -91,7 +91,7 @@ public class RecipeManagerAsteroids
         }
 
         CompressorRecipes.addShapelessRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 0), new ItemStack(MarsItems.marsItemBasic, 1, 3), new ItemStack(MarsItems.marsItemBasic, 1, 5));
-        
+
         //All this is for NEI's benefit
         List<ItemStack> list1 = new ArrayList();
         List<ItemStack> list2 = new ArrayList();

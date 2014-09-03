@@ -16,89 +16,89 @@ import java.util.List;
 
 public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric
 {
-	protected IIcon[] icons = new IIcon[7];
-	private static HashMap<ItemStack, Integer> craftingvalues = new HashMap();
+    protected IIcon[] icons = new IIcon[7];
+    private static HashMap<ItemStack, Integer> craftingvalues = new HashMap();
 
-	public ItemCanisterLiquidOxygen(String assetName)
-	{
-		super(assetName);
-		this.setContainerItem(GCItems.oilCanister);
-		this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
-	}
+    public ItemCanisterLiquidOxygen(String assetName)
+    {
+        super(assetName);
+        this.setContainerItem(GCItems.oilCanister);
+        this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister iconRegister)
-	{
-		for (int i = 0; i < this.icons.length; i++)
-		{
-			this.icons[i] = iconRegister.registerIcon(this.getIconString() + "_" + i);
-		}
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister iconRegister)
+    {
+        for (int i = 0; i < this.icons.length; i++)
+        {
+            this.icons[i] = iconRegister.registerIcon(this.getIconString() + "_" + i);
+        }
+    }
 
-	@Override
-	public String getUnlocalizedName(ItemStack itemStack)
-	{
-		if (itemStack.getMaxDamage() - itemStack.getItemDamage() == 0)
-		{
-			return "item.emptyGasCanister";
-		}
+    @Override
+    public String getUnlocalizedName(ItemStack itemStack)
+    {
+        if (itemStack.getMaxDamage() - itemStack.getItemDamage() == 0)
+        {
+            return "item.emptyGasCanister";
+        }
 
-		if (itemStack.getItemDamage() == 1)
-		{
-			return "item.canister.LOX.full";
-		}
+        if (itemStack.getItemDamage() == 1)
+        {
+            return "item.canister.LOX.full";
+        }
 
-		return "item.canister.LOX.partial";
-	}
+        return "item.canister.LOX.partial";
+    }
 
-	@Override
-	public IIcon getIconFromDamage(int par1)
-	{
-		final int damage = 6 * par1 / this.getMaxDamage();
+    @Override
+    public IIcon getIconFromDamage(int par1)
+    {
+        final int damage = 6 * par1 / this.getMaxDamage();
 
-		if (this.icons.length > damage)
-		{
-			return this.icons[this.icons.length - damage - 1];
-		}
+        if (this.icons.length > damage)
+        {
+            return this.icons[this.icons.length - damage - 1];
+        }
 
-		return super.getIconFromDamage(damage);
-	}
+        return super.getIconFromDamage(damage);
+    }
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
-	{
-		if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() > 0)
-		{
-			par3List.add(GCCoreUtil.translate("item.canister.LOX.name") +  ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
-		}
-	}
-	
-	public static void saveDamage(ItemStack itemstack, int damage)
-	{
-		ItemCanisterLiquidOxygen.craftingvalues.put(itemstack, Integer.valueOf(damage));
-	}
-	
-	public ItemStack getContainerItem(ItemStack itemstack)
-	{
-		Integer saved = ItemCanisterLiquidOxygen.craftingvalues.get(itemstack); 
-		if (saved != null)
-		{
-			ItemCanisterLiquidOxygen.craftingvalues.remove(itemstack);
-			itemstack.setItemDamage(saved);
-			return itemstack;
-		}
-		
-		int content = itemstack.getMaxDamage() - itemstack.getItemDamage(); 
-		if (content < 250)
-		{
-			content = 250;	
-		}
-			
-		itemstack.setItemDamage(itemstack.getMaxDamage() - (content - 250));	
-			
-		return itemstack;
-	}
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+    {
+        if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() > 0)
+        {
+            par3List.add(GCCoreUtil.translate("item.canister.LOX.name") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
+        }
+    }
+
+    public static void saveDamage(ItemStack itemstack, int damage)
+    {
+        ItemCanisterLiquidOxygen.craftingvalues.put(itemstack, Integer.valueOf(damage));
+    }
+
+    public ItemStack getContainerItem(ItemStack itemstack)
+    {
+        Integer saved = ItemCanisterLiquidOxygen.craftingvalues.get(itemstack);
+        if (saved != null)
+        {
+            ItemCanisterLiquidOxygen.craftingvalues.remove(itemstack);
+            itemstack.setItemDamage(saved);
+            return itemstack;
+        }
+
+        int content = itemstack.getMaxDamage() - itemstack.getItemDamage();
+        if (content < 250)
+        {
+            content = 250;
+        }
+
+        itemstack.setItemDamage(itemstack.getMaxDamage() - (content - 250));
+
+        return itemstack;
+    }
 }

@@ -49,71 +49,71 @@ import java.util.List;
 
 public class MarsModule implements IPlanetsModule
 {
-	public static final String ASSET_PREFIX = "galacticraftmars";
-	public static final String TEXTURE_PREFIX = MarsModule.ASSET_PREFIX + ":";
+    public static final String ASSET_PREFIX = "galacticraftmars";
+    public static final String TEXTURE_PREFIX = MarsModule.ASSET_PREFIX + ":";
 
-	public static Fluid SLUDGE;
+    public static Fluid SLUDGE;
 
-	public static Planet planetMars;
+    public static Planet planetMars;
 
-	@Override
-	public void preInit(FMLPreInitializationEvent event)
-	{
-		MinecraftForge.EVENT_BUS.register(new EventHandlerMars());
-		new ConfigManagerMars(new File(event.getModConfigurationDirectory(), "Galacticraft/mars.conf"));
+    @Override
+    public void preInit(FMLPreInitializationEvent event)
+    {
+        MinecraftForge.EVENT_BUS.register(new EventHandlerMars());
+        new ConfigManagerMars(new File(event.getModConfigurationDirectory(), "Galacticraft/mars.conf"));
 
-		MarsModule.SLUDGE = new Fluid("bacterialsludge").setViscosity(3000);
-		if (!FluidRegistry.registerFluid(MarsModule.SLUDGE))
-		{
-			GCLog.info("\"bacterialsludge\" has already been registered as a fluid, ignoring...");
-		}
+        MarsModule.SLUDGE = new Fluid("bacterialsludge").setViscosity(3000);
+        if (!FluidRegistry.registerFluid(MarsModule.SLUDGE))
+        {
+            GCLog.info("\"bacterialsludge\" has already been registered as a fluid, ignoring...");
+        }
 
-		MarsBlocks.initBlocks();
-		MarsBlocks.registerBlocks();
-		MarsBlocks.setHarvestLevels();
+        MarsBlocks.initBlocks();
+        MarsBlocks.registerBlocks();
+        MarsBlocks.setHarvestLevels();
 
-		MarsModule.SLUDGE.setBlock(MarsBlocks.blockSludge);
+        MarsModule.SLUDGE.setBlock(MarsBlocks.blockSludge);
 
-		MarsItems.initItems();
-	}
+        MarsItems.initItems();
+    }
 
-	@Override
-	public void init(FMLInitializationEvent event)
-	{
-		SchematicRegistry.registerSchematicRecipe(new SchematicTier2Rocket());
-		SchematicRegistry.registerSchematicRecipe(new SchematicCargoRocket());
+    @Override
+    public void init(FMLInitializationEvent event)
+    {
+        SchematicRegistry.registerSchematicRecipe(new SchematicTier2Rocket());
+        SchematicRegistry.registerSchematicRecipe(new SchematicCargoRocket());
 
-		GalacticraftCore.packetPipeline.addDiscriminator(6, PacketSimpleMars.class);
+        GalacticraftCore.packetPipeline.addDiscriminator(6, PacketSimpleMars.class);
 
-		this.registerTileEntities();
-		this.registerCreatures();
-		this.registerOtherEntities();
+        this.registerTileEntities();
+        this.registerCreatures();
+        this.registerOtherEntities();
 
-		MarsModule.planetMars = (Planet) new Planet("mars").setParentSolarSystem(GalacticraftCore.solarSystemSol).setRingColorRGB(0.67F, 0.1F, 0.1F).setPhaseShift(0.1667F).setRelativeSize(0.5319F).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(1.25F, 1.25F)).setRelativeOrbitTime(1.8811610076670317634173055859803F);
-		MarsModule.planetMars.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/mars.png"));
-		MarsModule.planetMars.setDimensionInfo(ConfigManagerMars.dimensionIDMars, WorldProviderMars.class).setTierRequired(2);
-		MarsModule.planetMars.atmosphereComponent(IAtmosphericGas.CO2).atmosphereComponent(IAtmosphericGas.ARGON).atmosphereComponent(IAtmosphericGas.NITROGEN);
+        MarsModule.planetMars = (Planet) new Planet("mars").setParentSolarSystem(GalacticraftCore.solarSystemSol).setRingColorRGB(0.67F, 0.1F, 0.1F).setPhaseShift(0.1667F).setRelativeSize(0.5319F).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(1.25F, 1.25F)).setRelativeOrbitTime(1.8811610076670317634173055859803F);
+        MarsModule.planetMars.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/mars.png"));
+        MarsModule.planetMars.setDimensionInfo(ConfigManagerMars.dimensionIDMars, WorldProviderMars.class).setTierRequired(2);
+        MarsModule.planetMars.atmosphereComponent(IAtmosphericGas.CO2).atmosphereComponent(IAtmosphericGas.ARGON).atmosphereComponent(IAtmosphericGas.NITROGEN);
 
-		GalaxyRegistry.registerPlanet(MarsModule.planetMars);
-		GalacticraftRegistry.registerTeleportType(WorldProviderMars.class, new TeleportTypeMars());
-		GalacticraftRegistry.registerRocketGui(WorldProviderMars.class, new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/marsRocketGui.png"));
-		GalacticraftRegistry.addDungeonLoot(2, new ItemStack(MarsItems.schematic, 1, 0));
-		GalacticraftRegistry.addDungeonLoot(2, new ItemStack(MarsItems.schematic, 1, 1));
+        GalaxyRegistry.registerPlanet(MarsModule.planetMars);
+        GalacticraftRegistry.registerTeleportType(WorldProviderMars.class, new TeleportTypeMars());
+        GalacticraftRegistry.registerRocketGui(WorldProviderMars.class, new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/marsRocketGui.png"));
+        GalacticraftRegistry.addDungeonLoot(2, new ItemStack(MarsItems.schematic, 1, 0));
+        GalacticraftRegistry.addDungeonLoot(2, new ItemStack(MarsItems.schematic, 1, 1));
 
-		CompressorRecipes.addShapelessRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 3), new ItemStack(GCItems.heavyPlatingTier1), new ItemStack(GCItems.meteoricIronIngot, 1, 1));
-		CompressorRecipes.addShapelessRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 5), new ItemStack(MarsItems.marsItemBasic, 1, 2));
-	}
+        CompressorRecipes.addShapelessRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 3), new ItemStack(GCItems.heavyPlatingTier1), new ItemStack(GCItems.meteoricIronIngot, 1, 1));
+        CompressorRecipes.addShapelessRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 5), new ItemStack(MarsItems.marsItemBasic, 1, 2));
+    }
 
-	@Override
-	public void postInit(FMLPostInitializationEvent event)
-	{
-		RecipeManagerMars.loadRecipes();
-	}
+    @Override
+    public void postInit(FMLPostInitializationEvent event)
+    {
+        RecipeManagerMars.loadRecipes();
+    }
 
-	@Override
-	public void serverStarting(FMLServerStartingEvent event)
-	{
-	}
+    @Override
+    public void serverStarting(FMLServerStartingEvent event)
+    {
+    }
 
     @Override
     public void serverInit(FMLServerStartedEvent event)
@@ -121,83 +121,83 @@ public class MarsModule implements IPlanetsModule
 
     }
 
-	public void registerTileEntities()
-	{
-		GameRegistry.registerTileEntity(TileEntitySlimelingEgg.class, "Slimeling Egg");
-		GameRegistry.registerTileEntity(TileEntityTreasureChestMars.class, "Tier 2 Treasure Chest");
-		GameRegistry.registerTileEntity(TileEntityTerraformer.class, "Planet Terraformer");
-		GameRegistry.registerTileEntity(TileEntityCryogenicChamber.class, "Cryogenic Chamber");
-		GameRegistry.registerTileEntity(TileEntityGasLiquefier.class, "Gas Liquefier");
-		GameRegistry.registerTileEntity(TileEntityMethaneSynthesizer.class, "Methane Synthesizer");
-		GameRegistry.registerTileEntity(TileEntityElectrolyzer.class, "Water Electrolyzer");
-		GameRegistry.registerTileEntity(TileEntityDungeonSpawnerMars.class, "Mars Dungeon Spawner");
-		GameRegistry.registerTileEntity(TileEntityLaunchController.class, "Launch Controller");
-	}
+    public void registerTileEntities()
+    {
+        GameRegistry.registerTileEntity(TileEntitySlimelingEgg.class, "Slimeling Egg");
+        GameRegistry.registerTileEntity(TileEntityTreasureChestMars.class, "Tier 2 Treasure Chest");
+        GameRegistry.registerTileEntity(TileEntityTerraformer.class, "Planet Terraformer");
+        GameRegistry.registerTileEntity(TileEntityCryogenicChamber.class, "Cryogenic Chamber");
+        GameRegistry.registerTileEntity(TileEntityGasLiquefier.class, "Gas Liquefier");
+        GameRegistry.registerTileEntity(TileEntityMethaneSynthesizer.class, "Methane Synthesizer");
+        GameRegistry.registerTileEntity(TileEntityElectrolyzer.class, "Water Electrolyzer");
+        GameRegistry.registerTileEntity(TileEntityDungeonSpawnerMars.class, "Mars Dungeon Spawner");
+        GameRegistry.registerTileEntity(TileEntityLaunchController.class, "Launch Controller");
+    }
 
-	public void registerCreatures()
-	{
-		this.registerGalacticraftCreature(EntitySludgeling.class, "Sludgeling", ConfigManagerMars.idEntitySludgeling, GCCoreUtil.to32BitColor(255, 0, 50, 0), GCCoreUtil.to32BitColor(255, 0, 150, 0));
-		this.registerGalacticraftCreature(EntitySlimeling.class, "Slimeling", ConfigManagerMars.idEntitySlimeling, GCCoreUtil.to32BitColor(255, 0, 50, 0), GCCoreUtil.to32BitColor(255, 0, 150, 0));
-		this.registerGalacticraftCreature(EntityCreeperBoss.class, "CreeperBoss", ConfigManagerMars.idEntityCreeperBoss, GCCoreUtil.to32BitColor(255, 0, 50, 0), GCCoreUtil.to32BitColor(255, 0, 150, 0));
-	}
+    public void registerCreatures()
+    {
+        this.registerGalacticraftCreature(EntitySludgeling.class, "Sludgeling", ConfigManagerMars.idEntitySludgeling, GCCoreUtil.to32BitColor(255, 0, 50, 0), GCCoreUtil.to32BitColor(255, 0, 150, 0));
+        this.registerGalacticraftCreature(EntitySlimeling.class, "Slimeling", ConfigManagerMars.idEntitySlimeling, GCCoreUtil.to32BitColor(255, 0, 50, 0), GCCoreUtil.to32BitColor(255, 0, 150, 0));
+        this.registerGalacticraftCreature(EntityCreeperBoss.class, "CreeperBoss", ConfigManagerMars.idEntityCreeperBoss, GCCoreUtil.to32BitColor(255, 0, 50, 0), GCCoreUtil.to32BitColor(255, 0, 150, 0));
+    }
 
-	public void registerOtherEntities()
-	{
-		this.registerGalacticraftNonMobEntity(EntityTier2Rocket.class, "SpaceshipT2", ConfigManagerMars.idEntitySpaceshipTier2, 150, 1, false);
-		this.registerGalacticraftNonMobEntity(EntityTerraformBubble.class, "TerraformBubble", ConfigManagerMars.idEntityTerraformBubble, 150, 20, false);
-		this.registerGalacticraftNonMobEntity(EntityProjectileTNT.class, "ProjectileTNT", ConfigManagerMars.idEntityProjectileTNT, 150, 1, true);
-		this.registerGalacticraftNonMobEntity(EntityLandingBalloons.class, "LandingBalloons", ConfigManagerMars.idEntityLandingBalloons, 150, 5, true);
-		this.registerGalacticraftNonMobEntity(EntityCargoRocket.class, "CargoRocket", ConfigManagerMars.idEntityCargoRocket, 150, 1, false);
-	}
+    public void registerOtherEntities()
+    {
+        this.registerGalacticraftNonMobEntity(EntityTier2Rocket.class, "SpaceshipT2", ConfigManagerMars.idEntitySpaceshipTier2, 150, 1, false);
+        this.registerGalacticraftNonMobEntity(EntityTerraformBubble.class, "TerraformBubble", ConfigManagerMars.idEntityTerraformBubble, 150, 20, false);
+        this.registerGalacticraftNonMobEntity(EntityProjectileTNT.class, "ProjectileTNT", ConfigManagerMars.idEntityProjectileTNT, 150, 1, true);
+        this.registerGalacticraftNonMobEntity(EntityLandingBalloons.class, "LandingBalloons", ConfigManagerMars.idEntityLandingBalloons, 150, 5, true);
+        this.registerGalacticraftNonMobEntity(EntityCargoRocket.class, "CargoRocket", ConfigManagerMars.idEntityCargoRocket, 150, 1, false);
+    }
 
-	public void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int id, int back, int fore)
-	{
-		EntityRegistry.registerGlobalEntityID(var0, var1, id, back, fore);
-		EntityRegistry.registerModEntity(var0, var1, id, GalacticraftPlanets.instance, 80, 3, true);
-	}
+    public void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int id, int back, int fore)
+    {
+        EntityRegistry.registerGlobalEntityID(var0, var1, id, back, fore);
+        EntityRegistry.registerModEntity(var0, var1, id, GalacticraftPlanets.instance, 80, 3, true);
+    }
 
-	public void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int id, int trackingDistance, int updateFreq, boolean sendVel)
-	{
-		EntityList.addMapping(var0, var1, id);
-		EntityRegistry.registerModEntity(var0, var1, id, GalacticraftPlanets.instance, trackingDistance, updateFreq, sendVel);
-	}
+    public void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int id, int trackingDistance, int updateFreq, boolean sendVel)
+    {
+        EntityList.addMapping(var0, var1, id);
+        EntityRegistry.registerModEntity(var0, var1, id, GalacticraftPlanets.instance, trackingDistance, updateFreq, sendVel);
+    }
 
-	@Override
-	public void getGuiIDs(List<Integer> idList)
-	{
-		idList.add(GuiIdsPlanets.MACHINE_MARS);
-	}
+    @Override
+    public void getGuiIDs(List<Integer> idList)
+    {
+        idList.add(GuiIdsPlanets.MACHINE_MARS);
+    }
 
-	@Override
-	public Object getGuiElement(Side side, int ID, EntityPlayer player, World world, int x, int y, int z)
-	{
-		if (side == Side.SERVER)
-		{
-			TileEntity tile = world.getTileEntity(x, y, z);
+    @Override
+    public Object getGuiElement(Side side, int ID, EntityPlayer player, World world, int x, int y, int z)
+    {
+        if (side == Side.SERVER)
+        {
+            TileEntity tile = world.getTileEntity(x, y, z);
 
-			if (ID == GuiIdsPlanets.MACHINE_MARS)
-			{
-				if (tile instanceof TileEntityTerraformer)
-				{
-					return new ContainerTerraformer(player.inventory, (TileEntityTerraformer) tile);
-				}
-				else if (tile instanceof TileEntityLaunchController)
-				{
-					return new ContainerLaunchController(player.inventory, (TileEntityLaunchController) tile);
-				}
-				else if (tile instanceof TileEntityGasLiquefier)
-				{
-					return new ContainerGasLiquefier(player.inventory, (TileEntityGasLiquefier) tile);
-				}
-				else if (tile instanceof TileEntityMethaneSynthesizer)
-				{
-					return new ContainerMethaneSynthesizer(player.inventory, (TileEntityMethaneSynthesizer) tile);
-				}
-			}
-		}
+            if (ID == GuiIdsPlanets.MACHINE_MARS)
+            {
+                if (tile instanceof TileEntityTerraformer)
+                {
+                    return new ContainerTerraformer(player.inventory, (TileEntityTerraformer) tile);
+                }
+                else if (tile instanceof TileEntityLaunchController)
+                {
+                    return new ContainerLaunchController(player.inventory, (TileEntityLaunchController) tile);
+                }
+                else if (tile instanceof TileEntityGasLiquefier)
+                {
+                    return new ContainerGasLiquefier(player.inventory, (TileEntityGasLiquefier) tile);
+                }
+                else if (tile instanceof TileEntityMethaneSynthesizer)
+                {
+                    return new ContainerMethaneSynthesizer(player.inventory, (TileEntityMethaneSynthesizer) tile);
+                }
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
     @Override
     public Configuration getConfiguration()

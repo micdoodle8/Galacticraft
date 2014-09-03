@@ -18,165 +18,159 @@ import java.util.Map;
 
 public class GalacticraftRegistry
 {
-	private static Map<Class<? extends WorldProvider>, ITeleportType> teleportTypeMap = new HashMap<Class<? extends WorldProvider>, ITeleportType>();
-	private static List<SpaceStationType> spaceStations = new ArrayList<SpaceStationType>();
-	private static List<INasaWorkbenchRecipe> rocketBenchT1Recipes = new ArrayList<INasaWorkbenchRecipe>();
-	private static List<INasaWorkbenchRecipe> buggyBenchRecipes = new ArrayList<INasaWorkbenchRecipe>();
-	private static List<INasaWorkbenchRecipe> rocketBenchT2Recipes = new ArrayList<INasaWorkbenchRecipe>();
-	private static List<INasaWorkbenchRecipe> cargoRocketRecipes = new ArrayList<INasaWorkbenchRecipe>();
+    private static Map<Class<? extends WorldProvider>, ITeleportType> teleportTypeMap = new HashMap<Class<? extends WorldProvider>, ITeleportType>();
+    private static List<SpaceStationType> spaceStations = new ArrayList<SpaceStationType>();
+    private static List<INasaWorkbenchRecipe> rocketBenchT1Recipes = new ArrayList<INasaWorkbenchRecipe>();
+    private static List<INasaWorkbenchRecipe> buggyBenchRecipes = new ArrayList<INasaWorkbenchRecipe>();
+    private static List<INasaWorkbenchRecipe> rocketBenchT2Recipes = new ArrayList<INasaWorkbenchRecipe>();
+    private static List<INasaWorkbenchRecipe> cargoRocketRecipes = new ArrayList<INasaWorkbenchRecipe>();
     private static List<INasaWorkbenchRecipe> rocketBenchT3Recipes = new ArrayList<INasaWorkbenchRecipe>();
-	private static Map<Class<? extends WorldProvider>, ResourceLocation> rocketGuiMap = new HashMap<Class<? extends WorldProvider>, ResourceLocation>();
-	private static Map<Integer, List<ItemStack>> dungeonLootMap = new HashMap<Integer, List<ItemStack>>();
+    private static Map<Class<? extends WorldProvider>, ResourceLocation> rocketGuiMap = new HashMap<Class<? extends WorldProvider>, ResourceLocation>();
+    private static Map<Integer, List<ItemStack>> dungeonLootMap = new HashMap<Integer, List<ItemStack>>();
 
-	/**
-	 * Register a new Teleport type for the world provider passed
-	 * 
-	 * @param clazz
-	 *            the world provider class that you wish to customize
-	 *            teleportation for
-	 * @param type
-	 *            an ITeleportType-implemented class that will be used for the
-	 *            provided world type
-	 */
-	public static void registerTeleportType(Class<? extends WorldProvider> clazz, ITeleportType type)
-	{
-		if (!GalacticraftRegistry.teleportTypeMap.containsKey(clazz))
-		{
-			GalacticraftRegistry.teleportTypeMap.put(clazz, type);
-		}
-	}
+    /**
+     * Register a new Teleport type for the world provider passed
+     *
+     * @param clazz the world provider class that you wish to customize
+     *              teleportation for
+     * @param type  an ITeleportType-implemented class that will be used for the
+     *              provided world type
+     */
+    public static void registerTeleportType(Class<? extends WorldProvider> clazz, ITeleportType type)
+    {
+        if (!GalacticraftRegistry.teleportTypeMap.containsKey(clazz))
+        {
+            GalacticraftRegistry.teleportTypeMap.put(clazz, type);
+        }
+    }
 
-	/**
-	 * Link a world provider to a gui texture. This texture will be shown on the
-	 * left-side of the screen while the player is in the rocket.
-	 * 
-	 * @param clazz
-	 *            The World Provider class
-	 * @param rocketGui
-	 *            Resource Location for the gui texture
-	 */
-	public static void registerRocketGui(Class<? extends WorldProvider> clazz, ResourceLocation rocketGui)
-	{
-		if (!GalacticraftRegistry.rocketGuiMap.containsKey(clazz))
-		{
-			GalacticraftRegistry.rocketGuiMap.put(clazz, rocketGui);
-		}
-	}
+    /**
+     * Link a world provider to a gui texture. This texture will be shown on the
+     * left-side of the screen while the player is in the rocket.
+     *
+     * @param clazz     The World Provider class
+     * @param rocketGui Resource Location for the gui texture
+     */
+    public static void registerRocketGui(Class<? extends WorldProvider> clazz, ResourceLocation rocketGui)
+    {
+        if (!GalacticraftRegistry.rocketGuiMap.containsKey(clazz))
+        {
+            GalacticraftRegistry.rocketGuiMap.put(clazz, rocketGui);
+        }
+    }
 
-	/**
-	 * Add loot to the list of items that can possibly spawn in dungeon chests,
-	 * but it is guaranteed that one will always spawn
-	 * 
-	 * @param tier
-	 *            Tier of dungeon chest to add loot to. For example Moon is 1
-	 *            and Mars is 2
-	 * @param loot
-	 *            The itemstack to add to the possible list of items
-	 */
-	public static void addDungeonLoot(int tier, ItemStack loot)
-	{
-		List<ItemStack> dungeonStacks = null;
+    /**
+     * Add loot to the list of items that can possibly spawn in dungeon chests,
+     * but it is guaranteed that one will always spawn
+     *
+     * @param tier Tier of dungeon chest to add loot to. For example Moon is 1
+     *             and Mars is 2
+     * @param loot The itemstack to add to the possible list of items
+     */
+    public static void addDungeonLoot(int tier, ItemStack loot)
+    {
+        List<ItemStack> dungeonStacks = null;
 
-		if (GalacticraftRegistry.dungeonLootMap.containsKey(tier))
-		{
-			dungeonStacks = GalacticraftRegistry.dungeonLootMap.get(tier);
-			dungeonStacks.add(loot);
-		}
-		else
-		{
-			dungeonStacks = new ArrayList<ItemStack>();
-			dungeonStacks.add(loot);
-		}
+        if (GalacticraftRegistry.dungeonLootMap.containsKey(tier))
+        {
+            dungeonStacks = GalacticraftRegistry.dungeonLootMap.get(tier);
+            dungeonStacks.add(loot);
+        }
+        else
+        {
+            dungeonStacks = new ArrayList<ItemStack>();
+            dungeonStacks.add(loot);
+        }
 
-		GalacticraftRegistry.dungeonLootMap.put(tier, dungeonStacks);
-	}
+        GalacticraftRegistry.dungeonLootMap.put(tier, dungeonStacks);
+    }
 
-	public static void addT1RocketRecipe(INasaWorkbenchRecipe recipe)
-	{
-		GalacticraftRegistry.rocketBenchT1Recipes.add(recipe);
-	}
+    public static void addT1RocketRecipe(INasaWorkbenchRecipe recipe)
+    {
+        GalacticraftRegistry.rocketBenchT1Recipes.add(recipe);
+    }
 
-	public static void addT2RocketRecipe(INasaWorkbenchRecipe recipe)
-	{
-		GalacticraftRegistry.rocketBenchT2Recipes.add(recipe);
-	}
+    public static void addT2RocketRecipe(INasaWorkbenchRecipe recipe)
+    {
+        GalacticraftRegistry.rocketBenchT2Recipes.add(recipe);
+    }
 
     public static void addT3RocketRecipe(INasaWorkbenchRecipe recipe)
     {
         GalacticraftRegistry.rocketBenchT3Recipes.add(recipe);
     }
 
-	public static void addCargoRocketRecipe(INasaWorkbenchRecipe recipe)
-	{
-		GalacticraftRegistry.cargoRocketRecipes.add(recipe);
-	}
+    public static void addCargoRocketRecipe(INasaWorkbenchRecipe recipe)
+    {
+        GalacticraftRegistry.cargoRocketRecipes.add(recipe);
+    }
 
-	public static void addMoonBuggyRecipe(INasaWorkbenchRecipe recipe)
-	{
-		GalacticraftRegistry.buggyBenchRecipes.add(recipe);
-	}
+    public static void addMoonBuggyRecipe(INasaWorkbenchRecipe recipe)
+    {
+        GalacticraftRegistry.buggyBenchRecipes.add(recipe);
+    }
 
-	public static ITeleportType getTeleportTypeForDimension(Class<? extends WorldProvider> clazz)
-	{
-		if (!IGalacticraftWorldProvider.class.isAssignableFrom(clazz))
-		{
-			clazz = WorldProviderSurface.class;
-		}
-		return GalacticraftRegistry.teleportTypeMap.get(clazz);
-	}
+    public static ITeleportType getTeleportTypeForDimension(Class<? extends WorldProvider> clazz)
+    {
+        if (!IGalacticraftWorldProvider.class.isAssignableFrom(clazz))
+        {
+            clazz = WorldProviderSurface.class;
+        }
+        return GalacticraftRegistry.teleportTypeMap.get(clazz);
+    }
 
-	public static void registerSpaceStation(SpaceStationType type)
-	{
-		GalacticraftRegistry.spaceStations.add(type);
-	}
+    public static void registerSpaceStation(SpaceStationType type)
+    {
+        GalacticraftRegistry.spaceStations.add(type);
+    }
 
-	public SpaceStationType getTypeFromPlanetID(int planetID)
-	{
-		return GalacticraftRegistry.spaceStations.get(planetID);
-	}
+    public SpaceStationType getTypeFromPlanetID(int planetID)
+    {
+        return GalacticraftRegistry.spaceStations.get(planetID);
+    }
 
-	public static List<SpaceStationType> getSpaceStationData()
-	{
-		return GalacticraftRegistry.spaceStations;
-	}
+    public static List<SpaceStationType> getSpaceStationData()
+    {
+        return GalacticraftRegistry.spaceStations;
+    }
 
-	public static List<INasaWorkbenchRecipe> getRocketT1Recipes()
-	{
-		return GalacticraftRegistry.rocketBenchT1Recipes;
-	}
+    public static List<INasaWorkbenchRecipe> getRocketT1Recipes()
+    {
+        return GalacticraftRegistry.rocketBenchT1Recipes;
+    }
 
-	public static List<INasaWorkbenchRecipe> getRocketT2Recipes()
-	{
-		return GalacticraftRegistry.rocketBenchT2Recipes;
-	}
+    public static List<INasaWorkbenchRecipe> getRocketT2Recipes()
+    {
+        return GalacticraftRegistry.rocketBenchT2Recipes;
+    }
 
     public static List<INasaWorkbenchRecipe> getRocketT3Recipes()
     {
         return GalacticraftRegistry.rocketBenchT3Recipes;
     }
 
-	public static List<INasaWorkbenchRecipe> getCargoRocketRecipes()
-	{
-		return GalacticraftRegistry.cargoRocketRecipes;
-	}
+    public static List<INasaWorkbenchRecipe> getCargoRocketRecipes()
+    {
+        return GalacticraftRegistry.cargoRocketRecipes;
+    }
 
-	public static List<INasaWorkbenchRecipe> getBuggyBenchRecipes()
-	{
-		return GalacticraftRegistry.buggyBenchRecipes;
-	}
+    public static List<INasaWorkbenchRecipe> getBuggyBenchRecipes()
+    {
+        return GalacticraftRegistry.buggyBenchRecipes;
+    }
 
-	@SideOnly(Side.CLIENT)
-	public static ResourceLocation getResouceLocationForDimension(Class<? extends WorldProvider> clazz)
-	{
-		if (!IGalacticraftWorldProvider.class.isAssignableFrom(clazz))
-		{
-			clazz = WorldProviderSurface.class;
-		}
-		return GalacticraftRegistry.rocketGuiMap.get(clazz);
-	}
+    @SideOnly(Side.CLIENT)
+    public static ResourceLocation getResouceLocationForDimension(Class<? extends WorldProvider> clazz)
+    {
+        if (!IGalacticraftWorldProvider.class.isAssignableFrom(clazz))
+        {
+            clazz = WorldProviderSurface.class;
+        }
+        return GalacticraftRegistry.rocketGuiMap.get(clazz);
+    }
 
-	public static List<ItemStack> getDungeonLoot(int tier)
-	{
-		return GalacticraftRegistry.dungeonLootMap.get(tier);
-	}
+    public static List<ItemStack> getDungeonLoot(int tier)
+    {
+        return GalacticraftRegistry.dungeonLootMap.get(tier);
+    }
 }

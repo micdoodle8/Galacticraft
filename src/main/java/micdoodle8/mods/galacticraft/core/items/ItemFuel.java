@@ -11,23 +11,23 @@ import net.minecraft.item.ItemStack;
 
 public class ItemFuel extends Item
 {
-	public ItemFuel(String assetName)
-	{
-		super();
-		this.setUnlocalizedName(assetName);
-	}
+    public ItemFuel(String assetName)
+    {
+        super();
+        this.setUnlocalizedName(assetName);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IconRegister)
-	{
-		this.itemIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "fuel_flow");
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister par1IconRegister)
+    {
+        this.itemIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "fuel_flow");
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack)
-	{
-		return ClientProxyCore.galacticraftItem;
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
 }

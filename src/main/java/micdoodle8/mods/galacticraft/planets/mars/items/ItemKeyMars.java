@@ -17,79 +17,79 @@ import java.util.List;
 
 public class ItemKeyMars extends Item implements IKeyItem
 {
-	public static String[] keyTypes = new String[] { "T2" };
-	public IIcon[] keyIcons = new IIcon[1];
+    public static String[] keyTypes = new String[] { "T2" };
+    public IIcon[] keyIcons = new IIcon[1];
 
-	public ItemKeyMars()
-	{
-		super();
-		this.setMaxStackSize(1);
-		this.setMaxDamage(0);
-		this.setHasSubtypes(true);
-	}
+    public ItemKeyMars()
+    {
+        super();
+        this.setMaxStackSize(1);
+        this.setMaxDamage(0);
+        this.setHasSubtypes(true);
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public CreativeTabs getCreativeTab()
-	{
-		return GalacticraftCore.galacticraftItemsTab;
-	}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftCore.galacticraftItemsTab;
+    }
 
-	@Override
-	public String getUnlocalizedName(ItemStack itemStack)
-	{
-		return "item." + "key." + ItemKeyMars.keyTypes[itemStack.getItemDamage()];
-	}
+    @Override
+    public String getUnlocalizedName(ItemStack itemStack)
+    {
+        return "item." + "key." + ItemKeyMars.keyTypes[itemStack.getItemDamage()];
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack)
-	{
-		return ClientProxyCore.galacticraftItem;
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister iconRegister)
-	{
-		int i = 0;
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister iconRegister)
+    {
+        int i = 0;
 
-		for (final String name : ItemKeyMars.keyTypes)
-		{
-			this.keyIcons[i++] = iconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "key_" + name);
-		}
-	}
+        for (final String name : ItemKeyMars.keyTypes)
+        {
+            this.keyIcons[i++] = iconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "key_" + name);
+        }
+    }
 
-	@Override
-	public IIcon getIconFromDamage(int damage)
-	{
-		if (this.keyIcons.length > damage)
-		{
-			return this.keyIcons[damage];
-		}
+    @Override
+    public IIcon getIconFromDamage(int damage)
+    {
+        if (this.keyIcons.length > damage)
+        {
+            return this.keyIcons[damage];
+        }
 
-		return super.getIconFromDamage(damage);
-	}
+        return super.getIconFromDamage(damage);
+    }
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-	{
-		for (int i = 0; i < ItemKeyMars.keyTypes.length; i++)
-		{
-			par3List.add(new ItemStack(par1, 1, i));
-		}
-	}
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    {
+        for (int i = 0; i < ItemKeyMars.keyTypes.length; i++)
+        {
+            par3List.add(new ItemStack(par1, 1, i));
+        }
+    }
 
-	@Override
-	public int getMetadata(int par1)
-	{
-		return par1;
-	}
+    @Override
+    public int getMetadata(int par1)
+    {
+        return par1;
+    }
 
-	@Override
-	public int getTier(ItemStack keyStack)
-	{
-		return 2;
-	}
+    @Override
+    public int getTier(ItemStack keyStack)
+    {
+        return 2;
+    }
 }

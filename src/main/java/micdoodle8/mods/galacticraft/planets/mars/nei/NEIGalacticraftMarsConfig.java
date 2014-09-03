@@ -21,12 +21,12 @@ public class NEIGalacticraftMarsConfig implements IConfigureNEI
 {
     private static HashMap<ArrayList<PositionedStack>, PositionedStack> rocketBenchRecipes = new HashMap<ArrayList<PositionedStack>, PositionedStack>();
     private static HashMap<ArrayList<PositionedStack>, PositionedStack> cargoBenchRecipes = new HashMap<ArrayList<PositionedStack>, PositionedStack>();
-	private static HashMap<PositionedStack, PositionedStack> liquefierRecipes = new HashMap<PositionedStack, PositionedStack>();
-	private static HashMap<PositionedStack, PositionedStack> synthesizerRecipes = new HashMap<PositionedStack, PositionedStack>();
-	
-	@Override
-	public void loadConfig()
-	{
+    private static HashMap<PositionedStack, PositionedStack> liquefierRecipes = new HashMap<PositionedStack, PositionedStack>();
+    private static HashMap<PositionedStack, PositionedStack> synthesizerRecipes = new HashMap<PositionedStack, PositionedStack>();
+
+    @Override
+    public void loadConfig()
+    {
         this.registerRecipes();
         API.registerRecipeHandler(new RocketT2RecipeHandler());
         API.registerUsageHandler(new RocketT2RecipeHandler());
@@ -36,20 +36,20 @@ public class NEIGalacticraftMarsConfig implements IConfigureNEI
         API.registerUsageHandler(new GasLiquefierRecipeHandler());
         API.registerRecipeHandler(new MethaneSynthesizerRecipeHandler());
         API.registerUsageHandler(new MethaneSynthesizerRecipeHandler());
-		API.registerHighlightIdentifier(MarsBlocks.marsBlock, new GCMarsNEIHighlightHandler());
-	}
+        API.registerHighlightIdentifier(MarsBlocks.marsBlock, new GCMarsNEIHighlightHandler());
+    }
 
-	@Override
-	public String getName()
-	{
-		return "Galacticraft Mars NEI Plugin";
-	}
+    @Override
+    public String getName()
+    {
+        return "Galacticraft Mars NEI Plugin";
+    }
 
-	@Override
-	public String getVersion()
-	{
-		return Constants.LOCALMAJVERSION + "." + Constants.LOCALMINVERSION + "." + Constants.LOCALBUILDVERSION;
-	}
+    @Override
+    public String getVersion()
+    {
+        return Constants.LOCALMAJVERSION + "." + Constants.LOCALMINVERSION + "." + Constants.LOCALBUILDVERSION;
+    }
 
     public void registerRocketBenchRecipe(ArrayList<PositionedStack> input, PositionedStack output)
     {
@@ -71,27 +71,27 @@ public class NEIGalacticraftMarsConfig implements IConfigureNEI
         return NEIGalacticraftMarsConfig.cargoBenchRecipes.entrySet();
     }
 
-	private void registerLiquefierRecipe(PositionedStack inputStack, PositionedStack outputStack)
-	{
-		NEIGalacticraftMarsConfig.liquefierRecipes.put(inputStack, outputStack);
-	}
+    private void registerLiquefierRecipe(PositionedStack inputStack, PositionedStack outputStack)
+    {
+        NEIGalacticraftMarsConfig.liquefierRecipes.put(inputStack, outputStack);
+    }
 
-	public static Set<Entry<PositionedStack, PositionedStack>> getLiquefierRecipes()
-	{
-		return NEIGalacticraftMarsConfig.liquefierRecipes.entrySet();
-	}
+    public static Set<Entry<PositionedStack, PositionedStack>> getLiquefierRecipes()
+    {
+        return NEIGalacticraftMarsConfig.liquefierRecipes.entrySet();
+    }
 
-	private void registerSynthesizerRecipe(PositionedStack inputStack, PositionedStack outputStack)
-	{
-		NEIGalacticraftMarsConfig.synthesizerRecipes.put(inputStack, outputStack);
-	}
+    private void registerSynthesizerRecipe(PositionedStack inputStack, PositionedStack outputStack)
+    {
+        NEIGalacticraftMarsConfig.synthesizerRecipes.put(inputStack, outputStack);
+    }
 
-	public static Set<Entry<PositionedStack, PositionedStack>> getSynthesizerRecipes()
-	{
-		return NEIGalacticraftMarsConfig.synthesizerRecipes.entrySet();
-	}
+    public static Set<Entry<PositionedStack, PositionedStack>> getSynthesizerRecipes()
+    {
+        return NEIGalacticraftMarsConfig.synthesizerRecipes.entrySet();
+    }
 
-	public void registerRecipes()
+    public void registerRecipes()
     {
         final int changeY = 15;
 
@@ -197,13 +197,13 @@ public class NEIGalacticraftMarsConfig implements IConfigureNEI
         input2.add(new PositionedStack(new ItemStack(Blocks.chest), 90 + 26, -7 + changeY));
         input2.add(new PositionedStack(new ItemStack(Blocks.chest), 90 + 52, -7 + changeY));
         this.registerCargoBenchRecipe(input2, new PositionedStack(new ItemStack(MarsItems.spaceship, 1, 13), 139, 77 + changeY));
-        
-		this.registerLiquefierRecipe(new PositionedStack(new ItemStack(AsteroidsItems.methaneCanister, 1, 1), 2, 3), new PositionedStack(new ItemStack(GCItems.fuelCanister, 1, 1), 127, 3));
-		this.registerLiquefierRecipe(new PositionedStack(new ItemStack(AsteroidsItems.atmosphericValve, 1, 0), 2, 3), new PositionedStack(new ItemStack(AsteroidsItems.canisterLN2, 1, 1), 127, 3));
-		this.registerLiquefierRecipe(new PositionedStack(new ItemStack(AsteroidsItems.atmosphericValve, 1, 0), 2, 3), new PositionedStack(new ItemStack(AsteroidsItems.canisterLOX, 1, 1), 148, 3));
-		this.registerLiquefierRecipe(new PositionedStack(new ItemStack(AsteroidsItems.canisterLN2, 1, 501), 2, 3), new PositionedStack(new ItemStack(AsteroidsItems.canisterLN2, 1, 1), 127, 3));
-		this.registerLiquefierRecipe(new PositionedStack(new ItemStack(AsteroidsItems.canisterLOX, 1, 501), 2, 3), new PositionedStack(new ItemStack(AsteroidsItems.canisterLOX, 1, 1), 148, 3));
-		this.registerSynthesizerRecipe(new PositionedStack(new ItemStack(AsteroidsItems.atmosphericValve, 1, 0), 23, 3), new PositionedStack(new ItemStack(AsteroidsItems.methaneCanister, 1, 1), 148, 3));
-		this.registerSynthesizerRecipe(new PositionedStack(new ItemStack(MarsItems.carbonFragments, 25, 0), 23, 49), new PositionedStack(new ItemStack(AsteroidsItems.methaneCanister, 1, 1), 148, 3));
+
+        this.registerLiquefierRecipe(new PositionedStack(new ItemStack(AsteroidsItems.methaneCanister, 1, 1), 2, 3), new PositionedStack(new ItemStack(GCItems.fuelCanister, 1, 1), 127, 3));
+        this.registerLiquefierRecipe(new PositionedStack(new ItemStack(AsteroidsItems.atmosphericValve, 1, 0), 2, 3), new PositionedStack(new ItemStack(AsteroidsItems.canisterLN2, 1, 1), 127, 3));
+        this.registerLiquefierRecipe(new PositionedStack(new ItemStack(AsteroidsItems.atmosphericValve, 1, 0), 2, 3), new PositionedStack(new ItemStack(AsteroidsItems.canisterLOX, 1, 1), 148, 3));
+        this.registerLiquefierRecipe(new PositionedStack(new ItemStack(AsteroidsItems.canisterLN2, 1, 501), 2, 3), new PositionedStack(new ItemStack(AsteroidsItems.canisterLN2, 1, 1), 127, 3));
+        this.registerLiquefierRecipe(new PositionedStack(new ItemStack(AsteroidsItems.canisterLOX, 1, 501), 2, 3), new PositionedStack(new ItemStack(AsteroidsItems.canisterLOX, 1, 1), 148, 3));
+        this.registerSynthesizerRecipe(new PositionedStack(new ItemStack(AsteroidsItems.atmosphericValve, 1, 0), 23, 3), new PositionedStack(new ItemStack(AsteroidsItems.methaneCanister, 1, 1), 148, 3));
+        this.registerSynthesizerRecipe(new PositionedStack(new ItemStack(MarsItems.carbonFragments, 25, 0), 23, 49), new PositionedStack(new ItemStack(AsteroidsItems.methaneCanister, 1, 1), 148, 3));
     }
 }

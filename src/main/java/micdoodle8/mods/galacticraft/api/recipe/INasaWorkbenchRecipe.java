@@ -7,11 +7,11 @@ import java.util.HashMap;
 
 public interface INasaWorkbenchRecipe
 {
-	public boolean matches(IInventory inventory);
+    public boolean matches(IInventory inventory);
 
-	public int getRecipeSize();
+    public int getRecipeSize();
 
-	public ItemStack getRecipeOutput();
+    public ItemStack getRecipeOutput();
 
-	public HashMap<Integer, ItemStack> getRecipeInput();
+    public HashMap<Integer, ItemStack> getRecipeInput();
 }

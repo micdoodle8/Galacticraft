@@ -26,276 +26,285 @@ import java.util.List;
 
 public abstract class ItemElectricBase extends Item implements IItemElectric
 {
-	private static Object itemManagerIC2;
-	public float transferMax;
-	private DefaultArtifactVersion mcVersion = null;
-	
-	public ItemElectricBase()
-	{
-		super();
-		this.setMaxStackSize(1);
-		this.setMaxDamage(100);
-		this.setNoRepair();
-		this.setMaxTransfer();
-		
+    private static Object itemManagerIC2;
+    public float transferMax;
+    private DefaultArtifactVersion mcVersion = null;
+
+    public ItemElectricBase()
+    {
+        super();
+        this.setMaxStackSize(1);
+        this.setMaxDamage(100);
+        this.setNoRepair();
+        this.setMaxTransfer();
+
         this.mcVersion = new DefaultArtifactVersion((String) FMLInjectionData.data()[4]);
-		
-		if (EnergyConfigHandler.isIndustrialCraft2Loaded())
-		{
-			if (VersionParser.parseRange("[1.7.2]").containsVersion(mcVersion))
-				itemManagerIC2 = new ElectricItemManagerIC2();
-			else
-				itemManagerIC2 = new ElectricItemManagerIC2_1710();
-		}
-	}
 
-	protected void setMaxTransfer()
-	{
-		this.transferMax = 200;
-	}
+        if (EnergyConfigHandler.isIndustrialCraft2Loaded())
+        {
+            if (VersionParser.parseRange("[1.7.2]").containsVersion(mcVersion))
+            {
+                itemManagerIC2 = new ElectricItemManagerIC2();
+            }
+            else
+            {
+                itemManagerIC2 = new ElectricItemManagerIC2_1710();
+            }
+        }
+    }
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean par4)
-	{
-		String color = "";
-		float joules = this.getElectricityStored(itemStack);
+    protected void setMaxTransfer()
+    {
+        this.transferMax = 200;
+    }
 
-		if (joules <= this.getMaxElectricityStored(itemStack) / 3)
-		{
-			color = "\u00a74";
-		}
-		else if (joules > this.getMaxElectricityStored(itemStack) * 2 / 3)
-		{
-			color = "\u00a72";
-		}
-		else
-		{
-			color = "\u00a76";
-		}
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override
+    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean par4)
+    {
+        String color = "";
+        float joules = this.getElectricityStored(itemStack);
 
-		list.add(color + EnergyDisplayHelper.getEnergyDisplayS(joules) + "/" + EnergyDisplayHelper.getEnergyDisplayS(this.getMaxElectricityStored(itemStack)));
-	}
+        if (joules <= this.getMaxElectricityStored(itemStack) / 3)
+        {
+            color = "\u00a74";
+        }
+        else if (joules > this.getMaxElectricityStored(itemStack) * 2 / 3)
+        {
+            color = "\u00a72";
+        }
+        else
+        {
+            color = "\u00a76";
+        }
 
-	/**
-	 * Makes sure the item is uncharged when it is crafted and not charged.
-	 * Change this if you do not want this to happen!
-	 */
-	@Override
-	public void onCreated(ItemStack itemStack, World par2World, EntityPlayer par3EntityPlayer)
-	{
-		this.setElectricity(itemStack, 0);
-	}
+        list.add(color + EnergyDisplayHelper.getEnergyDisplayS(joules) + "/" + EnergyDisplayHelper.getEnergyDisplayS(this.getMaxElectricityStored(itemStack)));
+    }
 
-	@Override
-	public float recharge(ItemStack itemStack, float energy, boolean doReceive)
-	{
-		float rejectedElectricity = Math.max(this.getElectricityStored(itemStack) + energy - this.getMaxElectricityStored(itemStack), 0);
-		float energyToReceive = energy - rejectedElectricity;
-		if (energyToReceive > this.transferMax)
-		{
-			rejectedElectricity += energyToReceive - this.transferMax;
-			energyToReceive = this.transferMax;
-		}
+    /**
+     * Makes sure the item is uncharged when it is crafted and not charged.
+     * Change this if you do not want this to happen!
+     */
+    @Override
+    public void onCreated(ItemStack itemStack, World par2World, EntityPlayer par3EntityPlayer)
+    {
+        this.setElectricity(itemStack, 0);
+    }
 
-		if (doReceive)
-		{
-			this.setElectricity(itemStack, this.getElectricityStored(itemStack) + energyToReceive);
-		}
+    @Override
+    public float recharge(ItemStack itemStack, float energy, boolean doReceive)
+    {
+        float rejectedElectricity = Math.max(this.getElectricityStored(itemStack) + energy - this.getMaxElectricityStored(itemStack), 0);
+        float energyToReceive = energy - rejectedElectricity;
+        if (energyToReceive > this.transferMax)
+        {
+            rejectedElectricity += energyToReceive - this.transferMax;
+            energyToReceive = this.transferMax;
+        }
 
-		return energyToReceive;
-	}
+        if (doReceive)
+        {
+            this.setElectricity(itemStack, this.getElectricityStored(itemStack) + energyToReceive);
+        }
 
-	@Override
-	public float discharge(ItemStack itemStack, float energy, boolean doTransfer)
-	{
-		float energyToTransfer = Math.min(Math.min(this.getElectricityStored(itemStack), energy), this.transferMax);
+        return energyToReceive;
+    }
 
-		if (doTransfer)
-		{
-			this.setElectricity(itemStack, this.getElectricityStored(itemStack) - energyToTransfer);
-		}
+    @Override
+    public float discharge(ItemStack itemStack, float energy, boolean doTransfer)
+    {
+        float energyToTransfer = Math.min(Math.min(this.getElectricityStored(itemStack), energy), this.transferMax);
 
-		return energyToTransfer;
-	}
+        if (doTransfer)
+        {
+            this.setElectricity(itemStack, this.getElectricityStored(itemStack) - energyToTransfer);
+        }
 
-	@Override
-	public int getTierGC(ItemStack itemStack)
-	{
-		return 1;
-	}
+        return energyToTransfer;
+    }
 
-	@Override
-	public void setElectricity(ItemStack itemStack, float joules)
-	{
-		// Saves the frequency in the ItemStack
-		if (itemStack.getTagCompound() == null)
-		{
-			itemStack.setTagCompound(new NBTTagCompound());
-		}
+    @Override
+    public int getTierGC(ItemStack itemStack)
+    {
+        return 1;
+    }
 
-		float electricityStored = Math.max(Math.min(joules, this.getMaxElectricityStored(itemStack)), 0);
-		itemStack.getTagCompound().setFloat("electricity", electricityStored);
+    @Override
+    public void setElectricity(ItemStack itemStack, float joules)
+    {
+        // Saves the frequency in the ItemStack
+        if (itemStack.getTagCompound() == null)
+        {
+            itemStack.setTagCompound(new NBTTagCompound());
+        }
 
-		/** Sets the damage as a percentage to render the bar properly. */
-		itemStack.setItemDamage((int) (100 - electricityStored / this.getMaxElectricityStored(itemStack) * 100));
-	}
+        float electricityStored = Math.max(Math.min(joules, this.getMaxElectricityStored(itemStack)), 0);
+        itemStack.getTagCompound().setFloat("electricity", electricityStored);
 
-	@Override
-	public float getTransfer(ItemStack itemStack)
-	{
-		return Math.min(this.transferMax, this.getMaxElectricityStored(itemStack) - this.getElectricityStored(itemStack));
-	}
+        /** Sets the damage as a percentage to render the bar properly. */
+        itemStack.setItemDamage((int) (100 - electricityStored / this.getMaxElectricityStored(itemStack) * 100));
+    }
 
-	/** Gets the energy stored in the item. Energy is stored using item NBT */
-	@Override
-	public float getElectricityStored(ItemStack itemStack)
-	{
-		if (itemStack.getTagCompound() == null)
-		{
-			itemStack.setTagCompound(new NBTTagCompound());
-		}
-		float energyStored = 0f;
-		if (itemStack.getTagCompound().hasKey("electricity"))
-		{
-			NBTBase obj = itemStack.getTagCompound().getTag("electricity");
-			if (obj instanceof NBTTagDouble)
-			{
-				energyStored = ((NBTTagDouble) obj).func_150288_h();
-			}
-			else if (obj instanceof NBTTagFloat)
-			{
-				energyStored = ((NBTTagFloat) obj).func_150288_h();
-			}
-		}
+    @Override
+    public float getTransfer(ItemStack itemStack)
+    {
+        return Math.min(this.transferMax, this.getMaxElectricityStored(itemStack) - this.getElectricityStored(itemStack));
+    }
 
-		/** Sets the damage as a percentage to render the bar properly. */
-		itemStack.setItemDamage((int) (100 - energyStored / this.getMaxElectricityStored(itemStack) * 100));
-		return energyStored;
-	}
+    /**
+     * Gets the energy stored in the item. Energy is stored using item NBT
+     */
+    @Override
+    public float getElectricityStored(ItemStack itemStack)
+    {
+        if (itemStack.getTagCompound() == null)
+        {
+            itemStack.setTagCompound(new NBTTagCompound());
+        }
+        float energyStored = 0f;
+        if (itemStack.getTagCompound().hasKey("electricity"))
+        {
+            NBTBase obj = itemStack.getTagCompound().getTag("electricity");
+            if (obj instanceof NBTTagDouble)
+            {
+                energyStored = ((NBTTagDouble) obj).func_150288_h();
+            }
+            else if (obj instanceof NBTTagFloat)
+            {
+                energyStored = ((NBTTagFloat) obj).func_150288_h();
+            }
+        }
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-	{
-		par3List.add(ElectricItemHelper.getUncharged(new ItemStack(this)));
-		par3List.add(ElectricItemHelper.getWithCharge(new ItemStack(this), this.getMaxElectricityStored(new ItemStack(this))));
-	}
+        /** Sets the damage as a percentage to render the bar properly. */
+        itemStack.setItemDamage((int) (100 - energyStored / this.getMaxElectricityStored(itemStack) * 100));
+        return energyStored;
+    }
 
-	public static boolean isElectricItem(Item item)
-	{
-		if (item instanceof ItemElectricBase) return true;
-		
-		if (EnergyConfigHandler.isIndustrialCraft2Loaded())
-		{
-			if (item instanceof ic2.api.item.ISpecialElectricItem)
-			{	
-				return true;
-			}
-		}
-		
-		return false;
-	}
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    {
+        par3List.add(ElectricItemHelper.getUncharged(new ItemStack(this)));
+        par3List.add(ElectricItemHelper.getWithCharge(new ItemStack(this), this.getMaxElectricityStored(new ItemStack(this))));
+    }
 
-	//The following seven methods are for Mekanism compatibility 
+    public static boolean isElectricItem(Item item)
+    {
+        if (item instanceof ItemElectricBase)
+        {
+            return true;
+        }
 
-	@RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
-	public double getEnergy(ItemStack itemStack)
-	{
-		return this.getElectricityStored(itemStack) * EnergyConfigHandler.TO_MEKANISM_RATIO;
-	}
+        if (EnergyConfigHandler.isIndustrialCraft2Loaded())
+        {
+            if (item instanceof ic2.api.item.ISpecialElectricItem)
+            {
+                return true;
+            }
+        }
 
-	@RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
-	public void setEnergy(ItemStack itemStack, double amount)
-	{
-		this.setElectricity(itemStack, (float) amount * EnergyConfigHandler.MEKANISM_RATIO);
-	}
+        return false;
+    }
 
-	@RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
-	public double getMaxEnergy(ItemStack itemStack)
-	{
-		return this.getMaxElectricityStored(itemStack) * EnergyConfigHandler.TO_MEKANISM_RATIO;
-	}
+    //The following seven methods are for Mekanism compatibility
 
-	@RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
-	public double getMaxTransfer(ItemStack itemStack)
-	{
-		return this.transferMax * EnergyConfigHandler.TO_MEKANISM_RATIO;
-	}
+    @RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
+    public double getEnergy(ItemStack itemStack)
+    {
+        return this.getElectricityStored(itemStack) * EnergyConfigHandler.TO_MEKANISM_RATIO;
+    }
 
-	@RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
-	public boolean canReceive(ItemStack itemStack)
-	{
-		return (itemStack != null && !(itemStack.getItem() instanceof ItemBatteryInfinite));
-	}
+    @RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
+    public void setEnergy(ItemStack itemStack, double amount)
+    {
+        this.setElectricity(itemStack, (float) amount * EnergyConfigHandler.MEKANISM_RATIO);
+    }
 
-	public boolean canSend(ItemStack itemStack)
-	{
-		return true;
-	}
+    @RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
+    public double getMaxEnergy(ItemStack itemStack)
+    {
+        return this.getMaxElectricityStored(itemStack) * EnergyConfigHandler.TO_MEKANISM_RATIO;
+    }
 
-	public boolean isMetadataSpecific(ItemStack itemStack)
-	{
-		return false;
-	}
-	
-	//All the following methods are for IC2 compatibility
-	
-	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
-	public IElectricItemManager getManager(ItemStack itemstack)
-	{
-		return (IElectricItemManager) ItemElectricBase.itemManagerIC2;
-	}
+    @RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
+    public double getMaxTransfer(ItemStack itemStack)
+    {
+        return this.transferMax * EnergyConfigHandler.TO_MEKANISM_RATIO;
+    }
 
-	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
-	public boolean canProvideEnergy(ItemStack itemStack)
-	{
-		return true;
-	}
+    @RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
+    public boolean canReceive(ItemStack itemStack)
+    {
+        return (itemStack != null && !(itemStack.getItem() instanceof ItemBatteryInfinite));
+    }
 
-	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
-	public Item getChargedItem(ItemStack itemStack)
-	{
-		return itemStack.getItem();
-	}
+    public boolean canSend(ItemStack itemStack)
+    {
+        return true;
+    }
 
-	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
-	public Item getEmptyItem(ItemStack itemStack)
-	{
-		return itemStack.getItem();	
-	}
+    public boolean isMetadataSpecific(ItemStack itemStack)
+    {
+        return false;
+    }
 
-	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
-	public int getTier(ItemStack itemStack)
-	{
-		return 1;
-	}
+    //All the following methods are for IC2 compatibility
 
-	@VersionSpecific(version = "[1.7.10]")
-	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
-	public double getMaxCharge(ItemStack itemStack)
-	{
-		return this.getMaxElectricityStored(itemStack) * EnergyConfigHandler.TO_IC2_RATIO;
-	}
+    @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+    public IElectricItemManager getManager(ItemStack itemstack)
+    {
+        return (IElectricItemManager) ItemElectricBase.itemManagerIC2;
+    }
 
-	@AltForVersion(version = "[1.7.2]")
-	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
-	public int getMaxChargeB(ItemStack itemStack)
-	{
-		return (int) (this.getMaxElectricityStored(itemStack) * EnergyConfigHandler.TO_IC2_RATIO);
-	}
+    @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+    public boolean canProvideEnergy(ItemStack itemStack)
+    {
+        return true;
+    }
 
-	@VersionSpecific(version = "[1.7.10]")
-	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
-	public double getTransferLimit(ItemStack itemStack)
-	{
-		return this.transferMax * EnergyConfigHandler.TO_IC2_RATIO;
-	}
+    @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+    public Item getChargedItem(ItemStack itemStack)
+    {
+        return itemStack.getItem();
+    }
 
-	@VersionSpecific(version = "[1.7.2]")
-	@RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
-	public int getTransferLimitB(ItemStack itemStack)
-	{
-		return (int) (this.transferMax * EnergyConfigHandler.TO_IC2_RATIO);
-	}
+    @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+    public Item getEmptyItem(ItemStack itemStack)
+    {
+        return itemStack.getItem();
+    }
+
+    @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+    public int getTier(ItemStack itemStack)
+    {
+        return 1;
+    }
+
+    @VersionSpecific(version = "[1.7.10]")
+    @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+    public double getMaxCharge(ItemStack itemStack)
+    {
+        return this.getMaxElectricityStored(itemStack) * EnergyConfigHandler.TO_IC2_RATIO;
+    }
+
+    @AltForVersion(version = "[1.7.2]")
+    @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+    public int getMaxChargeB(ItemStack itemStack)
+    {
+        return (int) (this.getMaxElectricityStored(itemStack) * EnergyConfigHandler.TO_IC2_RATIO);
+    }
+
+    @VersionSpecific(version = "[1.7.10]")
+    @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+    public double getTransferLimit(ItemStack itemStack)
+    {
+        return this.transferMax * EnergyConfigHandler.TO_IC2_RATIO;
+    }
+
+    @VersionSpecific(version = "[1.7.2]")
+    @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+    public int getTransferLimitB(ItemStack itemStack)
+    {
+        return (int) (this.transferMax * EnergyConfigHandler.TO_IC2_RATIO);
+    }
 }

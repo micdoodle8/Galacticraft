@@ -14,31 +14,31 @@ import net.minecraft.item.ItemStack;
 public class ItemCarbonFragments extends Item
 {
 
-	public ItemCarbonFragments()
-	{
-		super();
-		this.setMaxStackSize(64);
-		this.setMaxDamage(0);
-	}
+    public ItemCarbonFragments()
+    {
+        super();
+        this.setMaxStackSize(64);
+        this.setMaxDamage(0);
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public CreativeTabs getCreativeTab()
-	{
-		return GalacticraftCore.galacticraftItemsTab;
-	}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftCore.galacticraftItemsTab;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack)
-	{
-		return ClientProxyCore.galacticraftItem;
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister iconRegister)
-	{
-		this.itemIcon = iconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "carbonFragments");
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister iconRegister)
+    {
+        this.itemIcon = iconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "carbonFragments");
+    }
 }

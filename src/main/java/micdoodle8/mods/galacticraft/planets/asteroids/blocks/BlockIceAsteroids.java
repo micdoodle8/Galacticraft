@@ -69,11 +69,16 @@ public class BlockIceAsteroids extends BlockBreakable
             ArrayList<ItemStack> items = new ArrayList<ItemStack>();
             ItemStack itemstack = this.createStackedBlock(meta);
 
-            if (itemstack != null) items.add(itemstack);
+            if (itemstack != null)
+            {
+                items.add(itemstack);
+            }
 
             ForgeEventFactory.fireBlockHarvesting(items, world, this, x, y, z, meta, 0, 1.0f, true, player);
             for (ItemStack is : items)
+            {
                 this.dropBlockAsItem(world, x, y, z, is);
+            }
         }
         else
         {

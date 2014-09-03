@@ -5,15 +5,14 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * Applied to TileEntities that can connect to an electrical OR oxygen network.
- * 
+ *
  * @author Calclavia, micdoodle8
- * 
  */
 public interface IConnector
 {
 
-	/**
-	 * @return If the connection is possible.
-	 */
-	public boolean canConnect(ForgeDirection direction, NetworkType type);
+    /**
+     * @return If the connection is possible.
+     */
+    public boolean canConnect(ForgeDirection direction, NetworkType type);
 }

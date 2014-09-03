@@ -42,479 +42,487 @@ import java.util.Map.Entry;
  */
 public abstract class EntityTieredRocket extends EntityAutoRocket implements IRocketType, IDockable, IInventory, IWorldTransferCallback, ICameraZoomEntity
 {
-	public EnumRocketType rocketType;
-	public float rumble;
-	public int launchCooldown;
-	private ArrayList<BlockVec3> preGenList = new ArrayList();
-	private Iterator<BlockVec3> preGenIterator = null;
-	private MinecraftServer mcserver = FMLCommonHandler.instance().getMinecraftServerInstance();
-	
-	public EntityTieredRocket(World par1World)
-	{
-		super(par1World);
-		this.setSize(0.98F, 4F);
-		this.yOffset = this.height / 2.0F;
-	}
+    public EnumRocketType rocketType;
+    public float rumble;
+    public int launchCooldown;
+    private ArrayList<BlockVec3> preGenList = new ArrayList();
+    private Iterator<BlockVec3> preGenIterator = null;
+    private MinecraftServer mcserver = FMLCommonHandler.instance().getMinecraftServerInstance();
 
-	public EntityTieredRocket(World world, double posX, double posY, double posZ)
-	{
-		super(world, posX, posY, posZ);
-	}
+    public EntityTieredRocket(World par1World)
+    {
+        super(par1World);
+        this.setSize(0.98F, 4F);
+        this.yOffset = this.height / 2.0F;
+    }
 
-	@Override
-	protected void entityInit()
-	{
-		super.entityInit();
+    public EntityTieredRocket(World world, double posX, double posY, double posZ)
+    {
+        super(world, posX, posY, posZ);
+    }
 
-		if (Loader.isModLoaded("ICBM|Explosion"))
-		{
-			try
-			{
-				Class.forName("icbm.api.RadarRegistry").getMethod("register", Entity.class).invoke(null, this);
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-	}
+    @Override
+    protected void entityInit()
+    {
+        super.entityInit();
 
-	@Override
-	public void setDead()
-	{
-		super.setDead();
+        if (Loader.isModLoaded("ICBM|Explosion"))
+        {
+            try
+            {
+                Class.forName("icbm.api.RadarRegistry").getMethod("register", Entity.class).invoke(null, this);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
 
-		if (Loader.isModLoaded("ICBM|Explosion"))
-		{
-			try
-			{
-				Class.forName("icbm.api.RadarRegistry").getMethod("unregister", Entity.class).invoke(null, this);
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-	}
+    @Override
+    public void setDead()
+    {
+        super.setDead();
 
-	public void igniteCheckingCooldown()
-	{
-		if (!this.worldObj.isRemote && this.launchCooldown <= 0)
-		{
-			this.initiatePlanetsPreGen(this.chunkCoordX, this.chunkCoordZ);
+        if (Loader.isModLoaded("ICBM|Explosion"))
+        {
+            try
+            {
+                Class.forName("icbm.api.RadarRegistry").getMethod("unregister", Entity.class).invoke(null, this);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
 
-			this.ignite();
-		}
-	}
+    public void igniteCheckingCooldown()
+    {
+        if (!this.worldObj.isRemote && this.launchCooldown <= 0)
+        {
+            this.initiatePlanetsPreGen(this.chunkCoordX, this.chunkCoordZ);
 
-	private void initiatePlanetsPreGen(int cx, int cz)
-	{
-		this.preGenList.clear();
-		
-		//Pre-generate terrain on all possible destination planets if the destination is not being controlled by a Launch Controller
-		//(note: this does NOT include the Moon!)
-		
-		//This generates with a chunk radius of 12: so for 2 planets that's 1250 chunks to pregen
-		//It starts at the centre and generates in circles radiating out in case it doesn't have time to finish
-		//These will be done: 2 chunks per tick during IGNITE phase (so 800 chunks during the 20 second launch countdown)
-		//then the ones that are left 1 chunk per tick during flight (normally flight will last more than 450 ticks)
-		//If the server is at less than 20tps then maybe some of the outermost chunks won't be pre-generated but that's probably OK
-		if (this.destinationFrequency == -1)
-		{
-			ArrayList<Integer> toPreGen = new ArrayList();
-			for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
-			{
-				if (planet.getDimensionID() == this.dimension) continue;
-				if (planet.getReachable() && planet.getTierRequirement() <= this.getRocketTier())
-				{
-					toPreGen.add(planet.getDimensionID());
-				}
-			}
-			
-			if (toPreGen.size() > 0)
-			{
-				for (Integer dimID : toPreGen)
-				{
-					this.preGenList.add(new BlockVec3(cx, dimID, cz));
-					if (ConfigManagerCore.enableDebug)
-						GCLog.info("Starting terrain pregen for dimension " + dimID + " at " + (cx * 16 + 8) + ", " + (cz * 16 + 8));
-				}
-				for (int r = 1; r < 12; r++)
-				{
-					int xmin = cx - r;
-					int xmax = cx + r;
-					int zmin = cz - r;
-					int zmax = cz + r;
-					for (int i = -r; i < r; i++)
-					{
-						for (Integer dimID : toPreGen)
-						{
-							this.preGenList.add(new BlockVec3(xmin, dimID, cz + i));
-							this.preGenList.add(new BlockVec3(xmax, dimID, cz - i));
-							this.preGenList.add(new BlockVec3(cx - i, dimID, zmin));
-							this.preGenList.add(new BlockVec3(cx + i, dimID, zmax));
-						}
-					}
-				}
-				this.preGenIterator = this.preGenList.iterator();
-			}
-		}
-		else
-			this.preGenIterator = null;
-	}
-	
-	@Override
-	public void onUpdate()
-	{
-		if (this.getWaitForPlayer())
-		{
-			if (this.riddenByEntity != null)
-			{
-				if (this.ticks >= 40)
-				{
-					if (!this.worldObj.isRemote)
-					{
-						Entity e = this.riddenByEntity;
-						this.riddenByEntity.ridingEntity = null;
-						this.riddenByEntity = null;
-						e.mountEntity(this);
-					}
+            this.ignite();
+        }
+    }
 
-					this.setWaitForPlayer(false);
-					this.motionY = -0.5D;
-				}
-				else
-				{
-					this.motionX = this.motionY = this.motionZ = 0.0D;
-					this.riddenByEntity.motionX = this.riddenByEntity.motionY = this.riddenByEntity.motionZ = 0;
-				}
-			}
-			else
-			{
-				this.motionX = this.motionY = this.motionZ = 0.0D;
-			}
-		}
+    private void initiatePlanetsPreGen(int cx, int cz)
+    {
+        this.preGenList.clear();
 
-		super.onUpdate();
+        //Pre-generate terrain on all possible destination planets if the destination is not being controlled by a Launch Controller
+        //(note: this does NOT include the Moon!)
 
-		if (this.landing)
-		{
-			this.rotationPitch = this.rotationYaw = 0;
-		}
+        //This generates with a chunk radius of 12: so for 2 planets that's 1250 chunks to pregen
+        //It starts at the centre and generates in circles radiating out in case it doesn't have time to finish
+        //These will be done: 2 chunks per tick during IGNITE phase (so 800 chunks during the 20 second launch countdown)
+        //then the ones that are left 1 chunk per tick during flight (normally flight will last more than 450 ticks)
+        //If the server is at less than 20tps then maybe some of the outermost chunks won't be pre-generated but that's probably OK
+        if (this.destinationFrequency == -1)
+        {
+            ArrayList<Integer> toPreGen = new ArrayList();
+            for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
+            {
+                if (planet.getDimensionID() == this.dimension)
+                {
+                    continue;
+                }
+                if (planet.getReachable() && planet.getTierRequirement() <= this.getRocketTier())
+                {
+                    toPreGen.add(planet.getDimensionID());
+                }
+            }
 
-		if (!this.worldObj.isRemote)
-		{
-			if (this.launchCooldown > 0)
-			{
-				this.launchCooldown--;
-			}
-			
-			if (this.preGenIterator != null)
-			{
-				if (this.preGenIterator.hasNext())
-				{
-					BlockVec3 coords = this.preGenIterator.next();
-					World w = this.mcserver.worldServerForDimension(coords.y);
-					w.getChunkFromChunkCoords(coords.x, coords.z);
-					//Pregen a second chunk if still on launchpad (low strain on server)
-					if (this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal() && this.preGenIterator.hasNext())
-					{
-						coords = this.preGenIterator.next();
-						w = this.mcserver.worldServerForDimension(coords.y);
-						w.getChunkFromChunkCoords(coords.x, coords.z);						
-					}
-				}
-				else
-					this.preGenIterator = null;
-			}
-		}
+            if (toPreGen.size() > 0)
+            {
+                for (Integer dimID : toPreGen)
+                {
+                    this.preGenList.add(new BlockVec3(cx, dimID, cz));
+                    if (ConfigManagerCore.enableDebug)
+                    {
+                        GCLog.info("Starting terrain pregen for dimension " + dimID + " at " + (cx * 16 + 8) + ", " + (cz * 16 + 8));
+                    }
+                }
+                for (int r = 1; r < 12; r++)
+                {
+                    int xmin = cx - r;
+                    int xmax = cx + r;
+                    int zmin = cz - r;
+                    int zmax = cz + r;
+                    for (int i = -r; i < r; i++)
+                    {
+                        for (Integer dimID : toPreGen)
+                        {
+                            this.preGenList.add(new BlockVec3(xmin, dimID, cz + i));
+                            this.preGenList.add(new BlockVec3(xmax, dimID, cz - i));
+                            this.preGenList.add(new BlockVec3(cx - i, dimID, zmin));
+                            this.preGenList.add(new BlockVec3(cx + i, dimID, zmax));
+                        }
+                    }
+                }
+                this.preGenIterator = this.preGenList.iterator();
+            }
+        }
+        else
+        {
+            this.preGenIterator = null;
+        }
+    }
 
-		if (!this.worldObj.isRemote && this.getLandingPad() != null && this.getLandingPad().getConnectedTiles() != null)
-		{
-			for (ILandingPadAttachable tile : this.getLandingPad().getConnectedTiles())
-			{
-				if (this.worldObj.getTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) != null && this.worldObj.getTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) instanceof TileEntityFuelLoader)
-				{
-					if (tile instanceof TileEntityFuelLoader && ((TileEntityFuelLoader) tile).getEnergyStoredGC() > 0)
-					{
-						if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
-						{
-							this.setPad(null);
-						}
-					}
-				}
-			}
-		}
+    @Override
+    public void onUpdate()
+    {
+        if (this.getWaitForPlayer())
+        {
+            if (this.riddenByEntity != null)
+            {
+                if (this.ticks >= 40)
+                {
+                    if (!this.worldObj.isRemote)
+                    {
+                        Entity e = this.riddenByEntity;
+                        this.riddenByEntity.ridingEntity = null;
+                        this.riddenByEntity = null;
+                        e.mountEntity(this);
+                    }
 
-		if (this.rumble > 0)
-		{
-			this.rumble--;
-		}
-		else
-		if (this.rumble < 0)
-		{
-			this.rumble++;
-		}
+                    this.setWaitForPlayer(false);
+                    this.motionY = -0.5D;
+                }
+                else
+                {
+                    this.motionX = this.motionY = this.motionZ = 0.0D;
+                    this.riddenByEntity.motionX = this.riddenByEntity.motionY = this.riddenByEntity.motionZ = 0;
+                }
+            }
+            else
+            {
+                this.motionX = this.motionY = this.motionZ = 0.0D;
+            }
+        }
 
-		if (this.riddenByEntity != null)
-		{
-			this.riddenByEntity.posX += this.rumble / (37F - 5F * this.getRocketTier());
-			this.riddenByEntity.posZ += this.rumble / (37F - 5F * this.getRocketTier());
-		}
+        super.onUpdate();
 
-		if (this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() || this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
-		{
-			this.performHurtAnimation();
+        if (this.landing)
+        {
+            this.rotationPitch = this.rotationYaw = 0;
+        }
 
-			this.rumble = (float) this.rand.nextInt(3) - 3;
-		}
+        if (!this.worldObj.isRemote)
+        {
+            if (this.launchCooldown > 0)
+            {
+                this.launchCooldown--;
+            }
 
-		if (!this.worldObj.isRemote)
-		{
-			this.lastLastMotionY = this.lastMotionY;
-			this.lastMotionY = this.motionY;
-		}
-	}
+            if (this.preGenIterator != null)
+            {
+                if (this.preGenIterator.hasNext())
+                {
+                    BlockVec3 coords = this.preGenIterator.next();
+                    World w = this.mcserver.worldServerForDimension(coords.y);
+                    w.getChunkFromChunkCoords(coords.x, coords.z);
+                    //Pregen a second chunk if still on launchpad (low strain on server)
+                    if (this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal() && this.preGenIterator.hasNext())
+                    {
+                        coords = this.preGenIterator.next();
+                        w = this.mcserver.worldServerForDimension(coords.y);
+                        w.getChunkFromChunkCoords(coords.x, coords.z);
+                    }
+                }
+                else
+                {
+                    this.preGenIterator = null;
+                }
+            }
+        }
 
-	@Override
-	public void decodePacketdata(ByteBuf buffer)
-	{
-		this.rocketType = EnumRocketType.values()[buffer.readInt()];
-		super.decodePacketdata(buffer);
+        if (!this.worldObj.isRemote && this.getLandingPad() != null && this.getLandingPad().getConnectedTiles() != null)
+        {
+            for (ILandingPadAttachable tile : this.getLandingPad().getConnectedTiles())
+            {
+                if (this.worldObj.getTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) != null && this.worldObj.getTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) instanceof TileEntityFuelLoader)
+                {
+                    if (tile instanceof TileEntityFuelLoader && ((TileEntityFuelLoader) tile).getEnergyStoredGC() > 0)
+                    {
+                        if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
+                        {
+                            this.setPad(null);
+                        }
+                    }
+                }
+            }
+        }
 
-		if (buffer.readBoolean())
-		{
-			this.posX = buffer.readDouble() / 8000.0D;
-			this.posY = buffer.readDouble() / 8000.0D;
-			this.posZ = buffer.readDouble() / 8000.0D;
-		}
-	}
+        if (this.rumble > 0)
+        {
+            this.rumble--;
+        }
+        else if (this.rumble < 0)
+        {
+            this.rumble++;
+        }
 
-	@Override
-	public void getNetworkedData(ArrayList<Object> list)
-	{
-		list.add(this.rocketType != null ? this.rocketType.getIndex() : 0);
-		super.getNetworkedData(list);
+        if (this.riddenByEntity != null)
+        {
+            this.riddenByEntity.posX += this.rumble / (37F - 5F * this.getRocketTier());
+            this.riddenByEntity.posZ += this.rumble / (37F - 5F * this.getRocketTier());
+        }
 
-		boolean sendPosUpdates = this.ticks < 25 || this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal();
-		list.add(sendPosUpdates);
+        if (this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() || this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
+        {
+            this.performHurtAnimation();
 
-		if (sendPosUpdates)
-		{
-			list.add(this.posX * 8000.0D);
-			list.add(this.posY * 8000.0D);
-			list.add(this.posZ * 8000.0D);
-		}
-	}
+            this.rumble = (float) this.rand.nextInt(3) - 3;
+        }
 
-	@Override
-	public void onReachAtmosphere()
-	{
-		//Launch controlled
-		if (this.destinationFrequency != -1)
-		{
-			if (this.worldObj.isRemote)
-			{
-				return;
-			}
+        if (!this.worldObj.isRemote)
+        {
+            this.lastLastMotionY = this.lastMotionY;
+            this.lastMotionY = this.motionY;
+        }
+    }
 
-			this.setTarget(true, this.destinationFrequency);
+    @Override
+    public void decodePacketdata(ByteBuf buffer)
+    {
+        this.rocketType = EnumRocketType.values()[buffer.readInt()];
+        super.decodePacketdata(buffer);
 
-			if (this.targetVec != null)
-			{
-				if (this.targetDimension != this.worldObj.provider.dimensionId)
-				{
-					WorldProvider targetDim = WorldProvider.getProviderForDimension(this.targetDimension);
+        if (buffer.readBoolean())
+        {
+            this.posX = buffer.readDouble() / 8000.0D;
+            this.posY = buffer.readDouble() / 8000.0D;
+            this.posZ = buffer.readDouble() / 8000.0D;
+        }
+    }
 
-					//No rocket flight to non-Galacticraft dimensions other than the Overworld allowed 
-					if (targetDim != null && (this.targetDimension == 0 || targetDim instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider)targetDim).canSpaceshipTierPass(this.getRocketTier())))
-					{				
-						WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(this.targetDimension);
+    @Override
+    public void getNetworkedData(ArrayList<Object> list)
+    {
+        list.add(this.rocketType != null ? this.rocketType.getIndex() : 0);
+        super.getNetworkedData(list);
 
-						if (worldServer != null)
-						{
-							if (this.riddenByEntity != null)
-							{
-								WorldUtil.transferEntityToDimension(this.riddenByEntity, this.targetDimension, worldServer, false, this);
-							}
+        boolean sendPosUpdates = this.ticks < 25 || this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal();
+        list.add(sendPosUpdates);
 
-							return;
-						}
-					}
- 					//No return - in this situation continue into regular take-off
-				}
-				else
-				{
-					this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
-					if (this.riddenByEntity != null)
-					{
-						this.setWaitForPlayer(true);
-					}
-					this.landing = true;
-					return;
-				}
-			}
-			else
-			{
-				this.setDead();
-				return;
-			}
-		}
+        if (sendPosUpdates)
+        {
+            list.add(this.posX * 8000.0D);
+            list.add(this.posY * 8000.0D);
+            list.add(this.posZ * 8000.0D);
+        }
+    }
 
-		//Not launch controlled
-		if (this.riddenByEntity != null && !this.worldObj.isRemote)
-		{
-			if (this.riddenByEntity instanceof EntityPlayerMP)
-			{
-				EntityPlayerMP player = (EntityPlayerMP) this.riddenByEntity;
+    @Override
+    public void onReachAtmosphere()
+    {
+        //Launch controlled
+        if (this.destinationFrequency != -1)
+        {
+            if (this.worldObj.isRemote)
+            {
+                return;
+            }
 
-				HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(this.getRocketTier()), player);
+            this.setTarget(true, this.destinationFrequency);
 
-				String temp = "";
-				int count = 0;
+            if (this.targetVec != null)
+            {
+                if (this.targetDimension != this.worldObj.provider.dimensionId)
+                {
+                    WorldProvider targetDim = WorldProvider.getProviderForDimension(this.targetDimension);
 
-				for (Entry<String, Integer> entry : map.entrySet())
-				{
-					temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "?" : ""));
-					count++;
-				}
+                    //No rocket flight to non-Galacticraft dimensions other than the Overworld allowed
+                    if (targetDim != null && (this.targetDimension == 0 || targetDim instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider) targetDim).canSpaceshipTierPass(this.getRocketTier())))
+                    {
+                        WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(this.targetDimension);
 
-				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { player.getGameProfile().getName(), temp }), player);
+                        if (worldServer != null)
+                        {
+                            if (this.riddenByEntity != null)
+                            {
+                                WorldUtil.transferEntityToDimension(this.riddenByEntity, this.targetDimension, worldServer, false, this);
+                            }
+
+                            return;
+                        }
+                    }
+                    //No return - in this situation continue into regular take-off
+                }
+                else
+                {
+                    this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
+                    if (this.riddenByEntity != null)
+                    {
+                        this.setWaitForPlayer(true);
+                    }
+                    this.landing = true;
+                    return;
+                }
+            }
+            else
+            {
+                this.setDead();
+                return;
+            }
+        }
+
+        //Not launch controlled
+        if (this.riddenByEntity != null && !this.worldObj.isRemote)
+        {
+            if (this.riddenByEntity instanceof EntityPlayerMP)
+            {
+                EntityPlayerMP player = (EntityPlayerMP) this.riddenByEntity;
+
+                HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(this.getRocketTier()), player);
+
+                String temp = "";
+                int count = 0;
+
+                for (Entry<String, Integer> entry : map.entrySet())
+                {
+                    temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "?" : ""));
+                    count++;
+                }
+
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { player.getGameProfile().getName(), temp }), player);
                 GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(player);
                 stats.spaceshipTier = this.getRocketTier();
                 stats.usingPlanetSelectionGui = true;
 
-				this.onTeleport(player);
-				player.mountEntity(this);
+                this.onTeleport(player);
+                player.mountEntity(this);
 
-				if (!this.isDead)
-				{
-					this.setDead();
-				}
-			}
-		}
-	}
+                if (!this.isDead)
+                {
+                    this.setDead();
+                }
+            }
+        }
+    }
 
-	@Override
-	protected boolean shouldCancelExplosion()
-	{
-		return this.hasValidFuel() && Math.abs(this.lastLastMotionY) < 4;
-	}
+    @Override
+    protected boolean shouldCancelExplosion()
+    {
+        return this.hasValidFuel() && Math.abs(this.lastLastMotionY) < 4;
+    }
 
-	public void onTeleport(EntityPlayerMP player)
-	{
-	}
+    public void onTeleport(EntityPlayerMP player)
+    {
+    }
 
-	@Override
-	protected void onRocketLand(int x, int y, int z)
-	{
-		super.onRocketLand(x, y, z);
-		this.launchCooldown = 40;
-		this.setPositionAndRotation(x + 0.5, y + 1.8D, z + 0.5, this.rotationYaw, 0.0F);
-	}
+    @Override
+    protected void onRocketLand(int x, int y, int z)
+    {
+        super.onRocketLand(x, y, z);
+        this.launchCooldown = 40;
+        this.setPositionAndRotation(x + 0.5, y + 1.8D, z + 0.5, this.rotationYaw, 0.0F);
+    }
 
-	@Override
-	public void onLaunch()
-	{
-		super.onLaunch();
-	}
+    @Override
+    public void onLaunch()
+    {
+        super.onLaunch();
+    }
 
-	@Override
-	protected boolean shouldMoveClientSide()
-	{
-		return true;
-	}
+    @Override
+    protected boolean shouldMoveClientSide()
+    {
+        return true;
+    }
 
-	@Override
-	public boolean interactFirst(EntityPlayer par1EntityPlayer)
-	{
-		if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
-		{
-			return false;
-		}
+    @Override
+    public boolean interactFirst(EntityPlayer par1EntityPlayer)
+    {
+        if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
+        {
+            return false;
+        }
 
-		if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
-		{
-			if (!this.worldObj.isRemote)
-			{
-				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, new Object[] {}), (EntityPlayerMP) par1EntityPlayer);
+        if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
+        {
+            if (!this.worldObj.isRemote)
+            {
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, new Object[] { }), (EntityPlayerMP) par1EntityPlayer);
                 GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats((EntityPlayerMP) par1EntityPlayer);
                 stats.chatCooldown = 0;
-				par1EntityPlayer.mountEntity(null);
-			}
+                par1EntityPlayer.mountEntity(null);
+            }
 
-			return true;
-		}
-		else if (par1EntityPlayer instanceof EntityPlayerMP)
-		{
-			if (!this.worldObj.isRemote)
-			{
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_DISPLAY_ROCKET_CONTROLS, new Object[] {}), (EntityPlayerMP)par1EntityPlayer);
+            return true;
+        }
+        else if (par1EntityPlayer instanceof EntityPlayerMP)
+        {
+            if (!this.worldObj.isRemote)
+            {
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_DISPLAY_ROCKET_CONTROLS, new Object[] { }), (EntityPlayerMP) par1EntityPlayer);
                 GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats((EntityPlayerMP) par1EntityPlayer);
                 stats.chatCooldown = 0;
-				par1EntityPlayer.mountEntity(this);
-			}
+                par1EntityPlayer.mountEntity(this);
+            }
 
-			return true;
-		}
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbt)
-	{
-		nbt.setInteger("Type", this.rocketType.getIndex());
-		super.writeEntityToNBT(nbt);
-	}
+    @Override
+    protected void writeEntityToNBT(NBTTagCompound nbt)
+    {
+        nbt.setInteger("Type", this.rocketType.getIndex());
+        super.writeEntityToNBT(nbt);
+    }
 
-	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbt)
-	{
-		this.rocketType = EnumRocketType.values()[nbt.getInteger("Type")];
-		super.readEntityFromNBT(nbt);
-	}
+    @Override
+    protected void readEntityFromNBT(NBTTagCompound nbt)
+    {
+        this.rocketType = EnumRocketType.values()[nbt.getInteger("Type")];
+        super.readEntityFromNBT(nbt);
+    }
 
-	@Override
-	public EnumRocketType getType()
-	{
-		return this.rocketType;
-	}
+    @Override
+    public EnumRocketType getType()
+    {
+        return this.rocketType;
+    }
 
-	@Override
-	public int getSizeInventory()
-	{
-		return this.rocketType.getInventorySpace();
-	}
+    @Override
+    public int getSizeInventory()
+    {
+        return this.rocketType.getInventorySpace();
+    }
 
-	@Override
-	public void onWorldTransferred(World world)
-	{
-		if (this.targetVec != null)
-		{
-			this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
-			this.landing = true;
-			this.setWaitForPlayer(true);
-			this.motionX = this.motionY = this.motionZ = 0.0D;
-		}
-		else
-		{
-			this.setDead();
-		}
-	}
+    @Override
+    public void onWorldTransferred(World world)
+    {
+        if (this.targetVec != null)
+        {
+            this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
+            this.landing = true;
+            this.setWaitForPlayer(true);
+            this.motionX = this.motionY = this.motionZ = 0.0D;
+        }
+        else
+        {
+            this.setDead();
+        }
+    }
 
-	@Override
-	public void updateRiderPosition()
-	{
-		if (this.riddenByEntity != null)
-		{
-			this.riddenByEntity.setPosition(this.posX, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ);
-		}
-	}
+    @Override
+    public void updateRiderPosition()
+    {
+        if (this.riddenByEntity != null)
+        {
+            this.riddenByEntity.setPosition(this.posX, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ);
+        }
+    }
 
-	@Override
-	public boolean isPlayerRocket()
-	{
-		return true;
-	}
+    @Override
+    public boolean isPlayerRocket()
+    {
+        return true;
+    }
 }

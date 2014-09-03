@@ -13,31 +13,31 @@ import java.util.List;
 
 public abstract class GuiContainerGC extends GuiContainer
 {
-	public List<GuiElementInfoRegion> infoRegions = new ArrayList<GuiElementInfoRegion>();
+    public List<GuiElementInfoRegion> infoRegions = new ArrayList<GuiElementInfoRegion>();
 
-	public GuiContainerGC(Container container)
-	{
-		super(container);
-	}
+    public GuiContainerGC(Container container)
+    {
+        super(container);
+    }
 
-	@Override
-	public void drawScreen(int par1, int par2, float par3)
-	{
-		super.drawScreen(par1, par2, par3);
+    @Override
+    public void drawScreen(int par1, int par2, float par3)
+    {
+        super.drawScreen(par1, par2, par3);
 
         for (int k = 0; k < this.infoRegions.size(); ++k)
-		{
-			GuiElementInfoRegion guibutton = this.infoRegions.get(k);
-			guibutton.drawRegion(par1, par2);
-		}
-	}
+        {
+            GuiElementInfoRegion guibutton = this.infoRegions.get(k);
+            guibutton.drawRegion(par1, par2);
+        }
+    }
 
-	@Override
-	public void setWorldAndResolution(Minecraft par1Minecraft, int par2, int par3)
-	{
-		this.infoRegions.clear();
-		super.setWorldAndResolution(par1Minecraft, par2, par3);
-	}
+    @Override
+    public void setWorldAndResolution(Minecraft par1Minecraft, int par2, int par3)
+    {
+        this.infoRegions.clear();
+        super.setWorldAndResolution(par1Minecraft, par2, par3);
+    }
 
     public int getTooltipOffset(int par1, int par2)
     {

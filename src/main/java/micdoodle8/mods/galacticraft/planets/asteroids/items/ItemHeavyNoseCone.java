@@ -14,16 +14,16 @@ import net.minecraft.util.IIcon;
 
 public class ItemHeavyNoseCone extends Item
 {
-	public IIcon[] icons;
+    public IIcon[] icons;
 
-	public ItemHeavyNoseCone(String assetName)
-	{
-		super();
-		this.setMaxDamage(0);
-		this.setHasSubtypes(true);
-		this.setUnlocalizedName(assetName);
-		this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
-	}
+    public ItemHeavyNoseCone(String assetName)
+    {
+        super();
+        this.setMaxDamage(0);
+        this.setHasSubtypes(true);
+        this.setUnlocalizedName(assetName);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+    }
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -38,42 +38,42 @@ public class ItemHeavyNoseCone extends Item
         return par2 == 0 ? this.icons[0] : this.icons[1];
     }
 
-	@Override
-	public CreativeTabs getCreativeTab()
-	{
-		return GalacticraftCore.galacticraftItemsTab;
-	}
+    @Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftCore.galacticraftItemsTab;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack)
-	{
-		return ClientProxyCore.galacticraftItem;
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister iconRegister)
-	{
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister iconRegister)
+    {
         this.icons = new IIcon[2];
         this.icons[0] = iconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "heavyNoseCone");
         this.icons[1] = iconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "heavyNoseCone.0");
-	}
+    }
 
-	@Override
-	public IIcon getIconFromDamage(int damage)
-	{
-		if (this.icons.length > damage)
-		{
-			return this.icons[damage];
-		}
+    @Override
+    public IIcon getIconFromDamage(int damage)
+    {
+        if (this.icons.length > damage)
+        {
+            return this.icons[damage];
+        }
 
-		return super.getIconFromDamage(damage);
-	}
+        return super.getIconFromDamage(damage);
+    }
 
-	@Override
-	public int getMetadata(int par1)
-	{
-		return par1;
-	}
+    @Override
+    public int getMetadata(int par1)
+    {
+        return par1;
+    }
 }

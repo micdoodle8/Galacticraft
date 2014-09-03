@@ -43,23 +43,29 @@ public class ItemBlockDesc extends ItemBlockGC
             {
                 if (this.field_150939_a instanceof BlockTileGC)
                 {
-                	TileEntity te = ((BlockTileGC)this.field_150939_a).createTileEntity(null, stack.getItemDamage() & 12);
-                	if (te instanceof TileBaseElectricBlock && !(te instanceof TileEntityEnergyStorageModule))
-                	{
-                		float powerDrawn = ((TileBaseElectricBlock)te).storage.getMaxExtract();
-                		if (powerDrawn > 0) info.add(EnumChatFormatting.GREEN + GCCoreUtil.translateWithFormat("itemDesc.powerdraw.name", EnergyDisplayHelper.getEnergyDisplayS(powerDrawn * 20)));
-                	}
+                    TileEntity te = ((BlockTileGC) this.field_150939_a).createTileEntity(null, stack.getItemDamage() & 12);
+                    if (te instanceof TileBaseElectricBlock && !(te instanceof TileEntityEnergyStorageModule))
+                    {
+                        float powerDrawn = ((TileBaseElectricBlock) te).storage.getMaxExtract();
+                        if (powerDrawn > 0)
+                        {
+                            info.add(EnumChatFormatting.GREEN + GCCoreUtil.translateWithFormat("itemDesc.powerdraw.name", EnergyDisplayHelper.getEnergyDisplayS(powerDrawn * 20)));
+                        }
+                    }
                 }
                 else if (this.field_150939_a instanceof BlockAdvancedTile)
                 {
-                	TileEntity te = ((BlockAdvancedTile)this.field_150939_a).createTileEntity(null, stack.getItemDamage() & 12);
-                	if (te instanceof TileBaseElectricBlock)
-                	{
-                		float powerDrawn = ((TileBaseElectricBlock)te).storage.getMaxExtract();
-                		if (powerDrawn > 0) info.add(EnumChatFormatting.GREEN + GCCoreUtil.translateWithFormat("itemDesc.powerdraw.name", EnergyDisplayHelper.getEnergyDisplayS(powerDrawn * 20)));
-                	}
+                    TileEntity te = ((BlockAdvancedTile) this.field_150939_a).createTileEntity(null, stack.getItemDamage() & 12);
+                    if (te instanceof TileBaseElectricBlock)
+                    {
+                        float powerDrawn = ((TileBaseElectricBlock) te).storage.getMaxExtract();
+                        if (powerDrawn > 0)
+                        {
+                            info.add(EnumChatFormatting.GREEN + GCCoreUtil.translateWithFormat("itemDesc.powerdraw.name", EnergyDisplayHelper.getEnergyDisplayS(powerDrawn * 20)));
+                        }
+                    }
                 }
-            	info.add(GCCoreUtil.translateWithFormat("itemDesc.shift.name", Keyboard.getKeyName(FMLClientHandler.instance().getClient().gameSettings.keyBindSneak.getKeyCode())));
+                info.add(GCCoreUtil.translateWithFormat("itemDesc.shift.name", Keyboard.getKeyName(FMLClientHandler.instance().getClient().gameSettings.keyBindSneak.getKeyCode())));
             }
         }
     }

@@ -15,34 +15,34 @@ import net.minecraft.item.ItemStack;
 
 public class SchematicMoonBuggy extends SchematicPage
 {
-	@Override
-	public int getPageID()
-	{
-		return ConfigManagerCore.idSchematicMoonBuggy;
-	}
+    @Override
+    public int getPageID()
+    {
+        return ConfigManagerCore.idSchematicMoonBuggy;
+    }
 
-	@Override
-	public int getGuiID()
-	{
-		return GuiIdsCore.NASA_WORKBENCH_BUGGY;
-	}
+    @Override
+    public int getGuiID()
+    {
+        return GuiIdsCore.NASA_WORKBENCH_BUGGY;
+    }
 
-	@Override
-	public ItemStack getRequiredItem()
-	{
-		return new ItemStack(GCItems.schematic, 1, 0);
-	}
+    @Override
+    public ItemStack getRequiredItem()
+    {
+        return new ItemStack(GCItems.schematic, 1, 0);
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z)
-	{
-		return new GuiSchematicBuggy(player.inventory);
-	}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z)
+    {
+        return new GuiSchematicBuggy(player.inventory);
+    }
 
-	@Override
-	public Container getResultContainer(EntityPlayer player, int x, int y, int z)
-	{
-		return new ContainerBuggyBench(player.inventory, x, y, z);
-	}
+    @Override
+    public Container getResultContainer(EntityPlayer player, int x, int y, int z)
+    {
+        return new ContainerBuggyBench(player.inventory, x, y, z);
+    }
 }

@@ -26,305 +26,305 @@ import java.util.List;
 
 public class EntityTier1Rocket extends EntityTieredRocket
 {
-	public IUpdatePlayerListBox rocketSoundUpdater;
+    public IUpdatePlayerListBox rocketSoundUpdater;
 
-	public EntityTier1Rocket(World par1World)
-	{
-		super(par1World);
-	}
+    public EntityTier1Rocket(World par1World)
+    {
+        super(par1World);
+    }
 
-	public EntityTier1Rocket(World par1World, double par2, double par4, double par6, EnumRocketType rocketType)
-	{
-		super(par1World, par2, par4, par6);
-		this.rocketType = rocketType;
-		this.cargoItems = new ItemStack[this.getSizeInventory()];
-	}
+    public EntityTier1Rocket(World par1World, double par2, double par4, double par6, EnumRocketType rocketType)
+    {
+        super(par1World, par2, par4, par6);
+        this.rocketType = rocketType;
+        this.cargoItems = new ItemStack[this.getSizeInventory()];
+    }
 
-	@Override
-	public void setDead()
-	{
-		super.setDead();
+    @Override
+    public void setDead()
+    {
+        super.setDead();
 
-		if (this.rocketSoundUpdater != null)
-		{
-			this.rocketSoundUpdater.update();
-		}
-	}
+        if (this.rocketSoundUpdater != null)
+        {
+            this.rocketSoundUpdater.update();
+        }
+    }
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	public void onUpdate()
-	{
-		super.onUpdate();
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    public void onUpdate()
+    {
+        super.onUpdate();
 
-		int i;
+        int i;
 
-		if (this.timeUntilLaunch >= 100)
-		{
-			i = Math.abs(this.timeUntilLaunch / 100);
-		}
-		else
-		{
-			i = 1;
-		}
+        if (this.timeUntilLaunch >= 100)
+        {
+            i = Math.abs(this.timeUntilLaunch / 100);
+        }
+        else
+        {
+            i = 1;
+        }
 
-		if ((this.getLaunched() || this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() && this.rand.nextInt(i) == 0) && !ConfigManagerCore.disableSpaceshipParticles && this.hasValidFuel())
-		{
-			if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-			{
-				this.spawnParticles(this.getLaunched());
-			}
-		}
+        if ((this.getLaunched() || this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() && this.rand.nextInt(i) == 0) && !ConfigManagerCore.disableSpaceshipParticles && this.hasValidFuel())
+        {
+            if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+            {
+                this.spawnParticles(this.getLaunched());
+            }
+        }
 
-		if (this.rocketSoundUpdater != null && (this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() || this.getLaunched()))
-		{
-			this.rocketSoundUpdater.update();
-		}
+        if (this.rocketSoundUpdater != null && (this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() || this.getLaunched()))
+        {
+            this.rocketSoundUpdater.update();
+        }
 
-		if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal() && this.hasValidFuel())
-		{
-			if (!this.landing)
-			{
-				double d = this.timeSinceLaunch / 150;
+        if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal() && this.hasValidFuel())
+        {
+            if (!this.landing)
+            {
+                double d = this.timeSinceLaunch / 150;
 
-				d = Math.min(d, 1);
+                d = Math.min(d, 1);
 
-				if (d != 0.0)
-				{
-					this.motionY = -d * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
-				}
-			}
-			else
-			{
-				this.motionY -= 0.008D;
-			}
+                if (d != 0.0)
+                {
+                    this.motionY = -d * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
+                }
+            }
+            else
+            {
+                this.motionY -= 0.008D;
+            }
 
-			double multiplier = 1.0D;
+            double multiplier = 1.0D;
 
-			if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
-			{
-				multiplier = ((IGalacticraftWorldProvider) this.worldObj.provider).getFuelUsageMultiplier();
+            if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
+            {
+                multiplier = ((IGalacticraftWorldProvider) this.worldObj.provider).getFuelUsageMultiplier();
 
-				if (multiplier <= 0)
-				{
-					multiplier = 1;
-				}
-			}
+                if (multiplier <= 0)
+                {
+                    multiplier = 1;
+                }
+            }
 
-			if (this.timeSinceLaunch % MathHelper.floor_double(3 * (1 / multiplier)) == 0)
-			{
-				this.removeFuel(1);
-				/*TO: fix soundupdater (see below)
+            if (this.timeSinceLaunch % MathHelper.floor_double(3 * (1 / multiplier)) == 0)
+            {
+                this.removeFuel(1);
+                /*TO: fix soundupdater (see below)
 				if (!this.hasValidFuel() && this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
 				{
 					((GCCoreSoundUpdaterSpaceship) this.rocketSoundUpdater).stopRocketSound();
 				}*/
-			}
-		}
-		else if (!this.hasValidFuel() && this.getLaunched() && !this.worldObj.isRemote)
-		{
-			if (Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 10 != 0.0)
-			{
-				this.motionY -= Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 20;
-			}
-		}
-	}
+            }
+        }
+        else if (!this.hasValidFuel() && this.getLaunched() && !this.worldObj.isRemote)
+        {
+            if (Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 10 != 0.0)
+            {
+                this.motionY -= Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 20;
+            }
+        }
+    }
 
-	@Override
-	protected void onRocketLand(int x, int y, int z)
-	{
-		super.onRocketLand(x, y, z);
+    @Override
+    protected void onRocketLand(int x, int y, int z)
+    {
+        super.onRocketLand(x, y, z);
 
-		// if (this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
-		// {
-		// ((GCCoreSoundUpdaterSpaceship)
-		// this.rocketSoundUpdater).stopRocketSound();
-		// } TODO Fix rocket sound updater
-	}
+        // if (this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
+        // {
+        // ((GCCoreSoundUpdaterSpaceship)
+        // this.rocketSoundUpdater).stopRocketSound();
+        // } TODO Fix rocket sound updater
+    }
 
-	@Override
-	public void onTeleport(EntityPlayerMP player)
-	{
-		final EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
+    @Override
+    public void onTeleport(EntityPlayerMP player)
+    {
+        final EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
 
-		if (playerBase != null)
-		{
+        if (playerBase != null)
+        {
             GCPlayerStats stats = GCPlayerStats.get(player);
 
-			if (this.cargoItems == null || this.cargoItems.length == 0)
-			{
-				stats.rocketStacks = new ItemStack[2];
-			}
-			else
-			{
-				stats.rocketStacks = this.cargoItems;
-				if ((this.cargoItems.length - 2) % 18 != 0)
-				{
-					System.out.println("Strange rocket inventory size " + this.cargoItems.length);
-					int fail = 1 / 0;
-				}
-			}
+            if (this.cargoItems == null || this.cargoItems.length == 0)
+            {
+                stats.rocketStacks = new ItemStack[2];
+            }
+            else
+            {
+                stats.rocketStacks = this.cargoItems;
+                if ((this.cargoItems.length - 2) % 18 != 0)
+                {
+                    System.out.println("Strange rocket inventory size " + this.cargoItems.length);
+                    int fail = 1 / 0;
+                }
+            }
 
-			stats.rocketType = this.rocketType.getIndex();
-			stats.rocketItem = GCItems.rocketTier1;
-			stats.fuelLevel = this.fuelTank.getFluidAmount();
-		}
-	}
+            stats.rocketType = this.rocketType.getIndex();
+            stats.rocketItem = GCItems.rocketTier1;
+            stats.fuelLevel = this.fuelTank.getFluidAmount();
+        }
+    }
 
-	protected void spawnParticles(boolean launched)
-	{
-		if (!this.isDead)
-		{
-			final double x1 = 2 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
-			final double z1 = 2 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
-			double y1 = 2 * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
+    protected void spawnParticles(boolean launched)
+    {
+        if (!this.isDead)
+        {
+            final double x1 = 2 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
+            final double z1 = 2 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
+            double y1 = 2 * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
 
-			final double y = this.prevPosY + (this.posY - this.prevPosY) + y1;
+            final double y = this.prevPosY + (this.posY - this.prevPosY) + y1;
 
-			final double x2 = this.posX + x1;
-			final double z2 = this.posZ + z1;
+            final double x2 = this.posX + x1;
+            final double z2 = this.posZ + z1;
 
-			if (this.getLaunched())
-			{
-				Vector3 motionVec = new Vector3(x1, y1, z1);
-				GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2 + 0.4 - this.rand.nextDouble() / 10, y, z2 + 0.4 - this.rand.nextDouble() / 10), motionVec);
-				GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2 - 0.4 + this.rand.nextDouble() / 10, y, z2 + 0.4 - this.rand.nextDouble() / 10), motionVec);
-				GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2 - 0.4 + this.rand.nextDouble() / 10, y, z2 - 0.4 + this.rand.nextDouble() / 10), motionVec);
-				GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2 + 0.4 - this.rand.nextDouble() / 10, y, z2 - 0.4 + this.rand.nextDouble() / 10), motionVec);
-				GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2, y, z2), motionVec);
-				GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2 + 0.4, y, z2), motionVec);
-				GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2 - 0.4, y, z2), motionVec);
-				GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2, y, z2 + 0.4D), motionVec);
-				GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2, y, z2 - 0.4D), motionVec);
-				
-			}
-			else
-			{
-				GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 + 0.4 - this.rand.nextDouble() / 10, y, z2 + 0.4 - this.rand.nextDouble() / 10), new Vector3(x1 + 0.7, y1 - 1D, z1 + 0.7));
-				GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 - 0.4 + this.rand.nextDouble() / 10, y, z2 + 0.4 - this.rand.nextDouble() / 10), new Vector3(x1 - 0.7, y1 - 1D, z1 + 0.7));
-				GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 - 0.4 + this.rand.nextDouble() / 10, y, z2 - 0.4 + this.rand.nextDouble() / 10), new Vector3(x1 - 0.7, y1 - 1D, z1 - 0.7));
-				GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 + 0.4 - this.rand.nextDouble() / 10, y, z2 - 0.4 + this.rand.nextDouble() / 10), new Vector3(x1 + 0.7, y1 - 1D, z1 - 0.7));	
-			}
-		}
-	}
+            if (this.getLaunched())
+            {
+                Vector3 motionVec = new Vector3(x1, y1, z1);
+                GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2 + 0.4 - this.rand.nextDouble() / 10, y, z2 + 0.4 - this.rand.nextDouble() / 10), motionVec);
+                GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2 - 0.4 + this.rand.nextDouble() / 10, y, z2 + 0.4 - this.rand.nextDouble() / 10), motionVec);
+                GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2 - 0.4 + this.rand.nextDouble() / 10, y, z2 - 0.4 + this.rand.nextDouble() / 10), motionVec);
+                GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2 + 0.4 - this.rand.nextDouble() / 10, y, z2 - 0.4 + this.rand.nextDouble() / 10), motionVec);
+                GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2, y, z2), motionVec);
+                GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2 + 0.4, y, z2), motionVec);
+                GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2 - 0.4, y, z2), motionVec);
+                GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2, y, z2 + 0.4D), motionVec);
+                GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2, y, z2 - 0.4D), motionVec);
 
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
-	{
-		return !this.isDead && par1EntityPlayer.getDistanceSqToEntity(this) <= 64.0D;
-	}
+            }
+            else
+            {
+                GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 + 0.4 - this.rand.nextDouble() / 10, y, z2 + 0.4 - this.rand.nextDouble() / 10), new Vector3(x1 + 0.7, y1 - 1D, z1 + 0.7));
+                GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 - 0.4 + this.rand.nextDouble() / 10, y, z2 + 0.4 - this.rand.nextDouble() / 10), new Vector3(x1 - 0.7, y1 - 1D, z1 + 0.7));
+                GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 - 0.4 + this.rand.nextDouble() / 10, y, z2 - 0.4 + this.rand.nextDouble() / 10), new Vector3(x1 - 0.7, y1 - 1D, z1 - 0.7));
+                GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 + 0.4 - this.rand.nextDouble() / 10, y, z2 - 0.4 + this.rand.nextDouble() / 10), new Vector3(x1 + 0.7, y1 - 1D, z1 - 0.7));
+            }
+        }
+    }
 
-	@Override
-	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
-	{
-		super.writeEntityToNBT(par1NBTTagCompound);
-	}
+    @Override
+    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    {
+        return !this.isDead && par1EntityPlayer.getDistanceSqToEntity(this) <= 64.0D;
+    }
 
-	@Override
-	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
-	{
-		super.readEntityFromNBT(par1NBTTagCompound);
-	}
+    @Override
+    protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        super.writeEntityToNBT(par1NBTTagCompound);
+    }
 
-	@Override
-	public int getPreLaunchWait()
-	{
-		return 400;
-	}
+    @Override
+    protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        super.readEntityFromNBT(par1NBTTagCompound);
+    }
 
-	@Override
-	public List<ItemStack> getItemsDropped(List<ItemStack> droppedItems)
-	{
-		super.getItemsDropped(droppedItems);
-		droppedItems.add(new ItemStack(GCItems.rocketTier1, 1, this.rocketType.getIndex()));
-		return droppedItems;
-	}
+    @Override
+    public int getPreLaunchWait()
+    {
+        return 400;
+    }
 
-	@Override
-	public boolean hasCustomInventoryName()
-	{
-		return false;
-	}
+    @Override
+    public List<ItemStack> getItemsDropped(List<ItemStack> droppedItems)
+    {
+        super.getItemsDropped(droppedItems);
+        droppedItems.add(new ItemStack(GCItems.rocketTier1, 1, this.rocketType.getIndex()));
+        return droppedItems;
+    }
 
-	@Override
-	public boolean isItemValidForSlot(int i, ItemStack itemstack)
-	{
-		return false;
-	}
+    @Override
+    public boolean hasCustomInventoryName()
+    {
+        return false;
+    }
 
-	// @RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID =
-	// "ICBM|Explosion")
-	// public boolean canLock(IMissile missile)
-	// {
-	// return true;
-	// }
-	//
-	// @RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID =
-	// "ICBM|Explosion")
-	// public Vector3 getPredictedPosition(int ticks)
-	// {
-	// return new Vector3(this);
-	// } TODO Re-enable ICBM integration
+    @Override
+    public boolean isItemValidForSlot(int i, ItemStack itemstack)
+    {
+        return false;
+    }
 
-	@Override
-	public void onPadDestroyed()
-	{
-		if (!this.isDead && this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal())
-		{
-			this.dropShipAsItem();
-			this.setDead();
-		}
-	}
+    // @RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID =
+    // "ICBM|Explosion")
+    // public boolean canLock(IMissile missile)
+    // {
+    // return true;
+    // }
+    //
+    // @RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID =
+    // "ICBM|Explosion")
+    // public Vector3 getPredictedPosition(int ticks)
+    // {
+    // return new Vector3(this);
+    // } TODO Re-enable ICBM integration
 
-	@Override
-	public boolean isDockValid(IFuelDock dock)
-	{
-		return dock instanceof TileEntityLandingPad;
-	}
+    @Override
+    public void onPadDestroyed()
+    {
+        if (!this.isDead && this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal())
+        {
+            this.dropShipAsItem();
+            this.setDead();
+        }
+    }
 
-	// @RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID =
-	// "ICBM|Explosion")
-	// public void destroyCraft()
-	// {
-	// this.setDead();
-	// }
-	//
-	// @RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID =
-	// "ICBM|Explosion")
-	// public int doDamage(int damage)
-	// {
-	// return (int) (this.shipDamage += damage);
-	// }
-	//
-	// @RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID =
-	// "ICBM|Explosion")
-	// public boolean canBeTargeted(Object entity)
-	// {
-	// return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() &&
-	// this.timeSinceLaunch > 50;
-	// } TODO Re-enable ICBM integration
+    @Override
+    public boolean isDockValid(IFuelDock dock)
+    {
+        return dock instanceof TileEntityLandingPad;
+    }
 
-	@Override
-	public int getRocketTier()
-	{
-		return 1;
-	}
+    // @RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID =
+    // "ICBM|Explosion")
+    // public void destroyCraft()
+    // {
+    // this.setDead();
+    // }
+    //
+    // @RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID =
+    // "ICBM|Explosion")
+    // public int doDamage(int damage)
+    // {
+    // return (int) (this.shipDamage += damage);
+    // }
+    //
+    // @RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID =
+    // "ICBM|Explosion")
+    // public boolean canBeTargeted(Object entity)
+    // {
+    // return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() &&
+    // this.timeSinceLaunch > 50;
+    // } TODO Re-enable ICBM integration
 
-	@Override
-	public int getFuelTankCapacity()
-	{
-		return 1000;
-	}
+    @Override
+    public int getRocketTier()
+    {
+        return 1;
+    }
 
-	@Override
-	public float getCameraZoom()
-	{
-		return 15.0F;
-	}
+    @Override
+    public int getFuelTankCapacity()
+    {
+        return 1000;
+    }
 
-	@Override
-	public boolean defaultThirdPerson()
-	{
-		return true;
-	}
+    @Override
+    public float getCameraZoom()
+    {
+        return 15.0F;
+    }
+
+    @Override
+    public boolean defaultThirdPerson()
+    {
+        return true;
+    }
 }

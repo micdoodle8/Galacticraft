@@ -125,7 +125,7 @@ public class VersionUtil
     {
         try
         {
-            Method m = (Method)reflectionCache.get(0);
+            Method m = (Method) reflectionCache.get(0);
 
             if (m == null)
             {
@@ -145,7 +145,7 @@ public class VersionUtil
     {
         try
         {
-            Method m = (Method)reflectionCache.get(1);
+            Method m = (Method) reflectionCache.get(1);
 
             if (m == null)
             {
@@ -153,7 +153,7 @@ public class VersionUtil
                 reflectionCache.put(1, m);
             }
 
-            return (String)m.invoke(slimeling);
+            return (String) m.invoke(slimeling);
         }
         catch (Throwable t)
         {
@@ -176,25 +176,25 @@ public class VersionUtil
             {
                 if (mcVersionMatches("1.7.10"))
                 {
-	                Class<?> c = (Class)reflectionCache.get(2);
-	
-	                if (c == null)
-	                {
-	                    c = Class.forName(getNameDynamic(KEY_CLASS_YGG_CONVERTER).replace('/', '.'));
-	                    reflectionCache.put(2, c);
-	                }
-	
-	                Method m = (Method)reflectionCache.get(3);
-	
-	                if (m == null)
-	                {
-	                    m = c.getMethod(getNameDynamic(KEY_METHOD_CONVERT_UUID), new Class[] { String.class });
-	                    reflectionCache.put(3, m);
-	                }
-	
-	                String s1 = nbt.getString("Owner");
-	                    s = (String)m.invoke(null, s1);
-	            }
+                    Class<?> c = (Class) reflectionCache.get(2);
+
+                    if (c == null)
+                    {
+                        c = Class.forName(getNameDynamic(KEY_CLASS_YGG_CONVERTER).replace('/', '.'));
+                        reflectionCache.put(2, c);
+                    }
+
+                    Method m = (Method) reflectionCache.get(3);
+
+                    if (m == null)
+                    {
+                        m = c.getMethod(getNameDynamic(KEY_METHOD_CONVERT_UUID), new Class[] { String.class });
+                        reflectionCache.put(3, m);
+                    }
+
+                    String s1 = nbt.getString("Owner");
+                    s = (String) m.invoke(null, s1);
+                }
             }
 
             if (s.length() > 0)
@@ -212,7 +212,7 @@ public class VersionUtil
     {
         try
         {
-            Class<?> c = (Class<?>)reflectionCache.get(4);
+            Class<?> c = (Class<?>) reflectionCache.get(4);
 
             if (c == null)
             {
@@ -222,15 +222,15 @@ public class VersionUtil
 
             if (mcVersionMatches("1.7.10"))
             {
-                Class<?> c0 = (Class<?>)reflectionCache.get(5);
-                Method m = (Method)reflectionCache.get(6);
+                Class<?> c0 = (Class<?>) reflectionCache.get(5);
+                Method m = (Method) reflectionCache.get(6);
 
                 if (c0 == null)
                 {
                     c0 = Class.forName(getNameDynamic(KEY_CLASS_NBT_SIZE_TRACKER).replace('/', '.'));
-                    reflectionCache.put(5, c0);              
+                    reflectionCache.put(5, c0);
                 }
-                
+
                 if (m == null)
                 {
                     m = c.getMethod(getNameDynamic(KEY_METHOD_DECOMPRESS_NBT), byte[].class, c0);
@@ -238,11 +238,11 @@ public class VersionUtil
                 }
 
                 Object nbtSizeTracker = c0.getConstructor(long.class).newInstance(2097152L);
-                return (NBTTagCompound)m.invoke(null, compressedNBT, nbtSizeTracker);
+                return (NBTTagCompound) m.invoke(null, compressedNBT, nbtSizeTracker);
             }
             else if (mcVersionMatches("1.7.2"))
             {
-                Method m = (Method)reflectionCache.get(6);
+                Method m = (Method) reflectionCache.get(6);
 
                 if (m == null)
                 {
@@ -250,7 +250,7 @@ public class VersionUtil
                     reflectionCache.put(6, m);
                 }
 
-                return (NBTTagCompound)m.invoke(null, compressedNBT);
+                return (NBTTagCompound) m.invoke(null, compressedNBT);
             }
         }
         catch (Throwable t)
@@ -265,7 +265,7 @@ public class VersionUtil
     {
         try
         {
-            Class<?> c = (Class<?>)reflectionCache.get(7);
+            Class<?> c = (Class<?>) reflectionCache.get(7);
 
             if (c == null)
             {
@@ -275,7 +275,7 @@ public class VersionUtil
 
             if (mcVersionMatches("1.7.10"))
             {
-                Method m = (Method)reflectionCache.get(8);
+                Method m = (Method) reflectionCache.get(8);
 
                 if (m == null)
                 {
@@ -287,7 +287,7 @@ public class VersionUtil
             }
             else if (mcVersionMatches("1.7.2"))
             {
-                Method m = (Method)reflectionCache.get(8);
+                Method m = (Method) reflectionCache.get(8);
 
                 if (m == null)
                 {
@@ -308,7 +308,7 @@ public class VersionUtil
     {
         try
         {
-            Class<?> c = (Class<?>)reflectionCache.get(9);
+            Class<?> c = (Class<?>) reflectionCache.get(9);
 
             if (c == null)
             {
@@ -318,7 +318,7 @@ public class VersionUtil
 
             if (mcVersionMatches("1.7.10"))
             {
-                Method m = (Method)reflectionCache.get(10);
+                Method m = (Method) reflectionCache.get(10);
 
                 if (m == null)
                 {
@@ -330,7 +330,7 @@ public class VersionUtil
             }
             else if (mcVersionMatches("1.7.2"))
             {
-                Method m = (Method)reflectionCache.get(10);
+                Method m = (Method) reflectionCache.get(10);
 
                 if (m == null)
                 {
@@ -351,7 +351,7 @@ public class VersionUtil
     {
         try
         {
-            Class<?> c = (Class<?>)reflectionCache.get(11);
+            Class<?> c = (Class<?>) reflectionCache.get(11);
 
             if (c == null)
             {
@@ -359,7 +359,7 @@ public class VersionUtil
                 reflectionCache.put(11, c);
             }
 
-            Method m = (Method)reflectionCache.get(12);
+            Method m = (Method) reflectionCache.get(12);
 
             if (m == null)
             {
@@ -367,7 +367,7 @@ public class VersionUtil
                 reflectionCache.put(12, m);
             }
 
-            return (EntityPlayerMP)m.invoke(server.getConfigurationManager(), username);
+            return (EntityPlayerMP) m.invoke(server.getConfigurationManager(), username);
         }
         catch (Throwable t)
         {
@@ -381,7 +381,7 @@ public class VersionUtil
     {
         try
         {
-            Class<?> c = (Class<?>)reflectionCache.get(13);
+            Class<?> c = (Class<?>) reflectionCache.get(13);
 
             if (c == null)
             {
@@ -391,7 +391,7 @@ public class VersionUtil
 
             if (mcVersionMatches("1.7.10"))
             {
-                Method m = (Method)reflectionCache.get(14);
+                Method m = (Method) reflectionCache.get(14);
 
                 if (m == null)
                 {
@@ -399,11 +399,11 @@ public class VersionUtil
                     reflectionCache.put(14, m);
                 }
 
-                return (Boolean)m.invoke(player.mcServer.getConfigurationManager(), player.getGameProfile());
+                return (Boolean) m.invoke(player.mcServer.getConfigurationManager(), player.getGameProfile());
             }
             else if (mcVersionMatches("1.7.2"))
             {
-                Method m = (Method)reflectionCache.get(14);
+                Method m = (Method) reflectionCache.get(14);
 
                 if (m == null)
                 {
@@ -411,7 +411,7 @@ public class VersionUtil
                     reflectionCache.put(14, m);
                 }
 
-                return (Boolean)m.invoke(player.mcServer.getConfigurationManager(), player.getGameProfile().getName());
+                return (Boolean) m.invoke(player.mcServer.getConfigurationManager(), player.getGameProfile().getName());
             }
         }
         catch (Throwable t)
@@ -427,7 +427,7 @@ public class VersionUtil
     {
         try
         {
-            Class<?> c = (Class<?>)reflectionCache.get(15);
+            Class<?> c = (Class<?>) reflectionCache.get(15);
 
             if (c == null)
             {
@@ -437,27 +437,27 @@ public class VersionUtil
 
             if (mcVersionMatches("1.7.10"))
             {
-                Constructor m = (Constructor)reflectionCache.get(16);
+                Constructor m = (Constructor) reflectionCache.get(16);
 
                 if (m == null)
                 {
-                    m = c.getConstructor(new Class[]{Minecraft.class, int.class, int.class});
+                    m = c.getConstructor(new Class[] { Minecraft.class, int.class, int.class });
                     reflectionCache.put(16, m);
                 }
 
-                return (ScaledResolution)m.newInstance(mc, width, height);
+                return (ScaledResolution) m.newInstance(mc, width, height);
             }
             else if (mcVersionMatches("1.7.2"))
             {
-                Constructor m = (Constructor)reflectionCache.get(16);
+                Constructor m = (Constructor) reflectionCache.get(16);
 
                 if (m == null)
                 {
-                    m = c.getConstructor(new Class[]{ GameSettings.class, int.class, int.class});
+                    m = c.getConstructor(new Class[] { GameSettings.class, int.class, int.class });
                     reflectionCache.put(16, m);
                 }
 
-                return (ScaledResolution)m.newInstance(mc.gameSettings, width, height);
+                return (ScaledResolution) m.newInstance(mc.gameSettings, width, height);
             }
         }
         catch (Throwable t)

@@ -15,41 +15,41 @@ import java.util.List;
 
 public class ItemOxygenTank extends Item
 {
-	public ItemOxygenTank(int tier, String assetName)
-	{
-		super();
-		this.setMaxStackSize(1);
-		this.setMaxDamage(tier * 900);
-		this.setUnlocalizedName(assetName);
-		this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
-	}
+    public ItemOxygenTank(int tier, String assetName)
+    {
+        super();
+        this.setMaxStackSize(1);
+        this.setMaxDamage(tier * 900);
+        this.setUnlocalizedName(assetName);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+    }
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-	{
-		par3List.add(new ItemStack(par1, 1, 0));
-		par3List.add(new ItemStack(par1, 1, this.getMaxDamage()));
-	}
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    {
+        par3List.add(new ItemStack(par1, 1, 0));
+        par3List.add(new ItemStack(par1, 1, this.getMaxDamage()));
+    }
 
-	@Override
-	public CreativeTabs getCreativeTab()
-	{
-		return GalacticraftCore.galacticraftItemsTab;
-	}
+    @Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftCore.galacticraftItemsTab;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack)
-	{
-		return ClientProxyCore.galacticraftItem;
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b)
-	{
-		par2List.add(GCCoreUtil.translate("gui.tank.oxygenRemaining") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
-	}
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b)
+    {
+        par2List.add(GCCoreUtil.translate("gui.tank.oxygenRemaining") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
+    }
 }

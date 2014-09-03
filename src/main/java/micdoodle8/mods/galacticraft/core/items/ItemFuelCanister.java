@@ -12,57 +12,57 @@ import java.util.List;
 
 public class ItemFuelCanister extends ItemCanisterGeneric
 {
-	protected IIcon[] icons = new IIcon[7];
+    protected IIcon[] icons = new IIcon[7];
 
-	public ItemFuelCanister(String assetName)
-	{
-		super(assetName);
-		this.setContainerItem(GCItems.oilCanister);
-		this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
-	}
+    public ItemFuelCanister(String assetName)
+    {
+        super(assetName);
+        this.setContainerItem(GCItems.oilCanister);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister iconRegister)
-	{
-		for (int i = 0; i < this.icons.length; i++)
-		{
-			this.icons[i] = iconRegister.registerIcon(this.getIconString() + "_" + i);
-		}
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister iconRegister)
+    {
+        for (int i = 0; i < this.icons.length; i++)
+        {
+            this.icons[i] = iconRegister.registerIcon(this.getIconString() + "_" + i);
+        }
+    }
 
-	@Override
-	public String getUnlocalizedName(ItemStack itemStack)
-	{
-		if (itemStack.getItemDamage() == 1)
-		{
-			return "item.fuelCanister";
-		}
+    @Override
+    public String getUnlocalizedName(ItemStack itemStack)
+    {
+        if (itemStack.getItemDamage() == 1)
+        {
+            return "item.fuelCanister";
+        }
 
-		return "item.fuelCanisterPartial";
-	}
+        return "item.fuelCanisterPartial";
+    }
 
-	@Override
-	public IIcon getIconFromDamage(int par1)
-	{
-		final int damage = 6 * par1 / this.getMaxDamage();
+    @Override
+    public IIcon getIconFromDamage(int par1)
+    {
+        final int damage = 6 * par1 / this.getMaxDamage();
 
-		if (this.icons.length > damage)
-		{
-			return this.icons[this.icons.length - damage - 1];
-		}
+        if (this.icons.length > damage)
+        {
+            return this.icons[this.icons.length - damage - 1];
+        }
 
-		return super.getIconFromDamage(damage);
-	}
+        return super.getIconFromDamage(damage);
+    }
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
-	{
-		if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() > 0)
-		{
-			par3List.add("Fuel: " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
-		}
-	}
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+    {
+        if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() > 0)
+        {
+            par3List.add("Fuel: " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
+        }
+    }
 }

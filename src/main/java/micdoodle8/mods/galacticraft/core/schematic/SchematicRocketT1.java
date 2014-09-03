@@ -14,34 +14,34 @@ import net.minecraft.item.ItemStack;
 
 public class SchematicRocketT1 extends SchematicPage
 {
-	@Override
-	public int getPageID()
-	{
-		return ConfigManagerCore.idSchematicRocketT1;
-	}
+    @Override
+    public int getPageID()
+    {
+        return ConfigManagerCore.idSchematicRocketT1;
+    }
 
-	@Override
-	public int getGuiID()
-	{
-		return GuiIdsCore.NASA_WORKBENCH_ROCKET;
-	}
+    @Override
+    public int getGuiID()
+    {
+        return GuiIdsCore.NASA_WORKBENCH_ROCKET;
+    }
 
-	@Override
-	public ItemStack getRequiredItem()
-	{
-		return null;
-	}
+    @Override
+    public ItemStack getRequiredItem()
+    {
+        return null;
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z)
-	{
-		return new GuiSchematicTier1Rocket(player.inventory, x, y, z);
-	}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z)
+    {
+        return new GuiSchematicTier1Rocket(player.inventory, x, y, z);
+    }
 
-	@Override
-	public Container getResultContainer(EntityPlayer player, int x, int y, int z)
-	{
-		return new ContainerSchematicTier1Rocket(player.inventory, x, y, z);
-	}
+    @Override
+    public Container getResultContainer(EntityPlayer player, int x, int y, int z)
+    {
+        return new ContainerSchematicTier1Rocket(player.inventory, x, y, z);
+    }
 }

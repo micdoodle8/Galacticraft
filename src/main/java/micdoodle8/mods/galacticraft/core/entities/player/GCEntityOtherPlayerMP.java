@@ -6,13 +6,13 @@ import net.minecraft.world.World;
 
 public class GCEntityOtherPlayerMP extends EntityOtherPlayerMP
 {
-//	private ResourceLocation galacticraftCape; TODO Capes
+    //	private ResourceLocation galacticraftCape; TODO Capes
 //	private ThreadDownloadImageData galacticraftCapeImageData;
 //
-	public GCEntityOtherPlayerMP(World par1World, GameProfile profile)
-	{
-		super(par1World, profile);
-	}
+    public GCEntityOtherPlayerMP(World par1World, GameProfile profile)
+    {
+        super(par1World, profile);
+    }
 //
 //    public void func_152121_a(MinecraftProfileTexture.Type p_152121_1_, ResourceLocation p_152121_2_)
 //    {

@@ -18,25 +18,25 @@ public class NEIGalacticraftAsteroidsConfig implements IConfigureNEI
 {
     private static HashMap<ArrayList<PositionedStack>, PositionedStack> rocketBenchRecipes = new HashMap<ArrayList<PositionedStack>, PositionedStack>();
 
-	@Override
-	public void loadConfig()
-	{
+    @Override
+    public void loadConfig()
+    {
         this.registerRecipes();
         API.registerRecipeHandler(new RocketT3RecipeHandler());
         API.registerUsageHandler(new RocketT3RecipeHandler());
-	}
+    }
 
-	@Override
-	public String getName()
-	{
-		return "Galacticraft Asteroids NEI Plugin";
-	}
+    @Override
+    public String getName()
+    {
+        return "Galacticraft Asteroids NEI Plugin";
+    }
 
-	@Override
-	public String getVersion()
-	{
-		return Constants.LOCALMAJVERSION + "." + Constants.LOCALMINVERSION + "." + Constants.LOCALBUILDVERSION;
-	}
+    @Override
+    public String getVersion()
+    {
+        return Constants.LOCALMAJVERSION + "." + Constants.LOCALMINVERSION + "." + Constants.LOCALBUILDVERSION;
+    }
 
     public void registerRocketBenchRecipe(ArrayList<PositionedStack> input, PositionedStack output)
     {

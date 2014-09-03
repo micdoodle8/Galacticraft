@@ -12,32 +12,32 @@ import net.minecraft.item.ItemStack;
 
 public class ItemMeteoricIron extends Item
 {
-	private final String iconName;
+    private final String iconName;
 
-	public ItemMeteoricIron(String assetName)
-	{
-		super();
-		this.iconName = assetName;
-		this.setUnlocalizedName(assetName);
-	}
+    public ItemMeteoricIron(String assetName)
+    {
+        super();
+        this.iconName = assetName;
+        this.setUnlocalizedName(assetName);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister iconRegister)
-	{
-		this.itemIcon = iconRegister.registerIcon("galacticraftmoon:" + this.iconName);
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister iconRegister)
+    {
+        this.itemIcon = iconRegister.registerIcon("galacticraftmoon:" + this.iconName);
+    }
 
-	@Override
-	public CreativeTabs getCreativeTab()
-	{
-		return GalacticraftCore.galacticraftItemsTab;
-	}
+    @Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftCore.galacticraftItemsTab;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack)
-	{
-		return ClientProxyCore.galacticraftItem;
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
 }

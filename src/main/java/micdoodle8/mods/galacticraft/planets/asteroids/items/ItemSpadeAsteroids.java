@@ -12,23 +12,23 @@ import net.minecraft.item.ItemStack;
 
 public class ItemSpadeAsteroids extends ItemSpade
 {
-	public ItemSpadeAsteroids(String assetName)
-	{
-		super(AsteroidsItems.TOOL_TITANIUM);
-		this.setUnlocalizedName(assetName);
-		this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
-	}
+    public ItemSpadeAsteroids(String assetName)
+    {
+        super(AsteroidsItems.TOOL_TITANIUM);
+        this.setUnlocalizedName(assetName);
+        this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
+    }
 
-	@Override
-	public CreativeTabs getCreativeTab()
-	{
-		return GalacticraftCore.galacticraftItemsTab;
-	}
+    @Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftCore.galacticraftItemsTab;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack)
-	{
-		return ClientProxyCore.galacticraftItem;
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
 }

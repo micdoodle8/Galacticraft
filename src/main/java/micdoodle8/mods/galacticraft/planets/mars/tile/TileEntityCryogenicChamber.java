@@ -27,197 +27,197 @@ import net.minecraft.util.ChunkCoordinates;
 
 public class TileEntityCryogenicChamber extends TileEntityMulti implements IMultiBlock
 {
-	public boolean isOccupied;
+    public boolean isOccupied;
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public AxisAlignedBB getRenderBoundingBox()
-	{
-		return TileEntity.INFINITE_EXTENT_AABB;
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return TileEntity.INFINITE_EXTENT_AABB;
+    }
 
-	@Override
-	public boolean onActivated(EntityPlayer entityPlayer)
-	{
-		if (this.worldObj.isRemote)
-		{
-			return false;
-		}
+    @Override
+    public boolean onActivated(EntityPlayer entityPlayer)
+    {
+        if (this.worldObj.isRemote)
+        {
+            return false;
+        }
 
-		EnumStatus enumstatus = this.sleepInBedAt(entityPlayer, this.xCoord, this.yCoord, this.zCoord);
+        EnumStatus enumstatus = this.sleepInBedAt(entityPlayer, this.xCoord, this.yCoord, this.zCoord);
 
-		switch (enumstatus)
-		{
-		case OK:
-			((EntityPlayerMP) entityPlayer).playerNetServerHandler.setPlayerLocation(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_BEGIN_CRYOGENIC_SLEEP, new Object[] { this.xCoord, this.yCoord, this.zCoord }), (EntityPlayerMP) entityPlayer);
-			return true;
-		case NOT_POSSIBLE_NOW:
-			entityPlayer.addChatMessage(new ChatComponentTranslation("I can't use this for another " + GCEntityPlayerMP.getPlayerStats((EntityPlayerMP) entityPlayer).cryogenicChamberCooldown / 20 + " seconds"));
-			return false;
-		default:
-			return false;
-		}
-	}
+        switch (enumstatus)
+        {
+        case OK:
+            ((EntityPlayerMP) entityPlayer).playerNetServerHandler.setPlayerLocation(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_BEGIN_CRYOGENIC_SLEEP, new Object[] { this.xCoord, this.yCoord, this.zCoord }), (EntityPlayerMP) entityPlayer);
+            return true;
+        case NOT_POSSIBLE_NOW:
+            entityPlayer.addChatMessage(new ChatComponentTranslation("I can't use this for another " + GCEntityPlayerMP.getPlayerStats((EntityPlayerMP) entityPlayer).cryogenicChamberCooldown / 20 + " seconds"));
+            return false;
+        default:
+            return false;
+        }
+    }
 
-	public EnumStatus sleepInBedAt(EntityPlayer entityPlayer, int par1, int par2, int par3)
-	{
-		if (!this.worldObj.isRemote)
-		{
-			if (entityPlayer.isPlayerSleeping() || !entityPlayer.isEntityAlive())
-			{
-				return EnumStatus.OTHER_PROBLEM;
-			}
+    public EnumStatus sleepInBedAt(EntityPlayer entityPlayer, int par1, int par2, int par3)
+    {
+        if (!this.worldObj.isRemote)
+        {
+            if (entityPlayer.isPlayerSleeping() || !entityPlayer.isEntityAlive())
+            {
+                return EnumStatus.OTHER_PROBLEM;
+            }
 
-			if (!this.worldObj.provider.isSurfaceWorld())
-			{
-				return EnumStatus.NOT_POSSIBLE_HERE;
-			}
+            if (!this.worldObj.provider.isSurfaceWorld())
+            {
+                return EnumStatus.NOT_POSSIBLE_HERE;
+            }
 
-			if (GCEntityPlayerMP.getPlayerStats((EntityPlayerMP)entityPlayer).cryogenicChamberCooldown > 0)
-			{
-				return EnumStatus.NOT_POSSIBLE_NOW;
-			}
-		}
+            if (GCEntityPlayerMP.getPlayerStats((EntityPlayerMP) entityPlayer).cryogenicChamberCooldown > 0)
+            {
+                return EnumStatus.NOT_POSSIBLE_NOW;
+            }
+        }
 
-		if (entityPlayer.isRiding())
-		{
-			entityPlayer.mountEntity((Entity) null);
-		}
+        if (entityPlayer.isRiding())
+        {
+            entityPlayer.mountEntity((Entity) null);
+        }
 
-		entityPlayer.setPosition(this.xCoord + 0.5F, this.yCoord + 1.9F, this.zCoord + 0.5F);
+        entityPlayer.setPosition(this.xCoord + 0.5F, this.yCoord + 1.9F, this.zCoord + 0.5F);
 
-		entityPlayer.sleeping = true;
-		entityPlayer.sleepTimer = 0;
-		entityPlayer.playerLocation = new ChunkCoordinates(this.xCoord, this.yCoord, this.zCoord);
-		entityPlayer.motionX = entityPlayer.motionZ = entityPlayer.motionY = 0.0D;
+        entityPlayer.sleeping = true;
+        entityPlayer.sleepTimer = 0;
+        entityPlayer.playerLocation = new ChunkCoordinates(this.xCoord, this.yCoord, this.zCoord);
+        entityPlayer.motionX = entityPlayer.motionZ = entityPlayer.motionY = 0.0D;
 
-		if (!this.worldObj.isRemote)
-		{
-			this.worldObj.updateAllPlayersSleepingFlag();
-		}
+        if (!this.worldObj.isRemote)
+        {
+            this.worldObj.updateAllPlayersSleepingFlag();
+        }
 
-		return EnumStatus.OK;
-	}
+        return EnumStatus.OK;
+    }
 
-	@Override
-	public boolean canUpdate()
-	{
-		return true;
-	}
+    @Override
+    public boolean canUpdate()
+    {
+        return true;
+    }
 
-	@Override
-	public void updateEntity()
-	{
-		super.updateEntity();
-	}
+    @Override
+    public void updateEntity()
+    {
+        super.updateEntity();
+    }
 
-	@Override
-	public void onCreate(BlockVec3 placedPosition)
-	{
-		this.mainBlockPosition = placedPosition;
+    @Override
+    public void onCreate(BlockVec3 placedPosition)
+    {
+        this.mainBlockPosition = placedPosition;
 
-		for (int y = 0; y < 3; y++)
-		{
-			final BlockVec3 vecToAdd = new BlockVec3(placedPosition.x, placedPosition.y + y, placedPosition.z);
+        for (int y = 0; y < 3; y++)
+        {
+            final BlockVec3 vecToAdd = new BlockVec3(placedPosition.x, placedPosition.y + y, placedPosition.z);
 
-			if (!vecToAdd.equals(placedPosition))
-			{
-				((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 5);
-			}
-		}
-	}
+            if (!vecToAdd.equals(placedPosition))
+            {
+                ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 5);
+            }
+        }
+    }
 
-	@Override
-	public void onDestroy(TileEntity callingBlock)
-	{
-		final BlockVec3 thisBlock = new BlockVec3(this);
+    @Override
+    public void onDestroy(TileEntity callingBlock)
+    {
+        final BlockVec3 thisBlock = new BlockVec3(this);
 
-		int x1 = 0;
-		int x2 = 0;
-		int z1 = 0;
-		int z2 = 0;
+        int x1 = 0;
+        int x2 = 0;
+        int z1 = 0;
+        int z2 = 0;
 
-		switch (this.getBlockMetadata() - BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
-		{
-		case 0:
-			x1 = 0;
-			x2 = 0;
-			z1 = -1;
-			z2 = 1;
-			break;
-		case 1:
-			x1 = 0;
-			x2 = 0;
-			z1 = -1;
-			z2 = 1;
-			break;
-		case 2:
-			x1 = -1;
-			x2 = 1;
-			z1 = 0;
-			z2 = 0;
-			break;
-		case 3:
-			x1 = -1;
-			x2 = 1;
-			z1 = 0;
-			z2 = 0;
-			break;
-		}
+        switch (this.getBlockMetadata() - BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
+        {
+        case 0:
+            x1 = 0;
+            x2 = 0;
+            z1 = -1;
+            z2 = 1;
+            break;
+        case 1:
+            x1 = 0;
+            x2 = 0;
+            z1 = -1;
+            z2 = 1;
+            break;
+        case 2:
+            x1 = -1;
+            x2 = 1;
+            z1 = 0;
+            z2 = 0;
+            break;
+        case 3:
+            x1 = -1;
+            x2 = 1;
+            z1 = 0;
+            z2 = 0;
+            break;
+        }
 
-		int fakeBlockCount = 0;
-		for (int x = x1; x <= x2; x++)
-		{
-			for (int z = z1; z <= z2; z++)
-			{
-				for (int y = 0; y < 4; y++)
-				{
-					if (x == 0 && y == 0 && z == 0)
-					{
-						continue;
-					}
+        int fakeBlockCount = 0;
+        for (int x = x1; x <= x2; x++)
+        {
+            for (int z = z1; z <= z2; z++)
+            {
+                for (int y = 0; y < 4; y++)
+                {
+                    if (x == 0 && y == 0 && z == 0)
+                    {
+                        continue;
+                    }
 
-					if (this.worldObj.getBlock(thisBlock.x + x, thisBlock.y + y, thisBlock.z + z) == GCBlocks.fakeBlock)
-					{
-						fakeBlockCount++;
-					}
-				}
-			}
-		}
+                    if (this.worldObj.getBlock(thisBlock.x + x, thisBlock.y + y, thisBlock.z + z) == GCBlocks.fakeBlock)
+                    {
+                        fakeBlockCount++;
+                    }
+                }
+            }
+        }
 
-		if (fakeBlockCount == 0)
-		{
-			return;
-		}
+        if (fakeBlockCount == 0)
+        {
+            return;
+        }
 
-		for (int x = x1; x <= x2; x++)
-		{
-			for (int z = z1; z <= z2; z++)
-			{
-				for (int y = 0; y < 4; y++)
-				{
-					if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
-					{
-						FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, MarsBlocks.machine, Block.getIdFromBlock(MarsBlocks.machine) >> 12 & 255);
-					}
-					this.worldObj.func_147480_a(thisBlock.x + x, thisBlock.y + y, thisBlock.z + z, x == 0 && z == 0);
-				}
-			}
-		}
-	}
+        for (int x = x1; x <= x2; x++)
+        {
+            for (int z = z1; z <= z2; z++)
+            {
+                for (int y = 0; y < 4; y++)
+                {
+                    if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
+                    {
+                        FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, MarsBlocks.machine, Block.getIdFromBlock(MarsBlocks.machine) >> 12 & 255);
+                    }
+                    this.worldObj.func_147480_a(thisBlock.x + x, thisBlock.y + y, thisBlock.z + z, x == 0 && z == 0);
+                }
+            }
+        }
+    }
 
-	@Override
-	public void readFromNBT(NBTTagCompound nbt)
-	{
-		super.readFromNBT(nbt);
-		this.isOccupied = nbt.getBoolean("IsChamberOccupied");
-	}
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+        this.isOccupied = nbt.getBoolean("IsChamberOccupied");
+    }
 
-	@Override
-	public void writeToNBT(NBTTagCompound nbt)
-	{
-		super.writeToNBT(nbt);
-		nbt.setBoolean("IsChamberOccupied", this.isOccupied);
-	}
+    @Override
+    public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
+        nbt.setBoolean("IsChamberOccupied", this.isOccupied);
+    }
 }

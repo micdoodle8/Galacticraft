@@ -9,40 +9,40 @@ import java.io.File;
 
 public class ConfigManagerAsteroids
 {
-	public static boolean loaded;
+    public static boolean loaded;
 
-	static Configuration configuration;
+    static Configuration configuration;
 
-	public ConfigManagerAsteroids(File file)
-	{
-		if (!ConfigManagerAsteroids.loaded)
-		{
-			ConfigManagerAsteroids.configuration = new Configuration(file);
-			this.setDefaultValues();
-		}
-	}
+    public ConfigManagerAsteroids(File file)
+    {
+        if (!ConfigManagerAsteroids.loaded)
+        {
+            ConfigManagerAsteroids.configuration = new Configuration(file);
+            this.setDefaultValues();
+        }
+    }
 
-	// DIMENSIONS
-	public static int dimensionIDAsteroids;
+    // DIMENSIONS
+    public static int dimensionIDAsteroids;
 
-	// ENTITIES
-	public static int idEntitySmallAsteroid;
-	public static int idEntityGrappleHook;
-	public static int idEntityTier3Rocket;
+    // ENTITIES
+    public static int idEntitySmallAsteroid;
+    public static int idEntityGrappleHook;
+    public static int idEntityTier3Rocket;
     public static int idEntityEntryPod;
 
-	// GUI
+    // GUI
 
-	// SCHEMATIC
+    // SCHEMATIC
     public static int idSchematicRocketT3;
 
-	// GENERAL
+    // GENERAL
 
-	private void setDefaultValues()
-	{
+    private void setDefaultValues()
+    {
         ConfigManagerAsteroids.configuration.load();
         ConfigManagerAsteroids.syncConfig();
-	}
+    }
 
     public static void syncConfig()
     {

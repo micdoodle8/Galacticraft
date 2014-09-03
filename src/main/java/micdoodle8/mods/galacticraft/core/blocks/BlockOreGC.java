@@ -9,18 +9,18 @@ import net.minecraft.creativetab.CreativeTabs;
 
 public class BlockOreGC extends Block
 {
-	public BlockOreGC(String name)
-	{
-		super(Material.rock);
-		this.setBlockName(name);
-		this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + name);
-		this.setHardness(2.0F);
-	}
+    public BlockOreGC(String name)
+    {
+        super(Material.rock);
+        this.setBlockName(name);
+        this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + name);
+        this.setHardness(2.0F);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public CreativeTabs getCreativeTabToDisplayOn()
-	{
-		return GalacticraftCore.galacticraftBlocksTab;
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public CreativeTabs getCreativeTabToDisplayOn()
+    {
+        return GalacticraftCore.galacticraftBlocksTab;
+    }
 }

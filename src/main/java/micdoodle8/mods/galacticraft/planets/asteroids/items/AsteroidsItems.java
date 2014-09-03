@@ -10,9 +10,9 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class AsteroidsItems
 {
-	public static Item grapple;
-	public static Item tier3Rocket;
-	public static Item thermalPadding;
+    public static Item grapple;
+    public static Item tier3Rocket;
+    public static Item thermalPadding;
     public static Item basicItem;
     public static Item methaneCanister;
     public static Item canisterLOX;
@@ -31,13 +31,13 @@ public class AsteroidsItems
     public static Item titaniumSword;
 
     public static Item.ToolMaterial TOOL_TITANIUM = EnumHelper.addToolMaterial("titanium", 3, 520, 8.0F, 3.0F, 10);
-    public static ItemArmor.ArmorMaterial ARMOR_TITANIUM = EnumHelper.addArmorMaterial("titanium", 26, new int[]{5, 10, 7, 5}, 10);
+    public static ItemArmor.ArmorMaterial ARMOR_TITANIUM = EnumHelper.addArmorMaterial("titanium", 26, new int[] { 5, 10, 7, 5 }, 10);
 
-	public static void initItems()
-	{
-		AsteroidsItems.grapple = new ItemGrappleHook("grapple");
-		AsteroidsItems.tier3Rocket = new ItemTier3Rocket("itemTier3Rocket");
-		AsteroidsItems.thermalPadding = new ItemThermalPadding("thermalPadding");
+    public static void initItems()
+    {
+        AsteroidsItems.grapple = new ItemGrappleHook("grapple");
+        AsteroidsItems.tier3Rocket = new ItemTier3Rocket("itemTier3Rocket");
+        AsteroidsItems.thermalPadding = new ItemThermalPadding("thermalPadding");
         AsteroidsItems.basicItem = new ItemBasicAsteroids();
         AsteroidsItems.methaneCanister = new ItemCanisterMethane("methaneCanisterPartial");
         AsteroidsItems.canisterLOX = new ItemCanisterLiquidOxygen("canisterPartialLOX");
@@ -55,16 +55,16 @@ public class AsteroidsItems
         AsteroidsItems.titaniumHoe = new ItemHoeAsteroids("titanium_hoe");
         AsteroidsItems.titaniumSword = new ItemSwordAsteroids("titanium_sword");
 
-		AsteroidsItems.registerItems();
+        AsteroidsItems.registerItems();
 
         OreDictionary.registerOre("compressedTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 6));
         OreDictionary.registerOre("ingotTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 5));
         OreDictionary.registerOre("shardTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 4));
         OreDictionary.registerOre("shardIron", new ItemStack(AsteroidsItems.basicItem, 1, 3));
-	}
+    }
 
-	private static void registerItems()
-	{
+    private static void registerItems()
+    {
         registerItem(AsteroidsItems.grapple);
         registerItem(AsteroidsItems.tier3Rocket);
         registerItem(AsteroidsItems.thermalPadding);
@@ -84,7 +84,7 @@ public class AsteroidsItems
         registerItem(AsteroidsItems.titaniumSpade);
         registerItem(AsteroidsItems.titaniumHoe);
         registerItem(AsteroidsItems.titaniumSword);
-	}
+    }
 
     private static void registerItem(Item item)
     {

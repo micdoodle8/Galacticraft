@@ -23,75 +23,75 @@ import java.util.Map.Entry;
 
 public class CommandPlanetTeleport extends CommandBase
 {
-	@Override
-	public String getCommandUsage(ICommandSender var1)
-	{
-		return "/" + this.getCommandName() + " <player>";
-	}
+    @Override
+    public String getCommandUsage(ICommandSender var1)
+    {
+        return "/" + this.getCommandName() + " <player>";
+    }
 
-	@Override
-	public String getCommandName()
-	{
-		return "dimensiontp";
-	}
+    @Override
+    public String getCommandName()
+    {
+        return "dimensiontp";
+    }
 
-	@Override
-	public void processCommand(ICommandSender icommandsender, String[] astring)
-	{
-		EntityPlayerMP playerBase = null;
+    @Override
+    public void processCommand(ICommandSender icommandsender, String[] astring)
+    {
+        EntityPlayerMP playerBase = null;
 
-		if (astring.length < 2)
-		{
-			try
-			{
-				if (astring.length == 1)
-				{
-					playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(astring[0], true);
-				}
-				else
-				{
-					playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(icommandsender.getCommandSenderName(), true);
-				}
+        if (astring.length < 2)
+        {
+            try
+            {
+                if (astring.length == 1)
+                {
+                    playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(astring[0], true);
+                }
+                else
+                {
+                    playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(icommandsender.getCommandSenderName(), true);
+                }
 
-				if (playerBase != null)
-				{
+                if (playerBase != null)
+                {
                     GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(playerBase);
                     stats.rocketStacks = new ItemStack[2];
                     stats.rocketType = IRocketType.EnumRocketType.DEFAULT.ordinal();
                     stats.rocketItem = GCItems.rocketTier1;
                     stats.fuelLevel = 1000;
 
-					HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(Integer.MAX_VALUE), playerBase);
+                    HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(Integer.MAX_VALUE), playerBase);
 
-					String temp = "";
-					int count = 0;
+                    String temp = "";
+                    int count = 0;
 
-					for (Entry<String, Integer> entry : map.entrySet())
-					{
-						temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "?" : ""));
-						count++;
-					}
+                    for (Entry<String, Integer> entry : map.entrySet())
+                    {
+                        temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "?" : ""));
+                        count++;
+                    }
 
-					GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { playerBase.getGameProfile().getName(), temp }), playerBase);
-					stats.spaceshipTier = Integer.MAX_VALUE;
-					stats.usingPlanetSelectionGui = true;
-					playerBase.mountEntity(null);
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { playerBase.getGameProfile().getName(), temp }), playerBase);
+                    stats.spaceshipTier = Integer.MAX_VALUE;
+                    stats.usingPlanetSelectionGui = true;
+                    playerBase.mountEntity(null);
 
-                    VersionUtil.notifyAdmins(icommandsender, this, "commands.dimensionteleport", new Object[]{String.valueOf(EnumColor.GREY + "[" + playerBase.getCommandSenderName()), "]"});
-				}
-				else
-				{
-					throw new Exception("Could not find player with name: " + astring[0]);
-				}
-			}
-			catch (final Exception var6)
-			{
-				throw new CommandException(var6.getMessage(), new Object[0]);
-			}
-		}
-		else
-		{
-			throw new WrongUsageException("Not enough command arguments! Usage: " + this.getCommandUsage(icommandsender), new Object[0]);
-		}
-	}
+                    VersionUtil.notifyAdmins(icommandsender, this, "commands.dimensionteleport", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getCommandSenderName()), "]" });
+                }
+                else
+                {
+                    throw new Exception("Could not find player with name: " + astring[0]);
+                }
+            }
+            catch (final Exception var6)
+            {
+                throw new CommandException(var6.getMessage(), new Object[0]);
+            }
+        }
+        else
+        {
+            throw new WrongUsageException("Not enough command arguments! Usage: " + this.getCommandUsage(icommandsender), new Object[0]);
+        }
+    }
 }

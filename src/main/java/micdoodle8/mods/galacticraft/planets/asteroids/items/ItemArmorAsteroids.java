@@ -13,45 +13,45 @@ import net.minecraft.item.ItemStack;
 
 public class ItemArmorAsteroids extends ItemArmor
 {
-	public ItemArmorAsteroids(int armorIndex, String assetSuffix)
-	{
-		super(AsteroidsItems.ARMOR_TITANIUM, GalacticraftCore.proxy.getTitaniumArmorRenderIndex(), armorIndex);
-		this.setUnlocalizedName("titanium_" + assetSuffix);
-		this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + "titanium_" + assetSuffix);
-	}
+    public ItemArmorAsteroids(int armorIndex, String assetSuffix)
+    {
+        super(AsteroidsItems.ARMOR_TITANIUM, GalacticraftCore.proxy.getTitaniumArmorRenderIndex(), armorIndex);
+        this.setUnlocalizedName("titanium_" + assetSuffix);
+        this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + "titanium_" + assetSuffix);
+    }
 
-	@Override
-	public CreativeTabs getCreativeTab()
-	{
-		return GalacticraftCore.galacticraftItemsTab;
-	}
+    @Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftCore.galacticraftItemsTab;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack)
-	{
-		return ClientProxyCore.galacticraftItem;
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
 
-	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
-	{
-		if (this.getArmorMaterial() == AsteroidsItems.ARMOR_TITANIUM)
-		{
-			if (stack.getItem() == AsteroidsItems.titaniumHelmet)
-			{
-				return AsteroidsModule.TEXTURE_PREFIX + "textures/model/armor/titanium_1.png";
-			}
-			else if (stack.getItem() == AsteroidsItems.titaniumChestplate || stack.getItem() == AsteroidsItems.titaniumBoots)
-			{
-				return AsteroidsModule.TEXTURE_PREFIX + "textures/model/armor/titanium_2.png";
-			}
-			else if (stack.getItem() == AsteroidsItems.titaniumLeggings)
-			{
-				return AsteroidsModule.TEXTURE_PREFIX + "textures/model/armor/titanium_3.png";
-			}
-		}
+    @Override
+    public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
+    {
+        if (this.getArmorMaterial() == AsteroidsItems.ARMOR_TITANIUM)
+        {
+            if (stack.getItem() == AsteroidsItems.titaniumHelmet)
+            {
+                return AsteroidsModule.TEXTURE_PREFIX + "textures/model/armor/titanium_1.png";
+            }
+            else if (stack.getItem() == AsteroidsItems.titaniumChestplate || stack.getItem() == AsteroidsItems.titaniumBoots)
+            {
+                return AsteroidsModule.TEXTURE_PREFIX + "textures/model/armor/titanium_2.png";
+            }
+            else if (stack.getItem() == AsteroidsItems.titaniumLeggings)
+            {
+                return AsteroidsModule.TEXTURE_PREFIX + "textures/model/armor/titanium_3.png";
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 }

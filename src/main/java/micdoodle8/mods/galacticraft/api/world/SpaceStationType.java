@@ -7,38 +7,38 @@ import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
  */
 public class SpaceStationType
 {
-	private final int spaceStationID;
-	private final int planetID;
-	private final SpaceStationRecipe recipe;
+    private final int spaceStationID;
+    private final int planetID;
+    private final SpaceStationRecipe recipe;
 
-	public SpaceStationType(int spaceStationID, int planetID, SpaceStationRecipe recipe)
-	{
-		this.spaceStationID = spaceStationID;
-		this.planetID = planetID;
-		this.recipe = recipe;
-	}
+    public SpaceStationType(int spaceStationID, int planetID, SpaceStationRecipe recipe)
+    {
+        this.spaceStationID = spaceStationID;
+        this.planetID = planetID;
+        this.recipe = recipe;
+    }
 
-	/**
-	 * Dimension ID of the space station
-	 */
-	public int getSpaceStationID()
-	{
-		return this.spaceStationID;
-	}
+    /**
+     * Dimension ID of the space station
+     */
+    public int getSpaceStationID()
+    {
+        return this.spaceStationID;
+    }
 
-	/**
-	 * Dimension ID of the planet this space station is orbiting
-	 */
-	public int getWorldToOrbitID()
-	{
-		return this.planetID;
-	}
+    /**
+     * Dimension ID of the planet this space station is orbiting
+     */
+    public int getWorldToOrbitID()
+    {
+        return this.planetID;
+    }
 
-	/**
-	 * The recipe to create this space station
-	 */
-	public SpaceStationRecipe getRecipeForSpaceStation()
-	{
-		return this.recipe;
-	}
+    /**
+     * The recipe to create this space station
+     */
+    public SpaceStationRecipe getRecipeForSpaceStation()
+    {
+        return this.recipe;
+    }
 }

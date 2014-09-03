@@ -116,24 +116,24 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
 
         switch (key)
         {
-            case 0:
-                this.rotationPitch = Math.min(Math.max(this.rotationPitch - 0.5F * turnFactor, -angle), angle);
-                return true;
-            case 1:
-                this.rotationPitch = Math.min(Math.max(this.rotationPitch + 0.5F * turnFactor, -angle), angle);
-                return true;
-            case 2:
-                this.rotationYaw -= 0.5F * turnFactor;
-                return true;
-            case 3:
-                this.rotationYaw += 0.5F * turnFactor;
-                return true;
-            case 4:
-                this.motionY = Math.min(this.motionY + 0.03F, this.posY < 90 ? -0.15 : -1.0);
-                return true;
-            case 5:
-                this.motionY = Math.min(this.motionY - 0.022F, -1.0);
-                return true;
+        case 0:
+            this.rotationPitch = Math.min(Math.max(this.rotationPitch - 0.5F * turnFactor, -angle), angle);
+            return true;
+        case 1:
+            this.rotationPitch = Math.min(Math.max(this.rotationPitch + 0.5F * turnFactor, -angle), angle);
+            return true;
+        case 2:
+            this.rotationYaw -= 0.5F * turnFactor;
+            return true;
+        case 3:
+            this.rotationYaw += 0.5F * turnFactor;
+            return true;
+        case 4:
+            this.motionY = Math.min(this.motionY + 0.03F, this.posY < 90 ? -0.15 : -1.0);
+            return true;
+        case 5:
+            this.motionY = Math.min(this.motionY - 0.022F, -1.0);
+            return true;
         }
 
         return false;
@@ -220,22 +220,26 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     }
 
     @Override
-    public float getCameraZoom() {
+    public float getCameraZoom()
+    {
         return 15;
     }
 
     @Override
-    public boolean defaultThirdPerson() {
+    public boolean defaultThirdPerson()
+    {
         return true;
     }
 
     @Override
-    public boolean shouldIgnoreShiftExit() {
+    public boolean shouldIgnoreShiftExit()
+    {
         return !this.onGround;
     }
 
     @Override
-    public double getInitialMotionY() {
+    public double getInitialMotionY()
+    {
         return -2.5D;
     }
 

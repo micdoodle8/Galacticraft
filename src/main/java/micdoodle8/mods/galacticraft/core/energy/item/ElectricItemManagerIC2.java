@@ -14,93 +14,96 @@ import net.minecraft.item.ItemStack;
 public class ElectricItemManagerIC2 implements IElectricItemManager
 {
 
-	@Override
-	public int charge(ItemStack itemStack, int amount, int tier,
-			boolean ignoreTransferLimit, boolean simulate)
-	{
-		if (itemStack.getItem() instanceof ItemElectricBase)
-		{
-			ItemElectricBase item = (ItemElectricBase)itemStack.getItem();
-			float energy = amount * EnergyConfigHandler.IC2_RATIO;
-			float rejectedElectricity = Math.max(item.getElectricityStored(itemStack) + energy - item.getMaxElectricityStored(itemStack), 0);
-			float energyToReceive = energy - rejectedElectricity;
-			if (!ignoreTransferLimit && energyToReceive > item.transferMax)
-			{
-				rejectedElectricity += energyToReceive - item.transferMax;
-				energyToReceive = item.transferMax;
-			}
+    @Override
+    public int charge(ItemStack itemStack, int amount, int tier,
+                      boolean ignoreTransferLimit, boolean simulate)
+    {
+        if (itemStack.getItem() instanceof ItemElectricBase)
+        {
+            ItemElectricBase item = (ItemElectricBase) itemStack.getItem();
+            float energy = amount * EnergyConfigHandler.IC2_RATIO;
+            float rejectedElectricity = Math.max(item.getElectricityStored(itemStack) + energy - item.getMaxElectricityStored(itemStack), 0);
+            float energyToReceive = energy - rejectedElectricity;
+            if (!ignoreTransferLimit && energyToReceive > item.transferMax)
+            {
+                rejectedElectricity += energyToReceive - item.transferMax;
+                energyToReceive = item.transferMax;
+            }
 
-			if (!simulate)
-			{
-				item.setElectricity(itemStack, item.getElectricityStored(itemStack) + energyToReceive);
-			}
+            if (!simulate)
+            {
+                item.setElectricity(itemStack, item.getElectricityStored(itemStack) + energyToReceive);
+            }
 
-			return (int) (energyToReceive * EnergyConfigHandler.TO_IC2_RATIO);
-		}
-		return 0;
-	}
+            return (int) (energyToReceive * EnergyConfigHandler.TO_IC2_RATIO);
+        }
+        return 0;
+    }
 
-	@Override
-	public int discharge(ItemStack itemStack, int amount, int tier,
-			boolean ignoreTransferLimit, boolean simulate)
-	{
-		if (itemStack.getItem() instanceof ItemElectricBase)
-		{
-			ItemElectricBase item = (ItemElectricBase)itemStack.getItem();
-			float energy = amount * EnergyConfigHandler.IC2_RATIO;
-			float energyToTransfer = Math.min(item.getElectricityStored(itemStack), energy);
-			if (!ignoreTransferLimit) energyToTransfer = Math.min(energyToTransfer, item.transferMax);
-			
-			if (!simulate)
-			{
-				item.setElectricity(itemStack, item.getElectricityStored(itemStack) - energyToTransfer);
-			}
-	
-			return (int) (energyToTransfer * EnergyConfigHandler.TO_IC2_RATIO);
-		}
-		return 0;
-	}
+    @Override
+    public int discharge(ItemStack itemStack, int amount, int tier,
+                         boolean ignoreTransferLimit, boolean simulate)
+    {
+        if (itemStack.getItem() instanceof ItemElectricBase)
+        {
+            ItemElectricBase item = (ItemElectricBase) itemStack.getItem();
+            float energy = amount * EnergyConfigHandler.IC2_RATIO;
+            float energyToTransfer = Math.min(item.getElectricityStored(itemStack), energy);
+            if (!ignoreTransferLimit)
+            {
+                energyToTransfer = Math.min(energyToTransfer, item.transferMax);
+            }
 
-	@Override
-	public int getCharge(ItemStack itemStack)
-	{
-		if (itemStack.getItem() instanceof ItemElectricBase)
-		{
-			ItemElectricBase item = (ItemElectricBase)itemStack.getItem();
-			return (int) (item.getElectricityStored(itemStack) * EnergyConfigHandler.TO_IC2_RATIO);
-		}
-		return 0;
-	}
+            if (!simulate)
+            {
+                item.setElectricity(itemStack, item.getElectricityStored(itemStack) - energyToTransfer);
+            }
 
-	@Override
-	public boolean canUse(ItemStack itemStack, int amount)
-	{
-		if (itemStack.getItem() instanceof ItemElectricBase)
-		{
-			return this.getCharge(itemStack) >= amount;
-		}
-		return false;
-	}
+            return (int) (energyToTransfer * EnergyConfigHandler.TO_IC2_RATIO);
+        }
+        return 0;
+    }
 
-	@Override
-	public boolean use(ItemStack itemStack, int amount, EntityLivingBase entity)
-	{
-		if (itemStack.getItem() instanceof ItemElectricBase)
-		{
-			return this.discharge(itemStack, amount, 1, true, false) >= amount - 1;
-		}
-		return false;
-	}
+    @Override
+    public int getCharge(ItemStack itemStack)
+    {
+        if (itemStack.getItem() instanceof ItemElectricBase)
+        {
+            ItemElectricBase item = (ItemElectricBase) itemStack.getItem();
+            return (int) (item.getElectricityStored(itemStack) * EnergyConfigHandler.TO_IC2_RATIO);
+        }
+        return 0;
+    }
 
-	@Override
-	public void chargeFromArmor(ItemStack itemStack, EntityLivingBase entity)
-	{
-	}
+    @Override
+    public boolean canUse(ItemStack itemStack, int amount)
+    {
+        if (itemStack.getItem() instanceof ItemElectricBase)
+        {
+            return this.getCharge(itemStack) >= amount;
+        }
+        return false;
+    }
 
-	@Override
-	public String getToolTip(ItemStack itemStack)
-	{
-		return null;
-	}
+    @Override
+    public boolean use(ItemStack itemStack, int amount, EntityLivingBase entity)
+    {
+        if (itemStack.getItem() instanceof ItemElectricBase)
+        {
+            return this.discharge(itemStack, amount, 1, true, false) >= amount - 1;
+        }
+        return false;
+    }
+
+    @Override
+    public void chargeFromArmor(ItemStack itemStack, EntityLivingBase entity)
+    {
+    }
+
+    @Override
+    public String getToolTip(ItemStack itemStack)
+    {
+        return null;
+    }
 
 }

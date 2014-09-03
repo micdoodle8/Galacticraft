@@ -15,36 +15,36 @@ import java.lang.ref.WeakReference;
 
 public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPacketReceiver
 {
-	// The the position of the main block
-	@NetworkedField(targetSide = Side.CLIENT)
-	public BlockVec3 mainBlockPosition;
+    // The the position of the main block
+    @NetworkedField(targetSide = Side.CLIENT)
+    public BlockVec3 mainBlockPosition;
     private WeakReference<TileEntityShortRangeTelepad> mainTelepad = null;
 
-	public void setMainBlock(BlockVec3 mainBlock)
-	{
-		this.mainBlockPosition = mainBlock;
+    public void setMainBlock(BlockVec3 mainBlock)
+    {
+        this.mainBlockPosition = mainBlock;
 
-		if (!this.worldObj.isRemote)
-		{
-			this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-		}
-	}
+        if (!this.worldObj.isRemote)
+        {
+            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+        }
+    }
 
-	public void onBlockRemoval()
-	{
+    public void onBlockRemoval()
+    {
         TileEntityShortRangeTelepad telepad = this.getBaseTelepad();
 
         if (telepad != null)
         {
             telepad.onDestroy(this);
         }
-	}
+    }
 
-	public boolean onActivated(EntityPlayer par5EntityPlayer)
-	{
+    public boolean onActivated(EntityPlayer par5EntityPlayer)
+    {
         TileEntityShortRangeTelepad telepad = this.getBaseTelepad();
         return telepad != null && telepad.onActivated(par5EntityPlayer);
-	}
+    }
 
     @Override
     public void updateEntity()
@@ -103,41 +103,41 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
         return null;
     }
 
-	@Override
-	public void readFromNBT(NBTTagCompound nbt)
-	{
-		super.readFromNBT(nbt);
-		this.mainBlockPosition = new BlockVec3(nbt.getCompoundTag("mainBlockPosition"));
-	}
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+        this.mainBlockPosition = new BlockVec3(nbt.getCompoundTag("mainBlockPosition"));
+    }
 
-	@Override
-	public void writeToNBT(NBTTagCompound nbt)
-	{
-		super.writeToNBT(nbt);
+    @Override
+    public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
 
-		if (this.mainBlockPosition != null)
-		{
-			nbt.setTag("mainBlockPosition", this.mainBlockPosition.writeToNBT(new NBTTagCompound()));
-		}
-	}
+        if (this.mainBlockPosition != null)
+        {
+            nbt.setTag("mainBlockPosition", this.mainBlockPosition.writeToNBT(new NBTTagCompound()));
+        }
+    }
 
-	@Override
-	public double getPacketRange()
-	{
-		return 30.0D;
-	}
+    @Override
+    public double getPacketRange()
+    {
+        return 30.0D;
+    }
 
-	@Override
-	public int getPacketCooldown()
-	{
-		return 50;
-	}
+    @Override
+    public int getPacketCooldown()
+    {
+        return 50;
+    }
 
-	@Override
-	public boolean isNetworkedTile()
-	{
-		return true;
-	}
+    @Override
+    public boolean isNetworkedTile()
+    {
+        return true;
+    }
 
     @Override
     public boolean shouldUseEnergy()

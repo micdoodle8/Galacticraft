@@ -4,9 +4,9 @@ import net.minecraft.block.Block;
 
 public class ItemBlockArclamp extends ItemBlockDesc
 {
-	public ItemBlockArclamp(Block b)
-	{
-		super(b);
-	}
+    public ItemBlockArclamp(Block b)
+    {
+        super(b);
+    }
 
 }

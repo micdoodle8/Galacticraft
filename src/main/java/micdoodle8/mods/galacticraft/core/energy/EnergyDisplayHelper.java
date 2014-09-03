@@ -16,22 +16,22 @@ public class EnergyDisplayHelper
 
     public static String getEnergyDisplayS(float energyVal)
     {
-    	if (EnergyConfigHandler.displayEnergyUnitsIC2)
-    	{
-    		return getEnergyDisplayIC2(energyVal * EnergyConfigHandler.TO_IC2_RATIO);
-    	}
-    	else if (EnergyConfigHandler.displayEnergyUnitsBC)
-    	{
-    		return getEnergyDisplayBC(energyVal * EnergyConfigHandler.TO_BC_RATIO);
-    	}
-    	else if (EnergyConfigHandler.displayEnergyUnitsMek)
-    	{
-    		return getEnergyDisplayMek(energyVal * EnergyConfigHandler.TO_MEKANISM_RATIO);
-    	}
-    	else if (EnergyConfigHandler.displayEnergyUnitsRF)
-    	{
-    		return getEnergyDisplayRF(energyVal * EnergyConfigHandler.TO_TE_RATIO);
-    	}
+        if (EnergyConfigHandler.displayEnergyUnitsIC2)
+        {
+            return getEnergyDisplayIC2(energyVal * EnergyConfigHandler.TO_IC2_RATIO);
+        }
+        else if (EnergyConfigHandler.displayEnergyUnitsBC)
+        {
+            return getEnergyDisplayBC(energyVal * EnergyConfigHandler.TO_BC_RATIO);
+        }
+        else if (EnergyConfigHandler.displayEnergyUnitsMek)
+        {
+            return getEnergyDisplayMek(energyVal * EnergyConfigHandler.TO_MEKANISM_RATIO);
+        }
+        else if (EnergyConfigHandler.displayEnergyUnitsRF)
+        {
+            return getEnergyDisplayRF(energyVal * EnergyConfigHandler.TO_TE_RATIO);
+        }
         String val = String.valueOf(getEnergyDisplayI(energyVal));
         String newVal = "";
 
@@ -46,7 +46,7 @@ public class EnergyDisplayHelper
 
         return newVal + " gJ";
     }
-    
+
     public static String getEnergyDisplayIC2(float energyVal)
     {
         String val = String.valueOf(getEnergyDisplayI(energyVal));
@@ -63,33 +63,33 @@ public class EnergyDisplayHelper
 
         return newVal + " EU";
     }
-    
+
     public static String getEnergyDisplayBC(float energyVal)
     {
         String val = String.valueOf(getEnergyDisplayI(energyVal));
 
         return val + " MJ";
     }
-    
+
     public static String getEnergyDisplayMek(float energyVal)
     {
         if (energyVal < 1000)
         {
-	    	String val = String.valueOf(getEnergyDisplayI(energyVal));
-	        return val + " J";
+            String val = String.valueOf(getEnergyDisplayI(energyVal));
+            return val + " J";
         }
         else if (energyVal < 1000000)
         {
-	    	String val = getEnergyDisplay1DP(energyVal / 1000);
-	        return val + " kJ";        	
+            String val = getEnergyDisplay1DP(energyVal / 1000);
+            return val + " kJ";
         }
         else
         {
-	    	String val = getEnergyDisplay1DP(energyVal / 1000000);
-	        return val + " MJ";        	
+            String val = getEnergyDisplay1DP(energyVal / 1000000);
+            return val + " MJ";
         }
     }
-    
+
     public static String getEnergyDisplayRF(float energyVal)
     {
         String val = String.valueOf(getEnergyDisplayI(energyVal));
@@ -101,7 +101,7 @@ public class EnergyDisplayHelper
     {
         return MathHelper.floor_float(energyVal);
     }
-    
+
     public static String getEnergyDisplay1DP(float energyVal)
     {
         return "" + MathHelper.floor_float(energyVal) + "." + (MathHelper.floor_float(energyVal * 10) % 10) + (MathHelper.floor_float(energyVal * 100) % 10);

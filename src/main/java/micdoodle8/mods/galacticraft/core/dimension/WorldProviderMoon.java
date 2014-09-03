@@ -131,25 +131,25 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
 //		return var5;
 //	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public float getStarBrightness(float par1)
-	{
-		final float var2 = this.worldObj.getCelestialAngle(par1);
-		float var3 = 1.0F - (MathHelper.cos(var2 * (float) Math.PI * 2.0F) * 2.0F + 0.25F);
+    @Override
+    @SideOnly(Side.CLIENT)
+    public float getStarBrightness(float par1)
+    {
+        final float var2 = this.worldObj.getCelestialAngle(par1);
+        float var3 = 1.0F - (MathHelper.cos(var2 * (float) Math.PI * 2.0F) * 2.0F + 0.25F);
 
-		if (var3 < 0.0F)
-		{
-			var3 = 0.0F;
-		}
+        if (var3 < 0.0F)
+        {
+            var3 = 0.0F;
+        }
 
-		if (var3 > 1.0F)
-		{
-			var3 = 1.0F;
-		}
+        if (var3 > 1.0F)
+        {
+            var3 = 1.0F;
+        }
 
-		return var3 * var3 * 0.5F + 0.3F;
-	}
+        return var3 * var3 * 0.5F + 0.3F;
+    }
 
 //	@Override
 //	public IChunkProvider createChunkGenerator()
@@ -168,23 +168,23 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
 //		this.worldObj.thunderingStrength = 0.0F;
 //	}
 
-	@Override
-	public boolean isSkyColored()
-	{
-		return false;
-	}
+    @Override
+    public boolean isSkyColored()
+    {
+        return false;
+    }
 
-	@Override
-	public double getHorizon()
-	{
-		return 44.0D;
-	}
+    @Override
+    public double getHorizon()
+    {
+        return 44.0D;
+    }
 
-	@Override
-	public int getAverageGroundLevel()
-	{
-		return 44;
-	}
+    @Override
+    public int getAverageGroundLevel()
+    {
+        return 44;
+    }
 
 //	@Override
 //	public boolean isSurfaceWorld()
@@ -192,11 +192,11 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
 //		return true;
 //	}
 
-	@Override
-	public boolean canCoordinateBeSpawn(int var1, int var2)
-	{
-		return true;
-	}
+    @Override
+    public boolean canCoordinateBeSpawn(int var1, int var2)
+    {
+        return true;
+    }
 
 //	@Override
 //	public boolean canRespawnHere()
@@ -228,11 +228,11 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
 //		return "Moon";
 //	}
 
-	//	@Override
-	//	public boolean canSnowAt(int x, int y, int z)
-	//	{
-	//		return false;
-	//	}
+    //	@Override
+    //	public boolean canSnowAt(int x, int y, int z)
+    //	{
+    //		return false;
+    //	}
 
 //	@Override
 //	public boolean canBlockFreeze(int x, int y, int z, boolean byWater)
@@ -252,71 +252,71 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
 //		return false;
 //	}
 
-	@Override
-	public float getGravity()
-	{
-		return 0.062F;
-	}
+    @Override
+    public float getGravity()
+    {
+        return 0.062F;
+    }
 
-	@Override
-	public int getHeight()
-	{
-		return 600;
-	}
+    @Override
+    public int getHeight()
+    {
+        return 600;
+    }
 
-	@Override
-	public double getMeteorFrequency()
-	{
-		return 7.0D;
-	}
+    @Override
+    public double getMeteorFrequency()
+    {
+        return 7.0D;
+    }
 
-	@Override
-	public double getFuelUsageMultiplier()
-	{
-		return 0.7D;
-	}
+    @Override
+    public double getFuelUsageMultiplier()
+    {
+        return 0.7D;
+    }
 
-	@Override
-	public double getSolarEnergyMultiplier()
-	{
-		return 1.4D;
-	}
+    @Override
+    public double getSolarEnergyMultiplier()
+    {
+        return 1.4D;
+    }
 
-	@Override
-	public boolean canSpaceshipTierPass(int tier)
-	{
-		return tier > 0;
-	}
+    @Override
+    public boolean canSpaceshipTierPass(int tier)
+    {
+        return tier > 0;
+    }
 
-	@Override
-	public float getFallDamageModifier()
-	{
-		return 0.18F;
-	}
+    @Override
+    public float getFallDamageModifier()
+    {
+        return 0.18F;
+    }
 
-	@Override
-	public float getSoundVolReductionAmount()
-	{
-		return 20.0F;
-	}
+    @Override
+    public float getSoundVolReductionAmount()
+    {
+        return 20.0F;
+    }
 
-	@Override
-	public CelestialBody getCelestialBody()
-	{
-		return GalacticraftCore.moonMoon;
-	}
+    @Override
+    public CelestialBody getCelestialBody()
+    {
+        return GalacticraftCore.moonMoon;
+    }
 
-	@Override
-	public boolean hasBreathableAtmosphere()
-	{
-		return false;
-	}
+    @Override
+    public boolean hasBreathableAtmosphere()
+    {
+        return false;
+    }
 
-	@Override
-	public float getThermalLevelModifier()
-	{
-		return 0;
-	}
+    @Override
+    public float getThermalLevelModifier()
+    {
+        return 0;
+    }
 
     @Override
     public float getWindLevel()

@@ -23,12 +23,11 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     /**
      * The celestial body object for this dimension
      *
+     * @return The Moon or Planet object for this dimension
      * @see micdoodle8.mods.galacticraft.api.galaxies.Planet
      * @see micdoodle8.mods.galacticraft.api.galaxies.Moon
-     *
-     * @return The Moon or Planet object for this dimension
      */
-	public abstract CelestialBody getCelestialBody();
+    public abstract CelestialBody getCelestialBody();
 
     /**
      * The fog color in this dimension
@@ -52,7 +51,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
 
     /**
      * The length of day in this dimension
-     *
+     * <p/>
      * Default: 24000
      */
     public abstract long getDayLength();
@@ -73,21 +72,21 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
         super.setDimension(var1);
     }
 
-	@Override
-	public String getDimensionName()
-	{
-		return this.getCelestialBody().getUnlocalizedName();
-	}
+    @Override
+    public String getDimensionName()
+    {
+        return this.getCelestialBody().getUnlocalizedName();
+    }
 
-	@Override
-	public boolean isGasPresent(IAtmosphericGas gas)
-	{
-		return this.getCelestialBody().atmosphere.contains(gas);
-	}
+    @Override
+    public boolean isGasPresent(IAtmosphericGas gas)
+    {
+        return this.getCelestialBody().atmosphere.contains(gas);
+    }
 
-	@Override
-	public void updateWeather()
-	{
+    @Override
+    public void updateWeather()
+    {
         if (this.canRainOrSnow())
         {
             super.updateWeather();
@@ -101,7 +100,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
             this.worldObj.rainingStrength = 0.0F;
             this.worldObj.thunderingStrength = 0.0F;
         }
-	}
+    }
 
     @Override
     public String getSaveFolder()
@@ -154,7 +153,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     @Override
     public float calculateCelestialAngle(long par1, float par3)
     {
-        int j = (int)(par1 % this.getDayLength());
+        int j = (int) (par1 % this.getDayLength());
         float f1 = (j + par3) / this.getDayLength() - 0.25F;
 
         if (f1 < 0.0F)
@@ -199,13 +198,13 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
         return this.shouldForceRespawn();
     }
 
-	@Override
-	public boolean hasBreathableAtmosphere()
-	{
-		return this.isGasPresent(IAtmosphericGas.OXYGEN);
-	}
+    @Override
+    public boolean hasBreathableAtmosphere()
+    {
+        return this.isGasPresent(IAtmosphericGas.OXYGEN);
+    }
 
-   @Override
+    @Override
     public IChunkProvider createChunkGenerator()
     {
         try
@@ -218,11 +217,11 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
                 Constructor<?> constr = constructors[i];
                 if (Arrays.equals(constr.getParameterTypes(), new Object[] { World.class, long.class, boolean.class }))
                 {
-                    return (IChunkProvider)constr.newInstance(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
+                    return (IChunkProvider) constr.newInstance(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
                 }
                 else if (constr.getParameterTypes().length == 0)
                 {
-                    return (IChunkProvider)constr.newInstance();
+                    return (IChunkProvider) constr.newInstance();
                 }
             }
         }
@@ -252,11 +251,11 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
                 {
                     if (Arrays.equals(constr.getParameterTypes(), new Object[] { World.class }))
                     {
-                        this.worldChunkMgr = (WorldChunkManager)constr.newInstance(this.worldObj);
+                        this.worldChunkMgr = (WorldChunkManager) constr.newInstance(this.worldObj);
                     }
                     else if (constr.getParameterTypes().length == 0)
                     {
-                        this.worldChunkMgr = (WorldChunkManager)constr.newInstance();
+                        this.worldChunkMgr = (WorldChunkManager) constr.newInstance();
                     }
                 }
             }

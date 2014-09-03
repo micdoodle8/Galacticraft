@@ -121,7 +121,7 @@ public class ThreadDownloadImageDataGC extends SimpleTexture
 
                 try
                 {
-                    httpurlconnection = (HttpURLConnection)(new URL(ThreadDownloadImageDataGC.this.imageUrl)).openConnection();
+                    httpurlconnection = (HttpURLConnection) (new URL(ThreadDownloadImageDataGC.this.imageUrl)).openConnection();
                     httpurlconnection.setDoInput(true);
                     httpurlconnection.setDoOutput(false);
                     httpurlconnection.connect();

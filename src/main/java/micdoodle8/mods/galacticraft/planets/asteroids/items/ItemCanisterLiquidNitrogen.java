@@ -20,103 +20,107 @@ import java.util.List;
 
 public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric
 {
-	protected IIcon[] icons = new IIcon[7];
+    protected IIcon[] icons = new IIcon[7];
 
-	public ItemCanisterLiquidNitrogen(String assetName)
-	{
-		super(assetName);
-		this.setContainerItem(GCItems.oilCanister);
-		this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
-	}
+    public ItemCanisterLiquidNitrogen(String assetName)
+    {
+        super(assetName);
+        this.setContainerItem(GCItems.oilCanister);
+        this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister iconRegister)
-	{
-		for (int i = 0; i < this.icons.length; i++)
-		{
-			this.icons[i] = iconRegister.registerIcon(this.getIconString() + "_" + i);
-		}
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister iconRegister)
+    {
+        for (int i = 0; i < this.icons.length; i++)
+        {
+            this.icons[i] = iconRegister.registerIcon(this.getIconString() + "_" + i);
+        }
+    }
 
-	@Override
-	public String getUnlocalizedName(ItemStack itemStack)
-	{
-		if (itemStack.getMaxDamage() - itemStack.getItemDamage() == 0)
-		{
-			return "item.emptyGasCanister";
-		}
+    @Override
+    public String getUnlocalizedName(ItemStack itemStack)
+    {
+        if (itemStack.getMaxDamage() - itemStack.getItemDamage() == 0)
+        {
+            return "item.emptyGasCanister";
+        }
 
-		if (itemStack.getItemDamage() == 1)
-		{
-			return "item.canister.liquidNitrogen.full";
-		}
+        if (itemStack.getItemDamage() == 1)
+        {
+            return "item.canister.liquidNitrogen.full";
+        }
 
-		return "item.canister.liquidNitrogen.partial";
-	}
+        return "item.canister.liquidNitrogen.partial";
+    }
 
-	@Override
-	public IIcon getIconFromDamage(int par1)
-	{
-		final int damage = 6 * par1 / this.getMaxDamage();
+    @Override
+    public IIcon getIconFromDamage(int par1)
+    {
+        final int damage = 6 * par1 / this.getMaxDamage();
 
-		if (this.icons.length > damage)
-		{
-			return this.icons[this.icons.length - damage - 1];
-		}
+        if (this.icons.length > damage)
+        {
+            return this.icons[this.icons.length - damage - 1];
+        }
 
-		return super.getIconFromDamage(damage);
-	}
+        return super.getIconFromDamage(damage);
+    }
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
-	{
-		if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() > 0)
-		{
-			par3List.add(GCCoreUtil.translate("item.canister.liquidNitrogen.name") +  ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
-		}
-	}
-/*	
-	public boolean onItemUse(ItemStack i, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
-	{
-		int damage = i.getItemDamage() + 125;
-		if (damage > i.getMaxDamage()) return false;
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+    {
+        if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() > 0)
+        {
+            par3List.add(GCCoreUtil.translate("item.canister.liquidNitrogen.name") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
+        }
+    }
 
-		Block b = world.getBlock(x, y, z);
-		int meta = world.getBlockMetadata(x, y, z);
-		Block result =  this.canFreeze(b, meta);
-		if (result != null)
-		{
-			i.setItemDamage(damage);
-			world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "fire.ignite", 1.0F, Item.itemRand.nextFloat() * 0.4F + 0.8F);
-			world.setBlock(x, y, z, result, 0, 3);
-			return true;
-		}
+    /*
+        public boolean onItemUse(ItemStack i, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
+        {
+            int damage = i.getItemDamage() + 125;
+            if (damage > i.getMaxDamage()) return false;
 
-		return false;
-	}
-*/
-	private Block canFreeze(Block b, int meta)
-	{
-		if (b == Blocks.water)
-		{
-			return Blocks.ice;
-		}
-		if (b == Blocks.lava)
-		{
-			return Blocks.obsidian;
-		}
-		return null;
-	}
+            Block b = world.getBlock(x, y, z);
+            int meta = world.getBlockMetadata(x, y, z);
+            Block result =  this.canFreeze(b, meta);
+            if (result != null)
+            {
+                i.setItemDamage(damage);
+                world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "fire.ignite", 1.0F, Item.itemRand.nextFloat() * 0.4F + 0.8F);
+                world.setBlock(x, y, z, result, 0, 3);
+                return true;
+            }
+
+            return false;
+        }
+    */
+    private Block canFreeze(Block b, int meta)
+    {
+        if (b == Blocks.water)
+        {
+            return Blocks.ice;
+        }
+        if (b == Blocks.lava)
+        {
+            return Blocks.obsidian;
+        }
+        return null;
+    }
 
     public ItemStack onItemRightClick(ItemStack itemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-		int damage = itemStack.getItemDamage() + 125;
-		if (damage > itemStack.getMaxDamage()) return itemStack;
-    	
-    	MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, true);
+        int damage = itemStack.getItemDamage() + 125;
+        if (damage > itemStack.getMaxDamage())
+        {
+            return itemStack;
+        }
+
+        MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, true);
 
         if (movingobjectposition == null)
         {
@@ -144,14 +148,14 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric
                 Block b = par2World.getBlock(x, y, z);
                 int meta = par2World.getBlockMetadata(x, y, z);
 
-        		Block result =  this.canFreeze(b, meta);
-        		if (result != null)
-        		{
-        			itemStack.setItemDamage(damage);
-        			par2World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "fire.ignite", 1.0F, Item.itemRand.nextFloat() * 0.4F + 0.8F);
-        			par2World.setBlock(x, y, z, result, 0, 3);
-        			return itemStack;
-        		}
+                Block result = this.canFreeze(b, meta);
+                if (result != null)
+                {
+                    itemStack.setItemDamage(damage);
+                    par2World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "fire.ignite", 1.0F, Item.itemRand.nextFloat() * 0.4F + 0.8F);
+                    par2World.setBlock(x, y, z, result, 0, 3);
+                    return itemStack;
+                }
             }
 
             return itemStack;

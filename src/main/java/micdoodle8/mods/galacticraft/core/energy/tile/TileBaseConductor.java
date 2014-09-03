@@ -18,128 +18,130 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * This tile entity pre-fabricated for all conductors.
- * 
+ *
  * @author Calclavia
- * 
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public abstract class TileBaseConductor extends TileEntityAdvanced implements IConductor
 {
-	private IGridNetwork network;
+    private IGridNetwork network;
 
-	public TileEntity[] adjacentConnections = null;
+    public TileEntity[] adjacentConnections = null;
 
-	@Override
-	public void invalidate()
-	{
-		if (!this.worldObj.isRemote)
-		{
-			this.getNetwork().split(this);
-		}
+    @Override
+    public void invalidate()
+    {
+        if (!this.worldObj.isRemote)
+        {
+            this.getNetwork().split(this);
+        }
 
-		super.invalidate();
-	}
+        super.invalidate();
+    }
 
-	@Override
-	public boolean canUpdate()
-	{
-		return false;
-	}
+    @Override
+    public boolean canUpdate()
+    {
+        return false;
+    }
 
-	@Override
-	public IElectricityNetwork getNetwork()
-	{
-		if (this.network == null)
-		{
-			EnergyNetwork network = new EnergyNetwork();
-			network.getTransmitters().add(this);
-			this.setNetwork(network);
-		}
+    @Override
+    public IElectricityNetwork getNetwork()
+    {
+        if (this.network == null)
+        {
+            EnergyNetwork network = new EnergyNetwork();
+            network.getTransmitters().add(this);
+            this.setNetwork(network);
+        }
 
-		return (IElectricityNetwork) this.network;
-	}
+        return (IElectricityNetwork) this.network;
+    }
 
-	@Override
-	public void setNetwork(IGridNetwork network)
-	{
-		this.network = network;
-	}
+    @Override
+    public void setNetwork(IGridNetwork network)
+    {
+        this.network = network;
+    }
 
-	@Override
-	public void refresh()
-	{
-		if (!this.worldObj.isRemote)
-		{
-			this.adjacentConnections = null;
+    @Override
+    public void refresh()
+    {
+        if (!this.worldObj.isRemote)
+        {
+            this.adjacentConnections = null;
 
-			this.getNetwork().refresh();
+            this.getNetwork().refresh();
 
-			BlockVec3 thisVec = new BlockVec3(this);
-			for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
-			{
-				TileEntity tileEntity = thisVec.getTileEntityOnSide(this.worldObj, side);
+            BlockVec3 thisVec = new BlockVec3(this);
+            for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
+            {
+                TileEntity tileEntity = thisVec.getTileEntityOnSide(this.worldObj, side);
 
-				if (tileEntity != null)
-				{
-					if (tileEntity.getClass() == this.getClass() && tileEntity instanceof INetworkProvider && !this.getNetwork().equals(((INetworkProvider) tileEntity).getNetwork()))
-					{
-						((INetworkProvider) tileEntity).getNetwork().merge(this.getNetwork());
-					}
-				}
-			}
+                if (tileEntity != null)
+                {
+                    if (tileEntity.getClass() == this.getClass() && tileEntity instanceof INetworkProvider && !this.getNetwork().equals(((INetworkProvider) tileEntity).getNetwork()))
+                    {
+                        ((INetworkProvider) tileEntity).getNetwork().merge(this.getNetwork());
+                    }
+                }
+            }
 
-			if (EnergyConfigHandler.isBuildcraftLoaded())
-			{
-				if (this instanceof TileBaseUniversalConductor) ((TileBaseUniversalConductor) this).reconfigureBC();
-			}
-		}
-	}
+            if (EnergyConfigHandler.isBuildcraftLoaded())
+            {
+                if (this instanceof TileBaseUniversalConductor)
+                {
+                    ((TileBaseUniversalConductor) this).reconfigureBC();
+                }
+            }
+        }
+    }
 
-	@Override
-	public TileEntity[] getAdjacentConnections()
-	{
-		/**
-		 * Cache the adjacentConnections.
-		 */
-		if (this.adjacentConnections == null)
-		{
-			this.adjacentConnections = new TileEntity[6];
+    @Override
+    public TileEntity[] getAdjacentConnections()
+    {
+        /**
+         * Cache the adjacentConnections.
+         */
+        if (this.adjacentConnections == null)
+        {
+            this.adjacentConnections = new TileEntity[6];
 
-			BlockVec3 thisVec = new BlockVec3(this);
-			for (int i = 0; i < 6; i++)
-			{
-				ForgeDirection side = ForgeDirection.getOrientation(i);
-				TileEntity tileEntity = thisVec.getTileEntityOnSide(this.worldObj, side);
+            BlockVec3 thisVec = new BlockVec3(this);
+            for (int i = 0; i < 6; i++)
+            {
+                ForgeDirection side = ForgeDirection.getOrientation(i);
+                TileEntity tileEntity = thisVec.getTileEntityOnSide(this.worldObj, side);
 
-				if (tileEntity instanceof IConnector)
-				{
-					if (((IConnector) tileEntity).canConnect(side.getOpposite(), NetworkType.POWER))
-					{
-						this.adjacentConnections[i] = tileEntity;
-					}
-				}
-			}
-		}
+                if (tileEntity instanceof IConnector)
+                {
+                    if (((IConnector) tileEntity).canConnect(side.getOpposite(), NetworkType.POWER))
+                    {
+                        this.adjacentConnections[i] = tileEntity;
+                    }
+                }
+            }
+        }
 
-		return this.adjacentConnections;
-	}
+        return this.adjacentConnections;
+    }
 
-	@Override
-	public boolean canConnect(ForgeDirection direction, NetworkType type)
-	{
-		return type == NetworkType.POWER;
-	}
+    @Override
+    public boolean canConnect(ForgeDirection direction, NetworkType type)
+    {
+        return type == NetworkType.POWER;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public AxisAlignedBB getRenderBoundingBox()
-	{
-		return AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1);
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1);
+    }
 
-	@Override
-	public NetworkType getNetworkType()
-	{
-		return NetworkType.POWER;
-	}
+    @Override
+    public NetworkType getNetworkType()
+    {
+        return NetworkType.POWER;
+    }
 }

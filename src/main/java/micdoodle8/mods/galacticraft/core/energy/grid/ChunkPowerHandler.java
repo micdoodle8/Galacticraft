@@ -11,45 +11,45 @@ import java.util.ArrayList;
 
 public class ChunkPowerHandler
 {
-	private static boolean initiated = false;
+    private static boolean initiated = false;
 
-	public static void initiate()
-	{
-		if (!ChunkPowerHandler.initiated)
-		{
-			ChunkPowerHandler.initiated = true;
-			MinecraftForge.EVENT_BUS.register(new ChunkPowerHandler());
-		}
-	}
+    public static void initiate()
+    {
+        if (!ChunkPowerHandler.initiated)
+        {
+            ChunkPowerHandler.initiated = true;
+            MinecraftForge.EVENT_BUS.register(new ChunkPowerHandler());
+        }
+    }
 
-	@SuppressWarnings("unchecked")
-	@SubscribeEvent
-	public void onChunkLoad(ChunkEvent.Load event)
-	{
-		if (!event.world.isRemote && event.getChunk() != null)
-		{
-			try
-			{
-				ArrayList<Object> tileList = Lists.newArrayList();
-				tileList.addAll(event.getChunk().chunkTileEntityMap.values());
+    @SuppressWarnings("unchecked")
+    @SubscribeEvent
+    public void onChunkLoad(ChunkEvent.Load event)
+    {
+        if (!event.world.isRemote && event.getChunk() != null)
+        {
+            try
+            {
+                ArrayList<Object> tileList = Lists.newArrayList();
+                tileList.addAll(event.getChunk().chunkTileEntityMap.values());
 
-				for (Object o : tileList)
-				{
-					if (o instanceof TileEntity)
-					{
-						TileEntity tile = (TileEntity) o;
+                for (Object o : tileList)
+                {
+                    if (o instanceof TileEntity)
+                    {
+                        TileEntity tile = (TileEntity) o;
 
-						if (tile instanceof INetworkConnection)
-						{
-							((INetworkConnection) tile).refresh();
-						}
-					}
-				}
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-	}
+                        if (tile instanceof INetworkConnection)
+                        {
+                            ((INetworkConnection) tile).refresh();
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
 }

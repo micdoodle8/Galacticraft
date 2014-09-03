@@ -13,7 +13,7 @@ import java.util.Random;
 
 /**
  * Do not include this prefab class in your released mod download.
- *
+ * <p/>
  * This chunk manager is used for single-biome dimensions, which is common on basic planets.
  */
 public abstract class WorldChunkManagerSpace extends WorldChunkManager
@@ -137,5 +137,5 @@ public abstract class WorldChunkManagerSpace extends WorldChunkManager
         this.biomeCache.cleanupCache();
     }
 
-	public abstract BiomeGenBase getBiome();
+    public abstract BiomeGenBase getBiome();
 }

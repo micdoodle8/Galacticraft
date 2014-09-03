@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 
 public interface IBoss
 {
-	public void setRoom(Vector3 roomCoords, Vector3 roomSize);
+    public void setRoom(Vector3 roomCoords, Vector3 roomSize);
 
-	public void onBossSpawned(TileEntityDungeonSpawner spawner);
+    public void onBossSpawned(TileEntityDungeonSpawner spawner);
 }

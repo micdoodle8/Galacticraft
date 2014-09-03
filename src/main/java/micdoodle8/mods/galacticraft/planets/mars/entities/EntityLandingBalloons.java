@@ -306,17 +306,20 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
     }
 
     @Override
-    public float getCameraZoom() {
+    public float getCameraZoom()
+    {
         return 15.0F;
     }
 
     @Override
-    public boolean defaultThirdPerson() {
+    public boolean defaultThirdPerson()
+    {
         return true;
     }
 
     @Override
-    public boolean shouldIgnoreShiftExit() {
+    public boolean shouldIgnoreShiftExit()
+    {
         return this.groundHitCount < 14 || !this.onGround;
     }
 }

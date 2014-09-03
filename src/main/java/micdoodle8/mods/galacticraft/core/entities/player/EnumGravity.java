@@ -2,7 +2,12 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 
 public enum EnumGravity
 {
-    down(0, 1.0F, 0.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F), up(1, 1.0F, 0.0F, 0.0F, -1.0F, 0.0F, -1.0F, 0.0F, 0.0F, -1.0F, 0.0F, 0.0F, 1.0F, 0.0F), west(2, 0.0F, -1.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.5F, 1.0F, 0.0F, 0.0F, -1.0F, 1.0F, 0.0F), east(3, 0.0F, 1.0F, -1.0F, 0.0F, 0.0F, 0.0F, -0.5F, -1.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.0F), south(4, 1.0F, 0.0F, 0.0F, 0.0F, -1.0F, 0.5F, 0.0F, 0.0F, 0.0F, -1.0F, 0.0F, 1.0F, 1.0F), north(5, 1.0F, 0.0F, 0.0F, 0.0F, 1.0F, -0.5F, 0.0F, 0.0F, 0.0F, 1.0F, 0.0F, 1.0F, -1.0F);
+    down(0, 1.0F, 0.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),
+    up(1, 1.0F, 0.0F, 0.0F, -1.0F, 0.0F, -1.0F, 0.0F, 0.0F, -1.0F, 0.0F, 0.0F, 1.0F, 0.0F),
+    west(2, 0.0F, -1.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.5F, 1.0F, 0.0F, 0.0F, -1.0F, 1.0F, 0.0F),
+    east(3, 0.0F, 1.0F, -1.0F, 0.0F, 0.0F, 0.0F, -0.5F, -1.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.0F),
+    south(4, 1.0F, 0.0F, 0.0F, 0.0F, -1.0F, 0.5F, 0.0F, 0.0F, 0.0F, -1.0F, 0.0F, 1.0F, 1.0F),
+    north(5, 1.0F, 0.0F, 0.0F, 0.0F, 1.0F, -0.5F, 0.0F, 0.0F, 0.0F, 1.0F, 0.0F, 1.0F, -1.0F);
 
     public int intValue;
     public float pitchGravityX;

@@ -52,12 +52,14 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     }
 
     @Override
-    public boolean shouldSendAdvancedMotionPacket() {
+    public boolean shouldSendAdvancedMotionPacket()
+    {
         return this.shouldMoveClient != null && this.shouldMoveServer != null;
     }
 
     @Override
-    public boolean canSetPositionClient() {
+    public boolean canSetPositionClient()
+    {
         return this.shouldSendAdvancedMotionPacket();
     }
 
@@ -127,8 +129,8 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
             {
                 if (FluidContainerRegistry.isEmptyContainer(this.containedItems[this.containedItems.length - 1]))
                 {
-					ItemStack slotItem = this.containedItems[this.containedItems.length - 1];
-                	boolean isCanister = slotItem.isItemEqual(new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage()));
+                    ItemStack slotItem = this.containedItems[this.containedItems.length - 1];
+                    boolean isCanister = slotItem.isItemEqual(new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage()));
                     final int amountToFill = Math.min(liquid.amount, isCanister ? GCItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
 
                     if (isCanister)
@@ -139,8 +141,14 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
                     else
                     {
                         this.containedItems[this.containedItems.length - 1] = FluidContainerRegistry.fillFluidContainer(liquid, slotItem);
-						if (this.containedItems[this.containedItems.length - 1] == null) this.containedItems[this.containedItems.length - 1] = slotItem;
-						else fuelTank.drain(amountToFill, true);
+                        if (this.containedItems[this.containedItems.length - 1] == null)
+                        {
+                            this.containedItems[this.containedItems.length - 1] = slotItem;
+                        }
+                        else
+                        {
+                            fuelTank.drain(amountToFill, true);
+                        }
                     }
                 }
             }

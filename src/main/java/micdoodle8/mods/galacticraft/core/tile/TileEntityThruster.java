@@ -4,9 +4,9 @@ import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityThruster extends TileEntity
 {
-	@Override
-	public boolean canUpdate()
-	{
-		return false;
-	}
+    @Override
+    public boolean canUpdate()
+    {
+        return false;
+    }
 }
