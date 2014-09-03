@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import cpw.mods.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
@@ -99,7 +98,7 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
     protected final void setCreeperScale(float scale)
     {
         super.setSize(this.sizeXBase * scale, this.sizeYBase * scale);
-        FMLLog.info("" + this.sizeYBase + " " + scale);
+        //FMLLog.info("" + this.sizeYBase + " " + scale);
     }
 
     public boolean isChild()
