@@ -37,7 +37,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.server.S07PacketRespawn;
 import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
@@ -570,7 +569,7 @@ public class WorldUtil
 				{
 					GCLog.info("DEBUG: Sending respawn packet to player for dim "+dimID);
 				}
-				player.playerNetServerHandler.sendPacket(new S07PacketRespawn(dimID, player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
+				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESPAWN_PLAYER, new Object[] { worldNew.provider.getDimensionName(), player.worldObj.difficultySetting.getDifficultyId(), player.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), player.theItemInWorldManager.getGameType().getID() }), player);
 
 				if (worldNew.provider instanceof WorldProviderOrbit)
 				{

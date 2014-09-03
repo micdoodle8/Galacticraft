@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.network;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -69,9 +70,13 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.WorldSettings;
+import net.minecraft.world.WorldType;
 import net.minecraftforge.common.DimensionManager;
+
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
@@ -136,7 +141,8 @@ public class PacketSimple extends Packet implements IPacket
         C_UPDATE_THERMAL_LEVEL(Side.CLIENT, Integer.class),
         C_DISPLAY_ROCKET_CONTROLS(Side.CLIENT),
         C_GET_CELESTIAL_BODY_LIST(Side.CLIENT),
-		C_UPDATE_ENERGYUNITS(Side.CLIENT, Integer.class);
+		C_UPDATE_ENERGYUNITS(Side.CLIENT, Integer.class),
+		C_RESPAWN_PLAYER(Side.CLIENT, String.class, Integer.class, String.class, Integer.class);
 
 		private Side targetSide;
 		private Class<?>[] decodeAs;
@@ -725,6 +731,19 @@ public class PacketSimple extends Packet implements IPacket
             break;
         case C_UPDATE_ENERGYUNITS:
         	CommandGCEnergyUnits.handleParamClientside((Integer) this.data.get(0));
+        	break;
+        case C_RESPAWN_PLAYER:
+			final WorldProvider provider = WorldUtil.getProviderForName((String) this.data.get(0));
+			final int dimID = provider.dimensionId;
+			if (ConfigManagerCore.enableDebug)
+			{
+				GCLog.info("DEBUG: Client receiving respawn packet for dim "+dimID);
+			}
+        	int par2 = (Integer) this.data.get(1);
+        	String par3 = (String) this.data.get(2);
+        	int par4 = (Integer) this.data.get(3);
+        	S07PacketRespawn fakePacket = new S07PacketRespawn(dimID, EnumDifficulty.getDifficultyEnum(par2), WorldType.parseWorldType(par3), WorldSettings.GameType.getByID(par4));
+        	Minecraft.getMinecraft().getNetHandler().handleRespawn(fakePacket);
         	break;
 		default:
 			break;
