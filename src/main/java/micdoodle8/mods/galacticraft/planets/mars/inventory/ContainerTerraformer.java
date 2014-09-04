@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTerraformer;
+import net.minecraft.block.BlockBush;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -33,20 +34,11 @@ public class ContainerTerraformer extends Container
 
         for (var6 = 0; var6 < 3; ++var6)
         {
-            List<ItemStack> stacks = new ArrayList<ItemStack>();
+        	List<ItemStack> stacks = new ArrayList<ItemStack>();
 
             if (var6 == 0)
             {
                 stacks.add(new ItemStack(Items.dye, 1, 15));
-            }
-            else if (var6 == 1)
-            {
-                stacks.add(new ItemStack(Blocks.sapling, 1, 0));
-                stacks.add(new ItemStack(Blocks.sapling, 1, 1));
-                stacks.add(new ItemStack(Blocks.sapling, 1, 2));
-                stacks.add(new ItemStack(Blocks.sapling, 1, 3));
-                stacks.add(new ItemStack(Blocks.sapling, 1, 4));
-                stacks.add(new ItemStack(Blocks.sapling, 1, 5));
             }
             else if (var6 == 2)
             {
@@ -54,8 +46,10 @@ public class ContainerTerraformer extends Container
             }
             for (var7 = 0; var7 < 4; ++var7)
             {
-
-                this.addSlotToContainer(new SlotSpecific(tileEntity, var7 + var6 * 4 + 2, 25 + var7 * 18, 63 + var6 * 24, stacks.toArray(new ItemStack[stacks.size()])));
+                if (var6 == 1)
+                	this.addSlotToContainer(new SlotSpecific(tileEntity, var7 + var6 * 4 + 2, 25 + var7 * 18, 63 + var6 * 24, BlockBush.class));
+                else
+                	this.addSlotToContainer(new SlotSpecific(tileEntity, var7 + var6 * 4 + 2, 25 + var7 * 18, 63 + var6 * 24, stacks.toArray(new ItemStack[stacks.size()])));
             }
         }
 
