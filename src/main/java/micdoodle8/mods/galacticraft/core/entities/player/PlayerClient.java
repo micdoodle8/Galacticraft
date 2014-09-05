@@ -150,7 +150,7 @@ public class PlayerClient implements IPlayerClient
 
         if (!stats.lastUsingParachute && stats.usingParachute)
         {
-            FMLClientHandler.instance().getClient().getSoundHandler().playSound(new PositionedSoundRecord(new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "player.parachute"), (float) player.posX, (float) player.posY, (float) player.posZ, 0.95F + player.getRNG().nextFloat() * 0.1F, 1.0F));
+            FMLClientHandler.instance().getClient().getSoundHandler().playSound(new PositionedSoundRecord(new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "player.parachute"), 0.95F + player.getRNG().nextFloat() * 0.1F, 1.0F, (float) player.posX, (float) player.posY, (float) player.posZ));
         }
 
         stats.lastUsingParachute = stats.usingParachute;
