@@ -39,15 +39,17 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
     public void initGui()
     {
         super.initGui();
+        
+        this.guiLeft = (this.width - this.xSize) / 2;
 
         int cornerX = this.guiLeft;
-        int cornerY = (this.height - this.ySize) / 2;
+        int cornerY = this.guiTop;
 
         TabRegistry.updateTabValues(cornerX, cornerY, InventoryTabGalacticraft.class);
         TabRegistry.addTabsToList(this.buttonList);
 
-        this.buttonList.add(new GuiButton(0, this.guiLeft - 10, (this.height - this.ySize) / 2 + 71, 7, 7, ""));
-        this.buttonList.add(new GuiButton(1, this.guiLeft + 30, (this.height - this.ySize) / 2 + 71, 7, 7, ""));
+        this.buttonList.add(new GuiButton(0, this.guiLeft + 10, this.guiTop + 71, 7, 7, ""));
+        this.buttonList.add(new GuiButton(1, this.guiLeft + 51, this.guiTop + 71, 7, 7, ""));
     }
 
     @Override
@@ -56,10 +58,10 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         switch (par1GuiButton.id)
         {
         case 0:
-            GuiExtendedInventory.rotation -= 10.0F;
+            GuiExtendedInventory.rotation += 10.0F;
             break;
         case 1:
-            GuiExtendedInventory.rotation += 10.0F;
+            GuiExtendedInventory.rotation -= 10.0F;
             break;
         }
     }
