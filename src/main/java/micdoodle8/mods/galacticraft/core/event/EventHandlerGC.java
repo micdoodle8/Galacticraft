@@ -27,15 +27,20 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
+import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGravel;
 import net.minecraft.block.BlockSand;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -52,6 +57,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenDesert;
+import net.minecraftforge.client.event.sound.PlaySoundEvent17;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -660,49 +666,52 @@ public class EventHandlerGC
         }
     }
 
-    //	private List<SoundPlayEntry> soundPlayList = new ArrayList<SoundPlayEntry>();
-    //
-    //	@SideOnly(Side.CLIENT)
-    //	@SubscribeEvent
-    //	public void onSoundPlayed(PlaySoundEvent17 event)
-    //	{
-    //		EntityPlayerSP player = FMLClientHandler.INSTANCE().getClient().thePlayer;
-    //
-    //		PlayerGearData gearData = null;
-    //
-    //		for (PlayerGearData gearData2 : ClientProxyCore.playerItemData)
-    //		{
-    //			if (gearData2.getPlayer().getGameProfile().getName().equals(player.getGameProfile().getName()))
-    //			{
-    //				gearData = gearData2;
-    //				break;
-    //			}
-    //		}
-    //
-    //		if (player.worldObj.provider instanceof IGalacticraftWorldProvider && (gearData == null || gearData.getFrequencyModule() == -1))
-    //		{
-    //			for (int i = 0; i < this.soundPlayList.size(); i++)
-    //			{
-    //				SoundPlayEntry entry = this.soundPlayList.get(i);
-    //
-    //				if (entry.name.equals(event.name) && entry.x == event.x && entry.y == event.y && entry.z == event.z && entry.volume == event.volume)
-    //				{
-    //					this.soundPlayList.remove(i);
-    //					event.result = event.source;
-    //					return;
-    //				}
-    //			}
-    //
-    //			float newVolume = event.volume / Math.max(0.01F, ((IGalacticraftWorldProvider) player.worldObj.provider).getSoundVolReductionAmount());
-    //
-    //			this.soundPlayList.add(new SoundPlayEntry(event.name, event.x, event.y, event.z, newVolume));
-    //			event.manager.playSound(event.name, event.x, event.y, event.z, newVolume, event.pitch);
-    //			event.result = null;
-    //			return;
-    //		}
-    //
-    //		event.result = event.source;
-    //	} TODO Fix sounds
+    private List<SoundPlayEntry> soundPlayList = new ArrayList<SoundPlayEntry>();
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void onSoundPlayed(PlaySoundEvent17 event)
+    {
+    	EntityPlayerSP player = FMLClientHandler.instance().getClient().thePlayer;
+
+    	if (player != null && player.worldObj != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && event != null && event.sound != null)
+    	{
+        	//Only modify standard game sounds, not music
+    		if (event.sound.getAttenuationType() != ISound.AttenuationType.NONE)
+        	{
+        		PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getGameProfile().getName());
+
+        		if (gearData == null || gearData.getFrequencyModule() == -1)
+        		{
+        			float x = event.sound.getXPosF();
+        			float y = event.sound.getYPosF();
+        			float z = event.sound.getZPosF();
+        			float volume = event.sound.getVolume();
+        			for (int i = 0; i < this.soundPlayList.size(); i++)
+        			{
+        				SoundPlayEntry entry = this.soundPlayList.get(i);
+
+        				if (entry.name.equals(event.name) && entry.x == x && entry.y == y && entry.z == z && entry.volume == volume)
+        				{
+        					this.soundPlayList.remove(i);
+        					event.result = event.sound;
+        					return;
+        				}
+        			}
+
+        			float newVolume = volume / Math.max(0.01F, ((IGalacticraftWorldProvider) player.worldObj.provider).getSoundVolReductionAmount());
+
+        			this.soundPlayList.add(new SoundPlayEntry(event.name, x, y, z, newVolume));
+        			ISound newSound = new PositionedSoundRecord(event.sound.getPositionedSoundLocation(), newVolume, event.sound.getPitch(), x, y, z);
+        			event.manager.playSound(newSound);
+        			event.result = null;
+        			return;
+        		}
+        	}
+    	}
+
+    	event.result = event.sound;
+    }
 
     private static class SoundPlayEntry
     {
