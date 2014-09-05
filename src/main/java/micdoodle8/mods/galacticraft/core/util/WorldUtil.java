@@ -23,6 +23,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
+import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -518,9 +519,15 @@ public class WorldUtil
 
     private static Entity teleportEntity(World worldNew, Entity entity, int dimID, ITeleportType type, boolean transferInv, EntityAutoRocket ridingRocket)
     {
-        if (entity.ridingEntity != null && entity.ridingEntity instanceof EntitySpaceshipBase)
+        if (entity.ridingEntity != null)
         {
-            entity.mountEntity(entity.ridingEntity);
+        	if (entity.ridingEntity instanceof EntitySpaceshipBase)
+        		entity.mountEntity(entity.ridingEntity);
+        	else if (entity.ridingEntity instanceof EntityCelestialFake)
+        	{
+        		entity.ridingEntity.setDead();
+        		entity.mountEntity(null);
+        	}
         }
 
         boolean dimChange = entity.worldObj != worldNew;
@@ -843,6 +850,7 @@ public class WorldUtil
 
     public static void toCelestialSelection(EntityPlayerMP player, GCPlayerStats stats, int tier)
     {
+        player.mountEntity(null);
         stats.spaceshipTier = tier;
 
         HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(tier), player);
@@ -857,6 +865,7 @@ public class WorldUtil
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { player.getGameProfile().getName(), dimensionList }), player);
         stats.usingPlanetSelectionGui = true;
         stats.savedPlanetList = new String(dimensionList);
-        player.mountEntity(null);
+        Entity fakeEntity = new EntityCelestialFake(player.worldObj, player.posX, player.posY, player.posZ, 0.0F);
+        player.mountEntity(fakeEntity);
     }
 }

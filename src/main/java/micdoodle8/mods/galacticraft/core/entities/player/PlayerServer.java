@@ -4,6 +4,7 @@ import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
+import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
@@ -74,7 +75,11 @@ public class PlayerServer implements IPlayerServer
     @Override
     public float attackEntityFrom(EntityPlayerMP player, DamageSource par1DamageSource, float par2)
     {
-        if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
+        //No damage while in Celestial Selection screen
+    	if (player.ridingEntity instanceof EntityCelestialFake)
+        	return -1;
+    	
+    	if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
         {
             if (par1DamageSource == DamageSource.outOfWorld)
             {

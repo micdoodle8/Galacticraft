@@ -198,7 +198,8 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerEntityRenderingHandler(EntityAlienVillager.class, new RenderAlienVillager());
         RenderingRegistry.registerEntityRenderingHandler(EntityBubble.class, new RenderBubble(0.25F, 0.25F, 1.0F));
         RenderingRegistry.registerEntityRenderingHandler(EntityLander.class, new RenderLander());
-
+        RenderingRegistry.registerEntityRenderingHandler(EntityCelestialFake.class, new RenderEntityFake());
+        
         if (Loader.isModLoaded("RenderPlayerAPI"))
         {
             ModelPlayerAPI.register(Constants.MOD_ID_CORE, ModelPlayerBaseGC.class);

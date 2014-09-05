@@ -50,6 +50,7 @@ public class ConfigManagerCore
     public static int idEntityLander;
     public static int idEntityLanderChest;
     public static int idEntityMeteorChunk;
+	public static int idEntityCelestial;
 
     // GENERAL
     public static boolean moreStars;
@@ -136,6 +137,7 @@ public class ConfigManagerCore
             ConfigManagerCore.idEntityLanderChest = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityLanderChest", 169).getInt(169);
             ConfigManagerCore.idEntityEvolvedSkeletonBoss = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityEvolvedSkeletonBoss", 170).getInt(170);
             ConfigManagerCore.idEntityMeteorChunk = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityMeteorChunk", 179).getInt(179);
+            ConfigManagerCore.idEntityCelestial = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityCelestialScreen", 171).getInt(171);
 
 //Client side
             ConfigManagerCore.moreStars = ConfigManagerCore.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "More Stars", true, "Setting this to false will revert night skies back to default minecraft star count").getBoolean(true);
