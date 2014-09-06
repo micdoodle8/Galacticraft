@@ -338,7 +338,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                                 double arc = Math.sqrt(xx * xx + zz * zz);
                                 if (xx == 0D)
                                 {
-                                    angle = zz > 0 ? 3.141592536F / 2 : -3.141592536F / 2;
+                                    angle = zz > 0 ? 3.1415926535F / 2 : -3.1415926535F / 2;
                                 }
                                 else
                                 {
@@ -346,7 +346,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                                 }
                                 if (xx < 0D)
                                 {
-                                    angle += 3.141592536F;
+                                    angle += 3.1415926535F;
                                 }
                                 angle += this.angularVelocityRadians / 3F;
                                 arc = arc * this.angularVelocityRadians;
@@ -430,6 +430,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
     {
         return true;
     }
+
 
     @Override
     public boolean canCoordinateBeSpawn(int var1, int var2)
@@ -579,7 +580,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                 double arc = Math.sqrt(xx * xx + zz * zz);
                 if (xx == 0D)
                 {
-                    angle = zz > 0 ? 3.141592536F / 2 : -3.141592536F / 2;
+                    angle = zz > 0 ? 3.1415926535F / 2 : -3.1415926535F / 2;
                 }
                 else
                 {
@@ -587,7 +588,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                 }
                 if (xx < 0D)
                 {
-                    angle += 3.141592536F;
+                    angle += 3.1415926535F;
                 }
                 angle += this.angularVelocityRadians / 3F;
                 arc = arc * this.angularVelocityRadians;
