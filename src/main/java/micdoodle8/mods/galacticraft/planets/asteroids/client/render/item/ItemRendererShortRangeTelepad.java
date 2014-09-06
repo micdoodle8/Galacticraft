@@ -24,13 +24,41 @@ public class ItemRendererShortRangeTelepad implements IItemRenderer
 
         if (type == ItemRenderType.INVENTORY)
         {
-            TileEntityShortRangeTelepadRenderer.telepadModel.renderAll();
+            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("Base");
+            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("Top");
+            
+            FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityShortRangeTelepadRenderer.telepadTexture0);
+            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopMidxNegz");
+            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopPosxNegz");
+            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopNegxNegz");
+
+            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopMidxMidz");
+            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopPosxMidz");
+            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopNegxMidz");
+
+            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopMidxPosz");
+            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopPosxPosz");
+            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopNegxPosz");
         }
         else
         {
-            TileEntityShortRangeTelepadRenderer.telepadModel.renderAll();
-        }
+            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("Base");
+            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("Top");
+            
+            FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityShortRangeTelepadRenderer.telepadTexture0);
+            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopMidxNegz");
+            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopPosxNegz");
+            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopNegxNegz");
 
+            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopMidxMidz");
+            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopPosxMidz");
+            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopNegxMidz");
+
+            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopMidxPosz");
+            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopPosxPosz");
+            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopNegxPosz");
+        }
+        
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glPopMatrix();
     }
@@ -41,17 +69,18 @@ public class ItemRendererShortRangeTelepad implements IItemRenderer
 
         if (type == ItemRenderType.EQUIPPED)
         {
-            GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+            GL11.glTranslatef(0.8F, 0.5F, 0.8F);
             GL11.glRotatef(185, 1, 0, 0);
             GL11.glRotatef(40, 0, 1, 0);
             GL11.glRotatef(-70, 0, 0, 1);
-            GL11.glScalef(2.2F, 2.2F, 2.2F);
+            GL11.glScalef(0.8F, 0.8F, 0.8F);
         }
 
         if (type == ItemRenderType.EQUIPPED_FIRST_PERSON)
         {
-            GL11.glScalef(8.2F, 8.2F, 8.2F);
-            GL11.glTranslatef(0.291F, 1.0F, 0.1F);
+            GL11.glRotatef(180.0F, 0.9F, 0F, 0F);
+            GL11.glScalef(1.0F, 1.0F, 1.0F);
+            GL11.glTranslatef(1.0F, -0.6F, -0.5F);
         }
 
         GL11.glScalef(-0.4F, -0.4F, 0.4F);
@@ -68,7 +97,6 @@ public class ItemRendererShortRangeTelepad implements IItemRenderer
             }
             else
             {
-                GL11.glRotatef(Sys.getTime() / 90F % 360F, 0F, 1F, 0F);
                 GL11.glRotatef(180.0F, 1F, 0F, 0F);
             }
 
