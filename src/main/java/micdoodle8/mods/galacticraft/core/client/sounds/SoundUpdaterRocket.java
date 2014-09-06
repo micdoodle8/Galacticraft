@@ -25,6 +25,7 @@ public class SoundUpdaterRocket extends MovingSound
 	private final EntityPlayerSP thePlayer;
 	private final EntitySpaceshipBase theRocket;
 	private boolean soundStopped;
+	private boolean ignition = false;
 
 	public SoundUpdaterRocket(EntityPlayerSP par1EntityPlayerSP, EntitySpaceshipBase par2Entity)
 	{
@@ -49,7 +50,12 @@ public class SoundUpdaterRocket extends MovingSound
         {	
         	if (this.theRocket.launchPhase == EnumLaunchPhase.IGNITED.ordinal())
 			{
-				if (this.theRocket.timeUntilLaunch < this.theRocket.getPreLaunchWait())
+				if (!ignition)
+				{
+					this.field_147663_c = 0.0F;
+					ignition = true;
+				}
+        		if (this.theRocket.timeUntilLaunch < this.theRocket.getPreLaunchWait())
     			{
     				if (this.field_147663_c < 1.0F)
     				{
