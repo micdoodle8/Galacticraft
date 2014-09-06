@@ -17,7 +17,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
@@ -25,8 +24,6 @@ import java.util.List;
 
 public class EntityTier2Rocket extends EntityTieredRocket
 {
-    public IUpdatePlayerListBox rocketSoundUpdater;
-
     public EntityTier2Rocket(World par1World)
     {
         super(par1World);
@@ -49,17 +46,6 @@ public class EntityTier2Rocket extends EntityTieredRocket
     protected void entityInit()
     {
         super.entityInit();
-    }
-
-    @Override
-    public void setDead()
-    {
-        super.setDead();
-
-        if (this.rocketSoundUpdater != null)
-        {
-            this.rocketSoundUpdater.update();
-        }
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -85,11 +71,6 @@ public class EntityTier2Rocket extends EntityTieredRocket
             {
                 this.spawnParticles(this.getLaunched());
             }
-        }
-
-        if (this.rocketSoundUpdater != null && (this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() || this.getLaunched()))
-        {
-            this.rocketSoundUpdater.update();
         }
 
         if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal() && this.hasValidFuel())
@@ -125,11 +106,8 @@ public class EntityTier2Rocket extends EntityTieredRocket
             if (this.timeSinceLaunch % MathHelper.floor_double(2 * (1 / multiplier)) == 0)
             {
                 this.removeFuel(1);
-                /*TO: fix soundupdater (see below)
-				if (!this.hasValidFuel() && this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
-				{
-					((GCCoreSoundUpdaterSpaceship) this.rocketSoundUpdater).stopRocketSound();
-				}*/
+				if (!this.hasValidFuel())
+					this.stopRocketSound();
             }
         }
         else if (!this.hasValidFuel() && this.getLaunched() && !this.worldObj.isRemote)
@@ -218,11 +196,7 @@ public class EntityTier2Rocket extends EntityTieredRocket
     protected void onRocketLand(int x, int y, int z)
     {
         this.setPositionAndRotation(x + 0.5, y + 2.0D, z + 0.5, this.rotationYaw, 0.0F);
-
-        //		if (this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
-        //		{
-        //			((GCCoreSoundUpdaterSpaceship) this.rocketSoundUpdater).stopRocketSound();
-        //		} TODO Fix rocket sound
+        this.stopRocketSound();
     }
 
     @Override

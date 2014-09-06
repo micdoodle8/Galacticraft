@@ -31,7 +31,12 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
     private Boolean shouldMoveServer;
 	private boolean hasReceivedPacket;
 
-    public EntityCelestialFake(World var1, float yOffset)
+	public EntityCelestialFake(World var1)
+	{
+		this(var1, 0F);
+	}
+	
+	public EntityCelestialFake(World var1, float yOffset)
     {
         super(var1, yOffset);
         this.setSize(3.0F, 1.0F);

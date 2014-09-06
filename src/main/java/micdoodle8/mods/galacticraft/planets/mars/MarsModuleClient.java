@@ -237,33 +237,6 @@ public class MarsModuleClient implements IPlanetsModuleClient
                         world.provider.setCloudRenderer(new CloudRenderer());
                     }
                 }
-
-                //				for (int i = 0; i < world.loadedEntityList.size(); i++)
-                //				{
-                //					final Entity e = (Entity) world.loadedEntityList.get(i);
-                //
-                //					if (e != null)
-                //					{
-                //						if (e instanceof EntityRocketT2)
-                //						{
-                //							EntityRocketT2 eship = (EntityRocketT2) e;
-                //
-                //							if (eship.rocketSoundUpdater == null)
-                //							{
-                //								eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.INSTANCE().getClient().sndManager, eship, FMLClientHandler.INSTANCE().getClient().thePlayer);
-                //							}
-                //						}
-                //						else if (e instanceof EntityCargoRocket)
-                //						{
-                //							EntityCargoRocket eship = (EntityCargoRocket) e;
-                //
-                //							if (eship.rocketSoundUpdater == null)
-                //							{
-                //								eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.INSTANCE().getClient().sndManager, eship, FMLClientHandler.INSTANCE().getClient().thePlayer);
-                //							}
-                //						}
-                //					}
-                //				}
             }
         }
     }

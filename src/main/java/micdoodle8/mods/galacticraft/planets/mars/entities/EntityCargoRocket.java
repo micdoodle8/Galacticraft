@@ -19,7 +19,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -31,7 +30,6 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
 {
     public EnumRocketType rocketType;
     public float rumble;
-    public IUpdatePlayerListBox rocketSoundUpdater;
 
     public EntityCargoRocket(World par1World)
     {
@@ -64,17 +62,6 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
         }
 
         return weight;
-    }
-
-    @Override
-    public void setDead()
-    {
-        super.setDead();
-
-        if (this.rocketSoundUpdater != null)
-        {
-            this.rocketSoundUpdater.update();
-        }
     }
 
     @Override
@@ -119,11 +106,8 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
             if (this.timeSinceLaunch % MathHelper.floor_double(3 * (1 / multiplier)) == 0)
             {
                 this.removeFuel(1);
-                /*TO: fix soundupdater (see below)
-				if (!this.hasValidFuel() && this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
-				{
-					((GCCoreSoundUpdaterSpaceship) this.rocketSoundUpdater).stopRocketSound();
-				}*/
+				if (!this.hasValidFuel())
+					this.stopRocketSound();
             }
         }
         else if (!this.hasValidFuel() && this.getLaunched() && !this.worldObj.isRemote)
@@ -170,19 +154,6 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
             {
                 this.spawnParticles(this.getLaunched());
             }
-        }
-
-        if (this.rocketSoundUpdater != null && (this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() || this.getLaunched()))
-        {
-            this.rocketSoundUpdater.update();
-        }
-        else
-        {
-            //			if (this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
-            //			{
-            //				((GCCoreSoundUpdaterSpaceship) this.rocketSoundUpdater).stopRocketSound();
-            //				this.rocketSoundUpdater.update();
-            //			} TODO Fix sound updater
         }
     }
 
@@ -275,17 +246,6 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
         {
             this.setDead();
         }
-    }
-
-    @Override
-    protected void onRocketLand(int x, int y, int z)
-    {
-        super.onRocketLand(x, y, z);
-
-        //		if (this.rocketSoundUpdater instanceof GCCoreSoundUpdaterSpaceship)
-        //		{
-        //			((GCCoreSoundUpdaterSpaceship) this.rocketSoundUpdater).stopRocketSound();
-        //		} TODO Fix sound updater
     }
 
     @Override

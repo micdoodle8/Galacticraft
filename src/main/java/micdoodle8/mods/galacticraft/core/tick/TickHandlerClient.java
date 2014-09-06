@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -25,6 +26,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.*;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiNewSpaceRace;
+import micdoodle8.mods.galacticraft.core.client.sounds.SoundUpdaterRocket;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
@@ -40,6 +42,7 @@ import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.ISound;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.Gui;
@@ -58,9 +61,11 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+
 import tconstruct.client.tabs.TabRegistry;
 
 import java.util.List;
@@ -519,17 +524,16 @@ public class TickHandlerClient
 
             if (world != null)
             {
-                List entityList = world.loadedEntityList;
-                for (int i = entityList.size() - 1; i >= 0; i--)
+                List entityList = world.loadedEntityList;             
+                for (Object e : entityList)
                 {
-                    if (entityList.get(i) instanceof EntityTier1Rocket)
+                    if (e instanceof EntityAutoRocket)
                     {
-                        final EntityTier1Rocket eship = (EntityTier1Rocket) entityList.get(i);
-
-                        if (eship.rocketSoundUpdater == null)
+                        if (((EntityAutoRocket) e).rocketSoundUpdater == null)
                         {
-                            // TODO
-                            //								eship.rocketSoundUpdater = new GCCoreSoundUpdaterSpaceship(FMLClientHandler.INSTANCE().getClient().sndManager, eship, FMLClientHandler.INSTANCE().getClient().thePlayer);
+                        	EntityAutoRocket eship = (EntityAutoRocket) e;
+                        	eship.rocketSoundUpdater = new SoundUpdaterRocket(FMLClientHandler.instance().getClient().thePlayer, eship);
+							FMLClientHandler.instance().getClient().getSoundHandler().playSound((ISound) eship.rocketSoundUpdater);
                         }
                     }
                 }

@@ -15,6 +15,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.client.sounds.SoundUpdaterRocket;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
@@ -30,6 +31,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
@@ -69,6 +71,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
     protected double lastMotionY;
     protected double lastLastMotionY;
     private boolean waitForPlayer;
+    public IUpdatePlayerListBox rocketSoundUpdater;
 
     public EntityAutoRocket(World world)
     {
@@ -434,7 +437,12 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                 }
             }
 
-            this.lastStatusMessageCooldown = this.statusMessageCooldown;
+            this.lastStatusMessageCooldown = this.statusMessageCooldown;          
+        }
+        
+        if (this.rocketSoundUpdater != null && (this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() || this.getLaunched()))
+        {
+            this.rocketSoundUpdater.update();
         }
     }
 
@@ -573,8 +581,28 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
     protected void onRocketLand(int x, int y, int z)
     {
         this.setPositionAndRotation(x + 0.5, y + 0.4D, z + 0.5, this.rotationYaw, 0.0F);
+        this.stopRocketSound();
+    }
+    
+    public void stopRocketSound()
+    {
+        if (this.rocketSoundUpdater instanceof SoundUpdaterRocket)
+        {
+        	((SoundUpdaterRocket) this.rocketSoundUpdater).stopRocketSound();
+        }  	
     }
 
+    @Override
+    public void setDead()
+    {
+        super.setDead();
+
+        if (this.rocketSoundUpdater != null)
+        {
+            this.rocketSoundUpdater.update();
+        }
+    }
+    
     @Override
     public void decodePacketdata(ByteBuf buffer)
     {
