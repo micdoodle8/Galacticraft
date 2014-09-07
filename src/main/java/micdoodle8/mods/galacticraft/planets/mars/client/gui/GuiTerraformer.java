@@ -160,7 +160,7 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
 
         if (this.terraformer.terraformBubble.getSize() < this.terraformer.MAX_SIZE - 0.5)
         {
-            return EnumColor.YELLOW + GCCoreUtil.translate("gui.message.bubbleExpanding.name");
+            return EnumColor.YELLOW + GCCoreUtil.translate("gui.message.bubbleExp.name");
         }
 
         if (!this.terraformer.treesDisabled && this.terraformer.grassBlocksListSize <= 0)
