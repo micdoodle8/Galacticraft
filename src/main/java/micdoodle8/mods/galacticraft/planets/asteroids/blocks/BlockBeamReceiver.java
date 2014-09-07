@@ -57,12 +57,13 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
         if (meta != oldMeta)
         {
             world.setBlockMetadataWithNotify(x, y, z, meta, 3);
-            TileEntityBeamReceiver thisTile = (TileEntityBeamReceiver) world.getTileEntity(x, y, z);
-            if (thisTile != null)
+            TileEntity thisTile = world.getTileEntity(x, y, z);
+            if (thisTile instanceof TileEntityBeamReceiver)
             {
-                thisTile.setFacing(ForgeDirection.getOrientation(meta));
-                thisTile.invalidateReflector();
-                thisTile.initiateReflector();
+            	TileEntityBeamReceiver thisReceiver = (TileEntityBeamReceiver) thisTile; 
+                thisReceiver.setFacing(ForgeDirection.getOrientation(meta));
+                thisReceiver.invalidateReflector();
+                thisReceiver.initiateReflector();
             }
         }
 
@@ -72,8 +73,9 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
     @Override
     public void onBlockAdded(World world, int x, int y, int z)
     {
-        TileEntityBeamReceiver thisTile = (TileEntityBeamReceiver) world.getTileEntity(x, y, z);
-        thisTile.setFacing(ForgeDirection.getOrientation(world.getBlockMetadata(x, y, z)));
+        TileEntity thisTile = world.getTileEntity(x, y, z);
+        if (thisTile instanceof TileEntityBeamReceiver)
+        	((TileEntityBeamReceiver)thisTile).setFacing(ForgeDirection.getOrientation(world.getBlockMetadata(x, y, z)));
     }
 
     @Override
@@ -121,12 +123,11 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
 
     private int getMetadataFromAngle(World world, int x, int y, int z, int side)
     {
-        TileEntityBeamReceiver thisTile = (TileEntityBeamReceiver) world.getTileEntity(x, y, z);
         ForgeDirection direction = ForgeDirection.getOrientation(side).getOpposite();
 
         TileEntity tileAt = world.getTileEntity(x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ);
 
-        if (tileAt != null && tileAt instanceof EnergyStorageTile)
+        if (tileAt instanceof EnergyStorageTile)
         {
             if (((EnergyStorageTile) tileAt).getModeFromDirection(direction.getOpposite()) != null)
             {
