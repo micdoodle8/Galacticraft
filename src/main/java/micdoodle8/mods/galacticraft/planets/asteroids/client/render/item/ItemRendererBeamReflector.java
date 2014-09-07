@@ -23,7 +23,7 @@ public class ItemRendererBeamReflector implements IItemRenderer
     {
         if (type == ItemRenderType.EQUIPPED)
         {
-            GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+            GL11.glTranslatef(0.9F, 0.5F, 0.8F);
             GL11.glRotatef(185, 1, 0, 0);
             GL11.glRotatef(40, 0, 1, 0);
             GL11.glRotatef(-70, 0, 0, 1);
@@ -32,9 +32,9 @@ public class ItemRendererBeamReflector implements IItemRenderer
 
         if (type == ItemRenderType.EQUIPPED_FIRST_PERSON)
         {
-            GL11.glScalef(8.2F, 8.2F, 8.2F);
-            GL11.glTranslatef(0.291F, -0.15F, 0.1F);
-            GL11.glRotatef(180, 0, 0, 1);
+            GL11.glScalef(2.2F, 2.2F, 2.2F);
+            GL11.glTranslatef(0.291F, 0.2F, 0.3F);
+            GL11.glRotatef(180.0F, 0.0F, 0F, 1F);
         }
 
         GL11.glScalef(-0.4F, -0.4F, 0.4F);
