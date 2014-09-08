@@ -4,10 +4,10 @@ import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTerraformer;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
@@ -15,11 +15,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ContainerTerraformer extends Container
 {
     private final TileEntityTerraformer tileEntity;
+    private static LinkedList<ItemStack> saplingList = null;
 
     public ContainerTerraformer(InventoryPlayer par1InventoryPlayer, TileEntityTerraformer tileEntity)
     {
@@ -40,16 +43,49 @@ public class ContainerTerraformer extends Container
             {
                 stacks.add(new ItemStack(Items.dye, 1, 15));
             }
+            else if (var6 == 1)
+            {
+                if (ContainerTerraformer.saplingList == null)
+                {
+	                ContainerTerraformer.saplingList = new LinkedList();
+	                Iterator iterator = Block.blockRegistry.getKeys().iterator();
+                
+	                while (iterator.hasNext())
+	                {
+	                    Block b = (Block) Block.blockRegistry.getObject((String)iterator.next());
+	                    if (b instanceof BlockBush)
+	                    {
+	                        Item item = Item.getItemFromBlock(b);
+	                        if (item != null)
+	                        {
+	                        	//item.getSubItems(item, null, subItemsList); - can't use because clientside only
+	                        	ContainerTerraformer.saplingList.add(new ItemStack(item, 1, 0));
+	                        	String basicName = item.getUnlocalizedName(new ItemStack(item, 1, 0));
+	                    		for (int i = 1; i < 16; i++)
+	                    		{
+	                    			ItemStack testStack = new ItemStack(item, 1, i);
+	                    			String testName = item.getUnlocalizedName(testStack); 
+	                    			if (testName == null || testName.equals("") || testName.equals(basicName))
+	                    				break;
+	                    			ContainerTerraformer.saplingList.add(testStack);
+	                    		}                   		
+	                        }
+	                        else
+	                        	System.out.println("Terraformer: null item from block " + b.getUnlocalizedName());
+	                    }
+	                }
+                }
+                
+                stacks.addAll(ContainerTerraformer.saplingList);
+            }
             else if (var6 == 2)
             {
                 stacks.add(new ItemStack(Items.wheat_seeds));
             }
+
             for (var7 = 0; var7 < 4; ++var7)
             {
-                if (var6 == 1)
-                	this.addSlotToContainer(new SlotSpecific(tileEntity, var7 + var6 * 4 + 2, 25 + var7 * 18, 63 + var6 * 24, BlockBush.class));
-                else
-                	this.addSlotToContainer(new SlotSpecific(tileEntity, var7 + var6 * 4 + 2, 25 + var7 * 18, 63 + var6 * 24, stacks.toArray(new ItemStack[stacks.size()])));
+               	this.addSlotToContainer(new SlotSpecific(tileEntity, var7 + var6 * 4 + 2, 25 + var7 * 18, 63 + var6 * 24, stacks.toArray(new ItemStack[stacks.size()])));
             }
         }
 
@@ -124,7 +160,7 @@ public class ContainerTerraformer extends Container
                         return null;
                     }
                 }
-                else if (var4.getItem() == Item.getItemFromBlock(Blocks.sapling))
+                else if (this.getSlot(6).isItemValid(var4))
                 {
                     if (!this.mergeItemStack(var4, 6, 10, false))
                     {

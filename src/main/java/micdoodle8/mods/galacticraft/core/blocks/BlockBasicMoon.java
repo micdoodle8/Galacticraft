@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
+import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -359,7 +360,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 
         if (meta >= 5 && meta <= 13)
         {
-            return world.getBlock(x, y + 1, z) == Blocks.air;
+            return world.getBlock(x, y + 1, z) instanceof BlockAir;
         }
 
         return false;
