@@ -569,7 +569,7 @@ public class GCCoreEvents
 			}
 		}
 
-		if (player.worldObj.provider instanceof IGalacticraftWorldProvider && (gearData == null || gearData.getFrequencyModule() == -1))
+		if (player.worldObj != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && (gearData == null || gearData.getFrequencyModule() == -1))
 		{
 			for (int i = 0; i < this.soundPlayList.size(); i++)
 			{

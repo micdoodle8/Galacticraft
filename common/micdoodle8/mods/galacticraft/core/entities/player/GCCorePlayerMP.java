@@ -168,6 +168,7 @@ public class GCCorePlayerMP extends EntityPlayerMP
 			}
 
 			this.setSpaceStationDimensionID(((GCCorePlayerMP) par1EntityPlayer).getSpaceStationDimensionID());
+			this.unlockedSchematics = ((GCCorePlayerMP) par1EntityPlayer).getUnlockedSchematics();
 		}
 	}
 
