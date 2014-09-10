@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
@@ -49,8 +48,6 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -66,8 +63,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import tconstruct.client.tabs.TabRegistry;
-
 import java.util.List;
 
 public class TickHandlerClient
@@ -77,7 +72,6 @@ public class TickHandlerClient
     public static boolean checkedVersion = true;
     private static boolean lastInvKeyPressed;
     private static long tickCount;
-    public static boolean addTabsNextTick = false;
     public static boolean spaceRaceGuiScheduled = false;
 
     private static ThreadRequirementMissing missingRequirementThread;
@@ -402,16 +396,6 @@ public class TickHandlerClient
                 }
             }
 
-            if (TickHandlerClient.addTabsNextTick)
-            {
-                if (minecraft.currentScreen.getClass().equals(GuiInventory.class))
-                {
-                    TickHandlerClient.addTabsToInventory((GuiContainer) minecraft.currentScreen);
-                }
-
-                TickHandlerClient.addTabsNextTick = false;
-            }
-
             if (minecraft.currentScreen != null && minecraft.currentScreen instanceof GuiMainMenu)
             {
                 ClientProxyCore.playerItemData.clear();
@@ -560,17 +544,6 @@ public class TickHandlerClient
                 ClientProxyCore.lastSpacebarDown = true;
             }
         }
-        else
-        {
-            boolean invKeyPressed = minecraft.gameSettings.isKeyDown(minecraft.gameSettings.keyBindInventory);
-
-            if (!TickHandlerClient.lastInvKeyPressed && invKeyPressed && minecraft.currentScreen != null && minecraft.currentScreen.getClass() == GuiInventory.class)
-            {
-                TickHandlerClient.addTabsToInventory((GuiContainer) minecraft.currentScreen);
-            }
-
-            TickHandlerClient.lastInvKeyPressed = invKeyPressed;
-        }
     }
 
     private boolean alreadyContainsBlock(int x1, int y1, int z1)
@@ -582,22 +555,6 @@ public class TickHandlerClient
     {
         FMLClientHandler.instance().getClient().entityRenderer.thirdPersonDistance = value;
         FMLClientHandler.instance().getClient().entityRenderer.thirdPersonDistanceTemp = value;
-    }
-
-    public static void addTabsToInventory(GuiContainer gui)
-    {
-        boolean tConstructLoaded = Loader.isModLoaded("TConstruct");
-
-        if (!tConstructLoaded)
-        {
-            if (!TickHandlerClient.addTabsNextTick)
-            {
-                TickHandlerClient.addTabsNextTick = true;
-                return;
-            }
-
-            TabRegistry.addTabsToInventory(gui);
-        }
     }
 
     private void drawGradientRect(int par1, int par2, int par3, int par4, int par5, int par6)
