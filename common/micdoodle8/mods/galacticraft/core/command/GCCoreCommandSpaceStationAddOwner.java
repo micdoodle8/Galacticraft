@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.command;
 
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.core.dimension.GCCoreSpaceStationData;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCorePlayerMP;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -7,6 +9,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatMessageComponent;
 
 /**
@@ -94,7 +97,7 @@ public class GCCoreCommandSpaceStationAddOwner extends CommandBase
 		}
 	}
 	
-		@Override
+	@Override
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
         return par2ArrayOfStr.length == 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, this.getPlayers()) : null;
