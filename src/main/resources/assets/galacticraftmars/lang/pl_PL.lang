@@ -12,6 +12,7 @@ item.compressedDesh.name=Skompresowany Desz
 item.spaceshipTier2.cargoRocket.name=Rakieta Transportowa
 item.fluidManip.name=Manipulator Płynów
 item.deshPick.name=Deszowy Kilof
+item.deshPickSlime.name=Sticky Desh Pickaxe ##NEEDS TRANSLATE##
 item.deshAxe.name=Deszowa Siekiera
 item.deshHoe.name=Deszowa Motyka
 item.deshSpade.name=Deszowa Łopata

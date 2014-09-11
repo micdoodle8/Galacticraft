@@ -15,6 +15,7 @@ item.fluidManip.name=Manipulador de Fluidos
 
 # TOOLS
 item.deshPick.name=Pico de Desh
+item.deshPickSlime.name=Sticky Desh Pickaxe ##NEEDS TRANSLATE##
 item.deshAxe.name=Hacha de Desh
 item.deshHoe.name=Azada de Desh
 item.deshSpade.name=Pala de Desh

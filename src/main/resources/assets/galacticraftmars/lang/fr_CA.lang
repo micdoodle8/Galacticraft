@@ -15,6 +15,7 @@ item.fluidManip.name=Fluid Manipulator ##NEEDS TRANSLATE##
 
 # TOOLS
 item.deshPick.name=Pioche en silicium
+item.deshPickSlime.name=Sticky Desh Pickaxe ##NEEDS TRANSLATE##
 item.deshAxe.name=Hache en silicium
 item.deshHoe.name=Houe en silicium
 item.deshSpade.name=Pelle en silicium

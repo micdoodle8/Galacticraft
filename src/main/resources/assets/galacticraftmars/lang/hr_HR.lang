@@ -15,6 +15,7 @@ item.fluidManip.name=Manipulator Tekučinom
 
 # TOOLS
 item.deshPick.name=Desh Kramp
+item.deshPickSlime.name=Sticky Desh Pickaxe ##NEEDS TRANSLATE##
 item.deshAxe.name=Desh Sjekira
 item.deshHoe.name=Desh Motika
 item.deshSpade.name=Desh Lopata

@@ -15,6 +15,7 @@ item.fluidManip.name=Kapalinový manipulator
 
 # TOOLS
 item.deshPick.name=Krumpáč z frikčního kovu
+item.deshPickSlime.name=Sticky Desh Pickaxe ##NEEDS TRANSLATE##
 item.deshAxe.name=Sekera z frikčního kovu
 item.deshHoe.name=Motyka z frikčního kovu
 item.deshSpade.name=Lopata z frikčního kovu
