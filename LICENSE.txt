@@ -21,15 +21,17 @@ material including the Wiki which is published on www.micdoodle8.com or any
 
 other official Galacticraft website.
 
-2.  The "Galacticraft developers" means the persons known by the Github 
+2.  Galacticraft is a copyright work, and the copyright belongs to the
 
-usernames micdoodle8, radfast and fishtaco567 and any additional person whom 
+Galacticraft developers.  The "Galacticraft developers" means the persons
 
-the Galacticraft developers deem to become one of the Galacticraft 
+known by the Github usernames micdoodle8, radfast and fishtaco567
 
-developers in future.  References herein to the Galacticraft developers 
+and any additional person whom the Galacticraft developers deem to become
 
-shall be construed jointly and severally.
+one of the Galacticraft developers in future.  References herein to the
+
+Galacticraft developers shall be construed jointly and severally.
 
 3.  The "overriding principle" is that Galacticraft is intended to be 
 
@@ -249,7 +251,9 @@ Galacticraft source code in their own development environment without
 
 compilation errors.  The dependencies are not distributed within 
 
-Galacticraft's compiled binaries.
+Galacticraft's compiled binaries and are not part of the copyright work
+
+known as Galacticraft which is licensed under this licence.
 
 19.  The code of all dependencies within the Galacticraft project is subject 
 
@@ -419,9 +423,13 @@ not entitle any person to distribute copies of Galacticraft or any
 
 modification which substantially replicates the experience of Galacticraft
 
-which is not subject to these licence terms.
+which is not subject to these licence terms;  (e) incorporation of
 
-29.  To the extent that parts of the Galacticraft code are or have
+Galacticraft or parts of it (or any derived work) in any commercial project
+
+- including vanilla Minecraft itself - would violate section 20(b) above.
+
+29.  To the extent that Galacticraft uses parts of the code which are or have
 
 previously been licensed on the LGPL or GPL basis or any other licensing
 
@@ -432,6 +440,12 @@ code or compiled binaries are distributed as part of the Galacticraft
 project, and anything in the LGPL or GPL or other licence which is
 
 inconsistent with the above shall not apply to Galacticraft as a whole.
+
+In any event, users of Galacticraft are allowed to modify Galacticraft
+
+code for their own use and to reverse engineer the distributed binaries
+
+for the purpose of debugging such modifications.
 
 30.  A player playing Galacticraft within a Minecraft environment
 
@@ -521,4 +535,4 @@ the overriding principle; (c) every copy of Galacticraft's compiled binary
 
 code must include, within the relevant .jar or .zip or other packaged file,
 
-an unaltered copy of this licence.txt.
+an unaltered copy of this LICENSE.txt.
