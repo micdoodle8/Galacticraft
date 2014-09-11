@@ -338,7 +338,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     @Override
     public boolean shouldUseEnergy()
     {
-        return TileEntityOxygen.timeSinceOxygenRequest > 0;
+        return this.storedOxygen > this.oxygenPerTick;
     }
 
     @Override
@@ -354,15 +354,9 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     }
 
     @Override
-    public boolean shouldPullOxygen()
-    {
-        return this.hasEnoughEnergyToRun;
-    }
-
-    @Override
     public boolean shouldUseOxygen()
     {
-        return true;
+        return this.hasEnoughEnergyToRun;
     }
 
     @Override

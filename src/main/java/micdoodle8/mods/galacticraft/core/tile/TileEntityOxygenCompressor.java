@@ -19,7 +19,8 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
     private ItemStack[] containingItems = new ItemStack[3];
 
     public static final int WATTS_PER_TICK = 1;
-    public static final int TANK_TRANSFER_SPEED = 1;
+    public static final int TANK_TRANSFER_SPEED = 2;
+    private boolean usingEnergy = false;
 
     public TileEntityOxygenCompressor()
     {
@@ -45,19 +46,18 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
 
         if (!this.worldObj.isRemote)
         {
+	    	this.usingEnergy = false;
             if (this.storedOxygen > 0 && this.hasEnoughEnergyToRun)
             {
-                if (!this.worldObj.isRemote)
-                {
-                    if (this.containingItems[0] != null)
-                    {
-                        ItemStack tank0 = this.containingItems[0];
+                ItemStack tank0 = this.containingItems[0];
 
-                        if (tank0.getItem() instanceof ItemOxygenTank && tank0.getItemDamage() > 0)
-                        {
-                            tank0.setItemDamage(tank0.getItemDamage() - TileEntityOxygenCompressor.TANK_TRANSFER_SPEED);
-                            this.storedOxygen -= TileEntityOxygenCompressor.TANK_TRANSFER_SPEED;
-                        }
+                if (tank0 != null)
+                {
+                    if (tank0.getItem() instanceof ItemOxygenTank && tank0.getItemDamage() > 0)
+                    {
+                        tank0.setItemDamage(tank0.getItemDamage() - TileEntityOxygenCompressor.TANK_TRANSFER_SPEED);
+                        this.storedOxygen -= TileEntityOxygenCompressor.TANK_TRANSFER_SPEED;
+                        this.usingEnergy = true;
                     }
                 }
             }
@@ -269,7 +269,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
     @Override
     public boolean shouldUseEnergy()
     {
-        return TileEntityOxygen.timeSinceOxygenRequest > 0 && this.getStackInSlot(0) != null;
+        return this.usingEnergy;
     }
 
     @Override
@@ -282,12 +282,6 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
     public ItemStack getBatteryInSlot()
     {
         return this.getStackInSlot(1);
-    }
-
-    @Override
-    public boolean shouldPullOxygen()
-    {
-        return this.hasEnoughEnergyToRun;
     }
 
     @Override

@@ -305,7 +305,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     @Override
     public boolean shouldUseEnergy()
     {
-        return TileEntityOxygen.timeSinceOxygenRequest > 0 && !this.getDisabled(0);
+        return this.storedOxygen > this.oxygenPerTick && !this.getDisabled(0);
     }
 
     @Override
@@ -321,15 +321,9 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     }
 
     @Override
-    public boolean shouldPullOxygen()
-    {
-        return this.hasEnoughEnergyToRun;
-    }
-
-    @Override
     public boolean shouldUseOxygen()
     {
-        return this.active && this.sealed;
+        return this.hasEnoughEnergyToRun && this.active && this.sealed;
     }
 
     @Override
