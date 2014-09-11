@@ -46,6 +46,7 @@ public class GCItems
     public static Item flagPole;
     public static Item oilCanister;
     public static Item fuelCanister;
+    public static Item oxygenCanisterInfinite;
     public static Item oilExtractor;
     public static Item schematic;
     public static Item key;
@@ -99,6 +100,7 @@ public class GCItems
         GCItems.canvas = new ItemBase("canvas");
         GCItems.oilCanister = new ItemOilCanister("oilCanisterPartial");
         GCItems.fuelCanister = new ItemFuelCanister("fuelCanisterPartial");
+        GCItems.oxygenCanisterInfinite = new ItemCanisterOxygenInfinite("infiniteOxygen");
         GCItems.flagPole = new ItemBase("steelPole");
         GCItems.oilExtractor = new ItemOilExtractor("oilExtractor");
         GCItems.schematic = new ItemSchematic("schematic");
@@ -203,6 +205,7 @@ public class GCItems
         GCCoreUtil.registerGalacticraftItem("batteryEmpty", GCItems.battery, 100);
         GCCoreUtil.registerGalacticraftItem("batteryFull", GCItems.battery, 0);
         GCCoreUtil.registerGalacticraftItem("infiniteBattery", GCItems.infiniteBatery);
+        GCCoreUtil.registerGalacticraftItem("infiniteOxygen", GCItems.oxygenCanisterInfinite);
         GCCoreUtil.registerGalacticraftItem("rawSilicon", GCItems.basicItem, 2);
         GCCoreUtil.registerGalacticraftItem("ingotCopper", GCItems.basicItem, 3);
         GCCoreUtil.registerGalacticraftItem("ingotTin", GCItems.basicItem, 4);
@@ -285,6 +288,7 @@ public class GCItems
         GCItems.registerItem(GCItems.basicItem);
         GCItems.registerItem(GCItems.battery);
         GCItems.registerItem(GCItems.infiniteBatery);
+        GCItems.registerItem(GCItems.oxygenCanisterInfinite);
         GCItems.registerItem(GCItems.meteorChunk);
         GCItems.registerItem(GCItems.wrench);
         GCItems.registerItem(GCItems.cheeseCurd);
