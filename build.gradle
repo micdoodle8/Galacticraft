@@ -77,6 +77,7 @@ jar
 	// Add necessary files, remove unnecessary ones.
 	includes.addAll(project.ext.coreFiles)
 	includes.addAll('mcmod.info')
+	includes.addAll('LICENSE.txt')
 	includes.addAll('api/player/**')
 	includes.addAll(project.ext.dependencies)
 	includes.addAll(project.ext.planetsFiles)
@@ -85,6 +86,7 @@ jar
 
 task moveCoreMcmodInfo(type: Copy, dependsOn: "reobf") {
 	from 'src/main/resources/assets/galacticraftcore/mcmod.info'
+	from 'LICENSE.txt'
 	from(zipTree(project.ext.coreJar))
 	into 'temporary'
 }
@@ -112,6 +114,7 @@ task packCoreJar(type: Jar, dependsOn: "rePackAllJarCore") {
 		// Add necessary files, remove unnecessary ones.
 		includes.addAll(project.ext.coreFiles)
 		includes.addAll('mcmod.info')
+		includes.addAll('LICENSE.txt')
 		excludes.addAll(project.ext.planetsFiles)
 		excludes.addAll(project.ext.dependencies)
 		excludes.addAll(project.ext.micdoodleCoreFiles)
@@ -128,6 +131,7 @@ task packPlanetsJar(type: Jar, dependsOn: "rePackAllJarPlanets") {
 		// Add necessary files, remove unnecessary ones.
 		includes.addAll(project.ext.planetsFiles)
 		includes.addAll('mcmod.info')
+		includes.addAll('LICENSE.txt')
 		excludes.addAll(project.ext.coreFiles)
 		excludes.addAll(project.ext.dependencies)
 		excludes.addAll(project.ext.micdoodleCoreFiles)
@@ -143,6 +147,7 @@ task packMicCoreJar(type: Jar, dependsOn: "reobf") {
 	from(zipTree(project.ext.coreJar)) {
 		// Add necessary files, remove unnecessary ones.
 		includes.addAll(project.ext.micdoodleCoreFiles)
+		includes.addAll('LICENSE.txt')
 		excludes.addAll(project.ext.planetsFiles)
 		excludes.addAll(project.ext.coreFiles)
 		excludes.addAll(project.ext.dependencies)
@@ -162,6 +167,7 @@ task packCoreJarDev(type: Jar, dependsOn: "classes") {
 	from (sourceSets.main.output) {
 		includes.addAll(project.ext.coreFiles)
 		includes.addAll('mcmod.info')
+		includes.addAll('LICENSE.txt')
 		excludes.addAll(project.ext.planetsFiles)
 		excludes.addAll(project.ext.dependencies)
 		excludes.addAll(project.ext.micdoodleCoreFiles)
@@ -170,6 +176,7 @@ task packCoreJarDev(type: Jar, dependsOn: "classes") {
 	from (sourceSets.main.allSource) {
 		includes.addAll(project.ext.coreFiles)
 		includes.addAll('mcmod.info')
+		includes.addAll('LICENSE.txt')
 		excludes.addAll(project.ext.planetsFiles)
 		excludes.addAll(project.ext.dependencies)
 		excludes.addAll(project.ext.micdoodleCoreFiles)
@@ -193,6 +200,7 @@ task packPlanetsJarDev(type: Jar, dependsOn: "classes") {
 		// Add necessary files, remove unnecessary ones.
 		includes.addAll(project.ext.planetsFiles)
 		includes.addAll('mcmod.info')
+		includes.addAll('LICENSE.txt')
 		excludes.addAll(project.ext.coreFiles)
 		excludes.addAll(project.ext.dependencies)
 		excludes.addAll(project.ext.micdoodleCoreFiles)
@@ -202,6 +210,7 @@ task packPlanetsJarDev(type: Jar, dependsOn: "classes") {
 		// Add necessary files, remove unnecessary ones.
 		includes.addAll(project.ext.planetsFiles)
 		includes.addAll('mcmod.info')
+		includes.addAll('LICENSE.txt')
 		excludes.addAll(project.ext.coreFiles)
 		excludes.addAll(project.ext.dependencies)
 		excludes.addAll(project.ext.micdoodleCoreFiles)
@@ -219,6 +228,7 @@ task packMicCoreJarDev(type: Jar, dependsOn: "classes") {
 	from (sourceSets.main.output) {
 		// Add necessary files, remove unnecessary ones.
 		includes.addAll(project.ext.micdoodleCoreFiles)
+		includes.addAll('LICENSE.txt')
 		excludes.addAll(project.ext.planetsFiles)
 		excludes.addAll(project.ext.coreFiles)
 		excludes.addAll(project.ext.dependencies)
@@ -228,6 +238,7 @@ task packMicCoreJarDev(type: Jar, dependsOn: "classes") {
 	from (sourceSets.main.allSource) {
 		// Add necessary files, remove unnecessary ones.
 		includes.addAll(project.ext.micdoodleCoreFiles)
+		includes.addAll('LICENSE.txt')
 		excludes.addAll(project.ext.planetsFiles)
 		excludes.addAll(project.ext.coreFiles)
 		excludes.addAll(project.ext.dependencies)
@@ -254,6 +265,7 @@ task packApi(type: Jar, dependsOn: "classes") {
 	from (sourceSets.main.allSource) {
 		// Add necessary files, remove unnecessary ones.
 		includes.addAll(project.ext.apiFiles)
+		includes.addAll('LICENSE.txt')
 		excludes.addAll(project.ext.micdoodleCoreFiles)
 		excludes.addAll(project.ext.planetsFiles)
 		excludes.addAll(project.ext.coreFiles)
