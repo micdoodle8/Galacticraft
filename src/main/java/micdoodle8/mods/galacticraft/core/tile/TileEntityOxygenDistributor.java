@@ -102,7 +102,9 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     	if (oxygenItemStack != null && oxygenItemStack.getItem() instanceof IItemOxygenSupply)
     	{
     		IItemOxygenSupply oxygenItem = (IItemOxygenSupply) oxygenItemStack.getItem();
-    		this.storedOxygen += oxygenItem.discharge(oxygenItemStack, this.oxygenPerTick * 2.5F);
+    		float oxygenDraw = Math.min(this.oxygenPerTick * 2.5F, this.maxOxygen - this.storedOxygen);
+    		this.storedOxygen += oxygenItem.discharge(oxygenItemStack, oxygenDraw);
+    		if (this.storedOxygen > this.maxOxygen) this.storedOxygen = this.maxOxygen;
     	}
     	
     	super.updateEntity();
