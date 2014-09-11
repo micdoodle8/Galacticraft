@@ -21,7 +21,7 @@ import java.util.List;
 
 public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCallback
 {
-    private static final ResourceLocation distributorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/oxygen.png");
+    private static final ResourceLocation distributorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/oxygenDistributor.png");
 
     private final TileEntityOxygenDistributor distributor;
 
@@ -46,7 +46,11 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
         List<String> batterySlotDesc = new ArrayList<String>();
         batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
         batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
-        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 31, (this.height - this.ySize) / 2 + 26, 18, 18, batterySlotDesc, this.width, this.height, this));
+        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 46, (this.height - this.ySize) / 2 + 26, 18, 18, batterySlotDesc, this.width, this.height, this));
+        List<String> oxygenSlotDesc = new ArrayList<String>();
+        oxygenSlotDesc.add(GCCoreUtil.translate("gui.oxygenSlot.desc.0"));
+        oxygenSlotDesc.add(GCCoreUtil.translate("gui.oxygenSlot.desc.1"));
+        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 16, (this.height - this.ySize) / 2 + 26, 18, 18, oxygenSlotDesc, this.width, this.height, this));
         List<String> oxygenDesc = new ArrayList<String>();
         oxygenDesc.add(GCCoreUtil.translate("gui.oxygenStorage.desc.0"));
         oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygenStorage.desc.1") + ": " + ((int) Math.floor(this.distributor.storedOxygen) + " / " + (int) Math.floor(this.distributor.maxOxygen)));

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
+import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.entities.EntityBubble;
@@ -25,7 +26,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     public boolean active;
     public boolean lastActive;
 
-    private ItemStack[] containingItems = new ItemStack[1];
+    private ItemStack[] containingItems = new ItemStack[2];
     public EntityBubble oxygenBubble;
     /**
      * Used for saving/loading old oxygen bubbles
@@ -97,7 +98,16 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     @Override
     public void updateEntity()
     {
-        super.updateEntity();
+    	ItemStack oxygenItemStack = this.getStackInSlot(1);
+    	if (oxygenItemStack != null && oxygenItemStack.getItem() instanceof IItemOxygenSupply)
+    	{
+    		IItemOxygenSupply oxygenItem = (IItemOxygenSupply) oxygenItemStack.getItem();
+    		float oxygenDraw = Math.min(this.oxygenPerTick * 2.5F, this.maxOxygen - this.storedOxygen);
+    		this.storedOxygen += oxygenItem.discharge(oxygenItemStack, oxygenDraw);
+    		if (this.storedOxygen > this.maxOxygen) this.storedOxygen = this.maxOxygen;
+    	}
+    	
+    	super.updateEntity();
 
         if (!hasValidBubble && !this.worldObj.isRemote && (this.oxygenBubble == null || this.ticks < 25))
         {

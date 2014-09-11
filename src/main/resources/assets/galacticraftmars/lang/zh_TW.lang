@@ -15,6 +15,7 @@ item.fluidManip.name=流體機械手
 
 # TOOLS
 item.deshPick.name=戴斯鎬
+item.deshPickSlime.name=Sticky Desh Pickaxe ##NEEDS TRANSLATE##
 item.deshAxe.name=戴斯斧
 item.deshHoe.name=戴斯鋤
 item.deshSpade.name=戴斯鏟

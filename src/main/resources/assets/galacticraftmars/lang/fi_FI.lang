@@ -25,6 +25,7 @@ item.jetpack.name=Rakettireppu
 
 # TOOLS
 item.deshPick.name=Desh-hakku
+item.deshPickSlime.name=Sticky Desh Pickaxe ##NEEDS TRANSLATE##
 item.deshAxe.name=Desh-kirves
 item.deshHoe.name=Desh-kuokka
 item.deshSpade.name=Desh-lapio

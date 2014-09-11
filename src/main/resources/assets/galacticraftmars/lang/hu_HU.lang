@@ -14,6 +14,7 @@ item.fluidManip.name=Folyadék-Átalakító
 
 # TOOLS
 item.deshPick.name=Desh Csákány
+item.deshPickSlime.name=Sticky Desh Pickaxe ##NEEDS TRANSLATE##
 item.deshAxe.name=Desh Balta
 item.deshHoe.name=Desh Kapa
 item.deshSpade.name=Desh Ásó
@@ -133,6 +134,15 @@ gas.nitrogen.name=Nitrogén
 gui.desc.reinforcedPlateT2.name=2-Es Szintű
 dimension.Mars.name=Mars
 planet.mars=Mars
+tile.treasureT2.description=Tier 2 Treasure Chests will generate in Mars Dungeons. They are unlockable after defeating the final boss. ##NEEDS TRANSLATE##
+tile.cavernVines.description=Cavernous Vines are dangerous to living creatures, entangling them and dragging them upwards. ##NEEDS TRANSLATE##
+tile.slimelingEgg.description=Slimeling Eggs, once cracked with a player's bare hands, will soon hatch into a pet. ##NEEDS TRANSLATE##
+tile.cryoChamber.description=Cryogenic Chambers will allow a player to sleep during the day, healing a small amount of health, but has a cooldown. ##NEEDS TRANSLATE##
+tile.launchController.description=Launch Controllers are used to customize launch behavior, including launch criteria and destination launch pad for auto launches. ##NEEDS TRANSLATE##
+tile.terraformer.description=Terraformers are used to add some greenery to distant planets, adding grass, trees and water when given the correct materials. ##NEEDS TRANSLATE##
+tile.creeperEgg.description=Creeper Eggs will spawn in Mars dungeons, spawning a sneaky predator upon exploding. ##NEEDS TRANSLATE##
+tile.gasLiquefier.description=Liquefies gases, either from the atmosphere or from canisters. Liquefied methane makes a good rocket fuel! ##NEEDS TRANSLATE##
+tile.methaneSynthesizer.description=With a source of hydrogen and a source of carbon, this manufactures Methane for further processing in a Gas Liquefier. ##NEEDS TRANSLATE##
 
 # SCHEMATICS
 schematic.rocketT3.name=3-As Szintű Rakéta

@@ -12,6 +12,7 @@ item.compressedDesh.name=Compressed Desh ##NEEDS TRANSLATE##
 item.spaceshipTier2.cargoRocket.name=Cargo Rocket ##NEEDS TRANSLATE##
 item.fluidManip.name=Fluid Manipulator ##NEEDS TRANSLATE##
 item.deshPick.name=Desh Pickaxe ##NEEDS TRANSLATE##
+item.deshPickSlime.name=Sticky Desh Pickaxe ##NEEDS TRANSLATE##
 item.deshAxe.name=Desh Axe ##NEEDS TRANSLATE##
 item.deshHoe.name=Desh Hoe ##NEEDS TRANSLATE##
 item.deshSpade.name=Desh Shovel ##NEEDS TRANSLATE##

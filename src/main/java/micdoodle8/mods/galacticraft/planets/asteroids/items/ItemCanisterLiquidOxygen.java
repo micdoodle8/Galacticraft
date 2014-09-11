@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -14,7 +15,7 @@ import net.minecraft.util.IIcon;
 import java.util.HashMap;
 import java.util.List;
 
-public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric
+public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IItemOxygenSupply
 {
     protected IIcon[] icons = new IIcon[7];
     private static HashMap<ItemStack, Integer> craftingvalues = new HashMap();
@@ -101,4 +102,19 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric
 
         return itemstack;
     }
+
+	@Override
+	public float discharge(ItemStack itemStack, float amount)
+	{
+		int damage = itemStack.getItemDamage();
+		int used = Math.min((int) (amount * 5 / 54), itemStack.getMaxDamage() - damage);
+		itemStack.setItemDamage(damage + used);
+		return used * 10.8F;
+	}
+
+	@Override
+	public int getOxygenStored(ItemStack par1ItemStack)
+	{
+		return par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage();
+	}
 }

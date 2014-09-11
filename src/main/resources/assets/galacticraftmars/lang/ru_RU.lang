@@ -15,6 +15,7 @@ item.fluidManip.name=Манипулятор жидкости
 
 # TOOLS
 item.deshPick.name=Кирка из деш
+item.deshPickSlime.name=Sticky Desh Pickaxe ##NEEDS TRANSLATE##
 item.deshAxe.name=Топор из деш
 item.deshHoe.name=Мотыга из деш
 item.deshSpade.name=Лопата из деш
