@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import cpw.mods.fml.relauncher.Side;
+import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
@@ -30,7 +31,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean active;
-    private ItemStack[] containingItems = new ItemStack[1];
+    private ItemStack[] containingItems = new ItemStack[2];
     public ThreadFindSeal threadSeal;
     @NetworkedField(targetSide = Side.CLIENT)
     public int stopSealThreadCooldown;
@@ -76,6 +77,18 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     @Override
     public void updateEntity()
     {
+        if (!this.worldObj.isRemote)
+        {
+	    	ItemStack oxygenItemStack = this.getStackInSlot(1);
+	    	if (oxygenItemStack != null && oxygenItemStack.getItem() instanceof IItemOxygenSupply)
+	    	{
+	    		IItemOxygenSupply oxygenItem = (IItemOxygenSupply) oxygenItemStack.getItem();
+	    		float oxygenDraw = Math.min(this.oxygenPerTick * 2.5F, this.maxOxygen - this.storedOxygen);
+	    		this.storedOxygen += oxygenItem.discharge(oxygenItemStack, oxygenDraw);
+	    		if (this.storedOxygen > this.maxOxygen) this.storedOxygen = this.maxOxygen;
+	    	}
+        }
+    	
         super.updateEntity();
 
         if (!this.worldObj.isRemote)

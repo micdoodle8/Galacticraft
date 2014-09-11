@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -15,7 +16,7 @@ import java.util.EnumSet;
 
 public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInventory, ISidedInventory
 {
-    private ItemStack[] containingItems = new ItemStack[2];
+    private ItemStack[] containingItems = new ItemStack[3];
 
     public static final int WATTS_PER_TICK = 1;
     public static final int TANK_TRANSFER_SPEED = 1;
@@ -28,6 +29,18 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
     @Override
     public void updateEntity()
     {
+        if (!this.worldObj.isRemote)
+        {
+	    	ItemStack oxygenItemStack = this.getStackInSlot(2);
+	    	if (oxygenItemStack != null && oxygenItemStack.getItem() instanceof IItemOxygenSupply)
+	    	{
+	    		IItemOxygenSupply oxygenItem = (IItemOxygenSupply) oxygenItemStack.getItem();
+	    		float oxygenDraw = Math.min(this.oxygenPerTick * 2.5F, this.maxOxygen - this.storedOxygen);
+	    		this.storedOxygen += oxygenItem.discharge(oxygenItemStack, oxygenDraw);
+	    		if (this.storedOxygen > this.maxOxygen) this.storedOxygen = this.maxOxygen;
+	    	}
+        }
+    	
         super.updateEntity();
 
         if (!this.worldObj.isRemote)

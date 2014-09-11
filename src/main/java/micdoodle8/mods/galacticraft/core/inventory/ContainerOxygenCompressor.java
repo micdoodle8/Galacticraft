@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
@@ -19,7 +20,8 @@ public class ContainerOxygenCompressor extends Container
     {
         this.tileEntity = compressor;
         this.addSlotToContainer(new Slot(compressor, 0, 133, 71));
-        this.addSlotToContainer(new SlotSpecific(compressor, 1, 32, 27, ItemElectricBase.class));
+        this.addSlotToContainer(new SlotSpecific(compressor, 1, 47, 27, ItemElectricBase.class));
+        this.addSlotToContainer(new SlotSpecific(compressor, 2, 17, 27, IItemOxygenSupply.class));
 
         int var3;
 
@@ -57,7 +59,7 @@ public class ContainerOxygenCompressor extends Container
             final ItemStack stack = slot.getStack();
             var2 = stack.copy();
 
-            if (par1 < 2)
+            if (par1 < 3)
             {
                 if (!this.mergeItemStack(stack, b - 36, b, true))
                 {
@@ -69,6 +71,13 @@ public class ContainerOxygenCompressor extends Container
                 if (stack.getItem() instanceof IItemElectric)
                 {
                     if (!this.mergeItemStack(stack, 1, 2, false))
+                    {
+                        return null;
+                    }
+                }
+                else if (stack.getItem() instanceof IItemOxygenSupply)
+                {
+                    if (!this.mergeItemStack(stack, 2, 3, false))
                     {
                         return null;
                     }

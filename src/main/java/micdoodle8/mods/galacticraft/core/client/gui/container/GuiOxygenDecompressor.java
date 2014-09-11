@@ -17,7 +17,7 @@ import java.util.List;
 
 public class GuiOxygenDecompressor extends GuiContainerGC
 {
-    private static final ResourceLocation compressorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/compressor.png");
+    private static final ResourceLocation compressorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/decompressor.png");
 
     private final TileEntityOxygenDecompressor decompressor;
 
