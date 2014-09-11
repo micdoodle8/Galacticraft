@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.recipe;
 
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemCanisterLiquidOxygen;
 import net.minecraft.inventory.InventoryCrafting;
@@ -32,7 +33,7 @@ public class CanisterRecipes extends ShapelessRecipes
             if (itemstack1 != null)
             {
                 Item testItem = itemstack1.getItem();
-                if (testItem instanceof ItemCanisterLiquidOxygen)
+                if (testItem instanceof ItemCanisterLiquidOxygen || testItem == GCItems.oxygenCanisterInfinite)
                 {
                     if (itemCanister != null)
                     {
@@ -91,7 +92,7 @@ public class CanisterRecipes extends ShapelessRecipes
             if (itemstack1 != null)
             {
                 Item testItem = itemstack1.getItem();
-                if (testItem instanceof ItemCanisterLiquidOxygen)
+                if (testItem instanceof ItemCanisterLiquidOxygen || testItem == GCItems.oxygenCanisterInfinite)
                 {
                     if (itemCanister != null)
                     {
@@ -139,14 +140,14 @@ public class CanisterRecipes extends ShapelessRecipes
         {
             ItemStack result = itemTank.copy();
             result.setItemDamage(0);
-            ItemCanisterLiquidOxygen.saveDamage(itemCanister, itemCanister.getItemDamage() + oxygenToFill);
+            if (itemCanister.getItem() instanceof ItemCanisterLiquidOxygen) ItemCanisterLiquidOxygen.saveDamage(itemCanister, itemCanister.getItemDamage() + oxygenToFill);
             return result;
         }
 
         int tankDamageNew = (oxygenToFill - oxygenAvail) * 54 / 5;
         ItemStack result = itemTank.copy();
         result.setItemDamage(tankDamageNew);
-        ItemCanisterLiquidOxygen.saveDamage(itemCanister, itemCanister.getMaxDamage());
+        if (itemCanister.getItem() instanceof ItemCanisterLiquidOxygen) ItemCanisterLiquidOxygen.saveDamage(itemCanister, itemCanister.getMaxDamage());
         return result;
     }
 
