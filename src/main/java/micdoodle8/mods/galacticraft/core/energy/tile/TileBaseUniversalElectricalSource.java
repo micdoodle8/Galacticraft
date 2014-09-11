@@ -53,7 +53,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
      */
     public float produce(boolean simulate)
     {
-        int amountProduced = 0;
+        float amountProduced = 0;
 
         if (!this.worldObj.isRemote)
         {
