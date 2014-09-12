@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -38,7 +39,11 @@ public class GuiOxygenCompressor extends GuiContainerGC
         List<String> batterySlotDesc = new ArrayList<String>();
         batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
         batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
-        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 31, (this.height - this.ySize) / 2 + 26, 18, 18, batterySlotDesc, this.width, this.height, this));
+        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 46, (this.height - this.ySize) / 2 + 26, 18, 18, batterySlotDesc, this.width, this.height, this));
+        List<String> oxygenSlotDesc = new ArrayList<String>();
+        oxygenSlotDesc.add(GCCoreUtil.translate("gui.oxygenSlot.desc.0"));
+        oxygenSlotDesc.add(GCCoreUtil.translate("gui.oxygenSlot.desc.1"));
+        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 16, (this.height - this.ySize) / 2 + 26, 18, 18, oxygenSlotDesc, this.width, this.height, this));
         List<String> compressorSlotDesc = new ArrayList<String>();
         compressorSlotDesc.add("Compressor tank slot, place oxygen tank");
         compressorSlotDesc.add("here to fill it with breathable oxygen.");

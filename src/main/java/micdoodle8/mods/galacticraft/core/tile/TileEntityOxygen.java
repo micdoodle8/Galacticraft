@@ -283,6 +283,12 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     }
 
     @Override
+    public boolean shouldPullOxygen()
+    {
+        return this.storedOxygen < this.maxOxygen;
+    }
+
+    @Override
     public float getOxygenProvide(ForgeDirection direction)
     {
         return 0;

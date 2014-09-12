@@ -98,14 +98,17 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     @Override
     public void updateEntity()
     {
-    	ItemStack oxygenItemStack = this.getStackInSlot(1);
-    	if (oxygenItemStack != null && oxygenItemStack.getItem() instanceof IItemOxygenSupply)
-    	{
-    		IItemOxygenSupply oxygenItem = (IItemOxygenSupply) oxygenItemStack.getItem();
-    		float oxygenDraw = Math.min(this.oxygenPerTick * 2.5F, this.maxOxygen - this.storedOxygen);
-    		this.storedOxygen += oxygenItem.discharge(oxygenItemStack, oxygenDraw);
-    		if (this.storedOxygen > this.maxOxygen) this.storedOxygen = this.maxOxygen;
-    	}
+        if (!this.worldObj.isRemote)
+        {
+	    	ItemStack oxygenItemStack = this.getStackInSlot(1);
+	    	if (oxygenItemStack != null && oxygenItemStack.getItem() instanceof IItemOxygenSupply)
+	    	{
+	    		IItemOxygenSupply oxygenItem = (IItemOxygenSupply) oxygenItemStack.getItem();
+	    		float oxygenDraw = Math.min(this.oxygenPerTick * 2.5F, this.maxOxygen - this.storedOxygen);
+	    		this.storedOxygen += oxygenItem.discharge(oxygenItemStack, oxygenDraw);
+	    		if (this.storedOxygen > this.maxOxygen) this.storedOxygen = this.maxOxygen;
+	    	}
+        }
     	
     	super.updateEntity();
 
@@ -335,7 +338,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     @Override
     public boolean shouldUseEnergy()
     {
-        return TileEntityOxygen.timeSinceOxygenRequest > 0;
+        return this.storedOxygen > this.oxygenPerTick;
     }
 
     @Override
@@ -351,15 +354,9 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     }
 
     @Override
-    public boolean shouldPullOxygen()
-    {
-        return this.hasEnoughEnergyToRun;
-    }
-
-    @Override
     public boolean shouldUseOxygen()
     {
-        return true;
+        return this.hasEnoughEnergyToRun;
     }
 
     @Override

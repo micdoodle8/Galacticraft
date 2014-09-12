@@ -36,6 +36,7 @@ public class ItemCanisterOxygenInfinite extends Item implements IItemOxygenSuppl
         return GalacticraftCore.galacticraftItemsTab;
     }
 
+    @Override
     public ItemStack getContainerItem(ItemStack itemstack)
     {
         return itemstack;

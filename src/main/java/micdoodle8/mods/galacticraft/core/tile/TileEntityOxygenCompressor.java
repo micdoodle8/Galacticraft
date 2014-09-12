@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -15,10 +16,11 @@ import java.util.EnumSet;
 
 public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInventory, ISidedInventory
 {
-    private ItemStack[] containingItems = new ItemStack[2];
+    private ItemStack[] containingItems = new ItemStack[3];
 
     public static final int WATTS_PER_TICK = 1;
-    public static final int TANK_TRANSFER_SPEED = 1;
+    public static final int TANK_TRANSFER_SPEED = 2;
+    private boolean usingEnergy = false;
 
     public TileEntityOxygenCompressor()
     {
@@ -28,23 +30,34 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
     @Override
     public void updateEntity()
     {
+        if (!this.worldObj.isRemote)
+        {
+	    	ItemStack oxygenItemStack = this.getStackInSlot(2);
+	    	if (oxygenItemStack != null && oxygenItemStack.getItem() instanceof IItemOxygenSupply)
+	    	{
+	    		IItemOxygenSupply oxygenItem = (IItemOxygenSupply) oxygenItemStack.getItem();
+	    		float oxygenDraw = Math.min(this.oxygenPerTick * 2.5F, this.maxOxygen - this.storedOxygen);
+	    		this.storedOxygen += oxygenItem.discharge(oxygenItemStack, oxygenDraw);
+	    		if (this.storedOxygen > this.maxOxygen) this.storedOxygen = this.maxOxygen;
+	    	}
+        }
+    	
         super.updateEntity();
 
         if (!this.worldObj.isRemote)
         {
+	    	this.usingEnergy = false;
             if (this.storedOxygen > 0 && this.hasEnoughEnergyToRun)
             {
-                if (!this.worldObj.isRemote)
-                {
-                    if (this.containingItems[0] != null)
-                    {
-                        ItemStack tank0 = this.containingItems[0];
+                ItemStack tank0 = this.containingItems[0];
 
-                        if (tank0.getItem() instanceof ItemOxygenTank && tank0.getItemDamage() > 0)
-                        {
-                            tank0.setItemDamage(tank0.getItemDamage() - TileEntityOxygenCompressor.TANK_TRANSFER_SPEED);
-                            this.storedOxygen -= TileEntityOxygenCompressor.TANK_TRANSFER_SPEED;
-                        }
+                if (tank0 != null)
+                {
+                    if (tank0.getItem() instanceof ItemOxygenTank && tank0.getItemDamage() > 0)
+                    {
+                        tank0.setItemDamage(tank0.getItemDamage() - TileEntityOxygenCompressor.TANK_TRANSFER_SPEED);
+                        this.storedOxygen -= TileEntityOxygenCompressor.TANK_TRANSFER_SPEED;
+                        this.usingEnergy = true;
                     }
                 }
             }
@@ -256,7 +269,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
     @Override
     public boolean shouldUseEnergy()
     {
-        return TileEntityOxygen.timeSinceOxygenRequest > 0 && this.getStackInSlot(0) != null;
+        return this.usingEnergy;
     }
 
     @Override
@@ -269,12 +282,6 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
     public ItemStack getBatteryInSlot()
     {
         return this.getStackInSlot(1);
-    }
-
-    @Override
-    public boolean shouldPullOxygen()
-    {
-        return this.hasEnoughEnergyToRun;
     }
 
     @Override

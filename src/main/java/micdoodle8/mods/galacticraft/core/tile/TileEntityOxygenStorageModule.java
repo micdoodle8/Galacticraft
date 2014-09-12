@@ -108,12 +108,6 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     }
 
     @Override
-    public boolean shouldPullOxygen()
-    {
-        return this.storedOxygen < this.maxOxygen;
-    }
-
-    @Override
     public boolean shouldPullEnergy()
     {
         return false;

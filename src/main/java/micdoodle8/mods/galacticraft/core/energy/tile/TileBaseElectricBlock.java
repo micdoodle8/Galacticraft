@@ -109,6 +109,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
             else
             {
                 this.hasEnoughEnergyToRun = false;
+                if (this.getEnergyStoredGC(null) > 0) this.storage.extractEnergyGC(5F, false);
             }
         }
 

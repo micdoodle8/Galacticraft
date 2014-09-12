@@ -19,8 +19,8 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
     private ItemStack[] containingItems = new ItemStack[2];
 
     public static final int WATTS_PER_TICK = 1;
-
     public static final int OUTPUT_PER_TICK = 100;
+    private boolean usingEnergy = false;
 
     public TileEntityOxygenDecompressor()
     {
@@ -34,14 +34,16 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
 
         if (!this.worldObj.isRemote)
         {
-            if (this.containingItems[0] != null && this.hasEnoughEnergyToRun && this.getOxygenStored() < this.getMaxOxygenStored())
-            {
-                ItemStack tank1 = this.containingItems[0];
+            this.usingEnergy = false;
+        	ItemStack tank1 = this.containingItems[0];
 
+            if (tank1 != null && this.hasEnoughEnergyToRun && this.getOxygenStored() < this.getMaxOxygenStored())
+            {
                 if (tank1.getItem() instanceof ItemOxygenTank && tank1.getItemDamage() < tank1.getMaxDamage())
                 {
                     tank1.setItemDamage(tank1.getItemDamage() + 1);
                     this.receiveOxygen(1, true);
+                    this.usingEnergy = true;
                 }
             }
 
@@ -254,7 +256,7 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
     @Override
     public boolean shouldUseEnergy()
     {
-        return TileEntityOxygen.timeSinceOxygenRequest > 0 && this.getStackInSlot(0) != null;
+        return this.usingEnergy;
     }
 
     @Override

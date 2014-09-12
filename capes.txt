@@ -71,3 +71,7 @@ wurble000:capeLightBlue
 lancewalker:capeDarkGray
 LordLington:capeYellow
 MoonRaven:capeDarkGray
+AngryHaloGeek:capeLime
+spacedrgonz:capeDarkGreen
+bobdole010:capeRainbow
+dragonguide:capeLightGray
