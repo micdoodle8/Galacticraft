@@ -213,7 +213,7 @@ public class TickHandlerServer
 
                                     for (int j = 0; j < footprints.size(); j++)
                                     {
-                                        footprints.get(j).age += 500;
+                                        footprints.get(j).age += 100;
 
                                         if (footprints.get(j).age >= Footprint.MAX_AGE)
                                         {
