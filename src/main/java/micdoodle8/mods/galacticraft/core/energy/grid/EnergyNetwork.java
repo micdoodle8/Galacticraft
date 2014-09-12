@@ -729,6 +729,8 @@ public class EnergyNetwork implements IElectricityNetwork
         if (splitPoint instanceof TileEntity)
         {
             this.getTransmitters().remove(splitPoint);
+            boolean networkIntact = false;
+            World world = ((TileEntity) splitPoint).getWorldObj();
 
             /**
              * Loop through the connected blocks and attempt to see if there are
@@ -744,7 +746,7 @@ public class EnergyNetwork implements IElectricityNetwork
                     {
                         if (connectedBlockA != connectedBlockB && connectedBlockB instanceof INetworkConnection)
                         {
-                            Pathfinder finder = new PathfinderChecker(((TileEntity) splitPoint).getWorldObj(), (INetworkConnection) connectedBlockB, NetworkType.POWER, splitPoint);
+                            Pathfinder finder = new PathfinderChecker(world, (INetworkConnection) connectedBlockB, NetworkType.POWER, splitPoint);
                             finder.init(new BlockVec3(connectedBlockA));
 
                             if (finder.results.size() > 0)
@@ -755,9 +757,10 @@ public class EnergyNetwork implements IElectricityNetwork
                                  * connection into one network.
                                  */
 
+                            	networkIntact = true;
                                 for (BlockVec3 node : finder.closedSet)
                                 {
-                                    TileEntity nodeTile = node.getTileEntity(((TileEntity) splitPoint).getWorldObj());
+                                    TileEntity nodeTile = node.getTileEntity(world);
 
                                     if (nodeTile instanceof INetworkProvider)
                                     {
@@ -778,7 +781,7 @@ public class EnergyNetwork implements IElectricityNetwork
 
                                 for (BlockVec3 node : finder.closedSet)
                                 {
-                                    TileEntity nodeTile = node.getTileEntity(((TileEntity) splitPoint).getWorldObj());
+                                    TileEntity nodeTile = node.getTileEntity(world);
 
                                     if (nodeTile instanceof INetworkProvider)
                                     {
@@ -794,6 +797,11 @@ public class EnergyNetwork implements IElectricityNetwork
                         }
                     }
                 }
+            }
+            
+            if (!networkIntact)
+            {
+            	this.destroy();
             }
         }
     }
