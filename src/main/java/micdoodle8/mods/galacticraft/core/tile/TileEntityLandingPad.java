@@ -100,6 +100,8 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
     {
         final BlockVec3 thisBlock = new BlockVec3(this);
 
+        this.worldObj.func_147480_a(thisBlock.x, thisBlock.y, thisBlock.z, true);
+
         for (int x = -1; x < 2; x++)
         {
             for (int z = -1; z < 2; z++)
@@ -118,6 +120,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
             this.dockedEntity.onPadDestroyed();
             this.dockedEntity = null;
         }
+
     }
 
     @Override

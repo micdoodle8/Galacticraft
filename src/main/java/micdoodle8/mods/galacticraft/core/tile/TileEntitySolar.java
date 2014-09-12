@@ -290,7 +290,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
             }
         }
 
-        this.worldObj.setBlockToAir(thisBlock.intX(), thisBlock.intY(), thisBlock.intZ());
+        this.worldObj.func_147480_a(thisBlock.x, thisBlock.y, thisBlock.z, true);
     }
 
     @Override
