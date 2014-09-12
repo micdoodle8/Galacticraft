@@ -94,7 +94,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
     public Map<String, Integer> recentlyInvited = new HashMap<String, Integer>();
 
     private boolean lastMousePressed = false;
-    private boolean hasDataChanged = true;
+    private boolean isDirty = true;
     private boolean canEdit;
 
     public GuiNewSpaceRace(EntityPlayer player)
@@ -278,7 +278,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
     {
         if (this.currentState == EnumSpaceRaceGui.MAIN)
         {
-            if (this.hasDataChanged)
+            if (this.isDirty)
             {
                 this.sendSpaceRaceData();
             }
@@ -308,7 +308,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
         case 0:
             if (this.currentState == EnumSpaceRaceGui.CHANGE_TEAM_COLOR)
             {
-                this.hasDataChanged = true;
+                this.markDirty();
             }
 
             this.exitCurrentScreen(true);
@@ -372,10 +372,10 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 
         if (this.ticksPassed % 100 == 0)
         {
-            if (this.hasDataChanged || this.ticksPassed == 0)
+            if (this.isDirty || this.ticksPassed == 0)
             {
                 this.sendSpaceRaceData();
-                this.hasDataChanged = false;
+                this.isDirty = false;
             }
             else
             {
@@ -569,13 +569,13 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
         {
             if (unScaledX >= this.selectionMinX && unScaledX <= this.selectionMaxX - 1 && unScaledY >= this.selectionMinY && unScaledY <= this.selectionMaxY - 1)
             {
-                this.hasDataChanged = true;
+                this.markDirty();
                 this.spaceRaceData.getFlagData().setColorAt(unScaledX, unScaledY, color);
             }
         }
         else
         {
-            this.hasDataChanged = true;
+            this.markDirty();
             this.spaceRaceData.getFlagData().setColorAt(unScaledX, unScaledY, color);
         }
     }
@@ -605,7 +605,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
         String playerName = FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName();
         SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(playerName);
 
-        if (race != null && !this.hasDataChanged)
+        if (race != null && !this.isDirty)
         {
             this.spaceRaceData = race;
             this.canEdit = canPlayerEdit();
@@ -818,6 +818,11 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
         {
             this.gradientListRemovePlayers.draw(par1, par2);
         }
+    }
+
+    private void markDirty()
+    {
+        this.isDirty = true;
     }
 
     private void drawFlagButton()
@@ -1035,7 +1040,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
             if (!newText.equals(this.spaceRaceData.getTeamName()))
             {
                 this.spaceRaceData.setTeamName(newText);
-                this.hasDataChanged = true;
+                this.markDirty();
             }
         }
     }
