@@ -9,7 +9,7 @@ import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import org.lwjgl.input.Keyboard;
+import net.minecraft.client.settings.GameSettings;
 
 @SideOnly(Side.CLIENT)
 public class OverlayDockingRocket extends Overlay
@@ -42,8 +42,8 @@ public class OverlayDockingRocket extends Overlay
                 String dYStr = String.valueOf(dY);
                 String dZStr = String.valueOf(dZ);
 
-                String warning = GCCoreUtil.translateWithFormat("gui.dockingRocket.warning.name.0", Keyboard.getKeyName(KeyHandlerClient.spaceKey.getKeyCode()));
-                String warning2 = GCCoreUtil.translateWithFormat("gui.dockingRocket.warning.name.1", Keyboard.getKeyName(KeyHandlerClient.leftShiftKey.getKeyCode()));
+                String warning = GCCoreUtil.translateWithFormat("gui.dockingRocket.warning.name.0", GameSettings.getKeyDisplayString(KeyHandlerClient.spaceKey.getKeyCode()));
+                String warning2 = GCCoreUtil.translateWithFormat("gui.dockingRocket.warning.name.1", GameSettings.getKeyDisplayString(KeyHandlerClient.leftShiftKey.getKeyCode()));
 
                 double targetMotionY = Math.round(Math.max((rocket.posY - rocket.targetVec.y) / -100.0D, -0.9D) * 100.0D) / 100.0D;
                 double currentMotionY = Math.round(rocket.motionY * 100.0D) / 100.0D;

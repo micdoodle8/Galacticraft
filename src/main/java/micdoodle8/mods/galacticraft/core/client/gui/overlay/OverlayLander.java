@@ -9,7 +9,8 @@ import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import org.lwjgl.input.Keyboard;
+import net.minecraft.client.settings.GameSettings;
+
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -40,7 +41,7 @@ public class OverlayLander extends Overlay
             final int alpha = (int) (255 * Math.sin(OverlayLander.screenTicks / 20.0F));
             final String press1 = GCCoreUtil.translate("gui.lander.warning2");
             final String press2 = GCCoreUtil.translate("gui.lander.warning3");
-            OverlayLander.minecraft.fontRenderer.drawString(press1 + Keyboard.getKeyName(KeyHandlerClient.spaceKey.getKeyCode()) + press2, width / 4 - OverlayLander.minecraft.fontRenderer.getStringWidth(press1 + Keyboard.getKeyName(KeyHandlerClient.spaceKey.getKeyCode()) + press2) / 2, height / 8, GCCoreUtil.to32BitColor(alpha, alpha, alpha, alpha));
+            OverlayLander.minecraft.fontRenderer.drawString(press1 + GameSettings.getKeyDisplayString(KeyHandlerClient.spaceKey.getKeyCode()) + press2, width / 4 - OverlayLander.minecraft.fontRenderer.getStringWidth(press1 + GameSettings.getKeyDisplayString(KeyHandlerClient.spaceKey.getKeyCode()) + press2) / 2, height / 8, GCCoreUtil.to32BitColor(alpha, alpha, alpha, alpha));
         }
 
         GL11.glPopMatrix();
