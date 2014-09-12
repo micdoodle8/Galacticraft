@@ -11,11 +11,13 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FootprintRenderer
 {
-    public List<Footprint> footprints = new ArrayList<Footprint>();
+    public Map<Long, List<Footprint>> footprints = new HashMap<Long, List<Footprint>>();
     private static final ResourceLocation footprintTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/misc/footprint.png");
 
     public void renderFootprints(EntityPlayer player, float partialTicks)
@@ -43,33 +45,36 @@ public class FootprintRenderer
         float f10 = 0.4F;
         GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
 
-        for (Footprint footprint : this.footprints)
+        for (List<Footprint> footprintList : this.footprints.values())
         {
-            if (footprint.dimension == player.worldObj.provider.dimensionId)
+            for (Footprint footprint : footprintList)
             {
-                GL11.glPushMatrix();
-                float ageScale = footprint.age / (float) Footprint.MAX_AGE;
-                tessellator.startDrawingQuads();
+                if (footprint.dimension == player.worldObj.provider.dimensionId)
+                {
+                    GL11.glPushMatrix();
+                    float ageScale = footprint.age / (float) Footprint.MAX_AGE;
+                    tessellator.startDrawingQuads();
 
-                float f11 = (float) (footprint.position.x - interpPosX);
-                float f12 = (float) (footprint.position.y - interpPosY) + 0.001F;
-                float f13 = (float) (footprint.position.z - interpPosZ);
+                    float f11 = (float) (footprint.position.x - interpPosX);
+                    float f12 = (float) (footprint.position.y - interpPosY) + 0.001F;
+                    float f13 = (float) (footprint.position.z - interpPosZ);
 
-                GL11.glTranslatef(f11, f12, f13);
-                GL11.glRotatef(-footprint.rotation + 90, 0, 1, 0);
-                GL11.glTranslatef(-f11, -f12, -f13);
+                    GL11.glTranslatef(f11, f12, f13);
+                    GL11.glRotatef(-footprint.rotation + 90, 0, 1, 0);
+                    GL11.glTranslatef(-f11, -f12, -f13);
 
-                GL11.glTranslatef(f11, f12, f13);
+                    GL11.glTranslatef(f11, f12, f13);
 
-                tessellator.setBrightness((int) (100 + ageScale * 155));
-                GL11.glColor4f(1 - ageScale, 1 - ageScale, 1 - ageScale, 1 - ageScale);
-                tessellator.addVertexWithUV(0 - f10, 0, 0 + f10, f7, f9);
-                tessellator.addVertexWithUV(0 + f10, 0, 0 + f10, f7, f8);
-                tessellator.addVertexWithUV(0 + f10, 0, 0 - f10, f6, f8);
-                tessellator.addVertexWithUV(0 - f10, 0, 0 - f10, f6, f9);
+                    tessellator.setBrightness((int) (100 + ageScale * 155));
+                    GL11.glColor4f(1 - ageScale, 1 - ageScale, 1 - ageScale, 1 - ageScale);
+                    tessellator.addVertexWithUV(0 - f10, 0, 0 + f10, f7, f9);
+                    tessellator.addVertexWithUV(0 + f10, 0, 0 + f10, f7, f8);
+                    tessellator.addVertexWithUV(0 + f10, 0, 0 - f10, f6, f8);
+                    tessellator.addVertexWithUV(0 - f10, 0, 0 - f10, f6, f9);
 
-                tessellator.draw();
-                GL11.glPopMatrix();
+                    tessellator.draw();
+                    GL11.glPopMatrix();
+                }
             }
         }
 
@@ -78,13 +83,35 @@ public class FootprintRenderer
         GL11.glPopMatrix();
     }
 
-    public void addFootprint(int dimension, Vector3 position, float rotation)
+    public void addFootprint(long chunkKey, Footprint footprint)
     {
-        this.addFootprint(new Footprint(dimension, position, rotation));
+        List<Footprint> footprintList = this.footprints.get(chunkKey);
+
+        if (footprintList == null)
+        {
+            footprintList = new ArrayList<Footprint>();
+        }
+
+        footprintList.add(new Footprint(footprint.dimension, footprint.position, footprint.rotation));
+        this.footprints.put(chunkKey, footprintList);
     }
 
-    public void addFootprint(Footprint print)
+    public void addFootprint(long chunkKey, int dimension, Vector3 position, float rotation)
     {
-        this.footprints.add(print);
+        this.addFootprint(chunkKey, new Footprint(dimension, position, rotation));
+    }
+
+    public void setFootprints(long chunkKey, List<Footprint> prints)
+    {
+        List<Footprint> footprintList = this.footprints.get(chunkKey);
+
+        if (footprintList == null)
+        {
+            footprintList = new ArrayList<Footprint>();
+        }
+
+        footprintList.clear();
+        footprintList.addAll(prints);
+        this.footprints.put(chunkKey, footprintList);
     }
 }

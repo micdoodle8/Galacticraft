@@ -21,8 +21,12 @@ import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.ChunkProviderServer;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,7 +38,7 @@ public class TickHandlerServer
     private static Map<Integer, CopyOnWriteArrayList<BlockVec3>> scheduledTorchUpdates = new ConcurrentHashMap<Integer, CopyOnWriteArrayList<BlockVec3>>();
     private static Map<Integer, List<BlockVec3>> edgeChecks = new HashMap<Integer, List<BlockVec3>>();
     private static LinkedList<EnergyNetwork> networkTicks = new LinkedList<EnergyNetwork>();
-    private static Map<Integer, List<Footprint>> footprintList = new HashMap<Integer, List<Footprint>>();
+    private static Map<Integer, Map<Long, List<Footprint>>> serverFootprintMap = new HashMap<Integer, Map<Long, List<Footprint>>>();
     public static WorldDataSpaceRaces spaceRaceData = null;
     private static long tickCount;
 
@@ -44,7 +48,7 @@ public class TickHandlerServer
         TickHandlerServer.scheduledTorchUpdates.clear();
         TickHandlerServer.edgeChecks.clear();
         TickHandlerServer.networkTicks.clear();
-        TickHandlerServer.footprintList.clear();
+        TickHandlerServer.serverFootprintMap.clear();
 
         for (SpaceRace race : SpaceRaceManager.getSpaceRaces())
         {
@@ -55,17 +59,29 @@ public class TickHandlerServer
         TickHandlerServer.tickCount = 0L;
     }
 
-    public static void addFootprint(Footprint print, int dimID)
+    public static void addFootprint(long chunkKey, Footprint print, int dimID)
     {
-        List<Footprint> footprints = TickHandlerServer.footprintList.get(dimID);
+        Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(dimID);
+        List<Footprint> footprints;
 
-        if (footprints == null)
+        if (footprintMap == null)
         {
+            footprintMap = new HashMap<Long, List<Footprint>>();
             footprints = new ArrayList<Footprint>();
+        }
+        else
+        {
+            footprints = footprintMap.get(chunkKey);
+
+            if (footprints == null)
+            {
+                footprints = new ArrayList<Footprint>();
+            }
         }
 
         footprints.add(print);
-        TickHandlerServer.footprintList.put(dimID, footprints);
+        footprintMap.put(chunkKey, footprints);
+        TickHandlerServer.serverFootprintMap.put(dimID, footprintMap);
     }
 
     public static void scheduleNewBlockChange(int dimID, ScheduledBlockChange change)
@@ -172,26 +188,57 @@ public class TickHandlerServer
 
                 for (int i = 0; i < worlds.length; i++)
                 {
-                    List<Footprint> footprints = TickHandlerServer.footprintList.get(worlds[i].provider.dimensionId);
+                    WorldServer world = worlds[i];
+                    ChunkProviderServer chunkProviderServer = world.theChunkProviderServer;
 
-                    if (footprints != null)
+                    Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(world.provider.dimensionId);
+
+                    if (footprintMap != null)
                     {
-                        List<Footprint> toRemove = new ArrayList<Footprint>();
+                        boolean mapChanged = false;
 
-                        for (int j = 0; j < footprints.size(); j++)
+                        if (chunkProviderServer != null)
                         {
-                            footprints.get(j).age += 100;
+                            Iterator iterator = chunkProviderServer.loadedChunks.iterator();
 
-                            if (footprints.get(j).age >= Footprint.MAX_AGE)
+                            while (iterator.hasNext())
                             {
-                                toRemove.add(footprints.get(j));
+                                Chunk chunk = (Chunk) iterator.next();
+                                long chunkKey = ChunkCoordIntPair.chunkXZ2Int(chunk.xPosition, chunk.zPosition);
+
+                                List<Footprint> footprints = footprintMap.get(chunkKey);
+
+                                if (footprints != null)
+                                {
+                                    List<Footprint> toRemove = new ArrayList<Footprint>();
+
+                                    for (int j = 0; j < footprints.size(); j++)
+                                    {
+                                        footprints.get(j).age += 500;
+
+                                        if (footprints.get(j).age >= Footprint.MAX_AGE)
+                                        {
+                                            toRemove.add(footprints.get(j));
+                                        }
+                                    }
+
+                                    if (!toRemove.isEmpty())
+                                    {
+                                        footprints.removeAll(toRemove);
+                                    }
+
+                                    footprintMap.put(chunkKey, footprints);
+                                    mapChanged = true;
+
+                                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_FOOTPRINT_LIST, new Object[] { chunkKey, footprints.toArray(new Footprint[footprints.size()]) }), worlds[i].provider.dimensionId);
+                                }
                             }
                         }
 
-                        footprints.removeAll(toRemove);
-                        TickHandlerServer.footprintList.put(worlds[i].provider.dimensionId, footprints);
-
-                        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_FOOTPRINT_LIST, new Object[] { footprints.toArray(new Footprint[footprints.size()]) }), worlds[i].provider.dimensionId);
+                        if (mapChanged)
+                        {
+                            TickHandlerServer.serverFootprintMap.put(world.provider.dimensionId, footprintMap);
+                        }
                     }
                 }
             }

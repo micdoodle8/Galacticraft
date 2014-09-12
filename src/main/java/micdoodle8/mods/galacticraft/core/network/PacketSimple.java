@@ -128,7 +128,7 @@ public class PacketSimple extends Packet implements IPacket
         C_OPEN_SPACE_RACE_GUI(Side.CLIENT),
         C_UPDATE_SPACE_RACE_DATA(Side.CLIENT, Integer.class, String.class, FlagData.class, Vector3.class, String[].class),
         C_OPEN_JOIN_RACE_GUI(Side.CLIENT, Integer.class),
-        C_UPDATE_FOOTPRINT_LIST(Side.CLIENT, Footprint[].class),
+        C_UPDATE_FOOTPRINT_LIST(Side.CLIENT, Long.class, Footprint[].class),
         C_UPDATE_STATION_SPIN(Side.CLIENT, Float.class, Boolean.class),
         C_UPDATE_STATION_DATA(Side.CLIENT, Double.class, Double.class),
         C_UPDATE_STATION_BOX(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
@@ -666,12 +666,14 @@ public class PacketSimple extends Packet implements IPacket
             player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_JOIN, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
             break;
         case C_UPDATE_FOOTPRINT_LIST:
-            ClientProxyCore.footprintRenderer.footprints.clear();
-            for (int i = 0; i < this.data.size(); i++)
+            List<Footprint> printList = new ArrayList<Footprint>();
+            long chunkKey = (Long) this.data.get(0);
+            for (int i = 1; i < this.data.size(); i++)
             {
                 Footprint print = (Footprint) this.data.get(i);
-                ClientProxyCore.footprintRenderer.addFootprint(print);
+                printList.add(print);
             }
+            ClientProxyCore.footprintRenderer.setFootprints(chunkKey, printList);
             break;
         case C_UPDATE_STATION_SPIN:
             if (playerBaseClient.worldObj.provider instanceof WorldProviderOrbit)

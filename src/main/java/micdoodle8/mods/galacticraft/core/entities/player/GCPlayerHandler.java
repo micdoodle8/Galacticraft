@@ -43,6 +43,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -764,7 +765,8 @@ public class GCPlayerHandler
                             break;
                         }
 
-                        TickHandlerServer.addFootprint(new Footprint(player.worldObj.provider.dimensionId, pos, player.rotationYaw), player.worldObj.provider.dimensionId);
+                        long chunkKey = ChunkCoordIntPair.chunkXZ2Int(pos.intX() >> 4, pos.intZ() >> 4);
+                        TickHandlerServer.addFootprint(chunkKey, new Footprint(player.worldObj.provider.dimensionId, pos, player.rotationYaw), player.worldObj.provider.dimensionId);
 
                         // Increment and cap step counter at 1
                         playerStats.lastStep++;

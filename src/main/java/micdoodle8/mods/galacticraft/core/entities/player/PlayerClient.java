@@ -23,6 +23,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.MinecraftForge;
 
 public class PlayerClient implements IPlayerClient
@@ -226,7 +227,8 @@ public class PlayerClient implements IPlayerClient
                             break;
                         }
 
-                        ClientProxyCore.footprintRenderer.addFootprint(player.worldObj.provider.dimensionId, pos, player.rotationYaw);
+                        long chunkKey = ChunkCoordIntPair.chunkXZ2Int(pos.intX() >> 4, pos.intZ() >> 4);
+                        ClientProxyCore.footprintRenderer.addFootprint(chunkKey, player.worldObj.provider.dimensionId, pos, player.rotationYaw);
 
                         // Increment and cap step counter at 1
                         stats.lastStep++;
