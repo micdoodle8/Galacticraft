@@ -83,16 +83,16 @@ public class AsteroidsModule implements IPlanetsModule
 
         FluidRegistry.registerFluid(new Fluid("methane").setDensity(1).setViscosity(11).setGaseous(true));
         FluidRegistry.registerFluid(new Fluid("atmosphericgases").setDensity(1).setViscosity(13).setGaseous(true));
-        FluidRegistry.registerFluid(new Fluid("liquidmethane").setDensity(450).setViscosity(120));
+        FluidRegistry.registerFluid(new Fluid("liquidmethane").setDensity(450).setViscosity(120).setTemperature(109));
         //Data source for liquid methane: http://science.nasa.gov/science-news/science-at-nasa/2005/25feb_titan2/
-        FluidRegistry.registerFluid(new Fluid("liquidoxygen").setDensity(1141).setViscosity(140));
+        FluidRegistry.registerFluid(new Fluid("liquidoxygen").setDensity(1141).setViscosity(140).setTemperature(90));
         FluidRegistry.registerFluid(new Fluid("oxygen").setDensity(1).setViscosity(13).setGaseous(true));
-        FluidRegistry.registerFluid(new Fluid("liquidnitrogen").setDensity(808).setViscosity(130));
+        FluidRegistry.registerFluid(new Fluid("liquidnitrogen").setDensity(808).setViscosity(130).setTemperature(90));
         FluidRegistry.registerFluid(new Fluid("nitrogen").setDensity(1).setViscosity(12).setGaseous(true));
         FluidRegistry.registerFluid(new Fluid("carbondioxide").setDensity(2).setViscosity(20).setGaseous(true));
         FluidRegistry.registerFluid(new Fluid("hydrogen").setDensity(1).setViscosity(1).setGaseous(true));
         FluidRegistry.registerFluid(new Fluid("argon").setDensity(1).setViscosity(4).setGaseous(true));
-        FluidRegistry.registerFluid(new Fluid("liquidargon").setDensity(900).setViscosity(100));
+        FluidRegistry.registerFluid(new Fluid("liquidargon").setDensity(900).setViscosity(100).setTemperature(87));
         FluidRegistry.registerFluid(new Fluid("helium").setDensity(1).setViscosity(1).setGaseous(true));
         AsteroidsModule.fluidMethaneGas = FluidRegistry.getFluid("methane");
         AsteroidsModule.fluidAtmosphericGases = FluidRegistry.getFluid("atmosphericgases");
