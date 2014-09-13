@@ -590,7 +590,6 @@ public class WorldUtil
 
                 if (worldNew.provider instanceof WorldProviderOrbit)
                 {
-                    ((WorldProviderOrbit) worldNew.provider).sendPacketsToClient(player);
                     if (WorldUtil.registeredSpaceStations.contains(dimID))
                     //TODO This has never been effective before due to the earlier bug - what does it actually do?
                     {

@@ -112,6 +112,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
 
     public boolean receivedSoundWarning;
     public boolean openedSpaceRaceManager = false;
+	public boolean newInOrbit = true;
 
     public GCPlayerStats(EntityPlayerMP player)
     {

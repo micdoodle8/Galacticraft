@@ -283,7 +283,6 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                 {
                     this.writeToNBT(this.savefile.datacompound);
                     this.savefile.markDirty();
-
                     List<Object> objList = new ArrayList<Object>();
                     objList.add(Float.valueOf(this.angularVelocityRadians));
                     objList.add(Boolean.valueOf(this.thrustersFiring));
