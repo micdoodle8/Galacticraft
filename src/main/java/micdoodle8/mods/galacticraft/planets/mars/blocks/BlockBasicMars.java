@@ -86,7 +86,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     {
         int metadata = world.getBlockMetadata(x, y, z);
 
-        if (metadata == 10 || metadata == 7)
+        if (metadata == 10)
         {
             return 10000.0F;
         }
