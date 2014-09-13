@@ -299,7 +299,10 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
-        return slotID == 0 && ItemElectricBase.isElectricItem(itemstack.getItem());
+    	if (itemstack == null) return false; 
+    	if (slotID == 0) return ItemElectricBase.isElectricItem(itemstack.getItem());
+        if (slotID == 1) return itemstack.getItem() instanceof IItemOxygenSupply;
+        return false;
     }
 
     @Override
