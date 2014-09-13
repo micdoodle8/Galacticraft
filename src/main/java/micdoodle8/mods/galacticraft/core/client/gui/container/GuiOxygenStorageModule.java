@@ -1,18 +1,22 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class GuiOxygenStorageModule extends GuiContainer
+public class GuiOxygenStorageModule extends GuiContainerGC
 {
     private static final ResourceLocation batteryBoxTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/oxygenStorageModule.png");
 
@@ -24,7 +28,17 @@ public class GuiOxygenStorageModule extends GuiContainer
         this.tileEntity = storageModule;
     }
 
-    /**
+    @Override
+    public void initGui()
+    {
+        super.initGui();
+        List<String> oxygenSlotDesc = new ArrayList<String>();
+        oxygenSlotDesc.add(GCCoreUtil.translate("gui.oxygenSlot.desc.0"));
+        oxygenSlotDesc.add(GCCoreUtil.translate("gui.oxygenSlot.desc.1"));
+        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 16, (this.height - this.ySize) / 2 + 21, 18, 18, oxygenSlotDesc, this.width, this.height, this));
+    }
+    
+/**
      * Draw the foreground layer for the GuiContainer (everything in front of
      * the items)
      */

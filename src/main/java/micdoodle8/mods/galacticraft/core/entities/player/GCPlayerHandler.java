@@ -1032,8 +1032,18 @@ public class GCPlayerHandler
             if (player.worldObj.provider instanceof WorldProviderOrbit)
             {
                 player.fallDistance = 0.0F;
+                if (GCPlayer.newInOrbit)
+                {
+                	((WorldProviderOrbit) player.worldObj.provider).sendPacketsToClient(player);
+                	GCPlayer.newInOrbit = false;
+                }
             }
+            else
+            	GCPlayer.newInOrbit = true;
         }
+        else
+        	GCPlayer.newInOrbit = true;
+
 
         this.checkGear(player, GCPlayer);
 
