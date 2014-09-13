@@ -275,19 +275,43 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
     {
-        return new int[] { 0 };
+        return new int[] { 0, 1 };
     }
 
     @Override
     public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
     {
-        return this.isItemValidForSlot(slotID, itemstack);
+        if (this.isItemValidForSlot(slotID, itemstack))
+        {
+            switch (slotID)
+            {
+            case 0:
+                return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) > 0;
+            case 1:
+            	return itemstack.getItemDamage() < itemstack.getItem().getMaxDamage();
+            default:
+                return false;
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
     {
-        return slotID == 0;
+        if (this.isItemValidForSlot(slotID, itemstack))
+        {
+            switch (slotID)
+            {
+            case 0:
+                return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
+            case 1:
+            	return itemstack.getItemDamage() == itemstack.getItem().getMaxDamage();
+            default:
+                return false;
+            }
+        }
+        return false;
     }
 
     @Override

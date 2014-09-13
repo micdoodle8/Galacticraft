@@ -296,19 +296,43 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
     {
-        return new int[] { 0 };
+        return new int[] { 0, 1 };
     }
 
     @Override
     public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
     {
-        return this.isItemValidForSlot(slotID, itemstack);
+        if (this.isItemValidForSlot(slotID, itemstack))
+        {
+            switch (slotID)
+            {
+            case 0:
+                return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) > 0;
+            case 1:
+            	return itemstack.getItemDamage() < itemstack.getItem().getMaxDamage();
+            default:
+                return false;
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
     {
-        return slotID == 0;
+        if (this.isItemValidForSlot(slotID, itemstack))
+        {
+            switch (slotID)
+            {
+            case 0:
+                return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
+            case 1:
+            	return itemstack.getItemDamage() == itemstack.getItem().getMaxDamage();
+            default:
+                return false;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -320,7 +344,10 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
-        return slotID == 0 && ItemElectricBase.isElectricItem(itemstack.getItem());
+    	if (itemstack == null) return false; 
+    	if (slotID == 0) return ItemElectricBase.isElectricItem(itemstack.getItem());
+        if (slotID == 1) return itemstack.getItem() instanceof IItemOxygenSupply;
+        return false;
     }
 
     @Override

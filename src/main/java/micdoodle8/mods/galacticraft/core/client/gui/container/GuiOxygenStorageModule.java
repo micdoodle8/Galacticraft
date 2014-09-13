@@ -47,8 +47,8 @@ public class GuiOxygenStorageModule extends GuiContainerGC
     {
         String guiTitle = GCCoreUtil.translate("tile.machine2.6.name");
         this.fontRendererObj.drawString(guiTitle, this.xSize / 2 - this.fontRendererObj.getStringWidth(guiTitle) / 2, 6, 4210752);
-        String displayJoules = this.tileEntity.storedOxygen + " of";
-        String displayMaxJoules = "" + this.tileEntity.maxOxygen;
+        String displayJoules = (int) (this.tileEntity.storedOxygen + 0.5F) + " of";
+        String displayMaxJoules = "" + (int) this.tileEntity.maxOxygen;
         String maxOutputLabel = "Max Output: " + TileEntityOxygenStorageModule.OUTPUT_PER_TICK * 20 + "/s";
 
         this.fontRendererObj.drawString(displayJoules, 122 - this.fontRendererObj.getStringWidth(displayJoules) / 2 - 35, 30, 4210752);

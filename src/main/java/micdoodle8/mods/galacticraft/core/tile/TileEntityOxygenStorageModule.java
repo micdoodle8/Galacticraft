@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -14,7 +14,7 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TileEntityOxygenStorageModule extends TileEntityOxygen implements IPacketReceiver, IInventory
+public class TileEntityOxygenStorageModule extends TileEntityOxygen implements IPacketReceiver, ISidedInventory
 {
     public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
     public int scaledOxygenLevel;
@@ -278,5 +278,32 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
         return slotID == 0 && itemstack!=null && itemstack.getItem() instanceof IItemOxygenSupply;
+    }
+    
+    //ISidedInventory
+    @Override
+    public int[] getAccessibleSlotsFromSide(int side)
+    {
+        return new int[] { 0 };
+    }
+
+    @Override
+    public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
+    {
+        if (slotID ==0 && this.isItemValidForSlot(slotID, itemstack))
+        {
+           	return itemstack.getItemDamage() < itemstack.getItem().getMaxDamage();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
+    {
+        if (slotID ==0 && this.isItemValidForSlot(slotID, itemstack))
+        {
+           	return itemstack.getItemDamage() == itemstack.getItem().getMaxDamage();
+        }
+        return false;
     }
 }

@@ -207,7 +207,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
     {
-        return new int[] { 0, 1 };
+        return new int[] { 0, 1, 2 };
     }
 
     @Override
@@ -221,6 +221,8 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
                 return itemstack.getItemDamage() > 1;
             case 1:
                 return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) > 0;
+            case 2:
+            	return itemstack.getItemDamage() < itemstack.getItem().getMaxDamage();
             default:
                 return false;
             }
@@ -239,6 +241,8 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
                 return itemstack.getItemDamage() == 0;
             case 1:
                 return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
+            case 2:
+            	return itemstack.getItemDamage() == itemstack.getItem().getMaxDamage();
             default:
                 return false;
             }
@@ -255,6 +259,8 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
             return itemstack.getItem() instanceof ItemOxygenTank;
         case 1:
             return ItemElectricBase.isElectricItem(itemstack.getItem());
+        case 2:
+        	return itemstack.getItem() instanceof IItemOxygenSupply;
         }
 
         return false;
