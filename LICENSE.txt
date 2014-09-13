@@ -321,17 +321,17 @@ public access to the source code or any repository containing it.
 
 make money from it" does not prevent: (a) a person making money from an 
 
-advertisement which that person provides to a player who downloads a modpack 
+advertisement which that person provides to a player who downloads, free of
 
-or similar containing a compiled binary of Galacticraft; (b) a server owner 
+charge, a modpack or similar containing a compiled binary of Galacticraft;
 
-who charges a fee or receives donations from players playing on a server 
+(b) a server owner who charges a fee or receives donations from players
 
-which offers a Galacticraft gameplay experience to players who have 
+playing on a server which offers a Galacticraft gameplay experience to players
 
-themselves installed Galacticraft in their clients; or (c) a person from 
+who have themselves installed Galacticraft in their clients; or (c) a person
 
-making a video recording of a Galacticraft gameplay experience and 
+from making a video recording of a Galacticraft gameplay experience and 
 
 distributing that video on Youtube or similar internet distribution channels 
 
@@ -427,7 +427,11 @@ which is not subject to these licence terms;  (e) incorporation of
 
 Galacticraft or parts of it (or any derived work) in any commercial project
 
-- including vanilla Minecraft itself - would violate section 20(b) above.
+- including vanilla Minecraft itself or any modpack, downloadable content or
+
+other resource which is restricted to paying users, subscribers or members only
+
+or is otherwise conditional on a purchase - would violate section 20(a) above.
 
 29.  To the extent that Galacticraft uses parts of the code which are or have
 
