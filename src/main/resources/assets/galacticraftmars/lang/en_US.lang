@@ -111,6 +111,10 @@ gui.methaneOutput.desc.2=methane tank
 gui.message.withAtmosphere0.name=on a planet with plenty of
 gui.message.withAtmosphere1.name=in the atmosphere
 item.carbonFragments.name=Fragmented Carbon
+gui.cargorocket.status.waiting.0=Waiting for
+gui.cargorocket.status.waiting.1=ignition
+gui.cargorocket.status.launched.0=Already
+gui.cargorocket.status.launched.1=Launched
 
 gas.carbondioxide.name=Carbon Dioxide
 gas.oxygen.name=Oxygen
@@ -132,6 +136,18 @@ tile.methaneSynthesizer.description=With a source of hydrogen and a source of ca
 
 gui.slimeling.chat.wrongPlayer=This isn't my Slimeling!
 gui.cryogenic.chat.cantUse=I can't use this for another %d seconds
+gui.slimeling.name=Name
+gui.slimeling.owner=Owner
+gui.slimeling.kills=Kills
+gui.slimeling.scale=Scale
+gui.slimeling.button.sit=Sit
+gui.slimeling.button.follow=Follow
+gui.slimeling.sitting=Sitting
+gui.slimeling.following=Following
+gui.slimeling.damage=Attack Damage
+gui.slimeling.food=Favorite food
+
+
 
 # SCHEMATICS
 schematic.rocketT3.name=Tier 3 Rocket

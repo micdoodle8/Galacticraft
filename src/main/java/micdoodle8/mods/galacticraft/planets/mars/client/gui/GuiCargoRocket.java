@@ -108,14 +108,14 @@ public class GuiCargoRocket extends GuiContainerGC
         if (this.rocket.statusMessageCooldown == 0 || this.rocket.statusMessage == null)
         {
             spltString = new String[2];
-            spltString[0] = EnumColor.YELLOW + "Waiting for";
-            spltString[1] = EnumColor.YELLOW + "ignition";
+            spltString[0] = EnumColor.YELLOW + GCCoreUtil.translate("gui.cargorocket.status.waiting.0");
+            spltString[1] = EnumColor.YELLOW + GCCoreUtil.translate("gui.cargorocket.status.waiting.1");
 
             if (this.rocket.launchPhase != EnumLaunchPhase.UNIGNITED.ordinal())
             {
                 spltString = new String[2];
-                spltString[0] = EnumColor.YELLOW + "Already";
-                spltString[1] = EnumColor.YELLOW + "Launched";
+                spltString[0] = EnumColor.YELLOW + GCCoreUtil.translate("gui.cargorocket.status.launched.0");
+                spltString[1] = EnumColor.YELLOW + GCCoreUtil.translate("gui.cargorocket.status.launched.1");
                 this.launchButton.enabled = false;
             }
         }

@@ -259,17 +259,17 @@ public class GuiSlimeling extends GuiScreen
         Gui.drawRect(startX + 1, startY + 1, startX + width - 1, startY + height - 1, 0xFF000000);
         this.drawString(this.fontRendererObj, this.slimeling.getName() + (this.cursorPulse / 24 % 2 == 0 && this.isTextFocused ? "_" : ""), startX + 4, startY + 4, this.incorrectUseTimer > 0 ? GCCoreUtil.to32BitColor(255, 255, 20, 20) : 0xe0e0e0);
 
-        this.stayButton.displayString = this.slimeling.isSitting() ? "Follow" : "Sit";
+        this.stayButton.displayString = this.slimeling.isSitting() ? GCCoreUtil.translate("gui.slimeling.button.follow") : GCCoreUtil.translate("gui.slimeling.button.sit");
 
-        this.fontRendererObj.drawString("Name: ", dX + var5 + 55, dY + var6 - 6, 0x404040);
-        this.fontRendererObj.drawString("Owner: " + this.slimeling.getOwnerUsername(), dX + var5 + 55, dY + var6 + 7, 0x404040);
-        this.fontRendererObj.drawString("Kills: " + this.slimeling.getKillCount(), dX + var5 + 55, dY + var6 + 20, 0x404040);
-        this.fontRendererObj.drawString("Scale: " + Math.round(this.slimeling.getAge() / (float) this.slimeling.MAX_AGE * 1000.0F) / 10.0F + "%", dX + var5 + 55, dY + var6 + 33, 0x404040);
-        str = "" + (this.slimeling.isSitting() ? "Sitting" : "Following");
+        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.slimeling.name") + ": ", dX + var5 + 55, dY + var6 - 6, 0x404040);
+        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.slimeling.owner") + ": " + this.slimeling.getOwnerUsername(), dX + var5 + 55, dY + var6 + 7, 0x404040);
+        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.slimeling.kills") + ": " + this.slimeling.getKillCount(), dX + var5 + 55, dY + var6 + 20, 0x404040);
+        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.slimeling.scale") + ": " + Math.round(this.slimeling.getAge() / (float) this.slimeling.MAX_AGE * 1000.0F) / 10.0F + "%", dX + var5 + 55, dY + var6 + 33, 0x404040);
+        str = "" + (this.slimeling.isSitting() ? GCCoreUtil.translate("gui.slimeling.sitting") : GCCoreUtil.translate("gui.slimeling.following"));
         this.fontRendererObj.drawString(str, var5 + 145 - this.fontRendererObj.getStringWidth(str) / 2, var6 + 112, 0x404040);
-        str = "Attack Damage: " + Math.round(this.slimeling.getDamage() * 100.0F) / 100.0F;
+        str = GCCoreUtil.translate("gui.slimeling.damage") + ": " + Math.round(this.slimeling.getDamage() * 100.0F) / 100.0F;
         this.fontRendererObj.drawString(str, dX + var5 + 55, dY + var6 + 33 + 13, 0x404040);
-        str = "Favorite Food: ";
+        str = GCCoreUtil.translate("gui.slimeling.food");
         this.fontRendererObj.drawString(str, dX + var5 + 55, dY + var6 + 46 + 13, 0x404040);
 
         RenderHelper.enableGUIStandardItemLighting();

@@ -45,8 +45,8 @@ public class GuiOxygenCompressor extends GuiContainerGC
         oxygenSlotDesc.add(GCCoreUtil.translate("gui.oxygenSlot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 16, (this.height - this.ySize) / 2 + 26, 18, 18, oxygenSlotDesc, this.width, this.height, this));
         List<String> compressorSlotDesc = new ArrayList<String>();
-        compressorSlotDesc.add("Compressor tank slot, place oxygen tank");
-        compressorSlotDesc.add("here to fill it with breathable oxygen.");
+        compressorSlotDesc.add(GCCoreUtil.translate("gui.oxygenCompressor.slot.desc.0"));
+        compressorSlotDesc.add(GCCoreUtil.translate("gui.oxygenCompressor.slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 132, (this.height - this.ySize) / 2 + 70, 18, 18, compressorSlotDesc, this.width, this.height, this));
         List<String> oxygenDesc = new ArrayList<String>();
         oxygenDesc.add(GCCoreUtil.translate("gui.oxygenStorage.desc.0"));
@@ -76,7 +76,7 @@ public class GuiOxygenCompressor extends GuiContainerGC
         this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.in.name") + ":", 87, 38, 4210752);
         String status = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();
         this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 50, 4210752);
-        status = "Oxygen Use: " + TileEntityOxygenCompressor.TANK_TRANSFER_SPEED * 20 + "/s";
+        status = GCCoreUtil.translate("gui.oxygenUse.desc") + ": " + TileEntityOxygenCompressor.TANK_TRANSFER_SPEED * 20 + GCCoreUtil.translate("gui.perSecond");
         this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 60, 4210752);
         //		status = ElectricityDisplay.getDisplay(this.compressor.ueWattsPerTick * 20, ElectricUnit.WATT);
         //		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 70, 4210752);

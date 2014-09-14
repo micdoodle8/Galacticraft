@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.items;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -85,7 +86,7 @@ public class ItemOilCanister extends ItemCanisterGeneric
     {
         if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() > 0)
         {
-            par3List.add("Oil: " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
+            par3List.add(GCCoreUtil.translate("gui.message.oil.name") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
         }
     }
 }

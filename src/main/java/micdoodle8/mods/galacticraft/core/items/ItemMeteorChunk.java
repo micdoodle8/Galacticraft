@@ -111,7 +111,7 @@ public class ItemMeteorChunk extends Item
                 burnTime = 45.0F;
             }
 
-            par3List.add(GCCoreUtil.translate("item.hotDescription.name") + " " + burnTime + "s");
+            par3List.add(GCCoreUtil.translate("item.hotDescription.name") + " " + burnTime + GCCoreUtil.translate("gui.seconds"));
         }
     }
 

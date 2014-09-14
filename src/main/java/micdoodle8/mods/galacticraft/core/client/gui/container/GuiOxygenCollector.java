@@ -58,7 +58,7 @@ public class GuiOxygenCollector extends GuiContainerGC
         this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.in.name") + ":", 87, 37, 4210752);
         String status = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();
         this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 50, 4210752);
-        status = GCCoreUtil.translate("gui.status.collecting.name") + ": " + (int) Math.min(this.collector.lastOxygenCollected, TileEntityOxygenCollector.OUTPUT_PER_TICK) * 20 + "/s";
+        status = GCCoreUtil.translate("gui.status.collecting.name") + ": " + (int) Math.min(this.collector.lastOxygenCollected, TileEntityOxygenCollector.OUTPUT_PER_TICK) * 20 + GCCoreUtil.translate("gui.perSecond");
         this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 60, 4210752);
 //		status = EnergyDisplayHelper.getEnergyDisplayS(TileEntityOxygenCollector.WATTS_PER_TICK) + "gJ/t";
 //		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 70, 4210752);

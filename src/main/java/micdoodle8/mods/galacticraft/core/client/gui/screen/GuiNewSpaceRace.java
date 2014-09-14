@@ -653,7 +653,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 
                 if (par1 > serverStats.xPosition && par1 < serverStats.xPosition + serverStats.width && par2 > serverStats.yPosition && par2 < serverStats.yPosition + serverStats.height)
                 {
-                    serverStats.displayString = "Coming Soon";
+                    serverStats.displayString = GCCoreUtil.translate("gui.spaceRace.comingSoon");
                 }
                 else
                 {
@@ -662,7 +662,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 
                 if (par1 > localStats.xPosition && par1 < localStats.xPosition + localStats.width && par2 > localStats.yPosition && par2 < localStats.yPosition + localStats.height)
                 {
-                    localStats.displayString = "Coming Soon";
+                    localStats.displayString = GCCoreUtil.translate("gui.spaceRace.comingSoon");
                 }
                 else
                 {
