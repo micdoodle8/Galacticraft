@@ -51,6 +51,13 @@ public class GCBlocks
     public static Block blockMoon;
     public static Block cheeseBlock;
     public static Block spinThruster;
+    public static Block slabGCHalf;
+    public static Block slabGCDouble;
+    public static Block tinStairs1;
+    public static Block tinStairs2;
+    public static Block moonStoneStairs;
+    public static Block moonBricksStairs;
+    public static Block wallGC;
 
     public static final Material machine = new Material(MapColor.ironColor);
 
@@ -94,6 +101,13 @@ public class GCBlocks
         GCBlocks.blockMoon = new BlockBasicMoon();
         GCBlocks.cheeseBlock = new BlockCheese();
         GCBlocks.spinThruster = new BlockSpinThruster("spinThruster");
+        GCBlocks.slabGCHalf = new BlockSlabGC("slabGCHalf", false, Material.rock, BlockSlabGC.SlabCategoryGC.WOOD1);
+        GCBlocks.slabGCDouble = new BlockSlabGC("slabGCDouble", true, Material.rock, BlockSlabGC.SlabCategoryGC.WOOD1);
+        GCBlocks.tinStairs1 = new BlockStairsGC("tinStairs1", blockMoon, BlockStairsGC.StairsCategoryGC.TIN1).setHardness(2.0F);
+        GCBlocks.tinStairs2 = new BlockStairsGC("tinStairs2", blockMoon, BlockStairsGC.StairsCategoryGC.TIN2).setHardness(2.0F);
+        GCBlocks.moonStoneStairs = new BlockStairsGC("moonStoneStairs", blockMoon, BlockStairsGC.StairsCategoryGC.MOON_STONE).setHardness(1.5F);
+        GCBlocks.moonBricksStairs = new BlockStairsGC("moonBricksStairs", blockMoon, BlockStairsGC.StairsCategoryGC.MOON_BRICKS).setHardness(4.0F);
+        GCBlocks.wallGC = new BlockWallGC("wallGC", blockMoon);
 
         GCCoreUtil.registerGalacticraftBlock("rocketLaunchPad", GCBlocks.landingPad, 0);
         GCCoreUtil.registerGalacticraftBlock("buggyFuelingPad", GCBlocks.landingPad, 1);
@@ -187,6 +201,20 @@ public class GCBlocks
         GCBlocks.blockMoon.setHarvestLevel("shovel", 0, 3); //Moon dirt
         GCBlocks.blockMoon.setHarvestLevel("pickaxe", 1, 4); //Moon rock
 
+        GCBlocks.slabGCHalf.setHarvestLevel("pickaxe", 1, 0);
+        GCBlocks.slabGCHalf.setHarvestLevel("pickaxe", 1, 1);
+        GCBlocks.slabGCHalf.setHarvestLevel("pickaxe", 1, 2);
+        GCBlocks.slabGCHalf.setHarvestLevel("pickaxe", 1, 3);
+        GCBlocks.slabGCDouble.setHarvestLevel("pickaxe", 1, 0);
+        GCBlocks.slabGCDouble.setHarvestLevel("pickaxe", 1, 1);
+        GCBlocks.slabGCDouble.setHarvestLevel("pickaxe", 1, 2);
+        GCBlocks.slabGCDouble.setHarvestLevel("pickaxe", 1, 3);
+        GCBlocks.tinStairs1.setHarvestLevel("pickaxe", 1);
+        GCBlocks.tinStairs1.setHarvestLevel("pickaxe", 1);
+        GCBlocks.moonStoneStairs.setHarvestLevel("pickaxe", 2);
+        GCBlocks.moonBricksStairs.setHarvestLevel("pickaxe", 2);
+        GCBlocks.wallGC.setHarvestLevel("pickaxe", 2);
+
         for (int num = 5; num < 14; num++)
         {
             //Various types of Moon top dirt
@@ -234,5 +262,12 @@ public class GCBlocks
         GameRegistry.registerBlock(GCBlocks.spinThruster, ItemBlockThruster.class, GCBlocks.spinThruster.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.brightLamp, ItemBlockArclamp.class, GCBlocks.brightLamp.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.treasureChestTier1, ItemBlockDesc.class, GCBlocks.treasureChestTier1.getUnlocalizedName());
+        GameRegistry.registerBlock(GCBlocks.tinStairs1, ItemBlockGC.class, GCBlocks.tinStairs1.getUnlocalizedName());
+        GameRegistry.registerBlock(GCBlocks.tinStairs2, ItemBlockGC.class, GCBlocks.tinStairs2.getUnlocalizedName());
+        GameRegistry.registerBlock(GCBlocks.moonStoneStairs, ItemBlockGC.class, GCBlocks.moonStoneStairs.getUnlocalizedName());
+        GameRegistry.registerBlock(GCBlocks.moonBricksStairs, ItemBlockGC.class, GCBlocks.moonBricksStairs.getUnlocalizedName());
+        GameRegistry.registerBlock(GCBlocks.wallGC, ItemBlockWallGC.class, GCBlocks.wallGC.getUnlocalizedName());
+        GameRegistry.registerBlock(GCBlocks.slabGCHalf, ItemBlockSlabGC.class, GCBlocks.slabGCHalf.getUnlocalizedName().replace("tile.", ""), GCBlocks.slabGCHalf, GCBlocks.slabGCDouble);
+        GameRegistry.registerBlock(GCBlocks.slabGCDouble, ItemBlockSlabGC.class, GCBlocks.slabGCDouble.getUnlocalizedName().replace("tile.", ""), GCBlocks.slabGCHalf, GCBlocks.slabGCDouble);
     }
 }

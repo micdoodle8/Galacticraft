@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import micdoodle8.mods.galacticraft.core.blocks.BlockStairsGC;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockEgg;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMachine;
@@ -18,6 +20,8 @@ public class MarsBlocks
     public static Block machine;
     public static Block machineT2;
     public static Block creeperEgg;
+    public static Block marsCobblestoneStairs;
+    public static Block marsBricksStairs;
 
     public static void initBlocks()
     {
@@ -29,6 +33,8 @@ public class MarsBlocks
         MarsBlocks.machine = new BlockMachineMars().setHardness(1.8F).setBlockName("marsMachine");
         MarsBlocks.machineT2 = new BlockMachineMarsT2().setHardness(1.8F).setBlockName("marsMachineT2");
         MarsBlocks.creeperEgg = new BlockCreeperEgg().setHardness(-1.0F).setBlockName("creeperEgg");
+        MarsBlocks.marsCobblestoneStairs = new BlockStairsGC("marsCobblestoneStairs", marsBlock, BlockStairsGC.StairsCategoryGC.MARS_COBBLESTONE).setHardness(1.5F);
+        MarsBlocks.marsBricksStairs = new BlockStairsGC("marsDungeonBricksStairs", marsBlock, BlockStairsGC.StairsCategoryGC.MARS_BRICKS).setHardness(4.0F);
     }
 
     public static void setHarvestLevels()
@@ -44,6 +50,8 @@ public class MarsBlocks
         MarsBlocks.marsBlock.setHarvestLevel("shovel", 0, 5); //Top dirt
         MarsBlocks.marsBlock.setHarvestLevel("shovel", 0, 6); //Dirt
         MarsBlocks.rock.setHarvestLevel("pickaxe", 3);
+        MarsBlocks.marsCobblestoneStairs.setHarvestLevel("pickaxe", 1);
+        MarsBlocks.marsBricksStairs.setHarvestLevel("pickaxe", 2);
     }
 
     public static void registerBlocks()
@@ -55,5 +63,7 @@ public class MarsBlocks
         GameRegistry.registerBlock(MarsBlocks.creeperEgg, ItemBlockDesc.class, MarsBlocks.creeperEgg.getUnlocalizedName());
         GameRegistry.registerBlock(MarsBlocks.machine, ItemBlockMachine.class, MarsBlocks.machine.getUnlocalizedName());
         GameRegistry.registerBlock(MarsBlocks.machineT2, ItemBlockMachine.class, MarsBlocks.machineT2.getUnlocalizedName());
+        GameRegistry.registerBlock(MarsBlocks.marsCobblestoneStairs, ItemBlockGC.class, MarsBlocks.marsCobblestoneStairs.getUnlocalizedName());
+        GameRegistry.registerBlock(MarsBlocks.marsBricksStairs, ItemBlockGC.class, MarsBlocks.marsBricksStairs.getUnlocalizedName());
     }
 }
