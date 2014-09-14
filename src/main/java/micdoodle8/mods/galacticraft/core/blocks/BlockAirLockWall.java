@@ -19,7 +19,7 @@ public class BlockAirLockWall extends BlockBreakable implements IPartialSealable
 {
     public BlockAirLockWall(String assetName)
     {
-        super(GalacticraftCore.TEXTURE_PREFIX + "oxygentile_3", Material.portal, false);
+        super(GalacticraftCore.TEXTURE_PREFIX + "oxygentile_3", Material.iron, false);
         this.setTickRandomly(true);
         this.setHardness(1000.0F);
         this.setStepSound(Block.soundTypeMetal);
