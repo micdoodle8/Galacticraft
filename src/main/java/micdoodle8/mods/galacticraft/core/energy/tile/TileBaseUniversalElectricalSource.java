@@ -8,8 +8,6 @@ import mekanism.api.energy.IEnergizedItem;
 import mekanism.api.energy.IStrictEnergyAcceptor;
 import micdoodle8.mods.galacticraft.api.item.ElectricItemHelper;
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
-import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
-import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
@@ -79,16 +77,6 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
                         if (network != null)
                         {
                             amountProduced += (toSend - network.produce(toSend, true, this.tierGC, this));
-                        }
-                    }
-                    else if (tileAdj instanceof IEnergyHandlerGC)
-                    {
-                        EnergySourceAdjacent source = new EnergySourceAdjacent(direction.getOpposite());
-                        float transferred = ((IEnergyHandlerGC) tileAdj).receiveEnergyGC(source, toSend, simulate);
-                        amountProduced += transferred;
-                        if (this.tierGC > 1 && !simulate && transferred > 0F && tileAdj instanceof EnergyStorageTile)
-                        {
-                            ((EnergyStorageTile) tileAdj).poweredByTierGC = this.tierGC;
                         }
                     }
                     else if (EnergyConfigHandler.isMekanismLoaded() && tileAdj instanceof IStrictEnergyAcceptor)

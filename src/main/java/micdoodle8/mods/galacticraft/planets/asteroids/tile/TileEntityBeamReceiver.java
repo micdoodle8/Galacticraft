@@ -1,7 +1,13 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
+import buildcraft.api.mj.MjAPI;
+import buildcraft.api.power.IPowerReceptor;
+import buildcraft.api.power.PowerHandler.PowerReceiver;
+
 import com.google.common.collect.Lists;
+
 import cpw.mods.fml.relauncher.Side;
+import mekanism.api.energy.IStrictEnergyAcceptor;
 import micdoodle8.mods.galacticraft.api.power.EnergySource;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceWireless;
@@ -9,9 +15,11 @@ import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 import micdoodle8.mods.galacticraft.api.power.ILaserNode;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorage;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
 import micdoodle8.mods.galacticraft.core.tile.ReceiverMode;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.nbt.NBTTagCompound;
@@ -45,28 +53,29 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
             {
                 TileEntity tile = this.getAttachedTile();
 
-                if (tile instanceof TileBaseUniversalElectrical)
+                if (tile instanceof TileBaseUniversalElectricalSource)
                 {
-                    TileBaseUniversalElectrical electricalTile = (TileBaseUniversalElectrical) tile;
+                    TileBaseUniversalElectricalSource electricalTile = (TileBaseUniversalElectricalSource) tile;
 
                     if (electricalTile.storage.getEnergyStoredGC() > 0)
                     {
-                        EnergySourceAdjacent source = new EnergySourceAdjacent(ForgeDirection.getOrientation(this.facing).getOpposite());
+                        EnergySourceAdjacent source = new EnergySourceAdjacent(ForgeDirection.getOrientation(this.facing ^ 1));
                         float toSend = Math.min(electricalTile.storage.getMaxExtract(), electricalTile.storage.getEnergyStoredGC());
-                        electricalTile.extractEnergyGC(source, this.getTarget().receiveEnergyGC(new EnergySourceWireless(Lists.newArrayList((ILaserNode) this)), toSend, false), false);
+                        float transmitted = this.getTarget().receiveEnergyGC(new EnergySourceWireless(Lists.newArrayList((ILaserNode) this)), toSend, false);
+                        electricalTile.extractEnergyGC(source, transmitted, false);
                     }
                 }
             }
 
             if (this.modeReceive == ReceiverMode.RECEIVE.ordinal() && this.storage.getEnergyStoredGC() > 0)
             {
-                TileEntity tile = this.getAttachedTile();
+                TileEntity tileAdj = this.getAttachedTile();
 
-                if (tile instanceof TileBaseUniversalElectrical)
+                if (tileAdj instanceof TileBaseUniversalElectrical)
                 {
-                    TileBaseUniversalElectrical electricalTile = (TileBaseUniversalElectrical) tile;
-                    EnergySourceAdjacent source = new EnergySourceAdjacent(ForgeDirection.getOrientation(this.facing).getOpposite());
-                    this.storage.extractEnergyGC((int) electricalTile.receiveEnergyGC(source, this.storage.getEnergyStoredGC(), false), false);
+                    TileBaseUniversalElectrical electricalTile = (TileBaseUniversalElectrical) tileAdj;
+                    EnergySourceAdjacent source = new EnergySourceAdjacent(ForgeDirection.getOrientation(this.facing ^ 1));
+                    this.storage.extractEnergyGC(electricalTile.receiveEnergyGC(source, this.storage.getEnergyStoredGC(), false), false);
                 }
             }
         }
