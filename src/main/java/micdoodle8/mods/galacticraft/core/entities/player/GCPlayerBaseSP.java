@@ -2,7 +2,9 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 
 import api.player.client.ClientPlayerAPI;
 import api.player.client.ClientPlayerBase;
+import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 
 public class GCPlayerBaseSP extends ClientPlayerBase
 {
@@ -44,6 +46,18 @@ public class GCPlayerBaseSP extends ClientPlayerBase
     {
         super.moveEntity(par1, par3, par5);
         this.getClientHandler().moveEntity(this.player, par1, par3, par5);
+    }
+
+    @Override
+    public void afterMoveEntityWithHeading(float paramFloat1, float paramFloat2)
+    {
+        super.afterMoveEntityWithHeading(paramFloat1, paramFloat2);
+
+        if (Loader.isModLoaded("SmartMoving"))
+        {
+            this.player.motionY += 0.080000000000000002D;
+            this.player.motionY -= WorldUtil.getGravityForEntity(this.player);
+        }
     }
 
     @Override
