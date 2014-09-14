@@ -118,7 +118,6 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
         switch (metadata)
         {
         case 0:
-            System.out.println("Creating tile");
         	return new TileEntityLandingPadSingle();
         case 1:
             return new TileEntityBuggyFuelerSingle();
