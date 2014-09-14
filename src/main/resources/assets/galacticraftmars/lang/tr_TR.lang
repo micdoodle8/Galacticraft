@@ -111,6 +111,10 @@ gui.methaneOutput.desc.2=metan gazı tankı
 gui.message.withAtmosphere0.name=gezegenin atmosferinde
 gui.message.withAtmosphere1.name=bulunabilir
 item.carbonFragments.name=Parçalanmış Karbon
+gui.cargorocket.status.waiting.0=Waiting for ##NEEDS TRANSLATE##
+gui.cargorocket.status.waiting.1=ignition ##NEEDS TRANSLATE##
+gui.cargorocket.status.launched.0=Already ##NEEDS TRANSLATE##
+gui.cargorocket.status.launched.1=Launched ##NEEDS TRANSLATE##
 
 gas.carbondioxide.name=Karbondioksit
 gas.oxygen.name=Oksijen
@@ -129,6 +133,18 @@ tile.terraformer.description=Terraformer gezegenlere yeşillik katar, çim, ağa
 tile.creeperEgg.description=Creeper Yumurtası Mars zindanlarında bulunur, spawnlanınca büyük bir patlama oluşur. 
 tile.gasLiquefier.description=Gaz Sıvılaştırıcı, metan gazını atmosferden veya teneke kutudan alarak iyi bir roket yakıtı yapın.
 tile.methaneSynthesizer.description=Karbon ve hidrojenin ana kaynağı. Gaz sıvılaştırıcı için metan gazı sağlar.
+gui.slimeling.chat.wrongPlayer=This isn't my Slimeling! ##NEEDS TRANSLATE##
+gui.cryogenic.chat.cantUse=I can't use this for another %d seconds ##NEEDS TRANSLATE##
+gui.slimeling.name=Name ##NEEDS TRANSLATE##
+gui.slimeling.owner=Owner ##NEEDS TRANSLATE##
+gui.slimeling.kills=Kills ##NEEDS TRANSLATE##
+gui.slimeling.scale=Scale ##NEEDS TRANSLATE##
+gui.slimeling.button.sit=Sit ##NEEDS TRANSLATE##
+gui.slimeling.button.follow=Follow ##NEEDS TRANSLATE##
+gui.slimeling.sitting=Sitting ##NEEDS TRANSLATE##
+gui.slimeling.following=Following ##NEEDS TRANSLATE##
+gui.slimeling.damage=Attack Damage ##NEEDS TRANSLATE##
+gui.slimeling.food=Favorite food ##NEEDS TRANSLATE##
 
 # SCHEMATICS
 schematic.rocketT3.name=Tier 3 Roketi

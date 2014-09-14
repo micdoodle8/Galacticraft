@@ -21,7 +21,7 @@ tile.moonBlock.moongrass.name=Moon Turf
 tile.moonBlock.tinmoon.name=Tin Ore
 tile.moonBlock.coppermoon.name=Copper Ore
 tile.moonBlock.cheesestone.name=Cheese Ore
-tile.moonBlock.bricks.name=Moon Dungeon Bricks
+tile.moonBlock.bricks.name=Moon Dungeon Brick
 tile.cheeseBlock.name=Block of Cheese
 
 dimension.Moon.name=Moon

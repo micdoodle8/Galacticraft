@@ -111,6 +111,10 @@ gui.methaneOutput.desc.2=沼气池
 gui.message.withAtmosphere0.name=一个星球上有很多
 gui.message.withAtmosphere1.name=在大气中
 item.carbonFragments.name=碳片
+gui.cargorocket.status.waiting.0=Waiting for ##NEEDS TRANSLATE##
+gui.cargorocket.status.waiting.1=ignition ##NEEDS TRANSLATE##
+gui.cargorocket.status.launched.0=Already ##NEEDS TRANSLATE##
+gui.cargorocket.status.launched.1=Launched ##NEEDS TRANSLATE##
 
 gas.carbondioxide.name=二氧化碳
 gas.oxygen.name=氧气
@@ -129,6 +133,18 @@ tile.terraformer.description=地形改造机用于给偏远的行星增添一些
 tile.creeperEgg.description=爬行者蛋会在火星地牢生成,爆炸后有惊喜.
 tile.gasLiquefier.description=液化气,来自大气或容器.液化甲烷是不错的火箭燃料!
 tile.methaneSynthesizer.description=提供氢与碳就能制造出甲烷,进一步加工需要在气体液化机进行.
+gui.slimeling.chat.wrongPlayer=This isn't my Slimeling! ##NEEDS TRANSLATE##
+gui.cryogenic.chat.cantUse=I can't use this for another %d seconds ##NEEDS TRANSLATE##
+gui.slimeling.name=Name ##NEEDS TRANSLATE##
+gui.slimeling.owner=Owner ##NEEDS TRANSLATE##
+gui.slimeling.kills=Kills ##NEEDS TRANSLATE##
+gui.slimeling.scale=Scale ##NEEDS TRANSLATE##
+gui.slimeling.button.sit=Sit ##NEEDS TRANSLATE##
+gui.slimeling.button.follow=Follow ##NEEDS TRANSLATE##
+gui.slimeling.sitting=Sitting ##NEEDS TRANSLATE##
+gui.slimeling.following=Following ##NEEDS TRANSLATE##
+gui.slimeling.damage=Attack Damage ##NEEDS TRANSLATE##
+gui.slimeling.food=Favorite food ##NEEDS TRANSLATE##
 
 # Schematics
 schematic.rocketT3.name=3阶火箭
