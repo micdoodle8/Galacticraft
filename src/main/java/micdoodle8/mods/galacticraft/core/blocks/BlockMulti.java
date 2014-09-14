@@ -38,6 +38,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
     public BlockMulti(String assetName)
     {
         super(GCBlocks.machine);
+        this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeMetal);
         this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setBlockName(assetName);
@@ -179,7 +180,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
     {
         TileEntity tileEntity = par1World.getTileEntity(par2, par3, par4);
 
-        if (tileEntity != null)
+        if (tileEntity instanceof TileEntityMulti)
         {
             BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
 
