@@ -21,6 +21,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -330,21 +331,41 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             {
                 if (this.targetDimension != this.worldObj.provider.dimensionId)
                 {
-                    WorldProvider targetDim = WorldProvider.getProviderForDimension(this.targetDimension);
-
-                    //No rocket flight to non-Galacticraft dimensions other than the Overworld allowed
-                    if (targetDim != null && (this.targetDimension == 0 || targetDim instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider) targetDim).canSpaceshipTierPass(this.getRocketTier())))
+                    WorldProvider targetDim = WorldProvider.getProviderForDimension(this.targetDimension);                   
+                    if (targetDim != null)
                     {
-                        WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(this.targetDimension);
-
+                    	WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(this.targetDimension);
                         if (worldServer != null)
                         {
-                            if (this.riddenByEntity != null)
-                            {
-                                WorldUtil.transferEntityToDimension(this.riddenByEntity, this.targetDimension, worldServer, false, this);
-                            }
-
-                            return;
+	                        boolean dimensionAllowed = this.targetDimension == 0;
+	
+	                        if (targetDim instanceof IGalacticraftWorldProvider)
+	                        {
+	                        	if (((IGalacticraftWorldProvider) targetDim).canSpaceshipTierPass(this.getRocketTier()))
+	                        		dimensionAllowed = true;
+	                        	else
+	                        		dimensionAllowed = false;
+                        	}
+	                        else
+	                        //No rocket flight to non-Galacticraft dimensions other than the Overworld allowed unless config
+	                        if (this.targetDimension > 1 || this.targetDimension < -1)
+	                        {
+	                            try {
+		                        	Class<?> marsConfig = Class.forName("micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars");
+		                        	if (marsConfig.getField("launchControllerAllDims").getBoolean(null))
+		                        		dimensionAllowed = true;
+	                            } catch (Exception e) { e.printStackTrace(); }
+	                        }
+	
+	                    	if (dimensionAllowed)
+	                    	{
+	                            if (this.riddenByEntity != null)
+	                            {
+	                                WorldUtil.transferEntityToDimension(this.riddenByEntity, this.targetDimension, worldServer, false, this);
+	                            }
+	
+	                            return;
+	                    	}
                         }
                     }
                     //No return - in this situation continue into regular take-off

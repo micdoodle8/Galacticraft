@@ -42,6 +42,7 @@ public class ConfigManagerMars
     // GENERAL
     public static boolean generateOtherMods;
     public static boolean launchControllerChunkLoad;
+    public static boolean launchControllerAllDims;
 
     private void setDefaultValues()
     {
@@ -69,6 +70,7 @@ public class ConfigManagerMars
 
             ConfigManagerMars.generateOtherMods = ConfigManagerMars.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Generate other mod's features on Mars", false).getBoolean(false);
             ConfigManagerMars.launchControllerChunkLoad = ConfigManagerMars.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Launch Controller acts as chunkloader", true, "Will cause issues if disabled!").getBoolean(true);
+            ConfigManagerMars.launchControllerAllDims = ConfigManagerMars.configuration.get(Constants.CONFIG_CATEGORY_GENERAL, "Launch Controller destination can be in a dimension from another mod", false, "May rarely cause issues if enabled, depends on how the other mod's dimensions are.").getBoolean(false);
         }
         catch (final Exception e)
         {
