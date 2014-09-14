@@ -58,6 +58,12 @@ public class BlockShortRangeTelepad extends BlockTileGC implements ItemBlockDesc
     {
         return false;
     }
+    
+    @Override
+    public boolean renderAsNormalBlock()
+    {
+		return false;
+    }
 
     @Override
     public TileEntity createNewTileEntity(World world, int meta)
