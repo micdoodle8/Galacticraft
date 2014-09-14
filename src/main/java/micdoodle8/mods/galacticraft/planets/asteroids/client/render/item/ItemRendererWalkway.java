@@ -11,7 +11,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
-import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 
 public class ItemRendererWalkway implements IItemRenderer
@@ -59,16 +58,16 @@ public class ItemRendererWalkway implements IItemRenderer
     {
         if (type == ItemRenderType.EQUIPPED)
         {
-            GL11.glTranslatef(1.2F, 0.5F, 1.15F);
+            GL11.glTranslatef(0.9F, 0.5F, 0.9F);
             GL11.glRotatef(185, 1, 0, 0);
             GL11.glRotatef(40, 0, 1, 0);
             GL11.glRotatef(-70, 0, 0, 1);
-            GL11.glScalef(3.2F, 3.2F, 3.2F);
+            GL11.glScalef(2.0F, 2.0F, 2.0F);
         }
 
         if (type == ItemRenderType.EQUIPPED_FIRST_PERSON)
         {
-            GL11.glScalef(2.0F, 2.0F, 2.0F);
+            GL11.glScalef(1.6F, 1.6F, 1.6F);
             GL11.glTranslatef(-0.1F, 0.4F, 0.35F);
             GL11.glRotatef(180, 0, 0, 1);
         }
@@ -86,9 +85,8 @@ public class ItemRendererWalkway implements IItemRenderer
             }
             else
             {
-                GL11.glRotatef(Sys.getTime() / 90F % 360F, 0F, 1F, 0F);
                 GL11.glRotatef(180, 0, 0, 1);
-                GL11.glScalef(4.0F, 4.0F, 4.0F);
+                GL11.glScalef(1.8F, 1.8F, 1.8F);
             }
 
             GL11.glScalef(1.3F, 1.3F, 1.3F);
