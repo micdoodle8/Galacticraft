@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -95,10 +96,10 @@ public class CommandGCEnergyUnits extends CommandBase
 
             }
 
-            throw new WrongUsageException("Invalid units in /GCEnergyUnits command. Usage: " + this.getCommandUsage(icommandsender), new Object[0]);
+            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.gcenergyunits.invalidUnits", this.getCommandUsage(icommandsender)), new Object[0]);
         }
 
-        throw new WrongUsageException("The units need to be specified! Usage: " + this.getCommandUsage(icommandsender), new Object[0]);
+        throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.gcenergyunits.noUnits", this.getCommandUsage(icommandsender)), new Object[0]);
     }
 
 

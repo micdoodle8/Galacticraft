@@ -130,6 +130,9 @@ tile.creeperEgg.description=Creeper Eggs will spawn in Mars dungeons, spawning a
 tile.gasLiquefier.description=Liquefies gases, either from the atmosphere or from canisters. Liquefied methane makes a good rocket fuel!
 tile.methaneSynthesizer.description=With a source of hydrogen and a source of carbon, this manufactures Methane for further processing in a Gas Liquefier.
 
+gui.slimeling.chat.wrongPlayer=This isn't my Slimeling!
+gui.cryogenic.chat.cantUse=I can't use this for another %d seconds
+
 # SCHEMATICS
 schematic.rocketT3.name=Tier 3 Rocket
 schematic.cargoRocket.name=Automatic Cargo Rocket

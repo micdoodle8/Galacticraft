@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -68,7 +69,7 @@ public class CommandJoinSpaceRace extends CommandBase
         }
         else
         {
-            throw new WrongUsageException("Not enough command arguments! Usage: " + this.getCommandUsage(icommandsender), new Object[0]);
+            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.joinrace.noTeam", this.getCommandUsage(icommandsender)), new Object[0]);
         }
     }
 }

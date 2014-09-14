@@ -375,6 +375,9 @@ gui.rocketType.3=Pre-fueled
 gui.spacestation.typeCommand=Type
 gui.spacestation.playername=<playername>
 gui.spacestation.toAllowEntry=to allow another player to enter this space station!
+gui.spacestation.added=You've been added to %s's Space Station accepted players!
+gui.spacestation.addsuccess=Successfully added %s to Space Station list!
+gui.spacestation.removesuccess=Successfully removed %s from Space Station list!
 
 gui.skeletonBoss.message=Boss despawned, don't leave the boss room while fighting! Re-enter room to respawn boss.
 gui.warning.noroom=Not enough room!
@@ -453,6 +456,13 @@ gui.spaceRace.create.remove.name=Remove
 gui.spaceRace.join.title.name=Join Space Race
 gui.spaceRace.join.owner.name=Owner
 gui.spaceRace.join.memberCount.name=%d members
+gui.spaceRace.chat.addSuccess=%s has joined the Space Race!
+gui.spaceRace.chat.removeSuccess=%s has been removed from the Space Race.
+gui.spaceRace.chat.inviteReceived=Received Space Race Team Invite from %s.
+gui.spaceRace.chat.toJoin=To join %s use command %s
+gui.spaceRace.chat.notFound=Could not find player with name: %s
+gui.spaceRace.chat.alreadyPart=You are already a part of this space race!
+gui.spaceRace.unnamed=Unnamed Team
 
 gui.message.moon.daynightcycle.0.name=29.5 Earth Days
 gui.message.moon.daynightcycle.1.name=
@@ -550,3 +560,10 @@ star.sol=Sol
 
 # COMMANDS
 commands.dimensionteleport=%s was sent into the atmosphere%s
+commands.gcenergyunits.invalidUnits=Invalid units in /GCEnergyUnits command. Usage: %s
+commands.gcenergyunits.noUnits=The units need to be specified! Usage: %s
+commands.joinrace.noTeam=The team needs to be specified! Usage: %s
+commands.dimensiontp.tooMany=Too many command arguments! Usage: %s
+commands.ssinvite.notFound=Could not find space station for your username, you need to travel there first!
+commands.ssinvite.wrongUsage=Not enough command arguments! Usage: %s
+commands.ssuninvite.noPlayer=Couldn't find player with username %s on your Space Station list!

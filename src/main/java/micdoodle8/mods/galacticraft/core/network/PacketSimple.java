@@ -1082,7 +1082,7 @@ public class PacketSimple extends Packet implements IPacket
                     {
                         teamNameTotal = teamNameTotal.concat(dB + teamNamePart + " ");
                     }
-                    playerInvited.addChatMessage(new ChatComponentText("Received Space Race Team Invite from " + bG + player.getGameProfile().getName() + dA + ". To join " + teamNameTotal + dA + "use command " + EnumColor.AQUA + "/joinrace").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA)));
+                    playerInvited.addChatMessage(new ChatComponentText(dA + GCCoreUtil.translateWithFormat("gui.spaceRace.chat.inviteReceived", bG + player.getGameProfile().getName() + dA) + "  " + GCCoreUtil.translateWithFormat("gui.spaceRace.chat.toJoin", teamNameTotal, EnumColor.AQUA + "/joinrace" + dA)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA)));
                 }
             }
             break;
@@ -1096,7 +1096,7 @@ public class PacketSimple extends Packet implements IPacket
 
                 if (!race.getPlayerNames().remove(playerToRemove))
                 {
-                    player.addChatMessage(new ChatComponentText("Could not find player with name: " + playerToRemove));
+                    player.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.spaceRace.chat.notFound", playerToRemove)));
                 }
                 else
                 {
@@ -1129,13 +1129,13 @@ public class PacketSimple extends Packet implements IPacket
 
                         if (memberObj != null)
                         {
-                            memberObj.addChatMessage(new ChatComponentText(EnumColor.BRIGHT_GREEN + playerToAdd + EnumColor.DARK_AQUA + " has joined the Space Race!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA)));
+                            memberObj.addChatMessage(new ChatComponentText(EnumColor.DARK_AQUA + GCCoreUtil.translateWithFormat("gui.spaceRace.chat.addSuccess", EnumColor.BRIGHT_GREEN + playerToAdd + EnumColor.DARK_AQUA)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA)));
                         }
                     }
                 }
                 else
                 {
-                    player.addChatMessage(new ChatComponentText("You are already a part of this space race!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_RED)));
+                    player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.spaceRace.chat.alreadyPart")).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_RED)));
                 }
             }
             break;

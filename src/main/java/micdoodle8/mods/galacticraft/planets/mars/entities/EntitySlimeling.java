@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModuleClient;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.InventorySlimeling;
@@ -412,7 +413,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
                             GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats((EntityPlayerMP) par1EntityPlayer);
                             if (stats.chatCooldown == 0)
                             {
-                                par1EntityPlayer.addChatMessage(new ChatComponentText("This isn't my Slimeling!"));
+                                par1EntityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.slimeling.chat.wrongPlayer")));
                                 stats.chatCooldown = 100;
                             }
                         }

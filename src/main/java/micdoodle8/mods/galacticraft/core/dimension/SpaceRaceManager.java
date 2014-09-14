@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.dimension;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -9,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import net.minecraft.entity.player.EntityPlayer;
@@ -183,13 +185,13 @@ public class SpaceRaceManager
 
             if (memberObj != null)
             {
-                memberObj.addChatMessage(new ChatComponentText(EnumColor.RED + player + EnumColor.DARK_AQUA + " has been removed from the Space Race.").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA)));
+                memberObj.addChatMessage(new ChatComponentText(EnumColor.DARK_AQUA + GCCoreUtil.translateWithFormat("gui.spaceRace.chat.removeSuccess", EnumColor.RED + player + EnumColor.DARK_AQUA)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA)));
             }
         }
 
         List<String> playerList = new ArrayList<String>();
         playerList.add(player);
-        SpaceRace newRace = SpaceRaceManager.addSpaceRace(new SpaceRace(playerList, "Unnamed Team", new FlagData(48, 32), new Vector3(1, 1, 1)));
+        SpaceRace newRace = SpaceRaceManager.addSpaceRace(new SpaceRace(playerList, GCCoreUtil.translate("gui.spaceRace.unnamed"), new FlagData(48, 32), new Vector3(1, 1, 1)));
         EntityPlayerMP playerToRemove = PlayerUtil.getPlayerBaseServerFromPlayerUsername(player, true);
 
         if (playerToRemove != null)

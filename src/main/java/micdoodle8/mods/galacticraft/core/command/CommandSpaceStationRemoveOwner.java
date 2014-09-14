@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.command;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -56,7 +57,7 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
 
                     if (stats.spaceStationDimensionID <= 0)
                     {
-                        throw new WrongUsageException("Could not find space station for your username, you need to travel there first!", new Object[0]);
+                        throw new WrongUsageException(GCCoreUtil.translate("commands.ssinvite.notFound"), new Object[0]);
                     }
                     else
                     {
@@ -69,7 +70,7 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
                         }
                         else
                         {
-                            throw new CommandException("Couldn't find player with username \"" + var3 + "\" on your Space Station list!", new Object[0]);
+                            throw new CommandException(GCCoreUtil.translateWithFormat("commands.ssuninvite.noPlayer", "\"" + var3 + "\""), new Object[0]);
                         }
                     }
                 }
@@ -82,12 +83,12 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
         }
         else
         {
-            throw new WrongUsageException("Not enough command arguments! Usage: " + this.getCommandUsage(icommandsender), new Object[0]);
+            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssinvite.wrongUsage", this.getCommandUsage(icommandsender)), new Object[0]);
         }
 
         if (playerBase != null)
         {
-            playerBase.addChatMessage(new ChatComponentText("Successfully removed " + var3 + " from Space Station list!"));
+            playerBase.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.spacestation.removesuccess", var3)));
         }
     }
 
