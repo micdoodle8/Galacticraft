@@ -371,7 +371,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
         case 3:
             return itemstack.getItem() == MarsItems.carbonFragments;
         case 4:
-            return FluidContainerRegistry.isEmptyContainer(itemstack);
+            return itemstack.getItem() instanceof ItemCanisterGeneric;
         }
 
         return false;

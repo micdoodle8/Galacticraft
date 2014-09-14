@@ -533,21 +533,9 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
     {
-        int metaside = this.getBlockMetadata() + 2;
-        if (side == (metaside ^ 1))
+        if (side > 1)
         {
-            return new int [] { 2 };
-        }
-
-        //2->5 3->4 4->2 5->3
-        if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
-        {
-            return new int [] { 3 };
-        }
-
-        if (side == metaside)
-        {
-            return new int [] { 1 };
+            return new int [] { 1, 2, 3};
         }
 
         return new int[] { 0 };
@@ -609,9 +597,9 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
             FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(itemstack);
             return stack != null && stack.getFluid() != null && this.getIdFromName(stack.getFluid().getName()) > -1;
         case 2:
-            return FluidContainerRegistry.isEmptyContainer(itemstack);
+            return itemstack.getItem() instanceof ItemCanisterGeneric;
         case 3:
-            return FluidContainerRegistry.isEmptyContainer(itemstack);
+            return itemstack.getItem() instanceof ItemCanisterGeneric;
         }
 
         return false;
@@ -724,14 +712,20 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     public FluidTankInfo[] getTankInfo(ForgeDirection from)
     {
         FluidTankInfo[] tankInfo = new FluidTankInfo[] {};
+        int metaside = this.getBlockMetadata() + 2;
+        int side = from.ordinal();
 
-        if (from == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite())
+        if (side == (metaside ^ 1))
         {
             tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.gasTank) };
         }
-        else if (from == ForgeDirection.getOrientation(this.getBlockMetadata() + 2))
+        else if (side == metaside)
         {
             tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.liquidTank) };
+        }
+        else if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == side)
+        {
+            tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.liquidTank2) };
         }
 
         return tankInfo;

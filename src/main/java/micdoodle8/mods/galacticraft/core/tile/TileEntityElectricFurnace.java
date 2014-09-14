@@ -239,8 +239,8 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
     {
-        if (side == 0) return new int[] { 2 };
-        return new int[] { 0, 1 };
+        if (side == 0) return new int[] { 0 };
+        return new int[] { 1, 2 };
     }
 
     @Override
