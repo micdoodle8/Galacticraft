@@ -1,13 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
-import buildcraft.api.mj.MjAPI;
-import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
-
 import com.google.common.collect.Lists;
 
 import cpw.mods.fml.relauncher.Side;
-import mekanism.api.energy.IStrictEnergyAcceptor;
 import micdoodle8.mods.galacticraft.api.power.EnergySource;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceWireless;
@@ -15,7 +10,7 @@ import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 import micdoodle8.mods.galacticraft.api.power.ILaserNode;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
+import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorage;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
@@ -76,6 +71,15 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
                     TileBaseUniversalElectrical electricalTile = (TileBaseUniversalElectrical) tileAdj;
                     EnergySourceAdjacent source = new EnergySourceAdjacent(ForgeDirection.getOrientation(this.facing ^ 1));
                     this.storage.extractEnergyGC(electricalTile.receiveEnergyGC(source, this.storage.getEnergyStoredGC(), false), false);
+                }
+                else
+                {
+                    ForgeDirection inputAdj = ForgeDirection.getOrientation(this.facing);
+                	float otherModTransfer = EnergyUtil.otherModsEnergyTransfer(tileAdj, inputAdj, this.storage.getEnergyStoredGC(), false);
+                	if (otherModTransfer > 0F)
+                	{
+                		this.storage.extractEnergyGC(otherModTransfer, false);
+                	}
                 }
             }
         }

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.energy;
 
 import buildcraft.api.mj.MjAPI;
 import buildcraft.api.power.IPowerReceptor;
+import buildcraft.api.power.PowerHandler.PowerReceiver;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergyConductor;
 import ic2.api.energy.tile.IEnergyEmitter;
@@ -134,5 +135,48 @@ public class EnergyUtil
         }
 
         return adjacentConnections;
+    }
+    
+    public static float otherModsEnergyTransfer(TileEntity tileAdj, ForgeDirection inputAdj, float toSend, boolean simulate)
+    {
+        if (EnergyConfigHandler.isMekanismLoaded() && tileAdj instanceof IStrictEnergyAcceptor)
+        {
+            IStrictEnergyAcceptor tileMek = (IStrictEnergyAcceptor) tileAdj;
+            if (tileMek.canReceiveEnergy(inputAdj))
+            {
+            	float transferredMek;
+            	if (simulate)
+            		transferredMek = tileMek.canReceiveEnergy(inputAdj) ? (float) (tileMek.getMaxEnergy() - tileMek.getEnergy()) : 0F;
+            	else
+            		transferredMek = (float) tileMek.transferEnergyToAcceptor(inputAdj, toSend * EnergyConfigHandler.TO_MEKANISM_RATIO);
+                return transferredMek * EnergyConfigHandler.MEKANISM_RATIO;
+            }
+        }
+        else if (EnergyConfigHandler.isBuildcraftLoaded() && EnergyConfigHandler.getBuildcraftVersion() == 6 && MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, inputAdj) != null)
+        //New BC API
+        {
+            double toSendBC = Math.min(toSend * EnergyConfigHandler.TO_BC_RATIO, MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, inputAdj).getEnergyRequested());
+            if (simulate)
+            {
+                return (float) toSendBC * EnergyConfigHandler.BC3_RATIO;
+            }
+            return (float) MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, inputAdj).addEnergy(toSendBC) * EnergyConfigHandler.BC3_RATIO;
+        }
+        else if (EnergyConfigHandler.isBuildcraftLoaded() && tileAdj instanceof IPowerReceptor)
+        //Legacy BC API
+        {
+            PowerReceiver receiver = ((IPowerReceptor) tileAdj).getPowerReceiver(inputAdj);
+            if (receiver != null)
+            {
+                double toSendBC = Math.min(toSend * EnergyConfigHandler.TO_BC_RATIO, receiver.powerRequest());
+                if (simulate)
+                {
+                    return (float) toSendBC * EnergyConfigHandler.BC3_RATIO;
+                }
+                return (float) receiver.receiveEnergy(buildcraft.api.power.PowerHandler.Type.PIPE, toSendBC, inputAdj) * EnergyConfigHandler.BC3_RATIO;
+            }
+        }
+        
+        return 0F;
     }
 }

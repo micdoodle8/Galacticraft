@@ -1,11 +1,7 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
-import buildcraft.api.mj.MjAPI;
-import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
 import mekanism.api.energy.EnergizedItemManager;
 import mekanism.api.energy.IEnergizedItem;
-import mekanism.api.energy.IStrictEnergyAcceptor;
 import micdoodle8.mods.galacticraft.api.item.ElectricItemHelper;
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
@@ -13,6 +9,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
+import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import micdoodle8.mods.miccore.Annotations.VersionSpecific;
@@ -79,44 +76,9 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
                             amountProduced += (toSend - network.produce(toSend, true, this.tierGC, this));
                         }
                     }
-                    else if (EnergyConfigHandler.isMekanismLoaded() && tileAdj instanceof IStrictEnergyAcceptor)
+                    else
                     {
-                        IStrictEnergyAcceptor tileMek = (IStrictEnergyAcceptor) tileAdj;
-                        if (tileMek.canReceiveEnergy(direction.getOpposite()))
-                        {
-                            float transferredMek = (float) tileMek.transferEnergyToAcceptor(direction.getOpposite(), toSend * EnergyConfigHandler.TO_MEKANISM_RATIO);
-                            amountProduced += transferredMek * EnergyConfigHandler.MEKANISM_RATIO;
-                        }
-                    }
-                    else if (EnergyConfigHandler.isBuildcraftLoaded() && EnergyConfigHandler.getBuildcraftVersion() == 6 && MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, direction.getOpposite()) != null)
-                    //New BC API
-                    {
-                        double toSendBC = Math.min(toSend * EnergyConfigHandler.TO_BC_RATIO, MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, direction.getOpposite()).getEnergyRequested());
-                        if (simulate)
-                        {
-                            amountProduced += toSendBC * EnergyConfigHandler.BC3_RATIO;
-                        }
-                        else
-                        {
-                            amountProduced += (float) MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, direction.getOpposite()).addEnergy(toSendBC) * EnergyConfigHandler.BC3_RATIO;
-                        }
-                    }
-                    else if (EnergyConfigHandler.isBuildcraftLoaded() && tileAdj instanceof IPowerReceptor)
-                    //Legacy BC API
-                    {
-                        PowerReceiver receiver = ((IPowerReceptor) tileAdj).getPowerReceiver(direction.getOpposite());
-                        if (receiver != null)
-                        {
-                            double toSendBC = Math.min(toSend * EnergyConfigHandler.TO_BC_RATIO, receiver.powerRequest());
-                            if (simulate)
-                            {
-                                amountProduced += toSendBC * EnergyConfigHandler.BC3_RATIO;
-                            }
-                            else
-                            {
-                                amountProduced += (float) receiver.receiveEnergy(buildcraft.api.power.PowerHandler.Type.PIPE, toSendBC, direction.getOpposite()) * EnergyConfigHandler.BC3_RATIO;
-                            }
-                        }
+                        amountProduced += EnergyUtil.otherModsEnergyTransfer(tileAdj, direction.getOpposite(), toSend, simulate);
                     }
                 }
             }
