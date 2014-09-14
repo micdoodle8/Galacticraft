@@ -337,13 +337,15 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
             float speedModifier = 0.1162F * 2;
 
             float angularSwingArm = MathHelper.cos(par1 * (speedModifier / 2));
-            float angularSwingLeg = MathHelper.cos(par1 * speedModifier);
-            this.modelPlayer.bipedRightArm.rotateAngleX = -angularSwingArm * 4.0F * par2 * 0.5F;
-            this.modelPlayer.bipedLeftArm.rotateAngleX = angularSwingArm * 4.0F * par2 * 0.5F;
-            this.modelPlayer.bipedRightArm.rotateAngleZ = (float) (5 * (Math.PI / 180));
-            this.modelPlayer.bipedLeftArm.rotateAngleZ = (float) (-5 * (Math.PI / 180));
-            this.modelPlayer.bipedRightLeg.rotateAngleX = angularSwingLeg * 1.45F * par2;
-            this.modelPlayer.bipedLeftLeg.rotateAngleX = -angularSwingLeg * 1.45F * par2;
+            float rightMod = this.modelPlayer.heldItemRight != 0 ? 1 : 2;
+            this.modelPlayer.bipedRightArm.rotateAngleX -= MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * rightMod * par2 * 0.5F;
+            this.modelPlayer.bipedLeftArm.rotateAngleX -= MathHelper.cos(par1 * 0.6662F) * 2.0F * par2 * 0.5F;
+            this.modelPlayer.bipedRightArm.rotateAngleX += -angularSwingArm * 4.0F * par2 * 0.5F;
+            this.modelPlayer.bipedLeftArm.rotateAngleX += angularSwingArm * 4.0F * par2 * 0.5F;
+            this.modelPlayer.bipedLeftLeg.rotateAngleX -= MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
+            this.modelPlayer.bipedLeftLeg.rotateAngleX += MathHelper.cos(par1 * 0.1162F * 2 + (float)Math.PI) * 1.4F * par2;
+            this.modelPlayer.bipedRightLeg.rotateAngleX -= MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
+            this.modelPlayer.bipedRightLeg.rotateAngleX += MathHelper.cos(par1 * 0.1162F * 2) * 1.4F * par2;
         }
 
         this.oxygenMask.rotateAngleY = this.modelPlayer.bipedHead.rotateAngleY;

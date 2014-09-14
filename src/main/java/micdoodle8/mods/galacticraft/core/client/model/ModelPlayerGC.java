@@ -343,138 +343,29 @@ public class ModelPlayerGC extends ModelBiped
     @Override
     public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
     {
+        super.setRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);
         final EntityPlayer player = (EntityPlayer) par7Entity;
         final ItemStack currentItemStack = player.inventory.getCurrentItem();
 
-        this.bipedHead.rotateAngleY = par4 / 57.29578F;
-        this.bipedHead.rotateAngleX = par5 / 57.29578F;
-        this.bipedHeadwear.rotateAngleY = this.bipedHead.rotateAngleY;
-        this.bipedHeadwear.rotateAngleX = this.bipedHead.rotateAngleX;
-        this.oxygenMask.rotateAngleY = this.bipedHead.rotateAngleY;
-        this.oxygenMask.rotateAngleX = this.bipedHead.rotateAngleX;
-        this.bipedRightLeg.rotateAngleY = 0.0F;
-        this.bipedLeftLeg.rotateAngleY = 0.0F;
-
-        //Slower arm and leg motion if airborne in Galacticraft Dimensions
         if (!par7Entity.onGround && par7Entity.worldObj.provider instanceof IGalacticraftWorldProvider && !(currentItemStack != null && currentItemStack.getItem() instanceof IHoldableItem))
         {
             float speedModifier = 0.1162F * 2;
 
             float angularSwingArm = MathHelper.cos(par1 * (speedModifier / 2));
-            float angularSwingLeg = MathHelper.cos(par1 * speedModifier);
-            this.bipedRightArm.rotateAngleX = -angularSwingArm * 4.0F * par2 * 0.5F;
-            this.bipedLeftArm.rotateAngleX = angularSwingArm * 4.0F * par2 * 0.5F;
-            this.bipedRightArm.rotateAngleZ = (float) (5 * (Math.PI / 180));
-            this.bipedLeftArm.rotateAngleZ = (float) (-5 * (Math.PI / 180));
-            this.bipedRightLeg.rotateAngleX = angularSwingLeg * 1.45F * par2;
-            this.bipedLeftLeg.rotateAngleX = -angularSwingLeg * 1.45F * par2;
-        }
-        else
-        //Normal arm and leg motion
-        {
-            float angularSwingArm = MathHelper.cos(par1 * 0.6662F);
-            float angularSwingLeg = angularSwingArm;
-            this.bipedRightArm.rotateAngleX = -angularSwingArm * 2.0F * par2 * 0.5F;
-            this.bipedLeftArm.rotateAngleX = angularSwingArm * 2.0F * par2 * 0.5F;
-            this.bipedRightArm.rotateAngleZ = 0.0F;
-            this.bipedLeftArm.rotateAngleZ = 0.0F;
-            this.bipedRightLeg.rotateAngleX = angularSwingLeg * 1.4F * par2;
-            this.bipedLeftLeg.rotateAngleX = -angularSwingLeg * 1.4F * par2;
+            float rightMod = this.heldItemRight != 0 ? 1 : 2;
+            this.bipedRightArm.rotateAngleX -= MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * rightMod * par2 * 0.5F;
+            this.bipedLeftArm.rotateAngleX -= MathHelper.cos(par1 * 0.6662F) * 2.0F * par2 * 0.5F;
+            this.bipedRightArm.rotateAngleX += -angularSwingArm * 4.0F * par2 * 0.5F;
+            this.bipedLeftArm.rotateAngleX += angularSwingArm * 4.0F * par2 * 0.5F;
+            this.bipedLeftLeg.rotateAngleX -= MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
+            this.bipedLeftLeg.rotateAngleX += MathHelper.cos(par1 * 0.1162F * 2 + (float)Math.PI) * 1.4F * par2;
+            this.bipedRightLeg.rotateAngleX -= MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
+            this.bipedRightLeg.rotateAngleX += MathHelper.cos(par1 * 0.1162F * 2) * 1.4F * par2;
         }
 
-        if (this.isRiding)
-        {
-            float thirtySixDegrees = (float) Math.PI / 5F;
-            this.bipedRightArm.rotateAngleX += -thirtySixDegrees;
-            this.bipedLeftArm.rotateAngleX += -thirtySixDegrees;
-            this.bipedRightLeg.rotateAngleX = -thirtySixDegrees * 2F;
-            this.bipedLeftLeg.rotateAngleX = -thirtySixDegrees * 2F;
-            this.bipedRightLeg.rotateAngleY = thirtySixDegrees / 2F;
-            this.bipedLeftLeg.rotateAngleY = -thirtySixDegrees / 2F;
-        }
+        this.oxygenMask.rotateAngleY = this.bipedHead.rotateAngleY;
+        this.oxygenMask.rotateAngleX = this.bipedHead.rotateAngleX;
 
-        if (this.heldItemLeft != 0)
-        {
-            this.bipedLeftArm.rotateAngleX = this.bipedLeftArm.rotateAngleX * 0.5F - (float) Math.PI / 10F * this.heldItemLeft;
-        }
-
-        if (this.heldItemRight != 0)
-        {
-            this.bipedRightArm.rotateAngleX = this.bipedRightArm.rotateAngleX * 0.5F - (float) Math.PI / 10F * this.heldItemRight;
-        }
-
-        this.bipedRightArm.rotateAngleY = 0.0F;
-        this.bipedLeftArm.rotateAngleY = 0.0F;
-        float f6;
-        float f7;
-
-        if (this.onGround > -9990.0F)
-        {
-            f6 = this.onGround;
-            this.bipedBody.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(f6) * (float) Math.PI * 2.0F) * 0.2F;
-            this.bipedRightArm.rotationPointZ = MathHelper.sin(this.bipedBody.rotateAngleY) * 5.0F;
-            this.bipedRightArm.rotationPointX = -MathHelper.cos(this.bipedBody.rotateAngleY) * 5.0F;
-            this.bipedLeftArm.rotationPointZ = -this.bipedRightArm.rotationPointZ;
-            this.bipedLeftArm.rotationPointX = -this.bipedRightArm.rotationPointX;
-            this.bipedRightArm.rotateAngleY += this.bipedBody.rotateAngleY;
-            this.bipedLeftArm.rotateAngleY += this.bipedBody.rotateAngleY;
-            this.bipedLeftArm.rotateAngleX += this.bipedBody.rotateAngleY;
-            f6 = 1.0F - this.onGround;
-            f6 *= f6;
-            f6 *= f6;
-            f6 = 1.0F - f6;
-            f7 = MathHelper.sin(f6 * (float) Math.PI);
-            final float f8 = MathHelper.sin(this.onGround * (float) Math.PI) * -(this.bipedHead.rotateAngleX - 0.7F) * 0.75F;
-            this.bipedRightArm.rotateAngleX = (float) (this.bipedRightArm.rotateAngleX - (f7 * 1.2D + f8));
-            this.bipedRightArm.rotateAngleY += this.bipedBody.rotateAngleY * 2.0F;
-            this.bipedRightArm.rotateAngleZ = MathHelper.sin(this.onGround * (float) Math.PI) * -0.4F;
-        }
-
-        if (this.isSneak)
-        {
-            this.bipedBody.rotateAngleX = 0.5F;
-            this.bipedRightArm.rotateAngleX += 0.4F;
-            this.bipedLeftArm.rotateAngleX += 0.4F;
-            this.bipedRightLeg.rotationPointZ = 4.0F;
-            this.bipedLeftLeg.rotationPointZ = 4.0F;
-            this.bipedRightLeg.rotationPointY = 9.0F;
-            this.bipedLeftLeg.rotationPointY = 9.0F;
-            this.bipedHead.rotationPointY = 1.0F;
-            this.bipedHeadwear.rotationPointY = 1.0F;
-        }
-        else
-        {
-            this.bipedBody.rotateAngleX = 0.0F;
-            this.bipedRightLeg.rotationPointZ = 0.1F;
-            this.bipedLeftLeg.rotationPointZ = 0.1F;
-            this.bipedRightLeg.rotationPointY = 12.0F;
-            this.bipedLeftLeg.rotationPointY = 12.0F;
-            this.bipedHead.rotationPointY = 0.0F;
-            this.bipedHeadwear.rotationPointY = 0.0F;
-        }
-
-        if (this.aimedBow)
-        {
-            f6 = 0.0F;
-            f7 = 0.0F;
-            this.bipedRightArm.rotateAngleZ = 0.0F;
-            this.bipedLeftArm.rotateAngleZ = 0.0F;
-            this.bipedRightArm.rotateAngleY = -(0.1F - f6 * 0.6F) + this.bipedHead.rotateAngleY;
-            this.bipedLeftArm.rotateAngleY = 0.1F - f6 * 0.6F + this.bipedHead.rotateAngleY + 0.4F;
-            this.bipedRightArm.rotateAngleX = -((float) Math.PI / 2F) + this.bipedHead.rotateAngleX;
-            this.bipedLeftArm.rotateAngleX = -((float) Math.PI / 2F) + this.bipedHead.rotateAngleX;
-            this.bipedRightArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
-            this.bipedLeftArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
-        }
-
-        float partialAngleZ = MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-        float partialAngleX = MathHelper.sin(par3 * 0.067F) * 0.05F;
-        this.bipedRightArm.rotateAngleZ += partialAngleZ;
-        this.bipedLeftArm.rotateAngleZ -= partialAngleZ;
-        this.bipedRightArm.rotateAngleX += partialAngleX;
-        this.bipedLeftArm.rotateAngleX -= partialAngleX;
-
-        //Render parachute
         if (usingParachute)
         {
             this.parachute[0].rotateAngleZ = (float) (30F * (Math.PI / 180F));
@@ -497,42 +388,6 @@ public class ModelPlayerGC extends ModelBiped
             this.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
         }
 
-        //Hold rockets and other items above the player's head
-        if (currentItemStack != null && currentItemStack.getItem() instanceof IHoldableItem && !(par7Entity.ridingEntity instanceof EntityAutoRocket) && !(par7Entity.ridingEntity instanceof EntityLander))
-        {
-            IHoldableItem holdableItem = (IHoldableItem) currentItemStack.getItem();
-
-            if (holdableItem.shouldHoldLeftHandUp(player))
-            {
-                this.bipedLeftArm.rotateAngleX = 0;
-                this.bipedLeftArm.rotateAngleZ = 0;
-
-                this.bipedLeftArm.rotateAngleX += (float) Math.PI + 0.3;
-                this.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
-            }
-
-            if (holdableItem.shouldHoldRightHandUp(player))
-            {
-                this.bipedRightArm.rotateAngleX = 0;
-                this.bipedRightArm.rotateAngleZ = 0;
-
-                this.bipedRightArm.rotateAngleX += (float) Math.PI + 0.3;
-                this.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
-            }
-
-            if (holdableItem.shouldCrouch(player))
-            {
-                this.bipedBody.rotateAngleX = 0.5F;
-                this.bipedRightLeg.rotationPointZ = 4.0F;
-                this.bipedLeftLeg.rotationPointZ = 4.0F;
-                this.bipedRightLeg.rotationPointY = 9.0F;
-                this.bipedLeftLeg.rotationPointY = 9.0F;
-                this.bipedHead.rotationPointY = 1.0F;
-                this.bipedHeadwear.rotationPointY = 1.0F;
-            }
-        }
-
-        //Render the Oxygen Tanks etc
         this.greenOxygenTanks[0].rotateAngleX = this.bipedBody.rotateAngleX;
         this.greenOxygenTanks[0].rotateAngleY = this.bipedBody.rotateAngleY;
         this.greenOxygenTanks[0].rotateAngleZ = this.bipedBody.rotateAngleZ;
@@ -551,52 +406,5 @@ public class ModelPlayerGC extends ModelBiped
         this.redOxygenTanks[1].rotateAngleX = this.bipedBody.rotateAngleX;
         this.redOxygenTanks[1].rotateAngleY = this.bipedBody.rotateAngleY;
         this.redOxygenTanks[1].rotateAngleZ = this.bipedBody.rotateAngleZ;
-
-        //Attempt compatibility with SmartMoving mod
-        try
-        {
-            if (Class.forName("mod_SmartMoving") != null || Class.forName("net.minecraft.src.mod_SmartMoving") != null)
-            {
-                super.setRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);
-                return;
-            }
-        }
-        catch (final ClassNotFoundException e1)
-        {
-        }
-
-        final List<?> l = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, AxisAlignedBB.getBoundingBox(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
-
-        for (int i = 0; i < l.size(); i++)
-        {
-            final Entity e = (Entity) l.get(i);
-
-            if (e instanceof EntityTier1Rocket)
-            {
-                final EntityTier1Rocket ship = (EntityTier1Rocket) e;
-
-                if (ship.riddenByEntity != null && !((EntityPlayer) ship.riddenByEntity).getGameProfile().getName().equals(player.getGameProfile().getName()) && (ship.getLaunched() || ship.timeUntilLaunch < 390))
-                {
-                    this.bipedRightArm.rotateAngleZ -= (float) (Math.PI / 8) + MathHelper.sin(par3 * 0.9F) * 0.2F;
-                    this.bipedRightArm.rotateAngleX = (float) Math.PI;
-                }
-            }
-        }
-
-        if (ModelPlayerGC.crossbowModLoaded)
-        {
-            try
-            {
-                Class<?> c = Class.forName("micdoodle8.mods.crossbowmod.client.ClientProxy");
-
-                Method m = c.getMethod("bipedRotationHook", ModelBiped.class, Entity.class, float.class);
-
-                m.invoke(null, this, par7Entity, par3);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
     }
 }
