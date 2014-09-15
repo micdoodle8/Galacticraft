@@ -26,7 +26,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     @NetworkedField(targetSide = Side.CLIENT)
     public int facing = ForgeDirection.UNKNOWN.ordinal();
     private int preLoadFacing = -1;
-    private EnergyStorage storage = new EnergyStorage(Integer.MAX_VALUE, 1);
+    private EnergyStorage storage = new EnergyStorage(Integer.MAX_VALUE, 1500);
     @NetworkedField(targetSide = Side.CLIENT)
     public int modeReceive = ReceiverMode.UNDEFINED.ordinal();
     public Vector3 color = new Vector3(0, 1, 0);
@@ -164,7 +164,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
             return 0;
         }
 
-        TileEntity tile = this.getAttachedTile();
+        //TileEntity tile = this.getAttachedTile();
 
         if (this.facing == ForgeDirection.UNKNOWN.ordinal())
         {
