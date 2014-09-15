@@ -255,7 +255,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
             }
             else
             {
-                TileEntity tile = new Vector3(this).translate(new Vector3(newDirection)).getTileEntity(this.worldObj);
+                TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, newDirection);
 
                 if (tile == null)
                 {
@@ -273,6 +273,10 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
                     {
                         this.modeReceive = ReceiverMode.UNDEFINED.ordinal();
                     }
+                }
+                else if (EnergyUtil.otherModCanReceive(tile, newDirection.getOpposite()))
+                {
+                	this.modeReceive = ReceiverMode.RECEIVE.ordinal();
                 }
             }
         }
