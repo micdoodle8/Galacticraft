@@ -16,6 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -185,6 +186,13 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
     {
         return false;
     }
+    
+    @SideOnly(Side.CLIENT)
+	@Override
+	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+	{
+		return true;
+	}
 
     @Override
     public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)

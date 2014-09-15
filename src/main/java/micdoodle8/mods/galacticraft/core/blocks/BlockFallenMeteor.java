@@ -56,6 +56,12 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, Ite
     {
         return false;
     }
+    
+    @Override
+    public boolean renderAsNormalBlock()
+    {
+        return false;
+    }
 
     @Override
     public int quantityDroppedWithBonus(int par1, Random par2Random)
