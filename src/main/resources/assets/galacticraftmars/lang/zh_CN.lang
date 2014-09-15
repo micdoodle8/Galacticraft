@@ -49,7 +49,7 @@ tile.marsMachine.4.name=气体液化器
 tile.marsMachine.5.name=甲烷合成器
 tile.marsMachine.6.name=水电解器
 tile.sludge.name=菌泥
-tile.creeperEgg.name=爬行者蛋
+tile.creeperEgg.name=苦力怕蛋
 tile.cavernVines.name=岩穴藤蔓
 
 # GUI
@@ -111,10 +111,10 @@ gui.methaneOutput.desc.2=沼气池
 gui.message.withAtmosphere0.name=一个星球上有很多
 gui.message.withAtmosphere1.name=在大气中
 item.carbonFragments.name=碳片
-gui.cargorocket.status.waiting.0=Waiting for ##NEEDS TRANSLATE##
-gui.cargorocket.status.waiting.1=ignition ##NEEDS TRANSLATE##
-gui.cargorocket.status.launched.0=Already ##NEEDS TRANSLATE##
-gui.cargorocket.status.launched.1=Launched ##NEEDS TRANSLATE##
+gui.cargorocket.status.waiting.0=正在等待
+gui.cargorocket.status.waiting.1=点火
+gui.cargorocket.status.launched.0=已经
+gui.cargorocket.status.launched.1=发射
 
 gas.carbondioxide.name=二氧化碳
 gas.oxygen.name=氧气
@@ -130,21 +130,24 @@ tile.slimelingEgg.description=黏滑怪蛋,一旦被玩家空手打碎,就会立
 tile.cryoChamber.description=低温仓使玩家能在白天睡觉,回复少量生命,但有冷却时间.
 tile.launchController.description=发射控制器用于设置发射动作,包括发射条件和终点,连接发射平台以自动发射.
 tile.terraformer.description=地形改造机用于给偏远的行星增添一些绿色,在提供正确的材料时生成如草,树和水.
-tile.creeperEgg.description=爬行者蛋会在火星地牢生成,爆炸后有惊喜.
+tile.creeperEgg.description=苦力怕蛋会在火星地牢生成,爆炸后有惊喜.
 tile.gasLiquefier.description=液化气,来自大气或容器.液化甲烷是不错的火箭燃料!
 tile.methaneSynthesizer.description=提供氢与碳就能制造出甲烷,进一步加工需要在气体液化机进行.
-gui.slimeling.chat.wrongPlayer=This isn't my Slimeling! ##NEEDS TRANSLATE##
-gui.cryogenic.chat.cantUse=I can't use this for another %d seconds ##NEEDS TRANSLATE##
-gui.slimeling.name=Name ##NEEDS TRANSLATE##
-gui.slimeling.owner=Owner ##NEEDS TRANSLATE##
-gui.slimeling.kills=Kills ##NEEDS TRANSLATE##
-gui.slimeling.scale=Scale ##NEEDS TRANSLATE##
-gui.slimeling.button.sit=Sit ##NEEDS TRANSLATE##
-gui.slimeling.button.follow=Follow ##NEEDS TRANSLATE##
-gui.slimeling.sitting=Sitting ##NEEDS TRANSLATE##
-gui.slimeling.following=Following ##NEEDS TRANSLATE##
-gui.slimeling.damage=Attack Damage ##NEEDS TRANSLATE##
-gui.slimeling.food=Favorite food ##NEEDS TRANSLATE##
+
+gui.slimeling.chat.wrongPlayer=这不是我的黏滑怪!
+gui.cryogenic.chat.cantUse=我不能使用这个超过%d秒
+gui.slimeling.name=名字
+gui.slimeling.owner=拥有者
+gui.slimeling.kills=杀死
+gui.slimeling.scale=比例
+gui.slimeling.button.sit=坐
+gui.slimeling.button.follow=跟随
+gui.slimeling.sitting=正坐着
+gui.slimeling.following=正在跟随
+gui.slimeling.damage=攻击伤害
+gui.slimeling.food=最喜爱的食物
+
+
 
 # Schematics
 schematic.rocketT3.name=3阶火箭
@@ -153,10 +156,25 @@ schematic.cargoRocket.name=自动货运火箭
 # Entities
 entity.Sludgeling.name=泥浆怪
 entity.Slimeling.name=黏滑怪
-entity.CreeperBoss.name=进化爬行者之王
+entity.CreeperBoss.name=进化苦力怕之王
 entity.SpaceshipT2.name=二阶火箭
 entity.CargoRocket.name=货运火箭
 
 # Container
 container.launchcontroller.name=发射控制器
 container.tileTerraformer.name=地形改造机
+
+# CONFIG GUI
+gc.configgui.dimensionIDMars=火星维度ID
+gc.configgui.idEntityCreeperBoss=苦力怕王实体ID
+gc.configgui.idEntityProjectileTNT=可投掷TNT实体ID
+gc.configgui.idEntitySpaceshipTier2=2阶火箭实体ID
+gc.configgui.idEntitySludgeling=菌泥实体ID
+gc.configgui.idEntitySlimeling=黏滑怪实体ID
+gc.configgui.idEntityTerraformBubble=地形改造气泡实体ID
+gc.configgui.idEntityLandingBalloons=登陆气泡实体ID
+gc.configgui.idEntityCargoRocket=货运火箭实体ID
+gc.configgui.idSchematicRocketT2=2阶火箭设计图ID
+gc.configgui.idSchematicCargoRocket=货运火箭设计图ID
+gc.configgui.launchControllerChunkLoad=发射台控制器加载区块
+gc.configgui.launchControllerAllDims=发射台控制器所有维度
