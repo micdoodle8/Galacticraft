@@ -305,8 +305,6 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
             this.wheelRotationZ = Math.max(-30.0F, Math.min(30.0F, this.wheelRotationZ * 0.9F));
         }
 
-        System.err.println(this.motionY * this.motionY);
-
         if (this.worldObj.isRemote && (this.riddenByEntity == null || !(this.riddenByEntity instanceof EntityPlayer) || !FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity)))
         {
             double x;
