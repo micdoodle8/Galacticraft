@@ -41,6 +41,13 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 
     @SideOnly(Side.CLIENT)
     @Override
+    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_)
+    {
+        return true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
     public CreativeTabs getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftBlocksTab;
