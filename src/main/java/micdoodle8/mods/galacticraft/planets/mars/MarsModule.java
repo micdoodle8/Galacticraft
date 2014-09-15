@@ -202,12 +202,12 @@ public class MarsModule implements IPlanetsModule
     @Override
     public Configuration getConfiguration()
     {
-        return ConfigManagerMars.configuration;
+        return ConfigManagerMars.config;
     }
 
     @Override
     public void syncConfig()
     {
-        ConfigManagerMars.syncConfig();
+        ConfigManagerMars.syncConfig(false);
     }
 }

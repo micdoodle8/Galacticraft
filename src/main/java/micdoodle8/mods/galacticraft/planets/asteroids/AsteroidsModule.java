@@ -283,12 +283,12 @@ public class AsteroidsModule implements IPlanetsModule
     @Override
     public Configuration getConfiguration()
     {
-        return ConfigManagerAsteroids.configuration;
+        return ConfigManagerAsteroids.config;
     }
 
     @Override
     public void syncConfig()
     {
-        ConfigManagerAsteroids.syncConfig();
+        ConfigManagerAsteroids.syncConfig(false);
     }
 }

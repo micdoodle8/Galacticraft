@@ -400,7 +400,6 @@ public class GalacticraftCore
     public void registerOtherEntities()
     {
         GCCoreUtil.registerGalacticraftNonMobEntity(EntityTier1Rocket.class, "Spaceship", ConfigManagerCore.idEntitySpaceship, 150, 1, false);
-        GCCoreUtil.registerGalacticraftNonMobEntity(EntityArrow.class, "GravityArrow", ConfigManagerCore.idEntityAntiGravityArrow, 150, 5, true);
         GCCoreUtil.registerGalacticraftNonMobEntity(EntityMeteor.class, "Meteor", ConfigManagerCore.idEntityMeteor, 150, 5, true);
         GCCoreUtil.registerGalacticraftNonMobEntity(EntityBuggy.class, "Buggy", ConfigManagerCore.idEntityBuggy, 150, 5, true);
         GCCoreUtil.registerGalacticraftNonMobEntity(EntityFlag.class, "GCFlag", ConfigManagerCore.idEntityFlag, 150, 5, true);

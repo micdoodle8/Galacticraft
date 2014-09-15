@@ -82,7 +82,7 @@ public class EventHandlerGC
     {
         if (event.modID.equals(Constants.MOD_ID_CORE))
         {
-            ConfigManagerCore.syncConfig();
+            ConfigManagerCore.syncConfig(false);
         }
     }
 
