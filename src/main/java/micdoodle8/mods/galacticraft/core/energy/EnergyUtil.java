@@ -179,4 +179,24 @@ public class EnergyUtil
         
         return 0F;
     }
+
+	public static boolean otherModCanReceive(TileEntity tileAdj, ForgeDirection inputAdj)
+	{
+        if (EnergyConfigHandler.isMekanismLoaded() && tileAdj instanceof IStrictEnergyAcceptor)
+        {
+            return ((IStrictEnergyAcceptor) tileAdj).canReceiveEnergy(inputAdj);
+        }
+        else if (EnergyConfigHandler.isBuildcraftLoaded() && EnergyConfigHandler.getBuildcraftVersion() == 6 && MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, inputAdj) != null)
+        //New BC API
+        {
+            return true;
+        }
+        else if (EnergyConfigHandler.isBuildcraftLoaded() && tileAdj instanceof IPowerReceptor)
+        //Legacy BC API
+        {
+            return ((IPowerReceptor) tileAdj).getPowerReceiver(inputAdj) != null;
+        }
+		
+		return false;
+	}
 }

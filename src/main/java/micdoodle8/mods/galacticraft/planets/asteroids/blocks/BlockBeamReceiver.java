@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
+import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
@@ -138,15 +139,22 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
                 return -1;
             }
         }
+        
+        if (EnergyUtil.otherModCanReceive(tileAt, direction.getOpposite()))
+        	return direction.ordinal();
 
         for (ForgeDirection adjacentDir : ForgeDirection.VALID_DIRECTIONS)
         {
-            tileAt = world.getTileEntity(x + adjacentDir.offsetX, y + adjacentDir.offsetY, z + adjacentDir.offsetZ);
+            if (adjacentDir == direction) continue;
+        	tileAt = world.getTileEntity(x + adjacentDir.offsetX, y + adjacentDir.offsetY, z + adjacentDir.offsetZ);
 
-            if (tileAt != null && tileAt instanceof EnergyStorageTile && ((EnergyStorageTile) tileAt).getModeFromDirection(adjacentDir.getOpposite()) != null)
+            if (tileAt instanceof EnergyStorageTile && ((EnergyStorageTile) tileAt).getModeFromDirection(adjacentDir.getOpposite()) != null)
             {
                 return adjacentDir.ordinal();
             }
+            
+            if (EnergyUtil.otherModCanReceive(tileAt, adjacentDir.getOpposite()))
+            	return adjacentDir.ordinal();
         }
 
         return -1;
