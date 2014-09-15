@@ -379,7 +379,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-        return TileEntity.INFINITE_EXTENT_AABB;
+    	return AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 4, zCoord + 2);
     }
 
     @Override

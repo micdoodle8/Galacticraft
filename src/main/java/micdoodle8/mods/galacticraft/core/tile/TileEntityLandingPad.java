@@ -198,7 +198,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-        return TileEntity.INFINITE_EXTENT_AABB;
+    	return AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 0.4D, zCoord + 2);
     }
 
     @Override
