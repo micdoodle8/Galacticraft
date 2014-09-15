@@ -127,3 +127,9 @@ entity.Tier3RocketGC.name=Rang 3 Raketa
 # CONTAINERS
 container.shortRangeTelepad.name=Teleporter s Malom Daljinom
 container.entryPod.name=Ulazna Kapsula
+gc.configgui.dimensionIDAsteroids=Asteroids Dimension ID
+gc.configgui.idEntitySmallAsteroid=Small Asteroid Entity ID
+gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID
+gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID
+gc.configgui.idEntityEntryPod=Entry Pod Entity ID
+gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID
