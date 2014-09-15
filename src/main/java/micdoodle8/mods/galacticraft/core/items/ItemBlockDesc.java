@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.blocks.BlockAdvancedTile;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
@@ -33,6 +35,7 @@ public class ItemBlockDesc extends ItemBlockGC
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean advanced)
     {
         if (this.field_150939_a instanceof IBlockShiftDesc && ((IBlockShiftDesc) this.field_150939_a).showDescription(stack.getItemDamage()))
@@ -57,7 +60,7 @@ public class ItemBlockDesc extends ItemBlockGC
                 }
                 else if (this.field_150939_a instanceof BlockAdvancedTile)
                 {
-                    TileEntity te = ((BlockAdvancedTile) this.field_150939_a).createTileEntity(null, stack.getItemDamage() & 12);
+                    TileEntity te = ((BlockAdvancedTile) this.field_150939_a).createTileEntity(player.worldObj, stack.getItemDamage() & 12);
                     if (te instanceof TileBaseElectricBlock)
                     {
                         float powerDrawn = ((TileBaseElectricBlock) te).storage.getMaxExtract();
