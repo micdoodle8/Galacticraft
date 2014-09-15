@@ -99,9 +99,8 @@ public class RenderBuggy extends Render
         // Radar Dish
         GL11.glPushMatrix();
         GL11.glTranslatef(-1.178F, 4.1F, -2.397F);
-        GL11.glRotatef(entity.radarDishRotation.floatX(), 1, 0, 0);
-        GL11.glRotatef(entity.radarDishRotation.floatY(), 0, 1, 0);
-        GL11.glRotatef(entity.radarDishRotation.floatZ(), 0, 0, 1);
+        GL11.glRotatef((float)Math.sin(entity.ticksExisted * 0.05) * 50.0F, 1, 0, 0);
+        GL11.glRotatef((float)Math.cos(entity.ticksExisted * 0.1) * 50.0F, 0, 0, 1);
         this.modelBuggy.renderPart("RadarDish_Dish");
         GL11.glPopMatrix();
 

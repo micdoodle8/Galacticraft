@@ -61,7 +61,6 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     public double boatPitch;
     public int boatPosRotationIncrements;
     private IFuelDock landingPad;
-    public Vector3 radarDishRotation = new Vector3();
 
     public EntityBuggy(World var1)
     {
@@ -294,6 +293,20 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 
         super.onUpdate();
 
+        if (this.riddenByEntity == null)
+        {
+            this.motionX = this.motionZ = this.motionY = 0;
+        }
+
+        if (this.worldObj.isRemote)
+        {
+            this.wheelRotationX += Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ) * 150.0F * (this.speed < 0 ? 1 : -1);
+            this.wheelRotationX %= 360;
+            this.wheelRotationZ = Math.max(-30.0F, Math.min(30.0F, this.wheelRotationZ * 0.9F));
+        }
+
+        System.err.println(this.motionY * this.motionY);
+
         if (this.worldObj.isRemote && (this.riddenByEntity == null || !(this.riddenByEntity instanceof EntityPlayer) || !FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity)))
         {
             double x;
@@ -354,7 +367,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         {
         }
 
-        if (var2 < 1.0D)
+        if (!this.onGround)
         {
             this.motionY -= 0.04D;
         }
@@ -379,7 +392,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         if (this.isCollidedHorizontally)
         {
             this.speed *= 0.9;
-            this.motionY = 0.1D;
+            this.motionY = 0.15D;
         }
 
         if (this.worldObj.isRemote && this.buggyFuelTank.getFluid() != null && this.buggyFuelTank.getFluid().amount > 0)
@@ -391,10 +404,6 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         if (this.worldObj.isRemote)
         {
             this.moveEntity(this.motionX, this.motionY, this.motionZ);
-            this.wheelRotationX += (this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ) * 250.0F * (this.speed < 0 ? 1 : -1);
-            this.wheelRotationZ = Math.max(-30.0F, Math.min(30.0F, this.wheelRotationZ * 0.9F));
-            this.radarDishRotation.x = Math.sin(this.ticks * 0.05) * 50.0F;
-            this.radarDishRotation.z = Math.cos(this.ticks * 0.1) * 50.0F;
         }
 
         if (Math.abs(this.motionX * this.motionZ) > 0.000001)
