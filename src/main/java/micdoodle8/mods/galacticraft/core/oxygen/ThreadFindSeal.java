@@ -80,14 +80,14 @@ public class ThreadFindSeal
 
             this.looping.set(true);
 
-            if (ConfigManagerCore.enableSealerMultithreading)
-            {
-                new ThreadedFindSeal();
-            }
-            else
-            {
+//            if (ConfigManagerCore.enableSealerMultithreading)
+//            {
+//                new ThreadedFindSeal();
+//            }
+//            else
+//            {
                 this.check();
-            }
+//            }
         }
         else
         //If not called by a sealer, it's a breathable air edge check
