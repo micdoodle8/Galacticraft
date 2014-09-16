@@ -402,7 +402,7 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
     public ItemStack getGuaranteedLoot(Random rand)
     {
         List<ItemStack> stackList = GalacticraftRegistry.getDungeonLoot(2);
-        return stackList.get(rand.nextInt(stackList.size()));
+        return stackList.get(rand.nextInt(stackList.size())).copy();
     }
 
     @Override
