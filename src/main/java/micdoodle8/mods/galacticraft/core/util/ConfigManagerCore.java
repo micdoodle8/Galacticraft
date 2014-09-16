@@ -372,6 +372,12 @@ public class ConfigManagerCore
             enableDebug = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable lander on Moon and other planets", false);
+            prop.comment = "If this is true, the player will parachute onto the Moon instead - use only in debug situations.";
+            prop.setLanguageKey("gc.configgui.disableLander");
+            disableLander = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+
 //Server side
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Spaceship Explosion", false);
@@ -405,7 +411,7 @@ public class ConfigManagerCore
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Dungeon Boss Health Modifier", 1.0);
-            prop.comment = "Change this is you wish to balance the mod (if you have more powerful weapon mods).";
+            prop.comment = "Change this if you wish to balance the mod (if you have more powerful weapon mods).";
             prop.setLanguageKey("gc.configgui.dungeonBossHealthMod");
             dungeonBossHealthMod = prop.getDouble(1.0);
             propOrder.add(prop.getName());
