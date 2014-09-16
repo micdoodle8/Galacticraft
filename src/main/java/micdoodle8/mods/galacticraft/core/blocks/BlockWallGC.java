@@ -198,7 +198,7 @@ public class BlockWallGC extends BlockWall
 		}
 		else
 		{
-			for (int var4 = 0; var4 < 5; ++var4)
+			for (int var4 = 0; var4 < 4; ++var4)
 			{
 				par3List.add(new ItemStack(par1, 1, var4));
 			}
