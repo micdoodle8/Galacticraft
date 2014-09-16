@@ -186,7 +186,6 @@ public class EntityBubble extends EntityAdvanced implements IPacketReceiver, IBu
         {
             this.size = nbt.getFloat("bubbleSizeF");
         }
-        System.err.println("READ " + size);
 
         this.setShouldRender(nbt.getBoolean("ShouldRender"));
     }
