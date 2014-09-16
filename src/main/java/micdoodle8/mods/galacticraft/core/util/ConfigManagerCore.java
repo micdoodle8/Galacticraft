@@ -404,6 +404,12 @@ public class ConfigManagerCore
             spaceStationEnergyScalar = prop.getDouble(2.0);
             propOrder.add(prop.getName());
 
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Dungeon Boss Health Modifier", 1.0);
+            prop.comment = "Change this is you wish to balance the mod (if you have more powerful weapon mods).";
+            prop.setLanguageKey("gc.configgui.dungeonBossHealthMod");
+            dungeonBossHealthMod = prop.getDouble(1.0);
+            propOrder.add(prop.getName());
+
             try
             {
                 prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "External Sealable IDs", new String[] { GameData.getBlockRegistry().getNameForObject(Blocks.glass_pane) + ":0" });
