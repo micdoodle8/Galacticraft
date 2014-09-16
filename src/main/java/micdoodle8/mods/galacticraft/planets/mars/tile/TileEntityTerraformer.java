@@ -21,14 +21,18 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.ArrayList;
 
-public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IBubbleProvider
+public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IBubbleProvider, IFluidHandler
 {
     private final int tankCapacity = 2000;
     @NetworkedField(targetSide = Side.CLIENT)
@@ -54,6 +58,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     public float size;
     public final double MAX_SIZE = 15.0D;
     private int[] useCount = new int[2];
+	private int saplingIndex = 6;
 
     public TileEntityTerraformer()
     {
@@ -138,6 +143,8 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                 int bubbleSize = (int) Math.ceil(this.terraformBubble.getSize());
                 double bubbleSizeSq = this.terraformBubble.getSize();
                 bubbleSizeSq *= bubbleSizeSq;
+                boolean doGrass = !this.grassDisabled && this.getFirstSeedStack() != null;
+                boolean doTrees = !this.treesDisabled && this.getFirstSaplingStack() != null;
             	for (int x = this.xCoord - bubbleSize; x < this.xCoord + bubbleSize; x++)
                 {
                     for (int y = this.yCoord - bubbleSize; y < this.yCoord + bubbleSize; y++)
@@ -148,23 +155,17 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
                             if (!(blockID instanceof BlockAir) && this.getDistanceFromServer(x, y, z) < bubbleSizeSq)
                             {
-                                if (blockID instanceof ITerraformableBlock && ((ITerraformableBlock) blockID).isTerraformable(this.worldObj, x, y, z))
+                                if (doGrass && blockID instanceof ITerraformableBlock && ((ITerraformableBlock) blockID).isTerraformable(this.worldObj, x, y, z))
                                 {
-                                    if (!this.grassDisabled && this.getFirstSeedStack() != null)
-                                    {
-                                        this.terraformableBlocksList.add(new BlockVec3(x, y, z));
-                                    }
+                                    this.terraformableBlocksList.add(new BlockVec3(x, y, z));
                                 }
-                                else
+                                else if (doTrees)
                                 {
                                     Block blockIDAbove = this.worldObj.getBlock(x, y + 1, z);
                                 	if (blockID == Blocks.grass && blockIDAbove instanceof BlockAir)
 	                                {
-	                                    if (!this.treesDisabled && this.getFirstSaplingStack() != null)
-	                                    {
-	                                        this.grassBlockList.add(new BlockVec3(x, y, z));
-	                                    }
-	                                }
+                                        this.grassBlockList.add(new BlockVec3(x, y, z));
+                                    }
                                 }
                             }
                         }
@@ -316,7 +317,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         switch (type)
         {
         case 0:
-            stack = this.getFirstSaplingStack();
+            stack = this.containingItems[this.saplingIndex];
 
             if (stack != null)
             {
@@ -324,7 +325,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
                 if (stack.stackSize <= 0)
                 {
-                    this.containingItems[this.getSelectiveStack(6, 10)] = null;
+                    this.containingItems[this.saplingIndex] = null;
                 }
             }
             break;
@@ -365,6 +366,33 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         return -1;
     }
 
+    private int getRandomStack(int start, int end)
+    {
+    	int stackcount = 0;
+    	for (int i = start; i < end; i++)
+        {
+            if (this.containingItems[i] != null)
+            {
+                stackcount++;
+            }
+        }
+    	
+    	if (stackcount == 0)
+    		return -1;
+    	
+    	int random = this.worldObj.rand.nextInt(stackcount);
+    	for (int i = start; i < end; i++)
+        {
+            if (this.containingItems[i] != null)
+            {
+                if (random == 0) return i;
+                random --;
+            }
+        }
+    	
+    	return -1;
+    }
+
     public ItemStack getFirstBonemealStack()
     {
         int index = this.getSelectiveStack(2, 6);
@@ -379,11 +407,12 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
     public ItemStack getFirstSaplingStack()
     {
-        int index = this.getSelectiveStack(6, 10);
+        int index = this.getRandomStack(6, 10);
 
         if (index != -1)
         {
-            return this.containingItems[index];
+            this.saplingIndex = index;
+        	return this.containingItems[index];
         }
 
         return null;
@@ -545,5 +574,49 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         }
 
         this.terraformBubble.setShouldRender(shouldRender);
+    }
+ 
+    //Pipe handling
+    @Override
+    public boolean canDrain(ForgeDirection from, Fluid fluid)
+    {
+        return false;
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
+    {
+        return null;
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
+    {
+        return null;
+    }
+
+    @Override
+    public boolean canFill(ForgeDirection from, Fluid fluid)
+    {
+        return fluid != null && "water".equals(fluid.getName());
+    }
+
+    @Override
+    public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
+    {
+        int used = 0;
+
+        if (resource != null && this.canFill(from, resource.getFluid()))
+        {
+            used = this.waterTank.fill(resource, doFill);
+        }
+
+        return used;
+    }
+
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection from)
+    {
+        return new FluidTankInfo[] { new FluidTankInfo(this.waterTank) };
     }
 }
