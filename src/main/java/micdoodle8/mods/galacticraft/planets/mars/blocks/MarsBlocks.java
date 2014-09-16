@@ -9,6 +9,8 @@ import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockEgg;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMachine;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMars;
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class MarsBlocks
 {
@@ -65,5 +67,12 @@ public class MarsBlocks
         GameRegistry.registerBlock(MarsBlocks.machineT2, ItemBlockMachine.class, MarsBlocks.machineT2.getUnlocalizedName());
         GameRegistry.registerBlock(MarsBlocks.marsCobblestoneStairs, ItemBlockGC.class, MarsBlocks.marsCobblestoneStairs.getUnlocalizedName());
         GameRegistry.registerBlock(MarsBlocks.marsBricksStairs, ItemBlockGC.class, MarsBlocks.marsBricksStairs.getUnlocalizedName());
+    }
+    
+    public static void oreDictRegistration()
+    {
+        OreDictionary.registerOre("oreCopper", new ItemStack(MarsBlocks.marsBlock, 1, 0));
+        OreDictionary.registerOre("oreTin", new ItemStack(MarsBlocks.marsBlock, 1, 1));
+        OreDictionary.registerOre("oreIron", new ItemStack(MarsBlocks.marsBlock, 1, 3));
     }
 }
