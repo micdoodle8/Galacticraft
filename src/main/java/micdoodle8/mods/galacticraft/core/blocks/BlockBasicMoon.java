@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
@@ -7,7 +8,10 @@ import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
+import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.material.Material;
@@ -22,12 +26,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableResource, IPlantableBlock, ITerraformableBlock
@@ -380,5 +387,44 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
         }
 
         return super.getPickBlock(target, world, x, y, z);
+    }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int par6)
+    {
+        super.breakBlock(world, x, y, z, block, par6);
+
+        if (!world.isRemote && block == this && par6 == 5)
+        {
+            Map<Long, List<Footprint>> footprintChunkMap = TickHandlerServer.serverFootprintMap.get(world.provider.dimensionId);
+
+            if (footprintChunkMap != null)
+            {
+                long chunkKey = ChunkCoordIntPair.chunkXZ2Int(x >> 4, z >> 4);
+                List<Footprint> footprintList = footprintChunkMap.get(chunkKey);
+
+                if (footprintList != null && !footprintList.isEmpty())
+                {
+                    List<Footprint> toRemove = new ArrayList<Footprint>();
+
+                    for (Footprint footprint : footprintList)
+                    {
+                        if (footprint.position.x > x && footprint.position.x < x + 1 &&
+                                footprint.position.z > z && footprint.position.z < z + 1)
+                        {
+                            toRemove.add(footprint);
+                        }
+                    }
+
+                    if (!toRemove.isEmpty())
+                    {
+                        footprintList.removeAll(toRemove);
+                        footprintChunkMap.put(chunkKey, footprintList);
+                        TickHandlerServer.serverFootprintMap.put(world.provider.dimensionId, footprintChunkMap);
+                        TickHandlerServer.footprintRefreshList.add(new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 50));
+                    }
+                }
+            }
+        }
     }
 }

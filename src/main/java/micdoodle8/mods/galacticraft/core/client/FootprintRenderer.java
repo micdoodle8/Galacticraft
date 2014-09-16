@@ -60,17 +60,14 @@ public class FootprintRenderer
                     float f13 = (float) (footprint.position.z - interpPosZ);
 
                     GL11.glTranslatef(f11, f12, f13);
-                    GL11.glRotatef(-footprint.rotation + 90, 0, 1, 0);
-                    GL11.glTranslatef(-f11, -f12, -f13);
-
-                    GL11.glTranslatef(f11, f12, f13);
 
                     tessellator.setBrightness((int) (100 + ageScale * 155));
                     GL11.glColor4f(1 - ageScale, 1 - ageScale, 1 - ageScale, 1 - ageScale);
-                    tessellator.addVertexWithUV(0 - f10, 0, 0 + f10, f7, f9);
-                    tessellator.addVertexWithUV(0 + f10, 0, 0 + f10, f7, f8);
-                    tessellator.addVertexWithUV(0 + f10, 0, 0 - f10, f6, f8);
-                    tessellator.addVertexWithUV(0 - f10, 0, 0 - f10, f6, f9);
+                    double footprintScale = 0.5F;
+                    tessellator.addVertexWithUV(0 + Math.sin((45 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, 0, 0 + Math.cos((45 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, f7, f9);
+                    tessellator.addVertexWithUV(0 + Math.sin((135 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, 0, 0 + Math.cos((135 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, f7, f8);
+                    tessellator.addVertexWithUV(0 + Math.sin((225 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, 0, 0 + Math.cos((225 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, f6, f8);
+                    tessellator.addVertexWithUV(0 + Math.sin((315 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, 0, 0 + Math.cos((315 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, f6, f9);
 
                     tessellator.draw();
                     GL11.glPopMatrix();

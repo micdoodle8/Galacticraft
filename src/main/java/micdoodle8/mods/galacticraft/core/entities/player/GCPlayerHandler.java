@@ -13,6 +13,7 @@ import micdoodle8.mods.galacticraft.api.event.oxygen.GCCoreOxygenSuffocationEven
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -765,8 +766,11 @@ public class GCPlayerHandler
                             break;
                         }
 
+                        float rotation = player.rotationYaw - 180;
+                        pos = WorldUtil.getFootprintPosition(player.worldObj, rotation, pos, new BlockVec3(player));
+
                         long chunkKey = ChunkCoordIntPair.chunkXZ2Int(pos.intX() >> 4, pos.intZ() >> 4);
-                        TickHandlerServer.addFootprint(chunkKey, new Footprint(player.worldObj.provider.dimensionId, pos, player.rotationYaw), player.worldObj.provider.dimensionId);
+                        TickHandlerServer.addFootprint(chunkKey, new Footprint(player.worldObj.provider.dimensionId, pos, rotation), player.worldObj.provider.dimensionId);
 
                         // Increment and cap step counter at 1
                         playerStats.lastStep++;

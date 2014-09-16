@@ -1,10 +1,12 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
+import com.google.common.collect.Lists;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -37,7 +39,8 @@ public class TickHandlerServer
     private static Map<Integer, CopyOnWriteArrayList<BlockVec3>> scheduledTorchUpdates = new ConcurrentHashMap<Integer, CopyOnWriteArrayList<BlockVec3>>();
     private static Map<Integer, List<BlockVec3>> edgeChecks = new HashMap<Integer, List<BlockVec3>>();
     private static LinkedList<EnergyNetwork> networkTicks = new LinkedList<EnergyNetwork>();
-    private static Map<Integer, Map<Long, List<Footprint>>> serverFootprintMap = new HashMap<Integer, Map<Long, List<Footprint>>>();
+    public static Map<Integer, Map<Long, List<Footprint>>> serverFootprintMap = new HashMap<Integer, Map<Long, List<Footprint>>>();
+    public static List<NetworkRegistry.TargetPoint> footprintRefreshList = Lists.newArrayList();
     public static WorldDataSpaceRaces spaceRaceData = null;
     private static long tickCount;
 
@@ -237,6 +240,30 @@ public class TickHandlerServer
                         if (mapChanged)
                         {
                             TickHandlerServer.serverFootprintMap.put(world.provider.dimensionId, footprintMap);
+                        }
+                    }
+                }
+            }
+            else if (!footprintRefreshList.isEmpty())
+            {
+                for (NetworkRegistry.TargetPoint targetPoint : footprintRefreshList)
+                {
+                    WorldServer[] worlds = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers;
+
+                    for (int i = 0; i < worlds.length; i++)
+                    {
+                        WorldServer world = worlds[i];
+
+                        if (world.provider.dimensionId == targetPoint.dimension)
+                        {
+                            long chunkKey = ChunkCoordIntPair.chunkXZ2Int((int)targetPoint.x >> 4, (int)targetPoint.z >> 4);
+                            Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(world.provider.dimensionId);
+
+                            if (footprintMap != null && !footprintMap.isEmpty())
+                            {
+                                List<Footprint> footprints = footprintMap.get(chunkKey);
+                                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_FOOTPRINT_LIST, new Object[] { chunkKey, footprints.toArray(new Footprint[footprints.size()]) }), targetPoint);
+                            }
                         }
                     }
                 }

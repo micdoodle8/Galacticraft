@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
@@ -48,6 +49,7 @@ import net.minecraft.world.*;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import java.io.File;
 import java.util.*;
@@ -866,5 +868,78 @@ public class WorldUtil
         stats.savedPlanetList = new String(dimensionList);
         Entity fakeEntity = new EntityCelestialFake(player.worldObj, player.posX, player.posY, player.posZ, 0.0F);
         player.mountEntity(fakeEntity);
+    }
+
+    public static Vector3 getFootprintPosition(World world, float rotation, Vector3 startPosition, BlockVec3 playerCenter)
+    {
+        Vector3 position = startPosition.clone();
+        float footprintScale = 0.375F;
+
+        int mainPosX = position.intX();
+        int mainPosY = position.intY();
+        int mainPosZ = position.intZ();
+
+        // If the footprint is hovering over air...
+        if (world.getBlock(mainPosX, mainPosY, mainPosZ).isAir(world, mainPosX, mainPosY, mainPosZ))
+        {
+            position.x += (playerCenter.x - mainPosX);
+            position.z += (playerCenter.z - mainPosZ);
+
+            // If the footprint is still over air....
+            if (world.getBlock(position.intX(), position.intY(), position.intZ()).isAir(world, position.intX(), position.intY(), position.intZ()))
+            {
+                for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+                {
+                    if (direction != ForgeDirection.DOWN && direction != ForgeDirection.UP)
+                    {
+                        if (!world.getBlock(mainPosX + direction.offsetX, mainPosY, mainPosZ + direction.offsetZ).isAir(world, mainPosX + direction.offsetX, mainPosY, mainPosZ + direction.offsetZ))
+                        {
+                            position.x += direction.offsetX;
+                            position.z += direction.offsetZ;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        mainPosX = position.intX();
+        mainPosZ = position.intZ();
+
+        double x0 = (Math.sin((45 - rotation) * Math.PI / 180.0D) * footprintScale) + position.x;
+        double x1 = (Math.sin((135 - rotation) * Math.PI / 180.0D) * footprintScale) + position.x;
+        double x2 = (Math.sin((225 - rotation) * Math.PI / 180.0D) * footprintScale) + position.x;
+        double x3 = (Math.sin((315 - rotation) * Math.PI / 180.0D) * footprintScale) + position.x;
+        double z0 = (Math.cos((45 - rotation) * Math.PI / 180.0D) * footprintScale) + position.z;
+        double z1 = (Math.cos((135 - rotation) * Math.PI / 180.0D) * footprintScale) + position.z;
+        double z2 = (Math.cos((225 - rotation) * Math.PI / 180.0D) * footprintScale) + position.z;
+        double z3 = (Math.cos((315 - rotation) * Math.PI / 180.0D) * footprintScale) + position.z;
+
+        double xMin = Math.min(Math.min(x0, x1), Math.min(x2, x3));
+        double xMax = Math.max(Math.max(x0, x1), Math.max(x2, x3));
+        double zMin = Math.min(Math.min(z0, z1), Math.min(z2, z3));
+        double zMax = Math.max(Math.max(z0, z1), Math.max(z2, z3));
+
+        if (xMin < mainPosX)
+        {
+            position.x += mainPosX - xMin;
+        }
+
+        if (xMax > mainPosX + 1)
+        {
+            position.x -= xMax - (mainPosX + 1);
+        }
+
+        if (zMin < mainPosZ)
+        {
+            position.z += mainPosZ - zMin;
+        }
+
+        if (zMax > mainPosZ + 1)
+        {
+            position.z -= zMax - (mainPosZ + 1);
+        }
+
+        return position;
     }
 }
