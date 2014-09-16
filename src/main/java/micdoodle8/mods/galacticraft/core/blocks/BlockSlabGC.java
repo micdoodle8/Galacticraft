@@ -109,6 +109,10 @@ public class BlockSlabGC extends BlockSlab
 		{
 			max = 6;//Maximum slab type
 		}
+		else
+		{
+			max = 4;//Minimum slab type
+		}
 		for (int i = 0; i < max; ++i)
 		{
 			list.add(new ItemStack(block, 1, i));
