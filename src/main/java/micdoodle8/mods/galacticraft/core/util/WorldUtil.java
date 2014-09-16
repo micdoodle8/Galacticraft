@@ -379,14 +379,21 @@ public class WorldUtil
         {
             int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, registeredID);
 
-            if (id >= 0)
+            if (!DimensionManager.isDimensionRegistered(registeredID))
             {
-                DimensionManager.registerDimension(registeredID, ConfigManagerCore.idDimensionOverworldOrbitStatic);
-                FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(registeredID);
+	            if (id >= 0)
+	            {
+	                DimensionManager.registerDimension(registeredID, ConfigManagerCore.idDimensionOverworldOrbitStatic);
+	                FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(registeredID);
+                }
+	            else
+	            {
+	                DimensionManager.registerDimension(registeredID, ConfigManagerCore.idDimensionOverworldOrbit);
+	            }
             }
             else
             {
-                DimensionManager.registerDimension(registeredID, ConfigManagerCore.idDimensionOverworldOrbit);
+                GCLog.severe("Dimension already registered to another mod: unable to register space station dimension " + registeredID);
             }
         }
     }
@@ -405,8 +412,15 @@ public class WorldUtil
 
         if (isStatic)
         {
-            DimensionManager.registerDimension(planetID, planetID);
-            GCLog.info("Registered Dimension: " + planetID);
+            if (!DimensionManager.isDimensionRegistered(planetID))
+            {
+	            DimensionManager.registerDimension(planetID, planetID);
+	            GCLog.info("Registered Dimension: " + planetID);
+            }
+            else
+            {
+                GCLog.severe("Dimension already registered to another mod: unable to register planet dimension " + planetID);
+            }
         }
     }
 
@@ -471,13 +485,20 @@ public class WorldUtil
         WorldUtil.registeredSpaceStations.add(dimID);
         int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, dimID);
 
-        if (id >= 0)
+        if (!DimensionManager.isDimensionRegistered(dimID))
         {
-            DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbitStatic);
+	        if (id >= 0)
+	        {
+	            DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbitStatic);
+	        }
+	        else
+	        {
+	            DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbit);
+	        }
         }
         else
         {
-            DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbit);
+            GCLog.severe("Dimension already registered to another mod: unable to register space station dimension " + dimID);
         }
 
         GalacticraftCore.packetPipeline.sendToAll(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_LIST, WorldUtil.getSpaceStationList()));

@@ -315,7 +315,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     @Override
     public boolean canDrain(ForgeDirection from, Fluid fluid)
     {
-        if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2)))
+        if (from.equals(ForgeDirection.getOrientation((this.getBlockMetadata() + 2) ^ 1)))
         {
             return this.fuelTank.getFluid() != null && this.fuelTank.getFluidAmount() > 0;
         }
@@ -326,7 +326,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
     {
-        if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2)))
+        if (from.equals(ForgeDirection.getOrientation((this.getBlockMetadata() + 2) ^ 1)))
         {
             return this.fuelTank.drain(resource.amount, doDrain);
         }
@@ -337,7 +337,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
     {
-        if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2)))
+        if (from.equals(ForgeDirection.getOrientation((this.getBlockMetadata() + 2) ^ 1)))
         {
             return this.drain(from, new FluidStack(GalacticraftCore.fluidFuel, maxDrain), doDrain);
         }
@@ -348,7 +348,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     @Override
     public boolean canFill(ForgeDirection from, Fluid fluid)
     {
-        if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite()))
+        if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2)))
         {
             return this.oilTank.getFluid() == null || this.oilTank.getFluidAmount() < this.oilTank.getCapacity();
         }
@@ -361,7 +361,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     {
         int used = 0;
 
-        if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite()))
+        if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2)))
         {
             final String liquidName = FluidRegistry.getFluidName(resource);
 
@@ -379,11 +379,11 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     {
         FluidTankInfo[] tankInfo = new FluidTankInfo[] { };
 
-        if (from == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite())
+        if (from == ForgeDirection.getOrientation(this.getBlockMetadata() + 2))
         {
             tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.oilTank) };
         }
-        else if (from == ForgeDirection.getOrientation(this.getBlockMetadata() + 2))
+        else if (from == ForgeDirection.getOrientation((this.getBlockMetadata() + 2) ^ 1))
         {
             tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.fuelTank) };
         }

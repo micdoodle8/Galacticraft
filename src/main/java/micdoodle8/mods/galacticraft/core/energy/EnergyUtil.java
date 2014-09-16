@@ -169,11 +169,11 @@ public class EnergyUtil
                 {
                     if (EnergyUtil.voltageParameterIC2)
                     {
-                        result = (Double) EnergyUtil.injectEnergyIC2.invoke(tileAdj, inputAdj, energySendingIC2, 120D);
+                        result = energySendingIC2 - (Double) EnergyUtil.injectEnergyIC2.invoke(tileAdj, inputAdj, energySendingIC2, 120D);
                     }
                     else
                     {
-                        result = (Double) EnergyUtil.injectEnergyIC2.invoke(tileAdj, inputAdj, energySendingIC2);
+                        result = energySendingIC2 - (Double) EnergyUtil.injectEnergyIC2.invoke(tileAdj, inputAdj, energySendingIC2);
                     }
                 }
                 catch (Exception ex)

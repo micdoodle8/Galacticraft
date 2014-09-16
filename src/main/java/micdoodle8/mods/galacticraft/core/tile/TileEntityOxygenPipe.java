@@ -41,13 +41,6 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-        return TileEntity.INFINITE_EXTENT_AABB;
-    }
-
-    @Override
     public boolean canUpdate()
     {
         return this.worldObj == null || !this.worldObj.isRemote;

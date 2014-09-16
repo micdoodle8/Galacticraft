@@ -70,8 +70,6 @@ public class ContainerTerraformer extends Container
 	                    			ContainerTerraformer.saplingList.add(testStack);
 	                    		}                   		
 	                        }
-	                        else
-	                        	System.out.println("Terraformer: null item from block " + b.getUnlocalizedName());
 	                    }
 	                }
                 }

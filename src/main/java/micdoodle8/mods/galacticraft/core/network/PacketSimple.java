@@ -540,6 +540,10 @@ public class PacketSimple extends Packet implements IPacket
                                 WorldUtil.registeredPlanets.add(dimID);
                                 DimensionManager.registerDimension(dimID, dimID);
                             }
+                            else
+                            {
+                                GCLog.severe("Dimension already registered to another mod: unable to register planet dimension " + dimID);
+                            }
                         }
                     }
                     else if (this.data.get(0) instanceof Integer[])
@@ -552,6 +556,10 @@ public class PacketSimple extends Packet implements IPacket
                             {
                                 WorldUtil.registeredPlanets.add(dimID);
                                 DimensionManager.registerDimension(dimID, dimID);
+                            }
+                            else
+                            {
+                                GCLog.severe("Dimension already registered to another mod: unable to register planet dimension " + dimID);
                             }
                         }
                     }
