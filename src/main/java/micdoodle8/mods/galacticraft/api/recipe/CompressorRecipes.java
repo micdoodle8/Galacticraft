@@ -6,9 +6,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,7 +94,7 @@ public class CompressorRecipes
 
     public static void addShapelessRecipe(ItemStack par1ItemStack, Object... par2ArrayOfObj)
     {
-        ArrayList<ItemStack> arraylist = new ArrayList<ItemStack>();
+        ArrayList arraylist = new ArrayList();
         int i = par2ArrayOfObj.length;
 
         for (int j = 0; j < i; ++j)
@@ -111,12 +111,7 @@ public class CompressorRecipes
             }
             else if (object1 instanceof String)
             {
-                ArrayList<ItemStack> list = OreDictionary.getOres((String) object1);
-
-                if (!list.isEmpty())
-                {
-                    arraylist.add(list.get(0));
-                }
+                arraylist.add(object1);
             }
             else
             {
@@ -129,7 +124,7 @@ public class CompressorRecipes
             }
         }
 
-        CompressorRecipes.recipes.add(new ShapelessRecipes(par1ItemStack, arraylist));
+        CompressorRecipes.recipes.add(new ShapelessOreRecipe(par1ItemStack, arraylist.toArray()));
     }
 
     public static ItemStack findMatchingRecipe(IInventory inventory, World par2World)
@@ -183,7 +178,7 @@ public class CompressorRecipes
                 {
                     return irecipe.getRecipeOutput().copy();
                 }
-                else if (irecipe instanceof ShapelessRecipes && CompressorRecipes.matchesShapeless((ShapelessRecipes) irecipe, inventory, par2World))
+                else if (irecipe instanceof ShapelessOreRecipe && CompressorRecipes.matchesShapeless((ShapelessOreRecipe) irecipe, inventory, par2World))
                 {
                     return irecipe.getRecipeOutput().copy();
                 }
@@ -267,49 +262,54 @@ public class CompressorRecipes
         return true;
     }
 
-    private static boolean matchesShapeless(ShapelessRecipes recipe, IInventory inventory, World par2World)
+    private static boolean matchesShapeless(ShapelessOreRecipe recipe, IInventory var1, World par2World)
     {
-        @SuppressWarnings("unchecked")
-        ArrayList<ItemStack> arraylist = new ArrayList<ItemStack>(recipe.recipeItems);
+        ArrayList<Object> required = new ArrayList<Object>(recipe.getInput());
 
-        for (int i = 0; i < 3; ++i)
+        for (int x = 0; x < var1.getSizeInventory(); x++)
         {
-            for (int j = 0; j < 3; ++j)
+            ItemStack slot = var1.getStackInSlot(x);
+
+            if (slot != null)
             {
-                ItemStack itemstack = null;
+                boolean inRecipe = false;
+                Iterator<Object> req = required.iterator();
 
-                if (j >= 0 && i < 3)
+                while (req.hasNext())
                 {
-                    int k2 = j + i * 3;
-                    itemstack = inventory.getStackInSlot(k2);
-                }
+                    boolean match = false;
 
-                if (itemstack != null)
-                {
-                    boolean flag = false;
-                    Iterator<ItemStack> iterator = arraylist.iterator();
+                    Object next = req.next();
 
-                    while (iterator.hasNext())
+                    if (next instanceof ItemStack)
                     {
-                        ItemStack itemstack1 = iterator.next();
-
-                        if (itemstack.getItem() == itemstack1.getItem() && (itemstack1.getItemDamage() == 32767 || itemstack.getItemDamage() == itemstack1.getItemDamage()))
+                        match = OreDictionary.itemMatches((ItemStack)next, slot, false);
+                    }
+                    else if (next instanceof ArrayList)
+                    {
+                        Iterator<ItemStack> itr = ((ArrayList<ItemStack>)next).iterator();
+                        while (itr.hasNext() && !match)
                         {
-                            flag = true;
-                            arraylist.remove(itemstack1);
-                            break;
+                            match = OreDictionary.itemMatches(itr.next(), slot, false);
                         }
                     }
 
-                    if (!flag)
+                    if (match)
                     {
-                        return false;
+                        inRecipe = true;
+                        required.remove(next);
+                        break;
                     }
+                }
+
+                if (!inRecipe)
+                {
+                    return false;
                 }
             }
         }
 
-        return arraylist.isEmpty();
+        return required.isEmpty();
     }
 
     public static List<IRecipe> getRecipeList()

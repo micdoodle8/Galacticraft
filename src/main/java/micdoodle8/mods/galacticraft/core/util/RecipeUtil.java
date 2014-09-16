@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class RecipeUtil
@@ -42,57 +41,8 @@ public class RecipeUtil
 
     @SuppressWarnings("unchecked")
     public static void addRecipe(ItemStack result, Object[] obj)
-    {
-        CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(result, obj));
-
-        Object[] newIngredients = Arrays.copyOf(obj, obj.length);
-        boolean changed = false;
-
-        for (int i = 0; i < obj.length; i++)
-        {
-            if (newIngredients[i] instanceof String)
-            {
-                String ingred = (String) newIngredients[i];
-
-                if (ingred.equals("ingotAluminum"))
-                {
-                    newIngredients[i] = "ingotAluminium";
-                    changed = true;
-                }
-                else if (ingred.equals("compressedAluminum"))
-                {
-                    newIngredients[i] = "compressedAluminium";
-                    changed = true;
-                }
-            }
-        }
-
-        if (changed)
-        {
-            CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(result, newIngredients));
-        }
-
-        newIngredients = Arrays.copyOf(obj, obj.length);
-        changed = false;
-
-        for (int i = 0; i < obj.length; i++)
-        {
-            if (newIngredients[i] instanceof String)
-            {
-                String ingred = (String) newIngredients[i];
-
-                if (ingred.equals("ingotAluminum"))
-                {
-                    newIngredients[i] = "ingotNaturalAluminum";
-                    changed = true;
-                }
-            }
-        }
-
-        if (changed)
-        {
-            CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(result, newIngredients));
-        }
+    {    
+    	CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(result, obj));
     }
 
     public static void addRocketBenchRecipe(ItemStack result, HashMap<Integer, ItemStack> input)
