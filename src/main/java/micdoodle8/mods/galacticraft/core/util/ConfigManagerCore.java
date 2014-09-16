@@ -65,6 +65,7 @@ public class ConfigManagerCore
     public static double spaceStationEnergyScalar;
     public static boolean disableLander;
     public static double dungeonBossHealthMod;
+    public static boolean hardMode;
     public static int suffocationCooldown;
     public static int suffocationDamage;
     public static int[] externalOilGen;
@@ -410,12 +411,6 @@ public class ConfigManagerCore
             spaceStationEnergyScalar = prop.getDouble(2.0);
             propOrder.add(prop.getName());
 
-            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Dungeon Boss Health Modifier", 1.0);
-            prop.comment = "Change this if you wish to balance the mod (if you have more powerful weapon mods).";
-            prop.setLanguageKey("gc.configgui.dungeonBossHealthMod");
-            dungeonBossHealthMod = prop.getDouble(1.0);
-            propOrder.add(prop.getName());
-
             try
             {
                 prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "External Sealable IDs", new String[] { GameData.getBlockRegistry().getNameForObject(Blocks.glass_pane) + ":0" });
@@ -445,6 +440,18 @@ public class ConfigManagerCore
             prop.comment = "Change this value to modify the damage taken per suffocation tick";
             prop.setLanguageKey("gc.configgui.suffocationDamage");
             suffocationDamage = prop.getInt(2);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Dungeon Boss Health Modifier", 1.0);
+            prop.comment = "Change this if you wish to balance the mod (if you have more powerful weapon mods).";
+            prop.setLanguageKey("gc.configgui.dungeonBossHealthMod");
+            dungeonBossHealthMod = prop.getDouble(1.0);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Harder Difficulty", false);
+            prop.comment = "Set this to true for increased difficulty in modpacks (see forum for more info).";
+            prop.setLanguageKey("gc.configgui.hardMode");
+            hardMode = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Enable Sealed edge checks", true);
