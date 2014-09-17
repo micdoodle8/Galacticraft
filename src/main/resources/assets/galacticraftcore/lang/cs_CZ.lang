@@ -634,6 +634,7 @@ gc.configgui.disableCopperMoon=Nevitvářet měsíční měď
 gc.configgui.disableMoonVillageGen=Nevitvářet mimozemšťany
 gc.configgui.enableOtherModsFeatures=Povolit externí generátory terénu
 gc.configgui.enableDebug=Zobrazovat ladící výstup
+gc.configgui.disableLander=Disable lander on Moon, use parachute instead
 gc.configgui.disableSpaceshipGrief=Vypnout exploze raket
 gc.configgui.spaceStationsRequirePermission=Povolení ke vstupu na stanici
 gc.configgui.disableSpaceStationCreation=Zablokování vytváření vesmírných stanic
@@ -646,5 +647,7 @@ gc.configgui.suffocationDamage=Poškození dušením
 gc.configgui.enableSealerEdgeChecks=Ověřování vzduchového uzávěru
 gc.configgui.alternateCanisterRecipe=Alternativní láhve
 gc.configgui.rocketFuelFactor=Účinnost raketového paliva
+gc.configgui.dungeonBossHealthMod=Dungeon Boss Health Modifier
+gc.configgui.hardMode=Harder Difficulty
 
 # </file>

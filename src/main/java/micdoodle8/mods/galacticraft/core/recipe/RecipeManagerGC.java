@@ -25,11 +25,12 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class RecipeManagerGC
 {
-    public static void loadRecipes()
+    public static ArrayList<ItemStack> aluminumIngots = new ArrayList<ItemStack>();
+    
+	public static void loadRecipes()
     {
         if (CompatibilityManager.isBCraftLoaded())
         {
@@ -186,10 +187,42 @@ public class RecipeManagerGC
         input2.put(19, new ItemStack(GCItems.partBuggy, 1, 2));
         RecipeUtil.addBuggyBenchRecipe(new ItemStack(GCItems.buggy, 1, 3), input2);
 
-        ArrayList<ItemStack> aluminumIngots = new ArrayList<ItemStack>();
         aluminumIngots.addAll(OreDictionary.getOres("ingotAluminum"));
-        aluminumIngots.addAll(OreDictionary.getOres("ingotAluminium"));
-        aluminumIngots.addAll(OreDictionary.getOres("ingotNaturalAluminum"));
+    	ArrayList<ItemStack> addedList = new ArrayList<ItemStack>();
+        for (ItemStack ingotNew : OreDictionary.getOres("ingotAluminium"))
+        {
+        	boolean flag = false;
+        	for (ItemStack ingotDone : aluminumIngots)
+        	{
+        		if (ItemStack.areItemStacksEqual(ingotNew, ingotDone))
+        		{
+        			flag = true;
+        			break;
+        		}
+        	}
+        	if (!flag)
+        	{
+        		addedList.add(ingotNew);
+        		OreDictionary.registerOre("ingotAluminum", ingotNew);
+        	}
+        }
+        if (addedList.size() > 0)
+        {	
+        	aluminumIngots.addAll(addedList);
+        	addedList.clear();
+        }
+        for (ItemStack ingotNew : OreDictionary.getOres("ingotNaturalAluminum"))
+        {
+        	for (ItemStack ingotDone : aluminumIngots)
+        	{
+        		if (!ItemStack.areItemStacksEqual(ingotNew, ingotDone))
+        			addedList.add(ingotNew);
+        	}
+        }
+        if (addedList.size() > 0)
+        {	
+        	aluminumIngots.addAll(addedList);
+        }
 
         final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
         inputMap.put("ingotTin", 32);
@@ -401,84 +434,20 @@ public class RecipeManagerGC
 
         CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCItems.meteorChunk, 3), new Object[] { GCItems.meteoricIronRaw }));
 
-        for (int i = 3; i < 8; i++)
+        for (int i = 3; i < 6; i++)
         {
             if (ItemBasic.names[i].contains("ingot"))
             {
-                for (ItemStack stack : OreDictionary.getOres(ItemBasic.names[i]))
-                {
-                    CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, i + 3), stack, stack);
-                }
+                CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, i + 3), ItemBasic.names[i], ItemBasic.names[i]);
             }
         }
 
-        // Support for the other spelling of Aluminum
-        if (OreDictionary.getOres("ingotAluminium").size() > 0 || OreDictionary.getOres("ingotNaturalAluminum").size() > 0)
+/*        // Support for all the spellings of Aluminum
+        for (ItemStack stack : aluminumIngots)
         {
-            List<ItemStack> aluminumIngotList = new ArrayList<ItemStack>();
-            aluminumIngotList.addAll(OreDictionary.getOres("ingotAluminium"));
-            aluminumIngotList.addAll(OreDictionary.getOres("ingotNaturalAluminum"));
-
-            for (ItemStack stack : aluminumIngotList)
-            {
-                CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 8), stack, stack);
-            }
+          	CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 8), stack, stack);
         }
-
-        if (OreDictionary.getOres("ingotBronze").size() > 0)
-        {
-            for (ItemStack stack : OreDictionary.getOres("ingotBronze"))
-            {
-                CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 10), stack, stack);
-            }
-        }
-
-        if (OreDictionary.getOres("ingotSteel").size() > 0)
-        {
-            for (ItemStack stack : OreDictionary.getOres("ingotSteel"))
-            {
-                CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 9), stack, stack);
-            }
-        }
-
-        CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 9), Items.coal, new ItemStack(GCItems.basicItem, 1, 11), Items.coal);
-        CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 10), new ItemStack(GCItems.basicItem, 1, 6), new ItemStack(GCItems.basicItem, 1, 7));
-
-        CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 11), Items.iron_ingot, Items.iron_ingot);
-        CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.meteoricIronIngot, 1, 1), new ItemStack(GCItems.meteoricIronIngot, 1, 0));
-
-        CompressorRecipes.addRecipe(new ItemStack(GCItems.heavyPlatingTier1, 1, 0), "XYZ", "XYZ", 'X', new ItemStack(GCItems.basicItem, 1, 9), 'Y', new ItemStack(GCItems.basicItem, 1, 8), 'Z', new ItemStack(GCItems.basicItem, 1, 10));
-
-        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCItems.basicItem, 9, 12), new ItemStack[] { new ItemStack(Items.diamond), new ItemStack(GCItems.basicItem, 1, 2), new ItemStack(GCItems.basicItem, 1, 2), new ItemStack(Items.redstone), new ItemStack(Items.dye, 1, 4) });
-
-        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCItems.basicItem, 3, 13), new ItemStack[] { new ItemStack(Items.diamond), new ItemStack(GCItems.basicItem, 1, 2), new ItemStack(GCItems.basicItem, 1, 2), new ItemStack(Items.redstone), new ItemStack(Blocks.redstone_torch) });
-
-        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCItems.basicItem, 1, 14), new ItemStack[] { new ItemStack(Items.diamond), new ItemStack(GCItems.basicItem, 1, 2), new ItemStack(GCItems.basicItem, 1, 2), new ItemStack(Items.redstone), new ItemStack(Items.repeater) });
-
-        for (int i = 3; i < 8; i++)
-        {
-            if (ItemBasic.names[i].contains("ingot"))
-            {
-                for (ItemStack stack : OreDictionary.getOres(ItemBasic.names[i]))
-                {
-                    CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, i + 3), stack, stack);
-                }
-            }
-        }
-
-        // Support for the other spelling of Aluminum
-        if (OreDictionary.getOres("ingotAluminium").size() > 0 || OreDictionary.getOres("ingotNaturalAluminum").size() > 0)
-        {
-            List<ItemStack> aluminumIngotList = new ArrayList<ItemStack>();
-            aluminumIngotList.addAll(OreDictionary.getOres("ingotAluminium"));
-            aluminumIngotList.addAll(OreDictionary.getOres("ingotNaturalAluminum"));
-
-            for (ItemStack stack : aluminumIngotList)
-            {
-                CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 8), stack, stack);
-            }
-        }
-
+*/
         if (OreDictionary.getOres("ingotBronze").size() > 0)
         {
             for (ItemStack stack : OreDictionary.getOres("ingotBronze"))

@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 
 import java.util.*;
@@ -121,7 +122,7 @@ public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
         {
             for (final PositionedStack pstack : irecipe.getKey())
             {
-                if (NEIServerUtils.areStacksSameTypeCrafting(ingredient, pstack.item))
+                if (pstack.contains(ingredient))
                 {
                     this.arecipes.add(new CompressorRecipe(irecipe));
                     break;
@@ -196,7 +197,7 @@ public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
         @Override
         public ArrayList<PositionedStack> getIngredients()
         {
-            return this.input;
+        	return (ArrayList<PositionedStack>) getCycledIngredients(cycleticks / 20, this.input);
         }
 
         @Override

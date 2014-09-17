@@ -25,7 +25,7 @@ import java.util.List;
 
 public class TileEntityTreasureChest extends TileEntityAdvanced implements IInventory, IKeyable, IPacketReceiver
 {
-    private ItemStack[] chestContents = new ItemStack[36];
+    private ItemStack[] chestContents = new ItemStack[27];
 
     /**
      * Determines if the check for adjacent chests has taken place.
@@ -101,8 +101,8 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements IInve
      */
     @Override
     public ItemStack getStackInSlot(int par1)
-    {
-        return this.chestContents[par1];
+    {     
+    	return this.chestContents[par1];
     }
 
     /**

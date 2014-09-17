@@ -219,7 +219,7 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
 
             if (!this.worldObj.isRemote)
             {
-	            for (final TileEntity tile : (List<TileEntity>) this.worldObj.loadedTileEntityList)
+            	for (final TileEntity tile : (List<TileEntity>) this.worldObj.loadedTileEntityList)
 	            {
 	                if (tile instanceof TileEntityTreasureChest)
 	                {
@@ -231,7 +231,7 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
 	
 	                    if (dSq < Math.pow(100.0D, 2))
 	                    {
-	                        if (!chest.locked)
+	                    	if (!chest.locked)
 	                        {
 	                            chest.locked = true;
 	                        }
@@ -247,7 +247,9 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
 	                        WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));
 	                        WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));
 	
-	                        chest.setInventorySlotContents(this.rand.nextInt(chest.getSizeInventory()), this.getGuaranteedLoot(this.rand));
+	                        ItemStack schematic = this.getGuaranteedLoot(this.rand);
+	                        int slot = this.rand.nextInt(chest.getSizeInventory());
+	                        chest.setInventorySlotContents(slot, schematic);
 	
 	                        break;
 	                    }
@@ -508,7 +510,7 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
     public ItemStack getGuaranteedLoot(Random rand)
     {
         List<ItemStack> stackList = GalacticraftRegistry.getDungeonLoot(1);
-        return stackList.get(rand.nextInt(stackList.size()));
+        return stackList.get(rand.nextInt(stackList.size())).copy();
     }
 
     @Override

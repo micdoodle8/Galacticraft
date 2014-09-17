@@ -14,7 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -280,15 +280,15 @@ public class NEIGalacticraftConfig implements IConfigureNEI
                     input1.put(j, new PositionedStack(stack, 21 + j % 3 * 18, 26 + j / 3 * 18));
                 }
             }
-            else if (rec instanceof ShapelessRecipes)
+            else if (rec instanceof ShapelessOreRecipe)
             {
-                ShapelessRecipes recipe = (ShapelessRecipes) rec;
+                ShapelessOreRecipe recipe = (ShapelessOreRecipe) rec;
 
-                for (int j = 0; j < recipe.recipeItems.size(); j++)
+                for (int j = 0; j < recipe.getInput().size(); j++)
                 {
-                    ItemStack stack = (ItemStack) recipe.recipeItems.get(j);
+                    Object obj = recipe.getInput().get(j);
 
-                    input1.put(j, new PositionedStack(stack, 21 + j % 3 * 18, 26 + j / 3 * 18));
+                    input1.put(j, new PositionedStack(obj, 21 + j % 3 * 18, 26 + j / 3 * 18));
                 }
             }
 

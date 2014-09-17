@@ -82,7 +82,7 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
         this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.in.name") + ":", 87, 38, 4210752);
         String status = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();
         this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 50, 4210752);
-        status = GCCoreUtil.translate("gui.oxygenUse.desc") + ": " + this.distributor.oxygenPerTick * 20 + GCCoreUtil.translate("gui.oxygenUse.desc") + ":" ;
+        status = GCCoreUtil.translate("gui.oxygenUse.desc") + ": " + this.distributor.oxygenPerTick * 20 + GCCoreUtil.translate("gui.perSecond");
         this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 60, 4210752);
         //		status = ElectricityDisplay.getDisplay(this.distributor.ueWattsPerTick * 20, ElectricUnit.WATT);
         //		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 70, 4210752);

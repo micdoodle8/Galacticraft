@@ -106,6 +106,9 @@ public class AsteroidsModule implements IPlanetsModule
 
         AsteroidBlocks.initBlocks();
         AsteroidBlocks.registerBlocks();
+        AsteroidBlocks.setHarvestLevels();
+        AsteroidBlocks.oreDictRegistration();
+        
         AsteroidsItems.initItems();
     }
 

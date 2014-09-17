@@ -71,7 +71,8 @@ public class MarsModule implements IPlanetsModule
         MarsBlocks.initBlocks();
         MarsBlocks.registerBlocks();
         MarsBlocks.setHarvestLevels();
-
+        MarsBlocks.oreDictRegistration();
+        
         MarsModule.SLUDGE.setBlock(MarsBlocks.blockSludge);
 
         MarsItems.initItems();
