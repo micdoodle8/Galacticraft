@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import api.player.model.ModelPlayer;
 import api.player.render.RenderPlayerAPI;
 import api.player.render.RenderPlayerBase;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -19,16 +20,16 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderPlayerBaseGC extends RenderPlayerBase
 {
-    public ModelBiped modelThermalPadding;
-    public ModelBiped modelThermalPaddingHelmet;
+    public ModelPlayer modelThermalPadding;
+    public ModelPlayer modelThermalPaddingHelmet;
     private static ResourceLocation thermalPaddingTexture0;
     private static ResourceLocation thermalPaddingTexture1;
 
     public RenderPlayerBaseGC(RenderPlayerAPI renderPlayerAPI)
     {
         super(renderPlayerAPI);
-        this.modelThermalPadding = new ModelPlayerGC(0.25F);
-        this.modelThermalPaddingHelmet = new ModelPlayerGC(0.9F);
+        this.modelThermalPadding = new ModelPlayer(0.25F);
+        this.modelThermalPaddingHelmet = new ModelPlayer(0.9F);
 
         if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
         {
