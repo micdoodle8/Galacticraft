@@ -201,6 +201,7 @@ public class PacketSimpleMars implements IPacket
                     if (player == slimeling.getOwner() && !slimeling.worldObj.isRemote)
                     {
                         slimeling.slimelingName = (String) this.data.get(2);
+                        slimeling.setName(slimeling.slimelingName);
                     }
                     break;
                 case 2:
