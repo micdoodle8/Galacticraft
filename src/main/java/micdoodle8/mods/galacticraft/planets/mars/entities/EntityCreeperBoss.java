@@ -10,10 +10,10 @@ import micdoodle8.mods.galacticraft.core.entities.IBoss;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
+import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTreasureChestMars;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -212,43 +212,40 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
                 this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, j));
             }
 
-            if (!this.worldObj.isRemote)
+            for (final TileEntity tile : (List<TileEntity>) this.worldObj.loadedTileEntityList)
             {
-	            for (final TileEntity tile : (List<TileEntity>) this.worldObj.loadedTileEntityList)
-	            {
-	                if (tile instanceof TileEntityTreasureChest)
-	                {
-	                    final double d3 = tile.xCoord + 0.5D - this.posX;
-	                    final double d4 = tile.yCoord + 0.5D - this.posY;
-	                    final double d5 = tile.zCoord + 0.5D - this.posZ;
-	                    final double dSq = d3 * d3 + d4 * d4 + d5 * d5;
-	                    TileEntityTreasureChest chest = (TileEntityTreasureChest) tile; 
-	
-	                    if (dSq < Math.pow(100.0D, 2))
-	                    {
-	                        if (!chest.locked)
-	                        {
-	                            chest.locked = true;
-	                        }
-	
-	                        for (int k = 0; k < chest.getSizeInventory(); k++)
-	                        {
-	                            chest.setInventorySlotContents(k, null);
-	                        }
-	
-	                        ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
-	
-	                        // Generate three times, since it's an extra extra special chest
-	                        WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));
-	                        WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));
-	                        WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));
-	
-	                        chest.setInventorySlotContents(this.rand.nextInt(chest.getSizeInventory()), this.getGuaranteedLoot(this.rand));
-	
-	                        break;
-	                    }
-	                }
-	            }
+                if (tile instanceof TileEntityTreasureChestMars)
+                {
+                	final double d3 = tile.xCoord + 0.5D - this.posX;
+                    final double d4 = tile.yCoord + 0.5D - this.posY;
+                    final double d5 = tile.zCoord + 0.5D - this.posZ;
+                    final double dSq = d3 * d3 + d4 * d4 + d5 * d5;
+                    TileEntityTreasureChestMars chest = (TileEntityTreasureChestMars) tile; 
+
+                    if (dSq < 10000)
+                    {
+                    	if (!chest.locked)
+                        {
+                            chest.locked = true;
+                        }
+
+                        for (int k = 0; k < chest.getSizeInventory(); k++)
+                        {
+                            chest.setInventorySlotContents(k, null);
+                        }
+
+                        ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
+
+                        // Generate three times, since it's an extra extra special chest
+                        WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));
+                        WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));
+                        WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));
+
+                        chest.setInventorySlotContents(this.rand.nextInt(chest.getSizeInventory()), this.getGuaranteedLoot(this.rand));
+
+                        break;
+                    }
+                }
             }
 
             this.entityDropItem(new ItemStack(MarsItems.key, 1, 0), 0.5F);
