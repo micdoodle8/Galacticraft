@@ -346,6 +346,7 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
 
         this.oxygenMask.rotateAngleY = this.modelPlayer.bipedHead.rotateAngleY;
         this.oxygenMask.rotateAngleX = this.modelPlayer.bipedHead.rotateAngleX;
+        this.oxygenMask.rotateAngleZ = this.modelPlayer.bipedHead.rotateAngleZ;
 
         if (usingParachute)
         {
