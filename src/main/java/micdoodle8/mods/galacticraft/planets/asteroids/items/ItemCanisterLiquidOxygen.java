@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.planets.asteroids.items;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
@@ -11,6 +10,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +23,7 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
     public ItemCanisterLiquidOxygen(String assetName)
     {
         super(assetName);
-        this.setContainerItem(GCItems.oilCanister);
+        this.setAllowedFluid("liquidoxygen");
         this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
     }
 
@@ -40,7 +40,7 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
     @Override
     public String getUnlocalizedName(ItemStack itemStack)
     {
-        if (itemStack.getMaxDamage() - itemStack.getItemDamage() == 0)
+        if (ItemCanisterGeneric.EMPTY - itemStack.getItemDamage() == 0)
         {
             return "item.emptyGasCanister";
         }
@@ -56,7 +56,7 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
     @Override
     public IIcon getIconFromDamage(int par1)
     {
-        final int damage = 6 * par1 / this.getMaxDamage();
+        final int damage = 6 * par1 / ItemCanisterGeneric.EMPTY;
 
         if (this.icons.length > damage)
         {
@@ -71,9 +71,9 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {
-        if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() > 0)
+        if (ItemCanisterGeneric.EMPTY - par1ItemStack.getItemDamage() > 0)
         {
-            par3List.add(GCCoreUtil.translate("item.canister.LOX.name") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
+            par3List.add(GCCoreUtil.translate("item.canister.LOX.name") + ": " + (ItemCanisterGeneric.EMPTY - par1ItemStack.getItemDamage()));
         }
     }
 
@@ -82,6 +82,7 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
         ItemCanisterLiquidOxygen.craftingvalues.put(itemstack, Integer.valueOf(damage));
     }
 
+    @Override
     public ItemStack getContainerItem(ItemStack itemstack)
     {
         Integer saved = ItemCanisterLiquidOxygen.craftingvalues.get(itemstack);
@@ -92,22 +93,14 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
             return itemstack;
         }
 
-        int content = itemstack.getMaxDamage() - itemstack.getItemDamage();
-        if (content < 250)
-        {
-            content = 250;
-        }
-
-        itemstack.setItemDamage(itemstack.getMaxDamage() - (content - 250));
-
-        return itemstack;
+        return new ItemStack(this.getContainerItem(), 1, ItemCanisterGeneric.EMPTY);
     }
 
-	@Override
-	public float discharge(ItemStack itemStack, float amount)
+    @Override
+    public float discharge(ItemStack itemStack, float amount)
 	{
 		int damage = itemStack.getItemDamage();
-		int used = Math.min((int) (amount * 5 / 54), itemStack.getMaxDamage() - damage);
+		int used = Math.min((int) (amount * 5 / 54), ItemCanisterGeneric.EMPTY - damage);
 		itemStack.setItemDamage(damage + used);
 		return used * 10.8F;
 	}
@@ -115,6 +108,16 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
 	@Override
 	public int getOxygenStored(ItemStack par1ItemStack)
 	{
-		return par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage();
+		return ItemCanisterGeneric.EMPTY - par1ItemStack.getItemDamage();
 	}
+
+	@Override
+    public FluidStack getFluid(ItemStack container)
+    {
+    	int amount = ItemCanisterGeneric.EMPTY - container.getItemDamage();
+		if (amount == 0)
+        	return null;
+
+        return new FluidStack(AsteroidsModule.fluidLiquidOxygen, amount);
+    }
 }

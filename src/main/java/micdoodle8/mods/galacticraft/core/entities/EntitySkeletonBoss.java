@@ -229,7 +229,7 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
 	                    final double dSq = d3 * d3 + d4 * d4 + d5 * d5;
 	                    TileEntityTreasureChest chest = (TileEntityTreasureChest) tile; 
 	
-	                    if (dSq < Math.pow(100.0D, 2))
+	                    if (dSq < 10000)
 	                    {
 	                    	if (!chest.locked)
 	                        {

@@ -22,6 +22,7 @@ public class ItemOilCanister extends ItemCanisterGeneric
     public ItemOilCanister(String assetName)
     {
         super(assetName);
+        this.setAllowedFluid("oil");
         this.setContainerItem(this);
         this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }

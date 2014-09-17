@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -84,10 +85,16 @@ public class AsteroidsItems
         registerItem(AsteroidsItems.titaniumSpade);
         registerItem(AsteroidsItems.titaniumHoe);
         registerItem(AsteroidsItems.titaniumSword);
+        
+        //These exact names are important, ItemCanisterGeneric searches for "CanisterFull"
+        GCCoreUtil.registerGalacticraftItem("LOXCanisterFull", AsteroidsItems.canisterLOX, 1);
+        GCCoreUtil.registerGalacticraftItem("LN2CanisterFull", AsteroidsItems.canisterLN2, 1);
+        GCCoreUtil.registerGalacticraftItem("methaneCanisterFull", AsteroidsItems.methaneCanister, 1);
     }
 
     private static void registerItem(Item item)
     {
         GameRegistry.registerItem(item, item.getUnlocalizedName(), Constants.MOD_ID_PLANETS);
+        
     }
 }

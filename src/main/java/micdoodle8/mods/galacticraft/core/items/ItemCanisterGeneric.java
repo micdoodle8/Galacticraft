@@ -4,25 +4,35 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.ItemFluidContainer;
 
 import java.util.List;
 
-public abstract class ItemCanisterGeneric extends Item
+public abstract class ItemCanisterGeneric extends ItemFluidContainer
 {
-    public ItemCanisterGeneric(String assetName)
+    private String allowedFluid = null;
+    public final static int EMPTY = FluidContainerRegistry.BUCKET_VOLUME + 1;
+	
+	public ItemCanisterGeneric(String assetName)
     {
-        super();
+        super(0, FluidContainerRegistry.BUCKET_VOLUME);
         this.setMaxDamage(FluidContainerRegistry.BUCKET_VOLUME + 1);
         this.setMaxStackSize(1);
         this.setNoRepair();
         this.setUnlocalizedName(assetName);
+        this.setContainerItem(GCItems.oilCanister);
     }
 
     @Override
@@ -49,25 +59,103 @@ public abstract class ItemCanisterGeneric extends Item
     @Override
     public ItemStack getContainerItem(ItemStack itemStack)
     {
-        if (itemStack != null && itemStack.getItem() == this.getContainerItem() && itemStack.getItemDamage() == itemStack.getMaxDamage())
+        if (itemStack != null && itemStack.getItem() == this.getContainerItem() && itemStack.getItemDamage() == ItemCanisterGeneric.EMPTY)
         {
             return null;
         }
 
-        return new ItemStack(this.getContainerItem(), 1, this.getContainerItem().getMaxDamage());
+        return new ItemStack(this.getContainerItem(), 1, ItemCanisterGeneric.EMPTY);
     }
 
     @Override
     public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5)
     {
-        if (par1ItemStack.getMaxDamage() == par1ItemStack.getItemDamage())
+        if (ItemCanisterGeneric.EMPTY == par1ItemStack.getItemDamage())
         {
             final int stackSize = par1ItemStack.stackSize;
 
             if (!(par1ItemStack.getItem() instanceof ItemOilCanister))
             {
-                par1ItemStack = new ItemStack(GCItems.oilCanister, stackSize, GCItems.oilCanister.getMaxDamage());
+                par1ItemStack = new ItemStack(GCItems.oilCanister, stackSize, ItemCanisterGeneric.EMPTY);
             }
         }
+    }
+
+    public void setAllowedFluid(String name)
+    {
+    	this.allowedFluid = new String(name);
+    }
+    
+    public String getAllowedFluid()
+    {
+    	return this.allowedFluid;
+    }
+    
+    @Override
+    public int fill(ItemStack container, FluidStack resource, boolean doFill)
+    {
+    	if (resource == null || resource.getFluid() == null || !(container.getItem() instanceof ItemCanisterGeneric))
+        {
+            return 0;
+        }
+        
+        String fluidName = resource.getFluid().getName();
+        if (container.getItemDamage() == ItemCanisterGeneric.EMPTY)
+        {
+        	//Empty canister - find a new canister to match the fluid
+        	if (ConfigManagerCore.enableDebug) System.out.println("Searching for matching container for "+fluidName);
+        	for (String key : GalacticraftCore.itemList.keySet())
+        	{
+        		if (key.contains("CanisterFull"))
+        		{
+        			Item i = GalacticraftCore.itemList.get(key).getItem();
+        			if (i instanceof ItemCanisterGeneric && fluidName.equalsIgnoreCase(((ItemCanisterGeneric)i).allowedFluid))
+        			{
+        				if (ConfigManagerCore.enableDebug) System.out.println("Found "+key);
+                    	NBTTagCompound tag = new NBTTagCompound();
+        				tag.setShort("id", (short)Item.getIdFromItem(i));
+        		        tag.setByte("Count", (byte)1);
+        		        tag.setShort("Damage", (short)ItemCanisterGeneric.EMPTY);
+        				container.readFromNBT(tag);
+        				if (ConfigManagerCore.enableDebug) System.out.println("Set container for " + ((ItemCanisterGeneric)container.getItem()).allowedFluid + " to "+container.getItem().getClass().getSimpleName());
+        				break;
+        			}
+        		}
+        	}
+        }
+
+        if (fluidName.equalsIgnoreCase(((ItemCanisterGeneric)container.getItem()).allowedFluid))
+        {	
+        	int added = super.fill(container, resource, doFill);
+        	container.setItemDamage(Math.min(ItemCanisterGeneric.EMPTY, container.getItemDamage() + added));
+        	return added;
+        }
+       
+        return 0;
+    }
+    
+    @Override
+    public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain)
+    {
+    	if (this.allowedFluid == null)
+        	return null;
+        
+        container.stackTagCompound = null;
+        
+        this.fill(container, this.getFluid(container), true);
+
+        return super.drain(container, maxDrain, doDrain);
+    }
+
+    @Override
+    public FluidStack getFluid(ItemStack container)
+    {
+    	if (this.allowedFluid == null || ItemCanisterGeneric.EMPTY == container.getItemDamage())
+        	return null;
+        
+        Fluid fluid = FluidRegistry.getFluid(this.allowedFluid);
+        if (fluid == null) return null;
+
+        return new FluidStack(fluid, ItemCanisterGeneric.EMPTY - container.getItemDamage());
     }
 }

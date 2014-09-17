@@ -16,6 +16,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.EnumSet;
@@ -131,17 +132,20 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
         {
             if (this.active && this.oxygenBubble != null)
             {
-                for (int x = (int) Math.floor(this.xCoord - this.oxygenBubble.getSize() - 4); x < Math.ceil(this.xCoord + this.oxygenBubble.getSize() + 4); x++)
+                double bubbleR2 = this.oxygenBubble.getSize() - 0.5D;
+                bubbleR2 *= bubbleR2;
+                int bubbleR = MathHelper.floor_double(this.oxygenBubble.getSize() + 4);
+            	for (int x = this.xCoord - bubbleR; x <= this.xCoord + bubbleR; x++)
                 {
-                    for (int y = (int) Math.floor(this.yCoord - this.oxygenBubble.getSize() - 4); y < Math.ceil(this.yCoord + this.oxygenBubble.getSize() + 4); y++)
+                    for (int y = this.yCoord - bubbleR; y <= this.yCoord + bubbleR; y++)
                     {
-                        for (int z = (int) Math.floor(this.zCoord - this.oxygenBubble.getSize() - 4); z < Math.ceil(this.zCoord + this.oxygenBubble.getSize() + 4); z++)
+                        for (int z = this.zCoord - bubbleR; z <= this.zCoord + bubbleR; z++)
                         {
                             Block block = this.worldObj.getBlock(x, y, z);
 
                             if (block instanceof IOxygenReliantBlock)
                             {
-                                if (this.getDistanceFromServer(x, y, z) < Math.pow(this.oxygenBubble.getSize() - 0.5D, 2))
+                            	if (this.getDistanceFromServer(x, y, z) < bubbleR2)
                                 {
                                     ((IOxygenReliantBlock) block).onOxygenAdded(this.worldObj, x, y, z);
                                 }

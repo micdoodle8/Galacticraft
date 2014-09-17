@@ -189,6 +189,7 @@ public class GCItems
         GCCoreUtil.registerGalacticraftItem("parachuteCyan", GCItems.parachute, 14);
         GCCoreUtil.registerGalacticraftItem("parachuteYellow", GCItems.parachute, 15);
         GCCoreUtil.registerGalacticraftItem("canvas", GCItems.canvas);
+        //These exact names are important, ItemCanisterGeneric searches for "CanisterFull"
         GCCoreUtil.registerGalacticraftItem("fuelCanisterFull", GCItems.fuelCanister, 1);
         GCCoreUtil.registerGalacticraftItem("oilCanisterFull", GCItems.oilCanister, 1);
         GCCoreUtil.registerGalacticraftItem("liquidCanisterEmpty", GCItems.oilCanister, GCItems.oilCanister.getMaxDamage());

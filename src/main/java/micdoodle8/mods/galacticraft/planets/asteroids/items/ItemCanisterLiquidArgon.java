@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
@@ -20,7 +19,7 @@ public class ItemCanisterLiquidArgon extends ItemCanisterGeneric
     public ItemCanisterLiquidArgon(String assetName)
     {
         super(assetName);
-        this.setContainerItem(GCItems.oilCanister);
+        this.setAllowedFluid("liquidargon");
         this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
     }
 
