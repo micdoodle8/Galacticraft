@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
@@ -25,7 +24,7 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric
     public ItemCanisterLiquidNitrogen(String assetName)
     {
         super(assetName);
-        this.setContainerItem(GCItems.oilCanister);
+        this.setAllowedFluid("liquidnitrogen");
         this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
     }
 
@@ -79,26 +78,6 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric
         }
     }
 
-    /*
-        public boolean onItemUse(ItemStack i, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
-        {
-            int damage = i.getItemDamage() + 125;
-            if (damage > i.getMaxDamage()) return false;
-
-            Block b = world.getBlock(x, y, z);
-            int meta = world.getBlockMetadata(x, y, z);
-            Block result =  this.canFreeze(b, meta);
-            if (result != null)
-            {
-                i.setItemDamage(damage);
-                world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "fire.ignite", 1.0F, Item.itemRand.nextFloat() * 0.4F + 0.8F);
-                world.setBlock(x, y, z, result, 0, 3);
-                return true;
-            }
-
-            return false;
-        }
-    */
     private Block canFreeze(Block b, int meta)
     {
         if (b == Blocks.water)

@@ -204,9 +204,9 @@ public class AsteroidsModule implements IPlanetsModule
         int canisterMaxDamage = AsteroidsItems.methaneCanister.getMaxDamage();
         for (int i = canisterMaxDamage - 1; i > 0; i--)
         {
-            FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(AsteroidsModule.fluidMethaneGas, canisterMaxDamage - i), new ItemStack(AsteroidsItems.methaneCanister, 1, i), new ItemStack(AsteroidsItems.methaneCanister, 1, canisterMaxDamage)));
-            FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(AsteroidsModule.fluidLiquidOxygen, canisterMaxDamage - i), new ItemStack(AsteroidsItems.canisterLOX, 1, i), new ItemStack(AsteroidsItems.canisterLOX, 1, canisterMaxDamage)));
-            FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(AsteroidsModule.fluidLiquidNitrogen, canisterMaxDamage - i), new ItemStack(AsteroidsItems.canisterLN2, 1, i), new ItemStack(AsteroidsItems.canisterLN2, 1, canisterMaxDamage)));
+            FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(AsteroidsModule.fluidMethaneGas, canisterMaxDamage - i), new ItemStack(AsteroidsItems.methaneCanister, 1, i), new ItemStack(GCItems.oilCanister, 1, canisterMaxDamage)));
+            FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(AsteroidsModule.fluidLiquidOxygen, canisterMaxDamage - i), new ItemStack(AsteroidsItems.canisterLOX, 1, i), new ItemStack(GCItems.oilCanister, 1, canisterMaxDamage)));
+            FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(AsteroidsModule.fluidLiquidNitrogen, canisterMaxDamage - i), new ItemStack(AsteroidsItems.canisterLN2, 1, i), new ItemStack(GCItems.oilCanister, 1, canisterMaxDamage)));
         }
     }
 
