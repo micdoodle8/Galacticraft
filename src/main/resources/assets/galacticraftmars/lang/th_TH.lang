@@ -111,10 +111,10 @@ gui.methaneOutput.desc.2=ถังมีเทน
 gui.message.withAtmosphere0.name=ถ้าบนดาวเคราะห์เต็มไปด้วย
 gui.message.withAtmosphere1.name=ในชั้นบรรยากาศ
 item.carbonFragments.name=สะเก็ดคาร์บอน
-gui.cargorocket.status.waiting.0=Waiting for ##NEEDS TRANSLATE##
-gui.cargorocket.status.waiting.1=ignition ##NEEDS TRANSLATE##
-gui.cargorocket.status.launched.0=Already ##NEEDS TRANSLATE##
-gui.cargorocket.status.launched.1=Launched ##NEEDS TRANSLATE##
+gui.cargorocket.status.waiting.0=รอการ
+gui.cargorocket.status.waiting.1=จุดระเบิด
+gui.cargorocket.status.launched.0=จรวดถูก
+gui.cargorocket.status.launched.1=ปล่อยแล้ว
 
 gas.carbondioxide.name=คาร์บอนไดออกไซด์
 gas.oxygen.name=ออกซิเจน
@@ -133,18 +133,21 @@ tile.terraformer.description=เทอราฟอร์มเมอร์ ใ�
 tile.creeperEgg.description=ไข่คริปเปอร์ จะอยู่ในดันเจี้ยนดาวอังคาร จะสปอนคริปเปอร์อวกาศเมื่อไข่ถูกระเบิด
 tile.gasLiquefier.description=เครื่องเปลี่ยนสถานะก๊าซ เก็บก๊าซจากชั้นบรรยากาศหรือจากกระป๋องของเหลว ส่วนมีเทนเหลวสามารถกลั่นและใช้เป็นเชื้อเพลิงจรวดได้เมื่อเสร็จสิ้นการกลั่น
 tile.methaneSynthesizer.description=เครื่องสังเคราะห์มีเทน โดยแหล่งของไฮโดรเจนและคาร์บอน สิ่งนี้จะผลิตมีเทนสำหรับใช้ในเครื่องเปลี่ยนสถานะก๊าซ
-gui.slimeling.chat.wrongPlayer=This isn't my Slimeling! ##NEEDS TRANSLATE##
-gui.cryogenic.chat.cantUse=I can't use this for another %d seconds ##NEEDS TRANSLATE##
-gui.slimeling.name=Name ##NEEDS TRANSLATE##
-gui.slimeling.owner=Owner ##NEEDS TRANSLATE##
-gui.slimeling.kills=Kills ##NEEDS TRANSLATE##
-gui.slimeling.scale=Scale ##NEEDS TRANSLATE##
-gui.slimeling.button.sit=Sit ##NEEDS TRANSLATE##
-gui.slimeling.button.follow=Follow ##NEEDS TRANSLATE##
-gui.slimeling.sitting=Sitting ##NEEDS TRANSLATE##
-gui.slimeling.following=Following ##NEEDS TRANSLATE##
-gui.slimeling.damage=Attack Damage ##NEEDS TRANSLATE##
-gui.slimeling.food=Favorite food ##NEEDS TRANSLATE##
+
+gui.slimeling.chat.wrongPlayer=นี่ไม่ใช่สไลม์ลิ่งของฉัน!
+gui.cryogenic.chat.cantUse=ฉันไม่สามารถใช้สิ่งนี้ได้ %d วินาที
+gui.slimeling.name=ชื่อ
+gui.slimeling.owner=เจ้าของ
+gui.slimeling.kills=ฆ่าได้
+gui.slimeling.scale=ขนาด
+gui.slimeling.button.sit=นั่ง
+gui.slimeling.button.follow=ตามเจ้าของ
+gui.slimeling.sitting=นั่ง
+gui.slimeling.following=ตามเจ้าของ
+gui.slimeling.damage=แรงโจมตี
+gui.slimeling.food=อาหารที่ชอบ
+
+
 
 # SCHEMATICS
 schematic.rocketT3.name=จรวด เทียร์ 3
@@ -160,16 +163,18 @@ entity.CargoRocket.name=จรวดขนส่ง
 # CONTAINERS
 container.launchcontroller.name=เครื่องควบคุมการปล่อยจรวด
 container.tileTerraformer.name=เทอราฟอร์มเมอร์
-gc.configgui.dimensionIDMars=Mars Dimension ID
-gc.configgui.idEntityCreeperBoss=Creeper Boss Entity ID
-gc.configgui.idEntityProjectileTNT=Projectile TNT Entity ID
-gc.configgui.idEntitySpaceshipTier2=Tier 2 Rocket Entity ID
-gc.configgui.idEntitySludgeling=Sludgeling Entity ID
-gc.configgui.idEntitySlimeling=Slimeling Entity ID
-gc.configgui.idEntityTerraformBubble=Terraform Bubble Entity ID
-gc.configgui.idEntityLandingBalloons=Landing Balloons Entity ID
-gc.configgui.idEntityCargoRocket=Cargo Rocket Entity ID
-gc.configgui.idSchematicRocketT2=Tier 2 Rocket Schematic ID
-gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID
+
+# CONFIG GUI
+gc.configgui.dimensionIDMars=ID มิติดาวอังคาร
+gc.configgui.idEntityCreeperBoss=ID คริปเปอร์บอสอวกาศ
+gc.configgui.idEntityProjectileTNT=ID TNT โปรเจคไทล์
+gc.configgui.idEntitySpaceshipTier2=ID จรวด เทียร์ 2
+gc.configgui.idEntitySludgeling=ID หนอนแบคทีเรีย
+gc.configgui.idEntitySlimeling=ID สไลม์ลิ่ง
+gc.configgui.idEntityTerraformBubble=ID ฟองเทอราฟอร์ม
+gc.configgui.idEntityLandingBalloons=ID ยานลงจอดบอลลูน
+gc.configgui.idEntityCargoRocket=ID จรวดขนส่ง
+gc.configgui.idSchematicRocketT2=ID แผนผังจรวด เทียร์ 2
+gc.configgui.idSchematicCargoRocket=ID แผนผังจรวดขนส่ง
 gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
-gc.configgui.launchControllerAllDims=Launch Controller All Dimensions
+gc.configgui.launchControllerAllDims=เครื่องควบคุมการปล่อยจรวดโหลดทุกมิติ

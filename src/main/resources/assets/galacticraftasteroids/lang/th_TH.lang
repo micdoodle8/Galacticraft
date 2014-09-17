@@ -117,9 +117,11 @@ entity.Tier3RocketGC.name=จรวด เทียร์ 3
 # CONTAINERS
 container.shortRangeTelepad.name=เครื่องเทเลพอร์ตระยะใกล้
 container.entryPod.name=ยานลงจอด
-gc.configgui.dimensionIDAsteroids=Asteroids Dimension ID
-gc.configgui.idEntitySmallAsteroid=Small Asteroid Entity ID
-gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID
-gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID
-gc.configgui.idEntityEntryPod=Entry Pod Entity ID
-gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID
+
+# CONFIG GUI
+gc.configgui.dimensionIDAsteroids=ID มิติดาวเคราะห์น้อย
+gc.configgui.idEntitySmallAsteroid=ID ดาวเคราะห์น้อยขนาดเล็ก
+gc.configgui.idEntityGrappleHook=ID ตะขอเกี่ยว
+gc.configgui.idEntityTier3Rocket=ID จรวด เทียร์ 3
+gc.configgui.idEntityEntryPod=ID ยานลงจอด
+gc.configgui.idSchematicRocketT3=ID แผนผังจรวด เทียร์ 3
