@@ -147,8 +147,6 @@ gui.slimeling.following=Following
 gui.slimeling.damage=Attack Damage
 gui.slimeling.food=Favorite food
 
-
-
 # SCHEMATICS
 schematic.rocketT3.name=Tier 3 Rocket
 schematic.cargoRocket.name=Automatic Cargo Rocket
