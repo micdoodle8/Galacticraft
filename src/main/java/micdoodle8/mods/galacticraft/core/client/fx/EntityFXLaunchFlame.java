@@ -11,6 +11,7 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
@@ -19,10 +20,11 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class EntityFXLaunchFlame extends EntityFX
 {
-    float smokeParticleScale;
-    boolean spawnSmokeShort;
+    private float smokeParticleScale;
+    private boolean spawnSmokeShort;
+    private EntityLivingBase ridingEntity;
 
-    public EntityFXLaunchFlame(World par1World, Vector3 position, Vector3 motion, boolean launched)
+    public EntityFXLaunchFlame(World par1World, Vector3 position, Vector3 motion, boolean launched, EntityLivingBase ridingEntity)
     {
         super(par1World, position.x, position.y, position.z, 0.0D, 0.0D, 0.0D);
         this.motionX *= 0.10000000149011612D;
@@ -40,6 +42,7 @@ public class EntityFXLaunchFlame extends EntityFX
         this.particleMaxAge = (int) (this.particleMaxAge * 1F);
         this.noClip = false;
         this.spawnSmokeShort = launched;
+        this.ridingEntity = ridingEntity;
     }
 
     @Override
@@ -74,12 +77,12 @@ public class EntityFXLaunchFlame extends EntityFX
 
         if (this.particleAge++ >= this.particleMaxAge)
         {
-            GalacticraftCore.proxy.spawnParticle(this.spawnSmokeShort ? "whiteSmokeLaunched" : "whiteSmokeIdle", new Vector3(this.posX, this.posY + this.rand.nextDouble() * 2, this.posZ), new Vector3(this.motionX, this.motionY, this.motionZ));
-            GalacticraftCore.proxy.spawnParticle(this.spawnSmokeShort ? "whiteSmokeLargeLaunched" : "whiteSmokeLargeIdle", new Vector3(this.posX, this.posY + this.rand.nextDouble() * 2, this.posZ), new Vector3(this.motionX, this.motionY, this.motionZ));
+            GalacticraftCore.proxy.spawnParticle(this.spawnSmokeShort ? "whiteSmokeLaunched" : "whiteSmokeIdle", new Vector3(this.posX, this.posY + this.rand.nextDouble() * 2, this.posZ), new Vector3(this.motionX, this.motionY, this.motionZ), new Object[] {});
+            GalacticraftCore.proxy.spawnParticle(this.spawnSmokeShort ? "whiteSmokeLargeLaunched" : "whiteSmokeLargeIdle", new Vector3(this.posX, this.posY + this.rand.nextDouble() * 2, this.posZ), new Vector3(this.motionX, this.motionY, this.motionZ), new Object[] {});
             if (!this.spawnSmokeShort)
             {
-                GalacticraftCore.proxy.spawnParticle("whiteSmokeIdle", new Vector3(this.posX, this.posY + this.rand.nextDouble() * 2, this.posZ), new Vector3(this.motionX, this.motionY, this.motionZ));
-                GalacticraftCore.proxy.spawnParticle("whiteSmokeLargeIdle", new Vector3(this.posX, this.posY + this.rand.nextDouble() * 2, this.posZ), new Vector3(this.motionX, this.motionY, this.motionZ));
+                GalacticraftCore.proxy.spawnParticle("whiteSmokeIdle", new Vector3(this.posX, this.posY + this.rand.nextDouble() * 2, this.posZ), new Vector3(this.motionX, this.motionY, this.motionZ), new Object[] {});
+                GalacticraftCore.proxy.spawnParticle("whiteSmokeLargeIdle", new Vector3(this.posX, this.posY + this.rand.nextDouble() * 2, this.posZ), new Vector3(this.motionX, this.motionY, this.motionZ), new Object[] {});
             }
             this.setDead();
         }
@@ -108,12 +111,11 @@ public class EntityFXLaunchFlame extends EntityFX
             {
                 final Entity var5 = (Entity) var3.get(var4);
 
-                if (var5 instanceof EntityLiving)
+                if (var5 instanceof EntityLivingBase)
                 {
-                    if (!var5.isDead && !var5.isBurning() && !var5.equals(FMLClientHandler.instance().getClient().thePlayer))
+                    if (!var5.isDead && !var5.isBurning() && !var5.equals(this.ridingEntity))
                     {
                         var5.setFire(3);
-                        final Object[] toSend = { var5.getEntityId() };
                         GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_SET_ENTITY_FIRE, new Object[] { var5.getEntityId() }));
                     }
                 }

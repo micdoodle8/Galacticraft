@@ -10,6 +10,7 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
@@ -18,9 +19,10 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class EntityFXLanderFlame extends EntityFX
 {
-    float smokeParticleScale;
+    private float smokeParticleScale;
+    private EntityLivingBase ridingEntity;
 
-    public EntityFXLanderFlame(World world, double x, double y, double z, double mX, double mY, double mZ)
+    public EntityFXLanderFlame(World world, double x, double y, double z, double mX, double mY, double mZ, EntityLivingBase ridingEntity)
     {
         super(world, x, y, z, mX, mY, mZ);
         this.motionX *= 0.10000000149011612D;
@@ -35,6 +37,7 @@ public class EntityFXLanderFlame extends EntityFX
         this.smokeParticleScale = this.particleScale;
         this.particleMaxAge = (int) 5.0D;
         this.noClip = false;
+        this.ridingEntity = ridingEntity;
     }
 
     @Override
@@ -98,12 +101,11 @@ public class EntityFXLanderFlame extends EntityFX
             {
                 final Entity var5 = (Entity) var3.get(var4);
 
-                if (var5 instanceof EntityLiving)
+                if (var5 instanceof EntityLivingBase)
                 {
-                    if (!var5.isDead && !var5.isBurning() && !var5.equals(FMLClientHandler.instance().getClient().thePlayer))
+                    if (!var5.isDead && !var5.isBurning() && !var5.equals(this.ridingEntity))
                     {
                         var5.setFire(3);
-                        final Object[] toSend = { var5.getEntityId() };
                         GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_SET_ENTITY_FIRE, new Object[] { var5.getEntityId() }));
                     }
                 }

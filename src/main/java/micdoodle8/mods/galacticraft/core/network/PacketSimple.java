@@ -56,6 +56,7 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
@@ -877,9 +878,9 @@ public class PacketSimple extends Packet implements IPacket
         case S_SET_ENTITY_FIRE:
             Entity entity = player.worldObj.getEntityByID((Integer) this.data.get(0));
 
-            if (entity instanceof EntityLiving)
+            if (entity instanceof EntityLivingBase)
             {
-                ((EntityLiving) entity).setFire(3);
+                ((EntityLivingBase) entity).setFire(3);
             }
             break;
         case S_OPEN_REFINERY_GUI:
