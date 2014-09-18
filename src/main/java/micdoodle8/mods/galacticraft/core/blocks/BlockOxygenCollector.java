@@ -181,7 +181,7 @@ public class BlockOxygenCollector extends BlockAdvancedTile implements ItemBlock
                         mZ = rand.nextFloat() * 2.0F * dir;
                     }
 
-                    GalacticraftCore.proxy.spawnParticle("oxygen", new Vector3(x2, y2, z2), new Vector3(mX, mY, mZ), new Vector3(0.7D, 0.7D, 1.0D));
+                    GalacticraftCore.proxy.spawnParticle("oxygen", new Vector3(x2, y2, z2), new Vector3(mX, mY, mZ), new Object[] { new Vector3(0.7D, 0.7D, 1.0D) });
                 }
             }
         }

@@ -7,11 +7,12 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.particle.EntitySmokeFX;
+import net.minecraft.entity.EntityLivingBase;
 
 @SideOnly(Side.CLIENT)
 public class EffectHandler
 {
-    public static void spawnParticle(String particleID, Vector3 position, Vector3 motion, Vector3 color)
+    public static void spawnParticle(String particleID, Vector3 position, Vector3 motion, Object... otherInfo)
     {
         Minecraft mc = FMLClientHandler.instance().getClient();
 
@@ -41,11 +42,11 @@ public class EffectHandler
             }
             else if (particleID.equals("launchFlameIdle"))
             {
-                particle = new EntityFXLaunchFlame(mc.theWorld, position, motion, false);
+                particle = new EntityFXLaunchFlame(mc.theWorld, position, motion, false, (EntityLivingBase)otherInfo[0]);
             }
             else if (particleID.equals("launchFlameLaunched"))
             {
-                particle = new EntityFXLaunchFlame(mc.theWorld, position, motion, true);
+                particle = new EntityFXLaunchFlame(mc.theWorld, position, motion, true, (EntityLivingBase)otherInfo[0]);
             }
             else if (particleID.equals("whiteSmokeTiny"))
             {
@@ -60,7 +61,7 @@ public class EffectHandler
             {
                 if (particleID.equals("oxygen"))
                 {
-                    particle = new EntityFXEntityOxygen(mc.theWorld, position, motion, color);
+                    particle = new EntityFXEntityOxygen(mc.theWorld, position, motion, (Vector3) otherInfo[0]);
                 }
             }
 

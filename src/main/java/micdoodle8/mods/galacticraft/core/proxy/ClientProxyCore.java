@@ -397,15 +397,9 @@ public class ClientProxyCore extends CommonProxyCore
     }
 
     @Override
-    public void spawnParticle(String particleID, Vector3 position, Vector3 motion)
+    public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Object[] otherInfo)
     {
-        this.spawnParticle(particleID, position, motion, new Vector3(0, 0, 0));
-    }
-
-    @Override
-    public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Vector3 color)
-    {
-        EffectHandler.spawnParticle(particleID, position, motion, color);
+        EffectHandler.spawnParticle(particleID, position, motion, otherInfo);
     }
 
     public static void renderLiquidOverlays(float partialTicks)

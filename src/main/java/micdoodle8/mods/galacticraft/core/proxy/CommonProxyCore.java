@@ -49,11 +49,7 @@ public class CommonProxyCore
         return null;
     }
 
-    public void spawnParticle(String particleID, Vector3 position, Vector3 motion)
-    {
-    }
-
-    public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Vector3 color)
+    public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Object[] otherInfo)
     {
     }
 

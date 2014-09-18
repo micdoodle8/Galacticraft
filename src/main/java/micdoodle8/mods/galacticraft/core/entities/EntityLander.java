@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.client.fx.EntityFXLanderFlame;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -142,20 +143,31 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     @Override
     public boolean shouldSpawnParticles()
     {
-        return false;
+        return this.rotationPitch != 0.0000000000001F;
     }
 
     @Override
     public Map<Vector3, Vector3> getParticleMap()
     {
-        return new HashMap<Vector3, Vector3>();
+        final double x1 = 4 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
+        final double z1 = 4 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
+        final double y1 = -4 * Math.abs(Math.cos(this.rotationPitch * Math.PI / 180.0D));
+
+        new Vector3(this);
+
+        final Map<Vector3, Vector3> particleMap = new HashMap<Vector3, Vector3>();
+        particleMap.put(new Vector3(this).translate(new Vector3(0, 1, 0)), new Vector3(x1, y1, z1));
+        particleMap.put(new Vector3(this).translate(new Vector3(0, 1, 0)), new Vector3(x1, y1, z1));
+        particleMap.put(new Vector3(this).translate(new Vector3(0, 1, 0)), new Vector3(x1, y1, z1));
+        particleMap.put(new Vector3(this).translate(new Vector3(0, 1, 0)), new Vector3(x1, y1, z1));
+        return particleMap;
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     public EntityFX getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
     {
-        return new EntityFXLanderFlame(this.worldObj, x, y, z, motX, motY, motZ);
+        return new EntityFXLanderFlame(this.worldObj, x, y, z, motX, motY, motZ, this.riddenByEntity instanceof EntityLivingBase ? (EntityLivingBase)this.riddenByEntity : null);
     }
 
     @Override
@@ -181,7 +193,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     @Override
     public void tickOnGround()
     {
-        this.rotationPitch = 0.0F;
+        this.rotationPitch = 0.0000000000001F;
     }
 
     @Override
