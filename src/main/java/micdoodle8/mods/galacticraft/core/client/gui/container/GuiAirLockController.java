@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementTextBox.IT
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -119,11 +120,11 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
 
         displayString = GCCoreUtil.translate("gui.message.status.name") + ":";
         this.fontRendererObj.drawString(displayString, this.width / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, this.height / 2 + 45, 4210752);
-        displayString = GCCoreUtil.translate("gui.status.airLockClosed.name");
+        displayString = EnumColor.RED + GCCoreUtil.translate("gui.status.airLockClosed.name");
 
         if (!this.controller.active)
         {
-            displayString = GCCoreUtil.translate("gui.status.airLockOpen.name");
+            displayString = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.airLockOpen.name");
         }
 
         this.fontRendererObj.drawString(displayString, this.width / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, this.height / 2 + 55, 4210752);
