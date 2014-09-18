@@ -789,7 +789,7 @@ public class PacketSimple extends Packet implements IPacket
             {
                 final WorldProvider provider = WorldUtil.getProviderForName((String) this.data.get(0));
                 final Integer dim = provider.dimensionId;
-                GCLog.info("Found matching world (" + dim.toString() + ") for name: " + (String) this.data.get(0));
+                GCLog.info("Found matching world (" + dim.toString() + ") for name: " + GCCoreUtil.translate((String) this.data.get(0)));
 
                 if (playerBase.worldObj instanceof WorldServer)
                 {
@@ -810,7 +810,7 @@ public class PacketSimple extends Packet implements IPacket
             }
             catch (final Exception e)
             {
-                GCLog.severe("Error occurred when attempting to transfer entity to dimension: " + (String) this.data.get(0));
+                GCLog.severe("Error occurred when attempting to transfer entity to dimension: " + GCCoreUtil.translate((String) this.data.get(0)));
                 e.printStackTrace();
             }
             break;
