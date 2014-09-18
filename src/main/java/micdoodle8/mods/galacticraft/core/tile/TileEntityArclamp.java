@@ -1,9 +1,10 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.entity.Entity;
@@ -27,13 +28,13 @@ public class TileEntityArclamp extends TileEntity
 {
     private int ticks = 0;
     private int sideRear = 0;
-    @NetworkedField(targetSide = Side.CLIENT)
     public int facing = 0;
     private HashSet<BlockVec3> airToRestore = new HashSet();
     private boolean isActive = false;
     private AxisAlignedBB thisAABB;
     private Vec3 thisPos;
     private int facingSide = 0;
+	private boolean updateClientFlag;
 
     @Override
     public void updateEntity()
@@ -41,6 +42,11 @@ public class TileEntityArclamp extends TileEntity
         super.updateEntity();
 
         boolean firstTick = false;
+        if (this.updateClientFlag)
+        {
+        	GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, new Object[] { this.xCoord, this.yCoord, this.zCoord, this.facing } ), this.worldObj.provider.dimensionId);
+        	this.updateClientFlag = false;
+        }
 
         if (!this.worldObj.isRemote && this.isActive)
         {
@@ -286,6 +292,7 @@ public class TileEntityArclamp extends TileEntity
         super.readFromNBT(nbt);
 
         this.facing = nbt.getInteger("Facing");
+        this.updateClientFlag = true;
 
         this.airToRestore.clear();
         NBTTagList airBlocks = nbt.getTagList("AirBlocks", 10);
@@ -329,11 +336,9 @@ public class TileEntityArclamp extends TileEntity
             //facing sequence: 0 - 3 - 1 - 2
         }
 
-        if (!this.worldObj.isRemote)
-        {
-            this.thisAABB = null;
-            this.revertAir();
-        }
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, new Object[] { this.xCoord, this.yCoord, this.zCoord, this.facing } ), this.worldObj.provider.dimensionId);
+        this.thisAABB = null;
+        this.revertAir();
         this.markDirty();
     }
 

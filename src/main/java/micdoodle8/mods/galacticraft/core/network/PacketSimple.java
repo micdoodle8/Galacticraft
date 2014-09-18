@@ -46,6 +46,7 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
@@ -138,8 +139,9 @@ public class PacketSimple extends Packet implements IPacket
         C_DISPLAY_ROCKET_CONTROLS(Side.CLIENT),
         C_GET_CELESTIAL_BODY_LIST(Side.CLIENT),
         C_UPDATE_ENERGYUNITS(Side.CLIENT, Integer.class),
-        C_RESPAWN_PLAYER(Side.CLIENT, String.class, Integer.class, String.class, Integer.class);
-
+        C_RESPAWN_PLAYER(Side.CLIENT, String.class, Integer.class, String.class, Integer.class),
+        C_UPDATE_ARCLAMP_FACING(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class);
+        
         private Side targetSide;
         private Class<?>[] decodeAs;
 
@@ -753,6 +755,14 @@ public class PacketSimple extends Packet implements IPacket
             S07PacketRespawn fakePacket = new S07PacketRespawn(dimID, EnumDifficulty.getDifficultyEnum(par2), WorldType.parseWorldType(par3), WorldSettings.GameType.getByID(par4));
             Minecraft.getMinecraft().getNetHandler().handleRespawn(fakePacket);
             break;
+        case C_UPDATE_ARCLAMP_FACING:
+        	tile = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
+        	int facingNew = (Integer) this.data.get(3);
+        	if (tile instanceof TileEntityArclamp)
+        	{
+        		((TileEntityArclamp)tile).facing = facingNew;
+        	}
+        	break;
         default:
             break;
         }
