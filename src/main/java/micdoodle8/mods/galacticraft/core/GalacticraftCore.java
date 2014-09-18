@@ -42,13 +42,11 @@ import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.world.gen.OverworldGenerator;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldProviderSurface;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
@@ -238,8 +236,8 @@ public class GalacticraftCore
         GalaxyRegistry.registerPlanet(GalacticraftCore.planetNeptune);
         GalaxyRegistry.registerMoon(GalacticraftCore.moonMoon);
         GalaxyRegistry.registerSatellite(GalacticraftCore.satelliteSpaceStation);
-        DimensionManager.registerProviderType(ConfigManagerCore.idDimensionOverworldOrbit, WorldProviderOrbit.class, false);
-        DimensionManager.registerProviderType(ConfigManagerCore.idDimensionOverworldOrbitStatic, WorldProviderOrbit.class, true);
+        GalacticraftRegistry.registerProvider(ConfigManagerCore.idDimensionOverworldOrbit, WorldProviderOrbit.class, false);
+        GalacticraftRegistry.registerProvider(ConfigManagerCore.idDimensionOverworldOrbitStatic, WorldProviderOrbit.class, true);
         GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new TeleportTypeOverworld());
         GalacticraftRegistry.registerTeleportType(WorldProviderOrbit.class, new TeleportTypeOrbit());
         GalacticraftRegistry.registerTeleportType(WorldProviderMoon.class, new TeleportTypeMoon());
@@ -286,7 +284,8 @@ public class GalacticraftCore
             if (body.shouldAutoRegister())
             {
                 int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, body.getDimensionID());
-                DimensionManager.registerProviderType(body.getDimensionID(), body.getWorldProvider(), body.getForceStaticLoad() || id < 0);
+                //It's important this is done in the same order as planets will be registered by WorldUtil.registerPlanet();
+                GalacticraftRegistry.registerProvider(body.getDimensionID(), body.getWorldProvider(), body.getForceStaticLoad() || id < 0);
             }
         }
 

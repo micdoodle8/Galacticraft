@@ -401,6 +401,8 @@ public class WorldUtil
 
     /**
      * Call this on FMLServerStartingEvent to add a hotloadable planet ID
+     * 
+     * IMPORTANT: GalacticraftRegistry.registerProvider() must always be called in parallel with this
      */
     public static void registerPlanet(int planetID, boolean isStatic)
     {
@@ -439,6 +441,28 @@ public class WorldUtil
         }
     }
 
+    public static void registerPlanetClient(Integer dimID, int providerIndex)
+    {
+        int providerID = GalacticraftRegistry.getProviderID(providerIndex);
+
+        if (providerID == 0)
+        {
+        	GCLog.severe("Server dimension " + dimID + " has no match on client due to earlier registration problem.");
+        }
+        else
+        {
+            if (!WorldUtil.registeredPlanets.contains(dimID))
+            {
+                WorldUtil.registeredPlanets.add(dimID);
+                DimensionManager.registerDimension(dimID, providerID);
+            }
+            else
+            {
+                GCLog.severe("Dimension already registered to another mod: unable to register planet dimension " + dimID);
+            }
+        }
+    }
+    
     /**
      * This doesn't check if player is using the correct rocket, this is just a
      * total list of all space dimensions.
@@ -833,6 +857,10 @@ public class WorldUtil
         return null;
     }
 
+    /**
+     *  This must return planets in the same order their provider IDs
+     *   were registered in GalacticraftRegistry by GalacticraftCore.
+     */
     public static List<Object> getPlanetList()
     {
         Integer[] iArray = new Integer[WorldUtil.registeredPlanets.size()];

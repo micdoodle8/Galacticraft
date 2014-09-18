@@ -531,38 +531,22 @@ public class PacketSimple extends Packet implements IPacket
 
                 if (this.data.size() > 0)
                 {
+                	//Start the provider index at offset 2 to skip the two Overworld Orbit dimensions
+                	int providerIndex = 2;
                     if (this.data.get(0) instanceof Integer)
                     {
-                        for (Object o : this.data)
+                    	for (Object o : this.data)
                         {
-                            Integer dimID = (Integer) o;
-
-                            if (!WorldUtil.registeredPlanets.contains(dimID))
-                            {
-                                WorldUtil.registeredPlanets.add(dimID);
-                                DimensionManager.registerDimension(dimID, dimID);
-                            }
-                            else
-                            {
-                                GCLog.severe("Dimension already registered to another mod: unable to register planet dimension " + dimID);
-                            }
+                            WorldUtil.registerPlanetClient((Integer) o, providerIndex);
+                            providerIndex++;
                         }
                     }
                     else if (this.data.get(0) instanceof Integer[])
                     {
                         for (Object o : (Integer[]) this.data.get(0))
                         {
-                            Integer dimID = (Integer) o;
-
-                            if (!WorldUtil.registeredPlanets.contains(dimID))
-                            {
-                                WorldUtil.registeredPlanets.add(dimID);
-                                DimensionManager.registerDimension(dimID, dimID);
-                            }
-                            else
-                            {
-                                GCLog.severe("Dimension already registered to another mod: unable to register planet dimension " + dimID);
-                            }
+                            WorldUtil.registerPlanetClient((Integer) o, providerIndex);
+                            providerIndex++;
                         }
                     }
                 }
