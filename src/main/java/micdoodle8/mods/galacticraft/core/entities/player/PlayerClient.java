@@ -199,7 +199,7 @@ public class PlayerClient implements IPlayerClient
         double motionSqrd = motionX * motionX + motionZ * motionZ;
 
         // If the player is on the moon, not airbourne and not riding anything
-        if (motionSqrd > 0.001 && player.worldObj != null && player.worldObj.provider instanceof WorldProviderMoon && player.ridingEntity == null)
+        if (motionSqrd > 0.001 && player.worldObj != null && player.worldObj.provider instanceof WorldProviderMoon && player.ridingEntity == null && !player.capabilities.isFlying)
         {
             int iPosX = (int) Math.floor(player.posX);
             int iPosY = (int) Math.floor(player.posY - 2);

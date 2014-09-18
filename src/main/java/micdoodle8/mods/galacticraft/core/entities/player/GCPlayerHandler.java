@@ -733,7 +733,7 @@ public class GCPlayerHandler
     protected static void updateFeet(EntityPlayerMP player, double motionX, double motionZ)
     {
         double motionSqrd = motionX * motionX + motionZ * motionZ;
-        if (motionSqrd > 0.001D)
+        if (motionSqrd > 0.001D && !player.capabilities.isFlying)
         {
             int iPosX = MathHelper.floor_double(player.posX);
             int iPosY = MathHelper.floor_double(player.posY) - 1;

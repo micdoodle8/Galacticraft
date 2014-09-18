@@ -53,7 +53,7 @@ public class GCPlayerBaseSP extends ClientPlayerBase
     {
         super.afterMoveEntityWithHeading(paramFloat1, paramFloat2);
 
-        if (Loader.isModLoaded("SmartMoving"))
+        if (Loader.isModLoaded("SmartMoving") && !this.player.capabilities.isFlying)
         {
             this.player.motionY += 0.080000000000000002D;
             this.player.motionY -= WorldUtil.getGravityForEntity(this.player);
