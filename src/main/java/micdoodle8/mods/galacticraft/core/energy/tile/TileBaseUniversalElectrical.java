@@ -465,9 +465,8 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
                 this.IC2surplusInGJ = 0F;
             }
 
-            // Return the difference, since injectEnergy returns left over
-            // energy, and receiveElectricity returns energy used.
-            return Math.round(amount - receive * EnergyConfigHandler.TO_IC2_RATIO);
+            // injectEnergy returns left over energy but all is used or goes into 'surplus'
+            return 0D;
         }
 
         return amount;
@@ -492,9 +491,8 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
                 this.IC2surplusInGJ = 0F;
             }
 
-            // Return the difference, since injectEnergy returns left over
-            // energy, and receiveElectricity returns energy used.
-            return Math.round(amount - (receive + this.IC2surplusInGJ) * EnergyConfigHandler.TO_IC2_RATIO);
+            // injectEnergyUnits returns left over energy but all is used or goes into 'surplus'
+            return 0D;
         }
 
         return amount;
