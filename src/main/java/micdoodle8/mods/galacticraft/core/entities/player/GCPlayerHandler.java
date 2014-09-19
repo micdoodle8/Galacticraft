@@ -57,7 +57,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class GCPlayerHandler
 {
-    private ConcurrentHashMap<UUID, GCPlayerStats> playerStatsMap = new ConcurrentHashMap<UUID, GCPlayerStats>();
+    private static final int OXYGENHEIGHTLIMIT = 450;
+	private ConcurrentHashMap<UUID, GCPlayerStats> playerStatsMap = new ConcurrentHashMap<UUID, GCPlayerStats>();
 
     public ConcurrentHashMap<UUID, GCPlayerStats> getServerStatList()
     {
@@ -509,9 +510,9 @@ public class GCPlayerHandler
 
         final int drainSpacing = OxygenUtil.getDrainSpacing(tankInSlot, tankInSlot2);
 
-        if (player.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider) player.worldObj.provider).hasBreathableAtmosphere() && !player.capabilities.isCreativeMode && !(player.ridingEntity instanceof EntityLanderBase) && !(player.ridingEntity instanceof EntityAutoRocket))
+        if ((player.dimension == 0 || player.worldObj.provider instanceof IGalacticraftWorldProvider) && (!(player.dimension == 0 || ((IGalacticraftWorldProvider) player.worldObj.provider).hasBreathableAtmosphere()) || player.posY > GCPlayerHandler.OXYGENHEIGHTLIMIT) && !player.capabilities.isCreativeMode && !(player.ridingEntity instanceof EntityLanderBase) && !(player.ridingEntity instanceof EntityAutoRocket))
         {
-            if (tankInSlot == null)
+        	if (tankInSlot == null)
             {
                 playerStats.airRemaining = 0;
             }
