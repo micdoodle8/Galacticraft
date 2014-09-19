@@ -14,13 +14,13 @@ item.cheeseBlock.name=Блок сыра
 # ARMOR
 
 # BLOCKS
-tile.moonBlock.moonstone.name=Камень
-tile.moonBlock.moondirt.name=Грунт
+tile.moonBlock.moonstone.name=Лунный камень
+tile.moonBlock.moondirt.name=Лунный грунт
 tile.moonBlock.moongrass.name=Лунный дёрн
 tile.moonBlock.tinmoon.name=Оловянная руда
 tile.moonBlock.coppermoon.name=Медная руда
 tile.moonBlock.cheesestone.name=Сырная руда
-tile.moonBlock.bricks.name=Кирпичи
+tile.moonBlock.bricks.name=Кирпич сокровищницы Луны
 tile.cheeseBlock.name=Блок сыра
 
 # GUI

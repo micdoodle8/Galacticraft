@@ -6,10 +6,12 @@ import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldProviderSurface;
+import net.minecraftforge.common.DimensionManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +29,7 @@ public class GalacticraftRegistry
     private static List<INasaWorkbenchRecipe> rocketBenchT3Recipes = new ArrayList<INasaWorkbenchRecipe>();
     private static Map<Class<? extends WorldProvider>, ResourceLocation> rocketGuiMap = new HashMap<Class<? extends WorldProvider>, ResourceLocation>();
     private static Map<Integer, List<ItemStack>> dungeonLootMap = new HashMap<Integer, List<ItemStack>>();
+    private static List<Integer> worldProviderIDs = new ArrayList<Integer>();
 
     /**
      * Register a new Teleport type for the world provider passed
@@ -172,5 +175,22 @@ public class GalacticraftRegistry
     public static List<ItemStack> getDungeonLoot(int tier)
     {
         return GalacticraftRegistry.dungeonLootMap.get(tier);
+    }
+    
+    public static void registerProvider(int id, Class<? extends WorldProvider> provider, boolean keepLoaded)
+    {
+    	boolean flag = DimensionManager.registerProviderType(id, provider, keepLoaded);
+    	if (flag)
+    		GalacticraftRegistry.worldProviderIDs.add(id);
+    	else
+    	{
+    		GalacticraftRegistry.worldProviderIDs.add(0);
+    		GCLog.severe("Could not register dimension " + id + " - does it clash with another mod?  Change the ID in config.");
+    	}
+    }
+    
+    public static int getProviderID(int index)
+    {
+    	return GalacticraftRegistry.worldProviderIDs.get(index);
     }
 }

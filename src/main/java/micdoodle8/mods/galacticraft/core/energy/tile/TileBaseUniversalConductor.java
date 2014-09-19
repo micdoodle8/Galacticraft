@@ -223,7 +223,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
             this.IC2surplusJoules = 0F;
         }
 
-        return Math.round(this.IC2surplusJoules * EnergyConfigHandler.TO_IC2_RATIO);
+        return 0D;
     }
 
     @VersionSpecific(version = "[1.7.10]")
@@ -248,7 +248,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
             this.IC2surplusJoules = 0F;
         }
 
-        return Math.round(this.IC2surplusJoules * EnergyConfigHandler.TO_IC2_RATIO);
+        return 0D;
     }
 
     @VersionSpecific(version = "[1.7.10]")

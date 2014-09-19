@@ -148,10 +148,13 @@ public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlo
     @Override
     public boolean onUseWrench(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
     {
-        TileEntity tile = world.getTileEntity(x, y, z);
-        if (tile instanceof TileEntityArclamp)
+        if (!world.isRemote)
         {
-            ((TileEntityArclamp) tile).facingChanged();
+	    	TileEntity tile = world.getTileEntity(x, y, z);
+	        if (tile instanceof TileEntityArclamp)
+	        {
+	            ((TileEntityArclamp) tile).facingChanged();
+	        }
         }
         return true;
     }

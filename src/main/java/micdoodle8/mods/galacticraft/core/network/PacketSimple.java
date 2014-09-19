@@ -46,6 +46,7 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
@@ -55,7 +56,6 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -138,8 +138,9 @@ public class PacketSimple extends Packet implements IPacket
         C_DISPLAY_ROCKET_CONTROLS(Side.CLIENT),
         C_GET_CELESTIAL_BODY_LIST(Side.CLIENT),
         C_UPDATE_ENERGYUNITS(Side.CLIENT, Integer.class),
-        C_RESPAWN_PLAYER(Side.CLIENT, String.class, Integer.class, String.class, Integer.class);
-
+        C_RESPAWN_PLAYER(Side.CLIENT, String.class, Integer.class, String.class, Integer.class),
+        C_UPDATE_ARCLAMP_FACING(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class);
+        
         private Side targetSide;
         private Class<?>[] decodeAs;
 
@@ -530,38 +531,22 @@ public class PacketSimple extends Packet implements IPacket
 
                 if (this.data.size() > 0)
                 {
+                	//Start the provider index at offset 2 to skip the two Overworld Orbit dimensions
+                	int providerIndex = 2;
                     if (this.data.get(0) instanceof Integer)
                     {
-                        for (Object o : this.data)
+                    	for (Object o : this.data)
                         {
-                            Integer dimID = (Integer) o;
-
-                            if (!WorldUtil.registeredPlanets.contains(dimID))
-                            {
-                                WorldUtil.registeredPlanets.add(dimID);
-                                DimensionManager.registerDimension(dimID, dimID);
-                            }
-                            else
-                            {
-                                GCLog.severe("Dimension already registered to another mod: unable to register planet dimension " + dimID);
-                            }
+                            WorldUtil.registerPlanetClient((Integer) o, providerIndex);
+                            providerIndex++;
                         }
                     }
                     else if (this.data.get(0) instanceof Integer[])
                     {
                         for (Object o : (Integer[]) this.data.get(0))
                         {
-                            Integer dimID = (Integer) o;
-
-                            if (!WorldUtil.registeredPlanets.contains(dimID))
-                            {
-                                WorldUtil.registeredPlanets.add(dimID);
-                                DimensionManager.registerDimension(dimID, dimID);
-                            }
-                            else
-                            {
-                                GCLog.severe("Dimension already registered to another mod: unable to register planet dimension " + dimID);
-                            }
+                            WorldUtil.registerPlanetClient((Integer) o, providerIndex);
+                            providerIndex++;
                         }
                     }
                 }
@@ -753,6 +738,14 @@ public class PacketSimple extends Packet implements IPacket
             S07PacketRespawn fakePacket = new S07PacketRespawn(dimID, EnumDifficulty.getDifficultyEnum(par2), WorldType.parseWorldType(par3), WorldSettings.GameType.getByID(par4));
             Minecraft.getMinecraft().getNetHandler().handleRespawn(fakePacket);
             break;
+        case C_UPDATE_ARCLAMP_FACING:
+        	tile = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
+        	int facingNew = (Integer) this.data.get(3);
+        	if (tile instanceof TileEntityArclamp)
+        	{
+        		((TileEntityArclamp)tile).facing = facingNew;
+        	}
+        	break;
         default:
             break;
         }

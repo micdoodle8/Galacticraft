@@ -70,8 +70,8 @@ tile.asteroidsBlock.asteroid2.name=Астероидный камень
 tile.asteroidsBlock.oreIron.name=Железная руда
 tile.asteroidsBlock.oreIlmenite.name=Ильменитовая руда
 tile.asteroidsBlock.oreAluminum.name=Алюминиевая руда
-tile.beamReflector.name=Лучевой отражатель
-tile.beamReceiver.name=Лучевой приёмник
+tile.beamReflector.name=Лучевой отражатель энергии
+tile.beamReceiver.name=Лучевой приёмник энергии
 tile.telepadShort.name=Короткодистанционный телепорт
 tile.walkway.name=Дорожка
 tile.walkwayWire.name=Дорожка
@@ -98,13 +98,14 @@ gui.message.sendingActive.name=Отправка начата
 gui.message.range.name=Дальность: %dm
 gui.message.notEnoughEnergy.name=Недостаточно энергии!
 gui.message.targetNoEnergy.name=У цели не хватает энергии!
-tile.treasureT3.description=Tier 3 Treasure Chests are currently unused. ##NEEDS TRANSLATE##
-tile.walkway.description=Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme. ##NEEDS TRANSLATE##
-tile.walkwayAluminumWire.description=Aluminum Wire Walkways are used for running wire underneath a fully solid walkable surface. ##NEEDS TRANSLATE##
-tile.walkwayOxygenPipe.description=Oxygen Pipe Walkways are used for running pipes underneath a fully solid walkable surface. ##NEEDS TRANSLATE##
-tile.beamReflector.description=Beam Reflectors are used to redirect energy beams from source to destination. Can be right-clicked to cycle through targets. ##NEEDS TRANSLATE##
-tile.beamReceiver.description=Beam Receivers are connected to energy machine input and output, to transfer energy using beams. ##NEEDS TRANSLATE##
-tile.telepadShort.description=Short Range Telepads are used to transfer players and other living creatures short distances (250 Blocks) when linked to other telepads. ##NEEDS TRANSLATE##
+
+tile.treasureT3.description=Сундуки с сокровищами 3-го уровня сейчас бесполезны.
+tile.walkway.description=Дорожки используются в декоративных целях, для соединения блоков, чтобы сохранить тему космоса.
+tile.walkwayAluminumWire.description=Дорожки для алюминиевых проводов используются для прокладывания проводов под полностью твёрдой поверхностью.
+tile.walkwayOxygenPipe.description=Дорожки для кислородных труб используются для прокладывания труб под полностью твёрдой поверхностью.
+tile.beamReflector.description=Лучевые отражатели используются для перенаправления энергетических лучей от источника к месту назначения. ПКМ по отражателю, чтобы менять цели.
+tile.beamReceiver.description=Лучевые приёмники присоединяются к входу и выходу энергии механизма, чтобы передавать энергию, используя лучи.
+tile.telepadShort.description=Короткодистанционные телепорты используются для перемещения игроков и других живых существ на короткие дистанции, (250 блоков) если они присоединены к другим телепортам.
 
 # SCHEMATICS
 
@@ -116,9 +117,11 @@ entity.Tier3RocketGC.name=Ракета 3-го уровня
 # CONTAINERS
 container.shortRangeTelepad.name=Короткодистанционный телепорт
 container.entryPod.name=Entry Pod
-gc.configgui.dimensionIDAsteroids=Asteroids Dimension ID
-gc.configgui.idEntitySmallAsteroid=Small Asteroid Entity ID
-gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID
-gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID
-gc.configgui.idEntityEntryPod=Entry Pod Entity ID
-gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID
+
+# CONFIG GUI
+gc.configgui.dimensionIDAsteroids=ID измерения: Астероиды
+gc.configgui.idEntitySmallAsteroid=ID сущности: Малый астероид
+gc.configgui.idEntityGrappleHook=ID сущности: Крюк
+gc.configgui.idEntityTier3Rocket=ID сущности: Ракета 3-го уровня
+gc.configgui.idEntityEntryPod=ID сущности: Entry Pod
+gc.configgui.idSchematicRocketT3=ID схемы: Ракета 3-го уровня

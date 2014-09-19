@@ -112,6 +112,7 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer
         }
 
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityArclampRenderer.lampTexture);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         TileEntityArclampRenderer.lampBase.renderAll();
         GL11.glRotatef(45F, -1F, 0, 0);
         GL11.glScalef(0.048F, 0.048F, 0.048F);
