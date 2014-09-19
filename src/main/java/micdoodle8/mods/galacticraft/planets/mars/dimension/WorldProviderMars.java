@@ -19,13 +19,15 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     @Override
     public Vector3 getFogColor()
     {
-        return new Vector3(210F / 255F, 120F / 255F, 59F / 255F);
+        float f = 1.0F - this.getStarBrightness(1.0F);
+        return new Vector3(210F / 255F * f, 120F / 255F * f, 59F / 255F * f);
     }
 
     @Override
     public Vector3 getSkyColor()
     {
-        return new Vector3(154 / 255.0F, 114 / 255.0F, 66 / 255.0F);
+        float f = 1.0F - this.getStarBrightness(1.0F);
+        return new Vector3(154 / 255.0F * f, 114 / 255.0F * f, 66 / 255.0F * f);
     }
 
     @Override

@@ -118,7 +118,6 @@ public class SkyProviderMars extends IRenderHandler
         GL11.glEnable(GL11.GL_BLEND);
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
         RenderHelper.disableStandardItemLighting();
-        float[] afloat = world.provider.calcSunriseSunsetColors(world.getCelestialAngle(partialTicks), partialTicks);
         float f7;
         float f8;
         float f9;
@@ -132,7 +131,7 @@ public class SkyProviderMars extends IRenderHandler
             GL11.glCallList(this.starList);
         }
 
-        afloat = new float[4];
+        float[] afloat = new float[4];
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glShadeModel(GL11.GL_SMOOTH);
         GL11.glPushMatrix();
@@ -157,11 +156,13 @@ public class SkyProviderMars extends IRenderHandler
             f8 = f11;
         }
 
+        f18 = 1.0F - f18;
+
         tessellator1.startDrawing(GL11.GL_TRIANGLE_FAN);
-        tessellator1.setColorRGBA_F(f6, f7, f8, afloat[3] * 2);
+        tessellator1.setColorRGBA_F(f6 * f18, f7 * f18, f8 * f18, afloat[3] * 2 / f18);
         tessellator1.addVertex(0.0D, 100.0D, 0.0D);
         byte b0 = 16;
-        tessellator1.setColorRGBA_F(afloat[0], afloat[1], afloat[2], 0.0F);
+        tessellator1.setColorRGBA_F(afloat[0] * f18, afloat[1] * f18, afloat[2] * f18, 0.0F);
 
         // Render sun aura
         f10 = 20.0F;
@@ -177,9 +178,9 @@ public class SkyProviderMars extends IRenderHandler
 
         tessellator1.draw();
         tessellator1.startDrawing(GL11.GL_TRIANGLE_FAN);
-        tessellator1.setColorRGBA_F(f6, f7, f8, afloat[3]);
+        tessellator1.setColorRGBA_F(f6 * f18, f7 * f18, f8 * f18, afloat[3] * f18);
         tessellator1.addVertex(0.0D, 100.0D, 0.0D);
-        tessellator1.setColorRGBA_F(afloat[0], afloat[1], afloat[2], 0.0F);
+        tessellator1.setColorRGBA_F(afloat[0] * f18, afloat[1] * f18, afloat[2] * f18, 0.0F);
 
         // Render larger sun aura
         f10 = 40.0F;
