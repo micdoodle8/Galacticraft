@@ -637,3 +637,5 @@ gc.configgui.alternateCanisterRecipe=Альтернативный рецепт �
 gc.configgui.rocketFuelFactor=Множитель ракетного топлива
 gc.configgui.dungeonBossHealthMod=Модификатор здоровья босса
 gc.configgui.hardMode=Хардкорный режим
+
+gc.configgui.title=Конфигурация ядра Galacticraft
