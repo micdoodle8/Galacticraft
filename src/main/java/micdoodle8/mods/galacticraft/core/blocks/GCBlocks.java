@@ -101,8 +101,8 @@ public class GCBlocks
         GCBlocks.blockMoon = new BlockBasicMoon();
         GCBlocks.cheeseBlock = new BlockCheese();
         GCBlocks.spinThruster = new BlockSpinThruster("spinThruster");
-        GCBlocks.slabGCHalf = new BlockSlabGC("slabGCHalf", false, Material.rock, BlockSlabGC.SlabCategoryGC.WOOD1);
-        GCBlocks.slabGCDouble = new BlockSlabGC("slabGCDouble", true, Material.rock, BlockSlabGC.SlabCategoryGC.WOOD1);
+        GCBlocks.slabGCHalf = new BlockSlabGC("slabGCHalf", false, Material.rock);
+        GCBlocks.slabGCDouble = new BlockSlabGC("slabGCDouble", true, Material.rock);
         GCBlocks.tinStairs1 = new BlockStairsGC("tinStairs1", blockMoon, BlockStairsGC.StairsCategoryGC.TIN1).setHardness(2.0F);
         GCBlocks.tinStairs2 = new BlockStairsGC("tinStairs2", blockMoon, BlockStairsGC.StairsCategoryGC.TIN2).setHardness(2.0F);
         GCBlocks.moonStoneStairs = new BlockStairsGC("moonStoneStairs", blockMoon, BlockStairsGC.StairsCategoryGC.MOON_STONE).setHardness(1.5F);
