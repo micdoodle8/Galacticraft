@@ -541,7 +541,6 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     	Fluid f1 = fs1.getFluid();
     	Fluid f2 = fs2.getFluid();
     	if (f1 == null || f2 == null || f1.getName() == null) return false;
-    	System.out.println("Comparing fluids "+f1.getName()+" "+f2.getName());
 		return f1.getName().equals(f2.getName());
 	}
 
