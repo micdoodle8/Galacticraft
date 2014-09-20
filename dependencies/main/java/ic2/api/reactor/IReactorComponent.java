@@ -10,8 +10,7 @@ import net.minecraft.item.ItemStack;
  * All IC2 ReactorComponents implement and use this Interface
  *
  */
-public interface IReactorComponent
-{
+public interface IReactorComponent {
 	/**
 	 * Called by reactor upon iterating through it's inventory (every cycle).
 	 * Perform all necessary calculation/interaction here
@@ -20,9 +19,9 @@ public interface IReactorComponent
 	 * @param yourStack Reference to the specific instance of iterated ItemStack
 	 * @param x X-coordinate of the stack in the grid
 	 * @param y Y-coordinate of the stack in the grid
-	 * @param heatrun every Stack will cycle 2 time (true,false) first run for heat, sec for Eu calculation
+	 * @param heatrun every Stack will cycle 2 time (true, false) first run for heat, sec for Eu calculation
 	 */
-	public void processChamber(IReactor reactor, ItemStack yourStack, int x, int y,boolean heatrun);
+	public void processChamber(IReactor reactor, ItemStack yourStack, int x, int y, boolean heatrun);
 
 	/**
 	 * Can be called by Uranium-Components who attempt to generate energy by pulsing to other components.
@@ -37,7 +36,7 @@ public interface IReactorComponent
 	 * @param heatrun true for only create heat not EU, false for only EU  not heat
 	 * @return true if this component reacts to the pulse (and pulse is therefore meant to produce heat)
 	 */
-	public boolean acceptUraniumPulse(IReactor reactor, ItemStack yourStack, ItemStack pulsingStack, int youX, int youY, int pulseX, int pulseY,boolean heatrun);
+	public boolean acceptUraniumPulse(IReactor reactor, ItemStack yourStack, ItemStack pulsingStack, int youX, int youY, int pulseX, int pulseY, boolean heatrun);
 
 	/**
 	 * Called by components to determine whether your component can be heated.

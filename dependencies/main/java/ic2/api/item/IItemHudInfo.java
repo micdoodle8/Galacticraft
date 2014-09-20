@@ -5,7 +5,6 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 
 public interface IItemHudInfo {
-
 	/*
     Add Info to Nano- and Quantum-Suit Helm Hud
     for itemStack
@@ -22,5 +21,4 @@ public interface IItemHudInfo {
 	 */
 
 	public List<String> getHudInfo(ItemStack itemStack);
-
 }

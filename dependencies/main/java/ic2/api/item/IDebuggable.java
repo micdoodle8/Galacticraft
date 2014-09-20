@@ -1,7 +1,6 @@
 package ic2.api.item;
 
 
-
 /**
  * Allows a tile entity to output a debug message when the debugItem is used on it.
  * Suggestions by Myrathi

@@ -1,7 +1,6 @@
 package ic2.api.recipe;
 
 
-
 /**
  * General recipe registry.
  * 
@@ -12,6 +11,8 @@ public class Recipes {
 	public static IMachineRecipeManager extractor;
 	public static IMachineRecipeManager compressor;
 	public static IMachineRecipeManager centrifuge;
+	public static IMachineRecipeManager blockcutter;
+	public static IMachineRecipeManager blastfurance;
 	public static IMachineRecipeManager recycler;
 	public static IMachineRecipeManager metalformerExtruding;
 	public static IMachineRecipeManager metalformerCutting;
@@ -55,5 +56,5 @@ public class Recipes {
 	public static ICraftingRecipeManager advRecipes;
 
 	public static ISemiFluidFuelManager semiFluidGenerator;
-
+	public static IFluidHeatManager FluidHeatGenerator;
 }

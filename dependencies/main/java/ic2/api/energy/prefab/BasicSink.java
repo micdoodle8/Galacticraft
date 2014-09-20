@@ -9,7 +9,6 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import ic2.api.energy.EnergyNet;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergySink;
@@ -90,7 +89,6 @@ import ic2.api.item.ElectricItem;
  * @endcode
  */
 public class BasicSink extends TileEntity implements IEnergySink {
-
 	// **********************************
 	// *** Methods for use by the mod ***
 	// **********************************
@@ -100,7 +98,7 @@ public class BasicSink extends TileEntity implements IEnergySink {
 	 * 
 	 * @param parent1 TileEntity represented by this energy sink.
 	 * @param capacity1 Maximum amount of eu to store.
-	 * @param tier1 IC2 tier, 1=LV, 2=MV, ...
+	 * @param tier1 IC2 tier, 1 = LV, 2 = MV, ...
 	 */
 	public BasicSink(TileEntity parent1, int capacity1, int tier1) {
 		this.parent = parent1;
@@ -292,12 +290,12 @@ public class BasicSink extends TileEntity implements IEnergySink {
 	public boolean discharge(ItemStack stack, int limit) {
 		if (stack == null || !Info.isIc2Available()) return false;
 
-		int amount = (int) Math.floor(capacity - energyStored);
+		double amount = capacity - energyStored;
 		if (amount <= 0) return false;
 
 		if (limit > 0 && limit < amount) amount = limit;
 
-		amount = ElectricItem.manager.discharge(stack, amount, tier, limit > 0, false);
+		amount = ElectricItem.manager.discharge(stack, amount, tier, limit > 0, true, false);
 
 		energyStored += amount;
 
@@ -347,20 +345,20 @@ public class BasicSink extends TileEntity implements IEnergySink {
 	}
 
 	@Override
-	public double demandedEnergyUnits() {
+	public double getDemandedEnergy() {
 		return Math.max(0, capacity - energyStored);
 	}
 
 	@Override
-	public double injectEnergyUnits(ForgeDirection directionFrom, double amount) {
+	public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
 		energyStored += amount;
 
 		return 0;
 	}
 
 	@Override
-	public int getMaxSafeInput() {
-		return EnergyNet.instance.getPowerFromTier(tier);
+	public int getSinkTier() {
+		return tier;
 	}
 
 	// << energy net interface

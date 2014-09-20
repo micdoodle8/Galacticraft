@@ -42,8 +42,10 @@ public interface IEnergyNet {
 	 * @note call this twice with x ticks delay to get the avg. emitted power p = (call2 - call1) / x EU/tick
 	 *
 	 * @param tileEntity energy emitter
+	 * @deprecated Discontinued, use getNodeStats instead.
 	 */
-	long getTotalEnergyEmitted(TileEntity tileEntity);
+	@Deprecated
+	double getTotalEnergyEmitted(TileEntity tileEntity);
 
 	/**
 	 * determine how much energy has been sunken by the EnergySink specified
@@ -51,8 +53,20 @@ public interface IEnergyNet {
 	 * @note call this twice with x ticks delay to get the avg. sunken power p = (call2 - call1) / x EU/tick
 	 *
 	 * @param tileEntity energy emitter
+	 * @deprecated Discontinued, use getNodeStats instead.
 	 */
-	long getTotalEnergySunken(TileEntity tileEntity);
+	@Deprecated
+	double getTotalEnergySunken(TileEntity tileEntity);
+
+	/**
+	 * Retrieve statistics for the tile entity specified.
+	 * 
+	 * The statistics apply to the last simulated tick.
+	 * 
+	 * @param te Tile entity to check.
+	 * @return Statistics for the tile entity.
+	 */
+	NodeStats getNodeStats(TileEntity te);
 
 	/**
 	 * Determine the typical power used by the specific tier, e.g. 128 eu/t for tier 2.
@@ -60,5 +74,13 @@ public interface IEnergyNet {
 	 * @param tier tier
 	 * @return power in eu/t
 	 */
-	int getPowerFromTier(int tier);
+	double getPowerFromTier(int tier);
+
+	/**
+	 * Determine minimum tier required to handle the specified power, e.g. tier 2 for 128 eu/t.
+	 * 
+	 * @param power in eu/t
+	 * @return tier
+	 */
+	int getTierFromPower(double power);
 }

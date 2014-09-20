@@ -15,27 +15,30 @@ import net.minecraftforge.common.BiomeDictionary.Type;
 public abstract class Crops {
 	public static Crops instance;
 
-	/**
-	 * Adds a crop humidity and nutrient biome bonus.
-	 * 
-	 * 0 indicates no bonus and negative values indicate a penalty.
-	 * 
-	 * @param biome Biome to apply the bonus in
-	 * @param humidityBonus Humidity stat bonus
-	 * @param nutrientsBonus Nutrient stat bonus
-	 */
-	public abstract void addBiomeBonus(BiomeGenBase biome, int humidityBonus, int nutrientsBonus);
+
+
+
 
 	/**
-	 * Adds a crop humidity and nutrient biome bonus.
+	 * Adds a crop nutrient biome bonus.
 	 * 
-	 * 0 indicates no bonus and negative values indicate a penalty.
+	 * +10/-10  0 indicates no bonus and negative values indicate a penalty.
+	 * 
+	 * @param type Forge biome type to apply the bonus in
+	 * @param nutrientsBonus Nutrient stat bonus
+	 */
+	public abstract void addBiomenutrientsBonus(Type type, int nutrientsBonus);
+
+	/**
+	 * Adds a crop humidity biome bonus.
+	 * 
+	 * +10/-10 0 indicates no bonus and negative values indicate a penalty.
 	 * 
 	 * @param type Forge biome type to apply the bonus in
 	 * @param humidityBonus Humidity stat bonus
-	 * @param nutrientsBonus Nutrient stat bonus
 	 */
-	public abstract void addBiomeBonus(Type type, int humidityBonus, int nutrientsBonus);
+	public abstract void addBiomehumidityBonus(Type type, int humidityBonus);
+
 
 	/**
 	 * Gets the humidity bonus for a biome.
