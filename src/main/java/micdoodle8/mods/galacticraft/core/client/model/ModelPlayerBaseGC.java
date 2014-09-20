@@ -9,6 +9,7 @@ import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -71,6 +72,11 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
         public boolean preRender(float f)
         {
             boolean b = super.preRender(f);
+
+            if (ModelPlayerBaseGC.currentGearData == null)
+            {
+                return false;
+            }
 
             if (b)
             {
@@ -345,9 +351,8 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
     }
 
     @Override
-    public void render(Entity var1, float var2, float var3, float var4, float var5, float var6, float var7)
+    public void beforeRender(Entity var1, float var2, float var3, float var4, float var5, float var6, float var7)
     {
-
         usingParachute = false;
 
         final EntityPlayer player = (EntityPlayer) var1;
@@ -359,124 +364,24 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
         }
         playerRendering = (AbstractClientPlayer)var1;
         currentGearData = ClientProxyCore.playerItemData.get(playerRendering.getCommandSenderName());
-        super.render(var1, var2, var3, var4, var5, var6, var7);
+
+        if (currentGearData == null)
+        {
+            String id = player.getGameProfile().getName();
+
+            if (!ClientProxyCore.gearDataRequests.contains(id))
+            {
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA, new Object[] { id }));
+                ClientProxyCore.gearDataRequests.add(id);
+            }
+        }
+
+        super.beforeRender(var1, var2, var3, var4, var5, var6, var7);
 
         if (this.oxygenMask == null)
         {
             init();
         }
-//
-//        if (var1 instanceof AbstractClientPlayer && this.modelPlayer.equals(modelBipedMain))
-//        {
-//            if (gearData != null)
-//            {
-//                if (wearingMask)
-//                {
-//                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.oxygenMaskTexture);
-//                    GL11.glPushMatrix();
-//                    GL11.glScalef(1.05F, 1.05F, 1.05F);
-//                    this.oxygenMask.render(var7);
-//                    GL11.glScalef(1F, 1F, 1F);
-//                    GL11.glPopMatrix();
-//                }
-//
-//                //
-//
-//                if (wearingFrequencyModule)
-//                {
-//                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.frequencyModuleTexture);
-//                    GL11.glPushMatrix();
-//                    GL11.glRotatef(180, 1, 0, 0);
-//
-//                    GL11.glRotatef((float) (this.modelPlayer.bipedHeadwear.rotateAngleY * (-180.0F / Math.PI)), 0, 1, 0);
-//                    GL11.glRotatef((float) (this.modelPlayer.bipedHeadwear.rotateAngleX * (180.0F / Math.PI)), 1, 0, 0);
-//                    GL11.glScalef(0.3F, 0.3F, 0.3F);
-//                    GL11.glTranslatef(-1.1F, 1.2F, 0);
-//                    this.frequencyModule.renderPart("Main");
-//                    GL11.glTranslatef(0, 1.2F, 0);
-//                    GL11.glRotatef((float) (Math.sin(var1.ticksExisted * 0.05) * 50.0F), 1, 0, 0);
-//                    GL11.glRotatef((float) (Math.cos(var1.ticksExisted * 0.1) * 50.0F), 0, 1, 0);
-//                    GL11.glTranslatef(0, -1.2F, 0);
-//                    this.frequencyModule.renderPart("Radar");
-//                    GL11.glPopMatrix();
-//                }
-//
-//                //
-//
-//                FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.playerTexture);
-//
-//                if (wearingGear)
-//                {
-//                    for (int i = 0; i < 7; i++)
-//                    {
-//                        for (int k = 0; k < 2; k++)
-//                        {
-//                            this.tubes[k][i].render(var7);
-//                        }
-//                    }
-//                }
-//
-//                //
-//
-//                if (wearingLeftTankRed)
-//                {
-//                    this.redOxygenTanks[0].render(var7);
-//                }
-//
-//                //
-//
-//                if (wearingLeftTankOrange)
-//                {
-//                    this.orangeOxygenTanks[0].render(var7);
-//                }
-//
-//                //
-//
-//                if (wearingLeftTankGreen)
-//                {
-//                    this.greenOxygenTanks[0].render(var7);
-//                }
-//
-//                //
-//
-//                if (wearingRightTankRed)
-//                {
-//                    this.redOxygenTanks[1].render(var7);
-//                }
-//
-//                //
-//
-//                if (wearingRightTankOrange)
-//                {
-//                    this.orangeOxygenTanks[1].render(var7);
-//                }
-//
-//                //
-//
-//                if (wearingRightTankGreen)
-//                {
-//                    this.greenOxygenTanks[1].render(var7);
-//                }
-//
-//                //
-//
-//                if (usingParachute)
-//                {
-//                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(gearData.getParachute());
-//
-//                    this.parachute[0].render(var7);
-//                    this.parachute[1].render(var7);
-//                    this.parachute[2].render(var7);
-//
-//                    this.parachuteStrings[0].render(var7);
-//                    this.parachuteStrings[1].render(var7);
-//                    this.parachuteStrings[2].render(var7);
-//                    this.parachuteStrings[3].render(var7);
-//                }
-//            }
-//
-//            FMLClientHandler.instance().getClient().renderEngine.bindTexture(((AbstractClientPlayer) player).getLocationSkin());
-//        }
     }
 
     @Override
@@ -509,6 +414,39 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
             this.modelPlayer.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
             this.modelPlayer.bipedRightArm.rotateAngleX += (float) Math.PI;
             this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
+        }
+
+        if (par7Entity instanceof EntityPlayer)
+        {
+            if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof IHoldableItem)
+            {
+                IHoldableItem holdableItem = (IHoldableItem) player.inventory.getCurrentItem().getItem();
+
+                if (holdableItem.shouldHoldLeftHandUp(player))
+                {
+                    this.modelPlayer.bipedLeftArm.rotateAngleX = 0;
+                    this.modelPlayer.bipedLeftArm.rotateAngleZ = 0;
+
+                    this.modelPlayer.bipedLeftArm.rotateAngleX += (float) Math.PI + 0.3;
+                    this.modelPlayer.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
+                }
+
+                if (holdableItem.shouldHoldRightHandUp(player))
+                {
+                    this.modelPlayer.bipedRightArm.rotateAngleX = 0;
+                    this.modelPlayer.bipedRightArm.rotateAngleZ = 0;
+
+                    this.modelPlayer.bipedRightArm.rotateAngleX += (float) Math.PI + 0.3;
+                    this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
+                }
+
+                if (player.onGround && holdableItem.shouldCrouch(player))
+                {
+                    this.modelPlayer.bipedBody.rotateAngleX = 0.35F;
+                    this.modelPlayer.bipedRightLeg.rotationPointZ = 4.0F;
+                    this.modelPlayer.bipedLeftLeg.rotationPointZ = 4.0F;
+                }
+            }
         }
     }
 }

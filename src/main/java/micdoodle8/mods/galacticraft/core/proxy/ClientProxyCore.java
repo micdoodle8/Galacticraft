@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.proxy;
 import api.player.client.ClientPlayerAPI;
 import api.player.model.ModelPlayerAPI;
 import api.player.render.RenderPlayerAPI;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -141,6 +142,8 @@ public class ClientProxyCore extends CommonProxyCore
     private static Map<String, ResourceLocation> capesMap = Maps.newHashMap();
 
     public static IPlayerClient playerClientHandler = new PlayerClient();
+
+    public static List<String> gearDataRequests = Lists.newArrayList();
 
     //private static int playerList;
 

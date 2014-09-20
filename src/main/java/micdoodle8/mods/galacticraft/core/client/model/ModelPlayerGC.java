@@ -4,6 +4,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
@@ -388,6 +389,43 @@ public class ModelPlayerGC extends ModelBiped
             this.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
         }
 
+        if (par7Entity instanceof EntityPlayer)
+        {
+            if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof IHoldableItem)
+            {
+                IHoldableItem holdableItem = (IHoldableItem) player.inventory.getCurrentItem().getItem();
+
+                if (holdableItem.shouldHoldLeftHandUp(player))
+                {
+                    this.bipedLeftArm.rotateAngleX = 0;
+                    this.bipedLeftArm.rotateAngleZ = 0;
+
+                    this.bipedLeftArm.rotateAngleX += (float) Math.PI + 0.3;
+                    this.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
+                }
+
+                if (holdableItem.shouldHoldRightHandUp(player))
+                {
+                    this.bipedRightArm.rotateAngleX = 0;
+                    this.bipedRightArm.rotateAngleZ = 0;
+
+                    this.bipedRightArm.rotateAngleX += (float) Math.PI + 0.3;
+                    this.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
+                }
+
+                if (player.onGround && holdableItem.shouldCrouch(player))
+                {
+                    this.bipedBody.rotateAngleX = 0.5F;
+                    this.bipedRightLeg.rotationPointZ = 4.0F;
+                    this.bipedLeftLeg.rotationPointZ = 4.0F;
+                    this.bipedRightLeg.rotationPointY = 9.0F;
+                    this.bipedLeftLeg.rotationPointY = 9.0F;
+                    this.bipedHead.rotationPointY = 1.0F;
+                    this.bipedHeadwear.rotationPointY = 1.0F;
+                }
+            }
+        }
+
         this.greenOxygenTanks[0].rotateAngleX = this.bipedBody.rotateAngleX;
         this.greenOxygenTanks[0].rotateAngleY = this.bipedBody.rotateAngleY;
         this.greenOxygenTanks[0].rotateAngleZ = this.bipedBody.rotateAngleZ;
@@ -406,5 +444,23 @@ public class ModelPlayerGC extends ModelBiped
         this.redOxygenTanks[1].rotateAngleX = this.bipedBody.rotateAngleX;
         this.redOxygenTanks[1].rotateAngleY = this.bipedBody.rotateAngleY;
         this.redOxygenTanks[1].rotateAngleZ = this.bipedBody.rotateAngleZ;
+
+        final List<?> l = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, AxisAlignedBB.getBoundingBox(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
+
+        for (int i = 0; i < l.size(); i++)
+        {
+            final Entity e = (Entity) l.get(i);
+
+            if (e instanceof EntityTieredRocket)
+            {
+                final EntityTieredRocket ship = (EntityTieredRocket) e;
+
+                if (ship.riddenByEntity != null && !(ship.riddenByEntity).equals(player) && (ship.getLaunched() || ship.timeUntilLaunch < 390))
+                {
+                    this.bipedRightArm.rotateAngleZ -= (float) (Math.PI / 8) + MathHelper.sin(par3 * 0.9F) * 0.2F;
+                    this.bipedRightArm.rotateAngleX = (float) Math.PI;
+                }
+            }
+        }
     }
 }

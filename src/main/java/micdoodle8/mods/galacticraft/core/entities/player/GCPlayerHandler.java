@@ -155,7 +155,7 @@ public class GCPlayerHandler
         }
     }
 
-    protected void checkGear(EntityPlayerMP player, GCPlayerStats GCPlayer)
+    public static void checkGear(EntityPlayerMP player, GCPlayerStats GCPlayer, boolean forceSend)
     {
         GCPlayer.maskInSlot = GCPlayer.extendedInventory.getStackInSlot(0);
         GCPlayer.gearInSlot = GCPlayer.extendedInventory.getStackInSlot(1);
@@ -170,7 +170,7 @@ public class GCPlayerHandler
 
         //
 
-        if (GCPlayer.frequencyModuleInSlot != GCPlayer.lastFrequencyModuleInSlot)
+        if (GCPlayer.frequencyModuleInSlot != GCPlayer.lastFrequencyModuleInSlot || forceSend)
         {
             if (GCPlayer.frequencyModuleInSlot == null)
             {
@@ -186,13 +186,13 @@ public class GCPlayerHandler
 
         //
 
-        if (GCPlayer.maskInSlot != GCPlayer.lastMaskInSlot)
+        if (GCPlayer.maskInSlot != GCPlayer.lastMaskInSlot || forceSend)
         {
             if (GCPlayer.maskInSlot == null)
             {
                 GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVEMASK);
             }
-            else if (GCPlayer.maskInSlot.getItem() == GCItems.oxMask && GCPlayer.lastMaskInSlot == null)
+            else if (GCPlayer.maskInSlot.getItem() == GCItems.oxMask && (GCPlayer.lastMaskInSlot == null || forceSend))
             {
                 GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDMASK);
             }
@@ -202,13 +202,13 @@ public class GCPlayerHandler
 
         //
 
-        if (GCPlayer.gearInSlot != GCPlayer.lastGearInSlot)
+        if (GCPlayer.gearInSlot != GCPlayer.lastGearInSlot || forceSend)
         {
             if (GCPlayer.gearInSlot == null)
             {
                 GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVEGEAR);
             }
-            else if (GCPlayer.gearInSlot.getItem() == GCItems.oxygenGear && GCPlayer.lastGearInSlot == null)
+            else if (GCPlayer.gearInSlot.getItem() == GCItems.oxygenGear && (GCPlayer.lastGearInSlot == null || forceSend))
             {
                 GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDGEAR);
             }
@@ -218,13 +218,13 @@ public class GCPlayerHandler
 
         //
 
-        if (GCPlayer.tankInSlot1 != GCPlayer.lastTankInSlot1)
+        if (GCPlayer.tankInSlot1 != GCPlayer.lastTankInSlot1 || forceSend)
         {
             if (GCPlayer.tankInSlot1 == null)
             {
                 GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVE_LEFT_TANK);
             }
-            else if (GCPlayer.lastTankInSlot1 == null)
+            else if (GCPlayer.lastTankInSlot1 == null || forceSend)
             {
                 if (GCPlayer.tankInSlot1.getItem() == GCItems.oxTankLight)
                 {
@@ -261,13 +261,13 @@ public class GCPlayerHandler
 
         //
 
-        if (GCPlayer.tankInSlot2 != GCPlayer.lastTankInSlot2)
+        if (GCPlayer.tankInSlot2 != GCPlayer.lastTankInSlot2 || forceSend)
         {
             if (GCPlayer.tankInSlot2 == null)
             {
                 GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVE_RIGHT_TANK);
             }
-            else if (GCPlayer.lastTankInSlot2 == null)
+            else if (GCPlayer.lastTankInSlot2 == null || forceSend)
             {
                 if (GCPlayer.tankInSlot2.getItem() == GCItems.oxTankLight)
                 {
@@ -304,7 +304,7 @@ public class GCPlayerHandler
 
         //
 
-        if (GCPlayer.parachuteInSlot != GCPlayer.lastParachuteInSlot)
+        if (GCPlayer.parachuteInSlot != GCPlayer.lastParachuteInSlot || forceSend)
         {
             if (GCPlayer.parachuteInSlot == null)
             {
@@ -313,16 +313,16 @@ public class GCPlayerHandler
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVE_PARACHUTE);
                 }
             }
-            else if (GCPlayer.lastParachuteInSlot == null)
+            else if (GCPlayer.lastParachuteInSlot == null || forceSend)
             {
                 if (GCPlayer.usingParachute)
                 {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADD_PARACHUTE);
+                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADD_PARACHUTE, GCPlayer.parachuteInSlot.getItemDamage());
                 }
             }
             else if (GCPlayer.parachuteInSlot.getItemDamage() != GCPlayer.lastParachuteInSlot.getItemDamage())
             {
-                GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADD_PARACHUTE);
+                GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADD_PARACHUTE, GCPlayer.parachuteInSlot.getItemDamage());
             }
 
             GCPlayer.lastParachuteInSlot = GCPlayer.parachuteInSlot;
@@ -330,7 +330,7 @@ public class GCPlayerHandler
 
         //
 
-        if (GCPlayer.thermalHelmetInSlot != GCPlayer.lastThermalHelmetInSlot)
+        if (GCPlayer.thermalHelmetInSlot != GCPlayer.lastThermalHelmetInSlot || forceSend)
         {
             ThermalArmorEvent armorEvent = new ThermalArmorEvent(0, GCPlayer.thermalHelmetInSlot);
             MinecraftForge.EVENT_BUS.post(armorEvent);
@@ -341,7 +341,7 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVE_THERMAL_HELMET);
                 }
-                else if (armorEvent.armorResult == ThermalArmorEvent.ArmorAddResult.ADD && GCPlayer.lastThermalHelmetInSlot == null)
+                else if (armorEvent.armorResult == ThermalArmorEvent.ArmorAddResult.ADD && (GCPlayer.lastThermalHelmetInSlot == null || forceSend))
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADD_THERMAL_HELMET);
                 }
@@ -350,7 +350,7 @@ public class GCPlayerHandler
             GCPlayer.lastThermalHelmetInSlot = GCPlayer.thermalHelmetInSlot;
         }
 
-        if (GCPlayer.thermalChestplateInSlot != GCPlayer.lastThermalChestplateInSlot)
+        if (GCPlayer.thermalChestplateInSlot != GCPlayer.lastThermalChestplateInSlot || forceSend)
         {
             ThermalArmorEvent armorEvent = new ThermalArmorEvent(1, GCPlayer.thermalChestplateInSlot);
             MinecraftForge.EVENT_BUS.post(armorEvent);
@@ -361,7 +361,7 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVE_THERMAL_CHESTPLATE);
                 }
-                else if (armorEvent.armorResult == ThermalArmorEvent.ArmorAddResult.ADD && GCPlayer.lastThermalChestplateInSlot == null)
+                else if (armorEvent.armorResult == ThermalArmorEvent.ArmorAddResult.ADD && (GCPlayer.lastThermalChestplateInSlot == null || forceSend))
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADD_THERMAL_CHESTPLATE);
                 }
@@ -370,7 +370,7 @@ public class GCPlayerHandler
             GCPlayer.lastThermalChestplateInSlot = GCPlayer.thermalChestplateInSlot;
         }
 
-        if (GCPlayer.thermalLeggingsInSlot != GCPlayer.lastThermalLeggingsInSlot)
+        if (GCPlayer.thermalLeggingsInSlot != GCPlayer.lastThermalLeggingsInSlot || forceSend)
         {
             ThermalArmorEvent armorEvent = new ThermalArmorEvent(2, GCPlayer.thermalLeggingsInSlot);
             MinecraftForge.EVENT_BUS.post(armorEvent);
@@ -381,7 +381,7 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVE_THERMAL_LEGGINGS);
                 }
-                else if (armorEvent.armorResult == ThermalArmorEvent.ArmorAddResult.ADD && GCPlayer.lastThermalLeggingsInSlot == null)
+                else if (armorEvent.armorResult == ThermalArmorEvent.ArmorAddResult.ADD && (GCPlayer.lastThermalLeggingsInSlot == null || forceSend))
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADD_THERMAL_LEGGINGS);
                 }
@@ -390,7 +390,7 @@ public class GCPlayerHandler
             GCPlayer.lastThermalLeggingsInSlot = GCPlayer.thermalLeggingsInSlot;
         }
 
-        if (GCPlayer.thermalBootsInSlot != GCPlayer.lastThermalBootsInSlot)
+        if (GCPlayer.thermalBootsInSlot != GCPlayer.lastThermalBootsInSlot || forceSend)
         {
             ThermalArmorEvent armorEvent = new ThermalArmorEvent(3, GCPlayer.thermalBootsInSlot);
             MinecraftForge.EVENT_BUS.post(armorEvent);
@@ -401,7 +401,7 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVE_THERMAL_BOOTS);
                 }
-                else if (armorEvent.armorResult == ThermalArmorEvent.ArmorAddResult.ADD && GCPlayer.lastThermalBootsInSlot == null)
+                else if (armorEvent.armorResult == ThermalArmorEvent.ArmorAddResult.ADD && (GCPlayer.lastThermalBootsInSlot == null || forceSend))
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADD_THERMAL_BOOTS);
                 }
@@ -1050,7 +1050,7 @@ public class GCPlayerHandler
         	GCPlayer.newInOrbit = true;
 
 
-        this.checkGear(player, GCPlayer);
+        checkGear(player, GCPlayer, false);
 
         if (GCPlayer.chestSpawnCooldown > 0)
         {

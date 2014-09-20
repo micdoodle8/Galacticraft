@@ -34,11 +34,8 @@ import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.*;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler.EnumModelPacket;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematic;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
@@ -107,6 +104,7 @@ public class PacketSimple extends Packet implements IPacket
         S_REMOVE_RACE_PLAYER(Side.SERVER, String.class, Integer.class),
         S_ADD_RACE_PLAYER(Side.SERVER, String.class, Integer.class),
         S_COMPLETE_CBODY_HANDSHAKE(Side.SERVER, String.class),
+        S_REQUEST_GEAR_DATA(Side.SERVER, String.class),
         // CLIENT
         C_AIR_REMAINING(Side.CLIENT, Integer.class, Integer.class, String.class),
         C_UPDATE_DIMENSION_LIST(Side.CLIENT, String.class, String.class),
@@ -440,6 +438,7 @@ public class PacketSimple extends Packet implements IPacket
                 }
 
                 ClientProxyCore.playerItemData.put((String) this.data.get(0), gearData);
+                ClientProxyCore.gearDataRequests.remove((String) this.data.get(0));
             }
 
             break;
@@ -1180,6 +1179,14 @@ public class PacketSimple extends Packet implements IPacket
                 playerBase.playerNetServerHandler.kickPlayerFromServer("Missing Galacticraft Celestial Objects:\n\n " + missingObjects);
             }
 
+            break;
+        case S_REQUEST_GEAR_DATA:
+            String name = (String) this.data.get(0);
+            EntityPlayerMP e = PlayerUtil.getPlayerBaseServerFromPlayerUsername(name, true);
+            if (e != null)
+            {
+                GCPlayerHandler.checkGear(e, GCPlayerStats.get(e), true);
+            }
             break;
         default:
             break;
