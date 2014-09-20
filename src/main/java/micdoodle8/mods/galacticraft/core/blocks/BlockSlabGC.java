@@ -19,11 +19,6 @@ import java.util.Random;
 
 public class BlockSlabGC extends BlockSlab
 {
-	public static enum SlabCategoryGC
-	{
-		WOOD1, WOOD2, STONE;
-	}
-
 	private static final String[] woodTypes = new String[] {
 		"tin",
 		"tin",
@@ -36,13 +31,11 @@ public class BlockSlabGC extends BlockSlab
 	private IIcon[] textures;
 	private IIcon[] tinSideIcon;
 	private final boolean isDoubleSlab;
-	private final SlabCategoryGC category;
 
-	public BlockSlabGC(String name, boolean par2, Material material, SlabCategoryGC cat)
+	public BlockSlabGC(String name, boolean par2, Material material)
 	{
 		super(par2, material);
 		this.isDoubleSlab = par2;
-		this.category = cat;
 		this.setBlockName(name);
 		this.useNeighborBrightness = true;
 	}
@@ -74,29 +67,25 @@ public class BlockSlabGC extends BlockSlab
 	@Override
 	public IIcon getIcon(int side, int meta)
 	{
-		if (this.category == SlabCategoryGC.WOOD1)
+		if (meta == 1 || meta == 9)
 		{
-			if (meta == 1 || meta == 9)
+			switch (side)
 			{
-				switch (side)
-				{
-				case 0:
-					return this.textures[0]; //BOTTOM
-				case 1:
-					return this.textures[1]; //TOP
-				case 2:
-					return this.tinSideIcon[0]; //Z-
-				case 3:
-					return this.tinSideIcon[0]; //Z+
-				case 4:
-					return this.tinSideIcon[0]; //X-
-				case 5:
-					return this.tinSideIcon[0]; //X+
-				}
+			case 0:
+				return this.textures[0]; //BOTTOM
+			case 1:
+				return this.textures[1]; //TOP
+			case 2:
+				return this.tinSideIcon[0]; //Z-
+			case 3:
+				return this.tinSideIcon[0]; //Z+
+			case 4:
+				return this.tinSideIcon[0]; //X-
+			case 5:
+				return this.tinSideIcon[0]; //X+
 			}
-			return this.textures[getTypeFromMeta(meta)];
 		}
-		return this.blockIcon;
+		return this.textures[getTypeFromMeta(meta)];
 	}
 
 	@Override
@@ -105,9 +94,13 @@ public class BlockSlabGC extends BlockSlab
 	{
 		int max = 0;
 
-		if (this.category == SlabCategoryGC.WOOD1)
+		if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
 		{
-			max = 6;//Maximum slab type
+			max = 6;//Number of slab types with Planets loaded 
+		}
+		else
+		{
+			max = 4;//Number of slab types with Planets loaded
 		}
 		for (int i = 0; i < max; ++i)
 		{
@@ -156,19 +149,17 @@ public class BlockSlabGC extends BlockSlab
 		int meta = world.getBlockMetadata(x, y, z);
 		float hardness = this.blockHardness;
 
-		if (this.category == SlabCategoryGC.WOOD1)
+		switch (getTypeFromMeta(meta))
 		{
-			switch (getTypeFromMeta(meta))
-			{
-			case 2:
-			case 3:
-				hardness = 1.5F;
-				break;
-			default:
-				hardness = 2.0F;
-				break;
-			}
+		case 2:
+		case 3:
+			hardness = 1.5F;
+			break;
+		default:
+			hardness = 2.0F;
+			break;
 		}
+
 		return hardness;
 	}
 
@@ -196,7 +187,7 @@ public class BlockSlabGC extends BlockSlab
 
 	private int getWoodType(int meta)
 	{
-		meta = getTypeFromMeta(meta) + this.category.ordinal() * 8;
+		meta = getTypeFromMeta(meta);
 
 		if (meta < woodTypes.length)
 		{
