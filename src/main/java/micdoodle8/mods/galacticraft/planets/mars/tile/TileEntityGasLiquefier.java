@@ -147,7 +147,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 
                                 if (inputCanister.getItem() instanceof ItemCanisterMethane)
                                 {
-                                    this.containingItems[1] = new ItemStack(AsteroidsItems.methaneCanister, 1, AsteroidsItems.methaneCanister.getMaxDamage());
+                                    this.containingItems[1] = inputCanister.getItem().getContainerItem(inputCanister);
                                 }
                                 else if (FluidContainerRegistry.isBucket(inputCanister) && FluidContainerRegistry.isFilledContainer(inputCanister))
                                 {
@@ -176,7 +176,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 
                                     if (inputCanister.getItem() instanceof ItemCanisterLiquidOxygen)
                                     {
-                                        this.containingItems[1] = new ItemStack(AsteroidsItems.canisterLOX, 1, AsteroidsItems.canisterLOX.getMaxDamage());
+                                        this.containingItems[1] = inputCanister.getItem().getContainerItem(inputCanister);
                                     }
                                     else if (FluidContainerRegistry.isBucket(inputCanister) && FluidContainerRegistry.isFilledContainer(inputCanister))
                                     {
@@ -205,7 +205,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 
                                         if (inputCanister.getItem() instanceof ItemCanisterLiquidNitrogen)
                                         {
-                                            this.containingItems[1] = new ItemStack(AsteroidsItems.canisterLN2, 1, AsteroidsItems.canisterLN2.getMaxDamage());
+                                            this.containingItems[1] = inputCanister.getItem().getContainerItem(inputCanister);
                                         }
                                         else if (FluidContainerRegistry.isBucket(inputCanister) && FluidContainerRegistry.isFilledContainer(inputCanister))
                                         {
@@ -528,12 +528,34 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         return GCCoreUtil.translate("tile.marsMachine.4.name");
     }
 
+    /**
+     * 
+     * @param fs1 First FluidStack to compare
+     * @param fs2 Second FluidStack to compare
+     * @return  True if the FluidStacks are both not null and the same fluid type
+     * 		False otherwise
+     */
+    private boolean fluidsSame(FluidStack fs1, FluidStack fs2)
+    {
+    	if (fs1 == null || fs2 == null) return false;
+    	Fluid f1 = fs1.getFluid();
+    	Fluid f2 = fs2.getFluid();
+    	if (f1 == null || f2 == null || f1.getName() == null) return false;
+    	System.out.println("Comparing fluids "+f1.getName()+" "+f2.getName());
+		return f1.getName().equals(f2.getName());
+	}
+
     // ISidedInventory Implementation:
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
     {
-        if (side > 1)
+        if (side == 0)
+        {
+            return new int [] { 0, 1, 2, 3};
+        }
+    	
+    	if (side > 1)
         {
             return new int [] { 1, 2, 3};
         }
@@ -554,9 +576,13 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                 FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(itemstack);
                 return stack != null && stack.getFluid() != null && stack.getFluid().getName().toLowerCase().contains("methane");
             case 2:
-                return FluidContainerRegistry.isEmptyContainer(itemstack);
+                if (FluidContainerRegistry.isEmptyContainer(itemstack)) return true;
+                if (itemstack.getItemDamage() == 1) return false; 
+                return this.fluidsSame(FluidContainerRegistry.getFluidForFilledItem(itemstack), this.liquidTank.getFluid());               
             case 3:
-                return FluidContainerRegistry.isEmptyContainer(itemstack);
+                if (FluidContainerRegistry.isEmptyContainer(itemstack)) return true;
+                if (itemstack.getItemDamage() == 1) return false; 
+                return this.fluidsSame(FluidContainerRegistry.getFluidForFilledItem(itemstack), this.liquidTank2.getFluid());               
             default:
                 return false;
             }
@@ -564,26 +590,22 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         return false;
     }
 
-    @Override
+	@Override
     public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
     {
-        if (this.isItemValidForSlot(slotID, itemstack))
+        switch (slotID)
         {
-            switch (slotID)
-            {
-            case 0:
-                return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
-            case 1:
-                return FluidContainerRegistry.isEmptyContainer(itemstack);
-            case 2:
-                return FluidContainerRegistry.isFilledContainer(itemstack);
-            case 3:
-                return FluidContainerRegistry.isFilledContainer(itemstack);
-            default:
-                return false;
-            }
+        case 0:
+        	return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
+        case 1:
+            return FluidContainerRegistry.isEmptyContainer(itemstack);
+        case 2:
+            return itemstack.getItem() instanceof ItemCanisterGeneric && itemstack.getItemDamage() == 1;
+        case 3:
+            return itemstack.getItem() instanceof ItemCanisterGeneric && itemstack.getItemDamage() == 1;
+        default:
+            return false;
         }
-        return false;
     }
 
     @Override
@@ -715,15 +737,15 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         int metaside = this.getBlockMetadata() + 2;
         int side = from.ordinal();
 
-        if (side == (metaside ^ 1))
+        if (metaside == side)
         {
             tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.gasTank) };
         }
-        else if (side == metaside)
+        else if (metaside == (side ^ 1))
         {
             tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.liquidTank) };
         }
-        else if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == side)
+        else if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
         {
             tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.liquidTank2) };
         }
