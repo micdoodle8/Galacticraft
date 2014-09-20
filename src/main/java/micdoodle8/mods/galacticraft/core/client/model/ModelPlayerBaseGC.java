@@ -49,7 +49,7 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
 
     private boolean usingParachute;
 
-    private IModelCustom frequencyModule;
+    private static IModelCustom frequencyModule;
 
     public ModelPlayerBaseGC(ModelPlayerAPI modelPlayerAPI)
     {
@@ -64,6 +64,7 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
         {
             super(modelBase, i, j, baseRenderer);
             this.type = type;
+            frequencyModule = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/frequencyModule.obj"));
         }
 
         @Override
@@ -91,6 +92,8 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
                     return ModelPlayerBaseGC.currentGearData.getLeftTank() == 2;
                 case 8: // Right Red
                     return ModelPlayerBaseGC.currentGearData.getRightTank() == 2;
+                case 9:
+                    return ModelPlayerBaseGC.currentGearData.getFrequencyModule() > -1;
                 }
             }
 
@@ -103,7 +106,7 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
         @Override
         public void doRender(float f, boolean useParentTransformations)
         {
-            if (preRender(f))
+            if (this.preRender(f))
             {
                 switch (type)
                 {
@@ -113,12 +116,33 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
                 case 1:
                     FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerBaseGC.currentGearData.getParachute());
                     break;
+                case 9:
+                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.frequencyModuleTexture);
+                    break;
                 default:
                     FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.playerTexture);
                     break;
                 }
 
-                super.doRender(f, useParentTransformations);
+                if (type != 9)
+                {
+                    super.doRender(f, useParentTransformations);
+                }
+                else
+                {
+                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.frequencyModuleTexture);
+                    GL11.glPushMatrix();
+                    GL11.glRotatef(180, 1, 0, 0);
+                    GL11.glScalef(0.3F, 0.3F, 0.3F);
+                    GL11.glTranslatef(-1.1F, 1.2F, 0);
+                    frequencyModule.renderPart("Main");
+                    GL11.glTranslatef(0, 1.2F, 0);
+                    GL11.glRotatef((float) (Math.sin(ModelPlayerBaseGC.playerRendering.ticksExisted * 0.05) * 50.0F), 1, 0, 0);
+                    GL11.glRotatef((float) (Math.cos(ModelPlayerBaseGC.playerRendering.ticksExisted * 0.1) * 50.0F), 0, 1, 0);
+                    GL11.glTranslatef(0, -1.2F, 0);
+                    frequencyModule.renderPart("Radar");
+                    GL11.glPopMatrix();
+                }
 
                 if (playerRenderer == null)
                 {
@@ -151,6 +175,8 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
             switch (type)
             {
             case 0:
+                return new ModelRotationRendererGC(player, texOffsetX, texOffsetY, (ModelRotationRenderer)SmartRender.getPlayerBase(this.modelPlayer).getHead(), type);
+            case 9:
                 return new ModelRotationRendererGC(player, texOffsetX, texOffsetY, (ModelRotationRenderer)SmartRender.getPlayerBase(this.modelPlayer).getHead(), type);
             default:
                 return new ModelRotationRendererGC(player, texOffsetX, texOffsetY, (ModelRotationRenderer)SmartRender.getPlayerBase(this.modelPlayer).getBody(), type);
@@ -310,9 +336,12 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
             this.redOxygenTanks[1].addBox(-1.5F, 0F, -1.5F, 3, 7, 3, var1);
             this.redOxygenTanks[1].setRotationPoint(-2F, 2F, 3.8F);
             this.redOxygenTanks[1].mirror = true;
-        }
 
-        this.frequencyModule = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/frequencyModule.obj"));
+            ModelRenderer fModule = createModelRenderer(this.modelPlayer, 0, 0, 9);
+            fModule.addBox(0, 0, 0, 1, 1, 1, var1);
+            fModule.setRotationPoint(-2F, 2F, 3.8F);
+            fModule.mirror = true;
+        }
     }
 
     @Override
