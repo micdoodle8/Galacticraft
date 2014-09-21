@@ -33,7 +33,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     
     public TileEntityElectrolyzer()
     {
-        this.storage.setMaxExtract(60);
+        this.storage.setMaxExtract(120);
         this.setTierGC(2);
     }
 
