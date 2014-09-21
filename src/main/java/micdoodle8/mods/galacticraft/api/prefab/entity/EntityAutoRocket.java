@@ -586,7 +586,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
     
     public void stopRocketSound()
     {
-        if (this.rocketSoundUpdater instanceof SoundUpdaterRocket)
+        if (this.rocketSoundUpdater != null)
         {
         	((SoundUpdaterRocket) this.rocketSoundUpdater).stopRocketSound();
         }  	
