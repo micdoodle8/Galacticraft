@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -159,8 +160,7 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
                 {
                     if (getEntityTextureMethod == null)
                     {
-                        getEntityTextureMethod = playerRenderer.getClass().getDeclaredMethod("getEntityTexture", AbstractClientPlayer.class);
-                        getEntityTextureMethod.setAccessible(true);
+                        getEntityTextureMethod = VersionUtil.getPlayerTextureMethod();
                     }
 
                     ResourceLocation loc  = (ResourceLocation)getEntityTextureMethod.invoke(playerRenderer, ModelPlayerBaseGC.playerRendering);
@@ -416,36 +416,33 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
             this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
         }
 
-        if (par7Entity instanceof EntityPlayer)
+        if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof IHoldableItem)
         {
-            if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof IHoldableItem)
+            IHoldableItem holdableItem = (IHoldableItem) player.inventory.getCurrentItem().getItem();
+
+            if (holdableItem.shouldHoldLeftHandUp(player))
             {
-                IHoldableItem holdableItem = (IHoldableItem) player.inventory.getCurrentItem().getItem();
+                this.modelPlayer.bipedLeftArm.rotateAngleX = 0;
+                this.modelPlayer.bipedLeftArm.rotateAngleZ = 0;
 
-                if (holdableItem.shouldHoldLeftHandUp(player))
-                {
-                    this.modelPlayer.bipedLeftArm.rotateAngleX = 0;
-                    this.modelPlayer.bipedLeftArm.rotateAngleZ = 0;
+                this.modelPlayer.bipedLeftArm.rotateAngleX += (float) Math.PI + 0.3;
+                this.modelPlayer.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
+            }
 
-                    this.modelPlayer.bipedLeftArm.rotateAngleX += (float) Math.PI + 0.3;
-                    this.modelPlayer.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
-                }
+            if (holdableItem.shouldHoldRightHandUp(player))
+            {
+                this.modelPlayer.bipedRightArm.rotateAngleX = 0;
+                this.modelPlayer.bipedRightArm.rotateAngleZ = 0;
 
-                if (holdableItem.shouldHoldRightHandUp(player))
-                {
-                    this.modelPlayer.bipedRightArm.rotateAngleX = 0;
-                    this.modelPlayer.bipedRightArm.rotateAngleZ = 0;
+                this.modelPlayer.bipedRightArm.rotateAngleX += (float) Math.PI + 0.3;
+                this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
+            }
 
-                    this.modelPlayer.bipedRightArm.rotateAngleX += (float) Math.PI + 0.3;
-                    this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
-                }
-
-                if (player.onGround && holdableItem.shouldCrouch(player))
-                {
-                    this.modelPlayer.bipedBody.rotateAngleX = 0.35F;
-                    this.modelPlayer.bipedRightLeg.rotationPointZ = 4.0F;
-                    this.modelPlayer.bipedLeftLeg.rotationPointZ = 4.0F;
-                }
+            if (player.onGround && holdableItem.shouldCrouch(player))
+            {
+                this.modelPlayer.bipedBody.rotateAngleX = 0.35F;
+                this.modelPlayer.bipedRightLeg.rotationPointZ = 4.0F;
+                this.modelPlayer.bipedLeftLeg.rotationPointZ = 4.0F;
             }
         }
     }

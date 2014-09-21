@@ -389,40 +389,37 @@ public class ModelPlayerGC extends ModelBiped
             this.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
         }
 
-        if (par7Entity instanceof EntityPlayer)
+        if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof IHoldableItem)
         {
-            if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof IHoldableItem)
+            IHoldableItem holdableItem = (IHoldableItem) player.inventory.getCurrentItem().getItem();
+
+            if (holdableItem.shouldHoldLeftHandUp(player))
             {
-                IHoldableItem holdableItem = (IHoldableItem) player.inventory.getCurrentItem().getItem();
+                this.bipedLeftArm.rotateAngleX = 0;
+                this.bipedLeftArm.rotateAngleZ = 0;
 
-                if (holdableItem.shouldHoldLeftHandUp(player))
-                {
-                    this.bipedLeftArm.rotateAngleX = 0;
-                    this.bipedLeftArm.rotateAngleZ = 0;
+                this.bipedLeftArm.rotateAngleX += (float) Math.PI + 0.3;
+                this.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
+            }
 
-                    this.bipedLeftArm.rotateAngleX += (float) Math.PI + 0.3;
-                    this.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
-                }
+            if (holdableItem.shouldHoldRightHandUp(player))
+            {
+                this.bipedRightArm.rotateAngleX = 0;
+                this.bipedRightArm.rotateAngleZ = 0;
 
-                if (holdableItem.shouldHoldRightHandUp(player))
-                {
-                    this.bipedRightArm.rotateAngleX = 0;
-                    this.bipedRightArm.rotateAngleZ = 0;
+                this.bipedRightArm.rotateAngleX += (float) Math.PI + 0.3;
+                this.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
+            }
 
-                    this.bipedRightArm.rotateAngleX += (float) Math.PI + 0.3;
-                    this.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
-                }
-
-                if (player.onGround && holdableItem.shouldCrouch(player))
-                {
-                    this.bipedBody.rotateAngleX = 0.5F;
-                    this.bipedRightLeg.rotationPointZ = 4.0F;
-                    this.bipedLeftLeg.rotationPointZ = 4.0F;
-                    this.bipedRightLeg.rotationPointY = 9.0F;
-                    this.bipedLeftLeg.rotationPointY = 9.0F;
-                    this.bipedHead.rotationPointY = 1.0F;
-                    this.bipedHeadwear.rotationPointY = 1.0F;
-                }
+            if (player.onGround && holdableItem.shouldCrouch(player))
+            {
+                this.bipedBody.rotateAngleX = 0.5F;
+                this.bipedRightLeg.rotationPointZ = 4.0F;
+                this.bipedLeftLeg.rotationPointZ = 4.0F;
+                this.bipedRightLeg.rotationPointY = 9.0F;
+                this.bipedLeftLeg.rotationPointY = 9.0F;
+                this.bipedHead.rotationPointY = 1.0F;
+                this.bipedHeadwear.rotationPointY = 1.0F;
             }
         }
 

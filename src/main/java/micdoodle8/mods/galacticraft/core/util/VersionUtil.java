@@ -15,6 +15,7 @@ import micdoodle8.mods.miccore.MicdoodleTransformer;
 import micdoodle8.mods.miccore.MicdoodleTransformer.MethodObfuscationEntry;
 import micdoodle8.mods.miccore.MicdoodleTransformer.ObfuscationEntry;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.command.ICommand;
@@ -23,6 +24,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ResourceLocation;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -41,6 +43,7 @@ public class VersionUtil
     private static final String KEY_CLASS_TEXTURE_UTIL = "textureUtil";
     private static final String KEY_CLASS_COMMAND_BASE = "commandBase";
     private static final String KEY_CLASS_SCALED_RES = "scaledResolution";
+    private static final String KEY_CLASS_RENDER_PLAYER = "renderPlayer";
 
     private static final String KEY_METHOD_SET_OWNER = "setOwner";
     private static final String KEY_METHOD_GET_OWNER = "getOwnerName";
@@ -50,6 +53,7 @@ public class VersionUtil
     private static final String KEY_METHOD_NOTIFY_ADMINS = "notifyAdmins";
     private static final String KEY_METHOD_PLAYER_FOR_NAME = "getPlayerForUsername";
     private static final String KEY_METHOD_PLAYER_IS_OPPED = "isPlayerOpped";
+    private static final String KEY_METHOD_PLAYER_TEXTURE = "getEntityTexture";
 
     static
     {
@@ -78,6 +82,7 @@ public class VersionUtil
             nodemap.put(KEY_CLASS_TEXTURE_UTIL, new ObfuscationEntry("net/minecraft/client/renderer/texture/TextureUtil"));
             nodemap.put(KEY_CLASS_COMMAND_BASE, new ObfuscationEntry("net/minecraft/command/CommandBase"));
             nodemap.put(KEY_CLASS_SCALED_RES, new ObfuscationEntry("net/minecraft/client/gui/ScaledResolution"));
+            nodemap.put(KEY_CLASS_RENDER_PLAYER, new ObfuscationEntry("net/minecraft/client/renderer/entity/RenderPlayer"));
 
             // Method descriptions are empty, since they are not needed for reflection.
             nodemap.put(KEY_METHOD_SET_OWNER, new MethodObfuscationEntry("func_152115_b", "func_152115_b", ""));
@@ -88,6 +93,7 @@ public class VersionUtil
             nodemap.put(KEY_METHOD_NOTIFY_ADMINS, new MethodObfuscationEntry("func_152373_a", "func_152373_a", ""));
             nodemap.put(KEY_METHOD_PLAYER_FOR_NAME, new MethodObfuscationEntry("func_152612_a", "func_152612_a", ""));
             nodemap.put(KEY_METHOD_PLAYER_IS_OPPED, new MethodObfuscationEntry("func_152596_g", "func_152596_g", ""));
+            nodemap.put(KEY_METHOD_PLAYER_TEXTURE, new MethodObfuscationEntry("getEntityTexture", "func_110775_a", ""));
         }
         else if (mcVersionMatches("1.7.2"))
         {
@@ -103,6 +109,7 @@ public class VersionUtil
             nodemap.put(KEY_CLASS_TEXTURE_UTIL, new ObfuscationEntry("net/minecraft/client/renderer/texture/TextureUtil"));
             nodemap.put(KEY_CLASS_COMMAND_BASE, new ObfuscationEntry("net/minecraft/command/CommandBase"));
             nodemap.put(KEY_CLASS_SCALED_RES, new ObfuscationEntry("net/minecraft/client/gui/ScaledResolution"));
+            nodemap.put(KEY_CLASS_RENDER_PLAYER, new ObfuscationEntry("net/minecraft/client/renderer/entity/RenderPlayer"));
 
             nodemap.put(KEY_METHOD_SET_OWNER, new MethodObfuscationEntry("setOwner", "func_70910_a", ""));
             nodemap.put(KEY_METHOD_GET_OWNER, new MethodObfuscationEntry("getOwnerName", "func_70905_p", ""));
@@ -112,6 +119,7 @@ public class VersionUtil
             nodemap.put(KEY_METHOD_NOTIFY_ADMINS, new MethodObfuscationEntry("notifyAdmins", "func_71522_a", ""));
             nodemap.put(KEY_METHOD_PLAYER_FOR_NAME, new MethodObfuscationEntry("getPlayerForUsername", "func_72361_f", ""));
             nodemap.put(KEY_METHOD_PLAYER_IS_OPPED, new MethodObfuscationEntry("isPlayerOpped", "func_72353_e", ""));
+            nodemap.put(KEY_METHOD_PLAYER_TEXTURE, new MethodObfuscationEntry("getEntityTexture", "func_110775_a", ""));
         }
     }
 
@@ -459,6 +467,37 @@ public class VersionUtil
 
                 return (ScaledResolution) m.newInstance(mc.gameSettings, width, height);
             }
+        }
+        catch (Throwable t)
+        {
+            t.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static Method getPlayerTextureMethod()
+    {
+        try
+        {
+            Class<?> c = (Class<?>) reflectionCache.get(17);
+
+            if (c == null)
+            {
+                c = Class.forName(getNameDynamic(KEY_CLASS_RENDER_PLAYER).replace('/', '.'));
+                reflectionCache.put(17, c);
+            }
+
+            Method m = (Method) reflectionCache.get(18);
+
+            if (m == null)
+            {
+                m = c.getMethod(getNameDynamic(KEY_METHOD_PLAYER_TEXTURE), new Class[] { AbstractClientPlayer.class });
+                m.setAccessible(true);
+                reflectionCache.put(18, m);
+            }
+
+            return m;
         }
         catch (Throwable t)
         {
