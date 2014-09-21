@@ -620,9 +620,9 @@ gc.configgui.disableCheeseMoon=Отключить генерацию лунно�
 gc.configgui.disableTinMoon=Отключить генерацию лунного олова
 gc.configgui.disableCopperMoon=Отключить генерацию лунной меди
 gc.configgui.disableMoonVillageGen=Отключить генерацию лунных деревень
-gc.configgui.enableOtherModsFeatures=Включить внешнюю генерацию других модификаций
+gc.configgui.enableOtherModsFeatures=Включить внешнюю генерацию других модов
 gc.configgui.enableDebug=Показывать отладочные сообщения в консоли
-gc.configgui.disableLander=Отключить посадочный модуль на Луне, использовать парашют вместо этого
+gc.configgui.disableLander=Отключить посадочный модуль
 gc.configgui.disableSpaceshipGrief=Отключить взрыв ракеты
 gc.configgui.spaceStationsRequirePermission=Разрешения космических станций
 gc.configgui.disableSpaceStationCreation=Отключить создание космической станции
@@ -637,3 +637,5 @@ gc.configgui.alternateCanisterRecipe=Альтернативный рецепт �
 gc.configgui.rocketFuelFactor=Множитель ракетного топлива
 gc.configgui.dungeonBossHealthMod=Модификатор здоровья босса
 gc.configgui.hardMode=Хардкорный режим
+
+gc.configgui.title=Конфигурация ядра Galacticraft

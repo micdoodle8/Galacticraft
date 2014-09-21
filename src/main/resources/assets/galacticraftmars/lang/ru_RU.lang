@@ -176,3 +176,5 @@ gc.configgui.idSchematicRocketT2=ID схемы: Ракета 2-го уровня
 gc.configgui.idSchematicCargoRocket=ID схемы: Грузовая ракета
 gc.configgui.launchControllerChunkLoad=Загрузка чанков контроллером запуска
 gc.configgui.launchControllerAllDims=Загрузка всех измерений контроллером запуска
+
+gc.configgui.planets.title=Конфигурация планет Galacticraft
