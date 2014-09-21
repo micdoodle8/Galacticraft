@@ -27,6 +27,8 @@ public class EntityTier3Rocket extends EntityTieredRocket
     public EntityTier3Rocket(World par1World)
     {
         super(par1World);
+        this.setSize(1.8F, 7F);
+        this.yOffset = this.height / 2.0F;
     }
 
     public EntityTier3Rocket(World par1World, double par2, double par4, double par6, EnumRocketType rocketType)
@@ -52,6 +54,12 @@ public class EntityTier3Rocket extends EntityTieredRocket
     public double getMountedYOffset()
     {
         return 0.75D;
+    }
+
+    @Override
+    public float getRotateOffset()
+    {
+        return 2.25F;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

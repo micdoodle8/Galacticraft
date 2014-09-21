@@ -46,7 +46,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     private ArrayList<BlockVec3> preGenList = new ArrayList();
     private Iterator<BlockVec3> preGenIterator = null;
     private MinecraftServer mcserver = FMLCommonHandler.instance().getMinecraftServerInstance();
-
+    
     public EntityTieredRocket(World par1World)
     {
         super(par1World);
@@ -521,6 +521,11 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         {
             this.riddenByEntity.setPosition(this.posX, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ);
         }
+    }
+
+    public float getRotateOffset()
+    {
+        return 0.1F;
     }
 
     @Override

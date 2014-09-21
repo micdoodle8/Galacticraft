@@ -497,7 +497,13 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
             {
                 if (!this.worldObj.isRemote)
                 {
-                    this.setLaunchPhase(EnumLaunchPhase.UNIGNITED);
+                    //Drop any existing rocket on the landing pad
+                	if (dock.getDockedEntity() instanceof EntityAutoRocket)
+                    {
+                    	((EntityAutoRocket)dock.getDockedEntity()).dropShipAsItem();
+                    }
+                	
+                	this.setLaunchPhase(EnumLaunchPhase.UNIGNITED);
                     this.landing = false;
                     this.targetVec = null;
                     this.setPad(dock);
@@ -586,7 +592,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
     
     public void stopRocketSound()
     {
-        if (this.rocketSoundUpdater instanceof SoundUpdaterRocket)
+        if (this.rocketSoundUpdater != null)
         {
         	((SoundUpdaterRocket) this.rocketSoundUpdater).stopRocketSound();
         }  	
