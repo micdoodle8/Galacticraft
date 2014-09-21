@@ -73,9 +73,6 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
 
             //First, see if any gas needs to be put into the hydogen storage
             //TODO - in 1.7.10 implement support for Mekanism internal hydrogen tanks
-
-            //TODO TEMPORARY
-            this.gasTank.fill(FluidRegistry.getFluidStack("hydrogen", 4), true);
             //TODO add support for hydrogen atmospheres
 
             //Now check the CO2 storage
@@ -230,7 +227,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
             this.coalPartial++;
             if (this.coalPartial == 40) this.coalPartial = 0;
         }
-        this.gasTank.drain(this.placeIntoFluidTanks(1) * 2, true);
+        this.gasTank.drain(this.placeIntoFluidTanks(1) * 3, true);
     }
 
     private int placeIntoFluidTanks(int amountToDrain)
@@ -436,7 +433,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     @Override
     public boolean canFill(ForgeDirection from, Fluid fluid)
     {
-        if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2)))
+        if (from.ordinal() == this.getBlockMetadata() + 2)
         {
             return fluid != null && "hydrogen".equals(fluid.getName());
         }

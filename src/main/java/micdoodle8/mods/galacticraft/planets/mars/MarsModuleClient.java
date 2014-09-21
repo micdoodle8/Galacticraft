@@ -126,6 +126,10 @@ public class MarsModuleClient implements IPlanetsModuleClient
                 {
                     return new GuiLaunchController(player.inventory, (TileEntityLaunchController) tile);
                 }
+                else if (tile instanceof TileEntityElectrolyzer)
+                {
+                    return new GuiWaterElectrolyzer(player.inventory, (TileEntityElectrolyzer) tile);
+                }
                 else if (tile instanceof TileEntityGasLiquefier)
                 {
                     return new GuiGasLiquefier(player.inventory, (TileEntityGasLiquefier) tile);

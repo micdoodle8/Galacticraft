@@ -83,6 +83,7 @@ gui.message.redstoneSig.name=Redstone Signal
 gui.message.notSet.name=Not Set
 gui.message.notEnough.name=Not Enough
 gui.message.success.name=Success
+gui.message.zeroWater.name=No water!
 
 	# Dollar sign ($) will split text onto a new line
 gui.launchController.desc.0=This is the Launch Controller's$unique frequency

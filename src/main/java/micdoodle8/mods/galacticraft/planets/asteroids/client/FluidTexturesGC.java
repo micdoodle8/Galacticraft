@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.FluidRegistry;
 
 @SideOnly(Side.CLIENT)
 public class FluidTexturesGC
@@ -29,6 +30,7 @@ public class FluidTexturesGC
             AsteroidsModule.fluidLiquidNitrogen.setIcons(event.map.registerIcon(AsteroidsModule.ASSET_PREFIX + ":fluids/LiquidNitrogen"));
             AsteroidsModule.fluidLiquidArgon.setIcons(event.map.registerIcon(AsteroidsModule.ASSET_PREFIX + ":fluids/LiquidArgon"));
             AsteroidsModule.fluidNitrogenGas.setIcons(event.map.registerIcon(AsteroidsModule.ASSET_PREFIX + ":fluids/NitrogenGas"));
+            FluidRegistry.getFluid("hydrogen").setIcons(event.map.registerIcon(AsteroidsModule.ASSET_PREFIX + ":fluids/HydrogenGas"));
         }
     }
 
