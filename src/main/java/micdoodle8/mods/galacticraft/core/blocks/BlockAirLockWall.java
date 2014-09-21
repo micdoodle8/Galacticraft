@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -35,6 +36,20 @@ public class BlockAirLockWall extends BlockBreakable implements IPartialSealable
     }
 
     @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+    {
+        this.setBlockBoundsBasedOnState(world, x, y, z);
+        return super.getCollisionBoundingBoxFromPool(world, x, y, z);
+    }
+
+    @Override
+    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z)
+    {
+        this.setBlockBoundsBasedOnState(world, x, y, z);
+        return super.getSelectedBoundingBoxFromPool(world, x, y, z);
+    }
+
+    @Override
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
     {
         float var5;
@@ -48,7 +63,7 @@ public class BlockAirLockWall extends BlockBreakable implements IPartialSealable
 
         if (idXMin != frameID && idXMax != frameID && idXMin != sealID && idXMax != sealID)
         {
-            var5 = 0.415F;
+            var5 = 0.25F;
             var6 = 0.5F;
             this.setBlockBounds(0.5F - var5, 0.0F, 0.5F - var6, 0.5F + var5, 1.0F, 0.5F + var6);
         }
@@ -73,14 +88,12 @@ public class BlockAirLockWall extends BlockBreakable implements IPartialSealable
 
             if (adjacentCount == 4)
             {
-                var5 = 0.5F;
-                var6 = 0.415F;
-                this.setBlockBounds(0.0F, 0.0F + var6, 0.0F, 1.0F, 1.0F - var6, 1.0F);
+                this.setBlockBounds(0.0F, 0.25F, 0.0F, 1.0F, 0.75F, 1.0F);
             }
             else
             {
                 var5 = 0.5F;
-                var6 = 0.415F;
+                var6 = 0.25F;
                 this.setBlockBounds(0.5F - var5, 0.0F, 0.5F - var6, 0.5F + var5, 1.0F, 0.5F + var6);
             }
         }
