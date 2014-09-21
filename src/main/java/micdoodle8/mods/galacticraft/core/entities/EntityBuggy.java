@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -38,7 +39,7 @@ import java.util.UUID;
 
 public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, IDockable, IControllableEntity, IEntityFullSync
 {
-    private final int tankCapacity = 1000;
+    public static final int tankCapacity = 1000;
     public FluidTank buggyFuelTank = new FluidTank(this.tankCapacity);
     protected long ticks = 0;
     public int buggyType;
@@ -234,21 +235,32 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 
     public void dropBuggyAsItem()
     {
-        if (this.getItemsDropped() == null)
+        List<ItemStack> dropped = this.getItemsDropped();
+
+        if (dropped == null)
         {
             return;
         }
 
-        for (final ItemStack item : this.getItemsDropped())
+        for (final ItemStack item : dropped)
         {
-            this.entityDropItem(item, 0);
+            EntityItem entityItem = this.entityDropItem(item, 0);
+
+            if (item.hasTagCompound())
+            {
+                entityItem.getEntityItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());
+            }
         }
     }
 
     public List<ItemStack> getItemsDropped()
     {
         final List<ItemStack> items = new ArrayList<ItemStack>();
-        items.add(new ItemStack(GCItems.buggy, 1, this.buggyType));
+
+        ItemStack buggy = new ItemStack(GCItems.buggy, 1, this.buggyType);
+        buggy.setTagCompound(new NBTTagCompound());
+        buggy.getTagCompound().setInteger("BuggyFuel", this.buggyFuelTank.getFluidAmount());
+        items.add(buggy);
 
         for (ItemStack item : this.cargoItems)
         {

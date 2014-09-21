@@ -20,6 +20,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class ItemBuggy extends Item implements IHoldableItem
         super();
         this.setUnlocalizedName(assetName);
         this.setTextureName("arrow");
+        this.setMaxStackSize(1);
     }
 
     @Override
@@ -127,6 +129,11 @@ public class ItemBuggy extends Item implements IHoldableItem
                         return par1ItemStack;
                     }
 
+                    if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("BuggyFuel"))
+                    {
+                        var35.buggyFuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, par1ItemStack.getTagCompound().getInteger("BuggyFuel")));
+                    }
+
                     if (!par2World.isRemote)
                     {
                         par2World.spawnEntityInWorld(var35);
@@ -151,6 +158,11 @@ public class ItemBuggy extends Item implements IHoldableItem
         if (par1ItemStack.getItemDamage() != 0)
         {
             par2List.add(GCCoreUtil.translate("gui.buggy.storageSpace") + ": " + par1ItemStack.getItemDamage() * 18);
+        }
+
+        if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("BuggyFuel"))
+        {
+            par2List.add(GCCoreUtil.translate("gui.message.fuel.name") + ": " + par1ItemStack.getTagCompound().getInteger("BuggyFuel") + " / " + EntityBuggy.tankCapacity);
         }
     }
 
