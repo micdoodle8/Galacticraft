@@ -3,9 +3,11 @@ package micdoodle8.mods.galacticraft.core.proxy;
 import api.player.client.ClientPlayerAPI;
 import api.player.model.ModelPlayerAPI;
 import api.player.render.RenderPlayerAPI;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -18,6 +20,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -71,8 +74,10 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+
 import tconstruct.client.tabs.InventoryTabVanilla;
 import tconstruct.client.tabs.TabRegistry;
 
@@ -142,9 +147,8 @@ public class ClientProxyCore extends CommonProxyCore
     private static Map<String, ResourceLocation> capesMap = Maps.newHashMap();
 
     public static IPlayerClient playerClientHandler = new PlayerClient();
-
+    private static Minecraft mc = FMLClientHandler.instance().getClient();
     public static List<String> gearDataRequests = Lists.newArrayList();
-
     //private static int playerList;
 
     @Override
@@ -217,7 +221,7 @@ public class ClientProxyCore extends CommonProxyCore
     public static void registerItemRenderers()
     {
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(GCBlocks.unlitTorch), new ItemRendererUnlitTorch());
-        MinecraftForgeClient.registerItemRenderer(GCItems.rocketTier1, new ItemRendererTier1Rocket(new EntityTier1Rocket(FMLClientHandler.instance().getClient().theWorld), new ModelRocketTier1(), new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/rocketT1.png")));
+        MinecraftForgeClient.registerItemRenderer(GCItems.rocketTier1, new ItemRendererTier1Rocket(new EntityTier1Rocket(ClientProxyCore.mc.theWorld), new ModelRocketTier1(), new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/rocketT1.png")));
         MinecraftForgeClient.registerItemRenderer(GCItems.buggy, new ItemRendererBuggy());
         MinecraftForgeClient.registerItemRenderer(GCItems.flag, new ItemRendererFlag());
         MinecraftForgeClient.registerItemRenderer(GCItems.key, new ItemRendererKey(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/treasure.png")));
@@ -384,7 +388,7 @@ public class ClientProxyCore extends CommonProxyCore
     @Override
     public World getClientWorld()
     {
-        return FMLClientHandler.instance().getClient().theWorld;
+        return ClientProxyCore.mc.theWorld;
     }
 
     @Override
@@ -407,11 +411,9 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static void renderLiquidOverlays(float partialTicks)
     {
-        Minecraft minecraft = FMLClientHandler.instance().getClient();
-
-        if (ClientProxyCore.isInsideOfFluid(minecraft.thePlayer, GalacticraftCore.fluidOil))
+        if (ClientProxyCore.isInsideOfFluid(ClientProxyCore.mc.thePlayer, GalacticraftCore.fluidOil))
         {
-            minecraft.getTextureManager().bindTexture(ClientProxyCore.underOilTexture);
+        	ClientProxyCore.mc.getTextureManager().bindTexture(ClientProxyCore.underOilTexture);
         }
         else
         {
@@ -419,7 +421,7 @@ public class ClientProxyCore extends CommonProxyCore
         }
 
         Tessellator tessellator = Tessellator.instance;
-        float f1 = minecraft.thePlayer.getBrightness(partialTicks) / 3.0F;
+        float f1 = ClientProxyCore.mc.thePlayer.getBrightness(partialTicks) / 3.0F;
         GL11.glColor4f(f1, f1, f1, 1.0F);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -430,8 +432,8 @@ public class ClientProxyCore extends CommonProxyCore
         float f5 = -1.0F;
         float f6 = 1.0F;
         float f7 = -0.5F;
-        float f8 = -minecraft.thePlayer.rotationYaw / 64.0F;
-        float f9 = minecraft.thePlayer.rotationPitch / 64.0F;
+        float f8 = -ClientProxyCore.mc.thePlayer.rotationYaw / 64.0F;
+        float f9 = ClientProxyCore.mc.thePlayer.rotationPitch / 64.0F;
         tessellator.startDrawingQuads();
         tessellator.addVertexWithUV(f3, f5, f7, f2 + f8, f2 + f9);
         tessellator.addVertexWithUV(f4, f5, f7, 0.0F + f8, f2 + f9);
@@ -472,7 +474,7 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static void renderFootprints(float partialTicks)
     {
-        ClientProxyCore.footprintRenderer.renderFootprints(FMLClientHandler.instance().getClient().thePlayer, partialTicks);
+        ClientProxyCore.footprintRenderer.renderFootprints(ClientProxyCore.mc.thePlayer, partialTicks);
         MinecraftForge.EVENT_BUS.post(new EventSpecialRender(partialTicks));
     }
 
@@ -489,7 +491,7 @@ public class ClientProxyCore extends CommonProxyCore
     @Override
     public World getWorldForID(int dimensionID)
     {
-        World world = FMLClientHandler.instance().getClient().theWorld;
+        World world = ClientProxyCore.mc.theWorld;
 
         if (world != null && world.provider.dimensionId == dimensionID)
         {
@@ -504,19 +506,18 @@ public class ClientProxyCore extends CommonProxyCore
     {
         GL11.glPushMatrix();
 
-        final Minecraft minecraft = FMLClientHandler.instance().getClient();
         final EntityPlayer player = event.entityPlayer;
-        final WorldProvider provider = minecraft.theWorld.provider;
+        final WorldProvider provider = ClientProxyCore.mc.theWorld.provider;
 
-        if (player.ridingEntity instanceof EntityAutoRocket)
+        if (player.ridingEntity instanceof EntityTieredRocket)
         {
-            EntityAutoRocket entity = (EntityAutoRocket) player.ridingEntity;
-            GL11.glTranslatef(0, -(float) entity.getMountedYOffset() - 1F, 0);
+            EntityTieredRocket entity = (EntityTieredRocket) player.ridingEntity;
+            GL11.glTranslatef(0, -entity.getRotateOffset(), 0);
             float anglePitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * event.partialRenderTick;
             float angleYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * event.partialRenderTick;
             GL11.glRotatef(-angleYaw, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(anglePitch, 0.0F, 0.0F, 1.0F);
-            GL11.glTranslatef(0, (float) entity.getMountedYOffset() + 1F, 0);
+            GL11.glTranslatef(0, entity.getRotateOffset(), 0);
         }
 
         //Gravity - freefall - jetpack changes in player model orientation can go here
@@ -598,7 +599,7 @@ public class ClientProxyCore extends CommonProxyCore
                                 }
                             });
 
-                            if (FMLClientHandler.instance().getClient().getTextureManager().loadTexture(resourcelocation, threaddownloadimagedata))
+                            if (ClientProxyCore.mc.getTextureManager().loadTexture(resourcelocation, threaddownloadimagedata))
                             {
                                 capeLoc = resourcelocation;
                             }
@@ -615,7 +616,7 @@ public class ClientProxyCore extends CommonProxyCore
 
             if (capeLoc != null)
             {
-                FMLClientHandler.instance().getClient().getTextureManager().bindTexture(capeLoc);
+            	ClientProxyCore.mc.getTextureManager().bindTexture(capeLoc);
                 GL11.glPushMatrix();
                 GL11.glTranslatef(0.0F, 0.0F, 0.125F);
                 double d3 = player.field_71091_bM + (player.field_71094_bP - player.field_71091_bM) * event.partialRenderTick - (player.prevPosX + (player.posX - player.prevPosX) * event.partialRenderTick);
@@ -670,8 +671,7 @@ public class ClientProxyCore extends CommonProxyCore
         //Note: can also look for (entity.posY!=0.0D || entity.posX!=0.0D || entity.posZ!=0.0) which filters hand-held entities and the player in an inventory GUI
         if (ClientProxyCore.smallMoonActive && (offsetX != 0.0D || offsetY != 0.0D || offsetZ != 0.0D))
         {
-            final Minecraft minecraft = FMLClientHandler.instance().getClient();
-            final EntityPlayerSP player = minecraft.thePlayer;
+            final EntityPlayerSP player = ClientProxyCore.mc.thePlayer;
             if (player.posY > ClientProxyCore.terrainHeight + 8F && player.ridingEntity != entity && player != entity)
             {
                 double globalArc = ClientProxyCore.globalRadius / 57.2957795D;
@@ -754,9 +754,8 @@ public class ClientProxyCore extends CommonProxyCore
         //Skip tiles in inventory or in player's hand etc
         if (ClientProxyCore.smallMoonActive && (offsetX != 0.0D || offsetY != 0.0D || offsetZ != 0.0D))
         {
-            final Minecraft minecraft = FMLClientHandler.instance().getClient();
-            final EntityPlayerSP player = minecraft.thePlayer;
-            final WorldProvider provider = minecraft.theWorld.provider;
+            final EntityPlayerSP player = ClientProxyCore.mc.thePlayer;
+            final WorldProvider provider = ClientProxyCore.mc.theWorld.provider;
             if (provider instanceof WorldProviderMoon)
             {
                 if (player.posY > ClientProxyCore.terrainHeight + 8F)
@@ -838,10 +837,23 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static void orientCamera(float partialTicks)
     {
-        EntityClientPlayerMP player = FMLClientHandler.instance().getClient().thePlayer;
+        EntityClientPlayerMP player = ClientProxyCore.mc.thePlayer;
         GCPlayerStatsClient stats = GCEntityClientPlayerMP.getPlayerStats(player);
 
-        EntityLivingBase entityLivingBase = FMLClientHandler.instance().getClient().renderViewEntity;
+        EntityLivingBase entityLivingBase = ClientProxyCore.mc.renderViewEntity;
+        
+        if (player.ridingEntity instanceof EntityTieredRocket && ClientProxyCore.mc.gameSettings.thirdPersonView == 0)
+        {
+            EntityTieredRocket entity = (EntityTieredRocket) player.ridingEntity;          
+            float offset = entity.getRotateOffset();
+            GL11.glTranslatef(0, -offset, 0);
+            float anglePitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
+            float angleYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks;
+            GL11.glRotatef(-anglePitch, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(angleYaw, 0.0F, 1.0F, 0.0F);
+
+            GL11.glTranslatef(0, offset, 0);
+        }
 
         if (entityLivingBase.worldObj.provider instanceof WorldProviderOrbit && !entityLivingBase.isPlayerSleeping())
         {
@@ -889,7 +901,7 @@ public class ClientProxyCore extends CommonProxyCore
     {
         GL11.glNewList(glRenderList + 3, GL11.GL_COMPILE);
 
-        EntityLivingBase entitylivingbase = FMLClientHandler.instance().getClient().renderViewEntity;
+        EntityLivingBase entitylivingbase = ClientProxyCore.mc.renderViewEntity;
 
         if (entitylivingbase != null)
         {
