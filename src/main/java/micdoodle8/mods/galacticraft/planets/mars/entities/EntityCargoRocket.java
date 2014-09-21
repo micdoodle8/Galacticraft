@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
@@ -327,7 +328,10 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     public List<ItemStack> getItemsDropped(List<ItemStack> droppedItemList)
     {
         super.getItemsDropped(droppedItemList);
-        droppedItemList.add(new ItemStack(MarsItems.spaceship, 1, this.rocketType.getIndex() + 10));
+        ItemStack rocket = new ItemStack(MarsItems.spaceship, 1, this.rocketType.getIndex() + 10);
+        rocket.setTagCompound(new NBTTagCompound());
+        rocket.getTagCompound().setInteger("RocketFuel", this.fuelTank.getFluidAmount());
+        droppedItemList.add(rocket);
         return droppedItemList;
     }
 

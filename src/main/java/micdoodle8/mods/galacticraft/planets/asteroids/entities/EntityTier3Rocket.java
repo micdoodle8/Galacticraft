@@ -13,6 +13,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
+import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -321,7 +322,10 @@ public class EntityTier3Rocket extends EntityTieredRocket
     public List<ItemStack> getItemsDropped(List<ItemStack> droppedItems)
     {
         super.getItemsDropped(droppedItems);
-        droppedItems.add(new ItemStack(AsteroidsItems.tier3Rocket, 1, this.rocketType.getIndex()));
+        ItemStack rocket = new ItemStack(AsteroidsItems.tier3Rocket, 1, this.rocketType.getIndex());
+        rocket.setTagCompound(new NBTTagCompound());
+        rocket.getTagCompound().setInteger("RocketFuel", this.fuelTank.getFluidAmount());
+        droppedItems.add(rocket);
         return droppedItems;
     }
 }

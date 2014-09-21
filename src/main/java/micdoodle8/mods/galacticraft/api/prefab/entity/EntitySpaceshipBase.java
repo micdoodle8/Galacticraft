@@ -13,6 +13,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -139,7 +140,12 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
         for (final ItemStack item : this.getItemsDropped(new ArrayList<ItemStack>()))
         {
-            this.entityDropItem(item, 0);
+            EntityItem entityItem = this.entityDropItem(item, 0);
+
+            if (item.hasTagCompound())
+            {
+                entityItem.getEntityItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());
+            }
         }
     }
 

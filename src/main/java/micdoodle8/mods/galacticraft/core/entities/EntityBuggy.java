@@ -43,7 +43,6 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     public FluidTank buggyFuelTank = new FluidTank(this.tankCapacity);
     protected long ticks = 0;
     public int buggyType;
-    public int fuel;
     public int currentDamage;
     public int timeSinceHit;
     public int rockDirection;
@@ -68,7 +67,6 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         super(var1);
         this.setSize(0.98F, 1.7F);
         this.yOffset = 2.5F;
-        this.fuel = 0;
         this.currentDamage = 18;
         this.timeSinceHit = 19;
         this.rockDirection = 20;
@@ -476,7 +474,6 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     @Override
     protected void readEntityFromNBT(NBTTagCompound var1)
     {
-        this.fuel = var1.getInteger("Fuel");
         this.buggyType = var1.getInteger("buggyType");
         final NBTTagList var2 = var1.getTagList("Items", 10);
         this.cargoItems = new ItemStack[this.getSizeInventory()];
@@ -501,7 +498,6 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     @Override
     protected void writeEntityToNBT(NBTTagCompound var1)
     {
-        var1.setInteger("fuel", this.fuel);
         var1.setInteger("buggyType", this.buggyType);
         final NBTTagList var2 = new NBTTagList();
 
