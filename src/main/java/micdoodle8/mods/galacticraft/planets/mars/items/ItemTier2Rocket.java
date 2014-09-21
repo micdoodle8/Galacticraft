@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCargoRocket;
@@ -21,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -53,7 +55,8 @@ public class ItemTier2Rocket extends Item implements IHoldableItem
     @Override
     public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
-        int amountOfCorrectBlocks = 0;
+        boolean padFound = false;
+        TileEntity tile = null;
 
         if (par3World.isRemote)
         {
@@ -64,36 +67,52 @@ public class ItemTier2Rocket extends Item implements IHoldableItem
             float centerX = -1;
             float centerY = -1;
             float centerZ = -1;
-            int meta = par3World.getBlockMetadata(par4, par5, par6);
 
             for (int i = -1; i < 2; i++)
             {
                 for (int j = -1; j < 2; j++)
                 {
                     final Block id = par3World.getBlock(par4 + i, par5, par6 + j);
+                    int meta = par3World.getBlockMetadata(par4 + i, par5, par6 + j);
 
                     if (id == GCBlocks.landingPadFull && meta == 0)
                     {
-                        amountOfCorrectBlocks = 9;
+                        padFound = true;
+                        tile = par3World.getTileEntity(par4 + i, par5, par6 + j);
 
                         centerX = par4 + i + 0.5F;
-                        centerY = par5 - 2.2F;
+                        centerY = par5 + 0.4F;
                         centerZ = par6 + j + 0.5F;
+                        
+                        break;
                     }
                 }
+                
+                if (padFound) break;
             }
 
-            if (amountOfCorrectBlocks == 9)
+            if (padFound)
             {
+            	//Check whether there is already a rocket on the pad
+            	if (tile instanceof TileEntityLandingPad)
+            	{
+            		if (((TileEntityLandingPad)tile).getDockedEntity() != null)
+            			return false;
+            	}
+            	else
+            	{
+            		return false;
+            	}
+
                 EntitySpaceshipBase rocket = null;
 
                 if (par1ItemStack.getItemDamage() < 10)
                 {
-                    rocket = new EntityTier2Rocket(par3World, centerX, centerY + 4.2D, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
+                    rocket = new EntityTier2Rocket(par3World, centerX, centerY + 1.6D, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
                 }
                 else
                 {
-                    rocket = new EntityCargoRocket(par3World, centerX, centerY + 4.2D - 1.6D, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage() - 10]);
+                    rocket = new EntityCargoRocket(par3World, centerX, centerY, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage() - 10]);
                 }
 
                 par3World.spawnEntityInWorld(rocket);
