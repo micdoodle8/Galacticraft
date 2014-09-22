@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
+import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalConductor;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
@@ -83,11 +84,6 @@ public class EnergyNetwork implements IElectricityNetwork
 
     //This is an energy per tick which exceeds what any normal machine will request, so the requester must be an energy storage - for example, a battery or an energy cube
     private final static float ENERGY_STORAGE_LEVEL = 200F;
-
-    private Method demandedEnergyIC2 = null;
-    private Method injectEnergyIC2 = null;
-    private boolean initialisedIC2Methods = false;
-    private boolean voltageParameterIC2 = false;
 
     @Override
     public Set<IConductor> getTransmitters()
@@ -248,9 +244,9 @@ public class EnergyNetwork implements IElectricityNetwork
         this.totalSent = 0F;
         this.refreshAcceptors();
 
-        if (!this.initialisedIC2Methods)
+        if (!EnergyUtil.initialisedIC2Methods)
         {
-            this.initialiseIC2Methods();
+            EnergyUtil.initialiseIC2Methods();
         }
 
         if (this.getTransmitters().size() == 0)
@@ -302,7 +298,7 @@ public class EnergyNetwork implements IElectricityNetwork
                         double result = 0;
                         try
                         {
-                            result = (Double) this.demandedEnergyIC2.invoke(acceptor);
+                            result = (Double) EnergyUtil.demandedEnergyIC2.invoke(acceptor);
                         }
                         catch (Exception ex)
                         {
@@ -439,13 +435,13 @@ public class EnergyNetwork implements IElectricityNetwork
                         double result = 0;
                         try
                         {
-                            if (this.voltageParameterIC2)
+                            if (EnergyUtil.voltageParameterIC2)
                             {
-                                result = (Double) this.injectEnergyIC2.invoke(tileEntity, sideFrom, energySendingIC2, 120D);
+                                result = (Double) EnergyUtil.injectEnergyIC2.invoke(tileEntity, sideFrom, energySendingIC2, 120D);
                             }
                             else
                             {
-                                result = (Double) this.injectEnergyIC2.invoke(tileEntity, sideFrom, energySendingIC2);
+                                result = (Double) EnergyUtil.injectEnergyIC2.invoke(tileEntity, sideFrom, energySendingIC2);
                             }
                         }
                         catch (Exception ex)
@@ -810,79 +806,5 @@ public class EnergyNetwork implements IElectricityNetwork
     public String toString()
     {
         return "EnergyNetwork[" + this.hashCode() + "|Wires:" + this.getTransmitters().size() + "|Acceptors:" + this.connectedAcceptors.size() + "]";
-    }
-
-    private void initialiseIC2Methods()
-    {
-        if (EnergyConfigHandler.isIndustrialCraft2Loaded())
-        {
-            if (ConfigManagerCore.enableDebug)
-            {
-                GCLog.info("Debug UN: Initialising IC2 methods");
-            }
-            try
-            {
-                Class<?> clazz = Class.forName("ic2.api.energy.tile.IEnergySink");
-
-                if (ConfigManagerCore.enableDebug)
-                {
-                    GCLog.info("Debug UN: Found IC2 IEnergySink class");
-                }
-                try
-                {
-                    //1.7.2 version
-                    this.demandedEnergyIC2 = clazz.getMethod("demandedEnergyUnits");
-                }
-                catch (Exception e)
-                {
-                    //if that fails, try 1.7.10 version
-                    try
-                    {
-                        this.demandedEnergyIC2 = clazz.getMethod("getDemandedEnergy");
-                    }
-                    catch (Exception ee)
-                    {
-                        ee.printStackTrace();
-                    }
-                }
-
-                if (ConfigManagerCore.enableDebug)
-                {
-                    GCLog.info("Debug UN: Set IC2 demandedEnergy method");
-                }
-
-                try
-                {
-                    //1.7.2 version
-                    this.injectEnergyIC2 = clazz.getMethod("injectEnergyUnits", ForgeDirection.class, double.class);
-                    if (ConfigManagerCore.enableDebug)
-                    {
-                        GCLog.info("Debug UN: IC2 inject 1.7.2 succeeded");
-                    }
-                }
-                catch (Exception e)
-                {
-                    //if that fails, try 1.7.10 version
-                    try
-                    {
-                        this.injectEnergyIC2 = clazz.getMethod("injectEnergy", ForgeDirection.class, double.class, double.class);
-                        this.voltageParameterIC2 = true;
-                        if (ConfigManagerCore.enableDebug)
-                        {
-                            GCLog.info("Debug UN: IC2 inject 1.7.10 succeeded");
-                        }
-                    }
-                    catch (Exception ee)
-                    {
-                        ee.printStackTrace();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-        this.initialisedIC2Methods = true;
     }
 }
