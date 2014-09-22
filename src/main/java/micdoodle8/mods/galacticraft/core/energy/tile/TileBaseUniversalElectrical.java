@@ -68,6 +68,26 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
         return EnumSet.noneOf(ForgeDirection.class);
     }
 
+    @Override
+    public float getRequest(ForgeDirection direction)
+    {
+        if (this.getElectricalInputDirections().contains(direction))
+        	return super.getRequest(direction);
+        
+        return 0F;
+    }
+
+    @Override
+    public float receiveElectricity(ForgeDirection from, float receive, int tier, boolean doReceive)
+    {
+        if (this.getElectricalInputDirections().contains(from))
+        {
+        	return super.receiveElectricity(from, receive, tier, doReceive);
+        }
+        
+        return 0F;
+    }
+    
     //	@Override
     //	public float receiveElectricity(ForgeDirection from, ElectricityPack receive, boolean doReceive)
     //	{

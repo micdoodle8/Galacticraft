@@ -73,8 +73,12 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
                         IElectricityNetwork network = ((IConductor) tileAdj).getNetwork();
                         if (network != null)
                         {
-                            amountProduced += (toSend - network.produce(toSend, true, this.tierGC, this));
+                            amountProduced += (toSend - network.produce(toSend, !simulate, this.tierGC, this));
                         }
+                    }
+                    else if (tileAdj instanceof TileBaseUniversalElectrical)
+                    {
+                  		amountProduced += ((TileBaseUniversalElectrical) tileAdj).receiveElectricity(direction.getOpposite(), toSend, this.tierGC, !simulate);
                     }
                     else
                     {
