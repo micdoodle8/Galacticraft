@@ -7,7 +7,7 @@ public class Constants
 
     public static final int LOCALMAJVERSION = 3;
     public static final int LOCALMINVERSION = 0;
-    public static final int LOCALBUILDVERSION = 2;
+    public static final int LOCALBUILDVERSION = 3;
 
     public static final String CONFIG_CATEGORY_DIMENSIONS = "dimensions";
     public static final String CONFIG_CATEGORY_ENTITIES = "entities";
