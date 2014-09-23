@@ -1,19 +1,22 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityIngotCompressor;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class GuiIngotCompressor extends GuiContainer
+public class GuiIngotCompressor extends GuiContainerGC
 {
     private static final ResourceLocation electricFurnaceTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/ingotCompressor.png");
 
@@ -24,6 +27,18 @@ public class GuiIngotCompressor extends GuiContainer
         super(new ContainerIngotCompressor(par1InventoryPlayer, tileEntity));
         this.tileEntity = tileEntity;
         this.ySize = 192;
+    }
+
+    @Override
+    public void initGui()
+    {
+        super.initGui();
+        this.processInfoRegion.tooltipStrings = new ArrayList<String>();
+        this.processInfoRegion.xPosition = (this.width - this.xSize) / 2 + 77;
+        this.processInfoRegion.yPosition = (this.height - this.ySize) / 2 + 30;
+        this.processInfoRegion.parentWidth = this.width;
+        this.processInfoRegion.parentHeight = this.height;
+        this.infoRegions.add(this.processInfoRegion);
     }
 
     /**
@@ -63,9 +78,24 @@ public class GuiIngotCompressor extends GuiContainer
         this.mc.renderEngine.bindTexture(GuiIngotCompressor.electricFurnaceTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
+        int process;
         int containerWidth = (this.width - this.xSize) / 2;
         int containerHeight = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
+
+        if (this.tileEntity.processTicks > 0)
+        {
+        	process = (int) ((double) this.tileEntity.processTicks / (double) this.tileEntity.PROCESS_TIME_REQUIRED * 100);
+        }
+        else
+        {
+        	process = 0;
+        }
+        
+        List<String> processDesc = new ArrayList<String>();
+        processDesc.clear();
+        processDesc.add(GCCoreUtil.translate("gui.electricCompressor.desc.0") + ": " + process + "%");
+        this.processInfoRegion.tooltipStrings = processDesc;
 
         if (this.tileEntity.processTicks > 0)
         {
