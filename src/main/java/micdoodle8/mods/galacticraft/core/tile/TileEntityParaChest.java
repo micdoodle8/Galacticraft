@@ -308,7 +308,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
                     boolean isCanister = slotItem.isItemEqual(new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage()));
                     final int amountToFill = Math.min(liquid.amount, isCanister ? GCItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
 
-                    if (isCanister)
+                    if (isCanister && amountToFill > 0)
                     {
                         this.chestContents[this.chestContents.length - 1] = new ItemStack(GCItems.fuelCanister, 1, GCItems.fuelCanister.getMaxDamage() - amountToFill);
                         this.fuelTank.drain(amountToFill, true);
