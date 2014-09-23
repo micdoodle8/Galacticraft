@@ -251,7 +251,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
     @Override
     public List<ItemStack> getItemsDropped()
     {
-        return new ArrayList<ItemStack>(Arrays.asList(this.containedItems));
+        return null;
     }
 
     @Override
