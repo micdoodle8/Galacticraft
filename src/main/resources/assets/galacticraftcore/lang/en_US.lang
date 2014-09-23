@@ -265,6 +265,8 @@ gui.message.tier.name=Tier %d
 gui.message.canCreateSpaceStation.name=A Space Station can be created here!
 gui.message.cannotCreateSpaceStation.name=A Space Station cannot be created here.
 gui.message.createSS.name=Create
+gui.message.selectSS.name=Select a Space Station
+gui.message.ssOwner.name=Owner:
 
 gui.status.active.name=Active
 gui.status.missingleaves.name=Not Enough Leaf Blocks

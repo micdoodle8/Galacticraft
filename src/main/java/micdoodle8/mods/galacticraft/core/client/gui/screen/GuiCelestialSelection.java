@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.ibm.icu.text.ArabicShaping;
 import com.ibm.icu.text.ArabicShapingException;
 import com.ibm.icu.text.Bidi;
+import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
@@ -67,11 +68,15 @@ public class GuiCelestialSelection extends GuiScreen
     public List<CelestialBody> possibleBodies;
     public Map<String, String> spaceStationNames = Maps.newHashMap();
     public Map<String, Integer> spaceStationIDs = Maps.newHashMap();
+    public SmallFontRenderer smallFontRenderer;
+    private String selectedStationOwner = "";
+    private int spaceStationListOffset = 0;
 
     public GuiCelestialSelection(boolean mapMode, List<CelestialBody> possibleBodies)
     {
         this.mapMode = mapMode;
         this.possibleBodies = possibleBodies;
+        this.smallFontRenderer = new SmallFontRenderer(FMLClientHandler.instance().getClient().gameSettings, new ResourceLocation("textures/font/ascii.png"), FMLClientHandler.instance().getClient().renderEngine, false);
     }
 
     @Override
@@ -309,11 +314,6 @@ public class GuiCelestialSelection extends GuiScreen
                 Vector3f posVec = this.getCelestialBodyPosition(((IChildBody) this.selectedBody).getParentPlanet());
                 return new Vector2f(posVec.x, posVec.y);
             }
-            else if (this.selectedBody instanceof Satellite)
-            {
-                Vector3f posVec = this.getCelestialBodyPosition(((Satellite) this.selectedBody).getParentPlanet());
-                return new Vector2f(posVec.x, posVec.y);
-            }
 
             return new Vector2f(0, 0);
         }
@@ -376,6 +376,7 @@ public class GuiCelestialSelection extends GuiScreen
         this.lastSelectedBody = this.selectedBody;
         this.selectedBody = null;
         this.doneZooming = false;
+        this.selectedStationOwner = "";
     }
 
     @Override
@@ -448,10 +449,10 @@ public class GuiCelestialSelection extends GuiScreen
                             GCLog.severe("Please report as a BUG: player name profile problem.");
                             return false;
                         }
-                        Integer mapping = this.spaceStationIDs.get(this.mc.thePlayer.getGameProfile().getName().toLowerCase());
+                        Integer mapping = this.spaceStationIDs.get(this.selectedStationOwner);
                         if (mapping == null)
                         {
-                            GCLog.severe("Problem matching player name in space station check: " + this.mc.thePlayer.getGameProfile().getName().toLowerCase());
+                            GCLog.severe("Problem matching player name in space station check: " + this.selectedStationOwner);
                             return false;
                         }
                         int spacestationID = mapping;
@@ -532,7 +533,11 @@ public class GuiCelestialSelection extends GuiScreen
         {
             if (x > width - BORDER_WIDTH - BORDER_EDGE_WIDTH - 88 && x < width - BORDER_WIDTH - BORDER_EDGE_WIDTH && y > BORDER_WIDTH + BORDER_EDGE_WIDTH && y < BORDER_WIDTH + BORDER_EDGE_WIDTH + 13)
             {
-                this.teleportToSelectedBody();
+                if (!(this.selectedBody instanceof Satellite) || !this.selectedStationOwner.equals(""))
+                {
+                    this.teleportToSelectedBody();
+                }
+
                 clickHandled = true;
             }
         }
@@ -540,6 +545,66 @@ public class GuiCelestialSelection extends GuiScreen
         // Need unscaled mouse coords
         int mouseX = Mouse.getX();
         int mouseY = Mouse.getY() * -1 + Minecraft.getMinecraft().displayHeight - 1;
+
+        if (this.selectedBody instanceof Satellite)
+        {
+            int max = Math.min((this.height / 2) / 14, this.spaceStationIDs.size());
+
+            int xPos;
+            int yPos;
+
+            xPos = width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 85;
+            yPos = GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 45;
+
+            if (x >= xPos && x <= xPos + 61 && y >= yPos && y <= yPos + 4)
+            {
+                if (this.spaceStationListOffset > 0)
+                {
+                    this.spaceStationListOffset--;
+                }
+                clickHandled = true;
+            }
+
+            xPos = width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 85;
+            yPos = GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 49 + max * 14;
+
+            if (x >= xPos && x <= xPos + 61 && y >= yPos && y <= yPos + 4)
+            {
+                if (max + spaceStationListOffset < this.spaceStationIDs.size())
+                {
+                    this.spaceStationListOffset++;
+                }
+                clickHandled = true;
+            }
+
+            Iterator<Map.Entry<String, Integer>> it = this.spaceStationIDs.entrySet().iterator();
+            int i = 0;
+            int j = 0;
+            while (it.hasNext() && i < max)
+            {
+                Map.Entry<String, Integer> e = it.next();
+                if (j >= this.spaceStationListOffset)
+                {
+                    int xOffset = 0;
+
+                    if (e.getKey().equals(this.selectedStationOwner))
+                    {
+                        xOffset -= 5;
+                    }
+
+                    xPos = width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 95 + xOffset;
+                    yPos = GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 50 + i * 14;
+
+                    if (x >= xPos && x <= xPos + 93 && y >= yPos && y <= yPos + 12)
+                    {
+                        this.selectedStationOwner = e.getKey();
+                        clickHandled = true;
+                    }
+                    i++;
+                }
+                j++;
+            }
+        }
 
         List<CelestialBody> children = this.getChildren(this.selectedParent);
 
@@ -1269,10 +1334,91 @@ public class GuiCelestialSelection extends GuiScreen
                 // Right-hand bar (basic selection info)
                 this.mc.renderEngine.bindTexture(GuiCelestialSelection.guiMain1);
                 GL11.glColor4f(0.0F, 0.6F, 1.0F, 1);
-                this.drawTexturedModalRect(width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 96, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH, 95, 139, 63, 0, 95, 139, false, false);
 
-                if (this.canCreateSpaceStation())
+                if (this.selectedBody instanceof Satellite)
                 {
+                    int max = Math.min((this.height / 2) / 14, this.spaceStationIDs.size());
+                    this.drawTexturedModalRect(width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 95, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH, 95, 53, 0, 186, 95, 53, false, false);
+                    if (this.spaceStationListOffset <= 0)
+                    {
+                        GL11.glColor4f(0.65F, 0.65F, 0.65F, 1);
+                    }
+                    else
+                    {
+                        GL11.glColor4f(0.0F, 0.6F, 1.0F, 1);
+                    }
+                    this.drawTexturedModalRect(width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 85, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 45, 61, 4, 0, 239, 61, 4, false, false);
+                    if (max + spaceStationListOffset >= this.spaceStationIDs.size())
+                    {
+                        GL11.glColor4f(0.65F, 0.65F, 0.65F, 1);
+                    }
+                    else
+                    {
+                        GL11.glColor4f(0.0F, 0.6F, 1.0F, 1);
+                    }
+                    this.drawTexturedModalRect(width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 85, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 49 + max * 14, 61, 4, 0, 239, 61, 4, false, true);
+                    GL11.glColor4f(0.0F, 0.6F, 1.0F, 1);
+
+                    if (this.spaceStationIDs.get(this.selectedStationOwner) == null)
+                    {
+                        str = GCCoreUtil.translate("gui.message.selectSS.name");
+                        this.drawSplitString(str, width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 47, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 20, 91, GCCoreUtil.to32BitColor(255, 255, 255, 255));
+                    }
+                    else
+                    {
+                        str = GCCoreUtil.translate("gui.message.ssOwner.name");
+                        this.fontRendererObj.drawString(str, width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 88, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 20, GCCoreUtil.to32BitColor(255, 255, 255, 255));
+                        str = this.selectedStationOwner;
+                        this.smallFontRenderer.drawString(str, width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 47 - this.smallFontRenderer.getStringWidth(str) / 2, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 30, GCCoreUtil.to32BitColor(255, 255, 255, 255));
+                    }
+
+                    Iterator<Map.Entry<String, Integer>> it = this.spaceStationIDs.entrySet().iterator();
+                    int i = 0;
+                    int j = 0;
+                    while (it.hasNext() && i < max)
+                    {
+                        Map.Entry<String, Integer> e = it.next();
+
+                        if (j >= this.spaceStationListOffset)
+                        {
+                            this.mc.renderEngine.bindTexture(GuiCelestialSelection.guiMain0);
+                            GL11.glColor4f(0.0F, 0.6F, 1.0F, 1);
+                            int xOffset = 0;
+
+                            if (e.getKey().equals(this.selectedStationOwner))
+                            {
+                                xOffset -= 5;
+                            }
+
+                            this.drawTexturedModalRect(width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 95 + xOffset, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 50 + i * 14, 93, 12, 95, 464, 93, 12, true, false);
+                            str = "";
+                            String str0 = this.spaceStationNames.get(e.getKey());
+                            int point = 0;
+                            while (this.smallFontRenderer.getStringWidth(str) < 80 && point < str0.length())
+                            {
+                                str = str + str0.substring(point, point + 1);
+                                point++;
+                            }
+                            if (this.smallFontRenderer.getStringWidth(str) >= 80)
+                            {
+                                str = str.substring(0, str.length() - 3);
+                                str = str + "...";
+                            }
+                            this.smallFontRenderer.drawString(str, width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 88 + xOffset, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 51 + i * 14, GCCoreUtil.to32BitColor(255, 255, 255, 255));
+                            i++;
+                        }
+                        j++;
+                    }
+                }
+                else
+                {
+                    this.drawTexturedModalRect(width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 96, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH, 95, 139, 63, 0, 95, 139, false, false);
+                }
+
+                if (this.canCreateSpaceStation() && (!(this.selectedBody instanceof Satellite)))
+                {
+                    GL11.glColor4f(0.0F, 0.6F, 1.0F, 1);
+                    this.mc.renderEngine.bindTexture(GuiCelestialSelection.guiMain1);
                     this.drawTexturedModalRect(width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 96, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 140, 96, 35, 0, 139, 96, 35, false, false);
 
                     if (this.selectedBody == GalacticraftCore.planetOverworld)
@@ -1356,7 +1502,7 @@ public class GuiCelestialSelection extends GuiScreen
 
                 if (!this.mapMode)
                 {
-                    if (!this.selectedBody.getReachable() || (this.possibleBodies != null && !this.possibleBodies.contains(this.selectedBody)))
+                    if (!this.selectedBody.getReachable() || (this.possibleBodies != null && !this.possibleBodies.contains(this.selectedBody)) || (this.selectedBody instanceof Satellite && this.selectedStationOwner.equals("")))
                     {
                         GL11.glColor4f(1.0F, 0.0F, 0.0F, 1);
                     }
