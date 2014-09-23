@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.transmission.grid.Pathfinder;
 import micdoodle8.mods.galacticraft.api.transmission.grid.PathfinderChecker;
 import micdoodle8.mods.galacticraft.api.transmission.tile.*;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -35,6 +36,9 @@ public class OxygenNetwork implements IOxygenNetwork
     public float produce(float totalOxygen, TileEntity... ignoreTiles)
     {
         float remainingUsableOxygen = totalOxygen;
+
+        if (this.oxygenTiles.isEmpty())
+        	this.refreshOxygenTiles();
 
         if (!this.oxygenTiles.isEmpty())
         {
@@ -103,6 +107,9 @@ public class OxygenNetwork implements IOxygenNetwork
     public float getRequest(TileEntity... ignoreTiles)
     {
         List<Float> requests = new ArrayList<Float>();
+        
+        if (this.oxygenTiles.isEmpty())
+        	this.refreshOxygenTiles();
 
         List<TileEntity> ignoreTilesList = Arrays.asList(ignoreTiles);
         for (TileEntity tileEntity : new HashSet<TileEntity>(this.oxygenTiles.keySet()))
@@ -149,7 +156,7 @@ public class OxygenNetwork implements IOxygenNetwork
     @Override
     public void refresh()
     {
-        this.oxygenTiles.clear();
+    	this.oxygenTiles.clear();
 
         try
         {
@@ -172,7 +179,7 @@ public class OxygenNetwork implements IOxygenNetwork
                     it.remove();
                     continue;
                 }
-                else if (((TileEntity) transmitter).getWorldObj().getTileEntity(((TileEntity) transmitter).xCoord, ((TileEntity) transmitter).yCoord, ((TileEntity) transmitter).zCoord) != transmitter)
+                else if (((TileEntity) transmitter).getWorldObj().getBlock(((TileEntity) transmitter).xCoord, ((TileEntity) transmitter).yCoord, ((TileEntity) transmitter).zCoord) != GCBlocks.oxygenPipe)
                 {
                     it.remove();
                     continue;
@@ -181,18 +188,38 @@ public class OxygenNetwork implements IOxygenNetwork
                 {
                     transmitter.setNetwork(this);
                 }
-
-                for (int i = 0; i < transmitter.getAdjacentConnections().length; i++)
-                {
-                    TileEntity acceptor = transmitter.getAdjacentConnections()[i];
-
-                    if (!(acceptor instanceof ITransmitter) && acceptor instanceof IConnector)
-                    {
-                        this.oxygenTiles.put(acceptor, ForgeDirection.getOrientation(i));
-                    }
-                }
             }
         }
+        catch (Exception e)
+        {
+            FMLLog.severe("Failed to refresh oxygen pipe network.");
+            e.printStackTrace();
+        }
+    }
+
+    public void refreshOxygenTiles()
+    {
+    	this.oxygenTiles.clear();
+
+    	try
+    	{
+    		Iterator<ITransmitter> it = this.pipes.iterator();
+
+    		while (it.hasNext())
+    		{
+    			ITransmitter transmitter = it.next();
+
+    			for (int i = 0; i < transmitter.getAdjacentConnections().length; i++)
+    			{
+    				TileEntity acceptor = transmitter.getAdjacentConnections()[i];
+
+    				if (!(acceptor instanceof ITransmitter) && acceptor instanceof IConnector)
+    				{
+    					this.oxygenTiles.put(acceptor, ForgeDirection.getOrientation(i));
+    				}
+    			}
+    		}
+    	}
         catch (Exception e)
         {
             FMLLog.severe("Failed to refresh oxygen pipe network.");
