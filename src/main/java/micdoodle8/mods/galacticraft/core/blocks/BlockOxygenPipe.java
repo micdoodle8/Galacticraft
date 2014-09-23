@@ -188,7 +188,7 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
     @Override
     public TileEntity createNewTileEntity(World world, int meta)
     {
-        return new TileEntityOxygenPipe();
+    	return new TileEntityOxygenPipe(); 
     }
 
     @SideOnly(Side.CLIENT)

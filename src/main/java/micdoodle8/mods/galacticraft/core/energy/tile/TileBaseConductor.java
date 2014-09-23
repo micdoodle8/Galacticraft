@@ -29,6 +29,16 @@ public abstract class TileBaseConductor extends TileEntityAdvanced implements IC
     public TileEntity[] adjacentConnections = null;
 
     @Override
+    public void validate()
+    {
+    	super.validate();
+    	if (!this.worldObj.isRemote)
+    	{
+    		this.refresh();
+    	}
+    }
+    
+    @Override
     public void invalidate()
     {
         if (!this.worldObj.isRemote)
@@ -82,7 +92,7 @@ public abstract class TileBaseConductor extends TileEntityAdvanced implements IC
                 {
                     if (tileEntity.getClass() == this.getClass() && tileEntity instanceof INetworkProvider && !this.getNetwork().equals(((INetworkProvider) tileEntity).getNetwork()))
                     {
-                        ((INetworkProvider) tileEntity).getNetwork().merge(this.getNetwork());
+                    	((INetworkProvider) tileEntity).getNetwork().merge(this.getNetwork());
                     }
                 }
             }
