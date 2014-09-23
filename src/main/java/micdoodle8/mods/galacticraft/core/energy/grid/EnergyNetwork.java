@@ -9,23 +9,17 @@ import ic2.api.energy.tile.IEnergySink;
 import mekanism.api.energy.IStrictEnergyAcceptor;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
-import micdoodle8.mods.galacticraft.api.transmission.grid.Pathfinder;
-import micdoodle8.mods.galacticraft.api.transmission.grid.PathfinderChecker;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
-import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
-import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalConductor;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.lang.reflect.Method;
 import java.util.*;
 
 //import buildcraft.api.power.PowerHandler.Type;
@@ -521,8 +515,7 @@ public class EnergyNetwork implements IElectricityNetwork
     /**
      * Refresh validity of each conductor in the network
      */
-    @Override
-    public void refresh()
+    public void refreshWithChecks()
     {
         int tierfound = 2;
         Iterator<IConductor> it = this.getTransmitters().iterator();
@@ -567,6 +560,46 @@ public class EnergyNetwork implements IElectricityNetwork
         this.networkTierGC = tierfound;
     }
 
+    @Override
+    public void refresh()
+    {
+        int tierfound = 2;
+        Iterator<IConductor> it = this.getTransmitters().iterator();
+        while (it.hasNext())
+        {
+            IConductor conductor = it.next();
+
+            if (conductor == null)
+            {
+                it.remove();
+                continue;
+            }
+
+            TileEntity tile = (TileEntity) conductor;
+            World world = tile.getWorldObj();
+            //Remove any conductors in unloaded chunks
+            if (tile.isInvalid() || world == null)
+            {
+                it.remove();
+                continue;
+            }
+
+            if (conductor.getTierGC() < 2)
+            {
+                tierfound = 1;
+            }
+
+            if (conductor.getNetwork() != this)
+            {
+                conductor.setNetwork(this);
+                conductor.onNetworkChanged();
+            }
+        }
+
+        //This will set the network tier to 2 if all the conductors are tier 2
+        this.networkTierGC = tierfound;
+    }
+
     /**
      * Refresh all energy acceptors in the network
      */
@@ -575,7 +608,7 @@ public class EnergyNetwork implements IElectricityNetwork
         this.connectedAcceptors.clear();
         this.connectedDirections.clear();
 
-        this.refresh();
+        this.refreshWithChecks();
 
         try
         {
@@ -710,98 +743,97 @@ public class EnergyNetwork implements IElectricityNetwork
 
     }
 
-    /**
-     * Split the network into two separate networks at a specific tile.
-     * <p/>
-     * A new network will be created for one side of the broken network, and the current one will update for the rest.
-     * <p/>
-     * If the block is broken, but the network is still connected without that tile, no new network will be created.
-     *
-     * @param splitPoint
-     */
-    @Override
-    public void split(IConductor splitPoint)
-    {
+	public void split(IConductor splitPoint)
+	{
         if (splitPoint instanceof TileEntity)
         {
             this.getTransmitters().remove(splitPoint);
-            boolean networkIntact = false;
-            World world = ((TileEntity) splitPoint).getWorldObj();
+    		splitPoint.setNetwork(null);
 
-            /**
-             * Loop through the connected blocks and attempt to see if there are
-             * connections between the two points elsewhere.
-             */
-            TileEntity[] connectedBlocks = splitPoint.getAdjacentConnections();
-
-            for (TileEntity connectedBlockA : connectedBlocks)
+            //If the size of the residual network is 1, it should simply be preserved 
+            if (this.getTransmitters().size() > 1)
             {
-                if (connectedBlockA instanceof INetworkConnection)
-                {
-                    for (final TileEntity connectedBlockB : connectedBlocks)
-                    {
-                        if (connectedBlockA != connectedBlockB && connectedBlockB instanceof INetworkConnection)
-                        {
-                            Pathfinder finder = new PathfinderChecker(world, (INetworkConnection) connectedBlockB, NetworkType.POWER, splitPoint);
-                            finder.init(new BlockVec3(connectedBlockA));
-
-                            if (finder.results.size() > 0)
-                            {
-                                /**
-                                 * The connections A and B are still intact
-                                 * elsewhere. Set all references of wire
-                                 * connection into one network.
-                                 */
-
-                            	networkIntact = true;
-                                for (BlockVec3 node : finder.closedSet)
-                                {
-                                    TileEntity nodeTile = node.getTileEntity(world);
-
-                                    if (nodeTile instanceof INetworkProvider)
-                                    {
-                                        if (nodeTile != splitPoint)
-                                        {
-                                            ((INetworkProvider) nodeTile).setNetwork(this);
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                /**
-                                 * The connections A and B are not connected
-                                 * anymore. Give both of them a new network.
-                                 */
-                                IElectricityNetwork newNetwork = new EnergyNetwork();
-
-                                for (BlockVec3 node : finder.closedSet)
-                                {
-                                    TileEntity nodeTile = node.getTileEntity(world);
-
-                                    if (nodeTile instanceof INetworkProvider)
-                                    {
-                                        if (nodeTile != splitPoint)
-                                        {
-                                            newNetwork.getTransmitters().add((IConductor) nodeTile);
-                                        }
-                                    }
-                                }
-
-                                newNetwork.refresh();
-                            }
-                        }
-                    }
-                }
+	            World world = ((TileEntity) splitPoint).getWorldObj();
+	            
+				if (this.getTransmitters().size() > 0)
+				{	
+					TileEntity[] nextToSplit = new TileEntity[6];
+					boolean[] toDo = {true,true,true,true,true,true};
+					TileEntity tileEntity;
+					
+					int xCoord = ((TileEntity)splitPoint).xCoord;
+					int yCoord = ((TileEntity)splitPoint).yCoord;
+					int zCoord = ((TileEntity)splitPoint).zCoord;
+	
+					for(int j = 0; j < 6; j++)
+					{
+						switch (j)
+						{
+			    		case 0:  tileEntity = world.getTileEntity(xCoord, yCoord - 1, zCoord);
+			    			break;
+			    		case 1:  tileEntity = world.getTileEntity(xCoord, yCoord + 1, zCoord);
+			    			break;
+			    		case 2:  tileEntity = world.getTileEntity(xCoord, yCoord, zCoord - 1);
+			    			break;
+			    		case 3:  tileEntity = world.getTileEntity(xCoord, yCoord, zCoord + 1);
+			    			break;
+			    		case 4:  tileEntity = world.getTileEntity(xCoord - 1, yCoord, zCoord);
+			    			break;
+			    		case 5:  tileEntity = world.getTileEntity(xCoord + 1, yCoord, zCoord);
+			    			break;
+			    		default:
+			    			//Not reachable, only to prevent uninitiated compile errors
+			    			tileEntity = null;
+			    			break;
+			    		}
+		    						
+						if (tileEntity instanceof IConductor)
+						{
+							nextToSplit[j]=tileEntity;
+						}
+						else toDo[j]=false;
+					}
+		
+					for(int i1 = 0; i1 < 6; i1++)
+					{
+						if(toDo[i1])
+						{
+							TileEntity connectedBlockA = nextToSplit[i1];
+							NetworkFinder finder = new NetworkFinder(world, new BlockVec3(connectedBlockA), new BlockVec3((TileEntity)splitPoint));
+							List<IConductor> partNetwork = finder.exploreNetwork();
+							
+							//Mark any others still to do in the nextToSplit array which are connected to this, as dealt with
+							for(int i2 = i1 + 1; i2 < 6; i2++)
+							{
+								TileEntity connectedBlockB = nextToSplit[i2];
+								
+								if(toDo[i2])
+								{
+									if(partNetwork.contains(connectedBlockB))
+									{
+										toDo[i2] = false;
+									}
+								}
+							}
+					
+							//Now make the new network from partNetwork
+							EnergyNetwork newNetwork = new EnergyNetwork();
+							newNetwork.getTransmitters().addAll(partNetwork);
+							newNetwork.refreshWithChecks();
+						}
+					}
+					
+					this.destroy();
+				}
             }
-            
-            if (!networkIntact)
+            //Splitting a 1-block network leaves nothing
+            else if (this.getTransmitters().size() == 0)
             {
             	this.destroy();
             }
         }
-    }
-
+	}
+    
     @Override
     public String toString()
     {

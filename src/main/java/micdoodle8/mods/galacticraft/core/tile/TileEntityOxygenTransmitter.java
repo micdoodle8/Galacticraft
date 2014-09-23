@@ -25,6 +25,16 @@ public abstract class TileEntityOxygenTransmitter extends TileEntityAdvanced imp
     public TileEntity[] adjacentConnections = null;
 
     @Override
+    public void validate()
+    {
+    	super.validate();
+    	if (!this.worldObj.isRemote)
+    	{
+    		this.refresh();
+    	}
+    }
+
+    @Override
     public void invalidate()
     {
         if (!this.worldObj.isRemote)

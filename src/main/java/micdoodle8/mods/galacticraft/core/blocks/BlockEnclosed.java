@@ -186,6 +186,8 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         super.onBlockAdded(world, x, y, z);
 
         int metadata = world.getBlockMetadata(x, y, z);
+        
+        //TODO: this tileEntity will be null or invalid when onBlockAdded is called
         final TileEntity tileEntity = world.getTileEntity(x, y, z);
 
         if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())

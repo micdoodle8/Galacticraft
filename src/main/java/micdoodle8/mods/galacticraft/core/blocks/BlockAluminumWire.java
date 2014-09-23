@@ -97,15 +97,20 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     @Override
     public TileEntity createNewTileEntity(World world, int metadata)
     {
-        switch (metadata)
+        TileEntity tile;
+    	switch (metadata)
         {
         case 0:
-            return new TileEntityAluminumWire(1);
+            tile = new TileEntityAluminumWire(1);
+            break;
         case 1:
-            return new TileEntityAluminumWire(2);
+            tile = new TileEntityAluminumWire(2);
+            break;
         default:
             return null;
         }
+    	
+    	return tile;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

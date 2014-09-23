@@ -507,9 +507,9 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
             Vector3 colorParentA = new Vector3(this.getColorRed(), this.getColorGreen(), this.getColorBlue());
             Vector3 colorParentB = new Vector3(otherSlimeling.getColorRed(), otherSlimeling.getColorGreen(), otherSlimeling.getColorBlue());
             Vector3 newColor = ColorUtil.addColorsRealistically(colorParentA, colorParentB);
-            newColor.x = Math.max(newColor.x, 0);
-            newColor.y = Math.max(newColor.y, 0);
-            newColor.z = Math.max(newColor.z, 0);
+            newColor.x = Math.max(Math.min(newColor.x, 1.0F), 0);
+            newColor.y = Math.max(Math.min(newColor.y, 1.0F), 0);
+            newColor.z = Math.max(Math.min(newColor.z, 1.0F), 0);
             EntitySlimeling newSlimeling = new EntitySlimeling(this.worldObj, (float) newColor.x, (float) newColor.y, (float) newColor.z);
 
             String s = VersionUtil.getSlimelingOwner(this);

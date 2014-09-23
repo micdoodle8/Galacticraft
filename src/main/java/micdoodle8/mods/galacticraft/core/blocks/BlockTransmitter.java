@@ -30,22 +30,6 @@ public abstract class BlockTransmitter extends BlockContainer
         super(material);
     }
 
-    /**
-     * Called whenever the block is added into the world. Args: world, x, y, z
-     */
-    @Override
-    public void onBlockAdded(World world, int x, int y, int z)
-    {
-        super.onBlockAdded(world, x, y, z);
-
-        TileEntity tileEntity = world.getTileEntity(x, y, z);
-
-        if (tileEntity instanceof INetworkConnection)
-        {
-            ((INetworkConnection) tileEntity).refresh();
-        }
-    }
-
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
     {
