@@ -179,11 +179,6 @@ public class OxygenNetwork implements IOxygenNetwork
                     it.remove();
                     continue;
                 }
-                else if (((TileEntity) transmitter).getWorldObj().getBlock(((TileEntity) transmitter).xCoord, ((TileEntity) transmitter).yCoord, ((TileEntity) transmitter).zCoord) != GCBlocks.oxygenPipe)
-                {
-                    it.remove();
-                    continue;
-                }
                 else
                 {
                     transmitter.setNetwork(this);
@@ -199,8 +194,6 @@ public class OxygenNetwork implements IOxygenNetwork
 
     public void refreshOxygenTiles()
     {
-    	this.oxygenTiles.clear();
-
     	try
     	{
     		Iterator<ITransmitter> it = this.pipes.iterator();
@@ -209,6 +202,18 @@ public class OxygenNetwork implements IOxygenNetwork
     		{
     			ITransmitter transmitter = it.next();
 
+                if (transmitter == null || ((TileEntity) transmitter).isInvalid() || ((TileEntity) transmitter).getWorldObj() == null)
+                {
+                    it.remove();
+                    continue;
+                }
+
+                if (((TileEntity) transmitter).getWorldObj().getBlock(((TileEntity) transmitter).xCoord, ((TileEntity) transmitter).yCoord, ((TileEntity) transmitter).zCoord) != GCBlocks.oxygenPipe)
+                {
+                    it.remove();
+                    continue;
+                }
+   			
     			for (int i = 0; i < transmitter.getAdjacentConnections().length; i++)
     			{
     				TileEntity acceptor = transmitter.getAdjacentConnections()[i];
