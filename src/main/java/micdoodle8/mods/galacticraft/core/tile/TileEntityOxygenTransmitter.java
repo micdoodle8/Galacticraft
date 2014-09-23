@@ -23,24 +23,17 @@ public abstract class TileEntityOxygenTransmitter extends TileEntityAdvanced imp
     private IGridNetwork network;
 
     public TileEntity[] adjacentConnections = null;
-    private boolean newlyPlaced = false;
 
     @Override
     public void validate()
     {
     	super.validate();
-    	if (this.newlyPlaced)
+    	if (!this.worldObj.isRemote)
     	{
     		this.refresh();
-    		this.newlyPlaced = false;
     	}
     }
-    
-    public void setNewlyPlaced()
-    {
-    	this.newlyPlaced = true;
-    }   
-    
+
     @Override
     public void invalidate()
     {
