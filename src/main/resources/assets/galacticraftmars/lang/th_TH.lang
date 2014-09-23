@@ -147,8 +147,6 @@ gui.slimeling.following=ตามเจ้าของ
 gui.slimeling.damage=แรงโจมตี
 gui.slimeling.food=อาหารที่ชอบ
 
-
-
 # SCHEMATICS
 schematic.rocketT3.name=จรวด เทียร์ 3
 schematic.cargoRocket.name=จรวดขนส่งอัตโนมัติ
@@ -176,5 +174,7 @@ gc.configgui.idEntityLandingBalloons=ID ยานลงจอดบอลลู�
 gc.configgui.idEntityCargoRocket=ID จรวดขนส่ง
 gc.configgui.idSchematicRocketT2=ID แผนผังจรวด เทียร์ 2
 gc.configgui.idSchematicCargoRocket=ID แผนผังจรวดขนส่ง
-gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
+gc.configgui.launchControllerChunkLoad=เปิดใช้งานเครื่องควบคุมการปล่อยจรวดให้โหลด Chunk
 gc.configgui.launchControllerAllDims=เครื่องควบคุมการปล่อยจรวดโหลดทุกมิติ
+
+gc.configgui.planets.title=การตั้งค่ากาแลคติคคราฟ ดาวเคราะห์

@@ -22,14 +22,16 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class EnergyUtil
 {
-    private static boolean voltageParameterIC2 = false;
-    private static Method injectEnergyIC2 = null;
     private static boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
     //boolean isTELoaded = EnergyConfigHandler.isThermalExpansionLoaded();
     private static boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded();
     private static boolean isBCLoaded = EnergyConfigHandler.isBuildcraftLoaded();
     private static boolean isBCReallyLoaded = EnergyConfigHandler.isBuildcraftReallyLoaded();
-    private static boolean initialisedIC2Methods = EnergyUtil.initialiseIC2Methods();
+
+    public static boolean voltageParameterIC2 = false;
+    public static Method demandedEnergyIC2 = null;
+    public static Method injectEnergyIC2 = null;
+    public static boolean initialisedIC2Methods = EnergyUtil.initialiseIC2Methods();
     
     public static TileEntity[] getAdjacentPowerConnections(TileEntity tile)
     {
@@ -161,10 +163,22 @@ public class EnergyUtil
         }
         else if (isIC2Loaded && tileAdj instanceof IEnergySink)
         {
-            double energySendingIC2 = toSend * EnergyConfigHandler.TO_IC2_RATIO;
+            double demanded = 0;
+        	try
+            {
+                demanded = (Double) EnergyUtil.demandedEnergyIC2.invoke(tileAdj);
+            }
+            catch (Exception ex)
+            {
+                if (ConfigManagerCore.enableDebug)
+                {
+                    ex.printStackTrace();
+                }
+            }
+            double energySendingIC2 = Math.min(toSend * EnergyConfigHandler.TO_IC2_RATIO, demanded);
             if (energySendingIC2 >= 1D)
             {
-                double result = 0;
+            	double result = 0;
                 try
                 {
                     if (EnergyUtil.voltageParameterIC2)
@@ -249,13 +263,13 @@ public class EnergyUtil
 		return false;
 	}
 
-    private static boolean initialiseIC2Methods()
+    public static boolean initialiseIC2Methods()
     {
         if (isIC2Loaded)
         {
             if (ConfigManagerCore.enableDebug)
             {
-                GCLog.info("Debug UN: Initialising IC2 methods");
+                GCLog.info("Debug: Initialising IC2 methods OK");
             }
             try
             {
@@ -263,7 +277,30 @@ public class EnergyUtil
 
                 if (ConfigManagerCore.enableDebug)
                 {
-                    GCLog.info("Debug UN: Found IC2 IEnergySink class");
+                    GCLog.info("Debug: Found IC2 IEnergySink class OK");
+                }
+
+                try
+                {
+                    //1.7.2 version
+                    EnergyUtil.demandedEnergyIC2 = clazz.getMethod("demandedEnergyUnits");
+                }
+                catch (Exception e)
+                {
+                	//if that fails, try 1.7.10 version
+                    try
+                    {
+                        EnergyUtil.demandedEnergyIC2 = clazz.getMethod("getDemandedEnergy");
+                    }
+                    catch (Exception ee)
+                    {
+                        ee.printStackTrace();
+                    }
+                }
+
+                if (ConfigManagerCore.enableDebug)
+                {
+                    GCLog.info("Debug: Set IC2 demandedEnergy method OK");
                 }
 
                 try
@@ -272,7 +309,7 @@ public class EnergyUtil
                     EnergyUtil.injectEnergyIC2 = clazz.getMethod("injectEnergyUnits", ForgeDirection.class, double.class);
                     if (ConfigManagerCore.enableDebug)
                     {
-                        GCLog.info("Debug UN: IC2 inject 1.7.2 succeeded");
+                        GCLog.info("Debug: IC2 inject 1.7.2 succeeded");
                     }
                 }
                 catch (Exception e)
@@ -284,7 +321,7 @@ public class EnergyUtil
                         EnergyUtil.voltageParameterIC2 = true;
                         if (ConfigManagerCore.enableDebug)
                         {
-                            GCLog.info("Debug UN: IC2 inject 1.7.10 succeeded");
+                            GCLog.info("Debug: IC2 inject 1.7.10 succeeded");
                         }
                     }
                     catch (Exception ee)

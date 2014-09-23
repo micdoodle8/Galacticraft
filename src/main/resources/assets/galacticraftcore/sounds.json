@@ -32,14 +32,7 @@
   "entity.bossliving": { "category":"master", "sounds":[{"name": "entity/bossliving", "stream": false }]},
   "entity.bosslaugh": { "category":"master", "sounds":[{"name": "entity/bosslaugh", "stream": false }]},
   "entity.bossdeath": { "category":"master", "sounds":[{"name": "entity/bossdeath", "stream": false }]},
-  "ambience.singledrip1": { "category":"master", "sounds":[{"name": "ambience/singledrip1", "stream": false }]},
-  "ambience.singledrip2": { "category":"master", "sounds":[{"name": "ambience/singledrip2", "stream": false }]},
-  "ambience.singledrip3": { "category":"master", "sounds":[{"name": "ambience/singledrip3", "stream": false }]},
-  "ambience.singledrip4": { "category":"master", "sounds":[{"name": "ambience/singledrip4", "stream": false }]},
-  "ambience.singledrip5": { "category":"master", "sounds":[{"name": "ambience/singledrip5", "stream": false }]},
-  "ambience.singledrip6": { "category":"master", "sounds":[{"name": "ambience/singledrip6", "stream": false }]},
-  "ambience.singledrip7": { "category":"master", "sounds":[{"name": "ambience/singledrip7", "stream": false }]},
-  "ambience.singledrip8": { "category":"master", "sounds":[{"name": "ambience/singledrip8", "stream": false }]},
+  "ambience.singledrip": { "category":"master", "sounds":[ "ambience/singledrip1", "ambience/singledrip2", "ambience/singledrip3", "ambience/singledrip4", "ambience/singledrip5", "ambience/singledrip6", "ambience/singledrip7", "ambience/singledrip8" ]},
   "ambience.scaryscape": { "category":"master", "sounds":[{"name": "ambience/scaryscape", "stream": false }]},
   "shuttle.shuttle": { "category":"master", "sounds":[{"name": "shuttle/shuttle", "stream": false }]}
 }
