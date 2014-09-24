@@ -42,6 +42,7 @@ public class GCPlayerStatsClient implements IExtendedEntityProperties
     public float gravityTurnYaw;
 
     public int spaceRaceInviteTeamID;
+    public boolean lastZoomed;
 
     public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
 

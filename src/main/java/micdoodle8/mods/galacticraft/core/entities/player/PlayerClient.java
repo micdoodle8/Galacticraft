@@ -122,10 +122,12 @@ public class PlayerClient implements IPlayerClient
 
         if (player.ridingEntity != null && player.ridingEntity instanceof ICameraZoomEntity)
         {
+            stats.lastZoomed = true;
             TickHandlerClient.zoom(((ICameraZoomEntity) player.ridingEntity).getCameraZoom());
         }
-        else
+        else if (stats.lastZoomed)
         {
+            stats.lastZoomed = false;
             TickHandlerClient.zoom(4.0F);
         }
 
