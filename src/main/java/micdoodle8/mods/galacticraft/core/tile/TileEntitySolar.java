@@ -256,7 +256,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     {
         final BlockVec3 vecStrut = new BlockVec3(placedPosition.x, placedPosition.y + 1, placedPosition.z);
 
-        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecStrut, placedPosition, 0);
+        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecStrut, placedPosition, 4);
 
         for (int x = -1; x < 2; x++)
         {
@@ -264,7 +264,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
             {
                 final BlockVec3 vecToAdd = new BlockVec3(placedPosition.x + x, placedPosition.y + 2, placedPosition.z + z);
 
-                ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, (this.getTierGC() == 1) ? 4 : 0);
+                ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 4);
             }
         }
     }
