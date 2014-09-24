@@ -119,9 +119,9 @@ container.shortRangeTelepad.name=短程传送平台
 container.entryPod.name=入口平台
 
 # CONFIG GUI
-gc.configgui.dimensionIDAsteroids=行星维度ID
-gc.configgui.idEntitySmallAsteroid=小行星实体ID
-gc.configgui.idEntityGrappleHook=抓升钩实体ID
-gc.configgui.idEntityTier3Rocket=3阶火箭实体ID
-gc.configgui.idEntityEntryPod=入口平台实体ID
-gc.configgui.idSchematicRocketT3=3阶火箭设计图ID
+gc.configgui.dimensionIDAsteroids=Asteroids Dimension ID(行星维度ID)
+gc.configgui.idEntitySmallAsteroid=Small Asteroid Entity ID(小行星实体ID)
+gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID(抓升钩实体ID)
+gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID(3阶火箭实体ID)
+gc.configgui.idEntityEntryPod=Entry Pod Entity ID(入口平台实体ID)
+gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID(3阶火箭设计图ID)
