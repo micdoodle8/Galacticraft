@@ -49,10 +49,11 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
-        this.fakeIcons = new IIcon[4];
+        this.fakeIcons = new IIcon[5];
         this.fakeIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "launch_pad");
         this.fakeIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "workbench_nasa_top");
         this.fakeIcons[2] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "solar_basic_0");
+        this.fakeIcons[4] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "buggy_fueler_blank");
 
         if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
         {
@@ -88,6 +89,8 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
             return this.fakeIcons[2];
         case 5:
             return this.fakeIcons[3];
+        case 6:
+            return this.fakeIcons[4];
         default:
             return this.fakeIcons[0];
         }
@@ -108,10 +111,6 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
         {
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
         }
-        else if (meta == 6)
-        {
-            this.setBlockBounds(0.0F, 0.55F, 0.0F, 1.0F, 1.0F, 1.0F);
-        }
         else if (meta == 7)
         {
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.38F, 1.0F);
@@ -128,14 +127,9 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
     {
         int meta = world.getBlockMetadata(x, y, z);
 
-        if (meta == 2)
+        if (meta == 2 || meta == 6)
         {
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
-            super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
-        }
-        else if (meta == 6)
-        {
-            this.setBlockBounds(0.0F, 0.55F, 0.0F, 1.0F, 1.0F, 1.0F);
             super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
         }
         else if (meta == 7)
@@ -199,7 +193,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
         int metadata = world.getBlockMetadata(x, y, z);
 
         //Landing pad and refueling pad
-        if (metadata == 2)
+        if (metadata == 2 || metadata == 6)
         {
             return direction == ForgeDirection.DOWN;
         }
