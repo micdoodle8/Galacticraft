@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.grid.EnergyNetwork;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import net.minecraft.tileentity.TileEntity;
@@ -94,14 +93,6 @@ public abstract class TileBaseConductor extends TileEntityAdvanced implements IC
                     {
                     	((INetworkProvider) tileEntity).getNetwork().merge(this.getNetwork());
                     }
-                }
-            }
-
-            if (EnergyConfigHandler.isBuildcraftLoaded())
-            {
-                if (this instanceof TileBaseUniversalConductor)
-                {
-                    ((TileBaseUniversalConductor) this).reconfigureBC();
                 }
             }
         }
