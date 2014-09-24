@@ -90,7 +90,7 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
 
                 if (!vecToAdd.equals(placedPosition))
                 {
-                    ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 2);
+                    ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 6);
                 }
             }
         }
