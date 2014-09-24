@@ -61,8 +61,11 @@ public class InventorySlimeling implements IInventory
 
             if (par1 == 1 && this.stackList[par1].stackSize <= par2)
             {
-                ContainerSlimeling.removeSlots((ContainerSlimeling) this.currentContainer);
-                ContainerSlimeling.addSlots((ContainerSlimeling) this.currentContainer, ((EntityPlayer) this.slimeling.getOwner()).inventory, this.slimeling);
+                if (this.currentContainer instanceof ContainerSlimeling)
+                {
+	            	ContainerSlimeling.removeSlots((ContainerSlimeling) this.currentContainer);
+	                ContainerSlimeling.addSlots((ContainerSlimeling) this.currentContainer, ((EntityPlayer) this.slimeling.getOwner()).inventory, this.slimeling);
+                }
 
                 for (int i = 2; i < this.stackList.length; i++)
                 {

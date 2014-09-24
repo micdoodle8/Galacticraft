@@ -146,7 +146,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
         boolean isCanister = slotItem.getItem() instanceof ItemCanisterGeneric && slotItem.getItemDamage() > 1;
         final int amountToFill = Math.min(liquid.amount, isCanister ? slotItem.getItemDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
 
-        if (isCanister)
+        if (isCanister && amountToFill > 0)
         {
             this.containingItems[slot] = new ItemStack(canister, 1, slotItem.getItemDamage() - amountToFill);
             tank.drain(amountToFill, true);

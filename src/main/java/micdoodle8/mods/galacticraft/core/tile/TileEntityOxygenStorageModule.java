@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.EnumSet;
@@ -103,12 +104,41 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
-    }
+
+        final NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
+        this.containingItems = new ItemStack[this.getSizeInventory()];
+
+        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+        {
+            final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
+            final byte var5 = var4.getByte("Slot");
+
+            if (var5 >= 0 && var5 < this.containingItems.length)
+            {
+                this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
+            }
+        }
+}
 
     @Override
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
+
+        final NBTTagList list = new NBTTagList();
+
+        for (int var3 = 0; var3 < this.containingItems.length; ++var3)
+        {
+            if (this.containingItems[var3] != null)
+            {
+                final NBTTagCompound var4 = new NBTTagCompound();
+                var4.setByte("Slot", (byte) var3);
+                this.containingItems[var3].writeToNBT(var4);
+                list.appendTag(var4);
+            }
+        }
+
+        par1NBTTagCompound.setTag("Items", list);
     }
 
     @Override
