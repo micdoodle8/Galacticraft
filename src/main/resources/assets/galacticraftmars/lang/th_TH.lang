@@ -47,7 +47,7 @@ tile.marsMachine.1.name=ตู้ไคโยเจนนิค
 tile.marsMachine.2.name=เครื่องควบคุมการปล่อยจรวด
 tile.marsMachine.4.name=เครื่องเปลี่ยนสถานะก๊าซ
 tile.marsMachine.5.name=เครื่องสังเคราะห์มีเทน
-tile.marsMachine.6.name=เครื่องแยกน้ำด้วยไฟฟ้า
+tile.marsMachine.6.name=เครื่องเปลี่ยนน้ำเป็นก๊าซ
 tile.sludge.name=ตะกอนแบคทีเรีย
 tile.creeperEgg.name=ไข่คริปเปอร์
 tile.cavernVines.name=เถาวัลย์ถ้ำ
@@ -83,6 +83,7 @@ gui.message.redstoneSig.name=สัญญาณเรดสโตน
 gui.message.notSet.name=ไมได้ตั้งไว้
 gui.message.notEnough.name=ไม่พอ
 gui.message.success.name=เสร็จสิ้น
+gui.message.zeroWater.name=ไม่มีน้ำ!
 
 	# Dollar sign ($) will split text onto a new line
 gui.launchController.desc.0=นี่คือเครื่องควบคุมการปล่อยจรวด$ความถี่เฉพาะ
@@ -102,8 +103,8 @@ gui.status.tanksfull.name=ถังเก็บเต็ม
 gui.message.lowEnergy.name=พลังงานต่ำ
 gui.button.liquefy.name=เริ่มทำงาน
 gui.button.liquefyStop.name=หยุดทำงาน
-gui.gasInput.desc.0=วางกระป๋องของมีเทนตรงนี้
-gui.gasInput.desc.1=และอีกทางเลือกสามารถ$ใช้วาล์วอากาศได้
+gui.gasInput.desc.0=วางกระป๋องของมีเทนหรือ
+gui.gasInput.desc.1=วาล์วอากาศตรงนี้
 gui.hydrogenInput.desc.0=วางถังไฮโดรเจน
 gui.hydrogenInput.desc.1=หรือวาล์วอากาศ
 gui.liquidOutput.desc.2=ถังก๊าซเหลว
@@ -124,15 +125,15 @@ gui.desc.reinforcedPlateT2.name=เทียร์ 2
 dimension.Mars.name=ดาวอังคาร
 planet.mars=ดาวอังคาร
 
-tile.treasureT2.description=กล่องสมบัติ เทียร์ 2 จะอยู่ในดันเจี้ยนดาวอังคาร สามารถปลดล็อคกล่องได้เมื่อสู้กับบอสชนะ
+tile.treasureT2.description=กล่องสมบัติ เทียร์ 2 จะอยู่ในดันเจี้ยนดาวอังคาร กล่องสามารถปลดล็อคได้เมื่อสู้กับบอสชนะ
 tile.cavernVines.description=เถาวัลย์ถ้ำอันตรายสำหรับสิ่งมีชีวิต มันจะเกี่ยวพันตัวเราและดึงขึ้นสู่ข้างบน
-tile.slimelingEgg.description=ไข่สไลม์ลิ่ง ทุบหนึ่งครั้งโดยการใช้มือของผู้เล่น จะทำให้ออกมาเป็นสัตว์เลี้ยง
+tile.slimelingEgg.description=ไข่สไลม์ลิ่ง ทุบหนึ่งครั้งโดยการใช้มือของผู้เล่น จะทำให้ออกมาเป็นสัตว์เลี้ยงของเรา
 tile.cryoChamber.description=ตู้ไคโยเจนนิค จะให้ผู้เล่นสามารถนอนได้ระหว่างวัน เพิ่มเลือดได้จำนวนเล็กน้อย แต่มีการจำกัดการใช้งาน
 tile.launchController.description=เครื่องควบคุมการปล่อยจรวด ใช้สำหรับการปล่อยจรวดในรูปแบบต่างๆ รวมถึงการปล่อยจรวดไปยังจุดหมาย สำหรับการปล่อยจรวดอัตโนมัติ
 tile.terraformer.description=เทอราฟอร์มเมอร์ ใช้สำหรับเพิ่มพื้นที่สีเขียวในดาวเคราะห์ที่ห่างไกล เพิ่มหญ้า ต้นไม้ น้ำ เมื่อใส่วัสดุที่ถูกต้อง
-tile.creeperEgg.description=ไข่คริปเปอร์ จะอยู่ในดันเจี้ยนดาวอังคาร จะสปอนคริปเปอร์อวกาศเมื่อไข่ถูกระเบิด
+tile.creeperEgg.description=ไข่คริปเปอร์ จะอยู่ในดันเจี้ยนดาวอังคารและจะสปอนคริปเปอร์อวกาศเมื่อไข่ถูกแรงระเบิด
 tile.gasLiquefier.description=เครื่องเปลี่ยนสถานะก๊าซ เก็บก๊าซจากชั้นบรรยากาศหรือจากกระป๋องของเหลว ส่วนมีเทนเหลวสามารถกลั่นและใช้เป็นเชื้อเพลิงจรวดได้เมื่อเสร็จสิ้นการกลั่น
-tile.methaneSynthesizer.description=เครื่องสังเคราะห์มีเทน โดยแหล่งของไฮโดรเจนและคาร์บอน สิ่งนี้จะผลิตมีเทนสำหรับใช้ในเครื่องเปลี่ยนสถานะก๊าซ
+tile.methaneSynthesizer.description=เครื่องสังเคราะห์มีเทน จะผลิตมีเทนสำหรับใช้ในเครื่องเปลี่ยนสถานะก๊าซ
 
 gui.slimeling.chat.wrongPlayer=นี่ไม่ใช่สไลม์ลิ่งของฉัน!
 gui.cryogenic.chat.cantUse=ฉันไม่สามารถใช้สิ่งนี้ได้ %d วินาที
