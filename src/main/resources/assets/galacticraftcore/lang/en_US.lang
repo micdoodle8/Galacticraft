@@ -267,6 +267,10 @@ gui.message.cannotCreateSpaceStation.name=A Space Station cannot be created here
 gui.message.createSS.name=Create
 gui.message.selectSS.name=Select a Space Station
 gui.message.ssOwner.name=Owner:
+gui.message.apply.name=Apply
+gui.message.cancel.name=Cancel
+gui.message.assignName.name=Assign Name
+gui.message.rename.name=Rename
 
 gui.status.active.name=Active
 gui.status.missingleaves.name=Not Enough Leaf Blocks
@@ -570,6 +574,7 @@ planet.neptune=Neptune
 moon.moon=Moon
 solarsystem.sol=Sol
 star.sol=Sol
+satellite.spaceStation.overworld=Overworld Space Station
 
 # COMMANDS
 commands.dimensionteleport=%s was sent into the atmosphere%s
