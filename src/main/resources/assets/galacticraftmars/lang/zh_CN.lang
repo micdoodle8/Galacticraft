@@ -83,6 +83,7 @@ gui.message.redstoneSig.name=红石信号
 gui.message.notSet.name=未设置
 gui.message.notEnough.name=缺少
 gui.message.success.name=成功
+gui.message.zeroWater.name=缺水!
 
 # Dollar sign ($) will split text onto a new line
 gui.launchController.desc.0=这是发射控制器的$唯一频率
@@ -147,8 +148,6 @@ gui.slimeling.following=正在跟随
 gui.slimeling.damage=攻击伤害
 gui.slimeling.food=最喜爱的食物
 
-
-
 # Schematics
 schematic.rocketT3.name=3阶火箭
 schematic.cargoRocket.name=自动货运火箭
@@ -165,16 +164,18 @@ container.launchcontroller.name=发射控制器
 container.tileTerraformer.name=地形改造机
 
 # CONFIG GUI
-gc.configgui.dimensionIDMars=火星维度ID
-gc.configgui.idEntityCreeperBoss=苦力怕王实体ID
-gc.configgui.idEntityProjectileTNT=可投掷TNT实体ID
-gc.configgui.idEntitySpaceshipTier2=2阶火箭实体ID
-gc.configgui.idEntitySludgeling=菌泥实体ID
-gc.configgui.idEntitySlimeling=黏滑怪实体ID
-gc.configgui.idEntityTerraformBubble=地形改造气泡实体ID
-gc.configgui.idEntityLandingBalloons=登陆气泡实体ID
-gc.configgui.idEntityCargoRocket=货运火箭实体ID
-gc.configgui.idSchematicRocketT2=2阶火箭设计图ID
-gc.configgui.idSchematicCargoRocket=货运火箭设计图ID
-gc.configgui.launchControllerChunkLoad=发射台控制器加载区块
-gc.configgui.launchControllerAllDims=发射台控制器所有维度
+gc.configgui.dimensionIDMars=Mars Dimension ID(火星维度ID)
+gc.configgui.idEntityCreeperBoss=Creeper Boss Entity ID(苦力怕王实体ID)
+gc.configgui.idEntityProjectileTNT=Projectile TNT Entity ID(可投掷TNT实体ID)
+gc.configgui.idEntitySpaceshipTier2=Tier 2 Rocket Entity ID(2阶火箭实体ID)
+gc.configgui.idEntitySludgeling=Sludgeling Entity ID(菌泥实体ID)
+gc.configgui.idEntitySlimeling=Slimeling Entity ID(黏滑怪实体ID)
+gc.configgui.idEntityTerraformBubble=Terraform Bubble Entity ID(地形改造气泡实体ID)
+gc.configgui.idEntityLandingBalloons=Landing Balloons Entity ID(登陆气泡实体ID)
+gc.configgui.idEntityCargoRocket=Cargo Rocket Entity ID(货运火箭实体ID)
+gc.configgui.idSchematicRocketT2=Tier 2 Rocket Schematic ID(2阶火箭设计图ID)
+gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID(货运火箭设计图ID)
+gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading(发射台控制器加载区块)
+gc.configgui.launchControllerAllDims=Launch Controller All Dimensions(发射台控制器所有维度)
+
+gc.configgui.planets.title=Galacticraft Planets Config(星系行星配置文件)
