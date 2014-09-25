@@ -1,12 +1,16 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
 import cpw.mods.fml.relauncher.Side;
+import mekanism.api.gas.Gas;
+import mekanism.api.gas.GasStack;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
+import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
@@ -412,5 +416,69 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         }
 
         return this.blockMetadata & 3;
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public int receiveGas(ForgeDirection side, GasStack stack)
+    {
+        return 0;
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public GasStack drawGas(ForgeDirection from, int amount)
+    {
+        int metaside = this.getBlockMetadata() + 2;
+        int side = from.ordinal();
+    	if (metaside == (side ^ 1))
+        {
+    		int amountH = Math.min(8, this.liquidTank2.getFluidAmount());
+    		amountH = this.liquidTank2.drain(amountH, true).amount;
+    		return new GasStack((Gas) EnergyConfigHandler.gasHydrogen, amountH);
+        }
+        else if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
+        {
+    		int amountO = Math.min(8, this.liquidTank.getFluidAmount());
+    		amountO = this.liquidTank.drain(amountO, true).amount;
+    		return new GasStack((Gas) EnergyConfigHandler.gasOxygen, amountO);
+        }
+        return null;
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public boolean canReceiveGas(ForgeDirection side, Gas type)
+    {
+    	return false;
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public boolean canDrawGas(ForgeDirection from, Gas type)
+    {
+        int metaside = this.getBlockMetadata() + 2;
+        int side = from.ordinal();
+    	if (metaside == (side ^ 1))
+        {
+    		return type.getName().equals("hydrogen");
+    	}
+        else if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
+        {
+        	return type.getName().equals("oxygen");
+        }
+        return false;
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
+    public boolean canTubeConnect(ForgeDirection from)
+    {
+        int metaside = this.getBlockMetadata() + 2;
+        int side = from.ordinal();
+    	if (metaside == (side ^ 1))
+        {
+    		return true;
+    	}
+        else if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
+        {
+        	return true;
+        }
+        return false;
     }
 }

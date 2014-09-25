@@ -39,6 +39,7 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
     private IIcon iconInput;
     private IIcon iconGasInput;
     private IIcon iconGasOutput;
+    private IIcon iconWaterInput;
 
     private IIcon iconGasLiquefier;
     private IIcon iconMethaneSynthesizer;
@@ -58,6 +59,7 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
         this.iconMachineSide = par1IconRegister.registerIcon("galacticraftasteroids:machine_side_warning");
         this.iconGasInput = par1IconRegister.registerIcon("galacticraftasteroids:machine_oxygen_input_warning");
         this.iconGasOutput = par1IconRegister.registerIcon("galacticraftasteroids:machine_oxygen_output_warning");
+        this.iconWaterInput = par1IconRegister.registerIcon("galacticraftasteroids:machine_water_input_warning");
         this.iconGasLiquefier = par1IconRegister.registerIcon("galacticraftasteroids:gasLiquefier");
         this.iconMethaneSynthesizer = par1IconRegister.registerIcon("galacticraftasteroids:methaneSynthesizer");
         this.iconElectrolyzer = par1IconRegister.registerIcon("galacticraftasteroids:electrolyzer");
@@ -135,6 +137,13 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
             {
                 return this.iconElectrolyzer;
             }
+            
+            if (side != metaside)
+            {
+            	return this.iconWaterInput;
+            }
+            
+           	return this.iconGasOutput;
         }
 
         return this.iconMachineSide;
