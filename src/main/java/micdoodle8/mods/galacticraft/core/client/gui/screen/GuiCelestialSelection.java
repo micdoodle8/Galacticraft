@@ -616,7 +616,7 @@ public class GuiCelestialSelection extends GuiScreen
                     if (x >= width / 2 - 90 + 17 && x <= width / 2 - 90 + 17 + 72 && y >= this.height / 2 - 38 + 59 && y <= this.height / 2 - 38 + 59 + 12)
                     {
                         this.spaceStationNames.put(this.mc.thePlayer.getGameProfile().getName(), this.renamingString);
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_RENAME_SPACE_STATION, new Object[] { this.renamingString, this.spaceStationIDs.get(this.mc.thePlayer.getGameProfile().getName()) }));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_RENAME_SPACE_STATION, new Object[] { this.renamingString, this.spaceStationIDs.get(this.mc.thePlayer.getGameProfile().getName().toLowerCase()) }));
                         this.renamingSpaceStation = false;
                     }
                     // Cancel
@@ -633,7 +633,7 @@ public class GuiCelestialSelection extends GuiScreen
 
                 if (x >= width / 2 - 47 && x <= width / 2 - 47 + 94 && y >= GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH && y <= GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 11)
                 {
-                    if (this.selectedStationOwner.length() != 0 && this.selectedStationOwner.equals(this.mc.thePlayer.getGameProfile().getName()))
+                    if (this.selectedStationOwner.length() != 0 && this.selectedStationOwner.equalsIgnoreCase(this.mc.thePlayer.getGameProfile().getName()))
                     {
                         this.renamingSpaceStation = true;
                         clickHandled = true;
@@ -681,7 +681,7 @@ public class GuiCelestialSelection extends GuiScreen
                     {
                         int xOffset = 0;
 
-                        if (e.getKey().equals(this.selectedStationOwner))
+                        if (e.getKey().equalsIgnoreCase(this.selectedStationOwner))
                         {
                             xOffset -= 5;
                         }
@@ -1481,7 +1481,7 @@ public class GuiCelestialSelection extends GuiScreen
                             GL11.glColor4f(0.0F, 0.6F, 1.0F, 1);
                             int xOffset = 0;
 
-                            if (e.getKey().equals(this.selectedStationOwner))
+                            if (e.getKey().equalsIgnoreCase(this.selectedStationOwner))
                             {
                                 xOffset -= 5;
                             }
@@ -1623,7 +1623,7 @@ public class GuiCelestialSelection extends GuiScreen
                 GL11.glColor4f(0.0F, 0.6F, 1.0F, 1);
                 if (this.selectedBody instanceof Satellite)
                 {
-                    if (this.selectedStationOwner.length() == 0 || !this.selectedStationOwner.equals(this.mc.thePlayer.getGameProfile().getName()))
+                    if (this.selectedStationOwner.length() == 0 || !this.selectedStationOwner.equalsIgnoreCase(this.mc.thePlayer.getGameProfile().getName()))
                     {
                         GL11.glColor4f(1.0F, 0.0F, 0.0F, 1);
                     }
@@ -1742,7 +1742,7 @@ public class GuiCelestialSelection extends GuiScreen
 
                     if (this.renamingString == null)
                     {
-                        this.renamingString = this.spaceStationNames.get(FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName());
+                        this.renamingString = this.spaceStationNames.get(FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName().toLowerCase());
                     }
 
                     str = this.renamingString;
