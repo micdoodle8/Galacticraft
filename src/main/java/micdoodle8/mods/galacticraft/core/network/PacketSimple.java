@@ -84,11 +84,10 @@ public class PacketSimple extends Packet implements IPacket
         S_TELEPORT_ENTITY(Side.SERVER, String.class),
         S_IGNITE_ROCKET(Side.SERVER),
         S_OPEN_SCHEMATIC_PAGE(Side.SERVER, Integer.class),
-        S_OPEN_FUEL_GUI(Side.SERVER, Integer.class),
+        S_OPEN_FUEL_GUI(Side.SERVER, String.class),
         S_UPDATE_SHIP_YAW(Side.SERVER, Float.class),
         S_UPDATE_SHIP_PITCH(Side.SERVER, Float.class),
         S_SET_ENTITY_FIRE(Side.SERVER, Integer.class),
-        S_OPEN_REFINERY_GUI(Side.SERVER, Integer.class, Integer.class, Integer.class),
         S_BIND_SPACE_STATION_ID(Side.SERVER, Integer.class),
         S_UNLOCK_NEW_SCHEMATIC(Side.SERVER),
         S_UPDATE_DISABLEABLE_BUTTON(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class),
@@ -438,7 +437,7 @@ public class PacketSimple extends Packet implements IPacket
                 }
 
                 ClientProxyCore.playerItemData.put((String) this.data.get(0), gearData);
-                ClientProxyCore.gearDataRequests.remove((String) this.data.get(0));
+                ClientProxyCore.gearDataRequests.remove(this.data.get(0));
             }
 
             break;
@@ -874,9 +873,6 @@ public class PacketSimple extends Packet implements IPacket
             {
                 ((EntityLivingBase) entity).setFire(3);
             }
-            break;
-        case S_OPEN_REFINERY_GUI:
-            player.openGui(GalacticraftCore.instance, -1, player.worldObj, (Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
             break;
         case S_BIND_SPACE_STATION_ID:
             if ((stats.spaceStationDimensionID == -1 || stats.spaceStationDimensionID == 0) && !ConfigManagerCore.disableSpaceStationCreation)
