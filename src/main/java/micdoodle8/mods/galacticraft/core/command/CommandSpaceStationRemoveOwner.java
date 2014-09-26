@@ -63,9 +63,19 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
                     {
                         final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, stats.spaceStationDimensionID, playerBase);
 
-                        if (data.getAllowedPlayers().contains(var3.toLowerCase()))
+                        String str = null;
+                        for (String player : data.getAllowedPlayers())
                         {
-                            data.getAllowedPlayers().remove(var3.toLowerCase());
+                            if (player.equalsIgnoreCase(var3))
+                            {
+                                str = player;
+                                break;
+                            }
+                        }
+
+                        if (str != null)
+                        {
+                            data.getAllowedPlayers().remove(str);
                             data.markDirty();
                         }
                         else

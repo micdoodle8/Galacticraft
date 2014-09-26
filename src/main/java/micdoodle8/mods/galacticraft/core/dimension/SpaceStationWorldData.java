@@ -14,12 +14,35 @@ public class SpaceStationWorldData extends WorldSavedData
 {
     private String spaceStationName = "NoName";
     private String owner = "NoOwner";
-    private ArrayList<String> allowedPlayers = new ArrayList<String>();
+    private ArrayList<String> allowedPlayers;
     private NBTTagCompound dataCompound;
 
     public SpaceStationWorldData(String par1Str)
     {
         super(par1Str);
+
+        this.allowedPlayers = new ArrayList<String>()
+        {
+            // Override contains so it ignores case.
+            @Override
+            public boolean contains(Object o)
+            {
+                if (o instanceof String)
+                {
+                    String paramStr = (String) o;
+
+                    for (String s : this)
+                    {
+                        if (paramStr.equalsIgnoreCase(s))
+                        {
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+            }
+        };
     }
 
     public ArrayList<String> getAllowedPlayers()
@@ -45,7 +68,7 @@ public class SpaceStationWorldData extends WorldSavedData
     @Override
     public void readFromNBT(NBTTagCompound nbttagcompound)
     {
-        this.owner = nbttagcompound.getString("owner").toLowerCase().replace(".", "");
+        this.owner = nbttagcompound.getString("owner").replace(".", "");
         this.spaceStationName = nbttagcompound.getString("spaceStationName");
 
         if (nbttagcompound.hasKey("dataCompound"))
@@ -58,16 +81,16 @@ public class SpaceStationWorldData extends WorldSavedData
         }
 
         final NBTTagList var2 = nbttagcompound.getTagList("allowedPlayers", 10);
-        this.allowedPlayers = new ArrayList<String>();
+        this.allowedPlayers.clear();
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
         {
             final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
             final String var5 = var4.getString("allowedPlayer");
 
-            if (!this.allowedPlayers.contains(var5.toLowerCase()))
+            if (!this.allowedPlayers.contains(var5))
             {
-                this.allowedPlayers.add(var5.toLowerCase());
+                this.allowedPlayers.add(var5);
             }
         }
     }
@@ -116,15 +139,14 @@ public class SpaceStationWorldData extends WorldSavedData
 
                 if (player != null)
                 {
-                    var3.owner = player.getGameProfile().getName().toLowerCase().replace(".", "");
+                    var3.owner = player.getGameProfile().getName().replace(".", "");
                 }
 
                 var3.spaceStationName = "Station: " + var3.owner;
-                var3.allowedPlayers = new ArrayList<String>();
 
                 if (player != null)
                 {
-                    var3.allowedPlayers.add(player.getGameProfile().getName().toLowerCase());
+                    var3.allowedPlayers.add(player.getGameProfile().getName());
                 }
 
                 var3.markDirty();
@@ -153,15 +175,14 @@ public class SpaceStationWorldData extends WorldSavedData
 
             if (player != null)
             {
-                var3.owner = player.getGameProfile().getName().toLowerCase().replace(".", "");
+                var3.owner = player.getGameProfile().getName().replace(".", "");
             }
 
             var3.spaceStationName = "Station: " + var3.owner;
-            var3.allowedPlayers = new ArrayList<String>();
 
             if (player != null)
             {
-                var3.allowedPlayers.add(player.getGameProfile().getName().toLowerCase());
+                var3.allowedPlayers.add(player.getGameProfile().getName());
             }
 
             var3.markDirty();

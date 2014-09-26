@@ -17,7 +17,6 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -616,7 +615,7 @@ public class GuiCelestialSelection extends GuiScreen
                     if (x >= width / 2 - 90 + 17 && x <= width / 2 - 90 + 17 + 72 && y >= this.height / 2 - 38 + 59 && y <= this.height / 2 - 38 + 59 + 12)
                     {
                         this.spaceStationNames.put(this.mc.thePlayer.getGameProfile().getName(), this.renamingString);
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_RENAME_SPACE_STATION, new Object[] { this.renamingString, this.spaceStationIDs.get(this.mc.thePlayer.getGameProfile().getName().toLowerCase()) }));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_RENAME_SPACE_STATION, new Object[] { this.renamingString, this.spaceStationIDs.get(this.mc.thePlayer.getGameProfile().getName()) }));
                         this.renamingSpaceStation = false;
                     }
                     // Cancel
@@ -1823,7 +1822,7 @@ public class GuiCelestialSelection extends GuiScreen
 
                     if (this.renamingString == null)
                     {
-                        this.renamingString = this.spaceStationNames.get(FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName().toLowerCase());
+                        this.renamingString = this.spaceStationNames.get(FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName());
                     }
 
                     str = this.renamingString;
