@@ -73,7 +73,8 @@ public class EnergyConfigHandler
      * Oxygen gas used when Mekanism is loaded. Always null otherwise.
      */
     public static Object gasOxygen = null;
-
+    public static Object gasHydrogen = null;
+    
     public static boolean displayEnergyUnitsBC = false;
     public static boolean displayEnergyUnitsIC2 = false;
     public static boolean displayEnergyUnitsMek = false;
@@ -158,6 +159,17 @@ public class EnergyConfigHandler
             else
             {
                 EnergyConfigHandler.gasOxygen = oxygen;
+            }
+
+            Gas hydrogen = GasRegistry.getGas("hydrogen");
+
+            if (hydrogen == null)
+            {
+                EnergyConfigHandler.gasHydrogen = GasRegistry.register(new Gas("hydrogen")).registerFluid();
+            }
+            else
+            {
+                EnergyConfigHandler.gasHydrogen = hydrogen;
             }
         }
     }

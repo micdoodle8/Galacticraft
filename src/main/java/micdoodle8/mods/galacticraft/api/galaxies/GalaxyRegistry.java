@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.api.galaxies;
 
 import com.google.common.collect.*;
+
 import cpw.mods.fml.common.eventhandler.Event;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Credits to KingLemming and CovertJaguar, since this is based on the
@@ -21,9 +23,9 @@ public class GalaxyRegistry
     static int maxSatelliteID = 0;
     static HashMap<String, SolarSystem> solarSystems = Maps.newHashMap();
     static BiMap<String, Integer> solarSystemIDs = HashBiMap.create();
-    static HashMap<String, Planet> planets = Maps.newHashMap();
+    static TreeMap<String, Planet> planets = Maps.newTreeMap();
     static BiMap<String, Integer> planetIDs = HashBiMap.create();
-    static HashMap<String, Moon> moons = Maps.newHashMap();
+    static TreeMap<String, Moon> moons = Maps.newTreeMap();
     static BiMap<String, Integer> moonIDs = HashBiMap.create();
     static HashMap<String, Satellite> satellites = Maps.newHashMap();
     static BiMap<String, Integer> satelliteIDs = HashBiMap.create();
@@ -239,7 +241,7 @@ public class GalaxyRegistry
      */
     public static Map<String, Planet> getRegisteredPlanets()
     {
-        return ImmutableMap.copyOf(GalaxyRegistry.planets);
+        return (Map<String, Planet>) GalaxyRegistry.planets.clone();
     }
 
     /**
@@ -255,7 +257,7 @@ public class GalaxyRegistry
      */
     public static Map<String, Moon> getRegisteredMoons()
     {
-        return ImmutableMap.copyOf(GalaxyRegistry.moons);
+        return (Map<String, Moon>) GalaxyRegistry.moons.clone();
     }
 
     /**

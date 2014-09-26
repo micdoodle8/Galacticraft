@@ -22,6 +22,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
@@ -70,24 +71,33 @@ public class PlayerClient implements IPlayerClient
         if (player.worldObj.provider instanceof IGalacticraftWorldProvider)
         {
             //Test whether feet are on a block, also stops the login glitch
-            boolean flag = true;
+            boolean freefall = true;
             int playerFeetOnY = (int) (player.boundingBox.minY - 0.001D);
-            Block b = player.worldObj.getBlock(MathHelper.floor_double(player.posX), playerFeetOnY, MathHelper.floor_double(player.posZ));
+            int xx = MathHelper.floor_double(player.posX);
+            int zz = MathHelper.floor_double(player.posZ);
+            Block b = player.worldObj.getBlock(xx, playerFeetOnY, zz);
             if (b.getMaterial() != Material.air && !(b instanceof BlockLiquid))
             {
-                double blockYmax = playerFeetOnY + b.getBlockBoundsMaxY();
+            	double blockYmax = playerFeetOnY + b.getBlockBoundsMaxY();
                 if (player.boundingBox.minY - blockYmax < 0.001D && player.boundingBox.minY - blockYmax > -0.5D)
                 {
                     player.onGround = true;
-                    player.posY -= player.boundingBox.minY - blockYmax;
-                    player.boundingBox.offset(0, blockYmax - player.boundingBox.minY, 0);
-                    flag = false;
+                    if (b.canCollideCheck(player.worldObj.getBlockMetadata(xx, playerFeetOnY, zz), false))
+                    {
+                        AxisAlignedBB collisionBox = b.getCollisionBoundingBoxFromPool(player.worldObj, xx, playerFeetOnY, zz);
+                        if (collisionBox != null && collisionBox.intersectsWith(player.boundingBox))
+                        {
+	                        player.posY -= player.boundingBox.minY - blockYmax;
+		                    player.boundingBox.offset(0, blockYmax - player.boundingBox.minY, 0);
+                        }
+                    }
+                    freefall = false;
                 }
             }
 
             if (player.worldObj.provider instanceof WorldProviderOrbit)
             {
-                ((WorldProviderOrbit) player.worldObj.provider).spinUpdate(player, flag);
+                ((WorldProviderOrbit) player.worldObj.provider).spinUpdate(player, freefall);
             }
         }
 

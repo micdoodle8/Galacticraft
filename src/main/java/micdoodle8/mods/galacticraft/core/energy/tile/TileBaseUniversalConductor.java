@@ -46,6 +46,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
             {
                 this.powerHandlerBC = new PowerHandler((IPowerReceptor) this, buildcraft.api.power.PowerHandler.Type.PIPE);
                 ((PowerHandler) this.powerHandlerBC).configurePowerPerdition(0, 0);
+                ((PowerHandler) this.powerHandlerBC).configure(1, 0, 0, 0);
             }
         }
     }
@@ -323,11 +324,19 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
     @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
     public PowerReceiver getPowerReceiver(ForgeDirection side)
     {
-        if (this.getNetwork() == null || this.getNetwork().getRequest(this) <= 0.0F)
+        if (this.getNetwork() == null)
         {
             return null;
         }
 
+        double requiredEnergy = this.getNetwork().getRequest(this) * EnergyConfigHandler.TO_BC_RATIO;
+        
+        if (requiredEnergy <= 0.0D)
+        {
+        	return null;
+        }
+        
+        ((PowerHandler) this.powerHandlerBC).configure(1, requiredEnergy, 0, requiredEnergy);
         return ((PowerHandler) this.powerHandlerBC).getPowerReceiver();
     }
 
@@ -341,14 +350,6 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
     public void doWork(PowerHandler workProvider)
     {
         PowerHandler handler = (PowerHandler) this.powerHandlerBC;
-
-        if (handler.getEnergyStored() > 0.0F)
-        {
-            if (this.getNetwork() != null)
-            {
-
-            }
-        }
 
         double energyBC = handler.getEnergyStored();
         if (energyBC > 0D)
