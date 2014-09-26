@@ -99,8 +99,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
 
         this.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
 
-        this.riddenByEntity = player;
-        player.ridingEntity = this;
+        player.mountEntity(this);
     }
 
     @Override
