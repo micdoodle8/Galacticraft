@@ -54,7 +54,7 @@ public class WorldGenTaigaGC extends WorldGenerator
                         {
                             Block var15b = par1World.getBlock(var13, var11, var14);
 
-                            if (var15b != Blocks.air && var15b != null && !var15b.isLeaves(par1World, var13, var11, var14))
+                            if (Blocks.air != var15b && var15b != null && !var15b.isLeaves(par1World, var13, var11, var14))
                             {
                                 var10 = false;
                             }

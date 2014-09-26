@@ -37,6 +37,7 @@ import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGravel;
 import net.minecraft.block.BlockSand;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -402,7 +403,7 @@ public class EventHandlerGC
     private static boolean checkBlock(World w, int x, int y, int z)
     {
         Block b = w.getBlock(x, y, z);
-        if (b == Blocks.air)
+        if (b.getMaterial() == Material.air)
         {
             return true;
         }

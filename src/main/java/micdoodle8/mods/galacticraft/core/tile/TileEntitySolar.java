@@ -119,7 +119,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
                                     {
                                         Block block = this.worldObj.getBlock(this.xCoord + x, y, this.zCoord + z);
 
-                                        if (block != Blocks.air && block.isOpaqueCube())
+                                        if (block.isOpaqueCube())
                                         {
                                             valid = false;
                                             break;
@@ -142,7 +142,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
                                     BlockVec3 blockAt = blockVec.clone().translate((int) (d * sinA), (int) (d * cosA), 0);
                                     Block block = blockAt.getBlock(this.worldObj);
 
-                                    if (block != Blocks.air && block.isOpaqueCube())
+                                    if (block.isOpaqueCube())
                                     {
                                         valid = false;
                                         break;

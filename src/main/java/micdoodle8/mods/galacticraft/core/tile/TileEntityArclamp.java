@@ -262,7 +262,7 @@ public class TileEntityArclamp extends TileEntity
                     Block id = vec.getBlockIDsafe_noChunkLoad(world);
                     if (id instanceof BlockAir)
                     {
-                        if (id == Blocks.air)
+                        if (Blocks.air == id)
                         {
                             world.setBlock(vec.x, vec.y, vec.z, brightAir, 0, 2);
                             this.airToRestore.add(vec);

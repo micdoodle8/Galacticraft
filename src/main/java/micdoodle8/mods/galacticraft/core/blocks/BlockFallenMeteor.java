@@ -163,7 +163,7 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, Ite
     {
         final Block var4 = par0World.getBlock(par1, par2, par3);
 
-        if (var4 == Blocks.air)
+        if (var4.getMaterial() == Material.air)
         {
             return true;
         }

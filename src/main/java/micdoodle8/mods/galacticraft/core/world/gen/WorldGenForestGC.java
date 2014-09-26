@@ -52,7 +52,7 @@ public class WorldGenForestGC extends WorldGenerator
                         {
                             Block var12b = par1World.getBlock(var10, var8, var11);
 
-                            if (var12b != Blocks.air && !var12b.isLeaves(par1World, var10, var8, var11))
+                            if (Blocks.air != var12b && !var12b.isLeaves(par1World, var10, var8, var11))
                             {
                                 var7 = false;
                             }
@@ -123,7 +123,7 @@ public class WorldGenForestGC extends WorldGenerator
                     {
                         Block block = par1World.getBlock(par3, par4 + var16, par5);
 
-                        if (block == Blocks.air || block.isLeaves(par1World, par3, par4 + var16, par5))
+                        if (Blocks.air == block || block.isLeaves(par1World, par3, par4 + var16, par5))
                         {
                             this.setBlockAndNotifyAdequately(par1World, par3, par4 + var16, par5, Blocks.log, 2);
                         }

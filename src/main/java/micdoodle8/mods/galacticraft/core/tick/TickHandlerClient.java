@@ -40,6 +40,7 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -120,7 +121,7 @@ public class TickHandlerClient
             catch (NumberFormatException ex)
             {
             }
-            if (block == Blocks.air)
+            if (Blocks.air == block)
             {
                 GCLog.info("[config] External Detectable IDs: not a good idea to make air detectable, skipping that!");
                 continue;
@@ -339,7 +340,7 @@ public class TickHandlerClient
 
                                 final Block block = player.worldObj.getBlock(x, y, z);
 
-                                if (block != Blocks.air)
+                                if (block.getMaterial() != Material.air)
                                 {
                                     int metadata = world.getBlockMetadata(x, y, z);
                                     boolean isDetectable = false;

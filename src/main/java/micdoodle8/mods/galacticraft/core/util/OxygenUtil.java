@@ -183,7 +183,7 @@ public class OxygenUtil
             return true;
         }
 
-        if (block == Blocks.air || block == GCBlocks.brightAir)
+        if (block.getMaterial() == Material.air)
         {
             return false;
         }

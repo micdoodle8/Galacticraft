@@ -316,7 +316,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                                 {
                                     for (int z = zm; z <= zz; z++)
                                     {
-                                        if (this.worldObj.blockExists(x, y, z) && this.worldObj.getBlock(x, y, z) != Blocks.air)
+                                        if (this.worldObj.blockExists(x, y, z) && Blocks.air != this.worldObj.getBlock(x, y, z))
                                         {
                                             freefall = false;
                                             break BLOCKCHECK;
@@ -910,7 +910,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                     for (int z = zm; z <= zz; z++)
                     {
                         //Blocks.air is hard vacuum - we want to check for that, here
-                        if (this.worldObj.getBlock(x, y, z) != Blocks.air)
+                        if (Blocks.air != this.worldObj.getBlock(x, y, z))
                         {
                             return false;
                         }
@@ -979,7 +979,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 			for(int x = xmin; x <= xmax; x++)
 				for (int z = zmin; z <= zmax; z++)
 					for (int y = ymin; y <= ymax; y++)
-						if (this.worldObj.getBlock(x, y, z) != Blocks.air)
+						if (Blocks.air != this.worldObj.getBlock(x, y, z))
 						{
 							freefall = false;
 							break BLOCKCHECK0;
@@ -1100,7 +1100,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
      */
     public boolean checkSS(BlockVec3 baseBlock, boolean placingThruster)
     {
-        if (this.oneSSBlock == null || this.oneSSBlock.getBlockID(this.worldObj) == Blocks.air)
+        if (this.oneSSBlock == null || this.oneSSBlock.getBlockID(this.worldObj) instanceof BlockAir)
         {
             if (baseBlock != null)
             {
@@ -1182,7 +1182,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                         if (!(b instanceof BlockAir) && b != null)
                         {
                             nextLayer.add(sideVec);
-                            if (bStart == Blocks.air)
+                            if (bStart instanceof BlockAir)
                             {
                                 this.oneSSBlock = sideVec.clone();
                                 bStart = b;
@@ -1246,7 +1246,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
             if (!this.oneSSBlock.equals(baseBlock))
             {
                 this.oneSSBlock = baseBlock.clone();
-                if (this.oneSSBlock.getBlockID(this.worldObj) != Blocks.air)
+                if (this.oneSSBlock.getBlockID(this.worldObj).getMaterial() != Material.air)
                 {
                     return this.checkSS(baseBlock, true);
                 }
