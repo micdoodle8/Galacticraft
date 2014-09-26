@@ -118,7 +118,11 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
                     }
 
                     this.setDead();
-                    this.dropShipAsItem();
+
+                    if (!((EntityPlayer) par1DamageSource.getEntity()).capabilities.isCreativeMode)
+		    {
+			this.dropShipAsItem();
+		    }
                     return true;
                 }
 
