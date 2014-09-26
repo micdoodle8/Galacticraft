@@ -233,13 +233,13 @@ public class MapGenCavernMars extends MapGenBaseMeta
                                             int coordsAbove = (var42 * 16 + var45) * 256 + var50 + 1;
                                             int coordsBelow = (var42 * 16 + var45) * 256 + var50 - 1;
 
-                                            if (arrayOfIDs[coords] == Blocks.air)
+                                            if (Blocks.air == arrayOfIDs[coords])
                                             {
                                                 if (arrayOfIDs[coordsAbove] == MarsBlocks.marsBlock && this.rand.nextInt(200) == 0)
                                                 {
                                                     int modifier = 0;
 
-                                                    while (arrayOfIDs[coordsBelow] == Blocks.air)
+                                                    while (Blocks.air == arrayOfIDs[coordsBelow])
                                                     {
                                                         arrayOfIDs[coordsBelow] = MarsBlocks.vine;
                                                         arrayOfMeta[coordsBelow] = (byte) (Math.abs(modifier) % 3);

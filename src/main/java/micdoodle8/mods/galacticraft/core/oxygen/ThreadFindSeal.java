@@ -137,7 +137,7 @@ public class ThreadFindSeal
             this.currentLayer.add(this.head);
             if (this.head.x < -29990000 || this.head.z < -29990000 || this.head.x >= 29990000 || this.head.z >= 29990000)
             {
-                if (this.head.getBlockID_noChunkLoad(this.world) == Blocks.air)
+                if (Blocks.air == this.head.getBlockID_noChunkLoad(this.world))
                 {
                     this.airToReplace.add(this.head.clone());
                 }
@@ -150,7 +150,7 @@ public class ThreadFindSeal
             else
             {
                 Block headblock = this.head.getBlockIDsafe_noChunkLoad(this.world);
-                if (headblock == Blocks.air)
+                if (Blocks.air == headblock)
                 {
                     this.airToReplace.add(this.head.clone());
                 }
@@ -462,7 +462,7 @@ public class ThreadFindSeal
                             else
                             {
                                 checkedLocal.add(sideVec);
-                                if (id != null && id != Blocks.air && id != GCBlocks.brightAir && this.canBlockPassAirCheck(id, sideVec, side))
+                                if (id != null && Blocks.air != id && id != GCBlocks.brightAir && this.canBlockPassAirCheck(id, sideVec, side))
                                 {
                                     //Look outbound through partially sealable blocks in case there is breatheableAir to clear beyond
                                     nextLayer.add(sideVec);
@@ -550,7 +550,7 @@ public class ThreadFindSeal
                         else
                         {
                             checkedLocal.add(sideVec);
-                            if (id != null && id != Blocks.air && id != GCBlocks.brightAir && this.canBlockPassAirCheck(id, sideVec, side))
+                            if (id != null && Blocks.air != id && id != GCBlocks.brightAir && this.canBlockPassAirCheck(id, sideVec, side))
                             {
                                 //Look outbound through partially sealable blocks in case there is breatheableAir to clear beyond
                                 nextLayer.add(sideVec);

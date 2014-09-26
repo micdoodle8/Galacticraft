@@ -444,7 +444,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
                         int indexAbove = indexBase | (y + 1);
                         if (isHollow)
                         {
-                            if (blockArray[indexAbove] == Blocks.air && (blockArray[index] == ASTEROID_STONE || blockArray[index] == GRASS))
+                            if (Blocks.air == blockArray[indexAbove] && (blockArray[index] == ASTEROID_STONE || blockArray[index] == GRASS))
                             {
                                 if (this.rand.nextInt(GLOWSTONE_CHANCE) == 0)
                                 {

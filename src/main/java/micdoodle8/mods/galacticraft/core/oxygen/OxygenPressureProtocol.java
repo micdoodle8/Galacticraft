@@ -66,7 +66,7 @@ public class OxygenPressureProtocol
                 catch (NumberFormatException ex)
                 {
                 }
-                if (b == Blocks.air)
+                if (Blocks.air == b)
                 {
                     GCLog.info("[config] External Sealable IDs: not a good idea to make air sealable, skipping that!");
                     continue;

@@ -173,7 +173,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
                     {
                         final Block var18 = arrayOfIDs[index];
 
-                        if (var18 == Blocks.air)
+                        if (Blocks.air == var18)
                         {
                             var13 = -1;
                         }
@@ -301,7 +301,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
                     int helper = 0;
                     for (int y = 127; y > 0; y--)
                     {
-                        if (chunkArray[this.getIndex(x, y, z)] != Blocks.air && helper <= yDev)
+                        if (Blocks.air != chunkArray[this.getIndex(x, y, z)] && helper <= yDev)
                         {
                             chunkArray[this.getIndex(x, y, z)] = Blocks.air;
                             metaArray[this.getIndex(x, y, z)] = 0;

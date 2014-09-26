@@ -284,7 +284,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
         {
             Block mainBlockID = par1World.getBlock(mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z);
 
-            if (mainBlockID != Blocks.air)
+            if (Blocks.air != mainBlockID)
             {
                 return mainBlockID.getPickBlock(target, par1World, mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z);
             }

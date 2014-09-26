@@ -72,6 +72,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
     protected double lastLastMotionY;
     private boolean waitForPlayer;
     public IUpdatePlayerListBox rocketSoundUpdater;
+    private boolean rocketSoundToStop = false;
 
     public EntityAutoRocket(World world)
     {
@@ -336,7 +337,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                 this.autoLaunch();
             }
 
-            if (this.autoLaunchCountdown > 0)
+            if (this.autoLaunchCountdown > 0 && (!(this instanceof EntityTieredRocket) || this.riddenByEntity != null))
             {
                 this.autoLaunchCountdown--;
 
@@ -346,14 +347,14 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                 }
             }
 
-            if (this.autoLaunchSetting == EnumAutoLaunch.ROCKET_IS_FUELED && this.fuelTank.getFluidAmount() == this.fuelTank.getCapacity())
+            if (this.autoLaunchSetting == EnumAutoLaunch.ROCKET_IS_FUELED && this.fuelTank.getFluidAmount() == this.fuelTank.getCapacity()  && (!(this instanceof EntityTieredRocket) || this.riddenByEntity != null))
             {
                 this.autoLaunch();
             }
 
             if (this.autoLaunchSetting == EnumAutoLaunch.INSTANT)
             {
-                if (this.autoLaunchCountdown == 0)
+                if (this.autoLaunchCountdown == 0  && (!(this instanceof EntityTieredRocket) || this.riddenByEntity != null))
                 {
                     this.autoLaunch();
                 }
@@ -440,9 +441,19 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
             this.lastStatusMessageCooldown = this.statusMessageCooldown;          
         }
         
-        if (this.rocketSoundUpdater != null && (this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() || this.getLaunched()))
+        if (this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() || this.getLaunched())
         {
-            this.rocketSoundUpdater.update();
+	        if (this.rocketSoundUpdater != null)
+	        {
+	            this.rocketSoundUpdater.update();
+	            this.rocketSoundToStop = true;
+	        }
+        }
+        else
+        {
+        	//Not ignited - either because not yet launched, or because it has landed
+        	if (this.rocketSoundToStop)
+        		this.stopRocketSound();
         }
     }
 
@@ -595,7 +606,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
         if (this.rocketSoundUpdater != null)
         {
         	((SoundUpdaterRocket) this.rocketSoundUpdater).stopRocketSound();
-        }  	
+        }
+        this.rocketSoundToStop = false;
     }
 
     @Override

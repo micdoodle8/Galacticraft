@@ -190,7 +190,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
         {
             Block mainBlockID = par1World.getBlock(mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z);
 
-            if (mainBlockID != Blocks.air)
+            if (Blocks.air != mainBlockID)
             {
                 return mainBlockID.getPickBlock(target, par1World, mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z);
             }

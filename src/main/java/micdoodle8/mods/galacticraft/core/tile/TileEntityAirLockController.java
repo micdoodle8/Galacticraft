@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -237,7 +238,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
         int y = this.lastProtocol.minY + (this.lastProtocol.maxY - this.lastProtocol.minY) / 2;
         int z = this.lastProtocol.minZ + (this.lastProtocol.maxZ - this.lastProtocol.minZ) / 2;
 
-        if (this.worldObj.getBlock(x, y, z) != Blocks.air)
+        if (this.worldObj.getBlock(x, y, z).getMaterial() != Material.air)
         {
             this.worldObj.playSoundEffect(x, y, z, GalacticraftCore.TEXTURE_PREFIX + "player.closeairlock", 1.0F, 1.0F);
         }

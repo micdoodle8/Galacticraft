@@ -140,7 +140,7 @@ public class StructureComponentVillagePathGen extends StructureComponentVillageR
         {
             for (int var6 = this.boundingBox.minZ; var6 <= this.boundingBox.maxZ; ++var6)
             {
-                if (par3StructureBoundingBox.isVecInside(var5, 64, var6) && (par1World.getBlock(var5, par1World.getTopSolidOrLiquidBlock(var5, var6) - 1, var6) == GCBlocks.blockMoon && par1World.getBlockMetadata(var5, par1World.getTopSolidOrLiquidBlock(var5, var6) - 1, var6) == 5 || par1World.getBlock(var5, par1World.getTopSolidOrLiquidBlock(var5, var6) - 1, var6) == Blocks.air))
+                if (par3StructureBoundingBox.isVecInside(var5, 64, var6) && (par1World.getBlock(var5, par1World.getTopSolidOrLiquidBlock(var5, var6) - 1, var6) == GCBlocks.blockMoon && par1World.getBlockMetadata(var5, par1World.getTopSolidOrLiquidBlock(var5, var6) - 1, var6) == 5 || Blocks.air == par1World.getBlock(var5, par1World.getTopSolidOrLiquidBlock(var5, var6) - 1, var6)))
                 {
                     final int var7 = par1World.getTopSolidOrLiquidBlock(var5, var6) - 1;
                     par1World.setBlock(var5, var7, var6, var4, 1, 3);

@@ -475,7 +475,7 @@ public class MapGenDungeon
 
                     Block block = this.getBlock(blocks, x + i, j, z + k, cx + i / 16, cz + k / 16);
 
-                    if (block != Blocks.air && block != null)
+                    if (Blocks.air != block && block != null)
                     {
                         break;
                     }
@@ -496,7 +496,7 @@ public class MapGenDungeon
                 int helper = 0;
                 for (int j = maxLevel + 3; j > 0; j--)
                 {
-                    if ((this.getBlock(blocks, i, j - 1, k, cx, cz) != Blocks.air || this.getBlock(blocks, i, j, k, cx, cz) == this.DUNGEON_WALL_ID) && helper <= depth)
+                    if ((Blocks.air != this.getBlock(blocks, i, j - 1, k, cx, cz) || this.getBlock(blocks, i, j, k, cx, cz) == this.DUNGEON_WALL_ID) && helper <= depth)
                     {
                         this.placeBlock(blocks, meta, i, j, k, cx, cz, Blocks.air, 0);
                         helper++;

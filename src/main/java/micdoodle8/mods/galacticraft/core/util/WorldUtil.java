@@ -799,8 +799,7 @@ public class WorldUtil
             ridingRocket.setWorld(worldNew);
 
             worldNew.updateEntityWithOptionalForce(ridingRocket, true);
-            entity.ridingEntity = ridingRocket;
-            ridingRocket.riddenByEntity = entity;
+            entity.mountEntity(ridingRocket);
         }
         else if (spawnPos != null)
         {
