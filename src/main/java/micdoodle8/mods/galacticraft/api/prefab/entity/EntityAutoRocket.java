@@ -337,7 +337,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                 this.autoLaunch();
             }
 
-            if (this.autoLaunchCountdown > 0)
+            if (this.autoLaunchCountdown > 0 && (!(this instanceof EntityTieredRocket) || this.riddenByEntity != null))
             {
                 this.autoLaunchCountdown--;
 
@@ -347,14 +347,14 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                 }
             }
 
-            if (this.autoLaunchSetting == EnumAutoLaunch.ROCKET_IS_FUELED && this.fuelTank.getFluidAmount() == this.fuelTank.getCapacity())
+            if (this.autoLaunchSetting == EnumAutoLaunch.ROCKET_IS_FUELED && this.fuelTank.getFluidAmount() == this.fuelTank.getCapacity()  && (!(this instanceof EntityTieredRocket) || this.riddenByEntity != null))
             {
                 this.autoLaunch();
             }
 
             if (this.autoLaunchSetting == EnumAutoLaunch.INSTANT)
             {
-                if (this.autoLaunchCountdown == 0)
+                if (this.autoLaunchCountdown == 0  && (!(this instanceof EntityTieredRocket) || this.riddenByEntity != null))
                 {
                     this.autoLaunch();
                 }
