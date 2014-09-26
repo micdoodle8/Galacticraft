@@ -48,7 +48,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
     public long ticksAlive;
     public int age = 0;
     public final int MAX_AGE = 100000;
-    public String slimelingName = "Unnamed";
+    public String slimelingName = GCCoreUtil.translate("gui.message.unnamed.name");
     public int favFoodID = 1;
     public float attackDamage = 0.05F;
     public int kills;
