@@ -121,7 +121,9 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
             {
                 final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, ssdim, playerBase);
                 String[] allNames = MinecraftServer.getServer().getAllUsernames();
-                ArrayList<String> allowedNames = data.getAllowedPlayers();
+                //data.getAllowedPlayers may include some in lowercase
+                //Convert to correct case at least for those players who are online
+                ArrayList<String> allowedNames = new ArrayList(data.getAllowedPlayers());
                 Iterator<String> itName = allowedNames.iterator();
                 ArrayList<String> replaceNames = new ArrayList();
                 while (itName.hasNext())
@@ -136,6 +138,7 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
                         }
                     }
                 }
+                //This does the conversion to correct case
                 allowedNames.addAll(replaceNames);
                 String[] rvsize = new String[allowedNames.size()];
                 return allowedNames.toArray(rvsize);
