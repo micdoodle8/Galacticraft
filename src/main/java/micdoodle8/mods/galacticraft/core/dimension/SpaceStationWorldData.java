@@ -119,7 +119,7 @@ public class SpaceStationWorldData extends WorldSavedData
                     var3.owner = player.getGameProfile().getName().toLowerCase().replace(".", "");
                 }
 
-                var3.spaceStationName = var3.owner + "\'s Space Station";
+                var3.spaceStationName = "Station: " + var3.owner;
                 var3.allowedPlayers = new ArrayList<String>();
 
                 if (player != null)
@@ -132,7 +132,7 @@ public class SpaceStationWorldData extends WorldSavedData
 
             if (var3.getSpaceStationName().replace(" ", "").isEmpty())
             {
-                var3.setSpaceStationName(var3.owner + "\'s Space Station");
+                var3.setSpaceStationName("Station: " + var3.owner);
                 var3.markDirty();
             }
 
@@ -156,7 +156,7 @@ public class SpaceStationWorldData extends WorldSavedData
                 var3.owner = player.getGameProfile().getName().toLowerCase().replace(".", "");
             }
 
-            var3.spaceStationName = var3.owner + "\'s Space Station";
+            var3.spaceStationName = "Station: " + var3.owner;
             var3.allowedPlayers = new ArrayList<String>();
 
             if (player != null)
@@ -169,7 +169,7 @@ public class SpaceStationWorldData extends WorldSavedData
 
         if (var3.getSpaceStationName().replace(" ", "").isEmpty())
         {
-            var3.setSpaceStationName(var3.owner + "\'s Space Station");
+            var3.setSpaceStationName("Station: " + var3.owner);
             var3.markDirty();
         }
 
