@@ -180,9 +180,9 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     if (!this.worldObj.isRemote)
                     {
                         Entity e = this.riddenByEntity;
-                        this.riddenByEntity.ridingEntity = null;
-                        this.riddenByEntity = null;
+                        e.mountEntity(null);
                         e.mountEntity(this);
+                        if (ConfigManagerCore.enableDebug) System.out.println("Remounting player in rocket.");
                     }
 
                     this.setWaitForPlayer(false);
@@ -375,6 +375,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     if (this.riddenByEntity != null)
                     {
                         this.setWaitForPlayer(true);
+                        if (ConfigManagerCore.enableDebug) System.out.println("Rocket repositioned, waiting for player");
                     }
                     this.landing = true;
                     return;

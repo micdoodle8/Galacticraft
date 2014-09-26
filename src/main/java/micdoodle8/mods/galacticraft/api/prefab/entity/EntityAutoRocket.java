@@ -72,6 +72,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
     protected double lastLastMotionY;
     private boolean waitForPlayer;
     public IUpdatePlayerListBox rocketSoundUpdater;
+    private boolean rocketSoundToStop = false;
 
     public EntityAutoRocket(World world)
     {
@@ -440,9 +441,19 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
             this.lastStatusMessageCooldown = this.statusMessageCooldown;          
         }
         
-        if (this.rocketSoundUpdater != null && (this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() || this.getLaunched()))
+        if (this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() || this.getLaunched())
         {
-            this.rocketSoundUpdater.update();
+	        if (this.rocketSoundUpdater != null)
+	        {
+	            this.rocketSoundUpdater.update();
+	            this.rocketSoundToStop = true;
+	        }
+        }
+        else
+        {
+        	//Not ignited - either because not yet launched, or because it has landed
+        	if (this.rocketSoundToStop)
+        		this.stopRocketSound();
         }
     }
 
@@ -595,7 +606,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
         if (this.rocketSoundUpdater != null)
         {
         	((SoundUpdaterRocket) this.rocketSoundUpdater).stopRocketSound();
-        }  	
+        }
+        this.rocketSoundToStop = false;
     }
 
     @Override
