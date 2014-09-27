@@ -480,18 +480,12 @@ public class RecipeManagerGC
 */
         if (OreDictionary.getOres("ingotBronze").size() > 0)
         {
-            for (ItemStack stack : OreDictionary.getOres("ingotBronze"))
-            {
-                CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 10), stack, stack);
-            }
+            CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 10), "ingotBronze", "ingotBronze");
         }
 
         if (OreDictionary.getOres("ingotSteel").size() > 0)
         {
-            for (ItemStack stack : OreDictionary.getOres("ingotSteel"))
-            {
-                CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 9), stack, stack);
-            }
+            CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 9), "ingotSteel", "ingotSteel");
         }
 
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 9), Items.coal, new ItemStack(GCItems.basicItem, 1, 11), Items.coal);
