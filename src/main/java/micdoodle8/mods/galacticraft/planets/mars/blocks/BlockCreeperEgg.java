@@ -99,12 +99,13 @@ public class BlockCreeperEgg extends BlockDragonEgg implements ItemBlockDesc.IBl
     }
 
     //Can only be harvested with a Sticky Desh Pickaxe
-    public static boolean canHarvestBlock(Block block, EntityPlayer player, int metadata)
+    @Override
+    public boolean canHarvestBlock(EntityPlayer player, int metadata)
     {
         ItemStack stack = player.inventory.getCurrentItem();
         if (stack == null)
         {
-            return player.canHarvestBlock(block);
+            return player.canHarvestBlock(this);
         }
         return stack.getItem() == MarsItems.deshPickSlime;
     }
