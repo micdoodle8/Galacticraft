@@ -113,6 +113,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
             }
             
             this.produceOxygen(ForgeDirection.getOrientation(this.getOxygenOutputDirection()));
+            this.produceHydrogen(ForgeDirection.getOrientation(this.getHydrogenOutputDirection()));
         }
     }
 
@@ -505,6 +506,10 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 		return this.liquidTank.getFluidAmount();
 	}
 
+	public int getHydrogenStored() {
+		return this.liquidTank2.getFluidAmount();
+	}
+
 	@Override
 	public float getMaxOxygenStored() {
 		return this.liquidTank.getCapacity();
@@ -514,6 +519,12 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 	{
         int metaside = this.getBlockMetadata() + 2;
         return (7 - (metaside ^ (metaside > 3 ? 0 : 1)) ^ 1);
+	}
+	
+	private int getHydrogenOutputDirection()
+	{
+        int metaside = this.getBlockMetadata() + 2;
+        return (metaside ^ 1);
 	}
 	
     private boolean produceOxygen(ForgeDirection outputDirection)
@@ -569,6 +580,32 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         return false;
     }
 
+    private boolean produceHydrogen(ForgeDirection outputDirection)
+    {
+        float provide = this.getHydrogenProvide(outputDirection);
+
+        if (provide > 0)
+        {
+            TileEntity outputTile = new BlockVec3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.worldObj);
+            if (EnergyConfigHandler.isMekanismLoaded())
+            {
+                //TODO Gas item handling - internal tank (IGasItem)
+                //int acceptedHydrogen = GasTransmission.addGas(itemStack, type, amount);
+                //this.provideHydrogen(acceptedHydrogen, true);
+
+                if (outputTile instanceof IGasHandler && ((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas) EnergyConfigHandler.gasHydrogen))
+                {
+                    GasStack toSend = new GasStack((Gas) EnergyConfigHandler.gasHydrogen, (int) Math.floor(Math.min(this.getHydrogenStored(), provide)));
+                    int acceptedHydrogen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
+                    this.provideHydrogen(acceptedHydrogen, true);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     @Override
     public float provideOxygen(ForgeDirection from, float request, boolean doProvide)
     {
@@ -597,10 +634,33 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         return 0;
     }
 
+    public int provideHydrogen(int request, boolean doProvide)
+    {
+        if (request > 0)
+        {
+            int currentHydrogen = this.liquidTank2.getFluidAmount();
+        	int requestedHydrogen = Math.min(request, currentHydrogen);
+
+            if (doProvide)
+            {
+        		this.liquidTank2.setFluid(new FluidStack(FluidRegistry.getFluid("hydrogen"), currentHydrogen - requestedHydrogen));
+            }
+
+            return requestedHydrogen;
+        }
+
+        return 0;
+    }
+
     @Override
     public float getOxygenProvide(ForgeDirection direction)
     {
         return this.getOxygenOutputDirection() == direction.ordinal() ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getOxygenStored()) : 0.0F;
+    }
+
+    public float getHydrogenProvide(ForgeDirection direction)
+    {
+        return this.getHydrogenOutputDirection() == direction.ordinal() ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getHydrogenStored()) : 0.0F;
     }
 
 	@Override
