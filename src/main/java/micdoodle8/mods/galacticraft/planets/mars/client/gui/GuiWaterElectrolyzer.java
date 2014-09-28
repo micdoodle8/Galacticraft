@@ -125,7 +125,7 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
         }
         else if (this.tileEntity.canProcess() && this.tileEntity.hasEnoughEnergyToRun)
         {
-            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.liquefying.name");
+            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.running.name");
         }
         else if (!this.tileEntity.hasEnoughEnergyToRun)
         {
