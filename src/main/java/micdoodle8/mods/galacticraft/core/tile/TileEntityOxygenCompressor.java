@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import java.util.EnumSet;
 
@@ -233,21 +234,17 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
     @Override
     public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
     {
-        if (this.isItemValidForSlot(slotID, itemstack))
-        {
-            switch (slotID)
-            {
-            case 0:
-                return itemstack.getItemDamage() == 0;
-            case 1:
-                return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
-            case 2:
-            	return itemstack.getItemDamage() == itemstack.getItem().getMaxDamage();
-            default:
-                return false;
-            }
-        }
-        return false;
+    	switch (slotID)
+    	{
+    	case 0:
+    		return itemstack.getItem() instanceof ItemOxygenTank && itemstack.getItemDamage() == 0;
+    	case 1:
+    		return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
+    	case 2:
+    		return FluidContainerRegistry.isEmptyContainer(itemstack);
+    	default:
+    		return false;
+    	}
     }
 
     @Override

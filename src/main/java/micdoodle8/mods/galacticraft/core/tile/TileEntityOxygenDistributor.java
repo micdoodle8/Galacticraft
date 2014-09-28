@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.entities.EntityBubble;
 import micdoodle8.mods.galacticraft.core.entities.IBubble;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
+import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,6 +19,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -324,19 +326,15 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     @Override
     public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
     {
-        if (this.isItemValidForSlot(slotID, itemstack))
-        {
-            switch (slotID)
-            {
-            case 0:
-                return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
-            case 1:
-            	return itemstack.getItemDamage() == itemstack.getItem().getMaxDamage();
-            default:
-                return false;
-            }
-        }
-        return false;
+    	switch (slotID)
+    	{
+    	case 0:
+    		return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
+    	case 1:
+    		return FluidContainerRegistry.isEmptyContainer(itemstack);
+    	default:
+    		return false;
+    	}
     }
 
     @Override

@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -330,9 +331,9 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     @Override
     public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
     {
-        if (slotID ==0 && this.isItemValidForSlot(slotID, itemstack))
+        if (slotID ==0 && itemstack != null)
         {
-           	return itemstack.getItemDamage() == itemstack.getItem().getMaxDamage();
+           	return FluidContainerRegistry.isEmptyContainer(itemstack);
         }
         return false;
     }
