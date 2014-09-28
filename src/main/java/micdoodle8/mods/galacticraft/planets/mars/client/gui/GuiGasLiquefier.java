@@ -213,7 +213,7 @@ public class GuiGasLiquefier extends GuiContainerGC
     private void addToolTips()
     {
         List<String> gasTankDesc = new ArrayList<String>();
-        gasTankDesc.add(GCCoreUtil.translate("gui.gasTank.desc.0"));
+        gasTankDesc.add(GCCoreUtil.translate("gui.gasTankCompressed.desc.0"));
         FluidStack gasTankContents = this.tileEntity.gasTank != null ? this.tileEntity.gasTank.getFluid() : null;
         if (gasTankContents != null)
         {

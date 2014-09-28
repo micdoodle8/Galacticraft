@@ -323,11 +323,11 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         int metaside = this.getBlockMetadata() + 2;
         int side = from.ordinal();
         if (side == (metaside ^ 1))
-            return this.liquidTank.getFluid() != null && this.liquidTank.getFluidAmount() > 0;
+            return this.liquidTank2.getFluid() != null && this.liquidTank2.getFluidAmount() > 0;
 
         //2->5 3->4 4->2 5->3
         if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
-            return this.liquidTank2.getFluid() != null && this.liquidTank2.getFluidAmount() > 0;
+            return this.liquidTank.getFluid() != null && this.liquidTank.getFluidAmount() > 0;
 
         return false;
     }

@@ -138,7 +138,7 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
                 return this.iconElectrolyzer;
             }
             
-            if (side != metaside)
+            if (side == metaside)
             {
             	return this.iconWaterInput;
             }
