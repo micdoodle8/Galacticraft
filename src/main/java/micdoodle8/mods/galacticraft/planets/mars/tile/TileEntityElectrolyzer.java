@@ -3,11 +3,20 @@ package micdoodle8.mods.galacticraft.planets.mars.tile;
 import cpw.mods.fml.relauncher.Side;
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
+import mekanism.api.gas.IGasHandler;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
+import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.grid.IOxygenNetwork;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenReceiver;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenStorage;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
+import micdoodle8.mods.galacticraft.core.oxygen.NetworkHelper;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
@@ -16,10 +25,11 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandler
+public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandler, IOxygenStorage, IOxygenReceiver
 {
     private final int tankCapacity = 4000;
 
@@ -34,7 +44,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     @NetworkedField(targetSide = Side.CLIENT)
     public int processTicks = 0;
     private ItemStack[] containingItems = new ItemStack[4];
-    
+
     public TileEntityElectrolyzer()
     {
         this.storage.setMaxExtract(120);
@@ -48,7 +58,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 
         if (!this.worldObj.isRemote)
         {
-            if (this.containingItems[1] != null)
+        	if (this.containingItems[1] != null)
             {
                 final FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(this.containingItems[1]);
 
@@ -101,6 +111,8 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
             {
                 this.processTicks = 0;
             }
+            
+            this.produceOxygen(ForgeDirection.getOrientation(this.getOxygenOutputDirection()));
         }
     }
 
@@ -479,6 +491,152 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         {
         	return true;
         }
+        return false;
+    }
+
+	@Override
+	public void setOxygenStored(float amount)
+	{
+		this.liquidTank.setFluid(new FluidStack(AsteroidsModule.fluidOxygenGas, (int) amount));
+	}
+
+	@Override
+	public float getOxygenStored() {
+		return this.liquidTank.getFluidAmount();
+	}
+
+	@Override
+	public float getMaxOxygenStored() {
+		return this.liquidTank.getCapacity();
+	}
+	
+	private int getOxygenOutputDirection()
+	{
+        int metaside = this.getBlockMetadata() + 2;
+        return (7 - (metaside ^ (metaside > 3 ? 0 : 1)) ^ 1);
+	}
+	
+    private boolean produceOxygen(ForgeDirection outputDirection)
+    {
+        float provide = this.getOxygenProvide(outputDirection);
+
+        if (provide > 0)
+        {
+            TileEntity outputTile = new BlockVec3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.worldObj);
+            IOxygenNetwork outputNetwork = NetworkHelper.getOxygenNetworkFromTileEntity(outputTile, outputDirection);
+
+            if (outputNetwork != null)
+            {
+                float powerRequest = outputNetwork.getRequest(this);
+
+                if (powerRequest > 0)
+                {
+                    float toSend = Math.min(this.getOxygenStored(), provide);
+                    float rejectedPower = outputNetwork.produce(toSend, this);
+
+                    this.provideOxygen(Math.max(toSend - rejectedPower, 0), true);
+                    return true;
+                }
+            }
+            else if (outputTile instanceof IOxygenReceiver)
+            {
+                float requestedOxygen = ((IOxygenReceiver) outputTile).getOxygenRequest(outputDirection.getOpposite());
+
+                if (requestedOxygen > 0)
+                {
+                    float toSend = Math.min(this.getOxygenStored(), provide);
+                    float acceptedOxygen = ((IOxygenReceiver) outputTile).receiveOxygen(outputDirection.getOpposite(), toSend, true);
+                    this.provideOxygen(acceptedOxygen, true);
+                    return true;
+                }
+            }
+            else if (EnergyConfigHandler.isMekanismLoaded())
+            {
+                //TODO Oxygen item handling - internal tank (IGasItem)
+                //int acceptedOxygen = GasTransmission.addGas(itemStack, type, amount);
+                //this.provideOxygen(acceptedOxygen, true);
+
+                if (outputTile instanceof IGasHandler && ((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas) EnergyConfigHandler.gasOxygen))
+                {
+                    GasStack toSend = new GasStack((Gas) EnergyConfigHandler.gasOxygen, (int) Math.floor(Math.min(this.getOxygenStored(), provide)));
+                    int acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
+                    this.provideOxygen(acceptedOxygen, true);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public float provideOxygen(ForgeDirection from, float request, boolean doProvide)
+    {
+        if (this.getOxygenOutputDirection() == from.ordinal())
+        {
+            return this.provideOxygen(request, doProvide);
+        }
+
+        return 0;
+    }
+
+    public float provideOxygen(float request, boolean doProvide)
+    {
+        if (request > 0)
+        {
+            float requestedOxygen = Math.min(request, this.liquidTank.getFluidAmount());
+
+            if (doProvide)
+            {
+                this.setOxygenStored(this.liquidTank.getFluidAmount() - requestedOxygen);
+            }
+
+            return requestedOxygen;
+        }
+
+        return 0;
+    }
+
+    @Override
+    public float getOxygenProvide(ForgeDirection direction)
+    {
+        return this.getOxygenOutputDirection() == direction.ordinal() ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getOxygenStored()) : 0.0F;
+    }
+
+	@Override
+	public boolean shouldPullOxygen() {
+		return false;
+	}
+
+	@Override
+	public float receiveOxygen(ForgeDirection from, float receive,
+			boolean doReceive) {
+		return 0;
+	}
+
+	@Override
+	public float getOxygenRequest(ForgeDirection direction) {
+		return 0;
+	}
+
+    @Override
+    public boolean canConnect(ForgeDirection direction, NetworkType type)
+    {
+        if (direction == null || direction.equals(ForgeDirection.UNKNOWN))
+        {
+            return false;
+        }
+
+        if (type == NetworkType.OXYGEN)
+        {
+            return this.getOxygenOutputDirection() == direction.ordinal();
+        }
+
+        if (type == NetworkType.POWER)
+        {
+        	return direction == this.getElectricInputDirection();
+        }
+        
         return false;
     }
 }

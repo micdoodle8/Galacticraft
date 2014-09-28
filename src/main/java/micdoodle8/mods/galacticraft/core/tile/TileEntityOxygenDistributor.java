@@ -8,7 +8,6 @@ import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.entities.EntityBubble;
 import micdoodle8.mods.galacticraft.core.entities.IBubble;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
-import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
