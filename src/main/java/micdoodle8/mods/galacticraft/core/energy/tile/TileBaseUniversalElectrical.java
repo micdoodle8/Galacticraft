@@ -592,8 +592,9 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
         {
             this.powerHandlerBC = new PowerHandler((IPowerReceptor) this, buildcraft.api.power.PowerHandler.Type.MACHINE);
         }
-
-        ((PowerHandler) this.powerHandlerBC).configure(0D, this.storage.getMaxReceive() * EnergyConfigHandler.TO_BC_RATIO, 0, (int) Math.ceil(this.getMaxEnergyStoredGC() * EnergyConfigHandler.TO_BC_RATIO));
+        float receive = this.storage.receiveEnergyGC(this.storage.getMaxReceive(), true) * EnergyConfigHandler.TO_BC_RATIO;
+        if (receive < 0.1F) receive = 0F;
+        ((PowerHandler) this.powerHandlerBC).configure(0D, receive, 0, (int) (this.getMaxEnergyStoredGC() * EnergyConfigHandler.TO_BC_RATIO));
         ((PowerHandler) this.powerHandlerBC).configurePowerPerdition(1, 10);
     }
 
@@ -612,7 +613,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
     @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "EnderIO")
     public void doWork(PowerHandler workProvider)
     {
-
+    	this.initBuildCraft();
     }
 
     @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
@@ -635,7 +636,9 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
     @RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "BuildCraft|Energy")
     public double getEnergyRequested()
     {
-        return this.getRequest(ForgeDirection.UNKNOWN) * EnergyConfigHandler.TO_BC_RATIO;
+        float requested = this.getRequest(ForgeDirection.UNKNOWN) * EnergyConfigHandler.TO_BC_RATIO;
+        if (requested < 0.1F) requested = 0F;
+        return requested;
     }
 
     @RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "BuildCraft|Energy")
