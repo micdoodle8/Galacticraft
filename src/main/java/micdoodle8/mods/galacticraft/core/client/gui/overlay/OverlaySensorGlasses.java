@@ -99,7 +99,7 @@ public class OverlaySensorGlasses extends Overlay
             if (client != null)
             {
                 GCPlayerStatsClient stats = GCPlayerStatsClient.get(client);
-                var2 = stats.usingAdvancedGoggles = true;
+                var2 = stats.usingAdvancedGoggles;
             }
 
             OverlaySensorGlasses.minecraft.fontRenderer.drawString(GCCoreUtil.translate("gui.sensor.advanced") + ": " + (var2 ? GCCoreUtil.translate("gui.sensor.advancedon") : GCCoreUtil.translate("gui.sensor.advancedoff")), var6 / 2 - 50, 4, 0x03b88f);
