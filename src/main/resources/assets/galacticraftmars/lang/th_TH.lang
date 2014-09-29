@@ -1,1 +1,181 @@
-# Galacticraft Mars Language File = THAILAND◙◙# GENERAL ITEMS◙item.rawDesh.name=เดรชหยาบ◙item.deshStick.name=แทงเดรช◙item.ingotDesh.name=กอนเดรช◙item.spaceshipTier2.t2Rocket.name=จรวด เทียร 2◙item.reinforcedPlateT2.name=แผนโลหะทนทาน◙item.tier2.desc=เทียร 2◙item.slimelingCargo.name=กระเปาเกบของสไลมลิง◙item.key.T2.name=กุญแจดันเจียน เทียร 2◙item.compressedDesh.name=แผนเดรช◙item.spaceshipTier2.cargoRocket.name=จรวดขนสง◙item.fluidManip.name=ตัวจัดการของเหลว◙◙# TOOLS◙item.deshPick.name=อีเตอเดรช◙item.deshPickSlime.name=อีเตอเดรชเหนียว◙item.deshAxe.name=ขวานเดรช◙item.deshHoe.name=จอบเดรช◙item.deshSpade.name=พลัวเดรช◙item.deshSword.name=ดาบเดรช◙◙# ARMOR◙item.deshHelmet.name=หมวกเดรช◙item.deshChestplate.name=เสือเกราะเดรช◙item.deshLeggings.name=กางเกงเดรช◙item.deshBoots.name=รองเทาเดรช◙◙# BLOCKS◙tile.mars.deshmars.name=แรเดรช◙tile.mars.coppermars.name=แรทองแดง◙tile.mars.tinmars.name=แรดีบุก◙tile.mars.ironmars.name=แรเหลก◙tile.mars.marscobblestone.name=หินหยาบดาวอังคาร◙tile.mars.marsstone.name=หินดาวอังคาร◙tile.mars.marsdirt.name=หินดาวอังคารชันลาง◙tile.mars.marsgrass.name=หินดาวอังคารชันบน◙tile.mars.marsdeco.name=บลอกเดรช◙tile.mars.marsdungeon.name=อิฐดันเจียนดาวอังคาร◙tile.treasureT2.name=กลองสมบัติ เทียร 2◙tile.slimelingEgg.redEgg.name=ไขสไลมลิงสีแดง◙tile.slimelingEgg.blueEgg.name=ไขสไลมลิงสีนำเงิน◙tile.slimelingEgg.yellowEgg.name=ไขสไลมลิงสีเหลือง◙tile.marsMachine.0.name=เทอราฟอรมเมอร◙tile.marsMachine.1.name=ตูไคโยเจนนิค◙tile.marsMachine.2.name=เครืองควบคุมการปลอยจรวด◙tile.marsMachine.4.name=เครืองเปลียนสถานะกาซ◙tile.marsMachine.5.name=เครืองสังเคราะหมีเทน◙tile.marsMachine.6.name=เครืองเปลียนนำเปนกาซ◙tile.sludge.name=ตะกอนแบคทีเรีย◙tile.creeperEgg.name=ไขคริปเปอร◙tile.cavernVines.name=เถาวัลยถำ◙◙# GUI◙gui.choosePlanet.desc.mars=อาศัยอยูได#ไมมีออกซิเจน#แรงโนมถวง: 38%◙item.deshPickSlime.description.name=สามารถขุดไขคริปเปอรได◙gui.message.noEnergy.name=พลังงานไฟฟาไมพอ◙gui.message.noWater.name=นำไมพอ◙gui.message.noBonemeal.name=ผงกระดูกไมพอ◙gui.message.noSeeds.name=เมลดไมพอ◙gui.message.noSaplings.name=ตนกลาไมพอ◙gui.message.bubbleExp.name=ขยายฟองอากาศ◙gui.message.noValidBlocks.name=ไมมีบลอกทีตรงกันในฟองอากาศ◙gui.message.terraforming.name=กำลังสรางธรรมชาติ◙gui.message.enableTrees.name=เปิดใชงานตนไม◙gui.message.enableGrass.name=เปิดใชงานหญา◙gui.message.trees.name=ตนไม◙gui.message.grass.name=หญา◙gui.message.invalidFreq.name=ความถีไมถูกตอง◙gui.message.frequency.name=ความถี◙gui.message.destFrequency.name=เปาหมายความถี◙gui.message.removePad.name=ลบฐานปลอยจรวด◙gui.message.launchWhen.name=ปลอยเมือ◙gui.message.cargoUnloaded.name=จรวดขนสงถายสินคา◙gui.message.cargoFull.name=จรวดขนสงเตม◙gui.message.fullyFueled.name=เชือเพลิงเตม◙gui.message.instant.name=โดยตรง◙gui.message.tenSec.name=10 วินาที◙gui.message.thirtySec.name=30 วินาที◙gui.message.oneMin.name=1 นาที◙gui.message.redstoneSig.name=สัญญาณเรดสโตน◙gui.message.notSet.name=ไมไดตังไว◙gui.message.notEnough.name=ไมพอ◙gui.message.success.name=เสรจสิน◙gui.message.zeroWater.name=ไมมีนำ!◙◙○# Dollar sign ($) will split text onto a new line◙gui.launchController.desc.0=นีคือเครืองควบคุมการปลอยจรวด$ความถีเฉพาะ◙gui.launchController.desc.1=ความถีทีใกลจะปลอยจรวด◙gui.launchController.desc.2=ถาจรวดถูกปลอย ฐานปลอย$จรวดจะถูกลบออก◙gui.launchController.desc.3=เมือตัวเลือกตรงกับทีตังไว$จรวดจะถูกปลอย◙gui.terraformer.desc.0=ถังเกบนำ◙◙gui.gasTank.desc.0=กาซทีเกบไว◙gui.gasTankCompressed.desc.0=Gas Storage (Compressed) ##NEEDS TRANSLATE##◙gui.liquidTank.desc.0=ถังของเหลว◙gui.status.nogas.name=ไมมีกาซ◙gui.status.liquefying.name=ทำใหเปนของเหลว◙gui.status.processing.name=กำลังสังเคราะห◙gui.status.needsCarbon.name=ตองการคารบอน◙gui.status.tankfull.name=ถังเกบเตม◙gui.status.tanksfull.name=ถังเกบเตม◙gui.message.lowEnergy.name=พลังงานตำ◙gui.button.liquefy.name=เริมทำงาน◙gui.button.liquefyStop.name=หยุดทำงาน◙gui.gasInput.desc.0=วางกระปองของมีเทนหรือ◙gui.gasInput.desc.1=วาลวเกบกาซตรงนี◙gui.hydrogenInput.desc.0=วางถังไฮโดรเจน◙gui.hydrogenInput.desc.1=หรือวาลวเกบกาซ◙gui.liquidOutput.desc.2=ถังกาซเหลว◙gui.methaneOutput.desc.2=ถังมีเทน◙gui.message.withAtmosphere0.name=ถาบนดาวเคราะหเตมไปดวย◙gui.message.withAtmosphere1.name=ในชันบรรยากาศ◙item.carbonFragments.name=สะเกดคารบอน◙gui.carbonSlot.desc.0=Fragmented Carbon can go here ##NEEDS TRANSLATE##◙gui.waterBucketSlot.desc=Place water buckets here ##NEEDS TRANSLATE##◙◙gui.cargorocket.status.waiting.0=รอการ◙gui.cargorocket.status.waiting.1=จุดระเบิด◙gui.cargorocket.status.launched.0=จรวดถูก◙gui.cargorocket.status.launched.1=ปลอยแลว◙◙gas.carbondioxide.name=คารบอนไดออกไซด◙gas.oxygen.name=ออกซิเจน◙gas.nitrogen.name=ไนโตรเจน◙◙gui.desc.reinforcedPlateT2.name=เทียร 2◙dimension.Mars.name=ดาวอังคาร◙planet.mars=ดาวอังคาร◙◙tile.treasureT2.description=กลองสมบัติ เทียร 2 จะอยูในดันเจียนดาวอังคาร กลองสามารถปลดลอคไดเมือสูกับบอสชนะ◙tile.cavernVines.description=เถาวัลยถำอันตรายสำหรับสิงมีชีวิต มันจะเกียวพันตัวเราและดึงขึนสูขางบน◙tile.slimelingEgg.description=ไขสไลมลิง ทุบหนึงครังโดยการใชมือของผูเลน จะทำใหออกมาเปนสัตวเลียงของเรา◙tile.cryoChamber.description=ตูไคโยเจนนิค จะใหผูเลนสามารถนอนไดระหวางวัน เพิมเลือดไดจำนวนเลกนอย แตมีการจำกัดการใชงาน◙tile.launchController.description=เครืองควบคุมการปลอยจรวด ใชสำหรับการปลอยจรวดในรูปแบบตางๆ รวมถึงการปลอยจรวดไปยังจุดหมาย สำหรับการปลอยจรวดอัตโนมัติ◙tile.terraformer.description=เทอราฟอรมเมอร ใชสำหรับเพิมพืนทีสีเขียวในดาวเคราะหทีหางไกล เพิมหญา ตนไม นำ เมือใสวัสดุทีถูกตอง◙tile.creeperEgg.description=ไขคริปเปอร จะอยูในดันเจียนดาวอังคารและจะสปอนคริปเปอรอวกาศเมือไขถูกแรงระเบิด◙tile.gasLiquefier.description=เครืองเปลียนสถานะกาซ เกบกาซจากชันบรรยากาศหรือจากกระปองของเหลว สวนมีเทนเหลวสามารถกลันและใชเปนเชือเพลิงจรวดไดเมือเสรจสินการกลัน◙tile.methaneSynthesizer.description=เครืองสังเคราะหมีเทน จะผลิตมีเทนสำหรับใชในเครืองเปลียนสถานะกาซ◙tile.electrolyzer.description=Transforms water into hydrogen (useful for the Methane Synthesizer) and oxygen. ##NEEDS TRANSLATE##◙◙gui.slimeling.chat.wrongPlayer=นีไมใชสไลมลิงของฉัน!◙gui.cryogenic.chat.cantUse=ฉันไมสามารถใชสิงนีได %d วินาที◙gui.slimeling.name=ชือ◙gui.slimeling.owner=เจาของ◙gui.slimeling.kills=ฆาได◙gui.slimeling.scale=ขนาด◙gui.slimeling.button.sit=นัง◙gui.slimeling.button.follow=ตามเจาของ◙gui.slimeling.sitting=นัง◙gui.slimeling.following=ตามเจาของ◙gui.slimeling.damage=แรงโจมตี◙gui.slimeling.food=อาหารทีชอบ◙◙# SCHEMATICS◙schematic.rocketT3.name=จรวด เทียร 3◙schematic.cargoRocket.name=จรวดขนสงอัตโนมัติ◙◙# ENTITIES◙entity.Sludgeling.name=หนอนแบคทีเรีย◙entity.Slimeling.name=สไลมลิง◙entity.CreeperBoss.name=คริปเปอรบอสอวกาศ◙entity.SpaceshipT2.name=จรวด เทียร 2◙entity.CargoRocket.name=จรวดขนสง◙◙# CONTAINERS◙container.launchcontroller.name=เครืองควบคุมการปลอยจรวด◙container.tileTerraformer.name=เทอราฟอรมเมอร◙◙# CONFIG GUI◙gc.configgui.dimensionIDMars=ID มิติดาวอังคาร◙gc.configgui.idEntityCreeperBoss=ID คริปเปอรบอสอวกาศ◙gc.configgui.idEntityProjectileTNT=ID TNT โปรเจคไทล◙gc.configgui.idEntitySpaceshipTier2=ID จรวด เทียร 2◙gc.configgui.idEntitySludgeling=ID หนอนแบคทีเรีย◙gc.configgui.idEntitySlimeling=ID สไลมลิง◙gc.configgui.idEntityTerraformBubble=ID ฟองเทอราฟอรม◙gc.configgui.idEntityLandingBalloons=ID ยานลงจอดบอลลูน◙gc.configgui.idEntityCargoRocket=ID จรวดขนสง◙gc.configgui.idSchematicRocketT2=ID แผนผังจรวด เทียร 2◙gc.configgui.idSchematicCargoRocket=ID แผนผังจรวดขนสง◙gc.configgui.launchControllerChunkLoad=เปิดใชงานเครืองควบคุมการปลอยจรวดใหโหลด Chunk◙gc.configgui.launchControllerAllDims=เครืองควบคุมการปลอยจรวดโหลดทุกมิติ◙◙gc.configgui.planets.title=การตังคากาแลคติคคราฟ ดาวเคราะห◙
+# Galacticraft Mars Language File = THAILAND
+
+# GENERAL ITEMS
+item.rawDesh.name=เดรชหยาบ
+item.deshStick.name=แท่งเดรช
+item.ingotDesh.name=ก้อนเดรช
+item.spaceshipTier2.t2Rocket.name=จรวด เทียร์ 2
+item.reinforcedPlateT2.name=แผ่นโลหะทนทาน
+item.tier2.desc=เทียร์ 2
+item.slimelingCargo.name=กระเป๋าเก็บของสไลม์ลิ่ง
+item.key.T2.name=กุญแจดันเจี้ยน เทียร์ 2
+item.compressedDesh.name=แผ่นเดรช
+item.spaceshipTier2.cargoRocket.name=จรวดขนส่ง
+item.fluidManip.name=ตัวจัดการของเหลว
+
+# TOOLS
+item.deshPick.name=อีเต้อเดรช
+item.deshPickSlime.name=อีเต้อเดรชเหนียว
+item.deshAxe.name=ขวานเดรช
+item.deshHoe.name=จอบเดรช
+item.deshSpade.name=พลั่วเดรช
+item.deshSword.name=ดาบเดรช
+
+# ARMOR
+item.deshHelmet.name=หมวกเดรช
+item.deshChestplate.name=เสื้อเกราะเดรช
+item.deshLeggings.name=กางเกงเดรช
+item.deshBoots.name=รองเท้าเดรช
+
+# BLOCKS
+tile.mars.deshmars.name=แร่เดรช
+tile.mars.coppermars.name=แร่ทองแดง
+tile.mars.tinmars.name=แร่ดีบุก
+tile.mars.ironmars.name=แร่เหล็ก
+tile.mars.marscobblestone.name=หินหยาบดาวอังคาร
+tile.mars.marsstone.name=หินดาวอังคาร
+tile.mars.marsdirt.name=หินดาวอังคารชั้นล่าง
+tile.mars.marsgrass.name=หินดาวอังคารชั้นบน
+tile.mars.marsdeco.name=บล็อกเดรช
+tile.mars.marsdungeon.name=อิฐดันเจี้ยนดาวอังคาร
+tile.treasureT2.name=กล่องสมบัติ เทียร์ 2
+tile.slimelingEgg.redEgg.name=ไข่สไลม์ลิ่งสีแดง
+tile.slimelingEgg.blueEgg.name=ไข่สไลม์ลิ่งสีน้ำเงิน
+tile.slimelingEgg.yellowEgg.name=ไข่สไลม์ลิ่งสีเหลือง
+tile.marsMachine.0.name=เทอราฟอร์มเมอร์
+tile.marsMachine.1.name=ตู้ไคโยเจนนิค
+tile.marsMachine.2.name=เครื่องควบคุมการปล่อยจรวด
+tile.marsMachine.4.name=เครื่องเปลี่ยนสถานะก๊าซ
+tile.marsMachine.5.name=เครื่องสังเคราะห์มีเทน
+tile.marsMachine.6.name=เครื่องเปลี่ยนน้ำเป็นก๊าซ
+tile.sludge.name=ตะกอนแบคทีเรีย
+tile.creeperEgg.name=ไข่คริปเปอร์
+tile.cavernVines.name=เถาวัลย์ถ้ำ
+
+# GUI
+gui.choosePlanet.desc.mars=อาศัยอยู่ได้#ไม่มีออกซิเจน#แรงโน้มถ่วง: 38%
+item.deshPickSlime.description.name=สามารถขุดไข่คริปเปอร์ได้
+gui.message.noEnergy.name=พลังงานไฟฟ้าไม่พอ
+gui.message.noWater.name=น้ำไม่พอ
+gui.message.noBonemeal.name=ผงกระดูกไม่พอ
+gui.message.noSeeds.name=เมล็ดไม่พอ
+gui.message.noSaplings.name=ต้นกล้าไม่พอ
+gui.message.bubbleExp.name=ขยายฟองอากาศ
+gui.message.noValidBlocks.name=ไม่มีบล็อกที่ตรงกันในฟองอากาศ
+gui.message.terraforming.name=กำลังสร้างธรรมชาติ
+gui.message.enableTrees.name=เปิดใช้งานต้นไม้
+gui.message.enableGrass.name=เปิดใช้งานหญ้า
+gui.message.trees.name=ต้นไม้
+gui.message.grass.name=หญ้า
+gui.message.invalidFreq.name=ความถี่ไม่ถูกต้อง
+gui.message.frequency.name=ความถี่
+gui.message.destFrequency.name=เป้าหมายความถี่
+gui.message.removePad.name=ลบฐานปล่อยจรวด
+gui.message.launchWhen.name=ปล่อยเมื่อ
+gui.message.cargoUnloaded.name=จรวดขนส่งถ่ายสินค้า
+gui.message.cargoFull.name=จรวดขนส่งเต็ม
+gui.message.fullyFueled.name=เชื้อเพลิงเต็ม
+gui.message.instant.name=โดยตรง
+gui.message.tenSec.name=10 วินาที
+gui.message.thirtySec.name=30 วินาที
+gui.message.oneMin.name=1 นาที
+gui.message.redstoneSig.name=สัญญาณเรดสโตน
+gui.message.notSet.name=ไมได้ตั้งไว้
+gui.message.notEnough.name=ไม่พอ
+gui.message.success.name=เสร็จสิ้น
+gui.message.zeroWater.name=ไม่มีน้ำ!
+
+	# Dollar sign ($) will split text onto a new line
+gui.launchController.desc.0=นี่คือเครื่องควบคุมการปล่อยจรวด$ความถี่เฉพาะ
+gui.launchController.desc.1=ความถี่ที่ใกล้จะปล่อยจรวด
+gui.launchController.desc.2=ถ้าจรวดถูกปล่อย ฐานปล่อย$จรวดจะถูกลบออก
+gui.launchController.desc.3=เมื่อตัวเลือกตรงกับที่ตั้งไว้$จรวดจะถูกปล่อย
+gui.terraformer.desc.0=ถังเก็บน้ำ
+
+gui.gasTank.desc.0=ก๊าซที่เก็บไว้
+gui.liquidTank.desc.0=ถังของเหลว
+gui.status.nogas.name=ไม่มีก๊าซ
+gui.status.liquefying.name=ทำให้เป็นของเหลว
+gui.status.processing.name=กำลังสังเคราะห์
+gui.status.needsCarbon.name=ต้องการคาร์บอน
+gui.status.tankfull.name=ถังเก็บเต็ม
+gui.status.tanksfull.name=ถังเก็บเต็ม
+gui.message.lowEnergy.name=พลังงานต่ำ
+gui.button.liquefy.name=เริ่มทำงาน
+gui.button.liquefyStop.name=หยุดทำงาน
+gui.gasInput.desc.0=วางกระป๋องของมีเทนหรือ
+gui.gasInput.desc.1=วาล์วเก็บก๊าซตรงนี้
+gui.hydrogenInput.desc.0=วางถังไฮโดรเจน
+gui.hydrogenInput.desc.1=หรือวาล์วเก็บก๊าซ
+gui.liquidOutput.desc.2=ถังก๊าซเหลว
+gui.methaneOutput.desc.2=ถังมีเทน
+gui.message.withAtmosphere0.name=ถ้าบนดาวเคราะห์เต็มไปด้วย
+gui.message.withAtmosphere1.name=ในชั้นบรรยากาศ
+item.carbonFragments.name=สะเก็ดคาร์บอน
+gui.cargorocket.status.waiting.0=รอการ
+gui.cargorocket.status.waiting.1=จุดระเบิด
+gui.cargorocket.status.launched.0=จรวดถูก
+gui.cargorocket.status.launched.1=ปล่อยแล้ว
+
+gas.carbondioxide.name=คาร์บอนไดออกไซด์
+gas.oxygen.name=ออกซิเจน
+gas.nitrogen.name=ไนโตรเจน
+
+gui.desc.reinforcedPlateT2.name=เทียร์ 2
+dimension.Mars.name=ดาวอังคาร
+planet.mars=ดาวอังคาร
+
+tile.treasureT2.description=กล่องสมบัติ เทียร์ 2 จะอยู่ในดันเจี้ยนดาวอังคาร กล่องสามารถปลดล็อคได้เมื่อสู้กับบอสชนะ
+tile.cavernVines.description=เถาวัลย์ถ้ำอันตรายสำหรับสิ่งมีชีวิต มันจะเกี่ยวพันตัวเราและดึงขึ้นสู่ข้างบน
+tile.slimelingEgg.description=ไข่สไลม์ลิ่ง ทุบหนึ่งครั้งโดยการใช้มือของผู้เล่น จะทำให้ออกมาเป็นสัตว์เลี้ยงของเรา
+tile.cryoChamber.description=ตู้ไคโยเจนนิค จะให้ผู้เล่นสามารถนอนได้ระหว่างวัน เพิ่มเลือดได้จำนวนเล็กน้อย แต่มีการจำกัดการใช้งาน
+tile.launchController.description=เครื่องควบคุมการปล่อยจรวด ใช้สำหรับการปล่อยจรวดในรูปแบบต่างๆ รวมถึงการปล่อยจรวดไปยังจุดหมาย สำหรับการปล่อยจรวดอัตโนมัติ
+tile.terraformer.description=เทอราฟอร์มเมอร์ ใช้สำหรับเพิ่มพื้นที่สีเขียวในดาวเคราะห์ที่ห่างไกล เพิ่มหญ้า ต้นไม้ น้ำ เมื่อใส่วัสดุที่ถูกต้อง
+tile.creeperEgg.description=ไข่คริปเปอร์ จะอยู่ในดันเจี้ยนดาวอังคารและจะสปอนคริปเปอร์อวกาศเมื่อไข่ถูกแรงระเบิด
+tile.gasLiquefier.description=เครื่องเปลี่ยนสถานะก๊าซ เก็บก๊าซจากชั้นบรรยากาศหรือจากกระป๋องของเหลว ส่วนมีเทนเหลวสามารถกลั่นและใช้เป็นเชื้อเพลิงจรวดได้เมื่อเสร็จสิ้นการกลั่น
+tile.methaneSynthesizer.description=เครื่องสังเคราะห์มีเทน จะผลิตมีเทนสำหรับใช้ในเครื่องเปลี่ยนสถานะก๊าซ
+
+gui.slimeling.chat.wrongPlayer=นี่ไม่ใช่สไลม์ลิ่งของฉัน!
+gui.cryogenic.chat.cantUse=ฉันไม่สามารถใช้สิ่งนี้ได้ %d วินาที
+gui.slimeling.name=ชื่อ
+gui.slimeling.owner=เจ้าของ
+gui.slimeling.kills=ฆ่าได้
+gui.slimeling.scale=ขนาด
+gui.slimeling.button.sit=นั่ง
+gui.slimeling.button.follow=ตามเจ้าของ
+gui.slimeling.sitting=นั่ง
+gui.slimeling.following=ตามเจ้าของ
+gui.slimeling.damage=แรงโจมตี
+gui.slimeling.food=อาหารที่ชอบ
+
+# SCHEMATICS
+schematic.rocketT3.name=จรวด เทียร์ 3
+schematic.cargoRocket.name=จรวดขนส่งอัตโนมัติ
+
+# ENTITIES
+entity.Sludgeling.name=หนอนแบคทีเรีย
+entity.Slimeling.name=สไลม์ลิ่ง
+entity.CreeperBoss.name=คริปเปอร์บอสอวกาศ
+entity.SpaceshipT2.name=จรวด เทียร์ 2
+entity.CargoRocket.name=จรวดขนส่ง
+
+# CONTAINERS
+container.launchcontroller.name=เครื่องควบคุมการปล่อยจรวด
+container.tileTerraformer.name=เทอราฟอร์มเมอร์
+
+# CONFIG GUI
+gc.configgui.dimensionIDMars=ID มิติดาวอังคาร
+gc.configgui.idEntityCreeperBoss=ID คริปเปอร์บอสอวกาศ
+gc.configgui.idEntityProjectileTNT=ID TNT โปรเจคไทล์
+gc.configgui.idEntitySpaceshipTier2=ID จรวด เทียร์ 2
+gc.configgui.idEntitySludgeling=ID หนอนแบคทีเรีย
+gc.configgui.idEntitySlimeling=ID สไลม์ลิ่ง
+gc.configgui.idEntityTerraformBubble=ID ฟองเทอราฟอร์ม
+gc.configgui.idEntityLandingBalloons=ID ยานลงจอดบอลลูน
+gc.configgui.idEntityCargoRocket=ID จรวดขนส่ง
+gc.configgui.idSchematicRocketT2=ID แผนผังจรวด เทียร์ 2
+gc.configgui.idSchematicCargoRocket=ID แผนผังจรวดขนส่ง
+gc.configgui.launchControllerChunkLoad=เปิดใช้งานเครื่องควบคุมการปล่อยจรวดให้โหลด Chunk
+gc.configgui.launchControllerAllDims=เครื่องควบคุมการปล่อยจรวดโหลดทุกมิติ
+
+gc.configgui.planets.title=การตั้งค่ากาแลคติคคราฟ ดาวเคราะห์
