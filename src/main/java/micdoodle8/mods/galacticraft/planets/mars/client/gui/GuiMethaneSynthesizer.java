@@ -72,7 +72,11 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
         batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
         batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion(edgeLeft + 53, edgeTop + 53, 18, 18, batterySlotDesc, this.width, this.height, this));
+        List<String> carbonSlotDesc = new ArrayList<String>();
+        carbonSlotDesc.add(GCCoreUtil.translate("gui.carbonSlot.desc.0"));
+        this.infoRegions.add(new GuiElementInfoRegion(edgeLeft + 27, edgeTop + 53, 18, 18, carbonSlotDesc, this.width, this.height, this));
 
+        
         this.fuelTankRegion.xPosition = edgeLeft + 153;
         this.fuelTankRegion.yPosition = edgeTop + 28;
         this.fuelTankRegion.parentWidth = this.width;
@@ -130,17 +134,17 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
         String displayText = "";
         int yOffset = -18;
 
-        if (this.tileEntity.gasTank.getFluid() == null || this.tileEntity.gasTank.getFluidAmount() == 0)
+        if ((this.tileEntity.processTicks > -8 || this.tileEntity.canProcess()) && this.tileEntity.hasEnoughEnergyToRun)
+        {
+            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.processing.name");
+        }
+        else if (this.tileEntity.gasTank.getFluid() == null || this.tileEntity.gasTank.getFluidAmount() == 0)
         {
             displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.nogas.name");
         }
         else if (this.tileEntity.gasTank.getFluidAmount() > 0 && this.tileEntity.disabled)
         {
             displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready.name");
-        }
-        else if (this.tileEntity.canProcess() && this.tileEntity.hasEnoughEnergyToRun)
-        {
-            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.processing.name");
         }
         else if (!this.tileEntity.hasEnoughEnergyToRun)
         {
@@ -156,7 +160,7 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
         }
 
         this.buttonDisable.enabled = this.tileEntity.disableCooldown == 0;
-        this.buttonDisable.displayString = this.tileEntity.processTicks == 0 ? GCCoreUtil.translate("gui.button.liquefy.name") : GCCoreUtil.translate("gui.button.liquefyStop.name");
+        this.buttonDisable.displayString = this.tileEntity.processTicks <= -8 ? GCCoreUtil.translate("gui.button.liquefy.name") : GCCoreUtil.translate("gui.button.liquefyStop.name");
         this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.status.name") + ":", 72, 45 + 23 + yOffset, 4210752);
         this.fontRendererObj.drawString(displayText, 75, 45 + 33 + yOffset, 4210752);
         //		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.tileEntity.ueWattsPerTick * 20, ElectricUnit.WATT), 72, 56 + 23 + yOffset, 4210752);

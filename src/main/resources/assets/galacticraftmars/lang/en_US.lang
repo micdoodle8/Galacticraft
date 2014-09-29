@@ -113,6 +113,8 @@ gui.methaneOutput.desc.2=methane tank
 gui.message.withAtmosphere0.name=on a planet with plenty of
 gui.message.withAtmosphere1.name=in the atmosphere
 item.carbonFragments.name=Fragmented Carbon
+gui.waterBucketSlot.desc = Place water buckets here
+
 gui.cargorocket.status.waiting.0=Waiting for
 gui.cargorocket.status.waiting.1=ignition
 gui.cargorocket.status.launched.0=Already

@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.planets.mars.tile;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
+import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenReceiver;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
@@ -10,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithIn
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.*;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
@@ -26,7 +29,7 @@ import net.minecraftforge.fluids.*;
 
 import java.util.ArrayList;
 
-public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandler
+public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandler, IOxygenReceiver 
 {
     private final int tankCapacity = 2000;
 
@@ -39,7 +42,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 
     public int processTimeRequired = 3;
     @NetworkedField(targetSide = Side.CLIENT)
-    public int processTicks = 0;
+    public int processTicks = -10;
     private ItemStack[] containingItems = new ItemStack[4];
     private int airProducts = -1;
 
@@ -237,7 +240,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                 //50% extra speed boost for Tier 2 machine if powered by Tier 2 power
                 if (this.tierGC == 2) this.processTimeRequired = (this.poweredByTierGC == 2) ? 2 : 3;
 
-                if (this.processTicks == 0)
+                if (this.processTicks <= 0)
                 {
                     this.processTicks = this.processTimeRequired;
                 }
@@ -252,7 +255,10 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
             }
             else
             {
-                this.processTicks = 0;
+                if (this.processTicks > 0)
+                	this.processTicks = 0;
+                else if (--this.processTicks <= -10)
+                	this.processTicks = -10;
             }
         }
     }
@@ -769,5 +775,64 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         }
 
         return this.blockMetadata & 3;
+    }
+
+	@Override
+	public boolean shouldPullOxygen()
+	{
+		return this.gasTankType == -1 || (this.gasTankType == 1 && this.gasTank.getFluidAmount() < this.gasTank.getCapacity());
+	}
+
+	@Override
+	public float receiveOxygen(ForgeDirection from, float receive, boolean doReceive)
+	{
+		if (from.ordinal() == this.getBlockMetadata() + 2 && this.shouldPullOxygen())
+    	{
+			float conversion = 10F / 54F;
+	        FluidStack fluidToFill = new FluidStack(AsteroidsModule.fluidOxygenGas, (int) (receive * conversion));
+	    	int used = MathHelper.ceiling_float_int(this.gasTank.fill(fluidToFill, doReceive) / conversion);
+			return used;
+    	}
+    	
+    	return 0;
+	}
+
+	@Override
+	public float provideOxygen(ForgeDirection from, float request, boolean doProvide)
+	{
+		return 0;
+	}
+
+	@Override
+	public float getOxygenRequest(ForgeDirection direction)
+	{
+		return this.receiveOxygen(direction, 1000000F, false);
+	}
+
+	@Override
+	public float getOxygenProvide(ForgeDirection direction)
+	{
+		return 0;
+	}
+	
+    @Override
+    public boolean canConnect(ForgeDirection direction, NetworkType type)
+    {
+        if (direction == null || direction.equals(ForgeDirection.UNKNOWN))
+        {
+            return false;
+        }
+
+        if (type == NetworkType.OXYGEN)
+        {
+            return direction.ordinal() == this.getBlockMetadata() + 2;
+        }
+
+        if (type == NetworkType.POWER)
+        {
+            return direction == ForgeDirection.DOWN;
+        }
+
+        return false;
     }
 }

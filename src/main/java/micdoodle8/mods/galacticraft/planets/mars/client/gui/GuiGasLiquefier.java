@@ -116,17 +116,17 @@ public class GuiGasLiquefier extends GuiContainerGC
         String displayText = "";
         int yOffset = -18;
 
-        if (this.tileEntity.gasTank.getFluid() == null || this.tileEntity.gasTank.getFluidAmount() == 0)
+        if ((this.tileEntity.processTicks > -10 || this.tileEntity.canProcess()) && this.tileEntity.hasEnoughEnergyToRun)
+        {
+            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.liquefying.name");
+        }
+        else if (this.tileEntity.gasTank.getFluid() == null || this.tileEntity.gasTank.getFluidAmount() <= 0)
         {
             displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.nogas.name");
         }
         else if (this.tileEntity.gasTank.getFluidAmount() > 0 && this.tileEntity.disabled)
         {
             displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready.name");
-        }
-        else if (this.tileEntity.canProcess() && this.tileEntity.hasEnoughEnergyToRun)
-        {
-            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.liquefying.name");
         }
         else if (!this.tileEntity.hasEnoughEnergyToRun)
         {
@@ -142,7 +142,7 @@ public class GuiGasLiquefier extends GuiContainerGC
         }
 
         this.buttonDisable.enabled = this.tileEntity.disableCooldown == 0;
-        this.buttonDisable.displayString = this.tileEntity.processTicks == 0 ? GCCoreUtil.translate("gui.button.liquefy.name") : GCCoreUtil.translate("gui.button.liquefyStop.name");
+        this.buttonDisable.displayString = this.tileEntity.processTicks <= -10 ? GCCoreUtil.translate("gui.button.liquefy.name") : GCCoreUtil.translate("gui.button.liquefyStop.name");
         this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.status.name") + ":", 56, 45 + 23 + yOffset, 4210752);
         this.fontRendererObj.drawString(displayText, 62, 45 + 33 + yOffset, 4210752);
         //		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.tileEntity.ueWattsPerTick * 20, ElectricUnit.WATT), 72, 56 + 23 + yOffset, 4210752);
