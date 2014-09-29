@@ -109,9 +109,10 @@ public class ContainerGasLiquefier extends Container
                     }
                     else if (FluidContainerRegistry.isEmptyContainer(var4))
                     {
-                        if (!this.mergeItemStack(var4, 2, 4, false))
+                        if (!this.mergeItemStack(var4, 3, 4, false))
                         {
-                            return null;
+                            if (!this.mergeItemStack(var4, 2, 3, false))
+                            	return null;
                         }
                     }
                     else if (par1 < 31)

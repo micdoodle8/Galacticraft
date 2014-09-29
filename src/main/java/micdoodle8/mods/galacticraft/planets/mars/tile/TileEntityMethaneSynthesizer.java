@@ -41,7 +41,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
 
     public int processTimeRequired = 3;
     @NetworkedField(targetSide = Side.CLIENT)
-    public int processTicks = 0;
+    public int processTicks = -8;
     private ItemStack[] containingItems = new ItemStack[5];
     private int hasCO2 = -1;
     private boolean noCoal = true;
@@ -103,7 +103,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
                 //50% extra speed boost for Tier 2 machine if powered by Tier 2 power
                 if (this.tierGC == 2) this.processTimeRequired = (this.poweredByTierGC == 2) ? 2 : 3;
 
-                if (this.processTicks == 0)
+                if (this.processTicks <= 0)
                 {
                     this.processTicks = this.processTimeRequired;
                 }
@@ -118,7 +118,10 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
             }
             else
             {
-                this.processTicks = 0;
+                if (this.processTicks > 0)
+                	this.processTicks = 0;
+                else if (--this.processTicks <= -8)
+                	this.processTicks = -8;
             }
         }
     }
@@ -227,7 +230,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
             this.coalPartial++;
             if (this.coalPartial == 40) this.coalPartial = 0;
         }
-        this.gasTank.drain(this.placeIntoFluidTanks(1) * 3, true);
+        this.gasTank.drain(this.placeIntoFluidTanks(2) * 8, true);
     }
 
     private int placeIntoFluidTanks(int amountToDrain)

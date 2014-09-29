@@ -112,7 +112,7 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
         {
             for (final PositionedStack pstack : irecipe.getKey())
             {
-                if (NEIServerUtils.areStacksSameTypeCrafting(ingredient, pstack.item))
+                if (pstack.contains(ingredient))
                 {
                     this.arecipes.add(new ElectricCompressorRecipe(irecipe));
                     break;
@@ -146,7 +146,7 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
         @Override
         public ArrayList<PositionedStack> getIngredients()
         {
-            return this.input;
+        	return (ArrayList<PositionedStack>) getCycledIngredients(cycleticks / 20, this.input);
         }
 
         @Override

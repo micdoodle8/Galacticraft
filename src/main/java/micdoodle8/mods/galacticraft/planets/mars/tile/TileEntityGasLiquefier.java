@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.planets.mars.tile;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
+import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenReceiver;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
@@ -10,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithIn
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.*;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
@@ -19,13 +22,14 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
 import java.util.ArrayList;
 
-public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandler
+public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandler, IOxygenReceiver 
 {
     private final int tankCapacity = 2000;
 
@@ -38,7 +42,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 
     public int processTimeRequired = 3;
     @NetworkedField(targetSide = Side.CLIENT)
-    public int processTicks = 0;
+    public int processTicks = -10;
     private ItemStack[] containingItems = new ItemStack[4];
     private int airProducts = -1;
 
@@ -236,7 +240,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                 //50% extra speed boost for Tier 2 machine if powered by Tier 2 power
                 if (this.tierGC == 2) this.processTimeRequired = (this.poweredByTierGC == 2) ? 2 : 3;
 
-                if (this.processTicks == 0)
+                if (this.processTicks <= 0)
                 {
                     this.processTicks = this.processTimeRequired;
                 }
@@ -251,7 +255,10 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
             }
             else
             {
-                this.processTicks = 0;
+                if (this.processTicks > 0)
+                	this.processTicks = 0;
+                else if (--this.processTicks <= -10)
+                	this.processTicks = -10;
             }
         }
     }
@@ -448,20 +455,20 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         final int fuelSpace = this.liquidTank.getCapacity() - this.liquidTank.getFluidAmount();
         final int fuelSpace2 = this.liquidTank2.getCapacity() - this.liquidTank2.getFluidAmount();
 
-        if ((thisProduct == this.fluidTankType || this.fluidTankType == -1) && fuelSpace > 0)
-        {
-            if (amountToDrain > fuelSpace) amountToDrain = fuelSpace;
-            this.liquidTank.fill(FluidRegistry.getFluidStack(TankGases.values()[thisProduct].liquid, amountToDrain), true);
-            this.fluidTankType = thisProduct;
-        } else
         if ((thisProduct == this.fluidTank2Type || this.fluidTank2Type == -1) && fuelSpace2 > 0)
         {
-            if (amountToDrain > fuelSpace2) amountToDrain = fuelSpace2;
-            this.gasTank.drain(amountToDrain, true);
-            this.liquidTank2.fill(FluidRegistry.getFluidStack(TankGases.values()[thisProduct].liquid, amountToDrain), true);
-            this.fluidTank2Type = thisProduct;
+        	if (amountToDrain > fuelSpace2) amountToDrain = fuelSpace2;
+        	this.gasTank.drain(amountToDrain, true);
+        	this.liquidTank2.fill(FluidRegistry.getFluidStack(TankGases.values()[thisProduct].liquid, amountToDrain), true);
+        	this.fluidTank2Type = thisProduct;
         } else
-            amountToDrain = 0;
+    	if ((thisProduct == this.fluidTankType || this.fluidTankType == -1) && fuelSpace > 0)
+    	{
+    		if (amountToDrain > fuelSpace) amountToDrain = fuelSpace;
+    		this.liquidTank.fill(FluidRegistry.getFluidStack(TankGases.values()[thisProduct].liquid, amountToDrain), true);
+    		this.fluidTankType = thisProduct;
+    	} else
+    		amountToDrain = 0;
 
         return amountToDrain;
     }
@@ -650,11 +657,11 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         int metaside = this.getBlockMetadata() + 2;
         int side = from.ordinal();
         if (side == (metaside ^ 1))
-            return this.liquidTank.getFluid() != null && this.liquidTank.getFluidAmount() > 0;
+            return this.liquidTank2.getFluid() != null && this.liquidTank2.getFluidAmount() > 0;
 
         //2->5 3->4 4->2 5->3
         if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
-            return this.liquidTank2.getFluid() != null && this.liquidTank2.getFluidAmount() > 0;
+            return this.liquidTank.getFluid() != null && this.liquidTank.getFluidAmount() > 0;
 
         return false;
     }
@@ -666,15 +673,15 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         int side = from.ordinal();
         if (side == (metaside ^ 1))
         {
-            if (resource != null && resource.isFluidEqual(this.liquidTank.getFluid()))
-                return this.liquidTank.drain(resource.amount, doDrain);
+            if (resource != null && resource.isFluidEqual(this.liquidTank2.getFluid()))
+                return this.liquidTank2.drain(resource.amount, doDrain);
         }
 
         //2->5 3->4 4->2 5->3
         if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
         {
-            if (resource != null && resource.isFluidEqual(this.liquidTank2.getFluid()))
-                return this.liquidTank2.drain(resource.amount, doDrain);
+            if (resource != null && resource.isFluidEqual(this.liquidTank.getFluid()))
+                return this.liquidTank.drain(resource.amount, doDrain);
         }
 
         return null;
@@ -687,13 +694,13 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         int side = from.ordinal();
         if (side == (metaside ^ 1))
         {
-            return this.liquidTank.drain(maxDrain, doDrain);
+            return this.liquidTank2.drain(maxDrain, doDrain);
         }
 
         //2->5 3->4 4->2 5->3
         if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
         {
-            return this.liquidTank2.drain(maxDrain, doDrain);
+            return this.liquidTank.drain(maxDrain, doDrain);
         }
 
         return null;
@@ -722,7 +729,14 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 
             if (this.gasTankType == -1 || (this.gasTankType == type && this.gasTank.getFluidAmount() < this.gasTank.getCapacity()))
             {
-                used = this.gasTank.fill(resource, doFill);
+                if (type > 0)
+                {
+	            	float conversion = 10F / 54F;
+	                FluidStack fluidToFill = new FluidStack(resource.getFluid(), (int) (resource.amount * conversion));
+	            	used = MathHelper.ceiling_float_int(this.gasTank.fill(fluidToFill, doFill) / conversion);
+                }
+                else
+                	used = this.gasTank.fill(resource, doFill);
             }
         }
 
@@ -742,11 +756,11 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         }
         else if (metaside == (side ^ 1))
         {
-            tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.liquidTank) };
+            tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.liquidTank2) };
         }
         else if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
         {
-            tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.liquidTank2) };
+            tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.liquidTank) };
         }
 
         return tankInfo;
@@ -761,5 +775,64 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         }
 
         return this.blockMetadata & 3;
+    }
+
+	@Override
+	public boolean shouldPullOxygen()
+	{
+		return this.gasTankType == -1 || (this.gasTankType == 1 && this.gasTank.getFluidAmount() < this.gasTank.getCapacity());
+	}
+
+	@Override
+	public float receiveOxygen(ForgeDirection from, float receive, boolean doReceive)
+	{
+		if (from.ordinal() == this.getBlockMetadata() + 2 && this.shouldPullOxygen())
+    	{
+			float conversion = 10F / 54F;
+	        FluidStack fluidToFill = new FluidStack(AsteroidsModule.fluidOxygenGas, (int) (receive * conversion));
+	    	int used = MathHelper.ceiling_float_int(this.gasTank.fill(fluidToFill, doReceive) / conversion);
+			return used;
+    	}
+    	
+    	return 0;
+	}
+
+	@Override
+	public float provideOxygen(ForgeDirection from, float request, boolean doProvide)
+	{
+		return 0;
+	}
+
+	@Override
+	public float getOxygenRequest(ForgeDirection direction)
+	{
+		return this.receiveOxygen(direction, 1000000F, false);
+	}
+
+	@Override
+	public float getOxygenProvide(ForgeDirection direction)
+	{
+		return 0;
+	}
+	
+    @Override
+    public boolean canConnect(ForgeDirection direction, NetworkType type)
+    {
+        if (direction == null || direction.equals(ForgeDirection.UNKNOWN))
+        {
+            return false;
+        }
+
+        if (type == NetworkType.OXYGEN)
+        {
+            return direction.ordinal() == this.getBlockMetadata() + 2;
+        }
+
+        if (type == NetworkType.POWER)
+        {
+            return direction == ForgeDirection.DOWN;
+        }
+
+        return false;
     }
 }

@@ -61,9 +61,9 @@ public class CommandSpaceStationAddOwner extends CommandBase
                     {
                         final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, stats.spaceStationDimensionID, playerBase);
 
-                        if (!data.getAllowedPlayers().contains(var3.toLowerCase()))
+                        if (!data.getAllowedPlayers().contains(var3))
                         {
-                            data.getAllowedPlayers().add(var3.toLowerCase());
+                            data.getAllowedPlayers().add(var3);
                             data.markDirty();
                         }
                     }

@@ -398,6 +398,7 @@ gui.skeletonBoss.message=Boss despawned, don't leave the boss room while fightin
 gui.warning.noroom=Not enough room!
 gui.flag.alreadyPlaced=Flag already placed here!
 gui.receiver.cannotAttach=Cannot attach receiver here!
+gui.warning.invalidThermal=Invalid Thermal Protection!
 
 gui.tank.oxygenRemaining=Oxygen Remaining
 gui.buggy.storageSpace=Storage Space

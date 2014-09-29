@@ -215,7 +215,7 @@ public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
 
         public CompressorRecipe(Map.Entry<ArrayList<PositionedStack>, PositionedStack> recipe)
         {
-            this(recipe.getKey(), recipe.getValue());
+            this(new ArrayList<PositionedStack>(recipe.getKey()), recipe.getValue().copy());
         }
 
         @Override

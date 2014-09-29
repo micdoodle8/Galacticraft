@@ -169,7 +169,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
     {
-        return side == 1 || side == 0 ? new int[] { 0 } : new int[] { 1 };
+        return new int[] { 0, 1 };
     }
 
     @Override
@@ -181,7 +181,11 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     @Override
     public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
     {
-        return slotID == 1;
+        if (slotID == 1 && itemstack != null)
+        {
+           	return FluidContainerRegistry.isEmptyContainer(itemstack);
+        }
+        return false;
     }
 
     @Override
@@ -193,7 +197,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
-        return slotID == 1 || (slotID == 0 ? ItemElectricBase.isElectricItem(itemstack.getItem()) : false);
+        return (slotID == 1 && itemstack != null && itemstack.getItem() == GCItems.fuelCanister) || (slotID == 0 ? ItemElectricBase.isElectricItem(itemstack.getItem()) : false);
     }
 
     @Override

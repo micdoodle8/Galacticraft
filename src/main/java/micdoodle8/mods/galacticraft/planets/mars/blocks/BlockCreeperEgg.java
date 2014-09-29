@@ -8,7 +8,6 @@ import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockDragonEgg;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -99,12 +98,13 @@ public class BlockCreeperEgg extends BlockDragonEgg implements ItemBlockDesc.IBl
     }
 
     //Can only be harvested with a Sticky Desh Pickaxe
-    public static boolean canHarvestBlock(Block block, EntityPlayer player, int metadata)
+    @Override
+    public boolean canHarvestBlock(EntityPlayer player, int metadata)
     {
         ItemStack stack = player.inventory.getCurrentItem();
         if (stack == null)
         {
-            return player.canHarvestBlock(block);
+            return player.canHarvestBlock(this);
         }
         return stack.getItem() == MarsItems.deshPickSlime;
     }

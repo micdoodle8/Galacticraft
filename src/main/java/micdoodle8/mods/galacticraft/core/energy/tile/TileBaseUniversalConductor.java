@@ -46,7 +46,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
             {
                 this.powerHandlerBC = new PowerHandler((IPowerReceptor) this, buildcraft.api.power.PowerHandler.Type.PIPE);
                 ((PowerHandler) this.powerHandlerBC).configurePowerPerdition(0, 0);
-                ((PowerHandler) this.powerHandlerBC).configure(1, 0, 0, 0);
+                ((PowerHandler) this.powerHandlerBC).configure(0, 0, 0, 0);
             }
         }
     }
@@ -331,19 +331,23 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
 
         double requiredEnergy = this.getNetwork().getRequest(this) * EnergyConfigHandler.TO_BC_RATIO;
         
-        if (requiredEnergy <= 0.0D)
+        if (requiredEnergy <= 0.1D)
         {
-        	return null;
+        	requiredEnergy = 0;
         }
         
-        ((PowerHandler) this.powerHandlerBC).configure(1, requiredEnergy, 0, requiredEnergy);
+        ((PowerHandler) this.powerHandlerBC).configure(0, requiredEnergy, 0, requiredEnergy);
         return ((PowerHandler) this.powerHandlerBC).getPowerReceiver();
     }
 
     public void reconfigureBC()
     {
-        double requiredEnergy = this.getNetwork().getRequest(this) * EnergyConfigHandler.TO_BC_RATIO;
-        ((PowerHandler) this.powerHandlerBC).configure(1, requiredEnergy, 0, requiredEnergy);
+    	double requiredEnergy = this.getNetwork().getRequest(this) * EnergyConfigHandler.TO_BC_RATIO;
+        if (requiredEnergy <= 0.1D)
+        {
+        	requiredEnergy = 0;
+        }
+        ((PowerHandler) this.powerHandlerBC).configure(0, requiredEnergy, 0, requiredEnergy);
     }
 
     @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "EnderIO")

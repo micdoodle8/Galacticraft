@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.energy.grid;
 
 import buildcraft.api.mj.MjAPI;
+import buildcraft.api.power.IPowerEmitter;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cpw.mods.fml.common.FMLLog;
@@ -218,7 +219,8 @@ public class EnergyNetwork implements IElectricityNetwork
                 {
                     this.totalEnergy = 0F;
                 }
-            }
+            } else
+            	this.totalEnergy = 0F;
         }
         else
         {
@@ -672,7 +674,7 @@ public class EnergyNetwork implements IElectricityNetwork
                         }
                         else if (isBCLoaded && acceptor instanceof IPowerReceptor)
                         {
-                            if (((IPowerReceptor) acceptor).getPowerReceiver(sideFrom) != null)
+                            if (((IPowerReceptor) acceptor).getPowerReceiver(sideFrom) != null && (!(acceptor instanceof IPowerEmitter) || !((IPowerEmitter)acceptor).canEmitPowerFrom(sideFrom)))
                             {
                                 this.connectedAcceptors.add(acceptor);
                                 this.connectedDirections.add(sideFrom);

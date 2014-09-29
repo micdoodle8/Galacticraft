@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.energy.item;
 
 import ic2.api.item.IElectricItemManager;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
-import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 

@@ -220,12 +220,13 @@ public class EnergyUtil
             PowerReceiver receiver = ((IPowerReceptor) tileAdj).getPowerReceiver(inputAdj);
             if (receiver != null)
             {
-                double toSendBC = Math.min(toSend * EnergyConfigHandler.TO_BC_RATIO, receiver.powerRequest());
+                double toSendBC = Math.min(toSend * EnergyConfigHandler.TO_BC_RATIO, Math.min(receiver.powerRequest(), receiver.getMaxEnergyReceived()));
                 if (simulate)
                 {
                     return (float) toSendBC * EnergyConfigHandler.BC3_RATIO;
                 }
-                return (float) receiver.receiveEnergy(buildcraft.api.power.PowerHandler.Type.PIPE, toSendBC, inputAdj) * EnergyConfigHandler.BC3_RATIO;
+                float rec = (float) receiver.receiveEnergy(buildcraft.api.power.PowerHandler.Type.PIPE, toSendBC, inputAdj); 
+                return rec * EnergyConfigHandler.BC3_RATIO;
             }
         }
         

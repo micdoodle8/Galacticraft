@@ -265,6 +265,18 @@ gui.message.tier.name=Уровень %d
 gui.message.canCreateSpaceStation.name=Космическая станция может быть создана здесь!
 gui.message.cannotCreateSpaceStation.name=Космическая станция не может быть создана здесь.
 gui.message.createSS.name=Создать
+gui.message.selectSS.name=Выбрать космическую станцию
+gui.message.ssOwner.name=Владелец:
+gui.message.apply.name=Применить
+gui.message.cancel.name=Отмена
+gui.message.assignName.name=Дать имя
+gui.message.rename.name=Переименовать
+gui.message.unnamed.name=Без имени
+gui.message.grow.name=Расти
+gui.message.breed.name=Размножать
+gui.message.strengthen.name=Укреплять
+gui.message.heal.name=Лечить
+gui.message.of.name=из
 
 gui.status.active.name=Активно
 gui.status.missingleaves.name=Отсутствуют блоки листвы
@@ -386,6 +398,7 @@ gui.skeletonBoss.message=Босс пропал, не покидайте комн
 gui.warning.noroom=Недостаточно места!
 gui.flag.alreadyPlaced=Флаг уже стоит здесь!
 gui.receiver.cannotAttach=Нельзя поставить приёмник здесь!
+gui.warning.invalidThermal=Invalid Thermal Protection! ##NEEDS TRANSLATE##
 
 gui.tank.oxygenRemaining=Осталось кислорода
 gui.buggy.storageSpace=Размер хранилища
@@ -568,6 +581,7 @@ planet.neptune=Нептун
 moon.moon=Луна
 solarsystem.sol=Солнце
 star.sol=Солнце
+satellite.spaceStation.overworld=Космическая станция Земли
 
 # COMMANDS
 commands.dimensionteleport=%s был направлен в атмосферу%s

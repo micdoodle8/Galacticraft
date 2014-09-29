@@ -77,14 +77,12 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
         this.fuelTank2Region.parentHeight = this.height;
         this.infoRegions.add(this.fuelTank2Region);
 
-        List<String> fuelSlotDesc = new ArrayList<String>();
         //this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 152, (this.height - this.ySize) / 2 + 6, 18, 18, fuelSlotDesc, this.width, this.height, this));
         //this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 131, (this.height - this.ySize) / 2 + 6, 18, 18, fuelSlotDesc, this.width, this.height, this));
 
-        fuelSlotDesc = new ArrayList<String>();
-        //fuelSlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.gasInput.desc.0"));
-        //fuelSlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.gasInput.desc.1"));
-        //this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 6, (this.height - this.ySize) / 2 + 6, 18, 18, fuelSlotDesc, this.width, this.height, this));
+        List<String> fuelSlotDesc = new ArrayList<String>();
+        fuelSlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.waterBucketSlot.desc"));
+        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 6, (this.height - this.ySize) / 2 + 6, 18, 18, fuelSlotDesc, this.width, this.height, this));
 
         this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 42;
         this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 16;
@@ -125,7 +123,7 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
         }
         else if (this.tileEntity.canProcess() && this.tileEntity.hasEnoughEnergyToRun)
         {
-            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.liquefying.name");
+            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.running.name");
         }
         else if (!this.tileEntity.hasEnoughEnergyToRun)
         {

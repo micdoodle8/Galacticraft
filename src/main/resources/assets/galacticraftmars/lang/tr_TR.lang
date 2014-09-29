@@ -83,6 +83,7 @@ gui.message.redstoneSig.name=Kızıltaş Sinyali
 gui.message.notSet.name=Belirtilmemiş
 gui.message.notEnough.name=Yeterli Değil
 gui.message.success.name=Başarılı
+gui.message.zeroWater.name=No water! ##NEEDS TRANSLATE##
 
     # Dollar sign ($) will split text onto a new line
 gui.launchController.desc.0=Fırlatıcı kontrollünün frekansı
@@ -92,6 +93,7 @@ gui.launchController.desc.3=Roket fırlatmak için,$ayarlar
 gui.terraformer.desc.0=Su Tankı
 
 gui.gasTank.desc.0=Gaz Deposu
+gui.gasTankCompressed.desc.0=Gas Storage (Compressed) ##NEEDS TRANSLATE##
 gui.liquidTank.desc.0=Sıvı Tankı
 gui.status.nogas.name=Gaz Yok
 gui.status.liquefying.name=Sıvılaştırılıyor
@@ -111,6 +113,9 @@ gui.methaneOutput.desc.2=metan gazı tankı
 gui.message.withAtmosphere0.name=gezegenin atmosferinde
 gui.message.withAtmosphere1.name=bulunabilir
 item.carbonFragments.name=Parçalanmış Karbon
+gui.carbonSlot.desc.0=Fragmented Carbon can go here ##NEEDS TRANSLATE##
+gui.waterBucketSlot.desc=Place water buckets here ##NEEDS TRANSLATE##
+
 gui.cargorocket.status.waiting.0=Waiting for ##NEEDS TRANSLATE##
 gui.cargorocket.status.waiting.1=ignition ##NEEDS TRANSLATE##
 gui.cargorocket.status.launched.0=Already ##NEEDS TRANSLATE##
@@ -133,6 +138,7 @@ tile.terraformer.description=Terraformer gezegenlere yeşillik katar, çim, ağa
 tile.creeperEgg.description=Creeper Yumurtası Mars zindanlarında bulunur, spawnlanınca büyük bir patlama oluşur. 
 tile.gasLiquefier.description=Gaz Sıvılaştırıcı, metan gazını atmosferden veya teneke kutudan alarak iyi bir roket yakıtı yapın.
 tile.methaneSynthesizer.description=Karbon ve hidrojenin ana kaynağı. Gaz sıvılaştırıcı için metan gazı sağlar.
+tile.electrolyzer.description=Transforms water into hydrogen (useful for the Methane Synthesizer) and oxygen. ##NEEDS TRANSLATE##
 gui.slimeling.chat.wrongPlayer=This isn't my Slimeling! ##NEEDS TRANSLATE##
 gui.cryogenic.chat.cantUse=I can't use this for another %d seconds ##NEEDS TRANSLATE##
 gui.slimeling.name=Name ##NEEDS TRANSLATE##
@@ -173,3 +179,4 @@ gc.configgui.idSchematicRocketT2=Tier 2 Rocket Schematic ID
 gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID
 gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
 gc.configgui.launchControllerAllDims=Launch Controller All Dimensions
+gc.configgui.planets.title=Galacticraft Planets Config ##NEEDS TRANSLATE##
