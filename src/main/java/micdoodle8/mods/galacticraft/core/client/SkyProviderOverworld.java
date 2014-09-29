@@ -10,10 +10,12 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IRenderHandler;
+
 import org.lwjgl.opengl.GL11;
 
 import java.util.Random;
@@ -219,6 +221,9 @@ public class SkyProviderOverworld extends IRenderHandler
 
         double var25 = this.minecraft.thePlayer.posY - 64;
 
+        //TODO get exact figure here based on view distance setting
+        if (var25 > 256)
+        {
         var20 *= 400.0F;
 
         final float var22 = Math.max(Math.min(var20 / 100.0F - 0.2F, 1.0F), 0.0F);
@@ -243,17 +248,18 @@ public class SkyProviderOverworld extends IRenderHandler
 
         GL11.glColor4f(var22, var22, var22, var22);
         var23.startDrawingQuads();
-        var23.addVertexWithUV(-var10, 0, var10, 0.0F, 1.0F);
-        var23.addVertexWithUV(var10, 0, var10, 1.0F, 1.0F);
-        var23.addVertexWithUV(var10, 0, -var10, 1.0F, 0.0F);
-        var23.addVertexWithUV(-var10, 0, -var10, 0.0F, 0.0F);
-        var23.addVertexWithUV(-var10, 0, var10, 0.0F, 1.0F);
-        var23.addVertexWithUV(var10, 0, var10, 1.0F, 1.0F);
-        var23.addVertexWithUV(var10, 0, -var10, 1.0F, 0.0F);
-        var23.addVertexWithUV(-var10, 0, -var10, 0.0F, 0.0F);
+
+        float zoomIn = (1F - (float) var25 / 768F) / 5.86F;
+        if (zoomIn < 0F) zoomIn = 0F;
+        float cornerB = 1.0F - zoomIn;
+        var23.addVertexWithUV(-var10, 0, var10, zoomIn, cornerB);
+        var23.addVertexWithUV(var10, 0, var10, cornerB, cornerB);
+        var23.addVertexWithUV(var10, 0, -var10, cornerB, zoomIn);
+        var23.addVertexWithUV(-var10, 0, -var10, zoomIn, zoomIn);
         var23.draw();
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glPopMatrix();
+        }
 
         GL11.glColor3f(0.0f, 0.0f, 0.0f);
 
