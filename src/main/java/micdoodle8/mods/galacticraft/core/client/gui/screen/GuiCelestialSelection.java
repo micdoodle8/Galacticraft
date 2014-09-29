@@ -1062,7 +1062,10 @@ public class GuiCelestialSelection extends GuiScreen
                     MinecraftForge.EVENT_BUS.post(preEvent);
 
                     GL11.glColor4f(1, 1, 1, alpha);
-                    this.mc.renderEngine.bindTexture(preEvent.celestialBodyTexture);
+                    if (preEvent.celestialBodyTexture != null)
+                    {
+                        this.mc.renderEngine.bindTexture(preEvent.celestialBodyTexture);
+                    }
 
                     if (!preEvent.isCanceled())
                     {
@@ -1119,7 +1122,10 @@ public class GuiCelestialSelection extends GuiScreen
                     MinecraftForge.EVENT_BUS.post(preEvent);
 
                     GL11.glColor4f(1, 1, 1, alpha);
-                    this.mc.renderEngine.bindTexture(preEvent.celestialBodyTexture);
+                    if (preEvent.celestialBodyTexture != null)
+                    {
+                        this.mc.renderEngine.bindTexture(preEvent.celestialBodyTexture);
+                    }
 
                     if (!preEvent.isCanceled())
                     {
@@ -1164,7 +1170,10 @@ public class GuiCelestialSelection extends GuiScreen
                     MinecraftForge.EVENT_BUS.post(preEvent);
 
                     GL11.glColor4f(1, 1, 1, 1);
-                    this.mc.renderEngine.bindTexture(preEvent.celestialBodyTexture);
+                    if (preEvent.celestialBodyTexture != null)
+                    {
+                        this.mc.renderEngine.bindTexture(preEvent.celestialBodyTexture);
+                    }
 
                     if (!preEvent.isCanceled())
                     {

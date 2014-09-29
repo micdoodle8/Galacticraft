@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.client;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -79,6 +81,12 @@ public class SkyProviderOverworld extends IRenderHandler
     @Override
     public void render(float partialTicks, WorldClient world, Minecraft mc)
     {
+        if (!ClientProxyCore.overworldTextureRequestSent)
+        {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, new Object[] {}));
+            ClientProxyCore.overworldTextureRequestSent = true;
+        }
+
         float var20 = (float) (mc.thePlayer.posY - 200.0F) / 1000.0F;
         final float var21 = Math.max(1.0F - var20 * 4.0F, 0.0F);
 
@@ -222,7 +230,14 @@ public class SkyProviderOverworld extends IRenderHandler
         scale = Math.max(scale, 0.2F);
         GL11.glScalef(scale, 0.0F, scale);
         GL11.glTranslatef(0.0F, -var20, 0.0F);
-        this.minecraft.renderEngine.bindTexture(this.planetToRender);
+        if (ClientProxyCore.overworldTextureClient != null)
+        {
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureClient.getGlTextureId());
+        }
+        else
+        {
+            this.minecraft.renderEngine.bindTexture(this.planetToRender);
+        }
 
         var10 = 1.0F;
 

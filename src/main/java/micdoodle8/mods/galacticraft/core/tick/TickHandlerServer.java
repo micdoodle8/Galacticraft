@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
@@ -15,6 +16,7 @@ import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.WorldDataSpaceRaces;
 import micdoodle8.mods.galacticraft.core.energy.grid.EnergyNetwork;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.oxygen.ThreadFindSeal;
@@ -22,13 +24,23 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkProviderServer;
+import org.lwjgl.Sys;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -42,6 +54,7 @@ public class TickHandlerServer
     public static Map<Integer, Map<Long, List<Footprint>>> serverFootprintMap = new HashMap<Integer, Map<Long, List<Footprint>>>();
     public static List<NetworkRegistry.TargetPoint> footprintRefreshList = Lists.newArrayList();
     public static WorldDataSpaceRaces spaceRaceData = null;
+    public static ArrayList<EntityPlayerMP> playersRequestingMapData = Lists.newArrayList();
     private static long tickCount;
 
     public static void restart()
@@ -266,6 +279,78 @@ public class TickHandlerServer
                             }
                         }
                     }
+                }
+            }
+
+            if (tickCount % 20 == 0)
+            {
+                if (!playersRequestingMapData.isEmpty())
+                {
+                    ArrayList<EntityPlayerMP> copy = new ArrayList<EntityPlayerMP>(playersRequestingMapData);
+                    for (EntityPlayerMP playerMP : copy)
+                    {
+                        GCPlayerStats stats = GCPlayerStats.get(playerMP);
+                        ChunkCoordIntPair chunkCoordIntPair = new ChunkCoordIntPair((int)Math.floor(stats.coordsTeleportedFromX) >> 4, (int)Math.floor(stats.coordsTeleportedFromZ) >> 4);
+                        BufferedImage image = new BufferedImage(400, 400, BufferedImage.TYPE_INT_RGB);
+
+                        for (int x0 = -12; x0 <= 12; x0++)
+                        {
+                            for (int z0 = -12; z0 <= 12; z0++)
+                            {
+                                Chunk chunk = MinecraftServer.getServer().worldServerForDimension(0).getChunkFromChunkCoords(chunkCoordIntPair.chunkXPos + x0, chunkCoordIntPair.chunkZPos + z0);
+
+                                if (chunk != null)
+                                {
+                                    for (int z = 0; z < 16; z++)
+                                    {
+                                        for (int x = 0; x < 16; x++)
+                                        {
+                                            int l4 = chunk.getHeightValue(x, z) + 1;
+                                            Block block = Blocks.air;
+                                            int i5 = 0;
+
+                                            if (l4 > 1)
+                                            {
+                                                do
+                                                {
+                                                    --l4;
+                                                    block = chunk.getBlock(x, l4, z);
+                                                    i5 = chunk.getBlockMetadata(x, l4, z);
+                                                }
+                                                while (block.getMapColor(i5) == MapColor.airColor && l4 > 0);
+                                            }
+
+                                            int col = block.getMapColor(i5).colorValue;
+                                            image.setRGB(x + (x0 + 12) * 16, z + (z0 + 12) * 16, col);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        try
+                        {
+                            File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
+
+                            if (!baseFolder.exists())
+                            {
+                                baseFolder.mkdirs();
+                            }
+
+                            File outputFile = new File(baseFolder, "" + chunkCoordIntPair.chunkXPos + "_" + chunkCoordIntPair.chunkZPos + ".jpg");
+
+                            if (!outputFile.exists() || (outputFile.canWrite() && outputFile.canRead()))
+                            {
+                                ImageIO.write(image, "jpg", outputFile);
+                            }
+                        }
+                        catch (IOException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    playersRequestingMapData.removeAll(copy);
                 }
             }
 

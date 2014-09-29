@@ -2,13 +2,15 @@ package micdoodle8.mods.galacticraft.core.network;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
+import micdoodle8.mods.galacticraft.core.client.SkyProviderMoon;
+import net.minecraft.client.renderer.texture.DynamicTexture;
+import org.apache.commons.codec.binary.Base64;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.SolarSystem;
@@ -48,6 +50,8 @@ import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.particle.EntityFX;
@@ -56,6 +60,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -70,8 +75,13 @@ import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.*;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.DimensionManager;
+import org.apache.commons.io.FileUtils;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -104,6 +114,7 @@ public class PacketSimple extends Packet implements IPacket
         S_ADD_RACE_PLAYER(Side.SERVER, String.class, Integer.class),
         S_COMPLETE_CBODY_HANDSHAKE(Side.SERVER, String.class),
         S_REQUEST_GEAR_DATA(Side.SERVER, String.class),
+        S_REQUEST_OVERWORLD_IMAGE(Side.SERVER),
         // CLIENT
         C_AIR_REMAINING(Side.CLIENT, Integer.class, Integer.class, String.class),
         C_UPDATE_DIMENSION_LIST(Side.CLIENT, String.class, String.class),
@@ -136,7 +147,8 @@ public class PacketSimple extends Packet implements IPacket
         C_GET_CELESTIAL_BODY_LIST(Side.CLIENT),
         C_UPDATE_ENERGYUNITS(Side.CLIENT, Integer.class),
         C_RESPAWN_PLAYER(Side.CLIENT, String.class, Integer.class, String.class, Integer.class),
-        C_UPDATE_ARCLAMP_FACING(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class);
+        C_UPDATE_ARCLAMP_FACING(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class),
+        C_SEND_OVERWORLD_IMAGE(Side.CLIENT, byte[].class);
         
         private Side targetSide;
         private Class<?>[] decodeAs;
@@ -744,6 +756,43 @@ public class PacketSimple extends Packet implements IPacket
         		((TileEntityArclamp)tile).facing = facingNew;
         	}
         	break;
+        case C_SEND_OVERWORLD_IMAGE:
+            byte[] base64 = (byte[]) this.data.get(0);
+            byte[] bytes = Base64.decodeBase64(base64);
+            File folder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/temp");
+
+            try
+            {
+                if (folder.exists() || folder.mkdir())
+                {
+                    File file0 = new File(folder, "overworld.png");
+
+                    if (!file0.exists() || (file0.canRead() && file0.canWrite()))
+                    {
+                        FileUtils.writeByteArrayToFile(file0, bytes);
+
+                        BufferedImage img = ImageIO.read(file0);
+
+                        if (img != null)
+                        {
+                            ClientProxyCore.overworldTextureClient = new DynamicTexture(img);
+                        }
+                    }
+                    else
+                    {
+                        System.err.println("Cannot read/write to file %minecraftDir%/assets/temp/overworld.png");
+                    }
+                }
+                else
+                {
+                    System.err.println("Cannot create directory %minecraftDir%/assets/temp!");
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            break;
         default:
             break;
         }
@@ -1183,6 +1232,92 @@ public class PacketSimple extends Packet implements IPacket
             {
                 GCPlayerHandler.checkGear(e, GCPlayerStats.get(e), true);
             }
+            break;
+        case S_REQUEST_OVERWORLD_IMAGE:
+            ChunkCoordIntPair chunkCoordIntPair = new ChunkCoordIntPair((int)Math.floor(stats.coordsTeleportedFromX) >> 4, (int)Math.floor(stats.coordsTeleportedFromZ) >> 4);
+            File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
+            if (!baseFolder.exists())
+            {
+                baseFolder.mkdirs();
+            }
+            File outputFile = new File(baseFolder, "" + chunkCoordIntPair.chunkXPos + "_" + chunkCoordIntPair.chunkZPos + ".jpg");
+            boolean success = true;
+
+            if (!outputFile.exists() || !outputFile.isFile())
+            {
+                success = false;
+                BufferedImage image = new BufferedImage(400, 400, BufferedImage.TYPE_INT_RGB);
+
+                for (int x0 = -12; x0 <= 12; x0++)
+                {
+                    for (int z0 = -12; z0 <= 12; z0++)
+                    {
+                        Chunk chunk = MinecraftServer.getServer().worldServerForDimension(0).getChunkFromChunkCoords(chunkCoordIntPair.chunkXPos + x0, chunkCoordIntPair.chunkZPos + z0);
+
+                        if (chunk != null)
+                        {
+                            for (int z = 0; z < 16; z++)
+                            {
+                                for (int x = 0; x < 16; x++)
+                                {
+                                    int l4 = chunk.getHeightValue(x, z) + 1;
+                                    Block block = Blocks.air;
+                                    int i5 = 0;
+
+                                    if (l4 > 1)
+                                    {
+                                        do
+                                        {
+                                            --l4;
+                                            block = chunk.getBlock(x, l4, z);
+                                            i5 = chunk.getBlockMetadata(x, l4, z);
+                                        }
+                                        while (block.getMapColor(i5) == MapColor.airColor && l4 > 0);
+                                    }
+
+                                    int col = block.getMapColor(i5).colorValue;
+                                    image.setRGB(x + (x0 + 12) * 16, z + (z0 + 12) * 16, col);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                try
+                {
+                    if (!outputFile.exists() || (outputFile.canWrite() && outputFile.canRead()))
+                    {
+                        if (ImageIO.write(image, "jpg", outputFile))
+                        {
+                            success = true;
+                        }
+                    }
+                }
+                catch (IOException ex)
+                {
+                    ex.printStackTrace();
+                }
+            }
+
+            if (success)
+            {
+                try
+                {
+                    byte[] bytes = FileUtils.readFileToByteArray(outputFile);
+                    byte[] bytes64 = Base64.encodeBase64(bytes);
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { bytes64 } ), playerBase);
+                }
+                catch (Exception ex)
+                {
+                    System.err.println("Error sending overworld image to player.");
+                    ex.printStackTrace();
+                }
+            }
+            else
+            {
+                System.err.println("[Galacticraft] Error creating player's overworld texture, please report this as a bug!");
+            }
+
             break;
         default:
             break;

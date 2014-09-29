@@ -19,6 +19,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -41,6 +42,7 @@ import micdoodle8.mods.galacticraft.core.entities.*;
 import micdoodle8.mods.galacticraft.core.entities.player.*;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.*;
@@ -55,6 +57,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.IImageBuffer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -151,6 +154,9 @@ public class ClientProxyCore extends CommonProxyCore
     public static List<String> gearDataRequests = Lists.newArrayList();
     //private static int playerList;
 
+    public static DynamicTexture overworldTextureClient;
+    public static boolean overworldTextureRequestSent = false;
+
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
@@ -239,7 +245,7 @@ public class ClientProxyCore extends CommonProxyCore
         ClientRegistry.registerKeyBinding(KeyHandlerClient.galaxyMap);
         ClientRegistry.registerKeyBinding(KeyHandlerClient.openFuelGui);
         ClientRegistry.registerKeyBinding(KeyHandlerClient.toggleAdvGoggles);
-        MinecraftForge.EVENT_BUS.register(new ClientProxyCore());
+        MinecraftForge.EVENT_BUS.register(GalacticraftCore.proxy);
     }
 
     public static void registerTileEntityRenderers()
@@ -1067,5 +1073,24 @@ public class ClientProxyCore extends CommonProxyCore
         double var7 = 1 + (y + ClientProxyCore.offsetY) / ClientProxyCore.globalRadius;
         x += (x % 16 - 8) * var7 + 8;
         z += (z % 16 - 8) * var7 + 8;
+    }
+
+    @SubscribeEvent
+    public void onRenderPlanet(CelestialBodyRenderEvent.Pre event)
+    {
+        if (event.celestialBody == GalacticraftCore.planetOverworld)
+        {
+            if (!ClientProxyCore.overworldTextureRequestSent)
+            {
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, new Object[] {}));
+                ClientProxyCore.overworldTextureRequestSent = true;
+            }
+
+            if (ClientProxyCore.overworldTextureClient != null)
+            {
+                event.celestialBodyTexture = null;
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureClient.getGlTextureId());
+            }
+        }
     }
 }

@@ -21,6 +21,8 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.EntityEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -443,6 +445,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
     public void onLaunch()
     {
+        MinecraftForge.EVENT_BUS.post(new RocketLaunchEvent(this));
     }
 
     public void onReachAtmosphere()
@@ -474,5 +477,16 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     public boolean shouldIgnoreShiftExit()
     {
         return this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal();
+    }
+
+    public static class RocketLaunchEvent extends EntityEvent
+    {
+        public final EntitySpaceshipBase rocket;
+
+        public RocketLaunchEvent(EntitySpaceshipBase entity)
+        {
+            super(entity);
+            rocket = entity;
+        }
     }
 }
