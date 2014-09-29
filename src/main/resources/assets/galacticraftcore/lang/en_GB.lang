@@ -298,6 +298,18 @@ gui.message.tier.name=Tier %d
 gui.message.canCreateSpaceStation.name=A Space Station can be created here!
 gui.message.cannotCreateSpaceStation.name=A Space Station cannot be created here.
 gui.message.createSS.name=Create
+gui.message.selectSS.name=Select a Space Station
+gui.message.ssOwner.name=Owner:
+gui.message.apply.name=Apply
+gui.message.cancel.name=Cancel
+gui.message.assignName.name=Assign Name
+gui.message.rename.name=Rename
+gui.message.unnamed.name=Unnamed
+gui.message.grow.name=Grow
+gui.message.breed.name=Breed
+gui.message.strengthen.name=Strengthen
+gui.message.heal.name=Heal
+gui.message.of.name=of
 
 gui.status.active.name=Active
 gui.status.missingleaves.name=Not Enough Leaf Blocks
@@ -418,6 +430,7 @@ gui.skeletonBoss.message=Boss despawned, don't leave the boss room while fightin
 gui.warning.noroom=Not enough room!
 gui.flag.alreadyPlaced=Flag already placed here!
 gui.receiver.cannotAttach=Cannot attach receiver here!
+gui.warning.invalidThermal=Invalid Thermal Protection!
 
 gui.tank.oxygenRemaining=Oxygen Remaining
 gui.buggy.storageSpace=Storage Space
@@ -516,6 +529,7 @@ moon.moon=Moon
 galaxy.milkyWay=Milky Way
 solarsystem.sol=Sol
 star.sol=Sol
+satellite.spaceStation.overworld=Overworld Space Station
 planet.mercury=Mercury
 planet.venus=Venus
 planet.jupiter=Jupiter
@@ -649,5 +663,6 @@ gc.configgui.alternateCanisterRecipe=Alternate Canister Recipe
 gc.configgui.rocketFuelFactor=Rocket Fuel Factor
 gc.configgui.dungeonBossHealthMod=Dungeon Boss Health Modifier
 gc.configgui.hardMode=Harder Difficulty
+gc.configgui.title=Galacticraft Core Config
 
 # </file>

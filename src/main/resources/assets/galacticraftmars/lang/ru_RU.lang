@@ -83,6 +83,7 @@ gui.message.redstoneSig.name=сигнал красного камня
 gui.message.notSet.name=не указано
 gui.message.notEnough.name=Недостаточно
 gui.message.success.name=Успех
+gui.message.zeroWater.name=No water! ##NEEDS TRANSLATE##
 
 	# Dollar sign ($) will split text onto a new line
 gui.launchController.desc.0=Это уникальная частота$контроллера запуска
@@ -92,6 +93,7 @@ gui.launchController.desc.3=Когда это условие выполняет�
 gui.terraformer.desc.0=Водный резервуар
 
 gui.gasTank.desc.0=Хранилище газа
+gui.gasTankCompressed.desc.0=Gas Storage (Compressed) ##NEEDS TRANSLATE##
 gui.liquidTank.desc.0=Жидкостный резервуар
 gui.status.nogas.name=Нет газа
 gui.status.liquefying.name=Сжижение
@@ -111,6 +113,9 @@ gui.methaneOutput.desc.2=резервуар метана
 gui.message.withAtmosphere0.name=на планете с большим количеством
 gui.message.withAtmosphere1.name=в атмосфере
 item.carbonFragments.name=Раздробленный уголь
+gui.carbonSlot.desc.0=Fragmented Carbon can go here ##NEEDS TRANSLATE##
+gui.waterBucketSlot.desc=Place water buckets here ##NEEDS TRANSLATE##
+
 gui.cargorocket.status.waiting.0=Ожидание
 gui.cargorocket.status.waiting.1=зажигания
 gui.cargorocket.status.launched.0=Уже
@@ -133,6 +138,7 @@ tile.terraformer.description=Терраформеры используются �
 tile.creeperEgg.description=Яйца крипера появляются в сокровищницах Марса, из них вылупляется скрытный хищник при взрыве.
 tile.gasLiquefier.description=Разжижает газы из атмосферы или из канистры. Сжиженный метан подходит для хорошего ракетного топлива!
 tile.methaneSynthesizer.description=При наличии источника водорода и источника углерода, он производит метан для дальнейшей обработки в сжижители газа.
+tile.electrolyzer.description=Transforms water into hydrogen (useful for the Methane Synthesizer) and oxygen. ##NEEDS TRANSLATE##
 
 gui.slimeling.chat.wrongPlayer=Это не мой слаймлинг!
 gui.cryogenic.chat.cantUse=Я не могу использовать это в течение %d секунд(-ы)

@@ -398,6 +398,7 @@ gui.skeletonBoss.message=บอสหายไปแล้ว อย่าออ
 gui.warning.noroom=พื้นที่ไม่พอ!
 gui.flag.alreadyPlaced=ธงได้วางตรงนี้อยู่แล้ว!
 gui.receiver.cannotAttach=ไม่สามารถต่อเครื่องรับลำแสงตรงนี้ได้!
+gui.warning.invalidThermal=Invalid Thermal Protection! ##NEEDS TRANSLATE##
 
 gui.tank.oxygenRemaining=ออกซิเจนที่เหลือ
 gui.buggy.storageSpace=พื้นที่เก็บของ

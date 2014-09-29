@@ -271,6 +271,12 @@ gui.message.apply.name=应用
 gui.message.cancel.name=取消
 gui.message.assignName.name=命名
 gui.message.rename.name=重命名
+gui.message.unnamed.name=Unnamed ##NEEDS TRANSLATE##
+gui.message.grow.name=Grow ##NEEDS TRANSLATE##
+gui.message.breed.name=Breed ##NEEDS TRANSLATE##
+gui.message.strengthen.name=Strengthen ##NEEDS TRANSLATE##
+gui.message.heal.name=Heal ##NEEDS TRANSLATE##
+gui.message.of.name=of ##NEEDS TRANSLATE##
 
 gui.status.active.name=活动的
 gui.status.missingleaves.name=树叶不足
@@ -392,6 +398,7 @@ gui.skeletonBoss.message=Boss消失, 战斗时不要离开这个Boss的房间! �
 gui.warning.noroom=空间不足!
 gui.flag.alreadyPlaced=旗帜已经放置于此!
 gui.receiver.cannotAttach=这里无法放置接收器! 
+gui.warning.invalidThermal=Invalid Thermal Protection! ##NEEDS TRANSLATE##
 
 gui.tank.oxygenRemaining=氧气剩余
 gui.buggy.storageSpace=存储空间

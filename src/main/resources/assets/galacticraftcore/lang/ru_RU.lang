@@ -398,6 +398,7 @@ gui.skeletonBoss.message=Босс пропал, не покидайте комн
 gui.warning.noroom=Недостаточно места!
 gui.flag.alreadyPlaced=Флаг уже стоит здесь!
 gui.receiver.cannotAttach=Нельзя поставить приёмник здесь!
+gui.warning.invalidThermal=Invalid Thermal Protection! ##NEEDS TRANSLATE##
 
 gui.tank.oxygenRemaining=Осталось кислорода
 gui.buggy.storageSpace=Размер хранилища

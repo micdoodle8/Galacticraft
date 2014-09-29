@@ -99,6 +99,7 @@ gui.message.redstoneSig.name=Señal de Redstone
 gui.message.notSet.name=No Establecido
 gui.message.notEnough.name=Insuficiente
 gui.message.success.name=Éxito
+gui.message.zeroWater.name=No water! ##NEEDS TRANSLATE##
 
 	# Dollar sign ($) will split text onto a new line
 gui.launchController.desc.0=Ésta es la única frecuencia del$Controlador de Lanzamiento
@@ -108,6 +109,7 @@ gui.launchController.desc.3=Cuando esto se cumpla,$se lanzará el Cohete
 gui.terraformer.desc.0=Tanque de Aqua
 
 gui.gasTank.desc.0=Almacenamiento de Gas
+gui.gasTankCompressed.desc.0=Gas Storage (Compressed) ##NEEDS TRANSLATE##
 gui.liquidTank.desc.0=Tanque de Líquido
 gui.status.nogas.name=Sin gas
 gui.status.liquefying.name=Licuando
@@ -127,6 +129,9 @@ gui.methaneOutput.desc.2=Bote de Metano
 gui.message.withAtmosphere0.name=en un planeta lleno de
 gui.message.withAtmosphere1.name=en la atmósfera
 item.carbonFragments.name=Carbón Fragmentado
+gui.carbonSlot.desc.0=Fragmented Carbon can go here ##NEEDS TRANSLATE##
+gui.waterBucketSlot.desc=Place water buckets here ##NEEDS TRANSLATE##
+
 gui.cargorocket.status.waiting.0=Waiting for ##NEEDS TRANSLATE##
 gui.cargorocket.status.waiting.1=ignition ##NEEDS TRANSLATE##
 gui.cargorocket.status.launched.0=Already ##NEEDS TRANSLATE##
@@ -149,6 +154,7 @@ tile.terraformer.description=Los Terraformadores añaden hierba, árboles y agua
 tile.creeperEgg.description=Los Huevos de Creeper harán spawn en las Mazmorras de Marte, spawneando un astuto depredador después de una explosión.
 tile.gasLiquefier.description=Licua los gases, ya sean de la atmósfera o de los botes. !El metano líquido hace un buen combustible!
 tile.methaneSynthesizer.description=Con una fuente de hidrógeno y de carbono fabrica metano para un posterior procesamiento en el Condesador de Gas .
+tile.electrolyzer.description=Transforms water into hydrogen (useful for the Methane Synthesizer) and oxygen. ##NEEDS TRANSLATE##
 gui.slimeling.chat.wrongPlayer=This isn't my Slimeling! ##NEEDS TRANSLATE##
 gui.cryogenic.chat.cantUse=I can't use this for another %d seconds ##NEEDS TRANSLATE##
 gui.slimeling.name=Name ##NEEDS TRANSLATE##
@@ -189,3 +195,4 @@ gc.configgui.idSchematicRocketT2=Tier 2 Rocket Schematic ID
 gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID
 gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
 gc.configgui.launchControllerAllDims=Launch Controller All Dimensions
+gc.configgui.planets.title=Galacticraft Planets Config ##NEEDS TRANSLATE##

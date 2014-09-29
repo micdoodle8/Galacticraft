@@ -93,6 +93,7 @@ gui.launchController.desc.3=当这个条件达到时,$火箭就会发射
 gui.terraformer.desc.0=水箱
 
 gui.gasTank.desc.0=气体贮存模块
+gui.gasTankCompressed.desc.0=Gas Storage (Compressed) ##NEEDS TRANSLATE##
 gui.liquidTank.desc.0=液罐
 gui.status.nogas.name=没有气体
 gui.status.liquefying.name=液化中
@@ -112,6 +113,9 @@ gui.methaneOutput.desc.2=沼气池
 gui.message.withAtmosphere0.name=一个星球上有很多
 gui.message.withAtmosphere1.name=在大气中
 item.carbonFragments.name=碳片
+gui.carbonSlot.desc.0=Fragmented Carbon can go here ##NEEDS TRANSLATE##
+gui.waterBucketSlot.desc=Place water buckets here ##NEEDS TRANSLATE##
+
 gui.cargorocket.status.waiting.0=正在等待
 gui.cargorocket.status.waiting.1=点火
 gui.cargorocket.status.launched.0=已经
@@ -134,6 +138,7 @@ tile.terraformer.description=地形改造机用于给偏远的行星增添一些
 tile.creeperEgg.description=苦力怕蛋会在火星地牢生成,爆炸后有惊喜.
 tile.gasLiquefier.description=液化气,来自大气或容器.液化甲烷是不错的火箭燃料!
 tile.methaneSynthesizer.description=提供氢与碳就能制造出甲烷,进一步加工需要在气体液化机进行.
+tile.electrolyzer.description=Transforms water into hydrogen (useful for the Methane Synthesizer) and oxygen. ##NEEDS TRANSLATE##
 
 gui.slimeling.chat.wrongPlayer=这不是我的黏滑怪!
 gui.cryogenic.chat.cantUse=我不能使用这个超过%d秒
