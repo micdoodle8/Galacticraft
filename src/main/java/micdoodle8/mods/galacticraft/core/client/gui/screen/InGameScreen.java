@@ -33,10 +33,36 @@ public class InGameScreen
 
     private float yPlane = 0.94F;
     float frameA = 0.098F;
-    float frameB = 1.0F - frameA;
-    float centreX = 0.5F;
-    float centreZ = 0.5F;
+    float frameBx;
+    float frameBz;
+    float centreX;
+    float centreZ;
+    float scale;
+	float cornerAx = 0F;
+    float cornerAz = 0F;
+    float cornerBx = 1.0F;
+    float cornerBz = 1.0F;
 
+    public InGameScreen(float x, float z, float scaleX, float scaleZ)
+    {
+    	centreX = x + scaleX / 2;
+    	centreZ = z + scaleZ / 2;
+    	frameBx = scaleX - frameA;
+    	frameBz = scaleZ - frameA;
+    	this.scale = Math.max(scaleX, scaleZ) - 0.2F;
+
+    	if (scaleX < scaleZ)
+    	{
+    		cornerAx = (1.0F - (scaleX / scaleZ)) / 2;
+    		cornerBx = 1.0F - cornerAx;
+    	} else
+    	if (scaleZ < scaleX)
+    	{
+    		cornerAz = (1.0F - (scaleZ / scaleX)) / 2;
+    		cornerBz = 1.0F - cornerAz;
+    	}
+    }
+    
     public void drawScreen(int type, float ticks)
     {
         GL11.glPushMatrix();
@@ -113,12 +139,10 @@ public class InGameScreen
         tess.setColorRGBA(255, 255, 255, 255);
         tess.startDrawingQuads();
 
-        float cornerA = 0F;
-        float cornerB = 1.0F;
-        tess.addVertexWithUV(frameA, yPlane, frameB, cornerA, cornerB);
-        tess.addVertexWithUV(frameB, yPlane, frameB, cornerB, cornerB);
-        tess.addVertexWithUV(frameB, yPlane, frameA, cornerB, cornerA);
-        tess.addVertexWithUV(frameA, yPlane, frameA, cornerA, cornerA);
+        tess.addVertexWithUV(frameA, yPlane, frameBz, cornerAx, cornerBz);
+        tess.addVertexWithUV(frameBx, yPlane, frameBz, cornerBx, cornerBz);
+        tess.addVertexWithUV(frameBx, yPlane, frameA, cornerBx, cornerAz);
+        tess.addVertexWithUV(frameA, yPlane, frameA, cornerAx, cornerAz);
         tess.draw();   	
     }
 
@@ -130,9 +154,9 @@ public class InGameScreen
         GL11.glColor4f(greyLevel, greyLevel, greyLevel, 1.0F);
         tess.startDrawingQuads();
         
-        tess.addVertex(frameA, yPlane - 0.005F, frameB);
-        tess.addVertex(frameB, yPlane - 0.005F, frameB);
-        tess.addVertex(frameB, yPlane - 0.005F, frameA);
+        tess.addVertex(frameA, yPlane - 0.005F, frameBz);
+        tess.addVertex(frameBx, yPlane - 0.005F, frameBz);
+        tess.addVertex(frameBx, yPlane - 0.005F, frameA);
         tess.addVertex(frameA, yPlane - 0.005F, frameA);
         tess.draw();   	
 
@@ -198,6 +222,9 @@ public class InGameScreen
 
     private void drawCelestialBody(CelestialBody planet, float xPos, float zPos, float ticks, float relSize)
     {
+        if (xPos + centreX > frameBx || xPos + centreX < frameA) return;
+        if (zPos + centreZ > frameBz || zPos + centreZ < frameA) return;
+
         GL11.glPushMatrix();
 
         float alpha = 1.0F;
@@ -212,12 +239,11 @@ public class InGameScreen
         {
         	this.renderEngine.bindTexture(preEvent.celestialBodyTexture);
         }
-
         
         if (!preEvent.isCanceled())
         {
-        	float size = relSize / 80 * (frameA + frameB);
-        	this.drawTexturedRect(-size / 2, -size / 2, size, size);
+        	float size = relSize / 70 * scale;
+        	this.drawTexturedRect(- size / 2, -size / 2, size, size);
         }
 
         CelestialBodyRenderEvent.Post postEvent = new CelestialBodyRenderEvent.Post(planet);
@@ -229,12 +255,12 @@ public class InGameScreen
     private Vector3f getCelestialBodyPosition(CelestialBody cBody, float ticks)
     {
         float timeScale = cBody instanceof Planet ? 200.0F : 2.0F;
-        float distanceFromCenter = this.getScale(cBody);
+        float distanceFromCenter = this.getScale(cBody) * scale;
         return new Vector3f((float) Math.sin(ticks / (timeScale * cBody.getRelativeOrbitTime()) + cBody.getPhaseShift()) * distanceFromCenter, (float) Math.cos(ticks / (timeScale * cBody.getRelativeOrbitTime()) + cBody.getPhaseShift()) * distanceFromCenter, 0);
     }
 
     private float getScale(CelestialBody celestialBody)
     {
-        return 1 / 160.0F * celestialBody.getRelativeDistanceFromCenter().unScaledDistance * (celestialBody instanceof Planet ? 25.0F : 3.0F);
+        return 1 / 140.0F * celestialBody.getRelativeDistanceFromCenter().unScaledDistance * (celestialBody instanceof Planet ? 25.0F : 3.0F);
     }
 }

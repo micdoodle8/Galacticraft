@@ -430,7 +430,7 @@ public class ConfigManagerCore
             detectableIDs = prop.getStringList();
             propOrder.add(prop.getName());
 
-            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "External Detectable IDs", 100);
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Suffocation Cooldown", 100);
             prop.comment = "Lower/Raise this value to change time between suffocation damage ticks";
             prop.setLanguageKey("gc.configgui.suffocationCooldown");
             suffocationCooldown = prop.getInt(100);
