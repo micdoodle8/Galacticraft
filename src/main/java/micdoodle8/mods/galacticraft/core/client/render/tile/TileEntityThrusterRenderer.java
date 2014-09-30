@@ -20,10 +20,11 @@ public class TileEntityThrusterRenderer extends TileEntitySpecialRenderer
 
     public void renderModelAt(TileEntityThruster tileEntity, double d, double d1, double d2, float f)
     {
+        GL11.glPushMatrix();
+
         // Texture file
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityThrusterRenderer.thrusterTexture);
 
-        GL11.glPushMatrix();
         GL11.glTranslatef((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
 
         int meta = tileEntity.getBlockMetadata();

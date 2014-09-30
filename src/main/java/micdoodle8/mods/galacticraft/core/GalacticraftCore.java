@@ -384,6 +384,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(TileEntityOxygenDecompressor.class, "Oxygen Decompressor");
         GameRegistry.registerTileEntity(TileEntityThruster.class, "Space Station Thruster");
         GameRegistry.registerTileEntity(TileEntityArclamp.class, "Arc Lamp");
+        GameRegistry.registerTileEntity(TileEntityScreen.class, "View Screen");
     }
 
     public void registerCreatures()

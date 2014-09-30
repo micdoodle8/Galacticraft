@@ -8,12 +8,14 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import net.minecraftforge.client.model.obj.WavefrontObject;
+
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -24,6 +26,7 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer
     public static final IModelCustom lampMetal = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/arclampMetal.obj"));
     public static final IModelCustom lampLight = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/arclampLight.obj"));
     public static final IModelCustom lampBase = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/arclampBase.obj"));
+    private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
 
     public void renderModelAt(TileEntityArclamp tileEntity, double d, double d1, double d2, float f)
     {
@@ -111,7 +114,7 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer
             break;
         }
 
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityArclampRenderer.lampTexture);
+        this.renderEngine.bindTexture(TileEntityArclampRenderer.lampTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         TileEntityArclampRenderer.lampBase.renderAll();
         GL11.glRotatef(45F, -1F, 0, 0);
@@ -119,7 +122,7 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer
         TileEntityArclampRenderer.lampMetal.renderAll();
 
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityArclampRenderer.lightTexture);
+        this.renderEngine.bindTexture(TileEntityArclampRenderer.lightTexture);
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawing(GL11.GL_QUADS);
         tessellator.setColorRGBA(255, 255, 255, 255);
