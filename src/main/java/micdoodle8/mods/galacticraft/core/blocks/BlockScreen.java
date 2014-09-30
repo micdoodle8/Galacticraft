@@ -38,7 +38,7 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
     @Override
     public boolean isOpaqueCube()
     {
-        return false;
+        return true;
     }
 
     @Override
