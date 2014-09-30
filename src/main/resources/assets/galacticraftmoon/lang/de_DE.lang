@@ -14,7 +14,7 @@ item.cheeseBlock.name=Käseblock
 # ARMOR
 
 # BLOCKS
-tile.moonBlock.moonstone.name=Mondgetein
+tile.moonBlock.moonstone.name=Mondgestein
 tile.moonBlock.moondirt.name=Monderde
 tile.moonBlock.moongrass.name=Mondrasen
 tile.moonBlock.tinmoon.name=Zinnerz
