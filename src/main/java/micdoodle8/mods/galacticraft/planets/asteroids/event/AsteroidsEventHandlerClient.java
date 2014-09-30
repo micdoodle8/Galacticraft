@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore.EventSpecialRender;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.SkyProviderAsteroids;
@@ -123,7 +124,14 @@ public class AsteroidsEventHandlerClient
     {
         if (renderEvent.celestialBody.equals(AsteroidsModule.planetAsteroids))
         {
-            GL11.glRotatef(Sys.getTime() / 10.0F % 360, 0, 0, 1);
+            if (FMLClientHandler.instance().getClient().currentScreen instanceof GuiCelestialSelection)
+            {
+                GL11.glRotatef(Sys.getTime() / 10.0F % 360, 0, 0, 1);
+            }
+            else
+            {
+                GL11.glRotatef(Sys.getTime() / 10.0F % 360, 0, 1, 0);
+            }
         }
     }
 

@@ -202,6 +202,8 @@ public class InGameScreen
 
         float alpha = 1.0F;
 
+        GL11.glTranslatef(xPos + centreX, 0, zPos + centreZ);
+
         CelestialBodyRenderEvent.Pre preEvent = new CelestialBodyRenderEvent.Pre(planet, planet.getBodyIcon(), 12);
         MinecraftForge.EVENT_BUS.post(preEvent);
 
@@ -210,11 +212,12 @@ public class InGameScreen
         {
         	this.renderEngine.bindTexture(preEvent.celestialBodyTexture);
         }
+
         
         if (!preEvent.isCanceled())
         {
         	float size = relSize / 80 * (frameA + frameB);
-        	this.drawTexturedRect(xPos + centreX - size / 2, zPos + centreZ -size / 2, size, size);
+        	this.drawTexturedRect(-size / 2, -size / 2, size, size);
         }
 
         CelestialBodyRenderEvent.Post postEvent = new CelestialBodyRenderEvent.Post(planet);
