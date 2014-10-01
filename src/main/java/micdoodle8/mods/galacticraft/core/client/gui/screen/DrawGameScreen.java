@@ -70,6 +70,17 @@ public class DrawGameScreen
     		System.out.println("Wrong gamescreen type detected - this is a bug."+type);
     		return;
     	}
+
+		if (type < 2)
+		{
+			this.doDraw(type, ticks);
+			this.initialise = true;
+			this.initialiseLast = false;
+			return;
+		}
+
+    	//Performance code: if type > 1 then we only want
+    	//to draw the screen once per tick, for multi-screens
     	
     	//Spend the first tick just initialising the counter 
     	if (initialise)
@@ -84,7 +95,10 @@ public class DrawGameScreen
     		
     		if (!readyToInitialise)
     		{
-    			if (ticks == tickDrawn) return;
+    			if (ticks == tickDrawn)
+    			{
+    				return;
+    			}
     		}
     		
     		if (!readyToInitialise)
@@ -135,14 +149,22 @@ public class DrawGameScreen
         }
         	
         tickDrawn = ticks;
-
+        
+        this.doDraw(type, ticks);
+    }
+    
+    private void doDraw(int type, float ticks)
+    {
         float lightMapSaveX = OpenGlHelper.lastBrightnessX;
         float lightMapSaveY = OpenGlHelper.lastBrightnessY;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
 
         if (type > 0)
         {
-	        //Special GL Lighting for screen
+        	//Save the lighting state
+        	GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
+        	
+        	//Special GL Lighting for screen
 	        GL11.glEnable(GL11.GL_LIGHTING);
 	        GL11.glEnable(GL11.GL_LIGHT0);
 	        GL11.glDisable(GL11.GL_LIGHT1);
@@ -162,6 +184,8 @@ public class DrawGameScreen
 
         DrawGameScreen.gameScreens.get(type).render(type, ticks, scaleX, scaleZ);
 
+        //Restore the lighting state
+        if (type > 0) GL11.glPopAttrib();
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
     }
 
