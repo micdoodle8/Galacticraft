@@ -8,6 +8,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
 import net.minecraft.client.renderer.GLAllocation;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -29,7 +30,7 @@ public class TileEntityScreenRenderer extends TileEntitySpecialRenderer
     private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
     private static FloatBuffer colorBuffer = GLAllocation.createDirectFloatBuffer(16);
 
-    private float yPlane = 0.94F;
+    private float yPlane = 0.91F;
     float frame = 0.098F;
     
     public void renderModelAt(TileEntityScreen tileEntity, double d, double d1, double d2, float f)
@@ -146,9 +147,10 @@ public class TileEntityScreenRenderer extends TileEntitySpecialRenderer
         }
         GL11.glPopMatrix();
         
-        GL11.glTranslatef(-tileEntity.screenOffsetx, 0, -tileEntity.screenOffsetz);
+        GL11.glTranslatef(-tileEntity.screenOffsetx, this.yPlane, -tileEntity.screenOffsetz);
         tileEntity.screen.drawScreen(tileEntity.imageType, f + tileEntity.getWorldObj().getWorldTime());
 
+        RenderHelper.enableStandardItemLighting();
         GL11.glPopMatrix();
     }
 
