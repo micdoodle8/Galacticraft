@@ -36,10 +36,10 @@ public class ItemRendererBeamReceiver implements IItemRenderer
     {
         if (type == ItemRenderType.EQUIPPED)
         {
-            GL11.glTranslatef(1.2F, 0.5F, 1.15F);
+            GL11.glTranslatef(1.0F, -0.2F, 0.9F);
             GL11.glRotatef(185, 1, 0, 0);
             GL11.glRotatef(40, 0, 1, 0);
-            GL11.glRotatef(-70, 0, 0, 1);
+            GL11.glRotatef(0, 0, 0, 1);
             GL11.glScalef(3.2F, 3.2F, 3.2F);
         }
 
