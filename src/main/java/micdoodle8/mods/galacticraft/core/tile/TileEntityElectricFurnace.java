@@ -233,14 +233,14 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
     {
-        return slotID == 1 ? itemStack != null && FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null : slotID == 0 && ItemElectricBase.isElectricItem(itemStack.getItem());
+        if (itemStack == null) return false;
+    	return slotID == 1 ? FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null : slotID == 0 && ItemElectricBase.isElectricItem(itemStack.getItem());
     }
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
     {
-        if (side == 0) return new int[] { 0 };
-        return new int[] { 1, 2 };
+        return new int[] { 0, 1, 2 };
     }
 
     @Override
