@@ -21,7 +21,11 @@ import org.lwjgl.opengl.GL11;
 public class TileEntityScreenRenderer extends TileEntitySpecialRenderer
 {
     public static final ResourceLocation blockTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/misc/underoil.png");
-    public static final IModelCustom screenModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/screenWhole.obj"));
+    public static final IModelCustom screenModel0 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/screenWhole.obj"));
+    public static final IModelCustom screenModel1 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/screen3Quarters.obj"));
+    public static final IModelCustom screenModel2 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/screen2Quarters.obj"));
+    public static final IModelCustom screenModel3 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/screen1Quarters.obj"));
+    public static final IModelCustom screenModel4 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/screen0Quarters.obj"));
     private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
     private static FloatBuffer colorBuffer = GLAllocation.createDirectFloatBuffer(16);
 
@@ -70,8 +74,79 @@ public class TileEntityScreenRenderer extends TileEntitySpecialRenderer
             break;
         }
 
-        TileEntityScreenRenderer.screenModel.renderAll();
+        int count = 0;
+        if (tileEntity.connectedDown) count++;
+        if (tileEntity.connectedUp) count++;
+        if (tileEntity.connectedLeft) count++;
+        if (tileEntity.connectedRight) count++;
         
+        GL11.glPushMatrix();
+        switch (count)
+        {
+        case 0:
+            TileEntityScreenRenderer.screenModel0.renderAll();
+            break;
+        case 1:
+        	if (tileEntity.connectedUp)
+        	{
+                GL11.glRotatef(90, 0, -1.0F, 0);
+                GL11.glTranslatef(0.0F, 0.0F, -1.0F);
+        	}
+        	else if (tileEntity.connectedRight)
+        	{
+                GL11.glRotatef(180, 0, -1.0F, 0);
+                GL11.glTranslatef(-1.0F, 0.0F, -1.0F);
+        	}
+        	else if (tileEntity.connectedDown)
+        	{
+                GL11.glRotatef(270, 0, -1.0F, 0);
+                GL11.glTranslatef(-1.0F, 0.0F, 0.0F);
+        	}
+            TileEntityScreenRenderer.screenModel1.renderAll();
+            break;
+        case 2:
+        	if (!tileEntity.connectedRight && !tileEntity.connectedDown)
+        	{
+                GL11.glRotatef(90, 0, -1.0F, 0);
+                GL11.glTranslatef(0.0F, 0.0F, -1.0F);
+        	}
+        	else if (!tileEntity.connectedDown && !tileEntity.connectedLeft)
+        	{
+                GL11.glRotatef(180, 0, -1.0F, 0);
+                GL11.glTranslatef(-1.0F, 0.0F, -1.0F);
+        	}
+        	else if (!tileEntity.connectedUp && !tileEntity.connectedLeft)
+        	{
+                GL11.glRotatef(270, 0, -1.0F, 0);
+                GL11.glTranslatef(-1.0F, 0.0F, 0.0F);
+        	}
+            TileEntityScreenRenderer.screenModel2.renderAll();
+            break;
+        case 3:
+        	if (!tileEntity.connectedRight)
+        	{
+                GL11.glRotatef(90, 0, -1.0F, 0);
+                GL11.glTranslatef(0.0F, 0.0F, -1.0F);
+        	}
+        	else if (!tileEntity.connectedDown)
+        	{
+                GL11.glRotatef(180, 0, -1.0F, 0);
+                GL11.glTranslatef(-1.0F, 0.0F, -1.0F);
+        	}
+        	else if (!tileEntity.connectedLeft)
+        	{
+                GL11.glRotatef(270, 0, -1.0F, 0);
+                GL11.glTranslatef(-1.0F, 0.0F, 0.0F);
+        	}
+            TileEntityScreenRenderer.screenModel3.renderAll();
+            break;
+        case 4:
+            TileEntityScreenRenderer.screenModel4.renderAll();
+            break;
+        }
+        GL11.glPopMatrix();
+        
+        GL11.glTranslatef(-tileEntity.screenOffsetx, 0, -tileEntity.screenOffsetz);
         tileEntity.screen.drawScreen(tileEntity.imageType, f + tileEntity.getWorldObj().getWorldTime());
 
         GL11.glPopMatrix();

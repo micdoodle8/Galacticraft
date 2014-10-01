@@ -31,22 +31,29 @@ public class InGameScreen
     private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
     private static FloatBuffer colorBuffer = GLAllocation.createDirectFloatBuffer(16);
 
-    private float yPlane = 0.94F;
-    float frameA = 0.098F;
-    float frameBx;
-    float frameBz;
-    float centreX;
-    float centreZ;
-    float scale;
-	float cornerAx = 0F;
-    float cornerAz = 0F;
-    float cornerBx = 1.0F;
-    float cornerBz = 1.0F;
+    private float yPlane = 0.91F;
+    private float frameA = 0.098F;
+    private float frameBx;
+    private float frameBz;
+    private float centreX;
+    private float centreZ;
+    private float scale;
+    private float cornerAx = 0F;
+    private float cornerAz = 0F;
+    private float cornerBx = 1.0F;
+    private float cornerBz = 1.0F;
+    
+    private float tickDrawn = -1F;
+    public boolean initialise = true;
+    public boolean initialiseLast = false;
+    private boolean readyToInitialise = false;
+    private int tileCount = 0;
+    private int callCount = 0;
 
-    public InGameScreen(float x, float z, float scaleX, float scaleZ)
+    public InGameScreen(float scaleX, float scaleZ)
     {
-    	centreX = x + scaleX / 2;
-    	centreZ = z + scaleZ / 2;
+    	centreX = scaleX / 2;
+    	centreZ = scaleZ / 2;
     	frameBx = scaleX - frameA;
     	frameBz = scaleZ - frameA;
     	this.scale = Math.max(scaleX, scaleZ) - 0.2F;
@@ -65,7 +72,72 @@ public class InGameScreen
     
     public void drawScreen(int type, float ticks)
     {
-        GL11.glPushMatrix();
+        //Spend the first tick just initialising the counter 
+    	if (initialise)
+    	{
+    		if (!initialiseLast)
+    		{
+    			tickDrawn = ticks;
+    			readyToInitialise = false;
+    			initialiseLast = true;
+    			return;
+    		}
+    		
+    		if (!readyToInitialise)
+    		{
+    			if (ticks == tickDrawn) return;
+    		}
+    		
+    		if (!readyToInitialise)
+         	{
+        		readyToInitialise = true;
+         		tickDrawn = ticks;
+         		tileCount = 1;
+         		return;
+         	}
+        	else if (ticks == tickDrawn)
+        	{
+        		tileCount++;
+        		return;
+        	}
+        	else
+        	{
+        		//Start normal operations 
+        		initialise = false;
+    			initialiseLast = false;
+        		readyToInitialise = false;
+        	}
+    	}
+        
+        if (++callCount < tileCount)
+        {
+        	//Normal situation, everything OK
+        	if (callCount == 1 || tickDrawn == ticks)
+        	{
+	        	tickDrawn = ticks;
+	        	return;
+        	}
+        	else
+        	//The callCount last tick was less than the tileCount, reinitialise
+        	{
+        		initialise = true;
+        		//but draw this tick [probably a tileEntity moved out of the frustum]
+        	}
+        }
+        
+        if (callCount == tileCount)
+        {
+        	callCount = 0;
+        	//Again if this is not the tickDrawn then something is wrong, reinitialise
+        	if (tileCount > 1 && ticks != tickDrawn)
+        	{
+        		initialise = true;
+        	}
+        }
+        	
+        tickDrawn = ticks;
+    	GL11.glPushMatrix();
+
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
 
         if (type > 0)
@@ -80,7 +152,7 @@ public class InGameScreen
 	        float diffuse = 1.0F;
 	        float specular = 0.9F;
 	        float ambient2 = 0.6F;
-	        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, setColorBuffer(0.5F, 0.98F, 0.5F, 0.0F));
+	        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, setColorBuffer(0.5F, 0.95F, 0.5F, 0.0F));
 	        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, setColorBuffer(diffuse, diffuse, diffuse, 1.0F));
 	        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_AMBIENT, setColorBuffer(ambient, ambient, ambient, 1.0F));
 	        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, setColorBuffer(specular, specular, 1.0F, 1.0F));
@@ -114,7 +186,7 @@ public class InGameScreen
             drawCelestialBodies(ticks);
         	 break;
         case 3:
-        	drawBlackBackground(0.0F);
+            drawBlackBackground(0.0F);
             drawCelestialBodiesZ(GalacticraftCore.planetOverworld, ticks);
         	break;
         }
@@ -226,10 +298,9 @@ public class InGameScreen
         if (zPos + centreZ > frameBz || zPos + centreZ < frameA) return;
 
         GL11.glPushMatrix();
+        GL11.glTranslatef(xPos + centreX, 0, zPos + centreZ);
 
         float alpha = 1.0F;
-
-        GL11.glTranslatef(xPos + centreX, 0, zPos + centreZ);
 
         CelestialBodyRenderEvent.Pre preEvent = new CelestialBodyRenderEvent.Pre(planet, planet.getBodyIcon(), 12);
         MinecraftForge.EVENT_BUS.post(preEvent);
