@@ -68,11 +68,11 @@ public class ItemRendererShortRangeTelepad implements IItemRenderer
 
         if (type == ItemRenderType.EQUIPPED)
         {
-            GL11.glTranslatef(0.8F, 0.5F, 0.8F);
+            GL11.glTranslatef(0.55F, 0.45F, 0.6F);
             GL11.glRotatef(185, 1, 0, 0);
             GL11.glRotatef(40, 0, 1, 0);
-            GL11.glRotatef(-70, 0, 0, 1);
-            GL11.glScalef(0.8F, 0.8F, 0.8F);
+            GL11.glRotatef(0, 0, 0, 1);
+            GL11.glScalef(0.6F, 0.6F, 0.6F);
         }
 
         if (type == ItemRenderType.EQUIPPED_FIRST_PERSON)
