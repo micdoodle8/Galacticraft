@@ -20,7 +20,7 @@ tile.moonBlock.moongrass.name=Лунный дёрн
 tile.moonBlock.tinmoon.name=Оловянная руда
 tile.moonBlock.coppermoon.name=Медная руда
 tile.moonBlock.cheesestone.name=Сырная руда
-tile.moonBlock.bricks.name=Кирпич сокровищницы Луны
+tile.moonBlock.bricks.name=Кирпич лунной сокровищницы
 tile.cheeseBlock.name=Блок сыра
 
 # GUI
