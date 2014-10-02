@@ -1,13 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
-import java.nio.FloatBuffer;
-
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
-import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -29,7 +26,6 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer
     public static final IModelCustom lampLight = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/arclampLight.obj"));
     public static final IModelCustom lampBase = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/arclampBase.obj"));
     private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
-    private static FloatBuffer colorBuffer = GLAllocation.createDirectFloatBuffer(16);
 
     public void renderModelAt(TileEntityArclamp tileEntity, double d, double d1, double d2, float f)
     {
@@ -127,25 +123,8 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer
     	//Save the lighting state
         float lightMapSaveX = OpenGlHelper.lastBrightnessX;
         float lightMapSaveY = OpenGlHelper.lastBrightnessY;
-    	GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
-
-    	//Maximum brightness
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_LIGHT0);
-        GL11.glDisable(GL11.GL_LIGHT1);
-        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-        GL11.glColorMaterial(GL11.GL_FRONT_AND_BACK, GL11.GL_AMBIENT_AND_DIFFUSE);
-        float ambient = 1.0F;
-        float diffuse = 1.0F;
-        float specular = 1.0F;
-        float ambient2 = 1.0F;
-        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, setColorBuffer(0F, 1.0F, 0F, 0.0F));
-        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, setColorBuffer(diffuse, diffuse, diffuse, 1.0F));
-        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_AMBIENT, setColorBuffer(ambient, ambient, ambient, 1.0F));
-        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, setColorBuffer(specular, specular, specular, 1.0F));
-        GL11.glShadeModel(GL11.GL_FLAT);
-        GL11.glLightModel(GL11.GL_LIGHT_MODEL_AMBIENT, setColorBuffer(ambient2, ambient2, ambient2, 1.0F));
+        GL11.glDisable(GL11.GL_LIGHTING);
 
         this.renderEngine.bindTexture(TileEntityArclampRenderer.lightTexture);
         Tessellator tessellator = Tessellator.instance;
@@ -155,7 +134,7 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer
         tessellator.draw();
 
         //Restore the lighting state
-        GL11.glPopAttrib();
+        GL11.glEnable(GL11.GL_LIGHTING);
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
         
         GL11.glPopMatrix();
@@ -165,14 +144,5 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer
     public void renderTileEntityAt(TileEntity tileEntity, double var2, double var4, double var6, float var8)
     {
         this.renderModelAt((TileEntityArclamp) tileEntity, var2, var4, var6, var8);
-    }
-
-    private static FloatBuffer setColorBuffer(float p_74521_0_, float p_74521_1_, float p_74521_2_, float p_74521_3_)
-    {
-        colorBuffer.clear();
-        colorBuffer.put(p_74521_0_).put(p_74521_1_).put(p_74521_2_).put(p_74521_3_);
-        colorBuffer.flip();
-        /** Float buffer used to set OpenGL material colors */
-        return colorBuffer;
     }
 }
