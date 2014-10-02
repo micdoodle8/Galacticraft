@@ -302,11 +302,6 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 
         super.onUpdate();
 
-        if (this.riddenByEntity == null)
-        {
-            this.motionX = this.motionZ = this.motionY = 0;
-        }
-
         if (this.worldObj.isRemote)
         {
             this.wheelRotationX += Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ) * 150.0F * (this.speed < 0 ? 1 : -1);
@@ -314,7 +309,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
             this.wheelRotationZ = Math.max(-30.0F, Math.min(30.0F, this.wheelRotationZ * 0.9F));
         }
 
-        if (this.worldObj.isRemote && (this.riddenByEntity == null || !(this.riddenByEntity instanceof EntityPlayer) || !FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity)))
+        if (this.worldObj.isRemote && !FMLClientHandler.instance().getClient().thePlayer.equals(this.worldObj.getClosestPlayerToEntity(this, -1)))
         {
             double x;
             double y;
@@ -366,22 +361,9 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
             this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage) - 1));
         }
 
-        final byte var20 = 5;
-        final double var2 = 0.0D;
-        int var4;
-
-        for (var4 = 0; var4 < var20; ++var4)
-        {
-        }
-
         if (!this.onGround)
         {
             this.motionY -= 0.04D;
-        }
-
-        if (this.riddenByEntity == null)
-        {
-            this.yOffset = 5;
         }
 
         if (this.inWater && this.speed > 0.2D)
@@ -413,11 +395,11 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
             this.moveEntity(this.motionX, this.motionY, this.motionZ);
         }
 
-        if (Math.abs(this.motionX * this.motionZ) > 0.000001)
+        if (!this.worldObj.isRemote && Math.abs(this.motionX * this.motionZ) > 0.000001)
         {
             double d = this.motionX * this.motionX + this.motionZ * this.motionZ;
 
-            if (d != 0 && !this.worldObj.isRemote && d != 0 && this.ticks % MathHelper.floor_double(2 / d) == 0)
+            if (d != 0 && d != 0 && this.ticks % MathHelper.floor_double(2 / d) == 0)
             {
                 this.removeFuel(1);
             }
