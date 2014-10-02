@@ -288,7 +288,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
         switch (slotID)
         {
         case 0:
-            return ItemElectricBase.isElectricItem(itemstack.getItem());
+            return itemstack != null && ItemElectricBase.isElectricItem(itemstack.getItem());
         case 1:
             FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(itemstack);
             return stack != null && stack.getFluid() != null && stack.getFluid().getName().equalsIgnoreCase("oil") || FluidContainerRegistry.isContainer(itemstack);

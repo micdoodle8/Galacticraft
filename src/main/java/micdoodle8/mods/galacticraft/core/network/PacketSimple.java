@@ -2,15 +2,17 @@ package micdoodle8.mods.galacticraft.core.network;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import micdoodle8.mods.galacticraft.core.client.SkyProviderMoon;
 import net.minecraft.client.renderer.texture.DynamicTexture;
+
 import org.apache.commons.codec.binary.Base64;
+
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.SolarSystem;
@@ -46,6 +48,7 @@ import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
@@ -77,9 +80,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.*;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.DimensionManager;
+
 import org.apache.commons.io.FileUtils;
 
 import javax.imageio.ImageIO;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -115,6 +120,7 @@ public class PacketSimple extends Packet implements IPacket
         S_COMPLETE_CBODY_HANDSHAKE(Side.SERVER, String.class),
         S_REQUEST_GEAR_DATA(Side.SERVER, String.class),
         S_REQUEST_OVERWORLD_IMAGE(Side.SERVER),
+        S_UPDATE_VIEWSCREEN_REQUEST(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class),
         // CLIENT
         C_AIR_REMAINING(Side.CLIENT, Integer.class, Integer.class, String.class),
         C_UPDATE_DIMENSION_LIST(Side.CLIENT, String.class, String.class),
@@ -148,6 +154,7 @@ public class PacketSimple extends Packet implements IPacket
         C_UPDATE_ENERGYUNITS(Side.CLIENT, Integer.class),
         C_RESPAWN_PLAYER(Side.CLIENT, String.class, Integer.class, String.class, Integer.class),
         C_UPDATE_ARCLAMP_FACING(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class),
+        C_UPDATE_VIEWSCREEN(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
         C_SEND_OVERWORLD_IMAGE(Side.CLIENT, byte[].class);
         
         private Side targetSide;
@@ -756,6 +763,21 @@ public class PacketSimple extends Packet implements IPacket
         		((TileEntityArclamp)tile).facing = facingNew;
         	}
         	break;
+        case C_UPDATE_VIEWSCREEN:
+        	tile = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
+        	if (tile instanceof TileEntityScreen)
+        	{
+            	TileEntityScreen screenTile = (TileEntityScreen)tile; 
+        		int screenType = (Integer) this.data.get(3);
+        		int flags = (Integer) this.data.get(4);
+            	screenTile.imageType = screenType;
+            	screenTile.connectedUp = (flags & 8) > 0;
+            	screenTile.connectedDown = (flags & 4) > 0;
+            	screenTile.connectedLeft = (flags & 2) > 0;
+            	screenTile.connectedRight = (flags & 1) > 0;
+            	screenTile.refreshConnections(true);
+        	}      	
+        	break;
         case C_SEND_OVERWORLD_IMAGE:
             byte[] base64 = (byte[]) this.data.get(0);
             byte[] bytes = Base64.decodeBase64(base64);
@@ -1233,6 +1255,14 @@ public class PacketSimple extends Packet implements IPacket
                 GCPlayerHandler.checkGear(e, GCPlayerStats.get(e), true);
             }
             break;
+        case S_UPDATE_VIEWSCREEN_REQUEST:
+        	int screenDim = (Integer) this.data.get(0);
+        	TileEntity tile = player.worldObj.getTileEntity((Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3));
+        	if (tile instanceof TileEntityScreen)
+        	{
+            	((TileEntityScreen)tile).updateClients(); 
+        	}
+        	break;
         case S_REQUEST_OVERWORLD_IMAGE:
             ChunkCoordIntPair chunkCoordIntPair = new ChunkCoordIntPair((int)Math.floor(stats.coordsTeleportedFromX) >> 4, (int)Math.floor(stats.coordsTeleportedFromZ) >> 4);
             File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");

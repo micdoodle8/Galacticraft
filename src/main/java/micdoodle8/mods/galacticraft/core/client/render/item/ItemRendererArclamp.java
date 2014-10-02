@@ -27,7 +27,7 @@ public class ItemRendererArclamp implements IItemRenderer
             GL11.glScalef(0.7F, 0.7F, 0.7F);
             break;
         case EQUIPPED:
-            GL11.glTranslatef(1F, 0.8F, 0.2F);
+            GL11.glTranslatef(0.6F, 0.8F, 0.6F);
             GL11.glRotatef(150F, 0, 1F, 0);
             GL11.glScalef(0.9F, 0.9F, 0.9F);
             break;

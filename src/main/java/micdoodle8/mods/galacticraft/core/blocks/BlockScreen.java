@@ -54,13 +54,6 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
     }
 
     @Override
-    public void onNeighborBlockChange(World par1World, int x, int y, int z, Block par5)
-    {
-        if (par5 instanceof BlockScreen);
-        	//TODO
-    }
-
-    @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
     {
         int metadata = 0;
@@ -143,6 +136,16 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
         }
     	return false;
     }
+
+    @Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbour)
+    {
+        TileEntity tile = world.getTileEntity(x, y, z);
+        if (tile instanceof TileEntityScreen)
+        {
+        	((TileEntityScreen) tile).refreshConnections(true);
+        }
+    }
     
     @Override
     public String getShiftDescription(int meta)
@@ -159,6 +162,6 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
 	@Override
 	public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
 	{
-    	return direction.ordinal() != world.getBlockMetadata(x, y, z);
+    	return true;
 	}
 }

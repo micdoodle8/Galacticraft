@@ -178,6 +178,7 @@ tile.oxygenCompressor.0.name=Oxygen Compressor
 tile.oxygenCompressor.1.name=Oxygen Decompressor
 tile.arclamp.name=Arc Lamp
 tile.spinThruster.name=Spin Thruster
+tile.viewScreen.name=Display Screen
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Evolved Spider
