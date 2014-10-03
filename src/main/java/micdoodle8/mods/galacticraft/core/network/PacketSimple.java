@@ -11,6 +11,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 
+import net.minecraft.launchwrapper.Launch;
 import org.apache.commons.codec.binary.Base64;
 
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
@@ -779,40 +780,51 @@ public class PacketSimple extends Packet implements IPacket
         	}      	
         	break;
         case C_SEND_OVERWORLD_IMAGE:
-            byte[] base64 = (byte[]) this.data.get(0);
-            byte[] bytes = Base64.decodeBase64(base64);
-            File folder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/temp");
-
             try
             {
-                if (folder.exists() || folder.mkdir())
+                byte[] base64 = (byte[]) this.data.get(0);
+                Class c = Class.forName("org.apache.commons.codec.binary.Base64", true, Launch.classLoader);
+                if (c != null)
                 {
-                    File file0 = new File(folder, "overworld.png");
+                    byte[] bytes = (byte[])c.getMethod("decodeBase64", byte[].class).invoke(null, base64);
+                    File folder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/temp");
 
-                    if (!file0.exists() || (file0.canRead() && file0.canWrite()))
+                    try
                     {
-                        FileUtils.writeByteArrayToFile(file0, bytes);
-
-                        BufferedImage img = ImageIO.read(file0);
-
-                        if (img != null)
+                        if (folder.exists() || folder.mkdir())
                         {
-                            ClientProxyCore.overworldTextureClient = new DynamicTexture(img);
+                            File file0 = new File(folder, "overworld.png");
+
+                            if (!file0.exists() || (file0.canRead() && file0.canWrite()))
+                            {
+                                FileUtils.writeByteArrayToFile(file0, bytes);
+
+                                BufferedImage img = ImageIO.read(file0);
+
+                                if (img != null)
+                                {
+                                    ClientProxyCore.overworldTextureClient = new DynamicTexture(img);
+                                }
+                            }
+                            else
+                            {
+                                System.err.println("Cannot read/write to file %minecraftDir%/assets/temp/overworld.png");
+                            }
+                        }
+                        else
+                        {
+                            System.err.println("Cannot create directory %minecraftDir%/assets/temp!");
                         }
                     }
-                    else
+                    catch (Exception e)
                     {
-                        System.err.println("Cannot read/write to file %minecraftDir%/assets/temp/overworld.png");
+                        e.printStackTrace();
                     }
-                }
-                else
-                {
-                    System.err.println("Cannot create directory %minecraftDir%/assets/temp!");
                 }
             }
             catch (Exception e)
             {
-                e.printStackTrace();
+                ;
             }
             break;
         default:
@@ -1334,7 +1346,8 @@ public class PacketSimple extends Packet implements IPacket
                 try
                 {
                     byte[] bytes = FileUtils.readFileToByteArray(outputFile);
-                    byte[] bytes64 = Base64.encodeBase64(bytes);
+                    Class c = Class.forName("org.apache.commons.codec.binary.Base64", true, Launch.classLoader);
+                    byte[] bytes64 = (byte[])c.getMethod("encodeBase64", byte[].class).invoke(null, bytes);
                     GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { bytes64 } ), playerBase);
                 }
                 catch (Exception ex)
