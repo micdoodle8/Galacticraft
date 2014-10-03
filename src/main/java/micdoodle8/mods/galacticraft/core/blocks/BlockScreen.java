@@ -110,6 +110,12 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
         change += (8 & metadata);
         world.setBlockMetadataWithNotify(x, y, z, change, 2);
 
+        TileEntity tile = world.getTileEntity(x, y, z);
+        if (tile instanceof TileEntityScreen)
+        {
+        	((TileEntityScreen) tile).breakScreen(facing);
+        }
+
         return true;
     }
 

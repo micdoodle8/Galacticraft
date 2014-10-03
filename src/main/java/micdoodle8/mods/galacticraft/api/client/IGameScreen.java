@@ -3,15 +3,15 @@ package micdoodle8.mods.galacticraft.api.client;
 public interface IGameScreen
 {
     /**
-     * Draw a screen in the XZ plane with y == 0.
-     * Must fit in the coordinate range (0, 0, 0) - (scaleX, 0, scaleZ)
+     * Draw a screen in the XY plane with z == 0.
+     * Must fit in the coordinate range (0, 0, 0) - (scaleX, scaleY, 0)
      * 
      * Register your IGameScreen by calling DrawGameScreen.registerScreen();
      *
      * @param type  Type of screen to draw, as registered
      * @param ticks  The worldtime in ticks (including partial ticks)
      * @param scaleX  Dimension of the screen in X direction
-     * @param scaleZ  Dimension of the screen in Z direction
+     * @param scaleY  Dimension of the screen in Y direction
      * 
      * NOTE 1: It is not necessary to enclose your code with glPushMatrix and
      * glPopMatrix, as this will be done by the calling method.
@@ -22,5 +22,5 @@ public interface IGameScreen
      * IMPORTANT to re-enable it again.
      * 
      */
-	public void render(int type, float ticks, float scaleX, float scaleZ);
+	public void render(int type, float ticks, float scaleX, float scaleY);
 }
