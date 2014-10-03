@@ -5,10 +5,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.network.IPacket;
 import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.Entity;
@@ -28,7 +30,8 @@ public class PacketSimpleAsteroids implements IPacket
         // SERVER
         S_UPDATE_ADVANCED_GUI(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
         // CLIENT
-        C_TELEPAD_SEND(Side.CLIENT, BlockVec3.class, Integer.class);
+        C_TELEPAD_SEND(Side.CLIENT, BlockVec3.class, Integer.class),
+        C_UPDATE_GRAPPLE_POS(Side.CLIENT, Integer.class, Vector3.class);
 
         private Side targetSide;
         private Class<?>[] decodeAs;
@@ -120,6 +123,14 @@ public class PacketSimpleAsteroids implements IPacket
             {
                 BlockVec3 pos = (BlockVec3) this.data.get(0);
                 entity.setPosition(pos.x + 0.5, pos.y + 2.2, pos.z + 0.5);
+            }
+            break;
+        case C_UPDATE_GRAPPLE_POS:
+            entity = playerBaseClient.worldObj.getEntityByID((Integer) this.data.get(0));
+            if (entity != null && entity instanceof EntityGrapple)
+            {
+                Vector3 vec = (Vector3) this.data.get(1);
+                entity.setPosition(vec.x, vec.y, vec.z);
             }
             break;
         default:

@@ -1,8 +1,12 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -39,7 +43,8 @@ public class EntityGrapple extends Entity implements IProjectile
         super(par1World);
         this.renderDistanceWeight = 10.0D;
         this.ignoreFrustumCheck = false;
-        this.setSize(0.5F, 0.5F);
+        this.yOffset = -1.5F;
+        this.setSize(2.1F, 2.1F);
     }
 
     public EntityGrapple(World par1World, EntityPlayer shootingEntity, float par3)
@@ -53,7 +58,7 @@ public class EntityGrapple extends Entity implements IProjectile
             this.canBePickedUp = 1;
         }
 
-        this.setSize(0.5F, 0.5F);
+        this.setSize(2.1F, 2.1F);
         this.setLocationAndAngles(shootingEntity.posX, shootingEntity.posY + shootingEntity.getEyeHeight(), shootingEntity.posZ, shootingEntity.rotationYaw, shootingEntity.rotationPitch);
         this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
         this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
@@ -61,8 +66,8 @@ public class EntityGrapple extends Entity implements IProjectile
         this.posX += this.motionX;
         this.posY += this.motionY;
         this.posZ += this.motionZ;
+        this.yOffset = -1.5F;
         this.setPosition(this.posX, this.posY, this.posZ);
-        this.yOffset = 0.0F;
         this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, par3 * 1.5F, 1.0F);
     }
 
@@ -103,6 +108,11 @@ public class EntityGrapple extends Entity implements IProjectile
         this.setRotation(par7, par8);
     }
 
+    public void setPosition(double x, double y, double z)
+    {
+        super.setPosition(x, y, z);
+    }
+
     @Override
     @SideOnly(Side.CLIENT)
     public void setVelocity(double par1, double par3, double par5)
@@ -133,6 +143,29 @@ public class EntityGrapple extends Entity implements IProjectile
         if (!this.worldObj.isRemote)
         {
             this.updateShootingEntity();
+
+            if (this.getPullingEntity())
+            {
+                EntityPlayer shootingEntity = this.getShootingEntity();
+                if (shootingEntity != null)
+                {
+                    double deltaPosition = this.getDistanceSqToEntity(shootingEntity);
+
+                    Vector3 mot = new Vector3(shootingEntity.motionX, shootingEntity.motionY, shootingEntity.motionZ);
+
+                    if (mot.getMagnitudeSquared() < 0.01 && this.pullingPlayer)
+                    {
+                        if (deltaPosition < 10)
+                        {
+                            this.onCollideWithPlayer(shootingEntity);
+                        }
+                        this.updatePullingEntity(false);
+                        this.setDead();
+                    }
+
+                    this.pullingPlayer = true;
+                }
+            }
         }
         else
         {
@@ -141,19 +174,7 @@ public class EntityGrapple extends Entity implements IProjectile
                 EntityPlayer shootingEntity = this.getShootingEntity();
                 if (shootingEntity != null)
                 {
-                    shootingEntity.setVelocity((this.posX - shootingEntity.posX) / 16.0F, (this.posY - shootingEntity.posY) / 16.0F, (this.posZ - shootingEntity.posZ) / 16.0F);
-
-                    double deltaPositionX = shootingEntity.posX - shootingEntity.lastTickPosX;
-                    double deltaPositionY = shootingEntity.posY - shootingEntity.lastTickPosY;
-                    double deltaPositionZ = shootingEntity.posZ - shootingEntity.lastTickPosZ;
-                    double deltaPositionSqrd = deltaPositionX * deltaPositionX + deltaPositionY * deltaPositionY + deltaPositionZ * deltaPositionZ;
-
-                    if (deltaPositionSqrd < 0.01 && this.pullingPlayer)
-                    {
-                        this.updatePullingEntity(false);
-                    }
-
-                    this.pullingPlayer = true;
+                    shootingEntity.setVelocity((this.posX - shootingEntity.posX) / 12.0F, (this.posY - shootingEntity.posY) / 12.0F, (this.posZ - shootingEntity.posZ) / 12.0F);
                 }
             }
         }
@@ -202,7 +223,7 @@ public class EntityGrapple extends Entity implements IProjectile
                         this.shootingEntity.motionZ = (this.posZ - this.shootingEntity.posZ) / 16.0F;
                     }
 
-                    if (!this.worldObj.isRemote)
+                    if (!this.worldObj.isRemote && this.ticksInGround < 5)
                     {
                         this.updatePullingEntity(true);
                     }
@@ -370,12 +391,13 @@ public class EntityGrapple extends Entity implements IProjectile
                 this.extinguish();
             }
 
-            //            this.motionX *= (double)f3;
-            //            this.motionY *= (double)f3;
-            //            this.motionZ *= (double)f3;
-            //            this.motionY -= (double)f1;
             this.setPosition(this.posX, this.posY, this.posZ);
             this.func_145775_I();
+        }
+
+        if (!this.worldObj.isRemote && (this.ticksInGround - 1) % 10 == 0)
+        {
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_UPDATE_GRAPPLE_POS, new Object[] { this.getEntityId(), new Vector3(this) }), new NetworkRegistry.TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 150));
         }
     }
 
