@@ -74,13 +74,15 @@ public class TileEntityScreenRenderer extends TileEntitySpecialRenderer
             break;
         }
 
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glPushMatrix();
+
         int count = 0;
         if (tileEntity.connectedDown) count++;
         if (tileEntity.connectedUp) count++;
         if (tileEntity.connectedLeft) count++;
         if (tileEntity.connectedRight) count++;
-        
-        GL11.glPushMatrix();
+
         switch (count)
         {
         case 0:

@@ -63,6 +63,8 @@ public class TileEntityThrusterRenderer extends TileEntitySpecialRenderer
             {
                 GL11.glRotatef(180, 1, 0, 0);
             }
+
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             TileEntityThrusterRenderer.thrusterModel.renderAll();
         }
 
