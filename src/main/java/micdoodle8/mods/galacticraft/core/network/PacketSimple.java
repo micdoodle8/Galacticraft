@@ -2,18 +2,12 @@ package micdoodle8.mods.galacticraft.core.network;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import net.minecraft.client.renderer.texture.DynamicTexture;
-
-import net.minecraft.launchwrapper.Launch;
-import org.apache.commons.codec.binary.Base64;
-
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.SolarSystem;
@@ -59,6 +53,7 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -67,6 +62,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
@@ -81,11 +77,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.*;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.DimensionManager;
-
 import org.apache.commons.io.FileUtils;
 
 import javax.imageio.ImageIO;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -783,7 +777,7 @@ public class PacketSimple extends Packet implements IPacket
             try
             {
                 byte[] base64 = (byte[]) this.data.get(0);
-                Class c = Class.forName("org.apache.commons.codec.binary.Base64", true, Launch.classLoader);
+                Class c = Launch.classLoader.loadClass("org.apache.commons.codec.binary.Base64");
                 if (c != null)
                 {
                     byte[] bytes = (byte[])c.getMethod("decodeBase64", byte[].class).invoke(null, base64);
@@ -1346,7 +1340,7 @@ public class PacketSimple extends Packet implements IPacket
                 try
                 {
                     byte[] bytes = FileUtils.readFileToByteArray(outputFile);
-                    Class c = Class.forName("org.apache.commons.codec.binary.Base64", true, Launch.classLoader);
+                    Class c = Launch.classLoader.loadClass("org.apache.commons.codec.binary.Base64");
                     byte[] bytes64 = (byte[])c.getMethod("encodeBase64", byte[].class).invoke(null, bytes);
                     GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { bytes64 } ), playerBase);
                 }
