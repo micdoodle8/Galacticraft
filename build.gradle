@@ -58,7 +58,8 @@ ext.coreFiles = ['micdoodle8/mods/galacticraft/api/**',
 					'tconstruct/**',
 					'assets/minecraft/**',
 					'assets/galacticraftmoon/**',
-					'assets/galacticraftcore/**']
+					'assets/galacticraftcore/**',
+					'**/dependenciesGC.info']
 					
 // Keep a list of planets addon files/directories for easy jar packing
 ext.planetsFiles = ['micdoodle8/mods/galacticraft/planets/**',
