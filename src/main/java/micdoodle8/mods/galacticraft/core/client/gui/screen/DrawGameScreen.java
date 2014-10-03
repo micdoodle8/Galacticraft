@@ -41,7 +41,7 @@ public class DrawGameScreen
     	DrawGameScreen.initialise();
     }
     
-    private static void initialise()
+    public static void initialise()
     {
     	if (DrawGameScreen.gameScreens.isEmpty())
     	{
@@ -63,7 +63,7 @@ public class DrawGameScreen
         //on the server side, as this will only make client-side changes
     }
     
-    public void drawScreen(int type, float ticks)
+    public void drawScreen(int type, float ticks, boolean cornerBlock)
     {
     	if (type >= DrawGameScreen.maxType)
     	{
@@ -71,14 +71,14 @@ public class DrawGameScreen
     		return;
     	}
 
-		if (type < 2)
+		if (type < 2 || cornerBlock)
 		{
 			this.doDraw(type, ticks);
 			this.initialise = true;
 			this.initialiseLast = false;
 			return;
 		}
-
+		
     	//Performance code: if type > 1 then we only want
     	//to draw the screen once per tick, for multi-screens
     	

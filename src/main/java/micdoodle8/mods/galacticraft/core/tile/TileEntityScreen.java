@@ -25,6 +25,7 @@ public class TileEntityScreen extends TileEntity
 	public int connectionsDown;
 	public int connectionsLeft;
 	public int connectionsRight;
+	public boolean isMultiscreen;
 
 	public int screenOffsetx = 0;
 	public int screenOffsetz = 0;
@@ -44,8 +45,6 @@ public class TileEntityScreen extends TileEntity
 	
 	public void updateClients()
 	{
-		this.refreshConnections(false);
-		this.markDirty();
 		int connectedFlags = 0;
         if (this.connectedUp) connectedFlags += 8;
         if (this.connectedDown) connectedFlags += 4;
@@ -58,50 +57,94 @@ public class TileEntityScreen extends TileEntity
 	public void invalidate()
 	{
 		int meta = this.getBlockMetadata() & 7;
-		BlockVec3 vec = new BlockVec3(this);
 		super.invalidate();
-		TileEntity tile;
+		this.breakScreen(meta);
+	}
 
+	/**
+	 * Call when a screen (which maybe part of a multiscreen) is either
+	 * broken or rotated.
+	 * 
+	 * @param meta  The meta of the screen prior to breaking or rotation
+	 */
+	public void breakScreen(int meta)
+	{
+		BlockVec3 vec = new BlockVec3(this);
+		TileEntity tile;
+		int side = this.getRight(meta);
+
+		int left = this.connectionsLeft;
+		int right = this.connectionsRight;
+		int up = this.connectionsUp;
+		int down = this.connectionsDown;
+	
 		boolean doUp = this.connectedUp;
 		boolean doDown = this.connectedDown;
 		boolean doLeft = this.connectedLeft;
 		boolean doRight = this.connectedRight;
+
+    	for (int x = -left; x <= right; x++)
+    	{
+    		for (int z = -up; z <= down; z++)
+    		{
+    			if (x == 0 && z == 0) this.resetToSingle();
+    			else
+    			{
+	    			BlockVec3 newVec = vec.clone().modifyPositionFromSide(ForgeDirection.getOrientation(side), x).modifyPositionFromSide(ForgeDirection.DOWN, z);
+	    			tile = newVec.getTileEntity(this.worldObj);
+	    			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta)
+	    			{
+	    				((TileEntityScreen)tile).resetToSingle();
+	    			}
+    			}
+    		}
+   		}
+    	
+    	//TODO  Try to generate largest screen possible out of remaining blocks
 
 		this.connectedUp = this.connectedDown = this.connectedLeft = this.connectedRight = false;
 
 		if (doUp)
 		{
 			tile = vec.getTileEntityOnSide(this.worldObj, 1);
-			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta)
+			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
 			{
-				((TileEntityScreen)tile).connectedDown = false;
+				if (doLeft) ((TileEntityScreen)tile).connectedLeft = true; 
+				if (doRight) ((TileEntityScreen)tile).connectedRight = true;
+				((TileEntityScreen)tile).connectedUp = true;
 				((TileEntityScreen)tile).refreshConnections(true);
 			}			
 		}
 		if (doDown)
 		{
 			tile = vec.getTileEntityOnSide(this.worldObj, 0);
-			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta)
+			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
 			{
-				((TileEntityScreen)tile).connectedUp = false;
+				if (doLeft) ((TileEntityScreen)tile).connectedLeft = true; 
+				if (doRight) ((TileEntityScreen)tile).connectedRight = true;
+				((TileEntityScreen)tile).connectedDown = true;
 				((TileEntityScreen)tile).refreshConnections(true);
 			}			
 		}
 		if (doLeft)
 		{
 			tile = vec.getTileEntityOnSide(this.worldObj, this.getLeft(meta));
-			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta)
+			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
 			{
-				((TileEntityScreen)tile).connectedRight = false;
+				if (doUp) ((TileEntityScreen)tile).connectedUp = true; 
+				if (doDown) ((TileEntityScreen)tile).connectedDown = true;
+				((TileEntityScreen)tile).connectedLeft = true;
 				((TileEntityScreen)tile).refreshConnections(true);
 			}			
 		}
 		if (doRight)
 		{
 			tile = vec.getTileEntityOnSide(this.worldObj, this.getRight(meta));
-			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta)
+			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
 			{
-				((TileEntityScreen)tile).connectedLeft = false;
+				if (doUp) ((TileEntityScreen)tile).connectedUp = true; 
+				if (doDown) ((TileEntityScreen)tile).connectedDown = true;
+				((TileEntityScreen)tile).connectedRight = true;
 				((TileEntityScreen)tile).refreshConnections(true);
 			}			
 		}
@@ -115,10 +158,12 @@ public class TileEntityScreen extends TileEntity
 	 */
 	public void refreshConnections(boolean doScreen)
 	{
+		this.log("Starting connection check");
+
 		int meta = this.getBlockMetadata() & 7;
 		if (meta < 2)
 		{
-			System.out.println("Up/down oriented screens cannot be multiscreen");
+			//TODO System.out.println("Up/down oriented screens cannot be multiscreen");
 			this.resetToSingle();
 			return;
 		}
@@ -133,82 +178,58 @@ public class TileEntityScreen extends TileEntity
 		if (this.connectedUp)
 		{
 			tileUp = vec.getTileEntityOnSide(this.worldObj, 1);
-			if (!(tileUp instanceof TileEntityScreen && tileUp.getBlockMetadata() == meta))
-			{
+			if (!(tileUp instanceof TileEntityScreen && tileUp.getBlockMetadata() == meta && !tileUp.isInvalid()))
 				this.connectedUp = false;
-				this.markDirty();
-			}
 		}
 
 		if (this.connectedDown)
 		{
 			tileDown = vec.getTileEntityOnSide(this.worldObj, 0);
-			if (!(tileDown instanceof TileEntityScreen && tileDown.getBlockMetadata() == meta))
-			{
+			if (!(tileDown instanceof TileEntityScreen && tileDown.getBlockMetadata() == meta && !tileDown.isInvalid()))
 				this.connectedDown = false;
-				this.markDirty();
-			}
 		}
 
 		if (this.connectedLeft)
 		{
 			int side = this.getLeft(meta);
 			tileLeft = vec.getTileEntityOnSide(this.worldObj, side);
-			if (!(tileLeft instanceof TileEntityScreen && tileLeft.getBlockMetadata() == meta))
-			{
+			if (!(tileLeft instanceof TileEntityScreen && tileLeft.getBlockMetadata() == meta && !tileLeft.isInvalid()))
 				this.connectedLeft = false;
-				this.markDirty();
-			}
 		}
 
 		if (this.connectedRight)
 		{
 			int side = this.getRight(meta);
 			tileRight = vec.getTileEntityOnSide(this.worldObj, side);
-			if (!(tileRight instanceof TileEntityScreen && tileRight.getBlockMetadata() == meta))
-			{
+			if (!(tileRight instanceof TileEntityScreen && tileRight.getBlockMetadata() == meta && !tileRight.isInvalid()))
 				this.connectedRight = false;
-				this.markDirty();
-			}
 		}
 
 		//Now test whether a connection can be sustained with that other tile
 		if (this.connectedUp)
 		{
-    		if (!this.tryConnectUp((TileEntityScreen)tileUp))
-			{
+    		if (tileUp == null || !this.tryConnectUp((TileEntityScreen)tileUp))
 				this.connectedUp = false;
-				this.markDirty();
-			}
 		}
 
 		if (this.connectedDown)
 		{
-			if (!this.tryConnectDown((TileEntityScreen)tileDown))
-			{
+			if (tileDown == null || !this.tryConnectDown((TileEntityScreen)tileDown))
 				this.connectedDown = false;
-				this.markDirty();
-			}
 		}
 
 		if (this.connectedLeft)
 		{
-			if (!this.tryConnectLeft((TileEntityScreen)tileLeft))
-			{
+			if (tileLeft == null || !this.tryConnectLeft((TileEntityScreen)tileLeft))
 				this.connectedLeft = false;
-				this.markDirty();
-			}
 		}
 
 		if (this.connectedRight)
 		{
-			if (!this.tryConnectRight((TileEntityScreen)tileRight))
-			{
+			if (tileRight == null || !this.tryConnectRight((TileEntityScreen)tileRight))
 				this.connectedRight = false;
-				this.markDirty();
-			}
 		}
-
+		this.log("Ending connection check");
 		if (doScreen)
 		{
 			this.checkScreenSize();
@@ -234,7 +255,9 @@ public class TileEntityScreen extends TileEntity
 
 			//Temporary code for test purposes - always try to connect
 			this.connectedUp = this.connectedDown = this.connectedLeft = this.connectedRight = true;
-			
+			this.refreshConnections(true);
+			this.markDirty();
+
 			this.updateClients();
 		}
 	}
@@ -244,10 +267,15 @@ public class TileEntityScreen extends TileEntity
     {
         super.readFromNBT(nbt);
         this.imageType = nbt.getInteger("type");
-        this.connectedDown = nbt.getBoolean("connectDown");
-        this.connectedUp = nbt.getBoolean("connectUp");
-        this.connectedLeft = nbt.getBoolean("connectLeft");
-        this.connectedRight = nbt.getBoolean("connectRight");
+        this.connectionsDown = nbt.getInteger("connectionsDown");
+        this.connectionsUp = nbt.getInteger("connectionsUp");
+        this.connectionsLeft = nbt.getInteger("connectionsLeft");
+        this.connectionsRight = nbt.getInteger("connectionsRight");
+        this.isMultiscreen = nbt.getBoolean("multiscreen");
+        this.connectedUp = (this.connectionsUp > 0);
+        this.connectedDown = (this.connectionsDown > 0);
+        this.connectedLeft = (this.connectionsLeft > 0);
+        this.connectedRight = (this.connectionsRight > 0);
     }
     
     @Override
@@ -255,15 +283,16 @@ public class TileEntityScreen extends TileEntity
     {
         super.writeToNBT(nbt);
         nbt.setInteger("type", this.imageType);
-        nbt.setBoolean("connectDown", this.connectedDown);
-        nbt.setBoolean("connectUp", this.connectedUp);
-        nbt.setBoolean("connectLeft", this.connectedLeft);
-        nbt.setBoolean("connectRight", this.connectedRight);
+        nbt.setInteger("connectionsDown", this.connectionsDown);
+        nbt.setInteger("connectionsUp", this.connectionsUp);
+        nbt.setInteger("connectionsLeft", this.connectionsLeft);
+        nbt.setInteger("connectionsRight", this.connectionsRight);
+        nbt.setBoolean("multiscreen", this.isMultiscreen);
     }
     
-    //TODO prevent 3x1 or longer sizes 
     public void checkScreenSize()
     {
+    	this.log("Checking screen size");
     	int up = 0;
     	int down = 0;
     	int left = 0;
@@ -324,17 +353,17 @@ public class TileEntityScreen extends TileEntity
 
     	vec = new BlockVec3(this);
     	tile = this;
-    	while (left < 5)
+		int leftside = this.getLeft(meta);
+    	while (left < ((up + down == 0) ? 1 : 5))
     	{
     		if (tile.connectedLeft)
     		{
     			left++;
-    			int side = this.getLeft(meta);
-    			TileEntity newTile = vec.getTileEntityOnSide(this.worldObj, side);
+    			TileEntity newTile = vec.getTileEntityOnSide(this.worldObj, leftside);
     			if (newTile instanceof TileEntityScreen)
     			{
     				tile = (TileEntityScreen) newTile;
-    				vec = vec.newVecSide(side);
+    				vec = vec.newVecSide(leftside);
     			}
     			else
     			{
@@ -351,17 +380,17 @@ public class TileEntityScreen extends TileEntity
 
     	vec = new BlockVec3(this);
     	tile = this;
-    	while (right < 5)
+		int rightside = this.getRight(meta);
+    	while (right < ((up + down == 0) ? 1 : 5))
     	{
     		if (tile.connectedRight)
     		{
     			right++;
-    			int side = this.getRight(meta);
-    			TileEntity newTile = vec.getTileEntityOnSide(this.worldObj, side);
+    			TileEntity newTile = vec.getTileEntityOnSide(this.worldObj, rightside);
     			if (newTile instanceof TileEntityScreen)
     			{
     				tile = (TileEntityScreen) newTile;
-    				vec = vec.newVecSide(side);
+    				vec = vec.newVecSide(rightside);
     			}
     			else
     			{
@@ -376,7 +405,73 @@ public class TileEntityScreen extends TileEntity
     			break;
     	}
     	
-    	//TODO check total dimensions do not exceed 5 x 5
+    	this.log("Screen size check midpoint "+up+" "+down+" "+left+" "+right+" ");
+
+    	vec = new BlockVec3(this);
+    	TileEntity newtile = vec.getTileEntityOnSide(this.worldObj, 1);
+    	TileEntityScreen tileUp = (newtile instanceof TileEntityScreen) ? (TileEntityScreen)newtile : null; 
+    	newtile = vec.getTileEntityOnSide(this.worldObj, 0);
+    	TileEntityScreen tileDown = (newtile instanceof TileEntityScreen) ? (TileEntityScreen)newtile : null;
+    	newtile = vec.getTileEntityOnSide(this.worldObj, leftside);
+    	TileEntityScreen tileLeft = (newtile instanceof TileEntityScreen) ? (TileEntityScreen)newtile : null;
+    	newtile = vec.getTileEntityOnSide(this.worldObj, rightside);
+    	TileEntityScreen tileRight = (newtile instanceof TileEntityScreen) ? (TileEntityScreen)newtile : null;
+    	//Prevent 3 x 1 and longer
+    	if (left + right == 0 && up + down >= 1)
+    	{
+    		if (up > 0 && !tileUp.connectedUp)  //No need for null check if up > 0
+    		{
+    			up = 1;
+    			down = 0;
+    		}
+    		else
+    		{
+    			up = 0;
+    			if (tileDown != null && !tileDown.connectedDown)
+    				down = 1;
+    			else
+    				down = 0;
+    		}
+    	}
+    	if (up + down == 0 && left + right >= 1)
+    	{
+    		if (left > 0 && !tileLeft.connectedLeft)  //No need for null check if right > 0
+    		{
+    			left = 1;
+    			right = 0;
+    		}
+    		else
+    		{
+    			left = 0;
+    			if (tileRight != null && !tileRight.connectedRight)
+    				right = 1;
+    			else
+    				right = 0;
+    		}
+    	}
+    	
+    	if (up == 0)
+    	{	
+    		this.connectedUp = false;
+    		if (tileUp != null) tileUp.connectedDown = false;
+    	}
+    	if (down == 0)
+    	{	
+    		this.connectedDown = false;
+    		if (tileDown != null) tileDown.connectedUp = false;
+    	}
+    	if (left == 0)
+    	{	
+    		this.connectedLeft = false;
+    		if (tileLeft != null) tileLeft.connectedRight = false;
+    	}
+    	if (right == 0)
+    	{	
+    		this.connectedRight = false;
+    		if (tileRight != null) tileRight.connectedLeft = false;
+    	}
+
+    	this.log("Finished screen size check");
     	
     	if (this.checkWholeScreen(up, down, left, right))
     	{
@@ -417,9 +512,11 @@ public class TileEntityScreen extends TileEntity
 		int side = this.getRight(meta);
 		
 		DrawGameScreen newScreen = null;
+		boolean serverside = true;
 		if (FMLCommonHandler.instance().getEffectiveSide().isClient())
 		{
 			newScreen = new DrawGameScreen(1.0F + left + right, 1.0F + up + down);
+			serverside = false;
 		}
 		
     	for (int x = -left; x <= right; x++)
@@ -428,14 +525,24 @@ public class TileEntityScreen extends TileEntity
     		{
     			BlockVec3 newVec = vec.clone().modifyPositionFromSide(ForgeDirection.getOrientation(side), x).modifyPositionFromSide(ForgeDirection.DOWN, z);
     			TileEntity tile = newVec.getTileEntity(this.worldObj);
-    			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta)
+    			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
     			{
     				TileEntityScreen screenTile = (TileEntityScreen)tile;
     				screenList.add(screenTile);
     				screenTile.screenOffsetx = x + left;
     				screenTile.screenOffsetz = z + up;
    					screenTile.screen = newScreen;
-   					screenTile.imageType = this.imageType;
+   					screenTile.connectionsLeft = x + left;
+   					screenTile.connectionsRight = right - x;
+   					screenTile.connectionsUp = z + up;
+   					screenTile.connectionsDown = down - z;
+   					screenTile.isMultiscreen = true;
+   					if (serverside)
+					{
+   						screenTile.imageType = this.imageType;
+   						screenTile.markDirty();
+   						screenTile.updateClients();
+					}
     			}
     			else
     			{
@@ -470,6 +577,7 @@ public class TileEntityScreen extends TileEntity
     	this.connectionsDown = 0;
     	this.connectionsLeft = 0;
     	this.connectionsRight = 0;
+    	this.isMultiscreen = false;
     	this.connectedDown = this.connectedLeft = this.connectedRight = this.connectedUp = false;
 		this.markDirty();
     }
@@ -530,7 +638,6 @@ public class TileEntityScreen extends TileEntity
 			return false;
 		}
 		
-		screenTile.markDirty();
 		return true;
     }
 
@@ -550,7 +657,6 @@ public class TileEntityScreen extends TileEntity
 			return false;
 		}
 		
-		screenTile.markDirty();		
 		return true;
     }
     
@@ -573,7 +679,6 @@ public class TileEntityScreen extends TileEntity
 			return false;
 		}
 		
-		screenTile.markDirty();
 		return true;
     }
 
@@ -596,7 +701,16 @@ public class TileEntityScreen extends TileEntity
 			return false;
 		}
 		
-		screenTile.markDirty();
 		return true;
+    }
+    
+    private void log(String msg)
+    {
+    	String connections = "";
+    	if (this.connectedUp) connections = "U";
+    	if (this.connectedDown) connections += "D";
+    	if (this.connectedLeft) connections += "L";
+    	if (this.connectedRight) connections += "R";
+    	//System.out.println(msg + " at "+this.xCoord+","+this.zCoord+" "+connections);
     }
 }
