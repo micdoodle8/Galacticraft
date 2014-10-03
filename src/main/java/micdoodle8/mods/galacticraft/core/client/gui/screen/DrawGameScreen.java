@@ -159,42 +159,12 @@ public class DrawGameScreen
         float lightMapSaveY = OpenGlHelper.lastBrightnessY;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
 
-        if (type > 0)
-        {
-        	//Save the lighting state
-        	GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
-        	
-        	//Special GL Lighting for screen
-	        GL11.glEnable(GL11.GL_LIGHTING);
-	        GL11.glEnable(GL11.GL_LIGHT0);
-	        GL11.glDisable(GL11.GL_LIGHT1);
-	        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-	        GL11.glColorMaterial(GL11.GL_FRONT_AND_BACK, GL11.GL_AMBIENT_AND_DIFFUSE);
-	        float ambient = 0.2F;
-	        float diffuse = 1.0F;
-	        float specular = 0.9F;
-	        float ambient2 = 0.6F;
-	        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, setColorBuffer(0.5F, 0.95F, 0.5F, 0.0F));
-	        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, setColorBuffer(diffuse, diffuse, diffuse, 1.0F));
-	        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_AMBIENT, setColorBuffer(ambient, ambient, ambient, 1.0F));
-	        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, setColorBuffer(specular, specular, 1.0F, 1.0F));
-	        GL11.glShadeModel(GL11.GL_FLAT);
-	        GL11.glLightModel(GL11.GL_LIGHT_MODEL_AMBIENT, setColorBuffer(ambient2, ambient2, ambient2, 1.0F));
-        }
+        if (type > 0) GL11.glDisable(GL11.GL_LIGHTING);
 
         DrawGameScreen.gameScreens.get(type).render(type, ticks, scaleX, scaleZ);
 
-        //Restore the lighting state
-        if (type > 0) GL11.glPopAttrib();
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
-    }
+        if (type > 0) GL11.glEnable(GL11.GL_LIGHTING);
 
-    private static FloatBuffer setColorBuffer(float p_74521_0_, float p_74521_1_, float p_74521_2_, float p_74521_3_)
-    {
-        colorBuffer.clear();
-        colorBuffer.put(p_74521_0_).put(p_74521_1_).put(p_74521_2_).put(p_74521_3_);
-        colorBuffer.flip();
-        /** Float buffer used to set OpenGL material colors */
-        return colorBuffer;
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
     }
 }
