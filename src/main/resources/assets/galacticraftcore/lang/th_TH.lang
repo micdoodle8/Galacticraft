@@ -178,6 +178,7 @@ tile.oxygenCompressor.0.name=เครื่องบีบอัดออกซ
 tile.oxygenCompressor.1.name=เครื่องลดความดันออกซิเจน
 tile.arclamp.name=โคมไฟอาร์ค
 tile.spinThruster.name=สปินทรัสเตอร์
+tile.viewScreen.name=หน้าจอแสดงผล
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=แมงมุมอวกาศ
