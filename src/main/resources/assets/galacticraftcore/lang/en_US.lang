@@ -550,6 +550,7 @@ tile.glowstoneTorch.description=Glowstone Torches are best used to light areas w
 tile.cheeseBlock.description=Cheese Blocks are created from the cheeses of the Moon, place-able and edible.
 tile.spinThruster.description=Spin Thrusters are used to make space stations rotate.
 tile.arclamp.description=Arc Lamps are used to provide strong light to a large area, also causing most mobs to flee.
+tile.viewScreen.description=Display screens add that final touch to your space base. Right-click changes the information shown.
 
 # CONTAINERS
 container.cargoloader.name=Cargo Loader

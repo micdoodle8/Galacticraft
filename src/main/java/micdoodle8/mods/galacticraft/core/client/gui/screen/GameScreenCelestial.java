@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
+import java.nio.DoubleBuffer;
+
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
@@ -14,6 +16,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraftforge.common.MinecraftForge;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -29,6 +32,12 @@ public class GameScreenCelestial implements IGameScreen
     private float centreX;
     private float centreY;
     private float scale;
+
+    private final int lineSegments = 90;;
+    private final float cos = (float) Math.cos(2 * Math.PI / lineSegments);
+    private final float sin = (float) Math.sin(2 * Math.PI / lineSegments);
+
+    private static DoubleBuffer planes = BufferUtils.createDoubleBuffer(4 * Double.SIZE);
     
     public GameScreenCelestial(float frame)
     {
@@ -43,17 +52,35 @@ public class GameScreenCelestial implements IGameScreen
     	frameBy = scaleY - frameA;
     	this.scale = Math.max(scaleX, scaleY) - 0.2F;
 
+    	drawBlackBackground(0.0F);
+
+    	planeEquation(frameA,frameA,0,frameA,frameBy,0,frameA,frameBy,1);
+    	GL11.glClipPlane(GL11.GL_CLIP_PLANE0, planes);
+    	GL11.glEnable(GL11.GL_CLIP_PLANE0);
+    	planeEquation(frameBx,frameBy,0,frameBx,frameA,0,frameBx,frameA,1);
+    	GL11.glClipPlane(GL11.GL_CLIP_PLANE1, planes);
+    	GL11.glEnable(GL11.GL_CLIP_PLANE1);
+    	planeEquation(frameA,frameBy,0,frameBx,frameBy,0,frameBx,frameBy,1);
+    	GL11.glClipPlane(GL11.GL_CLIP_PLANE2, planes);
+    	GL11.glEnable(GL11.GL_CLIP_PLANE2);
+    	planeEquation(frameBx,frameA,0,frameA,frameA,0,frameA,frameA,1);
+    	GL11.glClipPlane(GL11.GL_CLIP_PLANE3, planes);
+    	GL11.glEnable(GL11.GL_CLIP_PLANE3);
+    	
     	switch(type)
         {
         case 2:
-        	drawBlackBackground(0.0F);
             drawCelestialBodies(ticks);
         	 break;
         case 3:
-            drawBlackBackground(0.0F);
             drawCelestialBodiesZ(GalacticraftCore.planetOverworld, ticks);
         	break;
         }
+        
+    	GL11.glDisable(GL11.GL_CLIP_PLANE3);
+    	GL11.glDisable(GL11.GL_CLIP_PLANE2);
+    	GL11.glDisable(GL11.GL_CLIP_PLANE1);
+    	GL11.glDisable(GL11.GL_CLIP_PLANE0);
     }
 
     private void drawBlackBackground(float greyLevel)
@@ -76,7 +103,7 @@ public class GameScreenCelestial implements IGameScreen
     
     private void drawCelestialBodies(float ticks)
     {
-        for (SolarSystem solarSystem : GalaxyRegistry.getRegisteredSolarSystems().values())
+    	for (SolarSystem solarSystem : GalaxyRegistry.getRegisteredSolarSystems().values())
         {
             Star star = solarSystem.getMainStar();
 
@@ -88,9 +115,10 @@ public class GameScreenCelestial implements IGameScreen
 
         for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
         {
-        	if (planet.getBodyIcon() != null)
+        	if (planet.getParentSolarSystem() != null && planet.getBodyIcon() != null)
             {
                 Vector3f pos = this.getCelestialBodyPosition(planet, ticks);
+                this.drawCircle(planet);
         		this.drawCelestialBody(planet, pos.x, pos.y, ticks, (planet.getRelativeDistanceFromCenter().unScaledDistance < 1.5F) ? 2F : 2.8F);
             }
         }
@@ -105,6 +133,7 @@ public class GameScreenCelestial implements IGameScreen
     		if (moon.getParentPlanet() == planet && moon.getBodyIcon() != null)
     		{
     	        Vector3f pos = this.getCelestialBodyPosition(moon, ticks);
+                this.drawCircle(moon);
     			this.drawCelestialBody(moon, pos.x, pos.y, ticks, 4F);
     		}
     	}
@@ -114,6 +143,7 @@ public class GameScreenCelestial implements IGameScreen
     		if (satellite.getParentPlanet() == planet)
     		{
     	        Vector3f pos = this.getCelestialBodyPosition(satellite, ticks);
+                this.drawCircle(satellite);
     			this.drawCelestialBody(satellite, pos.x, pos.y, ticks, 3F);
     		}
     	}
@@ -161,6 +191,49 @@ public class GameScreenCelestial implements IGameScreen
         GL11.glPopMatrix();
     }
 
+    private void drawCircle(CelestialBody cBody)
+    {
+        GL11.glPushMatrix();
+        GL11.glTranslatef(centreX, centreY, 0.002F);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        
+        float sd = 0.002514F * scale;
+        float x = this.getScale(cBody);
+        float y = 0;
+        float grey = 0.1F + 0.65F * Math.max(0F, (0.5F - x));
+        x = x * scale / sd;
+        
+        GL11.glColor4f(grey, grey, grey, 1.0F);
+        GL11.glLineWidth(0.002F);
+
+        GL11.glScalef(sd, sd, sd);
+        CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre preEvent = new CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre(cBody);
+        MinecraftForge.EVENT_BUS.post(preEvent);
+
+        if (!preEvent.isCanceled())
+        {
+            GL11.glBegin(GL11.GL_LINE_LOOP);
+
+            float temp;
+            for (int i = 0; i < lineSegments; i++)
+            {
+                GL11.glVertex2f(x, y);
+
+                temp = x;
+                x = cos * x - sin * y;
+                y = sin * temp + cos * y;
+            }
+
+            GL11.glEnd();
+        }
+
+        CelestialBodyRenderEvent.CelestialRingRenderEvent.Post postEvent = new CelestialBodyRenderEvent.CelestialRingRenderEvent.Post(cBody);
+        MinecraftForge.EVENT_BUS.post(postEvent);
+
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glPopMatrix();
+    }
+
     private Vector3f getCelestialBodyPosition(CelestialBody cBody, float ticks)
     {
         float timeScale = cBody instanceof Planet ? 200.0F : 2.0F;
@@ -176,5 +249,16 @@ public class GameScreenCelestial implements IGameScreen
         	else
         		distance += 0.075F; 
     	return 1 / 140.0F * distance * (celestialBody instanceof Planet ? 25.0F : 3.5F);
+    }
+    
+    private void planeEquation(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3)
+    {
+    	double[] result = new double[4];
+    	result[0] = y1 * (z2 - z3) + y2 * (z3 - z1) + y3 * (z1 - z2);
+    	result[1] = z1 * (x2 - x3) + z2 * (x3 - x1) + z3 * (x1 - x2);
+    	result[2] = x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2);
+    	result[3] = - (x1 * (y2 * z3 - y3 * z2) + x2 * (y3 * z1 - y1 * z3) + x3 * (y1 * z2 - y2 * z1));
+    	planes.put(result, 0, 4);
+    	planes.position(0);
     }
 }

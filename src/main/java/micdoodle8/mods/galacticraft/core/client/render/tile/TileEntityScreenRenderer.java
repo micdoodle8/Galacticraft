@@ -20,7 +20,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class TileEntityScreenRenderer extends TileEntitySpecialRenderer
 {
-    public static final ResourceLocation blockTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/misc/underoil.png");
+    public static final ResourceLocation blockTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/blocks/screenSide.png");
     public static final IModelCustom screenModel0 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/screenWhole.obj"));
     public static final IModelCustom screenModel1 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/screen3Quarters.obj"));
     public static final IModelCustom screenModel2 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/screen2Quarters.obj"));
@@ -86,6 +86,8 @@ public class TileEntityScreenRenderer extends TileEntitySpecialRenderer
         switch (count)
         {
         case 0:
+        	GL11.glTranslatef(-0.001F, -0.001F, -0.001F);
+        	GL11.glScalef(1.002F, 1.002F, 1.002F);
             TileEntityScreenRenderer.screenModel0.renderAll();
             break;
         case 1:
@@ -104,6 +106,8 @@ public class TileEntityScreenRenderer extends TileEntitySpecialRenderer
                 GL11.glRotatef(270, 0, -1.0F, 0);
                 GL11.glTranslatef(-1.0F, 0.0F, 0.0F);
         	}
+        	GL11.glTranslatef(-0.001F, -0.001F, -0.001F);
+        	GL11.glScalef(1.002F, 1.002F, 1.002F);
             TileEntityScreenRenderer.screenModel1.renderAll();
             break;
         case 2:
@@ -122,6 +126,8 @@ public class TileEntityScreenRenderer extends TileEntitySpecialRenderer
                 GL11.glRotatef(270, 0, -1.0F, 0);
                 GL11.glTranslatef(-1.0F, 0.0F, 0.0F);
         	}
+        	GL11.glTranslatef(-0.001F, -0.001F, -0.001F);
+        	GL11.glScalef(1.002F, 1.002F, 1.002F);
             TileEntityScreenRenderer.screenModel2.renderAll();
             break;
         case 3:
@@ -140,9 +146,13 @@ public class TileEntityScreenRenderer extends TileEntitySpecialRenderer
                 GL11.glRotatef(270, 0, -1.0F, 0);
                 GL11.glTranslatef(-1.0F, 0.0F, 0.0F);
         	}
+        	GL11.glTranslatef(-0.001F, -0.001F, -0.001F);
+        	GL11.glScalef(1.002F, 1.002F, 1.002F);
             TileEntityScreenRenderer.screenModel3.renderAll();
             break;
         case 4:
+        	GL11.glTranslatef(-0.001F, -0.001F, -0.001F);
+        	GL11.glScalef(1.002F, 1.002F, 1.002F);
             TileEntityScreenRenderer.screenModel4.renderAll();
             break;
         }

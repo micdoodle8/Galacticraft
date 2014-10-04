@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -15,7 +16,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class TileEntityScreen extends TileEntity
 {
     public int imageType = 0;
-    public static int maxTypes = 4;
+    public static int maxTypes;
 	public DrawGameScreen screen;
 	public boolean connectedUp;
 	public boolean connectedDown;
@@ -473,13 +474,7 @@ public class TileEntityScreen extends TileEntity
 
     	this.log("Finished screen size check");
     	
-    	if (this.checkWholeScreen(up, down, left, right))
-    	{
-	    	this.connectionsUp = up;
-	    	this.connectionsDown = down;
-	    	this.connectionsLeft = left;
-	    	this.connectionsRight = right;
-    	}
+    	this.checkWholeScreen(up, down, left, right);
     }
     
     /**
@@ -505,6 +500,12 @@ public class TileEntityScreen extends TileEntity
     	//System.out.println("Checking screen size at "+this.xCoord+","+this.zCoord+": Up "+up+" Dn "+down+" Lf "+left+" Rg "+right);
 
     	boolean screenWhole = true;
+    	boolean existingScreen = false;
+    	int barrierUp = up;
+    	int barrierDown = down;
+    	int barrierLeft = left;
+    	int barrierRight = right;
+    	
 		int meta = this.getBlockMetadata() & 7;
     	BlockVec3 vec = new BlockVec3(this);
     	ArrayList<TileEntityScreen> screenList = new ArrayList<TileEntityScreen>();
@@ -529,20 +530,30 @@ public class TileEntityScreen extends TileEntity
     			{
     				TileEntityScreen screenTile = (TileEntityScreen)tile;
     				screenList.add(screenTile);
-    				screenTile.screenOffsetx = x + left;
-    				screenTile.screenOffsetz = z + up;
-   					screenTile.screen = newScreen;
-   					screenTile.connectionsLeft = x + left;
-   					screenTile.connectionsRight = right - x;
-   					screenTile.connectionsUp = z + up;
-   					screenTile.connectionsDown = down - z;
-   					screenTile.isMultiscreen = true;
-   					if (serverside)
-					{
-   						screenTile.imageType = this.imageType;
-   						screenTile.markDirty();
-   						screenTile.updateClients();
-					}
+    				
+    				if (screenTile.isMultiscreen)
+    				{
+    					if (screenTile.connectionsUp > z + up)
+    					{
+    						barrierUp = up - (screenTile.connectionsUp - z - up);
+    						existingScreen = true;
+    					}
+    					if (screenTile.connectionsDown > down - z)
+    					{
+    						barrierDown = down - (screenTile.connectionsDown + z - down);
+    						existingScreen = true;
+    					}
+    					if (screenTile.connectionsLeft > x + left)
+    					{
+    						barrierLeft = left - (screenTile.connectionsLeft - x - left);
+    						existingScreen = true;
+    					}
+    					if (screenTile.connectionsRight > right - x)
+    					{
+    						barrierRight = right - (screenTile.connectionsRight + x - right);
+    						existingScreen = true;
+    					}
+    				}
     			}
     			else
     			{
@@ -551,17 +562,49 @@ public class TileEntityScreen extends TileEntity
     		}
     	}
     	
-    	if (screenWhole)
+    	if (!screenWhole)
     	{
-        	for (TileEntityScreen scr : screenList)
-       			scr.refreshConnections(false);
-    		return true;
+	    	for (TileEntityScreen scr : screenList)
+	   			scr.resetToSingle();
+	    	
+	    	return false;
     	}
 
-    	for (TileEntityScreen scr : screenList)
-   			scr.resetToSingle();
+    	if (existingScreen)
+    	{
+    		return this.checkWholeScreen(barrierUp, barrierDown, barrierLeft, barrierRight);
+    	}
     	
-    	return false;
+    	Iterator<TileEntityScreen> it = screenList.iterator();
+    	for (int x = -left; x <= right; x++)
+    	{
+    		for (int z = -up; z <= down; z++)
+    		{
+    			TileEntityScreen screenTile = it.next();   			
+				screenTile.screenOffsetx = x + left;
+				screenTile.screenOffsetz = z + up;
+				screenTile.screen = newScreen;
+				screenTile.connectionsLeft = x + left;
+				screenTile.connectionsRight = right - x;
+				screenTile.connectionsUp = z + up;
+				screenTile.connectionsDown = down - z;
+				screenTile.isMultiscreen = true;
+				if (serverside)
+				{
+					screenTile.imageType = this.imageType;
+					screenTile.markDirty();
+					screenTile.updateClients();
+				}
+    			screenTile.refreshConnections(false);
+    		}
+    	}
+
+    	this.connectionsUp = up;
+    	this.connectionsDown = down;
+    	this.connectionsLeft = left;
+    	this.connectionsRight = right;
+
+       	return true;
     }
     
     /**

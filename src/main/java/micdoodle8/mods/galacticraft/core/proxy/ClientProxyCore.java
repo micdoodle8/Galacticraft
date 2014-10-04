@@ -238,6 +238,7 @@ public class ClientProxyCore extends CommonProxyCore
         MinecraftForgeClient.registerItemRenderer(GCItems.meteorChunk, new ItemRendererMeteorChunk());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(GCBlocks.spinThruster), new ItemRendererThruster());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(GCBlocks.brightLamp), new ItemRendererArclamp());
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(GCBlocks.screen), new ItemRendererScreen());
     }
 
     public static void registerHandlers()

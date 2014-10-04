@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
@@ -7,19 +9,26 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockShiftDesc, IPartialSealableBlock
 {
-	//Metadata: 0-5 = direction screen is facing;  bit 3 = part of multi-block screen
+    private IIcon iconFront;
+    private IIcon iconSide;
+	
+	//Metadata: 0-5 = direction of screen back;  bit 3 = reserved for future use
 	protected BlockScreen(String assetName)
     {
         super(Material.circuits);
@@ -38,7 +47,7 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
     @Override
     public boolean isOpaqueCube()
     {
-        return true;
+        return false;
     }
 
     @Override
@@ -51,6 +60,25 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
     public int getRenderType()
     {
         return GalacticraftCore.proxy.getBlockRender(this);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister par1IconRegister)
+    {
+        this.iconFront = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "screenFront");
+        this.iconSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "screenSide");
+    }
+    
+    @Override
+    public IIcon getIcon(int side, int metadata)
+    {
+        if (side == (metadata & 7))
+        {
+            return this.iconSide;
+        }
+
+        return this.iconFront;
     }
 
     @Override
@@ -170,4 +198,36 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
 	{
     	return true;
 	}
+
+    @Override
+    public MovingObjectPosition collisionRayTrace(World par1World, int x, int y, int z, Vec3 par5Vec3, Vec3 par6Vec3)
+    {
+        final int metadata = par1World.getBlockMetadata(x, y, z) & 7;
+        float boundsFront = 0.094F;
+        float boundsBack = 1.0F - boundsFront;
+
+        switch (metadata)
+        {
+        case 0:
+        	this.setBlockBounds(0F, 0F, 0F, 1.0F, boundsBack, 1.0F);        	
+        	break;
+        case 1:
+        	this.setBlockBounds(0F, boundsFront, 0F, 1.0F, 1.0F, 1.0F);
+        	break;
+        case 2:
+        	this.setBlockBounds(0F, 0F, 0F, 1.0F, 1.0F, boundsBack);        	
+        	break;
+        case 3:
+        	this.setBlockBounds(0F, 0F, boundsFront, 1.0F, 1.0F, 1.0F);        	
+        	break;
+        case 4:
+        	this.setBlockBounds(0F, 0F, 0F, boundsBack, 1.0F, 1.0F);        	
+        	break;
+        case 5:
+        	this.setBlockBounds(boundsFront, 0F, 0F,  1.0F, 1.0F, 1.0F);        	
+        	break;
+        }
+
+        return super.collisionRayTrace(par1World, x, y, z, par5Vec3, par6Vec3);
+    }
 }

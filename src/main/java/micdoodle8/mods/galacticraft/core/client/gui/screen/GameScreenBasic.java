@@ -19,10 +19,10 @@ public class GameScreenBasic implements IGameScreen
     private float frameA;
     private float frameBx;
     private float frameBy;
-    private float cornerAx = 0F;
-    private float cornerAy = 0F;
-    private float cornerBx = 1.0F;
-    private float cornerBy = 1.0F;
+    private float textureAx = 0F;
+    private float textureAy = 0F;
+    private float textureBx = 1.0F;
+    private float textureBy = 1.0F;
     
     /**
      * Initialise the basic screen renderer
@@ -41,24 +41,24 @@ public class GameScreenBasic implements IGameScreen
 
     	if (scaleX == scaleY)
      	{
-     	    cornerAx = 0F;
-     	    cornerAy = 0F;
-     	    cornerBx = 1.0F;
-     	    cornerBy = 1.0F;
+     	    textureAx = 0F;
+     	    textureAy = 0F;
+     	    textureBx = 1.0F;
+     	    textureBy = 1.0F;
      	}
     	else if (scaleX < scaleY)
     	{
-    		cornerAx = (1.0F - (scaleX / scaleY)) / 2;
-    	    cornerAy = 0F;
-    		cornerBx = 1.0F - cornerAx;
-    	    cornerBy = 1.0F;
+    		textureAx = (1.0F - (scaleX / scaleY)) / 2;
+    	    textureAy = 0F;
+    		textureBx = 1.0F - textureAx;
+    	    textureBy = 1.0F;
     	} else
     	if (scaleY < scaleX)
     	{
-    	    cornerAx = 0F;
-    	    cornerAy = (1.0F - (scaleY / scaleX)) / 2;
-    	    cornerBx = 1.0F;
-    	    cornerBy = 1.0F - cornerAy;
+    	    textureAx = 0F;
+    	    textureAy = (1.0F - (scaleY / scaleX)) / 2;
+    	    textureBx = 1.0F;
+    	    textureBy = 1.0F - textureAy;
     	}
 
     	switch(type)
@@ -92,10 +92,10 @@ public class GameScreenBasic implements IGameScreen
         tess.setColorRGBA(255, 255, 255, 255);
         tess.startDrawingQuads();
 
-        tess.addVertexWithUV(frameA, frameBy, 0F, cornerAx, cornerBy);
-        tess.addVertexWithUV(frameBx, frameBy, 0F, cornerBx, cornerBy);
-        tess.addVertexWithUV(frameBx, frameA, 0F, cornerBx, cornerAy);
-        tess.addVertexWithUV(frameA, frameA, 0F, cornerAx, cornerAy);
+        tess.addVertexWithUV(frameA, frameBy, 0F, textureAx, textureBy);
+        tess.addVertexWithUV(frameBx, frameBy, 0F, textureBx, textureBy);
+        tess.addVertexWithUV(frameBx, frameA, 0F, textureBx, textureAy);
+        tess.addVertexWithUV(frameA, frameA, 0F, textureAx, textureAy);
         tess.draw();   	
     }
 
@@ -107,10 +107,10 @@ public class GameScreenBasic implements IGameScreen
         GL11.glColor4f(greyLevel, greyLevel, greyLevel, 1.0F);
         tess.startDrawingQuads();
         
-        tess.addVertex(frameA, frameBy, - 0.005F);
-        tess.addVertex(frameBx, frameBy, - 0.005F);
-        tess.addVertex(frameBx, frameA, - 0.005F);
-        tess.addVertex(frameA, frameA, - 0.005F);
+        tess.addVertex(frameA, frameBy, 0.005F);
+        tess.addVertex(frameBx, frameBy, 0.005F);
+        tess.addVertex(frameBx, frameA, 0.005F);
+        tess.addVertex(frameA, frameA, 0.005F);
         tess.draw();   	
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

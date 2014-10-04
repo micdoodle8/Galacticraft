@@ -51,6 +51,7 @@ public class DrawGameScreen
 	        registerScreen(rendererBasic);  //Type 1 - local satellite view
 	        registerScreen(rendererCelest);  //Type 2 - solar system
 	        registerScreen(rendererCelest);  //Type 3 - local planet
+	        registerScreen(new GameScreenText(FRAMEBORDER));  //Type 4 - text demo
     	}
     }
     
