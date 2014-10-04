@@ -263,7 +263,7 @@ public class GCBlocks
         GameRegistry.registerBlock(GCBlocks.blockMoon, ItemBlockMoon.class, GCBlocks.blockMoon.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.cheeseBlock, ItemBlockCheese.class, GCBlocks.cheeseBlock.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.spinThruster, ItemBlockThruster.class, GCBlocks.spinThruster.getUnlocalizedName());
-        GameRegistry.registerBlock(GCBlocks.screen, ItemBlockDummy.class, GCBlocks.screen.getUnlocalizedName());
+        GameRegistry.registerBlock(GCBlocks.screen, ItemBlockGC.class, GCBlocks.screen.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.brightLamp, ItemBlockArclamp.class, GCBlocks.brightLamp.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.treasureChestTier1, ItemBlockDesc.class, GCBlocks.treasureChestTier1.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.tinStairs1, ItemBlockGC.class, GCBlocks.tinStairs1.getUnlocalizedName());

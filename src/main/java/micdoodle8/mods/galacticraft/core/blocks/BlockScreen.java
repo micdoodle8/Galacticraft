@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import java.util.Random;
+
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
@@ -24,7 +26,7 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
     {
         super(Material.circuits);
         this.setHardness(0.1F);
-        this.setStepSound(Block.soundTypeGlass);
+        this.setStepSound(Block.soundTypeMetal);
         this.setBlockTextureName("glass");
         this.setBlockName(assetName);
     }
@@ -45,6 +47,12 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
     public boolean renderAsNormalBlock()
     {
         return false;
+    }
+
+    @Override
+    public Item getItemDropped(int par1, Random par2Random, int par3)
+    {
+        return Item.getItemFromBlock(this);
     }
 
     @Override
