@@ -28,7 +28,7 @@ public class GameScreenText implements IGameScreen
     	//Make the text to draw.  To look good it's important the width and height
     	//of the whole text box are correctly set here.
     	String str = makeString();  	
-    	int textWidthPixels = 41;
+    	int textWidthPixels = 39;
     	int textHeightPixels = 10;
 
     	//First pass - approximate border size
