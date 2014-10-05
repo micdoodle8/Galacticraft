@@ -6,9 +6,7 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.entity.Entity;
 import net.minecraft.stats.StatFileWriter;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.Session;
 import net.minecraft.world.World;
 

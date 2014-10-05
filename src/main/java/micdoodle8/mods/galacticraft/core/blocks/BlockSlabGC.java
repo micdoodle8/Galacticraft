@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.common.Loader;
-import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
@@ -49,7 +47,7 @@ public class BlockSlabGC extends BlockSlab
 		this.textures[2] = par1IconRegister.registerIcon("galacticraftmoon:bottom");
 		this.textures[3] = par1IconRegister.registerIcon("galacticraftmoon:brick");
 
-		if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
+		if (GalacticraftCore.isPlanetsLoaded)
 		{
 			this.textures[4] = par1IconRegister.registerIcon("galacticraftmars:cobblestone");
 			this.textures[5] = par1IconRegister.registerIcon("galacticraftmars:brick");
@@ -94,7 +92,7 @@ public class BlockSlabGC extends BlockSlab
 	{
 		int max = 0;
 
-		if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
+		if (GalacticraftCore.isPlanetsLoaded)
 		{
 			max = 6;//Number of slab types with Planets loaded 
 		}

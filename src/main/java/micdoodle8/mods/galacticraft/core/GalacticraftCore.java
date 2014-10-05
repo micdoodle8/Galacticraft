@@ -72,6 +72,8 @@ public class GalacticraftCore
     @Instance(Constants.MOD_ID_CORE)
     public static GalacticraftCore instance;
 
+    public static boolean isPlanetsLoaded;
+    
     public static GalacticraftChannelHandler packetPipeline;
 
     public static CreativeTabs galacticraftBlocksTab;
@@ -106,7 +108,9 @@ public class GalacticraftCore
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-        MinecraftForge.EVENT_BUS.register(new EventHandlerGC());
+    	isPlanetsLoaded = Loader.isModLoaded(Constants.MOD_ID_PLANETS);
+    	
+    	MinecraftForge.EVENT_BUS.register(new EventHandlerGC());
         GCPlayerHandler handler = new GCPlayerHandler();
         MinecraftForge.EVENT_BUS.register(handler);
         FMLCommonHandler.instance().bus().register(handler);

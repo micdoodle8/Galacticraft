@@ -1,8 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
-import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
-import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
@@ -79,7 +78,7 @@ public class PlayerServer implements IPlayerServer
     	if (player.ridingEntity instanceof EntityCelestialFake)
         	return -1;
     	
-    	if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
+    	if (GalacticraftCore.isPlanetsLoaded)
         {
             if (par1DamageSource == DamageSource.outOfWorld)
             {
@@ -124,7 +123,7 @@ public class PlayerServer implements IPlayerServer
     public void knockBack(EntityPlayerMP player, Entity p_70653_1_, float p_70653_2_, double impulseX, double impulseZ)
     {
         int deshCount = 0;
-        if (player.inventory != null && Loader.isModLoaded(Constants.MOD_ID_PLANETS))
+        if (player.inventory != null && GalacticraftCore.isPlanetsLoaded)
         {
             for (int i = 0; i < 4; i++)
             {

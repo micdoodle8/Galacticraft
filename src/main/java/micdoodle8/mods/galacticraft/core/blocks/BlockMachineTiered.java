@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.common.Loader;
-import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
@@ -80,7 +78,7 @@ public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBl
 
         this.iconElectricFurnace = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "electricFurnace");
 
-        if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
+        if (GalacticraftCore.isPlanetsLoaded)
         {
             this.iconTier2 = iconRegister.registerIcon("galacticraftasteroids:machine");
             this.iconInputT2 = iconRegister.registerIcon("galacticraftasteroids:machine_input");
@@ -352,7 +350,7 @@ public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBl
     {
         par3List.add(this.getEnergyStorageModule());
         par3List.add(this.getElectricFurnace());
-        if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
+        if (GalacticraftCore.isPlanetsLoaded)
         {
             par3List.add(this.getEnergyStorageCluster());
             par3List.add(this.getElectricArcFurnace());

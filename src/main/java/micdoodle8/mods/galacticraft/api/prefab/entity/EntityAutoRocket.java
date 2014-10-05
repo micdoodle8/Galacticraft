@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.api.prefab.entity;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
@@ -11,7 +10,6 @@ import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
-import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -61,7 +59,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
     private IFuelDock landingPad;
     public boolean landing;
     public EnumAutoLaunch autoLaunchSetting;
-    private static boolean marsLoaded = Loader.isModLoaded(Constants.MOD_ID_PLANETS);
+    private static boolean marsLoaded = GalacticraftCore.isPlanetsLoaded;
 
     public int autoLaunchCountdown;
     public String statusMessage;

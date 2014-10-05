@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockWall;
@@ -16,7 +15,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -41,7 +39,7 @@ public class BlockWallGC extends BlockWall
 		this.wallBlockIcon[2] = par1IconRegister.registerIcon("galacticraftmoon:bottom");
 		this.wallBlockIcon[3] = par1IconRegister.registerIcon("galacticraftmoon:brick");
 
-		if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
+		if (GalacticraftCore.isPlanetsLoaded)
 		{
 			try
 			{
@@ -189,7 +187,7 @@ public class BlockWallGC extends BlockWall
 	@Override
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
-		if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
+		if (GalacticraftCore.isPlanetsLoaded)
 		{
 			for (int var4 = 0; var4 < 6; ++var4)
 			{

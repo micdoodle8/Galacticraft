@@ -1,8 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
@@ -13,6 +12,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+
 import org.lwjgl.opengl.GL11;
 
 public class RenderPlayerGC extends RenderPlayer
@@ -32,7 +32,7 @@ public class RenderPlayerGC extends RenderPlayer
         this.modelThermalPadding = new ModelPlayerGC(0.25F);
         this.modelThermalPaddingHelmet = new ModelPlayerGC(0.9F);
 
-        if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
+        if (GalacticraftCore.isPlanetsLoaded)
         {
             RenderPlayerGC.thermalPaddingTexture0 = new ResourceLocation("galacticraftasteroids", "textures/misc/thermalPadding_0.png");
             RenderPlayerGC.thermalPaddingTexture1 = new ResourceLocation("galacticraftasteroids", "textures/misc/thermalPadding_1.png");

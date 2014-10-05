@@ -3,8 +3,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.util.Arrays;
 import java.util.List;
 
-import cpw.mods.fml.common.Loader;
-import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
@@ -75,7 +73,7 @@ public class BlockStairsGC extends BlockStairs
 			this.blockIcon = par1IconRegister.registerIcon("galacticraftmoon:brick");
 		}
 
-		if (Loader.isModLoaded(Constants.MOD_ID_PLANETS))
+		if (GalacticraftCore.isPlanetsLoaded)
 		{
 			if (this.category == StairsCategoryGC.MARS_COBBLESTONE)//Mars Cobblestone
 			{
