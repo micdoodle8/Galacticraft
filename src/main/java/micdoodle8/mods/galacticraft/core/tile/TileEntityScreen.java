@@ -14,8 +14,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityScreen extends TileEntity
-{
-    public int imageType = 0;
+{   
+    public static float FRAMEBORDER = 0.098F;  //used for rendering
+    public int imageType;
     public static int maxTypes;
 	public DrawGameScreen screen;
 	public boolean connectedUp;

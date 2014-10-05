@@ -1,10 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
 import java.nio.FloatBuffer;
-import java.util.ArrayList;
-import java.util.List;
 
-import micdoodle8.mods.galacticraft.api.client.IGameScreen;
+import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -16,8 +14,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 
 public class DrawGameScreen
 {
-    private static List<IGameScreen> gameScreens = new ArrayList<IGameScreen>();
-
     private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
     private static FloatBuffer colorBuffer = GLAllocation.createDirectFloatBuffer(16);
 
@@ -30,43 +26,16 @@ public class DrawGameScreen
     
     private float scaleX;
     private float scaleZ;
-    
-    public static float FRAMEBORDER = 0.098F;
-    public static int maxType = 0;
 
     public DrawGameScreen(float scaleXparam, float scaleZparam)
     {
     	this.scaleX = scaleXparam;
     	this.scaleZ = scaleZparam;
-    	DrawGameScreen.initialise();
-    }
-    
-    public static void initialise()
-    {
-    	if (DrawGameScreen.gameScreens.isEmpty())
-    	{
-	        IGameScreen rendererBasic = new GameScreenBasic(FRAMEBORDER);
-	        IGameScreen rendererCelest = new GameScreenCelestial(FRAMEBORDER);
-	        registerScreen(rendererBasic);  //Type 0 - blank
-	        registerScreen(rendererBasic);  //Type 1 - local satellite view
-	        registerScreen(rendererCelest);  //Type 2 - solar system
-	        registerScreen(rendererCelest);  //Type 3 - local planet
-	        registerScreen(new GameScreenText(FRAMEBORDER));  //Type 4 - text demo
-    	}
-    }
-    
-    public static void registerScreen(IGameScreen screen)
-    {
-    	DrawGameScreen.gameScreens.add(screen);
-    	DrawGameScreen.maxType++;
-        TileEntityScreen.maxTypes = DrawGameScreen.maxType;
-        //Note: add-ons may need to manually increase TileEntityScreen.maxTypes
-        //on the server side, as this will only make client-side changes
     }
     
     public void drawScreen(int type, float ticks, boolean cornerBlock)
     {
-    	if (type >= DrawGameScreen.maxType)
+    	if (type >= TileEntityScreen.maxTypes)
     	{
     		System.out.println("Wrong gamescreen type detected - this is a bug."+type);
     		return;
@@ -162,7 +131,7 @@ public class DrawGameScreen
 
         if (type > 0) GL11.glDisable(GL11.GL_LIGHTING);
 
-        DrawGameScreen.gameScreens.get(type).render(type, ticks, scaleX, scaleZ);
+        GalacticraftRegistry.getGameScreen(type).render(type, ticks, scaleX, scaleZ);
 
         if (type > 0) GL11.glEnable(GL11.GL_LIGHTING);
 

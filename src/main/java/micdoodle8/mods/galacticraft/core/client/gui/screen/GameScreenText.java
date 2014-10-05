@@ -4,50 +4,61 @@ import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureManager;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.client.FMLClientHandler;
-
 public class GameScreenText implements IGameScreen
 {
-    private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
-
     private float frameA;
     private float frameBx;
     private float frameBy;
-    private float cornerAx = 0F;
-    private float cornerAy = 0F;
-    private float cornerBx = 1.0F;
-    private float cornerBy = 1.0F;
         
-    /**
-     * Initialise the basic screen renderer
-     * 
-     * @param frameWidth  The undrawn frame border, in blocks (typically 0.1F)
-     */
-    public GameScreenText(float frameWidth)
-    {
-    	this.frameA = frameWidth;
-    }
     
-    public void render(int type, float ticks, float scaleX, float scaleY)
-    {
-    	drawBlackBackground(0.0F);
-    	float scale = Math.min(scaleX, scaleY);
-    	GL11.glTranslatef(frameA + 0.025F * scale, frameA + 0.025F * scale, 0.0F);
-    	String str = makeString();  	
-    	int width = str.length() * 6;
-    	float textScale = (scale - frameA * 2) / width; 
-        GL11.glScalef(textScale, textScale, 1.0F);
+	public void setFrameSize(float frameSize)
+	{
+		this.frameA = frameSize;
+	}
 
-    	switch(type)
-        {
-    	default:
-	        drawText(str, GCCoreUtil.to32BitColor(255, 240, 216, 255));
-	        break;
-        }
+	public void render(int type, float ticks, float sizeX, float sizeY)
+    {
+    	frameBx = sizeX - frameA;
+    	frameBy = sizeY - frameA;
+    	drawBlackBackground(0.0F);
+
+    	//Make the text to draw.  To look good it's important the width and height
+    	//of the whole text box are correctly set here.
+    	String str = makeString();  	
+    	int textWidthPixels = 41;
+    	int textHeightPixels = 10;
+
+    	//First pass - approximate border size
+    	float borders = frameA * 2 + 0.05F * Math.min(sizeX, sizeY);
+    	float scaleXTest = (sizeX - borders) / textWidthPixels;
+    	float scaleYTest = (sizeY - borders) / textHeightPixels;
+    	float scale = sizeX;
+    	if (scaleYTest < scaleXTest)
+    		scale = sizeY;
+    	//Second pass - the border size may be more accurate now
+    	borders = frameA * 2 + 0.05F * scale;
+    	scaleXTest = (sizeX - borders) / textWidthPixels;
+    	scaleYTest = (sizeY - borders) / textHeightPixels;
+    	scale = sizeX;
+    	float scaleText = scaleXTest;
+    	if (scaleYTest < scaleXTest)
+    	{
+    		scale = sizeY;
+    		scaleText = scaleYTest; 
+    	}
+
+    	//Centre the text in the display 
+    	float border = frameA + 0.025F * scale;
+    	float Xoffset = (sizeX - borders - textWidthPixels * scaleText) / 2;
+    	float Yoffset = (sizeY - borders - textHeightPixels * scaleText) / 2;
+    	GL11.glTranslatef(border + Xoffset, border + Yoffset, 0.0F);
+        GL11.glScalef(scaleText, scaleText, 1.0F);
+
+        //Actually draw the text
+        drawText(str, GCCoreUtil.to32BitColor(255, 240, 216, 255));
     }
     
     private String makeString()
@@ -56,12 +67,10 @@ public class GameScreenText implements IGameScreen
     	int hrs = l / 360000;
     	int mins = l / 6000 - hrs * 60;
     	int secs = l / 100 - hrs * 3600 - mins * 60;
-    	int cs = l % 100;
     	String hrsStr = hrs > 9 ? "" + hrs : "0" + hrs;
     	String minsStr = mins > 9 ? "" + mins : "0" + mins;
     	String secsStr = secs > 9 ? "" + secs : "0" + secs;
-    	String csStr = cs > 9 ? "" + cs : "0" + cs;
-    	return hrsStr + ":" + minsStr + ":" + secsStr + "." + csStr;
+    	return hrsStr + ":" + minsStr + ":" + secsStr;
     }
 
     private void drawText(String str, int colour)

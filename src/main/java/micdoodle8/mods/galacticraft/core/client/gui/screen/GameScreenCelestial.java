@@ -21,10 +21,11 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
 
 public class GameScreenCelestial implements IGameScreen
 {
-    private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
+    private TextureManager renderEngine;
 
     private float frameA;
     private float frameBx;
@@ -37,13 +38,23 @@ public class GameScreenCelestial implements IGameScreen
     private final float cos = (float) Math.cos(2 * Math.PI / lineSegments);
     private final float sin = (float) Math.sin(2 * Math.PI / lineSegments);
 
-    private static DoubleBuffer planes = BufferUtils.createDoubleBuffer(4 * Double.SIZE);
+    private DoubleBuffer planes;
+
     
-    public GameScreenCelestial(float frame)
+    public GameScreenCelestial()
     {
-    	this.frameA = frame;
+		if (FMLCommonHandler.instance().getEffectiveSide().isClient())
+		{
+			renderEngine = FMLClientHandler.instance().getClient().renderEngine;
+			planes = BufferUtils.createDoubleBuffer(4 * Double.SIZE);
+		}
     }
     
+	public void setFrameSize(float frameSize)
+	{
+		this.frameA = frameSize;
+	}
+
     public void render(int type, float ticks, float scaleX, float scaleY)
     {
     	centreX = scaleX / 2;

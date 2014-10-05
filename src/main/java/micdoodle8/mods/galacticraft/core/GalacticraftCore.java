@@ -19,6 +19,7 @@ import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.blocks.BlockFluidGC;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiHandler;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.GameScreenText;
 import micdoodle8.mods.galacticraft.core.command.*;
 import micdoodle8.mods.galacticraft.core.dimension.*;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
@@ -268,6 +269,7 @@ public class GalacticraftCore
         }
 
         FMLInterModComms.sendMessage("OpenBlocks", "donateUrl", "http://www.patreon.com/micdoodle8");
+    	GalacticraftRegistry.registerCoreGameScreens();
     }
 
     @EventHandler
@@ -294,6 +296,10 @@ public class GalacticraftCore
         NetworkRegistry.INSTANCE.registerGuiHandler(GalacticraftCore.instance, new GuiHandler());
         FMLCommonHandler.instance().bus().register(new TickHandlerServer());
         GalaxyRegistry.refreshGalaxies();
+        
+    	GalacticraftRegistry.registerScreen(new GameScreenText());  //Screen API demo
+    	//Note: add-ons can register their own screens in postInit by calling GalacticraftRegistry.registerScreen(IGameScreen) like this.
+    	//[Called on both client and server: do not include any client-specific code in the new game screen's constructor method.]
     }
 
     @EventHandler

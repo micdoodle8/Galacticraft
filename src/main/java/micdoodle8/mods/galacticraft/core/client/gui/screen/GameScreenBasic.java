@@ -11,10 +11,11 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
 
 public class GameScreenBasic implements IGameScreen
 {
-    private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
+    private TextureManager renderEngine;
 
     private float frameA;
     private float frameBx;
@@ -24,16 +25,22 @@ public class GameScreenBasic implements IGameScreen
     private float textureBx = 1.0F;
     private float textureBy = 1.0F;
     
-    /**
-     * Initialise the basic screen renderer
-     * 
-     * @param frameWidth  The undrawn frame border, in blocks (typically 0.1F)
-     */
-    public GameScreenBasic(float frameWidth)
+
+    public GameScreenBasic()
     {
-    	this.frameA = frameWidth;
+		//This can be called from either server or client, so don't include
+    	//client-side only code on the server.
+    	if (FMLCommonHandler.instance().getEffectiveSide().isClient())
+		{
+			renderEngine = FMLClientHandler.instance().getClient().renderEngine;
+		}
     }
     
+    public void setFrameSize(float frameSize)
+	{
+		this.frameA = frameSize;
+	}
+
     public void render(int type, float ticks, float scaleX, float scaleY)
     {
     	frameBx = scaleX - frameA;
