@@ -55,7 +55,8 @@ public class ContainerTerraformer extends Container
 	                    Block b = (Block) Block.blockRegistry.getObject((String)iterator.next());
 	                    if (b instanceof BlockBush)
 	                    {
-	                        Item item = Item.getItemFromBlock(b);
+	                        try {
+	                    	Item item = Item.getItemFromBlock(b);
 	                        if (item != null)
 	                        {
 	                        	//item.getSubItems(item, null, subItemsList); - can't use because clientside only
@@ -70,6 +71,7 @@ public class ContainerTerraformer extends Container
 	                    			ContainerTerraformer.saplingList.add(testStack);
 	                    		}                   		
 	                        }
+	                        } catch (Exception e) { e.printStackTrace(); }
 	                    }
 	                }
                 }
