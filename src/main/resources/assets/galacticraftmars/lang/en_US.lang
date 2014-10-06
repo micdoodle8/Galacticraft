@@ -52,6 +52,14 @@ tile.sludge.name=Bacterial Sludge
 tile.creeperEgg.name=Creeper Egg
 tile.cavernVines.name=Cavernous Vines
 
+# DECOBLOCKS
+tile.marsCobblestoneStairs.name=Mars Cobblestone Stairs
+tile.wallGC.mars.name=Mars Cobblestone Wall
+tile.slabGCHalf.marsSlab.name=Mars Cobblestone Slab
+tile.marsDungeonBricksStairs.name=Mars Dungeon Brick Stairs
+tile.wallGC.marsBricks.name=Mars Dungeon Brick Wall
+tile.slabGCHalf.marsBricksSlab.name=Mars Dungeon Brick Slab
+
 # GUI
 gui.choosePlanet.desc.mars=Habitable#No Oxygen#Gravity: 38%
 item.deshPickSlime.description.name=Can harvest Creeper eggs

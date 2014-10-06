@@ -180,6 +180,20 @@ tile.arclamp.name=Arc Lamp
 tile.spinThruster.name=Spin Thruster
 tile.viewScreen.name=Display Screen
 
+# DECOBLOCKS
+tile.tinStairs1.name=Tin Decoration Stairs
+tile.tinStairs2.name=Tin Decoration Stairs
+tile.wallGC.tin.name=Tin Decoration Wall
+tile.wallGC.tin.name=Tin Decoration Wall
+tile.slabGCHalf.tinSlab.name=Tin Decoration Slab
+tile.slabGCHalf.tinSlab.name=Tin Decoration Slab
+tile.moonStoneStairs.name=Moon Rock Stairs
+tile.wallGC.moon.name=Moon Rock Wall
+tile.slabGCHalf.moonSlab.name=Moon Rock Slab
+tile.moonBricksStairs.name=Moon Dungeon Brick Stairs
+tile.wallGC.moonBricks.name=Moon Dungeon Brick Wall
+tile.slabGCHalf.moonBricksSlab.name=Moon Dungeon Brick Slab
+
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Evolved Spider
 entity.GalacticraftCore.EvolvedZombie.name=Evolved Zombie
