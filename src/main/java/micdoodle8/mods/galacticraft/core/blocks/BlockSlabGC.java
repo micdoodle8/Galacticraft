@@ -98,7 +98,7 @@ public class BlockSlabGC extends BlockSlab
 		}
 		else
 		{
-			max = 4;//Number of slab types with Planets loaded
+			max = 4;//Number of slab types with Planets not loaded
 		}
 		for (int i = 0; i < max; ++i)
 		{
@@ -170,11 +170,31 @@ public class BlockSlabGC extends BlockSlab
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
 	{
+		int meta = world.getBlockMetadata(x, y, z);
+
 		if (this == GCBlocks.slabGCDouble)
 		{
-			return new ItemStack(GCBlocks.slabGCHalf, 1, world.getBlockMetadata(x, y, z));
+			return new ItemStack(GCBlocks.slabGCHalf, 1, meta);
 		}
-		return new ItemStack(GCBlocks.slabGCHalf, 1, world.getBlockMetadata(x, y, z));
+		if (this == GCBlocks.slabGCHalf)
+		{
+			switch (meta)
+			{
+			case 8:
+				return new ItemStack(GCBlocks.slabGCHalf, 1, 0);
+			case 9:
+				return new ItemStack(GCBlocks.slabGCHalf, 1, 1);
+			case 10:
+				return new ItemStack(GCBlocks.slabGCHalf, 1, 2);
+			case 11:
+				return new ItemStack(GCBlocks.slabGCHalf, 1, 3);
+			case 12:
+				return new ItemStack(GCBlocks.slabGCHalf, 1, 4);
+			case 13:
+				return new ItemStack(GCBlocks.slabGCHalf, 1, 5);
+			}
+		}
+		return new ItemStack(GCBlocks.slabGCHalf, 1, meta);
 	}
 
 	@Override
