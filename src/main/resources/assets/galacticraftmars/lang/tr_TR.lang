@@ -51,6 +51,12 @@ tile.marsMachine.6.name=Su Elektroliz Cihazı
 tile.sludge.name=Bakteriyelli Çamur
 tile.creeperEgg.name=Creeper Yumurtası
 tile.cavernVines.name=Cavernous Vines
+tile.marsCobblestoneStairs.name=Mars Cobblestone Stairs ##NEEDS TRANSLATE##
+tile.wallGC.mars.name=Mars Cobblestone Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.marsSlab.name=Mars Cobblestone Slab ##NEEDS TRANSLATE##
+tile.marsDungeonBricksStairs.name=Mars Dungeon Brick Stairs ##NEEDS TRANSLATE##
+tile.wallGC.marsBricks.name=Mars Dungeon Brick Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.marsBricksSlab.name=Mars Dungeon Brick Slab ##NEEDS TRANSLATE##
 
 # GUI
 gui.choosePlanet.desc.mars=Yaşanabilir#Oksijen Bulunmuyor#Yerçekimi: %38

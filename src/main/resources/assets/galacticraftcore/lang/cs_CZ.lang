@@ -195,6 +195,17 @@ tile.oxygenCompressor.0.name=Kyslíkový kompresor
 tile.oxygenCompressor.1.name=Kyslíkový dekompresor
 tile.arclamp.name=Oblouková lampa
 tile.spinThruster.name=Manévrovací tryska
+tile.viewScreen.name=Display Screen ##NEEDS TRANSLATE##
+tile.tinStairs1.name=Tin Decoration Stairs ##NEEDS TRANSLATE##
+tile.tinStairs2.name=Tin Decoration Stairs ##NEEDS TRANSLATE##
+tile.wallGC.tin.name=Tin Decoration Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.tinSlab.name=Tin Decoration Slab ##NEEDS TRANSLATE##
+tile.moonStoneStairs.name=Moon Rock Stairs ##NEEDS TRANSLATE##
+tile.wallGC.moon.name=Moon Rock Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.moonSlab.name=Moon Rock Slab ##NEEDS TRANSLATE##
+tile.moonBricksStairs.name=Moon Dungeon Brick Stairs ##NEEDS TRANSLATE##
+tile.wallGC.moonBricks.name=Moon Dungeon Brick Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.moonBricksSlab.name=Moon Dungeon Brick Slab ##NEEDS TRANSLATE##
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Vyvinutý pavouk
@@ -596,6 +607,7 @@ tile.glowstoneTorch.description=Světlitové pochodně je nejlépší využívat
 tile.cheeseBlock.description=Blok sýra je vytvořen z měsíčního sýra, lze umístit a jíst.
 tile.spinThruster.description=Manévrovací trysky lze použít pro rotaci vesmírné stanice.
 tile.arclamp.description=Obloukové lampy jsou používány jako silný zdroj světla pro rozsáhlé oblasti, také nutí většinu zvířat utéct.
+tile.viewScreen.description=Display screens add that final touch to your space base. Right-click changes the information shown. ##NEEDS TRANSLATE##
 
 # COMMANDS
 commands.dimensionteleport=%s byl/a odeslán do atmosféry%s
@@ -647,6 +659,7 @@ gc.configgui.disableTinMoon=Nevitvářet měsíční cín
 gc.configgui.disableCopperMoon=Nevitvářet měsíční měď
 gc.configgui.disableMoonVillageGen=Nevitvářet mimozemšťany
 gc.configgui.enableOtherModsFeatures=Povolit externí generátory terénu
+gc.configgui.otherModOreGenIDs=Other Mod Ores to Generate on Planets ##NEEDS TRANSLATE##
 gc.configgui.enableDebug=Zobrazovat ladící výstup
 gc.configgui.disableLander=Disable lander on Moon, use parachute instead
 gc.configgui.disableSpaceshipGrief=Vypnout exploze raket

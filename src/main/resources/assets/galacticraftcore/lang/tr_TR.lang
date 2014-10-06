@@ -178,6 +178,17 @@ tile.oxygenCompressor.0.name=Oksijen Kompresör
 tile.oxygenCompressor.1.name=Oksijen Açıcı
 tile.arclamp.name=Ark Lambası
 tile.spinThruster.name=Dönüş Pervanesi
+tile.viewScreen.name=Display Screen ##NEEDS TRANSLATE##
+tile.tinStairs1.name=Tin Decoration Stairs ##NEEDS TRANSLATE##
+tile.tinStairs2.name=Tin Decoration Stairs ##NEEDS TRANSLATE##
+tile.wallGC.tin.name=Tin Decoration Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.tinSlab.name=Tin Decoration Slab ##NEEDS TRANSLATE##
+tile.moonStoneStairs.name=Moon Rock Stairs ##NEEDS TRANSLATE##
+tile.wallGC.moon.name=Moon Rock Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.moonSlab.name=Moon Rock Slab ##NEEDS TRANSLATE##
+tile.moonBricksStairs.name=Moon Dungeon Brick Stairs ##NEEDS TRANSLATE##
+tile.wallGC.moonBricks.name=Moon Dungeon Brick Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.moonBricksSlab.name=Moon Dungeon Brick Slab ##NEEDS TRANSLATE##
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Gelişmiş Örümcek
@@ -549,6 +560,7 @@ tile.glowstoneTorch.description=Işık Taşı Meşale, oksijen bulunmayan ortaml
 tile.cheeseBlock.description=Peynir bloğu, yenilebilir. Peynir Ayda bulunur. 
 tile.spinThruster.description=Dönüş Pervanesi uzay istasyonu için kullanılır.
 tile.arclamp.description=Ark Lambası büyük alanları aydınlatmak için kullanılır.
+tile.viewScreen.description=Display screens add that final touch to your space base. Right-click changes the information shown. ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.cargoloader.name=Kargo Yükleyici
@@ -633,6 +645,7 @@ gc.configgui.disableTinMoon=Disable Moon Tin Gen
 gc.configgui.disableCopperMoon=Disable Moon Copper Gen
 gc.configgui.disableMoonVillageGen=Disable Moon Village Gen
 gc.configgui.enableOtherModsFeatures=Enable External Mod World Gen
+gc.configgui.otherModOreGenIDs=Other Mod Ores to Generate on Planets ##NEEDS TRANSLATE##
 gc.configgui.enableDebug=Show Debug Messages in Console
 gc.configgui.disableLander=Disable lander on Moon, use parachute instead
 gc.configgui.disableSpaceshipGrief=Disable Rocket Explosions

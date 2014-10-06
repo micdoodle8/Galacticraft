@@ -195,6 +195,17 @@ tile.oxygenCompressor.0.name=Compressor de Oxigénio
 tile.oxygenCompressor.1.name=Descompressor de Oxigénio
 tile.arclamp.name=Arc Lamp ##NEEDS TRANSLATE##
 tile.spinThruster.name=Spin Thruster ##NEEDS TRANSLATE##
+tile.viewScreen.name=Display Screen ##NEEDS TRANSLATE##
+tile.tinStairs1.name=Tin Decoration Stairs ##NEEDS TRANSLATE##
+tile.tinStairs2.name=Tin Decoration Stairs ##NEEDS TRANSLATE##
+tile.wallGC.tin.name=Tin Decoration Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.tinSlab.name=Tin Decoration Slab ##NEEDS TRANSLATE##
+tile.moonStoneStairs.name=Moon Rock Stairs ##NEEDS TRANSLATE##
+tile.wallGC.moon.name=Moon Rock Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.moonSlab.name=Moon Rock Slab ##NEEDS TRANSLATE##
+tile.moonBricksStairs.name=Moon Dungeon Brick Stairs ##NEEDS TRANSLATE##
+tile.wallGC.moonBricks.name=Moon Dungeon Brick Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.moonBricksSlab.name=Moon Dungeon Brick Slab ##NEEDS TRANSLATE##
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Aranha Evoluída
@@ -587,6 +598,7 @@ tile.glowstoneTorch.description=Glowstone Torches are best used to light areas w
 tile.cheeseBlock.description=Cheese Blocks are created from the cheeses of the Moon, place-able and edible. ##NEEDS TRANSLATE##
 tile.spinThruster.description=Spin Thrusters are used to make space stations rotate. ##NEEDS TRANSLATE##
 tile.arclamp.description=Arc Lamps are used to provide strong light to a large area, also causing most mobs to flee. ##NEEDS TRANSLATE##
+tile.viewScreen.description=Display screens add that final touch to your space base. Right-click changes the information shown. ##NEEDS TRANSLATE##
 
 # COMMANDS
 commands.dimensionteleport=%s foi enviado para a atmosfera%s
@@ -638,6 +650,7 @@ gc.configgui.disableTinMoon=Disable Moon Tin Gen
 gc.configgui.disableCopperMoon=Disable Moon Copper Gen
 gc.configgui.disableMoonVillageGen=Disable Moon Village Gen
 gc.configgui.enableOtherModsFeatures=Enable External Mod World Gen
+gc.configgui.otherModOreGenIDs=Other Mod Ores to Generate on Planets ##NEEDS TRANSLATE##
 gc.configgui.enableDebug=Show Debug Messages in Console
 gc.configgui.disableLander=Disable lander on Moon, use parachute instead
 gc.configgui.disableSpaceshipGrief=Disable Rocket Explosions

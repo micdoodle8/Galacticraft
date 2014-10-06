@@ -178,6 +178,17 @@ tile.oxygenCompressor.0.name=Кислородный компрессор
 tile.oxygenCompressor.1.name=Кислородный декомпрессор
 tile.arclamp.name=Дуговая лампа
 tile.spinThruster.name=Вращающий двигатель
+tile.viewScreen.name=Display Screen ##NEEDS TRANSLATE##
+tile.tinStairs1.name=Tin Decoration Stairs ##NEEDS TRANSLATE##
+tile.tinStairs2.name=Tin Decoration Stairs ##NEEDS TRANSLATE##
+tile.wallGC.tin.name=Tin Decoration Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.tinSlab.name=Tin Decoration Slab ##NEEDS TRANSLATE##
+tile.moonStoneStairs.name=Moon Rock Stairs ##NEEDS TRANSLATE##
+tile.wallGC.moon.name=Moon Rock Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.moonSlab.name=Moon Rock Slab ##NEEDS TRANSLATE##
+tile.moonBricksStairs.name=Moon Dungeon Brick Stairs ##NEEDS TRANSLATE##
+tile.wallGC.moonBricks.name=Moon Dungeon Brick Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.moonBricksSlab.name=Moon Dungeon Brick Slab ##NEEDS TRANSLATE##
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=Эволюционировавший паук
@@ -549,6 +560,7 @@ tile.glowstoneTorch.description=Факел из светящегося камн�
 tile.cheeseBlock.description=Сырные блоки создаются из сыра Луны, их можно поставить в мир или съесть.
 tile.spinThruster.description=Вращающие двигатели используются для вращения космических станций.
 tile.arclamp.description=Дуговые лампы используются для освещения большой территории, также заставляют большинство мобов убегать.
+tile.viewScreen.description=Display screens add that final touch to your space base. Right-click changes the information shown. ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.cargoloader.name=Грузовой загрузчик
@@ -635,6 +647,7 @@ gc.configgui.disableTinMoon=Отключить генерацию лунного
 gc.configgui.disableCopperMoon=Отключить генерацию лунной меди
 gc.configgui.disableMoonVillageGen=Отключить генерацию лунных деревень
 gc.configgui.enableOtherModsFeatures=Включить внешнюю генерацию других модов
+gc.configgui.otherModOreGenIDs=Other Mod Ores to Generate on Planets ##NEEDS TRANSLATE##
 gc.configgui.enableDebug=Показывать отладочные сообщения в консоли
 gc.configgui.disableLander=Отключить посадочный модуль
 gc.configgui.disableSpaceshipGrief=Отключить взрыв ракеты

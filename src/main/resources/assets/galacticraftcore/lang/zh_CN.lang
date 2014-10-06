@@ -178,6 +178,17 @@ tile.oxygenCompressor.0.name=氧气压缩机
 tile.oxygenCompressor.1.name=氧气解压机
 tile.arclamp.name=弧光灯
 tile.spinThruster.name=旋转推进器
+tile.viewScreen.name=Display Screen ##NEEDS TRANSLATE##
+tile.tinStairs1.name=Tin Decoration Stairs ##NEEDS TRANSLATE##
+tile.tinStairs2.name=Tin Decoration Stairs ##NEEDS TRANSLATE##
+tile.wallGC.tin.name=Tin Decoration Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.tinSlab.name=Tin Decoration Slab ##NEEDS TRANSLATE##
+tile.moonStoneStairs.name=Moon Rock Stairs ##NEEDS TRANSLATE##
+tile.wallGC.moon.name=Moon Rock Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.moonSlab.name=Moon Rock Slab ##NEEDS TRANSLATE##
+tile.moonBricksStairs.name=Moon Dungeon Brick Stairs ##NEEDS TRANSLATE##
+tile.wallGC.moonBricks.name=Moon Dungeon Brick Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.moonBricksSlab.name=Moon Dungeon Brick Slab ##NEEDS TRANSLATE##
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=蜘蛛(进化体)
@@ -549,6 +560,7 @@ tile.glowstoneTorch.description=萤石火把最好用于在无氧使得火把无
 tile.cheeseBlock.description=奶酪块由月球的奶酪制成,可放置并且可食用.
 tile.spinThruster.description=旋转推进器用于使空间站旋转.
 tile.arclamp.description=弧光灯用于给大片区域提供强光,也会使大部分怪物逃离.
+tile.viewScreen.description=Display screens add that final touch to your space base. Right-click changes the information shown. ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.cargoloader.name=货物装载器
@@ -635,6 +647,7 @@ gc.configgui.disableTinMoon=Disable Moon Tin Gen(禁止月球锡矿生成)
 gc.configgui.disableCopperMoon=Disable Moon Copper Gen(禁止月球铜矿生成)
 gc.configgui.disableMoonVillageGen=Disable Moon Village Gen(禁止月球村民生成)
 gc.configgui.enableOtherModsFeatures=Enable External Mod World Gen(允许其它Mod的世界生成)
+gc.configgui.otherModOreGenIDs=Other Mod Ores to Generate on Planets ##NEEDS TRANSLATE##
 gc.configgui.enableDebug=Show Debug Messages in Console(在控制台里显示调试信息)
 gc.configgui.disableLander=Disable Moon Lander(月球禁用登陆舱)
 gc.configgui.disableSpaceshipGrief=Disable Moon Lander(禁用火箭爆炸)

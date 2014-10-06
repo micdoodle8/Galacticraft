@@ -51,6 +51,12 @@ tile.marsMachine.6.name=เครื่องเปลี่ยนน้ำเ�
 tile.sludge.name=ตะกอนแบคทีเรีย
 tile.creeperEgg.name=ไข่คริปเปอร์
 tile.cavernVines.name=เถาวัลย์ถ้ำ
+tile.marsCobblestoneStairs.name=Mars Cobblestone Stairs ##NEEDS TRANSLATE##
+tile.wallGC.mars.name=Mars Cobblestone Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.marsSlab.name=Mars Cobblestone Slab ##NEEDS TRANSLATE##
+tile.marsDungeonBricksStairs.name=Mars Dungeon Brick Stairs ##NEEDS TRANSLATE##
+tile.wallGC.marsBricks.name=Mars Dungeon Brick Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.marsBricksSlab.name=Mars Dungeon Brick Slab ##NEEDS TRANSLATE##
 
 # GUI
 gui.choosePlanet.desc.mars=อาศัยอยู่ได้#ไม่มีออกซิเจน#แรงโน้มถ่วง: 38%

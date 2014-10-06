@@ -179,6 +179,16 @@ tile.oxygenCompressor.1.name=เครื่องลดความดันอ
 tile.arclamp.name=โคมไฟอาร์ค
 tile.spinThruster.name=สปินทรัสเตอร์
 tile.viewScreen.name=หน้าจอแสดงผล
+tile.tinStairs1.name=Tin Decoration Stairs ##NEEDS TRANSLATE##
+tile.tinStairs2.name=Tin Decoration Stairs ##NEEDS TRANSLATE##
+tile.wallGC.tin.name=Tin Decoration Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.tinSlab.name=Tin Decoration Slab ##NEEDS TRANSLATE##
+tile.moonStoneStairs.name=Moon Rock Stairs ##NEEDS TRANSLATE##
+tile.wallGC.moon.name=Moon Rock Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.moonSlab.name=Moon Rock Slab ##NEEDS TRANSLATE##
+tile.moonBricksStairs.name=Moon Dungeon Brick Stairs ##NEEDS TRANSLATE##
+tile.wallGC.moonBricks.name=Moon Dungeon Brick Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.moonBricksSlab.name=Moon Dungeon Brick Slab ##NEEDS TRANSLATE##
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=แมงมุมอวกาศ
@@ -550,6 +560,7 @@ tile.glowstoneTorch.description=คบเพลิงหินเรืองแ
 tile.cheeseBlock.description=บล็อกชีส สร้างด้วยชีสจากดวงจันทร์ วางได้และกินได้
 tile.spinThruster.description=สปินทรัสเตอร์ ใช้เพื่อทำให้สถานีอวกาศหมุน
 tile.arclamp.description=โคมไฟอาร์ค ใช้เพื่อให้แสงสว่างที่กว้างและช่วยให้ม๊อบต่างๆ หนีออกไป
+tile.viewScreen.description=Display screens add that final touch to your space base. Right-click changes the information shown. ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.cargoloader.name=เครื่องขนส่งสินค้า
