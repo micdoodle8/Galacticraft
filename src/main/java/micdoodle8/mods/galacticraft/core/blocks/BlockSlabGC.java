@@ -98,7 +98,7 @@ public class BlockSlabGC extends BlockSlab
 		}
 		else
 		{
-			max = 4;//Number of slab types with Planets loaded
+			max = 4;//Number of slab types with Planets not loaded
 		}
 		for (int i = 0; i < max; ++i)
 		{
@@ -174,7 +174,7 @@ public class BlockSlabGC extends BlockSlab
 		{
 			return new ItemStack(GCBlocks.slabGCHalf, 1, world.getBlockMetadata(x, y, z));
 		}
-		return new ItemStack(GCBlocks.slabGCHalf, 1, world.getBlockMetadata(x, y, z));
+		return new ItemStack(GCBlocks.slabGCHalf, 1, world.getBlockMetadata(x, y, z) & 7);
 	}
 
 	@Override
