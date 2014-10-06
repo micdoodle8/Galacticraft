@@ -41,6 +41,7 @@ import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
+import micdoodle8.mods.galacticraft.core.world.gen.OreGenOtherMods;
 import micdoodle8.mods.galacticraft.core.world.gen.OverworldGenerator;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -274,6 +275,8 @@ public class GalacticraftCore
 
         FMLInterModComms.sendMessage("OpenBlocks", "donateUrl", "http://www.patreon.com/micdoodle8");
     	GalacticraftRegistry.registerCoreGameScreens();
+    	
+    	MinecraftForge.EVENT_BUS.register(new OreGenOtherMods());
     }
 
     @EventHandler

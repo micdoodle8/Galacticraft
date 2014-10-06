@@ -8,12 +8,12 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
-import cpw.mods.fml.common.registry.GameData;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
+import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -54,7 +54,6 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProviderSurface;
@@ -81,57 +80,16 @@ public class TickHandlerClient
     {
         for (final String s : ConfigManagerCore.detectableIDs)
         {
-            int lastColon = s.lastIndexOf(':');
-            int meta = -1;
-            String name;
+        	BlockTuple bt = ConfigManagerCore.stringToBlock(s, "External Detectable IDs"); 
+        	if (bt == null) continue;
 
-            if (lastColon > 0)
-            {
-                try
-                {
-                    meta = Integer.parseInt(s.substring(lastColon + 1, s.length()));
-                }
-                catch (NumberFormatException ex)
-                {
-                }
-            }
-
-            if (meta == -1)
-            {
-                name = s;
-                meta = 0;
-            }
-            else
-            {
-                name = s.substring(0, lastColon);
-            }
-
-            Block block = Block.getBlockFromName(name);
-            if (block == null)
-            {
-                GCLog.severe("[config] External Detectable IDs: unrecognised block name '" + s + "'.");
-                continue;
-            }
-            try
-            {
-                Integer.parseInt(name);
-                String bName = GameData.getBlockRegistry().getNameForObject(block);
-                GCLog.info("[config] External Detectable IDs: the use of numeric IDs is discouraged, please use " + bName + " instead of " + name);
-            }
-            catch (NumberFormatException ex)
-            {
-            }
-            if (Blocks.air == block)
-            {
-                GCLog.info("[config] External Detectable IDs: not a good idea to make air detectable, skipping that!");
-                continue;
-            }
-
-
+			int meta = bt.meta;
+			if (meta == -1) meta = 0;
+        	
             boolean flag = false;
             for (BlockMetaList blockMetaList : ClientProxyCore.detectableBlocks)
             {
-                if (blockMetaList.getBlock() == block)
+                if (blockMetaList.getBlock() == bt.block)
                 {
                     if (!blockMetaList.getMetaList().contains(meta))
                     {
@@ -146,7 +104,7 @@ public class TickHandlerClient
             {
                 List<Integer> metaList = Lists.newArrayList();
                 metaList.add(meta);
-                ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
+                ClientProxyCore.detectableBlocks.add(new BlockMetaList(bt.block, metaList));
             }
         }
     }

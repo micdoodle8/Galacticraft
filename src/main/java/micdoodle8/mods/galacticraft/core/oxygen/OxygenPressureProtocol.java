@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.oxygen;
 
-import cpw.mods.fml.common.registry.GameData;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
+import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -27,54 +26,14 @@ public class OxygenPressureProtocol
         {
             try
             {
-                int lastColon = s.lastIndexOf(':');
-                int meta = -1;
-                String name;
+            	BlockTuple bt = ConfigManagerCore.stringToBlock(s, "External Sealable IDs"); 
+            	if (bt == null) continue;
 
-                if (lastColon > 0)
-                {
-                    try
-                    {
-                        meta = Integer.parseInt(s.substring(lastColon + 1, s.length()));
-                    }
-                    catch (NumberFormatException ex)
-                    {
-                    }
-                }
+    			int meta = bt.meta;
 
-                if (meta == -1)
+                if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(bt.block))
                 {
-                    name = s;
-                }
-                else
-                {
-                    name = s.substring(0, lastColon);
-                }
-
-                Block b = Block.getBlockFromName(name);
-                if (b == null)
-                {
-                    GCLog.severe("[config] External Sealable IDs: unrecognised block name '" + name + "'.");
-                    continue;
-                }
-                try
-                {
-                    Integer.parseInt(name);
-                    String bName = GameData.getBlockRegistry().getNameForObject(b);
-                    GCLog.info("[config] External Sealable IDs: the use of numeric IDs is discouraged, please use " + bName + " instead of " + name);
-                }
-                catch (NumberFormatException ex)
-                {
-                }
-                if (Blocks.air == b)
-                {
-                    GCLog.info("[config] External Sealable IDs: not a good idea to make air sealable, skipping that!");
-                    continue;
-                }
-
-                if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(b))
-                {
-                    final ArrayList<Integer> list = OxygenPressureProtocol.nonPermeableBlocks.get(b);
+                    final ArrayList<Integer> list = OxygenPressureProtocol.nonPermeableBlocks.get(bt.block);
                     if (!list.contains(meta))
                     {
                         list.add(meta);
@@ -88,7 +47,7 @@ public class OxygenPressureProtocol
                 {
                     final ArrayList<Integer> list = new ArrayList<Integer>();
                     list.add(meta);
-                    OxygenPressureProtocol.nonPermeableBlocks.put(b, list);
+                    OxygenPressureProtocol.nonPermeableBlocks.put(bt.block, list);
                 }
             }
             catch (final Exception e)

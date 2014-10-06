@@ -1,10 +1,13 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import com.google.common.primitives.Ints;
+
 import cpw.mods.fml.client.config.IConfigElement;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameData;
+import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.core.Constants;
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
@@ -576,5 +579,51 @@ public class ConfigManagerCore
         list.addAll(new ConfigElement(config.getCategory(Constants.CONFIG_CATEGORY_ENTITIES)).getChildElements());
         list.addAll(new ConfigElement(config.getCategory(Constants.CONFIG_CATEGORY_GENERAL)).getChildElements());
         return list;
+    }
+    
+    public static BlockTuple stringToBlock(String s, String caller)
+    {
+        int lastColon = s.lastIndexOf(':');
+        int meta = -1;
+        String name;
+
+        if (lastColon > 0)
+        {
+            try
+            {
+                meta = Integer.parseInt(s.substring(lastColon + 1, s.length()));
+            }
+            catch (NumberFormatException ex) { }
+        }
+
+        if (meta == -1)
+        {
+            name = s;
+        }
+        else
+        {
+            name = s.substring(0, lastColon);
+        }
+
+        Block block = Block.getBlockFromName(name);
+        if (block == null)
+        {
+            GCLog.severe("[config] " + caller + ": unrecognised block name '" + s + "'.");
+            return null;
+        }
+        try
+        {
+            Integer.parseInt(name);
+            String bName = GameData.getBlockRegistry().getNameForObject(block);
+            GCLog.info("[config] " + caller + ": the use of numeric IDs is discouraged, please use " + bName + " instead of " + name);
+        }
+        catch (NumberFormatException ex) { }
+        if (Blocks.air == block)
+        {
+            GCLog.info("[config] " + caller + ": not a good idea to specify air, skipping that!");
+            return null;
+        }
+   	
+    	return new BlockTuple(block, meta);
     }
 }
