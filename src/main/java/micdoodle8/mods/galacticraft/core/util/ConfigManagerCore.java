@@ -57,6 +57,7 @@ public class ConfigManagerCore
     public static boolean moreStars;
     public static String[] sealableIDs = { };
     public static String[] detectableIDs = { };
+    public static String[] oregenIDs = { };
     public static boolean disableSpaceshipParticles;
     public static boolean disableSpaceshipGrief;
     public static boolean oxygenIndicatorLeft;
@@ -366,6 +367,12 @@ public class ConfigManagerCore
             prop.comment = "If this is enabled, other mods' ores and all other features (eg. plants) can generate on the Moon and planets.";
             prop.setLanguageKey("gc.configgui.enableOtherModsFeatures");
             enableOtherModsFeatures = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Other mods ores for GC to generate on the Moon and planets", new String [] { });
+            prop.comment = "Enter IDs of other mods' ores here for Galacticraft to generate them on the Moon and other planets. Format is BlockName or BlockName:metadata. Use optional parameters at end of each line /RARE or /UNCOMMON, and /DEEP or /SHALLOW, and /SINGLE for single blocks instead of clusters - otherwise the default is Common and Even distribution (both deep & shallow)";
+            prop.setLanguageKey("gc.configgui.otherModOreGenIDs");
+            oregenIDs = prop.getStringList();
             propOrder.add(prop.getName());
 
 //Debug
