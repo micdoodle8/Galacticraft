@@ -42,11 +42,12 @@ public class OreGenOtherMods
             	String s;
             	int rarity = 0;  //0 = common  1 = uncommon  2 = rare
             	int depth = 0;   //0 = even   1 = deep   2 = shallow
-            	boolean single = false;
+            	int size = 1;	//0 = single 1 = standard 2 = large
+            	boolean extraRandom = false;
 
             	if (slash >= 0)
             	{
-            		s = str.substring(0, slash);
+            		s = str.substring(0, slash).trim();
             		String params = str.substring(slash).toUpperCase();
             		if (params.contains("UNCOMMON")) rarity = 1;
             		else if (params.contains("RARE")) rarity = 2;
@@ -54,17 +55,20 @@ public class OreGenOtherMods
             		if (params.contains("DEEP")) depth = 1;
             		else if (params.contains("SHALLOW")) depth = 2;
             		
-            		if (params.contains("SINGLE")) single = true;
+            		if (params.contains("SINGLE")) size = 0;
+            		else if (params.contains("LARGE")) size = 2;
+            		
+            		if (params.contains("XTRARANDOM")) extraRandom = true;
             	}
             	else s = str;
             	
-            	BlockTuple bt = ConfigManagerCore.stringToBlock(s, "External Sealable IDs"); 
+            	BlockTuple bt = ConfigManagerCore.stringToBlock(s, "Other mod ore generate IDs"); 
             	if (bt == null) continue;
 
     			int meta = bt.meta;
     			if (meta == -1) meta = 0;
     			
-    			OreGenOtherMods.addOre(bt.block, meta, rarity, depth, single);
+    			OreGenOtherMods.addOre(bt.block, meta, rarity, depth, size, extraRandom);
             }
             catch (final Exception e)
             {
@@ -73,7 +77,7 @@ public class OreGenOtherMods
         }
     }
     
-    public static void addOre(Block block, int meta, int rarity, int depth, boolean single)
+    public static void addOre(Block block, int meta, int rarity, int depth, int clumpSize, boolean extraRandom)
     {
     	int clusters = 12;
     	int size = 4;
@@ -139,10 +143,25 @@ public class OreGenOtherMods
         	}
     	}
     	
-    	if (single)
+    	if (clumpSize == 0)
     	{
     		size = 1;
     		clusters = (3 * clusters) / 2;
+    	}
+    	else if (clumpSize == 2)
+    	{
+    		size *= 4;
+    		clusters /= 2;
+    	}
+    	
+    	if (extraRandom)
+    	{
+    		if (depth == 1)
+    		{
+    			min = -max * 3;
+    		}
+    		else
+    			max *= 4;
     	}
     	
     	OreGenData ore = new OreGenData(block, meta, clusters, size, min, max);
@@ -152,10 +171,10 @@ public class OreGenOtherMods
     @SubscribeEvent
     public void onPlanetDecorated(GCCoreEventPopulate.Post event)
     {
-    	World worldObj = event.worldObj;
-    	Random rand = event.rand;
-    	int chunkX = event.chunkX;
-    	int chunkZ = event.chunkZ;
+    	this.worldObj = event.worldObj;
+    	this.randomGenerator = event.rand;
+    	this.chunkX = event.chunkX;
+    	this.chunkZ = event.chunkZ;
     	
     	WorldProvider prov = worldObj.provider;
     	if (!(prov instanceof IGalacticraftWorldProvider) || (prov instanceof WorldProviderOrbit))
@@ -190,6 +209,7 @@ public class OreGenOtherMods
         {
             final int var6 = this.chunkX + this.randomGenerator.nextInt(16);
             final int var7 = this.randomGenerator.nextInt(maxY - minY) + minY;
+            if (var7 < 0) continue;
             final int var8 = this.chunkZ + this.randomGenerator.nextInt(16);
             worldGenerator.generate(this.worldObj, this.randomGenerator, var6, var7, var8);
         }
