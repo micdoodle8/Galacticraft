@@ -419,7 +419,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 
         if (this.gasTankType == TankGases.AIR.index)
         {
-            int airProducts = this.airProducts;
+        	int airProducts = this.airProducts;
             int amountToDrain = Math.min(gasAmount / 2, (airProducts > 15) ? 2 : 3);
             if (amountToDrain == 0) amountToDrain = 1;
 
@@ -458,7 +458,6 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         if ((thisProduct == this.fluidTank2Type || this.fluidTank2Type == -1) && fuelSpace2 > 0)
         {
         	if (amountToDrain > fuelSpace2) amountToDrain = fuelSpace2;
-        	this.gasTank.drain(amountToDrain, true);
         	this.liquidTank2.fill(FluidRegistry.getFluidStack(TankGases.values()[thisProduct].liquid, amountToDrain), true);
         	this.fluidTank2Type = thisProduct;
         } else
