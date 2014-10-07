@@ -23,12 +23,12 @@ public class ItemRendererScreen implements IItemRenderer
             //GL11.glScalef(0.6F, 0.6F, 0.6F);
             break;
         case EQUIPPED:
-            GL11.glTranslatef(1.0F, 0.9F, 0.3F);
+            GL11.glTranslatef(1.0F, 1.0F, 0.0F);
             GL11.glRotatef(90, 0, -1, 0);
             //GL11.glScalef(0.5F, 0.5F, 0.5F);
             break;
         case EQUIPPED_FIRST_PERSON:
-            GL11.glTranslatef(0.3F, 0.7F, 1.3F);
+            GL11.glTranslatef(0.2F, 0.9F, 1.2F);
             GL11.glRotatef(90, 0, 1, 0);
             //GL11.glTranslatef(1.3F, 0.9F, 0.6F);
             //GL11.glRotatef(150, 0, 1, 0);
