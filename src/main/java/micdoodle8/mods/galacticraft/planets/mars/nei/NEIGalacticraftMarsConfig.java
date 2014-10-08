@@ -23,6 +23,7 @@ public class NEIGalacticraftMarsConfig implements IConfigureNEI
     private static HashMap<ArrayList<PositionedStack>, PositionedStack> cargoBenchRecipes = new HashMap<ArrayList<PositionedStack>, PositionedStack>();
     private static HashMap<PositionedStack, PositionedStack> liquefierRecipes = new HashMap<PositionedStack, PositionedStack>();
     private static HashMap<PositionedStack, PositionedStack> synthesizerRecipes = new HashMap<PositionedStack, PositionedStack>();
+	public static GCMarsNEIHighlightHandler planetsHighlightHandler  = new GCMarsNEIHighlightHandler();
 
     @Override
     public void loadConfig()
@@ -36,7 +37,7 @@ public class NEIGalacticraftMarsConfig implements IConfigureNEI
         API.registerUsageHandler(new GasLiquefierRecipeHandler());
         API.registerRecipeHandler(new MethaneSynthesizerRecipeHandler());
         API.registerUsageHandler(new MethaneSynthesizerRecipeHandler());
-        API.registerHighlightIdentifier(MarsBlocks.marsBlock, new GCMarsNEIHighlightHandler());
+        API.registerHighlightIdentifier(MarsBlocks.marsBlock, planetsHighlightHandler);
     }
 
     @Override

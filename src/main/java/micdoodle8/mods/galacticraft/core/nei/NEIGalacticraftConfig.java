@@ -5,6 +5,7 @@ import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import net.minecraft.block.Block;
@@ -41,6 +42,11 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         for (Block block : GCBlocks.hiddenBlocks)
         {
             API.hideItem(new ItemStack(block, 1, 0));
+            if (block == GCBlocks.slabGCDouble)
+            {
+            	for (int j = 1; j < (GalacticraftCore.isPlanetsLoaded ? 6 : 4); j++)
+            		API.hideItem(new ItemStack(block, 1, j));
+            }
         }
 
         API.registerRecipeHandler(new RocketT1RecipeHandler());

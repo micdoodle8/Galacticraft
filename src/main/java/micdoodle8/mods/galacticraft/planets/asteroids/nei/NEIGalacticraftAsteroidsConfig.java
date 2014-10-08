@@ -5,7 +5,9 @@ import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
+import micdoodle8.mods.galacticraft.planets.mars.nei.NEIGalacticraftMarsConfig;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -24,6 +26,7 @@ public class NEIGalacticraftAsteroidsConfig implements IConfigureNEI
         this.registerRecipes();
         API.registerRecipeHandler(new RocketT3RecipeHandler());
         API.registerUsageHandler(new RocketT3RecipeHandler());
+        API.registerHighlightIdentifier(AsteroidBlocks.blockBasic, NEIGalacticraftMarsConfig.planetsHighlightHandler);
     }
 
     @Override
