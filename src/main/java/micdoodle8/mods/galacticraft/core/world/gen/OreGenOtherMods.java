@@ -44,6 +44,7 @@ public class OreGenOtherMods
             	int depth = 0;   //0 = even   1 = deep   2 = shallow
             	int size = 1;	//0 = single 1 = standard 2 = large
             	boolean extraRandom = false;
+            	int dim = 0;
 
             	if (slash >= 0)
             	{
@@ -59,6 +60,10 @@ public class OreGenOtherMods
             		else if (params.contains("LARGE")) size = 2;
             		
             		if (params.contains("XTRARANDOM")) extraRandom = true;
+
+            		if (params.contains("ONLYMOON")) dim = 1;
+            		else if (params.contains("ONLYMARS")) dim = 2;
+
             	}
             	else s = str;
             	
@@ -68,7 +73,7 @@ public class OreGenOtherMods
     			int meta = bt.meta;
     			if (meta == -1) meta = 0;
     			
-    			OreGenOtherMods.addOre(bt.block, meta, rarity, depth, size, extraRandom);
+    			OreGenOtherMods.addOre(bt.block, meta, rarity, depth, size, extraRandom, dim);
             }
             catch (final Exception e)
             {
@@ -77,7 +82,7 @@ public class OreGenOtherMods
         }
     }
     
-    public static void addOre(Block block, int meta, int rarity, int depth, int clumpSize, boolean extraRandom)
+    public static void addOre(Block block, int meta, int rarity, int depth, int clumpSize, boolean extraRandom, int dim)
     {
     	int clusters = 12;
     	int size = 4;
@@ -164,7 +169,7 @@ public class OreGenOtherMods
     			max *= 4;
     	}
     	
-    	OreGenData ore = new OreGenData(block, meta, clusters, size, min, max);
+    	OreGenData ore = new OreGenData(block, meta, clusters, size, min, max, dim);
     	OreGenOtherMods.data.add(ore);
     }
 
@@ -175,6 +180,8 @@ public class OreGenOtherMods
     	this.randomGenerator = event.rand;
     	this.chunkX = event.chunkX;
     	this.chunkZ = event.chunkZ;
+    	
+    	int dimDetected = 0;
     	
     	WorldProvider prov = worldObj.provider;
     	if (!(prov instanceof IGalacticraftWorldProvider) || (prov instanceof WorldProviderOrbit))
@@ -187,19 +194,24 @@ public class OreGenOtherMods
     	{
     		stoneBlock = GCBlocks.blockMoon;
     		stoneMeta = 4;
+    		dimDetected = 1;
     	}
     	else if (GalacticraftCore.isPlanetsLoaded && prov instanceof WorldProviderMars)
     	{
     		stoneBlock = MarsBlocks.marsBlock;
     		stoneMeta = 9;
+    		dimDetected = 2;
     	}
 
     	if (stoneBlock == null) return;
 
     	for (OreGenData ore : OreGenOtherMods.data)
     	{
-	        this.oreGen = new WorldGenMinableMeta(ore.oreBlock, ore.sizeCluster, ore.oreMeta, true, stoneBlock, stoneMeta);
-	        this.genStandardOre1(ore.numClusters, this.oreGen, ore.minHeight, ore.maxHeight);
+	        if (ore.dimRestrict == 0 || ore.dimRestrict == dimDetected)
+	        {
+	    		this.oreGen = new WorldGenMinableMeta(ore.oreBlock, ore.sizeCluster, ore.oreMeta, true, stoneBlock, stoneMeta);
+		        this.genStandardOre1(ore.numClusters, this.oreGen, ore.minHeight, ore.maxHeight);
+	        }
     	}    	
     }
 
@@ -223,8 +235,9 @@ public class OreGenOtherMods
     	public int numClusters = 8;
     	public int minHeight = 0;
     	public int maxHeight = 128;
+    	public int dimRestrict = 0;
     	
-    	public OreGenData(Block block, int meta, int num, int cluster, int min, int max)
+    	public OreGenData(Block block, int meta, int num, int cluster, int min, int max, int dim)
     	{
     		this.oreBlock = block;
     		this.oreMeta = meta;
@@ -232,6 +245,7 @@ public class OreGenOtherMods
     		this.numClusters = num;
     		this.minHeight = min;
     		this.maxHeight = max;
+    		this.dimRestrict = dim;
     	}
     	
     	public OreGenData(Block block, int meta, int num, int cluster)
@@ -252,18 +266,6 @@ public class OreGenOtherMods
     		this.numClusters = num;
     		this.minHeight = 0;
     		this.maxHeight = 128;
-    	}
-    	
-    	public OreGenData readString(String s)
-    	{
-    		Block block = null;
-    		int meta = 0;
-    		int cluster = 4;
-    		int num = 12;
-    		int min = 0;
-    		int max = 128;
-    		
-    		return new OreGenData(block, meta, num, cluster, min, max);	
-    	}
+    	}    	
     }
 }
