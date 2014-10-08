@@ -42,7 +42,7 @@ item.parachute_yellow.name=黄色降落伞
 item.steelPole.name=钢杆
 item.canvas.name=帆布
 item.buggy.name=星球车
-item.emptyLiquidCanister.name=液体罐(空)
+item.emptyLiquidCanister.name=空罐
 item.oilCanisterPartial.name=部分灌满的油罐
 item.fuelCanisterPartial.name=部分灌满的燃料罐
 item.oilCanister.name=灌满的油罐
@@ -178,17 +178,19 @@ tile.oxygenCompressor.0.name=氧气压缩机
 tile.oxygenCompressor.1.name=氧气解压机
 tile.arclamp.name=弧光灯
 tile.spinThruster.name=旋转推进器
-tile.viewScreen.name=Display Screen ##NEEDS TRANSLATE##
-tile.tinStairs1.name=Tin Decoration Stairs ##NEEDS TRANSLATE##
-tile.tinStairs2.name=Tin Decoration Stairs ##NEEDS TRANSLATE##
-tile.wallGC.tin.name=Tin Decoration Wall ##NEEDS TRANSLATE##
-tile.slabGCHalf.tinSlab.name=Tin Decoration Slab ##NEEDS TRANSLATE##
-tile.moonStoneStairs.name=Moon Rock Stairs ##NEEDS TRANSLATE##
-tile.wallGC.moon.name=Moon Rock Wall ##NEEDS TRANSLATE##
-tile.slabGCHalf.moonSlab.name=Moon Rock Slab ##NEEDS TRANSLATE##
-tile.moonBricksStairs.name=Moon Dungeon Brick Stairs ##NEEDS TRANSLATE##
-tile.wallGC.moonBricks.name=Moon Dungeon Brick Wall ##NEEDS TRANSLATE##
-tile.slabGCHalf.moonBricksSlab.name=Moon Dungeon Brick Slab ##NEEDS TRANSLATE##
+tile.viewScreen.name=显示屏
+
+# DECOBLOCKS
+tile.tinStairs1.name=装饰锡制楼梯
+tile.tinStairs2.name=装饰锡制楼梯
+tile.wallGC.tin.name=装饰锡制墙
+tile.slabGCHalf.tinSlab.name=装饰锡制台阶
+tile.moonStoneStairs.name=月岩楼梯
+tile.wallGC.moon.name=月岩半墙
+tile.slabGCHalf.moonSlab.name=月岩台阶
+tile.moonBricksStairs.name=月球地牢砖块楼梯
+tile.wallGC.moonBricks.name=月球地牢砖块墙
+tile.slabGCHalf.moonBricksSlab.name=月球地牢砖块台阶
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=蜘蛛(进化体)
@@ -216,7 +218,7 @@ schematic.rocketT2.name=火箭(2阶)
 # DEATH MESSAGES
 death.attack.spaceshipExplosion=%1$s的火箭出故障了!
 death.attack.spaceshipExplosionB=%1$s不走运地丧生于一次太空事故!
-death.attack.spaceshipCrash=%1$s's 火箭坠毁于地面. Oops.
+death.attack.spaceshipCrash=%1$s's 火箭坠毁于地面.Oops.
 death.attack.oxygenSuffocation=%1$s因氧气消耗殆尽而死!
 death.attack.thermal=%1$s忘记了高温保护
 
@@ -225,7 +227,7 @@ galaxy.blockyway.name=方块银河
 galaxy.milkyWay=银河系
 
 # OTHER
-newversion.failed.name=星系mod新版本检查失败! 15秒后重试
+newversion.failed.name=星系mod新版本检查失败!15秒后重试
 newversion.success.name=发现星系mod远程版本:
 
 # KEYBINDINGS
@@ -267,9 +269,9 @@ gui.message.energy=能量
 gui.message.maxEnergy=最大能量
 gui.message.bubbleVisible.name=可看见气泡
 gui.message.launch.name=发射
-gui.message.clickAgain.0.name=再次点击放大 (赏月或是观测卫星) 
-gui.message.clickAgain.1.name=再次点击放大 (赏月)
-gui.message.clickAgain.2.name=再次点击放大 (观测卫星)
+gui.message.clickAgain.0.name=再次点击放大(赏月或是观测卫星) 
+gui.message.clickAgain.1.name=再次点击放大(赏月)
+gui.message.clickAgain.2.name=再次点击放大(观测卫星)
 gui.message.clickAgain.3.name=再次点击放大
 gui.message.exit.name=离开
 gui.message.tier.name=%d 阶
@@ -282,12 +284,12 @@ gui.message.apply.name=应用
 gui.message.cancel.name=取消
 gui.message.assignName.name=命名
 gui.message.rename.name=重命名
-gui.message.unnamed.name=Unnamed ##NEEDS TRANSLATE##
-gui.message.grow.name=Grow ##NEEDS TRANSLATE##
-gui.message.breed.name=Breed ##NEEDS TRANSLATE##
-gui.message.strengthen.name=Strengthen ##NEEDS TRANSLATE##
-gui.message.heal.name=Heal ##NEEDS TRANSLATE##
-gui.message.of.name=of ##NEEDS TRANSLATE##
+gui.message.unnamed.name=未命名
+gui.message.grow.name=生长
+gui.message.breed.name=繁殖
+gui.message.strengthen.name=强化
+gui.message.heal.name=治疗
+gui.message.of.name=of
 
 gui.status.active.name=活动的
 gui.status.missingleaves.name=树叶不足
@@ -409,7 +411,7 @@ gui.skeletonBoss.message=Boss消失, 战斗时不要离开这个Boss的房间! �
 gui.warning.noroom=空间不足!
 gui.flag.alreadyPlaced=旗帜已经放置于此!
 gui.receiver.cannotAttach=这里无法放置接收器! 
-gui.warning.invalidThermal=Invalid Thermal Protection! ##NEEDS TRANSLATE##
+gui.warning.invalidThermal=无效热保护!
 
 gui.tank.oxygenRemaining=氧气剩余
 gui.buggy.storageSpace=存储空间
@@ -560,7 +562,7 @@ tile.glowstoneTorch.description=萤石火把最好用于在无氧使得火把无
 tile.cheeseBlock.description=奶酪块由月球的奶酪制成,可放置并且可食用.
 tile.spinThruster.description=旋转推进器用于使空间站旋转.
 tile.arclamp.description=弧光灯用于给大片区域提供强光,也会使大部分怪物逃离.
-tile.viewScreen.description=Display screens add that final touch to your space base. Right-click changes the information shown. ##NEEDS TRANSLATE##
+tile.viewScreen.description=显示屏给你的太空基地添加了触摸屏.右击改变其显示的信息.
 
 # CONTAINERS
 container.cargoloader.name=货物装载器
@@ -646,8 +648,8 @@ gc.configgui.disableCheeseMoon=Disable Moon Cheese Gen(禁止月球奶酪生成)
 gc.configgui.disableTinMoon=Disable Moon Tin Gen(禁止月球锡矿生成)
 gc.configgui.disableCopperMoon=Disable Moon Copper Gen(禁止月球铜矿生成)
 gc.configgui.disableMoonVillageGen=Disable Moon Village Gen(禁止月球村民生成)
-gc.configgui.enableOtherModsFeatures=Enable External Mod World Gen(允许其它Mod的世界生成)
-gc.configgui.otherModOreGenIDs=Other Mod Ores to Generate on Planets ##NEEDS TRANSLATE##
+gc.configgui.enableOtherModsFeatures=Enable Other Mod World Gen(允许其它Mod的世界生成)
+gc.configgui.otherModOreGenIDs=Other Mod Ores to Generate on Planets(允许其它Mod的矿物生成于各个行星中）
 gc.configgui.enableDebug=Show Debug Messages in Console(在控制台里显示调试信息)
 gc.configgui.disableLander=Disable Moon Lander(月球禁用登陆舱)
 gc.configgui.disableSpaceshipGrief=Disable Moon Lander(禁用火箭爆炸)
