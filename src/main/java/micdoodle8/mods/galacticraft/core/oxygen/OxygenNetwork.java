@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.transmission.grid.Pathfinder;
 import micdoodle8.mods.galacticraft.api.transmission.grid.PathfinderChecker;
 import micdoodle8.mods.galacticraft.api.transmission.tile.*;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.blocks.BlockTransmitter;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import net.minecraft.tileentity.TileEntity;
@@ -208,7 +209,7 @@ public class OxygenNetwork implements IOxygenNetwork
                     continue;
                 }
 
-                if (((TileEntity) transmitter).getWorldObj().getBlock(((TileEntity) transmitter).xCoord, ((TileEntity) transmitter).yCoord, ((TileEntity) transmitter).zCoord) != GCBlocks.oxygenPipe)
+                if (!(((TileEntity) transmitter).getWorldObj().getBlock(((TileEntity) transmitter).xCoord, ((TileEntity) transmitter).yCoord, ((TileEntity) transmitter).zCoord) instanceof BlockTransmitter))
                 {
                     it.remove();
                     continue;
