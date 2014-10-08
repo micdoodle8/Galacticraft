@@ -24,6 +24,6 @@ tile.moonBlock.bricks.name=月球地牢砖块
 tile.cheeseBlock.name=奶酪块
 
 # GUI
-gui.choosePlanet.desc.moon=宜居#无氧气#重力: 18%
+gui.choosePlanet.desc.moon=宜居#无氧气#重力:18%
 
 dimension.Moon.name=月球
