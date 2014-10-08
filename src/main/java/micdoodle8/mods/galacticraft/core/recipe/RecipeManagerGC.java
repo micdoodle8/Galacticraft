@@ -411,11 +411,11 @@ public class RecipeManagerGC
 
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.screen), new Object[] { "XWX", "WGW", "XWX", 'W', "waferAdvanced", 'X', "compressedSteel", 'G', Blocks.glass });
 
-        RecipeUtil.addRecipe(new ItemStack(GCBlocks.basicBlock, 1, 9), new Object[] { "XXX", "XXX", "XXX", 'X', "ingotCopper" });
+        RecipeUtil.addBlockRecipe(new ItemStack(GCBlocks.basicBlock, 1, 9), "ingotCopper", new ItemStack(GCItems.basicItem, 1, 3));
 
-        RecipeUtil.addRecipe(new ItemStack(GCBlocks.basicBlock, 1, 10), new Object[] { "XXX", "XXX", "XXX", 'X', "ingotTin" });
+        RecipeUtil.addBlockRecipe(new ItemStack(GCBlocks.basicBlock, 1, 10), "ingotTin", new ItemStack(GCItems.basicItem, 1, 4));
 
-        RecipeUtil.addRecipe(new ItemStack(GCBlocks.basicBlock, 1, 11), new Object[] { "XXX", "XXX", "XXX", 'X', "ingotAluminum" });
+        RecipeUtil.addBlockRecipe(new ItemStack(GCBlocks.basicBlock, 1, 11), "ingotAluminum", new ItemStack(GCItems.basicItem, 1, 5));
 
         RecipeUtil.addRecipe(new ItemStack(GCItems.basicItem, 9, 3), new Object[] { "X", 'X', new ItemStack(GCBlocks.basicBlock, 1, 9) });
 

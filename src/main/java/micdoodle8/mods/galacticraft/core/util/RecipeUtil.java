@@ -44,6 +44,20 @@ public class RecipeUtil
     {    
     	CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(result, obj));
     }
+    
+    public static void addBlockRecipe(ItemStack result, String oreDictIngot, ItemStack gcIngot)
+    {   
+    	RecipeUtil.addRecipe(result, new Object[] { "XXX", "XXX", "XXI", 'X', oreDictIngot, 'I', gcIngot });
+    	RecipeUtil.addRecipe(result, new Object[] { "XXX", "XXX", "XIX", 'X', oreDictIngot, 'I', gcIngot });
+    	RecipeUtil.addRecipe(result, new Object[] { "XXX", "XXX", "IXX", 'X', oreDictIngot, 'I', gcIngot });
+    	RecipeUtil.addRecipe(result, new Object[] { "XXX", "XXI", "XXX", 'X', oreDictIngot, 'I', gcIngot });
+    	RecipeUtil.addRecipe(result, new Object[] { "XXX", "XIX", "XXX", 'X', oreDictIngot, 'I', gcIngot });
+    	RecipeUtil.addRecipe(result, new Object[] { "XXX", "IXX", "XXX", 'X', oreDictIngot, 'I', gcIngot });
+    	RecipeUtil.addRecipe(result, new Object[] { "XXI", "XXX", "XXX", 'X', oreDictIngot, 'I', gcIngot });
+    	RecipeUtil.addRecipe(result, new Object[] { "XIX", "XXX", "XXX", 'X', oreDictIngot, 'I', gcIngot });
+    	RecipeUtil.addRecipe(result, new Object[] { "IXX", "XXX", "XXX", 'X', oreDictIngot, 'I', gcIngot });
+    }
+
 
     public static void addRocketBenchRecipe(ItemStack result, HashMap<Integer, ItemStack> input)
     {
