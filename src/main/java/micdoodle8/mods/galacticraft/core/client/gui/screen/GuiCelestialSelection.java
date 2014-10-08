@@ -75,7 +75,7 @@ public class GuiCelestialSelection extends GuiScreen
     private String selectedStationOwner = "";
     private int spaceStationListOffset = 0;
     private boolean renamingSpaceStation;
-    private String renamingString;
+    private String renamingString = "";
     private static final int MAX_SPACE_STATION_NAME_LENGTH = 32;
 
     public GuiCelestialSelection(boolean mapMode, List<CelestialBody> possibleBodies)
@@ -349,7 +349,7 @@ public class GuiCelestialSelection extends GuiScreen
         {
             if (keyID == Keyboard.KEY_BACK)
             {
-                if (this.renamingString.length() > 0)
+                if (this.renamingString != null && this.renamingString.length() > 0)
                 {
                     String toBeParsed = this.renamingString.substring(0, this.renamingString.length() - 1);
 
@@ -416,8 +416,8 @@ public class GuiCelestialSelection extends GuiScreen
         }
 
         return ChatAllowedCharacters.isAllowedCharacter(string.charAt(string.length() - 1));
-
     }
+
     private boolean canCreateSpaceStation()
     {
         if (ClientProxyCore.clientSpaceStationID != 0 && ClientProxyCore.clientSpaceStationID != -1)
@@ -796,6 +796,14 @@ public class GuiCelestialSelection extends GuiScreen
                         this.selectedBody = e.getKey();
                         this.ticksSinceSelection = 0;
                         this.selectionCount++;
+                        
+                        //Auto select if it's a spacestation and there is only a single entry
+                        if (this.selectedBody instanceof Satellite && this.spaceStationIDs.entrySet().size() == 1)
+                        {
+                            Iterator<Map.Entry<String, Integer>> it = this.spaceStationIDs.entrySet().iterator();
+                            this.selectedStationOwner = new String(it.next().getKey());
+                        }
+                        	
                         clickHandled = true;
                         break;
                     }
