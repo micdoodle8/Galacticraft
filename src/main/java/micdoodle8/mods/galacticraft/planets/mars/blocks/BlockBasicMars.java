@@ -40,6 +40,13 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     @SideOnly(Side.CLIENT)
     private IIcon[] marsBlockIcons;
 
+    //Metadata values:
+    //0 copper ore, 1 tin ore, 2 desh ore, 3 iron ore
+    //4 cobblestone, 5 top (surface rock), 6 middle, 7 dungeon brick
+    //8 desh decoration block
+    //9 Mars stone
+    //10 dungeon spawner (invisible)
+    
     public MapColor getMapColor(int meta)
     {
         switch (meta)

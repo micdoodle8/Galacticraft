@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.mars.nei;
 import codechicken.nei.api.IHighlightHandler;
 import codechicken.nei.api.ItemInfo;
 import codechicken.nei.guihook.GuiContainerManager;
+import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -58,9 +59,18 @@ public class GCMarsNEIHighlightHandler implements IHighlightHandler
         int z = mop.blockZ;
         Block b = world.getBlock(x, y, z);
         int meta = world.getBlockMetadata(x, y, z);
-        if (meta == 2 && b == MarsBlocks.marsBlock)
+        if (b == MarsBlocks.marsBlock)
         {
-            return new ItemStack(MarsBlocks.marsBlock, 1, 2);
+        	if (meta == 2) 
+        		return new ItemStack(MarsBlocks.marsBlock, 1, 2);
+        	
+        	if (meta == 9)
+        		return new ItemStack(MarsBlocks.marsBlock, 1, 9);
+        }
+        else if (b == AsteroidBlocks.blockBasic)
+        {
+        	if (meta == 4) 
+        		return new ItemStack(AsteroidBlocks.blockBasic, 1, 4);   	
         }
         return null;
     }
