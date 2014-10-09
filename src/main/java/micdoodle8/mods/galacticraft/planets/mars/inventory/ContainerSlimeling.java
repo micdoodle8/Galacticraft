@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
-import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
@@ -9,8 +8,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
 
 public class ContainerSlimeling extends Container
 {
@@ -86,70 +83,93 @@ public class ContainerSlimeling extends Container
         return this.slimelingInventory.isUseableByPlayer(par1EntityPlayer);
     }
 
-    /**
-     * Called to transfer a stack from one inventory to the other eg. when shift
-     * clicking.
-     */
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
     {
         ItemStack var2 = null;
-        final Slot var3 = (Slot) this.inventorySlots.get(par1);
+        final Slot slot = (Slot) this.inventorySlots.get(par1);
+        final int b = this.inventorySlots.size();
 
-        if (var3 != null && var3.getHasStack())
+        if (slot != null && slot.getHasStack())
         {
-            final ItemStack var4 = var3.getStack();
+            final ItemStack var4 = slot.getStack();
             var2 = var4.copy();
 
-            if (par1 == 2)
+            if (b < 39)
             {
-                if (!this.mergeItemStack(var4, 3, 39, true))
-                {
-                    return null;
-                }
-
-                var3.onSlotChange(var4, var2);
-            }
-            else if (par1 != 1 && par1 != 0)
-            {
-                if (var4.getItem() instanceof IItemElectric)
-                {
-                    if (!this.mergeItemStack(var4, 0, 1, false))
-                    {
-                        return null;
-                    }
-                }
-                else if (FluidContainerRegistry.isContainer(var4) || FluidContainerRegistry.containsFluid(var4, FluidRegistry.getFluidStack("fuel", 1)))
-                {
-                    if (!this.mergeItemStack(var4, 1, 2, false))
-                    {
-                        return null;
-                    }
-                }
-                else if (par1 >= 3 && par1 < 30)
-                {
-                    if (!this.mergeItemStack(var4, 30, 39, false))
-                    {
-                        return null;
-                    }
-                }
-                else if (par1 >= 30 && par1 < 39 && !this.mergeItemStack(var4, 3, 30, false))
-                {
-                    return null;
-                }
-            }
-            else if (!this.mergeItemStack(var4, 3, 39, false))
-            {
-                return null;
-            }
-
-            if (var4.stackSize == 0)
-            {
-                var3.putStack((ItemStack) null);
+	            if (par1 < b - 36)
+	            {
+	                if (!this.mergeItemStack(var4, b - 36, b, true))
+	                {
+	                    return null;
+	                }
+	            }
+	            else
+	            {
+	                if (var4.getItem() == MarsItems.marsItemBasic && var4.getItemDamage() == 4)
+	                {
+	                    if (!this.mergeItemStack(var4, 0, 1, false))
+	                    {
+	                        return null;
+	                    }
+	                }
+	                else if (par1 < b - 9)
+	                {
+	                    if (!this.mergeItemStack(var4, b - 9, b, false))
+	                    {
+	                        return null;
+	                    }
+	                }
+	                else if (!this.mergeItemStack(var4, b - 36, b - 9, false))
+	                {
+	                    return null;
+	                }
+	            }
             }
             else
             {
-                var3.onSlotChanged();
+	            //With inventory bag, slot 0 is a bag slot
+            	//Slots 1-36 are regular inventory (27 inventory, 9 hotbar)
+            	//Slots 37-63 are the inventory bag slots
+            	if (par1 == 0)
+            		return null;
+            	
+            	if (par1 > 36)
+	            {
+	                if (!this.mergeItemStack(var4, 1, 37, true))
+	                {
+	                    return null;
+	                }
+	            }
+	            else
+	            {
+	                if (par1 < 28)
+	                {
+	                    if (!this.mergeItemStack(var4, 37, 64, false))
+	                    {
+		                    if (!this.mergeItemStack(var4, 28, 37, false))
+		                    {
+		                        return null;
+		                    }
+	                    }
+	                }
+	                else if (!this.mergeItemStack(var4, 37, 64, false))
+                    {
+	                	if (!this.mergeItemStack(var4, 1, 28, false))
+		                {
+		                    return null;
+		                }
+                    }
+	            }
+            }
+            
+            if (var4.stackSize == 0)
+            {
+                slot.putStack((ItemStack) null);
+            }
+            else
+            {
+                slot.onSlotChanged();
             }
 
             if (var4.stackSize == var2.stackSize)
@@ -157,7 +177,7 @@ public class ContainerSlimeling extends Container
                 return null;
             }
 
-            var3.onPickupFromSlot(par1EntityPlayer, var4);
+            slot.onPickupFromSlot(par1EntityPlayer, var4);
         }
 
         return var2;
