@@ -105,6 +105,8 @@ public class BlockRendererLandingPad implements ISimpleBlockRenderingHandler
 
         IFuelDock landingPad = (IFuelDock) var1.getTileEntity(par2, par3, par4);
 
+        if (landingPad != null)
+        {
         // +X left
         if (landingPad.isBlockAttachable(var1, par2 + 2, par3, par4 - 1))
         {
@@ -187,6 +189,7 @@ public class BlockRendererLandingPad implements ISimpleBlockRenderingHandler
         {
             renderBlocks.setRenderBounds(-0.9F, 0.2F, -1.0F, -0.1F, 0.901F, -0.5F);
             renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
+        }
         }
 
         if (var1.getBlockMetadata(par2, par3, par4) == 2)
