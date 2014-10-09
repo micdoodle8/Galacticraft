@@ -2,6 +2,9 @@ package micdoodle8.mods.galacticraft.planets.mars.items;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.items.ItemBucketGalacticraft;
+import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
@@ -24,6 +27,7 @@ public class MarsItems
     public static Item key;
     public static Item schematic;
     public static Item carbonFragments;
+    public static Item bucketSludge;
 
     public static ArmorMaterial ARMORDESH = EnumHelper.addArmorMaterial("DESH", 42, new int[] { 4, 9, 7, 4 }, 12);
     public static ToolMaterial TOOLDESH = EnumHelper.addToolMaterial("DESH", 3, 1024, 5.0F, 2.5F, 8);
@@ -46,6 +50,7 @@ public class MarsItems
         MarsItems.key = new ItemKeyMars().setUnlocalizedName("key");
         MarsItems.schematic = new ItemSchematicTier2().setUnlocalizedName("schematic");
         MarsItems.carbonFragments = new ItemCarbonFragments().setUnlocalizedName("carbonFragments");
+		MarsItems.bucketSludge = new ItemBucketGalacticraft(MarsBlocks.blockSludge, MarsModule.TEXTURE_PREFIX).setUnlocalizedName("bucketSludge");
         ;
 
         MarsItems.registerItems();
@@ -77,6 +82,7 @@ public class MarsItems
         MarsItems.registerItem(MarsItems.spaceship);
         MarsItems.registerItem(MarsItems.key);
         MarsItems.registerItem(MarsItems.schematic);
+        MarsItems.registerItem(MarsItems.bucketSludge);
     }
 
     private static void registerItem(Item item)

@@ -2,7 +2,9 @@ package micdoodle8.mods.galacticraft.planets.mars;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.event.wgen.GCCoreEventPopulate;
@@ -19,6 +21,7 @@ import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
+import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityCryogenicChamber;
@@ -31,16 +34,21 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayer.EnumStatus;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.FillBucketEvent;
+
 import org.lwjgl.opengl.GL11;
 
 public class EventHandlerMars
@@ -237,6 +245,37 @@ public class EventHandlerMars
                     event.allow = !launchController.launchPadRemovalDisabled;
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    public void onBucketFill(FillBucketEvent event)
+    {
+        final ItemStack result = this.fillCustomBucket(event.world, event.target);
+
+        if (result == null)
+        {
+            return;
+        }
+
+        event.result = result;
+        event.setResult(Result.ALLOW);
+    }
+
+    public ItemStack fillCustomBucket(World world, MovingObjectPosition pos)
+    {
+        final Block blockID = world.getBlock(pos.blockX, pos.blockY, pos.blockZ);
+
+        if (blockID == MarsBlocks.blockSludge
+                && world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0)
+        {
+            world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
+
+            return new ItemStack(MarsItems.bucketSludge);
+        }
+        else
+        {
+            return null;
         }
     }
 }
