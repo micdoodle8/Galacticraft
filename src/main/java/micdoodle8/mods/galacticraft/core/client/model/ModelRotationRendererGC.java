@@ -46,6 +46,8 @@ public class ModelRotationRendererGC extends ModelRotationRenderer
                 return ModelPlayerBaseGC.currentGearData.getMask() > -1;
             case 1:
                 return ModelPlayerBaseGC.currentGearData.getParachute() != null;
+            case 2:
+            	return ModelPlayerBaseGC.currentGearData.getGear() > -1;
             case 3: // Left Green
                 return ModelPlayerBaseGC.currentGearData.getLeftTank() == 0;
             case 4: // Right Green
