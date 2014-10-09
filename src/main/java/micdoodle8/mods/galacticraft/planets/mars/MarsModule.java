@@ -67,8 +67,6 @@ public class MarsModule implements IPlanetsModule
         MinecraftForge.EVENT_BUS.register(new EventHandlerMars());
         new ConfigManagerMars(new File(event.getModConfigurationDirectory(), "Galacticraft/mars.conf"));
 
-
-
         MarsModule.SLUDGE = new Fluid("bacterialsludge").setViscosity(3000);
         if (!FluidRegistry.registerFluid(MarsModule.SLUDGE))
         {
@@ -84,10 +82,7 @@ public class MarsModule implements IPlanetsModule
 
         MarsItems.initItems();
 
-		FluidContainerRegistry.registerFluidContainer(new FluidContainerData(
-				new FluidStack(MarsModule.SLUDGE, FluidContainerRegistry.BUCKET_VOLUME),
-				new ItemStack(MarsItems.bucketSludge),
-				new ItemStack(Items.bucket)));
+		FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(MarsModule.SLUDGE, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(MarsItems.bucketSludge), new ItemStack(Items.bucket)));
     }
 
     @Override

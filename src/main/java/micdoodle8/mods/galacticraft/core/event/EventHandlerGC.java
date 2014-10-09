@@ -36,6 +36,8 @@ import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
+import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGravel;
 import net.minecraft.block.BlockSand;
@@ -77,7 +79,6 @@ import net.minecraftforge.event.world.WorldEvent.Save;
 
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.List;
 
 public class EventHandlerGC
 {
@@ -252,19 +253,6 @@ public class EventHandlerGC
     @SubscribeEvent
     public void onBucketFill(FillBucketEvent event)
     {
-        final ItemStack result = this.fillCustomBucket(event.world, event.target);
-
-        if (result == null)
-        {
-            return;
-        }
-
-        event.result = result;
-        event.setResult(Result.ALLOW);
-    }
-
-    public ItemStack fillCustomBucket(World world, MovingObjectPosition pos)
-    {
         Class<?> buildCraftClass = null;
 
         Block bcOilID1 = null;
@@ -297,18 +285,27 @@ public class EventHandlerGC
 
         }
 
-        final Block blockID = world.getBlock(pos.blockX, pos.blockY, pos.blockZ);
+        MovingObjectPosition pos = event.target;
+    	final Block blockID = event.world.getBlock(pos.blockX, pos.blockY, pos.blockZ);
 
-        if ((blockID == bcOilID1 || blockID == bcOilID2 || blockID == GCBlocks.crudeOilStill) && world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0 && bcOilBucket != null)
+        if (GalacticraftCore.isPlanetsLoaded && blockID == MarsBlocks.blockSludge && event.world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0)
         {
-            world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
-
-            return new ItemStack(bcOilBucket);
+        	event.world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
+            event.result = new ItemStack(MarsItems.bucketSludge);
+            event.setResult(Result.ALLOW);
         }
-        else
+        else if (bcOilBucket != null && (blockID == bcOilID1 || blockID == bcOilID2 || blockID == GCBlocks.crudeOilStill) && event.world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0)
         {
-            return null;
+            event.world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
+            event.result = new ItemStack(bcOilBucket);
+            event.setResult(Result.ALLOW);
         }
+        else if ((blockID == GCBlocks.crudeOilStill || blockID == GCBlocks.fuelStill) && event.world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0)
+        {
+           event.setCanceled(true);
+        }
+        
+        return;
     }
 
     @SubscribeEvent
