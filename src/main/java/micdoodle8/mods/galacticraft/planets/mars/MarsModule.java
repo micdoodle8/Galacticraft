@@ -36,6 +36,7 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -43,7 +44,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 
 import java.io.File;
 import java.util.List;
@@ -63,6 +67,8 @@ public class MarsModule implements IPlanetsModule
         MinecraftForge.EVENT_BUS.register(new EventHandlerMars());
         new ConfigManagerMars(new File(event.getModConfigurationDirectory(), "Galacticraft/mars.conf"));
 
+
+
         MarsModule.SLUDGE = new Fluid("bacterialsludge").setViscosity(3000);
         if (!FluidRegistry.registerFluid(MarsModule.SLUDGE))
         {
@@ -73,10 +79,15 @@ public class MarsModule implements IPlanetsModule
         MarsBlocks.registerBlocks();
         MarsBlocks.setHarvestLevels();
         MarsBlocks.oreDictRegistration();
-        
+
         MarsModule.SLUDGE.setBlock(MarsBlocks.blockSludge);
 
         MarsItems.initItems();
+
+		FluidContainerRegistry.registerFluidContainer(new FluidContainerData(
+				new FluidStack(MarsModule.SLUDGE, FluidContainerRegistry.BUCKET_VOLUME),
+				new ItemStack(MarsItems.bucketSludge),
+				new ItemStack(Items.bucket)));
     }
 
     @Override
