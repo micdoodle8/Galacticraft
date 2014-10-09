@@ -1,16 +1,16 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
+import java.lang.reflect.Constructor;
+
 import api.player.model.ModelPlayer;
 import api.player.model.ModelPlayerAPI;
 import api.player.model.ModelPlayerBase;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -24,14 +24,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
-import net.smart.render.ModelRotationRenderer;
 import net.smart.render.playerapi.SmartRender;
-import org.lwjgl.opengl.GL11;
-
-import java.lang.reflect.Method;
 
 public class ModelPlayerBaseGC extends ModelPlayerBase
 {
@@ -45,151 +39,38 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
 
     private boolean usingParachute;
 
-    private static IModelCustom frequencyModule;
+    protected static IModelCustom frequencyModule;
+    public static AbstractClientPlayer playerRendering;
+    protected static PlayerGearData currentGearData;
+    
+    private boolean isSmartMovingLoaded;
+    private Class modelRotationGCSmartMoving;
+    private Constructor modelRotationGCSmartMovingInit;
 
     public ModelPlayerBaseGC(ModelPlayerAPI modelPlayerAPI)
     {
         super(modelPlayerAPI);
     }
 
-    private static class ModelRotationRendererGC extends ModelRotationRenderer
-    {
-        private int type;
-
-        public ModelRotationRendererGC(ModelBase modelBase, int i, int j, ModelRotationRenderer baseRenderer, int type)
-        {
-            super(modelBase, i, j, baseRenderer);
-            this.type = type;
-            frequencyModule = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/frequencyModule.obj"));
-        }
-
-        @Override
-        public boolean preRender(float f)
-        {
-            boolean b = super.preRender(f);
-
-            if (ModelPlayerBaseGC.currentGearData == null)
-            {
-                return false;
-            }
-
-            if (b)
-            {
-                switch (type)
-                {
-                case 0:
-                    return ModelPlayerBaseGC.currentGearData.getMask() > -1;
-                case 1:
-                    return ModelPlayerBaseGC.currentGearData.getParachute() != null;
-                case 3: // Left Green
-                    return ModelPlayerBaseGC.currentGearData.getLeftTank() == 0;
-                case 4: // Right Green
-                    return ModelPlayerBaseGC.currentGearData.getRightTank() == 0;
-                case 5: // Left Orange
-                    return ModelPlayerBaseGC.currentGearData.getLeftTank() == 1;
-                case 6: // Right Orange
-                    return ModelPlayerBaseGC.currentGearData.getRightTank() == 1;
-                case 7: // Left Red
-                    return ModelPlayerBaseGC.currentGearData.getLeftTank() == 2;
-                case 8: // Right Red
-                    return ModelPlayerBaseGC.currentGearData.getRightTank() == 2;
-                case 9:
-                    return ModelPlayerBaseGC.currentGearData.getFrequencyModule() > -1;
-                }
-            }
-
-            return b;
-        }
-
-        private static RenderPlayer playerRenderer;
-        private Method getEntityTextureMethod;
-
-        @Override
-        public void doRender(float f, boolean useParentTransformations)
-        {
-            if (this.preRender(f))
-            {
-                switch (type)
-                {
-                case 0:
-                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.oxygenMaskTexture);
-                    break;
-                case 1:
-                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerBaseGC.currentGearData.getParachute());
-                    break;
-                case 9:
-                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.frequencyModuleTexture);
-                    break;
-                default:
-                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.playerTexture);
-                    break;
-                }
-
-                if (type != 9)
-                {
-                    super.doRender(f, useParentTransformations);
-                }
-                else
-                {
-                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.frequencyModuleTexture);
-                    GL11.glPushMatrix();
-                    GL11.glRotatef(180, 1, 0, 0);
-                    GL11.glScalef(0.3F, 0.3F, 0.3F);
-                    GL11.glTranslatef(-1.1F, 1.2F, 0);
-                    frequencyModule.renderPart("Main");
-                    GL11.glTranslatef(0, 1.2F, 0);
-                    GL11.glRotatef((float) (Math.sin(ModelPlayerBaseGC.playerRendering.ticksExisted * 0.05) * 50.0F), 1, 0, 0);
-                    GL11.glRotatef((float) (Math.cos(ModelPlayerBaseGC.playerRendering.ticksExisted * 0.1) * 50.0F), 0, 1, 0);
-                    GL11.glTranslatef(0, -1.2F, 0);
-                    frequencyModule.renderPart("Radar");
-                    GL11.glPopMatrix();
-                }
-
-                if (playerRenderer == null)
-                {
-                    playerRenderer = (RenderPlayer)RenderManager.instance.entityRenderMap.get(EntityPlayer.class);
-                }
-
-                try
-                {
-                    if (getEntityTextureMethod == null)
-                    {
-                        getEntityTextureMethod = VersionUtil.getPlayerTextureMethod();
-                    }
-
-                    ResourceLocation loc  = (ResourceLocation)getEntityTextureMethod.invoke(playerRenderer, ModelPlayerBaseGC.playerRendering);
-                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(loc);
-                }
-                catch (Exception e)
-                {
-                    //e.printStackTrace();
-                }
-            }
-        }
-    }
-
     private ModelRenderer createModelRenderer(ModelPlayer player, int texOffsetX, int texOffsetY, int type)
     {
-        if (Loader.isModLoaded("SmartMoving"))
+    	if (isSmartMovingLoaded)
         {
-            switch (type)
-            {
-            case 0:
-                return new ModelRotationRendererGC(player, texOffsetX, texOffsetY, (ModelRotationRenderer)SmartRender.getPlayerBase(this.modelPlayer).getHead(), type);
-            case 9:
-                return new ModelRotationRendererGC(player, texOffsetX, texOffsetY, (ModelRotationRenderer)SmartRender.getPlayerBase(this.modelPlayer).getHead(), type);
-            default:
-                return new ModelRotationRendererGC(player, texOffsetX, texOffsetY, (ModelRotationRenderer)SmartRender.getPlayerBase(this.modelPlayer).getBody(), type);
-            }
+        	try {
+	        	switch (type)
+	            {
+	            case 0:
+	                return (ModelRenderer)modelRotationGCSmartMovingInit.newInstance(player, texOffsetX, texOffsetY, SmartRender.getPlayerBase(this.modelPlayer).getHead(), type);
+	            case 9:
+	                return (ModelRenderer)modelRotationGCSmartMovingInit.newInstance(player, texOffsetX, texOffsetY, SmartRender.getPlayerBase(this.modelPlayer).getHead(), type);
+	            default:
+	                return (ModelRenderer)modelRotationGCSmartMovingInit.newInstance(player, texOffsetX, texOffsetY, SmartRender.getPlayerBase(this.modelPlayer).getBody(), type);
+	            }
+            } catch (Exception e) { e.printStackTrace(); }
         }
-        else
-        {
-            return new ModelRenderer(player, texOffsetX, texOffsetY);
-        }
-    }
 
-    private static AbstractClientPlayer playerRendering;
-    private static PlayerGearData currentGearData;
+    	return new ModelRenderer(player, texOffsetX, texOffsetY);
+    }
 
     private void init()
     {
@@ -198,6 +79,13 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
         final Class<?> entityClass = EntityClientPlayerMP.class;
         final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
         final ModelBiped modelBipedMain = ((RenderPlayer) render).modelBipedMain;
+        
+        isSmartMovingLoaded = Loader.isModLoaded("SmartMoving");
+        try {
+        	modelRotationGCSmartMoving = Class.forName("micdoodle8.mods.galacticraft.core.client.model.ModelRotationRendererGC");
+        	modelRotationGCSmartMovingInit = modelRotationGCSmartMoving.getConstructor(ModelBase.class, int.class, int.class, ModelRenderer.class, int.class);
+        } catch (Exception e) { e.printStackTrace(); }
+        
 
         if (this.modelPlayer.equals(modelBipedMain))
         {
