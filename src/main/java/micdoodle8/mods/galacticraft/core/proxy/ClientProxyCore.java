@@ -519,7 +519,6 @@ public class ClientProxyCore extends CommonProxyCore
         GL11.glPushMatrix();
 
         final EntityPlayer player = event.entityPlayer;
-        final WorldProvider provider = ClientProxyCore.mc.theWorld.provider;
 
         if (player.ridingEntity instanceof EntityTieredRocket)
         {
