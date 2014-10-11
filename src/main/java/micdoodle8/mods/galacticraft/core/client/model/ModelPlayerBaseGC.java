@@ -43,9 +43,20 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
     public static AbstractClientPlayer playerRendering;
     protected static PlayerGearData currentGearData;
     
-    private boolean isSmartMovingLoaded;
-    private Class modelRotationGCSmartMoving;
-    private Constructor modelRotationGCSmartMovingInit;
+    private static boolean isSmartMovingLoaded;
+    private static Class modelRotationGCSmartMoving;
+    private static Constructor modelRotationGCSmartMovingInit;
+
+    static {
+	    isSmartMovingLoaded = Loader.isModLoaded("SmartMoving");
+	    if (isSmartMovingLoaded)
+	    {
+		    try {
+		    	modelRotationGCSmartMoving = Class.forName("micdoodle8.mods.galacticraft.core.client.model.ModelRotationRendererGC");
+		    	modelRotationGCSmartMovingInit = modelRotationGCSmartMoving.getConstructor(ModelBase.class, int.class, int.class, ModelRenderer.class, int.class);
+		    } catch (Exception e) { e.printStackTrace(); }
+	    }
+    }
 
     public ModelPlayerBaseGC(ModelPlayerAPI modelPlayerAPI)
     {
@@ -80,13 +91,6 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
         final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
         final ModelBiped modelBipedMain = ((RenderPlayer) render).modelBipedMain;
         
-        isSmartMovingLoaded = Loader.isModLoaded("SmartMoving");
-        try {
-        	modelRotationGCSmartMoving = Class.forName("micdoodle8.mods.galacticraft.core.client.model.ModelRotationRendererGC");
-        	modelRotationGCSmartMovingInit = modelRotationGCSmartMoving.getConstructor(ModelBase.class, int.class, int.class, ModelRenderer.class, int.class);
-        } catch (Exception e) { e.printStackTrace(); }
-        
-
         if (this.modelPlayer.equals(modelBipedMain))
         {
             this.oxygenMask = createModelRenderer(this.modelPlayer, 0, 0, 0);
