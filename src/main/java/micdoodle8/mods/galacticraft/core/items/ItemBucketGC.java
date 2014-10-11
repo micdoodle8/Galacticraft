@@ -7,11 +7,11 @@ import net.minecraft.item.ItemBucket;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemBucketGalacticraft extends ItemBucket {
+public class ItemBucketGC extends ItemBucket {
 
 	private String texture_prefix;
 
-	public ItemBucketGalacticraft(Block block, String texture_prefix) {
+	public ItemBucketGC(Block block, String texture_prefix) {
 		super(block);
 		this.texture_prefix = texture_prefix;
 		setContainerItem(Items.bucket);
