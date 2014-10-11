@@ -179,16 +179,19 @@ tile.oxygenCompressor.1.name=เครื่องลดความดันอ
 tile.arclamp.name=โคมไฟอาร์ค
 tile.spinThruster.name=สปินทรัสเตอร์
 tile.viewScreen.name=หน้าจอแสดงผล
-tile.tinStairs1.name=Tin Decoration Stairs ##NEEDS TRANSLATE##
-tile.tinStairs2.name=Tin Decoration Stairs ##NEEDS TRANSLATE##
-tile.wallGC.tin.name=Tin Decoration Wall ##NEEDS TRANSLATE##
-tile.slabGCHalf.tinSlab.name=Tin Decoration Slab ##NEEDS TRANSLATE##
-tile.moonStoneStairs.name=Moon Rock Stairs ##NEEDS TRANSLATE##
-tile.wallGC.moon.name=Moon Rock Wall ##NEEDS TRANSLATE##
-tile.slabGCHalf.moonSlab.name=Moon Rock Slab ##NEEDS TRANSLATE##
-tile.moonBricksStairs.name=Moon Dungeon Brick Stairs ##NEEDS TRANSLATE##
-tile.wallGC.moonBricks.name=Moon Dungeon Brick Wall ##NEEDS TRANSLATE##
-tile.slabGCHalf.moonBricksSlab.name=Moon Dungeon Brick Slab ##NEEDS TRANSLATE##
+tile.spaceStationBase.name=ฐานสถานีอวกาศ
+
+# DECOBLOCKS
+tile.tinStairs1.name=บันไดดีบุกตกแต่ง
+tile.tinStairs2.name=บันไดดีบุกตกแต่ง
+tile.wallGC.tin.name=กำแพงดีบุกตกแต่ง
+tile.slabGCHalf.tinSlab.name=แผ่นดีบุกตกแต่ง
+tile.moonStoneStairs.name=บันไดหินดวงจันทร์
+tile.wallGC.moon.name=กำแพงหินดวงจันทร์
+tile.slabGCHalf.moonSlab.name=แผ่นหินดวงจันทร์
+tile.moonBricksStairs.name=บันไดกำแพงดันเจี้ยนดวงจันทร์
+tile.wallGC.moonBricks.name=กำแพงอิฐดันเจี้ยนดวงจันทร์
+tile.slabGCHalf.moonBricksSlab.name=แผ่นอิฐดันเจี้ยนดวงจันทร์
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=แมงมุมอวกาศ
@@ -560,7 +563,7 @@ tile.glowstoneTorch.description=คบเพลิงหินเรืองแ
 tile.cheeseBlock.description=บล็อกชีส สร้างด้วยชีสจากดวงจันทร์ วางได้และกินได้
 tile.spinThruster.description=สปินทรัสเตอร์ ใช้เพื่อทำให้สถานีอวกาศหมุน
 tile.arclamp.description=โคมไฟอาร์ค ใช้เพื่อให้แสงสว่างที่กว้างและช่วยให้ม๊อบต่างๆ หนีออกไป
-tile.viewScreen.description=Display screens add that final touch to your space base. Right-click changes the information shown. ##NEEDS TRANSLATE##
+tile.viewScreen.description=หน้าจอแสดงผลจะแสดงภาพระบบสุริยะ โลก หรือเวลา คลิ๊กขวาที่บล็อกเพื่อเปลี่ยนการแสดงผล
 
 # CONTAINERS
 container.cargoloader.name=เครื่องขนส่งสินค้า
