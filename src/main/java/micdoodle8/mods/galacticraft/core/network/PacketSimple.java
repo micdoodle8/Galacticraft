@@ -58,6 +58,7 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -154,7 +155,7 @@ public class PacketSimple extends Packet implements IPacket
         C_RESPAWN_PLAYER(Side.CLIENT, String.class, Integer.class, String.class, Integer.class),
         C_UPDATE_ARCLAMP_FACING(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class),
         C_UPDATE_VIEWSCREEN(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
-        C_UPDATE_TELEMETRY(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
+        C_UPDATE_TELEMETRY(Side.CLIENT, Integer.class, Integer.class, Integer.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
         C_SEND_OVERWORLD_IMAGE(Side.CLIENT, byte[].class);
         
         private Side targetSide;
@@ -782,8 +783,12 @@ public class PacketSimple extends Packet implements IPacket
         	tile = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
         	if (tile instanceof TileEntityTelemetry)
         	{
-        		((TileEntityTelemetry)tile).clientTime1 = (Integer) this.data.get(3);
-        		((TileEntityTelemetry)tile).clientTime2 = (Integer) this.data.get(4);
+        		((TileEntityTelemetry)tile).clientClass = (Class) EntityList.stringToClassMapping.get(this.data.get(3));
+        		((TileEntityTelemetry)tile).clientData = new int[5];
+        		for (int i = 4; i < 9; i++)
+                {
+            		((TileEntityTelemetry)tile).clientData[i - 4] = (Integer) this.data.get(i);
+            	}
         	}
         	break;
         case C_SEND_OVERWORLD_IMAGE:

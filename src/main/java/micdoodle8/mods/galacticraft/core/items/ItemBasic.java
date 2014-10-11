@@ -8,11 +8,14 @@ import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
@@ -195,5 +198,27 @@ public class ItemBasic extends Item
         }
 
         return par1ItemStack;
+    }
+    
+    @Override
+    public boolean onLeftClickEntity(ItemStack itemStack, EntityPlayer player, Entity entity)
+    {
+    	if (itemStack.getItemDamage() != 19) return false;
+    	
+    	//Frequency module
+    	if (!player.worldObj.isRemote && entity != null && !(entity instanceof EntityPlayer))
+    	{
+    		if (itemStack.stackTagCompound == null)
+    		{
+    			itemStack.setTagCompound(new NBTTagCompound());
+    		}
+
+   			itemStack.stackTagCompound.setLong("linkedUUIDMost", entity.getUniqueID().getMostSignificantBits());
+   			itemStack.stackTagCompound.setLong("linkedUUIDLeast", entity.getUniqueID().getLeastSignificantBits());
+
+    		player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.tracking.message")));
+    		return true;
+    	}
+    	return false;
     }
 }

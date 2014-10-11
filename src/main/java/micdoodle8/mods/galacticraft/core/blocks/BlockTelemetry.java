@@ -1,8 +1,11 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import java.util.UUID;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -13,12 +16,13 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class BlockTelemetry extends BlockAdvanced implements ItemBlockDesc.IBlockShiftDesc
+public class BlockTelemetry extends BlockAdvancedTile implements ItemBlockDesc.IBlockShiftDesc
 {
     private IIcon iconFront;
     private IIcon iconSide;
@@ -133,11 +137,33 @@ public class BlockTelemetry extends BlockAdvanced implements ItemBlockDesc.IBloc
     @Override
     public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
     {
-        TileEntity tile = world.getTileEntity(x, y, z);
-        if (tile instanceof TileEntityTelemetry)
+        if (!world.isRemote)
         {
-        	((TileEntityTelemetry) tile).onActivated();
-        	return true;
+        	TileEntity tile = world.getTileEntity(x, y, z);
+        	if (tile instanceof TileEntityTelemetry)
+        	{
+        		ItemStack held = player.inventory.getCurrentItem();
+        		//Look for Frequency Module
+        		if (held != null && held.getItem() == GCItems.basicItem && held.getItemDamage() == 19)
+        		{
+        			NBTTagCompound fmData = held.stackTagCompound;
+        			if (fmData != null && fmData.hasKey("linkedUUIDMost") && fmData.hasKey("linkedUUIDLeast"))
+        			{
+        				UUID uuid = new UUID(fmData.getLong("linkedUUIDMost"), fmData.getLong("linkedUUIDLeast"));
+        				((TileEntityTelemetry) tile).addTrackedEntity(uuid);
+        			}
+        			else if (fmData == null)
+        			{
+        				fmData = new NBTTagCompound();
+        				held.setTagCompound(fmData);
+        			}
+        			fmData.setInteger("teCoordX", x);
+        			fmData.setInteger("teCoordY", y);
+        			fmData.setInteger("teCoordZ", z);
+        			fmData.setInteger("teDim", world.provider.dimensionId);
+        			return true;
+        		}
+        	}
         }
     	return false;
     }

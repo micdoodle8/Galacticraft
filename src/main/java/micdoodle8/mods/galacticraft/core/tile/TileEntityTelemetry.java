@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.UUID;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
@@ -8,19 +10,22 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import net.minecraft.util.MathHelper;
 
 public class TileEntityTelemetry extends TileEntity
 {   
-	public int clientTime1;
-	public int clientTime2;
+	public Class clientClass;
+	public int[] clientData;
 
 	public static HashSet<BlockVec3> loadedList = new HashSet<BlockVec3>();
 	private static MinecraftServer theServer;
+	private Entity linkedEntity;
 	
 	static
 	{
@@ -55,11 +60,26 @@ public class TileEntityTelemetry extends TileEntity
 	{
 		if (!this.worldObj.isRemote)
 		{
-			World w1 = theServer.worldServerForDimension(0);
-			World w2 = theServer.worldServerForDimension(ConfigManagerCore.idDimensionMoon);
-			int time1 = w1 != null ? (int) ((w1.getWorldTime() + 6000L) % 24000L) : 0;
-			int time2 = w2 != null ? (int) ((w2.getWorldTime() + 6000L) % 24000L) : 0;
-			GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, new Object[] { this.xCoord, this.yCoord, this.zCoord, time1, time2 } ), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 320D));
+			String name;
+			int data0 = -1;
+			int data1 = -1;
+			int data2 = -1;
+			int data3 = -1;
+			int data4 = -1;
+			if (linkedEntity != null && !linkedEntity.isDead)
+			{
+				name = (String) EntityList.classToStringMapping.get(linkedEntity.getClass());
+				data1 = linkedEntity instanceof EntityLivingBase ? (int) (((EntityLivingBase)linkedEntity).getHealth() * 2) : -1;
+				double xmotion = linkedEntity.motionX;
+				double ymotion = linkedEntity instanceof EntityLivingBase ? linkedEntity.motionY + 0.078D : linkedEntity.motionY;
+				double zmotion = linkedEntity.motionZ;
+				data2 = (int) (MathHelper.sqrt_double(xmotion * xmotion + ymotion * ymotion + zmotion * zmotion) * 2000D);
+			}
+			else
+			{
+				name = "";
+			}
+			GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, new Object[] { this.xCoord, this.yCoord, this.zCoord, name, data0, data1, data2, data3, data4 } ), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 320D));
 		}
 	}
 	
@@ -75,9 +95,19 @@ public class TileEntityTelemetry extends TileEntity
         super.writeToNBT(nbt);
     }
        
-    public void onActivated()
+    public void addTrackedEntity(UUID uuid)
     {
-    	
+    	List<Entity> eList = this.worldObj.getLoadedEntityList();
+    	for (Entity e : eList)
+    	{
+    		if (e.getUniqueID().equals(uuid))
+    		{
+    			this.linkedEntity = e;
+    			return;
+    		}
+    	}
+    	//TODO Add some kind of watcher to add the entity when next loaded
+    	this.linkedEntity = null;
     }
 
 	public static TileEntityTelemetry getNearest(TileEntity te)
@@ -101,4 +131,6 @@ public class TileEntityTelemetry extends TileEntity
 		if (result instanceof TileEntityTelemetry) return (TileEntityTelemetry) result;
 		return null;
 	}
+	
+	
 }

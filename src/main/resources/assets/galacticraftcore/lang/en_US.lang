@@ -395,6 +395,7 @@ gui.rocket.warning.nofuel=I'll need to load in some rocket fuel first!
 gui.chest.warning.wrongkey=I'll probably need a Tier %s Dungeon key to unlock this!
 gui.frequencymodule.warning0=I'll probably need a
 gui.frequencymodule.warning1=if I want to hear properly here.
+gui.tracking.message=Tracking activated. Now right-click on a Telemetry Unit to complete the link.
 
 gui.rocketType.0=Storage Space: 18
 gui.rocketType.1=Storage Space: 36
