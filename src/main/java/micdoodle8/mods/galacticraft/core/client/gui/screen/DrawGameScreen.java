@@ -33,7 +33,7 @@ public class DrawGameScreen
     	this.scaleZ = scaleZparam;
     }
     
-    public void drawScreen(int type, float ticks, boolean cornerBlock)
+    public void drawScreen(int type, float ticks, boolean cornerBlock, TileEntityScreen te)
     {
     	if (type >= TileEntityScreen.maxTypes)
     	{
@@ -43,7 +43,7 @@ public class DrawGameScreen
 
 		if (type < 2 || cornerBlock)
 		{
-			this.doDraw(type, ticks);
+			this.doDraw(type, ticks, te);
 			this.initialise = true;
 			this.initialiseLast = false;
 			return;
@@ -120,10 +120,10 @@ public class DrawGameScreen
         	
         tickDrawn = ticks;
         
-        this.doDraw(type, ticks);
+        this.doDraw(type, ticks, te);
     }
     
-    private void doDraw(int type, float ticks)
+    private void doDraw(int type, float ticks, TileEntityScreen te)
     {
         float lightMapSaveX = OpenGlHelper.lastBrightnessX;
         float lightMapSaveY = OpenGlHelper.lastBrightnessY;
@@ -131,7 +131,7 @@ public class DrawGameScreen
 
         if (type > 0) GL11.glDisable(GL11.GL_LIGHTING);
 
-        GalacticraftRegistry.getGameScreen(type).render(type, ticks, scaleX, scaleZ);
+        GalacticraftRegistry.getGameScreen(type).render(type, ticks, scaleX, scaleZ, te);
 
         if (type > 0) GL11.glEnable(GL11.GL_LIGHTING);
 

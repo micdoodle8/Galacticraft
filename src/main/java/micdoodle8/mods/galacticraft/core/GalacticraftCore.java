@@ -398,6 +398,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(TileEntityThruster.class, "Space Station Thruster");
         GameRegistry.registerTileEntity(TileEntityArclamp.class, "Arc Lamp");
         GameRegistry.registerTileEntity(TileEntityScreen.class, "View Screen");
+        GameRegistry.registerTileEntity(TileEntityTelemetry.class, "Telemetry Unit");
     }
 
     public void registerCreatures()

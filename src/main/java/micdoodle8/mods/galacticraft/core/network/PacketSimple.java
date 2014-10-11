@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.network;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -44,6 +45,7 @@ import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
@@ -77,9 +79,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.*;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.DimensionManager;
+
 import org.apache.commons.io.FileUtils;
 
 import javax.imageio.ImageIO;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -150,6 +154,7 @@ public class PacketSimple extends Packet implements IPacket
         C_RESPAWN_PLAYER(Side.CLIENT, String.class, Integer.class, String.class, Integer.class),
         C_UPDATE_ARCLAMP_FACING(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class),
         C_UPDATE_VIEWSCREEN(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
+        C_UPDATE_TELEMETRY(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
         C_SEND_OVERWORLD_IMAGE(Side.CLIENT, byte[].class);
         
         private Side targetSide;
@@ -772,6 +777,14 @@ public class PacketSimple extends Packet implements IPacket
             	screenTile.connectedRight = (flags & 1) > 0;
             	screenTile.refreshConnections(true);
         	}      	
+        	break;
+        case C_UPDATE_TELEMETRY:
+        	tile = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
+        	if (tile instanceof TileEntityTelemetry)
+        	{
+        		((TileEntityTelemetry)tile).clientTime1 = (Integer) this.data.get(3);
+        		((TileEntityTelemetry)tile).clientTime2 = (Integer) this.data.get(4);
+        	}
         	break;
         case C_SEND_OVERWORLD_IMAGE:
             try

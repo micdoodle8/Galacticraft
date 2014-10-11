@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.api.galaxies.Star;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.lwjgl.BufferUtils;
@@ -55,7 +56,7 @@ public class GameScreenCelestial implements IGameScreen
 		this.frameA = frameSize;
 	}
 
-    public void render(int type, float ticks, float scaleX, float scaleY)
+    public void render(int type, float ticks, float scaleX, float scaleY, TileEntity te)
     {
     	centreX = scaleX / 2;
     	centreY = scaleY / 2;

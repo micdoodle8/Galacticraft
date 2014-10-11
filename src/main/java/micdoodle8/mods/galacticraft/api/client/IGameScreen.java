@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.api.client;
 
+import net.minecraft.tileentity.TileEntity;
+
 public interface IGameScreen
 {
 	/**
@@ -35,5 +37,5 @@ public interface IGameScreen
      * IMPORTANT to re-enable it again.
      * 
      */
-	public void render(int type, float ticks, float scaleX, float scaleY);
+	public void render(int type, float ticks, float scaleX, float scaleY, TileEntity te);
 	}

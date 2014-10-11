@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -41,7 +42,7 @@ public class GameScreenBasic implements IGameScreen
 		this.frameA = frameSize;
 	}
 
-    public void render(int type, float ticks, float scaleX, float scaleY)
+    public void render(int type, float ticks, float scaleX, float scaleY, TileEntity te)
     {
     	frameBx = scaleX - frameA;
     	frameBy = scaleY - frameA;

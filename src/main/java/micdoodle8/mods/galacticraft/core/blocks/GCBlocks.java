@@ -52,6 +52,7 @@ public class GCBlocks
     public static Block cheeseBlock;
     public static Block spinThruster;
     public static Block screen;
+    public static Block telemetry;
     public static Block slabGCHalf;
     public static Block slabGCDouble;
     public static Block tinStairs1;
@@ -103,6 +104,7 @@ public class GCBlocks
         GCBlocks.cheeseBlock = new BlockCheese();
         GCBlocks.spinThruster = new BlockSpinThruster("spinThruster");
         GCBlocks.screen = new BlockScreen("viewScreen");
+        GCBlocks.telemetry = new BlockTelemetry("telemetry");
         GCBlocks.slabGCHalf = new BlockSlabGC("slabGCHalf", false, Material.rock);
         GCBlocks.slabGCDouble = new BlockSlabGC("slabGCDouble", true, Material.rock);
         GCBlocks.tinStairs1 = new BlockStairsGC("tinStairs1", blockMoon, BlockStairsGC.StairsCategoryGC.TIN1).setHardness(2.0F);
@@ -162,6 +164,7 @@ public class GCBlocks
         GCCoreUtil.registerGalacticraftBlock("wireAluminumHeavy", GCBlocks.aluminumWire, 1);
         GCCoreUtil.registerGalacticraftBlock("spinThruster", GCBlocks.spinThruster);
         GCCoreUtil.registerGalacticraftBlock("viewScreen", GCBlocks.screen);
+        GCCoreUtil.registerGalacticraftBlock("telemetry", GCBlocks.telemetry);
         GCCoreUtil.registerGalacticraftBlock("arclamp", GCBlocks.brightLamp);
         GCCoreUtil.registerGalacticraftBlock("treasureChestTier1", GCBlocks.treasureChestTier1);
 
@@ -265,6 +268,7 @@ public class GCBlocks
         GameRegistry.registerBlock(GCBlocks.cheeseBlock, ItemBlockCheese.class, GCBlocks.cheeseBlock.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.spinThruster, ItemBlockThruster.class, GCBlocks.spinThruster.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.screen, ItemBlockDesc.class, GCBlocks.screen.getUnlocalizedName());
+        GameRegistry.registerBlock(GCBlocks.telemetry, ItemBlockDesc.class, GCBlocks.telemetry.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.brightLamp, ItemBlockArclamp.class, GCBlocks.brightLamp.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.treasureChestTier1, ItemBlockDesc.class, GCBlocks.treasureChestTier1.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.tinStairs1, ItemBlockGC.class, GCBlocks.tinStairs1.getUnlocalizedName());
