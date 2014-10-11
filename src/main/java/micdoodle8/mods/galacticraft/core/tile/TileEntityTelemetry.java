@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -19,7 +20,15 @@ public class TileEntityTelemetry extends TileEntity
 	public int clientTime2;
 
 	public static HashSet<BlockVec3> loadedList = new HashSet<BlockVec3>();
+	private static MinecraftServer theServer;
 	
+	static
+	{
+		if (FMLCommonHandler.instance().getEffectiveSide().isServer())
+		{
+			theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
+		}
+	}
 	
 	@Override
 	public void validate()
@@ -46,8 +55,8 @@ public class TileEntityTelemetry extends TileEntity
 	{
 		if (!this.worldObj.isRemote)
 		{
-			World w1 = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
-			World w2 = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(ConfigManagerCore.idDimensionMoon);
+			World w1 = theServer.worldServerForDimension(0);
+			World w2 = theServer.worldServerForDimension(ConfigManagerCore.idDimensionMoon);
 			int time1 = w1 != null ? (int) ((w1.getWorldTime() + 6000L) % 24000L) : 0;
 			int time2 = w2 != null ? (int) ((w2.getWorldTime() + 6000L) % 24000L) : 0;
 			GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, new Object[] { this.xCoord, this.yCoord, this.zCoord, time1, time2 } ), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 320D));

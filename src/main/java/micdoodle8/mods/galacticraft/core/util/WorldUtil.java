@@ -60,7 +60,16 @@ public class WorldUtil
 {
     public static List<Integer> registeredSpaceStations;
     public static List<Integer> registeredPlanets;
-
+	private static MinecraftServer theServer;
+	
+	static
+	{
+		if (FMLCommonHandler.instance().getEffectiveSide().isServer())
+		{
+			theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
+		}
+	}
+	
     public static double getGravityForEntity(Entity entity)
     {
         if (entity.worldObj.provider instanceof IGalacticraftWorldProvider)
@@ -187,7 +196,7 @@ public class WorldUtil
 
         for (final Integer element : WorldUtil.getArrayOfPossibleDimensions())
         {
-            WorldProvider elementProvider = WorldProvider.getProviderForDimension(element);
+            WorldProvider elementProvider = WorldUtil.getProviderForDimension(element);
             if (elementProvider != null && nameToFind.equals(elementProvider.getDimensionName()))
             {
                 return elementProvider;
@@ -209,7 +218,7 @@ public class WorldUtil
 
         for (Integer element : WorldUtil.registeredPlanets)
         {
-            WorldProvider provider = WorldProvider.getProviderForDimension(element);
+        	WorldProvider provider = WorldUtil.getProviderForDimension(element);
 
             if (provider != null)
             {
@@ -229,7 +238,7 @@ public class WorldUtil
 
         for (Integer element : WorldUtil.registeredSpaceStations)
         {
-            WorldProvider provider = WorldProvider.getProviderForDimension(element);
+        	WorldProvider provider = WorldUtil.getProviderForDimension(element);
 
             if (provider != null)
             {
@@ -292,6 +301,13 @@ public class WorldUtil
         return null;
     }
 
+    public static WorldProvider getProviderForDimension(int id)
+    {
+    	WorldProvider provider = theServer.worldServerForDimension(id).provider;
+    	if (provider == null) provider = WorldProvider.getProviderForDimension(id);
+    	return provider;
+    }
+    
     public static HashMap<String, Integer> getArrayOfPossibleDimensions(List<Integer> ids, EntityPlayerMP playerBase)
     {
         final HashMap<String, Integer> map = new HashMap<String, Integer>();
@@ -305,19 +321,20 @@ public class WorldUtil
                 celestialBody = GalacticraftCore.satelliteSpaceStation;
             }
 
-            if (celestialBody != null && WorldProvider.getProviderForDimension(id) != null)
+            WorldProvider provider = WorldUtil.getProviderForDimension(id);
+            if (celestialBody != null && provider != null)
             {
-                if (WorldProvider.getProviderForDimension(id) instanceof IGalacticraftWorldProvider && !(WorldProvider.getProviderForDimension(id) instanceof IOrbitDimension) || WorldProvider.getProviderForDimension(id).dimensionId == 0)
+                if (provider instanceof IGalacticraftWorldProvider && !(provider instanceof IOrbitDimension) || provider.dimensionId == 0)
                 {
-                    map.put(celestialBody.getName(), WorldProvider.getProviderForDimension(id).dimensionId);
+                    map.put(celestialBody.getName(), provider.dimensionId);
                 }
-                else if (playerBase != null && WorldProvider.getProviderForDimension(id) instanceof IOrbitDimension)
+                else if (playerBase != null && provider instanceof IOrbitDimension)
                 {
                     final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, id, playerBase);
 
                     if (!ConfigManagerCore.spaceStationsRequirePermission || data.getAllowedPlayers().contains(playerBase.getGameProfile().getName()) || VersionUtil.isPlayerOpped(playerBase))
                     {
-                        map.put(celestialBody.getName() + "$" + data.getOwner() + "$" + data.getSpaceStationName() + "$" + WorldProvider.getProviderForDimension(id).dimensionId, WorldProvider.getProviderForDimension(id).dimensionId);
+                        map.put(celestialBody.getName() + "$" + data.getOwner() + "$" + data.getSpaceStationName() + "$" + provider.dimensionId, provider.dimensionId);
                     }
                 }
             }
@@ -385,7 +402,7 @@ public class WorldUtil
 	            if (id >= 0)
 	            {
 	                DimensionManager.registerDimension(registeredID, ConfigManagerCore.idDimensionOverworldOrbitStatic);
-	                FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(registeredID);
+	                theServer.worldServerForDimension(registeredID);
                 }
 	            else
 	            {
@@ -541,7 +558,7 @@ public class WorldUtil
         {
             GalacticraftCore.packetPipeline.sendToAll(new PacketSimple(EnumSimplePacket.C_UPDATE_PLANETS_LIST, WorldUtil.getPlanetList()));
 
-            MinecraftServer mcServer = FMLCommonHandler.instance().getMinecraftServerInstance();
+            MinecraftServer mcServer = theServer;
 
             if (mcServer != null)
             {
