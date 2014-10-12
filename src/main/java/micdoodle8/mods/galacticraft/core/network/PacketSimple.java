@@ -801,12 +801,12 @@ public class PacketSimple extends Packet implements IPacket
         case C_SEND_OVERWORLD_IMAGE:
             try
             {
-                byte[] base64 = (byte[]) this.data.get(0);
+                byte[] bytes = (byte[]) this.data.get(0);
                 
-                Class c = Launch.classLoader.loadClass("org.apache.commons.codec.binary.Base64");
-                if (c != null)
+                //Class c = Launch.classLoader.loadClass("org.apache.commons.codec.binary.Base64");
+                //if (c != null)
                 {
-                    byte[] bytes = (byte[])c.getMethod("decodeBase64", byte[].class).invoke(null, base64);
+                    //byte[] bytes = (byte[])c.getMethod("decodeBase64", byte[].class).invoke(null, base64);
                     File folder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/temp");
 
                     try
@@ -1366,9 +1366,9 @@ public class PacketSimple extends Packet implements IPacket
                 try
                 {
                     byte[] bytes = FileUtils.readFileToByteArray(outputFile);
-                    Class c = Launch.classLoader.loadClass("org.apache.commons.codec.binary.Base64");
-                    byte[] bytes64 = (byte[])c.getMethod("encodeBase64", byte[].class).invoke(null, bytes);
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { bytes64 } ), playerBase);
+                    //Class c = Launch.classLoader.loadClass("org.apache.commons.codec.binary.Base64");
+                    //byte[] bytes64 = (byte[])c.getMethod("encodeBase64", byte[].class).invoke(null, bytes);
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { bytes } ), playerBase);
                 }
                 catch (Exception ex)
                 {
