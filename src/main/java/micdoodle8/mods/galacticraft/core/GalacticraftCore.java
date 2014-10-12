@@ -110,6 +110,7 @@ public class GalacticraftCore
     public void preInit(FMLPreInitializationEvent event)
     {
     	isPlanetsLoaded = Loader.isModLoaded(Constants.MOD_ID_PLANETS);
+    	WorldUtil.theServer = null;
     	
     	MinecraftForge.EVENT_BUS.register(new EventHandlerGC());
         GCPlayerHandler handler = new GCPlayerHandler();
@@ -333,6 +334,7 @@ public class GalacticraftCore
         event.registerServerCommand(new CommandGCEnergyUnits());
         event.registerServerCommand(new CommandJoinSpaceRace());
 
+        WorldUtil.theServer = event.getServer();
         WorldUtil.registerSpaceStations(event.getServer().worldServerForDimension(0).getSaveHandler().getMapFileFromName("dummy").getParentFile());
 
         ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();

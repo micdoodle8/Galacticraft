@@ -58,7 +58,7 @@ public class GCPlayerHandler
 {
     private static final int OXYGENHEIGHTLIMIT = 450;
 	private ConcurrentHashMap<UUID, GCPlayerStats> playerStatsMap = new ConcurrentHashMap<UUID, GCPlayerStats>();
-	
+
     public ConcurrentHashMap<UUID, GCPlayerStats> getServerStatList()
     {
         return this.playerStatsMap;

@@ -23,7 +23,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 
 public class TileEntityTelemetry extends TileEntity
 {   
@@ -117,7 +117,7 @@ public class TileEntityTelemetry extends TileEntity
 					data1 =  (int) (eLiving.getHealth() * 100 / eLiving.getMaxHealth());
 					if (eLiving instanceof EntityPlayerMP)
 					{
-						data3 = ((EntityPlayerMP) eLiving).getFoodStats().getFoodLevel() * 25 / 4;
+						data3 = ((EntityPlayerMP) eLiving).getFoodStats().getFoodLevel() * 5;
 						GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) eLiving);
 						data4 = stats.airRemaining * 4096 + stats.airRemaining2; 
 					}
@@ -222,8 +222,9 @@ public class TileEntityTelemetry extends TileEntity
 			int x = fmData.getInteger("teCoordX");
 			int y = fmData.getInteger("teCoordY");
 			int z = fmData.getInteger("teCoordZ");
-			World w = WorldUtil.getProviderForDimension(dim).worldObj;
-			TileEntity te = w.getTileEntity(x, y, z);
+			WorldProvider wp = WorldUtil.getProviderForDimension(dim);
+			if (wp == null) System.out.println("Frequency module worn: world provider is null.  This is a bug. "+dim);
+			TileEntity te = wp.worldObj.getTileEntity(x, y, z);
 			if (te instanceof TileEntityTelemetry)
 			{
 				if (player == null)

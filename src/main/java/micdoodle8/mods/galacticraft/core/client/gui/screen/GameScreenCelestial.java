@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.screen;
 import java.nio.DoubleBuffer;
 
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
+import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
@@ -14,7 +15,6 @@ import micdoodle8.mods.galacticraft.api.galaxies.Star;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.lwjgl.BufferUtils;
@@ -56,7 +56,7 @@ public class GameScreenCelestial implements IGameScreen
 		this.frameA = frameSize;
 	}
 
-    public void render(int type, float ticks, float scaleX, float scaleY, TileEntity te)
+    public void render(int type, float ticks, float scaleX, float scaleY, IScreenManager scr)
     {
     	centreX = scaleX / 2;
     	centreY = scaleY / 2;

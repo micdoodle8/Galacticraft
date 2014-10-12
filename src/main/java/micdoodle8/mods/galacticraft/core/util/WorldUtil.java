@@ -60,15 +60,7 @@ public class WorldUtil
 {
     public static List<Integer> registeredSpaceStations;
     public static List<Integer> registeredPlanets;
-	private static MinecraftServer theServer;
-	
-	static
-	{
-		if (FMLCommonHandler.instance().getEffectiveSide().isServer())
-		{
-			theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
-		}
-	}
+	public static MinecraftServer theServer;
 	
     public static double getGravityForEntity(Entity entity)
     {

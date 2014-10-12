@@ -358,7 +358,7 @@ gui.lander.warning3=" to slow down!
 gui.lander.velocity=Entry Velocity
 gui.lander.velocityu=m/s
 gui.perSecond=/s
-gui.seconds=s	
+gui.seconds=s
 
 gui.oxygen.warning=Oxygen Setup is Invalid!
 gui.sensor.advanced=Advanced Mode

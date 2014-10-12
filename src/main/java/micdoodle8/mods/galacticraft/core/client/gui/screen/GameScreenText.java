@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.screen;
 import java.util.UUID;
 
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
+import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -18,7 +19,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
@@ -34,32 +34,22 @@ public class GameScreenText implements IGameScreen
     private float frameBy;
     private int yPos;
 
-    private Class lastClass;
-    private String lastName;
-    private Entity lastEntity;
-    private Render lastRender;
-    
-    private static TileEntity driver;
-    
 	public void setFrameSize(float frameSize)
 	{
 		this.frameA = frameSize;
 	}
 
-	public void setDriverTile(TileEntity te)
-	{
-		driver = te;
-	}
-	
 	@SideOnly(Side.CLIENT)
-	public void render(int type, float ticks, float sizeX, float sizeY, TileEntity te)
+	public void render(int type, float ticks, float sizeX, float sizeY, IScreenManager scr)
     {
-    	frameBx = sizeX - frameA;
+    	DrawGameScreen screen = (DrawGameScreen) scr;
+    	
+		frameBx = sizeX - frameA;
     	frameBy = sizeY - frameA;
     	drawBlackBackground(0.0F);
     	yPos = 0;
 
-    	TileEntityTelemetry telemeter = TileEntityTelemetry.getNearest(te);
+    	TileEntityTelemetry telemeter = TileEntityTelemetry.getNearest(screen.driver);
     	//Make the text to draw.  To look good it's important the width and height
     	//of the whole text box are correctly set here.
     	String strName = "";
@@ -76,12 +66,12 @@ public class GameScreenText implements IGameScreen
     	{
         	if (telemeter.clientClass != null)
         	{
-        		if (telemeter.clientClass == this.lastClass && (telemeter.clientClass != EntityPlayerMP.class || telemeter.clientName.equals(this.lastName)))
+        		if (telemeter.clientClass == screen.telemetryLastClass && (telemeter.clientClass != EntityPlayerMP.class || telemeter.clientName.equals(screen.telemetryLastName)))
         		{
         			//Used cached data from last time if possible
-        			entity = this.lastEntity;
-        			renderEntity = this.lastRender;
-        			strName = this.lastName;
+        			entity = screen.telemetryLastEntity;
+        			renderEntity = screen.telemetryLastRender;
+        			strName = screen.telemetryLastName;
         		}
         		else
         		{	        		
@@ -91,14 +81,14 @@ public class GameScreenText implements IGameScreen
 	        		if (telemeter.clientClass == EntityPlayerMP.class)
 	        		{
 	        			strName = telemeter.clientName;
-	        			if (ConfigManagerCore.enableDebug) System.out.println("Lastclass "+(this.lastClass == null ? "null" : this.lastClass.getSimpleName()) + " N1 " + strName + " N2 " + this.lastName);
-	        			entity = new EntityOtherPlayerMP(te.getWorldObj(), VersionUtil.constructGameProfile(UUID.randomUUID(), strName));
+	        			if (ConfigManagerCore.enableDebug) System.out.println("Telemetry for player: Lastclass "+(screen.telemetryLastClass == null ? "null" : screen.telemetryLastClass.getSimpleName()) + " N1 " + strName + " N2 " + screen.telemetryLastName);
+	        			entity = new EntityOtherPlayerMP(screen.driver.getWorldObj(), VersionUtil.constructGameProfile(UUID.randomUUID(), strName));
 	        			renderEntity = (Render) RenderManager.instance.entityRenderMap.get(EntityPlayer.class);
 	        		}
 	        		else
 	        		{
 		        		try {
-		        			entity = (Entity) telemeter.clientClass.getConstructor(World.class).newInstance(te.getWorldObj());
+		        			entity = (Entity) telemeter.clientClass.getConstructor(World.class).newInstance(screen.driver.getWorldObj());
 		        		} catch (Exception ex) { }
 		        		if (entity != null) strName = entity.getCommandSenderName();
 		        		renderEntity = (Render) RenderManager.instance.entityRenderMap.get(telemeter.clientClass);
@@ -131,10 +121,10 @@ public class GameScreenText implements IGameScreen
 	        	{
 	        		int oxygen = telemeter.clientData[4];
 	        		oxygen = (oxygen % 4096) + (oxygen / 4096);
-	        		if (oxygen == 180)
+	        		if (oxygen == 180 || oxygen == 90)
 	        			str4 = "Oxygen: OK";
 	        		else
-	        			str4 = "Oxygen: "  + this.makeOxygenString(oxygen)  + GCCoreUtil.translate("gui.seconds");
+	        			str4 = "Oxygen: " + this.makeOxygenString(oxygen)  + GCCoreUtil.translate("gui.seconds");
 	        	} 
         	}
         	else if (entity instanceof EntitySpaceshipBase)
@@ -163,7 +153,7 @@ public class GameScreenText implements IGameScreen
     	else
     	{
     		//Default - draw a simple time display just to show the Display Screen is working
-			World w1 = te.getWorldObj();
+			World w1 = screen.driver.getWorldObj();
     		int time1 = w1 != null ? (int) ((w1.getWorldTime() + 6000L) % 24000L) : 0;
     		str2 = makeTimeString(time1 * 360);
         }
@@ -200,12 +190,13 @@ public class GameScreenText implements IGameScreen
         GL11.glScalef(scaleText, scaleText, 1.0F);
 
         //Actually draw the text
-        drawText(strName, GCCoreUtil.to32BitColor(255, 240, 216, 255));
-        drawText(str0, GCCoreUtil.to32BitColor(255, 240, 216, 255));
-        drawText(str1, GCCoreUtil.to32BitColor(255, 240, 216, 255));
-        drawText(str2, GCCoreUtil.to32BitColor(255, 240, 216, 255));
-        drawText(str3, GCCoreUtil.to32BitColor(255, 240, 216, 255));
-        drawText(str4, GCCoreUtil.to32BitColor(255, 240, 216, 255));
+        int whiteColour = GCCoreUtil.to32BitColor(255, 240, 216, 255);
+        drawText(strName, whiteColour);
+        drawText(str0, whiteColour);
+        drawText(str1, whiteColour);
+        drawText(str2, whiteColour);
+        drawText(str3, whiteColour);
+        drawText(str4, whiteColour);
 
         //If there is an entity to render, draw it on the left of the text
         if (renderEntity != null && entity != null ) 
@@ -217,7 +208,8 @@ public class GameScreenText implements IGameScreen
         	GL11.glRotatef(180F, 0, 1, 0);
         	if (entity instanceof EntityOtherPlayerMP)
         	{
-        		FMLClientHandler.instance().getClient().renderEngine.bindTexture(((AbstractClientPlayer) entity).getLocationSkin());
+        		AbstractClientPlayer playerToRender = (AbstractClientPlayer) entity;
+        		FMLClientHandler.instance().getClient().renderEngine.bindTexture(playerToRender.getLocationSkin());
         	}
         	if (entity instanceof EntitySpaceshipBase)
         	{
@@ -230,10 +222,10 @@ public class GameScreenText implements IGameScreen
         //TODO  Cross-dimensional tracking (i.e. old entity setDead, new entity created)
         //TODO  Deal with text off screen (including where localizations longer than English)
 
-        this.lastClass = (telemeter == null) ? null : telemeter.clientClass;
-        this.lastEntity = entity;
-        this.lastRender = renderEntity;
-        this.lastName = strName;
+        screen.telemetryLastClass = (telemeter == null) ? null : telemeter.clientClass;
+        screen.telemetryLastEntity = entity;
+        screen.telemetryLastRender = renderEntity;
+        screen.telemetryLastName = strName;
     }
     
     private String makeTimeString(int l)

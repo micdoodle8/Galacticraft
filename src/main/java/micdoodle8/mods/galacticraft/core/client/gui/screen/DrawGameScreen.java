@@ -3,17 +3,20 @@ package micdoodle8.mods.galacticraft.core.client.gui.screen;
 import java.nio.FloatBuffer;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-public class DrawGameScreen
+public class DrawGameScreen extends IScreenManager
 {
     private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
     private static FloatBuffer colorBuffer = GLAllocation.createDirectFloatBuffer(16);
@@ -27,7 +30,14 @@ public class DrawGameScreen
     
     private float scaleX;
     private float scaleZ;
-    private TileEntity driver;
+
+    public TileEntity driver;
+    public Class telemetryLastClass;
+    public String telemetryLastName;
+    public Entity telemetryLastEntity;
+    public Render telemetryLastRender;
+    
+
 
     public DrawGameScreen(float scaleXparam, float scaleZparam, TileEntity te)
     {
@@ -134,7 +144,7 @@ public class DrawGameScreen
 
         if (type > 0) GL11.glDisable(GL11.GL_LIGHTING);
 
-        GalacticraftRegistry.getGameScreen(type).render(type, ticks, scaleX, scaleZ, this.driver);
+        GalacticraftRegistry.getGameScreen(type).render(type, ticks, scaleX, scaleZ, this);
 
         if (type > 0) GL11.glEnable(GL11.GL_LIGHTING);
 
