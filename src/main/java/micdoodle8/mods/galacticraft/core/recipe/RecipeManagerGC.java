@@ -409,7 +409,7 @@ public class RecipeManagerGC
 
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.spinThruster), new Object[] { "   ", "YWZ", "PXP", 'W', "waferAdvanced", 'X', new ItemStack(GCItems.meteoricIronIngot, 1, 0), 'Y', new ItemStack(GCItems.fuelCanister, 1, 1), 'Z', new ItemStack(GCItems.rocketEngine, 1, 0), 'P', "compressedSteel" });
 
-        RecipeUtil.addRecipe(new ItemStack(GCBlocks.screen), new Object[] { "XWX", "WGW", "XWX", 'W', "waferAdvanced", 'X', "compressedSteel", 'G', Blocks.glass });
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.screen), new Object[] { "XYX", "YGY", "XWX", 'W', "waferAdvanced", 'X', "compressedSteel", 'Y', "waferBasic", 'G', Blocks.glass });
 
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.telemetry), new Object[] { "XFX", "XWX", "YYY", 'W', "waferBasic", 'X', "compressedTin", 'Y', "compressedCopper", 'F', new ItemStack(GCItems.basicItem, 1, 19) });
 
