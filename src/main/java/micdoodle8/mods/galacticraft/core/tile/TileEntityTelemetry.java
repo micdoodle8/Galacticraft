@@ -6,26 +6,35 @@ import java.util.UUID;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
 
 public class TileEntityTelemetry extends TileEntity
 {   
 	public Class clientClass;
-	public int[] clientData;
+	public int[] clientData = { -1 };
+	public String clientName;
 
 	public static HashSet<BlockVec3> loadedList = new HashSet<BlockVec3>();
 	private static MinecraftServer theServer;
 	private Entity linkedEntity;
+	private UUID toUpdate = null;
+	private int pulseRate = 400;
 	
 	static
 	{
@@ -60,6 +69,12 @@ public class TileEntityTelemetry extends TileEntity
 	{
 		if (!this.worldObj.isRemote)
 		{
+			if (this.toUpdate != null)
+			{
+				this.addTrackedEntity(this.toUpdate);
+				this.toUpdate = null;
+			}
+			
 			String name;
 			int data0 = -1;
 			int data1 = -1;
@@ -68,12 +83,47 @@ public class TileEntityTelemetry extends TileEntity
 			int data4 = -1;
 			if (linkedEntity != null && !linkedEntity.isDead)
 			{
-				name = (String) EntityList.classToStringMapping.get(linkedEntity.getClass());
-				data1 = linkedEntity instanceof EntityLivingBase ? (int) (((EntityLivingBase)linkedEntity).getHealth() * 2) : -1;
+				if (linkedEntity instanceof EntityPlayerMP)
+					name = "$" + ((EntityPlayerMP) linkedEntity).getCommandSenderName();
+				else
+					name = (String) EntityList.classToStringMapping.get(linkedEntity.getClass());
+				if (name == null)
+				{
+					System.out.println("error finding name for "+linkedEntity.getClass().getSimpleName());
+					name = "";
+				}
 				double xmotion = linkedEntity.motionX;
 				double ymotion = linkedEntity instanceof EntityLivingBase ? linkedEntity.motionY + 0.078D : linkedEntity.motionY;
 				double zmotion = linkedEntity.motionZ;
 				data2 = (int) (MathHelper.sqrt_double(xmotion * xmotion + ymotion * ymotion + zmotion * zmotion) * 2000D);
+				if (linkedEntity instanceof EntityLivingBase)
+				{
+					EntityLivingBase eLiving = (EntityLivingBase)linkedEntity;
+					data0 = eLiving.hurtTime;
+					this.pulseRate--;
+					this.pulseRate += eLiving.hurtTime * 20;
+					if (eLiving.ridingEntity != null) data2 /= 4;  //reduced pulse effect if riding a vehicle
+					else if (data2 > 1) this.pulseRate+=2;
+					this.pulseRate += Math.max(data2 - pulseRate, 0) / 4;
+					if (this.pulseRate > 2000) this.pulseRate = 2000;
+					if (this.pulseRate < 400) this.pulseRate = 400;
+					data2 = this.pulseRate / 10;
+					data1 =  (int) (eLiving.getHealth() * 100 / eLiving.getMaxHealth());
+					if (eLiving instanceof EntityPlayerMP)
+					{
+						data3 = ((EntityPlayerMP) eLiving).getFoodStats().getFoodLevel();
+						GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) eLiving);
+						data4 = stats.airRemaining * 4096 + stats.airRemaining2; 
+					}
+				}
+				else if (linkedEntity instanceof EntitySpaceshipBase)
+				{
+					EntitySpaceshipBase eShip = (EntitySpaceshipBase)linkedEntity; 
+					data0 = eShip.timeUntilLaunch;
+					data1 = (int) eShip.posY;
+					data3 = eShip.getScaledFuelLevel(100);
+					data4 = (int) eShip.rotationPitch;
+				}
 			}
 			else
 			{
@@ -87,17 +137,23 @@ public class TileEntityTelemetry extends TileEntity
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
+        Long msb = nbt.getLong("entityUUIDMost");
+        Long lsb = nbt.getLong("entityUUIDLeast");
+        this.toUpdate = new UUID(msb, lsb);
     }
     
     @Override
     public void writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
+        nbt.setLong("entityUUIDMost", this.linkedEntity.getUniqueID().getMostSignificantBits());
+        nbt.setLong("entityUUIDLeast", this.linkedEntity.getUniqueID().getLeastSignificantBits());
     }
        
     public void addTrackedEntity(UUID uuid)
     {
-    	List<Entity> eList = this.worldObj.getLoadedEntityList();
+    	this.pulseRate = 400;
+    	List<Entity> eList = this.worldObj.loadedEntityList;
     	for (Entity e : eList)
     	{
     		if (e.getUniqueID().equals(uuid))
@@ -110,6 +166,12 @@ public class TileEntityTelemetry extends TileEntity
     	this.linkedEntity = null;
     }
 
+    public void removeTrackedEntity()
+    {
+    	this.pulseRate = 400;
+    	this.linkedEntity = null;
+    }
+    
 	public static TileEntityTelemetry getNearest(TileEntity te)
 	{
 		BlockVec3 target = new BlockVec3(te);
@@ -131,6 +193,32 @@ public class TileEntityTelemetry extends TileEntity
 		if (result instanceof TileEntityTelemetry) return (TileEntityTelemetry) result;
 		return null;
 	}
-	
-	
+
+	/**
+	 * Call this when a player wears a frequency module to check
+	 * whether it has been linked with a Telemetry Unit
+	 * 
+	 * @param ItemStack  The frequency module
+	 * @param player
+	 */
+	public static void frequencyModulePlayer(ItemStack held, EntityPlayerMP player)
+	{
+		NBTTagCompound fmData = held.stackTagCompound;
+		if (fmData != null && fmData.hasKey("teDim"))
+		{
+			int dim = fmData.getInteger("teDim");
+			int x = fmData.getInteger("teCoordX");
+			int y = fmData.getInteger("teCoordY");
+			int z = fmData.getInteger("teCoordZ");
+			World w = WorldUtil.getProviderForDimension(dim).worldObj;
+			TileEntity te = w.getTileEntity(x, y, z);
+			if (te instanceof TileEntityTelemetry)
+			{
+				if (player == null)
+					((TileEntityTelemetry) te).removeTrackedEntity();
+				else
+					((TileEntityTelemetry) te).addTrackedEntity(player.getUniqueID());
+			}
+		}
+	}
 }

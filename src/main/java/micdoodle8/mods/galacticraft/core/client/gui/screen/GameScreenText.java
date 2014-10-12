@@ -1,15 +1,29 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
+import java.util.UUID;
+
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
+
+import com.mojang.authlib.GameProfile;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GameScreenText implements IGameScreen
 {
@@ -17,12 +31,18 @@ public class GameScreenText implements IGameScreen
     private float frameBx;
     private float frameBy;
     private int yPos;
+
+    private Class lastClass;
+    private String lastName;
+    private Entity lastEntity;
+    private Render lastRender;
     
 	public void setFrameSize(float frameSize)
 	{
 		this.frameA = frameSize;
 	}
 
+	@SideOnly(Side.CLIENT)
 	public void render(int type, float ticks, float sizeX, float sizeY, TileEntity te)
     {
     	frameBx = sizeX - frameA;
@@ -33,27 +53,88 @@ public class GameScreenText implements IGameScreen
     	TileEntityTelemetry telemeter = TileEntityTelemetry.getNearest(te);
     	//Make the text to draw.  To look good it's important the width and height
     	//of the whole text box are correctly set here.
+    	String strName = "";
     	String str0 = "";
     	String str1 = "00:00:00";
     	String str2 = "";
+    	String str3 = "";
+    	String str4 = "";
+    	Render r = null;
+    	Entity e = null;
+    	float Xmargin = 0;
     	if (telemeter != null && telemeter.clientData.length >= 3)
     	{
         	if (telemeter.clientClass != null)
         	{
-        		Entity e = null;
-        		try {
-        			e = (Entity) telemeter.clientClass.getConstructor(World.class).newInstance(te.getWorldObj());
-        		} catch (Exception ex) { }
-        		if (e != null) str0 = e.getCommandSenderName();
+        		if (telemeter.clientClass == this.lastClass && (telemeter.clientClass != EntityPlayerMP.class || telemeter.clientName.equals(this.lastName)))
+        		{
+        			e = this.lastEntity;
+        			r = this.lastRender;
+        		}
+        		else
+        		{	        		
+	        		e = null;
+	        		
+	        		if (telemeter.clientClass == EntityPlayerMP.class)
+	        		{
+	        			strName = telemeter.clientName;
+	        			e = new EntityOtherPlayerMP(te.getWorldObj(), new GameProfile(UUID.randomUUID(), strName));
+		        		r = (Render) RenderManager.instance.entityRenderMap.get(EntityPlayer.class);
+	        		}
+	        		else
+	        		{
+		        		try {
+		        			e = (Entity) telemeter.clientClass.getConstructor(World.class).newInstance(te.getWorldObj());
+		        		} catch (Exception ex) { }
+		        		if (e != null) strName = e.getCommandSenderName();
+		        		r = (Render) RenderManager.instance.entityRenderMap.get(telemeter.clientClass);
+	        		}	        		
+        		}
+        		if (e != null && r != null) Xmargin = 0.4F;
         	}
         	
-    		if (telemeter.clientData[1] >= 0)
+        	if (e instanceof EntityLivingBase)
         	{
-        		str1 = makeHealthString(telemeter.clientData[1]);
+        		//Living entity:
+        		//data0 = time to show red damage
+        		//data1 = health in half-hearts
+        		//data2 = pulse
+        		//data3 = hunger
+        		//data4 = oxygen
+        		str0 = telemeter.clientData[0] > 0 ? "ouch" : "";
+	    		if (telemeter.clientData[1] >= 0)
+	        	{
+	        		str1 = "Health: " + telemeter.clientData[1] + "%";
+	        	}
+	    		else
+	    			str1 = "";
+	    		str2 = "" + telemeter.clientData[2] + " bpm";
+	    		if (telemeter.clientData[3] >= -1)
+	        	{
+	        		str3 = "Food: "  + telemeter.clientData[3] + "%";
+	        	}
+	    		if (telemeter.clientData[4] >= -1)
+	        	{
+	        		int oxygen = telemeter.clientData[4];
+	        		oxygen = (oxygen % 4096) + (oxygen / 4096);
+	    			str4 = "Oxygen: "  + oxygen / 18  + "s";
+	        	} 
         	}
-    		else
-    			str1 = "";
-    		
+        	else if (e instanceof EntitySpaceshipBase)
+        	{
+        		//Spaceships:
+        		//data0 = launch countdown
+        		//data1 = height
+        		//data2 = speed
+        		//data3 = fuel remaining
+        		//data4 = pitch angle
+        		int countdown = telemeter.clientData[0];
+        		str0 = (countdown == 400) ? "On launchpad" : ((countdown > 0) ? "Countdown: " + countdown / 20 : "Launched");
+        		str1 = "Height: " + telemeter.clientData[1];
+        		str2 = "Speed: " + this.makeSpeedString(telemeter.clientData[2]);
+        		str3 = "Fuel: " + telemeter.clientData[3] + "%";
+        	}
+        	else
         	if (telemeter.clientData[2] >= 0)
         	{
         		str2 = makeSpeedString(telemeter.clientData[2]);
@@ -65,8 +146,10 @@ public class GameScreenText implements IGameScreen
     		int time1 = w1 != null ? (int) ((w1.getWorldTime() + 6000L) % 24000L) : 0;
         	str1 = makeTimeString(time1 * 360);
         }
-    	int textWidthPixels = 75;
-    	int textHeightPixels = 30;  //1 lines
+    	int textWidthPixels = 135;
+    	int textHeightPixels = 60;  //1 lines
+    	if (str3.equals("")) textHeightPixels -= 10; 
+    	if (str4.equals("")) textHeightPixels -= 10; 
 
     	//First pass - approximate border size
     	float borders = frameA * 2 + 0.05F * Math.min(sizeX, sizeY);
@@ -89,17 +172,40 @@ public class GameScreenText implements IGameScreen
 
     	//Centre the text in the display 
     	float border = frameA + 0.025F * scale;
-    	float Xoffset = (sizeX - borders - textWidthPixels * scaleText) / 2;
+    	float Xoffset = (sizeX - borders - textWidthPixels * scaleText) / 2 + Xmargin;
     	float Yoffset = (sizeY - borders - textHeightPixels * scaleText) / 2 + scaleText;
     	GL11.glTranslatef(border + Xoffset, border + Yoffset, 0.0F);
         GL11.glScalef(scaleText, scaleText, 1.0F);
 
         //Actually draw the text
+        drawText(strName, GCCoreUtil.to32BitColor(255, 240, 216, 255));
         drawText(str0, GCCoreUtil.to32BitColor(255, 240, 216, 255));
         drawText(str1, GCCoreUtil.to32BitColor(255, 240, 216, 255));
         drawText(str2, GCCoreUtil.to32BitColor(255, 240, 216, 255));
-        
+        drawText(str3, GCCoreUtil.to32BitColor(255, 240, 216, 255));
+        drawText(str4, GCCoreUtil.to32BitColor(255, 240, 216, 255));
+
+        if (r != null && e != null ) 
+        {
+        	GL11.glTranslatef(-Xmargin / 2 / scaleText, 11.0F + (-Yoffset + (sizeY - borders) / 2) / scaleText, -0.0005F);
+        	float scalefactor = 40F / Math.max(e.height, e.width);
+        	GL11.glScalef(scalefactor, scalefactor, 0.0001F);
+        	GL11.glRotatef(180F, 0, 0, 1);
+        	if (!(e instanceof EntityOtherPlayerMP)) GL11.glRotatef(90F, 0, -1, 0);
+        	if (e instanceof EntitySpaceshipBase)
+        	{
+            	GL11.glRotatef(telemeter.clientData[4], -1, 0, 0);
+        	}
+        	r.doRender(e, 0, 0, 0, 0, 0);
+        }
+
+        //TODO  Cross-dimensional tracking (i.e. old entity setDead, new entity created)
         //TODO  Deal with text off screen (including where localizations longer than English)
+
+        this.lastClass = (telemeter == null) ? null : telemeter.clientClass;
+        this.lastEntity = e;
+        this.lastRender = r;
+        this.lastName = strName;
     }
     
     private String makeTimeString(int l)

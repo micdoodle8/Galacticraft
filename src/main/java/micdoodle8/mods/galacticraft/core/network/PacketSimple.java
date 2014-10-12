@@ -783,7 +783,14 @@ public class PacketSimple extends Packet implements IPacket
         	tile = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
         	if (tile instanceof TileEntityTelemetry)
         	{
-        		((TileEntityTelemetry)tile).clientClass = (Class) EntityList.stringToClassMapping.get(this.data.get(3));
+        		String name = (String) this.data.get(3);
+        		if (name.startsWith("$"))
+        		{
+        			((TileEntityTelemetry)tile).clientClass = EntityPlayerMP.class;
+        			((TileEntityTelemetry)tile).clientName = name.substring(1);
+        		}
+        		else
+        			((TileEntityTelemetry)tile).clientClass = (Class) EntityList.stringToClassMapping.get(name);
         		((TileEntityTelemetry)tile).clientData = new int[5];
         		for (int i = 4; i < 9; i++)
                 {
@@ -795,6 +802,7 @@ public class PacketSimple extends Packet implements IPacket
             try
             {
                 byte[] base64 = (byte[]) this.data.get(0);
+                
                 Class c = Launch.classLoader.loadClass("org.apache.commons.codec.binary.Base64");
                 if (c != null)
                 {

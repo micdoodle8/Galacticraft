@@ -229,14 +229,13 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
         {
             WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
 
-            for (int j = 0; j < world.loadedTileEntityList.size(); j++)
+            for (TileEntity tile : (List<TileEntity>) world.loadedTileEntityList)
             {
-                TileEntity tile = (TileEntity) world.loadedTileEntityList.get(j);
-
                 if (tile != null)
                 {
                     tile = world.getTileEntity(tile.xCoord, tile.yCoord, tile.zCoord);
-
+                    if (tile == null) continue;
+                    
                     try
                     {
                         Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController");

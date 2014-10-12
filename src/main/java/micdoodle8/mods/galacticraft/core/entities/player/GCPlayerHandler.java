@@ -28,6 +28,7 @@ import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -173,10 +174,12 @@ public class GCPlayerHandler
             if (GCPlayer.frequencyModuleInSlot == null)
             {
                 GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVE_FREQUENCY_MODULE);
+                TileEntityTelemetry.frequencyModulePlayer(GCPlayer.lastFrequencyModuleInSlot, null);
             }
             else if (GCPlayer.frequencyModuleInSlot.getItem() == GCItems.basicItem && GCPlayer.frequencyModuleInSlot.getItemDamage() == 19 && GCPlayer.lastFrequencyModuleInSlot == null)
             {
                 GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADD_FREQUENCY_MODULE);
+                TileEntityTelemetry.frequencyModulePlayer(GCPlayer.frequencyModuleInSlot, player);
             }
 
             GCPlayer.lastFrequencyModuleInSlot = GCPlayer.frequencyModuleInSlot;
