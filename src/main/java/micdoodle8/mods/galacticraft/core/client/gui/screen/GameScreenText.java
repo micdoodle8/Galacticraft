@@ -5,6 +5,7 @@ import java.util.UUID;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import net.minecraft.client.Minecraft;
@@ -90,10 +91,9 @@ public class GameScreenText implements IGameScreen
 	        		if (telemeter.clientClass == EntityPlayerMP.class)
 	        		{
 	        			strName = telemeter.clientName;
-	        			System.out.println("Lastclass "+(this.lastClass == null ? "null" : this.lastClass.getSimpleName()) + " N1 " + strName + " N2 " + this.lastName);
+	        			if (ConfigManagerCore.enableDebug) System.out.println("Lastclass "+(this.lastClass == null ? "null" : this.lastClass.getSimpleName()) + " N1 " + strName + " N2 " + this.lastName);
 	        			entity = new EntityOtherPlayerMP(te.getWorldObj(), VersionUtil.constructGameProfile(UUID.randomUUID(), strName));
 	        			renderEntity = (Render) RenderManager.instance.entityRenderMap.get(EntityPlayer.class);
-	        			//strName = entity.getCommandSenderName();	        			
 	        		}
 	        		else
 	        		{
@@ -115,7 +115,7 @@ public class GameScreenText implements IGameScreen
         		//  data2 = pulse
         		//  data3 = hunger
         		//  data4 = oxygen
-        		str0 = telemeter.clientData[0] > 0 ? "ouch" : "";
+        		str0 = telemeter.clientData[0] > 0 ? "ouch!!!!" : "";
 	    		if (telemeter.clientData[1] >= 0)
 	        	{
 	        		str1 = "Health: " + telemeter.clientData[1] + "%";
@@ -131,7 +131,10 @@ public class GameScreenText implements IGameScreen
 	        	{
 	        		int oxygen = telemeter.clientData[4];
 	        		oxygen = (oxygen % 4096) + (oxygen / 4096);
-	    			str4 = "Oxygen: "  + oxygen / 18  + "s";
+	        		if (oxygen == 180)
+	        			str4 = "Oxygen: OK";
+	        		else
+	        			str4 = "Oxygen: "  + this.makeOxygenString(oxygen)  + GCCoreUtil.translate("gui.seconds");
 	        	} 
         	}
         	else if (entity instanceof EntitySpaceshipBase)
@@ -208,19 +211,18 @@ public class GameScreenText implements IGameScreen
         if (renderEntity != null && entity != null ) 
         {
         	GL11.glTranslatef(-Xmargin / 2 / scaleText, textHeightPixels / 2 + (-Yoffset + (sizeY - borders) / 2) / scaleText, -0.0005F);
-        	float scalefactor = 40F / (float) Math.pow(Math.max(entity.height, entity.width), 0.8);
+        	float scalefactor = 38F / (float) Math.pow(Math.max(entity.height, entity.width), 0.65);
         	GL11.glScalef(scalefactor, scalefactor, 0.0001F);
         	GL11.glRotatef(180F, 0, 0, 1);
+        	GL11.glRotatef(180F, 0, 1, 0);
         	if (entity instanceof EntityOtherPlayerMP)
         	{
-        		GL11.glRotatef(180F, 0, 1, 0);
         		FMLClientHandler.instance().getClient().renderEngine.bindTexture(((AbstractClientPlayer) entity).getLocationSkin());
         	}
-        	else GL11.glRotatef(90F, 0, -1, 0);
         	if (entity instanceof EntitySpaceshipBase)
         	{
             	GL11.glRotatef(telemeter.clientData[4], -1, 0, 0);
-            	GL11.glTranslatef(0, entity.height / 2, 0);
+            	GL11.glTranslatef(0, entity.height / 4, 0);
         	}
         	renderEntity.doRender(entity, 0, 0, 0, 0, 0);
         }
@@ -261,6 +263,15 @@ public class GameScreenText implements IGameScreen
     	String spStr1 = "" + sp1;
     	String spStr2 = "" + sp2;
     	return spStr1 + "." + spStr2 + " hearts";
+    }
+
+    private String makeOxygenString(int oxygen18)
+    { 	
+    	int sp1 = oxygen18 / 18;
+    	int sp2 = (oxygen18 * 56) / 100;
+    	String spStr1 = "" + sp1;
+    	String spStr2 = (sp2 > 9 ? "" : "0") + sp2;
+    	return spStr1 + "." + spStr2;
     }
 
     private void drawText(String str, int colour)

@@ -179,6 +179,7 @@ tile.oxygenCompressor.1.name=Oxygen Decompressor
 tile.arclamp.name=Arc Lamp
 tile.spinThruster.name=Spin Thruster
 tile.viewScreen.name=Display Screen
+tile.telemetry.name=Telemetry Unit
 tile.spaceStationBase.name=Space Station arrival block
 
 # DECOBLOCKS

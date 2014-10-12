@@ -58,12 +58,6 @@ public class GCPlayerHandler
 {
     private static final int OXYGENHEIGHTLIMIT = 450;
 	private ConcurrentHashMap<UUID, GCPlayerStats> playerStatsMap = new ConcurrentHashMap<UUID, GCPlayerStats>();
-	private static MinecraftServer theServer;
-	
-	static
-	{
-		theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
-	}
 	
     public ConcurrentHashMap<UUID, GCPlayerStats> getServerStatList()
     {
@@ -176,7 +170,7 @@ public class GCPlayerHandler
 
         if (GCPlayer.frequencyModuleInSlot != GCPlayer.lastFrequencyModuleInSlot || forceSend)
         {
-            if (theServer != null)
+            if (FMLCommonHandler.instance().getMinecraftServerInstance() != null)
             {
 	        	if (GCPlayer.frequencyModuleInSlot == null)
 	            {
@@ -880,8 +874,8 @@ public class GCPlayerHandler
 
     public static void sendGearUpdatePacket(EntityPlayerMP player, EnumModelPacket gearType)
     {
-        
-        if (theServer != null && PlayerUtil.getPlayerForUsernameVanilla(theServer, player.getGameProfile().getName()) != null)
+    	MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
+    	if (theServer != null && PlayerUtil.getPlayerForUsernameVanilla(theServer, player.getGameProfile().getName()) != null)
         {
             GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, new Object[] { player.getGameProfile().getName(), gearType.ordinal(), -1 }), new TargetPoint(player.worldObj.provider.dimensionId, player.posX, player.posY, player.posZ, 50.0D));
         }
@@ -889,7 +883,8 @@ public class GCPlayerHandler
 
     public static void sendGearUpdatePacket(EntityPlayerMP player, EnumModelPacket gearType, int subtype)
     {
-        if (theServer != null && PlayerUtil.getPlayerForUsernameVanilla(theServer, player.getGameProfile().getName()) != null)
+    	MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
+    	if (theServer != null && PlayerUtil.getPlayerForUsernameVanilla(theServer, player.getGameProfile().getName()) != null)
         {
             GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, new Object[] { player.getGameProfile().getName(), gearType.ordinal(), subtype }), new TargetPoint(player.worldObj.provider.dimensionId, player.posX, player.posY, player.posZ, 50.0D));
         }

@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -90,7 +91,7 @@ public class TileEntityTelemetry extends TileEntity
 					name = (String) EntityList.classToStringMapping.get(linkedEntity.getClass());
 				if (name == null)
 				{
-					System.out.println("error finding name for "+linkedEntity.getClass().getSimpleName());
+					GCLog.info("Telemetry Unit: Error finding name for "+linkedEntity.getClass().getSimpleName());
 					name = "";
 				}
 				double xmotion = linkedEntity.motionX;
@@ -104,7 +105,7 @@ public class TileEntityTelemetry extends TileEntity
 					
 					//Calculate a "pulse rate" based on motion and taking damage
 					this.pulseRate--;
-					if (eLiving.hurtTime > this.lastHurttime) this.pulseRate += 250;
+					if (eLiving.hurtTime > this.lastHurttime) this.pulseRate += 100;
 					this.lastHurttime = eLiving.hurtTime;
 					if (eLiving.ridingEntity != null) data2 /= 4;  //reduced pulse effect if riding a vehicle
 					else if (data2 > 1) this.pulseRate+=2;
@@ -116,7 +117,7 @@ public class TileEntityTelemetry extends TileEntity
 					data1 =  (int) (eLiving.getHealth() * 100 / eLiving.getMaxHealth());
 					if (eLiving instanceof EntityPlayerMP)
 					{
-						data3 = ((EntityPlayerMP) eLiving).getFoodStats().getFoodLevel();
+						data3 = ((EntityPlayerMP) eLiving).getFoodStats().getFoodLevel() * 25 / 4;
 						GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) eLiving);
 						data4 = stats.airRemaining * 4096 + stats.airRemaining2; 
 					}
