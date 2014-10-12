@@ -15,7 +15,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 public abstract class EnergyStorageTile extends TileEntityAdvanced implements IEnergyHandlerGC, IElectrical
 {
     @NetworkedField(targetSide = Side.CLIENT)
-    public EnergyStorage storage = new EnergyStorage(16000, 30);
+    public EnergyStorage storage = new EnergyStorage(16000, 10);
     public int tierGC = 1;
     public int poweredByTierGC = 1;
 

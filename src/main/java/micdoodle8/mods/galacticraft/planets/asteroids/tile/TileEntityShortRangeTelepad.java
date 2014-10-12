@@ -69,7 +69,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     public TileEntityShortRangeTelepad()
     {
         super();
-        this.storage.setMaxExtract(5);
+        this.storage.setMaxExtract(50);
     }
 
     public int canTeleportHere()

@@ -19,13 +19,13 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
 {
     private ItemStack[] containingItems = new ItemStack[3];
 
-    public static final int WATTS_PER_TICK = 1;
     public static final int TANK_TRANSFER_SPEED = 2;
     private boolean usingEnergy = false;
 
     public TileEntityOxygenCompressor()
     {
         super(1200, 16);
+        this.storage.setMaxExtract(15);
     }
 
     @Override

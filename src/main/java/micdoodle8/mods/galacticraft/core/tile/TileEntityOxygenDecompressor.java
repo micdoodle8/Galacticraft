@@ -18,7 +18,6 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
 {
     private ItemStack[] containingItems = new ItemStack[2];
 
-    public static final int WATTS_PER_TICK = 1;
     public static final int OUTPUT_PER_TICK = 100;
     private boolean usingEnergy = false;
 

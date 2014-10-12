@@ -27,7 +27,6 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     public boolean sealed;
     public boolean lastSealed = false;
 
-    public static final int WATTS_PER_TICK = 1;
     public boolean lastDisabled = false;
 
     @NetworkedField(targetSide = Side.CLIENT)
