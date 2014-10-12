@@ -35,6 +35,7 @@ public class OverlayRocket extends Overlay
         final int height = scaledresolution.getScaledHeight();
         OverlayRocket.minecraft.entityRenderer.setupOverlayRendering();
         GL11.glDepthMask(true);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(guiTexture);
 

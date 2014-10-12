@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.util;
 
 import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
+
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.versioning.DefaultArtifactVersion;
 import cpw.mods.fml.common.versioning.VersionParser;
@@ -28,6 +29,7 @@ import net.minecraft.server.MinecraftServer;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class VersionUtil
 {
@@ -535,4 +537,33 @@ public class VersionUtil
             throw e;
         }
     }
+
+	public static GameProfile constructGameProfile(UUID uuid, String strName)
+	{
+        try
+        {
+			Class<?> c = (Class<?>) reflectionCache.get(19);
+	        if (c == null)
+	        {
+	            c = Class.forName("com.mojang.authlib.GameProfile");
+	            reflectionCache.put(19, c);
+	        }
+			
+			if (mcVersionMatches("1.7.10"))
+	        {
+				return (GameProfile) c.getConstructor(UUID.class, String.class).newInstance(uuid, strName);
+	        }
+	        
+			if (mcVersionMatches("1.7.2"))
+	        {
+	        	return (GameProfile) c.getConstructor(String.class, String.class).newInstance(uuid.toString().replaceAll("-", ""), strName);
+	        }
+        }
+        catch (Throwable t)
+        {
+            t.printStackTrace();
+        }
+
+        return null;
+	}
 }

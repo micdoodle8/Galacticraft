@@ -303,7 +303,13 @@ public class WorldUtil
 
     public static WorldProvider getProviderForDimension(int id)
     {
-    	WorldProvider provider = theServer.worldServerForDimension(id).provider;
+    	WorldProvider provider = null;
+    	if (theServer != null)
+    	{
+    		WorldServer ws = theServer.worldServerForDimension(id);
+    		if (ws != null)
+    			provider = ws.provider;
+    	}
     	if (provider == null) provider = WorldProvider.getProviderForDimension(id);
     	return provider;
     }

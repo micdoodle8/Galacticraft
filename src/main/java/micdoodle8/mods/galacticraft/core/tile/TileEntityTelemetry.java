@@ -35,6 +35,7 @@ public class TileEntityTelemetry extends TileEntity
 	private Entity linkedEntity;
 	private UUID toUpdate = null;
 	private int pulseRate = 400;
+	private int lastHurttime = 0;
 	
 	static
 	{
@@ -100,14 +101,18 @@ public class TileEntityTelemetry extends TileEntity
 				{
 					EntityLivingBase eLiving = (EntityLivingBase)linkedEntity;
 					data0 = eLiving.hurtTime;
+					
+					//Calculate a "pulse rate" based on motion and taking damage
 					this.pulseRate--;
-					this.pulseRate += eLiving.hurtTime * 20;
+					if (eLiving.hurtTime > this.lastHurttime) this.pulseRate += 250;
+					this.lastHurttime = eLiving.hurtTime;
 					if (eLiving.ridingEntity != null) data2 /= 4;  //reduced pulse effect if riding a vehicle
 					else if (data2 > 1) this.pulseRate+=2;
 					this.pulseRate += Math.max(data2 - pulseRate, 0) / 4;
 					if (this.pulseRate > 2000) this.pulseRate = 2000;
 					if (this.pulseRate < 400) this.pulseRate = 400;
 					data2 = this.pulseRate / 10;
+					
 					data1 =  (int) (eLiving.getHealth() * 100 / eLiving.getMaxHealth());
 					if (eLiving instanceof EntityPlayerMP)
 					{
@@ -146,13 +151,17 @@ public class TileEntityTelemetry extends TileEntity
     public void writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        nbt.setLong("entityUUIDMost", this.linkedEntity.getUniqueID().getMostSignificantBits());
-        nbt.setLong("entityUUIDLeast", this.linkedEntity.getUniqueID().getLeastSignificantBits());
+        if (this.linkedEntity != null && !this.linkedEntity.isDead)
+        {
+	        nbt.setLong("entityUUIDMost", this.linkedEntity.getUniqueID().getMostSignificantBits());
+	        nbt.setLong("entityUUIDLeast", this.linkedEntity.getUniqueID().getLeastSignificantBits());
+        }
     }
        
     public void addTrackedEntity(UUID uuid)
     {
     	this.pulseRate = 400;
+    	this.lastHurttime = 0;
     	List<Entity> eList = this.worldObj.loadedEntityList;
     	for (Entity e : eList)
     	{
@@ -174,6 +183,7 @@ public class TileEntityTelemetry extends TileEntity
     
 	public static TileEntityTelemetry getNearest(TileEntity te)
 	{
+		if (te == null) return null;
 		BlockVec3 target = new BlockVec3(te);
 		
 		int distSq = 1025;
@@ -196,13 +206,14 @@ public class TileEntityTelemetry extends TileEntity
 
 	/**
 	 * Call this when a player wears a frequency module to check
-	 * whether it has been linked with a Telemetry Unit
+	 * whether it has been linked with a Telemetry Unit.
 	 * 
 	 * @param ItemStack  The frequency module
 	 * @param player
 	 */
 	public static void frequencyModulePlayer(ItemStack held, EntityPlayerMP player)
 	{
+		if (held == null) return;
 		NBTTagCompound fmData = held.stackTagCompound;
 		if (fmData != null && fmData.hasKey("teDim"))
 		{

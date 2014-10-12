@@ -58,7 +58,13 @@ public class GCPlayerHandler
 {
     private static final int OXYGENHEIGHTLIMIT = 450;
 	private ConcurrentHashMap<UUID, GCPlayerStats> playerStatsMap = new ConcurrentHashMap<UUID, GCPlayerStats>();
-
+	private static MinecraftServer theServer;
+	
+	static
+	{
+		theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
+	}
+	
     public ConcurrentHashMap<UUID, GCPlayerStats> getServerStatList()
     {
         return this.playerStatsMap;
@@ -166,20 +172,22 @@ public class GCPlayerHandler
         GCPlayer.thermalChestplateInSlot = GCPlayer.extendedInventory.getStackInSlot(7);
         GCPlayer.thermalLeggingsInSlot = GCPlayer.extendedInventory.getStackInSlot(8);
         GCPlayer.thermalBootsInSlot = GCPlayer.extendedInventory.getStackInSlot(9);
-
         //
 
         if (GCPlayer.frequencyModuleInSlot != GCPlayer.lastFrequencyModuleInSlot || forceSend)
         {
-            if (GCPlayer.frequencyModuleInSlot == null)
+            if (theServer != null)
             {
-                GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVE_FREQUENCY_MODULE);
-                TileEntityTelemetry.frequencyModulePlayer(GCPlayer.lastFrequencyModuleInSlot, null);
-            }
-            else if (GCPlayer.frequencyModuleInSlot.getItem() == GCItems.basicItem && GCPlayer.frequencyModuleInSlot.getItemDamage() == 19 && GCPlayer.lastFrequencyModuleInSlot == null)
-            {
-                GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADD_FREQUENCY_MODULE);
-                TileEntityTelemetry.frequencyModulePlayer(GCPlayer.frequencyModuleInSlot, player);
+	        	if (GCPlayer.frequencyModuleInSlot == null)
+	            {
+	                GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVE_FREQUENCY_MODULE);
+	                TileEntityTelemetry.frequencyModulePlayer(GCPlayer.lastFrequencyModuleInSlot, null);
+	            }
+	            else if (GCPlayer.frequencyModuleInSlot.getItem() == GCItems.basicItem && GCPlayer.frequencyModuleInSlot.getItemDamage() == 19 && GCPlayer.lastFrequencyModuleInSlot == null)
+	            {
+	                GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADD_FREQUENCY_MODULE);
+	                TileEntityTelemetry.frequencyModulePlayer(GCPlayer.frequencyModuleInSlot, player);
+	            }
             }
 
             GCPlayer.lastFrequencyModuleInSlot = GCPlayer.frequencyModuleInSlot;
@@ -872,12 +880,15 @@ public class GCPlayerHandler
 
     public static void sendGearUpdatePacket(EntityPlayerMP player, EnumModelPacket gearType)
     {
-        GCPlayerHandler.sendGearUpdatePacket(player, gearType, -1);
+        
+        if (theServer != null && PlayerUtil.getPlayerForUsernameVanilla(theServer, player.getGameProfile().getName()) != null)
+        {
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, new Object[] { player.getGameProfile().getName(), gearType.ordinal(), -1 }), new TargetPoint(player.worldObj.provider.dimensionId, player.posX, player.posY, player.posZ, 50.0D));
+        }
     }
 
     public static void sendGearUpdatePacket(EntityPlayerMP player, EnumModelPacket gearType, int subtype)
     {
-        MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
         if (theServer != null && PlayerUtil.getPlayerForUsernameVanilla(theServer, player.getGameProfile().getName()) != null)
         {
             GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, new Object[] { player.getGameProfile().getName(), gearType.ordinal(), subtype }), new TargetPoint(player.worldObj.provider.dimensionId, player.posX, player.posY, player.posZ, 50.0D));

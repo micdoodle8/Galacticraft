@@ -40,7 +40,7 @@ public class TileEntityScreen extends TileEntity
         super.validate();
 		if (FMLCommonHandler.instance().getEffectiveSide().isClient())
 		{
-			this.screen = new DrawGameScreen(1.0F, 1.0F);
+			this.screen = new DrawGameScreen(1.0F, 1.0F, this);
 			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_VIEWSCREEN_REQUEST, new Object[] { this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord} ));
 		}
 	}
@@ -513,14 +513,6 @@ public class TileEntityScreen extends TileEntity
 
 		int side = this.getRight(meta);
 		
-		DrawGameScreen newScreen = null;
-		boolean serverside = true;
-		if (FMLCommonHandler.instance().getEffectiveSide().isClient())
-		{
-			newScreen = new DrawGameScreen(1.0F + left + right, 1.0F + up + down);
-			serverside = false;
-		}
-		
     	for (int x = -left; x <= right; x++)
     	{
     		for (int z = -up; z <= down; z++)
@@ -576,6 +568,18 @@ public class TileEntityScreen extends TileEntity
     		return this.checkWholeScreen(barrierUp, barrierDown, barrierLeft, barrierRight);
     	}
     	
+		DrawGameScreen newScreen = null;
+		boolean serverside = true;
+		TileEntity bottomLeft = vec.clone().modifyPositionFromSide(ForgeDirection.getOrientation(side), -left).modifyPositionFromSide(ForgeDirection.DOWN, down).getTileEntity(this.worldObj);
+		if (FMLCommonHandler.instance().getEffectiveSide().isClient())
+		{
+			if (bottomLeft instanceof TileEntityScreen)  //It always will be if reached this far
+			{
+				newScreen = new DrawGameScreen(1.0F + left + right, 1.0F + up + down, bottomLeft);				
+			}
+			serverside = false;
+		}
+		
     	Iterator<TileEntityScreen> it = screenList.iterator();
     	for (int x = -left; x <= right; x++)
     	{
@@ -614,7 +618,7 @@ public class TileEntityScreen extends TileEntity
     public void resetToSingle()
     {
 		if (FMLCommonHandler.instance().getEffectiveSide().isClient())
-			this.screen = new DrawGameScreen(1.0F, 1.0F);
+			this.screen = new DrawGameScreen(1.0F, 1.0F, this);
 		this.screenOffsetx = 0;
 		this.screenOffsetz = 0;   		
     	this.connectionsUp = 0;

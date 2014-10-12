@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.tileentity.TileEntity;
 
 import org.lwjgl.opengl.GL11;
 
@@ -26,14 +27,16 @@ public class DrawGameScreen
     
     private float scaleX;
     private float scaleZ;
+    private TileEntity driver;
 
-    public DrawGameScreen(float scaleXparam, float scaleZparam)
+    public DrawGameScreen(float scaleXparam, float scaleZparam, TileEntity te)
     {
     	this.scaleX = scaleXparam;
     	this.scaleZ = scaleZparam;
+    	this.driver = te;
     }
     
-    public void drawScreen(int type, float ticks, boolean cornerBlock, TileEntityScreen te)
+    public void drawScreen(int type, float ticks, boolean cornerBlock)
     {
     	if (type >= TileEntityScreen.maxTypes)
     	{
@@ -43,7 +46,7 @@ public class DrawGameScreen
 
 		if (type < 2 || cornerBlock)
 		{
-			this.doDraw(type, ticks, te);
+			this.doDraw(type, ticks);
 			this.initialise = true;
 			this.initialiseLast = false;
 			return;
@@ -120,10 +123,10 @@ public class DrawGameScreen
         	
         tickDrawn = ticks;
         
-        this.doDraw(type, ticks, te);
+        this.doDraw(type, ticks);
     }
     
-    private void doDraw(int type, float ticks, TileEntityScreen te)
+    private void doDraw(int type, float ticks)
     {
         float lightMapSaveX = OpenGlHelper.lastBrightnessX;
         float lightMapSaveY = OpenGlHelper.lastBrightnessY;
@@ -131,7 +134,7 @@ public class DrawGameScreen
 
         if (type > 0) GL11.glDisable(GL11.GL_LIGHTING);
 
-        GalacticraftRegistry.getGameScreen(type).render(type, ticks, scaleX, scaleZ, te);
+        GalacticraftRegistry.getGameScreen(type).render(type, ticks, scaleX, scaleZ, this.driver);
 
         if (type > 0) GL11.glEnable(GL11.GL_LIGHTING);
 
