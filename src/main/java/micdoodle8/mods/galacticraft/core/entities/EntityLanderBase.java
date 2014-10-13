@@ -129,9 +129,9 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
 
             if (liquid != null && this.fuelTank.getFluid().getFluid().getName().equalsIgnoreCase("Fuel"))
             {
-                if (FluidContainerRegistry.isEmptyContainer(this.containedItems[this.containedItems.length - 1]))
+                ItemStack slotItem = this.containedItems[this.containedItems.length - 1];
+                if (slotItem.stackSize == 1 && FluidContainerRegistry.isEmptyContainer(slotItem))
                 {
-                    ItemStack slotItem = this.containedItems[this.containedItems.length - 1];
                     boolean isCanister = slotItem.isItemEqual(new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage()));
                     final int amountToFill = Math.min(liquid.amount, isCanister ? GCItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
 
