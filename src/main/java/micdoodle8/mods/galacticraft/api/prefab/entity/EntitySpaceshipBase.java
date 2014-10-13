@@ -8,6 +8,8 @@ import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -15,6 +17,7 @@ import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -205,11 +208,28 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
             this.shipDamage--;
         }
 
-        if (this.posY < 0.0D || this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200) + 10)
+        if (!this.worldObj.isRemote)
         {
-            this.kill();
+	        if (this.posY < 0.0D)
+	        {
+	            this.kill();
+	        }
+	        else
+	        if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200) + 100)
+	        {
+	        	if (this.riddenByEntity instanceof EntityPlayerMP)
+	        	{
+	        		GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats((EntityPlayerMP) this.riddenByEntity);
+	        		if (stats.usingPlanetSelectionGui)
+	        		{
+	        			this.kill();
+	        		}
+	        	}
+	        	else
+	        		this.kill();
+	        }
         }
-
+        
         if (this.launchPhase == EnumLaunchPhase.UNIGNITED.ordinal())
         {
             this.timeUntilLaunch = this.getPreLaunchWait();

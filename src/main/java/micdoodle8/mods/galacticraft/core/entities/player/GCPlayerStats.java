@@ -152,7 +152,13 @@ public class GCPlayerStats implements IExtendedEntityProperties
 
         nbt.setInteger("rocketStacksLength", this.rocketStacks.length);
         nbt.setInteger("SpaceshipTier", this.spaceshipTier);
-
+        nbt.setInteger("FuelLevel", this.fuelLevel);
+        if (this.rocketItem != null)
+        {
+        	ItemStack returnRocket = new ItemStack(this.rocketItem, 1, this.rocketType);
+        	nbt.setTag("ReturnRocket", returnRocket.writeToNBT(new NBTTagCompound()));
+        }
+        
         final NBTTagList var2 = new NBTTagList();
 
         for (int var3 = 0; var3 < this.rocketStacks.length; ++var3)
@@ -211,6 +217,21 @@ public class GCPlayerStats implements IExtendedEntityProperties
         if (nbt.hasKey("SpaceshipTier"))
         {
             this.spaceshipTier = nbt.getInteger("SpaceshipTier");
+        }
+        
+        //New keys in version 3.0.5.220
+        if (nbt.hasKey("FuelLevel"))
+        {
+            this.fuelLevel = nbt.getInteger("FuelLevel");
+        }
+        if (nbt.hasKey("ReturnRocket"))
+        {
+            ItemStack returnRocket = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("ReturnRocket"));
+        	if (returnRocket != null)
+        	{
+        		this.rocketItem = returnRocket.getItem();
+        		this.rocketType = returnRocket.getItemDamage();
+        	}
         }
 
         this.usingParachute = nbt.getBoolean("usingParachute2");

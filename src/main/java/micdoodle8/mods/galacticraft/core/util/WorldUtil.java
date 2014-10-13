@@ -940,6 +940,7 @@ public class WorldUtil
         stats.usingPlanetSelectionGui = true;
         stats.savedPlanetList = new String(dimensionList);
         Entity fakeEntity = new EntityCelestialFake(player.worldObj, player.posX, player.posY, player.posZ, 0.0F);
+        player.worldObj.spawnEntityInWorld(fakeEntity);
         player.mountEntity(fakeEntity);
     }
 
