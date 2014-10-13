@@ -232,9 +232,11 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
         {
             WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
 
-            for (TileEntity tile : (List<TileEntity>) world.loadedTileEntityList)
+            for (int j = 0; j < world.loadedTileEntityList.size(); j++)
             {
-                if (tile != null)
+            	TileEntity tile = (TileEntity) world.loadedTileEntityList.get(j);
+            	
+            	if (tile != null)
                 {
                     tile = world.getTileEntity(tile.xCoord, tile.yCoord, tile.zCoord);
                     if (tile == null) continue;
