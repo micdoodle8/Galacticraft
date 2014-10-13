@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -206,17 +207,14 @@ public class GameScreenText implements IGameScreen
         	GL11.glScalef(scalefactor, scalefactor, 0.0001F);
         	GL11.glRotatef(180F, 0, 0, 1);
         	GL11.glRotatef(180F, 0, 1, 0);
-        	if (entity instanceof EntityOtherPlayerMP)
-        	{
-        		AbstractClientPlayer playerToRender = (AbstractClientPlayer) entity;
-        		FMLClientHandler.instance().getClient().renderEngine.bindTexture(playerToRender.getLocationSkin());
-        	}
         	if (entity instanceof EntitySpaceshipBase)
         	{
             	GL11.glRotatef(telemeter.clientData[4], -1, 0, 0);
             	GL11.glTranslatef(0, entity.height / 4, 0);
         	}
-        	renderEntity.doRender(entity, 0, 0, 0, 0, 0);
+            RenderHelper.enableStandardItemLighting();
+            RenderManager.instance.renderEntityWithPosYaw(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+            RenderHelper.disableStandardItemLighting();
         }
 
         //TODO  Cross-dimensional tracking (i.e. old entity setDead, new entity created)
