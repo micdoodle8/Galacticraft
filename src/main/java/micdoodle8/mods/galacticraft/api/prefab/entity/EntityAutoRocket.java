@@ -666,9 +666,9 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	        		 {
 	        			 if (e.dimension != this.dimension)
 	        			 {
-	        				 if (e instanceof EntityPlayerMP)
+	        				 if (e instanceof EntityPlayer)
 	        				 {
-	        					 WorldUtil.forceRespawnClient(this.dimension, e.worldObj.difficultySetting.getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP)e).theItemInWorldManager.getGameType().getID());
+	        					 e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.difficultySetting.getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP)e).theItemInWorldManager.getGameType().getID());
 	        					 e.mountEntity(this);
 	        				 }
 	        			 }
@@ -690,9 +690,9 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	       		 	{
 	       		 		if (e.dimension != this.dimension)
 	       		 		{
-	       		 			if (e instanceof EntityPlayerMP)
+	       		 			if (e instanceof EntityPlayer)
 	       		 			{
-	       		 				WorldUtil.forceRespawnClient(this.dimension, e.worldObj.difficultySetting.getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP)e).theItemInWorldManager.getGameType().getID());
+	       		 				e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.difficultySetting.getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP)e).theItemInWorldManager.getGameType().getID());
 	       		 				e.mountEntity(this);
 	       		 			}
 	       		 		}

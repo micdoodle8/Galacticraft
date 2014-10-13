@@ -853,7 +853,7 @@ public class GCPlayerHandler
             count++;
         }
 
-        if (!temp.equals(playerStats.savedPlanetList) || (player.ticksExisted % 15 == 0))
+        if (!temp.equals(playerStats.savedPlanetList) || (player.ticksExisted % 5 == 0))
         {
             GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { player.getGameProfile().getName(), temp }), player);
             playerStats.savedPlanetList = new String(temp);

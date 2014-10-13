@@ -832,10 +832,12 @@ public class WorldUtil
         return entity;
     }
 
-    public static void forceRespawnClient(int dimID, int par2, String par3, int par4)
+    @SideOnly(Side.CLIENT)
+    public static EntityPlayer forceRespawnClient(int dimID, int par2, String par3, int par4)
     {
         S07PacketRespawn fakePacket = new S07PacketRespawn(dimID, EnumDifficulty.getDifficultyEnum(par2), WorldType.parseWorldType(par3), WorldSettings.GameType.getByID(par4));
         Minecraft.getMinecraft().getNetHandler().handleRespawn(fakePacket);
+		return FMLClientHandler.instance().getClientPlayerEntity();
     }
     
     private static void removeEntityFromWorld(World var0, Entity var1, boolean directlyRemove)

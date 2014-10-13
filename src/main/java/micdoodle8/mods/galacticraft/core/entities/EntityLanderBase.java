@@ -340,13 +340,13 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     @Override
     public int getPacketTickSpacing()
     {
-        return 5;
+        return 2;
     }
 
     @Override
     public double getPacketSendDistance()
     {
-        return 50.0D;
+        return 250.0D;
     }
 
     @Override
@@ -379,9 +379,9 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
                 		 {
                 			 if (e.dimension != this.dimension)
                 			 {
-                				 if (e instanceof EntityPlayerMP)
-                				 {
-                					 WorldUtil.forceRespawnClient(this.dimension, e.worldObj.difficultySetting.getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP)e).theItemInWorldManager.getGameType().getID());
+    	        				 if (e instanceof EntityPlayer)
+    	        				 {
+    	        					 e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.difficultySetting.getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP)e).theItemInWorldManager.getGameType().getID());
                 					 e.mountEntity(this);
                 				 }
                 			 }
@@ -403,9 +403,9 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
                		 	{
                			 if (e.dimension != this.dimension)
                			 {
-               				 if (e instanceof EntityPlayerMP)
-               				 {
-               					 WorldUtil.forceRespawnClient(this.dimension, e.worldObj.difficultySetting.getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP)e).theItemInWorldManager.getGameType().getID());
+	        				 if (e instanceof EntityPlayer)
+	        				 {
+	        					 e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.difficultySetting.getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP)e).theItemInWorldManager.getGameType().getID());
                					 e.mountEntity(this);
                				 }
                			 }

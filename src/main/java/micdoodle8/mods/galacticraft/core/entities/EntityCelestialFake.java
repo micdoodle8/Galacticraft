@@ -215,13 +215,13 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
     @Override
     public int getPacketTickSpacing()
     {
-        return 5;
+        return 2;
     }
 
     @Override
     public double getPacketSendDistance()
     {
-        return 50.0D;
+        return 500.0D;
     }
 
     @Override
