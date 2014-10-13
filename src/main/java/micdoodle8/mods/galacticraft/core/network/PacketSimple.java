@@ -752,8 +752,7 @@ public class PacketSimple extends Packet implements IPacket
             int par2 = (Integer) this.data.get(1);
             String par3 = (String) this.data.get(2);
             int par4 = (Integer) this.data.get(3);
-            S07PacketRespawn fakePacket = new S07PacketRespawn(dimID, EnumDifficulty.getDifficultyEnum(par2), WorldType.parseWorldType(par3), WorldSettings.GameType.getByID(par4));
-            Minecraft.getMinecraft().getNetHandler().handleRespawn(fakePacket);
+            WorldUtil.forceRespawnClient(dimID, par2, par3, par4);
             break;
         case C_UPDATE_ARCLAMP_FACING:
         	tile = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));

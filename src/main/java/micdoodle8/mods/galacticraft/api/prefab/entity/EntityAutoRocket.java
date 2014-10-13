@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.api.prefab.entity;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
@@ -22,7 +23,9 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -649,6 +652,56 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
         this.statusMessageCooldown = buffer.readInt();
         this.lastStatusMessageCooldown = buffer.readInt();
         this.statusValid = buffer.readBoolean();
+
+        //Update client with correct rider if needed
+        if (this.worldObj.isRemote)
+        {
+	        int shouldBeMountedId = buffer.readInt();
+	        if (this.riddenByEntity == null)
+	        {
+	        	 if (shouldBeMountedId > -1)
+	        	 {
+	        		 Entity e = FMLClientHandler.instance().getWorldClient().getEntityByID(shouldBeMountedId);
+	        		 if (e != null)
+	        		 {
+	        			 if (e.dimension != this.dimension)
+	        			 {
+	        				 if (e instanceof EntityPlayerMP)
+	        				 {
+	        					 WorldUtil.forceRespawnClient(this.dimension, e.worldObj.difficultySetting.getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP)e).theItemInWorldManager.getGameType().getID());
+	        					 e.mountEntity(this);
+	        				 }
+	        			 }
+	        			 else
+	        				 e.mountEntity(this);
+	        		 }
+	        	 }
+	        }
+	        else if (this.riddenByEntity.getEntityId() != shouldBeMountedId)
+	        {
+	        	if (shouldBeMountedId == -1)
+	        	{
+	        		this.riddenByEntity.mountEntity(null);
+	        	}
+	        	else
+	        	{
+	        		Entity e = FMLClientHandler.instance().getWorldClient().getEntityByID(shouldBeMountedId);
+	       		 	if (e != null)
+	       		 	{
+	       		 		if (e.dimension != this.dimension)
+	       		 		{
+	       		 			if (e instanceof EntityPlayerMP)
+	       		 			{
+	       		 				WorldUtil.forceRespawnClient(this.dimension, e.worldObj.difficultySetting.getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP)e).theItemInWorldManager.getGameType().getID());
+	       		 				e.mountEntity(this);
+	       		 			}
+	       		 		}
+	       		 		else
+	       		 			e.mountEntity(this);
+	       		 	}
+	        	}
+	        }
+        }
     }
 
     @Override
@@ -685,6 +738,11 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
         list.add(this.statusMessageCooldown);
         list.add(this.lastStatusMessageCooldown);
         list.add(this.statusValid);
+        
+        if (!this.worldObj.isRemote)
+        {
+        	list.add(this.riddenByEntity == null ? -1 : this.riddenByEntity.getEntityId());
+        }
     }
 
     @Override

@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -25,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+
+import cpw.mods.fml.client.FMLClientHandler;
 
 public abstract class EntityLanderBase extends EntityAdvancedMotion implements IInventorySettable, IPacketReceiver, IScaleableFuelLevel
 {
@@ -321,6 +324,8 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
         {
             this.shouldMoveServer = this.shouldMove();
             objList.add(this.shouldMoveServer);
+            //Server send rider information for client to check
+            objList.add(this.riddenByEntity == null ? -1 : this.riddenByEntity.getEntityId());
         }
 
         return objList;
@@ -362,6 +367,53 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
                 this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, buffer.readInt()));
 
                 this.shouldMoveServer = buffer.readBoolean();
+
+                //Check has correct rider on client
+                int shouldBeMountedId = buffer.readInt();
+                if (this.riddenByEntity == null)
+                {
+                	 if (shouldBeMountedId > -1)
+                	 {
+                		 Entity e = FMLClientHandler.instance().getWorldClient().getEntityByID(shouldBeMountedId);
+                		 if (e != null)
+                		 {
+                			 if (e.dimension != this.dimension)
+                			 {
+                				 if (e instanceof EntityPlayerMP)
+                				 {
+                					 WorldUtil.forceRespawnClient(this.dimension, e.worldObj.difficultySetting.getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP)e).theItemInWorldManager.getGameType().getID());
+                					 e.mountEntity(this);
+                				 }
+                			 }
+                			 else
+                				 e.mountEntity(this);
+                		 }
+                	 }
+                }
+                else if (this.riddenByEntity.getEntityId() != shouldBeMountedId)
+                {
+                	if (shouldBeMountedId == -1)
+                	{
+                		this.riddenByEntity.mountEntity(null);
+                	}
+                	else
+                	{
+                		Entity e = FMLClientHandler.instance().getWorldClient().getEntityByID(shouldBeMountedId);
+               		 	if (e != null)
+               		 	{
+               			 if (e.dimension != this.dimension)
+               			 {
+               				 if (e instanceof EntityPlayerMP)
+               				 {
+               					 WorldUtil.forceRespawnClient(this.dimension, e.worldObj.difficultySetting.getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP)e).theItemInWorldManager.getGameType().getID());
+               					 e.mountEntity(this);
+               				 }
+               			 }
+               			 else
+               				 e.mountEntity(this);
+               		 	}
+                	}
+                }
             }
             else
             {

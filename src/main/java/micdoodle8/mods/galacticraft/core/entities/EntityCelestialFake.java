@@ -17,10 +17,12 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
- import java.util.List;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+
+import cpw.mods.fml.client.FMLClientHandler;
 
 public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnoreShift, IPacketReceiver
 {
@@ -197,6 +199,8 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
         {
             this.shouldMoveServer = this.shouldMove();
             objList.add(this.shouldMoveServer);
+            //Server send rider information for client to check
+            objList.add(this.riddenByEntity == null ? -1 : this.riddenByEntity.getEntityId());
         }
 
         return objList;
@@ -229,6 +233,29 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
             {
                 this.hasReceivedPacket = true;
                 this.shouldMoveServer = buffer.readBoolean();
+
+                //Check has correct rider on client
+                int shouldBeMountedId = buffer.readInt();
+                if (this.riddenByEntity == null)
+                {
+                	 if (shouldBeMountedId > -1)
+                	 {
+                		 Entity e = FMLClientHandler.instance().getWorldClient().getEntityByID(shouldBeMountedId);
+                		 if (e != null) e.mountEntity(this);
+                	 }
+                }
+                else if (this.riddenByEntity.getEntityId() != shouldBeMountedId)
+                {
+                	if (shouldBeMountedId == -1)
+                	{
+                		this.riddenByEntity.mountEntity(null);
+                	}
+                	else
+                	{
+                		Entity e = FMLClientHandler.instance().getWorldClient().getEntityByID(shouldBeMountedId);
+               		 	if (e != null) e.mountEntity(this);
+                	}
+                }
             }
             else
             {
