@@ -396,7 +396,11 @@ gui.rocket.warning.nofuel=I'll need to load in some rocket fuel first!
 gui.chest.warning.wrongkey=I'll probably need a Tier %s Dungeon key to unlock this!
 gui.frequencymodule.warning0=I'll probably need a
 gui.frequencymodule.warning1=if I want to hear properly here.
-gui.tracking.message=Tracking activated. Now right-click on a Telemetry Unit to complete the link.
+gui.tracking.message=Tracking activated. Now I'll need to right-click this on a Telemetry Unit to complete the link.
+gui.telemetrySucceed.message=Telemetry link created.
+gui.telemetryFail.message=First I'll need to track an entity with that Frequency Module! (Or try wearing it!)
+gui.telemetryFailNoFrequencyModule.message=I'll probably need a Frequency Module in my hand to make use of this!
+gui.telemetryFailWearingIt.message=I'll need to take off my Frequency Module if I want to link it with this Telemetry Unit!
 
 gui.rocketType.0=Storage Space: 18
 gui.rocketType.1=Storage Space: 36
@@ -566,6 +570,7 @@ tile.cheeseBlock.description=Cheese Blocks are created from the cheeses of the M
 tile.spinThruster.description=Spin Thrusters are used to make space stations rotate.
 tile.arclamp.description=Arc Lamps are used to provide strong light to a large area, also causing most mobs to flee.
 tile.viewScreen.description=Display screens add that final touch to your space base. Right-click changes the information shown.
+tile.telemetry.description=This gathers useful data from linked rockets, players and mobs. Best placed near to a Display Screen. Use a Frequency Module to establish data links.
 
 # CONTAINERS
 container.cargoloader.name=Cargo Loader

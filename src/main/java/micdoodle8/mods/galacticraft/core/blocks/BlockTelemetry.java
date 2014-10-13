@@ -5,6 +5,7 @@ import java.util.UUID;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
@@ -15,9 +16,11 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -151,11 +154,17 @@ public class BlockTelemetry extends BlockAdvancedTile implements ItemBlockDesc.I
         			{
         				UUID uuid = new UUID(fmData.getLong("linkedUUIDMost"), fmData.getLong("linkedUUIDLeast"));
         				((TileEntityTelemetry) tile).addTrackedEntity(uuid);
+        	    		player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetrySucceed.message")));
         			}
-        			else if (fmData == null)
+        			else
         			{
-        				fmData = new NBTTagCompound();
-        				held.setTagCompound(fmData);
+        	    		player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetryFail.message")));
+
+        				if (fmData == null)
+            			{
+            				fmData = new NBTTagCompound();
+            				held.setTagCompound(fmData);
+            			}
         			}
         			fmData.setInteger("teCoordX", x);
         			fmData.setInteger("teCoordY", y);
@@ -163,6 +172,15 @@ public class BlockTelemetry extends BlockAdvancedTile implements ItemBlockDesc.I
         			fmData.setInteger("teDim", world.provider.dimensionId);
         			return true;
         		}
+
+        		ItemStack wearing = GCEntityPlayerMP.getPlayerStats((EntityPlayerMP)player).frequencyModuleInSlot; 
+        		if (wearing != null)
+        		{
+        			if (wearing.hasTagCompound() && wearing.getTagCompound().hasKey("teDim")) return false;
+        			player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetryFailWearingIt.message")));
+        		}
+        		else
+        			player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetryFailNoFrequencyModule.message")));
         	}
         }
     	return false;
