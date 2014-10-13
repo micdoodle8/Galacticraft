@@ -240,6 +240,10 @@ public class GuiElementTextBox extends GuiButton
         }
     }
 
+    public int getMaxLength() {
+        return maxLength;
+    }
+
     public static interface ITextBoxCallback
     {
         public boolean canPlayerEdit(GuiElementTextBox textBox, EntityPlayer player);
