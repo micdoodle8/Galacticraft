@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
+import com.mojang.authlib.GameProfile;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
@@ -30,6 +32,7 @@ public class TileEntityTelemetry extends TileEntity
 	public Class clientClass;
 	public int[] clientData = { -1 };
 	public String clientName;
+	public GameProfile clientGameProfile = null;
 
 	public static HashSet<BlockVec3> loadedList = new HashSet<BlockVec3>();
 	private static MinecraftServer theServer;
@@ -83,6 +86,7 @@ public class TileEntityTelemetry extends TileEntity
 			int data2 = -1;
 			int data3 = -1;
 			int data4 = -1;
+			String strUUID = "";
 			if (linkedEntity != null && !linkedEntity.isDead)
 			{
 				if (linkedEntity instanceof EntityPlayerMP)
@@ -119,7 +123,9 @@ public class TileEntityTelemetry extends TileEntity
 					{
 						data3 = ((EntityPlayerMP) eLiving).getFoodStats().getFoodLevel() * 5;
 						GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) eLiving);
-						data4 = stats.airRemaining * 4096 + stats.airRemaining2; 
+						data4 = stats.airRemaining * 4096 + stats.airRemaining2;
+						UUID uuid = ((EntityPlayerMP) eLiving).getUniqueID();
+						if (uuid != null) strUUID = uuid.toString();
 					}
 				}
 				else if (linkedEntity instanceof EntitySpaceshipBase)
@@ -135,7 +141,7 @@ public class TileEntityTelemetry extends TileEntity
 			{
 				name = "";
 			}
-			GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, new Object[] { this.xCoord, this.yCoord, this.zCoord, name, data0, data1, data2, data3, data4 } ), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 320D));
+			GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, new Object[] { this.xCoord, this.yCoord, this.zCoord, name, data0, data1, data2, data3, data4, strUUID } ), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 320D));
 		}
 	}
 	

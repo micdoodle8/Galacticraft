@@ -614,8 +614,9 @@ public class GuiCelestialSelection extends GuiScreen
                     // Apply
                     if (x >= width / 2 - 90 + 17 && x <= width / 2 - 90 + 17 + 72 && y >= this.height / 2 - 38 + 59 && y <= this.height / 2 - 38 + 59 + 12)
                     {
-                        this.spaceStationNames.put(this.mc.thePlayer.getGameProfile().getName(), this.renamingString);
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_RENAME_SPACE_STATION, new Object[] { this.renamingString, this.spaceStationIDs.get(this.mc.thePlayer.getGameProfile().getName()) }));
+                        int spacestationID = this.spaceStationIDs.get(this.mc.thePlayer.getGameProfile().getName()); 
+                    	this.spaceStationNames.put(this.mc.thePlayer.getGameProfile().getName(), this.renamingString);
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_RENAME_SPACE_STATION, new Object[] { this.renamingString, spacestationID }));
                         this.renamingSpaceStation = false;
                     }
                     // Cancel

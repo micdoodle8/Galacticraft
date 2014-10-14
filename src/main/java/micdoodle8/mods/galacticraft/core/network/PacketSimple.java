@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.network;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -154,7 +155,7 @@ public class PacketSimple extends Packet implements IPacket
         C_RESPAWN_PLAYER(Side.CLIENT, String.class, Integer.class, String.class, Integer.class),
         C_UPDATE_ARCLAMP_FACING(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class),
         C_UPDATE_VIEWSCREEN(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
-        C_UPDATE_TELEMETRY(Side.CLIENT, Integer.class, Integer.class, Integer.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
+        C_UPDATE_TELEMETRY(Side.CLIENT, Integer.class, Integer.class, Integer.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, String.class),
         C_SEND_OVERWORLD_IMAGE(Side.CLIENT, byte[].class);
         
         private Side targetSide;
@@ -785,7 +786,16 @@ public class PacketSimple extends Packet implements IPacket
         		if (name.startsWith("$"))
         		{
         			((TileEntityTelemetry)tile).clientClass = EntityPlayerMP.class;
-        			((TileEntityTelemetry)tile).clientName = name.substring(1);
+        			String strName = name.substring(1);
+        			((TileEntityTelemetry)tile).clientName = strName;
+        			GameProfile profile = FMLClientHandler.instance().getClientPlayerEntity().getGameProfile();
+        			if (!strName.equals(profile.getName()))
+        			{
+            			String strUUID = (String) this.data.get(9);
+        				UUID uuid = strUUID.isEmpty() ? UUID.randomUUID() : UUID.fromString(strUUID);
+        				profile = VersionUtil.constructGameProfile(uuid, strName);
+        			}
+        			((TileEntityTelemetry)tile).clientGameProfile = profile; 
         		}
         		else
         			((TileEntityTelemetry)tile).clientClass = (Class) EntityList.stringToClassMapping.get(name);

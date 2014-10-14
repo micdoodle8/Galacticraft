@@ -1,18 +1,14 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
-import java.util.UUID;
-
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -24,7 +20,8 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import com.mojang.authlib.GameProfile;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -83,7 +80,20 @@ public class GameScreenText implements IGameScreen
 	        		{
 	        			strName = telemeter.clientName;
 	        			if (ConfigManagerCore.enableDebug) System.out.println("Telemetry for player: Lastclass "+(screen.telemetryLastClass == null ? "null" : screen.telemetryLastClass.getSimpleName()) + " N1 " + strName + " N2 " + screen.telemetryLastName);
-	        			entity = new EntityOtherPlayerMP(screen.driver.getWorldObj(), VersionUtil.constructGameProfile(UUID.randomUUID(), strName));
+	        			entity = new EntityOtherPlayerMP(screen.driver.getWorldObj(), telemeter.clientGameProfile);
+	        			/*
+	        			//Logging to check that the UUID matches correctly (it does!)
+	        			for (Object e : screen.driver.getWorldObj().getLoadedEntityList())
+	        			{
+	        				if (e instanceof AbstractClientPlayer)
+	        				{
+	        					GameProfile gp = ((AbstractClientPlayer)e).getGameProfile();
+	        					System.out.println(gp.getName() + " " + gp.getId());
+	        				}
+	        			}
+        				GameProfile gp = ((AbstractClientPlayer)entity).getGameProfile();
+        				System.out.println(gp.getName() + " " + gp.getId());
+        				*/
 	        			renderEntity = (Render) RenderManager.instance.entityRenderMap.get(EntityPlayer.class);
 	        		}
 	        		else
@@ -95,7 +105,6 @@ public class GameScreenText implements IGameScreen
 		        		renderEntity = (Render) RenderManager.instance.entityRenderMap.get(telemeter.clientClass);
 	        		}	        		
         		}
-        		if (entity != null && renderEntity != null) Xmargin = 0.4F;
         	}
         	
         	if (entity instanceof EntityLivingBase)
@@ -185,6 +194,7 @@ public class GameScreenText implements IGameScreen
 
     	//Centre the text in the display 
     	float border = frameA + 0.025F * scale;
+		if (entity != null && renderEntity != null) Xmargin = (sizeX - borders) / 2;
     	float Xoffset = (sizeX - borders - textWidthPixels * scaleText) / 2 + Xmargin;
     	float Yoffset = (sizeY - borders - textHeightPixels * scaleText) / 2 + scaleText;
     	GL11.glTranslatef(border + Xoffset, border + Yoffset, 0.0F);
@@ -212,9 +222,7 @@ public class GameScreenText implements IGameScreen
             	GL11.glRotatef(telemeter.clientData[4], -1, 0, 0);
             	GL11.glTranslatef(0, entity.height / 4, 0);
         	}
-            RenderHelper.enableStandardItemLighting();
             RenderManager.instance.renderEntityWithPosYaw(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
-            RenderHelper.disableStandardItemLighting();
         }
 
         //TODO  Cross-dimensional tracking (i.e. old entity setDead, new entity created)
