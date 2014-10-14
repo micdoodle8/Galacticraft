@@ -61,19 +61,19 @@ item.canister.liquidArgon.name=Argon
 item.emptyGasCanister.name=Prazni Karnister Plina
 
 # FLUIDS AND GASES
-fluid.methane.name=Metan 
-fluid.oxygen.name=Zrak 
-fluid.nitrogen.name=Nitrogen 
-fluid.hydrogen.name=Hidrogen 
-fluid.carbondioxide.name=CO2 
-fluid.helium.name=Helij
-fluid.argon.name=Argon
-fluid.atmosphericgases.name=Atmosferni Plinovi
-fluid.liquidmethane.name=Tekuči Methan
-fluid.liquidoxygen.name=Tekuči Zrak
-fluid.liquidnitrogen.name=Tekuči Nitrogen
-fluid.liquidargon.name=Tekuči Argon
-fluid.fuel.name=Gorivo
+fluid.methane=Metan 
+fluid.oxygen=Zrak 
+fluid.nitrogen=Nitrogen 
+fluid.hydrogen=Hidrogen 
+fluid.carbondioxide=CO2 
+fluid.helium=Helij
+fluid.argon=Argon
+fluid.atmosphericgases=Atmosferni Plinovi
+fluid.liquidmethane=Tekuči Methan
+fluid.liquidoxygen=Tekuči Zrak
+fluid.liquidnitrogen=Tekuči Nitrogen
+fluid.liquidargon=Tekuči Argon
+fluid.fuel=Gorivo
 
 # BLOCKS
 tile.asteroidsBlock.asteroid0.name=Asteroidski Kamen

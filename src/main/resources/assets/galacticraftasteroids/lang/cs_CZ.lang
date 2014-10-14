@@ -62,19 +62,21 @@ tile.walkwayWire.name=Lávka
 tile.walkwayOxygenPipe.name=Lávka
 tile.treasureT3.name=Pokladnice typ 3
 tile.denseIce.name=Zhuštěný led
-fluid.methane.name=Plynný metan
-fluid.oxygen.name=Plynný kyslík
-fluid.nitrogen.name=Plynný dusík
-fluid.hydrogen.name=Plynný vodík
-fluid.carbondioxide.name=Plynný oxid uhličitý
-fluid.helium.name=Plynné helium
-fluid.argon.name=Plynný argon
-fluid.atmosphericgases.name=Atmosferické plyny
-fluid.liquidmethane.name=Kapalný metan
-fluid.liquidoxygen.name=Kapalný kyslík
-fluid.liquidnitrogen.name=Kapalný dusík
-fluid.liquidargon.name=Kapalný Argon
-fluid.fuel.name=Palivo
+
+#FLUIDS
+fluid.methane=Plynný metan
+fluid.oxygen=Plynný kyslík
+fluid.nitrogen=Plynný dusík
+fluid.hydrogen=Plynný vodík
+fluid.carbondioxide=Plynný oxid uhličitý
+fluid.helium=Plynné helium
+fluid.argon=Plynný argon
+fluid.atmosphericgases=Atmosferické plyny
+fluid.liquidmethane=Kapalný metan
+fluid.liquidoxygen=Kapalný kyslík
+fluid.liquidnitrogen=Kapalný dusík
+fluid.liquidargon=Kapalný Argon
+fluid.fuel=Palivo
 
 # GUI
 planet.asteroids=Asteroidy

@@ -49,19 +49,19 @@ item.canister.liquidArgon.name=Жидкость
 item.emptyGasCanister.name=Пустая канистра для газа
 
 # Fluids and Gases
-fluid.methane.name=Метан
-fluid.oxygen.name=Кислород
-fluid.nitrogen.name=Азот
-fluid.hydrogen.name=Водород
-fluid.carbondioxide.name=Углекислый газ
-fluid.helium.name=Гелий
-fluid.argon.name=Аргон
-fluid.atmosphericgases.name=Атмосферные газы
-fluid.liquidmethane.name=Жидкий метан
-fluid.liquidoxygen.name=Жидкий кислород
-fluid.liquidnitrogen.name=Жидкий азот
-fluid.liquidargon.name=Жидкий аргон
-fluid.fuel.name=Топливо
+fluid.methane=Метан
+fluid.oxygen=Кислород
+fluid.nitrogen=Азот
+fluid.hydrogen=Водород
+fluid.carbondioxide=Углекислый газ
+fluid.helium=Гелий
+fluid.argon=Аргон
+fluid.atmosphericgases=Атмосферные газы
+fluid.liquidmethane=Жидкий метан
+fluid.liquidoxygen=Жидкий кислород
+fluid.liquidnitrogen=Жидкий азот
+fluid.liquidargon=Жидкий аргон
+fluid.fuel=Топливо
 
 # BLOCKS
 tile.asteroidsBlock.asteroid0.name=Астероидный камень

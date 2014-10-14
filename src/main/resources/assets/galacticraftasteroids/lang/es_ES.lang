@@ -49,19 +49,19 @@ item.canister.liquidArgon.name=Líquido       #short name for Liquid Argon conte
 item.emptyGasCanister.name=Bote de Gas Vacío
 
 # FLUIDS AND GASES
-fluid.methane.name=Metano
-fluid.oxygen.name=Oxígeno
-fluid.nitrogen.name=Nítrogeno
-fluid.hydrogen.name=Hidrógeno
-fluid.carbondioxide.name=CO2
-fluid.helium.name=Helio
-fluid.argon.name=Argón
-fluid.atmosphericgases.name=Gases Atmosféricos
-fluid.liquidmethane.name=Metano Líquido
-fluid.liquidoxygen.name=Oxígeno Líquido
-fluid.liquidnitrogen.name=Nítrogeno Líquido
-fluid.liquidargon.name=Argón Líquido
-fluid.fuel.name=Combustible
+fluid.methane=Metano
+fluid.oxygen=Oxígeno
+fluid.nitrogen=Nítrogeno
+fluid.hydrogen=Hidrógeno
+fluid.carbondioxide=CO2
+fluid.helium=Helio
+fluid.argon=Argón
+fluid.atmosphericgases=Gases Atmosféricos
+fluid.liquidmethane=Metano Líquido
+fluid.liquidoxygen=Oxígeno Líquido
+fluid.liquidnitrogen=Nítrogeno Líquido
+fluid.liquidargon=Argón Líquido
+fluid.fuel=Combustible
 
 # BLOCKS
 tile.asteroidsBlock.asteroid0.name=Roca de Asteroide

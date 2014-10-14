@@ -49,19 +49,19 @@ item.canister.liquidArgon.name=氩
 item.emptyGasCanister.name=气体罐(空)
 
 # Fluids and gases
-fluid.methane.name=甲烷
-fluid.oxygen.name=氧气
-fluid.nitrogen.name=氮气
-fluid.hydrogen.name=氢气
-fluid.carbondioxide.name=二氧化碳
-fluid.helium.name=氦气
-fluid.argon.name=氩气
-fluid.atmosphericgases.name=空气
-fluid.liquidmethane.name=液态甲烷
-fluid.liquidoxygen.name=液态氧
-fluid.liquidnitrogen.name=液态氮
-fluid.liquidargon.name=液态氩
-fluid.fuel.name=燃油
+fluid.methane=甲烷
+fluid.oxygen=氧气
+fluid.nitrogen=氮气
+fluid.hydrogen=氢气
+fluid.carbondioxide=二氧化碳
+fluid.helium=氦气
+fluid.argon=氩气
+fluid.atmosphericgases=空气
+fluid.liquidmethane=液态甲烷
+fluid.liquidoxygen=液态氧
+fluid.liquidnitrogen=液态氮
+fluid.liquidargon=液态氩
+fluid.fuel=燃油
 
 # BLOCKS
 tile.asteroidsBlock.asteroid0.name=行星岩

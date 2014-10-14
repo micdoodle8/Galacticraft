@@ -49,19 +49,19 @@ item.canister.liquidArgon.name=อาร์กอนเหลว
 item.emptyGasCanister.name=กระป๋องก๊าซเปล่า
 
 # FLUIDS AND GASES
-fluid.methane.name=ก๊าซมีเทน
-fluid.oxygen.name=ก๊าซออกซิเจน
-fluid.nitrogen.name=ก๊าซไนโตรเจน
-fluid.hydrogen.name=ก๊าซไฮโดรเจน
-fluid.carbondioxide.name=ก๊าซคาร์บอนไดออกไซด์
-fluid.helium.name=ก๊าซฮีเลียม
-fluid.argon.name=ก๊าซอาร์กอน
-fluid.atmosphericgases.name=ก๊าซชั้นบรรยากาศ
-fluid.liquidmethane.name=มีเทนเหลว
-fluid.liquidoxygen.name=ออกซิเจนเหลว
-fluid.liquidnitrogen.name=ไนโตรเจนเหลว
-fluid.liquidargon.name=อาร์กอนเหลว
-fluid.fuel.name=เชื้อเพลิง
+fluid.methane=ก๊าซมีเทน
+fluid.oxygen=ก๊าซออกซิเจน
+fluid.nitrogen=ก๊าซไนโตรเจน
+fluid.hydrogen=ก๊าซไฮโดรเจน
+fluid.carbondioxide=ก๊าซคาร์บอนไดออกไซด์
+fluid.helium=ก๊าซฮีเลียม
+fluid.argon=ก๊าซอาร์กอน
+fluid.atmosphericgases=ก๊าซชั้นบรรยากาศ
+fluid.liquidmethane=มีเทนเหลว
+fluid.liquidoxygen=ออกซิเจนเหลว
+fluid.liquidnitrogen=ไนโตรเจนเหลว
+fluid.liquidargon=อาร์กอนเหลว
+fluid.fuel=เชื้อเพลิง
 
 # BLOCKS
 tile.asteroidsBlock.asteroid0.name=หินดาวเคราะห์น้อย

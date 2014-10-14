@@ -49,19 +49,19 @@ item.canister.liquidArgon.name=Flüssigk.       #short name for Liquid Argon con
 item.emptyGasCanister.name=Leerer Gaskanister
 
 # FLUIDS AND GASES
-fluid.methane.name=Methangas
-fluid.oxygen.name=Sauerstoff
-fluid.nitrogen.name=Stickstoff
-fluid.hydrogen.name=Wasserstoff
-fluid.carbondioxide.name=CO2
-fluid.helium.name=Helium
-fluid.argon.name=Argon
-fluid.atmosphericgases.name=Atmosphärische Gase
-fluid.liquidmethane.name=Flüssigmethan
-fluid.liquidoxygen.name=Flüssiger Sauerstoff
-fluid.liquidnitrogen.name=Flüssigstickstoff
-fluid.liquidargon.name=Flüssiges Argon
-fluid.fuel.name=Treibstoff
+fluid.methane=Methangas
+fluid.oxygen=Sauerstoff
+fluid.nitrogen=Stickstoff
+fluid.hydrogen=Wasserstoff
+fluid.carbondioxide=CO2
+fluid.helium=Helium
+fluid.argon=Argon
+fluid.atmosphericgases=Atmosphärische Gase
+fluid.liquidmethane=Flüssigmethan
+fluid.liquidoxygen=Flüssiger Sauerstoff
+fluid.liquidnitrogen=Flüssigstickstoff
+fluid.liquidargon=Flüssiges Argon
+fluid.fuel=Treibstoff
 
 # BLOCKS
 tile.asteroidsBlock.asteroid0.name=Asteroidgestein

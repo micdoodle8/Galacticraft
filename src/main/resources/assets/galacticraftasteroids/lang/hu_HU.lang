@@ -49,19 +49,19 @@ item.canister.liquidArgon.name=Folyadék       #Folyékony Argon Töltöttségi 
 item.emptyGasCanister.name=Üres Gáz-Kanna
 
 # FLUIDS AND GASES
-fluid.methane.name=Metángáz
-fluid.oxygen.name=Oxigéngáz
-fluid.nitrogen.name=Nitrogéngáz
-fluid.hydrogen.name=Hidrogéngáz
-fluid.carbondioxide.name=Széndioxid-Gáz
-fluid.helium.name=Héliumgáz
-fluid.argon.name=Argongáz
-fluid.atmosphericgases.name=Légköri Gázok
-fluid.liquidmethane.name=Folyékony Metán
-fluid.liquidoxygen.name=Folyékony Oxigén
-fluid.liquidnitrogen.name=Folyékony Nitrogén
-fluid.liquidargon.name=Folyékony Argon
-fluid.fuel.name=Üzemanyag
+fluid.methane=Metángáz
+fluid.oxygen=Oxigéngáz
+fluid.nitrogen=Nitrogéngáz
+fluid.hydrogen=Hidrogéngáz
+fluid.carbondioxide=Széndioxid-Gáz
+fluid.helium=Héliumgáz
+fluid.argon=Argongáz
+fluid.atmosphericgases=Légköri Gázok
+fluid.liquidmethane=Folyékony Metán
+fluid.liquidoxygen=Folyékony Oxigén
+fluid.liquidnitrogen=Folyékony Nitrogén
+fluid.liquidargon=Folyékony Argon
+fluid.fuel=Üzemanyag
 
 # BLOCKS
 tile.asteroidsBlock.asteroid0.name=Aszteroida-Szikla

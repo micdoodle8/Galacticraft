@@ -49,19 +49,19 @@ item.canister.liquidArgon.name=Sıvı
 item.emptyGasCanister.name=Boş Gaz Bidonu
 
 # FLUIDS AND GASES
-fluid.methane.name=Metan Gazı
-fluid.oxygen.name=Oksijen Gazı
-fluid.nitrogen.name=Nitrojen Gazı
-fluid.hydrogen.name=Hidrojen Gazı
-fluid.carbondioxide.name=CO2 Gazı
-fluid.helium.name=Helyum Gazı
-fluid.argon.name=Argon Gazı
-fluid.atmosphericgases.name=Atmosferik Gazlar
-fluid.liquidmethane.name=Sıvı Metan
-fluid.liquidoxygen.name=Sıvı Oksijen
-fluid.liquidnitrogen.name=Sıvı Nitrojen
-fluid.liquidargon.name=Sıvı Argon
-fluid.fuel.name=Yakıt
+fluid.methane=Metan Gazı
+fluid.oxygen=Oksijen Gazı
+fluid.nitrogen=Nitrojen Gazı
+fluid.hydrogen=Hidrojen Gazı
+fluid.carbondioxide=CO2 Gazı
+fluid.helium=Helyum Gazı
+fluid.argon=Argon Gazı
+fluid.atmosphericgases=Atmosferik Gazlar
+fluid.liquidmethane=Sıvı Metan
+fluid.liquidoxygen=Sıvı Oksijen
+fluid.liquidnitrogen=Sıvı Nitrojen
+fluid.liquidargon=Sıvı Argon
+fluid.fuel=Yakıt
 
 # BLOCKS
 tile.asteroidsBlock.asteroid0.name=Asteroit Kayası
