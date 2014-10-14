@@ -80,20 +80,22 @@ public class GameScreenText implements IGameScreen
 	        		{
 	        			strName = telemeter.clientName;
 	        			if (ConfigManagerCore.enableDebug) System.out.println("Telemetry for player: Lastclass "+(screen.telemetryLastClass == null ? "null" : screen.telemetryLastClass.getSimpleName()) + " N1 " + strName + " N2 " + screen.telemetryLastName);
-	        			entity = new EntityOtherPlayerMP(screen.driver.getWorldObj(), telemeter.clientGameProfile);
-	        			/*
-	        			//Logging to check that the UUID matches correctly (it does!)
+	        			
+	        			GameProfile gp1 = telemeter.clientGameProfile;
 	        			for (Object e : screen.driver.getWorldObj().getLoadedEntityList())
 	        			{
 	        				if (e instanceof AbstractClientPlayer)
 	        				{
-	        					GameProfile gp = ((AbstractClientPlayer)e).getGameProfile();
-	        					System.out.println(gp.getName() + " " + gp.getId());
+	        					GameProfile gp2 = ((AbstractClientPlayer)e).getGameProfile();
+	        					if (gp2.getName().equals(gp1.getName()))
+	        					{
+	        						gp1 = gp2;
+	        						break;
+	        					}
 	        				}
 	        			}
-        				GameProfile gp = ((AbstractClientPlayer)entity).getGameProfile();
-        				System.out.println(gp.getName() + " " + gp.getId());
-        				*/
+	        			entity = new EntityOtherPlayerMP(screen.driver.getWorldObj(), gp1);
+        				
 	        			renderEntity = (Render) RenderManager.instance.entityRenderMap.get(EntityPlayer.class);
 	        		}
 	        		else
@@ -263,12 +265,13 @@ public class GameScreenText implements IGameScreen
     	return spStr1 + "." + spStr2 + " hearts";
     }
 
-    private String makeOxygenString(int oxygen18)
+    private String makeOxygenString(int oxygen)
     { 	
-    	int sp1 = oxygen18 / 18;
-    	int sp2 = (oxygen18 * 56) / 100;
+    	//Server takes 1 air away every 9 ticks (OxygenUtil.getDrainSpacing)
+    	int sp1 = oxygen * 9 / 20;
+    	int sp2 = ((oxygen * 9) % 20) / 2;
     	String spStr1 = "" + sp1;
-    	String spStr2 = (sp2 > 9 ? "" : "0") + sp2;
+    	String spStr2 = "" + sp2;
     	return spStr1 + "." + spStr2;
     }
 
