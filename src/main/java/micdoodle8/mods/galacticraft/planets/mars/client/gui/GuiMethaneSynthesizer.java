@@ -205,10 +205,10 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
         FluidStack gasTankContents = this.tileEntity.gasTank != null ? this.tileEntity.gasTank.getFluid() : null;
         if (gasTankContents != null)
         {
-            String gasname = FluidRegistry.getFluid("hydrogen").getLocalizedName();
+            String gasname = FluidRegistry.getFluid("hydrogen").getUnlocalizedName();
             if (gasname == null || gasname.equals("fluid.hydrogen"))
             {
-                gasname = GCCoreUtil.translate(gasTankContents.getFluid().getUnlocalizedName() + ".name");
+                gasname = GCCoreUtil.translate(gasTankContents.getFluid().getUnlocalizedName());
             }
             gasTankDesc.add("(" + gasname + ")");
         }
@@ -227,10 +227,10 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
         gasTankContents = this.tileEntity.gasTank2 != null ? this.tileEntity.gasTank2.getFluid() : null;
         if (gasTankContents != null)
         {
-            String gasname = FluidRegistry.getFluid("carbondioxide").getLocalizedName();
+            String gasname = FluidRegistry.getFluid("carbondioxide").getUnlocalizedName();
             if (gasname == null || gasname.equals("fluid.carbondioxide"))
             {
-                gasname = GCCoreUtil.translate(gasTankContents.getFluid().getUnlocalizedName() + ".name");
+                gasname = GCCoreUtil.translate(gasTankContents.getFluid().getUnlocalizedName());
             }
             gasTankDesc.add("(" + gasname + ")");
         }
@@ -248,10 +248,10 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
         gasTankContents = this.tileEntity.liquidTank != null ? this.tileEntity.liquidTank.getFluid() : null;
         if (gasTankContents != null)
         {
-            String gasname = FluidRegistry.getFluid("methane").getLocalizedName();
+            String gasname = FluidRegistry.getFluid("methane").getUnlocalizedName();
             if (gasname == null || gasname.equals("fluid.methane"))
             {
-                gasname = GCCoreUtil.translate(gasTankContents.getFluid().getUnlocalizedName() + ".name");
+                gasname = GCCoreUtil.translate(gasTankContents.getFluid().getUnlocalizedName());
             }
             fuelTankDesc.add("(" + gasname + ")");
         }

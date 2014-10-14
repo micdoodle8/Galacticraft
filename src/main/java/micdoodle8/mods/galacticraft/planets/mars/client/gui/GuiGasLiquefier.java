@@ -217,11 +217,7 @@ public class GuiGasLiquefier extends GuiContainerGC
         FluidStack gasTankContents = this.tileEntity.gasTank != null ? this.tileEntity.gasTank.getFluid() : null;
         if (gasTankContents != null)
         {
-            String gasname = gasTankContents.getFluid().getLocalizedName();
-            if (gasname == null || gasname.equals(gasTankContents.getFluid().getUnlocalizedName()))
-            {
-                gasname = GCCoreUtil.translate(gasTankContents.getFluid().getUnlocalizedName());
-            }
+            String gasname = GCCoreUtil.translate(gasTankContents.getFluid().getUnlocalizedName());
             gasTankDesc.add("(" + gasname + ")");
         }
         else
@@ -238,11 +234,7 @@ public class GuiGasLiquefier extends GuiContainerGC
         gasTankContents = this.tileEntity.liquidTank != null ? this.tileEntity.liquidTank.getFluid() : null;
         if (gasTankContents != null)
         {
-            String gasname = gasTankContents.getFluid().getLocalizedName();
-            if (gasname == null || gasname.equals(gasTankContents.getFluid().getUnlocalizedName()))
-            {
-                gasname = GCCoreUtil.translate(gasTankContents.getFluid().getUnlocalizedName());
-            }
+            String gasname = GCCoreUtil.translate(gasTankContents.getFluid().getUnlocalizedName());
             fuelTankDesc.add("(" + gasname + ")");
         }
         else
@@ -259,11 +251,7 @@ public class GuiGasLiquefier extends GuiContainerGC
         gasTankContents = this.tileEntity.liquidTank2 != null ? this.tileEntity.liquidTank2.getFluid() : null;
         if (gasTankContents != null)
         {
-            String gasname = gasTankContents.getFluid().getLocalizedName();
-            if (gasname == null || gasname.equals(gasTankContents.getFluid().getUnlocalizedName()))
-            {
-                gasname = GCCoreUtil.translate(gasTankContents.getFluid().getUnlocalizedName());
-            }
+            String gasname = GCCoreUtil.translate(gasTankContents.getFluid().getUnlocalizedName());
             fuelTankDesc.add("(" + gasname + ")");
         }
         else
