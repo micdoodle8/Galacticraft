@@ -354,7 +354,8 @@ gui.lander.warning3=", um zu verlangsamen!
 gui.lander.velocity=Eingangsgeschwindigkeit
 gui.lander.velocityu=m/s
 gui.perSecond=/s ##NEEDS TRANSLATE##
-gui.seconds=s	 ##NEEDS TRANSLATE##
+gui.seconds=s
+
 gui.oxygen.warning=Sauerstoff-Setup ist Ungültig!
 gui.sensor.advanced=Fortgeschrittener Modus
 gui.sensor.advancedon=AN

@@ -354,7 +354,8 @@ gui.lander.warning3=" da usporiš!
 gui.lander.velocity=Slijetanje
 gui.lander.velocityu=m/s
 gui.perSecond=/s ##NEEDS TRANSLATE##
-gui.seconds=s	 ##NEEDS TRANSLATE##
+gui.seconds=s
+
 gui.oxygen.warning=Postavljane Kisika Pogrešno!
 gui.sensor.advanced=Napredni Način
 gui.sensor.advancedon=Upali

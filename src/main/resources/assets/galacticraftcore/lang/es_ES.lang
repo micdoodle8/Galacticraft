@@ -354,7 +354,8 @@ gui.lander.warning3=" para desacelerar!
 gui.lander.velocity=Velocidad de Entrada
 gui.lander.velocityu=m/s
 gui.perSecond=/s ##NEEDS TRANSLATE##
-gui.seconds=s	 ##NEEDS TRANSLATE##
+gui.seconds=s
+
 gui.oxygen.warning=Disposición del Oxígeno es Invalido!
 gui.sensor.advanced=Modo Avanzado
 gui.sensor.advancedon=ON

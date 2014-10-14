@@ -401,7 +401,8 @@ gui.lander.warning3=" hidastaaksesi!
 gui.lander.velocity=Entry Velocity
 gui.lander.velocityu=m/s
 gui.perSecond=/s ##NEEDS TRANSLATE##
-gui.seconds=s	 ##NEEDS TRANSLATE##
+gui.seconds=s
+
 gui.oxygen.warning=Happijärjestelmäsi on kelpaamaton!
 gui.sensor.advanced=Advanced Mode
 gui.sensor.advancedon=ON

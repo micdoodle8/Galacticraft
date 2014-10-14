@@ -405,6 +405,7 @@ gui.lander.velocity=Prędkość Wejściowa
 gui.lander.velocityu=m/s
 gui.perSecond=/s
 gui.seconds=s
+
 gui.oxygen.warning=Konfiguracja Tlenowa Źle Założona!
 gui.sensor.advanced=Tryb Zaawansowany
 gui.sensor.advancedon=Włączony

@@ -390,7 +390,8 @@ gui.lander.warning3 = " i arafu i lawr !
 gui.lander.velocity = Cyflymder Mynediad
 gui.lander.velocityu = m / s
 gui.perSecond=/s ##NEEDS TRANSLATE##
-gui.seconds=s	 ##NEEDS TRANSLATE##
+gui.seconds=s
+
 gui.oxygen.warning=Oxygen Setup is Invalid! ##NEEDS TRANSLATE##
 Setup gui.oxygen.warning = Ocsigen yn annilys !
 gui.sensor.advanced = Uwch Ddelw
