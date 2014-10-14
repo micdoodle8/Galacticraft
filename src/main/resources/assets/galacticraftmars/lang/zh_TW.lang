@@ -12,6 +12,7 @@ item.key.T2.name=2階地牢鑰匙
 item.compressedDesh.name=致密戴斯
 item.spaceshipTier2.cargoRocket.name=貨運火箭
 item.fluidManip.name=流體機械手
+item.bucketSludge.name=Bacterial Sludge Bucket ##NEEDS TRANSLATE##
 
 # TOOLS
 item.deshPick.name=戴斯鎬

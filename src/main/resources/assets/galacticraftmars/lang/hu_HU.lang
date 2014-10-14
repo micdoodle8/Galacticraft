@@ -11,6 +11,7 @@ item.key.T2.name=2-Es Szintu Dungeon-Kulcs
 item.compressedDesh.name=Préselt Desh
 item.spaceshipTier2.cargoRocket.name=Távvezérlésu Teherrakéta
 item.fluidManip.name=Folyadék-Átalakító
+item.bucketSludge.name=Bacterial Sludge Bucket ##NEEDS TRANSLATE##
 
 # TOOLS
 item.deshPick.name=Desh Csákány

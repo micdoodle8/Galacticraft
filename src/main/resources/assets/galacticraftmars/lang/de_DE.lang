@@ -12,6 +12,7 @@ item.key.T2.name=Dungeonschlüssel (Stufe 2)
 item.compressedDesh.name=Gepresstes Desh
 item.spaceshipTier2.cargoRocket.name=Güterrakete
 item.fluidManip.name=Flüssigkeitsmanipulator
+item.bucketSludge.name=Bacterial Sludge Bucket ##NEEDS TRANSLATE##
 
 # TOOLS
 item.deshPick.name=Desh-Spitzhacke

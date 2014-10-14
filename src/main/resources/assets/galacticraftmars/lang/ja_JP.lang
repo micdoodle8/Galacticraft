@@ -11,6 +11,7 @@ item.key.T2.name=Tier 2 Dungeon Key ##NEEDS TRANSLATE##
 item.compressedDesh.name=Compressed Desh ##NEEDS TRANSLATE##
 item.spaceshipTier2.cargoRocket.name=Cargo Rocket ##NEEDS TRANSLATE##
 item.fluidManip.name=Fluid Manipulator ##NEEDS TRANSLATE##
+item.bucketSludge.name=Bacterial Sludge Bucket ##NEEDS TRANSLATE##
 item.deshPick.name=Desh Pickaxe ##NEEDS TRANSLATE##
 item.deshPickSlime.name=Sticky Desh Pickaxe ##NEEDS TRANSLATE##
 item.deshAxe.name=Desh Axe ##NEEDS TRANSLATE##

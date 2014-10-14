@@ -179,6 +179,7 @@ tile.oxygenCompressor.1.name=เครื่องลดความดันอ
 tile.arclamp.name=โคมไฟอาร์ค
 tile.spinThruster.name=สปินทรัสเตอร์
 tile.viewScreen.name=หน้าจอแสดงผล
+tile.telemetry.name=Telemetry Unit ##NEEDS TRANSLATE##
 tile.spaceStationBase.name=ฐานสถานีอวกาศ
 
 # DECOBLOCKS
@@ -396,6 +397,10 @@ gui.chest.warning.wrongkey=ฉันต้องการกุญแจดั�
 gui.frequencymodule.warning0=ฉันต้องการ
 gui.frequencymodule.warning1=ถ้าต้องการที่จะได้ยินแบบสมบูรณ์
 gui.tracking.message=การแทรคทำงานแล้ว คลิ๊กขวาที่ Telemetry Unit เพื่อเชื่อมต่อลิ้งค์ #To do
+gui.telemetrySucceed.message=Telemetry link created. ##NEEDS TRANSLATE##
+gui.telemetryFail.message=First I'll need to track an entity with that Frequency Module! (Or try wearing it!) ##NEEDS TRANSLATE##
+gui.telemetryFailNoFrequencyModule.message=I'll probably need a Frequency Module in my hand to make use of this! ##NEEDS TRANSLATE##
+gui.telemetryFailWearingIt.message=I'll need to take off my Frequency Module if I want to link it with this Telemetry Unit! ##NEEDS TRANSLATE##
 
 gui.rocketType.0=พื้นที่เก็บของ: 18
 gui.rocketType.1=พื้นที่เก็บของ: 36
@@ -565,6 +570,7 @@ tile.cheeseBlock.description=บล็อกชีส สร้างด้ว�
 tile.spinThruster.description=สปินทรัสเตอร์ ใช้เพื่อทำให้สถานีอวกาศหมุน
 tile.arclamp.description=โคมไฟอาร์ค ใช้เพื่อให้แสงสว่างที่กว้างและช่วยให้ม๊อบต่างๆ หนีออกไป
 tile.viewScreen.description=หน้าจอแสดงผลจะแสดงภาพระบบสุริยะ โลก หรือเวลา คลิ๊กขวาที่บล็อกเพื่อเปลี่ยนการแสดงผล
+tile.telemetry.description=This gathers useful data from linked rockets, players and mobs. Best placed near to a Display Screen. Use a Frequency Module to establish data links. ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.cargoloader.name=เครื่องขนส่งสินค้า

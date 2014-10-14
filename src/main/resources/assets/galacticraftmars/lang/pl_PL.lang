@@ -11,6 +11,7 @@ item.key.T2.name=Klucz Lochy Poziomu 3
 item.compressedDesh.name=Skompresowany Desz
 item.spaceshipTier2.cargoRocket.name=Rakieta Transportowa
 item.fluidManip.name=Manipulator Płynów
+item.bucketSludge.name=Bacterial Sludge Bucket ##NEEDS TRANSLATE##
 item.deshPick.name=Deszowy Kilof
 item.deshPickSlime.name=Lepki Deszowy Kilof
 item.deshAxe.name=Deszowa Siekiera

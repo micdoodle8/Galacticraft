@@ -12,6 +12,7 @@ item.key.T2.name=Tamnički Ključ Ranga 2
 item.compressedDesh.name=Prerađeni Desh
 item.spaceshipTier2.cargoRocket.name=Raketa s Teretom
 item.fluidManip.name=Manipulator Tekučinom
+item.bucketSludge.name=Bacterial Sludge Bucket ##NEEDS TRANSLATE##
 
 # TOOLS
 item.deshPick.name=Desh Kramp

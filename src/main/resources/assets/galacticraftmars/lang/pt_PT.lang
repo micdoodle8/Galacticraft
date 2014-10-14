@@ -12,6 +12,7 @@ item.key.T2.name=Chave de Calabouço - Nível 2
 item.compressedDesh.name=Desh Prensado
 item.spaceshipTier2.cargoRocket.name=Foguetão de Carga
 item.fluidManip.name=Fluid Manipulator ##NEEDS TRANSLATE##
+item.bucketSludge.name=Bacterial Sludge Bucket ##NEEDS TRANSLATE##
 
 # TOOLS
 item.deshPick.name=Picareta de Desh

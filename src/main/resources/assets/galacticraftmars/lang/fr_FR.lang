@@ -12,6 +12,7 @@ item.key.T2.name=Clé de Donjon Niveau 2
 item.compressedDesh.name=Silicium comprimé
 item.spaceshipTier2.cargoRocket.name=Cargaison de fusée
 item.fluidManip.name=Manipulateur de fluides
+item.bucketSludge.name=Bacterial Sludge Bucket ##NEEDS TRANSLATE##
 
 # TOOLS
 item.deshPick.name=Pioche en silicium

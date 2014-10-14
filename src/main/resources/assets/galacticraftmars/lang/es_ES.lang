@@ -12,6 +12,7 @@ item.key.T2.name=Llave de Mazmorra Nivel 2
 item.compressedDesh.name=Desh Comprimido
 item.spaceshipTier2.cargoRocket.name=Cohete de Carga
 item.fluidManip.name=Manipulador de Fluidos
+item.bucketSludge.name=Bacterial Sludge Bucket ##NEEDS TRANSLATE##
 
 # TOOLS
 item.deshPick.name=Pico de Desh

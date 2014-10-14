@@ -12,6 +12,7 @@ item.key.T2.name=Tier 2 Dungeon Key
 item.compressedDesh.name=Compressed Desh
 item.spaceshipTier2.cargoRocket.name=Cargo Rocket
 item.fluidManip.name=Fluid Manipulator
+item.bucketSludge.name=Bacterial Sludge Bucket ##NEEDS TRANSLATE##
 
 # TOOLS
 item.deshPick.name=Desh Pickaxe
@@ -51,12 +52,12 @@ tile.marsMachine.6.name=Water Electrolyzer
 tile.sludge.name=Bacterial Sludge
 tile.creeperEgg.name=Creeper Egg
 tile.cavernVines.name=Cavernous Vines
-tile.marsCobblestoneStairs.name=Mars Cobblestone Stairs ##NEEDS TRANSLATE##
-tile.wallGC.mars.name=Mars Cobblestone Wall ##NEEDS TRANSLATE##
-tile.slabGCHalf.marsSlab.name=Mars Cobblestone Slab ##NEEDS TRANSLATE##
-tile.marsDungeonBricksStairs.name=Mars Dungeon Brick Stairs ##NEEDS TRANSLATE##
-tile.wallGC.marsBricks.name=Mars Dungeon Brick Wall ##NEEDS TRANSLATE##
-tile.slabGCHalf.marsBricksSlab.name=Mars Dungeon Brick Slab ##NEEDS TRANSLATE##
+tile.marsCobblestoneStairs.name=Mars Cobblestone Stairs
+tile.wallGC.mars.name=Mars Cobblestone Wall
+tile.slabGCHalf.marsSlab.name=Mars Cobblestone Slab
+tile.marsDungeonBricksStairs.name=Mars Dungeon Brick Stairs
+tile.wallGC.marsBricks.name=Mars Dungeon Brick Wall
+tile.slabGCHalf.marsBricksSlab.name=Mars Dungeon Brick Slab
 
 # GUI
 gui.choosePlanet.desc.mars=Habitable#No Oxygen#Gravity: 38%

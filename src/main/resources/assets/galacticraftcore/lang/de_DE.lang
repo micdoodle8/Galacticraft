@@ -179,6 +179,8 @@ tile.oxygenCompressor.1.name=Sauerstoffdekompressor
 tile.arclamp.name=Bogenlampe
 tile.spinThruster.name=Drehungstriebwerk
 tile.viewScreen.name=Display Screen ##NEEDS TRANSLATE##
+tile.telemetry.name=Telemetry Unit ##NEEDS TRANSLATE##
+tile.spaceStationBase.name=Space Station arrival block ##NEEDS TRANSLATE##
 tile.tinStairs1.name=Tin Decoration Stairs ##NEEDS TRANSLATE##
 tile.tinStairs2.name=Tin Decoration Stairs ##NEEDS TRANSLATE##
 tile.wallGC.tin.name=Tin Decoration Wall ##NEEDS TRANSLATE##
@@ -392,6 +394,11 @@ gui.rocket.warning.nofuel=Ich brauche erst einmal etwas Raketentreibstoff!
 gui.chest.warning.wrongkey=Ich brauche wohl einen Dungeonschlüssel Stufe %s, um das zu entsperren!
 gui.frequencymodule.warning0=Ich brauche wohl ein
 gui.frequencymodule.warning1=, wenn ich hier vernünftig hören möchte
+gui.tracking.message=Tracking activated. Now I'll need to right-click this on a Telemetry Unit to complete the link. ##NEEDS TRANSLATE##
+gui.telemetrySucceed.message=Telemetry link created. ##NEEDS TRANSLATE##
+gui.telemetryFail.message=First I'll need to track an entity with that Frequency Module! (Or try wearing it!) ##NEEDS TRANSLATE##
+gui.telemetryFailNoFrequencyModule.message=I'll probably need a Frequency Module in my hand to make use of this! ##NEEDS TRANSLATE##
+gui.telemetryFailWearingIt.message=I'll need to take off my Frequency Module if I want to link it with this Telemetry Unit! ##NEEDS TRANSLATE##
 
 gui.rocketType.0=Lagerraum: 18
 gui.rocketType.1=Lagerraum: 36
@@ -561,6 +568,7 @@ tile.cheeseBlock.description=Cheese Blocks are created from the cheeses of the M
 tile.spinThruster.description=Spin Thrusters are used to make space stations rotate.
 tile.arclamp.description=Arc Lamps are used to provide strong light to a large area, also causing most mobs to flee.
 tile.viewScreen.description=Display screens add that final touch to your space base. Right-click changes the information shown. ##NEEDS TRANSLATE##
+tile.telemetry.description=This gathers useful data from linked rockets, players and mobs. Best placed near to a Display Screen. Use a Frequency Module to establish data links. ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.cargoloader.name=Cargo-Lader

@@ -196,6 +196,8 @@ tile.oxygenCompressor.1.name=Kyslíkový dekompresor
 tile.arclamp.name=Oblouková lampa
 tile.spinThruster.name=Manévrovací tryska
 tile.viewScreen.name=Display Screen ##NEEDS TRANSLATE##
+tile.telemetry.name=Telemetry Unit ##NEEDS TRANSLATE##
+tile.spaceStationBase.name=Space Station arrival block ##NEEDS TRANSLATE##
 tile.tinStairs1.name=Tin Decoration Stairs ##NEEDS TRANSLATE##
 tile.tinStairs2.name=Tin Decoration Stairs ##NEEDS TRANSLATE##
 tile.wallGC.tin.name=Tin Decoration Wall ##NEEDS TRANSLATE##
@@ -424,6 +426,11 @@ gui.rocket.warning.nofuel=Nejdříve potřebuji nějaké palivo!
 gui.chest.warning.wrongkey=Budu potřebovat klíč typu %s abych to odemknul!
 gui.frequencymodule.warning0=Nejspíš budu potřebovat
 gui.frequencymodule.warning1=pokud tady budu chtít něco slyšet.
+gui.tracking.message=Tracking activated. Now I'll need to right-click this on a Telemetry Unit to complete the link. ##NEEDS TRANSLATE##
+gui.telemetrySucceed.message=Telemetry link created. ##NEEDS TRANSLATE##
+gui.telemetryFail.message=First I'll need to track an entity with that Frequency Module! (Or try wearing it!) ##NEEDS TRANSLATE##
+gui.telemetryFailNoFrequencyModule.message=I'll probably need a Frequency Module in my hand to make use of this! ##NEEDS TRANSLATE##
+gui.telemetryFailWearingIt.message=I'll need to take off my Frequency Module if I want to link it with this Telemetry Unit! ##NEEDS TRANSLATE##
 
 gui.rocketType.0=Nákladní prostor: 18
 gui.rocketType.1=Nákladní prostor: 36
@@ -608,6 +615,7 @@ tile.cheeseBlock.description=Blok sýra je vytvořen z měsíčního sýra, lze 
 tile.spinThruster.description=Manévrovací trysky lze použít pro rotaci vesmírné stanice.
 tile.arclamp.description=Obloukové lampy jsou používány jako silný zdroj světla pro rozsáhlé oblasti, také nutí většinu zvířat utéct.
 tile.viewScreen.description=Display screens add that final touch to your space base. Right-click changes the information shown. ##NEEDS TRANSLATE##
+tile.telemetry.description=This gathers useful data from linked rockets, players and mobs. Best placed near to a Display Screen. Use a Frequency Module to establish data links. ##NEEDS TRANSLATE##
 
 # COMMANDS
 commands.dimensionteleport=%s byl/a odeslán do atmosféry%s

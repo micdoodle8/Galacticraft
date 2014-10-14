@@ -12,6 +12,7 @@ item.key.T2.name=Tier 2 Zindan Anahtarı
 item.compressedDesh.name=Sıkıştırılmış Desh
 item.spaceshipTier2.cargoRocket.name=Kargo Roketi
 item.fluidManip.name=Sıvı Manipülatör
+item.bucketSludge.name=Bacterial Sludge Bucket ##NEEDS TRANSLATE##
 
 # TOOLS
 item.deshPick.name=Desh Kazma

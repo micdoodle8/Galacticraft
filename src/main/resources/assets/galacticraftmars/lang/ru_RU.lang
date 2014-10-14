@@ -12,6 +12,7 @@ item.key.T2.name=Ключ от подземелья 2-го уровня
 item.compressedDesh.name=Сжатая деш
 item.spaceshipTier2.cargoRocket.name=Грузовая ракета
 item.fluidManip.name=Манипулятор жидкости
+item.bucketSludge.name=Bacterial Sludge Bucket ##NEEDS TRANSLATE##
 
 # TOOLS
 item.deshPick.name=Кирка из деш

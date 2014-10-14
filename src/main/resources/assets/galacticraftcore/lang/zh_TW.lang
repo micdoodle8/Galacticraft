@@ -179,6 +179,8 @@ tile.oxygenCompressor.1.name=氧氣解壓縮機
 tile.arclamp.name=弧光燈
 tile.spinThruster.name=旋轉推進器
 tile.viewScreen.name=Display Screen ##NEEDS TRANSLATE##
+tile.telemetry.name=Telemetry Unit ##NEEDS TRANSLATE##
+tile.spaceStationBase.name=Space Station arrival block ##NEEDS TRANSLATE##
 tile.tinStairs1.name=Tin Decoration Stairs ##NEEDS TRANSLATE##
 tile.tinStairs2.name=Tin Decoration Stairs ##NEEDS TRANSLATE##
 tile.wallGC.tin.name=Tin Decoration Wall ##NEEDS TRANSLATE##
@@ -391,6 +393,11 @@ gui.rocket.warning.nofuel=我需要先裝入一些火箭燃料!
 gui.chest.warning.wrongkey=我可能需要一個等級 %s的地牢鑰匙來解鎖這個!
 gui.frequencymodule.warning0=我可能需要一個
 gui.frequencymodule.warning1=如果我想在這清楚的聽到聲音.
+gui.tracking.message=Tracking activated. Now I'll need to right-click this on a Telemetry Unit to complete the link. ##NEEDS TRANSLATE##
+gui.telemetrySucceed.message=Telemetry link created. ##NEEDS TRANSLATE##
+gui.telemetryFail.message=First I'll need to track an entity with that Frequency Module! (Or try wearing it!) ##NEEDS TRANSLATE##
+gui.telemetryFailNoFrequencyModule.message=I'll probably need a Frequency Module in my hand to make use of this! ##NEEDS TRANSLATE##
+gui.telemetryFailWearingIt.message=I'll need to take off my Frequency Module if I want to link it with this Telemetry Unit! ##NEEDS TRANSLATE##
 
 gui.rocketType.0=存儲空間: 18
 gui.rocketType.1=存儲空間: 36
@@ -560,6 +567,7 @@ tile.cheeseBlock.description=奶酪塊由月球的奶酪制成,可放置并且�
 tile.spinThruster.description=旋轉推進器用于使空間站旋轉.
 tile.arclamp.description=弧光燈用于給大片區域提供強光,也會使大部分怪物逃離.
 tile.viewScreen.description=Display screens add that final touch to your space base. Right-click changes the information shown. ##NEEDS TRANSLATE##
+tile.telemetry.description=This gathers useful data from linked rockets, players and mobs. Best placed near to a Display Screen. Use a Frequency Module to establish data links. ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.cargoloader.name=貨物裝載器
