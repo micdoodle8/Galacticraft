@@ -311,7 +311,7 @@ public class EventHandlerGC
     @SubscribeEvent
     public void populate(PopulateChunkEvent.Post event)
     {
-        final boolean doGen = TerrainGen.populate(event.chunkProvider, event.world, event.rand, event.chunkX, event.chunkX, event.hasVillageGenerated, PopulateChunkEvent.Populate.EventType.CUSTOM);
+        final boolean doGen = TerrainGen.populate(event.chunkProvider, event.world, event.rand, event.chunkX, event.chunkZ, event.hasVillageGenerated, PopulateChunkEvent.Populate.EventType.CUSTOM);
         boolean doGen2 = false;
 
         for (Integer dim : ConfigManagerCore.externalOilGen)
