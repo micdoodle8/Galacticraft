@@ -220,7 +220,7 @@ public class GuiGasLiquefier extends GuiContainerGC
             String gasname = gasTankContents.getFluid().getLocalizedName();
             if (gasname == null || gasname.equals(gasTankContents.getFluid().getUnlocalizedName()))
             {
-                gasname = GCCoreUtil.translate(gasTankContents.getFluid().getUnlocalizedName() + ".name");
+                gasname = GCCoreUtil.translate(gasTankContents.getFluid().getUnlocalizedName());
             }
             gasTankDesc.add("(" + gasname + ")");
         }
@@ -241,7 +241,7 @@ public class GuiGasLiquefier extends GuiContainerGC
             String gasname = gasTankContents.getFluid().getLocalizedName();
             if (gasname == null || gasname.equals(gasTankContents.getFluid().getUnlocalizedName()))
             {
-                gasname = GCCoreUtil.translate(gasTankContents.getFluid().getUnlocalizedName() + ".name");
+                gasname = GCCoreUtil.translate(gasTankContents.getFluid().getUnlocalizedName());
             }
             fuelTankDesc.add("(" + gasname + ")");
         }
@@ -262,7 +262,7 @@ public class GuiGasLiquefier extends GuiContainerGC
             String gasname = gasTankContents.getFluid().getLocalizedName();
             if (gasname == null || gasname.equals(gasTankContents.getFluid().getUnlocalizedName()))
             {
-                gasname = GCCoreUtil.translate(gasTankContents.getFluid().getUnlocalizedName() + ".name");
+                gasname = GCCoreUtil.translate(gasTankContents.getFluid().getUnlocalizedName());
             }
             fuelTankDesc.add("(" + gasname + ")");
         }
