@@ -9,9 +9,10 @@ item.reinforcedPlateT2.name=重装板
 item.tier2.desc=2阶
 item.slimelingCargo.name=黏滑物品背包
 item.key.T2.name=2阶地牢钥匙
-item.compressedDesh.name=致密戴斯
+item.compressedDesh.name=致密戴斯板
 item.spaceshipTier2.cargoRocket.name=货运火箭
 item.fluidManip.name=流体操纵器
+item.bucketSludge.name=菌泥桶
 
 # TOOLS
 item.deshPick.name=戴斯镐
@@ -38,7 +39,7 @@ tile.mars.marsdirt.name=火星地底岩石
 tile.mars.marsgrass.name=火星地表岩石
 tile.mars.marsdeco.name=戴斯块
 tile.mars.marsdungeon.name=火星地牢砖
-tile.treasureT2.name=二阶宝箱
+tile.treasureT2.name=2阶宝箱
 tile.slimelingEgg.redEgg.name=红色黏滑怪蛋
 tile.slimelingEgg.blueEgg.name=蓝色黏滑怪蛋
 tile.slimelingEgg.yellowEgg.name=黄色黏滑怪蛋
@@ -137,7 +138,7 @@ gui.desc.reinforcedPlateT2.name=2阶
 dimension.Mars.name=火星
 planet.mars=火星
 
-tile.treasureT2.description=二阶宝箱会在火星地牢生成.直到打败最终boss后才能解锁.
+tile.treasureT2.description=2阶宝箱会在火星地牢生成.直到打败最终boss后才能解锁.
 tile.cavernVines.description=岩穴藤蔓对生物来说很危险,它会卷住它们并拖向空中.
 tile.slimelingEgg.description=黏滑怪蛋,一旦被玩家空手打碎,就会立即孵出一只宠物.
 tile.cryoChamber.description=低温仓使玩家能在白天睡觉,回复少量生命,但有冷却时间.
@@ -169,7 +170,7 @@ schematic.cargoRocket.name=自动货运火箭
 entity.Sludgeling.name=泥浆怪
 entity.Slimeling.name=黏滑怪
 entity.CreeperBoss.name=进化苦力怕之王
-entity.SpaceshipT2.name=二阶火箭
+entity.SpaceshipT2.name=2阶火箭
 entity.CargoRocket.name=货运火箭
 
 # Container

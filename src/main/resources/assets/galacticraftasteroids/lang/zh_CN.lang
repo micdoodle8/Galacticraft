@@ -1,9 +1,9 @@
 # Galacticraft Asteroids Language File = SIMPLIFIED CHINESE
 
 # GENERAL ITEMS
-item.itemTier3Rocket.t3Rocket.name=三阶火箭
+item.itemTier3Rocket.t3Rocket.name=3阶火箭
 item.heavyNoseCone.name=重型前锥体
-item.compressedTitanium.name=致密钛
+item.compressedTitanium.name=致密钛板
 item.ingotTitanium.name=钛锭
 item.shardTitanium.name=钛碎片
 item.shardIron.name=铁碎片
@@ -27,25 +27,25 @@ item.titanium_sword.name=钛剑
 item.thermalHelm.name=热力充能头盔
 item.thermalChestplate.name=热力充能胸甲
 item.thermalLeggings.name=热力充能护腿
-item.thermalBoots.name=热力充能靴子
+item.thermalBoots.name=热力充能靴
 item.titanium_helmet.name=钛头盔
 item.titanium_chestplate.name=钛胸甲
 item.titanium_leggings.name=钛护腿
-item.titanium_boots.name=钛靴子
+item.titanium_boots.name=钛靴
 
 # CANISTERS ETC
 item.methaneCanisterPartial.name=甲烷气体罐
 item.methaneCanister.name=甲烷气体罐(满)
-item.canister.gas.name=气体
+item.canister.gas.name=甲烷
 item.canister.LOX.partial.name=罐装液态氧
 item.canister.LOX.full.name=罐装液态氧(满)
-item.canister.LOX.name=液态氧
+item.canister.LOX.name=氧
 item.canister.liquidNitrogen.partial.name=灌装液态氮
 item.canister.liquidNitrogen.full.name=灌装液态氮(满)
-item.canister.liquidNitrogen.name=液态氮
+item.canister.liquidNitrogen.name=氮
 item.canister.liquidArgon.partial.name=灌装液态氩
 item.canister.liquidArgon.full.name=灌装液态氩(满)
-item.canister.liquidArgon.name=氩      #液态氩缩写
+item.canister.liquidArgon.name=氩
 item.emptyGasCanister.name=气体罐(空)
 
 # Fluids and gases
@@ -83,36 +83,36 @@ tile.denseIce.name=坚冰
 planet.asteroids=小行星
 
 # Dollar sign ($) will split text onto a new line
-gui.telepad.desc.0=这是传送台的's$唯一坐标
+# Do not remove %s or %d, since that will be replaced in-game
+gui.telepad.desc.0=这是本传送台的$唯一坐标
 gui.telepad.desc.1=另一个传送台的坐标.$实体会被传送到那里.
-container.shortRangeTelepad.name=短距离传送台
 gui.message.address.name=坐标
 gui.message.destAddress.name=目标坐标
 gui.message.invalidAddress.name=无效的唯一坐标
 gui.message.invalidTargetAddress.name=无效的目标坐标
 gui.message.receivingActive.name=激活接受
-gui.message.telepadTooFar.name=目标太远! (最远 %d)
-gui.message.telepadWrongDim.name=目标正在错误的维度!
-gui.message.telepadNotFound.name=未找到目标!
+gui.message.telepadTooFar.name=目标太远!(最远 %d)
+gui.message.telepadWrongDim.name=目标处于错误的维度!
+gui.message.telepadNotFound.name=未找到传送台!
 gui.message.sendingActive.name=激活发送
 gui.message.range.name=范围: %dm
 gui.message.notEnoughEnergy.name=能量不足
 gui.message.targetNoEnergy.name=目标没有足够的能量
 
 tile.treasureT3.description=3阶宝箱目前无法使用.
-tile.walkway.description=通道现作为装饰,用于在维持空布置时连接方块.
-tile.walkwayAluminumWire.description=铝线通道用于可行走的表面下布置线缆.
-tile.walkwayOxygenPipe.description=氧气管通道用于可行走的表面下布置管道.
+tile.walkway.description=通道现作为装饰,可在保持太空主题的同时,用于连接方块.
+tile.walkwayAluminumWire.description=铝线通道在其可行走的表面下可布置线缆.
+tile.walkwayOxygenPipe.description=氧气管道在其可行走的表面下可布置管道.
 tile.beamReflector.description=能量射束反射器用于改变源头来的激光束的方向.右击以在不同目标间循环切换.
 tile.beamReceiver.description=能量射束接收器连接到机器以输入和输出能量,使用激光束传输能量.
-tile.telepadShort.description=短距离传送台用于在连接到其他传送台时将玩家和其他生物短距离传送(250格).
+tile.telepadShort.description=短距离传送台可用于短距离传送(250格),将玩家和其他生物传送至其他已建立连接的传送台.
 
 # Schematics
 
 # Entity
 entity.SmallAsteroidGC.name=小行星
 entity.GrappleHookGC.name=抓升钩
-entity.Tier3RocketGC.name=三阶火箭
+entity.Tier3RocketGC.name=3阶火箭
 
 # Container
 container.shortRangeTelepad.name=短程传送平台
