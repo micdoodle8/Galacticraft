@@ -83,7 +83,7 @@ item.basicItem.dehydratedCarrot.name=แครอทแห้ง
 item.basicItem.dehydratedMelon.name=แตงโมแห้ง
 item.basicItem.dehydratedPotato.name=มันฝรั่งแห้ง
 item.basicItem.cannedFood.name=กระป๋องอาหาร
-item.basicItem.frequencyModule.name=โมดูลวัดความถี่เสียง
+item.basicItem.frequencyModule.name=โมดูลวัดความถี่
 item.standardWrench.name=ประแจ
 
 # TOOLS
@@ -179,7 +179,7 @@ tile.oxygenCompressor.1.name=เครื่องลดความดันอ
 tile.arclamp.name=โคมไฟอาร์ค
 tile.spinThruster.name=สปินทรัสเตอร์
 tile.viewScreen.name=หน้าจอแสดงผล
-tile.telemetry.name=Telemetry Unit ##NEEDS TRANSLATE##
+tile.telemetry.name=Telemetry Unit #To do
 tile.spaceStationBase.name=ฐานสถานีอวกาศ
 
 # DECOBLOCKS
@@ -392,15 +392,15 @@ gui.rocket.inv.name=ช่องเก็บของ / เชื้อเพล
 
 gui.rocket.warning.nogyroscope=คุณไ่ม่สามารถใช้จรวดในมิตินี้ได้!
 gui.rocket.warning.noparachute=ฉันไม่มีร่มชูชีพ! ถ้ากดปล่อยจรวดอีกครั้ง เราจะหยุดมันไม่ได้!
-gui.rocket.warning.nofuel=ฉันจะต้องการที่จะเติมเชื้อเพลิงก่อน เป็นอันดับแรก!
+gui.rocket.warning.nofuel=ฉันต้องการที่จะเติมเชื้อเพลิงก่อน เป็นอันดับแรก!
 gui.chest.warning.wrongkey=ฉันต้องการกุญแจดันเจี้ยน เทียร์ %s เพื่อปลดล็อคกล่องสมบัติ!
 gui.frequencymodule.warning0=ฉันต้องการ
 gui.frequencymodule.warning1=ถ้าต้องการที่จะได้ยินแบบสมบูรณ์
 gui.tracking.message=การแทรคทำงานแล้ว คลิ๊กขวาที่ Telemetry Unit เพื่อเชื่อมต่อลิ้งค์ #To do
-gui.telemetrySucceed.message=Telemetry link created. ##NEEDS TRANSLATE##
-gui.telemetryFail.message=First I'll need to track an entity with that Frequency Module! (Or try wearing it!) ##NEEDS TRANSLATE##
-gui.telemetryFailNoFrequencyModule.message=I'll probably need a Frequency Module in my hand to make use of this! ##NEEDS TRANSLATE##
-gui.telemetryFailWearingIt.message=I'll need to take off my Frequency Module if I want to link it with this Telemetry Unit! ##NEEDS TRANSLATE##
+gui.telemetrySucceed.message=Telemetry ลิ้งค์ได้สร้างแล้ว #To do
+gui.telemetryFail.message=อย่างแรก ฉันต้องการที่จะแทรคสิ่งมีชีวิตโดยใช้โมดูลวัดความถี่! (หรือลองใส่มัน!) 
+gui.telemetryFailNoFrequencyModule.message=เป็นไปได้ ฉันต้องการโมดูลวัดความถี่เพื่อใช้งานกับสิ่งนี้! 
+gui.telemetryFailWearingIt.message=ฉันต้องการเอาโมดูลวัดความถี่ออก ถ้าต้องการที่จะเชื่อมต่อลิ้งค์กับ Telemetry Unit! #To do
 
 gui.rocketType.0=พื้นที่เก็บของ: 18
 gui.rocketType.1=พื้นที่เก็บของ: 36
@@ -570,7 +570,7 @@ tile.cheeseBlock.description=บล็อกชีส สร้างด้ว�
 tile.spinThruster.description=สปินทรัสเตอร์ ใช้เพื่อทำให้สถานีอวกาศหมุน
 tile.arclamp.description=โคมไฟอาร์ค ใช้เพื่อให้แสงสว่างที่กว้างและช่วยให้ม๊อบต่างๆ หนีออกไป
 tile.viewScreen.description=หน้าจอแสดงผลจะแสดงภาพระบบสุริยะ โลก หรือเวลา คลิ๊กขวาที่บล็อกเพื่อเปลี่ยนการแสดงผล
-tile.telemetry.description=This gathers useful data from linked rockets, players and mobs. Best placed near to a Display Screen. Use a Frequency Module to establish data links. ##NEEDS TRANSLATE##
+tile.telemetry.description=สิ่งนี้มีประโยชน์สำหรับเก็บข้อมูลจากจรวด ผู้เล่นและม็อบ ให้วางติดกับหน้าจอแสดงผล และใช้โมดูลวัดความถี่สร้างลิ้งค์ข้อมูล
 
 # CONTAINERS
 container.cargoloader.name=เครื่องขนส่งสินค้า
