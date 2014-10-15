@@ -503,12 +503,8 @@ public class GuiCelestialSelection extends GuiScreen
                             GCLog.severe("Please report as a BUG: spaceStationIDs was null.");
                             return false;
                         }
-                        if (this.mc.thePlayer.getGameProfile() == null)
-                        {
-                            GCLog.severe("Please report as a BUG: player name profile problem.");
-                            return false;
-                        }
                         Integer mapping = this.spaceStationIDs.get(this.selectedStationOwner);
+                        //No need to check lowercase as selectedStationOwner is taken from keys.
                         if (mapping == null)
                         {
                             GCLog.severe("Problem matching player name in space station check: " + this.selectedStationOwner);
@@ -564,13 +560,21 @@ public class GuiCelestialSelection extends GuiScreen
         {
             if (x > width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 96 && x < width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH && y > GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 182 && y < GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 182 + 12)
             {
-                if (this.selectedBody != null && this.selectedBody == GalacticraftCore.planetOverworld && this.canCreateSpaceStation())
+                if (this.selectedBody == GalacticraftCore.planetOverworld && this.canCreateSpaceStation())
                 {
                     final SpaceStationRecipe recipe = WorldUtil.getSpaceStationRecipe(this.selectedBody.getDimensionID());
 
                     if (recipe != null && recipe.matches(this.mc.thePlayer, false))
                     {
                         GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BIND_SPACE_STATION_ID, new Object[] { this.selectedBody.getDimensionID() }));
+                        //Zoom in on Overworld to show the new SpaceStation if not already zoomed
+                        if (this.selectionCount < 2)
+                        {
+	                        this.selectionCount = 2;
+	                        this.preSelectZoom = this.zoom;
+	                        this.ticksSinceSelection = 0;
+	                        this.doneZooming = false;
+                        }
                     }
 
                     clickHandled = true;
@@ -614,9 +618,14 @@ public class GuiCelestialSelection extends GuiScreen
                     // Apply
                     if (x >= width / 2 - 90 + 17 && x <= width / 2 - 90 + 17 + 72 && y >= this.height / 2 - 38 + 59 && y <= this.height / 2 - 38 + 59 + 12)
                     {
-                        int spacestationID = this.spaceStationIDs.get(this.mc.thePlayer.getGameProfile().getName()); 
-                    	this.spaceStationNames.put(this.mc.thePlayer.getGameProfile().getName(), this.renamingString);
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_RENAME_SPACE_STATION, new Object[] { this.renamingString, spacestationID }));
+                        String strName = this.mc.thePlayer.getGameProfile().getName();
+                    	Integer spacestationID = this.spaceStationIDs.get(strName);
+                    	if (spacestationID == null) spacestationID = this.spaceStationIDs.get(strName.toLowerCase());
+                    	if (spacestationID != null)
+                    	{
+	                    	this.spaceStationNames.put(strName, this.renamingString);
+	                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_RENAME_SPACE_STATION, new Object[] { this.renamingString, spacestationID }));
+                    	}
                         this.renamingSpaceStation = false;
                     }
                     // Cancel
@@ -636,6 +645,7 @@ public class GuiCelestialSelection extends GuiScreen
                     if (this.selectedStationOwner.length() != 0 && this.selectedStationOwner.equalsIgnoreCase(this.mc.thePlayer.getGameProfile().getName()))
                     {
                         this.renamingSpaceStation = true;
+                        this.renamingString = null;
                         clickHandled = true;
                     }
                 }
@@ -725,16 +735,16 @@ public class GuiCelestialSelection extends GuiScreen
                         this.preSelectZoom = this.zoom;
                     }
 
-                    int selectionCount = this.selectionCount;
+                    int selectionCountOld = this.selectionCount;
 
                     if (this.selectionCount > 0 && this.selectedBody != child)
                     {
                         this.unselectCelestialBody();
                     }
 
-                    if (selectionCount == 2)
+                    if (selectionCountOld == 2)
                     {
-                        this.selectionCount = selectionCount - 1;
+                        this.selectionCount = 1;
                     }
 
                     this.doneZooming = false;
@@ -758,7 +768,8 @@ public class GuiCelestialSelection extends GuiScreen
         {
             for (Map.Entry<CelestialBody, Vector3f> e : this.planetPosMap.entrySet())
             {
-                if (this.selectedBody == null && e.getKey() instanceof IChildBody)
+                CelestialBody bodyClicked = e.getKey();
+            	if (this.selectedBody == null && bodyClicked instanceof IChildBody)
                 {
                     continue;
                 }
@@ -767,11 +778,11 @@ public class GuiCelestialSelection extends GuiScreen
 
                 if (mouseX >= e.getValue().x - iconSize && mouseX <= e.getValue().x + iconSize && mouseY >= e.getValue().y - iconSize && mouseY <= e.getValue().y + iconSize)
                 {
-                    if (this.selectedBody != e.getKey() || this.selectionCount < 2)
+                    if (this.selectedBody != bodyClicked || this.selectionCount < 2)
                     {
-                        if (this.selectionCount > 0 && this.selectedBody != e.getKey())
+                        if (this.selectionCount > 0 && this.selectedBody != bodyClicked)
                         {
-                            if (!(this.selectedBody instanceof IChildBody && ((IChildBody) this.selectedBody).getParentPlanet() == e.getKey()))
+                            if (!(this.selectedBody instanceof IChildBody && ((IChildBody) this.selectedBody).getParentPlanet() == bodyClicked))
                             {
                                 this.unselectCelestialBody();
                             }
@@ -784,17 +795,17 @@ public class GuiCelestialSelection extends GuiScreen
                         this.doneZooming = false;
                         this.planetZoom = 0.0F;
 
-                        if (e.getKey() != this.selectedBody)
+                        if (bodyClicked != this.selectedBody)
                         {
                             this.lastSelectedBody = this.selectedBody;
                         }
 
-                        if (this.lastSelectedBody == e.getKey() && this.selectionCount == 1 && e.getKey() instanceof Planet)
+                        if (this.lastSelectedBody == bodyClicked && this.selectionCount == 1 && bodyClicked instanceof Planet)
                         {
                             this.preSelectZoom = this.zoom;
                         }
 
-                        this.selectedBody = e.getKey();
+                        this.selectedBody = bodyClicked;
                         this.ticksSinceSelection = 0;
                         this.selectionCount++;
                         
@@ -1841,6 +1852,8 @@ public class GuiCelestialSelection extends GuiScreen
                     if (this.renamingString == null)
                     {
                         this.renamingString = this.spaceStationNames.get(FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName());
+                        if (this.renamingString == null) this.renamingString = this.spaceStationNames.get(FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName().toLowerCase());
+                        if (this.renamingString == null) this.renamingString = "";
                     }
 
                     str = this.renamingString;
