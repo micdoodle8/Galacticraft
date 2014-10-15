@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -12,6 +13,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
 public class ItemGrappleHook extends ItemBow
@@ -61,6 +63,8 @@ public class ItemGrappleHook extends ItemBow
                 par3EntityPlayer.inventory.consumeInventoryItem(Items.string);
             }
         }
+        else if (par2World.isRemote)
+           	par3EntityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.grapple.fail")));
     }
 
     @Override
