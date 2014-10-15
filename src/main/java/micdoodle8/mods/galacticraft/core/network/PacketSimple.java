@@ -1,13 +1,16 @@
 package micdoodle8.mods.galacticraft.core.network;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import cpw.mods.fml.server.FMLServerHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
@@ -120,6 +123,7 @@ public class PacketSimple extends Packet implements IPacket
         S_COMPLETE_CBODY_HANDSHAKE(Side.SERVER, String.class),
         S_REQUEST_GEAR_DATA(Side.SERVER, String.class),
         S_REQUEST_OVERWORLD_IMAGE(Side.SERVER),
+        S_REQUEST_PLAYERSKIN(Side.SERVER, String.class),
         S_UPDATE_VIEWSCREEN_REQUEST(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class),
         // CLIENT
         C_AIR_REMAINING(Side.CLIENT, Integer.class, Integer.class, String.class),
@@ -156,6 +160,7 @@ public class PacketSimple extends Packet implements IPacket
         C_UPDATE_ARCLAMP_FACING(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class),
         C_UPDATE_VIEWSCREEN(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
         C_UPDATE_TELEMETRY(Side.CLIENT, Integer.class, Integer.class, Integer.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, String.class),
+        C_SEND_PLAYERSKIN(Side.CLIENT, String.class, String.class, String.class, String.class),
         C_SEND_OVERWORLD_IMAGE(Side.CLIENT, byte[].class);
         
         private Side targetSide;
@@ -785,17 +790,23 @@ public class PacketSimple extends Packet implements IPacket
         		String name = (String) this.data.get(3);
         		if (name.startsWith("$"))
         		{
+        			//It's a player name
         			((TileEntityTelemetry)tile).clientClass = EntityPlayerMP.class;
         			String strName = name.substring(1);
         			((TileEntityTelemetry)tile).clientName = strName;
         			GameProfile profile = FMLClientHandler.instance().getClientPlayerEntity().getGameProfile();
         			if (!strName.equals(profile.getName()))
         			{
-            			String strUUID = (String) this.data.get(9);
-        				UUID uuid = strUUID.isEmpty() ? UUID.randomUUID() : UUID.fromString(strUUID);
-        				profile = VersionUtil.constructGameProfile(uuid, strName);
+        				profile = PlayerUtil.getOtherPlayerProfile(strName);
+            			if (profile == null)
+            			{
+            				String strUUID = (String) this.data.get(9);
+            				profile = PlayerUtil.makeOtherPlayerProfile(strName, strUUID);
+            			}
+            			if (!profile.getProperties().containsKey("textures"))
+            				GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_PLAYERSKIN, new Object[] { strName }));
         			}
-        			((TileEntityTelemetry)tile).clientGameProfile = profile; 
+        			((TileEntityTelemetry)tile).clientGameProfile = profile;
         		}
         		else
         			((TileEntityTelemetry)tile).clientClass = (Class) EntityList.stringToClassMapping.get(name);
@@ -805,6 +816,18 @@ public class PacketSimple extends Packet implements IPacket
             		((TileEntityTelemetry)tile).clientData[i - 4] = (Integer) this.data.get(i);
             	}
         	}
+        	break;
+        case C_SEND_PLAYERSKIN:
+        	String strName = (String) this.data.get(0);
+        	String s1 = (String) this.data.get(1);
+        	String s2 = (String) this.data.get(2);
+        	String strUUID = (String) this.data.get(3);
+        	GameProfile gp = PlayerUtil.getOtherPlayerProfile(strName);
+        	if (gp == null)
+        	{
+            	gp = PlayerUtil.makeOtherPlayerProfile(strName, strUUID);
+        	}
+        	gp.getProperties().put("textures", new Property("textures", s1, s2));
         	break;
         case C_SEND_OVERWORLD_IMAGE:
             try
@@ -1390,6 +1413,23 @@ public class PacketSimple extends Packet implements IPacket
             }
 
             break;
+        case S_REQUEST_PLAYERSKIN:
+        	String strName = (String) this.data.get(0);
+        	EntityPlayerMP playerRequested = FMLServerHandler.instance().getServer().getConfigurationManager().func_152612_a(strName);
+        	
+        	//Player not online
+        	if (playerRequested == null) return;
+        	
+        	GameProfile gp = playerRequested.getGameProfile();
+        	if (gp == null) return;
+        	
+            Property property = (Property)Iterables.getFirst(gp.getProperties().get("textures"), (Object)null);
+            if (property == null)
+            {
+                return;
+            }
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_PLAYERSKIN, new Object[] { strName, property.getValue(), property.getSignature(), playerRequested.getUniqueID().toString() }), playerBase);
+        	break;
         default:
             break;
         }

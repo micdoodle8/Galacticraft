@@ -3,11 +3,10 @@ package micdoodle8.mods.galacticraft.core.client.gui.screen;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
@@ -19,8 +18,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
-
-import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -79,23 +76,7 @@ public class GameScreenText implements IGameScreen
 	        		if (telemeter.clientClass == EntityPlayerMP.class)
 	        		{
 	        			strName = telemeter.clientName;
-	        			if (ConfigManagerCore.enableDebug) System.out.println("Telemetry for player: Lastclass "+(screen.telemetryLastClass == null ? "null" : screen.telemetryLastClass.getSimpleName()) + " N1 " + strName + " N2 " + screen.telemetryLastName);
-	        			
-	        			GameProfile gp1 = telemeter.clientGameProfile;
-	        			for (Object e : screen.driver.getWorldObj().getLoadedEntityList())
-	        			{
-	        				if (e instanceof AbstractClientPlayer)
-	        				{
-	        					GameProfile gp2 = ((AbstractClientPlayer)e).getGameProfile();
-	        					if (gp2.getName().equals(gp1.getName()))
-	        					{
-	        						gp1 = gp2;
-	        						break;
-	        					}
-	        				}
-	        			}
-	        			entity = new EntityOtherPlayerMP(screen.driver.getWorldObj(), gp1);
-        				
+	        			entity = new EntityOtherPlayerMP(screen.driver.getWorldObj(), telemeter.clientGameProfile);
 	        			renderEntity = (Render) RenderManager.instance.entityRenderMap.get(EntityPlayer.class);
 	        		}
 	        		else
@@ -224,7 +205,9 @@ public class GameScreenText implements IGameScreen
             	GL11.glRotatef(telemeter.clientData[4], -1, 0, 0);
             	GL11.glTranslatef(0, entity.height / 4, 0);
         	}
+        	RenderPlayerGC.flagThermalOverride = true;
             RenderManager.instance.renderEntityWithPosYaw(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+            RenderPlayerGC.flagThermalOverride = false;
         }
 
         //TODO  Cross-dimensional tracking (i.e. old entity setDead, new entity created)

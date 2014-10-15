@@ -21,6 +21,7 @@ public class RenderPlayerGC extends RenderPlayer
     public ModelBiped modelThermalPaddingHelmet;
     private static ResourceLocation thermalPaddingTexture0;
     private static ResourceLocation thermalPaddingTexture1;
+    public static boolean flagThermalOverride = false;
 
     public RenderPlayerGC()
     {
@@ -48,7 +49,7 @@ public class RenderPlayerGC extends RenderPlayer
         {
             PlayerGearData gearData = ClientProxyCore.playerItemData.get(par1EntityLivingBase.getCommandSenderName());
 
-            if (gearData != null)
+            if (gearData != null && !RenderPlayerGC.flagThermalOverride)
             {
                 ModelBiped modelBiped;
 

@@ -46,7 +46,7 @@ public class RenderPlayerBaseGC extends RenderPlayerBase
         {
             PlayerGearData gearData = ClientProxyCore.playerItemData.get(par1EntityLivingBase.getCommandSenderName());
 
-            if (gearData != null)
+            if (gearData != null && !RenderPlayerGC.flagThermalOverride)
             {
                 ModelBiped modelBiped;
 
