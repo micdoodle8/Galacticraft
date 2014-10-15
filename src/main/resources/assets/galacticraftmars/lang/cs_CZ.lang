@@ -12,7 +12,7 @@ item.key.T2.name=Klíc typ 2
 item.compressedDesh.name=Válcovaný frikcní kov
 item.spaceshipTier2.cargoRocket.name=Nákladní raketa
 item.fluidManip.name=Kapalinový manipulator
-item.bucketSludge.name=Bacterial Sludge Bucket ##NEEDS TRANSLATE##
+item.bucketSludge.name=Kyblík infikovaného bláta
 
 # TOOLS
 item.deshPick.name=Krumpác z frikcního kovu
@@ -52,12 +52,12 @@ tile.marsMachine.6.name=Vodní electrolyzér
 tile.sludge.name=Infikované bláto
 tile.creeperEgg.name=Vejce creepra
 tile.cavernVines.name=Jeskyní réva
-tile.marsCobblestoneStairs.name=Mars Cobblestone Stairs ##NEEDS TRANSLATE##
-tile.wallGC.mars.name=Mars Cobblestone Wall ##NEEDS TRANSLATE##
-tile.slabGCHalf.marsSlab.name=Mars Cobblestone Slab ##NEEDS TRANSLATE##
-tile.marsDungeonBricksStairs.name=Mars Dungeon Brick Stairs ##NEEDS TRANSLATE##
-tile.wallGC.marsBricks.name=Mars Dungeon Brick Wall ##NEEDS TRANSLATE##
-tile.slabGCHalf.marsBricksSlab.name=Mars Dungeon Brick Slab ##NEEDS TRANSLATE##
+tile.marsCobblestoneStairs.name=Schody z dlažebního kamene
+tile.wallGC.mars.name=Stěna z dlažebního kamene
+tile.slabGCHalf.marsSlab.name=Podlaha z dlažebního kamene
+tile.marsDungeonBricksStairs.name=Zděné schody (dungeon)
+tile.wallGC.marsBricks.name=Zděná stěna (dungeon)
+tile.slabGCHalf.marsBricksSlab.name=Zděná podlaha (dungeon)
 tile.tintedGlassPane.white.name=Bílé tónované sklo
 tile.tintedGlassPane.orange.name=Oranžové tónované sklo
 tile.tintedGlassPane.magenta.name=Tmave purpurové tónované sklo
