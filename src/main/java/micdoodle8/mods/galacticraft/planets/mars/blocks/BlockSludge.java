@@ -69,15 +69,15 @@ public class BlockSludge extends BlockFluidClassic
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int par1, int par2)
     {
-        return par1 != 0 && par1 != 1 ? this.stillIcon : this.flowingIcon;
+        return par1 != 0 && par1 != 1 ? this.flowingIcon : this.stillIcon;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
-        this.stillIcon = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "sludge_flow");
-        this.flowingIcon = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "sludge");
+        this.stillIcon = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "sludge_still");
+        this.flowingIcon = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "sludge_flow");
         MarsModule.SLUDGE.setStillIcon(this.stillIcon);
         MarsModule.SLUDGE.setFlowingIcon(this.flowingIcon);
     }
