@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.util.MarsUtil;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
@@ -87,7 +88,7 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
     @Override
     public String getInventoryName()
     {
-        return "Landing Balloons";
+        return GCCoreUtil.translate("container.marsLander.name");
     }
 
     @Override

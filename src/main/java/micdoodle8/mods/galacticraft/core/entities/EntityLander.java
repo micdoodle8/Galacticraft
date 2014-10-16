@@ -66,7 +66,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     @Override
     public String getInventoryName()
     {
-        return "Lander";
+        return GCCoreUtil.translate("container.lander.name");
     }
 
     @Override
