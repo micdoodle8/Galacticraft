@@ -76,7 +76,11 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
 
             if (!(par1ItemStack.getItem() instanceof ItemOilCanister))
             {
-                par1ItemStack = new ItemStack(GCItems.oilCanister, stackSize, ItemCanisterGeneric.EMPTY);
+            	NBTTagCompound tag = new NBTTagCompound();
+    			tag.setShort("id", (short)Item.getIdFromItem(GCItems.oilCanister));
+    	        tag.setByte("Count", (byte)stackSize);
+    	        tag.setShort("Damage", (short)ItemCanisterGeneric.EMPTY);
+    	        par1ItemStack.readFromNBT(tag);
             }
         }
     }
