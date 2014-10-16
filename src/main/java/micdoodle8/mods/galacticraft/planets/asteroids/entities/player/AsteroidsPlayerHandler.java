@@ -78,7 +78,7 @@ public class AsteroidsPlayerHandler
         {
             final int f = 50;
 
-            if (player.worldObj.rand.nextInt(f) == 0)
+            if (player.worldObj.rand.nextInt(f) == 0 && player.posY < 260D)
             {
                 final EntityPlayer closestPlayer = player.worldObj.getClosestPlayerToEntity(player, 100);
 
@@ -86,13 +86,14 @@ public class AsteroidsPlayerHandler
                 {
                     double x, y, z;
                     double motX, motY, motZ;
-                    double r = Math.PI * 2.0 * player.worldObj.rand.nextDouble();
-                    x = player.posX + Math.cos(r) * 100;
+                    double r = player.worldObj.rand.nextInt(60)+30D;
+                    double theta = Math.PI * 2.0 * player.worldObj.rand.nextDouble();
+                    x = player.posX + Math.cos(theta) * r;
                     y = player.posY + player.worldObj.rand.nextInt(5);
-                    z = player.posZ + Math.sin(r) * 100;
-                    motX = (player.posX + (player.worldObj.rand.nextDouble() - 0.5) * 50 - x) / 800.0F;
+                    z = player.posZ + Math.sin(theta) * r;
+                    motX = (player.posX - x + (player.worldObj.rand.nextDouble() - 0.5) * 40) / 400.0F;
                     motY = (player.worldObj.rand.nextDouble() - 0.5) * 0.4;
-                    motZ = (player.posZ + (player.worldObj.rand.nextDouble() - 0.5) * 50 - z) / 800.0F;
+                    motZ = (player.posZ - z + (player.worldObj.rand.nextDouble() - 0.5) * 40) / 400.0F;
 
                     final EntitySmallAsteroid smallAsteroid = new EntitySmallAsteroid(player.worldObj);
                     smallAsteroid.setPosition(x, y, z);
@@ -100,12 +101,9 @@ public class AsteroidsPlayerHandler
                     smallAsteroid.motionY = motY;
                     smallAsteroid.motionZ = motZ;
                     smallAsteroid.spinYaw = player.worldObj.rand.nextFloat() * 4;
-                    smallAsteroid.spinPitch = player.worldObj.rand.nextFloat() * 1;
+                    smallAsteroid.spinPitch = player.worldObj.rand.nextFloat() * 2;
 
-                    if (!player.worldObj.isRemote)
-                    {
-                        player.worldObj.spawnEntityInWorld(smallAsteroid);
-                    }
+                    player.worldObj.spawnEntityInWorld(smallAsteroid);
                 }
             }
         }

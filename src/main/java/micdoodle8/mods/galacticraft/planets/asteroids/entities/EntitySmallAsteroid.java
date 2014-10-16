@@ -22,10 +22,15 @@ public class EntitySmallAsteroid extends Entity
     @Override
     public void onEntityUpdate()
     {
-        if (!this.firstUpdate && Math.abs(this.posX - this.prevPosX) <= 0 && Math.abs(this.posZ - this.prevPosZ) <= 0)
+    	if (!this.firstUpdate)
         {
             // Kill non-moving entities
-            this.setDead();
+    		if (Math.abs(this.posX - this.prevPosX) + Math.abs(this.posZ - this.prevPosZ) <= 0)
+    			this.setDead();
+    		
+    		// Remove entities far outside the build range, or too old (to stop accumulations)
+    		else if (this.posY > 288D || this.posY < -32D || this.ticksExisted > 3000)
+    			this.setDead();
         }
 
         super.onEntityUpdate();
@@ -71,6 +76,7 @@ public class EntitySmallAsteroid extends Entity
     {
         this.spinPitch = nbt.getFloat("spinPitch");
         this.spinYaw = nbt.getFloat("spinYaw");
+        this.ticksExisted = nbt.getInteger("ageTicks");
     }
 
     @Override
@@ -78,6 +84,7 @@ public class EntitySmallAsteroid extends Entity
     {
         nbt.setFloat("spinPitch", this.spinPitch);
         nbt.setFloat("spinYaw", this.spinYaw);
+        nbt.setInteger("ageTicks", this.ticksExisted);
     }
 
     public float getSpinPitch()
