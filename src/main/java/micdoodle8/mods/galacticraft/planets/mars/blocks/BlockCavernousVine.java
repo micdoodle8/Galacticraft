@@ -70,20 +70,16 @@ public class BlockCavernousVine extends Block implements IShearable, ItemBlockDe
     @Override
 	public boolean canBlockStay(World world, int x, int y, int z)
 	{
-		if (world.getBlock(x, y + 1, z).getMaterial().isSolid() || world.getBlock(x, y + 1, z) == this)
-		{
-			return true;
-		}
-		return false;
+		Block blockAbove = world.getBlock(x, y + 1, z); 
+    	return (blockAbove == this || blockAbove.getMaterial().isSolid());
 	}
 
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
 	{
 		super.onNeighborBlockChange(world, x, y, z, block);
-		this.canBlockStay(world, x, y, z);
 
-		if (!world.getBlock(x, y + 1, z).getMaterial().isSolid() && !(world.getBlock(x, y + 1, z) == this))
+		if (!this.canBlockStay(world, x, y, z))
 		{
 			world.setBlockToAir(x, y, z);
 		}
