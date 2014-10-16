@@ -13,6 +13,7 @@ item.compressedDesh.name=Compressed Desh
 item.spaceshipTier2.cargoRocket.name=Cargo Rocket
 item.fluidManip.name=Fluid Manipulator
 item.bucketSludge.name=Bacterial Sludge Bucket
+fluid.bacterialsludge=Bacterial Sludge
 
 # TOOLS
 item.deshPick.name=Desh Pickaxe

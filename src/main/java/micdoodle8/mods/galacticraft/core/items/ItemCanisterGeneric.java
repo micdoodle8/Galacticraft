@@ -127,7 +127,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
         if (fluidName.equalsIgnoreCase(((ItemCanisterGeneric)container.getItem()).allowedFluid))
         {	
         	int added = super.fill(container, resource, doFill);
-        	container.setItemDamage(Math.min(ItemCanisterGeneric.EMPTY, container.getItemDamage() + added));
+        	container.setItemDamage(Math.min(1, container.getItemDamage() - added));
         	return added;
         }
        
@@ -142,7 +142,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
         
         container.stackTagCompound = null;
         
-        this.fill(container, this.getFluid(container), true);
+        super.fill(container, this.getFluid(container), true);
 
         return super.drain(container, maxDrain, doDrain);
     }
