@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.tile.ReceiverMode;
+import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.miccore.Annotations.AltForVersion;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import micdoodle8.mods.miccore.Annotations.VersionSpecific;
@@ -200,7 +201,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
                         {
                             Class<?> clazz = Class.forName("ic2.api.item.IElectricItemManager");
                             Method dischargeMethod = clazz.getMethod("discharge", ItemStack.class, int.class, int.class, boolean.class, boolean.class);
-                            result = (Double) dischargeMethod.invoke(ic2.api.item.ElectricItem.manager, itemStack, energyDischargeIC2, 4, false, false);
+                            result = (Integer) dischargeMethod.invoke(ic2.api.item.ElectricItem.manager, itemStack, energyDischargeIC2, 4, false, false);
                         }
                         catch (Exception e)
                         {
@@ -223,7 +224,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
                         {
                             Class<?> clazz = Class.forName("ic2.api.item.IElectricItemManager");
                             Method dischargeMethod = clazz.getMethod("discharge", ItemStack.class, int.class, int.class, boolean.class, boolean.class);
-                            result = (Double) dischargeMethod.invoke(electricItem.getManager(itemStack), itemStack, energyDischargeIC2, 4, false, false);
+                            result = (Integer) dischargeMethod.invoke(electricItem.getManager(itemStack), itemStack, energyDischargeIC2, 4, false, false);
                         }
                         catch (Exception e)
                         {
