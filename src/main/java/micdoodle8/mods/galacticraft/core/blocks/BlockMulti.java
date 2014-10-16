@@ -33,6 +33,16 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
 {
     private IIcon[] fakeIcons;
 
+    //Meta values:
+    //  0 : Solar panel strut and variable angle parts
+    //  1 : Space station base
+    //  2 : Rocket fueling pad
+    //  3 : NASA workbench
+    //  4 : Solar panel fixed horizontal panel parts (in basic panel)
+    //  5 : Cryogenic chamber
+    //  6 : Buggy fueling pad
+    //  7 unused
+
     public BlockMulti(String assetName)
     {
         super(GCBlocks.machine);
@@ -79,6 +89,8 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
     {
         switch (par2)
         {
+        case 0:
+            return this.fakeIcons[2];
         case 2:
             return this.fakeIcons[0];
         case 3:
@@ -109,10 +121,10 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
         {
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
         }
-        else if (meta == 7)
+        /*else if (meta == 7)
         {
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.38F, 1.0F);
-        }
+        }*/
         else
         {
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
@@ -130,11 +142,11 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
             super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
         }
-        else if (meta == 7)
+        /*else if (meta == 7)
         {
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.38F, 1.0F);
             super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
-        }
+        }*/
         else
         {
             super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
@@ -202,7 +214,6 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
             return direction == ForgeDirection.UP;
         }
 
-        //Space station base is 1, NASA workbench is 3, Cryogenic chamber is 5, Solar panel other parts are 0
         return false;
     }
 
