@@ -40,7 +40,7 @@ public class BlockTier3TreasureChest extends BlockContainer implements ITileEnti
     {
         super(Material.rock);
         this.setHardness(2.5F);
-        this.setResistance(10.0F);
+        this.setResistance(100.0F);
         this.setStepSound(Block.soundTypeStone);
         this.setBlockName(assetName);
     }
