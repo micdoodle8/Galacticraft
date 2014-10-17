@@ -12,7 +12,8 @@ item.key.T2.name=Ключ от подземелья 2-го уровня
 item.compressedDesh.name=Сжатая деш
 item.spaceshipTier2.cargoRocket.name=Грузовая ракета
 item.fluidManip.name=Манипулятор жидкости
-item.bucketSludge.name=Bacterial Sludge Bucket ##NEEDS TRANSLATE##
+item.bucketSludge.name=Ведро бактериального осадка
+fluid.bacterialsludge=Бактериальный осадок
 
 # TOOLS
 item.deshPick.name=Кирка из деш
@@ -33,12 +34,12 @@ tile.mars.deshmars.name=Руда деш
 tile.mars.coppermars.name=Медная руда
 tile.mars.tinmars.name=Оловянная руда
 tile.mars.ironmars.name=Железная руда
-tile.mars.marscobblestone.name=Булыжник
+tile.mars.marscobblestone.name=Марсианский булыжник
 tile.mars.marsstone.name=Марсианский камень
 tile.mars.marsdirt.name=Марсианский подповерхностный камень
 tile.mars.marsgrass.name=Марсианский поверхностный камень
 tile.mars.marsdeco.name=Блок деш
-tile.mars.marsdungeon.name=Стена подземелья
+tile.mars.marsdungeon.name=Кирпич марсианской сокровищницы
 tile.treasureT2.name=Сундук с сокровищами 2-го уровня
 tile.slimelingEgg.redEgg.name=Красное яйцо слаймлинга
 tile.slimelingEgg.blueEgg.name=Синее яйцо слаймлинга
@@ -52,12 +53,14 @@ tile.marsMachine.6.name=Электролизёр воды
 tile.sludge.name=Бактериальный осадок
 tile.creeperEgg.name=Яйцо крипера
 tile.cavernVines.name=Пещерные лианы
-tile.marsCobblestoneStairs.name=Mars Cobblestone Stairs ##NEEDS TRANSLATE##
-tile.wallGC.mars.name=Mars Cobblestone Wall ##NEEDS TRANSLATE##
-tile.slabGCHalf.marsSlab.name=Mars Cobblestone Slab ##NEEDS TRANSLATE##
-tile.marsDungeonBricksStairs.name=Mars Dungeon Brick Stairs ##NEEDS TRANSLATE##
-tile.wallGC.marsBricks.name=Mars Dungeon Brick Wall ##NEEDS TRANSLATE##
-tile.slabGCHalf.marsBricksSlab.name=Mars Dungeon Brick Slab ##NEEDS TRANSLATE##
+
+# DECOBLOCKS
+tile.marsCobblestoneStairs.name=Ступеньки из марсианского булыжника
+tile.wallGC.mars.name=Стена из марсианского булыжника
+tile.slabGCHalf.marsSlab.name=Плита из марсианского булыжника
+tile.marsDungeonBricksStairs.name=Ступеньки из кирпича марсианской сокровищницы
+tile.wallGC.marsBricks.name=Стена из кирпича марсианской сокровищницы
+tile.slabGCHalf.marsBricksSlab.name=Плита из кирпича марсианской сокровищницы
 
 # GUI
 gui.choosePlanet.desc.mars=Обитаем#Кислород отсутствует#Гравитация: 38%
@@ -174,6 +177,7 @@ entity.CargoRocket.name=Грузовая ракета
 # CONTAINERS
 container.launchcontroller.name=Контроллер запуска
 container.tileTerraformer.name=Терраформер
+container.marsLander.name=Посадочные шары
 
 # CONFIG GUI
 gc.configgui.dimensionIDMars=ID измерения: Марс
