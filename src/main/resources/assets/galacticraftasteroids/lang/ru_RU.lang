@@ -98,6 +98,7 @@ gui.message.sendingActive.name=Отправка начата
 gui.message.range.name=Дальность: %dm
 gui.message.notEnoughEnergy.name=Недостаточно энергии!
 gui.message.targetNoEnergy.name=У цели не хватает энергии!
+gui.message.grapple.fail=Мне нужно немного ниток, если я хочу метнуть этот крюк!
 
 tile.treasureT3.description=Сундуки с сокровищами 3-го уровня сейчас бесполезны.
 tile.walkway.description=Дорожки используются в декоративных целях, для соединения блоков, чтобы сохранить тему космоса.

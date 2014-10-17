@@ -26,4 +26,6 @@ tile.cheeseBlock.name=Блок сыра
 # GUI
 gui.choosePlanet.desc.moon=Обитаема#Кислород отсутствует#Гравитация: 18%
 
+# OTHER
+container.lander.name=Посадочный модуль
 dimension.Moon.name=Луна
