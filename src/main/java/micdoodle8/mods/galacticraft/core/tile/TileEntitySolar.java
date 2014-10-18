@@ -281,10 +281,10 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
                 {
                     if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
                     {
-                        FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + (y == 2 ? x : 0), thisBlock.intY() + y, thisBlock.intZ() + (y == 2 ? z : 0), GCBlocks.solarPanel, Block.getIdFromBlock(GCBlocks.solarPanel) >> 12 & 255);
+                        FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.x + (y == 2 ? x : 0), thisBlock.y + y, thisBlock.z + (y == 2 ? z : 0), GCBlocks.solarPanel, Block.getIdFromBlock(GCBlocks.solarPanel) >> 12 & 255);
                     }
 
-                    this.worldObj.setBlockToAir(thisBlock.intX() + (y == 2 ? x : 0), thisBlock.intY() + y, thisBlock.intZ() + (y == 2 ? z : 0));
+                    this.worldObj.setBlockToAir(thisBlock.x + (y == 2 ? x : 0), thisBlock.y + y, thisBlock.z + (y == 2 ? z : 0));
                 }
             }
         }

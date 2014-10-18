@@ -29,7 +29,7 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
     {
         if (this.mainBlockPosition != null)
         {
-            TileEntity tileEntity = this.worldObj.getTileEntity(this.mainBlockPosition.intX(), this.mainBlockPosition.intY(), this.mainBlockPosition.intZ());
+            TileEntity tileEntity = this.worldObj.getTileEntity(this.mainBlockPosition.x, this.mainBlockPosition.y, this.mainBlockPosition.z);
 
             if (tileEntity != null && tileEntity instanceof IMultiBlock)
             {
@@ -43,7 +43,7 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
     {
         if (this.mainBlockPosition != null)
         {
-            TileEntity tileEntity = this.worldObj.getTileEntity(this.mainBlockPosition.intX(), this.mainBlockPosition.intY(), this.mainBlockPosition.intZ());
+            TileEntity tileEntity = this.worldObj.getTileEntity(this.mainBlockPosition.x, this.mainBlockPosition.y, this.mainBlockPosition.z);
 
             if (tileEntity != null)
             {

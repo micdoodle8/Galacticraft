@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemArmorAsteroids;
@@ -29,6 +30,7 @@ public class PlayerServer implements IPlayerServer
         if (oldPlayer instanceof EntityPlayerMP)
         {
             GCPlayerStats.get(player).copyFrom(GCEntityPlayerMP.getPlayerStats((EntityPlayerMP) oldPlayer), keepInv || player.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"));
+            TileEntityTelemetry.updateLinkedPlayer((EntityPlayerMP) oldPlayer, player);
         }
     }
 

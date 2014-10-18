@@ -6,12 +6,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
 import net.minecraft.entity.Entity;
@@ -20,6 +22,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -49,7 +53,8 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     public int timeUntilLaunch;
     public float timeSinceLaunch;
     public float rollAmplitude;
-    public float shipDamage;
+    public float shipDamage; 
+    private ArrayList<BlockVec3Dim> telemetryList = new ArrayList<BlockVec3Dim>();
 
     public EntitySpaceshipBase(World par1World)
     {
@@ -395,6 +400,17 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     {
         nbt.setInteger("launchPhase", this.launchPhase + 1);
         nbt.setInteger("timeUntilLaunch", this.timeUntilLaunch);
+        if (telemetryList.size() > 0)
+        {
+            NBTTagList teleNBTList = new NBTTagList();
+            for (BlockVec3Dim vec : this.telemetryList)
+            {
+                NBTTagCompound tag = new NBTTagCompound();
+                vec.writeToNBT(tag);
+                teleNBTList.appendTag(tag);
+            }
+            nbt.setTag("telemetryList", teleNBTList);
+        }
     }
 
     @Override
@@ -441,6 +457,34 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         else
         {
             this.setLaunchPhase(EnumLaunchPhase.values()[nbt.getInteger("launchPhase") - 1]);
+        }
+
+        //Update all Telemetry Units which are still tracking this rocket
+        this.telemetryList.clear();
+        if (nbt.hasKey("telemetryList"))
+        {
+            NBTTagList teleNBT = nbt.getTagList("telemetryList", 10);
+            if (teleNBT.tagCount() > 0)
+            {
+                for (int j = teleNBT.tagCount() - 1; j >= 0; j--)
+                {
+                    NBTTagCompound tag1 = teleNBT.getCompoundTagAt(j);
+                    if (tag1 != null)
+                    {
+                        this.telemetryList.add(BlockVec3Dim.readFromNBT(tag1));
+                    }
+                }
+            }
+        	ArrayList<TileEntityTelemetry> tList = new ArrayList<TileEntityTelemetry>();
+    		for (BlockVec3Dim vec : this.telemetryList)
+    		{
+    			TileEntity t1 = vec.getTileEntity();
+    			if (t1 instanceof TileEntityTelemetry && !t1.isInvalid())
+    			{
+    				if (((TileEntityTelemetry)t1).linkedEntity == this)
+    					((TileEntityTelemetry)t1).addTrackedEntity(this);
+    			}		
+    		}
         }
     }
 
@@ -511,4 +555,24 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
             rocket = entity;
         }
     }
+
+	public void addTelemetry(TileEntityTelemetry tile)
+	{
+		this.telemetryList.add(new BlockVec3Dim(tile));
+	}
+
+	public ArrayList<TileEntityTelemetry> getTelemetry()
+	{
+		ArrayList<TileEntityTelemetry> returnList = new ArrayList<TileEntityTelemetry>();
+		for (BlockVec3Dim vec : this.telemetryList)
+		{
+			TileEntity t1 = vec.getTileEntity();
+			if (t1 instanceof TileEntityTelemetry && !t1.isInvalid())
+			{
+				if (((TileEntityTelemetry)t1).linkedEntity == this)
+					returnList.add((TileEntityTelemetry)t1);
+			}		
+		}
+		return returnList;
+	}
 }

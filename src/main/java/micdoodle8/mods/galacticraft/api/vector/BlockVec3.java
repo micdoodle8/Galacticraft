@@ -518,9 +518,9 @@ public class BlockVec3 implements Cloneable
     public static BlockVec3 readFromNBT(NBTTagCompound nbtCompound)
     {
         BlockVec3 tempVector = new BlockVec3();
-        tempVector.x = (int) Math.floor(nbtCompound.getInteger("x"));
-        tempVector.y = (int) Math.floor(nbtCompound.getInteger("y"));
-        tempVector.z = (int) Math.floor(nbtCompound.getInteger("z"));
+        tempVector.x = nbtCompound.getInteger("x");
+        tempVector.y = nbtCompound.getInteger("y");
+        tempVector.z = nbtCompound.getInteger("z");
         return tempVector;
     }
 
@@ -573,21 +573,6 @@ public class BlockVec3 implements Cloneable
     public boolean blockExists(World world)
     {
         return world.blockExists(this.x, this.y, this.z);
-    }
-
-    public int intX()
-    {
-        return this.x;
-    }
-
-    public int intY()
-    {
-        return this.y;
-    }
-
-    public int intZ()
-    {
-        return this.z;
     }
 
     public void setSideDone(int side)

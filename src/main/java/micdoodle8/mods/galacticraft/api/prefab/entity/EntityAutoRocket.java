@@ -402,7 +402,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
             if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal() && this.hasValidFuel())
             {
-                if (this.landing && this.targetVec != null && this.worldObj.getTileEntity(this.targetVec.intX(), this.targetVec.intY(), this.targetVec.intZ()) instanceof IFuelDock && this.posY - this.targetVec.y < 5)
+                if (this.landing && this.targetVec != null && this.worldObj.getTileEntity(this.targetVec.x, this.targetVec.y, this.targetVec.z) instanceof IFuelDock && this.posY - this.targetVec.y < 5)
                 {
                     this.motionY *= 0.99D;
                     for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)

@@ -31,6 +31,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
@@ -603,6 +604,7 @@ public class WorldUtil
 
         if (ridingRocket != null)
         {
+            ArrayList<TileEntityTelemetry> tList = ridingRocket.getTelemetry();
             NBTTagCompound nbt = new NBTTagCompound();
             ridingRocket.isDead = false;
             ridingRocket.riddenByEntity = null;
@@ -714,7 +716,12 @@ public class WorldUtil
             else
             //Non-player entity transfer i.e. it's an EntityCargoRocket
             {
-                WorldUtil.removeEntityFromWorld(entity.worldObj, entity, true);
+                ArrayList<TileEntityTelemetry> tList = null;
+                if (entity instanceof EntitySpaceshipBase)
+                {
+                	tList = ((EntitySpaceshipBase)entity).getTelemetry();
+                }
+            	WorldUtil.removeEntityFromWorld(entity.worldObj, entity, true);
 
                 NBTTagCompound nbt = new NBTTagCompound();
                 entity.isDead = false;
@@ -734,8 +741,15 @@ public class WorldUtil
 
                 worldNew.spawnEntityInWorld(entity);
                 entity.setWorld(worldNew);
-
                 worldNew.updateEntityWithOptionalForce(entity, false);
+                
+                if (tList != null && tList.size() > 0)
+                {
+                	for (TileEntityTelemetry t : tList)
+                	{
+                		t.addTrackedEntity(entity);
+                	}
+                }
             }
         }
         else

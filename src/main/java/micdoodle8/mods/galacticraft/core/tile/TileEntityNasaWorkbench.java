@@ -83,7 +83,7 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
                         {
                             if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.05D)
                             {
-                                FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.intX() + x, thisBlock.intY() + y, thisBlock.intZ() + z, GCBlocks.nasaWorkbench, Block.getIdFromBlock(GCBlocks.nasaWorkbench) >> 12 & 255);
+                                FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.x + x, thisBlock.y + y, thisBlock.z + z, GCBlocks.nasaWorkbench, Block.getIdFromBlock(GCBlocks.nasaWorkbench) >> 12 & 255);
                             }
 
                             this.worldObj.setBlockToAir(thisBlock.x + x, thisBlock.y + y, thisBlock.z + z);

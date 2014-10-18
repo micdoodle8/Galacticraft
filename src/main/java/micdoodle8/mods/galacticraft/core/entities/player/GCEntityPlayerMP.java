@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import com.mojang.authlib.GameProfile;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -22,11 +24,13 @@ public class GCEntityPlayerMP extends EntityPlayerMP
         return GalacticraftCore.proxy.player;
     }
 
+    //Server-only method
     @Override
     public void clonePlayer(EntityPlayer oldPlayer, boolean keepInv)
     {
         super.clonePlayer(oldPlayer, keepInv);
         this.getServerHandler().clonePlayer(this, oldPlayer, keepInv);
+        TileEntityTelemetry.updateLinkedPlayer((EntityPlayerMP) oldPlayer, this);
     }
 
     @Override

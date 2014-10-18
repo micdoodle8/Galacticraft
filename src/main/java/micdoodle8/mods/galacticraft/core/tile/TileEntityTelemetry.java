@@ -10,6 +10,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -34,12 +35,13 @@ public class TileEntityTelemetry extends TileEntity
 	public String clientName;
 	public GameProfile clientGameProfile = null;
 
-	public static HashSet<BlockVec3> loadedList = new HashSet<BlockVec3>();
+	public static HashSet<BlockVec3Dim> loadedList = new HashSet<BlockVec3Dim>();
 	private MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
-	private Entity linkedEntity;
+	public Entity linkedEntity;
 	private UUID toUpdate = null;
 	private int pulseRate = 400;
 	private int lastHurttime = 0;
+	private int ticks = 0;
 	
 	@Override
 	public void validate()
@@ -47,7 +49,7 @@ public class TileEntityTelemetry extends TileEntity
         super.validate();
         if (this.worldObj.isRemote)
         {
-        	loadedList.add(new BlockVec3(this));
+        	loadedList.add(new BlockVec3Dim(this));
         }
 	}
 	
@@ -57,14 +59,14 @@ public class TileEntityTelemetry extends TileEntity
 		super.invalidate();
         if (this.worldObj.isRemote)
         {
-        	loadedList.remove(new BlockVec3(this));
+        	loadedList.remove(new BlockVec3Dim(this));
         }
 	}
 
 	@Override
 	public void updateEntity()
 	{
-		if (!this.worldObj.isRemote)
+		if (!this.worldObj.isRemote && ++this.ticks % 2 == 0)
 		{
 			if (this.toUpdate != null)
 			{
@@ -167,11 +169,20 @@ public class TileEntityTelemetry extends TileEntity
     		if (e.getUniqueID().equals(uuid))
     		{
     			this.linkedEntity = e;
+    			if (e instanceof EntitySpaceshipBase) ((EntitySpaceshipBase)e).addTelemetry(this);
     			return;
     		}
     	}
     	//TODO Add some kind of watcher to add the entity when next loaded
     	this.linkedEntity = null;
+    }
+
+    public void addTrackedEntity(Entity e)
+    {
+    	this.pulseRate = 400;
+    	this.lastHurttime = 0;
+		this.linkedEntity = e;
+		if (e instanceof EntitySpaceshipBase) ((EntitySpaceshipBase)e).addTelemetry(this);
     }
 
     public void removeTrackedEntity()
@@ -186,10 +197,12 @@ public class TileEntityTelemetry extends TileEntity
 		BlockVec3 target = new BlockVec3(te);
 		
 		int distSq = 1025;
-		BlockVec3 nearest = null;
-		for (BlockVec3 telemeter : loadedList)
+		BlockVec3Dim nearest = null;
+		int dim = te.getWorldObj().provider.dimensionId;
+		for (BlockVec3Dim telemeter : loadedList)
 		{
-			int dist = target.distanceSquared(telemeter); 
+			if (telemeter.dim != dim) continue;
+			int dist = telemeter.distanceSquared(target); 
 			if (dist < distSq)
 			{
 				distSq = dist;
@@ -198,7 +211,7 @@ public class TileEntityTelemetry extends TileEntity
 		}
 		
 		if (nearest == null) return null;
-		TileEntity result = nearest.getTileEntity(te.getWorldObj());
+		TileEntity result = te.getWorldObj().getTileEntity(nearest.x, nearest.y, nearest.z);
 		if (result instanceof TileEntityTelemetry) return (TileEntityTelemetry) result;
 		return null;
 	}
@@ -231,5 +244,18 @@ public class TileEntityTelemetry extends TileEntity
 					((TileEntityTelemetry) te).addTrackedEntity(player.getUniqueID());
 			}
 		}
+	}
+	
+	public static void updateLinkedPlayer(EntityPlayerMP playerOld, EntityPlayerMP playerNew)
+	{
+		for (BlockVec3Dim telemeter : loadedList)
+		{
+			TileEntity te = telemeter.getTileEntity();
+			if (te instanceof TileEntityTelemetry)
+			{
+				if (((TileEntityTelemetry)te).linkedEntity == playerOld)
+					((TileEntityTelemetry)te).linkedEntity = playerNew;
+			}
+		}		
 	}
 }
