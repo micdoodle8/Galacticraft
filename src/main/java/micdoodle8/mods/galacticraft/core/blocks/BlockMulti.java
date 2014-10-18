@@ -117,7 +117,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
     {
         int meta = world.getBlockMetadata(x, y, z);
 
-        if (meta == 2)
+        if (meta == 2 || meta == 6)
         {
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
         }
@@ -344,11 +344,6 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
     @SideOnly(Side.CLIENT)
     public boolean addHitEffects(World worldObj, MovingObjectPosition target, EffectRenderer effectRenderer)
     {
-        if (worldObj.getBlockMetadata(target.blockX, target.blockY, target.blockZ) == 6)
-        {
-            return true;
-        }
-
         TileEntity tileEntity = worldObj.getTileEntity(target.blockX, target.blockY, target.blockZ);
 
         if (tileEntity instanceof TileEntityMulti)
@@ -368,11 +363,6 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
     @SideOnly(Side.CLIENT)
     public boolean addDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer)
     {
-        if (world.getBlockMetadata(x, y, z) == 6)
-        {
-            return true;
-        }
-
         return super.addDestroyEffects(world, x, y, z, meta, effectRenderer);
     }
 }
