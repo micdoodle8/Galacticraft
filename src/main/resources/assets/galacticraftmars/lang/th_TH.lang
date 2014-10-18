@@ -13,6 +13,7 @@ item.compressedDesh.name=แผ่นเดรช
 item.spaceshipTier2.cargoRocket.name=จรวดขนส่ง
 item.fluidManip.name=ตัวจัดการของเหลว
 item.bucketSludge.name=ถังตะกอนแบคทีเรีย
+fluid.bacterialsludge=ตะกอนแบคทีเรีย
 
 # TOOLS
 item.deshPick.name=อีเต้อเดรช
@@ -138,16 +139,16 @@ gui.desc.reinforcedPlateT2.name=เทียร์ 2
 dimension.Mars.name=ดาวอังคาร
 planet.mars=ดาวอังคาร
 
-tile.treasureT2.description=กล่องสมบัติ เทียร์ 2 จะอยู่ในดันเจี้ยนดาวอังคาร กล่องสามารถปลดล็อคได้เมื่อสู้กับบอสชนะ
-tile.cavernVines.description=เถาวัลย์ถ้ำอันตรายสำหรับสิ่งมีชีวิต มันจะเกี่ยวพันตัวเราและดึงขึ้นสู่ข้างบน
-tile.slimelingEgg.description=ไข่สไลม์ลิ่ง ทุบหนึ่งครั้งโดยการใช้มือของผู้เล่น จะทำให้ออกมาเป็นสัตว์เลี้ยงของเรา
-tile.cryoChamber.description=ตู้ไคโยเจนนิค จะให้ผู้เล่นสามารถนอนได้ระหว่างวัน เพิ่มเลือดได้จำนวนเล็กน้อย แต่มีการจำกัดการใช้งาน
-tile.launchController.description=เครื่องควบคุมการปล่อยจรวด ใช้สำหรับการปล่อยจรวดในรูปแบบต่างๆ รวมถึงการปล่อยจรวดไปยังจุดหมาย สำหรับการปล่อยจรวดอัตโนมัติ
-tile.terraformer.description=เทอราฟอร์มเมอร์ ใช้สำหรับเพิ่มพื้นที่สีเขียวในดาวเคราะห์ ที่ห่างไกล เพิ่มหญ้า ต้นไม้ น้ำ เมื่อใส่วัสดุที่ถูกต้อง
-tile.creeperEgg.description=ไข่คริปเปอร์ จะอยู่ในดันเจี้ยนดาวอังคารและจะสปอน คริปเปอร์อวกาศเมื่อไข่ถูกแรงระเบิด
-tile.gasLiquefier.description=เครื่องเปลี่ยนสถานะก๊าซ เก็บก๊าซจากชั้นบรรยากาศหรือจาก กระป๋องของเหลว ส่วนมีเทนเหลวสามารถกลั่นและใช้เป็น เชื้อเพลิงจรวดได้เมื่อเสร็จสิ้นการกลั่น
-tile.methaneSynthesizer.description=เครื่องสังเคราะห์มีเทน จะผลิตมีเทนสำหรับใช้ในเครื่องเปลี่ยนสถานะก๊าซ
-tile.electrolyzer.description=เครื่องเปลี่ยนน้ำเป็นก๊าซ จะเปลี่ยนน้ำให้เป็นไฮโดรเจนกับออกซิเจน และจะมีประโยชน์กับเครื่องสังเคราะห์มีเทน
+tile.treasureT2.description=พบได้ในดันเจี้ยนดาวอังคาร กล่องสามารถปลดล็อคได้เมื่อสู้กับบอสชนะ
+tile.cavernVines.description=สิ่งนี้อันตรายสำหรับสิ่งมีชีวิต มันจะเกี่ยวพันและดึงขึ้นสู่ข้างบน
+tile.slimelingEgg.description=ทุบหนึ่งครั้งโดยการใช้มือของผู้เล่น จะทำให้ออกมาเป็นสัตว์เลี้ยงของเรา
+tile.cryoChamber.description=ผู้เล่นสามารถนอนได้ระหว่างวันโดยใช้ สิ่งนี้ เพิ่มเลือดได้จำนวนเล็กน้อย แต่มีการจำกัดการใช้งาน
+tile.launchController.description=ใช้สำหรับการปล่อยจรวดในรูปแบบต่างๆ รวมถึงการปล่อยจรวดไปยังจุดหมาย สำหรับการปล่อยจรวดอัตโนมัติ
+tile.terraformer.description=ใช้สำหรับเพิ่มพื้นที่สีเขียวในดาวเคราะห์ ที่ห่างไกล เพิ่มหญ้า ต้นไม้ น้ำ เมื่อใส่วัสดุที่ถูกต้อง
+tile.creeperEgg.description=พบได้ในดันเจี้ยนดาวอังคาร และเมื่อไข่ถูกแรงระเบิดจะสปอนคริปเปอร์อวกาศออกมา
+tile.gasLiquefier.description=ใช้เก็บก๊าซจากชั้นบรรยากาศหรือจาก กระป๋องของเหลว ส่วนมีเทนเหลวสามารถกลั่นและใช้เป็น เชื้อเพลิงจรวดได้เมื่อเสร็จสิ้นการกลั่น
+tile.methaneSynthesizer.description=ใช้ผลิตมีเทนสำหรับใช้ใน เครื่องเปลี่ยนสถานะก๊าซ
+tile.electrolyzer.description=ใช้เปลี่ยนน้ำให้เป็นไฮโดรเจนกับออกซิเจน และจะมีประโยชน์กับเครื่องสังเคราะห์มีเทน
 
 gui.slimeling.chat.wrongPlayer=นี่ไม่ใช่สไลม์ลิ่งของฉัน!
 gui.cryogenic.chat.cantUse=ฉันไม่สามารถใช้สิ่งนี้ได้ %d วินาที
@@ -176,6 +177,7 @@ entity.CargoRocket.name=จรวดขนส่ง
 # CONTAINERS
 container.launchcontroller.name=เครื่องควบคุมการปล่อยจรวด
 container.tileTerraformer.name=เทอราฟอร์มเมอร์
+container.marsLander.name=ยานลงจอดบอลลูน #To do for new name
 
 # CONFIG GUI
 gc.configgui.dimensionIDMars=ID มิติดาวอังคาร
@@ -185,7 +187,7 @@ gc.configgui.idEntitySpaceshipTier2=ID จรวด เทียร์ 2
 gc.configgui.idEntitySludgeling=ID หนอนแบคทีเรีย
 gc.configgui.idEntitySlimeling=ID สไลม์ลิ่ง
 gc.configgui.idEntityTerraformBubble=ID ฟองเทอราฟอร์ม
-gc.configgui.idEntityLandingBalloons=ID ยานลงจอดบอลลูน
+gc.configgui.idEntityLandingBalloons=ID ยานลงจอดบอลลูน #To do for new name
 gc.configgui.idEntityCargoRocket=ID จรวดขนส่ง
 gc.configgui.idSchematicRocketT2=ID แผนผังจรวด เทียร์ 2
 gc.configgui.idSchematicCargoRocket=ID แผนผังจรวดขนส่ง

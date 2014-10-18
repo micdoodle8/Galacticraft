@@ -26,4 +26,5 @@ tile.cheeseBlock.name=บล็อกชีส
 # GUI
 gui.choosePlanet.desc.moon=อาศัยอยู่ได้#ไม่มีออกซิเจน#แรงโน้มถ่วง: 18%
 
-dimension.Moon.name=ดวงจันทร์
+# OTHER
+container.lander.name=ยานลงจอด
