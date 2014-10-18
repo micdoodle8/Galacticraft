@@ -40,7 +40,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 
             for (final Object o : list)
             {
-                if (o != null && o instanceof IDockable && !this.worldObj.isRemote)
+                if (o instanceof IDockable)
                 {
                     docked = true;
 
@@ -48,9 +48,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 
                     if (fuelable != this.dockedEntity && fuelable.isDockValid(this))
                     {
-                        this.dockedEntity = fuelable;
-
-                        this.dockedEntity.setPad(this);
+                        fuelable.setPad(this);
                     }
 
                     break;
@@ -218,5 +216,11 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
     public IDockable getDockedEntity()
     {
         return this.dockedEntity;
+    }
+
+    @Override
+    public void dockEntity(IDockable entity)
+    {
+        this.dockedEntity = entity;
     }
 }

@@ -197,7 +197,7 @@ public class GameScreenText implements IGameScreen
         {
         	GL11.glTranslatef(-Xmargin / 2 / scaleText, textHeightPixels / 2 + (-Yoffset + (sizeY - borders) / 2) / scaleText, -0.0005F);
         	float scalefactor = 38F / (float) Math.pow(Math.max(entity.height, entity.width), 0.65);
-        	GL11.glScalef(scalefactor, scalefactor, 0.0001F);
+        	GL11.glScalef(scalefactor, scalefactor, 0.0012F);
         	GL11.glRotatef(180F, 0, 0, 1);
         	GL11.glRotatef(180F, 0, 1, 0);
         	if (entity instanceof EntitySpaceshipBase)
@@ -206,7 +206,7 @@ public class GameScreenText implements IGameScreen
             	GL11.glTranslatef(0, entity.height / 4, 0);
         	}
         	RenderPlayerGC.flagThermalOverride = true;
-            RenderManager.instance.renderEntityWithPosYaw(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+        	renderEntity.doRender(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
             RenderPlayerGC.flagThermalOverride = false;
         }
 

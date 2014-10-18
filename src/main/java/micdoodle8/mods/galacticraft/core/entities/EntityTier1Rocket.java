@@ -142,9 +142,18 @@ public class EntityTier1Rocket extends EntityTieredRocket
     {
         if (!this.isDead)
         {
-            final double x1 = 2 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
-            final double z1 = 2 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
+            double x1 = 2 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
+            double z1 = 2 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
             double y1 = 2 * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
+
+            if (this.landing && this.targetVec != null)
+            {
+                double modifier = this.posY - this.targetVec.y;
+                modifier = Math.max(modifier, 1.0);
+                x1 *= modifier / 60.0D;
+                y1 *= modifier / 60.0D;
+                z1 *= modifier / 60.0D;
+            }
 
             final double y = this.prevPosY + (this.posY - this.prevPosY) + y1;
 
@@ -298,5 +307,11 @@ public class EntityTier1Rocket extends EntityTieredRocket
     public boolean defaultThirdPerson()
     {
         return true;
+    }
+
+    @Override
+    public double getOnPadYOffset()
+    {
+    	return 1.5D;
     }
 }

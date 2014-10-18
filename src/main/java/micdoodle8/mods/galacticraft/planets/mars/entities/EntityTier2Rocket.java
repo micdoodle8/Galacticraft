@@ -62,6 +62,12 @@ public class EntityTier2Rocket extends EntityTieredRocket
         return 0.94F;
     }
 
+    @Override
+    public double getOnPadYOffset()
+    {
+    	return 1.5D;
+    }
+    
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void onUpdate()
@@ -161,9 +167,17 @@ public class EntityTier2Rocket extends EntityTieredRocket
     {
         if (!this.isDead)
         {
-            final double x1 = 2.9 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
-            final double z1 = 2.9 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
+            double x1 = 2.9 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
+            double z1 = 2.9 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
             double y1 = 2.9 * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
+            if (this.landing && this.targetVec != null)
+            {
+                double modifier = this.posY - this.targetVec.y;
+                modifier = Math.max(modifier, 1.0);
+                x1 *= modifier / 60.0D;
+                y1 *= modifier / 60.0D;
+                z1 *= modifier / 60.0D;
+            }
 
             final double y = this.prevPosY + (this.posY - this.prevPosY) + y1;
             final double x2 = this.posX + x1;
@@ -204,13 +218,6 @@ public class EntityTier2Rocket extends EntityTieredRocket
             GalacticraftCore.proxy.spawnParticle("blueflame", new Vector3(x2, y, z2 - 0.8), motionVec, new Object[] { });
             GalacticraftCore.proxy.spawnParticle("blueflame", new Vector3(x2, y, z2 + 0.8), motionVec, new Object[] { });
         }
-    }
-
-    @Override
-    protected void onRocketLand(int x, int y, int z)
-    {
-        this.setPositionAndRotation(x + 0.5, y + 2.0D, z + 0.5, this.rotationYaw, 0.0F);
-        this.stopRocketSound();
     }
 
     @Override

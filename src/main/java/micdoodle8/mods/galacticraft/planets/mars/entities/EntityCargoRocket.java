@@ -83,13 +83,6 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
                     this.motionY = -motionScalar * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
                 }
             }
-            else
-            {
-                if (this.targetVec != null)
-                {
-                    this.motionY = (this.posY - this.targetVec.y) / -100.0D;
-                }
-            }
 
             double multiplier = 1.0D;
 
@@ -368,5 +361,10 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     public boolean isPlayerRocket()
     {
         return false;
+    }
+    
+    public double getOnPadYOffset()
+    {
+    	return -0.25D;
     }
 }

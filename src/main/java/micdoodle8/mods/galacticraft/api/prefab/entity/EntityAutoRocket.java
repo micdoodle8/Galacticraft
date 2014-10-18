@@ -62,7 +62,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
     private IFuelDock landingPad;
     public boolean landing;
     public EnumAutoLaunch autoLaunchSetting;
-    private static boolean marsLoaded = GalacticraftCore.isPlanetsLoaded;
 
     public int autoLaunchCountdown;
     public String statusMessage;
@@ -131,7 +130,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
     public boolean setFrequency()
     {
-        if (!EntityAutoRocket.marsLoaded)
+        if (!GalacticraftCore.isPlanetsLoaded)
         {
             return false;
         }
@@ -223,7 +222,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
     protected boolean setTarget(boolean doSet, int destFreq)
     {
-    	if (!EntityAutoRocket.marsLoaded || FMLCommonHandler.instance().getMinecraftServerInstance() == null || FMLCommonHandler.instance().getMinecraftServerInstance().worldServers == null)
+    	if (!GalacticraftCore.isPlanetsLoaded || FMLCommonHandler.instance().getMinecraftServerInstance() == null || FMLCommonHandler.instance().getMinecraftServerInstance().worldServers == null)
         {
             return false;
         }
@@ -402,24 +401,28 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
             if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal() && this.hasValidFuel())
             {
-                if (this.landing && this.targetVec != null && this.worldObj.getTileEntity(this.targetVec.x, this.targetVec.y, this.targetVec.z) instanceof IFuelDock && this.posY - this.targetVec.y < 5)
+                if (this.landing && this.targetVec != null && this.worldObj.getTileEntity(this.targetVec.x, this.targetVec.y, this.targetVec.z) instanceof IFuelDock)
                 {
-                    this.motionY *= 0.99D;
-                    for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
-                    {
-                        for (int y = MathHelper.floor_double(this.posY - this.height / 2 + 0.3D); y <= MathHelper.floor_double(this.posY) + 1; y++)
-                        {
-                            for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
-                            {
-                                TileEntity tile = this.worldObj.getTileEntity(x, y, z);
+                	this.motionY = (this.posY - this.getOnPadYOffset() - 0.4D - this.targetVec.y) / -100.0D;
 
-                                if (tile instanceof IFuelDock)
-                                {
-                                    this.failRocket();
-                                }
-                            }
-                        }
-                    }
+                	if (this.posY - this.targetVec.y < 5)
+	                {
+	                    for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
+	                    {
+	                        for (int y = MathHelper.floor_double(this.posY - this.getOnPadYOffset() - 0.45D); y <= MathHelper.floor_double(this.posY) + 1; y++)
+	                        {
+	                            for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
+	                            {
+	                                TileEntity tile = this.worldObj.getTileEntity(x, y, z);
+	
+	                                if (tile instanceof IFuelDock)
+	                                {
+	                                    this.failRocket();
+	                                }
+	                            }
+	                        }
+	                    }
+	                }
                 }
             }
 
@@ -511,20 +514,13 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                 if (!this.worldObj.isRemote)
                 {
                     //Drop any existing rocket on the landing pad
-                	if (dock.getDockedEntity() instanceof EntityAutoRocket)
+                	if (dock.getDockedEntity() instanceof EntitySpaceshipBase)
                     {
-                    	((EntityAutoRocket)dock.getDockedEntity()).dropShipAsItem();
+                    	((EntitySpaceshipBase)dock.getDockedEntity()).dropShipAsItem();
+                    	((EntitySpaceshipBase)dock.getDockedEntity()).setDead();
                     }
                 	
-                	this.setLaunchPhase(EnumLaunchPhase.UNIGNITED);
-                    this.landing = false;
-                    this.targetVec = null;
                     this.setPad(dock);
-
-                    if (EntityAutoRocket.marsLoaded)
-                    {
-                        this.updateControllerSettings(dock);
-                    }
                 }
 
                 this.onRocketLand(x, y, z);
@@ -599,7 +595,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
     protected void onRocketLand(int x, int y, int z)
     {
-        this.setPositionAndRotation(x + 0.5, y + 0.4D, z + 0.5, this.rotationYaw, 0.0F);
+        this.setPositionAndRotation(x + 0.5, y + 0.4D + this.getOnPadYOffset(), z + 0.5, this.rotationYaw, 0.0F);
         this.stopRocketSound();
     }
     
@@ -975,30 +971,19 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
     @Override
     public void setPad(IFuelDock pad)
     {
+        //Called either when a rocket lands or when one is placed
+    	//Can also be called with null param when rocket leaves a pad
         this.landingPad = pad;
-
-        if (this.landing)
+        if (pad != null)
         {
-            if (pad instanceof TileEntity)
-            {
-                int x = ((TileEntity) pad).xCoord;
-                int y = ((TileEntity) pad).yCoord;
-                int z = ((TileEntity) pad).zCoord;
-
-                if (!this.worldObj.isRemote)
-                {
-                    this.setLaunchPhase(EnumLaunchPhase.UNIGNITED);
-                    this.landing = false;
-                    this.targetVec = null;
-
-                    if (EntityAutoRocket.marsLoaded)
-                    {
-                        this.updateControllerSettings(pad);
-                    }
-                }
-
-                this.onRocketLand(x, y, z);
-            }
+            pad.dockEntity(this);
+	    	this.setLaunchPhase(EnumLaunchPhase.UNIGNITED);
+	        this.landing = false;
+	        this.targetVec = null;
+	        if (GalacticraftCore.isPlanetsLoaded)
+	        {
+	            this.updateControllerSettings(pad);
+	        }
         }
     }
 
@@ -1017,12 +1002,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
     @Override
     public boolean isDockValid(IFuelDock dock)
     {
-        //Called either when a rocket lands or when one is placed
-        if (dock instanceof TileEntityLandingPad)
-        {
-            return true;
-        }
-        return false;
+        return (dock instanceof TileEntityLandingPad);
     }
 
     @Override

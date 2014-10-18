@@ -508,6 +508,11 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     {
         return -0.9D;
     }
+    
+    public double getOnPadYOffset()
+    {
+    	return 0D;
+    }
 
     public void onLaunch()
     {

@@ -302,7 +302,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         list.add(this.rocketType != null ? this.rocketType.getIndex() : 0);
         super.getNetworkedData(list);
 
-        boolean sendPosUpdates = this.ticks < 25 || this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal();
+        boolean sendPosUpdates = this.ticks < 25 || this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal() || this.landing;
         list.add(sendPosUpdates);
 
         if (sendPosUpdates)
@@ -426,7 +426,6 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     {
         super.onRocketLand(x, y, z);
         this.launchCooldown = 40;
-        this.setPositionAndRotation(x + 0.5, y + 1.8D, z + 0.5, this.rotationYaw, 0.0F);
     }
 
     @Override

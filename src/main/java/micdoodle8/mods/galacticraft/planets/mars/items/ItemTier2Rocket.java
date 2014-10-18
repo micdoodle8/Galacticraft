@@ -109,13 +109,14 @@ public class ItemTier2Rocket extends Item implements IHoldableItem
 
                 if (par1ItemStack.getItemDamage() < 10)
                 {
-                    rocket = new EntityTier2Rocket(par3World, centerX, centerY + 1.6D, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
+                    rocket = new EntityTier2Rocket(par3World, centerX, centerY, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
                 }
                 else
                 {
                     rocket = new EntityCargoRocket(par3World, centerX, centerY, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage() - 10]);
                 }
 
+                rocket.setPosition(rocket.posX, rocket.posY + rocket.getOnPadYOffset(), rocket.posZ);
                 par3World.spawnEntityInWorld(rocket);
 
                 if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("RocketFuel"))

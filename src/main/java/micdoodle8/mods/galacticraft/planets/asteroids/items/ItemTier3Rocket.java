@@ -102,9 +102,10 @@ public class ItemTier3Rocket extends Item implements IHoldableItem
             		return false;
             	}
 
-                EntityTier3Rocket rocket = new EntityTier3Rocket(par3World, centerX, centerY + 1.7D, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
+                EntityTier3Rocket rocket = new EntityTier3Rocket(par3World, centerX, centerY, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
 
                 rocket.rotationYaw += 45;
+                rocket.setPosition(rocket.posX, rocket.posY + rocket.getOnPadYOffset(), rocket.posZ);
                 par3World.spawnEntityInWorld(rocket);
 
                 if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("RocketFuel"))

@@ -920,7 +920,7 @@ public class GCPlayerHandler
 
     private void onPlayerUpdate(EntityPlayerMP player)
     {
-        int tick = player.ticksExisted - 1;
+    	int tick = player.ticksExisted - 1;
 
         if (tick == 25)
         {

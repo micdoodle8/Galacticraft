@@ -3,13 +3,11 @@ package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
-import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
@@ -60,6 +58,12 @@ public class EntityTier3Rocket extends EntityTieredRocket
     public float getRotateOffset()
     {
         return 2.25F;
+    }
+
+    @Override
+    public double getOnPadYOffset()
+    {
+    	return 1.75D;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -161,9 +165,17 @@ public class EntityTier3Rocket extends EntityTieredRocket
     {
         if (!this.isDead)
         {
-            final double x1 = 3.2 * Math.cos(this.rotationYaw / 57.2957795D) * Math.sin(this.rotationPitch / 57.2957795D);
-            final double z1 = 3.2 * Math.sin(this.rotationYaw / 57.2957795D) * Math.sin(this.rotationPitch / 57.2957795D);
+            double x1 = 3.2 * Math.cos(this.rotationYaw / 57.2957795D) * Math.sin(this.rotationPitch / 57.2957795D);
+            double z1 = 3.2 * Math.sin(this.rotationYaw / 57.2957795D) * Math.sin(this.rotationPitch / 57.2957795D);
             double y1 = 3.2 * Math.cos((this.rotationPitch - 180) / 57.2957795D);
+            if (this.landing && this.targetVec != null)
+            {
+                double modifier = this.posY - this.targetVec.y;
+                modifier = Math.max(modifier, 1.0);
+                x1 *= modifier / 60.0D;
+                y1 *= modifier / 60.0D;
+                z1 *= modifier / 60.0D;
+            }
 
             final double y2 = this.prevPosY + (this.posY - this.prevPosY) + y1;
 
@@ -216,13 +228,6 @@ public class EntityTier3Rocket extends EntityTieredRocket
     }
 
     @Override
-    protected void onRocketLand(int x, int y, int z)
-    {
-        this.setPositionAndRotation(x + 0.5, y + 2.2D, z + 0.5, this.rotationYaw, 0.0F);
-        this.stopRocketSound();
-    }
-
-    @Override
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return !this.isDead && par1EntityPlayer.getDistanceSqToEntity(this) <= 64.0D;
@@ -260,12 +265,6 @@ public class EntityTier3Rocket extends EntityTieredRocket
             this.dropShipAsItem();
             this.setDead();
         }
-    }
-
-    @Override
-    public boolean isDockValid(IFuelDock dock)
-    {
-        return dock instanceof TileEntityLandingPad;
     }
 
     //	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")

@@ -212,4 +212,10 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
     {
         return this.dockedEntity;
     }
+
+    @Override
+    public void dockEntity(IDockable entity)
+    {
+        this.dockedEntity = entity;
+    }
 }

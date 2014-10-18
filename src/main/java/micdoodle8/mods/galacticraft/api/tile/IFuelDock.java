@@ -12,4 +12,6 @@ public interface IFuelDock
     public boolean isBlockAttachable(IBlockAccess world, int x, int y, int z);
 
     public IDockable getDockedEntity();
+
+	void dockEntity(IDockable entity);
 }

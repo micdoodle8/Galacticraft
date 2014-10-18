@@ -94,8 +94,9 @@ public class ItemTier1Rocket extends Item implements IHoldableItem
             		return false;
             	}
 
-            	final EntityTier1Rocket spaceship = new EntityTier1Rocket(par3World, centerX, centerY + 1.4D, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
+            	final EntityTier1Rocket spaceship = new EntityTier1Rocket(par3World, centerX, centerY, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
 
+                spaceship.setPosition(spaceship.posX, spaceship.posY + spaceship.getOnPadYOffset(), spaceship.posZ);
                 par3World.spawnEntityInWorld(spaceship);
 
                 if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("RocketFuel"))
