@@ -491,7 +491,8 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
     public int receiveGas(ForgeDirection side, GasStack stack)
     {
-        int used = 0;
+    	if (!stack.getGas().getName().equals("hydrogen")) return 0;  
+    	int used = 0;
         //System.out.println("Giving gas amount "+stack.amount);
         if (this.gasTank.getFluidAmount() < this.gasTank.getCapacity())
         {

@@ -297,7 +297,8 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
     public int receiveGas(ForgeDirection side, GasStack stack)
     {
-        return (int) Math.floor(this.receiveOxygen(stack.amount, true));
+    	if (!stack.getGas().getName().equals("oxygen")) return 0;  
+    	return (int) Math.floor(this.receiveOxygen(stack.amount, true));
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")

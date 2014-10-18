@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import cpw.mods.fml.relauncher.Side;
+import mekanism.api.gas.Gas;
+import mekanism.api.gas.GasStack;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
@@ -377,6 +379,18 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
     public boolean shouldPullOxygen()
     {
         return false;
+    }
+
+    @Override
+    public boolean canReceiveGas(ForgeDirection side, Gas type)
+    {
+    	return false;
+    }
+    
+    @Override
+    public int receiveGas(ForgeDirection side, GasStack stack)
+    {
+    	return 0;
     }
 
     @Override
