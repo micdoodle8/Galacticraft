@@ -336,7 +336,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     WorldProvider targetDim = WorldUtil.getProviderForDimension(this.targetDimension);                   
                     if (targetDim != null)
                     {
-                    	WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(this.targetDimension);
+                    	WorldServer worldServer = mcserver.worldServerForDimension(this.targetDimension);
                         if (worldServer != null)
                         {
 	                        boolean dimensionAllowed = this.targetDimension == 0;

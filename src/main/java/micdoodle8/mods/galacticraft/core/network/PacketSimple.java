@@ -23,7 +23,6 @@ import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.fx.EntityFXSparks;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
@@ -910,14 +909,7 @@ public class PacketSimple extends Packet implements IPacket
                 {
                     final WorldServer world = (WorldServer) playerBase.worldObj;
 
-                    if (provider instanceof IOrbitDimension)
-                    {
-                        WorldUtil.transferEntityToDimension(playerBase, dim, world);
-                    }
-                    else
-                    {
-                        WorldUtil.transferEntityToDimension(playerBase, dim, world);
-                    }
+                    WorldUtil.transferEntityToDimension(playerBase, dim, world);
                 }
 
                 stats.teleportCooldown = 10;

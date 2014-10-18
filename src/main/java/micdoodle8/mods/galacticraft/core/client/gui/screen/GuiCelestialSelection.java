@@ -532,6 +532,8 @@ public class GuiCelestialSelection extends GuiScreen
                         this.mc.gameSettings.thirdPersonView = 0;
                     }
                     GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_TELEPORT_ENTITY, new Object[] { dimension }));
+                    //TODO   Some type of clientside "in Space" holding screen here while waiting for the server to do the teleport
+                    //(Otherwise the client will be returned to the destination he was in until now, which looks weird)
                     mc.displayGuiScreen(null);
                     return true;
                 }

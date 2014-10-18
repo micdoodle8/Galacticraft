@@ -223,14 +223,16 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
     protected boolean setTarget(boolean doSet, int destFreq)
     {
-        if (!EntityAutoRocket.marsLoaded || FMLCommonHandler.instance().getMinecraftServerInstance() == null || FMLCommonHandler.instance().getMinecraftServerInstance().worldServers == null)
+    	if (!EntityAutoRocket.marsLoaded || FMLCommonHandler.instance().getMinecraftServerInstance() == null || FMLCommonHandler.instance().getMinecraftServerInstance().worldServers == null)
         {
             return false;
         }
 
-        for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
+        WorldServer[] servers = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers;
+
+        for (int i = 0; i < servers.length; i++)
         {
-            WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
+            WorldServer world = servers[i];
 
             for (TileEntity tile : new ArrayList<TileEntity>(world.loadedTileEntityList))
             {

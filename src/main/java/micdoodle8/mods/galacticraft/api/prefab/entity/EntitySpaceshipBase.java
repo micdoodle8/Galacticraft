@@ -196,6 +196,8 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200))
         {
             this.onReachAtmosphere();
+            if (this.worldObj.isRemote)
+            	this.posY = 1 + (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200);
         }
 
         if (this.rollAmplitude > 0)

@@ -61,7 +61,6 @@ public class WorldUtil
 {
     public static List<Integer> registeredSpaceStations;
     public static List<Integer> registeredPlanets;
-	public static MinecraftServer theServer;
 	
     public static double getGravityForEntity(Entity entity)
     {
@@ -297,6 +296,7 @@ public class WorldUtil
     public static WorldProvider getProviderForDimension(int id)
     {
     	WorldProvider provider = null;
+    	MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
     	if (theServer != null)
     	{
     		WorldServer ws = theServer.worldServerForDimension(id);
@@ -391,6 +391,7 @@ public class WorldUtil
     public static void registerSpaceStations(File spaceStationList)
     {
         WorldUtil.registeredSpaceStations = WorldUtil.getExistingSpaceStationList(spaceStationList);
+    	MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
 
         for (Integer registeredID : WorldUtil.registeredSpaceStations)
         {
@@ -555,9 +556,9 @@ public class WorldUtil
     {
         if (!world.isRemote)
         {
-            GalacticraftCore.packetPipeline.sendToAll(new PacketSimple(EnumSimplePacket.C_UPDATE_PLANETS_LIST, WorldUtil.getPlanetList()));
+            //GalacticraftCore.packetPipeline.sendToAll(new PacketSimple(EnumSimplePacket.C_UPDATE_PLANETS_LIST, WorldUtil.getPlanetList()));
 
-            MinecraftServer mcServer = theServer;
+            MinecraftServer mcServer = FMLCommonHandler.instance().getMinecraftServerInstance();
 
             if (mcServer != null)
             {
@@ -632,13 +633,17 @@ public class WorldUtil
                 World worldOld = player.worldObj;
                 if (ConfigManagerCore.enableDebug)
                 {
-                    GCLog.info("DEBUG: Attempting to remove player from old dimension " + oldDimID);
-                    ((WorldServer) worldOld).getPlayerManager().removePlayer(player);
-                    GCLog.info("DEBUG: Successfully removed player from old dimension " + oldDimID);
+                    try {
+	                    GCLog.info("DEBUG: Attempting to remove player from old dimension " + oldDimID);
+	                    ((WorldServer) worldOld).getPlayerManager().removePlayer(player);
+	                    GCLog.info("DEBUG: Successfully removed player from old dimension " + oldDimID);
+                    } catch (Exception e) { e.printStackTrace(); }
                 }
                 else
                 {
-                    ((WorldServer) worldOld).getPlayerManager().removePlayer(player);
+                    try {
+                    	((WorldServer) worldOld).getPlayerManager().removePlayer(player);
+                    } catch (Exception e) {  }
                 }
 
                 player.closeScreen();

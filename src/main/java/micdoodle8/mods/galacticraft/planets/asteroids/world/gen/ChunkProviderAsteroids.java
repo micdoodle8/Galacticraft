@@ -222,7 +222,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 
         BlockMetaPair pair;
 
-        if (this.rand.nextBoolean())
+        if (y0 < 0 && this.rand.nextBoolean())
         {
             for (int i = 0; i < numOfBlocks; i++)
             {

@@ -35,19 +35,11 @@ public class TileEntityTelemetry extends TileEntity
 	public GameProfile clientGameProfile = null;
 
 	public static HashSet<BlockVec3> loadedList = new HashSet<BlockVec3>();
-	private static MinecraftServer theServer;
+	private MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
 	private Entity linkedEntity;
 	private UUID toUpdate = null;
 	private int pulseRate = 400;
 	private int lastHurttime = 0;
-	
-	static
-	{
-		if (FMLCommonHandler.instance().getEffectiveSide().isServer())
-		{
-			theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
-		}
-	}
 	
 	@Override
 	public void validate()

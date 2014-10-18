@@ -325,11 +325,12 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         if (this.frequency >= 0)
         {
             this.frequencyValid = true;
+            WorldServer[] servers = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers;
 
             worldLoop:
-            for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
+            for (int i = 0; i < servers.length; i++)
             {
-                WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
+                WorldServer world = servers[i];
 
                 for (TileEntity tile2 : new ArrayList<TileEntity>(world.loadedTileEntityList))
                 {
@@ -376,9 +377,10 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
             this.destFrequencyValid = false;
             if (this.destFrequency >= 0)
             {
-                for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length; i++)
+                WorldServer[] servers = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers;
+            	for (int i = 0; i < servers.length; i++)
                 {
-                    WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[i];
+                    WorldServer world = servers[i];
 
                     for (TileEntity tile2 : new ArrayList<TileEntity>(world.loadedTileEntityList))
                     {
