@@ -149,6 +149,10 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
     {
         switch (metadata)
         {
+        case 3:
+        case 4:
+        case 5:
+        	return true;
         default:
             return false;
         }
