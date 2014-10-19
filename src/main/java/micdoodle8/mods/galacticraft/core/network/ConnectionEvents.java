@@ -11,6 +11,8 @@ import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -53,7 +55,8 @@ public class ConnectionEvents
     @SubscribeEvent
     public void onConnectionReceived(ServerConnectionFromClientEvent event)
     {
-        ((NetHandlerPlayServer) event.handler).sendPacket(new PacketSimple(EnumSimplePacket.C_UPDATE_PLANETS_LIST, WorldUtil.getPlanetList()));
+        if (ConfigManagerCore.enableDebug) GCLog.info("Galacticraft server sending dimension IDs to connecting client.");
+    	((NetHandlerPlayServer) event.handler).sendPacket(new PacketSimple(EnumSimplePacket.C_UPDATE_PLANETS_LIST, WorldUtil.getPlanetList()));
         ((NetHandlerPlayServer) event.handler).sendPacket(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_LIST, WorldUtil.getSpaceStationList()));
     }
 
