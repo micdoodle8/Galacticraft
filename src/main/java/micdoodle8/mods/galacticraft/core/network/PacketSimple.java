@@ -542,7 +542,9 @@ public class PacketSimple extends Packet implements IPacket
         case C_UPDATE_PLANETS_LIST:
             try
             {
-                if (WorldUtil.registeredPlanets != null)
+                if (ConfigManagerCore.enableDebug)
+                	System.out.println("GC connecting to server: received planets dimension ID list.");
+            	if (WorldUtil.registeredPlanets != null)
                 {
                     for (Integer registeredID : WorldUtil.registeredPlanets)
                     {
@@ -551,6 +553,7 @@ public class PacketSimple extends Packet implements IPacket
                 }
                 WorldUtil.registeredPlanets = new ArrayList<Integer>();
 
+                String ids = "";
                 if (this.data.size() > 0)
                 {
                 	//Start the provider index at offset 2 to skip the two Overworld Orbit dimensions
@@ -561,6 +564,7 @@ public class PacketSimple extends Packet implements IPacket
                         {
                             WorldUtil.registerPlanetClient((Integer) o, providerIndex);
                             providerIndex++;
+                            ids += ((Integer)o).toString() + " ";
                         }
                     }
                     else if (this.data.get(0) instanceof Integer[])
@@ -569,8 +573,19 @@ public class PacketSimple extends Packet implements IPacket
                         {
                             WorldUtil.registerPlanetClient((Integer) o, providerIndex);
                             providerIndex++;
+                            ids += ((Integer)o).toString() + " ";
                         }
                     }
+                }
+                if (ConfigManagerCore.enableDebug)
+                {
+                	System.out.println("GC clientside planet dimensions registered: "+ids);
+                	WorldProvider dimMoon = WorldUtil.getProviderForName("moon.moon");
+                	if (dimMoon != null) System.out.println("Crosscheck: Moon is "+dimMoon.dimensionId);
+                	WorldProvider dimMars = WorldUtil.getProviderForName("planet.mars");
+                	if (dimMoon != null) System.out.println("Crosscheck: Mars is "+dimMars.dimensionId);
+                	WorldProvider dimAst = WorldUtil.getProviderForName("planet.asteroids");
+                	if (dimMoon != null) System.out.println("Crosscheck: Asteroids is "+dimAst.dimensionId);
                 }
                 break;
             }

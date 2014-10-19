@@ -55,7 +55,16 @@ public class ConnectionEvents
     @SubscribeEvent
     public void onConnectionReceived(ServerConnectionFromClientEvent event)
     {
-        if (ConfigManagerCore.enableDebug) GCLog.info("Galacticraft server sending dimension IDs to connecting client.");
+        if (ConfigManagerCore.enableDebug)
+        {
+        	Integer[] idList = (Integer[]) WorldUtil.getPlanetList().get(0);
+        	String ids = "";
+        	for (int j = 0; j < idList.length; j++)
+        	{
+       			ids+=idList[j].toString()+" ";
+        	}
+        	GCLog.info("Galacticraft server sending dimension IDs to connecting client: "+ ids);
+        }        
     	((NetHandlerPlayServer) event.handler).sendPacket(new PacketSimple(EnumSimplePacket.C_UPDATE_PLANETS_LIST, WorldUtil.getPlanetList()));
         ((NetHandlerPlayServer) event.handler).sendPacket(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_LIST, WorldUtil.getSpaceStationList()));
     }
