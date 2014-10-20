@@ -121,6 +121,7 @@ public class PacketSimple extends Packet implements IPacket
         S_ADD_RACE_PLAYER(Side.SERVER, String.class, Integer.class),
         S_COMPLETE_CBODY_HANDSHAKE(Side.SERVER, String.class),
         S_REQUEST_GEAR_DATA(Side.SERVER, String.class),
+        S_REQUEST_ARCLAMP_FACING(Side.CLIENT, Integer.class, Integer.class, Integer.class), 
         S_REQUEST_OVERWORLD_IMAGE(Side.SERVER),
         S_REQUEST_PLAYERSKIN(Side.SERVER, String.class),
         S_UPDATE_VIEWSCREEN_REQUEST(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class),
@@ -1325,6 +1326,13 @@ public class PacketSimple extends Packet implements IPacket
                 GCPlayerHandler.checkGear(e, GCPlayerStats.get(e), true);
             }
             break;
+        case S_REQUEST_ARCLAMP_FACING:
+        	TileEntity tileAL = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
+        	if (tileAL instanceof TileEntityArclamp)
+        	{
+            	((TileEntityArclamp)tileAL).updateClientFlag = true; 
+        	}
+        	break;
         case S_UPDATE_VIEWSCREEN_REQUEST:
         	int screenDim = (Integer) this.data.get(0);
         	TileEntity tile = player.worldObj.getTileEntity((Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3));

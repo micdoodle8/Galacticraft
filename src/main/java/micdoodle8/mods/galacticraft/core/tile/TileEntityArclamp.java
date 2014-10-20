@@ -34,7 +34,7 @@ public class TileEntityArclamp extends TileEntity
     private AxisAlignedBB thisAABB;
     private Vec3 thisPos;
     private int facingSide = 0;
-	private boolean updateClientFlag;
+	public boolean updateClientFlag;
 
     @Override
     public void updateEntity()
@@ -164,6 +164,10 @@ public class TileEntityArclamp extends TileEntity
         this.ticks = 0;
         this.thisAABB = null;
         this.isActive = true;
+        if (this.worldObj.isRemote)
+        {
+        	GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_ARCLAMP_FACING, new Object[] { this.xCoord, this.yCoord, this.zCoord } ));
+        }
     }
 
     @Override
