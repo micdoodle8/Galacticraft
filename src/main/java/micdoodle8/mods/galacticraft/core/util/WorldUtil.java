@@ -496,10 +496,11 @@ public class WorldUtil
             temp.add(i);
         }
 
-        for (final Integer i : WorldUtil.registeredSpaceStations)
-        {
-            temp.add(i);
-        }
+        if (WorldUtil.registeredSpaceStations != null)
+        	for (final Integer i : WorldUtil.registeredSpaceStations)
+	        {
+	            temp.add(i);
+	        }
 
         final Integer[] finalArray = new Integer[temp.size()];
 
