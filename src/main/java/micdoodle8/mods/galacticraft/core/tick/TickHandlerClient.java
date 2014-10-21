@@ -78,9 +78,16 @@ public class TickHandlerClient
 
     static
     {
-        for (final String s : ConfigManagerCore.detectableIDs)
+    	registerDetectableBlocks(true);
+    }
+    
+    public static void registerDetectableBlocks(boolean logging)
+    {
+    	ClientProxyCore.detectableBlocks.clear();
+    	
+    	for (final String s : ConfigManagerCore.detectableIDs)
         {
-        	BlockTuple bt = ConfigManagerCore.stringToBlock(s, "External Detectable IDs"); 
+        	BlockTuple bt = ConfigManagerCore.stringToBlock(s, "External Detectable IDs", logging); 
         	if (bt == null) continue;
 
 			int meta = bt.meta;

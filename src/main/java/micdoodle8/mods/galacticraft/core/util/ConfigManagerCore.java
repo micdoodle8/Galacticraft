@@ -5,8 +5,11 @@ import com.google.common.primitives.Ints;
 import cpw.mods.fml.client.config.IConfigElement;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameData;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.config.ConfigElement;
@@ -90,6 +93,8 @@ public class ConfigManagerCore
     public static boolean alternateCanisterRecipe;
     public static boolean disableRocketsToOverworld;
     public static int rocketFuelFactor;
+    
+    public static ArrayList<Object> clientSave = null;
 
     public static void initialize(File file)
     {
@@ -370,7 +375,7 @@ public class ConfigManagerCore
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Other mods ores for GC to generate on the Moon and planets", new String [] { });
-            prop.comment = "Enter IDs of other mods' ores here for Galacticraft to generate them on the Moon and other planets. Format is BlockName or BlockName:metadata. Use optional parameters at end of each line: /RARE /UNCOMMON or /COMMON for rarity in a chunk; /DEEP /SHALLOW or /BOTH for height; /SINGLE /STANDARD or /LARGE for clump size; /XTRARANDOM for ores sometimes there sometimes not at all.  If nothing specified, defaults are /COMMON, /EVEN and /STANDARD.  Repeat lines to generate a huge quantity of ores.";
+            prop.comment = "Enter IDs of other mods' ores here for Galacticraft to generate them on the Moon and other planets. Format is BlockName or BlockName:metadata. Use optional parameters at end of each line: /RARE /UNCOMMON or /COMMON for rarity in a chunk; /DEEP /SHALLOW or /BOTH for height; /SINGLE /STANDARD or /LARGE for clump size; /XTRARANDOM for ores sometimes there sometimes not at all.  /ONLYMOON or /ONLYMARS if wanted on one planet only.  If nothing specified, defaults are /COMMON, /BOTH and /STANDARD.  Repeat lines to generate a huge quantity of ores.";
             prop.setLanguageKey("gc.configgui.otherModOreGenIDs");
             oregenIDs = prop.getStringList();
             propOrder.add(prop.getName());
@@ -588,7 +593,7 @@ public class ConfigManagerCore
         return list;
     }
     
-    public static BlockTuple stringToBlock(String s, String caller)
+    public static BlockTuple stringToBlock(String s, String caller, boolean logging)
     {
         int lastColon = s.lastIndexOf(':');
         int meta = -1;
@@ -615,22 +620,76 @@ public class ConfigManagerCore
         Block block = Block.getBlockFromName(name);
         if (block == null)
         {
-            GCLog.severe("[config] " + caller + ": unrecognised block name '" + s + "'.");
+            if (logging) GCLog.severe("[config] " + caller + ": unrecognised block name '" + s + "'.");
             return null;
         }
         try
         {
             Integer.parseInt(name);
             String bName = GameData.getBlockRegistry().getNameForObject(block);
-            GCLog.info("[config] " + caller + ": the use of numeric IDs is discouraged, please use " + bName + " instead of " + name);
+            if (logging) GCLog.info("[config] " + caller + ": the use of numeric IDs is discouraged, please use " + bName + " instead of " + name);
         }
         catch (NumberFormatException ex) { }
         if (Blocks.air == block)
         {
-            GCLog.info("[config] " + caller + ": not a good idea to specify air, skipping that!");
+        	if (logging) GCLog.info("[config] " + caller + ": not a good idea to specify air, skipping that!");
             return null;
         }
    	
     	return new BlockTuple(block, meta);
     }
+    
+    public static List<Object> getServerConfigOverride()
+    {
+    	ArrayList<Object> returnList = new ArrayList();
+    	returnList.add(ConfigManagerCore.hardMode);
+    	returnList.add(ConfigManagerCore.dungeonBossHealthMod);
+    	returnList.add(ConfigManagerCore.suffocationDamage);
+    	returnList.add(ConfigManagerCore.suffocationCooldown);
+    	returnList.add(ConfigManagerCore.rocketFuelFactor);
+    	returnList.add(ConfigManagerCore.detectableIDs.clone());
+    	
+    	//TODO Should this include any other client-side configurables too?
+    	//If changing this, update definition of EnumSimplePacket.C_UPDATE_CONFIGS
+    	return returnList;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void setConfigOverride(List<Object> configs)
+    {
+    	ConfigManagerCore.hardMode = (Boolean) configs.get(0);
+    	ConfigManagerCore.dungeonBossHealthMod = (Double) configs.get(1);
+    	ConfigManagerCore.suffocationDamage = (Integer) configs.get(2);
+    	ConfigManagerCore.suffocationCooldown = (Integer) configs.get(3);
+    	ConfigManagerCore.rocketFuelFactor = (Integer) configs.get(4);
+    	int sizeIDs = configs.size() - 5;
+    	if (sizeIDs > 0)
+    	{
+    		if (configs.get(5) instanceof String)
+    		{
+    			ConfigManagerCore.detectableIDs = new String[sizeIDs];
+		    	for (int j = 0; j < sizeIDs; j++)
+		    	ConfigManagerCore.detectableIDs[j] = new String((String) configs.get(5 + j));
+    		}
+    		else if (configs.get(5) instanceof String[])
+    		{
+    			ConfigManagerCore.detectableIDs = ((String[])configs.get(5));
+    		}
+        	TickHandlerClient.registerDetectableBlocks(false);
+    	}
+    }
+    
+    public static void saveClientConfigOverrideable()
+    {
+    	if (ConfigManagerCore.clientSave == null)
+    	{
+    		ConfigManagerCore.clientSave = (ArrayList<Object>) ConfigManagerCore.getServerConfigOverride();
+    	}
+    }
+    
+    public static void restoreClientConfigOverrideable()
+    {
+    	if (ConfigManagerCore.clientSave != null)
+    		ConfigManagerCore.setConfigOverride(clientSave);
+    }    
 }

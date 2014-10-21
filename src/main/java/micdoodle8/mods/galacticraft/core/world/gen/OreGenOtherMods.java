@@ -67,7 +67,7 @@ public class OreGenOtherMods
             	}
             	else s = str;
             	
-            	BlockTuple bt = ConfigManagerCore.stringToBlock(s, "Other mod ore generate IDs"); 
+            	BlockTuple bt = ConfigManagerCore.stringToBlock(s, "Other mod ore generate IDs", true); 
             	if (bt == null) continue;
 
     			int meta = bt.meta;

@@ -136,6 +136,7 @@ public class PacketSimple extends Packet implements IPacket
         C_UPDATE_SPACESTATION_DATA(Side.CLIENT, Integer.class, NBTTagCompound.class),
         C_UPDATE_SPACESTATION_CLIENT_ID(Side.CLIENT, Integer.class),
         C_UPDATE_PLANETS_LIST(Side.CLIENT, Integer[].class),
+        C_UPDATE_CONFIGS(Side.CLIENT, Boolean.class, Double.class, Integer.class, Integer.class, Integer.class, String[].class),
         C_ADD_NEW_SCHEMATIC(Side.CLIENT, Integer.class),
         C_UPDATE_SCHEMATIC_LIST(Side.CLIENT, Integer[].class),
         C_PLAY_SOUND_BOSS_DEATH(Side.CLIENT),
@@ -260,7 +261,7 @@ public class PacketSimple extends Packet implements IPacket
         }
         else
         {
-            if (type != EnumSimplePacket.C_UPDATE_SPACESTATION_LIST && type != EnumSimplePacket.C_UPDATE_PLANETS_LIST)
+            if (type != EnumSimplePacket.C_UPDATE_SPACESTATION_LIST && type != EnumSimplePacket.C_UPDATE_PLANETS_LIST && type != EnumSimplePacket.C_UPDATE_CONFIGS)
             {
                 return;
             }
@@ -595,6 +596,10 @@ public class PacketSimple extends Packet implements IPacket
                 e.printStackTrace();
             }
             break;
+        case C_UPDATE_CONFIGS:
+        	ConfigManagerCore.saveClientConfigOverrideable();
+        	ConfigManagerCore.setConfigOverride(data);
+        	break;
         case C_ADD_NEW_SCHEMATIC:
             final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) this.data.get(0));
             if (!stats.unlockedSchematics.contains(page))
@@ -1474,7 +1479,7 @@ public class PacketSimple extends Packet implements IPacket
     @Override
     public void processPacket(INetHandler var1)
     {
-        if (this.type != EnumSimplePacket.C_UPDATE_SPACESTATION_LIST && this.type != EnumSimplePacket.C_UPDATE_PLANETS_LIST)
+        if (this.type != EnumSimplePacket.C_UPDATE_SPACESTATION_LIST && this.type != EnumSimplePacket.C_UPDATE_PLANETS_LIST && this.type != EnumSimplePacket.C_UPDATE_CONFIGS)
         {
             return;
         }

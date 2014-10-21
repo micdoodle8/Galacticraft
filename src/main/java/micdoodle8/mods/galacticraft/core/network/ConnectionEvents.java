@@ -67,6 +67,7 @@ public class ConnectionEvents
         }        
     	((NetHandlerPlayServer) event.handler).sendPacket(new PacketSimple(EnumSimplePacket.C_UPDATE_PLANETS_LIST, WorldUtil.getPlanetList()));
         ((NetHandlerPlayServer) event.handler).sendPacket(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_LIST, WorldUtil.getSpaceStationList()));
+    	((NetHandlerPlayServer) event.handler).sendPacket(new PacketSimple(EnumSimplePacket.C_UPDATE_CONFIGS, ConfigManagerCore.getServerConfigOverride()));
     }
 
     @SubscribeEvent
@@ -86,6 +87,7 @@ public class ConnectionEvents
             ConnectionEvents.clientConnected = false;
             WorldUtil.unregisterPlanets();
             WorldUtil.unregisterSpaceStations();
+            ConfigManagerCore.restoreClientConfigOverrideable();
         }
     }
 }

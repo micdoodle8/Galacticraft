@@ -26,7 +26,7 @@ public class OxygenPressureProtocol
         {
             try
             {
-            	BlockTuple bt = ConfigManagerCore.stringToBlock(s, "External Sealable IDs"); 
+            	BlockTuple bt = ConfigManagerCore.stringToBlock(s, "External Sealable IDs", true); 
             	if (bt == null) continue;
 
     			int meta = bt.meta;
