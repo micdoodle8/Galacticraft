@@ -55,7 +55,8 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     public float rollAmplitude;
     public float shipDamage; 
     private ArrayList<BlockVec3Dim> telemetryList = new ArrayList<BlockVec3Dim>();
-
+    private boolean addToTelemetry = false;
+    
     public EntitySpaceshipBase(World par1World)
     {
         super(par1World);
@@ -186,13 +187,27 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     {
         if (this.ticks >= Long.MAX_VALUE)
         {
-            this.ticks = 1;
+            this.ticks = 0;
         }
 
         this.ticks++;
 
         super.onUpdate();
 
+        if (this.addToTelemetry)
+        {
+        	this.addToTelemetry = false;
+			for (BlockVec3Dim vec : this.telemetryList)
+			{
+				TileEntity t1 = vec.getTileEntity();
+				if (t1 instanceof TileEntityTelemetry && !t1.isInvalid())
+				{
+					if (((TileEntityTelemetry)t1).linkedEntity == this)
+						((TileEntityTelemetry)t1).addTrackedEntity(this);
+				}		
+			}
+        }
+        
         if (this.riddenByEntity != null)
         {
             this.riddenByEntity.fallDistance = 0.0F;
@@ -474,17 +489,8 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
                         this.telemetryList.add(BlockVec3Dim.readFromNBT(tag1));
                     }
                 }
+                this.addToTelemetry = true;
             }
-        	ArrayList<TileEntityTelemetry> tList = new ArrayList<TileEntityTelemetry>();
-    		for (BlockVec3Dim vec : this.telemetryList)
-    		{
-    			TileEntity t1 = vec.getTileEntity();
-    			if (t1 instanceof TileEntityTelemetry && !t1.isInvalid())
-    			{
-    				if (((TileEntityTelemetry)t1).linkedEntity == this)
-    					((TileEntityTelemetry)t1).addTrackedEntity(this);
-    			}		
-    		}
         }
     }
 
