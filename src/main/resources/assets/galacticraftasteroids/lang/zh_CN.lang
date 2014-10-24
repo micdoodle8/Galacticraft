@@ -98,6 +98,7 @@ gui.message.sendingActive.name=激活发送
 gui.message.range.name=范围: %dm
 gui.message.notEnoughEnergy.name=能量不足
 gui.message.targetNoEnergy.name=目标没有足够的能量
+gui.message.grapple.fail=如果我想将抓升钩抛出,我的物品栏中需要有足够的线!
 
 tile.treasureT3.description=3阶宝箱目前无法使用.
 tile.walkway.description=通道现作为装饰,可在保持太空主题的同时,用于连接方块.
