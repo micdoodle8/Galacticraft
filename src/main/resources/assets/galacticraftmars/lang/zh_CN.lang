@@ -13,6 +13,7 @@ item.compressedDesh.name=致密戴斯板
 item.spaceshipTier2.cargoRocket.name=货运火箭
 item.fluidManip.name=流体操纵器
 item.bucketSludge.name=菌泥桶
+fluid.bacterialsludge=菌泥
 
 # TOOLS
 item.deshPick.name=戴斯镐
@@ -176,6 +177,7 @@ entity.CargoRocket.name=货运火箭
 # Container
 container.launchcontroller.name=发射控制器
 container.tileTerraformer.name=地形改造机
+container.marsLander.name=着陆气球
 
 # CONFIG GUI
 gc.configgui.dimensionIDMars=Mars Dimension ID(火星维度ID)
