@@ -535,7 +535,7 @@ gui.spaceRace.comingSoon=Coming Soon ##NEEDS TRANSLATE##
 # DIMENSIONS
 dimension.Overworld.name=地球
 dimension.Moon.name=月
-dimension.Sun.name=日
+dimension.Sun.name=太陽
 planet.overworld=Overworld ##NEEDS TRANSLATE##
 moon.moon=Moon ##NEEDS TRANSLATE##
 galaxy.milkyWay=Milky Way ##NEEDS TRANSLATE##
