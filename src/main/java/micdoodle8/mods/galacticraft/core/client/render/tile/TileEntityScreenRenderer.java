@@ -163,6 +163,17 @@ public class TileEntityScreenRenderer extends TileEntitySpecialRenderer
         boolean cornerblock = false;
         if (tileEntity.connectionsLeft == 0 || tileEntity.connectionsRight == 0)
         	cornerblock = (tileEntity.connectionsUp == 0 || tileEntity.connectionsDown == 0);
+        int totalLR = tileEntity.connectionsLeft + tileEntity.connectionsRight; 
+        int totalUD = tileEntity.connectionsUp+ tileEntity.connectionsDown; 
+        if (totalLR > 1 && totalUD > 1 && !cornerblock)
+        {
+    		//centre block
+        	if (tileEntity.connectionsLeft == tileEntity.connectionsRight - (totalLR | 1))
+        	{
+    			if (tileEntity.connectionsUp == tileEntity.connectionsDown - (totalUD | 1))
+        			cornerblock = true;
+        	}
+        }	
         tileEntity.screen.drawScreen(tileEntity.imageType, f + tileEntity.getWorldObj().getWorldTime(), cornerblock);
 
         GL11.glPopMatrix();

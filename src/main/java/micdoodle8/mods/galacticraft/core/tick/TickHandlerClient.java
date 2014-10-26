@@ -37,6 +37,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketRotateRocket;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
 import net.minecraft.block.Block;
@@ -63,6 +64,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import java.util.HashSet;
 import java.util.List;
 
 public class TickHandlerClient
@@ -75,6 +77,8 @@ public class TickHandlerClient
     public static boolean spaceRaceGuiScheduled = false;
 
     private static ThreadRequirementMissing missingRequirementThread;
+    
+    public static HashSet<TileEntityScreen> screenConnectionsUpdateList = new HashSet<TileEntityScreen>();
 
     static
     {
@@ -508,6 +512,16 @@ public class TickHandlerClient
             {
                 GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_IGNITE_ROCKET, new Object[] { }));
                 ClientProxyCore.lastSpacebarDown = true;
+            }
+            
+            if (!(this.screenConnectionsUpdateList.isEmpty()))
+            {
+            	HashSet<TileEntityScreen> updateListCopy = (HashSet<TileEntityScreen>) screenConnectionsUpdateList.clone();
+            	screenConnectionsUpdateList.clear();
+            	for (TileEntityScreen te : updateListCopy)
+            	{
+            		if (te.refreshOnUpdate) te.refreshConnections(true);            		
+            	}
             }
         }
     }

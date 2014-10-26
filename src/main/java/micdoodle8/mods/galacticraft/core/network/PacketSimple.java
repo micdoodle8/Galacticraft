@@ -800,7 +800,7 @@ public class PacketSimple extends Packet implements IPacket
             	screenTile.connectedDown = (flags & 4) > 0;
             	screenTile.connectedLeft = (flags & 2) > 0;
             	screenTile.connectedRight = (flags & 1) > 0;
-            	screenTile.refreshConnections(true);
+            	screenTile.refreshNextTick(true);
         	}      	
         	break;
         case C_UPDATE_TELEMETRY:

@@ -54,7 +54,7 @@ public class DrawGameScreen extends IScreenManager
     		return;
     	}
 
-		if (type < 2 || cornerBlock)
+		if (cornerBlock)
 		{
 			this.doDraw(type, ticks);
 			this.initialise = true;
