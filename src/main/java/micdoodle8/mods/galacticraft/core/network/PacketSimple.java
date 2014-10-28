@@ -85,7 +85,10 @@ import net.minecraftforge.common.DimensionManager;
 
 import org.apache.commons.io.FileUtils;
 
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageOutputStream;
+import javax.imageio.stream.ImageOutputStream;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -1400,10 +1403,11 @@ public class PacketSimple extends Packet implements IPacket
                 {
                     if (!outputFile.exists() || (outputFile.canWrite() && outputFile.canRead()))
                     {
-                        if (ImageIO.write(image, "jpg", outputFile))
-                        {
-                            success = true;
-                        }
+                    	ImageOutputStream outputStream = new FileImageOutputStream(outputFile);  
+                    	GalacticraftCore.jpgWriter.setOutput(outputStream);
+                    	GalacticraftCore.jpgWriter.write(null, new IIOImage(image, null, null), GalacticraftCore.writeParam);
+                    	outputStream.close();
+                        success = true;
                     }
                 }
                 catch (IOException ex)

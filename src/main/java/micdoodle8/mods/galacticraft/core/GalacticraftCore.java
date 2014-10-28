@@ -62,6 +62,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+
 @Mod(name = GalacticraftCore.NAME, version = Constants.LOCALMAJVERSION + "." + Constants.LOCALMINVERSION + "." + Constants.LOCALBUILDVERSION, useMetadata = true, modid = Constants.MOD_ID_CORE, dependencies = "required-after:Forge@[10.12.2.1147,); required-after:FML@[7.2.217.1147,); after:IC2; after:BuildCraft|Core; after:BuildCraft|Energy; after:IC2", guiFactory = "micdoodle8.mods.galacticraft.core.client.gui.screen.ConfigGuiFactoryCore")
 public class GalacticraftCore
 {
@@ -106,6 +110,9 @@ public class GalacticraftCore
     public static HashMap<String, ItemStack> itemList = new HashMap<String, ItemStack>();
     public static HashMap<String, ItemStack> blocksList = new HashMap<String, ItemStack>();
 
+    public static ImageWriter jpgWriter;
+    public static ImageWriteParam writeParam;
+    
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
@@ -320,6 +327,11 @@ public class GalacticraftCore
         ThreadVersionCheck.startCheck();
         TickHandlerServer.restart();
         BlockVec3.chunkCacheDim = Integer.MAX_VALUE;
+        
+        jpgWriter = ImageIO.getImageWritersByFormatName("jpg").next();
+        writeParam = jpgWriter.getDefaultWriteParam();
+        writeParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+        writeParam.setCompressionQuality(1.0f);
     }
 
     @EventHandler
