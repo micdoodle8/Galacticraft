@@ -1,14 +1,24 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.ibm.icu.text.ArabicShaping;
-import com.ibm.icu.text.ArabicShapingException;
-import com.ibm.icu.text.Bidi;
-import cpw.mods.fml.client.FMLClientHandler;
+import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
-import micdoodle8.mods.galacticraft.api.galaxies.*;
+import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
+import micdoodle8.mods.galacticraft.api.galaxies.IChildBody;
+import micdoodle8.mods.galacticraft.api.galaxies.Moon;
+import micdoodle8.mods.galacticraft.api.galaxies.Planet;
+import micdoodle8.mods.galacticraft.api.galaxies.Satellite;
+import micdoodle8.mods.galacticraft.api.galaxies.SolarSystem;
+import micdoodle8.mods.galacticraft.api.galaxies.Star;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -27,6 +37,7 @@ import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.MinecraftForge;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -36,8 +47,13 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
-import java.nio.FloatBuffer;
-import java.util.*;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.ibm.icu.text.ArabicShaping;
+import com.ibm.icu.text.ArabicShapingException;
+import com.ibm.icu.text.Bidi;
+
+import cpw.mods.fml.client.FMLClientHandler;
 
 public class GuiCelestialSelection extends GuiScreen
 {
@@ -46,7 +62,8 @@ public class GuiCelestialSelection extends GuiScreen
         PREVIEW,
         PROFILE
     }
-
+    
+    private Matrix4f mainWorldMatrix;
     private float zoom = 0.0F;
     private float planetZoom = 0.0F;
     private boolean doneZooming = false;
@@ -451,7 +468,9 @@ public class GuiCelestialSelection extends GuiScreen
             {
                 if (this.selectedBody == null || (this.selectionState == EnumSelectionState.PREVIEW && this.selectionCount < 2))
                 {
-                    this.zoom = Math.min(Math.max(this.zoom + wheel, -0.5F), 3);
+//                    this.zoom = Math.min(Math.max(this.zoom + wheel, -0.5F), 3);
+                	this.zoom = Math.min(Math.max(this.zoom + wheel, -1F), 3); //Increase maximum zoom.
+                	//TODO: Make smoother, and allow for moving of the map
                 }
                 else
                 {
@@ -897,7 +916,10 @@ public class GuiCelestialSelection extends GuiScreen
 
         GL11.glPushMatrix();
         Matrix4f worldMatrix = this.setIsometric(partialTicks);
-        this.drawGrid(194.4F, height / 3 / 3.5F);
+        mainWorldMatrix = worldMatrix;
+        float gridSize = 7000F; //194.4F;
+        //TODO: Add dynamic map sizing, to allow the map to be small by default and expand when more distant solar systems are added.
+		this.drawGrid(gridSize, height / 3 / 3.5F);
         this.drawCircles();
         GL11.glPopMatrix();
 
@@ -998,14 +1020,23 @@ public class GuiCelestialSelection extends GuiScreen
     {
         if (cBody instanceof Star)
         {
-            return new Vector3f();
+        	if(cBody.getUnlocalizedName().equalsIgnoreCase("star.sol")) { return new Vector3f(); } //Stop floating point moving with a scale for main solar system
+        	Vector3 mappos = ((Star) cBody).getParentSolarSystem().getMapPosition();
+            return new Vector3f(mappos.floatX(), mappos.floatY(), mappos.floatZ());
         }
 
         int cBodyTicks = this.celestialBodyTicks.get(cBody);
         float timeScale = cBody instanceof Planet ? 200.0F : 2.0F;
         float distanceFromCenter = this.getScale(cBody);
         Vector3f cBodyPos = new Vector3f((float) Math.sin(cBodyTicks / (timeScale * cBody.getRelativeOrbitTime()) + cBody.getPhaseShift()) * distanceFromCenter, (float) Math.cos(cBodyTicks / (timeScale * cBody.getRelativeOrbitTime()) + cBody.getPhaseShift()) * distanceFromCenter, 0);
-
+        
+        if(cBody instanceof Planet)
+        {
+        	Star parentStar = ((Planet) cBody).getParentSolarSystem().getMainStar();
+        	Vector3f parentVec = this.getCelestialBodyPosition(parentStar);
+        	return Vector3f.add(cBodyPos, parentVec, null);
+        }
+        
         if (cBody instanceof IChildBody)
         {
             Vector3f parentVec = this.getCelestialBodyPosition(((IChildBody) cBody).getParentPlanet());
@@ -1014,6 +1045,7 @@ public class GuiCelestialSelection extends GuiScreen
 
         if (cBody instanceof Satellite)
         {
+        	
             Vector3f parentVec = this.getCelestialBodyPosition(((Satellite) cBody).getParentPlanet());
             return Vector3f.add(cBodyPos, parentVec, null);
         }
@@ -1031,6 +1063,7 @@ public class GuiCelestialSelection extends GuiScreen
         return celestialBody instanceof Star ? 12 : (celestialBody instanceof Planet ? 6 : (celestialBody instanceof IChildBody ? 6 : (celestialBody instanceof Satellite ? 6 : 2)));
     }
 
+    //TODO: Find Point
     public HashMap<CelestialBody, Matrix4f> drawCelestialBodies(Matrix4f worldMatrix)
     {
         GL11.glColor3f(1, 1, 1);
@@ -1045,7 +1078,7 @@ public class GuiCelestialSelection extends GuiScreen
             {
                 GL11.glPushMatrix();
                 Matrix4f worldMatrix0 = new Matrix4f(worldMatrix);
-
+                
                 Matrix4f.translate(this.getCelestialBodyPosition(star), worldMatrix0, worldMatrix0);
 
                 Matrix4f worldMatrix1 = new Matrix4f();
@@ -1099,7 +1132,7 @@ public class GuiCelestialSelection extends GuiScreen
                     CelestialBodyRenderEvent.Post postEvent = new CelestialBodyRenderEvent.Post(star);
                     MinecraftForge.EVENT_BUS.post(postEvent);
                 }
-
+                
                 fb.clear();
                 GL11.glPopMatrix();
             }
@@ -2023,8 +2056,11 @@ public class GuiCelestialSelection extends GuiScreen
         Matrix4f.translate(new Vector3f(width / 2.0F, height / 2, 0), mat0, mat0);
         Matrix4f.rotate((float) Math.toRadians(55), new Vector3f(1, 0, 0), mat0, mat0);
         Matrix4f.rotate((float) Math.toRadians(-45), new Vector3f(0, 0, 1), mat0, mat0);
-        float zoomLocal = this.getZoomAdvanced();
+        float zoomLocal = this.getZoomAdvanced(); //TODO: Find point
         this.zoom = this.getZoomAdvanced();
+//        System.out.println(zoom);
+        
+//        this.zoom = -1F;
         Matrix4f.scale(new Vector3f(1.1f + zoomLocal, 1.1F + zoomLocal, 1.1F + zoomLocal), mat0, mat0);
         Vector2f cBodyPos = this.getTranslationAdvanced(partialTicks);
         this.position = this.getTranslationAdvanced(partialTicks);
@@ -2066,10 +2102,12 @@ public class GuiCelestialSelection extends GuiScreen
         final float sin = (float) Math.sin(theta);
 
         for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
-        {
+        {	
             if (planet.getParentSolarSystem() != null)
             {
-                float x = this.getScale(planet);
+            	Vector3f planPos = this.getCelestialBodyPosition(planet.getParentSolarSystem().getMainStar());
+            	
+            	float x = this.getScale(planet);
                 float y = 0;
 
                 float alpha = 1.0F;
@@ -2103,6 +2141,10 @@ public class GuiCelestialSelection extends GuiScreen
 
                     if (!preEvent.isCanceled())
                     {
+                    	GL11.glTranslatef(planPos.getX(), planPos.getY(), planPos.getZ());
+                    	
+//                    	System.out.println(planet.getLocalizedName() + " " + planet.getParentSolarSystem().getMapPosition());
+                    	
                         GL11.glBegin(GL11.GL_LINE_LOOP);
 
                         float temp;
@@ -2114,9 +2156,11 @@ public class GuiCelestialSelection extends GuiScreen
                             x = cos * x - sin * y;
                             y = sin * temp + cos * y;
                         }
-
+                        
                         GL11.glEnd();
-
+                        
+                        GL11.glTranslatef(-planPos.getX(), -planPos.getY(), -planPos.getZ());
+                        
                         count++;
                     }
 
