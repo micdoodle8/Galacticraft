@@ -499,7 +499,8 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     @Override
     public int getSizeInventory()
     {
-        return this.rocketType.getInventorySpace();
+        if (this.rocketType == null) return 2;
+    	return this.rocketType.getInventorySpace();
     }
 
     @Override
