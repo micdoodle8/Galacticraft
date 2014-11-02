@@ -427,4 +427,12 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
             }
         }
     }
+    
+    @Override
+    public boolean isReplaceableOreGen(World world, int x, int y, int z, Block target)
+    {
+        if (target != Blocks.stone) return false;
+    	int meta = world.getBlockMetadata(x, y, z);
+    	return (meta == 3 || meta == 4);
+    }
 }

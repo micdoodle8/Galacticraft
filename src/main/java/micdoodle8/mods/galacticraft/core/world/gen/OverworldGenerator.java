@@ -86,7 +86,7 @@ public class OverworldGenerator implements IWorldGenerator
                                 double var45 = (var44 + 0.5D - var24) / (var28 / 2.0D);
 
                                 Block block = par1World.getBlock(var38, var41, var44);
-                                if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && block == Blocks.stone)
+                                if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && block.isReplaceableOreGen(par1World, var38, var41, var44, Blocks.stone))
                                 {
                                     par1World.setBlock(var38, var41, var44, this.oreBlock, this.metadata, 2);
                                 }
