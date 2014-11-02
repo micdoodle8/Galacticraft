@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -54,7 +54,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
             GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_BEGIN_CRYOGENIC_SLEEP, new Object[] { this.xCoord, this.yCoord, this.zCoord }), (EntityPlayerMP) entityPlayer);
             return true;
         case NOT_POSSIBLE_NOW:
-            entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.cryogenic.chat.cantUse", GCEntityPlayerMP.getPlayerStats((EntityPlayerMP) entityPlayer).cryogenicChamberCooldown / 20)));
+            entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.cryogenic.chat.cantUse", GCPlayerStats.get((EntityPlayerMP) entityPlayer).cryogenicChamberCooldown / 20)));
             return false;
         default:
             return false;
@@ -75,7 +75,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
                 return EnumStatus.NOT_POSSIBLE_HERE;
             }
 
-            if (GCEntityPlayerMP.getPlayerStats((EntityPlayerMP) entityPlayer).cryogenicChamberCooldown > 0)
+            if (GCPlayerStats.get((EntityPlayerMP) entityPlayer).cryogenicChamberCooldown > 0)
             {
                 return EnumStatus.NOT_POSSIBLE_NOW;
             }

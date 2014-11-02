@@ -5,7 +5,7 @@ import java.util.UUID;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
@@ -173,7 +173,7 @@ public class BlockTelemetry extends BlockAdvancedTile implements ItemBlockDesc.I
         			return true;
         		}
 
-        		ItemStack wearing = GCEntityPlayerMP.getPlayerStats((EntityPlayerMP)player).frequencyModuleInSlot; 
+        		ItemStack wearing = GCPlayerStats.get((EntityPlayerMP)player).frequencyModuleInSlot; 
         		if (wearing != null)
         		{
         			if (wearing.hasTagCompound() && wearing.getTagCompound().hasKey("teDim")) return false;

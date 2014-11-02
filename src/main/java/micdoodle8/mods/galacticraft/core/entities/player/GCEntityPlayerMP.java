@@ -19,32 +19,27 @@ public class GCEntityPlayerMP extends EntityPlayerMP
         super(server, world, profile, itemInWorldManager);
     }
 
-    private IPlayerServer getServerHandler()
-    {
-        return GalacticraftCore.proxy.player;
-    }
-
     //Server-only method
     @Override
     public void clonePlayer(EntityPlayer oldPlayer, boolean keepInv)
     {
         super.clonePlayer(oldPlayer, keepInv);
-        this.getServerHandler().clonePlayer(this, oldPlayer, keepInv);
+        GalacticraftCore.proxy.player.clonePlayer(this, oldPlayer, keepInv);
         TileEntityTelemetry.updateLinkedPlayer((EntityPlayerMP) oldPlayer, this);
     }
 
     @Override
     public void updateRidden()
     {
-        this.getServerHandler().updateRiddenPre(this);
+        GalacticraftCore.proxy.player.updateRiddenPre(this);
         super.updateRidden();
-        this.getServerHandler().updateRiddenPost(this);
+        GalacticraftCore.proxy.player.updateRiddenPost(this);
     }
 
     @Override
     public void mountEntity(Entity par1Entity)
     {
-        if (!this.getServerHandler().mountEntity(this, par1Entity))
+        if (!GalacticraftCore.proxy.player.mountEntity(this, par1Entity))
         {
             super.mountEntity(par1Entity);
         }
@@ -54,13 +49,13 @@ public class GCEntityPlayerMP extends EntityPlayerMP
     public void moveEntity(double par1, double par3, double par5)
     {
         super.moveEntity(par1, par3, par5);
-        this.getServerHandler().moveEntity(this, par1, par3, par5);
+        GalacticraftCore.proxy.player.moveEntity(this, par1, par3, par5);
     }
 
     @Override
     public void wakeUpPlayer(boolean par1, boolean par2, boolean par3)
     {
-        if (!this.getServerHandler().wakeUpPlayer(this, par1, par2, par3))
+        if (!GalacticraftCore.proxy.player.wakeUpPlayer(this, par1, par2, par3))
         {
             super.wakeUpPlayer(par1, par2, par3);
         }
@@ -69,7 +64,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
     @Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
-        par2 = this.getServerHandler().attackEntityFrom(this, par1DamageSource, par2);
+        par2 = GalacticraftCore.proxy.player.attackEntityFrom(this, par1DamageSource, par2);
 
         if (par2 == -1)
         {
@@ -82,16 +77,6 @@ public class GCEntityPlayerMP extends EntityPlayerMP
     @Override
     public void knockBack(Entity p_70653_1_, float p_70653_2_, double impulseX, double impulseZ)
     {
-        this.getServerHandler().knockBack(this, p_70653_1_, p_70653_2_, impulseX, impulseZ);
-    }
-
-    public final GCPlayerStats getPlayerStats()
-    {
-        return GCPlayerStats.get(this);
-    }
-
-    public static GCPlayerStats getPlayerStats(EntityPlayerMP player)
-    {
-        return GCPlayerStats.get(player);
+        GalacticraftCore.proxy.player.knockBack(this, p_70653_1_, p_70653_2_, impulseX, impulseZ);
     }
 }

@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.command;
 
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
@@ -50,7 +49,7 @@ public class CommandPlanetTeleport extends CommandBase
 
                 if (playerBase != null)
                 {
-                    GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(playerBase);
+                    GCPlayerStats stats = GCPlayerStats.get(playerBase);
                     stats.rocketStacks = new ItemStack[2];
                     stats.rocketType = IRocketType.EnumRocketType.DEFAULT.ordinal();
                     stats.rocketItem = GCItems.rocketTier1;

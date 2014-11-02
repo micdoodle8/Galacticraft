@@ -25,7 +25,6 @@ import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
@@ -518,7 +517,7 @@ public class WorldUtil
     {
         int newID = DimensionManager.getNextFreeDimId();
         SpaceStationWorldData data = WorldUtil.createSpaceStation(world, newID, player);
-        GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(player);
+        GCPlayerStats stats = GCPlayerStats.get(player);
         stats.spaceStationDimensionID = newID;
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, new Object[] { newID }), player);
         return data;
@@ -650,7 +649,7 @@ public class WorldUtil
                 }
 
                 player.closeScreen();
-                GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(player);
+                GCPlayerStats stats = GCPlayerStats.get(player);
                 stats.usingPlanetSelectionGui = false;
 
                 player.dimension = dimID;
@@ -760,7 +759,7 @@ public class WorldUtil
             {
                 player = (EntityPlayerMP) entity;
                 player.closeScreen();
-                GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(player);
+                GCPlayerStats stats = GCPlayerStats.get(player);
                 stats.usingPlanetSelectionGui = false;
 
                 worldNew.updateEntityWithOptionalForce(entity, false);
@@ -779,7 +778,7 @@ public class WorldUtil
         //Update PlayerStatsGC
         if (player != null)
         {
-            GCPlayerStats playerStats = GCEntityPlayerMP.getPlayerStats(player);
+            GCPlayerStats playerStats = GCPlayerStats.get(player);
             if (ridingRocket == null && type.useParachute() && playerStats.extendedInventory.getStackInSlot(4) != null && playerStats.extendedInventory.getStackInSlot(4).getItem() instanceof ItemParaChute)
             {
                 GCPlayerHandler.setUsingParachute(player, playerStats, true);

@@ -849,7 +849,7 @@ public class ClientProxyCore extends CommonProxyCore
     public static void orientCamera(float partialTicks)
     {
         EntityClientPlayerMP player = ClientProxyCore.mc.thePlayer;
-        GCPlayerStatsClient stats = GCEntityClientPlayerMP.getPlayerStats(player);
+        GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
         EntityLivingBase entityLivingBase = ClientProxyCore.mc.renderViewEntity;
         

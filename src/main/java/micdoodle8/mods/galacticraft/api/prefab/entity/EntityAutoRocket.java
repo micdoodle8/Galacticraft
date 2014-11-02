@@ -15,7 +15,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.sounds.SoundUpdaterRocket;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
@@ -818,7 +817,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
         	
         	if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
             {
-                stats = GCEntityPlayerMP.getPlayerStats((EntityPlayerMP) this.riddenByEntity);
+                stats = GCPlayerStats.get((EntityPlayerMP) this.riddenByEntity);
 
                 if (!(this.worldObj.provider instanceof IOrbitDimension))
                 {

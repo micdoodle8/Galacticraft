@@ -30,7 +30,6 @@ import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.items.ItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.network.PacketRotateRocket;
@@ -130,12 +129,12 @@ public class TickHandlerClient
 
         if (player != null)
         {
-            stats = GCEntityClientPlayerMP.getPlayerStats(playerBaseClient);
+            stats = GCPlayerStatsClient.get(playerBaseClient);
         }
 
         if (event.phase == Phase.END)
         {
-            if (minecraft.currentScreen instanceof GuiIngameMenu)
+        	if (minecraft.currentScreen instanceof GuiIngameMenu)
             {
                 int i = Mouse.getEventX() * minecraft.currentScreen.width / minecraft.displayWidth;
                 int j = minecraft.currentScreen.height - Mouse.getEventY() * minecraft.currentScreen.height / minecraft.displayHeight - 1;
@@ -252,7 +251,12 @@ public class TickHandlerClient
             {
                 OverlayOxygenWarning.renderOxygenWarningOverlay();
             }
-        }
+            
+            try {
+            	Class clazz = Class.forName("micdoodle8.mods.galacticraft.core.atoolkit.ProcessGraphic");
+            	clazz.getMethod("onTick").invoke(null);
+            } catch (Exception e) { }
+        }       
     }
 
     @SubscribeEvent
@@ -413,7 +417,7 @@ public class TickHandlerClient
                     {
                         world.provider.setSkyRenderer(new SkyProviderOrbit(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"), true, true));
                         ((SkyProviderOrbit) world.provider.getSkyRenderer()).spinDeltaPerTick = ((WorldProviderOrbit) world.provider).getSpinRate();
-                        GCEntityClientPlayerMP.getPlayerStats(player).inFreefallFirstCheck = false;
+                        GCPlayerStatsClient.get(player).inFreefallFirstCheck = false;
                     }
 
                     if (world.provider.getCloudRenderer() == null)

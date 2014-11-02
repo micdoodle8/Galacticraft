@@ -29,7 +29,7 @@ public class PlayerServer implements IPlayerServer
     {
         if (oldPlayer instanceof EntityPlayerMP)
         {
-            GCPlayerStats.get(player).copyFrom(GCEntityPlayerMP.getPlayerStats((EntityPlayerMP) oldPlayer), keepInv || player.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"));
+            GCPlayerStats.get(player).copyFrom(GCPlayerStats.get((EntityPlayerMP) oldPlayer), keepInv || player.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"));
             TileEntityTelemetry.updateLinkedPlayer((EntityPlayerMP) oldPlayer, player);
         }
     }

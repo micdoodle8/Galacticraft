@@ -12,7 +12,6 @@ import micdoodle8.mods.galacticraft.core.client.gui.container.*;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiJoinSpaceRace;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiNewSpaceRace;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.inventory.*;
@@ -33,7 +32,7 @@ public class GuiHandler implements IGuiHandler
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
         EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
-        GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(playerBase);
+        GCPlayerStats stats = GCPlayerStats.get(playerBase);
 
         if (playerBase == null)
         {

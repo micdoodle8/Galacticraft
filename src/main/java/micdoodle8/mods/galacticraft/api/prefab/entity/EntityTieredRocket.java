@@ -13,7 +13,6 @@ import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -400,7 +399,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                 EntityPlayerMP player = (EntityPlayerMP) this.riddenByEntity;
 
                 this.onTeleport(player);
-                GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(player);
+                GCPlayerStats stats = GCPlayerStats.get(player);
                 WorldUtil.toCelestialSelection(player, stats, this.getRocketTier());
 
                 if (!this.isDead)
@@ -453,7 +452,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             if (!this.worldObj.isRemote)
             {
                 GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, new Object[] { }), (EntityPlayerMP) par1EntityPlayer);
-                GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats((EntityPlayerMP) par1EntityPlayer);
+                GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) par1EntityPlayer);
                 stats.chatCooldown = 0;
                 par1EntityPlayer.mountEntity(null);
             }
@@ -465,7 +464,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             if (!this.worldObj.isRemote)
             {
                 GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_DISPLAY_ROCKET_CONTROLS, new Object[] { }), (EntityPlayerMP) par1EntityPlayer);
-                GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats((EntityPlayerMP) par1EntityPlayer);
+                GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) par1EntityPlayer);
                 stats.chatCooldown = 0;
                 par1EntityPlayer.mountEntity(this);
             }

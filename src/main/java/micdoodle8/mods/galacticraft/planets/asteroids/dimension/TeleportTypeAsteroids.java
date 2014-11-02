@@ -4,7 +4,6 @@ import cpw.mods.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
@@ -33,7 +32,7 @@ public class TeleportTypeAsteroids implements ITeleportType
     {
         if (player != null)
         {
-            GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(player);
+            GCPlayerStats stats = GCPlayerStats.get(player);
             int x = MathHelper.floor_double(stats.coordsTeleportedFromX);
             int z = MathHelper.floor_double(stats.coordsTeleportedFromZ);
 
@@ -287,7 +286,7 @@ public class TeleportTypeAsteroids implements ITeleportType
     @Override
     public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player, boolean ridingAutoRocket)
     {
-        GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(player);
+        GCPlayerStats stats = GCPlayerStats.get(player);
         if (!ridingAutoRocket && player != null && stats.teleportCooldown <= 0)
         {
             if (player.capabilities.isFlying)

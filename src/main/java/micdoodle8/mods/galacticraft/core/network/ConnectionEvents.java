@@ -8,7 +8,6 @@ import cpw.mods.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServer
 import cpw.mods.fml.common.network.FMLNetworkEvent.ServerConnectionFromClientEvent;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -42,7 +41,7 @@ public class ConnectionEvents
 
         if (event.player instanceof EntityPlayerMP)
         {
-            GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats((EntityPlayerMP) event.player);
+            GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) event.player);
             GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, new Object[] { stats.spaceStationDimensionID }), (EntityPlayerMP) event.player);
         }
 

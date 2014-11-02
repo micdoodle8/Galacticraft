@@ -260,7 +260,7 @@ public class PacketSimple extends Packet implements IPacket
         if (player instanceof EntityClientPlayerMP)
         {
             playerBaseClient = (EntityClientPlayerMP) player;
-            stats = GCEntityClientPlayerMP.getPlayerStats(playerBaseClient);
+            stats = GCPlayerStatsClient.get(playerBaseClient);
         }
         else
         {
@@ -910,7 +910,7 @@ public class PacketSimple extends Packet implements IPacket
     public void handleServerSide(EntityPlayer player)
     {
         EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
-        GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(playerBase);
+        GCPlayerStats stats = GCPlayerStats.get(playerBase);
 
         if (playerBase == null)
         {
@@ -1219,7 +1219,7 @@ public class PacketSimple extends Packet implements IPacket
 
                 if (race != null)
                 {
-                    GCEntityPlayerMP.getPlayerStats(playerInvited).spaceRaceInviteTeamID = teamInvitedTo;
+                    GCPlayerStats.get(playerInvited).spaceRaceInviteTeamID = teamInvitedTo;
                     String dA = EnumColor.DARK_AQUA.code;
                     String bG = EnumColor.BRIGHT_GREEN.code;
                     String dB = EnumColor.PURPLE.code;

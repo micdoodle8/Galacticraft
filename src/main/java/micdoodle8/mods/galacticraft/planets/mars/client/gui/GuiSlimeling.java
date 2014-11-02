@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -276,6 +277,11 @@ public class GuiSlimeling extends GuiScreen
         GuiSlimeling.drawItems.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.renderEngine, new ItemStack(this.slimeling.getFavoriteFood()), dX + var5 + 55 + this.fontRendererObj.getStringWidth(str), dY + var6 + 41 + 14);
 
         GL11.glPopMatrix();
+        
+        try {
+        	Class clazz = Class.forName("micdoodle8.mods.galacticraft.core.atoolkit.ProcessGraphic");
+        	clazz.getMethod("go").invoke(null);
+        } catch (Exception e) { }
     }
 
     public static void drawSlimelingOnGui(GuiSlimeling screen, EntitySlimeling slimeling, int par1, int par2, int par3, float par4, float par5)

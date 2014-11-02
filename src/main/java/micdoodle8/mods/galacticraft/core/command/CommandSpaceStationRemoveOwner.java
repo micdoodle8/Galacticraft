@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.command;
 
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -53,7 +52,7 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
 
                 if (playerBase != null)
                 {
-                    GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(playerBase);
+                    GCPlayerStats stats = GCPlayerStats.get(playerBase);
 
                     if (stats.spaceStationDimensionID <= 0)
                     {
@@ -115,7 +114,7 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
 
         if (playerBase != null)
         {
-            GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(playerBase);
+            GCPlayerStats stats = GCPlayerStats.get(playerBase);
             int ssdim = stats.spaceStationDimensionID;
             if (ssdim > 0)
             {

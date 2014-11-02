@@ -6,7 +6,6 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -144,7 +143,7 @@ public class EntityTier3Rocket extends EntityTieredRocket
 
         if (playerBase != null)
         {
-            GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(playerBase);
+            GCPlayerStats stats = GCPlayerStats.get(playerBase);
 
             if (this.cargoItems == null || this.cargoItems.length == 0)
             {

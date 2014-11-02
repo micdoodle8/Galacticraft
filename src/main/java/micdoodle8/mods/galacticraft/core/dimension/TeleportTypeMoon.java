@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.dimension;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.entity.Entity;
@@ -26,7 +25,7 @@ public class TeleportTypeMoon implements ITeleportType
     {
         if (player != null)
         {
-            GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(player);
+            GCPlayerStats stats = GCPlayerStats.get(player);
             return new Vector3(stats.coordsTeleportedFromX, ConfigManagerCore.disableLander ? 250.0 : 900.0, stats.coordsTeleportedFromZ);
         }
 
@@ -55,7 +54,7 @@ public class TeleportTypeMoon implements ITeleportType
     @Override
     public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player, boolean ridingAutoRocket)
     {
-        GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(player);
+        GCPlayerStats stats = GCPlayerStats.get(player);
         if (!ridingAutoRocket && !ConfigManagerCore.disableLander && stats.teleportCooldown <= 0)
         {
             if (player.capabilities.isFlying)

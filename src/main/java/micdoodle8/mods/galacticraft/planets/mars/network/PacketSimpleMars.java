@@ -5,7 +5,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.network.IPacket;
@@ -172,7 +171,7 @@ public class PacketSimpleMars implements IPacket
     public void handleServerSide(EntityPlayer player)
     {
         EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
-        GCPlayerStats stats = GCEntityPlayerMP.getPlayerStats(playerBase);
+        GCPlayerStats stats = GCPlayerStats.get(playerBase);
 
         switch (this.type)
         {

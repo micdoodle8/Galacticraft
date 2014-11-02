@@ -749,7 +749,7 @@ public class GCPlayerHandler
                 // And is the correct metadata (moon turf)
                 if (player.worldObj.getBlockMetadata(iPosX, iPosY, iPosZ) == 5)
                 {
-                    GCPlayerStats playerStats = GCEntityPlayerMP.getPlayerStats(player);
+                    GCPlayerStats playerStats = GCPlayerStats.get(player);
                     // If it has been long enough since the last step
                     if (playerStats.distanceSinceLastStep > 0.35D)
                     {
@@ -924,7 +924,7 @@ public class GCPlayerHandler
 
         if (tick == 25)
         {
-            if (!GCEntityPlayerMP.getPlayerStats(player).openedSpaceRaceManager)
+            if (!GCPlayerStats.get(player).openedSpaceRaceManager)
             {
                 SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(player.getGameProfile().getName());
 
@@ -933,7 +933,7 @@ public class GCPlayerHandler
                     GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_SPACE_RACE_GUI, new Object[] { }), player);
                 }
 
-                GCEntityPlayerMP.getPlayerStats(player).openedSpaceRaceManager = true;
+                GCPlayerStats.get(player).openedSpaceRaceManager = true;
             }
         }
 
