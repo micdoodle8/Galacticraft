@@ -91,7 +91,7 @@ item.basicItem.rawSilicon.name=生シリコン
 item.tier1.desc=レベル 1
 item.battery.name=電池
 item.infiniteBattery.name=無限の電池
-item.infiniteOxygen.name=Infinite Oxygen Supply ##NEEDS TRANSLATE##
+item.infiniteOxygen.name=無限の酸素
 item.meteorChunk.name=投げれる流星
 item.meteorChunkHot.name=投げれる流星
 item.hotDescription.name=温かい
@@ -101,7 +101,7 @@ item.basicItem.dehydratedMelon.name=乾燥したスイカ
 item.basicItem.dehydratedPotato.name=乾燥したジャガイモ
 item.basicItem.cannedFood.name=缶詰食品
 item.basicItem.frequencyModule.name=フリークエンシーモジュール
-item.standardWrench.name=標準レンチ
+item.standardWrench.name=レンチ
 
 # TOOLS
 item.steel_pickaxe.name=ヘビーデューティのツルハシ
@@ -139,7 +139,7 @@ tile.airLockSeal.name=エアロックシール
 tile.crudeOilStill.name=原油
 tile.crudeOilMoving.name=原油
 tile.refinery.name=精製所
-tile.fuelLoader.name=燃料積込機
+tile.fuelLoader.name=燃料給油機
 tile.sapling2.oak.name=樫の苗木
 tile.sapling2.spruce.name=松の苗木
 tile.sapling2.birch.name=白樺の苗木
@@ -206,9 +206,9 @@ tile.slabGCHalf.tinSlab.name=Tin Decoration Slab ##NEEDS TRANSLATE##
 tile.moonStoneStairs.name=Moon Rock Stairs ##NEEDS TRANSLATE##
 tile.wallGC.moon.name=Moon Rock Wall ##NEEDS TRANSLATE##
 tile.slabGCHalf.moonSlab.name=Moon Rock Slab ##NEEDS TRANSLATE##
-tile.moonBricksStairs.name=Moon Dungeon Brick Stairs ##NEEDS TRANSLATE##
-tile.wallGC.moonBricks.name=Moon Dungeon Brick Wall ##NEEDS TRANSLATE##
-tile.slabGCHalf.moonBricksSlab.name=Moon Dungeon Brick Slab ##NEEDS TRANSLATE##
+tile.moonBricksStairs.name=月ダンジョンのレンガの階段
+tile.wallGC.moonBricks.name=月ダンジョンのレンガ
+tile.slabGCHalf.moonBricksSlab.name=月ダンジョンのレンガ
 
 # ENTITIES
 entity.GalacticraftCore.EvolvedSpider.name=進化したクモ
@@ -237,7 +237,7 @@ schematic.rocketT2.name=レベル 2 宇宙機
 death.attack.spaceshipExplosion=%1$sのロケットが故障してしまった
 death.attack.spaceshipExplosionB=%1$sは宇宙機の事故で死んでしまった
 death.attack.spaceshipCrash=%1$sのロケットが地面に墜落した
-death.attack.oxygenSuffocation=%1$sの酸素が不足してしまった
+death.attack.oxygenSuffocation=%1$sが酸素不足で死んでしまった
 death.attack.thermal=%1$は熱保護を忘れた
 
 # GALAXIES
