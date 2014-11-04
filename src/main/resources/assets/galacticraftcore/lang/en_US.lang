@@ -292,6 +292,10 @@ gui.message.breed.name=Breed
 gui.message.strengthen.name=Strengthen
 gui.message.heal.name=Heal
 gui.message.of.name=of
+gui.message.help1=For Galacticraft help
+gui.message.help2=For Space Program guidance
+gui.message.help3=For help with oil
+gui.message.prelaunch=Pre-launch checklist
 
 gui.status.active.name=Active
 gui.status.missingleaves.name=Not Enough Leaf Blocks

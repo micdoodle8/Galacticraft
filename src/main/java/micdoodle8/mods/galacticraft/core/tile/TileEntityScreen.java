@@ -321,7 +321,7 @@ public class TileEntityScreen extends TileEntity
 
     	BlockVec3 vec = new BlockVec3(this);
     	TileEntityScreen tile = this;
-    	while (up < 5)
+    	while (up < 8)
     	{
     		if (tile.connectedUp)
     		{
@@ -347,7 +347,7 @@ public class TileEntityScreen extends TileEntity
 
     	vec = new BlockVec3(this);
     	tile = this;
-    	while (down < 5)
+    	while (down < 8 - up)
     	{
     		if (tile.connectedDown)
     		{
@@ -374,7 +374,7 @@ public class TileEntityScreen extends TileEntity
     	vec = new BlockVec3(this);
     	tile = this;
 		int leftside = this.getLeft(meta);
-    	while (left < ((up + down == 0) ? 1 : 5))
+    	while (left < ((up + down == 0) ? 1 : 8))
     	{
     		if (tile.connectedLeft)
     		{
@@ -401,7 +401,7 @@ public class TileEntityScreen extends TileEntity
     	vec = new BlockVec3(this);
     	tile = this;
 		int rightside = this.getRight(meta);
-    	while (right < ((up + down == 0) ? 1 : 5))
+    	while (right < ((up + down == 0) ? 1 : 8) - left)
     	{
     		if (tile.connectedRight)
     		{
@@ -526,7 +526,7 @@ public class TileEntityScreen extends TileEntity
 
     	//System.out.println("Checking screen size at "+this.xCoord+","+this.zCoord+": Up "+up+" Dn "+down+" Lf "+left+" Rg "+right);
 
-    	boolean screenWhole = true;
+    	boolean screenWhole= true;
     	boolean existingScreen = false;
     	int barrierUp = up;
     	int barrierDown = down;
