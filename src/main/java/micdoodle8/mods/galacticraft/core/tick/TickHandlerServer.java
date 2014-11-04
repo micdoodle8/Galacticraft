@@ -272,7 +272,8 @@ public class TickHandlerServer
                             if (footprintMap != null && !footprintMap.isEmpty())
                             {
                                 List<Footprint> footprints = footprintMap.get(chunkKey);
-                                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_FOOTPRINT_LIST, new Object[] { chunkKey, footprints.toArray(new Footprint[footprints.size()]) }), targetPoint);
+                                if (footprints != null)
+                                	GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_FOOTPRINT_LIST, new Object[] { chunkKey, footprints.toArray(new Footprint[footprints.size()]) }), targetPoint);
                             }
                         }
                     }
