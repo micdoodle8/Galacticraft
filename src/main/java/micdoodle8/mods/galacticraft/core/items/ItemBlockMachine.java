@@ -2,13 +2,17 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.Block;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 public class ItemBlockMachine extends ItemBlockDesc
 {
@@ -82,6 +86,22 @@ public class ItemBlockMachine extends ItemBlockDesc
         return this.field_150939_a.getUnlocalizedName() + "." + index;
     }
 
+    @Override
+    public void onCreated(ItemStack stack, World world, EntityPlayer player)
+    {
+        if (!world.isRemote) return;
+
+    	int typenum = stack.getItemDamage() & 12;
+        if (this.field_150939_a == GCBlocks.machineBase && typenum == BlockMachine.COMPRESSOR_METADATA)
+        {
+        	ClientProxyCore.playerClientHandler.onBuild(1, (EntityPlayerSP) player);
+        }
+        else if (this.field_150939_a == GCBlocks.machineBase2 && typenum == BlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+        {
+        	ClientProxyCore.playerClientHandler.onBuild(2, (EntityPlayerSP) player);
+        }
+    }
+    
     @Override
     public String getUnlocalizedName()
     {

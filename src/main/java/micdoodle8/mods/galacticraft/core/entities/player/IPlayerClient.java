@@ -17,4 +17,6 @@ public interface IPlayerClient
     public boolean isEntityInsideOpaqueBlock(EntityPlayerSP player, boolean vanillaInside);
 
     public boolean wakeUpPlayer(EntityPlayerSP player, boolean par1, boolean par2, boolean par3);
+
+	public void onBuild(int i, EntityPlayerSP player);
 }

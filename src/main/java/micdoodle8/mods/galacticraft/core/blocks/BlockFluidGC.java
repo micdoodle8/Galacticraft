@@ -3,9 +3,12 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -55,6 +58,15 @@ public class BlockFluidGC extends BlockFluidClassic
         this.flowingIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + this.fluidName + "_flow");
         this.fluid.setStillIcon(this.stillIcon);
         this.fluid.setFlowingIcon(this.flowingIcon);
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
+    {
+    	if (world.isRemote && this.fluidName.equals("oil"))
+        	ClientProxyCore.playerClientHandler.onBuild(7, (EntityPlayerSP) entityPlayer);
+
+    	return super.onBlockActivated(world, x, y, z, entityPlayer, side, hitX, hitY, hitZ);	
     }
 
     @Override

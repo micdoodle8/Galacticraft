@@ -43,6 +43,7 @@ public class GCPlayerStatsClient implements IExtendedEntityProperties
 
     public int spaceRaceInviteTeamID;
     public boolean lastZoomed;
+    public int buildFlags = -1;
 
     public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
 

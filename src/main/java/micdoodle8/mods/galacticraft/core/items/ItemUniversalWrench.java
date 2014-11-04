@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.block.Block;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -78,6 +79,13 @@ public class ItemUniversalWrench extends Item
         return true;
     }
 
+    @Override
+    public void onCreated(ItemStack stack, World world, EntityPlayer player)
+    {
+        if (world.isRemote)
+        	ClientProxyCore.playerClientHandler.onBuild(3, (EntityPlayerSP) player);
+    }
+    
     @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer entityPlayer, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
     {

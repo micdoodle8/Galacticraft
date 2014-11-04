@@ -128,6 +128,7 @@ public class PacketSimple extends Packet implements IPacket
         S_REQUEST_OVERWORLD_IMAGE(Side.SERVER),
         S_REQUEST_PLAYERSKIN(Side.SERVER, String.class),
         S_UPDATE_VIEWSCREEN_REQUEST(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class),
+        S_BUILDFLAGS_UPDATE(Side.SERVER, Integer.class),
         // CLIENT
         C_AIR_REMAINING(Side.CLIENT, Integer.class, Integer.class, String.class),
         C_UPDATE_DIMENSION_LIST(Side.CLIENT, String.class, String.class),
@@ -1340,6 +1341,9 @@ public class PacketSimple extends Packet implements IPacket
         	{
             	((TileEntityArclamp)tileAL).updateClientFlag = true; 
         	}
+        	break;
+        case S_BUILDFLAGS_UPDATE:
+        	stats.buildFlags = (Integer) this.data.get(0);
         	break;
         case S_UPDATE_VIEWSCREEN_REQUEST:
         	int screenDim = (Integer) this.data.get(0);

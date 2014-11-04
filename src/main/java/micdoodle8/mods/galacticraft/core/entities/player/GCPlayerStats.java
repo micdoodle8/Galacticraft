@@ -113,6 +113,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
     public boolean receivedSoundWarning;
     public boolean openedSpaceRaceManager = false;
 	public boolean newInOrbit = true;
+	public int buildFlags = 0;
 
     public GCPlayerStats(EntityPlayerMP player)
     {
@@ -185,6 +186,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
 
         nbt.setInteger("CryogenicChamberCooldown", this.cryogenicChamberCooldown);
         nbt.setBoolean("ReceivedSoundWarning", this.receivedSoundWarning);
+        nbt.setInteger("BuildFlags", this.buildFlags);
     }
 
     @Override
@@ -299,6 +301,8 @@ public class GCPlayerStats implements IExtendedEntityProperties
             this.launchpadStack = new ItemStack(GCBlocks.landingPad, 9, 0);
         }
 
+        if (nbt.hasKey("BuildFlags"))
+        	this.buildFlags = nbt.getInteger("BuildFlags");
     }
 
     @Override

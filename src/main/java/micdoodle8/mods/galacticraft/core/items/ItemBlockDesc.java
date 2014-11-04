@@ -5,16 +5,20 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.blocks.BlockAdvancedTile;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 
 import org.lwjgl.input.Keyboard;
 
@@ -34,6 +38,17 @@ public class ItemBlockDesc extends ItemBlockGC
         super(block);
     }
 
+    @Override
+    public void onCreated(ItemStack stack, World world, EntityPlayer player)
+    {
+        if (!world.isRemote) return;
+
+        if (this.field_150939_a == GCBlocks.fuelLoader) 
+        	ClientProxyCore.playerClientHandler.onBuild(4, (EntityPlayerSP) player);
+        else if (this.field_150939_a == GCBlocks.fuelLoader) 
+        	ClientProxyCore.playerClientHandler.onBuild(6, (EntityPlayerSP) player);
+    }
+    
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean advanced)

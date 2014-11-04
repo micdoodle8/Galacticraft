@@ -101,6 +101,7 @@ public class GalacticraftCore
 
     public static String ASSET_PREFIX = "galacticraftcore";
     public static String TEXTURE_PREFIX = GalacticraftCore.ASSET_PREFIX + ":";
+    public static String PREFIX = "micdoodle8.";  
 
     public static Fluid gcFluidOil;
     public static Fluid gcFluidFuel;

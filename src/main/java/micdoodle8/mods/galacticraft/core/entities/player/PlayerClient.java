@@ -11,9 +11,12 @@ import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.block.Block;
@@ -23,6 +26,7 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
@@ -277,4 +281,53 @@ public class PlayerClient implements IPlayerClient
 
         return true;
     }
+
+	@Override
+	public void onBuild(int i, EntityPlayerSP player)
+	{
+		// 0 : opened GC inventory tab
+		// 1,2,3 : Compressor, CF, Standard Wrench
+		// 4,5,6 : Fuel loader, Launchpad, NASA Workbench
+		// 7: oil found 8: placed rocket
+		GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
+		int flag = stats.buildFlags;
+		if (flag == -1) flag = 0;
+		if ((flag & 1 << i) > 0) return;
+		flag |= 1 << i;
+		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BUILDFLAGS_UPDATE, new Object[] { flag }));
+		switch (i) {
+		case 0:
+			sendChat(player, GCCoreUtil.translate("gui.message.help1")+": www."+GalacticraftCore.PREFIX+"com/wiki");
+			break;
+		case 1:
+			sendChat(player, GCCoreUtil.translate("gui.message.help1")+": www."+GalacticraftCore.PREFIX+"com/wiki/1");
+			break;
+		case 2:
+			sendChat(player, GCCoreUtil.translate("gui.message.help1")+": www."+GalacticraftCore.PREFIX+"com/wiki/1");
+			break;
+		case 3:
+			sendChat(player, GCCoreUtil.translate("gui.message.help1")+": www."+GalacticraftCore.PREFIX+"com/wiki/1");
+			break;
+		case 4:
+			sendChat(player, GCCoreUtil.translate("gui.message.help2")+": www."+GalacticraftCore.PREFIX+"com/wiki/2");
+			break;
+		case 5:
+			sendChat(player, GCCoreUtil.translate("gui.message.help2")+": www."+GalacticraftCore.PREFIX+"com/wiki/2");
+			break;
+		case 6:
+			sendChat(player, GCCoreUtil.translate("gui.message.help2")+": www."+GalacticraftCore.PREFIX+"com/wiki/2");
+			break;
+		case 7:
+			sendChat(player, GCCoreUtil.translate("gui.message.help3")+": www."+GalacticraftCore.PREFIX+"com/wiki/oil");
+			break;
+		case 8:
+			sendChat(player, GCCoreUtil.translate("gui.message.prelaunch")+": www."+GalacticraftCore.PREFIX+"com/wiki/pre");
+			break;
+		}
+	}
+
+	private void sendChat(EntityPlayerSP player, String string)
+	{
+		player.addChatMessage(new ChatComponentText(string));
+	}
 }
