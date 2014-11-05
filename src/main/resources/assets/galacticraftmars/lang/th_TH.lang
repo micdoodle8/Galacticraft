@@ -177,7 +177,7 @@ entity.CargoRocket.name=จรวดขนส่ง
 # CONTAINERS
 container.launchcontroller.name=เครื่องควบคุมการปล่อยจรวด
 container.tileTerraformer.name=เทอราฟอร์มเมอร์
-container.marsLander.name=ยานลงจอดบอลลูน #To do for new name
+container.marsLander.name=ยานลงจอดบอลลูน
 
 # CONFIG GUI
 gc.configgui.dimensionIDMars=ID มิติดาวอังคาร
@@ -186,12 +186,12 @@ gc.configgui.idEntityProjectileTNT=ID TNT โปรเจคไทล์
 gc.configgui.idEntitySpaceshipTier2=ID จรวด เทียร์ 2
 gc.configgui.idEntitySludgeling=ID หนอนแบคทีเรีย
 gc.configgui.idEntitySlimeling=ID สไลม์ลิ่ง
-gc.configgui.idEntityTerraformBubble=ID ฟองเทอราฟอร์ม
-gc.configgui.idEntityLandingBalloons=ID ยานลงจอดบอลลูน #To do for new name
+gc.configgui.idEntityTerraformBubble=ID ฟองเทอราฟอร์มเมอร์
+gc.configgui.idEntityLandingBalloons=ID ยานลงจอดบอลลูน
 gc.configgui.idEntityCargoRocket=ID จรวดขนส่ง
 gc.configgui.idSchematicRocketT2=ID แผนผังจรวด เทียร์ 2
 gc.configgui.idSchematicCargoRocket=ID แผนผังจรวดขนส่ง
 gc.configgui.launchControllerChunkLoad=เปิดใช้งานเครื่องควบคุมการปล่อยจรวดให้โหลด Chunk
-gc.configgui.launchControllerAllDims=เครื่องควบคุมการปล่อยจรวดโหลดทุกมิติ
+gc.configgui.launchControllerAllDims=เปิดใช้งานเครื่องควบคุมการปล่อยจรวดให้โหลดทุกมิติ
 
 gc.configgui.planets.title=การตั้งค่ากาแลคติคคราฟ ดาวเคราะห์
