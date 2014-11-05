@@ -98,7 +98,7 @@ gui.message.sendingActive.name=กำลังส่งการทำงาน
 gui.message.range.name=ระยะ: %d บล็อก
 gui.message.notEnoughEnergy.name=พลังงานไม่พอ!
 gui.message.targetNoEnergy.name=เป้าหมายพลังงานไม่พอ!
-gui.message.grapple.fail=ฉันต้องการเส้นเชือกจำนวนเล็กน้อย ถ้าต้องการที่จะโยนตะขอเกี่ยวออกไป!
+gui.message.grapple.fail=ฉันต้องการเส้นเชือกจำนวนเล็กน้อย ถ้าต้องการที่จะโยนตะขอออกไป!
 
 tile.treasureT3.description=ยังไม่ใช้ตอนนี้
 tile.walkway.description=ใช้สำหรับการตกแต่งที่คล้ายกับสภาพภายใน ยานอวกาศ
