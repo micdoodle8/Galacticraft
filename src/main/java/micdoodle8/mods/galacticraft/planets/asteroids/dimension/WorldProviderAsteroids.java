@@ -12,6 +12,8 @@ import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAst
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.WorldChunkManagerAsteroids;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.WorldSettings.GameType;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
 
@@ -295,5 +297,18 @@ public class WorldProviderAsteroids extends WorldProviderSpace
     public float getWindLevel()
     {
         return 0.05F;
+    }
+    
+    @Override
+    public int getActualHeight()
+    {
+        return 256;
+    }
+
+    @Override
+    public void registerWorldChunkManager()
+    {
+        super.registerWorldChunkManager();
+        this.hasNoSky = true;
     }
 }

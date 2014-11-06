@@ -68,15 +68,15 @@ public class FishyNoise
         final float u = x * x * x * (x * (x * 6 - 15) + 10);
         final float v = y * y * y * (y * (y * 6 - 15) + 10);
 
-        int randY = this.perm[largeY];
-        int randY1 = this.perm[largeY + 1];
-        float[] grad2 = this.grad2d[this.perm[largeX + randY] & 15];
+        int randY = this.perm[largeY] + largeX;
+        int randY1 = this.perm[largeY + 1] + largeX;
+        float[] grad2 = this.grad2d[this.perm[randY] & 15];
         final float grad00 = grad2[0] * x + grad2[1] * y;
-        grad2 = this.grad2d[this.perm[largeX + randY1] & 15];
+        grad2 = this.grad2d[this.perm[randY1] & 15];
         final float grad01 = grad2[0] * x + grad2[1] * (y - 1);
-        grad2 = this.grad2d[this.perm[largeX + 1 + randY1] & 15];
+        grad2 = this.grad2d[this.perm[1 + randY1] & 15];
         final float grad11 = grad2[0] * (x - 1) + grad2[1] * (y - 1);
-        grad2 = this.grad2d[this.perm[largeX + 1 + randY] & 15];
+        grad2 = this.grad2d[this.perm[1 + randY] & 15];
         final float grad10 = grad2[0] * (x - 1) + grad2[1] * y;
 
         final float lerpX0 = grad00 + u * (grad10 - grad00);
@@ -93,30 +93,44 @@ public class FishyNoise
         y -= unitY;
         z -= unitZ;
 
-        unitX = unitX & 255;
-        unitY = unitY & 255;
-        unitZ = unitZ & 255;
+        unitX &= 255;
+        unitY &= 255;
+        unitZ &= 255;
 
         final float u = x * x * x * (x * (x * 6 - 15) + 10);
         final float v = y * y * y * (y * (y * 6 - 15) + 10);
         final float w = z * z * z * (z * (z * 6 - 15) + 10);
 
-        int randZ = this.perm[unitZ];
-        int randZ1 = this.perm[unitZ + 1];
-        int randYZ = this.perm[unitY + randZ];
-        int randY1Z = this.perm[unitY + 1 + randZ];
-        int randYZ1 = this.perm[unitY + randZ1];
-        int randY1Z1 = this.perm[unitY + 1 + randZ1];
-        final float grad000 = FishyNoise.dot3(this.grad3d[this.perm[unitX + randYZ] & 15], x, y, z);
-        final float grad100 = FishyNoise.dot3(this.grad3d[this.perm[unitX + 1 + randYZ] & 15], x - 1, y, z);
-        final float grad010 = FishyNoise.dot3(this.grad3d[this.perm[unitX + randY1Z] & 15], x, y - 1, z);
-        final float grad110 = FishyNoise.dot3(this.grad3d[this.perm[unitX + 1 + randY1Z] & 15], x - 1, y - 1, z);
-        final float grad001 = FishyNoise.dot3(this.grad3d[this.perm[unitX + randYZ1] & 15], x, y, z - 1);
-        final float grad101 = FishyNoise.dot3(this.grad3d[this.perm[unitX + 1 + randYZ1] & 15], x - 1, y, z - 1);
-        final float grad011 = FishyNoise.dot3(this.grad3d[this.perm[unitX + randY1Z1] & 15], x, y - 1, z - 1);
-        final float grad111 = FishyNoise.dot3(this.grad3d[this.perm[unitX + 1 + randY1Z1] & 15], x - 1, y - 1, z - 1);
+        int randZ = this.perm[unitZ] + unitY;
+        int randZ1 = this.perm[unitZ + 1] + unitY;
+        int randYZ = this.perm[randZ] + unitX;
+        int randY1Z = this.perm[1 + randZ] + unitX;
+        int randYZ1 = this.perm[randZ1] + unitX;
+        int randY1Z1 = this.perm[1 + randZ1] + unitX;
+        int[] grad3 = this.grad3d[this.perm[randYZ] & 15];
+        final float grad000 = grad3[0] * x + grad3[1] * y + grad3[2] * z;
+        grad3 = this.grad3d[this.perm[1 + randYZ] & 15];
+        final float grad100 = grad3[0] * (x - 1) + grad3[1] * y + grad3[2] * z;
+        grad3 = this.grad3d[this.perm[randY1Z] & 15];
+        final float grad010 = grad3[0] * x + grad3[1] * (y - 1) + grad3[2] * z;
+        grad3 = this.grad3d[this.perm[1 + randY1Z] & 15];
+        final float grad110 = grad3[0] * (x - 1) + grad3[1] * (y - 1) + grad3[2] * z;
+        z--;
+        grad3 = this.grad3d[this.perm[randYZ1] & 15];
+        final float grad001 = grad3[0] * x + grad3[1] * y + grad3[2] * z;
+        grad3 = this.grad3d[this.perm[1 + randYZ1] & 15];
+        final float grad101 = grad3[0] * (x - 1) + grad3[1] * y + grad3[2] * z;
+        grad3 = this.grad3d[this.perm[randY1Z1] & 15];
+        final float grad011 = grad3[0] * x + grad3[1] * (y - 1) + grad3[2] * z;
+        grad3 = this.grad3d[this.perm[1 + randY1Z1] & 15];
+        final float grad111 = grad3[0] * (x - 1) + grad3[1] * (y - 1) + grad3[2] * z;
 
-        return FishyNoise.lerp(FishyNoise.lerp(grad000 + u * (grad100 - grad000), grad010 + u * (grad110 - grad010), v), FishyNoise.lerp(grad001 + u * (grad101 - grad001), grad011 + u * (grad111 - grad011), v), w);
+        float f1 = grad000 + u * (grad100 - grad000);
+        float f2 = grad010 + u * (grad110 - grad010);
+        float f3 = grad001 + u * (grad101 - grad001);
+        float f4 = grad011 + u * (grad111 - grad011);
+        float lerp1 = f1 + v * (f2 - f1);
+        return lerp1 + w * (f3 + v * (f4 - f3) - lerp1);
     }
 
 }

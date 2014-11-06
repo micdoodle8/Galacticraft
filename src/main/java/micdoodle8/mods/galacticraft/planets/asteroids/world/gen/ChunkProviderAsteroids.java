@@ -208,7 +208,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
                     }
                 }
             }
-        }
+        }       
     }
 
     private void generateAsteroid(Random rand, int asteroidX, int asteroidY, int asteroidZ, int chunkX, int chunkZ, int size, Block[] blockArray, byte[] metaArray)
