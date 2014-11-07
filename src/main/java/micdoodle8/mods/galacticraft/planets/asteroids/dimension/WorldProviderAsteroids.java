@@ -12,8 +12,6 @@ import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAst
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.WorldChunkManagerAsteroids;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.WorldSettings.GameType;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
 

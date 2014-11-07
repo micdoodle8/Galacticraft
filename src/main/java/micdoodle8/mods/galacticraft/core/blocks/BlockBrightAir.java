@@ -57,4 +57,10 @@ public class BlockBrightAir extends BlockAir
     {
         return false;
     }
+    
+    @Override
+    public int getLightValue(IBlockAccess world, int x, int y, int z)
+    {
+        return 15 - world.getBlockMetadata(x, y, z);
+    }
 }
