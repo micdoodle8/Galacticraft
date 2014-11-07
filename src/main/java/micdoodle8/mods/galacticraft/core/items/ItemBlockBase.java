@@ -63,6 +63,9 @@ public class ItemBlockBase extends ItemBlockDesc
         case 11:
             name = "aluminumBlock";
             break;
+        case 12:
+            name = "meteorironBlock";
+            break;
         default:
             name = "null";
         }

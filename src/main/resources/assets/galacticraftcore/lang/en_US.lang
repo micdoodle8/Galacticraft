@@ -173,6 +173,7 @@ tile.dummyblock.cryogenicChamber.name=Cryogenic Chamber
 tile.gcBlockCore.copperBlock.name=Copper Block
 tile.gcBlockCore.tinBlock.name=Tin Block
 tile.gcBlockCore.aluminumBlock.name=Aluminum Block
+tile.gcBlockCore.meteorironBlock.name=Solid Meteoric Iron
 tile.fuel.name=Fuel
 tile.oxygenCompressor.0.name=Oxygen Compressor
 tile.oxygenCompressor.1.name=Oxygen Decompressor
