@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
@@ -297,31 +298,32 @@ public class PlayerClient implements IPlayerClient
 		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BUILDFLAGS_UPDATE, new Object[] { flag }));
 		switch (i) {
 		case 0:
-			sendChat(player, GCCoreUtil.translate("gui.message.help1")+": www."+GalacticraftCore.PREFIX+"com/wiki");
+			sendChat(player, GCCoreUtil.translate("gui.message.help1")+": " + EnumColor.BRIGHT_GREEN + "wiki."+GalacticraftCore.PREFIX+"com/wiki");
+			sendChat(player, GCCoreUtil.translate("gui.message.help1a") + EnumColor.AQUA + " /gchelp");
 			break;
 		case 1:
-			sendChat(player, GCCoreUtil.translate("gui.message.help1")+": www."+GalacticraftCore.PREFIX+"com/wiki/1");
+			sendChat(player, GCCoreUtil.translate("gui.message.help1")+": " + EnumColor.BRIGHT_GREEN + "wiki."+GalacticraftCore.PREFIX+"com/wiki/1");
 			break;
 		case 2:
-			sendChat(player, GCCoreUtil.translate("gui.message.help1")+": www."+GalacticraftCore.PREFIX+"com/wiki/1");
+			sendChat(player, GCCoreUtil.translate("gui.message.help1")+": " + EnumColor.BRIGHT_GREEN + "wiki."+GalacticraftCore.PREFIX+"com/wiki/1");
 			break;
 		case 3:
-			sendChat(player, GCCoreUtil.translate("gui.message.help1")+": www."+GalacticraftCore.PREFIX+"com/wiki/1");
+			sendChat(player, GCCoreUtil.translate("gui.message.help1")+": " + EnumColor.BRIGHT_GREEN + "wiki."+GalacticraftCore.PREFIX+"com/wiki/1");
 			break;
 		case 4:
-			sendChat(player, GCCoreUtil.translate("gui.message.help2")+": www."+GalacticraftCore.PREFIX+"com/wiki/2");
+			sendChat(player, GCCoreUtil.translate("gui.message.help2")+": " + EnumColor.BRIGHT_GREEN + "wiki."+GalacticraftCore.PREFIX+"com/wiki/2");
 			break;
 		case 5:
-			sendChat(player, GCCoreUtil.translate("gui.message.help2")+": www."+GalacticraftCore.PREFIX+"com/wiki/2");
+			sendChat(player, GCCoreUtil.translate("gui.message.help2")+": " + EnumColor.BRIGHT_GREEN + "wiki."+GalacticraftCore.PREFIX+"com/wiki/2");
 			break;
 		case 6:
-			sendChat(player, GCCoreUtil.translate("gui.message.help2")+": www."+GalacticraftCore.PREFIX+"com/wiki/2");
+			sendChat(player, GCCoreUtil.translate("gui.message.help2")+": " + EnumColor.BRIGHT_GREEN + "wiki."+GalacticraftCore.PREFIX+"com/wiki/2");
 			break;
 		case 7:
-			sendChat(player, GCCoreUtil.translate("gui.message.help3")+": www."+GalacticraftCore.PREFIX+"com/wiki/oil");
+			sendChat(player, GCCoreUtil.translate("gui.message.help3")+": " + EnumColor.BRIGHT_GREEN + "wiki."+GalacticraftCore.PREFIX+"com/wiki/oil");
 			break;
 		case 8:
-			sendChat(player, GCCoreUtil.translate("gui.message.prelaunch")+": www."+GalacticraftCore.PREFIX+"com/wiki/pre");
+			sendChat(player, GCCoreUtil.translate("gui.message.prelaunch")+": " + EnumColor.BRIGHT_GREEN + "wiki."+GalacticraftCore.PREFIX+"com/wiki/pre");
 			break;
 		}
 	}
