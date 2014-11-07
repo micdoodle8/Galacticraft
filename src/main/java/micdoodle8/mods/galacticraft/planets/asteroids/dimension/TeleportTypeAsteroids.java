@@ -8,13 +8,11 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityEntryPod;
-import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderServer;
 
 import java.util.Random;
@@ -270,17 +268,6 @@ public class TeleportTypeAsteroids implements ITeleportType
     private void preGenChunk(World w, int chunkX, int chunkZ)
     {
         w.getChunkFromChunkCoords(chunkX, chunkZ);
-
-        //Search for and add large asteroids nearby
-        IChunkProvider cp = ((ChunkProviderServer) w.getChunkProvider()).currentChunkProvider;
-        if (cp instanceof ChunkProviderAsteroids)
-        {
-            ((ChunkProviderAsteroids) cp).addLargeAsteroids(chunkX, chunkZ);
-        }
-        else
-        {
-            FMLLog.info("GC bug: wrong chunk provider type, found: " + cp.getClass().getName());
-        }
     }
 
     @Override
