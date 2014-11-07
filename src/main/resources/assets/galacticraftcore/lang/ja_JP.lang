@@ -211,12 +211,12 @@ tile.wallGC.moonBricks.name=月ダンジョンのレンガ
 tile.slabGCHalf.moonBricksSlab.name=月ダンジョンのレンガ
 
 # ENTITIES
-entity.GalacticraftCore.EvolvedSpider.name=進化したクモ
-entity.GalacticraftCore.EvolvedZombie.name=進化したゾンビ
-entity.GalacticraftCore.EvolvedCreeper.name=進化したクリーパー
-entity.GalacticraftCore.EvolvedSkeleton.name=進化したスケルトン
+entity.GalacticraftCore.EvolvedSpider.name=宇宙のクモ
+entity.GalacticraftCore.EvolvedZombie.name=宇宙のゾンビ
+entity.GalacticraftCore.EvolvedCreeper.name=宇宙のクリーパー
+entity.GalacticraftCore.EvolvedSkeleton.name=宇宙のスケルトン
 entity.GalacticraftCore.EvolvedSkeletonBoss.name=スケルトンキング
-entity.GalacticraftCore.AlienVillager.name=エイリアン村人
+entity.GalacticraftCore.AlienVillager.name=宇宙の村人
 entity.GalacticraftCore.Spaceship.name=レベル 1 ロケット
 entity.GalacticraftCore.GravityArrow.name=矢
 entity.GalacticraftCore.Meteor.name=流星
@@ -244,7 +244,7 @@ death.attack.thermal=%1$は熱保護を忘れた
 galaxy.blockyway.name=銀ブロック系
 
 # OTHER
-newversion.failed.name=Galacticraft update check failed! Trying again in 15 seconds
+newversion.failed.name=GalacticraftのUpdate情報が確認出来ませんでした。 15秒後にもう一度確認してみます
 newversion.success.name=Galacticraft remote version found:
 
 # KEYBINDINGS
@@ -284,7 +284,7 @@ gui.message.out.name=出
 gui.message.in.name=入
 gui.message.status.name=ステータス
 gui.message.oxoutput.name=酸素搬出口
-gui.message.oxinput.name=Oxygen Input
+gui.message.oxinput.name=酸素搬入口
 gui.message.fuel.name=燃料
 gui.message.full.name=いっぱい
 gui.message.page.name=ページ
