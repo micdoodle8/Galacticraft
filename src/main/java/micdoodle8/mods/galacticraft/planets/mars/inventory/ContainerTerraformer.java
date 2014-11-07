@@ -71,7 +71,7 @@ public class ContainerTerraformer extends Container
 	                    			ContainerTerraformer.saplingList.add(testStack);
 	                    		}                   		
 	                        }
-	                        } catch (Exception e) { e.printStackTrace(); }
+	                        } catch (Exception e) { }
 	                    }
 	                }
                 }

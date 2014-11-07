@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
@@ -14,6 +15,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IRenderHandler;
+
 import org.lwjgl.opengl.GL11;
 
 import java.util.Random;
@@ -27,10 +29,14 @@ public class SkyProviderAsteroids extends IRenderHandler
     public int starGLCallList = GLAllocation.generateDisplayLists(3);
     public int glSkyList;
     public int glSkyList2;
+    
+    private float sunSize;
 
-    public SkyProviderAsteroids()
+    public SkyProviderAsteroids(IGalacticraftWorldProvider asteroidsProvider)
     {
-        GL11.glPushMatrix();
+        this.sunSize = 17.5F * asteroidsProvider.getSolarSize();
+
+    	GL11.glPushMatrix();
         GL11.glNewList(this.starGLCallList, GL11.GL_COMPILE);
         this.renderStars();
         GL11.glEndList();
@@ -135,17 +141,18 @@ public class SkyProviderAsteroids extends IRenderHandler
         GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
-        var12 = 5.0F;
+        var12 = this.sunSize;
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(SkyProviderAsteroids.sunTexture);
 
         // Draw it a few times...
         for (int i = 0; i < 4; i++)
         {
             var23.startDrawingQuads();
-            var23.addVertexWithUV(-var12, 150.0D, -var12, 0.0D, 0.0D);
-            var23.addVertexWithUV(var12, 150.0D, -var12, 1.0D, 0.0D);
-            var23.addVertexWithUV(var12, 150.0D, var12, 1.0D, 1.0D);
-            var23.addVertexWithUV(-var12, 150.0D, var12, 0.0D, 1.0D);
+            //110 distance instead of the normal 100, because there is no atmosphere to make the disk seem larger
+            var23.addVertexWithUV(-var12, 110.0D, -var12, 0.0D, 0.0D);
+            var23.addVertexWithUV(var12, 110.0D, -var12, 1.0D, 0.0D);
+            var23.addVertexWithUV(var12, 110.0D, var12, 1.0D, 1.0D);
+            var23.addVertexWithUV(-var12, 110.0D, var12, 0.0D, 1.0D);
             var23.draw();
         }
 

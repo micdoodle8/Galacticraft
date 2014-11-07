@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Billowed;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
@@ -166,9 +165,9 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
         this.asteroidSkewZ.frequencyZ = 0.005F;
 
         this.coreHandler = new SpecialAsteroidBlockHandler();
-        this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, this.ASTEROID_STONE_META_2, 7, .3));
-        this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, this.ASTEROID_STONE_META_1, 9, .3));
-        this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, this.ASTEROID_STONE_META_0, 14, .25));
+        this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, this.ASTEROID_STONE_META_2, 5, .3));
+        this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, this.ASTEROID_STONE_META_1, 7, .3));
+        this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, this.ASTEROID_STONE_META_0, 11, .25));
         this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, (byte) 3, 5, .2));
         this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, (byte) 4, 4, .15));
         this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, (byte) 5, 3, .2));
@@ -506,14 +505,14 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
     @Override
     public Chunk provideChunk(int par1, int par2)
     {
-        long time1 = System.nanoTime();
+//        long time1 = System.nanoTime();
         this.rand.setSeed(par1 * 341873128712L + par2 * 132897987541L);
         final Block[] ids = new Block[65536];
         final byte[] meta = new byte[65536];
         this.generateTerrain(par1, par2, ids, meta);
         //this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
 
-        long time2 = System.nanoTime();
+//        long time2 = System.nanoTime();
         final Chunk var4 = new Chunk(this.worldObj, ids, meta, par1, par2);
         final byte[] var5 = var4.getBiomeArray();
 
@@ -522,16 +521,16 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
             var5[var6] = (byte) BiomeGenBaseAsteroids.asteroid.biomeID;
         }
 
-        long time3 = System.nanoTime();
+//        long time3 = System.nanoTime();
         this.generateSkylightMap(var4, par1, par2);
-        long time4 = System.nanoTime();
-        if (ConfigManagerCore.enableDebug)
-        {       
-	        BlockVec3 vec = new BlockVec3(par1, par2, 0);
-	        if (chunksDone.contains(vec)) System.out.println("Done chunk already at "+par1+","+par2);
-	        else chunksDone.add(vec);
-        	System.out.println("Chunk gen: " + timeString(time1, time4) + " at "+par1+","+par2 + " - L"+this.largeCount+ " H"+this.largeAsteroids.size()+ " Terrain:"+timeString(time1, time2)+ " Biomes:"+timeString(time2,time3)+ " Light:"+timeString(time3, time4));
-        }
+//        long time4 = System.nanoTime();
+//        if (ConfigManagerCore.enableDebug)
+//        {       
+//	        BlockVec3 vec = new BlockVec3(par1, par2, 0);
+//	        if (chunksDone.contains(vec)) System.out.println("Done chunk already at "+par1+","+par2);
+//	        else chunksDone.add(vec);
+//        	System.out.println("Chunk gen: " + timeString(time1, time4) + " at "+par1+","+par2 + " - L"+this.largeCount+ " H"+this.largeAsteroids.size()+ " Terrain:"+timeString(time1, time2)+ " Biomes:"+timeString(time2,time3)+ " Light:"+timeString(time3, time4));
+//        }
         return var4;
     }
 
@@ -583,6 +582,8 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
     {
         int x = chunkX * 16;
         int z = chunkZ * 16;
+        if (!ChunkProviderAsteroids.chunksDone.add(new BlockVec3(x, 0, z)))
+        	System.out.println("Chunk done already at "+x+","+z);
 
         BlockFalling.fallInstantly = true;
         this.worldObj.getBiomeGenForCoords(x + 16, z + 16);
@@ -686,6 +687,23 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
                 }
             }
         }
+
+        //Update all block lighting
+		for (int xx = 0; xx < 16; xx++)
+		{
+			int xPos = x + xx;
+			for (int zz = 0; zz < 16; zz++)
+			{
+				int zPos = z + zz;       			
+
+				//Asteroid at min height 48, size 20, can't have lit blocks below 16
+				for (int y = 16; y < 240; y++)
+				{
+					worldObj.updateLightByType(EnumSkyBlock.Block, xPos, y, zPos);
+				}
+			}
+		}
+
     }
 
     public void generateSkylightMap(Chunk chunk, int cx, int cz)
@@ -782,25 +800,8 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
                             if (extendedblockstorage != null)
                             {
                                 extendedblockstorage.setExtBlocklightValue(x - 1, y & 15, z, count);
-//                                this.worldObj.func_147479_m(xPos, y, zPos);
                             }
    						}
-    				}
-    			}
-    		}
-    		
-    		yMin = Math.max(0,  yMin-10);
-    		yMax = Math.min(255,  yMax+10);
-    		for (int x = 0; x < 16; x++)
-    		{
-    			int xPos = x + (cx << 4);
-    			for (int z = 0; z < 16; z++)
-    			{
-    				int zPos = z + (cz << 4);       			
-
-    				for (int y = yMin; y < yMax; y++)
-    				{
-    					w.func_147451_t(xPos, y, zPos);
     				}
     			}
     		}

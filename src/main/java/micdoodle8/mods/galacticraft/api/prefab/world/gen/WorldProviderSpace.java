@@ -271,4 +271,10 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     {
         return false;
     }
+
+    @Override
+    public float getSolarSize()
+    {
+        return 1.0F / this.getCelestialBody().getRelativeDistanceFromCenter().unScaledDistance;
+    }
 }

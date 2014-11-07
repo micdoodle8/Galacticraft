@@ -90,4 +90,12 @@ public interface IGalacticraftWorldProvider
      * @return Flag movement magnitude. Relative to earth's value of 1.0F
      */
     public float getWindLevel();
+    
+    /**
+     * Factor by which the sun is to be drawn smaller (<1.0) or larger (>1.0) than
+     * the sun on the Overworld
+     * 
+     * @return  factor
+     */
+    public float getSolarSize();
 }
