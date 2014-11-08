@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.world.World;
@@ -32,4 +33,20 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
     {
         return false;
     }
+    
+    @Override
+	public IEntityLivingData onSpawnWithEgg(IEntityLivingData livingData)
+	{
+		livingData = super.onSpawnWithEgg(livingData);
+
+		if (this.worldObj.rand.nextInt(100) == 0)
+		{
+			EntityEvolvedSkeleton skeleton = new EntityEvolvedSkeleton(this.worldObj);
+			skeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
+			skeleton.onSpawnWithEgg(null);
+			this.worldObj.spawnEntityInWorld(skeleton);
+			skeleton.mountEntity(this);
+		}
+		return livingData;
+	}
 }
