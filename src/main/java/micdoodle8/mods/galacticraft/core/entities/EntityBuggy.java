@@ -769,7 +769,10 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 
             if (stackAt != null)
             {
-                if (doRemove && --this.cargoItems[i].stackSize <= 0)
+                ItemStack resultStack = stackAt.copy();
+                resultStack.stackSize = 1;
+
+            	if (doRemove && --stackAt.stackSize <= 0)
                 {
                     this.cargoItems[i] = null;
                 }
@@ -778,7 +781,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
                 {
                     this.markDirty();
                 }
-                return new RemovalResult(EnumCargoLoadingState.SUCCESS, new ItemStack(stackAt.getItem(), 1, stackAt.getItemDamage()));
+                return new RemovalResult(EnumCargoLoadingState.SUCCESS, resultStack);
             }
         }
 
