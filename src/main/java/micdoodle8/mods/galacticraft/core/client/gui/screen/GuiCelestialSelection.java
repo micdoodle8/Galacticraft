@@ -18,7 +18,6 @@ import micdoodle8.mods.galacticraft.api.galaxies.Satellite;
 import micdoodle8.mods.galacticraft.api.galaxies.SolarSystem;
 import micdoodle8.mods.galacticraft.api.galaxies.Star;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -410,19 +409,6 @@ public class GuiCelestialSelection extends GuiScreen
         {
             this.teleportToSelectedBody();
         }
-
-/*		// Temporarily allow to get to Space Station by pressing 'X'
-        if (keyID == 45)
-		{
-			final String dimension = WorldProvider.getProviderForDimension(2).getDimensionName();
-			if (dimension.contains("$"))
-			{
-				this.mc.gameSettings.thirdPersonView = 0;
-			}
-			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_TELEPORT_ENTITY, new Object[] { dimension }));
-            this.mc.displayGuiScreen(null);
-            this.mc.setIngameFocus();
-		}*/
     }
 
     public boolean isValid(String string)
@@ -468,9 +454,8 @@ public class GuiCelestialSelection extends GuiScreen
             {
                 if (this.selectedBody == null || (this.selectionState == EnumSelectionState.PREVIEW && this.selectionCount < 2))
                 {
-//                    this.zoom = Math.min(Math.max(this.zoom + wheel, -0.5F), 3);
-                	this.zoom = Math.min(Math.max(this.zoom + wheel, -1F), 3); //Increase maximum zoom.
-                	//TODO: Make smoother, and allow for moving of the map
+                	//Minimum zoom increased from 0.55F to 1F to allow zoom out to see other solar systems
+                	this.zoom = Math.min(Math.max(this.zoom + wheel, -1F), 3);
                 }
                 else
                 {
@@ -1020,9 +1005,10 @@ public class GuiCelestialSelection extends GuiScreen
     {
         if (cBody instanceof Star)
         {
-        	if(cBody.getUnlocalizedName().equalsIgnoreCase("star.sol")) { return new Vector3f(); } //Stop floating point moving with a scale for main solar system
-        	Vector3 mappos = ((Star) cBody).getParentSolarSystem().getMapPosition();
-            return new Vector3f(mappos.floatX(), mappos.floatY(), mappos.floatZ());
+        	if (cBody.getUnlocalizedName().equalsIgnoreCase("star.sol"))
+        		 //Return zero vector for Sol, different location for other solar systems
+        		return new Vector3f();
+            return ((Star) cBody).getParentSolarSystem().getMapPosition().toVector3f();
         }
 
         int cBodyTicks = this.celestialBodyTicks.get(cBody);
@@ -1030,10 +1016,9 @@ public class GuiCelestialSelection extends GuiScreen
         float distanceFromCenter = this.getScale(cBody);
         Vector3f cBodyPos = new Vector3f((float) Math.sin(cBodyTicks / (timeScale * cBody.getRelativeOrbitTime()) + cBody.getPhaseShift()) * distanceFromCenter, (float) Math.cos(cBodyTicks / (timeScale * cBody.getRelativeOrbitTime()) + cBody.getPhaseShift()) * distanceFromCenter, 0);
         
-        if(cBody instanceof Planet)
+        if (cBody instanceof Planet)
         {
-        	Star parentStar = ((Planet) cBody).getParentSolarSystem().getMainStar();
-        	Vector3f parentVec = this.getCelestialBodyPosition(parentStar);
+        	Vector3f parentVec = this.getCelestialBodyPosition(((Planet) cBody).getParentSolarSystem().getMainStar());
         	return Vector3f.add(cBodyPos, parentVec, null);
         }
         
@@ -1063,7 +1048,6 @@ public class GuiCelestialSelection extends GuiScreen
         return celestialBody instanceof Star ? 12 : (celestialBody instanceof Planet ? 6 : (celestialBody instanceof IChildBody ? 6 : (celestialBody instanceof Satellite ? 6 : 2)));
     }
 
-    //TODO: Find Point
     public HashMap<CelestialBody, Matrix4f> drawCelestialBodies(Matrix4f worldMatrix)
     {
         GL11.glColor3f(1, 1, 1);
@@ -2056,11 +2040,8 @@ public class GuiCelestialSelection extends GuiScreen
         Matrix4f.translate(new Vector3f(width / 2.0F, height / 2, 0), mat0, mat0);
         Matrix4f.rotate((float) Math.toRadians(55), new Vector3f(1, 0, 0), mat0, mat0);
         Matrix4f.rotate((float) Math.toRadians(-45), new Vector3f(0, 0, 1), mat0, mat0);
-        float zoomLocal = this.getZoomAdvanced(); //TODO: Find point
+        float zoomLocal = this.getZoomAdvanced();
         this.zoom = this.getZoomAdvanced();
-//        System.out.println(zoom);
-        
-//        this.zoom = -1F;
         Matrix4f.scale(new Vector3f(1.1f + zoomLocal, 1.1F + zoomLocal, 1.1F + zoomLocal), mat0, mat0);
         Vector2f cBodyPos = this.getTranslationAdvanced(partialTicks);
         this.position = this.getTranslationAdvanced(partialTicks);
@@ -2105,7 +2086,7 @@ public class GuiCelestialSelection extends GuiScreen
         {	
             if (planet.getParentSolarSystem() != null)
             {
-            	Vector3f planPos = this.getCelestialBodyPosition(planet.getParentSolarSystem().getMainStar());
+            	Vector3f systemOffset = this.getCelestialBodyPosition(planet.getParentSolarSystem().getMainStar());
             	
             	float x = this.getScale(planet);
                 float y = 0;
@@ -2141,9 +2122,7 @@ public class GuiCelestialSelection extends GuiScreen
 
                     if (!preEvent.isCanceled())
                     {
-                    	GL11.glTranslatef(planPos.getX(), planPos.getY(), planPos.getZ());
-                    	
-//                    	System.out.println(planet.getLocalizedName() + " " + planet.getParentSolarSystem().getMapPosition());
+                    	GL11.glTranslatef(systemOffset.x, systemOffset.y, systemOffset.z);
                     	
                         GL11.glBegin(GL11.GL_LINE_LOOP);
 
@@ -2159,7 +2138,7 @@ public class GuiCelestialSelection extends GuiScreen
                         
                         GL11.glEnd();
                         
-                        GL11.glTranslatef(-planPos.getX(), -planPos.getY(), -planPos.getZ());
+                    	GL11.glTranslatef(-systemOffset.x, -systemOffset.y, -systemOffset.z);
                         
                         count++;
                     }

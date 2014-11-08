@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.WorldProvider;
 
 import org.lwjgl.opengl.GL11;
 
@@ -150,4 +151,13 @@ public class DrawGameScreen extends IScreenManager
 
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
     }
+
+	@Override
+	public WorldProvider getWorldProvider()
+	{
+		if (this.driver != null)
+			return driver.getWorldObj().provider;
+		
+		return null;
+	}    
 }

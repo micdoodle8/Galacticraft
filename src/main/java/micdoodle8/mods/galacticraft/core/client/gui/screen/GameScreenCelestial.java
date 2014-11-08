@@ -12,9 +12,11 @@ import micdoodle8.mods.galacticraft.api.galaxies.Planet;
 import micdoodle8.mods.galacticraft.api.galaxies.Satellite;
 import micdoodle8.mods.galacticraft.api.galaxies.SolarSystem;
 import micdoodle8.mods.galacticraft.api.galaxies.Star;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.lwjgl.BufferUtils;
@@ -82,7 +84,12 @@ public class GameScreenCelestial implements IGameScreen
     	switch(type)
         {
         case 2:
-            drawCelestialBodies(ticks);
+            WorldProvider wp = scr.getWorldProvider();
+            CelestialBody body = null;
+            if (wp instanceof IGalacticraftWorldProvider)
+            	body = ((IGalacticraftWorldProvider)wp).getCelestialBody();
+            if (body == null) body = GalacticraftCore.planetOverworld;
+        	drawCelestialBodies(body, ticks);
         	 break;
         case 3:
             drawCelestialBodiesZ(GalacticraftCore.planetOverworld, ticks);
@@ -113,28 +120,32 @@ public class GameScreenCelestial implements IGameScreen
         GL11.glEnable(GL11.GL_TEXTURE_2D);
     }
     
-    private void drawCelestialBodies(float ticks)
+    private void drawCelestialBodies(CelestialBody body, float ticks)
     {
-    	for (SolarSystem solarSystem : GalaxyRegistry.getRegisteredSolarSystems().values())
-        {
-            Star star = solarSystem.getMainStar();
+    	Star star = null;
+    	SolarSystem solarSystem = null;
+    	if (body instanceof Planet)
+    		solarSystem = ((Planet)body).getParentSolarSystem();
+    	else if (body instanceof Moon)
+    		solarSystem = ((Moon)body).getParentPlanet().getParentSolarSystem();
+    	else if (body instanceof Satellite)
+    		solarSystem = ((Satellite)body).getParentPlanet().getParentSolarSystem();
+    	
+    	if (solarSystem == null)
+    		solarSystem = GalacticraftCore.solarSystemSol;
+		star = solarSystem.getMainStar();
 
-            if (star != null && star.getBodyIcon() != null)
-            {
-        		this.drawCelestialBody(star, 0F, 0F, ticks, 6F);
-            }
+        if (star != null && star.getBodyIcon() != null)
+        {
+    		this.drawCelestialBody(star, 0F, 0F, ticks, 6F);
         }
 
+    	String mainSolarSystem = solarSystem.getUnlocalizedName();
         for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
         {
         	if (planet.getParentSolarSystem() != null && planet.getBodyIcon() != null)
             {
-        		String status = planet.getUnlocalizedName() + " - " + planet.getParentSolarSystem().getUnlocalizedName() + " - ";
-        		boolean isMain = planet.getParentSolarSystem().getUnlocalizedName().equalsIgnoreCase(GalacticraftCore.solarSystemSol.getUnlocalizedName());
-        		status = status + isMain;
-//        		System.out.println(status);
-        		
-        		if(isMain)
+        		if (planet.getParentSolarSystem().getUnlocalizedName().equalsIgnoreCase(mainSolarSystem))
         		{
         			Vector3f pos = this.getCelestialBodyPosition(planet, ticks);
                     this.drawCircle(planet);

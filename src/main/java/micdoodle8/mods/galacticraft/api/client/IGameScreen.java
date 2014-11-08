@@ -25,6 +25,7 @@ public interface IGameScreen
      * @param ticks  The worldtime in ticks (including partial ticks)
      * @param scaleX  Dimension of the screen in X direction
      * @param scaleY  Dimension of the screen in Y direction
+     * @param screen  The screen driver (DrawGameScreen) for this particular screen
      * 
      * NOTE 1: It is not necessary to enclose your code with glPushMatrix and
      * glPopMatrix, as this will be done by the calling method.
@@ -33,6 +34,7 @@ public interface IGameScreen
 
      * NOTE 2: if disabling GL11.GL_TEXTURE_2D in your code it is very
      * IMPORTANT to re-enable it again.
+	 * @param driver 
      * 
      */
 	public void render(int type, float ticks, float scaleX, float scaleY, IScreenManager screen);
