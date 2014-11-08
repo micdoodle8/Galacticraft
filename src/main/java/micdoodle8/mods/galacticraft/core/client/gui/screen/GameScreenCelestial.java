@@ -129,9 +129,17 @@ public class GameScreenCelestial implements IGameScreen
         {
         	if (planet.getParentSolarSystem() != null && planet.getBodyIcon() != null)
             {
-                Vector3f pos = this.getCelestialBodyPosition(planet, ticks);
-                this.drawCircle(planet);
-        		this.drawCelestialBody(planet, pos.x, pos.y, ticks, (planet.getRelativeDistanceFromCenter().unScaledDistance < 1.5F) ? 2F : 2.8F);
+        		String status = planet.getUnlocalizedName() + " - " + planet.getParentSolarSystem().getUnlocalizedName() + " - ";
+        		boolean isMain = planet.getParentSolarSystem().getUnlocalizedName().equalsIgnoreCase(GalacticraftCore.solarSystemSol.getUnlocalizedName());
+        		status = status + isMain;
+//        		System.out.println(status);
+        		
+        		if(isMain)
+        		{
+        			Vector3f pos = this.getCelestialBodyPosition(planet, ticks);
+                    this.drawCircle(planet);
+            		this.drawCelestialBody(planet, pos.x, pos.y, ticks, (planet.getRelativeDistanceFromCenter().unScaledDistance < 1.5F) ? 2F : 2.8F);
+        		}
             }
         }
     }
