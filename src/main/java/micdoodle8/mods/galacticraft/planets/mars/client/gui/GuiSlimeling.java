@@ -121,7 +121,7 @@ public class GuiSlimeling extends GuiScreen
         }
         else if (this.isValid(this.slimeling.getName() + keyChar))
         {
-            if (this.mc.thePlayer.getGameProfile().getName().equals(this.slimeling.getOwner().getCommandSenderName()))
+            if (this.mc.thePlayer.getGameProfile().getName().equals(this.slimeling.getOwnerUsername()))
             {
                 this.slimeling.setName(this.slimeling.getName() + keyChar);
                 this.slimeling.setName(this.slimeling.getName().substring(0, Math.min(this.slimeling.getName().length(), 16)));
