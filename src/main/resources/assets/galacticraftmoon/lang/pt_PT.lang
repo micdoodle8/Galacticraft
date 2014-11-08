@@ -25,5 +25,6 @@ tile.cheeseBlock.name=Bloco de Queijo
 
 # GUI
 gui.choosePlanet.desc.moon=Habitável#Sem Oxigénio#Gravidade: 18%
+container.lander.name=Lander ##NEEDS TRANSLATE##
 
 dimension.Moon.name=Lua

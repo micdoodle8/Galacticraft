@@ -98,6 +98,7 @@ gui.message.sendingActive.name=Envío Activo
 gui.message.range.name=Alcance: %dm
 gui.message.notEnoughEnergy.name=Energía Insuficiente
 gui.message.targetNoEnergy.name=El Objetivo no tiene suficiente Energía
+gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook! ##NEEDS TRANSLATE##
 
 tile.treasureT3.description=Los Cofres del Tesoro Nivel 3 están actualmente sin utilizar.
 tile.walkway.description=Las Pasarelas se usan para finalidades decorativas, usado para unir bloques y andar sobre ellos manteniendo la tématica espacial.

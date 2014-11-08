@@ -25,5 +25,6 @@ tile.cheeseBlock.name=Juustokuutio
 
 # GUI
 gui.choosePlanet.desc.moon=Asuttava#Ei happea#Painovoima: 18%
+container.lander.name=Lander ##NEEDS TRANSLATE##
 
 dimension.Moon.name=Kuu

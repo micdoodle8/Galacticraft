@@ -25,5 +25,6 @@ tile.cheeseBlock.name=チーズブロック
 
 # GUI
 gui.choosePlanet.desc.moon=Habitable#No Oxygen#重力: 18%
+container.lander.name=Lander ##NEEDS TRANSLATE##
 
 dimension.Moon.name=月

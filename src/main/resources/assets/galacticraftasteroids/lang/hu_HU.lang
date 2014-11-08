@@ -98,6 +98,7 @@ gui.message.sendingActive.name=Küldés Elérhető
 gui.message.range.name=Hatósugár: %dm
 gui.message.notEnoughEnergy.name=Nincs Elég Energia
 gui.message.targetNoEnergy.name=A Célpontnak Nincs Elég Energiája
+gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook! ##NEEDS TRANSLATE##
 tile.treasureT3.description=Tier 3 Treasure Chests are currently unused. ##NEEDS TRANSLATE##
 tile.walkway.description=Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme. ##NEEDS TRANSLATE##
 tile.walkwayAluminumWire.description=Aluminum Wire Walkways are used for running wire underneath a fully walkable surface. ##NEEDS TRANSLATE##

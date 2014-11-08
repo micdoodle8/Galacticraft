@@ -100,6 +100,7 @@ gui.message.sendingActive.name=Envoi actif
 gui.message.range.name=Range: %dm
 gui.message.notEnoughEnergy.name=Pas assez d'énergie
 gui.message.targetNoEnergy.name=La cible ne possède pas assez d'énergie
+gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook! ##NEEDS TRANSLATE##
 tile.treasureT3.description=Tier 3 Treasure Chests are currently unused. ##NEEDS TRANSLATE##
 tile.walkway.description=Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme. ##NEEDS TRANSLATE##
 tile.walkwayAluminumWire.description=Aluminum Wire Walkways are used for running wire underneath a fully solid walkable surface. ##NEEDS TRANSLATE##

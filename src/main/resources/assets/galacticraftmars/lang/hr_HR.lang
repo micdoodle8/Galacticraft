@@ -13,6 +13,7 @@ item.compressedDesh.name=Prerađeni Desh
 item.spaceshipTier2.cargoRocket.name=Raketa s Teretom
 item.fluidManip.name=Manipulator Tekučinom
 item.bucketSludge.name=Bakterijska Sluz
+fluid.bacterialsludge=Bacterial Sludge ##NEEDS TRANSLATE##
 
 # TOOLS
 item.deshPick.name=Desh Kramp
@@ -187,6 +188,7 @@ entity.CargoRocket.name=Teretna Raketa
 # CONTAINERS
 container.launchcontroller.name=Kontroler Lansiranja
 container.tileTerraformer.name=Teraformer
+container.marsLander.name=Landing Balloons ##NEEDS TRANSLATE##
 gc.configgui.dimensionIDMars=Mars Dimension ID
 gc.configgui.idEntityCreeperBoss=Creeper Boss Entity ID
 gc.configgui.idEntityProjectileTNT=Projectile TNT Entity ID

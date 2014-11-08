@@ -25,5 +25,6 @@ tile.cheeseBlock.name=Blok sýra
 
 # GUI
 gui.choosePlanet.desc.moon=Obyvatelný#Žádný kyslík#Gravitace: 18%
+container.lander.name=Lander ##NEEDS TRANSLATE##
 
 dimension.Moon.name=Měsíc

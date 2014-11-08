@@ -25,5 +25,6 @@ tile.cheeseBlock.name=奶酪塊
 
 # GUI
 gui.choosePlanet.desc.moon=宜居#無氧氣#重力: 18%
+container.lander.name=Lander ##NEEDS TRANSLATE##
 
 dimension.Moon.name=月球

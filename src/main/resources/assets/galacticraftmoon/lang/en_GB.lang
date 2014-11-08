@@ -28,5 +28,6 @@ dimension.Moon.name=Moon
 
 # GUI
 gui.choosePlanet.desc.moon=Habitable#No Oxygen#Gravity: 18%
+container.lander.name=Lander ##NEEDS TRANSLATE##
 
 itemGroup.GalacticraftMoon=Galacticraft Moon

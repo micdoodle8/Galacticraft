@@ -98,6 +98,7 @@ gui.message.sendingActive.name=Senden Aktiviert
 gui.message.range.name=Reichweite: %dm
 gui.message.notEnoughEnergy.name=Night genug Energie!
 gui.message.targetNoEnergy.name=Ziel hat nicht genügend Energie! 
+gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook! ##NEEDS TRANSLATE##
 
 tile.treasureT3.description=Tier 3 Treasure Chests are currently unused.
 tile.walkway.description=Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme.

@@ -13,6 +13,7 @@ item.compressedDesh.name=Compressed Desh
 item.spaceshipTier2.cargoRocket.name=Cargo Rocket
 item.fluidManip.name=Fluid Manipulator
 item.bucketSludge.name=Bacterial Sludge Bucket ##NEEDS TRANSLATE##
+fluid.bacterialsludge=Bacterial Sludge ##NEEDS TRANSLATE##
 
 # TOOLS
 item.deshPick.name=Desh Pickaxe
@@ -173,6 +174,7 @@ entity.CargoRocket.name=Cargo Rocket
 # Container
 container.launchcontroller.name=Launch Controller
 container.tileTerraformer.name=Terraformer
+container.marsLander.name=Landing Balloons ##NEEDS TRANSLATE##
 gc.configgui.dimensionIDMars=Mars Dimension ID
 gc.configgui.idEntityCreeperBoss=Creeper Boss Entity ID
 gc.configgui.idEntityProjectileTNT=Projectile TNT Entity ID

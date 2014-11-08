@@ -13,6 +13,7 @@ item.compressedDesh.name=Válcovaný frikcní kov
 item.spaceshipTier2.cargoRocket.name=Nákladní raketa
 item.fluidManip.name=Kapalinový manipulator
 item.bucketSludge.name=Kyblík infikovaného bláta
+fluid.bacterialsludge=Bacterial Sludge ##NEEDS TRANSLATE##
 
 # TOOLS
 item.deshPick.name=Krumpác z frikcního kovu
@@ -187,6 +188,7 @@ entity.CargoRocket.name=Nákladní raketa
 # Container
 container.launchcontroller.name=Odpalovací zarízení
 container.tileTerraformer.name=Terraformer
+container.marsLander.name=Landing Balloons ##NEEDS TRANSLATE##
 gc.configgui.dimensionIDMars=Císlo dimenze Marsu
 gc.configgui.idEntityCreeperBoss=Císlo sycáka (Boss)
 gc.configgui.idEntityProjectileTNT=Císlo obraného TNT

@@ -98,6 +98,7 @@ gui.message.sendingActive.name=Gönderme Aktif
 gui.message.range.name=Menzil: %dm
 gui.message.notEnoughEnergy.name=Enerji Yetersiz!
 gui.message.targetNoEnergy.name=Hedefin Enerjisi Yetersiz!
+gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook! ##NEEDS TRANSLATE##
 
 tile.treasureT3.description=Tier 3 Hazine Sandığı şu anlık kullanılmıyor.
 tile.walkway.description=Yürüme Bloğu dekoratif amaçlıdır, diğer bloklara bağlanarak uzay teması oluşur.

@@ -25,5 +25,6 @@ tile.cheeseBlock.name=Peynir Bloğu
 
 # GUI
 gui.choosePlanet.desc.moon=Yaşanabilir#Oksijen Bulunmuyor#Yerçekimi: %18
+container.lander.name=Lander ##NEEDS TRANSLATE##
 
 dimension.Moon.name=Ay

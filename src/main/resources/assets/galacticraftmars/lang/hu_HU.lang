@@ -12,6 +12,7 @@ item.compressedDesh.name=Préselt Desh
 item.spaceshipTier2.cargoRocket.name=Távvezérlésu Teherrakéta
 item.fluidManip.name=Folyadék-Átalakító
 item.bucketSludge.name=Bacterial Sludge Bucket ##NEEDS TRANSLATE##
+fluid.bacterialsludge=Bacterial Sludge ##NEEDS TRANSLATE##
 
 # TOOLS
 item.deshPick.name=Desh Csákány
@@ -187,6 +188,7 @@ entity.CargoRocket.name=Távvezérlésu Teherrakéta
 # CONTAINERS
 container.launchcontroller.name=Távvezérlo
 container.tileTerraformer.name=Növényülteto
+container.marsLander.name=Landing Balloons ##NEEDS TRANSLATE##
 gc.configgui.dimensionIDMars=Mars Dimension ID
 gc.configgui.idEntityCreeperBoss=Creeper Boss Entity ID
 gc.configgui.idEntityProjectileTNT=Projectile TNT Entity ID

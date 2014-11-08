@@ -91,6 +91,7 @@ gui.message.sendingActive.name=Wysyłanie Aktywne
 gui.message.range.name=Range: %dm
 gui.message.notEnoughEnergy.name=Za mało energii!
 gui.message.targetNoEnergy.name=Cal ma za mało energii!
+gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook! ##NEEDS TRANSLATE##
 tile.treasureT3.description=Skrzynie Skarbów Poziomu 3 są aktualnie nieużywane.
 tile.walkway.description=Chodniki są używane are used do dekoracji oraz do łączenia bloków zachowując miejsce oraz motyw kosmicznu.
 tile.walkwayAluminumWire.description=Chodniki z Kablem Aluminiowym są używane do prowadzenia kabli pod w pełni szczelnej powierzchni.
