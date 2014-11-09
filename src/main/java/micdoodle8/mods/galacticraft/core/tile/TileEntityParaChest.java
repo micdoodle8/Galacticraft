@@ -7,11 +7,13 @@ import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerParaChest;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -298,37 +300,53 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 
         if (!this.worldObj.isRemote)
         {
-            final FluidStack liquid = this.fuelTank.getFluid();
-
-            if (liquid != null && liquid.getFluid().getName().equalsIgnoreCase("Fuel"))
-            {
-            	ItemStack slotItem = this.chestContents[this.chestContents.length - 1];
-            	if (slotItem != null && slotItem.stackSize == 1 && FluidContainerRegistry.isEmptyContainer(slotItem))
-                {
-                    boolean isCanister = slotItem.isItemEqual(new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage()));
-                    final int amountToFill = Math.min(liquid.amount, isCanister ? GCItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
-
-                    if (isCanister && amountToFill > 0)
-                    {
-                        this.chestContents[this.chestContents.length - 1] = new ItemStack(GCItems.fuelCanister, 1, GCItems.fuelCanister.getMaxDamage() - amountToFill);
-                        this.fuelTank.drain(amountToFill, true);
-                    }
-                    else
-                    {
-                        this.chestContents[this.chestContents.length - 1] = FluidContainerRegistry.fillFluidContainer(liquid, slotItem);
-                        if (this.chestContents[this.chestContents.length - 1] == null)
-                        {
-                            this.chestContents[this.chestContents.length - 1] = slotItem;
-                        }
-                        else
-                        {
-                            fuelTank.drain(amountToFill, true);
-                        }
-                    }
-                }
-            }
+			this.checkFluidTankTransfer(2, this.fuelTank);
         }
     }
+    
+    private void checkFluidTankTransfer(int slot, FluidTank tank)
+	{
+		if (this.chestContents[slot] != null && FluidContainerRegistry.isContainer(this.chestContents[slot]))
+		{
+			final FluidStack liquid = tank.getFluid();
+
+			if (liquid != null && liquid.amount > 0)
+			{
+				String liquidname = liquid.getFluid().getName();
+
+				if (liquidname.equals("fuel"))
+				{
+					tryFillContainer(tank, liquid, slot, GCItems.fuelCanister);
+				}
+			}
+		}
+	}
+	
+	private void tryFillContainer(FluidTank tank, FluidStack liquid, int slot, Item canister)
+	{
+		ItemStack slotItem = this.chestContents[slot];
+		boolean isCanister = slotItem.getItem() instanceof ItemCanisterGeneric && slotItem.getItemDamage() > 1;
+		final int amountToFill = Math.min(liquid.amount, isCanister ? slotItem.getItemDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
+
+		if (isCanister && amountToFill > 0)
+		{
+			this.chestContents[slot] = new ItemStack(canister, 1, slotItem.getItemDamage() - amountToFill);
+			tank.drain(amountToFill, true);
+		}
+		else if (amountToFill == FluidContainerRegistry.BUCKET_VOLUME)
+		{
+			this.chestContents[slot] = FluidContainerRegistry.fillFluidContainer(liquid, this.chestContents[slot]);
+
+			if (this.chestContents[slot] == null)
+			{
+				this.chestContents[slot] = slotItem;
+			}
+			else
+			{
+				tank.drain(amountToFill, true);
+			}
+		}
+	}
 
     @Override
     public boolean receiveClientEvent(int par1, int par2)
