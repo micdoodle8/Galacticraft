@@ -173,7 +173,7 @@ tile.dummyblock.cryogenicChamber.name=Криогенная камера
 tile.gcBlockCore.copperBlock.name=Медный блок
 tile.gcBlockCore.tinBlock.name=Оловянный блок
 tile.gcBlockCore.aluminumBlock.name=Алюминиевый блок
-tile.gcBlockCore.meteorironBlock.name=Блок из метеоритного железо ## Literal Translation, a shorter one will sound akward##
+tile.gcBlockCore.meteorironBlock.name=Блок метеоритного железа
 tile.fuel.name=Топливо
 tile.oxygenCompressor.0.name=Кислородный компрессор
 tile.oxygenCompressor.1.name=Кислородный декомпрессор
@@ -182,6 +182,8 @@ tile.spinThruster.name=Вращающий двигатель
 tile.viewScreen.name=Экран отображения
 tile.telemetry.name=Телеметрический блок
 tile.spaceStationBase.name=Основание космической станции
+
+# DECOBLOCKS
 tile.tinStairs1.name=Оловянные ступеньки
 tile.tinStairs2.name=Оловянные ступеньки
 tile.wallGC.tin.name=Оловянная стена
@@ -228,7 +230,7 @@ galaxy.blockyway.name=Блочный путь
 galaxy.milkyWay=Млечный Путь
 
 # OTHER
-newversion.failed.name=Проверка обновлений для Galacticraft провалилась! Следующая попытка произойдет через 15 секунд.
+newversion.failed.name=Проверка обновлений для Galacticraft провалилась! Следующая попытка произойдёт через 15 секунд.
 newversion.success.name=Найдена новая версия Galacticraft:
 
 # KEYBINDINGS
@@ -291,12 +293,12 @@ gui.message.breed.name=Размножать
 gui.message.strengthen.name=Укреплять
 gui.message.heal.name=Лечить
 gui.message.of.name=из
-gui.message.help1=Для помощи по Галактикрафту, напечатайте
-gui.message.help1a=Для того что-бы увидеть это уведомлениe eщё раз, напечатайте 
+gui.message.help1=Для помощи по Galacticraft, напечатайте
+gui.message.help1a=Для того, чтобы увидеть это уведомлениe eщё раз, напечатайте 
 gui.message.help2=Для помощи по космической программе, напечатайте
 gui.message.help3=Для помощи по добычи нефти, напечатайте
 gui.message.prelaunch=Контрольный список
-gui.message.clicklink=Нажмите чтоб-бы попасть на Вики по Галактикрафту
+gui.message.clicklink=Нажмите, чтобы попасть на Galacticraft Wiki
 
 gui.status.active.name=Активно
 gui.status.missingleaves.name=Отсутствуют блоки листвы
