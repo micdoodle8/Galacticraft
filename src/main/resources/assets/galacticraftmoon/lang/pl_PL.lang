@@ -25,6 +25,6 @@ tile.cheeseBlock.name=Blok Sera
 
 # GUI
 gui.choosePlanet.desc.moon=Nadający się do Zamieszkania#Brak Tlenu#Grawitacja: 18%
-container.lander.name=Lander ##NEEDS TRANSLATE##
+container.lander.name=Lądownik
 
 dimension.Moon.name=Księżyc
