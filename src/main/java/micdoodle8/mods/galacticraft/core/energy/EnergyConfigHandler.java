@@ -189,14 +189,29 @@ public class EnergyConfigHandler
     }
 
     /**
-     * Checks using the FML loader to see if BC (or EnderIO) is loaded
+     * Checks using the FML loader to see if BC (or BC API) is loaded
      */
     public static boolean isBuildcraftLoaded()
     {
         if (!cachedBCLoaded)
         {
             cachedBCLoaded = true;
-            cachedBCLoadedValue = Loader.isModLoaded("BuildCraft|Energy") || Loader.isModLoaded("EnderIO");
+            if (Loader.isModLoaded("BuildCraft|Energy"))
+            	cachedBCLoadedValue = true;
+            else
+            {
+            	int count = 0;
+            	try {
+	            	if (Class.forName("buildcraft.api.mj.MjAPI") != null) count++;           			
+	            	if (Class.forName("buildcraft.api.power.IPowerReceptor") != null) count++;
+	            	if (Class.forName("buildcraft.api.power.PowerHandler") != null) count++;
+	            	if (Class.forName("buildcraft.api.power.IPowerEmitter") != null) count++;
+	            	if (Class.forName("buildcraft.api.mj.IBatteryObject") != null) count++;
+	            	if (Class.forName("buildcraft.api.mj.ISidedBatteryProvider") != null) count++;
+            	} catch (Exception e) { }
+            	
+            	cachedBCLoadedValue = (count==6) ;
+            }
         }
 
         return cachedBCLoadedValue;
