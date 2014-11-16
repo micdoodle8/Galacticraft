@@ -13,7 +13,7 @@ item.compressedDesh.name=Prerađeni Desh
 item.spaceshipTier2.cargoRocket.name=Raketa s Teretom
 item.fluidManip.name=Manipulator Tekučinom
 item.bucketSludge.name=Bakterijska Sluz
-fluid.bacterialsludge=Bacterial Sludge ##NEEDS TRANSLATE##
+fluid.bacterialsludge=Bakterijska Sluz
 
 # TOOLS
 item.deshPick.name=Desh Kramp
@@ -163,16 +163,16 @@ tile.methaneSynthesizer.description=S izvorom vodika i izvora ugljika, to proizv
 tile.electrolyzer.description=Pretvara vodu u vodik (korisno za metan sintisajzer) i kisik.
 gui.slimeling.chat.wrongPlayer=Ovo nije moj Sludeling!
 gui.cryogenic.chat.cantUse=Nemogu koristiti ovo jos %d sekundi
-gui.slimeling.name=Ime ##NEEDS TRANSLATE##
-gui.slimeling.owner=Vlasnik ##NEEDS TRANSLATE##
-gui.slimeling.kills=Ubojstva ##NEEDS TRANSLATE##
-gui.slimeling.scale=Veličina ##NEEDS TRANSLATE##
-gui.slimeling.button.sit=Sjedi ##NEEDS TRANSLATE##
-gui.slimeling.button.follow=Prati ##NEEDS TRANSLATE##
-gui.slimeling.sitting=Sjedi ##NEEDS TRANSLATE##
-gui.slimeling.following=Prati ##NEEDS TRANSLATE##
-gui.slimeling.damage=Oštečenje ##NEEDS TRANSLATE##
-gui.slimeling.food=Najdraža Hrana ##NEEDS TRANSLATE##
+gui.slimeling.name=Ime 
+gui.slimeling.owner=Vlasnik 
+gui.slimeling.kills=Ubojstva 
+gui.slimeling.scale=Veličina
+gui.slimeling.button.sit=Sjedi
+gui.slimeling.button.follow=Prati 
+gui.slimeling.sitting=Sjedi
+gui.slimeling.following=Prati 
+gui.slimeling.damage=Oštečenje 
+gui.slimeling.food=Najdraža Hrana 
 
 # SCHEMATICS
 schematic.rocketT3.name=Raketa Ranga 3
@@ -188,7 +188,7 @@ entity.CargoRocket.name=Teretna Raketa
 # CONTAINERS
 container.launchcontroller.name=Kontroler Lansiranja
 container.tileTerraformer.name=Teraformer
-container.marsLander.name=Landing Balloons ##NEEDS TRANSLATE##
+container.marsLander.name=Baloni sa slijetanje
 gc.configgui.dimensionIDMars=Mars Dimension ID
 gc.configgui.idEntityCreeperBoss=Creeper Boss Entity ID
 gc.configgui.idEntityProjectileTNT=Projectile TNT Entity ID
