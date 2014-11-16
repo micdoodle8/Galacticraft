@@ -25,6 +25,5 @@ tile.cheeseBlock.name=Blok Sira
 
 # GUI
 gui.choosePlanet.desc.moon=Pogodan za život#Nema Zraka#Gravitacija: 18%
-container.lander.name=Lander ##NEEDS TRANSLATE##
-
+container.lander.name=Slijetač
 dimension.Moon.name=Mjesec
