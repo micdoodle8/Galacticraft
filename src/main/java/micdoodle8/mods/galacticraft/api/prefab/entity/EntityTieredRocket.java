@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.api.prefab.entity;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
@@ -63,7 +62,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     {
         super.entityInit();
 
-	//TODO reimplement once Resonant Engine comes out of alpha, bug Dark for info
+	//TODO reimplement once Resonant Engine comes out of alpha, bug DarkGuardsman for info
         //if (Loader.isModLoaded("ICBM|Explosion"))
         //{
         //    try

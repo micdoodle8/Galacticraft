@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeDecoratorSpace;
 import micdoodle8.mods.galacticraft.core.world.gen.WorldGenMinableMeta;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.init.Blocks;
+import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class BiomeDecoratorMars extends BiomeDecoratorSpace
@@ -14,6 +15,7 @@ public class BiomeDecoratorMars extends BiomeDecoratorSpace
     private WorldGenerator copperGen;
     private WorldGenerator ironGen;
     private WorldGenerator iceGen;
+    private World currentWorld;
 
     public BiomeDecoratorMars()
     {
@@ -35,4 +37,14 @@ public class BiomeDecoratorMars extends BiomeDecoratorSpace
         this.generateOre(23, this.tinGen, 0, 60);
         this.generateOre(20, this.ironGen, 0, 64);
     }
+    
+    protected void setCurrentWorld(World world)
+    {
+    	this.currentWorld = world;
+    }
+
+	protected World getCurrentWorld()
+	{
+		return this.currentWorld;
+	}
 }
