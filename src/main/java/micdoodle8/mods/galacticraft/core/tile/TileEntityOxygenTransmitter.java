@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenNetwork;
+import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.tileentity.TileEntity;
@@ -30,7 +31,7 @@ public abstract class TileEntityOxygenTransmitter extends TileEntityAdvanced imp
     	super.validate();
     	if (!this.worldObj.isRemote)
     	{
-    		this.refresh();
+    		TickHandlerServer.oxygenTransmitterUpdates.add(this);
     	}
     }
 

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
@@ -15,11 +16,13 @@ import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.WorldDataSpaceRaces;
 import micdoodle8.mods.galacticraft.core.energy.grid.EnergyNetwork;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.oxygen.ThreadFindSeal;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenTransmitter;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
@@ -34,7 +37,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkProviderServer;
+
 import javax.imageio.ImageIO;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -53,6 +58,8 @@ public class TickHandlerServer
     public static WorldDataSpaceRaces spaceRaceData = null;
     public static ArrayList<EntityPlayerMP> playersRequestingMapData = Lists.newArrayList();
     private static long tickCount;
+	public static LinkedList<TileEntityOxygenTransmitter> oxygenTransmitterUpdates  = new LinkedList<TileEntityOxygenTransmitter>();
+	public static LinkedList<TileBaseConductor> energyTransmitterUpdates  = new LinkedList<TileBaseConductor>();
 
     public static void restart()
     {
@@ -373,6 +380,40 @@ public class TickHandlerServer
                 {
                     grid.tickEnd();
                 }
+
+                if (--maxPasses <= 0)
+                {
+                    break;
+                }
+            }
+
+            maxPasses = 10;
+            while (!TickHandlerServer.oxygenTransmitterUpdates.isEmpty())
+            {
+                LinkedList<TileEntityOxygenTransmitter> pass = new LinkedList();
+                pass.addAll(TickHandlerServer.oxygenTransmitterUpdates);
+                TickHandlerServer.oxygenTransmitterUpdates.clear();
+                for (TileEntityOxygenTransmitter newTile : pass)
+                {
+                    if (!newTile.isInvalid()) newTile.refresh();
+                }            
+
+                if (--maxPasses <= 0)
+                {
+                    break;
+                }
+            }
+
+            maxPasses = 10;
+            while (!TickHandlerServer.energyTransmitterUpdates.isEmpty())
+            {
+                LinkedList<TileBaseConductor> pass = new LinkedList();
+                pass.addAll(TickHandlerServer.energyTransmitterUpdates);
+                TickHandlerServer.energyTransmitterUpdates.clear();
+                for (TileBaseConductor newTile : pass)
+                {
+                	if (!newTile.isInvalid()) newTile.refresh();
+                }            
 
                 if (--maxPasses <= 0)
                 {

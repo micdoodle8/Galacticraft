@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.grid.EnergyNetwork;
+import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -33,7 +34,7 @@ public abstract class TileBaseConductor extends TileEntityAdvanced implements IC
     	super.validate();
     	if (!this.worldObj.isRemote)
     	{
-    		this.refresh();
+    		TickHandlerServer.energyTransmitterUpdates.add(this);
     	}
     }
     
