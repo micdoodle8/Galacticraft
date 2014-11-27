@@ -1,0 +1,128 @@
+# Galacticraft Asteroids Language File = KOREA KOREAN
+
+# GENERAL ITEMS
+item.itemTier3Rocket.t3Rocket.name=3티어 로켓
+item.heavyNoseCone.name=중형 머리원뿔
+item.compressedTitanium.name=압축된 티타늄
+item.ingotTitanium.name=티타늄 주괴
+item.shardTitanium.name=티타늄 조각
+item.shardIron.name=철 조각
+item.rocketFinsT2.name=중형 로켓 날개
+item.engineT2.name=중형 로켓 엔진
+item.reinforcedPlateT3.name=강화 플레이트
+item.grapple.name=그래플
+item.atmosphericValve.name=대기 밸브
+item.thermalCloth.name=열보호 직물
+item.beamCore.name=광선 핵
+item.tier3.desc=3티어
+
+# TOOLS
+item.titanium_pickaxe.name=티타늄 곡괭이
+item.titanium_axe.name=티타늄 도끼
+item.titanium_hoe.name=티타늄 괭이
+item.titanium_shovel.name=티타늄 삽
+item.titanium_sword.name=티타늄 검
+
+# ARMOR
+item.thermalHelm.name=열 흡수 헬멧
+item.thermalChestplate.name=열 흡수 상의
+item.thermalLeggings.name=열 흡수 하의
+item.thermalBoots.name=열 흡수 부츠
+item.titanium_helmet.name=티타늄 헬멧
+item.titanium_chestplate.name=티타늄 상의
+item.titanium_leggings.name=티타늄 하의
+item.titanium_boots.name=티타늄 부츠
+
+# CANISTERS ETC
+item.methaneCanisterPartial.name=메탄 가스통
+item.methaneCanister.name=충전된 메탄 가스통
+item.canister.gas.name=가스                  #short name for Methane Gas contents level
+item.canister.LOX.partial.name=액체 산소통
+item.canister.LOX.full.name=충전된 액체 산소통
+item.canister.LOX.name=액체산소                  #short name for Liquid Oxygen contents level
+item.canister.liquidNitrogen.partial.name=액체 질소통
+item.canister.liquidNitrogen.full.name=충전된 액체 질소통
+item.canister.liquidNitrogen.name=액체질소    #short name for Liquid Nitrogen contents level
+item.canister.liquidArgon.partial.name=액체 아르곤 통
+item.canister.liquidArgon.full.name=충전된 액체 아르곤 통
+item.canister.liquidArgon.name=액체아르곤       #short name for Liquid Argon contents level
+item.emptyGasCanister.name=빈 가스통
+
+# FLUIDS AND GASES
+fluid.methane=메탄 가스
+fluid.oxygen=기체 산소
+fluid.nitrogen=기체 질소
+fluid.hydrogen=수소 가스
+fluid.carbondioxide=기체 이산화탄소
+fluid.helium=헬륨 가스
+fluid.argon=아르곤 가스
+fluid.atmosphericgases=대기 가스
+fluid.liquidmethane=액체 메탄
+fluid.liquidoxygen=액체 산소
+fluid.liquidnitrogen=액체 질소
+fluid.liquidargon=액체 아르곤
+fluid.fuel=연료
+
+# BLOCKS
+tile.asteroidsBlock.asteroid0.name=소행성 암석
+tile.asteroidsBlock.asteroid1.name=소행성 암석
+tile.asteroidsBlock.asteroid2.name=소행성 암석
+tile.asteroidsBlock.oreIron.name=철 광석
+tile.asteroidsBlock.oreIlmenite.name=티탄철광석
+tile.asteroidsBlock.oreAluminum.name=알루미늄 광석
+tile.beamReflector.name=에너지빔 반사장치
+tile.beamReceiver.name=에너지빔 수신기
+tile.telepadShort.name=단거리 텔레포터
+tile.walkway.name=통로
+tile.walkwayWire.name=통로
+tile.walkwayOxygenPipe.name=통로
+tile.treasureT3.name=3티어 보물상자
+tile.denseIce.name=두꺼운 얼음
+
+# GUI
+planet.asteroids=소행성대
+
+	# Dollar sign ($) will split text onto a new line
+	# Do not remove %s or %d, since that will be replaced in-game
+gui.telepad.desc.0=텔레포터 고유번호
+gui.telepad.desc.1=타겟 텔레포터 고유번호
+gui.message.address.name=고유번호
+gui.message.destAddress.name=타겟 고유번호
+gui.message.invalidAddress.name=유효하지 않은 고유번호
+gui.message.invalidTargetAddress.name=유효하지 않은 타겟 고유번호
+gui.message.receivingActive.name=수신 활성
+gui.message.telepadTooFar.name=타겟 너무 멀음! (최대 %d)
+gui.message.telepadWrongDim.name=타겟이 다른 세계에 있음!
+gui.message.telepadNotFound.name=텔레포터 존재하지 않음!
+gui.message.sendingActive.name=송신
+gui.message.range.name=거리: %d미터
+gui.message.notEnoughEnergy.name=에너지 부족!
+gui.message.targetNoEnergy.name=타겟 에너지 부족!
+gui.message.grapple.fail=그래플을 작동시키려면 줄이 필요합니다!
+
+tile.treasureT3.description=3티어 보물상자는 현재 사용할 수 없습니다.
+tile.walkway.description=통로는 우주 테마 장식용 블록입니다.
+tile.walkwayAluminumWire.description=알루미늄 전선 통로는 전선 기능을 하는 동시에 위로 걷는 통로를 제공하는 다중 기능성 블록입니다.
+tile.walkwayOxygenPipe.description=산소 파이프 통로는 전선 기능을 하는 동시에 위로 걷는 통로를 제공하는 다중 기능성 블록입니다.
+tile.beamReflector.description=에너지빔 반사장치는 에너지 광선(빔)의 방향을 바꾸어 목적지에 도달할 수 있게 해주는 기기입니다. 오른쪽 클릭을 통해 목표 타켓을 변경할 수 있습니다.
+tile.beamReceiver.description=에너지빔 수신기는 기계의 전력/에너지 입출력을 도와 에너지를 송수신 할 수 있게 해주는 기기입니다.
+tile.telepadShort.description=단거리 텔레포터는 플레이어와 다른 생명체의 빠른 단거리 이동을 도와주는 기기입니다 (250 Blocks). 최소한 두개의 기기가 서로 연결되어야 합니다.
+
+# SCHEMATICS
+
+# ENTITIES
+entity.SmallAsteroidGC.name=작은 소행성
+entity.GrappleHookGC.name=그래플
+entity.Tier3RocketGC.name=3티어 로켓
+
+# CONTAINERS
+container.shortRangeTelepad.name=단거리 텔레포터
+container.entryPod.name=진입 캡슐
+
+# CONFIG GUI
+gc.configgui.dimensionIDAsteroids=소행성대 세계 ID
+gc.configgui.idEntitySmallAsteroid=작은 소행성 엔티티 ID
+gc.configgui.idEntityGrappleHook=그래플 엔티티 ID
+gc.configgui.idEntityTier3Rocket=3티어 로켓 엔티티 ID
+gc.configgui.idEntityEntryPod=진입 캡슐 엔티티 ID
+gc.configgui.idSchematicRocketT3=3티어 로켓 설계도 ID
