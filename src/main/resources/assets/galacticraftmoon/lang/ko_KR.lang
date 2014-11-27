@@ -1,0 +1,31 @@
+# Galacticraft Moon Language File = KOREA KOREAN
+
+# GENERAL ITEMS
+item.meteoricIronRaw.name=운철 원석
+item.compressedMeteoricIron.name=압축 운철
+item.meteoricIronIngot.name=운철 주괴
+
+# FOOD
+item.cheeseCurd.name=치즈 커드
+item.cheeseBlock.name=치즈 덩어리
+
+# TOOLS
+
+# ARMOR
+
+# BLOCKS
+tile.moonBlock.moonstone.name=월석
+tile.moonBlock.moondirt.name=월토
+tile.moonBlock.moongrass.name=달 잔디
+tile.moonBlock.tinmoon.name=주석 원석
+tile.moonBlock.coppermoon.name=구리 원석
+tile.moonBlock.cheesestone.name=치즈 원석
+tile.moonBlock.bricks.name=달 던전 벽돌
+tile.cheeseBlock.name=치즈 블록
+
+# GUI
+gui.choosePlanet.desc.moon=거주 가능#산소 부족#중력: 18%
+
+# OTHER
+container.lander.name=착륙기
+dimension.Moon.name=달
