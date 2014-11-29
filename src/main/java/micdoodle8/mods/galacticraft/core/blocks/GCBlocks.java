@@ -211,16 +211,25 @@ public class GCBlocks
         GCBlocks.slabGCHalf.setHarvestLevel("pickaxe", 1, 0);
         GCBlocks.slabGCHalf.setHarvestLevel("pickaxe", 1, 1);
         GCBlocks.slabGCHalf.setHarvestLevel("pickaxe", 1, 2);
-        GCBlocks.slabGCHalf.setHarvestLevel("pickaxe", 1, 3);
+        GCBlocks.slabGCHalf.setHarvestLevel("pickaxe", 3, 3);
+        GCBlocks.slabGCHalf.setHarvestLevel("pickaxe", 1, 4);
+        GCBlocks.slabGCHalf.setHarvestLevel("pickaxe", 3, 5);
         GCBlocks.slabGCDouble.setHarvestLevel("pickaxe", 1, 0);
         GCBlocks.slabGCDouble.setHarvestLevel("pickaxe", 1, 1);
         GCBlocks.slabGCDouble.setHarvestLevel("pickaxe", 1, 2);
-        GCBlocks.slabGCDouble.setHarvestLevel("pickaxe", 1, 3);
+        GCBlocks.slabGCDouble.setHarvestLevel("pickaxe", 3, 3);
+        GCBlocks.slabGCDouble.setHarvestLevel("pickaxe", 1, 4);
+        GCBlocks.slabGCDouble.setHarvestLevel("pickaxe", 3, 5);
         GCBlocks.tinStairs1.setHarvestLevel("pickaxe", 1);
         GCBlocks.tinStairs1.setHarvestLevel("pickaxe", 1);
-        GCBlocks.moonStoneStairs.setHarvestLevel("pickaxe", 2);
-        GCBlocks.moonBricksStairs.setHarvestLevel("pickaxe", 2);
-        GCBlocks.wallGC.setHarvestLevel("pickaxe", 2);
+        GCBlocks.moonStoneStairs.setHarvestLevel("pickaxe", 1);
+        GCBlocks.moonBricksStairs.setHarvestLevel("pickaxe", 3);
+        GCBlocks.wallGC.setHarvestLevel("pickaxe", 1, 0);
+        GCBlocks.wallGC.setHarvestLevel("pickaxe", 1, 1);
+        GCBlocks.wallGC.setHarvestLevel("pickaxe", 1, 2);
+        GCBlocks.wallGC.setHarvestLevel("pickaxe", 3, 3);
+        GCBlocks.wallGC.setHarvestLevel("pickaxe", 0, 4);
+        GCBlocks.wallGC.setHarvestLevel("pickaxe", 3, 5);
 
         for (int num = 5; num < 14; num++)
         {
