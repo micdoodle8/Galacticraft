@@ -52,8 +52,8 @@ public class MarsBlocks
         MarsBlocks.marsBlock.setHarvestLevel("shovel", 0, 5); //Top dirt
         MarsBlocks.marsBlock.setHarvestLevel("shovel", 0, 6); //Dirt
         MarsBlocks.rock.setHarvestLevel("pickaxe", 3);
-        MarsBlocks.marsCobblestoneStairs.setHarvestLevel("pickaxe", 1);
-        MarsBlocks.marsBricksStairs.setHarvestLevel("pickaxe", 2);
+        MarsBlocks.marsCobblestoneStairs.setHarvestLevel("pickaxe", 0);
+        MarsBlocks.marsBricksStairs.setHarvestLevel("pickaxe", 3);
     }
 
     public static void registerBlocks()
