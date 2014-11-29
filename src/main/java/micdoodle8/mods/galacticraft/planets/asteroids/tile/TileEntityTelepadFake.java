@@ -22,7 +22,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
 
     public void setMainBlock(BlockVec3 mainBlock)
     {
-        this.mainBlockPosition = mainBlock;
+        this.mainBlockPosition = mainBlock.clone();
 
         if (!this.worldObj.isRemote)
         {
@@ -136,7 +136,32 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
     @Override
     public boolean isNetworkedTile()
     {
-        return true;
+        if (this.mainBlockPosition != null) return true;
+        else
+        {
+        	this.resetMainBlockPosition();
+        	return false;
+        }
+    }
+    
+    private void resetMainBlockPosition()
+    {
+        for (int y = -2; y < 1; y += 2)
+        {
+            for (int x = -1; x <= 1; x++)
+            {
+                for (int z = -1; z <= 1; z++)
+                {
+                    final BlockVec3 vecToCheck = new BlockVec3(this.xCoord + x, this.yCoord  + y, this.zCoord + z);
+                    if (vecToCheck.getTileEntity(this.worldObj) instanceof TileEntityShortRangeTelepad)
+                    {
+                        this.setMainBlock(vecToCheck);
+                        return;
+                    }
+                }
+            }
+        }
+	
     }
 
     @Override

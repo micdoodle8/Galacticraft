@@ -296,6 +296,7 @@ public class PlayerClient implements IPlayerClient
 		if (flag == -1) flag = 0;
 		if ((flag & 1 << i) > 0) return;
 		flag |= 1 << i;
+		stats.buildFlags = flag;
 		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BUILDFLAGS_UPDATE, new Object[] { flag }));
 		switch (i) {
 		case 0:
