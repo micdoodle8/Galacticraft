@@ -141,6 +141,7 @@ public class PacketSimple extends Packet implements IPacket
         C_UPDATE_SPACESTATION_CLIENT_ID(Side.CLIENT, Integer.class),
         C_UPDATE_PLANETS_LIST(Side.CLIENT, Integer[].class),
         C_UPDATE_CONFIGS(Side.CLIENT, Boolean.class, Double.class, Integer.class, Integer.class, Integer.class, String[].class),
+        C_UPDATE_STATS(Side.CLIENT, Integer.class),
         C_ADD_NEW_SCHEMATIC(Side.CLIENT, Integer.class),
         C_UPDATE_SCHEMATIC_LIST(Side.CLIENT, Integer[].class),
         C_PLAY_SOUND_BOSS_DEATH(Side.CLIENT),
@@ -792,6 +793,9 @@ public class PacketSimple extends Packet implements IPacket
         		((TileEntityArclamp)tile).facing = facingNew;
         	}
         	break;
+        case C_UPDATE_STATS:
+        	stats.buildFlags = (Integer) this.data.get(0);
+        	break;
         case C_UPDATE_VIEWSCREEN:
         	tile = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
         	if (tile instanceof TileEntityScreen)
@@ -1343,7 +1347,8 @@ public class PacketSimple extends Packet implements IPacket
         	}
         	break;
         case S_BUILDFLAGS_UPDATE:
-        	stats.buildFlags = (Integer) this.data.get(0);
+        	stats.buildFlags |= (Integer) this.data.get(0);
+        	GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATS, new Object[] { stats.buildFlags }), playerBase);
         	break;
         case S_UPDATE_VIEWSCREEN_REQUEST:
         	int screenDim = (Integer) this.data.get(0);
