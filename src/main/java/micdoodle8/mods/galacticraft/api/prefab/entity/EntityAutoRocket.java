@@ -1123,6 +1123,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
     @Override
     public ItemStack getStackInSlot(int par1)
     {
+        if (this.cargoItems == null) return null; 
+        
         return this.cargoItems[par1];
     }
 
