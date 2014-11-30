@@ -14,7 +14,7 @@ public class CommandKeepDim extends CommandBase
     @Override
     public String getCommandUsage(ICommandSender var1)
     {
-        return "/" + this.getCommandName();
+        return "/" + this.getCommandName() + " [dimension number (optional)]";
     }
 
     @Override
@@ -54,7 +54,9 @@ public class CommandKeepDim extends CommandBase
                     }
                     else
                     {
-                        dimID = CommandBase.parseInt(icommandsender, astring[0]);
+                    	try {
+                    		dimID = CommandBase.parseInt(icommandsender, astring[0]);
+                    	} catch (Exception e) { throw new WrongUsageException("Needs a dimension number! Usage: " + this.getCommandUsage(icommandsender), new Object[0]); }
                     }
 
                     if (ConfigManagerCore.setLoaded(dimID))
