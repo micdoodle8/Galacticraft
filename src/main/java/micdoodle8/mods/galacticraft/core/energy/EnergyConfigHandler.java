@@ -196,9 +196,9 @@ public class EnergyConfigHandler
         if (!cachedBCLoaded)
         {
             cachedBCLoaded = true;
-            if (Loader.isModLoaded("BuildCraft|Energy"))
-            	cachedBCLoadedValue = true;
-            else
+            //if (Loader.isModLoaded("BuildCraft|Energy"))
+            //	cachedBCLoadedValue = true;
+            //else
             {
             	int count = 0;
             	try {
