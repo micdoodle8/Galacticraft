@@ -10,9 +10,9 @@ import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInventory implements ISidedInventory, IPacketReceiver
@@ -178,25 +178,41 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
     {
-        return slotID == 1 ? itemStack != null && FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null : slotID == 0 && ItemElectricBase.isElectricItem(itemStack.getItem());
+        if (slotID == 0) return ItemElectricBase.isElectricItem(itemStack.getItem());
+        
+        if (slotID > 5) return false;
+
+        ArrayList<ItemStack> list = CircuitFabricatorRecipes.slotValidItems.get(slotID - 1);
+        
+        for (ItemStack test : list)
+        {
+        	if (test.isItemEqual(itemStack)) return true; 
+        }
+        
+        return false;
     }
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
     {
-        return side == 0 ? new int[] { 2 } : side == 1 ? new int[] { 0, 1 } : new int[] { 0 };
+        if (side == 0)
+        	return new int[] { 6 };
+
+        //Offer whichever silicon slot has less silicon
+        boolean siliconFlag = this.containingItems[2] != null && (this.containingItems[3] == null || this.containingItems[3].stackSize < this.containingItems[2].stackSize); 
+        return siliconFlag ? new int[] { 0, 1, 3, 4, 5 } : new int[] { 0, 1, 2, 4, 5 };
     }
 
     @Override
     public boolean canInsertItem(int slotID, ItemStack par2ItemStack, int par3)
     {
-        return this.isItemValidForSlot(slotID, par2ItemStack);
+        return slotID < 6 && this.isItemValidForSlot(slotID, par2ItemStack);
     }
 
     @Override
     public boolean canExtractItem(int slotID, ItemStack par2ItemStack, int par3)
     {
-        return slotID == 2;
+        return slotID == 6;
     }
 
     @Override
