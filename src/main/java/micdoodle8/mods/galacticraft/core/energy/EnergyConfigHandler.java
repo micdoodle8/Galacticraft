@@ -210,7 +210,7 @@ public class EnergyConfigHandler
 	            	if (Class.forName("buildcraft.api.mj.ISidedBatteryProvider") != null) count++;
             	} catch (Exception e) { }
             	
-            	cachedBCLoadedValue = (count==6) ;
+            	cachedBCLoadedValue = (count==6);
             }
         }
 

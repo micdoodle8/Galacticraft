@@ -400,7 +400,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
         return ForgeDirection.UNKNOWN;
     }
 
-    @RuntimeInterface(clazz = "buildcraft.api.power.IPowerEmitter", modID = "BuildCraft|Energy")
+    @RuntimeInterface(clazz = "buildcraft.api.power.IPowerEmitter", modID = "")
     public boolean canEmitPowerFrom(ForgeDirection side)
     {
         return this.getElectricalOutputDirections().contains(side);

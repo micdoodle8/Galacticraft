@@ -598,7 +598,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
         ((PowerHandler) this.powerHandlerBC).configurePowerPerdition(1, 10);
     }
 
-    @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
+    @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "")
     public PowerReceiver getPowerReceiver(ForgeDirection side)
     {
         if (this.getElectricalInputDirections().contains(side))
@@ -610,19 +610,19 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
         return null;
     }
 
-    @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "EnderIO")
+    @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "")
     public void doWork(PowerHandler workProvider)
     {
     	this.initBuildCraft();
     }
 
-    @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
+    @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "")
     public World getWorld()
     {
         return this.getWorldObj();
     }
 
-    @RuntimeInterface(clazz = "buildcraft.api.mj.ISidedBatteryProvider", modID = "BuildCraft|Energy")
+    @RuntimeInterface(clazz = "buildcraft.api.mj.ISidedBatteryProvider", modID = "")
     public IBatteryObject getMjBattery(String kind, ForgeDirection direction)
     {
         if (this.getElectricalInputDirections().contains(direction))
@@ -633,7 +633,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
         return null;
     }
 
-    @RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "BuildCraft|Energy")
+    @RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "")
     public double getEnergyRequested()
     {
         float requested = this.getRequest(ForgeDirection.UNKNOWN) * EnergyConfigHandler.TO_BC_RATIO;
@@ -641,7 +641,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
         return requested;
     }
 
-    @RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "BuildCraft|Energy")
+    @RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "")
     public double addEnergy(double mj)
     {
         float convertedEnergy = (float) mj * EnergyConfigHandler.BC3_RATIO;
@@ -649,7 +649,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
         return used * EnergyConfigHandler.TO_BC_RATIO;
     }
 
-    @RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "BuildCraft|Energy")
+    @RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "")
     public double addEnergy(double mj, boolean ignoreCycleLimit)
     {
         float convertedEnergy = (float) mj * EnergyConfigHandler.BC3_RATIO;
@@ -657,43 +657,43 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
         return used * EnergyConfigHandler.TO_BC_RATIO;
     }
 
-    @RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "BuildCraft|Energy")
+    @RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "")
     public double getEnergyStored()
     {
         return this.getEnergyStoredGC() * EnergyConfigHandler.TO_BC_RATIO;
     }
 
-    @RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "BuildCraft|Energy")
+    @RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "")
     public void setEnergyStored(double mj)
     {
 
     }
 
-    @RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "BuildCraft|Energy")
+    @RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "")
     public double maxCapacity()
     {
         return this.getMaxEnergyStoredGC() * EnergyConfigHandler.TO_BC_RATIO;
     }
 
-    @RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "BuildCraft|Energy")
+    @RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "")
     public double minimumConsumption()
     {
         return this.storage.getMaxReceive() * EnergyConfigHandler.TO_BC_RATIO;
     }
 
-    @RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "BuildCraft|Energy")
+    @RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "")
     public double maxReceivedPerCycle()
     {
         return (this.getMaxEnergyStoredGC() - this.getEnergyStoredGC()) * EnergyConfigHandler.TO_BC_RATIO;
     }
 
-    @RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "BuildCraft|Energy")
+    @RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "")
     public IBatteryObject reconfigure(double maxCapacity, double maxReceivedPerCycle, double minimumConsumption)
     {
         return (IBatteryObject) this;
     }
 
-    @RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "BuildCraft|Energy")
+    @RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "")
     public String kind()
     {
         return MjAPI.DEFAULT_POWER_FRAMEWORK;

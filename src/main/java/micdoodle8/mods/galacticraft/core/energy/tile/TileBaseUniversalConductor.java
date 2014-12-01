@@ -321,7 +321,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
     /**
      * BuildCraft functions
      */
-    @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
+    @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "")
     public PowerReceiver getPowerReceiver(ForgeDirection side)
     {
         if (this.getNetwork() == null)
@@ -350,7 +350,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         ((PowerHandler) this.powerHandlerBC).configure(0, requiredEnergy, 0, requiredEnergy);
     }
 
-    @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "EnderIO")
+    @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "")
     public void doWork(PowerHandler workProvider)
     {
         PowerHandler handler = (PowerHandler) this.powerHandlerBC;
@@ -369,7 +369,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         this.reconfigureBC();
     }
 
-    @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "BuildCraft|Energy")
+    @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "")
     public World getWorld()
     {
         return this.getWorldObj();
