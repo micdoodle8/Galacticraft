@@ -42,7 +42,7 @@ public class RecipeManagerMars
         //Water Electrolyzer
         RecipeUtil.addRecipe(new ItemStack(MarsBlocks.machineT2, 1, 8), new Object[] { "TVT", "FWF", "BXB", 'T', GCItems.oxTankHeavy, 'V', GCItems.oxygenVent, 'F', new ItemStack(GCBlocks.oxygenPipe, 1, 0), 'X', new ItemStack(GCItems.basicItem, 1, 10), 'W', new ItemStack(MarsItems.marsItemBasic, 1, 6), 'B', new ItemStack(GCItems.basicItem, 1, 6) });
         //Fluid Manipulator - crafting item
-        RecipeUtil.addRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 6), new Object[] { "MXM", "SWS", "MXM", 'S', Items.slime_ball, 'X', GCItems.oxygenFan, 'M', new ItemStack(GCItems.meteoricIronIngot, 1, 0), 'W', new ItemStack(GCItems.basicItem, 1, 14) });
+        RecipeUtil.addRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 6), new Object[] { "MXM", "SWS", "MXM", 'S', Items.slime_ball, 'X', GCItems.oxygenFan, 'M', "ingotMeteoricIron", 'W', new ItemStack(GCItems.basicItem, 1, 14) });
 
         RecipeUtil.addRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 1), new Object[] { "X", "X", 'X', "ingotDesh" });
 
