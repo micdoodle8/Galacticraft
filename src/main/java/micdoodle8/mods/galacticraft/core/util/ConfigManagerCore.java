@@ -89,6 +89,7 @@ public class ConfigManagerCore
     public static boolean disableCopperMoon;
     public static boolean disableMoonVillageGen;
     public static boolean enableOtherModsFeatures;
+	public static boolean enableThaumCraftNodes;
     public static boolean enableSealerEdgeChecks;
     public static boolean alternateCanisterRecipe;
     public static boolean disableRocketsToOverworld;
@@ -369,9 +370,15 @@ public class ConfigManagerCore
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Generate other mods features on planets", false);
-            prop.comment = "If this is enabled, other mods' ores and all other features (eg. plants) can generate on the Moon and planets.";
+            prop.comment = "If this is enabled, other mods' standard ores and all other features (eg. plants) can generate on the Moon and planets. Apart from looking wrong, this make cause 'Already Decorating!' type crashes.  NOT RECOMMENDED!  See Wiki.";
             prop.setLanguageKey("gc.configgui.enableOtherModsFeatures");
             enableOtherModsFeatures = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Generate ThaumCraft wild nodes on planetary surfaces", true);
+            prop.comment = "If ThaumCraft is installed, ThaumCraft wild nodes can generate on the Moon and planets.";
+            prop.setLanguageKey("gc.configgui.enableThaumCraftNodes");
+            enableThaumCraftNodes = prop.getBoolean(true);
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Other mods ores for GC to generate on the Moon and planets", new String [] { });
