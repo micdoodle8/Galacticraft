@@ -178,7 +178,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
     {
-        if (slotID == 0) return ItemElectricBase.isElectricItem(itemStack.getItem());
+        if (slotID == 0) return itemStack != null && ItemElectricBase.isElectricItem(itemStack.getItem());
         
         if (slotID > 5) return false;
 

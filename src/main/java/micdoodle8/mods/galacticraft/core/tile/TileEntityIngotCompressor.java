@@ -13,14 +13,16 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.Set;
 
 public class TileEntityIngotCompressor extends TileEntityAdvanced implements IInventory, ISidedInventory, IPacketReceiver
@@ -38,6 +40,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     private ItemStack[] containingItems = new ItemStack[2];
     public PersistantInventoryCrafting compressingCraftMatrix = new PersistantInventoryCrafting();
     public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
+    private static Random randnum = new Random();
 
     @Override
     public void updateEntity()
@@ -163,22 +166,42 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
                     }
                 }
             }
-            else if (recipe instanceof ShapelessRecipes)
+            else if (recipe instanceof ShapelessOreRecipe)
             {
                 @SuppressWarnings("unchecked")
-                ArrayList<ItemStack> arraylist = new ArrayList<ItemStack>(((ShapelessRecipes) recipe).recipeItems);
+                ArrayList<Object> required = new ArrayList<Object>(((ShapelessOreRecipe) recipe).getInput());
+                
+                Iterator<Object> req = required.iterator();
 
-                Iterator<ItemStack> iterator = arraylist.iterator();
+                int match = 0;
 
-                while (iterator.hasNext())
+                while (req.hasNext())
                 {
-                    ItemStack itemstack1 = iterator.next();
+                    Object next = req.next();
 
-                    if (stack.getItem() == itemstack1.getItem() && (itemstack1.getItemDamage() == 32767 || stack.getItemDamage() == itemstack1.getItemDamage()))
+                    if (next instanceof ItemStack)
                     {
-                        return true;
+                        if ( OreDictionary.itemMatches((ItemStack)next, stack, false)) match++;
+                    }
+                    else if (next instanceof ArrayList)
+                    {
+                        Iterator<ItemStack> itr = ((ArrayList<ItemStack>)next).iterator();
+                        while (itr.hasNext())
+                        {
+                            if (OreDictionary.itemMatches(itr.next(), stack, false))
+                            {
+                            	match++;
+                            	break;
+                            }
+                        }
                     }
                 }
+                
+                if (match == 0) continue;
+                
+                if (match == 1) return true;
+                
+                return randnum.nextInt(match) == 0;
             }
         }
 
@@ -413,7 +436,12 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
         }
         else if (slotID >= 2)
         {
-            return TileEntityIngotCompressor.isItemCompressorInput(itemStack);
+        	if (this.producingStack != null)
+        	{
+                ItemStack stackInSlot = this.getStackInSlot(slotID);
+                return stackInSlot != null && stackInSlot.isItemEqual(itemStack);
+        	}
+        	return TileEntityIngotCompressor.isItemCompressorInput(itemStack);
         }
 
         return false;
@@ -422,7 +450,48 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
     {
-        return side == 0 ? new int[] { 1 } : side == 1 ? new int[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10 } : new int[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+    	if (side == 0) return new int[] { 1 };
+    	int[] slots = new int[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+    	ArrayList<Integer> removeSlots = new ArrayList();
+    	
+    	for (int i = 1; i < slots.length; i++)
+    	{
+			if (removeSlots.contains(i)) continue;
+    		ItemStack stack1 = this.getStackInSlot(i);
+    		if (stack1 == null || stack1.stackSize <= 0) continue;
+    		
+    		for (int j = i + 1; j < slots.length; j++)
+    		{
+    			if (removeSlots.contains(j)) continue;
+    			ItemStack stack2 = this.getStackInSlot(j);
+    			if (stack2 == null) continue;
+    			
+    			if (stack1.isItemEqual(stack2))
+    			{
+    				if (stack2.stackSize >= stack1.stackSize)
+    					removeSlots.add(j);
+    				else
+    					removeSlots.add(i);
+    				break;
+    			}
+    		}
+    	}
+    	
+    	if (removeSlots.size() > 0)
+    	{
+    		int[] returnSlots = new int[slots.length - removeSlots.size()];
+        	int j = 0;
+        	for (int i = 0; i < slots.length; i++)
+        	{
+    			if (i > 0 && removeSlots.contains(slots[i])) { continue; }
+    			returnSlots[j] = slots[i];
+    			j++;    			
+        	}
+        	
+        	return returnSlots;
+    	}
+    	
+    	return slots;
     }
 
     @Override

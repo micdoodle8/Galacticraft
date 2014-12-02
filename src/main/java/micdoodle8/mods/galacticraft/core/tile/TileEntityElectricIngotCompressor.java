@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import java.util.ArrayList;
+
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
@@ -366,7 +368,12 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
         }
         else if (slotID >= 3)
         {
-            return TileEntityIngotCompressor.isItemCompressorInput(itemStack);
+        	if (this.producingStack != null)
+        	{
+                ItemStack stackInSlot = this.getStackInSlot(slotID);
+                return stackInSlot != null && stackInSlot.isItemEqual(itemStack);
+        	}
+        	return TileEntityIngotCompressor.isItemCompressorInput(itemStack);
         }
 
         return false;
@@ -375,13 +382,54 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
     {
-        return side == 0 ? new int[] { 1, 2 } : side == 1 ? new int[] { 0, 3, 4, 5, 6, 7, 8, 9, 10, 11 } : new int[] { 0, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+    	if (side == 0) return new int[] { 1, 2 };
+    	int[] slots = new int[] { 0, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+    	ArrayList<Integer> removeSlots = new ArrayList();
+    	
+    	for (int i = 1; i < slots.length; i++)
+    	{
+			if (removeSlots.contains(i)) continue;
+    		ItemStack stack1 = this.getStackInSlot(i);
+    		if (stack1 == null || stack1.stackSize <= 0) continue;
+    		
+    		for (int j = i + 1; j < slots.length; j++)
+    		{
+    			if (removeSlots.contains(j)) continue;
+    			ItemStack stack2 = this.getStackInSlot(j);
+    			if (stack2 == null) continue;
+    			
+    			if (stack1.isItemEqual(stack2))
+    			{
+    				if (stack2.stackSize >= stack1.stackSize)
+    					removeSlots.add(j);
+    				else
+    					removeSlots.add(i);
+    				break;
+    			}
+    		}
+    	}
+    	
+    	if (removeSlots.size() > 0)
+    	{
+    		int[] returnSlots = new int[slots.length - removeSlots.size()];
+        	int j = 0;
+        	for (int i = 0; i < slots.length; i++)
+        	{
+    			if (i > 0 && removeSlots.contains(slots[i])) { continue; }
+    			returnSlots[j] = slots[i];
+    			j++;    			
+        	}
+        	
+        	return returnSlots;
+    	}
+    	
+    	return slots;
     }
 
     @Override
     public boolean canInsertItem(int slotID, ItemStack par2ItemStack, int par3)
     {
-        return this.isItemValidForSlot(slotID, par2ItemStack);
+    	return this.isItemValidForSlot(slotID, par2ItemStack);
     }
 
     @Override
