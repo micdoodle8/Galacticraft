@@ -943,7 +943,7 @@ public class WorldUtil
         if (!generatorGCGregInitialised)
         {
 	        try {
-	        	Class GCGreg = Class.forName("GT_Worldgenerator_Space");
+	        	Class GCGreg = Class.forName("bloodasp.galacticgreg.GT_Worldgenerator_Space");
 	        	if (GCGreg != null)
 	        	{
 		        	final Field regField = Class.forName("cpw.mods.fml.common.registry.GameRegistry").getDeclaredField("worldGenerators");
