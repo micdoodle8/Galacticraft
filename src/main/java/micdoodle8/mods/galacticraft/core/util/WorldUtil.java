@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
@@ -48,10 +49,12 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.*;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -59,6 +62,8 @@ public class WorldUtil
 {
     public static List<Integer> registeredSpaceStations;
     public static List<Integer> registeredPlanets;
+    private static IWorldGenerator generatorGCGreg = null;
+    private static boolean generatorGCGregInitialised = false;
 	
     public static double getGravityForEntity(Entity entity)
     {
@@ -929,9 +934,45 @@ public class WorldUtil
         return objList;
     }
 
-    public static boolean otherModPreventGenerate(World world)
+    public static boolean otherModPreventGenerate(int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
     {
-        return (world.provider instanceof WorldProviderOrbit || (world.provider instanceof IGalacticraftWorldProvider && !ConfigManagerCore.enableOtherModsFeatures));
+        if (!(world.provider instanceof IGalacticraftWorldProvider)) return false;
+        if (world.provider instanceof WorldProviderOrbit) return true;
+        if (ConfigManagerCore.enableOtherModsFeatures) return false;
+        
+        if (!generatorGCGregInitialised)
+        {
+	        try {
+	        	Class GCGreg = Class.forName("GT_Worldgenerator_Space");
+	        	if (GCGreg != null)
+	        	{
+		        	final Field regField = Class.forName("cpw.mods.fml.common.registry.GameRegistry").getDeclaredField("worldGenerators");
+		            regField.setAccessible(true);
+		        	Set<IWorldGenerator> registeredGenerators = (Set<IWorldGenerator>) regField.get(null);
+		        	for (IWorldGenerator gen : registeredGenerators)
+		        		if (GCGreg.isInstance(gen))
+		        		{
+		        			generatorGCGreg = gen;
+		        			break;
+		        		}
+	        	}
+	        } catch (Exception e) { }
+        }
+
+        if (generatorGCGreg != null)
+        {
+	        if (ConfigManagerCore.enableDebug) System.out.println("Whitelisting GalacticGreg at chunk "+chunkX+","+chunkZ);
+        	try {
+	            long worldSeed = world.getSeed();
+	            Random fmlRandom = new Random(worldSeed);
+	            long xSeed = fmlRandom.nextLong() >> 2 + 1L;
+	            long zSeed = fmlRandom.nextLong() >> 2 + 1L;
+	            long chunkSeed = (xSeed * chunkX + zSeed * chunkZ) ^ worldSeed;
+	            fmlRandom.setSeed(chunkSeed);
+	            generatorGCGreg.generate(fmlRandom, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+	        } catch (Exception e) { e.printStackTrace(); }
+        }
+        return true;
     }
 
     public static void toCelestialSelection(EntityPlayerMP player, GCPlayerStats stats, int tier)
