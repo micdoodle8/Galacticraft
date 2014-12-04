@@ -30,7 +30,7 @@ public class EnergyDisplayHelper
         }
         else if (EnergyConfigHandler.displayEnergyUnitsRF)
         {
-            return getEnergyDisplayRF(energyVal * EnergyConfigHandler.TO_TE_RATIO);
+            return getEnergyDisplayRF(energyVal * EnergyConfigHandler.TO_RF_RATIO);
         }
         String val = String.valueOf(getEnergyDisplayI(energyVal));
         String newVal = "";

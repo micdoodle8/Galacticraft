@@ -23,6 +23,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -699,45 +700,34 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
         return MjAPI.DEFAULT_POWER_FRAMEWORK;
     }
 
-    //	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
-    //	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
-    //	{
-    //		if (!this.getElectricalInputDirections().contains(from))
-    //		{
-    //			return 0;
-    //		}
-    //
-    //		return (int) Math.floor(this.receiveElectricity(maxReceive * EnergyConfigHandler.TE_RATIO, !simulate)* EnergyConfigHandler.TO_TE_RATIO);
-    //	}
-    //
-    //	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
-    //	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
-    //	{
-    //		if (!this.getElectricalOutputDirections().contains(from))
-    //		{
-    //			return 0;
-    //		}
-    //
-    //		return (int) Math.floor(this.provideElectricity(maxExtract * EnergyConfigHandler.TE_RATIO, !simulate).getWatts() * EnergyConfigHandler.TO_TE_RATIO);
-    //	}
-    //
-    //	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
-    //	public boolean canInterface(ForgeDirection from)
-    //	{
-    //		return this.getElectricalInputDirections().contains(from) || this.getElectricalOutputDirections().contains(from);
-    //	}
-    //
-    //	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
-    //	public int getEnergyStored(ForgeDirection from)
-    //	{
-    //		return (int) Math.floor(this.getEnergyStored() * EnergyConfigHandler.TO_TE_RATIO);
-    //	}
-    //
-    //	@RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "ThermalExpansion")
-    //	public int getMaxEnergyStored(ForgeDirection from)
-    //	{
-    //		return (int) Math.floor(this.getMaxEnergyStored() * EnergyConfigHandler.TO_TE_RATIO);
-    //	}
+    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
+    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
+    {
+    	if (!this.getElectricalInputDirections().contains(from))
+    	{
+    		return 0;
+    	}
+
+    	return MathHelper.floor_float(super.receiveElectricity(from, maxReceive * EnergyConfigHandler.RF_RATIO, 1, !simulate) * EnergyConfigHandler.TO_RF_RATIO);
+    }
+
+    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
+    public boolean canConnectEnergy(ForgeDirection from)
+    {
+    	return this.getElectricalInputDirections().contains(from) || this.getElectricalOutputDirections().contains(from);
+    }
+
+    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
+    public int getEnergyStored(ForgeDirection from)
+    {
+    	return MathHelper.floor_float(this.getEnergyStoredGC() * EnergyConfigHandler.TO_RF_RATIO);
+    }
+
+    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
+    public int getMaxEnergyStored(ForgeDirection from)
+    {
+    	return MathHelper.floor_float(this.getMaxEnergyStoredGC() * EnergyConfigHandler.TO_RF_RATIO);
+    }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
     public double transferEnergyToAcceptor(ForgeDirection from, double amount)

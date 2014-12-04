@@ -16,6 +16,7 @@ import micdoodle8.mods.miccore.Annotations.VersionSpecific;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.lang.reflect.Method;
@@ -404,5 +405,16 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
     public boolean canEmitPowerFrom(ForgeDirection side)
     {
         return this.getElectricalOutputDirections().contains(side);
+    }
+    
+    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
+    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
+    {
+    	if (!this.getElectricalOutputDirections().contains(from))
+    	{
+    		return 0;
+    	}
+
+    	return MathHelper.floor_float(this.storage.extractEnergyGC(maxExtract * EnergyConfigHandler.RF_RATIO, !simulate) * EnergyConfigHandler.TO_RF_RATIO);
     }
 }

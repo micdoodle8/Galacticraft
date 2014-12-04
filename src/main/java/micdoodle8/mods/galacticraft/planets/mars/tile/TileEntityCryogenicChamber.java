@@ -117,6 +117,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
     public void onCreate(BlockVec3 placedPosition)
     {
         this.mainBlockPosition = placedPosition;
+        this.markDirty();
 
         for (int y = 0; y < 3; y++)
         {

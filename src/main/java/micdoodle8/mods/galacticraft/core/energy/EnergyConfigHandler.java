@@ -18,8 +18,8 @@ public class EnergyConfigHandler
     private static Configuration config;
 
     /**
-     * Ratio of Build craft(MJ) energy to Galacticraft energy(kJ).
-     * Multiply BC3 energy by this to convert to kJ.
+     * Ratio of Build craft(MJ) energy to Galacticraft energy(gJ).
+     * Multiply BC3 energy by this to convert to gJ.
      */
     public static float BC3_RATIO = 16F;
 
@@ -39,31 +39,31 @@ public class EnergyConfigHandler
     //electrical energy 50% more efficiently than BuildCraft's Stirling Engine can.
 
     /**
-     * Ratio of RF energy to Galacticraft energy(kJ).
-     * Multiply TE energy by this to convert to kJ.
+     * Ratio of RF energy to Galacticraft energy(gJ).
+     * Multiply RF energy by this to convert to gJ.
      */
-    public static float TE_RATIO = EnergyConfigHandler.BC3_RATIO / 10F;
+    public static float RF_RATIO = EnergyConfigHandler.BC3_RATIO / 10F;
 
     /**
-     * Ratio of IC2 energy (EU) to Galacticraft energy(kJ).
-     * Multiply IC2 power by this to convert to kJ.
+     * Ratio of IC2 energy (EU) to Galacticraft energy(gJ).
+     * Multiply IC2 power by this to convert to gJ.
      */
     public static float IC2_RATIO = EnergyConfigHandler.BC3_RATIO / 2.44F;
 
     public static float MEKANISM_RATIO = EnergyConfigHandler.IC2_RATIO / 10F;
 
     /**
-     * Convert kJ back to Buildcraft MJ
+     * Convert gJ back to Buildcraft MJ
      */
     public static float TO_BC_RATIO = 1 / EnergyConfigHandler.BC3_RATIO;
 
     /**
-     * Convert kJ back to TE3 RF
+     * Convert gJ back to RF
      */
-    public static float TO_TE_RATIO = 1 / EnergyConfigHandler.TE_RATIO;
+    public static float TO_RF_RATIO = 1 / EnergyConfigHandler.RF_RATIO;
 
     /**
-     * Convert kJ back to IC2 EU
+     * Convert gJ back to IC2 EU
      */
     public static float TO_IC2_RATIO = 1 / EnergyConfigHandler.IC2_RATIO;
 
@@ -89,6 +89,8 @@ public class EnergyConfigHandler
     private static int cachedBCVersion = -1;
     private static boolean cachedMekLoaded = false;
     private static boolean cachedMekLoadedValue = false;
+    private static boolean cachedRFLoaded = false;
+    private static boolean cachedRFLoadedValue = false;
 
 
     /**
@@ -103,12 +105,12 @@ public class EnergyConfigHandler
 
         EnergyConfigHandler.config.load();
         EnergyConfigHandler.IC2_RATIO = (float) EnergyConfigHandler.config.get("Compatibility", "IndustrialCraft Conversion Ratio", EnergyConfigHandler.IC2_RATIO).getDouble(EnergyConfigHandler.IC2_RATIO);
-        //EnergyConfigHandler.TE_RATIO = (float) EnergyConfigHandler.config.get("Compatibility", "Thermal Expansion Conversion Ratio", EnergyConfigHandler.TE_RATIO).getDouble(EnergyConfigHandler.TE_RATIO);
+        EnergyConfigHandler.RF_RATIO = (float) EnergyConfigHandler.config.get("Compatibility", "RF Conversion Ratio", EnergyConfigHandler.RF_RATIO).getDouble(EnergyConfigHandler.RF_RATIO);
         EnergyConfigHandler.BC3_RATIO = (float) EnergyConfigHandler.config.get("Compatibility", "BuildCraft Conversion Ratio", EnergyConfigHandler.BC3_RATIO).getDouble(EnergyConfigHandler.BC3_RATIO);
         EnergyConfigHandler.MEKANISM_RATIO = (float) EnergyConfigHandler.config.get("Compatibility", "Mekanism Conversion Ratio", EnergyConfigHandler.MEKANISM_RATIO).getDouble(EnergyConfigHandler.MEKANISM_RATIO);
         EnergyConfigHandler.TO_IC2_RATIO = 1 / EnergyConfigHandler.IC2_RATIO;
         EnergyConfigHandler.TO_BC_RATIO = 1 / EnergyConfigHandler.BC3_RATIO;
-        EnergyConfigHandler.TO_TE_RATIO = 1 / EnergyConfigHandler.TE_RATIO;
+        EnergyConfigHandler.TO_RF_RATIO = 1 / EnergyConfigHandler.RF_RATIO;
         EnergyConfigHandler.TO_MEKANISM_RATIO = 1 / EnergyConfigHandler.MEKANISM_RATIO;
 
         EnergyConfigHandler.displayEnergyUnitsBC = EnergyConfigHandler.config.get("Display", "If BuildCraft is loaded, show Galacticraft machines energy as MJ instead of gJ?", false).getBoolean(false);
@@ -261,9 +263,18 @@ public class EnergyConfigHandler
         return cachedBCVersion;
     }
 
-    public static boolean isThermalExpansionLoaded()
+    public static boolean isRFAPILoaded()
     {
-        return Loader.isModLoaded("ThermalExpansion");
+        if (!cachedRFLoaded)
+        {
+            cachedRFLoaded = true;
+            cachedRFLoadedValue = false;
+            try {
+            	cachedRFLoadedValue = (Class.forName("cofh.api.energy.IEnergyHandler") != null);
+            } catch (Exception e) { }
+        }
+
+        return cachedRFLoadedValue;
     }
 
     public static boolean isMekanismLoaded()

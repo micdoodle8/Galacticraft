@@ -45,6 +45,7 @@ public class TileEntitySpaceStationBase extends TileEntityMulti implements IMult
     public void onCreate(BlockVec3 placedPosition)
     {
         this.mainBlockPosition = placedPosition;
+        this.markDirty();
 
         for (int y = 1; y < 3; y++)
         {
@@ -55,6 +56,7 @@ public class TileEntitySpaceStationBase extends TileEntityMulti implements IMult
                 ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 1);
             }
         }
+        
     }
 
     @Override

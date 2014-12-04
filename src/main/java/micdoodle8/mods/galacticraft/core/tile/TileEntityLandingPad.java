@@ -78,6 +78,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
     public void onCreate(BlockVec3 placedPosition)
     {
         this.mainBlockPosition = placedPosition;
+        this.markDirty();
 
         for (int x = -1; x < 2; x++)
         {

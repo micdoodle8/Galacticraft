@@ -24,7 +24,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.*;
 
 //import buildcraft.api.power.PowerHandler.Type;
-//import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyHandler;
 
 
 /**
@@ -262,6 +262,7 @@ public class EnergyNetwork implements IElectricityNetwork
         boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded();
         boolean isBCLoaded = EnergyConfigHandler.isBuildcraftLoaded();
         boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
+        boolean isRFLoaded = EnergyConfigHandler.isRFAPILoaded();
 
         if (!this.connectedAcceptors.isEmpty())
         {
@@ -285,10 +286,10 @@ public class EnergyNetwork implements IElectricityNetwork
                     {
                         e = (float) ((((IStrictEnergyAcceptor) acceptor).getMaxEnergy() - ((IStrictEnergyAcceptor) acceptor).getEnergy()) * EnergyConfigHandler.MEKANISM_RATIO);
                     }
-                    /*else if (isTELoaded && acceptor instanceof IEnergyHandler)
+                    else if (isRFLoaded && acceptor instanceof IEnergyHandler)
 					{
-						e = ((IEnergyHandler) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) * EnergyConfigHandler.TE_RATIO;
-					}*/
+						e = ((IEnergyHandler) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) * EnergyConfigHandler.RF_RATIO;
+					}
                     else if (isIC2Loaded && acceptor instanceof IEnergySink)
                     {
                         double result = 0;
@@ -355,6 +356,7 @@ public class EnergyNetwork implements IElectricityNetwork
             boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded();
             boolean isBCLoaded = EnergyConfigHandler.isBuildcraftLoaded();
             boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
+            boolean isRFLoaded = EnergyConfigHandler.isRFAPILoaded();
 
             float energyNeeded = this.totalRequested;
             float energyAvailable = this.totalEnergy;
@@ -417,12 +419,12 @@ public class EnergyNetwork implements IElectricityNetwork
                 {
                     sentToAcceptor = (float) ((IStrictEnergyAcceptor) tileEntity).transferEnergyToAcceptor(sideFrom, currentSending * EnergyConfigHandler.TO_MEKANISM_RATIO) * EnergyConfigHandler.MEKANISM_RATIO;
                 }
-//				else if (isTELoaded && tileEntity instanceof IEnergyHandler)
-//				{
-//				IEnergyHandler handler = (IEnergyHandler) tileEntity;
-//				int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / EnergyConfigHandler.TO_TE_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * EnergyConfigHandler.TO_TE_RATIO);
-//				sentToAcceptor = handler.receiveEnergy(sideFrom, currentSendinginRF, false) * EnergyConfigHandler.TE_RATIO;
-//				}
+				else if (isRFLoaded && tileEntity instanceof IEnergyHandler)
+				{
+					IEnergyHandler handler = (IEnergyHandler) tileEntity;
+					int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / EnergyConfigHandler.TO_RF_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * EnergyConfigHandler.TO_RF_RATIO);
+					sentToAcceptor = handler.receiveEnergy(sideFrom, currentSendinginRF, false) * EnergyConfigHandler.RF_RATIO;
+				}
                 else if (isIC2Loaded && tileEntity instanceof IEnergySink)
                 {
                     double energySendingIC2 = currentSending * EnergyConfigHandler.TO_IC2_RATIO;
@@ -618,6 +620,7 @@ public class EnergyNetwork implements IElectricityNetwork
             boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded();
             boolean isBCLoaded = EnergyConfigHandler.isBuildcraftLoaded();
             boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
+            boolean isRFLoaded = EnergyConfigHandler.isRFAPILoaded();
 
             LinkedList<IConductor> conductors = new LinkedList();
             conductors.addAll(this.getTransmitters());
@@ -651,14 +654,14 @@ public class EnergyNetwork implements IElectricityNetwork
                                 this.connectedDirections.add(sideFrom);
                             }
                         }
-						/*else if (isTELoaded && acceptor instanceof IEnergyHandler)
+						else if (isRFLoaded && acceptor instanceof IEnergyHandler)
 						{
-							if (((IEnergyHandler) acceptor).canInterface(sideFrom))
+							if (((IEnergyHandler) acceptor).canConnectEnergy(sideFrom))
 							{
 								this.connectedAcceptors.add(acceptor);
 								this.connectedDirections.add(sideFrom);
 							}
-						}*/
+						}
                         else if (isIC2Loaded && acceptor instanceof IEnergyAcceptor)
                         {
                             if (((IEnergyAcceptor) acceptor).acceptsEnergyFrom((TileEntity) conductor, sideFrom))

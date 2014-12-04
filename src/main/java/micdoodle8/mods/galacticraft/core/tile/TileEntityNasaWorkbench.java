@@ -26,6 +26,7 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
     public void onCreate(BlockVec3 placedPosition)
     {
         this.mainBlockPosition = placedPosition;
+        this.markDirty();
 
         for (int x = -1; x < 2; x++)
         {
@@ -47,7 +48,7 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
         }
 
         final BlockVec3 vecToAdd = new BlockVec3(placedPosition.x, placedPosition.y + 3, placedPosition.z);
-        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);
+        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);       
     }
 
     @Override
