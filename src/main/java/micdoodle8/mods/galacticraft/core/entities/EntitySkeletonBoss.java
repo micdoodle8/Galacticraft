@@ -31,6 +31,7 @@ import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -219,7 +220,7 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
 
             if (!this.worldObj.isRemote)
             {
-            	for (final TileEntity tile : (List<TileEntity>) this.worldObj.loadedTileEntityList)
+            	for (final TileEntity tile : new ArrayList<TileEntity>(this.worldObj.loadedTileEntityList))
 	            {
 	                if (tile instanceof TileEntityTreasureChest)
 	                {

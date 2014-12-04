@@ -232,77 +232,77 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
         {
             WorldServer world = servers[i];
 
-            for (TileEntity tile : new ArrayList<TileEntity>(world.loadedTileEntityList))
+            try
             {
-            	if (tile != null)
+                Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController");
+                
+                for (TileEntity tile : new ArrayList<TileEntity>(world.loadedTileEntityList))
                 {
-                    tile = world.getTileEntity(tile.xCoord, tile.yCoord, tile.zCoord);
-                    if (tile == null) continue;
+                	if (tile != null)
+                	{
+                		tile = world.getTileEntity(tile.xCoord, tile.yCoord, tile.zCoord);
+                		if (tile == null) continue;
 
-                    try
-                    {
-                        Class<?> controllerClass = Class.forName("micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController");
+                		try
+                		{
+                			controllerClass.cast(tile);
+                		}
+                		catch (ClassCastException e)
+                		{
+                			continue;
+                		}
 
-                        try
-                        {
-                            controllerClass.cast(tile);
-                        }
-                        catch (ClassCastException e)
-                        {
-                            continue;
-                        }
+                		int controllerFrequency = controllerClass.getField("frequency").getInt(tile);
 
-                        int controllerFrequency = controllerClass.getField("frequency").getInt(tile);
+                		if (destFreq == controllerFrequency)
+                		{
+                			boolean targetSet = false;
 
-                        if (destFreq == controllerFrequency)
-                        {
-                            boolean targetSet = false;
+                			blockLoop:
+                				for (int x = -2; x <= 2; x++)
+                				{
+                					for (int z = -2; z <= 2; z++)
+                					{
+                						Block block = world.getBlock(tile.xCoord + x, tile.yCoord, tile.zCoord + z);
 
-                            blockLoop:
-                            for (int x = -2; x <= 2; x++)
-                            {
-                                for (int z = -2; z <= 2; z++)
-                                {
-                                    Block block = world.getBlock(tile.xCoord + x, tile.yCoord, tile.zCoord + z);
+                						if (block instanceof BlockLandingPadFull)
+                						{
+                							if (doSet)
+                							{
+                								this.targetVec = new BlockVec3(tile.xCoord + x, tile.yCoord, tile.zCoord + z);
+                							}
 
-                                    if (block instanceof BlockLandingPadFull)
-                                    {
-                                        if (doSet)
-                                        {
-                                            this.targetVec = new BlockVec3(tile.xCoord + x, tile.yCoord, tile.zCoord + z);
-                                        }
+                							targetSet = true;
+                							break blockLoop;
+                						}
+                					}
+                				}
 
-                                        targetSet = true;
-                                        break blockLoop;
-                                    }
-                                }
-                            }
+                			if (doSet)
+                			{
+                				this.targetDimension = tile.getWorldObj().provider.dimensionId;
+                			}
 
-                            if (doSet)
-                            {
-                                this.targetDimension = tile.getWorldObj().provider.dimensionId;
-                            }
+                			if (!targetSet)
+                			{
+                				if (doSet)
+                				{
+                					this.targetVec = null;
+                				}
 
-                            if (!targetSet)
-                            {
-                                if (doSet)
-                                {
-                                    this.targetVec = null;
-                                }
-
-                                return false;
-                            }
-                            else
-                            {
-                                return true;
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
+                				return false;
+                			}
+                			else
+                			{
+                				return true;
+                			}
+                		}
+                	}
                 }
+            }
+            catch (Exception e)
+            {
+            	e.printStackTrace();
             }
         }
 

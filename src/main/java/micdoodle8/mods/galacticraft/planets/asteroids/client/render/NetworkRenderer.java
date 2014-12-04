@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamOutput;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -19,7 +20,7 @@ public class NetworkRenderer
     {
         List<TileEntityBeamOutput> nodes = new ArrayList<TileEntityBeamOutput>();
 
-        for (Object o : world.loadedTileEntityList)
+        for (Object o : new ArrayList<TileEntity>(world.loadedTileEntityList))
         {
             if (o instanceof TileEntityBeamOutput)
             {

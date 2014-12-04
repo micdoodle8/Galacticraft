@@ -19,6 +19,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 
 public class TileEntityOxygenSealer extends TileEntityOxygen implements IInventory, ISidedInventory
@@ -43,13 +44,36 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     private static int countTemp = 0;
     private static long ticksSave = 0L;
     private static boolean sealerCheckedThisTick = false;
+    public static ArrayList<TileEntityOxygenSealer> loadedTiles = new ArrayList();
+
 
     public TileEntityOxygenSealer()
     {
         super(10000, 16);
     }
 
-    public int getScaledThreadCooldown(int i)
+    @Override
+    public void validate()
+    {
+    	super.validate();
+        if (!this.worldObj.isRemote) TileEntityOxygenSealer.loadedTiles.add(this);
+    }
+
+    @Override
+    public void invalidate()
+    {
+        if (!this.worldObj.isRemote) TileEntityOxygenSealer.loadedTiles.add(this);
+    	super.invalidate();
+    }
+
+    @Override
+    public void onChunkUnload()
+    {
+        if (!this.worldObj.isRemote) TileEntityOxygenSealer.loadedTiles.add(this);
+    	super.onChunkUnload();
+    }
+
+   	public int getScaledThreadCooldown(int i)
     {
         if (this.active)
         {

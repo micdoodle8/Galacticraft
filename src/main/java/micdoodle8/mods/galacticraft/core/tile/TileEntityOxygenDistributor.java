@@ -20,6 +20,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 
     private ItemStack[] containingItems = new ItemStack[2];
     public EntityBubble oxygenBubble;
+    public static ArrayList<TileEntityOxygenDistributor> loadedTiles = new ArrayList();
     /**
      * Used for saving/loading old oxygen bubbles
      */
@@ -39,6 +41,20 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     {
         super(6000, 8);
         this.oxygenBubble = null;
+    }
+
+    @Override
+    public void validate()
+    {
+    	super.validate();
+        if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.add(this);
+    }
+
+    @Override
+    public void onChunkUnload()
+    {
+        if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.add(this);
+    	super.onChunkUnload();
     }
 
     @Override
@@ -63,6 +79,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
             }
         }
 
+        if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.remove(this);
         super.invalidate();
     }
 

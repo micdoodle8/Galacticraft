@@ -34,7 +34,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 public class OxygenUtil
 {
@@ -87,23 +86,16 @@ public class OxygenUtil
             final double avgY = (bb.minY + bb.maxY) / 2.0D;
             final double avgZ = (bb.minZ + bb.maxZ) / 2.0D;
 
-            final List l = world.loadedTileEntityList;
-
-            for (final Object o : l)
+            for (final TileEntityOxygenDistributor distributor : new ArrayList<TileEntityOxygenDistributor>(TileEntityOxygenDistributor.loadedTiles))
             {
-                if (o instanceof TileEntityOxygenDistributor)
+                if (distributor.getWorld() == world && distributor.oxygenBubble != null)
                 {
-                    final TileEntityOxygenDistributor distributor = (TileEntityOxygenDistributor) o;
+                    final double dist = distributor.getDistanceFromServer(avgX, avgY, avgZ);
+                    double r = distributor.oxygenBubble.getSize();
 
-                    if (distributor.oxygenBubble != null)
+                    if (dist < r * r)
                     {
-                        final double dist = distributor.getDistanceFromServer(avgX, avgY, avgZ);
-                        double r = distributor.oxygenBubble.getSize();
-
-                        if (dist < r * r)
-                        {
-                            return true;
-                        }
+                        return true;
                     }
                 }
             }
