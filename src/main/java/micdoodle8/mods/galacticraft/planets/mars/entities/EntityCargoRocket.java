@@ -365,6 +365,6 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     
     public double getOnPadYOffset()
     {
-    	return -0.25D;
+    	return 0D;//-0.25D;
     }
 }
