@@ -96,6 +96,6 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
     @Override
     public boolean isNetworkedTile()
     {
-        return true;
+    	 return (this.mainBlockPosition != null);
     }
 }
