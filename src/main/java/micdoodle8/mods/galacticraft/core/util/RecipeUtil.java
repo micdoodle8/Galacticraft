@@ -4,10 +4,14 @@ import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryBuggyBench;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryRocketBench;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.recipe.NasaWorkbenchRecipe;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.HashMap;
 
@@ -47,15 +51,12 @@ public class RecipeUtil
     
     public static void addBlockRecipe(ItemStack result, String oreDictIngot, ItemStack gcIngot)
     {   
-    	RecipeUtil.addRecipe(result, new Object[] { "XXX", "XXX", "XXI", 'X', oreDictIngot, 'I', gcIngot });
-    	RecipeUtil.addRecipe(result, new Object[] { "XXX", "XXX", "XIX", 'X', oreDictIngot, 'I', gcIngot });
-    	RecipeUtil.addRecipe(result, new Object[] { "XXX", "XXX", "IXX", 'X', oreDictIngot, 'I', gcIngot });
-    	RecipeUtil.addRecipe(result, new Object[] { "XXX", "XXI", "XXX", 'X', oreDictIngot, 'I', gcIngot });
-    	RecipeUtil.addRecipe(result, new Object[] { "XXX", "XIX", "XXX", 'X', oreDictIngot, 'I', gcIngot });
-    	RecipeUtil.addRecipe(result, new Object[] { "XXX", "IXX", "XXX", 'X', oreDictIngot, 'I', gcIngot });
-    	RecipeUtil.addRecipe(result, new Object[] { "XXI", "XXX", "XXX", 'X', oreDictIngot, 'I', gcIngot });
-    	RecipeUtil.addRecipe(result, new Object[] { "XIX", "XXX", "XXX", 'X', oreDictIngot, 'I', gcIngot });
-    	RecipeUtil.addRecipe(result, new Object[] { "IXX", "XXX", "XXX", 'X', oreDictIngot, 'I', gcIngot });
+    	if (OreDictionary.getOres(oreDictIngot).size() > 1)
+    	{
+    		CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(result, new Object[] { gcIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot }));
+    	}
+    	else
+	    	RecipeUtil.addRecipe(result, new Object[] { "XXX", "XXX", "XXX", 'X', gcIngot });
     }
 
 

@@ -44,6 +44,8 @@ public class RecipeManagerMars
         //Fluid Manipulator - crafting item
         RecipeUtil.addRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 6), new Object[] { "MXM", "SWS", "MXM", 'S', Items.slime_ball, 'X', GCItems.oxygenFan, 'M', "ingotMeteoricIron", 'W', new ItemStack(GCItems.basicItem, 1, 14) });
 
+        RecipeUtil.addRecipe(new ItemStack(MarsBlocks.hydrogenPipe, 6, 0), new Object[] { "CCC", "   ", "CCC", 'C', "ingotCopper" });
+
         RecipeUtil.addRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 1), new Object[] { "X", "X", 'X', "ingotDesh" });
 
         RecipeUtil.addRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 4), new Object[] { "XWX", "XYX", " Z ", 'W', Items.diamond, 'X', Items.leather, 'Y', Items.slime_ball, 'Z', Blocks.chest });
