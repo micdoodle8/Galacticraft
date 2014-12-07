@@ -34,7 +34,6 @@ import micdoodle8.mods.galacticraft.planets.mars.schematic.SchematicCargoRocket;
 import micdoodle8.mods.galacticraft.planets.mars.schematic.SchematicTier2Rocket;
 import micdoodle8.mods.galacticraft.planets.mars.tile.*;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -145,30 +144,30 @@ public class MarsModule implements IPlanetsModule
 
     public void registerCreatures()
     {
-        this.registerGalacticraftCreature(EntitySludgeling.class, "Sludgeling", ConfigManagerMars.idEntitySludgeling, GCCoreUtil.to32BitColor(255, 0, 50, 0), GCCoreUtil.to32BitColor(255, 0, 150, 0));
-        this.registerGalacticraftCreature(EntitySlimeling.class, "Slimeling", ConfigManagerMars.idEntitySlimeling, GCCoreUtil.to32BitColor(255, 0, 50, 0), GCCoreUtil.to32BitColor(255, 0, 150, 0));
-        this.registerGalacticraftCreature(EntityCreeperBoss.class, "CreeperBoss", ConfigManagerMars.idEntityCreeperBoss, GCCoreUtil.to32BitColor(255, 0, 50, 0), GCCoreUtil.to32BitColor(255, 0, 150, 0));
+        this.registerGalacticraftCreature(EntitySludgeling.class, "Sludgeling", GCCoreUtil.to32BitColor(255, 0, 50, 0), GCCoreUtil.to32BitColor(255, 0, 150, 0));
+        this.registerGalacticraftCreature(EntitySlimeling.class, "Slimeling", GCCoreUtil.to32BitColor(255, 0, 50, 0), GCCoreUtil.to32BitColor(255, 0, 150, 0));
+        this.registerGalacticraftCreature(EntityCreeperBoss.class, "CreeperBoss", GCCoreUtil.to32BitColor(255, 0, 50, 0), GCCoreUtil.to32BitColor(255, 0, 150, 0));
     }
 
     public void registerOtherEntities()
     {
-        this.registerGalacticraftNonMobEntity(EntityTier2Rocket.class, "SpaceshipT2", ConfigManagerMars.idEntitySpaceshipTier2, 150, 1, false);
-        this.registerGalacticraftNonMobEntity(EntityTerraformBubble.class, "TerraformBubble", ConfigManagerMars.idEntityTerraformBubble, 150, 20, false);
-        this.registerGalacticraftNonMobEntity(EntityProjectileTNT.class, "ProjectileTNT", ConfigManagerMars.idEntityProjectileTNT, 150, 1, true);
-        this.registerGalacticraftNonMobEntity(EntityLandingBalloons.class, "LandingBalloons", ConfigManagerMars.idEntityLandingBalloons, 150, 5, true);
-        this.registerGalacticraftNonMobEntity(EntityCargoRocket.class, "CargoRocket", ConfigManagerMars.idEntityCargoRocket, 150, 1, false);
+        MarsModule.registerGalacticraftNonMobEntity(EntityTier2Rocket.class, "SpaceshipT2", 150, 1, false);
+        MarsModule.registerGalacticraftNonMobEntity(EntityTerraformBubble.class, "TerraformBubble", 150, 20, false);
+        MarsModule.registerGalacticraftNonMobEntity(EntityProjectileTNT.class, "ProjectileTNT", 150, 1, true);
+        MarsModule.registerGalacticraftNonMobEntity(EntityLandingBalloons.class, "LandingBalloons", 150, 5, true);
+        MarsModule.registerGalacticraftNonMobEntity(EntityCargoRocket.class, "CargoRocket", 150, 1, false);
     }
 
-    public void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int id, int back, int fore)
+    public void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int back, int fore)
     {
-        EntityRegistry.registerGlobalEntityID(var0, var1, id, back, fore);
-        EntityRegistry.registerModEntity(var0, var1, id, GalacticraftPlanets.instance, 80, 3, true);
+        int newID = EntityRegistry.instance().findGlobalUniqueEntityId();
+        EntityRegistry.registerGlobalEntityID(var0, var1, newID, back, fore);
+        EntityRegistry.registerModEntity(var0, var1, GCCoreUtil.nextInternalID(), GalacticraftPlanets.instance, 80, 3, true);
     }
 
-    public void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int id, int trackingDistance, int updateFreq, boolean sendVel)
+    public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
     {
-        EntityList.addMapping(var0, var1, id);
-        EntityRegistry.registerModEntity(var0, var1, id, GalacticraftPlanets.instance, trackingDistance, updateFreq, sendVel);
+        EntityRegistry.registerModEntity(var0, var1, GCCoreUtil.nextInternalID(), GalacticraftPlanets.instance, trackingDistance, updateFreq, sendVel);
     }
 
     @Override

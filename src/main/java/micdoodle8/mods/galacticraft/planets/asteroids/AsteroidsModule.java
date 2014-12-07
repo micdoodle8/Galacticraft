@@ -31,7 +31,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.recipe.RecipeManagerAstero
 import micdoodle8.mods.galacticraft.planets.asteroids.schematic.SchematicTier3Rocket;
 import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerServer;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.*;
-import micdoodle8.mods.galacticraft.planets.asteroids.util.AsteroidsUtil;
+import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -268,10 +268,10 @@ public class AsteroidsModule implements IPlanetsModule
 
     private void registerNonMobEntities()
     {
-        AsteroidsUtil.registerAsteroidsNonMobEntity(EntitySmallAsteroid.class, "SmallAsteroidGC", ConfigManagerAsteroids.idEntitySmallAsteroid, 150, 1, true);
-        AsteroidsUtil.registerAsteroidsNonMobEntity(EntityGrapple.class, "GrappleHookGC", ConfigManagerAsteroids.idEntityGrappleHook, 150, 1, true);
-        AsteroidsUtil.registerAsteroidsNonMobEntity(EntityTier3Rocket.class, "Tier3RocketGC", ConfigManagerAsteroids.idEntityTier3Rocket, 150, 1, false);
-        AsteroidsUtil.registerAsteroidsNonMobEntity(EntityEntryPod.class, "EntryPodAsteroids", ConfigManagerAsteroids.idEntityEntryPod, 150, 1, true);
+        MarsModule.registerGalacticraftNonMobEntity(EntitySmallAsteroid.class, "SmallAsteroidGC", 150, 1, true);
+        MarsModule.registerGalacticraftNonMobEntity(EntityGrapple.class, "GrappleHookGC", 150, 1, true);
+        MarsModule.registerGalacticraftNonMobEntity(EntityTier3Rocket.class, "Tier3RocketGC", 150, 1, false);
+        MarsModule.registerGalacticraftNonMobEntity(EntityEntryPod.class, "EntryPodAsteroids", 150, 1, true);
     }
 
     private void registerTileEntities()

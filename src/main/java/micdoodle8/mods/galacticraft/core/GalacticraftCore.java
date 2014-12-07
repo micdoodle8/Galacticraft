@@ -119,6 +119,7 @@ public class GalacticraftCore
     public void preInit(FMLPreInitializationEvent event)
     {
     	isPlanetsLoaded = Loader.isModLoaded(Constants.MOD_ID_PLANETS);
+    	GCCoreUtil.nextID = 0;
     	
     	MinecraftForge.EVENT_BUS.register(new EventHandlerGC());
         GCPlayerHandler handler = new GCPlayerHandler();
@@ -409,25 +410,25 @@ public class GalacticraftCore
 
     public void registerCreatures()
     {
-        GCCoreUtil.registerGalacticraftCreature(EntityEvolvedSpider.class, "EvolvedSpider", ConfigManagerCore.idEntityEvolvedSpider, 3419431, 11013646);
-        GCCoreUtil.registerGalacticraftCreature(EntityEvolvedZombie.class, "EvolvedZombie", ConfigManagerCore.idEntityEvolvedZombie, 44975, 7969893);
-        GCCoreUtil.registerGalacticraftCreature(EntityEvolvedCreeper.class, "EvolvedCreeper", ConfigManagerCore.idEntityEvolvedCreeper, 894731, 0);
-        GCCoreUtil.registerGalacticraftCreature(EntityEvolvedSkeleton.class, "EvolvedSkeleton", ConfigManagerCore.idEntityEvolvedSkeleton, 12698049, 4802889);
-        GCCoreUtil.registerGalacticraftCreature(EntitySkeletonBoss.class, "EvolvedSkeletonBoss", ConfigManagerCore.idEntityEvolvedSkeletonBoss, 12698049, 4802889);
-        GCCoreUtil.registerGalacticraftCreature(EntityAlienVillager.class, "AlienVillager", ConfigManagerCore.idEntityAlienVillager, GCCoreUtil.to32BitColor(255, 103, 145, 181), 12422002);
+        GCCoreUtil.registerGalacticraftCreature(EntityEvolvedSpider.class, "EvolvedSpider", 3419431, 11013646);
+        GCCoreUtil.registerGalacticraftCreature(EntityEvolvedZombie.class, "EvolvedZombie", 44975, 7969893);
+        GCCoreUtil.registerGalacticraftCreature(EntityEvolvedCreeper.class, "EvolvedCreeper", 894731, 0);
+        GCCoreUtil.registerGalacticraftCreature(EntityEvolvedSkeleton.class, "EvolvedSkeleton", 12698049, 4802889);
+        GCCoreUtil.registerGalacticraftCreature(EntitySkeletonBoss.class, "EvolvedSkeletonBoss", 12698049, 4802889);
+        GCCoreUtil.registerGalacticraftCreature(EntityAlienVillager.class, "AlienVillager", GCCoreUtil.to32BitColor(255, 103, 145, 181), 12422002);
     }
 
     public void registerOtherEntities()
     {
-        GCCoreUtil.registerGalacticraftNonMobEntity(EntityTier1Rocket.class, "Spaceship", ConfigManagerCore.idEntitySpaceship, 150, 1, false);
-        GCCoreUtil.registerGalacticraftNonMobEntity(EntityMeteor.class, "Meteor", ConfigManagerCore.idEntityMeteor, 150, 5, true);
-        GCCoreUtil.registerGalacticraftNonMobEntity(EntityBuggy.class, "Buggy", ConfigManagerCore.idEntityBuggy, 150, 5, true);
-        GCCoreUtil.registerGalacticraftNonMobEntity(EntityFlag.class, "GCFlag", ConfigManagerCore.idEntityFlag, 150, 5, true);
-        GCCoreUtil.registerGalacticraftNonMobEntity(EntityParachest.class, "ParaChest", ConfigManagerCore.idEntityParaChest, 150, 5, true);
-        GCCoreUtil.registerGalacticraftNonMobEntity(EntityBubble.class, "OxygenBubble", ConfigManagerCore.idEntityOxygenBubble, 150, 20, false);
-        GCCoreUtil.registerGalacticraftNonMobEntity(EntityLander.class, "Lander", ConfigManagerCore.idEntityLander, 150, 5, false);
-        GCCoreUtil.registerGalacticraftNonMobEntity(EntityMeteorChunk.class, "MeteorChunk", ConfigManagerCore.idEntityMeteorChunk, 150, 5, true);
-        GCCoreUtil.registerGalacticraftNonMobEntity(EntityCelestialFake.class, "CelestialScreen", ConfigManagerCore.idEntityCelestial, 150, 5, false);
+        GCCoreUtil.registerGalacticraftNonMobEntity(EntityTier1Rocket.class, "Spaceship", 150, 1, false);
+        GCCoreUtil.registerGalacticraftNonMobEntity(EntityMeteor.class, "Meteor", 150, 5, true);
+        GCCoreUtil.registerGalacticraftNonMobEntity(EntityBuggy.class, "Buggy", 150, 5, true);
+        GCCoreUtil.registerGalacticraftNonMobEntity(EntityFlag.class, "GCFlag", 150, 5, true);
+        GCCoreUtil.registerGalacticraftNonMobEntity(EntityParachest.class, "ParaChest", 150, 5, true);
+        GCCoreUtil.registerGalacticraftNonMobEntity(EntityBubble.class, "OxygenBubble", 150, 20, false);
+        GCCoreUtil.registerGalacticraftNonMobEntity(EntityLander.class, "Lander", 150, 5, false);
+        GCCoreUtil.registerGalacticraftNonMobEntity(EntityMeteorChunk.class, "MeteorChunk", 150, 5, true);
+        GCCoreUtil.registerGalacticraftNonMobEntity(EntityCelestialFake.class, "CelestialScreen", 150, 5, false);
     }
     
     public Planet makeUnreachablePlanet(String name, SolarSystem system)

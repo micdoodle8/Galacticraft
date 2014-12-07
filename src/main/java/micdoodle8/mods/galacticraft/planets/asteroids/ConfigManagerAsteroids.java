@@ -30,12 +30,6 @@ public class ConfigManagerAsteroids
     // DIMENSIONS
     public static int dimensionIDAsteroids;
 
-    // ENTITIES
-    public static int idEntitySmallAsteroid;
-    public static int idEntityGrappleHook;
-    public static int idEntityTier3Rocket;
-    public static int idEntityEntryPod;
-
     // GUI
 
     // SCHEMATIC
@@ -63,32 +57,6 @@ public class ConfigManagerAsteroids
             prop.comment = "Dimension ID for Asteroids";
             prop.setLanguageKey("gc.configgui.dimensionIDAsteroids").setRequiresMcRestart(true);
             dimensionIDAsteroids = prop.getInt();
-            propOrder.add(prop.getName());
-
-            //
-
-            prop = config.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntitySmallAsteroid", 180);
-            prop.comment = "Entity ID for Small Asteroid, must be unique.";
-            prop.setLanguageKey("gc.configgui.idEntitySmallAsteroid").setRequiresMcRestart(true);
-            idEntitySmallAsteroid = prop.getInt(180);
-            propOrder.add(prop.getName());
-
-            prop = config.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityGrappleHook", 181);
-            prop.comment = "Entity ID for Grapple Hook, must be unique.";
-            prop.setLanguageKey("gc.configgui.idEntityGrappleHook").setRequiresMcRestart(true);
-            idEntityGrappleHook = prop.getInt(181);
-            propOrder.add(prop.getName());
-
-            prop = config.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityTier3Rocket", 182);
-            prop.comment = "Entity ID for Tier 3 Rocket, must be unique.";
-            prop.setLanguageKey("gc.configgui.idEntityTier3Rocket").setRequiresMcRestart(true);
-            idEntityTier3Rocket = prop.getInt(182);
-            propOrder.add(prop.getName());
-
-            prop = config.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityEntryPod", 183);
-            prop.comment = "Entity ID for Cargo Rocket, must be unique.";
-            prop.setLanguageKey("gc.configgui.idEntityEntryPod").setRequiresMcRestart(true);
-            idEntityEntryPod = prop.getInt(183);
             propOrder.add(prop.getName());
 
             //

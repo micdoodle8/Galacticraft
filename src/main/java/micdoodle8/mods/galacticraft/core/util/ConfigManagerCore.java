@@ -40,22 +40,6 @@ public class ConfigManagerCore
     // ACHIEVEMENTS
     public static int idAchievBase;
 
-    public static int idEntityEvolvedSpider;
-    public static int idEntityEvolvedCreeper;
-    public static int idEntityEvolvedZombie;
-    public static int idEntityEvolvedSkeleton;
-    public static int idEntityEvolvedSkeletonBoss;
-    public static int idEntitySpaceship;
-    public static int idEntityMeteor;
-    public static int idEntityBuggy;
-    public static int idEntityFlag;
-    public static int idEntityParaChest;
-    public static int idEntityAlienVillager;
-    public static int idEntityOxygenBubble;
-    public static int idEntityLander;
-    public static int idEntityMeteorChunk;
-	public static int idEntityCelestial;
-
     // GENERAL
     public static boolean moreStars;
     public static String[] sealableIDs = { };
@@ -187,98 +171,6 @@ public class ConfigManagerCore
             prop.comment = "Base Achievement ID. All achievement IDs will start at this number.";
             prop.setLanguageKey("gc.configgui.idAchievBase");
             idAchievBase = prop.getInt(1784);
-            propOrder.add(prop.getName());
-
-            //
-
-            prop = config.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityEvolvedSpider", 155);
-            prop.comment = "Entity ID for Evolved Spider, must be unique.";
-            prop.setLanguageKey("gc.configgui.idEntityEvolvedSpider").setRequiresMcRestart(true);
-            idEntityEvolvedSpider = prop.getInt(155);
-            propOrder.add(prop.getName());
-
-            prop = config.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityEvolvedCreeper", 156);
-            prop.comment = "Entity ID for Evolved Creeper, must be unique.";
-            prop.setLanguageKey("gc.configgui.idEntityEvolvedCreeper").setRequiresMcRestart(true);
-            idEntityEvolvedCreeper = prop.getInt(156);
-            propOrder.add(prop.getName());
-
-            prop = config.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityEvolvedZombie", 157);
-            prop.comment = "Entity ID for Evolved Zombie, must be unique.";
-            prop.setLanguageKey("gc.configgui.idEntityEvolvedZombie").setRequiresMcRestart(true);
-            idEntityEvolvedZombie = prop.getInt(157);
-            propOrder.add(prop.getName());
-
-            prop = config.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityEvolvedSkeleton", 158);
-            prop.comment = "Entity ID for Evolved Skeleton, must be unique.";
-            prop.setLanguageKey("gc.configgui.idEntityEvolvedSkeleton").setRequiresMcRestart(true);
-            idEntityEvolvedSkeleton = prop.getInt(158);
-            propOrder.add(prop.getName());
-
-            prop = config.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntitySpaceship", 159);
-            prop.comment = "Entity ID for Tier 1 Rocket, must be unique.";
-            prop.setLanguageKey("gc.configgui.idEntitySpaceship").setRequiresMcRestart(true);
-            idEntitySpaceship = prop.getInt(159);
-            propOrder.add(prop.getName());
-
-            prop = config.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityMeteor", 161);
-            prop.comment = "Entity ID for Meteor, must be unique.";
-            prop.setLanguageKey("gc.configgui.idEntityMeteor").setRequiresMcRestart(true);
-            idEntityMeteor = prop.getInt(161);
-            propOrder.add(prop.getName());
-
-            prop = config.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityBuggy", 162);
-            prop.comment = "Entity ID for Buggy, must be unique.";
-            prop.setLanguageKey("gc.configgui.idEntityBuggy").setRequiresMcRestart(true);
-            idEntityBuggy = prop.getInt(162);
-            propOrder.add(prop.getName());
-
-            prop = config.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityFlag", 163);
-            prop.comment = "Entity ID for Flag Entity, must be unique.";
-            prop.setLanguageKey("gc.configgui.idEntityFlag").setRequiresMcRestart(true);
-            idEntityFlag = prop.getInt(163);
-            propOrder.add(prop.getName());
-
-            prop = config.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityParaChest", 165);
-            prop.comment = "Entity ID for Parachest, must be unique.";
-            prop.setLanguageKey("gc.configgui.idEntityParaChest").setRequiresMcRestart(true);
-            idEntityParaChest = prop.getInt(165);
-            propOrder.add(prop.getName());
-
-            prop = config.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityAlienVillager", 166);
-            prop.comment = "Entity ID for Alien Villager, must be unique.";
-            prop.setLanguageKey("gc.configgui.idEntityAlienVillager").setRequiresMcRestart(true);
-            idEntityAlienVillager = prop.getInt(166);
-            propOrder.add(prop.getName());
-
-            prop = config.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityOxygenBubble", 167);
-            prop.comment = "Entity ID for Oxygen Bubble, must be unique.";
-            prop.setLanguageKey("gc.configgui.idEntityOxygenBubble").setRequiresMcRestart(true);
-            idEntityOxygenBubble = prop.getInt(167);
-            propOrder.add(prop.getName());
-
-            prop = config.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityLander", 168);
-            prop.comment = "Entity ID for Moon Lander, must be unique.";
-            prop.setLanguageKey("gc.configgui.idEntityLander").setRequiresMcRestart(true);
-            idEntityLander = prop.getInt(168);
-            propOrder.add(prop.getName());
-
-            prop = config.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityEvolvedSkeletonBoss", 170);
-            prop.comment = "Entity ID for Skeleton Boss, must be unique.";
-            prop.setLanguageKey("gc.configgui.idEntityEvolvedSkeletonBoss").setRequiresMcRestart(true);
-            idEntityEvolvedSkeletonBoss = prop.getInt(170);
-            propOrder.add(prop.getName());
-
-            prop = config.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityCelestialScreen", 184);
-            prop.comment = "Entity ID for (hidden) Celestial Selection Entity, must be unique.";
-            prop.setLanguageKey("gc.configgui.idEntityCelestialScreen").setRequiresMcRestart(true);
-            idEntityCelestial = prop.getInt(184);
-            propOrder.add(prop.getName());
-
-            prop = config.get(Constants.CONFIG_CATEGORY_ENTITIES, "idEntityMeteorChunk", 179);
-            prop.comment = "Entity ID for Throwable Meteor Chunk, must be unique.";
-            prop.setLanguageKey("gc.configgui.idEntityMeteorChunk").setRequiresMcRestart(true);
-            idEntityMeteorChunk = prop.getInt(179);
             propOrder.add(prop.getName());
 
 //Client side

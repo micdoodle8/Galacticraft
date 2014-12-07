@@ -23,7 +23,9 @@ import java.util.List;
 
 public class GCCoreUtil
 {
-    public static int to32BitColor(int a, int r, int g, int b)
+	public static int nextID = 0;
+	
+	public static int to32BitColor(int a, int r, int g, int b)
     {
         a = a << 24;
         r = r << 16;
@@ -54,25 +56,32 @@ public class GCCoreUtil
         player.openContainer.addCraftingToCrafters(player);
     }
 
-    public static void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int id, int back, int fore)
+    public static int nextInternalID()
+    {
+    	GCCoreUtil.nextID++;
+    	return GCCoreUtil.nextID - 1;
+    }
+    
+    public static void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int back, int fore)
     {
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         {
             LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", GCCoreUtil.translate("entity.GalacticraftCore." + var1 + ".name"));
         }
 
-        EntityRegistry.registerGlobalEntityID(var0, var1, id, back, fore);
-        EntityRegistry.registerModEntity(var0, var1, id, GalacticraftCore.instance, 80, 3, true);
+        int newID = EntityRegistry.instance().findGlobalUniqueEntityId();
+        EntityRegistry.registerGlobalEntityID(var0, var1, newID, back, fore);
+        EntityRegistry.registerModEntity(var0, var1, nextInternalID(), GalacticraftCore.instance, 80, 3, true);
     }
 
-    public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int id, int trackingDistance, int updateFreq, boolean sendVel)
+    public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
     {
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         {
             LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", GCCoreUtil.translate("entity.GalacticraftCore." + var1 + ".name"));
         }
 
-        EntityRegistry.registerModEntity(var0, var1, id, GalacticraftCore.instance, trackingDistance, updateFreq, sendVel);
+        EntityRegistry.registerModEntity(var0, var1, nextInternalID(), GalacticraftCore.instance, trackingDistance, updateFreq, sendVel);
     }
 
     public static void registerGalacticraftItem(String key, Item item)
