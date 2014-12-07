@@ -140,6 +140,7 @@ public class MarsModule implements IPlanetsModule
         GameRegistry.registerTileEntity(TileEntityElectrolyzer.class, "Water Electrolyzer");
         GameRegistry.registerTileEntity(TileEntityDungeonSpawnerMars.class, "Mars Dungeon Spawner");
         GameRegistry.registerTileEntity(TileEntityLaunchController.class, "Launch Controller");
+        GameRegistry.registerTileEntity(TileEntityHydrogenPipe.class, "Hydrogen Pipe");
     }
 
     public void registerCreatures()

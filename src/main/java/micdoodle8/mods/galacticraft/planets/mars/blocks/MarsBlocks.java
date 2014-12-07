@@ -24,6 +24,7 @@ public class MarsBlocks
     public static Block creeperEgg;
     public static Block marsCobblestoneStairs;
     public static Block marsBricksStairs;
+    public static Block hydrogenPipe;
 
     public static void initBlocks()
     {
@@ -37,6 +38,7 @@ public class MarsBlocks
         MarsBlocks.creeperEgg = new BlockCreeperEgg().setHardness(-1.0F).setBlockName("creeperEgg");
         MarsBlocks.marsCobblestoneStairs = new BlockStairsGC("marsCobblestoneStairs", marsBlock, BlockStairsGC.StairsCategoryGC.MARS_COBBLESTONE).setHardness(1.5F);
         MarsBlocks.marsBricksStairs = new BlockStairsGC("marsDungeonBricksStairs", marsBlock, BlockStairsGC.StairsCategoryGC.MARS_BRICKS).setHardness(4.0F);
+        MarsBlocks.hydrogenPipe = new BlockHydrogenPipe("hydrogenPipe");
     }
 
     public static void setHarvestLevels()
@@ -67,6 +69,7 @@ public class MarsBlocks
         GameRegistry.registerBlock(MarsBlocks.machineT2, ItemBlockMachine.class, MarsBlocks.machineT2.getUnlocalizedName());
         GameRegistry.registerBlock(MarsBlocks.marsCobblestoneStairs, ItemBlockGC.class, MarsBlocks.marsCobblestoneStairs.getUnlocalizedName());
         GameRegistry.registerBlock(MarsBlocks.marsBricksStairs, ItemBlockGC.class, MarsBlocks.marsBricksStairs.getUnlocalizedName());
+        GameRegistry.registerBlock(MarsBlocks.hydrogenPipe, ItemBlockDesc.class, MarsBlocks.hydrogenPipe.getUnlocalizedName());
     }
     
     public static void oreDictRegistration()

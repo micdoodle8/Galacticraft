@@ -50,6 +50,7 @@ tile.marsMachine.2.name=Launch Controller
 tile.marsMachine.4.name=Gas Liquefier
 tile.marsMachine.5.name=Methane Synthesizer
 tile.marsMachine.6.name=Water Electrolyzer
+tile.hydrogenPipe.name=Hydrogen Pipe
 tile.sludge.name=Bacterial Sludge
 tile.creeperEgg.name=Creeper Egg
 tile.cavernVines.name=Cavernous Vines
@@ -149,6 +150,7 @@ tile.creeperEgg.description=Creeper Eggs will spawn in Mars dungeons, spawning a
 tile.gasLiquefier.description=Liquefies gases, either from the atmosphere or from canisters. Liquefied methane makes a good rocket fuel!
 tile.methaneSynthesizer.description=With a source of hydrogen and a source of carbon, this manufactures Methane for further processing in a Gas Liquefier.
 tile.electrolyzer.description=Transforms water into hydrogen (useful for the Methane Synthesizer) and oxygen.
+tile.hydrogenPipe.description=Hydrogen Pipe will transfer hydrogen from one machine's internal gas tank to another.
 
 gui.slimeling.chat.wrongPlayer=This isn't my Slimeling!
 gui.cryogenic.chat.cantUse=I can't use this for another %d seconds

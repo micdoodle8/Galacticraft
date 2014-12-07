@@ -25,6 +25,7 @@ import micdoodle8.mods.galacticraft.planets.mars.client.gui.*;
 import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelTier2Rocket;
 import micdoodle8.mods.galacticraft.planets.mars.client.render.block.BlockRendererCavernousVines;
 import micdoodle8.mods.galacticraft.planets.mars.client.render.block.BlockRendererEgg;
+import micdoodle8.mods.galacticraft.planets.mars.client.render.block.BlockRendererHydrogenPipe;
 import micdoodle8.mods.galacticraft.planets.mars.client.render.block.BlockRendererMachine;
 import micdoodle8.mods.galacticraft.planets.mars.client.render.block.BlockRendererTier2TreasureChest;
 import micdoodle8.mods.galacticraft.planets.mars.client.render.entity.*;
@@ -59,6 +60,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
     private static int eggRenderID;
     private static int treasureRenderID;
     private static int machineRenderID;
+    private static int renderIdHydrogenPipe;
 
     @Override
     public void preInit(FMLPreInitializationEvent event)
@@ -78,6 +80,8 @@ public class MarsModuleClient implements IPlanetsModuleClient
         RenderingRegistry.registerBlockHandler(new BlockRendererTier2TreasureChest(MarsModuleClient.treasureRenderID));
         MarsModuleClient.machineRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new BlockRendererMachine(MarsModuleClient.machineRenderID));
+        MarsModuleClient.renderIdHydrogenPipe = RenderingRegistry.getNextAvailableRenderId();        
+        RenderingRegistry.registerBlockHandler(new BlockRendererHydrogenPipe(MarsModuleClient.renderIdHydrogenPipe));
     }
 
     @Override
@@ -151,6 +155,10 @@ public class MarsModuleClient implements IPlanetsModuleClient
         if (block == MarsBlocks.vine)
         {
             return MarsModuleClient.vineRenderID;
+        }
+        else if (block == MarsBlocks.hydrogenPipe)
+        {
+            return MarsModuleClient.renderIdHydrogenPipe;
         }
         else if (block == MarsBlocks.rock)
         {

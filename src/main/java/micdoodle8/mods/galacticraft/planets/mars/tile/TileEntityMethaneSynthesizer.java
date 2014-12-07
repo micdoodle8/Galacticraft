@@ -5,6 +5,7 @@ import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
+import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
@@ -525,4 +526,40 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     {
         return side.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2));
     }
+
+    @Override
+    public boolean canConnect(ForgeDirection direction, NetworkType type)
+    {
+        if (direction == null || direction.equals(ForgeDirection.UNKNOWN) || type == NetworkType.OXYGEN)
+        {
+            return false;
+        }
+
+        if (type == NetworkType.POWER)
+        	return direction == this.getElectricInputDirection();
+        
+        //Hydrogen pipe
+        return direction.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2)); 
+    }
+
+	public Float getHydrogenRequest(ForgeDirection direction)
+	{
+		return this.receiveHydrogen(direction, 1000000F, false);
+	}
+
+	public boolean shouldPullHydrogen()
+	{
+		return this.gasTank.getFluidAmount() < this.gasTank.getCapacity();
+	}
+
+	public float receiveHydrogen(ForgeDirection from, float receive, boolean doReceive)
+	{
+		if (from.ordinal() == this.getBlockMetadata() + 2 && this.shouldPullHydrogen())
+    	{
+	        FluidStack fluidToFill = FluidRegistry.getFluidStack("hydrogen", (int) (receive));
+	    	return this.gasTank.fill(fluidToFill, doReceive);
+    	}
+    	
+    	return 0;
+	}
 }

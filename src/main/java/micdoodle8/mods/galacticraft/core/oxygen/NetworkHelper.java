@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.oxygen;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
+import micdoodle8.mods.galacticraft.api.transmission.grid.IHydrogenNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IOxygenNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
@@ -127,6 +128,35 @@ public class NetworkHelper
                     if (((INetworkProvider) tileEntity).getNetwork() instanceof IOxygenNetwork)
                     {
                         return (IOxygenNetwork) ((INetworkProvider) tileEntity).getNetwork();
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public static IHydrogenNetwork getHydrogenNetworkFromTileEntity(TileEntity tileEntity, ForgeDirection approachDirection)
+    {
+        if (tileEntity != null)
+        {
+            if (tileEntity instanceof INetworkProvider)
+            {
+                if (tileEntity instanceof IConnector)
+                {
+                    if (((IConnector) tileEntity).canConnect(approachDirection.getOpposite(), NetworkType.HYDROGEN))
+                    {
+                        if (((INetworkProvider) tileEntity).getNetwork() instanceof IHydrogenNetwork)
+                        {
+                            return (IHydrogenNetwork) ((INetworkProvider) tileEntity).getNetwork();
+                        }
+                    }
+                }
+                else
+                {
+                    if (((INetworkProvider) tileEntity).getNetwork() instanceof IHydrogenNetwork)
+                    {
+                        return (IHydrogenNetwork) ((INetworkProvider) tileEntity).getNetwork();
                     }
                 }
             }

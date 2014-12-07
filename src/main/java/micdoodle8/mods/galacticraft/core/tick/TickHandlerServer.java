@@ -26,6 +26,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenTransmitter;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
+import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityHydrogenPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.entity.Entity;
@@ -59,6 +60,7 @@ public class TickHandlerServer
     public static ArrayList<EntityPlayerMP> playersRequestingMapData = Lists.newArrayList();
     private static long tickCount;
 	public static LinkedList<TileEntityOxygenTransmitter> oxygenTransmitterUpdates  = new LinkedList<TileEntityOxygenTransmitter>();
+	public static LinkedList<TileEntityHydrogenPipe> hydrogenTransmitterUpdates  = new LinkedList<TileEntityHydrogenPipe>();
 	public static LinkedList<TileBaseConductor> energyTransmitterUpdates  = new LinkedList<TileBaseConductor>();
 
     public static void restart()
@@ -394,6 +396,23 @@ public class TickHandlerServer
                 pass.addAll(TickHandlerServer.oxygenTransmitterUpdates);
                 TickHandlerServer.oxygenTransmitterUpdates.clear();
                 for (TileEntityOxygenTransmitter newTile : pass)
+                {
+                    if (!newTile.isInvalid()) newTile.refresh();
+                }            
+
+                if (--maxPasses <= 0)
+                {
+                    break;
+                }
+            }
+
+            maxPasses = 10;
+            while (!TickHandlerServer.hydrogenTransmitterUpdates.isEmpty())
+            {
+                LinkedList<TileEntityHydrogenPipe> pass = new LinkedList();
+                pass.addAll(TickHandlerServer.hydrogenTransmitterUpdates);
+                TickHandlerServer.hydrogenTransmitterUpdates.clear();
+                for (TileEntityHydrogenPipe newTile : pass)
                 {
                     if (!newTile.isInvalid()) newTile.refresh();
                 }            

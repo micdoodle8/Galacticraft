@@ -6,6 +6,7 @@ import mekanism.api.gas.GasStack;
 import mekanism.api.gas.IGasHandler;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.grid.IHydrogenNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IOxygenNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenReceiver;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenStorage;
@@ -587,7 +588,34 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         if (provide > 0)
         {
             TileEntity outputTile = new BlockVec3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.worldObj);
-            if (EnergyConfigHandler.isMekanismLoaded())
+            IHydrogenNetwork outputNetwork = NetworkHelper.getHydrogenNetworkFromTileEntity(outputTile, outputDirection);
+
+            if (outputNetwork != null)
+            {
+                float powerRequest = outputNetwork.getRequest(this);
+
+                if (powerRequest > 0)
+                {
+                    float toSend = Math.min(this.getHydrogenStored(), provide);
+                    float rejectedPower = outputNetwork.produce(toSend, this);
+
+                    this.provideHydrogen((int) Math.max(toSend - rejectedPower, 0), true);
+                    return true;
+                }
+            }
+            else if (outputTile instanceof TileEntityMethaneSynthesizer)
+            {
+                float requestedHydrogen = ((TileEntityMethaneSynthesizer) outputTile).getHydrogenRequest(outputDirection.getOpposite());
+
+                if (requestedHydrogen > 0)
+                {
+                    float toSend = Math.min(this.getHydrogenStored(), provide);
+                    float acceptedHydrogen = ((TileEntityMethaneSynthesizer) outputTile).receiveHydrogen(outputDirection.getOpposite(), toSend, true);
+                    this.provideHydrogen((int) acceptedHydrogen, true);
+                    return true;
+                }
+            }
+            else if (EnergyConfigHandler.isMekanismLoaded())
             {
                 //TODO Gas item handling - internal tank (IGasItem)
                 //int acceptedHydrogen = GasTransmission.addGas(itemStack, type, amount);
@@ -690,6 +718,11 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         if (type == NetworkType.OXYGEN)
         {
             return this.getOxygenOutputDirection() == direction.ordinal();
+        }
+
+        if (type == NetworkType.HYDROGEN)
+        {
+            return this.getHydrogenOutputDirection() == direction.ordinal();
         }
 
         if (type == NetworkType.POWER)
