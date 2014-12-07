@@ -91,9 +91,9 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
 
                 if (pad != null && pad instanceof TileEntityMulti)
                 {
-                    final TileEntity mainTile = ((TileEntityMulti) pad).mainBlockPosition.getTileEntity(this.worldObj);
+                   	final TileEntity mainTile = ((TileEntityMulti)pad).getMainBlockTile();
 
-                    if (mainTile != null && mainTile instanceof ICargoEntity)
+                    if (mainTile instanceof ICargoEntity)
                     {
                         this.attachedFuelable = (ICargoEntity) mainTile;
                         foundFuelable = true;

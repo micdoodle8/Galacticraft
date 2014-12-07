@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -168,9 +167,9 @@ public class EventHandlerMars
             int z = MathHelper.floor_double(entity.posZ);
             TileEntity tile = Minecraft.getMinecraft().theWorld.getTileEntity(x, y - 1, z);
 
-            if (tile != null && tile.getClass().equals(TileEntityMulti.class))
+            if (tile instanceof TileEntityMulti)
             {
-                tile = ((TileEntityMulti) tile).mainBlockPosition.getTileEntity(FMLClientHandler.instance().getClient().theWorld);
+               	tile = ((TileEntityMulti)tile).getMainBlockTile();
             }
 
             if (tile instanceof TileEntityCryogenicChamber)

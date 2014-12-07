@@ -31,7 +31,7 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
         {
             TileEntity tileEntity = this.worldObj.getTileEntity(this.mainBlockPosition.x, this.mainBlockPosition.y, this.mainBlockPosition.z);
 
-            if (tileEntity != null && tileEntity instanceof IMultiBlock)
+            if (tileEntity instanceof IMultiBlock)
             {
                 IMultiBlock mainBlock = (IMultiBlock) tileEntity;
                 mainBlock.onDestroy(this);
@@ -45,16 +45,23 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
         {
             TileEntity tileEntity = this.worldObj.getTileEntity(this.mainBlockPosition.x, this.mainBlockPosition.y, this.mainBlockPosition.z);
 
-            if (tileEntity != null)
+            if (tileEntity instanceof IMultiBlock)
             {
-                if (tileEntity instanceof IMultiBlock)
-                {
-                    return ((IMultiBlock) tileEntity).onActivated(par5EntityPlayer);
-                }
+            	return ((IMultiBlock) tileEntity).onActivated(par5EntityPlayer);
             }
         }
 
         return false;
+    }
+    
+    public TileEntity getMainBlockTile()
+    {
+        if (this.mainBlockPosition != null)
+        {
+            return this.worldObj.getTileEntity(this.mainBlockPosition.x, this.mainBlockPosition.y, this.mainBlockPosition.z);
+        }
+
+        return null;
     }
 
     /**

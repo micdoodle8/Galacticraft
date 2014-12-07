@@ -91,7 +91,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
 
                     if (pad instanceof TileEntityMulti)
                     {
-                        final TileEntity mainTile = ((TileEntityMulti) pad).mainBlockPosition.getTileEntity(this.worldObj);
+                       	final TileEntity mainTile = ((TileEntityMulti)pad).getMainBlockTile();
 
                         if (mainTile instanceof IFuelable)
                         {
