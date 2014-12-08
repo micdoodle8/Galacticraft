@@ -98,6 +98,11 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
             return 10000.0F;
         }
 
+        if (metadata == 7)
+        {
+            return 40.0F;
+        }
+
         return super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ);
     }
 
