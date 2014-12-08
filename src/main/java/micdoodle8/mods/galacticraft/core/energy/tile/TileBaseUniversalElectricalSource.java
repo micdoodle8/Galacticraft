@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
+import java.lang.reflect.Method;
+import java.util.EnumSet;
+
 import mekanism.api.energy.EnergizedItemManager;
 import mekanism.api.energy.IEnergizedItem;
 import micdoodle8.mods.galacticraft.api.item.ElectricItemHelper;
@@ -18,9 +21,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.lang.reflect.Method;
-import java.util.EnumSet;
 
 public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectrical
 {

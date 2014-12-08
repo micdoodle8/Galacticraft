@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.Loader;
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -23,9 +23,11 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
+
 import org.lwjgl.opengl.GL11;
 
-import java.util.List;
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.Loader;
 
 public class ModelPlayerGC extends ModelBiped
 {

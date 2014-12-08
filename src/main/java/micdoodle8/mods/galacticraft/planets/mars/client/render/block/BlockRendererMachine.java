@@ -1,13 +1,15 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.block;
 
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;
+
 import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class BlockRendererMachine implements ISimpleBlockRenderingHandler
 {

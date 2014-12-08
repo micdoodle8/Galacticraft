@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox.ICheckBoxCallback;
@@ -16,9 +19,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCallback
 {

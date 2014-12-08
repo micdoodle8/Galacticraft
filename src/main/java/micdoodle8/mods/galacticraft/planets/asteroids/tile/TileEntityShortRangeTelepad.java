@@ -1,10 +1,11 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
+
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Random;
+
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -32,10 +33,10 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Random;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implements IMultiBlock, IInventory, ISidedInventory
 {

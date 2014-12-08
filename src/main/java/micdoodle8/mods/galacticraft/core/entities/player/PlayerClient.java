@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -34,6 +33,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.client.FMLClientHandler;
 
 public class PlayerClient implements IPlayerClient
 {

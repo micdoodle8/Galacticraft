@@ -1,5 +1,9 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
@@ -13,10 +17,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
 
 public class ChunkProviderOrbit extends ChunkProviderGenerate
 {

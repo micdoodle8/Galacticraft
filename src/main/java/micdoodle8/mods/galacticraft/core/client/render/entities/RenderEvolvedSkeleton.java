@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedSkeleton;
 import micdoodle8.mods.galacticraft.core.items.ItemSensorGlasses;
@@ -16,7 +13,12 @@ import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderEvolvedSkeleton extends RenderBiped

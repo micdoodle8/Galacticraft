@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import java.util.Random;
+
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
@@ -18,8 +20,6 @@ import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import java.util.Random;
 
 public class BlockFallenMeteor extends Block implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {

@@ -1,12 +1,17 @@
 package micdoodle8.mods.galacticraft.core.energy.grid;
 
-import buildcraft.api.mj.MjAPI;
-import buildcraft.api.power.IPowerEmitter;
-import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
-import cpw.mods.fml.common.FMLLog;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergySink;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import mekanism.api.energy.IStrictEnergyAcceptor;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
@@ -20,11 +25,13 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.*;
-
+import buildcraft.api.mj.MjAPI;
+import buildcraft.api.power.IPowerEmitter;
+import buildcraft.api.power.IPowerReceptor;
+import buildcraft.api.power.PowerHandler.PowerReceiver;
 //import buildcraft.api.power.PowerHandler.Type;
 import cofh.api.energy.IEnergyHandler;
+import cpw.mods.fml.common.FMLLog;
 
 
 /**

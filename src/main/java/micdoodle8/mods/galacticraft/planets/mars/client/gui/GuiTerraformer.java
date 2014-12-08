@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiContainerGC;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox;
@@ -17,10 +20,8 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.lwjgl.opengl.GL11;
 
 public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
 {

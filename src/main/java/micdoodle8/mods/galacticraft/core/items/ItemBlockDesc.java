@@ -1,8 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.core.blocks.BlockAdvancedTile;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -22,7 +21,9 @@ import net.minecraft.world.World;
 
 import org.lwjgl.input.Keyboard;
 
-import java.util.List;
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemBlockDesc extends ItemBlockGC
 {

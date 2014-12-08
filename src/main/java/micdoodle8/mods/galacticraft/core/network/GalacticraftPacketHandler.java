@@ -1,13 +1,13 @@
 package micdoodle8.mods.galacticraft.core.network;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.network.NetworkRegistry;
 
 @Sharable
 public class GalacticraftPacketHandler extends SimpleChannelInboundHandler<IPacket>

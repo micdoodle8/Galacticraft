@@ -1,14 +1,14 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
-import cpw.mods.fml.common.IWorldGenerator;
+import java.util.Random;
+
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
-
-import java.util.Random;
+import cpw.mods.fml.common.IWorldGenerator;
 
 public class OverworldGenerator implements IWorldGenerator
 {

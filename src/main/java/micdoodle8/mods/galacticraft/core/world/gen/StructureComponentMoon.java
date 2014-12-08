@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
@@ -7,8 +9,6 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
-
-import java.util.Random;
 
 public abstract class StructureComponentMoon extends StructureComponent
 {

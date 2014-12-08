@@ -1,15 +1,17 @@
 package micdoodle8.mods.galacticraft.core.client.render.block;
 
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import java.util.Arrays;
+
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
+
 import org.lwjgl.opengl.GL11;
 
-import java.util.Arrays;
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class BlockRendererOxygenPipe implements ISimpleBlockRenderingHandler
 {

@@ -1,12 +1,13 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import com.google.common.primitives.Ints;
+import static net.minecraftforge.common.config.Configuration.CATEGORY_GENERAL;
 
-import cpw.mods.fml.client.config.IConfigElement;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.registry.GameData;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
@@ -16,13 +17,13 @@ import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import com.google.common.primitives.Ints;
 
-import static net.minecraftforge.common.config.Configuration.CATEGORY_GENERAL;
+import cpw.mods.fml.client.config.IConfigElement;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.registry.GameData;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ConfigManagerCore
 {

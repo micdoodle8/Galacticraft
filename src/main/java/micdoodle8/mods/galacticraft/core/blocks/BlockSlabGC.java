@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import java.util.List;
+import java.util.Random;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
@@ -11,9 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-
-import java.util.List;
-import java.util.Random;
 
 public class BlockSlabGC extends BlockSlab
 {

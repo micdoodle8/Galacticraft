@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -9,6 +7,8 @@ import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.util.Session;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 {

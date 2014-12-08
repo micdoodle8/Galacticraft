@@ -1,13 +1,12 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
-import buildcraft.api.mj.IBatteryObject;
-import buildcraft.api.mj.MjAPI;
-import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.power.PowerHandler;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
-import cpw.mods.fml.common.eventhandler.Event;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.ISpecialElectricItem;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.EnumSet;
+
 import mekanism.api.energy.EnergizedItemManager;
 import mekanism.api.energy.IEnergizedItem;
 import micdoodle8.mods.galacticraft.api.item.ElectricItemHelper;
@@ -27,10 +26,12 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.util.EnumSet;
+import buildcraft.api.mj.IBatteryObject;
+import buildcraft.api.mj.MjAPI;
+import buildcraft.api.power.IPowerReceptor;
+import buildcraft.api.power.PowerHandler;
+import buildcraft.api.power.PowerHandler.PowerReceiver;
+import cpw.mods.fml.common.eventhandler.Event;
 
 public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //implements IElectrical, IElectricalStorage
 {

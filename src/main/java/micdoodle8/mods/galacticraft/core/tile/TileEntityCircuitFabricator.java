@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
@@ -11,9 +13,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-
-import java.util.ArrayList;
-import java.util.Arrays;
+import cpw.mods.fml.relauncher.Side;
 
 public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInventory implements ISidedInventory, IPacketReceiver
 {

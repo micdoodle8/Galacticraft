@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
+import java.util.Random;
+
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
-
-import java.util.Random;
 
 public class WorldGenSpaceStation extends WorldGenerator
 {

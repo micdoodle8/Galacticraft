@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import java.util.ArrayList;
+
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-
-import java.util.ArrayList;
 
 public class TileEntityLandingPadSingle extends TileEntity
 {

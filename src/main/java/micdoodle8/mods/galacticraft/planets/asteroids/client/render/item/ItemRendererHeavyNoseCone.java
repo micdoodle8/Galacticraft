@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.item;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
@@ -11,8 +10,11 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+
+import cpw.mods.fml.client.FMLClientHandler;
 
 public class ItemRendererHeavyNoseCone implements IItemRenderer
 {

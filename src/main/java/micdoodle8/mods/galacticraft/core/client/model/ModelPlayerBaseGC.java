@@ -2,10 +2,6 @@ package micdoodle8.mods.galacticraft.core.client.model;
 
 import java.lang.reflect.Constructor;
 
-import api.player.model.ModelPlayer;
-import api.player.model.ModelPlayerAPI;
-import api.player.model.ModelPlayerBase;
-import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -26,6 +22,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.model.IModelCustom;
 import net.smart.render.playerapi.SmartRender;
+import api.player.model.ModelPlayer;
+import api.player.model.ModelPlayerAPI;
+import api.player.model.ModelPlayerBase;
+import cpw.mods.fml.common.Loader;
 
 public class ModelPlayerBaseGC extends ModelPlayerBase
 {

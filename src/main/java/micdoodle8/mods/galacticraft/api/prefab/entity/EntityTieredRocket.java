@@ -1,7 +1,10 @@
 package micdoodle8.mods.galacticraft.api.prefab.entity;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import io.netty.buffer.ByteBuf;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
@@ -29,9 +32,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
-
-import java.util.ArrayList;
-import java.util.Iterator;
+import cpw.mods.fml.common.FMLCommonHandler;
 
 /**
  * Do not include this prefab class in your released mod download.

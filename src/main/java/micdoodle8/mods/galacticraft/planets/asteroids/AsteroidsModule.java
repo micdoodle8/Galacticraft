@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.asteroids;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
@@ -30,7 +30,11 @@ import micdoodle8.mods.galacticraft.planets.asteroids.recipe.CanisterRecipes;
 import micdoodle8.mods.galacticraft.planets.asteroids.recipe.RecipeManagerAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.schematic.SchematicTier3Rocket;
 import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerServer;
-import micdoodle8.mods.galacticraft.planets.asteroids.tile.*;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityTelepadFake;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityTreasureChestAsteroids;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -47,10 +51,14 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.List;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 public class AsteroidsModule implements IPlanetsModule
 {

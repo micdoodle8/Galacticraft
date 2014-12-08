@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.item;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererTier1Rocket;
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
@@ -13,8 +12,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModelCustom;
+
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.client.FMLClientHandler;
 
 public class ItemRendererTier2Rocket extends ItemRendererTier1Rocket
 {

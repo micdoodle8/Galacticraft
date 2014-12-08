@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import java.util.ArrayList;
+import java.util.HashSet;
+
 import mekanism.api.gas.IGasTransmitter;
 import mekanism.api.gas.ITubeConnection;
 import mekanism.api.transmitters.TransmissionType;
@@ -18,7 +20,17 @@ import micdoodle8.mods.galacticraft.core.items.ItemOxygenMask;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockEnchantmentTable;
+import net.minecraft.block.BlockFarmland;
+import net.minecraft.block.BlockGlass;
+import net.minecraft.block.BlockGravel;
+import net.minecraft.block.BlockLeavesBase;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.BlockPistonBase;
+import net.minecraft.block.BlockSlab;
+import net.minecraft.block.BlockSponge;
+import net.minecraft.block.BlockStainedGlass;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
@@ -31,9 +43,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.ArrayList;
-import java.util.HashSet;
+import cpw.mods.fml.client.FMLClientHandler;
 
 public class OxygenUtil
 {

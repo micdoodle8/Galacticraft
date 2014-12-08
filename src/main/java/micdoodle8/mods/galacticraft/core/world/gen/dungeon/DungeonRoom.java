@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.Random;
 
 public abstract class DungeonRoom
 {

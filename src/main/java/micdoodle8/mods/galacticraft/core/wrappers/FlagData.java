@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.wrappers;
 
+import java.awt.image.BufferedImage;
+
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.nbt.NBTTagCompound;
-
-import java.awt.image.BufferedImage;
 
 public class FlagData
 {

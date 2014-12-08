@@ -1,7 +1,8 @@
 package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.lang.reflect.Constructor;
+import java.util.Arrays;
+
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -13,9 +14,8 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
-
-import java.lang.reflect.Constructor;
-import java.util.Arrays;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class WorldProviderSpace extends WorldProvider implements IGalacticraftWorldProvider
 {

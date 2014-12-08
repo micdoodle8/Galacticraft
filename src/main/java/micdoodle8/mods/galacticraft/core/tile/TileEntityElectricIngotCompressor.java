@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.ArrayList;
 
-import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
@@ -18,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.relauncher.Side;
 
 public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock implements IInventory, ISidedInventory, IPacketReceiver
 {

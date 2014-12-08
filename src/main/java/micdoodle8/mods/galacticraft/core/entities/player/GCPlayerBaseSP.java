@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import api.player.client.ClientPlayerAPI;
 import api.player.client.ClientPlayerBase;
 import cpw.mods.fml.common.Loader;
-import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 
 public class GCPlayerBaseSP extends ClientPlayerBase
 {

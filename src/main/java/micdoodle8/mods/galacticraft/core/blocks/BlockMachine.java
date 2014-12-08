@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import java.util.List;
+import java.util.Random;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
@@ -21,9 +24,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import java.util.List;
-import java.util.Random;
 
 public class BlockMachine extends BlockTileGC implements ItemBlockDesc.IBlockShiftDesc
 {

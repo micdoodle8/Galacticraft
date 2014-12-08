@@ -10,7 +10,12 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import uristqwerty.CraftGuide.api.*;
+import uristqwerty.CraftGuide.api.ItemSlot;
+import uristqwerty.CraftGuide.api.RecipeGenerator;
+import uristqwerty.CraftGuide.api.RecipeProvider;
+import uristqwerty.CraftGuide.api.RecipeTemplate;
+import uristqwerty.CraftGuide.api.Slot;
+import uristqwerty.CraftGuide.api.SlotType;
 
 public class CraftGuideCompressorRecipes implements RecipeProvider
 {

@@ -1,15 +1,17 @@
 package micdoodle8.mods.galacticraft.core.client;
 
+import net.minecraft.client.gui.GuiChat;
+import net.minecraft.client.settings.KeyBinding;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.Type;
 import cpw.mods.fml.relauncher.Side;
-import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.settings.KeyBinding;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 
 public abstract class KeyHandler
 {

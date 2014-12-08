@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
-import com.google.common.collect.Lists;
-
-import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.power.EnergySource;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceWireless;
@@ -20,6 +17,10 @@ import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.google.common.collect.Lists;
+
+import cpw.mods.fml.relauncher.Side;
 
 public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEnergyHandlerGC, ILaserNode
 {

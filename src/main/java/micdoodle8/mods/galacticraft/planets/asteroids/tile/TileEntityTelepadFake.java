@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import java.lang.ref.WeakReference;
+
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
@@ -10,8 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.lang.ref.WeakReference;
+import cpw.mods.fml.relauncher.Side;
 
 public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPacketReceiver
 {
