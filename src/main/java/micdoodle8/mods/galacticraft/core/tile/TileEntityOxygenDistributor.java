@@ -1,6 +1,11 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import io.netty.buffer.ByteBuf;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -19,10 +24,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
 
 public class TileEntityOxygenDistributor extends TileEntityOxygen implements IInventory, ISidedInventory, IBubbleProvider
 {

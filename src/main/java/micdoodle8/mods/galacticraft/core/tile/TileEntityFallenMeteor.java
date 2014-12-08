@@ -1,12 +1,13 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
+
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.nbt.NBTTagCompound;
-
-import java.util.List;
+import cpw.mods.fml.relauncher.Side;
 
 public class TileEntityFallenMeteor extends TileEntityAdvanced implements IPacketReceiver
 {

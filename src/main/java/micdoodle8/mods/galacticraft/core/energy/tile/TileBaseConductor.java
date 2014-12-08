@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IGridNetwork;
@@ -15,6 +13,8 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * This tile entity pre-fabricated for all conductors.

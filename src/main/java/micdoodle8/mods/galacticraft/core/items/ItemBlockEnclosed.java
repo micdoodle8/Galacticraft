@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.lang.reflect.Method;
+
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed.EnumEnclosedBlock;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -14,8 +14,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-
-import java.lang.reflect.Method;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemBlockEnclosed extends ItemBlockDesc
 {

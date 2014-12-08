@@ -1,6 +1,13 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import io.netty.buffer.ByteBuf;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
+
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
@@ -15,13 +22,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
-
 import cpw.mods.fml.client.FMLClientHandler;
 
 public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnoreShift, IPacketReceiver

@@ -1,6 +1,12 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import io.netty.buffer.ByteBuf;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
@@ -21,12 +27,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-
 import cpw.mods.fml.client.FMLClientHandler;
 
 public abstract class EntityLanderBase extends EntityAdvancedMotion implements IInventorySettable, IPacketReceiver, IScaleableFuelLevel

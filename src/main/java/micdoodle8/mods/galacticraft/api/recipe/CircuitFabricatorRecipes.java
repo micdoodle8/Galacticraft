@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.api.recipe;
 
-import net.minecraft.item.ItemStack;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+
+import net.minecraft.item.ItemStack;
 
 public class CircuitFabricatorRecipes
 {

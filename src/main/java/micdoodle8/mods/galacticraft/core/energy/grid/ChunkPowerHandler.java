@@ -1,13 +1,15 @@
 package micdoodle8.mods.galacticraft.core.energy.grid;
 
-import com.google.common.collect.Lists;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import java.util.ArrayList;
+
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.ChunkEvent;
 
-import java.util.ArrayList;
+import com.google.common.collect.Lists;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class ChunkPowerHandler
 {

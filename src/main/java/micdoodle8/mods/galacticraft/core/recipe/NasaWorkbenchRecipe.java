@@ -1,12 +1,12 @@
 package micdoodle8.mods.galacticraft.core.recipe;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-
-import java.util.HashMap;
-import java.util.Map.Entry;
 
 public class NasaWorkbenchRecipe implements INasaWorkbenchRecipe
 {

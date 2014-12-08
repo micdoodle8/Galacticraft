@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.core.energy;
 
-import cpw.mods.fml.common.Loader;
+import java.io.File;
+
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasRegistry;
 import net.minecraftforge.common.config.Configuration;
-
-import java.io.File;
+import cpw.mods.fml.common.Loader;
 
 /**
  * The Universal Electricity compatibility module allows your mod to be

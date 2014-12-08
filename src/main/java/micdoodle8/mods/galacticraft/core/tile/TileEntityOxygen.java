@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import java.util.EnumSet;
+
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
 import mekanism.api.gas.IGasHandler;
@@ -17,8 +18,7 @@ import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.EnumSet;
+import cpw.mods.fml.relauncher.Side;
 
 public abstract class TileEntityOxygen extends TileBaseElectricBlock implements IOxygenReceiver, IOxygenStorage
 {

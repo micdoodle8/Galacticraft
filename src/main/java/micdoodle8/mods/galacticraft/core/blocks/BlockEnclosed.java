@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
@@ -23,10 +25,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.util.List;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockEnclosed extends BlockContainer implements IPartialSealableBlock, ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {

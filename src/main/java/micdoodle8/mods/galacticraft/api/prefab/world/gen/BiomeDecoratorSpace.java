@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 
+import java.util.Random;
+
 import micdoodle8.mods.galacticraft.api.event.wgen.GCCoreEventPopulate;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.MinecraftForge;
-
-import java.util.Random;
 
 /**
  * Do not include this prefab class in your released mod download.

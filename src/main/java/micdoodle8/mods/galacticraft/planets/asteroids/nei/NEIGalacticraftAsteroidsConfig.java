@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.nei;
 
-import codechicken.nei.PositionedStack;
-import codechicken.nei.api.API;
-import codechicken.nei.api.IConfigureNEI;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
@@ -10,11 +12,9 @@ import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.mars.nei.NEIGalacticraftMarsConfig;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import codechicken.nei.PositionedStack;
+import codechicken.nei.api.API;
+import codechicken.nei.api.IConfigureNEI;
 
 public class NEIGalacticraftAsteroidsConfig implements IConfigureNEI
 {

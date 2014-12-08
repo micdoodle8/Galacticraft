@@ -1,13 +1,13 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.StructureComponent;
 
 public class StructureVillagePiecesMoon
 {

@@ -1,15 +1,15 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import micdoodle8.mods.galacticraft.core.Constants;
-import net.minecraft.util.ChatComponentText;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import micdoodle8.mods.galacticraft.core.Constants;
+import net.minecraft.util.ChatComponentText;
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 
 public class ThreadVersionCheck extends Thread
 {

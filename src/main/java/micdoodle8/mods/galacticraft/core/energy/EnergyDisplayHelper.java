@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.energy;
 
+import java.util.List;
+
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
-
-import java.util.List;
 
 public class EnergyDisplayHelper
 {

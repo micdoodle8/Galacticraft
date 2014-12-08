@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.entity;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelSludgeling;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySludgeling;
@@ -10,6 +8,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderSludgeling extends RenderLiving

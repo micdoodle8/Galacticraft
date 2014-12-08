@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.api.tile;
 
+import java.util.HashSet;
+
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import net.minecraft.world.IBlockAccess;
-
-import java.util.HashSet;
 
 public interface IFuelDock
 {

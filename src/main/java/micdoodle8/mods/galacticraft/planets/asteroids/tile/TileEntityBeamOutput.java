@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
+import java.util.LinkedList;
+
 import micdoodle8.mods.galacticraft.api.power.ILaserNode;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -12,8 +12,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-
-import java.util.LinkedList;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 
 public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements ILaserNode
 {

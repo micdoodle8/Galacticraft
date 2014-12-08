@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.dimension;
 
-import cpw.mods.fml.common.FMLLog;
+import java.util.Random;
+
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
@@ -14,8 +15,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.ChunkProviderServer;
-
-import java.util.Random;
+import cpw.mods.fml.common.FMLLog;
 
 public class TeleportTypeAsteroids implements ITeleportType
 {

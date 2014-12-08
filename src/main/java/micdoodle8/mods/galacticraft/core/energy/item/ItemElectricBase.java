@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.energy.item;
 
-import cpw.mods.fml.common.versioning.DefaultArtifactVersion;
-import cpw.mods.fml.common.versioning.VersionParser;
-import cpw.mods.fml.relauncher.FMLInjectionData;
 import ic2.api.item.IElectricItemManager;
+
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.api.item.ElectricItemHelper;
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
@@ -21,8 +21,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagDouble;
 import net.minecraft.nbt.NBTTagFloat;
 import net.minecraft.world.World;
-
-import java.util.List;
+import cpw.mods.fml.common.versioning.DefaultArtifactVersion;
+import cpw.mods.fml.common.versioning.VersionParser;
+import cpw.mods.fml.relauncher.FMLInjectionData;
 
 public abstract class ItemElectricBase extends Item implements IItemElectric
 {

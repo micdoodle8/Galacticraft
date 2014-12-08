@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
-import com.mojang.authlib.GameProfile;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import net.minecraft.entity.Entity;
@@ -11,6 +9,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ItemInWorldManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.WorldServer;
+
+import com.mojang.authlib.GameProfile;
 
 public class GCEntityPlayerMP extends EntityPlayerMP
 {

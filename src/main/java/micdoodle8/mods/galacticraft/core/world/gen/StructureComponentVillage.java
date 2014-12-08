@@ -1,14 +1,14 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
+import java.util.List;
+import java.util.Random;
+
 import micdoodle8.mods.galacticraft.core.entities.EntityAlienVillager;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
-
-import java.util.List;
-import java.util.Random;
 
 public abstract class StructureComponentVillage extends StructureComponent
 {

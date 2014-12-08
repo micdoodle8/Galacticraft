@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import java.util.EnumSet;
+
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
@@ -20,8 +21,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.EnumSet;
+import cpw.mods.fml.relauncher.Side;
 
 public class TileEntityOxygenCollector extends TileEntityOxygen implements IInventory, ISidedInventory
 {

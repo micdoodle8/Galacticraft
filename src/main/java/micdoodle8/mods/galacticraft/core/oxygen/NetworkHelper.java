@@ -1,5 +1,9 @@
 package micdoodle8.mods.galacticraft.core.oxygen;
 
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Set;
+
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IHydrogenNetwork;
@@ -9,10 +13,6 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * A helper class that provides additional useful functions to interact with the

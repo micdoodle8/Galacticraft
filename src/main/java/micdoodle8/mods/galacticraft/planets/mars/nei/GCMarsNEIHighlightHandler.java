@@ -1,8 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.nei;
 
-import codechicken.nei.api.IHighlightHandler;
-import codechicken.nei.api.ItemInfo;
-import codechicken.nei.guihook.GuiContainerManager;
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Block;
@@ -11,8 +10,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-
-import java.util.List;
+import codechicken.nei.api.IHighlightHandler;
+import codechicken.nei.api.ItemInfo;
+import codechicken.nei.guihook.GuiContainerManager;
 
 public class GCMarsNEIHighlightHandler implements IHighlightHandler
 {

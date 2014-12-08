@@ -1,18 +1,20 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.nei;
 
-import codechicken.lib.gui.GuiDraw;
-import codechicken.nei.NEIServerUtils;
-import codechicken.nei.PositionedStack;
-import codechicken.nei.recipe.TemplateRecipeHandler;
-import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
-
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
+import codechicken.lib.gui.GuiDraw;
+import codechicken.nei.NEIServerUtils;
+import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.TemplateRecipeHandler;
 
 public class RocketT3RecipeHandler extends TemplateRecipeHandler
 {

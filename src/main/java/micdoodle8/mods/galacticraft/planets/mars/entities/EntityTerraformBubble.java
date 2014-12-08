@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.entities;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.entities.EntityAdvanced;
 import micdoodle8.mods.galacticraft.core.entities.IBubble;
@@ -13,6 +11,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityTerraformBubble extends EntityAdvanced implements IBubble
 {

@@ -1,13 +1,13 @@
 package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
+import java.util.Random;
+
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-
-import java.util.Random;
 
 public class MapGenCaveMars extends MapGenBaseMeta
 {

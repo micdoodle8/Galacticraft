@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiMissingCore;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiMissingCore;
 
 public class ThreadRequirementMissing extends Thread
 {

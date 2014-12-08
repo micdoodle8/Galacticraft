@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import java.util.ArrayList;
+import java.util.EnumSet;
+
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
@@ -18,9 +20,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-
-import java.util.ArrayList;
-import java.util.EnumSet;
+import cpw.mods.fml.relauncher.Side;
 
 public class TileEntityOxygenSealer extends TileEntityOxygen implements IInventory, ISidedInventory
 {

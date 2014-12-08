@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.perlin.generator;
 
+import java.util.Random;
+
 import micdoodle8.mods.galacticraft.core.perlin.FishyNoise;
 import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
-
-import java.util.Random;
 
 public class Gradient extends NoiseModule
 {

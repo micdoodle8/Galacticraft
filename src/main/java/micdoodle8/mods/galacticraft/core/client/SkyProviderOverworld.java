@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import java.util.Random;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -17,7 +18,7 @@ import net.minecraftforge.client.IRenderHandler;
 
 import org.lwjgl.opengl.GL11;
 
-import java.util.Random;
+import cpw.mods.fml.client.FMLClientHandler;
 
 public class SkyProviderOverworld extends IRenderHandler
 {

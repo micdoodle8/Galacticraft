@@ -1,5 +1,9 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Set;
+
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
@@ -11,10 +15,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Set;
 
 public class TileEntityOxygenStorageModule extends TileEntityOxygen implements IPacketReceiver, ISidedInventory
 {

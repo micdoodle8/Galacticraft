@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
@@ -8,9 +11,6 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCreeperBoss;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TileEntityDungeonSpawnerMars extends TileEntityDungeonSpawner
 {

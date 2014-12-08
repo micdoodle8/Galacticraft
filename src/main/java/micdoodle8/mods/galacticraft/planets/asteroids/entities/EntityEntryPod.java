@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
+import java.util.Map;
+import java.util.Random;
+
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -12,9 +15,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-
-import java.util.Map;
-import java.util.Random;
 
 public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLevel, ICameraZoomEntity, IIgnoreShift
 {

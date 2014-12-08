@@ -1,10 +1,9 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
-import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.power.PowerHandler;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
-import cpw.mods.fml.common.eventhandler.Event;
 import ic2.api.energy.tile.IEnergySource;
+
+import java.lang.reflect.Constructor;
+
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -18,8 +17,10 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.lang.reflect.Constructor;
+import buildcraft.api.power.IPowerReceptor;
+import buildcraft.api.power.PowerHandler;
+import buildcraft.api.power.PowerHandler.PowerReceiver;
+import cpw.mods.fml.common.eventhandler.Event;
 
 public abstract class TileBaseUniversalConductor extends TileBaseConductor
 {
