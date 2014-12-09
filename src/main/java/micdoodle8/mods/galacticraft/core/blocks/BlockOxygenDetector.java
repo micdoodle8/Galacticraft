@@ -16,6 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockOxygenDetector extends BlockContainer implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {
@@ -104,5 +105,12 @@ public class BlockOxygenDetector extends BlockContainer implements ITileEntityPr
     public boolean showDescription(int meta)
     {
         return true;
+    }
+    
+    //Solid block: can places torches on it (like a Redstone Block)
+    @Override
+    public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
+    {
+    	return true;
     }
 }
