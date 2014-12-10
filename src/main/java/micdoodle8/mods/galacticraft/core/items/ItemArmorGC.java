@@ -12,45 +12,45 @@ import net.minecraft.item.ItemStack;
 
 public class ItemArmorGC extends ItemArmor
 {
-	public ItemArmorGC(int armorIndex, String assetSuffix)
-	{
-		super(GCItems.ARMOR_STEEL, GalacticraftCore.proxy.getTitaniumArmorRenderIndex(), armorIndex);
-		this.setUnlocalizedName("steel_" + assetSuffix);
-		this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + "steel_" + assetSuffix);
-	}
+    public ItemArmorGC(int armorIndex, String assetSuffix)
+    {
+        super(GCItems.ARMOR_STEEL, GalacticraftCore.proxy.getTitaniumArmorRenderIndex(), armorIndex);
+        this.setUnlocalizedName("steel_" + assetSuffix);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + "steel_" + assetSuffix);
+    }
 
-	@Override
-	public CreativeTabs getCreativeTab()
-	{
-		return GalacticraftCore.galacticraftItemsTab;
-	}
+    @Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftCore.galacticraftItemsTab;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack)
-	{
-		return ClientProxyCore.galacticraftItem;
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
 
-	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
-	{
-		if (this.getArmorMaterial() == GCItems.ARMOR_STEEL)
-		{
-			if (stack.getItem() == GCItems.steelHelmet)
-			{
-				return "textures/model/armor/titanium_1.png";
-			}
-			else if (stack.getItem() == GCItems.steelChestplate || stack.getItem() == GCItems.steelBoots)
-			{
-				return "textures/model/armor/titanium_2.png";
-			}
-			else if (stack.getItem() == GCItems.steelLeggings)
-			{
-				return "textures/model/armor/titanium_3.png";
-			}
-		}
+    @Override
+    public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
+    {
+        if (this.getArmorMaterial() == GCItems.ARMOR_STEEL)
+        {
+            if (stack.getItem() == GCItems.steelHelmet)
+            {
+                return GalacticraftCore.TEXTURE_PREFIX + "textures/model/armor/steel_1.png";
+            }
+            else if (stack.getItem() == GCItems.steelChestplate || stack.getItem() == GCItems.steelBoots)
+            {
+                return GalacticraftCore.TEXTURE_PREFIX + "textures/model/armor/steel_2.png";
+            }
+            else if (stack.getItem() == GCItems.steelLeggings)
+            {
+                return GalacticraftCore.TEXTURE_PREFIX + "textures/model/armor/steel_3.png";
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 }

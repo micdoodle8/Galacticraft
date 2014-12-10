@@ -1,66 +1,62 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalConductor;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class TileEntityAluminumWire extends TileEntityUniversalConductor
+public class TileEntityAluminumWire extends TileBaseUniversalConductor
 {
-	public float resistance;
-	public float amperage;
+    public int tier;
 
-	public TileEntityAluminumWire()
-	{
-		this(0.05F, 200.0F);
-	}
+    public TileEntityAluminumWire()
+    {
+        this(1);
+    }
 
-	public TileEntityAluminumWire(float resistance, float amperage)
-	{
-		this.resistance = resistance;
-		this.amperage = amperage;
-	}
+    public TileEntityAluminumWire(int theTier)
+    {
+        this.tier = theTier;
+    }
 
-	@Override
-	public float getResistance()
-	{
-		return this.resistance;
-	}
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+        this.tier = nbt.getInteger("tier");
+        //For legacy worlds (e.g. converted from 1.6.4)
+        if (this.tier == 0)
+        {
+            this.tier = 1;
+        }
+    }
 
-	@Override
-	public float getCurrentCapacity()
-	{
-		return this.amperage;
-	}
+    @Override
+    public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
+        nbt.setInteger("tier", this.tier);
+    }
 
-	@Override
-	public void readFromNBT(NBTTagCompound nbt)
-	{
-		super.readFromNBT(nbt);
-		this.resistance = nbt.getFloat("resistance");
-		this.amperage = nbt.getFloat("amperage");
-	}
+    @Override
+    public double getPacketRange()
+    {
+        return 0;
+    }
 
-	@Override
-	public void writeToNBT(NBTTagCompound nbt)
-	{
-		super.writeToNBT(nbt);
-		nbt.setFloat("resistance", this.resistance);
-		nbt.setFloat("amperage", this.amperage);
-	}
+    @Override
+    public int getPacketCooldown()
+    {
+        return 0;
+    }
 
-	@Override
-	public double getPacketRange()
-	{
-		return 0;
-	}
+    @Override
+    public boolean isNetworkedTile()
+    {
+        return false;
+    }
 
-	@Override
-	public int getPacketCooldown()
-	{
-		return 0;
-	}
-
-	@Override
-	public boolean isNetworkedTile()
-	{
-		return false;
-	}
+    @Override
+    public int getTierGC()
+    {
+        return this.tier;
+    }
 }

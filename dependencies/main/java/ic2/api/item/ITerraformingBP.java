@@ -5,8 +5,7 @@ import net.minecraft.world.World;
 /**
  * Allows an item to act as a terraformer blueprint.
  */
-public interface ITerraformingBP
-{
+public interface ITerraformingBP {
 	/**
 	 * Get the energy consumption per operation of the blueprint.
 	 * 

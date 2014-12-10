@@ -1,14 +1,13 @@
 # Galacticraft Moon Language File = SPAIN SPANISH
 
 # GENERAL ITEMS
-item.meteoricIronRaw.name=Meteorito de hierro quemado
-item.meteoric_iron_ingot.name=Meteoric Iron Ingot ##NEEDS TRANSLATE##
-item.compressedMeteoricIron.name=Compressed Meteoric Iron ##NEEDS TRANSLATE##
-item.meteoricIronIngot.name=Lingote de hierro meteorico
+item.meteoricIronRaw.name=Hierro Meteórico Crudo
+item.compressedMeteoricIron.name=Hierro Meteórico Comprimido
+item.meteoricIronIngot.name=Lingote de Hierro Meteórico
 
 # FOOD
-item.cheeseCurd.name=Queso Curado
-item.cheeseBlock.name=Bloque de queso
+item.cheeseCurd.name=Queso en Grano
+item.cheeseBlock.name=Bloque de Queso
 
 # TOOLS
 
@@ -17,16 +16,15 @@ item.cheeseBlock.name=Bloque de queso
 # BLOCKS
 tile.moonBlock.moonstone.name=Piedra
 tile.moonBlock.moondirt.name=Tierra
-tile.moonBlock.moongrass.name=Hierba Lunar
-tile.moonBlock.tinmoon.name=Mena de Tin
+tile.moonBlock.moongrass.name=Césped Lunar
+tile.moonBlock.tinmoon.name=Mena de Estaño
 tile.moonBlock.coppermoon.name=Mena de Cobre
 tile.moonBlock.cheesestone.name=Mena de Queso
-tile.moonBlock.bricks.name=Ladrillo
-tile.cheeseBlock.name=Block of Cheese
-
-dimension.Moon.name=Moon
+tile.moonBlock.bricks.name=Ladrillos
+tile.cheeseBlock.name=Bloque de Queso
 
 # GUI
-gui.choosePlanet.desc.moon=Habitable#Sin Oxigeno#Gravedad: 18%
+gui.choosePlanet.desc.moon=Habitable#Sin Oxígeno#Gravedad: 18%
+container.lander.name=Lander ##NEEDS TRANSLATE##
 
-itemGroup.GalacticraftMoon=Luna Galacticraft
+dimension.Moon.name=Luna

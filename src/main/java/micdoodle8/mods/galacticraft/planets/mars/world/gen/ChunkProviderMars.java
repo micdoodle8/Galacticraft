@@ -94,19 +94,19 @@ public class ChunkProviderMars extends ChunkProviderSpace
     @Override
     protected BlockMetaPair getGrassBlock()
     {
-        return new BlockMetaPair(MarsBlocks.marsBlock, (byte)5);
+        return new BlockMetaPair(MarsBlocks.marsBlock, (byte) 5);
     }
 
     @Override
     protected BlockMetaPair getDirtBlock()
     {
-        return new BlockMetaPair(MarsBlocks.marsBlock, (byte)6);
+        return new BlockMetaPair(MarsBlocks.marsBlock, (byte) 6);
     }
 
     @Override
     protected BlockMetaPair getStoneBlock()
     {
-        return new BlockMetaPair(MarsBlocks.marsBlock, (byte)9);
+        return new BlockMetaPair(MarsBlocks.marsBlock, (byte) 9);
     }
 
     @Override

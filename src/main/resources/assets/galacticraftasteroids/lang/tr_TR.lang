@@ -1,12 +1,126 @@
 # Galacticraft Asteroids Language File = TURKEY TURKISH
 
-item.itemTier3Rocket.t3Rocket.name=Tier 3 Rocket ##NEEDS TRANSLATE##
-tile.asteroidsBlock.asteroids1.name=Asteroid Rock ##NEEDS TRANSLATE##
-tile.beamReflector.name=Beam Reflector ##NEEDS TRANSLATE##
-tile.beamReceiver.name=Beam Receiver ##NEEDS TRANSLATE##
-tile.telepadShort.name=Short Range Telepad ##NEEDS TRANSLATE##
-planet.asteroids=Asteroids ##NEEDS TRANSLATE##
-itemGroup.GalacticraftAsteroids=Galacticraft Asteroids ##NEEDS TRANSLATE##
-entity.SmallAsteroidGC.name=Small Asteroid ##NEEDS TRANSLATE##
-entity.GrappleHookGC.name=Grapple Hook ##NEEDS TRANSLATE##
-entity.Tier3RocketGC.name=Tier 3 Rocket ##NEEDS TRANSLATE##
+# GENERAL ITEMS
+item.itemTier3Rocket.t3Rocket.name=Tier 3 Roket
+item.heavyNoseCone.name=Ağır Roket Burnu
+item.compressedTitanium.name=Sıkıştırılmış Titanyum
+item.ingotTitanium.name=Titanyum Külçesi
+item.shardTitanium.name=Titanyum Parçası
+item.shardIron.name=Demir Parçası
+item.rocketFinsT2.name=Ağır Roket Kanatları
+item.engineT2.name=Ağır Roket Motoru
+item.reinforcedPlateT3.name=Daha Ağır Plaka
+item.grapple.name=Kanca
+item.atmosphericValve.name=Atmosferik Valf
+item.thermalCloth.name=Termal Kumaş
+item.beamCore.name=Işın Çekirdeği
+item.tier3.desc=Tier 3
+
+# TOOLS
+item.titanium_pickaxe.name=Titanyum Kazma
+item.titanium_axe.name=Titanyum Balta
+item.titanium_hoe.name=Titanyum Çapa
+item.titanium_shovel.name=Titanyum Kürek
+item.titanium_sword.name=Titanyum Kılıç
+
+# ARMOR
+item.thermalHelm.name=Termal Dolgulu Kask
+item.thermalChestplate.name=Termal Dolgulu Zırh
+item.thermalLeggings.name=Termal Dolgulu Pantolon 
+item.thermalBoots.name=Termal Dolgulu Bot
+item.titanium_helmet.name=Titanyum Kask
+item.titanium_chestplate.name=Titanyum Zırh
+item.titanium_leggings.name=Titanyum Pantolon
+item.titanium_boots.name=Titanyum Bot
+
+# CANISTERS ETC
+item.methaneCanisterPartial.name=Metan Gazı Bidonu 
+item.methaneCanister.name=Dolu Metan Gazı Bidonu
+item.canister.gas.name=Gaz
+item.canister.LOX.partial.name=Sıvı Oksijen Bidonu
+item.canister.LOX.full.name=Dolu Sıvı Oksijen Bidonu
+item.canister.LOX.name=LOX
+item.canister.liquidNitrogen.partial.name=Sıvı Nitrojen Bidonu
+item.canister.liquidNitrogen.full.name=Dolu Sıvı Nitrojen Bidonu
+item.canister.liquidNitrogen.name=Sıvı
+item.canister.liquidArgon.partial.name=Sıvı Argon Bidonu 
+item.canister.liquidArgon.full.name=Dolu Sıvı Argon Bidonu
+item.canister.liquidArgon.name=Sıvı
+item.emptyGasCanister.name=Boş Gaz Bidonu
+
+# FLUIDS AND GASES
+fluid.methane=Metan Gazı
+fluid.oxygen=Oksijen Gazı
+fluid.nitrogen=Nitrojen Gazı
+fluid.hydrogen=Hidrojen Gazı
+fluid.carbondioxide=CO2 Gazı
+fluid.helium=Helyum Gazı
+fluid.argon=Argon Gazı
+fluid.atmosphericgases=Atmosferik Gazlar
+fluid.liquidmethane=Sıvı Metan
+fluid.liquidoxygen=Sıvı Oksijen
+fluid.liquidnitrogen=Sıvı Nitrojen
+fluid.liquidargon=Sıvı Argon
+fluid.fuel=Yakıt
+
+# BLOCKS
+tile.asteroidsBlock.asteroid0.name=Asteroit Kayası
+tile.asteroidsBlock.asteroid1.name=Asteroit Kayası
+tile.asteroidsBlock.asteroid2.name=Asteroit Kayası
+tile.asteroidsBlock.oreIron.name=Demir Cevheri
+tile.asteroidsBlock.oreIlmenite.name=İlmenit Cevheri
+tile.asteroidsBlock.oreAluminum.name=Alüminyum Cevheri 
+tile.beamReflector.name=Işın Reflektörü
+tile.beamReceiver.name=Işın Alıcısı
+tile.telepadShort.name=Kısa Menzilli Telepad
+tile.walkway.name=Yürüme Bloğu
+tile.walkwayWire.name=Yürüme Bloğu
+tile.walkwayOxygenPipe.name=Yürüme Bloğu
+tile.treasureT3.name=Tier 3 Hazine Sandığı
+tile.denseIce.name=Yoğun Buz
+
+# GUI
+planet.asteroids=Asteroit
+
+    # Dollar sign ($) will split text onto a new line
+	# Do not remove %s or %d, since that will be replaced in-game
+gui.telepad.desc.0=Telepadın adres numarası$farklı olması gerekir.
+gui.telepad.desc.1=Başka bir Telepadın adres numarası.$250m içinde olmalı. 
+gui.message.address.name=Adres Numarası
+gui.message.destAddress.name=Hedefin Adres Numarası
+gui.message.invalidAddress.name=Lütfen Farklı Adres Numarası Girin
+gui.message.invalidTargetAddress.name=Hedef Adres Numarası Yanlış
+gui.message.receivingActive.name=Alma Aktif
+gui.message.telepadTooFar.name=Hedef çok uzak! (En fazla %d)
+gui.message.telepadWrongDim.name=Hedef farklı dünyada.
+gui.message.telepadNotFound.name=Telepad Bulunamadı!
+gui.message.sendingActive.name=Gönderme Aktif
+gui.message.range.name=Menzil: %dm
+gui.message.notEnoughEnergy.name=Enerji Yetersiz!
+gui.message.targetNoEnergy.name=Hedefin Enerjisi Yetersiz!
+gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook! ##NEEDS TRANSLATE##
+
+tile.treasureT3.description=Tier 3 Hazine Sandığı şu anlık kullanılmıyor.
+tile.walkway.description=Yürüme Bloğu dekoratif amaçlıdır, diğer bloklara bağlanarak uzay teması oluşur.
+tile.walkwayAluminumWire.description=Alüminyum Tel Yürüme Bloğu kabloların altan geçerek, güvenli bir yürüyüş sağlar.
+tile.walkwayOxygenPipe.description=Oksijen Borusu Yürüme Bloğu boruların altan geçerek, güvenli bir yürüyüş sağlar.
+tile.beamReflector.description=Işın Reflektörü ışın enerjisini kaynaktan gönderir. Sağ tıklayarak hedefi değiştirebilirsiniz.
+tile.beamReceiver.description=Işın alıcısı enerji makinelerin giriş ve çıkışına bağlanarak enerjiyi transfer etmekte kullanılır.
+tile.telepadShort.description=Kısa Menzilli Telepad oyuncuları ışınlamaya ve kısa mesafe (250 blok) gitmeye yarar.
+
+# SCHEMATICS
+
+# ENTITIES
+entity.SmallAsteroidGC.name=Küçük Asteroit
+entity.GrappleHookGC.name=Çeneli Kanca
+entity.Tier3RocketGC.name=Tier 3 Roket
+
+# CONTAINERS
+container.shortRangeTelepad.name=Kısa Menzilli Telepad
+container.entryPod.name=Giriş Bölmesi
+gc.configgui.dimensionIDAsteroids=Asteroids Dimension ID
+gc.configgui.idEntitySmallAsteroid=Small Asteroid Entity ID
+gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID
+gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID
+gc.configgui.idEntityEntryPod=Entry Pod Entity ID
+gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID

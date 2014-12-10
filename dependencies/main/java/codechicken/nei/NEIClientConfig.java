@@ -8,7 +8,6 @@ import codechicken.nei.api.*;
 import codechicken.nei.config.*;
 import codechicken.nei.recipe.RecipeInfo;
 import codechicken.obfuscator.ObfuscationRun;
-import net.minecraft.client.AnvilConverterException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
@@ -38,8 +37,6 @@ public class NEIClientConfig
             new File("saves/NEI/client.dat"),
             new ConfigFile(new File(configDir, "client.cfg")));
     public static ConfigSet world;
-
-    //public static ItemVisibilityHash vishash;
 
     public static ItemStack creativeInv[];
     private static boolean statesSaved[] = new boolean[7];
@@ -122,20 +119,26 @@ public class NEIClientConfig
                 return true;
             }
         });
+
+        ItemSorter.initConfig(tag);
+
         tag.getTag("inventory.itemIDs").getIntValue(1);
         API.addOption(new OptionCycled("inventory.itemIDs", 3, true));
+
+        tag.getTag("inventory.searchmode").getIntValue(1);
+        API.addOption(new OptionCycled("inventory.searchmode", 3, true));
 
         tag.getTag("world.highlight_tips").getBooleanValue(false);
         tag.getTag("world.highlight_tips.x").getIntValue(5000);
         tag.getTag("world.highlight_tips.y").getIntValue(100);
-        API.addOption(new OptionHighlightTips("world.highlight_tips"));
+        API.addOption(new OptionOpenGui("world.highlight_tips", GuiHighlightTips.class));
 
         tag.getTag("inventory.profileRecipes").getBooleanValue(false);
         API.addOption(new OptionToggleButton("inventory.profileRecipes", true));
 
         tag.getTag("command.creative").setDefaultValue("/gamemode {0} {1}");
         API.addOption(new OptionTextField("command.creative"));
-        tag.getTag("command.item").setDefaultValue("/give {0} {1} {2} {3}");
+        tag.getTag("command.item").setDefaultValue("/give {0} {1} {2} {3} {4}");
         API.addOption(new OptionTextField("command.item"));
         tag.getTag("command.time").setDefaultValue("/time set {0}");
         API.addOption(new OptionTextField("command.time"));
@@ -209,9 +212,10 @@ public class NEIClientConfig
         creativeInv = new ItemStack[54];
         LayoutManager.searchField.setText(getSearchExpression());
         LayoutManager.quantity.setText(Integer.toString(getItemQuantity()));
+        SubsetWidget.loadHidden();
 
         if (newWorld && Minecraft.getMinecraft().isSingleplayer())
-            world.config.getTag("inventory.cheatmode").setIntValue(NEIClientUtils.getGamemode() == 1 ? 2 : 0);
+            world.config.getTag("inventory.cheatmode").setIntValue(NEIClientUtils.mc().playerController.isInCreativeMode() ? 2 : 0);
 
         NEIInfo.load(ClientUtils.getWorld());
     }
@@ -257,17 +261,18 @@ public class NEIClientConfig
 
         classDiscoverer.findClasses();
 
-        for (Class<?> class1 : classDiscoverer.classes) {
+        for (Class<?> clazz : classDiscoverer.classes) {
             try {
-                IConfigureNEI config = (IConfigureNEI) class1.newInstance();
+                IConfigureNEI config = (IConfigureNEI) clazz.newInstance();
                 config.loadConfig();
                 NEIModContainer.plugins.add(config);
-                logger.debug("Loaded " + class1.getName());
+                logger.debug("Loaded " + clazz.getName());
             } catch (Exception e) {
-                logger.error("Failed to Load " + class1.getName());
-                e.printStackTrace();
+                logger.error("Failed to Load " + clazz.getName(), e);
             }
         }
+
+        ItemSorter.loadConfig();
     }
 
     public static void loadStates() {
@@ -326,10 +331,6 @@ public class NEIClientConfig
 
     public static String getStringSetting(String s) {
         return getSetting(s).getValue();
-    }
-
-    public static boolean canDump() {
-        return getBooleanSetting("ID dump.itemIDs") || getBooleanSetting("ID dump.blockIDs") || getBooleanSetting("ID dump.unused itemIDs") || getBooleanSetting("ID dump.unused blockIDs");
     }
 
     public static boolean showIDs() {
@@ -462,6 +463,10 @@ public class NEIClientConfig
         enabledActions.clear();
     }
 
+    public static boolean canCheatItem(ItemStack stack) {
+        return canPerformAction("item") && !bannedBlocks.contains(stack);
+    }
+
     public static boolean canPerformAction(String name) {
         if (!isEnabled())
             return false;
@@ -512,16 +517,15 @@ public class NEIClientConfig
         try {
             saves = Minecraft.getMinecraft().getSaveLoader().getSaveList();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error loading saves", e);
             return;
         }
         HashSet<String> saveFileNames = new HashSet<String>();
         for (SaveFormatComparator save : saves)
             saveFileNames.add(save.getFileName());
 
-        for (File file : saveDir.listFiles()) {
+        for (File file : saveDir.listFiles())
             if (file.isDirectory() && !saveFileNames.contains(file.getName()))
                 ObfuscationRun.deleteDir(file, true);
-        }
     }
 }

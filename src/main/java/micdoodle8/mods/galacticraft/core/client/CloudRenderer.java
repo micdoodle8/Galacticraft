@@ -8,10 +8,10 @@ import net.minecraftforge.client.IRenderHandler;
 
 public class CloudRenderer extends IRenderHandler
 {
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void render(float partialTicks, WorldClient world, Minecraft mc)
-	{
-		// Do nothing
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void render(float partialTicks, WorldClient world, Minecraft mc)
+    {
+        // Do nothing
+    }
 }

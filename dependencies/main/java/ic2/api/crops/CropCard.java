@@ -15,8 +15,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * 
  * Any crop extending this can be registered using registerCrop to be added into the game.
  */
-public abstract class CropCard
-{
+public abstract class CropCard {
 	/**
 	 * Plant name. Will be displayed to the player.
 	 * 
@@ -29,7 +28,7 @@ public abstract class CropCard
 	 * 
 	 * @return Your name
 	 */
-	public String discoveredBy() {return "Alblaka";}
+	public String discoveredBy() {return "IC2 Team";}
 
 	/**
 	 * Description of your plant. Keep it short, a few characters per line for up to two lines.
@@ -38,15 +37,12 @@ public abstract class CropCard
 	 * @param i line to get, starting from 0
 	 * @return The line
 	 */
-	public String desc(int i)
-	{
+	public String desc(int i) {
 		String[] att = attributes();
-		if (att == null || att.length==0) return "";
-		if (i == 0)
-		{
+		if (att == null || att.length == 0) return "";
+		if (i == 0) {
 			String s = att[0];
-			if (att.length >= 2)
-			{
+			if (att.length >= 2) {
 				s+=", "+att[1];
 				if (att.length >= 3) s+=",";
 			}
@@ -56,6 +52,15 @@ public abstract class CropCard
 		String s = att[2];
 		if (att.length >= 4) s+=", "+att[3];
 		return s;
+	}
+
+	/**
+	 * *
+	 * @param crop reference to ICropTile
+	 * @return roots lengt use in isBlockBelow
+	 */
+	public int getrootslength(ICropTile crop){
+		return 1;
 	}
 
 	/**
@@ -137,8 +142,7 @@ public abstract class CropCard
 	 * Amount of growth points needed to increase the plant's size.
 	 * Default is 200 * tier.
 	 */
-	public int growthDuration(ICropTile crop)
-	{
+	public int growthDuration(ICropTile crop) {
 		return tier()*200;
 	}
 
@@ -171,8 +175,7 @@ public abstract class CropCard
 	 * @param air air quality, influences by open gardens and less crops surrounding this one
 	 * @return 0-30
 	 */
-	public int weightInfluences(ICropTile crop, float humidity, float nutrients, float air)
-	{
+	public int weightInfluences(ICropTile crop, float humidity, float nutrients, float air) {
 		return (int) (humidity+nutrients+air);
 	}
 
@@ -182,8 +185,7 @@ public abstract class CropCard
 	 * 
 	 * @param crop crop to crossbreed with
 	 */
-	public boolean canCross(ICropTile crop)
-	{
+	public boolean canCross(ICropTile crop) {
 		return crop.getSize() >= 3;
 	}
 
@@ -198,10 +200,18 @@ public abstract class CropCard
 	 * @param player player rightclicking the crop
 	 * @return Whether the plant has changed
 	 */
-	public boolean rightclick(ICropTile crop, EntityPlayer player)
-	{
+	public boolean rightclick(ICropTile crop, EntityPlayer player) {
 		return crop.harvest(true);
 	}
+
+	/**
+	 * Use in Crop Havester with insert Cropnalyzer to get best Output.
+	 * 
+	 * @param crop reference to ICropTile
+	 * @return  need crop  size for best output.
+	 */
+
+	public abstract int getOptimalHavestSize(ICropTile crop);
 
 	/**
 	 * Check whether the crop can be harvested.
@@ -217,8 +227,7 @@ public abstract class CropCard
 	 * 
 	 * @return Chance to drop the gains
 	 */
-	public float dropGainChance()
-	{
+	public float dropGainChance() {
 		float base = 1F;
 		for (int i = 0; i < tier(); i++) {base*=0.95;}
 		return base;
@@ -252,8 +261,7 @@ public abstract class CropCard
 	 * @param player player leftclicked the crop
 	 * @return Whether the plant has changed
 	 */
-	public boolean leftclick(ICropTile crop, EntityPlayer player)
-	{
+	public boolean leftclick(ICropTile crop, EntityPlayer player) {
 		return crop.pick(true);
 	}
 
@@ -264,8 +272,7 @@ public abstract class CropCard
 	 * @param crop reference to ICropTile
 	 * @return Chance to drop the seeds
 	 */
-	public float dropSeedChance(ICropTile crop)
-	{
+	public float dropSeedChance(ICropTile crop) {
 		if (crop.getSize() == 1) return 0;
 		float base = 0.5F;
 		if (crop.getSize() == 2) base/=2F;
@@ -281,8 +288,7 @@ public abstract class CropCard
 	 * @param crop reference to ICropTile
 	 * @return Seeds
 	 */
-	public ItemStack getSeeds(ICropTile crop)
-	{
+	public ItemStack getSeeds(ICropTile crop) {
 		return crop.generateSeeds(crop.getID(), crop.getGrowth(), crop.getGain(), crop.getResistance(), crop.getScanLevel());
 	}
 
@@ -291,7 +297,7 @@ public abstract class CropCard
 	 * 
 	 * @param crop reference to ICropTile
 	 */
-	public void onNeighbourChange(ICropTile crop){
+	public void onNeighbourChange(ICropTile crop) {
 		//
 	}
 
@@ -300,14 +306,14 @@ public abstract class CropCard
 	 * 
 	 * @return Whether the crop should emit redstone
 	 */
-	public int emitRedstone(ICropTile crop){return 0;}
+	public int emitRedstone(ICropTile crop) {return 0;}
 
 	/**
 	 * Called when the crop is destroyed.
 	 * 
 	 * @param crop reference to ICropTile
 	 */
-	public void onBlockDestroyed(ICropTile crop){
+	public void onBlockDestroyed(ICropTile crop) {
 		//
 	}
 
@@ -326,11 +332,9 @@ public abstract class CropCard
 	 * @param entity entity colliding
 	 * @return Whether trampling calculation should happen, return false if the plant is no longer valid.
 	 */
-	public boolean onEntityCollision(ICropTile crop, Entity entity)
-	{
-		if (entity instanceof EntityLivingBase)
-		{
-			return ((EntityLivingBase)entity).isSprinting();
+	public boolean onEntityCollision(ICropTile crop, Entity entity) {
+		if (entity instanceof EntityLivingBase) {
+			return ((EntityLivingBase) entity).isSprinting();
 		}
 		return false;
 	}
@@ -353,9 +357,8 @@ public abstract class CropCard
 	 * @param crop reference to ICropTile
 	 * @return Whether the plant spreads weed
 	 */
-	public boolean isWeed(ICropTile crop)
-	{
-		return crop.getSize()>=2 && (crop.getID()==0 || crop.getGrowth()>=24);
+	public boolean isWeed(ICropTile crop) {
+		return crop.getSize() >= 2 && (crop.getID() == 0 || crop.getGrowth() >= 24);
 	}
 
 
@@ -364,8 +367,7 @@ public abstract class CropCard
 	 * 
 	 * @return ID of this CropCard or -1 if it's not registered
 	 */
-	public final int getId()
-	{
+	public final int getId() {
 		return Crops.instance.getIdFor(this);
 	}
 

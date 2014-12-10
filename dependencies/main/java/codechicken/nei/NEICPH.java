@@ -105,11 +105,11 @@ public class NEICPH implements IClientPacketHandler
         } else {
             try {
                 ClientHandler.instance().loadWorld(world, true);
-                NEIClientConfig.loadWorld(getSaveName(worldName));
                 NEIClientConfig.setHasSMPCounterPart(true);
+                NEIClientConfig.loadWorld(getSaveName(worldName));
                 sendRequestLoginInfo();
-            } catch (Exception nce) {
-                nce.printStackTrace();
+            } catch (Exception e) {
+                NEIClientConfig.logger.error("Error handling SMP Check", e);
             }
         }
     }

@@ -1,28 +1,128 @@
 # Galacticraft Asteroids Language File = RUSSIA RUSSIAN
 
 # GENERAL ITEMS
-item.itemTier3Rocket.t3Rocket.name=Ракета 3-его уровня
+item.itemTier3Rocket.t3Rocket.name=Ракета 3-го уровня
+item.heavyNoseCone.name=Прочный головной обтекатель
+item.compressedTitanium.name=Сжатый титан
+item.ingotTitanium.name=Титановый слиток
+item.shardTitanium.name=Титановый осколок
+item.shardIron.name=Железный осколок
+item.rocketFinsT2.name=Прочный ракетный стабилизатор
+item.engineT2.name=Прочный ракетный двигатель
+item.reinforcedPlateT3.name=Сверхпрочное покрытие
+item.grapple.name=Крюк
+item.atmosphericValve.name=Атмосферный клапан
+item.thermalCloth.name=Теплоустойчивая ткань
+item.beamCore.name=Лучевое ядро
+item.tier3.desc=3-ий уровень
 
 # TOOLS
+item.titanium_pickaxe.name=Титановая кирка
+item.titanium_axe.name=Титановый топор
+item.titanium_hoe.name=Титановая мотыга
+item.titanium_shovel.name=Титановая лопата
+item.titanium_sword.name=Титановый меч
 
 # ARMOR
+item.thermalHelm.name=Теплоустойчивый шлем
+item.thermalChestplate.name=Теплоустойчивая кираса
+item.thermalLeggings.name=Теплоустойчивые поножи
+item.thermalBoots.name=Теплоустойчивые ботинки
+item.titanium_helmet.name=Титановый шлем
+item.titanium_chestplate.name=Титановая кираса
+item.titanium_leggings.name=Титановые поножи
+item.titanium_boots.name=Титановые ботинки
+
+# CANISTERS ETC
+item.methaneCanisterPartial.name=Канистра для метана
+item.methaneCanister.name=Канистра метана
+item.canister.gas.name=Газ
+item.canister.LOX.partial.name=Канистра жидкого кислорода
+item.canister.LOX.full.name=Заполненная канистра жидкого кислорода
+item.canister.LOX.name=ЖК
+item.canister.liquidNitrogen.partial.name=Канистра жидкого азота
+item.canister.liquidNitrogen.full.name=Заполненная канистра жидкого азота
+item.canister.liquidNitrogen.name=Жидкость
+item.canister.liquidArgon.partial.name=Канистра жидкого аргона
+item.canister.liquidArgon.full.name=Заполненная канистра жидкого аргона
+item.canister.liquidArgon.name=Жидкость
+item.emptyGasCanister.name=Пустая канистра для газа
+
+# Fluids and Gases
+fluid.methane=Метан
+fluid.oxygen=Кислород
+fluid.nitrogen=Азот
+fluid.hydrogen=Водород
+fluid.carbondioxide=Углекислый газ
+fluid.helium=Гелий
+fluid.argon=Аргон
+fluid.atmosphericgases=Атмосферные газы
+fluid.liquidmethane=Жидкий метан
+fluid.liquidoxygen=Жидкий кислород
+fluid.liquidnitrogen=Жидкий азот
+fluid.liquidargon=Жидкий аргон
+fluid.fuel=Топливо
 
 # BLOCKS
-tile.asteroidsBlock.asteroids1.name=Камень астероида
-tile.beamReflector.name=Отражатель луча
-tile.beamReceiver.name=Получатель луча
-tile.telepadShort.name=Телепорт на короткую дистанцию
+tile.asteroidsBlock.asteroid0.name=Астероидный камень
+tile.asteroidsBlock.asteroid1.name=Астероидный камень
+tile.asteroidsBlock.asteroid2.name=Астероидный камень
+tile.asteroidsBlock.oreIron.name=Железная руда
+tile.asteroidsBlock.oreIlmenite.name=Ильменитовая руда
+tile.asteroidsBlock.oreAluminum.name=Алюминиевая руда
+tile.beamReflector.name=Лучевой отражатель энергии
+tile.beamReceiver.name=Лучевой приёмник энергии
+tile.telepadShort.name=Короткодистанционный телепорт
+tile.walkway.name=Дорожка
+tile.walkwayWire.name=Дорожка
+tile.walkwayOxygenPipe.name=Дорожка
+tile.treasureT3.name=Сундук с сокровищами 3-го уровня
+tile.denseIce.name=Плотный лёд
 
 # GUI
 planet.asteroids=Астероиды
 
-itemGroup.GalacticraftAsteroids=Galacticraft: Астероиды
+	# Dollar sign ($) will split text onto a new line
+	# Do not remove %s or %d, since that will be replaced in-game
+gui.telepad.desc.0=Это уникальный адрес$телепорта
+gui.telepad.desc.1=Адрес другого телепорта.$Сущности будут отправляться туда.
+gui.message.address.name=Адрес
+gui.message.destAddress.name=Целевой адрес
+gui.message.invalidAddress.name=Неверный уникальный адрес
+gui.message.invalidTargetAddress.name=Неверный целевой адрес
+gui.message.receivingActive.name=Приём начат
+gui.message.telepadTooFar.name=Цель слишком далеко! (Макс.: %d)
+gui.message.telepadWrongDim.name=Цель в другом измерении!
+gui.message.telepadNotFound.name=Телепорт не найден!
+gui.message.sendingActive.name=Отправка начата
+gui.message.range.name=Дальность: %dm
+gui.message.notEnoughEnergy.name=Недостаточно энергии!
+gui.message.targetNoEnergy.name=У цели не хватает энергии!
+gui.message.grapple.fail=Мне нужно немного ниток, если я хочу метнуть этот крюк!
 
-# Schematics
+tile.treasureT3.description=Сундуки с сокровищами 3-го уровня сейчас бесполезны.
+tile.walkway.description=Дорожки используются в декоративных целях, для соединения блоков, чтобы сохранить тему космоса.
+tile.walkwayAluminumWire.description=Дорожки для алюминиевых проводов используются для прокладывания проводов под полностью твёрдой поверхностью.
+tile.walkwayOxygenPipe.description=Дорожки для кислородных труб используются для прокладывания труб под полностью твёрдой поверхностью.
+tile.beamReflector.description=Лучевые отражатели используются для перенаправления энергетических лучей от источника к месту назначения. ПКМ по отражателю, чтобы менять цели.
+tile.beamReceiver.description=Лучевые приёмники присоединяются к входу и выходу энергии механизма, чтобы передавать энергию, используя лучи.
+tile.telepadShort.description=Короткодистанционные телепорты используются для перемещения игроков и других живых существ на короткие дистанции, (250 блоков) если они присоединены к другим телепортам.
 
-# Entity
-entity.SmallAsteroidGC.name=Маленький астероид
-entity.GrappleHookGC.name=Абордажная кошка
-entity.Tier3RocketGC.name=Ракета 3-его уровня
+# SCHEMATICS
 
-# Container
+# ENTITIES
+entity.SmallAsteroidGC.name=Малый астероид
+entity.GrappleHookGC.name=Абордажный крюк
+entity.Tier3RocketGC.name=Ракета 3-го уровня
+
+# CONTAINERS
+container.shortRangeTelepad.name=Короткодистанционный телепорт
+container.entryPod.name=Entry Pod
+
+# CONFIG GUI
+gc.configgui.dimensionIDAsteroids=ID измерения: Астероиды
+gc.configgui.idEntitySmallAsteroid=ID сущности: Малый астероид
+gc.configgui.idEntityGrappleHook=ID сущности: Крюк
+gc.configgui.idEntityTier3Rocket=ID сущности: Ракета 3-го уровня
+gc.configgui.idEntityEntryPod=ID сущности: Entry Pod
+gc.configgui.idSchematicRocketT3=ID схемы: Ракета 3-го уровня

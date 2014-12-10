@@ -89,6 +89,7 @@ public class LightMatrix implements CCRenderState.IVertexOperation
             Block b = access.getBlock(x, y, z);
             bSamples[i] = access.getLightBrightnessForSkyBlocks(x, y, z, b.getLightValue(access, x, y, z));
             aSamples[i] = b.getAmbientOcclusionLightValue();
+            sampled |= 1 << i;
         }
     }
 
@@ -138,6 +139,9 @@ public class LightMatrix implements CCRenderState.IVertexOperation
 
     @Override
     public boolean load() {
+        if(!CCRenderState.computeLighting)
+            return false;
+
         CCRenderState.pipeline.addDependency(CCRenderState.colourAttrib);
         CCRenderState.pipeline.addDependency(CCRenderState.lightCoordAttrib);
         return true;

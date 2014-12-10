@@ -10,48 +10,48 @@ import net.minecraft.item.ItemStack;
 
 public class ItemBlockAsteroids extends ItemBlock
 {
-	public ItemBlockAsteroids(Block block)
-	{
-		super(block);
-		this.setMaxDamage(0);
-		this.setHasSubtypes(true);
-	}
+    public ItemBlockAsteroids(Block block)
+    {
+        super(block);
+        this.setMaxDamage(0);
+        this.setHasSubtypes(true);
+    }
 
-	@Override
-	public int getMetadata(int meta)
-	{
-		return meta;
-	}
+    @Override
+    public int getMetadata(int meta)
+    {
+        return meta;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack)
-	{
-		return ClientProxyCore.galacticraftItem;
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
 
-	@Override
-	public String getUnlocalizedName(ItemStack itemstack)
-	{
-		String name = "";
+    @Override
+    public String getUnlocalizedName(ItemStack itemstack)
+    {
+        String name = "";
 
-		switch (itemstack.getItemDamage())
-		{
-		case 0:
-		{
-			name = "asteroid0";
-			break;
-		}
-		case 1:
-		{
-			name = "asteroid1";
-			break;
-		}
-		case 2:
-		{
-			name = "asteroid2";
-			break;
-		}
+        switch (itemstack.getItemDamage())
+        {
+        case 0:
+        {
+            name = "asteroid0";
+            break;
+        }
+        case 1:
+        {
+            name = "asteroid1";
+            break;
+        }
+        case 2:
+        {
+            name = "asteroid2";
+            break;
+        }
         case 3:
         {
             name = "oreAluminum";
@@ -67,16 +67,16 @@ public class ItemBlockAsteroids extends ItemBlock
             name = "oreIron";
             break;
         }
-		default:
-			name = "null";
-		}
+        default:
+            name = "null";
+        }
 
-		return this.field_150939_a.getUnlocalizedName() + "." + name;
-	}
+        return this.field_150939_a.getUnlocalizedName() + "." + name;
+    }
 
-	@Override
-	public String getUnlocalizedName()
-	{
-		return this.field_150939_a.getUnlocalizedName() + ".0";
-	}
+    @Override
+    public String getUnlocalizedName()
+    {
+        return this.field_150939_a.getUnlocalizedName() + ".0";
+    }
 }

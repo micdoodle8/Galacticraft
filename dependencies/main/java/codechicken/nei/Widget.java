@@ -1,5 +1,6 @@
 package codechicken.nei;
 
+import codechicken.lib.vec.Rectangle4i;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
@@ -9,19 +10,19 @@ public abstract class Widget
     public Widget() {
     }
 
-    public abstract void draw(int mousex, int mousey);
+    public abstract void draw(int mx, int my);
 
-    public void postDraw(int mousex, int mousey) {
+    public void postDraw(int mx, int my) {
     }
 
-    public boolean handleClick(int mousex, int mousey, int button) {
+    public boolean handleClick(int mx, int my, int button) {
         return true;
     }
 
-    public void onGuiClick(int mousex, int mousey) {
+    public void onGuiClick(int mx, int my) {
     }
 
-    public void mouseUp(int mousex, int mousey, int button) {
+    public void mouseUp(int mx, int my, int button) {
 
     }
 
@@ -32,22 +33,26 @@ public abstract class Widget
     public void lastKeyTyped(int keyID, char keyChar) {
     }
 
-    public boolean handleClickExt(int mousex, int mousey, int button) {
+    public boolean handleClickExt(int mx, int my, int button) {
         return false;
     }
 
-    public boolean onMouseWheel(int i, int mousex, int mousey) {
+    public boolean onMouseWheel(int i, int mx, int my) {
         return false;
     }
 
     public void update() {
     }
 
-    public boolean contains(int posx, int posy) {
-        return posx >= x && posx < x + width && posy >= y && posy < y + height;
+    public Rectangle4i bounds() {
+        return new Rectangle4i(x, y, w, h);
     }
 
-    public ItemStack getStackMouseOver(int mousex, int mousey) {
+    public boolean contains(int px, int py) {
+        return bounds().contains(px, py);
+    }
+
+    public ItemStack getStackMouseOver(int mx, int my) {
         return null;
     }
 
@@ -67,6 +72,6 @@ public abstract class Widget
     public int x;
     public int y;
     public int z;
-    public int width;
-    public int height;
+    public int w;
+    public int h;
 }

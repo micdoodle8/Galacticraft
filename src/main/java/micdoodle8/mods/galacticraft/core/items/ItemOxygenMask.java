@@ -11,23 +11,23 @@ import net.minecraft.item.ItemStack;
 
 public class ItemOxygenMask extends Item
 {
-	protected ItemOxygenMask(String assetName)
-	{
-		super();
-		this.setUnlocalizedName(assetName);
-		this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
-	}
+    protected ItemOxygenMask(String assetName)
+    {
+        super();
+        this.setUnlocalizedName(assetName);
+        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+    }
 
-	@Override
-	public CreativeTabs getCreativeTab()
-	{
-		return GalacticraftCore.galacticraftItemsTab;
-	}
+    @Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftCore.galacticraftItemsTab;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack)
-	{
-		return ClientProxyCore.galacticraftItem;
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
 }

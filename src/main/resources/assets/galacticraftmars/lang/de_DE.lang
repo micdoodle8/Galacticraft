@@ -11,9 +11,13 @@ item.slimelingCargo.name=Schleimling-Inventarbeutel
 item.key.T2.name=Dungeonschlüssel (Stufe 2)
 item.compressedDesh.name=Gepresstes Desh
 item.spaceshipTier2.cargoRocket.name=Güterrakete
+item.fluidManip.name=Flüssigkeitsmanipulator
+item.bucketSludge.name=Bacterial Sludge Bucket ##NEEDS TRANSLATE##
+fluid.bacterialsludge=Bacterial Sludge ##NEEDS TRANSLATE##
 
 # TOOLS
 item.deshPick.name=Desh-Spitzhacke
+item.deshPickSlime.name=Klebrige Desh-Spitzhacke
 item.deshAxe.name=Desh-Axt
 item.deshHoe.name=Desh-Hacke
 item.deshSpade.name=Desh-Schaufel
@@ -22,7 +26,7 @@ item.deshSword.name=Desh-Schwert
 # ARMOR
 item.deshHelmet.name=Desh-Helm
 item.deshChestplate.name=Desh-Brustpanzer
-item.deshLeggings.name=Desh-Hose
+item.deshLeggings.name=Desh-Beinschutz
 item.deshBoots.name=Desh-Stiefel
 
 # BLOCKS
@@ -30,12 +34,12 @@ tile.mars.deshmars.name=Desh-Erz
 tile.mars.coppermars.name=Kupfererz
 tile.mars.tinmars.name=Zinnerz
 tile.mars.ironmars.name=Eisenerz
-tile.mars.marscobblestone.name=Pflasterstein
+tile.mars.marscobblestone.name=Marspflasterstein
 tile.mars.marsstone.name=Marsgestein
 tile.mars.marsdirt.name=Marsniederoberflächengestein
 tile.mars.marsgrass.name=Marsoberflächengestein
 tile.mars.marsdeco.name=Desh-Dekorationsblock
-tile.mars.marsdungeon.name=Dungeonwand
+tile.mars.marsdungeon.name=Mars-Dungeonziegel
 tile.treasureT2.name=Schatztruhe (Stufe 2)
 tile.slimelingEgg.redEgg.name=Rotes Schleimling-Ei
 tile.slimelingEgg.blueEgg.name=Blaues Schleimling-Ei
@@ -43,28 +47,21 @@ tile.slimelingEgg.yellowEgg.name=Gelbes Schleimling-Ei
 tile.marsMachine.0.name=Terraformer
 tile.marsMachine.1.name=Kryogene Kammer
 tile.marsMachine.2.name=Start-Controller
+tile.marsMachine.4.name=Gasverflüssiger
+tile.marsMachine.5.name=Methansynthesegerät
+tile.marsMachine.6.name=Wasser-Elektolysegerät
 tile.sludge.name=Bakterieller Schlamm
 tile.creeperEgg.name=Creeper-Ei
 tile.cavernVines.name=Kavernöse Weinranken
-tile.tintedGlassPane.white.name=Weiß getönte Glasscheibe
-tile.tintedGlassPane.orange.name=Orange getönte Glasscheibe
-tile.tintedGlassPane.magenta.name=Magenta getönte Glasscheibe
-tile.tintedGlassPane.light_blue.name=Hellblau getönte Glasscheibe
-tile.tintedGlassPane.yellow.name=Gelb getönte Glasscheibe
-tile.tintedGlassPane.lime.name=Hellgrün getönte Glasscheibe
-tile.tintedGlassPane.pink.name=Pink getönte Glasscheibe
-tile.tintedGlassPane.gray.name=Grau getönte Glasscheibe
-tile.tintedGlassPane.silver.name=Hellgrau getönte Glasscheibe
-tile.tintedGlassPane.cyan.name=Türkis getönte Glasscheibe
-tile.tintedGlassPane.purple.name=Violett getönte Glasscheibe
-tile.tintedGlassPane.blue.name=Blau getönte Glasscheibe
-tile.tintedGlassPane.brown.name=Braun getönte Glasscheibe
-tile.tintedGlassPane.green.name=Grün getönte Glasscheibe
-tile.tintedGlassPane.red.name=Rot getönte Glasscheibe
-tile.tintedGlassPane.black.name=Schwarz getönte Glasscheibe
+tile.marsCobblestoneStairs.name=Mars Cobblestone Stairs ##NEEDS TRANSLATE##
+tile.wallGC.mars.name=Mars Cobblestone Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.marsSlab.name=Mars Cobblestone Slab ##NEEDS TRANSLATE##
+tile.marsDungeonBricksStairs.name=Mars Dungeon Brick Stairs ##NEEDS TRANSLATE##
+tile.wallGC.marsBricks.name=Mars Dungeon Brick Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.marsBricksSlab.name=Mars Dungeon Brick Slab ##NEEDS TRANSLATE##
 
 # GUI
-gui.choosePlanet.desc.mars=Bewohnbar#Kein SauerstoffSchwerkraft: 38%
+gui.choosePlanet.desc.mars=Bewohnbar#Kein Sauerstoff#Schwerkraft: 38%
 item.deshPickSlime.description.name=Kann Schleimling-Eier ernten
 gui.message.noEnergy.name=Nicht genügend Energie
 gui.message.noWater.name=Nicht genügend Wasser
@@ -94,25 +91,101 @@ gui.message.redstoneSig.name=Redstone-Signal
 gui.message.notSet.name=Nicht eingestellt
 gui.message.notEnough.name=Nicht genug
 gui.message.success.name=Erfolg
+gui.message.zeroWater.name=No water! ##NEEDS TRANSLATE##
+
+	# Dollar sign ($) will split text onto a new line
+gui.launchController.desc.0=Dies ist die spezifische Frequenz$des Start-Controllers
+gui.launchController.desc.1=Frequenz, zu welcher die Raketen fliegen
+gui.launchController.desc.2=Ob die Rampe beim Start$enfernt werden soll
+gui.launchController.desc.3=Wenn die Kriterien erfüllt sind,$wird die Rakete starten
+gui.terraformer.desc.0=Wasser Tank
+
+gui.gasTank.desc.0=Gasspeicher
+gui.gasTankCompressed.desc.0=Gas Storage (Compressed) ##NEEDS TRANSLATE##
+gui.liquidTank.desc.0=Flüssigkeitstank
+gui.status.nogas.name=Kein Gas
+gui.status.liquefying.name=Verflüssigen
+gui.status.processing.name=Synthetisieren
+gui.status.needsCarbon.name=Benötigt Kohlenstoff
+gui.status.tankfull.name=Tank voll
+gui.status.tanksfull.name=Tanks voll
+gui.message.lowEnergy.name=Zu wenig Energie
+gui.button.liquefy.name=Prozess
+gui.button.liquefyStop.name=Stopp
+gui.gasInput.desc.0=Versuche, einen Methangaskanister$ hier zu platzieren 
+gui.gasInput.desc.1=(Villeicht alternativ$ein Luftventil)
+gui.hydrogenInput.desc.0=Dies nimmt einen Wasserstofftank
+gui.hydrogenInput.desc.1=oder ein Atmosphärenventil auf
+gui.liquidOutput.desc.2=Flüssiggastank
+gui.methaneOutput.desc.2=Methantank
+gui.message.withAtmosphere0.name=auf einen Planeten mit reichlich
+gui.message.withAtmosphere1.name=in der Atmosphäre
+item.carbonFragments.name=Fragmentierter Kohlenstoff
+gui.carbonSlot.desc.0=Fragmented Carbon can go here ##NEEDS TRANSLATE##
+gui.waterBucketSlot.desc=Place water buckets here ##NEEDS TRANSLATE##
+
+gui.cargorocket.status.waiting.0=Waiting for ##NEEDS TRANSLATE##
+gui.cargorocket.status.waiting.1=ignition ##NEEDS TRANSLATE##
+gui.cargorocket.status.launched.0=Already ##NEEDS TRANSLATE##
+gui.cargorocket.status.launched.1=Launched ##NEEDS TRANSLATE##
+
+gas.carbondioxide.name=Kohlenstoffdioxid
+gas.oxygen.name=Sauerstoff
+gas.nitrogen.name=Stickstoff
 
 gui.desc.reinforcedPlateT2.name=Stufe 2
-
-itemGroup.GalacticraftMars=Galacticraft Mars
-
 dimension.Mars.name=Mars
 planet.mars=Mars
 
-# Schematics
+tile.treasureT2.description=Tier 2 Treasure Chests will generate in Mars Dungeons. They are unlockable after defeating the final boss.
+tile.cavernVines.description=Cavernous Vines are dangerous to living creatures, entangling them and dragging them upwards.
+tile.slimelingEgg.description=Slimeling Eggs, once cracked with a player's bare hands, will soon hatch into a pet.
+tile.cryoChamber.description=Cryogenic Chambers will allow a player to sleep during the day, healing a small amount of health, but has a cooldown.
+tile.launchController.description=Launch Controllers are used to customize launch behaviour, including launch criteria and destination launch pad for auto launches.
+tile.terraformer.description=Terraformers are used to add some greenery to distant planets, adding grass, trees and water when given the correct materials.
+tile.creeperEgg.description=Creeper Eggs will spawn in Mars dungeons, spawning a sneaky predator upon exploding.
+tile.gasLiquefier.description=Liquefies gases, either from the atmosphere or from canisters. Liquefied methane makes a good rocket fuel! ##NEEDS TRANSLATE##
+tile.methaneSynthesizer.description=With a source of hydrogen and a source of carbon, this manufactures Methane for further processing in a Gas Liquefier. ##NEEDS TRANSLATE##
+tile.electrolyzer.description=Transforms water into hydrogen (useful for the Methane Synthesizer) and oxygen. ##NEEDS TRANSLATE##
+gui.slimeling.chat.wrongPlayer=This isn't my Slimeling! ##NEEDS TRANSLATE##
+gui.cryogenic.chat.cantUse=I can't use this for another %d seconds ##NEEDS TRANSLATE##
+gui.slimeling.name=Name ##NEEDS TRANSLATE##
+gui.slimeling.owner=Owner ##NEEDS TRANSLATE##
+gui.slimeling.kills=Kills ##NEEDS TRANSLATE##
+gui.slimeling.scale=Scale ##NEEDS TRANSLATE##
+gui.slimeling.button.sit=Sit ##NEEDS TRANSLATE##
+gui.slimeling.button.follow=Follow ##NEEDS TRANSLATE##
+gui.slimeling.sitting=Sitting ##NEEDS TRANSLATE##
+gui.slimeling.following=Following ##NEEDS TRANSLATE##
+gui.slimeling.damage=Attack Damage ##NEEDS TRANSLATE##
+gui.slimeling.food=Favorite food ##NEEDS TRANSLATE##
+
+# SCHEMATICS
 schematic.rocketT3.name=Rakete (Stufe 3)
 schematic.cargoRocket.name=Automatische Güterrakete
 
-# Entities
+# ENTITIES
 entity.Sludgeling.name=Schlammling
 entity.Slimeling.name=Schleimling
 entity.CreeperBoss.name=Entwickelter Creeper-Boss
-entity.SpaceshipT2.name=Tier 2 Rocket ##NEEDS TRANSLATE##
-entity.CargoRocket.name=Cargo Rocket ##NEEDS TRANSLATE##
+entity.SpaceshipT2.name=Stufe 2 Rackete
+entity.CargoRocket.name=Automatische Güterrakete
 
-# Container
+# CONTAINERS
 container.launchcontroller.name=Start-Controller
-container.tileTerraformer.name=Terraformer ##NEEDS TRANSLATE##
+container.tileTerraformer.name=Terraformer
+container.marsLander.name=Landing Balloons ##NEEDS TRANSLATE##
+gc.configgui.dimensionIDMars=Mars Dimension ID
+gc.configgui.idEntityCreeperBoss=Creeper Boss Entity ID
+gc.configgui.idEntityProjectileTNT=Projectile TNT Entity ID
+gc.configgui.idEntitySpaceshipTier2=Tier 2 Rocket Entity ID
+gc.configgui.idEntitySludgeling=Sludgeling Entity ID
+gc.configgui.idEntitySlimeling=Slimeling Entity ID
+gc.configgui.idEntityTerraformBubble=Terraform Bubble Entity ID
+gc.configgui.idEntityLandingBalloons=Landing Balloons Entity ID
+gc.configgui.idEntityCargoRocket=Cargo Rocket Entity ID
+gc.configgui.idSchematicRocketT2=Tier 2 Rocket Schematic ID
+gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID
+gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
+gc.configgui.launchControllerAllDims=Launch Controller All Dimensions
+gc.configgui.planets.title=Galacticraft Planets Config ##NEEDS TRANSLATE##

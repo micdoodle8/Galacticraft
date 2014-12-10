@@ -2,27 +2,123 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=จรวด เทียร์ 3
+item.heavyNoseCone.name=กรวยจรวดแบบทนทาน
+item.compressedTitanium.name=แผ่นไททาเนียม
+item.ingotTitanium.name=แท่งไททาเนียม
+item.shardTitanium.name=สะเก็ดไททาเนียม
+item.shardIron.name=สะเก็ดเหล็ก
+item.rocketFinsT2.name=ปีกจรวดแบบทนทาน
+item.engineT2.name=เครื่องยนต์จรวดแบบทนทาน
+item.reinforcedPlateT3.name=แผ่นโลหะแบบทนทาน
+item.grapple.name=ตะขอ
+item.atmosphericValve.name=วาล์วเก็บก๊าซ
+item.thermalCloth.name=ผ้ากันความร้อน
+item.beamCore.name=แกนลำแสง
+item.tier3.desc=เทียร์ 3
 
 # TOOLS
+item.titanium_pickaxe.name=อีเต้อไททาเนียม
+item.titanium_axe.name=ขวานไททาเนียม
+item.titanium_hoe.name=จอบไททาเนียม
+item.titanium_shovel.name=พลั่วไททาเนียม
+item.titanium_sword.name=ดาบไททาเนียม
 
 # ARMOR
+item.thermalHelm.name=หมวกกันความร้อน
+item.thermalChestplate.name=เสื้อเกราะกันความร้อน
+item.thermalLeggings.name=กางเกงกันความร้อน
+item.thermalBoots.name=รองเท้ากันความร้อน
+item.titanium_helmet.name=หมวกไททาเนียม
+item.titanium_chestplate.name=เสื้อเกราะไททาเนียม
+item.titanium_leggings.name=กางเกงไททาเนียม
+item.titanium_boots.name=รองเท้าไททาเนียม
+
+# CANISTERS ETC
+item.methaneCanisterPartial.name=กระป๋องมีเทน
+item.methaneCanister.name=กระป๋องที่เต็มไปด้วยมีเทน
+item.canister.gas.name=ก๊าซ
+item.canister.LOX.partial.name=กระป๋องออกซิเจนเหลว
+item.canister.LOX.full.name=กระป๋องที่เต็มไปด้วยออกซิเจนเหลว
+item.canister.LOX.name=ออกซิเจนเหลว
+item.canister.liquidNitrogen.partial.name=กระป๋องไนโตรเจนเหลว
+item.canister.liquidNitrogen.full.name=กระป๋องที่เต็มไปด้วยไนโตรเจนเหลว
+item.canister.liquidNitrogen.name=ไนโตรเจนเหลว
+item.canister.liquidArgon.partial.name=กระป๋องอาร์กอนเหลว
+item.canister.liquidArgon.full.name=กระป๋องที่เต็มไปด้วยอาร์กอนเหลว
+item.canister.liquidArgon.name=อาร์กอนเหลว
+item.emptyGasCanister.name=กระป๋องก๊าซเปล่า
+
+# FLUIDS AND GASES
+fluid.methane=ก๊าซมีเทน
+fluid.oxygen=ก๊าซออกซิเจน
+fluid.nitrogen=ก๊าซไนโตรเจน
+fluid.hydrogen=ก๊าซไฮโดรเจน
+fluid.carbondioxide=ก๊าซคาร์บอนไดออกไซด์
+fluid.helium=ก๊าซฮีเลียม
+fluid.argon=ก๊าซอาร์กอน
+fluid.atmosphericgases=ก๊าซชั้นบรรยากาศ
+fluid.liquidmethane=มีเทนเหลว
+fluid.liquidoxygen=ออกซิเจนเหลว
+fluid.liquidnitrogen=ไนโตรเจนเหลว
+fluid.liquidargon=อาร์กอนเหลว
+fluid.fuel=เชื้อเพลิง
 
 # BLOCKS
-tile.asteroidsBlock.asteroids1.name=หินดาวเคราะห์น้อย
+tile.asteroidsBlock.asteroid0.name=หินดาวเคราะห์น้อย
+tile.asteroidsBlock.asteroid1.name=หินดาวเคราะห์น้อย
+tile.asteroidsBlock.asteroid2.name=หินดาวเคราะห์น้อย
+tile.asteroidsBlock.oreIron.name=แร่เหล็ก
+tile.asteroidsBlock.oreIlmenite.name=แร่อิลเมไนท์
+tile.asteroidsBlock.oreAluminum.name=แร่อลูมิเนียม
 tile.beamReflector.name=เครื่องสะท้อนลำแสง
 tile.beamReceiver.name=เครื่องรับลำแสง
 tile.telepadShort.name=เครื่องเทเลพอร์ตระยะใกล้
+tile.walkway.name=ทางเดิน
+tile.walkwayWire.name=ทางเดิน
+tile.walkwayOxygenPipe.name=ทางเดิน
+tile.treasureT3.name=กล่องสมบัติ เทียร์ 3
+tile.denseIce.name=ก้อนน้ำแข็งหนาทึบ
 
 # GUI
 planet.asteroids=ดาวเคราะห์น้อย
 
-itemGroup.GalacticraftAsteroids=กาแลคติคคราฟ ดาวเคราะห์น้อย
+	# Dollar sign ($) will split text onto a new line
+	# Do not remove %s or %d, since that will be replaced in-game
+gui.telepad.desc.0=นี่คือที่อยู่ของเครื่องเทเลพอร์ต
+gui.telepad.desc.1=ที่อยู่ของเครื่องเทเลพอร์ตอื่นๆ$สิ่งมีชีวิตจะถูกส่งไปยังเป้าหมาย
+gui.message.address.name=ที่อยู่
+gui.message.destAddress.name=เป้าหมายของที่อยู่
+gui.message.invalidAddress.name=ที่อยู่ผิดพลาด
+gui.message.invalidTargetAddress.name=ที่อยู่ของเป้าหมายผิดพลาด
+gui.message.receivingActive.name=รับข้อมูลการทำงาน
+gui.message.telepadTooFar.name=เป้าหมายไกลเกินไป! (สูงสุด %d)
+gui.message.telepadWrongDim.name=เป้าหมายผิดมิติ!
+gui.message.telepadNotFound.name=ไม่เจอเครื่องเทเลพอร์ต!
+gui.message.sendingActive.name=กำลังส่งการทำงาน
+gui.message.range.name=ระยะ: %d บล็อก
+gui.message.notEnoughEnergy.name=พลังงานไม่พอ!
+gui.message.targetNoEnergy.name=เป้าหมายพลังงานไม่พอ!
+gui.message.grapple.fail=ฉันต้องการเส้นเชือกจำนวนเล็กน้อย ถ้าต้องการที่จะโยนตะขอออกไป!
 
-# Schematics
+tile.treasureT3.description=ยังไม่ใช้ตอนนี้
+tile.walkway.description=ใช้สำหรับการตกแต่งที่คล้ายกับสภาพภายใน ยานอวกาศ
+tile.walkwayAluminumWire.description=ใช้สำหรับเป็นทางเดินและใช้เชื่อมต่อ กับแหล่งเก็บพลังงานได้ ด้วยสายไฟอลูมิเนียมที่อยู่ข้างใต้
+tile.walkwayOxygenPipe.description=ใช้สำหรับเป็นทางเดินและ้ใช้เชื่อมต่อ กับแหล่งเก็บออกซิเจนได้ ด้วยท่อออกซิเจนที่อยู่ข้างใต้
+tile.beamReflector.description=ใช้สำหรับเปลี่ยนทิศทางของพลังงานลำแสง จากเป้าหมายไปยังทิศทางอื่นๆ คลิ๊กขวาเพื่อเปลี่ยนทิศทางการสะท้อนแสง ไปยังเป้าหมายอื่นๆ
+tile.beamReceiver.description=ใช้เชื่อมต่อไปยังเครื่องมือต่างๆ ทั้งส่งเข้าและส่งออก พลังงานจะถูกส่งโดยใช้พลังงานลำแสง
+tile.telepadShort.description=ใช้สำหรับเทเลพอร์ทผู้เล่นหรือสิ่งมีชีวิต อื่นๆ ในระยะ 256 บล็อก และต้องเชื่อมต่อกับเครื่องเทเลพอร์ตอื่นๆ ด้วย
 
-# Entity
+# SCHEMATICS
+
+# ENTITIES
 entity.SmallAsteroidGC.name=ดาวเคราะห์น้อยขนาดเล็ก
 entity.GrappleHookGC.name=ตะขอเกี่ยว
 entity.Tier3RocketGC.name=จรวด เทียร์ 3
 
-# Container
+# CONTAINERS
+container.shortRangeTelepad.name=เครื่องเทเลพอร์ตระยะใกล้
+container.entryPod.name=ยานลงจอด
+
+# CONFIG GUI
+gc.configgui.dimensionIDAsteroids=ID มิติดาวเคราะห์น้อย
+gc.configgui.idSchematicRocketT3=ID แผนผังจรวด เทียร์ 3

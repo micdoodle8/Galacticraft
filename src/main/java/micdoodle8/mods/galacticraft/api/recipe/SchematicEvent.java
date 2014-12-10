@@ -10,34 +10,34 @@ import net.minecraft.entity.player.EntityPlayerMP;
  */
 public abstract class SchematicEvent extends Event
 {
-	public ISchematicPage page;
+    public ISchematicPage page;
 
-	public SchematicEvent(ISchematicPage page)
-	{
-		this.page = page;
-	}
+    public SchematicEvent(ISchematicPage page)
+    {
+        this.page = page;
+    }
 
-	public static class Unlock extends SchematicEvent
-	{
-		public EntityPlayerMP player;
+    public static class Unlock extends SchematicEvent
+    {
+        public EntityPlayerMP player;
 
-		public Unlock(EntityPlayerMP player, ISchematicPage page)
-		{
-			super(page);
-			this.player = player;
-		}
-	}
+        public Unlock(EntityPlayerMP player, ISchematicPage page)
+        {
+            super(page);
+            this.player = player;
+        }
+    }
 
-	public static class FlipPage extends SchematicEvent
-	{
-		public int index;
-		public int direction;
+    public static class FlipPage extends SchematicEvent
+    {
+        public int index;
+        public int direction;
 
-		public FlipPage(ISchematicPage page, int index, int direction)
-		{
-			super(page);
-			this.index = index;
-			this.direction = direction;
-		}
-	}
+        public FlipPage(ISchematicPage page, int index, int direction)
+        {
+            super(page);
+            this.index = index;
+            this.direction = direction;
+        }
+    }
 }

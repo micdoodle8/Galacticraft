@@ -1,494 +1,393 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import cpw.mods.fml.relauncher.Side;
-import micdoodle8.mods.galacticraft.api.transmission.item.ItemElectric;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.items.ItemOilCanister;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-public class TileEntityRefinery extends TileEntityElectricBlock implements IInventory, ISidedInventory, IFluidHandler
+public class TileEntityRefinery extends TileBaseElectricBlockWithInventory implements ISidedInventory, IFluidHandler
 {
-	private final int tankCapacity = 24000;
-	@NetworkedField(targetSide = Side.CLIENT)
-	public FluidTank oilTank = new FluidTank(this.tankCapacity);
-	@NetworkedField(targetSide = Side.CLIENT)
-	public FluidTank fuelTank = new FluidTank(this.tankCapacity);
+    private final int tankCapacity = 24000;
+    @NetworkedField(targetSide = Side.CLIENT)
+    public FluidTank oilTank = new FluidTank(this.tankCapacity);
+    @NetworkedField(targetSide = Side.CLIENT)
+    public FluidTank fuelTank = new FluidTank(this.tankCapacity);
 
-	public static final int PROCESS_TIME_REQUIRED = 2;
-	public static final int OUTPUT_PER_SECOND = 1;
-	@NetworkedField(targetSide = Side.CLIENT)
-	public int processTicks = 0;
-	private ItemStack[] containingItems = new ItemStack[3];
+    public static final int PROCESS_TIME_REQUIRED = 2;
+    public static final int OUTPUT_PER_SECOND = 1;
+    @NetworkedField(targetSide = Side.CLIENT)
+    public int processTicks = 0;
+    private ItemStack[] containingItems = new ItemStack[3];
 
-	public TileEntityRefinery()
-	{
-		this.storage.setMaxExtract(60);
-	}
+    public TileEntityRefinery()
+    {
+        this.storage.setMaxExtract(60);
+    }
 
-	@Override
-	public void updateEntity()
-	{
-		super.updateEntity();
+    @Override
+    public void updateEntity()
+    {
+        super.updateEntity();
 
-		if (!this.worldObj.isRemote)
-		{
-			if (this.containingItems[1] != null)
-			{
-				FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(this.containingItems[1]);
+        if (!this.worldObj.isRemote)
+        {
+            if (this.containingItems[1] != null)
+            {
+                FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(this.containingItems[1]);
 
-				if (liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("Oil"))
-				{
-					if (this.oilTank.getFluid() == null || this.oilTank.getFluid().amount + liquid.amount <= this.oilTank.getCapacity())
-					{
-						this.oilTank.fill(liquid, true);
+                if (liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("Oil"))
+                {
+                    if (this.oilTank.getFluid() == null || this.oilTank.getFluid().amount + liquid.amount <= this.oilTank.getCapacity())
+                    {
+                        this.oilTank.fill(liquid, true);
 
-						if (this.containingItems[1].getItem() instanceof ItemOilCanister)
-						{
-							this.containingItems[1] = new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage());
-						}
-						else if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
-						{
-							final int amount = this.containingItems[1].stackSize;
-							this.containingItems[1] = new ItemStack(Items.bucket, amount);
-						}
-						else
-						{
-							this.containingItems[1].stackSize--;
+                        if (this.containingItems[1].getItem() instanceof ItemOilCanister)
+                        {
+                            this.containingItems[1] = new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage());
+                        }
+                        else if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
+                        {
+                            final int amount = this.containingItems[1].stackSize;
+                            this.containingItems[1] = new ItemStack(Items.bucket, amount);
+                        }
+                        else
+                        {
+                            this.containingItems[1].stackSize--;
 
-							if (this.containingItems[1].stackSize == 0)
-							{
-								this.containingItems[1] = null;
-							}
-						}
-					}
-				}
-			}
+                            if (this.containingItems[1].stackSize == 0)
+                            {
+                                this.containingItems[1] = null;
+                            }
+                        }
+                    }
+                }
+            }
 
-			if (this.containingItems[2] != null && FluidContainerRegistry.isContainer(this.containingItems[2]))
-			{
-				final FluidStack liquid = this.fuelTank.getFluid();
+            checkFluidTankTransfer(2, this.fuelTank);
 
-				if (liquid != null && this.fuelTank.getFluid() != null && this.fuelTank.getFluid().getFluid().getName().equalsIgnoreCase("Fuel"))
-				{
-					if (FluidContainerRegistry.isEmptyContainer(this.containingItems[2]))
-					{
-						boolean isCanister = this.containingItems[2].isItemEqual(new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage()));
-						final int amountToFill = Math.min(liquid.amount, isCanister ? GCItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
+            if (this.canProcess() && this.hasEnoughEnergyToRun)
+            {
+                if (this.processTicks == 0)
+                {
+                    this.processTicks = TileEntityRefinery.PROCESS_TIME_REQUIRED;
+                }
+                else
+                {
+                    if (--this.processTicks <= 0)
+                    {
+                        this.smeltItem();
+                        this.processTicks = this.canProcess() ? TileEntityRefinery.PROCESS_TIME_REQUIRED : 0;
+                    }
+                }
+            }
+            else
+            {
+                this.processTicks = 0;
+            }
+        }
+    }
 
-						if (isCanister)
-						{
-							this.containingItems[2] = new ItemStack(GCItems.fuelCanister, 1, GCItems.fuelCanister.getMaxDamage() - amountToFill);
-						}
-						else
-						{
-							this.containingItems[2] = FluidContainerRegistry.fillFluidContainer(liquid, this.containingItems[2]);
-						}
+    private void checkFluidTankTransfer(int slot, FluidTank tank)
+    {
+        if (this.containingItems[slot] != null && FluidContainerRegistry.isContainer(this.containingItems[slot]))
+        {
+            final FluidStack liquid = tank.getFluid();
 
-						this.fuelTank.drain(amountToFill, true);
-					}
-				}
-			}
+            if (liquid != null && liquid.amount > 0)
+            {
+                String liquidname = liquid.getFluid().getName();
+                if (liquidname.equals("fuel"))
+                {
+                    tryFillContainer(tank, liquid, slot, GCItems.fuelCanister);
+                }
+            }
+        }
+    }
 
-			if (this.canProcess() && this.hasEnoughEnergyToRun)
-			{
-				if (this.processTicks == 0)
-				{
-					this.processTicks = TileEntityRefinery.PROCESS_TIME_REQUIRED;
-				}
-				else if (this.processTicks > 0)
-				{
-					this.processTicks--;
+    private void tryFillContainer(FluidTank tank, FluidStack liquid, int slot, Item canister)
+    {
+        ItemStack slotItem = this.containingItems[slot];
+        boolean isCanister = slotItem.getItem() instanceof ItemCanisterGeneric && slotItem.getItemDamage() > 1;
+        final int amountToFill = Math.min(liquid.amount, isCanister ? slotItem.getItemDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
 
-					if (this.processTicks < 1)
-					{
-						this.smeltItem();
-						this.processTicks = 0;
-					}
-				}
-				else
-				{
-					this.processTicks = 0;
-				}
-			}
-			else
-			{
-				this.processTicks = 0;
-			}
-		}
-	}
+        if (isCanister && amountToFill > 0)
+        {
+            this.containingItems[slot] = new ItemStack(canister, 1, slotItem.getItemDamage() - amountToFill);
+            tank.drain(amountToFill, true);
+        }
+        else if (amountToFill == FluidContainerRegistry.BUCKET_VOLUME)
+        {
+            this.containingItems[slot] = FluidContainerRegistry.fillFluidContainer(liquid, this.containingItems[slot]);
+            if (this.containingItems[slot] == null)
+            {
+                this.containingItems[slot] = slotItem;
+            }
+            else
+            {
+                tank.drain(amountToFill, true);
+            }
+        }
+    }
 
-	public int getScaledOilLevel(int i)
-	{
-		return this.oilTank.getFluid() != null ? this.oilTank.getFluid().amount * i / this.oilTank.getCapacity() : 0;
-	}
 
-	public int getScaledFuelLevel(int i)
-	{
-		return this.fuelTank.getFluid() != null ? this.fuelTank.getFluid().amount * i / this.fuelTank.getCapacity() : 0;
-	}
+    public int getScaledOilLevel(int i)
+    {
+        return this.oilTank.getFluid() != null ? this.oilTank.getFluid().amount * i / this.oilTank.getCapacity() : 0;
+    }
 
-	@Override
-	public void openInventory()
-	{
-	}
+    public int getScaledFuelLevel(int i)
+    {
+        return this.fuelTank.getFluid() != null ? this.fuelTank.getFluid().amount * i / this.fuelTank.getCapacity() : 0;
+    }
 
-	@Override
-	public void closeInventory()
-	{
-	}
-
-	public boolean canProcess()
-	{
-		if (this.oilTank.getFluid() == null || this.oilTank.getFluid().amount <= 0)
-		{
-			return false;
-		}
+    public boolean canProcess()
+    {
+        if (this.oilTank.getFluid() == null || this.oilTank.getFluid().amount <= 0)
+        {
+            return false;
+        }
 
         return !this.getDisabled(0);
 
     }
 
-	public void smeltItem()
-	{
-		if (this.canProcess())
-		{
-			final int oilAmount = this.oilTank.getFluid().amount;
-			final int fuelSpace = this.fuelTank.getCapacity() - (this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount);
+    public void smeltItem()
+    {
+        if (this.canProcess())
+        {
+            final int oilAmount = this.oilTank.getFluid().amount;
+            final int fuelSpace = this.fuelTank.getCapacity() - (this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount);
 
-			final int amountToDrain = Math.min(Math.min(oilAmount, fuelSpace), TileEntityRefinery.OUTPUT_PER_SECOND);
+            final int amountToDrain = Math.min(Math.min(oilAmount, fuelSpace), TileEntityRefinery.OUTPUT_PER_SECOND);
 
-			this.oilTank.drain(amountToDrain, true);
-			this.fuelTank.fill(FluidRegistry.getFluidStack("fuel", amountToDrain), true);
-		}
-	}
+            this.oilTank.drain(amountToDrain, true);
+            this.fuelTank.fill(FluidRegistry.getFluidStack("fuel", amountToDrain), true);
+        }
+    }
 
-	@Override
-	public void readFromNBT(NBTTagCompound nbt)
-	{
-		super.readFromNBT(nbt);
-		this.processTicks = nbt.getInteger("smeltingTicks");
-		final NBTTagList var2 = nbt.getTagList("Items", 10);
-		this.containingItems = new ItemStack[this.getSizeInventory()];
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+        this.processTicks = nbt.getInteger("smeltingTicks");
+        this.containingItems = this.readStandardItemsFromNBT(nbt);
 
-		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
-		{
-			final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
-			final byte var5 = var4.getByte("Slot");
+        if (nbt.hasKey("oilTank"))
+        {
+            this.oilTank.readFromNBT(nbt.getCompoundTag("oilTank"));
+        }
 
-			if (var5 >= 0 && var5 < this.containingItems.length)
-			{
-				this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
-			}
-		}
+        if (nbt.hasKey("fuelTank"))
+        {
+            this.fuelTank.readFromNBT(nbt.getCompoundTag("fuelTank"));
+        }
+    }
 
-		if (nbt.hasKey("oilTank"))
-		{
-			this.oilTank.readFromNBT(nbt.getCompoundTag("oilTank"));
-		}
+    @Override
+    public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
+        nbt.setInteger("smeltingTicks", this.processTicks);
+        this.writeStandardItemsToNBT(nbt);
 
-		if (nbt.hasKey("fuelTank"))
-		{
-			this.fuelTank.readFromNBT(nbt.getCompoundTag("fuelTank"));
-		}
-	}
+        if (this.oilTank.getFluid() != null)
+        {
+            nbt.setTag("oilTank", this.oilTank.writeToNBT(new NBTTagCompound()));
+        }
 
-	@Override
-	public void writeToNBT(NBTTagCompound nbt)
-	{
-		super.writeToNBT(nbt);
-		nbt.setInteger("smeltingTicks", this.processTicks);
-		final NBTTagList var2 = new NBTTagList();
+        if (this.fuelTank.getFluid() != null)
+        {
+            nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
+        }
+    }
 
-		for (int var3 = 0; var3 < this.containingItems.length; ++var3)
-		{
-			if (this.containingItems[var3] != null)
-			{
-				final NBTTagCompound var4 = new NBTTagCompound();
-				var4.setByte("Slot", (byte) var3);
-				this.containingItems[var3].writeToNBT(var4);
-				var2.appendTag(var4);
-			}
-		}
 
-		nbt.setTag("Items", var2);
+    @Override
+    protected ItemStack[] getContainingItems()
+    {
+        return this.containingItems;
+    }
 
-		if (this.oilTank.getFluid() != null)
-		{
-			nbt.setTag("oilTank", this.oilTank.writeToNBT(new NBTTagCompound()));
-		}
+    @Override
+    public String getInventoryName()
+    {
+        return GCCoreUtil.translate("container.refinery.name");
+    }
 
-		if (this.fuelTank.getFluid() != null)
-		{
-			nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
-		}
-	}
+    @Override
+    public boolean hasCustomInventoryName()
+    {
+        return true;
+    }
 
-	@Override
-	public int getSizeInventory()
-	{
-		return this.containingItems.length;
-	}
+    // ISidedInventory Implementation:
 
-	@Override
-	public ItemStack getStackInSlot(int par1)
-	{
-		return this.containingItems[par1];
-	}
+    @Override
+    public int[] getAccessibleSlotsFromSide(int side)
+    {
+        return new int[] { 0, 1, 2 };
+    }
 
-	@Override
-	public ItemStack decrStackSize(int par1, int par2)
-	{
-		if (this.containingItems[par1] != null)
-		{
-			ItemStack var3;
+    @Override
+    public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
+    {
+        if (this.isItemValidForSlot(slotID, itemstack))
+        {
+            switch (slotID)
+            {
+            case 0:
+                return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) > 0;
+            case 1:
+                FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(itemstack);
+                return stack != null && stack.getFluid() != null && stack.getFluid().getName().equalsIgnoreCase("oil");
+            case 2:
+                return FluidContainerRegistry.isEmptyContainer(itemstack);
+            default:
+                return false;
+            }
+        }
+        return false;
+    }
 
-			if (this.containingItems[par1].stackSize <= par2)
-			{
-				var3 = this.containingItems[par1];
-				this.containingItems[par1] = null;
-				return var3;
-			}
-			else
-			{
-				var3 = this.containingItems[par1].splitStack(par2);
+    @Override
+    public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
+    {
+        if (this.isItemValidForSlot(slotID, itemstack))
+        {
+            switch (slotID)
+            {
+            case 0:
+                return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
+            case 1:
+                return FluidContainerRegistry.isEmptyContainer(itemstack);
+            case 2:
+                FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(itemstack);
+                return stack != null && stack.getFluid() != null && stack.getFluid().getName().equalsIgnoreCase("fuel");
+            default:
+                return false;
+            }
+        }
+        return false;
+    }
 
-				if (this.containingItems[par1].stackSize == 0)
-				{
-					this.containingItems[par1] = null;
-				}
+    @Override
+    public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
+    {
+        switch (slotID)
+        {
+        case 0:
+            return itemstack != null && ItemElectricBase.isElectricItem(itemstack.getItem());
+        case 1:
+            FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(itemstack);
+            return stack != null && stack.getFluid() != null && stack.getFluid().getName().equalsIgnoreCase("oil") || FluidContainerRegistry.isContainer(itemstack);
+        case 2:
+            FluidStack stack2 = FluidContainerRegistry.getFluidForFilledItem(itemstack);
+            return stack2 != null && stack2.getFluid() != null && stack2.getFluid().getName().equalsIgnoreCase("fuel") || FluidContainerRegistry.isContainer(itemstack);
+        }
 
-				return var3;
-			}
-		}
-		else
-		{
-			return null;
-		}
-	}
+        return false;
+    }
 
-	@Override
-	public ItemStack getStackInSlotOnClosing(int par1)
-	{
-		if (this.containingItems[par1] != null)
-		{
-			final ItemStack var2 = this.containingItems[par1];
-			this.containingItems[par1] = null;
-			return var2;
-		}
-		else
-		{
-			return null;
-		}
-	}
+    @Override
+    public boolean shouldUseEnergy()
+    {
+        return this.canProcess();
+    }
 
-	@Override
-	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
-	{
-		this.containingItems[par1] = par2ItemStack;
+    @Override
+    public ForgeDirection getElectricInputDirection()
+    {
+        return ForgeDirection.UP;
+    }
 
-		if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
-		{
-			par2ItemStack.stackSize = this.getInventoryStackLimit();
-		}
-	}
+    @Override
+    public boolean canDrain(ForgeDirection from, Fluid fluid)
+    {
+        if (from.equals(ForgeDirection.getOrientation((this.getBlockMetadata() + 2) ^ 1)))
+        {
+            return this.fuelTank.getFluid() != null && this.fuelTank.getFluidAmount() > 0;
+        }
 
-	@Override
-	public String getInventoryName()
-	{
-		return GCCoreUtil.translate("container.refinery.name");
-	}
+        return false;
+    }
 
-	@Override
-	public int getInventoryStackLimit()
-	{
-		return 64;
-	}
+    @Override
+    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
+    {
+        if (from.equals(ForgeDirection.getOrientation((this.getBlockMetadata() + 2) ^ 1)))
+        {
+            return this.fuelTank.drain(resource.amount, doDrain);
+        }
 
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer)
-	{
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && entityplayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
-	}
+        return null;
+    }
 
-	@Override
-	public boolean hasCustomInventoryName()
-	{
-		return true;
-	}
+    @Override
+    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
+    {
+        if (from.equals(ForgeDirection.getOrientation((this.getBlockMetadata() + 2) ^ 1)))
+        {
+            return this.drain(from, new FluidStack(GalacticraftCore.fluidFuel, maxDrain), doDrain);
+        }
 
-	// ISidedInventory Implementation:
+        return null;
+    }
 
-	@Override
-	public int[] getAccessibleSlotsFromSide(int side)
-	{
-		return new int[] { 0, 1, 2 };
-	}
+    @Override
+    public boolean canFill(ForgeDirection from, Fluid fluid)
+    {
+        if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2)))
+        {
+            return this.oilTank.getFluid() == null || this.oilTank.getFluidAmount() < this.oilTank.getCapacity();
+        }
 
-	@Override
-	public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
-	{
-		if (this.isItemValidForSlot(slotID, itemstack))
-		{
-			switch (slotID)
-			{
-			case 0:
-				return itemstack.getItem() instanceof ItemElectric && ((ItemElectric) itemstack.getItem()).getElectricityStored(itemstack) > 0;
-			case 1:
-				FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(itemstack);
-				return stack != null && stack.getFluid() != null && stack.getFluid().getName().equalsIgnoreCase("oil");
-			case 2:
-				return FluidContainerRegistry.isEmptyContainer(itemstack);
-			default:
-				return false;
-			}
-		}
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
-	{
-		if (this.isItemValidForSlot(slotID, itemstack))
-		{
-			switch (slotID)
-			{
-			case 0:
-				return itemstack.getItem() instanceof ItemElectric && ((ItemElectric) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
-			case 1:
-				return FluidContainerRegistry.isEmptyContainer(itemstack);
-			case 2:
-				FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(itemstack);
-				return stack != null && stack.getFluid() != null && stack.getFluid().getName().equalsIgnoreCase("fuel");
-			default:
-				return false;
-			}
-		}
-		return false;
-	}
+    @Override
+    public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
+    {
+        int used = 0;
 
-	@Override
-	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
-	{
-		switch (slotID)
-		{
-		case 0:
-			return ItemElectric.isElectricItem(itemstack.getItem());
-		case 1:
-			FluidStack stack = FluidContainerRegistry.getFluidForFilledItem(itemstack);
-			return stack != null && stack.getFluid() != null && stack.getFluid().getName().equalsIgnoreCase("oil") || FluidContainerRegistry.isContainer(itemstack);
-		case 2:
-			FluidStack stack2 = FluidContainerRegistry.getFluidForFilledItem(itemstack);
-			return stack2 != null && stack2.getFluid() != null && stack2.getFluid().getName().equalsIgnoreCase("fuel") || FluidContainerRegistry.isContainer(itemstack);
-		}
+        if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2)))
+        {
+            final String liquidName = FluidRegistry.getFluidName(resource);
 
-		return false;
-	}
+            if (liquidName != null && liquidName.equalsIgnoreCase("Oil"))
+            {
+                used = this.oilTank.fill(resource, doFill);
+            }
+        }
 
-	@Override
-	public boolean shouldUseEnergy()
-	{
-		return this.canProcess();
-	}
+        return used;
+    }
 
-	@Override
-	public ForgeDirection getElectricInputDirection()
-	{
-		return ForgeDirection.UP;
-	}
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection from)
+    {
+        FluidTankInfo[] tankInfo = new FluidTankInfo[] { };
 
-	@Override
-	public ItemStack getBatteryInSlot()
-	{
-		return this.getStackInSlot(0);
-	}
+        if (from == ForgeDirection.getOrientation(this.getBlockMetadata() + 2))
+        {
+            tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.oilTank) };
+        }
+        else if (from == ForgeDirection.getOrientation((this.getBlockMetadata() + 2) ^ 1))
+        {
+            tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.fuelTank) };
+        }
 
-	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid)
-	{
-		if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2)))
-		{
-			return this.fuelTank.getFluid() != null && this.fuelTank.getFluidAmount() > 0;
-		}
-
-		return false;
-	}
-
-	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
-	{
-		if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2)))
-		{
-			return this.fuelTank.drain(resource.amount, doDrain);
-		}
-
-		return null;
-	}
-
-	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
-	{
-		if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2)))
-		{
-			return this.drain(from, new FluidStack(GalacticraftCore.fluidFuel, maxDrain), doDrain);
-		}
-
-		return null;
-	}
-
-	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid)
-	{
-		if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite()))
-		{
-			return this.oilTank.getFluid() == null || this.oilTank.getFluidAmount() < this.oilTank.getCapacity();
-		}
-
-		return false;
-	}
-
-	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
-	{
-		int used = 0;
-
-		if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite()))
-		{
-			final String liquidName = FluidRegistry.getFluidName(resource);
-
-			if (liquidName != null && liquidName.equalsIgnoreCase("Oil"))
-			{
-				used = this.oilTank.fill(resource, doFill);
-			}
-		}
-
-		return used;
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from)
-	{
-		FluidTankInfo[] tankInfo = new FluidTankInfo[] {};
-
-		if (from == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite())
-		{
-			tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.oilTank) };
-		}
-		else if (from == ForgeDirection.getOrientation(this.getBlockMetadata() + 2))
-		{
-			tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.fuelTank) };
-		}
-
-		return tankInfo;
-	}
+        return tankInfo;
+    }
 }

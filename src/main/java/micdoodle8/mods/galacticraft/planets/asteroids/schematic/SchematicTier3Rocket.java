@@ -16,47 +16,47 @@ import net.minecraft.item.ItemStack;
 
 public class SchematicTier3Rocket implements ISchematicPage
 {
-	@Override
-	public int getPageID()
-	{
-		return ConfigManagerAsteroids.idSchematicRocketT3;
-	}
+    @Override
+    public int getPageID()
+    {
+        return ConfigManagerAsteroids.idSchematicRocketT3;
+    }
 
-	@Override
-	public int getGuiID()
-	{
-		return GuiIdsPlanets.NASA_WORKBENCH_TIER_3_ROCKET + Constants.MOD_ID_PLANETS.hashCode();
-	}
+    @Override
+    public int getGuiID()
+    {
+        return GuiIdsPlanets.NASA_WORKBENCH_TIER_3_ROCKET + Constants.MOD_ID_PLANETS.hashCode();
+    }
 
-	@Override
-	public ItemStack getRequiredItem()
-	{
-		return new ItemStack(MarsItems.schematic, 1, 0);
-	}
+    @Override
+    public ItemStack getRequiredItem()
+    {
+        return new ItemStack(MarsItems.schematic, 1, 0);
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z)
-	{
-		return new GuiSchematicTier3Rocket(player.inventory, x, y, z);
-	}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z)
+    {
+        return new GuiSchematicTier3Rocket(player.inventory, x, y, z);
+    }
 
-	@Override
-	public Container getResultContainer(EntityPlayer player, int x, int y, int z)
-	{
-		return new ContainerSchematicTier3Rocket(player.inventory, x, y, z);
-	}
+    @Override
+    public Container getResultContainer(EntityPlayer player, int x, int y, int z)
+    {
+        return new ContainerSchematicTier3Rocket(player.inventory, x, y, z);
+    }
 
-	@Override
-	public int compareTo(ISchematicPage o)
-	{
-		if (this.getPageID() > o.getPageID())
-		{
-			return 1;
-		}
-		else
-		{
-			return -1;
-		}
-	}
+    @Override
+    public int compareTo(ISchematicPage o)
+    {
+        if (this.getPageID() > o.getPageID())
+        {
+            return 1;
+        }
+        else
+        {
+            return -1;
+        }
+    }
 }

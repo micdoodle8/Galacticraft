@@ -20,40 +20,40 @@ public abstract class LayoutStyleDefault extends LayoutStyle
         reset();
 
         prev.y = 2;
-        prev.height = 16;
-        prev.width = containerLeft / 3;
+        prev.h = 16;
+        prev.w = containerLeft / 3;
         prev.x = (containerWidth + windowWidth) / 2 + 2;
-        next.x = windowWidth - prev.width - 2;
+        next.x = windowWidth - prev.w - 2;
 
         next.y = prev.y;
-        next.width = prev.width;
-        next.height = prev.height;
+        next.w = prev.w;
+        next.h = prev.h;
         pageLabel.x = containerLeft * 3 / 2 + containerWidth + 1;
         pageLabel.y = prev.y + 5;
         pageLabel.text = "(" + itemPanel.getPage() + "/" + itemPanel.getNumPages() + ")";
 
-        itemPanel.y = prev.height + prev.y;
+        itemPanel.y = prev.h + prev.y;
         itemPanel.x = (containerWidth + windowWidth) / 2 + 3;
-        itemPanel.width = windowWidth - 3 - itemPanel.x;
-        itemPanel.height = windowHeight - 15 - itemPanel.y;
+        itemPanel.w = windowWidth - 3 - itemPanel.x;
+        itemPanel.h = windowHeight - 15 - itemPanel.y;
         if (!canPerformAction("item"))
-            itemPanel.height += 15;
+            itemPanel.h += 15;
         itemPanel.resize();
 
-        more.width = more.height = less.width = less.height = 16;
+        more.w = more.h = less.w = less.h = 16;
         less.x = prev.x;
-        more.x = windowWidth - less.width - 2;
-        more.y = less.y = windowHeight - more.height - 2;
+        more.x = windowWidth - less.w - 2;
+        more.y = less.y = windowHeight - more.h - 2;
 
-        quantity.x = less.x + less.width + 2;
+        quantity.x = less.x + less.w + 2;
         quantity.y = less.y;
-        quantity.width = more.x - quantity.x - 2;
-        quantity.height = less.height;
+        quantity.w = more.x - quantity.x - 2;
+        quantity.h = less.h;
 
         options.x = isEnabled() ? 0 : 6;
         options.y = isEnabled() ? windowHeight - 22 : windowHeight - 28;
-        options.width = 80;
-        options.height = 22;
+        options.w = 80;
+        options.h = 22;
 
         delete.state = 0x4;
         if (NEIController.getDeleteMode())
@@ -101,13 +101,13 @@ public abstract class LayoutStyleDefault extends LayoutStyle
         if (canPerformAction("heal"))
             layoutButton(heal);
 
-        searchField.y = windowHeight - searchField.height - 2;
+        searchField.y = windowHeight - searchField.h - 2;
 
-        dropDown.height = 20;
-        dropDown.width = prev.x - dropDown.x - 3;
-        searchField.height = 20;
-        searchField.width = 150;
-        searchField.x = (windowWidth - searchField.width) / 2;
+        dropDown.h = 20;
+        dropDown.w = prev.x - dropDown.x - 3;
+        searchField.h = 20;
+        searchField.w = 150;
+        searchField.x = (windowWidth - searchField.w) / 2;
 
         if (!visiblity.showItemSection) {
             //TODO dropDown.setDropDown(0);
@@ -116,8 +116,8 @@ public abstract class LayoutStyleDefault extends LayoutStyle
 
         int maxWidth = 0;
         for (int i = 0; i < 7; i++) {
-            deleteButtons[i].width = 16;
-            deleteButtons[i].height = 16;
+            deleteButtons[i].w = 16;
+            deleteButtons[i].h = 16;
 
             NBTTagCompound statelist = global.nbt.getCompoundTag("statename");
             global.nbt.setTag("statename", statelist);
@@ -140,11 +140,11 @@ public abstract class LayoutStyleDefault extends LayoutStyle
         for (int i = 0; i < 7; i++) {
             stateButtons[i].x = 0;
             stateButtons[i].y = 58 + i * 22;
-            stateButtons[i].height = 20;
+            stateButtons[i].h = 20;
 
             stateButtons[i].x = 0;
-            stateButtons[i].width = maxWidth;
-            deleteButtons[i].x = stateButtons[i].width + 3;
+            stateButtons[i].w = maxWidth;
+            deleteButtons[i].x = stateButtons[i].w + 3;
             deleteButtons[i].y = stateButtons[i].y + 2;
         }
     }

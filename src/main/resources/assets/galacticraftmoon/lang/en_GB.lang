@@ -15,18 +15,19 @@ item.cheeseBlock.name=Block of Cheese
 # ARMOR
 
 # BLOCKS
-tile.moonBlock.moonstone.name=Stone
-tile.moonBlock.moondirt.name=Dirt
+tile.moonBlock.moonstone.name=Moon Rock
+tile.moonBlock.moondirt.name=Moon Soil
 tile.moonBlock.moongrass.name=Moon Turf
 tile.moonBlock.tinmoon.name=Tin Ore
 tile.moonBlock.coppermoon.name=Copper Ore
 tile.moonBlock.cheesestone.name=Cheese Ore
-tile.moonBlock.bricks.name=Bricks
+tile.moonBlock.bricks.name=Moon Dungeon Brick
 tile.cheeseBlock.name=Block of Cheese
 
 dimension.Moon.name=Moon
 
 # GUI
 gui.choosePlanet.desc.moon=Habitable#No Oxygen#Gravity: 18%
+container.lander.name=Lander ##NEEDS TRANSLATE##
 
 itemGroup.GalacticraftMoon=Galacticraft Moon

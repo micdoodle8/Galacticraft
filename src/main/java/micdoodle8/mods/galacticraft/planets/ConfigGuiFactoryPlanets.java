@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets;
 import cpw.mods.fml.client.IModGuiFactory;
 import cpw.mods.fml.client.config.GuiConfig;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 
@@ -14,7 +15,7 @@ public class ConfigGuiFactoryPlanets implements IModGuiFactory
     {
         public PlanetsConfigGUI(GuiScreen parent)
         {
-            super(parent, GalacticraftPlanets.getConfigElements(), Constants.MOD_ID_PLANETS, false, false, "Galacticraft Planets Config");
+            super(parent, GalacticraftPlanets.getConfigElements(), Constants.MOD_ID_PLANETS, false, false, GCCoreUtil.translate("gc.configgui.planets.title"));
         }
     }
 

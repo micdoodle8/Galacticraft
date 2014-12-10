@@ -42,22 +42,22 @@ public final class IC2Items {
 	/* Possible values:
 
 	// ores
-	  copperOre; 			// Copper Ore block, currently not meta sensitive, meta in ItemStack set to 0, ore dictionary: oreCopper, null with enableWorldGenOreCopper=false
-	  tinOre; 			// Tin Ore block, currently not meta sensitive, meta in ItemStack set to 0, ore dictionary: oreTin, null with enableWorldGenOreTin=false
-	  uraniumOre; 		// Tin Ore block, currently not meta sensitive, meta in ItemStack set to 0, ore dictionary: oreUranium, null with enableWorldGenOreUranium=false
-	  leadOre;            // Lead Ore Block, currently not meta sensitive,  meta in ItemStack set to 0, ore dictionary: oreLead, null with enableWorldGenOreLead=false
+	  copperOre; 			// Copper Ore block, currently not meta sensitive, meta in ItemStack set to 0, ore dictionary: oreCopper, null with enableWorldGenOreCopper = false
+	  tinOre; 			// Tin Ore block, currently not meta sensitive, meta in ItemStack set to 0, ore dictionary: oreTin, null with enableWorldGenOreTin = false
+	  uraniumOre; 		// Tin Ore block, currently not meta sensitive, meta in ItemStack set to 0, ore dictionary: oreUranium, null with enableWorldGenOreUranium = false
+	  leadOre;            // Lead Ore Block, currently not meta sensitive,  meta in ItemStack set to 0, ore dictionary: oreLead, null with enableWorldGenOreLead = false
 
 	// rubber related
 
-	  Rubber wood block, meta reflects the state, meta in ItemStack set to 0, ore dictionary: woodRubber (with meta 0), null with enableWorldGenTreeRubber=false
+	  Rubber wood block, meta reflects the state, meta in ItemStack set to 0, ore dictionary: woodRubber (with meta 0), null with enableWorldGenTreeRubber = false
 	  dropped (as an item)  -> metadata 0
 	  block, no resin spot  -> metadata 0 or 1
 	  block, wet resin spot -> metadata 2-5 (according to the side)
 	  block, dry resin spot -> metadata 8-11 (wet state + 6)
 
 	  rubberWood;
-	  rubberLeaves; 		// Rubber Leaves block, currently not meta sensitive, meta in ItemStack set to 0, null with enableWorldGenTreeRubber=false
-	  rubberSapling; 		// Rubber Sapling block, currently not meta sensitive, meta in ItemStack set to 0, null with enableWorldGenTreeRubber=false
+	  rubberLeaves; 		// Rubber Leaves block, currently not meta sensitive, meta in ItemStack set to 0, null with enableWorldGenTreeRubber = false
+	  rubberSapling; 		// Rubber Sapling block, currently not meta sensitive, meta in ItemStack set to 0, null with enableWorldGenTreeRubber = false
 	  resinSheet; 		// Resin Sheet block, currently not meta sensitive
 	  rubberTrampoline; 	// Rubber Trampoline block, meta reflects internal state, meta in ItemStack set to 0
 
@@ -152,11 +152,11 @@ public final class IC2Items {
 	  luminator; 			// Passive (dark) Luminator block, meta = facing
 	  activeLuminator; 	// Active (bright) Luminator block, meta = facing
 	  centrifuge;         // Centrifuge block, meta sensitive
-	  metalformer;         // MetalFormer block ,meta sensitive
-	  orewashingplant;    // Ore Wasching Plant,Meta sensitive
-	  patternstorage;    // Pattern Storage,Meta sensitive
-	  scanner;           // Scanner,Meta sensitive
-	  replicator;           // Replicator,Meta sensitive
+	  metalformer;         // MetalFormer block , meta sensitive
+	  orewashingplant;    // Ore Wasching Plant, Meta sensitive
+	  patternstorage;    // Pattern Storage, Meta sensitive
+	  scanner;           // Scanner, Meta sensitive
+	  replicator;           // Replicator, Meta sensitive
 
 	  miningPipe; 		// Mining Pipe block, currently not meta sensitive, meta in ItemStack set to 0
 	  miningPipeTip; 		// Mining Pipe Tip block, currently not meta sensitive, meta in ItemStack set to 0
@@ -536,7 +536,6 @@ public final class IC2Items {
 	  denseplatelead;                  // Metal dense plate item, meta sensitive
 	  denseplatelapi;                  // Metal dense plate item, meta sensitive
 	  denseplateobsidian;              // Metal dense plate item, meta sensitive
-
 
 
 	// upgrade modules

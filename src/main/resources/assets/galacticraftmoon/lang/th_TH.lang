@@ -2,8 +2,8 @@
 
 # GENERAL ITEMS
 item.meteoricIronRaw.name=เหล็กอุกกาบาตดิบ
-item.meteoric_iron_ingot.name=แท่งเหล็กอุกกาบาต
 item.compressedMeteoricIron.name=แผ่นเหล็กอุกกาบาต
+item.meteoricIronIngot.name=แท่งเหล็กอุกกาบาต
 
 # FOOD
 item.cheeseCurd.name=เศษชีส
@@ -20,12 +20,12 @@ tile.moonBlock.moongrass.name=หินผิวดวงจันทร์
 tile.moonBlock.tinmoon.name=แร่ดีบุก
 tile.moonBlock.coppermoon.name=แร่ทองแดง
 tile.moonBlock.cheesestone.name=แร่ชีส
-tile.moonBlock.bricks.name=กำแพงดันเจี้ยน
+tile.moonBlock.bricks.name=อิฐดันเจี้ยนดวงจันทร์
 tile.cheeseBlock.name=บล็อกชีส
 
 # GUI
 gui.choosePlanet.desc.moon=อาศัยอยู่ได้#ไม่มีออกซิเจน#แรงโน้มถ่วง: 18%
 
-dimension.Moon.name=ดวงจันทร์
-
-itemGroup.GalacticraftMoon=กาแลคติคคราฟ ดวงจันทร์
+# OTHER
+container.lander.name=ยานลงจอด
+dimension.Moon.name=Moon ##NEEDS TRANSLATE##

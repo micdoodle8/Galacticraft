@@ -28,62 +28,62 @@ import java.util.Map;
 @Mod(name = GalacticraftPlanets.NAME, version = Constants.LOCALMAJVERSION + "." + Constants.LOCALMINVERSION + "." + Constants.LOCALBUILDVERSION, useMetadata = true, modid = Constants.MOD_ID_PLANETS, dependencies = "required-after:" + Constants.MOD_ID_CORE + ";", guiFactory = "micdoodle8.mods.galacticraft.planets.ConfigGuiFactoryPlanets")
 public class GalacticraftPlanets
 {
-	public static final String NAME = "Galacticraft Planets";
+    public static final String NAME = "Galacticraft Planets";
 
-	@Instance(Constants.MOD_ID_PLANETS)
-	public static GalacticraftPlanets instance;
+    @Instance(Constants.MOD_ID_PLANETS)
+    public static GalacticraftPlanets instance;
 
-	public static Map<String, IPlanetsModule> commonModules = new HashMap<String, IPlanetsModule>();
-	public static Map<String, IPlanetsModuleClient> clientModules = new HashMap<String, IPlanetsModuleClient>();
+    public static Map<String, IPlanetsModule> commonModules = new HashMap<String, IPlanetsModule>();
+    public static Map<String, IPlanetsModuleClient> clientModules = new HashMap<String, IPlanetsModuleClient>();
 
-	public static final String MODULE_KEY_MARS = "MarsModule";
-	public static final String MODULE_KEY_ASTEROIDS = "AsteroidsModule";
+    public static final String MODULE_KEY_MARS = "MarsModule";
+    public static final String MODULE_KEY_ASTEROIDS = "AsteroidsModule";
 
-	@SidedProxy(clientSide = "micdoodle8.mods.galacticraft.planets.PlanetsProxyClient", serverSide = "micdoodle8.mods.galacticraft.planets.PlanetsProxy")
-	public static PlanetsProxy proxy;
+    @SidedProxy(clientSide = "micdoodle8.mods.galacticraft.planets.PlanetsProxyClient", serverSide = "micdoodle8.mods.galacticraft.planets.PlanetsProxy")
+    public static PlanetsProxy proxy;
 
-	@EventHandler
-	public void preInit(FMLPreInitializationEvent event)
-	{
+    @EventHandler
+    public void preInit(FMLPreInitializationEvent event)
+    {
         FMLCommonHandler.instance().bus().register(this);
-		GalacticraftPlanets.commonModules.put(GalacticraftPlanets.MODULE_KEY_MARS, new MarsModule());
-		GalacticraftPlanets.commonModules.put(GalacticraftPlanets.MODULE_KEY_ASTEROIDS, new AsteroidsModule());
-		GalacticraftPlanets.proxy.preInit(event);
-	}
+        GalacticraftPlanets.commonModules.put(GalacticraftPlanets.MODULE_KEY_MARS, new MarsModule());
+        GalacticraftPlanets.commonModules.put(GalacticraftPlanets.MODULE_KEY_ASTEROIDS, new AsteroidsModule());
+        GalacticraftPlanets.proxy.preInit(event);
+    }
 
-	@EventHandler
-	public void init(FMLInitializationEvent event)
-	{
-		GalacticraftPlanets.proxy.init(event);
-		NetworkRegistry.INSTANCE.registerGuiHandler(GalacticraftPlanets.instance, GalacticraftPlanets.proxy);
-	}
+    @EventHandler
+    public void init(FMLInitializationEvent event)
+    {
+        GalacticraftPlanets.proxy.init(event);
+        NetworkRegistry.INSTANCE.registerGuiHandler(GalacticraftPlanets.instance, GalacticraftPlanets.proxy);
+    }
 
-	@EventHandler
-	public void postInit(FMLPostInitializationEvent event)
-	{
-		GalacticraftPlanets.proxy.postInit(event);
-	}
+    @EventHandler
+    public void postInit(FMLPostInitializationEvent event)
+    {
+        GalacticraftPlanets.proxy.postInit(event);
+    }
 
-	@EventHandler
-	public void serverStarting(FMLServerStartingEvent event)
-	{
-		GalacticraftPlanets.proxy.serverStarting(event);
-	}
+    @EventHandler
+    public void serverStarting(FMLServerStartingEvent event)
+    {
+        GalacticraftPlanets.proxy.serverStarting(event);
+    }
 
-	public static int getBlockRenderID(Block block)
-	{
-		for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules.values())
-		{
-			int id = module.getBlockRenderID(block);
+    public static int getBlockRenderID(Block block)
+    {
+        for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules.values())
+        {
+            int id = module.getBlockRenderID(block);
 
-			if (id > 1)
-			{
-				return id;
-			}
-		}
+            if (id > 1)
+            {
+                return id;
+            }
+        }
 
-		return 1;
-	}
+        return 1;
+    }
 
     public static void spawnParticle(String particleID, Vector3 position, Vector3 motion, Object... extraData)
     {

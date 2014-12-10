@@ -2,7 +2,6 @@
 
 # GENERAL ITEMS
 item.meteoricIronRaw.name=Raw Meteoric Iron
-item.meteoric_iron_ingot.name=Meteoric Iron Ingot
 item.compressedMeteoricIron.name=Compressed Meteoric Iron
 item.meteoricIronIngot.name=Meteoric Iron Ingot
 
@@ -15,16 +14,18 @@ item.cheeseBlock.name=Block of Cheese
 # ARMOR
 
 # BLOCKS
-tile.moonBlock.moonstone.name=Stone
-tile.moonBlock.moondirt.name=Dirt
+tile.moonBlock.moonstone.name=Moon Rock
+tile.moonBlock.moondirt.name=Moon Dirt
 tile.moonBlock.moongrass.name=Moon Turf
 tile.moonBlock.tinmoon.name=Tin Ore
 tile.moonBlock.coppermoon.name=Copper Ore
 tile.moonBlock.cheesestone.name=Cheese Ore
-tile.moonBlock.bricks.name=Bricks
+tile.moonBlock.bricks.name=Moon Dungeon Brick
 tile.cheeseBlock.name=Block of Cheese
 
 # GUI
 gui.choosePlanet.desc.moon=Habitable#No Oxygen#Gravity: 18%
 
+# OTHER
+container.lander.name=Lander
 dimension.Moon.name=Moon

@@ -10,93 +10,99 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerCoalGenerator extends Container
 {
-	private TileEntityCoalGenerator tileEntity;
+    private TileEntityCoalGenerator tileEntity;
 
-	public ContainerCoalGenerator(InventoryPlayer par1InventoryPlayer, TileEntityCoalGenerator tileEntity)
-	{
-		this.tileEntity = tileEntity;
-		this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 33, 34, Items.coal.getClass()));
-		int var3;
+    public ContainerCoalGenerator(InventoryPlayer par1InventoryPlayer, TileEntityCoalGenerator tileEntity)
+    {
+        this.tileEntity = tileEntity;
+        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 33, 34, Items.coal.getClass()));
+        int var3;
 
-		for (var3 = 0; var3 < 3; ++var3)
-		{
-			for (int var4 = 0; var4 < 9; ++var4)
-			{
-				this.addSlotToContainer(new Slot(par1InventoryPlayer, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
-			}
-		}
+        for (var3 = 0; var3 < 3; ++var3)
+        {
+            for (int var4 = 0; var4 < 9; ++var4)
+            {
+                this.addSlotToContainer(new Slot(par1InventoryPlayer, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
+            }
+        }
 
-		for (var3 = 0; var3 < 9; ++var3)
-		{
-			this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 142));
-		}
-	}
+        for (var3 = 0; var3 < 9; ++var3)
+        {
+            this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 142));
+        }
+    }
 
-	@Override
-	public void onContainerClosed(EntityPlayer entityplayer)
-	{
-		super.onContainerClosed(entityplayer);
-	}
+    @Override
+    public void onContainerClosed(EntityPlayer entityplayer)
+    {
+        super.onContainerClosed(entityplayer);
+    }
 
-	@Override
-	public boolean canInteractWith(EntityPlayer par1EntityPlayer)
-	{
-		return this.tileEntity.isUseableByPlayer(par1EntityPlayer);
-	}
+    @Override
+    public boolean canInteractWith(EntityPlayer par1EntityPlayer)
+    {
+        return this.tileEntity.isUseableByPlayer(par1EntityPlayer);
+    }
 
-	/**
-	 * Called to transfer a stack from one inventory to the other eg. when shift
-	 * clicking.
-	 */
-	@Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
-	{
-		ItemStack var2 = null;
-		Slot var3 = (Slot) this.inventorySlots.get(par1);
+    /**
+     * Called to transfer a stack from one inventory to the other eg. when shift
+     * clicking.
+     */
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
+    {
+        ItemStack var2 = null;
+        Slot var3 = (Slot) this.inventorySlots.get(par1);
 
-		if (var3 != null && var3.getHasStack())
-		{
-			ItemStack var4 = var3.getStack();
-			var2 = var4.copy();
+        if (var3 != null && var3.getHasStack())
+        {
+            ItemStack var4 = var3.getStack();
+            var2 = var4.copy();
 
-			if (par1 != 0)
-			{
-				if (var4.getItem() == Items.coal)
-				{
-					if (!this.mergeItemStack(var4, 0, 1, false))
-					{
-						return null;
-					}
-				}
-				else if (par1 >= 28)
-				{
-					if (!this.mergeItemStack(var4, 1, 28, false)) return null;
-				}
-				else if (!this.mergeItemStack(var4, 28, 37, false)) return null;
-				
-			}
-			else if (!this.mergeItemStack(var4, 1, 37, false))
-			{
-				return null;
-			}
+            if (par1 != 0)
+            {
+                if (var4.getItem() == Items.coal)
+                {
+                    if (!this.mergeItemStack(var4, 0, 1, false))
+                    {
+                        return null;
+                    }
+                }
+                else if (par1 >= 28)
+                {
+                    if (!this.mergeItemStack(var4, 1, 28, false))
+                    {
+                        return null;
+                    }
+                }
+                else if (!this.mergeItemStack(var4, 28, 37, false))
+                {
+                    return null;
+                }
 
-			if (var4.stackSize == 0)
-			{
-				var3.putStack((ItemStack) null);
-			}
-			else
-			{
-				var3.onSlotChanged();
-			}
+            }
+            else if (!this.mergeItemStack(var4, 1, 37, false))
+            {
+                return null;
+            }
 
-			if (var4.stackSize == var2.stackSize)
-			{
-				return null;
-			}
+            if (var4.stackSize == 0)
+            {
+                var3.putStack((ItemStack) null);
+            }
+            else
+            {
+                var3.onSlotChanged();
+            }
 
-			var3.onPickupFromSlot(par1EntityPlayer, var4);
-		}
+            if (var4.stackSize == var2.stackSize)
+            {
+                return null;
+            }
 
-		return var2;
-	}
+            var3.onPickupFromSlot(par1EntityPlayer, var4);
+        }
+
+        return var2;
+    }
 }

@@ -4,16 +4,20 @@
 item.rawDesh.name=Необработанная деш
 item.deshStick.name=Палка из деш
 item.ingotDesh.name=Слиток деш
-item.spaceshipTier2.t2Rocket.name=Ракета 2-ого уровня
+item.spaceshipTier2.t2Rocket.name=Ракета 2-го уровня
 item.reinforcedPlateT2.name=Сверхпрочное покрытие
-item.tier2.desc=Tier 2
+item.tier2.desc=2-ой уровень
 item.slimelingCargo.name=Сумка слаймлинга
-item.key.T2.name=Ключ от подземелья 2-ого уровня
+item.key.T2.name=Ключ от подземелья 2-го уровня
 item.compressedDesh.name=Сжатая деш
 item.spaceshipTier2.cargoRocket.name=Грузовая ракета
+item.fluidManip.name=Манипулятор жидкости
+item.bucketSludge.name=Ведро бактериального осадка
+fluid.bacterialsludge=Бактериальный осадок
 
 # TOOLS
 item.deshPick.name=Кирка из деш
+item.deshPickSlime.name=Липкая кирка из деш
 item.deshAxe.name=Топор из деш
 item.deshHoe.name=Мотыга из деш
 item.deshSpade.name=Лопата из деш
@@ -30,38 +34,33 @@ tile.mars.deshmars.name=Руда деш
 tile.mars.coppermars.name=Медная руда
 tile.mars.tinmars.name=Оловянная руда
 tile.mars.ironmars.name=Железная руда
-tile.mars.marscobblestone.name=Булыжник
+tile.mars.marscobblestone.name=Марсианский булыжник
 tile.mars.marsstone.name=Марсианский камень
 tile.mars.marsdirt.name=Марсианский подповерхностный камень
 tile.mars.marsgrass.name=Марсианский поверхностный камень
 tile.mars.marsdeco.name=Блок деш
-tile.mars.marsdungeon.name=Стена подземелья
-tile.treasureT2.name=Сундук с сокровищами 2-ого уровня
+tile.mars.marsdungeon.name=Кирпич марсианской сокровищницы
+tile.treasureT2.name=Сундук с сокровищами 2-го уровня
 tile.slimelingEgg.redEgg.name=Красное яйцо слаймлинга
 tile.slimelingEgg.blueEgg.name=Синее яйцо слаймлинга
 tile.slimelingEgg.yellowEgg.name=Жёлтое яйцо слаймлинга
 tile.marsMachine.0.name=Терраформер
 tile.marsMachine.1.name=Криогенная камера
 tile.marsMachine.2.name=Контроллер запуска
+tile.marsMachine.4.name=Сжижитель газа
+tile.marsMachine.5.name=Синтезатор метана
+tile.marsMachine.6.name=Электролизёр воды
 tile.sludge.name=Бактериальный осадок
 tile.creeperEgg.name=Яйцо крипера
 tile.cavernVines.name=Пещерные лианы
-tile.tintedGlassPane.white.name=Белая окрашенная стеклянная панель
-tile.tintedGlassPane.orange.name=Оранжевая окрашенная стеклянная панель
-tile.tintedGlassPane.magenta.name=Сиреневая окрашенная стеклянная панель
-tile.tintedGlassPane.light_blue.name=Светло-синяя окрашенная стеклянная панель
-tile.tintedGlassPane.yellow.name=Жёлтая окрашенная стеклянная панель
-tile.tintedGlassPane.lime.name=Лаймовая окрашенная стеклянная панель
-tile.tintedGlassPane.pink.name=Розовая окрашенная стеклянная панель
-tile.tintedGlassPane.gray.name=Серая окрашенная стеклянная панель
-tile.tintedGlassPane.silver.name=Светло-серая окрашенная стеклянная панель
-tile.tintedGlassPane.cyan.name=Бирюзовая окрашенная стеклянная панель
-tile.tintedGlassPane.purple.name=Фиолетовая окрашенная стеклянная панель
-tile.tintedGlassPane.blue.name=Синяя окрашенная стеклянная панель
-tile.tintedGlassPane.brown.name=Коричневая окрашенная стеклянная панель
-tile.tintedGlassPane.green.name=Зелёная окрашенная стеклянная панель
-tile.tintedGlassPane.red.name=Красная окрашенная стеклянная панель
-tile.tintedGlassPane.black.name=Чёрная окрашенная стеклянная панель
+
+# DECOBLOCKS
+tile.marsCobblestoneStairs.name=Ступеньки из марсианского булыжника
+tile.wallGC.mars.name=Стена из марсианского булыжника
+tile.slabGCHalf.marsSlab.name=Плита из марсианского булыжника
+tile.marsDungeonBricksStairs.name=Ступеньки из кирпича марсианской сокровищницы
+tile.wallGC.marsBricks.name=Стена из кирпича марсианской сокровищницы
+tile.slabGCHalf.marsBricksSlab.name=Плита из кирпича марсианской сокровищницы
 
 # GUI
 gui.choosePlanet.desc.mars=Обитаем#Кислород отсутствует#Гравитация: 38%
@@ -94,25 +93,105 @@ gui.message.redstoneSig.name=сигнал красного камня
 gui.message.notSet.name=не указано
 gui.message.notEnough.name=Недостаточно
 gui.message.success.name=Успех
+gui.message.zeroWater.name=Нет воды!
 
-gui.desc.reinforcedPlateT2.name=2 уровень
+	# Dollar sign ($) will split text onto a new line
+gui.launchController.desc.0=Это уникальная частота$контроллера запуска
+gui.launchController.desc.1=Частота для запуска ракет по направлению
+gui.launchController.desc.2=Взлётная площадка должна быть$удалена при запуске
+gui.launchController.desc.3=Когда это условие выполняется,$ракета запускается
+gui.terraformer.desc.0=Водный резервуар
 
-itemGroup.GalacticraftMars=Galacticraft: Марс
+gui.gasTank.desc.0=Хранилище газа
+gui.gasTankCompressed.desc.0=Хранилище газа (Сжатого)
+gui.liquidTank.desc.0=Жидкостный резервуар
+gui.status.nogas.name=Нет газа
+gui.status.liquefying.name=Сжижение
+gui.status.processing.name=Синтезация
+gui.status.needsCarbon.name=Нужен уголь
+gui.status.tankfull.name=Резервуар полон
+gui.status.tanksfull.name=Резервуары полны
+gui.message.lowEnergy.name=Мало энергии
+gui.button.liquefy.name=Запуск
+gui.button.liquefyStop.name=Стоп
+gui.gasInput.desc.0=Попробуйте поместить сюда$канистру с метаном
+gui.gasInput.desc.1=(Или в качестве альтернативы,$атмосферный клапан)
+gui.hydrogenInput.desc.0=Сюда помещается резервуар с водородом
+gui.hydrogenInput.desc.1=или атмосферный клапан
+gui.liquidOutput.desc.2=резервуар сжиженного газа
+gui.methaneOutput.desc.2=резервуар метана
+gui.message.withAtmosphere0.name=на планете с большим количеством
+gui.message.withAtmosphere1.name=в атмосфере
+item.carbonFragments.name=Раздробленный уголь
+gui.carbonSlot.desc.0=Раздробленный уголь ложится сюда
+gui.waterBucketSlot.desc=Положите вёдра с водой сюда
 
+gui.cargorocket.status.waiting.0=Ожидание
+gui.cargorocket.status.waiting.1=зажигания
+gui.cargorocket.status.launched.0=Уже
+gui.cargorocket.status.launched.1=запущена
+
+gas.carbondioxide.name=Углекислый газ
+gas.oxygen.name=Кислород
+gas.nitrogen.name=Азот
+
+gui.desc.reinforcedPlateT2.name=2-ой уровень
 dimension.Mars.name=Марс
 planet.mars=Марс
 
-# Schematics
-schematic.rocketT3.name=Ракета 3-его уровня
+tile.treasureT2.description=Сундуки с сокровищами 2-го уровня генерируются в сокровищницах Марса. Их можно открыть после победы над финальным боссом.
+tile.cavernVines.description=Пещерные лианы опасны для живых существ, тем что они опутывают их и тащут их вверх.
+tile.slimelingEgg.description=Яйца слаймлингов, если разбить их голыми руками, то скоро из них вылупится питомец.
+tile.cryoChamber.description=Криогенные камеры позволят игроку спать днём, восстанавливая тем самым небольшое количество здоровья, но на это уйдёт время.
+tile.launchController.description=Контроллеры запуска используются для настройки поведения запуска, включая условие запуска и назначение площадки запуска, для автоматических запусков.
+tile.terraformer.description=Терраформеры используются для добавления зелени дальним планетам: добавляют траву, деревья и воду, если имеются нужные материалы.
+tile.creeperEgg.description=Яйца крипера появляются в сокровищницах Марса, из них вылупляется скрытный хищник при взрыве.
+tile.gasLiquefier.description=Разжижает газы из атмосферы или из канистры. Сжиженный метан подходит для хорошего ракетного топлива!
+tile.methaneSynthesizer.description=При наличии источника водорода и источника углерода, он производит метан для дальнейшей обработки в сжижители газа.
+tile.electrolyzer.description=Преобразует воду в водород (Нужен для синтезатора метана) и кислород.
+
+gui.slimeling.chat.wrongPlayer=Это не мой слаймлинг!
+gui.cryogenic.chat.cantUse=Я не могу использовать это в течение %d секунд(-ы)
+gui.slimeling.name=Имя
+gui.slimeling.owner=Владелец
+gui.slimeling.kills=Убийств
+gui.slimeling.scale=Размер
+gui.slimeling.button.sit=Сиди
+gui.slimeling.button.follow=Следуй
+gui.slimeling.sitting=Сидит
+gui.slimeling.following=Следует
+gui.slimeling.damage=Урон
+gui.slimeling.food=Любимая еда
+
+# SCHEMATICS
+schematic.rocketT3.name=Ракета 3-го уровня
 schematic.cargoRocket.name=Автоматическая грузовая ракета
 
-# Entities
+# ENTITIES
 entity.Sludgeling.name=Сладжлинг
 entity.Slimeling.name=Слаймлинг
 entity.CreeperBoss.name=Эволюционировавший крипер-босс
-entity.SpaceshipT2.name=Ракета 2-ого уровня
+entity.SpaceshipT2.name=Ракета 2-го уровня
 entity.CargoRocket.name=Грузовая ракета
 
-# Container
+# CONTAINERS
 container.launchcontroller.name=Контроллер запуска
 container.tileTerraformer.name=Терраформер
+container.marsLander.name=Посадочные шары
+
+# CONFIG GUI
+gc.configgui.dimensionIDMars=ID измерения: Марс
+gc.configgui.idEntityCreeperBoss=ID сущности: Эволюционировавший крипер-босс
+gc.configgui.idEntityProjectileTNT=ID сущности: Метательный динамит
+gc.configgui.idEntitySpaceshipTier2=ID сущности: Ракета 2-го уровня
+gc.configgui.idEntitySludgeling=ID сущности: Сладжлинг
+gc.configgui.idEntitySlimeling=ID сущности: Слаймлинг
+gc.configgui.idEntityTerraformBubble=ID сущности: Терраформирующий пузырь
+gc.configgui.idEntityLandingBalloons=ID сущности: Посадочные шары
+gc.configgui.idEntityCargoRocket=ID сущности: Грузовая ракета
+gc.configgui.idSchematicRocketT2=ID схемы: Ракета 2-го уровня
+gc.configgui.idSchematicCargoRocket=ID схемы: Грузовая ракета
+gc.configgui.launchControllerChunkLoad=Загрузка чанков контроллером запуска
+gc.configgui.launchControllerAllDims=Загрузка всех измерений контроллером запуска
+
+gc.configgui.planets.title=Конфигурация планет Galacticraft

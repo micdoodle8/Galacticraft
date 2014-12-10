@@ -1,0 +1,125 @@
+# Galacticraft Asteroids Language File =MAGYAR
+
+# GENERAL ITEMS
+item.itemTier3Rocket.t3Rocket.name=3-As Szintű Rakéta
+item.heavyNoseCone.name=Nehéz Orrkúp
+item.compressedTitanium.name=Préselt Titánium
+item.ingotTitanium.name=Titániumrúd
+item.shardTitanium.name=Titániumszilánk
+item.shardIron.name=Vasszilánk
+item.rocketFinsT2.name=Nehéz Légterelő Szárny
+item.engineT2.name=Nehéz Rakétamotor
+item.reinforcedPlateT3.name=Nehéz Borítólemez
+item.grapple.name=Fogó
+item.atmosphericValve.name=Légköri Szelep
+item.thermalCloth.name=Hővégő Anyag
+item.beamCore.name=Sugárgerjesztő
+item.tier3.desc=3-As Szintű
+
+# TOOLS
+item.titanium_pickaxe.name=Titánium Csákány
+item.titanium_axe.name=Titánium Balta
+item.titanium_hoe.name=Titánium Kapa
+item.titanium_shovel.name=Titánium Ásó
+item.titanium_sword.name=Titánium Kard
+
+# ARMOR
+item.thermalHelm.name=Hővédő Sisak-Bélés
+item.thermalChestplate.name=Hővédő Mellvért-Bélés
+item.thermalLeggings.name=Hővédő Lábszárvégő-Bélés
+item.thermalBoots.name=Hővédő Bakancs-Bélés
+item.titanium_helmet.name=Titánium Sisak
+item.titanium_chestplate.name=Titánium Mellvért
+item.titanium_leggings.name=Titánium Lábszárvédő
+item.titanium_boots.name=Titánium Bakancs
+
+# CANISTERS ETC
+item.methaneCanisterPartial.name=Metán-Kanna
+item.methaneCanister.name=Teletöltött Metán-Kanna
+item.canister.gas.name=Gáz                  #Metángáz Töltöttségi-Szintje Röviden
+item.canister.LOX.partial.name=Folyékony Oxigén-Kanna
+item.canister.LOX.full.name=Teletöltött Folyékony Oxigén-Kanna
+item.canister.LOX.name=FOT                  #Folyékony Oxigén Töltöttségi Szintje Röviden
+item.canister.liquidNitrogen.partial.name=Nem Teljesen Teletöltött Folyékony Nitrogén-Kanna
+item.canister.liquidNitrogen.full.name=Teletöltött Folyékony Nitrogén-Kanna
+item.canister.liquidNitrogen.name=Folyadék    #Folyékony Nitrogén Töltöttségi Szintje Röviden
+item.canister.liquidArgon.partial.name=Nem Teljesen Teletöltött Folyékony Argon-Kanna
+item.canister.liquidArgon.full.name=Teletöltött Folyékony Argon-Kanna
+item.canister.liquidArgon.name=Folyadék       #Folyékony Argon Töltöttségi Szintje Röviden
+item.emptyGasCanister.name=Üres Gáz-Kanna
+
+# FLUIDS AND GASES
+fluid.methane=Metángáz
+fluid.oxygen=Oxigéngáz
+fluid.nitrogen=Nitrogéngáz
+fluid.hydrogen=Hidrogéngáz
+fluid.carbondioxide=Széndioxid-Gáz
+fluid.helium=Héliumgáz
+fluid.argon=Argongáz
+fluid.atmosphericgases=Légköri Gázok
+fluid.liquidmethane=Folyékony Metán
+fluid.liquidoxygen=Folyékony Oxigén
+fluid.liquidnitrogen=Folyékony Nitrogén
+fluid.liquidargon=Folyékony Argon
+fluid.fuel=Üzemanyag
+
+# BLOCKS
+tile.asteroidsBlock.asteroid0.name=Aszteroida-Szikla
+tile.asteroidsBlock.asteroid1.name=Aszteroida-Szikla
+tile.asteroidsBlock.asteroid2.name=Aszteroida-Szikla
+tile.asteroidsBlock.oreIron.name=Aszteroidai-Vasérc
+tile.asteroidsBlock.oreIlmenite.name=Aszteroidai-Ilmenitérc
+tile.asteroidsBlock.oreAluminum.name=Aszteroidai Alumíniumérc
+tile.beamReflector.name=Lézersugár-Kibocsájtó
+tile.beamReceiver.name=Lézersugár-Vevő
+tile.telepadShort.name=Rövidtávú Teleporter
+tile.walkway.name=Üvegpadló
+tile.walkwayWire.name=Vezetékes Üvegpadlő
+tile.walkwayOxygenPipe.name=Légcsöves Üvegpadló
+tile.treasureT3.name=3-As Szintű Kincsesláda
+tile.denseIce.name=Tömör Jég
+
+# GUI
+planet.asteroids=Aszteroidák
+
+	# Dollar sign ($) will split text onto a new line
+	# Do not remove %s or %d, since that will be replaced in-game
+gui.telepad.desc.0=Ez A Telepoerer $ Saját Frekvenciája
+gui.telepad.desc.1=A Célpont Teleporter $ Frekvenciája.
+gui.message.address.name=Saját Frekvencia
+gui.message.destAddress.name=Célpont Frekvenciája
+gui.message.invalidAddress.name=Érvénytelen Saját Frekvencia
+gui.message.invalidTargetAddress.name=Érvénytelen A Célpont Frekvenciája
+gui.message.receivingActive.name=Fogadás Elérhető
+gui.message.telepadTooFar.name=Célpont Túl Messze Van (Hatósugár: %d)
+gui.message.telepadWrongDim.name=A Célpont Érvénytelen Dimenzióban Van
+gui.message.telepadNotFound.name=Teleporter Nem Találva
+gui.message.sendingActive.name=Küldés Elérhető
+gui.message.range.name=Hatósugár: %dm
+gui.message.notEnoughEnergy.name=Nincs Elég Energia
+gui.message.targetNoEnergy.name=A Célpontnak Nincs Elég Energiája
+gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook! ##NEEDS TRANSLATE##
+tile.treasureT3.description=Tier 3 Treasure Chests are currently unused. ##NEEDS TRANSLATE##
+tile.walkway.description=Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme. ##NEEDS TRANSLATE##
+tile.walkwayAluminumWire.description=Aluminum Wire Walkways are used for running wire underneath a fully walkable surface. ##NEEDS TRANSLATE##
+tile.walkwayOxygenPipe.description=Oxygen Pipe Walkways are used for running pipes underneath a fully walkable surface. ##NEEDS TRANSLATE##
+tile.beamReflector.description=Beam Reflectors are used to redirect energy beams from source to destination. Can be right-clicked to cycle through targets. ##NEEDS TRANSLATE##
+tile.beamReceiver.description=Beam Receivers are connected to energy machine input and output, to transfer energy using beams. ##NEEDS TRANSLATE##
+tile.telepadShort.description=Short Range Telepads are used to transfer players and other living creatures short distances (250 Blocks) when linked to other telepads. ##NEEDS TRANSLATE##
+
+# SCHEMATICS
+
+# ENTITIES
+entity.SmallAsteroidGC.name=Kis Aszteroida
+entity.GrappleHookGC.name=Fodó Szigonyja
+entity.Tier3RocketGC.name=3-As Szintű Rakéta
+
+# CONTAINERS
+container.shortRangeTelepad.name=Rövidtávú Teleporter
+container.entryPod.name=Érkezőkapszula
+gc.configgui.dimensionIDAsteroids=Asteroids Dimension ID
+gc.configgui.idEntitySmallAsteroid=Small Asteroid Entity ID
+gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID
+gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID
+gc.configgui.idEntityEntryPod=Entry Pod Entity ID
+gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID

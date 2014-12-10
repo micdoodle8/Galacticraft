@@ -9,19 +9,19 @@ public class BlockCoord implements Comparable<BlockCoord>, Copyable<BlockCoord>
     public int x;
     public int y;
     public int z;
-    
+
     public BlockCoord(int x, int y, int z)
     {
         this.x = x;
         this.y = y;
         this.z = z;
     }
-    
+
     public BlockCoord(Vector3 v)
     {
         this(MathHelper.floor_double(v.x), MathHelper.floor_double(v.y), MathHelper.floor_double(v.z));
     }
-    
+
     public BlockCoord(TileEntity tile)
     {
         this(tile.xCoord, tile.yCoord, tile.zCoord);
@@ -31,7 +31,7 @@ public class BlockCoord implements Comparable<BlockCoord>, Copyable<BlockCoord>
     {
         this(ia[0], ia[1], ia[2]);
     }
-    
+
     public BlockCoord()
     {
     }
@@ -49,7 +49,7 @@ public class BlockCoord implements Comparable<BlockCoord>, Copyable<BlockCoord>
         BlockCoord o2 = (BlockCoord)obj;
         return x == o2.x && y == o2.y && z == o2.z;
     }
-    
+
     @Override
     public int hashCode()
     {
@@ -81,7 +81,7 @@ public class BlockCoord implements Comparable<BlockCoord>, Copyable<BlockCoord>
     {
         return Math.sqrt(x*x+y*y+z*z);
     }
-    
+
     public int mag2()
     {
         return x*x+y*y+z*z;
@@ -96,7 +96,7 @@ public class BlockCoord implements Comparable<BlockCoord>, Copyable<BlockCoord>
     {
         return x == 0 ? (y == 0 || z == 0) : (y == 0 && z == 0);
     }
-    
+
     public BlockCoord add(BlockCoord coord2)
     {
         x+=coord2.x;
@@ -112,7 +112,7 @@ public class BlockCoord implements Comparable<BlockCoord>, Copyable<BlockCoord>
         z+=k;
         return this;
     }
-    
+
     public BlockCoord sub(BlockCoord coord2)
     {
         x-=coord2.x;
@@ -128,7 +128,7 @@ public class BlockCoord implements Comparable<BlockCoord>, Copyable<BlockCoord>
         z-=k;
         return this;
     }
-    
+
     public BlockCoord offset(int side)
     {
         return offset(side, 1);
@@ -142,7 +142,7 @@ public class BlockCoord implements Comparable<BlockCoord>, Copyable<BlockCoord>
         z+=offset.z*amount;
         return this;
     }
-    
+
     public BlockCoord inset(int side)
     {
         return inset(side, 1);
@@ -182,7 +182,7 @@ public class BlockCoord implements Comparable<BlockCoord>, Copyable<BlockCoord>
         }
         return this;
     }
-    
+
     public static final BlockCoord[] sideOffsets = new BlockCoord[]{
         new BlockCoord( 0,-1, 0),
         new BlockCoord( 0, 1, 0),
@@ -218,7 +218,7 @@ public class BlockCoord implements Comparable<BlockCoord>, Copyable<BlockCoord>
     {
         return set(ia[0], ia[1], ia[2]);
     }
-    
+
     public int toSide()
     {
         if(!isAxial()) return -1;
@@ -228,14 +228,19 @@ public class BlockCoord implements Comparable<BlockCoord>, Copyable<BlockCoord>
         if(z > 0) return 3;
         if(x < 0) return 4;
         if(x > 0) return 5;
-        
+
         return -1;
     }
-    
+
     public int absSum()
     {
-        return (x < 0 ? -x : x) + 
-                (y < 0 ? -y : y) + 
+        return (x < 0 ? -x : x) +
+                (y < 0 ? -y : y) +
                 (z < 0 ? -z : z);
+    }
+
+    public String toString()
+    {
+        return "("+x+", "+y+", "+z+")";
     }
 }

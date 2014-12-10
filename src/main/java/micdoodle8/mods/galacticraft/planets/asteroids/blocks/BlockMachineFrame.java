@@ -17,86 +17,86 @@ import java.util.Random;
 
 public class BlockMachineFrame extends Block
 {
-	@SideOnly(Side.CLIENT)
-	private IIcon[] blockIcons;
+    @SideOnly(Side.CLIENT)
+    private IIcon[] blockIcons;
 
-	public BlockMachineFrame(String assetName)
-	{
-		super(Material.rock);
-		this.blockHardness = 3.0F;
-		this.setBlockName(assetName);
-	}
+    public BlockMachineFrame(String assetName)
+    {
+        super(Material.rock);
+        this.blockHardness = 3.0F;
+        this.setBlockName(assetName);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister)
-	{
-		this.blockIcons = new IIcon[1];
-		this.blockIcons[0] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "machineframe");
-		this.blockIcon = this.blockIcons[0];
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister par1IconRegister)
+    {
+        this.blockIcons = new IIcon[1];
+        this.blockIcons[0] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "machineframe");
+        this.blockIcon = this.blockIcons[0];
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public CreativeTabs getCreativeTabToDisplayOn()
-	{
-		return GalacticraftCore.galacticraftBlocksTab;
-	}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public CreativeTabs getCreativeTabToDisplayOn()
+    {
+        return GalacticraftCore.galacticraftBlocksTab;
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public IIcon getIcon(int side, int meta)
-	{
-		if (meta < 0 || meta >= this.blockIcons.length)
-		{
-			return this.blockIcon;
-		}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public IIcon getIcon(int side, int meta)
+    {
+        if (meta < 0 || meta >= this.blockIcons.length)
+        {
+            return this.blockIcon;
+        }
 
-		return this.blockIcons[meta];
-	}
+        return this.blockIcons[meta];
+    }
 
-	@Override
-	public Item getItemDropped(int meta, Random random, int par3)
-	{
-		switch (meta)
-		{
-		default:
-			return super.getItemDropped(meta, random, par3);
-		}
-	}
+    @Override
+    public Item getItemDropped(int meta, Random random, int par3)
+    {
+        switch (meta)
+        {
+        default:
+            return super.getItemDropped(meta, random, par3);
+        }
+    }
 
-	@Override
-	public int damageDropped(int meta)
-	{
-		return meta;
-	}
+    @Override
+    public int damageDropped(int meta)
+    {
+        return meta;
+    }
 
-	@Override
-	public int quantityDropped(int meta, int fortune, Random random)
-	{
-		switch (meta)
-		{
-		default:
-			return 1;
-		}
-	}
+    @Override
+    public int quantityDropped(int meta, int fortune, Random random)
+    {
+        switch (meta)
+        {
+        default:
+            return 1;
+        }
+    }
 
-	@Override
-	public boolean isOpaqueCube()
-	{
-		return false;
-	}
+    @Override
+    public boolean isOpaqueCube()
+    {
+        return false;
+    }
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-	{
-		int var4;
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    {
+        int var4;
 
-		for (var4 = 0; var4 < this.blockIcons.length; ++var4)
-		{
-			par3List.add(new ItemStack(par1, 1, var4));
-		}
-	}
+        for (var4 = 0; var4 < this.blockIcons.length; ++var4)
+        {
+            par3List.add(new ItemStack(par1, 1, var4));
+        }
+    }
 }

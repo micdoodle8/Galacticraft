@@ -30,26 +30,16 @@ public class EntityFXTeleport extends EntityFX
         this.portalPosY = this.posY = position.y;
         this.portalPosZ = this.posZ = position.z;
         this.portalParticleScale = this.particleScale = this.rand.nextFloat() * 0.2F + 0.5F;
-        this.particleMaxAge = (int)(Math.random() * 10.0D) + 40;
+        this.particleMaxAge = (int) (Math.random() * 10.0D) + 40;
         this.noClip = true;
-        this.setParticleTextureIndex((int)(Math.random() * 8.0D));
+        this.setParticleTextureIndex((int) (Math.random() * 8.0D));
         this.telepad = new WeakReference<TileEntityShortRangeTelepad>(telepad);
         this.direction = direction;
     }
 
     public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7)
     {
-        TileEntityShortRangeTelepad telepad1 = this.telepad.get();
-
-        if (telepad1 != null)
-        {
-            Vector3 color = telepad1.getParticleColor(this.rand, this.direction);
-            this.particleRed = color.floatX();
-            this.particleGreen = color.floatY();
-            this.particleBlue = color.floatZ();
-        }
-
-        float f6 = ((float)this.particleAge + par2) / (float)this.particleMaxAge;
+        float f6 = (this.particleAge + par2) / this.particleMaxAge;
         f6 = 1.0F - f6;
         f6 *= f6;
         f6 = 1.0F - f6;
@@ -60,12 +50,12 @@ public class EntityFXTeleport extends EntityFX
     public int getBrightnessForRender(float par1)
     {
         int i = super.getBrightnessForRender(par1);
-        float f1 = (float)this.particleAge / (float)this.particleMaxAge;
+        float f1 = (float) this.particleAge / (float) this.particleMaxAge;
         f1 *= f1;
         f1 *= f1;
         int j = i & 255;
         int k = i >> 16 & 255;
-        k += (int)(f1 * 15.0F * 16.0F);
+        k += (int) (f1 * 15.0F * 16.0F);
 
         if (k > 240)
         {
@@ -78,23 +68,33 @@ public class EntityFXTeleport extends EntityFX
     public float getBrightness(float par1)
     {
         float f1 = super.getBrightness(par1);
-        float f2 = (float)this.particleAge / (float)this.particleMaxAge;
+        float f2 = (float) this.particleAge / (float) this.particleMaxAge;
         f2 = f2 * f2 * f2 * f2;
         return f1 * (1.0F - f2) + f2;
     }
 
     public void onUpdate()
     {
+        TileEntityShortRangeTelepad telepad1 = this.telepad.get();
+
+        if (telepad1 != null)
+        {
+            Vector3 color = telepad1.getParticleColor(this.rand, this.direction);
+            this.particleRed = color.floatX();
+            this.particleGreen = color.floatY();
+            this.particleBlue = color.floatZ();
+        }
+
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
-        float f = (float)this.particleAge / (float)this.particleMaxAge;
+        float f = (float) this.particleAge / (float) this.particleMaxAge;
         float f1 = f;
         f = -f + f * f * 2.0F;
         f = 1.0F - f;
-        this.posX = this.portalPosX + this.motionX * (double)f;
-        this.posY = this.portalPosY + this.motionY * (double)f + (double)(1.0F - f1);
-        this.posZ = this.portalPosZ + this.motionZ * (double)f;
+        this.posX = this.portalPosX + this.motionX * f;
+        this.posY = this.portalPosY + this.motionY * f + (1.0F - f1);
+        this.posZ = this.portalPosZ + this.motionZ * f;
 
         if (this.particleAge++ >= this.particleMaxAge)
         {

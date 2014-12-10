@@ -14,6 +14,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class GuiPotionCreator extends GuiContainerWidget
@@ -30,16 +31,17 @@ public class GuiPotionCreator extends GuiContainerWidget
                 if (p != null)
                     validPotions.add(p);
             setSmoothScroll(false);
-            setContentSize(x, y, height);
+            setMargins(0, 0, 0, 0);
         }
 
         @Override
-        public int getSlotHeight() {
+        public int getSlotHeight(int slot) {
             return 19;
         }
 
         @Override
-        public void drawSlotBox(float frame) {
+        public void drawBackground(float frame) {
+            super.drawBackground(frame);
             drawRect(x, y, x + width, y + height, 0xFF000000);
         }
 
@@ -48,17 +50,19 @@ public class GuiPotionCreator extends GuiContainerWidget
         }
 
         @Override
-        public boolean drawLineGuide() {
-            return false;
+        public int scrollbarGuideAlignment() {
+            return 0;
         }
 
         @Override
-        public int getScrollBarWidth() {
-            return 7;
+        public Dimension scrollbarDim() {
+            Dimension dim = super.scrollbarDim();
+            dim.width = 7;
+            return dim;
         }
 
         @Override
-        protected void drawSlot(int slot, int x, int y, int mx, int my, boolean selected, float frame) {
+        protected void drawSlot(int slot, int x, int y, int mx, int my, float frame) {
             GL11.glColor4f(1, 1, 1, 1);
             Potion potion = validPotions.get(slot);
             PotionEffect effect = getEffect(potion.id);
@@ -68,13 +72,13 @@ public class GuiPotionCreator extends GuiContainerWidget
             int shade = selectedslot == slot ? 2 : blank ? 1 : 0;
 
             CCRenderState.changeTexture("textures/gui/container/enchanting_table.png");
-            drawTexturedModalRect(x, y, 0, 166 + getSlotHeight() * shade, width - 30, getSlotHeight());
-            drawTexturedModalRect(x + width - 30, y, width - 23, 166 + getSlotHeight() * shade, 30, getSlotHeight());
+            drawTexturedModalRect(x, y, 0, 166 + getSlotHeight(slot) * shade, width - 30, getSlotHeight(slot));
+            drawTexturedModalRect(x + width - 30, y, width - 23, 166 + getSlotHeight(slot) * shade, 30, getSlotHeight(slot));
 
             if (potion.hasStatusIcon()) {
                 CCRenderState.changeTexture("textures/gui/container/inventory.png");
                 int icon = potion.getStatusIconIndex();
-                drawTexturedModalRect(x + 1, y + 1, 0 + icon % 8 * 18, 198 + icon / 8 * 18, 18, 18);
+                drawTexturedModalRect(x + 1, y + 1, icon % 8 * 18, 198 + icon / 8 * 18, 18, 18);
             }
 
             String name = StatCollector.translateToLocal(potion.getName());
@@ -111,12 +115,7 @@ public class GuiPotionCreator extends GuiContainerWidget
         }
 
         @Override
-        protected boolean isSlotSelected(int slot) {
-            return slot == selectedslot;
-        }
-
-        @Override
-        protected void slotClicked(int slot, int button, int mx, int my, boolean doubleclick) {
+        protected void slotClicked(int slot, int button, int mx, int my, int count) {
             if (!enabled)
                 return;
 

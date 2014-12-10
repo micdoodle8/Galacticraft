@@ -2,8 +2,8 @@
 
 # GENERAL ITEMS
 item.meteoricIronRaw.name=Ham Meteorik Demir
-item.meteoric_iron_ingot.name=Meteorik Demir Külçesi
 item.compressedMeteoricIron.name=Sıkıştırılmış Meteorik Demir
+item.meteoricIronIngot.name=Meteorik Demir Külçesi
 
 # FOOD
 item.cheeseCurd.name=Lor Peynir
@@ -25,7 +25,6 @@ tile.cheeseBlock.name=Peynir Bloğu
 
 # GUI
 gui.choosePlanet.desc.moon=Yaşanabilir#Oksijen Bulunmuyor#Yerçekimi: %18
+container.lander.name=Lander ##NEEDS TRANSLATE##
 
 dimension.Moon.name=Ay
-
-itemGroup.GalacticraftMoon=Galacticraft Ay

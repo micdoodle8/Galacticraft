@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
@@ -19,16 +19,6 @@ import java.util.Arrays;
 
 public abstract class WorldProviderSpace extends WorldProvider implements IGalacticraftWorldProvider
 {
-    /**
-     * The celestial body object for this dimension
-     *
-     * @see micdoodle8.mods.galacticraft.api.galaxies.Planet
-     * @see micdoodle8.mods.galacticraft.api.galaxies.Moon
-     *
-     * @return The Moon or Planet object for this dimension
-     */
-	public abstract CelestialBody getCelestialBody();
-
     /**
      * The fog color in this dimension
      */
@@ -51,7 +41,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
 
     /**
      * The length of day in this dimension
-     *
+     * <p/>
      * Default: 24000
      */
     public abstract long getDayLength();
@@ -72,15 +62,21 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
         super.setDimension(var1);
     }
 
-	@Override
-	public String getDimensionName()
-	{
-		return this.getCelestialBody().getLocalizedName();
-	}
+    @Override
+    public String getDimensionName()
+    {
+        return this.getCelestialBody().getUnlocalizedName();
+    }
 
-	@Override
-	public void updateWeather()
-	{
+    @Override
+    public boolean isGasPresent(IAtmosphericGas gas)
+    {
+        return this.getCelestialBody().atmosphere.contains(gas);
+    }
+
+    @Override
+    public void updateWeather()
+    {
         if (this.canRainOrSnow())
         {
             super.updateWeather();
@@ -94,7 +90,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
             this.worldObj.rainingStrength = 0.0F;
             this.worldObj.thunderingStrength = 0.0F;
         }
-	}
+    }
 
     @Override
     public String getSaveFolder()
@@ -147,7 +143,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     @Override
     public float calculateCelestialAngle(long par1, float par3)
     {
-        int j = (int)(par1 % this.getDayLength());
+        int j = (int) (par1 % this.getDayLength());
         float f1 = (j + par3) / this.getDayLength() - 0.25F;
 
         if (f1 < 0.0F)
@@ -193,6 +189,12 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     }
 
     @Override
+    public boolean hasBreathableAtmosphere()
+    {
+        return this.isGasPresent(IAtmosphericGas.OXYGEN);
+    }
+
+    @Override
     public IChunkProvider createChunkGenerator()
     {
         try
@@ -205,11 +207,11 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
                 Constructor<?> constr = constructors[i];
                 if (Arrays.equals(constr.getParameterTypes(), new Object[] { World.class, long.class, boolean.class }))
                 {
-                    return (IChunkProvider)constr.newInstance(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
+                    return (IChunkProvider) constr.newInstance(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
                 }
                 else if (constr.getParameterTypes().length == 0)
                 {
-                    return (IChunkProvider)constr.newInstance();
+                    return (IChunkProvider) constr.newInstance();
                 }
             }
         }
@@ -239,11 +241,11 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
                 {
                     if (Arrays.equals(constr.getParameterTypes(), new Object[] { World.class }))
                     {
-                        this.worldChunkMgr = (WorldChunkManager)constr.newInstance(this.worldObj);
+                        this.worldChunkMgr = (WorldChunkManager) constr.newInstance(this.worldObj);
                     }
                     else if (constr.getParameterTypes().length == 0)
                     {
-                        this.worldChunkMgr = (WorldChunkManager)constr.newInstance();
+                        this.worldChunkMgr = (WorldChunkManager) constr.newInstance();
                     }
                 }
             }
@@ -252,5 +254,17 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public boolean shouldMapSpin(String entity, double x, double y, double z)
+    {
+        return false;
+    }
+
+    @Override
+    public float getSolarSize()
+    {
+        return 1.0F / this.getCelestialBody().getRelativeDistanceFromCenter().unScaledDistance;
     }
 }

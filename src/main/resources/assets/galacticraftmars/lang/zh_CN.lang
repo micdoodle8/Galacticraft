@@ -4,17 +4,20 @@
 item.rawDesh.name=未精炼戴斯矿
 item.deshStick.name=戴斯棍
 item.ingotDesh.name=戴斯锭
-item.spaceshipTier2.t2Rocket.name=Tier 2 Rocket ##NEEDS TRANSLATE##
-item.spaceshipTier2.name=2阶火箭
+item.spaceshipTier2.t2Rocket.name=2阶火箭
 item.reinforcedPlateT2.name=重装板
 item.tier2.desc=2阶
 item.slimelingCargo.name=黏滑物品背包
 item.key.T2.name=2阶地牢钥匙
-item.compressedDesh.name=致密戴斯
+item.compressedDesh.name=致密戴斯板
 item.spaceshipTier2.cargoRocket.name=货运火箭
+item.fluidManip.name=流体操纵器
+item.bucketSludge.name=菌泥桶
+fluid.bacterialsludge=菌泥
 
 # TOOLS
 item.deshPick.name=戴斯镐
+item.deshPickSlime.name=粘性戴斯镐
 item.deshAxe.name=戴斯斧
 item.deshHoe.name=戴斯锄
 item.deshSpade.name=戴斯铲
@@ -31,12 +34,12 @@ tile.mars.deshmars.name=戴斯矿石
 tile.mars.coppermars.name=铜矿石
 tile.mars.tinmars.name=锡矿石
 tile.mars.ironmars.name=铁矿石
-tile.mars.marscobblestone.name=圆石
+tile.mars.marscobblestone.name=火星圆石
 tile.mars.marsstone.name=火星石头
 tile.mars.marsdirt.name=火星地底岩石
 tile.mars.marsgrass.name=火星地表岩石
-tile.mars.marsdeco.name=Desh块
-tile.mars.marsdungeon.name=地牢墙壁
+tile.mars.marsdeco.name=戴斯块
+tile.mars.marsdungeon.name=火星地牢砖
 tile.treasureT2.name=2阶宝箱
 tile.slimelingEgg.redEgg.name=红色黏滑怪蛋
 tile.slimelingEgg.blueEgg.name=蓝色黏滑怪蛋
@@ -44,76 +47,151 @@ tile.slimelingEgg.yellowEgg.name=黄色黏滑怪蛋
 tile.marsMachine.0.name=地形改造机
 tile.marsMachine.1.name=低温仓
 tile.marsMachine.2.name=发射控制器
+tile.marsMachine.4.name=气体液化器
+tile.marsMachine.5.name=甲烷合成器
+tile.marsMachine.6.name=水电解器
 tile.sludge.name=菌泥
-tile.creeperEgg.name=爬行者蛋
+tile.creeperEgg.name=苦力怕蛋
 tile.cavernVines.name=岩穴藤蔓
-tile.tintedGlassPane.white.name=白色玻璃板
-tile.tintedGlassPane.orange.name=橙色玻璃板
-tile.tintedGlassPane.magenta.name=品红色玻璃板
-tile.tintedGlassPane.light_blue.name=浅蓝色玻璃板
-tile.tintedGlassPane.yellow.name=黄色玻璃板
-tile.tintedGlassPane.lime.name=柠檬色玻璃板
-tile.tintedGlassPane.pink.name=粉色玻璃板
-tile.tintedGlassPane.gray.name=灰色玻璃板
-tile.tintedGlassPane.silver.name=银色玻璃板
-tile.tintedGlassPane.cyan.name=青色玻璃板
-tile.tintedGlassPane.purple.name=紫色玻璃板
-tile.tintedGlassPane.blue.name=蓝色玻璃板
-tile.tintedGlassPane.brown.name=棕色玻璃板
-tile.tintedGlassPane.green.name=绿色玻璃板
-tile.tintedGlassPane.red.name=红色玻璃板
-tile.tintedGlassPane.black.name=黑色玻璃板
+
+# DECOBLOCKS
+tile.marsCobblestoneStairs.name=火星圆石楼梯
+tile.wallGC.mars.name=火星圆石墙
+tile.slabGCHalf.marsSlab.name=火星圆石台阶
+tile.marsDungeonBricksStairs.name=火星地牢砖楼梯
+tile.wallGC.marsBricks.name=火星地牢砖墙
+tile.slabGCHalf.marsBricksSlab.name=火星地牢砖台阶
 
 # GUI
 gui.choosePlanet.desc.mars=宜居#无氧气#重力:38%
-item.deshPickSlime.description.name=可用于回收黏滑怪蛋
-gui.message.noEnergy.name=Not Enough Energy ##NEEDS TRANSLATE##
-gui.message.noWater.name=Not Enough Water ##NEEDS TRANSLATE##
-gui.message.noBonemeal.name=Not Enough Bonemeal ##NEEDS TRANSLATE##
-gui.message.noSeeds.name=Not Enough Seeds ##NEEDS TRANSLATE##
-gui.message.noSaplings.name=Not Enough Saplings ##NEEDS TRANSLATE##
-gui.message.bubbleExp.name=BubbleExpanding ##NEEDS TRANSLATE##
-gui.message.noValidBlocks.name=No Valid Blocks in Bubble ##NEEDS TRANSLATE##
-gui.message.terraforming.name=Terraforming ##NEEDS TRANSLATE##
-gui.message.enableTrees.name=Enable Trees ##NEEDS TRANSLATE##
-gui.message.enableGrass.name=Enable Grass ##NEEDS TRANSLATE##
-gui.message.trees.name=Trees ##NEEDS TRANSLATE##
-gui.message.grass.name=Grass ##NEEDS TRANSLATE##
-gui.message.invalidFreq.name=Invalid Frequency ##NEEDS TRANSLATE##
-gui.message.frequency.name=Frequency ##NEEDS TRANSLATE##
-gui.message.destFrequency.name=Destination Frequency ##NEEDS TRANSLATE##
-gui.message.removePad.name=Remove Pad ##NEEDS TRANSLATE##
-gui.message.launchWhen.name=Launch When ##NEEDS TRANSLATE##
-gui.message.cargoUnloaded.name=Cargo is Unloaded ##NEEDS TRANSLATE##
-gui.message.cargoFull.name=Cargo is Full ##NEEDS TRANSLATE##
-gui.message.fullyFueled.name=Fully Fueled ##NEEDS TRANSLATE##
-gui.message.instant.name=Instantly ##NEEDS TRANSLATE##
-gui.message.tenSec.name=10 Seconds ##NEEDS TRANSLATE##
-gui.message.thirtySec.name=30 Seconds ##NEEDS TRANSLATE##
-gui.message.oneMin.name=1 Minute ##NEEDS TRANSLATE##
-gui.message.redstoneSig.name=Redstone Signal ##NEEDS TRANSLATE##
-gui.message.notSet.name=Not Set ##NEEDS TRANSLATE##
-gui.message.notEnough.name=Not Enough ##NEEDS TRANSLATE##
-gui.message.success.name=Success ##NEEDS TRANSLATE##
+item.deshPickSlime.description.name=可用于回收苦力怕怪蛋
+gui.message.noEnergy.name=电力不足
+gui.message.noWater.name=水量不足
+gui.message.noBonemeal.name=骨粉不足
+gui.message.noSeeds.name=种子不足
+gui.message.noSaplings.name=树苗不足
+gui.message.bubbleExp.name=气泡正在扩大
+gui.message.noValidBlocks.name=气泡内无有效方块
+gui.message.terraforming.name=正在进行环境改造
+gui.message.enableTrees.name=启用植树
+gui.message.enableGrass.name=启用种草
+gui.message.trees.name=树
+gui.message.grass.name=草
+gui.message.invalidFreq.name=无效频率
+gui.message.frequency.name=频率
+gui.message.destFrequency.name=目标频率
+gui.message.removePad.name=移除平板
+gui.message.launchWhen.name=发射当
+gui.message.cargoUnloaded.name=货物未卸载时
+gui.message.cargoFull.name=货物已满
+gui.message.fullyFueled.name=燃料已装满
+gui.message.instant.name=立即
+gui.message.tenSec.name=10秒
+gui.message.thirtySec.name=30秒
+gui.message.oneMin.name=1分钟
+gui.message.redstoneSig.name=红石信号
+gui.message.notSet.name=未设置
+gui.message.notEnough.name=缺少
+gui.message.success.name=成功
+gui.message.zeroWater.name=缺水!
+
+# Dollar sign ($) will split text onto a new line
+gui.launchController.desc.0=这是发射控制器的$唯一频率
+gui.launchController.desc.1=火箭发射频率,火箭前往
+gui.launchController.desc.2=发射台是否$在发射时移除
+gui.launchController.desc.3=当这个条件达到时,$火箭就会发射
+gui.terraformer.desc.0=水箱
+
+gui.gasTank.desc.0=气体贮存
+gui.gasTankCompressed.desc.0=气体贮存(压缩)
+gui.liquidTank.desc.0=液罐
+gui.status.nogas.name=没有气体
+gui.status.liquefying.name=液化中
+gui.status.processing.name=合成中
+gui.status.needsCarbon.name=需要碳
+gui.status.tankfull.name=已满
+gui.status.tanksfull.name=已满
+gui.message.lowEnergy.name=低耗能
+gui.button.liquefy.name=进行
+gui.button.liquefyStop.name=中止
+gui.gasInput.desc.0=尝试把甲烷气体罐放置在这
+gui.gasInput.desc.1=(也许有另外的东西,$比如一个气闸)
+gui.hydrogenInput.desc.0=这里需要一个氢气储罐
+gui.hydrogenInput.desc.1=或者是一个气闸
+gui.liquidOutput.desc.2=液化气储罐
+gui.methaneOutput.desc.2=沼气池
+gui.message.withAtmosphere0.name=一个星球上有很多
+gui.message.withAtmosphere1.name=在大气中
+item.carbonFragments.name=碳片
+gui.carbonSlot.desc.0=碳片放置于此
+gui.waterBucketSlot.desc=水桶放置于此
+
+gui.cargorocket.status.waiting.0=正在等待
+gui.cargorocket.status.waiting.1=点火
+gui.cargorocket.status.launched.0=已经
+gui.cargorocket.status.launched.1=发射
+
+gas.carbondioxide.name=二氧化碳
+gas.oxygen.name=氧气
+gas.nitrogen.name=氮气
 
 gui.desc.reinforcedPlateT2.name=2阶
-
-itemGroup.GalacticraftMars=Galacticraft|火星
-
 dimension.Mars.name=火星
-planet.mars=Mars ##NEEDS TRANSLATE##
+planet.mars=火星
+
+tile.treasureT2.description=2阶宝箱会在火星地牢生成.直到打败最终boss后才能解锁.
+tile.cavernVines.description=岩穴藤蔓对生物来说很危险,它会卷住它们并拖向空中.
+tile.slimelingEgg.description=黏滑怪蛋,一旦被玩家空手打碎,就会立即孵出一只宠物.
+tile.cryoChamber.description=低温仓使玩家能在白天睡觉,回复少量生命,但有冷却时间.
+tile.launchController.description=发射控制器用于设置发射动作,包括发射条件和终点,连接发射平台以自动发射.
+tile.terraformer.description=地形改造机用于给偏远的行星增添一些绿色,在提供正确的材料时生成如草,树和水.
+tile.creeperEgg.description=苦力怕蛋会在火星地牢生成,爆炸后有惊喜.
+tile.gasLiquefier.description=液化气,来自大气或容器.液化甲烷是不错的火箭燃料!
+tile.methaneSynthesizer.description=提供氢与碳就能制造出甲烷,进一步加工需要在气体液化机进行.
+tile.electrolyzer.description=将水转换成氢气(用于甲烷合成器)与氧气.
+
+gui.slimeling.chat.wrongPlayer=这不是我的黏滑怪!
+gui.cryogenic.chat.cantUse=我不能使用这个超过%d秒
+gui.slimeling.name=名字
+gui.slimeling.owner=拥有者
+gui.slimeling.kills=杀死
+gui.slimeling.scale=比例
+gui.slimeling.button.sit=坐
+gui.slimeling.button.follow=跟随
+gui.slimeling.sitting=正坐着
+gui.slimeling.following=正在跟随
+gui.slimeling.damage=攻击伤害
+gui.slimeling.food=最喜爱的食物
 
 # Schematics
 schematic.rocketT3.name=3阶火箭
 schematic.cargoRocket.name=自动货运火箭
 
-# Entity
+# Entities
 entity.Sludgeling.name=泥浆怪
 entity.Slimeling.name=黏滑怪
-entity.CreeperBoss.name=进化爬行者之王
-entity.SpaceshipT2.name=Tier 2 Rocket ##NEEDS TRANSLATE##
-entity.CargoRocket.name=Cargo Rocket ##NEEDS TRANSLATE##
+entity.CreeperBoss.name=进化苦力怕之王
+entity.SpaceshipT2.name=2阶火箭
+entity.CargoRocket.name=货运火箭
 
 # Container
 container.launchcontroller.name=发射控制器
-container.tileTerraformer.name=Terraformer ##NEEDS TRANSLATE##
+container.tileTerraformer.name=地形改造机
+container.marsLander.name=着陆气球
+
+# CONFIG GUI
+gc.configgui.dimensionIDMars=Mars Dimension ID(火星维度ID)
+gc.configgui.idEntityCreeperBoss=Creeper Boss Entity ID(苦力怕王实体ID)
+gc.configgui.idEntityProjectileTNT=Projectile TNT Entity ID(可投掷TNT实体ID)
+gc.configgui.idEntitySpaceshipTier2=Tier 2 Rocket Entity ID(2阶火箭实体ID)
+gc.configgui.idEntitySludgeling=Sludgeling Entity ID(菌泥实体ID)
+gc.configgui.idEntitySlimeling=Slimeling Entity ID(黏滑怪实体ID)
+gc.configgui.idEntityTerraformBubble=Terraform Bubble Entity ID(地形改造气泡实体ID)
+gc.configgui.idEntityLandingBalloons=Landing Balloons Entity ID(登陆气泡实体ID)
+gc.configgui.idEntityCargoRocket=Cargo Rocket Entity ID(货运火箭实体ID)
+gc.configgui.idSchematicRocketT2=Tier 2 Rocket Schematic ID(2阶火箭设计图ID)
+gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID(货运火箭设计图ID)
+gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading(发射台控制器加载区块)
+gc.configgui.launchControllerAllDims=Launch Controller All Dimensions(发射台控制器所有维度)
+
+gc.configgui.planets.title=Galacticraft Planets Config(星系行星配置文件)

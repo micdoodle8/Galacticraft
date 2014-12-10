@@ -101,8 +101,8 @@ public class GuiDraw
 
     public static Dimension displaySize() {
         Minecraft mc = Minecraft.getMinecraft();
-        ScaledResolution res = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
-        return new Dimension(res.getScaledWidth(), res.getScaledHeight());
+//        ScaledResolution res = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+        return new Dimension(1920, 1080);
     }
 
     public static Dimension displayRes() {
@@ -110,10 +110,14 @@ public class GuiDraw
         return new Dimension(mc.displayWidth, mc.displayHeight);
     }
 
-    public static Point getMousePosition() {
+    public static Point getMousePosition(int eventX, int eventY) {
         Dimension size = displaySize();
         Dimension res = displayRes();
-        return new Point(Mouse.getX() * size.width / res.width, size.height - Mouse.getY() * size.height / res.height - 1);
+        return new Point(eventX * size.width / res.width, size.height - eventY * size.height / res.height - 1);
+    }
+
+    public static Point getMousePosition() {
+        return getMousePosition(Mouse.getX(), Mouse.getY());
     }
 
     public static void changeTexture(String s) {
@@ -177,7 +181,10 @@ public class GuiDraw
         }
 
         if (x < 8) x = 8;
-        else if (x > displaySize().width - w - 8) x -= 24 + w;//flip side of cursor
+        else if (x > displaySize().width - w - 8) {
+            x -= 24 + w;//flip side of cursor
+            if(x < 8) x = 8;
+        }
         y = (int) MathHelper.clip(y, 8, displaySize().height - 8 - h);
 
         gui.incZLevel(300);

@@ -1,12 +1,125 @@
 # Galacticraft Asteroids Language File = Traditional Chinese
 
-item.itemTier3Rocket.t3Rocket.name=Tier 3 Rocket ##NEEDS TRANSLATE##
-tile.asteroidsBlock.asteroids1.name=Asteroid Rock ##NEEDS TRANSLATE##
-tile.beamReflector.name=Beam Reflector ##NEEDS TRANSLATE##
-tile.beamReceiver.name=Beam Receiver ##NEEDS TRANSLATE##
-tile.telepadShort.name=Short Range Telepad ##NEEDS TRANSLATE##
-planet.asteroids=Asteroids ##NEEDS TRANSLATE##
-itemGroup.GalacticraftAsteroids=Galacticraft Asteroids ##NEEDS TRANSLATE##
-entity.SmallAsteroidGC.name=Small Asteroid ##NEEDS TRANSLATE##
-entity.GrappleHookGC.name=Grapple Hook ##NEEDS TRANSLATE##
-entity.Tier3RocketGC.name=Tier 3 Rocket ##NEEDS TRANSLATE##
+# GENERAL ITEMS
+item.itemTier3Rocket.t3Rocket.name=三階火箭
+item.heavyNoseCone.name=重型前錐體
+item.compressedTitanium.name=致密鈦
+item.ingotTitanium.name=鈦錠
+item.shardTitanium.name=鈦碎片
+item.shardIron.name=鐵碎片
+item.rocketFinsT2.name=重型火箭鰭
+item.engineT2.name=重型火箭引擎
+item.reinforcedPlateT3.name=重型防護板
+item.grapple.name=吊鉤
+item.atmosphericValve.name=氣閘
+item.thermalCloth.name=熱力布料
+item.beamCore.name=光束核心
+item.tier3.desc=三階
+
+# TOOLS
+item.titanium_pickaxe.name=鈦金十字鎬
+item.titanium_axe.name=鈦金斧
+item.titanium_hoe.name=鈦金鋤
+item.titanium_shovel.name=鈦金鏟
+item.titanium_sword.name=鈦金屬劍
+
+# ARMOR
+item.thermalHelm.name=熱力充能頭盔
+item.thermalChestplate.name=熱力充能胸甲
+item.thermalLeggings.name=熱力充能護腿
+item.thermalBoots.name=熱力充能護腿
+item.titanium_helmet.name=鈦金屬頭盔
+item.titanium_chestplate.name=鈦金屬胸甲
+item.titanium_leggings.name=鈦金屬護腿
+item.titanium_boots.name=鈦金屬靴
+
+# CANISTERS ETC
+item.methaneCanisterPartial.name=甲烷氣體罐
+item.methaneCanister.name=裝滿的甲烷氣體罐
+item.canister.gas.name=氣體
+item.canister.LOX.partial.name=罐裝液態氧
+item.canister.LOX.full.name=裝滿的罐裝液態氧
+item.canister.LOX.name=液態氧
+item.canister.liquidNitrogen.partial.name=灌裝液氮
+item.canister.liquidNitrogen.full.name=裝滿的灌裝液態氮
+item.canister.liquidNitrogen.name=液態氮
+item.canister.liquidArgon.partial.name=液態氬罐
+item.canister.liquidArgon.full.name=液態氬罐(滿)
+item.canister.liquidArgon.name=液體
+item.emptyGasCanister.name=空的氣體罐
+
+# Fluids and gases
+fluid.methane=甲烷
+fluid.oxygen=氧氣
+fluid.nitrogen=氮氣
+fluid.hydrogen=氫氣
+fluid.carbondioxide=二氧化碳
+fluid.helium=氦氣
+fluid.argon=氬氣
+fluid.atmosphericgases=空氣
+fluid.liquidmethane=液態甲烷
+fluid.liquidoxygen=液態氧
+fluid.liquidnitrogen=液態氮
+fluid.liquidargon=液態氬
+fluid.fuel=燃油
+
+# BLOCKS
+tile.asteroidsBlock.asteroid0.name=行星巖
+tile.asteroidsBlock.asteroid1.name=行星巖
+tile.asteroidsBlock.asteroid2.name=行星巖
+tile.asteroidsBlock.oreIron.name=鐵礦石
+tile.asteroidsBlock.oreIlmenite.name=鈦鐵礦石
+tile.asteroidsBlock.oreAluminum.name=鋁礦石
+tile.beamReflector.name=能量射束反射器
+tile.beamReceiver.name=能量射束接收器
+tile.telepadShort.name=短距離傳送臺
+tile.walkway.name=通道
+tile.walkwayWire.name=通道
+tile.walkwayOxygenPipe.name=通道
+tile.treasureT3.name=三階寶箱
+tile.denseIce.name=Dense Ice ##NEEDS TRANSLATE##
+
+# GUI
+planet.asteroids=小行星
+
+	# Dollar sign ($) will split text onto a new line
+	# Do not remove %s or %d, since that will be replaced in-game
+gui.telepad.desc.0=這是傳送臺的's$唯一坐標
+gui.telepad.desc.1=另一個傳送臺的坐標.$實體會被傳送到那里.
+gui.message.address.name=坐標
+gui.message.destAddress.name=目標坐標
+gui.message.invalidAddress.name=無效的唯一坐標
+gui.message.invalidTargetAddress.name=無效的目標坐標
+gui.message.receivingActive.name=啟動接受
+gui.message.telepadTooFar.name=目標太遠! (最遠 %d)
+gui.message.telepadWrongDim.name=目標正在錯誤的維度!
+gui.message.telepadNotFound.name=未找到目標!
+gui.message.sendingActive.name=啟動發送
+gui.message.range.name=範圍: %dm
+gui.message.notEnoughEnergy.name=能量不足
+gui.message.targetNoEnergy.name=目標沒有足夠的能量
+gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook! ##NEEDS TRANSLATE##
+tile.treasureT3.description=Tier 3 Treasure Chests are currently unused. ##NEEDS TRANSLATE##
+tile.walkway.description=Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme. ##NEEDS TRANSLATE##
+tile.walkwayAluminumWire.description=Aluminum Wire Walkways are used for running wire underneath a fully solid walkable surface. ##NEEDS TRANSLATE##
+tile.walkwayOxygenPipe.description=Oxygen Pipe Walkways are used for running pipes underneath a fully solid walkable surface. ##NEEDS TRANSLATE##
+tile.beamReflector.description=Beam Reflectors are used to redirect energy beams from source to destination. Can be right-clicked to cycle through targets. ##NEEDS TRANSLATE##
+tile.beamReceiver.description=Beam Receivers are connected to energy machine input and output, to transfer energy using beams. ##NEEDS TRANSLATE##
+tile.telepadShort.description=Short Range Telepads are used to transfer players and other living creatures short distances (250 Blocks) when linked to other telepads. ##NEEDS TRANSLATE##
+
+# Schematics
+
+# Entity
+entity.SmallAsteroidGC.name=小行星
+entity.GrappleHookGC.name=抓升鉤
+entity.Tier3RocketGC.name=三階火箭
+
+# Container
+container.shortRangeTelepad.name=短距離傳送臺
+container.entryPod.name=Entry Pod ##NEEDS TRANSLATE##
+gc.configgui.dimensionIDAsteroids=Asteroids Dimension ID
+gc.configgui.idEntitySmallAsteroid=Small Asteroid Entity ID
+gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID
+gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID
+gc.configgui.idEntityEntryPod=Entry Pod Entity ID
+gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID

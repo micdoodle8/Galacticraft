@@ -2,8 +2,8 @@
 
 # GENERAL ITEMS
 item.meteoricIronRaw.name=Необработанное метеоритное железо
-item.meteoric_iron_ingot.name=Слиток метеоритного железа
 item.compressedMeteoricIron.name=Сжатое метеоритное железо
+item.meteoricIronIngot.name=Слиток метеоритного железа
 
 # FOOD
 item.cheeseCurd.name=Сырок
@@ -14,18 +14,18 @@ item.cheeseBlock.name=Блок сыра
 # ARMOR
 
 # BLOCKS
-tile.moonBlock.moonstone.name=Камень
-tile.moonBlock.moondirt.name=Земля
+tile.moonBlock.moonstone.name=Лунный камень
+tile.moonBlock.moondirt.name=Лунный грунт
 tile.moonBlock.moongrass.name=Лунный дёрн
 tile.moonBlock.tinmoon.name=Оловянная руда
 tile.moonBlock.coppermoon.name=Медная руда
 tile.moonBlock.cheesestone.name=Сырная руда
-tile.moonBlock.bricks.name=Кирпичи
+tile.moonBlock.bricks.name=Кирпич лунной сокровищницы
 tile.cheeseBlock.name=Блок сыра
 
 # GUI
 gui.choosePlanet.desc.moon=Обитаема#Кислород отсутствует#Гравитация: 18%
 
+# OTHER
+container.lander.name=Посадочный модуль
 dimension.Moon.name=Луна
-
-itemGroup.GalacticraftMoon=Galacticraft: Луна

@@ -16,39 +16,39 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderProjectileTNT extends Render
 {
-	private final RenderBlocks renderBlocks = new RenderBlocks();
+    private final RenderBlocks renderBlocks = new RenderBlocks();
 
-	public RenderProjectileTNT()
-	{
-		this.shadowSize = 0.5F;
-	}
+    public RenderProjectileTNT()
+    {
+        this.shadowSize = 0.5F;
+    }
 
-	public void renderProjectileTNT(EntityProjectileTNT tnt, double par2, double par4, double par6, float par8, float par9)
-	{
-		GL11.glPushMatrix();
-		GL11.glTranslatef((float) par2, (float) par4, (float) par6);
-		this.bindTexture(TextureMap.locationBlocksTexture);
-		final Block var10 = Blocks.tnt;
-		GL11.glDisable(GL11.GL_LIGHTING);
-		if (var10 != null)
-		{
-			this.renderBlocks.setRenderBoundsFromBlock(var10);
-			this.renderBlocks.renderBlockSandFalling(var10, tnt.worldObj, MathHelper.floor_double(tnt.posX), MathHelper.floor_double(tnt.posY), MathHelper.floor_double(tnt.posZ), 0);
-		}
+    public void renderProjectileTNT(EntityProjectileTNT tnt, double par2, double par4, double par6, float par8, float par9)
+    {
+        GL11.glPushMatrix();
+        GL11.glTranslatef((float) par2, (float) par4, (float) par6);
+        this.bindTexture(TextureMap.locationBlocksTexture);
+        final Block var10 = Blocks.tnt;
+        GL11.glDisable(GL11.GL_LIGHTING);
+        if (var10 != null)
+        {
+            this.renderBlocks.setRenderBoundsFromBlock(var10);
+            this.renderBlocks.renderBlockSandFalling(var10, tnt.worldObj, MathHelper.floor_double(tnt.posX), MathHelper.floor_double(tnt.posY), MathHelper.floor_double(tnt.posZ), 0);
+        }
 
-		GL11.glEnable(GL11.GL_LIGHTING);
-		GL11.glPopMatrix();
-	}
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glPopMatrix();
+    }
 
-	@Override
-	public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
-	{
-		this.renderProjectileTNT((EntityProjectileTNT) par1Entity, par2, par4, par6, par8, par9);
-	}
+    @Override
+    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
+    {
+        this.renderProjectileTNT((EntityProjectileTNT) par1Entity, par2, par4, par6, par8, par9);
+    }
 
-	@Override
-	protected ResourceLocation getEntityTexture(Entity entity)
-	{
-		return null;
-	}
+    @Override
+    protected ResourceLocation getEntityTexture(Entity entity)
+    {
+        return null;
+    }
 }

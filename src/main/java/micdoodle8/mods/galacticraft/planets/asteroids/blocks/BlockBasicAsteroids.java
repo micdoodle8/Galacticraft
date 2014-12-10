@@ -15,6 +15,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
@@ -26,58 +27,58 @@ import java.util.Random;
 
 public class BlockBasicAsteroids extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock
 {
-	@SideOnly(Side.CLIENT)
-	private IIcon[] blockIcons;
+    @SideOnly(Side.CLIENT)
+    private IIcon[] blockIcons;
 
-	public BlockBasicAsteroids(String assetName)
-	{
-		super(Material.rock);
-		this.blockHardness = 3.0F;
-		this.setBlockName(assetName);
-	}
+    public BlockBasicAsteroids(String assetName)
+    {
+        super(Material.rock);
+        this.blockHardness = 3.0F;
+        this.setBlockName(assetName);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister)
-	{
-		this.blockIcons = new IIcon[6];
-		this.blockIcons[0] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "asteroid0");
-		this.blockIcons[1] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "asteroid1");
-		this.blockIcons[2] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "asteroid2");
-		this.blockIcons[3] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "oreAluminum");
-		this.blockIcons[4] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "oreIlmenite");
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister par1IconRegister)
+    {
+        this.blockIcons = new IIcon[6];
+        this.blockIcons[0] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "asteroid0");
+        this.blockIcons[1] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "asteroid1");
+        this.blockIcons[2] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "asteroid2");
+        this.blockIcons[3] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "oreAluminum");
+        this.blockIcons[4] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "oreIlmenite");
         this.blockIcons[5] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "oreIron");
-		this.blockIcon = this.blockIcons[0];
-	}
+        this.blockIcon = this.blockIcons[0];
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public CreativeTabs getCreativeTabToDisplayOn()
-	{
-		return GalacticraftCore.galacticraftBlocksTab;
-	}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public CreativeTabs getCreativeTabToDisplayOn()
+    {
+        return GalacticraftCore.galacticraftBlocksTab;
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public IIcon getIcon(int side, int meta)
-	{
-		if (meta < 0 || meta >= this.blockIcons.length)
-		{
-			return this.blockIcon;
-		}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public IIcon getIcon(int side, int meta)
+    {
+        if (meta < 0 || meta >= this.blockIcons.length)
+        {
+            return this.blockIcon;
+        }
 
-		return this.blockIcons[meta];
-	}
+        return this.blockIcons[meta];
+    }
 
-	@Override
-	public Item getItemDropped(int meta, Random random, int par3)
-	{
-		switch (meta)
-		{
-		default:
-			return super.getItemDropped(meta, random, par3);
-		}
-	}
+    @Override
+    public Item getItemDropped(int meta, Random random, int par3)
+    {
+        switch (meta)
+        {
+        default:
+            return super.getItemDropped(meta, random, par3);
+        }
+    }
 
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
@@ -88,9 +89,13 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
             ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
 
             int count = quantityDropped(metadata, fortune, world.rand);
-            for(int i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
                 ret.add(new ItemStack(AsteroidsItems.basicItem, 1, 3));
+            }
+            count = quantityDropped(metadata, fortune, world.rand);
+            for (int i = 0; i < count; i++)
+            {
                 ret.add(new ItemStack(AsteroidsItems.basicItem, 1, 4));
             }
             return ret;
@@ -99,9 +104,9 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
         }
     }
 
-	@Override
-	public int damageDropped(int meta)
-	{
+    @Override
+    public int damageDropped(int meta)
+    {
         switch (meta)
         {
         case 4:
@@ -109,62 +114,84 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
         default:
             return meta;
         }
-	}
+    }
 
-	@Override
-	public int quantityDropped(int meta, int fortune, Random random)
-	{
-		switch (meta)
-		{
-		default:
-			return 1;
-		}
-	}
+    @Override
+    public int quantityDropped(int meta, int fortune, Random random)
+    {
+        switch (meta)
+        {
+        case 4:
+            if (fortune >= 1)
+            {
+                return (random.nextFloat() < fortune * 0.29F - 0.25F) ? 2 : 1;
+            }
+        default:
+            return 1;
+        }
+    }
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-	{
-		int var4;
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    {
+        int var4;
 
-		for (var4 = 0; var4 < this.blockIcons.length; ++var4)
-		{
-			par3List.add(new ItemStack(par1, 1, var4));
-		}
-	}
+        for (var4 = 0; var4 < this.blockIcons.length; ++var4)
+        {
+            par3List.add(new ItemStack(par1, 1, var4));
+        }
+    }
 
-	@Override
-	public boolean isValueable(int metadata)
-	{
-		switch (metadata)
-		{
-		default:
-			return false;
-		}
-	}
+    @Override
+    public boolean isValueable(int metadata)
+    {
+        switch (metadata)
+        {
+        case 3:
+        case 4:
+        case 5:
+        	return true;
+        default:
+            return false;
+        }
+    }
 
-	@Override
-	public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
-	{
-		return false;
-	}
+    @Override
+    public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
+    {
+        return false;
+    }
 
-	@Override
-	public int requiredLiquidBlocksNearby()
-	{
-		return 4;
-	}
+    @Override
+    public int requiredLiquidBlocksNearby()
+    {
+        return 4;
+    }
 
-	@Override
-	public boolean isPlantable(int metadata)
-	{
-		return false;
-	}
+    @Override
+    public boolean isPlantable(int metadata)
+    {
+        return false;
+    }
 
-	@Override
-	public boolean isTerraformable(World world, int x, int y, int z)
-	{
-		return false;
-	}
+    @Override
+    public boolean isTerraformable(World world, int x, int y, int z)
+    {
+        return false;
+    }
+
+    @Override
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    {
+        int metadata = world.getBlockMetadata(x, y, z);
+        if (metadata == 4)
+        {
+            return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
+        }
+
+        return super.getPickBlock(target, world, x, y, z);
+    }
+
 }

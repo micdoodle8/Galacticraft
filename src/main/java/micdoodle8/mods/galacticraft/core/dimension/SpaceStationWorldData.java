@@ -12,172 +12,193 @@ import java.util.ArrayList;
 
 public class SpaceStationWorldData extends WorldSavedData
 {
-	private String spaceStationName = "NoName";
-	private String owner = "NoOwner";
-	private ArrayList<String> allowedPlayers = new ArrayList<String>();
-	private NBTTagCompound dataCompound;
+    private String spaceStationName = "NoName";
+    private String owner = "NoOwner";
+    private ArrayList<String> allowedPlayers;
+    private NBTTagCompound dataCompound;
 
-	public SpaceStationWorldData(String par1Str)
-	{
-		super(par1Str);
-	}
+    public SpaceStationWorldData(String par1Str)
+    {
+        super(par1Str);
 
-	public ArrayList<String> getAllowedPlayers()
-	{
-		return this.allowedPlayers;
-	}
+        this.allowedPlayers = new ArrayList<String>()
+        {
+            // Override contains so it ignores case.
+            @Override
+            public boolean contains(Object o)
+            {
+                if (o instanceof String)
+                {
+                    String paramStr = (String) o;
 
-	public String getOwner()
-	{
-		return this.owner;
-	}
+                    for (String s : this)
+                    {
+                        if (paramStr.equalsIgnoreCase(s))
+                        {
+                            return true;
+                        }
+                    }
+                }
 
-	public String getSpaceStationName()
-	{
-		return this.spaceStationName;
-	}
+                return false;
+            }
+        };
+    }
 
-	public void setSpaceStationName(String string)
-	{
-		this.spaceStationName = string;
-	}
+    public ArrayList<String> getAllowedPlayers()
+    {
+        return this.allowedPlayers;
+    }
 
-	@Override
-	public void readFromNBT(NBTTagCompound nbttagcompound)
-	{
-		this.owner = nbttagcompound.getString("owner").toLowerCase().replace(".", "");
-		this.spaceStationName = nbttagcompound.getString("spaceStationName");
+    public String getOwner()
+    {
+        return this.owner;
+    }
 
-		if (nbttagcompound.hasKey("dataCompound"))
-		{
-			this.dataCompound = nbttagcompound.getCompoundTag("dataCompound");
-		}
-		else
-		{
-			this.dataCompound = new NBTTagCompound();
-		}
+    public String getSpaceStationName()
+    {
+        return this.spaceStationName;
+    }
 
-		final NBTTagList var2 = nbttagcompound.getTagList("allowedPlayers", 10);
-		this.allowedPlayers = new ArrayList<String>();
+    public void setSpaceStationName(String string)
+    {
+        this.spaceStationName = string;
+    }
 
-		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
-		{
-			final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
-			final String var5 = var4.getString("allowedPlayer");
+    @Override
+    public void readFromNBT(NBTTagCompound nbttagcompound)
+    {
+        this.owner = nbttagcompound.getString("owner").replace(".", "");
+        this.spaceStationName = nbttagcompound.getString("spaceStationName");
 
-			if (!this.allowedPlayers.contains(var5.toLowerCase()))
-			{
-				this.allowedPlayers.add(var5.toLowerCase());
-			}
-		}
-	}
+        if (nbttagcompound.hasKey("dataCompound"))
+        {
+            this.dataCompound = nbttagcompound.getCompoundTag("dataCompound");
+        }
+        else
+        {
+            this.dataCompound = new NBTTagCompound();
+        }
 
-	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound)
-	{
-		nbttagcompound.setString("owner", this.owner);
-		nbttagcompound.setString("spaceStationName", this.spaceStationName);
-		nbttagcompound.setTag("dataCompound", this.dataCompound);
+        final NBTTagList var2 = nbttagcompound.getTagList("allowedPlayers", 10);
+        this.allowedPlayers.clear();
 
-		final NBTTagList var2 = new NBTTagList();
+        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+        {
+            final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
+            final String var5 = var4.getString("allowedPlayer");
 
-		for (int var3 = 0; var3 < this.allowedPlayers.size(); ++var3)
-		{
-			final String player = this.allowedPlayers.get(var3);
+            if (!this.allowedPlayers.contains(var5))
+            {
+                this.allowedPlayers.add(var5);
+            }
+        }
+    }
 
-			if (player != null)
-			{
-				final NBTTagCompound var4 = new NBTTagCompound();
-				var4.setString("allowedPlayer", player);
-				var2.appendTag(var4);
-			}
-		}
+    @Override
+    public void writeToNBT(NBTTagCompound nbttagcompound)
+    {
+        nbttagcompound.setString("owner", this.owner);
+        nbttagcompound.setString("spaceStationName", this.spaceStationName);
+        nbttagcompound.setTag("dataCompound", this.dataCompound);
 
-		nbttagcompound.setTag("allowedPlayers", var2);
-	}
+        final NBTTagList var2 = new NBTTagList();
 
-	public static SpaceStationWorldData getStationData(World var0, int var1, EntityPlayer player)
-	{
-		int providerType = DimensionManager.getProviderType(var1);
-		if (providerType != ConfigManagerCore.idDimensionOverworldOrbit && providerType != ConfigManagerCore.idDimensionOverworldOrbitStatic)
-		{
-			return null;
-		}
-		else
-		{
-			final String var2 = SpaceStationWorldData.getSpaceStationID(var1);
-			SpaceStationWorldData var3 = (SpaceStationWorldData) var0.loadItemData(SpaceStationWorldData.class, var2);
+        for (int var3 = 0; var3 < this.allowedPlayers.size(); ++var3)
+        {
+            final String player = this.allowedPlayers.get(var3);
 
-			if (var3 == null)
-			{
-				var3 = new SpaceStationWorldData(var2);
-				var0.setItemData(var2, var3);
-				var3.dataCompound = new NBTTagCompound();
+            if (player != null)
+            {
+                final NBTTagCompound var4 = new NBTTagCompound();
+                var4.setString("allowedPlayer", player);
+                var2.appendTag(var4);
+            }
+        }
 
-				if (player != null)
-				{
-					var3.owner = player.getGameProfile().getName().toLowerCase().replace(".", "");
-				}
+        nbttagcompound.setTag("allowedPlayers", var2);
+    }
 
-				var3.spaceStationName = var3.owner + "\'s Space Station";
-				var3.allowedPlayers = new ArrayList<String>();
+    public static SpaceStationWorldData getStationData(World var0, int var1, EntityPlayer player)
+    {
+        int providerType = DimensionManager.getProviderType(var1);
+        if (providerType != ConfigManagerCore.idDimensionOverworldOrbit && providerType != ConfigManagerCore.idDimensionOverworldOrbitStatic)
+        {
+            return null;
+        }
+        else
+        {
+            final String var2 = SpaceStationWorldData.getSpaceStationID(var1);
+            SpaceStationWorldData var3 = (SpaceStationWorldData) var0.loadItemData(SpaceStationWorldData.class, var2);
 
-				if (player != null)
-				{
-					var3.allowedPlayers.add(player.getGameProfile().getName().toLowerCase());
-				}
+            if (var3 == null)
+            {
+                var3 = new SpaceStationWorldData(var2);
+                var0.setItemData(var2, var3);
+                var3.dataCompound = new NBTTagCompound();
 
-				var3.markDirty();
-			}
+                if (player != null)
+                {
+                    var3.owner = player.getGameProfile().getName().replace(".", "");
+                }
 
-			if (var3.getSpaceStationName().replace(" ", "").isEmpty())
-			{
-				var3.setSpaceStationName(var3.owner + "\'s Space Station");
-				var3.markDirty();
-			}
+                var3.spaceStationName = "Station: " + var3.owner;
 
-			return var3;
-		}
-	}
+                if (player != null)
+                {
+                    var3.allowedPlayers.add(player.getGameProfile().getName());
+                }
 
-	public static SpaceStationWorldData getMPSpaceStationData(World var0, int var1, EntityPlayer player)
-	{
-		final String var2 = SpaceStationWorldData.getSpaceStationID(var1);
-		SpaceStationWorldData var3 = (SpaceStationWorldData) var0.loadItemData(SpaceStationWorldData.class, var2);
+                var3.markDirty();
+            }
 
-		if (var3 == null)
-		{
-			var3 = new SpaceStationWorldData(var2);
-			var0.setItemData(var2, var3);
-			var3.dataCompound = new NBTTagCompound();
+            if (var3.getSpaceStationName().replace(" ", "").isEmpty())
+            {
+                var3.setSpaceStationName("Station: " + var3.owner);
+                var3.markDirty();
+            }
 
-			if (player != null)
-			{
-				var3.owner = player.getGameProfile().getName().toLowerCase().replace(".", "");
-			}
+            return var3;
+        }
+    }
 
-			var3.spaceStationName = var3.owner + "\'s Space Station";
-			var3.allowedPlayers = new ArrayList<String>();
+    public static SpaceStationWorldData getMPSpaceStationData(World var0, int var1, EntityPlayer player)
+    {
+        final String var2 = SpaceStationWorldData.getSpaceStationID(var1);
+        SpaceStationWorldData var3 = (SpaceStationWorldData) var0.loadItemData(SpaceStationWorldData.class, var2);
 
-			if (player != null)
-			{
-				var3.allowedPlayers.add(player.getGameProfile().getName().toLowerCase());
-			}
+        if (var3 == null)
+        {
+            var3 = new SpaceStationWorldData(var2);
+            var0.setItemData(var2, var3);
+            var3.dataCompound = new NBTTagCompound();
 
-			var3.markDirty();
-		}
+            if (player != null)
+            {
+                var3.owner = player.getGameProfile().getName().replace(".", "");
+            }
 
-		if (var3.getSpaceStationName().replace(" ", "").isEmpty())
-		{
-			var3.setSpaceStationName(var3.owner + "\'s Space Station");
-			var3.markDirty();
-		}
+            var3.spaceStationName = "Station: " + var3.owner;
 
-		return var3;
-	}
+            if (player != null)
+            {
+                var3.allowedPlayers.add(player.getGameProfile().getName());
+            }
 
-	public static String getSpaceStationID(int dimID)
-	{
-		return "spacestation_" + dimID;
-	}
+            var3.markDirty();
+        }
+
+        if (var3.getSpaceStationName().replace(" ", "").isEmpty())
+        {
+            var3.setSpaceStationName("Station: " + var3.owner);
+            var3.markDirty();
+        }
+
+        return var3;
+    }
+
+    public static String getSpaceStationID(int dimID)
+    {
+        return "spacestation_" + dimID;
+    }
 }

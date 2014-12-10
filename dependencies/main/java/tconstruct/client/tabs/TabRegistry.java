@@ -6,7 +6,12 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.network.play.client.C0DPacketCloseWindow;
+import net.minecraftforge.client.event.GuiScreenEvent;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class TabRegistry
 {
@@ -22,20 +27,22 @@ public class TabRegistry
 		return TabRegistry.tabList;
 	}
 
-	public static void addTabsToInventory(GuiContainer gui)
+	//Retained for backwards compatibility with TC pre version 1.6.0d40
+	public static void addTabsToInventory (GuiContainer gui)
 	{
-		if (gui.getClass() == GuiInventory.class)
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public void guiPostInit (GuiScreenEvent.InitGuiEvent.Post event)
+	{
+		if (event.gui instanceof GuiInventory)
 		{
-			// Values are public at runtime.
+			int guiLeft = (event.gui.width - 176) / 2;
+			int guiTop = (event.gui.height - 166) / 2;
 
-			int cornerX = gui.guiLeft;
-			int cornerY = gui.guiTop;
-			List bList = gui.buttonList;
-
-			bList.clear();
-
-			TabRegistry.updateTabValues(cornerX, cornerY, InventoryTabVanilla.class);
-			TabRegistry.addTabsToList(bList);
+			TabRegistry.updateTabValues(guiLeft, guiTop, InventoryTabVanilla.class);
+			TabRegistry.addTabsToList(event.gui.buttonList);
 		}
 	}
 
@@ -43,9 +50,9 @@ public class TabRegistry
 
 	public static void openInventoryGui()
 	{
+		TabRegistry.mc.thePlayer.sendQueue.addToSendQueue(new C0DPacketCloseWindow(mc.thePlayer.openContainer.windowId));
 		GuiInventory inventory = new GuiInventory(TabRegistry.mc.thePlayer);
 		TabRegistry.mc.displayGuiScreen(inventory);
-		TabRegistry.addTabsToInventory(inventory);
 	}
 
 	public static void updateTabValues(int cornerX, int cornerY, Class<?> selectedButton)
@@ -66,13 +73,13 @@ public class TabRegistry
 		}
 	}
 
-	public static void addTabsToList(List field_146292_n)
+	public static void addTabsToList(List buttonList)
 	{
 		for (AbstractTab tab : TabRegistry.tabList)
 		{
 			if (tab.shouldAddToList())
 			{
-				field_146292_n.add(tab);
+				buttonList.add(tab);
 			}
 		}
 	}

@@ -2,8 +2,8 @@
 
 # GENERAL ITEMS
 item.meteoricIronRaw.name=Nezpracované meteorické železo
-item.meteoric_iron_ingot.name=Ingot meteorického železa
 item.compressedMeteoricIron.name=Stlačené meteorické železo
+item.meteoricIronIngot.name=Ingot meteorického železa
 
 # FOOD
 item.cheeseCurd.name=Kousek sýra
@@ -25,7 +25,6 @@ tile.cheeseBlock.name=Blok sýra
 
 # GUI
 gui.choosePlanet.desc.moon=Obyvatelný#Žádný kyslík#Gravitace: 18%
+container.lander.name=Přistávací modul
 
 dimension.Moon.name=Měsíc
-
-itemGroup.GalacticraftMoon=Galacticraft Měsíc

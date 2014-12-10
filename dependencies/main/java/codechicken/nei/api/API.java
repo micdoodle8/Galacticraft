@@ -1,18 +1,22 @@
 package codechicken.nei.api;
 
-import codechicken.nei.KeyManager;
+import codechicken.nei.*;
 import codechicken.nei.KeyManager.KeyState;
-import codechicken.nei.LayoutManager;
-import codechicken.nei.NEIClientConfig;
-import codechicken.nei.OffsetPositioner;
+import codechicken.nei.SearchField.ISearchProvider;
+import codechicken.nei.SubsetWidget.SubsetTag;
+import codechicken.nei.api.ItemFilter.ItemFilterProvider;
 import codechicken.nei.config.Option;
 import codechicken.nei.config.OptionKeyBind;
 import codechicken.nei.recipe.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.input.Keyboard;
+
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * This is the main class that handles item property configuration.
@@ -123,6 +127,15 @@ public class API
     }
 
     /**
+     * Sets the item variants to appear in the item panel, overriding the default search pattern for a given item
+     */
+    public static void setItemListEntries(Item item, Iterable<ItemStack> items) {
+        if(items == null)
+            items = Collections.emptyList();
+        ItemInfo.itemOverrides.replaceValues(item, items);
+    }
+
+    /**
      * Add a custom KeyBinding to be configured in the Controls menu.
      * @param ident      An identifier for your key, eg "shoot"
      * @param defaultKey The default value, commonly obtained from {@link Keyboard}
@@ -148,7 +161,6 @@ public class API
 
     /**
      * Registers a new Infinite Item Handler.
-     *
      * @param handler The handler to be registered.
      */
     public static void addInfiniteItemHandler(IInfiniteItemHandler handler) {
@@ -157,7 +169,6 @@ public class API
 
     /**
      * Registers a new Infinite Item Handler.
-     *
      * @param block   The block to handle, null for all.
      * @param handler The handler to be registered.
      */
@@ -167,7 +178,6 @@ public class API
 
     /**
      * Tells NEI not to perform any Fast Transfer operations on slots of a particular class
-     *
      * @param slotClass The class of slot to be exempted
      */
     public static void addFastTransferExemptSlot(Class<? extends Slot> slotClass) {
@@ -176,8 +186,7 @@ public class API
 
     /**
      * Register a new text handler for the block highlight tooltip with a layout specification (HEADER, BODY or FOOTER).
-     *
-     * @param handler
+     * @param handler The handler to be registered.
      * @param layout  A HUDAugmenterRegistry.Layout entry. HEADER is displayed before BODY which is displayed before FOOTER.
      */
     public static void registerHighlightHandler(IHighlightHandler handler, ItemInfo.Layout... layout) {
@@ -186,10 +195,62 @@ public class API
 
     /**
      * Register a mode handler for overriding NEI recipe/utility/cheat mode settings.
-     *
-     * @param handler
+     * @param handler The handler to be registered.
      */
     public static void registerModeHandler(INEIModeHandler handler) {
         NEIInfo.modeHandlers.add(handler);
+    }
+
+    /**
+     * Register a filter provider for the item panel.
+     * @param filterProvider The filter provider to be registered.
+     */
+    public static void addItemFilter(ItemFilterProvider filterProvider) {
+        synchronized (ItemList.itemFilterers) {
+            ItemList.itemFilterers.add(filterProvider);
+        }
+    }
+
+    /**
+     * Adds a new tag to the item subset dropdown.
+     * @param name The fully qualified name, Eg Blocks.MobSpawners. NOT case sensitive
+     * @param filter A filter for matching items that fit in this subset
+     */
+    public static void addSubset(String name, ItemFilter filter) {
+        addSubset(new SubsetTag(name, filter));
+    }
+
+    /**
+     * Adds a new tag to the item subset dropdown.
+     * @param name The fully qualified name, Eg Blocks.MobSpawners. NOT case sensitive
+     * @param items An iterable of itemstacks to be added as a subset
+     */
+    public static void addSubset(String name, Iterable<ItemStack> items) {
+        ItemStackSet filter = new ItemStackSet();
+        for(ItemStack item : items)
+            filter.add(item);
+        addSubset(new SubsetTag(name, filter));
+    }
+
+    /**
+     * Adds a new tag to the item subset dropdown.
+     */
+    public static void addSubset(SubsetTag tag) {
+        SubsetWidget.addTag(tag);
+    }
+
+    /**
+     * Adds a new search provider to the search field
+     */
+    public static void addSearchProvider(ISearchProvider provider) {
+        SearchField.searchProviders.add(provider);
+    }
+
+    /**
+     * Adds a new sorting option to the item panel sort menu
+     * @param name A unique id for this sort option. Will be used in the config for saving and translated in the options gui. Note that if the translation key name.tip exists, it will be used for a tooltip
+     */
+    public static void addSortOption(String name, Comparator<ItemStack> comparator) {
+        ItemSorter.add(name, comparator);
     }
 }

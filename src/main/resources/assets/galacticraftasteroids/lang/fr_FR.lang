@@ -1,7 +1,52 @@
-# Galacticraft Asteroids Language File = FRANCE FRENCH by Linyor
+# Galacticraft Asteroids Language File = FRANCE FRENCH by Linyor, bart74
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=Fusée Niveau 3
+item.heavyNoseCone.name=Coiffe de fusée lourde
+item.compressedTitanium.name=Titane compressé
+item.ingotTitanium.name=Lingot de titane
+item.shardTitanium.name=Pointe de titane
+item.shardIron.name=Pointe de fer
+item.rocketFinsT2.name=Aileron de fusée lourd
+item.engineT2.name=Réacteur lourd
+item.reinforcedPlateT3.name=Plaquage lourd
+item.grapple.name=Grappin
+item.thermalHelm.name=Bouclier thermique (casque)
+item.thermalChestplate.name=Bouclier thermique (plastron)
+item.thermalLeggings.name=Bouclier thermique (pantalon)
+item.thermalBoots.name=Bouclier thermique (bottes)
+item.titanium_helmet.name=Casque en titane
+item.titanium_chestplate.name=Plastron en titane
+item.titanium_leggings.name=Pantalon en titane
+item.titanium_boots.name=Bottes en titane
+item.atmosphericValve.name=Valve atmosphérique
+item.thermalCloth.name=Bouclier thermique
+item.beamCore.name=Rayon énergétique
+item.methaneCanisterPartial.name=Réservoir de méthane
+item.methaneCanister.name=Réservoir de méthane plein
+item.canister.gas.name=Gas
+item.canister.LOX.partial.name=Réservoir d'oxygène liquide
+item.canister.LOX.full.name=Réservoir d'oxygène liquide plein
+item.canister.LOX.name=OL
+item.canister.liquidNitrogen.partial.name=Réservoir d'azote liquide
+item.canister.liquidNitrogen.full.name=Réservoir d'azote liquide plein
+item.canister.liquidNitrogen.name=Liquide
+item.canister.liquidArgon.partial.name=Réservoir d'argon liquide
+item.canister.liquidArgon.full.name=Réservoir d'argon liquide plein
+item.canister.liquidArgon.name=Liquide       #short name for Liquid Argon contents level
+item.emptyGasCanister.name=Réservoir vide
+item.tier3.desc=Niveau 3
+item.titanium_pickaxe.name=Pioche en titane
+item.titanium_axe.name=Hache en titane
+item.titanium_hoe.name=Houe en titane
+item.titanium_shovel.name=Pelle en titane
+item.titanium_sword.name=Epée en titane
+tile.asteroidsBlock.asteroid0.name=Roche d'astéroïde
+tile.asteroidsBlock.asteroid1.name=Roche d'astéroïde
+tile.asteroidsBlock.asteroid2.name=Roche d'astéroïde
+tile.asteroidsBlock.oreIron.name=Minerais de fer
+tile.asteroidsBlock.oreIlmenite.name=Minerais d'ilmenite
+tile.asteroidsBlock.oreAluminum.name=Minerais d'aluminium
 
 # TOOLS
 
@@ -12,16 +57,64 @@ tile.asteroidsBlock.asteroids1.name=Roche d'astéroïde
 tile.beamReflector.name=Réflecteur de faisceau
 tile.beamReceiver.name=Récepteur de faisceau
 tile.telepadShort.name=Système de téléportation à courte portée
+tile.walkway.name=Passerelle
+tile.walkwayWire.name=Passerelle
+tile.walkwayOxygenPipe.name=Passerelle
+tile.treasureT3.name=Coffre de niveau 3
+tile.denseIce.name=Glace dense
+fluid.methane=Méthane
+fluid.oxygen=Oxygène
+fluid.nitrogen=Azote
+fluid.hydrogen=Hydrogène
+fluid.carbondioxide=CO2
+fluid.helium=Hélium
+fluid.argon=Argon
+fluid.atmosphericgases=Gas atmosphériques
+fluid.liquidmethane=Méthane liquide
+fluid.liquidoxygen=Oxygène liquide
+fluid.liquidnitrogen=Azote liquide
+fluid.liquidargon=Argon liquide
+fluid.fuel=Carburant
 
 # GUI
 planet.asteroids=Astéroïdes
+gui.telepad.desc.0=Ceci est l'addresse unique du téléporteur
+gui.telepad.desc.1=Addresse d'un autre téléporteur. Les entités y seront envoyées.
+container.shortRangeTelepad.name=Téléporteur à courte portée
+container.entryPod.name=Point d'entrée
+gc.configgui.dimensionIDAsteroids=Asteroids Dimension ID ##NEEDS TRANSLATE## 
+gc.configgui.idEntitySmallAsteroid=Small Asteroid Entity ID ##NEEDS TRANSLATE##
+gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID ##NEEDS TRANSLATE##
+gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID ##NEEDS TRANSLATE##
+gc.configgui.idEntityEntryPod=Entry Pod Entity ID ##NEEDS TRANSLATE##
+gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID ##NEEDS TRANSLATE##
+gui.message.address.name=Adresse
+gui.message.destAddress.name=Adresse de la cible
+gui.message.invalidAddress.name=Adresse unique invalide
+gui.message.invalidTargetAddress.name=Adresse de la cible invalide
+gui.message.receivingActive.name=Réception active
+gui.message.telepadTooFar.name=Cible trop éloignée! (Max %d)
+gui.message.telepadWrongDim.name=Cible dans la mauvaise dimenssion!
+gui.message.telepadNotFound.name=Téléporteur non trouvé
+gui.message.sendingActive.name=Envoi actif
+gui.message.range.name=Range: %dm
+gui.message.notEnoughEnergy.name=Pas assez d'énergie
+gui.message.targetNoEnergy.name=La cible ne possède pas assez d'énergie
+gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook! ##NEEDS TRANSLATE##
+tile.treasureT3.description=Tier 3 Treasure Chests are currently unused. ##NEEDS TRANSLATE##
+tile.walkway.description=Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme. ##NEEDS TRANSLATE##
+tile.walkwayAluminumWire.description=Aluminum Wire Walkways are used for running wire underneath a fully solid walkable surface. ##NEEDS TRANSLATE##
+tile.walkwayOxygenPipe.description=Oxygen Pipe Walkways are used for running pipes underneath a fully solid walkable surface. ##NEEDS TRANSLATE##
+tile.beamReflector.description=Beam Reflectors are used to redirect energy beams from source to destination. Can be right-clicked to cycle through targets. ##NEEDS TRANSLATE##
+tile.beamReceiver.description=Beam Receivers are connected to energy machine input and output, to transfer energy using beams. ##NEEDS TRANSLATE##
+tile.telepadShort.description=Short Range Telepads are used to transfer players and other living creatures short distances (250 Blocks) when linked to other telepads. ##NEEDS TRANSLATE##
 
-itemGroup.GalacticraftAsteroids=Galacticraft Astéroïdes
+itemGroup.GalacticraftAsteroids=Astéroïdes Galacticraft
 # Schematics
 
 # Entity
 entity.SmallAsteroidGC.name=Petit astéroïde
-entity.GrappleHookGC.name=Grappin crochet
+entity.GrappleHookGC.name=Grappin
 entity.Tier3RocketGC.name=Fusée Niveau 3
 
 # Container

@@ -7,52 +7,52 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class PacketRotateRocket implements IPacket
 {
-	private int entityID;
-	private float entityPitch;
-	private float entityYaw;
+    private int entityID;
+    private float entityPitch;
+    private float entityYaw;
 
-	public PacketRotateRocket()
-	{
-	}
+    public PacketRotateRocket()
+    {
+    }
 
-	public PacketRotateRocket(Entity rotateableEntity)
-	{
-		this.entityID = rotateableEntity.getEntityId();
-		this.entityPitch = rotateableEntity.rotationPitch;
-		this.entityYaw = rotateableEntity.rotationYaw;
-	}
+    public PacketRotateRocket(Entity rotateableEntity)
+    {
+        this.entityID = rotateableEntity.getEntityId();
+        this.entityPitch = rotateableEntity.rotationPitch;
+        this.entityYaw = rotateableEntity.rotationYaw;
+    }
 
-	@Override
-	public void encodeInto(ChannelHandlerContext context, ByteBuf buffer)
-	{
-		buffer.writeInt(this.entityID);
-		buffer.writeFloat(this.entityPitch);
-		buffer.writeFloat(this.entityYaw);
-	}
+    @Override
+    public void encodeInto(ChannelHandlerContext context, ByteBuf buffer)
+    {
+        buffer.writeInt(this.entityID);
+        buffer.writeFloat(this.entityPitch);
+        buffer.writeFloat(this.entityYaw);
+    }
 
-	@Override
-	public void decodeInto(ChannelHandlerContext context, ByteBuf buffer)
-	{
-		this.entityID = buffer.readInt();
-		this.entityPitch = buffer.readFloat();
-		this.entityYaw = buffer.readFloat();
-	}
+    @Override
+    public void decodeInto(ChannelHandlerContext context, ByteBuf buffer)
+    {
+        this.entityID = buffer.readInt();
+        this.entityPitch = buffer.readFloat();
+        this.entityYaw = buffer.readFloat();
+    }
 
-	@Override
-	public void handleClientSide(EntityPlayer player)
-	{
+    @Override
+    public void handleClientSide(EntityPlayer player)
+    {
 
-	}
+    }
 
-	@Override
-	public void handleServerSide(EntityPlayer player)
-	{
-		Entity entity = player.worldObj.getEntityByID(this.entityID);
+    @Override
+    public void handleServerSide(EntityPlayer player)
+    {
+        Entity entity = player.worldObj.getEntityByID(this.entityID);
 
-		if (entity != null)
-		{
-			entity.rotationPitch = this.entityPitch;
-			entity.rotationYaw = this.entityYaw;
-		}
-	}
+        if (entity != null)
+        {
+            entity.rotationPitch = this.entityPitch;
+            entity.rotationYaw = this.entityYaw;
+        }
+    }
 }

@@ -1,20 +1,21 @@
 package micdoodle8.mods.galacticraft.api.galaxies;
 
-public class Satellite extends CelestialBody
+public class Satellite extends CelestialBody implements IChildBody
 {
-    protected CelestialBody parentCelestialBody = null;
+    protected Planet parentCelestialBody = null;
 
     public Satellite(String satelliteName)
     {
         super(satelliteName);
     }
 
-    public CelestialBody getParentBody()
+    @Override
+    public Planet getParentPlanet()
     {
         return this.parentCelestialBody;
     }
 
-    public Satellite setParentBody(CelestialBody parentCelestialBody)
+    public Satellite setParentBody(Planet parentCelestialBody)
     {
         this.parentCelestialBody = parentCelestialBody;
         return this;

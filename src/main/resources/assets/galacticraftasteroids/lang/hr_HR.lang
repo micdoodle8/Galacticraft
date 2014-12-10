@@ -1,0 +1,136 @@
+# Galacticraft Asteroids Language File = CROATIAN
+
+# GENERAL ITEMS
+item.itemTier3Rocket.t3Rocket.name=Raketa Ranga 3
+item.heavyNoseCone.name=Snažni Nos Rakete
+item.compressedTitanium.name=Prerađeni Titanium
+item.ingotTitanium.name=Poluga Titanum
+item.shardTitanium.name=Krhotina Titaniuma
+item.shardIron.name=Krhotina Željeza
+item.rocketFinsT2.name=Snažni Rep Rakete
+item.engineT2.name=Snažni Motor Rakete
+item.reinforcedPlateT3.name=Snažna Ploča Ranga 3
+item.grapple.name=Kuka
+item.atmosphericValve.name=Atmosferski Ventil
+item.thermalCloth.name=Termalna Odječa
+item.beamCore.name=Jezgra
+item.tier3.desc=Rang 3
+
+# TOOLS
+item.titanium_pickaxe.name=Titanium Kramp
+item.titanium_axe.name=Titanium Sjekira
+item.titanium_hoe.name=Titanium Motika
+item.titanium_shovel.name=Titanium Lopata
+item.titanium_sword.name=Titanium Mač
+
+# ARMOR
+item.thermalHelm0.name=Termalni Šljem
+item.thermalChestplate0.name=Termalni Prsni Oklop
+item.thermalLeggings0.name=Termalne Gamaše
+item.thermalBoots0.name=Termalne Čizme
+item.thermalHelm.name=Termalni Šljem
+item.thermalChestplate.name=Termali Prsni Oklop
+item.thermalLeggings.name=Termalne Gamaše
+item.thermalBoots.name=Termalne Čizme
+item.titanium_helmet.name=Titanium Šljem
+item.titanium_chestplate.name=Titanium Prsni Oklop 
+item.titanium_leggings.name=Titanium Gamaše
+item.titanium_boots.name=Titanium Čizme
+
+# CANISTERS ETC
+item.methaneCanisterPartial.name=Karnister Metana
+item.methaneCanister.name=Pun Karnister Metana
+item.canister.gas.name=Plin  
+                
+#short name for Methane Gas contents level
+item.canister.LOX.partial.name=Karnister od tekučeg kisika
+item.canister.LOX.full.name=Pun Karnister od tekučeg kisika
+item.canister.LOX.name=LOX
+              
+#short name for Liquid Oxygen contents level
+item.canister.liquidNitrogen.partial.name=Karnister tekučeg Nitrogena
+item.canister.liquidNitrogen.full.name=Pun Karnister tekučeg Nitrogena
+item.canister.liquidNitrogen.name=Nitrogen  
+  
+#short name for Liquid Nitrogen contents level
+item.canister.liquidArgon.partial.name=Karnister tekučine Argon
+item.canister.liquidArgon.full.name=Pun Karnister tekučine Argon
+item.canister.liquidArgon.name=Argon   
+    
+#short name for Liquid Argon contents level
+item.emptyGasCanister.name=Prazni Karnister Plina
+
+# FLUIDS AND GASES
+fluid.methane=Metan 
+fluid.oxygen=Zrak 
+fluid.nitrogen=Nitrogen 
+fluid.hydrogen=Hidrogen 
+fluid.carbondioxide=CO2 
+fluid.helium=Helij
+fluid.argon=Argon
+fluid.atmosphericgases=Atmosferni Plinovi
+fluid.liquidmethane=Tekuči Methan
+fluid.liquidoxygen=Tekuči Zrak
+fluid.liquidnitrogen=Tekuči Nitrogen
+fluid.liquidargon=Tekuči Argon
+fluid.fuel=Gorivo
+
+# BLOCKS
+tile.asteroidsBlock.asteroid0.name=Asteroidski Kamen
+tile.asteroidsBlock.asteroid1.name=Asteroidski Kamen
+tile.asteroidsBlock.asteroid2.name=Asteroidski Kamen
+tile.asteroidsBlock.oreIron.name=Ruda Željeza
+tile.asteroidsBlock.oreIlmenite.name= Ruda Ilmenita
+tile.asteroidsBlock.oreAluminum.name=Ruda Aluminija
+tile.beamReflector.name=Energetski Zračni Reflektor
+tile.beamReceiver.name=Energetski Zračni Odašiljac
+tile.telepadShort.name=Teleporter s Malom Daljinom
+tile.walkway.name=Staza
+tile.walkwayWire.name=Staza s Cijevima za Strujom
+tile.walkwayOxygenPipe.name=Staza s Cijevima za Zrakom
+tile.treasureT3.name=Rang 3 Škrinje s Blagom
+tile.denseIce.name=Gusti Led
+
+# GUI
+planet.asteroids=Asteroidi
+
+# Dollar sign ($) will split text onto a new line
+# Do not remove %s or %d, since that will be replaced in-game
+gui.telepad.desc.0=Ovo je teleporterova$Adresa
+gui.telepad.desc.1=Adresiraj na drugi teleporter.$Bića ce biti poslana ondje.
+gui.message.address.name=Adresa
+gui.message.destAddress.name=Meta Adrese
+gui.message.invalidAddress.name=Netočna Adresa
+gui.message.invalidTargetAddress.name=Netočna Meta Aderese
+gui.message.receivingActive.name=Čekam Aktiviranje
+gui.message.telepadTooFar.name=Meta previše daleko! (Max %d)
+gui.message.telepadWrongDim.name=Meta je u krivoj dimenziji!
+gui.message.telepadNotFound.name=Teleporter nije pronađen!
+gui.message.sendingActive.name=Šaljem aktivaciju
+gui.message.range.name=Daleko: %dm
+gui.message.notEnoughEnergy.name=Nema Dovoljno Energije!
+gui.message.targetNoEnergy.name=Meta nema Energije!
+gui.message.grapple.fail=Trebam nit da mogu baciti!
+tile.treasureT3.description=Rang 3 Škrinja s blagom se mogu pronači u asteroidskoj dimenziji u tamnicama.
+tile.walkway.description=Staze se koriste za dekorativne svrhe te za pokretanje energije/zraka ispod igrača.
+tile.walkwayAluminumWire.description=Staze s cijevima za struju se koriste za pokretanje struje ispod potpuno čvrste prohodne površine.
+tile.walkwayOxygenPipe.description=Staze s cijevima za kisik se koriste za pokretanje kisika ispod potpuno čvrste prohodne površine.
+tile.beamReflector.description=Reflektori se koriste za preusmjeravanje energije zrake od izvora do odredišta. Može se kliknuti na njega da ode na drugi cilj.
+tile.beamReceiver.description=Prijemnici su povezani s ulazom stroja, za prijenos energije pomoću zrake.
+tile.telepadShort.description=Teleporter s malom daljinom se koristi za prijenos igrača i bića na male daljine (250 blokova) kada je povezan s drugim teleporterom.
+# SCHEMATICS
+
+# ENTITIES
+entity.SmallAsteroidGC.name=Mali Asteroid
+entity.GrappleHookGC.name=Kuka
+entity.Tier3RocketGC.name=Rang 3 Raketa
+
+# CONTAINERS
+container.shortRangeTelepad.name=Teleporter s Malom Daljinom
+container.entryPod.name=Ulazna Kapsula
+gc.configgui.dimensionIDAsteroids=Asteroids Dimension ID
+gc.configgui.idEntitySmallAsteroid=Small Asteroid Entity ID
+gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID
+gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID
+gc.configgui.idEntityEntryPod=Entry Pod Entity ID
+gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID

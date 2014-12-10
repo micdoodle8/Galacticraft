@@ -6,10 +6,10 @@ import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.client.fx.EntityFXLanderFlame;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,7 +30,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
         this.setSize(3.0F, 3.0F);
     }
 
-    public EntityLander(GCEntityPlayerMP player)
+    public EntityLander(EntityPlayerMP player)
     {
         super(player, 0.0F);
     }
@@ -66,7 +66,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     @Override
     public String getInventoryName()
     {
-        return "Landing Balloons";
+        return GCCoreUtil.translate("container.lander.name");
     }
 
     @Override
@@ -117,24 +117,24 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
 
         switch (key)
         {
-            case 0:
-                this.rotationPitch = Math.min(Math.max(this.rotationPitch - 0.5F * turnFactor, -angle), angle);
-                return true;
-            case 1:
-                this.rotationPitch = Math.min(Math.max(this.rotationPitch + 0.5F * turnFactor, -angle), angle);
-                return true;
-            case 2:
-                this.rotationYaw -= 0.5F * turnFactor;
-                return true;
-            case 3:
-                this.rotationYaw += 0.5F * turnFactor;
-                return true;
-            case 4:
-                this.motionY = Math.min(this.motionY + 0.03F, this.posY < 90 ? -0.15 : -1.0);
-                return true;
-            case 5:
-                this.motionY = Math.min(this.motionY - 0.022F, -1.0);
-                return true;
+        case 0:
+            this.rotationPitch = Math.min(Math.max(this.rotationPitch - 0.5F * turnFactor, -angle), angle);
+            return true;
+        case 1:
+            this.rotationPitch = Math.min(Math.max(this.rotationPitch + 0.5F * turnFactor, -angle), angle);
+            return true;
+        case 2:
+            this.rotationYaw -= 0.5F * turnFactor;
+            return true;
+        case 3:
+            this.rotationYaw += 0.5F * turnFactor;
+            return true;
+        case 4:
+            this.motionY = Math.min(this.motionY + 0.03F, this.posY < 90 ? -0.15 : -1.0);
+            return true;
+        case 5:
+            this.motionY = Math.min(this.motionY - 0.022F, -1.0);
+            return true;
         }
 
         return false;
@@ -143,20 +143,31 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     @Override
     public boolean shouldSpawnParticles()
     {
-        return false;
+        return this.rotationPitch != 0.0000000000001F;
     }
 
     @Override
     public Map<Vector3, Vector3> getParticleMap()
     {
-        return new HashMap<Vector3, Vector3>();
+        final double x1 = 4 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
+        final double z1 = 4 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
+        final double y1 = -4 * Math.abs(Math.cos(this.rotationPitch * Math.PI / 180.0D));
+
+        new Vector3(this);
+
+        final Map<Vector3, Vector3> particleMap = new HashMap<Vector3, Vector3>();
+        particleMap.put(new Vector3(this).translate(new Vector3(0, 1, 0)), new Vector3(x1, y1, z1));
+        particleMap.put(new Vector3(this).translate(new Vector3(0, 1, 0)), new Vector3(x1, y1, z1));
+        particleMap.put(new Vector3(this).translate(new Vector3(0, 1, 0)), new Vector3(x1, y1, z1));
+        particleMap.put(new Vector3(this).translate(new Vector3(0, 1, 0)), new Vector3(x1, y1, z1));
+        return particleMap;
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     public EntityFX getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
     {
-        return new EntityFXLanderFlame(this.worldObj, x, y, z, motX, motY, motZ);
+        return new EntityFXLanderFlame(this.worldObj, x, y, z, motX, motY, motZ, this.riddenByEntity instanceof EntityLivingBase ? (EntityLivingBase)this.riddenByEntity : null);
     }
 
     @Override
@@ -182,7 +193,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     @Override
     public void tickOnGround()
     {
-        this.rotationPitch = 0.0F;
+        this.rotationPitch = 0.0000000000001F;
     }
 
     @Override
@@ -221,22 +232,26 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     }
 
     @Override
-    public float getCameraZoom() {
+    public float getCameraZoom()
+    {
         return 15;
     }
 
     @Override
-    public boolean defaultThirdPerson() {
+    public boolean defaultThirdPerson()
+    {
         return true;
     }
 
     @Override
-    public boolean shouldIgnoreShiftExit() {
+    public boolean shouldIgnoreShiftExit()
+    {
         return !this.onGround;
     }
 
     @Override
-    public double getInitialMotionY() {
+    public double getInitialMotionY()
+    {
         return -2.5D;
     }
 

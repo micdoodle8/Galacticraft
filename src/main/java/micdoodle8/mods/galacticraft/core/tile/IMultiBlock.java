@@ -6,24 +6,22 @@ import net.minecraft.tileentity.TileEntity;
 
 public interface IMultiBlock
 {
-	/**
-	 * Called when activated
-	 */
-	public boolean onActivated(EntityPlayer entityPlayer);
+    /**
+     * Called when activated
+     */
+    public boolean onActivated(EntityPlayer entityPlayer);
 
-	/**
-	 * Called when this multiblock is created
-	 * 
-	 * @param placedPosition
-	 *            - The position the block was placed at
-	 */
-	public void onCreate(BlockVec3 placedPosition);
+    /**
+     * Called when this multiblock is created
+     *
+     * @param placedPosition - The position the block was placed at
+     */
+    public void onCreate(BlockVec3 placedPosition);
 
-	/**
-	 * Called when one of the multiblocks of this block is destroyed
-	 * 
-	 * @param callingBlock
-	 *            - The tile entity who called the onDestroy function
-	 */
-	public void onDestroy(TileEntity callingBlock);
+    /**
+     * Called when one of the multiblocks of this block is destroyed
+     *
+     * @param callingBlock - The tile entity who called the onDestroy function
+     */
+    public void onDestroy(TileEntity callingBlock);
 }

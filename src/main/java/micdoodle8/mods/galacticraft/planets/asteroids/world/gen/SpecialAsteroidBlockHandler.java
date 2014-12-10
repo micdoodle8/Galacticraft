@@ -6,36 +6,36 @@ import java.util.Random;
 public class SpecialAsteroidBlockHandler
 {
 
-	ArrayList<SpecialAsteroidBlock> asteroidBlocks;
+    ArrayList<SpecialAsteroidBlock> asteroidBlocks;
 
-	public SpecialAsteroidBlockHandler(SpecialAsteroidBlock... asteroidBlocks)
-	{
-		this.asteroidBlocks = new ArrayList<SpecialAsteroidBlock>();
-		for (SpecialAsteroidBlock asteroidBlock : this.asteroidBlocks)
-		{
-			for (int i = 0; i < asteroidBlock.probability; i++)
-			{
-				this.asteroidBlocks.add(asteroidBlock);
-			}
-		}
-	}
+    public SpecialAsteroidBlockHandler(SpecialAsteroidBlock... asteroidBlocks)
+    {
+        this.asteroidBlocks = new ArrayList<SpecialAsteroidBlock>();
+        for (SpecialAsteroidBlock asteroidBlock : this.asteroidBlocks)
+        {
+            for (int i = 0; i < asteroidBlock.probability; i++)
+            {
+                this.asteroidBlocks.add(asteroidBlock);
+            }
+        }
+    }
 
-	public SpecialAsteroidBlockHandler()
-	{
-		this.asteroidBlocks = new ArrayList<SpecialAsteroidBlock>();
-	}
+    public SpecialAsteroidBlockHandler()
+    {
+        this.asteroidBlocks = new ArrayList<SpecialAsteroidBlock>();
+    }
 
-	public void addBlock(SpecialAsteroidBlock asteroidBlock)
-	{
-		for (int i = 0; i < asteroidBlock.probability; i++)
-		{
-			this.asteroidBlocks.add(asteroidBlock);
-		}
-	}
+    public void addBlock(SpecialAsteroidBlock asteroidBlock)
+    {
+        for (int i = 0; i < asteroidBlock.probability; i++)
+        {
+            this.asteroidBlocks.add(asteroidBlock);
+        }
+    }
 
-	public SpecialAsteroidBlock getBlock(Random rand)
-	{
-		return this.asteroidBlocks.get(rand.nextInt(this.asteroidBlocks.size()));
-	}
+    public SpecialAsteroidBlock getBlock(Random rand)
+    {
+        return this.asteroidBlocks.get(rand.nextInt(this.asteroidBlocks.size()));
+    }
 
 }

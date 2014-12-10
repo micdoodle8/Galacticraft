@@ -1,0 +1,197 @@
+# Galacticraft Mars Language File = KOREA KOREAN
+
+# GENERAL ITEMS
+item.rawDesh.name=가공되지 않은 데쉬
+item.deshStick.name=데쉬 막대기
+item.ingotDesh.name=데쉬 주괴
+item.spaceshipTier2.t2Rocket.name=2티어 로켓
+item.reinforcedPlateT2.name=강화 플레이트
+item.tier2.desc=2티어
+item.slimelingCargo.name=슬라임링 인벤토리 가방
+item.key.T2.name=2티어 던전 열쇠
+item.compressedDesh.name=압축된 데쉬
+item.spaceshipTier2.cargoRocket.name=화물 로켓
+item.fluidManip.name=유체 조정기
+item.bucketSludge.name=세균 슬러지 양동이
+fluid.bacterialsludge=세균 슬러지
+
+# TOOLS
+item.deshPick.name=데쉬 곡괭이
+item.deshPickSlime.name=접착 데쉬 곡괭이
+item.deshAxe.name=데쉬 도끼
+item.deshHoe.name=데쉬 괭이
+item.deshSpade.name=데쉬 삽
+item.deshSword.name=데쉬 검
+
+# ARMOR
+item.deshHelmet.name=데쉬 헬멧
+item.deshChestplate.name=데쉬 상의
+item.deshLeggings.name=데쉬 하의
+item.deshBoots.name=데쉬 부츠
+
+# BLOCKS
+tile.mars.deshmars.name=데쉬 광석
+tile.mars.coppermars.name=구리 광석
+tile.mars.tinmars.name=주석 광석
+tile.mars.ironmars.name=철광석
+tile.mars.marscobblestone.name=화성 조약돌
+tile.mars.marsstone.name=화성석
+tile.mars.marsdirt.name=화성 저표석
+tile.mars.marsgrass.name=화성 지표석
+tile.mars.marsdeco.name=데쉬 블록
+tile.mars.marsdungeon.name=화성 던전 벽돌
+tile.treasureT2.name=2티어 보물상자
+tile.slimelingEgg.redEgg.name=붉은 슬라임링 알
+tile.slimelingEgg.blueEgg.name=푸른 슬라임링 알
+tile.slimelingEgg.yellowEgg.name=노란 슬라임링 알
+tile.marsMachine.0.name=테라포머
+tile.marsMachine.1.name=극저온실
+tile.marsMachine.2.name=발사 통제기
+tile.marsMachine.4.name=가스 액화기
+tile.marsMachine.5.name=메탄 합성기
+tile.marsMachine.6.name=전기 분해기
+tile.sludge.name=세균 슬러지
+tile.creeperEgg.name=크리퍼 알
+tile.cavernVines.name=동굴 넝굴
+
+# DECOBLOCKS
+tile.marsCobblestoneStairs.name=화성 조약돌 계단
+tile.wallGC.mars.name=화성 조양돌 담장
+tile.slabGCHalf.marsSlab.name=화성 조약돌 반 블록
+tile.marsDungeonBricksStairs.name=화성 던전 벽돌 계단
+tile.wallGC.marsBricks.name=화성 던전 벽돌 담장
+tile.slabGCHalf.marsBricksSlab.name=화성 던전 벽돌 반 블록
+
+# GUI
+gui.choosePlanet.desc.mars=거주 가능#산소 부족#중력: 38%
+item.deshPickSlime.description.name=크리퍼 알 채취가능
+gui.message.noEnergy.name=에너지가 부족합니다!
+gui.message.noWater.name=물이 부족합니다
+gui.message.noBonemeal.name=뼛가루가 부족합니다
+gui.message.noSeeds.name=씨앗이 부족합니다
+gui.message.noSaplings.name=묘목이 부족합니다
+gui.message.bubbleExp.name=기포 팽창 중
+gui.message.noValidBlocks.name=기포 내부에 유효한 블록 없음
+gui.message.terraforming.name=테라포밍 중
+gui.message.enableTrees.name=나무 활성화
+gui.message.enableGrass.name=잔디 활성화
+gui.message.trees.name=나무
+gui.message.grass.name=잔디
+gui.message.invalidFreq.name=잘못된 주파수
+gui.message.frequency.name=주파수
+gui.message.destFrequency.name=목적지 주파수
+gui.message.removePad.name=발사대 제거
+gui.message.launchWhen.name=발사 조건: 
+gui.message.cargoUnloaded.name=화물이 비었을시
+gui.message.cargoFull.name=화물이 가득찰시
+gui.message.fullyFueled.name=연료 최대공급시
+gui.message.instant.name=즉시
+gui.message.tenSec.name=10초
+gui.message.thirtySec.name=30초
+gui.message.oneMin.name=1분
+gui.message.redstoneSig.name=레드스톤 신호
+gui.message.notSet.name=설정안됨
+gui.message.notEnough.name=부족
+gui.message.success.name=성공
+gui.message.zeroWater.name=물이 부족합니다!
+
+	# Dollar sign ($) will split text onto a new line
+gui.launchController.desc.0=발사 통제기의$고유 주파수
+gui.launchController.desc.1=로켓 발사 방향 (목적지) 주파수
+gui.launchController.desc.2=로켓 발사시$발사대 제거 여부
+gui.launchController.desc.3=현재 조건이 만족될 경우$로켓이 발사됩니다
+gui.terraformer.desc.0=물 탱크
+
+gui.gasTank.desc.0=가스 저장고
+gui.gasTankCompressed.desc.0=가스 저장고 (압축됨)
+gui.liquidTank.desc.0=액체 탱크
+gui.status.nogas.name=가스 없음
+gui.status.liquefying.name=액화 중
+gui.status.processing.name=합성 중
+gui.status.needsCarbon.name=탄소 필요
+gui.status.tankfull.name=탱크 꽉참
+gui.status.tanksfull.name=탱크 전체 꽉참
+gui.message.lowEnergy.name=에너지 적음
+gui.button.liquefy.name=가공시작
+gui.button.liquefyStop.name=중단
+gui.gasInput.desc.0=메탄가스통을 이곳에 배치하시오
+gui.gasInput.desc.1=(또는, 대기밸브를$대신 배치가능)
+gui.hydrogenInput.desc.0=수소 탱크를 이곳에 배치하시오
+gui.hydrogenInput.desc.1=혹은 대기밸브또한 가능
+gui.liquidOutput.desc.2=액체화된 가스 탱크
+gui.methaneOutput.desc.2=메탄 탱크
+gui.message.withAtmosphere0.name=현 행성의 대기에
+gui.message.withAtmosphere1.name=(이)가 풍부합니다.
+item.carbonFragments.name=탄소 파편
+gui.carbonSlot.desc.0=탄소 파편을 이곳에 배치하시오
+gui.waterBucketSlot.desc=물양동이를 이곳에 배치하시오
+
+gui.cargorocket.status.waiting.0=다음을 기다리는중: 
+gui.cargorocket.status.waiting.1=발화
+gui.cargorocket.status.launched.0=이미
+gui.cargorocket.status.launched.1=발사됨
+
+gas.carbondioxide.name=이산화탄소
+gas.oxygen.name=산소
+gas.nitrogen.name=질소
+
+gui.desc.reinforcedPlateT2.name=2티어
+dimension.Mars.name=화성
+planet.mars=화성
+
+tile.treasureT2.description=화성 던전안에 2티어 보물상자가 생성됩니다. 최종보스를 처치 했을시 열 수 있습니다.
+tile.cavernVines.description=동굴 넝쿨은 움직이는 동물에게 치명적입니다. 동물을 휘감아 들어올립니다.
+tile.slimelingEgg.description=슬라임링 알을 플레이어가 손에서 부화시켰을경우, 슬라임링을 펫으로 키울 수 있습니다.
+tile.cryoChamber.description=극저온실은 플레이어가 낮에 잠을 잘 수 있도록 도와줍니다. 쿨다운 시간이 존재하지만 소량의 체력을 회복시킵니다.
+tile.launchController.description=발사 통제기를 통해 로켓 발사 패턴을 커스터마이징 할 수 있습니다.
+tile.terraformer.description=테라포머는 특정 재료가 주어지면 잔디, 나무, 물과 같이 식물을 다른 행성에 키울 수 있는 환경을 만들어 줍니다.
+tile.creeperEgg.description=폭발하며 크리퍼를 부화시키는 크리퍼 알은 화성 던전에 생성됩니다.
+tile.gasLiquefier.description=대기 혹은 플레이어에 의해 주어진 기체를 액체화 시킵니다. (팁: 액체메탄 로켓 연료)
+tile.methaneSynthesizer.description=수소와 탄소를 이용해 가스 액화기에서 가공 가능한 메탄을 합성합니다.
+tile.electrolyzer.description=(메탄 합성기에 유용한) 수소와 산소를 물에서 부터 전기분해합니다.
+
+gui.slimeling.chat.wrongPlayer=어라? 내 슬라임링이 아니잖아!
+gui.cryogenic.chat.cantUse=%d 초 뒤에 다시 사용할 수 있습니다
+gui.slimeling.name=이름
+gui.slimeling.owner=주인
+gui.slimeling.kills=킬 수
+gui.slimeling.scale=크기
+gui.slimeling.button.sit=앉기
+gui.slimeling.button.follow=따라가기
+gui.slimeling.sitting=앉은 상태
+gui.slimeling.following=따라오는중
+gui.slimeling.damage=공격 데미지
+gui.slimeling.food=기호 음식
+
+# SCHEMATICS
+schematic.rocketT3.name=3티어 로켓
+schematic.cargoRocket.name=자동 화물 로켓
+
+# ENTITIES
+entity.Sludgeling.name=슬러지링
+entity.Slimeling.name=슬라임링
+entity.CreeperBoss.name=진화한 크리퍼 보스
+entity.SpaceshipT2.name=2티어 로켓
+entity.CargoRocket.name=화물 로켓
+
+# CONTAINERS
+container.launchcontroller.name=발사 통제기
+container.tileTerraformer.name=테라포머
+container.marsLander.name=착륙 기구
+
+# CONFIG GUI
+gc.configgui.dimensionIDMars=화성 세계 ID
+gc.configgui.idEntityCreeperBoss=크리퍼 보스 엔티티 ID
+gc.configgui.idEntityProjectileTNT=발사체 TNT 엔티티 ID
+gc.configgui.idEntitySpaceshipTier2=2티어 로켓 엔티티 ID
+gc.configgui.idEntitySludgeling=슬러지링 엔티티 ID
+gc.configgui.idEntitySlimeling=슬라임링 엔티티 ID
+gc.configgui.idEntityTerraformBubble=테라포밍 기포 엔티티 ID
+gc.configgui.idEntityLandingBalloons=착륙 기구 엔티티 ID
+gc.configgui.idEntityCargoRocket=화물 로켓 엔티티 ID
+gc.configgui.idSchematicRocketT2=2티어 로켓 설계도 ID
+gc.configgui.idSchematicCargoRocket=화물 로켓 설계도 ID
+gc.configgui.launchControllerChunkLoad=발사 통제기 청크로드
+gc.configgui.launchControllerAllDims=발사 통제기 모든 세계
+
+gc.configgui.planets.title=Galacticraft 행성 커스터마이징

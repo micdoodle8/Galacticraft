@@ -2,7 +2,6 @@
 
 # GENERAL ITEMS
 item.meteoricIronRaw.name=Ruwe meteoriet staaf
-item.meteoric_iron_ingot.name=Meteoric Iron Ingot ##NEEDS TRANSLATE##
 item.compressedMeteoricIron.name=Compressed Meteoric Iron ##NEEDS TRANSLATE##
 item.meteoricIronIngot.name=Meteoriet ijzer staaf
 
@@ -24,9 +23,8 @@ tile.moonBlock.cheesestone.name=Kaas erts
 tile.moonBlock.bricks.name=Bakstenen
 tile.cheeseBlock.name=Kaas blok
 
-dimension.Moon.name=Moon
-
 # GUI
 gui.choosePlanet.desc.moon=Bewoonbaar#Geen zuurstof#Zwaartekracht: 18%
+container.lander.name=Lander ##NEEDS TRANSLATE##
 
-itemGroup.GalacticraftMoon=Galacticraft Maan
+dimension.Moon.name=Maan

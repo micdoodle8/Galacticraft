@@ -1,12 +1,126 @@
 # Galacticraft Asteroids Language File = SPAIN SPANISH
 
-item.itemTier3Rocket.t3Rocket.name=Tier 3 Rocket ##NEEDS TRANSLATE##
-tile.asteroidsBlock.asteroids1.name=Asteroid Rock ##NEEDS TRANSLATE##
-tile.beamReflector.name=Beam Reflector ##NEEDS TRANSLATE##
-tile.beamReceiver.name=Beam Receiver ##NEEDS TRANSLATE##
-tile.telepadShort.name=Short Range Telepad ##NEEDS TRANSLATE##
-planet.asteroids=Asteroids ##NEEDS TRANSLATE##
-itemGroup.GalacticraftAsteroids=Galacticraft Asteroids ##NEEDS TRANSLATE##
-entity.SmallAsteroidGC.name=Small Asteroid ##NEEDS TRANSLATE##
-entity.GrappleHookGC.name=Grapple Hook ##NEEDS TRANSLATE##
-entity.Tier3RocketGC.name=Tier 3 Rocket ##NEEDS TRANSLATE##
+# GENERAL ITEMS
+item.itemTier3Rocket.t3Rocket.name=Cohete Nivel 3
+item.heavyNoseCone.name=Ojiva Grande
+item.compressedTitanium.name=Titanio Comprimido
+item.ingotTitanium.name=Lingote de Titanio
+item.shardTitanium.name=Fragmento de Titanio
+item.shardIron.name=Fragmento de Hierro
+item.rocketFinsT2.name=Aleta de Cohete Grande
+item.engineT2.name=Motor de Cohete Grande
+item.reinforcedPlateT3.name=Placa de Alta Resistencia
+item.grapple.name=Gancho
+item.atmosphericValve.name=Válvula Atmosférica
+item.thermalCloth.name=Tela Térmica
+item.beamCore.name=Núcleo del Haz
+item.tier3.desc=Nivel 3
+
+# TOOLS
+item.titanium_pickaxe.name=Pico de Titanio
+item.titanium_axe.name=Hacha de Titanio
+item.titanium_hoe.name=Azada de Titanio
+item.titanium_shovel.name=Pala de Titanio
+item.titanium_sword.name=Espada de Titanio
+
+# ARMOR
+item.thermalHelm.name=Gorro Térmico
+item.thermalChestplate.name=Suéter Térmico
+item.thermalLeggings.name=Leggings  Térmicos
+item.thermalBoots.name=Calcetines Térmicos
+item.titanium_helmet.name=Casco de Titanio
+item.titanium_chestplate.name=Peto de Titanio
+item.titanium_leggings.name=Grebas de Titanio
+item.titanium_boots.name=Botas de Titanio
+
+# CANISTERS ETC
+item.methaneCanisterPartial.name=Bote de Metano
+item.methaneCanister.name=Bote de Metano Lleno
+item.canister.gas.name=Gas                  #short name for Methane Gas contents level
+item.canister.LOX.partial.name=Bote de Oxígeno Líquido
+item.canister.LOX.full.name=Bote de Oxígeno Líquido Lleno
+item.canister.LOX.name=LOX                  #short name for Liquid Oxygen contents level
+item.canister.liquidNitrogen.partial.name=Bote de Nitrógeno Líquido
+item.canister.liquidNitrogen.full.name=Bote de Nitrógeno Líquido Lleno
+item.canister.liquidNitrogen.name=Líquido    #short name for Liquid Nitrogen contents level
+item.canister.liquidArgon.partial.name=Bote de Argón Líquido
+item.canister.liquidArgon.full.name=Bote de Argón Líquido Lleno
+item.canister.liquidArgon.name=Líquido       #short name for Liquid Argon contents level
+item.emptyGasCanister.name=Bote de Gas Vacío
+
+# FLUIDS AND GASES
+fluid.methane=Metano
+fluid.oxygen=Oxígeno
+fluid.nitrogen=Nítrogeno
+fluid.hydrogen=Hidrógeno
+fluid.carbondioxide=CO2
+fluid.helium=Helio
+fluid.argon=Argón
+fluid.atmosphericgases=Gases Atmosféricos
+fluid.liquidmethane=Metano Líquido
+fluid.liquidoxygen=Oxígeno Líquido
+fluid.liquidnitrogen=Nítrogeno Líquido
+fluid.liquidargon=Argón Líquido
+fluid.fuel=Combustible
+
+# BLOCKS
+tile.asteroidsBlock.asteroid0.name=Roca de Asteroide
+tile.asteroidsBlock.asteroid1.name=Roca de Asteroide
+tile.asteroidsBlock.asteroid2.name=Roca de Asteroide
+tile.asteroidsBlock.oreIron.name=Mena de Hierro
+tile.asteroidsBlock.oreIlmenite.name=Mena de Ilmenita
+tile.asteroidsBlock.oreAluminum.name=Mena de Aluminio
+tile.beamReflector.name=Reflector Láser
+tile.beamReceiver.name=Receptor Láser
+tile.telepadShort.name=Teletransportador de Corto Alcance
+tile.walkway.name=Pasarela
+tile.walkwayWire.name=Pasarela
+tile.walkwayOxygenPipe.name=Pasarela
+tile.treasureT3.name=Cofre del Tesoro Nivel 3
+tile.denseIce.name=Hielo Denso
+
+# GUI
+planet.asteroids=Asteroides
+
+	# Dollar sign ($) will split text onto a new line
+	# Do not remove %s or %d, since that will be replaced in-game
+gui.telepad.desc.0=Esta es la única dirección$del Teletransportador
+gui.telepad.desc.1=Dirección de otro Teletransportador.$Las entidades se enviarán allí.
+gui.message.address.name=Dirección
+gui.message.destAddress.name=Dirección de Destino
+gui.message.invalidAddress.name=Dirección Única Invalida
+gui.message.invalidTargetAddress.name=Dirección de Destino Invalida
+gui.message.receivingActive.name=Recepción Activa
+gui.message.telepadTooFar.name=Objetivo muy Lejos! (Max %d)
+gui.message.telepadWrongDim.name=Destino en otra Dimensión
+gui.message.telepadNotFound.name=Teletransportador No Encontrado
+gui.message.sendingActive.name=Envío Activo
+gui.message.range.name=Alcance: %dm
+gui.message.notEnoughEnergy.name=Energía Insuficiente
+gui.message.targetNoEnergy.name=El Objetivo no tiene suficiente Energía
+gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook! ##NEEDS TRANSLATE##
+
+tile.treasureT3.description=Los Cofres del Tesoro Nivel 3 están actualmente sin utilizar.
+tile.walkway.description=Las Pasarelas se usan para finalidades decorativas, usado para unir bloques y andar sobre ellos manteniendo la tématica espacial.
+tile.walkwayAluminumWire.description=Las Pasarelas con Cable de Aluminio se usan para tener un cable funcional por debajo de una superficie sólida por la que andar.
+tile.walkwayOxygenPipe.description=Las Pasarelas con Tubos de Oxígeno se usan para tener un tubo funcional por debajo de una superficie sólida por la que andar.
+tile.beamReflector.description=Los Refletores se usan para redirigir ráyos de energía del emisor al receptor. Se puede hacer click derecho para pasar a través de objetivos.
+tile.beamReceiver.description=Los Receptores se conectan en la entrada o salida de energía de una máquina, para transferir energía por medio del ráyo.
+tile.telepadShort.description=Los Teletransportadores se usan para enviar a jugadores y otras criaturas a cortas distancias (250 Bloques) cuando esta conectado a otro teletransportador.
+
+# SCHEMATICS
+
+# ENTITIES
+entity.SmallAsteroidGC.name=Asteroide Pequeño
+entity.GrappleHookGC.name=Gancho
+entity.Tier3RocketGC.name=Cohete Nivel 3
+
+# CONTAINERS
+container.shortRangeTelepad.name=Teletransportador de Corto Alcance
+container.entryPod.name=Cápsula de Entrada
+gc.configgui.dimensionIDAsteroids=Asteroids Dimension ID
+gc.configgui.idEntitySmallAsteroid=Small Asteroid Entity ID
+gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID
+gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID
+gc.configgui.idEntityEntryPod=Entry Pod Entity ID
+gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID

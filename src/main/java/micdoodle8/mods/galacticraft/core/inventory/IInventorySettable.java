@@ -4,5 +4,5 @@ import net.minecraft.inventory.IInventory;
 
 public interface IInventorySettable extends IInventory
 {
-	public void setSizeInventory(int size);
+    public void setSizeInventory(int size);
 }

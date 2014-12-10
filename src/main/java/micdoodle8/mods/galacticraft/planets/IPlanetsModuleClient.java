@@ -23,7 +23,7 @@ public interface IPlanetsModuleClient
 
     public Object getGuiElement(Side side, int ID, EntityPlayer player, World world, int x, int y, int z);
 
-	public int getBlockRenderID(Block block);
+    public int getBlockRenderID(Block block);
 
-	public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Object... extraData);
+    public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Object... extraData);
 }

@@ -1,9 +1,9 @@
-# Galacticraft Moon Language File = Polski
+ï»¿# Galacticraft Moon Language File = Polski
+
 # GENERAL ITEMS
-item.meteoricIronRaw.name=Surowe Meteorytowe ¯elazo
-item.meteoric_iron_ingot.name=Meteoric Iron Ingot ##NEEDS TRANSLATE##
-item.compressedMeteoricIron.name=Compressed Meteoric Iron ##NEEDS TRANSLATE##
-item.meteoricIronIngot.name=Sztabka Meteorytowego ¯elaza
+item.meteoricIronRaw.name=Surowe Meteorytowe Å»elazo
+item.compressedMeteoricIron.name=Skompresowane Meteorytowe Å»elazo
+item.meteoricIronIngot.name=Sztabka Meteorytowego Å»elaza
 
 # FOOD
 item.cheeseCurd.name=Pajdka Sera
@@ -14,18 +14,17 @@ item.cheeseBlock.name=Blok Sera
 # ARMOR
 
 # BLOCKS
-tile.moonBlock.moonstone.name=Ksiê¿ycowy Kamieñ
-tile.moonBlock.moondirt.name=Ksiê¿ycowa Ziemia
-tile.moonBlock.moongrass.name=Ksiê¿ycowa Gleba
-tile.moonBlock.tinmoon.name=Z³o¿e Cyny
-tile.moonBlock.coppermoon.name=Z³o¿e Miedzi
-tile.moonBlock.cheesestone.name=Z³o¿e Sera
-tile.moonBlock.bricks.name=Ksiê¿ycowe Ceg³y
+tile.moonBlock.moonstone.name=KsiÄ™Å¼ycowy KamieÅ„
+tile.moonBlock.moondirt.name=KsiÄ™Å¼ycowa Ziemia
+tile.moonBlock.moongrass.name=KsiÄ™Å¼ycowa Gleba
+tile.moonBlock.tinmoon.name=Ruda Cyny
+tile.moonBlock.coppermoon.name=Ruda Miedzi
+tile.moonBlock.cheesestone.name=Ruda Sera
+tile.moonBlock.bricks.name=KsiÄ™Å¼ycowe CegÅ‚y
 tile.cheeseBlock.name=Blok Sera
 
-dimension.Moon.name=Moon
-
 # GUI
-gui.choosePlanet.desc.moon=Nadaj¹cy siê do Zamieszkania#Brak Tlenu#Grawitacja: 18%
+gui.choosePlanet.desc.moon=NadajÄ…cy siÄ™ do Zamieszkania#Brak Tlenu#Grawitacja: 18%
+container.lander.name=LÄ…downik
 
-itemGroup.GalacticraftMoon=Galacticraft Ksiê¿yc
+dimension.Moon.name=KsiÄ™Å¼yc

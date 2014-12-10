@@ -8,9 +8,9 @@ import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.util.MarsUtil;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,7 +25,6 @@ import java.util.Random;
 
 public class EntityLandingBalloons extends EntityLanderBase implements IInventorySettable, IPacketReceiver, IScaleableFuelLevel, IIgnoreShift, ICameraZoomEntity
 {
-    private static final float TURN_FACTOR = 0.2F;
     private int groundHitCount;
     private float rotationPitchSpeed;
     private float rotationYawSpeed;
@@ -34,9 +33,11 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
     {
         super(world, 0F);
         this.setSize(2.0F, 2.0F);
+        this.rotationPitchSpeed = this.rand.nextFloat();
+        this.rotationYawSpeed = this.rand.nextFloat();
     }
 
-    public EntityLandingBalloons(GCEntityPlayerMP player)
+    public EntityLandingBalloons(EntityPlayerMP player)
     {
         super(player, 0F);
         this.setSize(2.0F, 2.0F);
@@ -45,7 +46,7 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
     @Override
     public double getMountedYOffset()
     {
-        return super.getMountedYOffset() - 1.5;
+        return super.getMountedYOffset() - 0.9;
     }
 
     @Override
@@ -87,7 +88,7 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
     @Override
     public String getInventoryName()
     {
-        return "Landing Balloons";
+        return GCCoreUtil.translate("container.marsLander.name");
     }
 
     @Override
@@ -132,25 +133,25 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
             return false;
         }
 
-        switch (key)
-        {
-            case 0: // Accelerate
-            {
-                this.rotationPitchSpeed -= 0.5F * TURN_FACTOR;
-                return true;
-            }
-            case 1: // Deccelerate
-            {
-                this.rotationPitchSpeed += 0.5F * TURN_FACTOR;
-                return true;
-            }
-            case 2: // Left
-                this.rotationYawSpeed -= 0.5F * TURN_FACTOR;
-                return true;
-            case 3: // Right
-                this.rotationYawSpeed += 0.5F * TURN_FACTOR;
-                return true;
-        }
+//        switch (key)
+//        {
+//            case 0: // Accelerate
+//            {
+//                this.rotationPitchSpeed -= 0.5F * TURN_FACTOR;
+//                return true;
+//            }
+//            case 1: // Deccelerate
+//            {
+//                this.rotationPitchSpeed += 0.5F * TURN_FACTOR;
+//                return true;
+//            }
+//            case 2: // Left
+//                this.rotationYawSpeed -= 0.5F * TURN_FACTOR;
+//                return true;
+//            case 3: // Right
+//                this.rotationYawSpeed += 0.5F * TURN_FACTOR;
+//                return true;
+//        }
 
         return false;
     }
@@ -227,7 +228,7 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
             if (this.groundHitCount < 14)
             {
                 this.groundHitCount++;
-                double mag = (1.0D / this.groundHitCount) * 12.0D;
+                double mag = (1.0D / this.groundHitCount) * 4.0D;
                 double mX = this.rand.nextDouble() - 0.5;
                 double mY = 1.0D;
                 double mZ = this.rand.nextDouble() - 0.5;
@@ -241,6 +242,11 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
         if (this.ticks >= 40 && this.ticks < 45)
         {
             this.motionY = this.getInitialMotionY();
+        }
+
+        if (!this.shouldMove())
+        {
+            return new Vector3(0, 0, 0);
         }
 
         return new Vector3(this.motionX, this.ticks < 40 ? 0 : this.motionY, this.motionZ);
@@ -301,17 +307,20 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
     }
 
     @Override
-    public float getCameraZoom() {
+    public float getCameraZoom()
+    {
         return 15.0F;
     }
 
     @Override
-    public boolean defaultThirdPerson() {
+    public boolean defaultThirdPerson()
+    {
         return true;
     }
 
     @Override
-    public boolean shouldIgnoreShiftExit() {
+    public boolean shouldIgnoreShiftExit()
+    {
         return this.groundHitCount < 14 || !this.onGround;
     }
 }

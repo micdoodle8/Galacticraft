@@ -2,13 +2,15 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -25,6 +27,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import cpw.mods.fml.client.FMLClientHandler;
+
 public abstract class EntityLanderBase extends EntityAdvancedMotion implements IInventorySettable, IPacketReceiver, IScaleableFuelLevel
 {
     private final int FUEL_TANK_CAPACITY = 5000;
@@ -32,6 +36,8 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     protected boolean hasReceivedPacket;
     private boolean lastShouldMove;
     private UUID persistantRiderUUID;
+    private Boolean shouldMoveClient;
+    private Boolean shouldMoveServer;
 
     public EntityLanderBase(World var1, float yOffset)
     {
@@ -49,6 +55,18 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     }
 
     @Override
+    public boolean shouldSendAdvancedMotionPacket()
+    {
+        return this.shouldMoveClient != null && this.shouldMoveServer != null;
+    }
+
+    @Override
+    public boolean canSetPositionClient()
+    {
+        return this.shouldSendAdvancedMotionPacket();
+    }
+
+    @Override
     public int getScaledFuelLevel(int i)
     {
         final double fuelLevel = this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount;
@@ -62,18 +80,19 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
         this.setPosition(var2, var4 + this.yOffset, var6);
     }
 
-    public EntityLanderBase(GCEntityPlayerMP player, float yOffset)
+    public EntityLanderBase(EntityPlayerMP player, float yOffset)
     {
         this(player.worldObj, player.posX, player.posY, player.posZ, yOffset);
 
-        this.containedItems = new ItemStack[player.getPlayerStats().rocketStacks.length + 1];
-        this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, player.getPlayerStats().fuelLevel));
+        GCPlayerStats stats = GCPlayerStats.get(player);
+        this.containedItems = new ItemStack[stats.rocketStacks.length + 1];
+        this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, stats.fuelLevel));
 
-        for (int i = 0; i < player.getPlayerStats().rocketStacks.length; i++)
+        for (int i = 0; i < stats.rocketStacks.length; i++)
         {
-            if (player.getPlayerStats().rocketStacks[i] != null)
+            if (stats.rocketStacks[i] != null)
             {
-                this.containedItems[i] = player.getPlayerStats().rocketStacks[i].copy();
+                this.containedItems[i] = stats.rocketStacks[i].copy();
             }
             else
             {
@@ -83,8 +102,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
 
         this.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
 
-        this.riddenByEntity = player;
-        player.ridingEntity = this;
+        player.mountEntity(this);
     }
 
     @Override
@@ -111,21 +129,29 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
 
             if (liquid != null && this.fuelTank.getFluid().getFluid().getName().equalsIgnoreCase("Fuel"))
             {
-                if (FluidContainerRegistry.isEmptyContainer(this.containedItems[this.containedItems.length - 1]))
+                ItemStack slotItem = this.containedItems[this.containedItems.length - 1];
+                if (slotItem != null && slotItem.stackSize == 1 && FluidContainerRegistry.isEmptyContainer(slotItem))
                 {
-                    boolean isCanister = this.containedItems[this.containedItems.length - 1].isItemEqual(new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage()));
+                    boolean isCanister = slotItem.isItemEqual(new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage()));
                     final int amountToFill = Math.min(liquid.amount, isCanister ? GCItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
 
                     if (isCanister)
                     {
                         this.containedItems[this.containedItems.length - 1] = new ItemStack(GCItems.fuelCanister, 1, GCItems.fuelCanister.getMaxDamage() - amountToFill);
+                        this.fuelTank.drain(amountToFill, true);
                     }
                     else
                     {
-                        this.containedItems[this.containedItems.length - 1] = FluidContainerRegistry.fillFluidContainer(liquid, this.containedItems[this.containedItems.length - 1]);
+                        this.containedItems[this.containedItems.length - 1] = FluidContainerRegistry.fillFluidContainer(liquid, slotItem);
+                        if (this.containedItems[this.containedItems.length - 1] == null)
+                        {
+                            this.containedItems[this.containedItems.length - 1] = slotItem;
+                        }
+                        else
+                        {
+                            fuelTank.drain(amountToFill, true);
+                        }
                     }
-
-                    this.fuelTank.drain(amountToFill, true);
                 }
             }
         }
@@ -243,6 +269,11 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     @Override
     public boolean shouldMove()
     {
+        if (this.shouldMoveClient == null || this.shouldMoveServer == null)
+        {
+            return false;
+        }
+
         if (this.ticks < 40)
         {
             return false;
@@ -284,6 +315,19 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
             objList.add(this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount);
         }
 
+        if (this.worldObj.isRemote)
+        {
+            this.shouldMoveClient = this.shouldMove();
+            objList.add(this.shouldMoveClient);
+        }
+        else
+        {
+            this.shouldMoveServer = this.shouldMove();
+            objList.add(this.shouldMoveServer);
+            //Server send rider information for client to check
+            objList.add(this.riddenByEntity == null ? -1 : this.riddenByEntity.getEntityId());
+        }
+
         return objList;
     }
 
@@ -296,13 +340,13 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     @Override
     public int getPacketTickSpacing()
     {
-        return 5;
+        return 2;
     }
 
     @Override
     public double getPacketSendDistance()
     {
-        return 50.0D;
+        return 250.0D;
     }
 
     @Override
@@ -321,6 +365,59 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
                 }
 
                 this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, buffer.readInt()));
+
+                this.shouldMoveServer = buffer.readBoolean();
+
+                //Check has correct rider on client
+                int shouldBeMountedId = buffer.readInt();
+                if (this.riddenByEntity == null)
+                {
+                	 if (shouldBeMountedId > -1)
+                	 {
+                		 Entity e = FMLClientHandler.instance().getWorldClient().getEntityByID(shouldBeMountedId);
+                		 if (e != null)
+                		 {
+                			 if (e.dimension != this.dimension)
+                			 {
+    	        				 if (e instanceof EntityPlayer)
+    	        				 {
+    	        					 e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.difficultySetting.getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP)e).theItemInWorldManager.getGameType().getID());
+                					 e.mountEntity(this);
+                				 }
+                			 }
+                			 else
+                				 e.mountEntity(this);
+                		 }
+                	 }
+                }
+                else if (this.riddenByEntity.getEntityId() != shouldBeMountedId)
+                {
+                	if (shouldBeMountedId == -1)
+                	{
+                		this.riddenByEntity.mountEntity(null);
+                	}
+                	else
+                	{
+                		Entity e = FMLClientHandler.instance().getWorldClient().getEntityByID(shouldBeMountedId);
+               		 	if (e != null)
+               		 	{
+               			 if (e.dimension != this.dimension)
+               			 {
+	        				 if (e instanceof EntityPlayer)
+	        				 {
+	        					 e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.difficultySetting.getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP)e).theItemInWorldManager.getGameType().getID());
+               					 e.mountEntity(this);
+               				 }
+               			 }
+               			 else
+               				 e.mountEntity(this);
+               		 	}
+                	}
+                }
+            }
+            else
+            {
+                this.shouldMoveClient = buffer.readBoolean();
             }
         }
         catch (final Exception e)

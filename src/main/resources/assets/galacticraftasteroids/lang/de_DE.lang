@@ -2,27 +2,125 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=Rakete (Stufe 3)
+item.heavyNoseCone.name=Schwere Raketennase
+item.compressedTitanium.name=Gepresstes Titan
+item.ingotTitanium.name=Titanbarren
+item.shardTitanium.name=Titanscherbe
+item.shardIron.name=Eisenscherbe
+item.rocketFinsT2.name=Schwere Racketenfinnen
+item.engineT2.name=Schwerer Raketenmotor
+item.reinforcedPlateT3.name=Robuste Platte
+item.grapple.name=Greifhaken
+item.atmosphericValve.name=Atmosphärenventil
+item.thermalCloth.name=Thermalstoff
+item.beamCore.name=Strahlenkern
+item.tier3.desc=Stufe 3
 
 # TOOLS
+item.titanium_pickaxe.name=Titanspitzhacke
+item.titanium_axe.name=Titanaxt
+item.titanium_hoe.name=Titanhacke
+item.titanium_shovel.name=Titanschaufel
+item.titanium_sword.name=Titanschwert
 
 # ARMOR
+item.thermalHelm.name=Thermalpolsterhelm
+item.thermalChestplate.name=Thermalpolsterbrustschutz
+item.thermalLeggings.name=Thermalpolsterbeinschutz
+item.thermalBoots.name=Thermalpolsterstiefel
+item.titanium_helmet.name=Titanhelm
+item.titanium_chestplate.name=Titanbrustschutz
+item.titanium_leggings.name=Titanbeinschutz
+item.titanium_boots.name=Titanstiefel
+
+# CANISTERS ETC
+item.methaneCanisterPartial.name=Methangaskanister
+item.methaneCanister.name=Gefüllter Methangaskanister
+item.canister.gas.name=Gas                  #short name for Methane Gas contents level
+item.canister.LOX.partial.name=Kanister mit Flüssigem Sauerstoff
+item.canister.LOX.full.name=Gefüllter Kanister mit Flüssigem Sauerstoff
+item.canister.LOX.name=LOX                  #short name for Liquid Oxygen contents level
+item.canister.liquidNitrogen.partial.name=Kanister mit Flüssigem Stickstoff
+item.canister.liquidNitrogen.full.name=Gefüllter Kanister mit Flüssigem Stickstoff
+item.canister.liquidNitrogen.name=Flüssigk.    #short name for Liquid Nitrogen contents level
+item.canister.liquidArgon.partial.name=Kanister mit Flüssigem Argon
+item.canister.liquidArgon.full.name=Gefüllter Kanister mit Flüssigem Argon
+item.canister.liquidArgon.name=Flüssigk.       #short name for Liquid Argon contents level
+item.emptyGasCanister.name=Leerer Gaskanister
+
+# FLUIDS AND GASES
+fluid.methane=Methangas
+fluid.oxygen=Sauerstoff
+fluid.nitrogen=Stickstoff
+fluid.hydrogen=Wasserstoff
+fluid.carbondioxide=CO2
+fluid.helium=Helium
+fluid.argon=Argon
+fluid.atmosphericgases=Atmosphärische Gase
+fluid.liquidmethane=Flüssigmethan
+fluid.liquidoxygen=Flüssiger Sauerstoff
+fluid.liquidnitrogen=Flüssigstickstoff
+fluid.liquidargon=Flüssiges Argon
+fluid.fuel=Treibstoff
 
 # BLOCKS
-tile.asteroidsBlock.asteroids1.name=Asteroidgestein
+tile.asteroidsBlock.asteroid0.name=Asteroidgestein
+tile.asteroidsBlock.asteroid1.name=Asteroidgestein
+tile.asteroidsBlock.asteroid2.name=Asteroidgestein
+tile.asteroidsBlock.oreIron.name=Eisenerz
+tile.asteroidsBlock.oreIlmenite.name=Ilmeniterz
+tile.asteroidsBlock.oreAluminum.name=Aluminumerz
 tile.beamReflector.name=Strahlenreflektor
 tile.beamReceiver.name=Strahlenempfänger
 tile.telepadShort.name=Kurzreichweiten-Telepad
+tile.walkway.name=Laufweg
+tile.walkwayWire.name=Laufweg
+tile.walkwayOxygenPipe.name=Laufweg
+tile.treasureT3.name=Schatztruhe (Stufe 3)
+tile.denseIce.name=Dichtes Eis
 
 # GUI
 planet.asteroids=Asteroiden
 
-itemGroup.GalacticraftAsteroids=Galacticraft: Asteroiden
+	# Dollar sign ($) will split text onto a new line
+	# Do not remove %s or %d, since that will be replaced in-game
+gui.telepad.desc.0=Dies ist die spezifische$Adresse des Telepads
+gui.telepad.desc.1=Adresse eines anderen Telepads.$Entities werden dort hin gesendet.
+gui.message.address.name=Adresse
+gui.message.destAddress.name=Zieladresse
+gui.message.invalidAddress.name=Ungültige spezifische Adresse
+gui.message.invalidTargetAddress.name=Ungültige Zieladresse
+gui.message.receivingActive.name=Emfangen Aktiviert
+gui.message.telepadTooFar.name=Ziel zu weit weg! (Max %d) 
+gui.message.telepadWrongDim.name=Das Ziel is in der falschen Dimension!
+gui.message.telepadNotFound.name=Telepad nicht gefunden!
+gui.message.sendingActive.name=Senden Aktiviert
+gui.message.range.name=Reichweite: %dm
+gui.message.notEnoughEnergy.name=Night genug Energie!
+gui.message.targetNoEnergy.name=Ziel hat nicht genügend Energie! 
+gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook! ##NEEDS TRANSLATE##
 
-# Schematics
+tile.treasureT3.description=Tier 3 Treasure Chests are currently unused.
+tile.walkway.description=Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme.
+tile.walkwayAluminumWire.description=Aluminum Wire Walkways are used for running wire underneath a fully solid walkable surface.
+tile.walkwayOxygenPipe.description=Oxygen Pipe Walkways are used for running pipes underneath a fully solid walkable surface.
+tile.beamReflector.description=Beam Reflectors are used to redirect energy beams from source to destination. Can be right-clicked to cycle through targets.
+tile.beamReceiver.description=Beam Receivers are connected to energy machine input and output, to transfer energy using beams.
+tile.telepadShort.description=Short Range Telepads are used to transfer players and other living creatures short distances (250 Blocks) when linked to other telepads.
 
-# Entity
+# SCHEMATICS
+
+# ENTITIES
 entity.SmallAsteroidGC.name=Kleiner Asteroid
-entity.GrappleHookGC.name=Fanghaken
+entity.GrappleHookGC.name=Greifhaken
 entity.Tier3RocketGC.name=Rakete (Stufe 3)
 
-# Container
+# CONTAINERS
+container.shortRangeTelepad.name=Short Range Telepad
+container.entryPod.name=Entry Pod
+gc.configgui.dimensionIDAsteroids=Asteroids Dimension ID
+gc.configgui.idEntitySmallAsteroid=Small Asteroid Entity ID
+gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID
+gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID
+gc.configgui.idEntityEntryPod=Entry Pod Entity ID
+gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID

@@ -19,13 +19,15 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     @Override
     public Vector3 getFogColor()
     {
-        return new Vector3(210F / 255F, 120F / 255F, 59F / 255F);
+        float f = 1.0F - this.getStarBrightness(1.0F);
+        return new Vector3(210F / 255F * f, 120F / 255F * f, 59F / 255F * f);
     }
 
     @Override
     public Vector3 getSkyColor()
     {
-        return new Vector3(154 / 255.0F, 114 / 255.0F, 66 / 255.0F);
+        float f = 1.0F - this.getStarBrightness(1.0F);
+        return new Vector3(154 / 255.0F * f, 114 / 255.0F * f, 66 / 255.0F * f);
     }
 
     @Override
@@ -108,25 +110,25 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
 //		return Vec3.createVectorHelper(154 / 255.0F, 114 / 255.0F, 66 / 255.0F);
 //	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public float getStarBrightness(float par1)
-	{
-		float f1 = this.worldObj.getCelestialAngle(par1);
-		float f2 = 1.0F - (MathHelper.cos(f1 * (float) Math.PI * 2.0F) * 2.0F + 0.25F);
+    @Override
+    @SideOnly(Side.CLIENT)
+    public float getStarBrightness(float par1)
+    {
+        float f1 = this.worldObj.getCelestialAngle(par1);
+        float f2 = 1.0F - (MathHelper.cos(f1 * (float) Math.PI * 2.0F) * 2.0F + 0.25F);
 
-		if (f2 < 0.0F)
-		{
-			f2 = 0.0F;
-		}
+        if (f2 < 0.0F)
+        {
+            f2 = 0.0F;
+        }
 
-		if (f2 > 1.0F)
-		{
-			f2 = 1.0F;
-		}
+        if (f2 > 1.0F)
+        {
+            f2 = 1.0F;
+        }
 
-		return f2 * f2 * 0.75F;
-	}
+        return f2 * f2 * 0.75F;
+    }
 
 //	@Override
 //	public float calculateCelestialAngle(long par1, float par3)
@@ -156,17 +158,17 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
 //		return true;
 //	}
 
-	@Override
-	public double getHorizon()
-	{
-		return 44.0D;
-	}
+    @Override
+    public double getHorizon()
+    {
+        return 44.0D;
+    }
 
-	@Override
-	public int getAverageGroundLevel()
-	{
-		return 44;
-	}
+    @Override
+    public int getAverageGroundLevel()
+    {
+        return 44;
+    }
 
 //	@Override
 //	public boolean isSurfaceWorld()
@@ -174,11 +176,11 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
 //		return true;
 //	}
 
-	@Override
-	public boolean canCoordinateBeSpawn(int var1, int var2)
-	{
-		return true;
-	}
+    @Override
+    public boolean canCoordinateBeSpawn(int var1, int var2)
+    {
+        return true;
+    }
 
 //	@Override
 //	public boolean canRespawnHere()
@@ -210,11 +212,11 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
 //		return "Mars";
 //	}
 
-	//	@Override
-	//	public boolean canSnowAt(int x, int y, int z)
-	//	{
-	//		return false;
-	//	}
+    //	@Override
+    //	public boolean canSnowAt(int x, int y, int z)
+    //	{
+    //		return false;
+    //	}
 
 //	@Override
 //	public boolean canBlockFreeze(int x, int y, int z, boolean byWater)
@@ -234,63 +236,69 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
 //		return false;
 //	}
 
-	@Override
-	public float getGravity()
-	{
-		return 0.058F;
-	}
+    @Override
+    public float getGravity()
+    {
+        return 0.058F;
+    }
 
-	@Override
-	public int getHeight()
-	{
-		return 800;
-	}
+    @Override
+    public int getHeight()
+    {
+        return 800;
+    }
 
-	@Override
-	public double getMeteorFrequency()
-	{
-		return 10.0D;
-	}
+    @Override
+    public double getMeteorFrequency()
+    {
+        return 10.0D;
+    }
 
-	@Override
-	public double getFuelUsageMultiplier()
-	{
-		return 0.9D;
-	}
+    @Override
+    public double getFuelUsageMultiplier()
+    {
+        return 0.9D;
+    }
 
-	@Override
-	public boolean canSpaceshipTierPass(int tier)
-	{
-		return tier >= 2;
-	}
+    @Override
+    public boolean canSpaceshipTierPass(int tier)
+    {
+        return tier >= 2;
+    }
 
-	@Override
-	public float getFallDamageModifier()
-	{
-		return 0.38F;
-	}
+    @Override
+    public float getFallDamageModifier()
+    {
+        return 0.38F;
+    }
 
-	@Override
-	public float getSoundVolReductionAmount()
-	{
-		return 10.0F;
-	}
+    @Override
+    public float getSoundVolReductionAmount()
+    {
+        return 10.0F;
+    }
 
-	@Override
-	public CelestialBody getCelestialBody()
-	{
-		return MarsModule.planetMars;
-	}
+    @Override
+    public CelestialBody getCelestialBody()
+    {
+        return MarsModule.planetMars;
+    }
 
-	@Override
-	public boolean hasBreathableAtmosphere()
-	{
-		return false;
-	}
+    @Override
+    public boolean hasBreathableAtmosphere()
+    {
+        return false;
+    }
 
-	@Override
-	public float getThermalLevelModifier()
-	{
-		return -1;
-	}
+    @Override
+    public float getThermalLevelModifier()
+    {
+        return -1;
+    }
+
+    @Override
+    public float getWindLevel()
+    {
+        return 0.3F;
+    }
 }

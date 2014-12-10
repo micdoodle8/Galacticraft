@@ -4,26 +4,14 @@ import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
 
 public interface IConductor extends ITransmitter
 {
-	/**
-	 * Gets the resistance of the conductor. Used to calculate energy loss. A
-	 * higher resistance means a higher energy loss.
-	 * 
-	 * @return The amount of resistance in Ohms.
-	 */
-	@Deprecated
-	public float getResistance();
+    /**
+     * @return The tier of this conductor - must be 1 or 2
+     */
+    public int getTierGC();
 
-	/**
-	 * @return The maximum amount of amps this conductor can handle before
-	 *         melting down.
-	 * 
-	 */
-	@Deprecated
-	public float getCurrentCapacity();
-
-	/**
-	 * @return This conductor's electricity network.
-	 */
-	@Override
-	public IElectricityNetwork getNetwork();
+    /**
+     * @return This conductor's electricity network.
+     */
+    @Override
+    public IElectricityNetwork getNetwork();
 }
