@@ -121,8 +121,4 @@ container.entryPod.name=ยานลงจอด
 
 # CONFIG GUI
 gc.configgui.dimensionIDAsteroids=ID มิติดาวเคราะห์น้อย
-gc.configgui.idEntitySmallAsteroid=ID ดาวเคราะห์น้อยขนาดเล็ก
-gc.configgui.idEntityGrappleHook=ID ตะขอเกี่ยว
-gc.configgui.idEntityTier3Rocket=ID จรวด เทียร์ 3
-gc.configgui.idEntityEntryPod=ID ยานลงจอด
 gc.configgui.idSchematicRocketT3=ID แผนผังจรวด เทียร์ 3
