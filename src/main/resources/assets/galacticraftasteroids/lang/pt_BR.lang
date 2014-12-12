@@ -77,7 +77,7 @@ fluid.liquidargon=Liquid Argon ##NEEDS TRANSLATE##
 fluid.fuel=Fuel ##NEEDS TRANSLATE##
 
 # GUI
-planet.asteroids=Asteróides
+planet.asteroids=Asteroides
 gui.telepad.desc.0=This is the Telepad's$unique address ##NEEDS TRANSLATE##
 gui.telepad.desc.1=Address of another Telepad.$Entities will be sent there. ##NEEDS TRANSLATE##
 container.shortRangeTelepad.name=Short Range Telepad ##NEEDS TRANSLATE##
@@ -115,7 +115,7 @@ itemGroup.GalacticraftAsteroids=Galacticraft - Asteroides
 
 # Entity
 entity.SmallAsteroidGC.name=Asteroides Menores
-entity.GrappleHookGC.name=Gancho de Ancoragem
+entity.GrappleHookGC.name=Gancho
 entity.Tier3RocketGC.name=Foguete - Nível 3
 
 # Container

@@ -14,7 +14,7 @@ item.cheeseBlock.name=Bloco de Queijo
 # ARMOR
 
 # BLOCKS
-tile.moonBlock.moonstone.name=Pedra Lunar
+tile.moonBlock.moonstone.name=Rocha Lunar
 tile.moonBlock.moondirt.name=Terra Lunar
 tile.moonBlock.moongrass.name=Turfa Lunar
 tile.moonBlock.tinmoon.name=Minério de Estanho
@@ -25,6 +25,6 @@ tile.cheeseBlock.name=Bloco de Queijo
 
 # GUI
 gui.choosePlanet.desc.moon=Habitável#Sem Oxigénio#Gravidade: 18%
-container.lander.name=Lander ##NEEDS TRANSLATE##
+container.lander.name=Módulo Espacial
 
 dimension.Moon.name=Lua
