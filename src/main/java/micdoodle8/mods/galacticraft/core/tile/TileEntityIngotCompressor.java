@@ -454,13 +454,13 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     	int[] slots = new int[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
     	ArrayList<Integer> removeSlots = new ArrayList();
     	
-    	for (int i = 1; i < slots.length; i++)
+    	for (int i = 2; i < 11; i++)
     	{
 			if (removeSlots.contains(i)) continue;
     		ItemStack stack1 = this.getStackInSlot(i);
     		if (stack1 == null || stack1.stackSize <= 0) continue;
     		
-    		for (int j = i + 1; j < slots.length; j++)
+    		for (int j = i + 1; j < 11; j++)
     		{
     			if (removeSlots.contains(j)) continue;
     			ItemStack stack2 = this.getStackInSlot(j);

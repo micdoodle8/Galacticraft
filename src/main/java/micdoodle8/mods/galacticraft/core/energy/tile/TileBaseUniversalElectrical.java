@@ -712,6 +712,12 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
     }
 
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
+    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
+    {
+    	return 0;
+    }
+
+    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
     public boolean canConnectEnergy(ForgeDirection from)
     {
     	return this.getElectricalInputDirections().contains(from) || this.getElectricalOutputDirections().contains(from);

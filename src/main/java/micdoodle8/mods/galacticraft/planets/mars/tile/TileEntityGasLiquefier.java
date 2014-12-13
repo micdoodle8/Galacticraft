@@ -433,10 +433,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                 amountToDrain = amountToDrain >> 1;
                 if (amountToDrain == 0)
                 {
-                    if (thisProduct == -1)
-                        amountToDrain = 1;
-                    else
-                        break;
+                	amountToDrain = 1;
                 }
             }
             while (airProducts > 0);
