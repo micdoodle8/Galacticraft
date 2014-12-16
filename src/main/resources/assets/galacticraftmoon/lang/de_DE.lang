@@ -25,6 +25,6 @@ tile.cheeseBlock.name=Käseblock
 
 # GUI
 gui.choosePlanet.desc.moon=Bewohnbar#Kein Sauerstoff#Schwerkraft: 18%
-container.lander.name=Lander ##NEEDS TRANSLATE##
+container.lander.name=Landekapsel ##NEEDS TRANSLATE##
 
 dimension.Moon.name=Mond
