@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
+import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
@@ -72,10 +73,10 @@ public abstract class BlockTransmitter extends BlockContainer
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
     {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
-        TileEntity[] connectable = new TileEntity[6];
 
-        if (tileEntity != null)
+        if (tileEntity instanceof ITransmitter)
         {
+            TileEntity[] connectable = new TileEntity[6];
             switch (this.getNetworkType())
             {
             case OXYGEN:
@@ -142,7 +143,7 @@ public abstract class BlockTransmitter extends BlockContainer
         super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
 
         TileEntity tileEntity = world.getTileEntity(x, y, z);
-        if (tileEntity != null)
+        if (tileEntity instanceof ITransmitter)
         {
             TileEntity[] connectable;
             switch (this.getNetworkType())

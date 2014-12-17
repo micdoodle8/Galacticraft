@@ -130,7 +130,6 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
         if (metadata >= BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
         {
             metadata -= BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA;
-            TileEntity tile = world.getTileEntity(x, y, z);
 
             if (side == 0 || side == 1)
             {
@@ -148,7 +147,12 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
                 return this.iconOxygenOutput;
             }
 
-            int oxygenLevel = Math.min(((TileEntityOxygenStorageModule) tile).scaledOxygenLevel, 16);
+            int oxygenLevel = 0;
+            TileEntity tile = world.getTileEntity(x, y, z);
+            if (tile instanceof TileEntityOxygenStorageModule)
+            {
+                oxygenLevel = Math.min(((TileEntityOxygenStorageModule) tile).scaledOxygenLevel, 16);
+            }
 
             return this.iconOxygenStorageModule[oxygenLevel];
         }

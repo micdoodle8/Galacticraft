@@ -281,16 +281,19 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
     public ItemStack getPickBlock(MovingObjectPosition target, World par1World, int x, int y, int z)
     {
         TileEntity tileEntity = par1World.getTileEntity(x, y, z);
-        BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
-
-        if (mainBlockPosition != null)
+        if (tileEntity instanceof TileEntityMulti)
         {
-            Block mainBlockID = par1World.getBlock(mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z);
+            BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
 
-            if (Blocks.air != mainBlockID)
-            {
-                return mainBlockID.getPickBlock(target, par1World, mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z);
-            }
+            if (mainBlockPosition != null)
+	        {
+	            Block mainBlockID = par1World.getBlock(mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z);
+	
+	            if (Blocks.air != mainBlockID)
+	            {
+	                return mainBlockID.getPickBlock(target, par1World, mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z);
+	            }
+	        }
         }
 
         return null;
@@ -300,11 +303,14 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
     public int getBedDirection(IBlockAccess world, int x, int y, int z)
     {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
-        BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
-
-        if (mainBlockPosition != null)
+        if (tileEntity instanceof TileEntityMulti)
         {
-            return mainBlockPosition.getBlock(world).getBedDirection(world, mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z);
+            BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
+
+	        if (mainBlockPosition != null)
+	        {
+	            return mainBlockPosition.getBlock(world).getBedDirection(world, mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z);
+	        }
         }
 
         return BlockDirectional.getDirection(world.getBlockMetadata(x, y, z));
@@ -314,11 +320,14 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
     public boolean isBed(IBlockAccess world, int x, int y, int z, EntityLivingBase player)
     {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
-        BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
-
-        if (mainBlockPosition != null)
+        if (tileEntity instanceof TileEntityMulti)
         {
-            return mainBlockPosition.getBlock(world).isBed(world, mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z, player);
+            BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
+
+            if (mainBlockPosition != null)
+	        {
+	            return mainBlockPosition.getBlock(world).isBed(world, mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z, player);
+	        }
         }
 
         return super.isBed(world, x, y, z, player);
