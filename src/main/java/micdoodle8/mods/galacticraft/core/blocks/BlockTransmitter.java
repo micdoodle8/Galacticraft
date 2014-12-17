@@ -83,7 +83,7 @@ public abstract class BlockTransmitter extends BlockContainer
                 connectable = OxygenUtil.getAdjacentOxygenConnections(tileEntity);
                 break;
             case HYDROGEN:
-                connectable = ((TileEntityHydrogenPipe)tileEntity).getAdjacentConnections();
+                connectable = TileEntityHydrogenPipe.getAdjacentHydrogenConnections(tileEntity);
                 break;
             case POWER:
                 connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
@@ -152,7 +152,7 @@ public abstract class BlockTransmitter extends BlockContainer
                 connectable = OxygenUtil.getAdjacentOxygenConnections(tileEntity);
                 break;
             case HYDROGEN:
-                connectable = ((TileEntityHydrogenPipe)tileEntity).getAdjacentConnections();
+                connectable = TileEntityHydrogenPipe.getAdjacentHydrogenConnections(tileEntity);
                 break;
             case POWER:
                 connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
