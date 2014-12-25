@@ -4,11 +4,11 @@
 item.rawDesh.name=Desh Bruto
 item.deshStick.name=Graveto de Desh
 item.ingotDesh.name=Barra de Desh
-item.spaceshipTier2.t2Rocket.name=Foguetão - Nível 2
+item.spaceshipTier2.t2Rocket.name=Foguetão Nível 2
 item.reinforcedPlateT2.name=Blindagem Pesada
 item.tier2.desc=Nível 2
 item.slimelingCargo.name=Mochila-Inventário para Slimeling
-item.key.T2.name=Chave de Calabouço - Nível 2
+item.key.T2.name=Chave de Calabouço Nível 2
 item.compressedDesh.name=Desh Prensado
 item.spaceshipTier2.cargoRocket.name=Foguetão de Carga
 item.fluidManip.name=Manipulador de Fluidos
@@ -40,7 +40,7 @@ tile.mars.marsdirt.name=Rocha Subsuperficial Marciana
 tile.mars.marsgrass.name=Rocha Superficial Marciana
 tile.mars.marsdeco.name=Bloco de Desh
 tile.mars.marsdungeon.name=Parede de Calabouço Marciano
-tile.treasureT2.name=Baú de Tesouro - Nível 2
+tile.treasureT2.name=Baú de Tesouro Nível 2
 tile.slimelingEgg.redEgg.name=Ovo de Slimeling Vermelho
 tile.slimelingEgg.blueEgg.name=Ovo de Slimeling Azul
 tile.slimelingEgg.yellowEgg.name=Ovo de Slimeling Amarelo
@@ -141,16 +141,16 @@ gui.cargorocket.status.waiting.0=Waiting for ##NEEDS TRANSLATE##
 gui.cargorocket.status.waiting.1=ignition ##NEEDS TRANSLATE##
 gui.cargorocket.status.launched.0=Already ##NEEDS TRANSLATE##
 gui.cargorocket.status.launched.1=Launched ##NEEDS TRANSLATE##
-gas.carbondioxide.name=Carbon Dioxide ##NEEDS TRANSLATE##
-gas.oxygen.name=Oxygen ##NEEDS TRANSLATE##
-gas.nitrogen.name=Nitrogen ##NEEDS TRANSLATE##
+gas.carbondioxide.name=Gás Carbónico
+gas.oxygen.name=Oxigénio
+gas.nitrogen.name=Nitrogénio
 
 gui.desc.reinforcedPlateT2.name=Nível 2
 
-itemGroup.GalacticraftMars=Galacticraft - Marte
+itemGroup.GalacticraftMars=Galacticraft Marte
 
 dimension.Mars.name=Marte
-planet.mars=Mars ##NEEDS TRANSLATE##
+planet.mars=Marte
 tile.treasureT2.description=Tier 2 Treasure Chests will generate in Mars Dungeons. They are unlockable after defeating the final boss. ##NEEDS TRANSLATE##
 tile.cavernVines.description=Cavernous Vines are dangerous to living creatures, entangling them and dragging them upwards. ##NEEDS TRANSLATE##
 tile.slimelingEgg.description=Slimeling Eggs, once cracked with a player's bare hands, will soon hatch into a pet. ##NEEDS TRANSLATE##
@@ -163,19 +163,19 @@ tile.methaneSynthesizer.description=With a source of hydrogen and a source of ca
 tile.electrolyzer.description=Transforms water into hydrogen (useful for the Methane Synthesizer) and oxygen. ##NEEDS TRANSLATE##
 gui.slimeling.chat.wrongPlayer=This isn't my Slimeling! ##NEEDS TRANSLATE##
 gui.cryogenic.chat.cantUse=I can't use this for another %d seconds ##NEEDS TRANSLATE##
-gui.slimeling.name=Name ##NEEDS TRANSLATE##
-gui.slimeling.owner=Owner ##NEEDS TRANSLATE##
-gui.slimeling.kills=Kills ##NEEDS TRANSLATE##
-gui.slimeling.scale=Scale ##NEEDS TRANSLATE##
-gui.slimeling.button.sit=Sit ##NEEDS TRANSLATE##
-gui.slimeling.button.follow=Follow ##NEEDS TRANSLATE##
-gui.slimeling.sitting=Sitting ##NEEDS TRANSLATE##
-gui.slimeling.following=Following ##NEEDS TRANSLATE##
-gui.slimeling.damage=Attack Damage ##NEEDS TRANSLATE##
-gui.slimeling.food=Favorite food ##NEEDS TRANSLATE##
+gui.slimeling.name=Nome
+gui.slimeling.owner=Dono
+gui.slimeling.kills=Vítimas
+gui.slimeling.scale=Tamanho
+gui.slimeling.button.sit=Sentar
+gui.slimeling.button.follow=Seguir
+gui.slimeling.sitting=Sentado
+gui.slimeling.following=Seguindo
+gui.slimeling.damage=Força de ataque
+gui.slimeling.food=Comida favorita
 
 # Schematics
-schematic.rocketT3.name=Foguetão - Nível 3
+schematic.rocketT3.name=Foguetão Nível 3
 schematic.cargoRocket.name=Foguetão de Carga Automático
 
 # Entity
