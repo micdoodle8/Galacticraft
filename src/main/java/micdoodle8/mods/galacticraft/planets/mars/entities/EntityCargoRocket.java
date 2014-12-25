@@ -277,7 +277,8 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     @Override
     public int getSizeInventory()
     {
-        return this.rocketType.getInventorySpace();
+        if (this.rocketType == null) return 0;
+    	return this.rocketType.getInventorySpace();
     }
 
     @Override
