@@ -25,15 +25,15 @@ public class BlockRendererHydrogenPipe implements ISimpleBlockRenderingHandler
     {
         final TileEntity tileEntity = iblockaccess.getTileEntity(x, y, z);
 
-        final float minX = 0.40F;
-        final float minY = 0.40F;
-        final float minZ = 0.40F;
-        final float maxX = 0.60F;
-        final float maxY = 0.60F;
-        final float maxZ = 0.60F;
-
-        if (tileEntity != null)
+        if (tileEntity instanceof TileEntityHydrogenPipe)
         {
+            final float minX = 0.40F;
+            final float minY = 0.40F;
+            final float minZ = 0.40F;
+            final float maxX = 0.60F;
+            final float maxY = 0.60F;
+            final float maxZ = 0.60F;
+
             final TileEntity[] connections = TileEntityHydrogenPipe.getAdjacentHydrogenConnections(tileEntity);
 
             for (TileEntity connection : connections)

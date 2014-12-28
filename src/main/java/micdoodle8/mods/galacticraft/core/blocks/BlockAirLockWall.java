@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.Item;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -128,5 +129,11 @@ public class BlockAirLockWall extends BlockBreakable implements IPartialSealable
     public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
     {
         return true;
+    }
+    
+    @Override
+    public Item getItem(World world, int x, int y, int z)
+    {
+		return null;
     }
 }
