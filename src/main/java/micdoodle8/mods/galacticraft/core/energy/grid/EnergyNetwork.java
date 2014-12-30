@@ -23,8 +23,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.*;
 
+import cofh.api.energy.IEnergyConnection;
 //import buildcraft.api.power.PowerHandler.Type;
 import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyReceiver;
 
 
 /**
@@ -290,6 +292,10 @@ public class EnergyNetwork implements IElectricityNetwork
 					{
 						e = ((IEnergyHandler) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) * EnergyConfigHandler.RF_RATIO;
 					}
+                    else if (isRFLoaded && acceptor instanceof IEnergyReceiver)
+					{
+						e = ((IEnergyReceiver) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) * EnergyConfigHandler.RF_RATIO;
+					}
                     else if (isIC2Loaded && acceptor instanceof IEnergySink)
                     {
                         double result = 0;
@@ -422,6 +428,12 @@ public class EnergyNetwork implements IElectricityNetwork
 				else if (isRFLoaded && tileEntity instanceof IEnergyHandler)
 				{
 					IEnergyHandler handler = (IEnergyHandler) tileEntity;
+					int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / EnergyConfigHandler.TO_RF_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * EnergyConfigHandler.TO_RF_RATIO);
+					sentToAcceptor = handler.receiveEnergy(sideFrom, currentSendinginRF, false) * EnergyConfigHandler.RF_RATIO;
+				}
+				else if (isRFLoaded && tileEntity instanceof IEnergyReceiver)
+				{
+					IEnergyReceiver handler = (IEnergyReceiver) tileEntity;
 					int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / EnergyConfigHandler.TO_RF_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * EnergyConfigHandler.TO_RF_RATIO);
 					sentToAcceptor = handler.receiveEnergy(sideFrom, currentSendinginRF, false) * EnergyConfigHandler.RF_RATIO;
 				}
@@ -654,9 +666,9 @@ public class EnergyNetwork implements IElectricityNetwork
                                 this.connectedDirections.add(sideFrom);
                             }
                         }
-						else if (isRFLoaded && acceptor instanceof IEnergyHandler)
+						else if (isRFLoaded && (acceptor instanceof IEnergyHandler || acceptor instanceof IEnergyReceiver))
 						{
-							if (((IEnergyHandler) acceptor).canConnectEnergy(sideFrom))
+							if (((IEnergyConnection) acceptor).canConnectEnergy(sideFrom))
 							{
 								this.connectedAcceptors.add(acceptor);
 								this.connectedDirections.add(sideFrom);
