@@ -1,10 +1,11 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public class BiomeGenBaseMoon extends BiomeGenBase
 {
-    public static final BiomeGenBase moonFlat = new BiomeGenFlatMoon(102).setBiomeName("moon");
+    public static final BiomeGenBase moonFlat = new BiomeGenFlatMoon(ConfigManagerCore.biomeIDbase).setBiomeName("moon");
 
     BiomeGenBaseMoon(int var1)
     {

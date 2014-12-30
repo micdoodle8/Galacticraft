@@ -626,6 +626,7 @@ commands.ssuninvite.noPlayer=Couldn't find player with username %s on your Space
 gc.configgui.idDimensionMoon=Moon Dimension ID
 gc.configgui.idDimensionOverworldOrbit=Space Station Dimension ID
 gc.configgui.idDimensionOverworldOrbitStatic=Space Station Static Dimension ID
+gc.configgui.biomeIDBase=BiomeID Base for GC
 gc.configgui.staticLoadedDimensions=Static Loaded Dimensions
 gc.configgui.rocketDisableOverworldReturn=Disable Overworld Rocket Return
 gc.configgui.rocketDisabledDimensions=Rocket Disabled Dimensions

@@ -31,6 +31,7 @@ public class ConfigManagerCore
     public static int idDimensionOverworldOrbit;
     public static int idDimensionOverworldOrbitStatic;
     public static int idDimensionMoon;
+    public static int biomeIDbase = 102;
 
     // SCHEMATICS
     public static int idSchematicRocketT1;
@@ -119,6 +120,13 @@ public class ConfigManagerCore
             prop.comment = "Dimension ID for Static Overworld Space Stations";
             prop.setLanguageKey("gc.configgui.idDimensionOverworldOrbitStatic").setRequiresMcRestart(true);
             idDimensionOverworldOrbitStatic = prop.getInt();
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "biomeIDBase", 102);
+            prop.comment = "Biome ID for Moon (Mars will be this + 1, Asteroids + 2 etc). Allowed range 40-250.";
+            prop.setLanguageKey("gc.configgui.biomeIDBase").setRequiresMcRestart(true);
+            biomeIDbase = prop.getInt();
+            if (biomeIDbase < 40 || biomeIDbase > 250) biomeIDbase = 102;
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "Static Loaded Dimensions", ConfigManagerCore.staticLoadDimensions);
