@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 
 import cofh.api.energy.IEnergyConnection;
 import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyReceiver;
 import buildcraft.api.mj.MjAPI;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
@@ -79,7 +80,7 @@ public class EnergyUtil
             }
             else if (isRFLoaded && tileEntity instanceof IEnergyConnection)
             {
-                if (tileEntity instanceof IEnergyHandler)
+                if (tileEntity instanceof IEnergyReceiver)
                 {
                     //Do not connect GC wires directly to power conduits
                     try {
@@ -88,7 +89,7 @@ public class EnergyUtil
                             continue;
                         }
                     } catch (Exception e) { }
-	                if (((IEnergyHandler)tileEntity).canConnectEnergy(direction.getOpposite()))
+	                if (((IEnergyReceiver)tileEntity).canConnectEnergy(direction.getOpposite()))
 	                	adjacentConnections[direction.ordinal()] = tileEntity;
                 }
                 continue;
@@ -210,9 +211,9 @@ public class EnergyUtil
                 return (float) result * EnergyConfigHandler.IC2_RATIO;
             }
         }
-        else if (isRFLoaded && tileAdj instanceof IEnergyHandler)
+        else if (isRFLoaded && tileAdj instanceof IEnergyReceiver)
         {
-        	return ((IEnergyHandler)tileAdj).receiveEnergy(inputAdj, MathHelper.floor_float(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) * EnergyConfigHandler.RF_RATIO;
+        	return ((IEnergyReceiver)tileAdj).receiveEnergy(inputAdj, MathHelper.floor_float(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) * EnergyConfigHandler.RF_RATIO;
         }
         else if (isBC6Loaded && MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, inputAdj) != null)
         //New BC API

@@ -24,7 +24,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.*;
 
 //import buildcraft.api.power.PowerHandler.Type;
-import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyReceiver;
 
 
 /**
@@ -286,9 +286,9 @@ public class EnergyNetwork implements IElectricityNetwork
                     {
                         e = (float) ((((IStrictEnergyAcceptor) acceptor).getMaxEnergy() - ((IStrictEnergyAcceptor) acceptor).getEnergy()) * EnergyConfigHandler.MEKANISM_RATIO);
                     }
-                    else if (isRFLoaded && acceptor instanceof IEnergyHandler)
+                    else if (isRFLoaded && acceptor instanceof IEnergyReceiver)
 					{
-						e = ((IEnergyHandler) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) * EnergyConfigHandler.RF_RATIO;
+						e = ((IEnergyReceiver) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) * EnergyConfigHandler.RF_RATIO;
 					}
                     else if (isIC2Loaded && acceptor instanceof IEnergySink)
                     {
@@ -419,11 +419,11 @@ public class EnergyNetwork implements IElectricityNetwork
                 {
                     sentToAcceptor = (float) ((IStrictEnergyAcceptor) tileEntity).transferEnergyToAcceptor(sideFrom, currentSending * EnergyConfigHandler.TO_MEKANISM_RATIO) * EnergyConfigHandler.MEKANISM_RATIO;
                 }
-				else if (isRFLoaded && tileEntity instanceof IEnergyHandler)
+				else if (isRFLoaded && tileEntity instanceof IEnergyReceiver)
 				{
-					IEnergyHandler handler = (IEnergyHandler) tileEntity;
+					IEnergyReceiver receiver = (IEnergyReceiver) tileEntity;
 					int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / EnergyConfigHandler.TO_RF_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * EnergyConfigHandler.TO_RF_RATIO);
-					sentToAcceptor = handler.receiveEnergy(sideFrom, currentSendinginRF, false) * EnergyConfigHandler.RF_RATIO;
+					sentToAcceptor = receiver.receiveEnergy(sideFrom, currentSendinginRF, false) * EnergyConfigHandler.RF_RATIO;
 				}
                 else if (isIC2Loaded && tileEntity instanceof IEnergySink)
                 {
@@ -654,9 +654,9 @@ public class EnergyNetwork implements IElectricityNetwork
                                 this.connectedDirections.add(sideFrom);
                             }
                         }
-						else if (isRFLoaded && acceptor instanceof IEnergyHandler)
+						else if (isRFLoaded && acceptor instanceof IEnergyReceiver)
 						{
-							if (((IEnergyHandler) acceptor).canConnectEnergy(sideFrom))
+							if (((IEnergyReceiver) acceptor).canConnectEnergy(sideFrom))
 							{
 								this.connectedAcceptors.add(acceptor);
 								this.connectedDirections.add(sideFrom);
