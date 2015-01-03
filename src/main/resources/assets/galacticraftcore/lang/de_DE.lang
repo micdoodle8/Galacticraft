@@ -295,7 +295,7 @@ gui.message.help1=Für die Galacticraft Hilfe
 gui.message.help1a=Um diese Meldung erneut anzuzeigen, benutze:
 gui.message.help2=Für die Weltraumprogramm Anleitung 
 gui.message.help3=Für Hilfe bezüglich Öl
-gui.message.prelaunch="Vor dem Start" - Checkliste
+gui.message.prelaunch=Vor dem Start - Checkliste
 gui.message.clicklink=Klicke um zum Galacticraft Wiki zu gelangen
 
 gui.status.active.name=Aktiv
