@@ -77,3 +77,4 @@ bobdole010:capeRainbow
 dragonguide:capeLightGray
 MrRobin1512:capeRainbow
 IndianGooN:capeOrange
+Mysticslay:capeLightBlue
