@@ -146,7 +146,7 @@ tile.slimelingEgg.description=Einmal vom Spieler zerbrochen, werden aus Schleiml
 tile.cryoChamber.description=Kryogene Kammern ermöglichen dem Spieler am Tag zu schlafen und heilen ihn dabei. Sie haben allerdings eine Abklingzeit.
 tile.launchController.description=Start-Controller können benutzt werden um das Startverhalten anzupassen, einschließlich Startbedingungen und Ziel für automatische Starts.
 tile.terraformer.description=Terraformer werden benutzt um etwas Grün auf entfernte Planeten zu bringen. Sie pflanzen Gras und Bäume, wenn sie die richtigen Materialien bekommen.
-tile.creeperEgg.description=Creeper Eggs will spawn in Mars dungeons, spawning a sneaky predator upon exploding.
+tile.creeperEgg.description=Creeper-Eier können nur in Marsdungeons gefunden werden. Wird eins gesprengt, schlüpft ein kleiner hinterhältiger Crepper.
 tile.gasLiquefier.description=Verflüssigt Gase, entweder aus der Atmosphäre oder aus Kanistern. Flüssiges Methan ist ein guter Raketentreibstoff!
 tile.methaneSynthesizer.description=Stellt aus Wasserstoff und Kohlenstoff Methan her, das im Gasverflüssiger weiterverarbeitet werden kann.
 tile.electrolyzer.description=Wandelt Wasser in Wasserstoff (für das Methansynthesegerät) und Sauerstoff um.
@@ -171,7 +171,7 @@ schematic.cargoRocket.name=Automatische Güterrakete
 entity.Sludgeling.name=Schlammling
 entity.Slimeling.name=Schleimling
 entity.CreeperBoss.name=Entwickelter Creeper-Boss
-entity.SpaceshipT2.name=Stufe 2 Rackete
+entity.SpaceshipT2.name=Stufe 2 Rakete
 entity.CargoRocket.name=Automatische Güterrakete
 
 # CONTAINERS
