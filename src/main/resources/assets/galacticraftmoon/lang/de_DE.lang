@@ -2,7 +2,7 @@
 
 # GENERAL ITEMS
 item.meteoricIronRaw.name=Rohes Meteorisches Eisen
-item.compressedMeteoricIron.name=Gepresstes Meteorisches Eisen
+item.compressedMeteoricIron.name=Gepresstes meteorisches Eisen
 item.meteoricIronIngot.name=Meteorischer Eisenbarren
 
 # FOOD
@@ -25,6 +25,6 @@ tile.cheeseBlock.name=Käseblock
 
 # GUI
 gui.choosePlanet.desc.moon=Bewohnbar#Kein Sauerstoff#Schwerkraft: 18%
-container.lander.name=Landekapsel ##NEEDS TRANSLATE##
+container.lander.name=Landekapsel
 
 dimension.Moon.name=Mond
