@@ -91,6 +91,8 @@ public class EnergyConfigHandler
     private static boolean cachedMekLoadedValue = false;
     private static boolean cachedRFLoaded = false;
     private static boolean cachedRFLoadedValue = false;
+    
+    private static boolean disableMJinterface = false;
 
 
     /**
@@ -117,6 +119,9 @@ public class EnergyConfigHandler
         EnergyConfigHandler.displayEnergyUnitsIC2 = EnergyConfigHandler.config.get("Display", "If IndustrialCraft2 is loaded, show Galacticraft machines energy as EU instead of gJ?", false).getBoolean(false);
         EnergyConfigHandler.displayEnergyUnitsMek = EnergyConfigHandler.config.get("Display", "If Mekanism is loaded, show Galacticraft machines energy as Joules (J) instead of gJ?", false).getBoolean(false);
         EnergyConfigHandler.displayEnergyUnitsRF = EnergyConfigHandler.config.get("Display", "Show Galacticraft machines energy in RF instead of gJ?", false).getBoolean(false);
+
+        EnergyConfigHandler.disableMJinterface = EnergyConfigHandler.config.get("Compatibility", "Disable old Buildcraft API (MJ) interfacing completely?", false).getBoolean(false);
+
         if (!EnergyConfigHandler.isBuildcraftLoaded())
         {
             EnergyConfigHandler.displayEnergyUnitsBC = false;
@@ -198,9 +203,10 @@ public class EnergyConfigHandler
         if (!cachedBCLoaded)
         {
             cachedBCLoaded = true;
-            //if (Loader.isModLoaded("BuildCraft|Energy"))
-            //	cachedBCLoadedValue = true;
-            //else
+
+            if (disableMJinterface)
+            	cachedBCLoadedValue = false;
+            else
             {
             	int count = 0;
             	try {
