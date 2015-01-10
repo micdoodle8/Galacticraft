@@ -36,6 +36,7 @@ public class ConfigManagerAsteroids
     public static int idSchematicRocketT3;
 
     // GENERAL
+    public static boolean disableGalacticraftHelium;
 
     public static void syncConfig(boolean load)
     {
@@ -65,6 +66,12 @@ public class ConfigManagerAsteroids
             prop.comment = "Schematic ID for Tier 3 Rocket, must be unique.";
             prop.setLanguageKey("gc.configgui.idSchematicRocketT3");
             idSchematicRocketT3 = prop.getInt(4);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "disableGalacticraftHelium", false);
+            prop.comment = "Option to disable Helium gas in Galacticraft (because it will be registered by another mod eg GregTech).";
+            prop.setLanguageKey("gc.configgui.disableGalacticraftHelium");
+            disableGalacticraftHelium = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
             config.setCategoryPropertyOrder(CATEGORY_GENERAL, propOrder);
