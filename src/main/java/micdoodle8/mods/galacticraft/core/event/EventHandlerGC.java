@@ -164,13 +164,16 @@ public class EventHandlerGC
     @SubscribeEvent
     public void onPlayerClicked(PlayerInteractEvent event)
     {
-        final ItemStack heldStack = event.entityPlayer.inventory.getCurrentItem();
-
+        //Skip events triggered from Thaumcraft Golems and other non-players
+    	if (event.entityPlayer == null || event.entityPlayer.inventory == null) return;
+        
+    	final ItemStack heldStack = event.entityPlayer.inventory.getCurrentItem();
         final TileEntity tileClicked = event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z);
-        final Block idClicked = event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z);
 
         if (heldStack != null)
         {
+            final Block idClicked = event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z);
+
             if (tileClicked != null && tileClicked instanceof IKeyable)
             {
                 if (event.action.equals(PlayerInteractEvent.Action.LEFT_CLICK_BLOCK))
