@@ -64,7 +64,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenDesert;
 import net.minecraftforge.client.event.sound.PlaySoundEvent17;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -573,7 +573,7 @@ public class EventHandlerGC
     }
 
     @SubscribeEvent
-    public void onPlayerDeath(LivingDeathEvent event)
+    public void onPlayerDeath(PlayerDropsEvent event)
     {
         if (event.entityLiving instanceof EntityPlayerMP)
         {
