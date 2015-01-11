@@ -300,13 +300,13 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 
         if (!this.worldObj.isRemote)
         {
-			this.checkFluidTankTransfer(2, this.fuelTank);
+			this.checkFluidTankTransfer(this.chestContents.length - 1, this.fuelTank);
         }
     }
     
     private void checkFluidTankTransfer(int slot, FluidTank tank)
 	{
-		if (this.chestContents[slot] != null && FluidContainerRegistry.isContainer(this.chestContents[slot]))
+		if (this.chestContents[slot] != null && this.chestContents[slot].stackSize == 1 && FluidContainerRegistry.isContainer(this.chestContents[slot]))
 		{
 			final FluidStack liquid = tank.getFluid();
 
