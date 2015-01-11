@@ -332,5 +332,6 @@ public class GCPlayerStats implements IExtendedEntityProperties
         this.receivedSoundWarning = oldData.receivedSoundWarning;
         this.openedSpaceRaceManager = oldData.openedSpaceRaceManager;
         this.spaceRaceInviteTeamID = oldData.spaceRaceInviteTeamID;
+        this.buildFlags = oldData.buildFlags;
     }
 }

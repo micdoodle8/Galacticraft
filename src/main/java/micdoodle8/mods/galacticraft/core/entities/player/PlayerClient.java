@@ -291,12 +291,19 @@ public class PlayerClient implements IPlayerClient
 		// 1,2,3 : Compressor, CF, Standard Wrench
 		// 4,5,6 : Fuel loader, Launchpad, NASA Workbench
 		// 7: oil found 8: placed rocket
+
 		GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 		int flag = stats.buildFlags;
 		if (flag == -1) flag = 0;
+		int repeatCount = flag >> 9;
+		if (repeatCount <= 3)
+		{
+			flag = 0;
+			repeatCount++;
+		}
 		if ((flag & 1 << i) > 0) return;
 		flag |= 1 << i;
-		stats.buildFlags = flag;
+		stats.buildFlags = (flag & 511) + (repeatCount << 9);
 		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BUILDFLAGS_UPDATE, new Object[] { flag }));
 		switch (i) {
 		case 0:
