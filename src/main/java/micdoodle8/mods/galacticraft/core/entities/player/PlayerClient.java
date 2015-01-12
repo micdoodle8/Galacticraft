@@ -298,13 +298,12 @@ public class PlayerClient implements IPlayerClient
 		int repeatCount = flag >> 9;
 		if (repeatCount <= 3)
 		{
-			flag = 0;
 			repeatCount++;
 		}
 		if ((flag & 1 << i) > 0) return;
 		flag |= 1 << i;
 		stats.buildFlags = (flag & 511) + (repeatCount << 9);
-		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BUILDFLAGS_UPDATE, new Object[] { flag }));
+		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BUILDFLAGS_UPDATE, new Object[] { stats.buildFlags }));
 		switch (i) {
 		case 0:
 		case 1:

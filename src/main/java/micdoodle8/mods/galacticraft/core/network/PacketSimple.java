@@ -1347,7 +1347,7 @@ public class PacketSimple extends Packet implements IPacket
         	}
         	break;
         case S_BUILDFLAGS_UPDATE:
-        	stats.buildFlags |= (Integer) this.data.get(0);
+        	stats.buildFlags = (Integer) this.data.get(0);
         	break;
         case S_UPDATE_VIEWSCREEN_REQUEST:
         	int screenDim = (Integer) this.data.get(0);
