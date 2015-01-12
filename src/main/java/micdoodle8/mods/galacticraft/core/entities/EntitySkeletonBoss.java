@@ -412,6 +412,7 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
                 d0 = (Math.random() - Math.random()) * 0.01D;
             }
 
+	if (!(this.worldObj.isRemote))
 	    GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOW, new Object[] {}), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 40.0D));
             ((EntityPlayer) this.thrownEntity).attackedAtYaw = (float) (Math.atan2(d1, d0) * 180.0D / Math.PI) - this.rotationYaw;
 
