@@ -560,7 +560,7 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
 
         if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
         {
-            var1 = new EntityArrowGC(this.worldObj, this, entitylivingbase, 0.3F, 12.0F);
+            var1 = new EntityArrow(this.worldObj, this, entitylivingbase, 0.3F, 12.0F);
         }
         else
         {
