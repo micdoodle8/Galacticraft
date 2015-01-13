@@ -219,7 +219,7 @@ schematic.rocketT1.name=จรวด เทียร์ 1
 schematic.rocketT2.name=จรวด เทียร์ 2
 
 # DEATH MESSAGES
-death.attack.spaceshipExplosion=%1$s's จรวดเกิดข้อผิดผลาด!
+death.attack.spaceshipExplosion=%1$s's จรวดเกิดข้อผิดพลาด!
 death.attack.spaceshipExplosionB=%1$s ตายเพราะอุบัติเหตุในยานอวกาศ!
 death.attack.spaceshipCrash=%1$s's ตายเพราะจรวดทำลายตัวเอง โอ้ย!
 death.attack.oxygenSuffocation=%1$s ขาดออกซิเจน!
@@ -397,7 +397,7 @@ gui.rocket.turn.name=ไปทางซ้าย-ขวา
 gui.rocket.updown.name=ขึ้นข้างบน-ลงข้างล่าง
 gui.rocket.inv.name=ช่องเก็บของ / เชื้อเพลิง
 
-gui.rocket.warning.nogyroscope=คุณไ่ม่สามารถใช้จรวดในมิตินี้ได้!
+gui.rocket.warning.nogyroscope=คุณไม่สามารถใช้จรวดในมิตินี้ได้!
 gui.rocket.warning.noparachute=ฉันไม่มีร่มชูชีพ! ถ้ากดปล่อยจรวดอีกครั้ง เราจะหยุดมันไม่ได้!
 gui.rocket.warning.nofuel=ฉันต้องการที่จะเติมเชื้อเพลิงก่อน เป็นอันดับแรก!
 gui.chest.warning.wrongkey=ฉันต้องการกุญแจดันเจี้ยน เทียร์ %s เพื่อปลดล็อคกล่องสมบัติ!
@@ -626,6 +626,7 @@ commands.ssuninvite.noPlayer=ไม่สามารถหาผู้เล่
 gc.configgui.idDimensionMoon=ID มิติของดวงจันทร์
 gc.configgui.idDimensionOverworldOrbit=ID มิติของสถานีอวกาศ
 gc.configgui.idDimensionOverworldOrbitStatic=ID มิติของสถานีอวกาศอยู่กับที่
+gc.configgui.biomeIDBase=ID ไบโอมหลักของ GC
 gc.configgui.staticLoadedDimensions=เปิดใช้งานโหลดมิติให้คงอยู่กับที่
 gc.configgui.rocketDisableOverworldReturn=ปิดใช้งานจรวดไม่ให้กลับไปยังโลก
 gc.configgui.rocketDisabledDimensions=ปิดใช้งานจรวดให้โหลดมิติ
