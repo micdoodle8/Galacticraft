@@ -413,14 +413,9 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketEntityUpdate(this));
         }
-
-        if (!this.worldObj.isRemote && this.ticks % 5 == 0)
+        else if (this.ticks % 5 == 0)
         {
             GalacticraftCore.packetPipeline.sendToAllAround(new PacketEntityUpdate(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 50.0D));
-        }
-
-        if (!this.worldObj.isRemote && this.ticks % 5 == 0)
-        {
             GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 50.0D));
         }
     }

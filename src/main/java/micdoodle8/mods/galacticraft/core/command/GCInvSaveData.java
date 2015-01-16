@@ -14,6 +14,11 @@ public class GCInvSaveData extends WorldSavedData
         super(SAVE_ID);
     }
 
+    public GCInvSaveData(String name)
+    {
+        super(name);
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound filedata)
     {
