@@ -65,7 +65,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     public EntityBuggy(World var1)
     {
         super(var1);
-        this.setSize(0.98F, 1.7F);
+        this.setSize(0.98F, 1F);
         this.yOffset = 2.5F;
         this.currentDamage = 18;
         this.timeSinceHit = 19;
