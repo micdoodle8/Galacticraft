@@ -580,16 +580,18 @@ public class EventHandlerGC
             GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) event.entityLiving);
             if (!event.entityLiving.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
             {
-                for (int i = 0; i < stats.extendedInventory.getSizeInventory(); i++)
+            	event.entityLiving.captureDrops = true;
+                for (int i = stats.extendedInventory.getSizeInventory() - 1; i >= 0; i--)
                 {
                     ItemStack stack = stats.extendedInventory.getStackInSlot(i);
 
                     if (stack != null)
                     {
-                        ((EntityPlayerMP) event.entityLiving).dropPlayerItemWithRandomChoice(stack, true);
+                        ((EntityPlayerMP) event.entityLiving).func_146097_a(stack, true, false);
                         stats.extendedInventory.setInventorySlotContents(i, null);
                     }
                 }
+                event.entityLiving.captureDrops = false;
             }
         }
     }
