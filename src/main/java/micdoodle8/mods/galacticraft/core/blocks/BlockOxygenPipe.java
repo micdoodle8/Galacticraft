@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
@@ -43,16 +44,20 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
     public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6)
     {
         final TileEntityOxygenPipe tile = (TileEntityOxygenPipe) par1World.getTileEntity(par2, par3, par4);
-
+		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+		
         if (tile != null && tile.getColor() != 15)
         {
-            final float f = 0.7F;
-            final double d0 = par1World.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-            final double d1 = par1World.rand.nextFloat() * f + (1.0F - f) * 0.2D + 0.6D;
-            final double d2 = par1World.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-            final EntityItem entityitem = new EntityItem(par1World, par2 + d0, par3 + d1, par4 + d2, new ItemStack(Items.dye, 1, tile.getColor()));
-            entityitem.delayBeforeCanPickup = 10;
-            par1World.spawnEntityInWorld(entityitem);
+            if (!player.capabilities.isCreativeMode)
+			{
+                final float f = 0.7F;
+                final double d0 = par1World.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+                final double d1 = par1World.rand.nextFloat() * f + (1.0F - f) * 0.2D + 0.6D;
+                final double d2 = par1World.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+                final EntityItem entityitem = new EntityItem(par1World, par2 + d0, par3 + d1, par4 + d2, new ItemStack(Items.dye, 1, tile.getColor()));
+                entityitem.delayBeforeCanPickup = 10;
+                par1World.spawnEntityInWorld(entityitem);
+			}
         }
 
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
@@ -114,16 +119,17 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
 
                     if (colorBefore != (byte) dyeColor && colorBefore != 15)
                     {
-                        final float f = 0.7F;
-                        final double d0 = par1World.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-                        final double d1 = par1World.rand.nextFloat() * f + (1.0F - f) * 0.2D + 0.6D;
-                        final double d2 = par1World.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-                        final EntityItem entityitem = new EntityItem(par1World, x + d0, y + d1, z + d2, new ItemStack(Items.dye, 1, colorBefore));
-                        entityitem.delayBeforeCanPickup = 10;
-                        par1World.spawnEntityInWorld(entityitem);
+                        if (!par5EntityPlayer.capabilities.isCreativeMode)
+						{
+                            final float f = 0.7F;
+                            final double d0 = par1World.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+                            final double d1 = par1World.rand.nextFloat() * f + (1.0F - f) * 0.2D + 0.6D;
+                            final double d2 = par1World.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+                            final EntityItem entityitem = new EntityItem(par1World, x + d0, y + d1, z + d2, new ItemStack(Items.dye, 1, colorBefore));
+                            entityitem.delayBeforeCanPickup = 10;
+                            par1World.spawnEntityInWorld(entityitem);
+						}
                     }
-
-                    //					GCCorePacketManager.sendPacketToClients(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, tileEntity, tileEntity.getColor(), (byte) -1)); TODO Fix pipe color
 
                     BlockVec3 tileVec = new BlockVec3(tileEntity);
                     for (final ForgeDirection dir : ForgeDirection.values())
