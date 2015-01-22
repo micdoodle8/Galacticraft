@@ -36,6 +36,13 @@ import cofh.api.energy.IEnergyReceiver;
  */
 public class EnergyNetwork implements IElectricityNetwork
 {
+    //boolean isTELoaded = EnergyConfigHandler.isThermalExpansionLoaded();
+    private boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
+    private boolean isRF1Loaded = EnergyConfigHandler.isRFAPIv1Loaded();
+    private boolean isRF2Loaded = EnergyConfigHandler.isRFAPIv2Loaded();
+    private boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded();
+    private boolean isBCLoaded = EnergyConfigHandler.isBuildcraftLoaded();
+
     /* Re-written by radfast for better performance
      *
      * Imagine a 30 producer, 80 acceptor network...
@@ -260,12 +267,6 @@ public class EnergyNetwork implements IElectricityNetwork
         this.totalRequested = 0.0F;
         this.totalStorageExcess = 0F;
 
-        //boolean isTELoaded = EnergyConfigHandler.isThermalExpansionLoaded();
-        boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded();
-        boolean isBCLoaded = EnergyConfigHandler.isBuildcraftLoaded();
-        boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
-        boolean isRFLoaded = EnergyConfigHandler.isRFAPILoaded();
-
         if (!this.connectedAcceptors.isEmpty())
         {
             float e;
@@ -288,11 +289,11 @@ public class EnergyNetwork implements IElectricityNetwork
                     {
                         e = (float) ((((IStrictEnergyAcceptor) acceptor).getMaxEnergy() - ((IStrictEnergyAcceptor) acceptor).getEnergy()) * EnergyConfigHandler.MEKANISM_RATIO);
                     }
-                    else if (isRFLoaded && acceptor instanceof IEnergyHandler)
+                    else if (isRF1Loaded && acceptor instanceof IEnergyHandler)
 					{
 						e = ((IEnergyHandler) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) * EnergyConfigHandler.RF_RATIO;
 					}
-                    else if (isRFLoaded && acceptor instanceof IEnergyReceiver)
+                    else if (isRF2Loaded && acceptor instanceof IEnergyReceiver)
 					{
 						e = ((IEnergyReceiver) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) * EnergyConfigHandler.RF_RATIO;
 					}
@@ -358,12 +359,6 @@ public class EnergyNetwork implements IElectricityNetwork
 
         if (!this.availableAcceptors.isEmpty())
         {
-            //boolean isTELoaded = EnergyConfigHandler.isThermalExpansionLoaded();
-            boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded();
-            boolean isBCLoaded = EnergyConfigHandler.isBuildcraftLoaded();
-            boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
-            boolean isRFLoaded = EnergyConfigHandler.isRFAPILoaded();
-
             float energyNeeded = this.totalRequested;
             float energyAvailable = this.totalEnergy;
             float reducor = 1.0F;
@@ -425,13 +420,13 @@ public class EnergyNetwork implements IElectricityNetwork
                 {
                     sentToAcceptor = (float) ((IStrictEnergyAcceptor) tileEntity).transferEnergyToAcceptor(sideFrom, currentSending * EnergyConfigHandler.TO_MEKANISM_RATIO) * EnergyConfigHandler.MEKANISM_RATIO;
                 }
-				else if (isRFLoaded && tileEntity instanceof IEnergyHandler)
+				else if (isRF1Loaded && tileEntity instanceof IEnergyHandler)
 				{
 					IEnergyHandler handler = (IEnergyHandler) tileEntity;
 					int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / EnergyConfigHandler.TO_RF_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * EnergyConfigHandler.TO_RF_RATIO);
 					sentToAcceptor = handler.receiveEnergy(sideFrom, currentSendinginRF, false) * EnergyConfigHandler.RF_RATIO;
 				}
-				else if (isRFLoaded && tileEntity instanceof IEnergyReceiver)
+				else if (isRF2Loaded && tileEntity instanceof IEnergyReceiver)
 				{
 					IEnergyReceiver handler = (IEnergyReceiver) tileEntity;
 					int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / EnergyConfigHandler.TO_RF_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * EnergyConfigHandler.TO_RF_RATIO);
@@ -628,12 +623,6 @@ public class EnergyNetwork implements IElectricityNetwork
 
         try
         {
-            //boolean isTELoaded = EnergyConfigHandler.isThermalExpansionLoaded();
-            boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded();
-            boolean isBCLoaded = EnergyConfigHandler.isBuildcraftLoaded();
-            boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
-            boolean isRFLoaded = EnergyConfigHandler.isRFAPILoaded();
-
             LinkedList<IConductor> conductors = new LinkedList();
             conductors.addAll(this.getTransmitters());
             //This prevents concurrent modifications if something in the loop causes chunk loading
@@ -666,7 +655,7 @@ public class EnergyNetwork implements IElectricityNetwork
                                 this.connectedDirections.add(sideFrom);
                             }
                         }
-						else if (isRFLoaded && (acceptor instanceof IEnergyHandler || acceptor instanceof IEnergyReceiver))
+						else if ((isRF1Loaded && acceptor instanceof IEnergyHandler) || (isRF2Loaded && acceptor instanceof IEnergyReceiver))
 						{
 							if (((IEnergyConnection) acceptor).canConnectEnergy(sideFrom))
 							{

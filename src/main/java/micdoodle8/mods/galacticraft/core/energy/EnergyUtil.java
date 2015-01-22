@@ -29,6 +29,8 @@ public class EnergyUtil
 {
     private static boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
     private static boolean isRFLoaded = EnergyConfigHandler.isRFAPILoaded();
+    private static boolean isRF1Loaded = EnergyConfigHandler.isRFAPIv1Loaded();
+    private static boolean isRF2Loaded = EnergyConfigHandler.isRFAPIv2Loaded();
     private static boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded();
     private static boolean isBCLoaded = EnergyConfigHandler.isBuildcraftLoaded();
     private static boolean isBC6Loaded = isBCLoaded && EnergyConfigHandler.getBuildcraftVersion() == 6;
@@ -81,7 +83,7 @@ public class EnergyUtil
             }
             else if (isRFLoaded && tileEntity instanceof IEnergyConnection)
             {
-                if (tileEntity instanceof IEnergyHandler || tileEntity instanceof IEnergyProvider || tileEntity instanceof IEnergyReceiver)
+                if (isRF1Loaded && tileEntity instanceof IEnergyHandler || isRF2Loaded && (tileEntity instanceof IEnergyProvider || tileEntity instanceof IEnergyReceiver))
                 {
                     //Do not connect GC wires directly to power conduits
                     try {
@@ -212,11 +214,11 @@ public class EnergyUtil
                 return (float) result * EnergyConfigHandler.IC2_RATIO;
             }
         }
-        else if (isRFLoaded && tileAdj instanceof IEnergyHandler)
+        else if (isRF1Loaded && tileAdj instanceof IEnergyHandler)
         {
         	return ((IEnergyHandler)tileAdj).receiveEnergy(inputAdj, MathHelper.floor_float(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) * EnergyConfigHandler.RF_RATIO;
         }
-        else if (isRFLoaded && tileAdj instanceof IEnergyReceiver)
+        else if (isRF2Loaded && tileAdj instanceof IEnergyReceiver)
         {
         	return ((IEnergyReceiver)tileAdj).receiveEnergy(inputAdj, MathHelper.floor_float(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) * EnergyConfigHandler.RF_RATIO;
         }
@@ -266,7 +268,7 @@ public class EnergyUtil
         {
             return ((IEnergyAcceptor) tileAdj).acceptsEnergyFrom(null, inputAdj);
         }
-        else if (isRFLoaded && (tileAdj instanceof IEnergyHandler || tileAdj instanceof IEnergyReceiver))
+        else if (isRF1Loaded && tileAdj instanceof IEnergyHandler || isRF2Loaded && tileAdj instanceof IEnergyReceiver)
         {
         	return ((IEnergyConnection)tileAdj).canConnectEnergy(inputAdj);
         }

@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.energy;
 import cpw.mods.fml.common.Loader;
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasRegistry;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
@@ -93,6 +94,8 @@ public class EnergyConfigHandler
     private static boolean cachedMekLoadedValue = false;
     private static boolean cachedRFLoaded = false;
     private static boolean cachedRFLoadedValue = false;
+    private static boolean cachedRF1LoadedValue = false;
+    private static boolean cachedRF2LoadedValue = false;
     
     private static boolean disableMJinterface = false;
 
@@ -275,14 +278,54 @@ public class EnergyConfigHandler
     {
         if (!cachedRFLoaded)
         {
-            cachedRFLoaded = true;
-            cachedRFLoadedValue = false;
-            try {
-            	cachedRFLoadedValue = (Class.forName("cofh.api.energy.IEnergyHandler") != null);
-            } catch (Exception e) { }
+        	initialiseRF();
         }
 
         return cachedRFLoadedValue;
+    }
+    
+    public static boolean isRFAPIv1Loaded()
+    {
+        if (!cachedRFLoaded)
+        {
+        	initialiseRF();
+        }
+
+        return cachedRF1LoadedValue;
+    }
+
+    public static boolean isRFAPIv2Loaded()
+    {
+        if (!cachedRFLoaded)
+        {
+        	initialiseRF();
+        }
+
+        return cachedRF2LoadedValue;
+    }
+    
+    private static void initialiseRF()
+    {
+        cachedRFLoaded = true;
+        cachedRFLoadedValue = false;
+        cachedRF2LoadedValue = false;
+    	int count = 0;
+    	int count2 = 0;
+        try {
+        	if (Class.forName("cofh.api.energy.IEnergyConnection") != null) count++;
+        	if (Class.forName("cofh.api.energy.IEnergyHandler") != null) count+=2;
+        	if (Class.forName("cofh.api.energy.IEnergyProvider") != null) count2++;
+        	if (Class.forName("cofh.api.energy.IEnergyReceiver") != null) count2++;
+        } catch (Exception e) { }
+        
+        if ((count + count2 == 3 && count2 != 1) || count + count2 == 5)
+        {
+        	cachedRFLoadedValue = true;
+        	cachedRF1LoadedValue = (count == 3);
+        	cachedRF2LoadedValue = (count2 == 2);
+        }
+        else if (count > 0 || count2 > 0)
+        	GCLog.info("Incomplete Redstone Flux API detected: Galacticraft will not support RF energy connections until this is fixed.");
     }
 
     public static boolean isMekanismLoaded()
