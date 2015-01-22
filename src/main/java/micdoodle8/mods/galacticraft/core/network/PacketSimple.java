@@ -140,7 +140,7 @@ public class PacketSimple extends Packet implements IPacket
         C_UPDATE_SPACESTATION_DATA(Side.CLIENT, Integer.class, NBTTagCompound.class),
         C_UPDATE_SPACESTATION_CLIENT_ID(Side.CLIENT, Integer.class),
         C_UPDATE_PLANETS_LIST(Side.CLIENT, Integer[].class),
-        C_UPDATE_CONFIGS(Side.CLIENT, Boolean.class, Double.class, Integer.class, Integer.class, Integer.class, String[].class),
+        C_UPDATE_CONFIGS(Side.CLIENT, Boolean.class, Double.class, Integer.class, Integer.class, Integer.class, Float.class, Float.class, Float.class, Float.class, Integer.class, String[].class),
         C_UPDATE_STATS(Side.CLIENT, Integer.class),
         C_ADD_NEW_SCHEMATIC(Side.CLIENT, Integer.class),
         C_UPDATE_SCHEMATIC_LIST(Side.CLIENT, Integer[].class),

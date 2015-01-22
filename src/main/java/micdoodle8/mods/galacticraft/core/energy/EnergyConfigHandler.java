@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * The Universal Electricity compatibility module allows your mod to be
@@ -71,6 +72,11 @@ public class EnergyConfigHandler
     public static float TO_IC2_RATIO = 1 / EnergyConfigHandler.IC2_RATIO;
 
     public static float TO_MEKANISM_RATIO = 1 / EnergyConfigHandler.MEKANISM_RATIO;
+
+    public static float TO_BC_RATIOdisp = 1 / EnergyConfigHandler.BC3_RATIO;
+    public static float TO_RF_RATIOdisp = 1 / EnergyConfigHandler.RF_RATIO;
+    public static float TO_IC2_RATIOdisp = 1 / EnergyConfigHandler.IC2_RATIO;
+    public static float TO_MEKANISM_RATIOdisp = 1 / EnergyConfigHandler.MEKANISM_RATIO;
 
     /**
      * Oxygen gas used when Mekanism is loaded. Always null otherwise.
@@ -341,15 +347,37 @@ public class EnergyConfigHandler
     
     private static void updateRatios()
     {
-    	if (conversionLossFactor >= 100) return;
     	float factor = conversionLossFactor / 100;
         TO_BC_RATIO = factor / EnergyConfigHandler.BC3_RATIO;
         TO_RF_RATIO = factor / EnergyConfigHandler.RF_RATIO;
         TO_IC2_RATIO = factor / EnergyConfigHandler.IC2_RATIO;
         TO_MEKANISM_RATIO = factor / EnergyConfigHandler.MEKANISM_RATIO;
+        TO_BC_RATIOdisp = 1 / EnergyConfigHandler.BC3_RATIO;
+        TO_RF_RATIOdisp = 1 / EnergyConfigHandler.RF_RATIO;
+        TO_IC2_RATIOdisp = 1 / EnergyConfigHandler.IC2_RATIO;
+        TO_MEKANISM_RATIOdisp = 1 / EnergyConfigHandler.MEKANISM_RATIO;
         EnergyConfigHandler.BC3_RATIO *= factor;
         EnergyConfigHandler.RF_RATIO *= factor;
         EnergyConfigHandler.IC2_RATIO *= factor;
         EnergyConfigHandler.MEKANISM_RATIO *= factor;
     }
+
+	public static void serverConfigOverride(ArrayList<Object> returnList)
+	{
+		returnList.add(EnergyConfigHandler.BC3_RATIO);
+		returnList.add(EnergyConfigHandler.RF_RATIO);
+		returnList.add(EnergyConfigHandler.IC2_RATIO);
+		returnList.add(EnergyConfigHandler.MEKANISM_RATIO);
+		returnList.add(EnergyConfigHandler.conversionLossFactor);
+	}
+
+	public static void setConfigOverride(float sBC3, float sRF, float sIC2, float sMEK, int sLossRatio)
+	{
+        EnergyConfigHandler.BC3_RATIO = sBC3;
+        EnergyConfigHandler.RF_RATIO = sRF;
+        EnergyConfigHandler.IC2_RATIO = sIC2;
+        EnergyConfigHandler.MEKANISM_RATIO = sMEK;
+        EnergyConfigHandler.conversionLossFactor = sLossRatio;
+        updateRatios();
+	}
 }
