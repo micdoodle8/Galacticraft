@@ -51,6 +51,8 @@ public class EnergyConfigHandler
     public static float IC2_RATIO = EnergyConfigHandler.BC3_RATIO / 2.44F;
 
     public static float MEKANISM_RATIO = EnergyConfigHandler.IC2_RATIO / 10F;
+    
+    private static int conversionLossFactor = 100; 
 
     /**
      * Convert gJ back to Buildcraft MJ
@@ -110,11 +112,11 @@ public class EnergyConfigHandler
         EnergyConfigHandler.RF_RATIO = (float) EnergyConfigHandler.config.get("Compatibility", "RF Conversion Ratio", EnergyConfigHandler.RF_RATIO).getDouble(EnergyConfigHandler.RF_RATIO);
         EnergyConfigHandler.BC3_RATIO = (float) EnergyConfigHandler.config.get("Compatibility", "BuildCraft Conversion Ratio", EnergyConfigHandler.BC3_RATIO).getDouble(EnergyConfigHandler.BC3_RATIO);
         EnergyConfigHandler.MEKANISM_RATIO = (float) EnergyConfigHandler.config.get("Compatibility", "Mekanism Conversion Ratio", EnergyConfigHandler.MEKANISM_RATIO).getDouble(EnergyConfigHandler.MEKANISM_RATIO);
-        EnergyConfigHandler.TO_IC2_RATIO = 1 / EnergyConfigHandler.IC2_RATIO;
-        EnergyConfigHandler.TO_BC_RATIO = 1 / EnergyConfigHandler.BC3_RATIO;
-        EnergyConfigHandler.TO_RF_RATIO = 1 / EnergyConfigHandler.RF_RATIO;
-        EnergyConfigHandler.TO_MEKANISM_RATIO = 1 / EnergyConfigHandler.MEKANISM_RATIO;
+        EnergyConfigHandler.conversionLossFactor = EnergyConfigHandler.config.get("Compatibility", "Loss factor when converting energy as a percentage (100 = no loss, 90 = 10% loss ...)", 100).getInt(100);
+        if (EnergyConfigHandler.conversionLossFactor > 100) EnergyConfigHandler.conversionLossFactor = 100;
 
+        updateRatios();
+        
         EnergyConfigHandler.displayEnergyUnitsBC = EnergyConfigHandler.config.get("Display", "If BuildCraft is loaded, show Galacticraft machines energy as MJ instead of gJ?", false).getBoolean(false);
         EnergyConfigHandler.displayEnergyUnitsIC2 = EnergyConfigHandler.config.get("Display", "If IndustrialCraft2 is loaded, show Galacticraft machines energy as EU instead of gJ?", false).getBoolean(false);
         EnergyConfigHandler.displayEnergyUnitsMek = EnergyConfigHandler.config.get("Display", "If Mekanism is loaded, show Galacticraft machines energy as Joules (J) instead of gJ?", false).getBoolean(false);
@@ -292,5 +294,19 @@ public class EnergyConfigHandler
         }
 
         return cachedMekLoadedValue;
+    }
+    
+    private static void updateRatios()
+    {
+    	if (conversionLossFactor >= 100) return;
+    	float factor = conversionLossFactor / 100;
+        TO_BC_RATIO = factor / EnergyConfigHandler.BC3_RATIO;
+        TO_RF_RATIO = factor / EnergyConfigHandler.RF_RATIO;
+        TO_IC2_RATIO = factor / EnergyConfigHandler.IC2_RATIO;
+        TO_MEKANISM_RATIO = factor / EnergyConfigHandler.MEKANISM_RATIO;
+        EnergyConfigHandler.BC3_RATIO *= factor;
+        EnergyConfigHandler.RF_RATIO *= factor;
+        EnergyConfigHandler.IC2_RATIO *= factor;
+        EnergyConfigHandler.MEKANISM_RATIO *= factor;
     }
 }
