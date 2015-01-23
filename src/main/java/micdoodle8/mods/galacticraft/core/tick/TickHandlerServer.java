@@ -516,11 +516,6 @@ public class TickHandlerServer
                         }
                     }
                 }
-
-                if (ConfigManagerCore.enableDebug && tickCount % 400 == 0)
-                {
-                	System.out.println("Space Station " + world.provider.dimensionId +": loaded tile entity count = " + world.loadedTileEntityList.size());
-                }
             }
         }
         else if (event.phase == Phase.END)
