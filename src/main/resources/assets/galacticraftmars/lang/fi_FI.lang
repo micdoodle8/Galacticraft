@@ -1,16 +1,8 @@
 # Galacticraft Mars Language File = FINLAND FINNISH
 
-
 # GENERAL ITEMS
-item.reinfocedBucket.name=Vahvistettu ämpäri
-item.reinfocedBucketMilk.name=Vahvistettu maitoämpäri
-item.reinfocedBucketWater.name=Vahvistettu vesiämpäri
-item.reinfocedBucketLava.name=Vahvistettu laavaämpäri
-item.reinfocedBucketSludge.name=Vahvistettu bakteeriliejuämpäri
 item.rawDesh.name=Puhdistamaton desh
 item.deshStick.name=Desh-tikku
-item.heavyBoots.name=Painavat kengät
-item.ingotQuandrium.name=Quandrium-harkko
 item.ingotDesh.name=Desh-harkko
 item.spaceshipTier2.t2Rocket.name=Tier 2 Rocket ##NEEDS TRANSLATE##
 item.reinforcedPlateT2.name=Heavy-Duty Plate ##NEEDS TRANSLATE##
@@ -22,8 +14,6 @@ item.spaceshipTier2.cargoRocket.name=Cargo Rocket ##NEEDS TRANSLATE##
 item.fluidManip.name=Fluid Manipulator ##NEEDS TRANSLATE##
 item.bucketSludge.name=Bacterial Sludge Bucket ##NEEDS TRANSLATE##
 fluid.bacterialsludge=Bacterial Sludge ##NEEDS TRANSLATE##
-item.jetpack.name=Rakettireppu
-
 
 # TOOLS
 item.deshPick.name=Desh-hakku
@@ -32,30 +22,12 @@ item.deshAxe.name=Desh-kirves
 item.deshHoe.name=Desh-kuokka
 item.deshSpade.name=Desh-lapio
 item.deshSword.name=Desh-miekka
-item.planetStonePick.name=Kivihakku
-item.planetStoneAxe.name=Kivikirves
-item.planetStoneHoe.name=Kivikuokka
-item.planetStoneSpade.name=Kivilapio
-item.planetStoneSword.name=Kivimiekka
-item.quandriumPick.name=Quandrium-hakku
-item.quandriumAxe.name=Quandrium-kirves
-item.quandriumHoe.name=Quandrium-kuokka
-item.quandriumSpade.name=Quandrium-lapio
-item.quandriumSword.name=Quandrium-miekka
-
 
 # ARMOR
 item.deshHelmet.name=Desh-kypärä
 item.deshChestplate.name=Desh-haarniska
 item.deshLeggings.name=Desh-housut
 item.deshBoots.name=Desh-kengät
-item.deshHelmetBreathable.name=Desh-kypärä happinaamarilla
-item.quandriumHelmet.name=Quandrium-kypärä
-item.quandriumChestplate.name=Quandrium-haarniska
-item.quandriumLeggings.name=Quandrium-housut
-item.quandriumBoots.name=Quandrium-kengät
-item.quandriumHelmetBreathable.name=Quandrium-kypärä happinaamarilla
-
 
 # BLOCKS
 tile.mars.deshmars.name=Desh-malmi
@@ -78,32 +50,18 @@ tile.marsMachine.2.name=Launch Controller ##NEEDS TRANSLATE##
 tile.marsMachine.4.name=Gas Liquefier ##NEEDS TRANSLATE##
 tile.marsMachine.5.name=Methane Synthesizer ##NEEDS TRANSLATE##
 tile.marsMachine.6.name=Water Electrolyzer ##NEEDS TRANSLATE##
+tile.hydrogenPipe.name=Hydrogen Pipe ##NEEDS TRANSLATE##
 tile.sludge.name=Bacterial Sludge ##NEEDS TRANSLATE##
 tile.creeperEgg.name=Creeper Egg ##NEEDS TRANSLATE##
 tile.cavernVines.name=Cavernous Vines ##NEEDS TRANSLATE##
+
+# DECOBLOCKS
 tile.marsCobblestoneStairs.name=Mars Cobblestone Stairs ##NEEDS TRANSLATE##
 tile.wallGC.mars.name=Mars Cobblestone Wall ##NEEDS TRANSLATE##
 tile.slabGCHalf.marsSlab.name=Mars Cobblestone Slab ##NEEDS TRANSLATE##
 tile.marsDungeonBricksStairs.name=Mars Dungeon Brick Stairs ##NEEDS TRANSLATE##
 tile.wallGC.marsBricks.name=Mars Dungeon Brick Wall ##NEEDS TRANSLATE##
 tile.slabGCHalf.marsBricksSlab.name=Mars Dungeon Brick Slab ##NEEDS TRANSLATE##
-tile.tintedGlassPane.white.name=White Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.orange.name=Orange Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.magenta.name=Magenta Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.light_blue.name=Light Blue Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.yellow.name=Yellow Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.lime.name=Lime Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.pink.name=Pink Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.gray.name=Gray Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.silver.name=Silver Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.cyan.name=Cyan Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.purple.name=Purple Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.blue.name=Blue Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.brown.name=Brown Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.green.name=Green Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.red.name=Red Tinted Glass Pane ##NEEDS TRANSLATE##
-tile.tintedGlassPane.black.name=Black Tinted Glass Pane ##NEEDS TRANSLATE##
-
 
 # GUI
 gui.choosePlanet.desc.mars=Asuttava#Ei happea#Painovoima: 38%
@@ -137,11 +95,14 @@ gui.message.notSet.name=Not Set ##NEEDS TRANSLATE##
 gui.message.notEnough.name=Not Enough ##NEEDS TRANSLATE##
 gui.message.success.name=Success ##NEEDS TRANSLATE##
 gui.message.zeroWater.name=No water! ##NEEDS TRANSLATE##
+
+	# Dollar sign ($) will split text onto a new line
 gui.launchController.desc.0=This is the Launch Controller's$unique frequency ##NEEDS TRANSLATE##
 gui.launchController.desc.1=Frequency to launch rockets towards ##NEEDS TRANSLATE##
 gui.launchController.desc.2=Whether the launch pad should$be removed on launch ##NEEDS TRANSLATE##
 gui.launchController.desc.3=When this criteria is met,$rocket will launch ##NEEDS TRANSLATE##
 gui.terraformer.desc.0=Water Tank ##NEEDS TRANSLATE##
+
 gui.gasTank.desc.0=Gas storage ##NEEDS TRANSLATE##
 gui.gasTankCompressed.desc.0=Gas Storage (Compressed) ##NEEDS TRANSLATE##
 gui.liquidTank.desc.0=Liquid Tank ##NEEDS TRANSLATE##
@@ -170,13 +131,15 @@ gui.cargorocket.status.waiting.0=Waiting for ##NEEDS TRANSLATE##
 gui.cargorocket.status.waiting.1=ignition ##NEEDS TRANSLATE##
 gui.cargorocket.status.launched.0=Already ##NEEDS TRANSLATE##
 gui.cargorocket.status.launched.1=Launched ##NEEDS TRANSLATE##
+
 gas.carbondioxide.name=Carbon Dioxide ##NEEDS TRANSLATE##
 gas.oxygen.name=Oxygen ##NEEDS TRANSLATE##
 gas.nitrogen.name=Nitrogen ##NEEDS TRANSLATE##
+
 gui.desc.reinforcedPlateT2.name=Tier 2 ##NEEDS TRANSLATE##
-itemGroup.GalacticraftMars=Galacticraft Mars ##NEEDS TRANSLATE##
 dimension.Mars.name=Mars ##NEEDS TRANSLATE##
 planet.mars=Mars ##NEEDS TRANSLATE##
+
 tile.treasureT2.description=Tier 2 Treasure Chests will generate in Mars Dungeons. They are unlockable after defeating the final boss. ##NEEDS TRANSLATE##
 tile.cavernVines.description=Cavernous Vines are dangerous to living creatures, entangling them and dragging them upwards. ##NEEDS TRANSLATE##
 tile.slimelingEgg.description=Slimeling Eggs, once cracked with a player's bare hands, will soon hatch into a pet. ##NEEDS TRANSLATE##
@@ -187,6 +150,8 @@ tile.creeperEgg.description=Creeper Eggs will spawn in Mars dungeons, spawning a
 tile.gasLiquefier.description=Liquefies gases, either from the atmosphere or from canisters. Liquefied methane makes a good rocket fuel! ##NEEDS TRANSLATE##
 tile.methaneSynthesizer.description=With a source of hydrogen and a source of carbon, this manufactures Methane for further processing in a Gas Liquefier. ##NEEDS TRANSLATE##
 tile.electrolyzer.description=Transforms water into hydrogen (useful for the Methane Synthesizer) and oxygen. ##NEEDS TRANSLATE##
+tile.hydrogenPipe.description=Hydrogen Pipe will transfer hydrogen from one machine's internal gas tank to another. ##NEEDS TRANSLATE##
+
 gui.slimeling.chat.wrongPlayer=This isn't my Slimeling! ##NEEDS TRANSLATE##
 gui.cryogenic.chat.cantUse=I can't use this for another %d seconds ##NEEDS TRANSLATE##
 gui.slimeling.name=Name ##NEEDS TRANSLATE##
@@ -199,28 +164,28 @@ gui.slimeling.sitting=Sitting ##NEEDS TRANSLATE##
 gui.slimeling.following=Following ##NEEDS TRANSLATE##
 gui.slimeling.damage=Attack Damage ##NEEDS TRANSLATE##
 gui.slimeling.food=Favorite food ##NEEDS TRANSLATE##
+
+# SCHEMATICS
 schematic.rocketT3.name=Tier 3 Rocket ##NEEDS TRANSLATE##
 schematic.cargoRocket.name=Automatic Cargo Rocket ##NEEDS TRANSLATE##
+
+# ENTITIES
 entity.Sludgeling.name=Sludgeling ##NEEDS TRANSLATE##
 entity.Slimeling.name=Slimeling ##NEEDS TRANSLATE##
 entity.CreeperBoss.name=Evolved Creeper Boss ##NEEDS TRANSLATE##
-entity.SpaceshipT2.name=Tier 2 Rocket ##NEEDS TRANSLATE##
-entity.CargoRocket.name=Cargo Rocket ##NEEDS TRANSLATE##
+entity.GalacticraftMars.SpaceshipT2.name=Tier 2 Rocket ##NEEDS TRANSLATE##
+entity.GalacticraftMars.CargoRocket.name=Cargo Rocket ##NEEDS TRANSLATE##
+
+# CONTAINERS
 container.launchcontroller.name=Launch Controller ##NEEDS TRANSLATE##
 container.tileTerraformer.name=Terraformer ##NEEDS TRANSLATE##
 container.marsLander.name=Landing Balloons ##NEEDS TRANSLATE##
+
+# CONFIG GUI
 gc.configgui.dimensionIDMars=Mars Dimension ID
-gc.configgui.idEntityCreeperBoss=Creeper Boss Entity ID
-gc.configgui.idEntityProjectileTNT=Projectile TNT Entity ID
-gc.configgui.idEntitySpaceshipTier2=Tier 2 Rocket Entity ID
-gc.configgui.idEntitySludgeling=Sludgeling Entity ID
-gc.configgui.idEntitySlimeling=Slimeling Entity ID
-gc.configgui.idEntityTerraformBubble=Terraform Bubble Entity ID
-gc.configgui.idEntityLandingBalloons=Landing Balloons Entity ID
-gc.configgui.idEntityCargoRocket=Cargo Rocket Entity ID
 gc.configgui.idSchematicRocketT2=Tier 2 Rocket Schematic ID
 gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID
 gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
 gc.configgui.launchControllerAllDims=Launch Controller All Dimensions
-gc.configgui.planets.title=Galacticraft Planets Config ##NEEDS TRANSLATE##
 
+gc.configgui.planets.title=Galacticraft Planets Config ##NEEDS TRANSLATE##

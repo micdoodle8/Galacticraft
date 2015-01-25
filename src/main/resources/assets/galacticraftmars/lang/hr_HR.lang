@@ -50,31 +50,18 @@ tile.marsMachine.2.name=Kontrola Leta
 tile.marsMachine.4.name=Plinski Liqufier
 tile.marsMachine.5.name=Metan Sintisajzer
 tile.marsMachine.6.name=Vodeni Elektrizer
+tile.hydrogenPipe.name=Hydrogen Pipe ##NEEDS TRANSLATE##
 tile.sludge.name=Bakterijska Sluz
 tile.creeperEgg.name=Jaje Kripera
 tile.cavernVines.name=Kavernozni Vine
+
+# DECOBLOCKS
 tile.marsCobblestoneStairs.name=Marsovske Kamene Stube
 tile.wallGC.mars.name=Marskovski Kameni Zid
 tile.slabGCHalf.marsSlab.name=Marsovska Kamena Ploča
 tile.marsDungeonBricksStairs.name=Marskovse Ciglene Stube
 tile.wallGC.marsBricks.name=Marskovki Cigleni Zid
 tile.slabGCHalf.marsBricksSlab.name=Marskovska Ciglena Ploča
-tile.tintedGlassPane.white.name=Bijelo Staklo
-tile.tintedGlassPane.orange.name=Naranđasto Staklo
-tile.tintedGlassPane.magenta.name=Purpurno Crveno Staklo
-tile.tintedGlassPane.light_blue.name=Svijetlo Plavo Staklo
-tile.tintedGlassPane.yellow.name=Žuto Staklo
-tile.tintedGlassPane.lime.name=Zelenkasto Staklo
-tile.tintedGlassPane.pink.name=Ružičasto Staklo
-tile.tintedGlassPane.gray.name=Sivo Staklo
-tile.tintedGlassPane.silver.name=Srebrno Staklo
-tile.tintedGlassPane.cyan.name=Plavkasto Staklo
-tile.tintedGlassPane.purple.name=Ljubičasto Staklo
-tile.tintedGlassPane.blue.name=Plavo Staklo
-tile.tintedGlassPane.brown.name=Smeđe Staklo
-tile.tintedGlassPane.green.name=Zeleno Staklo
-tile.tintedGlassPane.red.name=Crveno Staklo
-tile.tintedGlassPane.black.name=Crno Staklo
 
 # GUI
 gui.choosePlanet.desc.mars=Pogodno za Život#Nema Zraka#Gravitacija: 38%
@@ -109,12 +96,13 @@ gui.message.notEnough.name=Nema Dovoljno
 gui.message.success.name=Uspješno
 gui.message.zeroWater.name=Nema Vode!
 
-# Dollar sign ($) will split text onto a new line
+	# Dollar sign ($) will split text onto a new line
 gui.launchController.desc.0=Ovo je Glavna Kontrolna Frekvencija$Frekvencija
 gui.launchController.desc.1=Frekvencija lansirati raketu prema
 gui.launchController.desc.2=Ukloniti Lansirnu Rampu$Ukloniti Lansirnu Rampu
 gui.launchController.desc.3=Kada su te kriterije ispunjene,$raketa će se lansirati
 gui.terraformer.desc.0=Vodeni Tank
+
 gui.gasTank.desc.0=Gas Skladište
 gui.gasTankCompressed.desc.0=Skladište plina (komprimiranog)
 gui.liquidTank.desc.0=Vodeni Tank
@@ -151,6 +139,7 @@ gas.nitrogen.name=Nitrogen
 gui.desc.reinforcedPlateT2.name=Rang 2
 dimension.Mars.name=Mars
 planet.mars=Mars
+
 tile.treasureT2.description=Rang 2 Tamnički Ključ se može pronači u tamnicama na Marsu, ali prvo moraš pobijediti šefa.
 tile.cavernVines.description=Kavernozirane Lijane su opasne za živa biča, mogu te ubiti.
 tile.slimelingEgg.description=Slimeling Jaja, nakon što su strgane s rukama nekoliko puta onda če stvoriti ljubimca.
@@ -161,6 +150,8 @@ tile.creeperEgg.description=Kriperska jaja će se stvarati u Marsovskim tamnicam
 tile.gasLiquefier.description=Ukapljeni plinovi, bilo od atmosfere ili iz spremnika. Ukapljeni metan čini dobro raketno gorivo!
 tile.methaneSynthesizer.description=S izvorom vodika i izvora ugljika, to proizvodi metan za daljnju obradu u ukapljenom plinu.
 tile.electrolyzer.description=Pretvara vodu u vodik (korisno za metan sintisajzer) i kisik.
+tile.hydrogenPipe.description=Hydrogen Pipe will transfer hydrogen from one machine's internal gas tank to another. ##NEEDS TRANSLATE##
+
 gui.slimeling.chat.wrongPlayer=Ovo nije moj Sludeling!
 gui.cryogenic.chat.cantUse=Nemogu koristiti ovo jos %d sekundi
 gui.slimeling.name=Ime 
@@ -182,24 +173,19 @@ schematic.cargoRocket.name=Automatska Teret Raketa
 entity.Sludgeling.name=Sludgeling
 entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Evoulirani Šef Kripera
-entity.SpaceshipT2.name=Raketa Ranga 2
-entity.CargoRocket.name=Teretna Raketa
+entity.GalacticraftMars.SpaceshipT2.name=Raketa Ranga 2
+entity.GalacticraftMars.CargoRocket.name=Teretna Raketa
 
 # CONTAINERS
 container.launchcontroller.name=Kontroler Lansiranja
 container.tileTerraformer.name=Teraformer
 container.marsLander.name=Baloni sa slijetanje
+
+# CONFIG GUI
 gc.configgui.dimensionIDMars=Mars Dimension ID
-gc.configgui.idEntityCreeperBoss=Creeper Boss Entity ID
-gc.configgui.idEntityProjectileTNT=Projectile TNT Entity ID
-gc.configgui.idEntitySpaceshipTier2=Tier 2 Rocket Entity ID
-gc.configgui.idEntitySludgeling=Sludgeling Entity ID
-gc.configgui.idEntitySlimeling=Slimeling Entity ID
-gc.configgui.idEntityTerraformBubble=Terraform Bubble Entity ID
-gc.configgui.idEntityLandingBalloons=Landing Balloons Entity ID
-gc.configgui.idEntityCargoRocket=Cargo Rocket Entity ID
 gc.configgui.idSchematicRocketT2=Tier 2 Rocket Schematic ID
 gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID
 gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
 gc.configgui.launchControllerAllDims=Launch Controller All Dimensions
+
 gc.configgui.planets.title=Galacticraft Planeti Opcije

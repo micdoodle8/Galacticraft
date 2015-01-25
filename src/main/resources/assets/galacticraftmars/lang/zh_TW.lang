@@ -50,31 +50,18 @@ tile.marsMachine.2.name=發射控制器
 tile.marsMachine.4.name=氣體液化器
 tile.marsMachine.5.name=甲烷合成器
 tile.marsMachine.6.name=水電解器
+tile.hydrogenPipe.name=Hydrogen Pipe ##NEEDS TRANSLATE##
 tile.sludge.name=菌泥
 tile.creeperEgg.name=苦力怕蛋
 tile.cavernVines.name=巖穴藤蔓
+
+# DECOBLOCKS
 tile.marsCobblestoneStairs.name=Mars Cobblestone Stairs ##NEEDS TRANSLATE##
 tile.wallGC.mars.name=Mars Cobblestone Wall ##NEEDS TRANSLATE##
 tile.slabGCHalf.marsSlab.name=Mars Cobblestone Slab ##NEEDS TRANSLATE##
 tile.marsDungeonBricksStairs.name=Mars Dungeon Brick Stairs ##NEEDS TRANSLATE##
 tile.wallGC.marsBricks.name=Mars Dungeon Brick Wall ##NEEDS TRANSLATE##
 tile.slabGCHalf.marsBricksSlab.name=Mars Dungeon Brick Slab ##NEEDS TRANSLATE##
-tile.tintedGlassPane.white.name=白色玻璃板
-tile.tintedGlassPane.orange.name=橙色玻璃板
-tile.tintedGlassPane.magenta.name=品紅色玻璃板
-tile.tintedGlassPane.light_blue.name=淺藍色玻璃板
-tile.tintedGlassPane.yellow.name=黃色玻璃板
-tile.tintedGlassPane.lime.name=檸檬色玻璃板
-tile.tintedGlassPane.pink.name=粉色玻璃板
-tile.tintedGlassPane.gray.name=灰色玻璃板
-tile.tintedGlassPane.silver.name=銀色玻璃板
-tile.tintedGlassPane.cyan.name=青色玻璃板
-tile.tintedGlassPane.purple.name=紫色玻璃板
-tile.tintedGlassPane.blue.name=藍色玻璃板
-tile.tintedGlassPane.brown.name=棕色玻璃板
-tile.tintedGlassPane.green.name=綠色玻璃板
-tile.tintedGlassPane.red.name=紅色玻璃板
-tile.tintedGlassPane.black.name=黑色玻璃板
 
 # GUI
 gui.choosePlanet.desc.mars=宜居#無氧氣#重力:38%
@@ -109,12 +96,13 @@ gui.message.notEnough.name=缺少
 gui.message.success.name=成功
 gui.message.zeroWater.name=No water! ##NEEDS TRANSLATE##
 
-# Dollar sign ($) will split text onto a new line
+	# Dollar sign ($) will split text onto a new line
 gui.launchController.desc.0=這是發射控制器的$唯一頻率
 gui.launchController.desc.1=火箭發射頻率,火箭前往
 gui.launchController.desc.2=發射臺是否$在發射時移除
 gui.launchController.desc.3=當這個條件達到時,$火箭就會發射
 gui.terraformer.desc.0=水箱
+
 gui.gasTank.desc.0=氣體貯存模塊
 gui.gasTankCompressed.desc.0=Gas Storage (Compressed) ##NEEDS TRANSLATE##
 gui.liquidTank.desc.0=液罐
@@ -143,12 +131,15 @@ gui.cargorocket.status.waiting.0=Waiting for ##NEEDS TRANSLATE##
 gui.cargorocket.status.waiting.1=ignition ##NEEDS TRANSLATE##
 gui.cargorocket.status.launched.0=Already ##NEEDS TRANSLATE##
 gui.cargorocket.status.launched.1=Launched ##NEEDS TRANSLATE##
+
 gas.carbondioxide.name=二氧化碳
 gas.oxygen.name=氧氣
 gas.nitrogen.name=氮氣
+
 gui.desc.reinforcedPlateT2.name=二階
 dimension.Mars.name=火星
 planet.mars=火星
+
 tile.treasureT2.description=Tier 2 Treasure Chests will generate in Mars Dungeons. They are unlockable after defeating the final boss. ##NEEDS TRANSLATE##
 tile.cavernVines.description=Cavernous Vines are dangerous to living creatures, entangling them and dragging them upwards. ##NEEDS TRANSLATE##
 tile.slimelingEgg.description=Slimeling Eggs, once cracked with a player's bare hands, will soon hatch into a pet. ##NEEDS TRANSLATE##
@@ -159,6 +150,8 @@ tile.creeperEgg.description=Creeper Eggs will spawn in Mars dungeons, spawning a
 tile.gasLiquefier.description=Liquefies gases, either from the atmosphere or from canisters. Liquefied methane makes a good rocket fuel! ##NEEDS TRANSLATE##
 tile.methaneSynthesizer.description=With a source of hydrogen and a source of carbon, this manufactures Methane for further processing in a Gas Liquefier. ##NEEDS TRANSLATE##
 tile.electrolyzer.description=Transforms water into hydrogen (useful for the Methane Synthesizer) and oxygen. ##NEEDS TRANSLATE##
+tile.hydrogenPipe.description=Hydrogen Pipe will transfer hydrogen from one machine's internal gas tank to another. ##NEEDS TRANSLATE##
+
 gui.slimeling.chat.wrongPlayer=This isn't my Slimeling! ##NEEDS TRANSLATE##
 gui.cryogenic.chat.cantUse=I can't use this for another %d seconds ##NEEDS TRANSLATE##
 gui.slimeling.name=Name ##NEEDS TRANSLATE##
@@ -172,32 +165,27 @@ gui.slimeling.following=Following ##NEEDS TRANSLATE##
 gui.slimeling.damage=Attack Damage ##NEEDS TRANSLATE##
 gui.slimeling.food=Favorite food ##NEEDS TRANSLATE##
 
-# Schematics
+# SCHEMATICS
 schematic.rocketT3.name=3階火箭
 schematic.cargoRocket.name=自動貨運火箭
 
-# Entities
+# ENTITIES
 entity.Sludgeling.name=泥漿怪
 entity.Slimeling.name=黏滑怪
 entity.CreeperBoss.name=進化爬行者之王
-entity.SpaceshipT2.name=二階火箭
-entity.CargoRocket.name=貨運火箭
+entity.GalacticraftMars.SpaceshipT2.name=二階火箭
+entity.GalacticraftMars.CargoRocket.name=貨運火箭
 
-# Container
+# CONTAINERS
 container.launchcontroller.name=發射控制器
 container.tileTerraformer.name=地形改造機
 container.marsLander.name=Landing Balloons ##NEEDS TRANSLATE##
+
+# CONFIG GUI
 gc.configgui.dimensionIDMars=Mars Dimension ID
-gc.configgui.idEntityCreeperBoss=Creeper Boss Entity ID
-gc.configgui.idEntityProjectileTNT=Projectile TNT Entity ID
-gc.configgui.idEntitySpaceshipTier2=Tier 2 Rocket Entity ID
-gc.configgui.idEntitySludgeling=Sludgeling Entity ID
-gc.configgui.idEntitySlimeling=Slimeling Entity ID
-gc.configgui.idEntityTerraformBubble=Terraform Bubble Entity ID
-gc.configgui.idEntityLandingBalloons=Landing Balloons Entity ID
-gc.configgui.idEntityCargoRocket=Cargo Rocket Entity ID
 gc.configgui.idSchematicRocketT2=Tier 2 Rocket Schematic ID
 gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID
 gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
 gc.configgui.launchControllerAllDims=Launch Controller All Dimensions
+
 gc.configgui.planets.title=Galacticraft Planets Config ##NEEDS TRANSLATE##
