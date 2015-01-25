@@ -1,4 +1,5 @@
 # Galacticraft Mars Language File = MAGYAR
+
 # GENERAL ITEMS
 item.rawDesh.name=Deshpor
 item.deshStick.name=Deshbot
@@ -49,31 +50,18 @@ tile.marsMachine.2.name=Távvezérlo
 tile.marsMachine.4.name=Gázfolyósító
 tile.marsMachine.5.name=Metánfejleszto
 tile.marsMachine.6.name=Víz-Elektrolizáló
+tile.hydrogenPipe.name=Hydrogen Pipe ##NEEDS TRANSLATE##
 tile.sludge.name=Bakteriális Iszap
 tile.creeperEgg.name=Creepertojás
 tile.cavernVines.name=Mérgezo Inda
+
+# DECOBLOCKS
 tile.marsCobblestoneStairs.name=Mars Cobblestone Stairs ##NEEDS TRANSLATE##
 tile.wallGC.mars.name=Mars Cobblestone Wall ##NEEDS TRANSLATE##
 tile.slabGCHalf.marsSlab.name=Mars Cobblestone Slab ##NEEDS TRANSLATE##
 tile.marsDungeonBricksStairs.name=Mars Dungeon Brick Stairs ##NEEDS TRANSLATE##
 tile.wallGC.marsBricks.name=Mars Dungeon Brick Wall ##NEEDS TRANSLATE##
 tile.slabGCHalf.marsBricksSlab.name=Mars Dungeon Brick Slab ##NEEDS TRANSLATE##
-tile.tintedGlassPane.white.name=White Tinted Glass Pane
-tile.tintedGlassPane.orange.name=Orange Tinted Glass Pane
-tile.tintedGlassPane.magenta.name=Magenta Tinted Glass Pane
-tile.tintedGlassPane.light_blue.name=Light Blue Tinted Glass Pane
-tile.tintedGlassPane.yellow.name=Yellow Tinted Glass Pane
-tile.tintedGlassPane.lime.name=Lime Tinted Glass Pane
-tile.tintedGlassPane.pink.name=Pink Tinted Glass Pane
-tile.tintedGlassPane.gray.name=Gray Tinted Glass Pane
-tile.tintedGlassPane.silver.name=Silver Tinted Glass Pane
-tile.tintedGlassPane.cyan.name=Cyan Tinted Glass Pane
-tile.tintedGlassPane.purple.name=Purple Tinted Glass Pane
-tile.tintedGlassPane.blue.name=Blue Tinted Glass Pane
-tile.tintedGlassPane.brown.name=Brown Tinted Glass Pane
-tile.tintedGlassPane.green.name=Green Tinted Glass Pane
-tile.tintedGlassPane.red.name=Red Tinted Glass Pane
-tile.tintedGlassPane.black.name=Black Tinted Glass Pane
 
 # GUI
 gui.choosePlanet.desc.mars=Lakható#Nincs Lélegezheto légkör#Gravitáció: 38%
@@ -151,6 +139,7 @@ gas.nitrogen.name=Nitrogén
 gui.desc.reinforcedPlateT2.name=2-Es Szintu
 dimension.Mars.name=Mars
 planet.mars=Mars
+
 tile.treasureT2.description=Tier 2 Treasure Chests will generate in Mars Dungeons. They are unlockable after defeating the final boss. ##NEEDS TRANSLATE##
 tile.cavernVines.description=Cavernous Vines are dangerous to living creatures, entangling them and dragging them upwards. ##NEEDS TRANSLATE##
 tile.slimelingEgg.description=Slimeling Eggs, once cracked with a player's bare hands, will soon hatch into a pet. ##NEEDS TRANSLATE##
@@ -161,6 +150,8 @@ tile.creeperEgg.description=Creeper Eggs will spawn in Mars dungeons, spawning a
 tile.gasLiquefier.description=Liquefies gases, either from the atmosphere or from canisters. Liquefied methane makes a good rocket fuel! ##NEEDS TRANSLATE##
 tile.methaneSynthesizer.description=With a source of hydrogen and a source of carbon, this manufactures Methane for further processing in a Gas Liquefier. ##NEEDS TRANSLATE##
 tile.electrolyzer.description=Transforms water into hydrogen (useful for the Methane Synthesizer) and oxygen. ##NEEDS TRANSLATE##
+tile.hydrogenPipe.description=Hydrogen Pipe will transfer hydrogen from one machine's internal gas tank to another. ##NEEDS TRANSLATE##
+
 gui.slimeling.chat.wrongPlayer=This isn't my Slimeling! ##NEEDS TRANSLATE##
 gui.cryogenic.chat.cantUse=I can't use this for another %d seconds ##NEEDS TRANSLATE##
 gui.slimeling.name=Name ##NEEDS TRANSLATE##
@@ -182,24 +173,19 @@ schematic.cargoRocket.name=Távvezérlésu Teherrakéta
 entity.Sludgeling.name=Iszaphernyó
 entity.Slimeling.name=Nyálkahernyó
 entity.CreeperBoss.name=Vejlett Creeper-Fogonosz
-entity.SpaceshipT2.name=2-Es Szintu Rakéta
-entity.CargoRocket.name=Távvezérlésu Teherrakéta
+entity.GalacticraftMars.SpaceshipT2.name=2-Es Szintu Rakéta
+entity.GalacticraftMars.CargoRocket.name=Távvezérlésu Teherrakéta
 
 # CONTAINERS
 container.launchcontroller.name=Távvezérlo
 container.tileTerraformer.name=Növényülteto
 container.marsLander.name=Landing Balloons ##NEEDS TRANSLATE##
+
+# CONFIG GUI
 gc.configgui.dimensionIDMars=Mars Dimension ID
-gc.configgui.idEntityCreeperBoss=Creeper Boss Entity ID
-gc.configgui.idEntityProjectileTNT=Projectile TNT Entity ID
-gc.configgui.idEntitySpaceshipTier2=Tier 2 Rocket Entity ID
-gc.configgui.idEntitySludgeling=Sludgeling Entity ID
-gc.configgui.idEntitySlimeling=Slimeling Entity ID
-gc.configgui.idEntityTerraformBubble=Terraform Bubble Entity ID
-gc.configgui.idEntityLandingBalloons=Landing Balloons Entity ID
-gc.configgui.idEntityCargoRocket=Cargo Rocket Entity ID
 gc.configgui.idSchematicRocketT2=Tier 2 Rocket Schematic ID
 gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID
 gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
 gc.configgui.launchControllerAllDims=Launch Controller All Dimensions
+
 gc.configgui.planets.title=Galacticraft Planets Config ##NEEDS TRANSLATE##

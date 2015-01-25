@@ -50,31 +50,18 @@ tile.marsMachine.2.name=Controlo de Lançamentos
 tile.marsMachine.4.name=Condensador de Gases
 tile.marsMachine.5.name=Sintetizador de Metano
 tile.marsMachine.6.name=Eletrolisador de Água
+tile.hydrogenPipe.name=Hydrogen Pipe ##NEEDS TRANSLATE##
 tile.sludge.name=Lodo Bacterial
 tile.creeperEgg.name=Ovo de Creeper
 tile.cavernVines.name=Vinhas de Caverna
+
+# DECOBLOCKS
 tile.marsCobblestoneStairs.name=Escadas de Empedrado Marciano
 tile.wallGC.mars.name= Parede de Empedrado Marciano
 tile.slabGCHalf.marsSlab.name=Laje de Empedrado Marciano
 tile.marsDungeonBricksStairs.name=Escadas de Tijolos de Calabouço Marciano
 tile.wallGC.marsBricks.name=Parede de Tijolos de Calabouço Marciano
 tile.slabGCHalf.marsBricksSlab.name=Laje de Tijolos de Calabouço Marciano
-tile.tintedGlassPane.white.name=Painel de Vidro Branco
-tile.tintedGlassPane.orange.name=Painel de Vidro Laranja
-tile.tintedGlassPane.magenta.name=Painel de Vidro Magenta
-tile.tintedGlassPane.light_blue.name=Painel de Vidro Azul-Claro
-tile.tintedGlassPane.yellow.name=Painel de Vidro Amarelo
-tile.tintedGlassPane.lime.name=Painel de Vidro Verde-Limão
-tile.tintedGlassPane.pink.name=Painel de Vidro Rosa
-tile.tintedGlassPane.gray.name=Painel de Vidro Cinza
-tile.tintedGlassPane.silver.name=Painel de Vidro Prata
-tile.tintedGlassPane.cyan.name=Painel de Vidro Ciano
-tile.tintedGlassPane.purple.name=Painel de Vidro Púrpura
-tile.tintedGlassPane.blue.name=Painel de Vidro Azul
-tile.tintedGlassPane.brown.name=Painel de Vidro Marrom
-tile.tintedGlassPane.green.name=Painel de Vidro Verde
-tile.tintedGlassPane.red.name=Painel de Vidro Vermelho
-tile.tintedGlassPane.black.name=Painel de Vidro Preto
 
 # GUI
 gui.choosePlanet.desc.mars=Habitável#Sem Oxigénio#Gravidade: 38%
@@ -108,11 +95,14 @@ gui.message.notSet.name=Not Set ##NEEDS TRANSLATE##
 gui.message.notEnough.name=Not Enough ##NEEDS TRANSLATE##
 gui.message.success.name=Success ##NEEDS TRANSLATE##
 gui.message.zeroWater.name=No water! ##NEEDS TRANSLATE##
+
+	# Dollar sign ($) will split text onto a new line
 gui.launchController.desc.0=This is the Launch Controller's$unique frequency ##NEEDS TRANSLATE##
 gui.launchController.desc.1=Frequency to launch rockets towards ##NEEDS TRANSLATE##
 gui.launchController.desc.2=Whether the launch pad should$be removed on launch ##NEEDS TRANSLATE##
 gui.launchController.desc.3=When this criteria is met,$rocket will launch ##NEEDS TRANSLATE##
 gui.terraformer.desc.0=Water Tank ##NEEDS TRANSLATE##
+
 gui.gasTank.desc.0=Gas storage ##NEEDS TRANSLATE##
 gui.gasTankCompressed.desc.0=Gas Storage (Compressed) ##NEEDS TRANSLATE##
 gui.liquidTank.desc.0=Liquid Tank ##NEEDS TRANSLATE##
@@ -141,16 +131,15 @@ gui.cargorocket.status.waiting.0=Waiting for ##NEEDS TRANSLATE##
 gui.cargorocket.status.waiting.1=ignition ##NEEDS TRANSLATE##
 gui.cargorocket.status.launched.0=Already ##NEEDS TRANSLATE##
 gui.cargorocket.status.launched.1=Launched ##NEEDS TRANSLATE##
+
 gas.carbondioxide.name=Gás Carbónico
 gas.oxygen.name=Oxigénio
 gas.nitrogen.name=Nitrogénio
 
 gui.desc.reinforcedPlateT2.name=Nível 2
-
-itemGroup.GalacticraftMars=Galacticraft Marte
-
 dimension.Mars.name=Marte
 planet.mars=Marte
+
 tile.treasureT2.description=Tier 2 Treasure Chests will generate in Mars Dungeons. They are unlockable after defeating the final boss. ##NEEDS TRANSLATE##
 tile.cavernVines.description=Cavernous Vines are dangerous to living creatures, entangling them and dragging them upwards. ##NEEDS TRANSLATE##
 tile.slimelingEgg.description=Slimeling Eggs, once cracked with a player's bare hands, will soon hatch into a pet. ##NEEDS TRANSLATE##
@@ -161,6 +150,8 @@ tile.creeperEgg.description=Creeper Eggs will spawn in Mars dungeons, spawning a
 tile.gasLiquefier.description=Liquefies gases, either from the atmosphere or from canisters. Liquefied methane makes a good rocket fuel! ##NEEDS TRANSLATE##
 tile.methaneSynthesizer.description=With a source of hydrogen and a source of carbon, this manufactures Methane for further processing in a Gas Liquefier. ##NEEDS TRANSLATE##
 tile.electrolyzer.description=Transforms water into hydrogen (useful for the Methane Synthesizer) and oxygen. ##NEEDS TRANSLATE##
+tile.hydrogenPipe.description=Hydrogen Pipe will transfer hydrogen from one machine's internal gas tank to another. ##NEEDS TRANSLATE##
+
 gui.slimeling.chat.wrongPlayer=This isn't my Slimeling! ##NEEDS TRANSLATE##
 gui.cryogenic.chat.cantUse=I can't use this for another %d seconds ##NEEDS TRANSLATE##
 gui.slimeling.name=Nome
@@ -174,32 +165,27 @@ gui.slimeling.following=Seguindo
 gui.slimeling.damage=Força de ataque
 gui.slimeling.food=Comida favorita
 
-# Schematics
+# SCHEMATICS
 schematic.rocketT3.name=Foguetão Nível 3
 schematic.cargoRocket.name=Foguetão de Carga Automático
 
-# Entity
+# ENTITIES
 entity.Sludgeling.name=Sludgeling
 entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Creeper-Chefe Evoluído
-entity.SpaceshipT2.name=Tier 2 Rocket ##NEEDS TRANSLATE##
-entity.CargoRocket.name=Cargo Rocket ##NEEDS TRANSLATE##
+entity.GalacticraftMars.SpaceshipT2.name=Foguetão Nível 2
+entity.GalacticraftMars.CargoRocket.name=Foguetão de Carga
 
-# Container
+# CONTAINERS
 container.launchcontroller.name=Controle de Lançamentos
-container.tileTerraformer.name=Terraformer ##NEEDS TRANSLATE##
+container.tileTerraformer.name=Terraformador
 container.marsLander.name=Landing Balloons ##NEEDS TRANSLATE##
+
+# CONFIG GUI
 gc.configgui.dimensionIDMars=Mars Dimension ID
-gc.configgui.idEntityCreeperBoss=Creeper Boss Entity ID
-gc.configgui.idEntityProjectileTNT=Projectile TNT Entity ID
-gc.configgui.idEntitySpaceshipTier2=Tier 2 Rocket Entity ID
-gc.configgui.idEntitySludgeling=Sludgeling Entity ID
-gc.configgui.idEntitySlimeling=Slimeling Entity ID
-gc.configgui.idEntityTerraformBubble=Terraform Bubble Entity ID
-gc.configgui.idEntityLandingBalloons=Landing Balloons Entity ID
-gc.configgui.idEntityCargoRocket=Cargo Rocket Entity ID
 gc.configgui.idSchematicRocketT2=Tier 2 Rocket Schematic ID
 gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID
 gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
 gc.configgui.launchControllerAllDims=Launch Controller All Dimensions
+
 gc.configgui.planets.title=Galacticraft Planets Config ##NEEDS TRANSLATE##

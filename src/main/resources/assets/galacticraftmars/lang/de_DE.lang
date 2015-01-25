@@ -150,6 +150,8 @@ tile.creeperEgg.description=Creeper-Eier können nur in Marsdungeons gefunden we
 tile.gasLiquefier.description=Verflüssigt Gase, entweder aus der Atmosphäre oder aus Kanistern. Flüssiges Methan ist ein guter Raketentreibstoff!
 tile.methaneSynthesizer.description=Stellt aus Wasserstoff und Kohlenstoff Methan her, das im Gasverflüssiger weiterverarbeitet werden kann.
 tile.electrolyzer.description=Wandelt Wasser in Wasserstoff (für das Methansynthesegerät) und Sauerstoff um.
+tile.hydrogenPipe.description=Hydrogen Pipe will transfer hydrogen from one machine's internal gas tank to another. ##NEEDS TRANSLATE##
+
 gui.slimeling.chat.wrongPlayer=Das ist nicht mein Schleimling!
 gui.cryogenic.chat.cantUse=Ich kann das nicht für weitere %d Sekunden benutzen
 gui.slimeling.name=Name
@@ -171,24 +173,19 @@ schematic.cargoRocket.name=Automatische Güterrakete
 entity.Sludgeling.name=Schlammling
 entity.Slimeling.name=Schleimling
 entity.CreeperBoss.name=Entwickelter Creeper-Boss
-entity.SpaceshipT2.name=Stufe 2 Rakete
-entity.CargoRocket.name=Automatische Güterrakete
+entity.GalacticraftMars.SpaceshipT2.name=Stufe 2 Rakete
+entity.GalacticraftMars.CargoRocket.name=Automatische Güterrakete
 
 # CONTAINERS
 container.launchcontroller.name=Start-Controller
 container.tileTerraformer.name=Terraformer
 container.marsLander.name=Landeballons
+
+# CONFIG GUI
 gc.configgui.dimensionIDMars=Mars Dimension ID
-gc.configgui.idEntityCreeperBoss=Creeper Boss Entity ID
-gc.configgui.idEntityProjectileTNT=Projectile TNT Entity ID
-gc.configgui.idEntitySpaceshipTier2=Tier 2 Rocket Entity ID
-gc.configgui.idEntitySludgeling=Sludgeling Entity ID
-gc.configgui.idEntitySlimeling=Slimeling Entity ID
-gc.configgui.idEntityTerraformBubble=Terraform Bubble Entity ID
-gc.configgui.idEntityLandingBalloons=Landing Balloons Entity ID
-gc.configgui.idEntityCargoRocket=Cargo Rocket Entity ID
 gc.configgui.idSchematicRocketT2=Tier 2 Rocket Schematic ID
 gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID
 gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
 gc.configgui.launchControllerAllDims=Launch Controller All Dimensions
+
 gc.configgui.planets.title=Galacticraft Planets Konfiguration

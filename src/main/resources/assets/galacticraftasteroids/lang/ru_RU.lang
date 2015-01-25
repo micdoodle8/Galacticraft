@@ -126,3 +126,4 @@ gc.configgui.idEntityGrappleHook=ID сущности: Крюк
 gc.configgui.idEntityTier3Rocket=ID сущности: Ракета 3-го уровня
 gc.configgui.idEntityEntryPod=ID сущности: Entry Pod
 gc.configgui.idSchematicRocketT3=ID схемы: Ракета 3-го уровня
+gc.configgui.disableGalacticraftHelium=Отключение регистрации гелия

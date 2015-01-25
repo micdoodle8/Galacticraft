@@ -50,6 +50,7 @@ tile.marsMachine.2.name=발사 통제기
 tile.marsMachine.4.name=가스 액화기
 tile.marsMachine.5.name=메탄 합성기
 tile.marsMachine.6.name=전기 분해기
+tile.hydrogenPipe.name=Hydrogen Pipe ##NEEDS TRANSLATE##
 tile.sludge.name=세균 슬러지
 tile.creeperEgg.name=크리퍼 알
 tile.cavernVines.name=동굴 넝굴
@@ -149,6 +150,7 @@ tile.creeperEgg.description=폭발하며 크리퍼를 부화시키는 크리퍼 
 tile.gasLiquefier.description=대기 혹은 플레이어에 의해 주어진 기체를 액체화 시킵니다. (팁: 액체메탄 로켓 연료)
 tile.methaneSynthesizer.description=수소와 탄소를 이용해 가스 액화기에서 가공 가능한 메탄을 합성합니다.
 tile.electrolyzer.description=(메탄 합성기에 유용한) 수소와 산소를 물에서 부터 전기분해합니다.
+tile.hydrogenPipe.description=Hydrogen Pipe will transfer hydrogen from one machine's internal gas tank to another.  ##NEEDS TRANSLATE##
 
 gui.slimeling.chat.wrongPlayer=어라? 내 슬라임링이 아니잖아!
 gui.cryogenic.chat.cantUse=%d 초 뒤에 다시 사용할 수 있습니다
@@ -171,8 +173,8 @@ schematic.cargoRocket.name=자동 화물 로켓
 entity.Sludgeling.name=슬러지링
 entity.Slimeling.name=슬라임링
 entity.CreeperBoss.name=진화한 크리퍼 보스
-entity.SpaceshipT2.name=2티어 로켓
-entity.CargoRocket.name=화물 로켓
+entity.GalacticraftMars.SpaceshipT2.name=2티어 로켓
+entity.GalacticraftMars.CargoRocket.name=화물 로켓
 
 # CONTAINERS
 container.launchcontroller.name=발사 통제기
@@ -181,14 +183,6 @@ container.marsLander.name=착륙 기구
 
 # CONFIG GUI
 gc.configgui.dimensionIDMars=화성 세계 ID
-gc.configgui.idEntityCreeperBoss=크리퍼 보스 엔티티 ID
-gc.configgui.idEntityProjectileTNT=발사체 TNT 엔티티 ID
-gc.configgui.idEntitySpaceshipTier2=2티어 로켓 엔티티 ID
-gc.configgui.idEntitySludgeling=슬러지링 엔티티 ID
-gc.configgui.idEntitySlimeling=슬라임링 엔티티 ID
-gc.configgui.idEntityTerraformBubble=테라포밍 기포 엔티티 ID
-gc.configgui.idEntityLandingBalloons=착륙 기구 엔티티 ID
-gc.configgui.idEntityCargoRocket=화물 로켓 엔티티 ID
 gc.configgui.idSchematicRocketT2=2티어 로켓 설계도 ID
 gc.configgui.idSchematicCargoRocket=화물 로켓 설계도 ID
 gc.configgui.launchControllerChunkLoad=발사 통제기 청크로드
