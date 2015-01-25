@@ -116,7 +116,7 @@ gui.message.lowEnergy.name=Zu wenig Energie
 gui.button.liquefy.name=Prozess
 gui.button.liquefyStop.name=Stopp
 gui.gasInput.desc.0=Versuche, einen Methangaskanister$ hier zu platzieren 
-gui.gasInput.desc.1=(Villeicht alternativ$ein Luftventil)
+gui.gasInput.desc.1=(Vielleicht alternativ$ein Luftventil)
 gui.hydrogenInput.desc.0=Dies nimmt einen Wasserstofftank
 gui.hydrogenInput.desc.1=oder ein Atmosphärenventil auf
 gui.liquidOutput.desc.2=Flüssiggastank
@@ -150,7 +150,7 @@ tile.creeperEgg.description=Creeper-Eier können nur in Marsdungeons gefunden we
 tile.gasLiquefier.description=Verflüssigt Gase, entweder aus der Atmosphäre oder aus Kanistern. Flüssiges Methan ist ein guter Raketentreibstoff!
 tile.methaneSynthesizer.description=Stellt aus Wasserstoff und Kohlenstoff Methan her, das im Gasverflüssiger weiterverarbeitet werden kann.
 tile.electrolyzer.description=Wandelt Wasser in Wasserstoff (für das Methansynthesegerät) und Sauerstoff um.
-tile.hydrogenPipe.description=Hydrogen Pipe will transfer hydrogen from one machine's internal gas tank to another. ##NEEDS TRANSLATE##
+tile.hydrogenPipe.description=Wasserstoffrohre transportieren Wasserstoff von einer Maschine zur anderen.
 
 gui.slimeling.chat.wrongPlayer=Das ist nicht mein Schleimling!
 gui.cryogenic.chat.cantUse=Ich kann das nicht für weitere %d Sekunden benutzen
