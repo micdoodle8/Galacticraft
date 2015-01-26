@@ -123,6 +123,7 @@ public class EnergyConfigHandler
         EnergyConfigHandler.MEKANISM_RATIO = (float) EnergyConfigHandler.config.get("Compatibility", "Mekanism Conversion Ratio", EnergyConfigHandler.MEKANISM_RATIO).getDouble(EnergyConfigHandler.MEKANISM_RATIO);
         EnergyConfigHandler.conversionLossFactor = EnergyConfigHandler.config.get("Compatibility", "Loss factor when converting energy as a percentage (100 = no loss, 90 = 10% loss ...)", 100).getInt(100);
         if (EnergyConfigHandler.conversionLossFactor > 100) EnergyConfigHandler.conversionLossFactor = 100;
+        if (EnergyConfigHandler.conversionLossFactor < 5) EnergyConfigHandler.conversionLossFactor = 5;
 
         updateRatios();
         
@@ -320,7 +321,11 @@ public class EnergyConfigHandler
         try {
         	if (Class.forName("cofh.api.energy.IEnergyConnection") != null) count++;
         	if (Class.forName("cofh.api.energy.IEnergyHandler") != null) count+=2;
+        } catch (Exception e) { }
+        try {
         	if (Class.forName("cofh.api.energy.IEnergyProvider") != null) count2++;
+        } catch (Exception e) { }
+        try {
         	if (Class.forName("cofh.api.energy.IEnergyReceiver") != null) count2++;
         } catch (Exception e) { }
         
@@ -347,6 +352,16 @@ public class EnergyConfigHandler
     
     private static void updateRatios()
     {
+    	//Sense checks to avoid crazy large inverse ratios or ratios
+    	if (EnergyConfigHandler.IC2_RATIO < 0.01F) EnergyConfigHandler.IC2_RATIO = 0.01F; 
+    	if (EnergyConfigHandler.RF_RATIO < 0.001F) EnergyConfigHandler.RF_RATIO = 0.001F; 
+    	if (EnergyConfigHandler.BC3_RATIO < 0.01F) EnergyConfigHandler.BC3_RATIO = 0.01F; 
+    	if (EnergyConfigHandler.MEKANISM_RATIO < 0.001F) EnergyConfigHandler.MEKANISM_RATIO = 0.001F;
+    	if (EnergyConfigHandler.IC2_RATIO > 1000F) EnergyConfigHandler.IC2_RATIO = 1000F; 
+    	if (EnergyConfigHandler.RF_RATIO > 100F) EnergyConfigHandler.RF_RATIO = 100F; 
+    	if (EnergyConfigHandler.BC3_RATIO > 1000F) EnergyConfigHandler.BC3_RATIO = 1000F; 
+    	if (EnergyConfigHandler.MEKANISM_RATIO > 100F) EnergyConfigHandler.MEKANISM_RATIO = 100F;
+
     	float factor = conversionLossFactor / 100;
         TO_BC_RATIO = factor / EnergyConfigHandler.BC3_RATIO;
         TO_RF_RATIO = factor / EnergyConfigHandler.RF_RATIO;
