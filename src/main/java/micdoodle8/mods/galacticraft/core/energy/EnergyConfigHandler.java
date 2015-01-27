@@ -7,7 +7,10 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Universal Electricity compatibility module allows your mod to be
@@ -215,9 +218,10 @@ public class EnergyConfigHandler
         if (!cachedBCLoaded)
         {
             cachedBCLoaded = true;
+            cachedBCLoadedValue = false;
 
             if (disableMJinterface)
-            	cachedBCLoadedValue = false;
+            	return false;
             else
             {
             	int count = 0;
@@ -230,8 +234,20 @@ public class EnergyConfigHandler
 	            	if (Class.forName("buildcraft.api.mj.ISidedBatteryProvider") != null) count++;
             	} catch (Exception e) { }
             	
-            	cachedBCLoadedValue = (count==6);
-            }
+            	if (count < 6) return false;
+            	
+            	try {
+            		Class clazz = Class.forName("buildcraft.api.core.JavaTools");
+            		Method methodz = clazz.getMethod("getAllFields", Class.class);
+            		if (methodz != null && methodz.getReturnType() == List.class)
+            		{
+            			cachedBCLoadedValue = true;
+            			return true;           		
+            		}
+            	} catch (Exception e) { }
+            	
+            	GCLog.severe("Other mods with two different versions of Buildcraft API detected.  Galacticraft cannot use MJ until this is fixed.  You may have more serious problems with other mods.  More info at: http://wiki.micdoodle8.com/wiki/Compatibility.");
+            }            
         }
 
         return cachedBCLoadedValue;
@@ -336,7 +352,7 @@ public class EnergyConfigHandler
         	cachedRF2LoadedValue = (count2 == 2);
         }
         else if (count > 0 || count2 > 0)
-        	GCLog.info("Incomplete Redstone Flux API detected: Galacticraft will not support RF energy connections until this is fixed.");
+        	GCLog.severe("Incomplete Redstone Flux API detected: Galacticraft will not support RF energy connections until this is fixed.");
     }
 
     public static boolean isMekanismLoaded()
