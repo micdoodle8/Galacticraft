@@ -502,7 +502,7 @@ public class TickHandlerClient
                 player.motionY = 0;
             }
 
-            if (world != null && world.provider instanceof IGalacticraftWorldProvider)
+            if (world != null && world.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider)world.provider).hasBreathableAtmosphere() && !((IGalacticraftWorldProvider)world.provider).isGasPresent(IAtmosphericGas.OXYGEN))
             {
                 world.setRainStrength(0.0F);
             }
