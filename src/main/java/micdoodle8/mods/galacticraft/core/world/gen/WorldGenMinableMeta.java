@@ -23,7 +23,7 @@ public class WorldGenMinableMeta extends WorldGenMinable
 
     public WorldGenMinableMeta(Block par1, int par2, int par3, boolean par4, Block id, int meta)
     {
-        super(par1, par2);
+        super(par1, par3, par2, id);
         this.minableBlockId = par1;
         this.numberOfBlocks = par2;
         this.metadata = par3;
