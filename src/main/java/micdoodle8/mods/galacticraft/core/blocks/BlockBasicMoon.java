@@ -121,10 +121,15 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
     public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
     {
         int metadata = world.getBlockMetadata(x, y, z);
-        
-        if (metadata == 14 || metadata == 15)
+
+        if (metadata == 14)
         {
             return 10000.0F;
+        }
+
+        if (metadata == 15)
+        {
+            return 40.0F;
         }
 
         return super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ);
