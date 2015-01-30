@@ -173,8 +173,8 @@ schematic.cargoRocket.name=จรวดขนส่งอัตโนมัต�
 entity.Sludgeling.name=หนอนแบคทีเรีย
 entity.Slimeling.name=สไลม์ลิ่ง
 entity.CreeperBoss.name=คริปเปอร์บอสอวกาศ
-entity.SpaceshipT2.name=จรวด เทียร์ 2
-entity.CargoRocket.name=จรวดขนส่ง
+entity.GalacticraftMars.SpaceshipT2.name=จรวด เทียร์ 2
+entity.GalacticraftMars.CargoRocket.name=จรวดขนส่ง
 
 # CONTAINERS
 container.launchcontroller.name=เครื่องควบคุมการปล่อยจรวด

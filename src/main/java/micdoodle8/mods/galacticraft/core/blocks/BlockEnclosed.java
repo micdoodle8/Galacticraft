@@ -180,16 +180,8 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "" + EnumEnclosedBlock.OXYGEN_PIPE.getTexture());
     }
 
-    @Override
-    public void onBlockAdded(World world, int x, int y, int z)
+    private void tileAdded(TileEntity tileEntity, int metadata)
     {
-        super.onBlockAdded(world, x, y, z);
-
-        int metadata = world.getBlockMetadata(x, y, z);
-        
-        //TODO: this tileEntity will be null or invalid when onBlockAdded is called
-        final TileEntity tileEntity = world.getTileEntity(x, y, z);
-
         if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
         {
 
@@ -198,7 +190,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         {
             if (tileEntity instanceof INetworkConnection)
             {
-                ((INetworkConnection) tileEntity).refresh();
+//                ((INetworkConnection) tileEntity).refresh();
             }
         }
         else if (metadata <= EnumEnclosedBlock.IC2_LV_CABLE.getMetadata())
@@ -238,16 +230,16 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         {
             if (tileEntity instanceof IConductor)
             {
-                ((IConductor) tileEntity).refresh();
+//            	((IConductor) tileEntity).refresh();
             }
         }
         else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE_HEAVY.getMetadata())
         {
             if (tileEntity instanceof IConductor)
             {
-                ((IConductor) tileEntity).refresh();
+//                ((IConductor) tileEntity).refresh();
             }
-        }
+        }  	
     }
 
     @Override
@@ -349,13 +341,15 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
     @Override
     public TileEntity createNewTileEntity(World world, int metadata)
     {
-        if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
+        TileEntity returnTile = null;
+    	
+    	if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
         {
-
+    		//TODO
         }
         else if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
         {
-            return new TileEntityOxygenPipe();
+            returnTile = new TileEntityOxygenPipe();
         }
         else if (metadata <= EnumEnclosedBlock.IC2_LV_CABLE.getMetadata())
         {
@@ -379,7 +373,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 
                     constructor.setAccessible(true);
 
-                    return (TileEntity) constructor.newInstance((short) BlockEnclosed.getTypeFromMeta(metadata).getSubMetaValue());
+                    returnTile = (TileEntity) constructor.newInstance((short) BlockEnclosed.getTypeFromMeta(metadata).getSubMetaValue());
                 }
                 catch (Exception e)
                 {
@@ -411,7 +405,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 
                     TileEntity tilePipe = (TileEntity) constructor.newInstance();
 
-                    return tilePipe;
+                    returnTile = tilePipe;
                 }
                 catch (Exception e)
                 {
@@ -426,7 +420,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
                 try
                 {
                     Class<?> clazz = Class.forName("appeng.me.tile.TileCable");
-                    return (TileEntity) clazz.newInstance();
+                    returnTile = (TileEntity) clazz.newInstance();
                 }
                 catch (Exception e)
                 {
@@ -436,14 +430,16 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         }
         else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata())
         {
-            return new TileEntityAluminumWire(1);
+            returnTile = new TileEntityAluminumWire(1);
         }
         else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE_HEAVY.getMetadata())
         {
-            return new TileEntityAluminumWire(2);
+            returnTile = new TileEntityAluminumWire(2);
         }
 
-        return null;
+    	if (returnTile != null) this.tileAdded(returnTile, metadata);
+    	
+        return returnTile;
     }
 
     @Override

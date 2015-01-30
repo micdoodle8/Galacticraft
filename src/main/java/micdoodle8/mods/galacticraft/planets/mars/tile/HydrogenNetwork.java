@@ -10,7 +10,6 @@ import micdoodle8.mods.galacticraft.api.transmission.grid.Pathfinder;
 import micdoodle8.mods.galacticraft.api.transmission.grid.PathfinderChecker;
 import micdoodle8.mods.galacticraft.api.transmission.tile.*;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.blocks.BlockTransmitter;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -199,12 +198,12 @@ public class HydrogenNetwork implements IHydrogenNetwork
                     continue;
                 }
 
-                if (!(((TileEntity) transmitter).getWorldObj().getBlock(((TileEntity) transmitter).xCoord, ((TileEntity) transmitter).yCoord, ((TileEntity) transmitter).zCoord) instanceof BlockTransmitter))
+/*                if (!(((TileEntity) transmitter).getWorldObj().getBlock(((TileEntity) transmitter).xCoord, ((TileEntity) transmitter).yCoord, ((TileEntity) transmitter).zCoord) instanceof BlockTransmitter))
                 {
                     it.remove();
                     continue;
                 }
-   			
+*/   			
     			for (int i = 0; i < transmitter.getAdjacentConnections().length; i++)
     			{
     				TileEntity acceptor = transmitter.getAdjacentConnections()[i];

@@ -3,9 +3,14 @@ package micdoodle8.mods.galacticraft.core.energy;
 import cpw.mods.fml.common.Loader;
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasRegistry;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Universal Electricity compatibility module allows your mod to be
@@ -51,6 +56,8 @@ public class EnergyConfigHandler
     public static float IC2_RATIO = EnergyConfigHandler.BC3_RATIO / 2.44F;
 
     public static float MEKANISM_RATIO = EnergyConfigHandler.IC2_RATIO / 10F;
+    
+    private static int conversionLossFactor = 100; 
 
     /**
      * Convert gJ back to Buildcraft MJ
@@ -68,6 +75,11 @@ public class EnergyConfigHandler
     public static float TO_IC2_RATIO = 1 / EnergyConfigHandler.IC2_RATIO;
 
     public static float TO_MEKANISM_RATIO = 1 / EnergyConfigHandler.MEKANISM_RATIO;
+
+    public static float TO_BC_RATIOdisp = 1 / EnergyConfigHandler.BC3_RATIO;
+    public static float TO_RF_RATIOdisp = 1 / EnergyConfigHandler.RF_RATIO;
+    public static float TO_IC2_RATIOdisp = 1 / EnergyConfigHandler.IC2_RATIO;
+    public static float TO_MEKANISM_RATIOdisp = 1 / EnergyConfigHandler.MEKANISM_RATIO;
 
     /**
      * Oxygen gas used when Mekanism is loaded. Always null otherwise.
@@ -91,6 +103,10 @@ public class EnergyConfigHandler
     private static boolean cachedMekLoadedValue = false;
     private static boolean cachedRFLoaded = false;
     private static boolean cachedRFLoadedValue = false;
+    private static boolean cachedRF1LoadedValue = false;
+    private static boolean cachedRF2LoadedValue = false;
+    
+    private static boolean disableMJinterface = false;
 
 
     /**
@@ -108,15 +124,19 @@ public class EnergyConfigHandler
         EnergyConfigHandler.RF_RATIO = (float) EnergyConfigHandler.config.get("Compatibility", "RF Conversion Ratio", EnergyConfigHandler.RF_RATIO).getDouble(EnergyConfigHandler.RF_RATIO);
         EnergyConfigHandler.BC3_RATIO = (float) EnergyConfigHandler.config.get("Compatibility", "BuildCraft Conversion Ratio", EnergyConfigHandler.BC3_RATIO).getDouble(EnergyConfigHandler.BC3_RATIO);
         EnergyConfigHandler.MEKANISM_RATIO = (float) EnergyConfigHandler.config.get("Compatibility", "Mekanism Conversion Ratio", EnergyConfigHandler.MEKANISM_RATIO).getDouble(EnergyConfigHandler.MEKANISM_RATIO);
-        EnergyConfigHandler.TO_IC2_RATIO = 1 / EnergyConfigHandler.IC2_RATIO;
-        EnergyConfigHandler.TO_BC_RATIO = 1 / EnergyConfigHandler.BC3_RATIO;
-        EnergyConfigHandler.TO_RF_RATIO = 1 / EnergyConfigHandler.RF_RATIO;
-        EnergyConfigHandler.TO_MEKANISM_RATIO = 1 / EnergyConfigHandler.MEKANISM_RATIO;
+        EnergyConfigHandler.conversionLossFactor = EnergyConfigHandler.config.get("Compatibility", "Loss factor when converting energy as a percentage (100 = no loss, 90 = 10% loss ...)", 100).getInt(100);
+        if (EnergyConfigHandler.conversionLossFactor > 100) EnergyConfigHandler.conversionLossFactor = 100;
+        if (EnergyConfigHandler.conversionLossFactor < 5) EnergyConfigHandler.conversionLossFactor = 5;
 
+        updateRatios();
+        
         EnergyConfigHandler.displayEnergyUnitsBC = EnergyConfigHandler.config.get("Display", "If BuildCraft is loaded, show Galacticraft machines energy as MJ instead of gJ?", false).getBoolean(false);
         EnergyConfigHandler.displayEnergyUnitsIC2 = EnergyConfigHandler.config.get("Display", "If IndustrialCraft2 is loaded, show Galacticraft machines energy as EU instead of gJ?", false).getBoolean(false);
         EnergyConfigHandler.displayEnergyUnitsMek = EnergyConfigHandler.config.get("Display", "If Mekanism is loaded, show Galacticraft machines energy as Joules (J) instead of gJ?", false).getBoolean(false);
         EnergyConfigHandler.displayEnergyUnitsRF = EnergyConfigHandler.config.get("Display", "Show Galacticraft machines energy in RF instead of gJ?", false).getBoolean(false);
+
+        EnergyConfigHandler.disableMJinterface = EnergyConfigHandler.config.get("Compatibility", "Disable old Buildcraft API (MJ) interfacing completely?", false).getBoolean(false);
+
         if (!EnergyConfigHandler.isBuildcraftLoaded())
         {
             EnergyConfigHandler.displayEnergyUnitsBC = false;
@@ -198,9 +218,11 @@ public class EnergyConfigHandler
         if (!cachedBCLoaded)
         {
             cachedBCLoaded = true;
-            //if (Loader.isModLoaded("BuildCraft|Energy"))
-            //	cachedBCLoadedValue = true;
-            //else
+            cachedBCLoadedValue = false;
+
+            if (disableMJinterface)
+            	return false;
+            else
             {
             	int count = 0;
             	try {
@@ -212,8 +234,20 @@ public class EnergyConfigHandler
 	            	if (Class.forName("buildcraft.api.mj.ISidedBatteryProvider") != null) count++;
             	} catch (Exception e) { }
             	
-            	cachedBCLoadedValue = (count==6);
-            }
+            	if (count < 6) return false;
+            	
+            	try {
+            		Class clazz = Class.forName("buildcraft.api.core.JavaTools");
+            		Method methodz = clazz.getMethod("getAllFields", Class.class);
+            		if (methodz != null && methodz.getReturnType() == List.class)
+            		{
+            			cachedBCLoadedValue = true;
+            			return true;           		
+            		}
+            	} catch (Exception e) { }
+            	
+            	GCLog.severe("Other mods with two different versions of Buildcraft API detected.  Galacticraft cannot use MJ until this is fixed.  You may have more serious problems with other mods.  More info at: http://wiki.micdoodle8.com/wiki/Compatibility.");
+            }            
         }
 
         return cachedBCLoadedValue;
@@ -267,14 +301,58 @@ public class EnergyConfigHandler
     {
         if (!cachedRFLoaded)
         {
-            cachedRFLoaded = true;
-            cachedRFLoadedValue = false;
-            try {
-            	cachedRFLoadedValue = (Class.forName("cofh.api.energy.IEnergyHandler") != null);
-            } catch (Exception e) { }
+        	initialiseRF();
         }
 
         return cachedRFLoadedValue;
+    }
+    
+    public static boolean isRFAPIv1Loaded()
+    {
+        if (!cachedRFLoaded)
+        {
+        	initialiseRF();
+        }
+
+        return cachedRF1LoadedValue;
+    }
+
+    public static boolean isRFAPIv2Loaded()
+    {
+        if (!cachedRFLoaded)
+        {
+        	initialiseRF();
+        }
+
+        return cachedRF2LoadedValue;
+    }
+    
+    private static void initialiseRF()
+    {
+        cachedRFLoaded = true;
+        cachedRFLoadedValue = false;
+        cachedRF2LoadedValue = false;
+    	int count = 0;
+    	int count2 = 0;
+        try {
+        	if (Class.forName("cofh.api.energy.IEnergyConnection") != null) count++;
+        	if (Class.forName("cofh.api.energy.IEnergyHandler") != null) count+=2;
+        } catch (Exception e) { }
+        try {
+        	if (Class.forName("cofh.api.energy.IEnergyProvider") != null) count2++;
+        } catch (Exception e) { }
+        try {
+        	if (Class.forName("cofh.api.energy.IEnergyReceiver") != null) count2++;
+        } catch (Exception e) { }
+        
+        if ((count + count2 == 3 && count2 != 1) || count + count2 == 5)
+        {
+        	cachedRFLoadedValue = true;
+        	cachedRF1LoadedValue = (count == 3);
+        	cachedRF2LoadedValue = (count2 == 2);
+        }
+        else if (count > 0 || count2 > 0)
+        	GCLog.severe("Incomplete Redstone Flux API detected: Galacticraft will not support RF energy connections until this is fixed.");
     }
 
     public static boolean isMekanismLoaded()
@@ -287,4 +365,50 @@ public class EnergyConfigHandler
 
         return cachedMekLoadedValue;
     }
+    
+    private static void updateRatios()
+    {
+    	//Sense checks to avoid crazy large inverse ratios or ratios
+    	if (EnergyConfigHandler.IC2_RATIO < 0.01F) EnergyConfigHandler.IC2_RATIO = 0.01F; 
+    	if (EnergyConfigHandler.RF_RATIO < 0.001F) EnergyConfigHandler.RF_RATIO = 0.001F; 
+    	if (EnergyConfigHandler.BC3_RATIO < 0.01F) EnergyConfigHandler.BC3_RATIO = 0.01F; 
+    	if (EnergyConfigHandler.MEKANISM_RATIO < 0.001F) EnergyConfigHandler.MEKANISM_RATIO = 0.001F;
+    	if (EnergyConfigHandler.IC2_RATIO > 1000F) EnergyConfigHandler.IC2_RATIO = 1000F; 
+    	if (EnergyConfigHandler.RF_RATIO > 100F) EnergyConfigHandler.RF_RATIO = 100F; 
+    	if (EnergyConfigHandler.BC3_RATIO > 1000F) EnergyConfigHandler.BC3_RATIO = 1000F; 
+    	if (EnergyConfigHandler.MEKANISM_RATIO > 100F) EnergyConfigHandler.MEKANISM_RATIO = 100F;
+
+    	float factor = conversionLossFactor / 100;
+        TO_BC_RATIO = factor / EnergyConfigHandler.BC3_RATIO;
+        TO_RF_RATIO = factor / EnergyConfigHandler.RF_RATIO;
+        TO_IC2_RATIO = factor / EnergyConfigHandler.IC2_RATIO;
+        TO_MEKANISM_RATIO = factor / EnergyConfigHandler.MEKANISM_RATIO;
+        TO_BC_RATIOdisp = 1 / EnergyConfigHandler.BC3_RATIO;
+        TO_RF_RATIOdisp = 1 / EnergyConfigHandler.RF_RATIO;
+        TO_IC2_RATIOdisp = 1 / EnergyConfigHandler.IC2_RATIO;
+        TO_MEKANISM_RATIOdisp = 1 / EnergyConfigHandler.MEKANISM_RATIO;
+        EnergyConfigHandler.BC3_RATIO *= factor;
+        EnergyConfigHandler.RF_RATIO *= factor;
+        EnergyConfigHandler.IC2_RATIO *= factor;
+        EnergyConfigHandler.MEKANISM_RATIO *= factor;
+    }
+
+	public static void serverConfigOverride(ArrayList<Object> returnList)
+	{
+		returnList.add(EnergyConfigHandler.BC3_RATIO);
+		returnList.add(EnergyConfigHandler.RF_RATIO);
+		returnList.add(EnergyConfigHandler.IC2_RATIO);
+		returnList.add(EnergyConfigHandler.MEKANISM_RATIO);
+		returnList.add(EnergyConfigHandler.conversionLossFactor);
+	}
+
+	public static void setConfigOverride(float sBC3, float sRF, float sIC2, float sMEK, int sLossRatio)
+	{
+        EnergyConfigHandler.BC3_RATIO = sBC3;
+        EnergyConfigHandler.RF_RATIO = sRF;
+        EnergyConfigHandler.IC2_RATIO = sIC2;
+        EnergyConfigHandler.MEKANISM_RATIO = sMEK;
+        EnergyConfigHandler.conversionLossFactor = sLossRatio;
+        updateRatios();
+	}
 }

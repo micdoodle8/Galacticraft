@@ -53,28 +53,14 @@ tile.marsMachine.6.name=Vodní electrolyzér
 tile.sludge.name=Infikované bláto
 tile.creeperEgg.name=Vejce creepra
 tile.cavernVines.name=Jeskyní réva
+
+# DECOBLOCKS
 tile.marsCobblestoneStairs.name=Schody z dlažebního kamene
 tile.wallGC.mars.name=Stěna z dlažebního kamene
 tile.slabGCHalf.marsSlab.name=Podlaha z dlažebního kamene
 tile.marsDungeonBricksStairs.name=Zděné schody (dungeon)
 tile.wallGC.marsBricks.name=Zděná stěna (dungeon)
 tile.slabGCHalf.marsBricksSlab.name=Zděná podlaha (dungeon)
-tile.tintedGlassPane.white.name=Bílé tónované sklo
-tile.tintedGlassPane.orange.name=Oranžové tónované sklo
-tile.tintedGlassPane.magenta.name=Tmave purpurové tónované sklo
-tile.tintedGlassPane.light_blue.name=Svetle modré tónované sklo
-tile.tintedGlassPane.yellow.name=Žluté tónované sklo
-tile.tintedGlassPane.lime.name=Svetle zelené tónované sklo
-tile.tintedGlassPane.pink.name=Ružové tónované sklo
-tile.tintedGlassPane.gray.name=Šedé tónované sklo
-tile.tintedGlassPane.silver.name=Stríbrné tónované sklo
-tile.tintedGlassPane.cyan.name=Modrozelené tónované sklo
-tile.tintedGlassPane.purple.name=Fialové tónované sklo
-tile.tintedGlassPane.blue.name=Modré tónované sklo
-tile.tintedGlassPane.brown.name=Hnedé tónované sklo
-tile.tintedGlassPane.green.name=Zelené tónované sklo
-tile.tintedGlassPane.red.name=Cervené tónované sklo
-tile.tintedGlassPane.black.name=Cerné tónované sklo
 
 # GUI
 gui.choosePlanet.desc.mars=Obyvatelný#Žádný kyslík#Gravitace: 38%
@@ -108,11 +94,14 @@ gui.message.notSet.name=Nenastaveno
 gui.message.notEnough.name=Nedostatek
 gui.message.success.name=Úspech
 gui.message.zeroWater.name=Chybí voda!
+
+	# Dollar sign ($) will split text onto a new line
 gui.launchController.desc.0=Unikátní frekvence$tohoto odpalovace
 gui.launchController.desc.1=Frekvence pro vypuštení rakety na
 gui.launchController.desc.2=Má býd odstranen$po odpálení rakety
 gui.launchController.desc.3=Po splnení kritérií$bude vypuštena raketa
 gui.terraformer.desc.0=Nadrž na vodu
+
 gui.gasTank.desc.0=Plynová nádrž
 gui.gasTankCompressed.desc.0=Zásobárna stlačeného plynu
 gui.liquidTank.desc.0=Nádrž na kapaliny
@@ -141,16 +130,15 @@ gui.cargorocket.status.waiting.0=Cekám na odpalovací
 gui.cargorocket.status.waiting.1=sekvenci.
 gui.cargorocket.status.launched.0=Již
 gui.cargorocket.status.launched.1=odpáleno.
+
 gas.carbondioxide.name=Oxid uhlicitý
 gas.oxygen.name=Kyslík
 gas.nitrogen.name=Dusík
 
 gui.desc.reinforcedPlateT2.name=Typ 2
-
-itemGroup.GalacticraftMars=Galacticraft Mars
-
 dimension.Mars.name=Mars
 planet.mars=Mars
+
 tile.treasureT2.description=Pokladnice typu 2 jsou k nalezení v dungeonech na Marsu. Lze je odemknout po zabití bosse.
 tile.cavernVines.description=Jeskyní réva je nebezpecný živý organismus, který omotá hráce a táhne ho nahoru.
 tile.slimelingEgg.description=Vejce slizouna, pokud jsou rozbita hrácovou rukou, tak se z nich vylíhne brzy mazlícek.
@@ -161,6 +149,7 @@ tile.creeperEgg.description=Vejce creepera je k nalezení v dungeonech na Marsu,
 tile.gasLiquefier.description=Zkapalnené plyny, budto z atmosféry nebo tlakových lahví. Kapalný metan je dobré raketové palivo!
 tile.methaneSynthesizer.description=Se zdrojem vodíku a uhlíku vyrábí Metan pro další zpracování ve zkapalnovaci.
 tile.electrolyzer.description=Vyrábí z vody kyslík a vodík (používá se v syntetizéru metanu).
+
 gui.slimeling.chat.wrongPlayer=Tohle není muj slizoun!
 gui.cryogenic.chat.cantUse=Nemohu to použít dalších %d vterin.
 gui.slimeling.name=Jméno
@@ -174,32 +163,27 @@ gui.slimeling.following=Sleduje
 gui.slimeling.damage=Poškození
 gui.slimeling.food=Oblíbené jídlo
 
-# Schematics
+# SCHEMATICS
 schematic.rocketT3.name=Raketa typ 3
 schematic.cargoRocket.name=Automatická nákladní raketa
 
-# Entity
+# ENTITIES
 entity.Sludgeling.name=Bahenní vcela
 entity.Slimeling.name=Slizoun
 entity.CreeperBoss.name=Vyvinutý creeper - Boss
-entity.SpaceshipT2.name=Raketa typ 2
-entity.CargoRocket.name=Nákladní raketa
+entity.GalacticraftMars.SpaceshipT2.name=Raketa typ 2
+entity.GalacticraftMars.CargoRocket.name=Nákladní raketa
 
-# Container
+# CONTAINERS
 container.launchcontroller.name=Odpalovací zarízení
 container.tileTerraformer.name=Terraformer
 container.marsLander.name=Přistávací balóny
+
+# CONFIG GUI
 gc.configgui.dimensionIDMars=Císlo dimenze Marsu
-gc.configgui.idEntityCreeperBoss=Císlo sycáka (Boss)
-gc.configgui.idEntityProjectileTNT=Císlo obraného TNT
-gc.configgui.idEntitySpaceshipTier2=Císlo rakety typu 2
-gc.configgui.idEntitySludgeling=Císlo bahení vcely
-gc.configgui.idEntitySlimeling=Císlo slizouna
-gc.configgui.idEntityTerraformBubble=Císlo bubliny terraformeru
-gc.configgui.idEntityLandingBalloons=Císlo pristávacích balólu
-gc.configgui.idEntityCargoRocket=Císlo nákladní rakety
 gc.configgui.idSchematicRocketT2=Císlo schématu rakety typu 2
 gc.configgui.idSchematicCargoRocket=Císlo schématu nákladní rakety
 gc.configgui.launchControllerChunkLoad=Nacítání oblasti odpalovace
 gc.configgui.launchControllerAllDims=Odpalovace ve všech dimenzích
+
 gc.configgui.planets.title=Nastavení planet Galacticraftu

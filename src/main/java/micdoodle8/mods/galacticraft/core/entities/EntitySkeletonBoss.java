@@ -1,13 +1,17 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
+import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -35,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, IBossDisplayData, IRangedAttackMob, IBoss
+public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, IBossDisplayData, IRangedAttackMob, IBoss, IIgnoreShift
 {
     protected long ticks = 0;
     private static final ItemStack defaultHeldItem = new ItemStack(Items.bow, 1);
@@ -121,7 +125,7 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
         {
             if (!this.worldObj.isRemote)
             {
-//				GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_LAUGH, new Object[] {}), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 40.0D)); TODO
+            	GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_LAUGH, new Object[] {}), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 40.0D));
                 par1EntityPlayer.mountEntity(this);
             }
 
@@ -183,7 +187,7 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
         {
             if (this.deathTicks >= 180 && this.deathTicks % 5 == 0)
             {
-//				GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_EXPLODE, new Object[] {}), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 40.0D)); TODO
+            	GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_EXPLODE, new Object[] {}), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 40.0D));
             }
 
             if (this.deathTicks > 150 && this.deathTicks % 5 == 0)
@@ -200,7 +204,7 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
 
             if (this.deathTicks == 1)
             {
-//				GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, new Object[] {}), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 40.0D)); TODO
+            	GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, new Object[] {}), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 40.0D));
             }
         }
 
@@ -408,8 +412,9 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
                 d0 = (Math.random() - Math.random()) * 0.01D;
             }
 
-//			GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOW, new Object[] {}), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 40.0D));
-//          TODO When sounds are fixed ^
+
+            if (!this.worldObj.isRemote)
+            	GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOW, new Object[] {}), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 40.0D));
             ((EntityPlayer) this.thrownEntity).attackedAtYaw = (float) (Math.atan2(d1, d0) * 180.0D / Math.PI) - this.rotationYaw;
 
             this.thrownEntity.isAirBorne = true;
@@ -578,5 +583,11 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
     public void onBossSpawned(TileEntityDungeonSpawner spawner)
     {
         this.spawner = spawner;
+    }
+    
+    @Override
+    public boolean shouldIgnoreShiftExit()
+    {
+	return true;
     }
 }

@@ -1,5 +1,6 @@
 ﻿# Galacticraft Mars Language File = Polski
 
+# GENERAL ITEMS
 item.rawDesh.name=Desz
 item.deshStick.name=Patyk Deszu
 item.ingotDesh.name=Sztabka Deszu
@@ -13,16 +14,22 @@ item.spaceshipTier2.cargoRocket.name=Rakieta Transportowa
 item.fluidManip.name=Manipulator Płynów
 item.bucketSludge.name=Wiadro Szlamu Bakteryjnego
 fluid.bacterialsludge=Szlam Bakteryjny
+
+# TOOLS
 item.deshPick.name=Deszowy Kilof
 item.deshPickSlime.name=Lepki Deszowy Kilof
 item.deshAxe.name=Deszowa Siekiera
 item.deshHoe.name=Deszowa Motyka
 item.deshSpade.name=Deszowa Łopata
 item.deshSword.name=Deszowy Miecz
+
+# ARMOR
 item.deshHelmet.name=Deszowy Hełm
 item.deshChestplate.name=Deszowy Napierśnik
 item.deshLeggings.name=Deszowe Nogawice
 item.deshBoots.name=Deszowe Buty
+
+# BLOCKS
 tile.mars.deshmars.name=Ruda Deszu
 tile.mars.coppermars.name=Ruda Miedzi
 tile.mars.tinmars.name=Ruda Cyny
@@ -43,31 +50,20 @@ tile.marsMachine.2.name=Kontroler Startu
 tile.marsMachine.4.name=Skraplacz Gazu
 tile.marsMachine.5.name=Syntezator Metanu
 tile.marsMachine.6.name=Elektrolizer Wodny
+tile.hydrogenPipe.name=Hydrogen Pipe ##NEEDS TRANSLATE##
 tile.sludge.name=Szlam Bakteryjny
 tile.creeperEgg.name=Jajo Creepera
 tile.cavernVines.name=Trujące Pnącza
+
+# DECOBLOCKS
 tile.marsCobblestoneStairs.name=Schody z Marsowego Bruku
 tile.wallGC.mars.name=Ściana z Marsowego Bruku
 tile.slabGCHalf.marsSlab.name=Półpłyta z Marsowego Bruku
 tile.marsDungeonBricksStairs.name=Schody z Marsowych Lochów
 tile.wallGC.marsBricks.name=Ściana z Marsowych Lochów
 tile.slabGCHalf.marsBricksSlab.name=Półpłyta z Marsowych Lochów
-tile.tintedGlassPane.white.name=Biała Szyba
-tile.tintedGlassPane.orange.name=Pomarańczowa Szyba
-tile.tintedGlassPane.magenta.name=Karmazynowa Szyba
-tile.tintedGlassPane.light_blue.name=Jasnoniebieskia Szyba
-tile.tintedGlassPane.yellow.name=Żółta Szyba
-tile.tintedGlassPane.lime.name=Limonkowa Szyba
-tile.tintedGlassPane.pink.name=Różowa Szyba
-tile.tintedGlassPane.gray.name=Szara Szyba
-tile.tintedGlassPane.silver.name=Jasnoszara Szyba
-tile.tintedGlassPane.cyan.name=Cyjankowa Szyba
-tile.tintedGlassPane.purple.name=Fioletowa Szyba
-tile.tintedGlassPane.blue.name=Niebieska Szyba
-tile.tintedGlassPane.brown.name=Brązowa Szyba
-tile.tintedGlassPane.green.name=Zielona Szyba
-tile.tintedGlassPane.red.name=Czerwona Szyba
-tile.tintedGlassPane.black.name=Czarna Szyba
+
+# GUI
 gui.choosePlanet.desc.mars=Nadająca się Zamieszkania#Brak Tlenu#Grawitacja: 38%
 item.deshPickSlime.description.name=Może zbierać jaja Slimelingów
 gui.message.noEnergy.name=Za Mało Energii
@@ -99,11 +95,14 @@ gui.message.notSet.name=Nie Ustawione
 gui.message.notEnough.name=Nie Wystarczające
 gui.message.success.name=Sukces
 gui.message.zeroWater.name=Brak wody!
+
+	# Dollar sign ($) will split text onto a new line
 gui.launchController.desc.0=To jest unikalna częstotliwość$Kontrolera Startu.
 gui.launchController.desc.1=Częstotliwość do której mają lecieć rakiety.
 gui.launchController.desc.2=Platforma Startowa pozostanie na miejscu$gdy opcja jest zaznaczona.
 gui.launchController.desc.3=Gdy podane kryteria zostaną spełnione,$rakieta wystartuje.
 gui.terraformer.desc.0=Zbiornik Wody
+
 gui.gasTank.desc.0=Zbiornik Gazu
 gui.gasTankCompressed.desc.0=Zbiornik Gazu (Skompresowany)
 gui.liquidTank.desc.0=Zbiornik Płynu
@@ -132,13 +131,15 @@ gui.cargorocket.status.waiting.0=Czekanie na
 gui.cargorocket.status.waiting.1=zapłon
 gui.cargorocket.status.launched.0=Rakieta już
 gui.cargorocket.status.launched.1=wystartowała
+
 gas.carbondioxide.name=Dwutlenek Węgla
 gas.oxygen.name=Tlen
 gas.nitrogen.name=Azot
+
 gui.desc.reinforcedPlateT2.name=Poziom 2
-itemGroup.GalacticraftMars=Galacticraft Mars
 dimension.Mars.name=Mars
 planet.mars=Mars
+
 tile.treasureT2.description=Skrzynia Skrabów Poziomu 2 jest generowana w lochach Marsa. Można ją otworzyć po pokonaniu finałowego Bossa.
 tile.cavernVines.description=Trujące Pnącza to niebiezpieczne żywe istoty. Oplatają ofiarę i wciągają ją w górę.
 tile.slimelingEgg.description=Jaja Slimelingów, uderzone raz przez pięść gracza, wykluje się w zwierzaka.
@@ -149,6 +150,8 @@ tile.creeperEgg.description=Jaja Creepera powstają w lochach Marsa. Tworzą Cre
 tile.gasLiquefier.description=Skrapla gazy, zarówno z atmosfery jak i z kanistrów. Skroplony Metan jest świetnym paliwem rakietowym!
 tile.methaneSynthesizer.description=Z źródłem wodoru i węgla, Syntezator Metanu łączy oba pierwiastki tworząc metan przeznaczony do dalszej obróbki w Skraplaczu Gazów.
 tile.electrolyzer.description=Przemienia wode ma wodór (używany w Syntezatorze Metanu) i tlen.
+tile.hydrogenPipe.description=Hydrogen Pipe will transfer hydrogen from one machine's internal gas tank to another.  ##NEEDS TRANSLATE##
+
 gui.slimeling.chat.wrongPlayer=To nie jest mój Slimeling!
 gui.cryogenic.chat.cantUse=Nie mogę tego użyć przez następne %d sekundy,
 gui.slimeling.name=Nazwa
@@ -161,27 +164,28 @@ gui.slimeling.sitting=Siedzi
 gui.slimeling.following=Podąża
 gui.slimeling.damage=Obrażenia
 gui.slimeling.food=Ulubione jedzenie
+
+# SCHEMATICS
 schematic.rocketT3.name=Rakieta Poziomu 3
 schematic.cargoRocket.name=Automatyczna Rakieta Transportowa
+
+# ENTITIES
 entity.Sludgeling.name=Sludgeling
 entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Kosmiczny Creeper Boss
-entity.SpaceshipT2.name=Rakieta Poziomu 2
-entity.CargoRocket.name=Rakieta Transportowa
+entity.GalacticraftMars.SpaceshipT2.name=Rakieta Poziomu 2
+entity.GalacticraftMars.CargoRocket.name=Rakieta Transportowa
+
+# CONTAINERS
 container.launchcontroller.name=Kontroler Startu
 container.tileTerraformer.name=Terraformator
 container.marsLander.name=Balony Lądownicze
+
+# CONFIG GUI
 gc.configgui.dimensionIDMars=ID wymiaru Marsa
-gc.configgui.idEntityCreeperBoss=ID bytu Kosmiczny Creeper Boss
-gc.configgui.idEntityProjectileTNT=ID bytu Pocisk TNT
-gc.configgui.idEntitySpaceshipTier2=ID bytu Rakieta Poziom 2
-gc.configgui.idEntitySludgeling=ID bytu Sludgeling
-gc.configgui.idEntitySlimeling=ID bytu Slimeling
-gc.configgui.idEntityTerraformBubble=ID bytu Bańka Terraformacyjna
-gc.configgui.idEntityLandingBalloons=ID bytu Balony Lądownicze
-gc.configgui.idEntityCargoRocket=ID bytu Rakieta Transportowa
 gc.configgui.idSchematicRocketT2=ID bytu Schematy Rakiety Poziomu 2
 gc.configgui.idSchematicCargoRocket=ID bytu Schematy Rakiety Transportowej
 gc.configgui.launchControllerChunkLoad=Ładowanie Chunków Kontrolera Startu
 gc.configgui.launchControllerAllDims=Kontroler Startu we Wszystkich Wymiarach
+
 gc.configgui.planets.title=Konfiguracja Planet Galacticraft

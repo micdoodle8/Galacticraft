@@ -1,12 +1,12 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
+import micdoodle8.mods.galacticraft.api.inventory.IInventoryGC;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-public class InventoryExtended implements IInventory
+public class InventoryExtended implements IInventoryGC
 {
     public ItemStack[] inventoryStacks = new ItemStack[10];
 
@@ -189,11 +189,12 @@ public class InventoryExtended implements IInventory
         return tagList;
     }
 
-    public void copyInventory(InventoryExtended par1InventoryPlayer)
+    public void copyInventory(IInventoryGC par1InventoryPlayer)
     {
-        for (int i = 0; i < this.inventoryStacks.length; ++i)
+    	InventoryExtended toCopy = (InventoryExtended) par1InventoryPlayer;
+    	for (int i = 0; i < this.inventoryStacks.length; ++i)
         {
-            this.inventoryStacks[i] = ItemStack.copyItemStack(par1InventoryPlayer.inventoryStacks[i]);
+            this.inventoryStacks[i] = ItemStack.copyItemStack(toCopy.inventoryStacks[i]);
         }
     }
 }

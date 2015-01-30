@@ -770,6 +770,12 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
         return this.getMaxEnergyStoredGC() * EnergyConfigHandler.TO_MEKANISM_RATIO;
     }
 
+    @RuntimeInterface(clazz = "mekanism.api.energy.ICableOutputter", modID = "Mekanism")
+    public boolean canOutputTo(ForgeDirection side)
+    {
+        return false;
+    }
+
     @Override
     public ReceiverMode getModeFromDirection(ForgeDirection direction)
     {

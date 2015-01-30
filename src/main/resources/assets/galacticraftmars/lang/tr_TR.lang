@@ -50,9 +50,12 @@ tile.marsMachine.2.name=Fırlatma Kontrollü
 tile.marsMachine.4.name=Gaz Sıvılaştırıcı
 tile.marsMachine.5.name=Metan Birleştirici
 tile.marsMachine.6.name=Su Elektroliz Cihazı
+tile.hydrogenPipe.name=Hydrogen Pipe ##NEEDS TRANSLATE##
 tile.sludge.name=Bakteriyelli Çamur
 tile.creeperEgg.name=Creeper Yumurtası
 tile.cavernVines.name=Cavernous Vines
+
+# DECOBLOCKS
 tile.marsCobblestoneStairs.name=Mars Cobblestone Stairs ##NEEDS TRANSLATE##
 tile.wallGC.mars.name=Mars Cobblestone Wall ##NEEDS TRANSLATE##
 tile.slabGCHalf.marsSlab.name=Mars Cobblestone Slab ##NEEDS TRANSLATE##
@@ -147,6 +150,8 @@ tile.creeperEgg.description=Creeper Yumurtası Mars zindanlarında bulunur, spaw
 tile.gasLiquefier.description=Gaz Sıvılaştırıcı, metan gazını atmosferden veya teneke kutudan alarak iyi bir roket yakıtı yapın.
 tile.methaneSynthesizer.description=Karbon ve hidrojenin ana kaynağı. Gaz sıvılaştırıcı için metan gazı sağlar.
 tile.electrolyzer.description=Transforms water into hydrogen (useful for the Methane Synthesizer) and oxygen. ##NEEDS TRANSLATE##
+tile.hydrogenPipe.description=Hydrogen Pipe will transfer hydrogen from one machine's internal gas tank to another. ##NEEDS TRANSLATE##
+
 gui.slimeling.chat.wrongPlayer=This isn't my Slimeling! ##NEEDS TRANSLATE##
 gui.cryogenic.chat.cantUse=I can't use this for another %d seconds ##NEEDS TRANSLATE##
 gui.slimeling.name=Name ##NEEDS TRANSLATE##
@@ -168,24 +173,19 @@ schematic.cargoRocket.name=Otomatik Kargo Roketi
 entity.Sludgeling.name=Sludgeling
 entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Evrimleşmiş Creeper Patronu
-entity.SpaceshipT2.name=Tier 2 Roketi
-entity.CargoRocket.name=Kargo Roketi
+entity.GalacticraftMars.SpaceshipT2.name=Tier 2 Roketi
+entity.GalacticraftMars.CargoRocket.name=Kargo Roketi
 
 # CONTAINERS
 container.launchcontroller.name=Fırlatma Kontrollü
 container.tileTerraformer.name=Terraformer
 container.marsLander.name=Landing Balloons ##NEEDS TRANSLATE##
+
+# CONFIG GUI
 gc.configgui.dimensionIDMars=Mars Dimension ID
-gc.configgui.idEntityCreeperBoss=Creeper Boss Entity ID
-gc.configgui.idEntityProjectileTNT=Projectile TNT Entity ID
-gc.configgui.idEntitySpaceshipTier2=Tier 2 Rocket Entity ID
-gc.configgui.idEntitySludgeling=Sludgeling Entity ID
-gc.configgui.idEntitySlimeling=Slimeling Entity ID
-gc.configgui.idEntityTerraformBubble=Terraform Bubble Entity ID
-gc.configgui.idEntityLandingBalloons=Landing Balloons Entity ID
-gc.configgui.idEntityCargoRocket=Cargo Rocket Entity ID
 gc.configgui.idSchematicRocketT2=Tier 2 Rocket Schematic ID
 gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID
 gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
 gc.configgui.launchControllerAllDims=Launch Controller All Dimensions
+
 gc.configgui.planets.title=Galacticraft Planets Config ##NEEDS TRANSLATE##

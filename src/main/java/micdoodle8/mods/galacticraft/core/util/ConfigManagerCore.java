@@ -9,6 +9,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -31,6 +32,7 @@ public class ConfigManagerCore
     public static int idDimensionOverworldOrbit;
     public static int idDimensionOverworldOrbitStatic;
     public static int idDimensionMoon;
+    public static int biomeIDbase = 102;
 
     // SCHEMATICS
     public static int idSchematicRocketT1;
@@ -119,6 +121,13 @@ public class ConfigManagerCore
             prop.comment = "Dimension ID for Static Overworld Space Stations";
             prop.setLanguageKey("gc.configgui.idDimensionOverworldOrbitStatic").setRequiresMcRestart(true);
             idDimensionOverworldOrbitStatic = prop.getInt();
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "biomeIDBase", 102);
+            prop.comment = "Biome ID for Moon (Mars will be this + 1, Asteroids + 2 etc). Allowed range 40-250.";
+            prop.setLanguageKey("gc.configgui.biomeIDBase").setRequiresMcRestart(true);
+            biomeIDbase = prop.getInt();
+            if (biomeIDbase < 40 || biomeIDbase > 250) biomeIDbase = 102;
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "Static Loaded Dimensions", ConfigManagerCore.staticLoadDimensions);
@@ -546,8 +555,9 @@ public class ConfigManagerCore
     	returnList.add(ConfigManagerCore.suffocationDamage);
     	returnList.add(ConfigManagerCore.suffocationCooldown);
     	returnList.add(ConfigManagerCore.rocketFuelFactor);
-    	returnList.add(ConfigManagerCore.detectableIDs.clone());
+    	EnergyConfigHandler.serverConfigOverride(returnList);
     	
+    	returnList.add(ConfigManagerCore.detectableIDs.clone());  	
     	//TODO Should this include any other client-side configurables too?
     	//If changing this, update definition of EnumSimplePacket.C_UPDATE_CONFIGS
     	return returnList;
@@ -561,18 +571,21 @@ public class ConfigManagerCore
     	ConfigManagerCore.suffocationDamage = (Integer) configs.get(2);
     	ConfigManagerCore.suffocationCooldown = (Integer) configs.get(3);
     	ConfigManagerCore.rocketFuelFactor = (Integer) configs.get(4);
-    	int sizeIDs = configs.size() - 5;
+    	
+    	EnergyConfigHandler.setConfigOverride((Float) configs.get(5), (Float) configs.get(6), (Float) configs.get(7), (Float) configs.get(8), (Integer) configs.get(9));
+    	
+    	int sizeIDs = configs.size() - 10;
     	if (sizeIDs > 0)
     	{
-    		if (configs.get(5) instanceof String)
+    		if (configs.get(10) instanceof String)
     		{
     			ConfigManagerCore.detectableIDs = new String[sizeIDs];
 		    	for (int j = 0; j < sizeIDs; j++)
-		    	ConfigManagerCore.detectableIDs[j] = new String((String) configs.get(5 + j));
+		    	ConfigManagerCore.detectableIDs[j] = new String((String) configs.get(10 + j));
     		}
-    		else if (configs.get(5) instanceof String[])
+    		else if (configs.get(10) instanceof String[])
     		{
-    			ConfigManagerCore.detectableIDs = ((String[])configs.get(5));
+    			ConfigManagerCore.detectableIDs = ((String[])configs.get(10));
     		}
         	TickHandlerClient.registerDetectableBlocks(false);
     	}

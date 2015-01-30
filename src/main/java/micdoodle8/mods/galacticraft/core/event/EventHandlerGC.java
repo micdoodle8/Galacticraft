@@ -64,7 +64,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenDesert;
 import net.minecraftforge.client.event.sound.PlaySoundEvent17;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -164,13 +164,16 @@ public class EventHandlerGC
     @SubscribeEvent
     public void onPlayerClicked(PlayerInteractEvent event)
     {
-        final ItemStack heldStack = event.entityPlayer.inventory.getCurrentItem();
-
+        //Skip events triggered from Thaumcraft Golems and other non-players
+    	if (event.entityPlayer == null || event.entityPlayer.inventory == null) return;
+        
+    	final ItemStack heldStack = event.entityPlayer.inventory.getCurrentItem();
         final TileEntity tileClicked = event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z);
-        final Block idClicked = event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z);
 
         if (heldStack != null)
         {
+            final Block idClicked = event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z);
+
             if (tileClicked != null && tileClicked instanceof IKeyable)
             {
                 if (event.action.equals(PlayerInteractEvent.Action.LEFT_CLICK_BLOCK))
@@ -570,23 +573,25 @@ public class EventHandlerGC
     }
 
     @SubscribeEvent
-    public void onPlayerDeath(LivingDeathEvent event)
+    public void onPlayerDeath(PlayerDropsEvent event)
     {
         if (event.entityLiving instanceof EntityPlayerMP)
         {
             GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) event.entityLiving);
             if (!event.entityLiving.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
             {
-                for (int i = 0; i < stats.extendedInventory.getSizeInventory(); i++)
+            	event.entityLiving.captureDrops = true;
+                for (int i = stats.extendedInventory.getSizeInventory() - 1; i >= 0; i--)
                 {
                     ItemStack stack = stats.extendedInventory.getStackInSlot(i);
 
                     if (stack != null)
                     {
-                        ((EntityPlayerMP) event.entityLiving).dropPlayerItemWithRandomChoice(stack, true);
+                        ((EntityPlayerMP) event.entityLiving).func_146097_a(stack, true, false);
                         stats.extendedInventory.setInventorySlotContents(i, null);
                     }
                 }
+                event.entityLiving.captureDrops = false;
             }
         }
     }

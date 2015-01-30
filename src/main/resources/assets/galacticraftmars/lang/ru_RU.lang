@@ -50,6 +50,7 @@ tile.marsMachine.2.name=Контроллер запуска
 tile.marsMachine.4.name=Сжижитель газа
 tile.marsMachine.5.name=Синтезатор метана
 tile.marsMachine.6.name=Электролизёр воды
+tile.hydrogenPipe.name=Труба для водорода
 tile.sludge.name=Бактериальный осадок
 tile.creeperEgg.name=Яйцо крипера
 tile.cavernVines.name=Пещерные лианы
@@ -149,6 +150,7 @@ tile.creeperEgg.description=Яйца крипера появляются в со
 tile.gasLiquefier.description=Разжижает газы из атмосферы или из канистры. Сжиженный метан подходит для хорошего ракетного топлива!
 tile.methaneSynthesizer.description=При наличии источника водорода и источника углерода, он производит метан для дальнейшей обработки в сжижители газа.
 tile.electrolyzer.description=Преобразует воду в водород (Нужен для синтезатора метана) и кислород.
+tile.hydrogenPipe.description=Труба для водорода будет передавать водород из внутреннего резервуара одного механизма к другому.
 
 gui.slimeling.chat.wrongPlayer=Это не мой слаймлинг!
 gui.cryogenic.chat.cantUse=Я не могу использовать это в течение %d секунд(-ы)
@@ -171,8 +173,8 @@ schematic.cargoRocket.name=Автоматическая грузовая рак�
 entity.Sludgeling.name=Сладжлинг
 entity.Slimeling.name=Слаймлинг
 entity.CreeperBoss.name=Эволюционировавший крипер-босс
-entity.SpaceshipT2.name=Ракета 2-го уровня
-entity.CargoRocket.name=Грузовая ракета
+entity.GalacticraftMars.SpaceshipT2.name=Ракета 2-го уровня
+entity.GalacticraftMars.CargoRocket.name=Грузовая ракета
 
 # CONTAINERS
 container.launchcontroller.name=Контроллер запуска
@@ -181,14 +183,6 @@ container.marsLander.name=Посадочные шары
 
 # CONFIG GUI
 gc.configgui.dimensionIDMars=ID измерения: Марс
-gc.configgui.idEntityCreeperBoss=ID сущности: Эволюционировавший крипер-босс
-gc.configgui.idEntityProjectileTNT=ID сущности: Метательный динамит
-gc.configgui.idEntitySpaceshipTier2=ID сущности: Ракета 2-го уровня
-gc.configgui.idEntitySludgeling=ID сущности: Сладжлинг
-gc.configgui.idEntitySlimeling=ID сущности: Слаймлинг
-gc.configgui.idEntityTerraformBubble=ID сущности: Терраформирующий пузырь
-gc.configgui.idEntityLandingBalloons=ID сущности: Посадочные шары
-gc.configgui.idEntityCargoRocket=ID сущности: Грузовая ракета
 gc.configgui.idSchematicRocketT2=ID схемы: Ракета 2-го уровня
 gc.configgui.idSchematicCargoRocket=ID схемы: Грузовая ракета
 gc.configgui.launchControllerChunkLoad=Загрузка чанков контроллером запуска

@@ -53,6 +53,8 @@ tile.marsMachine.6.name=Water Electrolyzer
 tile.sludge.name=Bacterial Sludge
 tile.creeperEgg.name=Creeper Egg
 tile.cavernVines.name=Cavernous Vines
+
+# DECOBLOCKS
 tile.marsCobblestoneStairs.name=Mars Cobblestone Stairs
 tile.wallGC.mars.name=Mars Cobblestone Wall
 tile.slabGCHalf.marsSlab.name=Mars Cobblestone Slab
@@ -160,32 +162,27 @@ gui.slimeling.following=Following
 gui.slimeling.damage=Attack Damage
 gui.slimeling.food=Favourite food
 
-# Schematics
+# SCHEMATICS
 schematic.rocketT3.name=Tier 3 Rocket
 schematic.cargoRocket.name=Automatic Cargo Rocket
 
-# Entities
+# ENTITIES
 entity.Sludgeling.name=Sludgeling
 entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Evolved Creeper Boss
-entity.SpaceshipT2.name=Tier 2 Rocket
-entity.CargoRocket.name=Cargo Rocket
+entity.GalacticraftMars.SpaceshipT2.name=Tier 2 Rocket
+entity.GalacticraftMars.CargoRocket.name=Cargo Rocket
 
-# Container
+# CONTAINERS
 container.launchcontroller.name=Launch Controller
 container.tileTerraformer.name=Terraformer
 container.marsLander.name=Landing Balloons ##NEEDS TRANSLATE##
+
+# CONFIG GUI
 gc.configgui.dimensionIDMars=Mars Dimension ID
-gc.configgui.idEntityCreeperBoss=Creeper Boss Entity ID
-gc.configgui.idEntityProjectileTNT=Projectile TNT Entity ID
-gc.configgui.idEntitySpaceshipTier2=Tier 2 Rocket Entity ID
-gc.configgui.idEntitySludgeling=Sludgeling Entity ID
-gc.configgui.idEntitySlimeling=Slimeling Entity ID
-gc.configgui.idEntityTerraformBubble=Terraform Bubble Entity ID
-gc.configgui.idEntityLandingBalloons=Landing Balloons Entity ID
-gc.configgui.idEntityCargoRocket=Cargo Rocket Entity ID
 gc.configgui.idSchematicRocketT2=Tier 2 Rocket Schematic ID
 gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID
 gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
 gc.configgui.launchControllerAllDims=Launch Controller All Dimensions
+
 gc.configgui.planets.title=Galacticraft Planets Config

@@ -18,19 +18,19 @@ public class EnergyDisplayHelper
     {
         if (EnergyConfigHandler.displayEnergyUnitsIC2)
         {
-            return getEnergyDisplayIC2(energyVal * EnergyConfigHandler.TO_IC2_RATIO);
+            return getEnergyDisplayIC2(energyVal * EnergyConfigHandler.TO_IC2_RATIOdisp);
         }
         else if (EnergyConfigHandler.displayEnergyUnitsBC)
         {
-            return getEnergyDisplayBC(energyVal * EnergyConfigHandler.TO_BC_RATIO);
+            return getEnergyDisplayBC(energyVal * EnergyConfigHandler.TO_BC_RATIOdisp);
         }
         else if (EnergyConfigHandler.displayEnergyUnitsMek)
         {
-            return getEnergyDisplayMek(energyVal * EnergyConfigHandler.TO_MEKANISM_RATIO);
+            return getEnergyDisplayMek(energyVal * EnergyConfigHandler.TO_MEKANISM_RATIOdisp);
         }
         else if (EnergyConfigHandler.displayEnergyUnitsRF)
         {
-            return getEnergyDisplayRF(energyVal * EnergyConfigHandler.TO_RF_RATIO);
+            return getEnergyDisplayRF(energyVal * EnergyConfigHandler.TO_RF_RATIOdisp);
         }
         String val = String.valueOf(getEnergyDisplayI(energyVal));
         String newVal = "";

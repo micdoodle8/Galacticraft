@@ -2,11 +2,12 @@ package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public class BiomeGenBaseMars extends BiomeGenBase
 {
-    public static final BiomeGenBase marsFlat = new BiomeGenFlagMars(103).setBiomeName("marsFlat");
+    public static final BiomeGenBase marsFlat = new BiomeGenFlagMars(ConfigManagerCore.biomeIDbase + 1).setBiomeName("marsFlat");
 
     @SuppressWarnings("unchecked")
     BiomeGenBaseMars(int var1)

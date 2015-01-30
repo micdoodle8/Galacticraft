@@ -125,6 +125,10 @@ public class GCPlayerHandler
         GCPlayerStats stats = GCPlayerStats.get(player);
 
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_GET_CELESTIAL_BODY_LIST, new Object[] { }), player);
+        int repeatCount = stats.buildFlags >> 9;
+        if (repeatCount < 3)
+        	stats.buildFlags &= 1536;
+		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATS, new Object[] { stats.buildFlags }), player);
     }
 
     private void onPlayerLogout(EntityPlayerMP player)

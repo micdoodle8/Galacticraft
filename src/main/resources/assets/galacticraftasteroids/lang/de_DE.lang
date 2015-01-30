@@ -7,7 +7,7 @@ item.compressedTitanium.name=Gepresstes Titan
 item.ingotTitanium.name=Titanbarren
 item.shardTitanium.name=Titanscherbe
 item.shardIron.name=Eisenscherbe
-item.rocketFinsT2.name=Schwere Racketenfinnen
+item.rocketFinsT2.name=Schwere Raketenfinnen
 item.engineT2.name=Schwerer Raketenmotor
 item.reinforcedPlateT3.name=Robuste Platte
 item.grapple.name=Greifhaken
@@ -57,9 +57,9 @@ fluid.carbondioxide=CO2
 fluid.helium=Helium
 fluid.argon=Argon
 fluid.atmosphericgases=Atmosphärische Gase
-fluid.liquidmethane=Flüssigmethan
+fluid.liquidmethane=Flüssiges Methan
 fluid.liquidoxygen=Flüssiger Sauerstoff
-fluid.liquidnitrogen=Flüssigstickstoff
+fluid.liquidnitrogen=Flüssiger Stickstoff
 fluid.liquidargon=Flüssiges Argon
 fluid.fuel=Treibstoff
 
@@ -69,13 +69,13 @@ tile.asteroidsBlock.asteroid1.name=Asteroidgestein
 tile.asteroidsBlock.asteroid2.name=Asteroidgestein
 tile.asteroidsBlock.oreIron.name=Eisenerz
 tile.asteroidsBlock.oreIlmenite.name=Ilmeniterz
-tile.asteroidsBlock.oreAluminum.name=Aluminumerz
+tile.asteroidsBlock.oreAluminum.name=Aluminiumerz
 tile.beamReflector.name=Strahlenreflektor
 tile.beamReceiver.name=Strahlenempfänger
 tile.telepadShort.name=Kurzreichweiten-Telepad
-tile.walkway.name=Laufweg
-tile.walkwayWire.name=Laufweg
-tile.walkwayOxygenPipe.name=Laufweg
+tile.walkway.name=Gehweg
+tile.walkwayWire.name=Gehweg
+tile.walkwayOxygenPipe.name=Gehweg
 tile.treasureT3.name=Schatztruhe (Stufe 3)
 tile.denseIce.name=Dichtes Eis
 
@@ -84,29 +84,29 @@ planet.asteroids=Asteroiden
 
 	# Dollar sign ($) will split text onto a new line
 	# Do not remove %s or %d, since that will be replaced in-game
-gui.telepad.desc.0=Dies ist die spezifische$Adresse des Telepads
+gui.telepad.desc.0=Dies ist die eindeutige$Adresse des Telepads
 gui.telepad.desc.1=Adresse eines anderen Telepads.$Entities werden dort hin gesendet.
 gui.message.address.name=Adresse
 gui.message.destAddress.name=Zieladresse
-gui.message.invalidAddress.name=Ungültige spezifische Adresse
+gui.message.invalidAddress.name=Ungültige eindeutige Adresse
 gui.message.invalidTargetAddress.name=Ungültige Zieladresse
-gui.message.receivingActive.name=Emfangen Aktiviert
+gui.message.receivingActive.name=Empfangen aktiviert
 gui.message.telepadTooFar.name=Ziel zu weit weg! (Max %d) 
-gui.message.telepadWrongDim.name=Das Ziel is in der falschen Dimension!
+gui.message.telepadWrongDim.name=Das Ziel ist in der falschen Dimension!
 gui.message.telepadNotFound.name=Telepad nicht gefunden!
-gui.message.sendingActive.name=Senden Aktiviert
+gui.message.sendingActive.name=Senden aktiviert
 gui.message.range.name=Reichweite: %dm
-gui.message.notEnoughEnergy.name=Night genug Energie!
+gui.message.notEnoughEnergy.name=Nicht genug Energie!
 gui.message.targetNoEnergy.name=Ziel hat nicht genügend Energie! 
-gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook! ##NEEDS TRANSLATE##
+gui.message.grapple.fail=Ich brauche einen Faden, wenn ich den Greifhaken werfen will!
 
-tile.treasureT3.description=Tier 3 Treasure Chests are currently unused.
-tile.walkway.description=Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme.
-tile.walkwayAluminumWire.description=Aluminum Wire Walkways are used for running wire underneath a fully solid walkable surface.
-tile.walkwayOxygenPipe.description=Oxygen Pipe Walkways are used for running pipes underneath a fully solid walkable surface.
-tile.beamReflector.description=Beam Reflectors are used to redirect energy beams from source to destination. Can be right-clicked to cycle through targets.
-tile.beamReceiver.description=Beam Receivers are connected to energy machine input and output, to transfer energy using beams.
-tile.telepadShort.description=Short Range Telepads are used to transfer players and other living creatures short distances (250 Blocks) when linked to other telepads.
+tile.treasureT3.description=Schatztruhen der Stufe 3 werden zur Zeit nicht benutzt.
+tile.walkway.description=Gehwege können für Dekorationszwecke benutzt werden und um Blöcke zu verbinden.
+tile.walkwayAluminumWire.description=Aluminumkabelgehwege werden benutzt um Kabel unter einer vollständig begehbaren Oberfläche zu verlegen.
+tile.walkwayOxygenPipe.description=Sauerstoffleitungsgehwege werden benutzt um Sauerstoffleitungen unter einer vollständig begehbaren Oberfläche zu verlegen.
+tile.beamReflector.description=Strahlenreflektoren werden benutzt um Energiestrahlen von der Quelle zum Ziel weiterzuleiten. Kann rechtsgeklickt werden um das Ziel umzuschalten.
+tile.beamReceiver.description=Strahlenempfänger werden mit den Energieein- und ausgängen von Maschinen verbunden um Energie über Strahlen zu übertragen.
+tile.telepadShort.description=Kurzreichweiten-Telepads werden benutzt um Spieler und andere Lebewesen über kurze Distanzen (250 Blöcke) zu teleportieren, wenn sie mit anderen Telepads verbunden sind.
 
 # SCHEMATICS
 
@@ -116,7 +116,7 @@ entity.GrappleHookGC.name=Greifhaken
 entity.Tier3RocketGC.name=Rakete (Stufe 3)
 
 # CONTAINERS
-container.shortRangeTelepad.name=Short Range Telepad
+container.shortRangeTelepad.name=Kurzreichweiten-Telepad
 container.entryPod.name=Entry Pod
 gc.configgui.dimensionIDAsteroids=Asteroids Dimension ID
 gc.configgui.idEntitySmallAsteroid=Small Asteroid Entity ID

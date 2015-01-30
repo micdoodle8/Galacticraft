@@ -4,6 +4,8 @@ import java.lang.reflect.Method;
 
 import cofh.api.energy.IEnergyConnection;
 import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyProvider;
+import cofh.api.energy.IEnergyReceiver;
 import buildcraft.api.mj.MjAPI;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
@@ -27,6 +29,8 @@ public class EnergyUtil
 {
     private static boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
     private static boolean isRFLoaded = EnergyConfigHandler.isRFAPILoaded();
+    private static boolean isRF1Loaded = EnergyConfigHandler.isRFAPIv1Loaded();
+    private static boolean isRF2Loaded = EnergyConfigHandler.isRFAPIv2Loaded();
     private static boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded();
     private static boolean isBCLoaded = EnergyConfigHandler.isBuildcraftLoaded();
     private static boolean isBC6Loaded = isBCLoaded && EnergyConfigHandler.getBuildcraftVersion() == 6;
@@ -79,7 +83,7 @@ public class EnergyUtil
             }
             else if (isRFLoaded && tileEntity instanceof IEnergyConnection)
             {
-                if (tileEntity instanceof IEnergyHandler)
+                if (isRF1Loaded && tileEntity instanceof IEnergyHandler || isRF2Loaded && (tileEntity instanceof IEnergyProvider || tileEntity instanceof IEnergyReceiver))
                 {
                     //Do not connect GC wires directly to power conduits
                     try {
@@ -88,7 +92,7 @@ public class EnergyUtil
                             continue;
                         }
                     } catch (Exception e) { }
-	                if (((IEnergyHandler)tileEntity).canConnectEnergy(direction.getOpposite()))
+	                if (((IEnergyConnection)tileEntity).canConnectEnergy(direction.getOpposite()))
 	                	adjacentConnections[direction.ordinal()] = tileEntity;
                 }
                 continue;
@@ -210,9 +214,13 @@ public class EnergyUtil
                 return (float) result * EnergyConfigHandler.IC2_RATIO;
             }
         }
-        else if (isRFLoaded && tileAdj instanceof IEnergyHandler)
+        else if (isRF1Loaded && tileAdj instanceof IEnergyHandler)
         {
         	return ((IEnergyHandler)tileAdj).receiveEnergy(inputAdj, MathHelper.floor_float(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) * EnergyConfigHandler.RF_RATIO;
+        }
+        else if (isRF2Loaded && tileAdj instanceof IEnergyReceiver)
+        {
+        	return ((IEnergyReceiver)tileAdj).receiveEnergy(inputAdj, MathHelper.floor_float(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) * EnergyConfigHandler.RF_RATIO;
         }
         else if (isBC6Loaded && MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, inputAdj) != null)
         //New BC API
@@ -260,9 +268,9 @@ public class EnergyUtil
         {
             return ((IEnergyAcceptor) tileAdj).acceptsEnergyFrom(null, inputAdj);
         }
-        else if (isRFLoaded && tileAdj instanceof IEnergyHandler)
+        else if (isRF1Loaded && tileAdj instanceof IEnergyHandler || isRF2Loaded && tileAdj instanceof IEnergyReceiver)
         {
-        	return ((IEnergyHandler)tileAdj).canConnectEnergy(inputAdj);
+        	return ((IEnergyConnection)tileAdj).canConnectEnergy(inputAdj);
         }
         else if (isBC6Loaded && MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, inputAdj) != null)
         //New BC API

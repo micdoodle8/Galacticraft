@@ -5,6 +5,8 @@ import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.command.CommandGCInv;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -187,6 +189,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
         nbt.setInteger("CryogenicChamberCooldown", this.cryogenicChamberCooldown);
         nbt.setBoolean("ReceivedSoundWarning", this.receivedSoundWarning);
         nbt.setInteger("BuildFlags", this.buildFlags);
+        if (ConfigManagerCore.enableDebug) GCLog.info("Saving GC player data for " + player.get().getGameProfile().getName()  + " : " + this.buildFlags);
     }
 
     @Override
@@ -303,6 +306,8 @@ public class GCPlayerStats implements IExtendedEntityProperties
 
         if (nbt.hasKey("BuildFlags"))
         	this.buildFlags = nbt.getInteger("BuildFlags");
+
+        if (ConfigManagerCore.enableDebug) GCLog.info("Loading GC player data for " + player.get().getGameProfile().getName() + " : " + this.buildFlags);
     }
 
     @Override
@@ -332,5 +337,6 @@ public class GCPlayerStats implements IExtendedEntityProperties
         this.receivedSoundWarning = oldData.receivedSoundWarning;
         this.openedSpaceRaceManager = oldData.openedSpaceRaceManager;
         this.spaceRaceInviteTeamID = oldData.spaceRaceInviteTeamID;
+        this.buildFlags = oldData.buildFlags;
     }
 }

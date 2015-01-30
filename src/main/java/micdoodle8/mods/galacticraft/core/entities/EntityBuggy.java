@@ -13,6 +13,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketEntityUpdate.IEntityFullS
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFueler;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
@@ -64,7 +65,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     public EntityBuggy(World var1)
     {
         super(var1);
-        this.setSize(0.98F, 1.7F);
+        this.setSize(0.98F, 1F);
         this.yOffset = 2.5F;
         this.currentDamage = 18;
         this.timeSinceHit = 19;
@@ -363,7 +364,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 
         if (!this.onGround)
         {
-            this.motionY -= 0.04D;
+            this.motionY -= WorldUtil.getGravityForEntity(this) * 0.5D;
         }
 
         if (this.inWater && this.speed > 0.2D)
@@ -413,14 +414,9 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketEntityUpdate(this));
         }
-
-        if (!this.worldObj.isRemote && this.ticks % 5 == 0)
+        else if (this.ticks % 5 == 0)
         {
             GalacticraftCore.packetPipeline.sendToAllAround(new PacketEntityUpdate(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 50.0D));
-        }
-
-        if (!this.worldObj.isRemote && this.ticks % 5 == 0)
-        {
             GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 50.0D));
         }
     }

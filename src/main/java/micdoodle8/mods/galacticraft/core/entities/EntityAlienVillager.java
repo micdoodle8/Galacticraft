@@ -36,7 +36,7 @@ public class EntityAlienVillager extends EntityAgeable implements IEntityBreatha
         this.isMating = false;
         this.isPlaying = false;
         this.villageObj = null;
-        this.setSize(0.6F, 1.8F);
+        this.setSize(0.6F, 2.35F);
         this.getNavigator().setBreakDoors(true);
         this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
