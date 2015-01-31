@@ -96,7 +96,6 @@ import java.net.URLConnection;
 import java.nio.FloatBuffer;
 import java.util.*;
 import java.util.List;
-import java.util.Map.Entry;
 
 public class ClientProxyCore extends CommonProxyCore
 {
@@ -299,6 +298,7 @@ public class ClientProxyCore extends CommonProxyCore
             e.printStackTrace();
         }
 
+        /**
         if (Loader.isModLoaded("CoFHCore"))
         {
             for (Entry<String, String> e : ClientProxyCore.capeMap.entrySet())
@@ -315,6 +315,7 @@ public class ClientProxyCore extends CommonProxyCore
                 }
             }
         }
+        **/
     }
 
     private static void updateCapeList() throws Exception
