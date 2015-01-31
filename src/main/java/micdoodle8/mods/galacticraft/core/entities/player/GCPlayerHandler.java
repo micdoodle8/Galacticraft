@@ -1102,7 +1102,7 @@ public class GCPlayerHandler
 
         this.updateSchematics(player, GCPlayer);
 
-        if (tick % 250 == 0 && GCPlayer.frequencyModuleInSlot == null && !GCPlayer.receivedSoundWarning && isInGCDimension && player.onGround && tick > 0)
+        if (tick % 250 == 0 && GCPlayer.frequencyModuleInSlot == null && !GCPlayer.receivedSoundWarning && isInGCDimension && player.onGround && tick > 0 && ((IGalacticraftWorldProvider)player.worldObj.provider).getSoundVolReductionAmount() > 1.0F)
         {
             player.addChatMessage(new ChatComponentText(EnumColor.YELLOW + GCCoreUtil.translate("gui.frequencymodule.warning0") + " " + EnumColor.AQUA + GCItems.basicItem.getItemStackDisplayName(new ItemStack(GCItems.basicItem, 1, 19)) + EnumColor.YELLOW + " " + GCCoreUtil.translate("gui.frequencymodule.warning1")));
             GCPlayer.receivedSoundWarning = true;
