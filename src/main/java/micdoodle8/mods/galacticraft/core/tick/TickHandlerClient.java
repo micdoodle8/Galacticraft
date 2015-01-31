@@ -15,6 +15,7 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
@@ -502,7 +503,7 @@ public class TickHandlerClient
                 player.motionY = 0;
             }
 
-            if (world != null && world.provider instanceof IGalacticraftWorldProvider)
+            if (world != null && world.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider)world.provider).hasBreathableAtmosphere() && !((IGalacticraftWorldProvider)world.provider).isGasPresent(IAtmosphericGas.OXYGEN))
             {
                 world.setRainStrength(0.0F);
             }

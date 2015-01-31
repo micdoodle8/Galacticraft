@@ -231,7 +231,7 @@ public class EventHandlerGC
         {
             if (!(event.entityLiving instanceof EntityPlayer))
             {
-                if ((!(event.entityLiving instanceof IEntityBreathable) || !((IEntityBreathable) event.entityLiving).canBreath()) && event.entityLiving.ticksExisted % 100 == 0)
+                if ((!(event.entityLiving instanceof IEntityBreathable) || !((IEntityBreathable) event.entityLiving).canBreath()) && !((IGalacticraftWorldProvider)event.entityLiving.worldObj.provider).hasBreathableAtmosphere() && !((IGalacticraftWorldProvider)event.entityLiving.worldObj.provider).isGasPresent(IAtmosphericGas.OXYGEN) && event.entityLiving.ticksExisted % 100 == 0)
                 {
                     if (!OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving))
                     {
