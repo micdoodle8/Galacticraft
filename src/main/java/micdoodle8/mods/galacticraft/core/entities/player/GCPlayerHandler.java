@@ -57,7 +57,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class GCPlayerHandler
 {
     private static final int OXYGENHEIGHTLIMIT = 450;
-    private static boolean isClient = FMLCommonHandler.instance().getEffectiveSide().isClient();
+    private boolean isClient = FMLCommonHandler.instance().getEffectiveSide().isClient();
 	private ConcurrentHashMap<UUID, GCPlayerStats> playerStatsMap = new ConcurrentHashMap<UUID, GCPlayerStats>();
 
     public ConcurrentHashMap<UUID, GCPlayerStats> getServerStatList()
