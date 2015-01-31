@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.item.IKeyable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -530,7 +529,7 @@ public class TileEntityTreasureChestMars extends TileEntityAdvanced implements I
     @Override
     public String getInventoryName()
     {
-        return FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT ? GCCoreUtil.translate("container.treasurechest.name") : GCCoreUtil.translate("container.treasurechest.name");
+        return GCCoreUtil.translate("container.treasurechest.name");
     }
 
     @Override

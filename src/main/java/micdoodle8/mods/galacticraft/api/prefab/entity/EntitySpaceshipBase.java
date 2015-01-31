@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.api.prefab.entity;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
@@ -368,7 +367,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     @Override
     public void getNetworkedData(ArrayList<Object> list)
     {
-        if (FMLCommonHandler.instance().getEffectiveSide() != Side.SERVER)
+        if (this.worldObj.isRemote)
         {
             new Exception().printStackTrace();
         }

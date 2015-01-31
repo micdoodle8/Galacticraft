@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
@@ -166,7 +164,7 @@ public class EntityFlag extends Entity
     {
         super.onUpdate();
 
-        if ((this.ticksExisted - 1) % 20 == 0 && this.worldObj.isRemote && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        if ((this.ticksExisted - 1) % 20 == 0 && this.worldObj.isRemote)
         {
             this.flagData = ClientUtil.updateFlagData(this.getOwner(), Minecraft.getMinecraft().thePlayer.getDistanceToEntity(this) < 50.0D);
         }

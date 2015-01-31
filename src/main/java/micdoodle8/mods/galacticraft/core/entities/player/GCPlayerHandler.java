@@ -99,7 +99,7 @@ public class GCPlayerHandler
             GCPlayerStats.register((EntityPlayerMP) event.entity);
         }
 
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        if (event.entity.worldObj.isRemote)
         {
             this.onEntityConstructingClient(event);
         }
@@ -634,7 +634,7 @@ public class GCPlayerHandler
     protected void throwMeteors(EntityPlayerMP player)
     {
         World world = player.worldObj;
-        if (world.provider instanceof IGalacticraftWorldProvider && FMLCommonHandler.instance().getEffectiveSide() != Side.CLIENT)
+        if (world.provider instanceof IGalacticraftWorldProvider && !world.isRemote)
         {
             if (((IGalacticraftWorldProvider) world.provider).getMeteorFrequency() > 0)
             {

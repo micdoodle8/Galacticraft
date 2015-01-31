@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -92,7 +91,7 @@ public class EventHandlerMars
             {
                 event.result = EnumStatus.NOT_POSSIBLE_HERE;
 
-                if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && event.bypassed && event.entityPlayer instanceof EntityClientPlayerMP)
+                if (event.entityPlayer.worldObj.isRemote && event.bypassed && event.entityPlayer instanceof EntityClientPlayerMP)
                 {
                     GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_WAKE_PLAYER, new Object[] { }));
                 }

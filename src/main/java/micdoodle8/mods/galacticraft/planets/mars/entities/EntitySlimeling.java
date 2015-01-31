@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.entities;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -395,7 +393,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
                             par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, (ItemStack) null);
                         }
 
-                        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+                        if (this.worldObj.isRemote)
                         {
                             MarsModuleClient.openSlimelingGui(this, 1);
                         }
@@ -420,7 +418,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
                 }
                 else
                 {
-                    if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+                    if (this.worldObj.isRemote)
                     {
                         MarsModuleClient.openSlimelingGui(this, 0);
                     }
@@ -428,7 +426,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
             }
             else
             {
-                if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+                if (this.worldObj.isRemote)
                 {
                     MarsModuleClient.openSlimelingGui(this, 0);
                 }

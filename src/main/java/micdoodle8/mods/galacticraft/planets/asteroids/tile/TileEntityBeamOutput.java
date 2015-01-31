@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.power.ILaserNode;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -48,15 +47,15 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
 
         this.lastTargetVec = this.targetVec;
 
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER && this.targetVec.equals(BlockVec3.INVALID_VECTOR))
-        {
-            this.initiateReflector();
-        }
-
         if (this.worldObj.isRemote)
         {
             this.updateOrientation();
         }
+        else if (this.targetVec.equals(BlockVec3.INVALID_VECTOR))
+        {
+            this.initiateReflector();
+        }
+
     }
 
     @Override

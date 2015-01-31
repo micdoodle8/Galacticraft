@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -327,7 +326,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
             this.currentDamage--;
         }
 
-        if (this.shouldSpawnParticles() && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        if (this.shouldSpawnParticles() && this.worldObj.isRemote)
         {
             this.spawnParticles(this.getParticleMap());
         }
