@@ -48,7 +48,7 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
     private static Constructor modelRotationGCSmartMovingInit;
 
     static {
-	    isSmartMovingLoaded = Loader.isModLoaded("SmartMoving");
+	    isSmartMovingLoaded = Loader.isModLoaded("SmartRender");
 	    if (isSmartMovingLoaded)
 	    {
 		    try {
