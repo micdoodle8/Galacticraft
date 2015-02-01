@@ -82,7 +82,7 @@ public class ItemUniversalWrench extends Item
     @Override
     public void onCreated(ItemStack stack, World world, EntityPlayer player)
     {
-        if (world.isRemote)
+        if (world.isRemote && player instanceof EntityPlayerSP)
         	ClientProxyCore.playerClientHandler.onBuild(3, (EntityPlayerSP) player);
     }
     

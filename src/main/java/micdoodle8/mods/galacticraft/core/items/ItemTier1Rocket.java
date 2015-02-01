@@ -49,7 +49,7 @@ public class ItemTier1Rocket extends Item implements IHoldableItem
         boolean padFound = false;
         TileEntity tile = null;
 
-        if (par3World.isRemote)
+        if (par3World.isRemote && par2EntityPlayer instanceof EntityPlayerSP)
         {
         	ClientProxyCore.playerClientHandler.onBuild(8, (EntityPlayerSP) par2EntityPlayer);
         	return false;

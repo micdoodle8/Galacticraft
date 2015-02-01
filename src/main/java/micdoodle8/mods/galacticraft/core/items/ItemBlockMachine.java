@@ -92,14 +92,19 @@ public class ItemBlockMachine extends ItemBlockDesc
         if (!world.isRemote) return;
 
     	int typenum = stack.getItemDamage() & 12;
-        if (this.field_150939_a == GCBlocks.machineBase && typenum == BlockMachine.COMPRESSOR_METADATA)
-        {
-        	ClientProxyCore.playerClientHandler.onBuild(1, (EntityPlayerSP) player);
-        }
-        else if (this.field_150939_a == GCBlocks.machineBase2 && typenum == BlockMachine2.CIRCUIT_FABRICATOR_METADATA)
-        {
-        	ClientProxyCore.playerClientHandler.onBuild(2, (EntityPlayerSP) player);
-        }
+    	
+    	//The player could be a FakePlayer made by another mod e.g. LogisticsPipes
+    	if (player instanceof EntityPlayerSP)
+    	{
+	        if (this.field_150939_a == GCBlocks.machineBase && typenum == BlockMachine.COMPRESSOR_METADATA)
+	        {
+	        	ClientProxyCore.playerClientHandler.onBuild(1, (EntityPlayerSP) player);
+	        }
+	        else if (this.field_150939_a == GCBlocks.machineBase2 && typenum == BlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+	        {
+	        	ClientProxyCore.playerClientHandler.onBuild(2, (EntityPlayerSP) player);
+	        }
+    	}
     }
     
     @Override

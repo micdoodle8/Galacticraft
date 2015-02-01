@@ -43,10 +43,14 @@ public class ItemBlockDesc extends ItemBlockGC
     {
         if (!world.isRemote) return;
 
-        if (this.field_150939_a == GCBlocks.fuelLoader) 
-        	ClientProxyCore.playerClientHandler.onBuild(4, (EntityPlayerSP) player);
-        else if (this.field_150939_a == GCBlocks.fuelLoader) 
-        	ClientProxyCore.playerClientHandler.onBuild(6, (EntityPlayerSP) player);
+    	//The player could be a FakePlayer made by another mod e.g. LogisticsPipes
+    	if (player instanceof EntityPlayerSP)
+    	{
+	        if (this.field_150939_a == GCBlocks.fuelLoader) 
+	        	ClientProxyCore.playerClientHandler.onBuild(4, (EntityPlayerSP) player);
+	        else if (this.field_150939_a == GCBlocks.fuelLoader) 
+	        	ClientProxyCore.playerClientHandler.onBuild(6, (EntityPlayerSP) player);
+    	}
     }
     
     @Override
