@@ -404,9 +404,12 @@ public class EntityGrapple extends Entity implements IProjectile
     @Override
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
-        par1NBTTagCompound.setShort("xTile", (short) this.hitVec.x);
-        par1NBTTagCompound.setShort("yTile", (short) this.hitVec.y);
-        par1NBTTagCompound.setShort("zTile", (short) this.hitVec.z);
+        if (this.hitVec != null)
+        {
+	    	par1NBTTagCompound.setShort("xTile", (short) this.hitVec.x);
+	        par1NBTTagCompound.setShort("yTile", (short) this.hitVec.y);
+	        par1NBTTagCompound.setShort("zTile", (short) this.hitVec.z);
+        }
         par1NBTTagCompound.setShort("life", (short) this.ticksInGround);
         par1NBTTagCompound.setByte("inTile", (byte) Block.getIdFromBlock(this.hitBlock));
         par1NBTTagCompound.setByte("inData", (byte) this.inData);
@@ -418,7 +421,8 @@ public class EntityGrapple extends Entity implements IProjectile
     @Override
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
-        this.hitVec = new BlockVec3(par1NBTTagCompound.getShort("xTile"), par1NBTTagCompound.getShort("yTile"), par1NBTTagCompound.getShort("zTile"));
+        if (par1NBTTagCompound.hasKey("xTile")) this.hitVec = new BlockVec3(par1NBTTagCompound.getShort("xTile"), par1NBTTagCompound.getShort("yTile"), par1NBTTagCompound.getShort("zTile"));
+
         this.ticksInGround = par1NBTTagCompound.getShort("life");
         this.hitBlock = Block.getBlockById(par1NBTTagCompound.getByte("inTile") & 255);
         this.inData = par1NBTTagCompound.getByte("inData") & 255;
