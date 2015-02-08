@@ -175,6 +175,7 @@ entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Evolved Creeper Boss
 entity.GalacticraftMars.SpaceshipT2.name=Tier 2 Rocket
 entity.GalacticraftMars.CargoRocket.name=Cargo Rocket
+entity.GalacticraftMars.LandingBalloons.name=Landing Balloons
 
 # CONTAINERS
 container.launchcontroller.name=Launch Controller
