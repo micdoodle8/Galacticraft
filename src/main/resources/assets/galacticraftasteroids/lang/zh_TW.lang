@@ -110,9 +110,9 @@ tile.telepadShort.description=Short Range Telepads are used to transfer players 
 # Schematics
 
 # Entity
-entity.SmallAsteroidGC.name=小行星
-entity.GrappleHookGC.name=抓升鉤
-entity.Tier3RocketGC.name=三階火箭
+entity.GalacticraftMars.SmallAsteroidGC.name=小行星
+entity.GalacticraftMars.GrappleHookGC.name=抓升鉤
+entity.GalacticraftMars.Tier3RocketGC.name=三階火箭
 
 # Container
 container.shortRangeTelepad.name=短距離傳送臺
