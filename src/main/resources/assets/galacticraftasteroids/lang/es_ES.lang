@@ -111,9 +111,9 @@ tile.telepadShort.description=Los Teletransportadores se usan para enviar a juga
 # SCHEMATICS
 
 # ENTITIES
-entity.SmallAsteroidGC.name=Asteroide Pequeño
-entity.GrappleHookGC.name=Gancho
-entity.Tier3RocketGC.name=Cohete Nivel 3
+entity.GalacticraftMars.SmallAsteroidGC.name=Asteroide Pequeño
+entity.GalacticraftMars.GrappleHookGC.name=Gancho
+entity.GalacticraftMars.Tier3RocketGC.name=Cohete Nivel 3
 
 # CONTAINERS
 container.shortRangeTelepad.name=Teletransportador de Corto Alcance
