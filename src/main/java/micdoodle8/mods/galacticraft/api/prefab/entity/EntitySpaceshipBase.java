@@ -104,6 +104,8 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     {
         if (!this.worldObj.isRemote && !this.isDead)
         {
+            boolean flag = par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer)par1DamageSource.getEntity()).capabilities.isCreativeMode;
+        	
             if (this.isEntityInvulnerable() || this.posY > 300)
             {
                 return false;
@@ -114,20 +116,21 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
                 this.setBeenAttacked();
                 this.shipDamage += par2 * 10;
 
-                if (par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer) par1DamageSource.getEntity()).capabilities.isCreativeMode)
-                {
-                    this.shipDamage = 100;
-                }
-
-                if (this.shipDamage > 90 && !this.worldObj.isRemote)
+                if (flag || this.shipDamage > 90 && !this.worldObj.isRemote)
                 {
                     if (this.riddenByEntity != null)
                     {
                         this.riddenByEntity.mountEntity(null);
                     }
-
-                    this.setDead();
-                    this.dropShipAsItem();
+    		    if (flag)
+    		    {
+    			this.setDead();
+    		    }
+    		    else
+    		    {
+    			this.setDead();
+                        this.dropShipAsItem();
+    		    }
                     return true;
                 }
 
