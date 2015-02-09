@@ -114,6 +114,7 @@ tile.telepadShort.description=ใช้สำหรับเทเลพอร�
 entity.GalacticraftMars.SmallAsteroidGC.name=ดาวเคราะห์น้อยขนาดเล็ก
 entity.GalacticraftMars.GrappleHookGC.name=ตะขอเกี่ยว
 entity.GalacticraftMars.Tier3RocketGC.name=จรวด เทียร์ 3
+entity.GalacticraftMars.EntryPodAsteroids.name=ยานลงจอด
 
 # CONTAINERS
 container.shortRangeTelepad.name=เครื่องเทเลพอร์ตระยะใกล้
