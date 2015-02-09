@@ -27,6 +27,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -103,6 +104,12 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     {
         return this.buggyType;
     }
+    
+    @Override
+	public ItemStack getPickedResult(MovingObjectPosition target)
+	{
+		return new ItemStack(GCItems.buggy, 1, this.buggyType);
+	}
 
     @Override
     protected void entityInit()
@@ -197,17 +204,14 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         }
         else
         {
+            boolean flag = var1.getEntity() instanceof EntityPlayer && ((EntityPlayer)var1.getEntity()).capabilities.isCreativeMode;
+            
             this.dataWatcher.updateObject(this.rockDirection, Integer.valueOf(-this.dataWatcher.getWatchableObjectInt(this.rockDirection)));
             this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(10));
             this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf((int) (this.dataWatcher.getWatchableObjectInt(this.currentDamage) + var2 * 10)));
             this.setBeenAttacked();
 
-            if (var1.getEntity() instanceof EntityPlayer && ((EntityPlayer) var1.getEntity()).capabilities.isCreativeMode)
-            {
-                this.dataWatcher.updateObject(this.currentDamage, 100);
-            }
-
-            if (this.dataWatcher.getWatchableObjectInt(this.currentDamage) > 2)
+            if (flag || this.dataWatcher.getWatchableObjectInt(this.currentDamage) > 2)
             {
                 if (this.riddenByEntity != null)
                 {
@@ -220,8 +224,15 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
                     {
                         this.riddenByEntity.mountEntity(this);
                     }
-
-                    this.dropBuggyAsItem();
+    				if (flag)
+    				{
+    					this.setDead();
+    				}
+    				else
+    				{
+    					this.setDead();
+                        this.dropBuggyAsItem();
+    				}
                 }
 
                 this.setDead();
