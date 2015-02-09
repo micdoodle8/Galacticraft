@@ -16,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -229,6 +230,12 @@ public class EntityTier1Rocket extends EntityTieredRocket
     public boolean isItemValidForSlot(int i, ItemStack itemstack)
     {
         return false;
+    }
+    
+    @Override
+    public ItemStack getPickedResult(MovingObjectPosition target)
+    {
+	return new ItemStack(GCItems.rocketTier1, 1, this.rocketType.getIndex());
     }
 
     // @RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID =
