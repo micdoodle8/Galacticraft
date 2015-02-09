@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 public class EntityFlag extends Entity
@@ -46,6 +47,8 @@ public class EntityFlag extends Entity
     {
         if (!this.worldObj.isRemote && !this.isDead && !this.indestructable)
         {
+            boolean flag = par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer)par1DamageSource.getEntity()).capabilities.isCreativeMode;
+                    	
             if (this.isEntityInvulnerable())
             {
                 return false;
@@ -55,20 +58,21 @@ public class EntityFlag extends Entity
                 this.setBeenAttacked();
                 this.setDamage(this.getDamage() + par2 * 10);
 
-                if (par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer) par1DamageSource.getEntity()).capabilities.isCreativeMode)
-                {
-                    this.setDamage(100.0F);
-                }
-
-                if (this.getDamage() > 40)
+                if (flag || this.getDamage() > 40)
                 {
                     if (this.riddenByEntity != null)
                     {
                         this.riddenByEntity.mountEntity(this);
                     }
-
-                    this.setDead();
-                    this.dropItemStack();
+    				if (flag)
+    				{
+    					this.setDead();
+    				}
+    				else
+    				{
+    					this.setDead();
+                        this.dropItemStack();
+    				}
                 }
 
                 return true;
@@ -79,6 +83,12 @@ public class EntityFlag extends Entity
             return true;
         }
     }
+    
+    @Override
+	public ItemStack getPickedResult(MovingObjectPosition target)
+	{
+		return new ItemStack(GCItems.flag, 1, this.getType());
+	}
 
     public int getWidth()
     {
