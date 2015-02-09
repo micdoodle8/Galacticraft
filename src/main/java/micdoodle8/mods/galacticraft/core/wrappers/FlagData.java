@@ -88,9 +88,9 @@ public class FlagData
 
         FlagData flagData = new FlagData(width, height);
 
-        for (int i = 0; i < flagData.width; i++)
+        for (int i = 0; i < width; i++)
         {
-            for (int j = 0; j < flagData.height; j++)
+            for (int j = 0; j < height; j++)
             {
                 flagData.color[i][j][0] = nbt.getByte("ColorR-X" + i + "-Y" + j);
                 flagData.color[i][j][1] = nbt.getByte("ColorG-X" + i + "-Y" + j);
