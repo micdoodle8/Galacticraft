@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFallenMeteor;
+import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -193,7 +194,7 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, Ite
             col.y = Math.min(255, col.y);
             col.z = Math.min(255, col.z);
 
-            return GCCoreUtil.to32BitColor(255, (byte) col.x, (byte) col.y, (byte) col.z);
+            return ColorUtil.to32BitColor(255, (byte) col.x, (byte) col.y, (byte) col.z);
         }
 
         return super.colorMultiplier(par1IBlockAccess, par2, par3, par4);

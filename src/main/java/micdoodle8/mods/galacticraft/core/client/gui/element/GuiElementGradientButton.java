@@ -1,10 +1,11 @@
 package micdoodle8.mods.galacticraft.core.client.gui.element;
 
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.OpenGlHelper;
+
 import org.lwjgl.opengl.GL11;
 
 public class GuiElementGradientButton extends GuiButton
@@ -26,22 +27,22 @@ public class GuiElementGradientButton extends GuiButton
             GL11.glEnable(GL11.GL_BLEND);
             OpenGlHelper.glBlendFunc(770, 771, 1, 0);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            int color = GCCoreUtil.to32BitColor(150, 10, 10, 10);
+            int color = ColorUtil.to32BitColor(150, 10, 10, 10);
 
             if (!this.enabled)
             {
                 if (this.field_146123_n)
                 {
-                    color = GCCoreUtil.to32BitColor(150, 30, 30, 30);
+                    color = ColorUtil.to32BitColor(150, 30, 30, 30);
                 }
                 else
                 {
-                    color = GCCoreUtil.to32BitColor(150, 32, 32, 32);
+                    color = ColorUtil.to32BitColor(150, 32, 32, 32);
                 }
             }
             else if (this.field_146123_n)
             {
-                color = GCCoreUtil.to32BitColor(150, 30, 30, 30);
+                color = ColorUtil.to32BitColor(150, 30, 30, 30);
             }
 
             this.drawGradientRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, color, color);

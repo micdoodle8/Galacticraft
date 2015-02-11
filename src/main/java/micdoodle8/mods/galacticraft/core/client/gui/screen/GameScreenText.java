@@ -3,8 +3,10 @@ package micdoodle8.mods.galacticraft.core.client.gui.screen;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
+import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
@@ -184,7 +186,7 @@ public class GameScreenText implements IGameScreen
         GL11.glScalef(scaleText, scaleText, 1.0F);
 
         //Actually draw the text
-        int whiteColour = GCCoreUtil.to32BitColor(255, 240, 216, 255);
+        int whiteColour = ColorUtil.to32BitColor(255, 240, 216, 255);
         drawText(strName, whiteColour);
         drawText(str0, whiteColour);
         drawText(str1, whiteColour);

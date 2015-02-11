@@ -1,13 +1,14 @@
 package micdoodle8.mods.galacticraft.core.client.gui.element;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatAllowedCharacters;
+
 import org.lwjgl.input.Keyboard;
 
 public class GuiElementTextBox extends GuiButton
@@ -123,8 +124,8 @@ public class GuiElementTextBox extends GuiButton
 
         if (this.visible)
         {
-            Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, GCCoreUtil.to32BitColor(140, 140, 140, 140));
-            Gui.drawRect(this.xPosition + 1, this.yPosition + 1, this.xPosition + this.width - 1, this.yPosition + this.height - 1, GCCoreUtil.to32BitColor(255, 0, 0, 0));
+            Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, ColorUtil.to32BitColor(140, 140, 140, 140));
+            Gui.drawRect(this.xPosition + 1, this.yPosition + 1, this.xPosition + this.width - 1, this.yPosition + this.height - 1, ColorUtil.to32BitColor(255, 0, 0, 0));
 
             this.cursorPulse++;
 
@@ -174,7 +175,7 @@ public class GuiElementTextBox extends GuiButton
                 xPos = this.xPosition + this.width / 2 - this.mc.fontRenderer.getStringWidth(this.text) / 2;
             }
 
-            this.drawString(this.mc.fontRenderer, this.text + (this.cursorPulse / 24 % 2 == 0 && this.isTextFocused ? "_" : ""), xPos, this.yPosition + this.height / 2 - 4, this.incorrectUseTimer > 0 ? GCCoreUtil.to32BitColor(255, 255, 20, 20) : this.parentGui.getTextColor(this));
+            this.drawString(this.mc.fontRenderer, this.text + (this.cursorPulse / 24 % 2 == 0 && this.isTextFocused ? "_" : ""), xPos, this.yPosition + this.height / 2 - 4, this.incorrectUseTimer > 0 ? ColorUtil.to32BitColor(255, 255, 20, 20) : this.parentGui.getTextColor(this));
         }
     }
 

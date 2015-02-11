@@ -13,6 +13,7 @@ import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
@@ -144,9 +145,9 @@ public class MarsModule implements IPlanetsModule
 
     public void registerCreatures()
     {
-        this.registerGalacticraftCreature(EntitySludgeling.class, "Sludgeling", GCCoreUtil.to32BitColor(255, 0, 50, 0), GCCoreUtil.to32BitColor(255, 0, 150, 0));
-        this.registerGalacticraftCreature(EntitySlimeling.class, "Slimeling", GCCoreUtil.to32BitColor(255, 0, 50, 0), GCCoreUtil.to32BitColor(255, 0, 150, 0));
-        this.registerGalacticraftCreature(EntityCreeperBoss.class, "CreeperBoss", GCCoreUtil.to32BitColor(255, 0, 50, 0), GCCoreUtil.to32BitColor(255, 0, 150, 0));
+        this.registerGalacticraftCreature(EntitySludgeling.class, "Sludgeling", ColorUtil.to32BitColor(255, 0, 50, 0), ColorUtil.to32BitColor(255, 0, 150, 0));
+        this.registerGalacticraftCreature(EntitySlimeling.class, "Slimeling", ColorUtil.to32BitColor(255, 0, 50, 0), ColorUtil.to32BitColor(255, 0, 150, 0));
+        this.registerGalacticraftCreature(EntityCreeperBoss.class, "CreeperBoss", ColorUtil.to32BitColor(255, 0, 50, 0), ColorUtil.to32BitColor(255, 0, 150, 0));
     }
 
     public void registerOtherEntities()

@@ -162,11 +162,11 @@ public class TickHandlerClient
                     }
                 }
 
-                this.drawGradientRect(minecraft.currentScreen.width - 100, minecraft.currentScreen.height - 35, minecraft.currentScreen.width, minecraft.currentScreen.height, GCCoreUtil.to32BitColor(150, 10 + deltaColor, 10 + deltaColor, 10 + deltaColor), GCCoreUtil.to32BitColor(250, 10 + deltaColor, 10 + deltaColor, 10 + deltaColor));
-                minecraft.fontRenderer.drawString(GCCoreUtil.translate("gui.spaceRace.create.title.name.0"), minecraft.currentScreen.width - 50 - minecraft.fontRenderer.getStringWidth(GCCoreUtil.translate("gui.spaceRace.create.title.name.0")) / 2, minecraft.currentScreen.height - 26, GCCoreUtil.to32BitColor(255, 240, 240, 240));
-                minecraft.fontRenderer.drawString(GCCoreUtil.translate("gui.spaceRace.create.title.name.1"), minecraft.currentScreen.width - 50 - minecraft.fontRenderer.getStringWidth(GCCoreUtil.translate("gui.spaceRace.create.title.name.1")) / 2, minecraft.currentScreen.height - 16, GCCoreUtil.to32BitColor(255, 240, 240, 240));
-                Gui.drawRect(minecraft.currentScreen.width - 100, minecraft.currentScreen.height - 35, minecraft.currentScreen.width - 99, minecraft.currentScreen.height, GCCoreUtil.to32BitColor(255, 0, 0, 0));
-                Gui.drawRect(minecraft.currentScreen.width - 100, minecraft.currentScreen.height - 35, minecraft.currentScreen.width, minecraft.currentScreen.height - 34, GCCoreUtil.to32BitColor(255, 0, 0, 0));
+                this.drawGradientRect(minecraft.currentScreen.width - 100, minecraft.currentScreen.height - 35, minecraft.currentScreen.width, minecraft.currentScreen.height, ColorUtil.to32BitColor(150, 10 + deltaColor, 10 + deltaColor, 10 + deltaColor), ColorUtil.to32BitColor(250, 10 + deltaColor, 10 + deltaColor, 10 + deltaColor));
+                minecraft.fontRenderer.drawString(GCCoreUtil.translate("gui.spaceRace.create.title.name.0"), minecraft.currentScreen.width - 50 - minecraft.fontRenderer.getStringWidth(GCCoreUtil.translate("gui.spaceRace.create.title.name.0")) / 2, minecraft.currentScreen.height - 26, ColorUtil.to32BitColor(255, 240, 240, 240));
+                minecraft.fontRenderer.drawString(GCCoreUtil.translate("gui.spaceRace.create.title.name.1"), minecraft.currentScreen.width - 50 - minecraft.fontRenderer.getStringWidth(GCCoreUtil.translate("gui.spaceRace.create.title.name.1")) / 2, minecraft.currentScreen.height - 16, ColorUtil.to32BitColor(255, 240, 240, 240));
+                Gui.drawRect(minecraft.currentScreen.width - 100, minecraft.currentScreen.height - 35, minecraft.currentScreen.width - 99, minecraft.currentScreen.height, ColorUtil.to32BitColor(255, 0, 0, 0));
+                Gui.drawRect(minecraft.currentScreen.width - 100, minecraft.currentScreen.height - 35, minecraft.currentScreen.width, minecraft.currentScreen.height - 34, ColorUtil.to32BitColor(255, 0, 0, 0));
             }
 
             if (player != null)

@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import net.minecraft.client.Minecraft;
@@ -24,10 +25,12 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import javax.imageio.ImageIO;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -411,7 +414,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 
                     if (!this.spaceRaceData.getPlayerNames().contains(username))
                     {
-                        playerNames.add(new ListElement(username, this.recentlyInvited.containsKey(username) ? GCCoreUtil.to32BitColor(255, 250, 120, 0) : GCCoreUtil.to32BitColor(255, 190, 190, 190)));
+                        playerNames.add(new ListElement(username, this.recentlyInvited.containsKey(username) ? ColorUtil.to32BitColor(255, 250, 120, 0) : ColorUtil.to32BitColor(255, 190, 190, 190)));
                     }
                 }
             }
@@ -430,7 +433,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
             for (int i = 1; i < this.spaceRaceData.getPlayerNames().size(); i++)
             {
                 String playerName = this.spaceRaceData.getPlayerNames().get(i);
-                playerNames.add(new ListElement(playerName, GCCoreUtil.to32BitColor(255, 190, 190, 190)));
+                playerNames.add(new ListElement(playerName, ColorUtil.to32BitColor(255, 190, 190, 190)));
             }
 
             this.gradientListRemovePlayers.updateListContents(playerNames);
@@ -672,7 +675,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
                 break;
             case ADD_PLAYER:
                 this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.spaceRace.create.invitePlayer.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
-                this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.spaceRace.create.playerRadius.name"), this.width / 2, this.height / 2 + this.height / 3 + 3, GCCoreUtil.to32BitColor(255, 180, 40, 40));
+                this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.spaceRace.create.playerRadius.name"), this.width / 2, this.height / 2 + this.height / 3 + 3, ColorUtil.to32BitColor(255, 180, 40, 40));
                 break;
             case REMOVE_PLAYER:
                 this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.spaceRace.create.removePlayer.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
@@ -843,45 +846,45 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
         if (this.canEdit)
         {
             String message = GCCoreUtil.translate("gui.spaceRace.create.customize.name");
-            this.fontRendererObj.drawString(message, this.buttonFlag_xPosition + this.buttonFlag_width / 2 - this.fontRendererObj.getStringWidth(message) / 2, this.buttonFlag_yPosition + this.buttonFlag_height / 2 - 5, GCCoreUtil.to32BitColor(255, color, color, color), this.buttonFlag_hover);
+            this.fontRendererObj.drawString(message, this.buttonFlag_xPosition + this.buttonFlag_width / 2 - this.fontRendererObj.getStringWidth(message) / 2, this.buttonFlag_yPosition + this.buttonFlag_height / 2 - 5, ColorUtil.to32BitColor(255, color, color, color), this.buttonFlag_hover);
         }
         GL11.glPopMatrix();
 
         if (this.buttonFlag_hover)
         {
-            Gui.drawRect(this.buttonFlag_xPosition, this.buttonFlag_yPosition, this.buttonFlag_xPosition + this.buttonFlag_width, this.buttonFlag_yPosition + this.buttonFlag_height, GCCoreUtil.to32BitColor(255, 50, 50, 50));
+            Gui.drawRect(this.buttonFlag_xPosition, this.buttonFlag_yPosition, this.buttonFlag_xPosition + this.buttonFlag_width, this.buttonFlag_yPosition + this.buttonFlag_height, ColorUtil.to32BitColor(255, 50, 50, 50));
         }
 
-        Gui.drawRect(this.buttonFlag_xPosition + this.buttonFlag_width - 1, this.buttonFlag_yPosition, this.buttonFlag_xPosition + this.buttonFlag_width, this.buttonFlag_yPosition + this.buttonFlag_height, GCCoreUtil.to32BitColor(255, 0, 0, 0));
-        Gui.drawRect(this.buttonFlag_xPosition, this.buttonFlag_yPosition, this.buttonFlag_xPosition + 1, this.buttonFlag_yPosition + this.buttonFlag_height, GCCoreUtil.to32BitColor(255, 0, 0, 0));
-        Gui.drawRect(this.buttonFlag_xPosition, this.buttonFlag_yPosition, this.buttonFlag_xPosition + this.buttonFlag_width, this.buttonFlag_yPosition + 1, GCCoreUtil.to32BitColor(255, 0, 0, 0));
-        Gui.drawRect(this.buttonFlag_xPosition, this.buttonFlag_yPosition + this.buttonFlag_height - 1, this.buttonFlag_xPosition + this.buttonFlag_width, this.buttonFlag_yPosition + this.buttonFlag_height, GCCoreUtil.to32BitColor(255, 0, 0, 0));
+        Gui.drawRect(this.buttonFlag_xPosition + this.buttonFlag_width - 1, this.buttonFlag_yPosition, this.buttonFlag_xPosition + this.buttonFlag_width, this.buttonFlag_yPosition + this.buttonFlag_height, ColorUtil.to32BitColor(255, 0, 0, 0));
+        Gui.drawRect(this.buttonFlag_xPosition, this.buttonFlag_yPosition, this.buttonFlag_xPosition + 1, this.buttonFlag_yPosition + this.buttonFlag_height, ColorUtil.to32BitColor(255, 0, 0, 0));
+        Gui.drawRect(this.buttonFlag_xPosition, this.buttonFlag_yPosition, this.buttonFlag_xPosition + this.buttonFlag_width, this.buttonFlag_yPosition + 1, ColorUtil.to32BitColor(255, 0, 0, 0));
+        Gui.drawRect(this.buttonFlag_xPosition, this.buttonFlag_yPosition + this.buttonFlag_height - 1, this.buttonFlag_xPosition + this.buttonFlag_width, this.buttonFlag_yPosition + this.buttonFlag_height, ColorUtil.to32BitColor(255, 0, 0, 0));
     }
 
     private void drawColorButton()
     {
-        Gui.drawRect(this.buttonTeamColor_xPosition + 2, this.buttonTeamColor_yPosition + 2, this.buttonTeamColor_xPosition + this.buttonTeamColor_width - 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height - 2, GCCoreUtil.to32BitColor(255, (int) (this.spaceRaceData.getTeamColor().x * 255.0F), (int) (this.spaceRaceData.getTeamColor().y * 255.0F), (int) (this.spaceRaceData.getTeamColor().z * 255.0F)));
+        Gui.drawRect(this.buttonTeamColor_xPosition + 2, this.buttonTeamColor_yPosition + 2, this.buttonTeamColor_xPosition + this.buttonTeamColor_width - 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height - 2, ColorUtil.to32BitColor(255, (int) (this.spaceRaceData.getTeamColor().x * 255.0F), (int) (this.spaceRaceData.getTeamColor().y * 255.0F), (int) (this.spaceRaceData.getTeamColor().z * 255.0F)));
 
         GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, 0.0F, 500.0F);
         int color = this.buttonTeamColor_hover ? 170 : 100;
         if (canEdit)
         {
-            this.fontRendererObj.drawString(GCCoreUtil.translate("gui.spaceRace.create.changeColor.name.0"), this.buttonTeamColor_xPosition + this.buttonTeamColor_width / 2 - this.fontRendererObj.getStringWidth(GCCoreUtil.translate("gui.spaceRace.create.changeColor.name.0")) / 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height / 2 - 13, GCCoreUtil.to32BitColor(255, color, color, color), this.buttonTeamColor_hover);
+            this.fontRendererObj.drawString(GCCoreUtil.translate("gui.spaceRace.create.changeColor.name.0"), this.buttonTeamColor_xPosition + this.buttonTeamColor_width / 2 - this.fontRendererObj.getStringWidth(GCCoreUtil.translate("gui.spaceRace.create.changeColor.name.0")) / 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height / 2 - 13, ColorUtil.to32BitColor(255, color, color, color), this.buttonTeamColor_hover);
         }
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.spaceRace.create.changeColor.name.1"), this.buttonTeamColor_xPosition + this.buttonTeamColor_width / 2 - this.fontRendererObj.getStringWidth(GCCoreUtil.translate("gui.spaceRace.create.changeColor.name.1")) / 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height / 2 - (canEdit ? 3 : 9), GCCoreUtil.to32BitColor(255, color, color, color), this.buttonTeamColor_hover);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.spaceRace.create.changeColor.name.2"), this.buttonTeamColor_xPosition + this.buttonTeamColor_width / 2 - this.fontRendererObj.getStringWidth(GCCoreUtil.translate("gui.spaceRace.create.changeColor.name.2")) / 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height / 2 + (canEdit ? 7 : 1), GCCoreUtil.to32BitColor(255, color, color, color), this.buttonTeamColor_hover);
+        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.spaceRace.create.changeColor.name.1"), this.buttonTeamColor_xPosition + this.buttonTeamColor_width / 2 - this.fontRendererObj.getStringWidth(GCCoreUtil.translate("gui.spaceRace.create.changeColor.name.1")) / 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height / 2 - (canEdit ? 3 : 9), ColorUtil.to32BitColor(255, color, color, color), this.buttonTeamColor_hover);
+        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.spaceRace.create.changeColor.name.2"), this.buttonTeamColor_xPosition + this.buttonTeamColor_width / 2 - this.fontRendererObj.getStringWidth(GCCoreUtil.translate("gui.spaceRace.create.changeColor.name.2")) / 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height / 2 + (canEdit ? 7 : 1), ColorUtil.to32BitColor(255, color, color, color), this.buttonTeamColor_hover);
         GL11.glPopMatrix();
 
         if (this.buttonTeamColor_hover)
         {
-            Gui.drawRect(this.buttonTeamColor_xPosition, this.buttonTeamColor_yPosition, this.buttonTeamColor_xPosition + this.buttonTeamColor_width, this.buttonTeamColor_yPosition + this.buttonTeamColor_height, GCCoreUtil.to32BitColor(55, 50, 50, 50));
+            Gui.drawRect(this.buttonTeamColor_xPosition, this.buttonTeamColor_yPosition, this.buttonTeamColor_xPosition + this.buttonTeamColor_width, this.buttonTeamColor_yPosition + this.buttonTeamColor_height, ColorUtil.to32BitColor(55, 50, 50, 50));
         }
 
-        Gui.drawRect(this.buttonTeamColor_xPosition + this.buttonTeamColor_width - 1, this.buttonTeamColor_yPosition, this.buttonTeamColor_xPosition + this.buttonTeamColor_width, this.buttonTeamColor_yPosition + this.buttonTeamColor_height, GCCoreUtil.to32BitColor(255, 0, 0, 0));
-        Gui.drawRect(this.buttonTeamColor_xPosition, this.buttonTeamColor_yPosition, this.buttonTeamColor_xPosition + 1, this.buttonTeamColor_yPosition + this.buttonTeamColor_height, GCCoreUtil.to32BitColor(255, 0, 0, 0));
-        Gui.drawRect(this.buttonTeamColor_xPosition, this.buttonTeamColor_yPosition, this.buttonTeamColor_xPosition + this.buttonTeamColor_width, this.buttonTeamColor_yPosition + 1, GCCoreUtil.to32BitColor(255, 0, 0, 0));
-        Gui.drawRect(this.buttonTeamColor_xPosition, this.buttonTeamColor_yPosition + this.buttonTeamColor_height - 1, this.buttonTeamColor_xPosition + this.buttonTeamColor_width, this.buttonTeamColor_yPosition + this.buttonTeamColor_height, GCCoreUtil.to32BitColor(255, 0, 0, 0));
+        Gui.drawRect(this.buttonTeamColor_xPosition + this.buttonTeamColor_width - 1, this.buttonTeamColor_yPosition, this.buttonTeamColor_xPosition + this.buttonTeamColor_width, this.buttonTeamColor_yPosition + this.buttonTeamColor_height, ColorUtil.to32BitColor(255, 0, 0, 0));
+        Gui.drawRect(this.buttonTeamColor_xPosition, this.buttonTeamColor_yPosition, this.buttonTeamColor_xPosition + 1, this.buttonTeamColor_yPosition + this.buttonTeamColor_height, ColorUtil.to32BitColor(255, 0, 0, 0));
+        Gui.drawRect(this.buttonTeamColor_xPosition, this.buttonTeamColor_yPosition, this.buttonTeamColor_xPosition + this.buttonTeamColor_width, this.buttonTeamColor_yPosition + 1, ColorUtil.to32BitColor(255, 0, 0, 0));
+        Gui.drawRect(this.buttonTeamColor_xPosition, this.buttonTeamColor_yPosition + this.buttonTeamColor_height - 1, this.buttonTeamColor_xPosition + this.buttonTeamColor_width, this.buttonTeamColor_yPosition + this.buttonTeamColor_height, ColorUtil.to32BitColor(255, 0, 0, 0));
     }
 
     @Override
@@ -1065,7 +1068,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
     @Override
     public int getTextColor(GuiElementTextBox textBox)
     {
-        return GCCoreUtil.to32BitColor(255, 255, 255, 255);
+        return ColorUtil.to32BitColor(255, 255, 255, 255);
     }
 
     private File writeFlagToFile()

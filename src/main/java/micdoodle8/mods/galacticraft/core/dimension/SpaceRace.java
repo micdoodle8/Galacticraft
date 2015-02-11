@@ -80,6 +80,7 @@ public class SpaceRace
                 this.celestialBodyStatusList.put(body, tagAt.getInteger("TimeTaken"));
             }
         }
+        if (ConfigManagerCore.enableDebug) GCLog.info("Loaded spacerace team data OK.");
     }
 
     public void saveToNBT(NBTTagCompound nbt)
@@ -113,6 +114,7 @@ public class SpaceRace
         }
 
         nbt.setTag("CelestialBodyList", tagList);
+        if (ConfigManagerCore.enableDebug) GCLog.info("Saved spacerace team data OK.");
     }
 
     public void tick()

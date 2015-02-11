@@ -25,16 +25,7 @@ public class GCCoreUtil
 {
 	public static int nextID = 0;
 	
-	public static int to32BitColor(int a, int r, int g, int b)
-    {
-        a = a << 24;
-        r = r << 16;
-        g = g << 8;
-
-        return a | r | g | b;
-    }
-
-    public static void openBuggyInv(EntityPlayerMP player, IInventory buggyInv, int type)
+	public static void openBuggyInv(EntityPlayerMP player, IInventory buggyInv, int type)
     {
         player.getNextWindowId();
         player.closeContainer();

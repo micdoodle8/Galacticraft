@@ -415,7 +415,7 @@ public class GalacticraftCore
         GCCoreUtil.registerGalacticraftCreature(EntityEvolvedCreeper.class, "EvolvedCreeper", 894731, 0);
         GCCoreUtil.registerGalacticraftCreature(EntityEvolvedSkeleton.class, "EvolvedSkeleton", 12698049, 4802889);
         GCCoreUtil.registerGalacticraftCreature(EntitySkeletonBoss.class, "EvolvedSkeletonBoss", 12698049, 4802889);
-        GCCoreUtil.registerGalacticraftCreature(EntityAlienVillager.class, "AlienVillager", GCCoreUtil.to32BitColor(255, 103, 145, 181), 12422002);
+        GCCoreUtil.registerGalacticraftCreature(EntityAlienVillager.class, "AlienVillager", ColorUtil.to32BitColor(255, 103, 145, 181), 12422002);
     }
 
     public void registerOtherEntities()

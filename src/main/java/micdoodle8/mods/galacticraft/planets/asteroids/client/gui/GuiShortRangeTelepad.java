@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.gui;
 
 import com.google.common.collect.Maps;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiContainerGC;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
@@ -9,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementTextBox.IT
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.inventory.ContainerShortRangeTelepad;
@@ -18,6 +20,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
@@ -218,11 +221,11 @@ public class GuiShortRangeTelepad extends GuiContainerGC implements ITextBoxCall
     {
         if (textBox.equals(this.address))
         {
-            return this.telepad.addressValid ? GCCoreUtil.to32BitColor(255, 20, 255, 20) : GCCoreUtil.to32BitColor(255, 255, 25, 25);
+            return this.telepad.addressValid ? ColorUtil.to32BitColor(255, 20, 255, 20) : ColorUtil.to32BitColor(255, 255, 25, 25);
         }
         else if (textBox.equals(this.targetAddress))
         {
-            return this.telepad.targetAddressResult == TileEntityShortRangeTelepad.EnumTelepadSearchResult.VALID ? GCCoreUtil.to32BitColor(255, 20, 255, 20) : GCCoreUtil.to32BitColor(255, 255, 25, 25);
+            return this.telepad.targetAddressResult == TileEntityShortRangeTelepad.EnumTelepadSearchResult.VALID ? ColorUtil.to32BitColor(255, 20, 255, 20) : ColorUtil.to32BitColor(255, 255, 25, 25);
         }
 
         return 0;

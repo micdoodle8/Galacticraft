@@ -144,4 +144,21 @@ public class ColorUtil
 
         return ColorUtil.hue_to_rgb(hueresult).scale(1 / 255D);
     }
+
+	public static int to32BitColor(int a, int r, int g, int b)
+	{
+	    a = a << 24;
+	    r = r << 16;
+	    g = g << 8;
+	
+	    return a | r | g | b;
+	}
+
+	public static int to32BitColorB(byte r, byte g, byte b)
+	{
+	    int rr = (r & 255) << 16;
+	    int gg = (g & 255) << 8;
+	
+	    return rr | gg | (b & 255);
+	}
 }

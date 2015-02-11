@@ -13,6 +13,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementTextBox.IT
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
@@ -27,6 +28,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -227,7 +229,7 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
 
         if (this.cannotEditTimer > 0)
         {
-            this.fontRendererObj.drawString(this.launchController.getOwnerName(), this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 5, this.cannotEditTimer % 30 < 15 ? GCCoreUtil.to32BitColor(255, 255, 100, 100) : 4210752);
+            this.fontRendererObj.drawString(this.launchController.getOwnerName(), this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 5, this.cannotEditTimer % 30 < 15 ? ColorUtil.to32BitColor(255, 255, 100, 100) : 4210752);
             this.cannotEditTimer--;
         }
 
@@ -362,11 +364,11 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
     {
         if (textBox.equals(this.frequency))
         {
-            return this.launchController.frequencyValid ? GCCoreUtil.to32BitColor(255, 20, 255, 20) : GCCoreUtil.to32BitColor(255, 255, 25, 25);
+            return this.launchController.frequencyValid ? ColorUtil.to32BitColor(255, 20, 255, 20) : ColorUtil.to32BitColor(255, 255, 25, 25);
         }
         else if (textBox.equals(this.destinationFrequency))
         {
-            return this.launchController.destFrequencyValid ? GCCoreUtil.to32BitColor(255, 20, 255, 20) : GCCoreUtil.to32BitColor(255, 255, 25, 25);
+            return this.launchController.destFrequencyValid ? ColorUtil.to32BitColor(255, 20, 255, 20) : ColorUtil.to32BitColor(255, 255, 25, 25);
         }
 
         return 0;

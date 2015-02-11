@@ -10,12 +10,14 @@ import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementTextBox.IT
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
+import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.input.Keyboard;
 
 public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback, IDropboxCallback, ITextBoxCallback
@@ -114,7 +116,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
 
         if (this.cannotEditTimer > 0)
         {
-            this.fontRendererObj.drawString(this.controller.ownerName, this.width / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, this.height / 2 - 65, this.cannotEditTimer % 30 < 15 ? GCCoreUtil.to32BitColor(255, 255, 100, 100) : 4210752);
+            this.fontRendererObj.drawString(this.controller.ownerName, this.width / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, this.height / 2 - 65, this.cannotEditTimer % 30 < 15 ? ColorUtil.to32BitColor(255, 255, 100, 100) : 4210752);
             this.cannotEditTimer--;
         }
 
@@ -273,7 +275,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
     @Override
     public int getTextColor(GuiElementTextBox textBox)
     {
-        return GCCoreUtil.to32BitColor(255, 200, 200, 200);
+        return ColorUtil.to32BitColor(255, 200, 200, 200);
     }
 
     @Override

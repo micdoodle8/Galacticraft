@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
+import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -37,11 +38,11 @@ public class OverlayLander extends Overlay
 
         if (OverlayLander.minecraft.thePlayer.ridingEntity.motionY < -2.0)
         {
-            OverlayLander.minecraft.fontRenderer.drawString(GCCoreUtil.translate("gui.warning"), width / 4 - OverlayLander.minecraft.fontRenderer.getStringWidth(GCCoreUtil.translate("gui.warning")) / 2, height / 8 - 20, GCCoreUtil.to32BitColor(255, 255, 0, 0));
+            OverlayLander.minecraft.fontRenderer.drawString(GCCoreUtil.translate("gui.warning"), width / 4 - OverlayLander.minecraft.fontRenderer.getStringWidth(GCCoreUtil.translate("gui.warning")) / 2, height / 8 - 20, ColorUtil.to32BitColor(255, 255, 0, 0));
             final int alpha = (int) (255 * Math.sin(OverlayLander.screenTicks / 20.0F));
             final String press1 = GCCoreUtil.translate("gui.lander.warning2");
             final String press2 = GCCoreUtil.translate("gui.lander.warning3");
-            OverlayLander.minecraft.fontRenderer.drawString(press1 + GameSettings.getKeyDisplayString(KeyHandlerClient.spaceKey.getKeyCode()) + press2, width / 4 - OverlayLander.minecraft.fontRenderer.getStringWidth(press1 + GameSettings.getKeyDisplayString(KeyHandlerClient.spaceKey.getKeyCode()) + press2) / 2, height / 8, GCCoreUtil.to32BitColor(alpha, alpha, alpha, alpha));
+            OverlayLander.minecraft.fontRenderer.drawString(press1 + GameSettings.getKeyDisplayString(KeyHandlerClient.spaceKey.getKeyCode()) + press2, width / 4 - OverlayLander.minecraft.fontRenderer.getStringWidth(press1 + GameSettings.getKeyDisplayString(KeyHandlerClient.spaceKey.getKeyCode()) + press2) / 2, height / 8, ColorUtil.to32BitColor(alpha, alpha, alpha, alpha));
         }
 
         GL11.glPopMatrix();
@@ -49,7 +50,7 @@ public class OverlayLander extends Overlay
         if (OverlayLander.minecraft.thePlayer.ridingEntity.motionY != 0.0D)
         {
             String string = GCCoreUtil.translate("gui.lander.velocity") + ": " + Math.round(((EntityLander) OverlayLander.minecraft.thePlayer.ridingEntity).motionY * 1000) / 100.0D + " " + GCCoreUtil.translate("gui.lander.velocityu");
-            int color = GCCoreUtil.to32BitColor(255, (int) Math.floor(Math.abs(OverlayLander.minecraft.thePlayer.ridingEntity.motionY) * 51.0D), 255 - (int) Math.floor(Math.abs(OverlayLander.minecraft.thePlayer.ridingEntity.motionY) * 51.0D), 0);
+            int color = ColorUtil.to32BitColor(255, (int) Math.floor(Math.abs(OverlayLander.minecraft.thePlayer.ridingEntity.motionY) * 51.0D), 255 - (int) Math.floor(Math.abs(OverlayLander.minecraft.thePlayer.ridingEntity.motionY) * 51.0D), 0);
             OverlayLander.minecraft.fontRenderer.drawString(string, width / 2 - OverlayLander.minecraft.fontRenderer.getStringWidth(string) / 2, height / 3, color);
         }
     }

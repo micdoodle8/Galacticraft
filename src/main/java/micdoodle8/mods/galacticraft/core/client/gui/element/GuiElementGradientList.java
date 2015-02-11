@@ -1,9 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client.gui.element;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
+
 import org.lwjgl.input.Mouse;
 
 import java.util.ArrayList;
@@ -105,18 +106,18 @@ public class GuiElementGradientList extends Gui
 
         this.sliderPos = Math.min(Math.max(this.yPosition, this.sliderPos), this.yPosition + this.height - 15);
 
-        this.drawGradientRect(this.xPosition, this.yPosition, this.xPosition + this.width - 10, this.yPosition + this.height, GCCoreUtil.to32BitColor(255, 30, 30, 30), GCCoreUtil.to32BitColor(255, 30, 30, 30));
-        this.drawGradientRect(this.xPosition + this.width - 9, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, GCCoreUtil.to32BitColor(255, 50, 50, 50), GCCoreUtil.to32BitColor(255, 50, 50, 50));
-        int sliderColor = this.sliderEnabled ? GCCoreUtil.to32BitColor(255, 90, 90, 90) : GCCoreUtil.to32BitColor(255, 40, 40, 40);
+        this.drawGradientRect(this.xPosition, this.yPosition, this.xPosition + this.width - 10, this.yPosition + this.height, ColorUtil.to32BitColor(255, 30, 30, 30), ColorUtil.to32BitColor(255, 30, 30, 30));
+        this.drawGradientRect(this.xPosition + this.width - 9, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, ColorUtil.to32BitColor(255, 50, 50, 50), ColorUtil.to32BitColor(255, 50, 50, 50));
+        int sliderColor = this.sliderEnabled ? ColorUtil.to32BitColor(255, 90, 90, 90) : ColorUtil.to32BitColor(255, 40, 40, 40);
         this.drawGradientRect(this.xPosition + this.width - 9, this.sliderPos, this.xPosition + this.width, this.sliderPos + 15, sliderColor, sliderColor);
 
-        Gui.drawRect(this.xPosition + this.width - 1, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, GCCoreUtil.to32BitColor(255, 0, 0, 0));
-        Gui.drawRect(this.xPosition + this.width - 10, this.yPosition, this.xPosition + this.width - 9, this.yPosition + this.height, GCCoreUtil.to32BitColor(255, 0, 0, 0));
-        Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + 1, this.yPosition + this.height, GCCoreUtil.to32BitColor(255, 0, 0, 0));
-        Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + 1, GCCoreUtil.to32BitColor(255, 0, 0, 0));
-        Gui.drawRect(this.xPosition, this.yPosition + this.height - 1, this.xPosition + this.width, this.yPosition + this.height, GCCoreUtil.to32BitColor(255, 0, 0, 0));
+        Gui.drawRect(this.xPosition + this.width - 1, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, ColorUtil.to32BitColor(255, 0, 0, 0));
+        Gui.drawRect(this.xPosition + this.width - 10, this.yPosition, this.xPosition + this.width - 9, this.yPosition + this.height, ColorUtil.to32BitColor(255, 0, 0, 0));
+        Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + 1, this.yPosition + this.height, ColorUtil.to32BitColor(255, 0, 0, 0));
+        Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + 1, ColorUtil.to32BitColor(255, 0, 0, 0));
+        Gui.drawRect(this.xPosition, this.yPosition + this.height - 1, this.xPosition + this.width, this.yPosition + this.height, ColorUtil.to32BitColor(255, 0, 0, 0));
 
-        sliderColor = this.sliderEnabled ? GCCoreUtil.to32BitColor(255, 120, 120, 120) : GCCoreUtil.to32BitColor(255, 60, 60, 60);
+        sliderColor = this.sliderEnabled ? ColorUtil.to32BitColor(255, 120, 120, 120) : ColorUtil.to32BitColor(255, 60, 60, 60);
         Gui.drawRect(this.xPosition + this.width - 9, this.sliderPos + 1, this.xPosition + this.width - 8, this.sliderPos + 14, sliderColor);
         Gui.drawRect(this.xPosition + this.width - 2, this.sliderPos + 1, this.xPosition + this.width - 1, this.sliderPos + 14, sliderColor);
         Gui.drawRect(this.xPosition + this.width - 9, this.sliderPos, this.xPosition + this.width - 1, this.sliderPos + 1, sliderColor);
@@ -139,7 +140,7 @@ public class GuiElementGradientList extends Gui
                     yCoord0 = Math.max(this.yPosition + 1, yCoord0);
                     yCoord1 = Math.min(this.yPosition + this.height - 1, yCoord1);
 
-                    int color = i == this.selectedIndex ? GCCoreUtil.to32BitColor(255, 35, 35, 35) : GCCoreUtil.to32BitColor(255, 25, 25, 25);
+                    int color = i == this.selectedIndex ? ColorUtil.to32BitColor(255, 35, 35, 35) : ColorUtil.to32BitColor(255, 25, 25, 25);
 
                     Gui.drawRect(this.xPosition + 1, yCoord0, this.xPosition + this.width - 10, yCoord1, color);
 

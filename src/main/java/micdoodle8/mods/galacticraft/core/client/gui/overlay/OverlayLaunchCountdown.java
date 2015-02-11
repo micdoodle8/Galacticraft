@@ -5,9 +5,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -33,13 +34,13 @@ public class OverlayLaunchCountdown extends Overlay
         {
             GL11.glScalef(4.0F, 4.0F, 0.0F);
 
-            OverlayLaunchCountdown.minecraft.fontRenderer.drawString(String.valueOf(count), width / 8 - OverlayLaunchCountdown.minecraft.fontRenderer.getStringWidth(String.valueOf(count)) / 2, height / 20, GCCoreUtil.to32BitColor(255, 255, 0, 0));
+            OverlayLaunchCountdown.minecraft.fontRenderer.drawString(String.valueOf(count), width / 8 - OverlayLaunchCountdown.minecraft.fontRenderer.getStringWidth(String.valueOf(count)) / 2, height / 20, ColorUtil.to32BitColor(255, 255, 0, 0));
         }
         else
         {
             GL11.glScalef(2.0F, 2.0F, 0.0F);
 
-            OverlayLaunchCountdown.minecraft.fontRenderer.drawString(String.valueOf(count), width / 4 - OverlayLaunchCountdown.minecraft.fontRenderer.getStringWidth(String.valueOf(count)) / 2, height / 8, GCCoreUtil.to32BitColor(255, 255, 0, 0));
+            OverlayLaunchCountdown.minecraft.fontRenderer.drawString(String.valueOf(count), width / 4 - OverlayLaunchCountdown.minecraft.fontRenderer.getStringWidth(String.valueOf(count)) / 2, height / 8, ColorUtil.to32BitColor(255, 255, 0, 0));
         }
 
         GL11.glPopMatrix();
