@@ -260,7 +260,10 @@ public class EventHandlerGC
 
         Block bcOilID1 = null;
         Block bcOilID2 = null;
+        Block bcFuelID1 = null;
+        Block bcFuelID2 = null;
         Item bcOilBucket = null;
+        Item bcFuelBucket = null;
 
         try
         {
@@ -276,9 +279,21 @@ public class EventHandlerGC
                     {
                         bcOilID2 = (Block) f.get(null);
                     }
+                    if (f.getName().equals("fuelMoving"))
+                    {
+                        bcFuelID1 = (Block) f.get(null);
+                    }
+                    else if (f.getName().equals("fuelStill"))
+                    {
+                        bcFuelID2 = (Block) f.get(null);
+                    }
                     else if (f.getName().equals("bucketOil"))
                     {
                         bcOilBucket = (Item) f.get(null);
+                    }
+                    else if (f.getName().equals("bucketFuel"))
+                    {
+                        bcFuelBucket = (Item) f.get(null);
                     }
                 }
             }
@@ -301,6 +316,12 @@ public class EventHandlerGC
         {
             event.world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
             event.result = new ItemStack(bcOilBucket);
+            event.setResult(Result.ALLOW);
+        }
+        else if (bcFuelBucket != null && (blockID == bcFuelID1 || blockID == bcFuelID2 || blockID == GCBlocks.fuelStill) && event.world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0)
+        {
+            event.world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
+            event.result = new ItemStack(bcFuelBucket);
             event.setResult(Result.ALLOW);
         }
         else if ((blockID == GCBlocks.crudeOilStill || blockID == GCBlocks.fuelStill) && event.world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0)

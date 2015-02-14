@@ -424,7 +424,7 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static void renderLiquidOverlays(float partialTicks)
     {
-        if (ClientProxyCore.isInsideOfFluid(ClientProxyCore.mc.thePlayer, GalacticraftCore.fluidOil))
+        if (ClientProxyCore.isInsideOfFluid(ClientProxyCore.mc.thePlayer, GalacticraftCore.gcFluidOil))
         {
         	ClientProxyCore.mc.getTextureManager().bindTexture(ClientProxyCore.underOilTexture);
         }

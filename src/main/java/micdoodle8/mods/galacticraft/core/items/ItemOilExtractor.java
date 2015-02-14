@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -178,15 +179,28 @@ public class ItemOilExtractor extends Item
         if (block instanceof IFluidBlock)
         {
             IFluidBlock fluidBlockHit = (IFluidBlock) block;
-            Fluid fluidHit = FluidRegistry.lookupFluidForBlock(block);
-
-            if (fluidHit != null)
+            boolean flag = false;
+            if (block == GCBlocks.crudeOilStill)
             {
-                if (fluidHit.getName().equalsIgnoreCase("oil"))
-                {
-                    FluidStack stack = fluidBlockHit.drain(world, x, y, z, doDrain);
-                    return stack != null && stack.amount > 0;
-                }
+            	flag = true;
+            }
+            else
+            {
+            	Fluid fluidHit = FluidRegistry.lookupFluidForBlock(block);
+
+            	if (fluidHit != null)
+            	{
+            		if (fluidHit.getName().equalsIgnoreCase("oil"))
+            		{
+            			flag = true;
+            		}
+            	}
+            }
+
+            if (flag)
+            {
+            	FluidStack stack = fluidBlockHit.drain(world, x, y, z, doDrain);
+            	return stack != null && stack.amount > 0;
             }
         }
 
