@@ -36,7 +36,7 @@ public class ElectricItemManagerIC2_1710 implements IElectricItemManager
                 item.setElectricity(itemStack, item.getElectricityStored(itemStack) + energyToReceive);
             }
 
-            return energyToReceive * EnergyConfigHandler.TO_IC2_RATIO;
+            return energyToReceive / EnergyConfigHandler.IC2_RATIO;
         }
         return 0D;
     }
@@ -47,7 +47,7 @@ public class ElectricItemManagerIC2_1710 implements IElectricItemManager
         if (itemStack.getItem() instanceof ItemElectricBase)
         {
             ItemElectricBase item = (ItemElectricBase) itemStack.getItem();
-            float energy = (float) amount * EnergyConfigHandler.IC2_RATIO;
+            float energy = (float) amount / EnergyConfigHandler.TO_IC2_RATIO;
             float energyToTransfer = Math.min(item.getElectricityStored(itemStack), energy);
             if (!ignoreTransferLimit)
             {

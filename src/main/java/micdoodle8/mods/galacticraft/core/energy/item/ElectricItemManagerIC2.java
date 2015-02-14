@@ -34,7 +34,7 @@ public class ElectricItemManagerIC2
                 item.setElectricity(itemStack, item.getElectricityStored(itemStack) + energyToReceive);
             }
 
-            return (int) (energyToReceive * EnergyConfigHandler.TO_IC2_RATIO);
+            return (int) (energyToReceive / EnergyConfigHandler.IC2_RATIO);
         }
         return 0;
     }
@@ -46,7 +46,7 @@ public class ElectricItemManagerIC2
         if (itemStack.getItem() instanceof ItemElectricBase)
         {
             ItemElectricBase item = (ItemElectricBase) itemStack.getItem();
-            float energy = amount * EnergyConfigHandler.IC2_RATIO;
+            float energy = amount / EnergyConfigHandler.TO_IC2_RATIO;
             float energyToTransfer = Math.min(item.getElectricityStored(itemStack), energy);
             if (!ignoreTransferLimit)
             {

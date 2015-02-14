@@ -284,14 +284,14 @@ public abstract class ItemElectricBase extends Item implements IItemElectric
     @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
     public double getMaxCharge(ItemStack itemStack)
     {
-        return this.getMaxElectricityStored(itemStack) * EnergyConfigHandler.TO_IC2_RATIO;
+        return this.getMaxElectricityStored(itemStack) / EnergyConfigHandler.IC2_RATIO;
     }
 
     @AltForVersion(version = "[1.7.2]")
     @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
     public int getMaxChargeB(ItemStack itemStack)
     {
-        return (int) (this.getMaxElectricityStored(itemStack) * EnergyConfigHandler.TO_IC2_RATIO);
+        return (int) (this.getMaxElectricityStored(itemStack) / EnergyConfigHandler.IC2_RATIO);
     }
 
     @VersionSpecific(version = "[1.7.10]")

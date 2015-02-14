@@ -168,7 +168,7 @@ public class EnergyUtil
             		transferredMek = tileMek.canReceiveEnergy(inputAdj) ? (float) (tileMek.getMaxEnergy() - tileMek.getEnergy()) : 0F;
             	else
             		transferredMek = (float) tileMek.transferEnergyToAcceptor(inputAdj, toSend * EnergyConfigHandler.TO_MEKANISM_RATIO);
-                return transferredMek * EnergyConfigHandler.MEKANISM_RATIO;
+                return transferredMek / EnergyConfigHandler.TO_MEKANISM_RATIO;
             }
         }
         else if (isIC2Loaded && tileAdj instanceof IEnergySink)
@@ -211,16 +211,16 @@ public class EnergyUtil
                 {
                     result = 0D;
                 }
-                return (float) result * EnergyConfigHandler.IC2_RATIO;
+                return (float) result / EnergyConfigHandler.TO_IC2_RATIO;
             }
         }
         else if (isRF1Loaded && tileAdj instanceof IEnergyHandler)
         {
-        	return ((IEnergyHandler)tileAdj).receiveEnergy(inputAdj, MathHelper.floor_float(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) * EnergyConfigHandler.RF_RATIO;
+        	return ((IEnergyHandler)tileAdj).receiveEnergy(inputAdj, MathHelper.floor_float(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
         }
         else if (isRF2Loaded && tileAdj instanceof IEnergyReceiver)
         {
-        	return ((IEnergyReceiver)tileAdj).receiveEnergy(inputAdj, MathHelper.floor_float(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) * EnergyConfigHandler.RF_RATIO;
+        	return ((IEnergyReceiver)tileAdj).receiveEnergy(inputAdj, MathHelper.floor_float(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
         }
         else if (isBC6Loaded && MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, inputAdj) != null)
         //New BC API
@@ -228,9 +228,9 @@ public class EnergyUtil
             double toSendBC = Math.min(toSend * EnergyConfigHandler.TO_BC_RATIO, MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, inputAdj).getEnergyRequested());
             if (simulate)
             {
-                return (float) toSendBC * EnergyConfigHandler.BC3_RATIO;
+                return (float) toSendBC / EnergyConfigHandler.TO_BC_RATIO;
             }
-            return (float) MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, inputAdj).addEnergy(toSendBC) * EnergyConfigHandler.BC3_RATIO;
+            return (float) MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, inputAdj).addEnergy(toSendBC) / EnergyConfigHandler.TO_BC_RATIO;
         }
         else if (isBCLoaded && tileAdj instanceof IPowerReceptor)
         //Legacy BC API
@@ -241,10 +241,10 @@ public class EnergyUtil
                 double toSendBC = Math.min(toSend * EnergyConfigHandler.TO_BC_RATIO, Math.min(receiver.powerRequest(), receiver.getMaxEnergyReceived()));
                 if (simulate)
                 {
-                    return (float) toSendBC * EnergyConfigHandler.BC3_RATIO;
+                    return (float) toSendBC / EnergyConfigHandler.TO_BC_RATIO;
                 }
                 float rec = (float) receiver.receiveEnergy(buildcraft.api.power.PowerHandler.Type.PIPE, toSendBC, inputAdj); 
-                return rec * EnergyConfigHandler.BC3_RATIO;
+                return rec / EnergyConfigHandler.TO_BC_RATIO;
             }
         }
         
