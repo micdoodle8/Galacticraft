@@ -315,6 +315,9 @@ public class EventHandlerGC
     public void populate(PopulateChunkEvent.Post event)
     {
         final boolean doGen = TerrainGen.populate(event.chunkProvider, event.world, event.rand, event.chunkX, event.chunkZ, event.hasVillageGenerated, PopulateChunkEvent.Populate.EventType.CUSTOM);
+        
+        if (!doGen) return;
+        
         boolean doGen2 = false;
 
         for (Integer dim : ConfigManagerCore.externalOilGen)
@@ -326,7 +329,7 @@ public class EventHandlerGC
             }
         }
 
-        if (!doGen || !(event.world.provider instanceof IGalacticraftWorldProvider) && !doGen2)
+        if (!doGen2)
         {
             return;
         }
