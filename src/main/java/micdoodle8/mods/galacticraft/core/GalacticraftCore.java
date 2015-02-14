@@ -140,8 +140,8 @@ public class GalacticraftCore
         GalacticraftCore.gcFluidFuel = new Fluid(nameFuel).setDensity(400).setViscosity(900);
         FluidRegistry.registerFluid(GalacticraftCore.gcFluidOil);
         FluidRegistry.registerFluid(GalacticraftCore.gcFluidFuel);
-        GalacticraftCore.gcFluidOil = FluidRegistry.getFluid("oilgc"); 
-        GalacticraftCore.gcFluidFuel = FluidRegistry.getFluid("fuelgc");
+        GalacticraftCore.gcFluidOil = FluidRegistry.getFluid(nameOil); 
+        GalacticraftCore.gcFluidFuel = FluidRegistry.getFluid(nameFuel);
         GalacticraftCore.fluidOil = FluidRegistry.getFluid("oil"); 
         GalacticraftCore.fluidFuel = FluidRegistry.getFluid("fuel");
 
