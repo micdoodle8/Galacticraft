@@ -129,7 +129,7 @@ public class EventHandlerGC
     {
         if (event.source.damageType.equals(DamageSource.onFire.damageType))
         {
-            if (event.entityLiving.worldObj.provider instanceof IGalacticraftWorldProvider)
+            if (event.entityLiving.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider)event.entityLiving.worldObj.provider).isGasPresent(IAtmosphericGas.OXYGEN))
             {
                 if (event.entityLiving.worldObj instanceof WorldServer)
                 {
