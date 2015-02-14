@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 
@@ -111,5 +112,16 @@ public class BlockFluidGC extends BlockFluidClassic
     public IIcon getFlowingIcon()
     {
         return this.flowingIcon;
+    }
+    
+    @Override
+    public boolean isFlammable(IBlockAccess world, int x, int y, int z, ForgeDirection face) 
+    {
+    	if (this.fluidName.startsWith("fuel"))
+    	{
+    		((World) world).createExplosion(null, x, y, z, 6.0F, true);
+    		return true;
+    	}
+    	return (this.fluidName.startsWith("oil"));
     }
 }
