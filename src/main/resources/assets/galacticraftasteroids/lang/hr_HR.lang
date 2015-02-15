@@ -4,7 +4,7 @@
 item.itemTier3Rocket.t3Rocket.name=Raketa Ranga 3
 item.heavyNoseCone.name=Snažni Nos Rakete
 item.compressedTitanium.name=Prerađeni Titanium
-item.ingotTitanium.name=Poluga Titanum
+item.ingotTitanium.name=Poluga Titanuma
 item.shardTitanium.name=Krhotina Titaniuma
 item.shardIron.name=Krhotina Željeza
 item.rocketFinsT2.name=Snažni Rep Rakete
@@ -43,22 +43,22 @@ item.methaneCanister.name=Pun Karnister Metana
 item.canister.gas.name=Plin  
                 
 #short name for Methane Gas contents level
-item.canister.LOX.partial.name=Karnister od tekučeg kisika
-item.canister.LOX.full.name=Pun Karnister od tekučeg kisika
-item.canister.LOX.name=LOX
+item.canister.LOX.partial.name=Karnister Tekučeg Kisika
+item.canister.LOX.full.name=Pun Karnister Tekučeg Kisika
+item.canister.LOX.name=TK
               
 #short name for Liquid Oxygen contents level
-item.canister.liquidNitrogen.partial.name=Karnister tekučeg Nitrogena
-item.canister.liquidNitrogen.full.name=Pun Karnister tekučeg Nitrogena
+item.canister.liquidNitrogen.partial.name=Karnister Tekučeg Nitrogena
+item.canister.liquidNitrogen.full.name=Pun Karnister Tekučeg Nitrogena
 item.canister.liquidNitrogen.name=Nitrogen  
   
 #short name for Liquid Nitrogen contents level
-item.canister.liquidArgon.partial.name=Karnister tekučine Argon
-item.canister.liquidArgon.full.name=Pun Karnister tekučine Argon
+item.canister.liquidArgon.partial.name=Karnister Tekučeg Argona
+item.canister.liquidArgon.full.name=Pun Karnister Tekučeg Argona
 item.canister.liquidArgon.name=Argon   
     
 #short name for Liquid Argon contents level
-item.emptyGasCanister.name=Prazni Karnister Plina
+item.emptyGasCanister.name=Prazni Karnister
 
 # FLUIDS AND GASES
 fluid.methane=Metan 
@@ -97,20 +97,20 @@ planet.asteroids=Asteroidi
 # Dollar sign ($) will split text onto a new line
 # Do not remove %s or %d, since that will be replaced in-game
 gui.telepad.desc.0=Ovo je teleporterova$Adresa
-gui.telepad.desc.1=Adresiraj na drugi teleporter.$Bića ce biti poslana ondje.
+gui.telepad.desc.1=Adresiraj na drugi teleporter.$Bića će biti poslana ondje.
 gui.message.address.name=Adresa
 gui.message.destAddress.name=Meta Adrese
 gui.message.invalidAddress.name=Netočna Adresa
-gui.message.invalidTargetAddress.name=Netočna Meta Aderese
+gui.message.invalidTargetAddress.name=Netočna Meta Adrese
 gui.message.receivingActive.name=Čekam Aktiviranje
-gui.message.telepadTooFar.name=Meta previše daleko! (Max %d)
+gui.message.telepadTooFar.name=Meta je previše daleko! (Max %d)
 gui.message.telepadWrongDim.name=Meta je u krivoj dimenziji!
 gui.message.telepadNotFound.name=Teleporter nije pronađen!
 gui.message.sendingActive.name=Šaljem aktivaciju
 gui.message.range.name=Daleko: %dm
 gui.message.notEnoughEnergy.name=Nema Dovoljno Energije!
 gui.message.targetNoEnergy.name=Meta nema Energije!
-gui.message.grapple.fail=Trebam nit da mogu baciti!
+gui.message.grapple.fail=Trebam niti da mogu baciti!
 tile.treasureT3.description=Rang 3 Škrinja s blagom se mogu pronači u asteroidskoj dimenziji u tamnicama.
 tile.walkway.description=Staze se koriste za dekorativne svrhe te za pokretanje energije/zraka ispod igrača.
 tile.walkwayAluminumWire.description=Staze s cijevima za struju se koriste za pokretanje struje ispod potpuno čvrste prohodne površine.
