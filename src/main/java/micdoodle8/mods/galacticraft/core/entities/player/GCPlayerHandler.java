@@ -31,6 +31,7 @@ import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
+import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -50,6 +51,7 @@ import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -59,6 +61,7 @@ public class GCPlayerHandler
     private static final int OXYGENHEIGHTLIMIT = 450;
     private boolean isClient = FMLCommonHandler.instance().getEffectiveSide().isClient();
 	private ConcurrentHashMap<UUID, GCPlayerStats> playerStatsMap = new ConcurrentHashMap<UUID, GCPlayerStats>();
+	private Field ftc;
 
     public ConcurrentHashMap<UUID, GCPlayerStats> getServerStatList()
     {
@@ -1049,6 +1052,15 @@ public class GCPlayerHandler
             if (player.worldObj.provider instanceof WorldProviderOrbit)
             {
                 player.fallDistance = 0.0F;
+                try {
+                	if (ftc == null)
+                	{
+                		ftc = player.playerNetServerHandler.getClass().getField("floatingTickCount");
+            			ftc.setAccessible(true);
+                	}
+                	//Prevent kicks for flying
+					ftc.setInt(player.playerNetServerHandler, 0);
+				} catch (Exception e) { }
                 if (GCPlayer.newInOrbit)
                 {
                 	((WorldProviderOrbit) player.worldObj.provider).sendPacketsToClient(player);
@@ -1056,7 +1068,23 @@ public class GCPlayerHandler
                 }
             }
             else
+            {
             	GCPlayer.newInOrbit = true;
+            	
+                if (GalacticraftCore.isPlanetsLoaded && player.worldObj.provider instanceof WorldProviderAsteroids)
+                {
+                    player.fallDistance = 0.0F;
+                    try {
+                    	if (ftc == null)
+                    	{
+                    		ftc = player.playerNetServerHandler.getClass().getField("floatingTickCount");
+                			ftc.setAccessible(true);
+                    	}
+                    	//Prevent kicks for flying
+    					ftc.setInt(player.playerNetServerHandler, 0);
+    				} catch (Exception e) { }
+                }
+            }
         }
         else
         	GCPlayer.newInOrbit = true;
