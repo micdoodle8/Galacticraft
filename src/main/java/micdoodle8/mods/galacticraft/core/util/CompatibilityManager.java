@@ -60,7 +60,7 @@ public class CompatibilityManager
             }
         }
 
-        if (Loader.isModLoaded("Aether II"))
+        if (Loader.isModLoaded("AetherII"))
         {
             CompatibilityManager.modAetherIILoaded = true;
         }
