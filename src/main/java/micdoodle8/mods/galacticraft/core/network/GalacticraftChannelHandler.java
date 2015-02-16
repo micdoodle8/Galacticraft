@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.network;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.FMLEmbeddedChannel;
 import cpw.mods.fml.common.network.FMLIndexedMessageToMessageCodec;
 import cpw.mods.fml.common.network.FMLOutboundHandler;
@@ -119,7 +120,8 @@ public class GalacticraftChannelHandler extends FMLIndexedMessageToMessageCodec<
      */
     public void sendToServer(IPacket message)
     {
-        this.channels.get(Side.CLIENT).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.TOSERVER);
+    	if (FMLCommonHandler.instance().getSide() != Side.CLIENT) return;
+    	this.channels.get(Side.CLIENT).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.TOSERVER);
         this.channels.get(Side.CLIENT).writeOutbound(message);
     }
 }
