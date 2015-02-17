@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
+import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -399,8 +401,16 @@ public class MapGenDungeon
                     {
                         if (flag2 != -1)
                         {
-                            this.placeBlock(blocks, metas, i, j, k, cx, cz, GCBlocks.unlitTorch, 0);
-                            this.worldObj.scheduleBlockUpdateWithPriority(i, j, k, GCBlocks.unlitTorch, 40, 0);
+                        	if (this.worldObj.provider instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider)this.worldObj.provider).isGasPresent(IAtmosphericGas.OXYGEN))
+                        	{
+                                this.placeBlock(blocks, metas, i, j, k, cx, cz, Blocks.torch, 0);
+                                this.worldObj.scheduleBlockUpdateWithPriority(i, j, k, Blocks.torch, 40, 0);
+                        	}
+                        	else
+                        	{
+                                this.placeBlock(blocks, metas, i, j, k, cx, cz, GCBlocks.unlitTorch, 0);
+                                this.worldObj.scheduleBlockUpdateWithPriority(i, j, k, GCBlocks.unlitTorch, 40, 0);
+                        	}
                         }
                         else
                         {
