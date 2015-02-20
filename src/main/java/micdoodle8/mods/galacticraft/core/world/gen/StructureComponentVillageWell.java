@@ -97,7 +97,7 @@ public class StructureComponentVillageWell extends StructureComponentVillage
             {
                 if (var5 == 0 || var5 == 5 || var4 == 0 || var4 == 5)
                 {
-                    this.placeBlockAtCurrentPosition(par1World, Blocks.gravel, 0, var5, 11, var4, par3StructureBoundingBox);
+                    this.placeBlockAtCurrentPosition(par1World, Blocks.planks, 1, var5, 11, var4, par3StructureBoundingBox);
                     this.clearCurrentPositionBlocksUpwards(par1World, var5, 12, var4, par3StructureBoundingBox);
                 }
             }
