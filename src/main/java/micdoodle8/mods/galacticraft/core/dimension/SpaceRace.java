@@ -36,19 +36,11 @@ public class SpaceRace
     public SpaceRace(List<String> playerNames, String teamName, FlagData flagData, Vector3 teamColor)
     {
         this.playerNames = playerNames;
-        this.teamName = teamName;
+        this.teamName = new String(teamName);
         this.ticksSpent = 0;
         this.flagData = flagData;
         this.teamColor = teamColor;
         this.spaceRaceID = ++SpaceRace.lastSpaceRaceID;
-
-        for (int i = 0; i < flagData.getWidth(); i++)
-        {
-            for (int j = 0; j < flagData.getHeight(); j++)
-            {
-                Vector3 vec = flagData.getColorAt(i, j);
-            }
-        }
     }
 
     public void loadFromNBT(NBTTagCompound nbt)
