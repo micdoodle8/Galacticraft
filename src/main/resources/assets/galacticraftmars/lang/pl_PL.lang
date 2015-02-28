@@ -173,8 +173,8 @@ schematic.cargoRocket.name=Automatyczna Rakieta Transportowa
 entity.Sludgeling.name=Sludgeling
 entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Kosmiczny Creeper Boss
-entity.GalacticraftMars.SpaceshipT2.name=Rakieta Poziomu 2
-entity.GalacticraftMars.CargoRocket.name=Rakieta Transportowa
+entity.SpaceshipT2.name=Rakieta Poziomu 2
+entity.CargoRocket.name=Rakieta Transportowa
 
 # CONTAINERS
 container.launchcontroller.name=Kontroler Startu

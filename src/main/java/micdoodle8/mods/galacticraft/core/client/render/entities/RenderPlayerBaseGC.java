@@ -14,7 +14,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-
 import org.lwjgl.opengl.GL11;
 
 public class RenderPlayerBaseGC extends RenderPlayerBase

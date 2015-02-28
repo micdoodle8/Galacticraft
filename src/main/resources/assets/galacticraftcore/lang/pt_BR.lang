@@ -211,22 +211,22 @@ tile.wallGC.moonBricks.name=Parede de Tijolos de Calabouço Lunar
 tile.slabGCHalf.moonBricksSlab.name=Laje de Tijolos de Calabouço Lunar
 
 # ENTITIES
-entity.GalacticraftCore.EvolvedSpider.name=Aranha Evoluída
-entity.GalacticraftCore.EvolvedZombie.name=Zumbi Evoluído
-entity.GalacticraftCore.EvolvedCreeper.name=Creeper Evoluído
-entity.GalacticraftCore.EvolvedSkeleton.name=Esqueleto Evoluído
-entity.GalacticraftCore.EvolvedSkeletonBoss.name=Esqueleto-Chefe Evoluído
-entity.GalacticraftCore.AlienVillager.name=Aldeão Alienígena
-entity.GalacticraftCore.Spaceship.name=Foguete Nível 1
-entity.GalacticraftCore.GravityArrow.name=Flecha
-entity.GalacticraftCore.Meteor.name=Meteoro
-entity.GalacticraftCore.Buggy.name=Buggy
-entity.GalacticraftCore.Flag.name=Bandeira
-entity.GalacticraftCore.ParaChest.name=Para-baú
-entity.GalacticraftCore.OxygenBubble.name=Bolha de Oxigênio
-entity.GalacticraftCore.Lander.name=Módulo Espacial
-entity.GalacticraftCore.GCFlag.name=Bandeira
-entity.GalacticraftCore.MeteorChunk.name=Pedaço de Meteoro
+entity.EvolvedSpider.name=Aranha Evoluída
+entity.EvolvedZombie.name=Zumbi Evoluído
+entity.EvolvedCreeper.name=Creeper Evoluído
+entity.EvolvedSkeleton.name=Esqueleto Evoluído
+entity.EvolvedSkeletonBoss.name=Esqueleto-Chefe Evoluído
+entity.AlienVillager.name=Aldeão Alienígena
+entity.Spaceship.name=Foguete Nível 1
+entity.GravityArrow.name=Flecha
+entity.Meteor.name=Meteoro
+entity.Buggy.name=Buggy
+entity.Flag.name=Bandeira
+entity.ParaChest.name=Para-baú
+entity.OxygenBubble.name=Bolha de Oxigênio
+entity.Lander.name=Módulo Espacial
+entity.GCFlag.name=Bandeira
+entity.MeteorChunk.name=Pedaço de Meteoro
 
 # Schematics
 schematic.moonbuggy.name=Buggy

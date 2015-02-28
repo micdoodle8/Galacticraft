@@ -70,7 +70,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, Ite
     }
 
     @Override
-    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z)
+    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest)
     {
         ItemStack currentStack = player.getCurrentEquippedItem();
         int l = world.getBlockMetadata(x, y, z);
@@ -188,7 +188,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, Ite
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
     {
         int metadata = world.getBlockMetadata(x, y, z);
 
@@ -204,7 +204,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, Ite
         {
             return new ItemStack(Item.getItemFromBlock(this), 1, 2);
         }
-        return super.getPickBlock(target, world, x, y, z);
+        return super.getPickBlock(target, world, x, y, z, player);
     }
 
     @Override

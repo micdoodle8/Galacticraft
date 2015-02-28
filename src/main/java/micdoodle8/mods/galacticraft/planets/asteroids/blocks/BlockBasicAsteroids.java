@@ -12,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -183,7 +184,7 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
     {
         int metadata = world.getBlockMetadata(x, y, z);
         if (metadata == 4)
@@ -191,7 +192,7 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
             return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
         }
 
-        return super.getPickBlock(target, world, x, y, z);
+        return super.getPickBlock(target, world, x, y, z, player);
     }
 
 }

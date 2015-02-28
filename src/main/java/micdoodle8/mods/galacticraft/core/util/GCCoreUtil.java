@@ -1,9 +1,6 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggy;
@@ -55,11 +52,6 @@ public class GCCoreUtil
     
     public static void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int back, int fore)
     {
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-        {
-            LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", GCCoreUtil.translate("entity.GalacticraftCore." + var1 + ".name"));
-        }
-
         int newID = EntityRegistry.instance().findGlobalUniqueEntityId();
         EntityRegistry.registerGlobalEntityID(var0, var1, newID, back, fore);
         EntityRegistry.registerModEntity(var0, var1, nextInternalID(), GalacticraftCore.instance, 80, 3, true);
@@ -67,11 +59,6 @@ public class GCCoreUtil
 
     public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
     {
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-        {
-            LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", GCCoreUtil.translate("entity.GalacticraftCore." + var1 + ".name"));
-        }
-
         EntityRegistry.registerModEntity(var0, var1, nextInternalID(), GalacticraftCore.instance, trackingDistance, updateFreq, sendVel);
     }
 

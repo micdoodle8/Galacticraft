@@ -4,7 +4,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
-
 import org.lwjgl.input.Mouse;
 
 import java.util.ArrayList;

@@ -34,7 +34,7 @@ public class SlotRocketBenchResult extends Slot
             {
                 this.craftMatrix.decrStackSize(var2, 1);
 
-                if (var3.getItem().hasContainerItem())
+                if (var3.getItem().hasContainerItem(var3))
                 {
                     final ItemStack var4 = new ItemStack(var3.getItem().getContainerItem());
 

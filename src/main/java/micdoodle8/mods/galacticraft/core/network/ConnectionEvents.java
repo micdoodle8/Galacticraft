@@ -16,7 +16,6 @@ import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.EnumConnectionState;
-import net.minecraft.network.NetHandlerPlayServer;
 
 public class ConnectionEvents
 {

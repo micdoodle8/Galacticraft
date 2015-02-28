@@ -113,8 +113,8 @@ itemGroup.GalacticraftAsteroids=Galacticraft Astéroïdes
 # Schematics
 
 # Entity
-entity.GalacticraftMars.SmallAsteroidGC.name=Petit astéroïde
-entity.GalacticraftMars.GrappleHookGC.name=Grappin crochet
-entity.GalacticraftMars.Tier3RocketGC.name=Fusée Niveau 3
+entity.SmallAsteroidGC.name=Petit astéroïde
+entity.GrappleHookGC.name=Grappin crochet
+entity.Tier3RocketGC.name=Fusée Niveau 3
 
 # Container

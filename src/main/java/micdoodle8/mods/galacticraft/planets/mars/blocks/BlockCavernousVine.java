@@ -51,7 +51,7 @@ public class BlockCavernousVine extends Block implements IShearable, ItemBlockDe
     }
 
     @Override
-    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z)
+    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest)
     {
         if (world.setBlockToAir(x, y, z))
         {

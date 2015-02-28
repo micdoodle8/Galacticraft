@@ -39,7 +39,6 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-
 import org.lwjgl.opengl.GL11;
 
 public class EventHandlerMars

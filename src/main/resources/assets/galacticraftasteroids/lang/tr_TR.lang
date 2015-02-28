@@ -111,9 +111,9 @@ tile.telepadShort.description=Kısa Menzilli Telepad oyuncuları ışınlamaya v
 # SCHEMATICS
 
 # ENTITIES
-entity.GalacticraftMars.SmallAsteroidGC.name=Küçük Asteroit
-entity.GalacticraftMars.GrappleHookGC.name=Çeneli Kanca
-entity.GalacticraftMars.Tier3RocketGC.name=Tier 3 Roket
+entity.SmallAsteroidGC.name=Küçük Asteroit
+entity.GrappleHookGC.name=Çeneli Kanca
+entity.Tier3RocketGC.name=Tier 3 Roket
 
 # CONTAINERS
 container.shortRangeTelepad.name=Kısa Menzilli Telepad

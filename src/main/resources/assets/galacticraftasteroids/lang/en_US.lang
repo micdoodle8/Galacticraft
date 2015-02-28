@@ -111,10 +111,10 @@ tile.telepadShort.description=Short Range Telepads are used to transfer players 
 # SCHEMATICS
 
 # ENTITIES
-entity.GalacticraftMars.SmallAsteroidGC.name=Small Asteroid
-entity.GalacticraftMars.GrappleHookGC.name=Grapple Hook
-entity.GalacticraftMars.Tier3RocketGC.name=Tier 3 Rocket
-entity.GalacticraftMars.EntryPodAsteroids.name=Entry Pod
+entity.SmallAsteroidGC.name=Small Asteroid
+entity.GrappleHookGC.name=Grapple Hook
+entity.Tier3RocketGC.name=Tier 3 Rocket
+entity.EntryPodAsteroids.name=Entry Pod
 
 # CONTAINERS
 container.shortRangeTelepad.name=Short Range Telepad

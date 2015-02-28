@@ -1,4 +1,4 @@
-# Galacticraft Mars Language File = THAILAND
+﻿# Galacticraft Mars Language File = THAILAND
 
 # GENERAL ITEMS
 item.rawDesh.name=เดรชหยาบ
@@ -173,9 +173,9 @@ schematic.cargoRocket.name=จรวดขนส่งอัตโนมัต�
 entity.Sludgeling.name=หนอนแบคทีเรีย
 entity.Slimeling.name=สไลม์ลิ่ง
 entity.CreeperBoss.name=คริปเปอร์บอสอวกาศ
-entity.GalacticraftMars.SpaceshipT2.name=จรวด เทียร์ 2
-entity.GalacticraftMars.CargoRocket.name=จรวดขนส่ง
-entity.GalacticraftMars.LandingBalloons.name=ยานลงจอดบอลลูน
+entity.SpaceshipT2.name=จรวด เทียร์ 2
+entity.CargoRocket.name=จรวดขนส่ง
+entity.LandingBalloons.name=ยานลงจอดบอลลูน
 
 # CONTAINERS
 container.launchcontroller.name=เครื่องควบคุมการปล่อยจรวด

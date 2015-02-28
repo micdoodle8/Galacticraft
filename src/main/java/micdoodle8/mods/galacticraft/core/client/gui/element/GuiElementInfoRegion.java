@@ -8,7 +8,6 @@ import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 

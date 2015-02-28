@@ -8,7 +8,6 @@ import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)

@@ -173,8 +173,8 @@ schematic.cargoRocket.name=Cargaison automatique de fusée
 entity.Sludgeling.name=Boueux
 entity.Slimeling.name=Vaseux
 entity.CreeperBoss.name=Boss Creeper évolué
-entity.GalacticraftMars.SpaceshipT2.name=Tier 2 Rocket ##NEEDS TRANSLATE##
-entity.GalacticraftMars.CargoRocket.name=Cargo Rocket ##NEEDS TRANSLATE##
+entity.SpaceshipT2.name=Tier 2 Rocket ##NEEDS TRANSLATE##
+entity.CargoRocket.name=Cargo Rocket ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.launchcontroller.name=Contrôleur de lancement

@@ -173,8 +173,8 @@ schematic.cargoRocket.name=Cohete de Carga Automático
 entity.Sludgeling.name=Gusano de Lodo
 entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Jefe Creeper Evolucionado
-entity.GalacticraftMars.SpaceshipT2.name=Cohete Nivel 2
-entity.GalacticraftMars.CargoRocket.name=Cohete de Carga
+entity.SpaceshipT2.name=Cohete Nivel 2
+entity.CargoRocket.name=Cohete de Carga
 
 # CONTAINERS
 container.launchcontroller.name=Controlador de Lanzamiento

@@ -16,7 +16,6 @@ import micdoodle8.mods.galacticraft.planets.asteroids.client.render.NetworkRende
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
-
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 

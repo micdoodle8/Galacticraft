@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.dimension;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
