@@ -92,8 +92,6 @@ public class RecipeManagerMars
 
         CraftingManager.getInstance().addShapelessRecipe(new ItemStack(MarsItems.carbonFragments, 4, 0), new ItemStack(Items.coal, 1, 1));
 
-        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(MarsItems.carbonFragments, 64, 0), new ItemStack(Blocks.coal_block, 1, 0));
-
         // Smelting
         FurnaceRecipes.smelting().func_151394_a(new ItemStack(MarsItems.marsItemBasic, 1, 0), new ItemStack(MarsItems.marsItemBasic, 1, 2), 0.2F);
         FurnaceRecipes.smelting().func_151394_a(new ItemStack(MarsBlocks.marsBlock, 1, 4), new ItemStack(MarsBlocks.marsBlock, 1, 9), 0.0F);
