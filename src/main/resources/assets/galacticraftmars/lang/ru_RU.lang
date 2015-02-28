@@ -1,4 +1,4 @@
-# Galacticraft Mars Language File = RUSSIA RUSSIAN
+﻿# Galacticraft Mars Language File = RUSSIA RUSSIAN
 
 # GENERAL ITEMS
 item.rawDesh.name=Необработанная деш
@@ -173,8 +173,8 @@ schematic.cargoRocket.name=Автоматическая грузовая рак�
 entity.Sludgeling.name=Сладжлинг
 entity.Slimeling.name=Слаймлинг
 entity.CreeperBoss.name=Эволюционировавший крипер-босс
-entity.GalacticraftMars.SpaceshipT2.name=Ракета 2-го уровня
-entity.GalacticraftMars.CargoRocket.name=Грузовая ракета
+entity.SpaceshipT2.name=Ракета 2-го уровня
+entity.CargoRocket.name=Грузовая ракета
 
 # CONTAINERS
 container.launchcontroller.name=Контроллер запуска

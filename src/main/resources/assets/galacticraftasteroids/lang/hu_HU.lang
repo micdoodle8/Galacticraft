@@ -110,9 +110,9 @@ tile.telepadShort.description=Short Range Telepads are used to transfer players 
 # SCHEMATICS
 
 # ENTITIES
-entity.GalacticraftMars.SmallAsteroidGC.name=Kis Aszteroida
-entity.GalacticraftMars.GrappleHookGC.name=Fodó Szigonyja
-entity.GalacticraftMars.Tier3RocketGC.name=3-As Szintű Rakéta
+entity.SmallAsteroidGC.name=Kis Aszteroida
+entity.GrappleHookGC.name=Fodó Szigonyja
+entity.Tier3RocketGC.name=3-As Szintű Rakéta
 
 # CONTAINERS
 container.shortRangeTelepad.name=Rövidtávú Teleporter

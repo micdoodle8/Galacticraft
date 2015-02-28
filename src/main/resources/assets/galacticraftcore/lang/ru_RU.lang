@@ -1,4 +1,4 @@
-# Galacticraft Core Language File = RUSSIA RUSSIAN
+﻿# Galacticraft Core Language File = RUSSIA RUSSIAN
 
 # GENERAL ITEMS
 item.oxygenTankLightFull.name=Малый кислородный баллон
@@ -196,22 +196,22 @@ tile.wallGC.moonBricks.name=Стена из кирпича лунной сокр
 tile.slabGCHalf.moonBricksSlab.name=Плита из кирпича лунной сокровищницы
 
 # ENTITIES
-entity.GalacticraftCore.EvolvedSpider.name=Эволюционировавший паук
-entity.GalacticraftCore.EvolvedZombie.name=Эволюционировавший зомби
-entity.GalacticraftCore.EvolvedCreeper.name=Эволюционировавший крипер
-entity.GalacticraftCore.EvolvedSkeleton.name=Эволюционировавший скелет
-entity.GalacticraftCore.EvolvedSkeletonBoss.name=Эволюционировавший скелет-босс
-entity.GalacticraftCore.AlienVillager.name=Инопланетный житель
-entity.GalacticraftCore.Spaceship.name=Ракета 1-го уровня
-entity.GalacticraftCore.GravityArrow.name=Стрелка
-entity.GalacticraftCore.Meteor.name=Метеорит
-entity.GalacticraftCore.Buggy.name=Багги
-entity.GalacticraftCore.Flag.name=Флаг
-entity.GalacticraftCore.ParaChest.name=Сундук с парашютом
-entity.GalacticraftCore.OxygenBubble.name=Кислородный пузырь
-entity.GalacticraftCore.Lander.name=Посадочный модуль
-entity.GalacticraftCore.GCFlag.name=Флаг
-entity.GalacticraftCore.MeteorChunk.name=Кусок метеорита
+entity.EvolvedSpider.name=Эволюционировавший паук
+entity.EvolvedZombie.name=Эволюционировавший зомби
+entity.EvolvedCreeper.name=Эволюционировавший крипер
+entity.EvolvedSkeleton.name=Эволюционировавший скелет
+entity.EvolvedSkeletonBoss.name=Эволюционировавший скелет-босс
+entity.AlienVillager.name=Инопланетный житель
+entity.Spaceship.name=Ракета 1-го уровня
+entity.GravityArrow.name=Стрелка
+entity.Meteor.name=Метеорит
+entity.Buggy.name=Багги
+entity.Flag.name=Флаг
+entity.ParaChest.name=Сундук с парашютом
+entity.OxygenBubble.name=Кислородный пузырь
+entity.Lander.name=Посадочный модуль
+entity.GCFlag.name=Флаг
+entity.MeteorChunk.name=Кусок метеорита
 
 # SCHEMATICS
 schematic.moonbuggy.name=Лунный багги

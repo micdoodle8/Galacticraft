@@ -1,4 +1,4 @@
-# Galacticraft Asteroids Language File = KOREA KOREAN
+﻿# Galacticraft Asteroids Language File = KOREA KOREAN
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=3티어 로켓
@@ -111,9 +111,9 @@ tile.telepadShort.description=단거리 텔레포터는 플레이어와 다른 �
 # SCHEMATICS
 
 # ENTITIES
-entity.GalacticraftMars.SmallAsteroidGC.name=작은 소행성
-entity.GalacticraftMars.GrappleHookGC.name=그래플
-entity.GalacticraftMars.Tier3RocketGC.name=3티어 로켓
+entity.SmallAsteroidGC.name=작은 소행성
+entity.GrappleHookGC.name=그래플
+entity.Tier3RocketGC.name=3티어 로켓
 
 # CONTAINERS
 container.shortRangeTelepad.name=단거리 텔레포터

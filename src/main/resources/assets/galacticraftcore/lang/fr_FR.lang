@@ -211,22 +211,22 @@ tile.wallGC.moonBricks.name=Mur en briques de donjon lunaire
 tile.slabGCHalf.moonBricksSlab.name=Dalle en briques de donjon lunaire
 
 # ENTITIES
-entity.GalacticraftCore.EvolvedSpider.name=Araignée évolué
-entity.GalacticraftCore.EvolvedZombie.name=Zombie évolué
-entity.GalacticraftCore.EvolvedCreeper.name=Creeper évolué
-entity.GalacticraftCore.EvolvedSkeleton.name=Squelette évolué
-entity.GalacticraftCore.EvolvedSkeletonBoss.name=Boss squelette évolué
-entity.GalacticraftCore.AlienVillager.name=Villageois alien
-entity.GalacticraftCore.Spaceship.name=Fusée Niveau 1
-entity.GalacticraftCore.GravityArrow.name=Flèche
-entity.GalacticraftCore.Meteor.name=Météore
-entity.GalacticraftCore.Buggy.name=Boghei
-entity.GalacticraftCore.Flag.name=Drapeau
-entity.GalacticraftCore.ParaChest.name=Coffre parachuté
-entity.GalacticraftCore.OxygenBubble.name=Bulle d'oxygène
-entity.GalacticraftCore.Lander.name=Atterrisseur spatial
-entity.GalacticraftCore.GCFlag.name=Drapeau
-entity.GalacticraftCore.MeteorChunk.name=Morceau de météore
+entity.EvolvedSpider.name=Araignée évolué
+entity.EvolvedZombie.name=Zombie évolué
+entity.EvolvedCreeper.name=Creeper évolué
+entity.EvolvedSkeleton.name=Squelette évolué
+entity.EvolvedSkeletonBoss.name=Boss squelette évolué
+entity.AlienVillager.name=Villageois alien
+entity.Spaceship.name=Fusée Niveau 1
+entity.GravityArrow.name=Flèche
+entity.Meteor.name=Météore
+entity.Buggy.name=Boghei
+entity.Flag.name=Drapeau
+entity.ParaChest.name=Coffre parachuté
+entity.OxygenBubble.name=Bulle d'oxygène
+entity.Lander.name=Atterrisseur spatial
+entity.GCFlag.name=Drapeau
+entity.MeteorChunk.name=Morceau de météore
 
 # Schematics
 schematic.moonbuggy.name=Boghei Lunaire

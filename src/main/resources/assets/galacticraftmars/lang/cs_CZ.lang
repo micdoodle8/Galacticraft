@@ -171,8 +171,8 @@ schematic.cargoRocket.name=Automatická nákladní raketa
 entity.Sludgeling.name=Bahenní vcela
 entity.Slimeling.name=Slizoun
 entity.CreeperBoss.name=Vyvinutý creeper - Boss
-entity.GalacticraftMars.SpaceshipT2.name=Raketa typ 2
-entity.GalacticraftMars.CargoRocket.name=Nákladní raketa
+entity.SpaceshipT2.name=Raketa typ 2
+entity.CargoRocket.name=Nákladní raketa
 
 # CONTAINERS
 container.launchcontroller.name=Odpalovací zarízení

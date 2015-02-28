@@ -1,4 +1,4 @@
-# Galacticraft Core Language File = SIMPLIFIED CHINESE
+﻿# Galacticraft Core Language File = SIMPLIFIED CHINESE
 
 # GENERAL ITEMS
 item.oxygenTankLightFull.name=轻型氧气罐
@@ -196,22 +196,22 @@ tile.wallGC.moonBricks.name=月球地牢砖块墙
 tile.slabGCHalf.moonBricksSlab.name=月球地牢砖块台阶
 
 # ENTITIES
-entity.GalacticraftCore.EvolvedSpider.name=蜘蛛(进化体)
-entity.GalacticraftCore.EvolvedZombie.name=僵尸(进化体)
-entity.GalacticraftCore.EvolvedCreeper.name=苦力怕(进化体)
-entity.GalacticraftCore.EvolvedSkeleton.name=骷髅(进化体)
-entity.GalacticraftCore.EvolvedSkeletonBoss.name=骷髅王(进化体)
-entity.GalacticraftCore.AlienVillager.name=外星村民
-entity.GalacticraftCore.Spaceship.name=火箭(1阶)
-entity.GalacticraftCore.GravityArrow.name=箭
-entity.GalacticraftCore.Meteor.name=陨石
-entity.GalacticraftCore.Buggy.name=星球车
-entity.GalacticraftCore.Flag.name=旗帜
-entity.GalacticraftCore.ParaChest.name=伞降箱
-entity.GalacticraftCore.OxygenBubble.name=氧气泡沫
-entity.GalacticraftCore.Lander.name=登陆舱
-entity.GalacticraftCore.GCFlag.name=旗
-entity.GalacticraftCore.MeteorChunk.name=陨石块
+entity.EvolvedSpider.name=蜘蛛(进化体)
+entity.EvolvedZombie.name=僵尸(进化体)
+entity.EvolvedCreeper.name=苦力怕(进化体)
+entity.EvolvedSkeleton.name=骷髅(进化体)
+entity.EvolvedSkeletonBoss.name=骷髅王(进化体)
+entity.AlienVillager.name=外星村民
+entity.Spaceship.name=火箭(1阶)
+entity.GravityArrow.name=箭
+entity.Meteor.name=陨石
+entity.Buggy.name=星球车
+entity.Flag.name=旗帜
+entity.ParaChest.name=伞降箱
+entity.OxygenBubble.name=氧气泡沫
+entity.Lander.name=登陆舱
+entity.GCFlag.name=旗
+entity.MeteorChunk.name=陨石块
 
 # Schematics
 schematic.moonbuggy.name=星球车

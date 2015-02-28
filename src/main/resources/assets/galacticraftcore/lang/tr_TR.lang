@@ -194,22 +194,22 @@ tile.wallGC.moonBricks.name=Moon Dungeon Brick Wall ##NEEDS TRANSLATE##
 tile.slabGCHalf.moonBricksSlab.name=Moon Dungeon Brick Slab ##NEEDS TRANSLATE##
 
 # ENTITIES
-entity.GalacticraftCore.EvolvedSpider.name=Gelişmiş Örümcek
-entity.GalacticraftCore.EvolvedZombie.name=Gelişmiş Zombi
-entity.GalacticraftCore.EvolvedCreeper.name=Gelişmiş Creeper
-entity.GalacticraftCore.EvolvedSkeleton.name=Gelişmiş İskelet
-entity.GalacticraftCore.EvolvedSkeletonBoss.name=Gelişmiş İskelet Patronu
-entity.GalacticraftCore.AlienVillager.name=Uzaylı Köylü
-entity.GalacticraftCore.Spaceship.name=Tier 1 Roket
-entity.GalacticraftCore.GravityArrow.name=Ok
-entity.GalacticraftCore.Meteor.name=Meteor
-entity.GalacticraftCore.Buggy.name=Buggy
-entity.GalacticraftCore.Flag.name=Bayrak
-entity.GalacticraftCore.ParaChest.name=Para Sandık
-entity.GalacticraftCore.OxygenBubble.name=Oksijen Kabarcığı
-entity.GalacticraftCore.Lander.name=Uzay Lander
-entity.GalacticraftCore.GCFlag.name=Bayrak
-entity.GalacticraftCore.MeteorChunk.name=Meteor Parçası
+entity.EvolvedSpider.name=Gelişmiş Örümcek
+entity.EvolvedZombie.name=Gelişmiş Zombi
+entity.EvolvedCreeper.name=Gelişmiş Creeper
+entity.EvolvedSkeleton.name=Gelişmiş İskelet
+entity.EvolvedSkeletonBoss.name=Gelişmiş İskelet Patronu
+entity.AlienVillager.name=Uzaylı Köylü
+entity.Spaceship.name=Tier 1 Roket
+entity.GravityArrow.name=Ok
+entity.Meteor.name=Meteor
+entity.Buggy.name=Buggy
+entity.Flag.name=Bayrak
+entity.ParaChest.name=Para Sandık
+entity.OxygenBubble.name=Oksijen Kabarcığı
+entity.Lander.name=Uzay Lander
+entity.GCFlag.name=Bayrak
+entity.MeteorChunk.name=Meteor Parçası
 
 # SCHEMATICS
 schematic.moonbuggy.name=Ay Taşıtı

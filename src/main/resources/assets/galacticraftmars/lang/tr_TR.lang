@@ -173,8 +173,8 @@ schematic.cargoRocket.name=Otomatik Kargo Roketi
 entity.Sludgeling.name=Sludgeling
 entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Evrimleşmiş Creeper Patronu
-entity.GalacticraftMars.SpaceshipT2.name=Tier 2 Roketi
-entity.GalacticraftMars.CargoRocket.name=Kargo Roketi
+entity.SpaceshipT2.name=Tier 2 Roketi
+entity.CargoRocket.name=Kargo Roketi
 
 # CONTAINERS
 container.launchcontroller.name=Fırlatma Kontrollü

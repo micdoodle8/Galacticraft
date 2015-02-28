@@ -212,22 +212,22 @@ tile.wallGC.moonBricks.name=Moon Dungeon Brick Wall ##NEEDS TRANSLATE##
 tile.slabGCHalf.moonBricksSlab.name=Moon Dungeon Brick Slab ##NEEDS TRANSLATE##
 
 # ENDIDAU
-entity.GalacticraftCore.EvolvedSpider.name = esblygu Spider
-entity.GalacticraftCore.EvolvedZombie.name = esblygu Zombie
-entity.GalacticraftCore.EvolvedCreeper.name = esblygu Dringwr Bach
-entity.GalacticraftCore.EvolvedSkeleton.name = esblygu Sgerbwd
-entity.GalacticraftCore.EvolvedSkeletonBoss.name = esblygu Sgerbwd Boss
-entity.GalacticraftCore.AlienVillager.name = Pentrefwr Alien
-entity.GalacticraftCore.Spaceship.name = Haen 1 Roced
-entity.GalacticraftCore.GravityArrow.name = Arrow
-entity.GalacticraftCore.Meteor.name = Meteor
-entity.GalacticraftCore.Buggy.name = Buggy
-entity.GalacticraftCore.Flag.name = Flag
-entity.GalacticraftCore.ParaChest.name = Parachest
-entity.GalacticraftCore.OxygenBubble.name = Ocsigen Bubble
-entity.GalacticraftCore.Lander.name = Gofod Lander
-entity.GalacticraftCore.GCFlag.name=Flag ##NEEDS TRANSLATE##
-entity.GalacticraftCore.MeteorChunk.name=Meteor Chunk ##NEEDS TRANSLATE##
+entity.EvolvedSpider.name = esblygu Spider
+entity.EvolvedZombie.name = esblygu Zombie
+entity.EvolvedCreeper.name = esblygu Dringwr Bach
+entity.EvolvedSkeleton.name = esblygu Sgerbwd
+entity.EvolvedSkeletonBoss.name = esblygu Sgerbwd Boss
+entity.AlienVillager.name = Pentrefwr Alien
+entity.Spaceship.name = Haen 1 Roced
+entity.GravityArrow.name = Arrow
+entity.Meteor.name = Meteor
+entity.Buggy.name = Buggy
+entity.Flag.name = Flag
+entity.ParaChest.name = Parachest
+entity.OxygenBubble.name = Ocsigen Bubble
+entity.Lander.name = Gofod Lander
+entity.GCFlag.name=Flag ##NEEDS TRANSLATE##
+entity.MeteorChunk.name=Meteor Chunk ##NEEDS TRANSLATE##
 
 # schematics
 schematic.moonbuggy.name = Moon Buggy
