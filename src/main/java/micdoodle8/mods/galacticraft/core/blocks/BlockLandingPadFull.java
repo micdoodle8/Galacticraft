@@ -202,7 +202,7 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
     {
         int metadata = world.getBlockMetadata(x, y, z);
         return new ItemStack(Item.getItemFromBlock(GCBlocks.landingPad), 1, metadata);

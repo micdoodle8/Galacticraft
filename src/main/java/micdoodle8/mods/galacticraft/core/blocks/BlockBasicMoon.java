@@ -389,7 +389,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
     {
         int metadata = world.getBlockMetadata(x, y, z);
         if (metadata == 2)
@@ -401,7 +401,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
             return null;
         }
 
-        return super.getPickBlock(target, world, x, y, z, player);
+        return super.getPickBlock(target, world, x, y, z);
     }
 
     @Override

@@ -184,7 +184,7 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
     {
         int metadata = world.getBlockMetadata(x, y, z);
         if (metadata == 4)
@@ -192,7 +192,7 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
             return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
         }
 
-        return super.getPickBlock(target, world, x, y, z, player);
+        return super.getPickBlock(target, world, x, y, z);
     }
 
 }

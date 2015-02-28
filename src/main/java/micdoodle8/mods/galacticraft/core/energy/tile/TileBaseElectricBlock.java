@@ -189,7 +189,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
     public ItemStack getWrenchDrop(EntityPlayer entityPlayer)
     {
-        return this.getBlockType().getPickBlock(null, this.worldObj, this.xCoord, this.yCoord, this.zCoord, entityPlayer);
+        return this.getBlockType().getPickBlock(null, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
     }
 
     @Override

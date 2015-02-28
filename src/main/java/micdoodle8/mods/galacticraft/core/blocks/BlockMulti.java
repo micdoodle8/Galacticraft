@@ -278,7 +278,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
     {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (tileEntity instanceof TileEntityMulti)
@@ -291,7 +291,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
 	
 	            if (Blocks.air != mainBlockID)
 	            {
-	                return mainBlockID.getPickBlock(target, world, mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z, player);
+	                return mainBlockID.getPickBlock(target, world, mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z);
 	            }
 	        }
         }

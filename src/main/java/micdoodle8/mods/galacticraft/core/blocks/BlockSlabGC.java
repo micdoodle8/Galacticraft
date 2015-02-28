@@ -169,7 +169,7 @@ public class BlockSlabGC extends BlockSlab
 	}
 
 	@Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
 	{
 		if (this == GCBlocks.slabGCDouble)
 		{
