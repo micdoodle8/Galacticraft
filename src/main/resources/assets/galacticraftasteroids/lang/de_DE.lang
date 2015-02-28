@@ -111,9 +111,9 @@ tile.telepadShort.description=Kurzreichweiten-Telepads werden benutzt um Spieler
 # SCHEMATICS
 
 # ENTITIES
-entity.SmallAsteroidGC.name=Kleiner Asteroid
-entity.GrappleHookGC.name=Greifhaken
-entity.Tier3RocketGC.name=Rakete (Stufe 3)
+entity.GalacticraftMars.SmallAsteroidGC.name=Kleiner Asteroid
+entity.GalacticraftMars.GrappleHookGC.name=Greifhaken
+entity.GalacticraftMars.Tier3RocketGC.name=Rakete (Stufe 3)
 
 # CONTAINERS
 container.shortRangeTelepad.name=Kurzreichweiten-Telepad

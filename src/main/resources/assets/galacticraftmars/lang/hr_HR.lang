@@ -173,8 +173,8 @@ schematic.cargoRocket.name=Automatska Teret Raketa
 entity.Sludgeling.name=Sludgeling
 entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Evoulirani Šef Kripera
-entity.SpaceshipT2.name=Raketa Ranga 2
-entity.CargoRocket.name=Teretna Raketa
+entity.GalacticraftMars.SpaceshipT2.name=Raketa Ranga 2
+entity.GalacticraftMars.CargoRocket.name=Teretna Raketa
 
 # CONTAINERS
 container.launchcontroller.name=Kontroler Lansiranja

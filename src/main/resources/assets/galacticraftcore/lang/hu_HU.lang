@@ -194,22 +194,22 @@ tile.wallGC.moonBricks.name=Moon Dungeon Brick Wall ##NEEDS TRANSLATE##
 tile.slabGCHalf.moonBricksSlab.name=Moon Dungeon Brick Slab ##NEEDS TRANSLATE##
 
 # ENTITIES
-entity.EvolvedSpider.name=Fejlett Pók
-entity.EvolvedZombie.name=Fejlett Zombi
-entity.EvolvedCreeper.name=Fejlett Creeper
-entity.EvolvedSkeleton.name=Fejlett Csontváz
-entity.EvolvedSkeletonBoss.name=Fejlett Csontváz-Főgonosz
-entity.AlienVillager.name=Idegen Falusi
-entity.Spaceship.name=1-Es Szintű Rakéta
-entity.GravityArrow.name=Nyílvessző
-entity.Meteor.name=Meteor
-entity.Buggy.name=Rover
-entity.Flag.name=Zászló
-entity.ParaChest.name=Utánpótlás-Szállító Láda
-entity.OxygenBubble.name=Légbuborék
-entity.Lander.name=Leszállóegység
-entity.GCFlag.name=Zászló
-entity.MeteorChunk.name=Meteordarab
+entity.GalacticraftCore.EvolvedSpider.name=Fejlett Pók
+entity.GalacticraftCore.EvolvedZombie.name=Fejlett Zombi
+entity.GalacticraftCore.EvolvedCreeper.name=Fejlett Creeper
+entity.GalacticraftCore.EvolvedSkeleton.name=Fejlett Csontváz
+entity.GalacticraftCore.EvolvedSkeletonBoss.name=Fejlett Csontváz-Főgonosz
+entity.GalacticraftCore.AlienVillager.name=Idegen Falusi
+entity.GalacticraftCore.Spaceship.name=1-Es Szintű Rakéta
+entity.GalacticraftCore.GravityArrow.name=Nyílvessző
+entity.GalacticraftCore.Meteor.name=Meteor
+entity.GalacticraftCore.Buggy.name=Rover
+entity.GalacticraftCore.Flag.name=Zászló
+entity.GalacticraftCore.ParaChest.name=Utánpótlás-Szállító Láda
+entity.GalacticraftCore.OxygenBubble.name=Légbuborék
+entity.GalacticraftCore.Lander.name=Leszállóegység
+entity.GalacticraftCore.GCFlag.name=Zászló
+entity.GalacticraftCore.MeteorChunk.name=Meteordarab
 
 # SCHEMATICS
 schematic.moonbuggy.name=Rover

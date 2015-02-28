@@ -116,8 +116,8 @@ itemGroup.GalacticraftAsteroids=Galacticraft Asteroidy
 # Schematics
 
 # Entity
-entity.SmallAsteroidGC.name=Malý asteroid
-entity.GrappleHookGC.name=Hák
-entity.Tier3RocketGC.name=Raketa typ 3
+entity.GalacticraftMars.SmallAsteroidGC.name=Malý asteroid
+entity.GalacticraftMars.GrappleHookGC.name=Hák
+entity.GalacticraftMars.Tier3RocketGC.name=Raketa typ 3
 
 # Container

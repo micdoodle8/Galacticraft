@@ -1,4 +1,4 @@
-﻿# Galacticraft Mars Language File = Simplified Chinese
+# Galacticraft Mars Language File = Simplified Chinese
 
 # GENERAL ITEMS
 item.rawDesh.name=未精炼戴斯矿
@@ -173,9 +173,9 @@ schematic.cargoRocket.name=自动货运火箭
 entity.Sludgeling.name=泥浆怪
 entity.Slimeling.name=黏滑怪
 entity.CreeperBoss.name=进化苦力怕之王
-entity.SpaceshipT2.name=2阶火箭
-entity.CargoRocket.name=货运火箭
-entity.LandingBalloons.name=着陆气球
+entity.GalacticraftMars.SpaceshipT2.name=2阶火箭
+entity.GalacticraftMars.CargoRocket.name=货运火箭
+entity.GalacticraftMars.LandingBalloons.name=着陆气球
 
 # CONTAINERS
 container.launchcontroller.name=发射控制器

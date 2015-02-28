@@ -1,4 +1,4 @@
-﻿# Galacticraft Asteroids Language File = RUSSIA RUSSIAN
+# Galacticraft Asteroids Language File = RUSSIA RUSSIAN
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=Ракета 3-го уровня
@@ -111,9 +111,9 @@ tile.telepadShort.description=Короткодистанционные теле�
 # SCHEMATICS
 
 # ENTITIES
-entity.SmallAsteroidGC.name=Малый астероид
-entity.GrappleHookGC.name=Абордажный крюк
-entity.Tier3RocketGC.name=Ракета 3-го уровня
+entity.GalacticraftMars.SmallAsteroidGC.name=Малый астероид
+entity.GalacticraftMars.GrappleHookGC.name=Абордажный крюк
+entity.GalacticraftMars.Tier3RocketGC.name=Ракета 3-го уровня
 
 # CONTAINERS
 container.shortRangeTelepad.name=Короткодистанционный телепорт

@@ -121,9 +121,9 @@ tile.telepadShort.description=Teleporter s malom daljinom se koristi za prijenos
 # SCHEMATICS
 
 # ENTITIES
-entity.SmallAsteroidGC.name=Mali Asteroid
-entity.GrappleHookGC.name=Kuka
-entity.Tier3RocketGC.name=Rang 3 Raketa
+entity.GalacticraftMars.SmallAsteroidGC.name=Mali Asteroid
+entity.GalacticraftMars.GrappleHookGC.name=Kuka
+entity.GalacticraftMars.Tier3RocketGC.name=Rang 3 Raketa
 
 # CONTAINERS
 container.shortRangeTelepad.name=Teleporter s Malom Daljinom

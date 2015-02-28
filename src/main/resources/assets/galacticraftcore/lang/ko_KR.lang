@@ -1,4 +1,4 @@
-﻿# Galacticraft Core Language File = KOREA KOREAN
+# Galacticraft Core Language File = KOREA KOREAN
 
 # GENERAL ITEMS
 item.oxygenTankLightFull.name=소형 산소 탱크
@@ -196,22 +196,22 @@ tile.wallGC.moonBricks.name=달 던전 벽돌 담장
 tile.slabGCHalf.moonBricksSlab.name=달 던전 벽돌 반 블록
 
 # ENTITIES
-entity.EvolvedSpider.name=진화한 거미
-entity.EvolvedZombie.name=진화한 좀비
-entity.EvolvedCreeper.name=진화한 크리퍼
-entity.EvolvedSkeleton.name=진화한 스켈레톤
-entity.EvolvedSkeletonBoss.name=진화한 스켈레톤 보스
-entity.AlienVillager.name=외계주민
-entity.Spaceship.name=1티어 로켓
-entity.GravityArrow.name=화살
-entity.Meteor.name=운석
-entity.Buggy.name=버기
-entity.Flag.name=깃발
-entity.ParaChest.name=낙하상자
-entity.OxygenBubble.name=산소 기포
-entity.Lander.name=착륙기
-entity.GCFlag.name=깃발
-entity.MeteorChunk.name=운석 덩어리
+entity.GalacticraftCore.EvolvedSpider.name=진화한 거미
+entity.GalacticraftCore.EvolvedZombie.name=진화한 좀비
+entity.GalacticraftCore.EvolvedCreeper.name=진화한 크리퍼
+entity.GalacticraftCore.EvolvedSkeleton.name=진화한 스켈레톤
+entity.GalacticraftCore.EvolvedSkeletonBoss.name=진화한 스켈레톤 보스
+entity.GalacticraftCore.AlienVillager.name=외계주민
+entity.GalacticraftCore.Spaceship.name=1티어 로켓
+entity.GalacticraftCore.GravityArrow.name=화살
+entity.GalacticraftCore.Meteor.name=운석
+entity.GalacticraftCore.Buggy.name=버기
+entity.GalacticraftCore.Flag.name=깃발
+entity.GalacticraftCore.ParaChest.name=낙하상자
+entity.GalacticraftCore.OxygenBubble.name=산소 기포
+entity.GalacticraftCore.Lander.name=착륙기
+entity.GalacticraftCore.GCFlag.name=깃발
+entity.GalacticraftCore.MeteorChunk.name=운석 덩어리
 
 # SCHEMATICS
 schematic.moonbuggy.name=달 버기

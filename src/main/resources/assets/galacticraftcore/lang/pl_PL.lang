@@ -220,22 +220,22 @@ tile.wallGC.moonBricks.name=Ściana z Księżycowych Lochów
 tile.slabGCHalf.moonBricksSlab.name=Półblok z Księżycowych Lochów
 
 # ENTITIES
-entity.EvolvedSpider.name=Kosmiczny Pająk
-entity.EvolvedZombie.name=Kosmiczny Zombie
-entity.EvolvedCreeper.name=Kosmiczny Creeper
-entity.EvolvedSkeleton.name=Kosmiczny Szkielet
-entity.EvolvedSkeletonBoss.name=Kosmiczny szkielet Boss
-entity.AlienVillager.name=Wieśniak-Kosmita
-entity.Spaceship.name=Statek Kosmiczny
-entity.GravityArrow.name=Strzała
-entity.Meteor.name=Meteor
-entity.Buggy.name=Buggy
-entity.Flag.name=Flaga
-entity.ParaChest.name=Paraskrzynia
-entity.OxygenBubble.name=Bańka Tlenowa
-entity.Lander.name=Lądownik Kosmiczny
-entity.GCFlag.name=Flaga
-entity.MeteorChunk.name=Kawałek Meteorytu
+entity.GalacticraftCore.EvolvedSpider.name=Kosmiczny Pająk
+entity.GalacticraftCore.EvolvedZombie.name=Kosmiczny Zombie
+entity.GalacticraftCore.EvolvedCreeper.name=Kosmiczny Creeper
+entity.GalacticraftCore.EvolvedSkeleton.name=Kosmiczny Szkielet
+entity.GalacticraftCore.EvolvedSkeletonBoss.name=Kosmiczny szkielet Boss
+entity.GalacticraftCore.AlienVillager.name=Wieśniak-Kosmita
+entity.GalacticraftCore.Spaceship.name=Statek Kosmiczny
+entity.GalacticraftCore.GravityArrow.name=Strzała
+entity.GalacticraftCore.Meteor.name=Meteor
+entity.GalacticraftCore.Buggy.name=Buggy
+entity.GalacticraftCore.Flag.name=Flaga
+entity.GalacticraftCore.ParaChest.name=Paraskrzynia
+entity.GalacticraftCore.OxygenBubble.name=Bańka Tlenowa
+entity.GalacticraftCore.Lander.name=Lądownik Kosmiczny
+entity.GalacticraftCore.GCFlag.name=Flaga
+entity.GalacticraftCore.MeteorChunk.name=Kawałek Meteorytu
 
 # Schematics
 schematic.moonbuggy.name=Księżycowe Buggy

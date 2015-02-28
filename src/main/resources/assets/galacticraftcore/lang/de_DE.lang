@@ -196,22 +196,22 @@ tile.wallGC.moonBricks.name=Monddungeonmauer
 tile.slabGCHalf.moonBricksSlab.name=Monddungeonziegelstufe
 
 # ENTITIES
-entity.EvolvedSpider.name=Entwickelte Spinne
-entity.EvolvedZombie.name=Entwickelter Zombie
-entity.EvolvedCreeper.name=Entwickelter Creeper
-entity.EvolvedSkeleton.name=Entwickeltes Skelett
-entity.EvolvedSkeletonBoss.name=Entwickelter Skelett-Boss
-entity.AlienVillager.name=Alien-Dorfbewohner
-entity.Spaceship.name=Raumschiff
-entity.GravityArrow.name=Pfeil
-entity.Meteor.name=Meteor
-entity.Buggy.name=Mondrover
-entity.Flag.name=Flagge
-entity.ParaChest.name=Parakiste
-entity.OxygenBubble.name=Sauerstoffblase
-entity.Lander.name=Weltraum-Landekapsel
-entity.GCFlag.name=Flagge
-entity.MeteorChunk.name=Meteorbrocken
+entity.GalacticraftCore.EvolvedSpider.name=Entwickelte Spinne
+entity.GalacticraftCore.EvolvedZombie.name=Entwickelter Zombie
+entity.GalacticraftCore.EvolvedCreeper.name=Entwickelter Creeper
+entity.GalacticraftCore.EvolvedSkeleton.name=Entwickeltes Skelett
+entity.GalacticraftCore.EvolvedSkeletonBoss.name=Entwickelter Skelett-Boss
+entity.GalacticraftCore.AlienVillager.name=Alien-Dorfbewohner
+entity.GalacticraftCore.Spaceship.name=Raumschiff
+entity.GalacticraftCore.GravityArrow.name=Pfeil
+entity.GalacticraftCore.Meteor.name=Meteor
+entity.GalacticraftCore.Buggy.name=Mondrover
+entity.GalacticraftCore.Flag.name=Flagge
+entity.GalacticraftCore.ParaChest.name=Parakiste
+entity.GalacticraftCore.OxygenBubble.name=Sauerstoffblase
+entity.GalacticraftCore.Lander.name=Weltraum-Landekapsel
+entity.GalacticraftCore.GCFlag.name=Flagge
+entity.GalacticraftCore.MeteorChunk.name=Meteorbrocken
 
 # SCHEMATICS
 schematic.moonbuggy.name=Mondrover

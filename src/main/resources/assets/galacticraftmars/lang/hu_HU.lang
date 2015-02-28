@@ -173,8 +173,8 @@ schematic.cargoRocket.name=Távvezérlésu Teherrakéta
 entity.Sludgeling.name=Iszaphernyó
 entity.Slimeling.name=Nyálkahernyó
 entity.CreeperBoss.name=Vejlett Creeper-Fogonosz
-entity.SpaceshipT2.name=2-Es Szintu Rakéta
-entity.CargoRocket.name=Távvezérlésu Teherrakéta
+entity.GalacticraftMars.SpaceshipT2.name=2-Es Szintu Rakéta
+entity.GalacticraftMars.CargoRocket.name=Távvezérlésu Teherrakéta
 
 # CONTAINERS
 container.launchcontroller.name=Távvezérlo

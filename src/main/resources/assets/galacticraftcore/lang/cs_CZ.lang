@@ -211,22 +211,22 @@ tile.wallGC.moonBricks.name=Stěna z měsíčního kamene (dungeon)
 tile.slabGCHalf.moonBricksSlab.name=Podlaha z měsíčního kamene (dungeon)
 
 # ENTITIES
-entity.EvolvedSpider.name=Vyvinutý pavouk
-entity.EvolvedZombie.name=Vyvinutý zombie
-entity.EvolvedCreeper.name=Vyvinutý syčák
-entity.EvolvedSkeleton.name=Vyvinutý kostlivec
-entity.EvolvedSkeletonBoss.name=Vyvinutý kostlivec (Boss)
-entity.AlienVillager.name=Mimozemšťan
-entity.Spaceship.name=Raketa typ 1
-entity.GravityArrow.name=Šíp
-entity.Meteor.name=Meteorit
-entity.Buggy.name=Bugina
-entity.Flag.name=Vlajka
-entity.ParaChest.name=Truhla na padáku
-entity.OxygenBubble.name=Kyslíková bublina
-entity.Lander.name=Přistávací modul
-entity.GCFlag.name=Vlajka
-entity.MeteorChunk.name=Úlomek meteoritu
+entity.GalacticraftCore.EvolvedSpider.name=Vyvinutý pavouk
+entity.GalacticraftCore.EvolvedZombie.name=Vyvinutý zombie
+entity.GalacticraftCore.EvolvedCreeper.name=Vyvinutý syčák
+entity.GalacticraftCore.EvolvedSkeleton.name=Vyvinutý kostlivec
+entity.GalacticraftCore.EvolvedSkeletonBoss.name=Vyvinutý kostlivec (Boss)
+entity.GalacticraftCore.AlienVillager.name=Mimozemšťan
+entity.GalacticraftCore.Spaceship.name=Raketa typ 1
+entity.GalacticraftCore.GravityArrow.name=Šíp
+entity.GalacticraftCore.Meteor.name=Meteorit
+entity.GalacticraftCore.Buggy.name=Bugina
+entity.GalacticraftCore.Flag.name=Vlajka
+entity.GalacticraftCore.ParaChest.name=Truhla na padáku
+entity.GalacticraftCore.OxygenBubble.name=Kyslíková bublina
+entity.GalacticraftCore.Lander.name=Přistávací modul
+entity.GalacticraftCore.GCFlag.name=Vlajka
+entity.GalacticraftCore.MeteorChunk.name=Úlomek meteoritu
 
 # Schematics
 schematic.moonbuggy.name=Bugina

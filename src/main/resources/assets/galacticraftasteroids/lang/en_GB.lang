@@ -114,8 +114,8 @@ itemGroup.GalacticraftAsteroids=Galacticraft Asteroids
 # Schematics
 
 # Entity
-entity.SmallAsteroidGC.name=Small Asteroid
-entity.GrappleHookGC.name=Grapple Hook
-entity.Tier3RocketGC.name=Tier 3 Rocket
+entity.GalacticraftMars.SmallAsteroidGC.name=Small Asteroid
+entity.GalacticraftMars.GrappleHookGC.name=Grapple Hook
+entity.GalacticraftMars.Tier3RocketGC.name=Tier 3 Rocket
 
 # Container

@@ -194,22 +194,22 @@ tile.wallGC.moonBricks.name=Moon Dungeon Brick Wall ##NEEDS TRANSLATE##
 tile.slabGCHalf.moonBricksSlab.name=Moon Dungeon Brick Slab ##NEEDS TRANSLATE##
 
 # ENTITIES
-entity.EvolvedSpider.name=Araña Evolucionada
-entity.EvolvedZombie.name=Zombie Evolucionado
-entity.EvolvedCreeper.name=Creeper Evolucionado
-entity.EvolvedSkeleton.name=Esqueleto Evolucionado
-entity.EvolvedSkeletonBoss.name=Jefe Esqueleto Evolucionado
-entity.AlienVillager.name=Aldeano Alien
-entity.Spaceship.name=Cohete Nivel 1
-entity.GravityArrow.name=Flecha
-entity.Meteor.name=Meteorito
-entity.Buggy.name=Buggy
-entity.Flag.name=Bandera
-entity.ParaChest.name=Cofre-Paraca
-entity.OxygenBubble.name=Burbuja de Oxígeno
-entity.Lander.name=Aterrizador
-entity.GCFlag.name=Bandera
-entity.MeteorChunk.name=Trozo de Meteorito
+entity.GalacticraftCore.EvolvedSpider.name=Araña Evolucionada
+entity.GalacticraftCore.EvolvedZombie.name=Zombie Evolucionado
+entity.GalacticraftCore.EvolvedCreeper.name=Creeper Evolucionado
+entity.GalacticraftCore.EvolvedSkeleton.name=Esqueleto Evolucionado
+entity.GalacticraftCore.EvolvedSkeletonBoss.name=Jefe Esqueleto Evolucionado
+entity.GalacticraftCore.AlienVillager.name=Aldeano Alien
+entity.GalacticraftCore.Spaceship.name=Cohete Nivel 1
+entity.GalacticraftCore.GravityArrow.name=Flecha
+entity.GalacticraftCore.Meteor.name=Meteorito
+entity.GalacticraftCore.Buggy.name=Buggy
+entity.GalacticraftCore.Flag.name=Bandera
+entity.GalacticraftCore.ParaChest.name=Cofre-Paraca
+entity.GalacticraftCore.OxygenBubble.name=Burbuja de Oxígeno
+entity.GalacticraftCore.Lander.name=Aterrizador
+entity.GalacticraftCore.GCFlag.name=Bandera
+entity.GalacticraftCore.MeteorChunk.name=Trozo de Meteorito
 
 # SCHEMATICS
 schematic.moonbuggy.name=Buggy Lunar

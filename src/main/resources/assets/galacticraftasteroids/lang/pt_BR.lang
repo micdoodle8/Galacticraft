@@ -114,8 +114,8 @@ itemGroup.GalacticraftAsteroids=Galacticraft Asteroides
 # Schematics
 
 # Entity
-entity.SmallAsteroidGC.name=Asteroides Menores
-entity.GrappleHookGC.name=Gancho
-entity.Tier3RocketGC.name=Foguete Nível 3
+entity.GalacticraftMars.SmallAsteroidGC.name=Asteroides Menores
+entity.GalacticraftMars.GrappleHookGC.name=Gancho
+entity.GalacticraftMars.Tier3RocketGC.name=Foguete Nível 3
 
 # Container
