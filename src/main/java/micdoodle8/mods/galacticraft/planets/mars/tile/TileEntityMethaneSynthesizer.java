@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
@@ -88,8 +89,11 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
                         Block blockAbove = this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord);
                         if (blockAbove != null && blockAbove.getMaterial() == Material.air && blockAbove!=GCBlocks.breatheableAir && blockAbove!=GCBlocks.brightBreatheableAir)
                         {
-                            FluidStack gcAtmosphere = FluidRegistry.getFluidStack("carbondioxide", 4);
-                            this.gasTank2.fill(gcAtmosphere, true);
+                            if (!OxygenUtil.inOxygenBubble(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1D, this.zCoord + 0.5D))
+                            {
+	                        	FluidStack gcAtmosphere = FluidRegistry.getFluidStack("carbondioxide", 4);
+	                            this.gasTank2.fill(gcAtmosphere, true);
+                            }
                         }
                     }
                 }
