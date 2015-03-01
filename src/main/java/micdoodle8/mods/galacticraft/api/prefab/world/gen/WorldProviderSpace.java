@@ -191,7 +191,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     @Override
     public boolean hasBreathableAtmosphere()
     {
-        return this.isGasPresent(IAtmosphericGas.OXYGEN);
+        return this.isGasPresent(IAtmosphericGas.OXYGEN) && !this.isGasPresent(IAtmosphericGas.CO2);
     }
 
     @Override

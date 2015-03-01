@@ -129,8 +129,11 @@ public class EventHandlerGC
     {
         if (event.source.damageType.equals(DamageSource.onFire.damageType))
         {
-            if (event.entityLiving.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider)event.entityLiving.worldObj.provider).isGasPresent(IAtmosphericGas.OXYGEN))
+            if (event.entityLiving.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider)event.entityLiving.worldObj.provider).isGasPresent(IAtmosphericGas.OXYGEN) && !((IGalacticraftWorldProvider)event.entityLiving.worldObj.provider).hasBreathableAtmosphere())
             {
+    	        if (OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, event.entityLiving.getBoundingBox()))
+    	        	return;
+
                 if (event.entityLiving.worldObj instanceof WorldServer)
                 {
                     ((WorldServer) event.entityLiving.worldObj).func_147487_a("smoke", event.entityLiving.posX, event.entityLiving.posY + event.entityLiving.boundingBox.maxY - event.entityLiving.boundingBox.minY, event.entityLiving.posZ, 50, 0.0, 0.05, 0.0, 0.001);
@@ -201,7 +204,7 @@ public class EventHandlerGC
                 }
             }
 
-            if (event.entityPlayer.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider) event.entityPlayer.worldObj.provider).isGasPresent(IAtmosphericGas.OXYGEN) && heldStack.getItem() instanceof ItemFlintAndSteel)
+            if (heldStack.getItem() instanceof ItemFlintAndSteel && event.entityPlayer.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider) event.entityPlayer.worldObj.provider).isGasPresent(IAtmosphericGas.OXYGEN))
             {
                 if (!event.entity.worldObj.isRemote && event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK))
                 {
