@@ -2,15 +2,15 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -119,8 +119,12 @@ public class BlockFluidGC extends BlockFluidClassic
     @Override
     public boolean isFlammable(IBlockAccess world, int x, int y, int z, ForgeDirection face) 
     {
-        boolean noAtmosphericCombustion = ((World) world).provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider) ((World) world).provider).isGasPresent(IAtmosphericGas.OXYGEN) && !((IGalacticraftWorldProvider) ((World) world).provider).hasBreathableAtmosphere();
-        if (noAtmosphericCombustion) return false;
+        if (OxygenUtil.noAtmosphericCombustion(((World) world).provider))
+        {
+        	if (!OxygenUtil.isAABBInBreathableAirBlock((World) world, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 2, z + 1)))
+        		return false;
+        }
+        
     	if (this.fluidName.startsWith("fuel"))
     	{
     		((World) world).createExplosion(null, x, y, z, 6.0F, true);

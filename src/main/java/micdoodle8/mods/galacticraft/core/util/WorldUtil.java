@@ -114,11 +114,9 @@ public class WorldUtil
 
     	if (entity.isBurning())
     	{
-	        IGalacticraftWorldProvider worldGC = (IGalacticraftWorldProvider) entity.worldObj.provider;
-	        if (worldGC.hasBreathableAtmosphere() || worldGC.isGasPresent(IAtmosphericGas.OXYGEN))
-	        	return true;
-	        
-	        if (OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, entity.getBoundingBox()))
+	        if (OxygenUtil.noAtmosphericCombustion(entity.worldObj.provider))
+	        	return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, entity.getBoundingBox());
+	        else
 	        	return true;
 	        //Disable fire on Galacticraft worlds with no oxygen
     	}

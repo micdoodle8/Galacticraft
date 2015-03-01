@@ -17,7 +17,6 @@ import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.FlipPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.Unlock;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
-import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -129,7 +128,7 @@ public class EventHandlerGC
     {
         if (event.source.damageType.equals(DamageSource.onFire.damageType))
         {
-            if (event.entityLiving.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider)event.entityLiving.worldObj.provider).isGasPresent(IAtmosphericGas.OXYGEN) && !((IGalacticraftWorldProvider)event.entityLiving.worldObj.provider).hasBreathableAtmosphere())
+            if (OxygenUtil.noAtmosphericCombustion(event.entityLiving.worldObj.provider))
             {
     	        if (OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, event.entityLiving.getBoundingBox()))
     	        	return;
@@ -204,11 +203,11 @@ public class EventHandlerGC
                 }
             }
 
-            if (heldStack.getItem() instanceof ItemFlintAndSteel && event.entityPlayer.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider) event.entityPlayer.worldObj.provider).isGasPresent(IAtmosphericGas.OXYGEN))
+            if (heldStack.getItem() instanceof ItemFlintAndSteel)
             {
                 if (!event.entity.worldObj.isRemote && event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK))
                 {
-                    if (idClicked != Blocks.tnt && !OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, AxisAlignedBB.getBoundingBox(event.x, event.y, event.z, event.x + 1, event.y + 2, event.z + 1)))
+                    if (idClicked != Blocks.tnt  && OxygenUtil.noAtmosphericCombustion(event.entityPlayer.worldObj.provider) && !OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, AxisAlignedBB.getBoundingBox(event.x, event.y, event.z, event.x + 1, event.y + 2, event.z + 1)))
                     {
                         event.setCanceled(true);
                     }

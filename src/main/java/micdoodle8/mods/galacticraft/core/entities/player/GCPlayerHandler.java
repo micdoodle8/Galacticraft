@@ -696,7 +696,7 @@ public class GCPlayerHandler
     protected void checkCurrentItem(EntityPlayerMP player)
     {
         ItemStack theCurrentItem = player.inventory.getCurrentItem();
-        boolean noAtmosphericCombustion = player.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider) player.worldObj.provider).isGasPresent(IAtmosphericGas.OXYGEN) && !((IGalacticraftWorldProvider) player.worldObj.provider).hasBreathableAtmosphere();
+        boolean noAtmosphericCombustion = OxygenUtil.noAtmosphericCombustion(player.worldObj.provider);
         if (noAtmosphericCombustion && theCurrentItem != null)
         {
             final int var1 = theCurrentItem.stackSize;

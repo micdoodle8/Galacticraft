@@ -10,6 +10,8 @@ import micdoodle8.mods.galacticraft.api.item.IBreathableArmor.EnumGearType;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -30,6 +32,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
@@ -435,5 +438,15 @@ public class OxygenUtil
         }
 
         return adjacentConnections;
+    }
+    
+    public static boolean noAtmosphericCombustion(WorldProvider provider)
+    {
+    	if (provider instanceof IGalacticraftWorldProvider)
+    	{
+    		return (!((IGalacticraftWorldProvider) provider).isGasPresent(IAtmosphericGas.OXYGEN) && !((IGalacticraftWorldProvider) provider).hasBreathableAtmosphere());
+    	}
+    	
+    	return false;
     }
 }
