@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
@@ -27,6 +28,7 @@ import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityHydrogenPipe;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -39,6 +41,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkProviderServer;
 
 import javax.imageio.ImageIO;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -60,7 +63,8 @@ public class TickHandlerServer
 	public static LinkedList<TileEntityOxygenTransmitter> oxygenTransmitterUpdates  = new LinkedList<TileEntityOxygenTransmitter>();
 	public static LinkedList<TileEntityHydrogenPipe> hydrogenTransmitterUpdates  = new LinkedList<TileEntityHydrogenPipe>();
 	public static LinkedList<TileBaseConductor> energyTransmitterUpdates  = new LinkedList<TileBaseConductor>();
-
+	private final int MAX_BLOCKS_PER_TICK = 50000; 
+	
     public static void restart()
     {
         TickHandlerServer.scheduledBlockChanges.clear();
@@ -116,6 +120,12 @@ public class TickHandlerServer
         TickHandlerServer.scheduledBlockChanges.put(dimID, changeList);
     }
 
+    /**
+     * Only use this for AIR blocks (any type of BlockAir)
+     * 
+     * @param dimID
+     * @param changeAdd  List of <ScheduledBlockChange>
+     */
     public static void scheduleNewBlockChange(int dimID, List<ScheduledBlockChange> changeAdd)
     {
         CopyOnWriteArrayList<ScheduledBlockChange> changeList = TickHandlerServer.scheduledBlockChanges.get(dimID);
@@ -451,20 +461,33 @@ public class TickHandlerServer
 
             if (changeList != null && !changeList.isEmpty())
             {
+                CopyOnWriteArrayList<ScheduledBlockChange> newList = new CopyOnWriteArrayList<ScheduledBlockChange>();
+                int blockCount = 0;
+                int blockCountMax = Math.max(this.MAX_BLOCKS_PER_TICK, changeList.size() / 4);
+
                 for (ScheduledBlockChange change : changeList)
                 {
-                    if (change != null)
+                    if (++blockCount > blockCountMax)
                     {
-                        BlockVec3 changePosition = change.getChangePosition();
-                        if (changePosition != null)
-                        {
-                            world.setBlock(changePosition.x, changePosition.y, changePosition.z, change.getChangeID(), change.getChangeMeta(), 2);
-                        }
+                    	newList.add(change);
+                    }
+                    else
+                    {
+	                    if (change != null)
+	                    {
+	                        BlockVec3 changePosition = change.getChangePosition();
+	                        //Only replace blocks of type BlockAir - this is to prevent accidents where other mods have moved blocks
+	                        if (changePosition != null && world.getBlock(changePosition.x, changePosition.y, changePosition.z) instanceof BlockAir)
+	                        {
+	                            world.setBlock(changePosition.x, changePosition.y, changePosition.z, change.getChangeID(), change.getChangeMeta(), 2);
+	                        }
+	                    }
                     }
                 }
 
                 changeList.clear();
                 TickHandlerServer.scheduledBlockChanges.remove(world.provider.dimensionId);
+                if (newList.size() > 0) TickHandlerServer.scheduledBlockChanges.put(world.provider.dimensionId, newList);
             }
 
             CopyOnWriteArrayList<BlockVec3> torchList = TickHandlerServer.scheduledTorchUpdates.get(world.provider.dimensionId);

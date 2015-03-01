@@ -136,11 +136,12 @@ public class ThreadFindSeal
             this.currentLayer.add(this.head);
             if (this.head.x < -29990000 || this.head.z < -29990000 || this.head.x >= 29990000 || this.head.z >= 29990000)
             {
-                if (Blocks.air == this.head.getBlockID_noChunkLoad(this.world))
+                Block b = this.head.getBlockID_noChunkLoad(this.world);
+            	if (Blocks.air == b)
                 {
                     this.airToReplace.add(this.head.clone());
                 }
-                if (this.head.getBlockID_noChunkLoad(this.world) == GCBlocks.brightAir)
+            	else if (b == GCBlocks.brightAir)
                 {
                     this.airToReplaceBright.add(this.head.clone());
                 }
@@ -153,7 +154,7 @@ public class ThreadFindSeal
                 {
                     this.airToReplace.add(this.head.clone());
                 }
-                if (headblock == GCBlocks.brightAir)
+                else if (headblock == GCBlocks.brightAir)
                 {
                     this.airToReplaceBright.add(this.head.clone());
                 }
