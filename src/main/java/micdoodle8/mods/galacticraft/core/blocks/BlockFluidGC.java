@@ -119,7 +119,8 @@ public class BlockFluidGC extends BlockFluidClassic
     @Override
     public boolean isFlammable(IBlockAccess world, int x, int y, int z, ForgeDirection face) 
     {
-        if (OxygenUtil.noAtmosphericCombustion(((World) world).provider))
+    	if (!(world instanceof World)) return false;
+    	if (OxygenUtil.noAtmosphericCombustion(((World) world).provider))
         {
         	if (!OxygenUtil.isAABBInBreathableAirBlock((World) world, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 2, z + 1)))
         		return false;
