@@ -79,3 +79,4 @@ IndianGooN:capeOrange
 Mysticslay:capeLightBlue
 BeeCannon:capeYellow
 Krazymonkey151:capeRainbow
+Knightblock:capeLightBlue
