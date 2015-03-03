@@ -130,7 +130,7 @@ public class EventHandlerGC
         {
             if (OxygenUtil.noAtmosphericCombustion(event.entityLiving.worldObj.provider))
             {
-    	        if (OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, event.entityLiving.getBoundingBox()))
+    	        if (OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, event.entityLiving.boundingBox))
     	        	return;
 
                 if (event.entityLiving.worldObj instanceof WorldServer)
