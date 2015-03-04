@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
@@ -9,31 +7,31 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockOxygenDistributor extends BlockAdvancedTile implements ItemBlockDesc.IBlockShiftDesc
 {
-    private IIcon iconMachineSide;
+    /*private IIcon iconMachineSide;
     private IIcon iconDistributor;
     private IIcon iconInput;
-    private IIcon iconOutput;
+    private IIcon iconOutput;*/
 
     public BlockOxygenDistributor(String assetName)
     {
         super(Material.rock);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeStone);
-        this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
-        this.setBlockName(assetName);
+        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -48,7 +46,7 @@ public class BlockOxygenDistributor extends BlockAdvancedTile implements ItemBlo
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
@@ -56,15 +54,15 @@ public class BlockOxygenDistributor extends BlockAdvancedTile implements ItemBlo
         this.iconDistributor = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_distributor_fan");
         this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_oxygen_input");
         this.iconOutput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
-    }
+    }*/
 
     @Override
-    public boolean onUseWrench(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         int change = 0;
 
         // Re-orient the block
-        switch (par1World.getBlockMetadata(x, y, z))
+        switch (getMetaFromState(world.getBlockState(pos)))
         {
         case 0:
             change = 3;
@@ -80,24 +78,24 @@ public class BlockOxygenDistributor extends BlockAdvancedTile implements ItemBlo
             break;
         }
 
-        TileEntity te = par1World.getTileEntity(x, y, z);
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileBaseUniversalElectrical)
         {
             ((TileBaseUniversalElectrical) te).updateFacing();
         }
 
-        par1World.setBlockMetadataWithNotify(x, y, z, change, 3);
+        world.setBlockState(pos, getStateFromMeta(change), 3);
         return true;
     }
 
     @Override
-    public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        entityPlayer.openGui(GalacticraftCore.instance, -1, world, x, y, z);
+        entityPlayer.openGui(GalacticraftCore.instance, -1, world, pos.getX(), pos.getY(), pos.getZ());
         return true;
     }
 
-    @Override
+    /*@Override
     public IIcon getIcon(int side, int metadata)
     {
         if (side == 0 || side == 1)
@@ -116,12 +114,12 @@ public class BlockOxygenDistributor extends BlockAdvancedTile implements ItemBlo
         {
             return this.iconDistributor;
         }
-    }
+    }*/
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        final int angle = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         int change = 0;
 
         switch (angle)
@@ -140,11 +138,11 @@ public class BlockOxygenDistributor extends BlockAdvancedTile implements ItemBlo
             break;
         }
 
-        world.setBlockMetadataWithNotify(x, y, z, change, 3);
+        worldIn.setBlockState(pos, getStateFromMeta(change), 3);
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TileEntityOxygenDistributor();
     }

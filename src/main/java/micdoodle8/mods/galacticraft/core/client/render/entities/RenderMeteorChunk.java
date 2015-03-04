@@ -1,8 +1,10 @@
+/*
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteorChunk;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
@@ -16,8 +18,9 @@ public class RenderMeteorChunk extends Render
 
     private final IModelCustom meteorChunkModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/meteorChunk.obj"));
 
-    public RenderMeteorChunk()
+    public RenderMeteorChunk(RenderManager renderManager)
     {
+        super(renderManager);
         this.shadowSize = 0.1F;
     }
 
@@ -61,3 +64,4 @@ public class RenderMeteorChunk extends Render
         this.renderMeteorChunk((EntityMeteorChunk) par1Entity, par2, par4, par6, par8, par9);
     }
 }
+*/

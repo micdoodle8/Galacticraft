@@ -1,15 +1,15 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
@@ -39,7 +39,7 @@ public class EntityFXLanderFlame extends EntityFX
     }
 
     @Override
-    public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7)
+    public void func_180434_a(WorldRenderer worldRenderer, Entity entity, float par2, float par3, float par4, float par5, float par6, float par7)
     {
         GL11.glDepthMask(false);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -56,7 +56,7 @@ public class EntityFXLanderFlame extends EntityFX
         }
 
         this.particleScale = this.smokeParticleScale * var8;
-        super.renderParticle(par1Tessellator, par2, par3, par4, par5, par6, par7);
+        super.func_180434_a(worldRenderer, entity, par2, par3, par4, par5, par6, par7);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(true);
     }
@@ -91,7 +91,7 @@ public class EntityFXLanderFlame extends EntityFX
         this.motionY *= 0.9599999785423279D;
         this.motionZ *= 0.9599999785423279D;
 
-        final List<?> var3 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(1.0D, 0.5D, 1.0D));
+        final List<?> var3 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().expand(1.0D, 0.5D, 1.0D));
 
         if (var3 != null)
         {

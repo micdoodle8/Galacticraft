@@ -6,7 +6,6 @@ import api.player.render.RenderPlayerAPI;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -15,7 +14,6 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
@@ -851,7 +849,7 @@ public class ClientProxyCore extends CommonProxyCore
         EntityClientPlayerMP player = ClientProxyCore.mc.thePlayer;
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
-        EntityLivingBase entityLivingBase = ClientProxyCore.mc.renderViewEntity;
+        EntityLivingBase entityLivingBase = ClientProxyCore.mc.getRenderViewEntity();
         
         if (player.ridingEntity instanceof EntityTieredRocket && ClientProxyCore.mc.gameSettings.thirdPersonView == 0)
         {
@@ -912,7 +910,7 @@ public class ClientProxyCore extends CommonProxyCore
     {
         GL11.glNewList(glRenderList + 3, GL11.GL_COMPILE);
 
-        EntityLivingBase entitylivingbase = ClientProxyCore.mc.renderViewEntity;
+        EntityLivingBase entitylivingbase = ClientProxyCore.mc.getRenderViewEntity();
 
         if (entitylivingbase != null)
         {

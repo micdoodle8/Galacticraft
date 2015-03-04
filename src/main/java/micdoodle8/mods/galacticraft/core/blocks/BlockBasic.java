@@ -1,21 +1,23 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 import java.util.Random;
@@ -27,16 +29,48 @@ import java.util.Random;
  */
 public class BlockBasic extends Block implements IDetectableResource
 {
+    /*IIcon[] iconBuffer;*/
 
-    IIcon[] iconBuffer;
+    public static final PropertyEnum BASIC_TYPE = PropertyEnum.create("basicType", EnumBlockBasic.class);
+
+    private enum EnumBlockBasic
+    {
+        ALUMINUM_DECORATION_BLOCK_0(3),
+        ALUMINUM_DECORATION_BLOCK_1(4),
+        ORE_COPPER(5),
+        ORE_TIN(6),
+        ORE_ALUMINUM(7),
+        ORE_SILICON(8),
+        DECO_BLOCK_COPPER(9),
+        DECO_BLOCK_TIN(10),
+        DECO_BLOCK_ALUMINUM(11),
+        DECO_BLOCK_METEOR_IRON(12);
+
+        private final int meta;
+
+        private EnumBlockBasic(int meta)
+        {
+            this.meta = meta;
+        }
+
+        public int getMeta()
+        {
+            return this.meta;
+        }
+
+        public static EnumBlockBasic byMetadata(int meta)
+        {
+            return values()[meta - 3];
+        }
+    }
 
     protected BlockBasic(String assetName)
     {
         super(Material.rock);
         this.setHardness(1.0F);
         this.blockResistance = 15F;
-        this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
-        this.setBlockName(assetName);
+        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -45,7 +79,7 @@ public class BlockBasic extends Block implements IDetectableResource
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
-    @Override
+    /*@Override
     public void registerBlockIcons(IIconRegister iconRegister)
     {
         this.iconBuffer = new IIcon[12];
@@ -99,12 +133,12 @@ public class BlockBasic extends Block implements IDetectableResource
         default:
             return meta < this.iconBuffer.length ? this.iconBuffer[meta] : this.iconBuffer[0];
         }
-    }
+    }*/
 
     @Override
-    public Item getItemDropped(int meta, Random random, int par3)
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        switch (meta)
+        switch (getMetaFromState(state))
         {
         case 8:
             return GCItems.basicItem;
@@ -114,21 +148,21 @@ public class BlockBasic extends Block implements IDetectableResource
     }
 
     @Override
-    public int damageDropped(int meta)
+    public int damageDropped(IBlockState state)
     {
-        switch (meta)
+        switch (getMetaFromState(state))
         {
         case 8:
             return 2;
         default:
-            return meta;
+            return getMetaFromState(state);
         }
     }
 
     @Override
-    public int quantityDropped(int meta, int fortune, Random random)
+    public int quantityDropped(IBlockState state, int fortune, Random random)
     {
-        if (fortune > 0 && Item.getItemFromBlock(this) != this.getItemDropped(meta, random, fortune))
+        if (fortune > 0 && Item.getItemFromBlock(this) != this.getItemDropped(state, random, fortune))
         {
             int j = random.nextInt(fortune + 2) - 1;
 
@@ -146,9 +180,9 @@ public class BlockBasic extends Block implements IDetectableResource
     }
 
     @Override
-    public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
+    public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion)
     {
-    	int metadata = world.getBlockMetadata(x, y, z); 
+    	int metadata = getMetaFromState(world.getBlockState(pos));
 
     	if (metadata < 5)
         {
@@ -166,25 +200,25 @@ public class BlockBasic extends Block implements IDetectableResource
             //Blocks of metal are tough - like diamond blocks in vanilla
         }
 
-        return this.blockResistance / 5.0F;
+        return super.getExplosionResistance(world, pos, exploder, explosion);
     }
 
     @Override
-    public float getBlockHardness(World par1World, int par2, int par3, int par4)
+    public float getBlockHardness(World world, BlockPos pos)
     {
-        final int meta = par1World.getBlockMetadata(par2, par3, par4);
+        int metadata = getMetaFromState(world.getBlockState(pos));
 
-        if (meta == 5 || meta == 6)
+        if (metadata == 5 || metadata == 6)
         {
             return 5.0F;
         }
 
-        if (meta == 7)
+        if (metadata == 7)
         {
             return 6.0F;
         }
 
-        if (meta == 8)
+        if (metadata == 8)
         {
             return 3.0F;
         }
@@ -195,11 +229,11 @@ public class BlockBasic extends Block implements IDetectableResource
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @SideOnly(Side.CLIENT)
     @Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubBlocks(Item itemIn, CreativeTabs tabs, List list)
     {
         for (int var4 = 3; var4 < 13; ++var4)
         {
-            par3List.add(new ItemStack(par1, 1, var4));
+            list.add(new ItemStack(itemIn, 1, var4));
         }
     }
 
@@ -210,14 +244,30 @@ public class BlockBasic extends Block implements IDetectableResource
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos)
     {
-        int metadata = world.getBlockMetadata(x, y, z);
+        int metadata = getMetaFromState(world.getBlockState(pos));
+
         if (metadata == 8)
         {
             return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
         }
 
-        return super.getPickBlock(target, world, x, y, z, player);
+        return super.getPickBlock(target, world, pos);
+    }
+
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(BASIC_TYPE, EnumBlockBasic.byMetadata(meta));
+    }
+
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumBlockBasic)state.getValue(BASIC_TYPE)).getMeta();
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, BASIC_TYPE);
     }
 }

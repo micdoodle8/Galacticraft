@@ -1,3 +1,4 @@
+/*
 package micdoodle8.mods.galacticraft.core.nei;
 
 import codechicken.lib.gui.GuiDraw;
@@ -180,3 +181,4 @@ public class CircuitFabricatorRecipeHandler extends TemplateRecipeHandler
     {
     }
 }
+*/

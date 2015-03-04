@@ -9,19 +9,15 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 import java.util.Random;
@@ -32,22 +28,22 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
     public static final int CIRCUIT_FABRICATOR_METADATA = 4;
     public static final int OXYGEN_STORAGE_MODULE_METADATA = 8;
 
-    private IIcon iconMachineSide;
+    /*private IIcon iconMachineSide;
     private IIcon iconInput;
     private IIcon iconOxygenInput;
     private IIcon iconOxygenOutput;
 
     private IIcon iconElectricCompressor;
     private IIcon iconCircuitFabricator;
-    private IIcon[] iconOxygenStorageModule;
+    private IIcon[] iconOxygenStorageModule;*/
 
     public BlockMachine2(String assetName)
     {
         super(GCBlocks.machine);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeMetal);
-        this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
-        this.setBlockName(assetName);
+        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -56,7 +52,7 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
-    @Override
+    /*@Override
     public void registerBlockIcons(IIconRegister iconRegister)
     {
         this.blockIcon = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine");
@@ -73,7 +69,7 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
         {
             this.iconOxygenStorageModule[i] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oxygenStorageModule_" + i);
         }
-    }
+    }*/
 
     @Override
     public int getRenderType()
@@ -82,47 +78,47 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
     }
 
     @Override
-    public void randomDisplayTick(World par1World, int x, int y, int z, Random par5Random)
+    public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
-        TileEntity tile = par1World.getTileEntity(x, y, z);
+        TileEntity tile = worldIn.getTileEntity(pos);
 
         if (tile instanceof TileEntityCoalGenerator)
         {
             TileEntityCoalGenerator tileEntity = (TileEntityCoalGenerator) tile;
             if (tileEntity.heatGJperTick > 0)
             {
-                int metadata = par1World.getBlockMetadata(x, y, z);
-                float var7 = x + 0.5F;
-                float var8 = y + 0.0F + par5Random.nextFloat() * 6.0F / 16.0F;
-                float var9 = z + 0.5F;
-                float var10 = 0.52F;
-                float var11 = par5Random.nextFloat() * 0.6F - 0.3F;
+                int metadata = getMetaFromState(state);
+                float particlePosX = pos.getX() + 0.5F;
+                float particlePosY = pos.getY() + 0.0F + rand.nextFloat() * 6.0F / 16.0F;
+                float particlePosZ = pos.getZ() + 0.5F;
+                float particleSize0 = 0.52F;
+                float particleSize1 = rand.nextFloat() * 0.6F - 0.3F;
 
                 if (metadata == 3)
                 {
-                    par1World.spawnParticle("smoke", var7 - var10, var8, var9 + var11, 0.0D, 0.0D, 0.0D);
-                    par1World.spawnParticle("flame", var7 - var10, var8, var9 + var11, 0.0D, 0.0D, 0.0D);
+                    worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, particlePosX - particleSize0, particlePosY, particlePosZ + particleSize1, 0.0D, 0.0D, 0.0D);
+                    worldIn.spawnParticle(EnumParticleTypes.FLAME, particlePosX - particleSize0, particlePosY, particlePosZ + particleSize1, 0.0D, 0.0D, 0.0D);
                 }
                 else if (metadata == 2)
                 {
-                    par1World.spawnParticle("smoke", var7 + var10, var8, var9 + var11, 0.0D, 0.0D, 0.0D);
-                    par1World.spawnParticle("flame", var7 + var10, var8, var9 + var11, 0.0D, 0.0D, 0.0D);
+                    worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, particlePosX + particleSize0, particlePosY, particlePosZ + particleSize1, 0.0D, 0.0D, 0.0D);
+                    worldIn.spawnParticle(EnumParticleTypes.FLAME, particlePosX + particleSize0, particlePosY, particlePosZ + particleSize1, 0.0D, 0.0D, 0.0D);
                 }
                 else if (metadata == 1)
                 {
-                    par1World.spawnParticle("smoke", var7 + var11, var8, var9 - var10, 0.0D, 0.0D, 0.0D);
-                    par1World.spawnParticle("flame", var7 + var11, var8, var9 - var10, 0.0D, 0.0D, 0.0D);
+                    worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, particlePosX + particleSize1, particlePosY, particlePosZ - particleSize0, 0.0D, 0.0D, 0.0D);
+                    worldIn.spawnParticle(EnumParticleTypes.FLAME, particlePosX + particleSize1, particlePosY, particlePosZ - particleSize0, 0.0D, 0.0D, 0.0D);
                 }
                 else if (metadata == 0)
                 {
-                    par1World.spawnParticle("smoke", var7 + var11, var8, var9 + var10, 0.0D, 0.0D, 0.0D);
-                    par1World.spawnParticle("flame", var7 + var11, var8, var9 + var10, 0.0D, 0.0D, 0.0D);
+                    worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, particlePosX + particleSize1, particlePosY, particlePosZ + particleSize0, 0.0D, 0.0D, 0.0D);
+                    worldIn.spawnParticle(EnumParticleTypes.FLAME, particlePosX + particleSize1, particlePosY, particlePosZ + particleSize0, 0.0D, 0.0D, 0.0D);
                 }
             }
         }
     }
 
-    @Override
+    /*@Override
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
     {
         int metadata = world.getBlockMetadata(x, y, z);
@@ -220,17 +216,17 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
         }
 
         return this.iconMachineSide;
-    }
+    }*/
 
     /**
      * Called when the block is placed in the world.
      */
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        int metadata = world.getBlockMetadata(x, y, z);
+        int metadata = getMetaFromState(state);
 
-        int angle = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         int change = 0;
 
         switch (angle)
@@ -251,22 +247,22 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
 
         if (metadata >= BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
         {
-            world.setBlockMetadataWithNotify(x, y, z, BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + change, 3);
+            worldIn.setBlockState(pos, getStateFromMeta(BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + change), 3);
         }
         else if (metadata >= BlockMachine2.CIRCUIT_FABRICATOR_METADATA)
         {
-            world.setBlockMetadataWithNotify(x, y, z, BlockMachine2.CIRCUIT_FABRICATOR_METADATA + change, 3);
+            worldIn.setBlockState(pos, getStateFromMeta(BlockMachine2.CIRCUIT_FABRICATOR_METADATA + change), 3);
         }
         else if (metadata >= BlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
         {
-            world.setBlockMetadataWithNotify(x, y, z, BlockMachine2.ELECTRIC_COMPRESSOR_METADATA + change, 3);
+            worldIn.setBlockState(pos, getStateFromMeta(BlockMachine2.ELECTRIC_COMPRESSOR_METADATA + change), 3);
         }
     }
 
     @Override
-    public boolean onUseWrench(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        int metadata = par1World.getBlockMetadata(x, y, z);
+        int metadata = getMetaFromState(world.getBlockState(pos));
         int original = metadata;
 
         int change = 0;
@@ -283,7 +279,7 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
         {
             original -= BlockMachine2.ELECTRIC_COMPRESSOR_METADATA;
 
-            TileEntity te = par1World.getTileEntity(x, y, z);
+            TileEntity te = world.getTileEntity(pos);
             if (te instanceof TileBaseUniversalElectrical)
             {
                 ((TileBaseUniversalElectrical) te).updateFacing();
@@ -320,7 +316,7 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
             change += BlockMachine2.ELECTRIC_COMPRESSOR_METADATA;
         }
 
-        par1World.setBlockMetadataWithNotify(x, y, z, change, 3);
+        world.setBlockState(pos, getStateFromMeta(change), 3);
         return true;
     }
 
@@ -328,11 +324,11 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
      * Called when the block is right clicked by the player
      */
     @Override
-    public boolean onMachineActivated(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        if (!par1World.isRemote)
+        if (!world.isRemote)
         {
-            par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, x, y, z);
+            entityPlayer.openGui(GalacticraftCore.instance, -1, world, pos.getX(), pos.getY(), pos.getZ());
             return true;
         }
 
@@ -340,8 +336,9 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
+        int metadata = getMetaFromState(state);
         if (metadata >= BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
         {
             return new TileEntityOxygenStorageModule();
@@ -385,8 +382,9 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
     }
 
     @Override
-    public int damageDropped(int metadata)
+    public int damageDropped(IBlockState state)
     {
+        int metadata = getMetaFromState(state);
         if (metadata >= BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
         {
             return BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA;
@@ -406,9 +404,9 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos)
     {
-        int metadata = this.getDamageValue(world, x, y, z);
+        int metadata = this.getDamageValue(world, pos);
 
         return new ItemStack(this, 1, metadata);
     }

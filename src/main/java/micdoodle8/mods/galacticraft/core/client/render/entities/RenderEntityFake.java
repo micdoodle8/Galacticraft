@@ -1,17 +1,19 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteor;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderEntityFake extends Render
 {
-    public RenderEntityFake()
+    public RenderEntityFake(RenderManager renderManager)
     {
+        super(renderManager);
     }
 
     protected ResourceLocation func_110779_a(EntityMeteor entity)

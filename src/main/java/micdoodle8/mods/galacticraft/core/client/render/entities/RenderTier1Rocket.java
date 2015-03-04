@@ -1,14 +1,16 @@
+/*
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModelCustom;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -19,15 +21,15 @@ public class RenderTier1Rocket extends Render
     protected ModelBase modelSpaceship;
     protected IModelCustom modelSpaceshipObj;
 
-    public RenderTier1Rocket(ModelBase spaceshipModel, String textureDomain, String texture)
+    public RenderTier1Rocket(RenderManager renderManager, ModelBase spaceshipModel, String textureDomain, String texture)
     {
-        this(new ResourceLocation(textureDomain, "textures/model/" + texture + ".png"));
+        this(renderManager, new ResourceLocation(textureDomain, "textures/model/" + texture + ".png"));
         this.modelSpaceship = spaceshipModel;
     }
 
-    public RenderTier1Rocket(IModelCustom spaceshipModel, String textureDomain, String texture)
+    public RenderTier1Rocket(RenderManager renderManager, IModelCustom spaceshipModel, String textureDomain, String texture)
     {
-        this(new ResourceLocation(textureDomain, "textures/model/" + texture + ".png"));
+        this(renderManager, new ResourceLocation(textureDomain, "textures/model/" + texture + ".png"));
         this.modelSpaceshipObj = spaceshipModel;
     }
 
@@ -94,3 +96,4 @@ public class RenderTier1Rocket extends Render
         this.renderSpaceship((EntitySpaceshipBase) par1Entity, par2, par4, par6, par8, par9);
     }
 }
+*/

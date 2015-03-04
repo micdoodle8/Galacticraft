@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.gui.element;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;

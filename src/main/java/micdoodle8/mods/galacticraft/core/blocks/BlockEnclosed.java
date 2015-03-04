@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
@@ -15,14 +13,16 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -30,7 +30,7 @@ import java.util.List;
 
 public class BlockEnclosed extends BlockContainer implements IPartialSealableBlock, ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {
-    private IIcon[] enclosedIcons;
+    //private IIcon[] enclosedIcons;
 
     public enum EnumEnclosedBlock
     {
@@ -104,8 +104,8 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         this.setResistance(0.2F);
         this.setHardness(0.4f);
         this.setStepSound(Block.soundTypeStone);
-        this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
-        this.setBlockName(assetName);
+        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -154,20 +154,20 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int par1, int par2)
     {
         return par2 >= this.enclosedIcons.length ? this.blockIcon : this.enclosedIcons[par2];
-    }
+    }*/
 
     @Override
-    public int damageDropped(int meta)
+    public int damageDropped(IBlockState state)
     {
-        return meta;
+        return getMetaFromState(state);
     }
 
-    @Override
+    /*@Override
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
         this.enclosedIcons = new IIcon[16];
@@ -178,7 +178,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         }
 
         this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "" + EnumEnclosedBlock.OXYGEN_PIPE.getTexture());
-    }
+    }*/
 
     private void tileAdded(TileEntity tileEntity, int metadata)
     {
@@ -243,11 +243,11 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
     }
 
     @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
+    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
     {
-        super.onNeighborBlockChange(world, x, y, z, block);
+        super.onNeighborBlockChange(worldIn, pos, state, neighborBlock);
 
-        int metadata = world.getBlockMetadata(x, y, z);
+        /*int metadata = world.getBlockMetadata(x, y, z);
         final TileEntity tileEntity = world.getTileEntity(x, y, z);
 
         if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
@@ -335,7 +335,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
             {
                 ((IConductor) tileEntity).refresh();
             }
-        }
+        }*/
     }
 
     @Override
@@ -443,7 +443,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
     }
 
     @Override
-    public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
+    public boolean isSealed(World worldIn, BlockPos pos, EnumFacing direction)
     {
         return true;
     }

@@ -1,6 +1,6 @@
+/*
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.core.client.model.ModelKey;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.item.EntityItem;
@@ -75,9 +75,11 @@ public class ItemRendererKey implements IItemRenderer
         GL11.glPopMatrix();
     }
 
-    /**
+    */
+/**
      * IItemRenderer implementation *
-     */
+     *//*
+
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type)
@@ -125,3 +127,4 @@ public class ItemRendererKey implements IItemRenderer
     }
 
 }
+*/

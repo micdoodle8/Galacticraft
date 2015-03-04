@@ -1,3 +1,4 @@
+/*
 package micdoodle8.mods.galacticraft.core.nei;
 
 import codechicken.lib.gui.GuiDraw;
@@ -164,3 +165,4 @@ public class RocketT1RecipeHandler extends TemplateRecipeHandler
     {
     }
 }
+*/

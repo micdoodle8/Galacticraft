@@ -1,12 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.Phase;
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -32,11 +26,16 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkProviderServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -50,7 +49,7 @@ public class TickHandlerServer
 {
     private static Map<Integer, CopyOnWriteArrayList<ScheduledBlockChange>> scheduledBlockChanges = new ConcurrentHashMap<Integer, CopyOnWriteArrayList<ScheduledBlockChange>>();
     private static Map<Integer, CopyOnWriteArrayList<BlockVec3>> scheduledTorchUpdates = new ConcurrentHashMap<Integer, CopyOnWriteArrayList<BlockVec3>>();
-    private static Map<Integer, List<BlockVec3>> edgeChecks = new HashMap<Integer, List<BlockVec3>>();
+    private static Map<Integer, List<BlockPos>> edgeChecks = new HashMap<Integer, List<BlockPos>>();
     private static LinkedList<EnergyNetwork> networkTicks = new LinkedList<EnergyNetwork>();
     public static Map<Integer, Map<Long, List<Footprint>>> serverFootprintMap = new HashMap<Integer, Map<Long, List<Footprint>>>();
     public static List<NetworkRegistry.TargetPoint> footprintRefreshList = Lists.newArrayList();
@@ -142,13 +141,13 @@ public class TickHandlerServer
         TickHandlerServer.scheduledTorchUpdates.put(dimID, updateList);
     }
 
-    public static void scheduleNewEdgeCheck(int dimID, BlockVec3 edgeBlock)
+    public static void scheduleNewEdgeCheck(int dimID, BlockPos edgeBlock)
     {
-        List<BlockVec3> updateList = TickHandlerServer.edgeChecks.get(dimID);
+        List<BlockPos> updateList = TickHandlerServer.edgeChecks.get(dimID);
 
         if (updateList == null)
         {
-            updateList = new ArrayList<BlockVec3>();
+            updateList = new ArrayList<BlockPos>();
         }
 
         updateList.add(edgeBlock);
@@ -183,19 +182,19 @@ public class TickHandlerServer
     }
 
     @SubscribeEvent
-    public void onServerTick(ServerTickEvent event)
+    public void onServerTick(TickEvent.ServerTickEvent event)
     {
-        if (event.phase == Phase.START)
+        if (event.phase == TickEvent.Phase.START)
         {
             if (TickHandlerServer.spaceRaceData == null)
             {
                 World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
-                TickHandlerServer.spaceRaceData = (WorldDataSpaceRaces) world.mapStorage.loadData(WorldDataSpaceRaces.class, WorldDataSpaceRaces.saveDataID);
+                TickHandlerServer.spaceRaceData = (WorldDataSpaceRaces) world.getMapStorage().loadData(WorldDataSpaceRaces.class, WorldDataSpaceRaces.saveDataID);
 
                 if (TickHandlerServer.spaceRaceData == null)
                 {
                     TickHandlerServer.spaceRaceData = new WorldDataSpaceRaces(WorldDataSpaceRaces.saveDataID);
-                    world.mapStorage.setData(WorldDataSpaceRaces.saveDataID, TickHandlerServer.spaceRaceData);
+                    world.getMapStorage().setData(WorldDataSpaceRaces.saveDataID, TickHandlerServer.spaceRaceData);
                 }
             }
 
@@ -210,7 +209,7 @@ public class TickHandlerServer
                     WorldServer world = worlds[i];
                     ChunkProviderServer chunkProviderServer = world.theChunkProviderServer;
 
-                    Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(world.provider.dimensionId);
+                    Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(world.provider.getDimensionId());
 
                     if (footprintMap != null)
                     {
@@ -249,14 +248,14 @@ public class TickHandlerServer
                                     footprintMap.put(chunkKey, footprints);
                                     mapChanged = true;
 
-                                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_FOOTPRINT_LIST, new Object[] { chunkKey, footprints.toArray(new Footprint[footprints.size()]) }), worlds[i].provider.dimensionId);
+                                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_FOOTPRINT_LIST, new Object[] { chunkKey, footprints.toArray(new Footprint[footprints.size()]) }), worlds[i].provider.getDimensionId());
                                 }
                             }
                         }
 
                         if (mapChanged)
                         {
-                            TickHandlerServer.serverFootprintMap.put(world.provider.dimensionId, footprintMap);
+                            TickHandlerServer.serverFootprintMap.put(world.provider.getDimensionId(), footprintMap);
                         }
                     }
                 }
@@ -271,10 +270,10 @@ public class TickHandlerServer
                     {
                         WorldServer world = worlds[i];
 
-                        if (world.provider.dimensionId == targetPoint.dimension)
+                        if (world.provider.getDimensionId() == targetPoint.dimension)
                         {
                             long chunkKey = ChunkCoordIntPair.chunkXZ2Int((int)targetPoint.x >> 4, (int)targetPoint.z >> 4);
-                            Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(world.provider.dimensionId);
+                            Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(world.provider.getDimensionId());
 
                             if (footprintMap != null && !footprintMap.isEmpty())
                             {

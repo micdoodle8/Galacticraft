@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.util.ChatComponentText;
 

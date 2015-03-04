@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.client.fx;
 
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 
 public class EntityFXSparks extends EntityFX
@@ -29,7 +31,7 @@ public class EntityFXSparks extends EntityFX
     }
 
     @Override
-    public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7)
+    public void func_180434_a(WorldRenderer worldRenderer, Entity entity, float par2, float par3, float par4, float par5, float par6, float par7)
     {
         float var8 = (this.particleAge + par2) / this.particleMaxAge * 32.0F;
 
@@ -44,7 +46,7 @@ public class EntityFXSparks extends EntityFX
         }
 
         this.particleScale = this.smokeParticleScale * var8;
-        super.renderParticle(par1Tessellator, par2, par3, par4, par5, par6, par7);
+        super.func_180434_a(worldRenderer, entity, par2, par3, par4, par5, par6, par7);
     }
 
     @Override

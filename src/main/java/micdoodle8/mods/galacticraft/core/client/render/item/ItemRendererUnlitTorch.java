@@ -1,3 +1,4 @@
+/*
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
 import net.minecraft.item.ItemStack;
@@ -42,3 +43,4 @@ public class ItemRendererUnlitTorch implements IItemRenderer
         GL11.glPopMatrix();
     }
 }
+*/

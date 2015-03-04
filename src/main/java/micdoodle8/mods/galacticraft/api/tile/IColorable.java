@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.api.tile;
 
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 /**
  * Used for colored pipes to set/get colors
@@ -27,5 +27,5 @@ public interface IColorable
      *
      * @param direction the direction (relative to this tile) that was updated.
      */
-    public void onAdjacentColorChanged(ForgeDirection direction);
+    public void onAdjacentColorChanged(EnumFacing direction);
 }

@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedSpider;
 import micdoodle8.mods.galacticraft.core.items.ItemSensorGlasses;
@@ -10,11 +7,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -25,9 +26,9 @@ public class RenderEvolvedSpider extends RenderLiving
 
     private final ModelBase model = new ModelEvolvedSpider(0.2F);
 
-    public RenderEvolvedSpider()
+    public RenderEvolvedSpider(RenderManager renderManager)
     {
-        super(new ModelEvolvedSpider(), 1.0F);
+        super(renderManager, new ModelEvolvedSpider(), 1.0F);
         this.setRenderPassModel(new ModelEvolvedSpider());
     }
 

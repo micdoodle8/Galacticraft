@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.network;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;

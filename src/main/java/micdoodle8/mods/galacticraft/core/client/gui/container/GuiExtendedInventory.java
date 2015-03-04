@@ -12,10 +12,13 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import tconstruct.client.tabs.TabRegistry;
 
+@SideOnly(Side.CLIENT)
 public class GuiExtendedInventory extends InventoryEffectRenderer
 {
     private static final ResourceLocation inventoryTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/inventory.png");
@@ -106,9 +109,9 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         par0Minecraft.thePlayer.rotationYaw = (float) Math.atan(par4 / 40.0F) * 40.0F;
         par0Minecraft.thePlayer.rotationYaw = GuiExtendedInventory.rotation;
         par0Minecraft.thePlayer.rotationYawHead = par0Minecraft.thePlayer.rotationYaw;
-        GL11.glTranslatef(0.0F, par0Minecraft.thePlayer.yOffset, 0.0F);
-        RenderManager.instance.playerViewY = 180.0F;
-        RenderManager.instance.renderEntityWithPosYaw(par0Minecraft.thePlayer, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+        GL11.glTranslatef(0.0F, (float)par0Minecraft.thePlayer.getYOffset(), 0.0F);
+        par0Minecraft.getRenderManager().playerViewY = 180.0F;
+        par0Minecraft.getRenderManager().renderEntityWithPosYaw(par0Minecraft.thePlayer, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
         par0Minecraft.thePlayer.renderYawOffset = f2;
         par0Minecraft.thePlayer.rotationYaw = f3;
         par0Minecraft.thePlayer.rotationPitch = f4;

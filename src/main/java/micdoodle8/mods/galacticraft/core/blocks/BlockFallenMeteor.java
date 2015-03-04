@@ -10,13 +10,16 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -30,8 +33,8 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, Ite
         this.setBlockBounds(0.2F, 0.2F, 0.2F, 0.8F, 0.8F, 0.8F);
         this.setHardness(50.0F);
         this.setStepSound(Block.soundTypeStone);
-        this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
-        this.setBlockName(assetName);
+        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -40,11 +43,11 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, Ite
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
-    @Override
+    /*@Override
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
         this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "fallen_meteor");
-    }
+    }*/
 
     @Override
     public int getRenderType()
@@ -59,7 +62,7 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, Ite
     }
     
     @Override
-    public boolean renderAsNormalBlock()
+    public boolean isFullCube()
     {
         return false;
     }
@@ -71,15 +74,15 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, Ite
     }
 
     @Override
-    public Item getItemDropped(int par1, Random par2Random, int par3)
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
         return GCItems.meteoricIronRaw;
     }
 
     @Override
-    public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
+    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, Entity entityIn)
     {
-        TileEntity tile = par1World.getTileEntity(par2, par3, par4);
+        TileEntity tile = worldIn.getTileEntity(pos);
 
         if (tile instanceof TileEntityFallenMeteor)
         {
@@ -90,15 +93,15 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, Ite
                 return;
             }
 
-            if (par5Entity instanceof EntityLivingBase)
+            if (entityIn instanceof EntityLivingBase)
             {
-                final EntityLivingBase livingEntity = (EntityLivingBase) par5Entity;
+                final EntityLivingBase livingEntity = (EntityLivingBase) entityIn;
 
-                par1World.playSoundEffect(par2 + 0.5F, par3 + 0.5F, par4 + 0.5F, "random.fizz", 0.5F, 2.6F + (par1World.rand.nextFloat() - par1World.rand.nextFloat()) * 0.8F);
+                worldIn.playSoundEffect(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, "random.fizz", 0.5F, 2.6F + (worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.8F);
 
                 for (int var5 = 0; var5 < 8; ++var5)
                 {
-                    par1World.spawnParticle("largesmoke", par2 + Math.random(), par3 + 0.2D + Math.random(), par4 + Math.random(), 0.0D, 0.0D, 0.0D);
+                    worldIn.spawnParticle(EnumParticleTypes.SMOKE_LARGE, pos.getX() + Math.random(), pos.getY() + 0.2D + Math.random(), pos.getZ() + Math.random(), 0.0D, 0.0D, 0.0D);
                 }
 
                 if (!livingEntity.isBurning())
@@ -106,10 +109,10 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, Ite
                     livingEntity.setFire(2);
                 }
 
-                double var9 = par2 + 0.5F - livingEntity.posX;
+                double var9 = pos.getX() + 0.5F - livingEntity.posX;
                 double var7;
 
-                for (var7 = livingEntity.posZ - par4; var9 * var9 + var7 * var7 < 1.0E-4D; var7 = (Math.random() - Math.random()) * 0.01D)
+                for (var7 = livingEntity.posZ - pos.getZ(); var9 * var9 + var7 * var7 < 1.0E-4D; var7 = (Math.random() - Math.random()) * 0.01D)
                 {
                     var9 = (Math.random() - Math.random()) * 0.01D;
                 }
@@ -120,49 +123,50 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, Ite
     }
 
     @Override
-    public void onBlockAdded(World par1World, int par2, int par3, int par4)
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
-        par1World.scheduleBlockUpdate(par2, par3, par4, this, this.tickRate(par1World));
+        worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
     }
 
     @Override
-    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5)
+    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
     {
-        par1World.scheduleBlockUpdate(par2, par3, par4, this, this.tickRate(par1World));
+        worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
     }
 
     @Override
-    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
-        if (!par1World.isRemote)
+        if (!worldIn.isRemote)
         {
-            this.tryToFall(par1World, par2, par3, par4);
+            this.tryToFall(worldIn, pos);
         }
     }
 
-    private void tryToFall(World par1World, int par2, int par3, int par4)
+    private void tryToFall(World worldIn, BlockPos pos)
     {
-        if (BlockFallenMeteor.canFallBelow(par1World, par2, par3 - 1, par4) && par3 >= 0)
+        float yPos = pos.getY() - 1;
+        if (BlockFallenMeteor.canFallBelow(worldIn, pos.offset(EnumFacing.DOWN)) && pos.getY() >= 0)
         {
-            int prevHeatLevel = ((TileEntityFallenMeteor) par1World.getTileEntity(par2, par3, par4)).getHeatLevel();
-            par1World.setBlock(par2, par3, par4, Blocks.air, 0, 3);
+            int prevHeatLevel = ((TileEntityFallenMeteor) worldIn.getTileEntity(pos)).getHeatLevel();
+            worldIn.setBlockToAir(pos);
 
-            while (BlockFallenMeteor.canFallBelow(par1World, par2, par3 - 1, par4) && par3 > 0)
+            while (BlockFallenMeteor.canFallBelow(worldIn, new BlockPos(pos.getX(), yPos, pos.getZ())) && yPos > 0)
             {
-                --par3;
+                --yPos;
             }
 
-            if (par3 > 0)
+            if (yPos > 0)
             {
-                par1World.setBlock(par2, par3, par4, this, 0, 3);
-                ((TileEntityFallenMeteor) par1World.getTileEntity(par2, par3, par4)).setHeatLevel(prevHeatLevel);
+                worldIn.setBlockState(pos, this.getDefaultState(), 3);
+                ((TileEntityFallenMeteor) worldIn.getTileEntity(pos)).setHeatLevel(prevHeatLevel);
             }
         }
     }
 
-    public static boolean canFallBelow(World par0World, int par1, int par2, int par3)
+    public static boolean canFallBelow(World worldIn, BlockPos pos)
     {
-        final Block var4 = par0World.getBlock(par1, par2, par3);
+        final Block var4 = worldIn.getBlockState(pos).getBlock();
 
         if (var4.getMaterial() == Material.air)
         {
@@ -180,9 +184,9 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, Ite
     }
 
     @Override
-    public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+    public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass)
     {
-        TileEntity tile = par1IBlockAccess.getTileEntity(par2, par3, par4);
+        TileEntity tile = worldIn.getTileEntity(pos);
 
         if (tile instanceof TileEntityFallenMeteor)
         {
@@ -197,7 +201,7 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, Ite
             return ColorUtil.to32BitColor(255, (byte) col.x, (byte) col.y, (byte) col.z);
         }
 
-        return super.colorMultiplier(par1IBlockAccess, par2, par3, par4);
+        return super.colorMultiplier(worldIn, pos, renderPass);
     }
 
     @Override

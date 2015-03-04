@@ -8,8 +8,11 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
+@SideOnly(Side.CLIENT)
 public class GuiSchematicTier1Rocket extends GuiContainerGC implements ISchematicResultPage
 {
     private static final ResourceLocation rocketBenchTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/rocketbench.png");

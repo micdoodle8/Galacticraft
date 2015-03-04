@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -8,7 +7,6 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
@@ -152,11 +150,11 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
     {
         Minecraft mc = FMLClientHandler.instance().getClient();
 
-        if (mc != null && mc.renderViewEntity != null && mc.effectRenderer != null)
+        if (mc != null && mc.getRenderViewEntity() != null && mc.effectRenderer != null)
         {
-            double dX = mc.renderViewEntity.posX - position.x;
-            double dY = mc.renderViewEntity.posY - position.y;
-            double dZ = mc.renderViewEntity.posZ - position.z;
+            double dX = mc.getRenderViewEntity().posX - position.x;
+            double dY = mc.getRenderViewEntity().posY - position.y;
+            double dZ = mc.getRenderViewEntity().posZ - position.z;
             EntityFX particle = null;
             double viewDistance = 64.0D;
 

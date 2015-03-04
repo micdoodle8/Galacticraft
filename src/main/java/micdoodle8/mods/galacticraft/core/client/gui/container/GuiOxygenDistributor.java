@@ -14,11 +14,14 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@SideOnly(Side.CLIENT)
 public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCallback
 {
     private static final ResourceLocation distributorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/oxygenDistributor.png");
@@ -153,7 +156,7 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
     public void onSelectionChanged(GuiElementCheckbox checkbox, boolean newSelected)
     {
         this.distributor.oxygenBubble.setShouldRender(newSelected);
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 6, this.distributor.xCoord, this.distributor.yCoord, this.distributor.zCoord, newSelected ? 1 : 0 }));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 6, this.distributor.getPos(), newSelected ? 1 : 0 }));
     }
 
     @Override

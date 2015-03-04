@@ -5,8 +5,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
+@SideOnly(Side.CLIENT)
 public class GuiElementGradientButton extends GuiButton
 {
     public GuiElementGradientButton(int id, int x, int y, int width, int height, String buttonText)
@@ -19,10 +22,10 @@ public class GuiElementGradientButton extends GuiButton
     {
         if (this.visible)
         {
-            FontRenderer fontrenderer = p_146112_1_.fontRenderer;
+            FontRenderer fontrenderer = p_146112_1_.fontRendererObj;
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            this.field_146123_n = p_146112_2_ >= this.xPosition && p_146112_3_ >= this.yPosition && p_146112_2_ < this.xPosition + this.width && p_146112_3_ < this.yPosition + this.height;
-            int k = this.getHoverState(this.field_146123_n);
+            this.hovered = p_146112_2_ >= this.xPosition && p_146112_3_ >= this.yPosition && p_146112_2_ < this.xPosition + this.width && p_146112_3_ < this.yPosition + this.height;
+            int k = this.getHoverState(this.hovered);
             GL11.glEnable(GL11.GL_BLEND);
             OpenGlHelper.glBlendFunc(770, 771, 1, 0);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -30,7 +33,7 @@ public class GuiElementGradientButton extends GuiButton
 
             if (!this.enabled)
             {
-                if (this.field_146123_n)
+                if (this.hovered)
                 {
                     color = ColorUtil.to32BitColor(150, 30, 30, 30);
                 }
@@ -39,7 +42,7 @@ public class GuiElementGradientButton extends GuiButton
                     color = ColorUtil.to32BitColor(150, 32, 32, 32);
                 }
             }
-            else if (this.field_146123_n)
+            else if (this.hovered)
             {
                 color = ColorUtil.to32BitColor(150, 30, 30, 30);
             }
@@ -56,7 +59,7 @@ public class GuiElementGradientButton extends GuiButton
             {
                 l = 10526880;
             }
-            else if (this.field_146123_n)
+            else if (this.hovered)
             {
                 l = 16777120;
             }

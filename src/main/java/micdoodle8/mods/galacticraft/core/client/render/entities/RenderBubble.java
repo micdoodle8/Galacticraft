@@ -1,13 +1,14 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelBubble;
 import micdoodle8.mods.galacticraft.core.entities.IBubble;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -22,8 +23,9 @@ public class RenderBubble extends Render
     private final float colorGreen;
     private final float colorBlue;
 
-    public RenderBubble(float red, float green, float blue)
+    public RenderBubble(RenderManager renderManager, float red, float green, float blue)
     {
+        super(renderManager);
         this.colorRed = red;
         this.colorGreen = green;
         this.colorBlue = blue;

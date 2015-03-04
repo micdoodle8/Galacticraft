@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -11,20 +9,47 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
 public class BlockAluminumWire extends BlockTransmitter implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {
-    public static final String[] names = { "aluminumWire", "aluminumWireHeavy" };
-    private static IIcon[] blockIcons;
+    /*private static IIcon[] blockIcons;*/
+
+    public static final PropertyEnum WIRE_TYPE = PropertyEnum.create("wireType", EnumWireType.class);
+
+    private enum EnumWireType
+    {
+        ALUMINUM_WIRE(0),
+        ALUMINUM_WIRE_HEAVY(1);
+
+        private final int meta;
+
+        private EnumWireType(int meta)
+        {
+            this.meta = meta;
+        }
+
+        public int getMeta()
+        {
+            return this.meta;
+        }
+
+        public static EnumWireType byMetadata(int meta)
+        {
+            return values()[meta];
+        }
+    }
 
     public BlockAluminumWire(String assetName)
     {
@@ -35,7 +60,7 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
         this.minVector = new Vector3(0.4, 0.4, 0.4);
         this.maxVector = new Vector3(0.6, 0.6, 0.6);
         this.setHardness(0.075F);
-        this.setBlockName(assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -44,7 +69,7 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
-    @Override
+   /* @Override
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
         BlockAluminumWire.blockIcons = new IIcon[BlockAluminumWire.names.length];
@@ -53,7 +78,7 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
         {
             BlockAluminumWire.blockIcons[i] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + BlockAluminumWire.names[i]);
         }
-    }
+    }*/
 
     @Override
     public boolean isOpaqueCube()
@@ -62,12 +87,12 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     }
 
     @Override
-    public boolean renderAsNormalBlock()
+    public boolean isFullCube()
     {
         return false;
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta)
     {
@@ -80,7 +105,7 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
         default:
             return BlockAluminumWire.blockIcons[0];
         }
-    }
+    }*/
 
     @Override
     public int getRenderType()
@@ -89,9 +114,9 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     }
 
     @Override
-    public int damageDropped(int metadata)
+    public int damageDropped(IBlockState state)
     {
-        return metadata;
+        return getMetaFromState(state);
     }
 
     @Override
@@ -129,9 +154,9 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     }
 
     @Override
-    public String getShiftDescription(int meta)
+    public String getShiftDescription(int itemDamage)
     {
-        switch (meta)
+        switch (itemDamage)
         {
         case 0:
             return GCCoreUtil.translate("tile.aluminumWire.description");
@@ -141,8 +166,23 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
         return "";
     }
 
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(WIRE_TYPE, EnumWireType.byMetadata(meta));
+    }
+
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumWireType)state.getValue(WIRE_TYPE)).getMeta();
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, WIRE_TYPE);
+    }
+
     @Override
-    public boolean showDescription(int meta)
+    public boolean showDescription(int itemDamage)
     {
         return true;
     }

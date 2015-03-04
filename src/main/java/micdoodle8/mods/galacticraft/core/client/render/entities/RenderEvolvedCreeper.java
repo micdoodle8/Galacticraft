@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedCreeper;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
@@ -11,12 +8,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderCreeper;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -27,9 +28,9 @@ public class RenderEvolvedCreeper extends RenderCreeper
 
     private final ModelBase creeperModel = new ModelEvolvedCreeper(0.2F);
 
-    public RenderEvolvedCreeper()
+    public RenderEvolvedCreeper(RenderManager renderManager)
     {
-        super();
+        super(renderManager);
         this.mainModel = new ModelEvolvedCreeper();
     }
 

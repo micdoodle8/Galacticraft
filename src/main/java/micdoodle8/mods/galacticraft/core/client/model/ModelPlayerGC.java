@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;

@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.tile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.client.model.block.ModelTreasureChest;
 import micdoodle8.mods.galacticraft.core.client.model.block.ModelTreasureChestLarge;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;

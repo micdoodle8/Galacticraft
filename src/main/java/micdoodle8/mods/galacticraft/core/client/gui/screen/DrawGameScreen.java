@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;

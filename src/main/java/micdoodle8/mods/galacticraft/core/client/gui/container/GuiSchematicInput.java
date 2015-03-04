@@ -11,11 +11,14 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@SideOnly(Side.CLIENT)
 public class GuiSchematicInput extends GuiContainerGC implements ISchematicResultPage
 {
     private static final ResourceLocation schematicInputTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/schematicpage.png");

@@ -1,18 +1,15 @@
+/*
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockWall;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -26,7 +23,7 @@ public class BlockWallGC extends BlockWall
 	public BlockWallGC(String name, Block par2Block)
 	{
 		super(par2Block);
-		this.setBlockName(name);
+		this.setUnlocalizedName(name);
 	}
 
 	@Override
@@ -91,7 +88,7 @@ public class BlockWallGC extends BlockWall
 	}
 
 	@Override
-	public boolean renderAsNormalBlock()
+	public boolean isFullCube()
 	{
 		return false;
 	}
@@ -115,7 +112,7 @@ public class BlockWallGC extends BlockWall
 	}
 
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+	public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
 	{
 		boolean flag = this.canConnectWallTo(par1IBlockAccess, par2, par3, par4 - 1);
 		boolean flag1 = this.canConnectWallTo(par1IBlockAccess, par2, par3, par4 + 1);
@@ -163,7 +160,7 @@ public class BlockWallGC extends BlockWall
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
+	public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
 	{
 		this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
 		this.maxY = 1.5D;
@@ -217,8 +214,8 @@ public class BlockWallGC extends BlockWall
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+	public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
 	{
 		return par5 == 0 ? super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5) : true;
 	}
-}
+}*/

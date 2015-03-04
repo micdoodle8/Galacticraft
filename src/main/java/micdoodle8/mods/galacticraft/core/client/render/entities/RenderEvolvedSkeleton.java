@@ -1,14 +1,12 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedSkeleton;
 import micdoodle8.mods.galacticraft.core.items.ItemSensorGlasses;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.entity.RenderBiped;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,6 +14,8 @@ import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -27,9 +27,9 @@ public class RenderEvolvedSkeleton extends RenderBiped
     private final ModelEvolvedSkeleton model = new ModelEvolvedSkeleton(0.2F);
     private static int isBG2Loaded = 0;
 
-    public RenderEvolvedSkeleton()
+    public RenderEvolvedSkeleton(RenderManager renderManager)
     {
-        super(new ModelEvolvedSkeleton(), 1.0F);
+        super(renderManager, new ModelEvolvedSkeleton(), 1.0F);
 
         //Compatibility with BattleGear2
         try
@@ -44,15 +44,10 @@ public class RenderEvolvedSkeleton extends RenderBiped
         }
     }
 
-    protected ResourceLocation func_110779_a(EntitySkeleton par1EntityArrow)
-    {
-        return RenderEvolvedSkeleton.skeletonTexture;
-    }
-
     @Override
     protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
-        return this.func_110779_a((EntitySkeleton) par1Entity);
+        return RenderEvolvedSkeleton.skeletonTexture;
     }
 
     @Override

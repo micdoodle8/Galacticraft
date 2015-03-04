@@ -1,3 +1,4 @@
+/*
 package micdoodle8.mods.galacticraft.core.nei;
 
 import codechicken.nei.api.IHighlightHandler;
@@ -69,3 +70,4 @@ public class GCNEIHighlightHandler implements IHighlightHandler
         return null;
     }
 }
+*/

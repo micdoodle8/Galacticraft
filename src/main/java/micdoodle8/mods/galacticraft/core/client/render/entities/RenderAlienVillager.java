@@ -1,16 +1,18 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelAlienVillager;
 import micdoodle8.mods.galacticraft.core.entities.EntityAlienVillager;
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.layers.LayerCustomHead;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderAlienVillager extends RenderLiving
@@ -19,34 +21,29 @@ public class RenderAlienVillager extends RenderLiving
 
     protected ModelAlienVillager villagerModel;
 
-    public RenderAlienVillager()
+    public RenderAlienVillager(RenderManager renderManager)
     {
-        super(new ModelAlienVillager(0.0F), 0.5F);
-        this.villagerModel = (ModelAlienVillager) this.mainModel;
+        super(renderManager, new ModelAlienVillager(0.0F), 0.5F);
+        this.addLayer(new LayerCustomHead(this.getAlienModel().villagerHead));
     }
 
-    protected int shouldVillagerRenderPass(EntityAlienVillager par1EntityVillager, int par2, float par3)
+    public ModelAlienVillager getAlienModel()
     {
-        return -1;
+        return (ModelAlienVillager)super.getMainModel();
     }
 
-    public void renderVillager(EntityAlienVillager par1EntityVillager, double par2, double par4, double par6, float par8, float par9)
+    protected ResourceLocation getEntityTexture(EntityAlienVillager entity)
     {
-        super.doRender(par1EntityVillager, par2, par4, par6, par8, par9);
+        return villagerTexture;
     }
 
-    protected void renderVillagerEquipedItems(EntityAlienVillager par1EntityVillager, float par2)
-    {
-        super.renderEquippedItems(par1EntityVillager, par2);
-    }
-
-    protected void preRenderVillager(EntityAlienVillager par1EntityVillager, float par2)
+    protected void preRenderCallback(EntityAlienVillager p_77041_1_, float p_77041_2_)
     {
         float f1 = 0.9375F;
 
-        if (par1EntityVillager.getGrowingAge() < 0)
+        if (p_77041_1_.getGrowingAge() < 0)
         {
-            f1 = (float) (f1 * 0.5D);
+            f1 = (float)((double)f1 * 0.5D);
             this.shadowSize = 0.25F;
         }
         else
@@ -54,48 +51,21 @@ public class RenderAlienVillager extends RenderLiving
             this.shadowSize = 0.5F;
         }
 
-        GL11.glScalef(f1, f1, f1);
+        GlStateManager.scale(f1, f1, f1);
     }
 
-    @Override
-    public void doRender(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
+    protected void preRenderCallback(EntityLivingBase p_77041_1_, float p_77041_2_)
     {
-        this.renderVillager((EntityAlienVillager) par1EntityLiving, par2, par4, par6, par8, par9);
+        this.preRenderCallback((EntityAlienVillager) p_77041_1_, p_77041_2_);
     }
 
-    @Override
-    protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float par2)
+    public ModelBase getMainModel()
     {
-        this.preRenderVillager((EntityAlienVillager) par1EntityLivingBase, par2);
+        return this.getAlienModel();
     }
 
-    @Override
-    protected int shouldRenderPass(EntityLivingBase par1EntityLivingBase, int par2, float par3)
+    protected ResourceLocation getEntityTexture(Entity entity)
     {
-        return this.shouldVillagerRenderPass((EntityAlienVillager) par1EntityLivingBase, par2, par3);
-    }
-
-    @Override
-    protected void renderEquippedItems(EntityLivingBase par1EntityLivingBase, float par2)
-    {
-        this.renderVillagerEquipedItems((EntityAlienVillager) par1EntityLivingBase, par2);
-    }
-
-    @Override
-    public void doRender(EntityLivingBase par1EntityLivingBase, double par2, double par4, double par6, float par8, float par9)
-    {
-        this.renderVillager((EntityAlienVillager) par1EntityLivingBase, par2, par4, par6, par8, par9);
-    }
-
-    @Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
-    {
-        return RenderAlienVillager.villagerTexture;
-    }
-
-    @Override
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
-    {
-        this.renderVillager((EntityAlienVillager) par1Entity, par2, par4, par6, par8, par9);
+        return this.getEntityTexture((EntityAlienVillager)entity);
     }
 }

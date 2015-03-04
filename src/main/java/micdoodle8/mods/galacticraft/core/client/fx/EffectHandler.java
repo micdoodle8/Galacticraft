@@ -1,13 +1,14 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.particle.EntitySmokeFX;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class EffectHandler
@@ -16,11 +17,11 @@ public class EffectHandler
     {
         Minecraft mc = FMLClientHandler.instance().getClient();
 
-        if (mc != null && mc.renderViewEntity != null && mc.effectRenderer != null)
+        if (mc != null && mc.getRenderViewEntity() != null && mc.effectRenderer != null)
         {
-            double dX = mc.renderViewEntity.posX - position.x;
-            double dY = mc.renderViewEntity.posY - position.y;
-            double dZ = mc.renderViewEntity.posZ - position.z;
+            double dX = mc.getRenderViewEntity().posX - position.x;
+            double dY = mc.getRenderViewEntity().posY - position.y;
+            double dZ = mc.getRenderViewEntity().posZ - position.z;
             EntityFX particle = null;
             double viewDistance = 64.0D;
 
@@ -51,10 +52,6 @@ public class EffectHandler
             else if (particleID.equals("whiteSmokeTiny"))
             {
                 particle = new EntityFXSmokeSmall(mc.theWorld, position, motion);
-            }
-            else if (particleID.equals("distanceSmoke") && dX * dX + dY * dY + dZ * dZ < viewDistance * viewDistance * 1.7)
-            {
-                particle = new EntitySmokeFX(mc.theWorld, position.x, position.y, position.z, motion.x, motion.y, motion.z, 2.5F);
             }
 
             if (dX * dX + dY * dY + dZ * dZ < viewDistance * viewDistance)

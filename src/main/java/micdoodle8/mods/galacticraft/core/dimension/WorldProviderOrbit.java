@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -34,6 +32,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -1069,7 +1068,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         }
     }
 
-    public void removeThruster(BlockVec3 thruster, boolean positive)
+    public void removeThruster(BlockPos thruster, boolean positive)
     {
         if (positive)
         {
@@ -1098,7 +1097,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
      * @param baseBlock
      * @return
      */
-    public boolean checkSS(BlockVec3 baseBlock, boolean placingThruster)
+    public boolean checkSS(BlockPos baseBlock, boolean placingThruster)
     {
         if (this.oneSSBlock == null || this.oneSSBlock.getBlockID(this.worldObj) instanceof BlockAir)
         {

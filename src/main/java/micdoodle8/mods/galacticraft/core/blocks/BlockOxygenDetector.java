@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDetector;
@@ -10,26 +8,26 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockOxygenDetector extends BlockContainer implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {
-    private IIcon iconSide;
-    private IIcon iconTop;
+    /*private IIcon iconSide;
+    private IIcon iconTop;*/
 
     protected BlockOxygenDetector(String assetName)
     {
         super(Material.iron);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeStone);
-        this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
-        this.setBlockName(assetName);
+        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -38,7 +36,7 @@ public class BlockOxygenDetector extends BlockContainer implements ITileEntityPr
         return GalacticraftCore.proxy.getBlockRender(this);
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
@@ -57,7 +55,7 @@ public class BlockOxygenDetector extends BlockContainer implements ITileEntityPr
         {
             return this.iconSide;
         }
-    }
+    }*/
 
     @Override
     public CreativeTabs getCreativeTabToDisplayOn()
@@ -71,15 +69,15 @@ public class BlockOxygenDetector extends BlockContainer implements ITileEntityPr
         return new TileEntityOxygenDetector();
     }
 
-    public void updateOxygenState(World par1World, int x, int y, int z, boolean valid)
+    public void updateOxygenState(World worldIn, BlockPos pos, boolean valid)
     {
         if (valid)
         {
-            par1World.setBlockMetadataWithNotify(x, y, z, 1, 3);
+            worldIn.setBlockState(pos, getStateFromMeta(1), 3);
         }
         else
         {
-            par1World.setBlockMetadataWithNotify(x, y, z, 0, 3);
+            worldIn.setBlockState(pos, getStateFromMeta(0), 3);
         }
     }
 
@@ -90,9 +88,9 @@ public class BlockOxygenDetector extends BlockContainer implements ITileEntityPr
     }
 
     @Override
-    public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    public int isProvidingWeakPower(IBlockAccess worldIn, BlockPos pos, IBlockState state, EnumFacing side)
     {
-        return par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 1 ? 15 : 0;
+        return getMetaFromState(worldIn.getBlockState(pos)) == 1 ? 15 : 0;
     }
 
     @Override
@@ -109,7 +107,7 @@ public class BlockOxygenDetector extends BlockContainer implements ITileEntityPr
     
     //Solid block: can places torches on it (like a Redstone Block)
     @Override
-    public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
+    public boolean isSideSolid(IBlockAccess world, BlockPos pos, EnumFacing side)
     {
     	return true;
     }

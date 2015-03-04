@@ -15,12 +15,17 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@SideOnly(Side.CLIENT)
 public class GuiOxygenSealer extends GuiContainerGC
 {
     private static final ResourceLocation sealerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/oxygen_large.png");
@@ -44,7 +49,7 @@ public class GuiOxygenSealer extends GuiContainerGC
         switch (par1GuiButton.id)
         {
         case 0:
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.sealer.xCoord, this.sealer.yCoord, this.sealer.zCoord, 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.sealer.getPos(), 0 }));
             break;
         }
     }
@@ -104,9 +109,10 @@ public class GuiOxygenSealer extends GuiContainerGC
 
     private String getStatus()
     {
-        Block blockAbove = this.sealer.getWorldObj().getBlock(this.sealer.xCoord, this.sealer.yCoord + 1, this.sealer.zCoord);
+        BlockPos posAbove = this.sealer.getPos().offset(EnumFacing.UP);
+        Block blockAbove = this.sealer.getWorld().getBlockState(posAbove).getBlock();
 
-        if (!(blockAbove instanceof BlockAir) && !OxygenPressureProtocol.canBlockPassAir(this.sealer.getWorldObj(), blockAbove, new BlockVec3(this.sealer.xCoord, this.sealer.yCoord + 1, this.sealer.zCoord), 1))
+        if (!(blockAbove instanceof BlockAir) && !OxygenPressureProtocol.canBlockPassAir(this.sealer.getWorld(), blockAbove, posAbove, EnumFacing.UP))
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.sealerblocked.name");
         }

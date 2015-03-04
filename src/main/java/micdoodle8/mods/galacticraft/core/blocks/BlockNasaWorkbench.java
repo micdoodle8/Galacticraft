@@ -1,10 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
@@ -15,7 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -27,13 +24,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
 public class BlockNasaWorkbench extends BlockContainer implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc, IPartialSealableBlock
 {
-    IIcon[] iconBuffer;
+    // IIcon[] iconBuffer;
 
     public BlockNasaWorkbench(String assetName)
     {
@@ -41,8 +39,8 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
         this.setBlockBounds(-0.3F, 0.0F, -0.3F, 1.3F, 0.5F, 1.3F);
         this.setHardness(2.5F);
         this.setStepSound(Block.soundTypeMetal);
-        this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
-        this.setBlockName(assetName);
+        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -51,13 +49,13 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
-    @Override
+    /*@Override
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
         this.iconBuffer = new IIcon[2];
         this.iconBuffer[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "workbench_nasa_side");
         this.iconBuffer[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "workbench_nasa_top");
-    }
+    }*/
 
     @Override
     public int getRenderType()
@@ -66,30 +64,30 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
     }
 
     @Override
-    public boolean renderAsNormalBlock()
+    public boolean isFullCube()
     {
         return false;
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k)
+    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
     {
-        return AxisAlignedBB.getBoundingBox((double) i + -0.0F, (double) j + 0.0F, (double) k + -0.0F, (double) i + 1.0F, (double) j + 1.4F, (double) k + 1.0F);
+        return AxisAlignedBB.fromBounds((double) pos.getX() + -0.0F, (double) pos.getY() + 0.0F, (double) pos.getZ() + -0.0F, (double) pos.getX() + 1.0F, (double) pos.getY() + 1.4F, (double) pos.getZ() + 1.0F);
     }
 
     @SideOnly(Side.CLIENT)
     @Override
-    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k)
+    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
     {
-        return this.getCollisionBoundingBoxFromPool(world, i, j, k);
+        return this.getCollisionBoundingBox(worldIn, pos, worldIn.getBlockState(pos));
     }
 
     @Override
-    public MovingObjectPosition collisionRayTrace(World world, int i, int j, int k, Vec3 vec3d, Vec3 vec3d1)
+    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end)
     {
         this.setBlockBounds(-0.0F, 0.0F, -0.0F, 1.0F, 1.4F, 1.0F);
 
-        final MovingObjectPosition r = super.collisionRayTrace(world, i, j, k, vec3d, vec3d1);
+        final MovingObjectPosition r = super.collisionRayTrace(worldIn, pos, start, end);
 
         this.setBlockBounds(-0.0F, 0.0F, -0.0F, 1.0F, 1.4F, 1.0F);
 
@@ -98,22 +96,22 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
 
     @SuppressWarnings("rawtypes")
     @Override
-    public void addCollisionBoxesToList(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List arraylist, Entity par7Entity)
+    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
     {
         this.setBlockBounds(-0.0F, 0.0F, -0.0F, 1.0F, 1.4F, 1.0F);
-        super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+        super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
     }
 
     @Override
-    public boolean canPlaceBlockAt(World par1World, int x0, int y0, int z0)
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
         return true;
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int x0, int y0, int z0, EntityLivingBase entity, ItemStack var6)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        final TileEntity var8 = world.getTileEntity(x0, y0, z0);
+        final TileEntity var8 = worldIn.getTileEntity(pos);
 
         boolean validSpot = true;
 
@@ -127,7 +125,7 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
                     {
                         if (Math.abs(x) != 1 || Math.abs(z) != 1)
                         {
-                            Block blockAt = world.getBlock(x0 + x, y0 + y, z0 + z);
+                            Block blockAt = worldIn.getBlockState(new BlockPos(pos.getX() + x, pos.getY() + y, pos.getZ() + z)).getBlock();
 
                             if ((y == 0 || y == 3) && x == 0 && z == 0)
                             {
@@ -151,16 +149,16 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
 
         if (!validSpot)
         {
-            world.setBlockToAir(x0, y0, z0);
+            worldIn.setBlockToAir(pos);
 
-            if (!world.isRemote && entity instanceof EntityPlayerMP)
+            if (!worldIn.isRemote && placer instanceof EntityPlayerMP)
             {
-                EntityPlayerMP player = (EntityPlayerMP) entity;
+                EntityPlayerMP player = (EntityPlayerMP) placer;
                 player.addChatMessage(new ChatComponentText(EnumColor.RED + GCCoreUtil.translate("gui.warning.noroom")));
                 ItemStack itemstack = new ItemStack(this, 1, 0);
                 EntityItem entityitem = player.dropPlayerItemWithRandomChoice(itemstack, false);
-                entityitem.delayBeforeCanPickup = 0;
-                entityitem.func_145797_a(player.getCommandSenderName());
+                entityitem.setPickupDelay(0);
+                entityitem.setOwner(player.getName());
             }
 
             return;
@@ -168,16 +166,16 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
 
         if (var8 instanceof IMultiBlock)
         {
-            ((IMultiBlock) var8).onCreate(new BlockVec3(x0, y0, z0));
+            ((IMultiBlock) var8).onCreate(pos);
         }
 
-        super.onBlockPlacedBy(world, x0, y0, z0, entity, var6);
+        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
 
     @Override
-    public void breakBlock(World world, int x0, int y0, int z0, Block var5, int var6)
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        final TileEntity var9 = world.getTileEntity(x0, y0, z0);
+        final TileEntity var9 = worldIn.getTileEntity(pos);
 
         int fakeBlockCount = 0;
 
@@ -191,16 +189,18 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
                     {
                         if (Math.abs(x) != 1 || Math.abs(z) != 1)
                         {
+                            Block block = worldIn.getBlockState(pos.add(x, y, z)).getBlock();
+
                             if ((y == 0 || y == 3) && x == 0 && z == 0)
                             {
-                                if (world.getBlock(x0 + x, y0 + y, z0 + z) == GCBlocks.fakeBlock)
+                                if (block == GCBlocks.fakeBlock)
                                 {
                                     fakeBlockCount++;
                                 }
                             }
                             else if (y != 0 && y != 3)
                             {
-                                if (world.getBlock(x0 + x, y0 + y, z0 + z) == GCBlocks.fakeBlock)
+                                if (block == GCBlocks.fakeBlock)
                                 {
                                     fakeBlockCount++;
                                 }
@@ -216,24 +216,24 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
             ((IMultiBlock) var9).onDestroy(var9);
         }
 
-        super.breakBlock(world, x0, y0, z0, var5, var6);
+        super.breakBlock(worldIn, pos, state);
     }
 
-    @Override
+    /*@Override
     public IIcon getIcon(int par1, int par2)
     {
         return par1 == 1 ? this.iconBuffer[1] : this.iconBuffer[0];
-    }
+    }*/
 
     @Override
-    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        par5EntityPlayer.openGui(GalacticraftCore.instance, SchematicRegistry.getMatchingRecipeForID(0).getGuiID(), par1World, par2, par3, par4);
+        playerIn.openGui(GalacticraftCore.instance, SchematicRegistry.getMatchingRecipeForID(0).getGuiID(), worldIn, pos.getX(), pos.getY(), pos.getZ());
         return true;
     }
 
     @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
     {
         this.setBlockBounds(-0.0F, 0.0F, -0.0F, 1.0F, 1.4F, 1.0F);
     }
@@ -263,7 +263,7 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
     }
 
     @Override
-    public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
+    public boolean isSealed(World worldIn, BlockPos pos, EnumFacing direction)
     {
         return true;
     }

@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -9,8 +8,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
@@ -177,11 +174,11 @@ public class MarsModuleClient implements IPlanetsModuleClient
     {
         Minecraft mc = FMLClientHandler.instance().getClient();
 
-        if (mc != null && mc.renderViewEntity != null && mc.effectRenderer != null)
+        if (mc != null && mc.getRenderViewEntity() != null && mc.effectRenderer != null)
         {
-            final double dPosX = mc.renderViewEntity.posX - position.x;
-            final double dPosY = mc.renderViewEntity.posY - position.y;
-            final double dPosZ = mc.renderViewEntity.posZ - position.z;
+            final double dPosX = mc.getRenderViewEntity().posX - position.x;
+            final double dPosY = mc.getRenderViewEntity().posY - position.y;
+            final double dPosZ = mc.getRenderViewEntity().posZ - position.z;
             EntityFX particle = null;
             final double maxDistSqrd = 64.0D;
 

@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
@@ -9,23 +7,24 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFueler;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
 public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSealableBlock
 {
-    private IIcon[] icons = new IIcon[3];
+    //private IIcon[] icons = new IIcon[3];
 
     public BlockLandingPadFull(String assetName)
     {
@@ -33,15 +32,15 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
         this.setHardness(1.0F);
         this.setResistance(10.0F);
         this.setStepSound(Block.soundTypeStone);
-        this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
-        this.setBlockName(assetName);
+        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
         this.maxY = 0.39D;
     }
 
     @Override
-    public int damageDropped(int meta)
+    public int damageDropped(IBlockState state)
     {
-        return meta;
+        return getMetaFromState(state);
     }
 
     @Override
@@ -51,50 +50,56 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
     }
 
     @Override
-    public void breakBlock(World var1, int var2, int var3, int var4, Block var5, int var6)
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        final TileEntity var9 = var1.getTileEntity(var2, var3, var4);
+        final TileEntity var9 = worldIn.getTileEntity(pos);
 
         if (var9 instanceof IMultiBlock)
         {
             ((IMultiBlock) var9).onDestroy(var9);
         }
 
-        super.breakBlock(var1, var2, var3, var4, var5, var6);
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override
-    public Item getItemDropped(int par1, Random par2Random, int par3)
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
         return Item.getItemFromBlock(GCBlocks.landingPad);
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
     {
-        switch (world.getBlockMetadata(x, y, z))
+        switch (getMetaFromState(state))
         {
         case 0:
-            return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
+            return AxisAlignedBB.fromBounds(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ,
+                    pos.getX() + this.maxX, pos.getY() + this.maxY, pos.getZ() + this.maxZ);
         case 2:
-            return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
+            return AxisAlignedBB.fromBounds(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ,
+                    pos.getX() + this.maxX, pos.getY() + this.maxY, pos.getZ() + this.maxZ);
         default:
-            return AxisAlignedBB.getBoundingBox(x + 0.0D, y + 0.0D, z + 0.0D, x + 1.0D, y + 0.2D, z + 1.0D);
+            return AxisAlignedBB.fromBounds(pos.getX() + 0.0D, pos.getY() + 0.0D, pos.getZ() + 0.0D,
+                    pos.getX() + 1.0D, pos.getY() + 0.2D, pos.getZ() + 1.0D);
         }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z)
+    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
     {
-        switch (world.getBlockMetadata(x, y, z))
+        switch (getMetaFromState(worldIn.getBlockState(pos)))
         {
         case 0:
-            return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
+            return AxisAlignedBB.fromBounds(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ,
+                    pos.getX() + this.maxX, pos.getY() + this.maxY, pos.getZ() + this.maxZ);
         case 2:
-            return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
+            return AxisAlignedBB.fromBounds(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ,
+                    pos.getX() + this.maxX, pos.getY() + this.maxY, pos.getZ() + this.maxZ);
         default:
-            return AxisAlignedBB.getBoundingBox(x + 0.0D, y + 0.0D, z + 0.0D, x + 1.0D, y + 0.2D, z + 1.0D);
+            return AxisAlignedBB.fromBounds(pos.getX() + 0.0D, pos.getY() + 0.0D, pos.getZ() + 0.0D,
+                    pos.getX() + 1.0D, pos.getY() + 0.2D, pos.getZ() + 1.0D);
         }
     }
 
@@ -104,7 +109,7 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
         return GalacticraftCore.proxy.getBlockRender(this);
     }
 
-    @Override
+    /*@Override
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
         this.icons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "launch_pad");
@@ -128,16 +133,16 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
         }
 
         return this.blockIcon;
-    }
+    }*/
 
     @Override
-    public boolean canPlaceBlockAt(World world, int x, int y, int z)
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
         for (int x2 = -1; x2 < 2; ++x2)
         {
             for (int z2 = -1; z2 < 2; ++z2)
             {
-                if (!super.canPlaceBlockAt(world, x + x2, y, z + z2))
+                if (!super.canPlaceBlockAt(worldIn, new BlockPos(pos.getX() + x2, pos.getY(), pos.getZ() + z2)))
                 {
                     return false;
                 }
@@ -149,15 +154,15 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
     }
 
     @Override
-    public boolean hasTileEntity(int metadata)
+    public boolean hasTileEntity(IBlockState state)
     {
         return true;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
-        switch (metadata)
+        switch (getMetaFromState(state))
         {
         case 0:
             return new TileEntityLandingPad();
@@ -171,9 +176,9 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
     }
 
     @Override
-    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5)
+    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
     {
-        par1World.markBlockForUpdate(par2, par3, par4);
+        worldIn.markBlockForUpdate(pos);
     }
 
     @Override
@@ -183,28 +188,28 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
     }
 
     @Override
-    public boolean renderAsNormalBlock()
+    public boolean isFullCube()
     {
         return false;
     }
     
     @SideOnly(Side.CLIENT)
 	@Override
-	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+	public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
 	{
 		return true;
 	}
 
     @Override
-    public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
+    public boolean isSealed(World worldIn, BlockPos pos, EnumFacing direction)
     {
-        return direction == ForgeDirection.UP;
+        return direction == EnumFacing.UP;
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos)
     {
-        int metadata = world.getBlockMetadata(x, y, z);
+        int metadata = getMetaFromState(world.getBlockState(pos));
         return new ItemStack(Item.getItemFromBlock(GCBlocks.landingPad), 1, metadata);
     }
 }

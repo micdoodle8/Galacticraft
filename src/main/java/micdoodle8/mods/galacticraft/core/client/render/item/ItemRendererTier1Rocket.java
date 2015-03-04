@@ -1,13 +1,15 @@
+/*
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -23,7 +25,7 @@ public class ItemRendererTier1Rocket implements IItemRenderer
     protected ModelBase modelSpaceship;
     protected final ModelChest chestModel = new ModelChest();
 
-    protected static RenderItem drawItems = new RenderItem();
+    protected static RenderItem itemRenderer = new RenderItem(Minecraft.getMinecraft().getTextureManager(), new ModelManager(Minecraft.getMinecraft().getTextureMapBlocks()));
 
     protected ResourceLocation texture;
 
@@ -136,9 +138,11 @@ public class ItemRendererTier1Rocket implements IItemRenderer
         }
     }
 
-    /**
+    */
+/**
      * IItemRenderer implementation *
-     */
+     *//*
+
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type)
@@ -186,3 +190,4 @@ public class ItemRendererTier1Rocket implements IItemRenderer
     }
 
 }
+*/

@@ -38,9 +38,9 @@ public class GuiElementSlider extends GuiButton
     {
         if (this.visible)
         {
-            this.field_146123_n = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
+            this.hovered = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
 
-            if (Mouse.isButtonDown(0) && this.field_146123_n)
+            if (Mouse.isButtonDown(0) && this.hovered)
             {
                 if (this.isVertical)
                 {

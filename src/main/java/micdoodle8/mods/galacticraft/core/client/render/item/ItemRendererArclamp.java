@@ -1,6 +1,6 @@
+/*
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityArclampRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -53,9 +53,11 @@ public class ItemRendererArclamp implements IItemRenderer
         GL11.glEnable(GL11.GL_LIGHTING);
     }
 
-    /**
+    */
+/**
      * IItemRenderer implementation *
-     */
+     *//*
+
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type)
@@ -103,3 +105,4 @@ public class ItemRendererArclamp implements IItemRenderer
     }
 
 }
+*/

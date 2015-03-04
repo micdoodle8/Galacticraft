@@ -1,6 +1,6 @@
+/*
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityThrusterRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
@@ -40,9 +40,11 @@ public class ItemRendererThruster implements IItemRenderer
         GL11.glPopMatrix();
     }
 
-    /**
+    */
+/**
      * IItemRenderer implementation *
-     */
+     *//*
+
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type)
@@ -90,3 +92,4 @@ public class ItemRendererThruster implements IItemRenderer
     }
 
 }
+*/

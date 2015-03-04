@@ -1,11 +1,8 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import com.google.common.collect.Lists;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IWorldGenerator;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
@@ -44,6 +41,8 @@ import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.network.play.server.S1FPacketSetExperience;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.*;
@@ -181,12 +180,12 @@ public class WorldUtil
             float var20 = (float) (FMLClientHandler.instance().getClient().thePlayer.posY - 200.0F) / 1000.0F;
             final float var21 = Math.max(1.0F - var20 * 2.0F, 0.0F);
 
-            Vec3 vec = world.getSkyColor(FMLClientHandler.instance().getClient().renderViewEntity, 1.0F);
+            Vec3 vec = world.getSkyColor(FMLClientHandler.instance().getClient().getRenderViewEntity(), 1.0F);
 
             return Vec3.createVectorHelper(vec.xCoord * var21, vec.yCoord * var21, vec.zCoord * var21);
         }
 
-        return world.getSkyColor(FMLClientHandler.instance().getClient().renderViewEntity, 1.0F);
+        return world.getSkyColor(FMLClientHandler.instance().getClient().getRenderViewEntity(), 1.0F);
     }
 
     public static WorldProvider getProviderForName(String par1String)
@@ -1150,5 +1149,36 @@ public class WorldUtil
         }
 
         return position;
+    }
+
+    public static boolean blockOnSideHasSolidFace(World world, BlockPos pos, EnumFacing side)
+    {
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
+        switch (side)
+        {
+            case DOWN:
+                y--;
+                break;
+            case UP:
+                y++;
+                break;
+            case NORTH:
+                z--;
+                break;
+            case SOUTH:
+                z++;
+                break;
+            case WEST:
+                x--;
+                break;
+            case EAST:
+                x++;
+                break;
+            default:
+                return false;
+        }
+        return world.getBlockState(pos).getBlock().isSideSolid(world, pos, EnumFacing.values()[side.getIndex() ^ 1]);
     }
 }

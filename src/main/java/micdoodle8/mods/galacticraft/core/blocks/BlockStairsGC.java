@@ -1,18 +1,17 @@
+/*
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.util.IIcon;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class BlockStairsGC extends BlockStairs
 {
-	private IIcon[] tinSideIcon;
+	//private IIcon[] tinSideIcon;
 
 	public static enum StairsCategoryGC
 	{
@@ -37,9 +36,9 @@ public class BlockStairsGC extends BlockStairs
 
 	public BlockStairsGC(String name, Block model, StairsCategoryGC cat)
 	{
-		super(model, 0);
+		super(model);
 		this.category = cat;
-		this.setBlockName(name);
+		this.setUnlocalizedName(name);
 		this.useNeighborBrightness = true;
 	}
 
@@ -53,7 +52,8 @@ public class BlockStairsGC extends BlockStairs
 		return null;
 	}
 
-	@Override
+	*/
+/*@Override
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		if (this.category == StairsCategoryGC.TIN1)//Tin Decoration
@@ -88,7 +88,8 @@ public class BlockStairsGC extends BlockStairs
 		this.tinSideIcon = new IIcon[2];
 		this.tinSideIcon[0] = par1IconRegister.registerIcon("galacticraftcore:deco_aluminium_1");
 		this.tinSideIcon[1] = par1IconRegister.registerIcon("galacticraftcore:deco_aluminium_4");
-	}
+	}*//*
+
 
 	public boolean isWoodCategory(String block)
 	{
@@ -140,7 +141,8 @@ public class BlockStairsGC extends BlockStairs
 		return woodCatNo;
 	}
 
-	@Override
+	*/
+/*@Override
 	public IIcon getIcon(int side, int meta)
 	{
 		if (this.category == StairsCategoryGC.TIN2)//Tin Decoration
@@ -307,5 +309,6 @@ public class BlockStairsGC extends BlockStairs
 			}
 		}
 		return this.blockIcon;
-	}
-}
+	}*//*
+
+}*/

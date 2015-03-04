@@ -6,8 +6,11 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
+@SideOnly(Side.CLIENT)
 public class GuiElementCheckbox extends GuiButton
 {
     protected static final ResourceLocation texture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/gui.png");
@@ -59,10 +62,10 @@ public class GuiElementCheckbox extends GuiButton
         {
             par1Minecraft.getTextureManager().bindTexture(GuiElementCheckbox.texture);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            this.field_146123_n = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
-            this.drawTexturedModalRect(this.xPosition, this.yPosition, this.isSelected ? this.texX + this.texWidth : this.texX, this.field_146123_n ? this.shiftOnHover ? this.texY + this.texHeight : this.texY : this.texY, this.width, this.height);
+            this.hovered = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
+            this.drawTexturedModalRect(this.xPosition, this.yPosition, this.isSelected ? this.texX + this.texWidth : this.texX, this.hovered ? this.shiftOnHover ? this.texY + this.texHeight : this.texY : this.texY, this.width, this.height);
             this.mouseDragged(par1Minecraft, par2, par3);
-            par1Minecraft.fontRenderer.drawString(this.displayString, this.xPosition + this.width + 3, this.yPosition + (this.height - 6) / 2, this.textColor, false);
+            par1Minecraft.fontRendererObj.drawString(this.displayString, this.xPosition + this.width + 3, this.yPosition + (this.height - 6) / 2, this.textColor, false);
         }
     }
 
@@ -71,12 +74,12 @@ public class GuiElementCheckbox extends GuiButton
     {
         float f = 0.00390625F;
         float f1 = 0.00390625F;
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(par1 + 0, par2 + par6, this.zLevel, (par3 + 0) * f, (par4 + this.texHeight) * f1);
-        tessellator.addVertexWithUV(par1 + par5, par2 + par6, this.zLevel, (par3 + this.texWidth) * f, (par4 + this.texHeight) * f1);
-        tessellator.addVertexWithUV(par1 + par5, par2 + 0, this.zLevel, (par3 + this.texWidth) * f, (par4 + 0) * f1);
-        tessellator.addVertexWithUV(par1 + 0, par2 + 0, this.zLevel, (par3 + 0) * f, (par4 + 0) * f1);
+        Tessellator tessellator = Tessellator.getInstance();
+        tessellator.getWorldRenderer().startDrawingQuads();
+        tessellator.getWorldRenderer().addVertexWithUV(par1 + 0, par2 + par6, this.zLevel, (par3 + 0) * f, (par4 + this.texHeight) * f1);
+        tessellator.getWorldRenderer().addVertexWithUV(par1 + par5, par2 + par6, this.zLevel, (par3 + this.texWidth) * f, (par4 + this.texHeight) * f1);
+        tessellator.getWorldRenderer().addVertexWithUV(par1 + par5, par2 + 0, this.zLevel, (par3 + this.texWidth) * f, (par4 + 0) * f1);
+        tessellator.getWorldRenderer().addVertexWithUV(par1 + 0, par2 + 0, this.zLevel, (par3 + 0) * f, (par4 + 0) * f1);
         tessellator.draw();
     }
 

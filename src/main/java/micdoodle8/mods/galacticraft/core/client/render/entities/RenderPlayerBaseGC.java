@@ -1,9 +1,9 @@
+/*
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import api.player.model.ModelPlayer;
 import api.player.render.RenderPlayerAPI;
 import api.player.render.RenderPlayerBase;
-import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -157,3 +157,4 @@ public class RenderPlayerBaseGC extends RenderPlayerBase
         }
     }
 }
+*/

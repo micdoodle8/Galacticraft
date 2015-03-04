@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import mekanism.api.gas.IGasTransmitter;
 import mekanism.api.gas.ITubeConnection;
 import mekanism.api.transmitters.TransmissionType;

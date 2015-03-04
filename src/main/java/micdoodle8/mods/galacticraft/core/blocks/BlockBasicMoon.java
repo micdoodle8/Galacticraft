@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
@@ -11,11 +8,11 @@ import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,13 +21,16 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,53 +41,101 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 {
     // CopperMoon: 0, TinMoon: 1, CheeseStone: 2
     // Moon dirt: 3;  Moon rock: 4;  Moon topsoil: 5-13 (6-13 have GC2 footprints);  Moon dungeon brick: 14;  Moon boss spawner: 15;
-    @SideOnly(Side.CLIENT)
-    private IIcon[] moonBlockIcons;
+
+    public static final PropertyEnum BASIC_TYPE_MOON = PropertyEnum.create("basicTypeMoon", EnumBlockBasicMoon.class);
+
+    private enum EnumBlockBasicMoon
+    {
+        ORE_COPPER_MOON(0),
+        ORE_TIN_MOON(1),
+        ORE_CHEESE_MOON(2),
+        MOON_DIRT(3),
+        MOON_STONE(4),
+        MOON_TURF_0(5),
+        MOON_TURF_1(6),
+        MOON_TURF_2(7),
+        MOON_TURF_3(8),
+        MOON_TURF_4(9),
+        MOON_TURF_5(10),
+        MOON_TURF_6(11),
+        MOON_TURF_7(12),
+        MOON_TURF_8(13),
+        MOON_DUNGEON_BRICK(15),
+        MOON_BOSS_SPAWNER(16);
+
+        private final int meta;
+
+        private EnumBlockBasicMoon(int meta)
+        {
+            this.meta = meta;
+        }
+
+        public int getMeta()
+        {
+            return this.meta;
+        }
+
+        public static EnumBlockBasicMoon byMetadata(int meta)
+        {
+            for (EnumBlockBasicMoon value : values())
+            {
+                if (value.getMeta() == meta)
+                {
+                    return value;
+                }
+            }
+
+            return null;
+        }
+    }
+
+    /*@SideOnly(Side.CLIENT)
+    private IIcon[] moonBlockIcons;*/
 
     public BlockBasicMoon()
     {
         super(Material.rock);
         this.blockHardness = 1.5F;
         this.blockResistance = 2.5F;
-        this.setBlockName("moonBlock");
+        /*this.setUnlocalizedName("moonBlock");*/
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
     {
-        if (world.getBlockMetadata(x, y, z) == 15)
+        if (getMetaFromState(state) == 15)
         {
-            return AxisAlignedBB.getBoundingBox(x, y, z, x, y, z);
+            return AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
         }
 
-        return super.getCollisionBoundingBoxFromPool(world, x, y, z);
+        return super.getCollisionBoundingBox(worldIn, pos, state);
     }
 
     @Override
-    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z)
+    public AxisAlignedBB getSelectedBoundingBox(World world, BlockPos pos)
     {
-        if (world.getBlockMetadata(x, y, z) == 15)
+        if (getMetaFromState(world.getBlockState(pos)) == 15)
         {
-            return AxisAlignedBB.getBoundingBox(x, y, z, x, y, z);
+            return AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
         }
 
-        return super.getSelectedBoundingBoxFromPool(world, x, y, z);
+        return super.getSelectedBoundingBox(world, pos);
     }
 
     @Override
-    public boolean isNormalCube(IBlockAccess world, int x, int y, int z)
+    public boolean isNormalCube(IBlockAccess world, BlockPos pos)
     {
-        if (world.getBlockMetadata(x, y, z) == 15)
+        if (getMetaFromState(world.getBlockState(pos)) == 15)
         {
             return false;
         }
         else
         {
-            return super.isNormalCube(world, x, y, z);
+            return super.isNormalCube(world, pos);
         }
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
@@ -109,7 +157,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
         this.moonBlockIcons[14] = par1IconRegister.registerIcon("galacticraftmoon:moonore_cheese");
         this.moonBlockIcons[15] = par1IconRegister.registerIcon("galacticraftmoon:bottom");
         this.moonBlockIcons[16] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "blank");
-    }
+    }*/
 
     @SideOnly(Side.CLIENT)
     @Override
@@ -119,9 +167,9 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
     }
 
     @Override
-    public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
+    public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion)
     {
-    	int metadata = world.getBlockMetadata(x, y, z); 
+    	int metadata = getMetaFromState(world.getBlockState(pos));
 
     	if (metadata == 15)
         {
@@ -144,9 +192,9 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
     }
 
     @Override
-    public float getBlockHardness(World par1World, int par2, int par3, int par4)
+    public float getBlockHardness(World worldIn, BlockPos pos)
     {
-        final int meta = par1World.getBlockMetadata(par2, par3, par4);
+        final int meta = getMetaFromState(worldIn.getBlockState(pos));
 
         if (meta == 3 || meta >= 5 && meta <= 13)
         {
@@ -177,17 +225,18 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
     }
 
     @Override
-    public boolean canHarvestBlock(EntityPlayer player, int meta)
+    public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player)
     {
+        int meta = getMetaFromState(world.getBlockState(pos));
         if (meta == 3 || meta >= 5 && meta <= 13)
         {
             return true;
         }
 
-        return super.canHarvestBlock(player, meta);
+        return super.canHarvestBlock(world, pos, player);
     }
 
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     @Override
     public IIcon getIcon(int side, int meta)
     {
@@ -250,12 +299,12 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
         }
 
         return null;
-    }
+    }*/
 
     @Override
-    public Item getItemDropped(int meta, Random random, int par3)
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        switch (meta)
+        switch (getMetaFromState(state))
         {
         case 2:
             return GCItems.cheeseCurd;
@@ -267,8 +316,9 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
     }
 
     @Override
-    public int damageDropped(int meta)
+    public int damageDropped(IBlockState state)
     {
+        int meta = getMetaFromState(state);
         if (meta >= 5 && meta <= 13)
         {
             return 5;
@@ -284,8 +334,9 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
     }
 
     @Override
-    public int quantityDropped(int meta, int fortune, Random random)
+    public int quantityDropped(IBlockState state, int fortune, Random random)
     {
+        int meta = getMetaFromState(state);
         switch (meta)
         {
         case 2:
@@ -320,9 +371,9 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
-        if (metadata == 15)
+        if (getMetaFromState(state) == 15)
         {
             return new TileEntityDungeonSpawner();
         }
@@ -347,16 +398,16 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
     }
 
     @Override
-    public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
+    public boolean canSustainPlant(IBlockAccess world, BlockPos pos, EnumFacing direction, net.minecraftforge.common.IPlantable plantable)
     {
-        final int metadata = world.getBlockMetadata(x, y, z);
+        final int metadata = getMetaFromState(world.getBlockState(pos));
 
         if (metadata < 5 && metadata > 13)
         {
             return false;
         }
 
-        plantable.getPlant(world, x, y + 1, z);
+        plantable.getPlant(world, pos.offset(EnumFacing.UP));
 
         return plantable instanceof BlockFlower;
 
@@ -376,22 +427,22 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
     }
 
     @Override
-    public boolean isTerraformable(World world, int x, int y, int z)
+    public boolean isTerraformable(World world, BlockPos pos)
     {
-        int meta = world.getBlockMetadata(x, y, z);
+        int meta = getMetaFromState(world.getBlockState(pos));
 
         if (meta >= 5 && meta <= 13)
         {
-            return world.getBlock(x, y + 1, z) instanceof BlockAir;
+            return world.getBlockState(pos.offset(EnumFacing.UP)).getBlock() instanceof BlockAir;
         }
 
         return false;
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos)
     {
-        int metadata = world.getBlockMetadata(x, y, z);
+        int metadata = getMetaFromState(world.getBlockState(pos));
         if (metadata == 2)
         {
             return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
@@ -401,21 +452,21 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
             return null;
         }
 
-        return super.getPickBlock(target, world, x, y, z, player);
+        return super.getPickBlock(target, world, pos);
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int par6)
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        super.breakBlock(world, x, y, z, block, par6);
+        super.breakBlock(worldIn, pos, state);
 
-        if (!world.isRemote && block == this && par6 == 5)
+        if (!worldIn.isRemote && getMetaFromState(state) == 5)
         {
-            Map<Long, List<Footprint>> footprintChunkMap = TickHandlerServer.serverFootprintMap.get(world.provider.dimensionId);
+            Map<Long, List<Footprint>> footprintChunkMap = TickHandlerServer.serverFootprintMap.get(worldIn.provider.getDimensionId());
 
             if (footprintChunkMap != null)
             {
-                long chunkKey = ChunkCoordIntPair.chunkXZ2Int(x >> 4, z >> 4);
+                long chunkKey = ChunkCoordIntPair.chunkXZ2Int(pos.getX() >> 4, pos.getZ() >> 4);
                 List<Footprint> footprintList = footprintChunkMap.get(chunkKey);
 
                 if (footprintList != null && !footprintList.isEmpty())
@@ -424,8 +475,8 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 
                     for (Footprint footprint : footprintList)
                     {
-                        if (footprint.position.x > x && footprint.position.x < x + 1 &&
-                                footprint.position.z > z && footprint.position.z < z + 1)
+                        if (footprint.position.x > pos.getX() && footprint.position.x < pos.getX() + 1 &&
+                                footprint.position.z > pos.getZ() && footprint.position.z < pos.getZ() + 1)
                         {
                             toRemove.add(footprint);
                         }
@@ -435,8 +486,8 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
                     {
                         footprintList.removeAll(toRemove);
                         footprintChunkMap.put(chunkKey, footprintList);
-                        TickHandlerServer.serverFootprintMap.put(world.provider.dimensionId, footprintChunkMap);
-                        TickHandlerServer.footprintRefreshList.add(new NetworkRegistry.TargetPoint(world.provider.dimensionId, x, y, z, 50));
+                        TickHandlerServer.serverFootprintMap.put(worldIn.provider.getDimensionId(), footprintChunkMap);
+                        TickHandlerServer.footprintRefreshList.add(new NetworkRegistry.TargetPoint(worldIn.provider.getDimensionId(), pos.getX(), pos.getY(), pos.getZ(), 50));
                     }
                 }
             }
@@ -444,10 +495,10 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
     }
     
     @Override
-    public boolean isReplaceableOreGen(World world, int x, int y, int z, Block target)
+    public boolean isReplaceableOreGen(World world, BlockPos pos, com.google.common.base.Predicate<IBlockState> target)
     {
         if (target != Blocks.stone) return false;
-    	int meta = world.getBlockMetadata(x, y, z);
+    	int meta = getMetaFromState(world.getBlockState(pos));
     	return (meta == 3 || meta == 4);
     }
 }

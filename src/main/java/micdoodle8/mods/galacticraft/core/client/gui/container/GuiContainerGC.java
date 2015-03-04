@@ -1,16 +1,19 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
-import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@SideOnly(Side.CLIENT)
 public abstract class GuiContainerGC extends GuiContainer
 {
     public List<GuiElementInfoRegion> infoRegions = new ArrayList<GuiElementInfoRegion>();
@@ -45,7 +48,7 @@ public abstract class GuiContainerGC extends GuiContainer
         {
             Slot slot = (Slot) this.inventorySlots.inventorySlots.get(i1);
 
-            if (slot.func_111238_b() && this.func_146978_c(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, par1, par2))
+            if (slot.canBeHovered() && this.isPointInRegion(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, par1, par2))
             {
                 ItemStack itemStack = slot.getStack();
 

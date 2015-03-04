@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
@@ -10,7 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -22,8 +20,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Iterator;
 import java.util.Random;
@@ -38,8 +37,8 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
         this.setHardness(3.0F);
         this.setStepSound(Block.soundTypeWood);
         this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
-        this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
-        this.setBlockName(assetName);
+        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -55,7 +54,7 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
     }
 
     @Override
-    public boolean renderAsNormalBlock()
+    public boolean isFullCube()
     {
         return false;
     }
@@ -67,25 +66,25 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
     }
 
     @Override
-    public void onBlockAdded(World par1World, int par2, int par3, int par4)
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
-        super.onBlockAdded(par1World, par2, par3, par4);
+        super.onBlockAdded(worldIn, pos, state);
     }
 
     @Override
-    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        if (par1World.isRemote)
+        if (worldIn.isRemote)
         {
             return true;
         }
         else
         {
-            IInventory iinventory = this.getInventory(par1World, par2, par3, par4);
+            IInventory iinventory = this.getInventory(worldIn, pos);
 
-            if (iinventory != null && par5EntityPlayer instanceof EntityPlayerMP)
+            if (iinventory != null && playerIn instanceof EntityPlayerMP)
             {
-                par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, par2, par3, par4);
+                playerIn.openGui(GalacticraftCore.instance, -1, worldIn, pos.getX(), pos.getY(), pos.getZ());
             }
 
             return true;
@@ -93,15 +92,15 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
     }
 
     @Override
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        super.onBlockPlacedBy(par1World, par2, par3, par4, par5EntityLivingBase, par6ItemStack);
+        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
 
     @Override
-    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5)
+    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
     {
-        TileEntityParaChest tileentitychest = (TileEntityParaChest) par1World.getTileEntity(par2, par3, par4);
+        TileEntityParaChest tileentitychest = (TileEntityParaChest) worldIn.getTileEntity(pos);
 
         if (tileentitychest != null)
         {
@@ -110,15 +109,9 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
     }
 
     @Override
-    public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        return super.canPlaceBlockAt(par1World, par2, par3, par4);
-    }
-
-    @Override
-    public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6)
-    {
-        TileEntityParaChest tileentitychest = (TileEntityParaChest) par1World.getTileEntity(par2, par3, par4);
+        TileEntityParaChest tileentitychest = (TileEntityParaChest) worldIn.getTileEntity(pos);
 
         if (tileentitychest != null)
         {
@@ -132,7 +125,7 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
                     float f1 = this.random.nextFloat() * 0.8F + 0.1F;
                     EntityItem entityitem;
 
-                    for (float f2 = this.random.nextFloat() * 0.8F + 0.1F; itemstack.stackSize > 0; par1World.spawnEntityInWorld(entityitem))
+                    for (float f2 = this.random.nextFloat() * 0.8F + 0.1F; itemstack.stackSize > 0; worldIn.spawnEntityInWorld(entityitem))
                     {
                         int k1 = this.random.nextInt(21) + 10;
 
@@ -142,7 +135,7 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
                         }
 
                         itemstack.stackSize -= k1;
-                        entityitem = new EntityItem(par1World, par2 + f, par3 + f1, par4 + f2, new ItemStack(itemstack.getItem(), k1, itemstack.getItemDamage()));
+                        entityitem = new EntityItem(worldIn, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, new ItemStack(itemstack.getItem(), k1, itemstack.getItemDamage()));
                         float f3 = 0.05F;
                         entityitem.motionX = (float) this.random.nextGaussian() * f3;
                         entityitem.motionY = (float) this.random.nextGaussian() * f3 + 0.2F;
@@ -156,25 +149,25 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
                 }
             }
 
-            par1World.func_147453_f(par2, par3, par4, par5);
+            worldIn.updateComparatorOutputLevel(pos, null);
         }
 
-        super.breakBlock(par1World, par2, par3, par4, par5, par6);
+        super.breakBlock(worldIn, pos, state);
     }
 
-    public IInventory getInventory(World par1World, int par2, int par3, int par4)
+    public IInventory getInventory(World par1World, BlockPos pos)
     {
-        Object object = par1World.getTileEntity(par2, par3, par4);
+        Object object = par1World.getTileEntity(pos);
 
         if (object == null)
         {
             return null;
         }
-        else if (par1World.isSideSolid(par2, par3 + 1, par4, ForgeDirection.DOWN))
+        else if (par1World.isSideSolid(pos.offset(EnumFacing.UP), EnumFacing.DOWN))
         {
             return null;
         }
-        else if (BlockParaChest.isOcelotBlockingChest(par1World, par2, par3, par4))
+        else if (BlockParaChest.isOcelotBlockingChest(par1World, pos))
         {
             return null;
         }
@@ -184,9 +177,9 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
         }
     }
 
-    public static boolean isOcelotBlockingChest(World par0World, int par1, int par2, int par3)
+    public static boolean isOcelotBlockingChest(World par0World, BlockPos pos)
     {
-        Iterator<?> iterator = par0World.getEntitiesWithinAABB(EntityOcelot.class, AxisAlignedBB.getBoundingBox(par1, par2 + 1, par3, par1 + 1, par2 + 2, par3 + 1)).iterator();
+        Iterator<?> iterator = par0World.getEntitiesWithinAABB(EntityOcelot.class, AxisAlignedBB.fromBounds(pos.getX(), pos.getY() + 1, pos.getZ(), pos.getX() + 1, pos.getY() + 2, pos.getZ() + 1)).iterator();
         EntityOcelot entityocelot;
 
         do
@@ -209,12 +202,12 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
         return new TileEntityParaChest();
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
         this.blockIcon = par1IconRegister.registerIcon("planks_oak");
-    }
+    }*/
 
     @Override
     public String getShiftDescription(int meta)

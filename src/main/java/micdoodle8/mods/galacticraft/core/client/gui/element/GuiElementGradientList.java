@@ -1,14 +1,17 @@
 package micdoodle8.mods.galacticraft.core.client.gui.element;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Mouse;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@SideOnly(Side.CLIENT)
 public class GuiElementGradientList extends Gui
 {
     public static class ListElement
@@ -123,7 +126,7 @@ public class GuiElementGradientList extends Gui
         Gui.drawRect(this.xPosition + this.width - 9, this.sliderPos + 15, this.xPosition + this.width - 1, this.sliderPos + 14, sliderColor);
 
         int currentDrawHeight = this.yPosition + 1 - (int) Math.floor((this.listContents.size() * GuiElementGradientList.BUTTON_HEIGHT - this.height) * this.getSliderPercentage());
-        FontRenderer fontRenderer = FMLClientHandler.instance().getClient().fontRenderer;
+        FontRenderer fontRenderer = FMLClientHandler.instance().getClient().fontRendererObj;
 
         for (int i = 0; i < this.listContents.size(); i++)
         {

@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.model.ModelRenderer;

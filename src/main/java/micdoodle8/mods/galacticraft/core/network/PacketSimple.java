@@ -5,11 +5,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import cpw.mods.fml.server.FMLServerHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
@@ -57,7 +52,6 @@ import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.settings.GameSettings;
@@ -76,15 +70,15 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.S07PacketRespawn;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.io.FileUtils;
 
 import javax.imageio.IIOImage;
@@ -348,7 +342,7 @@ public class PacketSimple extends Packet implements IPacket
 
             for (int i = 0; i < 4; i++)
             {
-                if (mc != null && mc.renderViewEntity != null && mc.effectRenderer != null && mc.theWorld != null)
+                if (mc != null && mc.getRenderViewEntity() != null && mc.effectRenderer != null && mc.theWorld != null)
                 {
                     final EntityFX fx = new EntityFXSparks(mc.theWorld, x - 0.15 + 0.5, y + 1.2, z + 0.15 + 0.5, mc.theWorld.rand.nextDouble() / 20 - mc.theWorld.rand.nextDouble() / 20, mc.theWorld.rand.nextDouble() / 20 - mc.theWorld.rand.nextDouble() / 20);
 
@@ -589,11 +583,11 @@ public class PacketSimple extends Packet implements IPacket
                 {
                 	System.out.println("GC clientside planet dimensions registered: "+ids);
                 	WorldProvider dimMoon = WorldUtil.getProviderForName("moon.moon");
-                	if (dimMoon != null) System.out.println("Crosscheck: Moon is "+dimMoon.dimensionId);
+                	if (dimMoon != null) System.out.println("Crosscheck: Moon is "+dimMoon.getDimensionId());
                 	WorldProvider dimMars = WorldUtil.getProviderForName("planet.mars");
-                	if (dimMoon != null) System.out.println("Crosscheck: Mars is "+dimMars.dimensionId);
+                	if (dimMoon != null) System.out.println("Crosscheck: Mars is "+dimMars.getDimensionId());
                 	WorldProvider dimAst = WorldUtil.getProviderForName("planet.asteroids");
-                	if (dimMoon != null) System.out.println("Crosscheck: Asteroids is "+dimAst.dimensionId);
+                	if (dimMoon != null) System.out.println("Crosscheck: Asteroids is "+dimAst.getDimensionId());
                 }
                 break;
             }
@@ -668,12 +662,12 @@ public class PacketSimple extends Packet implements IPacket
             }
             break;
         case C_UPDATE_WIRE_BOUNDS:
-            TileEntity tile = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
+            TileEntity tile = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
 
             if (tile instanceof TileBaseConductor)
             {
                 ((TileBaseConductor) tile).adjacentConnections = null;
-                player.worldObj.getBlock(tile.xCoord, tile.yCoord, tile.zCoord).setBlockBoundsBasedOnState(player.worldObj, tile.xCoord, tile.yCoord, tile.zCoord);
+                player.worldObj.getBlockState(tile.getPos()).getBlock().setBlockBoundsBasedOnState(player.worldObj, tile.getPos());
             }
             break;
         case C_OPEN_SPACE_RACE_GUI:
@@ -776,7 +770,7 @@ public class PacketSimple extends Packet implements IPacket
             break;
         case C_RESPAWN_PLAYER:
             final WorldProvider provider = WorldUtil.getProviderForName((String) this.data.get(0));
-            final int dimID = provider.dimensionId;
+            final int dimID = provider.getDimensionId();
             if (ConfigManagerCore.enableDebug)
             {
                 GCLog.info("DEBUG: Client receiving respawn packet for dim " + dimID);
@@ -787,7 +781,7 @@ public class PacketSimple extends Packet implements IPacket
             WorldUtil.forceRespawnClient(dimID, par2, par3, par4);
             break;
         case C_UPDATE_ARCLAMP_FACING:
-        	tile = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
+        	tile = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
         	int facingNew = (Integer) this.data.get(3);
         	if (tile instanceof TileEntityArclamp)
         	{

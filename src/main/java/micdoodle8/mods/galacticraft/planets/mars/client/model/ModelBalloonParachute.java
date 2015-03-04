@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.model;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;

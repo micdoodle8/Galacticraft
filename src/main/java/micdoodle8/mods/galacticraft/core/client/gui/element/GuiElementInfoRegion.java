@@ -1,13 +1,15 @@
 package micdoodle8.mods.galacticraft.core.client.gui.element;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiContainerGC;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.resources.model.ModelManager;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -25,7 +27,7 @@ public class GuiElementInfoRegion extends Gui
     public boolean drawRegion;
     public boolean withinRegion;
     public List<String> tooltipStrings;
-    protected static RenderItem itemRenderer = new RenderItem();
+    protected static RenderItem itemRenderer = new RenderItem(Minecraft.getMinecraft().getTextureManager(), new ModelManager(Minecraft.getMinecraft().getTextureMapBlocks()));
     public int parentWidth;
     public int parentHeight;
     public GuiContainerGC parentGui;
@@ -85,7 +87,7 @@ public class GuiElementInfoRegion extends Gui
             while (iterator.hasNext())
             {
                 String s = iterator.next();
-                int l = FMLClientHandler.instance().getClient().fontRenderer.getStringWidth(s);
+                int l = FMLClientHandler.instance().getClient().fontRendererObj.getStringWidth(s);
 
                 if (l > k)
                 {
@@ -132,7 +134,7 @@ public class GuiElementInfoRegion extends Gui
             for (int k2 = 0; k2 < this.tooltipStrings.size(); ++k2)
             {
                 String s1 = this.tooltipStrings.get(k2);
-                FMLClientHandler.instance().getClient().fontRenderer.drawStringWithShadow(s1, i1, j1, -1);
+                FMLClientHandler.instance().getClient().fontRendererObj.drawStringWithShadow(s1, i1, j1, -1);
 
                 j1 += 10;
             }

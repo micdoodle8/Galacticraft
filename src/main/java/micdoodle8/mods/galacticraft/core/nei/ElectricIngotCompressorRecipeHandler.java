@@ -1,3 +1,4 @@
+/*
 package micdoodle8.mods.galacticraft.core.nei;
 
 import codechicken.lib.gui.GuiDraw;
@@ -214,3 +215,4 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
     {
     }
 }
+*/

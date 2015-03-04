@@ -1,41 +1,36 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySpaceStationBase;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 public class BlockSpaceStationBase extends BlockContainer implements ITileEntityProvider
 {
-    private IIcon[] spaceStationIcons;
+    //private IIcon[] spaceStationIcons;
 
     public BlockSpaceStationBase(String assetName)
     {
         super(Material.rock);
         this.setHardness(-1);
-        this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
-        this.setBlockName(assetName);
+        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override
-    public float getBlockHardness(World par1World, int par2, int par3, int par4)
+    public float getBlockHardness(World worldIn, BlockPos pos)
     {
         return -1.0F;
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
@@ -55,19 +50,19 @@ public class BlockSpaceStationBase extends BlockContainer implements ITileEntity
         default:
             return this.spaceStationIcons[1];
         }
-    }
+    }*/
 
     @Override
-    public void breakBlock(World var1, int var2, int var3, int var4, Block var5, int var6)
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        final TileEntity tileAt = var1.getTileEntity(var2, var3, var4);
+        final TileEntity tileAt = worldIn.getTileEntity(pos);
 
         if (tileAt instanceof IMultiBlock)
         {
             ((IMultiBlock) tileAt).onDestroy(tileAt);
         }
 
-        super.breakBlock(var1, var2, var3, var4, var5, var6);
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override
@@ -77,15 +72,15 @@ public class BlockSpaceStationBase extends BlockContainer implements ITileEntity
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        super.onBlockPlacedBy(world, x, y, z, entityLiving, itemStack);
+        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
 
-        TileEntity tile = world.getTileEntity(x, y, z);
+        TileEntity tile = worldIn.getTileEntity(pos);
 
         if (tile instanceof IMultiBlock)
         {
-            ((IMultiBlock) tile).onCreate(new BlockVec3(x, y, z));
+            ((IMultiBlock) tile).onCreate(pos);
         }
     }
 }

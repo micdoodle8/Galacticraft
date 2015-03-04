@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.client;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -95,7 +94,7 @@ public class SkyProviderMars extends IRenderHandler
     public void render(float partialTicks, WorldClient world, Minecraft mc)
     {
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        Vec3 vec3 = world.getSkyColor(mc.renderViewEntity, partialTicks);
+        Vec3 vec3 = world.getSkyColor(mc.getRenderViewEntity(), partialTicks);
         float f1 = (float) vec3.xCoord;
         float f2 = (float) vec3.yCoord;
         float f3 = (float) vec3.zCoord;

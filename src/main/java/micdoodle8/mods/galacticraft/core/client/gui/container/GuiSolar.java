@@ -12,11 +12,14 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@SideOnly(Side.CLIENT)
 public class GuiSolar extends GuiContainerGC
 {
     private static final ResourceLocation solarGuiTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/solar.png");
@@ -40,7 +43,7 @@ public class GuiSolar extends GuiContainerGC
         switch (par1GuiButton.id)
         {
         case 0:
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.solarPanel.xCoord, this.solarPanel.yCoord, this.solarPanel.zCoord, 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.solarPanel.getPos(), 0 }));
             break;
         }
     }
@@ -97,12 +100,12 @@ public class GuiSolar extends GuiContainerGC
             return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled.name");
         }
 
-        if (!this.solarPanel.getWorldObj().isDaytime())
+        if (!this.solarPanel.getWorld().isDaytime())
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.blockedfully.name");
         }
 
-        if (this.solarPanel.getWorldObj().isRaining() || this.solarPanel.getWorldObj().isThundering())
+        if (this.solarPanel.getWorld().isRaining() || this.solarPanel.getWorld().isThundering())
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.raining.name");
         }

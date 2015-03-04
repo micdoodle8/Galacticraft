@@ -1,16 +1,21 @@
+/*
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.BlockSlab;
+import net.minecraft.block.BlockStoneSlab;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -27,19 +32,22 @@ public class BlockSlabGC extends BlockSlab
 		"marsBricks"
 	};
 
-	private IIcon[] textures;
-	private IIcon[] tinSideIcon;
+	*/
+/*private IIcon[] textures;
+	private IIcon[] tinSideIcon;*//*
+
 	private final boolean isDoubleSlab;
 
-	public BlockSlabGC(String name, boolean par2, Material material)
+	public BlockSlabGC(String name, boolean isDouble, Material material)
 	{
-		super(par2, material);
-		this.isDoubleSlab = par2;
-		this.setBlockName(name);
+		super(material);
+		this.isDoubleSlab = isDouble;
+		this.setUnlocalizedName(name);
 		this.useNeighborBrightness = true;
 	}
 
-	@Override
+	*/
+/*@Override
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		this.textures = new IIcon[6];
@@ -85,7 +93,8 @@ public class BlockSlabGC extends BlockSlab
 			}
 		}
 		return this.textures[getTypeFromMeta(meta)];
-	}
+	}*//*
+
 
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -108,19 +117,19 @@ public class BlockSlabGC extends BlockSlab
 	}
 
 	@Override
-	public String func_150002_b(int meta)
+    public String getUnlocalizedName(int meta)
 	{
 		return new StringBuilder().append(woodTypes[this.getWoodType(meta)]).append("Slab").toString();
 	}
 
 	@Override
-	public int damageDropped(int meta)
+	public int damageDropped(IBlockState state)
 	{
-		return meta & 7;
+		return getMetaFromState(state) & 7;
 	}
 
 	@Override
-	public Item getItemDropped(int meta, Random par2Random, int par3)
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
 	{
 		if (this.isDoubleSlab)
 		{
@@ -143,9 +152,9 @@ public class BlockSlabGC extends BlockSlab
 	}
 
 	@Override
-	public float getBlockHardness(World world, int x, int y, int z)
+	public float getBlockHardness(World worldIn, BlockPos pos)
 	{
-		int meta = world.getBlockMetadata(x, y, z);
+		int meta = getMetaFromState(worldIn.getBlockState(pos));
 		float hardness = this.blockHardness;
 
 		switch (getTypeFromMeta(meta))
@@ -163,25 +172,25 @@ public class BlockSlabGC extends BlockSlab
 	}
 
 	@Override
-	public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
+	public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion)
 	{
-		return super.getBlockHardness(world, x, y, z);
+		return super.getBlockHardness(world, pos);
 	}
 
 	@Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos)
 	{
 		if (this == GCBlocks.slabGCDouble)
 		{
-			return new ItemStack(GCBlocks.slabGCHalf, 1, world.getBlockMetadata(x, y, z));
+			return new ItemStack(GCBlocks.slabGCHalf, 1, getMetaFromState(world.getBlockState(pos)));
 		}
-		return new ItemStack(GCBlocks.slabGCHalf, 1, world.getBlockMetadata(x, y, z) & 7);
+		return new ItemStack(GCBlocks.slabGCHalf, 1, getMetaFromState(world.getBlockState(pos)) & 7);
 	}
 
 	@Override
-	protected ItemStack createStackedBlock(int par1)
+	protected ItemStack createStackedBlock(IBlockState state)
 	{
-		return new ItemStack(this, 2, par1);
+		return new ItemStack(this, 2, getMetaFromState(state));
 	}
 
 	private int getWoodType(int meta)
@@ -199,4 +208,4 @@ public class BlockSlabGC extends BlockSlab
 	{
 		return meta & 7;
 	}
-}
+}*/

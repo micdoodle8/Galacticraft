@@ -1,32 +1,37 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.item;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelChest;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.model.IModelCustom;
+import net.minecraftforge.client.model.IModel;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemRendererTier3Rocket implements IItemRenderer
 {
     protected static final ResourceLocation chestTexture = new ResourceLocation("textures/entity/chest/normal.png");
 
-    protected IModelCustom modelSpaceship;
+    protected IModel modelSpaceship;
     protected final ModelChest chestModel = new ModelChest();
+    private IModel model = new ArrayList<IModel>();
 
-    protected static RenderItem drawItems = new RenderItem();
+    protected static RenderItem itemRenderer = new RenderItem(Minecraft.getMinecraft().getTextureManager(), new ModelManager(Minecraft.getMinecraft().getTextureMapBlocks()));
 
     protected ResourceLocation texture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/tier3rocket.png");
 
-    public ItemRendererTier3Rocket(IModelCustom model)
+    public ItemRendererTier3Rocket(IModel model)
     {
         this.modelSpaceship = model;
     }
@@ -38,6 +43,7 @@ public class ItemRendererTier3Rocket implements IItemRenderer
         this.transform(item, type);
 
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.texture);
+        this.modelSpaceship.bake()
         this.modelSpaceship.renderAll();
         GL11.glPopMatrix();
 

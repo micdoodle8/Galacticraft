@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -14,6 +15,7 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
@@ -28,7 +30,7 @@ public class GuiSlimeling extends GuiScreen
     private static final ResourceLocation slimelingPanelGui = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/slimelingPanel0.png");
     private final EntitySlimeling slimeling;
 
-    public static RenderItem drawItems = new RenderItem();
+    protected static RenderItem itemRenderer = new RenderItem(Minecraft.getMinecraft().getTextureManager(), new ModelManager(Minecraft.getMinecraft().getTextureMapBlocks()));
 
     public long timeBackspacePressed;
     public int cursorPulse;
@@ -274,7 +276,7 @@ public class GuiSlimeling extends GuiScreen
         this.fontRendererObj.drawString(str, dX + var5 + 55, dY + var6 + 46 + 13, 0x404040);
 
         RenderHelper.enableGUIStandardItemLighting();
-        GuiSlimeling.drawItems.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.renderEngine, new ItemStack(this.slimeling.getFavoriteFood()), dX + var5 + 55 + this.fontRendererObj.getStringWidth(str), dY + var6 + 41 + 14);
+        GuiSlimeling.itemRenderer.renderItemAndEffectIntoGUI(new ItemStack(this.slimeling.getFavoriteFood()), dX + var5 + 55 + this.fontRendererObj.getStringWidth(str), dY + var6 + 41 + 14);
 
         GL11.glPopMatrix();
         
@@ -305,9 +307,9 @@ public class GuiSlimeling extends GuiScreen
         slimeling.rotationYaw = (float) Math.atan(par4 / 40.0F) * 40.0F;
         slimeling.rotationPitch = -((float) Math.atan(par5 / 40.0F)) * 20.0F;
         slimeling.rotationYawHead = slimeling.rotationYaw;
-        GL11.glTranslatef(0.0F, slimeling.yOffset, 0.0F);
-        RenderManager.instance.playerViewY = 180.0F;
-        RenderManager.instance.renderEntityWithPosYaw(slimeling, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+        GL11.glTranslatef(0.0F, (float)slimeling.getYOffset(), 0.0F);
+        Minecraft.getMinecraft().getRenderManager().playerViewY = 180.0F;
+        Minecraft.getMinecraft().getRenderManager().renderEntityWithPosYaw(slimeling, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
         slimeling.renderYawOffset = f2;
         slimeling.rotationYaw = f3;
         slimeling.rotationPitch = f4;

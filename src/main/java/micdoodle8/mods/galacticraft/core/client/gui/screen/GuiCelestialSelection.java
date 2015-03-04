@@ -5,7 +5,6 @@ import com.google.common.collect.Maps;
 import com.ibm.icu.text.ArabicShaping;
 import com.ibm.icu.text.ArabicShapingException;
 import com.ibm.icu.text.Bidi;
-import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
@@ -23,11 +22,14 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -37,6 +39,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
+import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.*;
 
@@ -79,6 +82,7 @@ public class GuiCelestialSelection extends GuiScreen
     private boolean renamingSpaceStation;
     private String renamingString = "";
     private static final int MAX_SPACE_STATION_NAME_LENGTH = 32;
+    protected static RenderItem itemRenderer = new RenderItem(Minecraft.getMinecraft().getTextureManager(), new ModelManager(Minecraft.getMinecraft().getTextureMapBlocks()));
 
     public GuiCelestialSelection(boolean mapMode, List<CelestialBody> possibleBodies)
     {
@@ -331,15 +335,15 @@ public class GuiCelestialSelection extends GuiScreen
     }
 
     @Override
-    protected void keyTyped(char keyChar, int keyID)
+    protected void keyTyped(char typedChar, int keyCode) throws IOException
     {
         // Override and do nothing, so it isn't possible to exit the GUI
         if (this.mapMode)
         {
-            super.keyTyped(keyChar, keyID);
+            super.keyTyped(typedChar, keyCode);
         }
 
-        if (keyID == 1)
+        if (keyCode == 1)
         {
             if (this.selectedBody != null)
             {
@@ -349,7 +353,7 @@ public class GuiCelestialSelection extends GuiScreen
 
         if (this.renamingSpaceStation)
         {
-            if (keyID == Keyboard.KEY_BACK)
+            if (keyCode == Keyboard.KEY_BACK)
             {
                 if (this.renamingString != null && this.renamingString.length() > 0)
                 {
@@ -366,7 +370,7 @@ public class GuiCelestialSelection extends GuiScreen
                     }
                 }
             }
-            else if (keyChar == 22)
+            else if (keyCode == 22)
             {
                 String pastestring = GuiScreen.getClipboardString();
 
@@ -381,9 +385,9 @@ public class GuiCelestialSelection extends GuiScreen
                     this.renamingString = this.renamingString.substring(0, Math.min(String.valueOf(this.renamingString).length(), MAX_SPACE_STATION_NAME_LENGTH));
                 }
             }
-            else if (this.isValid(this.renamingString + keyChar))
+            else if (this.isValid(this.renamingString + keyCode))
             {
-                this.renamingString = this.renamingString + keyChar;
+                this.renamingString = this.renamingString + keyCode;
                 this.renamingString = this.renamingString.substring(0, Math.min(this.renamingString.length(), MAX_SPACE_STATION_NAME_LENGTH));
             }
 
@@ -391,7 +395,7 @@ public class GuiCelestialSelection extends GuiScreen
         }
 
         // Keyboard shortcut - teleport to dimension by pressing 'Enter'
-        if (keyID == Keyboard.KEY_RETURN)
+        if (keyCode == Keyboard.KEY_RETURN)
         {
             this.teleportToSelectedBody();
         }
@@ -537,9 +541,9 @@ public class GuiCelestialSelection extends GuiScreen
     }
 
     @Override
-    protected void mouseClicked(int x, int y, int button)
+    protected void mouseClicked(int x, int y, int mouseButton) throws IOException
     {
-        super.mouseClicked(x, y, button);
+        super.mouseClicked(x, y, mouseButton);
         boolean clickHandled = false;
 
         if (this.selectedBody != null && x > BORDER_WIDTH + BORDER_EDGE_WIDTH && x < BORDER_WIDTH + BORDER_EDGE_WIDTH + 88 && y > BORDER_WIDTH + BORDER_EDGE_WIDTH && y < BORDER_WIDTH + BORDER_EDGE_WIDTH + 13)
@@ -1569,7 +1573,7 @@ public class GuiCelestialSelection extends GuiScreen
                             {
                                 int amount = getAmountInInventory((ItemStack) next);
                                 RenderHelper.enableGUIStandardItemLighting();
-                                GuiCelestialSelection.itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.renderEngine, ((ItemStack) next).copy(), xPos, yPos);
+                                GuiCelestialSelection.itemRenderer.renderItemAndEffectIntoGUI(((ItemStack) next).copy(), xPos, yPos);
                                 RenderHelper.disableStandardItemLighting();
                                 GL11.glEnable(GL11.GL_BLEND);
 
@@ -1634,7 +1638,7 @@ public class GuiCelestialSelection extends GuiScreen
 
                                 RenderHelper.enableGUIStandardItemLighting();
                                 ItemStack stack = items.get((this.ticksSinceMenuOpen / 20) % items.size()).copy();
-                                GuiCelestialSelection.itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.renderEngine, stack, xPos, yPos);
+                                GuiCelestialSelection.itemRenderer.renderItemAndEffectIntoGUI(stack, xPos, yPos);
                                 RenderHelper.disableStandardItemLighting();
                                 GL11.glEnable(GL11.GL_BLEND);
 
@@ -1987,16 +1991,16 @@ public class GuiCelestialSelection extends GuiScreen
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         float texMod = 1 / (float) texSize;
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
+        Tessellator tessellator = Tessellator.getInstance();
+        tessellator.getWorldRenderer().startDrawingQuads();
         int height0 = invertY ? 0 : vHeight;
         int height1 = invertY ? vHeight : 0;
         int width0 = invertX ? uWidth : 0;
         int width1 = invertX ? 0 : uWidth;
-        tessellator.addVertexWithUV(x, y + height, this.zLevel, (u + width0) * texMod, (v + height0) * texMod);
-        tessellator.addVertexWithUV(x + width, y + height, this.zLevel, (u + width1) * texMod, (v + height0) * texMod);
-        tessellator.addVertexWithUV(x + width, y, this.zLevel, (u + width1) * texMod, (v + height1) * texMod);
-        tessellator.addVertexWithUV(x, y, this.zLevel, (u + width0) * texMod, (v + height1) * texMod);
+        tessellator.getWorldRenderer().addVertexWithUV(x, y + height, this.zLevel, (u + width0) * texMod, (v + height0) * texMod);
+        tessellator.getWorldRenderer().addVertexWithUV(x + width, y + height, this.zLevel, (u + width1) * texMod, (v + height0) * texMod);
+        tessellator.getWorldRenderer().addVertexWithUV(x + width, y, this.zLevel, (u + width1) * texMod, (v + height1) * texMod);
+        tessellator.getWorldRenderer().addVertexWithUV(x, y, this.zLevel, (u + width0) * texMod, (v + height1) * texMod);
         tessellator.draw();
     }
 
@@ -2007,14 +2011,14 @@ public class GuiCelestialSelection extends GuiScreen
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        final Tessellator var3 = Tessellator.instance;
+        final Tessellator tessellator = Tessellator.getInstance();
         GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);
-        var3.startDrawingQuads();
-        var3.addVertex(0.0D, height, -90.0D);
-        var3.addVertex(width, height, -90.0D);
-        var3.addVertex(width, 0.0D, -90.0D);
-        var3.addVertex(0.0D, 0.0D, -90.0D);
-        var3.draw();
+        tessellator.getWorldRenderer().startDrawingQuads();
+        tessellator.getWorldRenderer().addVertex(0.0D, height, -90.0D);
+        tessellator.getWorldRenderer().addVertex(width, height, -90.0D);
+        tessellator.getWorldRenderer().addVertex(width, 0.0D, -90.0D);
+        tessellator.getWorldRenderer().addVertex(0.0D, 0.0D, -90.0D);
+        tessellator.draw();
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

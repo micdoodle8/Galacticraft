@@ -1,3 +1,4 @@
+/*
 package micdoodle8.mods.galacticraft.core.nei;
 
 import codechicken.nei.PositionedStack;
@@ -302,3 +303,4 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         }
     }
 }
+*/

@@ -1,19 +1,20 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiver
 {
     // The the position of the main block
     @NetworkedField(targetSide = Side.CLIENT)
-    public BlockVec3 mainBlockPosition;
+    public BlockPos mainBlockPosition;
 
     public void setMainBlock(BlockVec3 mainBlock)
     {
@@ -21,7 +22,7 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
 
         if (!this.worldObj.isRemote)
         {
-            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+            this.worldObj.markBlockForUpdate(getPos());
         }
     }
 
@@ -39,7 +40,7 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
         }
     }
 
-    public boolean onBlockActivated(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, EntityPlayer par5EntityPlayer)
     {
         if (this.mainBlockPosition != null)
         {

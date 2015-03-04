@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.client.Minecraft;
@@ -96,7 +95,7 @@ public class SkyProviderOrbit extends IRenderHandler
         }
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        final Vec3 var2 = this.minecraft.theWorld.getSkyColor(this.minecraft.renderViewEntity, partialTicks);
+        final Vec3 var2 = this.minecraft.theWorld.getSkyColor(this.minecraft.getRenderViewEntity(), partialTicks);
         float var3 = (float) var2.xCoord;
         float var4 = (float) var2.yCoord;
         float var5 = (float) var2.zCoord;

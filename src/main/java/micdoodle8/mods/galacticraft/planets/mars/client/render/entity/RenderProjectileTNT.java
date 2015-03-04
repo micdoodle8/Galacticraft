@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.entity;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityProjectileTNT;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;

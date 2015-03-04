@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.items.ItemSensorGlasses;
@@ -11,10 +8,14 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelZombie;
 import net.minecraft.client.renderer.entity.RenderBiped;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -25,9 +26,9 @@ public class RenderEvolvedZombie extends RenderBiped
 
     private final ModelBase model = new ModelEvolvedZombie(0.2F);
 
-    public RenderEvolvedZombie()
+    public RenderEvolvedZombie(RenderManager renderManager)
     {
-        super(new ModelEvolvedZombie(), 0.5F);
+        super(renderManager, new ModelEvolvedZombie(), 0.5F);
     }
 
     @Override

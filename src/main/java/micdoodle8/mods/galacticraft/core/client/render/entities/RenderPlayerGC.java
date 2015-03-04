@@ -1,3 +1,4 @@
+/*
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -160,3 +161,4 @@ public class RenderPlayerGC extends RenderPlayer
         }
     }
 }
+*/
