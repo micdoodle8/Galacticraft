@@ -432,24 +432,6 @@ public class GuiCelestialSelection extends GuiScreen
     {
         this.ticksSinceMenuOpen++;
 
-        if (Mouse.hasWheel())
-        {
-            float wheel = Mouse.getDWheel() / (this.selectedBody == null ? 500.0F : 250.0F);
-
-            if (wheel != 0)
-            {
-                if (this.selectedBody == null || (this.selectionState == EnumSelectionState.PREVIEW && this.selectionCount < 2))
-                {
-                	//Minimum zoom increased from 0.55F to 1F to allow zoom out to see other solar systems
-                	this.zoom = Math.min(Math.max(this.zoom + wheel, -1F), 3);
-                }
-                else
-                {
-                    this.planetZoom = Math.min(Math.max(this.planetZoom + wheel, -4.9F), 5);
-                }
-            }
-        }
-
         for (CelestialBody e : this.celestialBodyTicks.keySet())
         {
 //			if (!(e instanceof Planet && e == this.selectedBody) && !(e instanceof Planet && this.selectedBody instanceof IChildBody && GalaxyRegistry.getIChildBodysForPlanet((Planet) e).contains(this.selectedBody)))
@@ -854,6 +836,24 @@ public class GuiCelestialSelection extends GuiScreen
     @Override
     public void drawScreen(int mousePosX, int mousePosY, float partialTicks)
     {
+        if (Mouse.hasWheel())
+        {
+            float wheel = Mouse.getDWheel() / (this.selectedBody == null ? 500.0F : 250.0F);
+
+            if (wheel != 0)
+            {
+                if (this.selectedBody == null || (this.selectionState == EnumSelectionState.PREVIEW && this.selectionCount < 2))
+                {
+                	//Minimum zoom increased from 0.55F to 1F to allow zoom out to see other solar systems
+                	this.zoom = Math.min(Math.max(this.zoom + wheel, -1F), 3);
+                }
+                else
+                {
+                    this.planetZoom = Math.min(Math.max(this.planetZoom + wheel, -4.9F), 5);
+                }
+            }
+        }
+
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
 
