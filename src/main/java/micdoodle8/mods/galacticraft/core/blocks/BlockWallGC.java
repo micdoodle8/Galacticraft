@@ -1,90 +1,45 @@
-/*
 package micdoodle8.mods.galacticraft.core.blocks;
+
+import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockWall;
+import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.List;
-
-public class BlockWallGC extends BlockWall
+public class BlockWallGC extends Block //Don't extends to BlockWall
 {
-	private IIcon[] wallBlockIcon;
-	private IIcon[] tinSideIcon;
+	public static PropertyBool UP = PropertyBool.create("up");
+	public static PropertyBool NORTH = PropertyBool.create("north");
+	public static PropertyBool EAST = PropertyBool.create("east");
+	public static PropertyBool SOUTH = PropertyBool.create("south");
+	public static PropertyBool WEST = PropertyBool.create("west");
+	public static PropertyEnum VARIANT = PropertyEnum.create("variant", BlockType.class);
 
-	public BlockWallGC(String name, Block par2Block)
+	public BlockWallGC(String name)
 	{
-		super(par2Block);
+		super(Material.rock);
+		this.setHardness(1.5F);
+		this.setResistance(2.5F);
+		this.setDefaultState(this.getDefaultState().withProperty(UP, Boolean.valueOf(false)).withProperty(NORTH, Boolean.valueOf(false)).withProperty(EAST, Boolean.valueOf(false)).withProperty(SOUTH, Boolean.valueOf(false)).withProperty(WEST, Boolean.valueOf(false)).withProperty(VARIANT, BlockType.tin_1_wall));
 		this.setUnlocalizedName(name);
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister)
-	{
-		this.wallBlockIcon = new IIcon[6];
-		this.wallBlockIcon[0] = par1IconRegister.registerIcon("galacticraftcore:deco_aluminium_4");
-		this.wallBlockIcon[1] = par1IconRegister.registerIcon("galacticraftcore:deco_aluminium_2");
-		this.wallBlockIcon[2] = par1IconRegister.registerIcon("galacticraftmoon:bottom");
-		this.wallBlockIcon[3] = par1IconRegister.registerIcon("galacticraftmoon:brick");
-
-		if (GalacticraftCore.isPlanetsLoaded)
-		{
-			try
-			{
-				Class<?> c = Class.forName("micdoodle8.mods.galacticraft.planets.mars.MarsModule");
-				String texturePrefix = (String) c.getField("TEXTURE_PREFIX").get(null);
-				this.wallBlockIcon[4] = par1IconRegister.registerIcon(texturePrefix + "cobblestone");
-				this.wallBlockIcon[5] = par1IconRegister.registerIcon(texturePrefix + "brick");
-			}
-			catch (Exception e)
-			{
-				this.wallBlockIcon[4] = this.wallBlockIcon[3];
-				this.wallBlockIcon[5] = this.wallBlockIcon[3];
-				e.printStackTrace();
-			}
-		}
-		else
-		{
-			this.wallBlockIcon[4] = this.wallBlockIcon[3];
-			this.wallBlockIcon[5] = this.wallBlockIcon[3];
-		}
-
-		this.tinSideIcon = new IIcon[1];
-		this.tinSideIcon[0] = par1IconRegister.registerIcon("galacticraftcore:deco_aluminium_1");
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public IIcon getIcon(int side, int meta)
-	{
-		if (meta == 1)
-		{
-			switch (side)
-			{
-			case 0:
-				return this.wallBlockIcon[0]; //BOTTOM
-			case 1:
-				return this.wallBlockIcon[1]; //TOP
-			case 2:
-				return this.tinSideIcon[0]; //Z-
-			case 3:
-				return this.tinSideIcon[0]; //Z+
-			case 4:
-				return this.tinSideIcon[0]; //X-
-			case 5:
-				return this.tinSideIcon[0]; //X+
-			}
-		}
-		return this.wallBlockIcon[meta];
 	}
 
 	@Override
@@ -94,7 +49,7 @@ public class BlockWallGC extends BlockWall
 	}
 
 	@Override
-	public boolean getBlocksMovement(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+	public boolean isPassable(IBlockAccess world, BlockPos pos)
 	{
 		return false;
 	}
@@ -106,18 +61,18 @@ public class BlockWallGC extends BlockWall
 	}
 
 	@Override
-	public boolean canPlaceTorchOnTop(World world, int x, int y, int z)
+	public boolean canPlaceTorchOnTop(IBlockAccess world, BlockPos pos)
 	{
 		return true;
 	}
 
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
+	public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos)
 	{
-		boolean flag = this.canConnectWallTo(par1IBlockAccess, par2, par3, par4 - 1);
-		boolean flag1 = this.canConnectWallTo(par1IBlockAccess, par2, par3, par4 + 1);
-		boolean flag2 = this.canConnectWallTo(par1IBlockAccess, par2 - 1, par3, par4);
-		boolean flag3 = this.canConnectWallTo(par1IBlockAccess, par2 + 1, par3, par4);
+		boolean flag = this.canConnectTo(world, pos.north());
+		boolean flag1 = this.canConnectTo(world, pos.south());
+		boolean flag2 = this.canConnectTo(world, pos.west());
+		boolean flag3 = this.canConnectTo(world, pos.east());
 		float f = 0.25F;
 		float f1 = 0.75F;
 		float f2 = 0.25F;
@@ -128,17 +83,14 @@ public class BlockWallGC extends BlockWall
 		{
 			f2 = 0.0F;
 		}
-
 		if (flag1)
 		{
 			f3 = 1.0F;
 		}
-
 		if (flag2)
 		{
 			f = 0.0F;
 		}
-
 		if (flag3)
 		{
 			f1 = 1.0F;
@@ -160,42 +112,35 @@ public class BlockWallGC extends BlockWall
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+	public AxisAlignedBB getCollisionBoundingBox(World world, BlockPos pos, IBlockState state)
 	{
-		this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
+		this.setBlockBoundsBasedOnState(world, pos);
 		this.maxY = 1.5D;
-		return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
+		return super.getCollisionBoundingBox(world, pos, state);
 	}
 
-	@Override
-	public boolean canConnectWallTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+	private boolean canConnectTo(IBlockAccess world, BlockPos pos)
 	{
-		Block block = par1IBlockAccess.getBlock(par2, par3, par4);
-
-		if (block != this && block != Blocks.fence_gate)
-		{
-			return block != null && block.getMaterial().isOpaque() && block.renderAsNormalBlock() ? block.getMaterial() != Material.gourd : false;
-		}
-		return true;
+		Block block = world.getBlockState(pos).getBlock();
+		return block == Blocks.barrier ? false : block != this && !(block instanceof BlockFenceGate) ? block.getMaterial().isOpaque() && block.isFullCube() ? block.getMaterial() != Material.gourd : false : true;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@SideOnly(Side.CLIENT)
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+	@SideOnly(Side.CLIENT)
+	public void getSubBlocks(Item item, CreativeTabs creativeTabs, List list)
 	{
 		if (GalacticraftCore.isPlanetsLoaded)
 		{
-			for (int var4 = 0; var4 < 6; ++var4)
+			for (int i = 0; i < 6; ++i)
 			{
-				par3List.add(new ItemStack(par1, 1, var4));
+				list.add(new ItemStack(this, 1, i));
 			}
 		}
 		else
 		{
-			for (int var4 = 0; var4 < 4; ++var4)
+			for (int i = 0; i < 4; ++i)
 			{
-				par3List.add(new ItemStack(par1, 1, var4));
+				list.add(new ItemStack(this, 1, i));
 			}
 		}
 	}
@@ -207,15 +152,61 @@ public class BlockWallGC extends BlockWall
 	}
 
 	@Override
-	public int damageDropped(int par1)
+	public int damageDropped(IBlockState state)
 	{
-		return par1;
+		return this.getMetaFromState(state);
 	}
 
-	@SideOnly(Side.CLIENT)
 	@Override
-	public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
+	@SideOnly(Side.CLIENT)
+	public boolean shouldSideBeRendered(IBlockAccess world, BlockPos pos, EnumFacing side)
 	{
-		return par5 == 0 ? super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5) : true;
+		return side == EnumFacing.DOWN ? super.shouldSideBeRendered(world, pos, side) : true;
 	}
-}*/
+
+	@Override
+	public IBlockState getStateFromMeta(int meta)
+	{
+		return this.getDefaultState().withProperty(VARIANT, BlockType.values()[meta]);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state)
+	{
+		return ((BlockType)state.getValue(VARIANT)).ordinal();
+	}
+
+	@Override
+	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
+	{
+		return state.withProperty(UP, Boolean.valueOf(this.canConnectTo(world, pos.up()))).withProperty(NORTH, Boolean.valueOf(this.canConnectTo(world, pos.north()))).withProperty(EAST, Boolean.valueOf(this.canConnectTo(world, pos.east()))).withProperty(SOUTH, Boolean.valueOf(this.canConnectTo(world, pos.south()))).withProperty(WEST, Boolean.valueOf(this.canConnectTo(world, pos.west())));
+	}
+
+	@Override
+	protected BlockState createBlockState()
+	{
+		return new BlockState(this, new IProperty[] {UP, NORTH, EAST, WEST, SOUTH, VARIANT});
+	}
+
+	public static enum BlockType implements IStringSerializable
+	{
+		tin_1_wall,
+		tin_2_wall,
+		moon_stone_wall,
+		moon_dungeon_brick_wall,
+		mars_cobblestone_wall,
+		mars_dungeon_brick_wall;
+
+		@Override
+		public String toString()
+		{
+			return this.getName();
+		}
+
+		@Override
+		public String getName()
+		{
+			return this.name();
+		}
+	}
+}

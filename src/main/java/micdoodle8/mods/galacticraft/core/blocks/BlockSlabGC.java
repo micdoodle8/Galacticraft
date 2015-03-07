@@ -1,110 +1,54 @@
-/*
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import java.util.List;
+import java.util.Random;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
-import net.minecraft.block.BlockStoneSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
-
-import java.util.List;
-import java.util.Random;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockSlabGC extends BlockSlab
 {
-	private static final String[] woodTypes = new String[] {
-		"tin",
-		"tin",
-		"moon",
-		"moonBricks",
-		"mars",
-		"marsBricks"
-	};
+	public static PropertyEnum VARIANT = PropertyEnum.create("variant", BlockType.class);
 
-	*/
-/*private IIcon[] textures;
-	private IIcon[] tinSideIcon;*//*
-
-	private final boolean isDoubleSlab;
-
-	public BlockSlabGC(String name, boolean isDouble, Material material)
+	public BlockSlabGC(String name, Material material)
 	{
 		super(material);
-		this.isDoubleSlab = isDouble;
 		this.setUnlocalizedName(name);
 		this.useNeighborBrightness = true;
 	}
 
-	*/
-/*@Override
-	public void registerBlockIcons(IIconRegister par1IconRegister)
+	public BlockSlabGC(Material material)
 	{
-		this.textures = new IIcon[6];
-		this.textures[0] = par1IconRegister.registerIcon("galacticraftcore:deco_aluminium_4");
-		this.textures[1] = par1IconRegister.registerIcon("galacticraftcore:deco_aluminium_2");
-		this.textures[2] = par1IconRegister.registerIcon("galacticraftmoon:bottom");
-		this.textures[3] = par1IconRegister.registerIcon("galacticraftmoon:brick");
-
-		if (GalacticraftCore.isPlanetsLoaded)
-		{
-			this.textures[4] = par1IconRegister.registerIcon("galacticraftmars:cobblestone");
-			this.textures[5] = par1IconRegister.registerIcon("galacticraftmars:brick");
-		}
-		else
-		{
-			this.textures[4] = this.textures[3];
-			this.textures[5] = this.textures[3];
-		}
-
-		this.tinSideIcon = new IIcon[1];
-		this.tinSideIcon[0] = par1IconRegister.registerIcon("galacticraftcore:deco_aluminium_1");
+		super(material);
 	}
 
 	@Override
-	public IIcon getIcon(int side, int meta)
-	{
-		if (meta == 1 || meta == 9)
-		{
-			switch (side)
-			{
-			case 0:
-				return this.textures[0]; //BOTTOM
-			case 1:
-				return this.textures[1]; //TOP
-			case 2:
-				return this.tinSideIcon[0]; //Z-
-			case 3:
-				return this.tinSideIcon[0]; //Z+
-			case 4:
-				return this.tinSideIcon[0]; //X-
-			case 5:
-				return this.tinSideIcon[0]; //X+
-			}
-		}
-		return this.textures[getTypeFromMeta(meta)];
-	}*//*
-
-
-	@Override
+	@SideOnly(Side.CLIENT)
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void getSubBlocks(Item block, CreativeTabs creativeTabs, List list)
+	public void getSubBlocks(Item item, CreativeTabs creativeTabs, List list)
 	{
 		int max = 0;
 
 		if (GalacticraftCore.isPlanetsLoaded)
 		{
-			max = 6;//Number of slab types with Planets loaded 
+			max = 6;//Number of slab types with Planets loaded
 		}
 		else
 		{
@@ -112,63 +56,46 @@ public class BlockSlabGC extends BlockSlab
 		}
 		for (int i = 0; i < max; ++i)
 		{
-			list.add(new ItemStack(block, 1, i));
+			list.add(new ItemStack(this, 1, i));
 		}
-	}
-
-	@Override
-    public String getUnlocalizedName(int meta)
-	{
-		return new StringBuilder().append(woodTypes[this.getWoodType(meta)]).append("Slab").toString();
 	}
 
 	@Override
 	public int damageDropped(IBlockState state)
 	{
-		return getMetaFromState(state) & 7;
+		return this.getMetaFromState(state) & 7;
 	}
 
 	@Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+	public Item getItemDropped(IBlockState state, Random rand, int fortune)
 	{
-		if (this.isDoubleSlab)
-		{
-			if (this == GCBlocks.slabGCDouble)
-			{
-				return Item.getItemFromBlock(GCBlocks.slabGCHalf);
-			}
-		}
 		return Item.getItemFromBlock(this);
 	}
 
 	@Override
 	public CreativeTabs getCreativeTabToDisplayOn()
 	{
-		if (!this.isDoubleSlab)
-		{
-			return GalacticraftCore.galacticraftBlocksTab;
-		}
-		return null;
+		return GalacticraftCore.galacticraftBlocksTab;
 	}
 
 	@Override
-	public float getBlockHardness(World worldIn, BlockPos pos)
+	public float getBlockHardness(World world, BlockPos pos)
 	{
-		int meta = getMetaFromState(worldIn.getBlockState(pos));
-		float hardness = this.blockHardness;
+		Block block = world.getBlockState(pos).getBlock();
 
-		switch (getTypeFromMeta(meta))
+		if (!(block instanceof BlockSlabGC)) //This will prevent the crash when harvest block
+		{
+			return 0;
+		}
+
+		switch (this.getMetaFromState(world.getBlockState(pos)))
 		{
 		case 2:
 		case 3:
-			hardness = 1.5F;
-			break;
+			return 1.5F;
 		default:
-			hardness = 2.0F;
-			break;
+			return 2.0F;
 		}
-
-		return hardness;
 	}
 
 	@Override
@@ -178,34 +105,119 @@ public class BlockSlabGC extends BlockSlab
 	}
 
 	@Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos)
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos)
 	{
-		if (this == GCBlocks.slabGCDouble)
-		{
-			return new ItemStack(GCBlocks.slabGCHalf, 1, getMetaFromState(world.getBlockState(pos)));
-		}
-		return new ItemStack(GCBlocks.slabGCHalf, 1, getMetaFromState(world.getBlockState(pos)) & 7);
+		return new ItemStack(this, 1, this.getMetaFromState(world.getBlockState(pos)) & 7);
 	}
 
 	@Override
-	protected ItemStack createStackedBlock(IBlockState state)
+	public String getUnlocalizedName(int meta)
 	{
-		return new ItemStack(this, 2, getMetaFromState(state));
+		return super.getUnlocalizedName();
 	}
 
-	private int getWoodType(int meta)
+	@Override
+	public boolean isDouble()
 	{
-		meta = getTypeFromMeta(meta);
+		return false;
+	}
 
-		if (meta < woodTypes.length)
+	@Override
+	public IProperty getVariantProperty()
+	{
+		return VARIANT;
+	}
+
+	@Override
+	public Object getVariant(ItemStack itemStack)
+	{
+		return BlockType.byMetadata(itemStack.getMetadata() & 7);
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta)
+	{
+		IBlockState state = this.getDefaultState().withProperty(VARIANT, BlockType.byMetadata(meta & 7));
+
+		if (!this.isDouble())
 		{
-			return meta;
+			state = state.withProperty(HALF, (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
 		}
-		return 0;
+		return state;
 	}
 
-	private static int getTypeFromMeta(int meta)
+	@Override
+	public int getMetaFromState(IBlockState state)
 	{
-		return meta & 7;
+		byte b0 = 0;
+		int i = b0 | ((BlockType)state.getValue(VARIANT)).getMetadata();
+
+		if (!this.isDouble() && state.getValue(HALF) == EnumBlockHalf.TOP)
+		{
+			i |= 8;
+		}
+		return i;
 	}
-}*/
+
+	@Override
+	protected BlockState createBlockState()
+	{
+		return this.isDouble() ? new BlockState(this, new IProperty[] {VARIANT}): new BlockState(this, new IProperty[] {HALF, VARIANT});
+	}
+
+	public static enum BlockType implements IStringSerializable
+	{
+		tin_slab_1(0),
+		tin_slab_2(1),
+		moon_stone_slab(2),
+		moon_dungeon_brick_slab(3),
+		mars_cobblestone_slab(4),
+		mars_dungeon_slab(5);
+
+		private int meta;
+		private static BlockType[] META_LOOKUP = new BlockType[values().length];
+
+		private BlockType(int meta)
+		{
+			this.meta = meta;
+		}
+
+		@Override
+		public String toString()
+		{
+			return this.getName();
+		}
+
+		@Override
+		public String getName()
+		{
+			return this.name();
+		}
+
+		public int getMetadata()
+		{
+			return this.meta;
+		}
+
+		public static BlockType byMetadata(int meta)
+		{
+			if (meta < 0 || meta >= META_LOOKUP.length)
+			{
+				meta = 0;
+			}
+			return META_LOOKUP[meta];
+		}
+
+		static
+		{
+			BlockType[] var0 = values();
+			int var1 = var0.length;
+
+			for (int var2 = 0; var2 < var1; ++var2)
+			{
+				BlockType var3 = var0[var2];
+				META_LOOKUP[var3.getMetadata()] = var3;
+			}
+		}
+	}
+}
