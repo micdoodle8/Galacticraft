@@ -58,6 +58,7 @@ public class ConfigManagerCore
     public static boolean disableLander;
     public static double dungeonBossHealthMod;
     public static boolean hardMode;
+    public static boolean quickMode;
     public static int suffocationCooldown;
     public static int suffocationDamage;
     public static int[] externalOilGen;
@@ -376,6 +377,12 @@ public class ConfigManagerCore
             hardMode = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Quick Game Mode", false);
+            prop.comment = "Set this to true for less metal use in Galacticraft recipes (makes the game easier).";
+            prop.setLanguageKey("gc.configgui.quickMode");
+            quickMode = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Enable Sealed edge checks", true);
             prop.comment = "If this is enabled, areas sealed by Oxygen Sealers will run a seal check when the player breaks or places a block (or on block updates).  This should be enabled for a 100% accurate sealed status, but can be disabled on servers for performance reasons.";
             prop.setLanguageKey("gc.configgui.enableSealerEdgeChecks");
@@ -549,7 +556,9 @@ public class ConfigManagerCore
     public static List<Object> getServerConfigOverride()
     {
     	ArrayList<Object> returnList = new ArrayList();
-    	returnList.add(ConfigManagerCore.hardMode);
+    	int modeFlags = ConfigManagerCore.hardMode ? 1 : 0;
+    	modeFlags += ConfigManagerCore.quickMode ? 2 : 0;
+    	returnList.add(modeFlags);
     	returnList.add(ConfigManagerCore.dungeonBossHealthMod);
     	returnList.add(ConfigManagerCore.suffocationDamage);
     	returnList.add(ConfigManagerCore.suffocationCooldown);
@@ -565,7 +574,9 @@ public class ConfigManagerCore
     @SideOnly(Side.CLIENT)
     public static void setConfigOverride(List<Object> configs)
     {
-    	ConfigManagerCore.hardMode = (Boolean) configs.get(0);
+    	int modeFlag = (Integer) configs.get(0);
+    	ConfigManagerCore.hardMode = (modeFlag & 1) > 0;
+    	ConfigManagerCore.quickMode = (modeFlag & 2) > 0;
     	ConfigManagerCore.dungeonBossHealthMod = (Double) configs.get(1);
     	ConfigManagerCore.suffocationDamage = (Integer) configs.get(2);
     	ConfigManagerCore.suffocationCooldown = (Integer) configs.get(3);

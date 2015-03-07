@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -257,7 +258,7 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         input1.put(2, new PositionedStack(new ItemStack(GCItems.basicItem, 1, 2), 69, 69));
         input1.put(3, new PositionedStack(new ItemStack(Items.redstone), 117, 51));
         input1.put(4, new PositionedStack(new ItemStack(Blocks.redstone_torch), 140, 25));
-        this.registerCircuitFabricatorRecipe(input1, new PositionedStack(new ItemStack(GCItems.basicItem, 3, 13), 147, 91));
+        this.registerCircuitFabricatorRecipe(input1, new PositionedStack(new ItemStack(GCItems.basicItem, ConfigManagerCore.quickMode ? 5 : 3, 13), 147, 91));
 
         HashMap<Integer, PositionedStack> input2 = new HashMap<Integer, PositionedStack>(input1);
         input2.put(4, new PositionedStack(new ItemStack(Items.dye, 1, 4), 140, 25));
@@ -265,7 +266,7 @@ public class NEIGalacticraftConfig implements IConfigureNEI
 
         input2 = new HashMap<Integer, PositionedStack>(input1);
         input2.put(4, new PositionedStack(new ItemStack(Items.repeater), 140, 25));
-        this.registerCircuitFabricatorRecipe(input2, new PositionedStack(new ItemStack(GCItems.basicItem, 1, 14), 147, 91));
+        this.registerCircuitFabricatorRecipe(input2, new PositionedStack(new ItemStack(GCItems.basicItem, ConfigManagerCore.quickMode ? 2 : 1, 14), 147, 91));
     }
 
     private void addIngotCompressorRecipes()
