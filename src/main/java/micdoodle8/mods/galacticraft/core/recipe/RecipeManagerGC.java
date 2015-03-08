@@ -492,12 +492,16 @@ public class RecipeManagerGC
             CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, configOutput, 10), "ingotBronze", "ingotBronze");
         }
 
+        boolean steelDone = false;
         if (OreDictionary.getOres("ingotSteel").size() > 0)
         {
             CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, configOutput, 9), "ingotSteel", "ingotSteel");
+            steelDone = true;
         }
-
-        CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 9), Items.coal, new ItemStack(GCItems.basicItem, 1, 11), Items.coal);
+        
+        if (!ConfigManagerCore.hardMode || !steelDone)
+        	CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 9), Items.coal, new ItemStack(GCItems.basicItem, 1, 11), Items.coal);
+        
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 10), new ItemStack(GCItems.basicItem, 1, 6), new ItemStack(GCItems.basicItem, 1, 7));
 
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, configOutput, 11), Items.iron_ingot, Items.iron_ingot);

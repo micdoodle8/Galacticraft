@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
@@ -51,7 +52,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
 
     public TileEntityMethaneSynthesizer()
     {
-        this.storage.setMaxExtract(30);
+        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 60 : 30);
         this.setTierGC(2);
     }
 

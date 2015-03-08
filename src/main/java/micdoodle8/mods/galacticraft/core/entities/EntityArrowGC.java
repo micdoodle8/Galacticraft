@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -42,7 +43,7 @@ public class EntityArrowGC extends Entity
     public Entity shootingEntity;
     private int ticksInGround;
     private int ticksInAir = 0;
-    private double damage = 2.0D;
+    private double damage = ConfigManagerCore.hardMode ? 3.5D : 2.0D;
 
     /**
      * The amount of knockback an arrow applies when it hits a mob.

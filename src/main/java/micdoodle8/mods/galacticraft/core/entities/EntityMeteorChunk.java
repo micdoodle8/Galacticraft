@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.entities;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -275,7 +276,7 @@ public class EntityMeteorChunk extends Entity implements IProjectile
 
             float f2;
             float f3;
-            double damage = 1.6D;
+            double damage = ConfigManagerCore.hardMode ? 3.2D : 1.6D;
 
             if (movingobjectposition != null)
             {

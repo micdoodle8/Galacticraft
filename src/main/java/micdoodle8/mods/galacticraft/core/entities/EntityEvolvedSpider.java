@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySpider;
@@ -22,7 +23,8 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(22.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1.0F);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(ConfigManagerCore.hardMode ? 1.3F : 1.0F);
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(ConfigManagerCore.hardMode ? 4.0D : 2.0D);
     }
 
     @Override

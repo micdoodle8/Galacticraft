@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
@@ -69,7 +70,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     public TileEntityShortRangeTelepad()
     {
         super();
-        this.storage.setMaxExtract(50);
+        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 115 : 50);
     }
 
     public int canTeleportHere()

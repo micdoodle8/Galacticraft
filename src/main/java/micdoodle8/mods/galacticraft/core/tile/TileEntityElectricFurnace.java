@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
@@ -51,13 +52,13 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     {
         if (tier == 1)
         {
-            this.storage.setMaxExtract(45);
+            this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 60 : 45);
             return;
         }
 
         //tier == 2
         this.storage.setCapacity(25000);
-        this.storage.setMaxExtract(60);
+        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 60);
         this.processTimeRequired = 100;
         this.setTierGC(2);
         this.initialised = true;
@@ -78,7 +79,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
             else if (metadata >= 8)
             {
                 this.storage.setCapacity(25000);
-                this.storage.setMaxExtract(60);
+                this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 60);
                 this.processTimeRequired = 100;
                 this.setTierGC(2);
             }
@@ -94,7 +95,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
                 if (this.hasEnoughEnergyToRun)
                 {
                     //50% extra speed boost for Tier 2 machine if powered by Tier 2 power
-                    if (this.tierGC == 2) this.processTimeRequired = 100 * 2 / (1 + this.poweredByTierGC);
+                    if (this.tierGC == 2) this.processTimeRequired = 200 / (1 + this.poweredByTierGC);
 
                     if (this.processTicks == 0)
                     {

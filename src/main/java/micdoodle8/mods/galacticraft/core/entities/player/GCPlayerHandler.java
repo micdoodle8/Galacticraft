@@ -14,7 +14,6 @@ import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -600,23 +599,29 @@ public class GCPlayerHandler
                 playerStats.oxygenSetupValid = !((!OxygenUtil.hasValidOxygenSetup(player) || airEmpty) && !OxygenUtil.isAABBInBreathableAirBlock(player));
             }
 
-            if (!playerStats.oxygenSetupValid && !player.worldObj.isRemote && player.isEntityAlive())
+            if (!player.worldObj.isRemote && player.isEntityAlive())
             {
-                if (playerStats.damageCounter == 0)
-                {
-                    playerStats.damageCounter = ConfigManagerCore.suffocationCooldown;
+            	if (!playerStats.oxygenSetupValid)
+            	{
+            		if (playerStats.damageCounter == 0)
+            		{
+            			playerStats.damageCounter = ConfigManagerCore.suffocationCooldown;
 
-                    GCCoreOxygenSuffocationEvent suffocationEvent = new GCCoreOxygenSuffocationEvent.Pre(player);
-                    MinecraftForge.EVENT_BUS.post(suffocationEvent);
+            			GCCoreOxygenSuffocationEvent suffocationEvent = new GCCoreOxygenSuffocationEvent.Pre(player);
+            			MinecraftForge.EVENT_BUS.post(suffocationEvent);
 
-                    if (!suffocationEvent.isCanceled())
-                    {
-                        player.attackEntityFrom(DamageSourceGC.oxygenSuffocation, ConfigManagerCore.suffocationDamage);
+            			if (!suffocationEvent.isCanceled())
+            			{
+            				player.attackEntityFrom(DamageSourceGC.oxygenSuffocation, ConfigManagerCore.suffocationDamage * (2 + playerStats.incrementalDamage) / 2);
+            				if (ConfigManagerCore.hardMode) playerStats.incrementalDamage++;
 
-                        GCCoreOxygenSuffocationEvent suffocationEventPost = new GCCoreOxygenSuffocationEvent.Post(player);
-                        MinecraftForge.EVENT_BUS.post(suffocationEventPost);
-                    }
-                }
+            				GCCoreOxygenSuffocationEvent suffocationEventPost = new GCCoreOxygenSuffocationEvent.Post(player);
+            				MinecraftForge.EVENT_BUS.post(suffocationEventPost);
+            			}
+            		}
+            	}
+        		else
+        			playerStats.incrementalDamage = 0;
             }
         }
         else if ((player.ticksExisted - 1) % 20 == 0 && !player.capabilities.isCreativeMode && playerStats.airRemaining < 90)

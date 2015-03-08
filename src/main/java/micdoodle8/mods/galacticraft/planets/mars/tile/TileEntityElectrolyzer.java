@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.oxygen.NetworkHelper;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
@@ -48,7 +49,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 
     public TileEntityElectrolyzer()
     {
-        this.storage.setMaxExtract(120);
+        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 150 : 120);
         this.setTierGC(2);
     }
 

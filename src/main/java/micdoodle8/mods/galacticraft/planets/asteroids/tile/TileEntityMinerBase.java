@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockTier3TreasureChest;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
@@ -36,7 +37,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory
 
     public TileEntityMinerBase()
     {
-        this.storage.setMaxExtract(90);
+        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 150 : 90);
     }
 
     @Override

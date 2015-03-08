@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.item.EntityItem;
@@ -34,7 +35,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
 
     public TileEntityElectricIngotCompressor()
     {
-        this.storage.setMaxExtract(75);
+        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 75);
         this.setTierGC(2);
     }
 

@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithIn
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.items.ItemOilCanister;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.init.Items;
@@ -33,7 +34,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
 
     public TileEntityRefinery()
     {
-        this.storage.setMaxExtract(60);
+        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 60);
     }
 
     @Override

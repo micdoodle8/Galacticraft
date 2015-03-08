@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.IAttribute;
@@ -37,8 +38,8 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.96F);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(3.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(ConfigManagerCore.hardMode ? 1.24F : 0.96F);
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(ConfigManagerCore.hardMode ? 5.0D : 3.0D);
         this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(16.0D);
     }
 

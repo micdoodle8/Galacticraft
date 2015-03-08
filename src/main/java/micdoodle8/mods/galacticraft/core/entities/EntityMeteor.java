@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.entities;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.block.BlockAir;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -129,7 +130,7 @@ public class EntityMeteor extends Entity
 
                 if (par1MovingObjectPosition.entityHit != null)
                 {
-                    par1MovingObjectPosition.entityHit.attackEntityFrom(EntityMeteor.causeMeteorDamage(this, this.shootingEntity), 6);
+                    par1MovingObjectPosition.entityHit.attackEntityFrom(EntityMeteor.causeMeteorDamage(this, this.shootingEntity), ConfigManagerCore.hardMode ? 12F : 6F);
                 }
             }
 

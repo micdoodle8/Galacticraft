@@ -117,6 +117,8 @@ public class GCPlayerStats implements IExtendedEntityProperties
 	public boolean newInOrbit = true;
 	public int buildFlags = 0;
 
+	public int incrementalDamage = 0;
+
     public GCPlayerStats(EntityPlayerMP player)
     {
         this.player = new WeakReference<EntityPlayerMP>(player);

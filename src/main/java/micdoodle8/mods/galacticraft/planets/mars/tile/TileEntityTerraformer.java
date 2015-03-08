@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.entities.IBubble;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityTerraformBubble;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -56,7 +57,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
     public TileEntityTerraformer()
     {
-        this.storage.setMaxExtract(45);
+        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 45);
     }
 
     public int getScaledWaterLevel(int i)
