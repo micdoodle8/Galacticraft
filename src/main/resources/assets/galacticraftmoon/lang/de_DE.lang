@@ -24,7 +24,8 @@ tile.moonBlock.bricks.name=Monddungeonziegel
 tile.cheeseBlock.name=Käseblock
 
 # GUI
-gui.choosePlanet.desc.moon=Bewohnbar#Kein Sauerstoff#Schwerkraft: 18%
-container.lander.name=Landekapsel
+gui.choosePlanet.desc.moon=Bewohnbar#Kein Sauerstoff#Gravitation: 18%
 
+# OTHER
+container.lander.name=Landekapsel
 dimension.Moon.name=Mond

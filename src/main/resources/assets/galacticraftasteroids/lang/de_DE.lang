@@ -25,11 +25,11 @@ item.titanium_sword.name=Titanschwert
 
 # ARMOR
 item.thermalHelm.name=Thermalpolsterhelm
-item.thermalChestplate.name=Thermalpolsterbrustschutz
+item.thermalChestplate.name=Thermalpolsterbrustpanzer
 item.thermalLeggings.name=Thermalpolsterbeinschutz
 item.thermalBoots.name=Thermalpolsterstiefel
 item.titanium_helmet.name=Titanhelm
-item.titanium_chestplate.name=Titanbrustschutz
+item.titanium_chestplate.name=Titanbrustpanzer
 item.titanium_leggings.name=Titanbeinschutz
 item.titanium_boots.name=Titanstiefel
 
@@ -104,7 +104,7 @@ tile.treasureT3.description=Schatztruhen der Stufe 3 werden zur Zeit nicht benut
 tile.walkway.description=Gehwege können für Dekorationszwecke benutzt werden und um Blöcke zu verbinden.
 tile.walkwayAluminumWire.description=Aluminumkabelgehwege werden benutzt um Kabel unter einer vollständig begehbaren Oberfläche zu verlegen.
 tile.walkwayOxygenPipe.description=Sauerstoffleitungsgehwege werden benutzt um Sauerstoffleitungen unter einer vollständig begehbaren Oberfläche zu verlegen.
-tile.beamReflector.description=Strahlenreflektoren werden benutzt um Energiestrahlen von der Quelle zum Ziel weiterzuleiten. Kann rechtsgeklickt werden um das Ziel umzuschalten.
+tile.beamReflector.description=Strahlenreflektoren werden benutzt um Energiestrahlen von der Quelle zum Ziel weiterzuleiten. Rechtsklick um das Ziel umzuschalten.
 tile.beamReceiver.description=Strahlenempfänger werden mit den Energieein- und ausgängen von Maschinen verbunden um Energie über Strahlen zu übertragen.
 tile.telepadShort.description=Kurzreichweiten-Telepads werden benutzt um Spieler und andere Lebewesen über kurze Distanzen (250 Blöcke) zu teleportieren, wenn sie mit anderen Telepads verbunden sind.
 
@@ -114,13 +114,17 @@ tile.telepadShort.description=Kurzreichweiten-Telepads werden benutzt um Spieler
 entity.SmallAsteroidGC.name=Kleiner Asteroid
 entity.GrappleHookGC.name=Greifhaken
 entity.Tier3RocketGC.name=Rakete (Stufe 3)
+entity.EntryPodAsteroids.name=Entry Pod
 
 # CONTAINERS
 container.shortRangeTelepad.name=Kurzreichweiten-Telepad
 container.entryPod.name=Entry Pod
+
+# CONFIG GUI
 gc.configgui.dimensionIDAsteroids=Asteroids Dimension ID
 gc.configgui.idEntitySmallAsteroid=Small Asteroid Entity ID
 gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID
 gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID
 gc.configgui.idEntityEntryPod=Entry Pod Entity ID
 gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID
+gc.configgui.disableGalacticraftHelium=Disable Helium gas registration
