@@ -2,13 +2,16 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 
 public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathable
 {
@@ -75,4 +78,26 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
 
 		return livingData;
 	}
+    
+    @Override
+    protected void jump()
+    {
+        this.motionY = 0.52D / WorldUtil.getGravityFactor(this);
+        if (this.motionY < 0.26D) this.motionY = 0.26D;
+
+        if (this.isPotionActive(Potion.jump))
+        {
+            this.motionY += (this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F;
+        }
+
+        if (this.isSprinting())
+        {
+            float f = this.rotationYaw * 0.017453292F;
+            this.motionX -= MathHelper.sin(f) * 0.2F;
+            this.motionZ += MathHelper.cos(f) * 0.2F;
+        }
+
+        this.isAirBorne = true;
+        ForgeHooks.onLivingJump(this);
+    }
 }

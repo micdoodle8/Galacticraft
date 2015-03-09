@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -9,7 +10,10 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 
 import java.util.UUID;
 
@@ -132,5 +136,27 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
         }
 
         this.setChildSize(isChild);
+    }
+    
+    @Override
+    protected void jump()
+    {
+        this.motionY = 0.45D / WorldUtil.getGravityFactor(this);
+        if (this.motionY < 0.22D) this.motionY = 0.22D;
+
+        if (this.isPotionActive(Potion.jump))
+        {
+            this.motionY += (this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F;
+        }
+
+        if (this.isSprinting())
+        {
+            float f = this.rotationYaw * 0.017453292F;
+            this.motionX -= MathHelper.sin(f) * 0.2F;
+            this.motionZ += MathHelper.cos(f) * 0.2F;
+        }
+
+        this.isAirBorne = true;
+        ForgeHooks.onLivingJump(this);
     }
 }

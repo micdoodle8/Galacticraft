@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -10,7 +11,10 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.potion.Potion;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 
 public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBreathable
 {
@@ -66,5 +70,27 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
 
         this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
         this.worldObj.spawnEntityInWorld(entityarrow);
+    }
+    
+    @Override
+    protected void jump()
+    {
+        this.motionY = 0.45D / WorldUtil.getGravityFactor(this);
+        if (this.motionY < 0.24D) this.motionY = 0.24D;
+
+        if (this.isPotionActive(Potion.jump))
+        {
+            this.motionY += (this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F;
+        }
+
+        if (this.isSprinting())
+        {
+            float f = this.rotationYaw * 0.017453292F;
+            this.motionX -= MathHelper.sin(f) * 0.2F;
+            this.motionZ += MathHelper.cos(f) * 0.2F;
+        }
+
+        this.isAirBorne = true;
+        ForgeHooks.onLivingJump(this);
     }
 }

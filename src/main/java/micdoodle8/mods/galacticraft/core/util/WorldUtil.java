@@ -89,6 +89,26 @@ public class WorldUtil
             return 0.08D;
         }
     }
+    
+    public static float getGravityFactor(Entity entity)
+    {
+        if (entity.worldObj.provider instanceof IGalacticraftWorldProvider)
+        {
+            final IGalacticraftWorldProvider customProvider = (IGalacticraftWorldProvider) entity.worldObj.provider;
+        	float returnValue = MathHelper.sqrt_float(0.08F / (0.08F - customProvider.getGravity()));
+        	if (returnValue > 2.5F) returnValue = 2.5F;
+        	if (returnValue < 0.75F) returnValue = 0.75F;
+        	return returnValue;
+        }
+        else if (GalacticraftCore.isPlanetsLoaded && entity instanceof EntityAstroMiner)
+        {
+        	return 1F;
+        }
+        else
+        {
+            return 1F;
+        }
+    }
 
     public static double getItemGravity(EntityItem e)
     {
