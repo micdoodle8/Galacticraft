@@ -80,3 +80,4 @@ Mysticslay:capeLightBlue
 BeeCannon:capeYellow
 Krazymonkey151:capeRainbow
 Knightblock:capeLightBlue
+FinnDragon12034:capeRainbow
