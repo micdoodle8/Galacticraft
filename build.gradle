@@ -2,7 +2,7 @@
 def mcVersion = "1.7"
 def versionMajor = 3
 def versionMinor = 0
-def versionRev = 8
+def versionRev = 9
 
 buildscript {
     repositories {
