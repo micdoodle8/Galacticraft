@@ -30,8 +30,10 @@ public class GCPlayerStatsClient implements IExtendedEntityProperties
     public double distanceSinceLastStep;
     public int lastStep;
     public boolean inFreefall;
+    public boolean inFreefallLast;
     public boolean inFreefallFirstCheck;
     public boolean lastRidingCameraZoomEntity;
+    public int landingTicks;
 
     public EnumGravity gdir = EnumGravity.down;
     public float gravityTurnRate;

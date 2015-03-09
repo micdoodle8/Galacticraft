@@ -886,7 +886,14 @@ public class ClientProxyCore extends CommonProxyCore
             GL11.glRotatef(yaw * stats.gdir.yawGravityY, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(yaw * stats.gdir.yawGravityZ, 0.0F, 0.0F, 1.0F);
 
-            GL11.glTranslatef(entityLivingBase.ySize * stats.gdir.sneakVecX, entityLivingBase.ySize * stats.gdir.sneakVecY, entityLivingBase.ySize * stats.gdir.sneakVecZ);
+            if (stats.landingTicks > 0)
+            {
+            	float sneakY;
+            	if (stats.landingTicks >= 4) sneakY = (stats.landingTicks >= 5) ? 0.15F : 0.3F;
+            	else
+            		sneakY = stats.landingTicks * 0.075F;
+            	GL11.glTranslatef(sneakY * stats.gdir.sneakVecX, sneakY * stats.gdir.sneakVecY, sneakY * stats.gdir.sneakVecZ);
+            }
 
             GL11.glTranslatef(eyeHeightChange * stats.gdir.eyeVecX, eyeHeightChange * stats.gdir.eyeVecY, eyeHeightChange * stats.gdir.eyeVecZ);
 

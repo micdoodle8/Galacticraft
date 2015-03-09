@@ -122,7 +122,11 @@ public class PlayerClient implements IPlayerClient
         {
             player.limbSwing -= player.limbSwingAmount;
             player.limbSwingAmount = player.prevLimbSwingAmount;
+        } else
+        {
+	    	if (stats.inFreefallLast) stats.landingTicks = 6;
         }
+        if (stats.landingTicks > 0) stats.landingTicks--;
 
         boolean ridingThirdPersonEntity = player.ridingEntity instanceof ICameraZoomEntity && ((ICameraZoomEntity) player.ridingEntity).defaultThirdPerson();
 

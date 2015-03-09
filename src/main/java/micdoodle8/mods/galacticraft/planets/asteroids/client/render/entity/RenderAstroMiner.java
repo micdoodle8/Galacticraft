@@ -1,11 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity;
 
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;

@@ -699,43 +699,45 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 
                 if (p.movementInput.moveForward != 0)
                 {
-                    p.motionX -= p.movementInput.moveForward * MathHelper.sin(p.rotationYaw / 57.29578F) / 400F;
-                    p.motionZ += p.movementInput.moveForward * MathHelper.cos(p.rotationYaw / 57.29578F) / 400F;
+                    p.motionX -= p.movementInput.moveForward * MathHelper.sin(p.rotationYaw / 57.29578F) / (ConfigManagerCore.hardMode ? 600F : 200F);
+                    p.motionZ += p.movementInput.moveForward * MathHelper.cos(p.rotationYaw / 57.29578F) / (ConfigManagerCore.hardMode ? 600F : 200F);
                 }
 
                 if (p.movementInput.sneak)
                 {
-                    p.motionY -= 0.0016D;
+                    p.motionY -= ConfigManagerCore.hardMode ? 0.0012D : 0.0032D;
                 }
 
                 if (p.movementInput.jump)
                 {
-                    p.motionY += 0.0016D;
+                    p.motionY += ConfigManagerCore.hardMode ? 0.0012D : 0.0032D;
                 }
+                
+                float speedLimit = ConfigManagerCore.hardMode ? 0.9F : 0.7F;
 
-                if (p.motionX > 0.7F)
+                if (p.motionX > speedLimit)
                 {
-                    p.motionX = 0.7F;
+                    p.motionX = speedLimit;
                 }
-                if (p.motionX < -0.7F)
+                if (p.motionX < -speedLimit)
                 {
-                    p.motionX = -0.7F;
+                    p.motionX = -speedLimit;
                 }
-                if (p.motionY > 0.7F)
+                if (p.motionY > speedLimit)
                 {
-                    p.motionY = 0.7F;
+                    p.motionY = speedLimit;
                 }
-                if (p.motionY < -0.7F)
+                if (p.motionY < -speedLimit)
                 {
-                    p.motionY = -0.7F;
+                    p.motionY = -speedLimit;
                 }
-                if (p.motionZ > 0.7F)
+                if (p.motionZ > speedLimit)
                 {
-                    p.motionZ = 0.7F;
+                    p.motionZ = speedLimit;
                 }
-                if (p.motionZ < -0.7F)
+                if (p.motionZ < -speedLimit)
                 {
-                    p.motionZ = -0.7F;
+                    p.motionZ = -speedLimit;
                 }
             }
             else
@@ -871,6 +873,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         }
 
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
+        stats.inFreefallLast = stats.inFreefall;
         stats.inFreefall = freefall;
         stats.inFreefallFirstCheck = true;
         this.pPrevMotionX = p.motionX;
