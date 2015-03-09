@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -11,6 +13,8 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -92,5 +96,42 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
 
         this.isAirBorne = true;
         ForgeHooks.onLivingJump(this);
+    }
+
+    @Override
+    protected void dropRareDrop(int p_70600_1_)
+    {
+        if (this.getSkeletonType() == 1)
+        {
+            this.entityDropItem(new ItemStack(Items.skull, 1, 1), 0.0F);
+            return;
+        }
+
+        switch (this.rand.nextInt(10))
+        {
+            case 0:
+            case 1:
+            case 9:
+            	this.dropItem(Items.arrow, 1);
+                break;
+            case 2:
+            case 3:
+            	this.dropItem(Items.arrow, 2);
+                break;
+            case 4:
+            case 5:
+            	this.dropItem(Items.arrow, 3);
+                break;
+            case 6:
+            	//Oxygen tank half empty or less
+                this.entityDropItem(new ItemStack(GCItems.oxTankMedium, 1, 901 + this.rand.nextInt(900)), 0.0F);
+                break;
+            case 7:
+                this.dropItem(GCItems.canister, 1);
+                break;
+            case 8:
+                this.entityDropItem(new ItemStack(GCBlocks.oxygenPipe), 0.0F);
+                break;
+        }
     }
 }

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
@@ -9,6 +10,8 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
@@ -158,5 +161,33 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
 
         this.isAirBorne = true;
         ForgeHooks.onLivingJump(this);
+    }
+
+    @Override
+    protected void dropRareDrop(int p_70600_1_)
+    {
+        switch (this.rand.nextInt(10))
+        {
+            case 0:
+            case 1:
+            case 9:
+            case 2:
+            case 3:
+                break;
+            case 4:
+            case 5:
+                this.entityDropItem(new ItemStack(Blocks.sand), 0.0F);
+                break;
+            case 6:
+            	//Oxygen tank half empty or less
+                this.entityDropItem(new ItemStack(GCItems.oxTankMedium, 1, 901 + this.rand.nextInt(900)), 0.0F);
+                break;
+            case 7:
+                this.dropItem(GCItems.oxygenGear, 1);
+                break;
+            case 8:
+                this.entityDropItem(new ItemStack(Blocks.ice), 0.0F);
+                break;
+        }
     }
 }
