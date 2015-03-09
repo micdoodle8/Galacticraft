@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -9,6 +10,7 @@ import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -78,5 +80,37 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
 
         this.isAirBorne = true;
         ForgeHooks.onLivingJump(this);
+    }
+
+    @Override
+    protected void dropRareDrop(int p_70600_1_)
+    {
+        switch (this.rand.nextInt(10))
+        {
+            case 0:
+            case 1:
+            case 9:
+            	//Dehydrated carrot
+                this.entityDropItem(new ItemStack(GCItems.basicItem, 1, 16), 0.0F);
+                break;
+            case 2:
+            case 3:
+                this.dropItem(GCItems.meteoricIronRaw, 1);
+                break;
+            case 4:
+            case 5:
+            	this.dropItem(GCItems.cheeseCurd, 1);
+                break;
+            case 6:
+            	//Oxygen tank half empty or less
+                this.entityDropItem(new ItemStack(GCItems.oxTankMedium, 1, 901 + this.rand.nextInt(900)), 0.0F);
+                break;
+            case 7:
+                this.dropItem(GCItems.oxMask, 1);
+                break;
+            case 8:
+                this.dropItem(GCItems.oxygenVent, 1);
+                break;
+        }
     }
 }
