@@ -1,4 +1,4 @@
-micdoodle8:capeBlue
+micdoodle8:capeOrange
 JTE:capeLime
 ajmski:capeLime
 Azeryuu:capeLime
