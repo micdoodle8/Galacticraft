@@ -48,7 +48,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
             {
                 FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(this.containingItems[1]);
 
-                if (liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("Oil"))
+                if (liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("oil"))
                 {
                     if (this.oilTank.getFluid() == null || this.oilTank.getFluid().amount + liquid.amount <= this.oilTank.getCapacity())
                     {
@@ -366,10 +366,14 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
         {
             final String liquidName = FluidRegistry.getFluidName(resource);
 
-            if (liquidName != null && liquidName.equalsIgnoreCase("Oil"))
+            if (liquidName != null && liquidName.equalsIgnoreCase("oil"))
             {
                 used = this.oilTank.fill(resource, doFill);
-            }
+            } else
+            if (liquidName != null && liquidName.equalsIgnoreCase("oilgc"))
+            {
+                used = this.oilTank.fill(new FluidStack(GalacticraftCore.fluidOil, resource.amount), doFill);
+            }            	
         }
 
         return used;
