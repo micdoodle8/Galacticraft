@@ -1,4 +1,4 @@
-﻿# Galacticraft Core Language File = THAILAND
+# Galacticraft Core Language File = THAILAND
 
 # GENERAL ITEMS
 item.oxygenTankLightFull.name=ถังออกซิเจนขนาดเล็ก
@@ -626,7 +626,7 @@ commands.ssuninvite.noPlayer=ไม่สามารถหาผู้เล่
 gc.configgui.idDimensionMoon=ID มิติของดวงจันทร์
 gc.configgui.idDimensionOverworldOrbit=ID มิติของสถานีอวกาศ
 gc.configgui.idDimensionOverworldOrbitStatic=ID มิติของสถานีอวกาศอยู่กับที่
-gc.configgui.biomeIDBase=ID ไบโอมหลักของ GC
+gc.configgui.biomeIDBase=ID ไบโอมหลักของกาแลคติคคราฟ
 gc.configgui.staticLoadedDimensions=เปิดใช้งานโหลดมิติให้คงอยู่กับที่
 gc.configgui.rocketDisableOverworldReturn=ปิดใช้งานจรวดไม่ให้กลับไปยังโลก
 gc.configgui.rocketDisabledDimensions=ปิดใช้งานจรวดให้โหลดมิติ
@@ -668,5 +668,6 @@ gc.configgui.alternateCanisterRecipe=เปลี่ยนวิธีการ�
 gc.configgui.rocketFuelFactor=ปรับค่าการใช้เชื้อเพลิงจรวด
 gc.configgui.dungeonBossHealthMod=ปรับพลังชีวิตของบอส
 gc.configgui.hardMode=ระดับความยากสูงสุด
+gc.configgui.quickMode=เปิดใช้งานโหมดรวดเร็ว (เพื่อความสะดวก)
 
 gc.configgui.title=ตั้งค่ากาแลคติคคราฟ
