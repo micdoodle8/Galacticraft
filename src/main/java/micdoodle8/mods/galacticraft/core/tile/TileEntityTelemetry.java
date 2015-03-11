@@ -134,9 +134,10 @@ public class TileEntityTelemetry extends TileEntity
 				else if (GalacticraftCore.isPlanetsLoaded && linkedEntity instanceof EntityAstroMiner)
 				{
 					EntityAstroMiner eShip = (EntityAstroMiner)linkedEntity; 
-					data1 = (int) eShip.posX;
-					data2 = (int) eShip.posZ;
+					data1 = (int) (eShip.posY);// - eShip.prevPosY) * 100;
+					data2 = (int) (eShip.posX - eShip.prevPosX) * 100;;
 					data3 = eShip.energyLevel;
+					data4 = eShip.AIstate;
 				}
 			}
 			else

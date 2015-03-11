@@ -147,8 +147,28 @@ public class GameScreenText implements IGameScreen
     	}
     	else if (GalacticraftCore.isPlanetsLoaded && entity instanceof EntityAstroMiner)
     	{
-    		str2 = "x: " + telemeter.clientData[1];
-    		str3 = "z: " + telemeter.clientData[2];
+    		str0 = "";
+    		str1 = "";
+    		switch (telemeter.clientData[4])
+    		{
+    			case 0:
+    				str1 = "Stuck - out of energy";
+    				break;
+    			case 1:
+    				str1 = "Travelling to mine";
+    				break;
+    			case 2:
+    				str1 = "Mining";
+    				break;
+    			case 3:
+    				str1 = "Returning to base";
+    				break;
+    			case 4:
+    				str1 = "At base - charging";
+    				break;
+    		}
+    		str2 = "dy: " + telemeter.clientData[1];
+    		str3 = "dx: " + telemeter.clientData[2];
     		str4 = "Energy: " + telemeter.clientData[3];        		
     	}
     	else

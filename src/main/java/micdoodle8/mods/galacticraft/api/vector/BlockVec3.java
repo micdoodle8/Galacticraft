@@ -342,7 +342,7 @@ public class BlockVec3 implements Cloneable
     @Override
     public String toString()
     {
-        return "BlockVec3 [" + this.x + "," + this.y + "," + this.z + "]";
+        return "[" + this.x + "," + this.y + "," + this.z + "]";
     }
 
     /**

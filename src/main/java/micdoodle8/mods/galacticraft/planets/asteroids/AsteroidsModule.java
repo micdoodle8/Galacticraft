@@ -273,7 +273,7 @@ public class AsteroidsModule implements IPlanetsModule
         MarsModule.registerGalacticraftNonMobEntity(EntityGrapple.class, "GrappleHookGC", 150, 1, true);
         MarsModule.registerGalacticraftNonMobEntity(EntityTier3Rocket.class, "Tier3RocketGC", 150, 1, false);
         MarsModule.registerGalacticraftNonMobEntity(EntityEntryPod.class, "EntryPodAsteroids", 150, 1, true);
-        MarsModule.registerGalacticraftNonMobEntity(EntityAstroMiner.class, "AstroMiner", 150, 1, true);
+        MarsModule.registerGalacticraftNonMobEntity(EntityAstroMiner.class, "AstroMiner", 80, 1, true);
     }
 
     private void registerTileEntities()

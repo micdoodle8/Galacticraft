@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.entity.Entity;
@@ -10,6 +12,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -37,11 +40,25 @@ public class EntityAstroMiner extends Entity
     public float shipDamage;
     public int currentDamage;
     public int timeSinceHit;
+    private boolean flagLink = false;
 
     private float cLENGTH = 1.4F;
     private float cWIDTH = 0.8F;
     //To do:
     //   break the entity drops it as an item
+
+    private int turnProgress;
+    private double minecartX;
+    private double minecartY;
+    private double minecartZ;
+    private double minecartYaw;
+    private double minecartPitch;
+    @SideOnly(Side.CLIENT)
+    private double velocityX;
+    @SideOnly(Side.CLIENT)
+    private double velocityY;
+    @SideOnly(Side.CLIENT)
+    private double velocityZ;
 
     public EntityAstroMiner(World world, ItemStack[] cargo, int energy)
     {
@@ -66,38 +83,39 @@ public class EntityAstroMiner extends Entity
     @Override
     protected void entityInit()
     {
+        this.dataWatcher.addObject(19, new Float(0.0F));
     }
 
     @Override
     protected void readEntityFromNBT(NBTTagCompound nbt)
     {
-        final NBTTagList var2 = nbt.getTagList("Items", 10);
+    	final NBTTagList var2 = nbt.getTagList("Items", 10);
         this.cargo = new ItemStack[27];
 
-        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+        if (var2 != null)
         {
-            final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
-            final int var5 = var4.getByte("Slot") & 255;
-
-            if (var5 >= 0 && var5 < this.cargo.length)
-            {
-                this.cargo[var5] = ItemStack.loadItemStackFromNBT(var4);
-            }
+	        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+	        {
+	            final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
+	            final int var5 = var4.getByte("Slot") & 255;
+	
+	            if (var5 >= 0 && var5 < this.cargo.length)
+	            {
+	                this.cargo[var5] = ItemStack.loadItemStackFromNBT(var4);
+	            }
+	        }
         }
         
         if (nbt.hasKey("Energy")) this.energyLevel = nbt.getInteger("Energy");
         if (nbt.hasKey("BaseX"))
         {
         	this.posBase = new BlockVec3(nbt.getInteger("BaseX"), nbt.getInteger("BaseY"), nbt.getInteger("BaseZ"));
-    		TileEntity tileEntity = posBase.getTileEntity(this.worldObj);
-    		if (tileEntity instanceof TileEntityMinerBase)
-    		{
-    			((TileEntityMinerBase) tileEntity).linkMiner(this);
-    		}
+        	this.flagLink = true;
         }
         if (nbt.hasKey("TargetX")) this.posTarget = new BlockVec3(nbt.getInteger("TargetX"), nbt.getInteger("TargetY"), nbt.getInteger("TargetZ"));
         if (nbt.hasKey("BaseFacing")) this.baseFacing = nbt.getInteger("BaseFacing");       
         if (nbt.hasKey("AIState")) this.AIstate = nbt.getInteger("AIState");       
+        System.out.println("Astro Miner: Successful read from NBT");
     }
 
     @Override
@@ -140,10 +158,49 @@ public class EntityAstroMiner extends Entity
     @Override
     public void onUpdate()
     {
-        if (this.posY < -64.0D)
+    	
+	    if (this.posY < -64.0D)
+	    {
+	        this.kill();
+	        return;
+	    }
+   	
+        if (this.getDamage() > 0.0F)
         {
-            this.kill();
-            return;
+            this.setDamage(this.getDamage() - 1.0F);
+        }
+
+        if (this.worldObj.isRemote)
+        {
+        	//this.checkRotation();
+        	if (this.turnProgress > 0)
+            {
+                double d6 = this.posX + (this.minecartX - this.posX) / this.turnProgress;
+                double d7 = this.posY + (this.minecartY - this.posY) / this.turnProgress;
+                double d1 = this.posZ + (this.minecartZ - this.posZ) / this.turnProgress;
+                double d3 = MathHelper.wrapAngleTo180_double(this.minecartYaw - this.rotationYaw);
+                this.rotationYaw = (float)(this.rotationYaw + d3 / this.turnProgress);
+                this.rotationPitch = (float)(this.rotationPitch + (this.minecartPitch - this.rotationPitch) / this.turnProgress);
+                --this.turnProgress;
+                this.setPosition(d6, d7, d1);
+                this.setRotation(this.rotationYaw, this.rotationPitch);
+            }
+            else
+            {
+                this.setPosition(this.posX, this.posY, this.posZ);
+                this.setRotation(this.rotationYaw, this.rotationPitch);
+            }
+        	return;
+        }
+
+        if (flagLink)
+        {
+	    	TileEntity tileEntity = posBase.getTileEntity(this.worldObj);
+			if (tileEntity instanceof TileEntityMinerBase)
+			{
+				((TileEntityMinerBase) tileEntity).linkMiner(this);
+			}
+        	flagLink = false;
         }
         
     	this.lastTickPosX = this.posX;
@@ -198,8 +255,6 @@ public class EntityAstroMiner extends Entity
         this.posZ += this.motionZ;
         this.boundingBox.minZ += this.motionZ;
         this.boundingBox.maxZ += this.motionZ;
-
-        System.out.println("Moved: "+ (this.posY - this.prevPosY));
 /*        if (this.dataWatcher.getWatchableObjectInt(this.timeSinceHit) > 0)
         {
             this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.timeSinceHit) - 1));
@@ -209,7 +264,9 @@ public class EntityAstroMiner extends Entity
         {
             this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage) - 1));
         }
-*/    }
+        
+*/    
+        }
 
 	private void atBase()
 	{
@@ -241,7 +298,6 @@ public class EntityAstroMiner extends Entity
 			if (this.findNextTarget())
 			{
 				this.AIstate = 1;
-				System.out.println("Starting motion: "+ this.energyLevel);	
 			}
 		}
 	}
@@ -251,6 +307,7 @@ public class EntityAstroMiner extends Entity
 		//Simple test = 10 forward, 3 down
 		this.posTarget = this.posBase.clone().modifyPositionFromSide(ForgeDirection.getOrientation(this.baseFacing), 10);
 		this.posTarget.modifyPositionFromSide(ForgeDirection.DOWN, 3);
+		System.out.println("Miner target: "+this.posTarget.toString());
 		return true;
 		// TODO Is target completely mined?  If so, change target	
 		// return false;
@@ -258,7 +315,7 @@ public class EntityAstroMiner extends Entity
 
 	private void moveToTarget()
 	{
-		if (this.moveToPos(this.posTarget))
+		if (this.moveToPos(this.posTarget, false))
 		{
 			AIstate = 2;
 		}
@@ -279,7 +336,7 @@ public class EntityAstroMiner extends Entity
 
 	private void moveToBase()
 	{
-		if (this.moveToPos(this.posBase))
+		if (this.moveToPos(this.waypointBase, true))
 		{
 			AIstate = 4;
 		}
@@ -295,7 +352,11 @@ public class EntityAstroMiner extends Entity
 
 	private void doMining()
 	{
-		if (energyLevel < 9900) AIstate = 3; 
+		if (energyLevel < 9900)
+		{
+			AIstate = 3;
+			System.out.println("Miner going home: "+this.posBase.toString());
+		}
 		// TODO
 		//Mine blocks around
 		//Note timing with moves - can't mine it all at once
@@ -321,84 +382,151 @@ public class EntityAstroMiner extends Entity
 		//But no mining out in protected zone close to base (may need to do pathfinding if blocks were changed?)		
 	}
 
-	private boolean moveToPos(BlockVec3 pos)
+	private boolean moveToPos(BlockVec3 pos, boolean reverse)
 	{
+		boolean stopForTurn = !this.checkRotation();
+		
 		if (zFirst)
 		{
 			//TODO
 		}
 		else
 		{
-			if (this.posX != pos.x)
+			if (reverse)
 			{
-		        this.targetPitch = 0;
-
-				if (this.posX > pos.x)
+				if (this.posY != pos.y)
 				{
-			        this.targetYaw = 270;
-		        	this.motionX = -this.speed;
-		        	//TODO some acceleration and deceleration
-		        	if (this.motionX < pos.x - this.posX)
-		        		this.motionX = pos.x - this.posX;
-					this.facing = 4;
-					this.setBoundingBoxForFacing();
+					this.moveToPosY(pos, stopForTurn);			
 				}
-				else
+				else if (this.posX != pos.x)
 				{
-					this.targetYaw = 90;
-					this.motionX = this.speed;
-		        	if (this.motionX > pos.x - this.posX)
-		        		this.motionX = pos.x - this.posX;
-					this.facing = 5;
-					this.setBoundingBoxForFacing();
+					this.moveToPosX(pos, stopForTurn);
 				}
-
-		        if (!this.checkRotation())
-		        	this.motionX = 0;
-
-				this.motionY = 0;
-				this.motionZ = 0;
+				else return true;
+				//got there				
 			}
-			else if (this.posY != pos.y)
+			else
 			{
-				System.out.println("Doing y motion");
-				if (this.posY > posTarget.y)
+				if (this.posX != pos.x)
 				{
-					this.targetYaw = -90;
-					this.motionY = -this.speed;
-					this.facing = 0;
-					this.setBoundingBoxForFacing();
+					this.moveToPosX(pos, stopForTurn);
 				}
-				else
+				else if (this.posY != pos.y)
 				{
-					this.targetYaw = 90;
-					this.motionY = speed;
-					this.facing = 1;
-					this.setBoundingBoxForFacing();
+					this.moveToPosY(pos, stopForTurn);			
 				}
-
-		        if (!this.checkRotation())
-		        {
-		        	this.motionY = 0;
-		        	System.out.println("Check rotation failed");
-		        }
-
-				this.motionX = 0;
-				this.motionZ = 0;
-				
+				else return true;
+				//got there
 			}
-			else return true;
-			//got there
 		}
 
 		return false;
 	}
+	
+	private void moveToPosX(BlockVec3 pos, boolean stopForTurn)
+	{
+        this.targetPitch = 0;
+
+		if (this.posX > pos.x)
+		{
+	        this.targetYaw = 270;
+        	this.motionX = -this.speed;
+        	//TODO some acceleration and deceleration
+        	if (this.motionX < pos.x - this.posX)
+        		this.motionX = pos.x - this.posX;
+			this.facing = 4;
+			this.setBoundingBoxForFacing();
+		}
+		else
+		{
+	        this.targetYaw = 90;
+			this.motionX = this.speed;
+        	if (this.motionX > pos.x - this.posX)
+        		this.motionX = pos.x - this.posX;
+			this.facing = 5;
+			this.setBoundingBoxForFacing();
+		}
+
+        if (stopForTurn)
+        	this.motionX = 0;
+
+		this.motionY = 0;
+		this.motionZ = 0;		
+	}
+
+	private void moveToPosY(BlockVec3 pos, boolean stopForTurn)
+	{
+		if (this.posY > pos.y)
+		{
+			this.targetPitch = -90;
+			this.motionY = -this.speed;
+        	if (this.motionY < pos.y - this.posY)
+        		this.motionY = pos.y - this.posY;
+			this.facing = 0;
+			this.setBoundingBoxForFacing();
+		}
+		else
+		{
+			this.targetPitch = 90;
+			this.motionY = this.speed;
+        	if (this.motionY > pos.y - this.posY)
+        		this.motionY = pos.y - this.posY;
+			this.facing = 1;
+			this.setBoundingBoxForFacing();
+		}
+
+        if (stopForTurn)
+        {
+        	this.motionY = 0;
+        }
+
+		this.motionX = 0;
+		this.motionZ = 0;
+	}
+	
+	private void moveToPosZ(BlockVec3 pos, boolean stopForTurn)
+	{
+        this.targetPitch = 0;
+
+		if (this.posZ > pos.z)
+		{
+	        this.targetYaw = 0;
+        	this.motionZ = -this.speed;
+        	//TODO some acceleration and deceleration
+        	if (this.motionZ < pos.z - this.posZ)
+        		this.motionZ = pos.z - this.posZ;
+			this.facing = 2;
+			this.setBoundingBoxForFacing();
+		}
+		else
+		{
+	        this.targetYaw = 180;
+			this.motionZ = this.speed;
+        	if (this.motionZ > pos.z - this.posZ)
+        		this.motionZ = pos.z - this.posZ;
+			this.facing = 3;
+			this.setBoundingBoxForFacing();
+		}
+
+        if (stopForTurn)
+        	this.motionZ = 0;
+
+		this.motionY = 0;
+		this.motionX = 0;		
+	}
 
 	private boolean checkRotation()
 	{
+		boolean flag = true;
 		//Handle the turns when it changes direction
         if (this.rotationPitch != this.targetPitch)
         {
+        	if (this.rotationPitch > this.targetPitch + 180)
+        		this.rotationPitch -= 360;
+        	else
+        	if (this.rotationPitch < this.targetPitch - 180)
+        		this.rotationPitch += 360;
+        		
         	if (this.rotationPitch > this.targetPitch)
         	{
         		this.rotationPitch -= this.rotSpeed;
@@ -411,11 +539,17 @@ public class EntityAstroMiner extends Entity
         		if (this.rotationPitch > this.targetPitch)
         			this.rotationPitch = this.targetPitch;       		
         	}
-        	return false;
+        	flag = false;
         }
-        else
+
         if (this.rotationYaw != this.targetYaw)
         {
+        	if (this.rotationYaw > this.targetYaw + 180)
+        		this.rotationYaw -= 360;
+        	else
+        	if (this.rotationYaw < this.targetYaw - 180)
+        		this.rotationYaw += 360;
+        		
         	if (this.rotationYaw > this.targetYaw)
         	{
         		this.rotationYaw -= this.rotSpeed;
@@ -428,10 +562,10 @@ public class EntityAstroMiner extends Entity
         		if (this.rotationYaw > this.targetYaw)
         			this.rotationYaw = this.targetYaw;       		
         	}
-        	return false;
+        	flag = false;
         }
 		
-		return true;
+		return flag;
 	}
 
 	private void updateAI()
@@ -594,5 +728,37 @@ public class EntityAstroMiner extends Entity
 //	    this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(10));
 //	    this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage) * 5));
 	}
+
+    public float getDamage()
+    {
+        return this.dataWatcher.getWatchableObjectFloat(19);
+    }
+
+    public void setDamage(float p_70492_1_)
+    {
+        this.dataWatcher.updateObject(19, Float.valueOf(p_70492_1_));
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void setPositionAndRotation2(double p_70056_1_, double p_70056_3_, double p_70056_5_, float p_70056_7_, float p_70056_8_, int p_70056_9_)
+    {
+        this.minecartX = p_70056_1_;
+        this.minecartY = p_70056_3_;
+        this.minecartZ = p_70056_5_;
+        this.minecartYaw = p_70056_7_;
+        this.minecartPitch = p_70056_8_;
+        this.turnProgress = p_70056_9_ + 2;
+        this.motionX = this.velocityX;
+        this.motionY = this.velocityY;
+        this.motionZ = this.velocityZ;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void setVelocity(double p_70016_1_, double p_70016_3_, double p_70016_5_)
+    {
+        this.velocityX = this.motionX = p_70016_1_;
+        this.velocityY = this.motionY = p_70016_3_;
+        this.velocityZ = this.motionZ = p_70016_5_;
+    }
 }
 

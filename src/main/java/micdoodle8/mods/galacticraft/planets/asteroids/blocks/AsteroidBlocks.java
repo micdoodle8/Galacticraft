@@ -4,6 +4,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockShortRangeTelepad;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockWalkway;
@@ -61,7 +62,7 @@ public class AsteroidBlocks
         GameRegistry.registerBlock(AsteroidBlocks.shortRangeTelepad, ItemBlockShortRangeTelepad.class, AsteroidBlocks.shortRangeTelepad.getUnlocalizedName());
         GameRegistry.registerBlock(AsteroidBlocks.fakeTelepad, ItemBlockGC.class, AsteroidBlocks.fakeTelepad.getUnlocalizedName());
         GameRegistry.registerBlock(AsteroidBlocks.blockDenseIce, ItemBlockGC.class, AsteroidBlocks.blockDenseIce.getUnlocalizedName());
-        //GameRegistry.registerBlock(AsteroidBlocks.blockMinerBase, ItemBlockDesc.class, AsteroidBlocks.blockMinerBase.getUnlocalizedName());
+//        if (ConfigManagerCore.enableDebug) GameRegistry.registerBlock(AsteroidBlocks.blockMinerBase, ItemBlockDesc.class, AsteroidBlocks.blockMinerBase.getUnlocalizedName());
     }
     
     public static void setHarvestLevels()

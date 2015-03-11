@@ -22,6 +22,8 @@ public class RenderAstroMiner extends Render
         EntityAstroMiner asteroid = (EntityAstroMiner) entity;
 
         GL11.glPushMatrix();
+        final float rotPitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTickTime;
+        final float rotYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTickTime;
 
         /*
         GL11.glEnable(GL11.GL_BLEND);
@@ -36,8 +38,19 @@ public class RenderAstroMiner extends Render
         GL11.glDisable(GL11.GL_BLEND);
          */
         GL11.glTranslatef((float) x, (float) y + 1, (float) z);
-        GL11.glRotatef(asteroid.rotationPitch, 1, 0, 0);
-        GL11.glRotatef(asteroid.rotationYaw, 0, 1, 0);
+        if (rotPitch != 0F)
+        {
+            GL11.glTranslatef(-0.65F, -0.65F, 0);
+        	GL11.glRotatef(rotPitch, 0, 0, -1);
+            GL11.glTranslatef(0.65F, 0.65F, 0);
+        }
+//        else if (rotPitch > 0F)
+//        {
+//            GL11.glTranslatef(-0.65F, -0.65F, 0);
+//        	GL11.glRotatef(rotPitch, 0, 0, 1);
+//            GL11.glTranslatef(0.65F, 0.65F, 0);
+//        }
+        GL11.glRotatef(rotYaw, 0, 1, 0);
         GL11.glTranslatef(0F, -0.65F, 0F);
         GL11.glScalef(1.3F, 1.3F, 1.3F);
 
