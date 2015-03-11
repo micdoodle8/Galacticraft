@@ -227,7 +227,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     {
         if (this.noCoal && this.coalPartial == 0)
         {
-            if (this.gasTank2.drain(1, true).amount < 1) return;
+            if (this.gasTank2.getFluid() == null || this.gasTank2.drain(1, true).amount < 1) return;
         }
         else
         {

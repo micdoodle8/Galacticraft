@@ -444,13 +444,13 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     {
         int metaside = this.getBlockMetadata() + 2;
         int side = from.ordinal();
-    	if (metaside == (side ^ 1))
+    	if (metaside == (side ^ 1) && this.liquidTank2.getFluid() != null)
         {
     		int amountH = Math.min(8, this.liquidTank2.getFluidAmount());
     		amountH = this.liquidTank2.drain(amountH, true).amount;
     		return new GasStack((Gas) EnergyConfigHandler.gasHydrogen, amountH);
         }
-        else if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
+        else if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1)  && this.liquidTank.getFluid() != null)
         {
     		int amountO = Math.min(8, this.liquidTank.getFluidAmount());
     		amountO = this.liquidTank.drain(amountO, true).amount;
