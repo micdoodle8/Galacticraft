@@ -132,28 +132,34 @@ public class SkyProviderAsteroids extends IRenderHandler
         GL11.glPopMatrix();
 
         GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 
         GL11.glPushMatrix();
 
         // Sun:
         GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
-        var12 = this.sunSize;
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);        
+        var12 = this.sunSize / 4.2F;
+        var23.startDrawingQuads();
+        var23.addVertex(-var12, 90.0D, -var12);
+        var23.addVertex(var12, 90.0D, -var12);
+        var23.addVertex(var12, 90.0D, var12);
+        var23.addVertex(-var12, 90.0D, var12);
+        var23.draw();
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        var12 = this.sunSize / 1.2F;
+        //110 distance instead of the normal 100, because there is no atmosphere to make the disk seem larger
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(SkyProviderAsteroids.sunTexture);
-
-        // Draw it a few times...
-        for (int i = 0; i < 4; i++)
-        {
-            var23.startDrawingQuads();
-            //110 distance instead of the normal 100, because there is no atmosphere to make the disk seem larger
-            var23.addVertexWithUV(-var12, 110.0D, -var12, 0.0D, 0.0D);
-            var23.addVertexWithUV(var12, 110.0D, -var12, 1.0D, 0.0D);
-            var23.addVertexWithUV(var12, 110.0D, var12, 1.0D, 1.0D);
-            var23.addVertexWithUV(-var12, 110.0D, var12, 0.0D, 1.0D);
-            var23.draw();
-        }
+        var23.startDrawingQuads();
+        var23.addVertexWithUV(-var12, 90.0D, -var12, 0.0D, 0.0D);
+        var23.addVertexWithUV(var12, 90.0D, -var12, 1.0D, 0.0D);
+        var23.addVertexWithUV(var12, 90.0D, var12, 1.0D, 1.0D);
+        var23.addVertexWithUV(-var12, 90.0D, var12, 0.0D, 1.0D);
+        var23.draw();
 
         GL11.glPopMatrix();
 

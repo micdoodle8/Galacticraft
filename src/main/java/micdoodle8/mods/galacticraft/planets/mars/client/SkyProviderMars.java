@@ -208,11 +208,22 @@ public class SkyProviderMars extends IRenderHandler
         f7 = 0.0F;
         f8 = 0.0F;
         f9 = 0.0F;
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glTranslatef(f7, f8, f9);
         GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
         // Render sun
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);        
+        //Some blanking to conceal the stars
+        f10 = this.sunSize / 3.5F;
+        tessellator1.startDrawingQuads();
+        tessellator1.addVertex(-f10, 99.9D, -f10);
+        tessellator1.addVertex(f10, 99.9D, -f10);
+        tessellator1.addVertex(f10, 99.9D, f10);
+        tessellator1.addVertex(-f10, 99.9D, f10);
+        tessellator1.draw();
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         f10 = this.sunSize;
         mc.renderEngine.bindTexture(SkyProviderMars.sunTexture);
         tessellator1.startDrawingQuads();

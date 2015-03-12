@@ -212,6 +212,19 @@ public class SkyProviderOrbit extends IRenderHandler
         GL11.glRotatef(celestialAngle * 360.0F, 1.0F, 0.0F, 0.0F);
         if (this.renderSun)
         {
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);        
+            var12 = 8.0F;
+            var23.startDrawingQuads();
+            var23.addVertex(-var12, 99.9D, -var12);
+            var23.addVertex(var12, 99.9D, -var12);
+            var23.addVertex(var12, 99.9D, var12);
+            var23.addVertex(-var12, 99.9D, var12);
+            var23.draw();
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             var12 = 28.0F;
             this.minecraft.renderEngine.bindTexture(SkyProviderOrbit.sunTexture);
             var23.startDrawingQuads();
@@ -224,6 +237,19 @@ public class SkyProviderOrbit extends IRenderHandler
 
         if (this.renderMoon)
         {
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);        
+            var12 = 11.5F;
+            var23.startDrawingQuads();
+            var23.addVertex(-var12, -99.9D, var12);
+            var23.addVertex(var12, -99.9D, var12);
+            var23.addVertex(var12, -99.9D, -var12);
+            var23.addVertex(-var12, -99.9D, -var12);
+            var23.draw();
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             var12 = 40.0F;
             this.minecraft.renderEngine.bindTexture(SkyProviderOrbit.moonTexture);
             float var28 = this.minecraft.theWorld.getMoonPhase();
