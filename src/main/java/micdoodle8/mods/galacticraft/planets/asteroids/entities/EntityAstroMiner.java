@@ -113,7 +113,8 @@ public class EntityAstroMiner extends Entity
         	this.flagLink = true;
         }
         if (nbt.hasKey("TargetX")) this.posTarget = new BlockVec3(nbt.getInteger("TargetX"), nbt.getInteger("TargetY"), nbt.getInteger("TargetZ"));
-        if (nbt.hasKey("BaseFacing")) this.baseFacing = nbt.getInteger("BaseFacing");       
+        if (nbt.hasKey("WBaseX")) this.waypointBase = new BlockVec3(nbt.getInteger("WBaseX"), nbt.getInteger("WBaseY"), nbt.getInteger("WBaseZ"));
+        if (nbt.hasKey("BaseFacing")) this.baseFacing = nbt.getInteger("BaseFacing");
         if (nbt.hasKey("AIState")) this.AIstate = nbt.getInteger("AIState");       
         System.out.println("Astro Miner: Successful read from NBT");
     }
@@ -150,6 +151,12 @@ public class EntityAstroMiner extends Entity
 	        nbt.setInteger("TargetX", this.posTarget.x);
 	        nbt.setInteger("TargetY", this.posTarget.y);
 	        nbt.setInteger("TargetZ", this.posTarget.z);
+        }
+        if (this.waypointBase != null)
+        {
+	        nbt.setInteger("WBaseX", this.waypointBase.x);
+	        nbt.setInteger("WBaseY", this.waypointBase.y);
+	        nbt.setInteger("WBaseZ", this.waypointBase.z);
         }
         nbt.setInteger("BaseFacing", this.baseFacing);
         nbt.setInteger("AIState", this.AIstate);
@@ -315,6 +322,12 @@ public class EntityAstroMiner extends Entity
 
 	private void moveToTarget()
 	{
+		if (this.posTarget == null)
+		{
+			AIstate = 0;
+			return;
+		}
+		
 		if (this.moveToPos(this.posTarget, false))
 		{
 			AIstate = 2;
@@ -336,6 +349,12 @@ public class EntityAstroMiner extends Entity
 
 	private void moveToBase()
 	{
+		if (this.waypointBase == null)
+		{
+			AIstate = 0;
+			return;
+		}
+		
 		if (this.moveToPos(this.waypointBase, true))
 		{
 			AIstate = 4;

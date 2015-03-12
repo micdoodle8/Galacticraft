@@ -158,9 +158,9 @@ public class InGameScreen
         	drawBlackBackground(0.09F);
         	break;
         case 1:
-	        if (ClientProxyCore.overworldTextureClient != null)
+	        if (ClientProxyCore.overworldTextureLocal != null)
 	        {
-	            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureClient.getGlTextureId());
+	            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureLocal.getGlTextureId());
 	        }
 	        else
 	        {

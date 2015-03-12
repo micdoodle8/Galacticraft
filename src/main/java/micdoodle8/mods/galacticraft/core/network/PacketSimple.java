@@ -873,7 +873,7 @@ public class PacketSimple extends Packet implements IPacket
                     {
                         if (folder.exists() || folder.mkdir())
                         {
-                            File file0 = new File(folder, "overworld.png");
+                            File file0 = new File(folder, "overworldLocal.png");
 
                             if (!file0.exists() || (file0.canRead() && file0.canWrite()))
                             {
@@ -883,12 +883,12 @@ public class PacketSimple extends Packet implements IPacket
 
                                 if (img != null)
                                 {
-                                    ClientProxyCore.overworldTextureClient = new DynamicTexture(img);
+                                    ClientProxyCore.overworldTextureLocal = new DynamicTexture(img);
                                 }
                             }
                             else
                             {
-                                System.err.println("Cannot read/write to file %minecraftDir%/assets/temp/overworld.png");
+                                System.err.println("Cannot read/write to file %minecraftDir%/assets/temp/overworldLocal.png");
                             }
                         }
                         else
@@ -1359,6 +1359,8 @@ public class PacketSimple extends Packet implements IPacket
         	}
         	break;
         case S_REQUEST_OVERWORLD_IMAGE:
+        	if (GalacticraftCore.enableJPEG)
+        	{
             ChunkCoordIntPair chunkCoordIntPair = new ChunkCoordIntPair((int)Math.floor(stats.coordsTeleportedFromX) >> 4, (int)Math.floor(stats.coordsTeleportedFromZ) >> 4);
             File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
             if (!baseFolder.exists())
@@ -1444,7 +1446,7 @@ public class PacketSimple extends Packet implements IPacket
             {
                 System.err.println("[Galacticraft] Error creating player's overworld texture, please report this as a bug!");
             }
-
+        	}
             break;
         case S_REQUEST_PLAYERSKIN:
         	String strName = (String) this.data.get(0);

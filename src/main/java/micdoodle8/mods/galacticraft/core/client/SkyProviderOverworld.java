@@ -233,9 +233,9 @@ public class SkyProviderOverworld extends IRenderHandler
         scale = Math.max(scale, 0.2F);
         GL11.glScalef(scale, 0.0F, scale);
         GL11.glTranslatef(0.0F, -var20, 0.0F);
-        if (ClientProxyCore.overworldTextureClient != null)
+        if (ClientProxyCore.overworldTextureLocal != null)
         {
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureClient.getGlTextureId());
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureLocal.getGlTextureId());
         }
         else
         {

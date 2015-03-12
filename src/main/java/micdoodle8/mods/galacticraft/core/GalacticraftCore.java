@@ -113,6 +113,7 @@ public class GalacticraftCore
 
     public static ImageWriter jpgWriter;
     public static ImageWriteParam writeParam;
+    public static boolean enableJPEG = false;
     
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
@@ -319,10 +320,17 @@ public class GalacticraftCore
         TickHandlerServer.restart();
         BlockVec3.chunkCacheDim = Integer.MAX_VALUE;
         
-        jpgWriter = ImageIO.getImageWritersByFormatName("jpg").next();
-        writeParam = jpgWriter.getDefaultWriteParam();
-        writeParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-        writeParam.setCompressionQuality(1.0f);
+        try {
+	        jpgWriter = ImageIO.getImageWritersByFormatName("jpg").next();
+	        writeParam = jpgWriter.getDefaultWriteParam();
+	        writeParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+	        writeParam.setCompressionQuality(1.0f);
+	        enableJPEG = true;
+        } catch (Exception e)
+        {
+        	GCLog.severe("Error initialising JPEG compressor - this is likely caused by a known bug in OpenJDK.");
+        	e.printStackTrace();
+        }
     }
 
     @EventHandler

@@ -23,7 +23,7 @@ public class GameScreenBasic implements IGameScreen
     private float textureAy = 0F;
     private float textureBx = 1.0F;
     private float textureBy = 1.0F;
-    
+    //private DynamicTexture localMap;
 
     public GameScreenBasic()
     {
@@ -73,9 +73,9 @@ public class GameScreenBasic implements IGameScreen
         	drawBlackBackground(0.09F);
         	break;
         case 1:
-	        if (ClientProxyCore.overworldTextureClient != null)
+	        if (ClientProxyCore.overworldTextureLocal != null)
 	        {
-	            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureClient.getGlTextureId());
+	            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureLocal.getGlTextureId());
 	        }
 	        else
 	        {

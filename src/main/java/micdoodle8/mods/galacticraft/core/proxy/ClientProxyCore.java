@@ -154,6 +154,7 @@ public class ClientProxyCore extends CommonProxyCore
     //private static int playerList;
 
     public static DynamicTexture overworldTextureClient;
+    public static DynamicTexture overworldTextureLocal;
     public static boolean overworldTextureRequestSent = false;
 
     @Override
