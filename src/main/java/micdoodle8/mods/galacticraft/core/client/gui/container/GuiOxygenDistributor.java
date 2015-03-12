@@ -152,7 +152,7 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
     @Override
     public void onSelectionChanged(GuiElementCheckbox checkbox, boolean newSelected)
     {
-        this.distributor.oxygenBubble.setShouldRender(newSelected);
+        if (this.distributor.oxygenBubble != null) this.distributor.oxygenBubble.setShouldRender(newSelected);
         GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 6, this.distributor.xCoord, this.distributor.yCoord, this.distributor.zCoord, newSelected ? 1 : 0 }));
     }
 
