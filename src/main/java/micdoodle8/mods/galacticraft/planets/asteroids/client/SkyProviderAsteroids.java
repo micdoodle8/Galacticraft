@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
-import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
@@ -84,13 +83,6 @@ public class SkyProviderAsteroids extends IRenderHandler
     @Override
     public void render(float partialTicks, WorldClient world, Minecraft mc)
     {
-        WorldProviderMars gcProvider = null;
-
-        if (world.provider instanceof WorldProviderMars)
-        {
-            gcProvider = (WorldProviderMars) world.provider;
-        }
-
         float var10;
         float var11;
         float var12;
@@ -109,31 +101,12 @@ public class SkyProviderAsteroids extends IRenderHandler
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         RenderHelper.disableStandardItemLighting();
 
-        float var20 = 0.55F;
-
-        if (var20 > 0.0F)
-        {
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-            GL11.glColor4f(var20, var20, var20, var20);
-            GL11.glCallList(this.starGLCallList);
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
-        }
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glColor4f(0.7F, 0.7F, 0.7F, 0.7F);
+        GL11.glCallList(this.starGLCallList);
 
         GL11.glPushMatrix();
-
-        GL11.glDisable(GL11.GL_BLEND);
-
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
-        GL11.glEnable(GL11.GL_FOG);
-        GL11.glPopMatrix();
-
-        GL11.glEnable(GL11.GL_BLEND);
-
-        GL11.glPushMatrix();
 
         // Sun:
         GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
@@ -164,8 +137,6 @@ public class SkyProviderAsteroids extends IRenderHandler
         GL11.glPopMatrix();
 
         GL11.glPushMatrix();
-
-        GL11.glDisable(GL11.GL_BLEND);
 
         // HOME:
         var12 = 0.5F;
@@ -246,7 +217,7 @@ public class SkyProviderAsteroids extends IRenderHandler
             double var4 = var1.nextFloat() * 2.0F - 1.0F;
             double var6 = var1.nextFloat() * 2.0F - 1.0F;
             double var8 = var1.nextFloat() * 2.0F - 1.0F;
-            final double var10 = 0.15F + var1.nextFloat() * 0.1F;
+            final double var10 = 0.08F + var1.nextFloat() * 0.07F;
             double var12 = var4 * var4 + var6 * var6 + var8 * var8;
 
             if (var12 < 1.0D && var12 > 0.01D)
@@ -255,9 +226,9 @@ public class SkyProviderAsteroids extends IRenderHandler
                 var4 *= var12;
                 var6 *= var12;
                 var8 *= var12;
-                final double var14 = var4 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 150D + 130D : 100.0D);
-                final double var16 = var6 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 150D + 130D : 100.0D);
-                final double var18 = var8 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 150D + 130D : 100.0D);
+                final double pX = var4 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 75D + 65D : 80.0D);
+                final double pY = var6 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 75D + 65D : 80.0D);
+                final double pZ = var8 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 75D + 65D : 80.0D);
                 final double var20 = Math.atan2(var4, var8);
                 final double var22 = Math.sin(var20);
                 final double var24 = Math.cos(var20);
@@ -268,18 +239,17 @@ public class SkyProviderAsteroids extends IRenderHandler
                 final double var34 = Math.sin(var32);
                 final double var36 = Math.cos(var32);
 
-                for (int var38 = 0; var38 < 4; ++var38)
+                for (int i = 0; i < 4; ++i)
                 {
-                    final double var39 = 0.0D;
-                    final double var41 = ((var38 & 2) - 1) * var10;
-                    final double var43 = ((var38 + 1 & 2) - 1) * var10;
-                    final double var47 = var41 * var36 - var43 * var34;
-                    final double var49 = var43 * var36 + var41 * var34;
-                    final double var53 = var47 * var28 + var39 * var30;
-                    final double var55 = var39 * var28 - var47 * var30;
-                    final double var57 = var55 * var22 - var49 * var24;
-                    final double var61 = var49 * var22 + var55 * var24;
-                    var2.addVertex(var14 + var57, var16 + var53, var18 + var61);
+                    final double i1 = ((i & 2) - 1) * var10;
+                    final double i2 = ((i + 1 & 2) - 1) * var10;
+                    final double var47 = i1 * var36 - i2 * var34;
+                    final double var49 = i2 * var36 + i1 * var34;
+                    final double var55 = -var47 * var30;
+                    final double dX = var55 * var22 - var49 * var24;
+                    final double dZ = var49 * var22 + var55 * var24;
+                    final double dY = var47 * var28;
+                    var2.addVertex(pX + dX, pY + dY, pZ + dZ);
                 }
             }
         }
