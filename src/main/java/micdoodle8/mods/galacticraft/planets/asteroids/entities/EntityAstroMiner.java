@@ -179,6 +179,7 @@ public class EntityAstroMiner extends Entity
 
         if (this.worldObj.isRemote)
         {
+        	//need to send this.facing, AIstate, targetrots and then do setboundingbox
         	//this.checkRotation();
         	if (this.turnProgress > 0)
             {

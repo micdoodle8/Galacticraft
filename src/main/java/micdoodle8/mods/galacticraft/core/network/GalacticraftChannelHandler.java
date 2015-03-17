@@ -9,6 +9,7 @@ import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 import java.util.EnumMap;
@@ -89,9 +90,15 @@ public class GalacticraftChannelHandler extends FMLIndexedMessageToMessageCodec<
      */
     public void sendToAllAround(IPacket message, NetworkRegistry.TargetPoint point)
     {
-        this.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALLAROUNDPOINT);
-        this.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(point);
-        this.channels.get(Side.SERVER).writeOutbound(message);
+    	try {
+	        this.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALLAROUNDPOINT);
+	        this.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(point);
+	        this.channels.get(Side.SERVER).writeOutbound(message);
+    	} catch (Exception e)
+    	{
+    		GCLog.severe("Forge error when sending network packet to nearby players - this is not a Galacticraft bug, does another mod make fake players?");
+    		e.printStackTrace();
+    	}
     }
 
     /**
@@ -105,9 +112,15 @@ public class GalacticraftChannelHandler extends FMLIndexedMessageToMessageCodec<
      */
     public void sendToDimension(IPacket message, int dimensionId)
     {
-        this.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.DIMENSION);
-        this.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(dimensionId);
-        this.channels.get(Side.SERVER).writeOutbound(message);
+    	try {
+	    	this.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.DIMENSION);
+	        this.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(dimensionId);
+	        this.channels.get(Side.SERVER).writeOutbound(message);
+    	} catch (Exception e)
+    	{
+    		GCLog.severe("Forge error when sending network packet to all players in dimension - this is not a Galacticraft bug, does another mod make fake players?");
+    		e.printStackTrace();
+    	}
     }
 
     /**
