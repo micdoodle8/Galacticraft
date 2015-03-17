@@ -1082,7 +1082,9 @@ public class WorldUtil
             		generateTCAuraNodes.invoke(generatorTCAuraNodes, world, fmlRandom, chunkX, chunkZ, false, true);	            		
 	            }
 	            
-	        } catch (Exception e) { e.printStackTrace(); }
+	        } catch (Exception e) {
+	        	GCLog.severe("Error in another mod's worldgen.  This is NOT a Galacticraft bug.");
+	        	e.printStackTrace(); }
         }
         return true;
     }

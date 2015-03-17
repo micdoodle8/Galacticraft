@@ -331,6 +331,12 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
     }
 
     @Override
+    public boolean hasTileEntity(int metadata)
+    {
+        return metadata == 15;
+    }
+
+    @Override
     public boolean isValueable(int metadata)
     {
         switch (metadata)

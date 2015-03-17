@@ -366,4 +366,10 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     	int meta = world.getBlockMetadata(x, y, z);
     	return (meta == 6 || meta == 9);
     }
+    
+    @Override
+    public boolean hasTileEntity(int metadata)
+    {
+        return metadata == 10;
+    }
 }

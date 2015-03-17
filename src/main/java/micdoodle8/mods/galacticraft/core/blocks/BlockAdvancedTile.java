@@ -8,7 +8,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.ChunkProviderServer;
 
 import java.util.Random;
 
@@ -33,10 +37,62 @@ public abstract class BlockAdvancedTile extends BlockAdvanced implements ITileEn
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int par6)
+    public void breakBlock(World world, int x, int y, int z, Block block, int metadata)
     {
-        this.dropEntireInventory(world, x, y, z, block, par6);
-        super.breakBlock(world, x, y, z, block, par6);
+    	if (this.hasTileEntity(metadata))
+    	{
+	    	//Workaround for long-standing bug in cofh.core.world.WorldHandler which should not use world.setBlock() on blocks which have tile entities during chunk population
+	    	boolean flagWorkAround = true;
+	    	if (world.blockExists(x,  y,  z))
+	    	{
+	    		IChunkProvider cps = world.getChunkProvider();
+	    		if (cps instanceof ChunkProviderServer)
+	    		{
+	    			int cx = x >> 4;
+	    			int cz = z >> 4;
+	    			Object chunk1 = ((ChunkProviderServer)cps).loadedChunkHashMap.getValueByKey(ChunkCoordIntPair.chunkXZ2Int(cx, cz));
+	    			Object chunk2, chunk3;
+	    			switch (x & 15)
+	    			{
+	    			case 0:
+	    				chunk2 = ((ChunkProviderServer)cps).loadedChunkHashMap.getValueByKey(ChunkCoordIntPair.chunkXZ2Int(cx - 1, cz));
+	    				break;
+	    			case 15:
+	    				chunk2 = ((ChunkProviderServer)cps).loadedChunkHashMap.getValueByKey(ChunkCoordIntPair.chunkXZ2Int(cx + 1, cz));
+	    				break;
+	    			default:
+	    				chunk2 = chunk1;
+	    			}
+	    			switch (z & 15)
+	    			{
+	    			case 0:
+	    				chunk3 = ((ChunkProviderServer)cps).loadedChunkHashMap.getValueByKey(ChunkCoordIntPair.chunkXZ2Int(cx, cz - 1));
+	    				break;
+	    			case 15:
+	    				chunk3 = ((ChunkProviderServer)cps).loadedChunkHashMap.getValueByKey(ChunkCoordIntPair.chunkXZ2Int(cx, cz + 1));
+	    				break;
+	    			default:
+	    				chunk3 = chunk1;
+	    			}
+	    			
+	    			if (chunk1 instanceof Chunk && ((Chunk)chunk1).isTerrainPopulated && chunk2 instanceof Chunk && ((Chunk)chunk2).isTerrainPopulated && chunk3 instanceof Chunk && ((Chunk)chunk3).isTerrainPopulated)
+			    	{
+	    				//Standard this.breakBlock() code for normal use except during CoFHCore worldgen
+				    	this.dropEntireInventory(world, x, y, z, block, metadata);
+				        super.breakBlock(world, x, y, z, block, metadata);
+				        flagWorkAround = false;
+			    	}
+	    		}
+	    	}
+	    	if (flagWorkAround)
+	    	{
+	    		TileEntity tileNew = world.getTileEntity(x,  y,  z);
+	    		if (tileNew != null)
+	    		{
+	    			tileNew.invalidate();
+	    		}
+	    	}
+    	}
     }
 
     @Override
