@@ -665,6 +665,7 @@ gc.configgui.suffocationCooldown=Suffocation Cooldown
 gc.configgui.suffocationDamage=Suffocation Damage
 gc.configgui.enableSealerEdgeChecks=Sealer Edge Checks
 gc.configgui.alternateCanisterRecipe=Alternate Canister Recipe
+gc.configgui.oreDictSilicon=OreDict name of silicon in other mods
 gc.configgui.rocketFuelFactor=Rocket Fuel Factor
 gc.configgui.dungeonBossHealthMod=Dungeon Boss Health Modifier
 gc.configgui.hardMode=Harder Difficulty

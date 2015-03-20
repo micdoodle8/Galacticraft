@@ -28,6 +28,7 @@ public class ConfigManagerCore
 {
     static Configuration config;
 
+    // DIMENSIONS
     public static int idDimensionOverworldOrbit;
     public static int idDimensionOverworldOrbitStatic;
     public static int idDimensionMoon;
@@ -41,19 +42,18 @@ public class ConfigManagerCore
     // ACHIEVEMENTS
     public static int idAchievBase;
 
-    // GENERAL
+    // CLIENT / VISUAL FX
     public static boolean moreStars;
-    public static String[] sealableIDs = { };
-    public static String[] detectableIDs = { };
-    public static String[] oregenIDs = { };
-    public static boolean disableSpaceshipParticles;
-    public static boolean disableSpaceshipGrief;
+    public static boolean disableSpaceshipParticles;  
     public static boolean oxygenIndicatorLeft;
     public static boolean oxygenIndicatorBottom;
+    public static boolean overrideCapes;
+    
+    // GENERAL
+    public static boolean disableSpaceshipGrief;
     public static double oilGenFactor;
     public static boolean spaceStationsRequirePermission;
     public static boolean disableSpaceStationCreation;
-    public static boolean overrideCapes;
     public static double spaceStationEnergyScalar;
     public static boolean disableLander;
     public static double dungeonBossHealthMod;
@@ -74,12 +74,18 @@ public class ConfigManagerCore
     public static boolean disableTinMoon;
     public static boolean disableCopperMoon;
     public static boolean disableMoonVillageGen;
-    public static boolean enableOtherModsFeatures;
-	public static boolean enableThaumCraftNodes;
     public static boolean enableSealerEdgeChecks;
-    public static boolean alternateCanisterRecipe;
     public static boolean disableRocketsToOverworld;
     public static int rocketFuelFactor;
+    
+    //COMPATIBILITY
+    public static String[] sealableIDs = { };
+    public static String[] detectableIDs = { };
+    public static String[] oregenIDs = { };
+    public static boolean enableOtherModsFeatures;
+	public static boolean enableThaumCraftNodes;
+    public static boolean alternateCanisterRecipe;
+    public static String otherModsSilicon;
     
     public static ArrayList<Object> clientSave = null;
 
@@ -393,6 +399,12 @@ public class ConfigManagerCore
             prop.comment = "Enable this if the standard canister recipe causes a conflict.";
             prop.setLanguageKey("gc.configgui.alternateCanisterRecipe").setRequiresMcRestart(true);
             alternateCanisterRecipe = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "OreDict name of other mod's silicon usable in Galacticraft", "itemSilicon");
+            prop.comment = "This needs to match the OreDictionary name used in the other mod. Set a nonsense name to disable.";
+            prop.setLanguageKey("gc.configgui.oreDictSilicon").setRequiresMcRestart(true);
+            otherModsSilicon = prop.getString();
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Rocket fuel factor", 1);

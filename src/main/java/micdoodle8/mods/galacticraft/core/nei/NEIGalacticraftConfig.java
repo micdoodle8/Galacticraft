@@ -255,7 +255,7 @@ public class NEIGalacticraftConfig implements IConfigureNEI
     {
         HashMap<Integer, PositionedStack> input1 = new HashMap<Integer, PositionedStack>();
         input1.put(0, new PositionedStack(new ItemStack(Items.diamond), 10, 22));
-        int siliconCount = OreDictionary.getOres("itemSilicon").size();
+        int siliconCount = OreDictionary.getOres(ConfigManagerCore.otherModsSilicon).size();
         ItemStack[] silicons = new ItemStack[siliconCount + 1];
         silicons[0] = new ItemStack(GCItems.basicItem, 1, 2);
         for (int j = 0; j < siliconCount; j++)
