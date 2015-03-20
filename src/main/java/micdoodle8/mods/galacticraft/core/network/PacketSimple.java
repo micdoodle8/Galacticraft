@@ -548,59 +548,7 @@ public class PacketSimple extends Packet implements IPacket
             ClientProxyCore.clientSpaceStationID = (Integer) this.data.get(0);
             break;
         case C_UPDATE_PLANETS_LIST:
-            try
-            {
-                if (ConfigManagerCore.enableDebug)
-                	System.out.println("GC connecting to server: received planets dimension ID list.");
-            	if (WorldUtil.registeredPlanets != null)
-                {
-                    for (Integer registeredID : WorldUtil.registeredPlanets)
-                    {
-                        DimensionManager.unregisterDimension(registeredID);
-                    }
-                }
-                WorldUtil.registeredPlanets = new ArrayList<Integer>();
-
-                String ids = "";
-                if (this.data.size() > 0)
-                {
-                	//Start the provider index at offset 2 to skip the two Overworld Orbit dimensions
-                	int providerIndex = 2;
-                    if (this.data.get(0) instanceof Integer)
-                    {
-                    	for (Object o : this.data)
-                        {
-                            WorldUtil.registerPlanetClient((Integer) o, providerIndex);
-                            providerIndex++;
-                            ids += ((Integer)o).toString() + " ";
-                        }
-                    }
-                    else if (this.data.get(0) instanceof Integer[])
-                    {
-                        for (Object o : (Integer[]) this.data.get(0))
-                        {
-                            WorldUtil.registerPlanetClient((Integer) o, providerIndex);
-                            providerIndex++;
-                            ids += ((Integer)o).toString() + " ";
-                        }
-                    }
-                }
-                if (ConfigManagerCore.enableDebug)
-                {
-                	System.out.println("GC clientside planet dimensions registered: "+ids);
-                	WorldProvider dimMoon = WorldUtil.getProviderForName("moon.moon");
-                	if (dimMoon != null) System.out.println("Crosscheck: Moon is "+dimMoon.dimensionId);
-                	WorldProvider dimMars = WorldUtil.getProviderForName("planet.mars");
-                	if (dimMoon != null) System.out.println("Crosscheck: Mars is "+dimMars.dimensionId);
-                	WorldProvider dimAst = WorldUtil.getProviderForName("planet.asteroids");
-                	if (dimMoon != null) System.out.println("Crosscheck: Asteroids is "+dimAst.dimensionId);
-                }
-                break;
-            }
-            catch (final Exception e)
-            {
-                e.printStackTrace();
-            }
+        	WorldUtil.decodePlanetsListClient(data);
             break;
         case C_UPDATE_CONFIGS:
         	ConfigManagerCore.saveClientConfigOverrideable();

@@ -963,6 +963,62 @@ public class WorldUtil
         return objList;
     }
 
+    public static void decodePlanetsListClient(List<Object> data)
+    {
+        try
+        {
+            if (ConfigManagerCore.enableDebug)
+            	System.out.println("GC connecting to server: received planets dimension ID list.");
+        	if (WorldUtil.registeredPlanets != null)
+            {
+                for (Integer registeredID : WorldUtil.registeredPlanets)
+                {
+                    DimensionManager.unregisterDimension(registeredID);
+                }
+            }
+            WorldUtil.registeredPlanets = new ArrayList<Integer>();
+
+            String ids = "";
+            if (data.size() > 0)
+            {
+            	//Start the provider index at offset 2 to skip the two Overworld Orbit dimensions
+            	int providerIndex = 2;
+                if (data.get(0) instanceof Integer)
+                {
+                	for (Object o : data)
+                    {
+                        WorldUtil.registerPlanetClient((Integer) o, providerIndex);
+                        providerIndex++;
+                        ids += ((Integer)o).toString() + " ";
+                    }
+                }
+                else if (data.get(0) instanceof Integer[])
+                {
+                    for (Object o : (Integer[]) data.get(0))
+                    {
+                        WorldUtil.registerPlanetClient((Integer) o, providerIndex);
+                        providerIndex++;
+                        ids += ((Integer)o).toString() + " ";
+                    }
+                }
+            }
+            if (ConfigManagerCore.enableDebug)
+            {
+            	System.out.println("GC clientside planet dimensions registered: "+ids);
+            	WorldProvider dimMoon = WorldUtil.getProviderForName("moon.moon");
+            	if (dimMoon != null) System.out.println("Crosscheck: Moon is "+dimMoon.dimensionId);
+            	WorldProvider dimMars = WorldUtil.getProviderForName("planet.mars");
+            	if (dimMoon != null) System.out.println("Crosscheck: Mars is "+dimMars.dimensionId);
+            	WorldProvider dimAst = WorldUtil.getProviderForName("planet.asteroids");
+            	if (dimMoon != null) System.out.println("Crosscheck: Asteroids is "+dimAst.dimensionId);
+            }
+        }
+        catch (final Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
     public static List<Object> getSpaceStationList()
     {
         Integer[] iArray = new Integer[WorldUtil.registeredSpaceStations.size()];
