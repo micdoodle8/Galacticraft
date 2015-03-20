@@ -84,7 +84,6 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.DimensionManager;
 import org.apache.commons.io.FileUtils;
 
 import javax.imageio.IIOImage;
@@ -480,65 +479,7 @@ public class PacketSimple extends Packet implements IPacket
             FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = stats.thirdPersonView;
             break;
         case C_UPDATE_SPACESTATION_LIST:
-            try
-            {
-                if (WorldUtil.registeredSpaceStations != null)
-                {
-                    for (Integer registeredID : WorldUtil.registeredSpaceStations)
-                    {
-                        DimensionManager.unregisterDimension(registeredID);
-                    }
-                }
-                WorldUtil.registeredSpaceStations = new ArrayList<Integer>();
-
-                if (this.data.size() > 0)
-                {
-                    if (this.data.get(0) instanceof Integer)
-                    {
-                        for (Object o : this.data)
-                        {
-                            Integer dimID = (Integer) o;
-
-                            if (!WorldUtil.registeredSpaceStations.contains(dimID))
-                            {
-                                WorldUtil.registeredSpaceStations.add(dimID);
-                                if (!DimensionManager.isDimensionRegistered(dimID))
-                                {
-                                    DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbit);
-                                }
-                                else
-                                {
-                                    GCLog.severe("Dimension already registered on client: unable to register space station dimension " + dimID);
-                                }
-                            }
-                        }
-                    }
-                    else if (this.data.get(0) instanceof Integer[])
-                    {
-                        for (Object o : (Integer[]) this.data.get(0))
-                        {
-                            Integer dimID = (Integer) o;
-
-                            if (!WorldUtil.registeredSpaceStations.contains(dimID))
-                            {
-                                WorldUtil.registeredSpaceStations.add(dimID);
-                                if (!DimensionManager.isDimensionRegistered(dimID))
-                                {
-                                    DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbit);
-                                }
-                                else
-                                {
-                                    GCLog.severe("Dimension already registered on client: unable to register space station dimension " + dimID);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            catch (final Exception e)
-            {
-                e.printStackTrace();
-            }
+        	WorldUtil.decodeSpaceStationListClient(data);
             break;
         case C_UPDATE_SPACESTATION_DATA:
             SpaceStationWorldData var4 = SpaceStationWorldData.getMPSpaceStationData(player.worldObj, (Integer) this.data.get(0), player);

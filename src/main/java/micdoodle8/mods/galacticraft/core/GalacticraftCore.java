@@ -31,6 +31,7 @@ import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
 import micdoodle8.mods.galacticraft.core.network.ConnectionEvents;
+import micdoodle8.mods.galacticraft.core.network.ConnectionPacket;
 import micdoodle8.mods.galacticraft.core.network.GalacticraftChannelHandler;
 import micdoodle8.mods.galacticraft.core.proxy.CommonProxyCore;
 import micdoodle8.mods.galacticraft.core.recipe.RecipeManagerGC;
@@ -60,6 +61,7 @@ import net.minecraftforge.fluids.FluidStack;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -126,6 +128,9 @@ public class GalacticraftCore
         MinecraftForge.EVENT_BUS.register(handler);
         FMLCommonHandler.instance().bus().register(handler);
         GalacticraftCore.proxy.preInit(event);
+        
+        ConnectionPacket.bus = NetworkRegistry.INSTANCE.newEventDrivenChannel(ConnectionPacket.CHANNEL);
+        ConnectionPacket.bus.register(new ConnectionPacket());
 
         ConfigManagerCore.initialize(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
         FMLCommonHandler.instance().bus().register(new ConfigManagerCore());

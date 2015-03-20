@@ -951,6 +951,13 @@ public class WorldUtil
      */
     public static List<Object> getPlanetList()
     {
+        List<Object> objList = new ArrayList<Object>();
+        objList.add(getPlanetListInts());
+        return objList;
+    }
+
+    public static Integer[] getPlanetListInts()
+    {
         Integer[] iArray = new Integer[WorldUtil.registeredPlanets.size()];
 
         for (int i = 0; i < iArray.length; i++)
@@ -958,11 +965,9 @@ public class WorldUtil
             iArray[i] = WorldUtil.registeredPlanets.get(i);
         }
 
-        List<Object> objList = new ArrayList<Object>();
-        objList.add(iArray);
-        return objList;
+        return iArray;
     }
-
+    
     public static void decodePlanetsListClient(List<Object> data)
     {
         try
@@ -1021,6 +1026,13 @@ public class WorldUtil
     
     public static List<Object> getSpaceStationList()
     {
+        List<Object> objList = new ArrayList<Object>();
+        objList.add(getSpaceStationListInts());
+        return objList;
+    }
+
+    public static Integer[] getSpaceStationListInts()
+    {
         Integer[] iArray = new Integer[WorldUtil.registeredSpaceStations.size()];
 
         for (int i = 0; i < iArray.length; i++)
@@ -1028,9 +1040,60 @@ public class WorldUtil
             iArray[i] = WorldUtil.registeredSpaceStations.get(i);
         }
 
-        List<Object> objList = new ArrayList<Object>();
-        objList.add(iArray);
-        return objList;
+        return iArray;
+    }
+
+    public static void decodeSpaceStationListClient(List<Object> data)
+    {
+        try
+        {
+            if (WorldUtil.registeredSpaceStations != null)
+            {
+                for (Integer registeredID : WorldUtil.registeredSpaceStations)
+                {
+                    DimensionManager.unregisterDimension(registeredID);
+                }
+            }
+            WorldUtil.registeredSpaceStations = new ArrayList<Integer>();
+
+            if (data.size() > 0)
+            {
+                if (data.get(0) instanceof Integer)
+                {
+                    for (Object dimID : data)
+                    {
+                        registerSSdim((Integer) dimID);
+                    }
+                }
+                else if (data.get(0) instanceof Integer[])
+                {
+                    for (Object dimID : (Integer[]) data.get(0))
+                    {
+                        registerSSdim((Integer) dimID);
+                    }
+                }
+            }
+        }
+        catch (final Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private static void registerSSdim(Integer dimID)
+    {
+	    if (!WorldUtil.registeredSpaceStations.contains(dimID))
+	    {
+	        WorldUtil.registeredSpaceStations.add(dimID);
+	        if (!DimensionManager.isDimensionRegistered(dimID))
+	        {
+	            DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbit);
+	        }
+	        else
+	        {
+	            GCLog.severe("Dimension already registered on client: unable to register space station dimension " + dimID);
+	        }
+	    }
     }
 
     public static boolean otherModPreventGenerate(int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)

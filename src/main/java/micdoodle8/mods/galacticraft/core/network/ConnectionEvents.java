@@ -68,9 +68,9 @@ public class ConnectionEvents
         	}
         	GCLog.info("Galacticraft server sending dimension IDs to connecting client: "+ ids);
         }
-        event.manager.scheduleOutboundPacket(new PacketSimple(EnumSimplePacket.C_UPDATE_PLANETS_LIST, WorldUtil.getPlanetList()));
-        event.manager.scheduleOutboundPacket(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_LIST, WorldUtil.getSpaceStationList()));
-        event.manager.scheduleOutboundPacket(new PacketSimple(EnumSimplePacket.C_UPDATE_CONFIGS, ConfigManagerCore.getServerConfigOverride()));
+        event.manager.scheduleOutboundPacket(ConnectionPacket.createDimPacket(WorldUtil.getPlanetListInts()));
+        event.manager.scheduleOutboundPacket(ConnectionPacket.createSSPacket(WorldUtil.getSpaceStationListInts()));
+        event.manager.scheduleOutboundPacket(ConnectionPacket.createConfigPacket(ConfigManagerCore.getServerConfigOverride()));
     }
 
     @SubscribeEvent
