@@ -48,11 +48,17 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
             {
                 FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(this.containingItems[1]);
 
-                if (liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("oil"))
+                boolean isOil = false;
+                boolean isOilOther = false;
+                if (FluidRegistry.getFluidName(liquid).equalsIgnoreCase("oil")) isOil = true;
+                if (FluidRegistry.getFluidName(liquid).equalsIgnoreCase("oilgc")) isOilOther = true;
+
+                if (liquid != null && (isOil || isOilOther))
                 {
                     if (this.oilTank.getFluid() == null || this.oilTank.getFluid().amount + liquid.amount <= this.oilTank.getCapacity())
                     {
-                        this.oilTank.fill(liquid, true);
+                        if (isOil) this.fuelTank.fill(liquid, true);
+                        else this.fuelTank.fill(new FluidStack(GalacticraftCore.fluidOil, liquid.amount), true);
 
                         if (this.containingItems[1].getItem() instanceof ItemOilCanister)
                         {
@@ -61,6 +67,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
                         else if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
                         {
                             final int amount = this.containingItems[1].stackSize;
+                            if (amount > 1) this.fuelTank.fill(new FluidStack(GalacticraftCore.fluidOil, (amount - 1) * FluidContainerRegistry.BUCKET_VOLUME), true);
                             this.containingItems[1] = new ItemStack(Items.bucket, amount);
                         }
                         else
@@ -117,15 +124,18 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
         }
     }
 
-    private void tryFillContainer(FluidTank tank, FluidStack liquid, int slot, Item canister)
+    private void tryFillContainer(FluidTank tank, FluidStack liquid, int slot, Item fuelCanister)
     {
         ItemStack slotItem = this.containingItems[slot];
-        boolean isCanister = slotItem.getItem() instanceof ItemCanisterGeneric && slotItem.getItemDamage() > 1;
-        final int amountToFill = Math.min(liquid.amount, isCanister ? slotItem.getItemDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
+		boolean isCanister = slotItem.getItem() instanceof ItemCanisterGeneric;
+		final int amountToFill = Math.min(liquid.amount, isCanister ? slotItem.getItemDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
 
-        if (isCanister && amountToFill > 0)
+		if (amountToFill <= 0 || (isCanister && slotItem.getItem() != fuelCanister && slotItem.getItemDamage() != slotItem.getMaxDamage()))
+			return;
+		
+		if (isCanister)
         {
-            this.containingItems[slot] = new ItemStack(canister, 1, slotItem.getItemDamage() - amountToFill);
+            this.containingItems[slot] = new ItemStack(fuelCanister, 1, slotItem.getItemDamage() - amountToFill);
             tank.drain(amountToFill, true);
         }
         else if (amountToFill == FluidContainerRegistry.BUCKET_VOLUME)
