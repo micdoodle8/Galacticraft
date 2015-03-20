@@ -509,11 +509,16 @@ public class RecipeManagerGC
 
         CompressorRecipes.addRecipe(new ItemStack(GCItems.heavyPlatingTier1, configOutput, 0), "XYZ", "XYZ", 'X', new ItemStack(GCItems.basicItem, 1, 9), 'Y', new ItemStack(GCItems.basicItem, 1, 8), 'Z', new ItemStack(GCItems.basicItem, 1, 10));
 
-        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCItems.basicItem, 9, 12), new ItemStack[] { new ItemStack(Items.diamond), new ItemStack(GCItems.basicItem, 1, 2), new ItemStack(GCItems.basicItem, 1, 2), new ItemStack(Items.redstone), new ItemStack(Items.dye, 1, 4) });
-
-        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCItems.basicItem, ConfigManagerCore.quickMode ? 5 : 3, 13), new ItemStack[] { new ItemStack(Items.diamond), new ItemStack(GCItems.basicItem, 1, 2), new ItemStack(GCItems.basicItem, 1, 2), new ItemStack(Items.redstone), new ItemStack(Blocks.redstone_torch) });
-
-        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCItems.basicItem, configOutput, 14), new ItemStack[] { new ItemStack(Items.diamond), new ItemStack(GCItems.basicItem, 1, 2), new ItemStack(GCItems.basicItem, 1, 2), new ItemStack(Items.redstone), new ItemStack(Items.repeater) });
+        int siliconCount = OreDictionary.getOres("itemSilicon").size();
+        for (int j = 0; j <= siliconCount; j++)
+        {
+        	ItemStack silicon;
+        	if (j == 0) silicon = new ItemStack(GCItems.basicItem, 1, 2);
+        	else silicon = OreDictionary.getOres("itemSilicon").get(j - 1); 
+	        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCItems.basicItem, 9, 12), new ItemStack[] { new ItemStack(Items.diamond), silicon, silicon, new ItemStack(Items.redstone), new ItemStack(Items.dye, 1, 4) });
+	        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCItems.basicItem, ConfigManagerCore.quickMode ? 5 : 3, 13), new ItemStack[] { new ItemStack(Items.diamond), silicon, silicon, new ItemStack(Items.redstone), new ItemStack(Blocks.redstone_torch) });
+	        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCItems.basicItem, configOutput, 14), new ItemStack[] { new ItemStack(Items.diamond), silicon, silicon, new ItemStack(Items.redstone), new ItemStack(Items.repeater) });
+        }
     }
 
     private static void addBuildCraftCraftingRecipes()

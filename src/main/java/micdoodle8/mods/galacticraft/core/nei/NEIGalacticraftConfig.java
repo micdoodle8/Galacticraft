@@ -16,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.HashMap;
@@ -254,8 +255,15 @@ public class NEIGalacticraftConfig implements IConfigureNEI
     {
         HashMap<Integer, PositionedStack> input1 = new HashMap<Integer, PositionedStack>();
         input1.put(0, new PositionedStack(new ItemStack(Items.diamond), 10, 22));
-        input1.put(1, new PositionedStack(new ItemStack(GCItems.basicItem, 1, 2), 69, 51));
-        input1.put(2, new PositionedStack(new ItemStack(GCItems.basicItem, 1, 2), 69, 69));
+        int siliconCount = OreDictionary.getOres("itemSilicon").size();
+        ItemStack[] silicons = new ItemStack[siliconCount + 1];
+        silicons[0] = new ItemStack(GCItems.basicItem, 1, 2);
+        for (int j = 0; j < siliconCount; j++)
+        {
+        	silicons[j + 1] = OreDictionary.getOres("itemSilicon").get(j); 
+        }	
+        input1.put(1, new PositionedStack(silicons, 69, 51));
+        input1.put(2, new PositionedStack(silicons, 69, 69));      	
         input1.put(3, new PositionedStack(new ItemStack(Items.redstone), 117, 51));
         input1.put(4, new PositionedStack(new ItemStack(Blocks.redstone_torch), 140, 25));
         this.registerCircuitFabricatorRecipe(input1, new PositionedStack(new ItemStack(GCItems.basicItem, ConfigManagerCore.quickMode ? 5 : 3, 13), 147, 91));
