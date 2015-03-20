@@ -322,15 +322,18 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 		}
 	}
 	
-	private void tryFillContainer(FluidTank tank, FluidStack liquid, int slot, Item canister)
+	private void tryFillContainer(FluidTank tank, FluidStack liquid, int slot, Item fuelCanister)
 	{
 		ItemStack slotItem = this.chestContents[slot];
-		boolean isCanister = slotItem.getItem() instanceof ItemCanisterGeneric && slotItem.getItemDamage() > 1;
+		boolean isCanister = slotItem.getItem() instanceof ItemCanisterGeneric;
 		final int amountToFill = Math.min(liquid.amount, isCanister ? slotItem.getItemDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
 
-		if (isCanister && amountToFill > 0)
+		if (amountToFill <= 0 || (isCanister && slotItem.getItem() != fuelCanister && slotItem.getItemDamage() != slotItem.getMaxDamage()))
+			return;
+		
+		if (isCanister)
 		{
-			this.chestContents[slot] = new ItemStack(canister, 1, slotItem.getItemDamage() - amountToFill);
+			this.chestContents[slot] = new ItemStack(fuelCanister, 1, slotItem.getItemDamage() - amountToFill);
 			tank.drain(amountToFill, true);
 		}
 		else if (amountToFill == FluidContainerRegistry.BUCKET_VOLUME)
