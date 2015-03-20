@@ -52,12 +52,19 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
             if (this.containingItems[1] != null)
             {
                 final FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(this.containingItems[1]);
+                
+                boolean isFuel = false;
+                boolean isFuelOther = false;
+                if (FluidRegistry.getFluidName(liquid).equalsIgnoreCase("fuel")) isFuel = true;
+                if (FluidRegistry.getFluidName(liquid).equalsIgnoreCase("rocket_fuel")) isFuelOther = true;
+                if (FluidRegistry.getFluidName(liquid).equalsIgnoreCase("fuelgc")) isFuelOther = true;
 
-                if (liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("Fuel"))
+                if (liquid != null && (isFuel || isFuelOther))
                 {
                     if (this.fuelTank.getFluid() == null || this.fuelTank.getFluid().amount + liquid.amount <= this.fuelTank.getCapacity())
                     {
-                        this.fuelTank.fill(liquid, true);
+                        if (isFuel) this.fuelTank.fill(liquid, true);
+                        else this.fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, liquid.amount), true);
 
                         if (this.containingItems[1].getItem() instanceof ItemFuelCanister)
                         {
@@ -66,6 +73,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
                         else if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
                         {
                             final int amount = this.containingItems[1].stackSize;
+                            if (amount > 1) this.fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, (amount - 1) * FluidContainerRegistry.BUCKET_VOLUME), true);
                             this.containingItems[1] = new ItemStack(Items.bucket, amount);
                         }
                         else
