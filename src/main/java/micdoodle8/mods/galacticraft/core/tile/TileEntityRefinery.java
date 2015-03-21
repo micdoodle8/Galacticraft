@@ -48,38 +48,41 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
             {
                 FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(this.containingItems[1]);
 
-                boolean isOil = false;
-                boolean isOilOther = false;
-                if (FluidRegistry.getFluidName(liquid).equalsIgnoreCase("oil")) isOil = true;
-                if (FluidRegistry.getFluidName(liquid).equalsIgnoreCase("oilgc")) isOilOther = true;
-
-                if (liquid != null && (isOil || isOilOther))
+                if (liquid != null)
                 {
-                    if (this.oilTank.getFluid() == null || this.oilTank.getFluid().amount + liquid.amount <= this.oilTank.getCapacity())
-                    {
-                        if (isOil) this.fuelTank.fill(liquid, true);
-                        else this.fuelTank.fill(new FluidStack(GalacticraftCore.fluidOil, liquid.amount), true);
-
-                        if (this.containingItems[1].getItem() instanceof ItemOilCanister)
-                        {
-                            this.containingItems[1] = new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage());
-                        }
-                        else if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
-                        {
-                            final int amount = this.containingItems[1].stackSize;
-                            if (amount > 1) this.fuelTank.fill(new FluidStack(GalacticraftCore.fluidOil, (amount - 1) * FluidContainerRegistry.BUCKET_VOLUME), true);
-                            this.containingItems[1] = new ItemStack(Items.bucket, amount);
-                        }
-                        else
-                        {
-                            this.containingItems[1].stackSize--;
-
-                            if (this.containingItems[1].stackSize == 0)
-                            {
-                                this.containingItems[1] = null;
-                            }
-                        }
-                    }
+                	boolean isOil = false;
+	                boolean isOilOther = false;
+	                if (FluidRegistry.getFluidName(liquid).equalsIgnoreCase("oil")) isOil = true;
+	                if (FluidRegistry.getFluidName(liquid).equalsIgnoreCase("oilgc")) isOilOther = true;
+	
+	                if (isOil || isOilOther)
+	                {
+	                    if (this.oilTank.getFluid() == null || this.oilTank.getFluid().amount + liquid.amount <= this.oilTank.getCapacity())
+	                    {
+	                        if (isOil) this.fuelTank.fill(liquid, true);
+	                        else this.fuelTank.fill(new FluidStack(GalacticraftCore.fluidOil, liquid.amount), true);
+	
+	                        if (this.containingItems[1].getItem() instanceof ItemOilCanister)
+	                        {
+	                            this.containingItems[1] = new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage());
+	                        }
+	                        else if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
+	                        {
+	                            final int amount = this.containingItems[1].stackSize;
+	                            if (amount > 1) this.fuelTank.fill(new FluidStack(GalacticraftCore.fluidOil, (amount - 1) * FluidContainerRegistry.BUCKET_VOLUME), true);
+	                            this.containingItems[1] = new ItemStack(Items.bucket, amount);
+	                        }
+	                        else
+	                        {
+	                            this.containingItems[1].stackSize--;
+	
+	                            if (this.containingItems[1].stackSize == 0)
+	                            {
+	                                this.containingItems[1] = null;
+	                            }
+	                        }
+	                    }
+	                }
                 }
             }
 
