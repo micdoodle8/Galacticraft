@@ -70,6 +70,7 @@ public class WorldUtil
     private static IWorldGenerator generatorCoFH = null;
     private static IWorldGenerator generatorDenseOres = null;
     private static IWorldGenerator generatorTCAuraNodes = null;
+    private static IWorldGenerator generatorAE2meteors = null;
     private static Method generateTCAuraNodes = null;
     private static boolean generatorsInitialised = false;
 	
@@ -1152,7 +1153,22 @@ public class WorldUtil
 		        			break;
 		        		}
 	        	}
-
+	        } catch (Exception e) { }
+	        
+	        try {
+	        	Class ae2meteorPlace = Class.forName("appeng.hooks.MeteoriteWorldGen");
+	        	if (ae2meteorPlace != null)
+	        	{
+		        	final Field regField = Class.forName("cpw.mods.fml.common.registry.GameRegistry").getDeclaredField("worldGenerators");
+		            regField.setAccessible(true);
+		        	Set<IWorldGenerator> registeredGenerators = (Set<IWorldGenerator>) regField.get(null);
+		        	for (IWorldGenerator gen : registeredGenerators)
+		        		if (ae2meteorPlace.isInstance(gen))
+		        		{
+		        	        generatorAE2meteors = gen;
+		        			break;
+		        		}
+	        	}
 	        } catch (Exception e) { }
 	        
 	        try {
@@ -1180,10 +1196,11 @@ public class WorldUtil
 	        if (generatorGCGreg != null) System.out.println("Whitelisting GalacticGreg oregen on planets.");
 	        if (generatorCoFH != null) System.out.println("Whitelisting CoFHCore custom oregen on planets.");
 	        if (generatorDenseOres != null) System.out.println("Whitelisting Dense Ores oregen on planets.");
+	        if (generatorAE2meteors != null) System.out.println("Whitelisting AE2 meteorites worldgen on planets.");
 	        if (generatorTCAuraNodes != null && generateTCAuraNodes != null) System.out.println("Whitelisting ThaumCraft aura node generation on planets.");
         }
 
-        if (generatorGCGreg != null || generatorCoFH != null || generatorDenseOres != null || generatorTCAuraNodes != null)
+        if (generatorGCGreg != null || generatorCoFH != null || generatorDenseOres != null || generatorTCAuraNodes != null || generatorAE2meteors != null)
         {
         	try {
 	            long worldSeed = world.getSeed();
@@ -1196,6 +1213,7 @@ public class WorldUtil
 	            if (generatorCoFH != null) generatorCoFH.generate(fmlRandom, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
 	            if (generatorDenseOres != null) generatorDenseOres.generate(fmlRandom, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
 	            if (generatorGCGreg != null) generatorGCGreg.generate(fmlRandom, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+	            if (generatorAE2meteors != null) generatorAE2meteors.generate(fmlRandom, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
 	            if (generateTCAuraNodes != null)
 	            {
             		generateTCAuraNodes.invoke(generatorTCAuraNodes, world, fmlRandom, chunkX, chunkZ, false, true);	            		
