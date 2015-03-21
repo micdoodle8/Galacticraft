@@ -41,11 +41,12 @@ public class EntityBubble extends EntityAdvanced implements IPacketReceiver, IBu
         this.ignoreFrustumCheck = true;
     }
 
-    // @Override
-    // protected boolean pushOutOfBlocks(double par1, double par3, double par5)
-    // {
-    // return false;
-    // } TODO Find out if this is still needed
+    //This is pushOutOfBlocks
+    @Override
+    protected boolean func_145771_j(double par1, double par3, double par5)
+    {
+    	return false;
+    }
 
     @Override
     public AxisAlignedBB getBoundingBox()
