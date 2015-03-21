@@ -33,6 +33,8 @@ public class ConfigManagerCore
     public static int idDimensionOverworldOrbitStatic;
     public static int idDimensionMoon;
     public static int biomeIDbase = 102;
+    public static int[] staticLoadDimensions = { };
+    public static int[] disableRocketLaunchDimensions = { -1, 1 };
 
     // SCHEMATICS
     public static int idSchematicRocketT1;
@@ -51,43 +53,45 @@ public class ConfigManagerCore
     
     // GENERAL
     public static boolean disableSpaceshipGrief;
-    public static double oilGenFactor;
     public static boolean spaceStationsRequirePermission;
     public static boolean disableSpaceStationCreation;
-    public static double spaceStationEnergyScalar;
     public static boolean disableLander;
-    public static double dungeonBossHealthMod;
+    public static boolean disableRocketsToOverworld;
+    public static boolean forceOverworldRespawn;
     public static boolean hardMode;
     public static boolean quickMode;
+    public static double dungeonBossHealthMod;
     public static int suffocationCooldown;
     public static int suffocationDamage;
-    public static int[] externalOilGen;
-    public static boolean forceOverworldRespawn;
+    public static boolean enableSealerEdgeChecks;
+    public static double spaceStationEnergyScalar;
+    public static int rocketFuelFactor;
     public static boolean enableDebug;
+    
+    // WORLDGEN
     public static boolean enableCopperOreGen;
     public static boolean enableTinOreGen;
     public static boolean enableAluminumOreGen;
     public static boolean enableSiliconOreGen;
-    public static int[] staticLoadDimensions = { };
-    public static int[] disableRocketLaunchDimensions = { -1, 1 };
+    public static int[] externalOilGen;
+    public static double oilGenFactor;
+	public static boolean retrogenOil;
     public static boolean disableCheeseMoon;
     public static boolean disableTinMoon;
     public static boolean disableCopperMoon;
     public static boolean disableMoonVillageGen;
-    public static boolean enableSealerEdgeChecks;
-    public static boolean disableRocketsToOverworld;
-    public static int rocketFuelFactor;
+    public static String[] oregenIDs = { };
+    public static boolean enableOtherModsFeatures;
     
     //COMPATIBILITY
     public static String[] sealableIDs = { };
     public static String[] detectableIDs = { };
-    public static String[] oregenIDs = { };
-    public static boolean enableOtherModsFeatures;
 	public static boolean enableThaumCraftNodes;
     public static boolean alternateCanisterRecipe;
     public static String otherModsSilicon;
     
     public static ArrayList<Object> clientSave = null;
+
 
     public static void initialize(File file)
     {
@@ -226,6 +230,12 @@ public class ConfigManagerCore
             prop.comment = "List of non-galacticraft dimension IDs to generate oil in.";
             prop.setLanguageKey("gc.configgui.externalOilGen");
             externalOilGen = prop.getIntList();
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Retro Gen of GC Oil in existing map chunks", false);
+            prop.comment = "If this is enabled, GC oil will be added to existing Overworld maps where possible.";
+            prop.setLanguageKey("gc.configgui.enableRetrogenOil");
+            retrogenOil = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Enable Copper Ore Gen", true);
