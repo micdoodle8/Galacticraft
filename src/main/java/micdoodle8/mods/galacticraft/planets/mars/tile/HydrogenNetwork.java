@@ -80,7 +80,7 @@ public class HydrogenNetwork implements IHydrogenNetwork
 
                                     if (hydrogenToSend > 0)
                                     {
-                                        remainingUsableHydrogen -= gasHandler.receiveGas(direction, (new GasStack((Gas) EnergyConfigHandler.gasHydrogen, hydrogenToSend)));
+                                        remainingUsableHydrogen -= gasHandler.receiveGas(direction, (new GasStack((Gas) EnergyConfigHandler.gasHydrogen, hydrogenToSend)), true);
                                     }
                                 }
                             }

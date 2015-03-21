@@ -25,7 +25,7 @@ public final class StackUtils
 		}
 
 		int remain = stack.stackSize % 2;
-		int split = (int)((float)(stack.stackSize)/2F);
+		int split = (int)((stack.stackSize)/2F);
 
 		ret.add(size(stack, split+remain));
 		ret.add(size(stack, split));

@@ -167,7 +167,7 @@ public class ListUtils
 
 	public static <V> List<V> asList(V... values)
 	{
-		return (List<V>)Arrays.asList(values);
+		return Arrays.asList(values);
 	}
 
 	public static double[] splitDouble(int size, double num)

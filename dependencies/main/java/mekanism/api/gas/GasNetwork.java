@@ -7,7 +7,6 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import mekanism.api.Coord4D;
@@ -332,7 +331,7 @@ public class GasNetwork extends DynamicNetwork<IGasHandler, GasNetwork>
 
 		while(it.hasNext())
 		{
-			IGridTransmitter<GasNetwork> conductor = (IGridTransmitter<GasNetwork>)it.next();
+			IGridTransmitter<GasNetwork> conductor = it.next();
 
 			if(conductor == null || conductor.getTile().isInvalid())
 			{
