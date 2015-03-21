@@ -575,6 +575,7 @@ public class ConfigManagerCore
     	returnList.add(ConfigManagerCore.suffocationDamage);
     	returnList.add(ConfigManagerCore.suffocationCooldown);
     	returnList.add(ConfigManagerCore.rocketFuelFactor);
+    	returnList.add(ConfigManagerCore.otherModsSilicon);
     	EnergyConfigHandler.serverConfigOverride(returnList);
     	
     	returnList.add(ConfigManagerCore.detectableIDs.clone());  	
@@ -593,21 +594,22 @@ public class ConfigManagerCore
     	ConfigManagerCore.suffocationDamage = (Integer) configs.get(2);
     	ConfigManagerCore.suffocationCooldown = (Integer) configs.get(3);
     	ConfigManagerCore.rocketFuelFactor = (Integer) configs.get(4);
+    	ConfigManagerCore.otherModsSilicon = (String) configs.get(5);
     	
-    	EnergyConfigHandler.setConfigOverride((Float) configs.get(5), (Float) configs.get(6), (Float) configs.get(7), (Float) configs.get(8), (Integer) configs.get(9));
+    	EnergyConfigHandler.setConfigOverride((Float) configs.get(6), (Float) configs.get(7), (Float) configs.get(8), (Float) configs.get(9), (Integer) configs.get(10));
     	
-    	int sizeIDs = configs.size() - 10;
+    	int sizeIDs = configs.size() - 11;
     	if (sizeIDs > 0)
     	{
-    		if (configs.get(10) instanceof String)
+    		if (configs.get(11) instanceof String)
     		{
     			ConfigManagerCore.detectableIDs = new String[sizeIDs];
 		    	for (int j = 0; j < sizeIDs; j++)
-		    	ConfigManagerCore.detectableIDs[j] = new String((String) configs.get(10 + j));
+		    	ConfigManagerCore.detectableIDs[j] = new String((String) configs.get(11 + j));
     		}
-    		else if (configs.get(10) instanceof String[])
+    		else if (configs.get(11) instanceof String[])
     		{
-    			ConfigManagerCore.detectableIDs = ((String[])configs.get(10));
+    			ConfigManagerCore.detectableIDs = ((String[])configs.get(11));
     		}
         	TickHandlerClient.registerDetectableBlocks(false);
     	}
