@@ -55,7 +55,7 @@ public class ConnectionPacket
 	        	data = NetworkUtil.decodeData(EnumSimplePacket.C_UPDATE_CONFIGS.getDecodeClasses(), payload);
 	        	ConfigManagerCore.saveClientConfigOverrideable();
 	        	ConfigManagerCore.setConfigOverride(data);
-	        	if (ConfigManagerCore.enableDebug) System.out.println("Server-set configs received OK on client.");
+	        	if (ConfigManagerCore.enableDebug) GCLog.info("Server-set configs received OK on client.");
 	        }
 	        catch (Exception e)
 	        {

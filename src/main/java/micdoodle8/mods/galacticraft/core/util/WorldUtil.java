@@ -973,7 +973,7 @@ public class WorldUtil
         try
         {
             if (ConfigManagerCore.enableDebug)
-            	System.out.println("GC connecting to server: received planets dimension ID list.");
+            	GCLog.info("GC connecting to server: received planets dimension ID list.");
         	if (WorldUtil.registeredPlanets != null)
             {
                 for (Integer registeredID : WorldUtil.registeredPlanets)

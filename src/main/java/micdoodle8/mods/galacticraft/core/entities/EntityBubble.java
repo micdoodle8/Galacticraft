@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -195,7 +196,7 @@ public class EntityBubble extends EntityAdvanced implements IPacketReceiver, IBu
     {
         if (ConfigManagerCore.enableDebug)
         {
-            System.err.println("Terraformer debug: writing bubble size " + size);
+            GCLog.info("Terraformer debug: writing bubble size " + size);
         }
         nbt.setFloat("bubbleSizeF", this.size);
         nbt.setBoolean("ShouldRender", this.shouldRender);
