@@ -572,7 +572,10 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
                 if (outputTile instanceof IGasHandler && ((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas) EnergyConfigHandler.gasOxygen))
                 {
                     GasStack toSend = new GasStack((Gas) EnergyConfigHandler.gasOxygen, (int) Math.floor(Math.min(this.getOxygenStored(), provide)));
-                    int acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend, true);
+                    int acceptedOxygen = 0;
+                    try {
+                    	acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend, true);
+                    } catch (Exception e) { }
                     this.provideOxygen(acceptedOxygen, true);
                     return true;
                 }
@@ -625,7 +628,10 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
                 if (outputTile instanceof IGasHandler && ((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas) EnergyConfigHandler.gasHydrogen))
                 {
                     GasStack toSend = new GasStack((Gas) EnergyConfigHandler.gasHydrogen, (int) Math.floor(Math.min(this.getHydrogenStored(), provide)));
-                    int acceptedHydrogen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend, true);
+                    int acceptedHydrogen = 0;
+                    try {
+                    	acceptedHydrogen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend, true);
+                    } catch (Exception e) { }
                     this.provideHydrogen(acceptedHydrogen, true);
                     return true;
                 }

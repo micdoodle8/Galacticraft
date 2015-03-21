@@ -259,7 +259,10 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
                 if (outputTile instanceof IGasHandler && ((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas) EnergyConfigHandler.gasOxygen))
                 {
                     GasStack toSend = new GasStack((Gas) EnergyConfigHandler.gasOxygen, (int) Math.floor(Math.min(this.getOxygenStored(), provide)));
-                    int acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend, true);
+                    int acceptedOxygen = 0;
+                    try {
+                    	acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend, true);
+                    } catch (Exception e) { }
                     this.provideOxygen(acceptedOxygen, true);
                     return true;
                 }
