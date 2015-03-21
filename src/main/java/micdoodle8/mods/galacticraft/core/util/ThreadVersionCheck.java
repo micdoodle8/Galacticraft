@@ -68,7 +68,7 @@ public class ThreadVersionCheck extends Thread
                             remoteBuildVer = Integer.parseInt(str2[2]);
                         }
 
-                        if (remoteMajVer > Constants.LOCALMAJVERSION || remoteMajVer == Constants.LOCALMAJVERSION && remoteMinVer > Constants.LOCALMINVERSION || remoteMajVer == Constants.LOCALMAJVERSION && remoteMinVer == Constants.LOCALMINVERSION && remoteBuildVer > Constants.LOCALBUILDVERSION)
+                        if (remoteMajVer == Constants.LOCALMAJVERSION && (remoteMinVer > Constants.LOCALMINVERSION || (remoteMinVer == Constants.LOCALMINVERSION && remoteBuildVer > Constants.LOCALBUILDVERSION)))
                         {
                             Thread.sleep(5000);
 

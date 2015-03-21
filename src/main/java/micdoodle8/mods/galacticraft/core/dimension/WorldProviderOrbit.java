@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderOrbit;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
@@ -242,7 +243,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                 this.readFromNBT(this.savefile.datacompound);
                 if (ConfigManagerCore.enableDebug)
                 {
-                    System.out.println("Loading data from save: " + this.savefile.datacompound.getFloat("omegaSky"));
+                    GCLog.info("Loading data from save: " + this.savefile.datacompound.getFloat("omegaSky"));
                 }
                 this.dataNotLoaded = false;
             }
@@ -1043,7 +1044,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         {
             if (ConfigManagerCore.enableDebug)
             {
-                System.out.println("Clientside update to spin centre: " + x + "," + z);
+                GCLog.info("Clientside update to spin centre: " + x + "," + z);
             }
         }
     }
@@ -1238,7 +1239,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                 //The thruster was not placed on the existing contiguous space station: it must be.
                 if (ConfigManagerCore.enableDebug)
                 {
-                    System.out.println("Returning false: oneSSBlock was " + this.oneSSBlock.x + "," + this.oneSSBlock.y + "," + this.oneSSBlock.z + " - baseBlock was " + baseBlock.x + "," + baseBlock.y + "," + baseBlock.z + " - found " + foundThrusters.size());
+                    GCLog.info("Thruster placed on wrong part of space station: base at " + this.oneSSBlock.x + "," + this.oneSSBlock.y + "," + this.oneSSBlock.z + " - baseBlock was " + baseBlock.x + "," + baseBlock.y + "," + baseBlock.z + " - found " + foundThrusters.size());
                 }
                 return false;
             }
@@ -1392,7 +1393,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 
                 if (ConfigManagerCore.enableDebug)
                 {
-                    System.out.println("MaxR = " + maxR + " Angular vel = " + this.angularVelocityTarget + " Angular accel = " + this.angularVelocityAccel);
+                    GCLog.info("MaxR = " + maxR + " Angular vel = " + this.angularVelocityTarget + " Angular accel = " + this.angularVelocityAccel);
                 }
             }
         }
