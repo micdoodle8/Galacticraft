@@ -274,22 +274,26 @@ public class TeleportTypeAsteroids implements ITeleportType
     @Override
     public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player, boolean ridingAutoRocket)
     {
-        GCPlayerStats stats = GCPlayerStats.get(player);
-        if (!ridingAutoRocket && player != null && stats.teleportCooldown <= 0)
+        if (!ridingAutoRocket && player != null)
         {
-            if (player.capabilities.isFlying)
+            GCPlayerStats stats = GCPlayerStats.get(player);
+            
+            if (stats.teleportCooldown <= 0)
             {
-                player.capabilities.isFlying = false;
+                if (player.capabilities.isFlying)
+                {
+                    player.capabilities.isFlying = false;
+                }
+
+                if (!newWorld.isRemote)
+                {
+                    EntityEntryPod entryPod = new EntityEntryPod(player);
+
+                    newWorld.spawnEntityInWorld(entryPod);
+                }
+
+                stats.teleportCooldown = 10;
             }
-
-            if (!newWorld.isRemote)
-            {
-                EntityEntryPod entryPod = new EntityEntryPod(player);
-
-                newWorld.spawnEntityInWorld(entryPod);
-            }
-
-            stats.teleportCooldown = 10;
         }
     }
 }

@@ -243,14 +243,18 @@ public class TileEntityTelemetry extends TileEntity
 			int y = fmData.getInteger("teCoordY");
 			int z = fmData.getInteger("teCoordZ");
 			WorldProvider wp = WorldUtil.getProviderForDimension(dim);
-			if (wp == null) System.out.println("Frequency module worn: world provider is null.  This is a bug. "+dim);
-			TileEntity te = wp.worldObj.getTileEntity(x, y, z);
-			if (te instanceof TileEntityTelemetry)
+			if (wp == null) 
+				System.out.println("Frequency module worn: world provider is null.  This is a bug. "+dim);
+			else
 			{
-				if (player == null)
-					((TileEntityTelemetry) te).removeTrackedEntity();
-				else
-					((TileEntityTelemetry) te).addTrackedEntity(player.getUniqueID());
+				TileEntity te = wp.worldObj.getTileEntity(x, y, z);
+				if (te instanceof TileEntityTelemetry)
+				{
+					if (player == null)
+						((TileEntityTelemetry) te).removeTrackedEntity();
+					else
+						((TileEntityTelemetry) te).addTrackedEntity(player.getUniqueID());
+				}
 			}
 		}
 	}

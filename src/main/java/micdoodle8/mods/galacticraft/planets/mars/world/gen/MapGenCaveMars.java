@@ -11,7 +11,6 @@ import java.util.Random;
 
 public class MapGenCaveMars extends MapGenBaseMeta
 {
-
     public static final int BREAK_THROUGH_CHANCE = 25; // 1 in n chance
 
     protected void generateLargeCaveNode(long par1, int par3, int par4, Block[] blockIdArray, byte[] metaArray, double par6, double par8, double par10)

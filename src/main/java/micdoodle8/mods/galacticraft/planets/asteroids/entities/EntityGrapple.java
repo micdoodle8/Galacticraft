@@ -52,14 +52,14 @@ public class EntityGrapple extends Entity implements IProjectile
         super(par1World);
         this.renderDistanceWeight = 10.0D;
         this.shootingEntity = shootingEntity;
+        this.setSize(2.1F, 2.1F);
 
         if (shootingEntity != null)
         {
             this.canBePickedUp = 1;
+            this.setLocationAndAngles(shootingEntity.posX, shootingEntity.posY + shootingEntity.getEyeHeight(), shootingEntity.posZ, shootingEntity.rotationYaw, shootingEntity.rotationPitch);
         }
 
-        this.setSize(2.1F, 2.1F);
-        this.setLocationAndAngles(shootingEntity.posX, shootingEntity.posY + shootingEntity.getEyeHeight(), shootingEntity.posZ, shootingEntity.rotationYaw, shootingEntity.rotationPitch);
         this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
         this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
         this.motionY = -MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI);

@@ -173,18 +173,24 @@ public class ItemBlockEnclosed extends ItemBlockDesc
                                         break;
                                     }
                                 }
-                                Object pipe = createPipe.invoke(null, pipeItem);
-                                Method initializePipe = null;
-                                for (Method m : clazzTilePipe.getDeclaredMethods())
+                                if (createPipe != null)
                                 {
-                                    if (m.getName().equals("initialize") && m.getParameterTypes().length == 1)
+                                    Object pipe = createPipe.invoke(null, pipeItem);
+                                    Method initializePipe = null;
+                                    for (Method m : clazzTilePipe.getDeclaredMethods())
                                     {
-                                        initializePipe = m;
-                                        break;
+                                        if (m.getName().equals("initialize") && m.getParameterTypes().length == 1)
+                                        {
+                                            initializePipe = m;
+                                            break;
+                                        }
+                                    }
+                                    if (initializePipe != null)
+                                    {
+                                        initializePipe.invoke(tilePipe, pipe);
+                                        clazzTilePipe.getMethod("sendUpdateToClient").invoke(tilePipe);
                                     }
                                 }
-                                initializePipe.invoke(tilePipe, pipe);
-                                clazzTilePipe.getMethod("sendUpdateToClient").invoke(tilePipe);
                                 //------
                             }
                             catch (Exception e)

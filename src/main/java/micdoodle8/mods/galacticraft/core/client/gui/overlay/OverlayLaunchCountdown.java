@@ -20,7 +20,7 @@ public class OverlayLaunchCountdown extends Overlay
         GL11.glDisable(GL11.GL_LIGHTING);
         int count = ((EntitySpaceshipBase) OverlayLaunchCountdown.minecraft.thePlayer.ridingEntity).timeUntilLaunch / 2;
 
-        count = Math.round(count / 10);
+        count = (int)Math.floor(count / 10.0F);
 
         final ScaledResolution scaledresolution = ClientUtil.getScaledRes(OverlayLaunchCountdown.minecraft, OverlayLaunchCountdown.minecraft.displayWidth, OverlayLaunchCountdown.minecraft.displayHeight);
         final int width = scaledresolution.getScaledWidth();

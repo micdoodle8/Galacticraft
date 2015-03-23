@@ -192,17 +192,14 @@ public class MapGenDungeon
                         default:
                             break;
                         }
-                        if (!this.isIntersecting(corridor1, boundingBoxes) && !corridor1.isOverlapping(possibleRoomBb))
+                        if (corridor1 != null && !this.isIntersecting(corridor1, boundingBoxes) && !corridor1.isOverlapping(possibleRoomBb))
                         {
                             boundingBoxes.add(possibleRoomBb);
                             boundingBoxes.add(corridor1);
                             currentRoom = possibleRoom;
                             currentRoom.generate(blocks, metas, chunkX, chunkZ);
                             this.rooms.add(currentRoom);
-                            if (corridor1 != null)
-                            {
-                                this.genCorridor(corridor1, rand, possibleRoom.posY, chunkX, chunkZ, dir, blocks, metas, false);
-                            }
+                            this.genCorridor(corridor1, rand, possibleRoom.posY, chunkX, chunkZ, dir, blocks, metas, false);
                             break;
                         }
                     }
@@ -279,7 +276,7 @@ public class MapGenDungeon
                         default:
                             break;
                         }
-                        if (!this.isIntersecting(corridor1, boundingBoxes) && !this.isIntersecting(corridor2, boundingBoxes) && !corridor1.isOverlapping(possibleRoomBb) && !corridor2.isOverlapping(possibleRoomBb))
+                        if (corridor1 != null && corridor2 != null && !this.isIntersecting(corridor1, boundingBoxes) && !this.isIntersecting(corridor2, boundingBoxes) && !corridor1.isOverlapping(possibleRoomBb) && !corridor2.isOverlapping(possibleRoomBb))
                         {
                             boundingBoxes.add(possibleRoomBb);
                             boundingBoxes.add(corridor1);
@@ -287,11 +284,8 @@ public class MapGenDungeon
                             currentRoom = possibleRoom;
                             currentRoom.generate(blocks, metas, chunkX, chunkZ);
                             this.rooms.add(currentRoom);
-                            if (corridor1 != null && corridor2 != null)
-                            {
-                                this.genCorridor(corridor2, rand, possibleRoom.posY, chunkX, chunkZ, dir2, blocks, metas, true);
-                                this.genCorridor(corridor1, rand, possibleRoom.posY, chunkX, chunkZ, dir, blocks, metas, false);
-                            }
+                            this.genCorridor(corridor2, rand, possibleRoom.posY, chunkX, chunkZ, dir2, blocks, metas, true);
+                            this.genCorridor(corridor1, rand, possibleRoom.posY, chunkX, chunkZ, dir, blocks, metas, false);
                             break;
                         }
                         else

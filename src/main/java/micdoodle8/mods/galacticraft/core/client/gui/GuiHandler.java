@@ -32,13 +32,14 @@ public class GuiHandler implements IGuiHandler
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
         EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
-        GCPlayerStats stats = GCPlayerStats.get(playerBase);
 
         if (playerBase == null)
         {
             player.addChatMessage(new ChatComponentText("Galacticraft player instance null server-side. This is a bug."));
             return null;
         }
+        
+        GCPlayerStats stats = GCPlayerStats.get(playerBase);
 
         if (ID == GuiIdsCore.ROCKET_INVENTORY && player.ridingEntity instanceof EntityTieredRocket)
         {

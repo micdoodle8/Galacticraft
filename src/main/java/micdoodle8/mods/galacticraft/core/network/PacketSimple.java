@@ -805,12 +805,13 @@ public class PacketSimple extends Packet implements IPacket
     public void handleServerSide(EntityPlayer player)
     {
         EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
-        GCPlayerStats stats = GCPlayerStats.get(playerBase);
 
         if (playerBase == null)
         {
             return;
         }
+        
+        GCPlayerStats stats = GCPlayerStats.get(playerBase);
 
         switch (this.type)
         {

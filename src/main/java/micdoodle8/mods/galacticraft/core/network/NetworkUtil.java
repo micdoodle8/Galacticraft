@@ -28,7 +28,6 @@ import java.util.UUID;
 
 public class NetworkUtil
 {
-    @SuppressWarnings("null")
 	public static void encodeData(ByteBuf buffer, Collection<Object> sendData) throws IOException
     {
         for (Object dataValue : sendData)
@@ -170,7 +169,6 @@ public class NetworkUtil
                 if (dataValue == null)
                 {
                 	GCLog.severe("Cannot construct PacketSimple with null data, this is a bug.");
-                	dataValue.equals(""); 
                 }
             	GCLog.info("Could not find data type to encode!: " + dataValue);
             }

@@ -55,6 +55,12 @@ public class KeyHandlerClient extends KeyHandler
         if (KeyHandlerClient.mc.thePlayer != null && tickEnd)
         {
             EntityClientPlayerMP playerBase = PlayerUtil.getPlayerBaseClientFromPlayer(KeyHandlerClient.mc.thePlayer, false);
+            
+            if (playerBase == null)
+            {
+            	return;
+            }
+            
             GCPlayerStatsClient stats = GCPlayerStatsClient.get(playerBase);
 
             if (kb.getKeyCode() == KeyHandlerClient.galaxyMap.getKeyCode())
