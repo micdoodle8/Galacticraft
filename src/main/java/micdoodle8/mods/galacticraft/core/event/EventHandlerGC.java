@@ -401,6 +401,7 @@ public class EventHandlerGC
             pos.y = 17 + rand.nextInt(10) + rand.nextInt(5);
             pos.x = x + rand.nextInt(16);
             pos.z = z + rand.nextInt(16);
+            radius = 3 + rand.nextInt(5);
             return true;
         }
         
