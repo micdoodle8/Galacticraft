@@ -46,7 +46,7 @@ public class RenderPlayerGC extends RenderPlayer
     @Override
     protected void rotateCorpse(EntityLivingBase entity, float x, float y, float z)
     {
-    	if (entity instanceof EntityPlayer)
+    	if (entity instanceof EntityPlayer && Minecraft.getMinecraft().gameSettings.thirdPersonView != 0)
     	{
             final EntityPlayer player = (EntityPlayer)entity;
 

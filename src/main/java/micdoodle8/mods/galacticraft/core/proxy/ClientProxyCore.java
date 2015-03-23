@@ -3,9 +3,11 @@ package micdoodle8.mods.galacticraft.core.proxy;
 import api.player.client.ClientPlayerAPI;
 import api.player.model.ModelPlayerAPI;
 import api.player.render.RenderPlayerAPI;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -17,6 +19,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
@@ -79,8 +82,10 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+
 import tconstruct.client.tabs.InventoryTabVanilla;
 import tconstruct.client.tabs.TabRegistry;
 
@@ -157,6 +162,8 @@ public class ClientProxyCore extends CommonProxyCore
     public static DynamicTexture overworldTextureLocal;
     public static boolean overworldTextureRequestSent = false;
 
+    private static float PLAYER_Y_OFFSET = 1.6200000047683716F;
+    
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
@@ -521,16 +528,16 @@ public class ClientProxyCore extends CommonProxyCore
 
         final EntityPlayer player = event.entityPlayer;
 
-        if (player.ridingEntity instanceof EntityTieredRocket)
+        if (player.ridingEntity instanceof EntityTieredRocket && player == Minecraft.getMinecraft().thePlayer
+        		&& Minecraft.getMinecraft().gameSettings.thirdPersonView == 0)
         {
-            /*EntityTieredRocket entity = (EntityTieredRocket) player.ridingEntity;
-            GL11.glTranslatef(0, -entity.getRotateOffset(), 0);
+            EntityTieredRocket entity = (EntityTieredRocket) player.ridingEntity;
+            GL11.glTranslatef(0, -entity.getRotateOffset() - PLAYER_Y_OFFSET, 0);
             float anglePitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * event.partialRenderTick;
             float angleYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * event.partialRenderTick;
-            System.out.println(entity.getRotateOffset() + " " + anglePitch + " " + angleYaw);
             GL11.glRotatef(-angleYaw, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(anglePitch, 0.0F, 0.0F, 1.0F);
-            GL11.glTranslatef(0, entity.getRotateOffset(), 0);*/
+            GL11.glTranslatef(0, entity.getRotateOffset() + PLAYER_Y_OFFSET, 0);
         }
 
         //Gravity - freefall - jetpack changes in player model orientation can go here
@@ -858,7 +865,7 @@ public class ClientProxyCore extends CommonProxyCore
         if (player.ridingEntity instanceof EntityTieredRocket && ClientProxyCore.mc.gameSettings.thirdPersonView == 0)
         {
             EntityTieredRocket entity = (EntityTieredRocket) player.ridingEntity;          
-            float offset = entity.getRotateOffset();
+            float offset = entity.getRotateOffset() + PLAYER_Y_OFFSET;
             GL11.glTranslatef(0, -offset, 0);
             float anglePitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
             float angleYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks;
