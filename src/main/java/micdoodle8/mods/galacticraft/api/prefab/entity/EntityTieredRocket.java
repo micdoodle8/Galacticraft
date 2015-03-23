@@ -530,7 +530,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
     public float getRotateOffset()
     {
-        return 0.1F;
+        return -1.5F;
     }
 
     @Override

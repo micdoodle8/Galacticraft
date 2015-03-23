@@ -1,17 +1,21 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+
 import org.lwjgl.opengl.GL11;
 
 public class RenderPlayerGC extends RenderPlayer
@@ -37,6 +41,27 @@ public class RenderPlayerGC extends RenderPlayer
             RenderPlayerGC.thermalPaddingTexture0 = new ResourceLocation("galacticraftasteroids", "textures/misc/thermalPadding_0.png");
             RenderPlayerGC.thermalPaddingTexture1 = new ResourceLocation("galacticraftasteroids", "textures/misc/thermalPadding_1.png");
         }
+    }
+
+    @Override
+    protected void rotateCorpse(EntityLivingBase entity, float x, float y, float z)
+    {
+    	if (entity instanceof EntityPlayer)
+    	{
+            final EntityPlayer player = (EntityPlayer)entity;
+
+            if (player.ridingEntity instanceof EntityTieredRocket)
+            {
+                EntityTieredRocket rocket = (EntityTieredRocket) player.ridingEntity;
+                GL11.glTranslatef(0, -rocket.getRotateOffset(), 0);
+                float anglePitch = rocket.prevRotationPitch;
+                float angleYaw = rocket.prevRotationYaw;
+                GL11.glRotatef(-angleYaw, 0.0F, 1.0F, 0.0F);
+                GL11.glRotatef(anglePitch, 0.0F, 0.0F, 1.0F);
+                GL11.glTranslatef(0, rocket.getRotateOffset(), 0);
+            }
+    	}
+    	super.rotateCorpse(entity, x, y, z);
     }
 
     @Override

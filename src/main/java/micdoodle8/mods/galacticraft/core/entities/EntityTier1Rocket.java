@@ -36,6 +36,12 @@ public class EntityTier1Rocket extends EntityTieredRocket
         this.cargoItems = new ItemStack[this.getSizeInventory()];
     }
 
+    @Override
+    public float getRotateOffset()
+    {
+        return -1.5F;
+    }
+
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void onUpdate()
