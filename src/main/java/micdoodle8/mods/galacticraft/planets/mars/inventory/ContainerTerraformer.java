@@ -47,33 +47,7 @@ public class ContainerTerraformer extends Container
             {
                 if (ContainerTerraformer.saplingList == null)
                 {
-	                ContainerTerraformer.saplingList = new LinkedList();
-	                Iterator iterator = Block.blockRegistry.getKeys().iterator();
-                
-	                while (iterator.hasNext())
-	                {
-	                    Block b = (Block) Block.blockRegistry.getObject((String)iterator.next());
-	                    if (b instanceof BlockBush)
-	                    {
-	                        try {
-	                    	Item item = Item.getItemFromBlock(b);
-	                        if (item != null)
-	                        {
-	                        	//item.getSubItems(item, null, subItemsList); - can't use because clientside only
-	                        	ContainerTerraformer.saplingList.add(new ItemStack(item, 1, 0));
-	                        	String basicName = item.getUnlocalizedName(new ItemStack(item, 1, 0));
-	                    		for (int i = 1; i < 16; i++)
-	                    		{
-	                    			ItemStack testStack = new ItemStack(item, 1, i);
-	                    			String testName = item.getUnlocalizedName(testStack); 
-	                    			if (testName == null || testName.equals("") || testName.equals(basicName))
-	                    				break;
-	                    			ContainerTerraformer.saplingList.add(testStack);
-	                    		}                   		
-	                        }
-	                        } catch (Exception e) { }
-	                    }
-	                }
+            		initSaplingList();
                 }
                 
                 stacks.addAll(ContainerTerraformer.saplingList);
@@ -205,5 +179,56 @@ public class ContainerTerraformer extends Container
         }
 
         return var2;
+    }
+    
+    public static boolean isOnSaplingList(ItemStack stack)
+    {	
+    	if (saplingList == null)
+    	{
+    		initSaplingList();
+    	}
+    	
+    	for (ItemStack sapling : saplingList)
+    	{
+    		if (sapling.isItemEqual(stack))
+    		{
+    			return true;
+    		}    		
+    	}
+    	
+    	return false;
+    }
+    
+    private static void initSaplingList()
+    {
+    	ContainerTerraformer.saplingList = new LinkedList();
+        Iterator iterator = Block.blockRegistry.getKeys().iterator();
+    
+        while (iterator.hasNext())
+        {
+            Block b = (Block) Block.blockRegistry.getObject((String)iterator.next());
+            if (b instanceof BlockBush)
+            {
+                try 
+                {
+                	Item item = Item.getItemFromBlock(b);
+                    if (item != null)
+                    {
+                    	//item.getSubItems(item, null, subItemsList); - can't use because clientside only
+                    	ContainerTerraformer.saplingList.add(new ItemStack(item, 1, 0));
+                    	String basicName = item.getUnlocalizedName(new ItemStack(item, 1, 0));
+                		for (int i = 1; i < 16; i++)
+                		{
+                			ItemStack testStack = new ItemStack(item, 1, i);
+                			String testName = item.getUnlocalizedName(testStack); 
+                			if (testName == null || testName.equals("") || testName.equals(basicName))
+                				break;
+                			ContainerTerraformer.saplingList.add(testStack);
+                		}                   		
+                    }
+                } 
+                catch (Exception e) { }
+            }
+        }
     }
 }
