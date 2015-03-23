@@ -4,7 +4,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockShortRangeTelepad;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockWalkway;
@@ -28,6 +27,7 @@ public class AsteroidBlocks
     public static Block treasureChestTier3;
     public static Block blockDenseIce;
 	public static Block blockMinerBase;
+	public static Block minerBaseFull;
 
     public static void initBlocks()
     {
@@ -44,8 +44,10 @@ public class AsteroidBlocks
         AsteroidBlocks.fakeTelepad = new BlockTelepadFake("telepadFake");
         AsteroidBlocks.blockDenseIce = new BlockIceAsteroids("denseIce");
         AsteroidBlocks.blockMinerBase = new BlockMinerBase("minerBase");
+        AsteroidBlocks.minerBaseFull = new BlockMinerBaseFull("minerBaseFull");
 
         GCBlocks.hiddenBlocks.add(AsteroidBlocks.fakeTelepad);
+        GCBlocks.hiddenBlocks.add(AsteroidBlocks.minerBaseFull);
     }
 
     public static void registerBlocks()
@@ -62,7 +64,8 @@ public class AsteroidBlocks
         GameRegistry.registerBlock(AsteroidBlocks.shortRangeTelepad, ItemBlockShortRangeTelepad.class, AsteroidBlocks.shortRangeTelepad.getUnlocalizedName());
         GameRegistry.registerBlock(AsteroidBlocks.fakeTelepad, ItemBlockGC.class, AsteroidBlocks.fakeTelepad.getUnlocalizedName());
         GameRegistry.registerBlock(AsteroidBlocks.blockDenseIce, ItemBlockGC.class, AsteroidBlocks.blockDenseIce.getUnlocalizedName());
-//        if (ConfigManagerCore.enableDebug) GameRegistry.registerBlock(AsteroidBlocks.blockMinerBase, ItemBlockDesc.class, AsteroidBlocks.blockMinerBase.getUnlocalizedName());
+       	GameRegistry.registerBlock(AsteroidBlocks.blockMinerBase, ItemBlockDesc.class, AsteroidBlocks.blockMinerBase.getUnlocalizedName());
+       	GameRegistry.registerBlock(AsteroidBlocks.minerBaseFull, ItemBlockDesc.class, AsteroidBlocks.minerBaseFull.getUnlocalizedName());
     }
     
     public static void setHarvestLevels()

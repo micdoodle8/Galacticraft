@@ -1,11 +1,21 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
+import java.util.ArrayList;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -13,12 +23,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class EntityAstroMiner extends Entity
+public class EntityAstroMiner extends Entity implements IInventory
 {
-    public ItemStack[] cargo;
+	public ItemStack[] cargoItems;
 
     public int energyLevel;
     public float targetYaw;
@@ -32,6 +45,20 @@ public class EntityAstroMiner extends Entity
     private int baseFacing;
     private int facing;
     private boolean zFirst;
+    private static BlockVec3[] headings = {
+    	new BlockVec3(0, -1, 0),
+    	new BlockVec3(0, 1, 0),
+    	new BlockVec3(0, 0, -1),
+    	new BlockVec3(0, 0, 1),
+    	new BlockVec3(-1, 0, 0),
+    	new BlockVec3(1, 0, 0)    };
+    private static BlockVec3[] headings3 = {
+    	new BlockVec3(0, -3, 0),
+    	new BlockVec3(0, 3, 0),
+    	new BlockVec3(0, 0, -3),
+    	new BlockVec3(0, 0, 3),
+    	new BlockVec3(-3, 0, 0),
+    	new BlockVec3(3, 0, 0)    };
 
     private final int baseSafeRadius = 32;
     private final int MAXENERGY = 10000;
@@ -60,10 +87,36 @@ public class EntityAstroMiner extends Entity
     @SideOnly(Side.CLIENT)
     private double velocityZ;
 
+	private int tryBlockLimit;
+
+    private static ArrayList<Block> noMineList = new ArrayList();
+    
+    static
+    {
+		//Avoid:
+		// Overworld: avoid lava source blocks, mossy cobble, End Portal and Fortress blocks
+		// railtrack, levers, redstone dust, GC walkways, 
+    	//Anything with a tileEntity will also be avoided:
+		// spawners, chests, oxygen pipes, hydrogen pipes, wires
+		noMineList.add(Blocks.bedrock);
+		noMineList.add(Blocks.lava);
+		noMineList.add(Blocks.mossy_cobblestone);
+		noMineList.add(Blocks.end_portal);
+		noMineList.add(Blocks.end_portal_frame);
+		noMineList.add(Blocks.stonebrick);
+		noMineList.add(Blocks.farmland);
+		noMineList.add(Blocks.rail);
+		noMineList.add(Blocks.lever);
+		noMineList.add(Blocks.redstone_wire);
+		noMineList.add(AsteroidBlocks.blockWalkway);
+		//TODO:
+		//Add configurable blacklist
+    }
+
     public EntityAstroMiner(World world, ItemStack[] cargo, int energy)
     {
         this(world);
-        this.cargo = cargo.clone();
+        this.cargoItems = cargo.clone();
         this.energyLevel = energy;
     }
 
@@ -90,7 +143,7 @@ public class EntityAstroMiner extends Entity
     protected void readEntityFromNBT(NBTTagCompound nbt)
     {
     	final NBTTagList var2 = nbt.getTagList("Items", 10);
-        this.cargo = new ItemStack[27];
+        this.cargoItems = new ItemStack[27];
 
         if (var2 != null)
         {
@@ -99,9 +152,9 @@ public class EntityAstroMiner extends Entity
 	            final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
 	            final int var5 = var4.getByte("Slot") & 255;
 	
-	            if (var5 >= 0 && var5 < this.cargo.length)
+	            if (var5 >= 0 && var5 < this.cargoItems.length)
 	            {
-	                this.cargo[var5] = ItemStack.loadItemStackFromNBT(var4);
+	                this.cargoItems[var5] = ItemStack.loadItemStackFromNBT(var4);
 	            }
 	        }
         }
@@ -124,15 +177,15 @@ public class EntityAstroMiner extends Entity
     {
         final NBTTagList var2 = new NBTTagList();
 
-        if (this.cargo != null)
+        if (this.cargoItems != null)
         {
-	        for (int var3 = 0; var3 < this.cargo.length; ++var3)
+	        for (int var3 = 0; var3 < this.cargoItems.length; ++var3)
 	        {
-	            if (this.cargo[var3] != null)
+	            if (this.cargoItems[var3] != null)
 	            {
 	                final NBTTagCompound var4 = new NBTTagCompound();
 	                var4.setByte("Slot", (byte) var3);
-	                this.cargo[var3].writeToNBT(var4);
+	                this.cargoItems[var3].writeToNBT(var4);
 	                var2.appendTag(var4);
 	            }
 	        }
@@ -234,15 +287,16 @@ public class EntityAstroMiner extends Entity
 	    	{
 	    	case 0:
 	    		//TODO blinking distress light or something
+	    		//TODO: check close to base and if so, reverse in
 	    		break;
 	    	case 1:
 	    		this.moveToTarget();
 	        	this.prepareMove();
 	    		break;
 	    	case 2:
-	        	this.prepareMove();
 	    		this.doMining();
 	        	if (this.ticksExisted % 2 == 0) this.energyLevel--;
+	        	this.prepareMove();
 	    		break;
 	    	case 3:
 	    		this.moveToBase();
@@ -292,6 +346,7 @@ public class EntityAstroMiner extends Entity
 		
 		// TODO
 		// Empty item storage
+		
 		// Recharge
 		if (minerBase.hasEnoughEnergyToRun && this.energyLevel < MAXENERGY)
 		{
@@ -312,9 +367,13 @@ public class EntityAstroMiner extends Entity
 
 	private boolean findNextTarget()
 	{
-		//Simple test = 10 forward, 3 down
-		this.posTarget = this.posBase.clone().modifyPositionFromSide(ForgeDirection.getOrientation(this.baseFacing), 10);
-		this.posTarget.modifyPositionFromSide(ForgeDirection.DOWN, 3);
+		this.posTarget = this.posBase.clone().modifyPositionFromSide(ForgeDirection.getOrientation(this.baseFacing), this.worldObj.rand.nextInt(40) + 10);
+		if ((this.baseFacing & 6) == 2)
+		{
+			this.posTarget.modifyPositionFromSide(ForgeDirection.WEST, this.worldObj.rand.nextInt(40) - 20);
+		}
+		else this.posTarget.modifyPositionFromSide(ForgeDirection.NORTH, this.worldObj.rand.nextInt(40) - 20);
+		this.posTarget.modifyPositionFromSide(ForgeDirection.DOWN, 3 + this.worldObj.rand.nextInt(10));
 		System.out.println("Miner target: "+this.posTarget.toString());
 		return true;
 		// TODO Is target completely mined?  If so, change target	
@@ -391,53 +450,220 @@ public class EntityAstroMiner extends Entity
 		//If out of power, set waypoint and return to base
 	}
 
-	private void prepareMove()
+	private boolean prepareMove()
 	{
-		// TODO
+		BlockVec3 inFront = new BlockVec3(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 0.5D), MathHelper.floor_double(this.posZ + 0.5D));
+		inFront.add(headings3[this.facing]);
+		int x = inFront.x;
+		int y = inFront.y;
+		int z = inFront.z;
+		boolean wayBarred = false;
+		this.tryBlockLimit = 3;
+
 		//Check not obstructed by something immovable e.g. bedrock
-		//[if it is obstructed, figure out what to do ... e.g. return to base, or turn 90 degrees?]
-		//Check things to avoid in front of it (see moveToTarget() for list)
-		//Can move through liquids including flowing lava
 		//Mine out the 12 blocks in front of it in direction of travel when getting close
+		switch (this.facing & 6)
+		{
+		case 0:
+			if (tryBlock(x, y, z)) wayBarred = true;
+			if (tryBlock(x + 1, y, z)) wayBarred = true;
+			if (tryBlock(x + 1, y, z - 1)) wayBarred = true;
+			if (tryBlock(x, y, z - 1)) wayBarred = true;
+			if (tryBlock(x, y, z - 2)) wayBarred = true;
+			if (tryBlock(x - 1, y, z - 2)) wayBarred = true;
+			if (tryBlock(x - 1, y, z - 1)) wayBarred = true;
+			if (tryBlock(x - 2, y, z - 1)) wayBarred = true;
+			if (tryBlock(x - 2, y, z)) wayBarred = true;
+			if (tryBlock(x - 1, y, z)) wayBarred = true;
+			if (tryBlock(x - 1, y, z + 1)) wayBarred = true;
+			if (tryBlock(x, y, z + 1)) wayBarred = true;
+			break;
+		case 2:
+			if (tryBlock(x, y, z)) wayBarred = true;
+			if (tryBlock(x + 1, y, z)) wayBarred = true;
+			if (tryBlock(x + 1, y - 1, z)) wayBarred = true;
+			if (tryBlock(x, y - 1, z)) wayBarred = true;
+			if (tryBlock(x, y - 2, z)) wayBarred = true;
+			if (tryBlock(x - 1, y - 2, z)) wayBarred = true;
+			if (tryBlock(x - 1, y - 1, z)) wayBarred = true;
+			if (tryBlock(x - 2, y - 1, z)) wayBarred = true;
+			if (tryBlock(x - 2, y, z)) wayBarred = true;
+			if (tryBlock(x - 1, y, z)) wayBarred = true;
+			if (tryBlock(x - 1, y + 1, z)) wayBarred = true;
+			if (tryBlock(x, y + 1, z)) wayBarred = true;
+			break;
+		case 4:
+			if (tryBlock(x, y, z)) wayBarred = true;
+			if (tryBlock(x, y, z + 1)) wayBarred = true;
+			if (tryBlock(x, y - 1, z + 1)) wayBarred = true;
+			if (tryBlock(x, y - 1, z)) wayBarred = true;
+			if (tryBlock(x, y - 2, z)) wayBarred = true;
+			if (tryBlock(x, y - 2, z - 1)) wayBarred = true;
+			if (tryBlock(x, y - 1, z - 1)) wayBarred = true;
+			if (tryBlock(x, y - 1, z - 2)) wayBarred = true;
+			if (tryBlock(x, y, z - 2)) wayBarred = true;
+			if (tryBlock(x, y, z - 1)) wayBarred = true;
+			if (tryBlock(x, y + 1, z - 1)) wayBarred = true;
+			if (tryBlock(x, y + 1, z)) wayBarred = true;
+			break;
+		}
+		
+		// TODO
+		//[if it is obstructed, figure out what to do ... e.g. return to base, or turn 90 degrees?]
+		if (wayBarred)
+		{
+			this.motionX = 0;
+			this.motionY = 0;
+			this.motionZ = 0;
+			this.tryBlockLimit = 0;
+			if (this.AIstate == 1 || this.AIstate == 2) this.AIstate = 3;
+			else this.AIstate = 0;
+		}
+		
+		if (this.tryBlockLimit == 3)
+		{
+			this.motionX *= 2.5F;
+			this.motionY *= 2.5F;
+			this.motionZ *= 2.5F;
+		}
+		
+		return wayBarred;
+
+		//TODO
 		//But no mining out in protected zone close to base (may need to do pathfinding if blocks were changed?)		
+	}
+
+	private boolean tryBlock(int x, int y, int z)
+	{
+		//Check things to avoid in front of it (see static list for list) including base type things
+		//Can move through liquids including flowing lava
+		Block b = this.worldObj.getBlock(x, y, z);
+		if (b.getMaterial() == Material.air) return false;
+		if (noMineList.contains(b)) return true;
+		if (b instanceof BlockLiquid) return false;
+		if (b instanceof IPlantable) return true;
+		int meta = this.worldObj.getBlockMetadata(x, y, z);
+		if (b.hasTileEntity(meta)) return true;
+		if (b.getBlockHardness(this.worldObj,  x,  y,  z) < 0) return true;
+		
+		if (this.tryBlockLimit == 0) return false;
+		this.tryBlockLimit--;
+		
+		ItemStack drops = b.getPickBlock(new MovingObjectPosition(this, Vec3.createVectorHelper(x + 0.5D, y + 0.5D, z + 0.5D)), this.worldObj, x, y, z);
+		if (!this.addToInventory(drops))
+		{
+			//drop itemstack if AstroMiner can't hold it
+            float f = 0.7F;
+            double d0 = this.worldObj.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+            double d1 = this.worldObj.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+            double d2 = this.worldObj.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+            EntityItem entityitem = new EntityItem(this.worldObj, x + d0, y + d1, z + d2, drops);
+            entityitem.delayBeforeCanPickup = 10;
+            this.worldObj.spawnEntityInWorld(entityitem);
+		}
+		
+		this.worldObj.setBlock(x, y, z, Blocks.air, 0, 3);
+		return false;
+	}
+
+	private boolean addToInventory(ItemStack itemstack)
+	{
+		//TODO - add test for is container open and if so use Container.mergeItemStack
+		
+		boolean flag1 = false;
+        int k = 0;
+        int invSize = this.getSizeInventory();
+
+        ItemStack itemstack1;
+
+        if (itemstack.isStackable())
+        {
+            while (itemstack.stackSize > 0 && k < invSize )
+            {
+                itemstack1 = this.cargoItems[k];
+
+                if (itemstack1 != null && itemstack1.getItem() == itemstack.getItem() && (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == itemstack1.getItemDamage()) && ItemStack.areItemStackTagsEqual(itemstack, itemstack1))
+                {
+                    int l = itemstack1.stackSize + itemstack.stackSize;
+
+                    if (l <= itemstack.getMaxStackSize())
+                    {
+                        itemstack.stackSize = 0;
+                        itemstack1.stackSize = l;
+                        flag1 = true;
+                    }
+                    else if (itemstack1.stackSize < itemstack.getMaxStackSize())
+                    {
+                        itemstack.stackSize -= itemstack.getMaxStackSize() - itemstack1.stackSize;
+                        itemstack1.stackSize = itemstack.getMaxStackSize();
+                        flag1 = true;
+                    }
+                }
+
+                ++k;
+            }
+        }
+
+        if (itemstack.stackSize > 0)
+        {
+            k = 0;
+
+            while (k < invSize)
+            {
+                itemstack1 = this.cargoItems[k];
+
+                if (itemstack1 == null)
+                {
+                    this.cargoItems[k] = itemstack.copy();
+                    itemstack.stackSize = 0;
+                    flag1 = true;
+                    break;
+                }
+
+                ++k;
+            }
+        }
+
+        return flag1;
 	}
 
 	private boolean moveToPos(BlockVec3 pos, boolean reverse)
 	{
 		boolean stopForTurn = !this.checkRotation();
 		
-		if (zFirst)
+		if (reverse != zFirst)
 		{
-			//TODO
+			if (this.posZ != pos.z)
+			{
+				this.moveToPosZ(pos, stopForTurn);			
+			}
+			else if (this.posY != pos.y)
+			{
+				this.moveToPosY(pos, stopForTurn);			
+			}
+			else if (this.posX != pos.x)
+			{
+				this.moveToPosX(pos, stopForTurn);
+			}
+			else return true;
+			//got there				
 		}
 		else
 		{
-			if (reverse)
+			if (this.posX != pos.x)
 			{
-				if (this.posY != pos.y)
-				{
-					this.moveToPosY(pos, stopForTurn);			
-				}
-				else if (this.posX != pos.x)
-				{
-					this.moveToPosX(pos, stopForTurn);
-				}
-				else return true;
-				//got there				
+				this.moveToPosX(pos, stopForTurn);
 			}
-			else
+			else if (this.posY != pos.y)
 			{
-				if (this.posX != pos.x)
-				{
-					this.moveToPosX(pos, stopForTurn);
-				}
-				else if (this.posY != pos.y)
-				{
-					this.moveToPosY(pos, stopForTurn);			
-				}
-				else return true;
-				//got there
+				this.moveToPosY(pos, stopForTurn);			
 			}
+			else if (this.posZ != pos.z)
+			{
+				this.moveToPosZ(pos, stopForTurn);			
+			}
+			else return true;
+			//got there
 		}
 
 		return false;
@@ -510,7 +736,7 @@ public class EntityAstroMiner extends Entity
 
 		if (this.posZ > pos.z)
 		{
-	        this.targetYaw = 0;
+	        this.targetYaw = 180;
         	this.motionZ = -this.speed;
         	//TODO some acceleration and deceleration
         	if (this.motionZ < pos.z - this.posZ)
@@ -520,7 +746,7 @@ public class EntityAstroMiner extends Entity
 		}
 		else
 		{
-	        this.targetYaw = 180;
+	        this.targetYaw = 0;
 			this.motionZ = this.speed;
         	if (this.motionZ > pos.z - this.posZ)
         		this.motionZ = pos.z - this.posZ;
@@ -609,7 +835,7 @@ public class EntityAstroMiner extends Entity
 	public static void spawnMinerAtBase(World world, int x, int y, int z, int facing, BlockVec3 base)
 	{
         if (world.isRemote) return;
-		final EntityAstroMiner miner = new EntityAstroMiner(world);
+		final EntityAstroMiner miner = new EntityAstroMiner(world, new ItemStack[27], 0);
         miner.waypointBase = new BlockVec3(x, y, z).modifyPositionFromSide(ForgeDirection.getOrientation(facing), 2);
         miner.setPosition(miner.waypointBase.x, y, miner.waypointBase.z);
         miner.baseFacing = facing;
@@ -684,7 +910,9 @@ public class EntityAstroMiner extends Entity
 
         if (!this.worldObj.isRemote)
         {
-        	if (this.isEntityInvulnerable())
+        	Entity e = par1DamageSource.getEntity(); 
+        	//Invulnerable to mobs
+        	if (this.isEntityInvulnerable() || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)))
             {
                 return false;
             }
@@ -695,7 +923,7 @@ public class EntityAstroMiner extends Entity
 //                this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf((int) (this.dataWatcher.getWatchableObjectInt(this.currentDamage) + par2 * 10)));
                 this.shipDamage += par2 * 10;
 
-                if (par1DamageSource.getEntity() instanceof EntityPlayer)
+                if (e instanceof EntityPlayer)
                 {
                     if (((EntityPlayer) par1DamageSource.getEntity()).capabilities.isCreativeMode) this.shipDamage = 100;
                     else this.shipDamage += par2 * 21;
@@ -779,6 +1007,120 @@ public class EntityAstroMiner extends Entity
         this.velocityX = this.motionX = p_70016_1_;
         this.velocityY = this.motionY = p_70016_3_;
         this.velocityZ = this.motionZ = p_70016_5_;
+    }
+
+    @Override
+    public int getSizeInventory()
+    {
+        return this.cargoItems.length;
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int var1)
+    {
+        return this.cargoItems[var1];
+    }
+
+    @Override
+    public ItemStack decrStackSize(int var1, int var2)
+    {
+        if (this.cargoItems[var1] != null)
+        {
+            ItemStack var3;
+
+            if (this.cargoItems[var1].stackSize <= var2)
+            {
+                var3 = this.cargoItems[var1];
+                this.cargoItems[var1] = null;
+                return var3;
+            }
+            else
+            {
+                var3 = this.cargoItems[var1].splitStack(var2);
+
+                if (this.cargoItems[var1].stackSize == 0)
+                {
+                    this.cargoItems[var1] = null;
+                }
+
+                return var3;
+            }
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    @Override
+    public ItemStack getStackInSlotOnClosing(int var1)
+    {
+        if (this.cargoItems[var1] != null)
+        {
+            final ItemStack var2 = this.cargoItems[var1];
+            this.cargoItems[var1] = null;
+            return var2;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    @Override
+    public void setInventorySlotContents(int var1, ItemStack var2)
+    {
+        this.cargoItems[var1] = var2;
+
+        if (var2 != null && var2.stackSize > this.getInventoryStackLimit())
+        {
+            var2.stackSize = this.getInventoryStackLimit();
+        }
+    }
+
+    @Override
+    public String getInventoryName()
+    {
+        return "AstroMiner";
+    }
+
+    @Override
+    public int getInventoryStackLimit()
+    {
+        return 64;
+    }
+
+    @Override
+    public boolean isUseableByPlayer(EntityPlayer var1)
+    {
+        return !this.isDead && var1.getDistanceSqToEntity(this) <= 64.0D;
+    }
+
+    @Override
+    public void markDirty()
+    {
+    }
+
+    @Override
+    public void openInventory()
+    {
+    }
+
+    @Override
+    public void closeInventory()
+    {
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int i, ItemStack itemstack)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean hasCustomInventoryName()
+    {
+        return true;
     }
 }
 

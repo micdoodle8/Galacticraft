@@ -1,25 +1,33 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
+import java.lang.ref.WeakReference;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
+import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockTier3TreasureChest;
+import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockMinerBase;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
+import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ContainerChest;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.Iterator;
-import java.util.List;
-
-public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory
+public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory implements IMultiBlock
 {
     private ItemStack[] containingItems = new ItemStack[72];
+    @NetworkedField(targetSide = Side.CLIENT)
+    public boolean isMaster = false;
+    @NetworkedField(targetSide = Side.CLIENT)
+	public int facing;
+    private WeakReference<TileEntityMinerBase> masterTile = null;
+    private BlockVec3 mainBlockPosition;
 
     /**
      * The number of players currently using this chest
@@ -41,10 +49,82 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory
     }
 
     @Override
+    public void updateEntity()
+    {
+		super.updateEntity();
+    	if (this.isMaster)
+    	{
+    		if (!this.spawnedMiner && this.linkedMiner == null && this.hasEnoughEnergyToRun)
+	    	{
+	    		this.spawnedMiner = true;
+	        	EntityAstroMiner.spawnMinerAtBase(this.worldObj, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1, (this.facing + 2) ^ 1, new BlockVec3(this));
+	    	}    	
+    	}
+    	else
+    	{
+            TileEntityMinerBase master = this.getMaster();
+
+            if (master != null)
+            {
+                this.storage.setCapacity(master.storage.getCapacityGC());
+                this.storage.setMaxExtract(master.storage.getMaxExtract());
+                this.storage.setMaxReceive(master.storage.getMaxReceive());
+                this.extractEnergyGC(null, master.receiveEnergyGC(null, this.getEnergyStoredGC(), false), false);
+            }
+    	}
+    }
+
+    private TileEntityMinerBase getMaster()
+    {
+        if (this.mainBlockPosition == null)
+        {
+            return null;
+        }
+
+        if (masterTile == null)
+        {
+            TileEntity tileEntity = this.mainBlockPosition.getTileEntity(this.worldObj);
+
+            if (tileEntity != null)
+            {
+                if (tileEntity instanceof TileEntityMinerBase)
+                {
+                    masterTile = new WeakReference<TileEntityMinerBase>(((TileEntityMinerBase) tileEntity));
+                }
+            }
+        }
+
+        if (masterTile == null)
+        {
+            this.worldObj.setBlockToAir(this.mainBlockPosition.x, this.mainBlockPosition.y, this.mainBlockPosition.z);
+        }
+        else
+        {
+            TileEntityMinerBase master = this.masterTile.get();
+
+            if (master != null)
+            {
+                return master;
+            }
+            else
+            {
+                this.worldObj.removeTileEntity(this.xCoord, this.yCoord, this.zCoord);
+            }
+        }
+
+        return null;
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
         this.containingItems = this.readStandardItemsFromNBT(nbt);
+        this.isMaster = nbt.getBoolean("isMaster");
+        if (!this.isMaster)
+        {
+        	this.mainBlockPosition = BlockVec3.readFromNBT(nbt.getCompoundTag("masterpos"));
+        }
     }
 
     @Override
@@ -52,6 +132,13 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory
     {
         super.writeToNBT(nbt);
         this.writeStandardItemsToNBT(nbt);
+        nbt.setBoolean("isMaster", this.isMaster);
+        if (!this.isMaster && this.mainBlockPosition != null)
+        {
+        	NBTTagCompound masterTag = new NBTTagCompound();
+        	this.mainBlockPosition.writeToNBT(masterTag);
+        	nbt.setTag("masterpos", masterTag);
+        }
     }
         
     /**
@@ -83,49 +170,6 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory
     public void updateContainingBlockInfo()
     {
         super.updateContainingBlockInfo();
-    }
-
-    /**
-     * Allows the entity to update its state. Overridden in most subclasses,
-     * e.g. the mob spawner uses this to count ticks and creates a new spawn
-     * inside its implementation.
-     */
-    @Override
-    public void updateEntity()
-    {
-    	super.updateEntity();
-    	if (!this.spawnedMiner && this.linkedMiner == null)
-    	{
-    		this.spawnedMiner = true;
-        	EntityAstroMiner.spawnMinerAtBase(this.worldObj, this.xCoord, this.yCoord + 1, this.zCoord, 4, new BlockVec3(this));
-    	}
-    	
-    	//TODO
-        ++this.ticksSinceSync;
-        float f;
-
-        if (!this.worldObj.isRemote && this.numUsingPlayers != 0 && (this.ticksSinceSync + this.xCoord + this.yCoord + this.zCoord) % 200 == 0)
-        {
-            this.numUsingPlayers = 0;
-            f = 5.0F;
-            final List<?> list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(this.xCoord - f, this.yCoord - f, this.zCoord - f, this.xCoord + 1 + f, this.yCoord + 1 + f, this.zCoord + 1 + f));
-            final Iterator<?> iterator = list.iterator();
-
-            while (iterator.hasNext())
-            {
-                final EntityPlayer entityplayer = (EntityPlayer) iterator.next();
-
-                if (entityplayer.openContainer instanceof ContainerChest)
-                {
-                    final IInventory iinventory = ((ContainerChest) entityplayer.openContainer).getLowerChestInventory();
-
-                    if (iinventory == this || iinventory instanceof InventoryLargeChest && ((InventoryLargeChest) iinventory).isPartOfLargeChest(this))
-                    {
-                        ++this.numUsingPlayers;
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -163,7 +207,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory
     @Override
     public void closeInventory()
     {
-        if (this.getBlockType() != null && this.getBlockType() instanceof BlockTier3TreasureChest)
+        if (this.getBlockType() != null && this.getBlockType() instanceof BlockMinerBase)
         {
             --this.numUsingPlayers;
             this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numUsingPlayers);
@@ -234,9 +278,125 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory
 	{
 		this.linkedMiner = entityAstroMiner;
 	}
+
+	public void setMaster()
+	{
+		this.isMaster = true;
+	}
+
+	public void setSlave(TileEntityMinerBase master)
+	{
+		this.isMaster = false;
+		this.masterTile = new WeakReference<TileEntityMinerBase>(master);
+		this.mainBlockPosition = new BlockVec3(master);
+	}
+
+    public void onBlockRemoval()
+    {
+        if (this.isMaster)
+        {
+        	this.onDestroy(this);
+        	return;
+        }
+        
+    	TileEntityMinerBase master = this.getMaster();
+
+        if (master != null)
+        {
+            master.onDestroy(this);
+        }
+    }
+
+	@Override
+	public boolean onActivated(EntityPlayer entityPlayer)
+	{
+        if (this.isMaster)
+        {
+        	//TODO = open GUI
+        	return true;
+        }
+        else
+        {
+			TileEntityMinerBase master = this.getMaster();
+	        return master != null && master.onActivated(entityPlayer);
+        }
+	}
+
+	@Override
+	public void onCreate(BlockVec3 placedPosition)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onDestroy(TileEntity callingBlock)
+	{
+        for (int x = 0; x < 2; x++)
+        {
+            for (int y = 0; y < 2; y++)
+            {
+	            for (int z = 0; z < 2; z++)
+                {
+                    this.worldObj.func_147480_a(this.xCoord + x, this.yCoord + y, this.zCoord + z, x + y + z == 0);
+                }
+            }
+        }
+	}
 	
-	//TODO side by side blocks
-	//2 electrical inputs needed
+	//TODO
+	//maybe 2 electrical inputs are needed?
 	//chest goes above (could be 2 chests or other mods storage)
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+    	return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 2, yCoord + 2, zCoord + 2);
+    }
+
+    public void updateFacing()
+    {
+    	if (this.isMaster)
+    	{
+	    	System.out.println("Wrench master "+this.facing);
+    		// Re-orient the block
+	        switch (this.facing)
+	        {
+	        case 0:
+	        	this.facing = 3;
+	            break;
+	        case 3:
+	        	this.facing = 1;
+	            break;
+	        case 1:
+	        	this.facing = 2;
+	            break;
+	        case 2:
+	        	this.facing = 0;
+	            break;
+	        }
 	
+	    	super.updateFacing();
+    	}
+    	else
+    	{
+	    	System.out.println("Wrench client to ->");
+            TileEntityMinerBase master = this.getMaster();
+            if (master != null) master.updateFacing();
+    	}
+    }
+    
+    
+    @Override
+    public ForgeDirection getElectricInputDirection()
+    {
+        if (this.isMaster)
+        {
+        	return ForgeDirection.getOrientation(this.facing + 2);
+        }
+        TileEntityMinerBase master = this.getMaster();
+        if (master != null) return master.getElectricInputDirection();
+        return ForgeDirection.UNKNOWN;
+    }
 }

@@ -4,40 +4,29 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
-import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
-import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
-import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBaseSingle;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Random;
 
-public class BlockMinerBase extends BlockTileGC 
+public class BlockMinerBaseFull extends BlockTileGC 
 {
 	//16 different orientations
     private IIcon iconInput;
 
 
-    public BlockMinerBase(String assetName)
+    public BlockMinerBaseFull(String assetName)
     {
         super(Material.rock);
         this.blockHardness = 3.0F;
         this.setBlockName(assetName);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.blockIcon = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "machineframe");
-        this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
     }
 
     @SideOnly(Side.CLIENT)
@@ -47,22 +36,10 @@ public class BlockMinerBase extends BlockTileGC
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
-    public IIcon getIcon(int side, int meta)
+    public int getRenderType()
     {
-        if (side == ForgeDirection.getOrientation(meta + 2).ordinal())
-        {
-            return this.iconInput;
-        }
-        
-        return this.blockIcon;
-    }
-
-    @Override
-    public Item getItemDropped(int meta, Random random, int par3)
-    {
-        return super.getItemDropped(0, random, par3);
+        return -1;
     }
 
     @Override
@@ -86,7 +63,7 @@ public class BlockMinerBase extends BlockTileGC
     @Override
     public TileEntity createTileEntity(World world, int metadata)
     {
-        return new TileEntityMinerBaseSingle();
+        return new TileEntityMinerBase();
     }
 
     @Override
@@ -110,36 +87,49 @@ public class BlockMinerBase extends BlockTileGC
 
         return true;
     }
+    
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block par5, int par6)
+    {
+        TileEntity tileEntity = world.getTileEntity(x, y, z);
 
+        if (tileEntity instanceof TileEntityMinerBase)
+        {
+            ((TileEntityMinerBase) tileEntity).onBlockRemoval();
+        }
+
+        super.breakBlock(world, x, y, z, par5, par6);
+    }
+
+    @Override
+    public boolean onMachineActivated(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
+    {
+        TileEntity tileEntity = par1World.getTileEntity(x, y, z);
+        if (tileEntity instanceof TileEntityMinerBase)
+        	return ((TileEntityMinerBase)tileEntity).onActivated(par5EntityPlayer);
+        else return false;
+    }
+
+    @Override
+    public Item getItemDropped(int par1, Random par2Random, int par3)
+    {
+        return Item.getItemFromBlock(AsteroidBlocks.blockMinerBase);
+    }
+
+    @Override
+    public int quantityDropped(Random par1Random)
+    {
+        return 8;
+    }
+    
     @Override
     public boolean onUseWrench(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
     {
-        int change = 0;
-
-        // Re-orient the block
-        switch (par1World.getBlockMetadata(x, y, z))
-        {
-        case 0:
-            change = 3;
-            break;
-        case 3:
-            change = 1;
-            break;
-        case 1:
-            change = 2;
-            break;
-        case 2:
-            change = 0;
-            break;
-        }
-
         TileEntity te = par1World.getTileEntity(x, y, z);
-        if (te instanceof TileBaseUniversalElectrical)
+        if (te instanceof TileEntityMinerBase)
         {
-            ((TileBaseUniversalElectrical) te).updateFacing();
+            ((TileEntityMinerBase) te).updateFacing();
         }
-
-        par1World.setBlockMetadataWithNotify(x, y, z, change, 3);
         return true;
     }
 }
