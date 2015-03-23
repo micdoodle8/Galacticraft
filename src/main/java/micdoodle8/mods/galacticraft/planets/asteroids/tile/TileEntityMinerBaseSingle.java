@@ -43,7 +43,6 @@ public class TileEntityMinerBaseSingle extends TileEntity
 	                tile.getWorldObj().setBlock(tile.xCoord, tile.yCoord, tile.zCoord, AsteroidBlocks.minerBaseFull, 0, 3);
 	            }
 	
-	            TileEntityMinerBase masterTile = null;
 		        for (int x = this.xCoord; x < this.xCoord + 2; x++)
 		        {
 		            for (int y = this.yCoord; y < this.yCoord + 2; y++)
@@ -54,13 +53,7 @@ public class TileEntityMinerBaseSingle extends TileEntity
 		
 			                if (tile instanceof TileEntityMinerBase)
 			                {
-				                if (x == this.xCoord && y == this.yCoord && z == this.zCoord)
-				                {
-				                	((TileEntityMinerBase) tile).setMaster();
-				                	masterTile = (TileEntityMinerBase) tile;
-				                }
-				                else if (masterTile != null)
-				                	((TileEntityMinerBase) tile).setSlave(masterTile);
+			                	((TileEntityMinerBase) tile).setMainBlockPos(this.xCoord, this.yCoord, this.zCoord);
 			                }
 			            }
 		            }

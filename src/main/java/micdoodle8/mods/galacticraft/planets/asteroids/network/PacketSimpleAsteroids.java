@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.Entity;
@@ -29,9 +30,11 @@ public class PacketSimpleAsteroids implements IPacket
     {
         // SERVER
         S_UPDATE_ADVANCED_GUI(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
+        S_REQUEST_MINERBASE_FACING(Side.CLIENT, Integer.class, Integer.class, Integer.class),
         // CLIENT
         C_TELEPAD_SEND(Side.CLIENT, BlockVec3.class, Integer.class),
-        C_UPDATE_GRAPPLE_POS(Side.CLIENT, Integer.class, Vector3.class);
+        C_UPDATE_GRAPPLE_POS(Side.CLIENT, Integer.class, Vector3.class),
+        C_UPDATE_MINERBASE_FACING(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class);
 
         private Side targetSide;
         private Class<?>[] decodeAs;
@@ -114,6 +117,7 @@ public class PacketSimpleAsteroids implements IPacket
             playerBaseClient = (EntityClientPlayerMP) player;
         }
 
+        TileEntity tile;
         switch (this.type)
         {
         case C_TELEPAD_SEND:
@@ -133,6 +137,15 @@ public class PacketSimpleAsteroids implements IPacket
                 entity.setPosition(vec.x, vec.y, vec.z);
             }
             break;
+        case C_UPDATE_MINERBASE_FACING:
+        	tile = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
+        	int facingNew = (Integer) this.data.get(3);
+        	if (tile instanceof TileEntityMinerBase)
+        	{
+        		((TileEntityMinerBase)tile).facing = facingNew;
+        		((TileEntityMinerBase)tile).setMainBlockPos((Integer) this.data.get(4), (Integer) this.data.get(5), (Integer) this.data.get(6));
+        	}     	
+        	break;
         default:
             break;
         }
@@ -168,6 +181,13 @@ public class PacketSimpleAsteroids implements IPacket
                 break;
             }
             break;
+        case S_REQUEST_MINERBASE_FACING:
+        	tile = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
+        	if (tile instanceof TileEntityMinerBase)
+        	{
+            	((TileEntityMinerBase)tile).updateClientFlag = true; 
+        	}
+        	break;
         default:
             break;
         }

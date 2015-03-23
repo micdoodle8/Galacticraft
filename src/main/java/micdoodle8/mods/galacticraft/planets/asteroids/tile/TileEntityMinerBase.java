@@ -5,13 +5,15 @@ import java.lang.ref.WeakReference;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockMinerBase;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids.EnumSimplePacketAsteroids;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,13 +24,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory implements IMultiBlock
 {
     private ItemStack[] containingItems = new ItemStack[72];
-    @NetworkedField(targetSide = Side.CLIENT)
     public boolean isMaster = false;
-    @NetworkedField(targetSide = Side.CLIENT)
 	public int facing;
-    private WeakReference<TileEntityMinerBase> masterTile = null;
     private BlockVec3 mainBlockPosition;
-
+    private WeakReference<TileEntityMinerBase> masterTile = null;
+	public boolean updateClientFlag;
+	
     /**
      * The number of players currently using this chest
      */
@@ -52,6 +53,12 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     public void updateEntity()
     {
 		super.updateEntity();
+        if (this.updateClientFlag)
+        {
+        	this.updateClient();
+        	this.updateClientFlag = false;
+        }
+
     	if (this.isMaster)
     	{
     		if (!this.spawnedMiner && this.linkedMiner == null && this.hasEnoughEnergyToRun)
@@ -125,6 +132,8 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         {
         	this.mainBlockPosition = BlockVec3.readFromNBT(nbt.getCompoundTag("masterpos"));
         }
+        this.facing = nbt.getInteger("facing");
+        this.updateClientFlag = true;
     }
 
     @Override
@@ -139,6 +148,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         	this.mainBlockPosition.writeToNBT(masterTag);
         	nbt.setTag("masterpos", masterTag);
         }
+        nbt.setInteger("facing", this.facing);
     }
         
     /**
@@ -222,6 +232,15 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         return true;
     }
 
+    @Override
+    public void validate()
+    {
+	    if (this.worldObj.isRemote)
+	    {
+	    	GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.S_REQUEST_MINERBASE_FACING, new Object[] { this.xCoord, this.yCoord, this.zCoord } ));
+	    }
+    }
+
     /**
      * invalidates a tile entity
      */
@@ -279,16 +298,17 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 		this.linkedMiner = entityAstroMiner;
 	}
 
-	public void setMaster()
+	public void setMainBlockPos(int x, int y, int z)
 	{
-		this.isMaster = true;
-	}
-
-	public void setSlave(TileEntityMinerBase master)
-	{
+		this.masterTile = null;
+		if (this.xCoord == x && this.yCoord == y && this.zCoord == z)
+		{
+			this.isMaster = true;
+			this.mainBlockPosition = null;
+			return;
+		}
 		this.isMaster = false;
-		this.masterTile = new WeakReference<TileEntityMinerBase>(master);
-		this.mainBlockPosition = new BlockVec3(master);
+		this.mainBlockPosition = new BlockVec3(x, y, z);
 	}
 
     public void onBlockRemoval()
@@ -359,7 +379,6 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     {
     	if (this.isMaster)
     	{
-	    	System.out.println("Wrench master "+this.facing);
     		// Re-orient the block
 	        switch (this.facing)
 	        {
@@ -381,12 +400,27 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     	}
     	else
     	{
-	    	System.out.println("Wrench client to ->");
             TileEntityMinerBase master = this.getMaster();
             if (master != null) master.updateFacing();
     	}
+    	
+    	if (!this.worldObj.isRemote)
+    		this.updateClient();
     }
-    
+
+    private void updateClient()
+    {
+    	int x = this.xCoord;
+    	int y = this.yCoord;
+    	int z = this.zCoord;
+    	if (this.mainBlockPosition != null)
+    	{
+    		x = this.mainBlockPosition.x;
+    		y = this.mainBlockPosition.y;
+    		z = this.mainBlockPosition.z;
+    	}
+    	GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.C_UPDATE_MINERBASE_FACING, new Object[] { this.xCoord, this.yCoord, this.zCoord, this.facing, x, y, z} ), this.worldObj.provider.dimensionId);
+    }
     
     @Override
     public ForgeDirection getElectricInputDirection()
@@ -396,7 +430,10 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         	return ForgeDirection.getOrientation(this.facing + 2);
         }
         TileEntityMinerBase master = this.getMaster();
-        if (master != null) return master.getElectricInputDirection();
+        if (master != null)
+        {
+        	return ForgeDirection.getOrientation(master.facing + 2);
+        }
         return ForgeDirection.UNKNOWN;
     }
 }

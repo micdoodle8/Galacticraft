@@ -78,6 +78,7 @@ tile.walkwayWire.name=Walkway
 tile.walkwayOxygenPipe.name=Walkway
 tile.treasureT3.name=Tier 3 Treasure Chest
 tile.denseIce.name=Dense Ice
+tile.minerBase.name=AstroMiner Base block
 
 # GUI
 planet.asteroids=Asteroids
@@ -115,6 +116,7 @@ entity.SmallAsteroidGC.name=Small Asteroid
 entity.GrappleHookGC.name=Grapple Hook
 entity.Tier3RocketGC.name=Tier 3 Rocket
 entity.EntryPodAsteroids.name=Entry Pod
+entity.AstroMiner.name=Astro Miner
 
 # CONTAINERS
 container.shortRangeTelepad.name=Short Range Telepad
