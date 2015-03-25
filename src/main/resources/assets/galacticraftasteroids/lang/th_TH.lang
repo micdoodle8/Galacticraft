@@ -1,4 +1,4 @@
-﻿# Galacticraft Asteroids Language File = THAILAND
+# Galacticraft Asteroids Language File = THAILAND
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=จรวด เทียร์ 3
@@ -78,6 +78,7 @@ tile.walkwayWire.name=ทางเดิน
 tile.walkwayOxygenPipe.name=ทางเดิน
 tile.treasureT3.name=กล่องสมบัติ เทียร์ 3
 tile.denseIce.name=ก้อนน้ำแข็งหนาทึบ
+tile.minerBase.name=แอสโทรไมน์เนอร์
 
 # GUI
 planet.asteroids=ดาวเคราะห์น้อย
@@ -115,6 +116,7 @@ entity.SmallAsteroidGC.name=ดาวเคราะห์น้อยขนา�
 entity.GrappleHookGC.name=ตะขอเกี่ยว
 entity.Tier3RocketGC.name=จรวด เทียร์ 3
 entity.EntryPodAsteroids.name=ยานลงจอด
+entity.AstroMiner.name=แอสโทรไมน์เนอร์
 
 # CONTAINERS
 container.shortRangeTelepad.name=เครื่องเทเลพอร์ตระยะใกล้
