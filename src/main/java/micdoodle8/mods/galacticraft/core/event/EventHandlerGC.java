@@ -350,7 +350,7 @@ public class EventHandlerGC
         EventHandlerGC.generateOil(event.world, event.rand, worldX + event.rand.nextInt(16), worldZ + event.rand.nextInt(16), false);
     }
 
-    public static boolean oilPresent(World world, Random rand, int x, int z, BlockVec3 pos, Integer radius)
+    public static boolean oilPresent(World world, Random rand, int x, int z, BlockVec3 pos)
     {
         boolean doGen2 = false;
 
@@ -401,7 +401,6 @@ public class EventHandlerGC
             pos.y = 17 + rand.nextInt(10) + rand.nextInt(5);
             pos.x = x + rand.nextInt(16);
             pos.z = z + rand.nextInt(16);
-            radius = 3 + rand.nextInt(5);
             return true;
         }
         
@@ -411,13 +410,12 @@ public class EventHandlerGC
     public static void generateOil(World world, Random rand, int xx, int zz, boolean testFirst)
     {
     	BlockVec3 pos = new BlockVec3();
-    	Integer radius = 0;
-    	if (oilPresent(world, rand, xx, zz, pos, radius))
+    	if (oilPresent(world, rand, xx, zz, pos))
     	{
             int x = pos.x;
             int cy = pos.y;
             int z = pos.z;
-            int r = radius;
+            int r = rand.nextInt(5);
             
     		if (testFirst && checkOilPresent(world, x, cy, z, r)) return;
 
