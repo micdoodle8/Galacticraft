@@ -43,11 +43,11 @@ public class AsteroidBlocks
         AsteroidBlocks.shortRangeTelepad = new BlockShortRangeTelepad("telepadShort");
         AsteroidBlocks.fakeTelepad = new BlockTelepadFake("telepadFake");
         AsteroidBlocks.blockDenseIce = new BlockIceAsteroids("denseIce");
-        AsteroidBlocks.blockMinerBase = new BlockMinerBase("minerBase");
-        AsteroidBlocks.minerBaseFull = new BlockMinerBaseFull("minerBaseFull");
+        //AsteroidBlocks.blockMinerBase = new BlockMinerBase("minerBase");
+        //AsteroidBlocks.minerBaseFull = new BlockMinerBaseFull("minerBaseFull");
 
         GCBlocks.hiddenBlocks.add(AsteroidBlocks.fakeTelepad);
-        GCBlocks.hiddenBlocks.add(AsteroidBlocks.minerBaseFull);
+        //GCBlocks.hiddenBlocks.add(AsteroidBlocks.minerBaseFull);
     }
 
     public static void registerBlocks()
