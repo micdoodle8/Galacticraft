@@ -181,14 +181,14 @@ public class TileEntityHydrogenPipe extends TileEntity implements ITransmitter
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public int receiveGas(ForgeDirection side, GasStack stack)
+    public int receiveGas(ForgeDirection side, GasStack stack, boolean doTransfer)
     {
     	if (!stack.getGas().getName().equals("hydrogen")) return 0;  
         return stack.amount - (int) Math.floor(((IHydrogenNetwork) this.getNetwork()).produce(stack.amount, this));
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public GasStack drawGas(ForgeDirection side, int amount)
+    public GasStack drawGas(ForgeDirection side, int amount, boolean doTransfer)
     {
         return null;
     }

@@ -434,26 +434,26 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public int receiveGas(ForgeDirection side, GasStack stack)
+    public int receiveGas(ForgeDirection side, GasStack stack, boolean doTransfer)
     {
         return 0;
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public GasStack drawGas(ForgeDirection from, int amount)
+    public GasStack drawGas(ForgeDirection from, int amount, boolean doTransfer)
     {
         int metaside = this.getBlockMetadata() + 2;
         int side = from.ordinal();
     	if (metaside == (side ^ 1) && this.liquidTank2.getFluid() != null)
         {
     		int amountH = Math.min(8, this.liquidTank2.getFluidAmount());
-    		amountH = this.liquidTank2.drain(amountH, true).amount;
+    		amountH = this.liquidTank2.drain(amountH, doTransfer).amount;
     		return new GasStack((Gas) EnergyConfigHandler.gasHydrogen, amountH);
         }
         else if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1)  && this.liquidTank.getFluid() != null)
         {
     		int amountO = Math.min(8, this.liquidTank.getFluidAmount());
-    		amountO = this.liquidTank.drain(amountO, true).amount;
+    		amountO = this.liquidTank.drain(amountO, doTransfer).amount;
     		return new GasStack((Gas) EnergyConfigHandler.gasOxygen, amountO);
         }
         return null;

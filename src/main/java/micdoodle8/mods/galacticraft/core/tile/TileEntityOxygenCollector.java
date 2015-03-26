@@ -388,7 +388,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
     }
     
     @Override
-    public int receiveGas(ForgeDirection side, GasStack stack)
+    public int receiveGas(ForgeDirection side, GasStack stack, boolean doTransfer)
     {
     	return 0;
     }
