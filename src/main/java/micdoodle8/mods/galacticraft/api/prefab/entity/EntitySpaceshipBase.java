@@ -15,6 +15,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -104,7 +105,8 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     {
         if (!this.worldObj.isRemote && !this.isDead)
         {
-            if (this.isEntityInvulnerable() || this.posY > 300)
+        	Entity e = par1DamageSource.getEntity(); 
+            if (this.isEntityInvulnerable() || this.posY > 300 || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)))
             {
                 return false;
             }
@@ -114,7 +116,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
                 this.setBeenAttacked();
                 this.shipDamage += par2 * 10;
 
-                if (par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer) par1DamageSource.getEntity()).capabilities.isCreativeMode)
+                if (e instanceof EntityPlayer && ((EntityPlayer) e).capabilities.isCreativeMode)
                 {
                     this.shipDamage = 100;
                 }
