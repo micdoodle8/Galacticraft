@@ -97,7 +97,7 @@ public class GuiCargoRocket extends GuiContainerGC
         String str = GCCoreUtil.translate("gui.message.fuel.name") + ":";
         this.fontRendererObj.drawString(str, 140 - this.fontRendererObj.getStringWidth(str) / 2, 5, 4210752);
         final double percentage = this.rocket.getScaledFuelLevel(100);
-        String color = percentage > 80.0D ? EnumColor.BRIGHT_GREEN.code : percentage > 40.0D ? EnumColor.ORANGE.code : EnumColor.RED.code;
+        String color = percentage > 80.0D ? EnumColor.BRIGHT_GREEN.getCode() : percentage > 40.0D ? EnumColor.ORANGE.getCode() : EnumColor.RED.getCode();
         str = percentage + "% " + GCCoreUtil.translate("gui.message.full.name");
         this.fontRendererObj.drawString(color + str, 140 - this.fontRendererObj.getStringWidth(str) / 2, 15, 4210752);
         str = GCCoreUtil.translate("gui.message.status.name") + ":";

@@ -125,7 +125,7 @@ public class OverlayOxygenTanks extends Overlay
         tessellator.draw();
         GL11.glDepthMask(true);
 
-        if (oxygenInTank1 > 0 || oxygenInTank1 <= 0)
+        if (oxygenInTank1 > 0)
         {
             final Tessellator tessellator2 = Tessellator.instance;
 
@@ -144,7 +144,7 @@ public class OverlayOxygenTanks extends Overlay
             tessellator2.draw();
         }
 
-        if (oxygenInTank2 > 0 || oxygenInTank2 <= 0)
+        if (oxygenInTank2 > 0)
         {
             final Tessellator tessellator2 = Tessellator.instance;
 

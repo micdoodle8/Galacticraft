@@ -61,7 +61,7 @@ public class GuiBuggy extends GuiContainerGC
         {
             this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.fuel.name") + ":", 125, 15 + 3, 4210752);
             final double percentage = ((EntityBuggy) this.mc.thePlayer.ridingEntity).getScaledFuelLevel(100);
-            final String color = percentage > 80.0D ? EnumColor.BRIGHT_GREEN.code : percentage > 40.0D ? EnumColor.ORANGE.code : EnumColor.RED.code;
+            final String color = percentage > 80.0D ? EnumColor.BRIGHT_GREEN.getCode() : percentage > 40.0D ? EnumColor.ORANGE.getCode() : EnumColor.RED.getCode();
             final String str = percentage + "% " + GCCoreUtil.translate("gui.message.full.name");
             this.fontRendererObj.drawString(color + str, 117 - str.length() / 2, 20 + 8, 4210752);
         }

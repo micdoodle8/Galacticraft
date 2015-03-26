@@ -474,7 +474,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
             final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
             final int var5 = var4.getByte("Slot") & 255;
 
-            if (var5 >= 0 && var5 < this.cargoItems.length)
+            if (var5 < this.cargoItems.length)
             {
                 this.cargoItems[var5] = ItemStack.loadItemStackFromNBT(var4);
             }

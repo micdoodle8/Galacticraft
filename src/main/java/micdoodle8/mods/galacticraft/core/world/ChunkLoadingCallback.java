@@ -134,47 +134,77 @@ public class ChunkLoadingCallback implements LoadingCallback
 
     public static void save(WorldServer world)
     {
-        try
-        {
-            File saveDir = ChunkLoadingCallback.getSaveDir();
+        File saveDir = ChunkLoadingCallback.getSaveDir();
 
-            if (saveDir != null)
+        if (saveDir != null)
+        {
+            File saveFile = new File(saveDir, "chunkloaders.dat");
+
+            if (!saveFile.exists())
             {
-                File saveFile = new File(saveDir, "chunkloaders.dat");
-
-                if (!saveFile.exists())
+                try 
                 {
-                    saveFile.createNewFile();
-                }
-
-                DataOutputStream dataStream = new DataOutputStream(new FileOutputStream(saveFile));
-                dataStream.writeInt(ChunkLoadingCallback.chunkLoaderList.size());
-
-                for (Entry<String, HashMap<Integer, HashSet<ChunkCoordinates>>> playerEntry : ChunkLoadingCallback.chunkLoaderList.entrySet())
+					if (!saveFile.createNewFile())
+					{
+						GCLog.severe("Could not create chunk loader data file: " + saveFile.getAbsolutePath());
+					}
+				} 
+                catch (IOException e) 
                 {
-                    dataStream.writeUTF(playerEntry.getKey());
-                    dataStream.writeInt(playerEntry.getValue().size());
-
-                    for (Entry<Integer, HashSet<ChunkCoordinates>> dimensionEntry : playerEntry.getValue().entrySet())
-                    {
-                        dataStream.writeInt(dimensionEntry.getKey());
-                        dataStream.writeInt(dimensionEntry.getValue().size());
-
-                        for (ChunkCoordinates coords : dimensionEntry.getValue())
-                        {
-                            dataStream.writeInt(coords.posX);
-                            dataStream.writeInt(coords.posY);
-                            dataStream.writeInt(coords.posZ);
-                        }
-                    }
-                }
-
-                dataStream.close();
+					GCLog.severe("Could not create chunk loader data file: " + saveFile.getAbsolutePath());
+					e.printStackTrace();
+				}
             }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
+
+            FileOutputStream fos = null;
+			try 
+			{
+				fos = new FileOutputStream(saveFile);
+			} 
+			catch (FileNotFoundException e) 
+			{
+				e.printStackTrace();
+			}
+			if (fos != null)
+			{
+	            DataOutputStream dataStream = new DataOutputStream(fos);
+	            try
+	            {
+		            dataStream.writeInt(ChunkLoadingCallback.chunkLoaderList.size());
+	
+		            for (Entry<String, HashMap<Integer, HashSet<ChunkCoordinates>>> playerEntry : ChunkLoadingCallback.chunkLoaderList.entrySet())
+		            {
+		                dataStream.writeUTF(playerEntry.getKey());
+		                dataStream.writeInt(playerEntry.getValue().size());
+	
+		                for (Entry<Integer, HashSet<ChunkCoordinates>> dimensionEntry : playerEntry.getValue().entrySet())
+		                {
+		                    dataStream.writeInt(dimensionEntry.getKey());
+		                    dataStream.writeInt(dimensionEntry.getValue().size());
+	
+		                    for (ChunkCoordinates coords : dimensionEntry.getValue())
+		                    {
+		                        dataStream.writeInt(coords.posX);
+		                        dataStream.writeInt(coords.posY);
+		                        dataStream.writeInt(coords.posZ);
+		                    }
+		                }
+		            }
+	            }
+	            catch (IOException e)
+	            {
+	            	e.printStackTrace();
+	            }
+	            try 
+	            {
+		            dataStream.close();
+					fos.close();
+				} 
+	            catch (IOException e) 
+	            {
+					e.printStackTrace();
+				}
+			}
         }
     }
 
@@ -186,7 +216,10 @@ public class ChunkLoadingCallback implements LoadingCallback
 
             if (!saveDir.exists())
             {
-                saveDir.mkdirs();
+                if (!saveDir.mkdirs())
+                {
+                	GCLog.severe("Could not create chunk loader save data folder: " + saveDir.getAbsolutePath());
+                }
             }
 
             return saveDir;
@@ -202,6 +235,8 @@ public class ChunkLoadingCallback implements LoadingCallback
             return;
         }
 
+        DataInputStream dataStream = null;
+        
         try
         {
             File saveDir = ChunkLoadingCallback.getSaveDir();
@@ -210,14 +245,17 @@ public class ChunkLoadingCallback implements LoadingCallback
             {
                 if (!saveDir.exists())
                 {
-                    saveDir.mkdirs();
+                    if (!saveDir.mkdirs())
+                    {
+                    	GCLog.severe("Could not create chunk loader save data folder: " + saveDir.getAbsolutePath());
+                    }
                 }
 
                 File saveFile = new File(saveDir, "chunkloaders.dat");
 
                 if (saveFile.exists())
                 {
-                    DataInputStream dataStream = new DataInputStream(new FileInputStream(saveFile));
+                    dataStream = new DataInputStream(new FileInputStream(saveFile));
 
                     int playerCount = dataStream.readInt();
 
@@ -251,6 +289,18 @@ public class ChunkLoadingCallback implements LoadingCallback
         catch (Exception e)
         {
             e.printStackTrace();
+            
+            if (dataStream != null)
+            {
+            	try 
+            	{
+					dataStream.close();
+				} 
+            	catch (IOException e1) 
+            	{
+					e1.printStackTrace();
+				}
+            }
         }
 
         ChunkLoadingCallback.loaded = true;

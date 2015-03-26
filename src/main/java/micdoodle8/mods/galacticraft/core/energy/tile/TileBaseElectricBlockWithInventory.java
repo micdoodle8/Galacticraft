@@ -20,7 +20,7 @@ public abstract class TileBaseElectricBlockWithInventory extends TileBaseElectri
             final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
             final byte var5 = var4.getByte("Slot");
 
-            if (var5 >= 0 && var5 < length)
+            if (var5 < length)
             {
                 result[var5] = ItemStack.loadItemStackFromNBT(var4);
             }

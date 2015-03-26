@@ -40,7 +40,12 @@ public class TileEntityAirLockController extends TileEntityAirLock
     public ArrayList<TileEntityAirLock> otherAirLocks;
     public ArrayList<TileEntityAirLock> lastOtherAirLocks;
     private AirLockProtocol protocol;
-    private AirLockProtocol lastProtocol = this.protocol;
+    private AirLockProtocol lastProtocol;
+
+    public TileEntityAirLockController()
+    {
+        this.lastProtocol = this.protocol;
+    }
 
     @SuppressWarnings("rawtypes")
     @Override
@@ -139,7 +144,9 @@ public class TileEntityAirLockController extends TileEntityAirLock
                 {
                     this.otherAirLocks = this.protocol.calculate(this.horizontalModeEnabled);
 
-                    if (this.active && (this.otherAirLocks != null || this.otherAirLocks != null && this.lastOtherAirLocks != null && this.otherAirLocks != this.lastOtherAirLocks || this.otherAirLocks != null && this.lastOtherAirLocks != null && this.otherAirLocks.size() != this.lastOtherAirLocks.size()))
+                    if (this.active && (this.otherAirLocks != null || 
+                    		(this.lastOtherAirLocks != null && this.otherAirLocks != this.lastOtherAirLocks) || 
+                    		(this.lastOtherAirLocks != null && this.otherAirLocks.size() != this.lastOtherAirLocks.size())))
                     {
                         this.sealAirLock();
                     }

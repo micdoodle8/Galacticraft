@@ -239,7 +239,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
             final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
             final int var5 = var4.getByte("Slot") & 255;
 
-            if (var5 >= 0 && var5 < this.containedItems.length)
+            if (var5 < this.containedItems.length)
             {
                 this.containedItems[var5] = ItemStack.loadItemStackFromNBT(var4);
             }

@@ -694,10 +694,10 @@ public class PacketSimple extends Packet implements IPacket
         		int screenType = (Integer) this.data.get(3);
         		int flags = (Integer) this.data.get(4);
             	screenTile.imageType = screenType;
-            	screenTile.connectedUp = (flags & 8) > 0;
-            	screenTile.connectedDown = (flags & 4) > 0;
-            	screenTile.connectedLeft = (flags & 2) > 0;
-            	screenTile.connectedRight = (flags & 1) > 0;
+            	screenTile.connectedUp = (flags & 8) != 0;
+            	screenTile.connectedDown = (flags & 4) != 0;
+            	screenTile.connectedLeft = (flags & 2) != 0;
+            	screenTile.connectedRight = (flags & 1) != 0;
             	screenTile.refreshNextTick(true);
         	}      	
         	break;
@@ -1116,9 +1116,9 @@ public class PacketSimple extends Packet implements IPacket
                 if (race != null)
                 {
                     GCPlayerStats.get(playerInvited).spaceRaceInviteTeamID = teamInvitedTo;
-                    String dA = EnumColor.DARK_AQUA.code;
-                    String bG = EnumColor.BRIGHT_GREEN.code;
-                    String dB = EnumColor.PURPLE.code;
+                    String dA = EnumColor.DARK_AQUA.getCode();
+                    String bG = EnumColor.BRIGHT_GREEN.getCode();
+                    String dB = EnumColor.PURPLE.getCode();
                     String teamNameTotal = "";
                     String[] teamNameSplit = race.getTeamName().split(" ");
                     for (String teamNamePart : teamNameSplit)
@@ -1255,7 +1255,10 @@ public class PacketSimple extends Packet implements IPacket
             File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
             if (!baseFolder.exists())
             {
-                baseFolder.mkdirs();
+                if (!baseFolder.mkdirs())
+                {
+                	GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
+                }
             }
             File outputFile = new File(baseFolder, "" + chunkCoordIntPair.chunkXPos + "_" + chunkCoordIntPair.chunkZPos + ".jpg");
             boolean success = true;

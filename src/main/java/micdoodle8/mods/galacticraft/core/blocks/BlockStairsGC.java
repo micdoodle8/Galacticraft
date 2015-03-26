@@ -94,7 +94,7 @@ public class BlockStairsGC extends BlockStairs
 	{
 		String type = StairsCategoryGC.valueOf(block).type;
 
-		if (type == "wood")
+		if (type.equals("wood"))
 		{
 			return true;
 		}
@@ -105,7 +105,7 @@ public class BlockStairsGC extends BlockStairs
 	{
 		String type = StairsCategoryGC.valueOf(block).type;
 
-		if (type == "stone")
+		if (type.equals("stone"))
 		{
 			return true;
 		}

@@ -635,8 +635,8 @@ public class ConfigManagerCore
     public static void setConfigOverride(List<Object> configs)
     {
     	int modeFlag = (Integer) configs.get(0);
-    	ConfigManagerCore.hardMode = (modeFlag & 1) > 0;
-    	ConfigManagerCore.quickMode = (modeFlag & 2) > 0;
+    	ConfigManagerCore.hardMode = (modeFlag & 1) != 0;
+    	ConfigManagerCore.quickMode = (modeFlag & 2) != 0;
     	ConfigManagerCore.dungeonBossHealthMod = (Double) configs.get(1);
     	ConfigManagerCore.suffocationDamage = (Integer) configs.get(2);
     	ConfigManagerCore.suffocationCooldown = (Integer) configs.get(3);

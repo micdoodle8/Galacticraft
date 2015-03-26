@@ -13,11 +13,11 @@ import org.lwjgl.input.Mouse;
 
 public abstract class KeyHandler
 {
-    public KeyBinding[] keyBindings;
-    public KeyBinding[] vKeyBindings;
-    public boolean[] keyDown;
-    public boolean[] repeatings;
-    public boolean[] vRepeatings;
+    private final KeyBinding[] keyBindings;
+    private KeyBinding[] vKeyBindings;
+    private boolean[] keyDown;
+    private boolean[] repeatings;
+    private boolean[] vRepeatings;
     public boolean isDummy;
 
     public KeyHandler(KeyBinding[] keyBindings, boolean[] repeatings, KeyBinding[] vanillaKeys, boolean[] vanillaRepeatings)
@@ -35,11 +35,6 @@ public abstract class KeyHandler
     {
         this.keyBindings = keyBindings;
         this.isDummy = true;
-    }
-
-    public KeyBinding[] getKeyBindings()
-    {
-        return this.keyBindings;
     }
 
     @SubscribeEvent

@@ -114,7 +114,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
             final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
             final byte var5 = var4.getByte("Slot");
 
-            if (var5 >= 0 && var5 < this.containingItems.length)
+            if (var5 < this.containingItems.length)
             {
                 this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
             }

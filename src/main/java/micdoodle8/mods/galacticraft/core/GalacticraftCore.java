@@ -133,7 +133,6 @@ public class GalacticraftCore
         ConnectionPacket.bus.register(new ConnectionPacket());
 
         ConfigManagerCore.initialize(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
-        FMLCommonHandler.instance().bus().register(new ConfigManagerCore());
         EnergyConfigHandler.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.POWER_CONFIG_FILE));
         ChunkLoadingCallback.loadConfig(new File(event.getModConfigurationDirectory(), GalacticraftCore.CHUNKLOADER_CONFIG_FILE));
 

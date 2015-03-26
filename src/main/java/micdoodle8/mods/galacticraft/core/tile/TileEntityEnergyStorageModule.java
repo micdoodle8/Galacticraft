@@ -137,7 +137,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
             NBTTagCompound var4 = var2.getCompoundTagAt(var3);
             byte var5 = var4.getByte("Slot");
 
-            if (var5 >= 0 && var5 < this.containingItems.length)
+            if (var5 < this.containingItems.length)
             {
                 this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
             }

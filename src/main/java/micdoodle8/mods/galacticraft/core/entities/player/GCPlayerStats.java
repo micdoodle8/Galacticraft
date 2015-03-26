@@ -265,7 +265,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
                 final NBTTagCompound var4 = var23.getCompoundTagAt(var3);
                 final int var5 = var4.getByte("Slot") & 255;
 
-                if (var5 >= 0 && var5 < this.rocketStacks.length)
+                if (var5 < this.rocketStacks.length)
                 {
                     this.rocketStacks[var5] = ItemStack.loadItemStackFromNBT(var4);
                 }

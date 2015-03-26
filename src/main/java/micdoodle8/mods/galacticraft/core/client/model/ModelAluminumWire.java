@@ -10,60 +10,60 @@ import net.minecraft.entity.Entity;
 public class ModelAluminumWire extends ModelBase
 {
     // fields
-    ModelRenderer Middle;
-    ModelRenderer Right;
-    ModelRenderer Left;
-    ModelRenderer Back;
-    ModelRenderer Front;
-    ModelRenderer Top;
-    ModelRenderer Bottom;
+    ModelRenderer middle;
+    ModelRenderer right;
+    ModelRenderer left;
+    ModelRenderer back;
+    ModelRenderer front;
+    ModelRenderer top;
+    ModelRenderer bottom;
 
     public ModelAluminumWire()
     {
         this.textureWidth = 64;
         this.textureHeight = 32;
-        this.Middle = new ModelRenderer(this, 0, 0);
-        this.Middle.addBox(-1F, -1F, -1F, 4, 4, 4);
-        this.Middle.setRotationPoint(-1F, 15F, -1F);
-        this.Middle.setTextureSize(64, 32);
-        this.Middle.mirror = true;
-        this.setRotation(this.Middle, 0F, 0F, 0F);
-        this.Right = new ModelRenderer(this, 21, 0);
-        this.Right.addBox(0F, 0F, 0F, 6, 4, 4);
-        this.Right.setRotationPoint(2F, 14F, -2F);
-        this.Right.setTextureSize(64, 32);
-        this.Right.mirror = true;
-        this.setRotation(this.Right, 0F, 0F, 0F);
-        this.Left = new ModelRenderer(this, 21, 0);
-        this.Left.addBox(0F, 0F, 0F, 6, 4, 4);
-        this.Left.setRotationPoint(-8F, 14F, -2F);
-        this.Left.setTextureSize(64, 32);
-        this.Left.mirror = true;
-        this.setRotation(this.Left, 0F, 0F, 0F);
-        this.Back = new ModelRenderer(this, 0, 11);
-        this.Back.addBox(0F, 0F, 0F, 4, 4, 6);
-        this.Back.setRotationPoint(-2F, 14F, 2F);
-        this.Back.setTextureSize(64, 32);
-        this.Back.mirror = true;
-        this.setRotation(this.Back, 0F, 0F, 0F);
-        this.Front = new ModelRenderer(this, 0, 11);
-        this.Front.addBox(0F, 0F, 0F, 4, 4, 6);
-        this.Front.setRotationPoint(-2F, 14F, -8F);
-        this.Front.setTextureSize(64, 32);
-        this.Front.mirror = true;
-        this.setRotation(this.Front, 0F, 0F, 0F);
-        this.Top = new ModelRenderer(this, 21, 11);
-        this.Top.addBox(0F, 0F, 0F, 4, 6, 4);
-        this.Top.setRotationPoint(-2F, 8F, -2F);
-        this.Top.setTextureSize(64, 32);
-        this.Top.mirror = true;
-        this.setRotation(this.Top, 0F, 0F, 0F);
-        this.Bottom = new ModelRenderer(this, 21, 11);
-        this.Bottom.addBox(0F, 0F, 0F, 4, 6, 4);
-        this.Bottom.setRotationPoint(-2F, 18F, -2F);
-        this.Bottom.setTextureSize(64, 32);
-        this.Bottom.mirror = true;
-        this.setRotation(this.Bottom, 0F, 0F, 0F);
+        this.middle = new ModelRenderer(this, 0, 0);
+        this.middle.addBox(-1F, -1F, -1F, 4, 4, 4);
+        this.middle.setRotationPoint(-1F, 15F, -1F);
+        this.middle.setTextureSize(64, 32);
+        this.middle.mirror = true;
+        this.setRotation(this.middle, 0F, 0F, 0F);
+        this.right = new ModelRenderer(this, 21, 0);
+        this.right.addBox(0F, 0F, 0F, 6, 4, 4);
+        this.right.setRotationPoint(2F, 14F, -2F);
+        this.right.setTextureSize(64, 32);
+        this.right.mirror = true;
+        this.setRotation(this.right, 0F, 0F, 0F);
+        this.left = new ModelRenderer(this, 21, 0);
+        this.left.addBox(0F, 0F, 0F, 6, 4, 4);
+        this.left.setRotationPoint(-8F, 14F, -2F);
+        this.left.setTextureSize(64, 32);
+        this.left.mirror = true;
+        this.setRotation(this.left, 0F, 0F, 0F);
+        this.back = new ModelRenderer(this, 0, 11);
+        this.back.addBox(0F, 0F, 0F, 4, 4, 6);
+        this.back.setRotationPoint(-2F, 14F, 2F);
+        this.back.setTextureSize(64, 32);
+        this.back.mirror = true;
+        this.setRotation(this.back, 0F, 0F, 0F);
+        this.front = new ModelRenderer(this, 0, 11);
+        this.front.addBox(0F, 0F, 0F, 4, 4, 6);
+        this.front.setRotationPoint(-2F, 14F, -8F);
+        this.front.setTextureSize(64, 32);
+        this.front.mirror = true;
+        this.setRotation(this.front, 0F, 0F, 0F);
+        this.top = new ModelRenderer(this, 21, 11);
+        this.top.addBox(0F, 0F, 0F, 4, 6, 4);
+        this.top.setRotationPoint(-2F, 8F, -2F);
+        this.top.setTextureSize(64, 32);
+        this.top.mirror = true;
+        this.setRotation(this.top, 0F, 0F, 0F);
+        this.bottom = new ModelRenderer(this, 21, 11);
+        this.bottom.addBox(0F, 0F, 0F, 4, 6, 4);
+        this.bottom.setRotationPoint(-2F, 18F, -2F);
+        this.bottom.setTextureSize(64, 32);
+        this.bottom.mirror = true;
+        this.setRotation(this.bottom, 0F, 0F, 0F);
     }
 
     @Override
@@ -82,32 +82,32 @@ public class ModelAluminumWire extends ModelBase
 
     public void renderMiddle()
     {
-        this.Middle.render(0.0625F);
+        this.middle.render(0.0625F);
     }
 
     public void renderBottom()
     {
-        this.Bottom.render(0.0625F);
+        this.bottom.render(0.0625F);
     }
 
     public void renderTop()
     {
-        this.Top.render(0.0625F);
+        this.top.render(0.0625F);
     }
 
     public void renderLeft()
     {
-        this.Left.render(0.0625F);
+        this.left.render(0.0625F);
     }
 
     public void renderRight()
     {
-        this.Right.render(0.0625F);
+        this.right.render(0.0625F);
     }
 
     public void renderBack()
     {
-        this.Back.render(0.0625F);
+        this.back.render(0.0625F);
     }
 
     public void renderFront()

@@ -33,7 +33,7 @@ public class ModelNasaWorkbench extends ModelBase
     ModelRenderer screenRotationPointF;
     ModelRenderer armF1;
     ModelRenderer baseRotationPointF;
-    ModelRenderer Screen;
+    ModelRenderer screen;
     ModelRenderer armRotationPointL;
     ModelRenderer armL2;
     ModelRenderer baseRotationPointL;
@@ -50,12 +50,15 @@ public class ModelNasaWorkbench extends ModelBase
     {
         this.textureWidth = 256;
         this.textureHeight = 128;
+
+        float halfPI = (float)(Math.PI / 2.0);
+        
         this.base1a = new ModelRenderer(this, 113, 24);
         this.base1a.addBox(-2.5F, -2F, -7.5F, 5, 2, 15);
         this.base1a.setRotationPoint(0F, 24F, 0F);
         this.base1a.setTextureSize(256, 128);
         this.base1a.mirror = true;
-        this.setRotation(this.base1a, 0F, 1.570796F, 0F);
+        this.setRotation(this.base1a, 0F, halfPI, 0F);
         this.baseAux1 = new ModelRenderer(this, 35, 40);
         this.baseAux1.addBox(-3.5F, 0F, -3.5F, 7, 1, 7);
         this.baseAux1.setRotationPoint(0F, 20F, 0F);
@@ -139,7 +142,7 @@ public class ModelNasaWorkbench extends ModelBase
         this.manipulatorRotationPointB.setRotationPoint(0F, 0F, 4.5F);
         this.manipulatorRotationPointB.setTextureSize(256, 128);
         this.manipulatorRotationPointB.mirror = true;
-        this.setRotation(this.manipulatorRotationPointB, 0F, 1.570796F, 0F);
+        this.setRotation(this.manipulatorRotationPointB, 0F, halfPI, 0F);
         this.baseRotationPointB = new ModelRenderer(this, 0, 69);
         this.baseRotationPointB.addBox(-1.5F, -1.2F, -1.5F, 3, 3, 3);
         this.baseRotationPointB.setRotationPoint(0F, 22F, 7.5F);
@@ -163,13 +166,13 @@ public class ModelNasaWorkbench extends ModelBase
         this.armR1.setRotationPoint(-8F, 22F, 0F);
         this.armR1.setTextureSize(256, 128);
         this.armR1.mirror = true;
-        this.setRotation(this.armR1, 0.6351428F, 1.570796F, 0F);
+        this.setRotation(this.armR1, 0.6351428F, halfPI, 0F);
         this.armR2 = new ModelRenderer(this, 55, 0);
         this.armR2.addBox(-1F, -8F, -1F, 2, 8, 2);
         this.armR2.setRotationPoint(-15F, 11F, 0F);
         this.armR2.setTextureSize(256, 128);
         this.armR2.mirror = true;
-        this.setRotation(this.armR2, -0.9635439F, 1.570796F, 0F);
+        this.setRotation(this.armR2, -0.9635439F, halfPI, 0F);
         this.baseRotationPointR = new ModelRenderer(this, 0, 69);
         this.baseRotationPointR.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3);
         this.baseRotationPointR.setRotationPoint(-7.9F, 22F, 0F);
@@ -212,12 +215,12 @@ public class ModelNasaWorkbench extends ModelBase
         this.baseRotationPointF.setTextureSize(256, 128);
         this.baseRotationPointF.mirror = true;
         this.setRotation(this.baseRotationPointF, this.toRadians(30F), this.toRadians(0), this.toRadians(0));
-        this.Screen = new ModelRenderer(this, 10, 45);
-        this.Screen.addBox(-3.5F, -2.5F, -1F, 7, 5, 1);
-        this.Screen.setRotationPoint(0F, 13F, -10F);
-        this.Screen.setTextureSize(256, 128);
-        this.Screen.mirror = true;
-        this.setRotation(this.Screen, -1.047198F, 0F, 0F);
+        this.screen = new ModelRenderer(this, 10, 45);
+        this.screen.addBox(-3.5F, -2.5F, -1F, 7, 5, 1);
+        this.screen.setRotationPoint(0F, 13F, -10F);
+        this.screen.setTextureSize(256, 128);
+        this.screen.mirror = true;
+        this.setRotation(this.screen, -1.047198F, 0F, 0F);
         this.armRotationPointL = new ModelRenderer(this, 0, 69);
         this.armRotationPointL.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3);
         this.armRotationPointL.setRotationPoint(13.8F, 18.4F, 0F);
@@ -229,7 +232,7 @@ public class ModelNasaWorkbench extends ModelBase
         this.armL2.setRotationPoint(13.7F, 18F, 0F);
         this.armL2.setTextureSize(256, 128);
         this.armL2.mirror = true;
-        this.setRotation(this.armL2, 0.6351428F, 1.570796F, 0F);
+        this.setRotation(this.armL2, 0.6351428F, halfPI, 0F);
         this.baseRotationPointL = new ModelRenderer(this, 0, 69);
         this.baseRotationPointL.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3);
         this.baseRotationPointL.setRotationPoint(7.5F, 22F, 0F);
@@ -241,7 +244,7 @@ public class ModelNasaWorkbench extends ModelBase
         this.armL1.setRotationPoint(8F, 22F, 0F);
         this.armL1.setTextureSize(256, 128);
         this.armL1.mirror = true;
-        this.setRotation(this.armL1, -1.037895F, 1.570796F, 0F);
+        this.setRotation(this.armL1, -1.037895F, halfPI, 0F);
         this.sensorDish = new ModelRenderer(this, 68, 41);
         this.sensorDish.addBox(-1F, -2F, -2F, 1, 4, 4);
         this.sensorDish.setRotationPoint(6F, 12F, 0F);
@@ -292,7 +295,7 @@ public class ModelNasaWorkbench extends ModelBase
         this.screenRotationPointF.render(0.0625F);
         this.armF1.render(0.0625F);
         this.baseRotationPointF.render(0.0625F);
-        this.Screen.render(0.0625F);
+        this.screen.render(0.0625F);
         this.armRotationPointL.render(0.0625F);
         this.armL2.render(0.0625F);
         this.baseRotationPointL.render(0.0625F);

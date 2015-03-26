@@ -93,8 +93,10 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.FloatBuffer;
@@ -325,27 +327,94 @@ public class ClientProxyCore extends CommonProxyCore
         **/
     }
 
-    private static void updateCapeList() throws Exception
+    private static void updateCapeList()
     {
         int timeout = 10000;
-        URL capeListUrl = new URL("https://raw.github.com/micdoodle8/Galacticraft/master/capes.txt");
-        URLConnection connection = capeListUrl.openConnection();
+        URL capeListUrl = null;
+        
+		try 
+		{
+			capeListUrl = new URL("https://raw.github.com/micdoodle8/Galacticraft/master/capes.txt");
+		} 
+		catch (MalformedURLException e) 
+		{
+            FMLLog.severe("Error getting capes list URL");
+			e.printStackTrace();
+			return;
+		}
+		
+        URLConnection connection = null;
+        
+		try 
+		{
+			connection = capeListUrl.openConnection();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+			return;
+		}
+		
         connection.setConnectTimeout(timeout);
         connection.setReadTimeout(timeout);
-        InputStream stream = connection.getInputStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        InputStream stream = null;
+        
+		try 
+		{
+			stream = connection.getInputStream();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+			return;
+		}
+		
+        InputStreamReader streamReader = new InputStreamReader(stream);
+        BufferedReader reader = new BufferedReader(streamReader);
 
         String line;
-        while ((line = reader.readLine()) != null)
+        try 
         {
-            if (line.contains(":"))
-            {
-                int splitLocation = line.indexOf(":");
-                String username = line.substring(0, splitLocation);
-                String capeUrl = "https://raw.github.com/micdoodle8/Galacticraft/master/capes/" + line.substring(splitLocation + 1) + ".png";
-                ClientProxyCore.capeMap.put(username, capeUrl);
-            }
-        }
+			while ((line = reader.readLine()) != null)
+			{
+			    if (line.contains(":"))
+			    {
+			        int splitLocation = line.indexOf(":");
+			        String username = line.substring(0, splitLocation);
+			        String capeUrl = "https://raw.github.com/micdoodle8/Galacticraft/master/capes/" + line.substring(splitLocation + 1) + ".png";
+			        ClientProxyCore.capeMap.put(username, capeUrl);
+			    }
+			}
+		} 
+        catch (IOException e)
+        {
+			e.printStackTrace();
+		}
+        
+        try 
+        {
+			reader.close();
+		} 
+        catch (IOException e)
+        {
+			e.printStackTrace();
+		}
+        try 
+        {
+			streamReader.close();
+		} 
+        catch (IOException e) 
+        {
+			e.printStackTrace();
+		}
+        try 
+        {
+			stream.close();
+		} 
+        catch (IOException e) 
+        {
+			e.printStackTrace();
+		}
     }
 
     public static void registerInventoryTabs()
@@ -887,13 +956,13 @@ public class ClientProxyCore extends CommonProxyCore
             GL11.glRotatef(-pitch, 1.0F, 0.0F, 0.0F);
             GL11.glTranslatef(0.0F, 0.0F, 0.1F);
 
-            GL11.glRotatef(180.0F * stats.gdir.thetaX, 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(180.0F * stats.gdir.thetaZ, 0.0F, 0.0F, 1.0F);
-            GL11.glRotatef(pitch * stats.gdir.pitchGravityX, 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(pitch * stats.gdir.pitchGravityY, 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(yaw * stats.gdir.yawGravityX, 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(yaw * stats.gdir.yawGravityY, 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(yaw * stats.gdir.yawGravityZ, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(180.0F * stats.gdir.getThetaX(), 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(180.0F * stats.gdir.getThetaZ(), 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(pitch * stats.gdir.getPitchGravityX(), 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(pitch * stats.gdir.getPitchGravityY(), 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(yaw * stats.gdir.getYawGravityX(), 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(yaw * stats.gdir.getYawGravityY(), 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(yaw * stats.gdir.getYawGravityZ(), 0.0F, 0.0F, 1.0F);
 
             if (stats.landingTicks > 0)
             {
@@ -901,10 +970,10 @@ public class ClientProxyCore extends CommonProxyCore
             	if (stats.landingTicks >= 4) sneakY = (stats.landingTicks >= 5) ? 0.15F : 0.3F;
             	else
             		sneakY = stats.landingTicks * 0.075F;
-            	GL11.glTranslatef(sneakY * stats.gdir.sneakVecX, sneakY * stats.gdir.sneakVecY, sneakY * stats.gdir.sneakVecZ);
+            	GL11.glTranslatef(sneakY * stats.gdir.getSneakVecX(), sneakY * stats.gdir.getSneakVecY(), sneakY * stats.gdir.getSneakVecZ());
             }
 
-            GL11.glTranslatef(eyeHeightChange * stats.gdir.eyeVecX, eyeHeightChange * stats.gdir.eyeVecY, eyeHeightChange * stats.gdir.eyeVecZ);
+            GL11.glTranslatef(eyeHeightChange * stats.gdir.getEyeVecX(), eyeHeightChange * stats.gdir.getEyeVecY(), eyeHeightChange * stats.gdir.getEyeVecZ());
 
             if (stats.gravityTurnRate < 1.0F)
             {
