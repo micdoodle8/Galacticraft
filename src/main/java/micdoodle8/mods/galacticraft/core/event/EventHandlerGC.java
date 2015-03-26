@@ -415,7 +415,7 @@ public class EventHandlerGC
             int x = pos.x;
             int cy = pos.y;
             int z = pos.z;
-            int r = rand.nextInt(5);
+            int r = 3 + rand.nextInt(5);
             
     		if (testFirst && checkOilPresent(world, x, cy, z, r)) return;
 
