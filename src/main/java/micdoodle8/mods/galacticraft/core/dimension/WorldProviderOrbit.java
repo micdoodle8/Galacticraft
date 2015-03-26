@@ -382,17 +382,17 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                                 {
                                     e.motionY /= 0.91F;
                                 }
-                                else if (e instanceof EntityFallingBlock)
-                                {
-                                    e.motionY /= 0.9800000190734863D;
-                                    //e.motionY += 0.03999999910593033D;
-                                    //e.posY += 0.03999999910593033D;
-                                    //e.lastTickPosY += 0.03999999910593033D;
-                                }
                                 else
                                 {
                                     e.motionY /= 0.9800000190734863D;
                                 }
+                            }
+                            else if (e instanceof EntityFallingBlock)
+                            {
+                                e.motionY /= 0.9800000190734863D;
+                                //e.motionY += 0.03999999910593033D;
+                                //e.posY += 0.03999999910593033D;
+                                //e.lastTickPosY += 0.03999999910593033D;
                             }
                             else
                             {
