@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import com.google.common.primitives.Ints;
+
 import cpw.mods.fml.client.config.IConfigElement;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameData;
@@ -10,7 +11,9 @@ import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
+import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
@@ -21,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import org.lwjgl.input.Keyboard;
 
 import static net.minecraftforge.common.config.Configuration.CATEGORY_GENERAL;
 
@@ -89,6 +94,12 @@ public class ConfigManagerCore
 	public static boolean enableThaumCraftNodes;
     public static boolean alternateCanisterRecipe;
     public static String otherModsSilicon;
+    public static String keyOverrideMap;
+    public static String keyOverrideFuelLevel;
+    public static String keyOverrideToggleAdvGoggles;
+    public static int keyOverrideMapI;
+    public static int keyOverrideFuelLevelI;
+    public static int keyOverrideToggleAdvGogglesI;
     
     public static ArrayList<Object> clientSave = null;
 
@@ -97,6 +108,11 @@ public class ConfigManagerCore
     {
         ConfigManagerCore.config = new Configuration(file);
         ConfigManagerCore.syncConfig(true);
+    }
+    
+    public static void forceSave()
+    {
+    	ConfigManagerCore.config.save();
     }
 
     public static void syncConfig(boolean load)
@@ -417,6 +433,27 @@ public class ConfigManagerCore
             otherModsSilicon = prop.getString();
             propOrder.add(prop.getName());
 
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Default key for opening in-game galaxy map - Useful for modpacks", "KEY_M");
+            prop.comment = "Leave 'KEY_' value, adding the intended keyboard character to replace the letter. Values 0-9 and A-Z are accepted";
+            prop.setLanguageKey("gc.configgui.overrideMap").setRequiresMcRestart(true);
+            keyOverrideMap = prop.getString();
+            keyOverrideMapI = parseKeyValue(keyOverrideMap);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Default key for opening fuel levels gui - Useful for modpacks", "KEY_F");
+            prop.comment = "Leave 'KEY_' value, adding the intended keyboard character to replace the letter. Values 0-9 and A-Z are accepted";
+            prop.setLanguageKey("gc.configgui.keyOverrideFuelLevel").setRequiresMcRestart(true);
+            keyOverrideFuelLevel = prop.getString();
+            keyOverrideFuelLevelI = parseKeyValue(keyOverrideFuelLevel);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Default key to toggle advanced goggles behaviour - Useful for modpacks", "KEY_K");
+            prop.comment = "Leave 'KEY_' value, adding the intended keyboard character to replace the letter. Values 0-9 and A-Z are accepted";
+            prop.setLanguageKey("gc.configgui.keyOverrideToggleAdvGoggles").setRequiresMcRestart(true);
+            keyOverrideToggleAdvGoggles = prop.getString();
+            keyOverrideToggleAdvGogglesI = parseKeyValue(keyOverrideToggleAdvGoggles);
+            propOrder.add(prop.getName());
+
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Rocket fuel factor", 1);
             prop.comment = "The normal factor is 1.  Increase this to 2 - 5 if other mods with a lot of oil (e.g. BuildCraft) are installed to increase GC rocket fuel requirement.";
             prop.setLanguageKey("gc.configgui.rocketFuelFactor");
@@ -637,5 +674,157 @@ public class ConfigManagerCore
     {
     	if (ConfigManagerCore.clientSave != null)
     		ConfigManagerCore.setConfigOverride(clientSave);
-    }    
+    }   
+    
+    private static int parseKeyValue(String key)
+    {
+    	if (key.equals("KEY_A"))
+    	{
+    		return Keyboard.KEY_A;
+    	}
+    	else if (key.equals("KEY_B"))
+    	{
+    		return Keyboard.KEY_B;
+    	}
+    	else if (key.equals("KEY_C"))
+    	{
+    		return Keyboard.KEY_C;
+    	}
+    	else if (key.equals("KEY_D"))
+    	{
+    		return Keyboard.KEY_D;
+    	}
+    	else if (key.equals("KEY_E"))
+    	{
+    		return Keyboard.KEY_E;
+    	}
+    	else if (key.equals("KEY_F"))
+    	{
+    		return Keyboard.KEY_F;
+    	}
+    	else if (key.equals("KEY_G"))
+    	{
+    		return Keyboard.KEY_G;
+    	}
+    	else if (key.equals("KEY_H"))
+    	{
+    		return Keyboard.KEY_H;
+    	}
+    	else if (key.equals("KEY_I"))
+    	{
+    		return Keyboard.KEY_I;
+    	}
+    	else if (key.equals("KEY_J"))
+    	{
+    		return Keyboard.KEY_J;
+    	}
+    	else if (key.equals("KEY_K"))
+    	{
+    		return Keyboard.KEY_K;
+    	}
+    	else if (key.equals("KEY_L"))
+    	{
+    		return Keyboard.KEY_L;
+    	}
+    	else if (key.equals("KEY_M"))
+    	{
+    		return Keyboard.KEY_M;
+    	}
+    	else if (key.equals("KEY_N"))
+    	{
+    		return Keyboard.KEY_N;
+    	}
+    	else if (key.equals("KEY_O"))
+    	{
+    		return Keyboard.KEY_O;
+    	}
+    	else if (key.equals("KEY_P"))
+    	{
+    		return Keyboard.KEY_P;
+    	}
+    	else if (key.equals("KEY_Q"))
+    	{
+    		return Keyboard.KEY_Q;
+    	}
+    	else if (key.equals("KEY_R"))
+    	{
+    		return Keyboard.KEY_R;
+    	}
+    	else if (key.equals("KEY_S"))
+    	{
+    		return Keyboard.KEY_S;
+    	}
+    	else if (key.equals("KEY_T"))
+    	{
+    		return Keyboard.KEY_T;
+    	}
+    	else if (key.equals("KEY_U"))
+    	{
+    		return Keyboard.KEY_U;
+    	}
+    	else if (key.equals("KEY_V"))
+    	{
+    		return Keyboard.KEY_V;
+    	}
+    	else if (key.equals("KEY_W"))
+    	{
+    		return Keyboard.KEY_W;
+    	}
+    	else if (key.equals("KEY_X"))
+    	{
+    		return Keyboard.KEY_X;
+    	}
+    	else if (key.equals("KEY_Y"))
+    	{
+    		return Keyboard.KEY_Y;
+    	}
+    	else if (key.equals("KEY_Z"))
+    	{
+    		return Keyboard.KEY_Z;
+    	}
+    	else if (key.equals("KEY_1"))
+    	{
+    		return Keyboard.KEY_1;
+    	}
+    	else if (key.equals("KEY_2"))
+    	{
+    		return Keyboard.KEY_2;
+    	}
+    	else if (key.equals("KEY_3"))
+    	{
+    		return Keyboard.KEY_3;
+    	}
+    	else if (key.equals("KEY_4"))
+    	{
+    		return Keyboard.KEY_4;
+    	}
+    	else if (key.equals("KEY_5"))
+    	{
+    		return Keyboard.KEY_5;
+    	}
+    	else if (key.equals("KEY_6"))
+    	{
+    		return Keyboard.KEY_6;
+    	}
+    	else if (key.equals("KEY_7"))
+    	{
+    		return Keyboard.KEY_7;
+    	}
+    	else if (key.equals("KEY_8"))
+    	{
+    		return Keyboard.KEY_8;
+    	}
+    	else if (key.equals("KEY_9"))
+    	{
+    		return Keyboard.KEY_9;
+    	}
+    	else if (key.equals("KEY_0"))
+    	{
+    		return Keyboard.KEY_0;
+    	}
+    	
+    	GCLog.severe("Failed to parse keyboard key: " + key + "... Use values A-Z or 0-9" );
+    	
+    	return 0;
+    }
 }
