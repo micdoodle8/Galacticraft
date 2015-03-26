@@ -64,8 +64,8 @@ public class AsteroidBlocks
         GameRegistry.registerBlock(AsteroidBlocks.shortRangeTelepad, ItemBlockShortRangeTelepad.class, AsteroidBlocks.shortRangeTelepad.getUnlocalizedName());
         GameRegistry.registerBlock(AsteroidBlocks.fakeTelepad, ItemBlockGC.class, AsteroidBlocks.fakeTelepad.getUnlocalizedName());
         GameRegistry.registerBlock(AsteroidBlocks.blockDenseIce, ItemBlockGC.class, AsteroidBlocks.blockDenseIce.getUnlocalizedName());
-       	GameRegistry.registerBlock(AsteroidBlocks.blockMinerBase, ItemBlockDesc.class, AsteroidBlocks.blockMinerBase.getUnlocalizedName());
-       	GameRegistry.registerBlock(AsteroidBlocks.minerBaseFull, ItemBlockDesc.class, AsteroidBlocks.minerBaseFull.getUnlocalizedName());
+//       	GameRegistry.registerBlock(AsteroidBlocks.blockMinerBase, ItemBlockDesc.class, AsteroidBlocks.blockMinerBase.getUnlocalizedName());
+//       	GameRegistry.registerBlock(AsteroidBlocks.minerBaseFull, ItemBlockDesc.class, AsteroidBlocks.minerBaseFull.getUnlocalizedName());
     }
     
     public static void setHarvestLevels()
