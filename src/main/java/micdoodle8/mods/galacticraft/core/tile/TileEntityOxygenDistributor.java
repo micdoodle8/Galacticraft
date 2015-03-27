@@ -194,7 +194,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
         {
             final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
-            final byte var5 = var4.getByte("Slot");
+            final int var5 = var4.getByte("Slot") & 255;
 
             if (var5 < this.containingItems.length)
             {

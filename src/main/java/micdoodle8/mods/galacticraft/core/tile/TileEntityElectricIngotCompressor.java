@@ -191,7 +191,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
         {
             NBTTagCompound var4 = var2.getCompoundTagAt(var3);
-            byte var5 = var4.getByte("Slot");
+            int var5 = var4.getByte("Slot") & 255;
 
             if (var5 < this.containingItems.length)
             {

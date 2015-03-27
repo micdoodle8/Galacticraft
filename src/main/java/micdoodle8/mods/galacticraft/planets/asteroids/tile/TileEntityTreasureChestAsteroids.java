@@ -196,7 +196,7 @@ public class TileEntityTreasureChestAsteroids extends TileEntityAdvanced impleme
             final NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
             final int j = nbttagcompound1.getByte("Slot") & 255;
 
-            if (j >= 0 && j < this.chestContents.length)
+            if (j < this.chestContents.length)
             {
                 this.chestContents[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
             }
