@@ -39,6 +39,7 @@ public class OverlayOxygenTanks extends Overlay
         final Tessellator tessellator = Tessellator.instance;
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
+        GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int minLeftX = 0;
@@ -168,5 +169,7 @@ public class OverlayOxygenTanks extends Overlay
             String value = GCCoreUtil.translate("gui.warning.invalidThermal");
             OverlayOxygenTanks.minecraft.fontRenderer.drawString(value, minLeftX - 18 - OverlayOxygenTanks.minecraft.fontRenderer.getStringWidth(value), (int) bottomY - heatLevelScaled - OverlayOxygenTanks.minecraft.fontRenderer.FONT_HEIGHT / 2 - 1, ColorUtil.to32BitColor(255, 255, 10, 10));
         }
+        
+        GL11.glEnable(GL11.GL_LIGHTING);
     }
 }
