@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import java.util.Collection;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerExtendedInventory;
@@ -12,8 +14,10 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+
 import tconstruct.client.tabs.TabRegistry;
 
 public class GuiExtendedInventory extends InventoryEffectRenderer
@@ -32,6 +36,7 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
+        GuiExtendedInventory.drawPlayerOnGui(this.mc, 33, 75, 29, 51 - this.xSize_lo_2, 75 - 50 - this.ySize_lo_2);
     }
 
     @SuppressWarnings("unchecked")
@@ -41,6 +46,8 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         super.initGui();
         
         this.guiLeft = (this.width - this.xSize) / 2;
+		Collection potions = mc.thePlayer.getActivePotionEffects();
+		guiLeft += (potions.isEmpty() ? 0 : 60);
 
         int cornerX = this.guiLeft;
         int cornerY = this.guiTop;
@@ -74,12 +81,12 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         final int k = this.guiLeft;
         final int l = this.guiTop;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
-        GuiExtendedInventory.drawPlayerOnGui(this.mc, k + 33, l + 75, 29, k + 51 - this.xSize_lo_2, l + 75 - 50 - this.ySize_lo_2);
     }
 
     @Override
     public void drawScreen(int par1, int par2, float par3)
     {
+        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         super.drawScreen(par1, par2, par3);
         this.xSize_lo_2 = par1;
         this.ySize_lo_2 = par2;

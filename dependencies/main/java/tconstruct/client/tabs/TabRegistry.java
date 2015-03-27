@@ -40,6 +40,10 @@ public class TabRegistry
 		{
 			int guiLeft = (event.gui.width - 176) / 2;
 			int guiTop = (event.gui.height - 166) / 2;
+			if (!mc.thePlayer.getActivePotionEffects().isEmpty())
+			{
+				guiLeft += 60;
+			}
 
 			TabRegistry.updateTabValues(guiLeft, guiTop, InventoryTabVanilla.class);
 			TabRegistry.addTabsToList(event.gui.buttonList);
