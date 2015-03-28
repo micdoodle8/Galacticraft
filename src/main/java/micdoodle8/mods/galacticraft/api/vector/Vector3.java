@@ -91,12 +91,7 @@ public class Vector3 implements Cloneable
         this(nbt.getDouble("x"), nbt.getDouble("y"), nbt.getDouble("z"));
     }
 
-    /**
-     * Get a Vector3 based on the rotationYaw and rotationPitch.
-     *
-     * @param rotationYaw   - Degree
-     * @param rotationPitch - Degree
-     */
+    @Deprecated
     public Vector3(float rotationYaw, float rotationPitch)
     {
         this(Math.cos(Math.toRadians(rotationYaw + 90)), Math.sin(Math.toRadians(-rotationPitch)), Math.sin(Math.toRadians(rotationYaw + 90)));

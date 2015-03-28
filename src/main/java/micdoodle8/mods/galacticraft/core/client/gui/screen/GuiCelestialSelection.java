@@ -50,6 +50,8 @@ public class GuiCelestialSelection extends GuiScreen
         PREVIEW,
         PROFILE
     }
+
+    private static final int MAX_SPACE_STATION_NAME_LENGTH = 32;
     
     private Matrix4f mainWorldMatrix;
     private float zoom = 0.0F;
@@ -82,7 +84,6 @@ public class GuiCelestialSelection extends GuiScreen
     private int spaceStationListOffset = 0;
     private boolean renamingSpaceStation;
     private String renamingString = "";
-    private static final int MAX_SPACE_STATION_NAME_LENGTH = 32;
     private Vector2f translation = new Vector2f();
 
     public GuiCelestialSelection(boolean mapMode, List<CelestialBody> possibleBodies)
@@ -270,6 +271,13 @@ public class GuiCelestialSelection extends GuiScreen
 
     private float getZoomAdvanced()
     {
+    	if (this.ticksSinceMenuOpen < 30)
+    	{
+    		float scale = Math.max(0.0F, Math.min(this.ticksSinceMenuOpen / 30.0F, 1.0F));
+    		float lerp = this.lerp(-0.75F, 0.0F, (float)Math.pow(scale, 0.5F));
+            return lerp;
+    	}
+    	
         if (this.selectedBody == null)
         {
             if (!this.doneZooming)
@@ -469,7 +477,7 @@ public class GuiCelestialSelection extends GuiScreen
             this.ticksSinceUnselection++;
         }
         
-        if (!this.renamingSpaceStation && this.selectedBody == null)
+        if (!this.renamingSpaceStation && (this.selectedBody == null || this.selectionCount < 2))
         {
         	this.translation.x = 0.0F;
         	this.translation.y = 0.0F;
@@ -890,7 +898,7 @@ public class GuiCelestialSelection extends GuiScreen
                 if (this.selectedBody == null || (this.selectionState == EnumSelectionState.PREVIEW && this.selectionCount < 2))
                 {
                 	//Minimum zoom increased from 0.55F to 1F to allow zoom out to see other solar systems
-                	this.zoom = Math.min(Math.max(this.zoom + wheel * ((this.zoom + 2.0F)) / 10.0F, -0.75F), 3);
+                	this.zoom = Math.min(Math.max(this.zoom + wheel * ((this.zoom + 2.0F)) / 10.0F, -1.0F), 3);
                 }
                 else
                 {
