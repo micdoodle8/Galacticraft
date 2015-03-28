@@ -69,8 +69,8 @@ public class EntityAstroMiner extends Entity implements IInventory
     public int timeSinceHit;
     private boolean flagLink = false;
 
-    private float cLENGTH = 1.4F;
-    private float cWIDTH = 0.8F;
+    private float cLENGTH = 2.8F;
+    private float cWIDTH = 1.8F;
     //To do:
     //   break the entity drops it as an item
 
@@ -126,7 +126,10 @@ public class EntityAstroMiner extends Entity implements IInventory
         this.preventEntitySpawning = true;
         this.ignoreFrustumCheck = true;
         this.renderDistanceWeight = 5.0D;
+        this.width = cLENGTH;
+        this.height = cWIDTH;
         this.setSize(cLENGTH, cWIDTH);
+        this.myEntitySize = Entity.EnumEntitySize.SIZE_6;
 //        this.dataWatcher.addObject(this.currentDamage, new Integer(0));
 //        this.dataWatcher.addObject(this.timeSinceHit, new Integer(0));
         this.isImmuneToFire = true;
@@ -836,8 +839,8 @@ public class EntityAstroMiner extends Entity implements IInventory
 	{
         if (world.isRemote) return;
 		final EntityAstroMiner miner = new EntityAstroMiner(world, new ItemStack[27], 0);
-        miner.waypointBase = new BlockVec3(x, y, z).modifyPositionFromSide(ForgeDirection.getOrientation(facing), 2);
-        miner.setPosition(miner.waypointBase.x, y, miner.waypointBase.z);
+        miner.waypointBase = new BlockVec3(x, y, z).modifyPositionFromSide(ForgeDirection.getOrientation(facing), 1);
+        miner.setPosition(miner.waypointBase.x, miner.waypointBase.y, miner.waypointBase.z);
         miner.baseFacing = facing;
         miner.facing = facing;
         miner.motionX = 0;
@@ -955,7 +958,7 @@ public class EntityAstroMiner extends Entity implements IInventory
     @Override
     public AxisAlignedBB getBoundingBox()
     {
-    	return null;
+    	return this.boundingBox;
     }
 
     @Override
@@ -1121,6 +1124,12 @@ public class EntityAstroMiner extends Entity implements IInventory
     public boolean hasCustomInventoryName()
     {
         return true;
+    }
+    
+    @Override
+    protected void setSize(float p_70105_1_, float p_70105_2_)
+    {
+    	this.setBoundingBoxForFacing();
     }
 }
 
