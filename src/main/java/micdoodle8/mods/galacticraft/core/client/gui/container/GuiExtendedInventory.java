@@ -47,7 +47,7 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         
         this.guiLeft = (this.width - this.xSize) / 2;
 		Collection potions = mc.thePlayer.getActivePotionEffects();
-		guiLeft += (potions.isEmpty() ? 0 : 60);
+		this.guiLeft += TabRegistry.getPotionOffset();
 
         int cornerX = this.guiLeft;
         int cornerY = this.guiTop;
