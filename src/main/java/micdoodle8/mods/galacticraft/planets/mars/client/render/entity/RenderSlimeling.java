@@ -95,7 +95,6 @@ public class RenderSlimeling extends RenderLiving
                 health = maxHealth;
             }
             float difference = health / (float)maxHealth;
-            System.err.println(difference);
 
             if (difference < 0.33333F)
             {
