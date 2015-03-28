@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.ibm.icu.text.ArabicShaping;
 import com.ibm.icu.text.ArabicShapingException;
 import com.ibm.icu.text.Bidi;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
@@ -13,6 +14,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
@@ -28,6 +30,7 @@ import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.MinecraftForge;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -53,6 +56,7 @@ public class GuiCelestialSelection extends GuiScreen
     private float planetZoom = 0.0F;
     private boolean doneZooming = false;
     private float preSelectZoom = 0.0F;
+    private Vector2f preSelectPosition = new Vector2f();
     public static ResourceLocation guiMain0 = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialselection.png");
     public static ResourceLocation guiMain1 = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialselection1.png");
     private int ticksSinceSelection = 0;
@@ -79,9 +83,12 @@ public class GuiCelestialSelection extends GuiScreen
     private boolean renamingSpaceStation;
     private String renamingString = "";
     private static final int MAX_SPACE_STATION_NAME_LENGTH = 32;
+    private Vector2f translation = new Vector2f();
 
     public GuiCelestialSelection(boolean mapMode, List<CelestialBody> possibleBodies)
     {
+    	this.translation.x = 0.0F;
+    	this.translation.y = 0.0F;
         this.mapMode = mapMode;
         this.possibleBodies = possibleBodies;
         this.smallFontRenderer = new SmallFontRenderer(FMLClientHandler.instance().getClient().gameSettings, new ResourceLocation("textures/font/ascii.png"), FMLClientHandler.instance().getClient().renderEngine, false);
@@ -268,7 +275,7 @@ public class GuiCelestialSelection extends GuiScreen
             if (!this.doneZooming)
             {
                 float unselectScale = this.lerp(this.zoom, this.preSelectZoom, Math.max(0.0F, Math.min(this.ticksSinceUnselection / 100.0F, 1.0F)));
-
+                
                 if (unselectScale <= this.preSelectZoom + 0.05F)
                 {
                     this.zoom = this.preSelectZoom;
@@ -309,10 +316,15 @@ public class GuiCelestialSelection extends GuiScreen
         {
             if (this.ticksSinceUnselection > 0)
             {
-                return this.lerpVec2(this.position, new Vector2f(0, 0), Math.max(0.0F, Math.min((this.ticksSinceUnselection + partialTicks) / 100.0F, 1.0F)));
+            	float f0 = Math.max(0.0F, Math.min((this.ticksSinceUnselection + partialTicks) / 100.0F, 1.0F));
+            	if (f0 >= 0.999999F)
+            	{
+            		this.ticksSinceUnselection = 0;
+            	}
+                return this.lerpVec2(this.position, this.preSelectPosition, f0);
             }
-
-            return this.position;
+            
+            return new Vector2f(this.position.x + translation.x, this.position.y + translation.y);
         }
 
         if (this.selectionCount < 2)
@@ -322,8 +334,8 @@ public class GuiCelestialSelection extends GuiScreen
                 Vector3f posVec = this.getCelestialBodyPosition(((IChildBody) this.selectedBody).getParentPlanet());
                 return new Vector2f(posVec.x, posVec.y);
             }
-
-            return new Vector2f(0, 0);
+            
+            return new Vector2f(this.position.x + translation.x, this.position.y + translation.y);
         }
 
         Vector3f posVec = this.getCelestialBodyPosition(this.selectedBody);
@@ -452,9 +464,39 @@ public class GuiCelestialSelection extends GuiScreen
             this.ticksSinceSelection++;
         }
 
-        if (this.selectedBody == null)
+        if (this.selectedBody == null && this.ticksSinceUnselection >= 0)
         {
             this.ticksSinceUnselection++;
+        }
+        
+        if (!this.renamingSpaceStation && this.selectedBody == null)
+        {
+        	this.translation.x = 0.0F;
+        	this.translation.y = 0.0F;
+        	
+            if (mc.gameSettings.isKeyDown(KeyHandlerClient.leftKey))
+            {
+            	translation.x += -1.0F;
+            	translation.y += -1.0F;
+            }
+            
+            if (mc.gameSettings.isKeyDown(KeyHandlerClient.rightKey))
+            {
+            	translation.x += 1.0F;
+            	translation.y += 1.0F;
+            }
+            
+            if (mc.gameSettings.isKeyDown(KeyHandlerClient.upKey))
+            {
+            	translation.x += 1.0F;
+            	translation.y += -1.0F;
+            }
+            
+            if (mc.gameSettings.isKeyDown(KeyHandlerClient.downKey))
+            {
+            	translation.x += -1.0F;
+            	translation.y += 1.0F;
+            }
         }
     }
 
@@ -546,6 +588,7 @@ public class GuiCelestialSelection extends GuiScreen
                         {
 	                        this.selectionCount = 2;
 	                        this.preSelectZoom = this.zoom;
+	                        this.preSelectPosition = this.position;
 	                        this.ticksSinceSelection = 0;
 	                        this.doneZooming = false;
                         }
@@ -707,6 +750,7 @@ public class GuiCelestialSelection extends GuiScreen
                     if (this.selectedBody == null)
                     {
                         this.preSelectZoom = this.zoom;
+                        this.preSelectPosition = this.position;
                     }
 
                     int selectionCountOld = this.selectionCount;
@@ -773,10 +817,11 @@ public class GuiCelestialSelection extends GuiScreen
                         {
                             this.lastSelectedBody = this.selectedBody;
                         }
-
-                        if (this.lastSelectedBody == bodyClicked && this.selectionCount == 1 && bodyClicked instanceof Planet)
+                        
+                        if (this.selectionCount == 1 && !(bodyClicked instanceof IChildBody))
                         {
                             this.preSelectZoom = this.zoom;
+                            this.preSelectPosition = this.position;
                         }
 
                         this.selectedBody = bodyClicked;
@@ -845,7 +890,7 @@ public class GuiCelestialSelection extends GuiScreen
                 if (this.selectedBody == null || (this.selectionState == EnumSelectionState.PREVIEW && this.selectionCount < 2))
                 {
                 	//Minimum zoom increased from 0.55F to 1F to allow zoom out to see other solar systems
-                	this.zoom = Math.min(Math.max(this.zoom + wheel, -1F), 3);
+                	this.zoom = Math.min(Math.max(this.zoom + wheel * ((this.zoom + 2.0F)) / 10.0F, -0.75F), 3);
                 }
                 else
                 {
@@ -2023,7 +2068,7 @@ public class GuiCelestialSelection extends GuiScreen
     public Matrix4f setIsometric(float partialTicks)
     {
         Matrix4f mat0 = new Matrix4f();
-        Matrix4f.translate(new Vector3f(width / 2.0F, height / 2, 0), mat0, mat0);
+        Matrix4f.translate(new Vector3f(width / 2.0F + translation.x, height / 2 + translation.y, 0), mat0, mat0);
         Matrix4f.rotate((float) Math.toRadians(55), new Vector3f(1, 0, 0), mat0, mat0);
         Matrix4f.rotate((float) Math.toRadians(-45), new Vector3f(0, 0, 1), mat0, mat0);
         float zoomLocal = this.getZoomAdvanced();

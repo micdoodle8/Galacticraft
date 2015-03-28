@@ -40,6 +40,8 @@ public class KeyHandlerClient extends KeyHandler
     public static KeyBinding decelerateKey;
     public static KeyBinding leftKey;
     public static KeyBinding rightKey;
+    public static KeyBinding upKey;
+    public static KeyBinding downKey;
     public static KeyBinding spaceKey;
     public static KeyBinding leftShiftKey;
     private static Minecraft mc = Minecraft.getMinecraft();
@@ -56,6 +58,8 @@ public class KeyHandlerClient extends KeyHandler
         KeyHandlerClient.decelerateKey = KeyHandlerClient.mc.gameSettings.keyBindBack;
         KeyHandlerClient.leftKey = KeyHandlerClient.mc.gameSettings.keyBindLeft;
         KeyHandlerClient.rightKey = KeyHandlerClient.mc.gameSettings.keyBindRight;
+        KeyHandlerClient.upKey = KeyHandlerClient.mc.gameSettings.keyBindForward;
+        KeyHandlerClient.downKey = KeyHandlerClient.mc.gameSettings.keyBindBack;
         KeyHandlerClient.spaceKey = KeyHandlerClient.mc.gameSettings.keyBindJump;
         KeyHandlerClient.leftShiftKey = KeyHandlerClient.mc.gameSettings.keyBindSneak;
         return new KeyBinding[] { invKey, KeyHandlerClient.accelerateKey, KeyHandlerClient.decelerateKey, KeyHandlerClient.leftKey, KeyHandlerClient.rightKey, KeyHandlerClient.spaceKey, KeyHandlerClient.leftShiftKey };
