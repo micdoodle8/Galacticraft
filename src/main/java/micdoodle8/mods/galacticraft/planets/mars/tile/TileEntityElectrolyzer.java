@@ -440,6 +440,12 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public int receiveGas(ForgeDirection side, GasStack stack)
+    {
+        return 0;
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
     public GasStack drawGas(ForgeDirection from, int amount, boolean doTransfer)
     {
         int metaside = this.getBlockMetadata() + 2;
@@ -457,6 +463,12 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     		return new GasStack((Gas) EnergyConfigHandler.gasOxygen, amountO);
         }
         return null;
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public GasStack drawGas(ForgeDirection from, int amount)
+    {
+    	return this.drawGas(from, amount, true);
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
@@ -574,7 +586,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
                     GasStack toSend = new GasStack((Gas) EnergyConfigHandler.gasOxygen, (int) Math.floor(Math.min(this.getOxygenStored(), provide)));
                     int acceptedOxygen = 0;
                     try {
-                    	acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend, true);
+                    	acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
                     } catch (Exception e) { }
                     this.provideOxygen(acceptedOxygen, true);
                     return true;
@@ -630,7 +642,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
                     GasStack toSend = new GasStack((Gas) EnergyConfigHandler.gasHydrogen, (int) Math.floor(Math.min(this.getHydrogenStored(), provide)));
                     int acceptedHydrogen = 0;
                     try {
-                    	acceptedHydrogen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend, true);
+                    	acceptedHydrogen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
                     } catch (Exception e) { }
                     this.provideHydrogen(acceptedHydrogen, true);
                     return true;
