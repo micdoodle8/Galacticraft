@@ -88,13 +88,14 @@ public class RenderSlimeling extends RenderLiving
         if (!mc.gameSettings.hideGUI && !par1EntityLivingBase.isInvisible() && (mc.currentScreen == null || !((mc.currentScreen instanceof GuiSlimeling || mc.currentScreen instanceof GuiSlimelingInventory) && GuiSlimeling.renderingOnGui)))
         {
             this.renderLivingLabelWithColor(par1EntityLivingBase, ((EntitySlimeling) par1EntityLivingBase).getName(), par2, par4 + 0.33, par6, 64, 0, 0, 0);
-            int health = (int) Math.floor(((EntitySlimeling) par1EntityLivingBase).getHealth() + 0.6D);
+            int health = (int) Math.floor(((EntitySlimeling) par1EntityLivingBase).getHealth() + 0.6D); 
             int maxHealth = (int) ((EntitySlimeling) par1EntityLivingBase).getMaxHealth();
             if (health > maxHealth)
             {
                 health = maxHealth;
             }
-            float difference = health / maxHealth;
+            float difference = health / (float)maxHealth;
+            System.err.println(difference);
 
             if (difference < 0.33333F)
             {
