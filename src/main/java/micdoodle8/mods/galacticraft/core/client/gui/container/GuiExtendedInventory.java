@@ -86,7 +86,6 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
     @Override
     public void drawScreen(int par1, int par2, float par3)
     {
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         super.drawScreen(par1, par2, par3);
         this.xSize_lo_2 = par1;
         this.ySize_lo_2 = par2;
@@ -94,7 +93,6 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
 
     public static void drawPlayerOnGui(Minecraft par0Minecraft, int par1, int par2, int par3, float par4, float par5)
     {
-        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
         GL11.glPushMatrix();
         GL11.glTranslatef(par1, par2, 50.0F);
         GL11.glScalef(-par3, par3, par3);
@@ -121,7 +119,6 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         par0Minecraft.thePlayer.rotationPitch = f4;
         par0Minecraft.thePlayer.rotationYawHead = f5;
         GL11.glPopMatrix();
-        RenderHelper.disableStandardItemLighting();
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
