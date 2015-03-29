@@ -64,7 +64,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     		if (!this.spawnedMiner && this.linkedMiner == null && this.hasEnoughEnergyToRun)
 	    	{
 	    		this.spawnedMiner = true;
-	        	EntityAstroMiner.spawnMinerAtBase(this.worldObj, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1, (this.facing + 2) ^ 1, new BlockVec3(this));
+	        	if (ConfigManagerCore.enableDebug) EntityAstroMiner.spawnMinerAtBase(this.worldObj, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1, (this.facing + 2) ^ 1, new BlockVec3(this));
 	    	}    	
     	}
     	else

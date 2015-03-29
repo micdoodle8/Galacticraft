@@ -6,7 +6,9 @@ import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -92,7 +94,7 @@ public class RenderAstroMiner extends Render
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_BLEND);
          */
-        GL11.glTranslatef((float)x, (float)y + 0.75F, (float)z);
+        GL11.glTranslatef((float)x, (float)y + 0.55F, (float)z);
         if (rotPitch != 0F)
         {
             GL11.glTranslatef(-0.65F, -0.65F, 0);
@@ -119,7 +121,38 @@ public class RenderAstroMiner extends Render
 //        GL11.glRotatef(spin, 1, 0, 0);
 //        GL11.glScalef(0.5F, 1F, 1F);
 //        this.blockRenderer.renderBlockAsItem(Blocks.diamond_block, 0, 1.0F);
-        this.modelObj.renderAll();
+        this.modelObj.renderAllExcept("Hoverpad008", "Hoverpad010", "Hoverpad011", "Hoverpad012", "Hoverpad013", "Hoverpad014", "Hoverpad015", "Hoverpad016");
+        float lightMapSaveX = OpenGlHelper.lastBrightnessX;
+        float lightMapSaveY = OpenGlHelper.lastBrightnessY;
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        this.modelObj.renderOnly("Hoverpad008", "Hoverpad010", "Hoverpad011", "Hoverpad012", "Hoverpad013", "Hoverpad014", "Hoverpad015", "Hoverpad016");
+        
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        GL11.glDisable(GL11.GL_ALPHA_TEST);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+        GL11.glEnable(GL11.GL_BLEND);
+        final Tessellator tess = Tessellator.instance;
+        GL11.glColor4f(0, 0.6F, 1.0F, 0.2F);
+        tess.startDrawingQuads(); 
+        tess.addVertex(13F, 2F, -15F);
+        tess.addVertex(30F, 30F, -30F);
+        tess.addVertex(30F, -26F, -30F);
+        tess.addVertex(13F, 1.9F, -15F);
+        tess.draw();   	
+        tess.startDrawingQuads(); 
+        tess.addVertex(-13F, 2F, -15F);
+        tess.addVertex(-30F, 30F, -30F);
+        tess.addVertex(-30F, -26F, -30F);
+        tess.addVertex(-13F, 1.9F, -15F);
+        tess.draw();   	
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_LIGHTING);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
         
         GL11.glPopMatrix();
     }

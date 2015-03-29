@@ -31,6 +31,7 @@ public class TileEntityMinerBaseRenderer extends TileEntitySpecialRenderer
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityMinerBaseRenderer.telepadTexture);
 
         GL11.glPushMatrix();
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         GL11.glTranslatef((float) d + 1F, (float) d1 + 1F, (float) d2 + 1F);
         GL11.glScalef(0.1F, 0.1F, 0.1F);

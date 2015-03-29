@@ -44,6 +44,8 @@ public class EntityAstroMiner extends Entity implements IInventory
     private BlockVec3 waypointBase;
     private int baseFacing;
     private int facing;
+    private int facingAI;
+    private int lastFacing;
     private boolean zFirst;
     private static BlockVec3[] headings = {
     	new BlockVec3(0, -1, 0),
@@ -69,8 +71,9 @@ public class EntityAstroMiner extends Entity implements IInventory
     public int timeSinceHit;
     private boolean flagLink = false;
 
-    private float cLENGTH = 2.8F;
+    private float cLENGTH = 3.6F;
     private float cWIDTH = 1.8F;
+    private float cHEIGHT = 2.0F;
     //To do:
     //   break the entity drops it as an item
 
@@ -88,6 +91,7 @@ public class EntityAstroMiner extends Entity implements IInventory
     private double velocityZ;
 
 	private int tryBlockLimit;
+	private int inventoryDrops;
 
     private static ArrayList<Block> noMineList = new ArrayList();
     
@@ -129,6 +133,7 @@ public class EntityAstroMiner extends Entity implements IInventory
         this.width = cLENGTH;
         this.height = cWIDTH;
         this.setSize(cLENGTH, cWIDTH);
+        this.yOffset = 0;
         this.myEntitySize = Entity.EnumEntitySize.SIZE_6;
 //        this.dataWatcher.addObject(this.currentDamage, new Integer(0));
 //        this.dataWatcher.addObject(this.timeSinceHit, new Integer(0));
@@ -172,7 +177,8 @@ public class EntityAstroMiner extends Entity implements IInventory
         if (nbt.hasKey("WBaseX")) this.waypointBase = new BlockVec3(nbt.getInteger("WBaseX"), nbt.getInteger("WBaseY"), nbt.getInteger("WBaseZ"));
         if (nbt.hasKey("BaseFacing")) this.baseFacing = nbt.getInteger("BaseFacing");
         if (nbt.hasKey("AIState")) this.AIstate = nbt.getInteger("AIState");       
-        System.out.println("Astro Miner: Successful read from NBT");
+        if (nbt.hasKey("Facing")) this.facingAI = nbt.getInteger("Facing");
+        this.lastFacing = -1;
     }
 
     @Override
@@ -216,8 +222,124 @@ public class EntityAstroMiner extends Entity implements IInventory
         }
         nbt.setInteger("BaseFacing", this.baseFacing);
         nbt.setInteger("AIState", this.AIstate);
+        nbt.setInteger("Facing", this.facingAI);
     }
 
+
+    @Override
+    public int getSizeInventory()
+    {
+        return this.cargoItems.length;
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int var1)
+    {
+        return this.cargoItems[var1];
+    }
+
+    @Override
+    public ItemStack decrStackSize(int var1, int var2)
+    {
+        if (this.cargoItems[var1] != null)
+        {
+            ItemStack var3;
+
+            if (this.cargoItems[var1].stackSize <= var2)
+            {
+                var3 = this.cargoItems[var1];
+                this.cargoItems[var1] = null;
+                return var3;
+            }
+            else
+            {
+                var3 = this.cargoItems[var1].splitStack(var2);
+
+                if (this.cargoItems[var1].stackSize == 0)
+                {
+                    this.cargoItems[var1] = null;
+                }
+
+                return var3;
+            }
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    @Override
+    public ItemStack getStackInSlotOnClosing(int var1)
+    {
+        if (this.cargoItems[var1] != null)
+        {
+            final ItemStack var2 = this.cargoItems[var1];
+            this.cargoItems[var1] = null;
+            return var2;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    @Override
+    public void setInventorySlotContents(int var1, ItemStack var2)
+    {
+        this.cargoItems[var1] = var2;
+
+        if (var2 != null && var2.stackSize > this.getInventoryStackLimit())
+        {
+            var2.stackSize = this.getInventoryStackLimit();
+        }
+    }
+
+    @Override
+    public String getInventoryName()
+    {
+        return "AstroMiner";
+    }
+
+    @Override
+    public int getInventoryStackLimit()
+    {
+        return 64;
+    }
+
+    @Override
+    public boolean isUseableByPlayer(EntityPlayer var1)
+    {
+        return !this.isDead && var1.getDistanceSqToEntity(this) <= 64.0D;
+    }
+
+    @Override
+    public void markDirty()
+    {
+    }
+
+    @Override
+    public void openInventory()
+    {
+    }
+
+    @Override
+    public void closeInventory()
+    {
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int i, ItemStack itemstack)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean hasCustomInventoryName()
+    {
+        return true;
+    }
+    
     @Override
     public void onUpdate()
     {
@@ -233,10 +355,14 @@ public class EntityAstroMiner extends Entity implements IInventory
             this.setDamage(this.getDamage() - 1.0F);
         }
 
-        if (this.worldObj.isRemote)
+        this.facing = this.getFacingFromRot();
+    	this.setBoundingBoxForFacing();
+
+    	if (this.worldObj.isRemote)
         {
-        	//need to send this.facing, AIstate, targetrots and then do setboundingbox
-        	//this.checkRotation();
+        	//need packet to send this.facing, AIstate, targetrots, mining info ... ?
+        	//TODO network packet with AI state + move targets
+        	if (this.ticksExisted % 100 == 0) System.out.println("Client bby = " + this.boundingBox.minY + " Facing" + this.facing + " posY " + this.posY);
         	if (this.turnProgress > 0)
             {
                 double d6 = this.posX + (this.minecartX - this.posX) / this.turnProgress;
@@ -256,6 +382,13 @@ public class EntityAstroMiner extends Entity implements IInventory
             }
         	return;
         }
+        
+    	if (this.lastFacing != this.facingAI)
+    	{
+    		this.lastFacing = this.facingAI;
+    		this.prepareMove(12, 1);
+    		this.prepareMove(12, 2);
+    	}
 
         if (flagLink)
         {
@@ -276,40 +409,37 @@ public class EntityAstroMiner extends Entity implements IInventory
         this.prevRotationPitch = this.rotationPitch;
         this.prevRotationYaw = this.rotationYaw;
 
-        //if (!(this.worldObj.isRemote))  //TODO network packet with AI state + move targets
-        {
-	        this.updateAI();
-	    	if (this.energyLevel <= 0)
-	    	{
-	    		if (this.AIstate != 4)
-	    			this.AIstate = 0;
-	    	}
-	    	else if (this.ticksExisted % 10 == 0) this.energyLevel--;
-	    	
-	    	switch (this.AIstate)
-	    	{
-	    	case 0:
-	    		//TODO blinking distress light or something
-	    		//TODO: check close to base and if so, reverse in
-	    		break;
-	    	case 1:
-	    		this.moveToTarget();
-	        	this.prepareMove();
-	    		break;
-	    	case 2:
-	    		this.doMining();
-	        	if (this.ticksExisted % 2 == 0) this.energyLevel--;
-	        	this.prepareMove();
-	    		break;
-	    	case 3:
-	    		this.moveToBase();
-	        	this.prepareMove();
-	    		break;
-	    	case 4:
-	    		this.atBase();
-	    		break;
-	    	}
-        }
+        this.updateAI();
+    	if (this.energyLevel <= 0)
+    	{
+    		if (this.AIstate != 4)
+    			this.AIstate = 0;
+    	}
+    	else if (this.ticksExisted % 10 == 0) this.energyLevel--;
+    	
+    	switch (this.AIstate)
+    	{
+    	case 0:
+    		//TODO blinking distress light or something
+    		//TODO: check close to base and if so, reverse in slowly
+    		break;
+    	case 1:
+    		this.moveToTarget();
+        	this.prepareMove(2, 3);
+    		break;
+    	case 2:
+    		this.doMining();
+        	if (this.ticksExisted % 2 == 0) this.energyLevel--;
+        	this.prepareMove(4, 3);
+    		break;
+    	case 3:
+    		this.moveToBase();
+        	this.prepareMove(2, 3);
+    		break;
+    	case 4:
+    		this.atBase();
+    		break;
+    	}
     	
         this.posX += this.motionX;
         this.boundingBox.minX += this.motionX;
@@ -331,7 +461,24 @@ public class EntityAstroMiner extends Entity implements IInventory
         }
         
 */    
-        }
+    }
+
+	private int getFacingFromRot()
+	{
+		if (this.rotationPitch > 45F)
+			return 1;
+		if (this.rotationPitch < -45F)
+			return 0;
+		float rY = this.rotationYaw % 360F;
+		//rotationYaw 5 90 4 270 2 180 3 0
+		if (rY < 45F || rY > 315F)
+			return 3;
+		if (rY < 135F)
+			return 5;
+		if (rY < 225F)
+			return 2;
+		return 4;
+	}
 
 	private void atBase()
 	{
@@ -349,6 +496,7 @@ public class EntityAstroMiner extends Entity implements IInventory
 		
 		// TODO
 		// Empty item storage
+		this.inventoryDrops = 0;
 		
 		// Recharge
 		if (minerBase.hasEnoughEnergyToRun && this.energyLevel < MAXENERGY)
@@ -385,6 +533,12 @@ public class EntityAstroMiner extends Entity implements IInventory
 
 	private void moveToTarget()
 	{
+		if (this.inventoryDrops > 10)
+		{
+			AIstate = 3;
+			return;		
+		}
+		
 		if (this.posTarget == null)
 		{
 			AIstate = 0;
@@ -434,7 +588,7 @@ public class EntityAstroMiner extends Entity implements IInventory
 
 	private void doMining()
 	{
-		if (energyLevel < 9900)
+		if (energyLevel < 9900 || this.inventoryDrops > 10)
 		{
 			AIstate = 3;
 			System.out.println("Miner going home: "+this.posBase.toString());
@@ -453,19 +607,20 @@ public class EntityAstroMiner extends Entity implements IInventory
 		//If out of power, set waypoint and return to base
 	}
 
-	private boolean prepareMove()
+	private boolean prepareMove(int limit, int dist)
 	{
 		BlockVec3 inFront = new BlockVec3(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 0.5D), MathHelper.floor_double(this.posZ + 0.5D));
-		inFront.add(headings3[this.facing]);
+		if (dist == 3) inFront.add(headings3[this.facingAI]);
+		else inFront.add(headings[this.facingAI].scale(dist));
 		int x = inFront.x;
 		int y = inFront.y;
 		int z = inFront.z;
 		boolean wayBarred = false;
-		this.tryBlockLimit = 3;
+		this.tryBlockLimit = limit;
 
 		//Check not obstructed by something immovable e.g. bedrock
 		//Mine out the 12 blocks in front of it in direction of travel when getting close
-		switch (this.facing & 6)
+		switch (this.facingAI & 6)
 		{
 		case 0:
 			if (tryBlock(x, y, z)) wayBarred = true;
@@ -563,6 +718,7 @@ public class EntityAstroMiner extends Entity implements IInventory
             EntityItem entityitem = new EntityItem(this.worldObj, x + d0, y + d1, z + d2, drops);
             entityitem.delayBeforeCanPickup = 10;
             this.worldObj.spawnEntityInWorld(entityitem);
+            this.inventoryDrops++;
 		}
 		
 		this.worldObj.setBlock(x, y, z, Blocks.air, 0, 3);
@@ -683,8 +839,7 @@ public class EntityAstroMiner extends Entity implements IInventory
         	//TODO some acceleration and deceleration
         	if (this.motionX < pos.x - this.posX)
         		this.motionX = pos.x - this.posX;
-			this.facing = 4;
-			this.setBoundingBoxForFacing();
+			this.facingAI = 4;
 		}
 		else
 		{
@@ -692,8 +847,7 @@ public class EntityAstroMiner extends Entity implements IInventory
 			this.motionX = this.speed;
         	if (this.motionX > pos.x - this.posX)
         		this.motionX = pos.x - this.posX;
-			this.facing = 5;
-			this.setBoundingBoxForFacing();
+			this.facingAI = 5;
 		}
 
         if (stopForTurn)
@@ -711,8 +865,7 @@ public class EntityAstroMiner extends Entity implements IInventory
 			this.motionY = -this.speed;
         	if (this.motionY < pos.y - this.posY)
         		this.motionY = pos.y - this.posY;
-			this.facing = 0;
-			this.setBoundingBoxForFacing();
+			this.facingAI = 0;
 		}
 		else
 		{
@@ -720,8 +873,7 @@ public class EntityAstroMiner extends Entity implements IInventory
 			this.motionY = this.speed;
         	if (this.motionY > pos.y - this.posY)
         		this.motionY = pos.y - this.posY;
-			this.facing = 1;
-			this.setBoundingBoxForFacing();
+			this.facingAI = 1;
 		}
 
         if (stopForTurn)
@@ -744,8 +896,7 @@ public class EntityAstroMiner extends Entity implements IInventory
         	//TODO some acceleration and deceleration
         	if (this.motionZ < pos.z - this.posZ)
         		this.motionZ = pos.z - this.posZ;
-			this.facing = 2;
-			this.setBoundingBoxForFacing();
+			this.facingAI = 2;
 		}
 		else
 		{
@@ -753,8 +904,7 @@ public class EntityAstroMiner extends Entity implements IInventory
 			this.motionZ = this.speed;
         	if (this.motionZ > pos.z - this.posZ)
         		this.motionZ = pos.z - this.posZ;
-			this.facing = 3;
-			this.setBoundingBoxForFacing();
+			this.facingAI = 3;
 		}
 
         if (stopForTurn)
@@ -842,20 +992,19 @@ public class EntityAstroMiner extends Entity implements IInventory
         miner.waypointBase = new BlockVec3(x, y, z).modifyPositionFromSide(ForgeDirection.getOrientation(facing), 1);
         miner.setPosition(miner.waypointBase.x, miner.waypointBase.y, miner.waypointBase.z);
         miner.baseFacing = facing;
-        miner.facing = facing;
+        miner.facingAI = facing;
         miner.motionX = 0;
         miner.motionY = 0;
         miner.motionZ = 0;
         miner.targetPitch = 0;
-        miner.setBoundingBoxForFacing();
         switch (facing)
         {
         case 2: 
-            miner.targetYaw = 0;
+            miner.targetYaw = 180;
             miner.zFirst = true;
             break;
         case 3: 
-            miner.targetYaw = 180;
+            miner.targetYaw = 0;
             miner.zFirst = true;
             break;
         case 4: 
@@ -867,10 +1016,13 @@ public class EntityAstroMiner extends Entity implements IInventory
         }
         miner.rotationPitch = miner.targetPitch;
         miner.rotationYaw = miner.targetYaw;
+        miner.setBoundingBoxForFacing();
         miner.AIstate = 4;
         miner.posBase = base;
 
         world.spawnEntityInWorld(miner);
+        miner.prepareMove(12, 1);
+        miner.prepareMove(12, 2);
 	}
 	
     private void setBoundingBoxForFacing()
@@ -886,10 +1038,12 @@ public class EntityAstroMiner extends Entity implements IInventory
         	break;
         case 2:
         case 3:
+        	ysize = cHEIGHT;
         	zsize = cLENGTH;
         	break;
         case 4:
         case 5:
+        	ysize = cHEIGHT;
         	xsize = cLENGTH;
         	break;
         }
@@ -1011,125 +1165,20 @@ public class EntityAstroMiner extends Entity implements IInventory
         this.velocityY = this.motionY = p_70016_3_;
         this.velocityZ = this.motionZ = p_70016_5_;
     }
-
-    @Override
-    public int getSizeInventory()
-    {
-        return this.cargoItems.length;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int var1)
-    {
-        return this.cargoItems[var1];
-    }
-
-    @Override
-    public ItemStack decrStackSize(int var1, int var2)
-    {
-        if (this.cargoItems[var1] != null)
-        {
-            ItemStack var3;
-
-            if (this.cargoItems[var1].stackSize <= var2)
-            {
-                var3 = this.cargoItems[var1];
-                this.cargoItems[var1] = null;
-                return var3;
-            }
-            else
-            {
-                var3 = this.cargoItems[var1].splitStack(var2);
-
-                if (this.cargoItems[var1].stackSize == 0)
-                {
-                    this.cargoItems[var1] = null;
-                }
-
-                return var3;
-            }
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int var1)
-    {
-        if (this.cargoItems[var1] != null)
-        {
-            final ItemStack var2 = this.cargoItems[var1];
-            this.cargoItems[var1] = null;
-            return var2;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    @Override
-    public void setInventorySlotContents(int var1, ItemStack var2)
-    {
-        this.cargoItems[var1] = var2;
-
-        if (var2 != null && var2.stackSize > this.getInventoryStackLimit())
-        {
-            var2.stackSize = this.getInventoryStackLimit();
-        }
-    }
-
-    @Override
-    public String getInventoryName()
-    {
-        return "AstroMiner";
-    }
-
-    @Override
-    public int getInventoryStackLimit()
-    {
-        return 64;
-    }
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer var1)
-    {
-        return !this.isDead && var1.getDistanceSqToEntity(this) <= 64.0D;
-    }
-
-    @Override
-    public void markDirty()
-    {
-    }
-
-    @Override
-    public void openInventory()
-    {
-    }
-
-    @Override
-    public void closeInventory()
-    {
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int i, ItemStack itemstack)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean hasCustomInventoryName()
-    {
-        return true;
-    }
-    
     @Override
     protected void setSize(float p_70105_1_, float p_70105_2_)
     {
     	this.setBoundingBoxForFacing();
     }
+
+    @Override
+    public void setPosition(double p_70107_1_, double p_70107_3_, double p_70107_5_)
+    {
+        this.boundingBox.addCoord(p_70107_1_ - this.posX, p_70107_3_ - this.posY, p_70107_5_ - this.posZ);
+        this.posX = p_70107_1_;
+        this.posY = p_70107_3_;
+        this.posZ = p_70107_5_;
+    }
+
 }
 
