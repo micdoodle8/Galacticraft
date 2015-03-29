@@ -52,22 +52,18 @@ public class TileEntityAirLockController extends TileEntityAirLock
     public void updateEntity()
     {
         super.updateEntity();
-
+ 
         if (!this.worldObj.isRemote)
         {
-            boolean optionHandled = false;
+            this.active = false;
 
             if (this.redstoneActivation)
             {
-                optionHandled = true;
-
-                this.active = this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
+                this.active = !this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
             }
 
-            if (this.playerDistanceActivation)
+            if ((this.active || !this.redstoneActivation) && this.playerDistanceActivation)
             {
-                optionHandled = true;
-
                 double distance = 0.0F;
 
                 switch (this.playerDistanceSelection)
@@ -117,11 +113,6 @@ public class TileEntityAirLockController extends TileEntityAirLock
                 }
 
                 this.active = !foundPlayer;
-            }
-
-            if (!optionHandled)
-            {
-                this.active = false;
             }
 
             if (this.invertSelection)
