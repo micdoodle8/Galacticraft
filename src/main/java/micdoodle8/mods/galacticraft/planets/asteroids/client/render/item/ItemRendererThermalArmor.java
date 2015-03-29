@@ -3,11 +3,13 @@ package micdoodle8.mods.galacticraft.planets.asteroids.client.render.item;
 import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -16,6 +18,7 @@ public class ItemRendererThermalArmor implements IItemRenderer
     private void renderThermalArmor(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
     {
         GL11.glPushMatrix();
+        OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
         GL11.glEnable(GL11.GL_BLEND);
 
         for (int i = 0; i < 2; i++)
@@ -63,6 +66,7 @@ public class ItemRendererThermalArmor implements IItemRenderer
             GL11.glPopMatrix();
         }
 
+        GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();
     }
 
