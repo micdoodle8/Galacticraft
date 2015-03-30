@@ -232,7 +232,68 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         return true;
     }
 
-    @Override
+	public boolean addToInventory(ItemStack itemstack)
+	{
+		//TODO - add test for is container open and if so use Container.mergeItemStack
+		
+		boolean flag1 = false;
+        int k = 0;
+        int invSize = this.getSizeInventory();
+
+        ItemStack existingStack;
+
+        if (itemstack.isStackable())
+        {
+            while (itemstack.stackSize > 0 && k < invSize )
+            {
+                existingStack = this.containingItems[k];
+
+                if (existingStack != null && existingStack.getItem() == itemstack.getItem() && (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == existingStack.getItemDamage()) && ItemStack.areItemStackTagsEqual(itemstack, existingStack))
+                {
+                    int combined = existingStack.stackSize + itemstack.stackSize;
+
+                    if (combined <= itemstack.getMaxStackSize())
+                    {
+                        itemstack.stackSize = 0;
+                        existingStack.stackSize = combined;
+                        flag1 = true;
+                    }
+                    else if (existingStack.stackSize < itemstack.getMaxStackSize())
+                    {
+                        itemstack.stackSize -= itemstack.getMaxStackSize() - existingStack.stackSize;
+                        existingStack.stackSize = itemstack.getMaxStackSize();
+                        flag1 = true;
+                    }
+                }
+
+                ++k;
+            }
+        }
+
+        if (itemstack.stackSize > 0)
+        {
+            k = 0;
+
+            while (k < invSize)
+            {
+                existingStack = this.containingItems[k];
+
+                if (existingStack == null)
+                {
+                    this.containingItems[k] = itemstack.copy();
+                    itemstack.stackSize = 0;
+                    flag1 = true;
+                    break;
+                }
+
+                ++k;
+            }
+        }
+
+        return flag1;
+	}
+
+   @Override
     public void validate()
     {
 	    if (this.worldObj.isRemote)
@@ -377,7 +438,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 
     public void updateFacing()
     {
-    	if (this.isMaster)
+    	if (this.isMaster && this.linkedMiner == null)
     	{
     		// Re-orient the block
 	        switch (this.facing)

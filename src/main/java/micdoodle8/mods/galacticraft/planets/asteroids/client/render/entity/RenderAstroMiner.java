@@ -17,8 +17,11 @@ import net.minecraftforge.client.model.IModelCustom;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.client.FMLClientHandler;
+
 public class RenderAstroMiner extends Render
 {
+	private static ResourceLocation scanTexture;
     private RenderBlocks blockRenderer = new RenderBlocks();
     private float spin;
     private float lastPartTime;
@@ -37,6 +40,7 @@ public class RenderAstroMiner extends Render
     {
     	this.modelObj = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMiner.obj"));
         this.modelTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/astroMiner.png");
+        this.scanTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/misc/gradient.png");
         this.shadowSize = 2F;
         
         Random rand = new Random();
@@ -95,12 +99,37 @@ public class RenderAstroMiner extends Render
         GL11.glDisable(GL11.GL_BLEND);
          */
         GL11.glTranslatef((float)x, (float)y + 0.55F, (float)z);
+        float partBlock;
+        switch (astroMiner.facing)
+        {
+        case 0:
+        	partBlock = (float) (astroMiner.posY % 1D);
+        	break;
+        case 1:
+        	partBlock = 1F - (float) (astroMiner.posY % 1D);
+        	break;
+        case 2:
+        	partBlock = (float) (astroMiner.posZ % 1D);
+        	break;
+        case 3:
+        	partBlock = 1F - (float) (astroMiner.posZ % 1D);
+        	break;
+        case 4:
+        	partBlock = (float) (astroMiner.posX % 1D);
+        	break;
+        case 5:
+        	partBlock = 1F - (float) (astroMiner.posX % 1D);
+        	break;
+        default:
+        	partBlock = 0F;
+        }
         if (rotPitch != 0F)
         {
             GL11.glTranslatef(-0.65F, -0.65F, 0);
         	GL11.glRotatef(rotPitch, 0, 0, -1);
             GL11.glTranslatef(0.65F, 0.65F, 0);
         }
+        partBlock /= 0.06F;
         
 //        else if (rotPitch > 0F)
 //        {
@@ -128,29 +157,28 @@ public class RenderAstroMiner extends Render
         GL11.glDisable(GL11.GL_LIGHTING);
         this.modelObj.renderOnly("Hoverpad008", "Hoverpad010", "Hoverpad011", "Hoverpad012", "Hoverpad013", "Hoverpad014", "Hoverpad015", "Hoverpad016");
         
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         GL11.glEnable(GL11.GL_BLEND);
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.scanTexture);
         final Tessellator tess = Tessellator.instance;
         GL11.glColor4f(0, 0.6F, 1.0F, 0.2F);
         tess.startDrawingQuads(); 
-        tess.addVertex(13F, 2F, -15F);
-        tess.addVertex(30F, 30F, -30F);
-        tess.addVertex(30F, -26F, -30F);
-        tess.addVertex(13F, 1.9F, -15F);
+        tess.addVertexWithUV(17F, 1F, -18F, 0D, 0D);
+        tess.addVertexWithUV(34F, 29F, -33F - partBlock, 1D, 0D);
+        tess.addVertexWithUV(34F, -27F, -33F - partBlock, 1D, 1D);
+        tess.addVertexWithUV(17F, 0.9F, -18F, 0D, 1D);
         tess.draw();   	
         tess.startDrawingQuads(); 
-        tess.addVertex(-13F, 2F, -15F);
-        tess.addVertex(-30F, 30F, -30F);
-        tess.addVertex(-30F, -26F, -30F);
-        tess.addVertex(-13F, 1.9F, -15F);
+        tess.addVertexWithUV(-17F, 1F, -18F, 0D, 0D);
+        tess.addVertexWithUV(-34F, 29F, -33F - partBlock, 1D, 0D);
+        tess.addVertexWithUV(-34F, -27F, -33F - partBlock, 1D, 1D);
+        tess.addVertexWithUV(-17F, 0.9F, -18F, 0D, 1D);
         tess.draw();   	
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_LIGHTING);
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
         

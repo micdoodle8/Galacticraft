@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -31,6 +32,15 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class EntityAstroMiner extends Entity implements IInventory
 {
+	private static final int MINE_LENGTH = 24;
+    private static final int MAXENERGY = 10000;
+    private static final int RETURNENERGY = 1000;
+    private static final int RETURNDROPS = 10;
+    private static final int INV_SIZE = 27;
+    private float cLENGTH = 3.6F;
+    private float cWIDTH = 1.8F;
+    private float cHEIGHT = 1.7F;
+
 	public ItemStack[] cargoItems;
 
     public int energyLevel;
@@ -42,8 +52,10 @@ public class EntityAstroMiner extends Entity implements IInventory
     private BlockVec3 posTarget;
     private BlockVec3 posBase;
     private BlockVec3 waypointBase;
+    private LinkedList<BlockVec3> wayPoints = new LinkedList();
+    private LinkedList<BlockVec3> minePoints = new LinkedList();
     private int baseFacing;
-    private int facing;
+    public int facing;
     private int facingAI;
     private int lastFacing;
     private boolean zFirst;
@@ -63,7 +75,6 @@ public class EntityAstroMiner extends Entity implements IInventory
     	new BlockVec3(3, 0, 0)    };
 
     private final int baseSafeRadius = 32;
-    private final int MAXENERGY = 10000;
     private final double speed = 0.02D;
     private final float rotSpeed = 1.5F;
     public float shipDamage;
@@ -71,9 +82,6 @@ public class EntityAstroMiner extends Entity implements IInventory
     public int timeSinceHit;
     private boolean flagLink = false;
 
-    private float cLENGTH = 3.6F;
-    private float cWIDTH = 1.8F;
-    private float cHEIGHT = 2.0F;
     //To do:
     //   break the entity drops it as an item
 
@@ -151,7 +159,7 @@ public class EntityAstroMiner extends Entity implements IInventory
     protected void readEntityFromNBT(NBTTagCompound nbt)
     {
     	final NBTTagList var2 = nbt.getTagList("Items", 10);
-        this.cargoItems = new ItemStack[27];
+        this.cargoItems = new ItemStack[this.INV_SIZE];
 
         if (var2 != null)
         {
@@ -179,6 +187,26 @@ public class EntityAstroMiner extends Entity implements IInventory
         if (nbt.hasKey("AIState")) this.AIstate = nbt.getInteger("AIState");       
         if (nbt.hasKey("Facing")) this.facingAI = nbt.getInteger("Facing");
         this.lastFacing = -1;
+        if (nbt.hasKey("WayPoints"))
+        {
+        	this.wayPoints.clear();
+        	final NBTTagList wpList = nbt.getTagList("WayPoints", 10);
+        	for (int j = 0; j < wpList.tagCount(); j++)
+        	{
+	            NBTTagCompound bvTag = wpList.getCompoundTagAt(j);
+	            this.wayPoints.add(BlockVec3.readFromNBT(bvTag));
+        	}
+        }
+        if (nbt.hasKey("MinePoints"))
+        {
+        	this.minePoints.clear();
+        	final NBTTagList mpList = nbt.getTagList("MinePoints", 10);
+        	for (int j = 0; j < mpList.tagCount(); j++)
+        	{
+	            NBTTagCompound bvTag = mpList.getCompoundTagAt(j);
+	            this.minePoints.add(BlockVec3.readFromNBT(bvTag));
+        	}
+        }
     }
 
     @Override
@@ -223,6 +251,26 @@ public class EntityAstroMiner extends Entity implements IInventory
         nbt.setInteger("BaseFacing", this.baseFacing);
         nbt.setInteger("AIState", this.AIstate);
         nbt.setInteger("Facing", this.facingAI);
+        if (this.wayPoints.size() > 0)
+        {
+        	NBTTagList wpList = new NBTTagList();
+        	for (int j = 0; j < this.wayPoints.size(); j++)
+        	{
+	            NBTTagCompound bvTag = this.wayPoints.get(j).writeToNBT(new NBTTagCompound());
+	            wpList.appendTag(bvTag);
+        	}
+        	nbt.setTag("WayPoints", wpList);
+        }
+        if (this.minePoints.size() > 0)
+        {
+        	NBTTagList mpList = new NBTTagList();
+        	for (int j = 0; j < this.minePoints.size(); j++)
+        	{
+	            NBTTagCompound bvTag = this.minePoints.get(j).writeToNBT(new NBTTagCompound());
+	            mpList.appendTag(bvTag);
+        	}
+        	nbt.setTag("MinePoints", mpList);
+        }
     }
 
 
@@ -340,6 +388,28 @@ public class EntityAstroMiner extends Entity implements IInventory
         return true;
     }
     
+	private void emptyInventory(TileEntityMinerBase minerBase)
+	{
+		for (int i = 0; i < this.cargoItems.length; i++)
+		{
+			ItemStack stack = this.cargoItems[i];
+			if (stack == null)
+				continue;
+			if (stack.stackSize == 0)
+			{
+				this.cargoItems[i] = null;
+				continue;
+			}
+			minerBase.addToInventory(stack);
+			if (stack == null || stack.stackSize == 0)
+			{
+				this.cargoItems[i] = null;
+			}
+			else
+				this.cargoItems[i] = stack;
+		}	
+	}
+
     @Override
     public void onUpdate()
     {
@@ -355,14 +425,13 @@ public class EntityAstroMiner extends Entity implements IInventory
             this.setDamage(this.getDamage() - 1.0F);
         }
 
-        this.facing = this.getFacingFromRot();
+        this.facing = this.getFacingFromRotation();
     	this.setBoundingBoxForFacing();
 
     	if (this.worldObj.isRemote)
         {
         	//need packet to send this.facing, AIstate, targetrots, mining info ... ?
         	//TODO network packet with AI state + move targets
-        	if (this.ticksExisted % 100 == 0) System.out.println("Client bby = " + this.boundingBox.minY + " Facing" + this.facing + " posY " + this.posY);
         	if (this.turnProgress > 0)
             {
                 double d6 = this.posX + (this.minecartX - this.posX) / this.turnProgress;
@@ -386,6 +455,7 @@ public class EntityAstroMiner extends Entity implements IInventory
     	if (this.lastFacing != this.facingAI)
     	{
     		this.lastFacing = this.facingAI;
+    		this.prepareMove(12, 0);
     		this.prepareMove(12, 1);
     		this.prepareMove(12, 2);
     	}
@@ -412,7 +482,7 @@ public class EntityAstroMiner extends Entity implements IInventory
         this.updateAI();
     	if (this.energyLevel <= 0)
     	{
-    		if (this.AIstate != 4)
+    		if (this.AIstate < 4)
     			this.AIstate = 0;
     	}
     	else if (this.ticksExisted % 10 == 0) this.energyLevel--;
@@ -430,7 +500,7 @@ public class EntityAstroMiner extends Entity implements IInventory
     	case 2:
     		this.doMining();
         	if (this.ticksExisted % 2 == 0) this.energyLevel--;
-        	this.prepareMove(4, 3);
+        	this.prepareMove(1, 3);
     		break;
     	case 3:
     		this.moveToBase();
@@ -438,6 +508,10 @@ public class EntityAstroMiner extends Entity implements IInventory
     		break;
     	case 4:
     		this.atBase();
+    		break;
+    	case 5:
+    		if (this.moveToPos(this.waypointBase, true))
+    			this.AIstate = 4;
     		break;
     	}
     	
@@ -463,7 +537,7 @@ public class EntityAstroMiner extends Entity implements IInventory
 */    
     }
 
-	private int getFacingFromRot()
+	private int getFacingFromRotation()
 	{
 		if (this.rotationPitch > 45F)
 			return 1;
@@ -493,9 +567,9 @@ public class EntityAstroMiner extends Entity implements IInventory
 		}
 		
 		TileEntityMinerBase minerBase = (TileEntityMinerBase) tileEntity;
+		this.wayPoints.clear();
 		
-		// TODO
-		// Empty item storage
+		this.emptyInventory(minerBase);
 		this.inventoryDrops = 0;
 		
 		// Recharge
@@ -512,12 +586,14 @@ public class EntityAstroMiner extends Entity implements IInventory
 			if (this.findNextTarget())
 			{
 				this.AIstate = 1;
+				this.wayPoints.add(this.waypointBase.clone());
 			}
 		}
 	}
 
 	private boolean findNextTarget()
 	{
+		if (!this.minePoints.isEmpty()) this.posTarget = this.minePoints.getFirst().clone(); 
 		this.posTarget = this.posBase.clone().modifyPositionFromSide(ForgeDirection.getOrientation(this.baseFacing), this.worldObj.rand.nextInt(40) + 10);
 		if ((this.baseFacing & 6) == 2)
 		{
@@ -533,7 +609,7 @@ public class EntityAstroMiner extends Entity implements IInventory
 
 	private void moveToTarget()
 	{
-		if (this.inventoryDrops > 10)
+		if (this.energyLevel < this.RETURNENERGY || this.inventoryDrops > this.RETURNDROPS)
 		{
 			AIstate = 3;
 			return;		
@@ -548,6 +624,8 @@ public class EntityAstroMiner extends Entity implements IInventory
 		if (this.moveToPos(this.posTarget, false))
 		{
 			AIstate = 2;
+			wayPoints.add(this.posTarget.clone());
+			this.setMinePoints();
 		}
 		
 		// TODO  marker beacons for things to avoid
@@ -556,56 +634,120 @@ public class EntityAstroMiner extends Entity implements IInventory
 		// GC walkways, oxygen pipes, hydrogen pipes, wires
 		
 		// TODO
-		/*
-	- move in straight lines (basedir first) until [12?] blocks from target
-	- not allowed to move less than 16 blocks closer to base in basedir (to protect own base from being mined by accident - hopefully!)
-	- once reached target: waypoint (so that can retrace same route when returning to base later)
-		 * 
-		 */
+		//- move in straight lines (basedir first) until [12?] blocks from target
+		//- not allowed to move less than 16 blocks closer to base in basedir (to protect own base from being mined by accident - hopefully!)
 	}
 
 	private void moveToBase()
 	{
-		if (this.waypointBase == null)
+		if (this.wayPoints.size() == 0)
 		{
-			AIstate = 0;
+			//When it gets there: stop and reverse in!
+			AIstate = 4;
+			if (this.waypointBase != null)
+			{
+				//Teleport back to base in case of any serious problem
+				this.setPosition(this.waypointBase.x, this.waypointBase.y, this.waypointBase.z);
+		        this.facingAI = this.baseFacing;
+			}
 			return;
 		}
 		
-		if (this.moveToPos(this.waypointBase, true))
+		if (this.moveToPos(this.wayPoints.getLast(), true))
 		{
-			AIstate = 4;
+			this.wayPoints.removeLast();
 		}
 		
 		// TODO
-		// Similar to moveToTarget
-		// Goto waypoints for journey home
-		// If obstructed: either mine it (v1) or will need AI pathfinding (v2 ...)
-		// Can move faster because not generally obstructed at all
-		//When it gets there: stop and reverse in!
+		// If obstructed: either mine it (v1) or will need AI pathfinding (v2 ...)	
+	}
+
+	private void setMinePoints()
+	{
+		//Still some areas left to mine from last visit (maybe it was full or out of power?)
+		if (this.minePoints.size() > 0) return;
 		
+		BlockVec3 inFront = new BlockVec3(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 0.5D), MathHelper.floor_double(this.posZ + 0.5D));
+		int otherEnd = this.MINE_LENGTH;
+		if (this.baseFacing == 3 || this.baseFacing == 5) otherEnd = -otherEnd;
+		switch (this.baseFacing)
+		{
+		case 2:
+		case 3:
+			this.minePoints.add(inFront.clone().translate(0, 0, otherEnd));
+			this.minePoints.add(inFront.clone().translate(4, 0, otherEnd));
+			this.minePoints.add(inFront.clone().translate(4, 0, 0));
+			this.minePoints.add(inFront.clone().translate(2, 3, 0));
+			this.minePoints.add(inFront.clone().translate(2, 3, otherEnd));
+			this.minePoints.add(inFront.clone().translate(-2, 3, otherEnd));
+			this.minePoints.add(inFront.clone().translate(-2, 3, 0));
+			this.minePoints.add(inFront.clone().translate(-4, 0, 0));
+			this.minePoints.add(inFront.clone().translate(-4, 0, otherEnd));
+			this.minePoints.add(inFront.clone().translate(-2, -3, otherEnd));
+			this.minePoints.add(inFront.clone().translate(-2, -3, 0));
+			this.minePoints.add(inFront.clone().translate(2, -3, 0));
+			this.minePoints.add(inFront.clone().translate(2, -3, otherEnd));
+			this.minePoints.add(inFront.clone().translate(0, 0, otherEnd));
+			break;
+		case 4:
+		case 5:
+			this.minePoints.add(inFront.clone().translate(otherEnd, 0, 0));
+			this.minePoints.add(inFront.clone().translate(otherEnd, 0, 4));
+			this.minePoints.add(inFront.clone().translate(0, 0, 4));
+			this.minePoints.add(inFront.clone().translate(0, 3, 2));
+			this.minePoints.add(inFront.clone().translate(otherEnd, 3, 2));
+			this.minePoints.add(inFront.clone().translate(otherEnd, 3, -2));
+			this.minePoints.add(inFront.clone().translate(0, 3, -2));
+			this.minePoints.add(inFront.clone().translate(0, 0, -4));
+			this.minePoints.add(inFront.clone().translate(otherEnd, 0, -4));
+			this.minePoints.add(inFront.clone().translate(otherEnd, -3, -2));
+			this.minePoints.add(inFront.clone().translate(0, -3, -2));
+			this.minePoints.add(inFront.clone().translate(0, -3, 2));
+			this.minePoints.add(inFront.clone().translate(otherEnd, -3, 2));
+			this.minePoints.add(inFront.clone().translate(otherEnd, 0, 0));
+			break;
+		}
 	}
 
 	private void doMining()
 	{
-		if (energyLevel < 9900 || this.inventoryDrops > 10)
+		if (this.energyLevel < this.RETURNENERGY || this.inventoryDrops > this.RETURNDROPS || this.minePoints.size() == 0)
 		{
 			AIstate = 3;
 			System.out.println("Miner going home: "+this.posBase.toString());
+			return;		
 		}
-		// TODO
-		//Mine blocks around
-		//Note timing with moves - can't mine it all at once
-		//There are 12 blocks around ... and 12 in front.  One block per tick?  
-		//(That means can move at 5/6 block per second when mining, and 1.67 bps when traveling)
-		//Once reached a certain distance from TunnelCentre, turn
-		//[How exactly handle the turn?  AI turning?  IF POSSIBLE: Move TunnelCentre and rest is auto consequence.]
-		
-		//Turn pattern:  6 blocks apart in z or x plane   (3, 4) blocks apart in y plane
-		//Order of moves so that pattern covers all bases...
-		
-		//If out of power, set waypoint and return to base
+
+		if (this.moveToPos(this.minePoints.getFirst(), false))
+		{
+			this.minePoints.removeFirst();
+		}
 	}
+
+	private void tryBackIn()
+	{
+		if (this.waypointBase.distanceSquared(new BlockVec3(this)) <= 9D)
+		{
+			this.AIstate = 5;
+	        switch (this.baseFacing)
+	        {
+	        case 2: 
+	            this.targetYaw = 180;
+	            break;
+	        case 3: 
+	            this.targetYaw = 0;
+	            break;
+	        case 4: 
+	            this.targetYaw = 270;
+	            break;
+	        case 5: 
+	            this.targetYaw = 90;
+	            break;
+	        }
+		}
+		else this.AIstate = 0;
+	}
+
 
 	private boolean prepareMove(int limit, int dist)
 	{
@@ -620,6 +762,8 @@ public class EntityAstroMiner extends Entity implements IInventory
 
 		//Check not obstructed by something immovable e.g. bedrock
 		//Mine out the 12 blocks in front of it in direction of travel when getting close
+		//There are 12 blocks around ... and 12 in front.  One block per tick?  
+		//(That means can move at 5/6 block per second when mining, and 1.67 bps when traveling)
 		switch (this.facingAI & 6)
 		{
 		case 0:
@@ -675,10 +819,12 @@ public class EntityAstroMiner extends Entity implements IInventory
 			this.motionZ = 0;
 			this.tryBlockLimit = 0;
 			if (this.AIstate == 1 || this.AIstate == 2) this.AIstate = 3;
+			else if (this.AIstate == 3)
+				this.tryBackIn();
 			else this.AIstate = 0;
 		}
 		
-		if (this.tryBlockLimit == 3)
+		if (this.tryBlockLimit == limit)
 		{
 			this.motionX *= 2.5F;
 			this.motionY *= 2.5F;
@@ -789,18 +935,19 @@ public class EntityAstroMiner extends Entity implements IInventory
 	private boolean moveToPos(BlockVec3 pos, boolean reverse)
 	{
 		boolean stopForTurn = !this.checkRotation();
+		//System.out.println("Moving to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | "  + this.targetPitch + "," + this.targetYaw: ""));
 		
 		if (reverse != zFirst)
 		{
-			if (this.posZ != pos.z)
+			if (this.posZ > pos.z + 0.0001D || this.posZ < pos.z - 0.0001D)
 			{
 				this.moveToPosZ(pos, stopForTurn);			
 			}
-			else if (this.posY != pos.y)
+			else if (this.posY > pos.y + 0.0001D || this.posY < pos.y - 0.0001D)
 			{
 				this.moveToPosY(pos, stopForTurn);			
 			}
-			else if (this.posX != pos.x)
+			else if (this.posX > pos.x + 0.0001D || this.posX < pos.x - 0.0001D)
 			{
 				this.moveToPosX(pos, stopForTurn);
 			}
@@ -809,15 +956,15 @@ public class EntityAstroMiner extends Entity implements IInventory
 		}
 		else
 		{
-			if (this.posX != pos.x)
+			if (this.posX > pos.x + 0.0001D || this.posX < pos.x - 0.0001D)
 			{
 				this.moveToPosX(pos, stopForTurn);
 			}
-			else if (this.posY != pos.y)
+			else if (this.posY > pos.y + 0.0001D || this.posY < pos.y - 0.0001D)
 			{
 				this.moveToPosY(pos, stopForTurn);			
 			}
-			else if (this.posZ != pos.z)
+			else if (this.posZ > pos.z + 0.0001D || this.posZ < pos.z - 0.0001D)
 			{
 				this.moveToPosZ(pos, stopForTurn);			
 			}
@@ -834,7 +981,8 @@ public class EntityAstroMiner extends Entity implements IInventory
 
 		if (this.posX > pos.x)
 		{
-	        this.targetYaw = 270;
+	        if (this.AIstate != 5)
+	        	this.targetYaw = 270;
         	this.motionX = -this.speed;
         	//TODO some acceleration and deceleration
         	if (this.motionX < pos.x - this.posX)
@@ -843,7 +991,8 @@ public class EntityAstroMiner extends Entity implements IInventory
 		}
 		else
 		{
-	        this.targetYaw = 90;
+	        if (this.AIstate != 5)
+	        	this.targetYaw = 90;
 			this.motionX = this.speed;
         	if (this.motionX > pos.x - this.posX)
         		this.motionX = pos.x - this.posX;
@@ -861,7 +1010,7 @@ public class EntityAstroMiner extends Entity implements IInventory
 	{
 		if (this.posY > pos.y)
 		{
-			this.targetPitch = -90;
+        	this.targetPitch = -90;
 			this.motionY = -this.speed;
         	if (this.motionY < pos.y - this.posY)
         		this.motionY = pos.y - this.posY;
@@ -869,7 +1018,7 @@ public class EntityAstroMiner extends Entity implements IInventory
 		}
 		else
 		{
-			this.targetPitch = 90;
+        	this.targetPitch = 90;
 			this.motionY = this.speed;
         	if (this.motionY > pos.y - this.posY)
         		this.motionY = pos.y - this.posY;
@@ -891,7 +1040,8 @@ public class EntityAstroMiner extends Entity implements IInventory
 
 		if (this.posZ > pos.z)
 		{
-	        this.targetYaw = 180;
+	        if (this.AIstate != 5)
+	        	this.targetYaw = 180;
         	this.motionZ = -this.speed;
         	//TODO some acceleration and deceleration
         	if (this.motionZ < pos.z - this.posZ)
@@ -900,7 +1050,8 @@ public class EntityAstroMiner extends Entity implements IInventory
 		}
 		else
 		{
-	        this.targetYaw = 0;
+	        if (this.AIstate != 5)
+	        	this.targetYaw = 0;
 			this.motionZ = this.speed;
         	if (this.motionZ > pos.z - this.posZ)
         		this.motionZ = pos.z - this.posZ;
@@ -918,7 +1069,7 @@ public class EntityAstroMiner extends Entity implements IInventory
 	{
 		boolean flag = true;
 		//Handle the turns when it changes direction
-        if (this.rotationPitch != this.targetPitch)
+        if (this.rotationPitch > this.targetPitch + 0.001F || this.rotationPitch < this.targetPitch - 0.001F)
         {
         	if (this.rotationPitch > this.targetPitch + 180)
         		this.rotationPitch -= 360;
@@ -941,7 +1092,7 @@ public class EntityAstroMiner extends Entity implements IInventory
         	flag = false;
         }
 
-        if (this.rotationYaw != this.targetYaw)
+        if (this.rotationYaw > this.targetYaw + 0.001F || this.rotationYaw < this.targetYaw - 0.001F)
         {
         	if (this.rotationYaw > this.targetYaw + 180)
         		this.rotationYaw -= 360;
@@ -985,11 +1136,11 @@ public class EntityAstroMiner extends Entity implements IInventory
 	}
 
 	//x y z should be the mid-point of the 4 base blocks
-	public static void spawnMinerAtBase(World world, int x, int y, int z, int facing, BlockVec3 base)
+	public static boolean spawnMinerAtBase(World world, int x, int y, int z, int facing, BlockVec3 base)
 	{
-        if (world.isRemote) return;
-		final EntityAstroMiner miner = new EntityAstroMiner(world, new ItemStack[27], 0);
-        miner.waypointBase = new BlockVec3(x, y, z).modifyPositionFromSide(ForgeDirection.getOrientation(facing), 1);
+        if (world.isRemote) return true;
+		final EntityAstroMiner miner = new EntityAstroMiner(world, new ItemStack[EntityAstroMiner.INV_SIZE], 0);
+        miner.waypointBase = new BlockVec3(x, y, z).modifyPositionFromSide(ForgeDirection.getOrientation(facing), 2);
         miner.setPosition(miner.waypointBase.x, miner.waypointBase.y, miner.waypointBase.z);
         miner.baseFacing = facing;
         miner.facingAI = facing;
@@ -1020,9 +1171,17 @@ public class EntityAstroMiner extends Entity implements IInventory
         miner.AIstate = 4;
         miner.posBase = base;
 
-        world.spawnEntityInWorld(miner);
-        miner.prepareMove(12, 1);
-        miner.prepareMove(12, 2);
+        boolean blocked = false;
+        if (miner.prepareMove(12, 0)) blocked = true;
+        if (miner.prepareMove(12, 1)) blocked = true;
+        if (miner.prepareMove(12, 2)) blocked = true;
+        if (!blocked)
+        {
+        	world.spawnEntityInWorld(miner);
+        	return true;
+        }
+       	miner.kill();
+       	return false;
 	}
 	
     private void setBoundingBoxForFacing()
