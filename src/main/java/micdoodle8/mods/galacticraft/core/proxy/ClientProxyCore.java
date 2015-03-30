@@ -28,6 +28,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
 import micdoodle8.mods.galacticraft.core.client.fx.EffectHandler;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerBaseGC;
 import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
@@ -1163,9 +1164,13 @@ public class ClientProxyCore extends CommonProxyCore
         x += (x % 16 - 8) * var7 + 8;
         z += (z % 16 - 8) * var7 + 8;
     }
+    
+    private static final ResourceLocation saturnRingTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/saturnRings.png");    
+    private static final ResourceLocation uranusRingTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/uranusRings.png");
+
 
     @SubscribeEvent
-    public void onRenderPlanet(CelestialBodyRenderEvent.Pre event)
+    public void onRenderPlanetPre(CelestialBodyRenderEvent.Pre event)
     {
         if (event.celestialBody == GalacticraftCore.planetOverworld)
         {
@@ -1180,6 +1185,26 @@ public class ClientProxyCore extends CommonProxyCore
                 event.celestialBodyTexture = null;
                 GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureClient.getGlTextureId());
             }
+        }
+    }
+
+    @SubscribeEvent
+    public void onRenderPlanetPost(CelestialBodyRenderEvent.Post event)
+    {
+        if (this.mc.currentScreen instanceof GuiCelestialSelection)
+        {
+        	if (event.celestialBody == GalacticraftCore.planetSaturn)
+        	{
+                this.mc.renderEngine.bindTexture(saturnRingTexture);
+                float size = GuiCelestialSelection.getWidthForCelestialBodyStatic(event.celestialBody) / 6.0F;
+                ((GuiCelestialSelection)this.mc.currentScreen).drawTexturedModalRect(-7.5F * size, -1.75F * size, 15.0F * size, 3.5F * size, 0, 0, 30, 7, false, false, 30, 7);
+        	}
+        	else if (event.celestialBody == GalacticraftCore.planetUranus)
+        	{
+                this.mc.renderEngine.bindTexture(uranusRingTexture);
+                float size = GuiCelestialSelection.getWidthForCelestialBodyStatic(event.celestialBody) / 6.0F;
+                ((GuiCelestialSelection)this.mc.currentScreen).drawTexturedModalRect(-1.75F * size, -7.0F * size, 3.5F * size, 14.0F * size, 0, 0, 28, 7, false, false, 28, 7);
+        	}
         }
     }
 }

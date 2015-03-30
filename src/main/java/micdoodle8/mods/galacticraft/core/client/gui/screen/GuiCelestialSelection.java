@@ -1012,7 +1012,13 @@ public class GuiCelestialSelection extends GuiScreen
                 this.mc.renderEngine.bindTexture(GuiCelestialSelection.guiMain0);
                 float colMod = this.getZoomAdvanced() < 4.9F ? (float) (Math.sin(this.ticksSinceSelection / 2.0F) * 0.5F + 0.5F) : 1.0F;
                 GL11.glColor4f(1.0F, 1.0F, 0.0F, 1 * colMod);
-                int width = this.getWidthForCelestialBody(this.selectedBody) * 10;
+                int width = this.getWidthForCelestialBodyStatic(this.selectedBody);
+                if (this.selectionCount == 1)
+                {
+                	width /= 2;
+                	width *= 3;
+                }
+                width *= 10;
 
                 this.drawTexturedModalRect(-width, -width, width * 2, width * 2, 266, 29, 100, 100, false, false);
                 GL11.glPopMatrix();
@@ -1086,9 +1092,11 @@ public class GuiCelestialSelection extends GuiScreen
         return cBodyPos;
     }
 
-    private int getWidthForCelestialBody(CelestialBody celestialBody)
+    public static int getWidthForCelestialBodyStatic(CelestialBody celestialBody)
     {
-        if (celestialBody != this.selectedBody || this.selectionCount != 1)
+        if (Minecraft.getMinecraft().currentScreen instanceof GuiCelestialSelection && 
+        		(celestialBody != ((GuiCelestialSelection) Minecraft.getMinecraft().currentScreen).selectedBody || 
+        		((GuiCelestialSelection) Minecraft.getMinecraft().currentScreen).selectionCount != 1))
         {
             return celestialBody instanceof Star ? 8 : (celestialBody instanceof Planet ? 4 : (celestialBody instanceof IChildBody ? 4 : (celestialBody instanceof Satellite ? 4 : 2)));
         }
@@ -1156,8 +1164,13 @@ public class GuiCelestialSelection extends GuiScreen
 
                     if (!preEvent.isCanceled())
                     {
-                        int size = this.getWidthForCelestialBody(star);
-                        this.drawTexturedModalRect(-size / 2, -size / 2, size, size, 0, 0, preEvent.textureSize, preEvent.textureSize, false, false, preEvent.textureSize);
+                        int size = this.getWidthForCelestialBodyStatic(star);
+                        if (star == this.selectedBody && this.selectionCount == 1)
+                        {
+                        	size /= 2;
+                        	size *= 3;
+                        }
+                        this.drawTexturedModalRect(-size / 2, -size / 2, size, size, 0, 0, preEvent.textureSize, preEvent.textureSize, false, false, preEvent.textureSize, preEvent.textureSize);
                         matrixMap.put(star, worldMatrix1);
                     }
 
@@ -1216,8 +1229,8 @@ public class GuiCelestialSelection extends GuiScreen
 
                     if (!preEvent.isCanceled())
                     {
-                        int size = this.getWidthForCelestialBody(planet);
-                        this.drawTexturedModalRect(-size / 2, -size / 2, size, size, 0, 0, preEvent.textureSize, preEvent.textureSize, false, false, preEvent.textureSize);
+                        int size = this.getWidthForCelestialBodyStatic(planet);
+                        this.drawTexturedModalRect(-size / 2, -size / 2, size, size, 0, 0, preEvent.textureSize, preEvent.textureSize, false, false, preEvent.textureSize, preEvent.textureSize);
                         matrixMap.put(planet, worldMatrix1);
                     }
 
@@ -1264,8 +1277,8 @@ public class GuiCelestialSelection extends GuiScreen
 
                     if (!preEvent.isCanceled())
                     {
-                        int size = this.getWidthForCelestialBody(moon);
-                        this.drawTexturedModalRect(-size / 2, -size / 2, size, size, 0, 0, preEvent.textureSize, preEvent.textureSize, false, false, preEvent.textureSize);
+                        int size = this.getWidthForCelestialBodyStatic(moon);
+                        this.drawTexturedModalRect(-size / 2, -size / 2, size, size, 0, 0, preEvent.textureSize, preEvent.textureSize, false, false, preEvent.textureSize, preEvent.textureSize);
                         matrixMap.put(moon, worldMatrix1);
                     }
 
@@ -1310,8 +1323,8 @@ public class GuiCelestialSelection extends GuiScreen
 
                         if (!preEvent.isCanceled())
                         {
-                            int size = this.getWidthForCelestialBody(satellite);
-                            this.drawTexturedModalRect(-size / 2, -size / 2, size, size, 0, 0, preEvent.textureSize, preEvent.textureSize, false, false, preEvent.textureSize);
+                            int size = this.getWidthForCelestialBodyStatic(satellite);
+                            this.drawTexturedModalRect(-size / 2, -size / 2, size, size, 0, 0, preEvent.textureSize, preEvent.textureSize, false, false, preEvent.textureSize, preEvent.textureSize);
                             matrixMap.put(satellite, worldMatrix1);
                         }
 
@@ -2039,26 +2052,27 @@ public class GuiCelestialSelection extends GuiScreen
 
     public void drawTexturedModalRect(int x, int y, int width, int height, int u, int v, int uWidth, int vHeight, boolean invertX, boolean invertY)
     {
-        this.drawTexturedModalRect(x, y, width, height, u, v, uWidth, vHeight, invertX, invertY, 512);
+        this.drawTexturedModalRect(x, y, width, height, u, v, uWidth, vHeight, invertX, invertY, 512, 512);
     }
 
-    public void drawTexturedModalRect(int x, int y, int width, int height, int u, int v, int uWidth, int vHeight, boolean invertX, boolean invertY, int texSize)
+    public void drawTexturedModalRect(float x, float y, float width, float height, float u, float v, float uWidth, float vHeight, boolean invertX, boolean invertY, float texSizeX, float texSizeY)
     {
         GL11.glShadeModel(GL11.GL_FLAT);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
-        float texMod = 1 / (float) texSize;
+        float texModX = 1 / (float) texSizeX;
+        float texModY = 1 / (float) texSizeY;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
-        int height0 = invertY ? 0 : vHeight;
-        int height1 = invertY ? vHeight : 0;
-        int width0 = invertX ? uWidth : 0;
-        int width1 = invertX ? 0 : uWidth;
-        tessellator.addVertexWithUV(x, y + height, this.zLevel, (u + width0) * texMod, (v + height0) * texMod);
-        tessellator.addVertexWithUV(x + width, y + height, this.zLevel, (u + width1) * texMod, (v + height0) * texMod);
-        tessellator.addVertexWithUV(x + width, y, this.zLevel, (u + width1) * texMod, (v + height1) * texMod);
-        tessellator.addVertexWithUV(x, y, this.zLevel, (u + width0) * texMod, (v + height1) * texMod);
+        float height0 = invertY ? 0 : vHeight;
+        float height1 = invertY ? vHeight : 0;
+        float width0 = invertX ? uWidth : 0;
+        float width1 = invertX ? 0 : uWidth;
+        tessellator.addVertexWithUV(x, y + height, this.zLevel, (u + width0) * texModX, (v + height0) * texModY);
+        tessellator.addVertexWithUV(x + width, y + height, this.zLevel, (u + width1) * texModX, (v + height0) * texModY);
+        tessellator.addVertexWithUV(x + width, y, this.zLevel, (u + width1) * texModX, (v + height1) * texModY);
+        tessellator.addVertexWithUV(x, y, this.zLevel, (u + width0) * texModX, (v + height1) * texModY);
         tessellator.draw();
     }
 
