@@ -64,6 +64,7 @@ public class GuiCelestialSelection extends GuiScreen
     private int ticksSinceSelection = 0;
     private int ticksSinceUnselection = -1;
     private int ticksSinceMenuOpen = 0;
+    private int ticksTotal = 0;
     private Vector2f position = new Vector2f(0, 0);
     private Map<CelestialBody, Vector3f> planetPosMap = Maps.newHashMap();
     private Map<CelestialBody, Integer> celestialBodyTicks = Maps.newHashMap();
@@ -271,9 +272,9 @@ public class GuiCelestialSelection extends GuiScreen
 
     private float getZoomAdvanced()
     {
-    	if (this.ticksSinceMenuOpen < 30)
+    	if (this.ticksTotal < 30)
     	{
-    		float scale = Math.max(0.0F, Math.min(this.ticksSinceMenuOpen / 30.0F, 1.0F));
+    		float scale = Math.max(0.0F, Math.min(this.ticksTotal / 30.0F, 1.0F));
     		float lerp = this.lerp(-0.75F, 0.0F, (float)Math.pow(scale, 0.5F));
             return lerp;
     	}
@@ -345,7 +346,13 @@ public class GuiCelestialSelection extends GuiScreen
             
             return new Vector2f(this.position.x + translation.x, this.position.y + translation.y);
         }
-
+        
+        if (this.selectedBody instanceof Planet && this.lastSelectedBody instanceof IChildBody && ((IChildBody) this.lastSelectedBody).getParentPlanet() == this.selectedBody)
+        {
+            Vector3f posVec = this.getCelestialBodyPosition(this.selectedBody);
+            return new Vector2f(posVec.x, posVec.y);
+        }
+        
         Vector3f posVec = this.getCelestialBodyPosition(this.selectedBody);
         return this.lerpVec2(this.position, new Vector2f(posVec.x, posVec.y), Math.max(0.0F, Math.min((this.ticksSinceSelection + partialTicks - 18) / 7.5F, 1.0F)));
     }
@@ -451,6 +458,7 @@ public class GuiCelestialSelection extends GuiScreen
     public void updateScreen()
     {
         this.ticksSinceMenuOpen++;
+        this.ticksTotal++;
 
         for (CelestialBody e : this.celestialBodyTicks.keySet())
         {
@@ -1025,9 +1033,10 @@ public class GuiCelestialSelection extends GuiScreen
                 fb.flip();
                 GL11.glMultMatrix(fb);
                 fb.clear();
-                float scale = Math.max(0.3F, 1.5F / (this.ticksSinceSelection / 5.0F));
-                float scale0 = this.getZoomAdvanced() < 0 || this.getZoomAdvanced() > 1 ? scale + this.planetZoom / 75.0F - 0.45F : scale;//(0.6F / this.getZoomAdvanced()) : scale;
-                GL11.glScalef(scale0, scale0, 1);
+                float div = (this.zoom + 1.0F - this.planetZoom);
+                float scale = Math.max(0.3F, 1.5F / (this.ticksSinceSelection / 5.0F)) * 2.0F / div;
+                div = Math.max(div, 0.0001F);
+                GL11.glScalef(scale, scale, 1);
                 this.mc.renderEngine.bindTexture(GuiCelestialSelection.guiMain0);
                 float colMod = this.getZoomAdvanced() < 4.9F ? (float) (Math.sin(this.ticksSinceSelection / 1.0F) * 0.5F + 0.5F) : 1.0F;
                 GL11.glColor4f(0.4F, 0.8F, 1.0F, 1 * colMod);
@@ -2080,7 +2089,7 @@ public class GuiCelestialSelection extends GuiScreen
         Matrix4f.rotate((float) Math.toRadians(55), new Vector3f(1, 0, 0), mat0, mat0);
         Matrix4f.rotate((float) Math.toRadians(-45), new Vector3f(0, 0, 1), mat0, mat0);
         float zoomLocal = this.getZoomAdvanced();
-        this.zoom = this.getZoomAdvanced();
+        this.zoom = zoomLocal;
         Matrix4f.scale(new Vector3f(1.1f + zoomLocal, 1.1F + zoomLocal, 1.1F + zoomLocal), mat0, mat0);
         Vector2f cBodyPos = this.getTranslationAdvanced(partialTicks);
         this.position = this.getTranslationAdvanced(partialTicks);
