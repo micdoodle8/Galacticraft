@@ -166,6 +166,9 @@ public class ClientProxyCore extends CommonProxyCore
 
     private static float PLAYER_Y_OFFSET = 1.6200000047683716F;
     
+    private static final ResourceLocation saturnRingTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/saturnRings.png");    
+    private static final ResourceLocation uranusRingTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/uranusRings.png");
+    
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
@@ -1164,9 +1167,6 @@ public class ClientProxyCore extends CommonProxyCore
         x += (x % 16 - 8) * var7 + 8;
         z += (z % 16 - 8) * var7 + 8;
     }
-    
-    private static final ResourceLocation saturnRingTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/saturnRings.png");    
-    private static final ResourceLocation uranusRingTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/uranusRings.png");
 
 
     @SubscribeEvent

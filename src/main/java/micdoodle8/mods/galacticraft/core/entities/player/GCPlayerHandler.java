@@ -935,7 +935,7 @@ public class GCPlayerHandler
     {
     	int tick = player.ticksExisted - 1;
 
-        if (tick == 25)
+        if (tick >= 25)
         {
             if (!GCPlayerStats.get(player).openedSpaceRaceManager)
             {
