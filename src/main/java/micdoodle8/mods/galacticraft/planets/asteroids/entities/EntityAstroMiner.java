@@ -40,6 +40,9 @@ public class EntityAstroMiner extends Entity implements IInventory
     private float cLENGTH = 3.6F;
     private float cWIDTH = 1.8F;
     private float cHEIGHT = 1.7F;
+    private double SPEEDUP = 2.5D;
+    
+    private boolean TEMPDEBUG = false;
 
 	public ItemStack[] cargoItems;
 
@@ -58,7 +61,6 @@ public class EntityAstroMiner extends Entity implements IInventory
     public int facing;
     private int facingAI;
     private int lastFacing;
-    private boolean zFirst;
     private static BlockVec3[] headings = {
     	new BlockVec3(0, -1, 0),
     	new BlockVec3(0, 1, 0),
@@ -77,6 +79,7 @@ public class EntityAstroMiner extends Entity implements IInventory
     private final int baseSafeRadius = 32;
     private final double speed = 0.02D;
     private final float rotSpeed = 1.5F;
+    private boolean noSpeedup = false;  //This stops the miner getting stuck at turning points
     public float shipDamage;
     public int currentDamage;
     public int timeSinceHit;
@@ -449,6 +452,15 @@ public class EntityAstroMiner extends Entity implements IInventory
                 this.setPosition(this.posX, this.posY, this.posZ);
                 this.setRotation(this.rotationYaw, this.rotationPitch);
             }
+            this.posX += this.motionX;
+            this.boundingBox.minX += this.motionX;
+            this.boundingBox.maxX += this.motionX;
+            this.posY += this.motionY;
+            this.boundingBox.minY += this.motionY;
+            this.boundingBox.maxY += this.motionY;
+            this.posZ += this.motionZ;
+            this.boundingBox.minZ += this.motionZ;
+            this.boundingBox.maxZ += this.motionZ;
         	return;
         }
         
@@ -824,11 +836,11 @@ public class EntityAstroMiner extends Entity implements IInventory
 			else this.AIstate = 0;
 		}
 		
-		if (this.tryBlockLimit == limit)
+		if (this.tryBlockLimit == limit && !this.noSpeedup)
 		{
-			this.motionX *= 2.5F;
-			this.motionY *= 2.5F;
-			this.motionZ *= 2.5F;
+			this.motionX *= SPEEDUP;
+			this.motionY *= SPEEDUP;
+			this.motionZ *= SPEEDUP;
 		}
 		
 		return wayBarred;
@@ -935,21 +947,24 @@ public class EntityAstroMiner extends Entity implements IInventory
 	private boolean moveToPos(BlockVec3 pos, boolean reverse)
 	{
 		boolean stopForTurn = !this.checkRotation();
-		//System.out.println("Moving to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | "  + this.targetPitch + "," + this.targetYaw: ""));
+		this.noSpeedup = false;
 		
-		if (reverse != zFirst)
+		if (reverse != (this.baseFacing < 4))
 		{
 			if (this.posZ > pos.z + 0.0001D || this.posZ < pos.z - 0.0001D)
 			{
 				this.moveToPosZ(pos, stopForTurn);			
+				if (TEMPDEBUG) System.out.println("At " + posX + "," + posY + "," + posZ + "Moving Z to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | "  + this.targetPitch + "," + this.targetYaw: ""));
 			}
 			else if (this.posY > pos.y + 0.0001D || this.posY < pos.y - 0.0001D)
 			{
-				this.moveToPosY(pos, stopForTurn);			
+				this.moveToPosY(pos, stopForTurn);
+				if (TEMPDEBUG) System.out.println("At " + posX + "," + posY + "," + posZ + "Moving Y to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | "  + this.targetPitch + "," + this.targetYaw: ""));
 			}
 			else if (this.posX > pos.x + 0.0001D || this.posX < pos.x - 0.0001D)
 			{
 				this.moveToPosX(pos, stopForTurn);
+				if (TEMPDEBUG) System.out.println("At " + posX + "," + posY + "," + posZ + "Moving X to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | "  + this.targetPitch + "," + this.targetYaw: ""));
 			}
 			else return true;
 			//got there				
@@ -959,14 +974,17 @@ public class EntityAstroMiner extends Entity implements IInventory
 			if (this.posX > pos.x + 0.0001D || this.posX < pos.x - 0.0001D)
 			{
 				this.moveToPosX(pos, stopForTurn);
+				if (TEMPDEBUG) System.out.println("At " + posX + "," + posY + "," + posZ + "Moving X to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | "  + this.targetPitch + "," + this.targetYaw: ""));
 			}
 			else if (this.posY > pos.y + 0.0001D || this.posY < pos.y - 0.0001D)
 			{
 				this.moveToPosY(pos, stopForTurn);			
+				if (TEMPDEBUG) System.out.println("At " + posX + "," + posY + "," + posZ + "Moving Y to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | "  + this.targetPitch + "," + this.targetYaw: ""));
 			}
 			else if (this.posZ > pos.z + 0.0001D || this.posZ < pos.z - 0.0001D)
 			{
 				this.moveToPosZ(pos, stopForTurn);			
+				if (TEMPDEBUG) System.out.println("At " + posX + "," + posY + "," + posZ + "Moving Z to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | "  + this.targetPitch + "," + this.targetYaw: ""));
 			}
 			else return true;
 			//got there
@@ -985,8 +1003,11 @@ public class EntityAstroMiner extends Entity implements IInventory
 	        	this.targetYaw = 270;
         	this.motionX = -this.speed;
         	//TODO some acceleration and deceleration
-        	if (this.motionX < pos.x - this.posX)
+        	if (this.motionX * SPEEDUP <= pos.x - this.posX)
+        	{
         		this.motionX = pos.x - this.posX;
+        		this.noSpeedup = true;
+        	}
 			this.facingAI = 4;
 		}
 		else
@@ -994,8 +1015,11 @@ public class EntityAstroMiner extends Entity implements IInventory
 	        if (this.AIstate != 5)
 	        	this.targetYaw = 90;
 			this.motionX = this.speed;
-        	if (this.motionX > pos.x - this.posX)
+        	if (this.motionX * SPEEDUP >= pos.x - this.posX)
+        	{
         		this.motionX = pos.x - this.posX;
+	    		this.noSpeedup = true;
+	    	}
 			this.facingAI = 5;
 		}
 
@@ -1012,16 +1036,22 @@ public class EntityAstroMiner extends Entity implements IInventory
 		{
         	this.targetPitch = -90;
 			this.motionY = -this.speed;
-        	if (this.motionY < pos.y - this.posY)
+        	if (this.motionY * SPEEDUP <= pos.y - this.posY)
+        	{
         		this.motionY = pos.y - this.posY;
+        		this.noSpeedup = true;
+        	}
 			this.facingAI = 0;
 		}
 		else
 		{
         	this.targetPitch = 90;
 			this.motionY = this.speed;
-        	if (this.motionY > pos.y - this.posY)
+        	if (this.motionY * SPEEDUP >= pos.y - this.posY)
+        	{
         		this.motionY = pos.y - this.posY;
+        		this.noSpeedup = true;
+        	}
 			this.facingAI = 1;
 		}
 
@@ -1044,8 +1074,11 @@ public class EntityAstroMiner extends Entity implements IInventory
 	        	this.targetYaw = 180;
         	this.motionZ = -this.speed;
         	//TODO some acceleration and deceleration
-        	if (this.motionZ < pos.z - this.posZ)
+        	if (this.motionZ * SPEEDUP <= pos.z - this.posZ)
+        	{
         		this.motionZ = pos.z - this.posZ;
+        		this.noSpeedup = true;
+        	}
 			this.facingAI = 2;
 		}
 		else
@@ -1053,8 +1086,11 @@ public class EntityAstroMiner extends Entity implements IInventory
 	        if (this.AIstate != 5)
 	        	this.targetYaw = 0;
 			this.motionZ = this.speed;
-        	if (this.motionZ > pos.z - this.posZ)
+        	if (this.motionZ * SPEEDUP >= pos.z - this.posZ)
+        	{
         		this.motionZ = pos.z - this.posZ;
+        		this.noSpeedup = true;
+        	}
 			this.facingAI = 3;
 		}
 
@@ -1152,11 +1188,9 @@ public class EntityAstroMiner extends Entity implements IInventory
         {
         case 2: 
             miner.targetYaw = 180;
-            miner.zFirst = true;
             break;
         case 3: 
             miner.targetYaw = 0;
-            miner.zFirst = true;
             break;
         case 4: 
             miner.targetYaw = 270;
