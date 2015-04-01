@@ -48,8 +48,6 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
     @Override
 	public IEntityLivingData onSpawnWithEgg(IEntityLivingData livingData)
 	{
-		livingData = super.onSpawnWithEgg(livingData);
-
 		if (this.worldObj.rand.nextInt(100) == 0)
 		{
 			EntityEvolvedSkeleton skeleton = new EntityEvolvedSkeleton(this.worldObj);
