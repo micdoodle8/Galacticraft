@@ -34,7 +34,7 @@ public class TileEntityMinerBaseRenderer extends TileEntitySpecialRenderer
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         GL11.glTranslatef((float) d + 1F, (float) d1 + 1F, (float) d2 + 1F);
-        GL11.glScalef(0.1F, 0.1F, 0.1F);
+        GL11.glScalef(0.05F, 0.05F, 0.05F);
 
         switch (tileEntity.facing)
         {
@@ -50,8 +50,6 @@ public class TileEntityMinerBaseRenderer extends TileEntitySpecialRenderer
             GL11.glRotatef(90F, 0, 1F, 0);
             break;
         }
-        GL11.glRotatef(90, -1, 0, 0);
-        GL11.glTranslatef(0F, -10F, 0F);
 
         TileEntityMinerBaseRenderer.telepadModel.renderAll();
 

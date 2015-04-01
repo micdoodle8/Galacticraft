@@ -138,7 +138,7 @@ public class RenderAstroMiner extends Render
 //            GL11.glTranslatef(0.65F, 0.65F, 0);
 //        }
         GL11.glRotatef(rotYaw + 180F, 0, 1, 0);
-        GL11.glTranslatef(0F, -0.65F, 0F);
+        GL11.glTranslatef(0F, -0.35F, 0.25F);
         GL11.glScalef(0.06F, 0.06F, 0.06F);
         GL11.glTranslatef(wx, wy, wz);
 
@@ -179,7 +179,9 @@ public class RenderAstroMiner extends Render
         tess.draw();   	
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glDepthMask(true);
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
