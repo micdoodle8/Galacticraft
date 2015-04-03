@@ -95,7 +95,7 @@ public class ItemRendererAstroMiner implements IItemRenderer
             }
 
             GL11.glScalef(1.3F, 1.3F, 1.3F);
-            GL11.glTranslatef(0, -0.6F, 0);
+            GL11.glTranslatef(0, -0.6F, 0.25F);
         }
 
         GL11.glRotatef(180, 0, 0, 1);
