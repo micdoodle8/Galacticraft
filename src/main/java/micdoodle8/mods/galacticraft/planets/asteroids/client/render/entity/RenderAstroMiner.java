@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
@@ -27,6 +28,8 @@ public class RenderAstroMiner extends Render
     private float lastPartTime;
 
     private ResourceLocation modelTexture;
+    private ResourceLocation modelTextureFX;
+    private ResourceLocation modelTextureOff;
     protected IModelCustom modelObj;
 
     private final NoiseModule wobbleX;
@@ -40,6 +43,8 @@ public class RenderAstroMiner extends Render
     {
     	this.modelObj = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMiner.obj"));
         this.modelTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/astroMiner.png");
+        this.modelTextureFX = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/astroMinerFX.png");
+        this.modelTextureOff = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/astroMiner_off.png");
         this.scanTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/misc/gradient.png");
         this.shadowSize = 2F;
         
@@ -74,6 +79,7 @@ public class RenderAstroMiner extends Render
     {
         EntityAstroMiner astroMiner = (EntityAstroMiner) entity;
         float time = astroMiner.ticksExisted + partialTickTime;
+        float sinOfTheTime = (MathHelper.sin(time / 4) + 1F)/4F + 0.5F;
         float wx = this.wobbleX.getNoise(time) + this.wobbleXX.getNoise(time);        
         float wy = this.wobbleY.getNoise(time) + this.wobbleYY.getNoise(time);
         float wz = this.wobbleZ.getNoise(time) + this.wobbleZZ.getNoise(time);
@@ -123,12 +129,6 @@ public class RenderAstroMiner extends Render
         default:
         	partBlock = 0F;
         }
-        if (rotPitch != 0F)
-        {
-            GL11.glTranslatef(-0.65F, -0.65F, 0);
-        	GL11.glRotatef(rotPitch, 0, 0, -1);
-            GL11.glTranslatef(0.65F, 0.65F, 0);
-        }
         partBlock /= 0.06F;
         
 //        else if (rotPitch > 0F)
@@ -138,53 +138,75 @@ public class RenderAstroMiner extends Render
 //            GL11.glTranslatef(0.65F, 0.65F, 0);
 //        }
         GL11.glRotatef(rotYaw + 180F, 0, 1, 0);
+        if (rotPitch != 0F)
+        {
+            GL11.glTranslatef(-0.65F, -0.65F, 0);
+        	GL11.glRotatef(rotPitch / 5F, 1, 0, 0);
+            GL11.glTranslatef(0.65F, 0.65F, 0);
+        }
         GL11.glTranslatef(0F, -0.35F, 0.25F);
-        GL11.glScalef(0.06F, 0.06F, 0.06F);
+        GL11.glScalef(0.05F, 0.05F, 0.05F);
         GL11.glTranslatef(wx, wy, wz);
 
-        this.bindEntityTexture(astroMiner);
-//        this.blockRenderer.renderBlockAsItem(Blocks.coal_block, 0, 1.0F);
-//        GL11.glTranslatef(-0.6F, 0F, 0F);
-//        spin += 2F * partTime;
-//        if (spin >= 360F) spin-=360F;
-//        GL11.glRotatef(spin, 1, 0, 0);
-//        GL11.glScalef(0.5F, 1F, 1F);
-//        this.blockRenderer.renderBlockAsItem(Blocks.diamond_block, 0, 1.0F);
-        this.modelObj.renderAllExcept("Hoverpad008", "Hoverpad010", "Hoverpad011", "Hoverpad012", "Hoverpad013", "Hoverpad014", "Hoverpad015", "Hoverpad016");
-        float lightMapSaveX = OpenGlHelper.lastBrightnessX;
-        float lightMapSaveY = OpenGlHelper.lastBrightnessY;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        this.modelObj.renderOnly("Hoverpad008", "Hoverpad010", "Hoverpad011", "Hoverpad012", "Hoverpad013", "Hoverpad014", "Hoverpad015", "Hoverpad016");
-        
-        GL11.glDisable(GL11.GL_CULL_FACE);
-        GL11.glDisable(GL11.GL_ALPHA_TEST);
-        GL11.glDepthMask(false);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-        GL11.glEnable(GL11.GL_BLEND);
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.scanTexture);
-        final Tessellator tess = Tessellator.instance;
-        GL11.glColor4f(0, 0.6F, 1.0F, 0.2F);
-        tess.startDrawingQuads(); 
-        tess.addVertexWithUV(17F, 1F, -18F, 0D, 0D);
-        tess.addVertexWithUV(34F, 29F, -33F - partBlock, 1D, 0D);
-        tess.addVertexWithUV(34F, -27F, -33F - partBlock, 1D, 1D);
-        tess.addVertexWithUV(17F, 0.9F, -18F, 0D, 1D);
-        tess.draw();   	
-        tess.startDrawingQuads(); 
-        tess.addVertexWithUV(-17F, 1F, -18F, 0D, 0D);
-        tess.addVertexWithUV(-34F, 29F, -33F - partBlock, 1D, 0D);
-        tess.addVertexWithUV(-34F, -27F, -33F - partBlock, 1D, 1D);
-        tess.addVertexWithUV(-17F, 0.9F, -18F, 0D, 1D);
-        tess.draw();   	
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glDepthMask(true);
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
+        boolean active = ((EntityAstroMiner)entity).AIstate > EntityAstroMiner.AISTATE_ATBASE;
+
+        if (active)
+        {
+            FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.modelTexture);
+	        this.modelObj.renderAllExcept("Hoverpad_Front_Left_Top", "Hoverpad_Front_Right_Top", "Hoverpad_Front_Left_Bottom", "Hoverpad_Front_Right_Bottom", "Hoverpad_Rear_Right", "Hoverpad_Rear_Left", "Hoverpad_Heavy_Right", "Hoverpad_Heavy_Left", "Hoverpad_Heavy_Rear", "Hoverpad_Front_Left_Top_Glow", "Hoverpad_Front_Right_Top_Glow", "Hoverpad_Front_Left_Bottom_Glow", "Hoverpad_Front_Right_Bottom_Glow", "Hoverpad_Rear_Right_Glow", "Hoverpad_Rear_Left_Glow", "Hoverpad_Heavy___Glow002", "Hoverpad_Heavy___Glow001", "Hoverpad_Heavy___Glow003");
+	
+	        float lightMapSaveX = OpenGlHelper.lastBrightnessX;
+	        float lightMapSaveY = OpenGlHelper.lastBrightnessY;
+	        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
+	        GL11.glDisable(GL11.GL_LIGHTING);
+	        GL11.glColor4f(sinOfTheTime, sinOfTheTime, sinOfTheTime, 1.0F);
+	        this.modelObj.renderOnly("Hoverpad_Front_Left_Top", "Hoverpad_Front_Right_Top", "Hoverpad_Front_Left_Bottom", "Hoverpad_Front_Right_Bottom", "Hoverpad_Rear_Right", "Hoverpad_Rear_Left", "Hoverpad_Heavy_Right", "Hoverpad_Heavy_Left", "Hoverpad_Heavy_Rear");
+	
+	        FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.modelTextureFX);
+	        GL11.glDisable(GL11.GL_CULL_FACE);
+	        GL11.glDisable(GL11.GL_ALPHA_TEST);
+	        GL11.glDepthMask(false);
+	        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+	        GL11.glEnable(GL11.GL_BLEND);
+	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+	        GL11.glColor4f(sinOfTheTime, sinOfTheTime, sinOfTheTime, 0.6F);
+	        this.modelObj.renderOnly("Hoverpad_Front_Left_Top_Glow", "Hoverpad_Front_Right_Top_Glow", "Hoverpad_Front_Left_Bottom_Glow", "Hoverpad_Front_Right_Bottom_Glow", "Hoverpad_Rear_Right_Glow", "Hoverpad_Rear_Left_Glow", "Hoverpad_Heavy___Glow002", "Hoverpad_Heavy___Glow001", "Hoverpad_Heavy___Glow003");
+
+	        if (((EntityAstroMiner)entity).AIstate < EntityAstroMiner.AISTATE_DOCKING);
+	        {
+		        FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.scanTexture);
+		        final Tessellator tess = Tessellator.instance;
+		        GL11.glColor4f(0, 0.6F, 1.0F, 0.2F);
+		        tess.startDrawingQuads(); 
+		        tess.addVertexWithUV(14.8F, -0.6F, -20F, 0D, 0D);
+		        tess.addVertexWithUV(37.8F, 31.4F, -45F - partBlock, 1D, 0D);
+		        tess.addVertexWithUV(37.8F, -32.6F, -45F - partBlock, 1D, 1D);
+		        tess.addVertexWithUV(14.8F, -0.7F, -20F, 0D, 1D);
+		        tess.draw();   	
+		        tess.startDrawingQuads(); 
+		        tess.addVertexWithUV(-14.8F, -0.6F, -20F, 0D, 0D);
+		        tess.addVertexWithUV(-37.8F, 31.4F, -45F - partBlock, 1D, 0D);
+		        tess.addVertexWithUV(-37.8F, -32.6F, -45F - partBlock, 1D, 1D);
+		        tess.addVertexWithUV(-14.8F, -0.7F, -20F, 0D, 1D);
+		        tess.draw();
+	        }
+	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+	        GL11.glDisable(GL11.GL_BLEND);
+	        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+	        GL11.glEnable(GL11.GL_CULL_FACE);
+	        GL11.glEnable(GL11.GL_ALPHA_TEST);
+	        GL11.glEnable(GL11.GL_LIGHTING);
+	        GL11.glDepthMask(true);
+	        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
+        }
+        else
+        {
+            this.bindEntityTexture(astroMiner);
+            this.modelObj.renderAllExcept("Hoverpad_Front_Left_Top_Glow", "Hoverpad_Front_Right_Top_Glow", "Hoverpad_Front_Left_Bottom_Glow", "Hoverpad_Front_Right_Bottom_Glow", "Hoverpad_Rear_Right_Glow", "Hoverpad_Rear_Left_Glow", "Hoverpad_Heavy___Glow002", "Hoverpad_Heavy___Glow001", "Hoverpad_Heavy___Glow003");
+        }
         
         GL11.glPopMatrix();
     }
@@ -192,6 +214,6 @@ public class RenderAstroMiner extends Render
     @Override
     protected ResourceLocation getEntityTexture(Entity entity)
     {
-        return this.modelTexture;
+        return this.modelTextureOff;
     }
 }

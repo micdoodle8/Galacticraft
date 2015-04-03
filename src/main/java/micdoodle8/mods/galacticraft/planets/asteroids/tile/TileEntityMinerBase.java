@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
 import java.lang.ref.WeakReference;
+import java.util.UUID;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -12,6 +13,7 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockMinerBase;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids.EnumSimplePacketAsteroids;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,7 +44,8 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 
     private boolean spawnedMiner = false;
 
-	public EntityAstroMiner linkedMiner;
+	public EntityAstroMiner linkedMiner = null;
+	public UUID linkedMinerID = null;
 
     public TileEntityMinerBase()
     {
@@ -58,16 +61,10 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         	this.updateClient();
         	this.updateClientFlag = false;
         }
+        
+        //TODO: Find linkedminer by UUID and chunkload it?
 
-    	if (this.isMaster)
-    	{
-    		if (!this.spawnedMiner && this.linkedMiner == null && this.hasEnoughEnergyToRun)
-	    	{
-	    		this.spawnedMiner = true;
-	        	if (ConfigManagerCore.enableDebug) EntityAstroMiner.spawnMinerAtBase(this.worldObj, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1, (this.facing + 2) ^ 1, new BlockVec3(this));
-	    	}    	
-    	}
-    	else
+    	if (!this.isMaster)
     	{
             TileEntityMinerBase master = this.getMaster();
 
@@ -81,6 +78,29 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     	}
     }
 
+    public void spawnMiner()
+    {
+		if (this.isMaster)
+		{
+			if (this.linkedMiner != null)
+			{
+				if (this.linkedMiner.isDead)
+					this.unlinkMiner();
+					
+			}
+			if (this.linkedMiner == null)
+	    	{
+	        	EntityAstroMiner.spawnMinerAtBase(this.worldObj, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1, (this.facing + 2) ^ 1, new BlockVec3(this));
+	    	}
+			return;
+		}
+        TileEntityMinerBase master = this.getMaster();
+        if (master != null)
+        {
+        	master.spawnMiner();
+        }		
+    }
+    
     private TileEntityMinerBase getMaster()
     {
         if (this.mainBlockPosition == null)
@@ -134,6 +154,11 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         }
         this.facing = nbt.getInteger("facing");
         this.updateClientFlag = true;
+        if (nbt.hasKey("LinkedUUIDMost", 4) && nbt.hasKey("LinkedUUIDLeast", 4))
+        {
+            this.linkedMinerID = new UUID(nbt.getLong("LinkedUUIDMost"), nbt.getLong("LinkedUUIDLeast"));
+        }
+        else this.linkedMinerID = null;
     }
 
     @Override
@@ -149,6 +174,11 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         	nbt.setTag("masterpos", masterTag);
         }
         nbt.setInteger("facing", this.facing);
+        if (this.isMaster && this.linkedMinerID != null)
+        {
+	        nbt.setLong("LinkedUUIDMost", this.linkedMinerID.getMostSignificantBits());
+	        nbt.setLong("LinkedUUIDLeast", this.linkedMinerID.getLeastSignificantBits());
+        }
     }
         
     /**
@@ -290,6 +320,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             }
         }
 
+		this.markDirty();
         return flag1;
 	}
 
@@ -354,11 +385,6 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 		return false;
 	}
 
-	public void linkMiner(EntityAstroMiner entityAstroMiner)
-	{
-		this.linkedMiner = entityAstroMiner;
-	}
-
 	public void setMainBlockPos(int x, int y, int z)
 	{
 		this.masterTile = null;
@@ -393,6 +419,10 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 	{
         if (this.isMaster)
         {
+        	ItemStack holding = entityPlayer.getCurrentEquippedItem(); 
+        	if (holding != null && holding.getItem() == AsteroidsItems.astroMiner)
+        		return false;
+        	
         	//TODO = open GUI
         	return true;
         }
@@ -406,8 +436,6 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 	@Override
 	public void onCreate(BlockVec3 placedPosition)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -438,7 +466,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 
     public void updateFacing()
     {
-    	if (this.isMaster && this.linkedMiner == null)
+    	if (this.isMaster && this.linkedMinerID == null)
     	{
     		// Re-orient the block
 	        switch (this.facing)
@@ -496,5 +524,31 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         	return ForgeDirection.getOrientation(master.facing + 2);
         }
         return ForgeDirection.UNKNOWN;
+    }
+    
+	public void linkMiner(EntityAstroMiner entityAstroMiner)
+	{
+		this.linkedMiner = entityAstroMiner;
+        this.linkedMinerID = this.linkedMiner.getUniqueID();
+	}
+
+	public void unlinkMiner()
+	{
+		this.linkedMiner = null;
+		this.linkedMinerID = null;
+	}
+
+   public UUID getLinkedMiner()
+    {
+        if (this.isMaster)
+        {
+        	return this.linkedMinerID;
+        }
+        TileEntityMinerBase master = this.getMaster();
+        if (master != null)
+        {
+        	return master.linkedMinerID;
+        }
+        return null;
     }
 }

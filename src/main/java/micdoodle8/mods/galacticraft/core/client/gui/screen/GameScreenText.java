@@ -144,19 +144,22 @@ public class GameScreenText implements IGameScreen
         		switch (telemeter.clientData[4])
         		{
         			case 0:
-        				str1 = "Stuck - out of energy";
+        				str1 = "Out of energy!";
         				break;
         			case 1:
-        				str1 = "Travelling to mine";
+        				str1 = "Charging";
         				break;
         			case 2:
-        				str1 = "Mining";
+        				str1 = "Travelling";
         				break;
         			case 3:
-        				str1 = "Returning to base";
+        				str1 = "Mining";
         				break;
         			case 4:
-        				str1 = "At base - charging";
+        				str1 = "Returning";
+        				break;
+        			case 5:
+        				str1 = "Docking";
         				break;
         		}
         		str2 = "dy: " + telemeter.clientData[1];
