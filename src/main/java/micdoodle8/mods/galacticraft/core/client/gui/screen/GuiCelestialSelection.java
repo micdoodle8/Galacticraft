@@ -2061,8 +2061,8 @@ public class GuiCelestialSelection extends GuiScreen
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
-        float texModX = 1 / (float) texSizeX;
-        float texModY = 1 / (float) texSizeY;
+        float texModX = 1F / texSizeX;
+        float texModY = 1F / texSizeY;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
         float height0 = invertY ? 0 : vHeight;
