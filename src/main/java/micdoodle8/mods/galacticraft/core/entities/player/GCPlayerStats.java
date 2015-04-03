@@ -191,6 +191,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
         nbt.setInteger("CryogenicChamberCooldown", this.cryogenicChamberCooldown);
         nbt.setBoolean("ReceivedSoundWarning", this.receivedSoundWarning);
         nbt.setInteger("BuildFlags", this.buildFlags);
+        nbt.setBoolean("ShownSpaceRace", this.openedSpaceRaceManager);
         if (ConfigManagerCore.enableDebug) GCLog.info("Saving GC player data for " + player.get().getGameProfile().getName()  + " : " + this.buildFlags);
     }
 
@@ -308,6 +309,9 @@ public class GCPlayerStats implements IExtendedEntityProperties
 
         if (nbt.hasKey("BuildFlags"))
         	this.buildFlags = nbt.getInteger("BuildFlags");
+
+        if (nbt.hasKey("ShownSpaceRace"))
+        	this.openedSpaceRaceManager = nbt.getBoolean("ShownSpaceRace");
 
         if (ConfigManagerCore.enableDebug) GCLog.info("Loading GC player data for " + player.get().getGameProfile().getName() + " : " + this.buildFlags);
     }
