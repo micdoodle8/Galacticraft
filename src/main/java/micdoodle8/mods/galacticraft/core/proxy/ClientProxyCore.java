@@ -422,7 +422,7 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static void registerInventoryTabs()
     {
-        if (!Loader.isModLoaded("TConstruct") || TabRegistry.getTabList().size() < 3)
+        if (!Loader.isModLoaded("TConstruct") && TabRegistry.getTabList().size() < 1)
         {
             TabRegistry.registerTab(new InventoryTabVanilla());
         }
