@@ -1249,7 +1249,7 @@ public class GuiCelestialSelection extends GuiScreen
 
             for (Moon moon : GalaxyRegistry.getRegisteredMoons().values())
             {
-                if ((moon == this.selectedBody || (moon.getParentPlanet() == this.selectedBody && this.selectionCount != 1)) && (this.ticksSinceSelection > 35 || this.selectedBody == moon || (this.lastSelectedBody instanceof Moon && GalaxyRegistry.getMoonsForPlanet(((Moon) this.lastSelectedBody).getParentPlanet()).contains(moon))))
+                if ((moon == this.selectedBody || (moon.getParentPlanet() == this.selectedBody && this.selectionCount != 1)) && (this.ticksSinceSelection > 35 || this.selectedBody == moon || (this.lastSelectedBody instanceof Moon && GalaxyRegistry.getMoonsForPlanet(((Moon) this.lastSelectedBody).getParentPlanet()).contains(moon))) || getSiblings(this.selectedBody).contains(moon))
                 {
                     GL11.glPushMatrix();
                     Matrix4f worldMatrix1 = new Matrix4f(worldMatrix0);
@@ -2230,7 +2230,7 @@ public class GuiCelestialSelection extends GuiScreen
 
             for (Moon moon : GalaxyRegistry.getRegisteredMoons().values())
             {
-                if ((moon.getParentPlanet() == this.selectedBody && this.selectionCount != 1) && this.ticksSinceSelection > 24 || moon == this.selectedBody || this.lastSelectedBody instanceof IChildBody)
+                if ((moon.getParentPlanet() == this.selectedBody && this.selectionCount != 1) || moon == this.selectedBody || getSiblings(this.selectedBody).contains(moon))
                 {
                     float x = this.getScale(moon);
                     float y = 0;
