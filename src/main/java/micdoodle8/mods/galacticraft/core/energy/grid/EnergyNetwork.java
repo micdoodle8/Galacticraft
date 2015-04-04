@@ -20,6 +20,7 @@ import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalConductor;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -385,9 +386,12 @@ public class EnergyNetwork implements IElectricityNetwork
             float sentToAcceptor;
             int tierProduced = Math.min(this.producersTierGC, this.networkTierGC);
 
+            ArrayList<TileEntity> debugList = new ArrayList<TileEntity>();
+            try {
             for (TileEntity tileEntity : this.availableAcceptors)
             {
-                //Exit the loop if there is no energy left at all (should normally not happen, should be some even for the last acceptor)
+            	debugList.add(tileEntity);
+            	//Exit the loop if there is no energy left at all (should normally not happen, should be some even for the last acceptor)
                 if (sent >= energyAvailable)
                 {
                     break;
@@ -503,6 +507,15 @@ public class EnergyNetwork implements IElectricityNetwork
                 }
 
                 sent += sentToAcceptor;
+            }
+            } catch (Exception e) {
+            	GCLog.severe("DEBUG Energy network crash prevented");
+            	TileEntity te = debugList.get(debugList.size() - 1);
+            	GCLog.severe("DEBUG Problem was after "+ te.xCoord + "," + te.yCoord + "," + te.zCoord);
+            	Iterator<TileEntity> debugIt = availableAcceptors.iterator();
+            	for (int j = 0; j < debugList.size(); j++) debugIt.next();
+            	if (debugIt.hasNext()) te = debugIt.next();
+            	GCLog.severe("DEBUG and before "+ te.xCoord + "," + te.yCoord + "," + te.zCoord);
             }
         }
 
