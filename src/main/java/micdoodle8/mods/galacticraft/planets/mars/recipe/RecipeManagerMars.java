@@ -26,7 +26,7 @@ public class RecipeManagerMars
     private static void addUniversalRecipes()
     {
         OreDictionary.registerOre("ingotDesh", new ItemStack(MarsItems.marsItemBasic, 1, 2));
-        OreDictionary.registerOre("plateDesh", new ItemStack(MarsItems.marsItemBasic, 1, 5));
+        OreDictionary.registerOre("compressedDesh", new ItemStack(MarsItems.marsItemBasic, 1, 5));
 
         RecipeUtil.addRecipe(new ItemStack(MarsItems.deshBoots), new Object[] { "X X", "X X", 'X', new ItemStack(MarsItems.marsItemBasic, 1, 2) });
 
