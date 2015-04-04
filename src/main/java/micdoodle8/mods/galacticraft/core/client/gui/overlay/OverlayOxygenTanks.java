@@ -140,8 +140,8 @@ public class OverlayOxygenTanks extends Overlay
             tessellator2.startDrawingQuads();
             tessellator.addVertexWithUV(minLeftX, topY + 1 + oxygenInTank1 / 2, zLevel, 66 * 0.00390625F, oxygenInTank1 / 2 * 0.00390625F);
             tessellator.addVertexWithUV(maxLeftX - 1, topY + 1 + oxygenInTank1 / 2, zLevel, (66 + 17) * 0.00390625F, oxygenInTank1 / 2 * 0.00390625F);
-            tessellator.addVertexWithUV(maxLeftX - 1, topY + 1 + oxygenInTank1 / 2 - 1, zLevel, (66 + 17) * 0.00390625F, (oxygenInTank1 / 2 - 1) * 0.00390625F);
-            tessellator.addVertexWithUV(minLeftX, topY + 1 + oxygenInTank1 / 2 - 1, zLevel, 66 * 0.00390625F, (oxygenInTank1 / 2 - 1) * 0.00390625F);
+            tessellator.addVertexWithUV(maxLeftX - 1, topY + 1 + oxygenInTank1 / 2 - 1, zLevel, (66 + 17) * 0.00390625F, 1 * 0.00390625F);
+            tessellator.addVertexWithUV(minLeftX, topY + 1 + oxygenInTank1 / 2 - 1, zLevel, 66 * 0.00390625F, 1 * 0.00390625F);
             tessellator2.draw();
         }
 
