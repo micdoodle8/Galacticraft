@@ -31,9 +31,9 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
         super(Material.cloth);
         this.setStepSound(Block.soundTypeCloth);
         this.setResistance(0.2F);
-        this.setBlockBounds(0.4F, 0.4F, 0.4F, 0.6F, 0.6F, 0.6F);
-        this.minVector = new Vector3(0.4, 0.4, 0.4);
-        this.maxVector = new Vector3(0.6, 0.6, 0.6);
+        this.setBlockBounds(0.35F, 0.35F, 0.35F, 0.65F, 0.65F, 0.65F);
+        this.minVector = new Vector3(0.35, 0.35, 0.35);
+        this.maxVector = new Vector3(0.65, 0.65, 0.65);
         this.setHardness(0.075F);
         this.setBlockName(assetName);
     }
