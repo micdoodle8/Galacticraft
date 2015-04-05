@@ -442,22 +442,7 @@ public class GCPlayerHandler
                 {
                     if (thermalPaddingHelm != null && thermalPaddingChestplate != null && thermalPaddingLeggings != null && thermalPaddingBoots != null)
                     {
-                        int last = playerStats.thermalLevel;
-
-                        if (playerStats.thermalLevel < 0)
-                        {
-                            playerStats.thermalLevel += 1;
-                        }
-                        else if (playerStats.thermalLevel > 0)
-                        {
-                            playerStats.thermalLevel -= 1;
-                        }
-
-                        if (playerStats.thermalLevel != last)
-                        {
-                            this.sendThermalLevelPacket(player, playerStats);
-                        }
-
+                    	this.normaliseThermalLevel(player, playerStats, 1);
                         // Player is wearing all required thermal padding items
                         return;
                     }
@@ -510,10 +495,39 @@ public class GCPlayerHandler
 
                 }
             }
+            else
+            //Normalise thermal level if on Space Station or non-modifier planet
+            {
+            	this.normaliseThermalLevel(player, playerStats, 2);
+            }
         }
+        else
+        //Normalise thermal level if on Overworld or any non-GC dimension
+        {
+        	this.normaliseThermalLevel(player, playerStats, 3);
+        }        	
     }
 
-    protected void checkOxygen(EntityPlayerMP player, GCPlayerStats playerStats)
+    public void normaliseThermalLevel(EntityPlayerMP player, GCPlayerStats playerStats, int increment)
+    {
+        int last = playerStats.thermalLevel;
+
+        if (playerStats.thermalLevel < 0)
+        {
+            playerStats.thermalLevel += Math.min(increment, -playerStats.thermalLevel);
+        }
+        else if (playerStats.thermalLevel > 0)
+        {
+            playerStats.thermalLevel -= Math.min(increment, playerStats.thermalLevel);
+        }
+
+        if (playerStats.thermalLevel != last)
+        {
+            this.sendThermalLevelPacket(player, playerStats);
+        }		
+	}
+
+	protected void checkOxygen(EntityPlayerMP player, GCPlayerStats playerStats)
     {
         final ItemStack tankInSlot = playerStats.extendedInventory.getStackInSlot(2);
         final ItemStack tankInSlot2 = playerStats.extendedInventory.getStackInSlot(3);
