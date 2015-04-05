@@ -1156,7 +1156,22 @@ public class WorldUtil
 	        } catch (Exception e) { }
 	        
 	        try {
-	        	Class ae2meteorPlace = Class.forName("appeng.hooks.MeteoriteWorldGen");
+	        	Class ae2meteorPlace = null;
+	        	try
+	        	{
+	        		ae2meteorPlace = Class.forName("appeng.hooks.MeteoriteWorldGen");
+	        	}
+	        	catch (ClassNotFoundException e) { }
+	        	
+	        	if (ae2meteorPlace == null)
+	        	{
+		        	try
+		        	{
+		        		ae2meteorPlace = Class.forName("appeng.worldgen.MeteoriteWorldGen");
+		        	}
+		        	catch (ClassNotFoundException e) {}
+	        	}
+	        	
 	        	if (ae2meteorPlace != null)
 	        	{
 		        	final Field regField = Class.forName("cpw.mods.fml.common.registry.GameRegistry").getDeclaredField("worldGenerators");
