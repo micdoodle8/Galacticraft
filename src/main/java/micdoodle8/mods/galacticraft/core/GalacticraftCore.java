@@ -400,6 +400,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(TileEntityCargoUnloader.class, "Cargo Unloader");
         GameRegistry.registerTileEntity(TileEntityParaChest.class, "Parachest Tile");
         GameRegistry.registerTileEntity(TileEntitySolar.class, "Galacticraft Solar Panel");
+        GameRegistry.registerTileEntity(TileEntityDish.class, "Radio Telescope");
         GameRegistry.registerTileEntity(TileEntityEnergyStorageModule.class, "Energy Storage Module");
         GameRegistry.registerTileEntity(TileEntityCoalGenerator.class, "Galacticraft Coal Generator");
         GameRegistry.registerTileEntity(TileEntityElectricFurnace.class, "Galacticraft Electric Furnace");
