@@ -37,17 +37,17 @@ public class TileEntityAluminumWireRenderer extends TileEntitySpecialRenderer
 
         TileEntity[] adjecentConnections = EnergyUtil.getAdjacentPowerConnections(tileEntity);
 
-        boolean isHeavy = (tileEntity.tier == 2);
+        int metadata = tileEntity.getWorldObj().getBlockMetadata(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
 
         IModelCustom model = null;
 
-        if (isHeavy)
+        if (metadata == 0)
         {
-            model = this.model2;
+            model = this.model;
         }
         else
         {
-            model = this.model;
+            model = this.model2;
         }
 
         if (adjecentConnections[0] != null)

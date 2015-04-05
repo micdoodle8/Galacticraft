@@ -8,43 +8,32 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-import java.util.Random;
+import java.util.List;
 
 public class BlockAluminumWire extends BlockTransmitter implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {
     public static final String[] names = { "aluminumWire", "aluminumWireHeavy" };
     private static IIcon[] blockIcons;
-    private boolean isHeavy = false;
 
-    public BlockAluminumWire(String assetName, boolean heavy)
+    public BlockAluminumWire(String assetName)
     {
         super(Material.cloth);
         this.setStepSound(Block.soundTypeCloth);
         this.setResistance(0.2F);
-        this.isHeavy = heavy;
-        if (heavy)
-        {
-	        this.setBlockBounds(0.3375F, 0.3375F, 0.3375F, 0.6625F, 0.6625F, 0.6625F);
-	        this.minVector = new Vector3(0.3375, 0.3375, 0.3375);
-	        this.maxVector = new Vector3(0.6625, 0.6625, 0.6625);
-        }
-        else
-        {
-	        this.setBlockBounds(0.4F, 0.4F, 0.4F, 0.6F, 0.6F, 0.6F);
-	        this.minVector = new Vector3(0.4, 0.4, 0.4);
-	        this.maxVector = new Vector3(0.6, 0.6, 0.6);
-        }       	
+        this.setBlockBounds(0.35F, 0.35F, 0.35F, 0.65F, 0.65F, 0.65F);
+        this.minVector = new Vector3(0.35, 0.35, 0.35);
+        this.maxVector = new Vector3(0.65, 0.65, 0.65);
         this.setHardness(0.075F);
         this.setBlockName(assetName);
     }
@@ -82,10 +71,15 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta)
     {
-        if (isHeavy)
+        switch (meta)
+        {
+        case 0:
+            return BlockAluminumWire.blockIcons[0];
+        case 1:
             return BlockAluminumWire.blockIcons[1];
-
-        return BlockAluminumWire.blockIcons[0];
+        default:
+            return BlockAluminumWire.blockIcons[0];
+        }
     }
 
     @Override
@@ -97,42 +91,35 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     @Override
     public int damageDropped(int metadata)
     {
-        return 0;
-    }
-    
-    @Override
-    public Item getItemDropped(int metadata, Random rand, int fortune)
-    {
-    	if (metadata > 0)
-        	return Item.getItemFromBlock(GCBlocks.aluminumWireHeavy);
-    	return Item.getItemFromBlock(this);
+        return metadata;
     }
 
     @Override
     public TileEntity createNewTileEntity(World world, int metadata)
     {
         TileEntity tile;
-        if (isHeavy)
+    	switch (metadata)
         {
-            tile = new TileEntityAluminumWire(2);        	
-        }
-        else
-        {
-	    	switch (metadata)
-	        {
-		        case 0:
-		            tile = new TileEntityAluminumWire(1);
-		            break;
-		        case 1:
-		            tile = new TileEntityAluminumWire(2);
-		            GCLog.info("Aluminum wire block with metadata is deprecated.");
-		            break;
-		        default:
-		            return null;
-	        }
+        case 0:
+            tile = new TileEntityAluminumWire(1);
+            break;
+        case 1:
+            tile = new TileEntityAluminumWire(2);
+            break;
+        default:
+            return null;
         }
     	
     	return tile;
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    {
+        par3List.add(new ItemStack(par1, 1, 0));
+        par3List.add(new ItemStack(par1, 1, 1));
     }
 
     @Override
@@ -144,15 +131,12 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     @Override
     public String getShiftDescription(int meta)
     {
-        if (isHeavy)
-        	return GCCoreUtil.translate("tile.aluminumWireHeavy.description");
-
         switch (meta)
         {
         case 0:
             return GCCoreUtil.translate("tile.aluminumWire.description");
         case 1:
-            return "Aluminum wire block with metadata is deprecated.";
+            return GCCoreUtil.translate("tile.aluminumWireHeavy.description");
         }
         return "";
     }
