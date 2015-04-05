@@ -70,9 +70,9 @@ public class RecipeManagerAsteroids
         RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 2), new Object[] { " Y ", "XYX", "X X", 'X', new ItemStack(AsteroidsItems.basicItem), 'Y', "compressedTitanium" });
 
         RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.blockWalkway, 5), new Object[] { "XXX", " X ", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6) });
-        RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.blockWalkwayWire, 5), new Object[] { "XXX", "YXY", "YYY", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', new ItemStack(GCBlocks.aluminumWire, 1, 1) });
+        RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.blockWalkwayWire, 5), new Object[] { "XXX", "YXY", "YYY", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', new ItemStack(GCBlocks.aluminumWireHeavy) });
         RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.blockWalkwayOxygenPipe, 5), new Object[] { "XXX", "YXY", "YYY", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', new ItemStack(GCBlocks.oxygenPipe) });
-        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(AsteroidBlocks.blockWalkwayWire, 1), new ItemStack(AsteroidBlocks.blockWalkway, 1), new ItemStack(GCBlocks.aluminumWire, 1, 1));
+        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(AsteroidBlocks.blockWalkwayWire, 1), new ItemStack(AsteroidBlocks.blockWalkway, 1), new ItemStack(GCBlocks.aluminumWireHeavy));
         CraftingManager.getInstance().addShapelessRecipe(new ItemStack(AsteroidBlocks.blockWalkwayOxygenPipe, 1), new ItemStack(AsteroidBlocks.blockWalkway, 1), new ItemStack(GCBlocks.oxygenPipe, 1));
 
         RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.shortRangeTelepad), new Object[] { "XWX", "ZYZ", "XXX", 'W', new ItemStack(AsteroidsItems.basicItem, 1, 8), 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', Items.redstone, 'Z', Items.ender_pearl });

@@ -1,11 +1,13 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalConductor;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEntityAluminumWire extends TileBaseUniversalConductor
 {
     public int tier;
+	private boolean checkReplaceBlockOnNextTick;
 
     public TileEntityAluminumWire()
     {
@@ -58,5 +60,27 @@ public class TileEntityAluminumWire extends TileBaseUniversalConductor
     public int getTierGC()
     {
         return this.tier;
+    }
+    
+    @Override
+    public void validate()
+    {
+    	super.validate();
+    	this.checkReplaceBlockOnNextTick = true;
+    }
+
+    @Override
+    public void updateEntity()
+    {
+    	if (this.checkReplaceBlockOnNextTick)
+    	{
+    		this.checkReplaceBlockOnNextTick = false;
+    		if (this.getBlockMetadata() == 1)
+        	{
+        		this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, GCBlocks.aluminumWireHeavy);
+        		return;
+        	}
+    	}
+    	super.updateEntity();
     }
 }

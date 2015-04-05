@@ -226,6 +226,6 @@ public class RecipeManagerMars
         input2.put(16, new ItemStack(Blocks.chest));
         MarsUtil.adCargoRocketRecipe(new ItemStack(MarsItems.spaceship, 1, 13), input2);
 
-        RecipeUtil.addRecipe(new ItemStack(MarsBlocks.machine, 1, BlockMachineMars.LAUNCH_CONTROLLER_METADATA), new Object[] { "ZVZ", "YXY", "ZWZ", 'V', new ItemStack(GCItems.basicItem, 1, 19), 'W', new ItemStack(GCBlocks.aluminumWire, 1, 0), 'X', new ItemStack(GCItems.basicItem, 1, 14), 'Y', "plateDesh", 'Z', "ingotDesh" });
+        RecipeUtil.addRecipe(new ItemStack(MarsBlocks.machine, 1, BlockMachineMars.LAUNCH_CONTROLLER_METADATA), new Object[] { "ZVZ", "YXY", "ZWZ", 'V', new ItemStack(GCItems.basicItem, 1, 19), 'W', new ItemStack(GCBlocks.aluminumWire), 'X', new ItemStack(GCItems.basicItem, 1, 14), 'Y', "plateDesh", 'Z', "ingotDesh" });
     }
 }
