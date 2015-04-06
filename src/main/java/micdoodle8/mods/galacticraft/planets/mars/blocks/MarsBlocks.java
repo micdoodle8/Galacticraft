@@ -28,7 +28,7 @@ public class MarsBlocks
 
     public static void initBlocks()
     {
-        MarsBlocks.marsBlock = new BlockBasicMars().setHardness(2.2F).setBlockName("mars");
+    	MarsBlocks.marsBlock = new BlockBasicMars().setHardness(2.2F).setBlockName("mars");
         MarsBlocks.blockSludge = new BlockSludge().setBlockName("sludge");
         MarsBlocks.vine = new BlockCavernousVine().setHardness(0.1F).setBlockName("cavernVines");
         MarsBlocks.rock = new BlockSlimelingEgg().setHardness(0.75F).setBlockName("slimelingEgg");

@@ -61,14 +61,14 @@ public class GCBlocks
     public static Block moonStoneStairs;
     public static Block moonBricksStairs;
     public static Block wallGC;
-
+	
     public static final Material machine = new Material(MapColor.ironColor);
 
     public static ArrayList<Block> hiddenBlocks = new ArrayList<Block>();
 
     public static void initBlocks()
     {
-        GCBlocks.breatheableAir = new BlockBreathableAir("breatheableAir");
+    	GCBlocks.breatheableAir = new BlockBreathableAir("breatheableAir");
         GCBlocks.brightAir = new BlockBrightAir("brightAir");
         GCBlocks.brightBreatheableAir = new BlockBrightBreathableAir("brightBreathableAir");
         GCBlocks.brightLamp = new BlockBrightLamp("arclamp");

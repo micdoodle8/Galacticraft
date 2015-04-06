@@ -33,6 +33,9 @@ import micdoodle8.mods.galacticraft.planets.mars.recipe.RecipeManagerMars;
 import micdoodle8.mods.galacticraft.planets.mars.schematic.SchematicCargoRocket;
 import micdoodle8.mods.galacticraft.planets.mars.schematic.SchematicTier2Rocket;
 import micdoodle8.mods.galacticraft.planets.mars.tile.*;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -57,6 +60,7 @@ public class MarsModule implements IPlanetsModule
     public static final String TEXTURE_PREFIX = MarsModule.ASSET_PREFIX + ":";
 
     public static Fluid SLUDGE;
+    public static Material sludgeMaterial = new MaterialLiquid(MapColor.foliageColor);
 
     public static Planet planetMars;
 

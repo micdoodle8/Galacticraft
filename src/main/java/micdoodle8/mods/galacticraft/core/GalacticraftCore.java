@@ -18,6 +18,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.blocks.BlockFluidGC;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.blocks.MaterialOleaginous;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiHandler;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GameScreenText;
 import micdoodle8.mods.galacticraft.core.command.*;
@@ -44,6 +45,8 @@ import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.world.gen.OreGenOtherMods;
 import micdoodle8.mods.galacticraft.core.world.gen.OverworldGenerator;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -109,6 +112,7 @@ public class GalacticraftCore
     public static Fluid gcFluidFuel;
     public static Fluid fluidOil;
     public static Fluid fluidFuel;
+	public static Material materialOil = new MaterialOleaginous(MapColor.brownColor);
 
     public static HashMap<String, ItemStack> itemList = new HashMap<String, ItemStack>();
     public static HashMap<String, ItemStack> blocksList = new HashMap<String, ItemStack>();

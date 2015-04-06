@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -29,7 +30,7 @@ public class BlockFluidGC extends BlockFluidClassic
 
     public BlockFluidGC(Fluid fluid, String assetName)
     {
-        super(fluid, Material.water);
+        super(fluid, (assetName.equals("oil") || assetName.equals("fuel")) ? GalacticraftCore.materialOil : Material.water);
         this.setRenderPass(1);
         this.fluidName = assetName;
         this.fluid = fluid;
@@ -87,9 +88,10 @@ public class BlockFluidGC extends BlockFluidClassic
     @Override
     public boolean canDisplace(IBlockAccess world, int x, int y, int z)
     {
-        if (world.getBlock(x, y, z).getMaterial().isLiquid())
+        if (world.getBlock(x, y, z) instanceof BlockLiquid)
         {
-            return false;
+        	int meta = world.getBlockMetadata(x,  y,  z);
+            return (meta > 1 || meta == -1);
         }
 
         return super.canDisplace(world, x, y, z);
@@ -98,8 +100,11 @@ public class BlockFluidGC extends BlockFluidClassic
     @Override
     public boolean displaceIfPossible(World world, int x, int y, int z)
     {
-        if (world.getBlock(x, y, z).getMaterial().isLiquid())
+        if (world.getBlock(x, y, z) instanceof BlockLiquid)
         {
+        	int meta = world.getBlockMetadata(x,  y,  z);
+            if (meta > 1 || meta == -1) 
+            	return super.displaceIfPossible(world, x, y, z);
             return false;
         }
 

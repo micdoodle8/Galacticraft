@@ -5,7 +5,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySludgeling;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -52,7 +51,7 @@ public class BlockSludge extends BlockFluidClassic
 
     public BlockSludge()
     {
-        super(MarsModule.SLUDGE, Material.water);
+        super(MarsModule.SLUDGE, MarsModule.sludgeMaterial);
         this.setQuantaPerBlock(9);
         this.setRenderPass(1);
         this.setLightLevel(1.0F);
