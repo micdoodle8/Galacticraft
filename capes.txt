@@ -84,3 +84,4 @@ FinnDragon12034:capeRainbow
 Strachey:capeYellow
 buddy1913:capeOrange
 JacobiCarter:capeLime
+afoolishmoon:capeBrown
