@@ -182,6 +182,7 @@ tile.spinThruster.name=สปินทรัสเตอร์
 tile.viewScreen.name=หน้าจอแสดงผล
 tile.telemetry.name=เครื่องส่งหน่วยข้อมูล
 tile.spaceStationBase.name=ฐานสถานีอวกาศ
+tile.dish.name=จานดาวเทียมสื่อสาร
 
 # DECOBLOCKS
 tile.tinStairs1.name=บันไดดีบุกตกแต่ง

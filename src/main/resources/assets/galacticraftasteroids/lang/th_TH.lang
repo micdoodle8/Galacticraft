@@ -2,6 +2,7 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=จรวด เทียร์ 3
+item.itemAstroMiner.name=แอสโทรไมน์เนอร์
 item.heavyNoseCone.name=กรวยจรวดแบบทนทาน
 item.compressedTitanium.name=แผ่นไททาเนียม
 item.ingotTitanium.name=แท่งไททาเนียม
@@ -78,7 +79,7 @@ tile.walkwayWire.name=ทางเดิน
 tile.walkwayOxygenPipe.name=ทางเดิน
 tile.treasureT3.name=กล่องสมบัติ เทียร์ 3
 tile.denseIce.name=ก้อนน้ำแข็งหนาทึบ
-tile.minerBase.name=แอสโทรไมน์เนอร์
+tile.minerBase.name=ฐานแอสโทรไมน์เนอร์
 
 # GUI
 planet.asteroids=ดาวเคราะห์น้อย
@@ -100,6 +101,7 @@ gui.message.range.name=ระยะ: %d บล็อก
 gui.message.notEnoughEnergy.name=พลังงานไม่พอ!
 gui.message.targetNoEnergy.name=เป้าหมายพลังงานไม่พอ!
 gui.message.grapple.fail=ฉันต้องการเส้นเชือกจำนวนเล็กน้อย ถ้าต้องการที่จะโยนตะขอออกไป!
+gui.message.astroMiner.fail=ฐานแอสโทรไมน์เนอร์นี้มีแอสโทรไมน์เนอร์แล้ว!
 
 tile.treasureT3.description=ยังไม่ใช้ตอนนี้
 tile.walkway.description=ใช้สำหรับการตกแต่งที่คล้ายกับสภาพภายใน ยานอวกาศ
