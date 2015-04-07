@@ -45,6 +45,7 @@ import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.world.gen.OreGenOtherMods;
 import micdoodle8.mods.galacticraft.core.world.gen.OverworldGenerator;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -66,6 +67,7 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -226,6 +228,7 @@ public class GalacticraftCore
         ChunkPowerHandler.initiate();
         EnergyConfigHandler.initGas();
 
+        this.registerMicroBlocks();
         this.registerCreatures();
         this.registerOtherEntities();
         this.registerTileEntities();
@@ -271,7 +274,7 @@ public class GalacticraftCore
     	MinecraftForge.EVENT_BUS.register(new OreGenOtherMods());
     }
 
-    @EventHandler
+	@EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
         GalacticraftCore.planetMercury = makeUnreachablePlanet("mercury", GalacticraftCore.solarSystemSol);
@@ -379,6 +382,37 @@ public class GalacticraftCore
         WorldUtil.unregisterPlanets();
         WorldUtil.unregisterSpaceStations();
     }
+
+    private void registerMicroBlocks()
+    {
+		try {
+			Class clazz = Class.forName("codechicken.microblock.MicroMaterialRegistry");
+			if (clazz != null)
+			{
+				Method registerMethod = null;
+				Method[] methodz = clazz.getMethods();
+				for (Method m : methodz)
+				{
+					if (m.getName().equals("registerMaterial"))
+					{
+						registerMethod = m;
+						break;
+					}
+				}
+				Class clazzbm = Class.forName("codechicken.microblock.BlockMicroMaterial");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 3), "tile.gcBlockCore.decoblock1");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 4), "tile.gcBlockCore.decoblock2");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 9), "tile.gcBlockCore.copperBlock");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 10), "tile.gcBlockCore.tinBlock");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 11), "tile.gcBlockCore.aluminumBlock");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 12), "tile.gcBlockCore.meteorironBlock");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.blockMoon, 3), "tile.moonBlock.moondirt");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.blockMoon, 4), "tile.moonBlock.moonstone");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.blockMoon, 5), "tile.moonBlock.moongrass");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.blockMoon, 14), "tile.moonBlock.bricks");
+			}
+		} catch (Exception e) {e.printStackTrace();}
+	}
 
     public void registerTileEntities()
     {
