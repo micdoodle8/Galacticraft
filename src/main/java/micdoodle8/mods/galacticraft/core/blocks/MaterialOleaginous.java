@@ -16,6 +16,7 @@ public class MaterialOleaginous extends MaterialLiquid
 	public MaterialOleaginous(MapColor color)
     {
 		super(color);
+		this.setNoPushMobility();
 	}
 
     //Water and other liquids cannot displace oil, but solid blocks can

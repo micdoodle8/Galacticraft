@@ -70,7 +70,7 @@ public class MarsModule implements IPlanetsModule
         MinecraftForge.EVENT_BUS.register(new EventHandlerMars());
         new ConfigManagerMars(new File(event.getModConfigurationDirectory(), "Galacticraft/mars.conf"));
 
-        MarsModule.SLUDGE = new Fluid("bacterialsludge").setViscosity(3000);
+        MarsModule.SLUDGE = new Fluid("bacterialsludge").setViscosity(3000).setDensity(1001);
         if (!FluidRegistry.registerFluid(MarsModule.SLUDGE))
         {
             GCLog.info("\"bacterialsludge\" has already been registered as a fluid, ignoring...");

@@ -37,6 +37,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.IFluidBlock;
 
 public class EntityAstroMiner extends Entity implements IInventory, IPacketReceiver
 {
@@ -84,13 +85,13 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     	new BlockVec3(0, 0, 1),
     	new BlockVec3(-1, 0, 0),
     	new BlockVec3(1, 0, 0)    };
-    private static BlockVec3[] headings3 = {
+    private static BlockVec3[] headings2 = {
     	new BlockVec3(0, -3, 0),
-    	new BlockVec3(0, 3, 0),
+    	new BlockVec3(0, 2, 0),
     	new BlockVec3(0, 0, -3),
-    	new BlockVec3(0, 0, 3),
+    	new BlockVec3(0, 0, 2),
     	new BlockVec3(-3, 0, 0),
-    	new BlockVec3(3, 0, 0)    };
+    	new BlockVec3(2, 0, 0)    };
 
     private final int baseSafeRadius = 32;
     private final double speed = 0.02D;
@@ -526,17 +527,17 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     		this.atBase();
     		break;
     	case AISTATE_TRAVELLING:
-    		this.moveToTarget();
-        	this.prepareMove(2, 3);
+    		if (!this.moveToTarget())
+    			this.prepareMove(2, 2);
     		break;
     	case AISTATE_MINING:
-    		this.doMining();
         	if (this.ticksExisted % 2 == 0) this.energyLevel--;
-        	this.prepareMove(1, 3);
+    		if (!this.doMining())
+    			this.prepareMove(1, 2);
     		break;
     	case AISTATE_RETURNING:
     		this.moveToBase();
-        	this.prepareMove(2, 3);
+        	this.prepareMove(2, 2);
     		break;
     	case AISTATE_DOCKING:
     		if (this.waypointBase != null)
@@ -669,18 +670,22 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		// return false;
 	}
 
-	private void moveToTarget()
+	/**
+	 * 
+	 * @return  True if reached a turning point
+	 */
+	private boolean moveToTarget()
 	{
 		if (this.energyLevel < this.RETURNENERGY || this.inventoryDrops > this.RETURNDROPS)
 		{
 			AIstate = AISTATE_RETURNING;
-			return;		
+			return true;		
 		}
 		
 		if (this.posTarget == null)
 		{
 			AIstate = AISTATE_STUCK;
-			return;
+			return true;
 		}
 		
 		if (this.moveToPos(this.posTarget, false))
@@ -688,8 +693,10 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 			AIstate = AISTATE_MINING;
 			wayPoints.add(this.posTarget.clone());
 			this.setMinePoints();
+			return true;
 		}
 		
+		return false;
 		// TODO  marker beacons for things to avoid
 		// Overworld: avoid lava source blocks, spawners, chests, mossy cobble, End Portal and Fortress blocks
 		// railtrack, levers, redstone dust
@@ -771,24 +778,30 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		}
 	}
 
-	private void doMining()
+	/**
+	 * 
+	 * @return  True if reached a turning point
+	 */
+	private boolean doMining()
 	{
 		if (this.energyLevel < this.RETURNENERGY || this.inventoryDrops > this.RETURNDROPS || this.minePoints.size() == 0)
 		{
 			AIstate = AISTATE_RETURNING;
 			if (ConfigManagerCore.enableDebug) System.out.println("Miner going home: "+this.posBase.toString());
-			return;		
+			return true;		
 		}
 
 		if (this.moveToPos(this.minePoints.getFirst(), false))
 		{
 			this.minePoints.removeFirst();
+			return true;
 		}
+		return false;
 	}
 
 	private void tryBackIn()
 	{
-		if (this.waypointBase.distanceSquared(new BlockVec3(this)) <= 9D)
+		if (this.waypointBase.distanceSquared(new BlockVec3(this)) <= 9.1D)
 		{
 			this.AIstate = AISTATE_DOCKING;
 	        switch (this.baseFacing)
@@ -811,14 +824,31 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	}
 
 
+	/**
+	 * Mine out the area in front of the miner (dist blocks from miner centre)
+	 * @param limit   Maximum block count to be mined this tick 
+	 * @param dist
+	 * @return  True if the mining failed (meaning the miner's path is blocked)
+	 */
 	private boolean prepareMove(int limit, int dist)
 	{
 		BlockVec3 inFront = new BlockVec3(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 0.5D), MathHelper.floor_double(this.posZ + 0.5D));
-		if (dist == 3) inFront.add(headings3[this.facingAI]);
-		else inFront.add(headings[this.facingAI].scale(dist));
+		if (dist == 2) inFront.add(headings2[this.facingAI]);
+		else
+		{	
+			if ((this.facingAI & 1) == 0) dist++; 
+			if (dist > 0) inFront.add(headings[this.facingAI].clone().scale(dist));
+		}
 		int x = inFront.x;
 		int y = inFront.y;
 		int z = inFront.z;
+		
+		//Test not trying to mine own dock!
+		if (y == this.waypointBase.y && x == this.waypointBase.x - ((this.baseFacing == 5) ? 1 : 0) && z == this.waypointBase.z - ((this.baseFacing == 3) ? 1 : 0))
+		{
+			this.tryBackIn();
+			return false;
+		}
 		boolean wayBarred = false;
 		this.tryBlockLimit = limit;
 
@@ -907,6 +937,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		if (b.getMaterial() == Material.air) return false;
 		if (noMineList.contains(b)) return true;
 		if (b instanceof BlockLiquid) return false;
+		if (b instanceof IFluidBlock) return false;
 		if (b instanceof IPlantable) return true;
 		int meta = this.worldObj.getBlockMetadata(x, y, z);
 		if (b.hasTileEntity(meta)) return true;
@@ -1229,6 +1260,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         miner.setPosition(miner.waypointBase.x, miner.waypointBase.y, miner.waypointBase.z);
         miner.baseFacing = facing;
         miner.facingAI = facing;
+        miner.lastFacing = facing;
         miner.motionX = 0;
         miner.motionY = 0;
         miner.motionZ = 0;
@@ -1254,18 +1286,26 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         miner.AIstate = AISTATE_ATBASE;
         miner.posBase = base;
 
-        boolean blocked = false;
-        if (miner.prepareMove(12, 0)) blocked = true;
-        if (miner.prepareMove(12, 1)) blocked = true;
-        if (miner.prepareMove(12, 2)) blocked = true;
-        if (!blocked)
+        //Clear blocks, and test to see if its movement area in front of the base is blocked
+        if (miner.prepareMove(12, 0))
         {
-        	world.spawnEntityInWorld(miner);
-        	miner.flagLink = true;
-        	return true;
+           	miner.kill();
+           	return false;
         }
-       	miner.kill();
-       	return false;
+        if (miner.prepareMove(12, 1))
+        {
+           	miner.kill();
+           	return false;
+        }
+        if (miner.prepareMove(12, 2))
+        {
+           	miner.kill();
+           	return false;
+        }
+
+    	world.spawnEntityInWorld(miner);
+    	miner.flagLink = true;
+    	return true;
 	}
 	
     private void setBoundingBoxForFacing()
