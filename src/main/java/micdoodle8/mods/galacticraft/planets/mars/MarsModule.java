@@ -33,6 +33,7 @@ import micdoodle8.mods.galacticraft.planets.mars.recipe.RecipeManagerMars;
 import micdoodle8.mods.galacticraft.planets.mars.schematic.SchematicCargoRocket;
 import micdoodle8.mods.galacticraft.planets.mars.schematic.SchematicTier2Rocket;
 import micdoodle8.mods.galacticraft.planets.mars.tile.*;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
@@ -52,6 +53,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.List;
 
 public class MarsModule implements IPlanetsModule
@@ -91,7 +93,8 @@ public class MarsModule implements IPlanetsModule
     @Override
     public void init(FMLInitializationEvent event)
     {
-        SchematicRegistry.registerSchematicRecipe(new SchematicTier2Rocket());
+        this.registerMicroBlocks();
+    	SchematicRegistry.registerSchematicRecipe(new SchematicTier2Rocket());
         SchematicRegistry.registerSchematicRecipe(new SchematicCargoRocket());
 
         GalacticraftCore.packetPipeline.addDiscriminator(6, PacketSimpleMars.class);
@@ -131,6 +134,33 @@ public class MarsModule implements IPlanetsModule
     {
 
     }
+
+    private void registerMicroBlocks()
+    {
+		try {
+			Class clazz = Class.forName("codechicken.microblock.MicroMaterialRegistry");
+			if (clazz != null)
+			{
+				Method registerMethod = null;
+				Method[] methodz = clazz.getMethods();
+				for (Method m : methodz)
+				{
+					if (m.getName().equals("registerMaterial"))
+					{
+						registerMethod = m;
+						break;
+					}
+				}
+				Class clazzbm = Class.forName("codechicken.microblock.BlockMicroMaterial");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(MarsBlocks.marsBlock, 4), "tile.mars.marscobblestone");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(MarsBlocks.marsBlock, 5), "tile.mars.marsgrass");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(MarsBlocks.marsBlock, 6), "tile.mars.marsdirt");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(MarsBlocks.marsBlock, 7), "tile.mars.marsdungeon");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(MarsBlocks.marsBlock, 8), "tile.mars.marsdeco");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(MarsBlocks.marsBlock, 9), "tile.mars.marsstone");
+			}
+		} catch (Exception e) {e.printStackTrace();}
+	}
 
     public void registerTileEntities()
     {

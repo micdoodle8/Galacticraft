@@ -33,6 +33,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.schematic.SchematicTier3Ro
 import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerServer;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.*;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -50,6 +51,7 @@ import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 
@@ -116,7 +118,8 @@ public class AsteroidsModule implements IPlanetsModule
     @Override
     public void init(FMLInitializationEvent event)
     {
-        SchematicRegistry.registerSchematicRecipe(new SchematicTier3Rocket());
+        this.registerMicroBlocks();
+    	SchematicRegistry.registerSchematicRecipe(new SchematicTier3Rocket());
 
         GalacticraftCore.packetPipeline.addDiscriminator(7, PacketSimpleAsteroids.class);
 
@@ -275,6 +278,31 @@ public class AsteroidsModule implements IPlanetsModule
         MarsModule.registerGalacticraftNonMobEntity(EntityEntryPod.class, "EntryPodAsteroids", 150, 1, true);
         MarsModule.registerGalacticraftNonMobEntity(EntityAstroMiner.class, "AstroMiner", 80, 1, true);
     }
+
+    private void registerMicroBlocks()
+    {
+		try {
+			Class clazz = Class.forName("codechicken.microblock.MicroMaterialRegistry");
+			if (clazz != null)
+			{
+				Method registerMethod = null;
+				Method[] methodz = clazz.getMethods();
+				for (Method m : methodz)
+				{
+					if (m.getName().equals("registerMaterial"))
+					{
+						registerMethod = m;
+						break;
+					}
+				}
+				Class clazzbm = Class.forName("codechicken.microblock.BlockMicroMaterial");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 0), "tile.asteroidsBlock.asteroid0");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 1), "tile.asteroidsBlock.asteroid1");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 2), "tile.asteroidsBlock.asteroid2");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockDenseIce, 0), "tile.denseIce");
+			}
+		} catch (Exception e) {e.printStackTrace();}
+	}
 
     private void registerTileEntities()
     {
