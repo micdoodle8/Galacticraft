@@ -122,12 +122,12 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
     {
         int metadata = world.getBlockMetadata(x, y, z);
 
-        if (metadata == 15)
+        if (metadata == 14)
         {
             return 10000.0F;
         }
 
-        if (metadata == 14)
+        if (metadata == 15)
         {
             return 40.0F;
         }
