@@ -102,6 +102,7 @@ gui.message.notEnoughEnergy.name=Not Enough Energy!
 gui.message.targetNoEnergy.name=Target doesn't have enough Energy!
 gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook!
 gui.message.astroMiner.fail=This base already has an Astro Miner!
+gui.message.astroMiner1.fail=The docking area is blocked by:
 
 tile.treasureT3.description=Tier 3 Treasure Chests are currently unused.
 tile.walkway.description=Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme.
