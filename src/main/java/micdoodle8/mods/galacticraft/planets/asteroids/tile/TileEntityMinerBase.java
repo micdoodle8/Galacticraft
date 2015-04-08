@@ -78,7 +78,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     	}
     }
 
-    public void spawnMiner()
+    public boolean spawnMiner()
     {
 		if (this.isMaster)
 		{
@@ -90,15 +90,17 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 			}
 			if (this.linkedMiner == null)
 	    	{
-	        	EntityAstroMiner.spawnMinerAtBase(this.worldObj, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1, (this.facing + 2) ^ 1, new BlockVec3(this));
+	        	if (EntityAstroMiner.spawnMinerAtBase(this.worldObj, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1, (this.facing + 2) ^ 1, new BlockVec3(this)))
+	        		return true;
 	    	}
-			return;
+			return false;
 		}
         TileEntityMinerBase master = this.getMaster();
         if (master != null)
         {
-        	master.spawnMiner();
-        }		
+        	return master.spawnMiner();
+        }
+        return false;
     }
     
     private TileEntityMinerBase getMaster()

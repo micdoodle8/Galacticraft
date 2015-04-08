@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
+import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -70,7 +71,16 @@ public class ItemAstroMiner extends Item implements IHoldableItem
         			par2EntityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner.fail")));
         			return false;
         		}
-        		((TileEntityMinerBase)tile).spawnMiner();
+        		if (!((TileEntityMinerBase)tile).spawnMiner())
+        		{
+        			par2EntityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner1.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
+        			return false;
+        		}
+        			
+                if (!par2EntityPlayer.capabilities.isCreativeMode)
+                {
+                    --par1ItemStack.stackSize;
+                }
         		return true;
         	}
     	}

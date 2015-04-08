@@ -8,6 +8,7 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
@@ -123,6 +124,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	public boolean stopForTurn;
 
     private static ArrayList<Block> noMineList = new ArrayList();
+    public static BlockTuple blockingBlock = new BlockTuple(Blocks.air, 0);
     
     static
     {
@@ -509,7 +511,6 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         this.prevRotationPitch = this.rotationPitch;
         this.prevRotationYaw = this.rotationYaw;
 
-        this.updateAI();
     	if (this.energyLevel <= 0)
     	{
     		if (this.AIstate > AISTATE_ATBASE)
@@ -531,9 +532,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     			this.prepareMove(2, 2);
     		break;
     	case AISTATE_MINING:
-        	if (this.ticksExisted % 2 == 0) this.energyLevel--;
-    		if (!this.doMining())
+    		if (!this.doMining() && this.ticksExisted % 2 == 0)
+    		{
+    			this.energyLevel--;
     			this.prepareMove(1, 2);
+    		}
     		break;
     	case AISTATE_RETURNING:
     		this.moveToBase();
@@ -543,7 +546,12 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     		if (this.waypointBase != null)
     		{	
     			if (this.moveToPos(this.waypointBase, true))
-    			this.AIstate = AISTATE_ATBASE;
+    			{
+    				this.AIstate = AISTATE_ATBASE;
+    				this.motionX = 0;
+    				this.motionY = 0;
+    				this.motionZ = 0;
+    			}
     		}
     		else
     			this.AIstate = AISTATE_STUCK;
@@ -935,13 +943,27 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		//Can move through liquids including flowing lava
 		Block b = this.worldObj.getBlock(x, y, z);
 		if (b.getMaterial() == Material.air) return false;
-		if (noMineList.contains(b)) return true;
+		if (noMineList.contains(b))
+		{
+			blockingBlock.block = b;
+			blockingBlock.meta = this.worldObj.getBlockMetadata(x, y, z);
+			return true;
+		}
 		if (b instanceof BlockLiquid) return false;
 		if (b instanceof IFluidBlock) return false;
-		if (b instanceof IPlantable) return true;
+		if (b instanceof IPlantable)
+		{
+			blockingBlock.block = b;
+			blockingBlock.meta = this.worldObj.getBlockMetadata(x, y, z);
+			return true;
+		}
 		int meta = this.worldObj.getBlockMetadata(x, y, z);
-		if (b.hasTileEntity(meta)) return true;
-		if (b.getBlockHardness(this.worldObj,  x,  y,  z) < 0) return true;
+		if (b.hasTileEntity(meta) || b.getBlockHardness(this.worldObj,  x,  y,  z) < 0)
+		{
+			blockingBlock.block = b;
+			blockingBlock.meta = meta;
+			return true;
+		}
 		
 		if (this.tryBlockLimit == 0) return false;
 		this.tryBlockLimit--;
@@ -966,8 +988,6 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
 	private boolean addToInventory(ItemStack itemstack)
 	{
-		//TODO - add test for is container open and if so use Container.mergeItemStack
-		
 		boolean flag1 = false;
         int k = 0;
         int invSize = this.getSizeInventory();
@@ -1234,24 +1254,16 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		return flag;
 	}
 
-	private void updateAI()
-	{
-		// TODO 
-		/* Check whether current task finished
-		// If in state 0 - look for target?
-		// If in state 1 - if reached target (within [12] blocks), start mining
-		// In in state 2
-			If nothing left nearby look for new target
-			If full or getting low on energy return to base
-			Otherwise keep mining
-		// If in state 3
-		 	- if reached base, state 4
-		// If in state 4
-		    - when empty and fully charged, look for target
-			*/
-	}
-
-	//x y z should be the mid-point of the 4 base blocks
+	/** x y z should be the mid-point of the 4 base blocks
+	 * 
+	 * @param world
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param facing
+	 * @param base
+	 * @return
+	 */
 	public static boolean spawnMinerAtBase(World world, int x, int y, int z, int facing, BlockVec3 base)
 	{
         if (world.isRemote) return true;
