@@ -1,4 +1,4 @@
-micdoodle8:capeBlue
+micdoodle8:capeOrange
 JTE:capeLime
 ajmski:capeLime
 Azeryuu:capeLime
@@ -23,7 +23,6 @@ smates:capeLime
 SoaringChris137:capeLime
 TeisAngel:capeLime
 TerraGenome:capeLime
-X_angelz_X:capeLime
 Yangjo123:capeLime
 Made_This_Name:capeLime
 spamenigma:capeLime
@@ -48,7 +47,7 @@ Tatertot2222:capeRainbow
 atomicpichu:capeRainbow
 Pig_Rider273:capeMagenta
 so2ro:capeOrange
-SportsFan10:capeBlue
+Sir_Killz:capeBlue
 TheDestroyer4000:capeRainbow
 Kingdom_Hearts12:capeRainbow
 alfiethomas102:capeLime
@@ -78,4 +77,11 @@ dragonguide:capeLightGray
 MrRobin1512:capeRainbow
 IndianGooN:capeOrange
 Mysticslay:capeLightBlue
-TFDOTMROCKS:capeYellow
+BeeCannon:capeYellow
+Krazymonkey151:capeRainbow
+Knightblock:capeLightBlue
+FinnDragon12034:capeRainbow
+Strachey:capeYellow
+buddy1913:capeOrange
+JacobiCarter:capeLime
+afoolishmoon:capeBrown
