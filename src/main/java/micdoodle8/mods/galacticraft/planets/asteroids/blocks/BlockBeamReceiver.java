@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -174,7 +173,7 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
             return true;
         }
 
-        if (world.isRemote && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        if (world.isRemote)
         {
             this.sendIncorrectSideMessage();
         }

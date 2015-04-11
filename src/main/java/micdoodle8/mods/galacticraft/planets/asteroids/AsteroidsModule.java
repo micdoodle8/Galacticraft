@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.planets.IPlanetsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.TeleportTypeAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityEntryPod;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAsteroid;
@@ -32,6 +33,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.schematic.SchematicTier3Ro
 import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerServer;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.*;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -49,6 +51,7 @@ import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 
@@ -115,7 +118,8 @@ public class AsteroidsModule implements IPlanetsModule
     @Override
     public void init(FMLInitializationEvent event)
     {
-        SchematicRegistry.registerSchematicRecipe(new SchematicTier3Rocket());
+        this.registerMicroBlocks();
+    	SchematicRegistry.registerSchematicRecipe(new SchematicTier3Rocket());
 
         GalacticraftCore.packetPipeline.addDiscriminator(7, PacketSimpleAsteroids.class);
 
@@ -268,11 +272,37 @@ public class AsteroidsModule implements IPlanetsModule
 
     private void registerNonMobEntities()
     {
-        MarsModule.registerGalacticraftNonMobEntity(EntitySmallAsteroid.class, "SmallAsteroidGC", 150, 1, true);
+        MarsModule.registerGalacticraftNonMobEntity(EntitySmallAsteroid.class, "SmallAsteroidGC", 150, 3, true);
         MarsModule.registerGalacticraftNonMobEntity(EntityGrapple.class, "GrappleHookGC", 150, 1, true);
         MarsModule.registerGalacticraftNonMobEntity(EntityTier3Rocket.class, "Tier3RocketGC", 150, 1, false);
         MarsModule.registerGalacticraftNonMobEntity(EntityEntryPod.class, "EntryPodAsteroids", 150, 1, true);
+        MarsModule.registerGalacticraftNonMobEntity(EntityAstroMiner.class, "AstroMiner", 80, 1, true);
     }
+
+    private void registerMicroBlocks()
+    {
+		try {
+			Class clazz = Class.forName("codechicken.microblock.MicroMaterialRegistry");
+			if (clazz != null)
+			{
+				Method registerMethod = null;
+				Method[] methodz = clazz.getMethods();
+				for (Method m : methodz)
+				{
+					if (m.getName().equals("registerMaterial"))
+					{
+						registerMethod = m;
+						break;
+					}
+				}
+				Class clazzbm = Class.forName("codechicken.microblock.BlockMicroMaterial");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 0), "tile.asteroidsBlock.asteroid0");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 1), "tile.asteroidsBlock.asteroid1");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 2), "tile.asteroidsBlock.asteroid2");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockDenseIce, 0), "tile.denseIce");
+			}
+		} catch (Exception e) {e.printStackTrace();}
+	}
 
     private void registerTileEntities()
     {
@@ -281,6 +311,8 @@ public class AsteroidsModule implements IPlanetsModule
         GameRegistry.registerTileEntity(TileEntityShortRangeTelepad.class, "Short Range Telepad");
         GameRegistry.registerTileEntity(TileEntityTelepadFake.class, "Fake Short Range Telepad");
         GameRegistry.registerTileEntity(TileEntityTreasureChestAsteroids.class, "Asteroids Treasure Chest");
+        GameRegistry.registerTileEntity(TileEntityMinerBaseSingle.class, "Astro Miner Base Builder");
+        GameRegistry.registerTileEntity(TileEntityMinerBase.class, "Astro Miner Base");
     }
 
     @Override

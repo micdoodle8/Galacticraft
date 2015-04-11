@@ -50,7 +50,7 @@ tile.marsMachine.2.name=Kontrola Leta
 tile.marsMachine.4.name=Plinski Liqufier
 tile.marsMachine.5.name=Metan Sintisajzer
 tile.marsMachine.6.name=Vodeni Elektrizer
-tile.hydrogenPipe.name=Hydrogen Pipe ##NEEDS TRANSLATE##
+tile.hydrogenPipe.name=Hidrogenska Cijev
 tile.sludge.name=Bakterijska Sluz
 tile.creeperEgg.name=Jaje Kripera
 tile.cavernVines.name=Kavernozni Vine
@@ -173,8 +173,8 @@ schematic.cargoRocket.name=Automatska Teret Raketa
 entity.Sludgeling.name=Sludgeling
 entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Evoulirani Šef Kripera
-entity.GalacticraftMars.SpaceshipT2.name=Raketa Ranga 2
-entity.GalacticraftMars.CargoRocket.name=Teretna Raketa
+entity.SpaceshipT2.name=Raketa Ranga 2
+entity.CargoRocket.name=Teretna Raketa
 
 # CONTAINERS
 container.launchcontroller.name=Kontroler Lansiranja

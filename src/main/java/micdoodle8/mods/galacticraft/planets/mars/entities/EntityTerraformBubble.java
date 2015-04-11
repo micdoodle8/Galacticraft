@@ -39,11 +39,11 @@ public class EntityTerraformBubble extends EntityAdvanced implements IBubble
         this.renderDistanceWeight = 5.0D;
     }
 
-    //	@Override
-    //	protected boolean pushOutOfBlocks(double par1, double par3, double par5)
-    //	{
-    //		return false;
-    //	} TODO Find out if this is still necessary
+    @Override
+    protected boolean func_145771_j(double x, double y, double z)
+    {
+    	return false;
+    }
 
     @Override
     public AxisAlignedBB getBoundingBox()

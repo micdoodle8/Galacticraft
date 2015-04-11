@@ -24,7 +24,6 @@ import java.util.List;
 
 public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock, IFuelable, IFuelDock, ICargoEntity
 {
-    protected long ticks = 0;
     private IDockable dockedEntity;
 
     @Override

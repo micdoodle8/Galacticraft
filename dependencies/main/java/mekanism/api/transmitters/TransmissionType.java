@@ -5,10 +5,35 @@ import net.minecraft.tileentity.TileEntity;
 
 public enum TransmissionType
 {
-	ENERGY,
-	FLUID,
-	GAS,
-	ITEM;
+	ENERGY("EnergyNetwork", "Energy"),
+	FLUID("FluidNetwork", "Fluids"),
+	GAS("GasNetwork", "Gases"),
+	ITEM("InventoryNetwork", "Items"),
+	HEAT("HeatNetwork", "Heat");
+	
+	private String name;
+	private String transmission;
+	
+	private TransmissionType(String n, String t)
+	{
+		name = n;
+		transmission = t;
+	}
+	
+	public String getName()
+	{
+		return name;
+	}
+	
+	public String getTransmission()
+	{
+		return transmission;
+	}
+	
+	public String localize()
+	{
+		return getTransmission();
+	}
 
 	public static boolean checkTransmissionType(TileEntity sideTile, TransmissionType type)
 	{

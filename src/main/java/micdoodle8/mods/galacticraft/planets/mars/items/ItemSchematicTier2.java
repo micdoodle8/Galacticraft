@@ -18,7 +18,7 @@ import java.util.List;
 
 public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem
 {
-    protected IIcon[] icons = new IIcon[1];
+    protected IIcon[] schematicIcons = new IIcon[1];
 
     public static final String[] names = { "schematic_rocketT3", "schematic_rocket_cargo" };
 
@@ -48,11 +48,11 @@ public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
-        this.icons = new IIcon[ItemSchematicTier2.names.length];
+        this.schematicIcons = new IIcon[ItemSchematicTier2.names.length];
 
         for (int i = 0; i < ItemSchematicTier2.names.length; i++)
         {
-            this.icons[i] = iconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + ItemSchematicTier2.names[i]);
+            this.schematicIcons[i] = iconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + ItemSchematicTier2.names[i]);
         }
 
     }
@@ -60,9 +60,9 @@ public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem
     @Override
     public IIcon getIconFromDamage(int damage)
     {
-        if (this.icons.length > damage)
+        if (this.schematicIcons.length > damage)
         {
-            return this.icons[damage];
+            return this.schematicIcons[damage];
         }
 
         return super.getIconFromDamage(damage);

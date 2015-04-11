@@ -12,12 +12,6 @@ import java.util.Random;
 
 public class MapGenCavernMars extends MapGenBaseMeta
 {
-    protected int range = 8;
-
-    protected Random rand = new Random();
-
-    protected World worldObj;
-
     @Override
     public void generate(IChunkProvider par1IChunkProvider, World par2World, int par3, int par4, Block[] arrayOfIDs, byte[] arrayOfMeta)
     {

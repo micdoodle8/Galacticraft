@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -32,6 +33,7 @@ public class BlockBasic extends Block implements IDetectableResource
     {
         super(Material.rock);
         this.setHardness(1.0F);
+        this.blockResistance = 15F;
         this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setBlockName(assetName);
     }
@@ -140,6 +142,30 @@ public class BlockBasic extends Block implements IDetectableResource
         {
             return this.quantityDropped(random);
         }
+    }
+
+    @Override
+    public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
+    {
+    	int metadata = world.getBlockMetadata(x, y, z); 
+
+    	if (metadata < 5)
+        {
+            return 2.0F;
+            //Decoration blocks are soft, like cauldrons or wood 
+        }
+    	else if (metadata == 12)
+        {
+            return 8.0F;
+            //Meteoric Iron is tougher than diamond
+        }
+    	else if (metadata > 8)
+        {
+            return 6.0F;
+            //Blocks of metal are tough - like diamond blocks in vanilla
+        }
+
+        return this.blockResistance / 5.0F;
     }
 
     @Override

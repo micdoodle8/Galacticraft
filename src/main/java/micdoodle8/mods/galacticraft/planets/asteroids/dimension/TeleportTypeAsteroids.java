@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityEntryPod;
 import net.minecraft.entity.Entity;
@@ -58,7 +59,7 @@ public class TeleportTypeAsteroids implements ITeleportType
 
                     if (ConfigManagerCore.enableDebug)
                     {
-                        FMLLog.info("Testing asteroid at x" + (bv3.x) + " y" + (bv3.y) + " z" + bv3.z);
+                        GCLog.info("Testing asteroid at x" + (bv3.x) + " y" + (bv3.y) + " z" + bv3.z);
                     }
                     this.loadChunksAround(bv3.x, bv3.z, 2, world.theChunkProviderServer);
                     this.loadChunksAround(bv3.x, bv3.z, -3, world.theChunkProviderServer);
@@ -87,7 +88,7 @@ public class TeleportTypeAsteroids implements ITeleportType
                     //Failed to find an asteroid even though there should be one there
                     if (ConfigManagerCore.enableDebug)
                     {
-                        FMLLog.info("Removing drilled out asteroid at x" + (bv3.x) + " z" + (bv3.z));
+                        GCLog.info("Removing drilled out asteroid at x" + (bv3.x) + " z" + (bv3.z));
                     }
                     ((WorldProviderAsteroids) world.provider).removeAsteroid(bv3.x, bv3.y, bv3.z);
                 }
@@ -137,7 +138,7 @@ public class TeleportTypeAsteroids implements ITeleportType
                 }
                 if (ConfigManagerCore.enableDebug)
                 {
-                    FMLLog.info("Found asteroid at x" + (x) + " z" + (z));
+                    GCLog.info("Found asteroid at x" + (x) + " z" + (z));
                 }
                 return true;
             }
@@ -273,22 +274,26 @@ public class TeleportTypeAsteroids implements ITeleportType
     @Override
     public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player, boolean ridingAutoRocket)
     {
-        GCPlayerStats stats = GCPlayerStats.get(player);
-        if (!ridingAutoRocket && player != null && stats.teleportCooldown <= 0)
+        if (!ridingAutoRocket && player != null)
         {
-            if (player.capabilities.isFlying)
+            GCPlayerStats stats = GCPlayerStats.get(player);
+            
+            if (stats.teleportCooldown <= 0)
             {
-                player.capabilities.isFlying = false;
+                if (player.capabilities.isFlying)
+                {
+                    player.capabilities.isFlying = false;
+                }
+
+                if (!newWorld.isRemote)
+                {
+                    EntityEntryPod entryPod = new EntityEntryPod(player);
+
+                    newWorld.spawnEntityInWorld(entryPod);
+                }
+
+                stats.teleportCooldown = 10;
             }
-
-            if (!newWorld.isRemote)
-            {
-                EntityEntryPod entryPod = new EntityEntryPod(player);
-
-                newWorld.spawnEntityInWorld(entryPod);
-            }
-
-            stats.teleportCooldown = 10;
         }
     }
 }

@@ -1,13 +1,12 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import java.util.ArrayList;
-
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.item.EntityItem;
@@ -18,6 +17,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.ArrayList;
 
 public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock implements IInventory, ISidedInventory, IPacketReceiver
 {
@@ -34,7 +35,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
 
     public TileEntityElectricIngotCompressor()
     {
-        this.storage.setMaxExtract(75);
+        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 75);
         this.setTierGC(2);
     }
 
@@ -190,9 +191,9 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
         {
             NBTTagCompound var4 = var2.getCompoundTagAt(var3);
-            byte var5 = var4.getByte("Slot");
+            int var5 = var4.getByte("Slot") & 255;
 
-            if (var5 >= 0 && var5 < this.containingItems.length)
+            if (var5 < this.containingItems.length)
             {
                 this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
             }

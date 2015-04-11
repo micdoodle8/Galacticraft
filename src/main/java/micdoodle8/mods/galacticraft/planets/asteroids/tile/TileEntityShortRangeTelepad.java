@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
@@ -69,7 +70,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     public TileEntityShortRangeTelepad()
     {
         super();
-        this.storage.setMaxExtract(50);
+        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 115 : 50);
     }
 
     public int canTeleportHere()
@@ -217,9 +218,9 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
         {
             NBTTagCompound var4 = var2.getCompoundTagAt(var3);
-            byte var5 = var4.getByte("Slot");
+            int var5 = var4.getByte("Slot") & 255;
 
-            if (var5 >= 0 && var5 < this.containingItems.length)
+            if (var5 < this.containingItems.length)
             {
                 this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
             }

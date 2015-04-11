@@ -10,6 +10,8 @@ import micdoodle8.mods.galacticraft.api.item.IBreathableArmor.EnumGearType;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -30,6 +32,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
@@ -86,20 +89,7 @@ public class OxygenUtil
             final double avgY = (bb.minY + bb.maxY) / 2.0D;
             final double avgZ = (bb.minZ + bb.maxZ) / 2.0D;
 
-            for (final TileEntityOxygenDistributor distributor : new ArrayList<TileEntityOxygenDistributor>(TileEntityOxygenDistributor.loadedTiles))
-            {
-                if (distributor.getWorld() == world && distributor.oxygenBubble != null)
-                {
-                    final double dist = distributor.getDistanceFromServer(avgX, avgY, avgZ);
-                    double r = distributor.oxygenBubble.getSize();
-
-                    if (dist < r * r)
-                    {
-                        return true;
-                    }
-                }
-            }
-
+            if (OxygenUtil.inOxygenBubble(world, avgX, avgY, avgZ)) return true;
         }
         return OxygenUtil.isInOxygenBlock(world, bb.copy().contract(0.001D, 0.001D, 0.001D));
     }
@@ -436,4 +426,33 @@ public class OxygenUtil
 
         return adjacentConnections;
     }
+    
+    public static boolean noAtmosphericCombustion(WorldProvider provider)
+    {
+    	if (provider instanceof IGalacticraftWorldProvider)
+    	{
+    		return (!((IGalacticraftWorldProvider) provider).isGasPresent(IAtmosphericGas.OXYGEN) && !((IGalacticraftWorldProvider) provider).hasBreathableAtmosphere());
+    	}
+    	
+    	return false;
+    }
+
+	public static boolean inOxygenBubble(World worldObj, double avgX, double avgY, double avgZ)
+	{
+        for (final TileEntityOxygenDistributor distributor : new ArrayList<TileEntityOxygenDistributor>(TileEntityOxygenDistributor.loadedTiles))
+        {
+            if (distributor.getWorld() == worldObj && distributor.oxygenBubble != null)
+            {
+                final double dist = distributor.getDistanceFromServer(avgX, avgY, avgZ);
+                double r = distributor.oxygenBubble.getSize();
+
+                if (dist < r * r)
+                {
+                    return true;
+                }
+            }
+        }
+
+		return false;
+	}
 }

@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -38,6 +36,12 @@ public class EntityTier1Rocket extends EntityTieredRocket
         this.cargoItems = new ItemStack[this.getSizeInventory()];
     }
 
+    @Override
+    public float getRotateOffset()
+    {
+        return -1.5F;
+    }
+
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void onUpdate()
@@ -57,7 +61,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
 
         if ((this.getLaunched() || this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() && this.rand.nextInt(i) == 0) && !ConfigManagerCore.disableSpaceshipParticles && this.hasValidFuel())
         {
-            if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+            if (this.worldObj.isRemote)
             {
                 this.spawnParticles(this.getLaunched());
             }

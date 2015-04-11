@@ -12,7 +12,7 @@ public interface IPlantableBlock
     public int requiredLiquidBlocksNearby();
 
     /**
-     * @return array of metadata values that are considered valueable.
+     * @return is sapling can be placed on the provided metadata value, return true
      */
     public boolean isPlantable(int metadata);
 }

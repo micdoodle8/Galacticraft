@@ -328,7 +328,8 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
      */
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
-        if (par5Random.nextInt(5) == 0)
+        boolean doSmoke = par5Random.nextInt(5) == 0; 
+    	if (this.lit || doSmoke)
         {
             final int var6 = par1World.getBlockMetadata(par2, par3, par4);
             final double var7 = par2 + 0.5F;
@@ -339,23 +340,28 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
 
             if (var6 == 1)
             {
-                par1World.spawnParticle("smoke", var7 - var15, var9 + var13, var11, 0.0D, 0.0D, 0.0D);
+                if (doSmoke) par1World.spawnParticle("smoke", var7 - var15, var9 + var13, var11, 0.0D, 0.0D, 0.0D);
+                if (this.lit) par1World.spawnParticle("flame", var7 - var15, var9 + var13, var11, 0.0D, 0.0D, 0.0D);
             }
             else if (var6 == 2)
             {
-                par1World.spawnParticle("smoke", var7 + var15, var9 + var13, var11, 0.0D, 0.0D, 0.0D);
+            	if (doSmoke) par1World.spawnParticle("smoke", var7 + var15, var9 + var13, var11, 0.0D, 0.0D, 0.0D);
+                if (this.lit) par1World.spawnParticle("flame", var7 + var15, var9 + var13, var11, 0.0D, 0.0D, 0.0D);
             }
             else if (var6 == 3)
             {
-                par1World.spawnParticle("smoke", var7, var9 + var13, var11 - var15, 0.0D, 0.0D, 0.0D);
+            	if (doSmoke) par1World.spawnParticle("smoke", var7, var9 + var13, var11 - var15, 0.0D, 0.0D, 0.0D);
+                if (this.lit) par1World.spawnParticle("flame", var7, var9 + var13, var11 - var15, 0.0D, 0.0D, 0.0D);
             }
             else if (var6 == 4)
             {
-                par1World.spawnParticle("smoke", var7, var9 + var13, var11 + var15, 0.0D, 0.0D, 0.0D);
+            	if (doSmoke) par1World.spawnParticle("smoke", var7, var9 + var13, var11 + var15, 0.0D, 0.0D, 0.0D);
+                if (this.lit) par1World.spawnParticle("flame", var7, var9 + var13, var11 + var15, 0.0D, 0.0D, 0.0D);
             }
             else
             {
-                par1World.spawnParticle("smoke", var7, var9, var11, 0.0D, 0.0D, 0.0D);
+            	if (doSmoke) par1World.spawnParticle("smoke", var7, var9, var11, 0.0D, 0.0D, 0.0D);
+                if (this.lit) par1World.spawnParticle("flame", var7, var9, var11, 0.0D, 0.0D, 0.0D);
             }
         }
     }

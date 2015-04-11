@@ -14,7 +14,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IRenderHandler;
-
 import org.lwjgl.opengl.GL11;
 
 import java.util.Random;
@@ -189,6 +188,19 @@ public class SkyProviderOverworld extends IRenderHandler
         var23.addVertexWithUV(-var12, 100.0D, var12, 0.0D, 1.0D);
         var23.draw();
 
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);        
+        var12 = 11.3F;
+        var23.startDrawingQuads();
+        var23.addVertex(-var12, -99.9D, var12);
+        var23.addVertex(var12, -99.9D, var12);
+        var23.addVertex(var12, -99.9D, -var12);
+        var23.addVertex(-var12, -99.9D, -var12);
+        var23.draw();
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         var12 = 40.0F;
         this.minecraft.renderEngine.bindTexture(SkyProviderOverworld.moonTexture);
         float var28 = this.minecraft.theWorld.getMoonPhase();
@@ -234,9 +246,9 @@ public class SkyProviderOverworld extends IRenderHandler
         scale = Math.max(scale, 0.2F);
         GL11.glScalef(scale, 0.0F, scale);
         GL11.glTranslatef(0.0F, -var20, 0.0F);
-        if (ClientProxyCore.overworldTextureClient != null)
+        if (ClientProxyCore.overworldTextureLocal != null)
         {
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureClient.getGlTextureId());
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureLocal.getGlTextureId());
         }
         else
         {

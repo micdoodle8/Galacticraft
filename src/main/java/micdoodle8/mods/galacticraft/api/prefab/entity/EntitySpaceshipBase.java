@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.api.prefab.entity;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
@@ -16,6 +15,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -105,7 +105,8 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     {
         if (!this.worldObj.isRemote && !this.isDead)
         {
-            if (this.isEntityInvulnerable() || this.posY > 300)
+        	Entity e = par1DamageSource.getEntity(); 
+            if (this.isEntityInvulnerable() || this.posY > 300 || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)))
             {
                 return false;
             }
@@ -115,7 +116,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
                 this.setBeenAttacked();
                 this.shipDamage += par2 * 10;
 
-                if (par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer) par1DamageSource.getEntity()).capabilities.isCreativeMode)
+                if (e instanceof EntityPlayer && ((EntityPlayer) e).capabilities.isCreativeMode)
                 {
                     this.shipDamage = 100;
                 }
@@ -196,7 +197,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         if (this.addToTelemetry)
         {
         	this.addToTelemetry = false;
-			for (BlockVec3Dim vec : this.telemetryList)
+			for (BlockVec3Dim vec : new ArrayList<BlockVec3Dim>(this.telemetryList))
 			{
 				TileEntity t1 = vec.getTileEntity();
 				if (t1 instanceof TileEntityTelemetry && !t1.isInvalid())
@@ -368,7 +369,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     @Override
     public void getNetworkedData(ArrayList<Object> list)
     {
-        if (FMLCommonHandler.instance().getEffectiveSide() != Side.SERVER)
+        if (this.worldObj.isRemote)
         {
             new Exception().printStackTrace();
         }
@@ -417,7 +418,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         if (telemetryList.size() > 0)
         {
             NBTTagList teleNBTList = new NBTTagList();
-            for (BlockVec3Dim vec : this.telemetryList)
+            for (BlockVec3Dim vec : new ArrayList<BlockVec3Dim>(this.telemetryList))
             {
                 NBTTagCompound tag = new NBTTagCompound();
                 vec.writeToNBT(tag);
@@ -574,7 +575,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 	public ArrayList<TileEntityTelemetry> getTelemetry()
 	{
 		ArrayList<TileEntityTelemetry> returnList = new ArrayList<TileEntityTelemetry>();
-		for (BlockVec3Dim vec : this.telemetryList)
+		for (BlockVec3Dim vec : new ArrayList<BlockVec3Dim>(this.telemetryList))
 		{
 			TileEntity t1 = vec.getTileEntity();
 			if (t1 instanceof TileEntityTelemetry && !t1.isInvalid())

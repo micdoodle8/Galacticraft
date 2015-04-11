@@ -11,7 +11,9 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
@@ -50,7 +52,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
 
     public TileEntityMethaneSynthesizer()
     {
-        this.storage.setMaxExtract(30);
+        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 60 : 30);
         this.setTierGC(2);
     }
 
@@ -88,8 +90,11 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
                         Block blockAbove = this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord);
                         if (blockAbove != null && blockAbove.getMaterial() == Material.air && blockAbove!=GCBlocks.breatheableAir && blockAbove!=GCBlocks.brightBreatheableAir)
                         {
-                            FluidStack gcAtmosphere = FluidRegistry.getFluidStack("carbondioxide", 4);
-                            this.gasTank2.fill(gcAtmosphere, true);
+                            if (!OxygenUtil.inOxygenBubble(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1D, this.zCoord + 0.5D))
+                            {
+	                        	FluidStack gcAtmosphere = FluidRegistry.getFluidStack("carbondioxide", 4);
+	                            this.gasTank2.fill(gcAtmosphere, true);
+                            }
                         }
                     }
                 }
@@ -222,7 +227,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     {
         if (this.noCoal && this.coalPartial == 0)
         {
-            if (this.gasTank2.drain(1, true).amount < 1) return;
+            if (this.gasTank2.getFluid() == null || this.gasTank2.drain(1, true).amount < 1) return;
         }
         else
         {
@@ -490,16 +495,28 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public int receiveGas(ForgeDirection side, GasStack stack)
+    public int receiveGas(ForgeDirection side, GasStack stack, boolean doTransfer)
     {
     	if (!stack.getGas().getName().equals("hydrogen")) return 0;  
     	int used = 0;
         //System.out.println("Giving gas amount "+stack.amount);
         if (this.gasTank.getFluidAmount() < this.gasTank.getCapacity())
         {
-            used = this.gasTank.fill(FluidRegistry.getFluidStack("hydrogen", stack.amount), true);
+            used = this.gasTank.fill(FluidRegistry.getFluidStack("hydrogen", stack.amount), doTransfer);
         }
         return used;
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public int receiveGas(ForgeDirection side, GasStack stack)
+    {
+        return this.receiveGas(side, stack, true);
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public GasStack drawGas(ForgeDirection side, int amount, boolean doTransfer)
+    {
+        return null;
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")

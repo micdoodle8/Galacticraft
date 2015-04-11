@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.oxygen;
 
-import cpw.mods.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
@@ -8,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -136,11 +136,12 @@ public class ThreadFindSeal
             this.currentLayer.add(this.head);
             if (this.head.x < -29990000 || this.head.z < -29990000 || this.head.x >= 29990000 || this.head.z >= 29990000)
             {
-                if (Blocks.air == this.head.getBlockID_noChunkLoad(this.world))
+                Block b = this.head.getBlockID_noChunkLoad(this.world);
+            	if (Blocks.air == b)
                 {
                     this.airToReplace.add(this.head.clone());
                 }
-                if (this.head.getBlockID_noChunkLoad(this.world) == GCBlocks.brightAir)
+            	else if (b == GCBlocks.brightAir)
                 {
                     this.airToReplaceBright.add(this.head.clone());
                 }
@@ -153,7 +154,7 @@ public class ThreadFindSeal
                 {
                     this.airToReplace.add(this.head.clone());
                 }
-                if (headblock == GCBlocks.brightAir)
+                else if (headblock == GCBlocks.brightAir)
                 {
                     this.airToReplaceBright.add(this.head.clone());
                 }
@@ -261,7 +262,7 @@ public class ThreadFindSeal
                         {
                             if (ConfigManagerCore.enableDebug)
                             {
-                                FMLLog.info("Oxygen Sealer replacing head at x" + this.head.x + " y" + (this.head.y - 1) + " z" + this.head.z);
+                                GCLog.info("Oxygen Sealer replacing head at x" + this.head.x + " y" + (this.head.y - 1) + " z" + this.head.z);
                             }
                             if (!sealersSave.isEmpty())
                             {
@@ -381,13 +382,13 @@ public class ThreadFindSeal
         if (ConfigManagerCore.enableDebug)
         {
             long time3 = System.nanoTime();
-            FMLLog.info("Oxygen Sealer Check Completed at x" + this.head.x + " y" + this.head.y + " z" + this.head.z);
-            FMLLog.info("   Sealed: " + this.sealed);
-            FMLLog.info("   Loop Time taken: " + (time2 - time1) / 1000000.0D + "ms");
-            FMLLog.info("   Place Time taken: " + (time3 - time2) / 1000000.0D + "ms");
-            FMLLog.info("   Total Time taken: " + (time3 - time1) / 1000000.0D + "ms");
-            FMLLog.info("   Found: " + this.sealers.size() + " sealers");
-            FMLLog.info("   Looped through: " + this.checked.size() + " blocks");
+            GCLog.info("Oxygen Sealer Check Completed at x" + this.head.x + " y" + this.head.y + " z" + this.head.z);
+            GCLog.info("   Sealed: " + this.sealed);
+            GCLog.info("   Loop Time taken: " + (time2 - time1) / 1000000.0D + "ms");
+            GCLog.info("   Place Time taken: " + (time3 - time2) / 1000000.0D + "ms");
+            GCLog.info("   Total Time taken: " + (time3 - time1) / 1000000.0D + "ms");
+            GCLog.info("   Found: " + this.sealers.size() + " sealers");
+            GCLog.info("   Looped through: " + this.checked.size() + " blocks");
         }
 
         this.sealedFinal.set(this.sealed);

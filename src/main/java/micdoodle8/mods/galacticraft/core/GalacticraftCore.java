@@ -18,6 +18,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.blocks.BlockFluidGC;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.blocks.MaterialOleaginous;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiHandler;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GameScreenText;
 import micdoodle8.mods.galacticraft.core.command.*;
@@ -31,6 +32,7 @@ import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
 import micdoodle8.mods.galacticraft.core.network.ConnectionEvents;
+import micdoodle8.mods.galacticraft.core.network.ConnectionPacket;
 import micdoodle8.mods.galacticraft.core.network.GalacticraftChannelHandler;
 import micdoodle8.mods.galacticraft.core.proxy.CommonProxyCore;
 import micdoodle8.mods.galacticraft.core.recipe.RecipeManagerGC;
@@ -43,6 +45,9 @@ import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.world.gen.OreGenOtherMods;
 import micdoodle8.mods.galacticraft.core.world.gen.OverworldGenerator;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -57,14 +62,15 @@ import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
+
+import java.io.File;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 @Mod(name = GalacticraftCore.NAME, version = Constants.LOCALMAJVERSION + "." + Constants.LOCALMINVERSION + "." + Constants.LOCALBUILDVERSION, useMetadata = true, modid = Constants.MOD_ID_CORE, dependencies = "required-after:Forge@[10.12.2.1147,); required-after:FML@[7.2.217.1147,); required-after:Micdoodlecore; after:IC2; after:BuildCraft|Core; after:BuildCraft|Energy; after:IC2", guiFactory = "micdoodle8.mods.galacticraft.core.client.gui.screen.ConfigGuiFactoryCore")
 public class GalacticraftCore
@@ -108,12 +114,14 @@ public class GalacticraftCore
     public static Fluid gcFluidFuel;
     public static Fluid fluidOil;
     public static Fluid fluidFuel;
+	public static Material materialOil = new MaterialOleaginous(MapColor.brownColor);
 
     public static HashMap<String, ItemStack> itemList = new HashMap<String, ItemStack>();
     public static HashMap<String, ItemStack> blocksList = new HashMap<String, ItemStack>();
 
     public static ImageWriter jpgWriter;
     public static ImageWriteParam writeParam;
+    public static boolean enableJPEG = false;
     
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
@@ -126,43 +134,43 @@ public class GalacticraftCore
         MinecraftForge.EVENT_BUS.register(handler);
         FMLCommonHandler.instance().bus().register(handler);
         GalacticraftCore.proxy.preInit(event);
+        
+        ConnectionPacket.bus = NetworkRegistry.INSTANCE.newEventDrivenChannel(ConnectionPacket.CHANNEL);
+        ConnectionPacket.bus.register(new ConnectionPacket());
 
         ConfigManagerCore.initialize(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
-        FMLCommonHandler.instance().bus().register(new ConfigManagerCore());
         EnergyConfigHandler.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.POWER_CONFIG_FILE));
         ChunkLoadingCallback.loadConfig(new File(event.getModConfigurationDirectory(), GalacticraftCore.CHUNKLOADER_CONFIG_FILE));
 
-        GalacticraftCore.gcFluidOil = new Fluid("oil").setDensity(800).setViscosity(1500);
-        GalacticraftCore.gcFluidFuel = new Fluid("fuel").setDensity(400).setViscosity(900);
+        String nameOil = "oil";
+        String nameFuel = "fuel"; 
+        if (FluidRegistry.getFluid(nameOil) != null) nameOil = "oilgc";
+        if (FluidRegistry.getFluid(nameFuel) != null) nameFuel = "fuelgc";        
+        GalacticraftCore.gcFluidOil = new Fluid(nameOil).setDensity(800).setViscosity(1500);
+        GalacticraftCore.gcFluidFuel = new Fluid(nameFuel).setDensity(400).setViscosity(900);
         FluidRegistry.registerFluid(GalacticraftCore.gcFluidOil);
         FluidRegistry.registerFluid(GalacticraftCore.gcFluidFuel);
-        GalacticraftCore.fluidOil = FluidRegistry.getFluid("oil");
+        GalacticraftCore.gcFluidOil = FluidRegistry.getFluid(nameOil); 
+        GalacticraftCore.gcFluidFuel = FluidRegistry.getFluid(nameFuel);
+        GalacticraftCore.fluidOil = FluidRegistry.getFluid("oil"); 
         GalacticraftCore.fluidFuel = FluidRegistry.getFluid("fuel");
 
-        if (GalacticraftCore.fluidOil.getBlock() == null)
+        GCBlocks.crudeOilStill = new BlockFluidGC(GalacticraftCore.gcFluidOil, "oil");
+        ((BlockFluidGC) GCBlocks.crudeOilStill).setQuantaPerBlock(3);
+        GCBlocks.crudeOilStill.setBlockName("crudeOilStill");
+        GameRegistry.registerBlock(GCBlocks.crudeOilStill, ItemBlockGC.class, GCBlocks.crudeOilStill.getUnlocalizedName());
+        if (GalacticraftCore.gcFluidOil.getBlock() == null)
         {
-            GCBlocks.crudeOilStill = new BlockFluidGC(GalacticraftCore.fluidOil, "oil");
-            ((BlockFluidGC) GCBlocks.crudeOilStill).setQuantaPerBlock(3);
-            GCBlocks.crudeOilStill.setBlockName("crudeOilStill");
-            GameRegistry.registerBlock(GCBlocks.crudeOilStill, ItemBlockGC.class, GCBlocks.crudeOilStill.getUnlocalizedName());
-            GalacticraftCore.fluidOil.setBlock(GCBlocks.crudeOilStill);
-        }
-        else
-        {
-            GCBlocks.crudeOilStill = GalacticraftCore.fluidOil.getBlock();
+            GalacticraftCore.gcFluidOil.setBlock(GCBlocks.crudeOilStill);
         }
 
-        if (GalacticraftCore.fluidFuel.getBlock() == null)
+        GCBlocks.fuelStill = new BlockFluidGC(GalacticraftCore.gcFluidFuel, "fuel");
+        ((BlockFluidGC) GCBlocks.fuelStill).setQuantaPerBlock(6);
+        GCBlocks.fuelStill.setBlockName("fuel");
+        GameRegistry.registerBlock(GCBlocks.fuelStill, ItemBlockGC.class, GCBlocks.fuelStill.getUnlocalizedName());
+        if (GalacticraftCore.gcFluidFuel.getBlock() == null)
         {
-            GCBlocks.fuelStill = new BlockFluidGC(GalacticraftCore.fluidFuel, "fuel");
-            ((BlockFluidGC) GCBlocks.fuelStill).setQuantaPerBlock(6);
-            GCBlocks.fuelStill.setBlockName("fuel");
-            GameRegistry.registerBlock(GCBlocks.fuelStill, ItemBlockGC.class, GCBlocks.fuelStill.getUnlocalizedName());
-            GalacticraftCore.fluidFuel.setBlock(GCBlocks.fuelStill);
-        }
-        else
-        {
-            GCBlocks.fuelStill = GalacticraftCore.fluidFuel.getBlock();
+            GalacticraftCore.gcFluidFuel.setBlock(GCBlocks.fuelStill);
         }
 
         if (Loader.isModLoaded("PlayerAPI"))
@@ -220,6 +228,7 @@ public class GalacticraftCore
         ChunkPowerHandler.initiate();
         EnergyConfigHandler.initGas();
 
+        this.registerMicroBlocks();
         this.registerCreatures();
         this.registerOtherEntities();
         this.registerTileEntities();
@@ -265,7 +274,7 @@ public class GalacticraftCore
     	MinecraftForge.EVENT_BUS.register(new OreGenOtherMods());
     }
 
-    @EventHandler
+	@EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
         GalacticraftCore.planetMercury = makeUnreachablePlanet("mercury", GalacticraftCore.solarSystemSol);
@@ -322,10 +331,17 @@ public class GalacticraftCore
         TickHandlerServer.restart();
         BlockVec3.chunkCacheDim = Integer.MAX_VALUE;
         
-        jpgWriter = ImageIO.getImageWritersByFormatName("jpg").next();
-        writeParam = jpgWriter.getDefaultWriteParam();
-        writeParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-        writeParam.setCompressionQuality(1.0f);
+        try {
+	        jpgWriter = ImageIO.getImageWritersByFormatName("jpg").next();
+	        writeParam = jpgWriter.getDefaultWriteParam();
+	        writeParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+	        writeParam.setCompressionQuality(1.0f);
+	        enableJPEG = true;
+        } catch (Exception e)
+        {
+        	GCLog.severe("Error initialising JPEG compressor - this is likely caused by a known bug in OpenJDK.");
+        	e.printStackTrace();
+        }
     }
 
     @EventHandler
@@ -367,6 +383,37 @@ public class GalacticraftCore
         WorldUtil.unregisterSpaceStations();
     }
 
+    private void registerMicroBlocks()
+    {
+		try {
+			Class clazz = Class.forName("codechicken.microblock.MicroMaterialRegistry");
+			if (clazz != null)
+			{
+				Method registerMethod = null;
+				Method[] methodz = clazz.getMethods();
+				for (Method m : methodz)
+				{
+					if (m.getName().equals("registerMaterial"))
+					{
+						registerMethod = m;
+						break;
+					}
+				}
+				Class clazzbm = Class.forName("codechicken.microblock.BlockMicroMaterial");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 3), "tile.gcBlockCore.decoblock1");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 4), "tile.gcBlockCore.decoblock2");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 9), "tile.gcBlockCore.copperBlock");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 10), "tile.gcBlockCore.tinBlock");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 11), "tile.gcBlockCore.aluminumBlock");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 12), "tile.gcBlockCore.meteorironBlock");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.blockMoon, 3), "tile.moonBlock.moondirt");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.blockMoon, 4), "tile.moonBlock.moonstone");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.blockMoon, 5), "tile.moonBlock.moongrass");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.blockMoon, 14), "tile.moonBlock.bricks");
+			}
+		} catch (Exception e) {e.printStackTrace();}
+	}
+
     public void registerTileEntities()
     {
         GameRegistry.registerTileEntity(TileEntityTreasureChest.class, CompatibilityManager.isAIILoaded() ? "Space Treasure Chest" : "Treasure Chest");
@@ -391,6 +438,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(TileEntityCargoUnloader.class, "Cargo Unloader");
         GameRegistry.registerTileEntity(TileEntityParaChest.class, "Parachest Tile");
         GameRegistry.registerTileEntity(TileEntitySolar.class, "Galacticraft Solar Panel");
+        GameRegistry.registerTileEntity(TileEntityDish.class, "Radio Telescope");
         GameRegistry.registerTileEntity(TileEntityEnergyStorageModule.class, "Energy Storage Module");
         GameRegistry.registerTileEntity(TileEntityCoalGenerator.class, "Galacticraft Coal Generator");
         GameRegistry.registerTileEntity(TileEntityElectricFurnace.class, "Galacticraft Electric Furnace");
@@ -415,7 +463,7 @@ public class GalacticraftCore
         GCCoreUtil.registerGalacticraftCreature(EntityEvolvedCreeper.class, "EvolvedCreeper", 894731, 0);
         GCCoreUtil.registerGalacticraftCreature(EntityEvolvedSkeleton.class, "EvolvedSkeleton", 12698049, 4802889);
         GCCoreUtil.registerGalacticraftCreature(EntitySkeletonBoss.class, "EvolvedSkeletonBoss", 12698049, 4802889);
-        GCCoreUtil.registerGalacticraftCreature(EntityAlienVillager.class, "AlienVillager", GCCoreUtil.to32BitColor(255, 103, 145, 181), 12422002);
+        GCCoreUtil.registerGalacticraftCreature(EntityAlienVillager.class, "AlienVillager", ColorUtil.to32BitColor(255, 103, 145, 181), 12422002);
     }
 
     public void registerOtherEntities()

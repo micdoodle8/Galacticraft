@@ -2,14 +2,12 @@ package micdoodle8.mods.galacticraft.core.dimension;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -145,25 +143,6 @@ public class SpaceRaceManager
             objList.add(spaceRace.getFlagData());
             objList.add(spaceRace.getTeamColor());
             objList.add(spaceRace.getPlayerNames().toArray(new String[spaceRace.getPlayerNames().size()]));
-
-            if (ConfigManagerCore.enableDebug)
-            {
-	            for (Object o : objList)
-	            {
-	
-	                if (o instanceof String[])
-	                {
-	                    for (String s : (String[]) o)
-	                    {
-	                        System.out.println(s);
-	                    }
-	                }
-	                else
-	                {
-	                    System.out.println(o);
-	                }
-	            }
-            }
 
             if (toPlayer != null)
             {

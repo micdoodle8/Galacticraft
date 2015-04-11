@@ -30,7 +30,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.Iterator;
 import java.util.Random;
 
-@SuppressWarnings("SimplifiableConditionalExpression")
 public class BlockT1TreasureChest extends BlockContainer implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {
     private final Random random = new Random();

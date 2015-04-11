@@ -113,7 +113,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
             }
             else if (EnergyConfigHandler.isMekanismLoaded() && item instanceof IEnergizedItem && ((IEnergizedItem) item).canReceive(itemStack))
             {
-                this.storage.extractEnergyGC((float) EnergizedItemManager.charge(itemStack, energyToCharge * EnergyConfigHandler.TO_MEKANISM_RATIO) * EnergyConfigHandler.MEKANISM_RATIO, false);
+                this.storage.extractEnergyGC((float) EnergizedItemManager.charge(itemStack, energyToCharge * EnergyConfigHandler.TO_MEKANISM_RATIO) / EnergyConfigHandler.TO_MEKANISM_RATIO, false);
             }
             else if (EnergyConfigHandler.isIndustrialCraft2Loaded())
             {
@@ -140,7 +140,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
                             Method methodCharge = itemManagerIC2.getMethod("charge", ItemStack.class, double.class, int.class, boolean.class, boolean.class);
                             result = (Double) methodCharge.invoke(IC2manager, itemStack, (double) (energyToCharge * EnergyConfigHandler.TO_IC2_RATIO), this.tierGC + 1, false, false);
                         }
-                        float energy = (float) result * EnergyConfigHandler.IC2_RATIO;
+                        float energy = (float) result / EnergyConfigHandler.TO_IC2_RATIO;
                         this.storage.extractEnergyGC(energy, false);
                     }
                     else if (itemElectricIC2B.isInstance(item))
@@ -158,7 +158,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
                             Method methodCharge = itemManagerIC2.getMethod("charge", ItemStack.class, double.class, int.class, boolean.class, boolean.class);
                             result = (Double) methodCharge.invoke(IC2manager, itemStack, (double) (energyToCharge * EnergyConfigHandler.TO_IC2_RATIO), this.tierGC + 1, false, false);
                         }
-                        float energy = (float) result * EnergyConfigHandler.IC2_RATIO;
+                        float energy = (float) result / EnergyConfigHandler.TO_IC2_RATIO;
                         this.storage.extractEnergyGC(energy, false);
                     }
                 }
@@ -213,7 +213,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySource", modID = "IC2")
     public void drawEnergy(double amount)
     {
-        this.storage.extractEnergyGC((float) amount * EnergyConfigHandler.IC2_RATIO, false);
+        this.storage.extractEnergyGC((float) amount / EnergyConfigHandler.TO_IC2_RATIO, false);
     }
 
     @VersionSpecific(version = "[1.7.10]")
@@ -270,6 +270,6 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
     		return 0;
     	}
 
-    	return MathHelper.floor_float(this.storage.extractEnergyGC(maxExtract * EnergyConfigHandler.RF_RATIO, !simulate) * EnergyConfigHandler.TO_RF_RATIO);
+    	return MathHelper.floor_float(this.storage.extractEnergyGC(maxExtract / EnergyConfigHandler.TO_RF_RATIO, !simulate) * EnergyConfigHandler.TO_RF_RATIO);
     }
 }

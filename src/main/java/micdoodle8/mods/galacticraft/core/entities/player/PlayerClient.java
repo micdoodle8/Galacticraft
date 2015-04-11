@@ -26,12 +26,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -127,7 +122,11 @@ public class PlayerClient implements IPlayerClient
         {
             player.limbSwing -= player.limbSwingAmount;
             player.limbSwingAmount = player.prevLimbSwingAmount;
+        } else
+        {
+	    	if (stats.inFreefallLast) stats.landingTicks = 6;
         }
+        if (stats.landingTicks > 0) stats.landingTicks--;
 
         boolean ridingThirdPersonEntity = player.ridingEntity instanceof ICameraZoomEntity && ((ICameraZoomEntity) player.ridingEntity).defaultThirdPerson();
 

@@ -30,8 +30,10 @@ public class GCPlayerStatsClient implements IExtendedEntityProperties
     public double distanceSinceLastStep;
     public int lastStep;
     public boolean inFreefall;
+    public boolean inFreefallLast;
     public boolean inFreefallFirstCheck;
     public boolean lastRidingCameraZoomEntity;
+    public int landingTicks;
 
     public EnumGravity gdir = EnumGravity.down;
     public float gravityTurnRate;
@@ -65,10 +67,10 @@ public class GCPlayerStatsClient implements IExtendedEntityProperties
         this.gravityTurnVecZ = 0.0F;
         this.gravityTurnYaw = 0.0F;
 
-        switch (this.gdir.intValue)
+        switch (this.gdir.getIntValue())
         {
         case 1:
-            switch (newGravity.intValue)
+            switch (newGravity.getIntValue())
             {
             case 1:
                 break;
@@ -92,7 +94,7 @@ public class GCPlayerStatsClient implements IExtendedEntityProperties
 
             break;
         case 2:
-            switch (newGravity.intValue)
+            switch (newGravity.getIntValue())
             {
             case 1:
                 this.gravityTurnVecX = -2.0F;
@@ -116,7 +118,7 @@ public class GCPlayerStatsClient implements IExtendedEntityProperties
 
             break;
         case 3:
-            switch (newGravity.intValue)
+            switch (newGravity.getIntValue())
             {
             case 1:
                 this.gravityTurnVecY = 1.0F;
@@ -141,7 +143,7 @@ public class GCPlayerStatsClient implements IExtendedEntityProperties
 
             break;
         case 4:
-            switch (newGravity.intValue)
+            switch (newGravity.getIntValue())
             {
             case 1:
                 this.gravityTurnVecY = -1.0F;
@@ -166,7 +168,7 @@ public class GCPlayerStatsClient implements IExtendedEntityProperties
 
             break;
         case 5:
-            switch (newGravity.intValue)
+            switch (newGravity.getIntValue())
             {
             case 1:
                 this.gravityTurnVecX = -1.0F;
@@ -190,7 +192,7 @@ public class GCPlayerStatsClient implements IExtendedEntityProperties
 
             break;
         case 6:
-            switch (newGravity.intValue)
+            switch (newGravity.getIntValue())
             {
             case 1:
                 this.gravityTurnVecX = 1.0F;

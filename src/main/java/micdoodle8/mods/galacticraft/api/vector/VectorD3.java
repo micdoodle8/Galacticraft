@@ -8,7 +8,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class VectorD3
+public class VectorD3 implements Cloneable
 {
     public Vector3 position;
     public int dimensionID;

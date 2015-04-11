@@ -1,14 +1,17 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -41,6 +44,27 @@ public class RenderPlayerGC extends RenderPlayer
     }
 
     @Override
+    protected void rotateCorpse(EntityLivingBase entity, float x, float y, float z)
+    {
+    	if (entity instanceof EntityPlayer && Minecraft.getMinecraft().gameSettings.thirdPersonView != 0)
+    	{
+            final EntityPlayer player = (EntityPlayer)entity;
+
+            if (player.ridingEntity instanceof EntityTieredRocket)
+            {
+                EntityTieredRocket rocket = (EntityTieredRocket) player.ridingEntity;
+                GL11.glTranslatef(0, -rocket.getRotateOffset(), 0);
+                float anglePitch = rocket.prevRotationPitch;
+                float angleYaw = rocket.prevRotationYaw;
+                GL11.glRotatef(-angleYaw, 0.0F, 1.0F, 0.0F);
+                GL11.glRotatef(anglePitch, 0.0F, 0.0F, 1.0F);
+                GL11.glTranslatef(0, rocket.getRotateOffset(), 0);
+            }
+    	}
+    	super.rotateCorpse(entity, x, y, z);
+    }
+
+    @Override
     protected void renderModel(EntityLivingBase par1EntityLivingBase, float par2, float par3, float par4, float par5, float par6, float par7)
     {
         super.renderModel(par1EntityLivingBase, par2, par3, par4, par5, par6, par7);
@@ -66,7 +90,7 @@ public class RenderPlayerGC extends RenderPlayer
 
                     int padding = gearData.getThermalPadding(i);
 
-                    if (padding >= 0)
+                    if (padding >= 0 && !par1EntityLivingBase.isInvisible())
                     {
                         GL11.glColor4f(1, 1, 1, 1);
                         this.bindTexture(RenderPlayerGC.thermalPaddingTexture1);

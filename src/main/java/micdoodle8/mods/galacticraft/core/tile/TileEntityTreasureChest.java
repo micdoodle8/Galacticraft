@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.item.IKeyable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -196,7 +195,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements IInve
             final NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
             final int j = nbttagcompound1.getByte("Slot") & 255;
 
-            if (j >= 0 && j < this.chestContents.length)
+            if (j < this.chestContents.length)
             {
                 this.chestContents[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
             }
@@ -529,7 +528,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements IInve
     @Override
     public String getInventoryName()
     {
-        return FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT ? GCCoreUtil.translate("container.treasurechest.name") : GCCoreUtil.translate("container.treasurechest.name");
+        return GCCoreUtil.translate("container.treasurechest.name");
     }
 
     @Override

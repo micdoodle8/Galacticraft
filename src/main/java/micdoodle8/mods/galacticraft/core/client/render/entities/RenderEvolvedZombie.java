@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.core.items.ItemSensorGlasses;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelZombie;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -23,18 +22,18 @@ public class RenderEvolvedZombie extends RenderBiped
     private static final ResourceLocation zombieTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/zombie.png");
     private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/power.png");
 
-    private final ModelBase model = new ModelEvolvedZombie(0.2F);
+    private final ModelBase model = new ModelEvolvedZombie(0.2F, false, true);
 
     public RenderEvolvedZombie()
     {
-        super(new ModelEvolvedZombie(), 0.5F);
+        super(new ModelEvolvedZombie(true), 0.5F);
     }
 
     @Override
     protected void func_82421_b()
     {
-        this.field_82423_g = new ModelZombie(1.0F, true);
-        this.field_82425_h = new ModelZombie(0.5F, true);
+        this.field_82423_g = new ModelEvolvedZombie(1.0F, true, false);
+        this.field_82425_h = new ModelEvolvedZombie(0.5F, true, false);
     }
 
     @Override

@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.recipe.craftguide;
 
-import java.util.ArrayList;
-
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -11,6 +9,8 @@ import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import uristqwerty.CraftGuide.api.*;
+
+import java.util.ArrayList;
 
 public class CraftGuideCompressorRecipes implements RecipeProvider
 {

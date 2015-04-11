@@ -1,14 +1,14 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import java.util.Arrays;
-import java.util.List;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.IIcon;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class BlockStairsGC extends BlockStairs
 {
@@ -94,7 +94,7 @@ public class BlockStairsGC extends BlockStairs
 	{
 		String type = StairsCategoryGC.valueOf(block).type;
 
-		if (type == "wood")
+		if (type.equals("wood"))
 		{
 			return true;
 		}
@@ -105,7 +105,7 @@ public class BlockStairsGC extends BlockStairs
 	{
 		String type = StairsCategoryGC.valueOf(block).type;
 
-		if (type == "stone")
+		if (type.equals("stone"))
 		{
 			return true;
 		}

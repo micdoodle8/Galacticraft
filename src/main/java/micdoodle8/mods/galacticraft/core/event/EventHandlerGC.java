@@ -17,7 +17,7 @@ import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.FlipPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.Unlock;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
-import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -40,6 +40,7 @@ import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGravel;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.ISound;
@@ -62,14 +63,15 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenDesert;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.event.sound.PlaySoundEvent17;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.ZombieEvent.SummonAidEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
+import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
@@ -129,8 +131,11 @@ public class EventHandlerGC
     {
         if (event.source.damageType.equals(DamageSource.onFire.damageType))
         {
-            if (event.entityLiving.worldObj.provider instanceof IGalacticraftWorldProvider)
+            if (OxygenUtil.noAtmosphericCombustion(event.entityLiving.worldObj.provider))
             {
+    	        if (OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, event.entityLiving.boundingBox))
+    	        	return;
+
                 if (event.entityLiving.worldObj instanceof WorldServer)
                 {
                     ((WorldServer) event.entityLiving.worldObj).func_147487_a("smoke", event.entityLiving.posX, event.entityLiving.posY + event.entityLiving.boundingBox.maxY - event.entityLiving.boundingBox.minY, event.entityLiving.posZ, 50, 0.0, 0.05, 0.0, 0.001);
@@ -201,11 +206,11 @@ public class EventHandlerGC
                 }
             }
 
-            if (event.entityPlayer.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider) event.entityPlayer.worldObj.provider).isGasPresent(IAtmosphericGas.OXYGEN) && heldStack.getItem() instanceof ItemFlintAndSteel)
+            if (heldStack.getItem() instanceof ItemFlintAndSteel)
             {
                 if (!event.entity.worldObj.isRemote && event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK))
                 {
-                    if (idClicked != Blocks.tnt && !OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, AxisAlignedBB.getBoundingBox(event.x, event.y, event.z, event.x + 1, event.y + 2, event.z + 1)))
+                    if (idClicked != Blocks.tnt  && OxygenUtil.noAtmosphericCombustion(event.entityPlayer.worldObj.provider) && !OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, AxisAlignedBB.getBoundingBox(event.x, event.y, event.z, event.x + 1, event.y + 2, event.z + 1)))
                     {
                         event.setCanceled(true);
                     }
@@ -231,7 +236,7 @@ public class EventHandlerGC
         {
             if (!(event.entityLiving instanceof EntityPlayer))
             {
-                if ((!(event.entityLiving instanceof IEntityBreathable) || !((IEntityBreathable) event.entityLiving).canBreath()) && event.entityLiving.ticksExisted % 100 == 0)
+                if (event.entityLiving.ticksExisted % 100 == 0 && (!(event.entityLiving instanceof IEntityBreathable) || !((IEntityBreathable) event.entityLiving).canBreath()) && !((IGalacticraftWorldProvider)event.entityLiving.worldObj.provider).hasBreathableAtmosphere())
                 {
                     if (!OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving))
                     {
@@ -260,7 +265,10 @@ public class EventHandlerGC
 
         Block bcOilID1 = null;
         Block bcOilID2 = null;
+        Block bcFuelID1 = null;
+        Block bcFuelID2 = null;
         Item bcOilBucket = null;
+        Item bcFuelBucket = null;
 
         try
         {
@@ -276,9 +284,21 @@ public class EventHandlerGC
                     {
                         bcOilID2 = (Block) f.get(null);
                     }
+                    if (f.getName().equals("fuelMoving"))
+                    {
+                        bcFuelID1 = (Block) f.get(null);
+                    }
+                    else if (f.getName().equals("fuelStill"))
+                    {
+                        bcFuelID2 = (Block) f.get(null);
+                    }
                     else if (f.getName().equals("bucketOil"))
                     {
                         bcOilBucket = (Item) f.get(null);
+                    }
+                    else if (f.getName().equals("bucketFuel"))
+                    {
+                        bcFuelBucket = (Item) f.get(null);
                     }
                 }
             }
@@ -303,6 +323,12 @@ public class EventHandlerGC
             event.result = new ItemStack(bcOilBucket);
             event.setResult(Result.ALLOW);
         }
+        else if (bcFuelBucket != null && (blockID == bcFuelID1 || blockID == bcFuelID2 || blockID == GCBlocks.fuelStill) && event.world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0)
+        {
+            event.world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
+            event.result = new ItemStack(bcFuelBucket);
+            event.setResult(Result.ALLOW);
+        }
         else if ((blockID == GCBlocks.crudeOilStill || blockID == GCBlocks.fuelStill) && event.world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0)
         {
            event.setCanceled(true);
@@ -315,36 +341,42 @@ public class EventHandlerGC
     public void populate(PopulateChunkEvent.Post event)
     {
         final boolean doGen = TerrainGen.populate(event.chunkProvider, event.world, event.rand, event.chunkX, event.chunkZ, event.hasVillageGenerated, PopulateChunkEvent.Populate.EventType.CUSTOM);
+        
+        if (!doGen) return;
+        
+        final int worldX = event.chunkX << 4;
+        final int worldZ = event.chunkZ << 4;
+
+        EventHandlerGC.generateOil(event.world, event.rand, worldX + event.rand.nextInt(16), worldZ + event.rand.nextInt(16), false);
+    }
+
+    public static boolean oilPresent(World world, Random rand, int x, int z, BlockVec3 pos)
+    {
         boolean doGen2 = false;
 
         for (Integer dim : ConfigManagerCore.externalOilGen)
         {
-            if (dim == event.world.provider.dimensionId)
+            if (dim == world.provider.dimensionId)
             {
                 doGen2 = true;
                 break;
             }
         }
 
-        if (!doGen || !(event.world.provider instanceof IGalacticraftWorldProvider) && !doGen2)
-        {
-            return;
-        }
-
-        final int worldX = event.chunkX << 4;
-        final int worldZ = event.chunkZ << 4;
-
-        EventHandlerGC.doPopulate(event.world, event.rand, worldX + event.rand.nextInt(16), worldZ + event.rand.nextInt(16));
-    }
-
-    public static void doPopulate(World world, Random rand, int x, int z)
-    {
-        final BiomeGenBase biomegenbase = world.getBiomeGenForCoords(x + 16, z + 16);
+        if (!doGen2)
+            return false;
+        
+        final BiomeGenBase biomegenbase = world.getBiomeGenForCoords(x + 8, z + 8);
 
         if (biomegenbase.biomeID == BiomeGenBase.sky.biomeID || biomegenbase.biomeID == BiomeGenBase.hell.biomeID)
         {
-            return;
+            return false;
         }
+
+        rand.setSeed(world.getSeed());
+        long i1 = rand.nextInt() / 2L * 2L + 1L;
+        long j1 = rand.nextInt() / 2L * 2L + 1L;
+        rand.setSeed(x * i1 + z * j1 ^ world.getSeed());
 
         double randMod = Math.min(0.2D, 0.08D * ConfigManagerCore.oilGenFactor);
 
@@ -366,12 +398,29 @@ public class EventHandlerGC
 
         if (flag1 || flag2)
         {
-            int cy = 17 + rand.nextInt(15);
+            pos.y = 17 + rand.nextInt(10) + rand.nextInt(5);
+            pos.x = x + rand.nextInt(16);
+            pos.z = z + rand.nextInt(16);
+            return true;
+        }
+        
+       	return false;
+    }
 
-            final int r = 3 + rand.nextInt(5);
+    public static void generateOil(World world, Random rand, int xx, int zz, boolean testFirst)
+    {
+    	BlockVec3 pos = new BlockVec3();
+    	if (oilPresent(world, rand, xx, zz, pos))
+    	{
+            int x = pos.x;
+            int cy = pos.y;
+            int z = pos.z;
+            int r = 3 + rand.nextInt(5);
+            
+    		if (testFirst && checkOilPresent(world, x, cy, z, r)) return;
 
             final int r2 = r * r;
-
+            
             for (int bx = -r; bx <= r; bx++)
             {
                 for (int by = -r + 2; by <= r - 2; by++)
@@ -383,29 +432,17 @@ public class EventHandlerGC
                         if (d2 <= r2)
                         {
                             if (EventHandlerGC.checkBlock(world, bx + x - 1, by + cy, bz + z))
-                            {
                                 continue;
-                            }
                             if (EventHandlerGC.checkBlock(world, bx + x + 1, by + cy, bz + z))
-                            {
                                 continue;
-                            }
                             if (EventHandlerGC.checkBlock(world, bx + x, by + cy - 1, bz + z))
-                            {
                                 continue;
-                            }
                             if (EventHandlerGC.checkBlock(world, bx + x, by + cy, bz + z - 1))
-                            {
                                 continue;
-                            }
                             if (EventHandlerGC.checkBlock(world, bx + x, by + cy, bz + z + 1))
-                            {
                                 continue;
-                            }
                             if (EventHandlerGC.checkBlockAbove(world, bx + x, by + cy + 1, bz + z))
-                            {
                                 continue;
-                            }
 
                             world.setBlock(bx + x, by + cy, bz + z, GCBlocks.crudeOilStill, 0, 2);
                         }
@@ -415,22 +452,59 @@ public class EventHandlerGC
         }
     }
 
-    private static boolean checkBlock(World w, int x, int y, int z)
+    private static boolean checkOilPresent(World world, int x, int cy, int z, int r)
+    {
+        final int r2 = r * r;
+        
+        for (int bx = -r; bx <= r; bx++)
+        {
+            for (int by = -r + 2; by <= r - 2; by++)
+            {
+                for (int bz = -r; bz <= r; bz++)
+                {
+                    final int d2 = bx * bx + by * by * 3 + bz * bz;
+
+                    if (d2 <= r2)
+                    {
+                        if (EventHandlerGC.checkBlock(world, bx + x - 1, by + cy, bz + z))
+                            continue;
+                        if (EventHandlerGC.checkBlock(world, bx + x + 1, by + cy, bz + z))
+                            continue;
+                        if (EventHandlerGC.checkBlock(world, bx + x, by + cy - 1, bz + z))
+                            continue;
+                        if (EventHandlerGC.checkBlock(world, bx + x, by + cy, bz + z - 1))
+                            continue;
+                        if (EventHandlerGC.checkBlock(world, bx + x, by + cy, bz + z + 1))
+                            continue;
+                        if (EventHandlerGC.checkBlockAbove(world, bx + x, by + cy + 1, bz + z))
+                            continue;
+
+                        if (world.getBlock(bx + x, by + cy, bz + z) == GCBlocks.crudeOilStill)
+                        	return true;
+                    }
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+	public static void retrogenOil(World world, Chunk chunk)
+	{
+		int cx = chunk.xPosition;
+		int cz = chunk.zPosition;
+
+		generateOil(world, new Random(), cx << 4, cz << 4, true);
+	}
+
+	private static boolean checkBlock(World w, int x, int y, int z)
     {
         Block b = w.getBlock(x, y, z);
         if (b.getMaterial() == Material.air)
         {
             return true;
         }
-        if (b == Blocks.water || b == Blocks.flowing_water)
-        {
-            return true;
-        }
-        if (b == Blocks.lava || b == Blocks.flowing_lava)
-        {
-            return true;
-        }
-        return false;
+        return b instanceof BlockLiquid && b != GCBlocks.crudeOilStill;
     }
 
     private static boolean checkBlockAbove(World w, int x, int y, int z)
@@ -756,4 +830,5 @@ public class EventHandlerGC
     public static class OrientCameraEvent extends Event
     {
     }
+
 }

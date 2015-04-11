@@ -68,22 +68,12 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, Ite
         Block block = par1World.getBlock(par2, par3 - 1, par4);
         return block.isSideSolid(par1World, par2, par3, par4, ForgeDirection.UP);
     }
-
-    @Override
-    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z)
+    
+    private boolean beginHatch(World world, int x, int y, int z, EntityPlayer player)
     {
-        ItemStack currentStack = player.getCurrentEquippedItem();
         int l = world.getBlockMetadata(x, y, z);
 
-        if (currentStack != null && currentStack.getItem() instanceof ItemPickaxe)
-        {
-            return world.setBlockToAir(x, y, z);
-        }
-        else if (player.capabilities.isCreativeMode)
-        {
-            return world.setBlockToAir(x, y, z);
-        }
-        else if (l < 3)
+        if (l < 3)
         {
             world.setBlockMetadataWithNotify(x, y, z, l + 3, 2);
 
@@ -96,12 +86,36 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, Ite
                 ((TileEntitySlimelingEgg) tile).lastTouchedPlayerName = player.getCommandSenderName();
             }
 
-            return false;
+            return true;
         }
         else
         {
             return false;
         }
+    }
+
+    @Override
+    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest)
+    {
+        ItemStack currentStack = player.getCurrentEquippedItem();
+    	if (currentStack != null && currentStack.getItem() instanceof ItemPickaxe)
+	    {
+	        return world.setBlockToAir(x, y, z);
+	    }
+	    else if (player.capabilities.isCreativeMode)
+	    {
+	        return world.setBlockToAir(x, y, z);
+	    }
+	    else 
+	    {
+	    	beginHatch(world, x, y, z, player);
+	    	return false;
+	    }
+    }
+
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
+    {
+    	return beginHatch(world, x, y, z, player);
     }
 
     @Override

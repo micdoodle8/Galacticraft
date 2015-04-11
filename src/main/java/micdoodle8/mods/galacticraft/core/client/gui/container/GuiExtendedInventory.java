@@ -8,12 +8,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+
+import cpw.mods.fml.common.Loader;
 import tconstruct.client.tabs.TabRegistry;
 
 public class GuiExtendedInventory extends InventoryEffectRenderer
@@ -32,6 +34,7 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
+        GuiExtendedInventory.drawPlayerOnGui(this.mc, 33, 75, 29, 51 - this.xSize_lo_2, 75 - 50 - this.ySize_lo_2);
     }
 
     @SuppressWarnings("unchecked")
@@ -41,6 +44,7 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         super.initGui();
         
         this.guiLeft = (this.width - this.xSize) / 2;
+		this.guiLeft += getPotionOffset();
 
         int cornerX = this.guiLeft;
         int cornerY = this.guiTop;
@@ -74,7 +78,6 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         final int k = this.guiLeft;
         final int l = this.guiTop;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
-        GuiExtendedInventory.drawPlayerOnGui(this.mc, k + 33, l + 75, 29, k + 51 - this.xSize_lo_2, l + 75 - 50 - this.ySize_lo_2);
     }
 
     @Override
@@ -87,7 +90,6 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
 
     public static void drawPlayerOnGui(Minecraft par0Minecraft, int par1, int par2, int par3, float par4, float par5)
     {
-        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
         GL11.glPushMatrix();
         GL11.glTranslatef(par1, par2, 50.0F);
         GL11.glScalef(-par3, par3, par3);
@@ -98,7 +100,6 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         float f5 = par0Minecraft.thePlayer.rotationYawHead;
         par4 -= 19;
         GL11.glRotatef(135.0F, 0.0F, 1.0F, 0.0F);
-        RenderHelper.enableStandardItemLighting();
         GL11.glRotatef(-135.0F, 0.0F, 1.0F, 0.0F);
         // GL11.glRotatef(-((float) Math.atan(par5 / 40.0F)) * 20.0F, 1.0F,
         // 0.0F, 0.0F);
@@ -106,6 +107,7 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         par0Minecraft.thePlayer.rotationYaw = (float) Math.atan(par4 / 40.0F) * 40.0F;
         par0Minecraft.thePlayer.rotationYaw = GuiExtendedInventory.rotation;
         par0Minecraft.thePlayer.rotationYawHead = par0Minecraft.thePlayer.rotationYaw;
+        par0Minecraft.thePlayer.rotationPitch = (float)Math.sin(par0Minecraft.getSystemTime() / 500.0F) * 3.0F;
         GL11.glTranslatef(0.0F, par0Minecraft.thePlayer.yOffset, 0.0F);
         RenderManager.instance.playerViewY = 180.0F;
         RenderManager.instance.renderEntityWithPosYaw(par0Minecraft.thePlayer, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
@@ -114,10 +116,46 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         par0Minecraft.thePlayer.rotationPitch = f4;
         par0Minecraft.thePlayer.rotationYawHead = f5;
         GL11.glPopMatrix();
-        RenderHelper.disableStandardItemLighting();
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
+	
+	public static int getPotionOffset()
+	{
+		// If at least one potion is active...
+		if (!Minecraft.getMinecraft().thePlayer.getActivePotionEffects().isEmpty())
+		{
+			if (Loader.isModLoaded("NotEnoughItems"))
+			{
+				try 
+				{
+					// Check whether NEI is hidden and enabled
+					Class<?> c = Class.forName("codechicken.nei.NEIClientConfig");
+					Object hidden = c.getMethod("isHidden").invoke(null);
+					Object enabled = c.getMethod("isEnabled").invoke(null);
+					if (hidden != null && hidden instanceof Boolean && enabled != null && enabled instanceof Boolean)
+					{
+						if ((Boolean)hidden || !((Boolean)enabled))
+						{
+							// If NEI is disabled or hidden, offset the tabs by 60 
+							return 60;
+						}
+					}
+				} 
+				catch (Exception e) 
+				{
+				}
+			}
+			else
+			{
+				// If NEI is not installed, offset the tabs 
+				return 60;
+			}
+		}
+		
+		// No potions, no offset needed
+		return 0;
+	}
 }

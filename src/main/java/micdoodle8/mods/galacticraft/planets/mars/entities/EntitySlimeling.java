@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.entities;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -9,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.VersionUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModuleClient;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.InventorySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
@@ -32,10 +31,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 
 public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 {
@@ -395,7 +397,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
                             par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, (ItemStack) null);
                         }
 
-                        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+                        if (this.worldObj.isRemote)
                         {
                             MarsModuleClient.openSlimelingGui(this, 1);
                         }
@@ -420,7 +422,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
                 }
                 else
                 {
-                    if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+                    if (this.worldObj.isRemote)
                     {
                         MarsModuleClient.openSlimelingGui(this, 0);
                     }
@@ -428,7 +430,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
             }
             else
             {
-                if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+                if (this.worldObj.isRemote)
                 {
                     MarsModuleClient.openSlimelingGui(this, 0);
                 }
@@ -760,5 +762,27 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
         {
             this.isSitting = isSitting;
         }
+    }
+    
+    @Override
+    protected void jump()
+    {
+        this.motionY = 0.48D / WorldUtil.getGravityFactor(this);
+        if (this.motionY < 0.28D) this.motionY = 0.28D;
+
+        if (this.isPotionActive(Potion.jump))
+        {
+            this.motionY += (this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F;
+        }
+
+        if (this.isSprinting())
+        {
+            float f = this.rotationYaw * 0.017453292F;
+            this.motionX -= MathHelper.sin(f) * 0.2F;
+            this.motionZ += MathHelper.cos(f) * 0.2F;
+        }
+
+        this.isAirBorne = true;
+        ForgeHooks.onLivingJump(this);
     }
 }

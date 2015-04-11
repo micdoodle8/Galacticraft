@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -14,6 +13,8 @@ import micdoodle8.mods.galacticraft.core.network.PacketEntityUpdate;
 import micdoodle8.mods.galacticraft.core.network.PacketEntityUpdate.IEntityFullSync;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
@@ -157,34 +158,42 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
         }
         else
         {
-            this.rockDirection = -this.rockDirection;
-            this.timeSinceHit = 10;
-            this.currentDamage = this.currentDamage + var2 * 10;
-            this.setBeenAttacked();
-
-            if (var1.getEntity() instanceof EntityPlayer && ((EntityPlayer) var1.getEntity()).capabilities.isCreativeMode)
+        	Entity e = var1.getEntity(); 
+            if (this.isEntityInvulnerable() || this.posY > 300 || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)))
             {
-                this.currentDamage = 100;
+                return false;
             }
-
-            if (this.currentDamage > 70)
+            else
             {
-                if (this.riddenByEntity != null)
-                {
-                    this.riddenByEntity.mountEntity(this);
-
-                    return false;
-                }
-
-                if (!this.worldObj.isRemote)
-                {
-                    this.dropItems();
-
-                    this.setDead();
-                }
+	        	this.rockDirection = -this.rockDirection;
+	            this.timeSinceHit = 10;
+	            this.currentDamage = this.currentDamage + var2 * 10;
+	            this.setBeenAttacked();
+	
+	            if (e instanceof EntityPlayer && ((EntityPlayer) e).capabilities.isCreativeMode)
+	            {
+	                this.currentDamage = 100;
+	            }
+	
+	            if (this.currentDamage > 70)
+	            {
+	                if (this.riddenByEntity != null)
+	                {
+	                    this.riddenByEntity.mountEntity(this);
+	
+	                    return false;
+	                }
+	
+	                if (!this.worldObj.isRemote)
+	                {
+	                    this.dropItems();
+	
+	                    this.setDead();
+	                }
+	            }
+	
+	            return true;
             }
-
-            return true;
         }
     }
 
@@ -327,7 +336,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
             this.currentDamage--;
         }
 
-        if (this.shouldSpawnParticles() && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        if (this.shouldSpawnParticles() && this.worldObj.isRemote)
         {
             this.spawnParticles(this.getParticleMap());
         }

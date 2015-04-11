@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -12,8 +13,6 @@ import net.minecraft.server.MinecraftServer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.UUID;
-
-import com.mojang.authlib.GameProfile;
 
 public class PlayerUtil
 {

@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -19,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
@@ -43,10 +41,14 @@ public class ItemBlockDesc extends ItemBlockGC
     {
         if (!world.isRemote) return;
 
-        if (this.field_150939_a == GCBlocks.fuelLoader) 
-        	ClientProxyCore.playerClientHandler.onBuild(4, (EntityPlayerSP) player);
-        else if (this.field_150939_a == GCBlocks.fuelLoader) 
-        	ClientProxyCore.playerClientHandler.onBuild(6, (EntityPlayerSP) player);
+    	//The player could be a FakePlayer made by another mod e.g. LogisticsPipes
+    	if (player instanceof EntityPlayerSP)
+    	{
+	        if (this.field_150939_a == GCBlocks.fuelLoader) 
+	        	ClientProxyCore.playerClientHandler.onBuild(4, (EntityPlayerSP) player);
+	        else if (this.field_150939_a == GCBlocks.fuelLoader) 
+	        	ClientProxyCore.playerClientHandler.onBuild(6, (EntityPlayerSP) player);
+    	}
     }
     
     @Override
@@ -64,7 +66,7 @@ public class ItemBlockDesc extends ItemBlockGC
                 if (this.field_150939_a instanceof BlockTileGC)
                 {
                     TileEntity te = ((BlockTileGC) this.field_150939_a).createTileEntity(null, stack.getItemDamage() & 12);
-                    if (te instanceof TileBaseElectricBlock && !(te instanceof TileEntityEnergyStorageModule))
+                    if (te instanceof TileBaseElectricBlock)
                     {
                         float powerDrawn = ((TileBaseElectricBlock) te).storage.getMaxExtract();
                         if (powerDrawn > 0)

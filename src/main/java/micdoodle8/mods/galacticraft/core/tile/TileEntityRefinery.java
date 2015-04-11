@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithIn
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.items.ItemOilCanister;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.init.Items;
@@ -33,7 +34,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
 
     public TileEntityRefinery()
     {
-        this.storage.setMaxExtract(60);
+        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 60);
     }
 
     @Override
@@ -47,31 +48,41 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
             {
                 FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(this.containingItems[1]);
 
-                if (liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("Oil"))
+                if (liquid != null)
                 {
-                    if (this.oilTank.getFluid() == null || this.oilTank.getFluid().amount + liquid.amount <= this.oilTank.getCapacity())
-                    {
-                        this.oilTank.fill(liquid, true);
-
-                        if (this.containingItems[1].getItem() instanceof ItemOilCanister)
-                        {
-                            this.containingItems[1] = new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage());
-                        }
-                        else if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
-                        {
-                            final int amount = this.containingItems[1].stackSize;
-                            this.containingItems[1] = new ItemStack(Items.bucket, amount);
-                        }
-                        else
-                        {
-                            this.containingItems[1].stackSize--;
-
-                            if (this.containingItems[1].stackSize == 0)
-                            {
-                                this.containingItems[1] = null;
-                            }
-                        }
-                    }
+                	boolean isOil = false;
+	                boolean isOilOther = false;
+	                if (FluidRegistry.getFluidName(liquid).equalsIgnoreCase("oil")) isOil = true;
+	                if (FluidRegistry.getFluidName(liquid).equalsIgnoreCase("oilgc")) isOilOther = true;
+	
+	                if (isOil || isOilOther)
+	                {
+	                    if (this.oilTank.getFluid() == null || this.oilTank.getFluid().amount + liquid.amount <= this.oilTank.getCapacity())
+	                    {
+	                        if (isOil) this.oilTank.fill(liquid, true);
+	                        else this.oilTank.fill(new FluidStack(GalacticraftCore.fluidOil, liquid.amount), true);
+	
+	                        if (this.containingItems[1].getItem() instanceof ItemOilCanister)
+	                        {
+	                            this.containingItems[1] = new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage());
+	                        }
+	                        else if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
+	                        {
+	                            final int amount = this.containingItems[1].stackSize;
+	                            if (amount > 1) this.oilTank.fill(new FluidStack(GalacticraftCore.fluidOil, (amount - 1) * FluidContainerRegistry.BUCKET_VOLUME), true);
+	                            this.containingItems[1] = new ItemStack(Items.bucket, amount);
+	                        }
+	                        else
+	                        {
+	                            this.containingItems[1].stackSize--;
+	
+	                            if (this.containingItems[1].stackSize == 0)
+	                            {
+	                                this.containingItems[1] = null;
+	                            }
+	                        }
+	                    }
+	                }
                 }
             }
 
@@ -116,15 +127,18 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
         }
     }
 
-    private void tryFillContainer(FluidTank tank, FluidStack liquid, int slot, Item canister)
+    private void tryFillContainer(FluidTank tank, FluidStack liquid, int slot, Item fuelCanister)
     {
         ItemStack slotItem = this.containingItems[slot];
-        boolean isCanister = slotItem.getItem() instanceof ItemCanisterGeneric && slotItem.getItemDamage() > 1;
-        final int amountToFill = Math.min(liquid.amount, isCanister ? slotItem.getItemDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
+		boolean isCanister = slotItem.getItem() instanceof ItemCanisterGeneric;
+		final int amountToFill = Math.min(liquid.amount, isCanister ? slotItem.getItemDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
 
-        if (isCanister && amountToFill > 0)
+		if (amountToFill <= 0 || (isCanister && slotItem.getItem() != fuelCanister && slotItem.getItemDamage() != slotItem.getMaxDamage()))
+			return;
+		
+		if (isCanister)
         {
-            this.containingItems[slot] = new ItemStack(canister, 1, slotItem.getItemDamage() - amountToFill);
+            this.containingItems[slot] = new ItemStack(fuelCanister, 1, slotItem.getItemDamage() - amountToFill);
             tank.drain(amountToFill, true);
         }
         else if (amountToFill == FluidContainerRegistry.BUCKET_VOLUME)
@@ -365,10 +379,14 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
         {
             final String liquidName = FluidRegistry.getFluidName(resource);
 
-            if (liquidName != null && liquidName.equalsIgnoreCase("Oil"))
+            if (liquidName != null && liquidName.equalsIgnoreCase("oil"))
             {
                 used = this.oilTank.fill(resource, doFill);
-            }
+            } else
+            if (liquidName != null && liquidName.equalsIgnoreCase("oilgc"))
+            {
+                used = this.oilTank.fill(new FluidStack(GalacticraftCore.fluidOil, resource.amount), doFill);
+            }            	
         }
 
         return used;

@@ -43,6 +43,7 @@ public class GCBlocks
     public static Block cargoLoader;
     public static Block parachest;
     public static Block solarPanel;
+    public static Block radioTelescope;
     public static Block machineBase;
     public static Block machineBase2;
     public static Block machineTiered;
@@ -60,14 +61,14 @@ public class GCBlocks
     public static Block moonStoneStairs;
     public static Block moonBricksStairs;
     public static Block wallGC;
-
+	
     public static final Material machine = new Material(MapColor.ironColor);
 
     public static ArrayList<Block> hiddenBlocks = new ArrayList<Block>();
 
     public static void initBlocks()
     {
-        GCBlocks.breatheableAir = new BlockBreathableAir("breatheableAir");
+    	GCBlocks.breatheableAir = new BlockBreathableAir("breatheableAir");
         GCBlocks.brightAir = new BlockBrightAir("brightAir");
         GCBlocks.brightBreatheableAir = new BlockBrightBreathableAir("brightBreathableAir");
         GCBlocks.brightLamp = new BlockBrightLamp("arclamp");
@@ -95,6 +96,7 @@ public class GCBlocks
         GCBlocks.cargoLoader = new BlockCargoLoader("cargo");
         GCBlocks.parachest = new BlockParaChest("parachest");
         GCBlocks.solarPanel = new BlockSolar("solar");
+        GCBlocks.radioTelescope = new BlockDish("dish");
         GCBlocks.machineBase = new BlockMachine("machine");
         GCBlocks.machineBase2 = new BlockMachine2("machine2");
         GCBlocks.machineTiered = new BlockMachineTiered("machineTiered");
@@ -147,6 +149,7 @@ public class GCBlocks
         GCCoreUtil.registerGalacticraftBlock("coalGenerator", GCBlocks.machineBase, 0);
         GCCoreUtil.registerGalacticraftBlock("solarPanelBasic", GCBlocks.solarPanel, 0);
         GCCoreUtil.registerGalacticraftBlock("solarPanelAdvanced", GCBlocks.solarPanel, 4);
+        GCCoreUtil.registerGalacticraftBlock("radioTelescope", GCBlocks.radioTelescope, 0);
         GCCoreUtil.registerGalacticraftBlock("energyStorageModule", GCBlocks.machineTiered, 0);
         GCCoreUtil.registerGalacticraftBlock("electricFurnace", GCBlocks.machineTiered, 4);
         GCCoreUtil.registerGalacticraftBlock("ingotCompressor", GCBlocks.machineBase, 12);
@@ -267,6 +270,7 @@ public class GCBlocks
         GameRegistry.registerBlock(GCBlocks.fakeBlock, ItemBlockDummy.class, GCBlocks.fakeBlock.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.parachest, ItemBlockDesc.class, GCBlocks.parachest.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.solarPanel, ItemBlockSolar.class, GCBlocks.solarPanel.getUnlocalizedName());
+        GameRegistry.registerBlock(GCBlocks.radioTelescope, ItemBlockGC.class, GCBlocks.radioTelescope.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.machineBase, ItemBlockMachine.class, GCBlocks.machineBase.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.machineBase2, ItemBlockMachine.class, GCBlocks.machineBase2.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.machineTiered, ItemBlockMachine.class, GCBlocks.machineTiered.getUnlocalizedName());

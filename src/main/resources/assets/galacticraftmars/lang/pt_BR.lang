@@ -173,8 +173,8 @@ schematic.cargoRocket.name=Foguete de Carga Automático
 entity.Sludgeling.name=Sludgeling
 entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Creeper-Chefe Evoluído
-entity.GalacticraftMars.SpaceshipT2.name=Foguete Nível 2
-entity.GalacticraftMars.CargoRocket.name=Foguete de Carga
+entity.SpaceshipT2.name=Foguete Nível 2
+entity.CargoRocket.name=Foguete de Carga
 
 # CONTAINERS
 container.launchcontroller.name=Controle de Lançamentos

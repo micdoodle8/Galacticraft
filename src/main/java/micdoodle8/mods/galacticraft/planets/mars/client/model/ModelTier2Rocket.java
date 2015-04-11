@@ -29,6 +29,9 @@ public class ModelTier2Rocket extends ModelBase
         this.textureWidth = 256;
         this.textureHeight = 256;
 
+        float halfPI = (float)(Math.PI / 2.0);
+        float fullPI = (float)(Math.PI);
+
         this.inside[0] = new ModelRenderer(this, 0, 59);
         this.inside[0].addBox(-9F, -57F, -9F, 18, 1, 18, var1);
         this.inside[0].setRotationPoint(0F, 23F, 0F);
@@ -290,19 +293,19 @@ public class ModelTier2Rocket extends ModelBase
         this.boosters[0][0].setRotationPoint(0F, 24F, 0F);
         this.boosters[0][0].setTextureSize(256, 256);
         this.boosters[0][0].mirror = true;
-        this.setStartingAngles(this.boosters[0][0], 0F, -1.570796F, 0F);
+        this.setStartingAngles(this.boosters[0][0], 0F, -halfPI, 0F);
         this.boosters[0][1] = new ModelRenderer(this, 154, 6);
         this.boosters[0][1].addBox(-14.9F, -11F, -2.5F, 5, 8, 5, var1);
         this.boosters[0][1].setRotationPoint(0F, 24F, 0F);
         this.boosters[0][1].setTextureSize(256, 256);
         this.boosters[0][1].mirror = true;
-        this.setStartingAngles(this.boosters[0][1], 0F, -1.570796F, 0F);
+        this.setStartingAngles(this.boosters[0][1], 0F, -halfPI, 0F);
         this.boosters[0][2] = new ModelRenderer(this, 154, 0);
         this.boosters[0][2].addBox(-14.4F, -13F, -2F, 4, 2, 4, var1);
         this.boosters[0][2].setRotationPoint(0F, 24F, 0F);
         this.boosters[0][2].setTextureSize(256, 256);
         this.boosters[0][2].mirror = true;
-        this.setStartingAngles(this.boosters[0][2], 0F, -1.570796F, 0F);
+        this.setStartingAngles(this.boosters[0][2], 0F, -halfPI, 0F);
 
         this.boosters[1][0] = new ModelRenderer(this, 154, 19);
         this.boosters[1][0].addBox(-10.9F, -10F, -0.5F, 3, 5, 1, var1);
@@ -328,38 +331,38 @@ public class ModelTier2Rocket extends ModelBase
         this.boosters[2][0].setRotationPoint(0F, 24F, 0F);
         this.boosters[2][0].setTextureSize(256, 256);
         this.boosters[2][0].mirror = true;
-        this.setStartingAngles(this.boosters[2][0], 0F, 1.570796F, 0F);
+        this.setStartingAngles(this.boosters[2][0], 0F, halfPI, 0F);
         this.boosters[2][1] = new ModelRenderer(this, 154, 6);
         this.boosters[2][1].addBox(-14.9F, -11F, -2.5F, 5, 8, 5, var1);
         this.boosters[2][1].setRotationPoint(0F, 24F, 0F);
         this.boosters[2][1].setTextureSize(256, 256);
         this.boosters[2][1].mirror = true;
-        this.setStartingAngles(this.boosters[2][1], 0F, 1.570796F, 0F);
+        this.setStartingAngles(this.boosters[2][1], 0F, halfPI, 0F);
         this.boosters[2][2] = new ModelRenderer(this, 154, 0);
         this.boosters[2][2].addBox(-14.4F, -13F, -2F, 4, 2, 4, var1);
         this.boosters[2][2].setRotationPoint(0F, 24F, 0F);
         this.boosters[2][2].setTextureSize(256, 256);
         this.boosters[2][2].mirror = true;
-        this.setStartingAngles(this.boosters[2][2], 0F, 1.570796F, 0F);
+        this.setStartingAngles(this.boosters[2][2], 0F, halfPI, 0F);
 
         this.boosters[3][0] = new ModelRenderer(this, 154, 19);
         this.boosters[3][0].addBox(-10.9F, -10F, -0.5F, 3, 5, 1, var1);
         this.boosters[3][0].setRotationPoint(0F, 24F, 0F);
         this.boosters[3][0].setTextureSize(256, 256);
         this.boosters[3][0].mirror = true;
-        this.setStartingAngles(this.boosters[3][0], 0F, 3.141593F, 0F);
+        this.setStartingAngles(this.boosters[3][0], 0F, fullPI, 0F);
         this.boosters[3][1] = new ModelRenderer(this, 154, 6);
         this.boosters[3][1].addBox(-14.9F, -11F, -2.5F, 5, 8, 5, var1);
         this.boosters[3][1].setRotationPoint(0F, 24F, 0F);
         this.boosters[3][1].setTextureSize(256, 256);
         this.boosters[3][1].mirror = true;
-        this.setStartingAngles(this.boosters[3][1], 0F, 3.141593F, 0F);
+        this.setStartingAngles(this.boosters[3][1], 0F, fullPI, 0F);
         this.boosters[3][2] = new ModelRenderer(this, 154, 0);
         this.boosters[3][2].addBox(-14.4F, -13F, -2F, 4, 2, 4, var1);
         this.boosters[3][2].setRotationPoint(0F, 24F, 0F);
         this.boosters[3][2].setTextureSize(256, 256);
         this.boosters[3][2].mirror = true;
-        this.setStartingAngles(this.boosters[3][2], 0F, 3.141593F, 0F);
+        this.setStartingAngles(this.boosters[3][2], 0F, fullPI, 0F);
     }
 
     @Override

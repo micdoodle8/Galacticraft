@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.wrappers;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.awt.image.BufferedImage;
@@ -83,37 +84,60 @@ public class FlagData
 
     public static FlagData readFlagData(NBTTagCompound nbt)
     {
-        int width = nbt.getInteger("FlagWidth");
-        int height = nbt.getInteger("FlagHeight");
+    	if (nbt.hasKey("FlagWidth"))
+    	{
+    		//Legacy saves
+	    	int width = nbt.getInteger("FlagWidth");
+	        int height = nbt.getInteger("FlagHeight");
+	
+	        FlagData flagData = new FlagData(width, height);
+	
+	        for (int i = 0; i < width; i++)
+	        {
+	            for (int j = 0; j < height; j++)
+	            {
+	                flagData.color[i][j][0] = nbt.getByte("ColorR-X" + i + "-Y" + j);
+	                flagData.color[i][j][1] = nbt.getByte("ColorG-X" + i + "-Y" + j);
+	                flagData.color[i][j][2] = nbt.getByte("ColorB-X" + i + "-Y" + j);
+	            }
+	        }
+	
+	        return flagData;
+    	}
+    	
+    	//New more compact flag save style 
+    	int width = nbt.getInteger("FWidth");
+        int height = nbt.getInteger("FHeight");
 
         FlagData flagData = new FlagData(width, height);
-
-        for (int i = 0; i < flagData.width; i++)
+        for (int i = 0; i < height; i++)
         {
-            for (int j = 0; j < flagData.height; j++)
+        	int[] colorRow = nbt.getIntArray("FRow"+i);
+        	for (int j = 0; j < width; j++)
             {
-                flagData.color[i][j][0] = nbt.getByte("ColorR-X" + i + "-Y" + j);
-                flagData.color[i][j][1] = nbt.getByte("ColorG-X" + i + "-Y" + j);
-                flagData.color[i][j][2] = nbt.getByte("ColorB-X" + i + "-Y" + j);
+                int color = colorRow[j]; 
+        		flagData.color[j][i][0] = (byte) (color >> 16);
+        		flagData.color[j][i][1] = (byte) ((color >> 8) & 255);
+        		flagData.color[j][i][2] = (byte) (color & 255);
             }
         }
-
-        return flagData;
+    	return flagData;
     }
 
     public void saveFlagData(NBTTagCompound nbt)
     {
-        nbt.setInteger("FlagWidth", this.width);
-        nbt.setInteger("FlagHeight", this.height);
+        nbt.setInteger("FWidth", this.width);
+        nbt.setInteger("FHeight", this.height);
 
-        for (int i = 0; i < this.width; i++)
+        for (int i = 0; i < this.height; i++)
         {
-            for (int j = 0; j < this.height; j++)
+        	int[] colorRow = new int[this.width]; 
+        	for (int j = 0; j < this.width; j++)
             {
-                nbt.setByte("ColorR-X" + i + "-Y" + j, this.color[i][j][0]);
-                nbt.setByte("ColorG-X" + i + "-Y" + j, this.color[i][j][1]);
-                nbt.setByte("ColorB-X" + i + "-Y" + j, this.color[i][j][2]);
+                byte[] arrayColor = this.color[j][i];
+                colorRow[j] = ColorUtil.to32BitColorB(arrayColor[0], arrayColor[1], arrayColor[2]);
             }
+        	nbt.setIntArray("FRow"+i, colorRow);
         }
     }
 

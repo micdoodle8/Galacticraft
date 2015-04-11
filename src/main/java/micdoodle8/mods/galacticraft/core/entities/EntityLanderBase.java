@@ -1,16 +1,19 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -26,8 +29,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-
-import cpw.mods.fml.client.FMLClientHandler;
 
 public abstract class EntityLanderBase extends EntityAdvancedMotion implements IInventorySettable, IPacketReceiver, IScaleableFuelLevel
 {
@@ -125,35 +126,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
 
         if (!this.worldObj.isRemote)
         {
-            final FluidStack liquid = this.fuelTank.getFluid();
-
-            if (liquid != null && this.fuelTank.getFluid().getFluid().getName().equalsIgnoreCase("Fuel"))
-            {
-                ItemStack slotItem = this.containedItems[this.containedItems.length - 1];
-                if (slotItem != null && slotItem.stackSize == 1 && FluidContainerRegistry.isEmptyContainer(slotItem))
-                {
-                    boolean isCanister = slotItem.isItemEqual(new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage()));
-                    final int amountToFill = Math.min(liquid.amount, isCanister ? GCItems.fuelCanister.getMaxDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
-
-                    if (isCanister)
-                    {
-                        this.containedItems[this.containedItems.length - 1] = new ItemStack(GCItems.fuelCanister, 1, GCItems.fuelCanister.getMaxDamage() - amountToFill);
-                        this.fuelTank.drain(amountToFill, true);
-                    }
-                    else
-                    {
-                        this.containedItems[this.containedItems.length - 1] = FluidContainerRegistry.fillFluidContainer(liquid, slotItem);
-                        if (this.containedItems[this.containedItems.length - 1] == null)
-                        {
-                            this.containedItems[this.containedItems.length - 1] = slotItem;
-                        }
-                        else
-                        {
-                            fuelTank.drain(amountToFill, true);
-                        }
-                    }
-                }
-            }
+   			this.checkFluidTankTransfer(this.containedItems.length - 1, this.fuelTank);
         }
 
         AxisAlignedBB box = this.boundingBox.expand(0.2D, 0.4D, 0.2D);
@@ -171,6 +144,57 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
             }
         }
     }
+   
+    
+    private void checkFluidTankTransfer(int slot, FluidTank tank)
+	{
+		ItemStack slotItem = this.containedItems[slot];
+		if (slotItem != null && slotItem.stackSize == 1 && FluidContainerRegistry.isContainer(slotItem))
+		{
+			final FluidStack liquid = tank.getFluid();
+
+			if (liquid != null && liquid.amount > 0)
+			{
+				String liquidname = liquid.getFluid().getName();
+
+				if (liquidname.equals("fuel"))
+				{
+					tryFillContainer(tank, liquid, slot, GCItems.fuelCanister);
+				}
+			}
+		}
+	}
+	
+
+    private void tryFillContainer(FluidTank tank, FluidStack liquid, int slot, Item fuelCanister)
+	{
+		ItemStack slotItem = this.containedItems[slot];
+		boolean isCanister = slotItem.getItem() instanceof ItemCanisterGeneric;
+		final int amountToFill = Math.min(liquid.amount, isCanister ? slotItem.getItemDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
+
+		if (amountToFill <= 0 || (isCanister && slotItem.getItem() != fuelCanister && slotItem.getItemDamage() != slotItem.getMaxDamage()))
+			return;
+		
+		if (isCanister)
+		{
+			this.containedItems[slot] = new ItemStack(fuelCanister, 1, slotItem.getItemDamage() - amountToFill);
+			tank.drain(amountToFill, true);
+		}
+		else if (amountToFill == FluidContainerRegistry.BUCKET_VOLUME)
+		{
+			this.containedItems[slot] = FluidContainerRegistry.fillFluidContainer(liquid, this.containedItems[slot]);
+
+			if (this.containedItems[slot] == null)
+			{
+				this.containedItems[slot] = slotItem;
+			}
+			else
+			{
+				tank.drain(amountToFill, true);
+			}
+		}
+	}
+
 
     private void pushEntityAway(Entity entityToPush)
     {
@@ -215,7 +239,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
             final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
             final int var5 = var4.getByte("Slot") & 255;
 
-            if (var5 >= 0 && var5 < this.containedItems.length)
+            if (var5 < this.containedItems.length)
             {
                 this.containedItems[var5] = ItemStack.loadItemStackFromNBT(var4);
             }

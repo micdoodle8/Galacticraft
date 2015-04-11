@@ -2,6 +2,7 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=Tier 3 Rocket
+item.itemAstroMiner.name=Astro Miner
 item.heavyNoseCone.name=Heavy Nose Cone
 item.compressedTitanium.name=Compressed Titanium
 item.ingotTitanium.name=Titanium Ingot
@@ -78,6 +79,7 @@ tile.walkwayWire.name=Walkway
 tile.walkwayOxygenPipe.name=Walkway
 tile.treasureT3.name=Tier 3 Treasure Chest
 tile.denseIce.name=Dense Ice
+tile.minerBase.name=Astro Miner Base
 
 # GUI
 planet.asteroids=Asteroids
@@ -99,6 +101,8 @@ gui.message.range.name=Range: %dm
 gui.message.notEnoughEnergy.name=Not Enough Energy!
 gui.message.targetNoEnergy.name=Target doesn't have enough Energy!
 gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook!
+gui.message.astroMiner.fail=This base already has an Astro Miner!
+gui.message.astroMiner1.fail=The docking area is blocked by:
 
 tile.treasureT3.description=Tier 3 Treasure Chests are currently unused.
 tile.walkway.description=Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme.
@@ -114,6 +118,8 @@ tile.telepadShort.description=Short Range Telepads are used to transfer players 
 entity.SmallAsteroidGC.name=Small Asteroid
 entity.GrappleHookGC.name=Grapple Hook
 entity.Tier3RocketGC.name=Tier 3 Rocket
+entity.EntryPodAsteroids.name=Entry Pod
+entity.AstroMiner.name=Astro Miner
 
 # CONTAINERS
 container.shortRangeTelepad.name=Short Range Telepad

@@ -157,10 +157,22 @@ public abstract class TileEntityOxygenTransmitter extends TileEntityAdvanced imp
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public int receiveGas(ForgeDirection side, GasStack stack)
+    public int receiveGas(ForgeDirection side, GasStack stack, boolean doTransfer)
     {
     	if (!stack.getGas().getName().equals("oxygen")) return 0;  
         return stack.amount - (int) Math.floor(((IOxygenNetwork) this.getNetwork()).produce(stack.amount, this));
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public int receiveGas(ForgeDirection side, GasStack stack)
+    {
+    	return this.receiveGas(side, stack, true);
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public GasStack drawGas(ForgeDirection side, int amount, boolean doTransfer)
+    {
+        return null;
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")

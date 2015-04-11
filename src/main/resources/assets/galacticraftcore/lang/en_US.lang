@@ -182,6 +182,7 @@ tile.spinThruster.name=Spin Thruster
 tile.viewScreen.name=Display Screen
 tile.telemetry.name=Telemetry Unit
 tile.spaceStationBase.name=Space Station arrival block
+tile.dish.name=Communications Dish
 
 # DECOBLOCKS
 tile.tinStairs1.name=Tin Decoration Stairs
@@ -196,22 +197,22 @@ tile.wallGC.moonBricks.name=Moon Dungeon Brick Wall
 tile.slabGCHalf.moonBricksSlab.name=Moon Dungeon Brick Slab
 
 # ENTITIES
-entity.GalacticraftCore.EvolvedSpider.name=Evolved Spider
-entity.GalacticraftCore.EvolvedZombie.name=Evolved Zombie
-entity.GalacticraftCore.EvolvedCreeper.name=Evolved Creeper
-entity.GalacticraftCore.EvolvedSkeleton.name=Evolved Skeleton
-entity.GalacticraftCore.EvolvedSkeletonBoss.name=Evolved Skeleton Boss
-entity.GalacticraftCore.AlienVillager.name=Alien Villager
-entity.GalacticraftCore.Spaceship.name=Tier 1 Rocket
-entity.GalacticraftCore.GravityArrow.name=Arrow
-entity.GalacticraftCore.Meteor.name=Meteor
-entity.GalacticraftCore.Buggy.name=Buggy
-entity.GalacticraftCore.Flag.name=Flag
-entity.GalacticraftCore.ParaChest.name=Parachest
-entity.GalacticraftCore.OxygenBubble.name=Oxygen Bubble
-entity.GalacticraftCore.Lander.name=Space Lander
-entity.GalacticraftCore.GCFlag.name=Flag
-entity.GalacticraftCore.MeteorChunk.name=Meteor Chunk
+entity.EvolvedSpider.name=Evolved Spider
+entity.EvolvedZombie.name=Evolved Zombie
+entity.EvolvedCreeper.name=Evolved Creeper
+entity.EvolvedSkeleton.name=Evolved Skeleton
+entity.EvolvedSkeletonBoss.name=Evolved Skeleton Boss
+entity.AlienVillager.name=Alien Villager
+entity.Spaceship.name=Tier 1 Rocket
+entity.GravityArrow.name=Arrow
+entity.Meteor.name=Meteor
+entity.Buggy.name=Buggy
+entity.Flag.name=Flag
+entity.ParaChest.name=Parachest
+entity.OxygenBubble.name=Oxygen Bubble
+entity.Lander.name=Space Lander
+entity.GCFlag.name=Flag
+entity.MeteorChunk.name=Meteor Chunk
 
 # SCHEMATICS
 schematic.moonbuggy.name=Moon Buggy
@@ -665,8 +666,10 @@ gc.configgui.suffocationCooldown=Suffocation Cooldown
 gc.configgui.suffocationDamage=Suffocation Damage
 gc.configgui.enableSealerEdgeChecks=Sealer Edge Checks
 gc.configgui.alternateCanisterRecipe=Alternate Canister Recipe
+gc.configgui.oreDictSilicon=OreDict name of silicon in other mods
 gc.configgui.rocketFuelFactor=Rocket Fuel Factor
 gc.configgui.dungeonBossHealthMod=Dungeon Boss Health Modifier
 gc.configgui.hardMode=Harder Difficulty
+gc.configgui.quickMode=Quick Game (easier)
 
 gc.configgui.title=Galacticraft Core Config

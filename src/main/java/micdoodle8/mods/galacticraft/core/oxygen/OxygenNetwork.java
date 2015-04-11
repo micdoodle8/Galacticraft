@@ -86,7 +86,9 @@ public class OxygenNetwork implements IOxygenNetwork
 
                                     if (oxygenToSend > 0)
                                     {
-                                        remainingUsableOxygen -= gasHandler.receiveGas(direction, (new GasStack((Gas) EnergyConfigHandler.gasOxygen, oxygenToSend)));
+                                    	try {
+                                    		remainingUsableOxygen -= gasHandler.receiveGas(direction, (new GasStack((Gas) EnergyConfigHandler.gasOxygen, oxygenToSend)));
+                                        } catch (Exception e) { }
                                     }
                                 }
                             }

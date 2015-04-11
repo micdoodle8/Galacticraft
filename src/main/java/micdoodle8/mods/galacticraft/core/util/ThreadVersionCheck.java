@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.util.ChatComponentText;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -43,12 +44,14 @@ public class ThreadVersionCheck extends Thread
 
         while (this.count < 3 && remoteBuildVer == 0)
         {
+        	BufferedReader in = null;
             try
             {
                 final URL url = new URL("http://micdoodle8.com/galacticraft/version.html");
                 final HttpURLConnection http = (HttpURLConnection) url.openConnection();
                 http.addRequestProperty("User-Agent", "Mozilla/4.76");
-                final BufferedReader in = new BufferedReader(new InputStreamReader(http.getInputStream()));
+                InputStreamReader streamReader = new InputStreamReader(http.getInputStream());
+                in = new BufferedReader(streamReader);
                 String str;
                 String str2[] = null;
 
@@ -68,13 +71,13 @@ public class ThreadVersionCheck extends Thread
                             remoteBuildVer = Integer.parseInt(str2[2]);
                         }
 
-                        if (remoteMajVer > Constants.LOCALMAJVERSION || remoteMajVer == Constants.LOCALMAJVERSION && remoteMinVer > Constants.LOCALMINVERSION || remoteMajVer == Constants.LOCALMAJVERSION && remoteMinVer == Constants.LOCALMINVERSION && remoteBuildVer > Constants.LOCALBUILDVERSION)
+                        if (remoteMajVer == Constants.LOCALMAJVERSION && (remoteMinVer > Constants.LOCALMINVERSION || (remoteMinVer == Constants.LOCALMINVERSION && remoteBuildVer > Constants.LOCALBUILDVERSION)))
                         {
                             Thread.sleep(5000);
 
                             if (sideToCheck.equals(Side.CLIENT))
                             {
-                                FMLClientHandler.instance().getClient().thePlayer.addChatMessage(new ChatComponentText(EnumColor.GREY + "New " + EnumColor.DARK_AQUA + "Galacticraft" + EnumColor.GREY + " version available! v" + String.valueOf(remoteMajVer) + "." + String.valueOf(remoteMinVer) + "." + String.valueOf(remoteBuildVer) + EnumColor.DARK_BLUE + " http://micdoodle8.com/"));
+                                FMLClientHandler.instance().getClient().thePlayer.addChatMessage(new ChatComponentText(EnumColor.GREY + "New " + EnumColor.DARK_AQUA + Constants.MOD_NAME_SIMPLE + EnumColor.GREY + " version available! v" + String.valueOf(remoteMajVer) + "." + String.valueOf(remoteMinVer) + "." + String.valueOf(remoteBuildVer) + EnumColor.DARK_BLUE + " http://micdoodle8.com/"));
                             }
                             else if (sideToCheck.equals(Side.SERVER))
                             {
@@ -83,9 +86,23 @@ public class ThreadVersionCheck extends Thread
                         }
                     }
                 }
+                
+                in.close();
+                streamReader.close();
             }
             catch (final Exception e)
             {
+            	if (in != null)
+            	{
+                	try 
+                	{
+						in.close();
+					} 
+                	catch (IOException e1) 
+                	{
+						e1.printStackTrace();
+					}
+            	}
             }
 
             if (remoteBuildVer == 0)

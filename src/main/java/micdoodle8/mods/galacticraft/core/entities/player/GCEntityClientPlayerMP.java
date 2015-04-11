@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -52,6 +53,18 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
     {
         ClientProxyCore.playerClientHandler.onUpdate(this);
         super.onUpdate();
+    }
+
+    @Override
+    public boolean isSneaking()
+    {
+        if (this.worldObj.provider instanceof WorldProviderOrbit)
+    	{
+	        GCPlayerStatsClient stats = GCPlayerStatsClient.get(this);
+	    	if (stats.inFreefall) return false;
+	    	if (stats.landingTicks > 0) return true;
+    	}
+        return super.isSneaking();
     }
 
     @Override

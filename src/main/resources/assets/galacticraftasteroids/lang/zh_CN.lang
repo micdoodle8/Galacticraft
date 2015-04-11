@@ -1,4 +1,4 @@
-# Galacticraft Asteroids Language File = SIMPLIFIED CHINESE
+﻿# Galacticraft Asteroids Language File = SIMPLIFIED CHINESE
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=3阶火箭
@@ -114,6 +114,7 @@ tile.telepadShort.description=短距离传送台可用于短距离传送(250格)
 entity.SmallAsteroidGC.name=小行星
 entity.GrappleHookGC.name=抓升钩
 entity.Tier3RocketGC.name=3阶火箭
+entity.EntryPodAsteroids.name=入口平台
 
 # Container
 container.shortRangeTelepad.name=短程传送平台
@@ -126,3 +127,4 @@ gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID(抓升钩实体ID)
 gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID(3阶火箭实体ID)
 gc.configgui.idEntityEntryPod=Entry Pod Entity ID(入口平台实体ID)
 gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID(3阶火箭设计图ID)
+gc.configgui.disableGalacticraftHelium=Disable Helium gas registration(禁用GC氦气)

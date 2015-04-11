@@ -26,6 +26,8 @@ public class AsteroidBlocks
     public static Block treasureChestTier2;
     public static Block treasureChestTier3;
     public static Block blockDenseIce;
+	public static Block blockMinerBase;
+	public static Block minerBaseFull;
 
     public static void initBlocks()
     {
@@ -41,8 +43,11 @@ public class AsteroidBlocks
         AsteroidBlocks.shortRangeTelepad = new BlockShortRangeTelepad("telepadShort");
         AsteroidBlocks.fakeTelepad = new BlockTelepadFake("telepadFake");
         AsteroidBlocks.blockDenseIce = new BlockIceAsteroids("denseIce");
+        AsteroidBlocks.blockMinerBase = new BlockMinerBase("minerBase");
+        AsteroidBlocks.minerBaseFull = new BlockMinerBaseFull("minerBaseFull");
 
         GCBlocks.hiddenBlocks.add(AsteroidBlocks.fakeTelepad);
+        GCBlocks.hiddenBlocks.add(AsteroidBlocks.minerBaseFull);
     }
 
     public static void registerBlocks()
@@ -59,6 +64,8 @@ public class AsteroidBlocks
         GameRegistry.registerBlock(AsteroidBlocks.shortRangeTelepad, ItemBlockShortRangeTelepad.class, AsteroidBlocks.shortRangeTelepad.getUnlocalizedName());
         GameRegistry.registerBlock(AsteroidBlocks.fakeTelepad, ItemBlockGC.class, AsteroidBlocks.fakeTelepad.getUnlocalizedName());
         GameRegistry.registerBlock(AsteroidBlocks.blockDenseIce, ItemBlockGC.class, AsteroidBlocks.blockDenseIce.getUnlocalizedName());
+       	GameRegistry.registerBlock(AsteroidBlocks.blockMinerBase, ItemBlockDesc.class, AsteroidBlocks.blockMinerBase.getUnlocalizedName());
+       	GameRegistry.registerBlock(AsteroidBlocks.minerBaseFull, ItemBlockDesc.class, AsteroidBlocks.minerBaseFull.getUnlocalizedName());
     }
     
     public static void setHarvestLevels()

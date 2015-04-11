@@ -64,7 +64,7 @@ tile.wallGC.marsBricks.name=Marsdungeonmauer
 tile.slabGCHalf.marsBricksSlab.name=Marsdungeonziegelstufe
 
 # GUI
-gui.choosePlanet.desc.mars=Bewohnbar#Kein Sauerstoff#Schwerkraft: 38%
+gui.choosePlanet.desc.mars=Bewohnbar#Kein Sauerstoff#Gravitation: 38%
 item.deshPickSlime.description.name=Kann Schleimling-Eier ernten
 gui.message.noEnergy.name=Nicht genügend Energie
 gui.message.noWater.name=Nicht genügend Wasser
@@ -101,7 +101,7 @@ gui.launchController.desc.0=Dies ist die spezifische Frequenz$des Start-Controll
 gui.launchController.desc.1=Frequenz, zu welcher die Raketen fliegen
 gui.launchController.desc.2=Ob die Rampe beim Start$enfernt werden soll
 gui.launchController.desc.3=Wenn die Kriterien erfüllt sind,$wird die Rakete starten
-gui.terraformer.desc.0=Wasser Tank
+gui.terraformer.desc.0=Wassertank
 
 gui.gasTank.desc.0=Gasspeicher
 gui.gasTankCompressed.desc.0=Gasspeicher (Unter Druck)
@@ -115,7 +115,7 @@ gui.status.tanksfull.name=Tanks voll
 gui.message.lowEnergy.name=Zu wenig Energie
 gui.button.liquefy.name=Prozess
 gui.button.liquefyStop.name=Stopp
-gui.gasInput.desc.0=Versuche, einen Methangaskanister$ hier zu platzieren 
+gui.gasInput.desc.0=Versuche, einen Methangaskanister$hier zu platzieren 
 gui.gasInput.desc.1=(Vielleicht alternativ$ein Luftventil)
 gui.hydrogenInput.desc.0=Dies nimmt einen Wasserstofftank
 gui.hydrogenInput.desc.1=oder ein Atmosphärenventil auf
@@ -146,7 +146,7 @@ tile.slimelingEgg.description=Einmal vom Spieler zerbrochen, werden aus Schleiml
 tile.cryoChamber.description=Kryogene Kammern ermöglichen dem Spieler am Tag zu schlafen und heilen ihn dabei. Sie haben allerdings eine Abklingzeit.
 tile.launchController.description=Start-Controller können benutzt werden um das Startverhalten anzupassen, einschließlich Startbedingungen und Ziel für automatische Starts.
 tile.terraformer.description=Terraformer werden benutzt um etwas Grün auf entfernte Planeten zu bringen. Sie pflanzen Gras und Bäume, wenn sie die richtigen Materialien bekommen.
-tile.creeperEgg.description=Creeper-Eier können nur in Marsdungeons gefunden werden. Wird eins gesprengt, schlüpft ein kleiner hinterhältiger Crepper.
+tile.creeperEgg.description=Creeper-Eier können nur in Marsdungeons gefunden werden. Wird eins gesprengt, schlüpft ein kleiner hinterhältiger Creeper aus ihm.
 tile.gasLiquefier.description=Verflüssigt Gase, entweder aus der Atmosphäre oder aus Kanistern. Flüssiges Methan ist ein guter Raketentreibstoff!
 tile.methaneSynthesizer.description=Stellt aus Wasserstoff und Kohlenstoff Methan her, das im Gasverflüssiger weiterverarbeitet werden kann.
 tile.electrolyzer.description=Wandelt Wasser in Wasserstoff (für das Methansynthesegerät) und Sauerstoff um.
@@ -173,8 +173,9 @@ schematic.cargoRocket.name=Automatische Güterrakete
 entity.Sludgeling.name=Schlammling
 entity.Slimeling.name=Schleimling
 entity.CreeperBoss.name=Entwickelter Creeper-Boss
-entity.GalacticraftMars.SpaceshipT2.name=Stufe 2 Rakete
-entity.GalacticraftMars.CargoRocket.name=Automatische Güterrakete
+entity.SpaceshipT2.name=Stufe 2 Rakete
+entity.CargoRocket.name=Automatische Güterrakete
+entity.LandingBalloons.name=Landeballons
 
 # CONTAINERS
 container.launchcontroller.name=Start-Controller
@@ -188,4 +189,4 @@ gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID
 gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
 gc.configgui.launchControllerAllDims=Launch Controller All Dimensions
 
-gc.configgui.planets.title=Galacticraft Planets Konfiguration
+gc.configgui.planets.title=Galacticraft Planets-Konfiguration

@@ -13,6 +13,7 @@ public class AsteroidsItems
 {
     public static Item grapple;
     public static Item tier3Rocket;
+    public static Item astroMiner;
     public static Item thermalPadding;
     public static Item basicItem;
     public static Item methaneCanister;
@@ -38,6 +39,7 @@ public class AsteroidsItems
     {
         AsteroidsItems.grapple = new ItemGrappleHook("grapple");
         AsteroidsItems.tier3Rocket = new ItemTier3Rocket("itemTier3Rocket");
+        AsteroidsItems.astroMiner = new ItemAstroMiner("itemAstroMiner");
         AsteroidsItems.thermalPadding = new ItemThermalPadding("thermalPadding");
         AsteroidsItems.basicItem = new ItemBasicAsteroids();
         AsteroidsItems.methaneCanister = new ItemCanisterMethane("methaneCanisterPartial");
@@ -68,6 +70,7 @@ public class AsteroidsItems
     {
         registerItem(AsteroidsItems.grapple);
         registerItem(AsteroidsItems.tier3Rocket);
+        registerItem(AsteroidsItems.astroMiner);
         registerItem(AsteroidsItems.thermalPadding);
         registerItem(AsteroidsItems.basicItem);
         registerItem(AsteroidsItems.methaneCanister);

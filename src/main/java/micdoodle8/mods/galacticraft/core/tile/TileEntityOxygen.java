@@ -259,7 +259,10 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
                 if (outputTile instanceof IGasHandler && ((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas) EnergyConfigHandler.gasOxygen))
                 {
                     GasStack toSend = new GasStack((Gas) EnergyConfigHandler.gasOxygen, (int) Math.floor(Math.min(this.getOxygenStored(), provide)));
-                    int acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
+                    int acceptedOxygen = 0;
+                    try {
+                    	acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
+                    } catch (Exception e) { }
                     this.provideOxygen(acceptedOxygen, true);
                     return true;
                 }
@@ -295,16 +298,28 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public int receiveGas(ForgeDirection side, GasStack stack)
+    public int receiveGas(ForgeDirection side, GasStack stack, boolean doTransfer)
     {
     	if (!stack.getGas().getName().equals("oxygen")) return 0;  
-    	return (int) Math.floor(this.receiveOxygen(stack.amount, true));
+    	return (int) Math.floor(this.receiveOxygen(stack.amount, doTransfer));
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public int receiveGas(ForgeDirection side, GasStack stack)
+    {
+    	return this.receiveGas(side, stack, true);
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public GasStack drawGas(ForgeDirection side, int amount, boolean doTransfer)
+    {
+        return new GasStack((Gas) EnergyConfigHandler.gasOxygen, (int) Math.floor(this.provideOxygen(amount, doTransfer)));
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
     public GasStack drawGas(ForgeDirection side, int amount)
     {
-        return new GasStack((Gas) EnergyConfigHandler.gasOxygen, (int) Math.floor(this.provideOxygen(amount, true)));
+        return this.drawGas(side, amount, true);
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")

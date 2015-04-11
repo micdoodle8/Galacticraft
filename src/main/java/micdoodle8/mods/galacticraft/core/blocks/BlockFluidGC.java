@@ -4,14 +4,19 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 
@@ -26,7 +31,7 @@ public class BlockFluidGC extends BlockFluidClassic
 
     public BlockFluidGC(Fluid fluid, String assetName)
     {
-        super(fluid, Material.water);
+        super(fluid, (assetName.equals("oil") || assetName.equals("fuel")) ? GalacticraftCore.materialOil : Material.water);
         this.setRenderPass(1);
         this.fluidName = assetName;
         this.fluid = fluid;
@@ -63,7 +68,7 @@ public class BlockFluidGC extends BlockFluidClassic
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
     {
-    	if (world.isRemote && this.fluidName.equals("oil"))
+    	if (world.isRemote && this.fluidName.equals("oil") && entityPlayer instanceof EntityPlayerSP)
         	ClientProxyCore.playerClientHandler.onBuild(7, (EntityPlayerSP) entityPlayer);
 
     	return super.onBlockActivated(world, x, y, z, entityPlayer, side, hitX, hitY, hitZ);	
@@ -84,9 +89,10 @@ public class BlockFluidGC extends BlockFluidClassic
     @Override
     public boolean canDisplace(IBlockAccess world, int x, int y, int z)
     {
-        if (world.getBlock(x, y, z).getMaterial().isLiquid())
+        if (world.getBlock(x, y, z) instanceof BlockLiquid)
         {
-            return false;
+        	int meta = world.getBlockMetadata(x,  y,  z);
+            return (meta > 1 || meta == -1);
         }
 
         return super.canDisplace(world, x, y, z);
@@ -95,8 +101,11 @@ public class BlockFluidGC extends BlockFluidClassic
     @Override
     public boolean displaceIfPossible(World world, int x, int y, int z)
     {
-        if (world.getBlock(x, y, z).getMaterial().isLiquid())
+        if (world.getBlock(x, y, z) instanceof BlockLiquid)
         {
+        	int meta = world.getBlockMetadata(x,  y,  z);
+            if (meta > 1 || meta == -1) 
+            	return super.displaceIfPossible(world, x, y, z);
             return false;
         }
 
@@ -111,5 +120,34 @@ public class BlockFluidGC extends BlockFluidClassic
     public IIcon getFlowingIcon()
     {
         return this.flowingIcon;
+    }
+    
+    @Override
+    public boolean isFlammable(IBlockAccess world, int x, int y, int z, ForgeDirection face) 
+    {
+    	if (!(world instanceof World)) return false;
+    	if (OxygenUtil.noAtmosphericCombustion(((World) world).provider))
+        {
+        	if (!OxygenUtil.isAABBInBreathableAirBlock((World) world, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 2, z + 1)))
+        		return false;
+        }
+        
+    	if (this.fluidName.startsWith("fuel"))
+    	{
+    		((World) world).createExplosion(null, x, y, z, 6.0F, true);
+    		return true;
+    	}
+    	return (this.fluidName.startsWith("oil"));
+    }
+
+    @Override
+    public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side)
+    {
+        Block block = world.getBlock(x, y, z);
+        if (block != this)
+        {
+            return !block.isOpaqueCube();
+        }
+        return side == 0 && this.minY > 0.0D ? true : (side == 1 && this.maxY < 1.0D ? true : (side == 2 && this.minZ > 0.0D ? true : (side == 3 && this.maxZ < 1.0D ? true : (side == 4 && this.minX > 0.0D ? true : (side == 5 && this.maxX < 1.0D ? true : !block.isOpaqueCube())))));
     }
 }

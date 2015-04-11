@@ -1,11 +1,16 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
+import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.renderer.Tessellator;
@@ -18,9 +23,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class GameScreenText implements IGameScreen
 {
@@ -135,6 +137,35 @@ public class GameScreenText implements IGameScreen
         		str3 = "Speed: " + this.makeSpeedString(telemeter.clientData[2]);
         		str4 = "Fuel: " + telemeter.clientData[3] + "%";
         	}
+        	else if (GalacticraftCore.isPlanetsLoaded && entity instanceof EntityAstroMiner)
+        	{
+        		str0 = "";
+        		str1 = "";
+        		switch (telemeter.clientData[4])
+        		{
+        			case 0:
+        				str1 = "Out of energy!";
+        				break;
+        			case 1:
+        				str1 = "Charging";
+        				break;
+        			case 2:
+        				str1 = "Travelling";
+        				break;
+        			case 3:
+        				str1 = "Mining";
+        				break;
+        			case 4:
+        				str1 = "Returning";
+        				break;
+        			case 5:
+        				str1 = "Docking";
+        				break;
+        		}
+        		str2 = "dy: " + telemeter.clientData[1];
+        		str3 = "dx: " + telemeter.clientData[2];
+        		str4 = "Energy: " + telemeter.clientData[3];        		
+        	}
         	else
         	//Generic - could be boats or minecarts etc - just show the speed
         	//TODO  can add more here, e.g. position data?
@@ -184,7 +215,7 @@ public class GameScreenText implements IGameScreen
         GL11.glScalef(scaleText, scaleText, 1.0F);
 
         //Actually draw the text
-        int whiteColour = GCCoreUtil.to32BitColor(255, 240, 216, 255);
+        int whiteColour = ColorUtil.to32BitColor(255, 240, 216, 255);
         drawText(strName, whiteColour);
         drawText(str0, whiteColour);
         drawText(str1, whiteColour);

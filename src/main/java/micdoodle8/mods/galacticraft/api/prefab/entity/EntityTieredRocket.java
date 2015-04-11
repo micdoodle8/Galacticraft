@@ -182,7 +182,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                         Entity e = this.riddenByEntity;
                         e.mountEntity(null);
                         e.mountEntity(this);
-                        if (ConfigManagerCore.enableDebug) System.out.println("Remounting player in rocket.");
+                        if (ConfigManagerCore.enableDebug) GCLog.info("Remounting player in rocket.");
                     }
 
                     this.setWaitForPlayer(false);
@@ -379,7 +379,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     if (this.riddenByEntity != null)
                     {
                         this.setWaitForPlayer(true);
-                        if (ConfigManagerCore.enableDebug) System.out.println("Rocket repositioned, waiting for player");
+                        if (ConfigManagerCore.enableDebug) GCLog.info("Rocket repositioned, waiting for player");
                     }
                     this.landing = true;
                     return;
@@ -530,7 +530,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
     public float getRotateOffset()
     {
-        return 0.1F;
+        return -1.5F;
     }
 
     @Override

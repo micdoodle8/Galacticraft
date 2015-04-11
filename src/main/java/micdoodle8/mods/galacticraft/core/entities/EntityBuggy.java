@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -197,37 +198,45 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         }
         else
         {
-            this.dataWatcher.updateObject(this.rockDirection, Integer.valueOf(-this.dataWatcher.getWatchableObjectInt(this.rockDirection)));
-            this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(10));
-            this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf((int) (this.dataWatcher.getWatchableObjectInt(this.currentDamage) + var2 * 10)));
-            this.setBeenAttacked();
-
-            if (var1.getEntity() instanceof EntityPlayer && ((EntityPlayer) var1.getEntity()).capabilities.isCreativeMode)
+        	Entity e = var1.getEntity(); 
+            if (this.isEntityInvulnerable() || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)))
             {
-                this.dataWatcher.updateObject(this.currentDamage, 100);
+                return false;
             }
-
-            if (this.dataWatcher.getWatchableObjectInt(this.currentDamage) > 2)
+            else
             {
-                if (this.riddenByEntity != null)
-                {
-                    this.riddenByEntity.mountEntity(this);
-                }
-
-                if (!this.worldObj.isRemote)
-                {
-                    if (this.riddenByEntity != null)
-                    {
-                        this.riddenByEntity.mountEntity(this);
-                    }
-
-                    this.dropBuggyAsItem();
-                }
-
-                this.setDead();
+	            this.dataWatcher.updateObject(this.rockDirection, Integer.valueOf(-this.dataWatcher.getWatchableObjectInt(this.rockDirection)));
+	            this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(10));
+	            this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf((int) (this.dataWatcher.getWatchableObjectInt(this.currentDamage) + var2 * 10)));
+	            this.setBeenAttacked();
+	
+	            if (e instanceof EntityPlayer && ((EntityPlayer) e).capabilities.isCreativeMode)
+	            {
+	                this.dataWatcher.updateObject(this.currentDamage, 100);
+	            }
+	
+	            if (this.dataWatcher.getWatchableObjectInt(this.currentDamage) > 2)
+	            {
+	                if (this.riddenByEntity != null)
+	                {
+	                    this.riddenByEntity.mountEntity(this);
+	                }
+	
+	                if (!this.worldObj.isRemote)
+	                {
+	                    if (this.riddenByEntity != null)
+	                    {
+	                        this.riddenByEntity.mountEntity(this);
+	                    }
+	
+	                    this.dropBuggyAsItem();
+	                }
+	
+	                this.setDead();
+	            }
+	
+	            return true;
             }
-
-            return true;
         }
     }
 
@@ -400,7 +409,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         {
             double d = this.motionX * this.motionX + this.motionZ * this.motionZ;
 
-            if (d != 0 && d != 0 && this.ticks % MathHelper.floor_double(2 / d) == 0)
+            if (d != 0 && this.ticks % MathHelper.floor_double(2 / d) == 0)
             {
                 this.removeFuel(1);
             }
@@ -465,7 +474,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
             final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
             final int var5 = var4.getByte("Slot") & 255;
 
-            if (var5 >= 0 && var5 < this.cargoItems.length)
+            if (var5 < this.cargoItems.length)
             {
                 this.cargoItems[var5] = ItemStack.loadItemStackFromNBT(var4);
             }

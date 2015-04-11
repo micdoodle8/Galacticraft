@@ -4,6 +4,9 @@ import buildcraft.api.mj.MjAPI;
 import buildcraft.api.power.IPowerEmitter;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
+import cofh.api.energy.IEnergyConnection;
+import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyReceiver;
 import cpw.mods.fml.common.FMLLog;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergySink;
@@ -17,16 +20,14 @@ import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalConductor;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.*;
 
-import cofh.api.energy.IEnergyConnection;
 //import buildcraft.api.power.PowerHandler.Type;
-import cofh.api.energy.IEnergyHandler;
-import cofh.api.energy.IEnergyReceiver;
 
 
 /**
@@ -287,15 +288,15 @@ public class EnergyNetwork implements IElectricityNetwork
                     }
                     else if (isMekLoaded && acceptor instanceof IStrictEnergyAcceptor)
                     {
-                        e = (float) ((((IStrictEnergyAcceptor) acceptor).getMaxEnergy() - ((IStrictEnergyAcceptor) acceptor).getEnergy()) * EnergyConfigHandler.MEKANISM_RATIO);
+                        e = (float) ((((IStrictEnergyAcceptor) acceptor).getMaxEnergy() - ((IStrictEnergyAcceptor) acceptor).getEnergy()) / EnergyConfigHandler.TO_MEKANISM_RATIO);
                     }
                     else if (isRF1Loaded && acceptor instanceof IEnergyHandler)
 					{
-						e = ((IEnergyHandler) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) * EnergyConfigHandler.RF_RATIO;
+						e = ((IEnergyHandler) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) / EnergyConfigHandler.TO_RF_RATIO;
 					}
                     else if (isRF2Loaded && acceptor instanceof IEnergyReceiver)
 					{
-						e = ((IEnergyReceiver) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) * EnergyConfigHandler.RF_RATIO;
+						e = ((IEnergyReceiver) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) / EnergyConfigHandler.TO_RF_RATIO;
 					}
                     else if (isIC2Loaded && acceptor instanceof IEnergySink)
                     {
@@ -313,12 +314,12 @@ public class EnergyNetwork implements IElectricityNetwork
                         }
                         //Cap IC2 power transfer at 128EU/t for standard Alu wire, 256EU/t for heavy Alu wire
                         result = Math.max(result, (this.networkTierGC == 2) ? 256D : 128D);
-                        e = (float) result * EnergyConfigHandler.IC2_RATIO;
+                        e = (float) result/ EnergyConfigHandler.TO_IC2_RATIO;
                     }
                     else if (isBCLoaded && EnergyConfigHandler.getBuildcraftVersion() == 6 && MjAPI.getMjBattery(acceptor, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom) != null)
                     //New BC API
                     {
-                        e = (float) MjAPI.getMjBattery(acceptor, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom).getEnergyRequested() * EnergyConfigHandler.BC3_RATIO;
+                        e = (float) MjAPI.getMjBattery(acceptor, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom).getEnergyRequested() / EnergyConfigHandler.TO_BC_RATIO;
                     }
                     else if (isBCLoaded && acceptor instanceof IPowerReceptor)
                     //Legacy BC API
@@ -326,7 +327,7 @@ public class EnergyNetwork implements IElectricityNetwork
                         PowerReceiver BCreceiver = ((IPowerReceptor) acceptor).getPowerReceiver(sideFrom);
                         if (BCreceiver != null)
                         {
-                            e = (float) BCreceiver.powerRequest() * EnergyConfigHandler.BC3_RATIO;
+                            e = (float) BCreceiver.powerRequest() / EnergyConfigHandler.TO_BC_RATIO;
                         }
                     }
 
@@ -385,9 +386,12 @@ public class EnergyNetwork implements IElectricityNetwork
             float sentToAcceptor;
             int tierProduced = Math.min(this.producersTierGC, this.networkTierGC);
 
+            ArrayList<TileEntity> debugList = new ArrayList<TileEntity>();
+            try {
             for (TileEntity tileEntity : this.availableAcceptors)
             {
-                //Exit the loop if there is no energy left at all (should normally not happen, should be some even for the last acceptor)
+            	debugList.add(tileEntity);
+            	//Exit the loop if there is no energy left at all (should normally not happen, should be some even for the last acceptor)
                 if (sent >= energyAvailable)
                 {
                     break;
@@ -418,19 +422,19 @@ public class EnergyNetwork implements IElectricityNetwork
                 }
                 else if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
                 {
-                    sentToAcceptor = (float) ((IStrictEnergyAcceptor) tileEntity).transferEnergyToAcceptor(sideFrom, currentSending * EnergyConfigHandler.TO_MEKANISM_RATIO) * EnergyConfigHandler.MEKANISM_RATIO;
+                    sentToAcceptor = (float) ((IStrictEnergyAcceptor) tileEntity).transferEnergyToAcceptor(sideFrom, currentSending * EnergyConfigHandler.TO_MEKANISM_RATIO) / EnergyConfigHandler.TO_MEKANISM_RATIO;
                 }
 				else if (isRF1Loaded && tileEntity instanceof IEnergyHandler)
 				{
 					IEnergyHandler handler = (IEnergyHandler) tileEntity;
 					int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / EnergyConfigHandler.TO_RF_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * EnergyConfigHandler.TO_RF_RATIO);
-					sentToAcceptor = handler.receiveEnergy(sideFrom, currentSendinginRF, false) * EnergyConfigHandler.RF_RATIO;
+					sentToAcceptor = handler.receiveEnergy(sideFrom, currentSendinginRF, false) / EnergyConfigHandler.TO_RF_RATIO;
 				}
 				else if (isRF2Loaded && tileEntity instanceof IEnergyReceiver)
 				{
 					IEnergyReceiver handler = (IEnergyReceiver) tileEntity;
 					int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / EnergyConfigHandler.TO_RF_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * EnergyConfigHandler.TO_RF_RATIO);
-					sentToAcceptor = handler.receiveEnergy(sideFrom, currentSendinginRF, false) * EnergyConfigHandler.RF_RATIO;
+					sentToAcceptor = handler.receiveEnergy(sideFrom, currentSendinginRF, false) / EnergyConfigHandler.TO_RF_RATIO;
 				}
                 else if (isIC2Loaded && tileEntity instanceof IEnergySink)
                 {
@@ -456,7 +460,7 @@ public class EnergyNetwork implements IElectricityNetwork
                                 ex.printStackTrace();
                             }
                         }
-                        sentToAcceptor = currentSending - (float) result * EnergyConfigHandler.IC2_RATIO;
+                        sentToAcceptor = currentSending - (float) result/ EnergyConfigHandler.TO_IC2_RATIO;
                         if (sentToAcceptor < 0F)
                         {
                             sentToAcceptor = 0F;
@@ -470,7 +474,7 @@ public class EnergyNetwork implements IElectricityNetwork
                 else if (isBCLoaded && EnergyConfigHandler.getBuildcraftVersion() == 6 && MjAPI.getMjBattery(tileEntity, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom) != null)
                 //New BC API
                 {
-                    sentToAcceptor = (float) MjAPI.getMjBattery(tileEntity, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom).addEnergy(currentSending * EnergyConfigHandler.TO_BC_RATIO) * EnergyConfigHandler.BC3_RATIO;
+                    sentToAcceptor = (float) MjAPI.getMjBattery(tileEntity, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom).addEnergy(currentSending * EnergyConfigHandler.TO_BC_RATIO) / EnergyConfigHandler.TO_BC_RATIO;
                 }
                 else if (isBCLoaded && tileEntity instanceof IPowerReceptor)
                 //Legacy BC API
@@ -480,7 +484,7 @@ public class EnergyNetwork implements IElectricityNetwork
                     if (receiver != null)
                     {
                         double toSendBC = Math.min(currentSending * EnergyConfigHandler.TO_BC_RATIO, receiver.powerRequest());
-                        sentToAcceptor = (float) receiver.receiveEnergy(buildcraft.api.power.PowerHandler.Type.PIPE, toSendBC, sideFrom) * EnergyConfigHandler.BC3_RATIO;
+                        sentToAcceptor = (float) receiver.receiveEnergy(buildcraft.api.power.PowerHandler.Type.PIPE, toSendBC, sideFrom) / EnergyConfigHandler.TO_BC_RATIO;
                     }
                     else
                     {
@@ -503,6 +507,15 @@ public class EnergyNetwork implements IElectricityNetwork
                 }
 
                 sent += sentToAcceptor;
+            }
+            } catch (Exception e) {
+            	GCLog.severe("DEBUG Energy network crash prevented");
+            	TileEntity te = debugList.get(debugList.size() - 1);
+            	GCLog.severe("DEBUG Problem was after "+ te.xCoord + "," + te.yCoord + "," + te.zCoord);
+            	Iterator<TileEntity> debugIt = availableAcceptors.iterator();
+            	for (int j = 0; j < debugList.size(); j++) debugIt.next();
+            	if (debugIt.hasNext()) te = debugIt.next();
+            	GCLog.severe("DEBUG and before "+ te.xCoord + "," + te.yCoord + "," + te.zCoord);
             }
         }
 

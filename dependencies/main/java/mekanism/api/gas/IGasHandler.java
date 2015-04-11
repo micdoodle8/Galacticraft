@@ -14,6 +14,9 @@ public interface IGasHandler
 	 * @param stack - gas to add
 	 * @return gas added
 	 */
+	public int receiveGas(ForgeDirection side, GasStack stack, boolean doTransfer);
+
+	@Deprecated
 	public int receiveGas(ForgeDirection side, GasStack stack);
 
 	/**
@@ -21,6 +24,9 @@ public interface IGasHandler
 	 * @param amount - amount to draw
 	 * @return gas drawn
 	 */
+	public GasStack drawGas(ForgeDirection side, int amount, boolean doTransfer);
+
+	@Deprecated
 	public GasStack drawGas(ForgeDirection side, int amount);
 
 	/**

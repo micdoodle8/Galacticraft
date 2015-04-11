@@ -33,10 +33,17 @@ public abstract class BlockAdvancedTile extends BlockAdvanced implements ITileEn
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int par6)
+    public void breakBlock(World world, int x, int y, int z, Block block, int metadata)
     {
-        this.dropEntireInventory(world, x, y, z, block, par6);
-        super.breakBlock(world, x, y, z, block, par6);
+    	if (this.hasTileEntity(metadata))
+    	{
+    		TileEntity tileNew = world.getTileEntity(x,  y,  z);
+    		if (tileNew != null)
+    		{
+		    	this.dropEntireInventory(world, x, y, z, block, metadata);
+    			tileNew.invalidate();
+    		}
+    	}
     }
 
     @Override

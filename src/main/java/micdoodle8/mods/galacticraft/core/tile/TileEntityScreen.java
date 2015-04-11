@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -15,6 +12,9 @@ import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class TileEntityScreen extends TileEntity
 {   
@@ -597,7 +597,7 @@ public class TileEntityScreen extends TileEntity
 		DrawGameScreen newScreen = null;
 		boolean serverside = true;
 		TileEntity bottomLeft = vec.clone().modifyPositionFromSide(ForgeDirection.getOrientation(side), -left).modifyPositionFromSide(ForgeDirection.DOWN, down).getTileEntity(this.worldObj);
-		if (FMLCommonHandler.instance().getEffectiveSide().isClient())
+		if (this.worldObj.isRemote)
 		{
 			if (bottomLeft instanceof TileEntityScreen)  //It always will be if reached this far
 			{
@@ -644,7 +644,7 @@ public class TileEntityScreen extends TileEntity
      */
     public void resetToSingle()
     {
-		if (FMLCommonHandler.instance().getEffectiveSide().isClient())
+		if (this.worldObj.isRemote)
 			this.screen = new DrawGameScreen(1.0F, 1.0F, this);
 		this.screenOffsetx = 0;
 		this.screenOffsetz = 0;   		
@@ -957,7 +957,7 @@ public class TileEntityScreen extends TileEntity
     	if (this.connectedDown) connections += "D";
     	if (this.connectedLeft) connections += "L";
     	if (this.connectedRight) connections += "R";
-    	if (FMLCommonHandler.instance().getEffectiveSide().isClient()) strSide = "C";
+    	if (this.worldObj.isRemote) strSide = "C";
     	//System.out.println(strSide + ":" + msg + " at "+this.xCoord+","+this.zCoord+" "+connections);
     }
 

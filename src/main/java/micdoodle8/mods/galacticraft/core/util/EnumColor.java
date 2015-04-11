@@ -27,20 +27,25 @@ public enum EnumColor
     /**
      * The color code that will be displayed
      */
-    public final String code;
+    private final String code;
 
-    public final int[] rgbCode;
+    private final int[] rgbCode;
 
     /**
      * A friendly name of the color.
      */
-    public String unlocalizedName;
+    private final String unlocalizedName;
 
     private EnumColor(String s, String n, int[] rgb)
     {
         this.code = s;
         this.unlocalizedName = n;
         this.rgbCode = rgb;
+    }
+    
+    public String getCode()
+    {
+    	return code;
     }
 
     public String getLocalizedName()

@@ -253,9 +253,18 @@ public class BlockVec3 implements Cloneable
 
     public BlockVec3 subtract(BlockVec3 par1)
     {
-        this.x = this.x -= par1.x;
-        this.y = this.y -= par1.y;
-        this.z = this.z -= par1.z;
+        this.x -= par1.x;
+        this.y -= par1.y;
+        this.z -= par1.z;
+
+        return this;
+    }
+
+    public BlockVec3 scale(int par1)
+    {
+        this.x *= par1;
+        this.y *= par1;
+        this.z *= par1;
 
         return this;
     }
@@ -342,7 +351,7 @@ public class BlockVec3 implements Cloneable
     @Override
     public String toString()
     {
-        return "BlockVec3 [" + this.x + "," + this.y + "," + this.z + "]";
+        return "[" + this.x + "," + this.y + "," + this.z + "]";
     }
 
     /**

@@ -1,9 +1,5 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
-
 import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -17,6 +13,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -27,6 +24,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldProvider;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.UUID;
 
 public class TileEntityTelemetry extends TileEntity
 {   
@@ -129,6 +130,14 @@ public class TileEntityTelemetry extends TileEntity
 					data1 = (int) eShip.posY;
 					data3 = eShip.getScaledFuelLevel(100);
 					data4 = (int) eShip.rotationPitch;
+				}
+				else if (GalacticraftCore.isPlanetsLoaded && linkedEntity instanceof EntityAstroMiner)
+				{
+					EntityAstroMiner eShip = (EntityAstroMiner)linkedEntity; 
+					data1 = (int) (eShip.posY);// - eShip.prevPosY) * 100;
+					data2 = (int) (eShip.posX - eShip.prevPosX) * 100;;
+					data3 = eShip.energyLevel;
+					data4 = eShip.AIstate;
 				}
 			}
 			else
@@ -234,14 +243,18 @@ public class TileEntityTelemetry extends TileEntity
 			int y = fmData.getInteger("teCoordY");
 			int z = fmData.getInteger("teCoordZ");
 			WorldProvider wp = WorldUtil.getProviderForDimension(dim);
-			if (wp == null) System.out.println("Frequency module worn: world provider is null.  This is a bug. "+dim);
-			TileEntity te = wp.worldObj.getTileEntity(x, y, z);
-			if (te instanceof TileEntityTelemetry)
+			if (wp == null) 
+				System.out.println("Frequency module worn: world provider is null.  This is a bug. "+dim);
+			else
 			{
-				if (player == null)
-					((TileEntityTelemetry) te).removeTrackedEntity();
-				else
-					((TileEntityTelemetry) te).addTrackedEntity(player.getUniqueID());
+				TileEntity te = wp.worldObj.getTileEntity(x, y, z);
+				if (te instanceof TileEntityTelemetry)
+				{
+					if (player == null)
+						((TileEntityTelemetry) te).removeTrackedEntity();
+					else
+						((TileEntityTelemetry) te).addTrackedEntity(player.getUniqueID());
+				}
 			}
 		}
 	}

@@ -173,8 +173,8 @@ schematic.cargoRocket.name=자동 화물 로켓
 entity.Sludgeling.name=슬러지링
 entity.Slimeling.name=슬라임링
 entity.CreeperBoss.name=진화한 크리퍼 보스
-entity.GalacticraftMars.SpaceshipT2.name=2티어 로켓
-entity.GalacticraftMars.CargoRocket.name=화물 로켓
+entity.SpaceshipT2.name=2티어 로켓
+entity.CargoRocket.name=화물 로켓
 
 # CONTAINERS
 container.launchcontroller.name=발사 통제기

@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -37,8 +36,10 @@ import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
-import micdoodle8.mods.galacticraft.core.entities.player.*;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler.EnumModelPacket;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematic;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
@@ -79,17 +80,16 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.*;
+import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.world.WorldProvider;
+import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.DimensionManager;
-
 import org.apache.commons.io.FileUtils;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageOutputStream;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -140,7 +140,7 @@ public class PacketSimple extends Packet implements IPacket
         C_UPDATE_SPACESTATION_DATA(Side.CLIENT, Integer.class, NBTTagCompound.class),
         C_UPDATE_SPACESTATION_CLIENT_ID(Side.CLIENT, Integer.class),
         C_UPDATE_PLANETS_LIST(Side.CLIENT, Integer[].class),
-        C_UPDATE_CONFIGS(Side.CLIENT, Boolean.class, Double.class, Integer.class, Integer.class, Integer.class, Float.class, Float.class, Float.class, Float.class, Integer.class, String[].class),
+        C_UPDATE_CONFIGS(Side.CLIENT, Integer.class, Double.class, Integer.class, Integer.class, Integer.class, String.class, Float.class, Float.class, Float.class, Float.class, Integer.class, String[].class),
         C_UPDATE_STATS(Side.CLIENT, Integer.class),
         C_ADD_NEW_SCHEMATIC(Side.CLIENT, Integer.class),
         C_UPDATE_SCHEMATIC_LIST(Side.CLIENT, Integer[].class),
@@ -479,65 +479,7 @@ public class PacketSimple extends Packet implements IPacket
             FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = stats.thirdPersonView;
             break;
         case C_UPDATE_SPACESTATION_LIST:
-            try
-            {
-                if (WorldUtil.registeredSpaceStations != null)
-                {
-                    for (Integer registeredID : WorldUtil.registeredSpaceStations)
-                    {
-                        DimensionManager.unregisterDimension(registeredID);
-                    }
-                }
-                WorldUtil.registeredSpaceStations = new ArrayList<Integer>();
-
-                if (this.data.size() > 0)
-                {
-                    if (this.data.get(0) instanceof Integer)
-                    {
-                        for (Object o : this.data)
-                        {
-                            Integer dimID = (Integer) o;
-
-                            if (!WorldUtil.registeredSpaceStations.contains(dimID))
-                            {
-                                WorldUtil.registeredSpaceStations.add(dimID);
-                                if (!DimensionManager.isDimensionRegistered(dimID))
-                                {
-                                    DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbit);
-                                }
-                                else
-                                {
-                                    GCLog.severe("Dimension already registered on client: unable to register space station dimension " + dimID);
-                                }
-                            }
-                        }
-                    }
-                    else if (this.data.get(0) instanceof Integer[])
-                    {
-                        for (Object o : (Integer[]) this.data.get(0))
-                        {
-                            Integer dimID = (Integer) o;
-
-                            if (!WorldUtil.registeredSpaceStations.contains(dimID))
-                            {
-                                WorldUtil.registeredSpaceStations.add(dimID);
-                                if (!DimensionManager.isDimensionRegistered(dimID))
-                                {
-                                    DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbit);
-                                }
-                                else
-                                {
-                                    GCLog.severe("Dimension already registered on client: unable to register space station dimension " + dimID);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            catch (final Exception e)
-            {
-                e.printStackTrace();
-            }
+        	WorldUtil.decodeSpaceStationListClient(data);
             break;
         case C_UPDATE_SPACESTATION_DATA:
             SpaceStationWorldData var4 = SpaceStationWorldData.getMPSpaceStationData(player.worldObj, (Integer) this.data.get(0), player);
@@ -547,59 +489,7 @@ public class PacketSimple extends Packet implements IPacket
             ClientProxyCore.clientSpaceStationID = (Integer) this.data.get(0);
             break;
         case C_UPDATE_PLANETS_LIST:
-            try
-            {
-                if (ConfigManagerCore.enableDebug)
-                	System.out.println("GC connecting to server: received planets dimension ID list.");
-            	if (WorldUtil.registeredPlanets != null)
-                {
-                    for (Integer registeredID : WorldUtil.registeredPlanets)
-                    {
-                        DimensionManager.unregisterDimension(registeredID);
-                    }
-                }
-                WorldUtil.registeredPlanets = new ArrayList<Integer>();
-
-                String ids = "";
-                if (this.data.size() > 0)
-                {
-                	//Start the provider index at offset 2 to skip the two Overworld Orbit dimensions
-                	int providerIndex = 2;
-                    if (this.data.get(0) instanceof Integer)
-                    {
-                    	for (Object o : this.data)
-                        {
-                            WorldUtil.registerPlanetClient((Integer) o, providerIndex);
-                            providerIndex++;
-                            ids += ((Integer)o).toString() + " ";
-                        }
-                    }
-                    else if (this.data.get(0) instanceof Integer[])
-                    {
-                        for (Object o : (Integer[]) this.data.get(0))
-                        {
-                            WorldUtil.registerPlanetClient((Integer) o, providerIndex);
-                            providerIndex++;
-                            ids += ((Integer)o).toString() + " ";
-                        }
-                    }
-                }
-                if (ConfigManagerCore.enableDebug)
-                {
-                	System.out.println("GC clientside planet dimensions registered: "+ids);
-                	WorldProvider dimMoon = WorldUtil.getProviderForName("moon.moon");
-                	if (dimMoon != null) System.out.println("Crosscheck: Moon is "+dimMoon.dimensionId);
-                	WorldProvider dimMars = WorldUtil.getProviderForName("planet.mars");
-                	if (dimMoon != null) System.out.println("Crosscheck: Mars is "+dimMars.dimensionId);
-                	WorldProvider dimAst = WorldUtil.getProviderForName("planet.asteroids");
-                	if (dimMoon != null) System.out.println("Crosscheck: Asteroids is "+dimAst.dimensionId);
-                }
-                break;
-            }
-            catch (final Exception e)
-            {
-                e.printStackTrace();
-            }
+        	WorldUtil.decodePlanetsListClient(data);
             break;
         case C_UPDATE_CONFIGS:
         	ConfigManagerCore.saveClientConfigOverrideable();
@@ -804,10 +694,10 @@ public class PacketSimple extends Packet implements IPacket
         		int screenType = (Integer) this.data.get(3);
         		int flags = (Integer) this.data.get(4);
             	screenTile.imageType = screenType;
-            	screenTile.connectedUp = (flags & 8) > 0;
-            	screenTile.connectedDown = (flags & 4) > 0;
-            	screenTile.connectedLeft = (flags & 2) > 0;
-            	screenTile.connectedRight = (flags & 1) > 0;
+            	screenTile.connectedUp = (flags & 8) != 0;
+            	screenTile.connectedDown = (flags & 4) != 0;
+            	screenTile.connectedLeft = (flags & 2) != 0;
+            	screenTile.connectedRight = (flags & 1) != 0;
             	screenTile.refreshNextTick(true);
         	}      	
         	break;
@@ -872,7 +762,7 @@ public class PacketSimple extends Packet implements IPacket
                     {
                         if (folder.exists() || folder.mkdir())
                         {
-                            File file0 = new File(folder, "overworld.png");
+                            File file0 = new File(folder, "overworldLocal.png");
 
                             if (!file0.exists() || (file0.canRead() && file0.canWrite()))
                             {
@@ -882,12 +772,12 @@ public class PacketSimple extends Packet implements IPacket
 
                                 if (img != null)
                                 {
-                                    ClientProxyCore.overworldTextureClient = new DynamicTexture(img);
+                                    ClientProxyCore.overworldTextureLocal = new DynamicTexture(img);
                                 }
                             }
                             else
                             {
-                                System.err.println("Cannot read/write to file %minecraftDir%/assets/temp/overworld.png");
+                                System.err.println("Cannot read/write to file %minecraftDir%/assets/temp/overworldLocal.png");
                             }
                         }
                         else
@@ -915,12 +805,13 @@ public class PacketSimple extends Packet implements IPacket
     public void handleServerSide(EntityPlayer player)
     {
         EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
-        GCPlayerStats stats = GCPlayerStats.get(playerBase);
 
         if (playerBase == null)
         {
             return;
         }
+        
+        GCPlayerStats stats = GCPlayerStats.get(playerBase);
 
         switch (this.type)
         {
@@ -1225,9 +1116,9 @@ public class PacketSimple extends Packet implements IPacket
                 if (race != null)
                 {
                     GCPlayerStats.get(playerInvited).spaceRaceInviteTeamID = teamInvitedTo;
-                    String dA = EnumColor.DARK_AQUA.code;
-                    String bG = EnumColor.BRIGHT_GREEN.code;
-                    String dB = EnumColor.PURPLE.code;
+                    String dA = EnumColor.DARK_AQUA.getCode();
+                    String bG = EnumColor.BRIGHT_GREEN.getCode();
+                    String dB = EnumColor.PURPLE.getCode();
                     String teamNameTotal = "";
                     String[] teamNameSplit = race.getTeamName().split(" ");
                     for (String teamNamePart : teamNameSplit)
@@ -1358,11 +1249,16 @@ public class PacketSimple extends Packet implements IPacket
         	}
         	break;
         case S_REQUEST_OVERWORLD_IMAGE:
+        	if (GalacticraftCore.enableJPEG)
+        	{
             ChunkCoordIntPair chunkCoordIntPair = new ChunkCoordIntPair((int)Math.floor(stats.coordsTeleportedFromX) >> 4, (int)Math.floor(stats.coordsTeleportedFromZ) >> 4);
             File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
             if (!baseFolder.exists())
             {
-                baseFolder.mkdirs();
+                if (!baseFolder.mkdirs())
+                {
+                	GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
+                }
             }
             File outputFile = new File(baseFolder, "" + chunkCoordIntPair.chunkXPos + "_" + chunkCoordIntPair.chunkZPos + ".jpg");
             boolean success = true;
@@ -1443,7 +1339,7 @@ public class PacketSimple extends Packet implements IPacket
             {
                 System.err.println("[Galacticraft] Error creating player's overworld texture, please report this as a bug!");
             }
-
+        	}
             break;
         case S_REQUEST_PLAYERSKIN:
         	String strName = (String) this.data.get(0);

@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.oxygen.NetworkHelper;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
@@ -48,7 +49,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 
     public TileEntityElectrolyzer()
     {
-        this.storage.setMaxExtract(120);
+        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 150 : 120);
         this.setTierGC(2);
     }
 
@@ -433,29 +434,41 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public int receiveGas(ForgeDirection side, GasStack stack, boolean doTransfer)
+    {
+        return 0;
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
     public int receiveGas(ForgeDirection side, GasStack stack)
     {
         return 0;
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public GasStack drawGas(ForgeDirection from, int amount)
+    public GasStack drawGas(ForgeDirection from, int amount, boolean doTransfer)
     {
         int metaside = this.getBlockMetadata() + 2;
         int side = from.ordinal();
-    	if (metaside == (side ^ 1))
+    	if (metaside == (side ^ 1) && this.liquidTank2.getFluid() != null)
         {
     		int amountH = Math.min(8, this.liquidTank2.getFluidAmount());
-    		amountH = this.liquidTank2.drain(amountH, true).amount;
+    		amountH = this.liquidTank2.drain(amountH, doTransfer).amount;
     		return new GasStack((Gas) EnergyConfigHandler.gasHydrogen, amountH);
         }
-        else if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
+        else if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1)  && this.liquidTank.getFluid() != null)
         {
     		int amountO = Math.min(8, this.liquidTank.getFluidAmount());
-    		amountO = this.liquidTank.drain(amountO, true).amount;
+    		amountO = this.liquidTank.drain(amountO, doTransfer).amount;
     		return new GasStack((Gas) EnergyConfigHandler.gasOxygen, amountO);
         }
         return null;
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public GasStack drawGas(ForgeDirection from, int amount)
+    {
+    	return this.drawGas(from, amount, true);
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
@@ -571,7 +584,10 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
                 if (outputTile instanceof IGasHandler && ((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas) EnergyConfigHandler.gasOxygen))
                 {
                     GasStack toSend = new GasStack((Gas) EnergyConfigHandler.gasOxygen, (int) Math.floor(Math.min(this.getOxygenStored(), provide)));
-                    int acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
+                    int acceptedOxygen = 0;
+                    try {
+                    	acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
+                    } catch (Exception e) { }
                     this.provideOxygen(acceptedOxygen, true);
                     return true;
                 }
@@ -624,7 +640,10 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
                 if (outputTile instanceof IGasHandler && ((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas) EnergyConfigHandler.gasHydrogen))
                 {
                     GasStack toSend = new GasStack((Gas) EnergyConfigHandler.gasHydrogen, (int) Math.floor(Math.min(this.getHydrogenStored(), provide)));
-                    int acceptedHydrogen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
+                    int acceptedHydrogen = 0;
+                    try {
+                    	acceptedHydrogen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
+                    } catch (Exception e) { }
                     this.provideHydrogen(acceptedHydrogen, true);
                     return true;
                 }

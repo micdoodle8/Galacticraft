@@ -117,6 +117,8 @@ public class GCPlayerStats implements IExtendedEntityProperties
 	public boolean newInOrbit = true;
 	public int buildFlags = 0;
 
+	public int incrementalDamage = 0;
+
     public GCPlayerStats(EntityPlayerMP player)
     {
         this.player = new WeakReference<EntityPlayerMP>(player);
@@ -189,6 +191,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
         nbt.setInteger("CryogenicChamberCooldown", this.cryogenicChamberCooldown);
         nbt.setBoolean("ReceivedSoundWarning", this.receivedSoundWarning);
         nbt.setInteger("BuildFlags", this.buildFlags);
+        nbt.setBoolean("ShownSpaceRace", this.openedSpaceRaceManager);
         if (ConfigManagerCore.enableDebug) GCLog.info("Saving GC player data for " + player.get().getGameProfile().getName()  + " : " + this.buildFlags);
     }
 
@@ -263,7 +266,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
                 final NBTTagCompound var4 = var23.getCompoundTagAt(var3);
                 final int var5 = var4.getByte("Slot") & 255;
 
-                if (var5 >= 0 && var5 < this.rocketStacks.length)
+                if (var5 < this.rocketStacks.length)
                 {
                     this.rocketStacks[var5] = ItemStack.loadItemStackFromNBT(var4);
                 }
@@ -306,6 +309,9 @@ public class GCPlayerStats implements IExtendedEntityProperties
 
         if (nbt.hasKey("BuildFlags"))
         	this.buildFlags = nbt.getInteger("BuildFlags");
+
+        if (nbt.hasKey("ShownSpaceRace"))
+        	this.openedSpaceRaceManager = nbt.getBoolean("ShownSpaceRace");
 
         if (ConfigManagerCore.enableDebug) GCLog.info("Loading GC player data for " + player.get().getGameProfile().getName() + " : " + this.buildFlags);
     }

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ChunkCoordinates;
@@ -191,17 +192,14 @@ public class MapGenDungeon
                         default:
                             break;
                         }
-                        if (!this.isIntersecting(corridor1, boundingBoxes) && !corridor1.isOverlapping(possibleRoomBb))
+                        if (corridor1 != null && !this.isIntersecting(corridor1, boundingBoxes) && !corridor1.isOverlapping(possibleRoomBb))
                         {
                             boundingBoxes.add(possibleRoomBb);
                             boundingBoxes.add(corridor1);
                             currentRoom = possibleRoom;
                             currentRoom.generate(blocks, metas, chunkX, chunkZ);
                             this.rooms.add(currentRoom);
-                            if (corridor1 != null)
-                            {
-                                this.genCorridor(corridor1, rand, possibleRoom.posY, chunkX, chunkZ, dir, blocks, metas, false);
-                            }
+                            this.genCorridor(corridor1, rand, possibleRoom.posY, chunkX, chunkZ, dir, blocks, metas, false);
                             break;
                         }
                     }
@@ -278,7 +276,7 @@ public class MapGenDungeon
                         default:
                             break;
                         }
-                        if (!this.isIntersecting(corridor1, boundingBoxes) && !this.isIntersecting(corridor2, boundingBoxes) && !corridor1.isOverlapping(possibleRoomBb) && !corridor2.isOverlapping(possibleRoomBb))
+                        if (corridor1 != null && corridor2 != null && !this.isIntersecting(corridor1, boundingBoxes) && !this.isIntersecting(corridor2, boundingBoxes) && !corridor1.isOverlapping(possibleRoomBb) && !corridor2.isOverlapping(possibleRoomBb))
                         {
                             boundingBoxes.add(possibleRoomBb);
                             boundingBoxes.add(corridor1);
@@ -286,11 +284,8 @@ public class MapGenDungeon
                             currentRoom = possibleRoom;
                             currentRoom.generate(blocks, metas, chunkX, chunkZ);
                             this.rooms.add(currentRoom);
-                            if (corridor1 != null && corridor2 != null)
-                            {
-                                this.genCorridor(corridor2, rand, possibleRoom.posY, chunkX, chunkZ, dir2, blocks, metas, true);
-                                this.genCorridor(corridor1, rand, possibleRoom.posY, chunkX, chunkZ, dir, blocks, metas, false);
-                            }
+                            this.genCorridor(corridor2, rand, possibleRoom.posY, chunkX, chunkZ, dir2, blocks, metas, true);
+                            this.genCorridor(corridor1, rand, possibleRoom.posY, chunkX, chunkZ, dir, blocks, metas, false);
                             break;
                         }
                         else
@@ -399,8 +394,16 @@ public class MapGenDungeon
                     {
                         if (flag2 != -1)
                         {
-                            this.placeBlock(blocks, metas, i, j, k, cx, cz, GCBlocks.unlitTorch, 0);
-                            this.worldObj.scheduleBlockUpdateWithPriority(i, j, k, GCBlocks.unlitTorch, 40, 0);
+                        	if (OxygenUtil.noAtmosphericCombustion(this.worldObj.provider))
+                        	{
+                                this.placeBlock(blocks, metas, i, j, k, cx, cz, GCBlocks.unlitTorch, 0);
+                                this.worldObj.scheduleBlockUpdateWithPriority(i, j, k, GCBlocks.unlitTorch, 40, 0);
+                        	}
+                        	else
+                        	{
+                                this.placeBlock(blocks, metas, i, j, k, cx, cz, Blocks.torch, 0);
+                                this.worldObj.scheduleBlockUpdateWithPriority(i, j, k, Blocks.torch, 40, 0);
+                        	}
                         }
                         else
                         {

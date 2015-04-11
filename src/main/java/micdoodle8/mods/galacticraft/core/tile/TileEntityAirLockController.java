@@ -40,29 +40,30 @@ public class TileEntityAirLockController extends TileEntityAirLock
     public ArrayList<TileEntityAirLock> otherAirLocks;
     public ArrayList<TileEntityAirLock> lastOtherAirLocks;
     private AirLockProtocol protocol;
-    private AirLockProtocol lastProtocol = this.protocol;
+    private AirLockProtocol lastProtocol;
+
+    public TileEntityAirLockController()
+    {
+        this.lastProtocol = this.protocol;
+    }
 
     @SuppressWarnings("rawtypes")
     @Override
     public void updateEntity()
     {
         super.updateEntity();
-
+ 
         if (!this.worldObj.isRemote)
         {
-            boolean optionHandled = false;
+            this.active = false;
 
             if (this.redstoneActivation)
             {
-                optionHandled = true;
-
-                this.active = this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
+                this.active = !this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
             }
 
-            if (this.playerDistanceActivation)
+            if ((this.active || !this.redstoneActivation) && this.playerDistanceActivation)
             {
-                optionHandled = true;
-
                 double distance = 0.0F;
 
                 switch (this.playerDistanceSelection)
@@ -114,11 +115,6 @@ public class TileEntityAirLockController extends TileEntityAirLock
                 this.active = !foundPlayer;
             }
 
-            if (!optionHandled)
-            {
-                this.active = false;
-            }
-
             if (this.invertSelection)
             {
                 this.active = !this.active;
@@ -139,7 +135,9 @@ public class TileEntityAirLockController extends TileEntityAirLock
                 {
                     this.otherAirLocks = this.protocol.calculate(this.horizontalModeEnabled);
 
-                    if (this.active && (this.otherAirLocks != null || this.otherAirLocks != null && this.lastOtherAirLocks != null && this.otherAirLocks != this.lastOtherAirLocks || this.otherAirLocks != null && this.lastOtherAirLocks != null && this.otherAirLocks.size() != this.lastOtherAirLocks.size()))
+                    if (this.active && (this.otherAirLocks != null || 
+                    		(this.lastOtherAirLocks != null && this.otherAirLocks != this.lastOtherAirLocks) || 
+                    		(this.lastOtherAirLocks != null && this.otherAirLocks.size() != this.lastOtherAirLocks.size())))
                     {
                         this.sealAirLock();
                     }

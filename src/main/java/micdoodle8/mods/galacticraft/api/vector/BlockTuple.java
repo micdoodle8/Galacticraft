@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.api.vector;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 public class BlockTuple
 {
@@ -11,5 +13,12 @@ public class BlockTuple
     {
         this.block = b;
         this.meta = m;
+    }
+    
+    public String toString()
+    {
+    	Item item = Item.getItemFromBlock(this.block);
+    	if (item == null) return "none"; 
+    	return new ItemStack(item, 1, this.meta).getUnlocalizedName() + ".name";
     }
 }

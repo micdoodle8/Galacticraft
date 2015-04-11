@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -8,11 +10,7 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
 
 public class GameScreenBasic implements IGameScreen
 {
@@ -25,7 +23,7 @@ public class GameScreenBasic implements IGameScreen
     private float textureAy = 0F;
     private float textureBx = 1.0F;
     private float textureBy = 1.0F;
-    
+    //private DynamicTexture localMap;
 
     public GameScreenBasic()
     {
@@ -75,9 +73,9 @@ public class GameScreenBasic implements IGameScreen
         	drawBlackBackground(0.09F);
         	break;
         case 1:
-	        if (ClientProxyCore.overworldTextureClient != null)
+	        if (ClientProxyCore.overworldTextureLocal != null)
 	        {
-	            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureClient.getGlTextureId());
+	            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureLocal.getGlTextureId());
 	        }
 	        else
 	        {

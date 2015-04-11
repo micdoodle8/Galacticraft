@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.EnumRarity;
@@ -12,11 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.ItemFluidContainer;
+import net.minecraftforge.fluids.*;
 
 import java.util.List;
 
@@ -107,7 +104,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
         if (container.getItemDamage() == ItemCanisterGeneric.EMPTY)
         {
         	//Empty canister - find a new canister to match the fluid
-        	if (ConfigManagerCore.enableDebug) System.out.println("Searching for matching container for "+fluidName);
+        	if (ConfigManagerCore.enableDebug) GCLog.info("Searching for matching container for "+fluidName);
         	for (String key : GalacticraftCore.itemList.keySet())
         	{
         		if (key.contains("CanisterFull"))

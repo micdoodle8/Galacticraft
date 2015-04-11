@@ -132,13 +132,26 @@ public class SkyProviderMoon extends IRenderHandler
         GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 5F);
         GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
-        var12 = 30.0F;
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);        
+        var12 = 20.0F / 3.5F;
+        var23.startDrawingQuads();
+        var23.addVertex(-var12, 99.9D, -var12);
+        var23.addVertex(var12, 99.9D, -var12);
+        var23.addVertex(var12, 99.9D, var12);
+        var23.addVertex(-var12, 99.9D, var12);
+        var23.draw();
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        var12 = 20.0F;
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(SkyProviderMoon.sunTexture);
         var23.startDrawingQuads();
-        var23.addVertexWithUV(-var12, 150.0D, -var12, 0.0D, 0.0D);
-        var23.addVertexWithUV(var12, 150.0D, -var12, 1.0D, 0.0D);
-        var23.addVertexWithUV(var12, 150.0D, var12, 1.0D, 1.0D);
-        var23.addVertexWithUV(-var12, 150.0D, var12, 0.0D, 1.0D);
+        var23.addVertexWithUV(-var12, 100.0D, -var12, 0.0D, 0.0D);
+        var23.addVertexWithUV(var12, 100.0D, -var12, 1.0D, 0.0D);
+        var23.addVertexWithUV(var12, 100.0D, var12, 1.0D, 1.0D);
+        var23.addVertexWithUV(-var12, 100.0D, var12, 0.0D, 1.0D);
         var23.draw();
 
         GL11.glPopMatrix();
@@ -148,7 +161,7 @@ public class SkyProviderMoon extends IRenderHandler
         GL11.glDisable(GL11.GL_BLEND);
 
         // HOME:
-        var12 = 50.0F;
+        var12 = 10.0F;
         final float earthRotation = (float) (world.getSpawnPoint().posZ - mc.thePlayer.posZ) * 0.01F;
         GL11.glScalef(0.6F, 0.6F, 0.6F);
         GL11.glRotatef(earthRotation, 1.0F, 0.0F, 0.0F);
@@ -165,10 +178,10 @@ public class SkyProviderMoon extends IRenderHandler
         }
         world.getMoonPhase();
         var23.startDrawingQuads();
-        var23.addVertexWithUV(-var12, -500.0D, var12, 0, 1);
-        var23.addVertexWithUV(var12, -500.0D, var12, 1, 1);
-        var23.addVertexWithUV(var12, -500.0D, -var12, 1, 0);
-        var23.addVertexWithUV(-var12, -500.0D, -var12, 0, 0);
+        var23.addVertexWithUV(-var12, -100.0D, var12, 0, 1);
+        var23.addVertexWithUV(var12, -100.0D, var12, 1, 1);
+        var23.addVertexWithUV(var12, -100.0D, -var12, 1, 0);
+        var23.addVertexWithUV(-var12, -100.0D, -var12, 0, 0);
         var23.draw();
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

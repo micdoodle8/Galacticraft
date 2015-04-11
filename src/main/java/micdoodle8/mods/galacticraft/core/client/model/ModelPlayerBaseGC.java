@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
-import java.lang.reflect.Constructor;
-
 import api.player.model.ModelPlayer;
 import api.player.model.ModelPlayerAPI;
 import api.player.model.ModelPlayerBase;
@@ -27,6 +25,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.model.IModelCustom;
 import net.smart.render.playerapi.SmartRender;
 
+import java.lang.reflect.Constructor;
+
 public class ModelPlayerBaseGC extends ModelPlayerBase
 {
     public ModelRenderer[] parachute = new ModelRenderer[3];
@@ -48,7 +48,7 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
     private static Constructor modelRotationGCSmartMovingInit;
 
     static {
-	    isSmartMovingLoaded = Loader.isModLoaded("SmartMoving");
+	    isSmartMovingLoaded = Loader.isModLoaded("SmartRender");
 	    if (isSmartMovingLoaded)
 	    {
 		    try {

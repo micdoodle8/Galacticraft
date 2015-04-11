@@ -161,7 +161,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         if (this.IC2surplusJoules < 0.001F)
         {
             this.IC2surplusJoules = 0F;
-            float result = this.getNetwork().getRequest(this) * EnergyConfigHandler.TO_IC2_RATIO;
+            float result = this.getNetwork().getRequest(this) / EnergyConfigHandler.IC2_RATIO;
             //Cap energy which IC2 can put into Alu Wire at 128 EU/t for regular, 256 EU/t for heavy
             result = Math.max(((EnergyNetwork) this.getNetwork()).networkTierGC == 2 ? 256F : 128F, result);
             return result;
@@ -171,7 +171,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         if (this.IC2surplusJoules < 0.001F)
         {
             this.IC2surplusJoules = 0F;
-            float result = this.getNetwork().getRequest(this) * EnergyConfigHandler.TO_IC2_RATIO;
+            float result = this.getNetwork().getRequest(this) / EnergyConfigHandler.IC2_RATIO;
             //Cap energy which IC2 can put into Alu Wire at 128 EU/t for regular, 256 EU/t for heavy
             result = Math.max(((EnergyNetwork) this.getNetwork()).networkTierGC == 2 ? 256F : 128F, result);
             return result;
@@ -191,14 +191,14 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         if (this.IC2surplusJoules < 0.001F)
         {
             this.IC2surplusJoules = 0F;
-            return this.getNetwork().getRequest(this) * EnergyConfigHandler.TO_IC2_RATIO;
+            return this.getNetwork().getRequest(this) / EnergyConfigHandler.IC2_RATIO;
         }
 
         this.IC2surplusJoules = this.getNetwork().produce(this.IC2surplusJoules, true, 1, this);
         if (this.IC2surplusJoules < 0.001F)
         {
             this.IC2surplusJoules = 0F;
-            return this.getNetwork().getRequest(this) * EnergyConfigHandler.TO_IC2_RATIO;
+            return this.getNetwork().getRequest(this) / EnergyConfigHandler.IC2_RATIO;
         }
         return 0D;
     }
@@ -330,7 +330,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
             return null;
         }
 
-        double requiredEnergy = this.getNetwork().getRequest(this) * EnergyConfigHandler.TO_BC_RATIO;
+        double requiredEnergy = this.getNetwork().getRequest(this) / EnergyConfigHandler.BC3_RATIO;
         
         if (requiredEnergy <= 0.1D)
         {
@@ -343,7 +343,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
 
     public void reconfigureBC()
     {
-    	double requiredEnergy = this.getNetwork().getRequest(this) * EnergyConfigHandler.TO_BC_RATIO;
+    	double requiredEnergy = this.getNetwork().getRequest(this) / EnergyConfigHandler.BC3_RATIO;
         if (requiredEnergy <= 0.1D)
         {
         	requiredEnergy = 0;
@@ -359,7 +359,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         double energyBC = handler.getEnergyStored();
         if (energyBC > 0D)
         {
-            energyBC = this.getNetwork().produce((float) energyBC * EnergyConfigHandler.BC3_RATIO, true, 1, this) * EnergyConfigHandler.TO_BC_RATIO;
+            energyBC = this.getNetwork().produce((float) energyBC * EnergyConfigHandler.BC3_RATIO, true, 1, this) / EnergyConfigHandler.BC3_RATIO;
             if (energyBC < 0D)
             {
                 energyBC = 0D;
@@ -385,7 +385,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
     	}
         float receiveGC = maxReceive * EnergyConfigHandler.RF_RATIO;
         float sentGC = receiveGC - this.getNetwork().produce(receiveGC, !simulate, 1, this);
-    	return MathHelper.floor_float(sentGC * EnergyConfigHandler.TO_RF_RATIO);
+    	return MathHelper.floor_float(sentGC / EnergyConfigHandler.RF_RATIO);
     }
 
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
@@ -422,7 +422,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
     		return 0;
     	}
 
-    	return MathHelper.floor_float(this.getNetwork().getRequest(this) * EnergyConfigHandler.TO_RF_RATIO);
+    	return MathHelper.floor_float(this.getNetwork().getRequest(this) / EnergyConfigHandler.RF_RATIO);
     }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
@@ -433,7 +433,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
             return 0;
         }
 
-        return amount - this.getNetwork().produce((float) amount * EnergyConfigHandler.MEKANISM_RATIO, true, 1, this) * EnergyConfigHandler.TO_MEKANISM_RATIO;
+        return amount - this.getNetwork().produce((float) amount * EnergyConfigHandler.MEKANISM_RATIO, true, 1, this) / EnergyConfigHandler.MEKANISM_RATIO;
     }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
@@ -479,6 +479,6 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         {
             return 0;
         }
-        return this.getNetwork().getRequest(this) * EnergyConfigHandler.TO_MEKANISM_RATIO;
+        return this.getNetwork().getRequest(this) / EnergyConfigHandler.MEKANISM_RATIO;
     }
 }

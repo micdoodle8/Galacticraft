@@ -9,8 +9,10 @@ import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.entities.IBubble;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityTerraformBubble;
+import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerTerraformer;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
@@ -22,13 +24,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.*;
 
 import java.util.ArrayList;
 
@@ -62,7 +58,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
     public TileEntityTerraformer()
     {
-        this.storage.setMaxExtract(45);
+        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 45);
     }
 
     public int getScaledWaterLevel(int i)
@@ -481,7 +477,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
     {
-        return new int[] { 1 };
+        return new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
     }
 
     @Override
@@ -493,7 +489,16 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     @Override
     public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
     {
-        return slotID == 1;
+    	if (slotID == 0)
+    	{
+    		return FluidContainerRegistry.isEmptyContainer(itemstack);
+    	}
+    	if (slotID == 1)
+    	{
+    		return ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
+    	}
+    	
+    	return false;
     }
 
     @Override
@@ -505,7 +510,29 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
-        return slotID == 1 && ItemElectricBase.isElectricItem(itemstack.getItem());
+    	switch (slotID)
+    	{
+    	case 0:
+    		return FluidContainerRegistry.containsFluid(itemstack, new FluidStack(FluidRegistry.WATER, 1));
+    	case 1:
+    		return ItemElectricBase.isElectricItem(itemstack.getItem());
+    	case 2:
+    	case 3:
+    	case 4:
+    	case 5:
+    		return itemstack.getItem() == Items.dye && itemstack.getItemDamage() == 15;
+    	case 6:
+    	case 7:
+    	case 8:
+    	case 9:
+    		return ContainerTerraformer.isOnSaplingList(itemstack);
+    	case 10:
+    	case 11:
+    	case 12:
+    	case 13:
+    		return itemstack.getItem() == Items.wheat_seeds;
+    	}
+    	return false;
     }
 
     @Override

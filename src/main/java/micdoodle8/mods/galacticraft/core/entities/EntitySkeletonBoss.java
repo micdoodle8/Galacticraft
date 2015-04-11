@@ -79,7 +79,7 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(150.0F * ConfigManagerCore.dungeonBossHealthMod);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.25F);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(ConfigManagerCore.hardMode ? 0.4F : 0.25F);
     }
 
     public EntitySkeletonBoss(World world, Vector3 vec)

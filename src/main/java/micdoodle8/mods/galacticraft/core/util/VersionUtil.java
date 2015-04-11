@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.util;
 
 import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
-
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.versioning.DefaultArtifactVersion;
 import cpw.mods.fml.common.versioning.VersionParser;

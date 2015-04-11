@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.tick;
 import cpw.mods.fml.common.gameevent.TickEvent.Type;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.KeyHandler;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
@@ -11,23 +12,36 @@ import micdoodle8.mods.galacticraft.core.entities.IControllableEntity;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
+
 import org.lwjgl.input.Keyboard;
 
 public class KeyHandlerClient extends KeyHandler
 {
-    public static KeyBinding galaxyMap = new KeyBinding(GCCoreUtil.translate("keybind.map.name"), Keyboard.KEY_M, "Galacticraft");
-    public static KeyBinding openFuelGui = new KeyBinding(GCCoreUtil.translate("keybind.spaceshipinv.name"), Keyboard.KEY_F, "Galacticraft");
-    public static KeyBinding toggleAdvGoggles = new KeyBinding(GCCoreUtil.translate("keybind.sensortoggle.name"), Keyboard.KEY_K, "Galacticraft");
+    public static KeyBinding galaxyMap;
+    public static KeyBinding openFuelGui;
+    public static KeyBinding toggleAdvGoggles;
+    
+    static
+    {
+        galaxyMap = new KeyBinding(GCCoreUtil.translate("keybind.map.name"), ConfigManagerCore.keyOverrideMapI == 0 ? Keyboard.KEY_M : ConfigManagerCore.keyOverrideMapI, Constants.MOD_NAME_SIMPLE);
+        openFuelGui = new KeyBinding(GCCoreUtil.translate("keybind.spaceshipinv.name"), ConfigManagerCore.keyOverrideFuelLevelI == 0 ? Keyboard.KEY_F : ConfigManagerCore.keyOverrideFuelLevelI, Constants.MOD_NAME_SIMPLE);
+        toggleAdvGoggles = new KeyBinding(GCCoreUtil.translate("keybind.sensortoggle.name"), ConfigManagerCore.keyOverrideToggleAdvGogglesI == 0 ? Keyboard.KEY_K : ConfigManagerCore.keyOverrideToggleAdvGogglesI, Constants.MOD_NAME_SIMPLE);
+        // See ConfigManagerCore.class for actual defaults. These do nothing
+    }
+    
     public static KeyBinding accelerateKey;
     public static KeyBinding decelerateKey;
     public static KeyBinding leftKey;
     public static KeyBinding rightKey;
+    public static KeyBinding upKey;
+    public static KeyBinding downKey;
     public static KeyBinding spaceKey;
     public static KeyBinding leftShiftKey;
     private static Minecraft mc = Minecraft.getMinecraft();
@@ -44,6 +58,8 @@ public class KeyHandlerClient extends KeyHandler
         KeyHandlerClient.decelerateKey = KeyHandlerClient.mc.gameSettings.keyBindBack;
         KeyHandlerClient.leftKey = KeyHandlerClient.mc.gameSettings.keyBindLeft;
         KeyHandlerClient.rightKey = KeyHandlerClient.mc.gameSettings.keyBindRight;
+        KeyHandlerClient.upKey = KeyHandlerClient.mc.gameSettings.keyBindForward;
+        KeyHandlerClient.downKey = KeyHandlerClient.mc.gameSettings.keyBindBack;
         KeyHandlerClient.spaceKey = KeyHandlerClient.mc.gameSettings.keyBindJump;
         KeyHandlerClient.leftShiftKey = KeyHandlerClient.mc.gameSettings.keyBindSneak;
         return new KeyBinding[] { invKey, KeyHandlerClient.accelerateKey, KeyHandlerClient.decelerateKey, KeyHandlerClient.leftKey, KeyHandlerClient.rightKey, KeyHandlerClient.spaceKey, KeyHandlerClient.leftShiftKey };
@@ -55,6 +71,12 @@ public class KeyHandlerClient extends KeyHandler
         if (KeyHandlerClient.mc.thePlayer != null && tickEnd)
         {
             EntityClientPlayerMP playerBase = PlayerUtil.getPlayerBaseClientFromPlayer(KeyHandlerClient.mc.thePlayer, false);
+            
+            if (playerBase == null)
+            {
+            	return;
+            }
+            
             GCPlayerStatsClient stats = GCPlayerStatsClient.get(playerBase);
 
             if (kb.getKeyCode() == KeyHandlerClient.galaxyMap.getKeyCode())

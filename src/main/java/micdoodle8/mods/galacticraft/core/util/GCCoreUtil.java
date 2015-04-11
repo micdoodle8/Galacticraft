@@ -25,16 +25,7 @@ public class GCCoreUtil
 {
 	public static int nextID = 0;
 	
-	public static int to32BitColor(int a, int r, int g, int b)
-    {
-        a = a << 24;
-        r = r << 16;
-        g = g << 8;
-
-        return a | r | g | b;
-    }
-
-    public static void openBuggyInv(EntityPlayerMP player, IInventory buggyInv, int type)
+	public static void openBuggyInv(EntityPlayerMP player, IInventory buggyInv, int type)
     {
         player.getNextWindowId();
         player.closeContainer();
@@ -64,11 +55,6 @@ public class GCCoreUtil
     
     public static void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int back, int fore)
     {
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-        {
-            LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", GCCoreUtil.translate("entity.GalacticraftCore." + var1 + ".name"));
-        }
-
         int newID = EntityRegistry.instance().findGlobalUniqueEntityId();
         EntityRegistry.registerGlobalEntityID(var0, var1, newID, back, fore);
         EntityRegistry.registerModEntity(var0, var1, nextInternalID(), GalacticraftCore.instance, 80, 3, true);
@@ -76,11 +62,10 @@ public class GCCoreUtil
 
     public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
     {
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-        {
-            LanguageRegistry.instance().addStringLocalization("entity." + var1 + ".name", GCCoreUtil.translate("entity.GalacticraftCore." + var1 + ".name"));
-        }
-
+    	if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+		{
+    		LanguageRegistry.instance().addStringLocalization("entity.GalacticraftCore." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
+		}
         EntityRegistry.registerModEntity(var0, var1, nextInternalID(), GalacticraftCore.instance, trackingDistance, updateFreq, sendVel);
     }
 

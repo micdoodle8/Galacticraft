@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
+import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -38,6 +39,7 @@ public class OverlayOxygenTanks extends Overlay
         final Tessellator tessellator = Tessellator.instance;
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
+        GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int minLeftX = 0;
@@ -124,7 +126,7 @@ public class OverlayOxygenTanks extends Overlay
         tessellator.draw();
         GL11.glDepthMask(true);
 
-        if (oxygenInTank1 > 0 || oxygenInTank1 <= 0)
+        if (oxygenInTank1 > 0)
         {
             final Tessellator tessellator2 = Tessellator.instance;
 
@@ -138,12 +140,12 @@ public class OverlayOxygenTanks extends Overlay
             tessellator2.startDrawingQuads();
             tessellator.addVertexWithUV(minLeftX, topY + 1 + oxygenInTank1 / 2, zLevel, 66 * 0.00390625F, oxygenInTank1 / 2 * 0.00390625F);
             tessellator.addVertexWithUV(maxLeftX - 1, topY + 1 + oxygenInTank1 / 2, zLevel, (66 + 17) * 0.00390625F, oxygenInTank1 / 2 * 0.00390625F);
-            tessellator.addVertexWithUV(maxLeftX - 1, topY + 1 + oxygenInTank1 / 2 - 1, zLevel, (66 + 17) * 0.00390625F, (oxygenInTank1 / 2 - 1) * 0.00390625F);
-            tessellator.addVertexWithUV(minLeftX, topY + 1 + oxygenInTank1 / 2 - 1, zLevel, 66 * 0.00390625F, (oxygenInTank1 / 2 - 1) * 0.00390625F);
+            tessellator.addVertexWithUV(maxLeftX - 1, topY + 1 + oxygenInTank1 / 2 - 1, zLevel, (66 + 17) * 0.00390625F, 1 * 0.00390625F);
+            tessellator.addVertexWithUV(minLeftX, topY + 1 + oxygenInTank1 / 2 - 1, zLevel, 66 * 0.00390625F, 1 * 0.00390625F);
             tessellator2.draw();
         }
 
-        if (oxygenInTank2 > 0 || oxygenInTank2 <= 0)
+        if (oxygenInTank2 > 0)
         {
             final Tessellator tessellator2 = Tessellator.instance;
 
@@ -165,7 +167,9 @@ public class OverlayOxygenTanks extends Overlay
         if (invalid)
         {
             String value = GCCoreUtil.translate("gui.warning.invalidThermal");
-            OverlayOxygenTanks.minecraft.fontRenderer.drawString(value, minLeftX - 18 - OverlayOxygenTanks.minecraft.fontRenderer.getStringWidth(value), (int) bottomY - heatLevelScaled - OverlayOxygenTanks.minecraft.fontRenderer.FONT_HEIGHT / 2 - 1, GCCoreUtil.to32BitColor(255, 255, 10, 10));
+            OverlayOxygenTanks.minecraft.fontRenderer.drawString(value, minLeftX - 18 - OverlayOxygenTanks.minecraft.fontRenderer.getStringWidth(value), (int) bottomY - heatLevelScaled - OverlayOxygenTanks.minecraft.fontRenderer.FONT_HEIGHT / 2 - 1, ColorUtil.to32BitColor(255, 255, 10, 10));
         }
+        
+        GL11.glEnable(GL11.GL_LIGHTING);
     }
 }

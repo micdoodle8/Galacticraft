@@ -199,12 +199,11 @@ public class SkyProviderOrbit extends IRenderHandler
         }
         GL11.glRotatef(this.spinAngle, 0.0F, 1.0F, 0.0F);
 
-        //Stars first
-        // if (var20 > 0.0F)
-        {
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GL11.glCallList(this.starGLCallList);
-        }
+        //At 0.8, these will look bright against a black sky - allows some headroom for them to
+        //look even brighter in outer dimensions (further from the sun)
+        GL11.glColor4f(0.8F, 0.8F, 0.8F, 0.8F);
+        GL11.glCallList(this.starGLCallList);
+        
         GL11.glEnable(GL11.GL_TEXTURE_2D);
 
         GL11.glPushMatrix();
@@ -212,6 +211,19 @@ public class SkyProviderOrbit extends IRenderHandler
         GL11.glRotatef(celestialAngle * 360.0F, 1.0F, 0.0F, 0.0F);
         if (this.renderSun)
         {
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);        
+            var12 = 8.0F;
+            var23.startDrawingQuads();
+            var23.addVertex(-var12, 99.9D, -var12);
+            var23.addVertex(var12, 99.9D, -var12);
+            var23.addVertex(var12, 99.9D, var12);
+            var23.addVertex(-var12, 99.9D, var12);
+            var23.draw();
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             var12 = 28.0F;
             this.minecraft.renderEngine.bindTexture(SkyProviderOrbit.sunTexture);
             var23.startDrawingQuads();
@@ -224,6 +236,19 @@ public class SkyProviderOrbit extends IRenderHandler
 
         if (this.renderMoon)
         {
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);        
+            var12 = 11.3F;
+            var23.startDrawingQuads();
+            var23.addVertex(-var12, -99.9D, var12);
+            var23.addVertex(var12, -99.9D, var12);
+            var23.addVertex(var12, -99.9D, -var12);
+            var23.addVertex(-var12, -99.9D, -var12);
+            var23.draw();
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             var12 = 40.0F;
             this.minecraft.renderEngine.bindTexture(SkyProviderOrbit.moonTexture);
             float var28 = this.minecraft.theWorld.getMoonPhase();
@@ -346,7 +371,7 @@ public class SkyProviderOrbit extends IRenderHandler
             double var4 = var1.nextFloat() * 2.0F - 1.0F;
             double var6 = var1.nextFloat() * 2.0F - 1.0F;
             double var8 = var1.nextFloat() * 2.0F - 1.0F;
-            final double var10 = 0.15F + var1.nextFloat() * 0.1F;
+            final double var10 = 0.07F + var1.nextFloat() * 0.06F;
             double var12 = var4 * var4 + var6 * var6 + var8 * var8;
 
             if (var12 < 1.0D && var12 > 0.01D)
@@ -355,9 +380,9 @@ public class SkyProviderOrbit extends IRenderHandler
                 var4 *= var12;
                 var6 *= var12;
                 var8 *= var12;
-                final double var14 = var4 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 100D + 150D : 100.0D);
-                final double var16 = var6 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 100D + 150D : 100.0D);
-                final double var18 = var8 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 100D + 150D : 100.0D);
+                final double var14 = var4 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 50D + 75D : 50.0D);
+                final double var16 = var6 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 50D + 75D : 50.0D);
+                final double var18 = var8 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 50D + 75D : 50.0D);
                 final double var20 = Math.atan2(var4, var8);
                 final double var22 = Math.sin(var20);
                 final double var24 = Math.cos(var20);

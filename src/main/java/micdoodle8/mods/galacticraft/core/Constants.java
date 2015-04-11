@@ -4,10 +4,11 @@ public class Constants
 {
     public static final String MOD_ID_CORE = "GalacticraftCore";
     public static final String MOD_ID_PLANETS = "GalacticraftMars";
+    public static final String MOD_NAME_SIMPLE = "Galacticraft";
 
     public static final int LOCALMAJVERSION = 3;
     public static final int LOCALMINVERSION = 0;
-    public static final int LOCALBUILDVERSION = 8;
+    public static final int LOCALBUILDVERSION = 11;
 
     public static final String CONFIG_CATEGORY_DIMENSIONS = "dimensions";
     public static final String CONFIG_CATEGORY_ENTITIES = "entities";

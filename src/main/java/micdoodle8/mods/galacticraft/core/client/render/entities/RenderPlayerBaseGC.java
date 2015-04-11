@@ -14,7 +14,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-
 import org.lwjgl.opengl.GL11;
 
 public class RenderPlayerBaseGC extends RenderPlayerBase
@@ -63,7 +62,7 @@ public class RenderPlayerBaseGC extends RenderPlayerBase
 
                     int padding = gearData.getThermalPadding(i);
 
-                    if (padding >= 0)
+                    if (padding >= 0 && !par1EntityLivingBase.isInvisible())
                     {
                         GL11.glColor4f(1, 1, 1, 1);
                         FMLClientHandler.instance().getClient().getTextureManager().bindTexture(thermalPaddingTexture1);

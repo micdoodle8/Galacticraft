@@ -5,13 +5,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySludgeling;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
 
@@ -51,7 +51,7 @@ public class BlockSludge extends BlockFluidClassic
 
     public BlockSludge()
     {
-        super(MarsModule.SLUDGE, Material.water);
+        super(MarsModule.SLUDGE, MarsModule.sludgeMaterial);
         this.setQuantaPerBlock(9);
         this.setRenderPass(1);
         this.setLightLevel(1.0F);
@@ -81,6 +81,26 @@ public class BlockSludge extends BlockFluidClassic
         MarsModule.SLUDGE.setStillIcon(this.stillIcon);
         MarsModule.SLUDGE.setFlowingIcon(this.flowingIcon);
     }
+
+    @Override
+	public boolean canDisplace(IBlockAccess world, int x, int y, int z)
+	{
+		if (world.getBlock(x, y, z).getMaterial().isLiquid())
+		{
+			return false;
+		}
+		return super.canDisplace(world, x, y, z);
+	}
+
+	@Override
+	public boolean displaceIfPossible(World world, int x, int y, int z)
+	{
+		if (world.getBlock(x, y, z).getMaterial().isLiquid())
+		{
+			return false;
+		}
+		return super.displaceIfPossible(world, x, y, z);
+	}
 
     @Override
     @SideOnly(Side.CLIENT)

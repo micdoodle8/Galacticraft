@@ -48,6 +48,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
     {
         super(Material.rock);
         this.blockHardness = 1.5F;
+        this.blockResistance = 2.5F;
         this.setBlockName("moonBlock");
     }
 
@@ -120,14 +121,26 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
     @Override
     public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
     {
-        int metadata = world.getBlockMetadata(x, y, z);
-        
-        if (metadata == 14 || metadata == 15)
+    	int metadata = world.getBlockMetadata(x, y, z); 
+
+    	if (metadata == 15)
         {
             return 10000.0F;
         }
+    	else if (metadata == 14)
+        {
+            return 40.0F;
+        }
+    	else if (metadata == 4)
+        {
+            return 6.0F;
+        }
+    	else if (metadata < 3)
+        {
+            return 3.0F;
+        }
 
-        return super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ);
+        return this.blockResistance / 5.0F;
     }
 
     @Override
@@ -315,6 +328,12 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
         }
 
         return null;
+    }
+
+    @Override
+    public boolean hasTileEntity(int metadata)
+    {
+        return metadata == 15;
     }
 
     @Override

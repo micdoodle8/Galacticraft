@@ -16,14 +16,12 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
-import micdoodle8.mods.galacticraft.api.world.ITeleportType;
-import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
+import micdoodle8.mods.galacticraft.api.world.*;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
+import micdoodle8.mods.galacticraft.core.entities.EntityArrowGC;
 import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -31,6 +29,7 @@ import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
+import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
@@ -39,6 +38,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.S07PacketRespawn;
@@ -60,6 +60,8 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.Map.Entry;
 
+//import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
+
 public class WorldUtil
 {
     public static List<Integer> registeredSpaceStations;
@@ -68,6 +70,7 @@ public class WorldUtil
     private static IWorldGenerator generatorCoFH = null;
     private static IWorldGenerator generatorDenseOres = null;
     private static IWorldGenerator generatorTCAuraNodes = null;
+    private static IWorldGenerator generatorAE2meteors = null;
     private static Method generateTCAuraNodes = null;
     private static boolean generatorsInitialised = false;
 	
@@ -78,9 +81,33 @@ public class WorldUtil
             final IGalacticraftWorldProvider customProvider = (IGalacticraftWorldProvider) entity.worldObj.provider;
             return 0.08D - customProvider.getGravity();
         }
+        else if (GalacticraftCore.isPlanetsLoaded && entity instanceof EntityAstroMiner)
+        {
+        	return 0;
+        }
         else
         {
             return 0.08D;
+        }
+    }
+    
+    public static float getGravityFactor(Entity entity)
+    {
+        if (entity.worldObj.provider instanceof IGalacticraftWorldProvider)
+        {
+            final IGalacticraftWorldProvider customProvider = (IGalacticraftWorldProvider) entity.worldObj.provider;
+        	float returnValue = MathHelper.sqrt_float(0.08F / (0.08F - customProvider.getGravity()));
+        	if (returnValue > 2.5F) returnValue = 2.5F;
+        	if (returnValue < 0.75F) returnValue = 0.75F;
+        	return returnValue;
+        }
+        else if (GalacticraftCore.isPlanetsLoaded && entity instanceof EntityAstroMiner)
+        {
+        	return 1F;
+        }
+        else
+        {
+            return 1F;
         }
     }
 
@@ -99,12 +126,23 @@ public class WorldUtil
 
     public static boolean shouldRenderFire(Entity entity)
     {
-        if (!(entity instanceof EntityLivingBase))
+        if (entity.worldObj == null || !(entity.worldObj.provider instanceof IGalacticraftWorldProvider)) return entity.isBurning();
+
+    	if (!(entity instanceof EntityLivingBase) && !(entity instanceof EntityArrow) && !(entity instanceof EntityArrowGC))
         {
-            return entity.isBurning();
+    		return entity.isBurning();
         }
 
-        return !(entity.worldObj.provider instanceof IGalacticraftWorldProvider) && entity.isBurning();
+    	if (entity.isBurning())
+    	{
+	        if (OxygenUtil.noAtmosphericCombustion(entity.worldObj.provider))
+	        	return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, entity.boundingBox);
+	        else
+	        	return true;
+	        //Disable fire on Galacticraft worlds with no oxygen
+    	}
+    	
+        return false;
     }
 
     public static Vector3 getWorldColor(World world)
@@ -914,6 +952,13 @@ public class WorldUtil
      */
     public static List<Object> getPlanetList()
     {
+        List<Object> objList = new ArrayList<Object>();
+        objList.add(getPlanetListInts());
+        return objList;
+    }
+
+    public static Integer[] getPlanetListInts()
+    {
         Integer[] iArray = new Integer[WorldUtil.registeredPlanets.size()];
 
         for (int i = 0; i < iArray.length; i++)
@@ -921,12 +966,73 @@ public class WorldUtil
             iArray[i] = WorldUtil.registeredPlanets.get(i);
         }
 
+        return iArray;
+    }
+    
+    public static void decodePlanetsListClient(List<Object> data)
+    {
+        try
+        {
+            if (ConfigManagerCore.enableDebug)
+            	GCLog.info("GC connecting to server: received planets dimension ID list.");
+        	if (WorldUtil.registeredPlanets != null)
+            {
+                for (Integer registeredID : WorldUtil.registeredPlanets)
+                {
+                    DimensionManager.unregisterDimension(registeredID);
+                }
+            }
+            WorldUtil.registeredPlanets = new ArrayList<Integer>();
+
+            String ids = "";
+            if (data.size() > 0)
+            {
+            	//Start the provider index at offset 2 to skip the two Overworld Orbit dimensions
+            	int providerIndex = 2;
+                if (data.get(0) instanceof Integer)
+                {
+                	for (Object o : data)
+                    {
+                        WorldUtil.registerPlanetClient((Integer) o, providerIndex);
+                        providerIndex++;
+                        ids += ((Integer)o).toString() + " ";
+                    }
+                }
+                else if (data.get(0) instanceof Integer[])
+                {
+                    for (Object o : (Integer[]) data.get(0))
+                    {
+                        WorldUtil.registerPlanetClient((Integer) o, providerIndex);
+                        providerIndex++;
+                        ids += ((Integer)o).toString() + " ";
+                    }
+                }
+            }
+            if (ConfigManagerCore.enableDebug)
+            {
+            	System.out.println("GC clientside planet dimensions registered: "+ids);
+            	WorldProvider dimMoon = WorldUtil.getProviderForName("moon.moon");
+            	if (dimMoon != null) System.out.println("Crosscheck: Moon is "+dimMoon.dimensionId);
+            	WorldProvider dimMars = WorldUtil.getProviderForName("planet.mars");
+            	if (dimMoon != null) System.out.println("Crosscheck: Mars is "+dimMars.dimensionId);
+            	WorldProvider dimAst = WorldUtil.getProviderForName("planet.asteroids");
+            	if (dimMoon != null) System.out.println("Crosscheck: Asteroids is "+dimAst.dimensionId);
+            }
+        }
+        catch (final Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public static List<Object> getSpaceStationList()
+    {
         List<Object> objList = new ArrayList<Object>();
-        objList.add(iArray);
+        objList.add(getSpaceStationListInts());
         return objList;
     }
 
-    public static List<Object> getSpaceStationList()
+    public static Integer[] getSpaceStationListInts()
     {
         Integer[] iArray = new Integer[WorldUtil.registeredSpaceStations.size()];
 
@@ -935,9 +1041,60 @@ public class WorldUtil
             iArray[i] = WorldUtil.registeredSpaceStations.get(i);
         }
 
-        List<Object> objList = new ArrayList<Object>();
-        objList.add(iArray);
-        return objList;
+        return iArray;
+    }
+
+    public static void decodeSpaceStationListClient(List<Object> data)
+    {
+        try
+        {
+            if (WorldUtil.registeredSpaceStations != null)
+            {
+                for (Integer registeredID : WorldUtil.registeredSpaceStations)
+                {
+                    DimensionManager.unregisterDimension(registeredID);
+                }
+            }
+            WorldUtil.registeredSpaceStations = new ArrayList<Integer>();
+
+            if (data.size() > 0)
+            {
+                if (data.get(0) instanceof Integer)
+                {
+                    for (Object dimID : data)
+                    {
+                        registerSSdim((Integer) dimID);
+                    }
+                }
+                else if (data.get(0) instanceof Integer[])
+                {
+                    for (Object dimID : (Integer[]) data.get(0))
+                    {
+                        registerSSdim((Integer) dimID);
+                    }
+                }
+            }
+        }
+        catch (final Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private static void registerSSdim(Integer dimID)
+    {
+	    if (!WorldUtil.registeredSpaceStations.contains(dimID))
+	    {
+	        WorldUtil.registeredSpaceStations.add(dimID);
+	        if (!DimensionManager.isDimensionRegistered(dimID))
+	        {
+	            DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbit);
+	        }
+	        else
+	        {
+	            GCLog.severe("Dimension already registered on client: unable to register space station dimension " + dimID);
+	        }
+	    }
     }
 
     public static boolean otherModPreventGenerate(int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
@@ -996,7 +1153,37 @@ public class WorldUtil
 		        			break;
 		        		}
 	        	}
-
+	        } catch (Exception e) { }
+	        
+	        try {
+	        	Class ae2meteorPlace = null;
+	        	try
+	        	{
+	        		ae2meteorPlace = Class.forName("appeng.hooks.MeteoriteWorldGen");
+	        	}
+	        	catch (ClassNotFoundException e) { }
+	        	
+	        	if (ae2meteorPlace == null)
+	        	{
+		        	try
+		        	{
+		        		ae2meteorPlace = Class.forName("appeng.worldgen.MeteoriteWorldGen");
+		        	}
+		        	catch (ClassNotFoundException e) {}
+	        	}
+	        	
+	        	if (ae2meteorPlace != null)
+	        	{
+		        	final Field regField = Class.forName("cpw.mods.fml.common.registry.GameRegistry").getDeclaredField("worldGenerators");
+		            regField.setAccessible(true);
+		        	Set<IWorldGenerator> registeredGenerators = (Set<IWorldGenerator>) regField.get(null);
+		        	for (IWorldGenerator gen : registeredGenerators)
+		        		if (ae2meteorPlace.isInstance(gen))
+		        		{
+		        	        generatorAE2meteors = gen;
+		        			break;
+		        		}
+	        	}
 	        } catch (Exception e) { }
 	        
 	        try {
@@ -1024,10 +1211,11 @@ public class WorldUtil
 	        if (generatorGCGreg != null) System.out.println("Whitelisting GalacticGreg oregen on planets.");
 	        if (generatorCoFH != null) System.out.println("Whitelisting CoFHCore custom oregen on planets.");
 	        if (generatorDenseOres != null) System.out.println("Whitelisting Dense Ores oregen on planets.");
+	        if (generatorAE2meteors != null) System.out.println("Whitelisting AE2 meteorites worldgen on planets.");
 	        if (generatorTCAuraNodes != null && generateTCAuraNodes != null) System.out.println("Whitelisting ThaumCraft aura node generation on planets.");
         }
 
-        if (generatorGCGreg != null || generatorCoFH != null || generatorDenseOres != null || generatorTCAuraNodes != null)
+        if (generatorGCGreg != null || generatorCoFH != null || generatorDenseOres != null || generatorTCAuraNodes != null || generatorAE2meteors != null)
         {
         	try {
 	            long worldSeed = world.getSeed();
@@ -1040,12 +1228,15 @@ public class WorldUtil
 	            if (generatorCoFH != null) generatorCoFH.generate(fmlRandom, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
 	            if (generatorDenseOres != null) generatorDenseOres.generate(fmlRandom, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
 	            if (generatorGCGreg != null) generatorGCGreg.generate(fmlRandom, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+	            if (generatorAE2meteors != null) generatorAE2meteors.generate(fmlRandom, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
 	            if (generateTCAuraNodes != null)
 	            {
             		generateTCAuraNodes.invoke(generatorTCAuraNodes, world, fmlRandom, chunkX, chunkZ, false, true);	            		
 	            }
 	            
-	        } catch (Exception e) { e.printStackTrace(); }
+	        } catch (Exception e) {
+	        	GCLog.severe("Error in another mod's worldgen.  This is NOT a Galacticraft bug.");
+	        	e.printStackTrace(); }
         }
         return true;
     }
