@@ -1,14 +1,10 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -32,15 +28,7 @@ public class BlockMinerBaseFull extends BlockTileGC
         this.blockHardness = 3.0F;
         this.setBlockName(assetName);
         this.setBlockTextureName(AsteroidsModule.TEXTURE_PREFIX + "machineframe");
-        this.setCreativeTab(CreativeTabs.tabBlock);
         this.setStepSound(soundTypeMetal);
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public CreativeTabs getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
     }
 
     @Override
