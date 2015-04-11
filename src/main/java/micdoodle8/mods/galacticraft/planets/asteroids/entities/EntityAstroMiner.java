@@ -18,6 +18,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFlowerPot;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -995,7 +996,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             return null;
         }
 
-        Block block = item instanceof ItemBlock && !b.isFlowerPot() ? Block.getBlockFromItem(item) : b;
+        Block block = item instanceof ItemBlock && !(b instanceof BlockFlowerPot) ? Block.getBlockFromItem(item) : b;
         return new ItemStack(item, 1, block.getDamageValue(world, x, y, z));
     }
 

@@ -566,7 +566,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 
         if (freefall)
         {
-            doGravity = false;
+        	doGravity = false;
             this.pjumpticks = 0;
             //Do spinning
             if (this.doSpinning && this.angularVelocityRadians != 0F)
