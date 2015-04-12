@@ -492,26 +492,26 @@ public class GuiCelestialSelection extends GuiScreen
         	
             if (mc.gameSettings.isKeyDown(KeyHandlerClient.leftKey))
             {
-            	translation.x += -1.0F;
-            	translation.y += -1.0F;
+            	translation.x += -2.0F;
+            	translation.y += -2.0F;
             }
             
             if (mc.gameSettings.isKeyDown(KeyHandlerClient.rightKey))
             {
-            	translation.x += 1.0F;
-            	translation.y += 1.0F;
+            	translation.x += 2.0F;
+            	translation.y += 2.0F;
             }
             
             if (mc.gameSettings.isKeyDown(KeyHandlerClient.upKey))
             {
-            	translation.x += 1.0F;
-            	translation.y += -1.0F;
+            	translation.x += 2.0F;
+            	translation.y += -2.0F;
             }
             
             if (mc.gameSettings.isKeyDown(KeyHandlerClient.downKey))
             {
-            	translation.x += -1.0F;
-            	translation.y += 1.0F;
+            	translation.x += -2.0F;
+            	translation.y += 2.0F;
             }
         }
     }
