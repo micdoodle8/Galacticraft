@@ -1,7 +1,5 @@
 package tconstruct.client.tabs;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +49,7 @@ public class TabRegistry
 	}
 
 	private static Minecraft mc = FMLClientHandler.instance().getClient();
+	private static boolean initWithPotion;
 
 	public static void openInventoryGui()
 	{
@@ -72,6 +71,7 @@ public class TabRegistry
 				t.xPosition = cornerX + (count - 2) * 28;
 				t.yPosition = cornerY - 28;
 				t.enabled = !t.getClass().equals(selectedButton);
+				t.potionOffsetLast = getPotionOffsetNEI();
 				count++;
 			}
 		}
@@ -93,35 +93,41 @@ public class TabRegistry
 		// If at least one potion is active...
 		if (!mc.thePlayer.getActivePotionEffects().isEmpty())
 		{
-			if (Loader.isModLoaded("NotEnoughItems"))
-			{
-				try 
-				{
-					// Check whether NEI is hidden and enabled
-					Class<?> c = Class.forName("codechicken.nei.NEIClientConfig");
-					Object hidden = c.getMethod("isHidden").invoke(null);
-					Object enabled = c.getMethod("isEnabled").invoke(null);
-					if (hidden != null && hidden instanceof Boolean && enabled != null && enabled instanceof Boolean)
-					{
-						if ((Boolean)hidden || !((Boolean)enabled))
-						{
-							// If NEI is disabled or hidden, offset the tabs by 60 
-							return 60;
-						}
-					}
-				} 
-				catch (Exception e) 
-				{
-				}
-			}
-			else
-			{
-				// If NEI is not installed, offset the tabs 
-				return 60;
-			}
+			initWithPotion = true;
+			return 60 + getPotionOffsetNEI();
 		}
 		
 		// No potions, no offset needed
+		initWithPotion = false;
+		return 0;
+	}
+
+	public static int getPotionOffsetNEI()
+	{
+		if (initWithPotion && Loader.isModLoaded("NotEnoughItems"))
+		{
+			try 
+			{
+				// Check whether NEI is hidden and enabled
+				Class<?> c = Class.forName("codechicken.nei.NEIClientConfig");
+				Object hidden = c.getMethod("isHidden").invoke(null);
+				Object enabled = c.getMethod("isEnabled").invoke(null);
+				if (hidden instanceof Boolean && enabled instanceof Boolean)
+				{
+					if ((Boolean)hidden || !((Boolean)enabled))
+					{
+						// If NEI is disabled or hidden, offset the tabs by the standard 60 
+						return 0;
+					}
+					//Active NEI undoes the standard potion offset
+					return -60;
+				}
+			} 
+			catch (Exception e) 
+			{
+			}
+		}
+		//No NEI, no change
 		return 0;
 	}
 }

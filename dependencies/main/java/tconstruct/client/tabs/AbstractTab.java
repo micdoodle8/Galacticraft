@@ -15,6 +15,7 @@ public abstract class AbstractTab extends GuiButton
 	ResourceLocation texture = new ResourceLocation("textures/gui/container/creative_inventory/tabs.png");
 	ItemStack renderStack;
 	RenderItem itemRenderer = new RenderItem();
+	public int potionOffsetLast;
 
 	public AbstractTab(int id, int posX, int posY, ItemStack renderStack)
 	{
@@ -25,6 +26,12 @@ public abstract class AbstractTab extends GuiButton
 	@Override
 	public void drawButton(Minecraft mc, int mouseX, int mouseY)
 	{
+		int newPotionOffset = TabRegistry.getPotionOffsetNEI();
+		if (newPotionOffset < this.potionOffsetLast)
+		{
+	    	this.xPosition += newPotionOffset - this.potionOffsetLast;
+	    	this.potionOffsetLast = newPotionOffset;
+		}
 		if (this.visible)
 		{
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

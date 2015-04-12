@@ -16,6 +16,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.common.Loader;
+import tconstruct.client.tabs.AbstractTab;
 import tconstruct.client.tabs.TabRegistry;
 
 public class GuiExtendedInventory extends InventoryEffectRenderer
@@ -24,7 +25,11 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
 
     private float xSize_lo_2;
     private float ySize_lo_2;
+
+	private int potionOffsetLast;
     private static float rotation;
+
+	private boolean initWithPotion;
 
     public GuiExtendedInventory(EntityPlayer entityPlayer, InventoryExtended inventory)
     {
@@ -44,7 +49,8 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         super.initGui();
         
         this.guiLeft = (this.width - this.xSize) / 2;
-		this.guiLeft += getPotionOffset();
+		this.guiLeft += this.getPotionOffset(); 
+		this.potionOffsetLast = getPotionOffsetNEI();
 
         int cornerX = this.guiLeft;
         int cornerY = this.guiTop;
@@ -83,6 +89,18 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
     @Override
     public void drawScreen(int par1, int par2, float par3)
     {
+		int newPotionOffset = this.getPotionOffsetNEI();
+		if (newPotionOffset < this.potionOffsetLast)
+		{
+	    	int diff = newPotionOffset - this.potionOffsetLast;
+	    	this.potionOffsetLast = newPotionOffset;
+	    	this.guiLeft += diff;
+			for (int k = 0; k < this.buttonList.size(); ++k)
+	        {
+	        	GuiButton b = (GuiButton) this.buttonList.get(k);
+	        	if (!(b instanceof AbstractTab)) b.xPosition += diff;	        	
+	        }
+		}
         super.drawScreen(par1, par2, par3);
         this.xSize_lo_2 = par1;
         this.ySize_lo_2 = par2;
@@ -122,40 +140,46 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
 	
-	public static int getPotionOffset()
+	public int getPotionOffset()
 	{
 		// If at least one potion is active...
 		if (!Minecraft.getMinecraft().thePlayer.getActivePotionEffects().isEmpty())
 		{
-			if (Loader.isModLoaded("NotEnoughItems"))
-			{
-				try 
-				{
-					// Check whether NEI is hidden and enabled
-					Class<?> c = Class.forName("codechicken.nei.NEIClientConfig");
-					Object hidden = c.getMethod("isHidden").invoke(null);
-					Object enabled = c.getMethod("isEnabled").invoke(null);
-					if (hidden != null && hidden instanceof Boolean && enabled != null && enabled instanceof Boolean)
-					{
-						if ((Boolean)hidden || !((Boolean)enabled))
-						{
-							// If NEI is disabled or hidden, offset the tabs by 60 
-							return 60;
-						}
-					}
-				} 
-				catch (Exception e) 
-				{
-				}
-			}
-			else
-			{
-				// If NEI is not installed, offset the tabs 
-				return 60;
-			}
+			this.initWithPotion = true;
+			return 60 + getPotionOffsetNEI();
 		}
 		
 		// No potions, no offset needed
+		this.initWithPotion = false;
+		return 0;
+	}
+
+	public int getPotionOffsetNEI()
+	{
+		if (this.initWithPotion && Loader.isModLoaded("NotEnoughItems"))
+		{
+			try 
+			{
+				// Check whether NEI is hidden and enabled
+				Class<?> c = Class.forName("codechicken.nei.NEIClientConfig");
+				Object hidden = c.getMethod("isHidden").invoke(null);
+				Object enabled = c.getMethod("isEnabled").invoke(null);
+				if (hidden instanceof Boolean && enabled instanceof Boolean)
+				{
+					if ((Boolean)hidden || !((Boolean)enabled))
+					{
+						// If NEI is disabled or hidden, offset the tabs by the standard 60 
+						return 0;
+					}
+					//Active NEI undoes the standard potion offset
+					return -60;
+				}
+			} 
+			catch (Exception e) 
+			{
+			}
+		}
+		//No NEI, no change
 		return 0;
 	}
 }
