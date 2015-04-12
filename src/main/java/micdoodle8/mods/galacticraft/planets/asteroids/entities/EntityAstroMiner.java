@@ -352,9 +352,21 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	            double diffX = this.minecartX - this.posX;
 	            double diffY = this.minecartY - this.posY;
 	            double diffZ = this.minecartZ - this.posZ;
-	            if (Math.abs(diffX) > Math.abs(this.motionX)) this.motionX += diffX / 10D;
-	            if (Math.abs(diffY) > Math.abs(this.motionY)) this.motionY += diffY / 10D;
-	            if (Math.abs(diffZ) > Math.abs(this.motionZ)) this.motionZ += diffZ / 10D;
+            	if (Math.abs(diffX) > 1.0D || Math.abs(diffY) > 1.0D || Math.abs(diffZ) > 1.0D)
+            	{
+            		this.posX = this.minecartX;
+            		this.posY = this.minecartY;
+            		this.posZ = this.minecartZ;
+            	}
+            	else
+            	{
+		            if (Math.abs(diffX) > Math.abs(this.motionX))
+		            		this.motionX += diffX / 10D;
+		            if (Math.abs(diffY) > Math.abs(this.motionY))
+		            		this.motionY += diffY / 10D;
+		            if (Math.abs(diffZ) > Math.abs(this.motionZ))
+		            		this.motionZ += diffZ / 10D;
+            	}
             }
             this.posX += this.motionX;
             this.boundingBox.minX += this.motionX;
@@ -986,7 +998,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		{
 			if (this.posZ > pos.z + 0.0001D || this.posZ < pos.z - 0.0001D)
 			{
-				this.moveToPosZ(pos.x, stopForTurn);			
+				this.moveToPosZ(pos.z, stopForTurn);			
 				if (TEMPDEBUG) System.out.println("At " + posX + "," + posY + "," + posZ + "Moving Z to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | "  + this.targetPitch + "," + this.targetYaw: ""));
 			}
 			else if (this.posY > pos.y - 0.9999D || this.posY < pos.y - 1.0001D)
@@ -996,7 +1008,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 			}
 			else if (this.posX > pos.x + 0.0001D || this.posX < pos.x - 0.0001D)
 			{
-				this.moveToPosX(pos.z, stopForTurn);
+				this.moveToPosX(pos.x, stopForTurn);
 				if (TEMPDEBUG) System.out.println("At " + posX + "," + posY + "," + posZ + "Moving X to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | "  + this.targetPitch + "," + this.targetYaw: ""));
 			}
 			else return true;
@@ -1201,7 +1213,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         if (world.isRemote) return true;
 		final EntityAstroMiner miner = new EntityAstroMiner(world, new ItemStack[EntityAstroMiner.INV_SIZE], 0);
 		miner.setPlayer(player);
-        miner.waypointBase = new BlockVec3(x, y, z).modifyPositionFromSide(ForgeDirection.getOrientation(facing), 1);
+        miner.waypointBase = new BlockVec3(x, y - 1, z).modifyPositionFromSide(ForgeDirection.getOrientation(facing), 1);
         miner.setPosition(miner.waypointBase.x, miner.waypointBase.y, miner.waypointBase.z);
         miner.baseFacing = facing;
         miner.facingAI = facing;
@@ -1378,6 +1390,15 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         this.dataWatcher.updateObject(19, Float.valueOf(p_70492_1_));
     }
 
+    @Override
+    public void setLocationAndAngles(double x, double y, double z, float rotYaw, float rotPitch)
+    {
+    	this.minecartX = x;
+    	this.minecartY = y;
+    	this.minecartZ = z;
+    	super.setLocationAndAngles(x, y, z, rotYaw, rotPitch);
+    }
+    
     @SideOnly(Side.CLIENT)
     public void setPositionAndRotation2(double p_70056_1_, double p_70056_3_, double p_70056_5_, float p_70056_7_, float p_70056_8_, int p_70056_9_)
     {

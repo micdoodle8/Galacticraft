@@ -17,6 +17,7 @@ import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
@@ -88,22 +89,12 @@ public class RenderAstroMiner extends Render
         lastPartTime = partialTickTime;
         while (partTime < 0) partTime += 1F;
 
+//      RenderHelper.enableStandardItemLighting();
+        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         GL11.glPushMatrix();
         final float rotPitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTickTime;
         final float rotYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTickTime;
 
-        /*
-        GL11.glEnable(GL11.GL_BLEND);
-        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-        GL11.glColor4f(0.0F, 0.0F, 0.0F, 0.4F);
-        GL11.glLineWidth(2.0F);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDepthMask(false);
-        RenderGlobal.drawOutlinedBoundingBox(asteroid.boundingBox, 16777215);
-        GL11.glDepthMask(true);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_BLEND);
-         */
         GL11.glTranslatef((float)x, (float)y + 1.55F, (float)z);
         float partBlock;
         switch (astroMiner.facing)
