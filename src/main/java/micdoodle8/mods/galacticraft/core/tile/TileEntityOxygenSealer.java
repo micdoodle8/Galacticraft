@@ -62,14 +62,14 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     @Override
     public void invalidate()
     {
-        if (!this.worldObj.isRemote) TileEntityOxygenSealer.loadedTiles.add(this);
+        if (!this.worldObj.isRemote) TileEntityOxygenSealer.loadedTiles.remove(this);
     	super.invalidate();
     }
 
     @Override
     public void onChunkUnload()
     {
-        if (!this.worldObj.isRemote) TileEntityOxygenSealer.loadedTiles.add(this);
+        if (!this.worldObj.isRemote) TileEntityOxygenSealer.loadedTiles.remove(this);
     	super.onChunkUnload();
     }
 
