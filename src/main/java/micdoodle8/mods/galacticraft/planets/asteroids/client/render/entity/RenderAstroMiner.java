@@ -104,7 +104,7 @@ public class RenderAstroMiner extends Render
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_BLEND);
          */
-        GL11.glTranslatef((float)x, (float)y + 0.55F, (float)z);
+        GL11.glTranslatef((float)x, (float)y + 1.55F, (float)z);
         float partBlock;
         switch (astroMiner.facing)
         {
@@ -141,14 +141,15 @@ public class RenderAstroMiner extends Render
         if (rotPitch != 0F)
         {
             GL11.glTranslatef(-0.65F, -0.65F, 0);
-        	GL11.glRotatef(rotPitch / 5F, 1, 0, 0);
+        	GL11.glRotatef(rotPitch / 4F, 1, 0, 0);
             GL11.glTranslatef(0.65F, 0.65F, 0);
         }
         GL11.glTranslatef(0F, -0.35F, 0.25F);
         GL11.glScalef(0.05F, 0.05F, 0.05F);
         GL11.glTranslatef(wx, wy, wz);
 
-        boolean active = ((EntityAstroMiner)entity).AIstate > EntityAstroMiner.AISTATE_ATBASE;
+        int ais = ((EntityAstroMiner)entity).AIstate;
+        boolean active = ais > EntityAstroMiner.AISTATE_ATBASE;
 
         if (active)
         {
@@ -173,22 +174,22 @@ public class RenderAstroMiner extends Render
 	        GL11.glColor4f(sinOfTheTime, sinOfTheTime, sinOfTheTime, 0.6F);
 	        this.modelObj.renderOnly("Hoverpad_Front_Left_Top_Glow", "Hoverpad_Front_Right_Top_Glow", "Hoverpad_Front_Left_Bottom_Glow", "Hoverpad_Front_Right_Bottom_Glow", "Hoverpad_Rear_Right_Glow", "Hoverpad_Rear_Left_Glow", "Hoverpad_Heavy___Glow002", "Hoverpad_Heavy___Glow001", "Hoverpad_Heavy___Glow003");
 
-	        if (((EntityAstroMiner)entity).AIstate < EntityAstroMiner.AISTATE_DOCKING);
+	        if (ais < EntityAstroMiner.AISTATE_DOCKING)
 	        {
-		        FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.scanTexture);
+	        	FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.scanTexture);
 		        final Tessellator tess = Tessellator.instance;
 		        GL11.glColor4f(0, 0.6F, 1.0F, 0.2F);
 		        tess.startDrawingQuads(); 
-		        tess.addVertexWithUV(14.8F, -0.6F, -20F, 0D, 0D);
+		        tess.addVertexWithUV(15.6F, -0.6F, -20F, 0D, 0D);
 		        tess.addVertexWithUV(37.8F, 31.4F, -45F - partBlock, 1D, 0D);
 		        tess.addVertexWithUV(37.8F, -32.6F, -45F - partBlock, 1D, 1D);
-		        tess.addVertexWithUV(14.8F, -0.7F, -20F, 0D, 1D);
+		        tess.addVertexWithUV(15.6F, -0.7F, -20F, 0D, 1D);
 		        tess.draw();   	
 		        tess.startDrawingQuads(); 
-		        tess.addVertexWithUV(-14.8F, -0.6F, -20F, 0D, 0D);
+		        tess.addVertexWithUV(-15.6F, -0.6F, -20F, 0D, 0D);
 		        tess.addVertexWithUV(-37.8F, 31.4F, -45F - partBlock, 1D, 0D);
 		        tess.addVertexWithUV(-37.8F, -32.6F, -45F - partBlock, 1D, 1D);
-		        tess.addVertexWithUV(-14.8F, -0.7F, -20F, 0D, 1D);
+		        tess.addVertexWithUV(-15.6F, -0.7F, -20F, 0D, 1D);
 		        tess.draw();
 	        }
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);

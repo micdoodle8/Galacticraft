@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -18,15 +19,18 @@ import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAstero
 import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids.EnumSimplePacketAsteroids;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory implements IMultiBlock
+public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory implements ISidedInventory, IMultiBlock
 {
-    private ItemStack[] containingItems = new ItemStack[72];
+    public static final int HOLDSIZE = 72;
+	private ItemStack[] containingItems = new ItemStack[HOLDSIZE + 1];
+    private int[] slotArray;
     public boolean isMaster = false;
 	public int facing;
     private BlockVec3 mainBlockPosition;
@@ -51,6 +55,9 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     public TileEntityMinerBase()
     {
         this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 150 : 90);
+        this.slotArray = new int[HOLDSIZE];
+        for (int i = 0; i < HOLDSIZE; i++)
+        	this.slotArray[i] = i + 1;
     }
 
     @Override
@@ -353,12 +360,6 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
-    {
-        return true;
-    }
-
-    @Override
     public double getPacketRange()
     {
         return 20.0D;
@@ -554,4 +555,33 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         }
         return null;
     }
+   
+   @Override
+   public int[] getAccessibleSlotsFromSide(int side)
+   {
+       return side != this.getBlockMetadata() - 2 ? slotArray : new int[] { };
+   }
+
+   @Override
+   public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
+   {
+       return false;
+   }
+
+   @Override
+   public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
+   {
+       if (side != this.getBlockMetadata() - 2)
+       {
+           return slotID > 0 || ItemElectricBase.isElectricItemEmpty(itemstack);
+       }
+
+       return false;
+   }
+
+   @Override
+   public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
+   {
+       return slotID > 0 || ItemElectricBase.isElectricItem(itemstack.getItem());
+   }
 }

@@ -84,6 +84,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     private BlockVec3 waypointBase;
     private LinkedList<BlockVec3> wayPoints = new LinkedList();
     private LinkedList<BlockVec3> minePoints = new LinkedList();
+    private BlockVec3 minePointCurrent = null;
     private int baseFacing;
     public int facing;
     private int facingAI;
@@ -187,139 +188,6 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     {
         this.dataWatcher.addObject(19, new Float(0.0F));
     }
-
-    @Override
-    protected void readEntityFromNBT(NBTTagCompound nbt)
-    {
-    	final NBTTagList var2 = nbt.getTagList("Items", 10);
-        this.cargoItems = new ItemStack[this.INV_SIZE];
-
-        if (var2 != null)
-        {
-	        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
-	        {
-	            final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
-	            final int var5 = var4.getByte("Slot") & 255;
-	
-	            if (var5 < this.cargoItems.length)
-	            {
-	                this.cargoItems[var5] = ItemStack.loadItemStackFromNBT(var4);
-	            }
-	        }
-        }
-        
-        if (nbt.hasKey("Energy")) this.energyLevel = nbt.getInteger("Energy");
-        if (nbt.hasKey("BaseX"))
-        {
-        	this.posBase = new BlockVec3(nbt.getInteger("BaseX"), nbt.getInteger("BaseY"), nbt.getInteger("BaseZ"));
-        	this.flagLink = true;
-        }
-        if (nbt.hasKey("TargetX")) this.posTarget = new BlockVec3(nbt.getInteger("TargetX"), nbt.getInteger("TargetY"), nbt.getInteger("TargetZ"));
-        if (nbt.hasKey("WBaseX")) this.waypointBase = new BlockVec3(nbt.getInteger("WBaseX"), nbt.getInteger("WBaseY"), nbt.getInteger("WBaseZ"));
-        if (nbt.hasKey("BaseFacing")) this.baseFacing = nbt.getInteger("BaseFacing");
-        if (nbt.hasKey("AIState")) this.AIstate = nbt.getInteger("AIState");       
-        if (nbt.hasKey("Facing")) this.facingAI = nbt.getInteger("Facing");
-        this.lastFacing = -1;
-        if (nbt.hasKey("WayPoints"))
-        {
-        	this.wayPoints.clear();
-        	final NBTTagList wpList = nbt.getTagList("WayPoints", 10);
-        	for (int j = 0; j < wpList.tagCount(); j++)
-        	{
-	            NBTTagCompound bvTag = wpList.getCompoundTagAt(j);
-	            this.wayPoints.add(BlockVec3.readFromNBT(bvTag));
-        	}
-        }
-        if (nbt.hasKey("MinePoints"))
-        {
-        	this.minePoints.clear();
-        	final NBTTagList mpList = nbt.getTagList("MinePoints", 10);
-        	for (int j = 0; j < mpList.tagCount(); j++)
-        	{
-	            NBTTagCompound bvTag = mpList.getCompoundTagAt(j);
-	            this.minePoints.add(BlockVec3.readFromNBT(bvTag));
-        	}
-        }
-        if (nbt.hasKey("playerUUIDMost", 4) && nbt.hasKey("playerUUIDLeast", 4))
-        {
-            this.playerUUID = new UUID(nbt.getLong("playerUUIDMost"), nbt.getLong("playerUUIDLeast"));
-        }
-        else
-        {
-        	System.out.println("[Galacticraft] Please break and replace any AstroMiner placed in the world prior to build 3.0.11.317.");
-        	this.playerUUID = null;
-        }
-    }
-
-    @Override
-    protected void writeEntityToNBT(NBTTagCompound nbt)
-    {
-        final NBTTagList var2 = new NBTTagList();
-
-        if (this.cargoItems != null)
-        {
-	        for (int var3 = 0; var3 < this.cargoItems.length; ++var3)
-	        {
-	            if (this.cargoItems[var3] != null)
-	            {
-	                final NBTTagCompound var4 = new NBTTagCompound();
-	                var4.setByte("Slot", (byte) var3);
-	                this.cargoItems[var3].writeToNBT(var4);
-	                var2.appendTag(var4);
-	            }
-	        }
-        }
-
-        nbt.setTag("Items", var2);
-        nbt.setInteger("Energy", this.energyLevel);
-        if (this.posBase != null)
-        {
-	        nbt.setInteger("BaseX", this.posBase.x);
-	        nbt.setInteger("BaseY", this.posBase.y);
-	        nbt.setInteger("BaseZ", this.posBase.z);
-        }
-        if (this.posTarget != null)
-        {
-	        nbt.setInteger("TargetX", this.posTarget.x);
-	        nbt.setInteger("TargetY", this.posTarget.y);
-	        nbt.setInteger("TargetZ", this.posTarget.z);
-        }
-        if (this.waypointBase != null)
-        {
-	        nbt.setInteger("WBaseX", this.waypointBase.x);
-	        nbt.setInteger("WBaseY", this.waypointBase.y);
-	        nbt.setInteger("WBaseZ", this.waypointBase.z);
-        }
-        nbt.setInteger("BaseFacing", this.baseFacing);
-        nbt.setInteger("AIState", this.AIstate);
-        nbt.setInteger("Facing", this.facingAI);
-        if (this.wayPoints.size() > 0)
-        {
-        	NBTTagList wpList = new NBTTagList();
-        	for (int j = 0; j < this.wayPoints.size(); j++)
-        	{
-	            NBTTagCompound bvTag = this.wayPoints.get(j).writeToNBT(new NBTTagCompound());
-	            wpList.appendTag(bvTag);
-        	}
-        	nbt.setTag("WayPoints", wpList);
-        }
-        if (this.minePoints.size() > 0)
-        {
-        	NBTTagList mpList = new NBTTagList();
-        	for (int j = 0; j < this.minePoints.size(); j++)
-        	{
-	            NBTTagCompound bvTag = this.minePoints.get(j).writeToNBT(new NBTTagCompound());
-	            mpList.appendTag(bvTag);
-        	}
-        	nbt.setTag("MinePoints", mpList);
-        }
-        if (this.playerUUID != null)
-        {
-	        nbt.setLong("playerUUIDMost", this.playerUUID.getMostSignificantBits());
-	        nbt.setLong("playerUUIDLeast", this.playerUUID.getLeastSignificantBits());
-        }        
-    }
-
 
     @Override
     public int getSizeInventory()
@@ -478,20 +346,15 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
     	if (this.worldObj.isRemote)
         {
-        	if (this.turnProgress > 0)
+            if (this.turnProgress == 0)
             {
-                double d6 = this.posX + (this.minecartX - this.posX) / this.turnProgress;
-                double d7 = this.posY + (this.minecartY - this.posY) / this.turnProgress;
-                double d1 = this.posZ + (this.minecartZ - this.posZ) / this.turnProgress;
-//                double d3 = MathHelper.wrapAngleTo180_double(this.minecartYaw - this.rotationYaw);
-//                this.rotationYaw = (float)(this.rotationYaw + d3 / this.turnProgress);
-//                this.rotationPitch = (float)(this.rotationPitch + (this.minecartPitch - this.rotationPitch) / this.turnProgress);
-                --this.turnProgress;
-                this.setPosition(d6, d7, d1);
-            }
-            else
-            {
-                this.setPosition(this.posX, this.posY, this.posZ);
+	            this.turnProgress++;
+	            double diffX = this.minecartX - this.posX;
+	            double diffY = this.minecartY - this.posY;
+	            double diffZ = this.minecartZ - this.posZ;
+	            if (Math.abs(diffX) > Math.abs(this.motionX)) this.motionX += diffX / 10D;
+	            if (Math.abs(diffY) > Math.abs(this.motionY)) this.motionY += diffY / 10D;
+	            if (Math.abs(diffZ) > Math.abs(this.motionZ)) this.motionZ += diffZ / 10D;
             }
             this.posX += this.motionX;
             this.boundingBox.minX += this.motionX;
@@ -560,7 +423,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     		if (this.AIstate > AISTATE_ATBASE)
     			this.AIstate = AISTATE_STUCK;
     	}
-    	else if (this.ticksExisted % 10 == 0) this.energyLevel--;
+    	else if (this.ticksExisted % 2 == 0) this.energyLevel--;
     	
     	switch (this.AIstate)
     	{
@@ -584,7 +447,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     		break;
     	case AISTATE_RETURNING:
     		this.moveToBase();
-        	this.prepareMove(2, 2);
+        	this.prepareMove(4, 1);
     		break;
     	case AISTATE_DOCKING:
     		if (this.waypointBase != null)
@@ -708,7 +571,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
 	private boolean findNextTarget()
 	{
-		if (!this.minePoints.isEmpty()) this.posTarget = this.minePoints.getFirst().clone(); 
+		if (!this.minePoints.isEmpty())
+		{	
+			this.posTarget = this.minePoints.getFirst().clone();
+			return true;
+		}
 		this.posTarget = this.posBase.clone().modifyPositionFromSide(ForgeDirection.getOrientation(this.baseFacing), this.worldObj.rand.nextInt(40) + 10);
 		if ((this.baseFacing & 6) == 2)
 		{
@@ -788,7 +655,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		//Still some areas left to mine from last visit (maybe it was full or out of power?)
 		if (this.minePoints.size() > 0) return;
 		
-		BlockVec3 inFront = new BlockVec3(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 0.5D), MathHelper.floor_double(this.posZ + 0.5D));
+		BlockVec3 inFront = new BlockVec3(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 1.5D), MathHelper.floor_double(this.posZ + 0.5D));
 		int otherEnd = this.MINE_LENGTH;
 		if (this.baseFacing == 2 || this.baseFacing == 4) otherEnd = -otherEnd;
 		switch (this.baseFacing)
@@ -838,6 +705,10 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	{
 		if (this.energyLevel < this.RETURNENERGY || this.inventoryDrops > this.RETURNDROPS || this.minePoints.size() == 0)
 		{
+			if (this.minePoints.size() > 0 && this.minePointCurrent != null)
+			{
+				this.minePoints.addFirst(this.minePointCurrent);
+			}
 			AIstate = AISTATE_RETURNING;
 			if (ConfigManagerCore.enableDebug) System.out.println("Miner going home: "+this.posBase.toString());
 			return true;		
@@ -845,6 +716,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
 		if (this.moveToPos(this.minePoints.getFirst(), false))
 		{
+			this.minePointCurrent = this.minePoints.getFirst();
 			this.minePoints.removeFirst();
 			return true;
 		}
@@ -884,7 +756,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	 */
 	private boolean prepareMove(int limit, int dist)
 	{
-		BlockVec3 inFront = new BlockVec3(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 0.5D), MathHelper.floor_double(this.posZ + 0.5D));
+		BlockVec3 inFront = new BlockVec3(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 1.5D), MathHelper.floor_double(this.posZ + 0.5D));
 		if (dist == 2) inFront.add(headings2[this.facingAI]);
 		else
 		{	
@@ -925,31 +797,31 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 			if (tryBlock(x, y, z + 1)) wayBarred = true;
 			break;
 		case 2:
-			if (tryBlock(x, y, z)) wayBarred = true;
-			if (tryBlock(x + 1, y, z)) wayBarred = true;
-			if (tryBlock(x + 1, y - 1, z)) wayBarred = true;
-			if (tryBlock(x, y - 1, z)) wayBarred = true;
 			if (tryBlock(x, y - 2, z)) wayBarred = true;
 			if (tryBlock(x - 1, y - 2, z)) wayBarred = true;
+			if (tryBlock(x, y - 1, z)) wayBarred = true;
 			if (tryBlock(x - 1, y - 1, z)) wayBarred = true;
+			if (tryBlock(x + 1, y - 1, z)) wayBarred = true;
 			if (tryBlock(x - 2, y - 1, z)) wayBarred = true;
+			if (tryBlock(x + 1, y, z)) wayBarred = true;
 			if (tryBlock(x - 2, y, z)) wayBarred = true;
+			if (tryBlock(x, y, z)) wayBarred = true;
 			if (tryBlock(x - 1, y, z)) wayBarred = true;
-			if (tryBlock(x - 1, y + 1, z)) wayBarred = true;
 			if (tryBlock(x, y + 1, z)) wayBarred = true;
+			if (tryBlock(x - 1, y + 1, z)) wayBarred = true;
 			break;
 		case 4:
-			if (tryBlock(x, y, z)) wayBarred = true;
-			if (tryBlock(x, y, z + 1)) wayBarred = true;
-			if (tryBlock(x, y - 1, z + 1)) wayBarred = true;
-			if (tryBlock(x, y - 1, z)) wayBarred = true;
-			if (tryBlock(x, y - 2, z)) wayBarred = true;
 			if (tryBlock(x, y - 2, z - 1)) wayBarred = true;
+			if (tryBlock(x, y - 1, z)) wayBarred = true;
 			if (tryBlock(x, y - 1, z - 1)) wayBarred = true;
+			if (tryBlock(x, y - 1, z + 1)) wayBarred = true;
 			if (tryBlock(x, y - 1, z - 2)) wayBarred = true;
+			if (tryBlock(x, y, z + 1)) wayBarred = true;
 			if (tryBlock(x, y, z - 2)) wayBarred = true;
 			if (tryBlock(x, y, z - 1)) wayBarred = true;
+			if (tryBlock(x, y - 2, z)) wayBarred = true;
 			if (tryBlock(x, y + 1, z - 1)) wayBarred = true;
+			if (tryBlock(x, y, z)) wayBarred = true;
 			if (tryBlock(x, y + 1, z)) wayBarred = true;
 			break;
 		}
@@ -1114,17 +986,17 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		{
 			if (this.posZ > pos.z + 0.0001D || this.posZ < pos.z - 0.0001D)
 			{
-				this.moveToPosZ(pos, stopForTurn);			
+				this.moveToPosZ(pos.x, stopForTurn);			
 				if (TEMPDEBUG) System.out.println("At " + posX + "," + posY + "," + posZ + "Moving Z to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | "  + this.targetPitch + "," + this.targetYaw: ""));
 			}
-			else if (this.posY > pos.y + 0.0001D || this.posY < pos.y - 0.0001D)
+			else if (this.posY > pos.y - 0.9999D || this.posY < pos.y - 1.0001D)
 			{
-				this.moveToPosY(pos, stopForTurn);
+				this.moveToPosY(pos.y - 1, stopForTurn);
 				if (TEMPDEBUG) System.out.println("At " + posX + "," + posY + "," + posZ + "Moving Y to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | "  + this.targetPitch + "," + this.targetYaw: ""));
 			}
 			else if (this.posX > pos.x + 0.0001D || this.posX < pos.x - 0.0001D)
 			{
-				this.moveToPosX(pos, stopForTurn);
+				this.moveToPosX(pos.z, stopForTurn);
 				if (TEMPDEBUG) System.out.println("At " + posX + "," + posY + "," + posZ + "Moving X to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | "  + this.targetPitch + "," + this.targetYaw: ""));
 			}
 			else return true;
@@ -1134,17 +1006,17 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		{
 			if (this.posX > pos.x + 0.0001D || this.posX < pos.x - 0.0001D)
 			{
-				this.moveToPosX(pos, stopForTurn);
+				this.moveToPosX(pos.x, stopForTurn);
 				if (TEMPDEBUG) System.out.println("At " + posX + "," + posY + "," + posZ + "Moving X to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | "  + this.targetPitch + "," + this.targetYaw: ""));
 			}
-			else if (this.posY > pos.y + 0.0001D || this.posY < pos.y - 0.0001D)
+			else if (this.posY > pos.y - 0.9999D || this.posY < pos.y - 1.0001D)
 			{
-				this.moveToPosY(pos, stopForTurn);			
+				this.moveToPosY(pos.y - 1, stopForTurn);			
 				if (TEMPDEBUG) System.out.println("At " + posX + "," + posY + "," + posZ + "Moving Y to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | "  + this.targetPitch + "," + this.targetYaw: ""));
 			}
 			else if (this.posZ > pos.z + 0.0001D || this.posZ < pos.z - 0.0001D)
 			{
-				this.moveToPosZ(pos, stopForTurn);			
+				this.moveToPosZ(pos.z, stopForTurn);			
 				if (TEMPDEBUG) System.out.println("At " + posX + "," + posY + "," + posZ + "Moving Z to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | "  + this.targetPitch + "," + this.targetYaw: ""));
 			}
 			else return true;
@@ -1154,19 +1026,19 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		return false;
 	}
 	
-	private void moveToPosX(BlockVec3 pos, boolean stopForTurn)
+	private void moveToPosX(int x, boolean stopForTurn)
 	{
         this.targetPitch = 0;
 
-		if (this.posX > pos.x)
+		if (this.posX > x)
 		{
 	        if (this.AIstate != AISTATE_DOCKING)
 	        	this.targetYaw = 270;
         	this.motionX = -this.speed;
         	//TODO some acceleration and deceleration
-        	if (this.motionX * SPEEDUP <= pos.x - this.posX)
+        	if (this.motionX * SPEEDUP <= x - this.posX)
         	{
-        		this.motionX = pos.x - this.posX;
+        		this.motionX = x - this.posX;
         		this.noSpeedup = true;
         	}
 			this.facingAI = 4;
@@ -1176,9 +1048,9 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	        if (this.AIstate != AISTATE_DOCKING)
 	        	this.targetYaw = 90;
 			this.motionX = this.speed;
-        	if (this.motionX * SPEEDUP >= pos.x - this.posX)
+        	if (this.motionX * SPEEDUP >= x - this.posX)
         	{
-        		this.motionX = pos.x - this.posX;
+        		this.motionX = x - this.posX;
 	    		this.noSpeedup = true;
 	    	}
 			this.facingAI = 5;
@@ -1191,15 +1063,15 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		this.motionZ = 0;		
 	}
 
-	private void moveToPosY(BlockVec3 pos, boolean stopForTurn)
+	private void moveToPosY(int y, boolean stopForTurn)
 	{
-		if (this.posY > pos.y)
+		if (this.posY > y)
 		{
         	this.targetPitch = -90;
 			this.motionY = -this.speed;
-        	if (this.motionY * SPEEDUP <= pos.y - this.posY)
+        	if (this.motionY * SPEEDUP <= y - this.posY)
         	{
-        		this.motionY = pos.y - this.posY;
+        		this.motionY = y - this.posY;
         		this.noSpeedup = true;
         	}
 			this.facingAI = 0;
@@ -1208,9 +1080,9 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		{
         	this.targetPitch = 90;
 			this.motionY = this.speed;
-        	if (this.motionY * SPEEDUP >= pos.y - this.posY)
+        	if (this.motionY * SPEEDUP >= y - this.posY)
         	{
-        		this.motionY = pos.y - this.posY;
+        		this.motionY = y - this.posY;
         		this.noSpeedup = true;
         	}
 			this.facingAI = 1;
@@ -1225,19 +1097,19 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		this.motionZ = 0;
 	}
 	
-	private void moveToPosZ(BlockVec3 pos, boolean stopForTurn)
+	private void moveToPosZ(int z, boolean stopForTurn)
 	{
         this.targetPitch = 0;
 
-		if (this.posZ > pos.z)
+		if (this.posZ > z)
 		{
 	        if (this.AIstate != AISTATE_DOCKING)
 	        	this.targetYaw = 180;
         	this.motionZ = -this.speed;
         	//TODO some acceleration and deceleration
-        	if (this.motionZ * SPEEDUP <= pos.z - this.posZ)
+        	if (this.motionZ * SPEEDUP <= z - this.posZ)
         	{
-        		this.motionZ = pos.z - this.posZ;
+        		this.motionZ = z - this.posZ;
         		this.noSpeedup = true;
         	}
 			this.facingAI = 2;
@@ -1247,9 +1119,9 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	        if (this.AIstate != AISTATE_DOCKING)
 	        	this.targetYaw = 0;
 			this.motionZ = this.speed;
-        	if (this.motionZ * SPEEDUP >= pos.z - this.posZ)
+        	if (this.motionZ * SPEEDUP >= z - this.posZ)
         	{
-        		this.motionZ = pos.z - this.posZ;
+        		this.motionZ = z - this.posZ;
         		this.noSpeedup = true;
         	}
 			this.facingAI = 3;
@@ -1411,12 +1283,12 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         }
         this.width = Math.max(xsize, zsize);
         this.height = ysize;
-        this.boundingBox.minX = this.posX - xsize / 2;
-        this.boundingBox.minY = this.posY - ysize / 2;
-        this.boundingBox.minZ = this.posZ - zsize / 2;
-        this.boundingBox.maxX = this.posX + xsize / 2;
-        this.boundingBox.maxY = this.posY + ysize / 2;
-        this.boundingBox.maxZ = this.posZ + zsize / 2;
+        this.boundingBox.minX = this.posX - xsize / 2D;
+        this.boundingBox.minY = this.posY + 1D - ysize / 2D;
+        this.boundingBox.minZ = this.posZ - zsize / 2D;
+        this.boundingBox.maxX = this.posX + xsize / 2D;
+        this.boundingBox.maxY = this.posY + 1D + ysize / 2D;
+        this.boundingBox.maxZ = this.posZ + zsize / 2D;
 	}
 
 	@Override
@@ -1514,7 +1386,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         this.minecartZ = p_70056_5_;
         this.minecartYaw = p_70056_7_;
         this.minecartPitch = p_70056_8_;
-        this.turnProgress = p_70056_9_ + 2;
+        this.turnProgress = 0;
         this.motionX = this.velocityX;
         this.motionY = this.velocityY;
         this.motionZ = this.velocityZ;
@@ -1526,6 +1398,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         this.velocityX = this.motionX = p_70016_1_;
         this.velocityY = this.motionY = p_70016_3_;
         this.velocityZ = this.motionZ = p_70016_5_;
+        this.turnProgress = 0;
     }
     @Override
     protected void setSize(float p_70105_1_, float p_70105_2_)
@@ -1546,11 +1419,14 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     protected void kill()
     {
         this.setDead();
-    	TileEntity tileEntity = posBase.getTileEntity(this.worldObj);
-		if (tileEntity instanceof TileEntityMinerBase)
-		{
-			((TileEntityMinerBase) tileEntity).unlinkMiner();
-		}
+    	if (posBase != null)
+    	{
+    		TileEntity tileEntity = posBase.getTileEntity(this.worldObj);
+			if (tileEntity instanceof TileEntityMinerBase)
+			{
+				((TileEntityMinerBase) tileEntity).unlinkMiner();
+			}
+    	}
     }
 
     public List<ItemStack> getItemsDropped(List<ItemStack> droppedItems)
@@ -1581,6 +1457,144 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
                 entityItem.getEntityItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());
             }
         }
+    }
+
+    @Override
+    protected void readEntityFromNBT(NBTTagCompound nbt)
+    {
+    	final NBTTagList var2 = nbt.getTagList("Items", 10);
+        this.cargoItems = new ItemStack[this.INV_SIZE];
+
+        if (var2 != null)
+        {
+	        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+	        {
+	            final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
+	            final int var5 = var4.getByte("Slot") & 255;
+	
+	            if (var5 < this.cargoItems.length)
+	            {
+	                this.cargoItems[var5] = ItemStack.loadItemStackFromNBT(var4);
+	            }
+	        }
+        }
+        
+        if (nbt.hasKey("Energy")) this.energyLevel = nbt.getInteger("Energy");
+        if (nbt.hasKey("BaseX"))
+        {
+        	this.posBase = new BlockVec3(nbt.getInteger("BaseX"), nbt.getInteger("BaseY"), nbt.getInteger("BaseZ"));
+        	this.flagLink = true;
+        }
+        if (nbt.hasKey("TargetX")) this.posTarget = new BlockVec3(nbt.getInteger("TargetX"), nbt.getInteger("TargetY"), nbt.getInteger("TargetZ"));
+        if (nbt.hasKey("WBaseX")) this.waypointBase = new BlockVec3(nbt.getInteger("WBaseX"), nbt.getInteger("WBaseY"), nbt.getInteger("WBaseZ"));
+        if (nbt.hasKey("BaseFacing")) this.baseFacing = nbt.getInteger("BaseFacing");
+        if (nbt.hasKey("AIState")) this.AIstate = nbt.getInteger("AIState");       
+        if (nbt.hasKey("Facing")) this.facingAI = nbt.getInteger("Facing");
+        this.lastFacing = -1;
+        if (nbt.hasKey("WayPoints"))
+        {
+        	this.wayPoints.clear();
+        	final NBTTagList wpList = nbt.getTagList("WayPoints", 10);
+        	for (int j = 0; j < wpList.tagCount(); j++)
+        	{
+	            NBTTagCompound bvTag = wpList.getCompoundTagAt(j);
+	            this.wayPoints.add(BlockVec3.readFromNBT(bvTag));
+        	}
+        }
+        if (nbt.hasKey("MinePoints"))
+        {
+        	this.minePoints.clear();
+        	final NBTTagList mpList = nbt.getTagList("MinePoints", 10);
+        	for (int j = 0; j < mpList.tagCount(); j++)
+        	{
+	            NBTTagCompound bvTag = mpList.getCompoundTagAt(j);
+	            this.minePoints.add(BlockVec3.readFromNBT(bvTag));
+        	}
+        }
+        if (nbt.hasKey("MinePointCurrent"))
+        	this.minePointCurrent = BlockVec3.readFromNBT(nbt.getCompoundTag("MinePointCurrent"));
+        else
+        	this.minePointCurrent = null;
+        if (nbt.hasKey("playerUUIDMost", 4) && nbt.hasKey("playerUUIDLeast", 4))
+        {
+            this.playerUUID = new UUID(nbt.getLong("playerUUIDMost"), nbt.getLong("playerUUIDLeast"));
+        }
+        else
+        {
+        	System.out.println("[Galacticraft] Please break and replace any AstroMiner placed in the world prior to build 3.0.11.317.");
+        	this.playerUUID = null;
+        }
+    }
+
+    @Override
+    protected void writeEntityToNBT(NBTTagCompound nbt)
+    {
+        final NBTTagList var2 = new NBTTagList();
+
+        if (this.cargoItems != null)
+        {
+	        for (int var3 = 0; var3 < this.cargoItems.length; ++var3)
+	        {
+	            if (this.cargoItems[var3] != null)
+	            {
+	                final NBTTagCompound var4 = new NBTTagCompound();
+	                var4.setByte("Slot", (byte) var3);
+	                this.cargoItems[var3].writeToNBT(var4);
+	                var2.appendTag(var4);
+	            }
+	        }
+        }
+
+        nbt.setTag("Items", var2);
+        nbt.setInteger("Energy", this.energyLevel);
+        if (this.posBase != null)
+        {
+	        nbt.setInteger("BaseX", this.posBase.x);
+	        nbt.setInteger("BaseY", this.posBase.y);
+	        nbt.setInteger("BaseZ", this.posBase.z);
+        }
+        if (this.posTarget != null)
+        {
+	        nbt.setInteger("TargetX", this.posTarget.x);
+	        nbt.setInteger("TargetY", this.posTarget.y);
+	        nbt.setInteger("TargetZ", this.posTarget.z);
+        }
+        if (this.waypointBase != null)
+        {
+	        nbt.setInteger("WBaseX", this.waypointBase.x);
+	        nbt.setInteger("WBaseY", this.waypointBase.y);
+	        nbt.setInteger("WBaseZ", this.waypointBase.z);
+        }
+        nbt.setInteger("BaseFacing", this.baseFacing);
+        nbt.setInteger("AIState", this.AIstate);
+        nbt.setInteger("Facing", this.facingAI);
+        if (this.wayPoints.size() > 0)
+        {
+        	NBTTagList wpList = new NBTTagList();
+        	for (int j = 0; j < this.wayPoints.size(); j++)
+        	{
+	            wpList.appendTag(this.wayPoints.get(j).writeToNBT(new NBTTagCompound()));
+        	}
+        	nbt.setTag("WayPoints", wpList);
+        }
+        if (this.minePoints.size() > 0)
+        {
+        	NBTTagList mpList = new NBTTagList();
+        	for (int j = 0; j < this.minePoints.size(); j++)
+        	{
+	            mpList.appendTag(this.minePoints.get(j).writeToNBT(new NBTTagCompound()));
+        	}
+        	nbt.setTag("MinePoints", mpList);
+        }
+        if (this.minePointCurrent != null)
+        {
+        	nbt.setTag("MinePointCurrent", this.minePointCurrent.writeToNBT(new NBTTagCompound()));
+        }
+        if (this.playerUUID != null)
+        {
+	        nbt.setLong("playerUUIDMost", this.playerUUID.getMostSignificantBits());
+	        nbt.setLong("playerUUIDLeast", this.playerUUID.getLeastSignificantBits());
+        }        
     }
 }
 

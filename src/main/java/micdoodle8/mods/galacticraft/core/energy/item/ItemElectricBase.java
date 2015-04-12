@@ -206,6 +206,27 @@ public abstract class ItemElectricBase extends Item implements IItemElectric
         return false;
     }
 
+    public static boolean isElectricItemEmpty(ItemStack itemstack)
+    {
+        if (itemstack == null) return false;        
+    	Item item = itemstack.getItem();
+    	
+    	if (item instanceof ItemElectricBase)
+        {
+            return ((ItemElectricBase) item).getElectricityStored(itemstack) <= 0;
+        }
+
+        if (EnergyConfigHandler.isIndustrialCraft2Loaded())
+        {
+            if (item instanceof ic2.api.item.ISpecialElectricItem)
+            {
+                return !((ic2.api.item.ISpecialElectricItem) item).canProvideEnergy(itemstack);
+            }
+        }
+
+        return false;
+    }
+
     //The following seven methods are for Mekanism compatibility
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
