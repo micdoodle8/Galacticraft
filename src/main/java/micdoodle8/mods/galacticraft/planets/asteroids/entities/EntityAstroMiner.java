@@ -531,6 +531,9 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         if (this.playerMP == null)
         {
             //Go into dormant state if player is offline
+        	this.motionX = 0;
+        	this.motionY = 0;
+        	this.motionZ = 0;
         	GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.dimensionId);
             return;
         }
