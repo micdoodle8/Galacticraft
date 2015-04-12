@@ -411,7 +411,7 @@ public class GalacticraftCore
 				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.blockMoon, 5), "tile.moonBlock.moongrass");
 				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.blockMoon, 14), "tile.moonBlock.bricks");
 			}
-		} catch (Exception e) {e.printStackTrace();}
+		} catch (Exception e) {}
 	}
 
     public void registerTileEntities()

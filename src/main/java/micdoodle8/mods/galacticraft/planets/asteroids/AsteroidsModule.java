@@ -301,7 +301,7 @@ public class AsteroidsModule implements IPlanetsModule
 				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 2), "tile.asteroidsBlock.asteroid2");
 				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockDenseIce, 0), "tile.denseIce");
 			}
-		} catch (Exception e) {e.printStackTrace();}
+		} catch (Exception e) {}
 	}
 
     private void registerTileEntities()

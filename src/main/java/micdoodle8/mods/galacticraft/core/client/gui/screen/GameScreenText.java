@@ -143,23 +143,26 @@ public class GameScreenText implements IGameScreen
         		str1 = "";
         		switch (telemeter.clientData[4])
         		{
-        			case 0:
+        			case EntityAstroMiner.AISTATE_STUCK:
         				str1 = "Out of energy!";
         				break;
-        			case 1:
+        			case EntityAstroMiner.AISTATE_ATBASE:
         				str1 = "Charging";
         				break;
-        			case 2:
+        			case EntityAstroMiner.AISTATE_TRAVELLING:
         				str1 = "Travelling";
         				break;
-        			case 3:
+        			case EntityAstroMiner.AISTATE_MINING:
         				str1 = "Mining";
         				break;
-        			case 4:
+        			case EntityAstroMiner.AISTATE_RETURNING:
         				str1 = "Returning";
         				break;
-        			case 5:
+        			case EntityAstroMiner.AISTATE_DOCKING:
         				str1 = "Docking";
+        				break;
+        			case EntityAstroMiner.AISTATE_OFFLINE:
+        				str1 = "Offline";
         				break;
         		}
         		str2 = "dy: " + telemeter.clientData[1];

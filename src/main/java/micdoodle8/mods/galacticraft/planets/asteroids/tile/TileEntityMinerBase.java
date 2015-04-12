@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids.EnumSimplePacketAsteroids;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -78,7 +79,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     	}
     }
 
-    public boolean spawnMiner()
+    public boolean spawnMiner(EntityPlayerMP player)
     {
 		if (this.isMaster)
 		{
@@ -90,7 +91,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 			}
 			if (this.linkedMiner == null)
 	    	{
-	        	if (EntityAstroMiner.spawnMinerAtBase(this.worldObj, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1, (this.facing + 2) ^ 1, new BlockVec3(this)))
+	        	if (EntityAstroMiner.spawnMinerAtBase(this.worldObj, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1, (this.facing + 2) ^ 1, new BlockVec3(this), player))
 	        		return true;
 	    	}
 			return false;
@@ -98,7 +99,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         TileEntityMinerBase master = this.getMaster();
         if (master != null)
         {
-        	return master.spawnMiner();
+        	return master.spawnMiner(player);
         }
         return false;
     }

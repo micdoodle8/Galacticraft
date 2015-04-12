@@ -159,7 +159,7 @@ public class MarsModule implements IPlanetsModule
 				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(MarsBlocks.marsBlock, 8), "tile.mars.marsdeco");
 				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(MarsBlocks.marsBlock, 9), "tile.mars.marsstone");
 			}
-		} catch (Exception e) {e.printStackTrace();}
+		} catch (Exception e) {}
 	}
 
     public void registerTileEntities()

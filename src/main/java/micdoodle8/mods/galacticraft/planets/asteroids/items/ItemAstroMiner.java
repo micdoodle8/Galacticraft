@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -71,7 +72,7 @@ public class ItemAstroMiner extends Item implements IHoldableItem
         			par2EntityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner.fail")));
         			return false;
         		}
-        		if (!((TileEntityMinerBase)tile).spawnMiner())
+        		if (!((TileEntityMinerBase)tile).spawnMiner((EntityPlayerMP) par2EntityPlayer))
         		{
         			par2EntityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner1.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
         			return false;
