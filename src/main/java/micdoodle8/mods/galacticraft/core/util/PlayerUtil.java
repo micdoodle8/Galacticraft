@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import com.mojang.authlib.GameProfile;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -12,6 +13,7 @@ import net.minecraft.server.MinecraftServer;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
 public class PlayerUtil
@@ -118,4 +120,26 @@ public class PlayerUtil
 		PlayerUtil.knownSkins.put(strName, profile); 
 		return profile;
 	}
+    
+    public static EntityPlayerMP getPlayerByUUID(UUID theUUID)
+    {
+        List players = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+        EntityPlayerMP entityplayermp;
+    	for (int i = players.size() - 1; i >= 0; --i)
+        {
+            entityplayermp = (EntityPlayerMP)players.get(i);
+
+            if (entityplayermp.getUniqueID().equals(theUUID))
+            {
+                return entityplayermp;
+            }
+        }
+    	return null;
+    }
+    
+    
+    public static boolean isPlayerOnline(EntityPlayerMP player)
+    {
+        return MinecraftServer.getServer().getConfigurationManager().playerEntityList.contains(player);
+    }
 }

@@ -5,6 +5,7 @@ import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -14,6 +15,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
@@ -25,6 +27,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -37,8 +40,10 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fluids.IFluidBlock;
 
 public class EntityAstroMiner extends Entity implements IInventory, IPacketReceiver
@@ -53,6 +58,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     private static final float cHEIGHT = 1.7F;
     private static final double SPEEDUP = 2.5D;
     
+    public static final int AISTATE_OFFLINE = -1;
     public static final int AISTATE_STUCK = 0;
     public static final int AISTATE_ATBASE = 1;
     public static final int AISTATE_TRAVELLING = 2;
@@ -71,7 +77,9 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     
     public int AIstate;
     public int timeInCurrentState = 0;
-    private BlockVec3 posTarget;
+	private EntityPlayerMP playerMP = null;
+	private UUID playerUUID;
+	private BlockVec3 posTarget;
     private BlockVec3 posBase;
     private BlockVec3 waypointBase;
     private LinkedList<BlockVec3> wayPoints = new LinkedList();
@@ -232,6 +240,15 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	            this.minePoints.add(BlockVec3.readFromNBT(bvTag));
         	}
         }
+        if (nbt.hasKey("playerUUIDMost", 4) && nbt.hasKey("playerUUIDLeast", 4))
+        {
+            this.playerUUID = new UUID(nbt.getLong("playerUUIDMost"), nbt.getLong("playerUUIDLeast"));
+        }
+        else
+        {
+        	System.out.println("[Galacticraft] Please break and replace any AstroMiner placed in the world prior to build 3.0.11.317.");
+        	this.playerUUID = null;
+        }
     }
 
     @Override
@@ -296,6 +313,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         	}
         	nbt.setTag("MinePoints", mpList);
         }
+        if (this.playerUUID != null)
+        {
+	        nbt.setLong("playerUUIDMost", this.playerUUID.getMostSignificantBits());
+	        nbt.setLong("playerUUIDLeast", this.playerUUID.getLeastSignificantBits());
+        }        
     }
 
 
@@ -439,7 +461,6 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     @Override
     public void onUpdate()
     {
-    	
 	    if (this.posY < -64.0D)
 	    {
 	        this.kill();
@@ -485,14 +506,18 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         	return;
         }
         
-    	if (this.lastFacing != this.facingAI)
+    	if (this.ticksExisted % 10 == 0)
     	{
-    		this.lastFacing = this.facingAI;
-    		this.prepareMove(12, 0);
-    		this.prepareMove(12, 1);
-    		this.prepareMove(12, 2);
+    		if (this.playerMP == null) 
+	    	{
+    			 if (this.playerUUID != null) this.playerMP = PlayerUtil.getPlayerByUUID(this.playerUUID);
+	    	}
+	    	else
+	    	{
+	    		if (!PlayerUtil.isPlayerOnline(this.playerMP)) this.playerMP = null;
+	    	}
     	}
-
+    	
         if (flagLink)
         {
 	    	TileEntity tileEntity = posBase.getTileEntity(this.worldObj);
@@ -503,6 +528,21 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         	flagLink = false;
         }
         
+        if (this.playerMP == null)
+        {
+            //Go into dormant state if player is offline
+        	GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.dimensionId);
+            return;
+        }
+        
+    	if (this.lastFacing != this.facingAI)
+    	{
+    		this.lastFacing = this.facingAI;
+    		this.prepareMove(12, 0);
+    		this.prepareMove(12, 1);
+    		this.prepareMove(12, 2);
+    	}
+
     	this.lastTickPosX = this.posX;
     	this.lastTickPosY = this.posY;
     	this.lastTickPosZ = this.posZ;
@@ -597,7 +637,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     @Override
     public void getNetworkedData(ArrayList<Object> list)
     {
-        list.add(this.AIstate);
+        list.add(this.playerMP == null ? AISTATE_OFFLINE : this.AIstate);
         list.add(this.energyLevel);
         list.add(this.targetPitch);
         list.add(this.targetYaw);
@@ -967,6 +1007,9 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		}
 		
 		if (this.tryBlockLimit == 0) return false;
+        BlockEvent.BreakEvent event = ForgeHooks.onBlockBreakEvent(this.worldObj, this.playerMP.theItemInWorldManager.getGameType(), this.playerMP, x, y, z);
+        if (event.isCanceled()) return false;
+
 		this.tryBlockLimit--;
 		
 		ItemStack drops = getPickBlock(this.worldObj, x, y, z, b);
@@ -1278,10 +1321,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	 * @param base
 	 * @return
 	 */
-	public static boolean spawnMinerAtBase(World world, int x, int y, int z, int facing, BlockVec3 base)
+	public static boolean spawnMinerAtBase(World world, int x, int y, int z, int facing, BlockVec3 base, EntityPlayerMP player)
 	{
         if (world.isRemote) return true;
 		final EntityAstroMiner miner = new EntityAstroMiner(world, new ItemStack[EntityAstroMiner.INV_SIZE], 0);
+		miner.setPlayer(player);
         miner.waypointBase = new BlockVec3(x, y, z).modifyPositionFromSide(ForgeDirection.getOrientation(facing), 1);
         miner.setPosition(miner.waypointBase.x, miner.waypointBase.y, miner.waypointBase.z);
         miner.baseFacing = facing;
@@ -1334,7 +1378,13 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     	return true;
 	}
 	
-    private void setBoundingBoxForFacing()
+    public void setPlayer(EntityPlayerMP player)
+    {
+    	this.playerMP = player;
+    	this.playerUUID = player.getUniqueID();	
+	}
+
+	private void setBoundingBoxForFacing()
     {
     	float xsize = cWIDTH;
     	float ysize = cWIDTH;
