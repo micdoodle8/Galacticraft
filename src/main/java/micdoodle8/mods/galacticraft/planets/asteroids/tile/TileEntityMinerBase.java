@@ -191,41 +191,24 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         }
     }
         
-    /**
-     * Returns the maximum stack size for a inventory slot. Seems to always be
-     * 64, possibly will be extended. *Isn't this more of a set than a get?*
-     */
     @Override
     public int getInventoryStackLimit()
     {
         return 64;
     }
 
-    /**
-     * Do not make give this method the name canInteractWith because it clashes
-     * with Container
-     */
     @Override
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
     }
 
-    /**
-     * Causes the TileEntity to reset all it's cached values for it's container
-     * block, blockID, metaData and in the case of chests, the adjcacent chest
-     * check
-     */
     @Override
     public void updateContainingBlockInfo()
     {
         super.updateContainingBlockInfo();
     }
 
-    /**
-     * Called when a client event is received with the event number and
-     * argument, see World.sendClientEvent
-     */
     @Override
     public boolean receiveClientEvent(int par1, int par2)
     {
@@ -559,8 +542,19 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
    @Override
    public int[] getAccessibleSlotsFromSide(int side)
    {
-       return side != this.getBlockMetadata() - 2 ? slotArray : new int[] { };
-   }
+       if (this.isMaster)
+       {
+    	   return side != this.facing + 2 ? slotArray : new int[] { };
+       }
+
+       TileEntityMinerBase master = this.getMaster();
+       if (master != null)
+       {
+    	   return master.getAccessibleSlotsFromSide(side);
+       }
+
+       return new int[] { };
+}
 
    @Override
    public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
@@ -571,9 +565,19 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
    @Override
    public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
    {
-       if (side != this.getBlockMetadata() - 2)
+       if (this.isMaster)
        {
-           return slotID > 0 || ItemElectricBase.isElectricItemEmpty(itemstack);
+           if (side != this.facing + 2)
+           {
+               return slotID > 0 || ItemElectricBase.isElectricItemEmpty(itemstack);
+           }
+
+           return false;
+       }
+       TileEntityMinerBase master = this.getMaster();
+       if (master != null)
+       {
+    	   return master.canExtractItem(slotID, itemstack, side);
        }
 
        return false;
@@ -582,6 +586,14 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
    @Override
    public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
    {
-       return slotID > 0 || ItemElectricBase.isElectricItem(itemstack.getItem());
+       if (this.isMaster)
+    	   return slotID > 0 || ItemElectricBase.isElectricItem(itemstack.getItem());
+       TileEntityMinerBase master = this.getMaster();
+       if (master != null)
+       {
+    	   return master.isItemValidForSlot(slotID, itemstack);
+       }
+
+       return false;    	   
    }
 }
