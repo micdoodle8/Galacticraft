@@ -50,7 +50,7 @@ tile.marsMachine.2.name=Odpalovac
 tile.marsMachine.4.name=Zkapalnovac
 tile.marsMachine.5.name=Syntetizér metanu
 tile.marsMachine.6.name=Vodní electrolyzér
-tile.hydrogenPipe.name=Hydrogen Pipe ##NEEDS TRANSLATE##
+tile.hydrogenPipe.name=Vodíková trubka
 tile.sludge.name=Infikované bláto
 tile.creeperEgg.name=Vejce creepra
 tile.cavernVines.name=Jeskyní réva
@@ -150,7 +150,7 @@ tile.creeperEgg.description=Vejce creepera je k nalezení v dungeonech na Marsu,
 tile.gasLiquefier.description=Zkapalnené plyny, budto z atmosféry nebo tlakových lahví. Kapalný metan je dobré raketové palivo!
 tile.methaneSynthesizer.description=Se zdrojem vodíku a uhlíku vyrábí Metan pro další zpracování ve zkapalnovaci.
 tile.electrolyzer.description=Vyrábí z vody kyslík a vodík (používá se v syntetizéru metanu).
-tile.hydrogenPipe.description=Hydrogen Pipe will transfer hydrogen from one machine's internal gas tank to another. ##NEEDS TRANSLATE##
+tile.hydrogenPipe.description=Vodíková trubka dopravuje vodík mezi stroji.
 
 gui.slimeling.chat.wrongPlayer=Tohle není muj slizoun!
 gui.cryogenic.chat.cantUse=Nemohu to použít dalších %d vterin.
@@ -175,7 +175,7 @@ entity.Slimeling.name=Slizoun
 entity.CreeperBoss.name=Vyvinutý creeper - Boss
 entity.SpaceshipT2.name=Raketa typ 2
 entity.CargoRocket.name=Nákladní raketa
-entity.LandingBalloons.name=Landing Balloons ##NEEDS TRANSLATE##
+entity.LandingBalloons.name=Přistávací balóny
 
 # CONTAINERS
 container.launchcontroller.name=Odpalovací zarízení
