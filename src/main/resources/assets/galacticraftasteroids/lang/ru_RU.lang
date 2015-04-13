@@ -2,7 +2,7 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=Ракета 3-го уровня
-item.itemAstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+item.itemAstroMiner.name=Астрономический шахтёр
 item.heavyNoseCone.name=Прочный головной обтекатель
 item.compressedTitanium.name=Сжатый титан
 item.ingotTitanium.name=Титановый слиток
@@ -49,7 +49,7 @@ item.canister.liquidArgon.full.name=Заполненная канистра жи
 item.canister.liquidArgon.name=Жидкость
 item.emptyGasCanister.name=Пустая канистра для газа
 
-# Fluids and Gases
+# FLUIDS AND GASES
 fluid.methane=Метан
 fluid.oxygen=Кислород
 fluid.nitrogen=Азот
@@ -79,7 +79,7 @@ tile.walkwayWire.name=Дорожка
 tile.walkwayOxygenPipe.name=Дорожка
 tile.treasureT3.name=Сундук с сокровищами 3-го уровня
 tile.denseIce.name=Плотный лёд
-tile.minerBase.name=Astro Miner Base ##NEEDS TRANSLATE##
+tile.minerBase.name=Основание астрономического шахтёра
 
 # GUI
 planet.asteroids=Астероиды
@@ -101,8 +101,8 @@ gui.message.range.name=Дальность: %dm
 gui.message.notEnoughEnergy.name=Недостаточно энергии!
 gui.message.targetNoEnergy.name=У цели не хватает энергии!
 gui.message.grapple.fail=Мне нужно немного ниток, если я хочу метнуть этот крюк!
-gui.message.astroMiner.fail=This base already has an Astro Miner! ##NEEDS TRANSLATE##
-gui.message.astroMiner1.fail=The docking area is blocked by: ##NEEDS TRANSLATE##
+gui.message.astroMiner.fail=У этой базы уже есть астрономический шахтёр!
+gui.message.astroMiner1.fail=Область стыковки заблокирована: 
 gui.message.astroMiner2.fail=That would be one Astro Miner too many! ##NEEDS TRANSLATE##
 
 tile.treasureT3.description=Сундуки с сокровищами 3-го уровня сейчас бесполезны.
@@ -112,22 +112,22 @@ tile.walkwayOxygenPipe.description=Дорожки для кислородных 
 tile.beamReflector.description=Лучевые отражатели используются для перенаправления энергетических лучей от источника к месту назначения. ПКМ по отражателю, чтобы менять цели.
 tile.beamReceiver.description=Лучевые приёмники присоединяются к входу и выходу энергии механизма, чтобы передавать энергию, используя лучи.
 tile.telepadShort.description=Короткодистанционные телепорты используются для перемещения игроков и других живых существ на короткие дистанции, (250 блоков) если они присоединены к другим телепортам.
-tile.minerBase.description=The Astro Miner Base is the docking point for an Astro Miner.  It's big ... try making a 2 x 2 x 2 cube with these. ##NEEDS TRANSLATE##
-schematic.astroMiner.name=Astro Miner ##NEEDS TRANSLATE##
-schematic.ionDrive.name=Ion Drive ##NEEDS TRANSLATE##
+tile.minerBase.description=Основание астрономического шахтёра - это точка стыковки для астрономического шахтёра. Он большой... попробуйте сделать куб 2 x 2 x 2 из блоков основания.
 
 # SCHEMATICS
+schematic.astroMiner.name=Астрономический шахтёр
+schematic.ionDrive.name=Ионный привод
 
 # ENTITIES
 entity.SmallAsteroidGC.name=Малый астероид
 entity.GrappleHookGC.name=Абордажный крюк
 entity.Tier3RocketGC.name=Ракета 3-го уровня
-entity.EntryPodAsteroids.name=Entry Pod ##NEEDS TRANSLATE##
-entity.AstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+entity.EntryPodAsteroids.name=Посадочный модуль
+entity.AstroMiner.name=Астрономический шахтёр
 
 # CONTAINERS
 container.shortRangeTelepad.name=Короткодистанционный телепорт
-container.entryPod.name=Entry Pod
+container.entryPod.name=Посадочный модуль
 
 # CONFIG GUI
 gc.configgui.dimensionIDAsteroids=ID измерения: Астероиды
