@@ -175,6 +175,7 @@ entity.Slimeling.name=黏滑怪
 entity.CreeperBoss.name=進化爬行者之王
 entity.SpaceshipT2.name=二階火箭
 entity.CargoRocket.name=貨運火箭
+entity.LandingBalloons.name=Landing Balloons ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.launchcontroller.name=發射控制器

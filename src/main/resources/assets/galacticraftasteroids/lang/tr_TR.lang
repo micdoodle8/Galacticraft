@@ -2,6 +2,7 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=Tier 3 Roket
+item.itemAstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
 item.heavyNoseCone.name=Ağır Roket Burnu
 item.compressedTitanium.name=Sıkıştırılmış Titanyum
 item.ingotTitanium.name=Titanyum Külçesi
@@ -78,6 +79,7 @@ tile.walkwayWire.name=Yürüme Bloğu
 tile.walkwayOxygenPipe.name=Yürüme Bloğu
 tile.treasureT3.name=Tier 3 Hazine Sandığı
 tile.denseIce.name=Yoğun Buz
+tile.minerBase.name=Astro Miner Base ##NEEDS TRANSLATE##
 
 # GUI
 planet.asteroids=Asteroit
@@ -99,6 +101,9 @@ gui.message.range.name=Menzil: %dm
 gui.message.notEnoughEnergy.name=Enerji Yetersiz!
 gui.message.targetNoEnergy.name=Hedefin Enerjisi Yetersiz!
 gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook! ##NEEDS TRANSLATE##
+gui.message.astroMiner.fail=This base already has an Astro Miner! ##NEEDS TRANSLATE##
+gui.message.astroMiner1.fail=The docking area is blocked by: ##NEEDS TRANSLATE##
+gui.message.astroMiner2.fail=That would be one Astro Miner too many! ##NEEDS TRANSLATE##
 
 tile.treasureT3.description=Tier 3 Hazine Sandığı şu anlık kullanılmıyor.
 tile.walkway.description=Yürüme Bloğu dekoratif amaçlıdır, diğer bloklara bağlanarak uzay teması oluşur.
@@ -107,6 +112,9 @@ tile.walkwayOxygenPipe.description=Oksijen Borusu Yürüme Bloğu boruların alt
 tile.beamReflector.description=Işın Reflektörü ışın enerjisini kaynaktan gönderir. Sağ tıklayarak hedefi değiştirebilirsiniz.
 tile.beamReceiver.description=Işın alıcısı enerji makinelerin giriş ve çıkışına bağlanarak enerjiyi transfer etmekte kullanılır.
 tile.telepadShort.description=Kısa Menzilli Telepad oyuncuları ışınlamaya ve kısa mesafe (250 blok) gitmeye yarar.
+tile.minerBase.description=The Astro Miner Base is the docking point for an Astro Miner.  It's big ... try making a 2 x 2 x 2 cube with these. ##NEEDS TRANSLATE##
+schematic.astroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+schematic.ionDrive.name=Ion Drive ##NEEDS TRANSLATE##
 
 # SCHEMATICS
 
@@ -114,6 +122,8 @@ tile.telepadShort.description=Kısa Menzilli Telepad oyuncuları ışınlamaya v
 entity.SmallAsteroidGC.name=Küçük Asteroit
 entity.GrappleHookGC.name=Çeneli Kanca
 entity.Tier3RocketGC.name=Tier 3 Roket
+entity.EntryPodAsteroids.name=Entry Pod ##NEEDS TRANSLATE##
+entity.AstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.shortRangeTelepad.name=Kısa Menzilli Telepad
@@ -124,3 +134,4 @@ gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID
 gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID
 gc.configgui.idEntityEntryPod=Entry Pod Entity ID
 gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID
+gc.configgui.disableGalacticraftHelium=Disable Helium gas registration ##NEEDS TRANSLATE##

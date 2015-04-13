@@ -2,6 +2,7 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=Ракета 3-го уровня
+item.itemAstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
 item.heavyNoseCone.name=Прочный головной обтекатель
 item.compressedTitanium.name=Сжатый титан
 item.ingotTitanium.name=Титановый слиток
@@ -78,6 +79,7 @@ tile.walkwayWire.name=Дорожка
 tile.walkwayOxygenPipe.name=Дорожка
 tile.treasureT3.name=Сундук с сокровищами 3-го уровня
 tile.denseIce.name=Плотный лёд
+tile.minerBase.name=Astro Miner Base ##NEEDS TRANSLATE##
 
 # GUI
 planet.asteroids=Астероиды
@@ -99,6 +101,9 @@ gui.message.range.name=Дальность: %dm
 gui.message.notEnoughEnergy.name=Недостаточно энергии!
 gui.message.targetNoEnergy.name=У цели не хватает энергии!
 gui.message.grapple.fail=Мне нужно немного ниток, если я хочу метнуть этот крюк!
+gui.message.astroMiner.fail=This base already has an Astro Miner! ##NEEDS TRANSLATE##
+gui.message.astroMiner1.fail=The docking area is blocked by: ##NEEDS TRANSLATE##
+gui.message.astroMiner2.fail=That would be one Astro Miner too many! ##NEEDS TRANSLATE##
 
 tile.treasureT3.description=Сундуки с сокровищами 3-го уровня сейчас бесполезны.
 tile.walkway.description=Дорожки используются в декоративных целях, для соединения блоков, чтобы сохранить тему космоса.
@@ -107,6 +112,9 @@ tile.walkwayOxygenPipe.description=Дорожки для кислородных 
 tile.beamReflector.description=Лучевые отражатели используются для перенаправления энергетических лучей от источника к месту назначения. ПКМ по отражателю, чтобы менять цели.
 tile.beamReceiver.description=Лучевые приёмники присоединяются к входу и выходу энергии механизма, чтобы передавать энергию, используя лучи.
 tile.telepadShort.description=Короткодистанционные телепорты используются для перемещения игроков и других живых существ на короткие дистанции, (250 блоков) если они присоединены к другим телепортам.
+tile.minerBase.description=The Astro Miner Base is the docking point for an Astro Miner.  It's big ... try making a 2 x 2 x 2 cube with these. ##NEEDS TRANSLATE##
+schematic.astroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+schematic.ionDrive.name=Ion Drive ##NEEDS TRANSLATE##
 
 # SCHEMATICS
 
@@ -114,6 +122,8 @@ tile.telepadShort.description=Короткодистанционные теле�
 entity.SmallAsteroidGC.name=Малый астероид
 entity.GrappleHookGC.name=Абордажный крюк
 entity.Tier3RocketGC.name=Ракета 3-го уровня
+entity.EntryPodAsteroids.name=Entry Pod ##NEEDS TRANSLATE##
+entity.AstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.shortRangeTelepad.name=Короткодистанционный телепорт

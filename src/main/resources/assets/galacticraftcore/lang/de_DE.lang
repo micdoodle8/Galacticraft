@@ -182,6 +182,7 @@ tile.spinThruster.name=Drehtriebwerk
 tile.viewScreen.name=Bildschirm
 tile.telemetry.name=Telemetrieempfänger
 tile.spaceStationBase.name=Raumstationsbasis
+tile.dish.name=Communications Dish ##NEEDS TRANSLATE##
 
 # DECOBLOCKS
 tile.tinStairs1.name=Zinndekorationstreppe
@@ -578,6 +579,7 @@ tile.spinThruster.description=Drehtriebwerke werden benutzt um deine Raumstation
 tile.arclamp.description=Bogenlampen erzeugen ein sehr starkes Licht, welches eine große Fläche ausleuchtet, aber auch Mobs zum Fliehen bringt.
 tile.viewScreen.description=Mit diesem Bildschirm verpasst du deiner Basis den letzten Feinschliff. Ein Rechtsklick ändert die angezeigte Information.
 tile.telemetry.description=Der Telemetrieempfämger sammelt wertvolle Daten von verbundenen Raketen, Spielern und Monstern. Sollte am besten neben einem Bildschirm plaziert werden. Benutze ein Frequenzmodul um eine Datenverbindung aufzubauen.
+tile.dish.description=The Communications Dish can track the position of space stations and receive communications from your remote space bases. ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.cargoloader.name=Cargo-Lader
@@ -665,6 +667,7 @@ gc.configgui.suffocationCooldown=Suffocation Cooldown
 gc.configgui.suffocationDamage=Suffocation Damage
 gc.configgui.enableSealerEdgeChecks=Sealer Edge Checks
 gc.configgui.alternateCanisterRecipe=Alternate Canister Recipe
+gc.configgui.oreDictSilicon=OreDict name of silicon in other mods ##NEEDS TRANSLATE##
 gc.configgui.rocketFuelFactor=Rocket Fuel Factor
 gc.configgui.dungeonBossHealthMod=Dungeon Boss Health Modifier
 gc.configgui.hardMode=Harder Difficulty

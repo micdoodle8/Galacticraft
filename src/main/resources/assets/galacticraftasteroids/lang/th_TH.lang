@@ -102,6 +102,8 @@ gui.message.notEnoughEnergy.name=พลังงานไม่พอ!
 gui.message.targetNoEnergy.name=เป้าหมายพลังงานไม่พอ!
 gui.message.grapple.fail=ฉันต้องการเส้นเชือกจำนวนเล็กน้อย ถ้าต้องการที่จะโยนตะขอออกไป!
 gui.message.astroMiner.fail=ฐานแอสโทรไมน์เนอร์นี้มีแอสโทรไมน์เนอร์แล้ว!
+gui.message.astroMiner1.fail=The docking area is blocked by: ##NEEDS TRANSLATE##
+gui.message.astroMiner2.fail=That would be one Astro Miner too many! ##NEEDS TRANSLATE##
 
 tile.treasureT3.description=ยังไม่ใช้ตอนนี้
 tile.walkway.description=ใช้สำหรับการตกแต่งที่คล้ายกับสภาพภายใน ยานอวกาศ
@@ -110,6 +112,9 @@ tile.walkwayOxygenPipe.description=ใช้สำหรับเป็นทา
 tile.beamReflector.description=ใช้สำหรับเปลี่ยนทิศทางของพลังงานลำแสง จากเป้าหมายไปยังทิศทางอื่นๆ คลิ๊กขวาเพื่อเปลี่ยนทิศทางการสะท้อนแสง ไปยังเป้าหมายอื่นๆ
 tile.beamReceiver.description=ใช้เชื่อมต่อไปยังเครื่องมือต่างๆ ทั้งส่งเข้าและส่งออก พลังงานจะถูกส่งโดยใช้พลังงานลำแสง
 tile.telepadShort.description=ใช้สำหรับเทเลพอร์ทผู้เล่นหรือสิ่งมีชีวิต อื่นๆ ในระยะ 256 บล็อก และต้องเชื่อมต่อกับเครื่องเทเลพอร์ตอื่นๆ ด้วย
+tile.minerBase.description=The Astro Miner Base is the docking point for an Astro Miner.  It's big ... try making a 2 x 2 x 2 cube with these. ##NEEDS TRANSLATE##
+schematic.astroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+schematic.ionDrive.name=Ion Drive ##NEEDS TRANSLATE##
 
 # SCHEMATICS
 
@@ -126,5 +131,9 @@ container.entryPod.name=ยานลงจอด
 
 # CONFIG GUI
 gc.configgui.dimensionIDAsteroids=ID มิติดาวเคราะห์น้อย
+gc.configgui.idEntitySmallAsteroid=Small Asteroid Entity ID ##NEEDS TRANSLATE##
+gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID ##NEEDS TRANSLATE##
+gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID ##NEEDS TRANSLATE##
+gc.configgui.idEntityEntryPod=Entry Pod Entity ID ##NEEDS TRANSLATE##
 gc.configgui.idSchematicRocketT3=ID แผนผังจรวด เทียร์ 3
 gc.configgui.disableGalacticraftHelium=ปิดใช้งานก๊าซฮีเลียมบนดาวเคราะห์น้อย

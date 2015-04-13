@@ -175,6 +175,7 @@ entity.Slimeling.name=Слаймлинг
 entity.CreeperBoss.name=Эволюционировавший крипер-босс
 entity.SpaceshipT2.name=Ракета 2-го уровня
 entity.CargoRocket.name=Грузовая ракета
+entity.LandingBalloons.name=Landing Balloons ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.launchcontroller.name=Контроллер запуска

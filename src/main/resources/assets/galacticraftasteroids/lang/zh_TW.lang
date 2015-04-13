@@ -2,6 +2,7 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=三階火箭
+item.itemAstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
 item.heavyNoseCone.name=重型前錐體
 item.compressedTitanium.name=致密鈦
 item.ingotTitanium.name=鈦錠
@@ -78,6 +79,7 @@ tile.walkwayWire.name=通道
 tile.walkwayOxygenPipe.name=通道
 tile.treasureT3.name=三階寶箱
 tile.denseIce.name=Dense Ice ##NEEDS TRANSLATE##
+tile.minerBase.name=Astro Miner Base ##NEEDS TRANSLATE##
 
 # GUI
 planet.asteroids=小行星
@@ -99,6 +101,9 @@ gui.message.range.name=範圍: %dm
 gui.message.notEnoughEnergy.name=能量不足
 gui.message.targetNoEnergy.name=目標沒有足夠的能量
 gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook! ##NEEDS TRANSLATE##
+gui.message.astroMiner.fail=This base already has an Astro Miner! ##NEEDS TRANSLATE##
+gui.message.astroMiner1.fail=The docking area is blocked by: ##NEEDS TRANSLATE##
+gui.message.astroMiner2.fail=That would be one Astro Miner too many! ##NEEDS TRANSLATE##
 tile.treasureT3.description=Tier 3 Treasure Chests are currently unused. ##NEEDS TRANSLATE##
 tile.walkway.description=Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme. ##NEEDS TRANSLATE##
 tile.walkwayAluminumWire.description=Aluminum Wire Walkways are used for running wire underneath a fully solid walkable surface. ##NEEDS TRANSLATE##
@@ -106,6 +111,9 @@ tile.walkwayOxygenPipe.description=Oxygen Pipe Walkways are used for running pip
 tile.beamReflector.description=Beam Reflectors are used to redirect energy beams from source to destination. Can be right-clicked to cycle through targets. ##NEEDS TRANSLATE##
 tile.beamReceiver.description=Beam Receivers are connected to energy machine input and output, to transfer energy using beams. ##NEEDS TRANSLATE##
 tile.telepadShort.description=Short Range Telepads are used to transfer players and other living creatures short distances (250 Blocks) when linked to other telepads. ##NEEDS TRANSLATE##
+tile.minerBase.description=The Astro Miner Base is the docking point for an Astro Miner.  It's big ... try making a 2 x 2 x 2 cube with these. ##NEEDS TRANSLATE##
+schematic.astroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+schematic.ionDrive.name=Ion Drive ##NEEDS TRANSLATE##
 
 # Schematics
 
@@ -113,6 +121,8 @@ tile.telepadShort.description=Short Range Telepads are used to transfer players 
 entity.SmallAsteroidGC.name=小行星
 entity.GrappleHookGC.name=抓升鉤
 entity.Tier3RocketGC.name=三階火箭
+entity.EntryPodAsteroids.name=Entry Pod ##NEEDS TRANSLATE##
+entity.AstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
 
 # Container
 container.shortRangeTelepad.name=短距離傳送臺
@@ -123,3 +133,4 @@ gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID
 gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID
 gc.configgui.idEntityEntryPod=Entry Pod Entity ID
 gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID
+gc.configgui.disableGalacticraftHelium=Disable Helium gas registration ##NEEDS TRANSLATE##

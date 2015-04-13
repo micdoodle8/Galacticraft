@@ -2,6 +2,7 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=3티어 로켓
+item.itemAstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
 item.heavyNoseCone.name=중형 머리원뿔
 item.compressedTitanium.name=압축된 티타늄
 item.ingotTitanium.name=티타늄 주괴
@@ -78,6 +79,7 @@ tile.walkwayWire.name=통로
 tile.walkwayOxygenPipe.name=통로
 tile.treasureT3.name=3티어 보물상자
 tile.denseIce.name=두꺼운 얼음
+tile.minerBase.name=Astro Miner Base ##NEEDS TRANSLATE##
 
 # GUI
 planet.asteroids=소행성대
@@ -99,6 +101,9 @@ gui.message.range.name=거리: %d미터
 gui.message.notEnoughEnergy.name=에너지 부족!
 gui.message.targetNoEnergy.name=타겟 에너지 부족!
 gui.message.grapple.fail=그래플을 작동시키려면 줄이 필요합니다!
+gui.message.astroMiner.fail=This base already has an Astro Miner! ##NEEDS TRANSLATE##
+gui.message.astroMiner1.fail=The docking area is blocked by: ##NEEDS TRANSLATE##
+gui.message.astroMiner2.fail=That would be one Astro Miner too many! ##NEEDS TRANSLATE##
 
 tile.treasureT3.description=3티어 보물상자는 현재 사용할 수 없습니다.
 tile.walkway.description=통로는 우주 테마 장식용 블록입니다.
@@ -107,6 +112,9 @@ tile.walkwayOxygenPipe.description=산소 파이프 통로는 전선 기능을 �
 tile.beamReflector.description=에너지빔 반사장치는 에너지 광선(빔)의 방향을 바꾸어 목적지에 도달할 수 있게 해주는 기기입니다. 오른쪽 클릭을 통해 목표 타켓을 변경할 수 있습니다.
 tile.beamReceiver.description=에너지빔 수신기는 기계의 전력/에너지 입출력을 도와 에너지를 송수신 할 수 있게 해주는 기기입니다.
 tile.telepadShort.description=단거리 텔레포터는 플레이어와 다른 생명체의 빠른 단거리 이동을 도와주는 기기입니다 (250 Blocks). 최소한 두개의 기기가 서로 연결되어야 합니다.
+tile.minerBase.description=The Astro Miner Base is the docking point for an Astro Miner.  It's big ... try making a 2 x 2 x 2 cube with these. ##NEEDS TRANSLATE##
+schematic.astroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+schematic.ionDrive.name=Ion Drive ##NEEDS TRANSLATE##
 
 # SCHEMATICS
 
@@ -114,6 +122,8 @@ tile.telepadShort.description=단거리 텔레포터는 플레이어와 다른 �
 entity.SmallAsteroidGC.name=작은 소행성
 entity.GrappleHookGC.name=그래플
 entity.Tier3RocketGC.name=3티어 로켓
+entity.EntryPodAsteroids.name=Entry Pod ##NEEDS TRANSLATE##
+entity.AstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.shortRangeTelepad.name=단거리 텔레포터
@@ -126,3 +136,4 @@ gc.configgui.idEntityGrappleHook=그래플 엔티티 ID
 gc.configgui.idEntityTier3Rocket=3티어 로켓 엔티티 ID
 gc.configgui.idEntityEntryPod=진입 캡슐 엔티티 ID
 gc.configgui.idSchematicRocketT3=3티어 로켓 설계도 ID
+gc.configgui.disableGalacticraftHelium=Disable Helium gas registration ##NEEDS TRANSLATE##

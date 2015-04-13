@@ -175,6 +175,7 @@ entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Evrimleşmiş Creeper Patronu
 entity.SpaceshipT2.name=Tier 2 Roketi
 entity.CargoRocket.name=Kargo Roketi
+entity.LandingBalloons.name=Landing Balloons ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.launchcontroller.name=Fırlatma Kontrollü

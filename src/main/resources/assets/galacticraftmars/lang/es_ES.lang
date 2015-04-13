@@ -175,6 +175,7 @@ entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Jefe Creeper Evolucionado
 entity.SpaceshipT2.name=Cohete Nivel 2
 entity.CargoRocket.name=Cohete de Carga
+entity.LandingBalloons.name=Landing Balloons ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.launchcontroller.name=Controlador de Lanzamiento

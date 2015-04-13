@@ -175,6 +175,7 @@ entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Evoulirani Šef Kripera
 entity.SpaceshipT2.name=Raketa Ranga 2
 entity.CargoRocket.name=Teretna Raketa
+entity.LandingBalloons.name=Landing Balloons ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.launchcontroller.name=Kontroler Lansiranja

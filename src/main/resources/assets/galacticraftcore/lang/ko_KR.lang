@@ -182,6 +182,7 @@ tile.spinThruster.name=회전반동 추력기
 tile.viewScreen.name=표시 화면
 tile.telemetry.name=원격측정 유닛
 tile.spaceStationBase.name=우주정거장 도착장
+tile.dish.name=Communications Dish ##NEEDS TRANSLATE##
 
 # DECOBLOCKS
 tile.tinStairs1.name=장식형 주석 계단
@@ -578,6 +579,7 @@ tile.spinThruster.description=회전반동 추진기는 우주정거장을 회�
 tile.arclamp.description=아크 램프는 주변지역에 굉장히 강력한 불빛을 제공함과 동시에 주변 몹을 쫒아냅니다.
 tile.viewScreen.description=표시 화면은 우주정거장의 가장 마지막을 "장식"합니다. 오른쪽 클릭으로 화면에 표시되는 정보를 바꿀 수 있습니다.
 tile.telemetry.description=링크된 로켓, 플레이어 혹은 다른 몬스터에게서 유용한 정보를 얻을 수 있습니다. 표시 화면 옆에 배치 하는게 좋습니다. 주파수 모듈을 이용해 링크를 활성화 하십시오.
+tile.dish.description=The Communications Dish can track the position of space stations and receive communications from your remote space bases. ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.cargoloader.name=화물 적재기
@@ -626,6 +628,7 @@ commands.ssuninvite.noPlayer=%s 플레이어를 우주정거장 리스트에서 
 gc.configgui.idDimensionMoon=달 세계 ID
 gc.configgui.idDimensionOverworldOrbit=우주정거장 세계 ID
 gc.configgui.idDimensionOverworldOrbitStatic=우주정거장 고정 세계 ID
+gc.configgui.biomeIDBase=BiomeID Base for GC ##NEEDS TRANSLATE##
 gc.configgui.staticLoadedDimensions=이미 로딩된 고정 세계들
 gc.configgui.rocketDisableOverworldReturn=오버월드 복귀 금지
 gc.configgui.rocketDisabledDimensions=로켓 접근 불가 세계
@@ -664,6 +667,7 @@ gc.configgui.disableTinMoon=달 주석 없애기
 gc.configgui.disableCopperMoon=달 구리 없애기
 gc.configgui.disableMoonVillageGen=달 마을 없애기
 gc.configgui.enableOtherModsFeatures=다른 모드의 생성기 이용하기
+gc.configgui.enableThaumCraftNodes=Enable ThaumCraft Nodes on planets ##NEEDS TRANSLATE##
 gc.configgui.otherModOreGenIDs=행성에 다른 모드 광석 이용하기
 gc.configgui.enableDebug=콘솔에 디버깅 메시지 표시
 gc.configgui.disableLander=착륙기 없애기
@@ -678,8 +682,10 @@ gc.configgui.suffocationCooldown=질식 쿨다운
 gc.configgui.suffocationDamage=질식 데미지
 gc.configgui.enableSealerEdgeChecks=밀봉기 모서리 확인
 gc.configgui.alternateCanisterRecipe=대체 깡통 레시피
+gc.configgui.oreDictSilicon=OreDict name of silicon in other mods ##NEEDS TRANSLATE##
 gc.configgui.rocketFuelFactor=로켓 연료 인수
 gc.configgui.dungeonBossHealthMod=던전 보스 체력 변경
 gc.configgui.hardMode=좀 더 어려운 난이도
+gc.configgui.quickMode=Quick Game (easier) ##NEEDS TRANSLATE##
 
 gc.configgui.title=Galacticraft Core 커스터마이징

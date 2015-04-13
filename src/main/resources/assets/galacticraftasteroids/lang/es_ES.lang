@@ -2,6 +2,7 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=Cohete Nivel 3
+item.itemAstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
 item.heavyNoseCone.name=Ojiva Grande
 item.compressedTitanium.name=Titanio Comprimido
 item.ingotTitanium.name=Lingote de Titanio
@@ -78,6 +79,7 @@ tile.walkwayWire.name=Pasarela
 tile.walkwayOxygenPipe.name=Pasarela
 tile.treasureT3.name=Cofre del Tesoro Nivel 3
 tile.denseIce.name=Hielo Denso
+tile.minerBase.name=Astro Miner Base ##NEEDS TRANSLATE##
 
 # GUI
 planet.asteroids=Asteroides
@@ -99,6 +101,9 @@ gui.message.range.name=Alcance: %dm
 gui.message.notEnoughEnergy.name=Energía Insuficiente
 gui.message.targetNoEnergy.name=El Objetivo no tiene suficiente Energía
 gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook! ##NEEDS TRANSLATE##
+gui.message.astroMiner.fail=This base already has an Astro Miner! ##NEEDS TRANSLATE##
+gui.message.astroMiner1.fail=The docking area is blocked by: ##NEEDS TRANSLATE##
+gui.message.astroMiner2.fail=That would be one Astro Miner too many! ##NEEDS TRANSLATE##
 
 tile.treasureT3.description=Los Cofres del Tesoro Nivel 3 están actualmente sin utilizar.
 tile.walkway.description=Las Pasarelas se usan para finalidades decorativas, usado para unir bloques y andar sobre ellos manteniendo la tématica espacial.
@@ -107,6 +112,9 @@ tile.walkwayOxygenPipe.description=Las Pasarelas con Tubos de Oxígeno se usan p
 tile.beamReflector.description=Los Refletores se usan para redirigir ráyos de energía del emisor al receptor. Se puede hacer click derecho para pasar a través de objetivos.
 tile.beamReceiver.description=Los Receptores se conectan en la entrada o salida de energía de una máquina, para transferir energía por medio del ráyo.
 tile.telepadShort.description=Los Teletransportadores se usan para enviar a jugadores y otras criaturas a cortas distancias (250 Bloques) cuando esta conectado a otro teletransportador.
+tile.minerBase.description=The Astro Miner Base is the docking point for an Astro Miner.  It's big ... try making a 2 x 2 x 2 cube with these. ##NEEDS TRANSLATE##
+schematic.astroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+schematic.ionDrive.name=Ion Drive ##NEEDS TRANSLATE##
 
 # SCHEMATICS
 
@@ -114,6 +122,8 @@ tile.telepadShort.description=Los Teletransportadores se usan para enviar a juga
 entity.SmallAsteroidGC.name=Asteroide Pequeño
 entity.GrappleHookGC.name=Gancho
 entity.Tier3RocketGC.name=Cohete Nivel 3
+entity.EntryPodAsteroids.name=Entry Pod ##NEEDS TRANSLATE##
+entity.AstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.shortRangeTelepad.name=Teletransportador de Corto Alcance
@@ -124,3 +134,4 @@ gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID
 gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID
 gc.configgui.idEntityEntryPod=Entry Pod Entity ID
 gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID
+gc.configgui.disableGalacticraftHelium=Disable Helium gas registration ##NEEDS TRANSLATE##

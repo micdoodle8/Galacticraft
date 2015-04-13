@@ -199,6 +199,7 @@ tile.spinThruster.name=Petits réacteurs
 tile.viewScreen.name=Ecran d'affichage
 tile.telemetry.name=Unité de télémétrie
 tile.spaceStationBase.name=Bloc d'arrivée de station spatiale
+tile.dish.name=Communications Dish ##NEEDS TRANSLATE##
 tile.tinStairs1.name=Escaliers décorés à l'étain 
 tile.tinStairs2.name=Escaliers décorés à l'étain
 tile.wallGC.tin.name=Mur décoré à l'étain
@@ -615,6 +616,7 @@ tile.spinThruster.description=Spin Thrusters are used to make space stations rot
 tile.arclamp.description=Arc Lamps are used to provide strong light to a large area, also causing most mobs to flee. ##NEEDS TRANSLATE##
 tile.viewScreen.description=Display screens add that final touch to your space base. Right-click changes the information shown. ##NEEDS TRANSLATE##
 tile.telemetry.description=This gathers useful data from linked rockets, players and mobs. Best placed near to a Display Screen. Use a Frequency Module to establish data links. ##NEEDS TRANSLATE##
+tile.dish.description=The Communications Dish can track the position of space stations and receive communications from your remote space bases. ##NEEDS TRANSLATE##
 
 # COMMANDS
 commands.dimensionteleport=%s a été envoyé dans l'atmosphère%s
@@ -628,6 +630,7 @@ commands.ssuninvite.noPlayer=Impossible de trouver un joueur du nom %s dans la l
 gc.configgui.idDimensionMoon=ID dimension lune
 gc.configgui.idDimensionOverworldOrbit=ID dimension station spatiale
 gc.configgui.idDimensionOverworldOrbitStatic=ID dimension station spatiale statique
+gc.configgui.biomeIDBase=BiomeID Base for GC ##NEEDS TRANSLATE##
 gc.configgui.staticLoadedDimensions=Dimensions statiques chargées
 gc.configgui.rocketDisableOverworldReturn=Désactiver le retour de fusée en monde normal
 gc.configgui.rocketDisabledDimensions=Dimensions désactivé aux fusées
@@ -666,6 +669,7 @@ gc.configgui.disableTinMoon=Désactive la génération d'étain lunaire
 gc.configgui.disableCopperMoon=Désactive la génération de cuivre lunaire
 gc.configgui.disableMoonVillageGen=Désactive la génération de village lunaire
 gc.configgui.enableOtherModsFeatures=Active le mod externe de génération de monde
+gc.configgui.enableThaumCraftNodes=Enable ThaumCraft Nodes on planets ##NEEDS TRANSLATE##
 gc.configgui.otherModOreGenIDs=Les minerai d'autre mod seront généré sur les planètes
 gc.configgui.enableDebug=Montre les message de débogue dans la console
 gc.configgui.disableLander=Désactible les atterrisseurs sur la lune, utilisez les parachutes à la place
@@ -680,9 +684,11 @@ gc.configgui.suffocationCooldown=Récupération de suffocation
 gc.configgui.suffocationDamage=Domages de suffocation
 gc.configgui.enableSealerEdgeChecks=Vérification des angles scélés
 gc.configgui.alternateCanisterRecipe=Recette alternative des bouteilles
+gc.configgui.oreDictSilicon=OreDict name of silicon in other mods ##NEEDS TRANSLATE##
 gc.configgui.rocketFuelFactor=Facteur de carburant de la fusée
 gc.configgui.dungeonBossHealthMod=Modificateur de santé du boss de donjon
 gc.configgui.hardMode=Harder Difficulty
+gc.configgui.quickMode=Quick Game (easier) ##NEEDS TRANSLATE##
 gc.configgui.title=Configuration de Galacticraft Core
 
 # </file>

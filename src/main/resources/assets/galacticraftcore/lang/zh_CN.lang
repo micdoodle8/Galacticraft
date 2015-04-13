@@ -182,6 +182,7 @@ tile.spinThruster.name=旋转推进器
 tile.viewScreen.name=显示屏
 tile.telemetry.name=遥感装置
 tile.spaceStationBase.name=空间站到达方块
+tile.dish.name=Communications Dish ##NEEDS TRANSLATE##
 
 # DECOBLOCKS
 tile.tinStairs1.name=装饰锡制楼梯
@@ -578,6 +579,7 @@ tile.spinThruster.description=旋转推进器用于使空间站旋转.
 tile.arclamp.description=弧光灯用于给大片区域提供强光,也会使大部分怪物逃离.
 tile.viewScreen.description=显示屏给你的太空基地添加了触摸屏.右击改变其显示的信息.
 tile.telemetry.description=遥感装置会从与其建立连接的火箭,玩家,怪物中收集有用数据.最好放置于显示屏附近.可使用频率模块来建立连接.
+tile.dish.description=The Communications Dish can track the position of space stations and receive communications from your remote space bases. ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.cargoloader.name=货物装载器
@@ -665,8 +667,10 @@ gc.configgui.suffocationCooldown=Suffocation Cooldown(窒息冷却)
 gc.configgui.suffocationDamage=Suffocation Damage(窒息伤害)
 gc.configgui.enableSealerEdgeChecks=Sealer Edge Checks(密封边缘检测)
 gc.configgui.alternateCanisterRecipe=Alternate Canister Recipe(罐的其它合成配方)
+gc.configgui.oreDictSilicon=OreDict name of silicon in other mods ##NEEDS TRANSLATE##
 gc.configgui.rocketFuelFactor=Rocket Fuel Factor(火箭燃料系数)
 gc.configgui.dungeonBossHealthMod=Dungeon Boss Health Modifier(地牢Boss血量调节)
 gc.configgui.hardMode=Harder Difficulty(更高难度)
+gc.configgui.quickMode=Quick Game (easier) ##NEEDS TRANSLATE##
 
 gc.configgui.title=Galacticraft Core Config(星系核心配置文件)

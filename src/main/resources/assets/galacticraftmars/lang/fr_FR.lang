@@ -175,6 +175,7 @@ entity.Slimeling.name=Vaseux
 entity.CreeperBoss.name=Boss Creeper évolué
 entity.SpaceshipT2.name=Fusée de niveau 2
 entity.CargoRocket.name=Fusée de transport de marchandise
+entity.LandingBalloons.name=Landing Balloons ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.launchcontroller.name=Contrôleur de lancement

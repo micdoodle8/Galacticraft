@@ -2,6 +2,7 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=Raketa Ranga 3
+item.itemAstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
 item.heavyNoseCone.name=Snažni Nos Rakete
 item.compressedTitanium.name=Prerađeni Titanium
 item.ingotTitanium.name=Poluga Titanuma
@@ -90,6 +91,7 @@ tile.walkwayWire.name=Staza s Cijevima za Strujom
 tile.walkwayOxygenPipe.name=Staza s Cijevima za Zrakom
 tile.treasureT3.name=Rang 3 Škrinje s Blagom
 tile.denseIce.name=Gusti Led
+tile.minerBase.name=Astro Miner Base ##NEEDS TRANSLATE##
 
 # GUI
 planet.asteroids=Asteroidi
@@ -111,6 +113,9 @@ gui.message.range.name=Daleko: %dm
 gui.message.notEnoughEnergy.name=Nema Dovoljno Energije!
 gui.message.targetNoEnergy.name=Meta nema Energije!
 gui.message.grapple.fail=Trebam niti da mogu baciti!
+gui.message.astroMiner.fail=This base already has an Astro Miner! ##NEEDS TRANSLATE##
+gui.message.astroMiner1.fail=The docking area is blocked by: ##NEEDS TRANSLATE##
+gui.message.astroMiner2.fail=That would be one Astro Miner too many! ##NEEDS TRANSLATE##
 tile.treasureT3.description=Rang 3 Škrinja s blagom se mogu pronači u asteroidskoj dimenziji u tamnicama.
 tile.walkway.description=Staze se koriste za dekorativne svrhe te za pokretanje energije/zraka ispod igrača.
 tile.walkwayAluminumWire.description=Staze s cijevima za struju se koriste za pokretanje struje ispod potpuno čvrste prohodne površine.
@@ -118,12 +123,17 @@ tile.walkwayOxygenPipe.description=Staze s cijevima za kisik se koriste za pokre
 tile.beamReflector.description=Reflektori se koriste za preusmjeravanje energije zrake od izvora do odredišta. Može se kliknuti na njega da ode na drugi cilj.
 tile.beamReceiver.description=Prijemnici su povezani s ulazom stroja, za prijenos energije pomoću zrake.
 tile.telepadShort.description=Teleporter s malom daljinom se koristi za prijenos igrača i bića na male daljine (250 blokova) kada je povezan s drugim teleporterom.
+tile.minerBase.description=The Astro Miner Base is the docking point for an Astro Miner.  It's big ... try making a 2 x 2 x 2 cube with these. ##NEEDS TRANSLATE##
+schematic.astroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+schematic.ionDrive.name=Ion Drive ##NEEDS TRANSLATE##
 # SCHEMATICS
 
 # ENTITIES
 entity.SmallAsteroidGC.name=Mali Asteroid
 entity.GrappleHookGC.name=Kuka
 entity.Tier3RocketGC.name=Rang 3 Raketa
+entity.EntryPodAsteroids.name=Entry Pod ##NEEDS TRANSLATE##
+entity.AstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.shortRangeTelepad.name=Teleporter s Malom Daljinom
@@ -134,3 +144,4 @@ gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID
 gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID
 gc.configgui.idEntityEntryPod=Entry Pod Entity ID
 gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID
+gc.configgui.disableGalacticraftHelium=Disable Helium gas registration ##NEEDS TRANSLATE##

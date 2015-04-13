@@ -175,6 +175,7 @@ entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Kosmiczny Creeper Boss
 entity.SpaceshipT2.name=Rakieta Poziomu 2
 entity.CargoRocket.name=Rakieta Transportowa
+entity.LandingBalloons.name=Landing Balloons ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.launchcontroller.name=Kontroler Startu

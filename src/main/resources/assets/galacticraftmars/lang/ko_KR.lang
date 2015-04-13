@@ -175,6 +175,7 @@ entity.Slimeling.name=슬라임링
 entity.CreeperBoss.name=진화한 크리퍼 보스
 entity.SpaceshipT2.name=2티어 로켓
 entity.CargoRocket.name=화물 로켓
+entity.LandingBalloons.name=Landing Balloons ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.launchcontroller.name=발사 통제기

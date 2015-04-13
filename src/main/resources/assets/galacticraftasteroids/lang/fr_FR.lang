@@ -2,6 +2,7 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=Fusée Niveau 3
+item.itemAstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
 item.heavyNoseCone.name=Coiffe de fusée lourde
 item.compressedTitanium.name=Titane compressé
 item.ingotTitanium.name=Lingot de titane
@@ -62,6 +63,7 @@ tile.walkwayWire.name=Passerelle
 tile.walkwayOxygenPipe.name=Passerelle
 tile.treasureT3.name=Coffre de niveau 3
 tile.denseIce.name=Glace dense
+tile.minerBase.name=Astro Miner Base ##NEEDS TRANSLATE##
 fluid.methane=Méthane
 fluid.oxygen=Oxygène
 fluid.nitrogen=Azote
@@ -88,6 +90,7 @@ gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID ##NEEDS TRANSLATE##
 gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID ##NEEDS TRANSLATE##
 gc.configgui.idEntityEntryPod=Entry Pod Entity ID ##NEEDS TRANSLATE##
 gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID ##NEEDS TRANSLATE##
+gc.configgui.disableGalacticraftHelium=Disable Helium gas registration ##NEEDS TRANSLATE##
 gui.message.address.name=Adresse
 gui.message.destAddress.name=Adresse de la cible
 gui.message.invalidAddress.name=Adresse unique invalide
@@ -101,6 +104,9 @@ gui.message.range.name=Range: %dm
 gui.message.notEnoughEnergy.name=Pas assez d'énergie
 gui.message.targetNoEnergy.name=La cible ne possède pas assez d'énergie
 gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook! ##NEEDS TRANSLATE##
+gui.message.astroMiner.fail=This base already has an Astro Miner! ##NEEDS TRANSLATE##
+gui.message.astroMiner1.fail=The docking area is blocked by: ##NEEDS TRANSLATE##
+gui.message.astroMiner2.fail=That would be one Astro Miner too many! ##NEEDS TRANSLATE##
 tile.treasureT3.description=Tier 3 Treasure Chests are currently unused. ##NEEDS TRANSLATE##
 tile.walkway.description=Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme. ##NEEDS TRANSLATE##
 tile.walkwayAluminumWire.description=Aluminum Wire Walkways are used for running wire underneath a fully solid walkable surface. ##NEEDS TRANSLATE##
@@ -108,6 +114,9 @@ tile.walkwayOxygenPipe.description=Oxygen Pipe Walkways are used for running pip
 tile.beamReflector.description=Beam Reflectors are used to redirect energy beams from source to destination. Can be right-clicked to cycle through targets. ##NEEDS TRANSLATE##
 tile.beamReceiver.description=Beam Receivers are connected to energy machine input and output, to transfer energy using beams. ##NEEDS TRANSLATE##
 tile.telepadShort.description=Short Range Telepads are used to transfer players and other living creatures short distances (250 Blocks) when linked to other telepads. ##NEEDS TRANSLATE##
+tile.minerBase.description=The Astro Miner Base is the docking point for an Astro Miner.  It's big ... try making a 2 x 2 x 2 cube with these. ##NEEDS TRANSLATE##
+schematic.astroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+schematic.ionDrive.name=Ion Drive ##NEEDS TRANSLATE##
 
 itemGroup.GalacticraftAsteroids=Astéroïdes Galacticraft
 # Schematics
@@ -116,5 +125,7 @@ itemGroup.GalacticraftAsteroids=Astéroïdes Galacticraft
 entity.SmallAsteroidGC.name=Petit astéroïde
 entity.GrappleHookGC.name=Grappin
 entity.Tier3RocketGC.name=Fusée Niveau 3
+entity.EntryPodAsteroids.name=Entry Pod ##NEEDS TRANSLATE##
+entity.AstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
 
 # Container

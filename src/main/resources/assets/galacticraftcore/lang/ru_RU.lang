@@ -182,6 +182,7 @@ tile.spinThruster.name=Вращающий двигатель
 tile.viewScreen.name=Экран отображения
 tile.telemetry.name=Телеметрический блок
 tile.spaceStationBase.name=Основание космической станции
+tile.dish.name=Communications Dish ##NEEDS TRANSLATE##
 
 # DECOBLOCKS
 tile.tinStairs1.name=Оловянные ступеньки
@@ -578,6 +579,7 @@ tile.spinThruster.description=Вращающие двигатели исполь
 tile.arclamp.description=Дуговые лампы используются для освещения большой территории, также заставляют большинство мобов убегать.
 tile.viewScreen.description=Экраны отображения добавят последний штрих к Вашей космической базе. ПКМ изменяет отображаемую информацию.
 tile.telemetry.description=Собирает полезные данные с присоединённых ракет, игроков и мобов. Лучше всего размещать рядом с экраном отображения. Используйте частотный модуль, чтобы настроить получаемую информацию.
+tile.dish.description=The Communications Dish can track the position of space stations and receive communications from your remote space bases. ##NEEDS TRANSLATE##
 
 # CONTAINERS
 container.cargoloader.name=Грузовой загрузчик
@@ -665,8 +667,10 @@ gc.configgui.suffocationCooldown=Задержка урона от удушья
 gc.configgui.suffocationDamage=Урон от удушья
 gc.configgui.enableSealerEdgeChecks=Sealer Edge Checks
 gc.configgui.alternateCanisterRecipe=Альтернативный рецепт канистры
+gc.configgui.oreDictSilicon=OreDict name of silicon in other mods ##NEEDS TRANSLATE##
 gc.configgui.rocketFuelFactor=Множитель ракетного топлива
 gc.configgui.dungeonBossHealthMod=Модификатор здоровья босса
 gc.configgui.hardMode=Хардкорный режим
+gc.configgui.quickMode=Quick Game (easier) ##NEEDS TRANSLATE##
 
 gc.configgui.title=Конфигурация ядра Galacticraft
