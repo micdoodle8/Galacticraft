@@ -25,6 +25,10 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer
 
     public void renderGCTileEntityTreasureChestAt(TileEntityTreasureChestAsteroids par1GCTileEntityTreasureChest, double par2, double par4, double par6, float par8)
     {
+        if (par1GCTileEntityTreasureChest.getWorldObj() != null)
+        	GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        else
+        	GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         int var9;
 
         if (!par1GCTileEntityTreasureChest.hasWorldObj())
@@ -62,7 +66,6 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer
             }
 
             GL11.glPushMatrix();
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glTranslatef((float) par2, (float) par4 + 1.0F, (float) par6 + 1.0F);
             GL11.glScalef(1.0F, -1.0F, -1.0F);
@@ -140,7 +143,6 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer
                 var14b.renderAll(!par1GCTileEntityTreasureChest.locked);
             }
 
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
             GL11.glPopMatrix();
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         }

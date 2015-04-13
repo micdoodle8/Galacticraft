@@ -13,6 +13,7 @@ import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityMinerBaseRenderer extends TileEntitySpecialRenderer
@@ -27,6 +28,7 @@ public class TileEntityMinerBaseRenderer extends TileEntitySpecialRenderer
 
     public void renderModelAt(TileEntityMinerBase tileEntity, double d, double d1, double d2, float f)
     {
+        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
     	if (!tileEntity.isMaster) return;
     	// Texture file
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityMinerBaseRenderer.telepadTexture);

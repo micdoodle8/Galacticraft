@@ -7,7 +7,9 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 public class RenderSmallAsteroid extends Render
 {
@@ -16,6 +18,7 @@ public class RenderSmallAsteroid extends Render
     @Override
     public void doRender(Entity entity, double x, double y, double z, float f, float partialTickTime)
     {
+        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         EntitySmallAsteroid asteroid = (EntitySmallAsteroid) entity;
 
         GL11.glPushMatrix();

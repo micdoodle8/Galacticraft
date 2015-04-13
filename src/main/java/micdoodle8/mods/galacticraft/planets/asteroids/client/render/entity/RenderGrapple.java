@@ -8,12 +8,15 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
+
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 public class RenderGrapple extends Render
 {
     public void doRender(EntityGrapple grapple, double x, double y, double z, float par8, float partialTicks)
     {
+        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         GL11.glPushMatrix();
 
         Vec3 vec3 = Vec3.createVectorHelper(0.0D, -0.2D, 0.0D);

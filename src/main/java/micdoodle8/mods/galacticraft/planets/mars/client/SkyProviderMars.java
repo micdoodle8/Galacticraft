@@ -14,7 +14,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IRenderHandler;
+
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import java.util.Random;
 
@@ -95,6 +97,8 @@ public class SkyProviderMars extends IRenderHandler
     public void render(float partialTicks, WorldClient world, Minecraft mc)
     {
         GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        RenderHelper.enableStandardItemLighting();
         Vec3 vec3 = world.getSkyColor(mc.renderViewEntity, partialTicks);
         float f1 = (float) vec3.xCoord;
         float f2 = (float) vec3.yCoord;

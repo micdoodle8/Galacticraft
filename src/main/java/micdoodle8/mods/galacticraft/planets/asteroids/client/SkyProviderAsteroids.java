@@ -14,7 +14,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IRenderHandler;
+
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import java.util.Random;
 
@@ -89,8 +91,9 @@ public class SkyProviderAsteroids extends IRenderHandler
         final Tessellator var23 = Tessellator.instance;
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-
-        GL11.glColor3f(1, 1, 1);
+        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        RenderHelper.enableStandardItemLighting();
+        GL11.glColor3f(1F, 1F, 1F);
         GL11.glDepthMask(false);
         GL11.glEnable(GL11.GL_FOG);
         GL11.glColor3f(0, 0, 0);
