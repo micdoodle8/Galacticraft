@@ -2,7 +2,7 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=Rakete (Stufe 3)
-item.itemAstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+item.itemAstroMiner.name=Astrominer
 item.heavyNoseCone.name=Schwere Raketennase
 item.compressedTitanium.name=Gepresstes Titan
 item.ingotTitanium.name=Titanbarren
@@ -43,10 +43,10 @@ item.canister.LOX.full.name=Gefüllter Kanister mit Flüssigem Sauerstoff
 item.canister.LOX.name=LOX                  #short name for Liquid Oxygen contents level
 item.canister.liquidNitrogen.partial.name=Kanister mit Flüssigem Stickstoff
 item.canister.liquidNitrogen.full.name=Gefüllter Kanister mit Flüssigem Stickstoff
-item.canister.liquidNitrogen.name=Flüssigk.    #short name for Liquid Nitrogen contents level
+item.canister.liquidNitrogen.name=Flüssigk. #short name for Liquid Nitrogen contents level
 item.canister.liquidArgon.partial.name=Kanister mit Flüssigem Argon
 item.canister.liquidArgon.full.name=Gefüllter Kanister mit Flüssigem Argon
-item.canister.liquidArgon.name=Flüssigk.       #short name for Liquid Argon contents level
+item.canister.liquidArgon.name=Flüssigk.    #short name for Liquid Argon contents level
 item.emptyGasCanister.name=Leerer Gaskanister
 
 # FLUIDS AND GASES
@@ -79,7 +79,7 @@ tile.walkwayWire.name=Gehweg
 tile.walkwayOxygenPipe.name=Gehweg
 tile.treasureT3.name=Schatztruhe (Stufe 3)
 tile.denseIce.name=Dichtes Eis
-tile.minerBase.name=Astro Miner Base ##NEEDS TRANSLATE##
+tile.minerBase.name=Astrominer-Basis
 
 # GUI
 planet.asteroids=Asteroiden
@@ -101,9 +101,9 @@ gui.message.range.name=Reichweite: %dm
 gui.message.notEnoughEnergy.name=Nicht genug Energie!
 gui.message.targetNoEnergy.name=Ziel hat nicht genügend Energie! 
 gui.message.grapple.fail=Ich brauche einen Faden, wenn ich den Greifhaken werfen will!
-gui.message.astroMiner.fail=This base already has an Astro Miner! ##NEEDS TRANSLATE##
-gui.message.astroMiner1.fail=The docking area is blocked by: ##NEEDS TRANSLATE##
-gui.message.astroMiner2.fail=That would be one Astro Miner too many! ##NEEDS TRANSLATE##
+gui.message.astroMiner.fail=Diese Basis hat schon einen Astrominer!
+gui.message.astroMiner1.fail=Der Andockbereich ist versperrt durch:
+gui.message.astroMiner2.fail=Das wäre ein Astrominer zu viel!
 
 tile.treasureT3.description=Schatztruhen der Stufe 3 werden zur Zeit nicht benutzt.
 tile.walkway.description=Gehwege können für Dekorationszwecke benutzt werden und um Blöcke zu verbinden.
@@ -112,9 +112,9 @@ tile.walkwayOxygenPipe.description=Sauerstoffleitungsgehwege werden benutzt um S
 tile.beamReflector.description=Strahlenreflektoren werden benutzt um Energiestrahlen von der Quelle zum Ziel weiterzuleiten. Rechtsklick um das Ziel umzuschalten.
 tile.beamReceiver.description=Strahlenempfänger werden mit den Energieein- und ausgängen von Maschinen verbunden um Energie über Strahlen zu übertragen.
 tile.telepadShort.description=Kurzreichweiten-Telepads werden benutzt um Spieler und andere Lebewesen über kurze Distanzen (250 Blöcke) zu teleportieren, wenn sie mit anderen Telepads verbunden sind.
-tile.minerBase.description=The Astro Miner Base is the docking point for an Astro Miner.  It's big ... try making a 2 x 2 x 2 cube with these. ##NEEDS TRANSLATE##
-schematic.astroMiner.name=Astro Miner ##NEEDS TRANSLATE##
-schematic.ionDrive.name=Ion Drive ##NEEDS TRANSLATE##
+tile.minerBase.description=Die Astrominer-Basis ist die Andockstelle für einen Astrominer. Sie ist groß ... versuche einen 2 x 2 x 2-Würfel mit ihr zu machen.
+schematic.astroMiner.name=Astrominer
+schematic.ionDrive.name=Ionenantrieb
 
 # SCHEMATICS
 
@@ -122,12 +122,12 @@ schematic.ionDrive.name=Ion Drive ##NEEDS TRANSLATE##
 entity.SmallAsteroidGC.name=Kleiner Asteroid
 entity.GrappleHookGC.name=Greifhaken
 entity.Tier3RocketGC.name=Rakete (Stufe 3)
-entity.EntryPodAsteroids.name=Entry Pod
-entity.AstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+entity.EntryPodAsteroids.name=Eintritts-Pod
+entity.AstroMiner.name=Astrominer
 
 # CONTAINERS
 container.shortRangeTelepad.name=Kurzreichweiten-Telepad
-container.entryPod.name=Entry Pod
+container.entryPod.name=Eintritts-Pod
 
 # CONFIG GUI
 gc.configgui.dimensionIDAsteroids=Asteroids Dimension ID
