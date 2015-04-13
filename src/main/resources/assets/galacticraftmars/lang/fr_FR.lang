@@ -12,12 +12,12 @@ item.key.T2.name=Clé de Donjon Niveau 2
 item.compressedDesh.name=Silicium comprimé
 item.spaceshipTier2.cargoRocket.name=Cargaison de fusée
 item.fluidManip.name=Manipulateur de fluides
-item.bucketSludge.name=Bacterial Sludge Bucket ##NEEDS TRANSLATE##
-fluid.bacterialsludge=Bacterial Sludge ##NEEDS TRANSLATE##
+item.bucketSludge.name=Sceau de bourbe bactérienne
+fluid.bacterialsludge=Bourbe bactérienne
 
 # TOOLS
 item.deshPick.name=Pioche en silicium
-item.deshPickSlime.name=Sticky Desh Pickaxe ##NEEDS TRANSLATE##
+item.deshPickSlime.name=Pioche attachante
 item.deshAxe.name=Hache en silicium
 item.deshHoe.name=Houe en silicium
 item.deshSpade.name=Pelle en silicium
@@ -50,18 +50,18 @@ tile.marsMachine.2.name=Contrôleur de lancement
 tile.marsMachine.4.name=Liquéfieur de gas
 tile.marsMachine.5.name=Synthétiseur de méthane
 tile.marsMachine.6.name=Electrolyseur d'eau 
-tile.hydrogenPipe.name=Hydrogen Pipe ##NEEDS TRANSLATE##
+tile.hydrogenPipe.name=Tuyau d'hydrogène
 tile.sludge.name=Boues bactérienne
 tile.creeperEgg.name=œuf de Creeper
 tile.cavernVines.name=Vignes caverneux
 
 # DECOBLOCKS
-tile.marsCobblestoneStairs.name=Mars Cobblestone Stairs ##NEEDS TRANSLATE##
-tile.wallGC.mars.name=Mars Cobblestone Wall ##NEEDS TRANSLATE##
-tile.slabGCHalf.marsSlab.name=Mars Cobblestone Slab ##NEEDS TRANSLATE##
-tile.marsDungeonBricksStairs.name=Mars Dungeon Brick Stairs ##NEEDS TRANSLATE##
-tile.wallGC.marsBricks.name=Mars Dungeon Brick Wall ##NEEDS TRANSLATE##
-tile.slabGCHalf.marsBricksSlab.name=Mars Dungeon Brick Slab ##NEEDS TRANSLATE##
+tile.marsCobblestoneStairs.name=Escalier de pavés Marsien
+tile.wallGC.mars.name=Mur de pavés Marsien
+tile.slabGCHalf.marsSlab.name=Dalle de pavés Marsien
+tile.marsDungeonBricksStairs.name=Escalier de briques de donjon Marsien
+tile.wallGC.marsBricks.name=Mur de briques de donjon Marsien
+tile.slabGCHalf.marsBricksSlab.name=Dalle de briques de donjon Marsien
 
 # GUI
 gui.choosePlanet.desc.mars=Habitable#Pas d'oxygène#Gravité: 38%
@@ -94,7 +94,7 @@ gui.message.redstoneSig.name=Signal de redstone
 gui.message.notSet.name=Non défini
 gui.message.notEnough.name=Pas assez
 gui.message.success.name=Succès
-gui.message.zeroWater.name=No water! ##NEEDS TRANSLATE##
+gui.message.zeroWater.name=aucune eau !
 
 	# Dollar sign ($) will split text onto a new line
 gui.launchController.desc.0=Ceci est la fréquence unique du controlleur
@@ -103,17 +103,17 @@ gui.launchController.desc.2=Si la rampe de lancement doit être enlevée ou non
 gui.launchController.desc.3=Quand ces critères seront remplis,la fusée sera lancée
 gui.terraformer.desc.0=Réservoir d'eau
 
-gui.gasTank.desc.0=Réservoir pour gas
-gui.gasTankCompressed.desc.0=Gas Storage (Compressed) ##NEEDS TRANSLATE##
-gui.liquidTank.desc.0=Rservoir pour liquide
-gui.status.nogas.name=Pas de gas
-gui.status.liquefying.name=Liquéfie
-gui.status.processing.name=Synthesizing ##NEEDS TRANSLATE##
+gui.gasTank.desc.0=Réservoir à gaz
+gui.gasTankCompressed.desc.0=Réservoir à gaz (Comprimé)
+gui.liquidTank.desc.0=Réservoir à liquide
+gui.status.nogas.name=Pas de gaz
+gui.status.liquefying.name=Liquéfaction
+gui.status.processing.name=Synthétisation
 gui.status.needsCarbon.name=Requiert du carbone
-gui.status.tankfull.name=Tank full ##NEEDS TRANSLATE##
-gui.status.tanksfull.name=Tanks full ##NEEDS TRANSLATE##
+gui.status.tankfull.name=Réservoir plein
+gui.status.tanksfull.name=Réservoirs pleins
 gui.message.lowEnergy.name=Niveau d'énergie bas
-gui.button.liquefy.name=Process ##NEEDS TRANSLATE##
+gui.button.liquefy.name=Traitement
 gui.button.liquefyStop.name=Stop
 gui.gasInput.desc.0=Essayez de placer un réservoir de Méthane ici
 gui.gasInput.desc.1=(ou alors,un valve atmosphérique)
@@ -124,21 +124,21 @@ gui.methaneOutput.desc.2=Réservoir de méthane
 gui.message.withAtmosphere0.name=Une planète avec beaucoup de 
 gui.message.withAtmosphere1.name=dans l'atmosphère
 item.carbonFragments.name=Carbone fragmenté
-gui.carbonSlot.desc.0=Fragmented Carbon can go here ##NEEDS TRANSLATE##
-gui.waterBucketSlot.desc=Place water buckets here ##NEEDS TRANSLATE##
+gui.carbonSlot.desc.0=Le carbone fragmenté peut venir ici
+gui.waterBucketSlot.desc=Placez les sceaux d'eau ici
 
-gui.cargorocket.status.waiting.0=Waiting for ##NEEDS TRANSLATE##
-gui.cargorocket.status.waiting.1=ignition ##NEEDS TRANSLATE##
-gui.cargorocket.status.launched.0=Already ##NEEDS TRANSLATE##
-gui.cargorocket.status.launched.1=Launched ##NEEDS TRANSLATE##
+gui.cargorocket.status.waiting.0=En attente de 
+gui.cargorocket.status.waiting.1=chauffage
+gui.cargorocket.status.launched.0=Prêt
+gui.cargorocket.status.launched.1=Lancé
 
 gas.carbondioxide.name=CO2
 gas.oxygen.name=Oxygène
 gas.nitrogen.name=Azote
 
 gui.desc.reinforcedPlateT2.name=Niveau 2
-dimension.Mars.name=Mars ##NEEDS TRANSLATE##
-planet.mars=Mars ##NEEDS TRANSLATE##
+dimension.Mars.name=Mars
+planet.mars=Mars
 
 tile.treasureT2.description=Tier 2 Treasure Chests will generate in Mars Dungeons. They are unlockable after defeating the final boss. ##NEEDS TRANSLATE##
 tile.cavernVines.description=Cavernous Vines are dangerous to living creatures, entangling them and dragging them upwards. ##NEEDS TRANSLATE##
@@ -154,16 +154,16 @@ tile.hydrogenPipe.description=Hydrogen Pipe will transfer hydrogen from one mach
 
 gui.slimeling.chat.wrongPlayer=This isn't my Slimeling! ##NEEDS TRANSLATE##
 gui.cryogenic.chat.cantUse=I can't use this for another %d seconds ##NEEDS TRANSLATE##
-gui.slimeling.name=Name ##NEEDS TRANSLATE##
-gui.slimeling.owner=Owner ##NEEDS TRANSLATE##
-gui.slimeling.kills=Kills ##NEEDS TRANSLATE##
-gui.slimeling.scale=Scale ##NEEDS TRANSLATE##
-gui.slimeling.button.sit=Sit ##NEEDS TRANSLATE##
-gui.slimeling.button.follow=Follow ##NEEDS TRANSLATE##
-gui.slimeling.sitting=Sitting ##NEEDS TRANSLATE##
-gui.slimeling.following=Following ##NEEDS TRANSLATE##
-gui.slimeling.damage=Attack Damage ##NEEDS TRANSLATE##
-gui.slimeling.food=Favorite food ##NEEDS TRANSLATE##
+gui.slimeling.name=Nom
+gui.slimeling.owner=Propriétaire
+gui.slimeling.kills=Meurtres
+gui.slimeling.scale=Echelle
+gui.slimeling.button.sit=S'assoir
+gui.slimeling.button.follow=Suivre
+gui.slimeling.sitting=Est assis
+gui.slimeling.following=Suit
+gui.slimeling.damage=Domage d'attaque
+gui.slimeling.food=Nourriture favorite
 
 # SCHEMATICS
 schematic.rocketT3.name=Fusée Niveau 3
@@ -179,7 +179,7 @@ entity.CargoRocket.name=Fusée de transport de marchandise
 # CONTAINERS
 container.launchcontroller.name=Contrôleur de lancement
 container.tileTerraformer.name=Terraformeur
-container.marsLander.name=Landing Balloons ##NEEDS TRANSLATE##
+container.marsLander.name=Ballons d'atterissage
 
 # CONFIG GUI
 gc.configgui.dimensionIDMars=Mars Dimension ID
@@ -188,4 +188,4 @@ gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID
 gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
 gc.configgui.launchControllerAllDims=Launch Controller All Dimensions
 
-gc.configgui.planets.title=Galacticraft Planets Config ##NEEDS TRANSLATE##
+gc.configgui.planets.title=Configuration de planetes Galacticraft
