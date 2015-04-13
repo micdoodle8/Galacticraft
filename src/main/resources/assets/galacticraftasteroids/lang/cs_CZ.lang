@@ -2,7 +2,7 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=Raketa typ 3
-item.itemAstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+item.itemAstroMiner.name=Těžební souprava
 item.heavyNoseCone.name=Vylepšená špička rakety
 item.compressedTitanium.name=Válcovaný titan
 item.ingotTitanium.name=Titanový ingot
@@ -63,7 +63,7 @@ tile.walkwayWire.name=Lávka
 tile.walkwayOxygenPipe.name=Lávka
 tile.treasureT3.name=Pokladnice typ 3
 tile.denseIce.name=Zhuštěný led
-tile.minerBase.name=Astro Miner Base ##NEEDS TRANSLATE##
+tile.minerBase.name=Základna pro těžební soupravu
 
 #FLUIDS
 fluid.methane=Plynný metan
@@ -92,7 +92,7 @@ gc.configgui.idEntityGrappleHook=Číslo háku
 gc.configgui.idEntityTier3Rocket=Číslo rakety typu 3
 gc.configgui.idEntityEntryPod=Číslo přistávacího modulu (ast.)
 gc.configgui.idSchematicRocketT3=Číslo schématu rakety typu 3
-gc.configgui.disableGalacticraftHelium=Disable Helium gas registration ##NEEDS TRANSLATE##
+gc.configgui.disableGalacticraftHelium=Vypnout registraci plynného Helia
 gui.message.address.name=Adresa
 gui.message.destAddress.name=Cílová adresa
 gui.message.invalidAddress.name=Neplatná adresa
@@ -106,9 +106,9 @@ gui.message.range.name=Dosah: %dm
 gui.message.notEnoughEnergy.name=Nedostatek energie!
 gui.message.targetNoEnergy.name=Cíl nemá dostatek energie!
 gui.message.grapple.fail=Pro použití háku je potřeba také lano!
-gui.message.astroMiner.fail=This base already has an Astro Miner! ##NEEDS TRANSLATE##
-gui.message.astroMiner1.fail=The docking area is blocked by: ##NEEDS TRANSLATE##
-gui.message.astroMiner2.fail=That would be one Astro Miner too many! ##NEEDS TRANSLATE##
+gui.message.astroMiner.fail=Tato základna již obsahuje těžební soupravu!
+gui.message.astroMiner1.fail=Přistávací port je obsazen hráčem: 
+gui.message.astroMiner2.fail=Již jsi postavil příliž mnoho těžebních souprav!
 tile.treasureT3.description=Pokladnice typu 3 zatím nejsou využity.
 tile.walkway.description=Lávky jsou využity pro dekorace, slouží pro spojování bloků při zachování vzhledu.
 tile.walkwayAluminumWire.description=Lávky s hliníkovým vodičem umožňují vedení vodiče pod lávkou a zároveň zachovávají rovný povrch.
@@ -116,9 +116,9 @@ tile.walkwayOxygenPipe.description=Lávky s kyslíkovou trubkou umožňují vede
 tile.beamReflector.description=Směrovače paprsku slouží ke směrování paprsků za zdroje do cíle. Po kliknutí pravým tlačítkem lze vybírat cíle.
 tile.beamReceiver.description=Zdroje paprsku jsou připojeny ke strojům jako přívody nebo vývody pro přenos energie pomocí paprsku.
 tile.telepadShort.description=Transportéry krátkého dosahu slouží k přepravě hráčů a dalších živých bytostí na krátké vzdálenosti (250 m) po spárování s dalším transportérem.
-tile.minerBase.description=The Astro Miner Base is the docking point for an Astro Miner.  It's big ... try making a 2 x 2 x 2 cube with these. ##NEEDS TRANSLATE##
-schematic.astroMiner.name=Astro Miner ##NEEDS TRANSLATE##
-schematic.ionDrive.name=Ion Drive ##NEEDS TRANSLATE##
+tile.minerBase.description=Základna těžební soupravy slouží jako dokovací port pro těžební stanici. Postavte jej jako krychly o straně 2 m.
+schematic.astroMiner.name=Těžební souprava
+schematic.ionDrive.name=Iontový motor
 
 itemGroup.GalacticraftAsteroids=Galacticraft Asteroidy
 
@@ -128,7 +128,7 @@ itemGroup.GalacticraftAsteroids=Galacticraft Asteroidy
 entity.SmallAsteroidGC.name=Malý asteroid
 entity.GrappleHookGC.name=Hák
 entity.Tier3RocketGC.name=Raketa typ 3
-entity.EntryPodAsteroids.name=Entry Pod ##NEEDS TRANSLATE##
-entity.AstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+entity.EntryPodAsteroids.name=Přistávací modul
+entity.AstroMiner.name=Těžební souprava
 
 # Container
