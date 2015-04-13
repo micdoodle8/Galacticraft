@@ -65,8 +65,8 @@ tile.slabGCHalf.marsBricksSlab.name=Marsdungeonziegelstufe
 
 # GUI
 gui.choosePlanet.desc.mars=Bewohnbar#Kein Sauerstoff#Gravitation: 38%
-item.deshPickSlime.description.name=Kann Schleimling-Eier ernten
-gui.message.noEnergy.name=Nicht genügend Energie
+item.deshPickSlime.description.name=Kann Creeper-Eier ernten
+gui.message.noEnergy.name=Keine Energie!
 gui.message.noWater.name=Nicht genügend Wasser
 gui.message.noBonemeal.name=Nicht genügend Knochenmehl
 gui.message.noSeeds.name=Nicht genügend Samen
@@ -82,10 +82,10 @@ gui.message.invalidFreq.name=Ungültige Frequenz
 gui.message.frequency.name=Frequenz
 gui.message.destFrequency.name=Zielfrequenz
 gui.message.removePad.name=Rampe entfernen
-gui.message.launchWhen.name=Starte
-gui.message.cargoUnloaded.name=wenn Fracht entladen wurde
-gui.message.cargoFull.name=wenn Frachtraum voll ist
-gui.message.fullyFueled.name=wenn vollgetankt wurde
+gui.message.launchWhen.name=Starte wenn
+gui.message.cargoUnloaded.name=Fracht entladen wurde
+gui.message.cargoFull.name=Frachtraum voll ist
+gui.message.fullyFueled.name=vollgetankt wurde
 gui.message.instant.name=sofort
 gui.message.tenSec.name=10 Sekunden
 gui.message.thirtySec.name=30 Sekunden
@@ -173,7 +173,7 @@ schematic.cargoRocket.name=Automatische Güterrakete
 entity.Sludgeling.name=Schlammling
 entity.Slimeling.name=Schleimling
 entity.CreeperBoss.name=Entwickelter Creeper-Boss
-entity.SpaceshipT2.name=Stufe 2 Rakete
+entity.SpaceshipT2.name=Rakete (Stufe 2)
 entity.CargoRocket.name=Automatische Güterrakete
 entity.LandingBalloons.name=Landeballons
 
