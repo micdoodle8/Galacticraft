@@ -195,7 +195,7 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);        
-        var12 = 11.3F;
+        var12 = 9.99F;
         var23.startDrawingQuads();
         var23.addVertex(-var12, -99.9D, var12);
         var23.addVertex(var12, -99.9D, var12);
