@@ -281,7 +281,7 @@ public class GuiSlimeling extends GuiScreen
         try {
         	Class clazz = Class.forName("micdoodle8.mods.galacticraft.core.atoolkit.ProcessGraphic");
         	clazz.getMethod("go").invoke(null);
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { }
     }
 
     public static void drawSlimelingOnGui(GuiSlimeling screen, EntitySlimeling slimeling, int par1, int par2, int par3, float par4, float par5)
