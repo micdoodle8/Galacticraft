@@ -30,12 +30,12 @@ item.deshLeggings.name=Desh Leggings ##NEEDS TRANSLATE##
 item.deshBoots.name=Desh Boots ##NEEDS TRANSLATE##
 
 # BLOCKS
-tile.mars.deshmars.name=Desh Ore ##NEEDS TRANSLATE##
-tile.mars.coppermars.name=Copper Ore ##NEEDS TRANSLATE##
-tile.mars.tinmars.name=Tin Ore ##NEEDS TRANSLATE##
-tile.mars.ironmars.name=Iron Ore ##NEEDS TRANSLATE##
+tile.mars.deshmars.name=Desh Erts
+tile.mars.coppermars.name=Koper Erts
+tile.mars.tinmars.name=Tin Erts
+tile.mars.ironmars.name=Ijzererts
 tile.mars.marscobblestone.name=Cobblestone ##NEEDS TRANSLATE##
-tile.mars.marsstone.name=Mars Stone ##NEEDS TRANSLATE##
+tile.mars.marsstone.name=Mars Steen
 tile.mars.marsdirt.name=Mars Sub-Surface Rock ##NEEDS TRANSLATE##
 tile.mars.marsgrass.name=Mars Surface Rock ##NEEDS TRANSLATE##
 tile.mars.marsdeco.name=Block of Desh ##NEEDS TRANSLATE##
