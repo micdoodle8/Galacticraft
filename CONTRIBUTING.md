@@ -52,18 +52,24 @@ If you spot an error or something missing in the translation of Galacticraft for
 5.  On the home page of your Fork, click "Pull Request"
 
 Pull Requests
--------------
+=============
 Galacticraft is an open source project and Pull Requests from any competent coder are extremely welcome - we could use the help.
 
 Pull Requests meeting the following guidelines can be automatically merged:
-1.  Please make one sensibly-named commit, which describes the aspect you are fixing.  Remember it will show up in the Galacticraft change log for all time.  So 'Fixed moon lander thrust particles remaining visible' is better than 'Moon fix'.
-2.  If you made a mistake and fixed it with a second or third minor commit, please combine them into one good commit (so not like some guys do it, commit 1 'fixed it' then commit 2 'oops, missed something' then commit 3 'derp'.)
-3.  One Pull Request per commit please.  It confuses us if you mix three unrelated commits in one Pull Request, and what are we supposed to do if we like two of them but not the third?  We don't mind having multiple Pull Requests from you.
-4.  If you're fixing something which is not already in the issues list and is not obvious, please make comments explaining what you fixed.  A screenshot of before and after can help.  We are not super-human, please help us to understand what you did.
-5.  If proposing a change in currently intended / designed behaviour of Galacticraft via a Pull Request, that could be great if it's an improvement, but you have more chance if it being immediately accepted if you discussed it with us first - you are very welcome to open an issue to do that.
-6.  Please respect our code style, which is fairly vanilla: you can see the style by looking at existing sources.  Long lines are OK.  We like opening braces on lines by themselves.
 
-Other Pull Requests are also welcomed, but we may have to manually merge them meaning that you may not be automatically accredited as the author in the changelog.
+1.  Please make one sensibly-named commit, which describes the aspect you are fixing.  Remember it will show up in the Galacticraft change log for all time.  So 'Fixed moon lander thrust particles remaining visible' is better than 'Moon fix'.
+
+2.  If you made a mistake and fixed it with a second or third minor commit, please combine them into one good commit (so not like some guys do it, commit 1 'fixed it' then commit 2 'oops, missed something' then commit 3 'derp'.)
+
+3.  One Pull Request per commit please.  It confuses us if you mix three unrelated commits in one Pull Request.  Bear in mind that we might, for example, decide to incorporate two of them but not the third.  We don't mind having multiple Pull Requests from you.
+
+4.  If you're fixing something which is not already in the issues list and is not obvious, please make comments explaining what you fixed.  A screenshot of before and after can help.  We are not super-human, please help us to understand what you did.
+
+5.  If proposing a change in currently intended behaviour of Galacticraft via a Pull Request, that could be great if it's an improvement, but you have more chance if it being immediately accepted if you discussed it with us first - you are very welcome to open an issue to do that.
+
+6.  Please respect our code style, which is fairly vanilla.  You can see the style by looking at existing sources.  Long lines are OK.  We like opening braces { to be on lines by themselves.
+
+Pull Requests not meeting these guidelines are also welcomed, but we may have to manually merge them, which means that you may not be automatically accredited as the author in the changelog....
 
 All Pull Requests automatically become subject to Galacticraft's licence.  If you're interested in the legal stuff, it's here: https://github.com/micdoodle8/Galacticraft/blob/master/LICENSE.txt
 Briefly, it's an open source, free for non-commercial use licence, and we think it's important that it remains open source for all time.  You are not allowed to subvert that by making a Pull Request and later asserting that your code, incorporated in the mod, has some different licensing terms.  Please take special care not to make a Pull Request with code which is subject to a GPL licence: once incorporated in Galacticraft it will become subject to Galacticraft's licence instead (which is not a GPL licence).  If you're not good with that, then don't make a Pull Request.
@@ -79,7 +85,7 @@ The Github issues list is __not__ the best place for 'how to' questions from int
 You should be able to figure things out for yourself if you know Java and you understand Minecraft modding.
 * Galacticraft is open source and you should be able to figure out most things by looking at the sources.
 * Especially, look at Galacticraft Mars.  Mars is coded just like an Add-On planet should be: it uses the API in the same way as an Add-On can.
-* Setup instructions are here: wiki.micdoodle8.com/wiki/GC3_API
+* Setup instructions are here:  http://wiki.micdoodle8.com/wiki/GC3_API
 * Micdoodle8 wrote a nice series of beginner modding tutorials a long time ago (2 years), they are still relevant and well-explained: http://micdoodle8.com/oldsite/become.html
 * Believe it or not, coding a (good) planet is not easy.  Algorithmic worldgen is a special skill.  A large part of the creativity in vanilla Minecraft is in its high quality, varied worldgen.  You are recommended to study it carefully before attempting to make your own world.  There are also plenty of books and online tutorials about how to generate terrain in computer games: read them.
 
