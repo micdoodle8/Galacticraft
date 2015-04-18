@@ -437,6 +437,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
             returnTile = new TileEntityAluminumWire(2);
         }
 
+    	if (returnTile != null) returnTile.setWorldObj(world);
     	if (returnTile != null) this.tileAdded(returnTile, metadata);
     	
         return returnTile;
