@@ -180,68 +180,6 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "" + EnumEnclosedBlock.OXYGEN_PIPE.getTexture());
     }
 
-    private void tileAdded(TileEntity tileEntity, int metadata)
-    {
-        if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
-        {
-
-        }
-        else if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
-        {
-            if (tileEntity instanceof INetworkConnection)
-            {
-//                ((INetworkConnection) tileEntity).refresh();
-            }
-        }
-        else if (metadata <= EnumEnclosedBlock.IC2_LV_CABLE.getMetadata())
-        {
-            if (CompatibilityManager.isIc2Loaded())
-            {
-                try
-                {
-                    Class<?> clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
-
-                    if (clazz != null && clazz.isInstance(tileEntity))
-                    {
-                        try
-                        {
-                            Method method = clazz.getMethod("onNeighborBlockChange");
-                            method.invoke(tileEntity);
-                        }
-                        catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
-        else if (metadata <= EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata())
-        {
-        }
-        else if (metadata <= EnumEnclosedBlock.ME_CABLE.getMetadata())
-        {
-        }
-        else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata())
-        {
-            if (tileEntity instanceof IConductor)
-            {
-//            	((IConductor) tileEntity).refresh();
-            }
-        }
-        else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE_HEAVY.getMetadata())
-        {
-            if (tileEntity instanceof IConductor)
-            {
-//                ((IConductor) tileEntity).refresh();
-            }
-        }  	
-    }
-
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
     {
@@ -263,7 +201,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         }
         else if (metadata <= EnumEnclosedBlock.IC2_LV_CABLE.getMetadata())
         {
-            if (CompatibilityManager.isIc2Loaded())
+            if (CompatibilityManager.isIc2Loaded() && tileEntity != null)
             {
                 try
                 {
@@ -436,10 +374,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         {
             returnTile = new TileEntityAluminumWire(2);
         }
-
-    	if (returnTile != null) returnTile.setWorldObj(world);
-    	if (returnTile != null) this.tileAdded(returnTile, metadata);
-    	
+   	
         return returnTile;
     }
 
