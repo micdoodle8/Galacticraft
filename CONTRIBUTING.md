@@ -11,9 +11,9 @@ Issues means:
 
 Posting new issues - guidelines
 -------------------------------
-1. When posting, always tell us your exact Galacticraft version.
-2. Please download the latest GC version from http://micdoodle8.com/mods/galacticraft/downloads and test if your issue still occurs in that, before posting.
-3. Please do not duplicate known issues: do a search first. __Check the closed issues also: maybe somebody already posted your issue and a fix was found.__
+1. Please do not duplicate known issues: do a search first. __Check the closed issues also: maybe somebody already posted your issue and a fix was found.__
+2. When posting, always tell us your exact Galacticraft version.
+3. Please download the latest GC version from http://micdoodle8.com/mods/galacticraft/downloads and test if your issue still occurs in that, before posting.
 4. If reporting a crash, please always post your full crash report, use Pastebin or http://paste.ubuntu.com/ or https://gist.github.com/ or similar to post it
 5. If reporting a mod conflict, we might ask you to do some testing to isolate which exact other mod is conflicting with GC.
 
@@ -28,9 +28,9 @@ The issues list is __not__ for:
 * questions and general support issues - go to http://forum.micdoodle8.com/index.php?forums/support.5/ for that
 * problems downloading or launching the mod: the mod works, if it is not working for you that's a support issue for the forum
 * questions about when a 1.8 version or more planets will come - see http://forum.micdoodle8.com/index.php?threads/when-will-the-next-update-when-will-new-planets-rockets-mobs-or-whatever-be-added.3753/
-* communicating with micdoodle8 or asking for modpack permissions etc - use other communication channels like Twitter or email
+* communicating with micdoodle8 or asking for modpack permissions etc - use other communication channels like Twitter or email.  Modpack permissions can also be found here: http://wiki.micdoodle8.com/wiki/Modpack_Permission
 
-We make an exception here for developers / collaborators on other mods making compatibility suggestions or questions - those are always welcomed.  Likewise if you're a coder planning a Pull Request you are welcome to open an issue to discuss it first.
+On the questions and suggestions thing, we make an exception for developers of other mods making compatibility suggestions or questions - those are always welcomed and the Issues list is a good place for that.  Likewise if you're a coder planning a Pull Request for Galacticraft you are welcome to open an issue to discuss it first.
 
 Translation fixes
 -----------------
@@ -50,6 +50,10 @@ If you spot an error or something missing in the translation of Galacticraft for
 4.  Edit the text to fix the translation, and save your edit
 
 5.  On the home page of your Fork, click "Pull Request"
+
+
+---------------------------------------
+
 
 Pull Requests
 =============
