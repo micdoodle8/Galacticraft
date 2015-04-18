@@ -2,11 +2,11 @@
 
 # GENERAL ITEMS
 item.rawDesh.name=Unrefined Desh ##NEEDS TRANSLATE##
-item.deshStick.name=Desh Stick ##NEEDS TRANSLATE##
-item.ingotDesh.name=Desh Ingot ##NEEDS TRANSLATE##
-item.spaceshipTier2.t2Rocket.name=Tier 2 Rocket ##NEEDS TRANSLATE##
+item.deshStick.name=Desh Stok
+item.ingotDesh.name=Desh Staaf 
+item.spaceshipTier2.t2Rocket.name=Tier 2 Raket 
 item.reinforcedPlateT2.name=Heavy-Duty Plate ##NEEDS TRANSLATE##
-item.tier2.desc=Tier 2 ##NEEDS TRANSLATE##
+item.tier2.desc=Tier 2
 item.slimelingCargo.name=Slimeling Inventory Bag ##NEEDS TRANSLATE##
 item.key.T2.name=Tier 2 Dungeon Key ##NEEDS TRANSLATE##
 item.compressedDesh.name=Compressed Desh ##NEEDS TRANSLATE##
@@ -16,16 +16,16 @@ item.bucketSludge.name=Bacterial Sludge Bucket ##NEEDS TRANSLATE##
 fluid.bacterialsludge=Bacterial Sludge ##NEEDS TRANSLATE##
 
 # TOOLS
-item.deshPick.name=Desh Pickaxe ##NEEDS TRANSLATE##
+item.deshPick.name=Desh Houweel
 item.deshPickSlime.name=Sticky Desh Pickaxe ##NEEDS TRANSLATE##
-item.deshAxe.name=Desh Axe ##NEEDS TRANSLATE##
+item.deshAxe.name=Desh Bijl
 item.deshHoe.name=Desh Hoe ##NEEDS TRANSLATE##
 item.deshSpade.name=Desh Shovel ##NEEDS TRANSLATE##
 item.deshSword.name=Desh Sword ##NEEDS TRANSLATE##
 
 # ARMOR
-item.deshHelmet.name=Desh Helmet ##NEEDS TRANSLATE##
-item.deshChestplate.name=Desh Chestplate ##NEEDS TRANSLATE##
+item.deshHelmet.name=Desh Helm
+item.deshChestplate.name=Desh Borstplaat
 item.deshLeggings.name=Desh Leggings ##NEEDS TRANSLATE##
 item.deshBoots.name=Desh Boots ##NEEDS TRANSLATE##
 
@@ -93,8 +93,8 @@ gui.message.oneMin.name=1 Minute ##NEEDS TRANSLATE##
 gui.message.redstoneSig.name=Redstone Signal ##NEEDS TRANSLATE##
 gui.message.notSet.name=Not Set ##NEEDS TRANSLATE##
 gui.message.notEnough.name=Not Enough ##NEEDS TRANSLATE##
-gui.message.success.name=Success ##NEEDS TRANSLATE##
-gui.message.zeroWater.name=No water! ##NEEDS TRANSLATE##
+gui.message.success.name=Succes
+gui.message.zeroWater.name=Geen Water!
 
 	# Dollar sign ($) will split text onto a new line
 gui.launchController.desc.0=This is the Launch Controller's$unique frequency ##NEEDS TRANSLATE##
@@ -133,12 +133,12 @@ gui.cargorocket.status.launched.0=Already ##NEEDS TRANSLATE##
 gui.cargorocket.status.launched.1=Launched ##NEEDS TRANSLATE##
 
 gas.carbondioxide.name=Carbon Dioxide ##NEEDS TRANSLATE##
-gas.oxygen.name=Oxygen ##NEEDS TRANSLATE##
-gas.nitrogen.name=Nitrogen ##NEEDS TRANSLATE##
+gas.oxygen.name=Zuurstof
+gas.nitrogen.name=Stikstof
 
-gui.desc.reinforcedPlateT2.name=Tier 2 ##NEEDS TRANSLATE##
-dimension.Mars.name=Mars ##NEEDS TRANSLATE##
-planet.mars=Mars ##NEEDS TRANSLATE##
+gui.desc.reinforcedPlateT2.name=Tier 2
+dimension.Mars.name=Mars
+planet.mars=Mars
 
 tile.treasureT2.description=Tier 2 Treasure Chests will generate in Mars Dungeons. They are unlockable after defeating the final boss. ##NEEDS TRANSLATE##
 tile.cavernVines.description=Cavernous Vines are dangerous to living creatures, entangling them and dragging them upwards. ##NEEDS TRANSLATE##
@@ -166,7 +166,7 @@ gui.slimeling.damage=Attack Damage ##NEEDS TRANSLATE##
 gui.slimeling.food=Favorite food ##NEEDS TRANSLATE##
 
 # SCHEMATICS
-schematic.rocketT3.name=Tier 3 Rocket ##NEEDS TRANSLATE##
+schematic.rocketT3.name=Tier 3 Raket
 schematic.cargoRocket.name=Automatic Cargo Rocket ##NEEDS TRANSLATE##
 
 # ENTITIES
