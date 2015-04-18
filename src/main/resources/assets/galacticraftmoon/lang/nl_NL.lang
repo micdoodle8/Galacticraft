@@ -25,6 +25,6 @@ tile.cheeseBlock.name=Kaas blok
 
 # GUI
 gui.choosePlanet.desc.moon=Bewoonbaar#Geen zuurstof#Zwaartekracht: 18%
-container.lander.name=Lander ##NEEDS TRANSLATE##
+container.lander.name=Lander
 
 dimension.Moon.name=Maan
