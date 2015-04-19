@@ -21,12 +21,26 @@ How to search before posting your issue
 ---------------------------------------
 You're in the Galacticraft repository here, so it's pretty easy to do a search, just enter the search term at the top of this page.  The Github results page shows you both "Code" results and "Issues" results.  You need to click on "Issues" to see what has been found.
 
-What is not OK on the issues list?
+Are you sure it's a Galacticraft issue?
+---------------------------------------
+If posting a crash report, please first be reasonably sure that it's a Galacticraft issue and not an issue in another mod.  (If it _could_ be Galacticraft or it _could_ be something else we will help you figure out the cause: obviously we want to fix anything which __is__ being caused by Galacticraft.)
+
+One to watch out for is crash reports involving the player which include somewhere in the middle of the report this line:
+>         at micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP.func_70097_a(GCEntityPlayerMP.java:73)
+
+If you have Galacticraft installed, that line will show up in the middle of the report whenever another mod crashes in a way which involves the player.  __It does not mean Galacticraft is crashing or causing a problem!__  All that's happening here is that Galacticraft has changed the name of the vanilla player code in Minecraft, in a way which does not break anything else.  So usually you will also see this line in the report just above the Galacticraft player line:
+>         at net.minecraft.entity.player.EntityPlayerMP.func_70097_a(EntityPlayerMP.java:491)
+
+Nobody seeing that is saying that vanilla Minecraft has an issue: likewise, Galacticraft does not have an issue here.  If you want to be 100% sure, you can install the PlayerAPI mod alongside Galacticraft and see if the same crash happens.  (If PlayerAPI is installed then Galacticraft does not change the name of the vanilla player code in Minecraft.)
+
+In conclusion: don't post issue reports suggesting Galacticraft is at fault when another mod is crashing and the only connection with Galacticraft is that micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP line.  (Example of what not to do: https://github.com/micdoodle8/Galacticraft/issues/1561)
+
+What else is not OK on the issues list?
 ----------------------------------
 The issues list is __not__ for:
-* suggestions and feature requests - go to http://forum.micdoodle8.com/index.php?forums/suggestions.7/ for that
-* questions and general support issues - go to http://forum.micdoodle8.com/index.php?forums/support.5/ for that
-* problems downloading or launching the mod: the mod works, if it is not working for you that's a support issue for the forum
+* suggestions and feature requests - go to http://forum.micdoodle8.com/index.php?forums/suggestions.7/
+* questions and general support issues - go to http://forum.micdoodle8.com/index.php?forums/support.5/
+* problems downloading, installing or launching the mod: the mod works, if it is not working for you that's a support issue for the forum
 * questions about when a 1.8 version or more planets will come - see http://forum.micdoodle8.com/index.php?threads/when-will-the-next-update-when-will-new-planets-rockets-mobs-or-whatever-be-added.3753/
 * communicating with micdoodle8 or asking for modpack permissions etc - use other communication channels like Twitter or email.  Modpack permissions can also be found here: http://wiki.micdoodle8.com/wiki/Modpack_Permission
 
@@ -65,11 +79,11 @@ Pull Requests meeting the following guidelines can be automatically merged:
 
 2.  If you made a mistake and fixed it with a second or third minor commit, please combine them into one good commit (so not like some guys do it, commit 1 'fixed it' then commit 2 'oops, missed something' then commit 3 'derp'.)
 
-3.  One Pull Request per commit please.  It confuses us if you mix three unrelated commits in one Pull Request.  Bear in mind that we might, for example, decide to incorporate two of them but not the third.  We don't mind having multiple Pull Requests from you.
+3.  One Pull Request per commit please.  It confuses us if you mix three unrelated commits in one Pull Request.  Bear in mind that we might, for example, decide to incorporate two of them but not the third.  We are happy to have multiple Pull Requests from you.
 
 4.  If you're fixing something which is not already in the issues list and is not obvious, please make comments explaining what you fixed.  A screenshot of before and after can help.  We are not super-human, please help us to understand what you did.
 
-5.  If proposing a change in currently intended behaviour of Galacticraft via a Pull Request, that could be great if it's an improvement, but you have more chance if it being immediately accepted if you discussed it with us first - you are very welcome to open an issue to do that.
+5.  If proposing a change in currently intended behaviour of Galacticraft via a Pull Request, that could be great if it's an improvement, but you have more chance of it being immediately accepted if you discussed it with us first - you are very welcome to open an issue to do that.
 
 6.  Please respect our code style, which is fairly vanilla.  You can see the style by looking at existing sources.  Long lines are OK.  We like opening braces { to be on lines by themselves.
 
