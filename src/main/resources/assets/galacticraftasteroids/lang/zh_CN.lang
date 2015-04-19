@@ -2,7 +2,7 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=3阶火箭
-item.itemAstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+item.itemAstroMiner.name=太空采矿机
 item.heavyNoseCone.name=重型前锥体
 item.compressedTitanium.name=致密钛板
 item.ingotTitanium.name=钛锭
@@ -79,7 +79,7 @@ tile.walkwayWire.name=通道
 tile.walkwayOxygenPipe.name=通道
 tile.treasureT3.name=3阶宝箱
 tile.denseIce.name=坚冰
-tile.minerBase.name=Astro Miner Base ##NEEDS TRANSLATE##
+tile.minerBase.name=太空采矿机停泊方块
 
 # GUI
 planet.asteroids=小行星
@@ -101,8 +101,8 @@ gui.message.range.name=范围: %dm
 gui.message.notEnoughEnergy.name=能量不足
 gui.message.targetNoEnergy.name=目标没有足够的能量
 gui.message.grapple.fail=如果我想将抓升钩抛出,我的物品栏中需要有足够的线!
-gui.message.astroMiner.fail=This base already has an Astro Miner! ##NEEDS TRANSLATE##
-gui.message.astroMiner1.fail=The docking area is blocked by: ##NEEDS TRANSLATE##
+gui.message.astroMiner.fail=该基地已经绑定过太空采矿机
+gui.message.astroMiner1.fail=停泊区已经被占用: 
 gui.message.astroMiner2.fail=That would be one Astro Miner too many! ##NEEDS TRANSLATE##
 
 tile.treasureT3.description=3阶宝箱目前无法使用.
@@ -112,9 +112,9 @@ tile.walkwayOxygenPipe.description=氧气管道在其可行走的表面下可布
 tile.beamReflector.description=能量射束反射器用于改变源头来的激光束的方向.右击以在不同目标间循环切换.
 tile.beamReceiver.description=能量射束接收器连接到机器以输入和输出能量,使用激光束传输能量.
 tile.telepadShort.description=短距离传送台可用于短距离传送(250格),将玩家和其他生物传送至其他已建立连接的传送台.
-tile.minerBase.description=The Astro Miner Base is the docking point for an Astro Miner.  It's big ... try making a 2 x 2 x 2 cube with these. ##NEEDS TRANSLATE##
-schematic.astroMiner.name=Astro Miner ##NEEDS TRANSLATE##
-schematic.ionDrive.name=Ion Drive ##NEEDS TRANSLATE##
+tile.minerBase.description=太空采矿机停泊基地用于太空采矿机的停驻.  它很大 ... 尝试用它做一个 2 x 2 x 2 的立方体
+schematic.astroMiner.name=太空采矿机
+schematic.ionDrive.name=离子推进器
 
 # Schematics
 
@@ -123,7 +123,7 @@ entity.SmallAsteroidGC.name=小行星
 entity.GrappleHookGC.name=抓升钩
 entity.Tier3RocketGC.name=3阶火箭
 entity.EntryPodAsteroids.name=入口平台
-entity.AstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+entity.AstroMiner.name=太空采矿机
 
 # Container
 container.shortRangeTelepad.name=短程传送平台
