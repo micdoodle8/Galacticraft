@@ -14,7 +14,7 @@ Posting new issues - guidelines
 1. Please do not duplicate known issues: do a search first. __Check the closed issues also: maybe somebody already posted your issue and a fix was found.__
 2. When posting, always tell us your exact Galacticraft version.
 3. Please download the latest GC version from http://micdoodle8.com/mods/galacticraft/downloads and test if your issue still occurs in that, before posting.
-4. If reporting a crash, please always post your full crash report, use Pastebin or http://paste.ubuntu.com/ or https://gist.github.com/ or similar to post it
+4. If reporting a crash, please always post your full crash report, use Pastebin or http://paste.ubuntu.com/ or https://gist.github.com/ or similar to post it.
 5. If reporting a mod conflict, we might ask you to do some testing to isolate which exact other mod is conflicting with GC.
 
 How to search before posting your issue
@@ -31,20 +31,21 @@ One to watch out for is crash reports involving the player which include somewhe
 If you have Galacticraft installed, that line will show up in the middle of the report whenever another mod crashes in a way which involves the player.  __It does not mean Galacticraft is crashing or causing a problem!__  All that's happening here is that Galacticraft has changed the name of the vanilla player code in Minecraft, in a way which does not break anything else.  So usually you will also see this line in the report just above the Galacticraft player line:
 >         at net.minecraft.entity.player.EntityPlayerMP.func_70097_a(EntityPlayerMP.java:491)
 
-Nobody seeing that is saying that vanilla Minecraft has an issue: likewise, Galacticraft does not have an issue here.  If you want to be 100% sure, you can install the PlayerAPI mod alongside Galacticraft and see if the same crash happens.  (If PlayerAPI is installed then Galacticraft does not change the name of the vanilla player code in Minecraft.)
+That's not a vanilla Minecraft crash: likewise, Galacticraft does not have an issue here.  If you want to be 100% sure, you can install the PlayerAPI mod alongside Galacticraft and see if the same crash still happens.  (If PlayerAPI is installed then Galacticraft does not change the name of the vanilla player code in Minecraft.)
 
-In conclusion: don't post issue reports suggesting Galacticraft is at fault when another mod is crashing and the only connection with Galacticraft is that micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP line.  (Example of what not to do: https://github.com/micdoodle8/Galacticraft/issues/1561)
+In summary: don't post crash reports suggesting Galacticraft is at fault, if the only connection with Galacticraft is that micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP line in the middle of the report.
 
 What else is not OK on the issues list?
 ----------------------------------
 The issues list is __not__ for:
-* suggestions and feature requests - go to http://forum.micdoodle8.com/index.php?forums/suggestions.7/
-* questions and general support issues - go to http://forum.micdoodle8.com/index.php?forums/support.5/
-* problems downloading, installing or launching the mod: the mod works, if it is not working for you that's a support issue for the forum
-* questions about when a 1.8 version or more planets will come - see http://forum.micdoodle8.com/index.php?threads/when-will-the-next-update-when-will-new-planets-rockets-mobs-or-whatever-be-added.3753/
-* communicating with micdoodle8 or asking for modpack permissions etc - use other communication channels like Twitter or email.  Modpack permissions can also be found here: http://wiki.micdoodle8.com/wiki/Modpack_Permission
+* suggestions and feature requests - go to the [suggestions forum](http://forum.micdoodle8.com/index.php?forums/suggestions.7/)
+* questions and general support issues - go to the [support forum](http://forum.micdoodle8.com/index.php?forums/support.5/)
+* problems downloading, installing or launching the mod: the mod works if you followed the [installation guide](http://wiki.micdoodle8.com/wiki/Tutorials/Galacticraft_Installation_Guide), if it is not working for you that's a support issue for the forum
+* questions about when a 1.8 version or more planets will come - see [sticky topic on this]( http://forum.micdoodle8.com/index.php?threads/when-will-the-next-update-when-will-new-planets-rockets-mobs-or-whatever-be-added.3753/)
+* communicating with micdoodle8 - use other communication channels like Twitter or email
+* modpack permission requests - modpack permissions are found here: http://wiki.micdoodle8.com/wiki/Modpack_Permission.
 
-On the questions and suggestions thing, we make an exception for developers of other mods making compatibility suggestions or questions - those are always welcomed and the Issues list is a good place for that.  Likewise if you're a coder planning a Pull Request for Galacticraft you are welcome to open an issue to discuss it first.
+On the questions and suggestions thing, we of course make an exception for developers of other mods making compatibility suggestions or questions - those are always welcomed and the Issues list is a great place for that.  Likewise if you're a coder planning a Pull Request for Galacticraft you are welcome to open an issue to discuss it first.
 
 Translation fixes
 -----------------
@@ -94,7 +95,7 @@ Briefly, it's an open source, free for non-commercial use licence, and we think 
 
 Intending Add-On Authors
 ------------------------
-Galacticraft has an API, and several people have successfully created add-ons using it, for example extra planet packs.  More information about those can be found here: http://forum.micdoodle8.com/index.php?forums/addons.11/
+Galacticraft has an API, and several people have successfully created add-ons using it, for example extra planet packs.  More information about those can be found [here](http://forum.micdoodle8.com/index.php?forums/addons.11/)
 
 If something in the API is not working, then please let us know - or ideally please find a way to fix it so that things work for your add-on, and make a Pull Request.
 
