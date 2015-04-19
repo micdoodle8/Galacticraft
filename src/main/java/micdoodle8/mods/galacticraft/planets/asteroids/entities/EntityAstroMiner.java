@@ -12,6 +12,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -1450,6 +1451,12 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     	}
     }
 
+    public boolean isEntityInvulnerable()
+    {
+        //Can't be damaged if its player is offline - it's in a fully dormant state
+    	return this.playerMP == null;
+    }
+
     public List<ItemStack> getItemsDropped(List<ItemStack> droppedItems)
     {
         ItemStack rocket = new ItemStack(AsteroidsItems.astroMiner, 1, 0);
@@ -1469,6 +1476,12 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             return;
         }
 
+        if (this.playerMP != null)
+        {
+        	int astroCount = GCPlayerStats.get(this.playerMP).astroMinerCount;
+        	if (astroCount > 0) GCPlayerStats.get(this.playerMP).astroMinerCount--;        	
+        }
+        
         for (final ItemStack item : this.getItemsDropped(new ArrayList<ItemStack>()))
         {
             EntityItem entityItem = this.entityDropItem(item, 0);

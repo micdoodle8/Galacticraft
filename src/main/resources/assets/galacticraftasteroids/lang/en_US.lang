@@ -133,3 +133,4 @@ container.entryPod.name=Entry Pod
 gc.configgui.dimensionIDAsteroids=Asteroids Dimension ID
 gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID
 gc.configgui.disableGalacticraftHelium=Disable Helium gas registration
+gc.configgui.astroMinersMax=Maximum number of Astro Miners per player
