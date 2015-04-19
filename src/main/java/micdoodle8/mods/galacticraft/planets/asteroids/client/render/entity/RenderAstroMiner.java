@@ -79,11 +79,14 @@ public class RenderAstroMiner extends Render
     public void doRender(Entity entity, double x, double y, double z, float f, float partialTickTime)
     {
         EntityAstroMiner astroMiner = (EntityAstroMiner) entity;
+        int ais = ((EntityAstroMiner)entity).AIstate;
+        boolean active = ais > EntityAstroMiner.AISTATE_ATBASE;
+
         float time = astroMiner.ticksExisted + partialTickTime;
         float sinOfTheTime = (MathHelper.sin(time / 4) + 1F)/4F + 0.5F;
-        float wx = this.wobbleX.getNoise(time) + this.wobbleXX.getNoise(time);        
-        float wy = this.wobbleY.getNoise(time) + this.wobbleYY.getNoise(time);
-        float wz = this.wobbleZ.getNoise(time) + this.wobbleZZ.getNoise(time);
+        float wx = active ? this.wobbleX.getNoise(time) + this.wobbleXX.getNoise(time) : 0F;        
+        float wy = active ? this.wobbleY.getNoise(time) + this.wobbleYY.getNoise(time) : 0F;
+        float wz = active ? this.wobbleZ.getNoise(time) + this.wobbleZZ.getNoise(time) : 0F;
         
         float partTime = partialTickTime - lastPartTime;
         lastPartTime = partialTickTime;
@@ -138,9 +141,6 @@ public class RenderAstroMiner extends Render
         GL11.glTranslatef(0F, -0.35F, 0.25F);
         GL11.glScalef(0.05F, 0.05F, 0.05F);
         GL11.glTranslatef(wx, wy, wz);
-
-        int ais = ((EntityAstroMiner)entity).AIstate;
-        boolean active = ais > EntityAstroMiner.AISTATE_ATBASE;
 
         if (active)
         {
