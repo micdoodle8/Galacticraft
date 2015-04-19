@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import ic2.api.item.IC2Items;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryBuggyBench;
@@ -67,4 +68,10 @@ public class RecipeUtil
     {
         GalacticraftRegistry.addMoonBuggyRecipe(new NasaWorkbenchRecipe(result, input));
     }
+
+
+    public static ItemStack getIndustrialCraftItem(String indentifier)
+	{
+		return IC2Items.getItem(indentifier);
+	}
 }
