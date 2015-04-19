@@ -102,7 +102,7 @@ public class KeyHandlerClient extends KeyHandler
             }
         }
 
-        if (KeyHandlerClient.mc.thePlayer != null)
+        if (KeyHandlerClient.mc.thePlayer != null && KeyHandlerClient.mc.currentScreen == null)
         {
             int keyNum = -1;
 
