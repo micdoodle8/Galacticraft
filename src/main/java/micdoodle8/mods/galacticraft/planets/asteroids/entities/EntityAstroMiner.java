@@ -16,6 +16,8 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
@@ -38,6 +40,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -434,7 +437,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     	if (this.energyLevel <= 0)
     	{
     		if (this.AIstate > AISTATE_ATBASE)
+    		{
     			this.AIstate = AISTATE_STUCK;
+    			if (this.playerMP != null)
+    				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner4.fail")));
+    		}
     	}
     	else if (this.ticksExisted % 2 == 0) this.energyLevel--;
     	
@@ -474,7 +481,10 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     			}
     		}
     		else
+    		{
+    			GCLog.severe("AstroMiner missing base position: this is a bug.");
     			this.AIstate = AISTATE_STUCK;
+    		}
     		break;
     	}
 
@@ -551,10 +561,10 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		
 		if (!(tileEntity instanceof TileEntityMinerBase) || tileEntity.isInvalid())
 		{
-			System.out.println("Problem with Astro Miner's base");
+			if (this.playerMP != null)
+				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner3.fail")));
 			this.AIstate = AISTATE_STUCK;
 			return;
-			//TODO notify owner in chat that miner can't find base
 		}
 		
 		TileEntityMinerBase minerBase = (TileEntityMinerBase) tileEntity;
@@ -616,6 +626,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		
 		if (this.posTarget == null)
 		{
+			GCLog.severe("AstroMiner missing target: this is a bug.");
 			AIstate = AISTATE_STUCK;
 			return true;
 		}
@@ -629,14 +640,6 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		}
 		
 		return false;
-		// TODO  marker beacons for things to avoid
-		// Overworld: avoid lava source blocks, spawners, chests, mossy cobble, End Portal and Fortress blocks
-		// railtrack, levers, redstone dust
-		// GC walkways, oxygen pipes, hydrogen pipes, wires
-		
-		// TODO
-		//- move in straight lines (basedir first) until [12?] blocks from target
-		//- not allowed to move less than 16 blocks closer to base in basedir (to protect own base from being mined by accident - hopefully!)
 	}
 
 	private void moveToBase()
@@ -658,9 +661,6 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		{
 			this.wayPoints.removeLast();
 		}
-		
-		// TODO
-		// If obstructed: either mine it (v1) or will need AI pathfinding (v2 ...)	
 	}
 
 	private void setMinePoints()
@@ -757,7 +757,12 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	            break;
 	        }
 		}
-		else this.AIstate = AISTATE_STUCK;
+		else
+		{
+			this.AIstate = AISTATE_STUCK;
+			if (this.playerMP != null)
+				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner5.fail")));
+		}
 	}
 
 
@@ -839,8 +844,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 			break;
 		}
 		
-		// TODO
-		//[if it is obstructed, figure out what to do ... e.g. return to base, or turn 90 degrees?]
+		//If it is obstructed, return to base, or stand still if that is impossible
 		if (wayBarred)
 		{
 			this.motionX = 0;
@@ -850,7 +854,12 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 			if (this.AIstate == AISTATE_TRAVELLING || this.AIstate == AISTATE_MINING) this.AIstate = AISTATE_RETURNING;
 			else if (this.AIstate == AISTATE_RETURNING)
 				this.tryBackIn();
-			else this.AIstate = AISTATE_STUCK;
+			else
+			{
+				this.AIstate = AISTATE_STUCK;
+				if (this.playerMP != null)
+					this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner5.fail")));
+			}
 		}
 		
 		if (this.tryBlockLimit == limit && !this.noSpeedup)
@@ -861,9 +870,6 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		}
 		
 		return wayBarred;
-
-		//TODO
-		//But no mining out in protected zone close to base (may need to do pathfinding if blocks were changed?)		
 	}
 
 	private boolean tryBlock(int x, int y, int z)
