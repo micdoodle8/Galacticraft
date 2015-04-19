@@ -112,7 +112,7 @@ tile.walkwayOxygenPipe.description=氧气管道在其可行走的表面下可布
 tile.beamReflector.description=能量射束反射器用于改变源头来的激光束的方向.右击以在不同目标间循环切换.
 tile.beamReceiver.description=能量射束接收器连接到机器以输入和输出能量,使用激光束传输能量.
 tile.telepadShort.description=短距离传送台可用于短距离传送(250格),将玩家和其他生物传送至其他已建立连接的传送台.
-tile.minerBase.description=太空采矿机停泊基地用于太空采矿机的停驻.  它很大 ... 尝试用它做一个 2 x 2 x 2 的立方体
+tile.minerBase.description=太空采矿机停泊基地用于太空采矿机的停驻.  它很大 ... 尝试用它们做一个 2 x 2 x 2 的立方体
 schematic.astroMiner.name=太空采矿机
 schematic.ionDrive.name=离子推进器
 
