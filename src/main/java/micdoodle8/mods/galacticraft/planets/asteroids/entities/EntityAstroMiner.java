@@ -20,6 +20,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
+import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.block.Block;
@@ -52,7 +53,8 @@ import net.minecraftforge.fluids.IFluidBlock;
 
 public class EntityAstroMiner extends Entity implements IInventory, IPacketReceiver
 {
-	private static final int MINE_LENGTH = 24;
+	public static final int MINE_LENGTH = 24;
+	private static final int MINE_LENGTH_AST = 24;
     private static final int MAXENERGY = 10000;
     private static final int RETURNENERGY = 1000;
     private static final int RETURNDROPS = 10;
@@ -71,6 +73,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     public static final int AISTATE_DOCKING = 5;
     
     private boolean TEMPDEBUG = false;
+    private boolean TEMPFAST = false;
 
 	public ItemStack[] cargoItems;
 
@@ -109,8 +112,8 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     	new BlockVec3(2, 0, 0)    };
 
     private final int baseSafeRadius = 32;
-    private final double speed = 0.02D;
-    private final float rotSpeed = 1.5F;
+    private final double speed = TEMPFAST ? 0.15D : 0.02D;
+    private final float rotSpeed = TEMPFAST ? 8F : 1.5F;
     private boolean noSpeedup = false;  //This stops the miner getting stuck at turning points
     public float shipDamage;
     public int currentDamage;
@@ -139,6 +142,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
     private static ArrayList<Block> noMineList = new ArrayList();
     public static BlockTuple blockingBlock = new BlockTuple(Blocks.air, 0);
+    private boolean givenFailMessage6 = false;
     
     static
     {
@@ -456,18 +460,18 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     		break;
     	case AISTATE_TRAVELLING:
     		if (!this.moveToTarget())
-    			this.prepareMove(2, 2);
+    			this.prepareMove(TEMPFAST ? 8 : 2, 2);
     		break;
     	case AISTATE_MINING:
     		if (!this.doMining() && this.ticksExisted % 2 == 0)
     		{
     			this.energyLevel--;
-    			this.prepareMove(1, 2);
+    			this.prepareMove(TEMPFAST ? 8 : 1, 2);
     		}
     		break;
     	case AISTATE_RETURNING:
     		this.moveToBase();
-        	this.prepareMove(4, 1);
+        	this.prepareMove(TEMPFAST ? 8 : 4, 1);
     		break;
     	case AISTATE_DOCKING:
     		if (this.waypointBase != null)
@@ -581,35 +585,57 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		}
 		
 		// When fully charged, set off again
-		if (this.energyLevel >= MAXENERGY)
+		if (this.energyLevel >= MAXENERGY && this.hasHoldSpace())
 		{
 			this.energyLevel = MAXENERGY;
-			if (this.findNextTarget())
+			if (this.findNextTarget(minerBase))
 			{
 				this.AIstate = AISTATE_TRAVELLING;
 				this.wayPoints.add(this.waypointBase.clone());
 			}
+			else
+			{
+    			if (this.playerMP != null && !this.givenFailMessage6)
+    			{
+    				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner6.fail")));
+    				this.givenFailMessage6 = true;
+    			}
+			}
 		}
 	}
 
-	private boolean findNextTarget()
+	private boolean hasHoldSpace()
+	{
+		for (int i = 0; i < this.getSizeInventory(); i++)
+		{
+			if (this.cargoItems[i] == null) return true;
+			if (this.cargoItems[i].stackSize == 0)
+			{
+				this.cargoItems[i] = null;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean findNextTarget(TileEntityMinerBase minerBase)
 	{
 		if (!this.minePoints.isEmpty())
 		{	
 			this.posTarget = this.minePoints.getFirst().clone();
+			if (ConfigManagerCore.enableDebug) System.out.println("Still mining at: " + posTarget.toString() + " Remaining shafts: " + this.minePoints.size());
 			return true;
 		}
-		this.posTarget = this.posBase.clone().modifyPositionFromSide(ForgeDirection.getOrientation(this.baseFacing), this.worldObj.rand.nextInt(40) + 10);
-		if ((this.baseFacing & 6) == 2)
-		{
-			this.posTarget.modifyPositionFromSide(ForgeDirection.WEST, this.worldObj.rand.nextInt(40) - 20);
-		}
-		else this.posTarget.modifyPositionFromSide(ForgeDirection.NORTH, this.worldObj.rand.nextInt(40) - 20);
-		this.posTarget.modifyPositionFromSide(ForgeDirection.DOWN, 3 + this.worldObj.rand.nextInt(10));
-		if (ConfigManagerCore.enableDebug) System.out.println("Miner target: "+this.posTarget.toString());
+		// Target is completely mined: change target
+		this.posTarget = minerBase.findNextTarget();
+					
+		//No more mining targets, the whole area is mined
+		if (this.posTarget == null)
+			return false;
+		
+		if (ConfigManagerCore.enableDebug) System.out.println("Miner target: " + posTarget.toString());
+
 		return true;
-		// TODO Is target completely mined?  If so, change target	
-		// return false;
 	}
 
 	/**
@@ -669,7 +695,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		if (this.minePoints.size() > 0) return;
 		
 		BlockVec3 inFront = new BlockVec3(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 1.5D), MathHelper.floor_double(this.posZ + 0.5D));
-		int otherEnd = this.MINE_LENGTH;
+		int otherEnd = (this.worldObj.provider instanceof WorldProviderAsteroids) ? this.MINE_LENGTH_AST : this.MINE_LENGTH;
 		if (this.baseFacing == 2 || this.baseFacing == 4) otherEnd = -otherEnd;
 		switch (this.baseFacing)
 		{
@@ -723,14 +749,14 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 				this.minePoints.addFirst(this.minePointCurrent);
 			}
 			AIstate = AISTATE_RETURNING;
-			if (ConfigManagerCore.enableDebug) System.out.println("Miner going home: "+this.posBase.toString());
+			if (ConfigManagerCore.enableDebug) System.out.println("Miner going home: "+this.posBase.toString() + " " + this.minePoints.size() + " shafts still to be mined");
 			return true;		
 		}
 
 		if (this.moveToPos(this.minePoints.getFirst(), false))
 		{
-			this.minePointCurrent = this.minePoints.getFirst();
-			this.minePoints.removeFirst();
+			this.minePointCurrent = this.minePoints.removeFirst();
+			if (ConfigManagerCore.enableDebug) System.out.println("Miner mid mining: "+this.minePointCurrent.toString() + " " + this.minePoints.size() + " shafts still to be mined");
 			return true;
 		}
 		return false;
@@ -997,6 +1023,14 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         return flag1;
 	}
 
+	
+	/**
+	 * Logic to move the miner to a given position
+	 * 
+	 * @param pos
+	 * @param reverse   True if returning home (re-use same tunnels)
+	 * @return   False while the miner is en route, True when the position is reached
+	 */
 	private boolean moveToPos(BlockVec3 pos, boolean reverse)
 	{
 		this.noSpeedup = false;
@@ -1220,8 +1254,8 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         if (world.isRemote) return true;
 		final EntityAstroMiner miner = new EntityAstroMiner(world, new ItemStack[EntityAstroMiner.INV_SIZE], 0);
 		miner.setPlayer(player);
-        miner.waypointBase = new BlockVec3(x, y - 1, z).modifyPositionFromSide(ForgeDirection.getOrientation(facing), 1);
-        miner.setPosition(miner.waypointBase.x, miner.waypointBase.y, miner.waypointBase.z);
+        miner.waypointBase = new BlockVec3(x, y, z).modifyPositionFromSide(ForgeDirection.getOrientation(facing), 1);
+        miner.setPosition(miner.waypointBase.x, miner.waypointBase.y - 1, miner.waypointBase.z);
         miner.baseFacing = facing;
         miner.facingAI = facing;
         miner.lastFacing = facing;
@@ -1267,7 +1301,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
            	return false;
         }
 
-    	world.spawnEntityInWorld(miner);
+        world.spawnEntityInWorld(miner);
     	miner.flagLink = true;
     	return true;
 	}
@@ -1437,7 +1471,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     @Override
     public void setPosition(double p_70107_1_, double p_70107_3_, double p_70107_5_)
     {
-        this.boundingBox.addCoord(p_70107_1_ - this.posX, p_70107_3_ - this.posY, p_70107_5_ - this.posZ);
+        this.boundingBox.offset(p_70107_1_ - this.posX, p_70107_3_ - this.posY, p_70107_5_ - this.posZ);
         this.posX = p_70107_1_;
         this.posY = p_70107_3_;
         this.posZ = p_70107_5_;
