@@ -79,11 +79,11 @@ Pull Requests meeting the following guidelines can be automatically merged:
 
 2.  If you made a mistake and fixed it with a second or third minor commit, please combine them into one good commit (so not like some guys do it, commit 1 'fixed it' then commit 2 'oops, missed something' then commit 3 'derp'.)
 
-3.  One Pull Request per commit please.  It confuses us if you mix three unrelated commits in one Pull Request.  Bear in mind that we might, for example, decide to incorporate two of them but not the third.  We don't mind having multiple Pull Requests from you.
+3.  One Pull Request per commit please.  It confuses us if you mix three unrelated commits in one Pull Request.  Bear in mind that we might, for example, decide to incorporate two of them but not the third.  We are happy to have multiple Pull Requests from you.
 
 4.  If you're fixing something which is not already in the issues list and is not obvious, please make comments explaining what you fixed.  A screenshot of before and after can help.  We are not super-human, please help us to understand what you did.
 
-5.  If proposing a change in currently intended behaviour of Galacticraft via a Pull Request, that could be great if it's an improvement, but you have more chance if it being immediately accepted if you discussed it with us first - you are very welcome to open an issue to do that.
+5.  If proposing a change in currently intended behaviour of Galacticraft via a Pull Request, that could be great if it's an improvement, but you have more chance of it being immediately accepted if you discussed it with us first - you are very welcome to open an issue to do that.
 
 6.  Please respect our code style, which is fairly vanilla.  You can see the style by looking at existing sources.  Long lines are OK.  We like opening braces { to be on lines by themselves.
 
