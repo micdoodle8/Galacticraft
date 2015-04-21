@@ -291,6 +291,35 @@ public class WorldProviderAsteroids extends WorldProviderSpace
         return result;
     }
 
+/*    public BlockVec3[] getClosestAsteroidsXZ(int x, int y, int z, int facing, int count)
+    {
+        if (this.asteroidCentres.size() == 0)
+        {
+            return new BlockVec3[0];
+        }
+
+        BlockVec3 target[] = new BlockVec3[count];
+        int dist[] = new int[count];
+        
+        for (int i = 0; i < count; i++)
+        	dist[i] = Integer.MAX_VALUE;
+
+        for (BlockVec3 test : this.asteroidCentres)
+        {
+            int dx = target.x - test.x;
+            int dz = target.z - test.z;
+            int a = dx * dx + dz * dz;
+            if (a < lowestDistance)
+            {
+                lowestDistance = a;
+                result = test.clone();
+            }
+        }
+
+        return result;
+    }
+*/
+    
     @Override
     public float getWindLevel()
     {

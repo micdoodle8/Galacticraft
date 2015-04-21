@@ -34,13 +34,13 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 
     public enum EnumEnclosedBlock
     {
-        TE_CONDUIT(0, 2, null, "enclosed_te_conduit"),
+        TE_CONDUIT(4, 2, null, "enclosed_te_conduit"), //CURRENTLY UNUSED
         OXYGEN_PIPE(1, -1, null, "enclosed_oxygen_pipe"),
         IC2_COPPER_CABLE(2, 0, null, "enclosed_copper_cable"),
         IC2_GOLD_CABLE(3, 3, null, "enclosed_gold_cable"),
-        IC2_HV_CABLE(4, 6, null, "enclosed_hv_cable"),
+        IC2_HV_CABLE(0, 6, null, "enclosed_hv_cable"),
         IC2_GLASS_FIBRE_CABLE(5, 9, null, "enclosed_glassfibre_cable"),
-        IC2_LV_CABLE(6, 10, null, "enclosed_lv_cable"),
+        IC2_LV_CABLE(6, 13, null, "enclosed_lv_cable"),
         BC_ITEM_STONEPIPE(7, -1, "PipeItemsStone", "enclosed_itempipe_stone"),
         BC_ITEM_COBBLESTONEPIPE(8, -1, "PipeItemsCobblestone", "enclosed_itempipe_cobblestone"),
         BC_FLUIDS_STONEPIPE(9, -1, "PipeFluidsStone", "enclosed_liquidpipe_stone"),
@@ -119,15 +119,14 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 
         if (CompatibilityManager.isTELoaded())
         {
-            // par3List.add(new ItemStack(par1, 1,
-            // EnumEnclosedBlock.TE_CONDUIT.getMetadata()));
+            // par3List.add(new ItemStack(par1, 1, 0));
         }
 
         if (CompatibilityManager.isIc2Loaded())
         {
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.IC2_COPPER_CABLE.getMetadata()));
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.IC2_GOLD_CABLE.getMetadata()));
-            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.IC2_HV_CABLE.getMetadata()));
+            par3List.add(new ItemStack(par1, 1, 4));  //Damage value not same as metadata for HV_CABLE
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.IC2_GLASS_FIBRE_CABLE.getMetadata()));
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.IC2_LV_CABLE.getMetadata()));
         }
@@ -156,15 +155,19 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2)
+    public IIcon getIcon(int par1, int meta)
     {
-        return par2 >= this.enclosedIcons.length ? this.blockIcon : this.enclosedIcons[par2];
+        if (meta == 4) meta = 0;  //Deal with item rendering for the HV block
+    	return meta >= this.enclosedIcons.length ? this.blockIcon : this.enclosedIcons[meta];
     }
 
     @Override
     public int damageDropped(int meta)
     {
-        return meta;
+        //TE_CONDUIT and HV_CABLE have had to have swapped metadata in 1.7.10 because IC2's TileCable tile entity doesn't like a block with metadata 4
+    	if (meta == 0) return 4;
+        if (meta == 4) return 0;
+    	return meta;
     }
 
     @Override
@@ -192,7 +195,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         {
 
         }
-        else if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
+        else if (metadata == EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
         {
             if (tileEntity instanceof INetworkConnection)
             {
@@ -279,13 +282,13 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
     @Override
     public TileEntity createNewTileEntity(World world, int metadata)
     {
-        TileEntity returnTile = null;
+    	TileEntity returnTile = null;
     	
     	if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
         {
     		//TODO
         }
-        else if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
+        else if (metadata == EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
         {
             returnTile = new TileEntityOxygenPipe();
         }

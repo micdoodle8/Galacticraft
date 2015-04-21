@@ -603,7 +603,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                     int collisions = 0;
                     do
                     {
-                        List<AxisAlignedBB> list = this.worldObj.getCollidingBoundingBoxes(p, p.boundingBox.addCoord(offsetX, 0.0D, offsetZ));
+                        List<AxisAlignedBB> list = this.worldObj.getCollidingBoundingBoxes(p, p.boundingBox.offset(offsetX, 0.0D, offsetZ));
                         collisions = list.size();
                         if (collisions > 0)
                         {

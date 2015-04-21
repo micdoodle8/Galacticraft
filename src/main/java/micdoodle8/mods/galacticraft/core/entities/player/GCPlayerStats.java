@@ -42,6 +42,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
     public int fuelLevel;
     public Item rocketItem;
     public ItemStack launchpadStack;
+    public int astroMinerCount = 0;
 
     public boolean usingParachute;
 
@@ -193,6 +194,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
         nbt.setInteger("BuildFlags", this.buildFlags);
         nbt.setBoolean("ShownSpaceRace", this.openedSpaceRaceManager);
         if (ConfigManagerCore.enableDebug) GCLog.info("Saving GC player data for " + player.get().getGameProfile().getName()  + " : " + this.buildFlags);
+        nbt.setInteger("AstroMinerCount", this.astroMinerCount);
     }
 
     @Override
@@ -313,6 +315,9 @@ public class GCPlayerStats implements IExtendedEntityProperties
         if (nbt.hasKey("ShownSpaceRace"))
         	this.openedSpaceRaceManager = nbt.getBoolean("ShownSpaceRace");
 
+        if (nbt.hasKey("AstroMinerCount"))
+        	this.astroMinerCount = nbt.getInteger("AstroMinerCount");
+
         if (ConfigManagerCore.enableDebug) GCLog.info("Loading GC player data for " + player.get().getGameProfile().getName() + " : " + this.buildFlags);
     }
 
@@ -344,5 +349,6 @@ public class GCPlayerStats implements IExtendedEntityProperties
         this.openedSpaceRaceManager = oldData.openedSpaceRaceManager;
         this.spaceRaceInviteTeamID = oldData.spaceRaceInviteTeamID;
         this.buildFlags = oldData.buildFlags;
+        this.astroMinerCount = oldData.astroMinerCount;
     }
 }

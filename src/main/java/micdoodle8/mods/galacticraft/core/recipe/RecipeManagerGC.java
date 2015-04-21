@@ -550,25 +550,12 @@ public class RecipeManagerGC
 
     private static void addIndustrialCraft2Recipes()
     {
-        // RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1,
-        // EnumEnclosedBlock.IC2_GOLD_CABLE.getMetadata()), new Object[] {
-        // "XYX", 'Y',
-        // RecipeUtil.getIndustrialCraftItem("insulatedGoldCableItem"), 'X', new
-        // ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
-        // RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1,
-        // EnumEnclosedBlock.IC2_HV_CABLE.getMetadata()), new Object[] { "XYX",
-        // 'Y', RecipeUtil.getIndustrialCraftItem("insulatedIronCableItem"),
-        // 'X', new ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
-        // RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1,
-        // EnumEnclosedBlock.IC2_GLASS_FIBRE_CABLE.getMetadata()), new Object[]
-        // { "XYX", 'Y',
-        // RecipeUtil.getIndustrialCraftItem("glassFiberCableItem"), 'X', new
-        // ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
-        // RecipeUtil.addRecipe(new ItemStack(GCCoreBlocks.sealableBlock, 1,
-        // EnumEnclosedBlock.IC2_LV_CABLE.getMetadata()), new Object[] { "XYX",
-        // 'Y', RecipeUtil.getIndustrialCraftItem("tinCableItem"), 'X', new
-        // ItemStack(GCCoreBlocks.basicBlock, 1, 4) });
-        //
+         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_COPPER_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedCopperCableItem"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
+         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_GOLD_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedGoldCableItem"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
+         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, 4), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedIronCableItem"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
+         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_GLASS_FIBRE_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("glassFiberCableItem"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
+         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, EnumEnclosedBlock.IC2_LV_CABLE.getMetadata()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedTinCableItem"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
+        
         // try
         // {
         // Class<?> clazz = Class.forName("ic2.core.Ic2Items");

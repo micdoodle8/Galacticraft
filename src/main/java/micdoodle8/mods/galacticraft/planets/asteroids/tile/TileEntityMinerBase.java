@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
 import java.lang.ref.WeakReference;
+import java.util.LinkedList;
 import java.util.UUID;
 
 import cpw.mods.fml.relauncher.Side;
@@ -13,6 +14,7 @@ import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockMinerBase;
+import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids;
@@ -22,6 +24,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -34,8 +37,10 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     public boolean isMaster = false;
 	public int facing;
     private BlockVec3 mainBlockPosition;
+    private LinkedList<BlockVec3> targetPoints = new LinkedList();
     private WeakReference<TileEntityMinerBase> masterTile = null;
 	public boolean updateClientFlag;
+	public boolean findTargetPointsFlag;
 	
     /**
      * The number of players currently using this chest
@@ -70,7 +75,13 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         	this.updateClientFlag = false;
         }
         
-        //TODO: Find linkedminer by UUID and chunkload it?
+        if (this.findTargetPointsFlag)
+        {
+        	if (this.isMaster && this.linkedMiner != null) this.findTargetPoints();
+        	this.findTargetPointsFlag = false;
+        }
+        
+        //TODO: Find linkedminer by UUID and update it if not chunkloaded?
 
     	if (!this.isMaster)
     	{
@@ -99,7 +110,10 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 			if (this.linkedMiner == null)
 	    	{
 	        	if (EntityAstroMiner.spawnMinerAtBase(this.worldObj, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1, (this.facing + 2) ^ 1, new BlockVec3(this), player))
+	        	{
+	        		this.findTargetPoints();
 	        		return true;
+	        	}
 	    	}
 			return false;
 		}
@@ -169,6 +183,17 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             this.linkedMinerID = new UUID(nbt.getLong("LinkedUUIDMost"), nbt.getLong("LinkedUUIDLeast"));
         }
         else this.linkedMinerID = null;
+        if (nbt.hasKey("TargetPoints"))
+        {
+        	this.targetPoints.clear();
+        	final NBTTagList mpList = nbt.getTagList("TargetPoints", 10);
+        	for (int j = 0; j < mpList.tagCount(); j++)
+        	{
+	            NBTTagCompound bvTag = mpList.getCompoundTagAt(j);
+	            this.targetPoints.add(BlockVec3.readFromNBT(bvTag));
+        	}
+        } else
+        	this.findTargetPointsFlag = true;
     }
 
     @Override
@@ -188,6 +213,15 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         {
 	        nbt.setLong("LinkedUUIDMost", this.linkedMinerID.getMostSignificantBits());
 	        nbt.setLong("LinkedUUIDLeast", this.linkedMinerID.getLeastSignificantBits());
+        }
+        if (this.targetPoints.size() > 0)
+        {
+        	NBTTagList mpList = new NBTTagList();
+        	for (int j = 0; j < this.targetPoints.size(); j++)
+        	{
+	            mpList.appendTag(this.targetPoints.get(j).writeToNBT(new NBTTagCompound()));
+        	}
+        	nbt.setTag("TargetPoints", mpList);
         }
     }
         
@@ -363,7 +397,17 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 	@Override
 	protected ItemStack[] getContainingItems()
 	{
-        return this.containingItems;
+		if (this.isMaster)
+		{
+			return this.containingItems;
+		}
+		TileEntityMinerBase master = this.getMaster();
+		if (master != null)
+		{
+			return master.getContainingItems();
+		}
+
+		return this.containingItems;
 	}
 
 	@Override
@@ -596,4 +640,153 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 
        return false;    	   
    }
+
+   @Override
+   public ItemStack getStackInSlot(int par1)
+   {
+       if (this.isMaster)
+    	   return super.getStackInSlot(par1);
+       TileEntityMinerBase master = this.getMaster();
+       if (master != null)
+       {
+    	   return master.getStackInSlot(par1);
+       }
+
+       return null;    	   
+   }
+
+   @Override
+   public ItemStack decrStackSize(int par1, int par2)
+   {
+       if (this.isMaster)
+    	   return super.decrStackSize(par1, par2);
+       TileEntityMinerBase master = this.getMaster();
+       if (master != null)
+       {
+    	   return master.decrStackSize(par1, par2);
+       }
+
+       return null;    	   
+   }
+
+   @Override
+   public ItemStack getStackInSlotOnClosing(int par1)
+   {
+       if (this.isMaster)
+    	   return super.getStackInSlotOnClosing(par1);
+       TileEntityMinerBase master = this.getMaster();
+       if (master != null)
+       {
+    	   return master.getStackInSlotOnClosing(par1);
+       }
+
+       return null;    	   
+   }
+
+   @Override
+   public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+   {
+       if (this.isMaster)
+       {
+    	   super.setInventorySlotContents(par1, par2ItemStack);
+    	   return;
+       }
+       TileEntityMinerBase master = this.getMaster();
+       if (master != null)
+       {
+    	   master.setInventorySlotContents(par1, par2ItemStack);
+       }
+
+       return;    	   
+   }
+
+   @Override
+   public ItemStack getBatteryInSlot()
+   {
+       if (this.isMaster)
+       {
+    	   return this.getStackInSlot(0);
+       }
+       TileEntityMinerBase master = this.getMaster();
+       if (master != null)
+       {
+    	   master.getBatteryInSlot();
+       }
+
+       return null;
+   }
+
+   @Override
+   public int getSizeInventory()
+   {
+	   return HOLDSIZE + 1;
+   }
+   
+  public BlockVec3 findNextTarget()
+   {
+	   if (!this.targetPoints.isEmpty())
+	   {	
+		   BlockVec3 pos = this.targetPoints.removeFirst();
+		   if (pos != null) return pos.clone();
+	   }
+
+	   //No more mining targets, the whole area is mined
+	   return null;
+   }
+
+  private void findTargetPoints()
+	{
+		this.targetPoints.clear();
+		int baseFacing = (this.facing + 2) ^ 1;
+		BlockVec3 posnTarget = new BlockVec3(this).modifyPositionFromSide(ForgeDirection.getOrientation(baseFacing), this.worldObj.rand.nextInt(16) + 32);
+		
+		if (this.worldObj.provider instanceof WorldProviderAsteroids)
+		{
+			BlockVec3 pos = ((WorldProviderAsteroids)this.worldObj.provider).getClosestAsteroidXZ(posnTarget.x, posnTarget.y, posnTarget.z);
+			if (pos != null)
+			{	
+				this.targetPoints.add(pos);
+				return;
+			}
+		}
+		
+		int miny = Math.min(this.yCoord * 2 - 90, this.yCoord - 22);
+		if (miny < 5) miny = 5;
+		posnTarget.y = miny + 5 + this.worldObj.rand.nextInt(4);
+
+		this.targetPoints.add(posnTarget);
+
+		ForgeDirection lateral = ForgeDirection.NORTH;
+		ForgeDirection inLine = ForgeDirection.getOrientation(baseFacing);
+		if ((baseFacing & 6) == 2)
+			lateral = ForgeDirection.WEST;
+			
+		this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, 13));
+		this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, -13));
+		if (posnTarget.y > 17)
+		{
+			this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, 7).modifyPositionFromSide(ForgeDirection.DOWN, 11));
+			this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, -7).modifyPositionFromSide(ForgeDirection.DOWN, 11));				
+		}
+		else
+		{
+			this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, 26));
+			this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, -26));
+		}
+		this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, 7).modifyPositionFromSide(ForgeDirection.UP, 11));
+		this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, -7).modifyPositionFromSide(ForgeDirection.UP, 11));
+		if (posnTarget.y < this.yCoord - 38)
+		{
+			this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, 13).modifyPositionFromSide(ForgeDirection.UP, 22));
+			this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(ForgeDirection.UP, 22));
+			this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, -13).modifyPositionFromSide(ForgeDirection.UP, 22));
+		}
+
+		int s = this.targetPoints.size();
+		for (int i = 0; i < s; i++)
+		{
+			this.targetPoints.add(this.targetPoints.get(i).clone().modifyPositionFromSide(inLine,EntityAstroMiner.MINE_LENGTH + 6));
+		}
+		return;
+	}
 }

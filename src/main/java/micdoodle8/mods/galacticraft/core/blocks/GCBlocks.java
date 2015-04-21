@@ -131,11 +131,10 @@ public class GCBlocks
         GCCoreUtil.registerGalacticraftBlock("tinDecorationBlock1", GCBlocks.basicBlock, 3);
         GCCoreUtil.registerGalacticraftBlock("tinDecorationBlock2", GCBlocks.basicBlock, 4);
         GCCoreUtil.registerGalacticraftBlock("airLockFrame", GCBlocks.airLockFrame);
-        GCCoreUtil.registerGalacticraftBlock("sealableCopperWire", GCBlocks.sealableBlock, 0);
         GCCoreUtil.registerGalacticraftBlock("sealableOxygenPipe", GCBlocks.sealableBlock, 1);
         GCCoreUtil.registerGalacticraftBlock("sealableCopperCable", GCBlocks.sealableBlock, 2);
         GCCoreUtil.registerGalacticraftBlock("sealableGoldCable", GCBlocks.sealableBlock, 3);
-        GCCoreUtil.registerGalacticraftBlock("sealableHighVoltageCable", GCBlocks.sealableBlock, 4);
+        GCCoreUtil.registerGalacticraftBlock("sealableHighVoltageCable", GCBlocks.sealableBlock, 0);
         GCCoreUtil.registerGalacticraftBlock("sealableGlassFibreCable", GCBlocks.sealableBlock, 5);
         GCCoreUtil.registerGalacticraftBlock("sealableLowVoltageCable", GCBlocks.sealableBlock, 6);
         GCCoreUtil.registerGalacticraftBlock("sealableStonePipeItem", GCBlocks.sealableBlock, 7);
@@ -144,6 +143,7 @@ public class GCBlocks
         GCCoreUtil.registerGalacticraftBlock("sealableCobblestonePipeFluid", GCBlocks.sealableBlock, 10);
         GCCoreUtil.registerGalacticraftBlock("sealableStonePipePower", GCBlocks.sealableBlock, 11);
         GCCoreUtil.registerGalacticraftBlock("sealableGoldPipePower", GCBlocks.sealableBlock, 12);
+        GCCoreUtil.registerGalacticraftBlock("sealableMECable", GCBlocks.sealableBlock, 13);
         GCCoreUtil.registerGalacticraftBlock("copperWire", GCBlocks.aluminumWire);
         GCCoreUtil.registerGalacticraftBlock("parachest", GCBlocks.parachest);
         GCCoreUtil.registerGalacticraftBlock("coalGenerator", GCBlocks.machineBase, 0);

@@ -135,7 +135,7 @@ public class ItemBlockEnclosed extends ItemBlockDesc
             }
             else if (world.canPlaceEntityOnSide(block, i, j, k, false, side, entityplayer, itemstack))
             {
-                int j1 = this.field_150939_a.onBlockPlaced(world, i, j, k, side, par8, par9, par10, metadata);
+            	int j1 = this.field_150939_a.onBlockPlaced(world, i, j, k, side, par8, par9, par10, metadata);
                 block.onBlockPlacedBy(world, i, j, k, entityplayer, itemstack);
 
                 if (placeBlockAt(itemstack, entityplayer, world, i, j, k, side, par8, par9, par10, j1))
@@ -225,6 +225,9 @@ public class ItemBlockEnclosed extends ItemBlockDesc
     @Override
     public int getMetadata(int damage)
     {
-        return damage;
+        //TE_CONDUIT (item damage 0: currently unused) and HV_CABLE (item damage 4) have had to have swapped metadata in 1.7.10 because IC2's TileCable tile entity doesn't like a block with metadata 4
+    	if (damage == 4) return 0;
+        if (damage == 0) return 4;
+    	return damage;
     }
 }

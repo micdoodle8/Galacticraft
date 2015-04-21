@@ -37,6 +37,7 @@ public class ConfigManagerAsteroids
 
     // GENERAL
     public static boolean disableGalacticraftHelium;
+	public static int astroMinerMax;
 
     public static void syncConfig(boolean load)
     {
@@ -72,6 +73,12 @@ public class ConfigManagerAsteroids
             prop.comment = "Option to disable Helium gas in Galacticraft (because it will be registered by another mod eg GregTech).";
             prop.setLanguageKey("gc.configgui.disableGalacticraftHelium");
             disableGalacticraftHelium = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "maximumAstroMiners", 4);
+            prop.comment = "Maximum number of Astro Miners each player is allowed to have active (default 4).";
+            prop.setLanguageKey("gc.configgui.astroMinersMax");
+            astroMinerMax = prop.getInt(4);
             propOrder.add(prop.getName());
 
             config.setCategoryPropertyOrder(CATEGORY_GENERAL, propOrder);
