@@ -2,7 +2,7 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=Foguete Nível 3
-item.itemAstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+item.itemAstroMiner.name=Astrominerador
 item.heavyNoseCone.name=Nariz de Foguete Pesado
 item.compressedTitanium.name=Titânio Prensado
 item.ingotTitanium.name=Barra de Titânio
@@ -25,16 +25,16 @@ item.thermalCloth.name=Tecido Térmico
 item.beamCore.name=Núcleo de Feixe
 item.methaneCanisterPartial.name=Lata de Gás Metano
 item.methaneCanister.name=Lata de Gás Metano Cheia
-item.canister.gas.name=Gás
+item.canister.gas.name=Gás                  #short name for Methane Gas contents level
 item.canister.LOX.partial.name=Lata de Oxigênio Líquido
 item.canister.LOX.full.name=Lata de Oxigênio Líquido Cheia
-item.canister.LOX.name=LOX
+item.canister.LOX.name=LOX                  #short name for Liquid Oxygen contents level
 item.canister.liquidNitrogen.partial.name=Lata de Nitrogênio Líquido
 item.canister.liquidNitrogen.full.name=Lata de Nitrogênio Líquido Cheia
-item.canister.liquidNitrogen.name=Líquido
+item.canister.liquidNitrogen.name=Líquido   #short name for Liquid Nitrogen contents level
 item.canister.liquidArgon.partial.name=Lata de Argônio Líquido
 item.canister.liquidArgon.full.name=Lata de Argônio Líquido Cheia
-item.canister.liquidArgon.name=Líquido       #short name for Liquid Argon contents level ##NEEDS TRANSLATE##
+item.canister.liquidArgon.name=Líquido      #short name for Liquid Argon contents level
 item.emptyGasCanister.name=Lata de Gás Vazia
 item.tier3.desc=Nível 3
 item.titanium_pickaxe.name=Picareta de Titânio
@@ -63,7 +63,7 @@ tile.walkwayWire.name=Passarela
 tile.walkwayOxygenPipe.name=Passarela
 tile.treasureT3.name=Baú de Tesouro Nível 3
 tile.denseIce.name=Gelo Denso
-tile.minerBase.name=Astro Miner Base ##NEEDS TRANSLATE##
+tile.minerBase.name=Base do Astrominerador
 fluid.methane=Gás Metano
 fluid.oxygen=Gás Oxigênio
 fluid.nitrogen=Gás Nitrogênio
@@ -126,7 +126,7 @@ itemGroup.GalacticraftAsteroids=Galacticraft Asteroides
 entity.SmallAsteroidGC.name=Asteroides Menores
 entity.GrappleHookGC.name=Gancho
 entity.Tier3RocketGC.name=Foguete Nível 3
-entity.EntryPodAsteroids.name=Entry Pod ##NEEDS TRANSLATE##
-entity.AstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+entity.EntryPodAsteroids.name=Cápsula de Entrada
+entity.AstroMiner.name=Astrominerador
 
 # Container
