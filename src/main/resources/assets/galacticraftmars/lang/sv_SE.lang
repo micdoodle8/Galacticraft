@@ -1,0 +1,192 @@
+# Galacticraft Mars Language File = SWEDEN SWEDISH
+
+# GENERAL ITEMS
+item.rawDesh.name=Deshflis
+item.deshStick.name=Deshpinne
+item.ingotDesh.name=Deshtacka
+item.spaceshipTier2.t2Rocket.name=N2-raket
+item.reinforcedPlateT2.name=Förstärkt plåt
+item.tier2.desc=Nivå 2
+item.slimelingCargo.name=Last
+item.key.T2.name=Marsiansk skattkistnyckel
+item.compressedDesh.name=Deshplåt
+item.spaceshipTier2.cargoRocket.name=Fraktraket
+item.fluidManip.name=Flödeshanterare
+item.bucketSludge.name=Bakteriell sörjhink
+fluid.bacterialsludge=Bakteriell sörja
+
+# TOOLS
+item.deshPick.name=Deshhacka
+item.deshPickSlime.name=Klibbig deshhacka
+item.deshAxe.name=Deshyxa
+item.deshHoe.name=Deshflohacka
+item.deshSpade.name=Deshspade
+item.deshSword.name=Deshsvärd
+
+# ARMOR
+item.deshHelmet.name=Deshhjälm
+item.deshChestplate.name=Deshharnesk
+item.deshLeggings.name=Deshbyxor
+item.deshBoots.name=Deshstövlar
+
+# BLOCKS
+tile.mars.deshmars.name=Deshmalm
+tile.mars.coppermars.name=Kopparmalm
+tile.mars.tinmars.name=Tennmalm
+tile.mars.ironmars.name=Järnmalm
+tile.mars.marscobblestone.name=Marsiansk kullersten
+tile.mars.marsstone.name=Marsianskt djupberg
+tile.mars.marsdirt.name=Marianskt ytberg
+tile.mars.marsgrass.name=Marsianskt sedimentberg
+tile.mars.marsdeco.name=Deshblock
+tile.mars.marsdungeon.name=Marsianskt håletegel
+tile.treasureT2.name=Marsiansk skattkista
+tile.slimelingEgg.redEgg.name=Rött slemvarelseägg
+tile.slimelingEgg.blueEgg.name=Blått slemvarelseägg
+tile.slimelingEgg.yellowEgg.name=Gult slemvarelseägg
+tile.marsMachine.0.name=Terraformare
+tile.marsMachine.1.name=Kryogenisk kammare
+tile.marsMachine.2.name=Raketfjärrstyrare
+tile.marsMachine.4.name=Gaskyl
+tile.marsMachine.5.name=Metanframställare
+tile.marsMachine.6.name=Vattenelektrolys
+tile.hydrogenPipe.name=Väteledning
+tile.sludge.name=Bakteriell sörja
+tile.creeperEgg.name=Smygarägg
+tile.cavernVines.name=Grottnässlor
+
+# DECOBLOCKS
+tile.marsCobblestoneStairs.name=Marsstentrappa
+tile.wallGC.mars.name=Marsstenvägg
+tile.slabGCHalf.marsSlab.name=Marsstenplatta
+tile.marsDungeonBricksStairs.name=Marsiansk hålestentrappa
+tile.wallGC.marsBricks.name=Marsiansk hålevägg
+tile.slabGCHalf.marsBricksSlab.name=Marsiansk hålestenplatta
+
+# GUI
+gui.choosePlanet.desc.mars=Habitable#No Oxygen#Gravity: 38%
+item.deshPickSlime.description.name=Can harvest Creeper eggs
+gui.message.noEnergy.name=Strömbrist
+gui.message.noWater.name=Vattenbrist
+gui.message.noBonemeal.name=Benmjöl saknas
+gui.message.noSeeds.name=Frön saknas
+gui.message.noSaplings.name=Träplantor saknas
+gui.message.bubbleExp.name=Bubbelexpansion
+gui.message.noValidBlocks.name=Saknar block att terraforma
+gui.message.terraforming.name=Terraformar
+gui.message.enableTrees.name=Träd: på
+gui.message.enableGrass.name=Gräs: på
+gui.message.trees.name=Träd
+gui.message.grass.name=Gräs
+gui.message.invalidFreq.name=Ogiltig frekvens
+gui.message.frequency.name=Frekvens
+gui.message.destFrequency.name=Målfrekvens
+gui.message.removePad.name=Ta bort ramp
+gui.message.launchWhen.name=Avfyra när
+gui.message.cargoUnloaded.name=Urlastad
+gui.message.cargoFull.name=Fullastad
+gui.message.fullyFueled.name=Fulltankad
+gui.message.instant.name=Omedelbart
+gui.message.tenSec.name=10 sekunder
+gui.message.thirtySec.name=30 sekunder
+gui.message.oneMin.name=1 minut
+gui.message.redstoneSig.name=Rödstensignal
+gui.message.notSet.name=Ej inställd
+gui.message.notEnough.name=Saknar
+gui.message.success.name=Success
+gui.message.zeroWater.name=Vattenbrist!
+
+	# Dollar sign ($) will split text onto a new line
+gui.launchController.desc.0=Fjärrstyrarens inställda frekvens
+gui.launchController.desc.1=Koordinatfrekvens raketen ska$avfyras till
+gui.launchController.desc.2=Om raketrampen ska tas$bortvid uppskjutning
+gui.launchController.desc.3=När detta vilkor uppnås$avfyras raketen
+gui.terraformer.desc.0=Vattenkärl
+
+gui.gasTank.desc.0=Gaskärl
+gui.gasTankCompressed.desc.0=Gaskärl
+gui.liquidTank.desc.0=Liquid Tank
+gui.status.nogas.name=Ingen gas
+gui.status.liquefying.name=Kondenserar
+gui.status.processing.name=Framställer
+gui.status.needsCarbon.name=Kol saknas
+gui.status.tankfull.name=Tank full
+gui.status.tanksfull.name=Tankar fulla
+gui.message.lowEnergy.name=Strömbrist
+gui.button.liquefy.name=Starta
+gui.button.liquefyStop.name=Stäng av
+gui.gasInput.desc.0=Fack för gastank
+gui.gasInput.desc.1=eller atmosfärsventil
+gui.hydrogenInput.desc.0=Fack för vätgastank
+gui.hydrogenInput.desc.1=eller atmosfärsventil
+gui.liquidOutput.desc.2=kondenskärl
+gui.methaneOutput.desc.2=metankärl
+gui.message.withAtmosphere0.name=
+gui.message.withAtmosphere1.name=
+item.carbonFragments.name=Kolflis
+gui.carbonSlot.desc.0=Fack för kolflis
+gui.waterBucketSlot.desc=Fack för vattenhinkning
+
+gui.cargorocket.status.waiting.0=Inväntar
+gui.cargorocket.status.waiting.1=avfyrning
+gui.cargorocket.status.launched.0=Redan
+gui.cargorocket.status.launched.1=avfyrad
+
+gas.carbondioxide.name=Koldioxid
+gas.oxygen.name=Syre
+gas.nitrogen.name=Kväve
+
+gui.desc.reinforcedPlateT2.name=Nivå 2
+dimension.Mars.name=Mars
+planet.mars=Mars
+
+tile.treasureT2.description=Marsianska skattkistor förekommer i slutet på marshålor. Den tillhörande nyckeln vaktas av marshålans härskare.
+tile.cavernVines.description=Grottnässlor skjuter ut ett kraftfullt gift vid beröring. Offer som blivit insnärjda hängs uppochner.
+tile.slimelingEgg.description=När slemvarelseägg knäcks med spelarens bara händer kläcks det snart till ett husdjur.
+tile.cryoChamber.description=Den kryogeniska kammaren tillåter spelaren att sova närsomhelst på dygnet med något läkande effekt. Kräver återhämtningstid efter användning.
+tile.launchController.description=Raketfjärrstyraren kan ställas in med automatiska avfyrningsinstruktioner. T.ex. vilkor för avfyrning och målkoordinater.
+tile.terraformer.description=Terraformaren sprider grönska på avlägsna himlakroppar. Matas in med vatten, benmjöl, träplantor och frön.
+tile.creeperEgg.description=Smygarägg förekommer i marsianska hålor. Kläckningen sker explosionsartat.
+tile.gasLiquefier.description=Kondenserar gas utvunnen från atmosfären (kräver atmosfärsventil) eller en gasledning. Flytande metan är ett utmärkt raketbränsle!
+tile.methaneSynthesizer.description=Med en tillförsel på vätgas och kol tillverkar denna metangas för vidare bearbetning med gaskylen.
+tile.electrolyzer.description=Delar vattenmolekyler till vätgas (används för metanframställning) och syrgas.
+tile.hydrogenPipe.description=Vätgasledningar överför vätgas från en maskins lagringskärl till en annans.
+
+gui.slimeling.chat.wrongPlayer=Detta är inte min slemvarelse!
+gui.cryogenic.chat.cantUse=Kan inte användas förrän %d sekunder har gått!
+gui.slimeling.name=Namn
+gui.slimeling.owner=Ägare
+gui.slimeling.kills=Dräpta
+gui.slimeling.scale=Storlek
+gui.slimeling.button.sit=Sitt
+gui.slimeling.button.follow=Följ
+gui.slimeling.sitting=Sitter
+gui.slimeling.following=Följer
+gui.slimeling.damage=Attackskada
+gui.slimeling.food=Favoritmat
+
+# SCHEMATICS
+schematic.rocketT3.name=N3-raket
+schematic.cargoRocket.name=Automatisk fraktraket
+
+# ENTITIES
+entity.Sludgeling.name=Sörjigel
+entity.Slimeling.name=Slemvarelse
+entity.CreeperBoss.name=Rymdsmygarhärskare
+entity.SpaceshipT2.name=N2-raket
+entity.CargoRocket.name=Fraktraket
+entity.LandingBalloons.name=Landningskudde
+
+# CONTAINERS
+container.launchcontroller.name=Raketfjärrstyrare
+container.tileTerraformer.name=Terraformare
+container.marsLander.name=Landningskudde
+
+# CONFIG GUI
+gc.configgui.dimensionIDMars=Mars Dimension ID
+gc.configgui.idSchematicRocketT2=Tier 2 Rocket Schematic ID
+gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID
+gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
+gc.configgui.launchControllerAllDims=Launch Controller All Dimensions
+
+gc.configgui.planets.title=Galacticraft Planets Config

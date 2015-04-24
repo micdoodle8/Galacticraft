@@ -1,0 +1,140 @@
+# Galacticraft Asteroids Language File = SWEDEN SWEDISH
+
+# GENERAL ITEMS
+item.itemTier3Rocket.t3Rocket.name=N3-raket
+item.itemAstroMiner.name=Astrobrytare
+item.heavyNoseCone.name=Förstärkt raketnos
+item.compressedTitanium.name=Titanplåt
+item.ingotTitanium.name=Titantacka
+item.shardTitanium.name=Titanflis
+item.shardIron.name=Järnflis
+item.rocketFinsT2.name=Förstärkt raketfena
+item.engineT2.name=Förstärkt raketmotor
+item.reinforcedPlateT3.name=Förstärkt plåt
+item.grapple.name=Änterhake
+item.atmosphericValve.name=Atmosfärsventil
+item.thermalCloth.name=Värmereglerande tyg
+item.beamCore.name=Strålnav
+item.tier3.desc=Nivå 3
+
+# TOOLS
+item.titanium_pickaxe.name=Titanhacka
+item.titanium_axe.name=Titanyxa
+item.titanium_hoe.name=Titanflohacka
+item.titanium_shovel.name=Titanspade
+item.titanium_sword.name=Titansvärd
+
+# ARMOR
+item.thermalHelm.name=Termosunderställ (huvud)
+item.thermalChestplate.name=Termosunderställ (torso)
+item.thermalLeggings.name=Termosunderställ (ben)
+item.thermalBoots.name=Termosunderställ (fötter)
+item.titanium_helmet.name=Titanhjälm
+item.titanium_chestplate.name=Titanharnesk
+item.titanium_leggings.name=Titanbyxor
+item.titanium_boots.name=Titanstövlar
+
+# CANISTERS ETC
+item.methaneCanisterPartial.name=Metangastank
+item.methaneCanister.name=Full metangastank
+item.canister.gas.name=Mängd                  #short name for Methane Gas contents level
+item.canister.LOX.partial.name=Tank (flytande syre)
+item.canister.LOX.full.name=Full tank (flytande syre)
+item.canister.LOX.name=Mängd                  #short name for Liquid Oxygen contents level
+item.canister.liquidNitrogen.partial.name=Tank (flytande kväve)
+item.canister.liquidNitrogen.full.name=Full tank (flytande kväve)
+item.canister.liquidNitrogen.name=Mängd    #short name for Liquid Nitrogen contents level
+item.canister.liquidArgon.partial.name=Tank (flytande argon)
+item.canister.liquidArgon.full.name=Full tank (flytande argon)
+item.canister.liquidArgon.name=Mängd       #short name for Liquid Argon contents level
+item.emptyGasCanister.name=Tom gastank
+
+# FLUIDS AND GASES
+fluid.methane=Metangas
+fluid.oxygen=Syrgas
+fluid.nitrogen=Kvävgas
+fluid.hydrogen=Vätgas
+fluid.carbondioxide=Koldioxid
+fluid.helium=Helium
+fluid.argon=Argon
+fluid.atmosphericgases=Atmosfärsgaser
+fluid.liquidmethane=Flytande metan
+fluid.liquidoxygen=Flytande syre
+fluid.liquidnitrogen=Flytande kväve
+fluid.liquidargon=Flytande argon
+fluid.fuel=Bränsle
+
+# BLOCKS
+tile.asteroidsBlock.asteroid0.name=Asteroidmineral
+tile.asteroidsBlock.asteroid1.name=Asteroidmineral
+tile.asteroidsBlock.asteroid2.name=Asteroidmineral
+tile.asteroidsBlock.oreIron.name=Järnmalm
+tile.asteroidsBlock.oreIlmenite.name=Ilmenitmalm
+tile.asteroidsBlock.oreAluminum.name=Aluminiummalm
+tile.beamReflector.name=Energistrålreflektor
+tile.beamReceiver.name=Energistrålmotagare
+tile.telepadShort.name=Kortdistansteleporterare
+tile.walkway.name=Gångbro
+tile.walkwayWire.name=Gångbro (elledning)
+tile.walkwayOxygenPipe.name=Gångbro (syrgasledning)
+tile.treasureT3.name=Asteroidskattkista
+tile.denseIce.name=Kompakt is
+tile.minerBase.name=Astrobrytarstation
+
+# GUI
+planet.asteroids=Huvudbältet
+
+	# Dollar sign ($) will split text onto a new line
+	# Do not remove %s or %d, since that will be replaced in-game
+gui.telepad.desc.0=Teleporterarens$intällda adress
+gui.telepad.desc.1=Ange annan teleporterares adress$för att dirigera objekt dit.
+gui.message.address.name=Adress
+gui.message.destAddress.name=Måladress
+gui.message.invalidAddress.name=Ogiltig adress
+gui.message.invalidTargetAddress.name=Ogiltig måladress
+gui.message.receivingActive.name=Mottagning aktiv
+gui.message.telepadTooFar.name=För avlägset! (Max. %d)
+gui.message.telepadWrongDim.name=Otillgänglig dimension!
+gui.message.telepadNotFound.name=Teleporterare ej funnen!
+gui.message.sendingActive.name=Sändning aktiv
+gui.message.range.name=Räckvidd: %dm
+gui.message.notEnoughEnergy.name=Strömbrist!
+gui.message.targetNoEnergy.name=Målet har brist på ström!
+gui.message.grapple.fail=Tråd behövs till änterhaken!
+gui.message.astroMiner.fail=Denna station har redan en annan astrobrytare!
+gui.message.astroMiner1.fail=Stationens ingång blockeras av:
+gui.message.astroMiner2.fail=Det skulle bli en astrobrytare för mycket!
+gui.message.astroMiner3.fail=Astrobrytarens station har tagits bort!
+gui.message.astroMiner4.fail=Astrobrytaren har slut på ström!
+gui.message.astroMiner5.fail=Astrobrytarens väg till stationen kan vara blockerad!
+gui.message.astroMiner6.fail=Astrobrytaren har slutfört brytning av detta områded och kommer nu sluta!
+
+tile.treasureT3.description=Asteroidskattkistor har inte riktigt intförts än.
+tile.walkway.description=Gångbroar är dekorativa block som anluter till andra intilliggande block.
+tile.walkwayAluminumWire.description=Aluminiumledning inbyggd i en gångbro bildar en promenadvänlig yta.
+tile.walkwayOxygenPipe.description=Syrgasledning inbyggd i en gångbro bildar en promenadvänlig yta.
+tile.beamReflector.description=Strålreflektorn utökar en energistråles räckvidd samt kan avleda den åt valfri riktning. Högerklicka för att ändra.
+tile.beamReceiver.description=Strålmotagaren ansluts intill en eldriven maskin för at föra in/ut ström.
+tile.telepadShort.description=Kortdistansteleporteraren överför spelare och andra levande varelser (250 Blocks) adresserad till en annan teleporterare.
+tile.minerBase.description=Astrobrytarstationen agerar som dockningsstation till astrobrytaren.  I.o.m. sin storlek måste 8 av dessa block läggas i en 2x2x2-kub.
+
+# SCHEMATICS
+schematic.astroMiner.name=Astrobrytare
+schematic.ionDrive.name=Jonmotor
+
+# ENTITIES
+entity.SmallAsteroidGC.name=Liten asteroid
+entity.GrappleHookGC.name=Änterhake
+entity.Tier3RocketGC.name=N3-raket
+entity.EntryPodAsteroids.name=Inträdeskapsel
+entity.AstroMiner.name=Astrobrytare
+
+# CONTAINERS
+container.shortRangeTelepad.name=Kortdistansteleporterare
+container.entryPod.name=Inträdeskapsel
+
+# CONFIG GUI
+gc.configgui.dimensionIDAsteroids=Asteroids Dimension ID
+gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID
+gc.configgui.disableGalacticraftHelium=Disable Helium gas registration
+gc.configgui.astroMinersMax=Maximum number of Astro Miners per player
