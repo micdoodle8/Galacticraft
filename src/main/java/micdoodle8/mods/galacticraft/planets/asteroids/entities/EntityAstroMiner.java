@@ -12,7 +12,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -54,11 +56,11 @@ import net.minecraftforge.fluids.IFluidBlock;
 public class EntityAstroMiner extends Entity implements IInventory, IPacketReceiver
 {
 	public static final int MINE_LENGTH = 24;
-	private static final int MINE_LENGTH_AST = 24;
+	private static final int MINE_LENGTH_AST = 12;
     private static final int MAXENERGY = 10000;
     private static final int RETURNENERGY = 1000;
     private static final int RETURNDROPS = 10;
-    private static final int INV_SIZE = 27;
+    private static final int INV_SIZE = 227;
     private static final float cLENGTH = 3.6F;
     private static final float cWIDTH = 1.8F;
     private static final float cHEIGHT = 1.7F;
@@ -71,6 +73,10 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     public static final int AISTATE_MINING = 3;
     public static final int AISTATE_RETURNING = 4;
     public static final int AISTATE_DOCKING = 5;
+    
+    public static final int FAIL_BASEDESTROYED = 3;
+    public static final int FAIL_OUTOFENERGY = 4;
+    public static final int FAIL_RETURNPATHBLOCKED = 5;
     
     private boolean TEMPDEBUG = false;
     private boolean TEMPFAST = false;
@@ -112,7 +118,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     	new BlockVec3(2, 0, 0)    };
 
     private final int baseSafeRadius = 32;
-    private final double speed = TEMPFAST ? 0.15D : 0.02D;
+    private final double speed = TEMPFAST ? 0.16D : 0.022D;
     private final float rotSpeed = TEMPFAST ? 8F : 1.5F;
     private boolean noSpeedup = false;  //This stops the miner getting stuck at turning points
     public float shipDamage;
@@ -143,6 +149,10 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     private static ArrayList<Block> noMineList = new ArrayList();
     public static BlockTuple blockingBlock = new BlockTuple(Blocks.air, 0);
     private boolean givenFailMessage6 = false;
+	private BlockVec3 mineLast = null;
+	private int mineCountDown = 0;
+	public LinkedList<BlockVec3> laserBlocks = new LinkedList();
+	public LinkedList<Integer> laserTimes = new LinkedList();
     
     static
     {
@@ -156,6 +166,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		noMineList.add(Blocks.mossy_cobblestone);
 		noMineList.add(Blocks.end_portal);
 		noMineList.add(Blocks.end_portal_frame);
+		noMineList.add(Blocks.portal);
 		noMineList.add(Blocks.stonebrick);
 		noMineList.add(Blocks.farmland);
 		noMineList.add(Blocks.rail);
@@ -386,6 +397,10 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             this.boundingBox.minZ += this.motionZ;
             this.boundingBox.maxZ += this.motionZ;
             this.setRotation(this.rotationYaw, this.rotationPitch);
+    		if (this.AIstate == AISTATE_MINING && this.ticksExisted % 2 == 0)
+    		{
+    			this.prepareMoveClient(TEMPFAST ? 8 : 1, 2);
+    		}
         	return;
         }
         
@@ -442,9 +457,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     	{
     		if (this.AIstate > AISTATE_ATBASE)
     		{
-    			this.AIstate = AISTATE_STUCK;
-    			if (this.playerMP != null)
-    				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner4.fail")));
+    			this.freeze(FAIL_OUTOFENERGY);
     		}
     	}
     	else if (this.ticksExisted % 2 == 0) this.energyLevel--;
@@ -516,6 +529,16 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 */    
     }
 
+	private void freeze(int i)
+	{
+		this.AIstate = AISTATE_STUCK;
+		this.motionX = 0;
+		this.motionY = 0;
+		this.motionZ = 0;
+		if (this.playerMP != null)
+			this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner"+i+".fail")));
+	}
+
 	//packet with AIstate, energy, rotationP + Y, mining data count
     @Override
     public void decodePacketdata(ByteBuf buffer)
@@ -565,9 +588,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		
 		if (!(tileEntity instanceof TileEntityMinerBase) || tileEntity.isInvalid())
 		{
-			if (this.playerMP != null)
-				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner3.fail")));
-			this.AIstate = AISTATE_STUCK;
+			this.freeze(FAIL_BASEDESTROYED);
 			return;
 		}
 		
@@ -785,9 +806,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		}
 		else
 		{
-			this.AIstate = AISTATE_STUCK;
-			if (this.playerMP != null)
-				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner5.fail")));
+			this.freeze(FAIL_RETURNPATHBLOCKED);
 		}
 	}
 
@@ -800,6 +819,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	 */
 	private boolean prepareMove(int limit, int dist)
 	{
+		if (this.mineCountDown > 0)
+		{
+			this.mineCountDown--;
+			return false;
+		}
 		BlockVec3 inFront = new BlockVec3(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 1.5D), MathHelper.floor_double(this.posZ + 0.5D));
 		if (dist == 2) inFront.add(headings2[this.facingAI]);
 		else
@@ -807,6 +831,14 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 			if ((this.facingAI & 1) == 0) dist++; 
 			if (dist > 0) inFront.add(headings[this.facingAI].clone().scale(dist));
 		}
+		
+		if (!inFront.equals(this.mineLast) && this.AIstate != AISTATE_ATBASE)
+		{
+			this.mineCountDown = 3;
+			this.mineLast = inFront;
+			return false;
+		}
+		
 		int x = inFront.x;
 		int y = inFront.y;
 		int z = inFront.z;
@@ -882,9 +914,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 				this.tryBackIn();
 			else
 			{
-				this.AIstate = AISTATE_STUCK;
-				if (this.playerMP != null)
-					this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner5.fail")));
+				this.freeze(FAIL_RETURNPATHBLOCKED);
 			}
 		}
 		
@@ -893,6 +923,91 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 			this.motionX *= SPEEDUP;
 			this.motionY *= SPEEDUP;
 			this.motionZ *= SPEEDUP;
+		}
+		
+		return wayBarred;
+	}
+
+	private boolean prepareMoveClient(int limit, int dist)
+	{
+		BlockVec3 inFront = new BlockVec3(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 1.5D), MathHelper.floor_double(this.posZ + 0.5D));
+		if (dist == 2) inFront.add(headings2[this.facing]);
+		else
+		{	
+			if ((this.facing & 1) == 0) dist++; 
+			if (dist > 0) inFront.add(headings[this.facing].clone().scale(dist));
+		}
+		if (inFront.equals(this.mineLast))
+		{
+			return false;
+		}
+		
+		int x = inFront.x;
+		int y = inFront.y;
+		int z = inFront.z;
+		
+		boolean wayBarred = false;
+		this.tryBlockLimit = limit;
+
+		//Check not obstructed by something immovable e.g. bedrock
+		//Mine out the 12 blocks in front of it in direction of travel when getting close
+		//There are 12 blocks around ... and 12 in front.  One block per tick?  
+		//(That means can move at 5/6 block per second when mining, and 1.67 bps when traveling)
+		switch (this.facing & 6)
+		{
+		case 0:
+			if (tryBlockClient(x, y, z)) wayBarred = true;
+			if (tryBlockClient(x + 1, y, z)) wayBarred = true;
+			if (tryBlockClient(x + 1, y, z - 1)) wayBarred = true;
+			if (tryBlockClient(x, y, z - 1)) wayBarred = true;
+			if (tryBlockClient(x, y, z - 2)) wayBarred = true;
+			if (tryBlockClient(x - 1, y, z - 2)) wayBarred = true;
+			if (tryBlockClient(x - 1, y, z - 1)) wayBarred = true;
+			if (tryBlockClient(x - 2, y, z - 1)) wayBarred = true;
+			if (tryBlockClient(x - 2, y, z)) wayBarred = true;
+			if (tryBlockClient(x - 1, y, z)) wayBarred = true;
+			if (tryBlockClient(x - 1, y, z + 1)) wayBarred = true;
+			if (tryBlockClient(x, y, z + 1)) wayBarred = true;
+			break;
+		case 2:
+			if (tryBlockClient(x, y - 2, z)) wayBarred = true;
+			if (tryBlockClient(x - 1, y - 2, z)) wayBarred = true;
+			if (tryBlockClient(x, y - 1, z)) wayBarred = true;
+			if (tryBlockClient(x - 1, y - 1, z)) wayBarred = true;
+			if (tryBlockClient(x + 1, y - 1, z)) wayBarred = true;
+			if (tryBlockClient(x - 2, y - 1, z)) wayBarred = true;
+			if (tryBlockClient(x + 1, y, z)) wayBarred = true;
+			if (tryBlockClient(x - 2, y, z)) wayBarred = true;
+			if (tryBlockClient(x, y, z)) wayBarred = true;
+			if (tryBlockClient(x - 1, y, z)) wayBarred = true;
+			if (tryBlockClient(x, y + 1, z)) wayBarred = true;
+			if (tryBlockClient(x - 1, y + 1, z)) wayBarred = true;
+			break;
+		case 4:
+			if (tryBlockClient(x, y - 2, z - 1)) wayBarred = true;
+			if (tryBlockClient(x, y - 1, z)) wayBarred = true;
+			if (tryBlockClient(x, y - 1, z - 1)) wayBarred = true;
+			if (tryBlockClient(x, y - 1, z + 1)) wayBarred = true;
+			if (tryBlockClient(x, y - 1, z - 2)) wayBarred = true;
+			if (tryBlockClient(x, y, z + 1)) wayBarred = true;
+			if (tryBlockClient(x, y, z - 2)) wayBarred = true;
+			if (tryBlockClient(x, y, z - 1)) wayBarred = true;
+			if (tryBlockClient(x, y - 2, z)) wayBarred = true;
+			if (tryBlockClient(x, y + 1, z - 1)) wayBarred = true;
+			if (tryBlockClient(x, y, z)) wayBarred = true;
+			if (tryBlockClient(x, y + 1, z)) wayBarred = true;
+			break;
+		}
+		
+		//If it is obstructed, return to base, or stand still if that is impossible
+		if (wayBarred)
+		{
+			this.tryBlockLimit = 0;
+		}
+		
+		if (this.tryBlockLimit == limit)
+		{
+			this.mineLast = inFront; 
 		}
 		
 		return wayBarred;
@@ -912,27 +1027,34 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		}
 		if (b instanceof BlockLiquid) return false;
 		if (b instanceof IFluidBlock) return false;
-		if (b instanceof IPlantable)
+		if (b != GCBlocks.fallenMeteor)
 		{
-			blockingBlock.block = b;
-			blockingBlock.meta = this.worldObj.getBlockMetadata(x, y, z);
-			return true;
-		}
-		int meta = this.worldObj.getBlockMetadata(x, y, z);
-		if (b.hasTileEntity(meta) || b.getBlockHardness(this.worldObj,  x,  y,  z) < 0)
-		{
-			blockingBlock.block = b;
-			blockingBlock.meta = meta;
-			return true;
+			if (b instanceof IPlantable)
+			{
+				blockingBlock.block = b;
+				blockingBlock.meta = this.worldObj.getBlockMetadata(x, y, z);
+				return true;
+			}
+			int meta = this.worldObj.getBlockMetadata(x, y, z);
+			if (b.hasTileEntity(meta) || b.getBlockHardness(this.worldObj,  x,  y,  z) < 0)
+			{
+				blockingBlock.block = b;
+				blockingBlock.meta = meta;
+				return true;
+			}
 		}
 		
 		if (this.tryBlockLimit == 0) return false;
         BlockEvent.BreakEvent event = ForgeHooks.onBlockBreakEvent(this.worldObj, this.playerMP.theItemInWorldManager.getGameType(), this.playerMP, x, y, z);
-        if (event.isCanceled()) return false;
+        if (event.isCanceled()) return true;
 
 		this.tryBlockLimit--;
 		
-		ItemStack drops = getPickBlock(this.worldObj, x, y, z, b);
+		ItemStack drops;
+		if (b != GCBlocks.fallenMeteor)
+			drops = getPickBlock(this.worldObj, x, y, z, b);
+		else
+			drops = new ItemStack(GCItems.meteoricIronRaw);
 		if (drops != null && !this.addToInventory(drops))
 		{
 			//drop itemstack if AstroMiner can't hold it
@@ -948,6 +1070,40 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		
 		this.worldObj.setBlock(x, y, z, Blocks.air, 0, 3);
 		return false;
+	}
+
+	private boolean tryBlockClient(int x, int y, int z)
+	{
+		BlockVec3 bv = new BlockVec3(x, y, z);
+		if (this.laserBlocks.contains(bv)) return false;
+
+		//Add minable blocks to the laser fx list
+		Block b = this.worldObj.getBlock(x, y, z);
+		if (b.getMaterial() == Material.air) return false;
+		if (noMineList.contains(b)) return true;
+		if (b instanceof BlockLiquid) return false;
+		if (b instanceof IFluidBlock) return false;
+		if (b instanceof IPlantable) return true;
+		int meta = this.worldObj.getBlockMetadata(x, y, z);
+		if (b.hasTileEntity(meta) || b.getBlockHardness(this.worldObj,  x,  y,  z) < 0) return true;
+		if (this.tryBlockLimit == 0) return false;
+		
+		this.tryBlockLimit--;
+		
+		this.laserBlocks.add(bv);
+		this.laserTimes.add(this.ticksExisted);
+		System.out.println("adding glowblock "+ bv.toString());
+		return false;
+	}
+
+
+	public void removeLaserBlocks(int removeCount)
+	{
+		for (int i = 0; i < removeCount; i++)
+		{
+			System.out.println("removing glowblock "+ this.laserBlocks.removeFirst().toString());
+			this.laserTimes.removeFirst();
+		}
 	}
 
 	private ItemStack getPickBlock(World world, int x, int y, int z, Block b)
