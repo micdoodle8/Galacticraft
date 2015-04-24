@@ -250,7 +250,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
     @Override
     protected String getHurtSound()
     {
-        return null;
+        return "mob.slime.small";
     }
 
     @Override
