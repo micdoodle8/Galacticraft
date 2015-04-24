@@ -107,7 +107,6 @@ public class EnergyNetwork implements IElectricityNetwork
     {
         if (EnergyNetwork.tickCount != this.tickDone)
         {
-            this.tickDone = EnergyNetwork.tickCount;
             //Start the new tick - initialise everything
             this.ignoreAcceptors.clear();
             this.ignoreAcceptors.addAll(Arrays.asList(ignoreTiles));
@@ -247,6 +246,7 @@ public class EnergyNetwork implements IElectricityNetwork
      */
     private void doTickStartCalc()
     {
+        this.tickDone = EnergyNetwork.tickCount;
         this.totalSent = 0F;
         this.refreshAcceptors();
 
@@ -386,11 +386,11 @@ public class EnergyNetwork implements IElectricityNetwork
             float sentToAcceptor;
             int tierProduced = Math.min(this.producersTierGC, this.networkTierGC);
 
-            ArrayList<TileEntity> debugList = new ArrayList<TileEntity>();
+            TileEntity debugTE = null;
             try {
             for (TileEntity tileEntity : this.availableAcceptors)
             {
-            	debugList.add(tileEntity);
+            	debugTE = tileEntity;
             	//Exit the loop if there is no energy left at all (should normally not happen, should be some even for the last acceptor)
                 if (sent >= energyAvailable)
                 {
@@ -509,13 +509,9 @@ public class EnergyNetwork implements IElectricityNetwork
                 sent += sentToAcceptor;
             }
             } catch (Exception e) {
-            	GCLog.severe("DEBUG Energy network crash prevented");
-            	TileEntity te = debugList.get(debugList.size() - 1);
-            	GCLog.severe("DEBUG Problem was after "+ te.xCoord + "," + te.yCoord + "," + te.zCoord);
-            	Iterator<TileEntity> debugIt = availableAcceptors.iterator();
-            	for (int j = 0; j < debugList.size(); j++) debugIt.next();
-            	if (debugIt.hasNext()) te = debugIt.next();
-            	GCLog.severe("DEBUG and before "+ te.xCoord + "," + te.yCoord + "," + te.zCoord);
+            	GCLog.severe("DEBUG Energy network loop issue, please report this");
+            	if (debugTE != null)
+            		GCLog.severe("Problem was likely caused by tile in dim " + debugTE.getWorldObj().provider.dimensionId + " at "+ debugTE.xCoord + "," + debugTE.yCoord + "," + debugTE.zCoord + " Type:" + debugTE.getClass().getSimpleName());
             }
         }
 
