@@ -2,7 +2,7 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=Tier 3 Rocket
-item.itemAstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+item.itemAstroMiner.name=Astro Miner
 item.heavyNoseCone.name=Heavy Nose Cone
 item.compressedTitanium.name=Compressed Titanium
 item.ingotTitanium.name=Titanium Ingot
@@ -63,7 +63,7 @@ tile.walkwayWire.name=Walkway
 tile.walkwayOxygenPipe.name=Walkway
 tile.treasureT3.name=Tier 3 Treasure Chest
 tile.denseIce.name=Dense Ice
-tile.minerBase.name=Astro Miner Base ##NEEDS TRANSLATE##
+tile.minerBase.name=Astro Miner Base
 fluid.methane=Methane Gas
 fluid.oxygen=Oxygen Gas
 fluid.nitrogen=Nitrogen Gas
@@ -90,7 +90,7 @@ gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID
 gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID
 gc.configgui.idEntityEntryPod=Entry Pod Entity ID
 gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID
-gc.configgui.disableGalacticraftHelium=Disable Helium gas registration ##NEEDS TRANSLATE##
+gc.configgui.disableGalacticraftHelium=Disable Helium gas registration
 gui.message.address.name=Address
 gui.message.destAddress.name=Target Address
 gui.message.invalidAddress.name=Invalid Unique Address
@@ -103,10 +103,10 @@ gui.message.sendingActive.name=Sending Active
 gui.message.range.name=Range: %dm
 gui.message.notEnoughEnergy.name=Not Enough Energy!
 gui.message.targetNoEnergy.name=Target doesn't have enough Energy!
-gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook! ##NEEDS TRANSLATE##
-gui.message.astroMiner.fail=This base already has an Astro Miner! ##NEEDS TRANSLATE##
-gui.message.astroMiner1.fail=The docking area is blocked by: ##NEEDS TRANSLATE##
-gui.message.astroMiner2.fail=That would be one Astro Miner too many! ##NEEDS TRANSLATE##
+gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook!
+gui.message.astroMiner.fail=This base already has an Astro Miner!
+gui.message.astroMiner1.fail=The docking area is blocked by:
+gui.message.astroMiner2.fail=That would be one Astro Miner too many!
 tile.treasureT3.description=Tier 3 Treasure Chests are currently unused.
 tile.walkway.description=Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme.
 tile.walkwayAluminumWire.description=Aluminium Wire Walkways are used for running wire underneath a fully walkable surface.
@@ -114,9 +114,9 @@ tile.walkwayOxygenPipe.description=Oxygen Pipe Walkways are used for running pip
 tile.beamReflector.description=Beam Reflectors are used to redirect energy beams from source to destination. Can be right-clicked to cycle through targets.
 tile.beamReceiver.description=Beam Receivers are connected to energy machine input and output, to transfer energy using beams.
 tile.telepadShort.description=Short Range Telepads are used to transfer players and other living creatures short distances (250 Blocks) when linked to other telepads.
-tile.minerBase.description=The Astro Miner Base is the docking point for an Astro Miner.  It's big ... try making a 2 x 2 x 2 cube with these. ##NEEDS TRANSLATE##
-schematic.astroMiner.name=Astro Miner ##NEEDS TRANSLATE##
-schematic.ionDrive.name=Ion Drive ##NEEDS TRANSLATE##
+tile.minerBase.description=The Astro Miner Base is the docking point for an Astro Miner.  It's big ... try making a 2 x 2 x 2 cube with these.
+schematic.astroMiner.name=Astro Miner
+schematic.ionDrive.name=Ion Drive
 
 itemGroup.GalacticraftAsteroids=Galacticraft Asteroids
 
@@ -126,7 +126,7 @@ itemGroup.GalacticraftAsteroids=Galacticraft Asteroids
 entity.SmallAsteroidGC.name=Small Asteroid
 entity.GrappleHookGC.name=Grapple Hook
 entity.Tier3RocketGC.name=Tier 3 Rocket
-entity.EntryPodAsteroids.name=Entry Pod ##NEEDS TRANSLATE##
-entity.AstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+entity.EntryPodAsteroids.name=Entry Pod
+entity.AstroMiner.name=Astro Miner
 
 # Container
