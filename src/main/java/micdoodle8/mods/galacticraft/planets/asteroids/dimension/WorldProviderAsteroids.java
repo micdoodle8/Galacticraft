@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
+import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.WorldChunkManagerAsteroids;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,7 +16,9 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.TreeMap;
 
 public class WorldProviderAsteroids extends WorldProviderSpace
 {
@@ -267,7 +270,11 @@ public class WorldProviderAsteroids extends WorldProviderSpace
 
     public BlockVec3 getClosestAsteroidXZ(int x, int y, int z)
     {
-        BlockVec3 target = new BlockVec3(x, y, z);
+        if (this.dataNotLoaded)
+        {
+            this.loadAsteroidSavedData();
+        }
+
         if (this.asteroidCentres.size() == 0)
         {
             return null;
@@ -278,47 +285,92 @@ public class WorldProviderAsteroids extends WorldProviderSpace
 
         for (BlockVec3 test : this.asteroidCentres)
         {
-            int dx = target.x - test.x;
-            int dz = target.z - test.z;
+            int dx = x - test.x;
+            int dz = z - test.z;
             int a = dx * dx + dz * dz;
             if (a < lowestDistance)
             {
                 lowestDistance = a;
-                result = test.clone();
+                result = test;
             }
         }
 
-        return result;
+        return result.clone();
     }
 
-/*    public BlockVec3[] getClosestAsteroidsXZ(int x, int y, int z, int facing, int count)
+    public ArrayList<BlockVec3> getClosestAsteroidsXZ(int x, int y, int z, int facing, int count)
     {
+        if (this.dataNotLoaded)
+        {
+            this.loadAsteroidSavedData();
+        }
+
         if (this.asteroidCentres.size() == 0)
         {
-            return new BlockVec3[0];
+            return null;
         }
 
-        BlockVec3 target[] = new BlockVec3[count];
-        int dist[] = new int[count];
+        TreeMap<Integer, BlockVec3> targets = new TreeMap();
         
-        for (int i = 0; i < count; i++)
-        	dist[i] = Integer.MAX_VALUE;
-
         for (BlockVec3 test : this.asteroidCentres)
         {
-            int dx = target.x - test.x;
-            int dz = target.z - test.z;
-            int a = dx * dx + dz * dz;
-            if (a < lowestDistance)
+            switch (facing)
             {
-                lowestDistance = a;
-                result = test.clone();
+            case 2:
+            	if (z - 16 < test.z)
+            		continue;
+            	break;
+            case 3:
+            	if (z + 16 > test.z)
+            		continue;
+            	break;
+            case 4:
+            	if (x - 16 < test.x)
+            		continue;
+            	break;
+            case 5:
+            	if (x + 16 > test.x)
+            		continue;
+            	break;
             }
+        	int dx = x - test.x;
+            int dz = z - test.z;
+            int a = dx * dx + dz * dz;
+            if (a < 262144) targets.put(a, test);
         }
 
-        return result;
+        int max = Math.max(count,  targets.size());
+        if (max <= 0) return null;
+        
+        ArrayList<BlockVec3> returnValues = new ArrayList();
+        int i = 0;
+        int offset = EntityAstroMiner.MINE_LENGTH_AST / 2;
+        for (BlockVec3 target : targets.values())
+        {
+        	BlockVec3 coords = target.clone();
+        	System.out.println("Found nearby asteroid at "+ target.toString());
+            switch (facing)
+            {
+            case 2:
+            	coords.z += offset;
+            	break;
+            case 3:
+            	coords.z -= offset;
+            	break;
+            case 4:
+            	coords.x += offset;
+            	break;
+            case 5:
+            	coords.x -= offset;
+            	break;
+            }
+        	returnValues.add(coords);
+        	if (++i >= count) break; 
+        }
+        
+        return returnValues;
     }
-*/
+
     
     @Override
     public float getWindLevel()

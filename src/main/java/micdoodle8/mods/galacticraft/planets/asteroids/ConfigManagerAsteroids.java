@@ -75,10 +75,10 @@ public class ConfigManagerAsteroids
             disableGalacticraftHelium = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
-            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "maximumAstroMiners", 4);
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "maximumAstroMiners", 6);
             prop.comment = "Maximum number of Astro Miners each player is allowed to have active (default 4).";
             prop.setLanguageKey("gc.configgui.astroMinersMax");
-            astroMinerMax = prop.getInt(4);
+            astroMinerMax = prop.getInt(6);
             propOrder.add(prop.getName());
 
             config.setCategoryPropertyOrder(CATEGORY_GENERAL, propOrder);

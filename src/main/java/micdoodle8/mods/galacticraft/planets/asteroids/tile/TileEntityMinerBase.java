@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.UUID;
 
@@ -27,6 +28,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory implements ISidedInventory, IMultiBlock
@@ -213,6 +215,8 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         {
 	        nbt.setLong("LinkedUUIDMost", this.linkedMinerID.getMostSignificantBits());
 	        nbt.setLong("LinkedUUIDLeast", this.linkedMinerID.getLeastSignificantBits());
+	        nbt.setInteger("LinkedChunkX", MathHelper.floor_double(this.linkedMiner.posX) >> 4);
+	        nbt.setInteger("LinkedChunkZ", MathHelper.floor_double(this.linkedMiner.posZ) >> 4);
         }
         if (this.targetPoints.size() > 0)
         {
@@ -738,18 +742,19 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 	{
 		this.targetPoints.clear();
 		int baseFacing = (this.facing + 2) ^ 1;
-		BlockVec3 posnTarget = new BlockVec3(this).modifyPositionFromSide(ForgeDirection.getOrientation(baseFacing), this.worldObj.rand.nextInt(16) + 32);
+		BlockVec3 posnTarget = new BlockVec3(this);
 		
 		if (this.worldObj.provider instanceof WorldProviderAsteroids)
 		{
-			BlockVec3 pos = ((WorldProviderAsteroids)this.worldObj.provider).getClosestAsteroidXZ(posnTarget.x, posnTarget.y, posnTarget.z);
-			if (pos != null)
+			ArrayList<BlockVec3> roids = ((WorldProviderAsteroids)this.worldObj.provider).getClosestAsteroidsXZ(posnTarget.x, posnTarget.y, posnTarget.z, baseFacing, 100);
+			if (roids != null && roids.size() > 0)
 			{	
-				this.targetPoints.add(pos);
+				this.targetPoints.addAll(roids);
 				return;
 			}
 		}
 		
+		posnTarget.modifyPositionFromSide(ForgeDirection.getOrientation(baseFacing), this.worldObj.rand.nextInt(16) + 32);		
 		int miny = Math.min(this.yCoord * 2 - 90, this.yCoord - 22);
 		if (miny < 5) miny = 5;
 		posnTarget.y = miny + 5 + this.worldObj.rand.nextInt(4);

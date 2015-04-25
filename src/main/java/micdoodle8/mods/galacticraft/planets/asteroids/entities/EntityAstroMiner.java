@@ -56,7 +56,7 @@ import net.minecraftforge.fluids.IFluidBlock;
 public class EntityAstroMiner extends Entity implements IInventory, IPacketReceiver
 {
 	public static final int MINE_LENGTH = 24;
-	private static final int MINE_LENGTH_AST = 12;
+	public static final int MINE_LENGTH_AST = 12;
     private static final int MAXENERGY = 10000;
     private static final int RETURNENERGY = 1000;
     private static final int RETURNDROPS = 10;
@@ -120,6 +120,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     private final int baseSafeRadius = 32;
     private final double speed = TEMPFAST ? 0.16D : 0.022D;
     private final float rotSpeed = TEMPFAST ? 8F : 1.5F;
+    private double speedup = SPEEDUP;
     private boolean noSpeedup = false;  //This stops the miner getting stuck at turning points
     public float shipDamage;
     public int currentDamage;
@@ -460,7 +461,8 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     			this.freeze(FAIL_OUTOFENERGY);
     		}
     	}
-    	else if (this.ticksExisted % 2 == 0) this.energyLevel--;
+    	else if (!(this.worldObj.provider instanceof WorldProviderAsteroids) && this.ticksExisted % 2 == 0) this.energyLevel--;
+    	//No energy consumption when moving in space in Asteroids dimension (this reduces the risk of the Astro Miner becoming stranded!)
     	
     	switch (this.AIstate)
     	{
@@ -920,9 +922,9 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		
 		if (this.tryBlockLimit == limit && !this.noSpeedup)
 		{
-			this.motionX *= SPEEDUP;
-			this.motionY *= SPEEDUP;
-			this.motionZ *= SPEEDUP;
+			this.motionX *= this.speedup;
+			this.motionY *= this.speedup;
+			this.motionZ *= this.speedup;
 		}
 		
 		return wayBarred;
@@ -1050,11 +1052,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
 		this.tryBlockLimit--;
 		
-		ItemStack drops;
-		if (b != GCBlocks.fallenMeteor)
-			drops = getPickBlock(this.worldObj, x, y, z, b);
-		else
-			drops = new ItemStack(GCItems.meteoricIronRaw);
+		ItemStack drops = getPickBlock(this.worldObj, x, y, z, b);
 		if (drops != null && !this.addToInventory(drops))
 		{
 			//drop itemstack if AstroMiner can't hold it
@@ -1107,7 +1105,10 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
 	private ItemStack getPickBlock(World world, int x, int y, int z, Block b)
 	{
-        Item item = Item.getItemById(Block.getIdFromBlock(b));
+		if (b == GCBlocks.fallenMeteor)
+			return new ItemStack(GCItems.meteoricIronRaw);
+
+		Item item = Item.getItemById(Block.getIdFromBlock(b));
         
 		if (item == null)
         {
@@ -1244,7 +1245,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	        	this.targetYaw = 270;
         	this.motionX = -this.speed;
         	//TODO some acceleration and deceleration
-        	if (this.motionX * SPEEDUP <= x - this.posX)
+        	if (this.motionX * speedup <= x - this.posX)
         	{
         		this.motionX = x - this.posX;
         		this.noSpeedup = true;
@@ -1256,7 +1257,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	        if (this.AIstate != AISTATE_DOCKING)
 	        	this.targetYaw = 90;
 			this.motionX = this.speed;
-        	if (this.motionX * SPEEDUP >= x - this.posX)
+        	if (this.motionX * speedup >= x - this.posX)
         	{
         		this.motionX = x - this.posX;
 	    		this.noSpeedup = true;
@@ -1277,7 +1278,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		{
         	this.targetPitch = -90;
 			this.motionY = -this.speed;
-        	if (this.motionY * SPEEDUP <= y - this.posY)
+        	if (this.motionY * speedup <= y - this.posY)
         	{
         		this.motionY = y - this.posY;
         		this.noSpeedup = true;
@@ -1288,7 +1289,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		{
         	this.targetPitch = 90;
 			this.motionY = this.speed;
-        	if (this.motionY * SPEEDUP >= y - this.posY)
+        	if (this.motionY * speedup >= y - this.posY)
         	{
         		this.motionY = y - this.posY;
         		this.noSpeedup = true;
@@ -1315,7 +1316,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	        	this.targetYaw = 180;
         	this.motionZ = -this.speed;
         	//TODO some acceleration and deceleration
-        	if (this.motionZ * SPEEDUP <= z - this.posZ)
+        	if (this.motionZ * speedup <= z - this.posZ)
         	{
         		this.motionZ = z - this.posZ;
         		this.noSpeedup = true;
@@ -1327,7 +1328,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	        if (this.AIstate != AISTATE_DOCKING)
 	        	this.targetYaw = 0;
 			this.motionZ = this.speed;
-        	if (this.motionZ * SPEEDUP >= z - this.posZ)
+        	if (this.motionZ * speedup >= z - this.posZ)
         	{
         		this.motionZ = z - this.posZ;
         		this.noSpeedup = true;
@@ -1438,6 +1439,9 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         miner.setBoundingBoxForFacing();
         miner.AIstate = AISTATE_ATBASE;
         miner.posBase = base;
+
+        //Increase motion speed when moving in empty space between asteroids
+		miner.speedup = (world.provider instanceof WorldProviderAsteroids) ? SPEEDUP * 1.6D : SPEEDUP;
 
         //Clear blocks, and test to see if its movement area in front of the base is blocked
         if (miner.prepareMove(12, 0))
