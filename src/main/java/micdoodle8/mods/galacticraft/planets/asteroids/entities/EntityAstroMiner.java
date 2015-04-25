@@ -1092,7 +1092,6 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		
 		this.laserBlocks.add(bv);
 		this.laserTimes.add(this.ticksExisted);
-		System.out.println("adding glowblock "+ bv.toString());
 		return false;
 	}
 
@@ -1101,7 +1100,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	{
 		for (int i = 0; i < removeCount; i++)
 		{
-			System.out.println("removing glowblock "+ this.laserBlocks.removeFirst().toString());
+			this.laserBlocks.removeFirst();
 			this.laserTimes.removeFirst();
 		}
 	}
