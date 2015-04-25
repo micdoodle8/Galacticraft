@@ -21,6 +21,7 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
@@ -1757,6 +1758,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         	System.out.println("[Galacticraft] Please break and replace any AstroMiner placed in the world prior to build 3.0.11.317.");
         	this.playerUUID = null;
         }
+        if (nbt.hasKey("speedup"))
+        {
+        	this.speedup = nbt.getDouble("speedup");
+        }
+        else this.speedup = (WorldUtil.getProviderForDimension(this.dimension) instanceof WorldProviderAsteroids) ? SPEEDUP * 1.6D : SPEEDUP;
     }
 
     @Override
@@ -1827,7 +1833,8 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         {
 	        nbt.setLong("playerUUIDMost", this.playerUUID.getMostSignificantBits());
 	        nbt.setLong("playerUUIDLeast", this.playerUUID.getLeastSignificantBits());
-        }        
+        }
+        nbt.setDouble("speedup", this.speedup);
     }
 }
 
