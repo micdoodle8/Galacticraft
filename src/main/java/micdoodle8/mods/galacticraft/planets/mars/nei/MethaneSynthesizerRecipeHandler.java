@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.planets.mars.nei;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
+import codechicken.nei.guihook.GuiContainerManager;
+import codechicken.nei.guihook.IContainerTooltipHandler;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
@@ -11,17 +13,20 @@ import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
+public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler implements IContainerTooltipHandler
 {
     private static final ResourceLocation synthesizerGuiTexture = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/methaneSynthesizer.png");
     private static final ResourceLocation synthesizerGasesTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/gui/gasesMethaneOxygenNitrogen.png");
@@ -92,7 +97,7 @@ public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
         {
             String gasname = GCCoreUtil.translate("gas.carbondioxide.name");
             String text1 = " * " + GCCoreUtil.translate("gui.message.withAtmosphere0.name");
-            String text2 = " " + gasname;
+            String text2 = " " + GCCoreUtil.lowerCaseNoun(gasname);
             String text3 = GCCoreUtil.translate("gui.message.withAtmosphere1.name");
             this.fontRendererObj.drawString(text1, 4, 85, 4210752);
             this.fontRendererObj.drawString(text2, 18, 95, 4210752);
@@ -250,4 +255,30 @@ public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
     public void drawForeground(int recipe)
     {
     }
+
+    @Override
+    public List<String> handleTooltip(GuiContainer gui, int mousex, int mousey, List<String> currenttip)
+    {
+    	ItemStack stack = GuiContainerManager.getStackMouseOver(gui);
+        if (stack != null)
+            currenttip.addAll(GuiContainerManager.itemDisplayNameMultiline(stack, gui, true));
+
+        if (mousex < 35 && mousex > 2 && mousey < 62 && mousey > 2)
+        	currenttip.add(GCCoreUtil.translate("fluid.hydrogen"));
+    	
+        return currenttip;
+    }
+
+    @Override
+    public List<String> handleItemDisplayName(GuiContainer gui, ItemStack itemstack, List<String> currenttip)
+    {
+        return currenttip;
+    }
+
+
+	@Override
+	public List<String> handleItemTooltip(GuiContainer gui,ItemStack itemstack, int mousex, int mousey, List<String> currenttip)
+	{
+		return currenttip;
+	}
 }

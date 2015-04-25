@@ -104,7 +104,7 @@ public class GasLiquefierRecipeHandler extends TemplateRecipeHandler
         {
             String gasname = this.outputGas == 3 ? GCCoreUtil.translate("gas.oxygen.name") : GCCoreUtil.translate("gas.nitrogen.name");
             String text1 = " * " + GCCoreUtil.translate("gui.message.withAtmosphere0.name");
-            String text2 = gasname + " " + GCCoreUtil.translate("gui.message.withAtmosphere1.name");
+            String text2 = GCCoreUtil.lowerCaseNoun(gasname) + " " + GCCoreUtil.translate("gui.message.withAtmosphere1.name");
             this.fontRendererObj.drawString(text1, 4, 83, 4210752);
             this.fontRendererObj.drawString(text2, 4, 93, 4210752);
         }

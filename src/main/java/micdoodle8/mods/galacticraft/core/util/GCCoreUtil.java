@@ -11,6 +11,9 @@ import micdoodle8.mods.galacticraft.core.inventory.ContainerParaChest;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.resources.Language;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -120,4 +123,21 @@ public class GCCoreUtil
         int comment = result.indexOf('#');
         return (comment > 0) ? result.substring(0, comment).trim() : result;
     }
+
+	public static void drawStringRightAligned(String string, int x, int y, int color, FontRenderer fontRendererObj)
+	{
+        fontRendererObj.drawString(string, x - fontRendererObj.getStringWidth(string), y, color);
+	}
+
+	public static void drawStringCentered(String string, int x, int y, int color, FontRenderer fontRendererObj)
+	{
+        fontRendererObj.drawString(string, x - fontRendererObj.getStringWidth(string) / 2, y, color);
+	}
+
+	public static String lowerCaseNoun(String string)
+	{
+		Language l = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage();
+		if (l.getLanguageCode().equals("de_DE")) return string;
+		return GCCoreUtil.translate(string).toLowerCase();
+	}
 }
