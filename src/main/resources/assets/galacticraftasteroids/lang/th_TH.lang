@@ -102,11 +102,11 @@ gui.message.notEnoughEnergy.name=พลังงานไม่พอ!
 gui.message.targetNoEnergy.name=เป้าหมายพลังงานไม่พอ!
 gui.message.grapple.fail=ฉันต้องการเส้นเชือกจำนวนเล็กน้อย ถ้าต้องการที่จะโยนตะขอออกไป!
 gui.message.astroMiner.fail=ฐานแอสโทรไมน์เนอร์นี้มีแอสโทรไมน์เนอร์แล้ว!
-gui.message.astroMiner1.fail=พื้นที่โรงจอดถูกบล็อกโดย:
+gui.message.astroMiner1.fail=พื้นที่โรงจอดถูกปิดกั้นโดย:
 gui.message.astroMiner2.fail=มีแอสโทรไมน์เนอร์มากเกินไป!
 gui.message.astroMiner3.fail=ฐานแอสโทรไมน์เนอร์ถูกลบออกไป!
 gui.message.astroMiner4.fail=แอสโทรไมน์เนอร์พลังงานหมดและไม่สามารถกลับไปยังฐานแอสโทรไมน์เนอร์ได้!
-gui.message.astroMiner5.fail=เส้นทางของแอสโทรไมน์เนอร์ที่ไปยังฐาน ดูเหมือนว่าจะถูกบล็อก!
+gui.message.astroMiner5.fail=เส้นทางของแอสโทรไมน์เนอร์ที่ไปยังฐาน ดูเหมือนว่าจะถูกปิดกั้น!
 gui.message.astroMiner6.fail=แอสโทรไมน์เนอร์ทำเหมืองเสร็จเรียบร้อย และจะหยุดทำงาน!
 
 tile.treasureT3.description=ยังไม่ใช้ตอนนี้
