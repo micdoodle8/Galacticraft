@@ -150,9 +150,10 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
     private static ArrayList<Block> noMineList = new ArrayList();
     public static BlockTuple blockingBlock = new BlockTuple(Blocks.air, 0);
-    private boolean givenFailMessage6 = false;
+    private int givenFailMessage = 0;
 	private BlockVec3 mineLast = null;
 	private int mineCountDown = 0;
+	private int pathBlockedCount = 0;
 	public LinkedList<BlockVec3> laserBlocks = new LinkedList();
 	public LinkedList<Integer> laserTimes = new LinkedList();
     
@@ -468,8 +469,22 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     	switch (this.AIstate)
     	{
     	case AISTATE_STUCK:
-    		//TODO blinking distress light or something
-    		//TODO: check close to base and if so, reverse in slowly
+    		//TODO blinking distress light or something?
+    		//Attempt to re-start every 30 seconds or so
+    		if (this.ticksExisted % 600 == 0)
+    		{
+    			if ((this.givenFailMessage & 8) > 0)
+    			{
+    				//The base was destroyed - see if it has been replaced?
+    				this.atBase();
+    			}
+    			else
+    			{
+    				//See if the return path has been unblocked, and give a small amount of backup energy to try to get home
+	    			this.AIstate = AISTATE_RETURNING;
+	    			if (this.energyLevel <= 0) this.energyLevel = 20;
+    			}
+    		}
     		break;
     	case AISTATE_ATBASE:
     		this.atBase();
@@ -538,8 +553,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		this.motionX = 0;
 		this.motionY = 0;
 		this.motionZ = 0;
-		if (this.playerMP != null)
+		if (this.playerMP != null && (this.givenFailMessage & (1 << i)) == 0)
+		{
 			this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner"+i+".fail")));
+			this.givenFailMessage += (1 << i);
+		}
 	}
 
 	//packet with AIstate, energy, rotationP + Y, mining data count
@@ -596,6 +614,8 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		}
 		
 		TileEntityMinerBase minerBase = (TileEntityMinerBase) tileEntity;
+		//If it's successfully reached its base, clear all fail messages except number 6, which is that all mining areas are finished (see below)
+		this.givenFailMessage &= 64;
 		this.wayPoints.clear();
 		
 		this.emptyInventory(minerBase);
@@ -619,10 +639,10 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 			}
 			else
 			{
-    			if (this.playerMP != null && !this.givenFailMessage6)
+    			if (this.playerMP != null && (this.givenFailMessage & 64) == 0)
     			{
     				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner6.fail")));
-    				this.givenFailMessage6 = true;
+    				this.givenFailMessage += 64;
     			}
 			}
 		}
@@ -644,14 +664,17 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
 	private boolean findNextTarget(TileEntityMinerBase minerBase)
 	{
-		if (!this.minePoints.isEmpty())
+		//If mining has finished, or path has been blocked two or more times, try mining elsewhere
+		if (!this.minePoints.isEmpty() && this.pathBlockedCount < 2)
 		{	
 			this.posTarget = this.minePoints.getFirst().clone();
 			if (ConfigManagerCore.enableDebug) System.out.println("Still mining at: " + posTarget.toString() + " Remaining shafts: " + this.minePoints.size());
 			return true;
 		}
+		
 		// Target is completely mined: change target
 		this.posTarget = minerBase.findNextTarget();
+		this.pathBlockedCount = 0;
 					
 		//No more mining targets, the whole area is mined
 		if (this.posTarget == null)
@@ -671,6 +694,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		if (this.energyLevel < this.RETURNENERGY || this.inventoryDrops > this.RETURNDROPS)
 		{
 			AIstate = AISTATE_RETURNING;
+			this.pathBlockedCount = 0;
 			return true;		
 		}
 		
@@ -773,6 +797,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 				this.minePoints.addFirst(this.minePointCurrent);
 			}
 			AIstate = AISTATE_RETURNING;
+			this.pathBlockedCount = 0;
 			if (ConfigManagerCore.enableDebug) System.out.println("Miner going home: "+this.posBase.toString() + " " + this.minePoints.size() + " shafts still to be mined");
 			return true;		
 		}
@@ -912,7 +937,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 			this.motionY = 0;
 			this.motionZ = 0;
 			this.tryBlockLimit = 0;
-			if (this.AIstate == AISTATE_TRAVELLING || this.AIstate == AISTATE_MINING) this.AIstate = AISTATE_RETURNING;
+			if (this.AIstate == AISTATE_TRAVELLING || this.AIstate == AISTATE_MINING)
+			{
+				this.AIstate = AISTATE_RETURNING;
+				this.pathBlockedCount++;
+			}
 			else if (this.AIstate == AISTATE_RETURNING)
 				this.tryBackIn();
 			else
@@ -1770,6 +1799,8 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         	this.speedup = nbt.getDouble("speedup");
         }
         else this.speedup = (WorldUtil.getProviderForDimension(this.dimension) instanceof WorldProviderAsteroids) ? SPEEDUP * 1.6D : SPEEDUP;
+
+        this.pathBlockedCount = nbt.getInteger("pathBlockedCount");
     }
 
     @Override
@@ -1842,6 +1873,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	        nbt.setLong("playerUUIDLeast", this.playerUUID.getLeastSignificantBits());
         }
         nbt.setDouble("speedup", this.speedup);
+        nbt.setInteger("pathBlockedCount", this.pathBlockedCount);
     }
 }
 
