@@ -11,11 +11,15 @@ Issues means:
 
 Posting new issues - guidelines
 -------------------------------
-1. Please do not duplicate known issues: do a search first. __Check the closed issues also: maybe somebody already posted your issue and a fix was found.__
-2. When posting, always tell us your exact Galacticraft version.
-3. Please download the latest GC version from http://micdoodle8.com/mods/galacticraft/downloads and test if your issue still occurs in that, before posting.
-4. If reporting a crash, please always post your full crash report, use Pastebin or http://paste.ubuntu.com/ or https://gist.github.com/ or similar to post it.
-5. If reporting a mod conflict, we might ask you to do some testing to isolate which exact other mod is conflicting with GC.
+1. If you have a crash report with ```micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP``` or ```GCEntityClientPlayerMP``` somewhere in the _middle_ of it (and that's the _only_ link with Galacticraft) then it's probably __not__ a Galacticraft issue, instead it's being caused by something else nearer to the top of the crash report - see further guidance below - so please don't take up Galacticraft mod developers' time by posting these.
+2. Do not duplicate known issues: do a search first. __Check the closed issues also: maybe somebody already posted your issue and a fix was found.__
+3. When posting, always tell us your exact Galacticraft version.
+4. You should download the latest GC version from http://micdoodle8.com/mods/galacticraft/downloads and test if your issue still occurs in that, before posting.
+5. If reporting a crash, please always post your full crash report, use Pastebin or http://paste.ubuntu.com/ or https://gist.github.com/ or similar to post it.
+
+Issue reports not meeting these guidelines will be flagged as __Invalid__ and closed.
+
+If reporting a mod conflict, we might ask you to do some testing to isolate which exact other mod is conflicting with GC.
 
 How to search before posting your issue
 ---------------------------------------
