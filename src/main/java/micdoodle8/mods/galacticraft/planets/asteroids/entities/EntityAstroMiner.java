@@ -1514,7 +1514,15 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
         if (!this.worldObj.isRemote)
         {
-        	Entity e = par1DamageSource.getEntity(); 
+        	Entity e = par1DamageSource.getEntity();
+        	
+        	//If creative mode player, kill the entity (even if player owner is offline) and drop nothing
+        	if (e instanceof EntityPlayer && ((EntityPlayer)e).capabilities.isCreativeMode)
+        	{
+                this.kill();
+                return true;
+        	}
+        	
         	//Invulnerable to mobs
         	if (this.isEntityInvulnerable() || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)))
             {
@@ -1529,12 +1537,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
                 if (e instanceof EntityPlayer)
                 {
-                    if (((EntityPlayer) par1DamageSource.getEntity()).capabilities.isCreativeMode) this.shipDamage = 100;
-                    else this.shipDamage += par2 * 21;
+                    this.shipDamage += par2 * 21;
 //                    this.dataWatcher.updateObject(this.currentDamage, 100);
                 }
 
-                if (this.shipDamage > 90 && !this.worldObj.isRemote)
+                if (this.shipDamage > 90)
                 {
                     this.kill();
                     this.dropShipAsItem();
