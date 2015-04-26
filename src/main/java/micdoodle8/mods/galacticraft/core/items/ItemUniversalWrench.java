@@ -89,11 +89,12 @@ public class ItemUniversalWrench extends Item
     @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer entityPlayer, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
     {
-        Block blockID = world.getBlock(x, y, z);
+        if (world.isRemote) return false; 
+    	Block blockID = world.getBlock(x, y, z);
 
         if (blockID == Blocks.furnace || blockID == Blocks.lit_furnace || blockID == Blocks.dropper || blockID == Blocks.hopper || blockID == Blocks.dispenser || blockID == Blocks.piston || blockID == Blocks.sticky_piston)
         {
-            int metadata = world.getBlockMetadata(x, y, z);
+        	int metadata = world.getBlockMetadata(x, y, z);
 
             int[] rotationMatrix = { 1, 2, 3, 4, 5, 0 };
 
