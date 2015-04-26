@@ -37,7 +37,7 @@ If you have Galacticraft installed, that line will show up in the middle of the 
 
 That's not a vanilla Minecraft crash: likewise, Galacticraft does not have an issue here.  If you want to be 100% sure, you can install the PlayerAPI mod alongside Galacticraft and see if the same crash still happens.  (If PlayerAPI is installed then Galacticraft does not change the name of the vanilla player code in Minecraft.)
 
-In summary: don't post crash reports suggesting Galacticraft is at fault, if the only connection with Galacticraft is that micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP line in the middle of the report.
+In summary: don't post crash reports suggesting Galacticraft is at fault, if the only connection with Galacticraft is that ```micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP``` line in the middle of the report.  Or ```GCEntityClientPlayerMP```, the same guidance applies.
 
 What else is not OK on the issues list?
 ----------------------------------
