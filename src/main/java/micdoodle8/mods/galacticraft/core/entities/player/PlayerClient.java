@@ -98,7 +98,7 @@ public class PlayerClient implements IPlayerClient
 
             if (player.worldObj.provider instanceof WorldProviderOrbit)
             {
-                ((WorldProviderOrbit) player.worldObj.provider).spinUpdate(player, freefall);
+                ((WorldProviderOrbit) player.worldObj.provider).preVanillaMotion(player, freefall);
             }
         }
 
@@ -118,13 +118,18 @@ public class PlayerClient implements IPlayerClient
     {
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
+        if (player.worldObj.provider instanceof WorldProviderOrbit)
+        {
+            ((WorldProviderOrbit) player.worldObj.provider).postVanillaMotion(player, stats.inFreefall);
+        }
+
         if (stats.inFreefall)
         {
             player.limbSwing -= player.limbSwingAmount;
             player.limbSwingAmount = player.prevLimbSwingAmount;
         } else
         {
-	    	if (stats.inFreefallLast) stats.landingTicks = 6;
+	    	if (stats.inFreefallLast && stats.downMotionLast < -0.01D) stats.landingTicks = 6;
         }
         if (stats.landingTicks > 0) stats.landingTicks--;
 

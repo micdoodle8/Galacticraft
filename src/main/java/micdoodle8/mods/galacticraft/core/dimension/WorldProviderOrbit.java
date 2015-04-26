@@ -84,7 +84,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
     private boolean dataNotLoaded = true;
     private List<Entity> loadedEntities = new LinkedList();
     private double pPrevMotionX = 0D;
-    private double pPrevMotionY = 0D;
+    public double pPrevMotionY = 0D;
     private double pPrevMotionZ = 0D;
     private int pjumpticks = 0;
     private boolean pWasOnGround = false;
@@ -559,9 +559,25 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
     }
 
     @SideOnly(Side.CLIENT)
-    public void spinUpdate(EntityPlayerSP p, boolean flag)
+    public void preVanillaMotion(EntityPlayerSP p, boolean flag)
     {
         boolean freefall = this.testFreefall(p, flag);
+
+        GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
+        stats.inFreefallLast = stats.inFreefall;
+        stats.inFreefall = freefall;
+        stats.inFreefallFirstCheck = true;
+        this.pPrevMotionX = p.motionX;
+        this.pPrevMotionY = p.motionY;
+        this.pPrevMotionZ = p.motionZ;
+        this.pWasOnGround = p.onGround;
+        stats.downMotionLast = p.motionY;
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public void postVanillaMotion(EntityPlayerSP p, boolean flag)
+    {
+        boolean freefall = flag;
         boolean doGravity = true;
 
         if (freefall)
@@ -603,7 +619,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                     int collisions = 0;
                     do
                     {
-                        List<AxisAlignedBB> list = this.worldObj.getCollidingBoundingBoxes(p, p.boundingBox.offset(offsetX, 0.0D, offsetZ));
+                        List<AxisAlignedBB> list = this.worldObj.getCollidingBoundingBoxes(p, p.boundingBox.addCoord(offsetX, 0.0D, offsetZ));
                         collisions = list.size();
                         if (collisions > 0)
                         {
@@ -872,15 +888,6 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                 p.motionZ -= accel;
             }
         }
-
-        GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
-        stats.inFreefallLast = stats.inFreefall;
-        stats.inFreefall = freefall;
-        stats.inFreefallFirstCheck = true;
-        this.pPrevMotionX = p.motionX;
-        this.pPrevMotionY = p.motionY;
-        this.pPrevMotionZ = p.motionZ;
-        this.pWasOnGround = p.onGround;
     }
 
     @SideOnly(Side.CLIENT)
@@ -1512,6 +1519,4 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
     {
         return 0.1F;
     }
-
-    //TODO Occasional call to checkSS to update centre of mass etc (in case the player has been building)
 }

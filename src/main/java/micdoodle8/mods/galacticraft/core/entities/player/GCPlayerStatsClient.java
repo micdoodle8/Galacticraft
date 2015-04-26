@@ -32,6 +32,7 @@ public class GCPlayerStatsClient implements IExtendedEntityProperties
     public boolean inFreefall;
     public boolean inFreefallLast;
     public boolean inFreefallFirstCheck;
+	public double downMotionLast;
     public boolean lastRidingCameraZoomEntity;
     public int landingTicks;
 
