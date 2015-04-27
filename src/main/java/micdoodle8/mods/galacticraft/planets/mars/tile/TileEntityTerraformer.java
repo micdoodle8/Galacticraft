@@ -92,7 +92,6 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
             if (!this.worldObj.isRemote)
             {
                 this.terraformBubble = new EntityTerraformBubble(this.worldObj, new Vector3(this), this);
-                this.terraformBubble.setPosition(this.xCoord, this.yCoord, this.zCoord);
                 this.worldObj.spawnEntityInWorld(this.terraformBubble);
             }
         }
