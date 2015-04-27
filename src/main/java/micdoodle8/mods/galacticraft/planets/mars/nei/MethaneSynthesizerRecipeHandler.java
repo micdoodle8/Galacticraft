@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.planets.mars.nei;
 
+import static codechicken.lib.gui.GuiDraw.getMousePosition;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
-import codechicken.nei.guihook.GuiContainerManager;
-import codechicken.nei.guihook.IContainerTooltipHandler;
+import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
@@ -20,13 +20,14 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler implements IContainerTooltipHandler
+public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
 {
     private static final ResourceLocation synthesizerGuiTexture = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/methaneSynthesizer.png");
     private static final ResourceLocation synthesizerGasesTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/gui/gasesMethaneOxygenNitrogen.png");
@@ -257,28 +258,20 @@ public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler imple
     }
 
     @Override
-    public List<String> handleTooltip(GuiContainer gui, int mousex, int mousey, List<String> currenttip)
+    public List<String> handleTooltip(GuiRecipe gui, List<String> currenttip, int recipe)
     {
-    	ItemStack stack = GuiContainerManager.getStackMouseOver(gui);
-        if (stack != null)
-            currenttip.addAll(GuiContainerManager.itemDisplayNameMultiline(stack, gui, true));
+        Point mousePos = getMousePosition();
+    	try {
+        	Class clazz = GuiContainer.class;       	
+        	mousePos.x -= (Integer) clazz.getField("field_147003_i").get(gui);
+        	mousePos.y -= (Integer) clazz.getField("field_147009_r").get(gui);
+    	}  catch (Exception ee) { ee.printStackTrace(); }
 
-        if (mousex < 35 && mousex > 2 && mousey < 62 && mousey > 2)
+        if (mousePos.x < 23 && mousePos.x > 6 && mousePos.y < 78 && mousePos.y > 39)
         	currenttip.add(GCCoreUtil.translate("fluid.hydrogen"));
-    	
+        else if (mousePos.x < 44 && mousePos.x > 27 && mousePos.y < 60 && mousePos.y > 39)
+    		currenttip.add(GCCoreUtil.translate("gas.carbondioxide.name"));
+        
         return currenttip;
     }
-
-    @Override
-    public List<String> handleItemDisplayName(GuiContainer gui, ItemStack itemstack, List<String> currenttip)
-    {
-        return currenttip;
-    }
-
-
-	@Override
-	public List<String> handleItemTooltip(GuiContainer gui,ItemStack itemstack, int mousex, int mousey, List<String> currenttip)
-	{
-		return currenttip;
-	}
 }
