@@ -28,7 +28,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory implements ISidedInventory, IMultiBlock
@@ -107,9 +106,8 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 			{
 				if (this.linkedMiner.isDead)
 					this.unlinkMiner();
-					
 			}
-			if (this.linkedMiner == null)
+			if (this.linkedMinerID == null)
 	    	{
 	        	if (EntityAstroMiner.spawnMinerAtBase(this.worldObj, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1, (this.facing + 2) ^ 1, new BlockVec3(this), player))
 	        	{
@@ -215,8 +213,6 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         {
 	        nbt.setLong("LinkedUUIDMost", this.linkedMinerID.getMostSignificantBits());
 	        nbt.setLong("LinkedUUIDLeast", this.linkedMinerID.getLeastSignificantBits());
-	        nbt.setInteger("LinkedChunkX", MathHelper.floor_double(this.linkedMiner.posX) >> 4);
-	        nbt.setInteger("LinkedChunkZ", MathHelper.floor_double(this.linkedMiner.posZ) >> 4);
         }
         if (this.targetPoints.size() > 0)
         {

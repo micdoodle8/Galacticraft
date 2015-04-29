@@ -422,7 +422,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         if (flagLink)
         {
 	    	TileEntity tileEntity = posBase.getTileEntity(this.worldObj);
-			if (tileEntity instanceof TileEntityMinerBase)
+			if (tileEntity instanceof TileEntityMinerBase && ((TileEntityMinerBase)tileEntity).isMaster)
 			{
 				((TileEntityMinerBase) tileEntity).linkMiner(this);
 			}
@@ -607,7 +607,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	{
 		TileEntity tileEntity = posBase.getTileEntity(this.worldObj);
 		
-		if (!(tileEntity instanceof TileEntityMinerBase) || tileEntity.isInvalid())
+		if (!(tileEntity instanceof TileEntityMinerBase) || tileEntity.isInvalid() || !((TileEntityMinerBase)tileEntity).isMaster)
 		{
 			this.freeze(FAIL_BASEDESTROYED);
 			return;
@@ -1674,9 +1674,9 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     }
 
     @Override
-    protected void kill()
+    public void setDead()
     {
-        this.setDead();
+        super.setDead();
     	if (posBase != null)
     	{
     		TileEntity tileEntity = posBase.getTileEntity(this.worldObj);
