@@ -138,34 +138,40 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                 else
                 if (inputCanister.getItem() instanceof ItemCanisterGeneric)
                 {
-                    Item canisterType = inputCanister.getItem(); 
-                	FluidStack canisterGas = null;
-                    int factor = 1;
-                	if (this.gasTankType <= 0 && canisterType == AsteroidsItems.methaneCanister)
-                    {
-                        canisterGas = ((ItemCanisterGeneric)canisterType).getFluid(inputCanister);
-                    }
-                	if ((this.gasTankType == TankGases.OXYGEN.index || this.gasTankType == -1) && canisterType == AsteroidsItems.canisterLOX)
-                    {
-                        canisterGas = ((ItemCanisterGeneric)canisterType).getFluid(inputCanister);
-                        factor = 2;
-                    }
-                	if ((this.gasTankType == TankGases.NITROGEN.index || this.gasTankType == -1) && canisterType == AsteroidsItems.canisterLN2)
-                    {
-                        canisterGas = ((ItemCanisterGeneric)canisterType).getFluid(inputCanister);
-                        factor = 2;
-                    }
-
-                    if (canisterGas != null)
-	                {
-	                	canisterGas.amount *= factor;
-                    	int originalDamage = inputCanister.getItemDamage();
-	                	int used = this.gasTank.fill(canisterGas, true) / factor;
-	                	if (originalDamage + used == ItemCanisterGeneric.EMPTY)
-	                		this.containingItems[1] = new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY);
-	                	else
-	                		this.containingItems[1] = new ItemStack(canisterType, 1, originalDamage + used);
-	                }
+                	if (inputCanister.getItemDamage() < ItemCanisterGeneric.EMPTY)
+                	{
+	                	Item canisterType = inputCanister.getItem(); 
+	                	FluidStack canisterGas = null;
+	                    int factor = 1;
+	                	if (this.gasTankType <= 0 && canisterType == AsteroidsItems.methaneCanister)
+	                    {
+	                        this.gasTankType = TankGases.METHANE.index;
+	                        canisterGas = ((ItemCanisterGeneric)canisterType).getFluid(inputCanister);
+	                    }
+	                	if ((this.gasTankType == TankGases.OXYGEN.index || this.gasTankType == -1) && canisterType == AsteroidsItems.canisterLOX)
+	                    {
+	                        this.gasTankType = TankGases.OXYGEN.index;
+	                        canisterGas = ((ItemCanisterGeneric)canisterType).getFluid(inputCanister);
+	                        factor = 2;
+	                    }
+	                	if ((this.gasTankType == TankGases.NITROGEN.index || this.gasTankType == -1) && canisterType == AsteroidsItems.canisterLN2)
+	                    {
+	                        this.gasTankType = TankGases.NITROGEN.index;
+	                        canisterGas = ((ItemCanisterGeneric)canisterType).getFluid(inputCanister);
+	                        factor = 2;
+	                    }
+	
+	                    if (canisterGas != null)
+		                {
+		                	canisterGas.amount *= factor;
+	                    	int originalDamage = inputCanister.getItemDamage();
+		                	int used = this.gasTank.fill(canisterGas, true) / factor;
+		                	if (originalDamage + used == ItemCanisterGeneric.EMPTY)
+		                		this.containingItems[1] = new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY);
+		                	else
+		                		this.containingItems[1] = new ItemStack(canisterType, 1, originalDamage + used);
+		                }
+                	}
             	}
                 else
                 {
