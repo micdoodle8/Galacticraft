@@ -55,6 +55,9 @@ public class VersionUtil
     private static final String KEY_METHOD_PLAYER_IS_OPPED = "isPlayerOpped";
     private static final String KEY_METHOD_PLAYER_TEXTURE = "getEntityTexture";
 
+    //Used in GCPlayerHandler
+    public static final String KEY_FIELD_FLOATINGTICKCOUNT = "floatingTickCount";
+
     static
     {
         mcVersion = new DefaultArtifactVersion((String) FMLInjectionData.data()[4]);
@@ -121,6 +124,9 @@ public class VersionUtil
             nodemap.put(KEY_METHOD_PLAYER_IS_OPPED, new MethodObfuscationEntry("isPlayerOpped", "func_72353_e", ""));
             nodemap.put(KEY_METHOD_PLAYER_TEXTURE, new MethodObfuscationEntry("getEntityTexture", "func_110775_a", ""));
         }
+
+        //Same for both versions
+        nodemap.put(KEY_FIELD_FLOATINGTICKCOUNT, new ObfuscationEntry("floatingTickCount", "field_147365_f"));
     }
 
     public static boolean mcVersionMatches(String version)
@@ -517,7 +523,7 @@ public class VersionUtil
         return nodemap.get(keyName).obfuscatedName;
     }
 
-    private static String getNameDynamic(String keyName)
+    public static String getNameDynamic(String keyName)
     {
         try
         {

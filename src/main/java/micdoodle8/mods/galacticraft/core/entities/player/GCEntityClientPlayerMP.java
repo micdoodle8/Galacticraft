@@ -73,4 +73,16 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
     {
         return ClientProxyCore.playerClientHandler.getBedOrientationInDegrees(this, super.getBedOrientationInDegrees());
     }
+//
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public void setVelocity(double xx, double yy, double zz)
+//    {
+//    	if (this.worldObj.provider instanceof WorldProviderOrbit)
+//    	{
+//    		((WorldProviderOrbit)this.worldObj.provider).setVelocityClient(this, xx, yy, zz);	
+//    	}
+//    	super.setVelocity(xx, yy, zz);
+//    }
+//
 }

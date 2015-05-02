@@ -12,7 +12,9 @@ import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSpinThruster;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOrbit;
+import micdoodle8.mods.galacticraft.core.entities.player.FreefallHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -559,25 +561,22 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
     }
 
     @SideOnly(Side.CLIENT)
-    public void preVanillaMotion(EntityPlayerSP p, boolean flag)
+    public void preVanillaMotion(EntityPlayerSP p)
     {
-        boolean freefall = this.testFreefall(p, flag);
-
-        GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
-        stats.inFreefallLast = stats.inFreefall;
-        stats.inFreefall = freefall;
-        stats.inFreefallFirstCheck = true;
-        this.pPrevMotionX = p.motionX;
-        this.pPrevMotionY = p.motionY;
-        this.pPrevMotionZ = p.motionZ;
+        FreefallHandler.setupFreefallPre(p);
         this.pWasOnGround = p.onGround;
-        stats.downMotionLast = p.motionY;
     }
     
     @SideOnly(Side.CLIENT)
-    public void postVanillaMotion(EntityPlayerSP p, boolean flag)
+    public void postVanillaMotion(EntityPlayerSP p)
     {
-        boolean freefall = flag;
+        GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
+        boolean freefall = stats.inFreefall;
+        if (freefall) p.ySize = 0F;  //Undo the sneak height adjust
+        freefall = this.testFreefall(p, freefall);
+        stats.inFreefall = freefall;
+        stats.inFreefallFirstCheck = true;
+        
         boolean doGravity = true;
 
         if (freefall)
@@ -684,78 +683,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
             //Do freefall motion
             if (!p.capabilities.isCreativeMode)
             {
-                double dx = p.motionX - this.pPrevMotionX;
-                double dy = p.motionY - this.pPrevMotionY;
-                double dz = p.motionZ - this.pPrevMotionZ;
-/*				double dyaw = p.rotationYaw - p.prevRotationYaw;
-				p.rotationYaw -= dyaw * 0.8D;
-				double dyawh = p.rotationYawHead - p.prevRotationYawHead;
-				p.rotationYawHead -= dyawh * 0.8D;
-				while (p.rotationYaw > 360F)
-				{
-					p.rotationYaw -= 360F;
-				}
-				while (p.rotationYaw < 0F)
-				{
-					p.rotationYaw += 360F;
-				}
-				while (p.rotationYawHead > 360F)
-				{
-					p.rotationYawHead -= 360F;
-				}
-				while (p.rotationYawHead < 0F)
-				{
-					p.rotationYawHead += 360F;
-				}
-*/
-                //if (p.capabilities.isFlying)
-                ///Undo whatever vanilla tried to do to our y motion
-                p.motionY -= dy;
-                p.motionX -= dx;
-                p.motionZ -= dz;
-
-                if (p.movementInput.moveForward != 0)
-                {
-                    p.motionX -= p.movementInput.moveForward * MathHelper.sin(p.rotationYaw / 57.29578F) / (ConfigManagerCore.hardMode ? 600F : 200F);
-                    p.motionZ += p.movementInput.moveForward * MathHelper.cos(p.rotationYaw / 57.29578F) / (ConfigManagerCore.hardMode ? 600F : 200F);
-                }
-
-                if (p.movementInput.sneak)
-                {
-                    p.motionY -= ConfigManagerCore.hardMode ? 0.0012D : 0.0032D;
-                }
-
-                if (p.movementInput.jump)
-                {
-                    p.motionY += ConfigManagerCore.hardMode ? 0.0012D : 0.0032D;
-                }
-                
-                float speedLimit = ConfigManagerCore.hardMode ? 0.9F : 0.7F;
-
-                if (p.motionX > speedLimit)
-                {
-                    p.motionX = speedLimit;
-                }
-                if (p.motionX < -speedLimit)
-                {
-                    p.motionX = -speedLimit;
-                }
-                if (p.motionY > speedLimit)
-                {
-                    p.motionY = speedLimit;
-                }
-                if (p.motionY < -speedLimit)
-                {
-                    p.motionY = -speedLimit;
-                }
-                if (p.motionZ > speedLimit)
-                {
-                    p.motionZ = speedLimit;
-                }
-                if (p.motionZ < -speedLimit)
-                {
-                    p.motionZ = -speedLimit;
-                }
+            	FreefallHandler.freefallMotion(p);
             }
             else
             {
@@ -794,7 +722,6 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
             }
             //TODO: Think about endless drift?
             //Player may run out of oxygen - that will kill the player eventually if can't get back to SS
-            //Maybe player needs a 'suicide' button if floating helplessly in space and with no tether
             //Could auto-kill + respawn the player if floats too far away (config option whether to lose items or not)
             //But we want players to be able to enjoy the view of the spinning space station from the outside
             //Arm and leg movements could start tumbling the player?
@@ -817,7 +744,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                 }
                 else
                 {
-                    p.motionY += 0.003D;
+                    p.motionY += 0.015D;
                     if (this.pjumpticks == 0)
                     {
                         p.motionY -= dy;
@@ -828,7 +755,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
             {
                 if (!p.onGround)
                 {
-                    p.motionY -= 0.003D;
+                    p.motionY -= 0.015D;
                 }
                 this.pjumpticks = 0;
             }
@@ -888,6 +815,9 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                 p.motionZ -= accel;
             }
         }
+        this.pPrevMotionX = p.motionX;
+        this.pPrevMotionY = p.motionY;
+        this.pPrevMotionZ = p.motionZ;
     }
 
     @SideOnly(Side.CLIENT)
@@ -903,31 +833,45 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         {
             return false;
         }
-        else if (p.boundingBox.maxX >= this.ssBoundsMinX && p.boundingBox.minX <= this.ssBoundsMaxX && p.boundingBox.maxY >= this.ssBoundsMinY && p.boundingBox.minY <= this.ssBoundsMaxY && p.boundingBox.maxZ >= this.ssBoundsMinZ && p.boundingBox.minZ <= this.ssBoundsMaxZ)
-        //Player is somewhere within the space station boundaries
+        else
         {
-            //Check if the player's bounding box is in the same block coordinates as any non-vacuum block (including torches etc)
-            //If so, it's assumed the player has something close enough to grab onto, so is not in freefall
-            //Note: breatheable air here means the player is definitely not in freefall
-            int xmx = MathHelper.floor_double(p.boundingBox.maxX);
-            int ym = MathHelper.floor_double(p.boundingBox.minY);
-            int yy = MathHelper.floor_double(p.boundingBox.maxY);
-            int zm = MathHelper.floor_double(p.boundingBox.minZ);
-            int zz = MathHelper.floor_double(p.boundingBox.maxZ);
-            for (int x = MathHelper.floor_double(p.boundingBox.minX); x <= xmx; x++)
-            {
-                for (int y = ym; y <= yy; y++)
-                {
-                    for (int z = zm; z <= zz; z++)
-                    {
-                        //Blocks.air is hard vacuum - we want to check for that, here
-                        if (Blocks.air != this.worldObj.getBlock(x, y, z))
-                        {
-                            return false;
-                        }
-                    }
-                }
-            }
+    		float rY = p.rotationYaw % 360F;
+            double zreach = 0D;
+            double xreach = 0D;
+    		if (rY < 80F || rY > 280F) zreach = 0.2D;
+    		if (rY < 170F && rY > 10F) xreach = 0.2D;
+    		if (rY < 260F && rY > 100F) zreach = -0.2D;
+    		if (rY < 350F && rY > 190F) xreach = -0.2D;
+        	AxisAlignedBB playerReach = p.boundingBox.addCoord(xreach, 0, zreach);            
+            
+        	if (playerReach.maxX >= this.ssBoundsMinX && playerReach.minX <= this.ssBoundsMaxX && playerReach.maxY >= this.ssBoundsMinY && playerReach.minY <= this.ssBoundsMaxY && playerReach.maxZ >= this.ssBoundsMinZ && playerReach.minZ <= this.ssBoundsMaxZ)
+	        //Player is somewhere within the space station boundaries
+	        {
+	        	//Check if the player's bounding box is in the same block coordinates as any non-vacuum block (including torches etc)
+	            //If so, it's assumed the player has something close enough to grab onto, so is not in freefall
+	            //Note: breatheable air here means the player is definitely not in freefall
+	        	int xm = MathHelper.floor_double(playerReach.minX);
+	        	int xx = MathHelper.floor_double(playerReach.maxX);
+	            int ym = MathHelper.floor_double(playerReach.minY);
+	            int yy = MathHelper.floor_double(playerReach.maxY);
+	            int zm = MathHelper.floor_double(playerReach.minZ);
+	            int zz = MathHelper.floor_double(playerReach.maxZ);
+	            for (int x = xm; x <= xx; x++)
+	            {
+	                for (int y = ym; y <= yy; y++)
+	                {
+	                    for (int z = zm; z <= zz; z++)
+	                    {
+	                        //Blocks.air is hard vacuum - we want to check for that, here
+	                    	Block b = this.worldObj.getBlock(x, y, z);
+	                        if (Blocks.air != b && GCBlocks.brightAir != b)
+	                        {
+	                            return false;
+	                        }
+	                    }
+	                }
+	            }
+	        }
         }
 
 		/*
