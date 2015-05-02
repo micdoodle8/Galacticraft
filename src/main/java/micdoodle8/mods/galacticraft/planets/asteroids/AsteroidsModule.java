@@ -43,10 +43,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.RecipeSorter;
 
 import java.io.File;
@@ -204,14 +201,6 @@ public class AsteroidsModule implements IPlanetsModule
         input2.put(20, new ItemStack(Blocks.chest));
         input2.put(21, new ItemStack(Blocks.chest));
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 3), input2));
-
-        int canisterMaxDamage = AsteroidsItems.methaneCanister.getMaxDamage();
-        for (int i = canisterMaxDamage - 1; i > 0; i--)
-        {
-            FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(AsteroidsModule.fluidMethaneGas, canisterMaxDamage - i), new ItemStack(AsteroidsItems.methaneCanister, 1, i), new ItemStack(GCItems.oilCanister, 1, canisterMaxDamage)));
-            FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(AsteroidsModule.fluidLiquidOxygen, canisterMaxDamage - i), new ItemStack(AsteroidsItems.canisterLOX, 1, i), new ItemStack(GCItems.oilCanister, 1, canisterMaxDamage)));
-            FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(AsteroidsModule.fluidLiquidNitrogen, canisterMaxDamage - i), new ItemStack(AsteroidsItems.canisterLN2, 1, i), new ItemStack(GCItems.oilCanister, 1, canisterMaxDamage)));
-        }
     }
 
     @Override

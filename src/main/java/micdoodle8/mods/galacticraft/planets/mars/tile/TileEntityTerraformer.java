@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithIn
 import micdoodle8.mods.galacticraft.core.entities.IBubble;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityTerraformBubble;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerTerraformer;
@@ -109,19 +110,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                     {
                         this.waterTank.fill(liquid, true);
 
-                        if (FluidContainerRegistry.isBucket(this.containingItems[0]) && FluidContainerRegistry.isFilledContainer(this.containingItems[0]))
-                        {
-                            this.containingItems[0] = new ItemStack(Items.bucket, this.containingItems[0].stackSize);
-                        }
-                        else
-                        {
-                            this.containingItems[0].stackSize--;
-
-                            if (this.containingItems[0].stackSize == 0)
-                            {
-                                this.containingItems[0] = null;
-                            }
-                        }
+                        this.containingItems[0] = FluidUtil.getUsedContainer(this.containingItems[0]);
                     }
                 }
             }

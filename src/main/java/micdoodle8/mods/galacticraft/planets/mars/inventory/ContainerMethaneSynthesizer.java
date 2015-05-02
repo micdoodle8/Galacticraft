@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.planets.mars.inventory;
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
+import micdoodle8.mods.galacticraft.core.util.FluidUtil;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityMethaneSynthesizer;
@@ -11,8 +13,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class ContainerMethaneSynthesizer extends Container
 {
@@ -105,8 +105,7 @@ public class ContainerMethaneSynthesizer extends Container
                 }
                 else
                 {
-                    FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(var4);
-                    if (liquid != null || var4.getItem() instanceof ItemAtmosphericValve)
+                    if (var4.getItem() instanceof ItemAtmosphericValve)
                     {
                         if (!this.mergeItemStack(var4, 2, 3, false))
                         {
@@ -120,7 +119,7 @@ public class ContainerMethaneSynthesizer extends Container
                             return null;
                         }
                     }
-                    else if (FluidContainerRegistry.isEmptyContainer(var4))
+                    else if (FluidUtil.isEmptyContainer(var4, AsteroidsItems.methaneCanister))
                     {
                         if (!this.mergeItemStack(var4, 4, 5, false))
                         {

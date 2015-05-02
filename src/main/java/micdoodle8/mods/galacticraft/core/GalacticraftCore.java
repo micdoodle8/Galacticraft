@@ -57,10 +57,7 @@ import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
@@ -212,16 +209,6 @@ public class GalacticraftCore
 
         ForgeChunkManager.setForcedChunkLoadingCallback(GalacticraftCore.instance, new ChunkLoadingCallback());
         FMLCommonHandler.instance().bus().register(new ConnectionEvents());
-
-        for (int i = GCItems.fuelCanister.getMaxDamage() - 1; i > 0; i--)
-        {
-            FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidFuel, GCItems.fuelCanister.getMaxDamage() - i), new ItemStack(GCItems.fuelCanister, 1, i), new ItemStack(GCItems.oilCanister, 1, GCItems.fuelCanister.getMaxDamage())));
-        }
-
-        for (int i = GCItems.oilCanister.getMaxDamage() - 1; i > 0; i--)
-        {
-            FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidOil, GCItems.oilCanister.getMaxDamage() - i), new ItemStack(GCItems.oilCanister, 1, i), new ItemStack(GCItems.oilCanister, 1, GCItems.fuelCanister.getMaxDamage())));
-        }
 
         SchematicRegistry.registerSchematicRecipe(new SchematicRocketT1());
         SchematicRegistry.registerSchematicRecipe(new SchematicMoonBuggy());
