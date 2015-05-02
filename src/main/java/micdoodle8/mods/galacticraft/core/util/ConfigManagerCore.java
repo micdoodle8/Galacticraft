@@ -70,6 +70,8 @@ public class ConfigManagerCore
     public static double spaceStationEnergyScalar;
     public static int rocketFuelFactor;
     public static boolean enableDebug;
+    public static float mapMouseScrollSensitivity;
+    public static boolean invertMapMouseScroll;
     
     // WORLDGEN
     public static boolean enableCopperOreGen;
@@ -456,6 +458,18 @@ public class ConfigManagerCore
             prop.comment = "The normal factor is 1.  Increase this to 2 - 5 if other mods with a lot of oil (e.g. BuildCraft) are installed to increase GC rocket fuel requirement.";
             prop.setLanguageKey("gc.configgui.rocketFuelFactor");
             rocketFuelFactor = prop.getInt(1);
+            propOrder.add(prop.getName());
+            
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Map Scroll Mouse Sensitivity", 1.0);
+            prop.comment = "Increase to make the mouse drag scroll more sensitive, decrease to lower sensitivity.";
+            prop.setLanguageKey("gc.configgui.mapScrollSensitivity");
+            mapMouseScrollSensitivity = (float)prop.getDouble(1.0);
+            propOrder.add(prop.getName());
+            
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Map Scroll Mouse Invert", false);
+            prop.comment = "Set to true to invert the mouse scroll feature on the galaxy map.";
+            prop.setLanguageKey("gc.configgui.mapScrollInvert");
+            invertMapMouseScroll = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
             config.setCategoryPropertyOrder(CATEGORY_GENERAL, propOrder);

@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -86,6 +87,9 @@ public class GuiCelestialSelection extends GuiScreen
     private boolean renamingSpaceStation;
     private String renamingString = "";
     private Vector2f translation = new Vector2f();
+    boolean mouseDragging = false;
+    int lastMovePosX = -1;
+    int lastMovePosY = -1;
 
     public GuiCelestialSelection(boolean mapMode, List<CelestialBody> possibleBodies)
     {
@@ -487,9 +491,6 @@ public class GuiCelestialSelection extends GuiScreen
         
         if (!this.renamingSpaceStation && (this.selectedBody == null || this.selectionCount < 2))
         {
-        	this.translation.x = 0.0F;
-        	this.translation.y = 0.0F;
-        	
             if (mc.gameSettings.isKeyDown(KeyHandlerClient.leftKey))
             {
             	translation.x += -2.0F;
@@ -576,6 +577,42 @@ public class GuiCelestialSelection extends GuiScreen
         return false;
     }
 
+    @Override
+    public void handleInput()
+    {
+    	this.translation.x = 0.0F;
+    	this.translation.y = 0.0F;
+    	super.handleInput();
+    }
+
+    @Override
+    protected void mouseClickMove(int x, int y, int lastButtonClicked, long timeSinceMouseClick) 
+    {
+    	super.mouseClickMove(x, y, lastButtonClicked, timeSinceMouseClick);
+    	
+    	if (mouseDragging && lastMovePosX != -1 && lastButtonClicked == 0)
+    	{
+    		int deltaX = x - lastMovePosX;
+    		int deltaY = y - lastMovePosY;
+
+        	translation.x += (deltaX - deltaY) * -0.4F * (ConfigManagerCore.invertMapMouseScroll ? -1.0F : 1.0F) * ConfigManagerCore.mapMouseScrollSensitivity;
+        	translation.y += (deltaY + deltaX) * -0.4F * (ConfigManagerCore.invertMapMouseScroll ? -1.0F : 1.0F) * ConfigManagerCore.mapMouseScrollSensitivity;
+    	}
+    	
+		lastMovePosX = x;
+		lastMovePosY = y;
+    }
+
+    @Override
+    protected void mouseMovedOrUp(int x, int y, int button)
+    {
+    	super.mouseMovedOrUp(x, y, button);
+
+    	mouseDragging = false;
+		lastMovePosX = -1;
+		lastMovePosY = -1;
+    }
+    
     @Override
     protected void mouseClicked(int x, int y, int button)
     {
@@ -864,6 +901,8 @@ public class GuiCelestialSelection extends GuiScreen
             {
                 this.unselectCelestialBody();
             }
+
+            mouseDragging = true;
         }
 
         Object selectedParent = this.selectedParent;
@@ -2099,7 +2138,7 @@ public class GuiCelestialSelection extends GuiScreen
     public Matrix4f setIsometric(float partialTicks)
     {
         Matrix4f mat0 = new Matrix4f();
-        Matrix4f.translate(new Vector3f(width / 2.0F + translation.x, height / 2 + translation.y, 0), mat0, mat0);
+        Matrix4f.translate(new Vector3f(width / 2.0F, height / 2, 0), mat0, mat0);
         Matrix4f.rotate((float) Math.toRadians(55), new Vector3f(1, 0, 0), mat0, mat0);
         Matrix4f.rotate((float) Math.toRadians(-45), new Vector3f(0, 0, 1), mat0, mat0);
         float zoomLocal = this.getZoomAdvanced();
