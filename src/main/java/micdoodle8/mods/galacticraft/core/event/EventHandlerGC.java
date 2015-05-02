@@ -36,6 +36,7 @@ import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.block.Block;
@@ -232,15 +233,23 @@ public class EventHandlerGC
     @SubscribeEvent
     public void entityLivingEvent(LivingUpdateEvent event)
     {
-        if (event.entityLiving.worldObj.provider instanceof IGalacticraftWorldProvider)
+        EntityLivingBase entityLiving = event.entityLiving; 
+    	if (entityLiving instanceof EntityPlayerMP)
         {
-            if (!(event.entityLiving instanceof EntityPlayer))
+                GalacticraftCore.handler.onPlayerUpdate((EntityPlayerMP) entityLiving);
+                if (GalacticraftCore.isPlanetsLoaded) AsteroidsModule.playerHandler.onPlayerUpdate((EntityPlayerMP) entityLiving);
+                return;
+        }
+
+        if (entityLiving.ticksExisted % 100 == 0)
+        {
+            if (entityLiving.worldObj.provider instanceof IGalacticraftWorldProvider)
             {
-                if (event.entityLiving.ticksExisted % 100 == 0 && (!(event.entityLiving instanceof IEntityBreathable) || !((IEntityBreathable) event.entityLiving).canBreath()) && !((IGalacticraftWorldProvider)event.entityLiving.worldObj.provider).hasBreathableAtmosphere())
+                if (!(entityLiving instanceof EntityPlayer) && (!(entityLiving instanceof IEntityBreathable) || !((IEntityBreathable) entityLiving).canBreath()) && !((IGalacticraftWorldProvider)entityLiving.worldObj.provider).hasBreathableAtmosphere())
                 {
-                    if (!OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving))
+                    if (!OxygenUtil.isAABBInBreathableAirBlock(entityLiving))
                     {
-                        GCCoreOxygenSuffocationEvent suffocationEvent = new GCCoreOxygenSuffocationEvent.Pre(event.entityLiving);
+                        GCCoreOxygenSuffocationEvent suffocationEvent = new GCCoreOxygenSuffocationEvent.Pre(entityLiving);
                         MinecraftForge.EVENT_BUS.post(suffocationEvent);
 
                         if (suffocationEvent.isCanceled())
@@ -248,9 +257,9 @@ public class EventHandlerGC
                             return;
                         }
 
-                        event.entityLiving.attackEntityFrom(DamageSourceGC.oxygenSuffocation, 1);
+                        entityLiving.attackEntityFrom(DamageSourceGC.oxygenSuffocation, 1);
 
-                        GCCoreOxygenSuffocationEvent suffocationEventPost = new GCCoreOxygenSuffocationEvent.Post(event.entityLiving);
+                        GCCoreOxygenSuffocationEvent suffocationEventPost = new GCCoreOxygenSuffocationEvent.Post(entityLiving);
                         MinecraftForge.EVENT_BUS.post(suffocationEventPost);
                     }
                 }

@@ -10,7 +10,6 @@ import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAstero
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.EntityEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
 public class AsteroidsPlayerHandler
 {
@@ -63,16 +62,7 @@ public class AsteroidsPlayerHandler
     {
     }
 
-    @SubscribeEvent
-    public void onLivingUpdate(LivingUpdateEvent event)
-    {
-        if (event.entityLiving instanceof EntityPlayerMP)
-        {
-            this.onPlayerUpdate((EntityPlayerMP) event.entityLiving);
-        }
-    }
-
-    private void onPlayerUpdate(EntityPlayerMP player)
+    public void onPlayerUpdate(EntityPlayerMP player)
     {
         if (!player.worldObj.isRemote && player.worldObj.provider instanceof WorldProviderAsteroids)
         {

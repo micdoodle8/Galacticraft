@@ -86,6 +86,7 @@ public class GalacticraftCore
     public static boolean isPlanetsLoaded;
     
     public static GalacticraftChannelHandler packetPipeline;
+    public static GCPlayerHandler handler;
 
     public static CreativeTabs galacticraftBlocksTab;
     public static CreativeTabs galacticraftItemsTab;
@@ -130,7 +131,7 @@ public class GalacticraftCore
     	GCCoreUtil.nextID = 0;
     	
     	MinecraftForge.EVENT_BUS.register(new EventHandlerGC());
-        GCPlayerHandler handler = new GCPlayerHandler();
+        handler = new GCPlayerHandler();
         MinecraftForge.EVENT_BUS.register(handler);
         FMLCommonHandler.instance().bus().register(handler);
         GalacticraftCore.proxy.preInit(event);

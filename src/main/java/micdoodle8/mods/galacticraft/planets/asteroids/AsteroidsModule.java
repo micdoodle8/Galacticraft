@@ -61,6 +61,7 @@ public class AsteroidsModule implements IPlanetsModule
     public static final String ASSET_PREFIX = "galacticraftasteroids";
     public static final String TEXTURE_PREFIX = AsteroidsModule.ASSET_PREFIX + ":";
 
+    public static AsteroidsPlayerHandler playerHandler;
     public static Fluid fluidMethaneGas;
     public static Fluid fluidOxygenGas;
     public static Fluid fluidNitrogenGas;
@@ -75,7 +76,7 @@ public class AsteroidsModule implements IPlanetsModule
     public void preInit(FMLPreInitializationEvent event)
     {
         new ConfigManagerAsteroids(new File(event.getModConfigurationDirectory(), "Galacticraft/asteroids.conf"));
-        AsteroidsPlayerHandler playerHandler = new AsteroidsPlayerHandler();
+        playerHandler = new AsteroidsPlayerHandler();
         MinecraftForge.EVENT_BUS.register(playerHandler);
         FMLCommonHandler.instance().bus().register(playerHandler);
         AsteroidsEventHandler eventHandler = new AsteroidsEventHandler();

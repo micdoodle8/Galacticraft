@@ -47,7 +47,6 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
@@ -150,15 +149,6 @@ public class GCPlayerHandler
         }
 
         stats.player = new WeakReference<EntityPlayerMP>(player);
-    }
-
-    @SubscribeEvent
-    public void onLivingUpdate(LivingUpdateEvent event)
-    {
-        if (event.entityLiving instanceof EntityPlayerMP)
-        {
-            this.onPlayerUpdate((EntityPlayerMP) event.entityLiving);
-        }
     }
 
     public static void checkGear(EntityPlayerMP player, GCPlayerStats GCPlayer, boolean forceSend)
@@ -945,7 +935,7 @@ public class GCPlayerHandler
         REMOVE_THERMAL_BOOTS
     }
 
-    private void onPlayerUpdate(EntityPlayerMP player)
+    public void onPlayerUpdate(EntityPlayerMP player)
     {
     	int tick = player.ticksExisted - 1;
 
