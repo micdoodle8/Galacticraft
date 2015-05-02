@@ -73,6 +73,11 @@ public class TickHandlerServer
         TickHandlerServer.edgeChecks.clear();
         TickHandlerServer.networkTicks.clear();
         TickHandlerServer.serverFootprintMap.clear();
+        TickHandlerServer.oxygenTransmitterUpdates.clear();
+        TickHandlerServer.hydrogenTransmitterUpdates.clear();
+        TickHandlerServer.energyTransmitterUpdates.clear();
+        TickHandlerServer.playersRequestingMapData.clear();
+        TickHandlerServer.networkTicks.clear();
 
         for (SpaceRace race : SpaceRaceManager.getSpaceRaces())
         {
