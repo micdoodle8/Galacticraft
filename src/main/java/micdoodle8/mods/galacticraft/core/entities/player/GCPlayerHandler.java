@@ -949,9 +949,13 @@ public class GCPlayerHandler
     {
     	int tick = player.ticksExisted - 1;
 
+        //This will speed things up a little
+        final GCPlayerStats GCPlayer = GCPlayerStats.get(player);
+        final boolean isInGCDimension = player.worldObj.provider instanceof IGalacticraftWorldProvider;
+
         if (tick >= 25)
         {
-            if (!GCPlayerStats.get(player).openedSpaceRaceManager)
+            if (!GCPlayer.openedSpaceRaceManager)
             {
                 SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(player.getGameProfile().getName());
 
@@ -960,13 +964,9 @@ public class GCPlayerHandler
                     GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_SPACE_RACE_GUI, new Object[] { }), player);
                 }
 
-                GCPlayerStats.get(player).openedSpaceRaceManager = true;
+                GCPlayer.openedSpaceRaceManager = true;
             }
         }
-
-        //This will speed things up a little
-        final GCPlayerStats GCPlayer = GCPlayerStats.get(player);
-        final boolean isInGCDimension = player.worldObj.provider instanceof IGalacticraftWorldProvider;
 
         if (GCPlayer.cryogenicChamberCooldown > 0)
         {
@@ -1074,7 +1074,7 @@ public class GCPlayerHandler
                 try {
                 	if (ftc == null)
                 	{
-                		ftc = player.playerNetServerHandler.getClass().getField("floatingTickCount");
+                		ftc = player.playerNetServerHandler.getClass().getField(VersionUtil.getNameDynamic(VersionUtil.KEY_FIELD_FLOATINGTICKCOUNT));
             			ftc.setAccessible(true);
                 	}
                 	//Prevent kicks for flying
