@@ -2,9 +2,12 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.command.CommandGCInv;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.entity.Entity;
@@ -193,7 +196,6 @@ public class GCPlayerStats implements IExtendedEntityProperties
         nbt.setBoolean("ReceivedSoundWarning", this.receivedSoundWarning);
         nbt.setInteger("BuildFlags", this.buildFlags);
         nbt.setBoolean("ShownSpaceRace", this.openedSpaceRaceManager);
-        if (ConfigManagerCore.enableDebug) GCLog.info("Saving GC player data for " + player.get().getGameProfile().getName()  + " : " + this.buildFlags);
         nbt.setInteger("AstroMinerCount", this.astroMinerCount);
     }
 
@@ -218,10 +220,14 @@ public class GCPlayerStats implements IExtendedEntityProperties
         // inventory, load it now
         // (if there was no offline load, then the dontload flag in doLoad()
         // will make sure nothing happens)
-        ItemStack[] saveinv = CommandGCInv.getSaveData(this.player.get().getGameProfile().getName().toLowerCase());
-        if (saveinv != null)
+        EntityPlayerMP p = this.player.get();
+        if (p != null)
         {
-            CommandGCInv.doLoad(this.player.get());
+	        ItemStack[] saveinv = CommandGCInv.getSaveData(p.getGameProfile().getName().toLowerCase());
+	        if (saveinv != null)
+	        {
+	            CommandGCInv.doLoad(p);
+	        }
         }
 
         if (nbt.hasKey("SpaceshipTier"))
@@ -277,13 +283,16 @@ public class GCPlayerStats implements IExtendedEntityProperties
 
         this.unlockedSchematics = new ArrayList<ISchematicPage>();
 
-        for (int i = 0; i < nbt.getTagList("Schematics", 10).tagCount(); ++i)
+        if (p != null)
         {
-            final NBTTagCompound nbttagcompound = nbt.getTagList("Schematics", 10).getCompoundTagAt(i);
-
-            final int j = nbttagcompound.getInteger("UnlockedPage");
-
-            SchematicRegistry.addUnlockedPage(this.player.get(), SchematicRegistry.getMatchingRecipeForID(j));
+	        for (int i = 0; i < nbt.getTagList("Schematics", 10).tagCount(); ++i)
+	        {
+	            final NBTTagCompound nbttagcompound = nbt.getTagList("Schematics", 10).getCompoundTagAt(i);
+	
+	            final int j = nbttagcompound.getInteger("UnlockedPage");
+	
+	            SchematicRegistry.addUnlockedPage(p, SchematicRegistry.getMatchingRecipeForID(j));
+	        }
         }
 
         Collections.sort(this.unlockedSchematics);
@@ -350,5 +359,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
         this.spaceRaceInviteTeamID = oldData.spaceRaceInviteTeamID;
         this.buildFlags = oldData.buildFlags;
         this.astroMinerCount = oldData.astroMinerCount;
+        EntityPlayerMP p = this.player.get();
+		if (p != null) GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATS, new Object[] { this.buildFlags }), p);
     }
 }
