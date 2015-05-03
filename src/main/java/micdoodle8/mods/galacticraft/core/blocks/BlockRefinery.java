@@ -196,11 +196,11 @@ public class BlockRefinery extends BlockAdvancedTile implements ItemBlockDesc.IB
     {
         if (side == metadata + 2)
         {
-            return this.iconFuelOutput;
+            return this.iconOilInput;
         }
         else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
         {
-            return this.iconOilInput;
+            return this.iconFuelOutput;
         }
 
         if (side == 1)
