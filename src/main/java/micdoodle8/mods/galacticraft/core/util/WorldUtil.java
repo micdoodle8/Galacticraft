@@ -1139,7 +1139,7 @@ public class WorldUtil
 
 	        try {
 	        	Class cofh = Class.forName("cofh.core.world.WorldHandler");
-	        	if (cofh != null)
+	        	if (cofh != null && ConfigManagerCore.whitelistCoFHCoreGen)
 	        	{
 		        	final Field regField = Class.forName("cpw.mods.fml.common.registry.GameRegistry").getDeclaredField("worldGenerators");
 		            regField.setAccessible(true);
