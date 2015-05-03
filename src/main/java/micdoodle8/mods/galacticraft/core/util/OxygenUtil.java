@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.item.IBreathableArmor.EnumGearType;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -82,15 +83,11 @@ public class OxygenUtil
     @SuppressWarnings("rawtypes")
     public static boolean isAABBInBreathableAirBlock(World world, AxisAlignedBB bb)
     {
-        if (!world.isRemote)
-        {
+        final double avgX = (bb.minX + bb.maxX) / 2.0D;
+        final double avgY = (bb.minY + bb.maxY) / 2.0D;
+        final double avgZ = (bb.minZ + bb.maxZ) / 2.0D;
 
-            final double avgX = (bb.minX + bb.maxX) / 2.0D;
-            final double avgY = (bb.minY + bb.maxY) / 2.0D;
-            final double avgZ = (bb.minZ + bb.maxZ) / 2.0D;
-
-            if (OxygenUtil.inOxygenBubble(world, avgX, avgY, avgZ)) return true;
-        }
+        if (OxygenUtil.inOxygenBubble(world, avgX, avgY, avgZ)) return true;
         return OxygenUtil.isInOxygenBlock(world, bb.copy().contract(0.001D, 0.001D, 0.001D));
     }
 
@@ -439,17 +436,25 @@ public class OxygenUtil
 
 	public static boolean inOxygenBubble(World worldObj, double avgX, double avgY, double avgZ)
 	{
-        for (final TileEntityOxygenDistributor distributor : new ArrayList<TileEntityOxygenDistributor>(TileEntityOxygenDistributor.loadedTiles))
+        for (final BlockVec3Dim blockVec : new ArrayList<BlockVec3Dim>(TileEntityOxygenDistributor.loadedTiles))
         {
-            if (distributor.getWorld() == worldObj && distributor.oxygenBubble != null)
+            if (blockVec.dim == worldObj.provider.dimensionId)
             {
-                final double dist = distributor.getDistanceFromServer(avgX, avgY, avgZ);
-                double r = distributor.oxygenBubble.getSize();
+            	TileEntity tile = worldObj.getTileEntity(blockVec.x, blockVec.y, blockVec.z);
+            	if (tile instanceof TileEntityOxygenDistributor)
+            	{
+	            	TileEntityOxygenDistributor distributor = (TileEntityOxygenDistributor) tile;
+	            	if (distributor.oxygenBubble != null)
+	            	{
+		                final double dist = distributor.getDistanceFromServer(avgX, avgY, avgZ);
+		                double r = distributor.oxygenBubble.getSize();
 
-                if (dist < r * r)
-                {
-                    return true;
-                }
+		                if (dist < r * r)
+		                {
+		                    return true;
+		                }
+	            	}
+            	}
             }
         }
 

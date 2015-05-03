@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.core.tile;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.entities.EntityBubble;
@@ -22,7 +24,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.Iterator;
 import java.util.List;
+
+import com.google.common.collect.Lists;
 
 public class TileEntityOxygenDistributor extends TileEntityOxygen implements IInventory, ISidedInventory, IBubbleProvider
 {
@@ -31,7 +36,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 
     private ItemStack[] containingItems = new ItemStack[2];
     public EntityBubble oxygenBubble;
-    public static ArrayList<TileEntityOxygenDistributor> loadedTiles = new ArrayList();
+    public static ArrayList<BlockVec3Dim> loadedTiles = Lists.newArrayList();
     /**
      * Used for saving/loading old oxygen bubbles
      */
@@ -47,13 +52,21 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     public void validate()
     {
     	super.validate();
-        if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.add(this);
+        if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.add(new BlockVec3Dim(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId));
     }
 
     @Override
     public void onChunkUnload()
     {
-        if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.add(this);
+    	Iterator<BlockVec3Dim> i = loadedTiles.iterator();
+    	while (i.hasNext())
+    	{
+    		BlockVec3Dim vec = i.next();
+    		if (vec.dim == this.worldObj.provider.dimensionId && xCoord == vec.x && yCoord == vec.y && zCoord == vec.z)
+    		{
+    			i.remove();
+    		}
+    	}
     	super.onChunkUnload();
     }
 
@@ -92,16 +105,30 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
             {
                 networkedList.add(this.oxygenBubble.getEntityId());
             }
+            networkedList.add(loadedTiles.size());
+            for (BlockVec3Dim distributor : loadedTiles)
+            {
+            	networkedList.add(distributor.x);
+            	networkedList.add(distributor.y);
+            	networkedList.add(distributor.z);
+            	networkedList.add(distributor.dim);
+            }
         }
     }
 
     public void readExtraNetworkedData(ByteBuf dataStream)
     {
+    	loadedTiles.clear();
         if (this.worldObj.isRemote)
         {
             if (dataStream.readBoolean())
             {
                 this.oxygenBubble = (EntityBubble) worldObj.getEntityByID(dataStream.readInt());
+            }
+            int size = dataStream.readInt();
+            for (int i = 0; i < size; ++i)
+            {
+            	this.loadedTiles.add(new BlockVec3Dim(dataStream.readInt(), dataStream.readInt(), dataStream.readInt(), dataStream.readInt()));
             }
         }
     }
