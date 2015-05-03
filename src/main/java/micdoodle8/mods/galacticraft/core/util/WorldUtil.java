@@ -124,6 +124,18 @@ public class WorldUtil
         }
     }
 
+    public static float getArrowGravity(EntityArrow e)
+    {
+        if (e.worldObj.provider instanceof IGalacticraftWorldProvider)
+        {
+            return 0.005F;
+        }
+        else
+        {
+            return 0.05F;
+        }
+    }
+
     public static boolean shouldRenderFire(Entity entity)
     {
         if (entity.worldObj == null || !(entity.worldObj.provider instanceof IGalacticraftWorldProvider)) return entity.isBurning();

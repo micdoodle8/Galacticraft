@@ -28,7 +28,7 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIRestrictSun(this));
         this.tasks.addTask(3, new EntityAIFleeSun(this, 0.25F));
-        this.tasks.addTask(4, new EntityAIArrowAttack(this, 0.25F, 17, 20));
+        this.tasks.addTask(4, new EntityAIArrowAttack(this, 0.25F, 25, 20));
         this.tasks.addTask(5, new EntityAIWander(this, 0.25F));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
@@ -52,7 +52,7 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
 
     public void attackEntityWithRangedAttack(EntityLivingBase par1EntityLivingBase, float par2)
     {
-        EntityArrow entityarrow = new EntityArrow(this.worldObj, this, par1EntityLivingBase, 0.8F, 50 - this.worldObj.difficultySetting.getDifficultyId() * 4);
+    	EntityArrow entityarrow = new EntityArrow(this.worldObj, this, par1EntityLivingBase, 0.4F, 17 - this.worldObj.difficultySetting.getDifficultyId() * 4);
         int i = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, this.getHeldItem());
         int j = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, this.getHeldItem());
         entityarrow.setDamage(par2 * 2.0F + this.rand.nextGaussian() * 0.25D + this.worldObj.difficultySetting.getDifficultyId() * 0.11F);
