@@ -128,7 +128,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
         if (fluidName.equalsIgnoreCase(((ItemCanisterGeneric)container.getItem()).allowedFluid))
         {	
         	int added = super.fill(container, resource, doFill);
-        	container.setItemDamage(Math.max(1, container.getItemDamage() - added));
+        	if (doFill && added > 0) container.setItemDamage(Math.max(1, container.getItemDamage() - added));
         	return added;
         }
        
