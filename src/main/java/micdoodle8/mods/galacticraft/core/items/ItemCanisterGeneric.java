@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -21,6 +22,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
 {
     private String allowedFluid = null;
     public final static int EMPTY = FluidContainerRegistry.BUCKET_VOLUME + 1;
+    private static boolean isTELoaded = Loader.isModLoaded("ThermalExpansion"); 
 	
 	public ItemCanisterGeneric(String assetName)
     {
@@ -56,10 +58,20 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
     @Override
     public ItemStack getContainerItem(ItemStack itemStack)
     {
-        if (itemStack != null && itemStack.getItem() == this.getContainerItem() && itemStack.getItemDamage() == ItemCanisterGeneric.EMPTY)
-        {
-            return null;
-        }
+    	//Workaround for strange behaviour in TE Transposer
+    	if (isTELoaded)
+    	{
+	    	StackTraceElement[] st = Thread.currentThread().getStackTrace();
+			int imax = Math.max(st.length,5);
+	        for (int i = 1; i < imax; i++)
+	        {
+	            String ste = st[i].getClassName();
+	            if (ste.equals("thermalexpansion.block.machine.TileTransposer"))
+	            {
+	                return null;
+	            }
+	        }
+    	}
 
         return new ItemStack(this.getContainerItem(), 1, ItemCanisterGeneric.EMPTY);
     }
@@ -69,17 +81,13 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
     {
         if (ItemCanisterGeneric.EMPTY == par1ItemStack.getItemDamage())
         {
-            final int stackSize = par1ItemStack.stackSize;
-
-            if (!(par1ItemStack.getItem() instanceof ItemOilCanister))
+            if (par1ItemStack.getItem() != GCItems.oilCanister)
             {
-            	NBTTagCompound tag = new NBTTagCompound();
-    			tag.setShort("id", (short)Item.getIdFromItem(GCItems.oilCanister));
-    	        tag.setByte("Count", (byte)stackSize);
-    	        tag.setShort("Damage", (short)ItemCanisterGeneric.EMPTY);
-    	        par1ItemStack.readFromNBT(tag);
-            }
+        		this.replaceEmptyCanisterItem(par1ItemStack, GCItems.oilCanister);
+        	}
+            par1ItemStack.stackTagCompound = null;
         }
+        else if (par1ItemStack.getItemDamage() <= 0) par1ItemStack.setItemDamage(1);
     }
 
     public void setAllowedFluid(String name)
@@ -95,7 +103,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
     @Override
     public int fill(ItemStack container, FluidStack resource, boolean doFill)
     {
-    	if (resource == null || resource.getFluid() == null || !(container.getItem() instanceof ItemCanisterGeneric))
+    	if (resource == null || resource.getFluid() == null || resource.amount == 0 || container == null || container.getItemDamage() <= 1 || !(container.getItem() instanceof ItemCanisterGeneric))
         {
             return 0;
         }
@@ -104,7 +112,6 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
         if (container.getItemDamage() == ItemCanisterGeneric.EMPTY)
         {
         	//Empty canister - find a new canister to match the fluid
-        	if (ConfigManagerCore.enableDebug) GCLog.info("Searching for matching container for "+fluidName);
         	for (String key : GalacticraftCore.itemList.keySet())
         	{
         		if (key.contains("CanisterFull"))
@@ -112,19 +119,23 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
         			Item i = GalacticraftCore.itemList.get(key).getItem();
         			if (i instanceof ItemCanisterGeneric && fluidName.equalsIgnoreCase(((ItemCanisterGeneric)i).allowedFluid))
         			{
-        				if (ConfigManagerCore.enableDebug) System.out.println("Found "+key);
-                    	NBTTagCompound tag = new NBTTagCompound();
-        				tag.setShort("id", (short)Item.getIdFromItem(i));
-        		        tag.setByte("Count", (byte)1);
-        		        tag.setShort("Damage", (short)ItemCanisterGeneric.EMPTY);
-        				container.readFromNBT(tag);
-        				if (ConfigManagerCore.enableDebug) System.out.println("Set container for " + ((ItemCanisterGeneric)container.getItem()).allowedFluid + " to "+container.getItem().getClass().getSimpleName());
+        	        	if (!doFill) return Math.min(resource.amount, this.capacity);
+        	        	
+        				this.replaceEmptyCanisterItem(container, i);
         				break;
         			}
-        		}
+        		}     		
         	}
+        	//Delete any Forge fluid contents
+	    	container.stackTagCompound = null;
         }
-
+        else
+        {
+	    	//Refresh the Forge fluid contents
+	    	container.stackTagCompound = null;
+	    	super.fill(container, this.getFluid(container), true);
+        }
+    	
         if (fluidName.equalsIgnoreCase(((ItemCanisterGeneric)container.getItem()).allowedFluid))
         {	
         	int added = super.fill(container, resource, doFill);
@@ -138,28 +149,56 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
     @Override
     public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain)
     {
-    	if (this.allowedFluid == null)
+    	if (this.allowedFluid == null || container.getItemDamage() >= ItemCanisterGeneric.EMPTY)
         	return null;
         
-        container.stackTagCompound = null;
-        
+    	//Refresh the Forge fluid contents
+    	container.stackTagCompound = null;
         super.fill(container, this.getFluid(container), true);
 
         FluidStack used = super.drain(container, maxDrain, doDrain);
-        if (doDrain && used != null)
+        if (doDrain && used != null && used.amount > 0)
         {
-        	container.setItemDamage(Math.min(container.getItemDamage() + used.amount, ItemCanisterGeneric.EMPTY));
+        	this.setNewDamage(container, container.getItemDamage() + used.amount);
         }
         return used;
+    }
+
+    protected void setNewDamage(ItemStack container, int newDamage)
+    {
+    	newDamage = Math.min(newDamage, ItemCanisterGeneric.EMPTY);
+    	if (newDamage == ItemCanisterGeneric.EMPTY)
+    	{
+            container.stackTagCompound = null;
+    		if (container.getItem() != GCItems.oilCanister)
+        	{
+        		this.replaceEmptyCanisterItem(container, GCItems.oilCanister);
+        		return;
+        	}
+    	}
+
+    	container.setItemDamage(newDamage);   	
+    }
+    
+    private void replaceEmptyCanisterItem(ItemStack container, Item newItem)
+    {
+        //This is a neat trick to change the item ID in an ItemStack
+		final int stackSize = container.stackSize;
+    	NBTTagCompound tag = new NBTTagCompound();
+		tag.setShort("id", (short)Item.getIdFromItem(newItem));
+        tag.setByte("Count", (byte)stackSize);
+        tag.setShort("Damage", (short)ItemCanisterGeneric.EMPTY);
+        container.readFromNBT(tag);    	
     }
 
     @Override
     public FluidStack getFluid(ItemStack container)
     {
-    	if (this.allowedFluid == null || ItemCanisterGeneric.EMPTY == container.getItemDamage())
+    	String fluidName = ((ItemCanisterGeneric)container.getItem()).allowedFluid; 
+    	if (fluidName == null || ItemCanisterGeneric.EMPTY == container.getItemDamage())
         	return null;
         
-        Fluid fluid = FluidRegistry.getFluid(this.allowedFluid);
+        Fluid fluid = FluidRegistry.getFluid(fluidName);
         if (fluid == null) return null;
 
         return new FluidStack(fluid, ItemCanisterGeneric.EMPTY - container.getItemDamage());

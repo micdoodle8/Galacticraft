@@ -89,14 +89,17 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
     public ItemStack getContainerItem(ItemStack itemstack)
     {
         Integer saved = ItemCanisterLiquidOxygen.craftingvalues.get(itemstack);
-        if (saved != null && saved < ItemCanisterGeneric.EMPTY)
+        if (saved != null)
         {
-            ItemCanisterLiquidOxygen.craftingvalues.remove(itemstack);
-            itemstack.setItemDamage(saved);
-            return itemstack;
+        	if (saved < ItemCanisterGeneric.EMPTY)
+	        {
+	            ItemCanisterLiquidOxygen.craftingvalues.remove(itemstack);
+	            itemstack.setItemDamage(saved);
+	            return itemstack;
+	        }
+        	return new ItemStack(this.getContainerItem(), 1, ItemCanisterGeneric.EMPTY);
         }
-
-        return new ItemStack(this.getContainerItem(), 1, ItemCanisterGeneric.EMPTY);
+        return super.getContainerItem(itemstack);
     }
 
     @Override
@@ -104,15 +107,7 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
 	{
 		int damage = itemStack.getItemDamage();
 		int used = Math.min((int) (amount * 5 / 54), ItemCanisterGeneric.EMPTY - damage);
-		itemStack.setItemDamage(damage + used);
-		if (damage + used >= ItemCanisterGeneric.EMPTY)
-		{
-        	NBTTagCompound tag = new NBTTagCompound();
-			tag.setShort("id", (short)Item.getIdFromItem(GCItems.oilCanister));
-	        tag.setByte("Count", (byte)1);
-	        tag.setShort("Damage", (short)ItemCanisterGeneric.EMPTY);
-			itemStack.readFromNBT(tag);
-		}
+		this.setNewDamage(itemStack, damage + used);
 		return used * 10.8F;
 	}
 
@@ -121,14 +116,4 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
 	{
 		return ItemCanisterGeneric.EMPTY - par1ItemStack.getItemDamage();
 	}
-
-	@Override
-    public FluidStack getFluid(ItemStack container)
-    {
-    	int amount = ItemCanisterGeneric.EMPTY - container.getItemDamage();
-		if (amount == 0)
-        	return null;
-
-        return new FluidStack(AsteroidsModule.fluidLiquidOxygen, amount);
-    }
 }

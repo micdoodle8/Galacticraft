@@ -132,15 +132,7 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric
                 Block result = this.canFreeze(b, meta);
                 if (result != null)
                 {
-                    itemStack.setItemDamage(damage);
-            		if (damage >= ItemCanisterGeneric.EMPTY)
-            		{
-                    	NBTTagCompound tag = new NBTTagCompound();
-            			tag.setShort("id", (short)Item.getIdFromItem(GCItems.oilCanister));
-            	        tag.setByte("Count", (byte)1);
-            	        tag.setShort("Damage", (short)ItemCanisterGeneric.EMPTY);
-            			itemStack.readFromNBT(tag);
-            		}
+	                this.setNewDamage(itemStack, damage);
                     par2World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "fire.ignite", 1.0F, Item.itemRand.nextFloat() * 0.4F + 0.8F);
                     par2World.setBlock(x, y, z, result, 0, 3);
                     return itemStack;

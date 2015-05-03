@@ -27,20 +27,6 @@ public class ItemOilCanister extends ItemCanisterGeneric
         this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-    {
-        par3List.add(new ItemStack(par1, 1, 1));
-        par3List.add(new ItemStack(par1, 1, this.getMaxDamage()));
-    }
-
-    @Override
-    public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5)
-    {
-    }
-
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
@@ -89,5 +75,24 @@ public class ItemOilCanister extends ItemCanisterGeneric
         {
             par3List.add(GCCoreUtil.translate("gui.message.oil.name") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
         }
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    {
+        par3List.add(new ItemStack(par1, 1, 1));
+        par3List.add(new ItemStack(par1, 1, this.getMaxDamage()));
+    }
+
+    @Override
+    public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5)
+    {
+        if (ItemCanisterGeneric.EMPTY == par1ItemStack.getItemDamage())
+        {
+            par1ItemStack.stackTagCompound = null;
+        }
+        else if (par1ItemStack.getItemDamage() <= 0) par1ItemStack.setItemDamage(1);
     }
 }

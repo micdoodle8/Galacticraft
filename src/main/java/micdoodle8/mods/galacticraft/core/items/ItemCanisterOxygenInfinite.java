@@ -39,7 +39,9 @@ public class ItemCanisterOxygenInfinite extends Item implements IItemOxygenSuppl
     @Override
     public ItemStack getContainerItem(ItemStack itemstack)
     {
-        return itemstack;
+        if (super.getContainerItem(itemstack) == null)
+        	return null;
+    	return itemstack;
     }
 
 	@Override
