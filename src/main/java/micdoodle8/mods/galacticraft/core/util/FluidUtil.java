@@ -14,7 +14,12 @@ import net.minecraftforge.fluids.FluidTank;
 
 public class FluidUtil
 {
-	
+
+	/**
+	 * This looks for any type of filled or partly filled container of "fuel"
+	 * @param var4  The ItemStack being examined
+	 * @return     True if it's a container with "fuel"
+	 */
 	public static boolean isFuelContainerAny(ItemStack var4)
 	{
     	if (var4.getItem() instanceof ItemCanisterGeneric)
@@ -24,6 +29,12 @@ public class FluidUtil
         return liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("fuel");
 	}
 
+	/**
+	 * This looks for any type of filled or partly filled container of "oil"
+	 * or the alternative fluid "oilgc" which may be present if Buildcraft was installed on top of a GC world
+	 * @param var4  The ItemStack being examined
+	 * @return     True if it's a container with "oil"
+	 */
 	public static boolean isOilContainerAny(ItemStack var4)
 	{
     	if (var4.getItem() instanceof ItemCanisterGeneric)
@@ -33,6 +44,11 @@ public class FluidUtil
         return liquid != null && (FluidRegistry.getFluidName(liquid).equalsIgnoreCase("oil") || FluidRegistry.getFluidName(liquid).equalsIgnoreCase("oilgc"));
 	}
 
+	/**
+	 * This looks for any type of filled or partly filled container of "methane" gas
+	 * @param var4  The ItemStack being examined
+	 * @return     True if it's a container with "methane"
+	 */
 	public static boolean isMethaneContainerAny(ItemStack var4)
 	{
     	if (var4.getItem() instanceof ItemCanisterGeneric)
@@ -42,6 +58,12 @@ public class FluidUtil
         return stack != null && stack.getFluid() != null && stack.getFluid().getName().toLowerCase().contains("methane");
 	}
 
+	/**
+	 * This looks for any type of completely full container
+	 * Used, for example, in canExtractItem() logic
+	 * @param var4  The ItemStack being examined
+	 * @return     True if it's a full container
+	 */
 	public static boolean isFullContainer(ItemStack var4)
 	{
     	if (var4.getItem() instanceof ItemCanisterGeneric)
@@ -51,6 +73,19 @@ public class FluidUtil
         return liquid != null;
 	}
 
+	/**
+	 * This tries to fill the given container (at inventory[slot]) with fluid from the specified tank
+	 * If successful, it places the resulting filled container in inventory[slot]
+	 * 
+	 * Note: this deals with the issue where FluidContainerRegistry.fillFluidContainer() returns null for failed fills
+	 * 
+	 * @param tank		The tank to take the fluid from
+	 * @param liquid   The type of liquid in that tank (the calling method will normally have checked this already)
+	 * @param inventory
+	 * @param slot
+	 * @param canisterType  The type of canister to return, if it's a canister being filled (pre-matched with the liquid type)
+	 * 
+	 */
     public static void tryFillContainer(FluidTank tank, FluidStack liquid, ItemStack[] inventory, int slot, Item canisterType)
 	{
 		ItemStack slotItem = inventory[slot];
@@ -81,8 +116,10 @@ public class FluidUtil
 	}
 
 	/**
-	 * Tests for either an empty canister, or a canister of the appropriate type with some capacity remaining
-	 * Will also return true for empty Forge fluid containers
+	 * Tests for any type of container with some space in it
+	 * It can be either an empty container, or a Galacticraft canister
+	 * of the appropriate type, either empty or at least with some capacity remaining
+	 * Will return true for any type of empty Forge fluid container including vanilla buckets
 	 * 
 	 * @param var4
 	 * @param canisterType
@@ -97,8 +134,8 @@ public class FluidUtil
 	}
 
 	/**
-	 * Tests for either an empty canister, or a canister of the appropriate type with some capacity remaining
-	 * Will also return true for empty Forge fluid containers
+	 * Tests for any empty container which can accept the specified fluid
+	 * Either Galacticraft canisters or Forge containers
 	 * 
 	 * @param var4
 	 * @param canisterType
@@ -135,6 +172,12 @@ public class FluidUtil
 		return f1.getName().equals(f2.getName());
 	}
 
+    /**
+     * Test for any completely empty container of either type
+     * Used, for example, in canExtractItem() logic
+     * @param var4  The ItemStack being tested
+     * @return  True if the container is empty
+     */
     public static boolean isEmptyContainer(ItemStack var4)
 	{
     	if (var4.getItem() instanceof ItemCanisterGeneric)
@@ -143,11 +186,23 @@ public class FluidUtil
 		return FluidContainerRegistry.isEmptyContainer(var4);
 	}
 
+    /**
+     * Test for any empty specialist gas container
+     * For future use, e.g. for compatibility with Mekanism tank items
+     * @param var4  The ItemStack being tested
+     * @return  True if the container is empty
+     */
 	public static boolean isEmptyGasContainer(ItemStack var4)
 	{
 		return false;
 	}
 
+    /**
+     * Test for any container with some level of contents
+     * Used, for example, in shift-clicking items into input item slots
+     * @param var4  The ItemStack being tested
+     * @return  True if the container contains something
+     */
 	public static boolean isFilledContainer(ItemStack var4)
 	{
     	if (var4.getItem() instanceof ItemCanisterGeneric)
@@ -155,17 +210,35 @@ public class FluidUtil
         return FluidContainerRegistry.getFluidForFilledItem(var4) != null;
 	}
 
+    /**
+     * Test for any container with water
+     * (vanilla or Forge items only, Galacticraft does not have a water container)
+     * @param var4  The ItemStack being tested
+     * @return  True if the container contains water
+     */
 	public static boolean isWaterContainer(ItemStack var4)
 	{
         FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(var4);
         return liquid != null && liquid.getFluid() != null && liquid.getFluid().getName().equals("water");
 	}
 
+	/**
+	 * Test for any container type at all
+	 * Used, for example, in isItemValidForSlot() logic
+	 * @param slotItem
+	 * @return  True if it is a container; False if it is null or not a container 
+	 */
 	public static boolean isValidContainer(ItemStack slotItem)
 	{
 		return slotItem != null && slotItem.stackSize == 1 && (slotItem.getItem() instanceof ItemCanisterGeneric || FluidContainerRegistry.isContainer(slotItem));
 	}
 
+	/**
+	 * Returns the used (empty) container, for example an empty bucket
+	 * Used, for example, in isItemValidForSlot() logic
+	 * @param slotItem
+	 * @return  True if it is a container; False if it is null or not a container 
+	 */
 	public static ItemStack getUsedContainer(ItemStack container)
 	{
         if (FluidContainerRegistry.isBucket(container) && FluidContainerRegistry.isFilledContainer(container))
