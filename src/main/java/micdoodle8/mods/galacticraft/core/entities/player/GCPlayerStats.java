@@ -2,12 +2,9 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.command.CommandGCInv;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.entity.Entity;
@@ -359,7 +356,5 @@ public class GCPlayerStats implements IExtendedEntityProperties
         this.spaceRaceInviteTeamID = oldData.spaceRaceInviteTeamID;
         this.buildFlags = oldData.buildFlags;
         this.astroMinerCount = oldData.astroMinerCount;
-        EntityPlayerMP p = this.player.get();
-		if (p != null) GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATS, new Object[] { this.buildFlags }), p);
     }
 }

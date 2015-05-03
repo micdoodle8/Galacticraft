@@ -954,9 +954,10 @@ public class GCPlayerHandler
                     GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_SPACE_RACE_GUI, new Object[] { }), player);
                 }
 
+    			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATS, new Object[] { GCPlayer.buildFlags }), player);
                 GCPlayer.openedSpaceRaceManager = true;
             }
-        }
+   		}
 
         if (GCPlayer.cryogenicChamberCooldown > 0)
         {
