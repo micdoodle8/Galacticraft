@@ -10,14 +10,13 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 
 public class ItemCanisterOxygenInfinite extends Item implements IItemOxygenSupply
 {
     public ItemCanisterOxygenInfinite(String assetName)
     {
         super();
-        this.setMaxDamage(FluidContainerRegistry.BUCKET_VOLUME + 1);
+        this.setMaxDamage(ItemCanisterGeneric.EMPTY);
         this.setMaxStackSize(1);
         this.setNoRepair();
         this.setUnlocalizedName(assetName);

@@ -25,7 +25,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
 	public ItemCanisterGeneric(String assetName)
     {
         super(0, FluidContainerRegistry.BUCKET_VOLUME);
-        this.setMaxDamage(FluidContainerRegistry.BUCKET_VOLUME + 1);
+        this.setMaxDamage(ItemCanisterGeneric.EMPTY);
         this.setMaxStackSize(1);
         this.setNoRepair();
         this.setUnlocalizedName(assetName);
