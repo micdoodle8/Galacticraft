@@ -98,32 +98,35 @@ public class ContainerGasLiquefier extends Container
                 }
                 else
                 {
-                    if (FluidUtil.isFilledContainer(var4) || var4.getItem() instanceof ItemAtmosphericValve)
-                    {
-                        if (!this.mergeItemStack(var4, 1, 2, false))
-                        {
-                            return null;
-                        }
-                    }
-                    else if (FluidUtil.isEmptyContainer(var4))
-                    {
-                        if (!this.mergeItemStack(var4, 3, 4, false))
-                        {
-                            if (!this.mergeItemStack(var4, 2, 3, false))
-                            	return null;
-                        }
-                    }
-                    else if (par1 < 31)
-                    {
-                        if (!this.mergeItemStack(var4, 31, 40, false))
-                        {
-                            return null;
-                        }
-                    }
-                    else if (!this.mergeItemStack(var4, 4, 31, false))
-                    {
-                        return null;
-                    }
+                	boolean outputTankSlotsSuccess = false;
+                	if (FluidUtil.isEmptyContainerFor(var4, this.tileEntity.liquidTank2.getFluid()))
+                	{
+                		if (this.mergeItemStack(var4, 3, 4, false))
+                			outputTankSlotsSuccess = true;
+                	}
+                	if (!outputTankSlotsSuccess && FluidUtil.isEmptyContainerFor(var4, this.tileEntity.liquidTank.getFluid()))
+                	{
+                		if (this.mergeItemStack(var4, 2, 3, false))
+                			outputTankSlotsSuccess = true;
+                	}
+                	
+                	if (!outputTankSlotsSuccess)
+                	{                	
+	                	if (FluidUtil.isFilledContainer(var4) || var4.getItem() instanceof ItemAtmosphericValve)
+	                	{
+	                		if (!this.mergeItemStack(var4, 1, 2, false))
+	                			return null;
+	                	}
+	                    else if (par1 < 31)
+	                    {
+	                        if (!this.mergeItemStack(var4, 31, 40, false))
+	                            return null;
+	                    }
+	                    else if (!this.mergeItemStack(var4, 4, 31, false))
+	                    {
+	                        return null;
+	                    }
+                	}
                 }
             }
 
