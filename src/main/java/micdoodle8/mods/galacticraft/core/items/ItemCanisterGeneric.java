@@ -128,7 +128,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
         if (fluidName.equalsIgnoreCase(((ItemCanisterGeneric)container.getItem()).allowedFluid))
         {	
         	int added = super.fill(container, resource, doFill);
-        	container.setItemDamage(Math.min(1, container.getItemDamage() - added));
+        	container.setItemDamage(Math.max(1, container.getItemDamage() - added));
         	return added;
         }
        
@@ -145,7 +145,12 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
         
         super.fill(container, this.getFluid(container), true);
 
-        return super.drain(container, maxDrain, doDrain);
+        FluidStack used = super.drain(container, maxDrain, doDrain);
+        if (doDrain && used != null)
+        {
+        	container.setItemDamage(Math.min(container.getItemDamage() + used.amount, ItemCanisterGeneric.EMPTY));
+        }
+        return used;
     }
 
     @Override
