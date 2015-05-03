@@ -108,6 +108,7 @@ gui.message.astroMiner3.fail=The Astro Miner's base was removed!
 gui.message.astroMiner4.fail=The Astro Miner ran out of energy and cannot get back to base!
 gui.message.astroMiner5.fail=The Astro Miner's route into its base seems to be blocked!
 gui.message.astroMiner6.fail=The Astro Miner has finished mining the area, and will now stop!
+gui.message.astroMiner7.fail=There's nothing for an Astro Miner to mine on a space station!
 
 tile.treasureT3.description=Tier 3 Treasure Chests are currently unused.
 tile.walkway.description=Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme.
