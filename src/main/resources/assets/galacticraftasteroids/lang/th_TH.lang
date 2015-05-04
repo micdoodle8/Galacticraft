@@ -108,6 +108,7 @@ gui.message.astroMiner3.fail=ฐานแอสโทรไมน์เนอร
 gui.message.astroMiner4.fail=แอสโทรไมน์เนอร์พลังงานหมดและไม่สามารถกลับไปยังฐานแอสโทรไมน์เนอร์ได้!
 gui.message.astroMiner5.fail=เส้นทางของแอสโทรไมน์เนอร์ที่ไปยังฐาน ดูเหมือนว่าจะถูกปิดกั้น!
 gui.message.astroMiner6.fail=แอสโทรไมน์เนอร์ทำเหมืองเสร็จเรียบร้อย และจะหยุดทำงาน!
+gui.message.astroMiner7.fail=แอสโทรไมน์เนอร์ไม่สามารถทำงานได้บนสถานีอวกาศ!
 
 tile.treasureT3.description=ยังไม่ใช้ตอนนี้
 tile.walkway.description=ใช้สำหรับการตกแต่งที่คล้ายกับสภาพภายใน ยานอวกาศ
@@ -124,7 +125,7 @@ schematic.ionDrive.name=ไอออนไดร์ฟ
 
 # ENTITIES
 entity.SmallAsteroidGC.name=ดาวเคราะห์น้อยขนาดเล็ก
-entity.GrappleHookGC.name=ตะขอเกี่ยว
+entity.GrappleHookGC.name=ตะขอ
 entity.Tier3RocketGC.name=จรวด เทียร์ 3
 entity.EntryPodAsteroids.name=ยานลงจอด
 entity.AstroMiner.name=แอสโทรไมน์เนอร์
