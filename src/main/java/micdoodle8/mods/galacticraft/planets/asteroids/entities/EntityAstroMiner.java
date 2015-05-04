@@ -165,6 +165,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	public float retraction = 1F;
 	protected IUpdatePlayerListBox soundUpdater;
 	private boolean soundToStop = false;
+	private boolean spawnedInCreative = false;
     
     static
     {
@@ -1463,6 +1464,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         if (world.isRemote) return true;
 		final EntityAstroMiner miner = new EntityAstroMiner(world, new ItemStack[EntityAstroMiner.INV_SIZE], 0);
 		miner.setPlayer(player);
+		if (player.capabilities.isCreativeMode) miner.spawnedInCreative = true;
         miner.waypointBase = new BlockVec3(x, y, z).modifyPositionFromSide(ForgeDirection.getOrientation(facing), 1);
         miner.setPosition(miner.waypointBase.x, miner.waypointBase.y - 1, miner.waypointBase.z);
         miner.baseFacing = facing;
@@ -1499,17 +1501,17 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         //Clear blocks, and test to see if its movement area in front of the base is blocked
         if (miner.prepareMove(12, 0))
         {
-           	miner.kill();
+        	miner.isDead = true;
            	return false;
         }
         if (miner.prepareMove(12, 1))
         {
-           	miner.kill();
+        	miner.isDead = true;
            	return false;
         }
         if (miner.prepareMove(12, 2))
         {
-           	miner.kill();
+        	miner.isDead = true;
            	return false;
         }
 
@@ -1571,7 +1573,9 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         	//If creative mode player, kill the entity (even if player owner is offline) and drop nothing
         	if (e instanceof EntityPlayer && ((EntityPlayer)e).capabilities.isCreativeMode)
         	{
-                this.kill();
+                if (this.playerMP == null && !this.spawnedInCreative)
+                	((EntityPlayer)e).addChatMessage(new ChatComponentText("WARNING: the player who owned that Astro Miner is offline: cannot reset player's Astro Miner item count."));
+        		this.kill();
                 return true;
         	}
         	
@@ -1699,6 +1703,12 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     @Override
     public void setDead()
     {
+    	if (!this.worldObj.isRemote && this.playerMP != null && !this.spawnedInCreative)
+        {
+        	int astroCount = GCPlayerStats.get(this.playerMP).astroMinerCount;
+        	if (astroCount > 0) GCPlayerStats.get(this.playerMP).astroMinerCount--;        	
+        }
+
         super.setDead();
     	if (posBase != null)
     	{
@@ -1740,12 +1750,6 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             return;
         }
 
-        if (this.playerMP != null)
-        {
-        	int astroCount = GCPlayerStats.get(this.playerMP).astroMinerCount;
-        	if (astroCount > 0) GCPlayerStats.get(this.playerMP).astroMinerCount--;        	
-        }
-        
         for (final ItemStack item : this.getItemsDropped(new ArrayList<ItemStack>()))
         {
             EntityItem entityItem = this.entityDropItem(item, 0);
@@ -1851,6 +1855,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         else this.speedup = (WorldUtil.getProviderForDimension(this.dimension) instanceof WorldProviderAsteroids) ? SPEEDUP * 1.6D : SPEEDUP;
 
         this.pathBlockedCount = nbt.getInteger("pathBlockedCount");
+        this.spawnedInCreative = nbt.getBoolean("spawnedInCreative");
     }
 
     @Override
@@ -1924,6 +1929,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         }
         nbt.setDouble("speedup", this.speedup);
         nbt.setInteger("pathBlockedCount", this.pathBlockedCount);
+        nbt.setBoolean("spawnedInCreative", this.spawnedInCreative);
     }
 }
 
