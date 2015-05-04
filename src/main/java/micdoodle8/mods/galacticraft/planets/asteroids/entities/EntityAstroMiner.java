@@ -156,6 +156,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	private int pathBlockedCount = 0;
 	public LinkedList<BlockVec3> laserBlocks = new LinkedList();
 	public LinkedList<Integer> laserTimes = new LinkedList();
+	public float retraction = 1F;
     
     static
     {
@@ -544,7 +545,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage) - 1));
         }
         
-*/    
+*/
     }
 
 	private void freeze(int i)

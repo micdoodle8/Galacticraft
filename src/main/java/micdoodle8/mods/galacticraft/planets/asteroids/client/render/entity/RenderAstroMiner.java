@@ -26,6 +26,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 public class RenderAstroMiner extends Render
 {
 	private static final float LSIZE = 0.12F;
+	private static final float RETRACTIONSPEED = 0.02F;
 	private static ResourceLocation scanTexture;
     private RenderBlocks blockRenderer = new RenderBlocks();
     private float spin;
@@ -35,6 +36,11 @@ public class RenderAstroMiner extends Render
     private ResourceLocation modelTextureFX;
     private ResourceLocation modelTextureOff;
     protected IModelCustom modelObj;
+    protected IModelCustom modellaser1;
+    protected IModelCustom modellaser2;
+    protected IModelCustom modellaser3;
+    protected IModelCustom modellasergl;
+    protected IModelCustom modellasergr;
 
     private final NoiseModule wobbleX;
     private final NoiseModule wobbleY;
@@ -46,6 +52,11 @@ public class RenderAstroMiner extends Render
     public RenderAstroMiner()
     {
     	this.modelObj = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMiner.obj"));
+    	this.modellaser1 = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerLaserFront.obj"));
+    	this.modellaser2 = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerLaserBottom.obj"));
+    	this.modellaser3 = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerLaserCenter.obj"));
+    	this.modellasergl = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerLeftGuard.obj"));
+    	this.modellasergr = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerRightGuard.obj"));
         this.modelTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/astroMiner.png");
         this.modelTextureFX = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/astroMinerFX.png");
         this.modelTextureOff = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/astroMiner_off.png");
@@ -149,7 +160,9 @@ public class RenderAstroMiner extends Render
         {
             FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.modelTexture);
 	        this.modelObj.renderAllExcept("Hoverpad_Front_Left_Top", "Hoverpad_Front_Right_Top", "Hoverpad_Front_Left_Bottom", "Hoverpad_Front_Right_Bottom", "Hoverpad_Rear_Right", "Hoverpad_Rear_Left", "Hoverpad_Heavy_Right", "Hoverpad_Heavy_Left", "Hoverpad_Heavy_Rear", "Hoverpad_Front_Left_Top_Glow", "Hoverpad_Front_Right_Top_Glow", "Hoverpad_Front_Left_Bottom_Glow", "Hoverpad_Front_Right_Bottom_Glow", "Hoverpad_Rear_Right_Glow", "Hoverpad_Rear_Left_Glow", "Hoverpad_Heavy___Glow002", "Hoverpad_Heavy___Glow001", "Hoverpad_Heavy___Glow003");
-	
+
+	        renderLaserModel(astroMiner.retraction);
+	        
 	        float lightMapSaveX = OpenGlHelper.lastBrightnessX;
 	        float lightMapSaveY = OpenGlHelper.lastBrightnessY;
 	        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
@@ -209,10 +222,14 @@ public class RenderAstroMiner extends Render
 		        	else doLaser(astroMiner, blockLaser);
 		        	count ++;
 		        }
+		        if (astroMiner.retraction > 0F) astroMiner.retraction -= RETRACTIONSPEED;
 		        GL11.glPopMatrix();
 	        }
 	        else
-		        GL11.glPopMatrix();	        	
+	        {
+		        if (astroMiner.retraction < 1F) astroMiner.retraction += RETRACTIONSPEED;
+		        GL11.glPopMatrix();
+	        }
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -228,6 +245,8 @@ public class RenderAstroMiner extends Render
         {
             this.bindEntityTexture(astroMiner);
             this.modelObj.renderAllExcept("Hoverpad_Front_Left_Top_Glow", "Hoverpad_Front_Right_Top_Glow", "Hoverpad_Front_Left_Bottom_Glow", "Hoverpad_Front_Right_Bottom_Glow", "Hoverpad_Rear_Right_Glow", "Hoverpad_Rear_Left_Glow", "Hoverpad_Heavy___Glow002", "Hoverpad_Heavy___Glow001", "Hoverpad_Heavy___Glow003");
+	        renderLaserModel(astroMiner.retraction);
+	        if (astroMiner.retraction < 1F) astroMiner.retraction += RETRACTIONSPEED;
             GL11.glPopMatrix();
         }
     }
@@ -240,7 +259,7 @@ public class RenderAstroMiner extends Render
         GL11.glColor4f(1.0F, 0.7F, 0.7F, 0.016667F * (12 - level));
         float cA = -0.01F;
         float cB = 1.01F;
-        tess.startDrawingQuads(); 
+        tess.startDrawingQuads();
         tess.addVertexWithUV(cA, cB, cA, 0D, 1D);
         tess.addVertexWithUV(cB, cB, cA, 1D, 1D);
         tess.addVertexWithUV(cB, cB, cB, 1D, 0D);
@@ -363,7 +382,6 @@ public class RenderAstroMiner extends Render
             zz = ((zD < 0) ? cA : cB);
             drawLaserZ(mainLaserX, mainLaserY, mainLaserZ, 0.5F, 0.5F, zz);
         }
-
     	
         GL11.glPopMatrix();
    	}
@@ -455,7 +473,34 @@ public class RenderAstroMiner extends Render
         tess.draw();
     }
 
-	@Override
+    private void renderLaserModel(float retraction)
+    {
+    	float laserretraction = retraction / 0.8F;
+    	if (laserretraction > 1F) laserretraction = 1F;
+    	float guardmovement = (retraction - 0.6F) / 0.4F;
+    	if (guardmovement < 0F) guardmovement = 0F;
+    	GL11.glPushMatrix();       
+    	float zadjust = laserretraction * 5F;
+    	float yadjust = zadjust;
+    	if (yadjust > 0.938F)
+    	{	
+    		yadjust = 0.938F;
+    		zadjust = (zadjust - yadjust) * 2F + yadjust;
+    	}
+        GL11.glTranslatef(0F, yadjust, zadjust);
+	    this.modellaser1.renderAll();
+	    this.modellaser2.renderAll();
+	    this.modellaser3.renderAll();
+        GL11.glPopMatrix();
+        GL11.glPushMatrix();
+        GL11.glTranslatef(guardmovement, 0F, 0F);
+	    this.modellasergl.renderAll();
+        GL11.glTranslatef(-2 * guardmovement, 0F, 0F);
+	    this.modellasergr.renderAll();
+        GL11.glPopMatrix();
+    }
+
+    @Override
     protected ResourceLocation getEntityTexture(Entity entity)
     {
         return this.modelTextureOff;
