@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -8,6 +9,7 @@ import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
+import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
@@ -25,7 +27,6 @@ import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.*;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiNewSpaceRace;
-import micdoodle8.mods.galacticraft.core.client.sounds.SoundUpdaterRocket;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
@@ -58,6 +59,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -481,16 +483,16 @@ public class TickHandlerClient
 
             if (world != null)
             {
-                List entityList = world.loadedEntityList;             
+                List entityList = world.loadedEntityList;
                 for (Object e : entityList)
                 {
-                    if (e instanceof EntityAutoRocket)
+                    if (e instanceof IEntityNoisy)
                     {
-                        if (((EntityAutoRocket) e).rocketSoundUpdater == null)
+                        IEntityNoisy vehicle = (IEntityNoisy)e; 
+                    	if (vehicle.getSoundUpdater() == null)
                         {
-                        	EntityAutoRocket eship = (EntityAutoRocket) e;
-                        	eship.rocketSoundUpdater = new SoundUpdaterRocket(FMLClientHandler.instance().getClient().thePlayer, eship);
-							FMLClientHandler.instance().getClient().getSoundHandler().playSound((ISound) eship.rocketSoundUpdater);
+                        	ISound noise = vehicle.setSoundUpdater(FMLClientHandler.instance().getClient().thePlayer);
+							FMLClientHandler.instance().getClient().getSoundHandler().playSound(noise);
                         }
                     }
                 }

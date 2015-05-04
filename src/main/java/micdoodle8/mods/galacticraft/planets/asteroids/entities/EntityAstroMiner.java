@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -23,6 +24,7 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.sounds.SoundUpdaterMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
@@ -30,6 +32,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlowerPot;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -42,6 +46,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
@@ -54,7 +59,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fluids.IFluidBlock;
 
-public class EntityAstroMiner extends Entity implements IInventory, IPacketReceiver
+public class EntityAstroMiner extends Entity implements IInventory, IPacketReceiver, IEntityNoisy
 {
 	public static final int MINE_LENGTH = 24;
 	public static final int MINE_LENGTH_AST = 12;
@@ -119,7 +124,8 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     	new BlockVec3(2, 0, 0)    };
 
     private final int baseSafeRadius = 32;
-    private final double speed = TEMPFAST ? 0.16D : 0.022D;
+    private final double speedbase = TEMPFAST ? 0.16D : 0.022D;
+    private double speed = speedbase;
     private final float rotSpeed = TEMPFAST ? 8F : 1.5F;
     private double speedup = SPEEDUP;
     private boolean noSpeedup = false;  //This stops the miner getting stuck at turning points
@@ -157,6 +163,8 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	public LinkedList<BlockVec3> laserBlocks = new LinkedList();
 	public LinkedList<Integer> laserTimes = new LinkedList();
 	public float retraction = 1F;
+	protected IUpdatePlayerListBox soundUpdater;
+	private boolean soundToStop = false;
     
     static
     {
@@ -508,12 +516,14 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     	case AISTATE_DOCKING:
     		if (this.waypointBase != null)
     		{	
+    			this.speed = speedbase / 1.6;
     			if (this.moveToPos(this.waypointBase, true))
     			{
     				this.AIstate = AISTATE_ATBASE;
     				this.motionX = 0;
     				this.motionY = 0;
     				this.motionZ = 0;
+    	    		this.speed = speedbase;
     			}
     		}
     		else
@@ -543,9 +553,21 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         if (this.dataWatcher.getWatchableObjectInt(this.currentDamage) > 0)
         {
             this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage) - 1));
-        }
-        
+        }       
 */
+        if (this.AIstate > AISTATE_ATBASE)
+        {
+	        if (this.soundUpdater != null)
+	        {
+	            this.soundUpdater.update();
+	            this.soundToStop  = true;
+	        }
+        }
+        else
+        {
+        	if (this.soundToStop)
+        		this.stopRocketSound();
+        }
     }
 
 	private void freeze(int i)
@@ -1686,6 +1708,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 				((TileEntityMinerBase) tileEntity).unlinkMiner();
 			}
     	}
+
+        if (this.soundUpdater != null)
+        {
+            this.soundUpdater.update();
+        }
     }
 
     public boolean isEntityInvulnerable()
@@ -1730,6 +1757,28 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         }
     }
 
+    @SideOnly(Side.CLIENT)
+    public IUpdatePlayerListBox getSoundUpdater()
+    {
+    	return this.soundUpdater;
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public ISound setSoundUpdater(EntityPlayerSP player)
+    {
+    	this.soundUpdater = new SoundUpdaterMiner(player, this);
+    	return (ISound) this.soundUpdater;
+    }
+
+    public void stopRocketSound()
+    {
+        if (this.soundUpdater != null)
+        {
+        	((SoundUpdaterMiner) this.soundUpdater).stopRocketSound();
+        }
+        this.soundToStop = false;
+    }
+    
     @Override
     protected void readEntityFromNBT(NBTTagCompound nbt)
     {

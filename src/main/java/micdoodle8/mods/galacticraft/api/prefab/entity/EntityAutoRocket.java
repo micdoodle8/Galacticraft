@@ -4,8 +4,10 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
+import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -24,6 +26,8 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -51,7 +55,7 @@ import java.util.List;
 /**
  * Do not include this prefab class in your released mod download.
  */
-public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IDockable, IInventory, IPacketReceiver
+public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IDockable, IInventory, IPacketReceiver, IEntityNoisy
 {
     public FluidTank fuelTank = new FluidTank(this.getFuelTankCapacity() * ConfigManagerCore.rocketFuelFactor);
     public int destinationFrequency = -1;
@@ -70,7 +74,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
     protected double lastMotionY;
     protected double lastLastMotionY;
     private boolean waitForPlayer;
-    public IUpdatePlayerListBox rocketSoundUpdater;
+    protected IUpdatePlayerListBox rocketSoundUpdater;
     private boolean rocketSoundToStop = false;
 
     public EntityAutoRocket(World world)
@@ -1296,5 +1300,18 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
         {
             return GCCoreUtil.translate("gui.message." + this.title + ".name");
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public IUpdatePlayerListBox getSoundUpdater()
+    {
+    	return this.rocketSoundUpdater;
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public ISound setSoundUpdater(EntityPlayerSP player)
+    {
+    	this.rocketSoundUpdater = new SoundUpdaterRocket(player, this);
+    	return (ISound) this.rocketSoundUpdater;
     }
 }

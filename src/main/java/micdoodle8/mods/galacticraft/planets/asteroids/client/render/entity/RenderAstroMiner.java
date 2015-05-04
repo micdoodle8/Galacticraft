@@ -112,7 +112,7 @@ public class RenderAstroMiner extends Render
         final float rotPitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTickTime;
         final float rotYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTickTime;
 
-        GL11.glTranslatef((float)x, (float)y + 1.55F, (float)z);
+        GL11.glTranslatef((float)x, (float)y + 1.4F, (float)z);
         float partBlock;
         switch (astroMiner.facing)
         {
@@ -152,7 +152,7 @@ public class RenderAstroMiner extends Render
         	GL11.glRotatef(rotPitch / 4F, 1, 0, 0);
             GL11.glTranslatef(0.65F, 0.65F, 0);
         }
-        GL11.glTranslatef(0F, -0.35F, 0.25F);
+        GL11.glTranslatef(0F, -0.35F, 0.2F);
         GL11.glScalef(0.05F, 0.05F, 0.05F);
         GL11.glTranslatef(wx, wy, wz);
 
