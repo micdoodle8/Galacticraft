@@ -19,7 +19,7 @@ public class CommandSpaceStationAddOwner extends CommandBase
     @Override
     public String getCommandUsage(ICommandSender var1)
     {
-        return "/" + this.getCommandName() + " [player]";
+        return "/" + this.getCommandName() + " <player>";
     }
 
     @Override

@@ -20,17 +20,17 @@ public class CommandGCEnergyUnits extends CommandBase
         String options = " [gJ";
         if (EnergyConfigHandler.isBuildcraftLoaded())
         {
-            options = options + "/MJ";
+            options = options + "|MJ";
         }
         if (EnergyConfigHandler.isIndustrialCraft2Loaded())
         {
-            options = options + "/EU";
+            options = options + "|EU";
         }
         if (EnergyConfigHandler.isMekanismLoaded())
         {
-            options = options + "/J";
+            options = options + "|J";
         }
-        options = options + "/RF";
+        options = options + "|RF";
         return "/" + this.getCommandName() + options + "]";
     }
 

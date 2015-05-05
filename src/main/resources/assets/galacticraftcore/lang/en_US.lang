@@ -623,6 +623,7 @@ commands.dimensiontp.tooMany=Too many command arguments! Usage: %s
 commands.ssinvite.notFound=Could not find space station for your username, you need to travel there first!
 commands.ssinvite.wrongUsage=Not enough command arguments! Usage: %s
 commands.ssuninvite.noPlayer=Couldn't find player with username %s on your Space Station list!
+command.gcastrominer.count=The Astro Miner count for player %s is %s
 
 # CONFIG GUI
 gc.configgui.idDimensionMoon=Moon Dimension ID

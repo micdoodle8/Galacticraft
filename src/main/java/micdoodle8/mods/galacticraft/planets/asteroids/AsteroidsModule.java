@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Planet;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.command.CommandGCAstroMiner;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.recipe.NasaWorkbenchRecipe;
@@ -220,7 +221,7 @@ public class AsteroidsModule implements IPlanetsModule
     @Override
     public void serverStarting(FMLServerStartingEvent event)
     {
-
+        event.registerServerCommand(new CommandGCAstroMiner());
     }
 
     @Override

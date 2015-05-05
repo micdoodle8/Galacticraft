@@ -14,7 +14,7 @@ public class CommandKeepDim extends CommandBase
     @Override
     public String getCommandUsage(ICommandSender var1)
     {
-        return "/" + this.getCommandName() + " [dimension number (optional)]";
+        return "/" + this.getCommandName() + " <dimension id>";
     }
 
     @Override
@@ -36,7 +36,7 @@ public class CommandKeepDim extends CommandBase
 
         if (astring.length > 1)
         {
-            throw new WrongUsageException("Not enough command arguments! Usage: " + this.getCommandUsage(icommandsender), new Object[0]);
+            throw new WrongUsageException("Too many command arguments! Usage: " + this.getCommandUsage(icommandsender), new Object[0]);
         }
         else
         {

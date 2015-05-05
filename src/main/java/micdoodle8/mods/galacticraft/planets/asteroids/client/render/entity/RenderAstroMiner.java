@@ -490,8 +490,8 @@ public class RenderAstroMiner extends Render
         GL11.glTranslatef(0F, yadjust, zadjust);
 	    this.modellaser1.renderAll();
 	    this.modellaser2.renderAll();
-	    this.modellaser3.renderAll();
         GL11.glPopMatrix();
+	    this.modellaser3.renderAll();
         GL11.glPushMatrix();
         GL11.glTranslatef(guardmovement, 0F, 0F);
 	    this.modellasergl.renderAll();
