@@ -14,7 +14,6 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithIn
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockMinerBase;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
@@ -90,10 +89,16 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 
             if (master != null)
             {
-                this.storage.setCapacity(master.storage.getCapacityGC());
-                this.storage.setMaxExtract(master.storage.getMaxExtract());
-                this.storage.setMaxReceive(master.storage.getMaxReceive());
-                this.extractEnergyGC(null, master.receiveEnergyGC(null, this.getEnergyStoredGC(), false), false);
+                float energyLimit = master.storage.getCapacityGC() - master.storage.getEnergyStoredGC();
+                if (energyLimit < 0F) energyLimit = 0F;
+            	this.storage.setCapacity(energyLimit);
+                this.storage.setMaxExtract(energyLimit);
+                this.storage.setMaxReceive(energyLimit);
+                float hasEnergy = this.getEnergyStoredGC();
+                if (hasEnergy > 0F)
+                {	
+                	this.extractEnergyGC(null, master.receiveEnergyGC(null, hasEnergy, false), false);
+                }
             }
     	}
     }
@@ -193,7 +198,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 	            this.targetPoints.add(BlockVec3.readFromNBT(bvTag));
         	}
         } else
-        	this.findTargetPointsFlag = true;
+        	this.findTargetPointsFlag = this.isMaster;
     }
 
     @Override
@@ -214,15 +219,12 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 	        nbt.setLong("LinkedUUIDMost", this.linkedMinerID.getMostSignificantBits());
 	        nbt.setLong("LinkedUUIDLeast", this.linkedMinerID.getLeastSignificantBits());
         }
-        if (this.targetPoints.size() > 0)
-        {
-        	NBTTagList mpList = new NBTTagList();
-        	for (int j = 0; j < this.targetPoints.size(); j++)
-        	{
-	            mpList.appendTag(this.targetPoints.get(j).writeToNBT(new NBTTagCompound()));
-        	}
-        	nbt.setTag("TargetPoints", mpList);
-        }
+       	NBTTagList mpList = new NBTTagList();
+    	for (int j = 0; j < this.targetPoints.size(); j++)
+    	{
+            mpList.appendTag(this.targetPoints.get(j).writeToNBT(new NBTTagCompound()));
+    	}
+    	nbt.setTag("TargetPoints", mpList);
     }
         
     @Override
@@ -235,52 +237,6 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
-    }
-
-    @Override
-    public void updateContainingBlockInfo()
-    {
-        super.updateContainingBlockInfo();
-    }
-
-    @Override
-    public boolean receiveClientEvent(int par1, int par2)
-    {
-        if (par1 == 1)
-        {
-            this.numUsingPlayers = par2;
-            return true;
-        }
-        else
-        {
-            return super.receiveClientEvent(par1, par2);
-        }
-    }
-
-    @Override
-    public void openInventory()
-    {
-        if (this.numUsingPlayers < 0)
-        {
-            this.numUsingPlayers = 0;
-        }
-
-        ++this.numUsingPlayers;
-        this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numUsingPlayers);
-        this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
-        this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
-    }
-
-    @Override
-    public void closeInventory()
-    {
-        if (this.getBlockType() != null && this.getBlockType() instanceof BlockMinerBase)
-        {
-            --this.numUsingPlayers;
-            this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numUsingPlayers);
-            this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
-            this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
-        }
     }
 
     @Override
@@ -427,6 +383,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 		}
 		this.isMaster = false;
 		this.mainBlockPosition = new BlockVec3(x, y, z);
+		this.markDirty();
 	}
 
     public void onBlockRemoval()
@@ -526,6 +483,8 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     	
     	if (!this.worldObj.isRemote)
     		this.updateClient();
+    	
+		this.markDirty();
     }
 
     private void updateClient()
@@ -561,12 +520,14 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 	{
 		this.linkedMiner = entityAstroMiner;
         this.linkedMinerID = this.linkedMiner.getUniqueID();
+		this.markDirty();
 	}
 
 	public void unlinkMiner()
 	{
 		this.linkedMiner = null;
 		this.linkedMinerID = null;
+		this.markDirty();
 	}
 
    public UUID getLinkedMiner()
@@ -688,8 +649,9 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
    {
        if (this.isMaster)
        {
-    	   super.setInventorySlotContents(par1, par2ItemStack);
-    	   return;
+    	   	super.setInventorySlotContents(par1, par2ItemStack);
+   			this.markDirty();
+   			return;
        }
        TileEntityMinerBase master = this.getMaster();
        if (master != null)
@@ -727,7 +689,9 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 	   if (!this.targetPoints.isEmpty())
 	   {	
 		   BlockVec3 pos = this.targetPoints.removeFirst();
-		   if (pos != null) return pos.clone();
+			this.markDirty();
+		   if (pos != null)
+	       		return pos.clone();
 	   }
 
 	   //No more mining targets, the whole area is mined
@@ -788,6 +752,8 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 		{
 			this.targetPoints.add(this.targetPoints.get(i).clone().modifyPositionFromSide(inLine,EntityAstroMiner.MINE_LENGTH + 6));
 		}
+		
+		this.markDirty();
 		return;
 	}
 }

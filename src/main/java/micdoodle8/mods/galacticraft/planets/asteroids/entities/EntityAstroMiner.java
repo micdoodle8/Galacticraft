@@ -96,7 +96,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     
     public int AIstate;
     public int timeInCurrentState = 0;
-	private EntityPlayerMP playerMP = null;
+	public EntityPlayerMP playerMP = null;
 	private UUID playerUUID;
 	private BlockVec3 posTarget;
     private BlockVec3 posBase;
@@ -380,25 +380,35 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         {
             if (this.turnProgress == 0)
             {
-	            this.turnProgress++;
-	            double diffX = this.minecartX - this.posX;
-	            double diffY = this.minecartY - this.posY;
-	            double diffZ = this.minecartZ - this.posZ;
-            	if (Math.abs(diffX) > 1.0D || Math.abs(diffY) > 1.0D || Math.abs(diffZ) > 1.0D)
-            	{
-            		this.posX = this.minecartX;
+            	this.turnProgress++;
+	            if (this.AIstate < AISTATE_TRAVELLING)
+	            {
+            		//It should be stationary, so this deals with the spooky movement (due to minor differences between server and client position)
+	            	this.posX = this.minecartX;
             		this.posY = this.minecartY;
-            		this.posZ = this.minecartZ;
-            	}
-            	else
-            	{
-		            if (Math.abs(diffX) > Math.abs(this.motionX))
-		            		this.motionX += diffX / 10D;
-		            if (Math.abs(diffY) > Math.abs(this.motionY))
-		            		this.motionY += diffY / 10D;
-		            if (Math.abs(diffZ) > Math.abs(this.motionZ))
-		            		this.motionZ += diffZ / 10D;
-            	}
+            		this.posZ = this.minecartZ;            	
+	            }
+	            else
+	            {
+		            double diffX = this.minecartX - this.posX;
+		            double diffY = this.minecartY - this.posY;
+		            double diffZ = this.minecartZ - this.posZ;
+	            	if (Math.abs(diffX) > 1.0D || Math.abs(diffY) > 1.0D || Math.abs(diffZ) > 1.0D)
+	            	{
+	            		this.posX = this.minecartX;
+	            		this.posY = this.minecartY;
+	            		this.posZ = this.minecartZ;
+	            	}
+	            	else
+	            	{
+			            if (Math.abs(diffX) > Math.abs(this.motionX))
+			            		this.motionX += diffX / 10D;
+			            if (Math.abs(diffY) > Math.abs(this.motionY))
+			            		this.motionY += diffY / 10D;
+			            if (Math.abs(diffZ) > Math.abs(this.motionZ))
+			            		this.motionZ += diffZ / 10D;
+	            	}
+	            }
             }
             this.posX += this.motionX;
             this.boundingBox.minX += this.motionX;
@@ -466,15 +476,15 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         this.prevRotationPitch = this.rotationPitch;
         this.prevRotationYaw = this.rotationYaw;
 
-    	if (this.energyLevel <= 0)
-    	{
-    		if (this.AIstate > AISTATE_ATBASE)
-    		{
+		if (this.AIstate > AISTATE_ATBASE)
+		{
+	    	if (this.energyLevel <= 0)
+	    	{
     			this.freeze(FAIL_OUTOFENERGY);
     		}
+	    	else if (!(this.worldObj.provider instanceof WorldProviderAsteroids) && this.ticksExisted % 2 == 0) this.energyLevel--;
+			//No energy consumption when moving in space in Asteroids dimension (this reduces the risk of the Astro Miner becoming stranded!)
     	}
-    	else if (!(this.worldObj.provider instanceof WorldProviderAsteroids) && this.ticksExisted % 2 == 0) this.energyLevel--;
-    	//No energy consumption when moving in space in Asteroids dimension (this reduces the risk of the Astro Miner becoming stranded!)
     	
     	switch (this.AIstate)
     	{
@@ -961,10 +971,12 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 			this.motionY = 0;
 			this.motionZ = 0;
 			this.tryBlockLimit = 0;
-			if (this.AIstate == AISTATE_TRAVELLING || this.AIstate == AISTATE_MINING)
-			{
+			if (this.AIstate == AISTATE_TRAVELLING)
 				this.AIstate = AISTATE_RETURNING;
+			else if (AIstate == AISTATE_MINING)
+			{
 				this.pathBlockedCount++;
+				this.AIstate = AISTATE_RETURNING;
 			}
 			else if (this.AIstate == AISTATE_RETURNING)
 				this.tryBackIn();
@@ -1574,7 +1586,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         	if (e instanceof EntityPlayer && ((EntityPlayer)e).capabilities.isCreativeMode)
         	{
                 if (this.playerMP == null && !this.spawnedInCreative)
-                	((EntityPlayer)e).addChatMessage(new ChatComponentText("WARNING: the player who owned that Astro Miner is offline: cannot reset player's Astro Miner item count."));
+                	((EntityPlayer)e).addChatMessage(new ChatComponentText("WARNING: that Astro Miner belonged to an offline player, cannot reset player's Astro Miner count."));
         		this.kill();
                 return true;
         	}

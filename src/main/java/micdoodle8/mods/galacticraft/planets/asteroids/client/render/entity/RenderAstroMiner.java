@@ -27,20 +27,20 @@ public class RenderAstroMiner extends Render
 {
 	private static final float LSIZE = 0.12F;
 	private static final float RETRACTIONSPEED = 0.02F;
-	private static ResourceLocation scanTexture;
     private RenderBlocks blockRenderer = new RenderBlocks();
     private float spin;
     private float lastPartTime;
 
-    private ResourceLocation modelTexture;
-    private ResourceLocation modelTextureFX;
-    private ResourceLocation modelTextureOff;
-    protected IModelCustom modelObj;
-    protected IModelCustom modellaser1;
-    protected IModelCustom modellaser2;
-    protected IModelCustom modellaser3;
-    protected IModelCustom modellasergl;
-    protected IModelCustom modellasergr;
+	public static ResourceLocation scanTexture;
+    public static ResourceLocation modelTexture;
+    public static ResourceLocation modelTextureFX;
+    public static ResourceLocation modelTextureOff;
+    public static IModelCustom modelObj;
+    public static IModelCustom modellaser1;
+    public static IModelCustom modellaser2;
+    public static IModelCustom modellaser3;
+    public static IModelCustom modellasergl;
+    public static IModelCustom modellasergr;
 
     private final NoiseModule wobbleX;
     private final NoiseModule wobbleY;
@@ -49,18 +49,22 @@ public class RenderAstroMiner extends Render
     private final NoiseModule wobbleYY;
     private final NoiseModule wobbleZZ;
 
+    static
+    {
+		modelObj = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMiner.obj"));
+		modellaser1 = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerLaserFront.obj"));
+		modellaser2 = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerLaserBottom.obj"));
+		modellaser3 = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerLaserCenter.obj"));
+		modellasergl = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerLeftGuard.obj"));
+		modellasergr = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerRightGuard.obj"));
+	    modelTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/astroMiner.png");
+	    modelTextureFX = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/astroMinerFX.png");
+	    modelTextureOff = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/astroMiner_off.png");
+	    scanTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/misc/gradient.png");
+    }
+    
     public RenderAstroMiner()
     {
-    	this.modelObj = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMiner.obj"));
-    	this.modellaser1 = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerLaserFront.obj"));
-    	this.modellaser2 = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerLaserBottom.obj"));
-    	this.modellaser3 = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerLaserCenter.obj"));
-    	this.modellasergl = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerLeftGuard.obj"));
-    	this.modellasergr = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerRightGuard.obj"));
-        this.modelTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/astroMiner.png");
-        this.modelTextureFX = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/astroMinerFX.png");
-        this.modelTextureOff = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/astroMiner_off.png");
-        this.scanTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/misc/gradient.png");
         this.shadowSize = 2F;
         
         Random rand = new Random();
@@ -152,8 +156,9 @@ public class RenderAstroMiner extends Render
         	GL11.glRotatef(rotPitch / 4F, 1, 0, 0);
             GL11.glTranslatef(0.65F, 0.65F, 0);
         }
-        GL11.glTranslatef(0F, -0.35F, 0.2F);
-        GL11.glScalef(0.05F, 0.05F, 0.05F);
+
+        GL11.glTranslatef(0F, -0.42F, 0.28F);
+        GL11.glScalef(0.0495F, 0.0495F, 0.0495F);
         GL11.glTranslatef(wx, wy, wz);
 
         if (active)
@@ -222,12 +227,20 @@ public class RenderAstroMiner extends Render
 		        	else doLaser(astroMiner, blockLaser);
 		        	count ++;
 		        }
-		        if (astroMiner.retraction > 0F) astroMiner.retraction -= RETRACTIONSPEED;
+		        if (astroMiner.retraction > 0F)
+		        {	
+		        	astroMiner.retraction -= RETRACTIONSPEED;
+		        	if (astroMiner.retraction < 0F) astroMiner.retraction = 0F; 
+		        }
 		        GL11.glPopMatrix();
 	        }
 	        else
 	        {
-		        if (astroMiner.retraction < 1F) astroMiner.retraction += RETRACTIONSPEED;
+		        if (astroMiner.retraction < 1F)
+		        {
+		        	astroMiner.retraction += RETRACTIONSPEED;
+		        	if (astroMiner.retraction > 1F) astroMiner.retraction = 1F; 
+		        }
 		        GL11.glPopMatrix();
 	        }
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
@@ -246,7 +259,11 @@ public class RenderAstroMiner extends Render
             this.bindEntityTexture(astroMiner);
             this.modelObj.renderAllExcept("Hoverpad_Front_Left_Top_Glow", "Hoverpad_Front_Right_Top_Glow", "Hoverpad_Front_Left_Bottom_Glow", "Hoverpad_Front_Right_Bottom_Glow", "Hoverpad_Rear_Right_Glow", "Hoverpad_Rear_Left_Glow", "Hoverpad_Heavy___Glow002", "Hoverpad_Heavy___Glow001", "Hoverpad_Heavy___Glow003");
 	        renderLaserModel(astroMiner.retraction);
-	        if (astroMiner.retraction < 1F) astroMiner.retraction += RETRACTIONSPEED;
+	        if (astroMiner.retraction < 1F)
+	        {
+	        	astroMiner.retraction += RETRACTIONSPEED;
+	        	if (astroMiner.retraction > 1F) astroMiner.retraction = 1F; 
+	        }
             GL11.glPopMatrix();
         }
     }
@@ -477,7 +494,7 @@ public class RenderAstroMiner extends Render
     {
     	float laserretraction = retraction / 0.8F;
     	if (laserretraction > 1F) laserretraction = 1F;
-    	float guardmovement = (retraction - 0.6F) / 0.4F;
+    	float guardmovement = (retraction - 0.6F) / 0.4F * 1.875F;
     	if (guardmovement < 0F) guardmovement = 0F;
     	GL11.glPushMatrix();       
     	float zadjust = laserretraction * 5F;
@@ -485,13 +502,16 @@ public class RenderAstroMiner extends Render
     	if (yadjust > 0.938F)
     	{	
     		yadjust = 0.938F;
-    		zadjust = (zadjust - yadjust) * 2F + yadjust;
+    		zadjust = (zadjust - yadjust) * 2.5F + yadjust;
     	}
         GL11.glTranslatef(0F, yadjust, zadjust);
 	    this.modellaser1.renderAll();
 	    this.modellaser2.renderAll();
-        GL11.glPopMatrix();
+	    if (yadjust == 0.938F)
+	        //Do not move laser centre into body
+	    	GL11.glTranslatef(0F, 0F, -zadjust);
 	    this.modellaser3.renderAll();
+    	GL11.glPopMatrix();
         GL11.glPushMatrix();
         GL11.glTranslatef(guardmovement, 0F, 0F);
 	    this.modellasergl.renderAll();
