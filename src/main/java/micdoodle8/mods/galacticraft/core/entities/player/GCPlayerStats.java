@@ -115,6 +115,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
 
     public boolean receivedSoundWarning;
     public boolean openedSpaceRaceManager = false;
+	public boolean sentFlags = false;
 	public boolean newInOrbit = true;
 	public int buildFlags = 0;
 
@@ -193,7 +194,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
         nbt.setBoolean("ReceivedSoundWarning", this.receivedSoundWarning);
         nbt.setInteger("BuildFlags", this.buildFlags);
         nbt.setBoolean("ShownSpaceRace", this.openedSpaceRaceManager);
-        nbt.setInteger("AstroMinerCount", this.astroMinerCount);
+        nbt.setInteger("AstroMinerCount", this.astroMinerCount);       
     }
 
     @Override
@@ -324,6 +325,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
         if (nbt.hasKey("AstroMinerCount"))
         	this.astroMinerCount = nbt.getInteger("AstroMinerCount");
 
+        this.sentFlags = false;
         if (ConfigManagerCore.enableDebug) GCLog.info("Loading GC player data for " + player.get().getGameProfile().getName() + " : " + this.buildFlags);
     }
 
@@ -356,5 +358,6 @@ public class GCPlayerStats implements IExtendedEntityProperties
         this.spaceRaceInviteTeamID = oldData.spaceRaceInviteTeamID;
         this.buildFlags = oldData.buildFlags;
         this.astroMinerCount = oldData.astroMinerCount;
+        this.sentFlags = false;
     }
 }
