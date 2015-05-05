@@ -61,7 +61,7 @@ public class ItemBlockBase extends ItemBlockDesc
             name = "tinBlock";
             break;
         case 11:
-            name = "aluminumBlock";
+            name = "blockAluminum";
             break;
         case 12:
             name = "meteorironBlock";
