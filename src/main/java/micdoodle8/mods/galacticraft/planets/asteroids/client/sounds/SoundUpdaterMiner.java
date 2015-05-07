@@ -28,7 +28,7 @@ public class SoundUpdaterMiner extends MovingSound
 		this.thePlayer = par1EntityPlayerSP;
         this.field_147666_i = ISound.AttenuationType.NONE;
         this.volume = 0.00001F;  //If it's zero it won't start playing
-        this.field_147663_c = 0.0F;  //pitch
+        this.field_147663_c = 1.0F;  //pitch
         this.repeat = true;
         this.field_147665_h = 0;  //repeat delay
         this.updateSoundLocation(par2Entity);
