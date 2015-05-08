@@ -424,6 +424,12 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     		{
     			this.prepareMoveClient(TEMPFAST ? 8 : 1, 2);
     		}
+
+    		//Sound updates on client
+    		if (this.AIstate < AISTATE_ATBASE)
+            {
+           		this.stopRocketSound();
+            }
         	return;
         }
         
@@ -566,19 +572,6 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage) - 1));
         }       
 */
-        if (this.AIstate > AISTATE_ATBASE)
-        {
-	        if (this.soundUpdater != null)
-	        {
-	            this.soundUpdater.update();
-	            this.soundToStop  = true;
-	        }
-        }
-        else
-        {
-        	if (this.soundToStop)
-        		this.stopRocketSound();
-        }
     }
 
 	private void freeze(int i)
