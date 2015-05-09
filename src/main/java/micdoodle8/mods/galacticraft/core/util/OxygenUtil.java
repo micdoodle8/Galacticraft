@@ -129,7 +129,8 @@ public class OxygenUtil
      */
     public static boolean checkTorchHasOxygen(World world, Block block, int x, int y, int z)
     {
-        OxygenUtil.checked = new HashSet();
+    	if (OxygenUtil.inOxygenBubble(world, x + 0.5D, y + 0.6D, z + 0.5D)) return true;
+    	OxygenUtil.checked = new HashSet();
         BlockVec3 vec = new BlockVec3(x, y, z);
         for (int side = 0; side < 6; side++)
         {
@@ -160,7 +161,7 @@ public class OxygenUtil
             return true;
         }
 
-        if (block.getMaterial() == Material.air)
+        if (block == null || block.getMaterial() == Material.air)
         {
             return false;
         }
@@ -443,17 +444,7 @@ public class OxygenUtil
             	TileEntity tile = worldObj.getTileEntity(blockVec.x, blockVec.y, blockVec.z);
             	if (tile instanceof TileEntityOxygenDistributor)
             	{
-	            	TileEntityOxygenDistributor distributor = (TileEntityOxygenDistributor) tile;
-	            	if (distributor.oxygenBubble != null)
-	            	{
-		                final double dist = distributor.getDistanceFromServer(avgX, avgY, avgZ);
-		                double r = distributor.oxygenBubble.getSize();
-
-		                if (dist < r * r)
-		                {
-		                    return true;
-		                }
-	            	}
+	            	if (((TileEntityOxygenDistributor) tile).inBubble(avgX, avgY, avgZ)) return true;
             	}
             }
         }

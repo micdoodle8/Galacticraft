@@ -169,13 +169,10 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 
         if (!this.worldObj.isRemote && this.oxygenBubble != null)
         {
-            this.active = this.oxygenBubble.getSize() >= 1 && this.hasEnoughEnergyToRun;
-        }
+            this.active = this.oxygenBubble.getSize() >= 1 && this.hasEnoughEnergyToRun && this.storedOxygen > this.oxygenPerTick;
 
-        if (!this.worldObj.isRemote && (this.active != this.lastActive || this.ticks % 20 == 0))
-        {
-            if (this.active && this.oxygenBubble != null)
-            {
+            if (this.ticks % (this.active ? 20 : 4) == 0)
+	        {
                 double bubbleR2 = this.oxygenBubble.getSize() - 0.5D;
                 bubbleR2 *= bubbleR2;
                 int bubbleR = MathHelper.floor_double(this.oxygenBubble.getSize() + 4);
@@ -448,6 +445,24 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
         return this.oxygenBubble;
     }
 
+    public boolean inBubble(double pX, double pY, double pZ)
+    {
+		if (this.oxygenBubble != null)
+		{
+	        double r = this.oxygenBubble.getSize();
+	        r *= r;
+	        double d3 = this.xCoord + 0.5D - pX;
+	        d3 *= d3;
+	        if (d3 > r) return false;
+	        double d4 = this.zCoord + 0.5D - pZ;
+	        d4 *= d4;
+	        if (d3 + d4 > r) return false;
+	        double d5 = this.yCoord + 0.5D - pY;
+	        return d3 + d4 + d5 * d5 < r;
+		}
+		return false;
+    }
+    
     @Override
     public void setBubbleVisible(boolean shouldRender)
     {

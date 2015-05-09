@@ -153,16 +153,14 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
     @Override
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
-        super.updateTick(par1World, par2, par3, par4, par5Random);
-
-        if (par1World.getBlockMetadata(par2, par3, par4) == 0)
-        {
-            this.onBlockAdded(par1World, par2, par3, par4);
-        }
-        else
-        {
-            this.checkOxygen(par1World, par2, par3, par4);
-        }
+    	if (par1World.getBlockMetadata(par2, par3, par4) == 0)
+    	{
+    		this.onBlockAdded(par1World, par2, par3, par4);
+    	}
+    	else
+    	{
+    		this.checkOxygen(par1World, par2, par3, par4);
+    	}
     }
 
     @Override
