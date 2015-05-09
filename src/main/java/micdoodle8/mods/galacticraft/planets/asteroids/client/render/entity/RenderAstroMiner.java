@@ -229,7 +229,7 @@ public class RenderAstroMiner extends Render
 		        }
 		        if (astroMiner.retraction > 0F)
 		        {	
-		        	astroMiner.retraction -= RETRACTIONSPEED;
+		        	astroMiner.retraction -= RETRACTIONSPEED * partTime;
 		        	if (astroMiner.retraction < 0F) astroMiner.retraction = 0F; 
 		        }
 		        GL11.glPopMatrix();
@@ -238,7 +238,7 @@ public class RenderAstroMiner extends Render
 	        {
 		        if (astroMiner.retraction < 1F)
 		        {
-		        	astroMiner.retraction += RETRACTIONSPEED;
+		        	astroMiner.retraction += RETRACTIONSPEED * partTime;
 		        	if (astroMiner.retraction > 1F) astroMiner.retraction = 1F; 
 		        }
 		        GL11.glPopMatrix();
@@ -261,7 +261,7 @@ public class RenderAstroMiner extends Render
 	        renderLaserModel(astroMiner.retraction);
 	        if (astroMiner.retraction < 1F)
 	        {
-	        	astroMiner.retraction += RETRACTIONSPEED;
+	        	astroMiner.retraction += RETRACTIONSPEED * partTime;
 	        	if (astroMiner.retraction > 1F) astroMiner.retraction = 1F; 
 	        }
             GL11.glPopMatrix();
