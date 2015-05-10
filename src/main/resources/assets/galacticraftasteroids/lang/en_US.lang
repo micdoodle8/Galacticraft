@@ -15,6 +15,7 @@ item.grapple.name=Grapple
 item.atmosphericValve.name=Atmospheric Valve
 item.thermalCloth.name=Thermal Cloth
 item.beamCore.name=Beam Core
+item.orionDrive.name=Orion Drive
 item.tier3.desc=Tier 3
 
 # TOOLS
@@ -121,7 +122,6 @@ tile.minerBase.description=The Astro Miner Base is the docking point for an Astr
 
 # SCHEMATICS
 schematic.astroMiner.name=Astro Miner
-schematic.ionDrive.name=Ion Drive
 
 # ENTITIES
 entity.SmallAsteroidGC.name=Small Asteroid

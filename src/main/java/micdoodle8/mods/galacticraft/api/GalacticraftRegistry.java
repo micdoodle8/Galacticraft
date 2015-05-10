@@ -31,6 +31,7 @@ public class GalacticraftRegistry
     private static List<INasaWorkbenchRecipe> rocketBenchT2Recipes = new ArrayList<INasaWorkbenchRecipe>();
     private static List<INasaWorkbenchRecipe> cargoRocketRecipes = new ArrayList<INasaWorkbenchRecipe>();
     private static List<INasaWorkbenchRecipe> rocketBenchT3Recipes = new ArrayList<INasaWorkbenchRecipe>();
+    private static List<INasaWorkbenchRecipe> astroMinerRecipes = new ArrayList<INasaWorkbenchRecipe>();
     private static Map<Class<? extends WorldProvider>, ResourceLocation> rocketGuiMap = new HashMap<Class<? extends WorldProvider>, ResourceLocation>();
     private static Map<Integer, List<ItemStack>> dungeonLootMap = new HashMap<Integer, List<ItemStack>>();
     private static List<Integer> worldProviderIDs = new ArrayList<Integer>();
@@ -118,6 +119,11 @@ public class GalacticraftRegistry
         GalacticraftRegistry.buggyBenchRecipes.add(recipe);
     }
 
+    public static void addAstroMinerRecipe(INasaWorkbenchRecipe recipe)
+    {
+        GalacticraftRegistry.astroMinerRecipes.add(recipe);
+    }
+
     public static ITeleportType getTeleportTypeForDimension(Class<? extends WorldProvider> clazz)
     {
         if (!IGalacticraftWorldProvider.class.isAssignableFrom(clazz))
@@ -167,7 +173,12 @@ public class GalacticraftRegistry
         return GalacticraftRegistry.buggyBenchRecipes;
     }
 
-    @SideOnly(Side.CLIENT)
+	public static List<INasaWorkbenchRecipe> getAstroMinerRecipes()
+	{
+        return GalacticraftRegistry.astroMinerRecipes;
+	}   
+
+	@SideOnly(Side.CLIENT)
     public static ResourceLocation getResouceLocationForDimension(Class<? extends WorldProvider> clazz)
     {
         if (!IGalacticraftWorldProvider.class.isAssignableFrom(clazz))
@@ -226,5 +237,5 @@ public class GalacticraftRegistry
         registerScreen(rendererBasic);  //Type 1 - local satellite view
         registerScreen(rendererCelest);  //Type 2 - solar system
         registerScreen(rendererCelest);  //Type 3 - local planet
-    }   
+    }
 }

@@ -31,6 +31,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.recipe.CanisterRecipes;
 import micdoodle8.mods.galacticraft.planets.asteroids.recipe.RecipeManagerAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.schematic.SchematicAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.schematic.SchematicTier3Rocket;
 import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerServer;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.*;
@@ -126,6 +127,7 @@ public class AsteroidsModule implements IPlanetsModule
     {
         this.registerMicroBlocks();
     	SchematicRegistry.registerSchematicRecipe(new SchematicTier3Rocket());
+    	SchematicRegistry.registerSchematicRecipe(new SchematicAstroMiner());
 
         GalacticraftCore.packetPipeline.addDiscriminator(7, PacketSimpleAsteroids.class);
 
@@ -210,6 +212,23 @@ public class AsteroidsModule implements IPlanetsModule
         input2.put(20, new ItemStack(Blocks.chest));
         input2.put(21, new ItemStack(Blocks.chest));
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 3), input2));
+
+        input.clear();
+        input.put(1, new ItemStack(GCItems.heavyPlatingTier1));
+        input.put(3, new ItemStack(GCItems.heavyPlatingTier1));
+        input.put(5, new ItemStack(GCItems.heavyPlatingTier1));
+        input.put(11, new ItemStack(GCItems.heavyPlatingTier1));
+        input.put(2, new ItemStack(AsteroidsItems.orionDrive));
+        input.put(4, new ItemStack(AsteroidsItems.orionDrive));
+        input.put(9, new ItemStack(AsteroidsItems.orionDrive));
+        input.put(10, new ItemStack(AsteroidsItems.orionDrive));
+        input.put(12, new ItemStack(AsteroidsItems.orionDrive));
+        input.put(6, new ItemStack(GCItems.basicItem, 1, 14));
+        input.put(7, new ItemStack(Blocks.chest));
+        input.put(8, new ItemStack(Blocks.chest));
+        input.put(13, new ItemStack(AsteroidsItems.basicItem, 1, 8));
+        input.put(14, new ItemStack(GCItems.flagPole));
+        GalacticraftRegistry.addAstroMinerRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.astroMiner, 1, 0), input));
     }
 
     @Override

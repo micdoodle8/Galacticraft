@@ -113,6 +113,8 @@ public class MarsModule implements IPlanetsModule
         GalacticraftRegistry.registerRocketGui(WorldProviderMars.class, new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/marsRocketGui.png"));
         GalacticraftRegistry.addDungeonLoot(2, new ItemStack(MarsItems.schematic, 1, 0));
         GalacticraftRegistry.addDungeonLoot(2, new ItemStack(MarsItems.schematic, 1, 1));
+        GalacticraftRegistry.addDungeonLoot(2, new ItemStack(MarsItems.schematic, 1, 2));
+        GalacticraftRegistry.addDungeonLoot(3, new ItemStack(MarsItems.schematic, 1, 2));
 
         CompressorRecipes.addShapelessRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 3), new ItemStack(GCItems.heavyPlatingTier1), new ItemStack(GCItems.meteoricIronIngot, 1, 1));
         CompressorRecipes.addShapelessRecipe(new ItemStack(MarsItems.marsItemBasic, ConfigManagerCore.quickMode ? 2 : 1, 5), new ItemStack(MarsItems.marsItemBasic, 1, 2));

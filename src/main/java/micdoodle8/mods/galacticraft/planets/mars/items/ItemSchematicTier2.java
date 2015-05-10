@@ -20,7 +20,7 @@ public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem
 {
     protected IIcon[] schematicIcons = new IIcon[1];
 
-    public static final String[] names = { "schematic_rocketT3", "schematic_rocket_cargo" };
+    public static final String[] names = { "schematic_rocketT3", "schematic_rocket_cargo", "schematic_astroMiner" };
 
     public ItemSchematicTier2()
     {
@@ -82,6 +82,9 @@ public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem
                 break;
             case 1:
                 par3List.add(GCCoreUtil.translate("schematic.cargoRocket.name"));
+                break;
+            case 2:
+                par3List.add(GCCoreUtil.translate("schematic.astroMiner.name"));
                 break;
             }
         }
