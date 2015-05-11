@@ -145,10 +145,10 @@ public class PacketSimpleAsteroids implements IPacket
         	{
         		((TileEntityMinerBase)tile).facing = facingNew;
         		((TileEntityMinerBase)tile).setMainBlockPos((Integer) this.data.get(4), (Integer) this.data.get(5), (Integer) this.data.get(6));
+            	int link = (Integer) this.data.get(7);
+            	if (link > 0) ((TileEntityMinerBase)tile).linkedMinerID = UUID.randomUUID();
+            	else ((TileEntityMinerBase)tile).linkedMinerID = null;
         	}
-        	int link = (Integer) this.data.get(7);
-        	if (link > 0) ((TileEntityMinerBase)tile).linkedMinerID = UUID.randomUUID();
-        	else ((TileEntityMinerBase)tile).linkedMinerID = null;
         	break;
         default:
             break;

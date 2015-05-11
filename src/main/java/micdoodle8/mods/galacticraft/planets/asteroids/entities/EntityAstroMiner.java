@@ -335,8 +335,9 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         return true;
     }
     
-	private void emptyInventory(TileEntityMinerBase minerBase)
+	private boolean emptyInventory(TileEntityMinerBase minerBase)
 	{
+		boolean doneOne = false;
 		for (int i = 0; i < this.cargoItems.length; i++)
 		{
 			ItemStack stack = this.cargoItems[i];
@@ -347,15 +348,24 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 				this.cargoItems[i] = null;
 				continue;
 			}
+			int sizeprev = stack.stackSize;
 			minerBase.addToInventory(stack);
 			if (stack == null || stack.stackSize == 0)
 			{
 				this.cargoItems[i] = null;
+				this.markDirty();
+				return true;
 			}
-			else
+			else if (stack.stackSize < sizeprev)
+			{
 				this.cargoItems[i] = stack;
+				this.markDirty();
+				//Something was transferred although some stacks remaining
+				return true;
+			}
 		}
-		this.markDirty();
+		//No stacks were transferred
+		return false;
 	}
 
     @Override
@@ -669,18 +679,19 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		this.givenFailMessage &= 64;
 		this.wayPoints.clear();
 		
-		this.emptyInventory(minerBase);
+		boolean somethingTransferred = true;
+		if (this.ticksExisted % 5 == 0) somethingTransferred = this.emptyInventory(minerBase);
 		this.inventoryDrops = 0;
 		
 		// Recharge
 		if (minerBase.hasEnoughEnergyToRun && this.energyLevel < MAXENERGY)
 		{
-			this.energyLevel += 100;
+			this.energyLevel += 10;
 			minerBase.storage.extractEnergyGC(minerBase.storage.getMaxExtract(), false);
 		}
 		
 		// When fully charged, set off again
-		if (this.energyLevel >= MAXENERGY && this.hasHoldSpace())
+		if (this.energyLevel >= MAXENERGY && !somethingTransferred && this.hasHoldSpace())
 		{
 			this.energyLevel = MAXENERGY;
 			if (this.findNextTarget(minerBase))

@@ -162,7 +162,8 @@ public class GuiAstroMinerDock extends GuiContainerGC
             this.drawTexturedModalRect(xPos + 234, yPos + 17, 176, 0, 11, 10);
         }
 
-        this.drawColorModalRect(xPos + 235, yPos + 29, 7, Math.min(this.tile.getScaledElecticalLevel(66), 66), 0xc1aa24);
+        int level = Math.min(this.tile.getScaledElecticalLevel(66), 66);
+        this.drawColorModalRect(xPos + 235, yPos + 29 + 66 - level, 7, level, 0xc1aa24);
     }
     
     public void drawColorModalRect(int p_73729_1_, int p_73729_2_, int p_73729_5_, int p_73729_6_, int color)
