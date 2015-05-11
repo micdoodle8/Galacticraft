@@ -26,6 +26,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAstero
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityTier3Rocket;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.player.AsteroidsPlayerHandler;
 import micdoodle8.mods.galacticraft.planets.asteroids.event.AsteroidsEventHandler;
+import micdoodle8.mods.galacticraft.planets.asteroids.inventory.ContainerAstroMinerDock;
 import micdoodle8.mods.galacticraft.planets.asteroids.inventory.ContainerShortRangeTelepad;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids;
@@ -258,18 +259,25 @@ public class AsteroidsModule implements IPlanetsModule
     @Override
     public Object getGuiElement(Side side, int ID, EntityPlayer player, World world, int x, int y, int z)
     {
-        TileEntity tile = world.getTileEntity(x, y, z);
-
-        switch (ID)
+        if (side == Side.SERVER)
         {
-        case GuiIdsPlanets.MACHINE_ASTEROIDS:
-
-            if (tile instanceof TileEntityShortRangeTelepad)
-            {
-                return new ContainerShortRangeTelepad(player.inventory, ((TileEntityShortRangeTelepad) tile));
-            }
-
-            break;
+	        TileEntity tile = world.getTileEntity(x, y, z);
+	
+	        switch (ID)
+	        {
+	        case GuiIdsPlanets.MACHINE_ASTEROIDS:
+	
+	            if (tile instanceof TileEntityShortRangeTelepad)
+	            {
+	                return new ContainerShortRangeTelepad(player.inventory, ((TileEntityShortRangeTelepad) tile));
+	            }
+	            if (tile instanceof TileEntityMinerBase)
+	            {
+	            	return new ContainerAstroMinerDock(player.inventory, (TileEntityMinerBase) tile);
+	            }
+	
+	            break;
+	        }
         }
 
         return null;

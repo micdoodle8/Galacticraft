@@ -596,6 +596,18 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         this.targetPitch = buffer.readFloat();
         this.targetYaw = buffer.readFloat();
         this.mineCount = buffer.readInt();
+        int x = buffer.readInt();
+        int y = buffer.readInt();
+        int z = buffer.readInt();
+        if (this.worldObj.blockExists(x, y, z))
+        {
+        	TileEntity tile = this.worldObj.getTileEntity(x, y, z);
+        	if (tile instanceof TileEntityMinerBase)
+        	{
+        		((TileEntityMinerBase)tile).linkedMiner = this;
+        		((TileEntityMinerBase)tile).linkCountDown = 20;
+        	}
+        }
     }
 
     @Override
@@ -606,11 +618,23 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         list.add(this.targetPitch);
         list.add(this.targetYaw);
         list.add(this.mineCount);
+        list.add(this.posBase.x);
+        list.add(this.posBase.y);
+        list.add(this.posBase.z);
     }
 
     @Override
     public void handlePacketData(Side side, EntityPlayer player)
     {
+    }
+    
+    public void recall()
+    {
+		if (this.AIstate > this.AISTATE_ATBASE && this.AIstate < this.AISTATE_RETURNING)
+		{	
+			AIstate = AISTATE_RETURNING;
+			this.pathBlockedCount = 0;
+		}
     }
 
 	private int getFacingFromRotation()
@@ -1788,7 +1812,8 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         this.soundToStop = false;
     }
     
-    @Override
+	
+	@Override
     protected void readEntityFromNBT(NBTTagCompound nbt)
     {
     	final NBTTagList var2 = nbt.getTagList("Items", 10);

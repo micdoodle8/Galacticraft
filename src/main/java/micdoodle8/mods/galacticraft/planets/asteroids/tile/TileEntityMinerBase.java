@@ -14,6 +14,8 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithIn
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
@@ -41,6 +43,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     private WeakReference<TileEntityMinerBase> masterTile = null;
 	public boolean updateClientFlag;
 	public boolean findTargetPointsFlag;
+	public int linkCountDown = 0;
 	
     /**
      * The number of players currently using this chest
@@ -69,6 +72,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     public void updateEntity()
     {
 		super.updateEntity();
+		
         if (this.updateClientFlag)
         {
         	this.updateClient();
@@ -101,6 +105,10 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
                 }
             }
     	}
+
+    	//Used for refreshing client with linked miner position data
+		if (this.linkCountDown > 0)
+			this.linkCountDown--;
     }
 
     public boolean spawnMiner(EntityPlayerMP player)
@@ -130,7 +138,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         return false;
     }
     
-    private TileEntityMinerBase getMaster()
+    public TileEntityMinerBase getMaster()
     {
         if (this.mainBlockPosition == null)
         {
@@ -250,7 +258,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 		//TODO - add test for is container open and if so use Container.mergeItemStack
 		
 		boolean flag1 = false;
-        int k = 0;
+        int k = 1;
         int invSize = this.getSizeInventory();
 
         ItemStack existingStack;
@@ -285,7 +293,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 
         if (itemstack.stackSize > 0)
         {
-            k = 0;
+            k = 1;
 
             while (k < invSize)
             {
@@ -329,7 +337,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     @Override
     public String getInventoryName()
     {
-        return GCCoreUtil.translate("container.astrominerbase.name");
+        return GCCoreUtil.translate("tile.minerBase.name");
     }
 
     @Override
@@ -411,7 +419,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         	if (holding != null && holding.getItem() == AsteroidsItems.astroMiner)
         		return false;
         	
-        	//TODO = open GUI
+        	entityPlayer.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_ASTEROIDS, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
         	return true;
         }
         else
@@ -498,7 +506,8 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     		y = this.mainBlockPosition.y;
     		z = this.mainBlockPosition.z;
     	}
-    	GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.C_UPDATE_MINERBASE_FACING, new Object[] { this.xCoord, this.yCoord, this.zCoord, this.facing, x, y, z} ), this.worldObj.provider.dimensionId);
+    	int link = (this.linkedMinerID != null) ? 1:0;
+    	GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.C_UPDATE_MINERBASE_FACING, new Object[] { this.xCoord, this.yCoord, this.zCoord, this.facing, x, y, z, link} ), this.worldObj.provider.dimensionId);
     }
     
     @Override
@@ -520,6 +529,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 	{
 		this.linkedMiner = entityAstroMiner;
         this.linkedMinerID = this.linkedMiner.getUniqueID();
+		this.updateClientFlag = true;
 		this.markDirty();
 	}
 
@@ -527,6 +537,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 	{
 		this.linkedMiner = null;
 		this.linkedMinerID = null;
+		this.updateClientFlag = true;
 		this.markDirty();
 	}
 
@@ -756,4 +767,13 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 		this.markDirty();
 		return;
 	}
+  
+  	@Override
+  	public void setDisabled(int index, boolean disabled)
+  	{
+  		//Used to recall miner
+  		if (this.linkedMiner != null) this.linkedMiner.recall();
+  	}
+  	
 }
+

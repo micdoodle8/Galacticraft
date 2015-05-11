@@ -23,6 +23,7 @@ import net.minecraft.tileentity.TileEntity;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class PacketSimpleAsteroids implements IPacket
 {
@@ -34,7 +35,7 @@ public class PacketSimpleAsteroids implements IPacket
         // CLIENT
         C_TELEPAD_SEND(Side.CLIENT, BlockVec3.class, Integer.class),
         C_UPDATE_GRAPPLE_POS(Side.CLIENT, Integer.class, Vector3.class),
-        C_UPDATE_MINERBASE_FACING(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class);
+        C_UPDATE_MINERBASE_FACING(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class);
 
         private Side targetSide;
         private Class<?>[] decodeAs;
@@ -144,7 +145,10 @@ public class PacketSimpleAsteroids implements IPacket
         	{
         		((TileEntityMinerBase)tile).facing = facingNew;
         		((TileEntityMinerBase)tile).setMainBlockPos((Integer) this.data.get(4), (Integer) this.data.get(5), (Integer) this.data.get(6));
-        	}     	
+        	}
+        	int link = (Integer) this.data.get(7);
+        	if (link > 0) ((TileEntityMinerBase)tile).linkedMinerID = UUID.randomUUID();
+        	else ((TileEntityMinerBase)tile).linkedMinerID = null;
         	break;
         default:
             break;
