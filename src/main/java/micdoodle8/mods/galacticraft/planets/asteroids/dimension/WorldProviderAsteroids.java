@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
@@ -13,6 +14,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAst
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.WorldChunkManagerAsteroids;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
 
@@ -20,12 +22,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.TreeMap;
 
-public class WorldProviderAsteroids extends WorldProviderSpace
+public class WorldProviderAsteroids extends WorldProviderSpace implements ISolarLevel
 {
     //Used to list asteroid centres to external code that needs to know them
     private HashSet<BlockVec3> asteroidCentres = new HashSet();
     private boolean dataNotLoaded = true;
     private AsteroidSaveData datafile;
+	private double solarMultiplier = -1D;
 
     //	@Override
 //	public void registerWorldChunkManager()
@@ -67,6 +70,11 @@ public class WorldProviderAsteroids extends WorldProviderSpace
     public long getDayLength()
     {
         return 0;
+    }
+
+    public boolean isDaytime()
+    {
+        return true;
     }
 
     @Override
@@ -390,4 +398,15 @@ public class WorldProviderAsteroids extends WorldProviderSpace
         super.registerWorldChunkManager();
         this.hasNoSky = true;
     }
+
+	@Override
+	public double getSolarEnergyMultiplier()
+	{
+		if (this.solarMultiplier < 0D)
+		{
+			double s = this.getSolarSize();
+			this.solarMultiplier = s * MathHelper.sqrt_double(s) * ConfigManagerCore.spaceStationEnergyScalar;
+		}
+		return this.solarMultiplier;
+	}
 }

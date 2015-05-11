@@ -212,6 +212,13 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         return null;
     }
 
+    public boolean isDaytime()
+    {
+        final float a = this.worldObj.getCelestialAngle(0F);
+        //TODO: adjust this according to size of planet below
+        return a < 0.42F || a > 0.58F;
+    }
+
     @Override
     @SideOnly(Side.CLIENT)
     public float getStarBrightness(float par1)

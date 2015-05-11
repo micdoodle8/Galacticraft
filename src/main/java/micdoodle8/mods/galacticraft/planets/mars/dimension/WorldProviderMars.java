@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.ChunkProviderMars;
@@ -14,9 +15,11 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
 
-public class WorldProviderMars extends WorldProviderSpace implements IGalacticraftWorldProvider
+public class WorldProviderMars extends WorldProviderSpace implements IGalacticraftWorldProvider, ISolarLevel
 {
-    @Override
+    private double solarMultiplier = -1D;
+
+	@Override
     public Vector3 getFogColor()
     {
         float f = 1.0F - this.getStarBrightness(1.0F);
@@ -301,4 +304,15 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     {
         return 0.3F;
     }
+
+	@Override
+	public double getSolarEnergyMultiplier()
+	{
+		if (this.solarMultiplier < 0D)
+		{
+			double s = this.getSolarSize(); 
+			this.solarMultiplier = s * MathHelper.sqrt_double(s);
+		}
+		return this.solarMultiplier;
+	}
 }
