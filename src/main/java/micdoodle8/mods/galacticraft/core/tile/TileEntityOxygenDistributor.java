@@ -105,7 +105,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
                 networkedList.add(this.oxygenBubble.getEntityId());
             }
             networkedList.add(loadedTiles.size());
-            for (BlockVec3Dim distributor : loadedTiles)
+            for (BlockVec3Dim distributor : new ArrayList<BlockVec3Dim>(loadedTiles))
             {
             	networkedList.add(distributor.x);
             	networkedList.add(distributor.y);
