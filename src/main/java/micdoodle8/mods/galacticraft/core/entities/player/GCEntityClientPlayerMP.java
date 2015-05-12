@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
@@ -37,7 +38,13 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
     public void onLivingUpdate()
     {
         ClientProxyCore.playerClientHandler.onLivingUpdatePre(this);
-        super.onLivingUpdate();
+        try {
+        	super.onLivingUpdate();
+        } catch (RuntimeException e)
+        {
+        	FMLLog.severe("A mod has crashed while Minecraft was doing a normal player tick update.  See details below.  GCEntityClientPlayerMP is in this because that is the player class name when Galacticraft is installed.  This is =*NOT*= a bug in Galacticraft, please report it to the mod indicated by the first lines of the crash report.");
+        	throw (e);
+        }
         ClientProxyCore.playerClientHandler.onLivingUpdatePost(this);
     }
 
