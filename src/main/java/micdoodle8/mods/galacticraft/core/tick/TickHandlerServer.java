@@ -11,7 +11,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.WorldDataSpaceRaces;
@@ -87,6 +87,7 @@ public class TickHandlerServer
 
         TickHandlerServer.spaceRaceData = null;
         TickHandlerServer.tickCount = 0L;
+        MapUtil.calculatingMap.set(false);
     }
 
     public static void addFootprint(long chunkKey, Footprint print, int dimID)
@@ -510,13 +511,10 @@ public class TickHandlerServer
                 {
                     if (torch != null)
                     {
-                        if (world.getBlock(torch.x, torch.y, torch.z) == GCBlocks.unlitTorch)
+                        Block b = world.getBlock(torch.x, torch.y, torch.z); 
+                    	if (b instanceof BlockUnlitTorch)
                         {
-                            world.scheduleBlockUpdateWithPriority(torch.x, torch.y, torch.z, GCBlocks.unlitTorch, 2 + world.rand.nextInt(30), 0);
-                        }
-                        else if (world.getBlock(torch.x, torch.y, torch.z) == GCBlocks.unlitTorchLit)
-                        {
-                            world.scheduleBlockUpdateWithPriority(torch.x, torch.y, torch.z, GCBlocks.unlitTorchLit, 2 + world.rand.nextInt(30), 0);
+                            world.scheduleBlockUpdateWithPriority(torch.x, torch.y, torch.z, b, 2 + world.rand.nextInt(30), 0);
                         }
                     }
                 }

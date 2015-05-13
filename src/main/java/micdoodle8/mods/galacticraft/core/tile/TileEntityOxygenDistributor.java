@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.entities.EntityBubble;
 import micdoodle8.mods.galacticraft.core.entities.IBubble;
@@ -72,23 +73,27 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     @Override
     public void invalidate()
     {
-        if (this.oxygenBubble != null)
+        if (!this.worldObj.isRemote && this.oxygenBubble != null)
         {
-            for (int x = (int) Math.floor(this.xCoord - this.oxygenBubble.getSize()); x < Math.ceil(this.xCoord + this.oxygenBubble.getSize()); x++)
+            double size = this.oxygenBubble.getSize();
+        	int bubbleR = MathHelper.ceiling_double_int(size);
+            int bubbleR2 = (int) (size * size);
+        	for (int x = this.xCoord - bubbleR; x < this.xCoord + bubbleR; x++)
             {
-                for (int y = (int) Math.floor(this.yCoord - this.oxygenBubble.getSize()); y < Math.ceil(this.yCoord + this.oxygenBubble.getSize()); y++)
+                for (int y = this.yCoord - bubbleR; y < this.yCoord + bubbleR; y++)
                 {
-                    for (int z = (int) Math.floor(this.zCoord - this.oxygenBubble.getSize()); z < Math.ceil(this.zCoord + this.oxygenBubble.getSize()); z++)
+                    for (int z = this.zCoord - bubbleR; z < this.zCoord + bubbleR; z++)
                     {
                         Block block = this.worldObj.getBlock(x, y, z);
 
-                        if (block instanceof IOxygenReliantBlock)
+                        if (block instanceof IOxygenReliantBlock && this.getDistanceFromServer(x, y, z) <= bubbleR2)
                         {
-                            ((IOxygenReliantBlock) block).onOxygenRemoved(this.worldObj, x, y, z);
+                        	this.worldObj.scheduleBlockUpdateWithPriority(x, y, z, block, 1, 0);
                         }
                     }
                 }
             }
+        	this.oxygenBubble.setDead();
         }
 
         if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.remove(this);
@@ -132,11 +137,11 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
         }
     }
 
-    public double getDistanceFromServer(double par1, double par3, double par5)
+    public int getDistanceFromServer(int par1, int par3, int par5)
     {
-        final double d3 = this.xCoord + 0.5D - par1;
-        final double d4 = this.yCoord + 0.5D - par3;
-        final double d5 = this.zCoord + 0.5D - par5;
+        final int d3 = this.xCoord - par1;
+        final int d4 = this.yCoord - par3;
+        final int d5 = this.zCoord - par5;
         return d3 * d3 + d4 * d4 + d5 * d5;
     }
 
@@ -159,7 +164,8 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 
         if (!hasValidBubble && !this.worldObj.isRemote && (this.oxygenBubble == null || this.ticks < 25))
         {
-            if (this.oxygenBubble == null)
+            //Check it's a world without a breathable atmosphere
+        	if (this.oxygenBubble == null && this.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider)this.worldObj.provider).hasBreathableAtmosphere())
             {
                 this.oxygenBubble = new EntityBubble(this.worldObj, new Vector3(this), this);
                 this.hasValidBubble = true;
@@ -173,9 +179,9 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 
             if (this.ticks % (this.active ? 20 : 4) == 0)
 	        {
-                double bubbleR2 = this.oxygenBubble.getSize() - 0.5D;
-                bubbleR2 *= bubbleR2;
-                int bubbleR = MathHelper.floor_double(this.oxygenBubble.getSize() + 4);
+                double size = this.oxygenBubble.getSize();
+                int bubbleR = MathHelper.floor_double(size) + 4;
+                int bubbleR2 = (int) (size * size);
             	for (int x = this.xCoord - bubbleR; x <= this.xCoord + bubbleR; x++)
                 {
                     for (int y = this.yCoord - bubbleR; y <= this.yCoord + bubbleR; y++)
@@ -186,13 +192,14 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 
                             if (block instanceof IOxygenReliantBlock)
                             {
-                            	if (this.getDistanceFromServer(x, y, z) < bubbleR2)
+                            	if (this.getDistanceFromServer(x, y, z) <= bubbleR2)
                                 {
                                     ((IOxygenReliantBlock) block).onOxygenAdded(this.worldObj, x, y, z);
                                 }
                                 else
                                 {
-                                    ((IOxygenReliantBlock) block).onOxygenRemoved(this.worldObj, x, y, z);
+                                	//Do not necessarily extinguish it - it might be inside another oxygen system
+                                	this.worldObj.scheduleBlockUpdateWithPriority(x, y, z, block, 1, 0);
                                 }
                             }
                         }

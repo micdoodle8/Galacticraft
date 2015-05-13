@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
@@ -31,10 +32,10 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
+import net.minecraft.block.Block;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -60,6 +61,7 @@ public class GCPlayerHandler
     private boolean isClient = FMLCommonHandler.instance().getEffectiveSide().isClient();
 	private ConcurrentHashMap<UUID, GCPlayerStats> playerStatsMap = new ConcurrentHashMap<UUID, GCPlayerStats>();
 	private Field ftc;
+	private HashMap<Item, Item> torchItems = new HashMap<Item, Item>();
 
     public ConcurrentHashMap<UUID, GCPlayerStats> getServerStatList()
     {
@@ -705,29 +707,47 @@ public class GCPlayerHandler
     protected void checkCurrentItem(EntityPlayerMP player)
     {
         ItemStack theCurrentItem = player.inventory.getCurrentItem();
-        boolean noAtmosphericCombustion = OxygenUtil.noAtmosphericCombustion(player.worldObj.provider);
-        if (noAtmosphericCombustion && theCurrentItem != null)
+        if (theCurrentItem != null)
         {
-            final int var1 = theCurrentItem.stackSize;
-            final int var2 = theCurrentItem.getItemDamage();
-
-            if (player.inventory.getCurrentItem().getItem() == Item.getItemFromBlock(Blocks.torch))
-            {
-                final ItemStack stack = new ItemStack(GCBlocks.unlitTorch, var1, 0);
-                player.inventory.mainInventory[player.inventory.currentItem] = stack;
-            }
+        	if (OxygenUtil.noAtmosphericCombustion(player.worldObj.provider))
+	        {
+	            //Is it a type of overworld torch?
+        		if (torchItems.containsValue(theCurrentItem.getItem()))
+	            {
+	                Item torchItem = null;
+	                //Get space torch for this overworld torch
+	                for (Item i : torchItems.keySet())
+	                {
+	                	if (torchItems.get(i) == theCurrentItem.getItem())
+	                	{
+	                		torchItem = i;
+	                		break;
+	                	}
+	                }
+	                if (torchItem != null)
+	                	player.inventory.mainInventory[player.inventory.currentItem] = new ItemStack(torchItem, theCurrentItem.stackSize, 0);
+	            }
+	        }
+	        else
+	        {
+	            //Is it a type of space torch?
+	        	if (torchItems.containsKey(theCurrentItem.getItem()))
+	            {
+	                //Get overworld torch for this space torch
+	                Item torchItem = torchItems.get(theCurrentItem.getItem());
+	                if (torchItem != null)
+	                	player.inventory.mainInventory[player.inventory.currentItem] = new ItemStack(torchItem, theCurrentItem.stackSize, 0);
+	            }
+	        }
         }
-        else if (!noAtmosphericCombustion && theCurrentItem != null)
-        {
-            final int var1 = theCurrentItem.stackSize;
-            final int var2 = theCurrentItem.getItemDamage();
-
-            if (player.inventory.getCurrentItem().getItem() == Item.getItemFromBlock(GCBlocks.unlitTorch))
-            {
-                final ItemStack stack = new ItemStack(Blocks.torch, var1, 0);
-                player.inventory.mainInventory[player.inventory.currentItem] = stack;
-            }
-        }
+    }
+    
+    public void registerTorchType(BlockUnlitTorch spaceTorch, Block vanillaTorch)
+    {
+    	//Space Torch registration must be unique; there may be multiple mappings for vanillaTorch
+    	Item itemSpaceTorch = Item.getItemFromBlock(spaceTorch);
+    	Item itemVanillaTorch = Item.getItemFromBlock(vanillaTorch);
+    	torchItems.put(itemSpaceTorch, itemVanillaTorch);
     }
 
     public static void setUsingParachute(EntityPlayerMP player, GCPlayerStats playerStats, boolean tf)

@@ -24,6 +24,7 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
 import micdoodle8.mods.galacticraft.core.client.fx.EffectHandler;
@@ -525,7 +526,7 @@ public class ClientProxyCore extends CommonProxyCore
         {
             return ClientProxyCore.renderIdLandingPad;
         }
-        else if (blockID == GCBlocks.unlitTorch || blockID == GCBlocks.unlitTorchLit || blockID == GCBlocks.glowstoneTorch)
+        else if (blockID instanceof BlockUnlitTorch || blockID == GCBlocks.glowstoneTorch)
         {
             return ClientProxyCore.renderIdTorchUnlit;
         }
