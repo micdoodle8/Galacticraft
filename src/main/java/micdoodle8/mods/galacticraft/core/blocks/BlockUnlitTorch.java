@@ -23,7 +23,9 @@ import java.util.Random;
 public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
 {
     public boolean lit;
-
+    public Block litVersion;
+    public Block unlitVersion;
+    
     public static IIcon[] torchIcons = new IIcon[2];
 
     protected BlockUnlitTorch(boolean lit, String assetName)
@@ -70,8 +72,7 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
-        BlockUnlitTorch.torchIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "unlitTorchLit");
-        BlockUnlitTorch.torchIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "unlitTorch");
+        BlockUnlitTorch.torchIcons[this.lit ? 0 : 1] = par1IconRegister.registerIcon(this.getTextureName());
     }
 
     @Override

@@ -54,8 +54,6 @@ import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.particle.EntityFX;
@@ -66,7 +64,6 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -83,13 +80,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.chunk.Chunk;
 import org.apache.commons.io.FileUtils;
 
-import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
-import javax.imageio.stream.FileImageOutputStream;
-import javax.imageio.stream.ImageOutputStream;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -1267,57 +1260,8 @@ public class PacketSimple extends Packet implements IPacket
             {
                 success = false;
                 BufferedImage image = new BufferedImage(400, 400, BufferedImage.TYPE_INT_RGB);
-
-                for (int x0 = -12; x0 <= 12; x0++)
-                {
-                    for (int z0 = -12; z0 <= 12; z0++)
-                    {
-                        Chunk chunk = MinecraftServer.getServer().worldServerForDimension(0).getChunkFromChunkCoords(chunkCoordIntPair.chunkXPos + x0, chunkCoordIntPair.chunkZPos + z0);
-
-                        if (chunk != null)
-                        {
-                            for (int z = 0; z < 16; z++)
-                            {
-                                for (int x = 0; x < 16; x++)
-                                {
-                                    int l4 = chunk.getHeightValue(x, z) + 1;
-                                    Block block = Blocks.air;
-                                    int i5 = 0;
-
-                                    if (l4 > 1)
-                                    {
-                                        do
-                                        {
-                                            --l4;
-                                            block = chunk.getBlock(x, l4, z);
-                                            i5 = chunk.getBlockMetadata(x, l4, z);
-                                        }
-                                        while (block.getMapColor(i5) == MapColor.airColor && l4 > 0);
-                                    }
-
-                                    int col = block.getMapColor(i5).colorValue;
-                                    image.setRGB(x + (x0 + 12) * 16, z + (z0 + 12) * 16, col);
-                                }
-                            }
-                        }
-                    }
-                }
-
-                try
-                {
-                    if (!outputFile.exists() || (outputFile.canWrite() && outputFile.canRead()))
-                    {
-                    	ImageOutputStream outputStream = new FileImageOutputStream(outputFile);  
-                    	GalacticraftCore.jpgWriter.setOutput(outputStream);
-                    	GalacticraftCore.jpgWriter.write(null, new IIOImage(image, null, null), GalacticraftCore.writeParam);
-                    	outputStream.close();
-                        success = true;
-                    }
-                }
-                catch (IOException ex)
-                {
-                    ex.printStackTrace();
-                }
+                MapUtil.getLocalMap(MinecraftServer.getServer().worldServerForDimension(0), chunkCoordIntPair.chunkXPos, chunkCoordIntPair.chunkZPos, image);
+                //MapUtil.getBiomeMapForCoords(MinecraftServer.getServer().worldServerForDimension(0), chunkCoordIntPair.chunkXPos, chunkCoordIntPair.chunkZPos, ConfigManagerCore.mapfactor, ConfigManagerCore.mapsize, outputFile, playerBase);
             }
 
             if (success)
@@ -1334,10 +1278,6 @@ public class PacketSimple extends Packet implements IPacket
                     System.err.println("Error sending overworld image to player.");
                     ex.printStackTrace();
                 }
-            }
-            else
-            {
-                System.err.println("[Galacticraft] Error creating player's overworld texture, please report this as a bug!");
             }
         	}
             break;

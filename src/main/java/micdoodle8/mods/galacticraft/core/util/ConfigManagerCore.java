@@ -72,6 +72,9 @@ public class ConfigManagerCore
     public static boolean enableDebug;
     public static float mapMouseScrollSensitivity;
     public static boolean invertMapMouseScroll;
+//    public static int mapfactor;
+//    public static int mapsize;
+	
     
     // WORLDGEN
     public static boolean enableCopperOreGen;
@@ -101,8 +104,10 @@ public class ConfigManagerCore
     public static int keyOverrideMapI;
     public static int keyOverrideFuelLevelI;
     public static int keyOverrideToggleAdvGogglesI;
-    
+	
     public static ArrayList<Object> clientSave = null;
+
+
 
 
     public static void initialize(File file)
@@ -467,6 +472,18 @@ public class ConfigManagerCore
             rocketFuelFactor = prop.getInt(1);
             propOrder.add(prop.getName());
             
+//            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Map factor", 1);
+//            prop.comment = "Allowed values 1-4 etc";
+//            prop.setLanguageKey("gc.configgui.mapFactor");
+//            mapfactor = prop.getInt(1);
+//            propOrder.add(prop.getName());
+//            
+//            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Map size", 400);
+//            prop.comment = "Suggested value 400";
+//            prop.setLanguageKey("gc.configgui.mapSize");
+//            mapsize = prop.getInt(400);
+//            propOrder.add(prop.getName());
+//            
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Map Scroll Mouse Sensitivity", 1.0);
             prop.comment = "Increase to make the mouse drag scroll more sensitive, decrease to lower sensitivity.";
             prop.setLanguageKey("gc.configgui.mapScrollSensitivity");

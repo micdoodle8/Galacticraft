@@ -71,6 +71,7 @@ public class GameScreenBasic implements IGameScreen
         {
         case 0:
         	drawBlackBackground(0.09F);
+        	ClientProxyCore.overworldTextureLocal = null;
         	break;
         case 1:
 	        if (ClientProxyCore.overworldTextureLocal != null)

@@ -24,6 +24,7 @@ import micdoodle8.mods.galacticraft.core.oxygen.ThreadFindSeal;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenTransmitter;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.MapUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
@@ -203,7 +204,9 @@ public class TickHandlerServer
     {
         if (event.phase == Phase.START)
         {
-            if (TickHandlerServer.spaceRaceData == null)
+            if (MapUtil.calculatingMap.get()) MapUtil.BiomeMapNextTick();
+            
+        	if (TickHandlerServer.spaceRaceData == null)
             {
                 World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
                 TickHandlerServer.spaceRaceData = (WorldDataSpaceRaces) world.mapStorage.loadData(WorldDataSpaceRaces.class, WorldDataSpaceRaces.saveDataID);
