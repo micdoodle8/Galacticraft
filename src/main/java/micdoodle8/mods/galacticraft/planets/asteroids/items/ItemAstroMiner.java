@@ -82,6 +82,12 @@ public class ItemAstroMiner extends Item implements IHoldableItem
         			return false;
         		}
         		
+        		//Gives a chance for any loaded Astro Miner to link itself
+        		if (((TileEntityMinerBase) tile).ticks < 15L)
+        		{
+        			return false;
+        		}
+        		
         		EntityPlayerMP playerMP = (EntityPlayerMP) par2EntityPlayer;
         		
                	int astroCount = GCPlayerStats.get(playerMP).astroMinerCount;

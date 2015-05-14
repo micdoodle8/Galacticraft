@@ -110,6 +110,7 @@ gui.message.astroMiner4.fail=The Astro Miner ran out of energy and cannot get ba
 gui.message.astroMiner5.fail=The Astro Miner's route into its base seems to be blocked!
 gui.message.astroMiner6.fail=The Astro Miner has finished mining the area, and will now stop!
 gui.message.astroMiner7.fail=There's nothing for an Astro Miner to mine on a space station!
+gui.message.astroMiner8.fail=A second Astro Miner was detected at the same base, the first will now freeze.
 gui.button.recall.name=Recall
 gui.miner.outOfRange=Out of range
 gui.miner.offline=Offline

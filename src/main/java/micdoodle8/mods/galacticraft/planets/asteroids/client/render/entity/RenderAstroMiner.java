@@ -363,8 +363,8 @@ public class RenderAstroMiner extends Render
         tess.draw();
         
         GL11.glColor4f(1.0F, 0.79F, 0.79F, 0.17F);
-        float bb = 1.75F;
-        float cc = 0.6F;
+        float bb = 1.7F;
+        float cc = 0.4F;
         float radiansYaw = entity.rotationYaw * 0.017453292F;
         float radiansPitch = entity.rotationPitch * 0.017453292F / 4F;
         float mainLaserX = bb * MathHelper.sin(radiansYaw) * MathHelper.cos(radiansPitch);

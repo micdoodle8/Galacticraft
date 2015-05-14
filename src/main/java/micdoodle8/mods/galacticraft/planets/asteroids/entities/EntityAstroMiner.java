@@ -63,7 +63,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 {
 	public static final int MINE_LENGTH = 24;
 	public static final int MINE_LENGTH_AST = 12;
-    private static final int MAXENERGY = 10000;
+    private static final int MAXENERGY = 12000;
     private static final int RETURNENERGY = 1000;
     private static final int RETURNDROPS = 10;
     private static final int INV_SIZE = 227;
@@ -83,6 +83,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     public static final int FAIL_BASEDESTROYED = 3;
     public static final int FAIL_OUTOFENERGY = 4;
     public static final int FAIL_RETURNPATHBLOCKED = 5;
+    public static final int FAIL_ANOTHERWASLINKED = 8;
     
     private boolean TEMPDEBUG = false;
     private boolean TEMPFAST = false;
@@ -133,6 +134,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     public int currentDamage;
     public int timeSinceHit;
     private boolean flagLink = false;
+    private boolean flagCheckPlayer = false;
 
     //To do:
     //   break the entity drops it as an item
@@ -382,13 +384,14 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             this.setDamage(this.getDamage() - 1.0F);
         }
 
-		stopForTurn = !this.checkRotation();
+        stopForTurn = !this.checkRotation();
         this.facing = this.getFacingFromRotation();
     	this.setBoundingBoxForFacing();
 
     	if (this.worldObj.isRemote)
         {
-            if (this.turnProgress == 0)
+            //CLIENT CODE
+    		if (this.turnProgress == 0)
             {
             	this.turnProgress++;
 	            if (this.AIstate < AISTATE_TRAVELLING)
@@ -443,39 +446,56 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         	return;
         }
         
-    	if (this.ticksExisted % 10 == 0)
-    	{
-    		if (this.playerMP == null) 
-	    	{
-    			 if (this.playerUUID != null) this.playerMP = PlayerUtil.getPlayerByUUID(this.playerUUID);
-	    	}
-	    	else
-	    	{
-	    		if (!PlayerUtil.isPlayerOnline(this.playerMP)) this.playerMP = null;
-	    	}
-    	}
-    	
-        if (flagLink)
-        {
-	    	TileEntity tileEntity = posBase.getTileEntity(this.worldObj);
-			if (tileEntity instanceof TileEntityMinerBase && ((TileEntityMinerBase)tileEntity).isMaster)
+        //SERVER CODE
+    	if (this.ticksExisted % 10 == 0 || this.flagLink)
+    	{       	
+           	this.flagLink = false;
+           	this.checkPlayer();
+    		TileEntity tileEntity = posBase.getTileEntity(this.worldObj);    		
+        	if (tileEntity instanceof TileEntityMinerBase && ((TileEntityMinerBase)tileEntity).isMaster && !tileEntity.isInvalid())
 			{
-				((TileEntityMinerBase) tileEntity).linkMiner(this);
+    			//Create link with base on loading the EntityAstroMiner
+    			UUID linker = ((TileEntityMinerBase) tileEntity).getLinkedMiner();
+    			if (!this.getUniqueID().equals(linker))
+				{
+    				if (linker == null)
+    				{
+    					((TileEntityMinerBase) tileEntity).linkMiner(this);
+    				}
+    				else
+    				{
+    					this.freeze(FAIL_ANOTHERWASLINKED);
+    					return;
+    				}
+    			}
 			}
-        	flagLink = false;
-        }
+        	else
+    		{
+    			if (this.playerMP != null && (this.givenFailMessage & (1 << FAIL_BASEDESTROYED)) == 0)
+    			{
+    				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner"+FAIL_BASEDESTROYED+".fail")));
+    				this.givenFailMessage += (1 << FAIL_BASEDESTROYED);
+    				//Continue mining even though base was destroyed - maybe it will be replaced
+    			}
+    		}
+    	}
+    	else if (this.flagCheckPlayer)
+		{
+			this.checkPlayer();
+		}
         
         if (this.playerMP == null)
         {
             //Go into dormant state if player is offline
+        	//but do not actually set the dormant state on the server, so can resume immediately if player comes online
         	this.motionX = 0;
         	this.motionY = 0;
         	this.motionZ = 0;
         	GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.dimensionId);
             return;
         }
-        
-    	if (this.lastFacing != this.facingAI)
+
+        if (this.lastFacing != this.facingAI)
     	{
     		this.lastFacing = this.facingAI;
     		this.prepareMove(12, 0);
@@ -584,6 +604,18 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 */
     }
 
+    private void checkPlayer()
+    {
+		if (this.playerMP == null) 
+    	{
+			 if (this.playerUUID != null) this.playerMP = PlayerUtil.getPlayerByUUID(this.playerUUID);
+    	}
+    	else
+    	{
+    		 if (!PlayerUtil.isPlayerOnline(this.playerMP)) this.playerMP = null;
+    	}
+    }
+    	
 	private void freeze(int i)
 	{
 		this.AIstate = AISTATE_STUCK;
@@ -686,7 +718,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		// Recharge
 		if (minerBase.hasEnoughEnergyToRun && this.energyLevel < MAXENERGY)
 		{
-			this.energyLevel += 10;
+			this.energyLevel += 16;
 			minerBase.storage.extractEnergyGC(minerBase.storage.getMaxExtract(), false);
 		}
 		
@@ -1897,6 +1929,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
         this.pathBlockedCount = nbt.getInteger("pathBlockedCount");
         this.spawnedInCreative = nbt.getBoolean("spawnedInCreative");
+        this.flagCheckPlayer = true;
     }
 
     @Override
