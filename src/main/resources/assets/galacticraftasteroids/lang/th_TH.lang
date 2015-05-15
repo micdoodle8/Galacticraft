@@ -15,7 +15,7 @@ item.grapple.name=ตะขอ
 item.atmosphericValve.name=วาล์วเก็บก๊าซ
 item.thermalCloth.name=ผ้ากันความร้อน
 item.beamCore.name=แกนลำแสง
-item.orionDrive.name=Orion Drive # To do
+item.orionDrive.name=เครื่องยนต์ตรวจสอบแร่
 item.tier3.desc=เทียร์ 3
 
 # TOOLS
@@ -102,14 +102,15 @@ gui.message.range.name=ระยะ: %d บล็อก
 gui.message.notEnoughEnergy.name=พลังงานไม่พอ!
 gui.message.targetNoEnergy.name=เป้าหมายพลังงานไม่พอ!
 gui.message.grapple.fail=ฉันต้องการเส้นเชือกจำนวนเล็กน้อย ถ้าต้องการที่จะโยนตะขอออกไป!
-gui.message.astroMiner.fail=ฐานแอสโทรไมน์เนอร์นี้มีแอสโทรไมน์เนอร์แล้ว!
+gui.message.astroMiner.fail=ฐานนี้มีแอสโทรไมน์เนอร์แล้ว!
 gui.message.astroMiner1.fail=พื้นที่โรงจอดถูกปิดกั้นโดย:
 gui.message.astroMiner2.fail=มีแอสโทรไมน์เนอร์มากเกินไป!
 gui.message.astroMiner3.fail=ฐานแอสโทรไมน์เนอร์ถูกลบออกไป!
-gui.message.astroMiner4.fail=แอสโทรไมน์เนอร์พลังงานหมดและไม่สามารถกลับไปยังฐานแอสโทรไมน์เนอร์ได้!
+gui.message.astroMiner4.fail=แอสโทรไมน์เนอร์พลังงานหมดและไม่สามารถกลับไปยังฐานได้!
 gui.message.astroMiner5.fail=เส้นทางของแอสโทรไมน์เนอร์ที่ไปยังฐาน ดูเหมือนว่าจะถูกปิดกั้น!
 gui.message.astroMiner6.fail=แอสโทรไมน์เนอร์ทำเหมืองเสร็จเรียบร้อย และจะหยุดทำงาน!
 gui.message.astroMiner7.fail=แอสโทรไมน์เนอร์ไม่สามารถทำงานได้บนสถานีอวกาศ!
+gui.message.astroMiner8.fail=แอสโทรไมน์เนอร์คันที่สองถูกตรวจพบในฐานแรก, แอสโทรไมน์เนอร์คันแรกจะหยุดทำงาน
 gui.button.recall.name=เรียกกลับ
 gui.miner.outOfRange=ออกจากระยะที่กำหนด
 gui.miner.offline=ออฟไลน์
@@ -129,7 +130,7 @@ tile.walkwayOxygenPipe.description=ใช้สำหรับเป็นทา
 tile.beamReflector.description=ใช้สำหรับเปลี่ยนทิศทางของพลังงานลำแสง จากเป้าหมายไปยังทิศทางอื่นๆ คลิ๊กขวาเพื่อเปลี่ยนทิศทางการสะท้อนแสง ไปยังเป้าหมายอื่นๆ
 tile.beamReceiver.description=ใช้เชื่อมต่อไปยังเครื่องมือต่างๆ ทั้งส่งเข้าและส่งออก พลังงานจะถูกส่งโดยใช้พลังงานลำแสง
 tile.telepadShort.description=ใช้สำหรับเทเลพอร์ทผู้เล่นหรือสิ่งมีชีวิต อื่นๆ ในระยะ 256 บล็อก และต้องเชื่อมต่อกับเครื่องเทเลพอร์ตอื่นๆ ด้วย
-tile.minerBase.description=ฐานแอสโทรไมน์เนอร์ใช้สำหรับเป็นฐานจอดของแอสโทรไมน์เนอร์ วางฐานเป็น 2x2x2 เพื่อทำให้ฐานสมบูรณ์
+tile.minerBase.description=ใช้สำหรับเป็นฐานจอดของแอสโทรไมน์เนอร์ วางฐานเป็น 2x2x2 เพื่อทำให้ฐานสมบูรณ์
 
 # SCHEMATICS
 schematic.astroMiner.name=แอสโทรไมน์เนอร์
@@ -149,4 +150,4 @@ container.entryPod.name=ยานลงจอด
 gc.configgui.dimensionIDAsteroids=ID มิติดาวเคราะห์น้อย
 gc.configgui.idSchematicRocketT3=ID แผนผังจรวด เทียร์ 3
 gc.configgui.disableGalacticraftHelium=ปิดใช้งานก๊าซฮีเลียมบนดาวเคราะห์
-gc.configgui.astroMinersMax=ค่าสูงสุดของแอสโทรไมน์เนอร์ต่อ 1 ผู้เล่น
+gc.configgui.astroMinersMax=ค่าสูงสุดของแอสโทรไมน์เนอร์ต่อผู้เล่น

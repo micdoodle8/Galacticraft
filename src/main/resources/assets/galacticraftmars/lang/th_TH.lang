@@ -1,4 +1,4 @@
-﻿# Galacticraft Mars Language File = THAILAND
+# Galacticraft Mars Language File = THAILAND
 
 # GENERAL ITEMS
 item.rawDesh.name=เดรชหยาบ
@@ -153,7 +153,7 @@ tile.electrolyzer.description=ใช้เปลี่ยนน้ำให้�
 tile.hydrogenPipe.description=ใช้ส่งไฮโดรเจนไปยังเครื่องมืออื่นๆ ที่ใช้งานไฮโดรเจน
 
 gui.slimeling.chat.wrongPlayer=นี่ไม่ใช่สไลม์ลิ่งของฉัน!
-gui.cryogenic.chat.cantUse=ฉันไม่สามารถใช้สิ่งนี้ได้ %d วินาที
+gui.cryogenic.chat.cantUse=ฉันไม่สามารถใช้ตู้นี้ได้เป็นเวลา %d วินาที
 gui.slimeling.name=ชื่อ
 gui.slimeling.owner=เจ้าของ
 gui.slimeling.kills=ฆ่าได้
