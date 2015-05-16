@@ -134,57 +134,18 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
     public void onDestroy(TileEntity callingBlock)
     {
         final BlockVec3 thisBlock = new BlockVec3(this);
-
-        int x1 = 0;
-        int x2 = 0;
-        int z1 = 0;
-        int z2 = 0;
-
-        switch (this.getBlockMetadata() - BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
-        {
-        case 0:
-            x1 = 0;
-            x2 = 0;
-            z1 = -1;
-            z2 = 1;
-            break;
-        case 1:
-            x1 = 0;
-            x2 = 0;
-            z1 = -1;
-            z2 = 1;
-            break;
-        case 2:
-            x1 = -1;
-            x2 = 1;
-            z1 = 0;
-            z2 = 0;
-            break;
-        case 3:
-            x1 = -1;
-            x2 = 1;
-            z1 = 0;
-            z2 = 0;
-            break;
-        }
-
         int fakeBlockCount = 0;
-        for (int x = x1; x <= x2; x++)
-        {
-            for (int z = z1; z <= z2; z++)
-            {
-                for (int y = 0; y < 4; y++)
-                {
-                    if (x == 0 && y == 0 && z == 0)
-                    {
-                        continue;
-                    }
 
-                    if (this.worldObj.getBlock(thisBlock.x + x, thisBlock.y + y, thisBlock.z + z) == GCBlocks.fakeBlock)
-                    {
-                        fakeBlockCount++;
-                    }
-                }
+        for (int y = 0; y < 4; y++)
+        {
+            if (y == 0)
+            {
+                continue;
+            }
+
+            if (this.worldObj.getBlock(thisBlock.x, thisBlock.y + y, thisBlock.z) == GCBlocks.fakeBlock)
+            {
+                fakeBlockCount++;
             }
         }
 
@@ -193,19 +154,13 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
             return;
         }
 
-        for (int x = x1; x <= x2; x++)
+        for (int y = 0; y < 3; y++)
         {
-            for (int z = z1; z <= z2; z++)
+            if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
             {
-                for (int y = 0; y < 4; y++)
-                {
-                    if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
-                    {
-                        FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.x + x, thisBlock.y + y, thisBlock.z + z, MarsBlocks.machine, Block.getIdFromBlock(MarsBlocks.machine) >> 12 & 255);
-                    }
-                    this.worldObj.func_147480_a(thisBlock.x + x, thisBlock.y + y, thisBlock.z + z, x == 0 && z == 0);
-                }
+                FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.x, thisBlock.y + y, thisBlock.z, MarsBlocks.machine, Block.getIdFromBlock(MarsBlocks.machine) >> 12 & 255);
             }
+            this.worldObj.func_147480_a(thisBlock.x, thisBlock.y + y, thisBlock.z, true);
         }
     }
 
