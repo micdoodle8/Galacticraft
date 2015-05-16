@@ -15,6 +15,7 @@ item.grapple.name=Крюк
 item.atmosphericValve.name=Атмосферный клапан
 item.thermalCloth.name=Теплоустойчивая ткань
 item.beamCore.name=Лучевое ядро
+item.orionDrive.name=Orion Drive ##NEEDS TRANSLATE##
 item.tier3.desc=3-ий уровень
 
 # TOOLS
@@ -103,7 +104,24 @@ gui.message.targetNoEnergy.name=У цели не хватает энергии!
 gui.message.grapple.fail=Мне нужно немного ниток, если я хочу метнуть этот крюк!
 gui.message.astroMiner.fail=У этой базы уже есть астрономический шахтёр!
 gui.message.astroMiner1.fail=Область стыковки заблокирована: 
+gui.message.astroMiner1A.fail=The Astro Miner's route is blocked by: ##NEEDS TRANSLATE##
 gui.message.astroMiner2.fail=That would be one Astro Miner too many! ##NEEDS TRANSLATE##
+gui.message.astroMiner3.fail=The Astro Miner's base was removed! ##NEEDS TRANSLATE##
+gui.message.astroMiner4.fail=The Astro Miner ran out of energy and cannot get back to base! ##NEEDS TRANSLATE##
+gui.message.astroMiner5.fail=The Astro Miner's route into its base seems to be blocked! ##NEEDS TRANSLATE##
+gui.message.astroMiner6.fail=The Astro Miner has finished mining the area, and will now stop! ##NEEDS TRANSLATE##
+gui.message.astroMiner7.fail=There's nothing for an Astro Miner to mine on a space station! ##NEEDS TRANSLATE##
+gui.message.astroMiner8.fail=A second Astro Miner was detected at the same base, the first will now freeze. ##NEEDS TRANSLATE##
+gui.button.recall.name=Recall ##NEEDS TRANSLATE##
+gui.miner.outOfRange=Out of range ##NEEDS TRANSLATE##
+gui.miner.offline=Offline ##NEEDS TRANSLATE##
+gui.miner.stuck=Stuck at: ##NEEDS TRANSLATE##
+gui.miner.docked=Docked ##NEEDS TRANSLATE##
+gui.miner.travelling=Travelling ##NEEDS TRANSLATE##
+gui.miner.mining=Mining ##NEEDS TRANSLATE##
+gui.miner.returning=Returning ##NEEDS TRANSLATE##
+gui.miner.docking=Docking ##NEEDS TRANSLATE##
+gui.miner.mined=Mined ##NEEDS TRANSLATE##
 
 tile.treasureT3.description=Сундуки с сокровищами 3-го уровня сейчас бесполезны.
 tile.walkway.description=Дорожки используются в декоративных целях, для соединения блоков, чтобы сохранить тему космоса.
@@ -137,3 +155,4 @@ gc.configgui.idEntityTier3Rocket=ID сущности: Ракета 3-го уро
 gc.configgui.idEntityEntryPod=ID сущности: Entry Pod
 gc.configgui.idSchematicRocketT3=ID схемы: Ракета 3-го уровня
 gc.configgui.disableGalacticraftHelium=Отключение регистрации гелия
+gc.configgui.astroMinersMax=Maximum number of Astro Miners per player ##NEEDS TRANSLATE##
