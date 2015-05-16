@@ -311,7 +311,7 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
 		if (this.solarMultiplier < 0D)
 		{
 			double s = this.getSolarSize(); 
-			this.solarMultiplier = s * MathHelper.sqrt_double(s);
+			this.solarMultiplier = s * s * s;
 		}
 		return this.solarMultiplier;
 	}

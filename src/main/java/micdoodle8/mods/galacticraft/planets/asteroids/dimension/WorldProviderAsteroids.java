@@ -14,7 +14,6 @@ import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAst
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.WorldChunkManagerAsteroids;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
 
@@ -405,7 +404,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
 		if (this.solarMultiplier < 0D)
 		{
 			double s = this.getSolarSize();
-			this.solarMultiplier = s * MathHelper.sqrt_double(s) * ConfigManagerCore.spaceStationEnergyScalar;
+			this.solarMultiplier = s * s * s * ConfigManagerCore.spaceStationEnergyScalar;
 		}
 		return this.solarMultiplier;
 	}
