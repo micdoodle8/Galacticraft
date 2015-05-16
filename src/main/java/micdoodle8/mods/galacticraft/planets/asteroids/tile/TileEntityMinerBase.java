@@ -773,7 +773,15 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
   	public void setDisabled(int index, boolean disabled)
   	{
   		//Used to recall miner
-  		if (this.linkedMiner != null) this.linkedMiner.recall();
+  		TileEntityMinerBase master;
+    	if (!this.isMaster)
+    	{
+            master = this.getMaster();
+            if (master == null)
+            	return;
+    	} else
+    		master = this;
+  		if (master.linkedMiner != null) master.linkedMiner.recall();
   	}
   	
 }

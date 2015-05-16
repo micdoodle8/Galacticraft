@@ -33,6 +33,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAst
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockFlowerPot;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -734,6 +735,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 			{
 				this.AIstate = AISTATE_TRAVELLING;
 				this.wayPoints.add(this.waypointBase.clone());
+				this.mineCount = 0;
 			}
 			else
 			{
@@ -1031,12 +1033,16 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		//If it is obstructed, return to base, or stand still if that is impossible
 		if (wayBarred)
 		{
+			if (this.playerMP != null)
+				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner1A.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
 			this.motionX = 0;
 			this.motionY = 0;
 			this.motionZ = 0;
 			this.tryBlockLimit = 0;
 			if (this.AIstate == AISTATE_TRAVELLING)
+			{
 				this.AIstate = AISTATE_RETURNING;
+			}
 			else if (AIstate == AISTATE_MINING)
 			{
 				this.pathBlockedCount++;
@@ -1161,7 +1167,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		if (b instanceof IFluidBlock) return false;
 		if (b != GCBlocks.fallenMeteor)
 		{
-			if (b instanceof IPlantable)
+			if (b instanceof IPlantable && b!=Blocks.tallgrass && b!=Blocks.deadbush && b!=Blocks.double_plant && b!=Blocks.waterlily && !(b instanceof BlockFlower))
 			{
 				blockingBlock.block = b;
 				blockingBlock.meta = this.worldObj.getBlockMetadata(x, y, z);
@@ -1305,7 +1311,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             }
         }
 
-		this.markDirty();
+		if (flag1)
+		{	
+			this.markDirty();
+			this.mineCount++;
+		}
         return flag1;
 	}
 

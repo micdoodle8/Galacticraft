@@ -104,6 +104,7 @@ gui.message.targetNoEnergy.name=Target doesn't have enough Energy!
 gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook!
 gui.message.astroMiner.fail=This base already has an Astro Miner!
 gui.message.astroMiner1.fail=The docking area is blocked by:
+gui.message.astroMiner1A.fail=The Astro Miner's route is blocked by:
 gui.message.astroMiner2.fail=That would be one Astro Miner too many!
 gui.message.astroMiner3.fail=The Astro Miner's base was removed!
 gui.message.astroMiner4.fail=The Astro Miner ran out of energy and cannot get back to base!
@@ -120,6 +121,7 @@ gui.miner.travelling=Travelling
 gui.miner.mining=Mining
 gui.miner.returning=Returning
 gui.miner.docking=Docking
+gui.miner.mined=Mined
 
 
 
