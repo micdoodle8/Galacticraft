@@ -15,9 +15,7 @@ import java.util.ArrayList;
 
 public class GCBlocks
 {
-    public static Block breatheableAir;
     public static Block brightAir;
-    public static Block brightBreatheableAir;
     public static Block brightLamp;
     public static Block treasureChestTier1;
     public static Block landingPad;
@@ -70,9 +68,7 @@ public class GCBlocks
 
     public static void initBlocks()
     {
-    	GCBlocks.breatheableAir = new BlockBreathableAir("breatheableAir");
         GCBlocks.brightAir = new BlockBrightAir("brightAir");
-        GCBlocks.brightBreatheableAir = new BlockBrightBreathableAir("brightBreathableAir");
         GCBlocks.brightLamp = new BlockBrightLamp("arclamp");
         GCBlocks.treasureChestTier1 = new BlockT1TreasureChest("treasureChest");
         GCBlocks.landingPad = new BlockLandingPad("landingPad");
@@ -175,8 +171,6 @@ public class GCBlocks
        
         // Hide certain items from NEI
         GCBlocks.hiddenBlocks.add(GCBlocks.airLockSeal);
-        GCBlocks.hiddenBlocks.add(GCBlocks.breatheableAir);
-        GCBlocks.hiddenBlocks.add(GCBlocks.brightBreatheableAir);
         GCBlocks.hiddenBlocks.add(GCBlocks.brightAir);
         GCBlocks.hiddenBlocks.add(GCBlocks.unlitTorch);
         GCBlocks.hiddenBlocks.add(GCBlocks.unlitTorchLit);
@@ -286,9 +280,7 @@ public class GCBlocks
         GameRegistry.registerBlock(GCBlocks.landingPadFull, ItemBlockGC.class, GCBlocks.landingPadFull.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.unlitTorch, ItemBlockGC.class, GCBlocks.unlitTorch.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.unlitTorchLit, ItemBlockGC.class, GCBlocks.unlitTorchLit.getUnlocalizedName());
-        GameRegistry.registerBlock(GCBlocks.breatheableAir, ItemBlockGC.class, GCBlocks.breatheableAir.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.brightAir, ItemBlockGC.class, GCBlocks.brightAir.getUnlocalizedName());
-        GameRegistry.registerBlock(GCBlocks.brightBreatheableAir, ItemBlockGC.class, GCBlocks.brightBreatheableAir.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.oxygenCollector, ItemBlockDesc.class, GCBlocks.oxygenCollector.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.oxygenCompressor, ItemBlockOxygenCompressor.class, GCBlocks.oxygenCompressor.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.oxygenDistributor, ItemBlockDesc.class, GCBlocks.oxygenDistributor.getUnlocalizedName());

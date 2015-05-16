@@ -506,11 +506,7 @@ public class ClientProxyCore extends CommonProxyCore
     @Override
     public int getBlockRender(Block blockID)
     {
-        if (blockID == GCBlocks.breatheableAir || blockID == GCBlocks.brightBreatheableAir)
-        {
-            return ClientProxyCore.renderIdBreathableAir;
-        }
-        else if (blockID == GCBlocks.oxygenPipe)
+    	if (blockID == GCBlocks.oxygenPipe)
         {
             return ClientProxyCore.renderIdOxygenPipe;
         }

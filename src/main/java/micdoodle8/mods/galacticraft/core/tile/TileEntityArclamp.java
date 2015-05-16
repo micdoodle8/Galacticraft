@@ -183,9 +183,7 @@ public class TileEntityArclamp extends TileEntity
     public void lightArea()
     {
         Block air = Blocks.air;
-        Block breatheableAirID = GCBlocks.breatheableAir;
         Block brightAir = GCBlocks.brightAir;
-        Block brightBreatheableAir = GCBlocks.brightBreatheableAir;
         HashSet<BlockVec3> checked = new HashSet();
         LinkedList<BlockVec3> currentLayer = new LinkedList();
         LinkedList<BlockVec3> nextLayer = new LinkedList();
@@ -272,12 +270,6 @@ public class TileEntityArclamp extends TileEntity
                             this.airToRestore.add(vec);
                             this.markDirty();
                         }
-                        else if (id == breatheableAirID)
-                        {
-                            world.setBlock(vec.x, vec.y, vec.z, brightBreatheableAir, 0, 2);
-                            this.airToRestore.add(vec);
-                            this.markDirty();
-                        }
                     }
                 }
             }
@@ -349,17 +341,12 @@ public class TileEntityArclamp extends TileEntity
     private void revertAir()
     {
         Block brightAir = GCBlocks.brightAir;
-        Block brightBreatheableAir = GCBlocks.brightBreatheableAir;
         for (BlockVec3 vec : this.airToRestore)
         {
             Block b = vec.getBlock(this.worldObj);
             if (b == brightAir)
             {
                 this.worldObj.setBlock(vec.x, vec.y, vec.z, Blocks.air, 0, 2);
-            }
-            else if (b == brightBreatheableAir)
-            {
-                this.worldObj.setBlock(vec.x, vec.y, vec.z, GCBlocks.breatheableAir, 0, 2);
                 //No block update - not necessary for changing air to air, also must not trigger a sealer edge check
             }
         }

@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -19,8 +18,6 @@ import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -86,14 +83,10 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
                     //CO2 -> CO2 tank
                     if (this.gasTank2.getFluidAmount() < this.gasTank2.getCapacity())
                     {
-                        Block blockAbove = this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord);
-                        if (blockAbove != null && blockAbove.getMaterial() == Material.air && blockAbove!=GCBlocks.breatheableAir && blockAbove!=GCBlocks.brightBreatheableAir)
+                        if (OxygenUtil.checkRawAtmosphere(this.worldObj, this.xCoord, this.yCoord + 1, this.zCoord))
                         {
-                            if (!OxygenUtil.inOxygenBubble(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1D, this.zCoord + 0.5D))
-                            {
-	                        	FluidStack gcAtmosphere = FluidRegistry.getFluidStack("carbondioxide", 4);
-	                            this.gasTank2.fill(gcAtmosphere, true);
-                            }
+                        	FluidStack gcAtmosphere = FluidRegistry.getFluidStack("carbondioxide", 4);
+                            this.gasTank2.fill(gcAtmosphere, true);
                         }
                     }
                 }

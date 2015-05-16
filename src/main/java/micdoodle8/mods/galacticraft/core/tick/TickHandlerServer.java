@@ -20,6 +20,7 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.oxygen.DataOxygen;
 import micdoodle8.mods.galacticraft.core.oxygen.ThreadFindSeal;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenTransmitter;
@@ -574,6 +575,22 @@ public class TickHandlerServer
                 }
 
                 TickHandlerServer.edgeChecks.remove(world.provider.dimensionId);
+            }
+
+            if (this.tickCount % 99 == 0)
+            {
+	            Map<BlockVec3, Integer> airList = DataOxygen.getAirData(world.provider.dimensionId);
+	            ArrayList<BlockVec3> removeList = new ArrayList();
+	            for (Map.Entry<BlockVec3, Integer> b : airList.entrySet())
+	            {
+	            	int level = b.getValue(); 
+	            	if (level > 1) b.setValue(--level);
+	            	else removeList.add(b.getKey());
+	            }
+	            for (BlockVec3 v : removeList)
+	            {
+	            	airList.remove(v);
+	            }
             }
         }
     }

@@ -19,7 +19,7 @@ import java.util.Map;
 public class OxygenPressureProtocol
 {
     public final static Map<Block, ArrayList<Integer>> nonPermeableBlocks = new HashMap<Block, ArrayList<Integer>>();
-
+   
     static
     {
         for (final String s : ConfigManagerCore.sealableIDs)

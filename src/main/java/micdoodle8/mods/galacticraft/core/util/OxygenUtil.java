@@ -13,12 +13,12 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenGear;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenMask;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
+import micdoodle8.mods.galacticraft.core.oxygen.DataOxygen;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
 import net.minecraft.block.*;
@@ -38,6 +38,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Map;
 
 public class OxygenUtil
 {
@@ -101,6 +102,7 @@ public class OxygenUtil
         int j1 = MathHelper.floor_double(bb.maxZ);
 
         OxygenUtil.checked = new HashSet();
+        Map<BlockVec3, Integer> airData = DataOxygen.getAirData(world.provider.dimensionId);
         if (world.checkChunksExist(i, k, i1, j, l, j1))
         {
             for (int x = i; x <= j; ++x)
@@ -110,7 +112,7 @@ public class OxygenUtil
                     for (int z = i1; z <= j1; ++z)
                     {
                         Block block = world.getBlock(x, y, z);
-                        if (OxygenUtil.testContactWithBreathableAir(world, block, x, y, z, 0))
+                        if (OxygenUtil.testContactWithBreathableAir(world, block, x, y, z, 0, airData))
                         {
                             return true;
                         }
@@ -132,11 +134,12 @@ public class OxygenUtil
     	if (OxygenUtil.inOxygenBubble(world, x + 0.5D, y + 0.6D, z + 0.5D)) return true;
     	OxygenUtil.checked = new HashSet();
         BlockVec3 vec = new BlockVec3(x, y, z);
+        Map<BlockVec3, Integer> airData = DataOxygen.getAirData(world.provider.dimensionId);
         for (int side = 0; side < 6; side++)
         {
             BlockVec3 sidevec = vec.newVecSide(side);
             Block newblock = sidevec.getBlockID_noChunkLoad(world);
-            if (OxygenUtil.testContactWithBreathableAir(world, newblock, sidevec.x, sidevec.y, sidevec.z, 1))
+            if (OxygenUtil.testContactWithBreathableAir(world, newblock, sidevec.x, sidevec.y, sidevec.z, 1, airData))
             {
                 return true;
             }
@@ -152,13 +155,14 @@ public class OxygenUtil
      * air-reachable blocks (up to 5 blocks away) and return true if breathable air is found
      * in one of them, or false if not.
      */
-    public static boolean testContactWithBreathableAir(World world, Block block, int x, int y, int z, int limitCount)
+    public static boolean testContactWithBreathableAir(World world, Block block, int x, int y, int z, int limitCount, Map<BlockVec3, Integer> airData)
     {
         BlockVec3 vec = new BlockVec3(x, y, z);
         checked.add(vec);
-        if (block == GCBlocks.breatheableAir || block == GCBlocks.brightBreatheableAir)
+        Integer level = airData.get(vec);
+        if (level != null)
         {
-            return true;
+            return level > 0;
         }
 
         if (block == null || block.getMaterial() == Material.air)
@@ -214,7 +218,7 @@ public class OxygenUtil
                     if (!checked.contains(sidevec))
                     {
                         Block newblock = sidevec.getBlockID_noChunkLoad(world);
-                        if (OxygenUtil.testContactWithBreathableAir(world, newblock, sidevec.x, sidevec.y, sidevec.z, limitCount + 1))
+                        if (OxygenUtil.testContactWithBreathableAir(world, newblock, sidevec.x, sidevec.y, sidevec.z, limitCount + 1, airData))
                         {
                             return true;
                         }
@@ -450,5 +454,12 @@ public class OxygenUtil
         }
 
 		return false;
+	}
+
+	public static boolean checkRawAtmosphere(World world, int x, int y, int z)
+	{
+        return !OxygenUtil.inOxygenBubble(world, x + 0.5D, y, z + 0.5D);
+        
+        //TODO Check OxygenData
 	}
 }
