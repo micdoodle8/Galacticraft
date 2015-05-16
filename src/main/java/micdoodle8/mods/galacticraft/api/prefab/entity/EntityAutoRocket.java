@@ -68,6 +68,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 
     public int autoLaunchCountdown;
     public String statusMessage;
+    public String statusColour;
     public int statusMessageCooldown;
     public int lastStatusMessageCooldown;
     public boolean statusValid;
@@ -110,12 +111,14 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
                 if (!this.setFrequency())
                 {
                     this.destinationFrequency = -1;
-                    this.statusMessage = "\u00a7c" + StatCollector.translateToLocal("gui.message.frequency.name") + "#\u00a7c" + StatCollector.translateToLocal("gui.message.notSet.name");
+                    this.statusMessage = StatCollector.translateToLocal("gui.message.frequency.name") + "#" + StatCollector.translateToLocal("gui.message.notSet.name");
+                    this.statusColour = "\u00a7c";
                     return false;
                 }
                 else
                 {
-                    this.statusMessage = "\u00a7a" + StatCollector.translateToLocal("gui.message.success.name");
+                    this.statusMessage = StatCollector.translateToLocal("gui.message.success.name");
+                    this.statusColour = "\u00a7a";
                     return true;
                 }
             }
@@ -123,7 +126,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
         else
         {
             this.destinationFrequency = -1;
-            this.statusMessage = "\u00a7c" + StatCollector.translateToLocal("gui.message.notEnough.name") + "#\u00a7c" + StatCollector.translateToLocal("gui.message.fuel.name");
+            this.statusMessage = StatCollector.translateToLocal("gui.message.notEnough.name") + "#" + StatCollector.translateToLocal("gui.message.fuel.name");
+            this.statusColour = "\u00a7c";
             return false;
         }
 
@@ -703,6 +707,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
 	        	}
 	        }
         }
+        this.statusColour = ByteBufUtils.readUTF8String(buffer);
+        if (this.statusColour.equals("")) this.statusColour = null;
     }
 
     @Override
@@ -744,6 +750,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ID
         {
         	list.add(this.riddenByEntity == null ? -1 : this.riddenByEntity.getEntityId());
         }
+        list.add(this.statusColour != null ? this.statusColour : "");
     }
 
     @Override
