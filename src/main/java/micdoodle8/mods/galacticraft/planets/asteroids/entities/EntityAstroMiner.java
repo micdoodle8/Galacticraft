@@ -132,7 +132,8 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     private final int baseSafeRadius = 32;
     private final double speedbase = TEMPFAST ? 0.16D : 0.022D;
     private double speed = speedbase;
-    private final float rotSpeed = TEMPFAST ? 8F : 1.5F;
+    private final float rotSpeedBase = TEMPFAST ? 8F : 1.5F;
+    private float rotSpeed = rotSpeedBase;
     private double speedup = SPEEDUP;
     private boolean noSpeedup = false;  //This stops the miner getting stuck at turning points
     public float shipDamage;
@@ -473,6 +474,8 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     					return;
     				}
     			}
+    			else if (((TileEntityMinerBase) tileEntity).linkedMiner != this)
+					((TileEntityMinerBase) tileEntity).linkMiner(this);
 			}
         	else
     		{
@@ -569,6 +572,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     		if (this.waypointBase != null)
     		{	
     			this.speed = speedbase / 1.6;
+    			this.rotSpeed = rotSpeedBase / 1.6F;
     			if (this.moveToPos(this.waypointBase, true))
     			{
     				this.AIstate = AISTATE_ATBASE;
@@ -576,6 +580,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     				this.motionY = 0;
     				this.motionZ = 0;
     	    		this.speed = speedbase;
+    	    		this.rotSpeed = rotSpeedBase;
     			}
     		}
     		else

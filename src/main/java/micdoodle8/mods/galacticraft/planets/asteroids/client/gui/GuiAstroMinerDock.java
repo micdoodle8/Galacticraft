@@ -52,7 +52,7 @@ public class GuiAstroMinerDock extends GuiContainerGC
     	else
     	{
 	    	EntityAstroMiner miner = this.tile.linkedMiner;
-	    	if (miner == null || miner.isDead || this.tile.linkCountDown == 0) this.recallButton.enabled = false;
+	    	if (miner == null || miner.isDead || this.tile.linkCountDown == 0 || miner.AIstate < EntityAstroMiner.AISTATE_TRAVELLING || miner.AIstate == EntityAstroMiner.AISTATE_DOCKING ) this.recallButton.enabled = false;
     	}
         this.recallButton.displayString = GCCoreUtil.translate("gui.button.recall.name");
 

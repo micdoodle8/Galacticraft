@@ -499,6 +499,7 @@ public class RenderAstroMiner extends Render
     	GL11.glPushMatrix();       
     	float zadjust = laserretraction * 5F;
     	float yadjust = zadjust;
+    	
     	if (yadjust > 0.938F)
     	{	
     		yadjust = 0.938F;
@@ -508,8 +509,10 @@ public class RenderAstroMiner extends Render
 	    this.modellaser1.renderAll();
 	    this.modellaser2.renderAll();
 	    if (yadjust == 0.938F)
+	    {
 	        //Do not move laser centre into body
-	    	GL11.glTranslatef(0F, 0F, -zadjust);
+	    	GL11.glTranslatef(0F, 0F, -zadjust + 0.938F);
+	    }
 	    this.modellaser3.renderAll();
     	GL11.glPopMatrix();
         GL11.glPushMatrix();
