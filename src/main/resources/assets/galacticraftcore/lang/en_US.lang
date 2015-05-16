@@ -482,6 +482,16 @@ gui.oxygenCompressor.slot.desc.0=Compressor tank slot, place oxygen tank
 gui.oxygenCompressor.slot.desc.1=here to fill it with breathable oxygen.
 gui.oxygenDecompressor.slot.desc.0=Decompressor tank slot, place oxygen tank
 gui.oxygenDecompressor.slot.desc.1=here to empty out the breathable oxygen.
+gui.rocket.onLaunchpad=On launchpad
+gui.rocket.countdown=Countdown
+gui.rocket.launched=Launched
+gui.rocket.height=Height
+gui.rocket.speed=Speed
+gui.player.health=Health
+gui.player.food=Food
+gui.player.bpm=bpm
+gui.player.ouch=ouch!!!!
+
 
 gui.spaceRace.create.close.name=Close
 gui.spaceRace.create.back.name=Back

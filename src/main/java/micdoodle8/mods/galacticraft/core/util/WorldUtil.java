@@ -12,6 +12,7 @@ import java.util.Random;
 import java.util.Set;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.entity.IAntiGrav;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
@@ -36,7 +37,6 @@ import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
-import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
@@ -103,7 +103,7 @@ public class WorldUtil
             final IGalacticraftWorldProvider customProvider = (IGalacticraftWorldProvider) entity.worldObj.provider;
             return 0.08D - customProvider.getGravity();
         }
-        else if (GalacticraftCore.isPlanetsLoaded && entity instanceof EntityAstroMiner)
+        else if (entity instanceof IAntiGrav)
         {
         	return 0;
         }
@@ -123,7 +123,7 @@ public class WorldUtil
         	if (returnValue < 0.75F) returnValue = 0.75F;
         	return returnValue;
         }
-        else if (GalacticraftCore.isPlanetsLoaded && entity instanceof EntityAstroMiner)
+        else if (entity instanceof IAntiGrav)
         {
         	return 1F;
         }

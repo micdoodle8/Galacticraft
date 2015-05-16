@@ -7,9 +7,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.api.entity.IAntiGrav;
 import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
+import micdoodle8.mods.galacticraft.api.entity.ITelemetry;
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -59,7 +63,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fluids.IFluidBlock;
 
-public class EntityAstroMiner extends Entity implements IInventory, IPacketReceiver, IEntityNoisy
+public class EntityAstroMiner extends Entity implements IInventory, IPacketReceiver, IEntityNoisy, IAntiGrav, ITelemetry
 {
 	public static final int MINE_LENGTH = 24;
 	public static final int MINE_LENGTH_AST = 12;
@@ -1854,9 +1858,56 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         }
         this.soundToStop = false;
     }
-    
+
+    public void transmitData(int[] data)
+    {
+    	data[0] = (int) (this.posX);
+    	data[1] = (int) (this.posY);
+		data[2] = (int) (this.posZ);
+		data[3] = this.energyLevel;
+		data[4] = this.AIstate;
+    }
 	
-	@Override
+    public void receiveData(int[] data, String[] str)
+    {
+		str[0] = "";
+		str[1] = "x: " + data[0];
+		str[2] = "y: " + data[1];
+		str[3] = "z: " + data[2];
+		int energyPerCent = data[3] / 120;
+		str[4] = GCCoreUtil.translate("gui.energyStorage.desc.1") + ": " + energyPerCent + "%";
+		switch (data[4])
+		{
+			case EntityAstroMiner.AISTATE_STUCK:
+				str[0] = GCCoreUtil.translate("gui.message.noEnergy.name");
+				break;
+			case EntityAstroMiner.AISTATE_ATBASE:
+				str[0] = GCCoreUtil.translate("gui.miner.docked");
+				break;
+			case EntityAstroMiner.AISTATE_TRAVELLING:
+				str[0] = GCCoreUtil.translate("gui.miner.travelling");
+				break;
+			case EntityAstroMiner.AISTATE_MINING:
+				str[0] = GCCoreUtil.translate("gui.miner.mining");
+				break;
+			case EntityAstroMiner.AISTATE_RETURNING:
+				str[0] = GCCoreUtil.translate("gui.miner.returning");
+				break;
+			case EntityAstroMiner.AISTATE_DOCKING:
+				str[0] = GCCoreUtil.translate("gui.miner.docking");
+				break;
+			case EntityAstroMiner.AISTATE_OFFLINE:
+				str[0] = GCCoreUtil.translate("gui.miner.offline");
+				break;
+		}
+    }
+
+    public void adjustDisplay(int[] data)
+    {
+    	GL11.glScalef(0.9F, 0.9F, 0.9F);
+    }
+
+    @Override
     protected void readEntityFromNBT(NBTTagCompound nbt)
     {
     	final NBTTagList var2 = nbt.getTagList("Items", 10);

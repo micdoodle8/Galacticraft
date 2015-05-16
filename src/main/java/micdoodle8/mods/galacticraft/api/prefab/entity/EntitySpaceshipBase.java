@@ -5,15 +5,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
+import micdoodle8.mods.galacticraft.api.entity.ITelemetry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.GameScreenText;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -33,10 +36,12 @@ import net.minecraftforge.event.entity.EntityEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
 /**
  * Do not include this prefab class in your released mod download.
  */
-public abstract class EntitySpaceshipBase extends Entity implements IPacketReceiver, IIgnoreShift
+public abstract class EntitySpaceshipBase extends Entity implements IPacketReceiver, IIgnoreShift, ITelemetry
 {
     public static enum EnumLaunchPhase
     {
@@ -586,4 +591,36 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 		}
 		return returnList;
 	}
+	
+    public void transmitData(int[] data)
+    {
+		data[0] = this.timeUntilLaunch;
+		data[1] = (int) this.posY;
+		//data[2] is entity speed already set as default by TileEntityTelemetry
+		data[3] = this.getScaledFuelLevel(100);
+		data[4] = (int) this.rotationPitch;
+    }
+	
+    public void receiveData(int[] data, String[] str)
+    {
+		//Spaceships:
+		//  data0 = launch countdown
+		//  data1 = height
+		//  data2 = speed
+		//  data3 = fuel remaining
+		//  data4 = pitch angle
+		int countdown = data[0];
+		str[0] = "";
+		str[1] = (countdown == 400) ? GCCoreUtil.translate("gui.rocket.onLaunchpad") : ((countdown > 0) ? GCCoreUtil.translate("gui.rocket.countdown") + ": " + countdown / 20 : GCCoreUtil.translate("gui.rocket.launched"));
+		str[2] = GCCoreUtil.translate("gui.rocket.height") + ": " + data[1];
+		str[3] = GameScreenText.makeSpeedString(data[2]);
+		str[4] = GCCoreUtil.translate("gui.message.fuel.name") + ": " + data[3] + "%";
+    }
+
+    public void adjustDisplay(int[] data)
+    {
+		GL11.glRotatef(data[4], -1, 0, 0);
+		GL11.glTranslatef(0, this.height / 4, 0);
+    }
+
 }

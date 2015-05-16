@@ -12,6 +12,11 @@ import net.minecraft.server.management.ItemInWorldManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.WorldServer;
 
+/**
+ * Do not reference this or test 'intance of' this in your code:
+ * if PlayerAPI is installed, GCEntityPlayerMP will not be used.
+ * 
+ */
 public class GCEntityPlayerMP extends EntityPlayerMP
 {
     public GCEntityPlayerMP(MinecraftServer server, WorldServer world, GameProfile profile, ItemInWorldManager itemInWorldManager)
