@@ -15,7 +15,7 @@ item.grapple.name=Änterhake
 item.atmosphericValve.name=Atmosfärsventil
 item.thermalCloth.name=Värmereglerande tyg
 item.beamCore.name=Strålnav
-item.orionDrive.name=Orion Drive ##NEEDS TRANSLATE##
+item.orionDrive.name=Orionmotor
 item.tier3.desc=Nivå 3
 
 # TOOLS
@@ -26,10 +26,10 @@ item.titanium_shovel.name=Titanspade
 item.titanium_sword.name=Titansvärd
 
 # ARMOR
-item.thermalHelm.name=Termosunderställ (huvud)
-item.thermalChestplate.name=Termosunderställ (torso)
-item.thermalLeggings.name=Termosunderställ (ben)
-item.thermalBoots.name=Termosunderställ (fötter)
+item.thermalHelm.name=Termosunderställshuva
+item.thermalChestplate.name=Termosunderställströja
+item.thermalLeggings.name=Termosunderställsbyxor
+item.thermalBoots.name=Termosunderställstrumpor
 item.titanium_helmet.name=Titanhjälm
 item.titanium_chestplate.name=Titanharnesk
 item.titanium_leggings.name=Titanbyxor
