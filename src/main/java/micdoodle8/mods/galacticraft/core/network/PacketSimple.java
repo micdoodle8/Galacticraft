@@ -1259,9 +1259,11 @@ public class PacketSimple extends Packet implements IPacket
             if (!outputFile.exists() || !outputFile.isFile())
             {
                 success = false;
-                BufferedImage image = new BufferedImage(400, 400, BufferedImage.TYPE_INT_RGB);
-                MapUtil.getLocalMap(MinecraftServer.getServer().worldServerForDimension(0), chunkCoordIntPair.chunkXPos, chunkCoordIntPair.chunkZPos, image);
-                //MapUtil.getBiomeMapForCoords(MinecraftServer.getServer().worldServerForDimension(0), chunkCoordIntPair.chunkXPos, chunkCoordIntPair.chunkZPos, ConfigManagerCore.mapfactor, ConfigManagerCore.mapsize, outputFile, playerBase);
+                //BufferedImage image = new BufferedImage(400, 400, BufferedImage.TYPE_INT_RGB);
+                //MapUtil.getLocalMap(MinecraftServer.getServer().worldServerForDimension(0), chunkCoordIntPair.chunkXPos, chunkCoordIntPair.chunkZPos, image);
+                int scale = 3;
+                //ConfigManagerCore.mapsize
+                MapUtil.getBiomeMapForCoords(MinecraftServer.getServer().worldServerForDimension(0), chunkCoordIntPair.chunkXPos, chunkCoordIntPair.chunkZPos, scale, 96, outputFile, playerBase);
             }
 
             if (success)

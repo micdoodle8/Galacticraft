@@ -230,12 +230,19 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static DynamicTexture overworldTextureClient;
     public static DynamicTexture overworldTextureLocal;
-    public static boolean overworldTextureRequestSent = false;
+    public static boolean overworldTextureRequestSent;
 
     private static float PLAYER_Y_OFFSET = 1.6200000047683716F;
     
     private static final ResourceLocation saturnRingTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/saturnRings.png");    
     private static final ResourceLocation uranusRingTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/uranusRings.png");
+    
+    public static void reset()
+    {
+        ClientProxyCore.playerItemData.clear();
+        ClientProxyCore.overworldTextureRequestSent = false;
+        ClientProxyCore.flagRequestsSent.clear();
+    }
     
     @Override
     public void preInit(FMLPreInitializationEvent event)

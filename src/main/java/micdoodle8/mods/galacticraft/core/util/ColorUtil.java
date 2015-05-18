@@ -161,4 +161,16 @@ public class ColorUtil
 	
 	    return rr | gg | (b & 255);
 	}
+
+	public static int lighten(int col, float factor)
+	{
+	    int gg = col >> 8;
+		int rr = gg >> 8;
+	    gg &= 255;
+	    int bb = col & 255;
+	    rr *= (1F + factor);
+	    gg *= (1F + factor);
+	    bb *= (1F + factor);
+		return rr << 16 | gg << 8 | (bb & 255);
+	}
 }

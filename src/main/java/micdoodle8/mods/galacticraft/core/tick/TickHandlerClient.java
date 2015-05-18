@@ -371,9 +371,9 @@ public class TickHandlerClient
                 }
             }
 
-            if (minecraft.currentScreen != null && minecraft.currentScreen instanceof GuiMainMenu)
+            if (minecraft.currentScreen instanceof GuiMainMenu)
             {
-                ClientProxyCore.playerItemData.clear();
+                ClientProxyCore.reset();
 
                 if (TickHandlerClient.missingRequirementThread == null)
                 {

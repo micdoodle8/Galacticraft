@@ -57,6 +57,7 @@ public class VersionUtil
 
     //Used in GCPlayerHandler
     public static final String KEY_FIELD_FLOATINGTICKCOUNT = "floatingTickCount";
+    public static final String KEY_FIELD_BIOMEINDEXLAYER = "biomeIndexLayer";
 
     static
     {
@@ -127,6 +128,7 @@ public class VersionUtil
 
         //Same for both versions
         nodemap.put(KEY_FIELD_FLOATINGTICKCOUNT, new ObfuscationEntry("floatingTickCount", "field_147365_f"));
+        nodemap.put(KEY_FIELD_BIOMEINDEXLAYER, new ObfuscationEntry("biomeIndexLayer", "field_76945_e"));
     }
 
     public static boolean mcVersionMatches(String version)
