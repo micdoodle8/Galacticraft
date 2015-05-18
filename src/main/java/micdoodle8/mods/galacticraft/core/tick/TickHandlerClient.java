@@ -289,7 +289,7 @@ public class TickHandlerClient
 
         if (event.phase == Phase.START)
         {
-            if (TickHandlerClient.tickCount >= Long.MAX_VALUE)
+        	if (TickHandlerClient.tickCount >= Long.MAX_VALUE)
             {
                 TickHandlerClient.tickCount = 0;
             }
