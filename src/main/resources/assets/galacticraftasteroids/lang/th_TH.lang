@@ -104,7 +104,7 @@ gui.message.targetNoEnergy.name=เป้าหมายพลังงานไ
 gui.message.grapple.fail=ฉันต้องการเส้นเชือกจำนวนเล็กน้อย ถ้าต้องการที่จะโยนตะขอออกไป!
 gui.message.astroMiner.fail=ฐานนี้มีแอสโทรไมน์เนอร์แล้ว!
 gui.message.astroMiner1.fail=พื้นที่โรงจอดถูกปิดกั้นโดย:
-gui.message.astroMiner1A.fail=The Astro Miner's route is blocked by: ##NEEDS TRANSLATE##
+gui.message.astroMiner1A.fail=เส้นทางของแอสโทรไมน์เนอร์ถูกบล็อกโดย:
 gui.message.astroMiner2.fail=มีแอสโทรไมน์เนอร์มากเกินไป!
 gui.message.astroMiner3.fail=ฐานแอสโทรไมน์เนอร์ถูกลบออกไป!
 gui.message.astroMiner4.fail=แอสโทรไมน์เนอร์พลังงานหมดและไม่สามารถกลับไปยังฐานได้!
@@ -121,9 +121,7 @@ gui.miner.travelling=กำลังเดินทาง
 gui.miner.mining=กำลังขุด
 gui.miner.returning=กำลังกลับ
 gui.miner.docking=กำลังจอด
-gui.miner.mined=Mined ##NEEDS TRANSLATE##
-
-
+gui.miner.mined=ขุดแล้ว
 
 tile.treasureT3.description=ยังไม่ใช้ตอนนี้
 tile.walkway.description=ใช้สำหรับการตกแต่งที่คล้ายกับสภาพภายใน ยานอวกาศ
