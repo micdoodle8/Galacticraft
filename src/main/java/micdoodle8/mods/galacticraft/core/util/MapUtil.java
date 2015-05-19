@@ -3,13 +3,21 @@ package micdoodle8.mods.galacticraft.core.util;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
+import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.stream.FileImageOutputStream;
+import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -19,9 +27,13 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -36,10 +48,12 @@ import org.apache.commons.io.FileUtils;
 public class MapUtil
 {
     public static AtomicBoolean calculatingMap = new AtomicBoolean();
+    public static boolean doneOverworldTexture = false;
     private static int ix = 0;
     private static int iz = 0;
     private static int biomeMapx0 = 0;
     private static int biomeMapz0 = 0;
+	private static int biomeMapz00;
 	private static int biomeMapCx;
 	private static int biomeMapCz;
 	private static int biomeMapFactor;
@@ -47,8 +61,8 @@ public class MapUtil
 	private static BufferedImage biomeMapImage;
 	private static File biomeMapFile;
 	private static EntityPlayerMP biomeMapPlayerBase;
-	private static int biomeMapRange;
-	private static int biomeMapSize;
+	private static int biomeMapSizeX;
+	private static int biomeMapSizeZ;
 	private static ArrayList<BlockVec3> biomeColours = new ArrayList<BlockVec3>(40);
 	private static Random rand = new Random();
 	private static World biomeMapWorld;
@@ -112,9 +126,68 @@ public class MapUtil
         }
 	}
     
+	public static void makeOverworldTexture()
+	{
+    	doneOverworldTexture = true;
+    	if (doneOverworldTexture) return;
+		World world = WorldUtil.getProviderForDimension(0).worldObj;
+    	if (world == null) return;
+    	if (calculatingMap.getAndSet(true)) return;
+    	biomeMapWCM = world.getWorldChunkManager();
+    	try {
+    		Field bil = biomeMapWCM.getClass().getDeclaredField(VersionUtil.getNameDynamic(VersionUtil.KEY_FIELD_BIOMEINDEXLAYER));
+    		bil.setAccessible(true);
+    		biomeMapGenLayer = (GenLayer) bil.get(biomeMapWCM);
+    	} catch (Exception e) { }
+    	if (biomeMapGenLayer == null)
+    	{
+    		calculatingMap.set(false);
+        	if (ConfigManagerCore.enableDebug) System.out.println("Failed to get gen layer from World Chunk Manager.");
+    		return;
+    	}
+        File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
+        if (!baseFolder.exists())
+        {
+            if (!baseFolder.mkdirs())
+            {
+            	GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
+        		calculatingMap.set(false);
+        		return;            	
+            }
+        }
+//		try {
+//			IResourceManager rm = Minecraft.getMinecraft().getResourceManager();			
+//			BufferedImage paletteImage2 = null;
+//			InputStream in = rm.getResource(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png")).getInputStream();
+//			paletteImage2 = readImage(in);
+//			in.close();
+//			writeOutputFile(paletteImage2, false);
+//			biomeMapFile.renameTo(new File("OWdiffread.jpg"));
+//		} catch (Exception e) { e.printStackTrace(); }
+
+    	if (ConfigManagerCore.enableDebug) System.out.println("Starting overworld generation centered at " + 0 + "," + 0);
+    	ix = 0;
+    	iz = 0;
+    	biomeMapCx = 0;
+    	biomeMapCz = 0;
+    	biomeMapFactor = 256;
+    	biomeMapSizeX = 192;
+    	biomeMapSizeZ = 48;
+    	biomeMapWorld = world;
+    	biomeMapImage = new BufferedImage(biomeMapSizeX, biomeMapSizeZ, BufferedImage.TYPE_INT_RGB);
+    	int limitX = biomeMapSizeX * biomeMapFactor / 32;
+    	int limitZ = biomeMapSizeZ * biomeMapFactor / 32;
+    	biomeMapz00 = -limitZ;
+    	biomeMapx0 = -limitZ;
+    	biomeMapz0 = biomeMapz00;
+        File outputFile = new File(baseFolder, "Overworld192x48.jpg");
+    	biomeMapFile = outputFile;
+    	biomeMapPlayerBase = null;
+	}
+	
 	public static void getBiomeMapForCoords(World world, int cx, int cz, int scale, int size, File outputFile, EntityPlayerMP player)
     {
-    	if (calculatingMap.get()) return;
+    	if (calculatingMap.getAndSet(true)) return;
     	if (ConfigManagerCore.enableDebug) System.out.println("Starting map generation centered at " + cx + "," + cz);
     	ix = 0;
     	iz = 0;
@@ -129,31 +202,132 @@ public class MapUtil
     		biomeMapGenLayer = (GenLayer) bil.get(biomeMapWCM);
     	} catch (Exception e) { }
     	if (biomeMapGenLayer == null)
+    	{
+    		calculatingMap.set(false);
     		return;
+    	}
     	biomeMapImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
-    	int ffactor = Math.max(biomeMapFactor, 16);
-    	int limit = size * biomeMapFactor / ffactor / 2;
-    	biomeMapRange = limit;
-    	biomeMapSize = size;
+    	int limit = size * biomeMapFactor / 32;
+    	biomeMapz00 = -limit;
+    	biomeMapSizeX = size;
+    	biomeMapSizeZ = size;
     	biomeMapx0 = -limit;
-    	biomeMapz0 = -limit;
+    	biomeMapz0 = biomeMapz00;
     	biomeMapFile = outputFile;
     	biomeMapPlayerBase = player;
-		calculatingMap.set(true);
 	}
 
 	private static void doneBiomeMap()
 	{
-		calculatingMap.set(false);
-		if (biomeMapSize == 48 && biomeMapFactor == 9)
+		if (biomeMapSizeZ == 48)
 		{
-			//Overworld image
-			//TODO
+			BufferedImage worldImage = new BufferedImage(biomeMapSizeX, biomeMapSizeZ, BufferedImage.TYPE_INT_RGB);
+
+			IResourceManager rm = Minecraft.getMinecraft().getResourceManager();			
+			BufferedImage paletteImage = null;
+			try {
+				InputStream in = rm.getResource(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png")).getInputStream();
+				paletteImage = ImageIO.read(in);
+				in.close();
+				paletteImage.getHeight();
+			} catch (Exception e) { e.printStackTrace(); calculatingMap.set(false); return;  }
+
+			convertTo12pxTexture(worldImage, paletteImage);
+			writeOutputFile(worldImage, false);
+			doneOverworldTexture = true;
+			calculatingMap.set(false);
+			return;
 		}
-		writeOutputFile(biomeMapImage);
+		writeOutputFile(biomeMapImage, true);
+		calculatingMap.set(false);
 	}
 	
-	private static void writeOutputFile(BufferedImage image)
+
+	/**
+	 * Converts a 48px high image to a 12px high image with a palette chosen only from the colours in the paletteImage
+	 * 
+	 * @param overworldImage  Output image already created as a blank image, dimensions biomeMapSizeX x biomeMapSizeY
+	 * @param paletteImage   Palette image, dimensions must be a square with sides biomeMapSizeZ / 4
+	 */
+	private static void convertTo12pxTexture(BufferedImage overworldImage, BufferedImage paletteImage)
+	{
+		TreeMap<Integer, Integer> mapColPos = new TreeMap();
+		TreeMap<Integer, Integer> mapColPosB = new TreeMap();
+		int count = 0;
+		for (int x = 0; x < biomeMapSizeX; x+=4)
+			for (int z = 0; z < biomeMapSizeZ; z+=4)
+			{
+				int r = 0;
+				int g = 0;
+				int b = 0;
+				for (int xx = 0; xx < 4; xx++)
+					for (int zz = 0; zz < 4; zz++)
+					{
+						int col = biomeMapImage.getRGB(xx + x, zz + z);
+						r += (col >> 16);
+						g += (col >> 8) & 255;
+						b += col & 255;
+					}
+				while (mapColPos.containsKey(g - b)) g++;
+				mapColPos.put(g - b, count);
+				if (x < biomeMapSizeZ)
+				{
+					int col = paletteImage.getRGB(x + 1, z + 1);
+					r = (col >> 16);
+					g = (col >> 8) & 255;
+					b = col & 255;
+					while (mapColPosB.containsKey(g - b)) g++;
+					mapColPosB.put(g - b, col);
+				}
+				count++;
+			}
+
+		count = 0;
+		int newCol = 0;
+		Iterator<Integer> it = mapColPosB.keySet().iterator();
+		Iterator<Integer> itt = mapColPos.keySet().iterator();
+		int modulus = biomeMapSizeZ / 4;
+		int mod2 = biomeMapSizeX / biomeMapSizeZ;
+		for (int x = 0; x < biomeMapSizeX / 4; x++)
+			for (int z = 0; z < modulus; z++)
+			{
+				if (count % mod2 == 0) newCol = mapColPosB.get(it.next());
+				int position = mapColPos.get(itt.next());
+				int xx = position / modulus;
+				int zz = position % modulus;
+				for (int xxx = 0; xxx < 4; xxx++)
+					for (int zzz = 0; zzz < 4; zzz++)
+					{
+						overworldImage.setRGB(xx * 4 + xxx, zz * 4 + zzz, newCol);
+					}
+				count++;
+			}
+	}
+
+	//Unused
+	public static BufferedImage readImage(Object source) throws IOException
+	{
+		ImageInputStream stream = ImageIO.createImageInputStream(source);
+		ImageReader reader = ImageIO.getImageReaders(stream).next();
+		reader.setInput(stream);
+		ImageReadParam param =reader.getDefaultReadParam();
+
+		ImageTypeSpecifier typeToUse = null;
+		for (Iterator i = reader.getImageTypes(0);i.hasNext(); )
+		{
+			ImageTypeSpecifier type = (ImageTypeSpecifier) i.next();
+			if (type.getColorModel().getColorSpace().isCS_sRGB())
+				typeToUse = type;
+		}
+		if (typeToUse!=null) param.setDestinationType(typeToUse);
+
+		BufferedImage b = reader.read(0, param);
+		reader.dispose();
+		stream.close();
+		return b;
+	}
+	
+	private static void writeOutputFile(BufferedImage image, boolean flag)
 	{
 		try
 		{
@@ -169,16 +343,19 @@ public class MapUtil
 		{
 			ex.printStackTrace();
 		}
-		try
+		if (flag)
 		{
-			byte[] bytes = FileUtils.readFileToByteArray(biomeMapFile);
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { bytes } ), biomeMapPlayerBase);
+			try
+			{
+				byte[] bytes = FileUtils.readFileToByteArray(biomeMapFile);
+				GalacticraftCore.packetPipeline.sendToAll(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { bytes } ));//, biomeMapPlayerBase);
+			}
+			catch (Exception ex)
+			{
+				System.err.println("Error sending overworld image to player.");
+				ex.printStackTrace();
+			}
 		}
-		catch (Exception ex)
-		{
-			System.err.println("Error sending overworld image to player.");
-			ex.printStackTrace();
-		}		
 	}
 
 	public static void BiomeMapNextTick()
@@ -206,14 +383,15 @@ public class MapUtil
     	biomeMapOneChunk(biomeMapCx + biomeMapx0, biomeMapCz + biomeMapz0, ix, iz, biomeMapFactor);
     	biomeMapz0 += multifactor;
     	iz += imagefactor;
-    	if (iz > biomeMapSize - imagefactor)
+    	if (iz > biomeMapSizeZ - imagefactor)
     	{
         	iz = 0;
         	if (ConfigManagerCore.enableDebug) System.out.println("Finished map column " + ix);
         	ix += imagefactor;
-        	biomeMapz0 = -biomeMapRange;
+        	biomeMapz0 = biomeMapz00;
         	biomeMapx0 += multifactor;
-        	return ix > biomeMapSize - imagefactor;
+        	if (biomeMapx0 > -biomeMapz00 * 4) biomeMapx0 += biomeMapz00 * 8; 
+        	return ix > biomeMapSizeX - imagefactor;
     	}
     	return false;
 	}

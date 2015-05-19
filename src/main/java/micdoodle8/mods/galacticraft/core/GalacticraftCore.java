@@ -405,7 +405,7 @@ public class GalacticraftCore
 
         ThreadVersionCheck.startCheck();
         TickHandlerServer.restart();
-        BlockVec3.chunkCacheDim = Integer.MAX_VALUE;
+        BlockVec3.chunkCacheDim = Integer.MAX_VALUE;       
         
         try {
 	        jpgWriter = ImageIO.getImageWritersByFormatName("jpg").next();

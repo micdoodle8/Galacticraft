@@ -88,6 +88,7 @@ public class TickHandlerServer
         TickHandlerServer.spaceRaceData = null;
         TickHandlerServer.tickCount = 0L;
         MapUtil.calculatingMap.set(false);
+        MapUtil.doneOverworldTexture = false;
     }
 
     public static void addFootprint(long chunkKey, Footprint print, int dimID)
@@ -206,6 +207,8 @@ public class TickHandlerServer
         if (event.phase == Phase.START)
         {
             if (MapUtil.calculatingMap.get()) MapUtil.BiomeMapNextTick();
+            else if (!MapUtil.doneOverworldTexture) MapUtil.makeOverworldTexture();
+
             
         	if (TickHandlerServer.spaceRaceData == null)
             {

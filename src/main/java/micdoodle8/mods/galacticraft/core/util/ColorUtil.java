@@ -171,6 +171,19 @@ public class ColorUtil
 	    rr *= (1F + factor);
 	    gg *= (1F + factor);
 	    bb *= (1F + factor);
-		return rr << 16 | gg << 8 | (bb & 255);
+	    if (rr > 255) rr = 255;
+	    if (gg > 255) gg = 255;
+	    if (bb > 255) bb = 255;
+		return rr << 16 | gg << 8 | bb;
+	}
+
+	public static int toGreyscale(int col)
+	{
+	    int gg = col >> 8;
+		int grey = gg >> 8;
+	    grey += gg & 255;
+	    grey += col & 255;
+	    grey /= 3;
+		return grey << 16 | grey << 8 | (grey & 255);
 	}
 }
