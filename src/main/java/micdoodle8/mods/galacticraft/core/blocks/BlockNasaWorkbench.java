@@ -19,9 +19,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -153,14 +151,13 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
         {
             world.setBlockToAir(x0, y0, z0);
 
-            if (!world.isRemote && entity instanceof EntityPlayerMP)
+            if (entity instanceof EntityPlayer)
             {
-                EntityPlayerMP player = (EntityPlayerMP) entity;
-                player.addChatMessage(new ChatComponentText(EnumColor.RED + GCCoreUtil.translate("gui.warning.noroom")));
-                ItemStack itemstack = new ItemStack(this, 1, 0);
-                EntityItem entityitem = player.dropPlayerItemWithRandomChoice(itemstack, false);
-                entityitem.delayBeforeCanPickup = 0;
-                entityitem.func_145797_a(player.getCommandSenderName());
+                if (!world.isRemote)
+                {
+                    ((EntityPlayer) entity).addChatMessage(new ChatComponentText(EnumColor.RED + GCCoreUtil.translate("gui.warning.noroom")));
+                }
+                ((EntityPlayer) entity).inventory.addItemStackToInventory(new ItemStack(this, 1, 0));
             }
 
             return;

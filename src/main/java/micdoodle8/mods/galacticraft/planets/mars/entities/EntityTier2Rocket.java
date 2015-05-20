@@ -46,6 +46,12 @@ public class EntityTier2Rocket extends EntityTieredRocket
     {
         super.entityInit();
     }
+    
+    @Override
+    public double getMountedYOffset()
+    {
+	return this.height * -0.035D;
+    }
 
     @Override
     public double getMountedYOffset()

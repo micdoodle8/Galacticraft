@@ -100,6 +100,10 @@ public class BlockSlabGC extends BlockSlab
 		{
 			max = 4;//Number of slab types with Planets not loaded
 		}
+		else
+		{
+			max = 4;//Minimum slab type
+		}
 		for (int i = 0; i < max; ++i)
 		{
 			list.add(new ItemStack(block, 1, i));
