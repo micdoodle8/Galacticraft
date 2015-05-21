@@ -11,15 +11,17 @@ http://www.micdoodle8.com/mods/galacticraft and whose source code is
 
 currently published on Github.  Galacticraft's "source code" means the 
 
-material, including images and other binary files, currently published within the 
+material, including Java code, other programming code, image, textures,
+
+models, sound files and other binary files, currently published within the 
 
 micdoodle8/Galacticraft and micdoodle8/MicdoodleCore repositories on Github, 
 
 subject to section 18 below in relation to "dependencies", and any related 
 
-material including the Wiki which is published on www.micdoodle8.com or any 
+material including the text, design and artwork on the Wiki which is
 
-other official Galacticraft website.
+published on www.micdoodle8.com or any other official Galacticraft website.
 
 2.  Galacticraft is a copyright work, and the copyright belongs to the
 
@@ -39,7 +41,9 @@ open-source software with its source code distributed freely on Github (or
 
 any similar technological means which allows for the distribution of source 
 
-code via the internet to any interested person).
+code via the internet to any interested person), available to all on a free
+
+for non-commercial use basis as detailed further below.
 
 4.  Nothing in this Licence shall interfere with that overriding principle 
 
@@ -55,9 +59,9 @@ compiled or binary code based thereon.
 Contributions
 -------------
 
-5.  Contributions to Galacticraft in the form of code snippets, pull 
+5.  Contributions to Galacticraft in the form of code, code snippets,
 
-requests, translations, artwork, sounds, music, or other similar
+pull requests, translations, artwork, sounds, music, or other similar
 
 contributions are welcomed.  Issue reports and comments, forum posts, 
 
@@ -151,7 +155,7 @@ a player playing modified Minecraft through the use of Galacticraft's
 
 original material which is contained in compiled binary versions of 
 
-Galacticraft (including graphics, textures, icons, models, sounds and 
+Galacticraft (including code, raphics, textures, icons, models, sounds and 
 
 music).  The player will need to be running Minecraft, together with the 
 
@@ -265,15 +269,19 @@ should be made to the original code for licensing information.
 Galacticraft: licence
 ---------------------
 
-20.  The Galacticraft project and its source code can be used and copied 
+20.  Galacticraft is free for non-commercial use.  The compiled
 
-freely on an open-source basis by any person without restriction, except 
+binaries in Galacticraft are made freely available to all players.
 
-that (a) no person can sell it for money or try to make money from it, (b) 
+The Galacticrafat project source code can be accessed and used
 
-no person can interfere with the overriding principle, and (c) the other 
+on an open-source basis by any person, except that (a) no person can
 
-terms and provisions set out below shall apply.
+sell it or any derived work for money or try to make money from it, 
+
+(b) no person can interfere with the overriding principle.  The
+
+detailed terms and provisions set out below shall apply in all cases.
 
 21.  Where the Galacticraft project or its source code incorporates or 
 
@@ -323,19 +331,27 @@ make money from it" does not prevent: (a) a person making money from an
 
 advertisement which that person provides to a player who downloads, free of
 
-charge, a modpack or similar containing a compiled binary of Galacticraft;
+charge, a modpack containing a compiled binary of Galacticraft together
+
+with other mods, subject to the additional conditions in section 37 below;
 
 (b) a server owner who charges a fee or receives donations from players
 
 playing on a server which offers a Galacticraft gameplay experience to players
 
-who have themselves installed Galacticraft in their clients; or (c) a person
+who have themselves installed Galacticraft in their clients, so long as the
+
+server does not disable player access to critical (in contrast to cosmetic)
+
+features, items or blocks in Galacticraft or make player access to parts or
+
+stages of Galacticraft conditional on payment ("pay to win"); and (c) a person
 
 from making a video recording of a Galacticraft gameplay experience and 
 
-distributing that video on Youtube or similar internet distribution channels 
+distributing that video on Youtube, Twitch or similar internet video distribution
 
-and making money from that channel.
+channels and making money in consequence of the video or related advertisements.
 
 24.  No undertaking or warranty is given that Galacticraft is suitable for 
 
@@ -375,11 +391,11 @@ discretion of the Galacticraft developers, in which case users of
 
 Galacticraft may continue to use such source code or compiled versions as 
 
-they may have at that time on the terms applicable to them at that time, but 
+they may have downloaded at that time on the terms applicable to them at
 
-no further access to Galacticraft or its source code will be provided by the 
+that time, but no further access to Galacticraft or its source code will be
 
-Galacticraft developers.
+provided by the Galacticraft developers.
 
 27.  Galacticraft may either now or in future contain or display code, 
 
@@ -395,43 +411,105 @@ particular, no server owner or modpack maker) shall block, disable or
 
 prevent such reference, link, communication or advertising.
 
-28.  Any person may make free use of Galacticraft's API and may freely 
+28.  (a) Any person may make free use of Galacticraft's API and may freely 
 
-copy all or part of Galacticraft's source code and study it, modify it and
+copy and distribute the API to the extent required for interoperability reasons.
 
-incorporate parts of the source code as appropriate in other projects, provided
+(b) Any person may study Galacticraft's source code and may copy it, modify it, 
 
-that: (a) no other person may present Galacticraft's source code or any
+reverse engineer it or otherwise use it for that person's own personal use
 
-compiled version as their own work or take any action which denies the
+or any non-commercial academic purpose (but this does not permit distribution).
 
-Galacticraft developers' ownership of the copyright in Galacticraft and
+(c) Licence is granted to all persons freely to copy, use and modify
 
-rights to licence it; (b) no other person may present a modified version of
+non-substantial parts (as defined below) of the Galacticraft project or its
 
-Galacticraft as being the "official" version;  (c) copies of the whole
+source code for any non-commercial purpose and to incorporate such non-substantial
 
-of Galacticraft - including ports to other versions of Minecraft or
+parts as appropriate and reasonable in their own non-commercial projects, including
 
-Forge - are strongly discouraged and must be explicitly stated to be
+other Minecraft mods or plugins, provided that no person other than the Galacticraft
 
-"unofficial" unless the Galacticraft developers give permission;  (d)
+developers may present Galacticraft's source code as being their own work, and any
 
-the copying of the whole or any substantial part of Galacticraft does
- 
-not entitle any person to distribute copies of Galacticraft or any
+derived work must contain appropriate author attribution.
 
-modification which substantially replicates the experience of Galacticraft
+(d) "Non-substantial parts" means any part other than the whole or a substantial
 
-which is not subject to these licence terms;  (e) incorporation of
+part of Galacticraft: for example a single Java class would be a non-substantial part.
 
-Galacticraft or parts of it (or any derived work) in any commercial project
+A "substantial part" is anything which when compiled into playable form (including
 
-- including vanilla Minecraft itself or any modpack, downloadable content or
+any other code from any origin required to render it playable) replicates or reproduces
 
-other resource which is restricted to paying users, subscribers or members only
+to any substantially similar extent the gameplay, graphics, sound or visual design of
 
-or is otherwise conditional on a purchase - would violate section 20(a) above.
+Galacticraft or any identifiable or material part or gameplay element of Galacticraft
+
+(including for example the player experience of visiting any individual planet,
+
+dimension or world which is represented in Galacticraft, the appearance of any 'mob'
+
+or entity in Galacticraft, and any game screen or GUI which is specific to Galacticraft).
+
+All textured models (for example rockets, landers, mobs and other entities) included
+
+in Galacticraft are individually deemed to be "substantial parts".
+
+(e) Distribution of the whole of Galacticraft, in unaltered compiled binary form,
+
+in modpacks, is permitted as set out further in section 37 below.  Apart from that,
+
+distribution or copying of Galacticraft or any substantial part of it or any derived
+
+work is prohibited without permission from the developers.  In particular,
+
+distribution of altered, modified, converted or partial copies of Galacticraft or its
+
+binaries is prohibited, including ports to other versions of Minecraft or Forge
+
+either in Java or for other gaming platforms including mobile or console versions.
+
+(f) All permissions in this section 28 are subject to the proviso that no other person
+
+may present Galacticraft's source code or any derived work or any compiled version as
+
+being their own work or take any action which denies the Galacticraft developers' 
+
+ownership of the copyright in Galacticraft and rights to licence it and continued
+
+ability to publish the source code in accordance with the overriding principle.
+
+Incorporation of Galacticraft or parts of it (or any derived work) in any commercial
+
+project - including vanilla Minecraft itself or any modpack, installer, distribution,
+
+downloadable content or other resource which is available to paying users, subscribers
+
+or members only, or is otherwise conditional on a purchase, or which is distributed
+
+only to viewers of an advertisement (for example through an Ad.fly link or similar)
+
+- would violate section 20(a) above.
+
+28A.  The copying or distribution of Galacticraft in mod "installers",
+
+for example Skydaz, is prohibited and no licence is granted to distribute
+
+Galacticraft or its binaries in that way.  An "installer" here means a program,
+
+script or system which has the sole or main function of installing
+
+Galacticraft for a player.  A system for downloading, installing and launching
+
+modpacks comprising multiple mods presented together (for example Technic
+
+or FeedTheBeast launchers) is not an "installer" for these purposes and distribution
+
+of Galacticraft in modpacks is fully permitted in accordance with the modpack
+
+permission in section 37 below.
 
 29.  To the extent that Galacticraft uses parts of the code which are or have
 
@@ -481,7 +559,17 @@ applicable and enforceable in every jurisdiction where Galacticraft is used,
 
 in accordance with these terms.  References herein to "each relevant 
 
-jurisdiction" are to be read accordingly.
+jurisdiction" are to be read accordingly.  "Copyright" includes to the
+
+extent applicable also all the other intellectual property rights or equivalent
+
+rights, as applicable in each relevant jurisdiction, which are held by the
+
+author, writer, artist, designer, inventor, creator or other rights-holder of
+
+the computer code, text, artwork, designs, technologies and sounds contained
+
+in Galacticraft.
 
 34.  In the event that a part or provision of this document is ineffective
 
@@ -535,8 +623,12 @@ players with a link to Galacticraft's source code, but they must not attempt
 
 to deny access to Galacticraft's source code nor otherwise interfere with 
 
-the overriding principle; (c) every copy of Galacticraft's compiled binary
+the overriding principle; (c) the Galacticraft code and other elements
 
-code must include, within the relevant .jar or .zip or other packaged file,
+in the compiled binary must not be altered and every copy of Galacticraft's
 
-an unaltered copy of this LICENSE.txt.
+compiled binary code must include, within the relevant .jar or .zip or other
+
+packaged file, a copy of this LICENSE.txt; (d) modpacks must so far as
+
+reasonably possible distribute an up-to-date version of Galacticraft.
