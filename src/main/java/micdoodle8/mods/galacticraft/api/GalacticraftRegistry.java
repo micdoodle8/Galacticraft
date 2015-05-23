@@ -237,5 +237,6 @@ public class GalacticraftRegistry
         registerScreen(rendererBasic);  //Type 1 - local satellite view
         registerScreen(rendererCelest);  //Type 2 - solar system
         registerScreen(rendererCelest);  //Type 3 - local planet
+        registerScreen(rendererCelest);  //Type 4 - render test
     }
 }
