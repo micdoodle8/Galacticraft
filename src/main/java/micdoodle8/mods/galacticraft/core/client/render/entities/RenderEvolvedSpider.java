@@ -89,7 +89,6 @@ public class RenderEvolvedSpider extends RenderLiving
             char c0 = 61680;
             int j = c0 % 65536;
             int k = c0 / 65536;
-            GL11.glDisable(GL11.GL_LIGHTING);
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 1.0F, k / 1.0F);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             return 1;

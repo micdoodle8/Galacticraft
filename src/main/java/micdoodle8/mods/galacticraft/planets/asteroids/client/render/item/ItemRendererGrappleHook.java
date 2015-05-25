@@ -89,7 +89,7 @@ public class ItemRendererGrappleHook implements IItemRenderer
             }
             else
             {
-                GL11.glTranslatef(0, -3.9F, 0);
+                GL11.glTranslatef(0, -0.5F, 0);
                 GL11.glRotatef(Sys.getTime() / 90F % 360F, 0F, 1F, 0F);
             }
 
