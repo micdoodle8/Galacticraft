@@ -4,9 +4,9 @@
 item.itemTier3Rocket.t3Rocket.name=จรวด เทียร์ 3
 item.itemAstroMiner.name=แอสโทรไมน์เนอร์
 item.heavyNoseCone.name=กรวยจรวดแบบทนทาน
-item.compressedTitanium.name=แผ่นไททาเนียม
-item.ingotTitanium.name=แท่งไททาเนียม
-item.shardTitanium.name=สะเก็ดไททาเนียม
+item.compressedTitanium.name=แผ่นไทเทเนียม
+item.ingotTitanium.name=แท่งไทเทเนียม
+item.shardTitanium.name=สะเก็ดไทเทเนียม
 item.shardIron.name=สะเก็ดเหล็ก
 item.rocketFinsT2.name=ปีกจรวดแบบทนทาน
 item.engineT2.name=เครื่องยนต์จรวดแบบทนทาน
@@ -19,21 +19,21 @@ item.orionDrive.name=เครื่องยนต์ตรวจสอบแ�
 item.tier3.desc=เทียร์ 3
 
 # TOOLS
-item.titanium_pickaxe.name=อีเต้อไททาเนียม
-item.titanium_axe.name=ขวานไททาเนียม
-item.titanium_hoe.name=จอบไททาเนียม
-item.titanium_shovel.name=พลั่วไททาเนียม
-item.titanium_sword.name=ดาบไททาเนียม
+item.titanium_pickaxe.name=อีเต้อไทเทเนียม
+item.titanium_axe.name=ขวานไทเทเนียม
+item.titanium_hoe.name=จอบไทเทเนียม
+item.titanium_shovel.name=พลั่วไทเทเนียม
+item.titanium_sword.name=ดาบไทเทเนียม
 
 # ARMOR
 item.thermalHelm.name=หมวกกันความร้อน
 item.thermalChestplate.name=เสื้อเกราะกันความร้อน
 item.thermalLeggings.name=กางเกงกันความร้อน
 item.thermalBoots.name=รองเท้ากันความร้อน
-item.titanium_helmet.name=หมวกไททาเนียม
-item.titanium_chestplate.name=เสื้อเกราะไททาเนียม
-item.titanium_leggings.name=กางเกงไททาเนียม
-item.titanium_boots.name=รองเท้าไททาเนียม
+item.titanium_helmet.name=หมวกไทเทเนียม
+item.titanium_chestplate.name=เสื้อเกราะไทเทเนียม
+item.titanium_leggings.name=กางเกงไทเทเนียม
+item.titanium_boots.name=รองเท้าไทเทเนียม
 
 # CANISTERS ETC
 item.methaneCanisterPartial.name=กระป๋องมีเทน
