@@ -459,6 +459,7 @@ gui.buggy.decel.name=Decelerate
 gui.buggy.inv.name=Inventory / Fuel
 gui.rocket.launch.name=Lanceren
 gui.rocket.turn.name=Draai link-rechts
+gui.rocket.updown.name=Draai op-neer
 gui.rocket.inv.name=Inventory / Brandstof
 gui.rocket.warning.nogyroscope=Mysterious forces are at play and the gyroscopes are spinning wildly! ##NEEDS TRANSLATE##
 gui.rocket.warning.noparachute=I don't have a parachute! If I press launch again, there's no going back! ##NEEDS TRANSLATE##
