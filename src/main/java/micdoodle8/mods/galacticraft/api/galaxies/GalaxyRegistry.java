@@ -61,6 +61,7 @@ public class GalaxyRegistry
     {
         GalaxyRegistry.moonList.clear();
         GalaxyRegistry.satelliteList.clear();
+        GalaxyRegistry.solarSystemList.clear();
 
         for (Moon moon : GalaxyRegistry.getRegisteredMoons().values())
         {
