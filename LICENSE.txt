@@ -155,7 +155,7 @@ a player playing modified Minecraft through the use of Galacticraft's
 
 original material which is contained in compiled binary versions of 
 
-Galacticraft (including code, raphics, textures, icons, models, sounds and 
+Galacticraft (including code, graphics, textures, icons, models, sounds and 
 
 music).  The player will need to be running Minecraft, together with the 
 
