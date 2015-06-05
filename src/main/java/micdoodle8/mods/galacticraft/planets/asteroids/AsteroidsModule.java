@@ -214,7 +214,7 @@ public class AsteroidsModule implements IPlanetsModule
         input2.put(21, new ItemStack(Blocks.chest));
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 3), input2));
 
-        input.clear();
+        input = new HashMap<Integer, ItemStack>();
         input.put(1, new ItemStack(GCItems.heavyPlatingTier1));
         input.put(3, new ItemStack(GCItems.heavyPlatingTier1));
         input.put(5, new ItemStack(GCItems.heavyPlatingTier1));
