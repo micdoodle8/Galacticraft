@@ -74,7 +74,7 @@ public class ContainerBuggyBench extends Container
 
         if (!this.worldObj.isRemote)
         {
-            for (int var2 = 1; var2 < 18; ++var2)
+            for (int var2 = 1; var2 < this.craftMatrix.getSizeInventory(); ++var2)
             {
                 final ItemStack slot = this.craftMatrix.getStackInSlotOnClosing(var2);
 
