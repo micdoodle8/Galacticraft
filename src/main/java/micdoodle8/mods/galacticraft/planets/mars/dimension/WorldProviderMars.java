@@ -246,12 +246,6 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     }
 
     @Override
-    public int getHeight()
-    {
-        return 800;
-    }
-
-    @Override
     public double getMeteorFrequency()
     {
         return 10.0D;

@@ -138,12 +138,6 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     }
 
     @Override
-    public int getHeight()
-    {
-        return 800;
-    }
-
-    @Override
     public double getMeteorFrequency()
     {
         return 10.0D;
