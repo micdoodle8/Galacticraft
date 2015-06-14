@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import buildcraft.api.recipes.BuildcraftRecipeRegistry;
 import buildcraft.api.recipes.BuildcraftRecipes;
 
 public class RecipeManagerGC
@@ -552,7 +553,7 @@ public class RecipeManagerGC
     		if (newBCAPI)
     		{
 	    		//Newer Buildcraft API versions
-	        	BuildcraftRecipes.refinery.addRecipe("buildcraft:fuel", new FluidStack(GalacticraftCore.gcFluidOil, 1), new FluidStack(FluidRegistry.getFluid("fuel"), 1), 120, 1);
+	        	BuildcraftRecipeRegistry.refinery.addRecipe("buildcraft:fuel", new FluidStack(GalacticraftCore.gcFluidOil, 1), new FluidStack(FluidRegistry.getFluid("fuel"), 1), 120, 1);
 	        	refineryDone = true;
     		}
     		else
