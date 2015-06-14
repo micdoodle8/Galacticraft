@@ -31,6 +31,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -465,7 +466,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
 
             if (addressResult != null)
             {
-                WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(addressResult.dimensionID);
+                World world = GalacticraftCore.proxy.getWorldForID(addressResult.dimensionID);
 
                 TileEntity tile2 = addressResult.position.getTileEntity(world);
 

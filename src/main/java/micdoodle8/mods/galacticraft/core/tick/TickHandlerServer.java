@@ -204,9 +204,13 @@ public class TickHandlerServer
     @SubscribeEvent
     public void onServerTick(ServerTickEvent event)
     {
-        if (event.phase == Phase.START)
-        {
-            if (MapUtil.calculatingMap.get()) MapUtil.BiomeMapNextTick();
+    	MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+    	//Prevent issues when clients switch to LAN servers
+    	if (server == null) return;
+
+    	if (event.phase == Phase.START)
+        {       	
+        	if (MapUtil.calculatingMap.get()) MapUtil.BiomeMapNextTick();
             else if (!MapUtil.doneOverworldTexture) MapUtil.makeOverworldTexture();
 
             
@@ -226,7 +230,7 @@ public class TickHandlerServer
 
             if (TickHandlerServer.tickCount % 100 == 0)
             {
-                WorldServer[] worlds = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers;
+                WorldServer[] worlds = server.worldServers;
 
                 for (int i = 0; i < worlds.length; i++)
                 {

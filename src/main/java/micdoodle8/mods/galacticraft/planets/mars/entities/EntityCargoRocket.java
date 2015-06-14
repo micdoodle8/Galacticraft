@@ -214,12 +214,12 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
         {
             if (this.targetDimension != this.worldObj.provider.dimensionId)
             {
-                WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(this.targetDimension);
+                World worldServer = GalacticraftCore.proxy.getWorldForID(this.targetDimension);
 
                 if (!this.worldObj.isRemote && worldServer != null)
                 {
                     this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
-                    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, worldServer, false, null);
+                    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (WorldServer) worldServer, false, null);
 
                     if (e instanceof EntityCargoRocket)
                     {

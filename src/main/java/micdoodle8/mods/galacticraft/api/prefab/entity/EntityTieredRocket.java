@@ -43,7 +43,6 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     public int launchCooldown;
     private ArrayList<BlockVec3> preGenList = new ArrayList();
     private Iterator<BlockVec3> preGenIterator = null;
-    private MinecraftServer mcserver = FMLCommonHandler.instance().getMinecraftServerInstance();
     
     public EntityTieredRocket(World par1World)
     {
@@ -218,15 +217,20 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             {
                 if (this.preGenIterator.hasNext())
                 {
-                    BlockVec3 coords = this.preGenIterator.next();
-                    World w = this.mcserver.worldServerForDimension(coords.y);
-                    w.getChunkFromChunkCoords(coords.x, coords.z);
-                    //Pregen a second chunk if still on launchpad (low strain on server)
-                    if (this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal() && this.preGenIterator.hasNext())
+                    MinecraftServer mcserver = FMLCommonHandler.instance().getMinecraftServerInstance();
+                    //mcserver can be null if client switches to a LAN server
+                    if (mcserver != null)
                     {
-                        coords = this.preGenIterator.next();
-                        w = this.mcserver.worldServerForDimension(coords.y);
-                        w.getChunkFromChunkCoords(coords.x, coords.z);
+	                	BlockVec3 coords = this.preGenIterator.next();
+	                    World w = mcserver.worldServerForDimension(coords.y);
+	                    w.getChunkFromChunkCoords(coords.x, coords.z);
+	                    //Pregen a second chunk if still on launchpad (low strain on server)
+	                    if (this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal() && this.preGenIterator.hasNext())
+	                    {
+	                        coords = this.preGenIterator.next();
+	                        w = mcserver.worldServerForDimension(coords.y);
+	                        w.getChunkFromChunkCoords(coords.x, coords.z);
+	                    }
                     }
                 }
                 else
@@ -334,7 +338,8 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                 if (this.targetDimension != this.worldObj.provider.dimensionId)
                 {
                     WorldProvider targetDim = WorldUtil.getProviderForDimension(this.targetDimension);                   
-                    if (targetDim != null)
+                    MinecraftServer mcserver = FMLCommonHandler.instance().getMinecraftServerInstance();
+                    if (targetDim != null && mcserver != null)
                     {
                     	WorldServer worldServer = mcserver.worldServerForDimension(this.targetDimension);
                         if (worldServer != null)

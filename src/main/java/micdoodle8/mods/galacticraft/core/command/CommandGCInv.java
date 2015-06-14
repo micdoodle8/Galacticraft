@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.command;
 
-import cpw.mods.fml.common.FMLCommonHandler;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -208,7 +208,8 @@ public class CommandGCInv extends CommandBase
 
     private static void initialise()
     {
-        World world0 = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
+   		World world0 = GalacticraftCore.proxy.getWorldForID(0);
+   		if (world0 == null) return;
         CommandGCInv.savefile = (GCInvSaveData) world0.loadItemData(GCInvSaveData.class, GCInvSaveData.SAVE_ID);
         if (CommandGCInv.savefile == null)
         {

@@ -377,13 +377,9 @@ public class WorldUtil
     public static WorldProvider getProviderForDimension(int id)
     {
     	WorldProvider provider = null;
-    	MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
-    	if (theServer != null)
-    	{
-    		WorldServer ws = theServer.worldServerForDimension(id);
-    		if (ws != null)
-    			provider = ws.provider;
-    	}
+    	World ws = GalacticraftCore.proxy.getWorldForID(id);
+   		if (ws != null)
+   			provider = ws.provider;
     	if (provider == null) provider = WorldProvider.getProviderForDimension(id);
     	return provider;
     }
@@ -473,6 +469,7 @@ public class WorldUtil
     {
         WorldUtil.registeredSpaceStations = WorldUtil.getExistingSpaceStationList(spaceStationList);
     	MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
+    	if (theServer == null) return;
 
         for (Integer registeredID : WorldUtil.registeredSpaceStations)
         {
