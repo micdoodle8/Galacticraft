@@ -570,8 +570,6 @@ public class RecipeManagerGC
     	
         try
         {           
-            BuildcraftRecipes.refinery.addRecipe(new FluidStack(GalacticraftCore.gcFluidOil, 1), new FluidStack(FluidRegistry.getFluid("fuel"), 1), 120, 1);
-
             Class<?> clazz = Class.forName("buildcraft.BuildCraftTransport");
 
             Object pipeItemsStone = clazz.getField("pipeItemsStone").get(null);
