@@ -19,6 +19,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
@@ -62,6 +63,12 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
 
         return weight;
     }
+
+	@Override
+	public ItemStack getPickedResult(MovingObjectPosition target)
+	{
+	return new ItemStack(MarsItems.spaceship, 1, this.rocketType.getIndex() + 10);
+	}
 
     @Override
     public void onUpdate()
