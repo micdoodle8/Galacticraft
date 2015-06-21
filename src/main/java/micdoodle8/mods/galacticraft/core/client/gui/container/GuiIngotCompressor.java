@@ -19,6 +19,7 @@ import org.lwjgl.opengl.GL11;
 public class GuiIngotCompressor extends GuiContainerGC
 {
     private static final ResourceLocation electricFurnaceTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/ingotCompressor.png");
+    private GuiElementInfoRegion processInfoRegion = new GuiElementInfoRegion(0, 0, 52, 25, null, 0, 0, this);
 
     private TileEntityIngotCompressor tileEntity;
 
