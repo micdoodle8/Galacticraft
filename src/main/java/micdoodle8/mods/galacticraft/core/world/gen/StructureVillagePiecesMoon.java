@@ -16,6 +16,7 @@ public class StructureVillagePiecesMoon
         final ArrayList<StructureVillagePieceWeightMoon> var2 = new ArrayList<StructureVillagePieceWeightMoon>();
         var2.add(new StructureVillagePieceWeightMoon(StructureComponentVillageWoodHut.class, 5, MathHelper.getRandomIntegerInRange(par0Random, 2 + par1, 5 + par1 * 3)));
         var2.add(new StructureVillagePieceWeightMoon(StructureComponentVillageField.class, 5, MathHelper.getRandomIntegerInRange(par0Random, 3 + par1, 5 + par1)));
+        var2.add(new StructureVillagePieceWeightMoon(StructureComponentVillageField2.class, 5, MathHelper.getRandomIntegerInRange(par0Random, 3 + par1, 5 + par1)));
         var2.add(new StructureVillagePieceWeightMoon(StructureComponentVillageHouse.class, 5, MathHelper.getRandomIntegerInRange(par0Random, 3 + par1, 4 + par1 * 2)));
 
         final Iterator<StructureVillagePieceWeightMoon> var3 = var2.iterator();
@@ -62,6 +63,10 @@ public class StructureVillagePiecesMoon
         else if (var9 == StructureComponentVillageField.class)
         {
             var10 = StructureComponentVillageField.func_74900_a(par0ComponentVillageStartPiece, par2List, par3Random, par4, par5, par6, par7, par8);
+        }
+        else if (var9 == StructureComponentVillageField2.class)
+        {
+            var10 = StructureComponentVillageField2.func_74900_a(par0ComponentVillageStartPiece, par2List, par3Random, par4, par5, par6, par7, par8);
         }
         else if (var9 == StructureComponentVillageHouse.class)
         {
