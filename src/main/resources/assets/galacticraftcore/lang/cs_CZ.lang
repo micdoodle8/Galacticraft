@@ -680,6 +680,7 @@ gc.configgui.oxygenIndicatorLeft=Posunout indikátor kyslíku vlevo
 gc.configgui.oxygenIndicatorBottom=Posunout indikátor kyslíku dolu
 gc.configgui.oilGenFactor=Četnost ropy
 gc.configgui.externalOilGen=Četnost externí ropy
+gc.configgui.enableRetrogenOil=Retrogen Overworld Oil
 gc.configgui.enableCopperOreGen=Četnost mědi
 gc.configgui.enableTinOreGen=Četnost cínu
 gc.configgui.enableAluminumOreGen=Četnost hliníku
@@ -712,6 +713,9 @@ gc.configgui.hardMode=Harder Difficulty
 gc.configgui.quickMode=Rychlá hra (snazší)
 gc.configgui.mapScrollInvert=Invertovat přibližování kolečkem na mapě
 gc.configgui.mapScrollSensitivity=Ciltivost kolačka na mapě
+gc.configgui.overrideMap=Set key: Galaxy Map
+gc.configgui.keyOverrideFuelLevel=Set key: Rocket Fuel GUI
+gc.configgui.keyOverrideToggleAdvGoggles=Set key: Advanced Goggles
 gc.configgui.title=Nastavení jádra Galacticraftu
 
 # </file>

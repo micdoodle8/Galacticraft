@@ -672,6 +672,7 @@ gc.configgui.oxygenIndicatorLeft=Placer l'indicateur d'oxygène à gauche
 gc.configgui.oxygenIndicatorBottom=Placer l'indicateur d'oxygène en bas
 gc.configgui.oilGenFactor=Facteur de génération de pétrole
 gc.configgui.externalOilGen=Génération de pétrole externe
+gc.configgui.enableRetrogenOil=Retrogen Overworld Oil
 gc.configgui.enableCopperOreGen=Génération de cuivre du monde normal
 gc.configgui.enableTinOreGen=Génération d'étain du monde normal
 gc.configgui.enableAluminumOreGen=Génération d'aluminium du monde normal
@@ -681,7 +682,7 @@ gc.configgui.disableTinMoon=Désactive la génération d'étain lunaire
 gc.configgui.disableCopperMoon=Désactive la génération de cuivre lunaire
 gc.configgui.disableMoonVillageGen=Désactive la génération de village lunaire
 gc.configgui.enableOtherModsFeatures=Active le mod externe de génération de monde
-gc.configgui.whitelistCoFHCoreGen=Whitelist CoFHCore World Gen ##NEEDS TRANSLATE##
+gc.configgui.whitelistCoFHCoreGen=Whitelist CoFHCore World Gen
 gc.configgui.enableThaumCraftNodes=Active les nodes ThaumCraft sur les planètes
 gc.configgui.otherModOreGenIDs=Les minerai d'autre mod seront généré sur les planètes
 gc.configgui.enableDebug=Montre les message de débogue dans la console
@@ -704,6 +705,9 @@ gc.configgui.hardMode=Difficulté plus dure
 gc.configgui.quickMode=Jeu rapide (plus facile)
 gc.configgui.mapScrollInvert=Inservez le défilement de la carte
 gc.configgui.mapScrollSensitivity=Sensibilité de la souris pour le défilement de carte
+gc.configgui.overrideMap=Set key: Galaxy Map
+gc.configgui.keyOverrideFuelLevel=Set key: Rocket Fuel GUI
+gc.configgui.keyOverrideToggleAdvGoggles=Set key: Advanced Goggles
 gc.configgui.title=Configuration de Galacticraft Core
 
 # </file>

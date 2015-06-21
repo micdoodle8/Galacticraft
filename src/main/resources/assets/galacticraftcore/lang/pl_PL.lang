@@ -687,6 +687,7 @@ gc.configgui.oxygenIndicatorLeft=Przesuń Wskaźnik Tlenu w Lewo
 gc.configgui.oxygenIndicatorBottom=Przesuń wskaźnik Tlenu w Dół
 gc.configgui.oilGenFactor=Współczynnik Generowania Ropy
 gc.configgui.externalOilGen=Zewnętrzna Generacja Ropy
+gc.configgui.enableRetrogenOil=Retrogen Overworld Oil
 gc.configgui.enableCopperOreGen=Generowanie Miedzi na Ziemi
 gc.configgui.enableTinOreGen=Generowanie Cyny na Ziemi
 gc.configgui.enableAluminumOreGen=Generowanie Aluminium na Ziemi
@@ -719,6 +720,9 @@ gc.configgui.hardMode=Zwiększenie Trudności
 gc.configgui.quickMode=Szybka Gra (łatwiejsza)
 gc.configgui.mapScrollInvert=Odwróć przewijanie mapy
 gc.configgui.mapScrollSensitivity=Czułość przewijania mapy
+gc.configgui.overrideMap=Set key: Galaxy Map
+gc.configgui.keyOverrideFuelLevel=Set key: Rocket Fuel GUI
+gc.configgui.keyOverrideToggleAdvGoggles=Set key: Advanced Goggles
 gc.configgui.title=Konfiguracja Głównego Galacticraft
 
 # </file>

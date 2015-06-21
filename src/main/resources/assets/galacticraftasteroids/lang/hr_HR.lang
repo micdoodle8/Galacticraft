@@ -162,5 +162,5 @@ gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID
 gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID
 gc.configgui.idEntityEntryPod=Entry Pod Entity ID
 gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID
-gc.configgui.disableGalacticraftHelium=Disable Helium gas registration ##NEEDS TRANSLATE##
-gc.configgui.astroMinersMax=Maximum number of Astro Miners per player ##NEEDS TRANSLATE##
+gc.configgui.disableGalacticraftHelium=Disable Helium gas registration
+gc.configgui.astroMinersMax=Maximum number of Astro Miners per player

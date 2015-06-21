@@ -655,6 +655,7 @@ gc.configgui.oxygenIndicatorLeft=Move Oxygen Indicator Left
 gc.configgui.oxygenIndicatorBottom=Move Oxygen Indicator Down
 gc.configgui.oilGenFactor=Oil Gen Factor
 gc.configgui.externalOilGen=External Oil Gen
+gc.configgui.enableRetrogenOil=Retrogen Overworld Oil
 gc.configgui.enableCopperOreGen=Overworld Copper Gen
 gc.configgui.enableTinOreGen=Overworld Tin Gen
 gc.configgui.enableAluminumOreGen=Overworld Aluminum Gen
@@ -687,5 +688,8 @@ gc.configgui.hardMode=Harder Difficulty
 gc.configgui.quickMode=Quick Game (easier)
 gc.configgui.mapScrollInvert=Invert Map Scroll
 gc.configgui.mapScrollSensitivity=Map Scroll Mouse Sensitivity
+gc.configgui.overrideMap=Set key: Galaxy Map
+gc.configgui.keyOverrideFuelLevel=Set key: Rocket Fuel GUI
+gc.configgui.keyOverrideToggleAdvGoggles=Set key: Advanced Goggles
 
 gc.configgui.title=Galacticraft Core-Konfiguration
