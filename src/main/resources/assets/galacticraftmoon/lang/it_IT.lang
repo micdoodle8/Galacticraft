@@ -1,0 +1,32 @@
+# Galacticraft Moon Language File = ITALIAN
+# Translation by QuodQuaeris
+
+# GENERAL ITEMS
+item.meteoricIronRaw.name=Ferro Meteorico Grezzo
+item.compressedMeteoricIron.name=Ferro Meteorico Compresso
+item.meteoricIronIngot.name=Lingotto Di Ferro Meteorico
+
+# FOOD
+item.cheeseCurd.name=Cagliata Di Formaggio
+item.cheeseBlock.name=Blocco Di Formaggio
+
+# TOOLS
+
+# ARMOR
+
+# BLOCKS
+tile.moonBlock.moonstone.name=Roccia Lunare
+tile.moonBlock.moondirt.name=Terra Lunare
+tile.moonBlock.moongrass.name=Torba Lunare
+tile.moonBlock.tinmoon.name=Minerale Di Stagno
+tile.moonBlock.coppermoon.name=Minerale Di Rame
+tile.moonBlock.cheesestone.name=Minerale Di Formaggio
+tile.moonBlock.bricks.name=Mattoni Delle Segrete Lunari
+tile.cheeseBlock.name=Blocco Di Formaggio
+
+# GUI
+gui.choosePlanet.desc.moon=Abitabile#Privo Di Ossigeno#Gravità: 18%
+
+# OTHER
+container.lander.name=Atterratore
+dimension.Moon.name=Luna
