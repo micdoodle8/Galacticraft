@@ -87,7 +87,7 @@ item.basicItem.frequencyModule.name=โมดูลวัดความถี�
 item.standardWrench.name=ประแจ
 
 # TOOLS
-item.steel_pickaxe.name=อีเต้อแบบทนทาน
+item.steel_pickaxe.name=ที่ขุดแบบทนทาน
 item.steel_axe.name=ขวานแบบทนทาน
 item.steel_hoe.name=จอบแบบทนทาน
 item.steel_shovel.name=พลั่วแบบทนทาน
