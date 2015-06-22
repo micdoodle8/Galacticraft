@@ -465,8 +465,9 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
             if (addressResult != null)
             {
                 World world = GalacticraftCore.proxy.getWorldForID(addressResult.dimensionID);
-
-                TileEntity tile2 = addressResult.position.getTileEntity(world);
+                TileEntity tile2;
+                if (world == null) tile2 = null;
+                else tile2 = addressResult.position.getTileEntity(world);
 
                 if (tile2 == null)
                 {
