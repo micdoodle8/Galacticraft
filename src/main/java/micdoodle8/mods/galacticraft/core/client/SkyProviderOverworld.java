@@ -234,10 +234,10 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glColor3f(0.0F, 0.0F, 0.0F);
 
+        //TODO get exact height figure here
         double var25 = this.minecraft.thePlayer.posY - 64;
 
-        //TODO get exact figure here based on view distance setting
-        if (var25 > 256)
+        if (var25 > this.minecraft.gameSettings.renderDistanceChunks * 16)
         {
         var20 *= 400.0F;
 
