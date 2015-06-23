@@ -42,7 +42,7 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements ItemBloc
     {
         super(Material.rock);
         this.setHardness(1.0F);
-        this.setStepSound(Block.soundTypeStone);
+        this.setStepSound(Block.soundTypeMetal);
         this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setBlockName(assetName);
     }

@@ -55,6 +55,7 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
     public BlockMachineMars()
     {
         super(GCBlocks.machine);
+		this.setStepSound(soundTypeMetal);
     }
 
     @Override
