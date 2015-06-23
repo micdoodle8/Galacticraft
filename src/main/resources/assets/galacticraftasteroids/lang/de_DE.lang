@@ -15,7 +15,7 @@ item.grapple.name=Greifhaken
 item.atmosphericValve.name=Atmosphärenventil
 item.thermalCloth.name=Thermalstoff
 item.beamCore.name=Strahlenkern
-item.orionDrive.name=Orionantrieb
+item.orionDrive.name=Ionenantrieb
 item.tier3.desc=Stufe 3
 
 # TOOLS
@@ -87,15 +87,15 @@ planet.asteroids=Asteroiden
 
 	# Dollar sign ($) will split text onto a new line
 	# Do not remove %s or %d, since that will be replaced in-game
-gui.telepad.desc.0=Dies ist die eindeutige$Adresse des Telepads
+gui.telepad.desc.0=Dies ist die einzigartige$Adresse des Telepads
 gui.telepad.desc.1=Adresse eines anderen Telepads.$Entities werden dort hin gesendet.
 gui.message.address.name=Adresse
 gui.message.destAddress.name=Zieladresse
-gui.message.invalidAddress.name=Ungültige eindeutige Adresse
+gui.message.invalidAddress.name=Ungültige einzigartige Adresse
 gui.message.invalidTargetAddress.name=Ungültige Zieladresse
 gui.message.receivingActive.name=Empfangen aktiviert
 gui.message.telepadTooFar.name=Ziel zu weit weg! (Max %d) 
-gui.message.telepadWrongDim.name=Das Ziel ist in der falschen Dimension!
+gui.message.telepadWrongDim.name=Ziel ist in der falschen Dimension!
 gui.message.telepadNotFound.name=Telepad nicht gefunden!
 gui.message.sendingActive.name=Senden aktiviert
 gui.message.range.name=Reichweite: %dm
@@ -109,7 +109,7 @@ gui.message.astroMiner2.fail=Das wäre ein Astrominer zu viel!
 gui.message.astroMiner3.fail=Die Astrominer-Basis wurde entfernt!
 gui.message.astroMiner4.fail=Der Astrominer hat keine Energie mehr und kann nicht zur Basis zurückkehren!
 gui.message.astroMiner5.fail=Die Route des Astrominers zurück zur Basis ist versperrt!
-gui.message.astroMiner6.fail=Der Astrominer ist fertig mit dem Abbauen und wird jetzt aufhören!
+gui.message.astroMiner6.fail=Der Astrominer ist mit dem Abbauen fertig und wird jetzt aufhören!
 gui.message.astroMiner7.fail=Auf einer Raumstation gibt es für den Astrominer nichts zum Abbauen!
 gui.message.astroMiner8.fail=Ein zweiter Astrominer wurde auf der selben Basis erkannt, der erste wird nun einfrieren.
 gui.button.recall.name=Zurückrufen
@@ -125,34 +125,29 @@ gui.miner.mined=Abgebaut
 
 tile.treasureT3.description=Schatztruhen der Stufe 3 werden zur Zeit nicht benutzt.
 tile.walkway.description=Gehwege können für Dekorationszwecke benutzt werden und um Blöcke zu verbinden.
-tile.walkwayAluminumWire.description=Aluminumkabelgehwege werden benutzt um Kabel unter einer vollständig begehbaren Oberfläche zu verlegen.
-tile.walkwayOxygenPipe.description=Sauerstoffleitungsgehwege werden benutzt um Sauerstoffleitungen unter einer vollständig begehbaren Oberfläche zu verlegen.
-tile.beamReflector.description=Strahlenreflektoren werden benutzt um Energiestrahlen von der Quelle zum Ziel weiterzuleiten. Rechtsklick um das Ziel umzuschalten.
-tile.beamReceiver.description=Strahlenempfänger werden mit den Energieein- und ausgängen von Maschinen verbunden um Energie über Strahlen zu übertragen.
-tile.telepadShort.description=Kurzreichweiten-Telepads werden benutzt um Spieler und andere Lebewesen über kurze Distanzen (250 Blöcke) zu teleportieren, wenn sie mit anderen Telepads verbunden sind.
-tile.minerBase.description=Die Astrominer-Basis ist die Andockstelle für einen Astrominer. Sie ist groß ... versuche einen 2 x 2 x 2-Würfel mit ihr zu machen.
-schematic.astroMiner.name=Astrominer
-schematic.ionDrive.name=Ionenantrieb
+tile.walkwayAluminumWire.description=Aluminumkabelgehwege werden benutzt, um Kabel unter einer vollständig begehbaren Oberfläche zu verlegen.
+tile.walkwayOxygenPipe.description=Sauerstoffleitungsgehwege werden benutzt, um Sauerstoffleitungen unter einer vollständig begehbaren Oberfläche zu verlegen.
+tile.beamReflector.description=Strahlenreflektoren werden benutzt, um Energiestrahlen von der Quelle zum Ziel weiterzuleiten. Rechtsklick um das Ziel umzuschalten.
+tile.beamReceiver.description=Strahlenempfänger werden mit den Energieein- und ausgängen von Maschinen verbunden, um Energie über Strahlen zu übertragen.
+tile.telepadShort.description=Kurzreichweiten-Telepads werden benutzt, um Spieler und andere Lebewesen über kurze Distanzen (250 Blöcke) zu teleportieren, wenn sie mit anderen Telepads verbunden sind.
+tile.minerBase.description=Die Astrominer-Basis ist die Andockstelle für einen Astrominer. Sie ist groß ... versuche, einen 2 x 2 x 2-Würfel mit ihr zu bauen.
 
 # SCHEMATICS
+schematic.astroMiner.name=Astrominer
 
 # ENTITIES
 entity.SmallAsteroidGC.name=Kleiner Asteroid
 entity.GrappleHookGC.name=Greifhaken
 entity.Tier3RocketGC.name=Rakete (Stufe 3)
-entity.EntryPodAsteroids.name=Eintritts-Pod
+entity.EntryPodAsteroids.name=Eintrittskapsel
 entity.AstroMiner.name=Astrominer
 
 # CONTAINERS
 container.shortRangeTelepad.name=Kurzreichweiten-Telepad
-container.entryPod.name=Eintritts-Pod
+container.entryPod.name=Eintrittskapsel
 
 # CONFIG GUI
 gc.configgui.dimensionIDAsteroids=Asteroids Dimension ID
-gc.configgui.idEntitySmallAsteroid=Small Asteroid Entity ID
-gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID
-gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID
-gc.configgui.idEntityEntryPod=Entry Pod Entity ID
 gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID
 gc.configgui.disableGalacticraftHelium=Disable Helium gas registration
 gc.configgui.astroMinersMax=Maximum number of Astro Miners per player
