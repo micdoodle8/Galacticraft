@@ -22,7 +22,7 @@ public class ItemGrappleHook extends ItemBow
     {
         super();
         this.setUnlocalizedName(assetName);
-        this.setMaxStackSize(16);
+        this.setMaxStackSize(1);
         this.setTextureName("arrow");
     }
 

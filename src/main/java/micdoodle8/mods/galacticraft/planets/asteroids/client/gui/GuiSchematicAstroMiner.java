@@ -16,7 +16,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiSchematicAstroMiner extends GuiContainer implements ISchematicResultPage
 {
-    private static final ResourceLocation schematicTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/gui/schematic_astro_miner.png");
+    public static final ResourceLocation schematicTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/gui/schematic_astro_miner.png");
 
     private int pageIndex;
 

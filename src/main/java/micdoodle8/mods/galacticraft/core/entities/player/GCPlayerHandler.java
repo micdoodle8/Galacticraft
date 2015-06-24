@@ -1089,7 +1089,7 @@ public class GCPlayerHandler
                 try {
                 	if (ftc == null)
                 	{
-                		ftc = player.playerNetServerHandler.getClass().getField(VersionUtil.getNameDynamic(VersionUtil.KEY_FIELD_FLOATINGTICKCOUNT));
+                		ftc = player.playerNetServerHandler.getClass().getDeclaredField(VersionUtil.getNameDynamic(VersionUtil.KEY_FIELD_FLOATINGTICKCOUNT));
             			ftc.setAccessible(true);
                 	}
                 	//Prevent kicks for flying
@@ -1111,7 +1111,7 @@ public class GCPlayerHandler
                     try {
                     	if (ftc == null)
                     	{
-                    		ftc = player.playerNetServerHandler.getClass().getField("floatingTickCount");
+                    		ftc = player.playerNetServerHandler.getClass().getDeclaredField("floatingTickCount");
                 			ftc.setAccessible(true);
                     	}
                     	//Prevent kicks for flying

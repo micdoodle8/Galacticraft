@@ -322,7 +322,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     {
         this.frequency = frequency;
 
-        if (this.frequency >= 0)
+        if (this.frequency >= 0 && FMLCommonHandler.instance().getMinecraftServerInstance() != null)
         {
             this.frequencyValid = true;
             WorldServer[] servers = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers;
@@ -372,7 +372,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 
     public void checkDestFrequencyValid()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.worldObj.isRemote && FMLCommonHandler.instance().getMinecraftServerInstance() != null)
         {
             this.destFrequencyValid = false;
             if (this.destFrequency >= 0)

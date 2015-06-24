@@ -289,7 +289,7 @@ public class TickHandlerClient
 
         if (event.phase == Phase.START)
         {
-            if (TickHandlerClient.tickCount >= Long.MAX_VALUE)
+        	if (TickHandlerClient.tickCount >= Long.MAX_VALUE)
             {
                 TickHandlerClient.tickCount = 0;
             }
@@ -371,9 +371,9 @@ public class TickHandlerClient
                 }
             }
 
-            if (minecraft.currentScreen != null && minecraft.currentScreen instanceof GuiMainMenu)
+            if (minecraft.currentScreen instanceof GuiMainMenu)
             {
-                ClientProxyCore.playerItemData.clear();
+                ClientProxyCore.reset();
 
                 if (TickHandlerClient.missingRequirementThread == null)
                 {

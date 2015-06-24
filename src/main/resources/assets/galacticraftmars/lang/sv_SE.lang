@@ -65,7 +65,7 @@ tile.slabGCHalf.marsBricksSlab.name=Marsiansk hålestenplatta
 
 # GUI
 gui.choosePlanet.desc.mars=Habitable#No Oxygen#Gravity: 38%
-item.deshPickSlime.description.name=Can harvest Creeper eggs
+item.deshPickSlime.description.name=Kan skörda smygarägg
 gui.message.noEnergy.name=Strömbrist
 gui.message.noWater.name=Vattenbrist
 gui.message.noBonemeal.name=Benmjöl saknas
@@ -172,7 +172,7 @@ schematic.cargoRocket.name=Automatisk fraktraket
 # ENTITIES
 entity.Sludgeling.name=Sörjigel
 entity.Slimeling.name=Slemvarelse
-entity.CreeperBoss.name=Rymdsmygarhärskare
+entity.CreeperBoss.name=Marshålehärskare
 entity.SpaceshipT2.name=N2-raket
 entity.CargoRocket.name=Fraktraket
 entity.LandingBalloons.name=Landningskudde

@@ -155,4 +155,4 @@ gc.configgui.idEntityTier3Rocket=ID сущности: Ракета 3-го уро
 gc.configgui.idEntityEntryPod=ID сущности: Entry Pod
 gc.configgui.idSchematicRocketT3=ID схемы: Ракета 3-го уровня
 gc.configgui.disableGalacticraftHelium=Отключение регистрации гелия
-gc.configgui.astroMinersMax=Maximum number of Astro Miners per player ##NEEDS TRANSLATE##
+gc.configgui.astroMinersMax=Maximum number of Astro Miners per player

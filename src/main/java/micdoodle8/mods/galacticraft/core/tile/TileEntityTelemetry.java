@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import com.mojang.authlib.GameProfile;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import micdoodle8.mods.galacticraft.api.entity.ITelemetry;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
@@ -20,7 +19,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldProvider;
@@ -37,7 +35,6 @@ public class TileEntityTelemetry extends TileEntity
 	public GameProfile clientGameProfile = null;
 
 	public static HashSet<BlockVec3Dim> loadedList = new HashSet<BlockVec3Dim>();
-	private MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
 	public Entity linkedEntity;
 	private UUID toUpdate = null;
 	private int pulseRate = 400;

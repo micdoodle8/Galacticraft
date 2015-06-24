@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 
 public class CommonProxyCore
@@ -55,7 +56,9 @@ public class CommonProxyCore
 
     public World getWorldForID(int dimensionID)
     {
-        return FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(dimensionID);
+        MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance(); 
+    	if (theServer == null) return null;
+    	return theServer.worldServerForDimension(dimensionID);
     }
 
     public EntityPlayer getPlayerFromNetHandler(INetHandler handler)

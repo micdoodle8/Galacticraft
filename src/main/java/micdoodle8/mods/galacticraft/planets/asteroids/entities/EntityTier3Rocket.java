@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -38,6 +39,12 @@ public class EntityTier3Rocket extends EntityTieredRocket
         this(par1World, par2, par4, par6, rocketType);
         this.cargoItems = inv;
     }
+
+	@Override
+	public ItemStack getPickedResult(MovingObjectPosition target)
+	{
+	return new ItemStack(AsteroidsItems.tier3Rocket, 1, this.rocketType.getIndex());
+	}
 
     @Override
     protected void entityInit()

@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.entities;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
@@ -19,6 +18,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
@@ -62,6 +62,12 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
 
         return weight;
     }
+
+	@Override
+	public ItemStack getPickedResult(MovingObjectPosition target)
+	{
+	return new ItemStack(MarsItems.spaceship, 1, this.rocketType.getIndex() + 10);
+	}
 
     @Override
     public void onUpdate()
@@ -214,12 +220,12 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
         {
             if (this.targetDimension != this.worldObj.provider.dimensionId)
             {
-                WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(this.targetDimension);
+                World worldServer = GalacticraftCore.proxy.getWorldForID(this.targetDimension);
 
                 if (!this.worldObj.isRemote && worldServer != null)
                 {
                     this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
-                    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, worldServer, false, null);
+                    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (WorldServer) worldServer, false, null);
 
                     if (e instanceof EntityCargoRocket)
                     {

@@ -33,8 +33,9 @@ public class ItemRendererAstroMiner implements IItemRenderer
 
     protected void renderMiner(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
     {
-        GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glPushMatrix();
+    	boolean saveCullState = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+    	GL11.glEnable(GL11.GL_CULL_FACE);
+    	GL11.glPushMatrix();
 
         this.transform(item, type);
         GL11.glScalef(0.06F, 0.06F, 0.06F);
@@ -46,7 +47,7 @@ public class ItemRendererAstroMiner implements IItemRenderer
         GL11.glTranslatef(-3.75F, 0F, 0F);
 	    this.modellasergr.renderAll();
         GL11.glPopMatrix();
-        GL11.glDisable(GL11.GL_CULL_FACE);
+    	if (!saveCullState) GL11.glDisable(GL11.GL_CULL_FACE);
     }
 
     public void transform(ItemStack itemstack, ItemRenderType type)

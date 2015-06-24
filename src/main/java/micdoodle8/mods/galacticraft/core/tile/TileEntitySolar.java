@@ -254,10 +254,13 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     @Override
     public void onCreate(BlockVec3 placedPosition)
     {
-        final BlockVec3 vecStrut = new BlockVec3(placedPosition.x, placedPosition.y + 1, placedPosition.z);
-
+        int buildHeight = this.worldObj.getHeight() - 1;
+        
+    	if (placedPosition.y + 1 > buildHeight) return;
+    	final BlockVec3 vecStrut = new BlockVec3(placedPosition.x, placedPosition.y + 1, placedPosition.z);
         ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecStrut, placedPosition, 0);
 
+        if (placedPosition.y + 2 > buildHeight) return;
         for (int x = -1; x < 2; x++)
         {
             for (int z = -1; z < 2; z++)

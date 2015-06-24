@@ -154,5 +154,5 @@ gc.configgui.idEntityGrappleHook=그래플 엔티티 ID
 gc.configgui.idEntityTier3Rocket=3티어 로켓 엔티티 ID
 gc.configgui.idEntityEntryPod=진입 캡슐 엔티티 ID
 gc.configgui.idSchematicRocketT3=3티어 로켓 설계도 ID
-gc.configgui.disableGalacticraftHelium=Disable Helium gas registration ##NEEDS TRANSLATE##
-gc.configgui.astroMinersMax=Maximum number of Astro Miners per player ##NEEDS TRANSLATE##
+gc.configgui.disableGalacticraftHelium=Disable Helium gas registration
+gc.configgui.astroMinersMax=Maximum number of Astro Miners per player

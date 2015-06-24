@@ -13,17 +13,24 @@ import micdoodle8.mods.galacticraft.core.items.ItemBasic;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import buildcraft.api.recipes.BuildcraftRecipeRegistry;
+import buildcraft.api.recipes.BuildcraftRecipes;
 
 public class RecipeManagerGC
 {
@@ -525,8 +532,44 @@ public class RecipeManagerGC
 
     private static void addBuildCraftCraftingRecipes()
     {
-        try
+        boolean refineryDone = false;
+        boolean newBCAPI = false;
+    	try
         {
+    		Class<?> clazz = Class.forName("buildcraft.api.recipes.IRefineryRecipeManager");
+    		Method[] mzz = clazz.getMethods();
+    		for (Method m : mzz)
+    		{
+    			if (m.getName().equals("addRecipe"))
+    			{
+    				if (m.getParameterTypes()[0].equals(String.class))
+    				{
+    		    		newBCAPI = true;
+    		    		break;
+    				}
+    			}
+    		}
+
+    		if (newBCAPI)
+    		{
+	    		//Newer Buildcraft API versions
+	        	BuildcraftRecipeRegistry.refinery.addRecipe("buildcraft:fuel", new FluidStack(GalacticraftCore.gcFluidOil, 1), new FluidStack(FluidRegistry.getFluid("fuel"), 1), 120, 1);
+	        	refineryDone = true;
+    		}
+    		else
+    		{
+	    		//Older Buildcraft API versions
+	        	BuildcraftRecipes.refinery.addRecipe(new FluidStack(GalacticraftCore.gcFluidOil, 1), new FluidStack(FluidRegistry.getFluid("fuel"), 1), 120, 1);
+	        	refineryDone = true;    			
+    		}
+        }
+        catch (Exception e) { }
+       
+    	if (refineryDone)
+    		GCLog.info("Successfully added GC oil to Buildcraft Refinery recipes.");
+    	
+        try
+        {           
             Class<?> clazz = Class.forName("buildcraft.BuildCraftTransport");
 
             Object pipeItemsStone = clazz.getField("pipeItemsStone").get(null);

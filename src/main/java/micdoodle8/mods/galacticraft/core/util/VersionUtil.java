@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.util;
 
 import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
+
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.versioning.DefaultArtifactVersion;
 import cpw.mods.fml.common.versioning.VersionParser;
@@ -55,9 +56,11 @@ public class VersionUtil
     private static final String KEY_METHOD_PLAYER_IS_OPPED = "isPlayerOpped";
     private static final String KEY_METHOD_PLAYER_TEXTURE = "getEntityTexture";
 
-    //Used in GCPlayerHandler
+    //Used in GCPlayerHandler etc
     public static final String KEY_FIELD_FLOATINGTICKCOUNT = "floatingTickCount";
-
+    public static final String KEY_FIELD_BIOMEINDEXLAYER = "biomeIndexLayer";
+	public static final String KEY_FIELD_MUSICTICKER = "mcMusicTicker";
+	
     static
     {
         mcVersion = new DefaultArtifactVersion((String) FMLInjectionData.data()[4]);
@@ -127,6 +130,8 @@ public class VersionUtil
 
         //Same for both versions
         nodemap.put(KEY_FIELD_FLOATINGTICKCOUNT, new ObfuscationEntry("floatingTickCount", "field_147365_f"));
+        nodemap.put(KEY_FIELD_BIOMEINDEXLAYER, new ObfuscationEntry("biomeIndexLayer", "field_76945_e"));
+        nodemap.put(KEY_FIELD_MUSICTICKER, new ObfuscationEntry("mcMusicTicker", "field_147126_aw"));
     }
 
     public static boolean mcVersionMatches(String version)

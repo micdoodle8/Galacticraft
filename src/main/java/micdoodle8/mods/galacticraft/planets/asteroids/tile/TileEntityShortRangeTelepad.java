@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -31,7 +30,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.EnumSet;
@@ -285,8 +284,10 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     @Override
     public void onCreate(BlockVec3 placedPosition)
     {
+        int buildHeight = this.worldObj.getHeight() - 1;
         for (int y = 0; y < 3; y += 2)
         {
+        	if (placedPosition.y + y > buildHeight) return;
             for (int x = -1; x <= 1; x++)
             {
                 for (int z = -1; z <= 1; z++)
@@ -463,13 +464,14 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
 
             if (addressResult != null)
             {
-                WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(addressResult.dimensionID);
-
-                TileEntity tile2 = addressResult.position.getTileEntity(world);
+                World world = GalacticraftCore.proxy.getWorldForID(addressResult.dimensionID);
+                TileEntity tile2;
+                if (world == null) tile2 = null;
+                else tile2 = addressResult.position.getTileEntity(world);
 
                 if (tile2 == null)
                 {
-                    FMLLog.severe("Bad TileEntity in Telepad Handler: address(" + this.targetAddress + ") x" + addressResult.position.x + " y" + addressResult.position.y + " z" + addressResult.position.z);
+                    FMLLog.severe("Bad TileEntity in Telepad Handler: address(" + this.targetAddress + ") dim" + addressResult.dimensionID + " x" + addressResult.position.x + " y" + addressResult.position.y + " z" + addressResult.position.z);
                 }
                 else
                 {

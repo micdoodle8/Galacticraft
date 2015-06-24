@@ -4,6 +4,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.ShortRangeTelepadHandler;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 
 public class AsteroidsTickHandlerServer
@@ -18,11 +19,15 @@ public class AsteroidsTickHandlerServer
     @SubscribeEvent
     public void onServerTick(TickEvent.ServerTickEvent event)
     {
-        if (event.phase == TickEvent.Phase.START)
+    	MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+    	//Prevent issues when clients switch to LAN servers
+    	if (server == null) return;
+
+    	if (event.phase == TickEvent.Phase.START)
         {
             if (AsteroidsTickHandlerServer.spaceRaceData == null)
             {
-                World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
+                World world = server.worldServerForDimension(0);
                 AsteroidsTickHandlerServer.spaceRaceData = (ShortRangeTelepadHandler) world.mapStorage.loadData(ShortRangeTelepadHandler.class, ShortRangeTelepadHandler.saveDataID);
 
                 if (AsteroidsTickHandlerServer.spaceRaceData == null)

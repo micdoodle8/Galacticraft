@@ -78,7 +78,10 @@ public class ItemRendererMachine implements IItemRenderer
             }
             else
             {
-                GL11.glTranslatef(0, -3.9F, 0);
+            	GL11.glEnable(GL11.GL_BLEND);
+            	GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            	GL11.glTranslatef(0, -3.9F, 0);
+            	GL11.glDisable(GL11.GL_BLEND);
             }
 
             GL11.glScalef(1.3F, 1.3F, 1.3F);
