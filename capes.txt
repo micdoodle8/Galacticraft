@@ -48,7 +48,7 @@ atomicpichu:capeRainbow
 Pig_Rider273:capeMagenta
 so2ro:capeOrange
 Sir_Killz:capeBlue
-TheDestroyer4000:capeRainbow
+Takos:capeRainbow
 Kingdom_Hearts12:capeRainbow
 alfiethomas102:capeLime
 MattRockSolid:capeBlue
