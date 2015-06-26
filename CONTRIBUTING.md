@@ -11,7 +11,7 @@ Issues means:
 
 Posting new issues - guidelines
 -------------------------------
-1. If you have a crash report with ```micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP``` or ```GCEntityClientPlayerMP``` somewhere in the _middle_ of it (and that's the _only_ link with Galacticraft) then it's probably __not__ a Galacticraft issue, instead it's being caused by something else nearer to the top of the crash report - see further guidance below - so please don't take up Galacticraft mod developers' time by posting these.
+1. If you have a crash report with ```micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP``` or ```GCEntityClientPlayerMP``` or ```GCPlayerBaseSP``` somewhere in the _middle_ of it (and that's the _only_ link with Galacticraft) then it's probably __not__ a Galacticraft issue, instead it's being caused by something else nearer to the top of the crash report - see further guidance below - so please don't take up Galacticraft mod developers' time by posting these.
 2. Do not duplicate known issues: do a search first. __Check the closed issues also: maybe somebody already posted your issue and a fix was found.__
 3. When posting, always tell us your exact Galacticraft version.
 4. You should download the latest GC version from http://micdoodle8.com/mods/galacticraft/downloads and test if your issue still occurs in that, before posting.
@@ -37,7 +37,7 @@ If you have Galacticraft installed, that line will show up in the middle of the 
 
 That's not a vanilla Minecraft crash: likewise, Galacticraft does not have an issue here.  If you want to be 100% sure, you can install the PlayerAPI mod alongside Galacticraft and see if the same crash still happens.  (If PlayerAPI is installed then Galacticraft does not change the name of the vanilla player code in Minecraft.)
 
-In summary: don't post crash reports suggesting Galacticraft is at fault, if the only connection with Galacticraft is that ```micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP``` line in the middle of the report.  Or ```GCEntityClientPlayerMP```, the same guidance applies.
+In summary: don't post crash reports suggesting Galacticraft is at fault, if the only connection with Galacticraft is that ```micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP``` line in the middle of the report.  Or ```GCEntityClientPlayerMP``` or ```GCPlayerBaseSP``` or other similar variants, the same guidance applies.
 
 What else is not OK on the issues list?
 ----------------------------------
