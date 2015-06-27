@@ -7,11 +7,11 @@
   "mcversion": "1.7.10",
   "url": "http://www.micdoodle8.com/",
   "updateUrl": "http://www.micdoodle8.com/",
-  "authors": [
+  "authorList": [
     "micdoodle8, radfast, fishtaco"
   ],
   "credits": "",
-  "logoFile": "/galacticraft_logo.png",
+  "logoFile": "galacticraft_logo.png",
   "screenshots": [
   ],
   "parent":""
