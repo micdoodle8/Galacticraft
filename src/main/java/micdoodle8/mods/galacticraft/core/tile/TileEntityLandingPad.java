@@ -6,6 +6,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.entity.IFuelable;
+import micdoodle8.mods.galacticraft.api.entity.ILandable;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -47,7 +49,14 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 
                     if (fuelable != this.dockedEntity && fuelable.isDockValid(this))
                     {
-                        fuelable.setPad(this);
+                        if (fuelable instanceof ILandable)
+                        {
+                        	((ILandable) fuelable).landEntity(this.xCoord, this.yCoord, this.zCoord);
+                        }
+                        else
+                        {
+                            fuelable.setPad(this);
+                        }
                     }
 
                     break;
