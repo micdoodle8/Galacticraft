@@ -33,6 +33,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     public EntityCargoRocket(World par1World)
     {
         super(par1World);
+        this.setSize(0.98F, 2F);
     }
 
     public EntityCargoRocket(World par1World, double par2, double par4, double par6, EnumRocketType rocketType)
@@ -40,6 +41,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
         super(par1World, par2, par4, par6);
         this.rocketType = rocketType;
         this.cargoItems = new ItemStack[this.getSizeInventory()];
+        this.setSize(0.98F, 2F);
     }
 
     @Override
@@ -72,7 +74,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     @Override
     public void onUpdate()
     {
-        if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal() && this.hasValidFuel() && !this.worldObj.isRemote)
+        if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal() && this.hasValidFuel())
         {
             double motionScalar = this.timeSinceLaunch / 250;
 
@@ -108,7 +110,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
 					this.stopRocketSound();
             }
         }
-        else if (!this.hasValidFuel() && this.getLaunched() && !this.worldObj.isRemote)
+        else if (!this.hasValidFuel() && this.getLaunched())
         {
             if (Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 10 != 0.0)
             {
@@ -153,6 +155,12 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
                 this.spawnParticles(this.getLaunched());
             }
         }
+    }
+
+    @Override
+    protected boolean shouldMoveClientSide()
+    {
+        return true;
     }
 
     protected void spawnParticles(boolean launched)

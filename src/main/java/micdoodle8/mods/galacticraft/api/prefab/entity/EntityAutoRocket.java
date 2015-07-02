@@ -411,13 +411,13 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             {
                 if (this.landing && this.targetVec != null && this.worldObj.getTileEntity(this.targetVec.x, this.targetVec.y, this.targetVec.z) instanceof IFuelDock)
                 {
-                	this.motionY = (this.posY - this.getOnPadYOffset() - 0.4D - this.targetVec.y) / -100.0D;
-
-                	if (this.posY - this.targetVec.y < 5)
+                	this.motionY = Math.max(-2.0F, (this.posY - this.getOnPadYOffset() - 0.4D - this.targetVec.y) / -70.0D);
+                	
+                	if (this.boundingBox.minY - this.targetVec.y < 0.5F)
 	                {
 	                    for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
 	                    {
-	                        for (int y = MathHelper.floor_double(this.posY - this.getOnPadYOffset() - 0.45D); y <= MathHelper.floor_double(this.posY) + 1; y++)
+	                        for (int y = MathHelper.floor_double(this.boundingBox.minY - this.getOnPadYOffset() - 0.45D) - 1; y <= MathHelper.floor_double(this.boundingBox.maxY) + 1; y++)
 	                        {
 	                            for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
 	                            {
@@ -444,7 +444,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                         {
                             if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
                             {
-                            	System.out.println("Setting null 1");
                                 this.setPad(null);
                             }
                         }
