@@ -5,7 +5,7 @@ item.rawDesh.name=未精製デッス
 item.deshStick.name=デッスの棒
 item.ingotDesh.name=デッスインゴット
 item.spaceshipTier2.t2Rocket.name=レベル２宇宙機
-item.reinforcedPlateT2.name=ヘビーデューティープレート
+item.reinforcedPlateT2.name=ヘビーデューティーめっき
 item.tier2.desc=レベル２
 item.slimelingCargo.name=スライム子袋
 item.key.T2.name=レベル２ダンジョンの鍵
@@ -40,7 +40,7 @@ tile.mars.marsdirt.name=火星の表面下石
 tile.mars.marsgrass.name=火星の表面石
 tile.mars.marsdeco.name=デッスのブロック
 tile.mars.marsdungeon.name=火星のダンジョンの壁
-tile.treasureT2.name=レベル２の宝物箱
+tile.treasureT2.name=レベル２宝物箱
 tile.slimelingEgg.redEgg.name=赤いスライムこの卵
 tile.slimelingEgg.blueEgg.name=青いスライムこの卵
 tile.slimelingEgg.yellowEgg.name=黄色いスライムこの卵
@@ -166,7 +166,7 @@ gui.slimeling.damage=攻撃力
 gui.slimeling.food=好きな食べ物
 
 # SCHEMATICS
-schematic.rocketT3.name=レベル3の宇宙機
+schematic.rocketT3.name=レベル3宇宙機
 schematic.cargoRocket.name=自動貨物宇宙機
 
 # ENTITIES
