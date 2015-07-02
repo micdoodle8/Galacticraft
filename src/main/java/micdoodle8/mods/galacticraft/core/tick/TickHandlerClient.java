@@ -403,11 +403,11 @@ public class TickHandlerClient
             {
                 if (world.provider instanceof WorldProviderSurface)
                 {
-                    if (world.provider.getSkyRenderer() == null && player.ridingEntity != null && player.ridingEntity.posY >= 200)
+                    if (world.provider.getSkyRenderer() == null && player.ridingEntity != null && player.ridingEntity.posY > 200)
                     {
                         world.provider.setSkyRenderer(new SkyProviderOverworld());
                     }
-                    else if (world.provider.getSkyRenderer() != null && world.provider.getSkyRenderer() instanceof SkyProviderOverworld && (player.ridingEntity == null || player.ridingEntity.posY < 200))
+                    else if (world.provider.getSkyRenderer() != null && world.provider.getSkyRenderer() instanceof SkyProviderOverworld && (player.ridingEntity == null || player.ridingEntity.posY <= 200))
                     {
                         world.provider.setSkyRenderer(null);
                     }

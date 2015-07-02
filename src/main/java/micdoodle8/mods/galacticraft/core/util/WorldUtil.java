@@ -229,7 +229,7 @@ public class WorldUtil
         if (world.provider instanceof WorldProviderSurface && FMLClientHandler.instance().getClient().thePlayer.posY >= 200)
         {
             float var20 = (float) (FMLClientHandler.instance().getClient().thePlayer.posY - 200.0F) / 1000.0F;
-            final float var21 = Math.max(1.0F - var20 * 4.0F, 0.0F);
+            final float var21 = Math.max(1.0F - var20 * 50.0F, 0.0F);
 
             Vec3 vec = world.getFogColor(1.0F);
 
