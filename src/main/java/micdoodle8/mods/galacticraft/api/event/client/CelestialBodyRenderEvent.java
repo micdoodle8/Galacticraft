@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.api.event.client;
 
+import org.lwjgl.util.vector.Vector3f;
+
 import cpw.mods.fml.common.eventhandler.Cancelable;
 import cpw.mods.fml.common.eventhandler.Event;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
@@ -24,9 +26,12 @@ public abstract class CelestialBodyRenderEvent extends Event
         @Cancelable
         public static class Pre extends CelestialBodyRenderEvent
         {
-            public Pre(CelestialBody celestialBody)
+        	public final Vector3f parentOffset;
+        	
+            public Pre(CelestialBody celestialBody, Vector3f parentOffset)
             {
                 super(celestialBody);
+                this.parentOffset = parentOffset;
             }
         }
 

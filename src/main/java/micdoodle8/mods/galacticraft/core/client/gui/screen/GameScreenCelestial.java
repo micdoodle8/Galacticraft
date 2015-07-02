@@ -236,7 +236,7 @@ public class GameScreenCelestial implements IGameScreen
         GL11.glLineWidth(0.002F);
 
         GL11.glScalef(sd, sd, sd);
-        CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre preEvent = new CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre(cBody);
+        CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre preEvent = new CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre(cBody, new Vector3f(0.0F, 0.0F, 0.0F));
         MinecraftForge.EVENT_BUS.post(preEvent);
 
         if (!preEvent.isCanceled())

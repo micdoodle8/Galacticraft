@@ -2218,7 +2218,7 @@ public class GuiCelestialSelection extends GuiScreen
                         break;
                     }
 
-                    CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre preEvent = new CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre(planet);
+                    CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre preEvent = new CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre(planet, systemOffset);
                     MinecraftForge.EVENT_BUS.post(preEvent);
 
                     if (!preEvent.isCanceled())
@@ -2301,7 +2301,7 @@ public class GuiCelestialSelection extends GuiScreen
                             break;
                         }
 
-                        CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre preEvent = new CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre(moon);
+                        CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre preEvent = new CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre(moon, new Vector3f(0.0F, 0.0F, 0.0F));
                         MinecraftForge.EVENT_BUS.post(preEvent);
 
                         if (!preEvent.isCanceled())
@@ -2365,7 +2365,7 @@ public class GuiCelestialSelection extends GuiScreen
                                 break;
                             }
 
-                            CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre preEvent = new CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre(satellite);
+                            CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre preEvent = new CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre(satellite, new Vector3f(0.0F, 0.0F, 0.0F));
                             MinecraftForge.EVENT_BUS.post(preEvent);
 
                             if (!preEvent.isCanceled())
