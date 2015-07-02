@@ -178,8 +178,12 @@ public class RenderPlayerGC extends RenderPlayer
         {
             RotatePlayerEvent event = new RotatePlayerEvent(par1AbstractClientPlayer);
             MinecraftForge.EVENT_BUS.post(event);
-
-            if (event.shouldRotate == null || event.shouldRotate)
+            
+            if (event.vanillaOverride)
+            {
+                super.rotateCorpse(par1AbstractClientPlayer, par2, par3, par4);
+            }
+            else if (event.shouldRotate == null || event.shouldRotate)
             {
                 GL11.glRotatef(par1AbstractClientPlayer.getBedOrientationInDegrees(), 0.0F, 1.0F, 0.0F);
             }
@@ -193,6 +197,7 @@ public class RenderPlayerGC extends RenderPlayer
     public static class RotatePlayerEvent extends PlayerEvent
     {
         public Boolean shouldRotate = null;
+        public boolean vanillaOverride = false;
 
         public RotatePlayerEvent(AbstractClientPlayer player)
         {
