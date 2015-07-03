@@ -72,6 +72,7 @@ public class ConfigManagerCore
     public static boolean enableDebug;
     public static float mapMouseScrollSensitivity;
     public static boolean invertMapMouseScroll;
+    public static double meteorSpawnMod;
 //    public static int mapfactor;
 //    public static int mapsize;
 	
@@ -494,6 +495,12 @@ public class ConfigManagerCore
             prop.comment = "Set to true to invert the mouse scroll feature on the galaxy map.";
             prop.setLanguageKey("gc.configgui.mapScrollInvert");
             invertMapMouseScroll = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+            
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Meteor Spawn Modifier", 1.0);
+            prop.comment = "Set to a value between 0.0 and 1.0 to decrease meteor spawn chance (all dimensions).";
+            prop.setLanguageKey("gc.configgui.meteorSpawnMod").setRequiresWorldRestart(true);
+            meteorSpawnMod = prop.getDouble(1.0);
             propOrder.add(prop.getName());
 
             config.setCategoryPropertyOrder(CATEGORY_GENERAL, propOrder);

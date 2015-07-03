@@ -651,9 +651,9 @@ public class GCPlayerHandler
         World world = player.worldObj;
         if (world.provider instanceof IGalacticraftWorldProvider && !world.isRemote)
         {
-            if (((IGalacticraftWorldProvider) world.provider).getMeteorFrequency() > 0)
+            if (((IGalacticraftWorldProvider) world.provider).getMeteorFrequency() > 0 && ConfigManagerCore.meteorSpawnMod > 0.0)
             {
-                final int f = (int) (((IGalacticraftWorldProvider) world.provider).getMeteorFrequency() * 1000D);
+                final int f = (int) (((IGalacticraftWorldProvider) world.provider).getMeteorFrequency() * 1000D * (1.0 / ConfigManagerCore.meteorSpawnMod));
 
                 if (world.rand.nextInt(f) == 0)
                 {
