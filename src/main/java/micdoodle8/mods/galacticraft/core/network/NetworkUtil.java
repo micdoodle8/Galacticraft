@@ -162,6 +162,7 @@ public class NetworkUtil
                     buffer.writeFloat((float) array[i].position.z);
                     buffer.writeFloat(array[i].rotation);
                     buffer.writeShort(array[i].age);
+                    ByteBufUtils.writeUTF8String(buffer, array[i].owner);
                 }
             }
             else
@@ -291,7 +292,7 @@ public class NetworkUtil
 
                 for (int i = 0; i < size; i++)
                 {
-                    objList.add(new Footprint(buffer.readInt(), new Vector3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat()), buffer.readFloat(), buffer.readShort()));
+                    objList.add(new Footprint(buffer.readInt(), new Vector3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat()), buffer.readFloat(), buffer.readShort(), ByteBufUtils.readUTF8String(buffer)));
                 }
             }
         }

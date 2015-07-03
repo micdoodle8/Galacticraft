@@ -597,7 +597,10 @@ public class PacketSimple extends Packet implements IPacket
             for (int i = 1; i < this.data.size(); i++)
             {
                 Footprint print = (Footprint) this.data.get(i);
-                printList.add(print);
+                if (!print.owner.equals(player.getCommandSenderName()))
+                {
+                    printList.add(print);
+                }
             }
             ClientProxyCore.footprintRenderer.setFootprints(chunkKey, printList);
             break;

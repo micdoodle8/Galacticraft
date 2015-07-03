@@ -40,6 +40,7 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
+import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -65,6 +66,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 public class TickHandlerClient
@@ -295,6 +297,24 @@ public class TickHandlerClient
             }
 
             TickHandlerClient.tickCount++;
+            
+            if (TickHandlerClient.tickCount % 20 == 0)
+            {
+            	for (List<Footprint> fpList : ClientProxyCore.footprintRenderer.footprints.values())
+            	{
+            		Iterator<Footprint> fpIt = fpList.iterator();
+            		while (fpIt.hasNext())
+            		{
+            			Footprint fp = fpIt.next();
+            			fp.age += 20;
+
+                        if (fp.age >= Footprint.MAX_AGE)
+                        {
+                            fpIt.remove();
+                        }
+            		}
+            	}
+            }
 
             if (TickHandlerClient.tickCount % 20 == 0)
             {

@@ -247,7 +247,7 @@ public class PlayerClient implements IPlayerClient
                         pos = WorldUtil.getFootprintPosition(player.worldObj, player.rotationYaw - 180, pos, new BlockVec3(player));
 
                         long chunkKey = ChunkCoordIntPair.chunkXZ2Int(pos.intX() >> 4, pos.intZ() >> 4);
-                        ClientProxyCore.footprintRenderer.addFootprint(chunkKey, player.worldObj.provider.dimensionId, pos, player.rotationYaw);
+                        ClientProxyCore.footprintRenderer.addFootprint(chunkKey, player.worldObj.provider.dimensionId, pos, player.rotationYaw, player.getCommandSenderName());
 
                         // Increment and cap step counter at 1
                         stats.lastStep++;

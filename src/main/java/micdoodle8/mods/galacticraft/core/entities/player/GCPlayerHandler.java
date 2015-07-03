@@ -811,7 +811,7 @@ public class GCPlayerHandler
                         pos = WorldUtil.getFootprintPosition(player.worldObj, rotation, pos, new BlockVec3(player));
 
                         long chunkKey = ChunkCoordIntPair.chunkXZ2Int(pos.intX() >> 4, pos.intZ() >> 4);
-                        TickHandlerServer.addFootprint(chunkKey, new Footprint(player.worldObj.provider.dimensionId, pos, rotation), player.worldObj.provider.dimensionId);
+                        TickHandlerServer.addFootprint(chunkKey, new Footprint(player.worldObj.provider.dimensionId, pos, rotation, player.getCommandSenderName()), player.worldObj.provider.dimensionId);
 
                         // Increment and cap step counter at 1
                         playerStats.lastStep++;
