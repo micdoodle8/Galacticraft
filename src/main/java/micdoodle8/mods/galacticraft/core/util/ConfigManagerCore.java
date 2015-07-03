@@ -73,6 +73,7 @@ public class ConfigManagerCore
     public static float mapMouseScrollSensitivity;
     public static boolean invertMapMouseScroll;
     public static double meteorSpawnMod;
+    public static boolean meteorBlockDamageEnabled;
 //    public static int mapfactor;
 //    public static int mapsize;
 	
@@ -501,6 +502,12 @@ public class ConfigManagerCore
             prop.comment = "Set to a value between 0.0 and 1.0 to decrease meteor spawn chance (all dimensions).";
             prop.setLanguageKey("gc.configgui.meteorSpawnMod");
             meteorSpawnMod = prop.getDouble(1.0);
+            propOrder.add(prop.getName());
+            
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Meteor Block Damage Enabled", true);
+            prop.comment = "Set to false to stop meteors from breaking blocks on contact.";
+            prop.setLanguageKey("gc.configgui.meteorBlockDamage");
+            meteorBlockDamageEnabled = prop.getBoolean(true);
             propOrder.add(prop.getName());
 
             config.setCategoryPropertyOrder(CATEGORY_GENERAL, propOrder);
