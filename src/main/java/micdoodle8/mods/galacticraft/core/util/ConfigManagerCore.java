@@ -499,7 +499,7 @@ public class ConfigManagerCore
             
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Meteor Spawn Modifier", 1.0);
             prop.comment = "Set to a value between 0.0 and 1.0 to decrease meteor spawn chance (all dimensions).";
-            prop.setLanguageKey("gc.configgui.meteorSpawnMod").setRequiresWorldRestart(true);
+            prop.setLanguageKey("gc.configgui.meteorSpawnMod");
             meteorSpawnMod = prop.getDouble(1.0);
             propOrder.add(prop.getName());
 
