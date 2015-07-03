@@ -137,7 +137,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                         {
                             Block blockID = this.worldObj.getBlock(x, y, z);
 
-                            if (!(blockID instanceof BlockAir) && this.getDistanceFromServer(x, y, z) < bubbleSizeSq)
+                            if (!(blockID.isAir(this.worldObj, x, y, z)) && this.getDistanceFromServer(x, y, z) < bubbleSizeSq)
                             {
                                 if (doGrass && blockID instanceof ITerraformableBlock && ((ITerraformableBlock) blockID).isTerraformable(this.worldObj, x, y, z))
                                 {
@@ -146,7 +146,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                                 else if (doTrees)
                                 {
                                     Block blockIDAbove = this.worldObj.getBlock(x, y + 1, z);
-                                	if (blockID == Blocks.grass && blockIDAbove instanceof BlockAir)
+                                	if (blockID == Blocks.grass && blockIDAbove.isAir(this.worldObj, x, y + 1, z))
 	                                {
                                         this.grassBlockList.add(new BlockVec3(x, y, z));
                                     }

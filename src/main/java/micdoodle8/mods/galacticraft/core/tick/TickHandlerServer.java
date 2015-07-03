@@ -497,7 +497,7 @@ public class TickHandlerServer
 	                    {
 	                        BlockVec3 changePosition = change.getChangePosition();
 	                        //Only replace blocks of type BlockAir - this is to prevent accidents where other mods have moved blocks
-	                        if (changePosition != null && world.getBlock(changePosition.x, changePosition.y, changePosition.z) instanceof BlockAir)
+	                        if (changePosition != null && world.getBlock(changePosition.x, changePosition.y, changePosition.z).isAir(world, changePosition.x, changePosition.y, changePosition.z))
 	                        {
 	                            world.setBlock(changePosition.x, changePosition.y, changePosition.z, change.getChangeID(), change.getChangeMeta(), 2);
 	                        }

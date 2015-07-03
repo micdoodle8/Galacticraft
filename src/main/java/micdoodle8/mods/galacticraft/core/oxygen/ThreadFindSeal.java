@@ -69,7 +69,7 @@ public class ThreadFindSeal
             if (checkCount > 0)
             {
                 Block headBlock = head.getBlockID(this.world);
-                if (headBlock != null && !(headBlock instanceof BlockAir))
+                if (headBlock != null && !(headBlock.isAir(world, head.x, head.y, head.z)))
                 {
                     this.canBlockPassAirCheck(headBlock, this.head, 1);
                     //reset the checkCount as canBlockPassAirCheck might have changed it

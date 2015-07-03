@@ -1062,7 +1062,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
      */
     public boolean checkSS(BlockVec3 baseBlock, boolean placingThruster)
     {
-        if (this.oneSSBlock == null || this.oneSSBlock.getBlockID(this.worldObj) instanceof BlockAir)
+        if (this.oneSSBlock == null || this.oneSSBlock.getBlockID(this.worldObj).isAir(worldObj, this.oneSSBlock.x, this.oneSSBlock.y, this.oneSSBlock.z))
         {
             if (baseBlock != null)
             {
@@ -1141,10 +1141,10 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                     {
                         this.checked.add(sideVec);
                         Block b = sideVec.getBlockID(this.worldObj);
-                        if (!(b instanceof BlockAir) && b != null)
+                        if (!(b.isAir(worldObj, sideVec.x, sideVec.y, sideVec.z)) && b != null)
                         {
                             nextLayer.add(sideVec);
-                            if (bStart instanceof BlockAir)
+                            if (bStart.isAir(worldObj, this.oneSSBlock.x, this.oneSSBlock.y, this.oneSSBlock.z))
                             {
                                 this.oneSSBlock = sideVec.clone();
                                 bStart = b;

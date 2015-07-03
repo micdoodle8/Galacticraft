@@ -65,7 +65,7 @@ public class BlockBrightBreathableAir extends BlockAir
         }
         else
         {
-            return block instanceof BlockAir && par5 >= 0 && par5 <= 5;
+            return block.isAir(par1IBlockAccess, par2, par3, par4) && par5 >= 0 && par5 <= 5;
         }
     }
 

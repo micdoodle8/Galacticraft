@@ -237,7 +237,7 @@ public class TileEntityArclamp extends TileEntity
                             checked.add(sideVec);
 
                             Block b = sideVec.getBlockIDsafe_noChunkLoad(world);
-                            if (b instanceof BlockAir)
+                            if (b.isAir(world, sideVec.x, sideVec.y, sideVec.z))
                             {
                                 if (side != sideskip1 && side != sideskip2)
                                 {
@@ -264,7 +264,7 @@ public class TileEntityArclamp extends TileEntity
                 if (!allAir)
                 {
                     Block id = vec.getBlockIDsafe_noChunkLoad(world);
-                    if (id instanceof BlockAir)
+                    if (id.isAir(world, vec.x, vec.y, vec.z))
                     {
                         if (Blocks.air == id)
                         {
