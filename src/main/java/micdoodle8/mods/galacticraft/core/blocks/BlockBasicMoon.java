@@ -394,7 +394,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 
         if (meta >= 5 && meta <= 13)
         {
-            return world.getBlock(x, y + 1, z) instanceof BlockAir;
+            return !world.getBlock(x, y + 1, z).isOpaqueCube();
         }
 
         return false;

@@ -336,7 +336,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     @Override
     public boolean isTerraformable(World world, int x, int y, int z)
     {
-        return world.getBlockMetadata(x, y, z) == 5 && world.getBlock(x, y + 1, z) instanceof BlockAir;
+        return world.getBlockMetadata(x, y, z) == 5 && !world.getBlock(x, y + 1, z).isOpaqueCube();
     }
 
     @Override
