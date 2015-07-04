@@ -155,7 +155,7 @@ a player playing modified Minecraft through the use of Galacticraft's
 
 original material which is contained in compiled binary versions of 
 
-Galacticraft (including code, raphics, textures, icons, models, sounds and 
+Galacticraft (including code, graphics, textures, icons, models, sounds and 
 
 music).  The player will need to be running Minecraft, together with the 
 
@@ -209,7 +209,7 @@ to the Game ("Mods") (including pre-run Mods and in-memory Mods) and plugins
 
 for the Game also belong to you and you can do whatever you want with them, 
 
-as long as you donâ€˜t sell them for money / try to make money from them."
+as long as you don't sell them for money / try to make money from them."
 
 In quoting Mojang's EULA as aforesaid, no representation or admission is 
 
