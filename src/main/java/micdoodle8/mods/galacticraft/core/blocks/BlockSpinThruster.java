@@ -31,7 +31,7 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
     {
         super(Material.circuits);
         this.setHardness(0.1F);
-        this.setStepSound(Block.soundTypeWood);
+        this.setStepSound(Block.soundTypeMetal);
         this.setBlockTextureName("stone");
         this.setBlockName(assetName);
     }

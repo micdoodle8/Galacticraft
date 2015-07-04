@@ -81,19 +81,8 @@ public class BlockRendererLandingPad implements ISimpleBlockRenderingHandler
 
     public void renderBlockLandingPad(RenderBlocks renderBlocks, Block par1Block, IBlockAccess var1, int par2, int par3, int par4)
     {
-        var1.getBlockMetadata(par2, par3, par4);
-        if (var1.getBlockMetadata(par2, par3, par4) == 1)
-        {
-            renderBlocks.setOverrideBlockTexture(((BlockLandingPadFull) par1Block).getIcon(0, 1));
-        }
-
         renderBlocks.setRenderBounds(-1F, 0F, -1F, 2F, 0.2F, 2F);
         renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
-
-        if (var1.getBlockMetadata(par2, par3, par4) == 1)
-        {
-            renderBlocks.setOverrideBlockTexture(((BlockLandingPadFull) par1Block).getIcon(0, 2));
-        }
 
         if (var1.getBlockMetadata(par2, par3, par4) == 0)
         {

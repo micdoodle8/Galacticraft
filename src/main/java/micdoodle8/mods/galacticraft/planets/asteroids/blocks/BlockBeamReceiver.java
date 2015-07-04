@@ -34,6 +34,7 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
         super(Material.iron);
         this.setBlockName(assetName);
         this.setBlockTextureName("stone");
+        this.setStepSound(Block.soundTypeMetal);
     }
 
     @SideOnly(Side.CLIENT)

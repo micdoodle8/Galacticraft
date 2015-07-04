@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -27,6 +28,7 @@ public class BlockBeamReflector extends BlockTileGC implements ItemBlockDesc.IBl
         super(Material.iron);
         this.setBlockName(assetName);
         this.setBlockTextureName("stone");
+        this.setStepSound(Block.soundTypeMetal);
     }
 
     @SideOnly(Side.CLIENT)

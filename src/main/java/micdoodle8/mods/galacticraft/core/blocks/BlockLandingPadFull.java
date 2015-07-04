@@ -31,7 +31,7 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
         super(Material.rock);
         this.setHardness(1.0F);
         this.setResistance(10.0F);
-        this.setStepSound(Block.soundTypeStone);
+        this.setStepSound(Block.soundTypeMetal);
         this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setBlockName(assetName);
         this.maxY = 0.39D;

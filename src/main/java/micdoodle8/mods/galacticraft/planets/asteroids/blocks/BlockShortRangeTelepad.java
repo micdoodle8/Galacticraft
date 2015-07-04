@@ -38,6 +38,7 @@ public class BlockShortRangeTelepad extends BlockTileGC implements ItemBlockDesc
         this.blockHardness = 3.0F;
         this.setBlockName(assetName);
         this.setBlockTextureName("stone");
+        this.setStepSound(Block.soundTypeMetal);
     }
 
     @SideOnly(Side.CLIENT)
