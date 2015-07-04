@@ -360,6 +360,8 @@ gui.button.unlockschematic.name=Unlock Schematic
 gui.button.stoprefine.name=Stop Refining
 gui.button.enable.name=Enable
 gui.button.disable.name=Disable
+gui.button.hideDest.name=Hide
+gui.button.unhideDest.name=Unhide
 
 gui.choosePlanet.desc.overworld=Full of Life#Habitable#Gravity: 100%
 gui.warning=WARNING!
