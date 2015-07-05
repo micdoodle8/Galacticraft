@@ -16,7 +16,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import cpw.mods.fml.common.Loader;
+import net.minecraftforge.fml.common.Loader;
 import tconstruct.client.tabs.AbstractTab;
 import tconstruct.client.tabs.TabRegistry;
 

@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import net.minecraftforge.fml.relauncher.FMLRelaunchLog;
 import micdoodle8.mods.galacticraft.core.Constants;
 
 import org.apache.logging.log4j.Level;

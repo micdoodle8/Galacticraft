@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
 import mekanism.api.gas.IGasTransmitter;
@@ -19,7 +19,6 @@ import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityHydrogenPipe extends TileEntity implements ITransmitter
 {
@@ -97,7 +96,7 @@ public class TileEntityHydrogenPipe extends TileEntity implements ITransmitter
         {
             this.adjacentConnections = null;
 
-            for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
+            for (EnumFacing side : EnumFacing.VALID_DIRECTIONS)
             {
                 TileEntity tileEntity = new BlockVec3(this).getTileEntityOnSide(this.worldObj, side);
 
@@ -130,12 +129,12 @@ public class TileEntityHydrogenPipe extends TileEntity implements ITransmitter
 
     public static TileEntity[] getAdjacentHydrogenConnections(TileEntity tile)
     {
-        TileEntity[] adjacentConnections = new TileEntity[ForgeDirection.VALID_DIRECTIONS.length];
+        TileEntity[] adjacentConnections = new TileEntity[EnumFacing.VALID_DIRECTIONS.length];
 
         boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
 
         BlockVec3 thisVec = new BlockVec3(tile);
-        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+        for (EnumFacing direction : EnumFacing.VALID_DIRECTIONS)
         {
             TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorldObj(), direction);
 
@@ -162,7 +161,7 @@ public class TileEntityHydrogenPipe extends TileEntity implements ITransmitter
     }
 
     @Override
-    public boolean canConnect(ForgeDirection direction, NetworkType type)
+    public boolean canConnect(EnumFacing direction, NetworkType type)
     {
         return type == NetworkType.HYDROGEN;
     }
@@ -171,7 +170,7 @@ public class TileEntityHydrogenPipe extends TileEntity implements ITransmitter
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-        return AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1);
+        return AxisAlignedBB.fromBounds(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1);
     }
 
     @Override
@@ -181,44 +180,44 @@ public class TileEntityHydrogenPipe extends TileEntity implements ITransmitter
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public int receiveGas(ForgeDirection side, GasStack stack, boolean doTransfer)
+    public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer)
     {
     	if (!stack.getGas().getName().equals("hydrogen")) return 0;  
         return stack.amount - (int) Math.floor(((IHydrogenNetwork) this.getNetwork()).produce(stack.amount, this));
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public int receiveGas(ForgeDirection side, GasStack stack)
+    public int receiveGas(EnumFacing side, GasStack stack)
     {
     	return this.receiveGas(side, stack, true);
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public GasStack drawGas(ForgeDirection side, int amount, boolean doTransfer)
+    public GasStack drawGas(EnumFacing side, int amount, boolean doTransfer)
     {
         return null;
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public GasStack drawGas(ForgeDirection side, int amount)
+    public GasStack drawGas(EnumFacing side, int amount)
     {
         return null;
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public boolean canDrawGas(ForgeDirection side, Gas type)
+    public boolean canDrawGas(EnumFacing side, Gas type)
     {
         return false;
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public boolean canReceiveGas(ForgeDirection side, Gas type)
+    public boolean canReceiveGas(EnumFacing side, Gas type)
     {
         return type.getName().equals("hydrogen");
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
-    public boolean canTubeConnect(ForgeDirection side)
+    public boolean canTubeConnect(EnumFacing side)
     {
         return this.canConnect(side, NetworkType.HYDROGEN);
     }

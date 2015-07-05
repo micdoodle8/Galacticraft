@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteor;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;

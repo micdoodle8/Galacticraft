@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -13,7 +13,6 @@ import net.minecraft.item.Item;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Random;
 
@@ -72,9 +71,9 @@ public class BlockAirLockWall extends BlockBreakable implements IPartialSealable
         {
             int adjacentCount = 0;
 
-            for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+            for (EnumFacing dir : EnumFacing.VALID_DIRECTIONS)
             {
-                if (dir != ForgeDirection.UP && dir != ForgeDirection.DOWN)
+                if (dir != EnumFacing.UP && dir != EnumFacing.DOWN)
                 {
                     Vector3 thisVec = new Vector3(x, y, z);
                     thisVec = thisVec.modifyPositionFromSide(dir);
@@ -126,7 +125,7 @@ public class BlockAirLockWall extends BlockBreakable implements IPartialSealable
     }
 
     @Override
-    public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
+    public boolean isSealed(World world, int x, int y, int z, EnumFacing direction)
     {
         return true;
     }

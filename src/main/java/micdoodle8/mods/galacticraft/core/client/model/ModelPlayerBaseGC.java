@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.model;
 import api.player.model.ModelPlayer;
 import api.player.model.ModelPlayerAPI;
 import api.player.model.ModelPlayerBase;
-import cpw.mods.fml.common.Loader;
+import net.minecraftforge.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;

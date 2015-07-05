@@ -59,12 +59,12 @@ public class TileEntityArclamp extends TileEntity
                 case 0:
                     this.sideRear = side; //Down
                     this.facingSide = this.facing + 2;
-                    this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 8, this.zCoord - 20, this.xCoord + 20, this.yCoord + 20, this.zCoord + 20);
+                    this.thisAABB = AxisAlignedBB.fromBounds(this.xCoord - 20, this.yCoord - 8, this.zCoord - 20, this.xCoord + 20, this.yCoord + 20, this.zCoord + 20);
                     break;
                 case 1:
                     this.sideRear = side; //Up
                     this.facingSide = this.facing + 2;
-                    this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 20, this.zCoord - 20, this.xCoord + 20, this.yCoord + 8, this.zCoord + 20);
+                    this.thisAABB = AxisAlignedBB.fromBounds(this.xCoord - 20, this.yCoord - 20, this.zCoord - 20, this.xCoord + 20, this.yCoord + 8, this.zCoord + 20);
                     break;
                 case 2:
                     this.sideRear = side; //North
@@ -73,7 +73,7 @@ public class TileEntityArclamp extends TileEntity
                     {
                         this.facingSide = 7 - this.facing;
                     }
-                    this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 20, this.zCoord - 8, this.xCoord + 20, this.yCoord + 20, this.zCoord + 20);
+                    this.thisAABB = AxisAlignedBB.fromBounds(this.xCoord - 20, this.yCoord - 20, this.zCoord - 8, this.xCoord + 20, this.yCoord + 20, this.zCoord + 20);
                     break;
                 case 3:
                     this.sideRear = side; //South
@@ -82,12 +82,12 @@ public class TileEntityArclamp extends TileEntity
                     {
                         this.facingSide += 2;
                     }
-                    this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 20, this.zCoord - 20, this.xCoord + 20, this.yCoord + 20, this.zCoord + 8);
+                    this.thisAABB = AxisAlignedBB.fromBounds(this.xCoord - 20, this.yCoord - 20, this.zCoord - 20, this.xCoord + 20, this.yCoord + 20, this.zCoord + 8);
                     break;
                 case 4:
                     this.sideRear = side; //West
                     this.facingSide = this.facing;
-                    this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 8, this.yCoord - 20, this.zCoord - 20, this.xCoord + 20, this.yCoord + 20, this.zCoord + 20);
+                    this.thisAABB = AxisAlignedBB.fromBounds(this.xCoord - 8, this.yCoord - 20, this.zCoord - 20, this.xCoord + 20, this.yCoord + 20, this.zCoord + 20);
                     break;
                 case 5:
                     this.sideRear = side; //East
@@ -96,7 +96,7 @@ public class TileEntityArclamp extends TileEntity
                     {
                         this.facingSide = 5 - this.facing;
                     }
-                    this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 20, this.zCoord - 20, this.xCoord + 8, this.yCoord + 20, this.zCoord + 20);
+                    this.thisAABB = AxisAlignedBB.fromBounds(this.xCoord - 20, this.yCoord - 20, this.zCoord - 20, this.xCoord + 8, this.yCoord + 20, this.zCoord + 20);
                     break;
                 default:
                     return;

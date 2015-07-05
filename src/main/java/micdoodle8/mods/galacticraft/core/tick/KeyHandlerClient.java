@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
-import cpw.mods.fml.common.gameevent.TickEvent.Type;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.Constants;

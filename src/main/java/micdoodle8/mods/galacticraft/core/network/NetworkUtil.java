@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.network;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;

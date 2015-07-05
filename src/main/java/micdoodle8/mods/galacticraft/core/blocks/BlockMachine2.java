@@ -21,7 +21,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 import java.util.Random;
@@ -142,7 +141,7 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
                 return this.iconOxygenInput;
             }
             // If it is the back side
-            else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
+            else if (side == EnumFacing.getOrientation(metadata + 2).getOpposite().ordinal())
             {
                 return this.iconOxygenOutput;
             }
@@ -183,7 +182,7 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
                 return this.iconOxygenInput;
             }
             // If it is the back side
-            else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
+            else if (side == EnumFacing.getOrientation(metadata + 2).getOpposite().ordinal())
             {
                 return this.iconOxygenOutput;
             }
@@ -199,7 +198,7 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
                 return this.iconCircuitFabricator;
             }
 
-            if (side == ForgeDirection.getOrientation(metadata + 2).ordinal())
+            if (side == EnumFacing.getOrientation(metadata + 2).ordinal())
             {
                 return this.iconInput;
             }
@@ -213,7 +212,7 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
                 return this.iconElectricCompressor;
             }
 
-            if (side == ForgeDirection.getOrientation(metadata + 2).ordinal())
+            if (side == EnumFacing.getOrientation(metadata + 2).ordinal())
             {
                 return this.iconInput;
             }

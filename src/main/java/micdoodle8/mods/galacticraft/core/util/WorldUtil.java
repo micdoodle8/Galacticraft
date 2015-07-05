@@ -67,15 +67,14 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.Lists;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.IWorldGenerator;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.IWorldGenerator;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 //import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 
@@ -1314,9 +1313,9 @@ public class WorldUtil
             // If the footprint is still over air....
             if (world.getBlock(position.intX(), position.intY(), position.intZ()).isAir(world, position.intX(), position.intY(), position.intZ()))
             {
-                for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+                for (EnumFacing direction : EnumFacing.VALID_DIRECTIONS)
                 {
-                    if (direction != ForgeDirection.DOWN && direction != ForgeDirection.UP)
+                    if (direction != EnumFacing.DOWN && direction != EnumFacing.UP)
                     {
                         if (!world.getBlock(mainPosX + direction.offsetX, mainPosY, mainPosZ + direction.offsetZ).isAir(world, mainPosX + direction.offsetX, mainPosY, mainPosZ + direction.offsetZ))
                         {

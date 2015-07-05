@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -21,7 +21,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockDish extends BlockTileGC implements ItemBlockDesc.IBlockShiftDesc, IPartialSealableBlock
 {
@@ -216,7 +215,7 @@ public class BlockDish extends BlockTileGC implements ItemBlockDesc.IBlockShiftD
     }
 
     @Override
-    public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
+    public boolean isSealed(World world, int x, int y, int z, EnumFacing direction)
     {
         return true;
     }

@@ -10,7 +10,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -143,15 +142,15 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     }
 
     @Override
-    public EnumSet<ForgeDirection> getElectricalInputDirections()
+    public EnumSet<EnumFacing> getElectricalInputDirections()
     {
-        return EnumSet.noneOf(ForgeDirection.class);
+        return EnumSet.noneOf(EnumFacing.class);
     }
 
     @Override
-    public EnumSet<ForgeDirection> getElectricalOutputDirections()
+    public EnumSet<EnumFacing> getElectricalOutputDirections()
     {
-        return EnumSet.noneOf(ForgeDirection.class);
+        return EnumSet.noneOf(EnumFacing.class);
     }
 
     @Override
@@ -167,7 +166,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     }
 
     @Override
-    public ForgeDirection getElectricInputDirection()
+    public EnumFacing getElectricInputDirection()
     {
         return null;
     }
@@ -185,21 +184,21 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     }
 
     @Override
-    public float getOxygenProvide(ForgeDirection direction)
+    public float getOxygenProvide(EnumFacing direction)
     {
         return this.getOxygenOutputDirections().contains(direction) ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getOxygenStored()) : 0.0F;
     }
 
     @Override
-    public EnumSet<ForgeDirection> getOxygenInputDirections()
+    public EnumSet<EnumFacing> getOxygenInputDirections()
     {
-        return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2));
+        return EnumSet.of(EnumFacing.getOrientation(this.getBlockMetadata() - BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2));
     }
 
     @Override
-    public EnumSet<ForgeDirection> getOxygenOutputDirections()
+    public EnumSet<EnumFacing> getOxygenOutputDirections()
     {
-        return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2).getOpposite());
+        return EnumSet.of(EnumFacing.getOrientation(this.getBlockMetadata() - BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2).getOpposite());
     }
     
     @Override

@@ -18,7 +18,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
 import org.lwjgl.opengl.GL11;
-import cpw.mods.fml.common.Loader;
+import net.minecraftforge.fml.common.Loader;
 
 public class RenderPlayerGC extends RenderPlayer
 {

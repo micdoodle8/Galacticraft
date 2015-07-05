@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;

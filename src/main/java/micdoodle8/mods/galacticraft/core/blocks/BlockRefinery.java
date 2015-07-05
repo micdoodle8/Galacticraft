@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
@@ -20,7 +20,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Random;
 
@@ -198,7 +197,7 @@ public class BlockRefinery extends BlockAdvancedTile implements ItemBlockDesc.IB
         {
             return this.iconOilInput;
         }
-        else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
+        else if (side == EnumFacing.getOrientation(metadata + 2).getOpposite().ordinal())
         {
             return this.iconFuelOutput;
         }

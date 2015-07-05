@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.core.client.model.ModelFlag;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderFlag;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;

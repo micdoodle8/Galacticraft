@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.energy.tile;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
-import cpw.mods.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import ic2.api.energy.tile.IEnergySource;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
@@ -17,7 +17,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.lang.reflect.Constructor;
 
@@ -205,7 +204,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
 
     @VersionSpecific(version = "[1.7.2]")
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
-    public double injectEnergyUnits(ForgeDirection directionFrom, double amount)
+    public double injectEnergyUnits(EnumFacing directionFrom, double amount)
     {
         TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, directionFrom);
         int tier = 1;
@@ -230,7 +229,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
 
     @VersionSpecific(version = "[1.7.10]")
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
-    public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage)
+    public double injectEnergy(EnumFacing directionFrom, double amount, double voltage)
     {
         TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, directionFrom);
         int tier = ((int) voltage > 120) ? 2 : 1;
@@ -268,7 +267,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
     }
 
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyAcceptor", modID = "IC2")
-    public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction)
+    public boolean acceptsEnergyFrom(TileEntity emitter, EnumFacing direction)
     {
         //Don't add connection to IC2 grid if it's a Galacticraft tile
         if (emitter instanceof IElectrical || emitter instanceof IConductor)
@@ -294,7 +293,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
     }
 
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyEmitter", modID = "IC2")
-    public boolean emitsEnergyTo(TileEntity receiver, ForgeDirection direction)
+    public boolean emitsEnergyTo(TileEntity receiver, EnumFacing direction)
     {
         //Don't add connection to IC2 grid if it's a Galacticraft tile
         if (receiver instanceof IElectrical || receiver instanceof IConductor)
@@ -323,7 +322,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
      * BuildCraft functions
      */
     @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "")
-    public PowerReceiver getPowerReceiver(ForgeDirection side)
+    public PowerReceiver getPowerReceiver(EnumFacing side)
     {
         if (this.getNetwork() == null)
         {
@@ -377,7 +376,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
     }
 
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
-    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
+    public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate)
     {
     	if (this.getNetwork() == null)
     	{
@@ -389,13 +388,13 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
     }
 
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
-    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
+    public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate)
     {
     	return 0;
     }
 
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
-    public boolean canConnectEnergy(ForgeDirection from)
+    public boolean canConnectEnergy(EnumFacing from)
     {
     	//Do not form wire-to-wire connections with EnderIO conduits
     	TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, from);
@@ -409,13 +408,13 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
     }
 
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
-    public int getEnergyStored(ForgeDirection from)
+    public int getEnergyStored(EnumFacing from)
     {
     	return 0;
     }
 
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
-    public int getMaxEnergyStored(ForgeDirection from)
+    public int getMaxEnergyStored(EnumFacing from)
     {
     	if (this.getNetwork() == null)
     	{
@@ -426,7 +425,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
     }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-    public double transferEnergyToAcceptor(ForgeDirection side, double amount)
+    public double transferEnergyToAcceptor(EnumFacing side, double amount)
     {
         if (!this.canReceiveEnergy(side))
         {
@@ -437,7 +436,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
     }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-    public boolean canReceiveEnergy(ForgeDirection side)
+    public boolean canReceiveEnergy(EnumFacing side)
     {
         if (this.getNetwork() == null)
         {

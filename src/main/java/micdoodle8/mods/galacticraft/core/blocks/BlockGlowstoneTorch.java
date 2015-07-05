@@ -10,11 +10,10 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Random;
 
-import static net.minecraftforge.common.util.ForgeDirection.*;
+import static net.minecraftforge.common.util.EnumFacing.*;
 
 public class BlockGlowstoneTorch extends Block implements ItemBlockDesc.IBlockShiftDesc
 {
@@ -28,7 +27,7 @@ public class BlockGlowstoneTorch extends Block implements ItemBlockDesc.IBlockSh
         this.setStepSound(Block.soundTypeWood);
     }
 
-    private static boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection direction, boolean nope)
+    private static boolean isBlockSolidOnSide(World world, int x, int y, int z, EnumFacing direction, boolean nope)
     {
         return world.getBlock(x, y, z).isSideSolid(world, x, y, z, direction);
     }

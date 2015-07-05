@@ -21,7 +21,6 @@ import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,19 +51,19 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
     private final MapGenDungeon dungeonGenerator = new MapGenDungeon(GCBlocks.blockMoon, 14, 8, 16, 3);
 
     {
-        this.dungeonGenerator.otherRooms.add(new RoomEmptyMoon(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        this.dungeonGenerator.otherRooms.add(new RoomChestsMoon(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        this.dungeonGenerator.otherRooms.add(new RoomChestsMoon(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        this.dungeonGenerator.otherRooms.add(new RoomChestsMoon(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        this.dungeonGenerator.bossRooms.add(new RoomBossMoon(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        this.dungeonGenerator.treasureRooms.add(new RoomTreasureMoon(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new RoomEmptyMoon(null, 0, 0, 0, EnumFacing.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, EnumFacing.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, EnumFacing.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new RoomChestsMoon(null, 0, 0, 0, EnumFacing.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, EnumFacing.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, EnumFacing.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, EnumFacing.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, EnumFacing.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, EnumFacing.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new RoomChestsMoon(null, 0, 0, 0, EnumFacing.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new RoomChestsMoon(null, 0, 0, 0, EnumFacing.UNKNOWN));
+        this.dungeonGenerator.bossRooms.add(new RoomBossMoon(null, 0, 0, 0, EnumFacing.UNKNOWN));
+        this.dungeonGenerator.treasureRooms.add(new RoomTreasureMoon(null, 0, 0, 0, EnumFacing.UNKNOWN));
     }
 
     private BiomeGenBase[] biomesForGeneration = { BiomeGenBaseMoon.moonFlat };

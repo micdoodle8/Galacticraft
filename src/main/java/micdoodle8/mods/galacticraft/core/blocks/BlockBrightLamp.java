@@ -38,7 +38,7 @@ public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlo
     {
         double boundsMin = 0.2D;
         double boundsMax = 0.8D;
-        return AxisAlignedBB.getBoundingBox(x + boundsMin, y + boundsMin, z + boundsMin, x + boundsMax, y + boundsMax, z + boundsMax);
+        return AxisAlignedBB.fromBounds(x + boundsMin, y + boundsMin, z + boundsMin, x + boundsMax, y + boundsMax, z + boundsMax);
     }
 
     @Override

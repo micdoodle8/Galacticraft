@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tick;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.ShortRangeTelepadHandler;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;

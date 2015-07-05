@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import com.mojang.authlib.GameProfile;
 
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import micdoodle8.mods.galacticraft.api.entity.ITelemetry;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;

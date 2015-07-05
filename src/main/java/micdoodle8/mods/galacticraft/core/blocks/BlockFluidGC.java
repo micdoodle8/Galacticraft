@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
@@ -15,7 +15,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 
@@ -122,12 +121,12 @@ public class BlockFluidGC extends BlockFluidClassic
     }
     
     @Override
-    public boolean isFlammable(IBlockAccess world, int x, int y, int z, ForgeDirection face) 
+    public boolean isFlammable(IBlockAccess world, int x, int y, int z, EnumFacing face)
     {
     	if (!(world instanceof World)) return false;
     	if (OxygenUtil.noAtmosphericCombustion(((World) world).provider))
         {
-        	if (!OxygenUtil.isAABBInBreathableAirBlock((World) world, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 2, z + 1)))
+        	if (!OxygenUtil.isAABBInBreathableAirBlock((World) world, AxisAlignedBB.fromBounds(x, y, z, x + 1, y + 2, z + 1)))
         		return false;
         }
         

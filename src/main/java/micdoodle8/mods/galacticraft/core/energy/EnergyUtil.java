@@ -17,7 +17,6 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.lang.reflect.Method;
 
@@ -46,7 +45,7 @@ public class EnergyUtil
         TileEntity[] adjacentConnections = new TileEntity[6];
         
         BlockVec3 thisVec = new BlockVec3(tile);
-        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+        for (EnumFacing direction : EnumFacing.VALID_DIRECTIONS)
         {
             TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorldObj(), direction);
 
@@ -152,7 +151,7 @@ public class EnergyUtil
         return adjacentConnections;
     }
     
-    public static float otherModsEnergyTransfer(TileEntity tileAdj, ForgeDirection inputAdj, float toSend, boolean simulate)
+    public static float otherModsEnergyTransfer(TileEntity tileAdj, EnumFacing inputAdj, float toSend, boolean simulate)
     {
         if (isMekLoaded && tileAdj instanceof IStrictEnergyAcceptor)
         {
@@ -254,7 +253,7 @@ public class EnergyUtil
      * @param tileAdj - the tile under test, it might be an energy tile from another mod
      * @param inputAdj - the energy input side for that tile which is under test
      */
-	public static boolean otherModCanReceive(TileEntity tileAdj, ForgeDirection inputAdj)
+	public static boolean otherModCanReceive(TileEntity tileAdj, EnumFacing inputAdj)
 	{
         if (isMekLoaded && tileAdj instanceof IStrictEnergyAcceptor)
         {
@@ -339,7 +338,7 @@ public class EnergyUtil
                 try
                 {
                     //1.7.2 version
-                    EnergyUtil.injectEnergyIC2 = clazz.getMethod("injectEnergyUnits", ForgeDirection.class, double.class);
+                    EnergyUtil.injectEnergyIC2 = clazz.getMethod("injectEnergyUnits", EnumFacing.class, double.class);
                     if (ConfigManagerCore.enableDebug)
                     {
                         GCLog.info("Debug: IC2 inject 1.7.2 succeeded");
@@ -350,7 +349,7 @@ public class EnergyUtil
                     //if that fails, try 1.7.10 version
                     try
                     {
-                        EnergyUtil.injectEnergyIC2 = clazz.getMethod("injectEnergy", ForgeDirection.class, double.class, double.class);
+                        EnergyUtil.injectEnergyIC2 = clazz.getMethod("injectEnergy", EnumFacing.class, double.class, double.class);
                         EnergyUtil.voltageParameterIC2 = true;
                         if (ConfigManagerCore.enableDebug)
                         {

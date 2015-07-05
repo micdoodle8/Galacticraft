@@ -1,13 +1,12 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamOutput;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -70,7 +69,7 @@ public class NetworkRenderer
             GL11.glColor4f(tileEntity.getColor().floatX(), tileEntity.getColor().floatY(), tileEntity.getColor().floatZ(), 1.0F);
             tess.startDrawing(GL11.GL_LINES);
 
-            for (ForgeDirection dir : ForgeDirection.values())
+            for (EnumFacing dir : EnumFacing.values())
             {
                 tess.addVertex(dir.offsetX / 40.0F, dir.offsetY / 40.0F, dir.offsetZ / 40.0F);
                 tess.addVertex(dir.offsetX / 40.0F, dir.offsetY / 40.0F, directionLength + dir.offsetZ / 40.0F);

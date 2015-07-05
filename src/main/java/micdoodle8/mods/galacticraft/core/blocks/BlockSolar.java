@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -22,7 +22,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
@@ -79,15 +78,15 @@ public class BlockSolar extends BlockTileGC implements ItemBlockDesc.IBlockShift
         {
             int shiftedMeta = meta -= BlockSolar.ADVANCED_METADATA;
 
-            if (side == ForgeDirection.getOrientation(shiftedMeta + 2).getOpposite().ordinal())
+            if (side == EnumFacing.getOrientation(shiftedMeta + 2).getOpposite().ordinal())
             {
                 return this.icons[5];
             }
-            else if (side == ForgeDirection.UP.ordinal())
+            else if (side == EnumFacing.UP.ordinal())
             {
                 return this.icons[2];
             }
-            else if (side == ForgeDirection.DOWN.ordinal())
+            else if (side == EnumFacing.DOWN.ordinal())
             {
                 return this.icons[4];
             }
@@ -100,15 +99,15 @@ public class BlockSolar extends BlockTileGC implements ItemBlockDesc.IBlockShift
         {
             int shiftedMeta = meta -= BlockSolar.BASIC_METADATA;
 
-            if (side == ForgeDirection.getOrientation(shiftedMeta + 2).getOpposite().ordinal())
+            if (side == EnumFacing.getOrientation(shiftedMeta + 2).getOpposite().ordinal())
             {
                 return this.icons[5];
             }
-            else if (side == ForgeDirection.UP.ordinal())
+            else if (side == EnumFacing.UP.ordinal())
             {
                 return this.icons[0];
             }
-            else if (side == ForgeDirection.DOWN.ordinal())
+            else if (side == EnumFacing.DOWN.ordinal())
             {
                 return this.icons[4];
             }
@@ -314,7 +313,7 @@ public class BlockSolar extends BlockTileGC implements ItemBlockDesc.IBlockShift
     }
 
     @Override
-    public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
+    public boolean isSealed(World world, int x, int y, int z, EnumFacing direction)
     {
         return true;
     }

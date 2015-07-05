@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
@@ -27,7 +27,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.EnumSet;
 
@@ -350,39 +349,39 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     }
 
 	/*@Override
-    public float getRequest(ForgeDirection direction)
+    public float getRequest(EnumFacing direction)
 	{
 		return 0;
 	}
 	*/
 
     @Override
-    public EnumSet<ForgeDirection> getElectricalInputDirections()
+    public EnumSet<EnumFacing> getElectricalInputDirections()
     {
-        return EnumSet.noneOf(ForgeDirection.class);
+        return EnumSet.noneOf(EnumFacing.class);
     }
 
     @Override
-    public EnumSet<ForgeDirection> getElectricalOutputDirections()
+    public EnumSet<EnumFacing> getElectricalOutputDirections()
     {
         int metadata = this.getBlockMetadata() & 3;
 
-        return EnumSet.of(ForgeDirection.getOrientation((metadata + 2) ^ 1), ForgeDirection.UNKNOWN);
+        return EnumSet.of(EnumFacing.getOrientation((metadata + 2) ^ 1), EnumFacing.UNKNOWN);
     }
 
     @Override
-    public ForgeDirection getElectricalOutputDirectionMain()
+    public EnumFacing getElectricalOutputDirectionMain()
     {
         int metadata = this.getBlockMetadata() & 3;
 
-        return ForgeDirection.getOrientation((metadata + 2) ^ 1);
+        return EnumFacing.getOrientation((metadata + 2) ^ 1);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-    	return AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 4, zCoord + 2);
+    	return AxisAlignedBB.fromBounds(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 4, zCoord + 2);
     }
 
     @Override
@@ -534,9 +533,9 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     }
 
     @Override
-    public boolean canConnect(ForgeDirection direction, NetworkType type)
+    public boolean canConnect(EnumFacing direction, NetworkType type)
     {
-        if (direction == null || direction.equals(ForgeDirection.UNKNOWN) || type != NetworkType.POWER)
+        if (direction == null || direction.equals(EnumFacing.UNKNOWN) || type != NetworkType.POWER)
         {
             return false;
         }

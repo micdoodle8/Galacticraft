@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;

@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -85,7 +85,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
                 Vector3 thisPos = new Vector3(this).translate(0.5F);
                 Vector3 minPos = new Vector3(thisPos).translate(-distance);
                 Vector3 maxPos = new Vector3(thisPos).translate(distance);
-                AxisAlignedBB matchingRegion = AxisAlignedBB.getBoundingBox(minPos.x, minPos.y, minPos.z, maxPos.x, maxPos.y, maxPos.z);
+                AxisAlignedBB matchingRegion = AxisAlignedBB.fromBounds(minPos.x, minPos.y, minPos.z, maxPos.x, maxPos.y, maxPos.z);
                 List playersWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, matchingRegion);
 
                 boolean foundPlayer = false;

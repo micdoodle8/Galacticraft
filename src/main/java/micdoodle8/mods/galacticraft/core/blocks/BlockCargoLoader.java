@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
@@ -20,7 +20,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
@@ -123,7 +122,7 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
             {
                 return this.iconInput;
             }
-            else if (side == ForgeDirection.getOrientation(shiftedMeta + 2).getOpposite().ordinal())
+            else if (side == EnumFacing.getOrientation(shiftedMeta + 2).getOpposite().ordinal())
             {
                 return metadata < 4 ? this.iconItemInput : this.iconItemOutput;
             }
@@ -140,7 +139,7 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
             {
                 return this.iconInput;
             }
-            else if (side == ForgeDirection.getOrientation(shiftedMeta + 2).getOpposite().ordinal())
+            else if (side == EnumFacing.getOrientation(shiftedMeta + 2).getOpposite().ordinal())
             {
                 return metadata < 4 ? this.iconItemInput : this.iconItemOutput;
             }

@@ -16,7 +16,6 @@ import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,19 +31,19 @@ public class ChunkProviderMars extends ChunkProviderSpace
     public ChunkProviderMars(World par1World, long seed, boolean mapFeaturesEnabled)
     {
         super(par1World, seed, mapFeaturesEnabled);
-        this.dungeonGenerator.otherRooms.add(new RoomEmptyMars(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        this.dungeonGenerator.otherRooms.add(new RoomChestsMars(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        this.dungeonGenerator.otherRooms.add(new RoomChestsMars(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        this.dungeonGenerator.bossRooms.add(new RoomBossMars(null, 0, 0, 0, ForgeDirection.UNKNOWN));
-        this.dungeonGenerator.treasureRooms.add(new RoomTreasureMars(null, 0, 0, 0, ForgeDirection.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new RoomEmptyMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new RoomChestsMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
+        this.dungeonGenerator.otherRooms.add(new RoomChestsMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
+        this.dungeonGenerator.bossRooms.add(new RoomBossMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
+        this.dungeonGenerator.treasureRooms.add(new RoomTreasureMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
     }
 
     @Override

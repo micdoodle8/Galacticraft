@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
@@ -16,7 +16,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.EnumSet;
 
@@ -283,41 +282,41 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
     }
 
     @Override
-    public float receiveElectricity(ForgeDirection from, float energy, int tier, boolean doReceive)
+    public float receiveElectricity(EnumFacing from, float energy, int tier, boolean doReceive)
     {
         return 0;
     }
 
 	/*
     @Override
-	public float getRequest(ForgeDirection direction)
+	public float getRequest(EnumFacing direction)
 	{
 		return 0;
 	}
 	*/
 
     @Override
-    public EnumSet<ForgeDirection> getElectricalInputDirections()
+    public EnumSet<EnumFacing> getElectricalInputDirections()
     {
-        return EnumSet.noneOf(ForgeDirection.class);
+        return EnumSet.noneOf(EnumFacing.class);
     }
 
     @Override
-    public EnumSet<ForgeDirection> getElectricalOutputDirections()
+    public EnumSet<EnumFacing> getElectricalOutputDirections()
     {
-        return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() + 2));
+        return EnumSet.of(EnumFacing.getOrientation(this.getBlockMetadata() + 2));
     }
 
     @Override
-    public ForgeDirection getElectricalOutputDirectionMain()
+    public EnumFacing getElectricalOutputDirectionMain()
     {
-        return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
+        return EnumFacing.getOrientation(this.getBlockMetadata() + 2);
     }
 
     @Override
-    public boolean canConnect(ForgeDirection direction, NetworkType type)
+    public boolean canConnect(EnumFacing direction, NetworkType type)
     {
-        if (direction == null || direction.equals(ForgeDirection.UNKNOWN) || type != NetworkType.POWER)
+        if (direction == null || direction.equals(EnumFacing.UNKNOWN) || type != NetworkType.POWER)
         {
             return false;
         }

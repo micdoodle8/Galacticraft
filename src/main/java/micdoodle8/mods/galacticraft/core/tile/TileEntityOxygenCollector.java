@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.Side;
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
@@ -19,7 +19,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.EnumSet;
 
@@ -364,9 +363,9 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
     }
 
     @Override
-    public ForgeDirection getElectricInputDirection()
+    public EnumFacing getElectricInputDirection()
     {
-        return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
+        return EnumFacing.getOrientation(this.getBlockMetadata() + 2);
     }
 
     @Override
@@ -382,19 +381,19 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
     }
 
     @Override
-    public boolean canReceiveGas(ForgeDirection side, Gas type)
+    public boolean canReceiveGas(EnumFacing side, Gas type)
     {
     	return false;
     }
     
     @Override
-    public int receiveGas(ForgeDirection side, GasStack stack, boolean doTransfer)
+    public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer)
     {
     	return 0;
     }
 
     @Override
-    public int receiveGas(ForgeDirection side, GasStack stack)
+    public int receiveGas(EnumFacing side, GasStack stack)
     {
     	return 0;
     }
@@ -406,19 +405,19 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
     }
 
     @Override
-    public EnumSet<ForgeDirection> getOxygenInputDirections()
+    public EnumSet<EnumFacing> getOxygenInputDirections()
     {
-        return EnumSet.noneOf(ForgeDirection.class);
+        return EnumSet.noneOf(EnumFacing.class);
     }
 
     @Override
-    public EnumSet<ForgeDirection> getOxygenOutputDirections()
+    public EnumSet<EnumFacing> getOxygenOutputDirections()
     {
         return EnumSet.of(this.getElectricInputDirection().getOpposite());
     }
 
     @Override
-    public float getOxygenProvide(ForgeDirection direction)
+    public float getOxygenProvide(EnumFacing direction)
     {
         return this.getOxygenOutputDirections().contains(direction) ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getOxygenStored()) : 0.0F;
     }

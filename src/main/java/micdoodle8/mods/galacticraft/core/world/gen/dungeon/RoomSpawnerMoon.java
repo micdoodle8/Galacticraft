@@ -4,7 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -18,7 +17,7 @@ public class RoomSpawnerMoon extends DungeonRoom
 
     private final ArrayList<ChunkCoordinates> spawners = new ArrayList<ChunkCoordinates>();
 
-    public RoomSpawnerMoon(MapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
+    public RoomSpawnerMoon(MapGenDungeon dungeon, int posX, int posY, int posZ, EnumFacing entranceDir)
     {
         super(dungeon, posX, posY, posZ, entranceDir);
         if (this.worldObj != null)
@@ -71,7 +70,7 @@ public class RoomSpawnerMoon extends DungeonRoom
     }
 
     @Override
-    protected DungeonRoom makeRoom(MapGenDungeon dungeon, int x, int y, int z, ForgeDirection dir)
+    protected DungeonRoom makeRoom(MapGenDungeon dungeon, int x, int y, int z, EnumFacing dir)
     {
         return new RoomSpawnerMoon(dungeon, x, y, z, dir);
     }

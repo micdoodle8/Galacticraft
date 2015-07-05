@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.oxygen;
 
-import cpw.mods.fml.common.FMLLog;
+import net.minecraftforge.fml.common.FMLLog;
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
 import mekanism.api.gas.IGasHandler;
@@ -12,7 +12,6 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.*;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.*;
 
@@ -27,7 +26,7 @@ import java.util.*;
  */
 public class OxygenNetwork implements IOxygenNetwork
 {
-    public Map<TileEntity, ForgeDirection> oxygenTiles = new HashMap<TileEntity, ForgeDirection>();
+    public Map<TileEntity, EnumFacing> oxygenTiles = new HashMap<TileEntity, EnumFacing>();
 
     private final Set<ITransmitter> pipes = new HashSet<ITransmitter>();
 
@@ -56,7 +55,7 @@ public class OxygenNetwork implements IOxygenNetwork
 
                             if (oxygenTile.shouldPullOxygen())
                             {
-                                for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+                                for (EnumFacing direction : EnumFacing.VALID_DIRECTIONS)
                                 {
                                     TileEntity tile = new BlockVec3(tileEntity).modifyPositionFromSide(direction, 1).getTileEntity(tileEntity.getWorldObj());
 
@@ -76,7 +75,7 @@ public class OxygenNetwork implements IOxygenNetwork
                         {
                             IGasHandler gasHandler = (IGasHandler) tileEntity;
 
-                            for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+                            for (EnumFacing direction : EnumFacing.VALID_DIRECTIONS)
                             {
                                 TileEntity tile = new BlockVec3(tileEntity).getTileEntityOnSide(tileEntity.getWorldObj(), direction);
 
@@ -126,7 +125,7 @@ public class OxygenNetwork implements IOxygenNetwork
                 {
                     if (tileEntity.getWorldObj().getTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord) == tileEntity)
                     {
-                        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+                        for (EnumFacing direction : EnumFacing.VALID_DIRECTIONS)
                         {
                             BlockVec3 tileVec = new BlockVec3(tileEntity);
                             TileEntity tile = tileVec.modifyPositionFromSide(direction, 1).getTileEntity(tileEntity.getWorldObj());
@@ -222,7 +221,7 @@ public class OxygenNetwork implements IOxygenNetwork
 
     				if (!(acceptor instanceof ITransmitter) && acceptor instanceof IConnector)
     				{
-    					this.oxygenTiles.put(acceptor, ForgeDirection.getOrientation(i));
+    					this.oxygenTiles.put(acceptor, EnumFacing.getOrientation(i));
     				}
     			}
     		}

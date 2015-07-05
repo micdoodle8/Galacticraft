@@ -6,7 +6,6 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +65,7 @@ public class MapGenDungeon
 
         final int length = rand.nextInt(4) + 5;
 
-        DungeonRoom currentRoom = DungeonRoom.makeRoom(this, rand, x, y, z, ForgeDirection.DOWN);
+        DungeonRoom currentRoom = DungeonRoom.makeRoom(this, rand, x, y, z, EnumFacing.DOWN);
         currentRoom.generate(blocks, metas, chunkX, chunkZ);
         this.rooms.add(currentRoom);
         final DungeonBoundingBox cbb = currentRoom.getBoundingBox();
@@ -79,8 +78,8 @@ public class MapGenDungeon
             {
                 int offsetX = 0;
                 int offsetZ = 0;
-                final ForgeDirection dir = this.randDir(rand);
-                ForgeDirection entranceDir = dir;
+                final EnumFacing dir = this.randDir(rand);
+                EnumFacing entranceDir = dir;
                 switch (dir)
                 // East = 0, North = 1, South = 2, West = 3
                 {
@@ -90,12 +89,12 @@ public class MapGenDungeon
                     {
                         if (rand.nextBoolean())
                         {
-                            entranceDir = ForgeDirection.NORTH;
+                            entranceDir = EnumFacing.NORTH;
                             offsetX = this.HALLWAY_LENGTH + rand.nextInt(15);
                         }
                         else
                         {
-                            entranceDir = ForgeDirection.SOUTH;
+                            entranceDir = EnumFacing.SOUTH;
                             offsetX = -this.HALLWAY_LENGTH - rand.nextInt(15);
                         }
                     }
@@ -106,12 +105,12 @@ public class MapGenDungeon
                     {
                         if (rand.nextBoolean())
                         {
-                            entranceDir = ForgeDirection.EAST;
+                            entranceDir = EnumFacing.EAST;
                             offsetZ = this.HALLWAY_LENGTH + rand.nextInt(15);
                         }
                         else
                         {
-                            entranceDir = ForgeDirection.WEST;
+                            entranceDir = EnumFacing.WEST;
                             offsetZ = -this.HALLWAY_LENGTH - rand.nextInt(15);
                         }
                     }
@@ -122,12 +121,12 @@ public class MapGenDungeon
                     {
                         if (rand.nextBoolean())
                         {
-                            entranceDir = ForgeDirection.EAST;
+                            entranceDir = EnumFacing.EAST;
                             offsetZ = this.HALLWAY_LENGTH + rand.nextInt(15);
                         }
                         else
                         {
-                            entranceDir = ForgeDirection.WEST;
+                            entranceDir = EnumFacing.WEST;
                             offsetZ = -this.HALLWAY_LENGTH - rand.nextInt(15);
                         }
                     }
@@ -138,12 +137,12 @@ public class MapGenDungeon
                     {
                         if (rand.nextBoolean())
                         {
-                            entranceDir = ForgeDirection.NORTH;
+                            entranceDir = EnumFacing.NORTH;
                             offsetX = this.HALLWAY_LENGTH + rand.nextInt(15);
                         }
                         else
                         {
-                            entranceDir = ForgeDirection.SOUTH;
+                            entranceDir = EnumFacing.SOUTH;
                             offsetX = -this.HALLWAY_LENGTH - rand.nextInt(15);
                         }
                     }
@@ -208,7 +207,7 @@ public class MapGenDungeon
                     {
                         DungeonBoundingBox corridor1 = null;
                         DungeonBoundingBox corridor2 = null;
-                        ForgeDirection dir2 = ForgeDirection.EAST;
+                        EnumFacing dir2 = EnumFacing.EAST;
                         int extraLength = 0;
                         if (rand.nextInt(6) == 0)
                         {
@@ -222,13 +221,13 @@ public class MapGenDungeon
                             if (offsetX > 0) // x++
                             {
                                 corridor2 = new DungeonBoundingBox(corridor1.minX - extraLength, corridor1.maxZ + 1, possibleRoomBb.minX, corridor1.maxZ + 3);
-                                dir2 = ForgeDirection.NORTH;
+                                dir2 = EnumFacing.NORTH;
                             }
                             else
                             // x--
                             {
                                 corridor2 = new DungeonBoundingBox(possibleRoomBb.maxX, corridor1.maxZ + 1, corridor1.maxX + extraLength, corridor1.maxZ + 3);
-                                dir2 = ForgeDirection.SOUTH;
+                                dir2 = EnumFacing.SOUTH;
                             }
                             break;
                         case NORTH: // North x++
@@ -236,13 +235,13 @@ public class MapGenDungeon
                             if (offsetZ > 0) // z++
                             {
                                 corridor2 = new DungeonBoundingBox(corridor1.maxX + 1, corridor1.minZ - extraLength, corridor1.maxX + 4, possibleRoomBb.minZ);
-                                dir2 = ForgeDirection.EAST;
+                                dir2 = EnumFacing.EAST;
                             }
                             else
                             // z--
                             {
                                 corridor2 = new DungeonBoundingBox(corridor1.maxX + 1, possibleRoomBb.maxZ, corridor1.maxX + 4, corridor1.maxZ + extraLength);
-                                dir2 = ForgeDirection.WEST;
+                                dir2 = EnumFacing.WEST;
                             }
                             break;
                         case SOUTH: // South x--
@@ -250,13 +249,13 @@ public class MapGenDungeon
                             if (offsetZ > 0) // z++
                             {
                                 corridor2 = new DungeonBoundingBox(corridor1.minX - 3, corridor1.minZ - extraLength, corridor1.minX - 1, possibleRoomBb.minZ);
-                                dir2 = ForgeDirection.EAST;
+                                dir2 = EnumFacing.EAST;
                             }
                             else
                             // z--
                             {
                                 corridor2 = new DungeonBoundingBox(corridor1.minX - 3, possibleRoomBb.maxZ, corridor1.minX - 1, corridor1.maxZ + extraLength);
-                                dir2 = ForgeDirection.WEST;
+                                dir2 = EnumFacing.WEST;
                             }
                             break;
                         case WEST: // West z--
@@ -264,13 +263,13 @@ public class MapGenDungeon
                             if (offsetX > 0) // x++
                             {
                                 corridor2 = new DungeonBoundingBox(corridor1.minX - extraLength, corridor1.minZ - 3, possibleRoomBb.minX, corridor1.minZ - 1);
-                                dir2 = ForgeDirection.NORTH;
+                                dir2 = EnumFacing.NORTH;
                             }
                             else
                             // x--
                             {
                                 corridor2 = new DungeonBoundingBox(possibleRoomBb.maxX, corridor1.minZ - 3, corridor1.maxX + extraLength, corridor1.minZ - 1);
-                                dir2 = ForgeDirection.SOUTH;
+                                dir2 = EnumFacing.SOUTH;
                             }
                             break;
                         default:
@@ -300,7 +299,7 @@ public class MapGenDungeon
         }
     }
 
-    private void genCorridor(DungeonBoundingBox corridor, Random rand, int y, int cx, int cz, ForgeDirection dir, Block[] blocks, byte[] metas, boolean doubleCorridor)
+    private void genCorridor(DungeonBoundingBox corridor, Random rand, int y, int cx, int cz, EnumFacing dir, Block[] blocks, byte[] metas, boolean doubleCorridor)
     {
         for (int i = corridor.minX - 1; i <= corridor.maxX + 1; i++)
         {
@@ -577,9 +576,9 @@ public class MapGenDungeon
         return (x * 16 + z) * 256 + y;
     }
 
-    private ForgeDirection randDir(Random rand)
+    private EnumFacing randDir(Random rand)
     {
-        return ForgeDirection.values()[rand.nextInt(ForgeDirection.VALID_DIRECTIONS.length)];
+        return EnumFacing.values()[rand.nextInt(EnumFacing.VALID_DIRECTIONS.length)];
     }
 
     private boolean isIntersecting(DungeonBoundingBox bb, List<DungeonBoundingBox> dungeonBbs)

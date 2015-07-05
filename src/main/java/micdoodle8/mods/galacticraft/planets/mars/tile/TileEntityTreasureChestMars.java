@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.item.IKeyable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
@@ -379,7 +379,7 @@ public class TileEntityTreasureChestMars extends TileEntityAdvanced implements I
         {
             this.numUsingPlayers = 0;
             f = 5.0F;
-            final List<?> list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(this.xCoord - f, this.yCoord - f, this.zCoord - f, this.xCoord + 1 + f, this.yCoord + 1 + f, this.zCoord + 1 + f));
+            final List<?> list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.fromBounds(this.xCoord - f, this.yCoord - f, this.zCoord - f, this.xCoord + 1 + f, this.yCoord + 1 + f, this.zCoord + 1 + f));
             final Iterator<?> iterator = list.iterator();
 
             while (iterator.hasNext())

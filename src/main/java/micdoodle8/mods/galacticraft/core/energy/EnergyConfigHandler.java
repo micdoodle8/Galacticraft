@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.energy;
 
-import cpw.mods.fml.common.Loader;
+import net.minecraftforge.fml.common.Loader;
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasRegistry;
 import micdoodle8.mods.galacticraft.core.util.GCLog;

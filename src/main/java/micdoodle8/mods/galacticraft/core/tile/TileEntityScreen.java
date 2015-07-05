@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.DrawGameScreen;
@@ -11,7 +11,6 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -97,7 +96,7 @@ public class TileEntityScreen extends TileEntity
     			if (x == 0 && z == 0) this.resetToSingle();
     			else
     			{
-	    			BlockVec3 newVec = vec.clone().modifyPositionFromSide(ForgeDirection.getOrientation(side), x).modifyPositionFromSide(ForgeDirection.DOWN, z);
+	    			BlockVec3 newVec = vec.clone().modifyPositionFromSide(EnumFacing.getOrientation(side), x).modifyPositionFromSide(EnumFacing.DOWN, z);
 	    			tile = newVec.getTileEntity(this.worldObj);
 	    			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta)
 	    			{
@@ -543,7 +542,7 @@ public class TileEntityScreen extends TileEntity
     	{
     		for (int z = -up; z <= down; z++)
     		{
-    			BlockVec3 newVec = vec.clone().modifyPositionFromSide(ForgeDirection.getOrientation(side), x).modifyPositionFromSide(ForgeDirection.DOWN, z);
+    			BlockVec3 newVec = vec.clone().modifyPositionFromSide(EnumFacing.getOrientation(side), x).modifyPositionFromSide(EnumFacing.DOWN, z);
     			TileEntity tile = newVec.getTileEntity(this.worldObj);
     			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
     			{
@@ -596,7 +595,7 @@ public class TileEntityScreen extends TileEntity
     	
 		DrawGameScreen newScreen = null;
 		boolean serverside = true;
-		TileEntity bottomLeft = vec.clone().modifyPositionFromSide(ForgeDirection.getOrientation(side), -left).modifyPositionFromSide(ForgeDirection.DOWN, down).getTileEntity(this.worldObj);
+		TileEntity bottomLeft = vec.clone().modifyPositionFromSide(EnumFacing.getOrientation(side), -left).modifyPositionFromSide(EnumFacing.DOWN, down).getTileEntity(this.worldObj);
 		if (this.worldObj.isRemote)
 		{
 			if (bottomLeft instanceof TileEntityScreen)  //It always will be if reached this far
@@ -767,7 +766,7 @@ public class TileEntityScreen extends TileEntity
     	for (int z = -this.connectionsUp; z <= this.connectionsDown; z++)
 		{
     		TileEntity tile;
-			BlockVec3 newVec = vec.clone().modifyPositionFromSide(ForgeDirection.DOWN, z);
+			BlockVec3 newVec = vec.clone().modifyPositionFromSide(EnumFacing.DOWN, z);
     		if (z == 0) tile = this;
 			else
 			{
@@ -794,7 +793,7 @@ public class TileEntityScreen extends TileEntity
     	for (int z = -this.connectionsUp; z <= this.connectionsDown; z++)
 		{
     		TileEntity tile;
-			BlockVec3 newVec = vec.clone().modifyPositionFromSide(ForgeDirection.DOWN, z);
+			BlockVec3 newVec = vec.clone().modifyPositionFromSide(EnumFacing.DOWN, z);
     		if (z == 0) tile = this;
 			else
 			{
@@ -816,7 +815,7 @@ public class TileEntityScreen extends TileEntity
     private void joinUp()
     {
     	int meta = this.getBlockMetadata();
-    	ForgeDirection side = ForgeDirection.getOrientation(this.getRight(meta));
+    	EnumFacing side = EnumFacing.getOrientation(this.getRight(meta));
     	BlockVec3 vec = new BlockVec3(this);
     	for (int x = -this.connectionsLeft; x <= this.connectionsRight; x++)
 		{
@@ -843,7 +842,7 @@ public class TileEntityScreen extends TileEntity
     private void joinDown()
     {
     	int meta = this.getBlockMetadata();
-    	ForgeDirection side = ForgeDirection.getOrientation(this.getRight(meta));
+    	EnumFacing side = EnumFacing.getOrientation(this.getRight(meta));
     	BlockVec3 vec = new BlockVec3(this);
     	for (int x = -this.connectionsLeft; x <= this.connectionsRight; x++)
 		{

@@ -8,7 +8,6 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTreasureChestMar
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -21,7 +20,7 @@ public class RoomTreasureMars extends DungeonRoom
 
     private final HashSet<ChunkCoordinates> chests = new HashSet<ChunkCoordinates>();
 
-    public RoomTreasureMars(MapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
+    public RoomTreasureMars(MapGenDungeon dungeon, int posX, int posY, int posZ, EnumFacing entranceDir)
     {
         super(dungeon, posX, posY, posZ, entranceDir);
         if (this.worldObj != null)
@@ -75,7 +74,7 @@ public class RoomTreasureMars extends DungeonRoom
     }
 
     @Override
-    protected DungeonRoom makeRoom(MapGenDungeon dungeon, int x, int y, int z, ForgeDirection dir)
+    protected DungeonRoom makeRoom(MapGenDungeon dungeon, int x, int y, int z, EnumFacing dir)
     {
         return new RoomTreasureMars(dungeon, x, y, z, dir);
     }

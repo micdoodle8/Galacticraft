@@ -9,8 +9,8 @@ import java.util.UUID;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.entity.IAntiGrav;
 import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
 import micdoodle8.mods.galacticraft.api.entity.ITelemetry;
@@ -60,7 +60,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fluids.IFluidBlock;
 
@@ -1556,7 +1555,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		final EntityAstroMiner miner = new EntityAstroMiner(world, new ItemStack[EntityAstroMiner.INV_SIZE], 0);
 		miner.setPlayer(player);
 		if (player.capabilities.isCreativeMode) miner.spawnedInCreative = true;
-        miner.waypointBase = new BlockVec3(x, y, z).modifyPositionFromSide(ForgeDirection.getOrientation(facing), 1);
+        miner.waypointBase = new BlockVec3(x, y, z).modifyPositionFromSide(EnumFacing.getOrientation(facing), 1);
         miner.setPosition(miner.waypointBase.x, miner.waypointBase.y - 1, miner.waypointBase.z);
         miner.baseFacing = facing;
         miner.facingAI = facing;

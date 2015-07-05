@@ -13,7 +13,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -311,33 +310,33 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public EnumSet<ForgeDirection> getElectricalInputDirections()
+    public EnumSet<EnumFacing> getElectricalInputDirections()
     {
-        return EnumSet.of(ForgeDirection.getOrientation((this.getBlockMetadata() & 3) + 2).getOpposite(), ForgeDirection.UNKNOWN);
+        return EnumSet.of(EnumFacing.getOrientation((this.getBlockMetadata() & 3) + 2).getOpposite(), EnumFacing.UNKNOWN);
     }
 
     @Override
-    public EnumSet<ForgeDirection> getElectricalOutputDirections()
+    public EnumSet<EnumFacing> getElectricalOutputDirections()
     {
-        return EnumSet.of(ForgeDirection.getOrientation((this.getBlockMetadata() & 3) + 2), ForgeDirection.UNKNOWN);
+        return EnumSet.of(EnumFacing.getOrientation((this.getBlockMetadata() & 3) + 2), EnumFacing.UNKNOWN);
     }
 
     @Override
-    public ForgeDirection getElectricalOutputDirectionMain()
+    public EnumFacing getElectricalOutputDirectionMain()
     {
-        return ForgeDirection.getOrientation((this.getBlockMetadata() & 3) + 2);
+        return EnumFacing.getOrientation((this.getBlockMetadata() & 3) + 2);
     }
 
     @Override
-    public boolean canConnect(ForgeDirection direction, NetworkType type)
+    public boolean canConnect(EnumFacing direction, NetworkType type)
     {
-        if (direction == null || direction.equals(ForgeDirection.UNKNOWN) || type != NetworkType.POWER)
+        if (direction == null || direction.equals(EnumFacing.UNKNOWN) || type != NetworkType.POWER)
         {
             return false;
         }
 
         int metadata = this.getBlockMetadata() & 3;
 
-        return direction == ForgeDirection.getOrientation(metadata + 2) || direction == ForgeDirection.getOrientation((metadata + 2) ^ 1);
+        return direction == EnumFacing.getOrientation(metadata + 2) || direction == EnumFacing.getOrientation((metadata + 2) ^ 1);
     }
 }

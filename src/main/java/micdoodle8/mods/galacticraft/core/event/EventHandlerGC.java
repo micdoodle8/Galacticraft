@@ -1,12 +1,12 @@
 package micdoodle8.mods.galacticraft.core.event;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.common.eventhandler.Event;
-import cpw.mods.fml.common.eventhandler.Event.Result;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.api.event.oxygen.GCCoreOxygenSuffocationEvent;
 import micdoodle8.mods.galacticraft.api.item.IKeyItem;
@@ -211,7 +211,7 @@ public class EventHandlerGC
             {
                 if (!event.entity.worldObj.isRemote && event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK))
                 {
-                    if (idClicked != Blocks.tnt  && OxygenUtil.noAtmosphericCombustion(event.entityPlayer.worldObj.provider) && !OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, AxisAlignedBB.getBoundingBox(event.x, event.y, event.z, event.x + 1, event.y + 2, event.z + 1)))
+                    if (idClicked != Blocks.tnt  && OxygenUtil.noAtmosphericCombustion(event.entityPlayer.worldObj.provider) && !OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, AxisAlignedBB.fromBounds(event.x, event.y, event.z, event.x + 1, event.y + 2, event.z + 1)))
                     {
                         event.setCanceled(true);
                     }

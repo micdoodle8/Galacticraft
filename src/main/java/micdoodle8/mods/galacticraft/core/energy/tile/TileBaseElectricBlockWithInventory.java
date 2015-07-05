@@ -5,7 +5,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class TileBaseElectricBlockWithInventory extends TileBaseElectricBlock implements IInventory
 {
@@ -148,9 +147,9 @@ public abstract class TileBaseElectricBlockWithInventory extends TileBaseElectri
     }
 
     @Override
-    public ForgeDirection getElectricInputDirection()
+    public EnumFacing getElectricInputDirection()
     {
-        return ForgeDirection.getOrientation((this.getBlockMetadata() & 3) + 2);
+        return EnumFacing.getOrientation((this.getBlockMetadata() & 3) + 2);
     }
 
     @Override

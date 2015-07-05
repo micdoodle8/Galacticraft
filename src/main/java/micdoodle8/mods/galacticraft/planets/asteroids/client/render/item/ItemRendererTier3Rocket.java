@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.item;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;

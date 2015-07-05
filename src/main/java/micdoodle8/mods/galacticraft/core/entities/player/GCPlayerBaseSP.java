@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 
 import api.player.client.ClientPlayerAPI;
 import api.player.client.ClientPlayerBase;
-import cpw.mods.fml.common.Loader;
+import net.minecraftforge.fml.common.Loader;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;

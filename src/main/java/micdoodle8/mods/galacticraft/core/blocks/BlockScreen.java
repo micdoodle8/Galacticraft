@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
@@ -21,7 +21,6 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockShiftDesc, IPartialSealableBlock
 {
@@ -39,7 +38,7 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
     }
 
 	@Override
-    public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection direction)
+    public boolean isSideSolid(IBlockAccess world, int x, int y, int z, EnumFacing direction)
     {
     	return direction.ordinal() != world.getBlockMetadata(x, y, z);
     }
@@ -194,7 +193,7 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
     }
 
 	@Override
-	public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
+	public boolean isSealed(World world, int x, int y, int z, EnumFacing direction)
 	{
     	return true;
 	}

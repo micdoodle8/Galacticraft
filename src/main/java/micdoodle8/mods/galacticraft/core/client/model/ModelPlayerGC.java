@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.Loader;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -439,7 +439,7 @@ public class ModelPlayerGC extends ModelBiped
         this.redOxygenTanks[1].rotateAngleY = this.bipedBody.rotateAngleY;
         this.redOxygenTanks[1].rotateAngleZ = this.bipedBody.rotateAngleZ;
 
-        final List<?> l = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, AxisAlignedBB.getBoundingBox(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
+        final List<?> l = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, AxisAlignedBB.fromBounds(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
 
         for (int i = 0; i < l.size(); i++)
         {

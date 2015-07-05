@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.block;
 
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import net.minecraftforge.fml.client.registry.ISimpleBlockRenderingHandler;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
 import net.minecraft.block.Block;

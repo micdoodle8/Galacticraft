@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.Side;
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
 import mekanism.api.gas.IGasHandler;
@@ -29,7 +29,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
 public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandler, IOxygenStorage, IOxygenReceiver
@@ -103,8 +102,8 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
                 this.processTicks = 0;
             }
             
-            this.produceOxygen(ForgeDirection.getOrientation(this.getOxygenOutputDirection()));
-            this.produceHydrogen(ForgeDirection.getOrientation(this.getHydrogenOutputDirection()));
+            this.produceOxygen(EnumFacing.getOrientation(this.getOxygenOutputDirection()));
+            this.produceHydrogen(EnumFacing.getOrientation(this.getHydrogenOutputDirection()));
         }
     }
 
@@ -303,13 +302,13 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public ForgeDirection getElectricInputDirection()
+    public EnumFacing getElectricInputDirection()
     {
-        return ForgeDirection.DOWN;
+        return EnumFacing.DOWN;
     }
 
     @Override
-    public boolean canDrain(ForgeDirection from, Fluid fluid)
+    public boolean canDrain(EnumFacing from, Fluid fluid)
     {
         int metaside = this.getBlockMetadata() + 2;
         int side = from.ordinal();
@@ -324,7 +323,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
+    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain)
     {
         int metaside = this.getBlockMetadata() + 2;
         int side = from.ordinal();
@@ -345,7 +344,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
+    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain)
     {
         int metaside = this.getBlockMetadata() + 2;
         int side = from.ordinal();
@@ -364,7 +363,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid)
+    public boolean canFill(EnumFacing from, Fluid fluid)
     {
         if (from.ordinal() == this.getBlockMetadata() + 2)
         {
@@ -376,7 +375,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
+    public int fill(EnumFacing from, FluidStack resource, boolean doFill)
     {
         int used = 0;
 
@@ -389,7 +388,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection from)
+    public FluidTankInfo[] getTankInfo(EnumFacing from)
     {
         FluidTankInfo[] tankInfo = new FluidTankInfo[] {};
         int metaside = this.getBlockMetadata() + 2;
@@ -423,19 +422,19 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public int receiveGas(ForgeDirection side, GasStack stack, boolean doTransfer)
+    public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer)
     {
         return 0;
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public int receiveGas(ForgeDirection side, GasStack stack)
+    public int receiveGas(EnumFacing side, GasStack stack)
     {
         return 0;
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public GasStack drawGas(ForgeDirection from, int amount, boolean doTransfer)
+    public GasStack drawGas(EnumFacing from, int amount, boolean doTransfer)
     {
         int metaside = this.getBlockMetadata() + 2;
         int side = from.ordinal();
@@ -455,19 +454,19 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public GasStack drawGas(ForgeDirection from, int amount)
+    public GasStack drawGas(EnumFacing from, int amount)
     {
     	return this.drawGas(from, amount, true);
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public boolean canReceiveGas(ForgeDirection side, Gas type)
+    public boolean canReceiveGas(EnumFacing side, Gas type)
     {
     	return false;
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public boolean canDrawGas(ForgeDirection from, Gas type)
+    public boolean canDrawGas(EnumFacing from, Gas type)
     {
         int metaside = this.getBlockMetadata() + 2;
         int side = from.ordinal();
@@ -483,7 +482,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
-    public boolean canTubeConnect(ForgeDirection from)
+    public boolean canTubeConnect(EnumFacing from)
     {
         int metaside = this.getBlockMetadata() + 2;
         int side = from.ordinal();
@@ -530,7 +529,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         return (metaside ^ 1);
 	}
 	
-    private boolean produceOxygen(ForgeDirection outputDirection)
+    private boolean produceOxygen(EnumFacing outputDirection)
     {
         float provide = this.getOxygenProvide(outputDirection);
 
@@ -586,7 +585,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         return false;
     }
 
-    private boolean produceHydrogen(ForgeDirection outputDirection)
+    private boolean produceHydrogen(EnumFacing outputDirection)
     {
         float provide = this.getHydrogenProvide(outputDirection);
 
@@ -643,7 +642,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public float provideOxygen(ForgeDirection from, float request, boolean doProvide)
+    public float provideOxygen(EnumFacing from, float request, boolean doProvide)
     {
         if (this.getOxygenOutputDirection() == from.ordinal())
         {
@@ -689,12 +688,12 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public float getOxygenProvide(ForgeDirection direction)
+    public float getOxygenProvide(EnumFacing direction)
     {
         return this.getOxygenOutputDirection() == direction.ordinal() ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getOxygenStored()) : 0.0F;
     }
 
-    public float getHydrogenProvide(ForgeDirection direction)
+    public float getHydrogenProvide(EnumFacing direction)
     {
         return this.getHydrogenOutputDirection() == direction.ordinal() ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getHydrogenStored()) : 0.0F;
     }
@@ -705,20 +704,20 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 	}
 
 	@Override
-	public float receiveOxygen(ForgeDirection from, float receive,
+	public float receiveOxygen(EnumFacing from, float receive,
 			boolean doReceive) {
 		return 0;
 	}
 
 	@Override
-	public float getOxygenRequest(ForgeDirection direction) {
+	public float getOxygenRequest(EnumFacing direction) {
 		return 0;
 	}
 
     @Override
-    public boolean canConnect(ForgeDirection direction, NetworkType type)
+    public boolean canConnect(EnumFacing direction, NetworkType type)
     {
-        if (direction == null || direction.equals(ForgeDirection.UNKNOWN))
+        if (direction == null || direction.equals(EnumFacing.UNKNOWN))
         {
             return false;
         }

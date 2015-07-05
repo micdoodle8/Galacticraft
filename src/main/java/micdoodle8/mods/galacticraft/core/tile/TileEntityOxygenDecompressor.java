@@ -10,7 +10,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.EnumSet;
 
@@ -259,9 +258,9 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
     }
 
     @Override
-    public ForgeDirection getElectricInputDirection()
+    public EnumFacing getElectricInputDirection()
     {
-        return ForgeDirection.getOrientation(this.getBlockMetadata() - BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA + 2);
+        return EnumFacing.getOrientation(this.getBlockMetadata() - BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA + 2);
     }
 
     @Override
@@ -270,19 +269,19 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
         return this.getStackInSlot(1);
     }
 
-    public ForgeDirection getOxygenOutputDirection()
+    public EnumFacing getOxygenOutputDirection()
     {
         return this.getElectricInputDirection().getOpposite();
     }
 
     @Override
-    public EnumSet<ForgeDirection> getOxygenInputDirections()
+    public EnumSet<EnumFacing> getOxygenInputDirections()
     {
-        return EnumSet.noneOf(ForgeDirection.class);
+        return EnumSet.noneOf(EnumFacing.class);
     }
 
     @Override
-    public EnumSet<ForgeDirection> getOxygenOutputDirections()
+    public EnumSet<EnumFacing> getOxygenOutputDirections()
     {
         return EnumSet.of(this.getElectricInputDirection().getOpposite());
     }
@@ -300,7 +299,7 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
     }
 
     @Override
-    public float getOxygenProvide(ForgeDirection direction)
+    public float getOxygenProvide(EnumFacing direction)
     {
         return this.getOxygenOutputDirections().contains(direction) ? Math.min(TileEntityOxygenDecompressor.OUTPUT_PER_TICK, this.getOxygenStored()) : 0.0F;
     }

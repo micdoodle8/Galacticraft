@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -26,7 +26,6 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -169,7 +168,7 @@ public class BlockCavernousVine extends Block implements IShearable, ItemBlockDe
     @Override
     public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
     {
-        return ForgeDirection.getOrientation(side) == ForgeDirection.DOWN && this.isBlockSolid(world, x, y + 1, z, side);
+        return EnumFacing.getOrientation(side) == EnumFacing.DOWN && this.isBlockSolid(world, x, y + 1, z, side);
     }
 
     public int getVineLength(IBlockAccess world, int x, int y, int z)

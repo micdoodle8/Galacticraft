@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
@@ -25,7 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldProvider;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
 import java.util.ArrayList;
@@ -587,13 +586,13 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public ForgeDirection getElectricInputDirection()
+    public EnumFacing getElectricInputDirection()
     {
-        return ForgeDirection.DOWN;
+        return EnumFacing.DOWN;
     }
 
     @Override
-    public boolean canDrain(ForgeDirection from, Fluid fluid)
+    public boolean canDrain(EnumFacing from, Fluid fluid)
     {
         int metaside = this.getBlockMetadata() + 2;
         int side = from.ordinal();
@@ -608,7 +607,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
+    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain)
     {
         int metaside = this.getBlockMetadata() + 2;
         int side = from.ordinal();
@@ -629,7 +628,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
+    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain)
     {
         int metaside = this.getBlockMetadata() + 2;
         int side = from.ordinal();
@@ -648,9 +647,9 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid)
+    public boolean canFill(EnumFacing from, Fluid fluid)
     {
-        if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2)))
+        if (from.equals(EnumFacing.getOrientation(this.getBlockMetadata() + 2)))
         {
             //Can fill with gases
             return fluid != null && this.getIdFromName(fluid.getName()) > -1;
@@ -660,7 +659,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
+    public int fill(EnumFacing from, FluidStack resource, boolean doFill)
     {
         int used = 0;
 
@@ -685,7 +684,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection from)
+    public FluidTankInfo[] getTankInfo(EnumFacing from)
     {
         FluidTankInfo[] tankInfo = new FluidTankInfo[] {};
         int metaside = this.getBlockMetadata() + 2;
@@ -725,7 +724,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 	}
 
 	@Override
-	public float receiveOxygen(ForgeDirection from, float receive, boolean doReceive)
+	public float receiveOxygen(EnumFacing from, float receive, boolean doReceive)
 	{
 		if (from.ordinal() == this.getBlockMetadata() + 2 && this.shouldPullOxygen())
     	{
@@ -739,27 +738,27 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 	}
 
 	@Override
-	public float provideOxygen(ForgeDirection from, float request, boolean doProvide)
+	public float provideOxygen(EnumFacing from, float request, boolean doProvide)
 	{
 		return 0;
 	}
 
 	@Override
-	public float getOxygenRequest(ForgeDirection direction)
+	public float getOxygenRequest(EnumFacing direction)
 	{
 		return this.receiveOxygen(direction, 1000000F, false);
 	}
 
 	@Override
-	public float getOxygenProvide(ForgeDirection direction)
+	public float getOxygenProvide(EnumFacing direction)
 	{
 		return 0;
 	}
 	
     @Override
-    public boolean canConnect(ForgeDirection direction, NetworkType type)
+    public boolean canConnect(EnumFacing direction, NetworkType type)
     {
-        if (direction == null || direction.equals(ForgeDirection.UNKNOWN))
+        if (direction == null || direction.equals(EnumFacing.UNKNOWN))
         {
             return false;
         }
@@ -771,7 +770,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 
         if (type == NetworkType.POWER)
         {
-            return direction == ForgeDirection.DOWN;
+            return direction == EnumFacing.DOWN;
         }
 
         return false;

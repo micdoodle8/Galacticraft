@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -24,7 +24,6 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
 import java.util.ArrayList;
@@ -593,31 +592,31 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
  
     //Pipe handling
     @Override
-    public boolean canDrain(ForgeDirection from, Fluid fluid)
+    public boolean canDrain(EnumFacing from, Fluid fluid)
     {
         return false;
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
+    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain)
     {
         return null;
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
+    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain)
     {
         return null;
     }
 
     @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid)
+    public boolean canFill(EnumFacing from, Fluid fluid)
     {
         return fluid != null && "water".equals(fluid.getName());
     }
 
     @Override
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
+    public int fill(EnumFacing from, FluidStack resource, boolean doFill)
     {
         int used = 0;
 
@@ -630,7 +629,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection from)
+    public FluidTankInfo[] getTankInfo(EnumFacing from)
     {
         return new FluidTankInfo[] { new FluidTankInfo(this.waterTank) };
     }

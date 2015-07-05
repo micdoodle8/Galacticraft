@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.block;
 
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import net.minecraftforge.fml.client.registry.ISimpleBlockRenderingHandler;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityTreasureChestAsteroids;
 import net.minecraft.block.Block;

@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;

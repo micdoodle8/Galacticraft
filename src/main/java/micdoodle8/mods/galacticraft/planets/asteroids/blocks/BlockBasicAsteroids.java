@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
@@ -19,7 +19,6 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -165,7 +164,7 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
     }
 
     @Override
-    public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
+    public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, EnumFacing direction, IPlantable plantable)
     {
         return false;
     }

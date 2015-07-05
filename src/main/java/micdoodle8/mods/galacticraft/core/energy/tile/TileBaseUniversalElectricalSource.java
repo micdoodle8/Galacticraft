@@ -17,7 +17,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.lang.reflect.Method;
 import java.util.EnumSet;
@@ -53,11 +52,11 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
 
         if (!this.worldObj.isRemote)
         {
-            EnumSet<ForgeDirection> outputDirections = this.getElectricalOutputDirections();
-            outputDirections.remove(ForgeDirection.UNKNOWN);
+            EnumSet<EnumFacing> outputDirections = this.getElectricalOutputDirections();
+            outputDirections.remove(EnumFacing.UNKNOWN);
 
             BlockVec3 thisVec = new BlockVec3(this);
-            for (ForgeDirection direction : outputDirections)
+            for (EnumFacing direction : outputDirections)
             {
                 TileEntity tileAdj = thisVec.getTileEntityOnSide(this.worldObj, direction);
 
@@ -169,7 +168,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
             }
             //			else if (GCCoreCompatibilityManager.isTELoaded() && itemStack.getItem() instanceof IEnergyContainerItem)
             //			{
-            //				int accepted = ((IEnergyContainerItem) itemStack.getItem()).receiveEnergy(itemStack, (int) Math.floor(this.getProvide(ForgeDirection.UNKNOWN) * EnergyConfigHandler.TO_TE_RATIO), false);
+            //				int accepted = ((IEnergyContainerItem) itemStack.getItem()).receiveEnergy(itemStack, (int) Math.floor(this.getProvide(EnumFacing.UNKNOWN) * EnergyConfigHandler.TO_TE_RATIO), false);
             //				this.provideElectricity(accepted * EnergyConfigHandler.TE_RATIO, true);
             //			}
 
@@ -181,7 +180,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
     }
 
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyEmitter", modID = "IC2")
-    public boolean emitsEnergyTo(TileEntity receiver, ForgeDirection direction)
+    public boolean emitsEnergyTo(TileEntity receiver, EnumFacing direction)
     {
         //Don't add connection to IC2 grid if it's a Galacticraft tile
         if (receiver instanceof IElectrical || receiver instanceof IConductor)
@@ -207,7 +206,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySource", modID = "IC2")
     public double getOfferedEnergy()
     {
-        return this.getProvide(ForgeDirection.UNKNOWN) * EnergyConfigHandler.TO_IC2_RATIO;
+        return this.getProvide(EnumFacing.UNKNOWN) * EnergyConfigHandler.TO_IC2_RATIO;
     }
 
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySource", modID = "IC2")
@@ -224,15 +223,15 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
     }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.ICableOutputter", modID = "Mekanism")
-    public boolean canOutputTo(ForgeDirection side)
+    public boolean canOutputTo(EnumFacing side)
     {
         return this.getElectricalOutputDirections().contains(side);
     }
 
     @Override
-    public float getProvide(ForgeDirection direction)
+    public float getProvide(EnumFacing direction)
     {
-        if (direction == ForgeDirection.UNKNOWN && EnergyConfigHandler.isIndustrialCraft2Loaded())
+        if (direction == EnumFacing.UNKNOWN && EnergyConfigHandler.isIndustrialCraft2Loaded())
         {
             TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, this.getElectricalOutputDirectionMain());
             if (tile instanceof IConductor)
@@ -250,20 +249,20 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
         return 0F;
     }
 
-    public ForgeDirection getElectricalOutputDirectionMain()
+    public EnumFacing getElectricalOutputDirectionMain()
     {
-        return ForgeDirection.UNKNOWN;
+        return EnumFacing.UNKNOWN;
     }
 
     @RuntimeInterface(clazz = "buildcraft.api.power.IPowerEmitter", modID = "")
-    public boolean canEmitPowerFrom(ForgeDirection side)
+    public boolean canEmitPowerFrom(EnumFacing side)
     {
         return this.getElectricalOutputDirections().contains(side);
     }
     
     @Override
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
-    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
+    public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate)
     {
     	if (!this.getElectricalOutputDirections().contains(from))
     	{

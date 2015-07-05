@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.UUID;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
@@ -29,7 +29,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory implements ISidedInventory, IMultiBlock
 {
@@ -458,7 +457,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-    	return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 2, yCoord + 2, zCoord + 2);
+    	return AxisAlignedBB.fromBounds(xCoord, yCoord, zCoord, xCoord + 2, yCoord + 2, zCoord + 2);
     }
 
     public void updateFacing()
@@ -512,18 +511,18 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
     
     @Override
-    public ForgeDirection getElectricInputDirection()
+    public EnumFacing getElectricInputDirection()
     {
         if (this.isMaster)
         {
-        	return ForgeDirection.getOrientation(this.facing + 2);
+        	return EnumFacing.getOrientation(this.facing + 2);
         }
         TileEntityMinerBase master = this.getMaster();
         if (master != null)
         {
-        	return ForgeDirection.getOrientation(master.facing + 2);
+        	return EnumFacing.getOrientation(master.facing + 2);
         }
-        return ForgeDirection.UNKNOWN;
+        return EnumFacing.UNKNOWN;
     }
     
 	public void linkMiner(EntityAstroMiner entityAstroMiner)
@@ -726,37 +725,37 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 			}
 		}
 		
-		posnTarget.modifyPositionFromSide(ForgeDirection.getOrientation(baseFacing), this.worldObj.rand.nextInt(16) + 32);		
+		posnTarget.modifyPositionFromSide(EnumFacing.getOrientation(baseFacing), this.worldObj.rand.nextInt(16) + 32);
 		int miny = Math.min(this.yCoord * 2 - 90, this.yCoord - 22);
 		if (miny < 5) miny = 5;
 		posnTarget.y = miny + 5 + this.worldObj.rand.nextInt(4);
 
 		this.targetPoints.add(posnTarget);
 
-		ForgeDirection lateral = ForgeDirection.NORTH;
-		ForgeDirection inLine = ForgeDirection.getOrientation(baseFacing);
+		EnumFacing lateral = EnumFacing.NORTH;
+		EnumFacing inLine = EnumFacing.getOrientation(baseFacing);
 		if ((baseFacing & 6) == 2)
-			lateral = ForgeDirection.WEST;
+			lateral = EnumFacing.WEST;
 			
 		this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, 13));
 		this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, -13));
 		if (posnTarget.y > 17)
 		{
-			this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, 7).modifyPositionFromSide(ForgeDirection.DOWN, 11));
-			this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, -7).modifyPositionFromSide(ForgeDirection.DOWN, 11));				
+			this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, 7).modifyPositionFromSide(EnumFacing.DOWN, 11));
+			this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, -7).modifyPositionFromSide(EnumFacing.DOWN, 11));
 		}
 		else
 		{
 			this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, 26));
 			this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, -26));
 		}
-		this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, 7).modifyPositionFromSide(ForgeDirection.UP, 11));
-		this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, -7).modifyPositionFromSide(ForgeDirection.UP, 11));
+		this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, 7).modifyPositionFromSide(EnumFacing.UP, 11));
+		this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, -7).modifyPositionFromSide(EnumFacing.UP, 11));
 		if (posnTarget.y < this.yCoord - 38)
 		{
-			this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, 13).modifyPositionFromSide(ForgeDirection.UP, 22));
-			this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(ForgeDirection.UP, 22));
-			this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, -13).modifyPositionFromSide(ForgeDirection.UP, 22));
+			this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, 13).modifyPositionFromSide(EnumFacing.UP, 22));
+			this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(EnumFacing.UP, 22));
+			this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, -13).modifyPositionFromSide(EnumFacing.UP, 22));
 		}
 
 		int s = this.targetPoints.size();

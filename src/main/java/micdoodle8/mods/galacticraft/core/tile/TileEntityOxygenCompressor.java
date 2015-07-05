@@ -11,7 +11,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.EnumSet;
 
@@ -276,9 +275,9 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
     }
 
     @Override
-    public ForgeDirection getElectricInputDirection()
+    public EnumFacing getElectricInputDirection()
     {
-        return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
+        return EnumFacing.getOrientation(this.getBlockMetadata() + 2);
     }
 
     @Override
@@ -294,14 +293,14 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
     }
 
     @Override
-    public EnumSet<ForgeDirection> getOxygenInputDirections()
+    public EnumSet<EnumFacing> getOxygenInputDirections()
     {
         return EnumSet.of(this.getElectricInputDirection().getOpposite());
     }
 
     @Override
-    public EnumSet<ForgeDirection> getOxygenOutputDirections()
+    public EnumSet<EnumFacing> getOxygenOutputDirections()
     {
-        return EnumSet.noneOf(ForgeDirection.class);
+        return EnumSet.noneOf(EnumFacing.class);
     }
 }

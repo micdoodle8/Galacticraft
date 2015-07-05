@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.block;
 
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import net.minecraftforge.fml.client.registry.ISimpleBlockRenderingHandler;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityNasaWorkbench;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;

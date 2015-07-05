@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
@@ -18,7 +18,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Random;
 
@@ -74,11 +73,11 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
         switch (world.getBlockMetadata(x, y, z))
         {
         case 0:
-            return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
+            return AxisAlignedBB.fromBounds(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
         case 2:
-            return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
+            return AxisAlignedBB.fromBounds(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
         default:
-            return AxisAlignedBB.getBoundingBox(x + 0.0D, y + 0.0D, z + 0.0D, x + 1.0D, y + 0.2D, z + 1.0D);
+            return AxisAlignedBB.fromBounds(x + 0.0D, y + 0.0D, z + 0.0D, x + 1.0D, y + 0.2D, z + 1.0D);
         }
     }
 
@@ -89,11 +88,11 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
         switch (world.getBlockMetadata(x, y, z))
         {
         case 0:
-            return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
+            return AxisAlignedBB.fromBounds(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
         case 2:
-            return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
+            return AxisAlignedBB.fromBounds(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
         default:
-            return AxisAlignedBB.getBoundingBox(x + 0.0D, y + 0.0D, z + 0.0D, x + 1.0D, y + 0.2D, z + 1.0D);
+            return AxisAlignedBB.fromBounds(x + 0.0D, y + 0.0D, z + 0.0D, x + 1.0D, y + 0.2D, z + 1.0D);
         }
     }
 
@@ -195,9 +194,9 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
 	}
 
     @Override
-    public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
+    public boolean isSealed(World world, int x, int y, int z, EnumFacing direction)
     {
-        return direction == ForgeDirection.UP;
+        return direction == EnumFacing.UP;
     }
 
     @Override

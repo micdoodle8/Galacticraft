@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.energy.item;
 
-import cpw.mods.fml.common.versioning.DefaultArtifactVersion;
-import cpw.mods.fml.common.versioning.VersionParser;
-import cpw.mods.fml.relauncher.FMLInjectionData;
+import net.minecraftforge.fml.common.versioning.DefaultArtifactVersion;
+import net.minecraftforge.fml.common.versioning.VersionParser;
+import net.minecraftforge.fml.relauncher.FMLInjectionData;
 import ic2.api.item.IElectricItemManager;
 import micdoodle8.mods.galacticraft.api.item.ElectricItemHelper;
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;

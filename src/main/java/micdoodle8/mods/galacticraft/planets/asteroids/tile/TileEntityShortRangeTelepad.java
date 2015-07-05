@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -31,7 +31,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -108,7 +107,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         {
             if (this.targetAddressResult == EnumTelepadSearchResult.VALID && (this.ticks % 5 == 0 || teleporting))
             {
-                List<EntityLivingBase> containedEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 2, this.zCoord + 1));
+                List<EntityLivingBase> containedEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.fromBounds(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 2, this.zCoord + 1));
 
                 if (containedEntities.size() > 0 && this.getEnergyStoredGC() >= ENERGY_USE_ON_TELEPORT)
                 {
@@ -138,7 +137,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                     if (finalPos != null)
                     {
                         TileEntity tileAt = finalPos.getTileEntity(this.worldObj);
-                        List<EntityLivingBase> containedEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 2, this.zCoord + 1));
+                        List<EntityLivingBase> containedEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.fromBounds(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 2, this.zCoord + 1));
 
                         if (tileAt != null && tileAt instanceof TileEntityShortRangeTelepad)
                         {
@@ -322,7 +321,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-    	return AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 4, zCoord + 2);
+    	return AxisAlignedBB.fromBounds(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 4, zCoord + 2);
     }
 
     @Override
@@ -374,9 +373,9 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     }
 
     @Override
-    public EnumSet<ForgeDirection> getElectricalOutputDirections()
+    public EnumSet<EnumFacing> getElectricalOutputDirections()
     {
-        return EnumSet.noneOf(ForgeDirection.class);
+        return EnumSet.noneOf(EnumFacing.class);
     }
 
     @Override
@@ -386,9 +385,9 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     }
 
     @Override
-    public ForgeDirection getElectricInputDirection()
+    public EnumFacing getElectricInputDirection()
     {
-        return ForgeDirection.getOrientation((this.getBlockMetadata() & 3) + 2);
+        return EnumFacing.getOrientation((this.getBlockMetadata() & 3) + 2);
     }
 
     @Override

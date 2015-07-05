@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.Side;
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
 import mekanism.api.gas.IGasHandler;
@@ -16,7 +16,6 @@ import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.EnumSet;
 
@@ -108,20 +107,20 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
         return this.maxOxygen;
     }
 
-    public EnumSet<ForgeDirection> getOxygenInputDirections()
+    public EnumSet<EnumFacing> getOxygenInputDirections()
     {
-        return EnumSet.allOf(ForgeDirection.class);
+        return EnumSet.allOf(EnumFacing.class);
     }
 
-    public EnumSet<ForgeDirection> getOxygenOutputDirections()
+    public EnumSet<EnumFacing> getOxygenOutputDirections()
     {
-        return EnumSet.noneOf(ForgeDirection.class);
+        return EnumSet.noneOf(EnumFacing.class);
     }
 
     @Override
-    public boolean canConnect(ForgeDirection direction, NetworkType type)
+    public boolean canConnect(EnumFacing direction, NetworkType type)
     {
-        if (direction == null || direction.equals(ForgeDirection.UNKNOWN))
+        if (direction == null || direction.equals(EnumFacing.UNKNOWN))
         {
             return false;
         }
@@ -140,7 +139,7 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     }
 
     @Override
-    public float receiveOxygen(ForgeDirection from, float receive, boolean doReceive)
+    public float receiveOxygen(EnumFacing from, float receive, boolean doReceive)
     {
         if (this.getOxygenInputDirections().contains(from))
         {
@@ -175,7 +174,7 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     }
 
     @Override
-    public float provideOxygen(ForgeDirection from, float request, boolean doProvide)
+    public float provideOxygen(EnumFacing from, float request, boolean doProvide)
     {
         if (this.getOxygenOutputDirections().contains(from))
         {
@@ -206,9 +205,9 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     {
         if (!this.worldObj.isRemote)
         {
-            for (ForgeDirection direction : this.getOxygenOutputDirections())
+            for (EnumFacing direction : this.getOxygenOutputDirections())
             {
-                if (direction != ForgeDirection.UNKNOWN)
+                if (direction != EnumFacing.UNKNOWN)
                 {
                     this.produceOxygen(direction);
                 }
@@ -216,7 +215,7 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
         }
     }
 
-    public boolean produceOxygen(ForgeDirection outputDirection)
+    public boolean produceOxygen(EnumFacing outputDirection)
     {
         float provide = this.getOxygenProvide(outputDirection);
 
@@ -273,7 +272,7 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     }
 
     @Override
-    public float getOxygenRequest(ForgeDirection direction)
+    public float getOxygenRequest(EnumFacing direction)
     {
         if (this.shouldPullOxygen())
         {
@@ -292,50 +291,50 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     }
 
     @Override
-    public float getOxygenProvide(ForgeDirection direction)
+    public float getOxygenProvide(EnumFacing direction)
     {
         return 0;
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public int receiveGas(ForgeDirection side, GasStack stack, boolean doTransfer)
+    public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer)
     {
     	if (!stack.getGas().getName().equals("oxygen")) return 0;  
     	return (int) Math.floor(this.receiveOxygen(stack.amount, doTransfer));
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public int receiveGas(ForgeDirection side, GasStack stack)
+    public int receiveGas(EnumFacing side, GasStack stack)
     {
     	return this.receiveGas(side, stack, true);
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public GasStack drawGas(ForgeDirection side, int amount, boolean doTransfer)
+    public GasStack drawGas(EnumFacing side, int amount, boolean doTransfer)
     {
         return new GasStack((Gas) EnergyConfigHandler.gasOxygen, (int) Math.floor(this.provideOxygen(amount, doTransfer)));
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public GasStack drawGas(ForgeDirection side, int amount)
+    public GasStack drawGas(EnumFacing side, int amount)
     {
         return this.drawGas(side, amount, true);
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public boolean canReceiveGas(ForgeDirection side, Gas type)
+    public boolean canReceiveGas(EnumFacing side, Gas type)
     {
         return type.getName().equals("oxygen") && this.getOxygenInputDirections().contains(side);
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public boolean canDrawGas(ForgeDirection side, Gas type)
+    public boolean canDrawGas(EnumFacing side, Gas type)
     {
         return type.getName().equals("oxygen") && this.getOxygenOutputDirections().contains(side);
     }
 
     @RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
-    public boolean canTubeConnect(ForgeDirection side)
+    public boolean canTubeConnect(EnumFacing side)
     {
         return this.canConnect(side, NetworkType.OXYGEN);
     }

@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
@@ -19,7 +19,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Random;
 
@@ -36,7 +35,7 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
         this.setBlockName(assetName);
     }
 
-    private static boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection direction, boolean nope)
+    private static boolean isBlockSolidOnSide(World world, int x, int y, int z, EnumFacing direction, boolean nope)
     {
         return world.getBlock(x, y, z).isSideSolid(world, x, y, z, direction);
     }
@@ -89,7 +88,7 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
     @Override
     public boolean canPlaceBlockAt(World par1World, int x, int y, int z)
     {
-        return BlockSpinThruster.isBlockSolidOnSide(par1World, x - 1, y, z, ForgeDirection.EAST, true) || BlockSpinThruster.isBlockSolidOnSide(par1World, x + 1, y, z, ForgeDirection.WEST, true) || BlockSpinThruster.isBlockSolidOnSide(par1World, x, y, z - 1, ForgeDirection.SOUTH, true) || BlockSpinThruster.isBlockSolidOnSide(par1World, x, y, z + 1, ForgeDirection.NORTH, true);
+        return BlockSpinThruster.isBlockSolidOnSide(par1World, x - 1, y, z, EnumFacing.EAST, true) || BlockSpinThruster.isBlockSolidOnSide(par1World, x + 1, y, z, EnumFacing.WEST, true) || BlockSpinThruster.isBlockSolidOnSide(par1World, x, y, z - 1, EnumFacing.SOUTH, true) || BlockSpinThruster.isBlockSolidOnSide(par1World, x, y, z + 1, EnumFacing.NORTH, true);
     }
 
     @Override
@@ -97,22 +96,22 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
     {
         int var10 = par9;
 
-        if (par5 == 2 && BlockSpinThruster.isBlockSolidOnSide(par1World, x, y, z + 1, ForgeDirection.NORTH, true))
+        if (par5 == 2 && BlockSpinThruster.isBlockSolidOnSide(par1World, x, y, z + 1, EnumFacing.NORTH, true))
         {
             var10 = 4;
         }
 
-        if (par5 == 3 && BlockSpinThruster.isBlockSolidOnSide(par1World, x, y, z - 1, ForgeDirection.SOUTH, true))
+        if (par5 == 3 && BlockSpinThruster.isBlockSolidOnSide(par1World, x, y, z - 1, EnumFacing.SOUTH, true))
         {
             var10 = 3;
         }
 
-        if (par5 == 4 && BlockSpinThruster.isBlockSolidOnSide(par1World, x + 1, y, z, ForgeDirection.WEST, true))
+        if (par5 == 4 && BlockSpinThruster.isBlockSolidOnSide(par1World, x + 1, y, z, EnumFacing.WEST, true))
         {
             var10 = 2;
         }
 
-        if (par5 == 5 && BlockSpinThruster.isBlockSolidOnSide(par1World, x - 1, y, z, ForgeDirection.EAST, true))
+        if (par5 == 5 && BlockSpinThruster.isBlockSolidOnSide(par1World, x - 1, y, z, EnumFacing.EAST, true))
         {
             var10 = 1;
         }
@@ -139,22 +138,22 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
 
         if (metadata == 0)
         {
-            if (BlockSpinThruster.isBlockSolidOnSide(par1World, x - 1, y, z, ForgeDirection.EAST, true))
+            if (BlockSpinThruster.isBlockSolidOnSide(par1World, x - 1, y, z, EnumFacing.EAST, true))
             {
                 metadata = 1;
                 par1World.setBlockMetadataWithNotify(x, y, z, metadata, 3);
             }
-            else if (BlockSpinThruster.isBlockSolidOnSide(par1World, x + 1, y, z, ForgeDirection.WEST, true))
+            else if (BlockSpinThruster.isBlockSolidOnSide(par1World, x + 1, y, z, EnumFacing.WEST, true))
             {
                 metadata = 2;
                 par1World.setBlockMetadataWithNotify(x, y, z, metadata, 3);
             }
-            else if (BlockSpinThruster.isBlockSolidOnSide(par1World, x, y, z - 1, ForgeDirection.SOUTH, true))
+            else if (BlockSpinThruster.isBlockSolidOnSide(par1World, x, y, z - 1, EnumFacing.SOUTH, true))
             {
                 metadata = 3;
                 par1World.setBlockMetadataWithNotify(x, y, z, metadata, 3);
             }
-            else if (BlockSpinThruster.isBlockSolidOnSide(par1World, x, y, z + 1, ForgeDirection.NORTH, true))
+            else if (BlockSpinThruster.isBlockSolidOnSide(par1World, x, y, z + 1, EnumFacing.NORTH, true))
             {
                 metadata = 4;
                 par1World.setBlockMetadataWithNotify(x, y, z, metadata, 3);
@@ -203,22 +202,22 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
             final int var6 = par1World.getBlockMetadata(x, y, z) & 7;
             boolean var7 = false;
 
-            if (!BlockSpinThruster.isBlockSolidOnSide(par1World, x - 1, y, z, ForgeDirection.EAST, true) && var6 == 1)
+            if (!BlockSpinThruster.isBlockSolidOnSide(par1World, x - 1, y, z, EnumFacing.EAST, true) && var6 == 1)
             {
                 var7 = true;
             }
 
-            if (!BlockSpinThruster.isBlockSolidOnSide(par1World, x + 1, y, z, ForgeDirection.WEST, true) && var6 == 2)
+            if (!BlockSpinThruster.isBlockSolidOnSide(par1World, x + 1, y, z, EnumFacing.WEST, true) && var6 == 2)
             {
                 var7 = true;
             }
 
-            if (!BlockSpinThruster.isBlockSolidOnSide(par1World, x, y, z - 1, ForgeDirection.SOUTH, true) && var6 == 3)
+            if (!BlockSpinThruster.isBlockSolidOnSide(par1World, x, y, z - 1, EnumFacing.SOUTH, true) && var6 == 3)
             {
                 var7 = true;
             }
 
-            if (!BlockSpinThruster.isBlockSolidOnSide(par1World, x, y, z + 1, ForgeDirection.NORTH, true) && var6 == 4)
+            if (!BlockSpinThruster.isBlockSolidOnSide(par1World, x, y, z + 1, EnumFacing.NORTH, true) && var6 == 4)
             {
                 var7 = true;
             }

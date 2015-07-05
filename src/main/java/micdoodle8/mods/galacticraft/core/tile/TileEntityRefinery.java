@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
@@ -14,7 +14,6 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
 public class TileEntityRefinery extends TileBaseElectricBlockWithInventory implements ISidedInventory, IFluidHandler
@@ -292,15 +291,15 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     }
 
     @Override
-    public ForgeDirection getElectricInputDirection()
+    public EnumFacing getElectricInputDirection()
     {
-        return ForgeDirection.UP;
+        return EnumFacing.UP;
     }
 
     @Override
-    public boolean canDrain(ForgeDirection from, Fluid fluid)
+    public boolean canDrain(EnumFacing from, Fluid fluid)
     {
-        if (from.equals(ForgeDirection.getOrientation((this.getBlockMetadata() + 2) ^ 1)))
+        if (from.equals(EnumFacing.getOrientation((this.getBlockMetadata() + 2) ^ 1)))
         {
             return this.fuelTank.getFluid() != null && this.fuelTank.getFluidAmount() > 0;
         }
@@ -309,9 +308,9 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
+    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain)
     {
-        if (from.equals(ForgeDirection.getOrientation((this.getBlockMetadata() + 2) ^ 1)))
+        if (from.equals(EnumFacing.getOrientation((this.getBlockMetadata() + 2) ^ 1)))
         {
             return this.fuelTank.drain(resource.amount, doDrain);
         }
@@ -320,9 +319,9 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
+    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain)
     {
-        if (from.equals(ForgeDirection.getOrientation((this.getBlockMetadata() + 2) ^ 1)))
+        if (from.equals(EnumFacing.getOrientation((this.getBlockMetadata() + 2) ^ 1)))
         {
             return this.drain(from, new FluidStack(GalacticraftCore.fluidFuel, maxDrain), doDrain);
         }
@@ -331,9 +330,9 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     }
 
     @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid)
+    public boolean canFill(EnumFacing from, Fluid fluid)
     {
-        if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2)))
+        if (from.equals(EnumFacing.getOrientation(this.getBlockMetadata() + 2)))
         {
             return this.oilTank.getFluid() == null || this.oilTank.getFluidAmount() < this.oilTank.getCapacity();
         }
@@ -342,11 +341,11 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     }
 
     @Override
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
+    public int fill(EnumFacing from, FluidStack resource, boolean doFill)
     {
         int used = 0;
 
-        if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2)))
+        if (from.equals(EnumFacing.getOrientation(this.getBlockMetadata() + 2)))
         {
             final String liquidName = FluidRegistry.getFluidName(resource);
 
@@ -364,15 +363,15 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection from)
+    public FluidTankInfo[] getTankInfo(EnumFacing from)
     {
         FluidTankInfo[] tankInfo = new FluidTankInfo[] { };
 
-        if (from == ForgeDirection.getOrientation(this.getBlockMetadata() + 2))
+        if (from == EnumFacing.getOrientation(this.getBlockMetadata() + 2))
         {
             tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.oilTank) };
         }
-        else if (from == ForgeDirection.getOrientation((this.getBlockMetadata() + 2) ^ 1))
+        else if (from == EnumFacing.getOrientation((this.getBlockMetadata() + 2) ^ 1))
         {
             tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.fuelTank) };
         }

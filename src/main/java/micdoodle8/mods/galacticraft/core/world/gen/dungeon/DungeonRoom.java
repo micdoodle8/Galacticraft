@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Random;
 
@@ -18,9 +17,9 @@ public abstract class DungeonRoom
 
     // East = 0, North = 1, South = 2, West = 3, Up = 4, Down = 5.
     // North is z++, East is x++.
-    public ForgeDirection entranceDir;
+    public EnumFacing entranceDir;
 
-    public DungeonRoom(MapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
+    public DungeonRoom(MapGenDungeon dungeon, int posX, int posY, int posZ, EnumFacing entranceDir)
     {
         this.dungeonInstance = dungeon;
         this.worldObj = dungeon != null ? dungeon.worldObj : null;
@@ -34,21 +33,21 @@ public abstract class DungeonRoom
 
     public abstract DungeonBoundingBox getBoundingBox();
 
-    protected abstract DungeonRoom makeRoom(MapGenDungeon dungeon, int x, int y, int z, ForgeDirection dir);
+    protected abstract DungeonRoom makeRoom(MapGenDungeon dungeon, int x, int y, int z, EnumFacing dir);
 
     protected abstract void handleTileEntities(Random rand);
 
-    public static DungeonRoom makeRoom(MapGenDungeon dungeon, Random rand, int x, int y, int z, ForgeDirection dir)
+    public static DungeonRoom makeRoom(MapGenDungeon dungeon, Random rand, int x, int y, int z, EnumFacing dir)
     {
         return dungeon.otherRooms.get(rand.nextInt(dungeon.otherRooms.size())).makeRoom(dungeon, x, y, z, dir);
     }
 
-    public static DungeonRoom makeBossRoom(MapGenDungeon dungeon, Random rand, int x, int y, int z, ForgeDirection dir)
+    public static DungeonRoom makeBossRoom(MapGenDungeon dungeon, Random rand, int x, int y, int z, EnumFacing dir)
     {
         return dungeon.bossRooms.get(rand.nextInt(dungeon.bossRooms.size())).makeRoom(dungeon, x, y, z, dir);
     }
 
-    public static DungeonRoom makeTreasureRoom(MapGenDungeon dungeon, Random rand, int x, int y, int z, ForgeDirection dir)
+    public static DungeonRoom makeTreasureRoom(MapGenDungeon dungeon, Random rand, int x, int y, int z, EnumFacing dir)
     {
         return dungeon.treasureRooms.get(rand.nextInt(dungeon.treasureRooms.size())).makeRoom(dungeon, x, y, z, dir);
     }

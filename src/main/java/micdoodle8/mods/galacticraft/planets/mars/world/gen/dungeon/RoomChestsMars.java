@@ -9,7 +9,6 @@ import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -22,7 +21,7 @@ public class RoomChestsMars extends DungeonRoom
 
     private final ArrayList<ChunkCoordinates> chests = new ArrayList<ChunkCoordinates>();
 
-    public RoomChestsMars(MapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
+    public RoomChestsMars(MapGenDungeon dungeon, int posX, int posY, int posZ, EnumFacing entranceDir)
     {
         super(dungeon, posX, posY, posZ, entranceDir);
         if (this.worldObj != null)
@@ -69,7 +68,7 @@ public class RoomChestsMars extends DungeonRoom
     }
 
     @Override
-    protected DungeonRoom makeRoom(MapGenDungeon dungeon, int x, int y, int z, ForgeDirection dir)
+    protected DungeonRoom makeRoom(MapGenDungeon dungeon, int x, int y, int z, EnumFacing dir)
     {
         return new RoomChestsMars(dungeon, x, y, z, dir);
     }

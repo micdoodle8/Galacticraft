@@ -2,11 +2,11 @@ package micdoodle8.mods.galacticraft.core.util;
 
 import com.google.common.primitives.Ints;
 
-import cpw.mods.fml.client.config.IConfigElement;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.registry.GameData;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.config.IConfigElement;
+import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.common.registry.GameData;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;

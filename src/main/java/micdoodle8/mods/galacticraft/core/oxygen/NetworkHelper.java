@@ -8,7 +8,6 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -22,15 +21,15 @@ import java.util.Set;
  */
 public class NetworkHelper
 {
-    public static EnumSet<ForgeDirection> getDirections(TileEntity tileEntity, NetworkType type)
+    public static EnumSet<EnumFacing> getDirections(TileEntity tileEntity, NetworkType type)
     {
-        EnumSet<ForgeDirection> possibleSides = EnumSet.noneOf(ForgeDirection.class);
+        EnumSet<EnumFacing> possibleSides = EnumSet.noneOf(EnumFacing.class);
 
         if (tileEntity instanceof IConnector)
         {
             for (int i = 0; i < 6; i++)
             {
-                ForgeDirection direction = ForgeDirection.getOrientation(i);
+                EnumFacing direction = EnumFacing.getOrientation(i);
                 if (((IConnector) tileEntity).canConnect(direction, type))
                 {
                     possibleSides.add(direction);
@@ -47,12 +46,12 @@ public class NetworkHelper
      * @return A list of networks from all specified sides. There will be no
      * repeated ElectricityNetworks and it will never return null.
      */
-    public static Set<IElectricityNetwork> getNetworksFromMultipleSides(TileEntity tileEntity, EnumSet<ForgeDirection> approachingDirection)
+    public static Set<IElectricityNetwork> getNetworksFromMultipleSides(TileEntity tileEntity, EnumSet<EnumFacing> approachingDirection)
     {
         final Set<IElectricityNetwork> connectedNetworks = new HashSet<IElectricityNetwork>();
 
         BlockVec3 tileVec = new BlockVec3(tileEntity);
-        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
+        for (EnumFacing side : EnumFacing.VALID_DIRECTIONS)
         {
             if (approachingDirection.contains(side))
             {
@@ -78,7 +77,7 @@ public class NetworkHelper
      * @param approachDirection - The direction you are approaching this wire from.
      * @return The ElectricityNetwork or null if not found.
      */
-    public static IElectricityNetwork getElectricalNetworkFromTileEntity(TileEntity tileEntity, ForgeDirection approachDirection)
+    public static IElectricityNetwork getElectricalNetworkFromTileEntity(TileEntity tileEntity, EnumFacing approachDirection)
     {
         if (tileEntity != null)
         {
@@ -107,7 +106,7 @@ public class NetworkHelper
         return null;
     }
 
-    public static IOxygenNetwork getOxygenNetworkFromTileEntity(TileEntity tileEntity, ForgeDirection approachDirection)
+    public static IOxygenNetwork getOxygenNetworkFromTileEntity(TileEntity tileEntity, EnumFacing approachDirection)
     {
         if (tileEntity != null)
         {
@@ -136,7 +135,7 @@ public class NetworkHelper
         return null;
     }
 
-    public static IHydrogenNetwork getHydrogenNetworkFromTileEntity(TileEntity tileEntity, ForgeDirection approachDirection)
+    public static IHydrogenNetwork getHydrogenNetworkFromTileEntity(TileEntity tileEntity, EnumFacing approachDirection)
     {
         if (tileEntity != null)
         {

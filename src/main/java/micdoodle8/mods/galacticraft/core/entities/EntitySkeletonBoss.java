@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
@@ -334,7 +334,7 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
         // final Vector3 thisVec = new Vector3(this);
         // final List l =
         // this.worldObj.getEntitiesWithinAABBExcludingEntity(this,
-        // AxisAlignedBB.getBoundingBox(thisVec.x - 10, thisVec.y - 10,
+        // AxisAlignedBB.fromBounds(thisVec.x - 10, thisVec.y - 10,
         // thisVec.z - 10, thisVec.x + 10, thisVec.y + 10, thisVec.z + 10));
         //
         // for (final Entity e : (List<Entity>) l)
@@ -363,14 +363,14 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
         if (this.roomCoords != null && this.roomSize != null)
         {
             @SuppressWarnings("unchecked")
-            List<Entity> entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(this.roomCoords.intX() - 1, this.roomCoords.intY() - 1, this.roomCoords.intZ() - 1, this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ()));
+            List<Entity> entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.fromBounds(this.roomCoords.intX() - 1, this.roomCoords.intY() - 1, this.roomCoords.intZ() - 1, this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ()));
 
             this.entitiesWithin = entitiesWithin.size();
 
             if (this.entitiesWithin == 0 && this.entitiesWithinLast != 0)
             {
                 @SuppressWarnings("unchecked")
-                List<EntityPlayer> entitiesWithin2 = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(this.roomCoords.intX() - 11, this.roomCoords.intY() - 11, this.roomCoords.intZ() - 11, this.roomCoords.intX() + this.roomSize.intX() + 10, this.roomCoords.intY() + this.roomSize.intY() + 10, this.roomCoords.intZ() + this.roomSize.intZ() + 10));
+                List<EntityPlayer> entitiesWithin2 = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.fromBounds(this.roomCoords.intX() - 11, this.roomCoords.intY() - 11, this.roomCoords.intZ() - 11, this.roomCoords.intX() + this.roomSize.intX() + 10, this.roomCoords.intY() + this.roomSize.intY() + 10, this.roomCoords.intZ() + this.roomSize.intZ() + 10));
 
                 for (EntityPlayer p : entitiesWithin2)
                 {

@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDetector;
@@ -16,7 +16,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockOxygenDetector extends BlockContainer implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {
@@ -109,7 +108,7 @@ public class BlockOxygenDetector extends BlockContainer implements ITileEntityPr
     
     //Solid block: can places torches on it (like a Redstone Block)
     @Override
-    public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
+    public boolean isSideSolid(IBlockAccess world, int x, int y, int z, EnumFacing side)
     {
     	return true;
     }

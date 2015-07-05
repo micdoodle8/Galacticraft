@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.event;
 
-import cpw.mods.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraft.world.World;
 
 public class EventLandingPadRemoval extends Event

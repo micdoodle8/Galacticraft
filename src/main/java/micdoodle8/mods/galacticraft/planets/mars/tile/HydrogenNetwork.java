@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
-import cpw.mods.fml.common.FMLLog;
+import net.minecraftforge.fml.common.FMLLog;
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
 import mekanism.api.gas.IGasHandler;
@@ -15,13 +15,12 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.*;
 
 public class HydrogenNetwork implements IHydrogenNetwork
 {
-    public Map<TileEntity, ForgeDirection> hydrogenTiles = new HashMap<TileEntity, ForgeDirection>();
+    public Map<TileEntity, EnumFacing> hydrogenTiles = new HashMap<TileEntity, EnumFacing>();
 
     private final Set<ITransmitter> pipes = new HashSet<ITransmitter>();
 
@@ -50,7 +49,7 @@ public class HydrogenNetwork implements IHydrogenNetwork
 
                             if (hydrogenTile.shouldPullHydrogen())
                             {
-                                for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+                                for (EnumFacing direction : EnumFacing.VALID_DIRECTIONS)
                                 {
                                     TileEntity tile = new BlockVec3(tileEntity).modifyPositionFromSide(direction, 1).getTileEntity(tileEntity.getWorldObj());
 
@@ -70,7 +69,7 @@ public class HydrogenNetwork implements IHydrogenNetwork
                         {
                             IGasHandler gasHandler = (IGasHandler) tileEntity;
 
-                            for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+                            for (EnumFacing direction : EnumFacing.VALID_DIRECTIONS)
                             {
                                 TileEntity tile = new BlockVec3(tileEntity).getTileEntityOnSide(tileEntity.getWorldObj(), direction);
 
@@ -120,7 +119,7 @@ public class HydrogenNetwork implements IHydrogenNetwork
                 {
                     if (tileEntity.getWorldObj().getTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord) == tileEntity)
                     {
-                        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+                        for (EnumFacing direction : EnumFacing.VALID_DIRECTIONS)
                         {
                             BlockVec3 tileVec = new BlockVec3(tileEntity);
                             TileEntity tile = tileVec.modifyPositionFromSide(direction, 1).getTileEntity(tileEntity.getWorldObj());
@@ -215,7 +214,7 @@ public class HydrogenNetwork implements IHydrogenNetwork
 
     				if (!(acceptor instanceof ITransmitter) && acceptor instanceof IConnector)
     				{
-    					this.hydrogenTiles.put(acceptor, ForgeDirection.getOrientation(i));
+    					this.hydrogenTiles.put(acceptor, EnumFacing.getOrientation(i));
     				}
     			}
     		}

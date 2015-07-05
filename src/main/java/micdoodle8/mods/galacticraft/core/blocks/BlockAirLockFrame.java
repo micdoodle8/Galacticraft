@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
@@ -20,7 +20,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
@@ -96,7 +95,7 @@ public class BlockAirLockFrame extends BlockAdvancedTile implements ItemBlockDes
     {
         if (par2 >= BlockAirLockFrame.METADATA_AIR_LOCK_CONTROLLER)
         {
-            if (par1 == ForgeDirection.UP.ordinal() || par1 == ForgeDirection.DOWN.ordinal())
+            if (par1 == EnumFacing.UP.ordinal() || par1 == EnumFacing.DOWN.ordinal())
             {
                 return this.airLockIcons[0];
             }
@@ -114,7 +113,7 @@ public class BlockAirLockFrame extends BlockAdvancedTile implements ItemBlockDes
     {
         if (world.getBlockMetadata(par2, par3, par4) >= BlockAirLockFrame.METADATA_AIR_LOCK_CONTROLLER)
         {
-            if (side == ForgeDirection.UP.ordinal() || side == ForgeDirection.DOWN.ordinal())
+            if (side == EnumFacing.UP.ordinal() || side == EnumFacing.DOWN.ordinal())
             {
                 return this.airLockIcons[0];
             }
@@ -141,9 +140,9 @@ public class BlockAirLockFrame extends BlockAdvancedTile implements ItemBlockDes
         }
         else
         {
-            for (final ForgeDirection orientation : ForgeDirection.values())
+            for (final EnumFacing orientation : EnumFacing.values())
             {
-                if (orientation != ForgeDirection.UNKNOWN)
+                if (orientation != EnumFacing.UNKNOWN)
                 {
                     final Vector3 vector = new Vector3(par2, par3, par4);
                     Vector3 blockVec = this.modifyPositionFromSide(vector.clone(), orientation, 1);
@@ -291,7 +290,7 @@ public class BlockAirLockFrame extends BlockAdvancedTile implements ItemBlockDes
         return this.airLockIcons[0];
     }
 
-    public Vector3 modifyPositionFromSide(Vector3 vec, ForgeDirection side, double amount)
+    public Vector3 modifyPositionFromSide(Vector3 vec, EnumFacing side, double amount)
     {
         switch (side.ordinal())
         {

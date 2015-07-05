@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -27,7 +27,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
@@ -74,7 +73,7 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k)
     {
-        return AxisAlignedBB.getBoundingBox((double) i + -0.0F, (double) j + 0.0F, (double) k + -0.0F, (double) i + 1.0F, (double) j + 1.4F, (double) k + 1.0F);
+        return AxisAlignedBB.fromBounds((double) i + -0.0F, (double) j + 0.0F, (double) k + -0.0F, (double) i + 1.0F, (double) j + 1.4F, (double) k + 1.0F);
     }
 
     @SideOnly(Side.CLIENT)
@@ -263,7 +262,7 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
     }
 
     @Override
-    public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
+    public boolean isSealed(World world, int x, int y, int z, EnumFacing direction)
     {
         return true;
     }

@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.item;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEntityBeamReflectorRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;

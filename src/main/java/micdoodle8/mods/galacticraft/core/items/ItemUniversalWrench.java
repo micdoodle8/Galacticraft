@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
@@ -14,7 +14,6 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class ItemUniversalWrench extends Item
 {
@@ -100,10 +99,10 @@ public class ItemUniversalWrench extends Item
 
             if (blockID == Blocks.furnace || blockID == Blocks.lit_furnace)
             {
-                rotationMatrix = ForgeDirection.ROTATION_MATRIX[0];
+                rotationMatrix = EnumFacing.ROTATION_MATRIX[0];
             }
 
-            world.setBlockMetadataWithNotify(x, y, z, ForgeDirection.getOrientation(rotationMatrix[metadata]).ordinal(), 3);
+            world.setBlockMetadataWithNotify(x, y, z, EnumFacing.getOrientation(rotationMatrix[metadata]).ordinal(), 3);
             this.wrenchUsed(entityPlayer, x, y, z);
 
             return true;

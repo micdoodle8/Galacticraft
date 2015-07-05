@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
@@ -11,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.EnumSet;
 
@@ -34,7 +33,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
 
     public abstract boolean shouldUseEnergy();
 
-    public abstract ForgeDirection getElectricInputDirection();
+    public abstract EnumFacing getElectricInputDirection();
 
     public abstract ItemStack getBatteryInSlot();
 
@@ -66,7 +65,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     }
 
     //	@Override
-    //	public float getRequest(ForgeDirection direction)
+    //	public float getRequest(EnumFacing direction)
     //	{
     //		if (this.shouldPullEnergy())
     //		{
@@ -79,7 +78,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     //	}
     //
     //	@Override
-    //	public float getProvide(ForgeDirection direction)
+    //	public float getProvide(EnumFacing direction)
     //	{
     //		return 0;
     //	}
@@ -94,7 +93,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
                 this.discharge(this.getBatteryInSlot());
                 // this.receiveElectricity(this.getElectricInputDirection(),
                 // ElectricityPack.getFromWatts(ElectricItemHelper.dischargeItem(this.getBatteryInSlot(),
-                // this.getRequest(ForgeDirection.UNKNOWN)), this.getVoltage()),
+                // this.getRequest(EnumFacing.UNKNOWN)), this.getVoltage()),
                 // true);
             }
 
@@ -193,11 +192,11 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     }
 
     @Override
-    public EnumSet<ForgeDirection> getElectricalInputDirections()
+    public EnumSet<EnumFacing> getElectricalInputDirections()
     {
         if (this.getElectricInputDirection() == null)
         {
-            return EnumSet.noneOf(ForgeDirection.class);
+            return EnumSet.noneOf(EnumFacing.class);
         }
 
         return EnumSet.of(this.getElectricInputDirection());
@@ -209,9 +208,9 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     }
 
     @Override
-    public boolean canConnect(ForgeDirection direction, NetworkType type)
+    public boolean canConnect(EnumFacing direction, NetworkType type)
     {
-        if (direction == null || direction.equals(ForgeDirection.UNKNOWN) || type != NetworkType.POWER)
+        if (direction == null || direction.equals(EnumFacing.UNKNOWN) || type != NetworkType.POWER)
         {
             return false;
         }

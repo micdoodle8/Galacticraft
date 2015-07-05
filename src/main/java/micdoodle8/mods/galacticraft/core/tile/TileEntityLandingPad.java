@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.entity.IFuelable;
@@ -35,7 +35,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 
         if (!this.worldObj.isRemote)
         {
-            final List<?> list = this.worldObj.getEntitiesWithinAABB(IFuelable.class, AxisAlignedBB.getBoundingBox(this.xCoord - 0.5D, this.yCoord, this.zCoord - 0.5D, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D));
+            final List<?> list = this.worldObj.getEntitiesWithinAABB(IFuelable.class, AxisAlignedBB.fromBounds(this.xCoord - 0.5D, this.yCoord, this.zCoord - 0.5D, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D));
 
             boolean docked = false;
 
@@ -205,7 +205,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-    	return AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 0.4D, zCoord + 2);
+    	return AxisAlignedBB.fromBounds(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 0.4D, zCoord + 2);
     }
 
     @Override

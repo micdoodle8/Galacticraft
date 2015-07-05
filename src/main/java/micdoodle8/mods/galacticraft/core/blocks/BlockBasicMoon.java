@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
@@ -30,7 +30,6 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +56,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
     {
         if (world.getBlockMetadata(x, y, z) == 15)
         {
-            return AxisAlignedBB.getBoundingBox(x, y, z, x, y, z);
+            return AxisAlignedBB.fromBounds(x, y, z, x, y, z);
         }
 
         return super.getCollisionBoundingBoxFromPool(world, x, y, z);
@@ -68,7 +67,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
     {
         if (world.getBlockMetadata(x, y, z) == 15)
         {
-            return AxisAlignedBB.getBoundingBox(x, y, z, x, y, z);
+            return AxisAlignedBB.fromBounds(x, y, z, x, y, z);
         }
 
         return super.getSelectedBoundingBoxFromPool(world, x, y, z);
@@ -359,7 +358,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
     }
 
     @Override
-    public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
+    public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, EnumFacing direction, IPlantable plantable)
     {
         final int metadata = world.getBlockMetadata(x, y, z);
 

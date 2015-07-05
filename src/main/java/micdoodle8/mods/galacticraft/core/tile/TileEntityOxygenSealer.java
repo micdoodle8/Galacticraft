@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
@@ -17,7 +17,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.ForgeDirection;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
@@ -355,9 +354,9 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     }
 
     @Override
-    public ForgeDirection getElectricInputDirection()
+    public EnumFacing getElectricInputDirection()
     {
-        return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
+        return EnumFacing.getOrientation(this.getBlockMetadata() + 2);
     }
 
     @Override
@@ -373,14 +372,14 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     }
 
     @Override
-    public EnumSet<ForgeDirection> getOxygenInputDirections()
+    public EnumSet<EnumFacing> getOxygenInputDirections()
     {
         return EnumSet.of(this.getElectricInputDirection().getOpposite());
     }
 
     @Override
-    public EnumSet<ForgeDirection> getOxygenOutputDirections()
+    public EnumSet<EnumFacing> getOxygenOutputDirections()
     {
-        return EnumSet.noneOf(ForgeDirection.class);
+        return EnumSet.noneOf(EnumFacing.class);
     }
 }

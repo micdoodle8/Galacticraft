@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
@@ -9,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.lang.ref.WeakReference;
 
@@ -171,14 +170,14 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
     }
 
     @Override
-    public ForgeDirection getElectricInputDirection()
+    public EnumFacing getElectricInputDirection()
     {
         if (this.getBlockMetadata() != 0)
         {
             return null;
         }
 
-        return ForgeDirection.UP;
+        return EnumFacing.UP;
     }
 
     @Override

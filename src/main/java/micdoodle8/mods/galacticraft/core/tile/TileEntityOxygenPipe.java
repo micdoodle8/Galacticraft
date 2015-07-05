@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.tile.IColorable;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
@@ -12,7 +12,6 @@ import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements IColorable, IPacketReceiver
 {
@@ -21,7 +20,7 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
     private byte lastPipeColor = -1;
 
     @Override
-    public boolean canConnect(ForgeDirection direction, NetworkType type)
+    public boolean canConnect(EnumFacing direction, NetworkType type)
     {
         TileEntity adjacentTile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, direction);
 
@@ -116,7 +115,7 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
     }
 
     @Override
-    public void onAdjacentColorChanged(ForgeDirection direction)
+    public void onAdjacentColorChanged(EnumFacing direction)
     {
         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 

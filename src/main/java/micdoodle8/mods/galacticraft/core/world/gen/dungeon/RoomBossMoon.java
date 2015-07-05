@@ -7,7 +7,6 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Random;
 
@@ -19,7 +18,7 @@ public class RoomBossMoon extends DungeonRoom
     Random rand;
     ChunkCoordinates spawnerCoords;
 
-    public RoomBossMoon(MapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
+    public RoomBossMoon(MapGenDungeon dungeon, int posX, int posY, int posZ, EnumFacing entranceDir)
     {
         super(dungeon, posX, posY, posZ, entranceDir);
         if (this.worldObj != null)
@@ -76,7 +75,7 @@ public class RoomBossMoon extends DungeonRoom
     }
 
     @Override
-    protected DungeonRoom makeRoom(MapGenDungeon dungeon, int x, int y, int z, ForgeDirection dir)
+    protected DungeonRoom makeRoom(MapGenDungeon dungeon, int x, int y, int z, EnumFacing dir)
     {
         return new RoomBossMoon(dungeon, x, y, z, dir);
     }

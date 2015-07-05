@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.entity.IFuelable;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -18,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
 public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory implements ISidedInventory, IFluidHandler, ILandingPadAttachable
@@ -106,7 +105,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
             {
                 this.attachedFuelable = null;
 
-                for (final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+                for (final EnumFacing dir : EnumFacing.VALID_DIRECTIONS)
                 {
                     final TileEntity pad = new BlockVec3(this).getTileEntityOnSide(this.worldObj, dir);
 
@@ -223,35 +222,35 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     }
 
     @Override
-    public boolean canDrain(ForgeDirection from, Fluid fluid)
+    public boolean canDrain(EnumFacing from, Fluid fluid)
     {
         return false;
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
+    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain)
     {
         return null;
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
+    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain)
     {
         return null;
     }
 
     @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid)
+    public boolean canFill(EnumFacing from, Fluid fluid)
     {
         return this.fuelTank.getFluid() == null || this.fuelTank.getFluidAmount() < this.fuelTank.getCapacity();
     }
 
     @Override
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
+    public int fill(EnumFacing from, FluidStack resource, boolean doFill)
     {
         int used = 0;
 
-        if (from.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite()))
+        if (from.equals(EnumFacing.getOrientation(this.getBlockMetadata() + 2).getOpposite()))
         {
             final String liquidName = FluidRegistry.getFluidName(resource);
 
@@ -265,7 +264,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection from)
+    public FluidTankInfo[] getTankInfo(EnumFacing from)
     {
         return new FluidTankInfo[] { new FluidTankInfo(this.fuelTank) };
     }

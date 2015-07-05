@@ -10,7 +10,6 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,7 +98,7 @@ public class OxygenPressureProtocol
 
         if (block instanceof IPartialSealableBlock)
         {
-            return !((IPartialSealableBlock) block).isSealed(world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side));
+            return !((IPartialSealableBlock) block).isSealed(world, vec.x, vec.y, vec.z, EnumFacing.getOrientation(side));
         }
 
         //Solid but non-opaque blocks, for example special glass
@@ -139,6 +138,6 @@ public class OxygenPressureProtocol
         //General case - this should cover any block which correctly implements isBlockSolidOnSide
         //including most modded blocks - Forge microblocks in particular is covered by this.
         // ### Any exceptions in mods should implement the IPartialSealableBlock interface ###
-        return !block.isSideSolid(world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side ^ 1));
+        return !block.isSideSolid(world, vec.x, vec.y, vec.z, EnumFacing.getOrientation(side ^ 1));
     }
 }

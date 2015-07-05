@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.api.event.wgen;
 
-import cpw.mods.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraft.world.World;
 
 import java.util.Random;

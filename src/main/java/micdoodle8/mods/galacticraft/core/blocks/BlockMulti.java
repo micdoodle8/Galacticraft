@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -24,7 +24,6 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 import java.util.Random;
@@ -198,20 +197,20 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
     }
 
     @Override
-    public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
+    public boolean isSealed(World world, int x, int y, int z, EnumFacing direction)
     {
         int metadata = world.getBlockMetadata(x, y, z);
 
         //Landing pad and refueling pad
         if (metadata == 2 || metadata == 6)
         {
-            return direction == ForgeDirection.DOWN;
+            return direction == EnumFacing.DOWN;
         }
 
         //Basic solar panel fixed top
         if (metadata == 4)
         {
-            return direction == ForgeDirection.UP;
+            return direction == EnumFacing.UP;
         }
 
         return false;

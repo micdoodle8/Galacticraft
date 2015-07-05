@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.tile.IColorable;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -24,7 +24,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {
@@ -75,7 +74,7 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(IBlockAccess par1IBlockAccess, int x, int y, int z, int par5)
     {
-        BlockVec3 thisVec = new BlockVec3(x, y, z).modifyPositionFromSide(ForgeDirection.getOrientation(par5));
+        BlockVec3 thisVec = new BlockVec3(x, y, z).modifyPositionFromSide(EnumFacing.getOrientation(par5));
         final Block blockAt = thisVec.getBlock(par1IBlockAccess);
 
         final TileEntityOxygenPipe tileEntity = (TileEntityOxygenPipe) par1IBlockAccess.getTileEntity(x, y, z);
@@ -126,7 +125,7 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
                     //					GCCorePacketManager.sendPacketToClients(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, tileEntity, tileEntity.getColor(), (byte) -1)); TODO Fix pipe color
 
                     BlockVec3 tileVec = new BlockVec3(tileEntity);
-                    for (final ForgeDirection dir : ForgeDirection.values())
+                    for (final EnumFacing dir : EnumFacing.values())
                     {
                         final TileEntity tileAt = tileVec.getTileEntityOnSide(tileEntity.getWorldObj(), dir);
 

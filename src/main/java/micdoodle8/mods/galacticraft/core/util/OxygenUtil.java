@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import mekanism.api.gas.IGasTransmitter;
 import mekanism.api.gas.ITubeConnection;
 import mekanism.api.transmitters.TransmissionType;
@@ -34,7 +34,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -77,7 +76,7 @@ public class OxygenUtil
         //A good first estimate of head size is that it's the smallest of the entity's 3 dimensions (e.g. front to back, for Steve)
         double smin = Math.min(sx, Math.min(sy, sz)) / 2;
 
-        return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, AxisAlignedBB.getBoundingBox(x - smin, y - smin, z - smin, x + smin, y + smin, z + smin));
+        return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, AxisAlignedBB.fromBounds(x - smin, y - smin, z - smin, x + smin, y + smin, z + smin));
     }
 
     @SuppressWarnings("rawtypes")
@@ -232,7 +231,7 @@ public class OxygenUtil
     {
         if (block instanceof IPartialSealableBlock)
         {
-            return !((IPartialSealableBlock) block).isSealed(world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side));
+            return !((IPartialSealableBlock) block).isSealed(world, vec.x, vec.y, vec.z, EnumFacing.getOrientation(side));
         }
 
         //Half slab seals on the top side or the bottom side according to its metadata
@@ -259,7 +258,7 @@ public class OxygenUtil
             return false;
         }
 
-        return !block.isSideSolid(world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side ^ 1));
+        return !block.isSideSolid(world, vec.x, vec.y, vec.z, EnumFacing.getOrientation(side ^ 1));
     }
 
     public static int getDrainSpacing(ItemStack tank, ItemStack tank2)
@@ -394,12 +393,12 @@ public class OxygenUtil
 
     public static TileEntity[] getAdjacentOxygenConnections(TileEntity tile)
     {
-        TileEntity[] adjacentConnections = new TileEntity[ForgeDirection.VALID_DIRECTIONS.length];
+        TileEntity[] adjacentConnections = new TileEntity[EnumFacing.VALID_DIRECTIONS.length];
 
         boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
 
         BlockVec3 thisVec = new BlockVec3(tile);
-        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+        for (EnumFacing direction : EnumFacing.VALID_DIRECTIONS)
         {
             TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorldObj(), direction);
 

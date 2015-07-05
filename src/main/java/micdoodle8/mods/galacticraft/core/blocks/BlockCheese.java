@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
@@ -76,7 +76,7 @@ public class BlockCheese extends Block implements ItemBlockDesc.IBlockShiftDesc
         final float var6 = 0.0625F;
         final float var7 = (1 + var5 * 2) / 16.0F;
         final float var8 = 0.5F;
-        return AxisAlignedBB.getBoundingBox(par2 + var7, par3, par4 + var6, par2 + 1 - var6, par3 + var8 - var6, par4 + 1 - var6);
+        return AxisAlignedBB.fromBounds(par2 + var7, par3, par4 + var6, par2 + 1 - var6, par3 + var8 - var6, par4 + 1 - var6);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class BlockCheese extends Block implements ItemBlockDesc.IBlockShiftDesc
         final float var6 = 0.0625F;
         final float var7 = (1 + var5 * 2) / 16.0F;
         final float var8 = 0.5F;
-        return AxisAlignedBB.getBoundingBox(par2 + var7, par3, par4 + var6, par2 + 1 - var6, par3 + var8, par4 + 1 - var6);
+        return AxisAlignedBB.fromBounds(par2 + var7, par3, par4 + var6, par2 + 1 - var6, par3 + var8, par4 + 1 - var6);
     }
 
     /**

@@ -20,7 +20,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -417,9 +416,9 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     }
 
     @Override
-    public ForgeDirection getElectricInputDirection()
+    public EnumFacing getElectricInputDirection()
     {
-        return ForgeDirection.getOrientation(this.getBlockMetadata() + 2);
+        return EnumFacing.getOrientation(this.getBlockMetadata() + 2);
     }
 
     @Override
@@ -435,15 +434,15 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     }
 
     @Override
-    public EnumSet<ForgeDirection> getOxygenInputDirections()
+    public EnumSet<EnumFacing> getOxygenInputDirections()
     {
         return EnumSet.of(this.getElectricInputDirection().getOpposite());
     }
 
     @Override
-    public EnumSet<ForgeDirection> getOxygenOutputDirections()
+    public EnumSet<EnumFacing> getOxygenOutputDirections()
     {
-        return EnumSet.noneOf(ForgeDirection.class);
+        return EnumSet.noneOf(EnumFacing.class);
     }
 
     @Override

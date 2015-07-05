@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
@@ -23,7 +23,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
@@ -48,7 +47,7 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
     public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
     {
         int oldMeta = world.getBlockMetadata(x, y, z);
-        int meta = this.getMetadataFromAngle(world, x, y, z, ForgeDirection.getOrientation(oldMeta).getOpposite().ordinal());
+        int meta = this.getMetadataFromAngle(world, x, y, z, EnumFacing.getOrientation(oldMeta).getOpposite().ordinal());
 
         if (meta == -1)
         {
@@ -62,7 +61,7 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
             if (thisTile instanceof TileEntityBeamReceiver)
             {
             	TileEntityBeamReceiver thisReceiver = (TileEntityBeamReceiver) thisTile; 
-                thisReceiver.setFacing(ForgeDirection.getOrientation(meta));
+                thisReceiver.setFacing(EnumFacing.getOrientation(meta));
                 thisReceiver.invalidateReflector();
                 thisReceiver.initiateReflector();
             }
@@ -76,7 +75,7 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
     {
         TileEntity thisTile = world.getTileEntity(x, y, z);
         if (thisTile instanceof TileEntityBeamReceiver)
-        	((TileEntityBeamReceiver)thisTile).setFacing(ForgeDirection.getOrientation(world.getBlockMetadata(x, y, z)));
+        	((TileEntityBeamReceiver)thisTile).setFacing(EnumFacing.getOrientation(world.getBlockMetadata(x, y, z)));
     }
 
     @Override
@@ -86,7 +85,7 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
 
         if (meta != -1)
         {
-            ForgeDirection dir = ForgeDirection.getOrientation(meta);
+            EnumFacing dir = EnumFacing.getOrientation(meta);
 
             switch (dir)
             {
@@ -124,7 +123,7 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
 
     private int getMetadataFromAngle(World world, int x, int y, int z, int side)
     {
-        ForgeDirection direction = ForgeDirection.getOrientation(side).getOpposite();
+        EnumFacing direction = EnumFacing.getOrientation(side).getOpposite();
 
         TileEntity tileAt = world.getTileEntity(x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ);
 
@@ -143,7 +142,7 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
         if (EnergyUtil.otherModCanReceive(tileAt, direction.getOpposite()))
         	return direction.ordinal();
 
-        for (ForgeDirection adjacentDir : ForgeDirection.VALID_DIRECTIONS)
+        for (EnumFacing adjacentDir : EnumFacing.VALID_DIRECTIONS)
         {
             if (adjacentDir == direction) continue;
         	tileAt = world.getTileEntity(x + adjacentDir.offsetX, y + adjacentDir.offsetY, z + adjacentDir.offsetZ);

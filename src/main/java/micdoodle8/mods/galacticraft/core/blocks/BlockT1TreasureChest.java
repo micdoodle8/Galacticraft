@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
@@ -25,7 +25,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Iterator;
 import java.util.Random;
@@ -386,7 +385,7 @@ public class BlockT1TreasureChest extends BlockContainer implements ITileEntityP
         {
             return true;
         }
-        else if (par1World.isSideSolid(par2, par3 + 1, par4, ForgeDirection.DOWN))
+        else if (par1World.isSideSolid(par2, par3 + 1, par4, EnumFacing.DOWN))
         {
             return true;
         }
@@ -394,19 +393,19 @@ public class BlockT1TreasureChest extends BlockContainer implements ITileEntityP
         {
             return true;
         }
-        else if (par1World.getBlock(par2 - 1, par3, par4) == this && (par1World.isSideSolid(par2 - 1, par3 + 1, par4, ForgeDirection.DOWN) || BlockT1TreasureChest.isOcelotBlockingChest(par1World, par2 - 1, par3, par4)))
+        else if (par1World.getBlock(par2 - 1, par3, par4) == this && (par1World.isSideSolid(par2 - 1, par3 + 1, par4, EnumFacing.DOWN) || BlockT1TreasureChest.isOcelotBlockingChest(par1World, par2 - 1, par3, par4)))
         {
             return true;
         }
-        else if (par1World.getBlock(par2 + 1, par3, par4) == this && (par1World.isSideSolid(par2 + 1, par3 + 1, par4, ForgeDirection.DOWN) || BlockT1TreasureChest.isOcelotBlockingChest(par1World, par2 + 1, par3, par4)))
+        else if (par1World.getBlock(par2 + 1, par3, par4) == this && (par1World.isSideSolid(par2 + 1, par3 + 1, par4, EnumFacing.DOWN) || BlockT1TreasureChest.isOcelotBlockingChest(par1World, par2 + 1, par3, par4)))
         {
             return true;
         }
-        else if (par1World.getBlock(par2, par3, par4 - 1) == this && (par1World.isSideSolid(par2, par3 + 1, par4 - 1, ForgeDirection.DOWN) || BlockT1TreasureChest.isOcelotBlockingChest(par1World, par2, par3, par4 - 1)))
+        else if (par1World.getBlock(par2, par3, par4 - 1) == this && (par1World.isSideSolid(par2, par3 + 1, par4 - 1, EnumFacing.DOWN) || BlockT1TreasureChest.isOcelotBlockingChest(par1World, par2, par3, par4 - 1)))
         {
             return true;
         }
-        else if (par1World.getBlock(par2, par3, par4 + 1) == this && (par1World.isSideSolid(par2, par3 + 1, par4 + 1, ForgeDirection.DOWN) || BlockT1TreasureChest.isOcelotBlockingChest(par1World, par2, par3, par4 + 1)))
+        else if (par1World.getBlock(par2, par3, par4 + 1) == this && (par1World.isSideSolid(par2, par3 + 1, par4 + 1, EnumFacing.DOWN) || BlockT1TreasureChest.isOcelotBlockingChest(par1World, par2, par3, par4 + 1)))
         {
             return true;
         }
@@ -453,7 +452,7 @@ public class BlockT1TreasureChest extends BlockContainer implements ITileEntityP
     @SuppressWarnings("rawtypes")
     public static boolean isOcelotBlockingChest(World par0World, int par1, int par2, int par3)
     {
-        final Iterator var4 = par0World.getEntitiesWithinAABB(EntityOcelot.class, AxisAlignedBB.getBoundingBox(par1, par2 + 1, par3, par1 + 1, par2 + 2, par3 + 1)).iterator();
+        final Iterator var4 = par0World.getEntitiesWithinAABB(EntityOcelot.class, AxisAlignedBB.fromBounds(par1, par2 + 1, par3, par1 + 1, par2 + 2, par3 + 1)).iterator();
         EntityOcelot var6;
 
         do

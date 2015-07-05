@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.EnumCargoLoadingState;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.RemovalResult;
@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory implements ISidedInventory, ILandingPadAttachable
 {
@@ -83,9 +82,9 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     {
         boolean foundFuelable = false;
 
-        for (final ForgeDirection dir : ForgeDirection.values())
+        for (final EnumFacing dir : EnumFacing.values())
         {
-            if (dir != ForgeDirection.UNKNOWN)
+            if (dir != EnumFacing.UNKNOWN)
             {
                 final TileEntity pad = new BlockVec3(this).getTileEntityOnSide(this.worldObj, dir);
 
