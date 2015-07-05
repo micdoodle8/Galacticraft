@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.api.tile;
 
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
 /**
@@ -14,10 +15,8 @@ public interface ILandingPadAttachable
      * coordinates.
      *
      * @param world World the tiles are located in
-     * @param x     Coordinate the landing pad is located at, on the x-axis
-     * @param y     Coordinate the landing pad is located at, on the y-axis
-     * @param z     Coordinate the landing pad is located at, on the z-axis
+     * @param pos   Coordinate the landing pad is located at
      * @return True if the block can attach to the landing pad, false if not
      */
-    public boolean canAttachToLandingPad(IBlockAccess world, int x, int y, int z);
+    public boolean canAttachToLandingPad(IBlockAccess world, BlockPos pos);
 }

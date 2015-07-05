@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
@@ -13,15 +14,15 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
 {
     // The the position of the main block
     @NetworkedField(targetSide = Side.CLIENT)
-    public BlockVec3 mainBlockPosition;
+    public BlockPos mainBlockPosition;
 
-    public void setMainBlock(BlockVec3 mainBlock)
+    public void setMainBlock(BlockPos mainBlock)
     {
         this.mainBlockPosition = mainBlock;
 
         if (!this.worldObj.isRemote)
         {
-            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+            this.worldObj.markBlockForUpdate(this.getPos());
         }
     }
 
@@ -29,7 +30,7 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
     {
         if (this.mainBlockPosition != null)
         {
-            TileEntity tileEntity = this.worldObj.getTileEntity(this.mainBlockPosition.x, this.mainBlockPosition.y, this.mainBlockPosition.z);
+            TileEntity tileEntity = this.worldObj.getTileEntity(this.mainBlockPosition);
 
             if (tileEntity instanceof IMultiBlock)
             {
@@ -43,7 +44,7 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
     {
         if (this.mainBlockPosition != null)
         {
-            TileEntity tileEntity = this.worldObj.getTileEntity(this.mainBlockPosition.x, this.mainBlockPosition.y, this.mainBlockPosition.z);
+            TileEntity tileEntity = this.worldObj.getTileEntity(this.mainBlockPosition);
 
             if (tileEntity instanceof IMultiBlock)
             {
@@ -58,7 +59,7 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
     {
         if (this.mainBlockPosition != null)
         {
-            return this.worldObj.getTileEntity(this.mainBlockPosition.x, this.mainBlockPosition.y, this.mainBlockPosition.z);
+            return this.worldObj.getTileEntity(this.mainBlockPosition);
         }
 
         return null;
@@ -71,7 +72,8 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        this.mainBlockPosition = new BlockVec3(nbt.getCompoundTag("mainBlockPosition"));
+        NBTTagCompound tag = nbt.getCompoundTag("mainBlockPosition");
+        this.mainBlockPosition = new BlockPos(tag.getInteger("x"), tag.getInteger("y"), tag.getInteger("z"));
     }
 
     /**
@@ -84,10 +86,29 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
 
         if (this.mainBlockPosition != null)
         {
-            nbt.setTag("mainBlockPosition", this.mainBlockPosition.writeToNBT(new NBTTagCompound()));
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setInteger("x", this.mainBlockPosition.getX());
+            tag.setInteger("y", this.mainBlockPosition.getY());
+            tag.setInteger("z", this.mainBlockPosition.getZ());
+            nbt.setTag("mainBlockPosition", tag);
         }
     }
+/*
 
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        par1NBTTagCompound.setInteger("x", this.x);
+        par1NBTTagCompound.setInteger("y", this.y);
+        par1NBTTagCompound.setInteger("z", this.z);
+        return par1NBTTagCompound;
+    }
+
+    public BlockVec3(NBTTagCompound par1NBTTagCompound)
+    {
+        this.x = par1NBTTagCompound.getInteger("x");
+        this.y = par1NBTTagCompound.getInteger("y");
+        this.z = par1NBTTagCompound.getInteger("z");
+    }*/
     @Override
     public double getPacketRange()
     {

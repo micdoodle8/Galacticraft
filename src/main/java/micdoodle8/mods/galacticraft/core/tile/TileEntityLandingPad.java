@@ -107,7 +107,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
     {
         final BlockVec3 thisBlock = new BlockVec3(this);
 
-        this.worldObj.func_147480_a(thisBlock.x, thisBlock.y, thisBlock.z, true);
+        this.worldObj.destroyBlock(thisBlock.x, thisBlock.y, thisBlock.z, true);
 
         for (int x = -1; x < 2; x++)
         {
@@ -115,10 +115,10 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
             {
                 if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
                 {
-                    FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.x + x, thisBlock.y, thisBlock.z + z, GCBlocks.landingPad, Block.getIdFromBlock(GCBlocks.landingPad) >> 12 & 255);
+                    FMLClientHandler.instance().getClient().effectRenderer.func_180533_a(thisBlock.x + x, thisBlock.y, thisBlock.z + z, GCBlocks.landingPad, Block.getIdFromBlock(GCBlocks.landingPad) >> 12 & 255);
                 }
 
-                this.worldObj.func_147480_a(thisBlock.x + x, thisBlock.y, thisBlock.z + z, false);
+                this.worldObj.destroyBlock(thisBlock.x + x, thisBlock.y, thisBlock.z + z, false);
             }
         }
 

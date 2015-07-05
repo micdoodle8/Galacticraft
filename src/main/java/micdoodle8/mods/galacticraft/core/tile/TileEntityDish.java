@@ -138,7 +138,7 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
                 {
                     if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
                     {
-                        FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.x + (y == 2 ? x : 0), thisBlock.y + y, thisBlock.z + (y == 2 ? z : 0), GCBlocks.radioTelescope, Block.getIdFromBlock(GCBlocks.radioTelescope) >> 12 & 255);
+                        FMLClientHandler.instance().getClient().effectRenderer.func_180533_a(thisBlock.x + (y == 2 ? x : 0), thisBlock.y + y, thisBlock.z + (y == 2 ? z : 0), GCBlocks.radioTelescope, Block.getIdFromBlock(GCBlocks.radioTelescope) >> 12 & 255);
                     }
 
                     this.worldObj.setBlockToAir(thisBlock.x + (y == 2 ? x : 0), thisBlock.y + y, thisBlock.z + (y == 2 ? z : 0));
@@ -146,7 +146,7 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
             }
         }
 
-        this.worldObj.func_147480_a(thisBlock.x, thisBlock.y, thisBlock.z, true);
+        this.worldObj.destroyBlock(thisBlock.x, thisBlock.y, thisBlock.z, true);
     }
 
     @Override

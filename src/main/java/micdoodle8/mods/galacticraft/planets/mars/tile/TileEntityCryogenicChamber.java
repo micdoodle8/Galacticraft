@@ -159,9 +159,9 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
         {
             if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
             {
-                FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.x, thisBlock.y + y, thisBlock.z, MarsBlocks.machine, Block.getIdFromBlock(MarsBlocks.machine) >> 12 & 255);
+                FMLClientHandler.instance().getClient().effectRenderer.func_180533_a(thisBlock.x, thisBlock.y + y, thisBlock.z, MarsBlocks.machine, Block.getIdFromBlock(MarsBlocks.machine) >> 12 & 255);
             }
-            this.worldObj.func_147480_a(thisBlock.x, thisBlock.y + y, thisBlock.z, true);
+            this.worldObj.destroyBlock(thisBlock.x, thisBlock.y + y, thisBlock.z, true);
         }
     }
 

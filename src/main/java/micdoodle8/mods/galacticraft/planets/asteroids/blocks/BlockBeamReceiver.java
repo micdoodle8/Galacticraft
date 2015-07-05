@@ -51,7 +51,7 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
 
         if (meta == -1)
         {
-            world.func_147480_a(x, y, z, true);
+            world.destroyBlock(x, y, z, true);
         }
 
         if (meta != oldMeta)

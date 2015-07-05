@@ -406,7 +406,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 
         if (master != null && !master.isInvalid())
         {
-        	this.worldObj.func_147480_a(master.xCoord, master.yCoord, master.zCoord, false);
+        	this.worldObj.destroyBlock(master.xCoord, master.yCoord, master.zCoord, false);
         }
     }
 
@@ -443,7 +443,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             {
 	            for (int z = 0; z < 2; z++)
                 {
-                    this.worldObj.func_147480_a(this.xCoord + x, this.yCoord + y, this.zCoord + z, false);
+                    this.worldObj.destroyBlock(this.xCoord + x, this.yCoord + y, this.zCoord + z, false);
                 }
             }
         }
