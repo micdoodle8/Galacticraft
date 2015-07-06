@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
@@ -16,6 +15,9 @@ import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -39,9 +41,9 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     private static Random randnum = new Random();
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
 
         if (!this.worldObj.isRemote)
         {
@@ -80,7 +82,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 
                 if (this.processTicks % 40 == 0 && this.processTicks > TileEntityIngotCompressor.PROCESS_TIME_REQUIRED / 2)
                 {
-                    this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "random.anvil_land", 0.2F, 0.5F);
+                    this.worldObj.playSoundEffect(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), "random.anvil_land", 0.2F, 0.5F);
                 }
 
                 if (this.processTicks == TileEntityIngotCompressor.PROCESS_TIME_REQUIRED)
@@ -115,12 +117,12 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     }
 
     @Override
-    public void openInventory()
+    public void openInventory(EntityPlayer player)
     {
     }
 
     @Override
-    public void closeInventory()
+    public void closeInventory(EntityPlayer player)
     {
     }
 
@@ -224,9 +226,8 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
                         double dx = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
                         double dy = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
                         double dz = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        EntityItem entityitem = new EntityItem(this.worldObj, this.xCoord + dx, this.yCoord + dy, this.zCoord + dz, new ItemStack(resultItemStack.getItem(), 1, resultItemStack.getItemDamage()));
-
-                        entityitem.delayBeforeCanPickup = 10;
+                        EntityItem entityitem = new EntityItem(this.worldObj, this.getPos().getX() + dx, this.getPos().getY() + dy, this.getPos().getZ() + dz, new ItemStack(resultItemStack.getItem(), 1, resultItemStack.getItemDamage()));
+                        entityitem.setDefaultPickupDelay();
 
                         this.worldObj.spawnEntityInWorld(entityitem);
                     }
@@ -400,7 +401,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
         return GCCoreUtil.translate("tile.machine.3.name");
     }
@@ -414,14 +415,14 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     @Override
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+        return this.worldObj.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
-    @Override
-    public boolean hasCustomInventoryName()
-    {
-        return true;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return true;
+//    }
 
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
@@ -444,9 +445,9 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int side)
+    public int[] getSlotsForFace(EnumFacing side)
     {
-    	if (side == 0) return new int[] { 1 };
+    	if (side == EnumFacing.DOWN) return new int[] { 1 };
     	int[] slots = new int[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
     	ArrayList<Integer> removeSlots = new ArrayList();
     	
@@ -491,13 +492,13 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, int par3)
+    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
     {
         return this.isItemValidForSlot(slotID, par2ItemStack);
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, int par3)
+    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
     {
         return slotID == 1;
     }
@@ -518,5 +519,35 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     public boolean isNetworkedTile()
     {
         return true;
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return null;
     }
 }

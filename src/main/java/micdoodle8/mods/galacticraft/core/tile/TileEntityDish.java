@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -44,14 +47,14 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
         if (!this.initialised)
         {
             this.initialised = true;
         }
 
-        super.updateEntity();
+        super.update();
 
         if (!this.worldObj.isRemote)
         {
@@ -95,30 +98,24 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
     @Override
     public boolean onActivated(EntityPlayer entityPlayer)
     {
-        return this.getBlockType().onBlockActivated(this.worldObj, this.xCoord, this.yCoord, this.zCoord, entityPlayer, 0, this.xCoord, this.yCoord, this.zCoord);
+        return this.getBlockType().onBlockActivated(this.worldObj, this.getPos(), this.worldObj.getBlockState(this.getPos()), entityPlayer, EnumFacing.DOWN, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
     }
 
     @Override
-    public boolean canUpdate()
-    {
-        return true;
-    }
-
-    @Override
-    public void onCreate(BlockVec3 placedPosition)
+    public void onCreate(BlockPos placedPosition)
     {
         int buildHeight = this.worldObj.getHeight() - 1;
 
-        if (placedPosition.y + 1 > buildHeight) return;
-        final BlockVec3 vecStrut = new BlockVec3(placedPosition.x, placedPosition.y + 1, placedPosition.z);
+        if (placedPosition.getY() + 1 > buildHeight) return;
+        final BlockPos vecStrut = new BlockPos(placedPosition.getX(), placedPosition.getY() + 1, placedPosition.getZ());
         ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecStrut, placedPosition, 0);
 
-        if (placedPosition.y + 2 > buildHeight) return;
+        if (placedPosition.getY() + 2 > buildHeight) return;
         for (int x = -1; x < 2; x++)
         {
             for (int z = -1; z < 2; z++)
             {
-                final BlockVec3 vecToAdd = new BlockVec3(placedPosition.x + x, placedPosition.y + 2, placedPosition.z + z);
+                final BlockPos vecToAdd = new BlockPos(placedPosition.getX() + x, placedPosition.getY() + 2, placedPosition.getZ() + z);
 
                 ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, (this.getTierGC() == 1) ? 4 : 0);
             }
@@ -128,7 +125,7 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
     @Override
     public void onDestroy(TileEntity callingBlock)
     {
-        final BlockVec3 thisBlock = new BlockVec3(this);
+        final BlockPos thisBlock = getPos();
 
         for (int y = 1; y <= 2; y++)
         {
@@ -136,17 +133,19 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
             {
                 for (int z = -1; z < 2; z++)
                 {
+                    BlockPos pos = new BlockPos(thisBlock.getX() + (y == 2 ? x : 0), thisBlock.getY() + y, thisBlock.getZ() + (y == 2 ? z : 0));
+
                     if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
                     {
-                        FMLClientHandler.instance().getClient().effectRenderer.func_180533_a(thisBlock.x + (y == 2 ? x : 0), thisBlock.y + y, thisBlock.z + (y == 2 ? z : 0), GCBlocks.radioTelescope, Block.getIdFromBlock(GCBlocks.radioTelescope) >> 12 & 255);
+                        FMLClientHandler.instance().getClient().effectRenderer.func_180533_a(pos, this.worldObj.getBlockState(pos));
                     }
 
-                    this.worldObj.setBlockToAir(thisBlock.x + (y == 2 ? x : 0), thisBlock.y + y, thisBlock.z + (y == 2 ? z : 0));
+                    this.worldObj.setBlockToAir(pos);
                 }
             }
         }
 
-        this.worldObj.destroyBlock(thisBlock.x, thisBlock.y, thisBlock.z, true);
+        this.worldObj.destroyBlock(thisBlock, true);
     }
 
     @Override
@@ -212,17 +211,17 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-    	return AxisAlignedBB.fromBounds(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 4, zCoord + 2);
+    	return AxisAlignedBB.fromBounds(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 4, getPos().getZ() + 2);
     }
 
-    @Override
-    public boolean hasCustomInventoryName()
-    {
-        return true;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return true;
+//    }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
         //TODO
     	return "";
@@ -327,33 +326,33 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
     @Override
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+        return this.worldObj.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
-    public void openInventory()
+    public void openInventory(EntityPlayer player)
     {
     }
 
     @Override
-    public void closeInventory()
+    public void closeInventory(EntityPlayer player)
     {
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int side)
+    public int[] getSlotsForFace(EnumFacing side)
     {
         return new int[] { 0 };
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
+    public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
         return this.isItemValidForSlot(slotID, itemstack);
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
         return slotID == 0;
     }
@@ -362,5 +361,35 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
         return slotID == 0 && ItemElectricBase.isElectricItem(itemstack.getItem());
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return null;
     }
 }

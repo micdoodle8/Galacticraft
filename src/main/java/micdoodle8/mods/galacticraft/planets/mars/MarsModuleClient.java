@@ -1,5 +1,33 @@
 package micdoodle8.mods.galacticraft.planets.mars;
 
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
+import micdoodle8.mods.galacticraft.core.client.objload.AdvancedModelLoader;
+import micdoodle8.mods.galacticraft.core.client.objload.IModelCustom;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderBubble;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderTier1Rocket;
+import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
+import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
+import micdoodle8.mods.galacticraft.planets.mars.client.SkyProviderMars;
+import micdoodle8.mods.galacticraft.planets.mars.client.gui.*;
+import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelTier2Rocket;
+import micdoodle8.mods.galacticraft.planets.mars.client.render.entity.*;
+import micdoodle8.mods.galacticraft.planets.mars.client.render.tile.TileEntityCryogenicChamberRenderer;
+import micdoodle8.mods.galacticraft.planets.mars.client.render.tile.TileEntityTreasureChestRenderer;
+import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
+import micdoodle8.mods.galacticraft.planets.mars.entities.*;
+import micdoodle8.mods.galacticraft.planets.mars.tile.*;
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.particle.EntityFX;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -11,42 +39,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderBubble;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderTier1Rocket;
-import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererKey;
-import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
-import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
-import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
-import micdoodle8.mods.galacticraft.planets.mars.client.SkyProviderMars;
-import micdoodle8.mods.galacticraft.planets.mars.client.gui.*;
-import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelTier2Rocket;
-import micdoodle8.mods.galacticraft.planets.mars.client.render.block.*;
-import micdoodle8.mods.galacticraft.planets.mars.client.render.entity.*;
-import micdoodle8.mods.galacticraft.planets.mars.client.render.item.ItemRendererMachine;
-import micdoodle8.mods.galacticraft.planets.mars.client.render.item.ItemRendererTier2Rocket;
-import micdoodle8.mods.galacticraft.planets.mars.client.render.tile.TileEntityCryogenicChamberRenderer;
-import micdoodle8.mods.galacticraft.planets.mars.client.render.tile.TileEntityTreasureChestRenderer;
-import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
-import micdoodle8.mods.galacticraft.planets.mars.entities.*;
-import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
-import micdoodle8.mods.galacticraft.planets.mars.tile.*;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.client.particle.EntityDropParticleFX;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 
 import java.util.List;
 
@@ -68,16 +60,16 @@ public class MarsModuleClient implements IPlanetsModuleClient
     public void init(FMLInitializationEvent event)
     {
         FMLCommonHandler.instance().bus().register(new TickHandlerClient());
-        MarsModuleClient.vineRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new BlockRendererCavernousVines(MarsModuleClient.vineRenderID));
-        MarsModuleClient.eggRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new BlockRendererEgg(MarsModuleClient.eggRenderID));
-        MarsModuleClient.treasureRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new BlockRendererTier2TreasureChest(MarsModuleClient.treasureRenderID));
-        MarsModuleClient.machineRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new BlockRendererMachine(MarsModuleClient.machineRenderID));
-        MarsModuleClient.renderIdHydrogenPipe = RenderingRegistry.getNextAvailableRenderId();        
-        RenderingRegistry.registerBlockHandler(new BlockRendererHydrogenPipe(MarsModuleClient.renderIdHydrogenPipe));
+//        MarsModuleClient.vineRenderID = RenderingRegistry.getNextAvailableRenderId();
+//        RenderingRegistry.registerBlockHandler(new BlockRendererCavernousVines(MarsModuleClient.vineRenderID));
+//        MarsModuleClient.eggRenderID = RenderingRegistry.getNextAvailableRenderId();
+//        RenderingRegistry.registerBlockHandler(new BlockRendererEgg(MarsModuleClient.eggRenderID));
+//        MarsModuleClient.treasureRenderID = RenderingRegistry.getNextAvailableRenderId();
+//        RenderingRegistry.registerBlockHandler(new BlockRendererTier2TreasureChest(MarsModuleClient.treasureRenderID));
+//        MarsModuleClient.machineRenderID = RenderingRegistry.getNextAvailableRenderId();
+//        RenderingRegistry.registerBlockHandler(new BlockRendererMachine(MarsModuleClient.machineRenderID));
+//        MarsModuleClient.renderIdHydrogenPipe = RenderingRegistry.getNextAvailableRenderId();
+//        RenderingRegistry.registerBlockHandler(new BlockRendererHydrogenPipe(MarsModuleClient.renderIdHydrogenPipe));
     }
 
     @Override
@@ -102,12 +94,12 @@ public class MarsModuleClient implements IPlanetsModuleClient
         RenderingRegistry.registerEntityRenderingHandler(EntityCargoRocket.class, new RenderCargoRocket(cargoRocketModel));
 
         // Add Armor Renderer Prefix
-        RenderingRegistry.addNewArmourRendererPrefix("desh");
+//        RenderingRegistry.addNewArmourRendererPrefix("desh");
 
         // Item Renderers
-        MinecraftForgeClient.registerItemRenderer(MarsItems.spaceship, new ItemRendererTier2Rocket(cargoRocketModel));
-        MinecraftForgeClient.registerItemRenderer(MarsItems.key, new ItemRendererKey(new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/model/treasure.png")));
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(MarsBlocks.machine), new ItemRendererMachine(chamberModel));
+//        MinecraftForgeClient.registerItemRenderer(MarsItems.spaceship, new ItemRendererTier2Rocket(cargoRocketModel));
+//        MinecraftForgeClient.registerItemRenderer(MarsItems.key, new ItemRendererKey(new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/model/treasure.png")));
+//        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(MarsBlocks.machine), new ItemRendererMachine(chamberModel));
     }
 
     @Override
@@ -115,7 +107,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
     {
         if (side == Side.CLIENT)
         {
-            TileEntity tile = world.getTileEntity(x, y, z);
+            TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
 
             if (ID == GuiIdsPlanets.MACHINE_MARS)
             {
@@ -177,11 +169,11 @@ public class MarsModuleClient implements IPlanetsModuleClient
     {
         Minecraft mc = FMLClientHandler.instance().getClient();
 
-        if (mc != null && mc.renderViewEntity != null && mc.effectRenderer != null)
+        if (mc != null && mc.getRenderViewEntity() != null && mc.effectRenderer != null)
         {
-            final double dPosX = mc.renderViewEntity.posX - position.x;
-            final double dPosY = mc.renderViewEntity.posY - position.y;
-            final double dPosZ = mc.renderViewEntity.posZ - position.z;
+            final double dPosX = mc.getRenderViewEntity().posX - position.x;
+            final double dPosY = mc.getRenderViewEntity().posY - position.y;
+            final double dPosZ = mc.getRenderViewEntity().posZ - position.z;
             EntityFX particle = null;
             final double maxDistSqrd = 64.0D;
 
@@ -189,7 +181,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
             {
                 if (particleID.equals("sludgeDrip"))
                 {
-                    particle = new EntityDropParticleFX(mc.theWorld, position.x, position.y, position.z, Material.water);
+//                    particle = new EntityDropParticleFX(mc.theWorld, position.x, position.y, position.z, Material.water); TODO
                 }
             }
 

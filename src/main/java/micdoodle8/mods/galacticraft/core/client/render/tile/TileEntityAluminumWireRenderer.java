@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
+import micdoodle8.mods.galacticraft.core.client.objload.AdvancedModelLoader;
+import micdoodle8.mods.galacticraft.core.client.objload.IModelCustom;
+import net.minecraft.block.state.IBlockState;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -9,8 +12,6 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -27,17 +28,20 @@ public class TileEntityAluminumWireRenderer extends TileEntitySpecialRenderer
         this.model2 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/aluminumWireHeavy.obj"));
     }
 
-    public void renderModelAt(TileEntityAluminumWire tileEntity, double d, double d1, double d2, float f)
+    @Override
+    public void renderTileEntityAt(TileEntity tile, double par2, double par4, double par6, float par8, int par9)
     {
+        TileEntityAluminumWire aluminumWire = (TileEntityAluminumWire) tile;
         // Texture file
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityAluminumWireRenderer.aluminumWireTexture);
         GL11.glPushMatrix();
-        GL11.glTranslatef((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
+        GL11.glTranslatef((float) par2 + 0.5F, (float) par4 + 0.5F, (float) par6 + 0.5F);
         GL11.glScalef(1.0F, -1F, -1F);
 
-        TileEntity[] adjecentConnections = EnergyUtil.getAdjacentPowerConnections(tileEntity);
+        TileEntity[] adjecentConnections = EnergyUtil.getAdjacentPowerConnections(aluminumWire);
 
-        int metadata = tileEntity.getWorldObj().getBlockMetadata(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+        IBlockState blockState = aluminumWire.getWorld().getBlockState(aluminumWire.getPos());
+        int metadata = blockState.getBlock().getMetaFromState(blockState);
 
         IModelCustom model = null;
 
@@ -82,11 +86,5 @@ public class TileEntityAluminumWireRenderer extends TileEntitySpecialRenderer
 
         model.renderPart("Middle");
         GL11.glPopMatrix();
-    }
-
-    @Override
-    public void renderTileEntityAt(TileEntity tileEntity, double var2, double var4, double var6, float var8)
-    {
-        this.renderModelAt((TileEntityAluminumWire) tileEntity, var2, var4, var6, var8);
     }
 }

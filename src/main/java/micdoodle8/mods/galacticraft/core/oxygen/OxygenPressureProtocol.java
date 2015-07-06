@@ -9,6 +9,8 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -68,7 +70,7 @@ public class OxygenPressureProtocol
         }
     }
 
-    public static void onEdgeBlockUpdated(World world, BlockVec3 vec)
+    public static void onEdgeBlockUpdated(World world, BlockPos vec)
     {
         if (ConfigManagerCore.enableSealerEdgeChecks)
         {

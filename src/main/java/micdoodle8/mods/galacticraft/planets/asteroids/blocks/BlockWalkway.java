@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -33,7 +33,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
         super(Material.iron);
         this.setHardness(1.0F);
         this.setBlockTextureName(AsteroidsModule.TEXTURE_PREFIX + "walkway");
-        this.setBlockName(assetName);
+        this.setUnlocalizedName(assetName);
         this.setStepSound(Block.soundTypeMetal);
         this.isBlockContainer = true;
         this.minVector = new Vector3(0.0, 0.32, 0.0);

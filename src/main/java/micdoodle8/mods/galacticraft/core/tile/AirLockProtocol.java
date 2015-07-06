@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ class AirLockProtocol
     public AirLockProtocol(TileEntity head)
     {
         this.adjacentAirLocks = new ArrayList<TileEntityAirLock>();
-        this.worldObj = head.getWorldObj();
+        this.worldObj = head.getWorld();
         this.head = head;
         this.maxLoops = 26;
     }
@@ -45,9 +46,9 @@ class AirLockProtocol
                     {
                         if (!(x == 0 && y == 0 && z == 0))
                         {
-                            if (tile2.xCoord + x == this.head.xCoord || tile2.zCoord + z == this.head.zCoord)
+                            if (tile2.getPos().getX() + x == this.head.getPos().getX() || tile2.getPos().getZ() + z == this.head.getPos().getZ())
                             {
-                                final TileEntity tile = this.worldObj.getTileEntity(tile2.xCoord + x, tile2.yCoord + y, tile2.zCoord + z);
+                                final TileEntity tile = this.worldObj.getTileEntity(new BlockPos(tile2.getPos().getX() + x, tile2.getPos().getY() + y, tile2.getPos().getZ() + z));
                                 if (tile instanceof TileEntityAirLock && !this.adjacentAirLocks.contains(tile))
                                 {
                                     this.adjacentAirLocks.add((TileEntityAirLock) tile);
@@ -73,9 +74,9 @@ class AirLockProtocol
                     {
                         if (!(x == 0 && y == 0 && z == 0))
                         {
-                            if (tile2.yCoord + y == this.head.yCoord)
+                            if (tile2.getPos().getY() + y == this.head.getPos().getY())
                             {
-                                final TileEntity tile = this.worldObj.getTileEntity(tile2.xCoord + x, tile2.yCoord + y, tile2.zCoord + z);
+                                final TileEntity tile = this.worldObj.getTileEntity(new BlockPos(tile2.getPos().getX() + x, tile2.getPos().getY() + y, tile2.getPos().getZ() + z));
                                 if (tile instanceof TileEntityAirLock && !this.adjacentAirLocks.contains(tile))
                                 {
                                     this.adjacentAirLocks.add((TileEntityAirLock) tile);
@@ -117,34 +118,34 @@ class AirLockProtocol
 
         for (final TileEntityAirLock airLock : this.adjacentAirLocks)
         {
-            if (airLock.xCoord < this.minX)
+            if (airLock.getPos().getX() < this.minX)
             {
-                this.minX = airLock.xCoord;
+                this.minX = airLock.getPos().getX();
             }
 
-            if (airLock.xCoord > this.maxX)
+            if (airLock.getPos().getX() > this.maxX)
             {
-                this.maxX = airLock.xCoord;
+                this.maxX = airLock.getPos().getX();
             }
 
-            if (airLock.yCoord < this.minY)
+            if (airLock.getPos().getY() < this.minY)
             {
-                this.minY = airLock.yCoord;
+                this.minY = airLock.getPos().getY();
             }
 
-            if (airLock.yCoord > this.maxY)
+            if (airLock.getPos().getY() > this.maxY)
             {
-                this.maxY = airLock.yCoord;
+                this.maxY = airLock.getPos().getY();
             }
 
-            if (airLock.zCoord < this.minZ)
+            if (airLock.getPos().getZ() < this.minZ)
             {
-                this.minZ = airLock.zCoord;
+                this.minZ = airLock.getPos().getZ();
             }
 
-            if (airLock.zCoord > this.maxZ)
+            if (airLock.getPos().getZ() > this.maxZ)
             {
-                this.maxZ = airLock.zCoord;
+                this.maxZ = airLock.getPos().getZ();
             }
         }
 
@@ -167,7 +168,7 @@ class AirLockProtocol
 
         for (int y = this.minY; y <= this.maxY; y++)
         {
-            final TileEntity tileAt = this.worldObj.getTileEntity(this.minX, y, this.minZ);
+            final TileEntity tileAt = this.worldObj.getTileEntity(new BlockPos(this.minX, y, this.minZ));
 
             if (tileAt instanceof TileEntityAirLock)
             {
@@ -177,7 +178,7 @@ class AirLockProtocol
 
         for (int y = this.minY; y <= this.maxY; y++)
         {
-            final TileEntity tileAt = this.worldObj.getTileEntity(this.maxX, y, this.maxZ);
+            final TileEntity tileAt = this.worldObj.getTileEntity(new BlockPos(this.maxX, y, this.maxZ));
 
             if (tileAt instanceof TileEntityAirLock)
             {
@@ -189,7 +190,7 @@ class AirLockProtocol
         {
             for (int x = this.minX; x <= this.maxX; x++)
             {
-                final TileEntity tileAt = this.worldObj.getTileEntity(x, this.maxY, this.maxZ);
+                final TileEntity tileAt = this.worldObj.getTileEntity(new BlockPos(x, this.maxY, this.maxZ));
 
                 if (tileAt instanceof TileEntityAirLock)
                 {
@@ -199,7 +200,7 @@ class AirLockProtocol
 
             for (int x = this.minX; x <= this.maxX; x++)
             {
-                final TileEntity tileAt = this.worldObj.getTileEntity(x, this.minY, this.maxZ);
+                final TileEntity tileAt = this.worldObj.getTileEntity(new BlockPos(x, this.minY, this.maxZ));
 
                 if (tileAt instanceof TileEntityAirLock)
                 {
@@ -211,7 +212,7 @@ class AirLockProtocol
         {
             for (int z = this.minZ; z <= this.maxZ; z++)
             {
-                final TileEntity tileAt = this.worldObj.getTileEntity(this.maxX, this.maxY, z);
+                final TileEntity tileAt = this.worldObj.getTileEntity(new BlockPos(this.maxX, this.maxY, z));
 
                 if (tileAt instanceof TileEntityAirLock)
                 {
@@ -221,7 +222,7 @@ class AirLockProtocol
 
             for (int z = this.minZ; z <= this.maxZ; z++)
             {
-                final TileEntity tileAt = this.worldObj.getTileEntity(this.maxX, this.minY, z);
+                final TileEntity tileAt = this.worldObj.getTileEntity(new BlockPos(this.maxX, this.minY, z));
 
                 if (tileAt instanceof TileEntityAirLock)
                 {

@@ -55,7 +55,7 @@ public class GuiBuggy extends GuiContainerGC
     {
         this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.fuel.name"), 8, 2 + 3, 4210752);
 
-        this.fontRendererObj.drawString(GCCoreUtil.translate(this.upperChestInventory.getInventoryName()), 8, this.type == 0 ? 50 : 39, 4210752);
+        this.fontRendererObj.drawString(GCCoreUtil.translate(this.upperChestInventory.getName()), 8, this.type == 0 ? 50 : 39, 4210752);
 
         if (this.mc.thePlayer != null && this.mc.thePlayer.ridingEntity != null && this.mc.thePlayer.ridingEntity instanceof EntityBuggy)
         {

@@ -17,11 +17,11 @@ public class TileEntitySolarPanelRenderer extends TileEntitySpecialRenderer
     public ModelSolarPanel model = new ModelSolarPanel();
 
     @Override
-    public void renderTileEntityAt(TileEntity var1, double par2, double par4, double par6, float var8)
+    public void renderTileEntityAt(TileEntity tile, double par2, double par4, double par6, float partialTickTime, int par9)
     {
-        TileEntitySolar panel = (TileEntitySolar) var1;
+        TileEntitySolar panel = (TileEntitySolar) tile;
 
-        if (var1.getBlockMetadata() >= BlockSolar.ADVANCED_METADATA)
+        if (tile.getBlockMetadata() >= BlockSolar.ADVANCED_METADATA)
         {
             this.bindTexture(TileEntitySolarPanelRenderer.solarPanelAdvTexture);
         }
@@ -42,8 +42,8 @@ public class TileEntitySolarPanelRenderer extends TileEntitySpecialRenderer
         GL11.glRotatef(180.0F, 0, 0, 1);
         GL11.glRotatef(-90.0F, 0, 1, 0);
 
-        float celestialAngle = (panel.getWorldObj().getCelestialAngle(1.0F) - 0.784690560F) * 360.0F;
-        float celestialAngle2 = panel.getWorldObj().getCelestialAngle(1.0F) * 360.0F;
+        float celestialAngle = (panel.getWorld().getCelestialAngle(1.0F) - 0.784690560F) * 360.0F;
+        float celestialAngle2 = panel.getWorld().getCelestialAngle(1.0F) * 360.0F;
 
         GL11.glRotatef(panel.currentAngle - (celestialAngle - celestialAngle2), 1.0F, 0.0F, 0.0F);
 

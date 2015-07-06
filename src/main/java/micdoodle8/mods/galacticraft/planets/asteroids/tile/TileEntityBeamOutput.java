@@ -91,10 +91,10 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
     {
         this.nodeList.clear();
 
-        int chunkXMin = this.xCoord - 15 >> 4;
-        int chunkZMin = this.zCoord - 15 >> 4;
-        int chunkXMax = this.xCoord + 15 >> 4;
-        int chunkZMax = this.zCoord + 15 >> 4;
+        int chunkXMin = this.getPos().getX() - 15 >> 4;
+        int chunkZMin = this.getPos().getZ() - 15 >> 4;
+        int chunkXMax = this.getPos().getX() + 15 >> 4;
+        int chunkZMax = this.getPos().getZ() + 15 >> 4;
 
         for (int cX = chunkXMin; cX <= chunkXMax; cX++)
         {

@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
@@ -14,7 +13,10 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class TileEntityRefinery extends TileBaseElectricBlockWithInventory implements ISidedInventory, IFluidHandler
 {
@@ -36,9 +38,9 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
 
         if (!this.worldObj.isRemote)
         {
@@ -210,13 +212,13 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
         return GCCoreUtil.translate("container.refinery.name");
     }
 
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return true;
     }
@@ -224,13 +226,13 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     // ISidedInventory Implementation:
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int side)
+    public int[] getSlotsForFace(EnumFacing side)
     {
         return new int[] { 0, 1, 2 };
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
+    public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
         if (itemstack != null && this.isItemValidForSlot(slotID, itemstack))
         {
@@ -250,7 +252,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
         if (itemstack != null && this.isItemValidForSlot(slotID, itemstack))
         {
@@ -299,7 +301,8 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     @Override
     public boolean canDrain(EnumFacing from, Fluid fluid)
     {
-        if (from.equals(EnumFacing.getOrientation((this.getBlockMetadata() + 2) ^ 1)))
+        if (from.equals(getFacing()))
+//        if (from.equals(EnumFacing.getOrientation((this.getBlockMetadata() + 2) ^ 1)))
         {
             return this.fuelTank.getFluid() != null && this.fuelTank.getFluidAmount() > 0;
         }
@@ -310,7 +313,8 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     @Override
     public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain)
     {
-        if (from.equals(EnumFacing.getOrientation((this.getBlockMetadata() + 2) ^ 1)))
+        if (from.equals(getFacing()))
+//        if (from.equals(EnumFacing.getOrientation((this.getBlockMetadata() + 2) ^ 1)))
         {
             return this.fuelTank.drain(resource.amount, doDrain);
         }
@@ -321,7 +325,8 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     @Override
     public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain)
     {
-        if (from.equals(EnumFacing.getOrientation((this.getBlockMetadata() + 2) ^ 1)))
+        if (from.equals(getFacing()))
+//        if (from.equals(EnumFacing.getOrientation((this.getBlockMetadata() + 2) ^ 1)))
         {
             return this.drain(from, new FluidStack(GalacticraftCore.fluidFuel, maxDrain), doDrain);
         }
@@ -332,7 +337,8 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     @Override
     public boolean canFill(EnumFacing from, Fluid fluid)
     {
-        if (from.equals(EnumFacing.getOrientation(this.getBlockMetadata() + 2)))
+        if (from.equals(getFacing()))
+//        if (from.equals(EnumFacing.getOrientation(this.getBlockMetadata() + 2)))
         {
             return this.oilTank.getFluid() == null || this.oilTank.getFluidAmount() < this.oilTank.getCapacity();
         }
@@ -345,7 +351,8 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     {
         int used = 0;
 
-        if (from.equals(EnumFacing.getOrientation(this.getBlockMetadata() + 2)))
+        if (from.equals(getFacing()))
+//        if (from.equals(EnumFacing.getOrientation(this.getBlockMetadata() + 2)))
         {
             final String liquidName = FluidRegistry.getFluidName(resource);
 
@@ -367,15 +374,22 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     {
         FluidTankInfo[] tankInfo = new FluidTankInfo[] { };
 
-        if (from == EnumFacing.getOrientation(this.getBlockMetadata() + 2))
+        if (from.equals(getFacing()))
+//        if (from == EnumFacing.getOrientation(this.getBlockMetadata() + 2))
         {
             tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.oilTank) };
         }
-        else if (from == EnumFacing.getOrientation((this.getBlockMetadata() + 2) ^ 1))
+        else if (from.equals(getFacing()))
+//        else if (from == EnumFacing.getOrientation((this.getBlockMetadata() + 2) ^ 1))
         {
             tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.fuelTank) };
         }
 
         return tankInfo;
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return null;
     }
 }

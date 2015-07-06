@@ -4,8 +4,8 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
+import micdoodle8.mods.galacticraft.core.client.objload.AdvancedModelLoader;
+import micdoodle8.mods.galacticraft.core.client.objload.IModelCustom;
 
 public class ModelBubble extends ModelBase
 {

@@ -32,7 +32,7 @@ public class GuiEnergyStorageModule extends GuiContainer
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString(this.tileEntity.getInventoryName(), this.xSize / 2 - this.fontRendererObj.getStringWidth(this.tileEntity.getInventoryName()) / 2, 6, 4210752);
+        this.fontRendererObj.drawString(this.tileEntity.getName(), this.xSize / 2 - this.fontRendererObj.getStringWidth(this.tileEntity.getName()) / 2, 6, 4210752);
         float energy = this.tileEntity.getEnergyStoredGC();
         if (energy + 49 > this.tileEntity.getMaxEnergyStoredGC())
         {

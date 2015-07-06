@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.tile.IColorable;
@@ -45,13 +46,13 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
 
         if (!this.worldObj.isRemote && this.ticks % 60 == 0 && this.lastPipeColor != this.getColor())
         {
-            GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.dimensionId);
+            GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.getDimensionId());
             this.lastPipeColor = this.getColor();
         }
     }
@@ -81,8 +82,7 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
 
         if (this.worldObj != null && this.worldObj.isRemote)
         {
-            final BlockVec3 thisVec = new BlockVec3(this);
-            this.worldObj.func_147479_m(thisVec.x, thisVec.y, thisVec.z);
+            this.worldObj.notifyLightSet(getPos());
         }
     }
 
@@ -96,8 +96,7 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
         {
             if (this.worldObj.isRemote)
             {
-                final BlockVec3 thisVec = new BlockVec3(this);
-                this.worldObj.func_147479_m(thisVec.x, thisVec.y, thisVec.z);
+                this.worldObj.notifyLightSet(getPos());
             }
             else
             {
@@ -117,7 +116,7 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
     @Override
     public void onAdjacentColorChanged(EnumFacing direction)
     {
-        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+        this.worldObj.markBlockForUpdate(this.getPos());
 
         if (!this.worldObj.isRemote)
         {
@@ -150,7 +149,7 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
 
         if (this.pipeColor != colorBefore && this.worldObj instanceof WorldClient)
         {
-            this.worldObj.func_147479_m(this.xCoord, this.yCoord, this.zCoord);
+            this.worldObj.notifyLightSet(this.getPos());
         }
     }
 }

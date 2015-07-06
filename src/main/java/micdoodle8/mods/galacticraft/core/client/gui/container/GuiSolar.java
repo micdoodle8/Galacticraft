@@ -40,7 +40,7 @@ public class GuiSolar extends GuiContainerGC
         switch (par1GuiButton.id)
         {
         case 0:
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.solarPanel.xCoord, this.solarPanel.yCoord, this.solarPanel.zCoord, 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.solarPanel.getPos(), 0 }));
             break;
         }
     }
@@ -76,7 +76,7 @@ public class GuiSolar extends GuiContainerGC
         int offsetY = 35;
         this.buttonEnableSolar.enabled = this.solarPanel.disableCooldown == 0;
         this.buttonEnableSolar.displayString = !this.solarPanel.getDisabled(0) ? GCCoreUtil.translate("gui.button.disable.name") : GCCoreUtil.translate("gui.button.enable.name");
-        String displayString = this.solarPanel.getInventoryName();
+        String displayString = this.solarPanel.getName();
         this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 7, 4210752);
         displayString = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();
         this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 45 + 23 - 46 + offsetY, 4210752);
@@ -97,12 +97,12 @@ public class GuiSolar extends GuiContainerGC
             return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled.name");
         }
 
-        if (!this.solarPanel.getWorldObj().isDaytime())
+        if (!this.solarPanel.getWorld().isDaytime())
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.blockedfully.name");
         }
 
-        if (this.solarPanel.getWorldObj().isRaining() || this.solarPanel.getWorldObj().isThundering())
+        if (this.solarPanel.getWorld().isRaining() || this.solarPanel.getWorld().isThundering())
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.raining.name");
         }

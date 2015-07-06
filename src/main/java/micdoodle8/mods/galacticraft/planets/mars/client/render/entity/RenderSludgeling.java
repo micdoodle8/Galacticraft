@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.entity;
 
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
@@ -18,7 +19,7 @@ public class RenderSludgeling extends RenderLiving
 
     public RenderSludgeling()
     {
-        super(new ModelSludgeling(), 0.3F);
+        super(FMLClientHandler.instance().getClient().getRenderManager(), new ModelSludgeling(), 0.3F);
     }
 
     protected ResourceLocation func_110779_a(EntitySludgeling par1EntityArrow)
@@ -43,11 +44,11 @@ public class RenderSludgeling extends RenderLiving
         return 180.0F;
     }
 
-    @Override
-    protected int shouldRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3)
-    {
-        return -1;
-    }
+//    @Override
+//    protected int shouldRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3)
+//    {
+//        return -1;
+//    }
 
     @Override
     public void doRender(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)

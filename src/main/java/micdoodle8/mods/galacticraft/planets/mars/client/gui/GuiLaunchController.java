@@ -267,7 +267,7 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        String displayString = this.launchController.getOwnerName() + "\'s " + this.launchController.getInventoryName();
+        String displayString = this.launchController.getOwnerName() + "\'s " + this.launchController.getName();
         this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 5, 4210752);
 
         if (this.cannotEditTimer > 0)

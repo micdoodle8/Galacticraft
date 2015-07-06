@@ -39,7 +39,7 @@ public class GuiCargoUnloader extends GuiContainerGC
         switch (par1GuiButton.id)
         {
         case 0:
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.cargoUnloader.xCoord, this.cargoUnloader.yCoord, this.cargoUnloader.zCoord, 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.cargoUnloader.getPos(), 0 }));
             break;
         }
     }
@@ -70,7 +70,7 @@ public class GuiCargoUnloader extends GuiContainerGC
     {
         int offsetX = -17;
         int offsetY = 45;
-        this.fontRendererObj.drawString(this.cargoUnloader.getInventoryName(), 60, 12, 4210752);
+        this.fontRendererObj.drawString(this.cargoUnloader.getName(), 60, 12, 4210752);
         this.buttonLoadItems.enabled = this.cargoUnloader.disableCooldown == 0;
         this.buttonLoadItems.displayString = !this.cargoUnloader.getDisabled(0) ? GCCoreUtil.translate("gui.button.stopunloading.name") : GCCoreUtil.translate("gui.button.unloaditems.name");
         this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus(), 28 + offsetX, 45 + 23 - 46 + offsetY, 4210752);

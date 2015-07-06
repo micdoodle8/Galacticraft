@@ -86,13 +86,13 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
         return GCCoreUtil.translate("container.marsLander.name");
     }
 
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return true;
     }

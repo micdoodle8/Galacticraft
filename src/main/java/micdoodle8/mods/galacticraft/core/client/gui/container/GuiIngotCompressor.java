@@ -49,7 +49,7 @@ public class GuiIngotCompressor extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString(this.tileEntity.getInventoryName(), 10, 6, 4210752);
+        this.fontRendererObj.drawString(this.tileEntity.getName(), 10, 6, 4210752);
         String displayText = GCCoreUtil.translate("gui.message.fuel.name") + ":";
         this.fontRendererObj.drawString(displayText, 50 - this.fontRendererObj.getStringWidth(displayText), 79, 4210752);
 

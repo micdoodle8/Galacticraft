@@ -85,10 +85,10 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
                     //CO2 -> CO2 tank
                     if (this.gasTank2.getFluidAmount() < this.gasTank2.getCapacity())
                     {
-                        Block blockAbove = this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord);
+                        Block blockAbove = this.worldObj.getBlock(this.getPos().getX(), this.getPos().getY() + 1, this.getPos().getZ());
                         if (blockAbove != null && blockAbove.getMaterial() == Material.air && blockAbove!=GCBlocks.breatheableAir && blockAbove!=GCBlocks.brightBreatheableAir)
                         {
-                            if (!OxygenUtil.inOxygenBubble(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1D, this.zCoord + 0.5D))
+                            if (!OxygenUtil.inOxygenBubble(this.worldObj, this.getPos().getX() + 0.5D, this.getPos().getY() + 1D, this.getPos().getZ() + 0.5D))
                             {
 	                        	FluidStack gcAtmosphere = FluidRegistry.getFluidStack("carbondioxide", 4);
 	                            this.gasTank2.fill(gcAtmosphere, true);
@@ -285,13 +285,13 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     }
 
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return true;
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
         return GCCoreUtil.translate("tile.marsMachine.5.name");
     }
@@ -299,13 +299,13 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     // ISidedInventory Implementation:
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int side)
+    public int[] getSlotsForFace(EnumFacing side)
     {
         return new int[] { 0, 1, 2, 3, 4 };
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
+    public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
         if (this.isItemValidForSlot(slotID, itemstack))
         {
@@ -325,7 +325,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
         if (this.isItemValidForSlot(slotID, itemstack))
         {
@@ -467,7 +467,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     {
         if (this.blockMetadata == -1)
         {
-            this.blockMetadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
+            this.blockMetadata = this.worldObj.getBlockMetadata(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
         }
 
         return this.blockMetadata & 3;

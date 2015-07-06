@@ -121,7 +121,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 			}
 			if (this.linkedMinerID == null)
 	    	{
-	        	if (EntityAstroMiner.spawnMinerAtBase(this.worldObj, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1, (this.facing + 2) ^ 1, new BlockVec3(this), player))
+	        	if (EntityAstroMiner.spawnMinerAtBase(this.worldObj, this.getPos().getX() + 1, this.getPos().getY() + 1, this.getPos().getZ() + 1, (this.facing + 2) ^ 1, new BlockVec3(this), player))
 	        	{
 	        		this.findTargetPoints();
 	        		return true;
@@ -171,7 +171,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             }
             else
             {
-                this.worldObj.removeTileEntity(this.xCoord, this.yCoord, this.zCoord);
+                this.worldObj.removeTileEntity(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
             }
         }
 
@@ -243,11 +243,11 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     @Override
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+        return this.worldObj.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return true;
     }
@@ -319,7 +319,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     {
 	    if (this.worldObj.isRemote)
 	    {
-	    	GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.S_REQUEST_MINERBASE_FACING, new Object[] { this.xCoord, this.yCoord, this.zCoord } ));
+	    	GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.S_REQUEST_MINERBASE_FACING, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ() } ));
 	    }
     }
 
@@ -334,7 +334,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
         return GCCoreUtil.translate("tile.minerBase.name");
     }
@@ -382,7 +382,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 	public void setMainBlockPos(int x, int y, int z)
 	{
 		this.masterTile = null;
-		if (this.xCoord == x && this.yCoord == y && this.zCoord == z)
+		if (this.getPos().getX() == x && this.getPos().getY() == y && this.getPos().getZ() == z)
 		{
 			this.isMaster = true;
 			this.mainBlockPosition = null;
@@ -419,7 +419,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         	if (holding != null && holding.getItem() == AsteroidsItems.astroMiner)
         		return false;
         	
-        	entityPlayer.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_ASTEROIDS, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+        	entityPlayer.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_ASTEROIDS, this.worldObj, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
         	return true;
         }
         else
@@ -443,7 +443,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             {
 	            for (int z = 0; z < 2; z++)
                 {
-                    this.worldObj.destroyBlock(this.xCoord + x, this.yCoord + y, this.zCoord + z, false);
+                    this.worldObj.destroyBlock(this.getPos().getX() + x, this.getPos().getY() + y, this.getPos().getZ() + z, false);
                 }
             }
         }
@@ -497,9 +497,9 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 
     private void updateClient()
     {
-    	int x = this.xCoord;
-    	int y = this.yCoord;
-    	int z = this.zCoord;
+    	int x = this.getPos().getX();
+    	int y = this.getPos().getY();
+    	int z = this.getPos().getZ();
     	if (this.mainBlockPosition != null)
     	{
     		x = this.mainBlockPosition.x;
@@ -507,7 +507,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     		z = this.mainBlockPosition.z;
     	}
     	int link = (this.linkedMinerID != null) ? 1:0;
-    	GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.C_UPDATE_MINERBASE_FACING, new Object[] { this.xCoord, this.yCoord, this.zCoord, this.facing, x, y, z, link} ), this.worldObj.provider.dimensionId);
+    	GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.C_UPDATE_MINERBASE_FACING, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.facing, x, y, z, link} ), this.worldObj.provider.dimensionId);
     }
     
     @Override
@@ -556,7 +556,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
    
    @Override
-   public int[] getAccessibleSlotsFromSide(int side)
+   public int[] getSlotsForFace(EnumFacing side)
    {
        if (this.isMaster)
        {
@@ -573,13 +573,13 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 }
 
    @Override
-   public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
+   public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
    {
        return false;
    }
 
    @Override
-   public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
+   public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
    {
        if (this.isMaster)
        {
@@ -726,7 +726,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 		}
 		
 		posnTarget.modifyPositionFromSide(EnumFacing.getOrientation(baseFacing), this.worldObj.rand.nextInt(16) + 32);
-		int miny = Math.min(this.yCoord * 2 - 90, this.yCoord - 22);
+		int miny = Math.min(this.getPos().getY() * 2 - 90, this.getPos().getY() - 22);
 		if (miny < 5) miny = 5;
 		posnTarget.y = miny + 5 + this.worldObj.rand.nextInt(4);
 
@@ -751,7 +751,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 		}
 		this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, 7).modifyPositionFromSide(EnumFacing.UP, 11));
 		this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, -7).modifyPositionFromSide(EnumFacing.UP, 11));
-		if (posnTarget.y < this.yCoord - 38)
+		if (posnTarget.y < this.getPos().getY() - 38)
 		{
 			this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, 13).modifyPositionFromSide(EnumFacing.UP, 22));
 			this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(EnumFacing.UP, 22));

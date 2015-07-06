@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
+import micdoodle8.mods.galacticraft.core.client.objload.AdvancedModelLoader;
 import net.smart.render.ModelRotationRenderer;
 import org.lwjgl.opengl.GL11;
 

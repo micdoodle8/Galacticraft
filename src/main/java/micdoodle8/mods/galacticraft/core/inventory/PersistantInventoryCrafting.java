@@ -69,7 +69,7 @@ public class PersistantInventoryCrafting implements IInventory
      * Returns the name of the inventory.
      */
     @Override
-    public String getInventoryName()
+    public String getName()
     {
         return "container.crafting";
     }
@@ -80,7 +80,7 @@ public class PersistantInventoryCrafting implements IInventory
      * used directly.
      */
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return false;
     }
@@ -195,12 +195,12 @@ public class PersistantInventoryCrafting implements IInventory
     }
 
     @Override
-    public void openInventory()
+    public void openInventory(EntityPlayer player)
     {
     }
 
     @Override
-    public void closeInventory()
+    public void closeInventory(EntityPlayer player)
     {
     }
 

@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
@@ -16,16 +18,16 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
 {
     // The the position of the main block
     @NetworkedField(targetSide = Side.CLIENT)
-    public BlockVec3 mainBlockPosition;
+    public BlockPos mainBlockPosition;
     private WeakReference<TileEntityShortRangeTelepad> mainTelepad = null;
 
-    public void setMainBlock(BlockVec3 mainBlock)
+    public void setMainBlock(BlockPos mainBlock)
     {
-        this.mainBlockPosition = mainBlock.clone();
+        this.mainBlockPosition = mainBlock;
 
         if (!this.worldObj.isRemote)
         {
-            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+            this.worldObj.markBlockForUpdate(this.getPos());
         }
     }
 
@@ -46,9 +48,9 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
 
         TileEntityShortRangeTelepad telepad = this.getBaseTelepad();
 
@@ -70,7 +72,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
 
         if (mainTelepad == null)
         {
-            TileEntity tileEntity = this.mainBlockPosition.getTileEntity(this.worldObj);
+            TileEntity tileEntity = this.worldObj.getTileEntity(this.mainBlockPosition);
 
             if (tileEntity != null)
             {
@@ -83,7 +85,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
 
         if (mainTelepad == null)
         {
-            this.worldObj.setBlockToAir(this.mainBlockPosition.x, this.mainBlockPosition.y, this.mainBlockPosition.z);
+            this.worldObj.setBlockToAir(this.mainBlockPosition);
         }
         else
         {
@@ -95,7 +97,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
             }
             else
             {
-                this.worldObj.removeTileEntity(this.xCoord, this.yCoord, this.zCoord);
+                this.worldObj.removeTileEntity(this.getPos());
             }
         }
 
@@ -106,7 +108,8 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        this.mainBlockPosition = new BlockVec3(nbt.getCompoundTag("mainBlockPosition"));
+        NBTTagCompound tagCompound = nbt.getCompoundTag("mainBlockPosition");
+        this.mainBlockPosition = new BlockPos(tagCompound.getInteger("x"), tagCompound.getInteger("y"), tagCompound.getInteger("z"));
     }
 
     @Override
@@ -116,7 +119,11 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
 
         if (this.mainBlockPosition != null)
         {
-            nbt.setTag("mainBlockPosition", this.mainBlockPosition.writeToNBT(new NBTTagCompound()));
+            NBTTagCompound tagCompound = new NBTTagCompound();
+            tagCompound.setInteger("x", this.mainBlockPosition.getX());
+            tagCompound.setInteger("y", this.mainBlockPosition.getY());
+            tagCompound.setInteger("z", this.mainBlockPosition.getZ());
+            nbt.setTag("mainBlockPosition", tagCompound);
         }
     }
 
@@ -151,8 +158,8 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
             {
                 for (int z = -1; z <= 1; z++)
                 {
-                    final BlockVec3 vecToCheck = new BlockVec3(this.xCoord + x, this.yCoord  + y, this.zCoord + z);
-                    if (vecToCheck.getTileEntity(this.worldObj) instanceof TileEntityShortRangeTelepad)
+                    final BlockPos vecToCheck = this.getPos().add(x, y, z);
+                    if (this.worldObj.getTileEntity(vecToCheck) instanceof TileEntityShortRangeTelepad)
                     {
                         this.setMainBlock(vecToCheck);
                         return;

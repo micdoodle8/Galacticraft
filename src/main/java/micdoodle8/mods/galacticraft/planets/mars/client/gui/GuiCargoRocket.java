@@ -87,11 +87,11 @@ public class GuiCargoRocket extends GuiContainerGC
     {
         if (this.rocket.rocketType.getInventorySpace() == 2)
         {
-            this.fontRendererObj.drawString(GCCoreUtil.translate(this.upperChestInventory.getInventoryName()), 8, 76 + (this.rocket.rocketType.getInventorySpace() - 20) / 9 * 18, 4210752);
+            this.fontRendererObj.drawString(GCCoreUtil.translate(this.upperChestInventory.getName()), 8, 76 + (this.rocket.rocketType.getInventorySpace() - 20) / 9 * 18, 4210752);
         }
         else
         {
-            this.fontRendererObj.drawString(GCCoreUtil.translate(this.upperChestInventory.getInventoryName()), 8, 89 + (this.rocket.rocketType.getInventorySpace() - 20) / 9 * 18, 4210752);
+            this.fontRendererObj.drawString(GCCoreUtil.translate(this.upperChestInventory.getName()), 8, 89 + (this.rocket.rocketType.getInventorySpace() - 20) / 9 * 18, 4210752);
         }
 
         String str = GCCoreUtil.translate("gui.message.fuel.name") + ":";

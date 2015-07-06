@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
@@ -33,7 +33,7 @@ public class BlockIceAsteroids extends BlockBreakable
         this.setCreativeTab(CreativeTabs.tabBlock);
         this.setBlockTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
         this.setHardness(0.5F);
-        this.setBlockName(assetName);
+        this.setUnlocalizedName(assetName);
         this.setStepSound(soundTypeGlass);
     }
 

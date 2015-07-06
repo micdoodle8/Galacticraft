@@ -112,7 +112,7 @@ public class GuiGasLiquefier extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString(this.tileEntity.getInventoryName(), 40, 5, 4210752);
+        this.fontRendererObj.drawString(this.tileEntity.getName(), 40, 5, 4210752);
         String displayText = "";
         int yOffset = -18;
 

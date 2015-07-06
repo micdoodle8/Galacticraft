@@ -44,7 +44,7 @@ public class TileEntityHydrogenPipe extends TileEntity implements ITransmitter
 
         if (this.worldObj != null && this.worldObj.isRemote)
         {
-            this.worldObj.func_147479_m(this.xCoord, this.yCoord, this.zCoord);
+            this.worldObj.notifyLightSet(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
         }
     }
 
@@ -170,7 +170,7 @@ public class TileEntityHydrogenPipe extends TileEntity implements ITransmitter
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-        return AxisAlignedBB.fromBounds(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1);
+        return AxisAlignedBB.fromBounds(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getPos().getX() + 1, this.getPos().getY() + 1, this.getPos().getZ() + 1);
     }
 
     @Override

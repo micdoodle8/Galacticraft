@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
@@ -24,7 +24,7 @@ public class BlockMinerBase extends BlockTileGC implements ItemBlockDesc.IBlockS
     {
         super(Material.rock);
         this.blockHardness = 3.0F;
-        this.setBlockName(assetName);
+        this.setUnlocalizedName(assetName);
         this.setBlockTextureName(AsteroidsModule.TEXTURE_PREFIX + "machineframe");
         this.setCreativeTab(CreativeTabs.tabBlock);
         this.setStepSound(soundTypeMetal);

@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
@@ -10,14 +8,15 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDecompressor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -29,21 +28,21 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements ItemBloc
     public static final int OXYGEN_COMPRESSOR_METADATA = 0;
     public static final int OXYGEN_DECOMPRESSOR_METADATA = 4;
 
-    private IIcon iconMachineSide;
+    /*private IIcon iconMachineSide;
     private IIcon iconCompressor1;
     private IIcon iconCompressor2;
     private IIcon iconDecompressor;
     private IIcon iconOxygenInput;
     private IIcon iconOxygenOutput;
-    private IIcon iconInput;
+    private IIcon iconInput;*/
 
     public BlockOxygenCompressor(boolean isActive, String assetName)
     {
         super(Material.rock);
         this.setHardness(1.0F);
-        this.setStepSound(Block.soundTypeMetal);
-        this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
-        this.setBlockName(assetName);
+        this.setStepSound(Block.soundTypeStone);
+        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -58,7 +57,7 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements ItemBloc
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
@@ -69,12 +68,12 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements ItemBloc
         this.iconOxygenInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_oxygen_input");
         this.iconOxygenOutput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_oxygen_output");
         this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
-    }
+    }*/
 
     @Override
-    public boolean onUseWrench(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        final int metadata = par1World.getBlockMetadata(x, y, z);
+        final int metadata = getMetaFromState(world.getBlockState(pos));
         int original = metadata;
 
         if (metadata >= BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
@@ -114,26 +113,27 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements ItemBloc
             meta += BlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA;
         }
 
-        TileEntity te = par1World.getTileEntity(x, y, z);
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileBaseUniversalElectrical)
         {
             ((TileBaseUniversalElectrical) te).updateFacing();
         }
 
-        par1World.setBlockMetadataWithNotify(x, y, z, meta, 3);
+        world.setBlockState(pos, getStateFromMeta(meta), 3);
         return true;
     }
 
     @Override
-    public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        entityPlayer.openGui(GalacticraftCore.instance, -1, world, x, y, z);
+        entityPlayer.openGui(GalacticraftCore.instance, -1, world, pos.getX(), pos.getY(), pos.getZ());
         return true;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
+        int metadata = getMetaFromState(state);
         if (metadata >= BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
         {
             return new TileEntityOxygenDecompressor();
@@ -148,7 +148,7 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements ItemBloc
         }
     }
 
-    @Override
+    /*@Override
     public IIcon getIcon(int side, int metadata)
     {
         if (side == 0 || side == 1)
@@ -164,7 +164,7 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements ItemBloc
             {
                 return this.iconInput;
             }
-            else if (side == EnumFacing.getOrientation(metadata + 2).getOpposite().ordinal())
+            else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
             {
                 return this.iconOxygenOutput;
             }
@@ -185,7 +185,7 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements ItemBloc
             {
                 return this.iconInput;
             }
-            else if (side == EnumFacing.getOrientation(metadata + 2).getOpposite().ordinal())
+            else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
             {
                 return this.iconOxygenInput;
             }
@@ -202,12 +202,12 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements ItemBloc
         {
             return this.iconMachineSide;
         }
-    }
+    }*/
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        final int angle = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         int change = 0;
 
         switch (angle)
@@ -226,16 +226,16 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements ItemBloc
             break;
         }
 
-        if (itemStack.getItemDamage() >= BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
+        if (stack.getItemDamage() >= BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
         {
             change += BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA;
         }
-        else if (itemStack.getItemDamage() >= BlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
+        else if (stack.getItemDamage() >= BlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
         {
             change += BlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA;
         }
 
-        world.setBlockMetadataWithNotify(x, y, z, change, 3);
+        worldIn.setBlockState(pos, getStateFromMeta(change), 3);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -247,8 +247,9 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements ItemBloc
     }
 
     @Override
-    public int damageDropped(int metadata)
+    public int damageDropped(IBlockState state)
     {
+        int metadata = getMetaFromState(state);
         if (metadata >= BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
         {
             return BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA;
@@ -264,9 +265,9 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements ItemBloc
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos)
     {
-        int metadata = this.getDamageValue(world, x, y, z);
+        int metadata = this.getDamageValue(world, pos);
 
         return new ItemStack(this, 1, metadata);
     }

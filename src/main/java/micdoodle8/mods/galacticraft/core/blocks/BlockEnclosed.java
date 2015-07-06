@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
@@ -15,13 +13,16 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -29,17 +30,17 @@ import java.util.List;
 
 public class BlockEnclosed extends BlockContainer implements IPartialSealableBlock, ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {
-    private IIcon[] enclosedIcons;
+    //private IIcon[] enclosedIcons;
 
     public enum EnumEnclosedBlock
     {
-        TE_CONDUIT(4, 2, null, "enclosed_te_conduit"), //CURRENTLY UNUSED
+        TE_CONDUIT(0, 2, null, "enclosed_te_conduit"),
         OXYGEN_PIPE(1, -1, null, "enclosed_oxygen_pipe"),
         IC2_COPPER_CABLE(2, 0, null, "enclosed_copper_cable"),
         IC2_GOLD_CABLE(3, 3, null, "enclosed_gold_cable"),
-        IC2_HV_CABLE(0, 6, null, "enclosed_hv_cable"),
+        IC2_HV_CABLE(4, 6, null, "enclosed_hv_cable"),
         IC2_GLASS_FIBRE_CABLE(5, 9, null, "enclosed_glassfibre_cable"),
-        IC2_LV_CABLE(6, 13, null, "enclosed_lv_cable"),
+        IC2_LV_CABLE(6, 10, null, "enclosed_lv_cable"),
         BC_ITEM_STONEPIPE(7, -1, "PipeItemsStone", "enclosed_itempipe_stone"),
         BC_ITEM_COBBLESTONEPIPE(8, -1, "PipeItemsCobblestone", "enclosed_itempipe_cobblestone"),
         BC_FLUIDS_STONEPIPE(9, -1, "PipeFluidsStone", "enclosed_liquidpipe_stone"),
@@ -103,8 +104,8 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         this.setResistance(0.2F);
         this.setHardness(0.4f);
         this.setStepSound(Block.soundTypeStone);
-        this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
-        this.setBlockName(assetName);
+        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -118,14 +119,15 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 
         if (CompatibilityManager.isTELoaded())
         {
-            // par3List.add(new ItemStack(par1, 1, 0));
+            // par3List.add(new ItemStack(par1, 1,
+            // EnumEnclosedBlock.TE_CONDUIT.getMetadata()));
         }
 
         if (CompatibilityManager.isIc2Loaded())
         {
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.IC2_COPPER_CABLE.getMetadata()));
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.IC2_GOLD_CABLE.getMetadata()));
-            par3List.add(new ItemStack(par1, 1, 4));  //Damage value not same as metadata for HV_CABLE
+            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.IC2_HV_CABLE.getMetadata()));
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.IC2_GLASS_FIBRE_CABLE.getMetadata()));
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.IC2_LV_CABLE.getMetadata()));
         }
@@ -152,24 +154,20 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int meta)
+    public IIcon getIcon(int par1, int par2)
     {
-        if (meta == 4) meta = 0;  //Deal with item rendering for the HV block
-    	return meta >= this.enclosedIcons.length ? this.blockIcon : this.enclosedIcons[meta];
-    }
+        return par2 >= this.enclosedIcons.length ? this.blockIcon : this.enclosedIcons[par2];
+    }*/
 
     @Override
-    public int damageDropped(int meta)
+    public int damageDropped(IBlockState state)
     {
-        //TE_CONDUIT and HV_CABLE have had to have swapped metadata in 1.7.10 because IC2's TileCable tile entity doesn't like a block with metadata 4
-    	if (meta == 0) return 4;
-        if (meta == 4) return 0;
-    	return meta;
+        return getMetaFromState(state);
     }
 
-    @Override
+    /*@Override
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
         this.enclosedIcons = new IIcon[16];
@@ -180,21 +178,83 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         }
 
         this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "" + EnumEnclosedBlock.OXYGEN_PIPE.getTexture());
+    }*/
+
+    private void tileAdded(TileEntity tileEntity, int metadata)
+    {
+        if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
+        {
+
+        }
+        else if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
+        {
+            if (tileEntity instanceof INetworkConnection)
+            {
+//                ((INetworkConnection) tileEntity).refresh();
+            }
+        }
+        else if (metadata <= EnumEnclosedBlock.IC2_LV_CABLE.getMetadata())
+        {
+            if (CompatibilityManager.isIc2Loaded())
+            {
+                try
+                {
+                    Class<?> clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
+
+                    if (clazz != null && clazz.isInstance(tileEntity))
+                    {
+                        try
+                        {
+                            Method method = clazz.getMethod("onNeighborBlockChange");
+                            method.invoke(tileEntity);
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        else if (metadata <= EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata())
+        {
+        }
+        else if (metadata <= EnumEnclosedBlock.ME_CABLE.getMetadata())
+        {
+        }
+        else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata())
+        {
+            if (tileEntity instanceof IConductor)
+            {
+//            	((IConductor) tileEntity).refresh();
+            }
+        }
+        else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE_HEAVY.getMetadata())
+        {
+            if (tileEntity instanceof IConductor)
+            {
+//                ((IConductor) tileEntity).refresh();
+            }
+        }  	
     }
 
     @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
+    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
     {
-        super.onNeighborBlockChange(world, x, y, z, block);
+        super.onNeighborBlockChange(worldIn, pos, state, neighborBlock);
 
-        int metadata = world.getBlockMetadata(x, y, z);
+        /*int metadata = world.getBlockMetadata(x, y, z);
         final TileEntity tileEntity = world.getTileEntity(x, y, z);
 
         if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
         {
 
         }
-        else if (metadata == EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
+        else if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
         {
             if (tileEntity instanceof INetworkConnection)
             {
@@ -203,7 +263,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         }
         else if (metadata <= EnumEnclosedBlock.IC2_LV_CABLE.getMetadata())
         {
-            if (CompatibilityManager.isIc2Loaded() && tileEntity != null)
+            if (CompatibilityManager.isIc2Loaded())
             {
                 try
                 {
@@ -275,19 +335,19 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
             {
                 ((IConductor) tileEntity).refresh();
             }
-        }
+        }*/
     }
 
     @Override
     public TileEntity createNewTileEntity(World world, int metadata)
     {
-    	TileEntity returnTile = null;
+        TileEntity returnTile = null;
     	
     	if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
         {
     		//TODO
         }
-        else if (metadata == EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
+        else if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
         {
             returnTile = new TileEntityOxygenPipe();
         }
@@ -376,12 +436,14 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         {
             returnTile = new TileEntityAluminumWire(2);
         }
-   	
+
+    	if (returnTile != null) this.tileAdded(returnTile, metadata);
+    	
         return returnTile;
     }
 
     @Override
-    public boolean isSealed(World world, int x, int y, int z, EnumFacing direction)
+    public boolean isSealed(World worldIn, BlockPos pos, EnumFacing direction)
     {
         return true;
     }

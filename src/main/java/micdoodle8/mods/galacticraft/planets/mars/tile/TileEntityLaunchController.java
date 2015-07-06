@@ -114,7 +114,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         {
             if (this.frequency == -1 && this.destFrequency == -1)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, new Object[] { 5, this.xCoord, this.yCoord, this.zCoord, 0 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, new Object[] { 5, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 0 }));
             }
         }
     }
@@ -158,36 +158,36 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
             }
 
             NBTTagCompound nbt = this.chunkLoadTicket.getModData();
-            nbt.setInteger("ChunkLoaderTileX", this.xCoord);
-            nbt.setInteger("ChunkLoaderTileY", this.yCoord);
-            nbt.setInteger("ChunkLoaderTileZ", this.zCoord);
+            nbt.setInteger("ChunkLoaderTileX", this.getPos().getX());
+            nbt.setInteger("ChunkLoaderTileY", this.getPos().getY());
+            nbt.setInteger("ChunkLoaderTileZ", this.getPos().getZ());
 
             for (int x = -2; x <= 2; x++)
             {
                 for (int z = -2; z <= 2; z++)
                 {
-                    Block blockID = this.worldObj.getBlock(this.xCoord + x, this.yCoord, this.zCoord + z);
+                    Block blockID = this.worldObj.getBlock(this.getPos().getX() + x, this.getPos().getY(), this.getPos().getZ() + z);
 
                     if (blockID instanceof BlockLandingPadFull)
                     {
-                        if (this.xCoord + x >> 4 != this.xCoord >> 4 || this.zCoord + z >> 4 != this.zCoord >> 4)
+                        if (this.getPos().getX() + x >> 4 != this.getPos().getX() >> 4 || this.getPos().getZ() + z >> 4 != this.getPos().getZ() >> 4)
                         {
-                            this.connectedPads.add(new ChunkCoordinates(this.xCoord + x, this.yCoord, this.zCoord + z));
+                            this.connectedPads.add(new ChunkCoordinates(this.getPos().getX() + x, this.getPos().getY(), this.getPos().getZ() + z));
 
                             if (placed)
                             {
-                                ChunkLoadingCallback.forceChunk(this.chunkLoadTicket, this.worldObj, this.xCoord + x, this.yCoord, this.zCoord + z, this.getOwnerName());
+                                ChunkLoadingCallback.forceChunk(this.chunkLoadTicket, this.worldObj, this.getPos().getX() + x, this.getPos().getY(), this.getPos().getZ() + z, this.getOwnerName());
                             }
                             else
                             {
-                                ChunkLoadingCallback.addToList(this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.getOwnerName());
+                                ChunkLoadingCallback.addToList(this.worldObj, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getOwnerName());
                             }
                         }
                     }
                 }
             }
 
-            ChunkLoadingCallback.forceChunk(this.chunkLoadTicket, this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.getOwnerName());
+            ChunkLoadingCallback.forceChunk(this.chunkLoadTicket, this.worldObj, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getOwnerName());
         }
     }
 
@@ -200,7 +200,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     @Override
     public ChunkCoordinates getCoords()
     {
-        return new ChunkCoordinates(this.xCoord, this.yCoord, this.zCoord);
+        return new ChunkCoordinates(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
     }
 
     @Override
@@ -241,13 +241,13 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
         return GCCoreUtil.translate("container.launchcontroller.name");
     }
 
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return true;
     }
@@ -259,7 +259,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int side)
+    public int[] getSlotsForFace(EnumFacing side)
     {
         return new int[] { 0 };
     }

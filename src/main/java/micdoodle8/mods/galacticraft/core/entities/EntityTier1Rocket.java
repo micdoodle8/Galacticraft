@@ -237,7 +237,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
     }
 
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return false;
     }

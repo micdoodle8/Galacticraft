@@ -165,7 +165,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
 //    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
 //    public short getFacing()
 //    {
-//        return (short) this.worldObj.getBlockMetadata(MathHelper.floor_double(this.xCoord), MathHelper.floor_double(this.yCoord), MathHelper.floor_double(this.zCoord));
+//        return (short) this.worldObj.getBlockMetadata(MathHelper.floor_double(this.getPos().getX()), MathHelper.floor_double(this.getPos().getY()), MathHelper.floor_double(this.getPos().getZ()));
 //    }
 //
 //    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
@@ -189,7 +189,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
 //    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
 //    public ItemStack getWrenchDrop(EntityPlayer entityPlayer)
 //    {
-//        return this.getBlockType().getPickBlock(null, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+//        return this.getBlockType().getPickBlock(null, this.worldObj, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
 //    } TODO
 
     @Override

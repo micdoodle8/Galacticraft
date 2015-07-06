@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
@@ -26,7 +26,7 @@ public class BlockBeamReflector extends BlockTileGC implements ItemBlockDesc.IBl
     public BlockBeamReflector(String assetName)
     {
         super(Material.iron);
-        this.setBlockName(assetName);
+        this.setUnlocalizedName(assetName);
         this.setBlockTextureName("stone");
         this.setStepSound(Block.soundTypeMetal);
     }

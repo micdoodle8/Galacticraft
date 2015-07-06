@@ -104,7 +104,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     @Override
     public Vector3 getInputPoint()
     {
-        Vector3 headVec = new Vector3(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5);
+        Vector3 headVec = new Vector3(this.getPos().getX() + 0.5, this.getPos().getY() + 0.5, this.getPos().getZ() + 0.5);
         EnumFacing facingDir = EnumFacing.getOrientation(this.facing);
         headVec.x += facingDir.offsetX * 0.1F;
         headVec.y += facingDir.offsetY * 0.1F;
@@ -115,7 +115,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     @Override
     public Vector3 getOutputPoint(boolean offset)
     {
-        Vector3 headVec = new Vector3(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5);
+        Vector3 headVec = new Vector3(this.getPos().getX() + 0.5, this.getPos().getY() + 0.5, this.getPos().getZ() + 0.5);
         EnumFacing facingDir = EnumFacing.getOrientation(this.facing);
         headVec.x += facingDir.offsetX * 0.1F;
         headVec.y += facingDir.offsetY * 0.1F;

@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.api.transmission.tile;
 
 
+import net.minecraft.util.EnumFacing;
+
 /**
  * Applied to all TileEntities that can interact with oxygen.
  */

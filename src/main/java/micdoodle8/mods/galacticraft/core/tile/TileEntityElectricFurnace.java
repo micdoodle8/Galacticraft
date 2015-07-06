@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
@@ -65,16 +67,16 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
         if (!this.initialised )
         {
             int metadata = this.getBlockMetadata();
             //for version update compatibility
-            Block b = this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord);
+            Block b = this.worldObj.getBlockState(this.getPos()).getBlock();
             if (b == GCBlocks.machineBase)
             {
-                this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, GCBlocks.machineTiered, 4, 2);
+                this.worldObj.setBlockState(this.getPos(), GCBlocks.machineTiered.getDefaultState()/*,s 4*/, 2);
             }
             else if (metadata >= 8)
             {
@@ -86,7 +88,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
             this.initialised = true;
         }
 
-        super.updateEntity();
+        super.update();
 
         if (!this.worldObj.isRemote)
         {
@@ -131,14 +133,14 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
      */
     public boolean canProcess()
     {
-        if (this.containingItems[1] == null || FurnaceRecipes.smelting().getSmeltingResult(this.containingItems[1]) == null)
+        if (this.containingItems[1] == null || FurnaceRecipes.instance().getSmeltingResult(this.containingItems[1]) == null)
         {
             return false;
         }
 
         if (this.containingItems[2] != null)
         {
-            if (!this.containingItems[2].isItemEqual(FurnaceRecipes.smelting().getSmeltingResult(this.containingItems[1])))
+            if (!this.containingItems[2].isItemEqual(FurnaceRecipes.instance().getSmeltingResult(this.containingItems[1])))
             {
                 return false;
             }
@@ -160,7 +162,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     {
         if (this.canProcess())
         {
-            ItemStack resultItemStack = FurnaceRecipes.smelting().getSmeltingResult(this.containingItems[1]);
+            ItemStack resultItemStack = FurnaceRecipes.instance().getSmeltingResult(this.containingItems[1]);
 
             if (this.containingItems[2] == null)
             {
@@ -216,16 +218,16 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
         return GCCoreUtil.translate(this.tierGC == 1 ? "tile.machine.2.name" : "tile.machine.7.name");
     }
 
-    @Override
-    public boolean hasCustomInventoryName()
-    {
-        return true;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return true;
+//    }
 
     /**
      * Returns true if automation is allowed to insert the given stack (ignoring
@@ -235,23 +237,23 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
     {
         if (itemStack == null) return false;
-    	return slotID == 1 ? FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null : slotID == 0 && ItemElectricBase.isElectricItem(itemStack.getItem());
+    	return slotID == 1 ? FurnaceRecipes.instance().getSmeltingResult(itemStack) != null : slotID == 0 && ItemElectricBase.isElectricItem(itemStack.getItem());
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int side)
+    public int[] getSlotsForFace(EnumFacing side)
     {
         return new int[] { 0, 1, 2 };
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, int par3)
+    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
     {
         return this.isItemValidForSlot(slotID, par2ItemStack);
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, int par3)
+    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
     {
         return slotID == 2;
     }
@@ -260,5 +262,15 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     public boolean shouldUseEnergy()
     {
         return this.canProcess();
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return null;
     }
 }

@@ -22,7 +22,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.client.model.IModelCustom;
+import micdoodle8.mods.galacticraft.core.client.objload.IModelCustom;
 import net.smart.render.playerapi.SmartRender;
 
 import java.lang.reflect.Constructor;

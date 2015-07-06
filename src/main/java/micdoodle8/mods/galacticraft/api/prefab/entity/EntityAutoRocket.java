@@ -1198,7 +1198,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
         return GCCoreUtil.translate("container.spaceship.name");
     }
@@ -1210,17 +1210,17 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     }
 
     @Override
-    public void openInventory()
+    public void openInventory(EntityPlayer player)
     {
     }
 
     @Override
-    public void closeInventory()
+    public void closeInventory(EntityPlayer player)
     {
     }
 
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return true;
     }

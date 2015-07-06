@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
@@ -13,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,9 +18,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
@@ -31,8 +34,7 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
     public BlockBeamReceiver(String assetName)
     {
         super(Material.iron);
-        this.setBlockName(assetName);
-        this.setBlockTextureName("stone");
+        this.setUnlocalizedName(assetName);
         this.setStepSound(Block.soundTypeMetal);
     }
 
@@ -44,14 +46,14 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
     }
 
     @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
+    public void onNeighborBlockChange(World world, BlockPos pos, Block block)
     {
-        int oldMeta = world.getBlockMetadata(x, y, z);
-        int meta = this.getMetadataFromAngle(world, x, y, z, EnumFacing.getOrientation(oldMeta).getOpposite().ordinal());
+        IBlockState oldMeta = world.getBlockState(pos);
+        int meta = this.getMetadataFromAngle(world, pos, EnumFacing.getFront(getMetaFromState(oldMeta)).getOpposite());
 
         if (meta == -1)
         {
-            world.destroyBlock(x, y, z, true);
+            world.func_147480_a(x, y, z, true);
         }
 
         if (meta != oldMeta)
@@ -61,7 +63,7 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
             if (thisTile instanceof TileEntityBeamReceiver)
             {
             	TileEntityBeamReceiver thisReceiver = (TileEntityBeamReceiver) thisTile; 
-                thisReceiver.setFacing(EnumFacing.getOrientation(meta));
+                thisReceiver.setFacing(ForgeDirection.getOrientation(meta));
                 thisReceiver.invalidateReflector();
                 thisReceiver.initiateReflector();
             }
@@ -75,7 +77,7 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
     {
         TileEntity thisTile = world.getTileEntity(x, y, z);
         if (thisTile instanceof TileEntityBeamReceiver)
-        	((TileEntityBeamReceiver)thisTile).setFacing(EnumFacing.getOrientation(world.getBlockMetadata(x, y, z)));
+        	((TileEntityBeamReceiver)thisTile).setFacing(ForgeDirection.getOrientation(world.getBlockMetadata(x, y, z)));
     }
 
     @Override
@@ -85,7 +87,7 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
 
         if (meta != -1)
         {
-            EnumFacing dir = EnumFacing.getOrientation(meta);
+            ForgeDirection dir = ForgeDirection.getOrientation(meta);
 
             switch (dir)
             {
@@ -115,17 +117,17 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
 
     @SuppressWarnings("rawtypes")
     @Override
-    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, List list, Entity entity)
+    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
     {
-        this.setBlockBoundsBasedOnState(world, x, y, z);
-        super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
+        this.setBlockBoundsBasedOnState(worldIn, pos);
+        super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
     }
 
-    private int getMetadataFromAngle(World world, int x, int y, int z, int side)
+    private int getMetadataFromAngle(World world, BlockPos pos, EnumFacing side)
     {
-        EnumFacing direction = EnumFacing.getOrientation(side).getOpposite();
+        EnumFacing direction = side.getOpposite();
 
-        TileEntity tileAt = world.getTileEntity(x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ);
+        TileEntity tileAt = world.getTileEntity(pos.add(direction.getFrontOffsetX(), direction.getFrontOffsetY(), direction.getFrontOffsetZ()));
 
         if (tileAt instanceof EnergyStorageTile)
         {
@@ -142,10 +144,10 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
         if (EnergyUtil.otherModCanReceive(tileAt, direction.getOpposite()))
         	return direction.ordinal();
 
-        for (EnumFacing adjacentDir : EnumFacing.VALID_DIRECTIONS)
+        for (EnumFacing adjacentDir : EnumFacing.values())
         {
             if (adjacentDir == direction) continue;
-        	tileAt = world.getTileEntity(x + adjacentDir.offsetX, y + adjacentDir.offsetY, z + adjacentDir.offsetZ);
+        	tileAt = world.getTileEntity(pos.add(adjacentDir.getFrontOffsetX(), adjacentDir.getFrontOffsetY(), adjacentDir.getFrontOffsetZ()));
 
             if (tileAt instanceof EnergyStorageTile && ((EnergyStorageTile) tileAt).getModeFromDirection(adjacentDir.getOpposite()) != null)
             {
@@ -160,15 +162,15 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
     }
 
     @Override
-    public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta)
+    public int onBlockPlaced(World world, BlockPos pos, int side, float hitX, float hitY, float hitZ, int meta)
     {
-        return this.getMetadataFromAngle(world, x, y, z, side);
+        return this.getMetadataFromAngle(world, pos, side);
     }
 
     @Override
-    public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
+    public boolean canPlaceBlockOnSide(World world, BlockPos pos, int side)
     {
-        if (this.getMetadataFromAngle(world, x, y, z, side) != -1)
+        if (this.getMetadataFromAngle(world, pos, side) != -1)
         {
             return true;
         }

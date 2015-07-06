@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import com.mojang.authlib.GameProfile;
 
+import net.minecraft.server.gui.IUpdatePlayerListBox;
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import micdoodle8.mods.galacticraft.api.entity.ITelemetry;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
@@ -27,7 +29,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
-public class TileEntityTelemetry extends TileEntity
+public class TileEntityTelemetry extends TileEntity implements IUpdatePlayerListBox
 {   
 	public Class clientClass;
 	public int[] clientData = { -1 };
@@ -62,7 +64,7 @@ public class TileEntityTelemetry extends TileEntity
 	}
 
 	@Override
-	public void updateEntity()
+	public void update()
 	{
 		if (!this.worldObj.isRemote && ++this.ticks % 2 == 0)
 		{
@@ -78,7 +80,7 @@ public class TileEntityTelemetry extends TileEntity
 			if (linkedEntity != null && !linkedEntity.isDead)
 			{
 				if (linkedEntity instanceof EntityPlayerMP)
-					name = "$" + ((EntityPlayerMP) linkedEntity).getCommandSenderName();
+					name = "$" + linkedEntity.getName();
 				else
 					name = (String) EntityList.classToStringMapping.get(linkedEntity.getClass());
 				if (name == null)
@@ -125,7 +127,7 @@ public class TileEntityTelemetry extends TileEntity
 			{
 				name = "";
 			}
-			GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, new Object[] { this.xCoord, this.yCoord, this.zCoord, name, data[0], data[1], data[2], data[3], data[4], strUUID } ), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 320D));
+			GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), name, data[0], data[1], data[2], data[3], data[4], strUUID } ), new TargetPoint(this.worldObj.provider.getDimensionId(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 320D));
 		}
 	}
 	
@@ -188,7 +190,7 @@ public class TileEntityTelemetry extends TileEntity
 		
 		int distSq = 1025;
 		BlockVec3Dim nearest = null;
-		int dim = te.getWorldObj().provider.dimensionId;
+		int dim = te.getWorld().provider.getDimensionId();
 		for (BlockVec3Dim telemeter : loadedList)
 		{
 			if (telemeter.dim != dim) continue;
@@ -201,7 +203,7 @@ public class TileEntityTelemetry extends TileEntity
 		}
 		
 		if (nearest == null) return null;
-		TileEntity result = te.getWorldObj().getTileEntity(nearest.x, nearest.y, nearest.z);
+		TileEntity result = te.getWorld().getTileEntity(new BlockPos(nearest.x, nearest.y, nearest.z));
 		if (result instanceof TileEntityTelemetry) return (TileEntityTelemetry) result;
 		return null;
 	}
@@ -210,13 +212,13 @@ public class TileEntityTelemetry extends TileEntity
 	 * Call this when a player wears a frequency module to check
 	 * whether it has been linked with a Telemetry Unit.
 	 * 
-	 * @param ItemStack  The frequency module
+	 * @param held  The frequency module
 	 * @param player
 	 */
 	public static void frequencyModulePlayer(ItemStack held, EntityPlayerMP player)
 	{
 		if (held == null) return;
-		NBTTagCompound fmData = held.stackTagCompound;
+		NBTTagCompound fmData = held.getTagCompound();
 		if (fmData != null && fmData.hasKey("teDim"))
 		{
 			int dim = fmData.getInteger("teDim");
@@ -228,7 +230,7 @@ public class TileEntityTelemetry extends TileEntity
 				System.out.println("Frequency module worn: world provider is null.  This is a bug. "+dim);
 			else
 			{
-				TileEntity te = wp.worldObj.getTileEntity(x, y, z);
+				TileEntity te = player.worldObj.getTileEntity(new BlockPos(x, y, z));
 				if (te instanceof TileEntityTelemetry)
 				{
 					if (player == null)

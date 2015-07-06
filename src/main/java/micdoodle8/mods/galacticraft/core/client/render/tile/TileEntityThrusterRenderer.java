@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
+import micdoodle8.mods.galacticraft.core.client.objload.AdvancedModelLoader;
+import micdoodle8.mods.galacticraft.core.client.objload.IModelCustom;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -8,8 +10,6 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityThruster;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -18,16 +18,17 @@ public class TileEntityThrusterRenderer extends TileEntitySpecialRenderer
     public static final ResourceLocation thrusterTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/thruster.png");
     public static final IModelCustom thrusterModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/thruster.obj"));
 
-    public void renderModelAt(TileEntityThruster tileEntity, double d, double d1, double d2, float f)
+    @Override
+    public void renderTileEntityAt(TileEntity tile, double par2, double par4, double par6, float partialTickTime, int par9)
     {
         GL11.glPushMatrix();
 
         // Texture file
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityThrusterRenderer.thrusterTexture);
 
-        GL11.glTranslatef((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
+        GL11.glTranslatef((float) par2 + 0.5F, (float) par4 + 0.5F, (float) par6 + 0.5F);
 
-        int meta = tileEntity.getBlockMetadata();
+        int meta = tile.getBlockMetadata();
         boolean reverseThruster = (meta >= 8);
         meta &= 7;
 
@@ -69,11 +70,5 @@ public class TileEntityThrusterRenderer extends TileEntitySpecialRenderer
         }
 
         GL11.glPopMatrix();
-    }
-
-    @Override
-    public void renderTileEntityAt(TileEntity tileEntity, double var2, double var4, double var6, float var8)
-    {
-        this.renderModelAt((TileEntityThruster) tileEntity, var2, var4, var6, var8);
     }
 }

@@ -71,13 +71,13 @@ public class InventoryExtended implements IInventoryGC
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
         return "Galacticraft Player Inventory";
     }
 
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return true;
     }
@@ -101,13 +101,13 @@ public class InventoryExtended implements IInventoryGC
     }
 
     @Override
-    public void openInventory()
+    public void openInventory(EntityPlayer player)
     {
 
     }
 
     @Override
-    public void closeInventory()
+    public void closeInventory(EntityPlayer player)
     {
 
     }

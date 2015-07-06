@@ -15,11 +15,11 @@ public class TileEntityMinerBaseSingle extends TileEntity
 	    	final ArrayList<TileEntity> attachedBaseBlocks = new ArrayList<TileEntity>();
 
 	    	SEARCH:
-	        for (int x = this.xCoord; x < this.xCoord + 2; x++)
+	        for (int x = this.getPos().getX(); x < this.getPos().getX() + 2; x++)
 	        {
-	            for (int y = this.yCoord; y < this.yCoord + 2; y++)
+	            for (int y = this.getPos().getY(); y < this.getPos().getY() + 2; y++)
 	            {
-		            for (int z = this.zCoord; z < this.zCoord + 2; z++)
+		            for (int z = this.getPos().getZ(); z < this.getPos().getZ() + 2; z++)
 		            {
 	                	final TileEntity tile = this.worldObj.getTileEntity(x, y, z);
 	
@@ -43,17 +43,17 @@ public class TileEntityMinerBaseSingle extends TileEntity
 	                tile.getWorldObj().setBlock(tile.xCoord, tile.yCoord, tile.zCoord, AsteroidBlocks.minerBaseFull, 0, 3);
 	            }
 	
-		        for (int x = this.xCoord; x < this.xCoord + 2; x++)
+		        for (int x = this.getPos().getX(); x < this.getPos().getX() + 2; x++)
 		        {
-		            for (int y = this.yCoord; y < this.yCoord + 2; y++)
+		            for (int y = this.getPos().getY(); y < this.getPos().getY() + 2; y++)
 		            {
-			            for (int z = this.zCoord; z < this.zCoord + 2; z++)
+			            for (int z = this.getPos().getZ(); z < this.getPos().getZ() + 2; z++)
 			            {
 		                	final TileEntity tile = this.worldObj.getTileEntity(x, y, z);
 		
 			                if (tile instanceof TileEntityMinerBase)
 			                {
-			                	((TileEntityMinerBase) tile).setMainBlockPos(this.xCoord, this.yCoord, this.zCoord);
+			                	((TileEntityMinerBase) tile).setMainBlockPos(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
 			                }
 			            }
 		            }

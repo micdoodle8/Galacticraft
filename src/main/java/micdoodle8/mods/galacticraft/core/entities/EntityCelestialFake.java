@@ -325,12 +325,12 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
 	}
 
 	@Override
-	public String getInventoryName() {
+	public String getName() {
 		return null;
 	}
 
 	@Override
-	public boolean hasCustomInventoryName() {
+	public boolean hasCustomName() {
 		return false;
 	}
 

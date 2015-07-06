@@ -53,7 +53,7 @@ public class GuiElectricFurnace extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString(this.tileEntity.getInventoryName(), 45, 6, 4210752);
+        this.fontRendererObj.drawString(this.tileEntity.getName(), 45, 6, 4210752);
         String displayText = "";
 
         if (this.tileEntity.processTicks > 0)

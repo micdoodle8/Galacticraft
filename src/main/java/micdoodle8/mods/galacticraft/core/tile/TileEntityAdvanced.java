@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import net.minecraft.server.gui.IUpdatePlayerListBox;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
@@ -23,6 +24,8 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
     public long ticks = 0;
     private LinkedHashSet<Field> fieldCacheClient;
     private LinkedHashSet<Field> fieldCacheServer;
+    @NetworkedField(targetSide = Side.CLIENT)
+    public EnumFacing facing = EnumFacing.NORTH;
 
     @Override
     public void update()
@@ -95,12 +98,10 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
 
     public void addExtraNetworkedData(List<Object> networkedList)
     {
-
     }
 
     public void readExtraNetworkedData(ByteBuf dataStream)
     {
-
     }
 
     public void initiate()
@@ -203,5 +204,13 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
     public void handlePacketData(Side side, EntityPlayer player)
     {
 
+    }
+
+    public EnumFacing getFacing() {
+        return facing;
+    }
+
+    public void setFacing(EnumFacing facing) {
+        this.facing = facing;
     }
 }

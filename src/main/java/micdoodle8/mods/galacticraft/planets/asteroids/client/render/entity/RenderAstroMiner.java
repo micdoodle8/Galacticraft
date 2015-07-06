@@ -1,33 +1,29 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.client.objload.AdvancedModelLoader;
+import micdoodle8.mods.galacticraft.core.client.objload.IModelCustom;
 import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
-
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import net.minecraftforge.fml.client.FMLClientHandler;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class RenderAstroMiner extends Render
 {
 	private static final float LSIZE = 0.12F;
 	private static final float RETRACTIONSPEED = 0.02F;
-    private RenderBlocks blockRenderer = new RenderBlocks();
     private float spin;
     private float lastPartTime;
 
@@ -65,6 +61,7 @@ public class RenderAstroMiner extends Render
     
     public RenderAstroMiner()
     {
+        super(FMLClientHandler.instance().getClient().getRenderManager());
         this.shadowSize = 2F;
         
         Random rand = new Random();
@@ -189,19 +186,19 @@ public class RenderAstroMiner extends Render
 	        if (ais < EntityAstroMiner.AISTATE_DOCKING)
 	        {
 	        	FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.scanTexture);
-		        final Tessellator tess = Tessellator.instance;
+		        final Tessellator tess = Tessellator.getInstance();
 		        GL11.glColor4f(0, 0.6F, 1.0F, 0.2F);
-		        tess.startDrawingQuads(); 
-		        tess.addVertexWithUV(15.6F, -0.6F, -20F, 0D, 0D);
-		        tess.addVertexWithUV(37.8F, 31.4F, -45F - partBlock, 1D, 0D);
-		        tess.addVertexWithUV(37.8F, -32.6F, -45F - partBlock, 1D, 1D);
-		        tess.addVertexWithUV(15.6F, -0.7F, -20F, 0D, 1D);
+		        tess.getWorldRenderer().startDrawingQuads();
+		        tess.getWorldRenderer().addVertexWithUV(15.6F, -0.6F, -20F, 0D, 0D);
+		        tess.getWorldRenderer().addVertexWithUV(37.8F, 31.4F, -45F - partBlock, 1D, 0D);
+		        tess.getWorldRenderer().addVertexWithUV(37.8F, -32.6F, -45F - partBlock, 1D, 1D);
+		        tess.getWorldRenderer().addVertexWithUV(15.6F, -0.7F, -20F, 0D, 1D);
 		        tess.draw();   	
-		        tess.startDrawingQuads(); 
-		        tess.addVertexWithUV(-15.6F, -0.6F, -20F, 0D, 0D);
-		        tess.addVertexWithUV(-37.8F, 31.4F, -45F - partBlock, 1D, 0D);
-		        tess.addVertexWithUV(-37.8F, -32.6F, -45F - partBlock, 1D, 1D);
-		        tess.addVertexWithUV(-15.6F, -0.7F, -20F, 0D, 1D);
+		        tess.getWorldRenderer().startDrawingQuads();
+		        tess.getWorldRenderer().addVertexWithUV(-15.6F, -0.6F, -20F, 0D, 0D);
+		        tess.getWorldRenderer().addVertexWithUV(-37.8F, 31.4F, -45F - partBlock, 1D, 0D);
+		        tess.getWorldRenderer().addVertexWithUV(-37.8F, -32.6F, -45F - partBlock, 1D, 1D);
+		        tess.getWorldRenderer().addVertexWithUV(-15.6F, -0.7F, -20F, 0D, 1D);
 		        tess.draw();
 		        
 		        int removeCount = 0;
@@ -272,45 +269,45 @@ public class RenderAstroMiner extends Render
     {
         GL11.glPushMatrix();
         GL11.glTranslatef(blockLaser.x, blockLaser.y, blockLaser.z);
-        final Tessellator tess = Tessellator.instance;
+        final Tessellator tess = Tessellator.getInstance();
         GL11.glColor4f(1.0F, 0.7F, 0.7F, 0.016667F * (12 - level));
         float cA = -0.01F;
         float cB = 1.01F;
-        tess.startDrawingQuads();
-        tess.addVertexWithUV(cA, cB, cA, 0D, 1D);
-        tess.addVertexWithUV(cB, cB, cA, 1D, 1D);
-        tess.addVertexWithUV(cB, cB, cB, 1D, 0D);
-        tess.addVertexWithUV(cA, cB, cB, 0D, 0D);
+        tess.getWorldRenderer().startDrawingQuads();
+        tess.getWorldRenderer().addVertexWithUV(cA, cB, cA, 0D, 1D);
+        tess.getWorldRenderer().addVertexWithUV(cB, cB, cA, 1D, 1D);
+        tess.getWorldRenderer().addVertexWithUV(cB, cB, cB, 1D, 0D);
+        tess.getWorldRenderer().addVertexWithUV(cA, cB, cB, 0D, 0D);
         tess.draw();
-        tess.startDrawingQuads();
-        tess.addVertexWithUV(cA, cA, cA, 0D, 0D);
-        tess.addVertexWithUV(cA, cA, cB, 0D, 1D);
-        tess.addVertexWithUV(cB, cA, cB, 1D, 1D);
-        tess.addVertexWithUV(cB, cA, cA, 1D, 0D);
+        tess.getWorldRenderer().startDrawingQuads();
+        tess.getWorldRenderer().addVertexWithUV(cA, cA, cA, 0D, 0D);
+        tess.getWorldRenderer().addVertexWithUV(cA, cA, cB, 0D, 1D);
+        tess.getWorldRenderer().addVertexWithUV(cB, cA, cB, 1D, 1D);
+        tess.getWorldRenderer().addVertexWithUV(cB, cA, cA, 1D, 0D);
         tess.draw();
-        tess.startDrawingQuads();
-        tess.addVertexWithUV(cA, cA, cA, 1D, 0D);
-        tess.addVertexWithUV(cA, cB, cA, 0D, 0D);
-        tess.addVertexWithUV(cA, cB, cB, 0D, 1D);
-        tess.addVertexWithUV(cA, cA, cB, 1D, 1D);
+        tess.getWorldRenderer().startDrawingQuads();
+        tess.getWorldRenderer().addVertexWithUV(cA, cA, cA, 1D, 0D);
+        tess.getWorldRenderer().addVertexWithUV(cA, cB, cA, 0D, 0D);
+        tess.getWorldRenderer().addVertexWithUV(cA, cB, cB, 0D, 1D);
+        tess.getWorldRenderer().addVertexWithUV(cA, cA, cB, 1D, 1D);
         tess.draw();
-        tess.startDrawingQuads();
-        tess.addVertexWithUV(cB, cA, cA, 1D, 1D);
-        tess.addVertexWithUV(cB, cA, cB, 1D, 0D);
-        tess.addVertexWithUV(cB, cB, cB, 0D, 0D);
-        tess.addVertexWithUV(cB, cB, cA, 0D, 1D);
+        tess.getWorldRenderer().startDrawingQuads();
+        tess.getWorldRenderer().addVertexWithUV(cB, cA, cA, 1D, 1D);
+        tess.getWorldRenderer().addVertexWithUV(cB, cA, cB, 1D, 0D);
+        tess.getWorldRenderer().addVertexWithUV(cB, cB, cB, 0D, 0D);
+        tess.getWorldRenderer().addVertexWithUV(cB, cB, cA, 0D, 1D);
         tess.draw();   	
-        tess.startDrawingQuads();
-        tess.addVertexWithUV(cA, cA, cA, 1D, 0D);
-        tess.addVertexWithUV(1F, cA, cA, 0D, 0D);
-        tess.addVertexWithUV(1F, 1F, cA, 0D, 1D);
-        tess.addVertexWithUV(cA, 1F, cA, 1D, 1D);
+        tess.getWorldRenderer().startDrawingQuads();
+        tess.getWorldRenderer().addVertexWithUV(cA, cA, cA, 1D, 0D);
+        tess.getWorldRenderer().addVertexWithUV(1F, cA, cA, 0D, 0D);
+        tess.getWorldRenderer().addVertexWithUV(1F, 1F, cA, 0D, 1D);
+        tess.getWorldRenderer().addVertexWithUV(cA, 1F, cA, 1D, 1D);
         tess.draw();
-        tess.startDrawingQuads();
-        tess.addVertexWithUV(1F, cA, 1F, 1D, 1D);
-        tess.addVertexWithUV(cA, cA, 1F, 1D, 0D);
-        tess.addVertexWithUV(cA, 1F, 1F, 0D, 0D);
-        tess.addVertexWithUV(1F, 1F, 1F, 0D, 1D);
+        tess.getWorldRenderer().startDrawingQuads();
+        tess.getWorldRenderer().addVertexWithUV(1F, cA, 1F, 1D, 1D);
+        tess.getWorldRenderer().addVertexWithUV(cA, cA, 1F, 1D, 0D);
+        tess.getWorldRenderer().addVertexWithUV(cA, 1F, 1F, 0D, 0D);
+        tess.getWorldRenderer().addVertexWithUV(1F, 1F, 1F, 0D, 1D);
         tess.draw();   	
         
     	
@@ -321,45 +318,45 @@ public class RenderAstroMiner extends Render
     {
         GL11.glPushMatrix();
         GL11.glTranslatef(blockLaser.x, blockLaser.y, blockLaser.z);
-        final Tessellator tess = Tessellator.instance;
+        final Tessellator tess = Tessellator.getInstance();
         GL11.glColor4f(1.0F, 0.7F, 0.7F, 0.2F);
         float cA = -0.01F;
         float cB = 1.01F;
-        tess.startDrawingQuads(); 
-        tess.addVertexWithUV(cA, cB, cA, 0D, 1D);
-        tess.addVertexWithUV(cB, cB, cA, 1D, 1D);
-        tess.addVertexWithUV(cB, cB, cB, 1D, 0D);
-        tess.addVertexWithUV(cA, cB, cB, 0D, 0D);
+        tess.getWorldRenderer().startDrawingQuads();
+        tess.getWorldRenderer().addVertexWithUV(cA, cB, cA, 0D, 1D);
+        tess.getWorldRenderer().addVertexWithUV(cB, cB, cA, 1D, 1D);
+        tess.getWorldRenderer().addVertexWithUV(cB, cB, cB, 1D, 0D);
+        tess.getWorldRenderer().addVertexWithUV(cA, cB, cB, 0D, 0D);
         tess.draw();
-        tess.startDrawingQuads();
-        tess.addVertexWithUV(cA, cA, cA, 0D, 0D);
-        tess.addVertexWithUV(cA, cA, cB, 0D, 1D);
-        tess.addVertexWithUV(cB, cA, cB, 1D, 1D);
-        tess.addVertexWithUV(cB, cA, cA, 1D, 0D);
+        tess.getWorldRenderer().startDrawingQuads();
+        tess.getWorldRenderer().addVertexWithUV(cA, cA, cA, 0D, 0D);
+        tess.getWorldRenderer().addVertexWithUV(cA, cA, cB, 0D, 1D);
+        tess.getWorldRenderer().addVertexWithUV(cB, cA, cB, 1D, 1D);
+        tess.getWorldRenderer().addVertexWithUV(cB, cA, cA, 1D, 0D);
         tess.draw();
-        tess.startDrawingQuads();
-        tess.addVertexWithUV(cA, cA, cA, 1D, 0D);
-        tess.addVertexWithUV(cA, cB, cA, 0D, 0D);
-        tess.addVertexWithUV(cA, cB, cB, 0D, 1D);
-        tess.addVertexWithUV(cA, cA, cB, 1D, 1D);
+        tess.getWorldRenderer().startDrawingQuads();
+        tess.getWorldRenderer().addVertexWithUV(cA, cA, cA, 1D, 0D);
+        tess.getWorldRenderer().addVertexWithUV(cA, cB, cA, 0D, 0D);
+        tess.getWorldRenderer().addVertexWithUV(cA, cB, cB, 0D, 1D);
+        tess.getWorldRenderer().addVertexWithUV(cA, cA, cB, 1D, 1D);
         tess.draw();
-        tess.startDrawingQuads();
-        tess.addVertexWithUV(cB, cA, cA, 1D, 1D);
-        tess.addVertexWithUV(cB, cA, cB, 1D, 0D);
-        tess.addVertexWithUV(cB, cB, cB, 0D, 0D);
-        tess.addVertexWithUV(cB, cB, cA, 0D, 1D);
+        tess.getWorldRenderer().startDrawingQuads();
+        tess.getWorldRenderer().addVertexWithUV(cB, cA, cA, 1D, 1D);
+        tess.getWorldRenderer().addVertexWithUV(cB, cA, cB, 1D, 0D);
+        tess.getWorldRenderer().addVertexWithUV(cB, cB, cB, 0D, 0D);
+        tess.getWorldRenderer().addVertexWithUV(cB, cB, cA, 0D, 1D);
         tess.draw();   	
-        tess.startDrawingQuads();
-        tess.addVertexWithUV(cA, cA, cA, 1D, 0D);
-        tess.addVertexWithUV(1F, cA, cA, 0D, 0D);
-        tess.addVertexWithUV(1F, 1F, cA, 0D, 1D);
-        tess.addVertexWithUV(cA, 1F, cA, 1D, 1D);
+        tess.getWorldRenderer().startDrawingQuads();
+        tess.getWorldRenderer().addVertexWithUV(cA, cA, cA, 1D, 0D);
+        tess.getWorldRenderer().addVertexWithUV(1F, cA, cA, 0D, 0D);
+        tess.getWorldRenderer().addVertexWithUV(1F, 1F, cA, 0D, 1D);
+        tess.getWorldRenderer().addVertexWithUV(cA, 1F, cA, 1D, 1D);
         tess.draw();
-        tess.startDrawingQuads();
-        tess.addVertexWithUV(1F, cA, 1F, 1D, 1D);
-        tess.addVertexWithUV(cA, cA, 1F, 1D, 0D);
-        tess.addVertexWithUV(cA, 1F, 1F, 0D, 0D);
-        tess.addVertexWithUV(1F, 1F, 1F, 0D, 1D);
+        tess.getWorldRenderer().startDrawingQuads();
+        tess.getWorldRenderer().addVertexWithUV(1F, cA, 1F, 1D, 1D);
+        tess.getWorldRenderer().addVertexWithUV(cA, cA, 1F, 1D, 0D);
+        tess.getWorldRenderer().addVertexWithUV(cA, 1F, 1F, 0D, 0D);
+        tess.getWorldRenderer().addVertexWithUV(1F, 1F, 1F, 0D, 1D);
         tess.draw();
         
         GL11.glColor4f(1.0F, 0.79F, 0.79F, 0.17F);
@@ -405,88 +402,88 @@ public class RenderAstroMiner extends Render
     
     private void drawLaserX(float x1, float y1, float z1, float x2, float y2, float z2)
     {
-        final Tessellator tess = Tessellator.instance;
-        tess.startDrawingQuads();
-        tess.addVertex(x1, y1 - 0.01F, z1 - 0.01F);
-        tess.addVertex(x2, y2 - LSIZE, z2 - LSIZE);
-        tess.addVertex(x2, y2 + LSIZE, z2 - LSIZE);
-        tess.addVertex(x1, y1 + 0.01F, z1 - 0.01F);
+        final Tessellator tess = Tessellator.getInstance();
+        tess.getWorldRenderer().startDrawingQuads();
+        tess.getWorldRenderer().addVertex(x1, y1 - 0.01F, z1 - 0.01F);
+        tess.getWorldRenderer().addVertex(x2, y2 - LSIZE, z2 - LSIZE);
+        tess.getWorldRenderer().addVertex(x2, y2 + LSIZE, z2 - LSIZE);
+        tess.getWorldRenderer().addVertex(x1, y1 + 0.01F, z1 - 0.01F);
         tess.draw();   	
-        tess.startDrawingQuads();
-        tess.addVertex(x1, y1 - 0.01F, z1 + 0.01F);
-        tess.addVertex(x2, y2 - LSIZE, z2 + LSIZE);
-        tess.addVertex(x2, y2 + LSIZE, z2 + LSIZE);
-        tess.addVertex(x1, y1 + 0.01F, z1 + 0.01F);
+        tess.getWorldRenderer().startDrawingQuads();
+        tess.getWorldRenderer().addVertex(x1, y1 - 0.01F, z1 + 0.01F);
+        tess.getWorldRenderer().addVertex(x2, y2 - LSIZE, z2 + LSIZE);
+        tess.getWorldRenderer().addVertex(x2, y2 + LSIZE, z2 + LSIZE);
+        tess.getWorldRenderer().addVertex(x1, y1 + 0.01F, z1 + 0.01F);
         tess.draw();   	
-        tess.startDrawingQuads();
-        tess.addVertex(x1, y1 - 0.01F, z1 - 0.01F);
-        tess.addVertex(x2, y2 - LSIZE, z2 - LSIZE);
-        tess.addVertex(x2, y2 - LSIZE, z2 + LSIZE);
-        tess.addVertex(x1, y1 - 0.01F, z1 + 0.01F);
+        tess.getWorldRenderer().startDrawingQuads();
+        tess.getWorldRenderer().addVertex(x1, y1 - 0.01F, z1 - 0.01F);
+        tess.getWorldRenderer().addVertex(x2, y2 - LSIZE, z2 - LSIZE);
+        tess.getWorldRenderer().addVertex(x2, y2 - LSIZE, z2 + LSIZE);
+        tess.getWorldRenderer().addVertex(x1, y1 - 0.01F, z1 + 0.01F);
         tess.draw();   	
-        tess.startDrawingQuads();
-        tess.addVertex(x1, y1 + 0.01F, z1 + 0.01F);
-        tess.addVertex(x2, y2 + LSIZE, z2 + LSIZE);
-        tess.addVertex(x2, y2 + LSIZE, z2 - LSIZE);
-        tess.addVertex(x1, y1 + 0.01F, z1 - 0.01F);
+        tess.getWorldRenderer().startDrawingQuads();
+        tess.getWorldRenderer().addVertex(x1, y1 + 0.01F, z1 + 0.01F);
+        tess.getWorldRenderer().addVertex(x2, y2 + LSIZE, z2 + LSIZE);
+        tess.getWorldRenderer().addVertex(x2, y2 + LSIZE, z2 - LSIZE);
+        tess.getWorldRenderer().addVertex(x1, y1 + 0.01F, z1 - 0.01F);
         tess.draw();
     }
 
     private void drawLaserY(float x1, float y1, float z1, float x2, float y2, float z2)
     {
-        final Tessellator tess = Tessellator.instance;
-        tess.startDrawingQuads();
-        tess.addVertex(x1 - 0.01F, y1, z1 - 0.01F);
-        tess.addVertex(x2 - LSIZE, y2, z2 - LSIZE);
-        tess.addVertex(x2 + LSIZE, y2, z2 - LSIZE);
-        tess.addVertex(x1 + 0.01F, y1, z1 - 0.01F);
+        final Tessellator tess = Tessellator.getInstance();
+        tess.getWorldRenderer().startDrawingQuads();
+        tess.getWorldRenderer().addVertex(x1 - 0.01F, y1, z1 - 0.01F);
+        tess.getWorldRenderer().addVertex(x2 - LSIZE, y2, z2 - LSIZE);
+        tess.getWorldRenderer().addVertex(x2 + LSIZE, y2, z2 - LSIZE);
+        tess.getWorldRenderer().addVertex(x1 + 0.01F, y1, z1 - 0.01F);
         tess.draw();   	
-        tess.startDrawingQuads();
-        tess.addVertex(x1 - 0.01F, y1, z1 + 0.01F);
-        tess.addVertex(x2 - LSIZE, y2, z2 + LSIZE);
-        tess.addVertex(x2 + LSIZE, y2, z2 + LSIZE);
-        tess.addVertex(x1 + 0.01F, y1, z1 + 0.01F);
+        tess.getWorldRenderer().startDrawingQuads();
+        tess.getWorldRenderer().addVertex(x1 - 0.01F, y1, z1 + 0.01F);
+        tess.getWorldRenderer().addVertex(x2 - LSIZE, y2, z2 + LSIZE);
+        tess.getWorldRenderer().addVertex(x2 + LSIZE, y2, z2 + LSIZE);
+        tess.getWorldRenderer().addVertex(x1 + 0.01F, y1, z1 + 0.01F);
         tess.draw();   	
-        tess.startDrawingQuads();
-        tess.addVertex(x1 - 0.01F, y1, z1 - 0.01F);
-        tess.addVertex(x2 - LSIZE, y2, z2 - LSIZE);
-        tess.addVertex(x2 - LSIZE, y2, z2 + LSIZE);
-        tess.addVertex(x1 - 0.01F, y1, z1 + 0.01F);
+        tess.getWorldRenderer().startDrawingQuads();
+        tess.getWorldRenderer().addVertex(x1 - 0.01F, y1, z1 - 0.01F);
+        tess.getWorldRenderer().addVertex(x2 - LSIZE, y2, z2 - LSIZE);
+        tess.getWorldRenderer().addVertex(x2 - LSIZE, y2, z2 + LSIZE);
+        tess.getWorldRenderer().addVertex(x1 - 0.01F, y1, z1 + 0.01F);
         tess.draw();   	
-        tess.startDrawingQuads();
-        tess.addVertex(x1 + 0.01F, y1, z1 + 0.01F);
-        tess.addVertex(x2 + LSIZE, y2, z2 + LSIZE);
-        tess.addVertex(x2 + LSIZE, y2, z2 - LSIZE);
-        tess.addVertex(x1 + 0.01F, y1, z1 - 0.01F);
+        tess.getWorldRenderer().startDrawingQuads();
+        tess.getWorldRenderer().addVertex(x1 + 0.01F, y1, z1 + 0.01F);
+        tess.getWorldRenderer().addVertex(x2 + LSIZE, y2, z2 + LSIZE);
+        tess.getWorldRenderer().addVertex(x2 + LSIZE, y2, z2 - LSIZE);
+        tess.getWorldRenderer().addVertex(x1 + 0.01F, y1, z1 - 0.01F);
         tess.draw();
     }
 
     private void drawLaserZ(float x1, float y1, float z1, float x2, float y2, float z2)
     {
-        final Tessellator tess = Tessellator.instance;
-        tess.startDrawingQuads();
-        tess.addVertex(x1 - 0.01F, y1 - 0.01F, z1);
-        tess.addVertex(x2 - LSIZE, y2 - LSIZE, z2);
-        tess.addVertex(x2 - LSIZE, y2 + LSIZE, z2);
-        tess.addVertex(x1 - 0.01F, y1 + 0.01F, z1);
+        final Tessellator tess = Tessellator.getInstance();
+        tess.getWorldRenderer().startDrawingQuads();
+        tess.getWorldRenderer().addVertex(x1 - 0.01F, y1 - 0.01F, z1);
+        tess.getWorldRenderer().addVertex(x2 - LSIZE, y2 - LSIZE, z2);
+        tess.getWorldRenderer().addVertex(x2 - LSIZE, y2 + LSIZE, z2);
+        tess.getWorldRenderer().addVertex(x1 - 0.01F, y1 + 0.01F, z1);
         tess.draw();   	
-        tess.startDrawingQuads();
-        tess.addVertex(x1 + 0.01F, y1 - 0.01F, z1);
-        tess.addVertex(x2 + LSIZE, y2 - LSIZE, z2);
-        tess.addVertex(x2 + LSIZE, y2 + LSIZE, z2);
-        tess.addVertex(x1 + 0.01F, y1 + 0.01F, z1);
+        tess.getWorldRenderer().startDrawingQuads();
+        tess.getWorldRenderer().addVertex(x1 + 0.01F, y1 - 0.01F, z1);
+        tess.getWorldRenderer().addVertex(x2 + LSIZE, y2 - LSIZE, z2);
+        tess.getWorldRenderer().addVertex(x2 + LSIZE, y2 + LSIZE, z2);
+        tess.getWorldRenderer().addVertex(x1 + 0.01F, y1 + 0.01F, z1);
         tess.draw();   	
-        tess.startDrawingQuads();
-        tess.addVertex(x1 - 0.01F, y1 - 0.01F, z1);
-        tess.addVertex(x2 - LSIZE, y2 - LSIZE, z2);
-        tess.addVertex(x2 + LSIZE, y2 - LSIZE, z2);
-        tess.addVertex(x1 + 0.01F, y1 - 0.01F, z1);
+        tess.getWorldRenderer().startDrawingQuads();
+        tess.getWorldRenderer().addVertex(x1 - 0.01F, y1 - 0.01F, z1);
+        tess.getWorldRenderer().addVertex(x2 - LSIZE, y2 - LSIZE, z2);
+        tess.getWorldRenderer().addVertex(x2 + LSIZE, y2 - LSIZE, z2);
+        tess.getWorldRenderer().addVertex(x1 + 0.01F, y1 - 0.01F, z1);
         tess.draw();   	
-        tess.startDrawingQuads();
-        tess.addVertex(x1, y1 + 0.01F, z1 + 0.01F);
-        tess.addVertex(x2, y2 + LSIZE, z2 + LSIZE);
-        tess.addVertex(x2, y2 + LSIZE, z2 - LSIZE);
-        tess.addVertex(x1, y1 + 0.01F, z1 - 0.01F);
+        tess.getWorldRenderer().startDrawingQuads();
+        tess.getWorldRenderer().addVertex(x1, y1 + 0.01F, z1 + 0.01F);
+        tess.getWorldRenderer().addVertex(x2, y2 + LSIZE, z2 + LSIZE);
+        tess.getWorldRenderer().addVertex(x2, y2 + LSIZE, z2 - LSIZE);
+        tess.getWorldRenderer().addVertex(x1, y1 + 0.01F, z1 - 0.01F);
         tess.draw();
     }
 

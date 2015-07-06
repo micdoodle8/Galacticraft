@@ -32,7 +32,7 @@ public class GuiCoalGenerator extends GuiContainer
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString(this.tileEntity.getInventoryName(), 55, 6, 4210752);
+        this.fontRendererObj.drawString(this.tileEntity.getName(), 55, 6, 4210752);
         String displayText = GCCoreUtil.translate("gui.status.generating.name");
         this.fontRendererObj.drawString(displayText, 122 - this.fontRendererObj.getStringWidth(displayText) / 2, 33, 4210752);
 

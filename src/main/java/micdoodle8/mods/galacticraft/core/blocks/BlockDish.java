@@ -31,8 +31,8 @@ public class BlockDish extends BlockTileGC implements ItemBlockDesc.IBlockShiftD
         super(Material.iron);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeMetal);
-        this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
-        this.setBlockName(assetName);
+        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -215,7 +215,7 @@ public class BlockDish extends BlockTileGC implements ItemBlockDesc.IBlockShiftD
     }
 
     @Override
-    public boolean isSealed(World world, int x, int y, int z, EnumFacing direction)
+    public boolean isSealed(World world, BlockPos pos, EnumFacing direction)
     {
         return true;
     }

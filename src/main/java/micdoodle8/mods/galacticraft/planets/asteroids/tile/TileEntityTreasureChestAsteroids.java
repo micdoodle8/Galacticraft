@@ -245,7 +245,7 @@ public class TileEntityTreasureChestAsteroids extends TileEntityAdvanced impleme
     @Override
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+        return this.worldObj.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
     /**
@@ -314,24 +314,24 @@ public class TileEntityTreasureChestAsteroids extends TileEntityAdvanced impleme
             this.adjacentChestXNeg = null;
             this.adjacentChestZPos = null;
 
-            if (this.func_94044_a(this.xCoord - 1, this.yCoord, this.zCoord))
+            if (this.func_94044_a(this.getPos().getX() - 1, this.getPos().getY(), this.getPos().getZ()))
             {
-                this.adjacentChestXNeg = (TileEntityTreasureChestAsteroids) this.worldObj.getTileEntity(this.xCoord - 1, this.yCoord, this.zCoord);
+                this.adjacentChestXNeg = (TileEntityTreasureChestAsteroids) this.worldObj.getTileEntity(this.getPos().getX() - 1, this.getPos().getY(), this.getPos().getZ());
             }
 
-            if (this.func_94044_a(this.xCoord + 1, this.yCoord, this.zCoord))
+            if (this.func_94044_a(this.getPos().getX() + 1, this.getPos().getY(), this.getPos().getZ()))
             {
-                this.adjacentChestXPos = (TileEntityTreasureChestAsteroids) this.worldObj.getTileEntity(this.xCoord + 1, this.yCoord, this.zCoord);
+                this.adjacentChestXPos = (TileEntityTreasureChestAsteroids) this.worldObj.getTileEntity(this.getPos().getX() + 1, this.getPos().getY(), this.getPos().getZ());
             }
 
-            if (this.func_94044_a(this.xCoord, this.yCoord, this.zCoord - 1))
+            if (this.func_94044_a(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ() - 1))
             {
-                this.adjacentChestZNeg = (TileEntityTreasureChestAsteroids) this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord - 1);
+                this.adjacentChestZNeg = (TileEntityTreasureChestAsteroids) this.worldObj.getTileEntity(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ() - 1);
             }
 
-            if (this.func_94044_a(this.xCoord, this.yCoord, this.zCoord + 1))
+            if (this.func_94044_a(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ() + 1))
             {
-                this.adjacentChestZPos = (TileEntityTreasureChestAsteroids) this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord + 1);
+                this.adjacentChestZPos = (TileEntityTreasureChestAsteroids) this.worldObj.getTileEntity(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ() + 1);
             }
 
             if (this.adjacentChestZNeg != null)
@@ -375,11 +375,11 @@ public class TileEntityTreasureChestAsteroids extends TileEntityAdvanced impleme
         ++this.ticksSinceSync;
         float f;
 
-        if (!this.worldObj.isRemote && this.numUsingPlayers != 0 && (this.ticksSinceSync + this.xCoord + this.yCoord + this.zCoord) % 200 == 0)
+        if (!this.worldObj.isRemote && this.numUsingPlayers != 0 && (this.ticksSinceSync + this.getPos().getX() + this.getPos().getY() + this.getPos().getZ()) % 200 == 0)
         {
             this.numUsingPlayers = 0;
             f = 5.0F;
-            final List<?> list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.fromBounds(this.xCoord - f, this.yCoord - f, this.zCoord - f, this.xCoord + 1 + f, this.yCoord + 1 + f, this.zCoord + 1 + f));
+            final List<?> list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.fromBounds(this.getPos().getX() - f, this.getPos().getY() - f, this.getPos().getZ() - f, this.getPos().getX() + 1 + f, this.getPos().getY() + 1 + f, this.getPos().getZ() + 1 + f));
             final Iterator<?> iterator = list.iterator();
 
             while (iterator.hasNext())
@@ -404,8 +404,8 @@ public class TileEntityTreasureChestAsteroids extends TileEntityAdvanced impleme
 
         if (this.numUsingPlayers > 0 && this.lidAngle == 0.0F && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
         {
-            double d1 = this.xCoord + 0.5D;
-            d0 = this.zCoord + 0.5D;
+            double d1 = this.getPos().getX() + 0.5D;
+            d0 = this.getPos().getZ() + 0.5D;
 
             if (this.adjacentChestZPos != null)
             {
@@ -417,7 +417,7 @@ public class TileEntityTreasureChestAsteroids extends TileEntityAdvanced impleme
                 d1 += 0.5D;
             }
 
-            this.worldObj.playSoundEffect(d1, this.yCoord + 0.5D, d0, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.6F);
+            this.worldObj.playSoundEffect(d1, this.getPos().getY() + 0.5D, d0, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.6F);
         }
 
         if (this.numUsingPlayers == 0 && this.lidAngle > 0.0F || this.numUsingPlayers > 0 && this.lidAngle < 1.0F)
@@ -442,8 +442,8 @@ public class TileEntityTreasureChestAsteroids extends TileEntityAdvanced impleme
 
             if (this.lidAngle < f2 && f1 >= f2 && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
             {
-                d0 = this.xCoord + 0.5D;
-                double d2 = this.zCoord + 0.5D;
+                d0 = this.getPos().getX() + 0.5D;
+                double d2 = this.getPos().getZ() + 0.5D;
 
                 if (this.adjacentChestZPos != null)
                 {
@@ -455,7 +455,7 @@ public class TileEntityTreasureChestAsteroids extends TileEntityAdvanced impleme
                     d0 += 0.5D;
                 }
 
-                this.worldObj.playSoundEffect(d0, this.yCoord + 0.5D, d2, "random.chestclosed", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.6F);
+                this.worldObj.playSoundEffect(d0, this.getPos().getY() + 0.5D, d2, "random.chestclosed", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.6F);
             }
 
             if (this.lidAngle < 0.0F)
@@ -484,7 +484,7 @@ public class TileEntityTreasureChestAsteroids extends TileEntityAdvanced impleme
     }
 
     @Override
-    public void openInventory()
+    public void openInventory(EntityPlayer player)
     {
         if (this.numUsingPlayers < 0)
         {
@@ -492,25 +492,25 @@ public class TileEntityTreasureChestAsteroids extends TileEntityAdvanced impleme
         }
 
         ++this.numUsingPlayers;
-        this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numUsingPlayers);
-        this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
-        this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
+        this.worldObj.addBlockEvent(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getBlockType(), 1, this.numUsingPlayers);
+        this.worldObj.notifyBlocksOfNeighborChange(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getBlockType());
+        this.worldObj.notifyBlocksOfNeighborChange(this.getPos().getX(), this.getPos().getY() - 1, this.getPos().getZ(), this.getBlockType());
     }
 
     @Override
-    public void closeInventory()
+    public void closeInventory(EntityPlayer player)
     {
         if (this.getBlockType() != null && this.getBlockType() instanceof BlockTier3TreasureChest)
         {
             --this.numUsingPlayers;
-            this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numUsingPlayers);
-            this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
-            this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
+            this.worldObj.addBlockEvent(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getBlockType(), 1, this.numUsingPlayers);
+            this.worldObj.notifyBlocksOfNeighborChange(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getBlockType());
+            this.worldObj.notifyBlocksOfNeighborChange(this.getPos().getX(), this.getPos().getY() - 1, this.getPos().getZ(), this.getBlockType());
         }
     }
 
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return true;
     }
@@ -527,7 +527,7 @@ public class TileEntityTreasureChestAsteroids extends TileEntityAdvanced impleme
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
         return GCCoreUtil.translate("container.treasurechest.name");
     }

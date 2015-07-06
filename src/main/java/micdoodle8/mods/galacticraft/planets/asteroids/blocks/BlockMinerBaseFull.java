@@ -26,7 +26,7 @@ public class BlockMinerBaseFull extends BlockTileGC
     {
         super(Material.rock);
         this.blockHardness = 3.0F;
-        this.setBlockName(assetName);
+        this.setUnlocalizedName(assetName);
         this.setBlockTextureName(AsteroidsModule.TEXTURE_PREFIX + "machineframe");
         this.setStepSound(soundTypeMetal);
     }

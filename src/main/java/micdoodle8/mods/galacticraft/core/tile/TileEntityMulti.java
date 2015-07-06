@@ -40,7 +40,7 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
         }
     }
 
-    public boolean onBlockActivated(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, EntityPlayer player)
     {
         if (this.mainBlockPosition != null)
         {
@@ -48,7 +48,7 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
 
             if (tileEntity instanceof IMultiBlock)
             {
-            	return ((IMultiBlock) tileEntity).onActivated(par5EntityPlayer);
+            	return ((IMultiBlock) tileEntity).onActivated(player);
             }
         }
 
@@ -93,22 +93,7 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
             nbt.setTag("mainBlockPosition", tag);
         }
     }
-/*
 
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        par1NBTTagCompound.setInteger("x", this.x);
-        par1NBTTagCompound.setInteger("y", this.y);
-        par1NBTTagCompound.setInteger("z", this.z);
-        return par1NBTTagCompound;
-    }
-
-    public BlockVec3(NBTTagCompound par1NBTTagCompound)
-    {
-        this.x = par1NBTTagCompound.getInteger("x");
-        this.y = par1NBTTagCompound.getInteger("y");
-        this.z = par1NBTTagCompound.getInteger("z");
-    }*/
     @Override
     public double getPacketRange()
     {

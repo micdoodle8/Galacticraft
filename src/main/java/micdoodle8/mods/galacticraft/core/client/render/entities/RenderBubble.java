@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -24,6 +25,7 @@ public class RenderBubble extends Render
 
     public RenderBubble(float red, float green, float blue)
     {
+        super(FMLClientHandler.instance().getClient().getRenderManager());
         this.colorRed = red;
         this.colorGreen = green;
         this.colorBlue = blue;

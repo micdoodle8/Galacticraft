@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -26,6 +26,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 import java.util.Random;
@@ -65,7 +66,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, Ite
     public boolean canBlockStay(World par1World, int par2, int par3, int par4)
     {
         Block block = par1World.getBlock(par2, par3 - 1, par4);
-        return block.isSideSolid(par1World, par2, par3, par4, EnumFacing.UP);
+        return block.isSideSolid(par1World, par2, par3, par4, ForgeDirection.UP);
     }
     
     private boolean beginHatch(World world, int x, int y, int z, EntityPlayer player)

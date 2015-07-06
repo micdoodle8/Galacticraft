@@ -7,9 +7,9 @@ import net.minecraft.util.AxisAlignedBB;
 public class TileEntityOxygenDetector extends TileEntityAdvanced
 {
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
 
         if (this.worldObj != null && !this.worldObj.isRemote && this.ticks % 50 == 0)
         {
@@ -17,7 +17,7 @@ public class TileEntityOxygenDetector extends TileEntityAdvanced
 
             if (this.blockType != null && this.blockType instanceof BlockOxygenDetector)
             {
-                ((BlockOxygenDetector) this.blockType).updateOxygenState(this.worldObj, this.xCoord, this.yCoord, this.zCoord, OxygenUtil.isAABBInBreathableAirBlock(this.worldObj, AxisAlignedBB.fromBounds(this.xCoord - 1, this.yCoord - 1, this.zCoord - 1, this.xCoord + 2, this.yCoord + 2, this.zCoord + 2)));
+                ((BlockOxygenDetector) this.blockType).updateOxygenState(this.worldObj, this.getPos(), OxygenUtil.isAABBInBreathableAirBlock(this.worldObj, AxisAlignedBB.fromBounds(this.getPos().getX() - 1, this.getPos().getY() - 1, this.getPos().getZ() - 1, this.getPos().getX() + 2, this.getPos().getY() + 2, this.getPos().getZ() + 2)));
             }
         }
     }

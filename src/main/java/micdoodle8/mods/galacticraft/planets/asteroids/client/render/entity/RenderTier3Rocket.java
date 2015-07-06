@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.IModelCustom;
+import micdoodle8.mods.galacticraft.core.client.objload.IModelCustom;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -24,6 +24,7 @@ public class RenderTier3Rocket extends Render
 
     public RenderTier3Rocket(IModelCustom spaceshipModel, String textureDomain, String texture)
     {
+        super(FMLClientHandler.instance().getClient().getRenderManager());
         this.rocketModelObj = spaceshipModel;
         this.rocketTexture = new ResourceLocation(textureDomain, "textures/model/" + texture + ".png");
         this.shadowSize = 2F;
@@ -65,7 +66,7 @@ public class RenderTier3Rocket extends Render
         GL11.glScalef(0.9F, 0.9F, 0.9F);
 
         this.rocketModelObj.renderOnly("Boosters", "Rocket");
-        Vector3 teamColor = ClientUtil.updateTeamColor(FMLClientHandler.instance().getClient().thePlayer.getCommandSenderName(), true);
+        Vector3 teamColor = ClientUtil.updateTeamColor(FMLClientHandler.instance().getClient().thePlayer.getName(), true);
         if (teamColor != null)
         {
             GL11.glColor3f(teamColor.floatX(), teamColor.floatY(), teamColor.floatZ());

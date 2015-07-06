@@ -94,7 +94,7 @@ public class GuiRefinery extends GuiContainerGC
         switch (par1GuiButton.id)
         {
         case 0:
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.tileEntity.xCoord, this.tileEntity.yCoord, this.tileEntity.zCoord, 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.tileEntity.getPos(), 0 }));
             break;
         }
     }
@@ -102,7 +102,7 @@ public class GuiRefinery extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        GCCoreUtil.drawStringCentered(this.tileEntity.getInventoryName(), this.xSize / 2, 5, 4210752, this.fontRendererObj);
+        GCCoreUtil.drawStringCentered(this.tileEntity.getName(), this.xSize / 2, 5, 4210752, this.fontRendererObj);
         String displayText = "";
         int yOffset = -18;
 

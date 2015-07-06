@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.tile;
 
+import micdoodle8.mods.galacticraft.core.client.objload.IModelCustom;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
@@ -8,7 +9,6 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityCryogenicChamber
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -24,8 +24,10 @@ public class TileEntityCryogenicChamberRenderer extends TileEntitySpecialRendere
         this.model = model;
     }
 
-    public void renderCryogenicChamber(TileEntityCryogenicChamber chamber, double par2, double par4, double par6, float par8)
+    @Override
+    public void renderTileEntityAt(TileEntity tile, double par2, double par4, double par6, float par8, int par9)
     {
+        TileEntityCryogenicChamber chamber = (TileEntityCryogenicChamber) tile;
         GL11.glPushMatrix();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glTranslatef((float) par2 + 0.5F, (float) par4, (float) par6 + 0.5F);
@@ -66,11 +68,5 @@ public class TileEntityCryogenicChamberRenderer extends TileEntitySpecialRendere
 
         GL11.glPopMatrix();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    }
-
-    @Override
-    public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8)
-    {
-        this.renderCryogenicChamber((TileEntityCryogenicChamber) par1TileEntity, par2, par4, par6, par8);
     }
 }

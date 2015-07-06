@@ -76,9 +76,9 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
     public double getDistanceFromServer(double par1, double par3, double par5)
     {
-        final double d3 = this.xCoord + 0.5D - par1;
-        final double d4 = this.yCoord + 0.5D - par3;
-        final double d5 = this.zCoord + 0.5D - par5;
+        final double d3 = this.getPos().getX() + 0.5D - par1;
+        final double d4 = this.getPos().getY() + 0.5D - par3;
+        final double d5 = this.getPos().getZ() + 0.5D - par5;
         return d3 * d3 + d4 * d4 + d5 * d5;
     }
 
@@ -128,11 +128,11 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                 bubbleSizeSq *= bubbleSizeSq;
                 boolean doGrass = !this.grassDisabled && this.getFirstSeedStack() != null;
                 boolean doTrees = !this.treesDisabled && this.getFirstSaplingStack() != null;
-            	for (int x = this.xCoord - bubbleSize; x < this.xCoord + bubbleSize; x++)
+            	for (int x = this.getPos().getX() - bubbleSize; x < this.getPos().getX() + bubbleSize; x++)
                 {
-                    for (int y = this.yCoord - bubbleSize; y < this.yCoord + bubbleSize; y++)
+                    for (int y = this.getPos().getY() - bubbleSize; y < this.getPos().getY() + bubbleSize; y++)
                     {
-                        for (int z = this.zCoord - bubbleSize; z < this.zCoord + bubbleSize; z++)
+                        for (int z = this.getPos().getZ() - bubbleSize; z < this.getPos().getZ() + bubbleSize; z++)
                         {
                             Block blockID = this.worldObj.getBlock(x, y, z);
 
@@ -454,7 +454,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
         return GCCoreUtil.translate("container.tileTerraformer.name");
     }
@@ -462,19 +462,19 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     // ISidedInventory Implementation:
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int side)
+    public int[] getSlotsForFace(EnumFacing side)
     {
         return new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
+    public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
         return this.isItemValidForSlot(slotID, itemstack);
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
     	if (slotID == 0)
     	{
@@ -489,7 +489,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return true;
     }

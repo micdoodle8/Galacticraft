@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -15,7 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class TileEntityScreen extends TileEntity
+public class TileEntityScreen extends TileEntityAdvanced
 {   
     public static float FRAMEBORDER = 0.098F;  //used for rendering
     public int imageType;
@@ -45,7 +46,7 @@ public class TileEntityScreen extends TileEntity
 		if (FMLCommonHandler.instance().getEffectiveSide().isClient())
 		{
 			this.screen = new DrawGameScreen(1.0F, 1.0F, this);
-			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_VIEWSCREEN_REQUEST, new Object[] { this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord} ));
+			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_VIEWSCREEN_REQUEST, new Object[] { this.worldObj.provider.getDimensionId(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()} ));
 		}
 	}
 	
@@ -56,7 +57,7 @@ public class TileEntityScreen extends TileEntity
         if (this.connectedDown) connectedFlags += 4;
         if (this.connectedLeft) connectedFlags += 2;
         if (this.connectedRight) connectedFlags += 1;
-		GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_VIEWSCREEN, new Object[] { this.xCoord, this.yCoord, this.zCoord, this.imageType, connectedFlags } ), this.worldObj.provider.dimensionId);
+		GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_VIEWSCREEN, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.imageType, connectedFlags } ), this.worldObj.provider.getDimensionId());
 	}
 	
 	@Override
@@ -77,7 +78,7 @@ public class TileEntityScreen extends TileEntity
 	{
 		BlockVec3 vec = new BlockVec3(this);
 		TileEntity tile;
-		int side = this.getRight(meta);
+        EnumFacing facingRight = getFacing().rotateY();
 
 		int left = this.connectionsLeft;
 		int right = this.connectionsRight;
@@ -96,7 +97,7 @@ public class TileEntityScreen extends TileEntity
     			if (x == 0 && z == 0) this.resetToSingle();
     			else
     			{
-	    			BlockVec3 newVec = vec.clone().modifyPositionFromSide(EnumFacing.getOrientation(side), x).modifyPositionFromSide(EnumFacing.DOWN, z);
+	    			BlockVec3 newVec = vec.clone().modifyPositionFromSide(facing, x).modifyPositionFromSide(EnumFacing.DOWN, z);
 	    			tile = newVec.getTileEntity(this.worldObj);
 	    			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta)
 	    			{
@@ -235,11 +236,11 @@ public class TileEntityScreen extends TileEntity
 		}
 	}
 	
-	@Override
-    public boolean canUpdate()
-    {
-        return false;
-    }
+//	@Override
+//    public boolean canUpdate()
+//    {
+//        return false;
+//    }
 
 	/**
 	 * Cycle through different screen contents
@@ -523,7 +524,7 @@ public class TileEntityScreen extends TileEntity
     		return true;
     	}
 
-    	//System.out.println("Checking screen size at "+this.xCoord+","+this.zCoord+": Up "+up+" Dn "+down+" Lf "+left+" Rg "+right);
+    	//System.out.println("Checking screen size at "+this.getPos().getX()+","+this.getPos().getZ()+": Up "+up+" Dn "+down+" Lf "+left+" Rg "+right);
 
     	boolean screenWhole= true;
     	boolean existingScreen = false;
@@ -536,13 +537,14 @@ public class TileEntityScreen extends TileEntity
     	BlockVec3 vec = new BlockVec3(this);
     	ArrayList<TileEntityScreen> screenList = new ArrayList<TileEntityScreen>();
 
-		int side = this.getRight(meta);
-		
+//		int side = this.getRight(meta);
+		EnumFacing side = getFacing().rotateY();
+
     	for (int x = -left; x <= right; x++)
     	{
     		for (int z = -up; z <= down; z++)
     		{
-    			BlockVec3 newVec = vec.clone().modifyPositionFromSide(EnumFacing.getOrientation(side), x).modifyPositionFromSide(EnumFacing.DOWN, z);
+    			BlockVec3 newVec = vec.clone().modifyPositionFromSide(side, x).modifyPositionFromSide(EnumFacing.DOWN, z);
     			TileEntity tile = newVec.getTileEntity(this.worldObj);
     			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
     			{
@@ -595,7 +597,7 @@ public class TileEntityScreen extends TileEntity
     	
 		DrawGameScreen newScreen = null;
 		boolean serverside = true;
-		TileEntity bottomLeft = vec.clone().modifyPositionFromSide(EnumFacing.getOrientation(side), -left).modifyPositionFromSide(EnumFacing.DOWN, down).getTileEntity(this.worldObj);
+		TileEntity bottomLeft = vec.clone().modifyPositionFromSide(side, -left).modifyPositionFromSide(EnumFacing.DOWN, down).getTileEntity(this.worldObj);
 		if (this.worldObj.isRemote)
 		{
 			if (bottomLeft instanceof TileEntityScreen)  //It always will be if reached this far
@@ -815,7 +817,8 @@ public class TileEntityScreen extends TileEntity
     private void joinUp()
     {
     	int meta = this.getBlockMetadata();
-    	EnumFacing side = EnumFacing.getOrientation(this.getRight(meta));
+//    	EnumFacing side = EnumFacing.getOrientation(this.getRight(meta));
+        EnumFacing side = getFacing().rotateY();
     	BlockVec3 vec = new BlockVec3(this);
     	for (int x = -this.connectionsLeft; x <= this.connectionsRight; x++)
 		{
@@ -842,7 +845,8 @@ public class TileEntityScreen extends TileEntity
     private void joinDown()
     {
     	int meta = this.getBlockMetadata();
-    	EnumFacing side = EnumFacing.getOrientation(this.getRight(meta));
+//    	EnumFacing side = EnumFacing.getOrientation(this.getRight(meta));
+        EnumFacing side = getFacing().rotateY();
     	BlockVec3 vec = new BlockVec3(this);
     	for (int x = -this.connectionsLeft; x <= this.connectionsRight; x++)
 		{
@@ -957,7 +961,7 @@ public class TileEntityScreen extends TileEntity
     	if (this.connectedLeft) connections += "L";
     	if (this.connectedRight) connections += "R";
     	if (this.worldObj.isRemote) strSide = "C";
-    	//System.out.println(strSide + ":" + msg + " at "+this.xCoord+","+this.zCoord+" "+connections);
+    	//System.out.println(strSide + ":" + msg + " at "+this.getPos().getX()+","+this.getPos().getZ()+" "+connections);
     }
 
     @SideOnly(Side.CLIENT)
@@ -966,4 +970,19 @@ public class TileEntityScreen extends TileEntity
 		this.refreshOnUpdate  = true;
 		TickHandlerClient.screenConnectionsUpdateList.add(this);
 	}
+
+    @Override
+    public double getPacketRange() {
+        return 0;
+    }
+
+    @Override
+    public int getPacketCooldown() {
+        return 0;
+    }
+
+    @Override
+    public boolean isNetworkedTile() {
+        return false;
+    }
 }

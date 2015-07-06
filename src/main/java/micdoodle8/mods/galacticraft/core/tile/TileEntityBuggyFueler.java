@@ -74,7 +74,7 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
     }
 
     @Override
-    public void onCreate(BlockVec3 placedPosition)
+    public void onCreate(BlockPos placedPosition)
     {
         this.mainBlockPosition = placedPosition;
         this.markDirty();
@@ -83,7 +83,7 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
         {
             for (int z = -1; z < 2; z++)
             {
-                final BlockVec3 vecToAdd = new BlockVec3(placedPosition.x + x, placedPosition.y, placedPosition.z + z);
+                final BlockPos vecToAdd = new BlockPos(placedPosition.getX() + x, placedPosition.getY(), placedPosition.getZ() + z);
 
                 if (!vecToAdd.equals(placedPosition))
                 {

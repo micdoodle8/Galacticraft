@@ -4,8 +4,9 @@ import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.IModelCustom;
+import micdoodle8.mods.galacticraft.core.client.objload.IModelCustom;
 
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -16,6 +17,7 @@ public class RenderEntryPod extends Render
 
     public RenderEntryPod(IModelCustom model)
     {
+        super(FMLClientHandler.instance().getClient().getRenderManager());
         modelEntryPod = model;
     }
 

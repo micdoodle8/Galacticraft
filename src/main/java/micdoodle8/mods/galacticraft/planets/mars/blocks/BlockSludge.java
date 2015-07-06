@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySludgeling;
@@ -36,7 +36,7 @@ public class BlockSludge extends BlockFluidClassic
             }
 
             int range = 5;
-            List<?> l = world.getEntitiesWithinAABB(EntitySludgeling.class, AxisAlignedBB.fromBounds(x - range, y - range, z - range, x + range, y + range, z + range));
+            List<?> l = world.getEntitiesWithinAABB(EntitySludgeling.class, AxisAlignedBB.getBoundingBox(x - range, y - range, z - range, x + range, y + range, z + range));
 
             if (l.size() < 3)
             {

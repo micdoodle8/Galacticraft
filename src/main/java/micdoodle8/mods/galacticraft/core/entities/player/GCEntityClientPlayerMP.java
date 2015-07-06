@@ -1,22 +1,22 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.util.Session;
 import net.minecraft.world.World;
 
-public class GCEntityClientPlayerMP extends EntityClientPlayerMP
+public class GCEntityClientPlayerMP extends EntityPlayerSP
 {
-    public GCEntityClientPlayerMP(Minecraft minecraft, World world, Session session, NetHandlerPlayClient netHandler, StatFileWriter statFileWriter)
+    public GCEntityClientPlayerMP(Minecraft mcIn, World worldIn, NetHandlerPlayClient netHandler, StatFileWriter statFileWriter)
     {
-        super(minecraft, world, session, netHandler, statFileWriter);
+        super(mcIn, worldIn, netHandler, statFileWriter);
     }
 
     @Override

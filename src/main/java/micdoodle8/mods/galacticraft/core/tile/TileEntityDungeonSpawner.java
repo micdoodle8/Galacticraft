@@ -38,9 +38,9 @@ public class TileEntityDungeonSpawner extends TileEntityAdvanced
 
     @SuppressWarnings("unchecked")
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
 
         if (this.roomCoords == null)
         {
@@ -79,7 +79,7 @@ public class TileEntityDungeonSpawner extends TileEntityAdvanced
                 {
                     Constructor<?> c = this.bossClass.getConstructor(new Class[] { World.class });
                     this.boss = (IBoss) c.newInstance(new Object[] { this.worldObj });
-                    ((Entity) this.boss).setPosition(this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord + 0.5);
+                    ((Entity) this.boss).setPosition(this.getPos().getX() + 0.5, this.getPos().getY() + 1.0, this.getPos().getZ() + 0.5);
                     this.boss.setRoom(this.roomCoords, this.roomSize);
                 }
                 catch (Exception e)

@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -14,7 +15,6 @@ public abstract class AbstractTab extends GuiButton
 {
 	ResourceLocation texture = new ResourceLocation("textures/gui/container/creative_inventory/tabs.png");
 	ItemStack renderStack;
-	RenderItem itemRenderer = new RenderItem();
 	public int potionOffsetLast;
 
 	public AbstractTab(int id, int posX, int posY, ItemStack renderStack)
@@ -46,14 +46,14 @@ public abstract class AbstractTab extends GuiButton
 
 			RenderHelper.enableGUIStandardItemLighting();
 			this.zLevel = 100.0F;
-			this.itemRenderer.zLevel = 100.0F;
-			GL11.glEnable(GL11.GL_LIGHTING);
-			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-			this.itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.renderEngine, this.renderStack, this.xPosition + 6, this.yPosition + 8);
-			this.itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.renderEngine, this.renderStack, this.xPosition + 6, this.yPosition + 8);
-			GL11.glDisable(GL11.GL_LIGHTING);
-            GL11.glEnable(GL11.GL_BLEND);
-			this.itemRenderer.zLevel = 0.0F;
+//			FMLClientHandler.instance().getClient().getItemRenderer().zLevel = 100.0F;
+//			GL11.glEnable(GL11.GL_LIGHTING);
+//			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+//            FMLClientHandler.instance().getClient().getItemRenderer().renderOverlays(mc.fontRenderer, mc.renderEngine, this.renderStack, this.xPosition + 6, this.yPosition + 8);
+//            FMLClientHandler.instance().getClient().getItemRenderer().renderItemOverlayIntoGUI(mc.fontRenderer, mc.renderEngine, this.renderStack, this.xPosition + 6, this.yPosition + 8);
+//			GL11.glDisable(GL11.GL_LIGHTING);
+//            GL11.glEnable(GL11.GL_BLEND);
+//            FMLClientHandler.instance().getClient().getItemRenderer().zLevel = 0.0F;
 			this.zLevel = 0.0F;
 			RenderHelper.disableStandardItemLighting();
 		}

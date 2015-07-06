@@ -16,9 +16,9 @@ public class TileEntityFallenMeteor extends TileEntityAdvanced implements IPacke
     private boolean sentOnePacket = false;
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
 
         if (!this.worldObj.isRemote && this.heatLevel > 0)
         {
@@ -46,7 +46,7 @@ public class TileEntityFallenMeteor extends TileEntityAdvanced implements IPacke
     {
         if (this.worldObj.isRemote)
         {
-            this.worldObj.func_147479_m(this.xCoord, this.yCoord, this.zCoord);
+            this.worldObj.notifyLightSet(this.getPos());
         }
     }
 

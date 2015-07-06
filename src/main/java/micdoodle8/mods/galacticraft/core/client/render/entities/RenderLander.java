@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -19,6 +20,7 @@ public class RenderLander extends Render
 
     public RenderLander()
     {
+        super(FMLClientHandler.instance().getClient().getRenderManager());
         this.shadowSize = 2F;
         this.landerModel = new ModelLander();
     }

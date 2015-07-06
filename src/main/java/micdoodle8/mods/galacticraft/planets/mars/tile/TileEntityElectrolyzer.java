@@ -219,13 +219,13 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return true;
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
         return GCCoreUtil.translate("tile.marsMachine.6.name");
     }
@@ -233,13 +233,13 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     // ISidedInventory Implementation:
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int side)
+    public int[] getSlotsForFace(EnumFacing side)
     {
         return new int[] { 0, 1 };
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
+    public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
         if (this.isItemValidForSlot(slotID, itemstack))
         {
@@ -257,7 +257,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
         if (this.isItemValidForSlot(slotID, itemstack))
         {
@@ -415,7 +415,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     {
         if (this.blockMetadata == -1)
         {
-            this.blockMetadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
+            this.blockMetadata = this.worldObj.getBlockMetadata(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
         }
 
         return this.blockMetadata & 3;
