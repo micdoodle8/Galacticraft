@@ -174,7 +174,7 @@ public class BlockWallGC extends BlockWall
 
 		if (block != this && block != Blocks.fence_gate)
 		{
-			return block != null && block.getMaterial().isOpaque() && block.renderAsNormalBlock() ? block.getMaterial() != Material.gourd : false;
+			return block != null && block.getMaterial().isOpaque() && block.isFullCube() ? block.getMaterial() != Material.gourd : false;
 		}
 		return true;
 	}

@@ -4,7 +4,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -15,7 +15,7 @@ public class RoomTreasureMoon extends DungeonRoom
     int sizeY;
     int sizeZ;
 
-    private final HashSet<ChunkCoordinates> chests = new HashSet<ChunkCoordinates>();
+    private final HashSet<BlockPos> chests = new HashSet<BlockPos>();
 
     public RoomTreasureMoon(MapGenDungeon dungeon, int posX, int posY, int posZ, EnumFacing entranceDir)
     {
@@ -61,7 +61,7 @@ public class RoomTreasureMoon extends DungeonRoom
 
         if (this.placeBlock(chunk, meta, hx, this.posY, hz, cx, cz, GCBlocks.treasureChestTier1, 0))
         {
-            this.chests.add(new ChunkCoordinates(hx, this.posY, hz));
+            this.chests.add(new BlockPos(hx, this.posY, hz));
         }
     }
 
@@ -82,9 +82,9 @@ public class RoomTreasureMoon extends DungeonRoom
     {
         if (!this.chests.isEmpty())
         {
-            HashSet<ChunkCoordinates> removeList = new HashSet<ChunkCoordinates>();
+            HashSet<BlockPos> removeList = new HashSet<BlockPos>();
 
-            for (ChunkCoordinates coords : this.chests)
+            for (BlockPos coords : this.chests)
             {
                 this.worldObj.setBlock(coords.posX, coords.posY, coords.posZ, GCBlocks.treasureChestTier1, 0, 3);
                 this.worldObj.setTileEntity(coords.posX, coords.posY, coords.posZ, new TileEntityTreasureChest(1));

@@ -154,7 +154,7 @@ public class DrawGameScreen extends IScreenManager
 	public WorldProvider getWorldProvider()
 	{
 		if (this.driver != null)
-			return driver.getWorldObj().provider;
+			return driver.getWorld().provider;
 		
 		return null;
 	}    

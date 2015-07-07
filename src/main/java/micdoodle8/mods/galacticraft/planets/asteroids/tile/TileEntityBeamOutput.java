@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.power.ILaserNode;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -18,18 +21,18 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
 {
     public LinkedList<ILaserNode> nodeList = new LinkedList<ILaserNode>();
     @NetworkedField(targetSide = Side.CLIENT)
-    public BlockVec3 targetVec = BlockVec3.INVALID_VECTOR;
+    public BlockPos targetVec = new BlockPos(-1, -1, -1);
     public float pitch;
     public float yaw;
-    private BlockVec3 preLoadTarget = null;
-    private BlockVec3 lastTargetVec = BlockVec3.INVALID_VECTOR;
+    private BlockPos preLoadTarget = null;
+    private BlockPos lastTargetVec = new BlockPos(-1, -1, -1);
 
     @Override
-    public void updateEntity()
+    public void update()
     {
         if (this.preLoadTarget != null)
         {
-            TileEntity tileAtTarget = this.worldObj.getTileEntity(this.preLoadTarget.x, this.preLoadTarget.y, this.preLoadTarget.z);
+            TileEntity tileAtTarget = this.worldObj.getTileEntity(this.preLoadTarget);
 
             if (tileAtTarget != null && tileAtTarget instanceof ILaserNode)
             {
@@ -38,7 +41,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
             }
         }
 
-        super.updateEntity();
+        super.update();
 
         if (!this.targetVec.equals(this.lastTargetVec))
         {
@@ -104,7 +107,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
                 {
                     Chunk chunk = this.worldObj.getChunkFromChunkCoords(cX, cZ);
 
-                    for (Object obj : chunk.chunkTileEntityMap.values())
+                    for (Object obj : chunk.getTileEntityMap().values())
                     {
                         if (obj != this && obj instanceof ILaserNode)
                         {
@@ -255,7 +258,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
         return 0;
     }
 
-    public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if (this.nodeList.size() > 1)
         {
@@ -295,7 +298,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
     {
         if (!this.targetVec.equals(BlockVec3.INVALID_VECTOR))
         {
-            TileEntity tileAtTarget = this.worldObj.getTileEntity(this.targetVec.x, this.targetVec.y, this.targetVec.z);
+            TileEntity tileAtTarget = this.worldObj.getTileEntity(this.targetVec);
 
             if (tileAtTarget != null && tileAtTarget instanceof ILaserNode)
             {
@@ -312,11 +315,11 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
     {
         if (target != null)
         {
-            this.targetVec = new BlockVec3(target.getTile());
+            this.targetVec = target.getTile().getPos();
         }
         else
         {
-            this.targetVec = BlockVec3.INVALID_VECTOR;
+            this.targetVec = new BlockPos(-1, -1, -1);
         }
     }
 
@@ -327,7 +330,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
 
         if (nbt.getBoolean("HasTarget"))
         {
-            this.preLoadTarget = new BlockVec3(nbt.getInteger("TargetX"), nbt.getInteger("TargetY"), nbt.getInteger("TargetZ"));
+            this.preLoadTarget = new BlockPos(nbt.getInteger("TargetX"), nbt.getInteger("TargetY"), nbt.getInteger("TargetZ"));
         }
     }
 
@@ -340,9 +343,9 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
 
         if (this.getTarget() != null)
         {
-            nbt.setInteger("TargetX", this.getTarget().getTile().xCoord);
-            nbt.setInteger("TargetY", this.getTarget().getTile().yCoord);
-            nbt.setInteger("TargetZ", this.getTarget().getTile().zCoord);
+            nbt.setInteger("TargetX", this.getTarget().getTile().getPos().getX());
+            nbt.setInteger("TargetY", this.getTarget().getTile().getPos().getY());
+            nbt.setInteger("TargetZ", this.getTarget().getTile().getPos().getZ());
         }
     }
 }

@@ -58,7 +58,7 @@ public abstract class BlockAdvanced extends BlockContainer
             }
         }
 
-        return this.onMachineActivated(worldIn, pos, playerIn, side, hitX, hitY, hitZ);
+        return this.onMachineActivated(worldIn, pos, state, playerIn, side, hitX, hitY, hitZ);
     }
 
     /**
@@ -157,7 +157,7 @@ public abstract class BlockAdvanced extends BlockContainer
      *
      * @return True if something happens
      */
-    public boolean onMachineActivated(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         return false;
     }

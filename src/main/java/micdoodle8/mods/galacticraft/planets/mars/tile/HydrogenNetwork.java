@@ -1,9 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.FMLLog;
-import mekanism.api.gas.Gas;
-import mekanism.api.gas.GasStack;
-import mekanism.api.gas.IGasHandler;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IHydrogenNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.grid.Pathfinder;
@@ -49,9 +47,9 @@ public class HydrogenNetwork implements IHydrogenNetwork
 
                             if (hydrogenTile.shouldPullHydrogen())
                             {
-                                for (EnumFacing direction : EnumFacing.VALID_DIRECTIONS)
+                                for (EnumFacing direction : EnumFacing.values())
                                 {
-                                    TileEntity tile = new BlockVec3(tileEntity).modifyPositionFromSide(direction, 1).getTileEntity(tileEntity.getWorldObj());
+                                    TileEntity tile = new BlockVec3(tileEntity).modifyPositionFromSide(direction, 1).getTileEntity(tileEntity.getWorld());
 
                                     if (hydrogenTile.canConnect(direction, NetworkType.HYDROGEN) && this.pipes.contains(tile))
                                     {
@@ -65,27 +63,27 @@ public class HydrogenNetwork implements IHydrogenNetwork
                                 }
                             }
                         }
-                        else if (EnergyConfigHandler.isMekanismLoaded() && tileEntity instanceof IGasHandler)
-                        {
-                            IGasHandler gasHandler = (IGasHandler) tileEntity;
-
-                            for (EnumFacing direction : EnumFacing.VALID_DIRECTIONS)
-                            {
-                                TileEntity tile = new BlockVec3(tileEntity).getTileEntityOnSide(tileEntity.getWorldObj(), direction);
-
-                                if (gasHandler.canReceiveGas(direction, (Gas) EnergyConfigHandler.gasHydrogen) && this.getTransmitters().contains(tile))
-                                {
-                                    int hydrogenToSend = (int) Math.floor(totalHydrogen / this.hydrogenTiles.size());
-
-                                    if (hydrogenToSend > 0)
-                                    {
-                                    	try {
-                                    		remainingUsableHydrogen -= gasHandler.receiveGas(direction, (new GasStack((Gas) EnergyConfigHandler.gasHydrogen, hydrogenToSend)));
-                                        } catch (Exception e) { }
-                                    }
-                                }
-                            }
-                        }
+//                        else if (EnergyConfigHandler.isMekanismLoaded() && tileEntity instanceof IGasHandler)
+//                        {
+//                            IGasHandler gasHandler = (IGasHandler) tileEntity;
+//
+//                            for (EnumFacing direction : EnumFacing.values())
+//                            {
+//                                TileEntity tile = new BlockVec3(tileEntity).getTileEntityOnSide(tileEntity.getWorldObj(), direction);
+//
+//                                if (gasHandler.canReceiveGas(direction, (Gas) EnergyConfigHandler.gasHydrogen) && this.getTransmitters().contains(tile))
+//                                {
+//                                    int hydrogenToSend = (int) Math.floor(totalHydrogen / this.hydrogenTiles.size());
+//
+//                                    if (hydrogenToSend > 0)
+//                                    {
+//                                    	try {
+//                                    		remainingUsableHydrogen -= gasHandler.receiveGas(direction, (new GasStack((Gas) EnergyConfigHandler.gasHydrogen, hydrogenToSend)));
+//                                        } catch (Exception e) { }
+//                                    }
+//                                }
+//                            }
+//                        }
                     }
                 }
             }
@@ -117,12 +115,12 @@ public class HydrogenNetwork implements IHydrogenNetwork
             {
                 if (!tileEntity.isInvalid())
                 {
-                    if (tileEntity.getWorldObj().getTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord) == tileEntity)
+                    if (tileEntity.getWorld().getTileEntity(tileEntity.getPos()) == tileEntity)
                     {
-                        for (EnumFacing direction : EnumFacing.VALID_DIRECTIONS)
+                        for (EnumFacing direction : EnumFacing.values())
                         {
                             BlockVec3 tileVec = new BlockVec3(tileEntity);
-                            TileEntity tile = tileVec.modifyPositionFromSide(direction, 1).getTileEntity(tileEntity.getWorldObj());
+                            TileEntity tile = tileVec.modifyPositionFromSide(direction, 1).getTileEntity(tileEntity.getWorld());
 
                             if (((TileEntityMethaneSynthesizer) tileEntity).canConnect(direction, NetworkType.HYDROGEN) && this.pipes.contains(tile))
                             {
@@ -168,7 +166,7 @@ public class HydrogenNetwork implements IHydrogenNetwork
 
                 transmitter.onNetworkChanged();
 
-                if (((TileEntity) transmitter).isInvalid() || ((TileEntity) transmitter).getWorldObj() == null)
+                if (((TileEntity) transmitter).isInvalid() || ((TileEntity) transmitter).getWorld() == null)
                 {
                     it.remove();
                     continue;
@@ -196,7 +194,7 @@ public class HydrogenNetwork implements IHydrogenNetwork
     		{
     			ITransmitter transmitter = it.next();
 
-                if (transmitter == null || ((TileEntity) transmitter).isInvalid() || ((TileEntity) transmitter).getWorldObj() == null)
+                if (transmitter == null || ((TileEntity) transmitter).isInvalid() || ((TileEntity) transmitter).getWorld() == null)
                 {
                     it.remove();
                     continue;
@@ -214,7 +212,7 @@ public class HydrogenNetwork implements IHydrogenNetwork
 
     				if (!(acceptor instanceof ITransmitter) && acceptor instanceof IConnector)
     				{
-    					this.hydrogenTiles.put(acceptor, EnumFacing.getOrientation(i));
+    					this.hydrogenTiles.put(acceptor, EnumFacing.getFront(i));
     				}
     			}
     		}
@@ -268,7 +266,7 @@ public class HydrogenNetwork implements IHydrogenNetwork
                     {
                         if (connectedBlockA != connectedBlockB && connectedBlockB instanceof INetworkConnection)
                         {
-                            Pathfinder finder = new PathfinderChecker(((TileEntity) splitPoint).getWorldObj(), (INetworkConnection) connectedBlockB, NetworkType.HYDROGEN, splitPoint);
+                            Pathfinder finder = new PathfinderChecker(((TileEntity) splitPoint).getWorld(), (INetworkConnection) connectedBlockB, NetworkType.HYDROGEN, splitPoint);
                             finder.init(new BlockVec3(connectedBlockA));
 
                             if (finder.results.size() > 0)
@@ -281,7 +279,7 @@ public class HydrogenNetwork implements IHydrogenNetwork
 
                                 for (BlockVec3 node : finder.closedSet)
                                 {
-                                    TileEntity nodeTile = node.getTileEntity(((TileEntity) splitPoint).getWorldObj());
+                                    TileEntity nodeTile = node.getTileEntity(((TileEntity) splitPoint).getWorld());
 
                                     if (nodeTile instanceof INetworkProvider)
                                     {
@@ -302,7 +300,7 @@ public class HydrogenNetwork implements IHydrogenNetwork
 
                                 for (BlockVec3 node : finder.closedSet)
                                 {
-                                    TileEntity nodeTile = node.getTileEntity(((TileEntity) splitPoint).getWorldObj());
+                                    TileEntity nodeTile = node.getTileEntity(((TileEntity) splitPoint).getWorld());
 
                                     if (nodeTile instanceof INetworkProvider)
                                     {

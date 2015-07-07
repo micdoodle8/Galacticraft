@@ -23,7 +23,7 @@ public class ItemGrappleHook extends ItemBow
         super();
         this.setUnlocalizedName(assetName);
         this.setMaxStackSize(1);
-        this.setTextureName("arrow");
+        //this.setTextureName("arrow");
     }
 
     @SideOnly(Side.CLIENT)

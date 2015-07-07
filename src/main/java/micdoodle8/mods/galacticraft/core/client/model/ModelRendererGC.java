@@ -108,11 +108,11 @@ public class ModelRendererGC extends ModelRenderer
     {
         this.displayList = GLAllocation.generateDisplayLists(1);
         GL11.glNewList(this.displayList, GL11.GL_COMPILE);
-        Tessellator tessellator = Tessellator.instance;
+        Tessellator tessellator = Tessellator.getInstance();
 
         for (int i = 0; i < this.cubeList.size(); ++i)
         {
-            ((ModelBox) this.cubeList.get(i)).render(tessellator, par1);
+            ((ModelBox) this.cubeList.get(i)).render(tessellator.getWorldRenderer(), par1);
         }
 
         GL11.glEndList();

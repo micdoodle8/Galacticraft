@@ -57,7 +57,7 @@ import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -739,7 +739,7 @@ public class EventHandlerGC
     {
         EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
 
-        ChunkCoordinates c = player.playerLocation;
+        BlockPos c = player.playerLocation;
 
         if (c != null)
         {

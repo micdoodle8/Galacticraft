@@ -19,7 +19,7 @@ public class ItemFuelCanister extends ItemCanisterGeneric
     {
         super(assetName);
         this.setAllowedFluid("fuel");
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }
 
     @Override

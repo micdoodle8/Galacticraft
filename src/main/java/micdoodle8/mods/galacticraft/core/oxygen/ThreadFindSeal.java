@@ -898,7 +898,7 @@ public class ThreadFindSeal
         if (block.isSideSolid(this.world, vec.x, vec.y, vec.z, EnumFacing.getOrientation(side ^ 1)))
         {
             //Solid on all sides
-            if (block.getMaterial().blocksMovement() && block.renderAsNormalBlock())
+            if (block.getMaterial().blocksMovement() && block.isFullCube())
             {
                 return false;
             }

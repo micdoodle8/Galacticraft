@@ -924,7 +924,7 @@ public class ClientProxyCore extends CommonProxyCore
         /*EntityClientPlayerMP player = ClientProxyCore.mc.thePlayer;
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
-        EntityLivingBase entityLivingBase = ClientProxyCore.mc.renderViewEntity;
+        EntityLivingBase entityLivingBase = ClientProxyCore.mc.getRenderViewEntity();
 
         if (player.ridingEntity instanceof EntityTieredRocket && ClientProxyCore.mc.gameSettings.thirdPersonView == 0)
         {
@@ -992,7 +992,7 @@ public class ClientProxyCore extends CommonProxyCore
     {
         /*GL11.glNewList(glRenderList + 3, GL11.GL_COMPILE);
 
-        EntityLivingBase entitylivingbase = ClientProxyCore.mc.renderViewEntity;
+        EntityLivingBase entitylivingbase = ClientProxyCore.mc.getRenderViewEntity();
 
         if (entitylivingbase != null)
         {

@@ -427,7 +427,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
     {
         final Minecraft mc = FMLClientHandler.instance().getClient();
 
-        if (mc != null && mc.renderViewEntity != null && mc.effectRenderer != null)
+        if (mc != null && mc.getRenderViewEntity() != null && mc.effectRenderer != null)
         {
             if (fx != null)
             {

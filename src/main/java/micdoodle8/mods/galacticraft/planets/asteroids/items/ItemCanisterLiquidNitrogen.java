@@ -25,7 +25,7 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric
     {
         super(assetName);
         this.setAllowedFluid("liquidnitrogen");
-        this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
     }
 
     @Override

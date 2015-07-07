@@ -36,9 +36,9 @@ public class OverlayOxygenWarning extends Overlay
 
         GL11.glScalef(2.0F, 2.0F, 0.0F);
 
-        OverlayOxygenWarning.minecraft.fontRenderer.drawString(GCCoreUtil.translate("gui.warning"), width / 4 - OverlayOxygenWarning.minecraft.fontRenderer.getStringWidth(GCCoreUtil.translate("gui.warning")) / 2, height / 8 - 20, ColorUtil.to32BitColor(255, 255, 0, 0));
+        OverlayOxygenWarning.minecraft.fontRendererObj.drawString(GCCoreUtil.translate("gui.warning"), width / 4 - OverlayOxygenWarning.minecraft.fontRendererObj.getStringWidth(GCCoreUtil.translate("gui.warning")) / 2, height / 8 - 20, ColorUtil.to32BitColor(255, 255, 0, 0));
         final int alpha = (int) (200 * (Math.sin(OverlayOxygenWarning.screenTicks / 20.0F) * 0.5F + 0.5F)) + 5;
-        OverlayOxygenWarning.minecraft.fontRenderer.drawString(GCCoreUtil.translate("gui.oxygen.warning"), width / 4 - OverlayOxygenWarning.minecraft.fontRenderer.getStringWidth(GCCoreUtil.translate("gui.oxygen.warning")) / 2, height / 8, ColorUtil.to32BitColor(alpha, 255, 0, 0));
+        OverlayOxygenWarning.minecraft.fontRendererObj.drawString(GCCoreUtil.translate("gui.oxygen.warning"), width / 4 - OverlayOxygenWarning.minecraft.fontRendererObj.getStringWidth(GCCoreUtil.translate("gui.oxygen.warning")) / 2, height / 8, ColorUtil.to32BitColor(alpha, 255, 0, 0));
 
         GL11.glPopMatrix();
     }

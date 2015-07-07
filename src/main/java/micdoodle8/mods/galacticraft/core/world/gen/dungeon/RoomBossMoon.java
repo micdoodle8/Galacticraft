@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 
 import java.util.Random;
 
@@ -16,7 +16,7 @@ public class RoomBossMoon extends DungeonRoom
     public int sizeY;
     public int sizeZ;
     Random rand;
-    ChunkCoordinates spawnerCoords;
+    BlockPos spawnerCoords;
 
     public RoomBossMoon(MapGenDungeon dungeon, int posX, int posY, int posZ, EnumFacing entranceDir)
     {
@@ -65,7 +65,7 @@ public class RoomBossMoon extends DungeonRoom
 
         final int hx = (this.posX + this.posX + this.sizeX) / 2;
         final int hz = (this.posZ + this.posZ + this.sizeZ) / 2;
-        this.spawnerCoords = new ChunkCoordinates(hx, this.posY + 2, hz);
+        this.spawnerCoords = new BlockPos(hx, this.posY + 2, hz);
     }
 
     @Override

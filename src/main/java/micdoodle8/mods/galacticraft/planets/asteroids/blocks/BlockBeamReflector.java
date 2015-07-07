@@ -45,7 +45,7 @@ public class BlockBeamReflector extends BlockTileGC implements ItemBlockDesc.IBl
     }
 
     @Override
-    public boolean renderAsNormalBlock()
+    public boolean isFullCube()
     {
         return false;
     }
@@ -91,7 +91,7 @@ public class BlockBeamReflector extends BlockTileGC implements ItemBlockDesc.IBl
     }
 
     @Override
-    public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onSneakMachineActivated(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         TileEntity tile = world.getTileEntity(x, y, z);
 

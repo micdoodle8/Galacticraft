@@ -17,7 +17,7 @@ public class ItemArmorAsteroids extends ItemArmor
     {
         super(AsteroidsItems.ARMOR_TITANIUM, GalacticraftCore.proxy.getTitaniumArmorRenderIndex(), armorIndex);
         this.setUnlocalizedName("titanium_" + assetSuffix);
-        this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + "titanium_" + assetSuffix);
+        //this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + "titanium_" + assetSuffix);
     }
 
     @Override

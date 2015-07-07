@@ -1,56 +1,56 @@
-//package micdoodle8.mods.galacticraft.core.client.render.entities;
-//
-//import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
-//import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-//import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-//import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
-//import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-//import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
-//import net.minecraft.client.Minecraft;
-//import net.minecraft.client.entity.AbstractClientPlayer;
-//import net.minecraft.client.model.ModelBiped;
-//import net.minecraft.client.renderer.entity.RenderPlayer;
-//import net.minecraft.client.renderer.entity.RendererLivingEntity;
-//import net.minecraft.entity.EntityLivingBase;
-//import net.minecraft.entity.player.EntityPlayer;
-//import net.minecraft.util.ResourceLocation;
-//import net.minecraftforge.common.MinecraftForge;
-//import net.minecraftforge.event.entity.player.PlayerEvent;
-//
-//import net.minecraftforge.fml.client.FMLClientHandler;
-//import org.lwjgl.opengl.GL11;
-//import net.minecraftforge.fml.common.Loader;
-//
-//public class RenderPlayerGC extends RenderPlayer
-//{
-//    public static ModelBiped modelThermalPadding;
-//    public static ModelBiped modelThermalPaddingHelmet;
-//    private static ResourceLocation thermalPaddingTexture0;
-//    private static ResourceLocation thermalPaddingTexture1;
-//    public static boolean flagThermalOverride = false;
-//    private static Boolean isSmartRenderLoaded = null;
-//
-//    static
-//    {
-//        modelThermalPadding = new ModelPlayerGC(0.25F);
-//        modelThermalPaddingHelmet = new ModelPlayerGC(0.9F);
-//    }
-//
-//    public RenderPlayerGC()
-//    {
-//        super(FMLClientHandler.instance().getClient().getRenderManager());
+package micdoodle8.mods.galacticraft.core.client.render.entities;
+
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.renderer.entity.RendererLivingEntity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+
+import net.minecraftforge.fml.client.FMLClientHandler;
+import org.lwjgl.opengl.GL11;
+import net.minecraftforge.fml.common.Loader;
+
+public class RenderPlayerGC extends RenderPlayer
+{
+    public static ModelBiped modelThermalPadding;
+    public static ModelBiped modelThermalPaddingHelmet;
+    private static ResourceLocation thermalPaddingTexture0;
+    private static ResourceLocation thermalPaddingTexture1;
+    public static boolean flagThermalOverride = false;
+    private static Boolean isSmartRenderLoaded = null;
+
+    static
+    {
+        modelThermalPadding = new ModelPlayerGC(0.25F);
+        modelThermalPaddingHelmet = new ModelPlayerGC(0.9F);
+    }
+
+    public RenderPlayerGC()
+    {
+        super(FMLClientHandler.instance().getClient().getRenderManager());
 //        this.mainModel = new ModelPlayerGC(0.0F);
 //        this.modelBipedMain = (ModelPlayerGC) this.mainModel;
 //        this.modelArmorChestplate = new ModelPlayerGC(1.0F);
 //        this.modelArmor = new ModelPlayerGC(0.5F);
-//
-//        if (GalacticraftCore.isPlanetsLoaded)
-//        {
-//            RenderPlayerGC.thermalPaddingTexture0 = new ResourceLocation("galacticraftasteroids", "textures/misc/thermalPadding_0.png");
-//            RenderPlayerGC.thermalPaddingTexture1 = new ResourceLocation("galacticraftasteroids", "textures/misc/thermalPadding_1.png");
-//        }
-//    }
-//
+
+        if (GalacticraftCore.isPlanetsLoaded)
+        {
+            RenderPlayerGC.thermalPaddingTexture0 = new ResourceLocation("galacticraftasteroids", "textures/misc/thermalPadding_0.png");
+            RenderPlayerGC.thermalPaddingTexture1 = new ResourceLocation("galacticraftasteroids", "textures/misc/thermalPadding_1.png");
+        }
+    }
+
 //    @Override
 //    protected void rotateCorpse(EntityLivingBase entity, float x, float y, float z)
 //    {
@@ -71,7 +71,7 @@
 //    	}
 //    	super.rotateCorpse(entity, x, y, z);
 //    }
-//
+
 //    public static void renderModelS(RendererLivingEntity inst, EntityLivingBase par1EntityLivingBase, float par2, float par3, float par4, float par5, float par6, float par7)
 //    {
 //    	if (inst instanceof RenderPlayer)
@@ -85,7 +85,7 @@
 //
 //            if (RenderPlayerGC.thermalPaddingTexture0 != null && !isSmartRenderLoaded)
 //            {
-//                PlayerGearData gearData = ClientProxyCore.playerItemData.get(par1EntityLivingBase.getCommandSenderName());
+//                PlayerGearData gearData = ClientProxyCore.playerItemData.get(par1EntityLivingBase.getName());
 //
 //                if (gearData != null && !RenderPlayerGC.flagThermalOverride)
 //                {
@@ -171,7 +171,7 @@
 //            }
 //    	}
 //    }
-//
+
 //    @Override
 //    protected void rotateCorpse(AbstractClientPlayer par1AbstractClientPlayer, float par2, float par3, float par4)
 //    {
@@ -194,15 +194,15 @@
 //            super.rotateCorpse(par1AbstractClientPlayer, par2, par3, par4);
 //        }
 //    }
-//
-//    public static class RotatePlayerEvent extends PlayerEvent
-//    {
-//        public Boolean shouldRotate = null;
-//        public boolean vanillaOverride = false;
-//
-//        public RotatePlayerEvent(AbstractClientPlayer player)
-//        {
-//            super(player);
-//        }
-//    }
-//}
+
+    public static class RotatePlayerEvent extends PlayerEvent
+    {
+        public Boolean shouldRotate = null;
+        public boolean vanillaOverride = false;
+
+        public RotatePlayerEvent(AbstractClientPlayer player)
+        {
+            super(player);
+        }
+    }
+}

@@ -169,7 +169,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    public boolean renderAsNormalBlock()
+    public boolean isFullCube()
     {
         return false;
     }
@@ -181,7 +181,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
     {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         BlockVec3 mainBlockPosition = ((TileEntityTelepadFake) tileEntity).mainBlockPosition;

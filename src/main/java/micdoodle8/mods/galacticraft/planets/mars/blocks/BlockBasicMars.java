@@ -346,7 +346,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
     {
         int metadata = world.getBlockMetadata(x, y, z);
         if (metadata == 2)

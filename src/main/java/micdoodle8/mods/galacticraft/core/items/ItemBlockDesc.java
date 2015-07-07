@@ -59,7 +59,7 @@ public class ItemBlockDesc extends ItemBlockGC
         {
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
             {
-                info.addAll(FMLClientHandler.instance().getClient().fontRenderer.listFormattedStringToWidth(((IBlockShiftDesc) this.field_150939_a).getShiftDescription(stack.getItemDamage()), 150));
+                info.addAll(FMLClientHandler.instance().getClient().fontRendererObj.listFormattedStringToWidth(((IBlockShiftDesc) this.field_150939_a).getShiftDescription(stack.getItemDamage()), 150));
             }
             else
             {

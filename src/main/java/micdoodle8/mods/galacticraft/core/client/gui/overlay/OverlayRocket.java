@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -50,17 +52,18 @@ public class OverlayRocket extends Overlay
         float var8 = 1.0F;
         float sizeScale = 0.65F;
 
-        final Tessellator var9 = Tessellator.instance;
-        var9.startDrawingQuads();
-        var9.addVertexWithUV(var1 + 0, var2 + 242.0F * sizeScale, 0.0, (var3 + 0) * var7, (var4 + var6) * var8);
-        var9.addVertexWithUV(var1 + 20.0F * sizeScale, var2 + 242.0F * sizeScale, 0.0, (var3 + var5) * var7, (var4 + var6) * var8);
-        var9.addVertexWithUV(var1 + 20.0F * sizeScale, var2 + 0, 0.0, (var3 + var5) * var7, (var4 + 0) * var8);
-        var9.addVertexWithUV(var1 + 0, var2 + 0, 0.0, (var3 + 0) * var7, (var4 + 0) * var8);
-        var9.draw();
+        final Tessellator tess = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tess.getWorldRenderer();
+        worldRenderer.startDrawingQuads();
+        worldRenderer.addVertexWithUV(var1 + 0, var2 + 242.0F * sizeScale, 0.0, (var3 + 0) * var7, (var4 + var6) * var8);
+        worldRenderer.addVertexWithUV(var1 + 20.0F * sizeScale, var2 + 242.0F * sizeScale, 0.0, (var3 + var5) * var7, (var4 + var6) * var8);
+        worldRenderer.addVertexWithUV(var1 + 20.0F * sizeScale, var2 + 0, 0.0, (var3 + var5) * var7, (var4 + 0) * var8);
+        worldRenderer.addVertexWithUV(var1 + 0, var2 + 0, 0.0, (var3 + 0) * var7, (var4 + 0) * var8);
+        tess.draw();
 
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
 
-        Render spaceshipRender = (Render) RenderManager.instance.entityRenderMap.get(OverlayRocket.minecraft.thePlayer.ridingEntity.getClass());
+        Render spaceshipRender = (Render) minecraft.getRenderManager().entityRenderMap.get(OverlayRocket.minecraft.thePlayer.ridingEntity.getClass());
 
         final int y1 = height / 2 + 60 - (int) Math.floor(Overlay.getPlayerPositionY(OverlayRocket.minecraft.thePlayer) / 10.5F);
         var1 = 2.5F;
@@ -96,8 +99,7 @@ public class OverlayRocket extends Overlay
 
         GL11.glPopMatrix();
 
-        ResourceLocation resourcelocation = AbstractClientPlayer.locationStevePng;
-        resourcelocation = AbstractClientPlayer.getLocationSkin(OverlayRocket.minecraft.thePlayer.getGameProfile().getName());
+        ResourceLocation resourcelocation = AbstractClientPlayer.getLocationSkin(OverlayRocket.minecraft.thePlayer.getGameProfile().getName());
         AbstractClientPlayer.getDownloadImageSkin(resourcelocation, OverlayRocket.minecraft.thePlayer.getGameProfile().getName());
 
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(resourcelocation);
@@ -105,19 +107,19 @@ public class OverlayRocket extends Overlay
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glTranslatef(0F, 0F, 60F);
 
-        var9.startDrawingQuads();
-        var9.addVertexWithUV(var1 + 0, var2 + var6, 0.0, (var3 + 0) * var7, (var4 + var6) * var8);
-        var9.addVertexWithUV(var1 + var5, var2 + var6, 0.0, (var3 + var5) * var7, (var4 + var6) * var8);
-        var9.addVertexWithUV(var1 + var5, var2 + 0, 0.0, (var3 + var5) * var7, (var4 + 0) * var8);
-        var9.addVertexWithUV(var1 + 0, var2 + 0, 0.0, (var3 + 0) * var7, (var4 + 0) * var8);
-        var9.draw();
+        worldRenderer.startDrawingQuads();
+        worldRenderer.addVertexWithUV(var1 + 0, var2 + var6, 0.0, (var3 + 0) * var7, (var4 + var6) * var8);
+        worldRenderer.addVertexWithUV(var1 + var5, var2 + var6, 0.0, (var3 + var5) * var7, (var4 + var6) * var8);
+        worldRenderer.addVertexWithUV(var1 + var5, var2 + 0, 0.0, (var3 + var5) * var7, (var4 + 0) * var8);
+        worldRenderer.addVertexWithUV(var1 + 0, var2 + 0, 0.0, (var3 + 0) * var7, (var4 + 0) * var8);
+        tess.draw();
 
-        var9.startDrawingQuads();
-        var9.addVertexWithUV(var1 + 0, var2 + var6, 0.0, (var3b + 0) * var7, (var4 + var6) * var8);
-        var9.addVertexWithUV(var1 + var5, var2 + var6, 0.0, (var3b + var5) * var7, (var4 + var6) * var8);
-        var9.addVertexWithUV(var1 + var5, var2 + 0, 0.0, (var3b + var5) * var7, (var4 + 0) * var8);
-        var9.addVertexWithUV(var1 + 0, var2 + 0, 0.0, (var3b + 0) * var7, (var4 + 0) * var8);
-        var9.draw();
+        worldRenderer.startDrawingQuads();
+        worldRenderer.addVertexWithUV(var1 + 0, var2 + var6, 0.0, (var3b + 0) * var7, (var4 + var6) * var8);
+        worldRenderer.addVertexWithUV(var1 + var5, var2 + var6, 0.0, (var3b + var5) * var7, (var4 + var6) * var8);
+        worldRenderer.addVertexWithUV(var1 + var5, var2 + 0, 0.0, (var3b + var5) * var7, (var4 + 0) * var8);
+        worldRenderer.addVertexWithUV(var1 + 0, var2 + 0, 0.0, (var3b + 0) * var7, (var4 + 0) * var8);
+        tess.draw();
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glEnable(GL11.GL_LIGHTING);

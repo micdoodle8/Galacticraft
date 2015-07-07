@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -17,7 +20,6 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCargoRocket;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityTier2Rocket;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -54,12 +56,12 @@ public class ItemTier2Rocket extends Item implements IHoldableItem
     }
 
     @Override
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         boolean padFound = false;
         TileEntity tile = null;
 
-        if (par3World.isRemote)
+        if (world.isRemote)
         {
             return false;
         }
@@ -73,17 +75,19 @@ public class ItemTier2Rocket extends Item implements IHoldableItem
             {
                 for (int j = -1; j < 2; j++)
                 {
-                    final Block id = par3World.getBlock(par4 + i, par5, par6 + j);
-                    int meta = par3World.getBlockMetadata(par4 + i, par5, par6 + j);
+                    BlockPos pos1 = pos.add(i, 0, j);
+                    IBlockState state = world.getBlockState(pos1);
+                    final Block id = state.getBlock();
+                    int meta = id.getMetaFromState(state);
 
                     if (id == GCBlocks.landingPadFull && meta == 0)
                     {
                         padFound = true;
-                        tile = par3World.getTileEntity(par4 + i, par5, par6 + j);
+                        tile = world.getTileEntity(pos1);
 
-                        centerX = par4 + i + 0.5F;
-                        centerY = par5 + 0.4F;
-                        centerZ = par6 + j + 0.5F;
+                        centerX = pos.getX() + i + 0.5F;
+                        centerY = pos.getY() + 0.4F;
+                        centerZ = pos.getZ() + j + 0.5F;
                         
                         break;
                     }
@@ -107,30 +111,30 @@ public class ItemTier2Rocket extends Item implements IHoldableItem
 
                 EntityAutoRocket rocket;
 
-                if (par1ItemStack.getItemDamage() < 10)
+                if (stack.getItemDamage() < 10)
                 {
-                    rocket = new EntityTier2Rocket(par3World, centerX, centerY, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
+                    rocket = new EntityTier2Rocket(world, centerX, centerY, centerZ, EnumRocketType.values()[stack.getItemDamage()]);
                 }
                 else
                 {
-                    rocket = new EntityCargoRocket(par3World, centerX, centerY, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage() - 10]);
+                    rocket = new EntityCargoRocket(world, centerX, centerY, centerZ, EnumRocketType.values()[stack.getItemDamage() - 10]);
                 }
 
                 rocket.setPosition(rocket.posX, rocket.posY + rocket.getOnPadYOffset(), rocket.posZ);
-                par3World.spawnEntityInWorld(rocket);
+                world.spawnEntityInWorld(rocket);
 
-                if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("RocketFuel"))
+                if (stack.hasTagCompound() && stack.getTagCompound().hasKey("RocketFuel"))
                 {
-                    rocket.fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, par1ItemStack.getTagCompound().getInteger("RocketFuel")), true);
+                    rocket.fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, stack.getTagCompound().getInteger("RocketFuel")), true);
                 }
 
-                if (!par2EntityPlayer.capabilities.isCreativeMode)
+                if (!player.capabilities.isCreativeMode)
                 {
-                    par1ItemStack.stackSize--;
+                    stack.stackSize--;
 
-                    if (par1ItemStack.stackSize <= 0)
+                    if (stack.stackSize <= 0)
                     {
-                        par1ItemStack = null;
+                        stack = null;
                     }
                 }
 
@@ -241,9 +245,9 @@ public class ItemTier2Rocket extends Item implements IHoldableItem
         return true;
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister par1IconRegister)
     {
-    }
+    }*/
 }

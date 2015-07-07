@@ -61,7 +61,7 @@ public class BlockShortRangeTelepad extends BlockTileGC implements ItemBlockDesc
     }
     
     @Override
-    public boolean renderAsNormalBlock()
+    public boolean isFullCube()
     {
 		return false;
     }

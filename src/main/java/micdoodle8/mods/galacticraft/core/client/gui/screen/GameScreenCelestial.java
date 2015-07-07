@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
@@ -104,14 +105,15 @@ public class GameScreenCelestial implements IGameScreen
     {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        final Tessellator tess = Tessellator.instance;
+        final Tessellator tess = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tess.getWorldRenderer();
         GL11.glColor4f(greyLevel, greyLevel, greyLevel, 1.0F);
-        tess.startDrawingQuads();
-        
-        tess.addVertex(frameA, frameBy, 0.005F);
-        tess.addVertex(frameBx, frameBy, 0.005F);
-        tess.addVertex(frameBx, frameA, 0.005F);
-        tess.addVertex(frameA, frameA, 0.005F);
+        worldRenderer.startDrawingQuads();
+
+        worldRenderer.addVertex(frameA, frameBy, 0.005F);
+        worldRenderer.addVertex(frameBx, frameBy, 0.005F);
+        worldRenderer.addVertex(frameBx, frameA, 0.005F);
+        worldRenderer.addVertex(frameA, frameA, 0.005F);
         tess.draw();   	
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -180,12 +182,13 @@ public class GameScreenCelestial implements IGameScreen
 
     private void drawTexturedRect(float x, float y, float width, float height)
     {
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(x, y + height, 0F, 0, 1.0F);
-        tessellator.addVertexWithUV(x + width, y + height, 0F, 1.0F, 1.0F);
-        tessellator.addVertexWithUV(x + width, y, 0F, 1.0F, 0.0F);
-        tessellator.addVertexWithUV(x, y, 0F, 0.0F, 0.0F);
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        worldRenderer.startDrawingQuads();
+        worldRenderer.addVertexWithUV(x, y + height, 0F, 0, 1.0F);
+        worldRenderer.addVertexWithUV(x + width, y + height, 0F, 1.0F, 1.0F);
+        worldRenderer.addVertexWithUV(x + width, y, 0F, 1.0F, 0.0F);
+        worldRenderer.addVertexWithUV(x, y, 0F, 0.0F, 0.0F);
         tessellator.draw();
     }
 
@@ -356,48 +359,49 @@ public class GameScreenCelestial implements IGameScreen
     	float yab = y + height * y1;
     	float yba = y + height * y2;
     	float ybb = y + height * y3;
-    	Tessellator tessellator = Tessellator.instance;
+    	Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
     	if (prog <= 0.75F)
     	{
-        	tessellator.startDrawingQuads();
-	    	tessellator.addVertexWithUV(x, yab, 0F, prog, y1);
-	    	tessellator.addVertexWithUV(x + width, yab, 0F, prog + 0.25F, y1);
-	    	tessellator.addVertexWithUV(x + width, yaa, 0F, prog + 0.25F, y0);
-	    	tessellator.addVertexWithUV(x, yaa, 0F, prog, y0);
+            worldRenderer.startDrawingQuads();
+            worldRenderer.addVertexWithUV(x, yab, 0F, prog, y1);
+            worldRenderer.addVertexWithUV(x + width, yab, 0F, prog + 0.25F, y1);
+            worldRenderer.addVertexWithUV(x + width, yaa, 0F, prog + 0.25F, y0);
+            worldRenderer.addVertexWithUV(x, yaa, 0F, prog, y0);
 	    	tessellator.draw();
-        	tessellator.startDrawingQuads();
-	    	tessellator.addVertexWithUV(x, ybb, 0F, prog, y3);
-	    	tessellator.addVertexWithUV(x + width, ybb, 0F, prog + 0.25F, y3);
-	    	tessellator.addVertexWithUV(x + width, yba, 0F, prog + 0.25F, y2);
-	    	tessellator.addVertexWithUV(x, yba, 0F, prog, y2);
+            worldRenderer.startDrawingQuads();
+            worldRenderer.addVertexWithUV(x, ybb, 0F, prog, y3);
+            worldRenderer.addVertexWithUV(x + width, ybb, 0F, prog + 0.25F, y3);
+            worldRenderer.addVertexWithUV(x + width, yba, 0F, prog + 0.25F, y2);
+            worldRenderer.addVertexWithUV(x, yba, 0F, prog, y2);
 	    	tessellator.draw();
     	}
     	else
     	{
     		double xp = x + width * (1F - prog) / 0.25F;
-        	tessellator.startDrawingQuads();
-    		tessellator.addVertexWithUV(x, yab, 0F, prog, y1);
-    		tessellator.addVertexWithUV(xp, yab, 0F, 1.0F, y1);
-    		tessellator.addVertexWithUV(xp, yaa, 0F, 1.0F, y0);
-    		tessellator.addVertexWithUV(x, yaa, 0F, prog, y0);
+            worldRenderer.startDrawingQuads();
+            worldRenderer.addVertexWithUV(x, yab, 0F, prog, y1);
+            worldRenderer.addVertexWithUV(xp, yab, 0F, 1.0F, y1);
+            worldRenderer.addVertexWithUV(xp, yaa, 0F, 1.0F, y0);
+            worldRenderer.addVertexWithUV(x, yaa, 0F, prog, y0);
         	tessellator.draw();
-        	tessellator.startDrawingQuads();
-    		tessellator.addVertexWithUV(x, ybb, 0F, prog, y3);
-    		tessellator.addVertexWithUV(xp, ybb, 0F, 1.0F, y3);
-    		tessellator.addVertexWithUV(xp, yba, 0F, 1.0F, y2);
-    		tessellator.addVertexWithUV(x, yba, 0F, prog, y2);
+            worldRenderer.startDrawingQuads();
+            worldRenderer.addVertexWithUV(x, ybb, 0F, prog, y3);
+            worldRenderer.addVertexWithUV(xp, ybb, 0F, 1.0F, y3);
+            worldRenderer.addVertexWithUV(xp, yba, 0F, 1.0F, y2);
+            worldRenderer.addVertexWithUV(x, yba, 0F, prog, y2);
         	tessellator.draw();
-        	tessellator.startDrawingQuads();
-    		tessellator.addVertexWithUV(xp, yab, 0F, 0F, y1);
-    		tessellator.addVertexWithUV(x + width, yab, 0F, prog - 0.75F, y1);
-    		tessellator.addVertexWithUV(x + width, yaa, 0F, prog - 0.75F, y0);
-    		tessellator.addVertexWithUV(xp, yaa, 0F, 0F, y0);
+            worldRenderer.startDrawingQuads();
+            worldRenderer.addVertexWithUV(xp, yab, 0F, 0F, y1);
+            worldRenderer.addVertexWithUV(x + width, yab, 0F, prog - 0.75F, y1);
+            worldRenderer.addVertexWithUV(x + width, yaa, 0F, prog - 0.75F, y0);
+            worldRenderer.addVertexWithUV(xp, yaa, 0F, 0F, y0);
         	tessellator.draw();
-        	tessellator.startDrawingQuads();
-    		tessellator.addVertexWithUV(xp, ybb, 0F, 0F, y3);
-    		tessellator.addVertexWithUV(x + width, ybb, 0F, prog - 0.75F, y3);
-    		tessellator.addVertexWithUV(x + width, yba, 0F, prog - 0.75F, y2);
-    		tessellator.addVertexWithUV(xp, yba, 0F, 0F, y2);
+            worldRenderer.startDrawingQuads();
+            worldRenderer.addVertexWithUV(xp, ybb, 0F, 0F, y3);
+            worldRenderer.addVertexWithUV(x + width, ybb, 0F, prog - 0.75F, y3);
+            worldRenderer.addVertexWithUV(x + width, yba, 0F, prog - 0.75F, y2);
+            worldRenderer.addVertexWithUV(xp, yba, 0F, 0F, y2);
         	tessellator.draw();
     	}    		
     }    	

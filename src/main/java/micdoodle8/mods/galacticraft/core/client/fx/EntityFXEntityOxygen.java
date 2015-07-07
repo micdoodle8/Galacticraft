@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -34,14 +36,14 @@ public class EntityFXEntityOxygen extends EntityFX
     }
 
     @Override
-    public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7)
+    public void func_180434_a(WorldRenderer worldRenderer, Entity entity, float f0, float f1, float f2, float f3, float f4, float f5)
     {
-        float var8 = (this.particleAge + par2) / this.particleMaxAge;
+        float var8 = (this.particleAge + f0) / this.particleMaxAge;
         var8 = 1.0F - var8;
         var8 *= var8;
         var8 = 1.0F - var8;
         this.particleScale = this.portalParticleScale * var8;
-        super.renderParticle(par1Tessellator, par2, par3, par4, par5, par6, par7);
+        super.func_180434_a(worldRenderer, entity, f0, f1, f2, f3, f4, f5);
     }
 
     @Override

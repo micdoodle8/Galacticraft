@@ -1,19 +1,18 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.objload.AdvancedModelLoader;
+import micdoodle8.mods.galacticraft.core.client.objload.IModelCustom;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,9 +20,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import micdoodle8.mods.galacticraft.core.client.objload.AdvancedModelLoader;
-import micdoodle8.mods.galacticraft.core.client.objload.IModelCustom;
-
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.Loader;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
@@ -189,9 +187,9 @@ public class ModelPlayerGC extends ModelBiped
     @Override
     public void render(Entity var1, float var2, float var3, float var4, float var5, float var6, float var7)
     {
-        final Class<?> entityClass = EntityClientPlayerMP.class;
-        final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
-        final ModelBiped modelBipedMain = ((RenderPlayer) render).modelBipedMain;
+        final Class<?> entityClass = EntityPlayerSP.class;
+        final Render render = FMLClientHandler.instance().getClient().getRenderManager().getEntityClassRenderObject(entityClass);
+        final ModelBiped modelBipedMain = ((RenderPlayer) render).getPlayerModel();
 
         this.usingParachute = false;
         boolean wearingMask = false;
@@ -205,7 +203,7 @@ public class ModelPlayerGC extends ModelBiped
         boolean wearingFrequencyModule = false;
 
         final EntityPlayer player = (EntityPlayer) var1;
-        PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getCommandSenderName());
+        PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getName());
 
         if (gearData != null)
         {

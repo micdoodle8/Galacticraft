@@ -155,7 +155,7 @@ public class BlockCavernousVine extends Block implements IShearable, ItemBlockDe
     }
 
     @Override
-    public boolean renderAsNormalBlock()
+    public boolean isFullCube()
     {
         return false;
     }

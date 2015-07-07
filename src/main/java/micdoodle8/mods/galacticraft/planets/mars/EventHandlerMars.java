@@ -32,7 +32,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldServer;
@@ -80,7 +80,7 @@ public class EventHandlerMars
     @SubscribeEvent
     public void onPlayerWakeUp(EventWakePlayer event)
     {
-        ChunkCoordinates c = event.entityPlayer.playerLocation;
+        BlockPos c = event.entityPlayer.playerLocation;
         Block blockID = event.entityPlayer.worldObj.getBlock(c.posX, c.posY, c.posZ);
         int metadata = event.entityPlayer.worldObj.getBlockMetadata(c.posX, c.posY, c.posZ);
 
@@ -115,7 +115,7 @@ public class EventHandlerMars
     @SubscribeEvent
     public void onPlayerRotate(RotatePlayerEvent event)
     {
-        ChunkCoordinates c = event.entityPlayer.playerLocation;
+        BlockPos c = event.entityPlayer.playerLocation;
         Block block = event.entityPlayer.worldObj.getBlock(c.posX, c.posY - 2, c.posZ);
         int metadata = event.entityPlayer.worldObj.getBlockMetadata(c.posX, c.posY - 2, c.posZ);
 

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -39,11 +40,11 @@ public class EntityFXLanderFlame extends EntityFX
     }
 
     @Override
-    public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7)
+    public void func_180434_a(WorldRenderer worldRenderer, Entity entity, float f0, float f1, float f2, float f3, float f4, float f5)
     {
         GL11.glDepthMask(false);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
-        float var8 = (this.particleAge + par2) / this.particleMaxAge * 32.0F;
+        float var8 = (this.particleAge + f0) / this.particleMaxAge * 32.0F;
 
         if (var8 < 0.0F)
         {
@@ -56,7 +57,7 @@ public class EntityFXLanderFlame extends EntityFX
         }
 
         this.particleScale = this.smokeParticleScale * var8;
-        super.renderParticle(par1Tessellator, par2, par3, par4, par5, par6, par7);
+        super.func_180434_a(worldRenderer, entity, f0, f1, f2, f3, f4, f5);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(true);
     }
@@ -91,7 +92,7 @@ public class EntityFXLanderFlame extends EntityFX
         this.motionY *= 0.9599999785423279D;
         this.motionZ *= 0.9599999785423279D;
 
-        final List<?> var3 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(1.0D, 0.5D, 1.0D));
+        final List<?> var3 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().expand(1.0D, 0.5D, 1.0D));
 
         if (var3 != null)
         {

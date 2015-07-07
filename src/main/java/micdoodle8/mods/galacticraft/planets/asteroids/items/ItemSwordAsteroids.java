@@ -16,7 +16,7 @@ public class ItemSwordAsteroids extends ItemSword
     {
         super(AsteroidsItems.TOOL_TITANIUM);
         this.setUnlocalizedName(assetName);
-        this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
     }
 
     @Override

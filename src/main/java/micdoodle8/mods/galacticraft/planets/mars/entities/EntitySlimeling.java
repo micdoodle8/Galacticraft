@@ -58,7 +58,6 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
     {
         super(par1World);
         this.setSize(0.25F, 0.7F);
-        this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.aiSit = new EntityAISitGC(this);
         this.tasks.addTask(2, this.aiSit);
@@ -140,13 +139,13 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
             this.favFoodID = Item.getIdFromItem(Items.gunpowder);
             break;
         case 5:
-            this.favFoodID = Item.getIdFromItem(Items.wooden_door);
+            this.favFoodID = Item.getIdFromItem(Items.wooden_hoe);
             break;
         case 6:
             this.favFoodID = Item.getIdFromItem(Items.emerald);
             break;
         case 7:
-            this.favFoodID = Item.getIdFromItem(Items.cooked_fished);
+            this.favFoodID = Item.getIdFromItem(Items.fish);
             break;
         case 8:
             this.favFoodID = Item.getIdFromItem(Items.repeater);

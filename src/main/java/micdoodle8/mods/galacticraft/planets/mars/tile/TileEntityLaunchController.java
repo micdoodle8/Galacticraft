@@ -23,7 +23,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.WorldServer;
@@ -40,7 +40,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean launchPadRemovalDisabled = true;
     private Ticket chunkLoadTicket;
-    private List<ChunkCoordinates> connectedPads = new ArrayList<ChunkCoordinates>();
+    private List<BlockPos> connectedPads = new ArrayList<BlockPos>();
     @NetworkedField(targetSide = Side.CLIENT)
     public int frequency = -1;
     @NetworkedField(targetSide = Side.CLIENT)
@@ -98,7 +98,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
                 {
                     for (int i = 0; i < this.connectedPads.size(); i++)
                     {
-                        ChunkCoordinates coords = this.connectedPads.get(i);
+                        BlockPos coords = this.connectedPads.get(i);
                         Block block = this.worldObj.getBlock(coords.posX, coords.posY, coords.posZ);
 
                         if (block != GCBlocks.landingPadFull)
@@ -172,7 +172,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
                     {
                         if (this.getPos().getX() + x >> 4 != this.getPos().getX() >> 4 || this.getPos().getZ() + z >> 4 != this.getPos().getZ() >> 4)
                         {
-                            this.connectedPads.add(new ChunkCoordinates(this.getPos().getX() + x, this.getPos().getY(), this.getPos().getZ() + z));
+                            this.connectedPads.add(new BlockPos(this.getPos().getX() + x, this.getPos().getY(), this.getPos().getZ() + z));
 
                             if (placed)
                             {
@@ -198,9 +198,9 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public ChunkCoordinates getCoords()
+    public BlockPos getCoords()
     {
-        return new ChunkCoordinates(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
+        return new BlockPos(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
     }
 
     @Override

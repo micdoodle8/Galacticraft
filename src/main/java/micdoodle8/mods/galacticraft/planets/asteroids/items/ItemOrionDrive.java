@@ -9,18 +9,17 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 public class ItemOrionDrive extends Item
 {
-    public IIcon[] icons;
+//    public IIcon[] icons;
 
     public ItemOrionDrive(String assetName)
     {
         super();
         this.setMaxDamage(0);
         this.setUnlocalizedName(assetName);
-        this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
     }
 
     @Override

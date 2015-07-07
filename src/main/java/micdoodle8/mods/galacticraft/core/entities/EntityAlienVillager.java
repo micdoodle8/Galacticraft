@@ -10,7 +10,7 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.village.MerchantRecipe;
@@ -84,7 +84,7 @@ public class EntityAlienVillager extends EntityAgeable implements IEntityBreatha
             }
             else
             {
-                ChunkCoordinates chunkcoordinates = this.villageObj.getCenter();
+                BlockPos chunkcoordinates = this.villageObj.getCenter();
                 this.setHomeArea(chunkcoordinates.posX, chunkcoordinates.posY, chunkcoordinates.posZ, (int) (this.villageObj.getVillageRadius() * 0.6F));
 
                 if (this.field_82190_bM)

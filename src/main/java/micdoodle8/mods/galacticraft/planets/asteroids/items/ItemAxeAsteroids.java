@@ -17,7 +17,7 @@ public class ItemAxeAsteroids extends ItemAxe
     {
         super(GCItems.TOOL_STEEL);
         this.setUnlocalizedName(assetName);
-        this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
     }
 
     @Override

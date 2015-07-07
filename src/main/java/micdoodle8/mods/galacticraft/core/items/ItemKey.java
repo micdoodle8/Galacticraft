@@ -23,7 +23,7 @@ public class ItemKey extends Item implements IKeyItem
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.setUnlocalizedName(assetName);
-        this.setTextureName("arrow");
+        //this.setTextureName("arrow");
     }
 
     @Override

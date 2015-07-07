@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -18,7 +18,7 @@ public class RoomSpawnerMars extends DungeonRoom
     int sizeZ;
     Random rand;
 
-    private final ArrayList<ChunkCoordinates> spawners = new ArrayList<ChunkCoordinates>();
+    private final ArrayList<BlockPos> spawners = new ArrayList<BlockPos>();
 
     public RoomSpawnerMars(MapGenDungeon dungeon, int posX, int posY, int posZ, EnumFacing entranceDir)
     {
@@ -58,11 +58,11 @@ public class RoomSpawnerMars extends DungeonRoom
         }
         if (this.placeBlock(chunk, meta, this.posX + 1, this.posY - 1, this.posZ + 1, cx, cz, Blocks.mob_spawner, 0))
         {
-            this.spawners.add(new ChunkCoordinates(this.posX + 1, this.posY - 1, this.posZ + 1));
+            this.spawners.add(new BlockPos(this.posX + 1, this.posY - 1, this.posZ + 1));
         }
         if (this.placeBlock(chunk, meta, this.posX + this.sizeX - 1, this.posY - 1, this.posZ + this.sizeZ - 1, cx, cz, Blocks.mob_spawner, 0))
         {
-            this.spawners.add(new ChunkCoordinates(this.posX + this.sizeX - 1, this.posY - 1, this.posZ + this.sizeZ - 1));
+            this.spawners.add(new BlockPos(this.posX + this.sizeX - 1, this.posY - 1, this.posZ + this.sizeZ - 1));
         }
     }
 
@@ -81,7 +81,7 @@ public class RoomSpawnerMars extends DungeonRoom
     @Override
     protected void handleTileEntities(Random rand)
     {
-        for (final ChunkCoordinates spawnerCoords : this.spawners)
+        for (final BlockPos spawnerCoords : this.spawners)
         {
             if (this.worldObj.getBlock(spawnerCoords.posX, spawnerCoords.posY, spawnerCoords.posZ) == Blocks.mob_spawner)
             {

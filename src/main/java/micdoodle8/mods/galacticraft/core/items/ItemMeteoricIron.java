@@ -4,7 +4,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -12,21 +11,21 @@ import net.minecraft.item.ItemStack;
 
 public class ItemMeteoricIron extends Item
 {
-    private final String iconName;
+//    private final String iconName;
 
     public ItemMeteoricIron(String assetName)
     {
         super();
-        this.iconName = assetName;
+//        this.iconName = assetName;
         this.setUnlocalizedName(assetName);
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
         this.itemIcon = iconRegister.registerIcon("galacticraftmoon:" + this.iconName);
-    }
+    }*/
 
     @Override
     public CreativeTabs getCreativeTab()

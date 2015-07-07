@@ -30,7 +30,7 @@ public class ItemBuggy extends Item implements IHoldableItem
     {
         super();
         this.setUnlocalizedName(assetName);
-        this.setTextureName("arrow");
+        //this.setTextureName("arrow");
         this.setMaxStackSize(1);
     }
 

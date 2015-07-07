@@ -4,7 +4,8 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -40,19 +41,19 @@ public class MapGenDungeon
 
     public void generateUsingArrays(World world, long seed, int x, int y, int z, int chunkX, int chunkZ, Block[] blocks, byte[] metas)
     {
-        final ChunkCoordinates dungeonCoords = this.getDungeonNear(seed, chunkX, chunkZ);
+        final BlockPos dungeonCoords = this.getDungeonNear(seed, chunkX, chunkZ);
         if (dungeonCoords != null)
         {
-            this.generate(world, new Random(seed * dungeonCoords.posX * dungeonCoords.posZ * 24789), dungeonCoords.posX, y, dungeonCoords.posZ, chunkX, chunkZ, blocks, metas, true);
+            this.generate(world, new Random(seed * dungeonCoords.getX() * dungeonCoords.getZ() * 24789), dungeonCoords.getX(), y, dungeonCoords.getZ(), chunkX, chunkZ, blocks, metas, true);
         }
     }
 
     public void generateUsingSetBlock(World world, long seed, int x, int y, int z)
     {
-        final ChunkCoordinates dungeonCoords = this.getDungeonNear(seed, x / 16, y / 16);
+        final BlockPos dungeonCoords = this.getDungeonNear(seed, x / 16, y / 16);
         if (dungeonCoords != null)
         {
-            this.generate(world, new Random(seed * dungeonCoords.posX * dungeonCoords.posZ * 24789), x, y, z, x, z, null, null, false);
+            this.generate(world, new Random(seed * dungeonCoords.getX() * dungeonCoords.getZ() * 24789), x, y, z, x, z, null, null, false);
         }
     }
 
@@ -308,6 +309,8 @@ public class MapGenDungeon
                 loopj:
                 for (int j = y - 1; j <= y + this.HALLWAY_HEIGHT; j++)
                 {
+                    BlockPos blockPos = new BlockPos(i, j, k);
+
                     boolean flag = false;
                     int flag2 = -1;
 
@@ -395,23 +398,23 @@ public class MapGenDungeon
                         {
                         	if (OxygenUtil.noAtmosphericCombustion(this.worldObj.provider))
                         	{
-                                this.placeBlock(blocks, metas, i, j, k, cx, cz, GCBlocks.unlitTorch, 0);
-                                this.worldObj.scheduleBlockUpdateWithPriority(i, j, k, GCBlocks.unlitTorch, 40, 0);
+                                this.placeBlock(blocks, metas, blockPos, cx, cz, GCBlocks.unlitTorch, 0);
+                                this.worldObj.scheduleUpdate(new BlockPos(i, j, k), GCBlocks.unlitTorch, 40);
                         	}
                         	else
                         	{
-                                this.placeBlock(blocks, metas, i, j, k, cx, cz, Blocks.torch, 0);
-                                this.worldObj.scheduleBlockUpdateWithPriority(i, j, k, Blocks.torch, 40, 0);
+                                this.placeBlock(blocks, metas, blockPos, cx, cz, Blocks.torch, 0);
+                                this.worldObj.scheduleUpdate(new BlockPos(i, j, k), Blocks.torch, 40);
                         	}
                         }
                         else
                         {
-                            this.placeBlock(blocks, metas, i, j, k, cx, cz, Blocks.air, 0);
+                            this.placeBlock(blocks, metas, blockPos, cx, cz, Blocks.air, 0);
                         }
                     }
                     else
                     {
-                        this.placeBlock(blocks, metas, i, j, k, cx, cz, this.DUNGEON_WALL_ID, this.DUNGEON_WALL_META);
+                        this.placeBlock(blocks, metas, blockPos, cx, cz, this.DUNGEON_WALL_ID, this.DUNGEON_WALL_META);
                     }
                 }
             }
@@ -475,7 +478,7 @@ public class MapGenDungeon
                 {
                     j--;
 
-                    Block block = this.getBlock(blocks, x + i, j, z + k, cx + i / 16, cz + k / 16);
+                    Block block = this.getBlock(blocks, new BlockPos(x + i, j, z + k), cx + i / 16, cz + k / 16);
 
                     if (Blocks.air != block && block != null)
                     {
@@ -498,9 +501,9 @@ public class MapGenDungeon
                 int helper = 0;
                 for (int j = maxLevel + 3; j > 0; j--)
                 {
-                    if ((Blocks.air != this.getBlock(blocks, i, j - 1, k, cx, cz) || this.getBlock(blocks, i, j, k, cx, cz) == this.DUNGEON_WALL_ID) && helper <= depth)
+                    if ((Blocks.air != this.getBlock(blocks, new BlockPos(i, j - 1, k), cx, cz) || this.getBlock(blocks, new BlockPos(i, j, k), cx, cz) == this.DUNGEON_WALL_ID) && helper <= depth)
                     {
-                        this.placeBlock(blocks, meta, i, j, k, cx, cz, Blocks.air, 0);
+                        this.placeBlock(blocks, meta, new BlockPos(i, j, k), cx, cz, Blocks.air, 0);
                         helper++;
                     }
                     if (helper > depth || j <= y + 1)
@@ -512,7 +515,7 @@ public class MapGenDungeon
         }
     }
 
-    public ChunkCoordinates getDungeonNear(long worldSeed, int i, int j)
+    public BlockPos getDungeonNear(long worldSeed, int i, int j)
     {
         final int range = 16;
         for (int x = i - range; x <= i + range; x++)
@@ -521,7 +524,7 @@ public class MapGenDungeon
             {
                 if (this.canGenDungeonAtCoords(worldSeed, x, z))
                 {
-                    return new ChunkCoordinates(x * 16 + 8, 0, z * 16 + 8);
+                    return new BlockPos(x * 16 + 8, 0, z * 16 + 8);
                 }
             }
         }
@@ -529,46 +532,49 @@ public class MapGenDungeon
         return null;
     }
 
-    private void placeBlock(Block[] blocks, byte[] metas, int x, int y, int z, int cx, int cz, Block id, int meta)
+    private void placeBlock(Block[] blocks, byte[] metas, BlockPos pos, int cx, int cz, Block id, int meta)
     {
         if (MapGenDungeon.useArrays)
         {
             cx *= 16;
             cz *= 16;
-            x -= cx;
-            z -= cz;
-            if (x < 0 || x >= 16 || z < 0 || z >= 16)
+            pos = pos.add(-cx, 0, -cz);
+            if (pos.getX() < 0 || pos.getX() >= 16 || pos.getZ() < 0 || pos.getZ() >= 16)
             {
                 return;
             }
-            final int index = this.getIndex(x, y, z);
+            final int index = this.getIndex(pos);
             blocks[index] = id;
             metas[index] = (byte) meta;
         }
         else
         {
-            this.worldObj.setBlock(x, y, z, id, meta, 0);
+            this.worldObj.setBlockState(pos, id.getStateFromMeta(meta), 0);
         }
     }
 
-    private Block getBlock(Block[] blocks, int x, int y, int z, int cx, int cz)
+    private Block getBlock(Block[] blocks, BlockPos pos, int cx, int cz)
     {
         if (MapGenDungeon.useArrays)
         {
             cx *= 16;
             cz *= 16;
-            x -= cx;
-            z -= cz;
-            if (x < 0 || x >= 16 || z < 0 || z >= 16)
+            pos.add(-cx, 0, -cz);
+            if (pos.getX() < 0 || pos.getX() >= 16 || pos.getZ() < 0 || pos.getZ() >= 16)
             {
                 return Blocks.air;
             }
-            return blocks[this.getIndex(x, y, z)];
+            return blocks[this.getIndex(pos)];
         }
         else
         {
-            return this.worldObj.getBlock(x, y, z);
+            return this.worldObj.getBlockState(pos).getBlock();
         }
+    }
+
+    private int getIndex(BlockPos pos)
+    {
+        return getIndex(pos.getX(), pos.getY(), pos.getZ());
     }
 
     private int getIndex(int x, int y, int z)
@@ -578,7 +584,7 @@ public class MapGenDungeon
 
     private EnumFacing randDir(Random rand)
     {
-        return EnumFacing.values()[rand.nextInt(EnumFacing.VALID_DIRECTIONS.length)];
+        return EnumFacing.values()[rand.nextInt(EnumFacing.values().length)];
     }
 
     private boolean isIntersecting(DungeonBoundingBox bb, List<DungeonBoundingBox> dungeonBbs)

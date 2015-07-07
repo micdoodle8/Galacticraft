@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world;
 
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
@@ -12,7 +12,7 @@ public interface IChunkLoader
 
     public World getWorldObj();
 
-    public ChunkCoordinates getCoords();
+    public BlockPos getCoords();
 
     public String getOwnerName();
 

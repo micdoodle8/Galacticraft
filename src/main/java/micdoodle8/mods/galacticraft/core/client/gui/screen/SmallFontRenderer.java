@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
@@ -600,27 +601,29 @@ public class SmallFontRenderer implements IResourceManagerReloadListener
 
                 if (this.strikethroughStyle)
                 {
-                    tessellator = Tessellator.instance;
+                    tessellator = Tessellator.getInstance();
+                    WorldRenderer worldRenderer = tessellator.getWorldRenderer();
                     GL11.glDisable(GL11.GL_TEXTURE_2D);
-                    tessellator.startDrawingQuads();
-                    tessellator.addVertex(this.posX, this.posY + this.FONT_HEIGHT / 2, 0.0D);
-                    tessellator.addVertex(this.posX + f1, this.posY + this.FONT_HEIGHT / 2, 0.0D);
-                    tessellator.addVertex(this.posX + f1, this.posY + this.FONT_HEIGHT / 2 - 1.0F, 0.0D);
-                    tessellator.addVertex(this.posX, this.posY + this.FONT_HEIGHT / 2 - 1.0F, 0.0D);
+                    worldRenderer.startDrawingQuads();
+                    worldRenderer.addVertex(this.posX, this.posY + this.FONT_HEIGHT / 2, 0.0D);
+                    worldRenderer.addVertex(this.posX + f1, this.posY + this.FONT_HEIGHT / 2, 0.0D);
+                    worldRenderer.addVertex(this.posX + f1, this.posY + this.FONT_HEIGHT / 2 - 1.0F, 0.0D);
+                    worldRenderer.addVertex(this.posX, this.posY + this.FONT_HEIGHT / 2 - 1.0F, 0.0D);
                     tessellator.draw();
                     GL11.glEnable(GL11.GL_TEXTURE_2D);
                 }
 
                 if (this.underlineStyle)
                 {
-                    tessellator = Tessellator.instance;
+                    tessellator = Tessellator.getInstance();
+                    WorldRenderer worldRenderer = tessellator.getWorldRenderer();
                     GL11.glDisable(GL11.GL_TEXTURE_2D);
-                    tessellator.startDrawingQuads();
+                    worldRenderer.startDrawingQuads();
                     int l = this.underlineStyle ? -1 : 0;
-                    tessellator.addVertex(this.posX + l, this.posY + this.FONT_HEIGHT, 0.0D);
-                    tessellator.addVertex(this.posX + f1, this.posY + this.FONT_HEIGHT, 0.0D);
-                    tessellator.addVertex(this.posX + f1, this.posY + this.FONT_HEIGHT - 1.0F, 0.0D);
-                    tessellator.addVertex(this.posX + l, this.posY + this.FONT_HEIGHT - 1.0F, 0.0D);
+                    worldRenderer.addVertex(this.posX + l, this.posY + this.FONT_HEIGHT, 0.0D);
+                    worldRenderer.addVertex(this.posX + f1, this.posY + this.FONT_HEIGHT, 0.0D);
+                    worldRenderer.addVertex(this.posX + f1, this.posY + this.FONT_HEIGHT - 1.0F, 0.0D);
+                    worldRenderer.addVertex(this.posX + l, this.posY + this.FONT_HEIGHT - 1.0F, 0.0D);
                     tessellator.draw();
                     GL11.glEnable(GL11.GL_TEXTURE_2D);
                 }

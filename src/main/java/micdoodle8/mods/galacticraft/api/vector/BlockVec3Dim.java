@@ -351,4 +351,9 @@ public class BlockVec3Dim implements Cloneable
         int var6 = vector.z - this.z;
         return var2 * var2 + var4 * var4 + var6 * var6;
     }
+
+    public BlockPos toBlockPos()
+    {
+        return new BlockPos(x, y, z);
+    }
 }

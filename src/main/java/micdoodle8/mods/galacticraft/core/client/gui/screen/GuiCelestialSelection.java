@@ -6,6 +6,7 @@ import com.ibm.icu.text.ArabicShaping;
 import com.ibm.icu.text.ArabicShapingException;
 import com.ibm.icu.text.Bidi;
 
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
@@ -41,6 +42,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
+import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.*;
 
@@ -362,7 +364,7 @@ public class GuiCelestialSelection extends GuiScreen
     }
 
     @Override
-    protected void keyTyped(char keyChar, int keyID)
+    protected void keyTyped(char keyChar, int keyID) throws IOException
     {
         // Override and do nothing, so it isn't possible to exit the GUI
         if (this.mapMode)
@@ -578,7 +580,7 @@ public class GuiCelestialSelection extends GuiScreen
     }
 
     @Override
-    public void handleInput()
+    public void handleInput() throws IOException
     {
     	this.translation.x = 0.0F;
     	this.translation.y = 0.0F;
@@ -603,10 +605,12 @@ public class GuiCelestialSelection extends GuiScreen
 		lastMovePosY = y;
     }
 
+
+
     @Override
-    protected void mouseMovedOrUp(int x, int y, int button)
+    protected void mouseReleased(int x, int y, int button)
     {
-    	super.mouseMovedOrUp(x, y, button);
+    	super.mouseReleased(x, y, button);
 
     	mouseDragging = false;
 		lastMovePosX = -1;
@@ -614,7 +618,7 @@ public class GuiCelestialSelection extends GuiScreen
     }
     
     @Override
-    protected void mouseClicked(int x, int y, int button)
+    protected void mouseClicked(int x, int y, int button) throws IOException
     {
         super.mouseClicked(x, y, button);
         boolean clickHandled = false;
@@ -1683,7 +1687,7 @@ public class GuiCelestialSelection extends GuiScreen
                             {
                                 int amount = getAmountInInventory((ItemStack) next);
                                 RenderHelper.enableGUIStandardItemLighting();
-                                GuiCelestialSelection.itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.renderEngine, ((ItemStack) next).copy(), xPos, yPos);
+//                                GuiCelestialSelection.itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.renderEngine, ((ItemStack) next).copy(), xPos, yPos);
                                 RenderHelper.disableStandardItemLighting();
                                 GL11.glEnable(GL11.GL_BLEND);
 
@@ -1748,7 +1752,7 @@ public class GuiCelestialSelection extends GuiScreen
 
                                 RenderHelper.enableGUIStandardItemLighting();
                                 ItemStack stack = items.get((this.ticksSinceMenuOpen / 20) % items.size()).copy();
-                                GuiCelestialSelection.itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.renderEngine, stack, xPos, yPos);
+//                                GuiCelestialSelection.itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.renderEngine, stack, xPos, yPos);
                                 RenderHelper.disableStandardItemLighting();
                                 GL11.glEnable(GL11.GL_BLEND);
 
@@ -2102,16 +2106,17 @@ public class GuiCelestialSelection extends GuiScreen
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         float texModX = 1F / texSizeX;
         float texModY = 1F / texSizeY;
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        worldRenderer.startDrawingQuads();
         float height0 = invertY ? 0 : vHeight;
         float height1 = invertY ? vHeight : 0;
         float width0 = invertX ? uWidth : 0;
         float width1 = invertX ? 0 : uWidth;
-        tessellator.addVertexWithUV(x, y + height, this.zLevel, (u + width0) * texModX, (v + height0) * texModY);
-        tessellator.addVertexWithUV(x + width, y + height, this.zLevel, (u + width1) * texModX, (v + height0) * texModY);
-        tessellator.addVertexWithUV(x + width, y, this.zLevel, (u + width1) * texModX, (v + height1) * texModY);
-        tessellator.addVertexWithUV(x, y, this.zLevel, (u + width0) * texModX, (v + height1) * texModY);
+        worldRenderer.addVertexWithUV(x, y + height, this.zLevel, (u + width0) * texModX, (v + height0) * texModY);
+        worldRenderer.addVertexWithUV(x + width, y + height, this.zLevel, (u + width1) * texModX, (v + height0) * texModY);
+        worldRenderer.addVertexWithUV(x + width, y, this.zLevel, (u + width1) * texModX, (v + height1) * texModY);
+        worldRenderer.addVertexWithUV(x, y, this.zLevel, (u + width0) * texModX, (v + height1) * texModY);
         tessellator.draw();
     }
 
@@ -2122,14 +2127,15 @@ public class GuiCelestialSelection extends GuiScreen
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        final Tessellator var3 = Tessellator.instance;
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
         GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);
-        var3.startDrawingQuads();
-        var3.addVertex(0.0D, height, -90.0D);
-        var3.addVertex(width, height, -90.0D);
-        var3.addVertex(width, 0.0D, -90.0D);
-        var3.addVertex(0.0D, 0.0D, -90.0D);
-        var3.draw();
+        worldRenderer.startDrawingQuads();
+        worldRenderer.addVertex(0.0D, height, -90.0D);
+        worldRenderer.addVertex(width, height, -90.0D);
+        worldRenderer.addVertex(width, 0.0D, -90.0D);
+        worldRenderer.addVertex(0.0D, 0.0D, -90.0D);
+        tessellator.draw();
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

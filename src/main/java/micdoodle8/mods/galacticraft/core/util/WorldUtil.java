@@ -245,12 +245,12 @@ public class WorldUtil
             float var20 = (float) (FMLClientHandler.instance().getClient().thePlayer.posY - 200.0F) / 1000.0F;
             final float var21 = Math.max(1.0F - var20 * 2.0F, 0.0F);
 
-            Vec3 vec = world.getSkyColor(FMLClientHandler.instance().getClient().renderViewEntity, 1.0F);
+            Vec3 vec = world.getSkyColor(FMLClientHandler.instance().getClient().getRenderViewEntity(), 1.0F);
 
             return Vec3.createVectorHelper(vec.xCoord * var21, vec.yCoord * var21, vec.zCoord * var21);
         }
 
-        return world.getSkyColor(FMLClientHandler.instance().getClient().renderViewEntity, 1.0F);
+        return world.getSkyColor(FMLClientHandler.instance().getClient().getRenderViewEntity(), 1.0F);
     }
 
     public static WorldProvider getProviderForName(String par1String)

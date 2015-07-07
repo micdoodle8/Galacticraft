@@ -1,9 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
-import net.minecraftforge.fml.relauncher.Side;
-import mekanism.api.gas.Gas;
-import mekanism.api.gas.GasStack;
-import mekanism.api.gas.IGasHandler;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IHydrogenNetwork;
@@ -11,7 +7,6 @@ import micdoodle8.mods.galacticraft.api.transmission.grid.IOxygenNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenReceiver;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenStorage;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.oxygen.NetworkHelper;
@@ -22,14 +17,16 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandler, IOxygenStorage, IOxygenReceiver
 {
@@ -54,9 +51,9 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
 
         if (!this.worldObj.isRemote)
         {
@@ -102,8 +99,8 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
                 this.processTicks = 0;
             }
             
-            this.produceOxygen(EnumFacing.getOrientation(this.getOxygenOutputDirection()));
-            this.produceHydrogen(EnumFacing.getOrientation(this.getHydrogenOutputDirection()));
+            this.produceOxygen(EnumFacing.getFront(this.getOxygenOutputDirection()));
+            this.produceHydrogen(EnumFacing.getFront(this.getHydrogenOutputDirection()));
         }
     }
 
@@ -413,89 +410,84 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     @Override
     public int getBlockMetadata()
     {
-        if (this.blockMetadata == -1)
-        {
-            this.blockMetadata = this.worldObj.getBlockMetadata(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
-        }
-
-        return this.blockMetadata & 3;
+        return getBlockType().getMetaFromState(this.worldObj.getBlockState(getPos()));
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer)
-    {
-        return 0;
-    }
-
-    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public int receiveGas(EnumFacing side, GasStack stack)
-    {
-        return 0;
-    }
-
-    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public GasStack drawGas(EnumFacing from, int amount, boolean doTransfer)
-    {
-        int metaside = this.getBlockMetadata() + 2;
-        int side = from.ordinal();
-    	if (metaside == (side ^ 1) && this.liquidTank2.getFluid() != null)
-        {
-    		int amountH = Math.min(8, this.liquidTank2.getFluidAmount());
-    		amountH = this.liquidTank2.drain(amountH, doTransfer).amount;
-    		return new GasStack((Gas) EnergyConfigHandler.gasHydrogen, amountH);
-        }
-        else if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1)  && this.liquidTank.getFluid() != null)
-        {
-    		int amountO = Math.min(8, this.liquidTank.getFluidAmount());
-    		amountO = this.liquidTank.drain(amountO, doTransfer).amount;
-    		return new GasStack((Gas) EnergyConfigHandler.gasOxygen, amountO);
-        }
-        return null;
-    }
-
-    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public GasStack drawGas(EnumFacing from, int amount)
-    {
-    	return this.drawGas(from, amount, true);
-    }
-
-    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public boolean canReceiveGas(EnumFacing side, Gas type)
-    {
-    	return false;
-    }
-
-    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public boolean canDrawGas(EnumFacing from, Gas type)
-    {
-        int metaside = this.getBlockMetadata() + 2;
-        int side = from.ordinal();
-    	if (metaside == (side ^ 1))
-        {
-    		return type.getName().equals("hydrogen");
-    	}
-        else if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
-        {
-        	return type.getName().equals("oxygen");
-        }
-        return false;
-    }
-
-    @RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
-    public boolean canTubeConnect(EnumFacing from)
-    {
-        int metaside = this.getBlockMetadata() + 2;
-        int side = from.ordinal();
-    	if (metaside == (side ^ 1))
-        {
-    		return true;
-    	}
-        else if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
-        {
-        	return true;
-        }
-        return false;
-    }
+//    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+//    public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer)
+//    {
+//        return 0;
+//    }
+//
+//    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+//    public int receiveGas(EnumFacing side, GasStack stack)
+//    {
+//        return 0;
+//    }
+//
+//    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+//    public GasStack drawGas(EnumFacing from, int amount, boolean doTransfer)
+//    {
+//        int metaside = this.getBlockMetadata() + 2;
+//        int side = from.ordinal();
+//    	if (metaside == (side ^ 1) && this.liquidTank2.getFluid() != null)
+//        {
+//    		int amountH = Math.min(8, this.liquidTank2.getFluidAmount());
+//    		amountH = this.liquidTank2.drain(amountH, doTransfer).amount;
+//    		return new GasStack((Gas) EnergyConfigHandler.gasHydrogen, amountH);
+//        }
+//        else if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1)  && this.liquidTank.getFluid() != null)
+//        {
+//    		int amountO = Math.min(8, this.liquidTank.getFluidAmount());
+//    		amountO = this.liquidTank.drain(amountO, doTransfer).amount;
+//    		return new GasStack((Gas) EnergyConfigHandler.gasOxygen, amountO);
+//        }
+//        return null;
+//    }
+//
+//    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+//    public GasStack drawGas(EnumFacing from, int amount)
+//    {
+//    	return this.drawGas(from, amount, true);
+//    }
+//
+//    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+//    public boolean canReceiveGas(EnumFacing side, Gas type)
+//    {
+//    	return false;
+//    }
+//
+//    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+//    public boolean canDrawGas(EnumFacing from, Gas type)
+//    {
+//        int metaside = this.getBlockMetadata() + 2;
+//        int side = from.ordinal();
+//    	if (metaside == (side ^ 1))
+//        {
+//    		return type.getName().equals("hydrogen");
+//    	}
+//        else if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
+//        {
+//        	return type.getName().equals("oxygen");
+//        }
+//        return false;
+//    }
+//
+//    @RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
+//    public boolean canTubeConnect(EnumFacing from)
+//    {
+//        int metaside = this.getBlockMetadata() + 2;
+//        int side = from.ordinal();
+//    	if (metaside == (side ^ 1))
+//        {
+//    		return true;
+//    	}
+//        else if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
+//        {
+//        	return true;
+//        }
+//        return false;
+//    }
 
 	@Override
 	public void setOxygenStored(float amount)
@@ -563,23 +555,23 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
                     return true;
                 }
             }
-            else if (EnergyConfigHandler.isMekanismLoaded())
-            {
-                //TODO Oxygen item handling - internal tank (IGasItem)
-                //int acceptedOxygen = GasTransmission.addGas(itemStack, type, amount);
-                //this.provideOxygen(acceptedOxygen, true);
-
-                if (outputTile instanceof IGasHandler && ((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas) EnergyConfigHandler.gasOxygen))
-                {
-                    GasStack toSend = new GasStack((Gas) EnergyConfigHandler.gasOxygen, (int) Math.floor(Math.min(this.getOxygenStored(), provide)));
-                    int acceptedOxygen = 0;
-                    try {
-                    	acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
-                    } catch (Exception e) { }
-                    this.provideOxygen(acceptedOxygen, true);
-                    return true;
-                }
-            }
+//            else if (EnergyConfigHandler.isMekanismLoaded())
+//            {
+//                //TODO Oxygen item handling - internal tank (IGasItem)
+//                //int acceptedOxygen = GasTransmission.addGas(itemStack, type, amount);
+//                //this.provideOxygen(acceptedOxygen, true);
+//
+//                if (outputTile instanceof IGasHandler && ((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas) EnergyConfigHandler.gasOxygen))
+//                {
+//                    GasStack toSend = new GasStack((Gas) EnergyConfigHandler.gasOxygen, (int) Math.floor(Math.min(this.getOxygenStored(), provide)));
+//                    int acceptedOxygen = 0;
+//                    try {
+//                    	acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
+//                    } catch (Exception e) { }
+//                    this.provideOxygen(acceptedOxygen, true);
+//                    return true;
+//                }
+//            }
         }
 
         return false;
@@ -619,23 +611,23 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
                     return true;
                 }
             }
-            else if (EnergyConfigHandler.isMekanismLoaded())
-            {
-                //TODO Gas item handling - internal tank (IGasItem)
-                //int acceptedHydrogen = GasTransmission.addGas(itemStack, type, amount);
-                //this.provideHydrogen(acceptedHydrogen, true);
-
-                if (outputTile instanceof IGasHandler && ((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas) EnergyConfigHandler.gasHydrogen))
-                {
-                    GasStack toSend = new GasStack((Gas) EnergyConfigHandler.gasHydrogen, (int) Math.floor(Math.min(this.getHydrogenStored(), provide)));
-                    int acceptedHydrogen = 0;
-                    try {
-                    	acceptedHydrogen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
-                    } catch (Exception e) { }
-                    this.provideHydrogen(acceptedHydrogen, true);
-                    return true;
-                }
-            }
+//            else if (EnergyConfigHandler.isMekanismLoaded())
+//            {
+//                //TODO Gas item handling - internal tank (IGasItem)
+//                //int acceptedHydrogen = GasTransmission.addGas(itemStack, type, amount);
+//                //this.provideHydrogen(acceptedHydrogen, true);
+//
+//                if (outputTile instanceof IGasHandler && ((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas) EnergyConfigHandler.gasHydrogen))
+//                {
+//                    GasStack toSend = new GasStack((Gas) EnergyConfigHandler.gasHydrogen, (int) Math.floor(Math.min(this.getHydrogenStored(), provide)));
+//                    int acceptedHydrogen = 0;
+//                    try {
+//                    	acceptedHydrogen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
+//                    } catch (Exception e) { }
+//                    this.provideHydrogen(acceptedHydrogen, true);
+//                    return true;
+//                }
+//            }
         }
 
         return false;
@@ -717,7 +709,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     @Override
     public boolean canConnect(EnumFacing direction, NetworkType type)
     {
-        if (direction == null || direction.equals(EnumFacing.UNKNOWN))
+        if (direction == null)
         {
             return false;
         }
@@ -738,5 +730,10 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         }
         
         return false;
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return null;
     }
 }

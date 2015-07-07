@@ -20,7 +20,7 @@ public class ItemCanisterMethane extends ItemCanisterGeneric
     {
         super(assetName);
         this.setAllowedFluid("methane");
-        this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
     }
 
     @Override

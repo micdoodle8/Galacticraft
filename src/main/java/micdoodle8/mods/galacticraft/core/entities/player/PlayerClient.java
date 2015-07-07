@@ -265,7 +265,7 @@ public class PlayerClient implements IPlayerClient
 
     public boolean wakeUpPlayer(EntityPlayerSP player, boolean par1, boolean par2, boolean par3, boolean bypass)
     {
-        ChunkCoordinates c = player.playerLocation;
+        BlockPos c = player.playerLocation;
 
         if (c != null)
         {

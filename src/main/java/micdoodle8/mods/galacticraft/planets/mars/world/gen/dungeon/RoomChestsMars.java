@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 
@@ -19,7 +19,7 @@ public class RoomChestsMars extends DungeonRoom
     int sizeY;
     int sizeZ;
 
-    private final ArrayList<ChunkCoordinates> chests = new ArrayList<ChunkCoordinates>();
+    private final ArrayList<BlockPos> chests = new ArrayList<BlockPos>();
 
     public RoomChestsMars(MapGenDungeon dungeon, int posX, int posY, int posZ, EnumFacing entranceDir)
     {
@@ -57,7 +57,7 @@ public class RoomChestsMars extends DungeonRoom
         final int hz = (this.posZ + this.posZ + this.sizeZ) / 2;
         if (this.placeBlock(chunk, meta, hx, this.posY, hz, cx, cz, Blocks.chest, 0))
         {
-            this.chests.add(new ChunkCoordinates(hx, this.posY, hz));
+            this.chests.add(new BlockPos(hx, this.posY, hz));
         }
     }
 

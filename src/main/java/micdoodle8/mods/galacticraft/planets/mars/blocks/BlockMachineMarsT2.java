@@ -182,7 +182,7 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
     }
 
     @Override
-    public boolean onUseWrench(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         int metadata = par1World.getBlockMetadata(x, y, z);
         int original = metadata & 3;
@@ -264,7 +264,7 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
     {
         int metadata = this.getDamageValue(world, x, y, z);
 

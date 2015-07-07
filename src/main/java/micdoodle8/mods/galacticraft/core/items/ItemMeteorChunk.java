@@ -30,7 +30,7 @@ public class ItemMeteorChunk extends Item
         this.setHasSubtypes(true);
         this.maxStackSize = 16;
         this.setCreativeTab(CreativeTabs.tabMaterials);
-        this.setTextureName("arrow");
+        //this.setTextureName("arrow");
     }
 
     @Override

@@ -13,6 +13,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -46,48 +47,48 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
     }
 
     @Override
-    public void onNeighborBlockChange(World world, BlockPos pos, Block block)
+    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
     {
-        IBlockState oldMeta = world.getBlockState(pos);
-        int meta = this.getMetadataFromAngle(world, pos, EnumFacing.getFront(getMetaFromState(oldMeta)).getOpposite());
+        int oldMeta = getMetaFromState(worldIn.getBlockState(pos));
+        int meta = this.getMetadataFromAngle(worldIn, pos, EnumFacing.getFront(oldMeta).getOpposite());
 
         if (meta == -1)
         {
-            world.func_147480_a(x, y, z, true);
+            worldIn.destroyBlock(pos, true);
         }
 
         if (meta != oldMeta)
         {
-            world.setBlockMetadataWithNotify(x, y, z, meta, 3);
-            TileEntity thisTile = world.getTileEntity(x, y, z);
+            worldIn.setBlockState(pos, getStateFromMeta(meta), 3);
+            TileEntity thisTile = worldIn.getTileEntity(pos);
             if (thisTile instanceof TileEntityBeamReceiver)
             {
             	TileEntityBeamReceiver thisReceiver = (TileEntityBeamReceiver) thisTile; 
-                thisReceiver.setFacing(ForgeDirection.getOrientation(meta));
+                thisReceiver.setFacing(EnumFacing.getFront(meta));
                 thisReceiver.invalidateReflector();
                 thisReceiver.initiateReflector();
             }
         }
 
-        super.onNeighborBlockChange(world, x, y, z, block);
+        super.onNeighborBlockChange(worldIn, pos, state, neighborBlock);
     }
 
     @Override
-    public void onBlockAdded(World world, int x, int y, int z)
+    public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
-        TileEntity thisTile = world.getTileEntity(x, y, z);
+        TileEntity thisTile = world.getTileEntity(pos);
         if (thisTile instanceof TileEntityBeamReceiver)
-        	((TileEntityBeamReceiver)thisTile).setFacing(ForgeDirection.getOrientation(world.getBlockMetadata(x, y, z)));
+        	((TileEntityBeamReceiver)thisTile).setFacing(EnumFacing.getFront(getMetaFromState(state)));
     }
 
     @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
+    public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos)
     {
-        int meta = world.getBlockMetadata(x, y, z);
+        int meta = getMetaFromState(world.getBlockState(pos));
 
         if (meta != -1)
         {
-            ForgeDirection dir = ForgeDirection.getOrientation(meta);
+            EnumFacing dir = EnumFacing.getFront(meta);
 
             switch (dir)
             {
@@ -162,20 +163,20 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
     }
 
     @Override
-    public int onBlockPlaced(World world, BlockPos pos, int side, float hitX, float hitY, float hitZ, int meta)
+    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return this.getMetadataFromAngle(world, pos, side);
+        return getStateFromMeta(this.getMetadataFromAngle(worldIn, pos, facing));
     }
 
     @Override
-    public boolean canPlaceBlockOnSide(World world, BlockPos pos, int side)
+    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side)
     {
-        if (this.getMetadataFromAngle(world, pos, side) != -1)
+        if (this.getMetadataFromAngle(worldIn, pos, side) != -1)
         {
             return true;
         }
 
-        if (world.isRemote)
+        if (worldIn.isRemote)
         {
             this.sendIncorrectSideMessage();
         }
@@ -196,7 +197,7 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
     }
 
     @Override
-    public boolean renderAsNormalBlock()
+    public boolean isFullCube()
     {
         return false;
     }
@@ -208,13 +209,13 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
     }
 
     @Override
-    public int damageDropped(int metadata)
+    public int damageDropped(IBlockState metadata)
     {
         return 0;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata)
+    public TileEntity createTileEntity(World world, IBlockState metadata)
     {
         return new TileEntityBeamReceiver();
     }
@@ -228,13 +229,13 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
     }
 
     @Override
-    public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        TileEntity tile = world.getTileEntity(x, y, z);
+        TileEntity tile = worldIn.getTileEntity(pos);
 
         if (tile instanceof TileEntityBeamReceiver)
         {
-            return ((TileEntityBeamReceiver) tile).onMachineActivated(world, x, y, z, entityPlayer, side, hitX, hitY, hitZ);
+            return ((TileEntityBeamReceiver) tile).onMachineActivated(worldIn, pos, state, playerIn, side, hitX, hitY, hitZ);
         }
 
         return false;

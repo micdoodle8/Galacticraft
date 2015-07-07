@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -11,7 +13,6 @@ import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
@@ -52,13 +53,13 @@ public class OverlaySensorGlasses extends Overlay
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(OverlaySensorGlasses.hudTexture);
-        final Tessellator tessellator = Tessellator.instance;
-
-        tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(i / 2 - 2 * k - f * 80, k + f * 40, -90D, 0.0D, 1.0D);
-        tessellator.addVertexWithUV(i / 2 + 2 * k + f * 80, k + f * 40, -90D, 1.0D, 1.0D);
-        tessellator.addVertexWithUV(i / 2 + 2 * k + f * 80, 0.0D - f * 40, -90D, 1.0D, 0.0D);
-        tessellator.addVertexWithUV(i / 2 - 2 * k - f * 80, 0.0D - f * 40, -90D, 0.0D, 0.0D);
+        final Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        worldRenderer.startDrawingQuads();
+        worldRenderer.addVertexWithUV(i / 2 - 2 * k - f * 80, k + f * 40, -90D, 0.0D, 1.0D);
+        worldRenderer.addVertexWithUV(i / 2 + 2 * k + f * 80, k + f * 40, -90D, 1.0D, 1.0D);
+        worldRenderer.addVertexWithUV(i / 2 + 2 * k + f * 80, 0.0D - f * 40, -90D, 1.0D, 0.0D);
+        worldRenderer.addVertexWithUV(i / 2 - 2 * k - f * 80, 0.0D - f * 40, -90D, 0.0D, 0.0D);
         tessellator.draw();
 
         GL11.glDepthMask(true);
@@ -94,7 +95,7 @@ public class OverlaySensorGlasses extends Overlay
 
             boolean var2 = false;
 
-            final EntityClientPlayerMP client = PlayerUtil.getPlayerBaseClientFromPlayer(OverlaySensorGlasses.minecraft.thePlayer, false);
+            final EntityPlayerSP client = PlayerUtil.getPlayerBaseClientFromPlayer(OverlaySensorGlasses.minecraft.thePlayer, false);
 
             if (client != null)
             {
@@ -102,7 +103,7 @@ public class OverlaySensorGlasses extends Overlay
                 var2 = stats.usingAdvancedGoggles;
             }
 
-            OverlaySensorGlasses.minecraft.fontRenderer.drawString(GCCoreUtil.translate("gui.sensor.advanced") + ": " + (var2 ? GCCoreUtil.translate("gui.sensor.advancedon") : GCCoreUtil.translate("gui.sensor.advancedoff")), var6 / 2 - 50, 4, 0x03b88f);
+            OverlaySensorGlasses.minecraft.fontRendererObj.drawString(GCCoreUtil.translate("gui.sensor.advanced") + ": " + (var2 ? GCCoreUtil.translate("gui.sensor.advancedon") : GCCoreUtil.translate("gui.sensor.advancedoff")), var6 / 2 - 50, 4, 0x03b88f);
 
             try
             {

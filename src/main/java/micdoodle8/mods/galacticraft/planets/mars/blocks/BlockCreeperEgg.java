@@ -47,7 +47,7 @@ public class BlockCreeperEgg extends BlockDragonEgg implements ItemBlockDesc.IBl
     }
 
     @Override
-    public boolean renderAsNormalBlock()
+    public boolean isFullCube()
     {
         return false;
     }
@@ -72,7 +72,7 @@ public class BlockCreeperEgg extends BlockDragonEgg implements ItemBlockDesc.IBl
 
     @Override
     @SideOnly(Side.CLIENT)
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
     {
         return null;
     }

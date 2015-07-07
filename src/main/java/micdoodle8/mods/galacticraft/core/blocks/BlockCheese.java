@@ -215,7 +215,7 @@ public class BlockCheese extends Block implements ItemBlockDesc.IBlockShiftDesc
 
 //	@Override
 //	@SideOnly(Side.CLIENT)
-//	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+//	public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
 //	{
 //		return new ItemStack(GCItems.cheeseBlock);
 //	}

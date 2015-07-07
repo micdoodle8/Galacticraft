@@ -15,7 +15,7 @@ public class ItemBattery extends ItemElectricBase
     {
         super();
         this.setUnlocalizedName(assetName);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }
 
     @Override

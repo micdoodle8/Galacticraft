@@ -4,8 +4,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -19,7 +17,7 @@ public class ItemAtmosphericValve extends Item
         this.setMaxDamage(0);
         this.setUnlocalizedName(assetName);
         this.setMaxStackSize(64);
-        this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
     }
 
     @SideOnly(Side.CLIENT)
@@ -36,9 +34,9 @@ public class ItemAtmosphericValve extends Item
         return ClientProxyCore.galacticraftItem;
     }
 
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
         this.itemIcon = iconRegister.registerIcon(this.getIconString());
-    }
+    }*/
 }

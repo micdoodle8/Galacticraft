@@ -23,7 +23,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 
 public class TileEntityCryogenicChamber extends TileEntityMulti implements IMultiBlock
 {
@@ -89,7 +89,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
 
         entityPlayer.sleeping = true;
         entityPlayer.sleepTimer = 0;
-        entityPlayer.playerLocation = new ChunkCoordinates(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
+        entityPlayer.playerLocation = new BlockPos(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
         entityPlayer.motionX = entityPlayer.motionZ = entityPlayer.motionY = 0.0D;
 
         if (!this.worldObj.isRemote)

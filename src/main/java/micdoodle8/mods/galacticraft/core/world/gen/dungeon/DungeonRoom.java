@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 import java.util.Random;
@@ -70,7 +72,7 @@ public abstract class DungeonRoom
         }
         else
         {
-            this.worldObj.setBlock(x, y, z, id, meta, 0);
+            this.worldObj.setBlockState(new BlockPos(x, y, z), id.getStateFromMeta(meta), 0);
         }
         return true;
     }

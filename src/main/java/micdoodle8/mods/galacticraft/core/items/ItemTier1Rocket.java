@@ -33,7 +33,7 @@ public class ItemTier1Rocket extends Item implements IHoldableItem
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.setMaxStackSize(1);
-        this.setTextureName("arrow");
+        //this.setTextureName("arrow");
         this.setUnlocalizedName(assetName);
     }
 

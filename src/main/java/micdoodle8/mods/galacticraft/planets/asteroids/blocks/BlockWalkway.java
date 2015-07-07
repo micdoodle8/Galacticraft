@@ -67,7 +67,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     }
 
     @Override
-    public boolean renderAsNormalBlock()
+    public boolean isFullCube()
     {
         return false;
     }
@@ -91,17 +91,17 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 
     public int getWalkwayOrientation(World world, int x, int y, int z)
     {
-        int connectedNorth = isBlockNormalCube(world.getBlock(x, y, z - 1)) || world.getBlock(x, y, z - 1) instanceof BlockWalkway ? 1 : 0;
-        int connectedEast = isBlockNormalCube(world.getBlock(x + 1, y, z)) || world.getBlock(x + 1, y, z) instanceof BlockWalkway ? 2 : 0;
-        int connectedSouth = isBlockNormalCube(world.getBlock(x, y, z + 1)) || world.getBlock(x, y, z + 1) instanceof BlockWalkway ? 4 : 0;
-        int connectedWest = isBlockNormalCube(world.getBlock(x - 1, y, z)) || world.getBlock(x - 1, y, z) instanceof BlockWalkway ? 8 : 0;
+        int connectedNorth = isNormalCube(world.getBlock(x, y, z - 1)) || world.getBlock(x, y, z - 1) instanceof BlockWalkway ? 1 : 0;
+        int connectedEast = isNormalCube(world.getBlock(x + 1, y, z)) || world.getBlock(x + 1, y, z) instanceof BlockWalkway ? 2 : 0;
+        int connectedSouth = isNormalCube(world.getBlock(x, y, z + 1)) || world.getBlock(x, y, z + 1) instanceof BlockWalkway ? 4 : 0;
+        int connectedWest = isNormalCube(world.getBlock(x - 1, y, z)) || world.getBlock(x - 1, y, z) instanceof BlockWalkway ? 8 : 0;
 
         return connectedNorth | connectedEast | connectedSouth | connectedWest;
     }
 
-    public boolean isBlockNormalCube(Block block)
+    public boolean isNormalCube(Block block)
     {
-        return block.getMaterial().blocksMovement() && block.renderAsNormalBlock();
+        return block.getMaterial().blocksMovement() && block.isFullCube();
     }
 
     @Override

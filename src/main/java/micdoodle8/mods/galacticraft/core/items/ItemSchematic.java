@@ -7,13 +7,11 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 import java.util.List;
 
@@ -21,7 +19,7 @@ public class ItemSchematic extends Item implements ISchematicItem
 {
     public static final String[] names = { "buggy", "rocketT2" }; // 15
 
-    protected IIcon[] icons = new IIcon[ItemSchematic.names.length];
+//    protected IIcon[] icons = new IIcon[ItemSchematic.names.length];
 
     public ItemSchematic(String assetName)
     {
@@ -30,7 +28,7 @@ public class ItemSchematic extends Item implements ISchematicItem
         this.setHasSubtypes(true);
         this.setMaxStackSize(1);
         this.setUnlocalizedName(assetName);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+//        //this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }
 
     @Override
@@ -62,7 +60,7 @@ public class ItemSchematic extends Item implements ISchematicItem
         return par1;
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
@@ -81,7 +79,7 @@ public class ItemSchematic extends Item implements ISchematicItem
         }
 
         return super.getIconFromDamage(damage);
-    }
+    }*/
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override

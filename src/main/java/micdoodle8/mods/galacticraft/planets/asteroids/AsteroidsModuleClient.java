@@ -164,11 +164,11 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
     {
         Minecraft mc = FMLClientHandler.instance().getClient();
 
-        if (mc != null && mc.renderViewEntity != null && mc.effectRenderer != null)
+        if (mc != null && mc.getRenderViewEntity() != null && mc.effectRenderer != null)
         {
-            double dX = mc.renderViewEntity.posX - position.x;
-            double dY = mc.renderViewEntity.posY - position.y;
-            double dZ = mc.renderViewEntity.posZ - position.z;
+            double dX = mc.getRenderViewEntity().posX - position.x;
+            double dY = mc.getRenderViewEntity().posY - position.y;
+            double dZ = mc.getRenderViewEntity().posZ - position.z;
             EntityFX particle = null;
             double viewDistance = 64.0D;
 

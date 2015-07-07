@@ -72,7 +72,7 @@ public class BlockTier3TreasureChest extends BlockContainer implements ITileEnti
     }
 
     @Override
-    public boolean renderAsNormalBlock()
+    public boolean isFullCube()
     {
         return false;
     }
