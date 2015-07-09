@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.core.energy;
 
 import net.minecraftforge.fml.common.Loader;
-import mekanism.api.gas.Gas;
-import mekanism.api.gas.GasRegistry;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraftforge.common.config.Configuration;
 
@@ -169,7 +167,7 @@ public class EnergyConfigHandler
 
     public static void initGas()
     {
-        if (EnergyConfigHandler.isMekanismLoaded())
+        /*if (EnergyConfigHandler.isMekanismLoaded())
         {
             Gas oxygen = GasRegistry.getGas("oxygen");
 
@@ -192,7 +190,7 @@ public class EnergyConfigHandler
             {
                 EnergyConfigHandler.gasHydrogen = hydrogen;
             }
-        }
+        } TODO */
     }
 
     /**

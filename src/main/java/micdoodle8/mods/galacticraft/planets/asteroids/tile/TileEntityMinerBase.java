@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.UUID;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -36,7 +37,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 	private ItemStack[] containingItems = new ItemStack[HOLDSIZE + 1];
     private int[] slotArray;
     public boolean isMaster = false;
-	public int facing;
+	public EnumFacing facing;
     private BlockVec3 mainBlockPosition;
     private LinkedList<BlockVec3> targetPoints = new LinkedList();
     private WeakReference<TileEntityMinerBase> masterTile = null;
@@ -68,9 +69,9 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-		super.updateEntity();
+		super.update();
 		
         if (this.updateClientFlag)
         {
@@ -121,7 +122,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 			}
 			if (this.linkedMinerID == null)
 	    	{
-	        	if (EntityAstroMiner.spawnMinerAtBase(this.worldObj, this.getPos().getX() + 1, this.getPos().getY() + 1, this.getPos().getZ() + 1, (this.facing + 2) ^ 1, new BlockVec3(this), player))
+	        	if (EntityAstroMiner.spawnMinerAtBase(this.worldObj, this.getPos().getX() + 1, this.getPos().getY() + 1, this.getPos().getZ() + 1, EnumFacing.getFront((this.facing.getIndex() + 2) ^ 1), new BlockVec3(this), player))
 	        	{
 	        		this.findTargetPoints();
 	        		return true;
@@ -515,14 +516,14 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     {
         if (this.isMaster)
         {
-        	return EnumFacing.getOrientation(this.facing + 2);
+        	return EnumFacing.getFront(this.facing + 2);
         }
         TileEntityMinerBase master = this.getMaster();
         if (master != null)
         {
-        	return EnumFacing.getOrientation(master.facing + 2);
+        	return EnumFacing.getFront(master.facing + 2);
         }
-        return EnumFacing.UNKNOWN;
+        return null;
     }
     
 	public void linkMiner(EntityAstroMiner entityAstroMiner)
@@ -725,7 +726,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 			}
 		}
 		
-		posnTarget.modifyPositionFromSide(EnumFacing.getOrientation(baseFacing), this.worldObj.rand.nextInt(16) + 32);
+		posnTarget.modifyPositionFromSide(EnumFacing.getFront(baseFacing), this.worldObj.rand.nextInt(16) + 32);
 		int miny = Math.min(this.getPos().getY() * 2 - 90, this.getPos().getY() - 22);
 		if (miny < 5) miny = 5;
 		posnTarget.y = miny + 5 + this.worldObj.rand.nextInt(4);
@@ -733,7 +734,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 		this.targetPoints.add(posnTarget);
 
 		EnumFacing lateral = EnumFacing.NORTH;
-		EnumFacing inLine = EnumFacing.getOrientation(baseFacing);
+		EnumFacing inLine = EnumFacing.getFront(baseFacing);
 		if ((baseFacing & 6) == 2)
 			lateral = EnumFacing.WEST;
 			

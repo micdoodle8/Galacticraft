@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 
 import java.util.Random;
 

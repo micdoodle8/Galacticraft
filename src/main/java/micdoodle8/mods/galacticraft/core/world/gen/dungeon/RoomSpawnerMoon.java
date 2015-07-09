@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -80,12 +81,12 @@ public class RoomSpawnerMoon extends DungeonRoom
     {
         for (final BlockPos spawnerCoords : this.spawners)
         {
-            if (this.worldObj.getBlock(spawnerCoords.posX, spawnerCoords.posY, spawnerCoords.posZ) == Blocks.mob_spawner)
+            if (this.worldObj.getBlockState(spawnerCoords).getBlock() == Blocks.mob_spawner)
             {
-                final TileEntityMobSpawner spawner = (TileEntityMobSpawner) this.worldObj.getTileEntity(spawnerCoords.posX, spawnerCoords.posY, spawnerCoords.posZ);
+                final TileEntityMobSpawner spawner = (TileEntityMobSpawner) this.worldObj.getTileEntity(spawnerCoords);
                 if (spawner != null)
                 {
-                    spawner.func_145881_a().setEntityName(RoomSpawnerMoon.getMob(rand));
+                    spawner.getSpawnerBaseLogic().setEntityName(RoomSpawnerMoon.getMob(rand));
                 }
             }
         }

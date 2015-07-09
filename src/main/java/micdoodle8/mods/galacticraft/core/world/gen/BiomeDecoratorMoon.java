@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 import micdoodle8.mods.galacticraft.api.event.wgen.GCCoreEventPopulate;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -56,7 +57,7 @@ public class BiomeDecoratorMoon
             final int var6 = this.chunkX + this.randomGenerator.nextInt(16);
             final int var7 = this.randomGenerator.nextInt(maxY - minY) + minY;
             final int var8 = this.chunkZ + this.randomGenerator.nextInt(16);
-            worldGenerator.generate(this.worldObj, this.randomGenerator, var6, var7, var8);
+            worldGenerator.generate(this.worldObj, this.randomGenerator, new BlockPos(var6, var7, var8));
         }
     }
 

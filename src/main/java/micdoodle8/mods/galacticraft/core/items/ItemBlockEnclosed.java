@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
@@ -75,73 +78,75 @@ public class ItemBlockEnclosed extends ItemBlockDesc
             break;
         }
 
-        return this.field_150939_a.getUnlocalizedName() + "." + name;
+        return this.getBlock().getUnlocalizedName() + "." + name;
     }
 
     @Override
-    public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int side, float par8, float par9, float par10)
+    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        int metadata = this.getMetadata(itemstack.getItemDamage());
+        int metadata = this.getMetadata(stack.getItemDamage());
         EnumEnclosedBlock type = BlockEnclosed.getTypeFromMeta(metadata);
 
         if (type != null && type.getPipeClass() != null)
         {
-            Block block = world.getBlock(i, j, k);
+            Block block = worldIn.getBlockState(pos).getBlock();
 
             if (block == Blocks.snow)
             {
-                side = 1;
+                side = EnumFacing.UP;
             }
-            else if (block != Blocks.vine && block != Blocks.tallgrass && block != Blocks.deadbush && !block.isReplaceable(world, i, j, k))
+            else if (block != Blocks.vine && block != Blocks.tallgrass && block != Blocks.deadbush && !block.isReplaceable(worldIn, pos))
             {
-                if (side == 0)
-                {
-                    j--;
-                }
-                if (side == 1)
-                {
-                    j++;
-                }
-                if (side == 2)
-                {
-                    k--;
-                }
-                if (side == 3)
-                {
-                    k++;
-                }
-                if (side == 4)
-                {
-                    i--;
-                }
-                if (side == 5)
-                {
-                    i++;
-                }
+                pos = pos.offset(side);
+//                if (side == EnumFacing.DOWN)
+//                {
+//                    j--;
+//                }
+//                if (side == EnumFacing.UP)
+//                {
+//                    j++;
+//                }
+//                if (side == EnumFacing.NORTH)
+//                {
+//                    k--;
+//                }
+//                if (side == EnumFacing.SOUTH)
+//                {
+//                    k++;
+//                }
+//                if (side == EnumFacing.WEST)
+//                {
+//                    i--;
+//                }
+//                if (side == EnumFacing.EAST)
+//                {
+//                    i++;
+//                }
             }
 
-            if (itemstack.stackSize == 0)
+            if (stack.stackSize == 0)
             {
                 return false;
             }
 
-            if (!entityplayer.canPlayerEdit(i, j, k, side, itemstack))
+            if (!playerIn.canPlayerEdit(pos, side, stack))
             {
                 return false;
             }
-            else if (j == 255 && this.field_150939_a.getMaterial().isSolid())
+            else if (pos.getY() == 255 && this.getBlock().getMaterial().isSolid())
             {
                 return false;
             }
-            else if (world.canPlaceEntityOnSide(block, i, j, k, false, side, entityplayer, itemstack))
+            else if (worldIn.canBlockBePlaced(block, pos, false, side, playerIn, stack))
             {
-            	int j1 = this.field_150939_a.onBlockPlaced(world, i, j, k, side, par8, par9, par10, metadata);
-                block.onBlockPlacedBy(world, i, j, k, entityplayer, itemstack);
+//                public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+            	IBlockState j1 = this.getBlock().onBlockPlaced(worldIn, pos, side, hitX, hitY, hitZ, metadata, playerIn);
+                block.onBlockPlacedBy(worldIn, pos, j1, playerIn, stack);
 
-                if (placeBlockAt(itemstack, entityplayer, world, i, j, k, side, par8, par9, par10, j1))
+                if (placeBlockAt(stack, playerIn, worldIn, pos, side, hitX, hitY, hitZ, j1))
                 {
-                    world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, this.field_150939_a.stepSound.func_150496_b(), (this.field_150939_a.stepSound.getVolume() + 1.0F) / 2.0F, this.field_150939_a.stepSound.getPitch() * 0.8F);
-                    --itemstack.stackSize;
+                    worldIn.playSoundEffect(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, this.getBlock().stepSound.getPlaceSound(), (this.getBlock().stepSound.getVolume() + 1.0F) / 2.0F, 1.0F * 0.8F);
+                    --stack.stackSize;
 
                     if (metadata >= EnumEnclosedBlock.BC_ITEM_STONEPIPE.getMetadata() && metadata <= EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata())
                     {
@@ -158,7 +163,7 @@ public class ItemBlockEnclosed extends ItemBlockDesc
                                 Class<?> clazzBC = Class.forName("buildcraft.BuildCraftTransport");
                                 Class<?> clazzBlockPipe = Class.forName("buildcraft.transport.BlockGenericPipe");
                                 Class<?> clazzTilePipe = Class.forName("buildcraft.transport.TileGenericPipe");
-                                TileEntity tilePipe = world.getTileEntity(i, j, k);
+                                TileEntity tilePipe = worldIn.getTileEntity(pos);
 
                                 String pipeName = EnumEnclosedBlock.values()[metadata].getPipeClass();
                                 pipeName = pipeName.substring(0, 1).toLowerCase() + pipeName.substring(1);
@@ -211,7 +216,7 @@ public class ItemBlockEnclosed extends ItemBlockDesc
         }
         else
         {
-            return super.onItemUse(itemstack, entityplayer, world, i, j, k, side, par8, par9, par10);
+            return super.onItemUse(stack, playerIn, worldIn, pos, side, hitX, hitY, hitZ);
         }
     }
 

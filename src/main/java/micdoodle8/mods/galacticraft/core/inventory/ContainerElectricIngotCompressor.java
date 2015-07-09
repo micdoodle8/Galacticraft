@@ -8,7 +8,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnace;
+import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.ItemStack;
 
 public class ContainerElectricIngotCompressor extends Container
@@ -32,8 +32,8 @@ public class ContainerElectricIngotCompressor extends Container
         this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 55, 75, ItemElectricBase.class));
 
         // Smelting result
-        this.addSlotToContainer(new SlotFurnace(par1InventoryPlayer.player, tileEntity, 1, 138, 30));
-        this.addSlotToContainer(new SlotFurnace(par1InventoryPlayer.player, tileEntity, 2, 138, 48));
+        this.addSlotToContainer(new SlotFurnaceOutput(par1InventoryPlayer.player, tileEntity, 1, 138, 30));
+        this.addSlotToContainer(new SlotFurnaceOutput(par1InventoryPlayer.player, tileEntity, 2, 138, 48));
 
         int var3;
 

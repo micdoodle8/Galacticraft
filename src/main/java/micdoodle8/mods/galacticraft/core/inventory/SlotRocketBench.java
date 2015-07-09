@@ -37,7 +37,7 @@ public class SlotRocketBench extends Slot
             {
                 final EntityPlayerMP var13 = (EntityPlayerMP) this.player.worldObj.playerEntities.get(var12);
 
-                if (var13.dimension == this.player.worldObj.provider.dimensionId)
+                if (var13.dimension == this.player.worldObj.provider.getDimensionId())
                 {
                     final double var14 = this.x - var13.posX;
                     final double var16 = this.y - var13.posY;

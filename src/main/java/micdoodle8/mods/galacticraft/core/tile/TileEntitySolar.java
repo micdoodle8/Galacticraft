@@ -367,7 +367,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
 
 //        int metadata = this.getBlockMetadata() & 3;
 
-//        return EnumSet.of(EnumFacing.getOrientation((metadata + 2) ^ 1), EnumFacing.UNKNOWN);
+//        return EnumSet.of(EnumFacing.getFront((metadata + 2) ^ 1), EnumFacing.UNKNOWN);
     }
 
     @Override
@@ -376,7 +376,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
         return getFacing();
 //        int metadata = this.getBlockMetadata() & 3;
 
-//        return EnumFacing.getOrientation((metadata + 2) ^ 1);
+//        return EnumFacing.getFront((metadata + 2) ^ 1);
     }
 
     @Override

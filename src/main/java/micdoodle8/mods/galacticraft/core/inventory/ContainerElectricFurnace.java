@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnace;
+import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 
@@ -26,7 +26,7 @@ public class ContainerElectricFurnace extends Container
         this.addSlotToContainer(new Slot(tileEntity, 1, 56, 25));
 
         // Smelting result
-        this.addSlotToContainer(new SlotFurnace(par1InventoryPlayer.player, tileEntity, 2, 109, 25));
+        this.addSlotToContainer(new SlotFurnaceOutput(par1InventoryPlayer.player, tileEntity, 2, 109, 25));
         int var3;
 
         for (var3 = 0; var3 < 3; ++var3)
@@ -91,7 +91,7 @@ public class ContainerElectricFurnace extends Container
                         return null;
                     }
                 }
-                else if (FurnaceRecipes.smelting().getSmeltingResult(var4) != null)
+                else if (FurnaceRecipes.instance().getSmeltingResult(var4) != null)
                 {
                     if (!this.mergeItemStack(var4, 1, 2, false))
                     {

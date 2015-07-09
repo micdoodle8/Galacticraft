@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 
 import java.util.Random;
 
@@ -88,15 +89,15 @@ public class RoomBossMoon extends DungeonRoom
             return;
         }
 
-        this.worldObj.setBlock(this.spawnerCoords.posX, this.spawnerCoords.posY, this.spawnerCoords.posZ, GCBlocks.blockMoon, 15, 3);
+        this.worldObj.setBlockState(this.spawnerCoords, GCBlocks.blockMoon.getStateFromMeta(15), 3);
 
-        final TileEntity tile = this.worldObj.getTileEntity(this.spawnerCoords.posX, this.spawnerCoords.posY, this.spawnerCoords.posZ);
+        final TileEntity tile = this.worldObj.getTileEntity(this.spawnerCoords);
 
         if (tile == null || !(tile instanceof TileEntityDungeonSpawner))
         {
             TileEntityDungeonSpawner spawner = new TileEntityDungeonSpawner();
             spawner.setRoom(new Vector3(this.posX, this.posY, this.posZ), new Vector3(this.sizeX, this.sizeY, this.sizeZ));
-            this.worldObj.setTileEntity(this.spawnerCoords.posX, this.spawnerCoords.posY, this.spawnerCoords.posZ, spawner);
+            this.worldObj.setTileEntity(this.spawnerCoords, spawner);
         }
         else if (tile instanceof TileEntityDungeonSpawner)
         {

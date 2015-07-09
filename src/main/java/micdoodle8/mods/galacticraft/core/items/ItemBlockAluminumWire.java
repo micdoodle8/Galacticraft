@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 public class ItemBlockAluminumWire extends ItemBlockDesc
 {
@@ -18,12 +17,12 @@ public class ItemBlockAluminumWire extends ItemBlockDesc
         this.setHasSubtypes(true);
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int par1)
     {
         return this.field_150939_a.getIcon(0, par1);
-    }
+    }*/
 
     @Override
     public String getUnlocalizedName(ItemStack par1ItemStack)

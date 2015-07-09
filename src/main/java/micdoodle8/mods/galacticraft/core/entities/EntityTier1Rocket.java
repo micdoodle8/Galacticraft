@@ -10,11 +10,14 @@ import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -29,7 +32,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
     {
         super(par1World);
         this.setSize(1.2F, 3.5F);
-        this.yOffset = 1.5F;
+//        this.yOffset = 1.5F;
     }
 
     public EntityTier1Rocket(World par1World, double par2, double par4, double par6, EnumRocketType rocketType)
@@ -38,7 +41,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
         this.rocketType = rocketType;
         this.cargoItems = new ItemStack[this.getSizeInventory()];
         this.setSize(1.2F, 3.5F);
-        this.yOffset = 1.5F;
+//        this.yOffset = 1.5F;
     }
 
     @Override
@@ -163,7 +166,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
 
             if (this.landing && this.targetVec != null)
             {
-                double modifier = this.posY - this.targetVec.y;
+                double modifier = this.posY - this.targetVec.getY();
                 modifier = Math.max(modifier, 1.0);
                 x1 *= modifier / 60.0D;
                 y1 *= modifier / 60.0D;
@@ -328,5 +331,35 @@ public class EntityTier1Rocket extends EntityTieredRocket
     public double getOnPadYOffset()
     {
     	return 1.5D;
+    }
+
+    @Override
+    public IUpdatePlayerListBox getSoundUpdater() {
+        return null;
+    }
+
+    @Override
+    public ISound setSoundUpdater(EntityPlayerSP player) {
+        return null;
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
     }
 }

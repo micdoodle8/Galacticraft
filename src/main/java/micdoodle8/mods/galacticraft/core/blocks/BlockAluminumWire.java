@@ -24,8 +24,8 @@ import java.util.List;
 
 public class BlockAluminumWire extends BlockTransmitter implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {
+    public static final String[] names = { "aluminumWire", "aluminumWireHeavy" };
     /*private static IIcon[] blockIcons;*/
-
     public static final PropertyEnum WIRE_TYPE = PropertyEnum.create("wireType", EnumWireType.class);
 
     private enum EnumWireType

@@ -2,18 +2,15 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 import java.util.List;
 
 public class ItemFuelCanister extends ItemCanisterGeneric
 {
-    protected IIcon[] icons = new IIcon[7];
+//    protected IIcon[] icons = new IIcon[7];
 
     public ItemFuelCanister(String assetName)
     {
@@ -22,7 +19,7 @@ public class ItemFuelCanister extends ItemCanisterGeneric
         //this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
@@ -30,7 +27,7 @@ public class ItemFuelCanister extends ItemCanisterGeneric
         {
             this.icons[i] = iconRegister.registerIcon(this.getIconString() + "_" + i);
         }
-    }
+    }*/
 
     @Override
     public String getUnlocalizedName(ItemStack itemStack)
@@ -43,7 +40,7 @@ public class ItemFuelCanister extends ItemCanisterGeneric
         return "item.fuelCanisterPartial";
     }
 
-    @Override
+    /*@Override
     public IIcon getIconFromDamage(int par1)
     {
         final int damage = 6 * par1 / this.getMaxDamage();
@@ -54,7 +51,7 @@ public class ItemFuelCanister extends ItemCanisterGeneric
         }
 
         return super.getIconFromDamage(damage);
-    }
+    }*/
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override

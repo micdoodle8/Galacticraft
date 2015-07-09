@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,19 +56,19 @@ public class EntityMeteor extends Entity
             this.spawnParticles();
         }
 
-        Vec3 var15 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-        Vec3 var2 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-        MovingObjectPosition var3 = this.worldObj.func_147447_a(var15, var2, true, true, false);
-        var15 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-        var2 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+        Vec3 var15 = new Vec3(this.posX, this.posY, this.posZ);
+        Vec3 var2 = new Vec3(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+        MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var15, var2, true, true, false);
+        var15 = new Vec3(this.posX, this.posY, this.posZ);
+        var2 = new Vec3(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
         if (var3 != null)
         {
-            var2 = Vec3.createVectorHelper(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
+            var2 = new Vec3(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
         }
 
         Entity var4 = null;
-        final List<?> var5 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(2.0D, 2.0D, 2.0D));
+        final List<?> var5 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expand(2.0D, 2.0D, 2.0D));
         double var6 = 0.0D;
         final Iterator<?> var8 = var5.iterator();
 
@@ -78,7 +79,7 @@ public class EntityMeteor extends Entity
             if (var9.canBeCollidedWith() && !var9.isEntityEqual(this.shootingEntity))
             {
                 final float var10 = 0.01F;
-                final AxisAlignedBB var11 = var9.boundingBox.expand(var10, var10, var10);
+                final AxisAlignedBB var11 = var9.getBoundingBox().expand(var10, var10, var10);
                 final MovingObjectPosition var12 = var11.calculateIntercept(var15, var2);
 
                 if (var12 != null)
@@ -125,9 +126,9 @@ public class EntityMeteor extends Entity
         {
             if (movingObjPos != null)
             {
-                if (this.worldObj.getBlock(movingObjPos.blockX, movingObjPos.blockY + 1, movingObjPos.blockZ).isAir(worldObj, movingObjPos.blockX, movingObjPos.blockY + 1, movingObjPos.blockZ))
+                if (this.worldObj.getBlockState(movingObjPos.getBlockPos().up()).getBlock().isAir(worldObj, movingObjPos.getBlockPos().up()))
                 {
-                    this.worldObj.setBlock(movingObjPos.blockX, movingObjPos.blockY + 1, movingObjPos.blockZ, GCBlocks.fallenMeteor, 0, 3);
+                    this.worldObj.setBlockState(movingObjPos.getBlockPos().up(), GCBlocks.fallenMeteor.getDefaultState(), 3);
                 }
 
                 if (movingObjPos.entityHit != null)
@@ -143,7 +144,7 @@ public class EntityMeteor extends Entity
     }
 
 	@Override
-    public boolean func_145774_a(Explosion p_145774_1_, World p_145774_2_, int p_145774_3_, int p_145774_4_, int p_145774_5_, Block p_145774_6_, float p_145774_7_)
+    public boolean func_174816_a(Explosion p_174816_1_, World worldIn, BlockPos p_174816_3_, IBlockState p_174816_4_, float p_174816_5_)
     {
         return ConfigManagerCore.meteorBlockDamageEnabled;
     }

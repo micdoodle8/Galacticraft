@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.IChatComponent;
 
 public class InventoryExtended implements IInventoryGC
 {
@@ -196,5 +197,30 @@ public class InventoryExtended implements IInventoryGC
         {
             this.inventoryStacks[i] = ItemStack.copyItemStack(toCopy.inventoryStacks[i]);
         }
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return null;
     }
 }

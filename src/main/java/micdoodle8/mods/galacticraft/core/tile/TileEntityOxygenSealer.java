@@ -361,7 +361,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     public EnumFacing getElectricInputDirection()
     {
         return getFacing();
-//        return EnumFacing.getOrientation(this.getBlockMetadata() + 2);
+//        return EnumFacing.getFront(this.getBlockMetadata() + 2);
     }
 
     @Override

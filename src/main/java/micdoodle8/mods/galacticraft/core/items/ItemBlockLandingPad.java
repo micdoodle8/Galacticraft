@@ -37,7 +37,7 @@ public class ItemBlockLandingPad extends ItemBlockDesc
             break;
         }
 
-        return this.field_150939_a.getUnlocalizedName() + "." + name;
+        return this.getBlock().getUnlocalizedName() + "." + name;
     }
 
     @Override

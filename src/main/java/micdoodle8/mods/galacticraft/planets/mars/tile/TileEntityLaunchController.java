@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
@@ -24,11 +22,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,9 +70,9 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
 
         if (!this.worldObj.isRemote)
         {
@@ -99,12 +102,12 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
                     for (int i = 0; i < this.connectedPads.size(); i++)
                     {
                         BlockPos coords = this.connectedPads.get(i);
-                        Block block = this.worldObj.getBlock(coords.posX, coords.posY, coords.posZ);
+                        Block block = this.worldObj.getBlockState(coords).getBlock();
 
                         if (block != GCBlocks.landingPadFull)
                         {
                             this.connectedPads.remove(i);
-                            ForgeChunkManager.unforceChunk(this.chunkLoadTicket, new ChunkCoordIntPair(coords.posX >> 4, coords.posZ >> 4));
+                            ForgeChunkManager.unforceChunk(this.chunkLoadTicket, new ChunkCoordIntPair(coords.getX() >> 4, coords.getZ() >> 4));
                         }
                     }
                 }
@@ -166,7 +169,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
             {
                 for (int z = -2; z <= 2; z++)
                 {
-                    Block blockID = this.worldObj.getBlock(this.getPos().getX() + x, this.getPos().getY(), this.getPos().getZ() + z);
+                    Block blockID = this.worldObj.getBlockState(this.getPos().add(x, 0, z)).getBlock();
 
                     if (blockID instanceof BlockLandingPadFull)
                     {
@@ -265,13 +268,13 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, int par3)
+    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
     {
         return this.isItemValidForSlot(slotID, par2ItemStack);
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, int par3)
+    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
     {
         return slotID == 0;
     }
@@ -321,9 +324,9 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public boolean canAttachToLandingPad(IBlockAccess world, int x, int y, int z)
+    public boolean canAttachToLandingPad(IBlockAccess world, BlockPos pos)
     {
-        TileEntity tile = world.getTileEntity(x, y, z);
+        TileEntity tile = world.getTileEntity(pos);
 
         return tile instanceof TileEntityLandingPad;
     }
@@ -346,7 +349,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
                 {
                     if (this != tile2)
                     {
-                        tile2 = world.getTileEntity(tile2.xCoord, tile2.yCoord, tile2.zCoord);
+                        tile2 = world.getTileEntity(tile2.getPos());
                         if (tile2 == null)
                             continue;
 
@@ -396,7 +399,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
                     {
                         if (this != tile2)
                         {
-                            tile2 = world.getTileEntity(tile2.xCoord, tile2.yCoord, tile2.zCoord);
+                            tile2 = world.getTileEntity(tile2.getPos());
                             if (tile2 == null)
                                 continue;
 
@@ -454,5 +457,10 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
                 ((EntityAutoRocket) rocket).updateControllerSettings(pad);
             }
         }
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return null;
     }
 }

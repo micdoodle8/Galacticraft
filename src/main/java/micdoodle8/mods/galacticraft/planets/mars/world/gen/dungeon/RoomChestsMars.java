@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 
@@ -78,8 +79,8 @@ public class RoomChestsMars extends DungeonRoom
     {
         if (!this.chests.isEmpty())
         {
-            this.worldObj.setBlock(this.chests.get(0).posX, this.chests.get(0).posY, this.chests.get(0).posZ, Blocks.chest, 0, 2);
-            TileEntityChest chest = (TileEntityChest) this.worldObj.getTileEntity(this.chests.get(0).posX, this.chests.get(0).posY, this.chests.get(0).posZ);
+            this.worldObj.setBlockState(this.chests.get(0), Blocks.chest.getDefaultState(), 2);
+            TileEntityChest chest = (TileEntityChest) this.worldObj.getTileEntity(this.chests.get(0));
 
             if (chest != null)
             {

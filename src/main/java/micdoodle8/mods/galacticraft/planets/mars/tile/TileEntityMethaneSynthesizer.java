@@ -506,7 +506,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
 //    public boolean canReceiveGas(EnumFacing side, Gas type)
 //    {
 //        //System.out.println("Testing receipt of gas "+type.getName());
-//        return type.getName().equals("hydrogen") && side.equals(EnumFacing.getOrientation(this.getBlockMetadata() + 2));
+//        return type.getName().equals("hydrogen") && side.equals(EnumFacing.getFront(this.getBlockMetadata() + 2));
 //    }
 //
 //    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
@@ -518,7 +518,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
 //    @RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
 //    public boolean canTubeConnect(EnumFacing side)
 //    {
-//        return side.equals(EnumFacing.getOrientation(this.getBlockMetadata() + 2));
+//        return side.equals(EnumFacing.getFront(this.getBlockMetadata() + 2));
 //    }
 
     @Override

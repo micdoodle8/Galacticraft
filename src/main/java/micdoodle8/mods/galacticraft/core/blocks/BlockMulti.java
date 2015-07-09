@@ -170,9 +170,9 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
         return false;
     }
 
-    public void makeFakeBlock(World worldObj, BlockPos pos, BlockVec3 mainBlock, int meta)
+    public void makeFakeBlock(World worldObj, BlockPos pos, BlockPos mainBlock, IBlockState state)
     {
-        worldObj.setBlockState(pos, getStateFromMeta(meta), 3);
+        worldObj.setBlockState(pos, state, 3);
         ((TileEntityMulti) worldObj.getTileEntity(pos)).setMainBlock(mainBlock);
     }
 

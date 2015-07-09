@@ -7,7 +7,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 public class ItemBlockDummy extends ItemBlock
 {
@@ -18,12 +17,12 @@ public class ItemBlockDummy extends ItemBlock
         this.setHasSubtypes(true);
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int par1)
-    {
-        return this.field_150939_a.getIcon(0, par1);
-    }
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public IIcon getIconFromDamage(int par1)
+//    {
+//        return this.field_150939_a.getIcon(0, par1);
+//    }
 
     @Override
     public int getMetadata(int damage)
@@ -66,12 +65,12 @@ public class ItemBlockDummy extends ItemBlock
             break;
         }
 
-        return this.field_150939_a.getUnlocalizedName() + "." + blockName;
+        return this.getBlock().getUnlocalizedName() + "." + blockName;
     }
 
     @Override
     public String getUnlocalizedName()
     {
-        return this.field_150939_a.getUnlocalizedName() + ".0";
+        return this.getBlock().getUnlocalizedName() + ".0";
     }
 }

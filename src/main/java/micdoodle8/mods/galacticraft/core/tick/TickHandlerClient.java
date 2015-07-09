@@ -2,6 +2,9 @@ package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -45,7 +48,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiIngameMenu;
@@ -127,7 +129,7 @@ public class TickHandlerClient
     {
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
         final EntityPlayerSP player = minecraft.thePlayer;
-        final EntityClientPlayerMP playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
+        final EntityPlayerSP playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
         GCPlayerStatsClient stats = null;
 
         if (player != null)
@@ -262,32 +264,32 @@ public class TickHandlerClient
         }       
     }
 
-    @SubscribeEvent
-    public void onPreGuiRender(RenderGameOverlayEvent.Pre event)
-    {
-        final Minecraft minecraft = FMLClientHandler.instance().getClient();
-        final EntityClientPlayerMP player = minecraft.thePlayer;
-
-        if (event.type == RenderGameOverlayEvent.ElementType.ALL)
-        {
-            if (player != null && player.ridingEntity != null && player.ridingEntity instanceof IIgnoreShift && ((IIgnoreShift) player.ridingEntity).shouldIgnoreShiftExit())
-            {
-                // Remove "Press shift to dismount" message when shift-exiting is disabled (not ideal, but the only option)
-                String str = I18n.format("mount.onboard", new Object[] { GameSettings.getKeyDisplayString(minecraft.gameSettings.keyBindSneak.getKeyCode()) });
-                if (minecraft.ingameGUI.recordPlaying.equals(str))
-                {
-                    minecraft.ingameGUI.recordPlaying = "";
-                }
-            }
-        }
-    }
+//    @SubscribeEvent
+//    public void onPreGuiRender(RenderGameOverlayEvent.Pre event)
+//    {
+//        final Minecraft minecraft = FMLClientHandler.instance().getClient();
+//        final EntityPlayerSP player = minecraft.thePlayer;
+//
+//        if (event.type == RenderGameOverlayEvent.ElementType.ALL)
+//        {
+//            if (player != null && player.ridingEntity != null && player.ridingEntity instanceof IIgnoreShift && ((IIgnoreShift) player.ridingEntity).shouldIgnoreShiftExit())
+//            {
+//                // Remove "Press shift to dismount" message when shift-exiting is disabled (not ideal, but the only option)
+//                String str = I18n.format("mount.onboard", new Object[] { GameSettings.getKeyDisplayString(minecraft.gameSettings.keyBindSneak.getKeyCode()) });
+//                if (minecraft.ingameGUI.recordPlaying.equals(str))
+//                {
+//                    minecraft.ingameGUI.recordPlaying = "";
+//                }
+//            }
+//        }
+//    } TODO
 
     @SubscribeEvent
     public void onClientTick(ClientTickEvent event)
     {
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
         final WorldClient world = minecraft.theWorld;
-        final EntityClientPlayerMP player = minecraft.thePlayer;
+        final EntityPlayerSP player = minecraft.thePlayer;
 
         if (event.phase == Phase.START)
         {
@@ -331,12 +333,14 @@ public class TickHandlerClient
                                 int x = MathHelper.floor_double(player.posX + i);
                                 int y = MathHelper.floor_double(player.posY + j);
                                 int z = MathHelper.floor_double(player.posZ + k);
+                                BlockPos pos = new BlockPos(x, y, z);
 
-                                final Block block = player.worldObj.getBlock(x, y, z);
+                                IBlockState state = player.worldObj.getBlockState(pos);
+                                final Block block = state.getBlock();
 
                                 if (block.getMaterial() != Material.air)
                                 {
-                                    int metadata = world.getBlockMetadata(x, y, z);
+                                    int metadata = block.getMetaFromState(state);
                                     boolean isDetectable = false;
 
                                     for (BlockMetaList blockMetaList : ClientProxyCore.detectableBlocks)
@@ -465,19 +469,19 @@ public class TickHandlerClient
                 final EntitySpaceshipBase ship = (EntitySpaceshipBase) player.ridingEntity;
                 boolean hasChanged = false;
 
-                if (minecraft.gameSettings.keyBindLeft.getIsKeyPressed())
+                if (minecraft.gameSettings.keyBindLeft.isPressed())
                 {
                     ship.turnYaw(-1.0F);
                     hasChanged = true;
                 }
 
-                if (minecraft.gameSettings.keyBindRight.getIsKeyPressed())
+                if (minecraft.gameSettings.keyBindRight.isPressed())
                 {
                     ship.turnYaw(1.0F);
                     hasChanged = true;
                 }
 
-                if (minecraft.gameSettings.keyBindForward.getIsKeyPressed())
+                if (minecraft.gameSettings.keyBindForward.isPressed())
                 {
                     if (ship.getLaunched())
                     {
@@ -486,7 +490,7 @@ public class TickHandlerClient
                     }
                 }
 
-                if (minecraft.gameSettings.keyBindBack.getIsKeyPressed())
+                if (minecraft.gameSettings.keyBindBack.isPressed())
                 {
                     if (ship.getLaunched())
                     {
@@ -528,12 +532,12 @@ public class TickHandlerClient
                 world.setRainStrength(0.0F);
             }
 
-            if (!KeyHandlerClient.spaceKey.getIsKeyPressed())
+            if (!KeyHandlerClient.spaceKey.isPressed())
             {
                 ClientProxyCore.lastSpacebarDown = false;
             }
 
-            if (player != null && player.ridingEntity != null && KeyHandlerClient.spaceKey.getIsKeyPressed() && !ClientProxyCore.lastSpacebarDown)
+            if (player != null && player.ridingEntity != null && KeyHandlerClient.spaceKey.isPressed() && !ClientProxyCore.lastSpacebarDown)
             {
                 GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_IGNITE_ROCKET, new Object[] { }));
                 ClientProxyCore.lastSpacebarDown = true;
@@ -558,8 +562,8 @@ public class TickHandlerClient
 
     public static void zoom(float value)
     {
-        FMLClientHandler.instance().getClient().entityRenderer.thirdPersonDistance = value;
-        FMLClientHandler.instance().getClient().entityRenderer.thirdPersonDistanceTemp = value;
+//        FMLClientHandler.instance().getClient().entityRenderer.thirdPersonDistance = value;
+//        FMLClientHandler.instance().getClient().entityRenderer.thirdPersonDistanceTemp = value; TODO
     }
 
     private void drawGradientRect(int par1, int par2, int par3, int par4, int par5, int par6)
@@ -577,14 +581,15 @@ public class TickHandlerClient
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
         GL11.glShadeModel(GL11.GL_SMOOTH);
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
-        tessellator.setColorRGBA_F(f1, f2, f3, f);
-        tessellator.addVertex(par3, par2, 0.0D);
-        tessellator.addVertex(par1, par2, 0.0D);
-        tessellator.setColorRGBA_F(f5, f6, f7, f4);
-        tessellator.addVertex(par1, par4, 0.0D);
-        tessellator.addVertex(par3, par4, 0.0D);
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        worldRenderer.startDrawingQuads();
+        worldRenderer.setColorRGBA_F(f1, f2, f3, f);
+        worldRenderer.addVertex(par3, par2, 0.0D);
+        worldRenderer.addVertex(par1, par2, 0.0D);
+        worldRenderer.setColorRGBA_F(f5, f6, f7, f4);
+        worldRenderer.addVertex(par1, par4, 0.0D);
+        worldRenderer.addVertex(par3, par4, 0.0D);
         tessellator.draw();
         GL11.glShadeModel(GL11.GL_FLAT);
         GL11.glDisable(GL11.GL_BLEND);

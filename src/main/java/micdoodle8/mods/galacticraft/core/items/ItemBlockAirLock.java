@@ -56,6 +56,6 @@ public class ItemBlockAirLock extends ItemBlockDesc
     @Override
     public String getUnlocalizedName()
     {
-        return this.field_150939_a.getUnlocalizedName() + ".0";
+        return this.getBlock().getUnlocalizedName() + ".0";
     }
 }

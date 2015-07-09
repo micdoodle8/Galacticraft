@@ -817,7 +817,7 @@ public class TileEntityScreen extends TileEntityAdvanced
     private void joinUp()
     {
     	int meta = this.getBlockMetadata();
-//    	EnumFacing side = EnumFacing.getOrientation(this.getRight(meta));
+//    	EnumFacing side = EnumFacing.getFront(this.getRight(meta));
         EnumFacing side = getFacing().rotateY();
     	BlockVec3 vec = new BlockVec3(this);
     	for (int x = -this.connectionsLeft; x <= this.connectionsRight; x++)
@@ -845,7 +845,7 @@ public class TileEntityScreen extends TileEntityAdvanced
     private void joinDown()
     {
     	int meta = this.getBlockMetadata();
-//    	EnumFacing side = EnumFacing.getOrientation(this.getRight(meta));
+//    	EnumFacing side = EnumFacing.getFront(this.getRight(meta));
         EnumFacing side = getFacing().rotateY();
     	BlockVec3 vec = new BlockVec3(this);
     	for (int x = -this.connectionsLeft; x <= this.connectionsRight; x++)

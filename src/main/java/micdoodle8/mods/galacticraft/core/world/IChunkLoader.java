@@ -10,7 +10,7 @@ public interface IChunkLoader
 
     public Ticket getTicket();
 
-    public World getWorldObj();
+    public World getWorld();
 
     public BlockPos getCoords();
 

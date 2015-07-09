@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
@@ -15,7 +16,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
@@ -58,15 +58,13 @@ public class ItemFlag extends Item implements IHoldableItem
 
         if (var7 == 1.0F && var12 != null && var12.typeOfHit == MovingObjectType.BLOCK)
         {
-            final int x = var12.blockX;
-            final int y = var12.blockY;
-            final int z = var12.blockZ;
+            final BlockPos pos = var12.getBlockPos();
 
             if (!par2World.isRemote)
             {
-                final EntityFlag flag = new EntityFlag(par2World, x + 0.5F, y + 1.0F, z + 0.5F, (int) (par3EntityPlayer.rotationYaw - 90));
+                final EntityFlag flag = new EntityFlag(par2World, pos.getX() + 0.5F, pos.getY() + 1.0F, pos.getZ() + 0.5F, (int) (par3EntityPlayer.rotationYaw - 90));
 
-                if (par2World.getEntitiesWithinAABB(EntityFlag.class, AxisAlignedBB.fromBounds(x, y, z, x + 1, y + 3, z + 1)).isEmpty())
+                if (par2World.getEntitiesWithinAABB(EntityFlag.class, AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 3, pos.getZ() + 1)).isEmpty())
                 {
                     par2World.spawnEntityInWorld(flag);
                     flag.setType(par1ItemStack.getItemDamage());
@@ -108,9 +106,9 @@ public class ItemFlag extends Item implements IHoldableItem
     }
 
     @Override
-    public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityPlayer playerIn)
     {
-        return par1ItemStack;
+        return stack;
     }
 
     @Override
@@ -122,7 +120,7 @@ public class ItemFlag extends Item implements IHoldableItem
     @Override
     public EnumAction getItemUseAction(ItemStack par1ItemStack)
     {
-        return EnumAction.none;
+        return EnumAction.NONE;
     }
 
     @Override
@@ -146,11 +144,11 @@ public class ItemFlag extends Item implements IHoldableItem
         return "item.flag";
     }
 
-    @Override
+    /*@Override
     public IIcon getIconFromDamage(int damage)
     {
         return super.getIconFromDamage(damage);
-    }
+    }*/
 
     @Override
     public boolean shouldHoldLeftHandUp(EntityPlayer player)

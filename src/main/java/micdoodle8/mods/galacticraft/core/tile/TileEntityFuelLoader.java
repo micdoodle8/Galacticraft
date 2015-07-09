@@ -263,7 +263,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     {
         int used = 0;
 
-//        if (from.equals(EnumFacing.getOrientation(this.getBlockMetadata() + 2).getOpposite()))
+//        if (from.equals(EnumFacing.getFront(this.getBlockMetadata() + 2).getOpposite()))
         if (from.equals(getFacing()))
         {
             final String liquidName = FluidRegistry.getFluidName(resource);

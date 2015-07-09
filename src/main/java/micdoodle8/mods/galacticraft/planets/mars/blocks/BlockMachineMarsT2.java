@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
@@ -15,17 +13,20 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityElectrolyzer;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityGasLiquefier;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityMethaneSynthesizer;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 import java.util.Random;
@@ -36,7 +37,7 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
     public static final int METHANE_SYNTHESIZER = 4;
     public static final int ELECTROLYZER = 8;
 
-    private IIcon iconMachineSide;
+    /*private IIcon iconMachineSide;
     private IIcon iconInput;
     private IIcon iconGasInput;
     private IIcon iconGasOutput;
@@ -44,15 +45,16 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
 
     private IIcon iconGasLiquefier;
     private IIcon iconMethaneSynthesizer;
-    private IIcon iconElectrolyzer;
+    private IIcon iconElectrolyzer;*/
 
-    public BlockMachineMarsT2()
+    public BlockMachineMarsT2(String assetName)
     {
         super(GCBlocks.machine);
         this.setStepSound(Block.soundTypeMetal);
+        this.setUnlocalizedName(assetName);
     }
 
-    @Override
+    /*@Override
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
         this.blockIcon = par1IconRegister.registerIcon("galacticraftasteroids:machine");
@@ -65,7 +67,7 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
         this.iconGasLiquefier = par1IconRegister.registerIcon("galacticraftasteroids:gasLiquefier");
         this.iconMethaneSynthesizer = par1IconRegister.registerIcon("galacticraftasteroids:methaneSynthesizer");
         this.iconElectrolyzer = par1IconRegister.registerIcon("galacticraftasteroids:electrolyzer");
-    }
+    }*/
 
     @SideOnly(Side.CLIENT)
     @Override
@@ -80,7 +82,7 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
         return GalacticraftPlanets.getBlockRenderID(this);
     }
 
-    @Override
+    /*@Override
     public IIcon getIcon(int side, int metadata)
     {
         if (side == 0)
@@ -149,17 +151,17 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
         }
 
         return this.iconMachineSide;
-    }
+    }*/
 
     /**
      * Called when the block is placed in the world.
      */
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        int metadata = world.getBlockMetadata(x, y, z);
+        int metadata = state.getBlock().getMetaFromState(state);
 
-        int angle = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         int change = 0;
 
         switch (angle)
@@ -178,13 +180,14 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
             break;
         }
 
-        world.setBlockMetadataWithNotify(x, y, z, (metadata & 12) + change, 3);
+        worldIn.setBlockState(pos, getStateFromMeta((metadata & 12) + change), 3);
     }
 
     @Override
     public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        int metadata = par1World.getBlockMetadata(x, y, z);
+        IBlockState state = world.getBlockState(pos);
+        int metadata = state.getBlock().getMetaFromState(state);
         int original = metadata & 3;
         int change = 0;
 
@@ -205,13 +208,13 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
             break;
         }
 
-        TileEntity te = par1World.getTileEntity(x, y, z);
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileBaseUniversalElectrical)
         {
             ((TileBaseUniversalElectrical) te).updateFacing();
         }
 
-        par1World.setBlockMetadataWithNotify(x, y, z, (metadata & 12) + change, 3);
+        world.setBlockState(pos, getStateFromMeta((metadata & 12) + change), 3);
         return true;
     }
 
@@ -219,17 +222,16 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
      * Called when the block is right clicked by the player
      */
     @Override
-    public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        int metadata = world.getBlockMetadata(x, y, z);
-
-        par5EntityPlayer.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_MARS, world, x, y, z);
+        playerIn.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_MARS, worldIn, pos.getX(), pos.getY(), pos.getZ());
         return true;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
+        int metadata = state.getBlock().getMetaFromState(state);
         metadata &= 12;
 
         if (metadata == BlockMachineMarsT2.GAS_LIQUEFIER)
@@ -258,24 +260,24 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
     }
 
     @Override
-    public int damageDropped(int metadata)
+    public int damageDropped(IBlockState state)
     {
-        return metadata & 12;
+        return state.getBlock().getMetaFromState(state) & 12;
     }
 
     @Override
     public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
     {
-        int metadata = this.getDamageValue(world, x, y, z);
+        int metadata = this.getDamageValue(world, pos);
 
         return new ItemStack(this, 1, metadata);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random rand)
+    public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
-        final TileEntity te = par1World.getTileEntity(par2, par3, par4);
+        final TileEntity te = worldIn.getTileEntity(pos);
 
         if (te instanceof TileEntityGasLiquefier)
         {
@@ -283,9 +285,9 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
 
             if (tileEntity.processTicks > 0)
             {
-                final float x = par2 + 0.5F;
-                final float y = par3 + 0.8F + 0.05F * rand.nextInt(3);
-                final float z = par4 + 0.5F;
+                final float x = pos.getX() + 0.5F;
+                final float y = pos.getY() + 0.8F + 0.05F * rand.nextInt(3);
+                final float z = pos.getZ() + 0.5F;
 
                 for (float i = -0.41F + 0.16F * rand.nextFloat(); i < 0.5F; i += 0.167F)
                 {

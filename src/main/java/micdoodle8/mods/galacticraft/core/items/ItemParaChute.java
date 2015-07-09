@@ -4,12 +4,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 import java.util.List;
 
@@ -32,7 +30,7 @@ public class ItemParaChute extends Item
             "teal", // 14
             "yellow" }; // 15
 
-    protected IIcon[] icons;
+//    protected IIcon[] icons;
 
     public ItemParaChute(String assetName)
     {
@@ -66,7 +64,7 @@ public class ItemParaChute extends Item
         return par1;
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
@@ -77,7 +75,7 @@ public class ItemParaChute extends Item
         {
             this.icons[i++] = iconRegister.registerIcon(this.getIconString() + "_" + name);
         }
-    }
+    }*/
 
     @Override
     public String getUnlocalizedName(ItemStack itemStack)
@@ -85,7 +83,7 @@ public class ItemParaChute extends Item
         return this.getUnlocalizedName() + "_" + ItemParaChute.names[itemStack.getItemDamage()];
     }
 
-    @Override
+    /*@Override
     public IIcon getIconFromDamage(int damage)
     {
         if (this.icons.length > damage)
@@ -94,7 +92,7 @@ public class ItemParaChute extends Item
         }
 
         return super.getIconFromDamage(damage);
-    }
+    }*/
 
     // @Override
     // @SideOnly(Side.CLIENT)

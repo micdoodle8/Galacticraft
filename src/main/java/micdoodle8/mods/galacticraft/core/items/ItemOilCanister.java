@@ -2,22 +2,19 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import java.util.List;
 
 public class ItemOilCanister extends ItemCanisterGeneric
 {
-    protected IIcon[] icons = new IIcon[7];
+//    protected IIcon[] icons = new IIcon[7];
 
     public ItemOilCanister(String assetName)
     {
@@ -27,7 +24,7 @@ public class ItemOilCanister extends ItemCanisterGeneric
         //this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
@@ -35,7 +32,7 @@ public class ItemOilCanister extends ItemCanisterGeneric
         {
             this.icons[i] = iconRegister.registerIcon(this.getIconString() + "_" + i);
         }
-    }
+    }*/
 
     @Override
     public String getUnlocalizedName(ItemStack itemStack)
@@ -53,7 +50,7 @@ public class ItemOilCanister extends ItemCanisterGeneric
         return "item.oilCanisterPartial";
     }
 
-    @Override
+    /*@Override
     public IIcon getIconFromDamage(int par1)
     {
         final int damage = 6 * par1 / this.getMaxDamage();
@@ -64,7 +61,7 @@ public class ItemOilCanister extends ItemCanisterGeneric
         }
 
         return super.getIconFromDamage(damage);
-    }
+    }*/
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
@@ -91,7 +88,7 @@ public class ItemOilCanister extends ItemCanisterGeneric
     {
         if (ItemCanisterGeneric.EMPTY == par1ItemStack.getItemDamage())
         {
-            par1ItemStack.stackTagCompound = null;
+            par1ItemStack.setTagCompound(null);
         }
         else if (par1ItemStack.getItemDamage() <= 0) par1ItemStack.setItemDamage(1);
     }

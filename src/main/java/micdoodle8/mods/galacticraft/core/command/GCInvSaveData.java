@@ -22,7 +22,7 @@ public class GCInvSaveData extends WorldSavedData
     @Override
     public void readFromNBT(NBTTagCompound filedata)
     {
-        for (Object obj : filedata.func_150296_c())
+        for (Object obj : filedata.getKeySet())
         {
             if (obj instanceof NBTTagList)
             {

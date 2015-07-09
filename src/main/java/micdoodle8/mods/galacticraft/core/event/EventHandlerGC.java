@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.core.event;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.*;
+import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
@@ -46,7 +49,6 @@ import net.minecraft.block.BlockSand;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -56,16 +58,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenDesert;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.client.event.sound.PlaySoundEvent17;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
@@ -88,7 +85,7 @@ public class EventHandlerGC
     @SubscribeEvent
     public void onRocketLaunch(EntitySpaceshipBase.RocketLaunchEvent event)
     {
-        if (!event.entity.worldObj.isRemote && event.entity.worldObj.provider.dimensionId == 0)
+        if (!event.entity.worldObj.isRemote && event.entity.worldObj.provider.getDimensionId() == 0)
         {
             if (event.rocket.riddenByEntity instanceof EntityPlayerMP)
             {
@@ -134,12 +131,12 @@ public class EventHandlerGC
         {
             if (OxygenUtil.noAtmosphericCombustion(event.entityLiving.worldObj.provider))
             {
-    	        if (OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, event.entityLiving.boundingBox))
+    	        if (OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, event.entityLiving.getBoundingBox()))
     	        	return;
 
                 if (event.entityLiving.worldObj instanceof WorldServer)
                 {
-                    ((WorldServer) event.entityLiving.worldObj).func_147487_a("smoke", event.entityLiving.posX, event.entityLiving.posY + event.entityLiving.boundingBox.maxY - event.entityLiving.boundingBox.minY, event.entityLiving.posZ, 50, 0.0, 0.05, 0.0, 0.001);
+                    ((WorldServer) event.entityLiving.worldObj).spawnParticle(EnumParticleTypes.SMOKE_NORMAL, event.entityLiving.posX, event.entityLiving.posY + event.entityLiving.getBoundingBox().maxY - event.entityLiving.getBoundingBox().minY, event.entityLiving.posZ, 50, 0.0, 0.05, 0.0, 0.001);
                 }
 
                 event.entityLiving.extinguish();
@@ -174,11 +171,11 @@ public class EventHandlerGC
     	if (event.entityPlayer == null || event.entityPlayer.inventory == null) return;
         
     	final ItemStack heldStack = event.entityPlayer.inventory.getCurrentItem();
-        final TileEntity tileClicked = event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z);
+        final TileEntity tileClicked = event.entityPlayer.worldObj.getTileEntity(event.pos);
 
         if (heldStack != null)
         {
-            final Block idClicked = event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z);
+            final Block idClicked = event.entityPlayer.worldObj.getBlockState(event.pos).getBlock();
 
             if (tileClicked != null && tileClicked instanceof IKeyable)
             {
@@ -211,7 +208,7 @@ public class EventHandlerGC
             {
                 if (!event.entity.worldObj.isRemote && event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK))
                 {
-                    if (idClicked != Blocks.tnt  && OxygenUtil.noAtmosphericCombustion(event.entityPlayer.worldObj.provider) && !OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, AxisAlignedBB.fromBounds(event.x, event.y, event.z, event.x + 1, event.y + 2, event.z + 1)))
+                    if (idClicked != Blocks.tnt  && OxygenUtil.noAtmosphericCombustion(event.entityPlayer.worldObj.provider) && !OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, AxisAlignedBB.fromBounds(event.pos.getX(), event.pos.getY(), event.pos.getZ(), event.pos.getX() + 1, event.pos.getY() + 2, event.pos.getZ() + 1)))
                     {
                         event.setCanceled(true);
                     }
@@ -318,27 +315,29 @@ public class EventHandlerGC
         }
 
         MovingObjectPosition pos = event.target;
-    	final Block blockID = event.world.getBlock(pos.blockX, pos.blockY, pos.blockZ);
+        IBlockState state = event.world.getBlockState(pos.getBlockPos());
+    	final Block blockID = state.getBlock();
+        int meta = blockID.getMetaFromState(state);
 
-        if (GalacticraftCore.isPlanetsLoaded && blockID == MarsBlocks.blockSludge && event.world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0)
+        if (GalacticraftCore.isPlanetsLoaded && blockID == MarsBlocks.blockSludge && meta == 0)
         {
-        	event.world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
+        	event.world.setBlockToAir(pos.getBlockPos());
             event.result = new ItemStack(MarsItems.bucketSludge);
             event.setResult(Result.ALLOW);
         }
-        else if (bcOilBucket != null && (blockID == bcOilID1 || blockID == bcOilID2 || blockID == GCBlocks.crudeOilStill) && event.world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0)
+        else if (bcOilBucket != null && (blockID == bcOilID1 || blockID == bcOilID2 || blockID == GCBlocks.crudeOilStill) && meta == 0)
         {
-            event.world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
+            event.world.setBlockToAir(pos.getBlockPos());
             event.result = new ItemStack(bcOilBucket);
             event.setResult(Result.ALLOW);
         }
-        else if (bcFuelBucket != null && (blockID == bcFuelID1 || blockID == bcFuelID2 || blockID == GCBlocks.fuelStill) && event.world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0)
+        else if (bcFuelBucket != null && (blockID == bcFuelID1 || blockID == bcFuelID2 || blockID == GCBlocks.fuelStill) && meta == 0)
         {
-            event.world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
+            event.world.setBlockToAir(pos.getBlockPos());
             event.result = new ItemStack(bcFuelBucket);
             event.setResult(Result.ALLOW);
         }
-        else if ((blockID == GCBlocks.crudeOilStill || blockID == GCBlocks.fuelStill) && event.world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0)
+        else if ((blockID == GCBlocks.crudeOilStill || blockID == GCBlocks.fuelStill) && meta == 0)
         {
            event.setCanceled(true);
         }
@@ -365,7 +364,7 @@ public class EventHandlerGC
 
         for (Integer dim : ConfigManagerCore.externalOilGen)
         {
-            if (dim == world.provider.dimensionId)
+            if (dim == world.provider.getDimensionId())
             {
                 doGen2 = true;
                 break;
@@ -375,7 +374,7 @@ public class EventHandlerGC
         if (!doGen2)
             return false;
         
-        final BiomeGenBase biomegenbase = world.getBiomeGenForCoords(x + 8, z + 8);
+        final BiomeGenBase biomegenbase = world.getBiomeGenForCoords(new BlockPos(x + 8, 0, z + 8));
 
         if (biomegenbase.biomeID == BiomeGenBase.sky.biomeID || biomegenbase.biomeID == BiomeGenBase.hell.biomeID)
         {
@@ -389,11 +388,11 @@ public class EventHandlerGC
 
         double randMod = Math.min(0.2D, 0.08D * ConfigManagerCore.oilGenFactor);
 
-        if (biomegenbase.rootHeight >= 0.45F)
+        if (biomegenbase.minHeight >= 0.45F)
         {
             randMod /= 2;
         }
-        if (biomegenbase.rootHeight < -0.5F)
+        if (biomegenbase.minHeight < -0.5F)
         {
             randMod *= 1.8;
         }
@@ -440,20 +439,20 @@ public class EventHandlerGC
 
                         if (d2 <= r2)
                         {
-                            if (EventHandlerGC.checkBlock(world, bx + x - 1, by + cy, bz + z))
+                            if (EventHandlerGC.checkBlock(world, new BlockPos(bx + x - 1, by + cy, bz + z)))
                                 continue;
-                            if (EventHandlerGC.checkBlock(world, bx + x + 1, by + cy, bz + z))
+                            if (EventHandlerGC.checkBlock(world, new BlockPos(bx + x + 1, by + cy, bz + z)))
                                 continue;
-                            if (EventHandlerGC.checkBlock(world, bx + x, by + cy - 1, bz + z))
+                            if (EventHandlerGC.checkBlock(world, new BlockPos(bx + x, by + cy - 1, bz + z)))
                                 continue;
-                            if (EventHandlerGC.checkBlock(world, bx + x, by + cy, bz + z - 1))
+                            if (EventHandlerGC.checkBlock(world, new BlockPos(bx + x, by + cy, bz + z - 1)))
                                 continue;
-                            if (EventHandlerGC.checkBlock(world, bx + x, by + cy, bz + z + 1))
+                            if (EventHandlerGC.checkBlock(world, new BlockPos(bx + x, by + cy, bz + z + 1)))
                                 continue;
-                            if (EventHandlerGC.checkBlockAbove(world, bx + x, by + cy + 1, bz + z))
+                            if (EventHandlerGC.checkBlockAbove(world, new BlockPos(bx + x, by + cy + 1, bz + z)))
                                 continue;
 
-                            world.setBlock(bx + x, by + cy, bz + z, GCBlocks.crudeOilStill, 0, 2);
+                            world.setBlockState(new BlockPos(bx + x, by + cy, bz + z), GCBlocks.crudeOilStill.getDefaultState(), 2);
                         }
                     }
                 }
@@ -475,20 +474,20 @@ public class EventHandlerGC
 
                     if (d2 <= r2)
                     {
-                        if (EventHandlerGC.checkBlock(world, bx + x - 1, by + cy, bz + z))
+                        if (EventHandlerGC.checkBlock(world, new BlockPos(bx + x - 1, by + cy, bz + z)))
                             continue;
-                        if (EventHandlerGC.checkBlock(world, bx + x + 1, by + cy, bz + z))
+                        if (EventHandlerGC.checkBlock(world, new BlockPos(bx + x + 1, by + cy, bz + z)))
                             continue;
-                        if (EventHandlerGC.checkBlock(world, bx + x, by + cy - 1, bz + z))
+                        if (EventHandlerGC.checkBlock(world, new BlockPos(bx + x, by + cy - 1, bz + z)))
                             continue;
-                        if (EventHandlerGC.checkBlock(world, bx + x, by + cy, bz + z - 1))
+                        if (EventHandlerGC.checkBlock(world, new BlockPos(bx + x, by + cy, bz + z - 1)))
                             continue;
-                        if (EventHandlerGC.checkBlock(world, bx + x, by + cy, bz + z + 1))
+                        if (EventHandlerGC.checkBlock(world, new BlockPos(bx + x, by + cy, bz + z + 1)))
                             continue;
-                        if (EventHandlerGC.checkBlockAbove(world, bx + x, by + cy + 1, bz + z))
+                        if (EventHandlerGC.checkBlockAbove(world, new BlockPos(bx + x, by + cy + 1, bz + z)))
                             continue;
 
-                        if (world.getBlock(bx + x, by + cy, bz + z) == GCBlocks.crudeOilStill)
+                        if (world.getBlockState(new BlockPos(bx + x, by + cy, bz + z)).getBlock() == GCBlocks.crudeOilStill)
                         	return true;
                     }
                 }
@@ -506,9 +505,9 @@ public class EventHandlerGC
 		generateOil(world, new Random(), cx << 4, cz << 4, true);
 	}
 
-	private static boolean checkBlock(World w, int x, int y, int z)
+	private static boolean checkBlock(World w, BlockPos pos)
     {
-        Block b = w.getBlock(x, y, z);
+        Block b = w.getBlockState(pos).getBlock();
         if (b.getMaterial() == Material.air)
         {
             return true;
@@ -516,9 +515,9 @@ public class EventHandlerGC
         return b instanceof BlockLiquid && b != GCBlocks.crudeOilStill;
     }
 
-    private static boolean checkBlockAbove(World w, int x, int y, int z)
+    private static boolean checkBlockAbove(World w, BlockPos pos)
     {
-        Block b = w.getBlock(x, y, z);
+        Block b = w.getBlockState(pos).getBlock();
         if (b instanceof BlockSand)
         {
             return true;
@@ -586,7 +585,7 @@ public class EventHandlerGC
     {
         final HashMap<Integer, Integer> idList = new HashMap<Integer, Integer>();
 
-        EntityClientPlayerMP player = PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer, false);
+        EntityPlayerSP player = PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer, false);
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
         for (int i = 0; i < stats.unlockedSchematics.size(); i++)
@@ -623,7 +622,7 @@ public class EventHandlerGC
     {
         final HashMap<Integer, Integer> idList = new HashMap<Integer, Integer>();
 
-        EntityClientPlayerMP player = PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer, false);
+        EntityPlayerSP player = PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer, false);
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
         for (int i = 0; i < stats.unlockedSchematics.size(); i++)
@@ -670,7 +669,7 @@ public class EventHandlerGC
 
                     if (stack != null)
                     {
-                        ((EntityPlayerMP) event.entityLiving).func_146097_a(stack, true, false);
+                        ((EntityPlayerMP) event.entityLiving).dropItem(stack, true, false);
                         stats.extendedInventory.setInventorySlotContents(i, null);
                     }
                 }
@@ -743,7 +742,7 @@ public class EventHandlerGC
 
         if (c != null)
         {
-            EventWakePlayer event0 = new EventWakePlayer(player, c.posX, c.posY, c.posZ, false, true, true, true);
+            EventWakePlayer event0 = new EventWakePlayer(player, c, false, true, true, true);
             MinecraftForge.EVENT_BUS.post(event0);
             player.wakeUpPlayer(false, true, true);
         }
@@ -771,7 +770,7 @@ public class EventHandlerGC
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
-    public void onSoundPlayed(PlaySoundEvent17 event)
+    public void onSoundPlayed(PlaySoundEvent event)
     {
     	EntityPlayerSP player = FMLClientHandler.instance().getClient().thePlayer;
 
@@ -803,7 +802,7 @@ public class EventHandlerGC
         			float newVolume = volume / Math.max(0.01F, ((IGalacticraftWorldProvider) player.worldObj.provider).getSoundVolReductionAmount());
 
         			this.soundPlayList.add(new SoundPlayEntry(event.name, x, y, z, newVolume));
-        			ISound newSound = new PositionedSoundRecord(event.sound.getPositionedSoundLocation(), newVolume, event.sound.getPitch(), x, y, z);
+        			ISound newSound = new PositionedSoundRecord(event.sound.getSoundLocation(), newVolume, event.sound.getPitch(), x, y, z);
         			event.manager.playSound(newSound);
         			event.result = null;
         			return;

@@ -52,7 +52,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
                     {
                         if (fuelable instanceof ILandable)
                         {
-                        	((ILandable) fuelable).landEntity(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
+                        	((ILandable) fuelable).landEntity(this.getPos());
                         }
                         else
                         {
@@ -97,7 +97,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 
                 if (!vecToAdd.equals(placedPosition))
                 {
-                    ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 2);
+                    ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, worldObj.getBlockState(vecToAdd).getBlock().getStateFromMeta(2));
                 }
             }
         }

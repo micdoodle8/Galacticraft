@@ -351,21 +351,21 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     public EnumSet<EnumFacing> getElectricalInputDirections()
     {
         return EnumSet.of(getFacing());
-//        return EnumSet.of(EnumFacing.getOrientation((this.getBlockMetadata() & 3) + 2).getOpposite(), EnumFacing.UNKNOWN);
+//        return EnumSet.of(EnumFacing.getFront((this.getBlockMetadata() & 3) + 2).getOpposite(), EnumFacing.UNKNOWN);
     }
 
     @Override
     public EnumSet<EnumFacing> getElectricalOutputDirections()
     {
         return EnumSet.of(getFacing());
-//        return EnumSet.of(EnumFacing.getOrientation((this.getBlockMetadata() & 3) + 2), EnumFacing.UNKNOWN);
+//        return EnumSet.of(EnumFacing.getFront((this.getBlockMetadata() & 3) + 2), EnumFacing.UNKNOWN);
     }
 
     @Override
     public EnumFacing getElectricalOutputDirectionMain()
     {
         return getFacing();
-//        return EnumFacing.getOrientation((this.getBlockMetadata() & 3) + 2);
+//        return EnumFacing.getFront((this.getBlockMetadata() & 3) + 2);
     }
 
     @Override
@@ -379,6 +379,6 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
         int metadata = this.getBlockMetadata() & 3;
 
         return direction == getFacing();
-//        return direction == EnumFacing.getOrientation(metadata + 2) || direction == EnumFacing.getOrientation((metadata + 2) ^ 1);
+//        return direction == EnumFacing.getFront(metadata + 2) || direction == EnumFacing.getFront((metadata + 2) ^ 1);
     }
 }

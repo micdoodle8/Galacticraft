@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -7,7 +8,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -15,7 +15,6 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
@@ -25,7 +24,7 @@ import net.minecraftforge.fluids.IFluidBlock;
 
 public class ItemOilExtractor extends Item
 {
-    protected IIcon[] icons = new IIcon[5];
+//    protected IIcon[] icons = new IIcon[5];
 
     public ItemOilExtractor(String assetName)
     {
@@ -51,7 +50,7 @@ public class ItemOilExtractor extends Item
     @Override
     public EnumAction getItemUseAction(ItemStack par1ItemStack)
     {
-        return EnumAction.bow;
+        return EnumAction.BOW;
     }
 
     @Override
@@ -68,7 +67,7 @@ public class ItemOilExtractor extends Item
         return par1ItemStack;
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
@@ -80,7 +79,7 @@ public class ItemOilExtractor extends Item
         }
 
         this.itemIcon = this.icons[0];
-    }
+    }*/
 
     @Override
     public void onUsingTick(ItemStack stack, EntityPlayer player, int count)
@@ -93,7 +92,7 @@ public class ItemOilExtractor extends Item
             final int y = MathHelper.floor_double(blockHit.y);
             final int z = MathHelper.floor_double(blockHit.z);
 
-            if (this.isOilBlock(player, player.worldObj, x, y, z, false))
+            if (this.isOilBlock(player, player.worldObj, new BlockPos(x, y, z), false))
             {
                 if (this.openCanister(player) != null)
                 {
@@ -101,7 +100,7 @@ public class ItemOilExtractor extends Item
 
                     if (canister != null && count % 5 == 0 && canister.getItemDamage() > 1)
                     {
-                        this.isOilBlock(player, player.worldObj, x, y, z, true);
+                        this.isOilBlock(player, player.worldObj, new BlockPos(x, y, z), true);
                         canister.setItemDamage(Math.max(canister.getItemDamage() - 200, 1));
                     }
                 }
@@ -131,13 +130,13 @@ public class ItemOilExtractor extends Item
         return 72000;
     }
 
-    @Override
-    public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer player)
-    {
-        return par1ItemStack;
-    }
+//    @Override
+//    public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer player)
+//    {
+//        return par1ItemStack;
+//    }
 
-    @Override
+    /*@Override
     public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
     {
         final int count2 = useRemaining / 2;
@@ -161,20 +160,20 @@ public class ItemOilExtractor extends Item
         }
 
         return this.icons[0];
-    }
+    }*/
 
     @Override
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer player, int par4)
     {
         if (par2World.isRemote)
         {
-            this.itemIcon = this.icons[0];
+//            this.itemIcon = this.icons[0];
         }
     }
 
-    private boolean isOilBlock(EntityPlayer player, World world, int x, int y, int z, boolean doDrain)
+    private boolean isOilBlock(EntityPlayer player, World world, BlockPos pos, boolean doDrain)
     {
-        Block block = world.getBlock(x, y, z);
+        Block block = world.getBlockState(pos).getBlock();
 
         if (block instanceof IFluidBlock)
         {
@@ -199,7 +198,7 @@ public class ItemOilExtractor extends Item
 
             if (flag)
             {
-            	FluidStack stack = fluidBlockHit.drain(world, x, y, z, doDrain);
+            	FluidStack stack = fluidBlockHit.drain(world, pos, doDrain);
             	return stack != null && stack.amount > 0;
             }
         }
@@ -213,7 +212,7 @@ public class ItemOilExtractor extends Item
         final float var5 = par1EntityPlayer.prevRotationPitch + (par1EntityPlayer.rotationPitch - par1EntityPlayer.prevRotationPitch) * var4;
         final float var6 = par1EntityPlayer.prevRotationYaw + (par1EntityPlayer.rotationYaw - par1EntityPlayer.prevRotationYaw) * var4;
         final double var7 = par1EntityPlayer.prevPosX + (par1EntityPlayer.posX - par1EntityPlayer.prevPosX) * var4;
-        final double var9 = par1EntityPlayer.prevPosY + (par1EntityPlayer.posY - par1EntityPlayer.prevPosY) * var4 + 1.62D - par1EntityPlayer.yOffset;
+        final double var9 = par1EntityPlayer.prevPosY + (par1EntityPlayer.posY - par1EntityPlayer.prevPosY) * var4 + 1.62D - par1EntityPlayer.getYOffset();
         final double var11 = par1EntityPlayer.prevPosZ + (par1EntityPlayer.posZ - par1EntityPlayer.prevPosZ) * var4;
         final Vector3 var13 = new Vector3(var7, var9, var11);
         final float var14 = MathHelper.cos(-var6 * 0.017453292F - (float) Math.PI);
@@ -233,7 +232,8 @@ public class ItemOilExtractor extends Item
         {
             final Vector3 var23 = var13.translate(new Vector3(var18 * dist, var17 * dist, var20 * dist));
 
-            if (this.isOilBlock(par1EntityPlayer, par1EntityPlayer.worldObj, MathHelper.floor_double(var23.x), MathHelper.floor_double(var23.y), MathHelper.floor_double(var23.z), false))
+            BlockPos pos = new BlockPos(MathHelper.floor_double(var23.x), MathHelper.floor_double(var23.y), MathHelper.floor_double(var23.z));
+            if (this.isOilBlock(par1EntityPlayer, par1EntityPlayer.worldObj, pos, false))
             {
                 return var23;
             }

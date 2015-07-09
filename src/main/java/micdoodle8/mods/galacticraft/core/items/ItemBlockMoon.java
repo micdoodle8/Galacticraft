@@ -75,12 +75,12 @@ public class ItemBlockMoon extends ItemBlockDesc
             name = "null";
         }
 
-        return this.field_150939_a.getUnlocalizedName() + "." + name;
+        return this.getBlock().getUnlocalizedName() + "." + name;
     }
 
     @Override
     public String getUnlocalizedName()
     {
-        return this.field_150939_a.getUnlocalizedName() + ".0";
+        return this.getBlock().getUnlocalizedName() + ".0";
     }
 }

@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -67,13 +70,13 @@ public class ItemUniversalWrench extends Item
     }
 
     @Override
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
+    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         return false;
     }
 
     @Override
-    public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player)
+    public boolean doesSneakBypassUse(World world, BlockPos pos, EntityPlayer player)
     {
         return true;
     }
@@ -86,14 +89,15 @@ public class ItemUniversalWrench extends Item
     }
     
     @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer entityPlayer, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        if (world.isRemote) return false; 
-    	Block blockID = world.getBlock(x, y, z);
+        if (world.isRemote) return false;
+        IBlockState state = world.getBlockState(pos);
+    	Block blockID = state.getBlock();
 
         if (blockID == Blocks.furnace || blockID == Blocks.lit_furnace || blockID == Blocks.dropper || blockID == Blocks.hopper || blockID == Blocks.dispenser || blockID == Blocks.piston || blockID == Blocks.sticky_piston)
         {
-        	int metadata = world.getBlockMetadata(x, y, z);
+        	int metadata = blockID.getMetaFromState(state);
 
             int[] rotationMatrix = { 1, 2, 3, 4, 5, 0 };
 
@@ -102,7 +106,7 @@ public class ItemUniversalWrench extends Item
                 rotationMatrix = EnumFacing.ROTATION_MATRIX[0];
             }
 
-            world.setBlockMetadataWithNotify(x, y, z, EnumFacing.getOrientation(rotationMatrix[metadata]).ordinal(), 3);
+            world.setBlockMetadataWithNotify(x, y, z, EnumFacing.getFront(rotationMatrix[metadata]).ordinal(), 3);
             this.wrenchUsed(entityPlayer, x, y, z);
 
             return true;

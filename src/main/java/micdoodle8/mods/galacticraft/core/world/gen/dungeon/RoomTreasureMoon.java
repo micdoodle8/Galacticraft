@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -86,8 +87,8 @@ public class RoomTreasureMoon extends DungeonRoom
 
             for (BlockPos coords : this.chests)
             {
-                this.worldObj.setBlock(coords.posX, coords.posY, coords.posZ, GCBlocks.treasureChestTier1, 0, 3);
-                this.worldObj.setTileEntity(coords.posX, coords.posY, coords.posZ, new TileEntityTreasureChest(1));
+                this.worldObj.setBlockState(coords, GCBlocks.treasureChestTier1.getDefaultState(), 3);
+                this.worldObj.setTileEntity(coords, new TileEntityTreasureChest(1));
                 removeList.add(coords);
             }
 

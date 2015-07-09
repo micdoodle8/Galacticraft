@@ -100,7 +100,7 @@ public class OxygenPressureProtocol
 
         if (block instanceof IPartialSealableBlock)
         {
-            return !((IPartialSealableBlock) block).isSealed(world, vec.x, vec.y, vec.z, EnumFacing.getOrientation(side));
+            return !((IPartialSealableBlock) block).isSealed(world, vec.x, vec.y, vec.z, EnumFacing.getFront(side));
         }
 
         //Solid but non-opaque blocks, for example special glass
@@ -140,6 +140,6 @@ public class OxygenPressureProtocol
         //General case - this should cover any block which correctly implements isBlockSolidOnSide
         //including most modded blocks - Forge microblocks in particular is covered by this.
         // ### Any exceptions in mods should implement the IPartialSealableBlock interface ###
-        return !block.isSideSolid(world, vec.x, vec.y, vec.z, EnumFacing.getOrientation(side ^ 1));
+        return !block.isSideSolid(world, vec.x, vec.y, vec.z, EnumFacing.getFront(side ^ 1));
     }
 }

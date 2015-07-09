@@ -57,7 +57,6 @@ import micdoodle8.mods.galacticraft.core.entities.EntityMeteorChunk;
 import micdoodle8.mods.galacticraft.core.entities.EntityParachest;
 import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerBaseMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
@@ -138,7 +137,6 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import api.player.server.ServerPlayerAPI;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
@@ -241,7 +239,7 @@ public class GalacticraftCore
 
         GCBlocks.crudeOilStill = new BlockFluidGC(GalacticraftCore.gcFluidOil, "oil");
         ((BlockFluidGC) GCBlocks.crudeOilStill).setQuantaPerBlock(3);
-        GCBlocks.crudeOilStill.setBlockName("crudeOilStill");
+//        GCBlocks.crudeOilStill.setBlockName("crudeOilStill");
         GameRegistry.registerBlock(GCBlocks.crudeOilStill, ItemBlockGC.class, GCBlocks.crudeOilStill.getUnlocalizedName());
         if (GalacticraftCore.gcFluidOil.getBlock() == null)
         {
@@ -250,17 +248,17 @@ public class GalacticraftCore
 
         GCBlocks.fuelStill = new BlockFluidGC(GalacticraftCore.gcFluidFuel, "fuel");
         ((BlockFluidGC) GCBlocks.fuelStill).setQuantaPerBlock(6);
-        GCBlocks.fuelStill.setBlockName("fuel");
+//        GCBlocks.fuelStill.setBlockName("fuel");
         GameRegistry.registerBlock(GCBlocks.fuelStill, ItemBlockGC.class, GCBlocks.fuelStill.getUnlocalizedName());
         if (GalacticraftCore.gcFluidFuel.getBlock() == null)
         {
             GalacticraftCore.gcFluidFuel.setBlock(GCBlocks.fuelStill);
         }
 
-        if (Loader.isModLoaded("PlayerAPI"))
-        {
-            ServerPlayerAPI.register(Constants.MOD_ID_CORE, GCPlayerBaseMP.class);
-        }
+//        if (Loader.isModLoaded("PlayerAPI"))
+//        {
+//            ServerPlayerAPI.register(Constants.MOD_ID_CORE, GCPlayerBaseMP.class);
+//        }
 
         GCBlocks.initBlocks();
         GCItems.initItems();
@@ -272,7 +270,8 @@ public class GalacticraftCore
             FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.gcFluidOil, 1000), new ItemStack(GCItems.oilCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
             if (CompatibilityManager.isBCraftLoaded())
             {
-            	FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.gcFluidOil, 1000), GameRegistry.findItemStack("BuildCraft|Core", "bucketOil", 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
+                Item item = GameRegistry.findItem("BuildCraft|Core", "bucketOil");
+            	FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.gcFluidOil, 1000), new ItemStack(item, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
             }
         }
         if (!nameFuel.equals("fuel"))

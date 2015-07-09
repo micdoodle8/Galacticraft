@@ -5,7 +5,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.EnumRarity;
@@ -23,13 +22,13 @@ public class ItemArmorMars extends ItemArmor
         this.material = par2EnumArmorMaterial;
     }
 
-    @Override
+    /*@Override
     public Item setUnlocalizedName(String par1Str)
     {
-        super.setTextureName(par1Str);
+//        super.setTextureName(par1Str);
         super.setUnlocalizedName(par1Str);
         return this;
-    }
+    }*/
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
@@ -67,10 +66,10 @@ public class ItemArmorMars extends ItemArmor
         return ClientProxyCore.galacticraftItem;
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister par1IconRegister)
     {
         this.itemIcon = par1IconRegister.registerIcon(this.getUnlocalizedName().replace("item.", "galacticraftmars:"));
-    }
+    }*/
 }

@@ -8,7 +8,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 public class ItemOxygenGear extends Item
 {
@@ -32,9 +31,9 @@ public class ItemOxygenGear extends Item
         return ClientProxyCore.galacticraftItem;
     }
 
-    @Override
+    /*@Override
     public IIcon getIconFromDamage(int damage)
     {
         return super.getIconFromDamage(damage);
-    }
+    }*/
 }

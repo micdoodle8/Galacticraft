@@ -11,11 +11,11 @@ public class ContainerParaChest extends Container
     private IInventory parachestInventory;
     public int numRows;
 
-    public ContainerParaChest(IInventory par1IInventory, IInventory par2IInventory)
+    public ContainerParaChest(IInventory par1IInventory, IInventory par2IInventory, EntityPlayer player)
     {
         this.parachestInventory = par2IInventory;
         this.numRows = (par2IInventory.getSizeInventory() - 3) / 9;
-        par2IInventory.openInventory();
+        par2IInventory.openInventory(player);
         int i = (this.numRows - 4) * 18 + 19;
         int j;
         int k;
@@ -96,7 +96,7 @@ public class ContainerParaChest extends Container
     public void onContainerClosed(EntityPlayer par1EntityPlayer)
     {
         super.onContainerClosed(par1EntityPlayer);
-        this.parachestInventory.closeInventory();
+        this.parachestInventory.closeInventory(par1EntityPlayer);
     }
 
     /**

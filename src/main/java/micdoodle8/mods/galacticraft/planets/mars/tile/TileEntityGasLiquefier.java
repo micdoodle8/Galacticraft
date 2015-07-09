@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
@@ -87,9 +89,9 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
 
         if (this.airProducts == -1)
         {
@@ -125,7 +127,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                     //Air -> Air tank
                     if (this.gasTankType == -1 || (this.gasTankType == TankGases.AIR.index && this.gasTank.getFluid().amount < this.gasTank.getCapacity()))
                     {
-                        Block blockAbove = this.worldObj.getBlock(this.getPos().getX(), this.getPos().getY() + 1, this.getPos().getZ());
+                        Block blockAbove = this.worldObj.getBlockState(getPos().up()).getBlock();
                         if (blockAbove != null && blockAbove.getMaterial() == Material.air && blockAbove!=GCBlocks.breatheableAir && blockAbove!=GCBlocks.brightBreatheableAir)
                         {
                             FluidStack gcAtmosphere = FluidRegistry.getFluidStack(TankGases.AIR.gas, 4);
@@ -504,17 +506,17 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     @Override
     public int[] getSlotsForFace(EnumFacing side)
     {
-        if (side == 0)
+        if (side == EnumFacing.DOWN)
         {
             return new int [] { 0, 1, 2, 3};
         }
     	
-    	if (side > 1)
+    	if (side == EnumFacing.UP)
         {
-            return new int [] { 1, 2, 3};
+            return new int[] { 0 };
         }
 
-        return new int[] { 0 };
+        return new int [] { 1, 2, 3};
     }
 
     @Override
@@ -649,7 +651,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     @Override
     public boolean canFill(EnumFacing from, Fluid fluid)
     {
-        if (from.equals(EnumFacing.getOrientation(this.getBlockMetadata() + 2)))
+        if (from.equals(EnumFacing.getFront(this.getBlockMetadata() + 2)))
         {
             //Can fill with gases
             return fluid != null && this.getIdFromName(fluid.getName()) > -1;
@@ -709,12 +711,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     @Override
     public int getBlockMetadata()
     {
-        if (this.blockMetadata == -1)
-        {
-            this.blockMetadata = this.worldObj.getBlockMetadata(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
-        }
-
-        return this.blockMetadata & 3;
+        return getBlockType().getMetaFromState(this.worldObj.getBlockState(getPos())) & 3;
     }
 
 	@Override
@@ -758,7 +755,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     @Override
     public boolean canConnect(EnumFacing direction, NetworkType type)
     {
-        if (direction == null || direction.equals(EnumFacing.UNKNOWN))
+        if (direction == null)
         {
             return false;
         }
@@ -774,5 +771,10 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         }
 
         return false;
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return null;
     }
 }

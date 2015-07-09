@@ -855,7 +855,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                         {
                             if (amountRemoved < 9)
                             {
-                                EventLandingPadRemoval event = new EventLandingPadRemoval(this.worldObj, x, y, z);
+                                EventLandingPadRemoval event = new EventLandingPadRemoval(this.worldObj, pos);
                                 MinecraftForge.EVENT_BUS.post(event);
 
                                 if (event.allow)

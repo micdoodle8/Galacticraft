@@ -1,21 +1,18 @@
 package micdoodle8.mods.galacticraft.core.event;
 
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraft.world.World;
 
 public class EventLandingPadRemoval extends Event
 {
     public boolean allow = true;
-    public final int x;
-    public final int y;
-    public final int z;
+    public final BlockPos pos;
     public final World world;
 
-    public EventLandingPadRemoval(World world, int x, int y, int z)
+    public EventLandingPadRemoval(World world, BlockPos pos)
     {
         this.world = world;
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.pos = pos;
     }
 }

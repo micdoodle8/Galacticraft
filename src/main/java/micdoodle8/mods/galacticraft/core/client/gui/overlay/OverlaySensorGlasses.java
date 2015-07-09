@@ -36,7 +36,7 @@ public class OverlaySensorGlasses extends Overlay
     /**
      * Render the GUI that displays sensor glasses
      */
-    public static void renderSensorGlassesMain(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks, boolean hasScreen, int mouseX, int mouseY)
+    public static void renderSensorGlassesMain(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks)
     {
         OverlaySensorGlasses.zoom++;
 
@@ -68,7 +68,7 @@ public class OverlaySensorGlasses extends Overlay
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    public static void renderSensorGlassesValueableBlocks(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks, boolean hasScreen, int mouseX, int mouseY)
+    public static void renderSensorGlassesValueableBlocks(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks)
     {
         final Iterator<Vector3> var51 = ClientProxyCore.valueableBlocks.iterator();
         double var52;

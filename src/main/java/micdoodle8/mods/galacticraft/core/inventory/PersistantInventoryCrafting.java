@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IChatComponent;
 
 public class PersistantInventoryCrafting implements IInventory
 {
@@ -212,5 +213,30 @@ public class PersistantInventoryCrafting implements IInventory
     public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return true;
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return null;
     }
 }

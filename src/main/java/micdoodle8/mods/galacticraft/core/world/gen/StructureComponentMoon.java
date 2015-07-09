@@ -56,7 +56,7 @@ public abstract class StructureComponentMoon extends StructureComponent
 
             if (var8 != null)
             {
-                var8.func_145881_a().setEntityName(var6);
+                var8.getSpawnerBaseLogic().setEntityName(var6);
             }
         }
 

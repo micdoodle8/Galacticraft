@@ -262,7 +262,7 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
     public EnumFacing getElectricInputDirection()
     {
         return getFacing();
-//        return EnumFacing.getOrientation(this.getBlockMetadata() - BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA + 2);
+//        return EnumFacing.getFront(this.getBlockMetadata() - BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA + 2);
     }
 
     @Override

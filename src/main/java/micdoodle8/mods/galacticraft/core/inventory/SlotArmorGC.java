@@ -8,7 +8,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 public class SlotArmorGC extends Slot
 {
@@ -35,10 +34,10 @@ public class SlotArmorGC extends Slot
         return item != null && item.isValidArmor(par1ItemStack, this.armorType, this.thePlayer);
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public IIcon getBackgroundIconIndex()
     {
         return ItemArmor.func_94602_b(this.armorType);
-    }
+    }*/
 }

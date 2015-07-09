@@ -35,7 +35,7 @@ public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer
         GL11.glTranslatef((float) d + 0.5F, (float) d1, (float) d2 + 0.5F);
         GL11.glScalef(0.85F, 0.85F, 0.85F);
 
-        switch (EnumFacing.getOrientation(tileEntity.facing))
+        switch (EnumFacing.getFront(tileEntity.facing))
         {
         case DOWN:
             GL11.glTranslatef(0.7F, -0.15F, 0.0F);

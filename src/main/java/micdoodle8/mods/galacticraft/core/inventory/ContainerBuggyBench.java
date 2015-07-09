@@ -10,6 +10,7 @@ import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 public class ContainerBuggyBench extends Container
@@ -18,7 +19,7 @@ public class ContainerBuggyBench extends Container
     public IInventory craftResult = new InventoryCraftResult();
     private final World worldObj;
 
-    public ContainerBuggyBench(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
+    public ContainerBuggyBench(InventoryPlayer par1InventoryPlayer, BlockPos pos, EntityPlayer player)
     {
         final int change = 27;
         this.worldObj = par1InventoryPlayer.player.worldObj;
@@ -31,7 +32,7 @@ public class ContainerBuggyBench extends Container
         {
             for (var7 = 0; var7 < 3; ++var7)
             {
-                this.addSlotToContainer(new SlotBuggyBench(this.craftMatrix, var7 * 4 + var6 + 1, 39 + var7 * 18, 14 + var6 * 18 + change, x, y, z, par1InventoryPlayer.player));
+                this.addSlotToContainer(new SlotBuggyBench(this.craftMatrix, var7 * 4 + var6 + 1, 39 + var7 * 18, 14 + var6 * 18 + change, pos, par1InventoryPlayer.player));
             }
         }
 
@@ -39,14 +40,14 @@ public class ContainerBuggyBench extends Container
         {
             for (var7 = 0; var7 < 2; ++var7)
             {
-                this.addSlotToContainer(new SlotBuggyBench(this.craftMatrix, var7 * 2 + var6 + 13, 21 + var7 * 72, 14 + var6 * 54 + change, x, y, z, par1InventoryPlayer.player));
+                this.addSlotToContainer(new SlotBuggyBench(this.craftMatrix, var7 * 2 + var6 + 13, 21 + var7 * 72, 14 + var6 * 54 + change, pos, par1InventoryPlayer.player));
             }
         }
 
         // Addons
         for (int var8 = 0; var8 < 3; var8++)
         {
-            this.addSlotToContainer(new SlotBuggyBench(this.craftMatrix, 17 + var8, 93 + var8 * 26, -15 + change, x, y, z, par1InventoryPlayer.player));
+            this.addSlotToContainer(new SlotBuggyBench(this.craftMatrix, 17 + var8, 93 + var8 * 26, -15 + change, pos, par1InventoryPlayer.player));
         }
 
         // Player inv:

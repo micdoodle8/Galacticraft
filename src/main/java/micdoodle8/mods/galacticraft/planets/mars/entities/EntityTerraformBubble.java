@@ -64,7 +64,7 @@ public class EntityTerraformBubble extends EntityAdvanced implements IBubble
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
+    public void func_180426_a(double x, double y, double z, float yaw, float pitch, int i, boolean b)
     {
         this.setPosition(par1, par3, par5);
         this.setRotation(par7, par8);

@@ -30,7 +30,7 @@ public class NetworkHelper
         {
             for (int i = 0; i < 6; i++)
             {
-                EnumFacing direction = EnumFacing.getOrientation(i);
+                EnumFacing direction = EnumFacing.getFront(i);
                 if (((IConnector) tileEntity).canConnect(direction, type))
                 {
                     possibleSides.add(direction);

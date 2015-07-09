@@ -1,5 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
+import micdoodle8.mods.galacticraft.core.blocks.BlockTier3TreasureChest;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.item.IKeyable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -8,7 +12,6 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockTier3TreasureChest;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -316,22 +319,22 @@ public class TileEntityTreasureChestAsteroids extends TileEntityAdvanced impleme
 
             if (this.func_94044_a(this.getPos().getX() - 1, this.getPos().getY(), this.getPos().getZ()))
             {
-                this.adjacentChestXNeg = (TileEntityTreasureChestAsteroids) this.worldObj.getTileEntity(this.getPos().getX() - 1, this.getPos().getY(), this.getPos().getZ());
+                this.adjacentChestXNeg = (TileEntityTreasureChestAsteroids) this.worldObj.getTileEntity(this.getPos().west());
             }
 
             if (this.func_94044_a(this.getPos().getX() + 1, this.getPos().getY(), this.getPos().getZ()))
             {
-                this.adjacentChestXPos = (TileEntityTreasureChestAsteroids) this.worldObj.getTileEntity(this.getPos().getX() + 1, this.getPos().getY(), this.getPos().getZ());
+                this.adjacentChestXPos = (TileEntityTreasureChestAsteroids) this.worldObj.getTileEntity(this.getPos().east());
             }
 
             if (this.func_94044_a(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ() - 1))
             {
-                this.adjacentChestZNeg = (TileEntityTreasureChestAsteroids) this.worldObj.getTileEntity(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ() - 1);
+                this.adjacentChestZNeg = (TileEntityTreasureChestAsteroids) this.worldObj.getTileEntity(this.getPos().north());
             }
 
             if (this.func_94044_a(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ() + 1))
             {
-                this.adjacentChestZPos = (TileEntityTreasureChestAsteroids) this.worldObj.getTileEntity(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ() + 1);
+                this.adjacentChestZPos = (TileEntityTreasureChestAsteroids) this.worldObj.getTileEntity(this.getPos().south());
             }
 
             if (this.adjacentChestZNeg != null)
@@ -358,7 +361,7 @@ public class TileEntityTreasureChestAsteroids extends TileEntityAdvanced impleme
 
     private boolean func_94044_a(int par1, int par2, int par3)
     {
-        final Block block = this.worldObj.getBlock(par1, par2, par3);
+        final Block block = this.worldObj.getBlockState(new BlockPos(par1, par2, par3)).getBlock();
         return block != null && block instanceof BlockTier3TreasureChest;
     }
 
@@ -368,9 +371,9 @@ public class TileEntityTreasureChestAsteroids extends TileEntityAdvanced impleme
      * inside its implementation.
      */
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
         this.checkForAdjacentChests();
         ++this.ticksSinceSync;
         float f;
@@ -492,9 +495,9 @@ public class TileEntityTreasureChestAsteroids extends TileEntityAdvanced impleme
         }
 
         ++this.numUsingPlayers;
-        this.worldObj.addBlockEvent(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getBlockType(), 1, this.numUsingPlayers);
-        this.worldObj.notifyBlocksOfNeighborChange(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getBlockType());
-        this.worldObj.notifyBlocksOfNeighborChange(this.getPos().getX(), this.getPos().getY() - 1, this.getPos().getZ(), this.getBlockType());
+        this.worldObj.addBlockEvent(this.getPos(), this.getBlockType(), 1, this.numUsingPlayers);
+        this.worldObj.notifyNeighborsOfStateChange(this.getPos(), this.getBlockType());
+        this.worldObj.notifyNeighborsOfStateChange(this.getPos().down(), this.getBlockType());
     }
 
     @Override
@@ -503,9 +506,9 @@ public class TileEntityTreasureChestAsteroids extends TileEntityAdvanced impleme
         if (this.getBlockType() != null && this.getBlockType() instanceof BlockTier3TreasureChest)
         {
             --this.numUsingPlayers;
-            this.worldObj.addBlockEvent(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getBlockType(), 1, this.numUsingPlayers);
-            this.worldObj.notifyBlocksOfNeighborChange(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getBlockType());
-            this.worldObj.notifyBlocksOfNeighborChange(this.getPos().getX(), this.getPos().getY() - 1, this.getPos().getZ(), this.getBlockType());
+            this.worldObj.addBlockEvent(this.getPos(), this.getBlockType(), 1, this.numUsingPlayers);
+            this.worldObj.notifyNeighborsOfStateChange(this.getPos(), this.getBlockType());
+            this.worldObj.notifyNeighborsOfStateChange(this.getPos().down(), this.getBlockType());
         }
     }
 
@@ -545,7 +548,7 @@ public class TileEntityTreasureChestAsteroids extends TileEntityAdvanced impleme
     }
 
     @Override
-    public boolean onValidKeyActivated(EntityPlayer player, ItemStack key, int face)
+    public boolean onValidKeyActivated(EntityPlayer player, ItemStack key, EnumFacing face)
     {
         if (this.locked)
         {
@@ -588,7 +591,7 @@ public class TileEntityTreasureChestAsteroids extends TileEntityAdvanced impleme
     }
 
     @Override
-    public boolean onActivatedWithoutKey(EntityPlayer player, int face)
+    public boolean onActivatedWithoutKey(EntityPlayer player, EnumFacing face)
     {
         if (this.locked)
         {
@@ -624,5 +627,30 @@ public class TileEntityTreasureChestAsteroids extends TileEntityAdvanced impleme
     public boolean isNetworkedTile()
     {
         return true;
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return null;
     }
 }

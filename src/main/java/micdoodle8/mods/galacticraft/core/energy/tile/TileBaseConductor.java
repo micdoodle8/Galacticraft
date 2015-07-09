@@ -49,11 +49,11 @@ public abstract class TileBaseConductor extends TileEntityAdvanced implements IC
         super.invalidate();
     }
 
-    @Override
-    public boolean canUpdate()
-    {
-        return false;
-    }
+//    @Override
+//    public boolean canUpdate()
+//    {
+//        return false;
+//    }
 
     @Override
     public IElectricityNetwork getNetwork()
@@ -84,7 +84,7 @@ public abstract class TileBaseConductor extends TileEntityAdvanced implements IC
             this.getNetwork().refresh();
 
             BlockVec3 thisVec = new BlockVec3(this);
-            for (EnumFacing side : EnumFacing.VALID_DIRECTIONS)
+            for (EnumFacing side : EnumFacing.values())
             {
                 TileEntity tileEntity = thisVec.getTileEntityOnSide(this.worldObj, side);
 
@@ -112,7 +112,7 @@ public abstract class TileBaseConductor extends TileEntityAdvanced implements IC
             BlockVec3 thisVec = new BlockVec3(this);
             for (int i = 0; i < 6; i++)
             {
-                EnumFacing side = EnumFacing.getOrientation(i);
+                EnumFacing side = EnumFacing.getFront(i);
                 TileEntity tileEntity = thisVec.getTileEntityOnSide(this.worldObj, side);
 
                 if (tileEntity instanceof IConnector)

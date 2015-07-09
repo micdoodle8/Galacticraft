@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -24,7 +26,6 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.WorldGenEggs;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayer.EnumStatus;
@@ -60,7 +61,7 @@ public class EventHandlerMars
     @SubscribeEvent
     public void onLivingAttacked(LivingAttackEvent event)
     {
-        if (!event.entity.isEntityInvulnerable() && !event.entity.worldObj.isRemote && event.entityLiving.getHealth() <= 0.0F && !(event.source.isFireDamage() && event.entityLiving.isPotionActive(Potion.fireResistance)))
+        if (!event.entity.isEntityInvulnerable(event.source) && !event.entity.worldObj.isRemote && event.entityLiving.getHealth() <= 0.0F && !(event.source.isFireDamage() && event.entityLiving.isPotionActive(Potion.fireResistance)))
         {
             Entity entity = event.source.getEntity();
 
@@ -70,8 +71,8 @@ public class EventHandlerMars
 
                 if (entitywolf.isTamed())
                 {
-                    event.entityLiving.recentlyHit = 100;
-                    event.entityLiving.attackingPlayer = null;
+//                    event.entityLiving.recentlyHit = 100;
+//                    event.entityLiving.attackingPlayer = null; TODO
                 }
             }
         }
@@ -81,8 +82,9 @@ public class EventHandlerMars
     public void onPlayerWakeUp(EventWakePlayer event)
     {
         BlockPos c = event.entityPlayer.playerLocation;
-        Block blockID = event.entityPlayer.worldObj.getBlock(c.posX, c.posY, c.posZ);
-        int metadata = event.entityPlayer.worldObj.getBlockMetadata(c.posX, c.posY, c.posZ);
+        IBlockState state = event.entityPlayer.getEntityWorld().getBlockState(c);
+        Block blockID = state.getBlock();
+        int metadata = blockID.getMetaFromState(state);
 
         if (blockID == MarsBlocks.machine && metadata >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
         {
@@ -90,7 +92,7 @@ public class EventHandlerMars
             {
                 event.result = EnumStatus.NOT_POSSIBLE_HERE;
 
-                if (event.entityPlayer.worldObj.isRemote && event.bypassed && event.entityPlayer instanceof EntityClientPlayerMP)
+                if (event.entityPlayer.worldObj.isRemote && event.bypassed && event.entityPlayer instanceof EntityPlayerSP)
                 {
                     GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_WAKE_PLAYER, new Object[] { }));
                 }
@@ -116,8 +118,9 @@ public class EventHandlerMars
     public void onPlayerRotate(RotatePlayerEvent event)
     {
         BlockPos c = event.entityPlayer.playerLocation;
-        Block block = event.entityPlayer.worldObj.getBlock(c.posX, c.posY - 2, c.posZ);
-        int metadata = event.entityPlayer.worldObj.getBlockMetadata(c.posX, c.posY - 2, c.posZ);
+        IBlockState state = event.entityPlayer.getEntityWorld().getBlockState(c.down().down());
+        Block block = state.getBlock();
+        int metadata = block.getMetaFromState(state);
 
         if (block == MarsBlocks.machine && metadata >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
         {
@@ -151,7 +154,7 @@ public class EventHandlerMars
                 x = event.chunkX + event.rand.nextInt(16) + 8;
                 y = event.rand.nextInt(128);
                 z = event.chunkZ + event.rand.nextInt(16) + 8;
-                this.eggGenerator.generate(event.worldObj, event.rand, x, y, z);
+                this.eggGenerator.generate(event.worldObj, event.rand, new BlockPos(x, y, z));
             }
         }
     }
@@ -167,7 +170,7 @@ public class EventHandlerMars
             int x = MathHelper.floor_double(entity.posX);
             int y = MathHelper.floor_double(entity.posY);
             int z = MathHelper.floor_double(entity.posZ);
-            TileEntity tile = Minecraft.getMinecraft().theWorld.getTileEntity(x, y - 1, z);
+            TileEntity tile = Minecraft.getMinecraft().theWorld.getTileEntity(new BlockPos(x, y - 1, z));
 
             if (tile instanceof TileEntityMulti)
             {
@@ -215,7 +218,7 @@ public class EventHandlerMars
     @SubscribeEvent
     public void onLandingPadRemoved(EventLandingPadRemoval event)
     {
-        TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
+        TileEntity tile = event.world.getTileEntity(event.pos);
 
         if (tile instanceof IFuelDock)
         {
@@ -227,7 +230,7 @@ public class EventHandlerMars
             {
                 if (connectedTile instanceof TileEntityLaunchController)
                 {
-                    launchController = (TileEntityLaunchController) event.world.getTileEntity(((TileEntityLaunchController) connectedTile).xCoord, ((TileEntityLaunchController) connectedTile).yCoord, ((TileEntityLaunchController) connectedTile).zCoord);
+                    launchController = (TileEntityLaunchController) event.world.getTileEntity(((TileEntityLaunchController) connectedTile).getPos());
                     break;
                 }
             }

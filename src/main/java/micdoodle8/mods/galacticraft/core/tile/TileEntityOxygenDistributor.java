@@ -423,7 +423,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     public EnumFacing getElectricInputDirection()
     {
         return getFacing();
-//        return EnumFacing.getOrientation(this.getBlockMetadata() + 2);
+//        return EnumFacing.getFront(this.getBlockMetadata() + 2);
     }
 
     @Override

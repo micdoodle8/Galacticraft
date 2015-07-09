@@ -1,5 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -50,12 +54,12 @@ public class ItemTier3Rocket extends Item implements IHoldableItem
     }
 
     @Override
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
+    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         boolean padFound = false;
         TileEntity tile = null;
 
-        if (par3World.isRemote)
+        if (worldIn.isRemote)
         {
             return false;
         }
@@ -69,17 +73,19 @@ public class ItemTier3Rocket extends Item implements IHoldableItem
             {
                 for (int j = -1; j < 2; j++)
                 {
-                    final Block id = par3World.getBlock(par4 + i, par5, par6 + j);
-                    int meta = par3World.getBlockMetadata(par4 + i, par5, par6 + j);
+                    BlockPos pos1 = pos.add(i, 0, j);
+                    IBlockState state = worldIn.getBlockState(pos1);
+                    final Block id = state.getBlock();
+                    int meta = id.getMetaFromState(state);
 
                     if (id == GCBlocks.landingPadFull && meta == 0)
                     {
                         padFound = true;
-                        tile = par3World.getTileEntity(par4 + i, par5, par6 + j);
+                        tile = worldIn.getTileEntity(pos1);
 
-                        centerX = par4 + i + 0.5F;
-                        centerY = par5 + 0.4F;
-                        centerZ = par6 + j + 0.5F;
+                        centerX = pos.getX() + i + 0.5F;
+                        centerY = pos.getY() + 0.4F;
+                        centerZ = pos.getZ() + j + 0.5F;
                         
                         break;
                     }
@@ -101,24 +107,24 @@ public class ItemTier3Rocket extends Item implements IHoldableItem
             		return false;
             	}
 
-                EntityTier3Rocket rocket = new EntityTier3Rocket(par3World, centerX, centerY, centerZ, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
+                EntityTier3Rocket rocket = new EntityTier3Rocket(worldIn, centerX, centerY, centerZ, EnumRocketType.values()[stack.getItemDamage()]);
 
                 rocket.rotationYaw += 45;
                 rocket.setPosition(rocket.posX, rocket.posY + rocket.getOnPadYOffset(), rocket.posZ);
-                par3World.spawnEntityInWorld(rocket);
+                worldIn.spawnEntityInWorld(rocket);
 
-                if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("RocketFuel"))
+                if (stack.hasTagCompound() && stack.getTagCompound().hasKey("RocketFuel"))
                 {
-                    rocket.fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, par1ItemStack.getTagCompound().getInteger("RocketFuel")), true);
+                    rocket.fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, stack.getTagCompound().getInteger("RocketFuel")), true);
                 }
 
-                if (!par2EntityPlayer.capabilities.isCreativeMode)
+                if (!playerIn.capabilities.isCreativeMode)
                 {
-                    par1ItemStack.stackSize--;
+                    stack.stackSize--;
 
-                    if (par1ItemStack.stackSize <= 0)
+                    if (stack.stackSize <= 0)
                     {
-                        par1ItemStack = null;
+                        stack = null;
                     }
                 }
 

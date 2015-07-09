@@ -56,7 +56,7 @@ public class ItemMeteorChunk extends Item
                 else
                 {
                     itemstack.setItemDamage(0);
-                    itemstack.stackTagCompound = null;
+                    itemstack.setTagCompound(null);
                 }
             }
             else

@@ -1,16 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
 import io.netty.buffer.ByteBuf;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
-
-import org.lwjgl.opengl.GL11;
-
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.entity.IAntiGrav;
 import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
 import micdoodle8.mods.galacticraft.api.entity.ITelemetry;
@@ -22,11 +12,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.GCLog;
-import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.sounds.SoundUpdaterMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
@@ -37,6 +23,7 @@ import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockFlowerPot;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
@@ -53,15 +40,19 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
 
 public class EntityAstroMiner extends Entity implements IInventory, IPacketReceiver, IEntityNoisy, IAntiGrav, ITelemetry
 {
@@ -109,10 +100,10 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     private LinkedList<BlockVec3> wayPoints = new LinkedList();
     private LinkedList<BlockVec3> minePoints = new LinkedList();
     private BlockVec3 minePointCurrent = null;
-    private int baseFacing;
-    public int facing;
-    private int facingAI;
-    private int lastFacing;
+    private EnumFacing baseFacing;
+    public EnumFacing facing;
+    private EnumFacing facingAI;
+    private EnumFacing lastFacing;
     private static BlockVec3[] headings = {
     	new BlockVec3(0, -1, 0),
     	new BlockVec3(0, 1, 0),
@@ -214,8 +205,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         this.width = cLENGTH;
         this.height = cWIDTH;
         this.setSize(cLENGTH, cWIDTH);
-        this.yOffset = 0;
-        this.myEntitySize = Entity.EnumEntitySize.SIZE_6;
+//        this.myEntitySize = Entity.EnumEntitySize.SIZE_6;
 //        this.dataWatcher.addObject(this.currentDamage, new Integer(0));
 //        this.dataWatcher.addObject(this.timeSinceHit, new Integer(0));
         this.isImmuneToFire = true;
@@ -429,14 +419,9 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	            }
             }
             this.posX += this.motionX;
-            this.boundingBox.minX += this.motionX;
-            this.boundingBox.maxX += this.motionX;
             this.posY += this.motionY;
-            this.boundingBox.minY += this.motionY;
-            this.boundingBox.maxY += this.motionY;
             this.posZ += this.motionZ;
-            this.boundingBox.minZ += this.motionZ;
-            this.boundingBox.maxZ += this.motionZ;
+            setEntityBoundingBox(getBoundingBox().offset(this.motionX, this.motionY, this.motionZ));
             this.setRotation(this.rotationYaw, this.rotationPitch);
     		if (this.AIstate == AISTATE_MINING && this.ticksExisted % 2 == 0)
     		{
@@ -498,7 +483,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         	this.motionX = 0;
         	this.motionY = 0;
         	this.motionZ = 0;
-        	GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.dimensionId);
+        	GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.getDimensionId());
             return;
         }
 
@@ -590,17 +575,12 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     		break;
     	}
 
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.dimensionId);
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.getDimensionId());
     	
         this.posX += this.motionX;
-        this.boundingBox.minX += this.motionX;
-        this.boundingBox.maxX += this.motionX;
         this.posY += this.motionY;
-        this.boundingBox.minY += this.motionY;
-        this.boundingBox.maxY += this.motionY;
         this.posZ += this.motionZ;
-        this.boundingBox.minZ += this.motionZ;
-        this.boundingBox.maxZ += this.motionZ;
+        setEntityBoundingBox(getBoundingBox().offset(this.motionX, this.motionY, this.motionZ));
 /*        if (this.dataWatcher.getWatchableObjectInt(this.timeSinceHit) > 0)
         {
             this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.timeSinceHit) - 1));
@@ -650,9 +630,10 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         int x = buffer.readInt();
         int y = buffer.readInt();
         int z = buffer.readInt();
-        if (this.worldObj.blockExists(x, y, z))
+        BlockPos pos = new BlockPos(x, y, z);
+        if (this.worldObj.isBlockLoaded(pos))
         {
-        	TileEntity tile = this.worldObj.getTileEntity(x, y, z);
+        	TileEntity tile = this.worldObj.getTileEntity(pos);
         	if (tile instanceof TileEntityMinerBase)
         	{
         		((TileEntityMinerBase)tile).linkedMiner = this;
@@ -688,21 +669,21 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		}
     }
 
-	private int getFacingFromRotation()
+	private EnumFacing getFacingFromRotation()
 	{
 		if (this.rotationPitch > 45F)
-			return 1;
+			return EnumFacing.UP;
 		if (this.rotationPitch < -45F)
-			return 0;
+			return EnumFacing.DOWN;
 		float rY = this.rotationYaw % 360F;
 		//rotationYaw 5 90 4 270 2 180 3 0
 		if (rY < 45F || rY > 315F)
-			return 3;
+			return EnumFacing.SOUTH;
 		if (rY < 135F)
-			return 5;
+			return EnumFacing.EAST;
 		if (rY < 225F)
-			return 2;
-		return 4;
+			return EnumFacing.NORTH;
+		return EnumFacing.WEST;
 	}
 
 	private void atBase()
@@ -848,11 +829,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		
 		BlockVec3 inFront = new BlockVec3(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 1.5D), MathHelper.floor_double(this.posZ + 0.5D));
 		int otherEnd = (this.worldObj.provider instanceof WorldProviderAsteroids) ? this.MINE_LENGTH_AST : this.MINE_LENGTH;
-		if (this.baseFacing == 2 || this.baseFacing == 4) otherEnd = -otherEnd;
+		if (this.baseFacing == EnumFacing.NORTH || this.baseFacing == EnumFacing.WEST) otherEnd = -otherEnd;
 		switch (this.baseFacing)
 		{
-		case 2:
-		case 3:
+		case NORTH:
+		case SOUTH:
 			this.minePoints.add(inFront.clone().translate(0, 0, otherEnd));
 			this.minePoints.add(inFront.clone().translate(4, 0, otherEnd));
 			this.minePoints.add(inFront.clone().translate(4, 0, 0));
@@ -868,8 +849,8 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 			this.minePoints.add(inFront.clone().translate(2, -3, otherEnd));
 			this.minePoints.add(inFront.clone().translate(0, 0, otherEnd));
 			break;
-		case 4:
-		case 5:
+		case WEST:
+		case EAST:
 			this.minePoints.add(inFront.clone().translate(otherEnd, 0, 0));
 			this.minePoints.add(inFront.clone().translate(otherEnd, 0, 4));
 			this.minePoints.add(inFront.clone().translate(0, 0, 4));
@@ -922,16 +903,16 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 			this.AIstate = AISTATE_DOCKING;
 	        switch (this.baseFacing)
 	        {
-	        case 2: 
+	        case NORTH:
 	            this.targetYaw = 180;
 	            break;
-	        case 3: 
+	        case SOUTH:
 	            this.targetYaw = 0;
 	            break;
-	        case 4: 
+	        case WEST:
 	            this.targetYaw = 270;
 	            break;
-	        case 5: 
+	        case EAST:
 	            this.targetYaw = 90;
 	            break;
 	        }
@@ -957,11 +938,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 			return false;
 		}
 		BlockVec3 inFront = new BlockVec3(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 1.5D), MathHelper.floor_double(this.posZ + 0.5D));
-		if (dist == 2) inFront.add(headings2[this.facingAI]);
+		if (dist == 2) inFront.add(headings2[this.facingAI.getIndex()]);
 		else
 		{	
-			if ((this.facingAI & 1) == 0) dist++; 
-			if (dist > 0) inFront.add(headings[this.facingAI].clone().scale(dist));
+			if ((this.facingAI.getIndex() & 1) == EnumFacing.DOWN.getIndex()) dist++;
+			if (dist > 0) inFront.add(headings[this.facingAI.getIndex()].clone().scale(dist));
 		}
 		
 		if (!inFront.equals(this.mineLast) && this.AIstate != AISTATE_ATBASE)
@@ -976,7 +957,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		int z = inFront.z;
 		
 		//Test not trying to mine own dock!
-		if (y == this.waypointBase.y && x == this.waypointBase.x - ((this.baseFacing == 5) ? 1 : 0) && z == this.waypointBase.z - ((this.baseFacing == 3) ? 1 : 0))
+		if (y == this.waypointBase.y && x == this.waypointBase.x - ((this.baseFacing == EnumFacing.EAST) ? 1 : 0) && z == this.waypointBase.z - ((this.baseFacing == EnumFacing.SOUTH) ? 1 : 0))
 		{
 			this.tryBackIn();
 			return false;
@@ -988,49 +969,50 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		//Mine out the 12 blocks in front of it in direction of travel when getting close
 		//There are 12 blocks around ... and 12 in front.  One block per tick?  
 		//(That means can move at 5/6 block per second when mining, and 1.67 bps when traveling)
-		switch (this.facingAI & 6)
+        BlockPos pos = new BlockPos(x, y, z);
+		switch (EnumFacing.getFront(this.facingAI.getIndex() & 6))
 		{
-		case 0:
-			if (tryBlock(x, y, z)) wayBarred = true;
-			if (tryBlock(x + 1, y, z)) wayBarred = true;
-			if (tryBlock(x + 1, y, z - 1)) wayBarred = true;
-			if (tryBlock(x, y, z - 1)) wayBarred = true;
-			if (tryBlock(x, y, z - 2)) wayBarred = true;
-			if (tryBlock(x - 1, y, z - 2)) wayBarred = true;
-			if (tryBlock(x - 1, y, z - 1)) wayBarred = true;
-			if (tryBlock(x - 2, y, z - 1)) wayBarred = true;
-			if (tryBlock(x - 2, y, z)) wayBarred = true;
-			if (tryBlock(x - 1, y, z)) wayBarred = true;
-			if (tryBlock(x - 1, y, z + 1)) wayBarred = true;
-			if (tryBlock(x, y, z + 1)) wayBarred = true;
+		case DOWN:
+			if (tryBlock(pos)) wayBarred = true;
+			if (tryBlock(pos.east())) wayBarred = true;
+			if (tryBlock(pos.east().north())) wayBarred = true;
+			if (tryBlock(pos.north())) wayBarred = true;
+			if (tryBlock(pos.north().north())) wayBarred = true;
+			if (tryBlock(pos.north().north().west())) wayBarred = true;
+			if (tryBlock(pos.north().west())) wayBarred = true;
+			if (tryBlock(pos.west().west().north())) wayBarred = true;
+			if (tryBlock(pos.west().west())) wayBarred = true;
+			if (tryBlock(pos.west())) wayBarred = true;
+			if (tryBlock(pos.west().south())) wayBarred = true;
+			if (tryBlock(pos.south())) wayBarred = true;
 			break;
-		case 2:
-			if (tryBlock(x, y - 2, z)) wayBarred = true;
-			if (tryBlock(x - 1, y - 2, z)) wayBarred = true;
-			if (tryBlock(x, y - 1, z)) wayBarred = true;
-			if (tryBlock(x - 1, y - 1, z)) wayBarred = true;
-			if (tryBlock(x + 1, y - 1, z)) wayBarred = true;
-			if (tryBlock(x - 2, y - 1, z)) wayBarred = true;
-			if (tryBlock(x + 1, y, z)) wayBarred = true;
-			if (tryBlock(x - 2, y, z)) wayBarred = true;
-			if (tryBlock(x, y, z)) wayBarred = true;
-			if (tryBlock(x - 1, y, z)) wayBarred = true;
-			if (tryBlock(x, y + 1, z)) wayBarred = true;
-			if (tryBlock(x - 1, y + 1, z)) wayBarred = true;
+		case NORTH:
+			if (tryBlock(pos.down().down())) wayBarred = true;
+			if (tryBlock(pos.north().down().down())) wayBarred = true;
+			if (tryBlock(pos.down())) wayBarred = true;
+			if (tryBlock(pos.down().north())) wayBarred = true;
+			if (tryBlock(pos.south().down())) wayBarred = true;
+			if (tryBlock(pos.north().north().down())) wayBarred = true;
+			if (tryBlock(pos.east())) wayBarred = true;
+			if (tryBlock(pos.west().west())) wayBarred = true;
+			if (tryBlock(pos)) wayBarred = true;
+			if (tryBlock(pos.west())) wayBarred = true;
+			if (tryBlock(pos.up())) wayBarred = true;
+			if (tryBlock(pos.north().up())) wayBarred = true;
 			break;
-		case 4:
-			if (tryBlock(x, y - 2, z - 1)) wayBarred = true;
-			if (tryBlock(x, y - 1, z)) wayBarred = true;
-			if (tryBlock(x, y - 1, z - 1)) wayBarred = true;
-			if (tryBlock(x, y - 1, z + 1)) wayBarred = true;
-			if (tryBlock(x, y - 1, z - 2)) wayBarred = true;
-			if (tryBlock(x, y, z + 1)) wayBarred = true;
-			if (tryBlock(x, y, z - 2)) wayBarred = true;
-			if (tryBlock(x, y, z - 1)) wayBarred = true;
-			if (tryBlock(x, y - 2, z)) wayBarred = true;
-			if (tryBlock(x, y + 1, z - 1)) wayBarred = true;
-			if (tryBlock(x, y, z)) wayBarred = true;
-			if (tryBlock(x, y + 1, z)) wayBarred = true;
+		case WEST:
+			if (tryBlock(pos.north().down().down())) wayBarred = true;
+			if (tryBlock(pos.down())) wayBarred = true;
+			if (tryBlock(pos.north().down())) wayBarred = true;
+			if (tryBlock(pos.south().down())) wayBarred = true;
+			if (tryBlock(pos.north().north().down())) wayBarred = true;
+			if (tryBlock(pos.south())) wayBarred = true;
+			if (tryBlock(pos.north().north())) wayBarred = true;
+			if (tryBlock(pos.north())) wayBarred = true;
+			if (tryBlock(pos.down().down())) wayBarred = true;
+			if (tryBlock(pos.north().up())) wayBarred = true;
+			if (tryBlock(pos)) wayBarred = true;
+			if (tryBlock(pos.up())) wayBarred = true;
 			break;
 		}
 		
@@ -1073,11 +1055,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	private boolean prepareMoveClient(int limit, int dist)
 	{
 		BlockVec3 inFront = new BlockVec3(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 1.5D), MathHelper.floor_double(this.posZ + 0.5D));
-		if (dist == 2) inFront.add(headings2[this.facing]);
+		if (dist == 2) inFront.add(headings2[this.facing.getIndex()]);
 		else
 		{	
-			if ((this.facing & 1) == 0) dist++; 
-			if (dist > 0) inFront.add(headings[this.facing].clone().scale(dist));
+			if ((this.facing.getIndex() & 1) == EnumFacing.DOWN.getIndex()) dist++;
+			if (dist > 0) inFront.add(headings[this.facing.getIndex()].clone().scale(dist));
 		}
 		if (inFront.equals(this.mineLast))
 		{
@@ -1095,49 +1077,50 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		//Mine out the 12 blocks in front of it in direction of travel when getting close
 		//There are 12 blocks around ... and 12 in front.  One block per tick?  
 		//(That means can move at 5/6 block per second when mining, and 1.67 bps when traveling)
-		switch (this.facing & 6)
+        BlockPos pos = new BlockPos(x, y, z);
+		switch (EnumFacing.getFront(this.facing.getIndex() & 6))
 		{
-		case 0:
-			if (tryBlockClient(x, y, z)) wayBarred = true;
-			if (tryBlockClient(x + 1, y, z)) wayBarred = true;
-			if (tryBlockClient(x + 1, y, z - 1)) wayBarred = true;
-			if (tryBlockClient(x, y, z - 1)) wayBarred = true;
-			if (tryBlockClient(x, y, z - 2)) wayBarred = true;
-			if (tryBlockClient(x - 1, y, z - 2)) wayBarred = true;
-			if (tryBlockClient(x - 1, y, z - 1)) wayBarred = true;
-			if (tryBlockClient(x - 2, y, z - 1)) wayBarred = true;
-			if (tryBlockClient(x - 2, y, z)) wayBarred = true;
-			if (tryBlockClient(x - 1, y, z)) wayBarred = true;
-			if (tryBlockClient(x - 1, y, z + 1)) wayBarred = true;
-			if (tryBlockClient(x, y, z + 1)) wayBarred = true;
+		case DOWN:
+			if (tryBlockClient(pos)) wayBarred = true;
+			if (tryBlockClient(pos.add(1, 0, 0))) wayBarred = true;
+			if (tryBlockClient(pos.add(1, 0, -1))) wayBarred = true;
+			if (tryBlockClient(pos.add(0, 0, -1))) wayBarred = true;
+			if (tryBlockClient(pos.add(0, 0, -2))) wayBarred = true;
+			if (tryBlockClient(pos.add(-1, 0, -2))) wayBarred = true;
+			if (tryBlockClient(pos.add(-1, 0, -1))) wayBarred = true;
+			if (tryBlockClient(pos.add(-2, 0, -1))) wayBarred = true;
+			if (tryBlockClient(pos.add(-2, 0, 0))) wayBarred = true;
+			if (tryBlockClient(pos.add(-1, 0, 0))) wayBarred = true;
+			if (tryBlockClient(pos.add(-1, 0, 1))) wayBarred = true;
+			if (tryBlockClient(pos.add(0, 0, 1))) wayBarred = true;
 			break;
-		case 2:
-			if (tryBlockClient(x, y - 2, z)) wayBarred = true;
-			if (tryBlockClient(x - 1, y - 2, z)) wayBarred = true;
-			if (tryBlockClient(x, y - 1, z)) wayBarred = true;
-			if (tryBlockClient(x - 1, y - 1, z)) wayBarred = true;
-			if (tryBlockClient(x + 1, y - 1, z)) wayBarred = true;
-			if (tryBlockClient(x - 2, y - 1, z)) wayBarred = true;
-			if (tryBlockClient(x + 1, y, z)) wayBarred = true;
-			if (tryBlockClient(x - 2, y, z)) wayBarred = true;
-			if (tryBlockClient(x, y, z)) wayBarred = true;
-			if (tryBlockClient(x - 1, y, z)) wayBarred = true;
-			if (tryBlockClient(x, y + 1, z)) wayBarred = true;
-			if (tryBlockClient(x - 1, y + 1, z)) wayBarred = true;
+		case NORTH:
+			if (tryBlockClient(pos.add(0, -2, 0))) wayBarred = true;
+			if (tryBlockClient(pos.add(-1, -2, 0))) wayBarred = true;
+			if (tryBlockClient(pos.add(0, -1, 0))) wayBarred = true;
+			if (tryBlockClient(pos.add(-1, -1, 0))) wayBarred = true;
+			if (tryBlockClient(pos.add(1, -1, 0))) wayBarred = true;
+			if (tryBlockClient(pos.add(-2, -1, 0))) wayBarred = true;
+			if (tryBlockClient(pos.add(1, 0, 0))) wayBarred = true;
+			if (tryBlockClient(pos.add(-2, 0, 0))) wayBarred = true;
+			if (tryBlockClient(pos.add(0, 0, 0))) wayBarred = true;
+			if (tryBlockClient(pos.add(-1, 0, 0))) wayBarred = true;
+			if (tryBlockClient(pos.add(0, 1, 0))) wayBarred = true;
+			if (tryBlockClient(pos.add(-1, 1, 0))) wayBarred = true;
 			break;
-		case 4:
-			if (tryBlockClient(x, y - 2, z - 1)) wayBarred = true;
-			if (tryBlockClient(x, y - 1, z)) wayBarred = true;
-			if (tryBlockClient(x, y - 1, z - 1)) wayBarred = true;
-			if (tryBlockClient(x, y - 1, z + 1)) wayBarred = true;
-			if (tryBlockClient(x, y - 1, z - 2)) wayBarred = true;
-			if (tryBlockClient(x, y, z + 1)) wayBarred = true;
-			if (tryBlockClient(x, y, z - 2)) wayBarred = true;
-			if (tryBlockClient(x, y, z - 1)) wayBarred = true;
-			if (tryBlockClient(x, y - 2, z)) wayBarred = true;
-			if (tryBlockClient(x, y + 1, z - 1)) wayBarred = true;
-			if (tryBlockClient(x, y, z)) wayBarred = true;
-			if (tryBlockClient(x, y + 1, z)) wayBarred = true;
+		case WEST:
+			if (tryBlockClient(pos.add(0, -2, -1))) wayBarred = true;
+			if (tryBlockClient(pos.add(0, -1, 0))) wayBarred = true;
+			if (tryBlockClient(pos.add(0, -1, -1))) wayBarred = true;
+			if (tryBlockClient(pos.add(0, -1, +1))) wayBarred = true;
+			if (tryBlockClient(pos.add(0, -1, -2))) wayBarred = true;
+			if (tryBlockClient(pos.add(0, 0, 1))) wayBarred = true;
+			if (tryBlockClient(pos.add(0, 0, -2))) wayBarred = true;
+			if (tryBlockClient(pos.add(0, 0, -1))) wayBarred = true;
+			if (tryBlockClient(pos.add(0, -2, 0))) wayBarred = true;
+			if (tryBlockClient(pos.add(0, 1, -1))) wayBarred = true;
+			if (tryBlockClient(pos.add(0, 0, 0))) wayBarred = true;
+			if (tryBlockClient(pos.add(0, 1, 0))) wayBarred = true;
 			break;
 		}
 		
@@ -1155,16 +1138,17 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		return wayBarred;
 	}
 
-	private boolean tryBlock(int x, int y, int z)
+	private boolean tryBlock(BlockPos pos)
 	{
 		//Check things to avoid in front of it (see static list for list) including base type things
 		//Can move through liquids including flowing lava
-		Block b = this.worldObj.getBlock(x, y, z);
+        IBlockState state = this.worldObj.getBlockState(pos);
+		Block b = state.getBlock();
 		if (b.getMaterial() == Material.air) return false;
 		if (noMineList.contains(b))
 		{
 			blockingBlock.block = b;
-			blockingBlock.meta = this.worldObj.getBlockMetadata(x, y, z);
+			blockingBlock.meta = b.getMetaFromState(state);
 			return true;
 		}
 		if (b instanceof BlockLiquid) return false;
@@ -1174,11 +1158,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 			if (b instanceof IPlantable && b!=Blocks.tallgrass && b!=Blocks.deadbush && b!=Blocks.double_plant && b!=Blocks.waterlily && !(b instanceof BlockFlower))
 			{
 				blockingBlock.block = b;
-				blockingBlock.meta = this.worldObj.getBlockMetadata(x, y, z);
+				blockingBlock.meta = b.getMetaFromState(state);
 				return true;
 			}
-			int meta = this.worldObj.getBlockMetadata(x, y, z);
-			if (b.hasTileEntity(meta) || b.getBlockHardness(this.worldObj,  x,  y,  z) < 0)
+			int meta = b.getMetaFromState(state);
+			if (b.hasTileEntity(state) || b.getBlockHardness(this.worldObj, pos) < 0)
 			{
 				blockingBlock.block = b;
 				blockingBlock.meta = meta;
@@ -1187,12 +1171,12 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		}
 		
 		if (this.tryBlockLimit == 0) return false;
-        BlockEvent.BreakEvent event = ForgeHooks.onBlockBreakEvent(this.worldObj, this.playerMP.theItemInWorldManager.getGameType(), this.playerMP, x, y, z);
-        if (event.isCanceled()) return true;
+        int result = ForgeHooks.onBlockBreakEvent(this.worldObj, this.playerMP.theItemInWorldManager.getGameType(), this.playerMP, pos);
+        if (result < 0) return true;
 
 		this.tryBlockLimit--;
 		
-		ItemStack drops = getPickBlock(this.worldObj, x, y, z, b);
+		ItemStack drops = getPickBlock(this.worldObj, pos, b);
 		if (drops != null && !this.addToInventory(drops))
 		{
 			//drop itemstack if AstroMiner can't hold it
@@ -1200,30 +1184,31 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             double d0 = this.worldObj.rand.nextFloat() * f + (1.0F - f) * 0.5D;
             double d1 = this.worldObj.rand.nextFloat() * f + (1.0F - f) * 0.5D;
             double d2 = this.worldObj.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-            EntityItem entityitem = new EntityItem(this.worldObj, x + d0, y + d1, z + d2, drops);
-            entityitem.delayBeforeCanPickup = 10;
+            EntityItem entityitem = new EntityItem(this.worldObj, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, drops);
+            entityitem.setDefaultPickupDelay();
             this.worldObj.spawnEntityInWorld(entityitem);
             this.inventoryDrops++;
 		}
 		
-		this.worldObj.setBlock(x, y, z, Blocks.air, 0, 3);
+		this.worldObj.setBlockState(pos, Blocks.air.getDefaultState(), 3);
 		return false;
 	}
 
-	private boolean tryBlockClient(int x, int y, int z)
+	private boolean tryBlockClient(BlockPos pos)
 	{
-		BlockVec3 bv = new BlockVec3(x, y, z);
+		BlockVec3 bv = new BlockVec3(pos.getX(), pos.getY(), pos.getZ());
 		if (this.laserBlocks.contains(bv)) return false;
 
 		//Add minable blocks to the laser fx list
-		Block b = this.worldObj.getBlock(x, y, z);
+        IBlockState state = this.worldObj.getBlockState(pos);
+		Block b = state.getBlock();
 		if (b.getMaterial() == Material.air) return false;
 		if (noMineList.contains(b)) return true;
 		if (b instanceof BlockLiquid) return false;
 		if (b instanceof IFluidBlock) return false;
 		if (b instanceof IPlantable) return true;
-		int meta = this.worldObj.getBlockMetadata(x, y, z);
-		if (b.hasTileEntity(meta) || b.getBlockHardness(this.worldObj,  x,  y,  z) < 0) return true;
+		int meta = b.getMetaFromState(state);
+		if (b.hasTileEntity(state) || b.getBlockHardness(this.worldObj, pos) < 0) return true;
 		if (this.tryBlockLimit == 0) return false;
 		
 		this.tryBlockLimit--;
@@ -1243,7 +1228,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		}
 	}
 
-	private ItemStack getPickBlock(World world, int x, int y, int z, Block b)
+	private ItemStack getPickBlock(World world, BlockPos pos, Block b)
 	{
 		if (b == GCBlocks.fallenMeteor)
 			return new ItemStack(GCItems.meteoricIronRaw);
@@ -1256,7 +1241,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         }
 
         Block block = item instanceof ItemBlock && !(b instanceof BlockFlowerPot) ? Block.getBlockFromItem(item) : b;
-        return new ItemStack(item, 1, block.getDamageValue(world, x, y, z));
+        return new ItemStack(item, 1, block.getDamageValue(world, pos));
     }
 
 	private boolean addToInventory(ItemStack itemstack)
@@ -1335,7 +1320,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	{
 		this.noSpeedup = false;
 		
-		if (reverse != (this.baseFacing < 4))
+		if (reverse != (this.baseFacing.getIndex() < 4))
 		{
 			if (this.posZ > pos.z + 0.0001D || this.posZ < pos.z - 0.0001D)
 			{
@@ -1394,7 +1379,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         		this.motionX = x - this.posX;
         		this.noSpeedup = true;
         	}
-			this.facingAI = 4;
+			this.facingAI = EnumFacing.WEST;
 		}
 		else
 		{
@@ -1406,7 +1391,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         		this.motionX = x - this.posX;
 	    		this.noSpeedup = true;
 	    	}
-			this.facingAI = 5;
+			this.facingAI = EnumFacing.EAST;
 		}
 
         if (stopForTurn)
@@ -1427,7 +1412,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         		this.motionY = y - this.posY;
         		this.noSpeedup = true;
         	}
-			this.facingAI = 0;
+			this.facingAI = EnumFacing.DOWN;
 		}
 		else
 		{
@@ -1438,7 +1423,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         		this.motionY = y - this.posY;
         		this.noSpeedup = true;
         	}
-			this.facingAI = 1;
+			this.facingAI = EnumFacing.UP;
 		}
 
         if (stopForTurn)
@@ -1465,7 +1450,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         		this.motionZ = z - this.posZ;
         		this.noSpeedup = true;
         	}
-			this.facingAI = 2;
+			this.facingAI = EnumFacing.NORTH;
 		}
 		else
 		{
@@ -1477,7 +1462,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         		this.motionZ = z - this.posZ;
         		this.noSpeedup = true;
         	}
-			this.facingAI = 3;
+			this.facingAI = EnumFacing.SOUTH;
 		}
 
         if (stopForTurn)
@@ -1549,13 +1534,13 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	 * @param base
 	 * @return
 	 */
-	public static boolean spawnMinerAtBase(World world, int x, int y, int z, int facing, BlockVec3 base, EntityPlayerMP player)
+	public static boolean spawnMinerAtBase(World world, int x, int y, int z, EnumFacing facing, BlockVec3 base, EntityPlayerMP player)
 	{
         if (world.isRemote) return true;
 		final EntityAstroMiner miner = new EntityAstroMiner(world, new ItemStack[EntityAstroMiner.INV_SIZE], 0);
 		miner.setPlayer(player);
 		if (player.capabilities.isCreativeMode) miner.spawnedInCreative = true;
-        miner.waypointBase = new BlockVec3(x, y, z).modifyPositionFromSide(EnumFacing.getOrientation(facing), 1);
+        miner.waypointBase = new BlockVec3(x, y, z).modifyPositionFromSide(facing, 1);
         miner.setPosition(miner.waypointBase.x, miner.waypointBase.y - 1, miner.waypointBase.z);
         miner.baseFacing = facing;
         miner.facingAI = facing;
@@ -1566,16 +1551,16 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         miner.targetPitch = 0;
         switch (facing)
         {
-        case 2: 
+        case NORTH:
             miner.targetYaw = 180;
             break;
-        case 3: 
+        case SOUTH:
             miner.targetYaw = 0;
             break;
-        case 4: 
+        case WEST:
             miner.targetYaw = 270;
             break;
-        case 5: 
+        case EAST:
             miner.targetYaw = 90;
             break;
         }
@@ -1623,29 +1608,25 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     	float zsize = cWIDTH;
     	switch (this.facing)
         {
-        case 0:
-        case 1:
+        case DOWN:
+        case UP:
         	ysize = cLENGTH;
         	break;
-        case 2:
-        case 3:
+        case NORTH:
+        case SOUTH:
         	ysize = cHEIGHT;
         	zsize = cLENGTH;
         	break;
-        case 4:
-        case 5:
+        case WEST:
+        case EAST:
         	ysize = cHEIGHT;
         	xsize = cLENGTH;
         	break;
         }
         this.width = Math.max(xsize, zsize);
         this.height = ysize;
-        this.boundingBox.minX = this.posX - xsize / 2D;
-        this.boundingBox.minY = this.posY + 1D - ysize / 2D;
-        this.boundingBox.minZ = this.posZ - zsize / 2D;
-        this.boundingBox.maxX = this.posX + xsize / 2D;
-        this.boundingBox.maxY = this.posY + 1D + ysize / 2D;
-        this.boundingBox.maxZ = this.posZ + zsize / 2D;
+        this.setEntityBoundingBox(new AxisAlignedBB(this.posX - xsize / 2D, this.posY + 1D - ysize / 2D, this.posZ - zsize / 2D,
+                this.posX + xsize / 2D, this.posY + 1D + ysize / 2D, this.posZ + zsize / 2D));
 	}
 
 	@Override
@@ -1706,13 +1687,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     @Override
     public AxisAlignedBB getCollisionBox(Entity par1Entity)
     {
-        return par1Entity.boundingBox;
-    }
-
-    @Override
-    public AxisAlignedBB getBoundingBox()
-    {
-    	return this.boundingBox;
+        return par1Entity.getBoundingBox();
     }
 
     @Override
@@ -1784,7 +1759,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     @Override
     public void setPosition(double p_70107_1_, double p_70107_3_, double p_70107_5_)
     {
-        this.boundingBox.offset(p_70107_1_ - this.posX, p_70107_3_ - this.posY, p_70107_5_ - this.posZ);
+        this.setEntityBoundingBox(this.getBoundingBox().offset(p_70107_1_ - this.posX, p_70107_3_ - this.posY, p_70107_5_ - this.posZ));
         this.posX = p_70107_1_;
         this.posY = p_70107_3_;
         this.posZ = p_70107_5_;
@@ -1949,10 +1924,10 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         }
         if (nbt.hasKey("TargetX")) this.posTarget = new BlockVec3(nbt.getInteger("TargetX"), nbt.getInteger("TargetY"), nbt.getInteger("TargetZ"));
         if (nbt.hasKey("WBaseX")) this.waypointBase = new BlockVec3(nbt.getInteger("WBaseX"), nbt.getInteger("WBaseY"), nbt.getInteger("WBaseZ"));
-        if (nbt.hasKey("BaseFacing")) this.baseFacing = nbt.getInteger("BaseFacing");
+        if (nbt.hasKey("BaseFacing")) this.baseFacing = EnumFacing.getFront(nbt.getInteger("BaseFacing"));
         if (nbt.hasKey("AIState")) this.AIstate = nbt.getInteger("AIState");       
-        if (nbt.hasKey("Facing")) this.facingAI = nbt.getInteger("Facing");
-        this.lastFacing = -1;
+        if (nbt.hasKey("Facing")) this.facingAI = EnumFacing.getFront(nbt.getInteger("Facing"));
+        this.lastFacing = null;
         if (nbt.hasKey("WayPoints"))
         {
         	this.wayPoints.clear();
@@ -2036,9 +2011,9 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	        nbt.setInteger("WBaseY", this.waypointBase.y);
 	        nbt.setInteger("WBaseZ", this.waypointBase.z);
         }
-        nbt.setInteger("BaseFacing", this.baseFacing);
+        nbt.setInteger("BaseFacing", this.baseFacing.getIndex());
         nbt.setInteger("AIState", this.AIstate);
-        nbt.setInteger("Facing", this.facingAI);
+        nbt.setInteger("Facing", this.facingAI.getIndex());
         if (this.wayPoints.size() > 0)
         {
         	NBTTagList wpList = new NBTTagList();
@@ -2069,6 +2044,26 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         nbt.setDouble("speedup", this.speedup);
         nbt.setInteger("pathBlockedCount", this.pathBlockedCount);
         nbt.setBoolean("spawnedInCreative", this.spawnedInCreative);
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
     }
 }
 

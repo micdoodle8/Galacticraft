@@ -24,7 +24,7 @@ public class ItemBlockSolar extends ItemBlockDesc
 
         String name = BlockSolar.names[index];
 
-        return this.field_150939_a.getUnlocalizedName() + "." + name;
+        return this.getBlock().getUnlocalizedName() + "." + name;
     }
 
     @Override

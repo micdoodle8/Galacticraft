@@ -52,10 +52,11 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
 //    private IIcon iconLaunchController;
 //    private IIcon iconCryochamber;
 
-    public BlockMachineMars()
+    public BlockMachineMars(String assetName)
     {
         super(GCBlocks.machine);
 		this.setStepSound(soundTypeMetal);
+        this.setUnlocalizedName(assetName);
     }
 
     /*@Override
