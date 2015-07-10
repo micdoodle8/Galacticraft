@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -33,17 +34,18 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
     private IIcon iconItemInput;
     private IIcon iconItemOutput;*/
 
-
-    private enum EnumLoaderType
+    private enum EnumLoaderType implements IStringSerializable
     {
-        CARGO_LOADER(0),
-        CARGO_UNLOADER(1);
+        CARGO_LOADER(0, "cargo_loader"),
+        CARGO_UNLOADER(1, "cargo_unloader");
 
         private final int meta;
+        private final String name;
 
-        private EnumLoaderType(int meta)
+        private EnumLoaderType(int meta, String name)
         {
             this.meta = meta;
+            this.name = name;
         }
 
         public int getMeta()
@@ -59,6 +61,11 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
         public static EnumLoaderType byIndex(int index)
         {
             return values()[index];
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
         }
     }
 
@@ -131,9 +138,9 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
     }*/
 
     @Override
-    public boolean onMachineActivated(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        entityPlayer.openGui(GalacticraftCore.instance, -1, world, pos.getX(), pos.getY(), pos.getZ());
+        playerIn.openGui(GalacticraftCore.instance, -1, worldIn, pos.getX(), pos.getY(), pos.getZ());
         return true;
     }
 

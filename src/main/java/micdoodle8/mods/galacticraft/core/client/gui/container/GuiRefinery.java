@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -34,7 +35,7 @@ public class GuiRefinery extends GuiContainerGC
 
     public GuiRefinery(InventoryPlayer par1InventoryPlayer, TileEntityRefinery tileEntity)
     {
-        super(new ContainerRefinery(par1InventoryPlayer, tileEntity));
+        super(new ContainerRefinery(par1InventoryPlayer, tileEntity, FMLClientHandler.instance().getClient().thePlayer));
         this.tileEntity = tileEntity;
         this.ySize = 168;
     }

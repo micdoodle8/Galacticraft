@@ -23,6 +23,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -250,13 +251,13 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
 //    }
 
     @Override
-    public void onCreate(BlockPos placedPosition)
+    public void onCreate(World world, BlockPos placedPosition)
     {
         int buildHeight = this.worldObj.getHeight() - 1;
         
     	if (placedPosition.getY() + 1 > buildHeight) return;
     	final BlockPos vecStrut = new BlockPos(placedPosition.getX(), placedPosition.getY() + 1, placedPosition.getZ());
-        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecStrut, placedPosition, 0);
+        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, vecStrut, placedPosition, 0);
 
         if (placedPosition.getY() + 2 > buildHeight) return;
         for (int x = -1; x < 2; x++)
@@ -265,7 +266,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
             {
                 final BlockPos vecToAdd = new BlockPos(placedPosition.getX() + x, placedPosition.getY() + 2, placedPosition.getZ() + z);
 
-                ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, (this.getTierGC() == 1) ? 4 : 0);
+                ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, vecToAdd, placedPosition, (this.getTierGC() == 1) ? 4 : 0);
             }
         }
     }

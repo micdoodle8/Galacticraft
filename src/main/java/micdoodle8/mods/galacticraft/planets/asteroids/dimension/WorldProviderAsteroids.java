@@ -402,4 +402,9 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
 		}
 		return this.solarMultiplier;
 	}
+
+    @Override
+    public String getInternalNameSuffix() {
+        return "_asteroids";
+    }
 }

@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
-import micdoodle8.mods.galacticraft.core.blocks.BlockTier3TreasureChest;
+import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockTier3TreasureChest;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;

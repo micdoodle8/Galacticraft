@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 
 import java.io.IOException;
 
@@ -40,7 +41,7 @@ public class PacketDynamicInventory implements IPacket
     {
         assert chest instanceof IInventory : "Tile does not implement " + IInventory.class.getSimpleName();
         this.type = 1;
-        this.data = new Object[] { chest.xCoord, chest.yCoord, chest.zCoord };
+        this.data = new Object[] { chest.getPos() };
         this.stacks = new ItemStack[((IInventory) chest).getSizeInventory()];
 
         for (int i = 0; i < this.stacks.length; i++)
@@ -60,9 +61,9 @@ public class PacketDynamicInventory implements IPacket
             buffer.writeInt((Integer) this.data[0]);
             break;
         case 1:
-            buffer.writeInt((Integer) this.data[0]);
-            buffer.writeInt((Integer) this.data[1]);
-            buffer.writeInt((Integer) this.data[2]);
+            buffer.writeInt(((BlockPos) this.data[0]).getX());
+            buffer.writeInt(((BlockPos) this.data[1]).getY());
+            buffer.writeInt(((BlockPos) this.data[2]).getZ());
             break;
         }
 
@@ -135,7 +136,7 @@ public class PacketDynamicInventory implements IPacket
 
             break;
         case 1:
-            TileEntity tile = player.worldObj.getTileEntity((Integer) this.data[0], (Integer) this.data[1], (Integer) this.data[2]);
+            TileEntity tile = player.worldObj.getTileEntity((BlockPos) this.data[0]);
 
             if (tile instanceof IInventorySettable)
             {
@@ -161,7 +162,7 @@ public class PacketDynamicInventory implements IPacket
 
             break;
         case 1:
-            TileEntity tile = player.worldObj.getTileEntity((Integer) this.data[0], (Integer) this.data[1], (Integer) this.data[2]);
+            TileEntity tile = player.worldObj.getTileEntity((BlockPos) this.data[0]);
 
             if (tile instanceof IInventorySettable)
             {

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.dimension;
 
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -110,7 +111,7 @@ public class TeleportTypeAsteroids implements ITeleportType
     {
         for (int k = 208; k > 48; k--)
         {
-            if (!world.isAirBlock(x, k, z))
+            if (!world.isAirBlock(new BlockPos(x, k, z)))
             {
                 if (Math.abs(k - yorig) > 20)
                 {
@@ -119,21 +120,21 @@ public class TeleportTypeAsteroids implements ITeleportType
                 //Clear the downward path of small asteroids and any other asteroid rock
                 for (int y = k + 2; y < 256; y++)
                 {
-                    if (world.getBlock(x, y, z) == AsteroidBlocks.blockBasic)
+                    if (world.getBlockState(new BlockPos(x, y, z)).getBlock() == AsteroidBlocks.blockBasic)
                     {
-                        world.setBlockToAir(x, y, z);
+                        world.setBlockToAir(new BlockPos(x, y, z));
                     }
-                    if (world.getBlock(x - 1, y, z) == AsteroidBlocks.blockBasic)
+                    if (world.getBlockState(new BlockPos(x - 1, y, z)).getBlock() == AsteroidBlocks.blockBasic)
                     {
-                        world.setBlockToAir(x - 1, y, z);
+                        world.setBlockToAir(new BlockPos(x - 1, y, z));
                     }
-                    if (world.getBlock(x, y, z - 1) == AsteroidBlocks.blockBasic)
+                    if (world.getBlockState(new BlockPos(x, y, z - 1)).getBlock() == AsteroidBlocks.blockBasic)
                     {
-                        world.setBlockToAir(x, y, z - 1);
+                        world.setBlockToAir(new BlockPos(x, y, z - 1));
                     }
-                    if (world.getBlock(x - 1, y, z - 1) == AsteroidBlocks.blockBasic)
+                    if (world.getBlockState(new BlockPos(x - 1, y, z - 1)).getBlock() == AsteroidBlocks.blockBasic)
                     {
-                        world.setBlockToAir(x - 1, y, z - 1);
+                        world.setBlockToAir(new BlockPos(x - 1, y, z - 1));
                     }
                 }
                 if (ConfigManagerCore.enableDebug)
@@ -152,22 +153,22 @@ public class TeleportTypeAsteroids implements ITeleportType
 
         for (int k = 255; k > 48; k--)
         {
-            if (!world.isAirBlock(x, k, z))
+            if (!world.isAirBlock(new BlockPos(x, k, z)))
             {
                 this.makePlatform(world, x, k - 1, z);
                 return;
             }
-            if (!world.isAirBlock(x - 1, k, z))
+            if (!world.isAirBlock(new BlockPos(x - 1, k, z)))
             {
                 this.makePlatform(world, x - 1, k - 1, z);
                 return;
             }
-            if (!world.isAirBlock(x - 1, k, z - 1))
+            if (!world.isAirBlock(new BlockPos(x - 1, k, z - 1)))
             {
                 this.makePlatform(world, x - 1, k - 1, z - 1);
                 return;
             }
-            if (!world.isAirBlock(x, k, z - 1))
+            if (!world.isAirBlock(new BlockPos(x, k, z - 1)))
             {
                 this.makePlatform(world, x, k - 1, z - 1);
                 return;
@@ -229,9 +230,9 @@ public class TeleportTypeAsteroids implements ITeleportType
     private void doBlock(World world, int x, int y, int z)
     {
         int meta = (int) (world.rand.nextFloat() * 1.5F);
-        if (world.isAirBlock(x, y, z))
+        if (world.isAirBlock(new BlockPos(x, y, z)))
         {
-            world.setBlock(x, y, z, AsteroidBlocks.blockBasic, meta, 2);
+            world.setBlockState(new BlockPos(x, y, z), AsteroidBlocks.blockBasic.getStateFromMeta(meta), 2);
         }
     }
 

@@ -93,7 +93,7 @@ public class ShortRangeTelepadHandler extends WorldSavedData
         {
             if (telepad.addressValid)
             {
-                TelepadEntry newEntry = new TelepadEntry(telepad.getWorldObj().provider.dimensionId, new BlockVec3(telepad));
+                TelepadEntry newEntry = new TelepadEntry(telepad.getWorld().provider.getDimensionId(), new BlockVec3(telepad));
                 TelepadEntry previous = tileMap.put(telepad.address, newEntry);
 
                 if (previous == null || !previous.equals(newEntry))

@@ -11,11 +11,11 @@ public class TileEntityBeamReflector extends TileEntityBeamOutput implements ILa
     public Vector3 color = new Vector3(0, 1, 0);
     private EnergyStorage storage = new EnergyStorage(10, 1);
 
-    @Override
-    public void updateEntity()
-    {
-        super.updateEntity();
-    }
+//    @Override
+//    public void update()
+//    {
+//        super.update();
+//    }
 
     @Override
     public Vector3 getInputPoint()

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile;
 
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -26,14 +27,15 @@ public class TileEntityMinerBaseRenderer extends TileEntitySpecialRenderer
         TileEntityMinerBaseRenderer.telepadModel = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/minerbase.obj"));
     }
 
-    public void renderModelAt(TileEntityMinerBase tileEntity, double d, double d1, double d2, float f)
+    public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float p_180535_8_, int p_180535_9_)
     {
+        TileEntityMinerBase minerBase = (TileEntityMinerBase) tile;
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-    	if (!tileEntity.isMaster) return;
+    	if (!minerBase.isMaster) return;
     	// Texture file
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityMinerBaseRenderer.telepadTexture);
 
-        int i = tileEntity.getWorldObj().getLightBrightnessForSkyBlocks(tileEntity.xCoord, tileEntity.yCoord + 1, tileEntity.zCoord, 0);
+        int i = minerBase.getWorld().getLightFor(EnumSkyBlock.SKY, minerBase.getPos().up());
         int j = i % 65536;
         int k = i / 65536;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 1.0F, k / 1.0F);
@@ -41,20 +43,20 @@ public class TileEntityMinerBaseRenderer extends TileEntitySpecialRenderer
         GL11.glPushMatrix();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-        GL11.glTranslatef((float) d + 1F, (float) d1 + 1F, (float) d2 + 1F);
+        GL11.glTranslatef((float) x + 1F, (float) y + 1F, (float) z + 1F);
         GL11.glScalef(0.05F, 0.05F, 0.05F);
 
-        switch (tileEntity.facing)
+        switch (minerBase.facing)
         {
-        case 0:
+        case SOUTH:
             GL11.glRotatef(180F, 0, 1F, 0);
             break;
-        case 1:
+        case WEST:
             break;
-        case 2:
+        case NORTH:
             GL11.glRotatef(270F, 0, 1F, 0);
             break;
-        case 3:
+        case EAST:
             GL11.glRotatef(90F, 0, 1F, 0);
             break;
         }
@@ -62,11 +64,5 @@ public class TileEntityMinerBaseRenderer extends TileEntitySpecialRenderer
         TileEntityMinerBaseRenderer.telepadModel.renderAll();
 
         GL11.glPopMatrix();
-    }
-
-    @Override
-    public void renderTileEntityAt(TileEntity tileEntity, double var2, double var4, double var6, float var8)
-    {
-        this.renderModelAt((TileEntityMinerBase) tileEntity, var2, var4, var6, var8);
     }
 }

@@ -8,6 +8,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.chunk.ChunkPrimer;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -34,7 +35,7 @@ public class RoomSpawnerMars extends DungeonRoom
     }
 
     @Override
-    public void generate(Block[] chunk, byte[] meta, int cx, int cz)
+    public void generate(ChunkPrimer primer, int cx, int cz)
     {
         for (int i = this.posX - 1; i <= this.posX + this.sizeX; i++)
         {
@@ -44,24 +45,24 @@ public class RoomSpawnerMars extends DungeonRoom
                 {
                     if (i == this.posX - 1 || i == this.posX + this.sizeX || j == this.posY - 1 || j == this.posY + this.sizeY || k == this.posZ - 1 || k == this.posZ + this.sizeZ)
                     {
-                        this.placeBlock(chunk, meta, i, j, k, cx, cz, this.dungeonInstance.DUNGEON_WALL_ID, this.dungeonInstance.DUNGEON_WALL_META);
+                        this.placeBlock(primer, i, j, k, cx, cz, this.dungeonInstance.DUNGEON_WALL_ID, this.dungeonInstance.DUNGEON_WALL_META);
                     }
                     else
                     {
-                        this.placeBlock(chunk, meta, i, j, k, cx, cz, Blocks.air, 0);
+                        this.placeBlock(primer, i, j, k, cx, cz, Blocks.air, 0);
                         if (this.rand.nextFloat() < 0.05F)
                         {
-                            this.placeBlock(chunk, meta, i, j, k, cx, cz, Blocks.web, 0);
+                            this.placeBlock(primer, i, j, k, cx, cz, Blocks.web, 0);
                         }
                     }
                 }
             }
         }
-        if (this.placeBlock(chunk, meta, this.posX + 1, this.posY - 1, this.posZ + 1, cx, cz, Blocks.mob_spawner, 0))
+        if (this.placeBlock(primer, this.posX + 1, this.posY - 1, this.posZ + 1, cx, cz, Blocks.mob_spawner, 0))
         {
             this.spawners.add(new BlockPos(this.posX + 1, this.posY - 1, this.posZ + 1));
         }
-        if (this.placeBlock(chunk, meta, this.posX + this.sizeX - 1, this.posY - 1, this.posZ + this.sizeZ - 1, cx, cz, Blocks.mob_spawner, 0))
+        if (this.placeBlock(primer, this.posX + this.sizeX - 1, this.posY - 1, this.posZ + this.sizeZ - 1, cx, cz, Blocks.mob_spawner, 0))
         {
             this.spawners.add(new BlockPos(this.posX + this.sizeX - 1, this.posY - 1, this.posZ + this.sizeZ - 1));
         }

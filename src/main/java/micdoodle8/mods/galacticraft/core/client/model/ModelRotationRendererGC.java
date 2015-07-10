@@ -111,7 +111,7 @@
 //
 //            if (playerRenderer == null)
 //            {
-//                playerRenderer = (RenderPlayer)RenderManager.instance.entityRenderMap.get(EntityPlayer.class);
+//                playerRenderer = (RenderPlayer)FMLClientHandler.instance().getClient().getRenderManager().entityRenderMap.get(EntityPlayer.class);
 //            }
 //
 //            try

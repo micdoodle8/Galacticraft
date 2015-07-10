@@ -8,6 +8,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.chunk.ChunkPrimer;
 
 import java.util.Random;
 
@@ -32,7 +33,7 @@ public class RoomBossMoon extends DungeonRoom
     }
 
     @Override
-    public void generate(Block[] chunk, byte[] meta, int cx, int cz)
+    public void generate(ChunkPrimer primer, int cx, int cz)
     {
         for (int i = this.posX - 1; i <= this.posX + this.sizeX; i++)
         {
@@ -42,23 +43,23 @@ public class RoomBossMoon extends DungeonRoom
                 {
                     if (i == this.posX - 1 || i == this.posX + this.sizeX || j == this.posY - 1 || j == this.posY + this.sizeY || k == this.posZ - 1 || k == this.posZ + this.sizeZ)
                     {
-                        this.placeBlock(chunk, meta, i, j, k, cx, cz, this.dungeonInstance.DUNGEON_WALL_ID, this.dungeonInstance.DUNGEON_WALL_META);
+                        this.placeBlock(primer, i, j, k, cx, cz, this.dungeonInstance.DUNGEON_WALL_ID, this.dungeonInstance.DUNGEON_WALL_META);
                     }
                     else if (i == this.posX && k == this.posZ || i == this.posX + this.sizeX - 1 && k == this.posZ || i == this.posX && k == this.posZ + this.sizeZ - 1 || i == this.posX + this.sizeX - 1 && k == this.posZ + this.sizeZ - 1)
                     {
-                        this.placeBlock(chunk, meta, i, j, k, cx, cz, Blocks.flowing_lava, 0);
+                        this.placeBlock(primer, i, j, k, cx, cz, Blocks.flowing_lava, 0);
                     }
                     else if (j % 3 == 0 && j >= this.posY + 2 && (i == this.posX || i == this.posX + this.sizeX - 1 || k == this.posZ || k == this.posZ + this.sizeZ - 1) || i == this.posX + 1 && k == this.posZ || i == this.posX && k == this.posZ + 1 || i == this.posX + this.sizeX - 2 && k == this.posZ || i == this.posX + this.sizeX - 1 && k == this.posZ + 1 || i == this.posX + 1 && k == this.posZ + this.sizeZ - 1 || i == this.posX && k == this.posZ + this.sizeZ - 2 || i == this.posX + this.sizeX - 2 && k == this.posZ + this.sizeZ - 1 || i == this.posX + this.sizeX - 1 && k == this.posZ + this.sizeZ - 2)
                     {
-                        this.placeBlock(chunk, meta, i, j, k, cx, cz, Blocks.iron_bars, 0);
+                        this.placeBlock(primer, i, j, k, cx, cz, Blocks.iron_bars, 0);
                     }
                     else if ((i == this.posX + 1 && k == this.posZ + 1 || i == this.posX + this.sizeX - 2 && k == this.posZ + 1 || i == this.posX + 1 && k == this.posZ + this.sizeZ - 2 || i == this.posX + this.sizeX - 2 && k == this.posZ + this.sizeZ - 2) && j % 3 == 0)
                     {
-                        this.placeBlock(chunk, meta, i, j, k, cx, cz, Blocks.iron_bars, 0);
+                        this.placeBlock(primer, i, j, k, cx, cz, Blocks.iron_bars, 0);
                     }
                     else
                     {
-                        this.placeBlock(chunk, meta, i, j, k, cx, cz, Blocks.air, 0);
+                        this.placeBlock(primer, i, j, k, cx, cz, Blocks.air, 0);
                     }
                 }
             }

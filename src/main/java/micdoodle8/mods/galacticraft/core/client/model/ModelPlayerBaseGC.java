@@ -88,7 +88,7 @@
 //        float var1 = 0.0F;
 //
 //        final Class<?> entityClass = EntityClientPlayerMP.class;
-//        final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
+//        final Render render = FMLClientHandler.instance().getClient().getRenderManager().getEntityClassRenderObject(entityClass);
 //        final ModelBiped modelBipedMain = ((RenderPlayer) render).modelBipedMain;
 //
 //        if (this.modelPlayer.equals(modelBipedMain))

@@ -29,7 +29,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
-import micdoodle8.mods.galacticraft.core.entities.EntityArrowGC;
 import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -54,6 +53,8 @@ import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.network.play.server.S1FPacketSetExperience;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -94,7 +95,7 @@ public class WorldUtil
     {
         if (entity.worldObj.provider instanceof IGalacticraftWorldProvider)
         {
-        	if (entity instanceof EntityChicken && !OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, entity.boundingBox)) 
+        	if (entity instanceof EntityChicken && !OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, entity.getBoundingBox()))
         	{
         		return 0.08D;
         	}
@@ -161,7 +162,7 @@ public class WorldUtil
     {
         if (entity.worldObj == null || !(entity.worldObj.provider instanceof IGalacticraftWorldProvider)) return entity.isBurning();
 
-    	if (!(entity instanceof EntityLivingBase) && !(entity instanceof EntityArrow) && !(entity instanceof EntityArrowGC))
+    	if (!(entity instanceof EntityLivingBase) && !(entity instanceof EntityArrow))
         {
     		return entity.isBurning();
         }
@@ -169,7 +170,7 @@ public class WorldUtil
     	if (entity.isBurning())
     	{
 	        if (OxygenUtil.noAtmosphericCombustion(entity.worldObj.provider))
-	        	return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, entity.boundingBox);
+	        	return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, entity.getBoundingBox());
 	        else
 	        	return true;
 	        //Disable fire on Galacticraft worlds with no oxygen
@@ -232,7 +233,7 @@ public class WorldUtil
 
             Vec3 vec = world.getFogColor(1.0F);
 
-            return Vec3.createVectorHelper(vec.xCoord * var21, vec.yCoord * var21, vec.zCoord * var21);
+            return new Vec3(vec.xCoord * var21, vec.yCoord * var21, vec.zCoord * var21);
         }
 
         return world.getFogColor(1.0F);
@@ -247,7 +248,7 @@ public class WorldUtil
 
             Vec3 vec = world.getSkyColor(FMLClientHandler.instance().getClient().getRenderViewEntity(), 1.0F);
 
-            return Vec3.createVectorHelper(vec.xCoord * var21, vec.yCoord * var21, vec.zCoord * var21);
+            return new Vec3(vec.xCoord * var21, vec.yCoord * var21, vec.zCoord * var21);
         }
 
         return world.getSkyColor(FMLClientHandler.instance().getClient().getRenderViewEntity(), 1.0F);
@@ -399,9 +400,9 @@ public class WorldUtil
             WorldProvider provider = WorldUtil.getProviderForDimension(id);
             if (celestialBody != null && provider != null)
             {
-                if (provider instanceof IGalacticraftWorldProvider && !(provider instanceof IOrbitDimension) || provider.dimensionId == 0)
+                if (provider instanceof IGalacticraftWorldProvider && !(provider instanceof IOrbitDimension) || provider.getDimensionId() == 0)
                 {
-                    map.put(celestialBody.getName(), provider.dimensionId);
+                    map.put(celestialBody.getName(), provider.getDimensionId());
                 }
                 else if (playerBase != null && provider instanceof IOrbitDimension)
                 {
@@ -409,7 +410,7 @@ public class WorldUtil
 
                     if (!ConfigManagerCore.spaceStationsRequirePermission || data.getAllowedPlayers().contains(playerBase.getGameProfile().getName()) || VersionUtil.isPlayerOpped(playerBase))
                     {
-                        map.put(celestialBody.getName() + "$" + data.getOwner() + "$" + data.getSpaceStationName() + "$" + provider.dimensionId, provider.dimensionId);
+                        map.put(celestialBody.getName() + "$" + data.getOwner() + "$" + data.getSpaceStationName() + "$" + provider.getDimensionId(), provider.getDimensionId());
                     }
                 }
             }
@@ -677,7 +678,7 @@ public class WorldUtil
         entity.worldObj.updateEntityWithOptionalForce(entity, false);
         EntityPlayerMP player = null;
         Vector3 spawnPos = null;
-        int oldDimID = entity.worldObj.provider.dimensionId;
+        int oldDimID = entity.worldObj.provider.getDimensionId();
 
         if (ridingRocket != null)
         {
@@ -687,7 +688,7 @@ public class WorldUtil
             ridingRocket.riddenByEntity = null;
             ridingRocket.writeToNBTOptional(nbt);
 
-            ((WorldServer) ridingRocket.worldObj).getEntityTracker().removeEntityFromAllTrackingPlayers(ridingRocket);
+            ((WorldServer) ridingRocket.worldObj).getEntityTracker().untrackEntity(ridingRocket);
             ridingRocket.worldObj.loadedEntityList.remove(ridingRocket);
             ridingRocket.worldObj.onEntityRemoved(ridingRocket);
 
@@ -734,7 +735,7 @@ public class WorldUtil
                 {
                     GCLog.info("DEBUG: Sending respawn packet to player for dim " + dimID);
                 }
-                player.playerNetServerHandler.sendPacket(new S07PacketRespawn(dimID, player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
+                player.playerNetServerHandler.sendPacket(new S07PacketRespawn(dimID, player.worldObj.getDifficulty(), player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
 
                 if (worldNew.provider instanceof WorldProviderOrbit)
                 {
@@ -753,7 +754,7 @@ public class WorldUtil
                 {
                     Chunk chunkOld = worldOld.getChunkFromChunkCoords(player.chunkCoordX, player.chunkCoordZ);
                     chunkOld.removeEntity(player);
-                    chunkOld.isModified = true;
+                    chunkOld.setChunkModified();
                 }
                 worldOld.loadedEntityList.remove(player);
                 worldOld.onEntityRemoved(player);
@@ -777,7 +778,7 @@ public class WorldUtil
                 player.playerNetServerHandler.setPlayerLocation(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
                 //worldNew.updateEntityWithOptionalForce(entity, false);
 
-                GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " to dimension " + worldNew.provider.dimensionId);
+                GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " to dimension " + worldNew.provider.getDimensionId());
 
                 player.theItemInWorldManager.setWorld((WorldServer) worldNew);
                 player.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(player, (WorldServer) worldNew);
@@ -848,7 +849,7 @@ public class WorldUtil
                 entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
                 worldNew.updateEntityWithOptionalForce(entity, false);
 
-                GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " within same dimension " + worldNew.provider.dimensionId);
+                GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " within same dimension " + worldNew.provider.getDimensionId());
             }
 
             //Cargo rocket does not needs its location setting here, it will do that itself
@@ -952,7 +953,7 @@ public class WorldUtil
             if (var1.addedToChunk && var0.getChunkProvider().chunkExists(var3, var4))
             {
                 var0.getChunkFromChunkCoords(var3, var4).removeEntity(var1);
-                var0.getChunkFromChunkCoords(var3, var4).isModified = true;
+                var0.getChunkFromChunkCoords(var3, var4).setChunkModified();
             }
 
             if (directlyRemove)
@@ -1044,11 +1045,11 @@ public class WorldUtil
             {
             	System.out.println("GC clientside planet dimensions registered: "+ids);
             	WorldProvider dimMoon = WorldUtil.getProviderForName("moon.moon");
-            	if (dimMoon != null) System.out.println("Crosscheck: Moon is "+dimMoon.dimensionId);
+            	if (dimMoon != null) System.out.println("Crosscheck: Moon is "+dimMoon.getDimensionId());
             	WorldProvider dimMars = WorldUtil.getProviderForName("planet.mars");
-            	if (dimMoon != null) System.out.println("Crosscheck: Mars is "+dimMars.dimensionId);
+            	if (dimMoon != null) System.out.println("Crosscheck: Mars is "+dimMars.getDimensionId());
             	WorldProvider dimAst = WorldUtil.getProviderForName("planet.asteroids");
-            	if (dimMoon != null) System.out.println("Crosscheck: Asteroids is "+dimAst.dimensionId);
+            	if (dimMoon != null) System.out.println("Crosscheck: Asteroids is "+dimAst.getDimensionId());
             }
         }
         catch (final Exception e)
@@ -1289,8 +1290,8 @@ public class WorldUtil
 
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { player.getGameProfile().getName(), dimensionList }), player);
         stats.usingPlanetSelectionGui = true;
-        stats.savedPlanetList = new String(dimensionList);
-        Entity fakeEntity = new EntityCelestialFake(player.worldObj, player.posX, player.posY, player.posZ, 0.0F);
+        stats.savedPlanetList = dimensionList;
+        Entity fakeEntity = new EntityCelestialFake(player.worldObj, player.posX, player.posY, player.posZ);
         player.worldObj.spawnEntityInWorld(fakeEntity);
         player.mountEntity(fakeEntity);
     }
@@ -1303,24 +1304,27 @@ public class WorldUtil
         int mainPosX = position.intX();
         int mainPosY = position.intY();
         int mainPosZ = position.intZ();
+        BlockPos posMain = new BlockPos(mainPosX, mainPosY, mainPosZ);
 
         // If the footprint is hovering over air...
-        if (world.getBlock(mainPosX, mainPosY, mainPosZ).isAir(world, mainPosX, mainPosY, mainPosZ))
+        if (world.getBlockState(posMain).getBlock().isAir(world, posMain))
         {
             position.x += (playerCenter.x - mainPosX);
             position.z += (playerCenter.z - mainPosZ);
 
+            BlockPos pos1 = new BlockPos(posMain.getX() + position.intX(), posMain.getY() + position.intY(), posMain.getZ() + position.intZ());
             // If the footprint is still over air....
-            if (world.getBlock(position.intX(), position.intY(), position.intZ()).isAir(world, position.intX(), position.intY(), position.intZ()))
+            if (world.getBlockState(pos1).getBlock().isAir(world, pos1))
             {
-                for (EnumFacing direction : EnumFacing.VALID_DIRECTIONS)
+                for (EnumFacing direction : EnumFacing.values())
                 {
+                    BlockPos offsetPos = posMain.offset(direction);
                     if (direction != EnumFacing.DOWN && direction != EnumFacing.UP)
                     {
-                        if (!world.getBlock(mainPosX + direction.offsetX, mainPosY, mainPosZ + direction.offsetZ).isAir(world, mainPosX + direction.offsetX, mainPosY, mainPosZ + direction.offsetZ))
+                        if (!world.getBlockState(offsetPos).getBlock().isAir(world, offsetPos))
                         {
-                            position.x += direction.offsetX;
-                            position.z += direction.offsetZ;
+                            position.x += direction.getFrontOffsetX();
+                            position.z += direction.getFrontOffsetZ();
                             break;
                         }
                     }

@@ -127,7 +127,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
    			this.checkFluidTankTransfer(this.containedItems.length - 1, this.fuelTank);
         }
 
-        AxisAlignedBB box = this.getBoundingBox().expand(0.2D, 0.4D, 0.2D);
+        AxisAlignedBB box = this.getEntityBoundingBox().expand(0.2D, 0.4D, 0.2D);
 
         final List<Entity> var15 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, box);
 

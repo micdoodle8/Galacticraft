@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
-import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.item.IKeyable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
@@ -19,6 +18,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.Iterator;
 import java.util.List;
@@ -316,22 +319,22 @@ public class TileEntityTreasureChestMars extends TileEntityAdvanced implements I
 
             if (this.func_94044_a(this.getPos().getX() - 1, this.getPos().getY(), this.getPos().getZ()))
             {
-                this.adjacentChestXNeg = (TileEntityTreasureChestMars) this.worldObj.getTileEntity(this.getPos().getX() - 1, this.getPos().getY(), this.getPos().getZ());
+                this.adjacentChestXNeg = (TileEntityTreasureChestMars) this.worldObj.getTileEntity(this.getPos().west());
             }
 
             if (this.func_94044_a(this.getPos().getX() + 1, this.getPos().getY(), this.getPos().getZ()))
             {
-                this.adjacentChestXPos = (TileEntityTreasureChestMars) this.worldObj.getTileEntity(this.getPos().getX() + 1, this.getPos().getY(), this.getPos().getZ());
+                this.adjacentChestXPos = (TileEntityTreasureChestMars) this.worldObj.getTileEntity(this.getPos().east());
             }
 
             if (this.func_94044_a(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ() - 1))
             {
-                this.adjacentChestZNeg = (TileEntityTreasureChestMars) this.worldObj.getTileEntity(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ() - 1);
+                this.adjacentChestZNeg = (TileEntityTreasureChestMars) this.worldObj.getTileEntity(this.getPos().north());
             }
 
             if (this.func_94044_a(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ() + 1))
             {
-                this.adjacentChestZPos = (TileEntityTreasureChestMars) this.worldObj.getTileEntity(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ() + 1);
+                this.adjacentChestZPos = (TileEntityTreasureChestMars) this.worldObj.getTileEntity(this.getPos().south());
             }
 
             if (this.adjacentChestZNeg != null)
@@ -358,7 +361,7 @@ public class TileEntityTreasureChestMars extends TileEntityAdvanced implements I
 
     private boolean func_94044_a(int par1, int par2, int par3)
     {
-        final Block block = this.worldObj.getBlock(par1, par2, par3);
+        final Block block = this.worldObj.getBlockState(new BlockPos(par1, par2, par3)).getBlock();
         return block != null && block instanceof BlockTier2TreasureChest;
     }
 
@@ -368,9 +371,9 @@ public class TileEntityTreasureChestMars extends TileEntityAdvanced implements I
      * inside its implementation.
      */
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
         this.checkForAdjacentChests();
         ++this.ticksSinceSync;
         float f;
@@ -492,9 +495,9 @@ public class TileEntityTreasureChestMars extends TileEntityAdvanced implements I
         }
 
         ++this.numUsingPlayers;
-        this.worldObj.addBlockEvent(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getBlockType(), 1, this.numUsingPlayers);
-        this.worldObj.notifyBlocksOfNeighborChange(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getBlockType());
-        this.worldObj.notifyBlocksOfNeighborChange(this.getPos().getX(), this.getPos().getY() - 1, this.getPos().getZ(), this.getBlockType());
+        this.worldObj.addBlockEvent(this.getPos(), this.getBlockType(), 1, this.numUsingPlayers);
+        this.worldObj.notifyNeighborsOfStateChange(this.getPos(), this.getBlockType());
+        this.worldObj.notifyNeighborsOfStateChange(this.getPos().down(), this.getBlockType());
     }
 
     @Override
@@ -503,9 +506,9 @@ public class TileEntityTreasureChestMars extends TileEntityAdvanced implements I
         if (this.getBlockType() != null && this.getBlockType() instanceof BlockTier2TreasureChest)
         {
             --this.numUsingPlayers;
-            this.worldObj.addBlockEvent(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getBlockType(), 1, this.numUsingPlayers);
-            this.worldObj.notifyBlocksOfNeighborChange(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getBlockType());
-            this.worldObj.notifyBlocksOfNeighborChange(this.getPos().getX(), this.getPos().getY() - 1, this.getPos().getZ(), this.getBlockType());
+            this.worldObj.addBlockEvent(this.getPos(), this.getBlockType(), 1, this.numUsingPlayers);
+            this.worldObj.notifyNeighborsOfStateChange(this.getPos(), this.getBlockType());
+            this.worldObj.notifyNeighborsOfStateChange(this.getPos().down(), this.getBlockType());
         }
     }
 
@@ -545,7 +548,7 @@ public class TileEntityTreasureChestMars extends TileEntityAdvanced implements I
     }
 
     @Override
-    public boolean onValidKeyActivated(EntityPlayer player, ItemStack key, int face)
+    public boolean onValidKeyActivated(EntityPlayer player, ItemStack key, EnumFacing face)
     {
         if (this.locked)
         {
@@ -588,7 +591,7 @@ public class TileEntityTreasureChestMars extends TileEntityAdvanced implements I
     }
 
     @Override
-    public boolean onActivatedWithoutKey(EntityPlayer player, int face)
+    public boolean onActivatedWithoutKey(EntityPlayer player, EnumFacing face)
     {
         if (this.locked)
         {
@@ -624,5 +627,30 @@ public class TileEntityTreasureChestMars extends TileEntityAdvanced implements I
     public boolean isNetworkedTile()
     {
         return true;
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return null;
     }
 }

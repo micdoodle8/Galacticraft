@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -17,7 +18,7 @@ public class OverlayLaunchCountdown extends Overlay
 
     public static void renderCountdownOverlay()
     {
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GlStateManager.disableLighting();
         int count = ((EntitySpaceshipBase) OverlayLaunchCountdown.minecraft.thePlayer.ridingEntity).timeUntilLaunch / 2;
 
         count = (int)Math.floor(count / 10.0F);
@@ -43,6 +44,6 @@ public class OverlayLaunchCountdown extends Overlay
         }
 
         GL11.glPopMatrix();
-        GL11.glEnable(GL11.GL_LIGHTING);
+        GlStateManager.enableLighting();
     }
 }

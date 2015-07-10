@@ -112,7 +112,7 @@ public class BlockDish extends BlockTileGC implements ItemBlockDesc.IBlockShiftD
 
         if (tile instanceof TileEntityDish)
         {
-            ((TileEntityDish) tile).onCreate(pos);
+            ((TileEntityDish) tile).onCreate(worldIn, pos);
         }
     }
 

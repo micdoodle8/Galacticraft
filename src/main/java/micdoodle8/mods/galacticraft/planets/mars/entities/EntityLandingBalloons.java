@@ -31,7 +31,7 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
 
     public EntityLandingBalloons(World world)
     {
-        super(world, 0F);
+        super(world);
         this.setSize(2.0F, 2.0F);
         this.rotationPitchSpeed = this.rand.nextFloat();
         this.rotationYawSpeed = this.rand.nextFloat();
@@ -322,5 +322,25 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
     public boolean shouldIgnoreShiftExit()
     {
         return this.groundHitCount < 14 || !this.onGround;
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
     }
 }

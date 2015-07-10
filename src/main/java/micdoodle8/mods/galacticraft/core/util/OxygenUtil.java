@@ -69,9 +69,9 @@ public class OxygenUtil
         double x = entity.posX;
         double z = entity.posZ;
 
-        double sx = entity.getBoundingBox().maxX - entity.getBoundingBox().minX;
-        double sy = entity.getBoundingBox().maxY - entity.getBoundingBox().minY;
-        double sz = entity.getBoundingBox().maxZ - entity.getBoundingBox().minZ;
+        double sx = entity.getEntityBoundingBox().maxX - entity.getEntityBoundingBox().minX;
+        double sy = entity.getEntityBoundingBox().maxY - entity.getEntityBoundingBox().minY;
+        double sz = entity.getEntityBoundingBox().maxZ - entity.getEntityBoundingBox().minZ;
 
         //A good first estimate of head size is that it's the smallest of the entity's 3 dimensions (e.g. front to back, for Steve)
         double smin = Math.min(sx, Math.min(sy, sz)) / 2;

@@ -37,7 +37,7 @@
 //            GL11.glEnable(GL11.GL_BLEND);
 //            GL11.glDisable(GL11.GL_LIGHTING);
 //            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-//            RenderManager.instance.itemRenderer.renderItem(FMLClientHandler.instance().getClientPlayerEntity(), new ItemStack(Items.string, 1), 0, ItemRenderType.INVENTORY);
+//            FMLClientHandler.instance().getClient().getRenderManager().itemRenderer.renderItem(FMLClientHandler.instance().getClientPlayerEntity(), new ItemStack(Items.string, 1), 0, ItemRenderType.INVENTORY);
 //            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 //            GL11.glEnable(GL11.GL_LIGHTING);
 //            GL11.glDisable(GL11.GL_BLEND);

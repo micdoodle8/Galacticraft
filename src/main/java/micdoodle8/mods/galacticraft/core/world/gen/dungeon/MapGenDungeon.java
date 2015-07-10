@@ -7,6 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.ChunkPrimer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,25 +40,25 @@ public class MapGenDungeon
         this.HALLWAY_HEIGHT = hallwayHeight;
     }
 
-    public void generateUsingArrays(World world, long seed, int x, int y, int z, int chunkX, int chunkZ, Block[] blocks, byte[] metas)
+    public void generateUsingArrays(World world, long seed, int x, int y, int z, int chunkX, int chunkZ, ChunkPrimer primer)
     {
         final BlockPos dungeonCoords = this.getDungeonNear(seed, chunkX, chunkZ);
         if (dungeonCoords != null)
         {
-            this.generate(world, new Random(seed * dungeonCoords.getX() * dungeonCoords.getZ() * 24789), dungeonCoords.getX(), y, dungeonCoords.getZ(), chunkX, chunkZ, blocks, metas, true);
+            this.generate(world, new Random(seed * dungeonCoords.getX() * dungeonCoords.getZ() * 24789), dungeonCoords.getX(), y, dungeonCoords.getZ(), chunkX, chunkZ, primer, true);
         }
     }
 
-    public void generateUsingSetBlock(World world, long seed, int x, int y, int z)
-    {
-        final BlockPos dungeonCoords = this.getDungeonNear(seed, x / 16, y / 16);
-        if (dungeonCoords != null)
-        {
-            this.generate(world, new Random(seed * dungeonCoords.getX() * dungeonCoords.getZ() * 24789), x, y, z, x, z, null, null, false);
-        }
-    }
+//    public void generateUsingSetBlock(World world, long seed, int x, int y, int z)
+//    {
+//        final BlockPos dungeonCoords = this.getDungeonNear(seed, x / 16, y / 16);
+//        if (dungeonCoords != null)
+//        {
+//            this.generate(world, new Random(seed * dungeonCoords.getX() * dungeonCoords.getZ() * 24789), x, y, z, x, z, null, false);
+//        }
+//    }
 
-    public void generate(World world, Random rand, int x, int y, int z, int chunkX, int chunkZ, Block[] blocks, byte[] metas, boolean useArrays)
+    public void generate(World world, Random rand, int x, int y, int z, int chunkX, int chunkZ, ChunkPrimer primer, boolean useArrays)
     {
         MapGenDungeon.useArrays = useArrays;
         this.worldObj = world;
@@ -67,11 +68,11 @@ public class MapGenDungeon
         final int length = rand.nextInt(4) + 5;
 
         DungeonRoom currentRoom = DungeonRoom.makeRoom(this, rand, x, y, z, EnumFacing.DOWN);
-        currentRoom.generate(blocks, metas, chunkX, chunkZ);
+        currentRoom.generate(primer, chunkX, chunkZ);
         this.rooms.add(currentRoom);
         final DungeonBoundingBox cbb = currentRoom.getBoundingBox();
         boundingBoxes.add(cbb);
-        this.generateEntranceCrater(blocks, metas, x + (cbb.maxX - cbb.minX) / 2, y, z + (cbb.maxZ - cbb.minZ) / 2, chunkX, chunkZ);
+        this.generateEntranceCrater(primer, x + (cbb.maxX - cbb.minX) / 2, y, z + (cbb.maxZ - cbb.minZ) / 2, chunkX, chunkZ);
 
         for (int i = 0; i <= length; i++)
         {
@@ -197,9 +198,9 @@ public class MapGenDungeon
                             boundingBoxes.add(possibleRoomBb);
                             boundingBoxes.add(corridor1);
                             currentRoom = possibleRoom;
-                            currentRoom.generate(blocks, metas, chunkX, chunkZ);
+                            currentRoom.generate(primer, chunkX, chunkZ);
                             this.rooms.add(currentRoom);
-                            this.genCorridor(corridor1, rand, possibleRoom.posY, chunkX, chunkZ, dir, blocks, metas, false);
+                            this.genCorridor(corridor1, rand, possibleRoom.posY, chunkX, chunkZ, dir, primer, false);
                             break;
                         }
                     }
@@ -282,10 +283,10 @@ public class MapGenDungeon
                             boundingBoxes.add(corridor1);
                             boundingBoxes.add(corridor2);
                             currentRoom = possibleRoom;
-                            currentRoom.generate(blocks, metas, chunkX, chunkZ);
+                            currentRoom.generate(primer, chunkX, chunkZ);
                             this.rooms.add(currentRoom);
-                            this.genCorridor(corridor2, rand, possibleRoom.posY, chunkX, chunkZ, dir2, blocks, metas, true);
-                            this.genCorridor(corridor1, rand, possibleRoom.posY, chunkX, chunkZ, dir, blocks, metas, false);
+                            this.genCorridor(corridor2, rand, possibleRoom.posY, chunkX, chunkZ, dir2, primer, true);
+                            this.genCorridor(corridor1, rand, possibleRoom.posY, chunkX, chunkZ, dir, primer, false);
                             break;
                         }
                         else
@@ -300,7 +301,7 @@ public class MapGenDungeon
         }
     }
 
-    private void genCorridor(DungeonBoundingBox corridor, Random rand, int y, int cx, int cz, EnumFacing dir, Block[] blocks, byte[] metas, boolean doubleCorridor)
+    private void genCorridor(DungeonBoundingBox corridor, Random rand, int y, int cx, int cz, EnumFacing dir, ChunkPrimer primer, boolean doubleCorridor)
     {
         for (int i = corridor.minX - 1; i <= corridor.maxX + 1; i++)
         {
@@ -398,23 +399,23 @@ public class MapGenDungeon
                         {
                         	if (OxygenUtil.noAtmosphericCombustion(this.worldObj.provider))
                         	{
-                                this.placeBlock(blocks, metas, blockPos, cx, cz, GCBlocks.unlitTorch, 0);
+                                this.placeBlock(primer, blockPos, cx, cz, GCBlocks.unlitTorch, 0);
                                 this.worldObj.scheduleUpdate(new BlockPos(i, j, k), GCBlocks.unlitTorch, 40);
                         	}
                         	else
                         	{
-                                this.placeBlock(blocks, metas, blockPos, cx, cz, Blocks.torch, 0);
+                                this.placeBlock(primer, blockPos, cx, cz, Blocks.torch, 0);
                                 this.worldObj.scheduleUpdate(new BlockPos(i, j, k), Blocks.torch, 40);
                         	}
                         }
                         else
                         {
-                            this.placeBlock(blocks, metas, blockPos, cx, cz, Blocks.air, 0);
+                            this.placeBlock(primer, blockPos, cx, cz, Blocks.air, 0);
                         }
                     }
                     else
                     {
-                        this.placeBlock(blocks, metas, blockPos, cx, cz, this.DUNGEON_WALL_ID, this.DUNGEON_WALL_META);
+                        this.placeBlock(primer, blockPos, cx, cz, this.DUNGEON_WALL_ID, this.DUNGEON_WALL_META);
                     }
                 }
             }
@@ -462,7 +463,7 @@ public class MapGenDungeon
 
     }
 
-    public void generateEntranceCrater(Block[] blocks, byte[] meta, int x, int y, int z, int cx, int cz)
+    public void generateEntranceCrater(ChunkPrimer primer, int x, int y, int z, int cx, int cz)
     {
         final int range = 18;
         int maxLevel = 0;
@@ -478,7 +479,7 @@ public class MapGenDungeon
                 {
                     j--;
 
-                    Block block = this.getBlock(blocks, new BlockPos(x + i, j, z + k), cx + i / 16, cz + k / 16);
+                    Block block = this.getBlock(primer, new BlockPos(x + i, j, z + k), cx + i / 16, cz + k / 16);
 
                     if (Blocks.air != block && block != null)
                     {
@@ -501,9 +502,9 @@ public class MapGenDungeon
                 int helper = 0;
                 for (int j = maxLevel + 3; j > 0; j--)
                 {
-                    if ((Blocks.air != this.getBlock(blocks, new BlockPos(i, j - 1, k), cx, cz) || this.getBlock(blocks, new BlockPos(i, j, k), cx, cz) == this.DUNGEON_WALL_ID) && helper <= depth)
+                    if ((Blocks.air != this.getBlock(primer, new BlockPos(i, j - 1, k), cx, cz) || this.getBlock(primer, new BlockPos(i, j, k), cx, cz) == this.DUNGEON_WALL_ID) && helper <= depth)
                     {
-                        this.placeBlock(blocks, meta, new BlockPos(i, j, k), cx, cz, Blocks.air, 0);
+                        this.placeBlock(primer, new BlockPos(i, j, k), cx, cz, Blocks.air, 0);
                         helper++;
                     }
                     if (helper > depth || j <= y + 1)
@@ -532,7 +533,7 @@ public class MapGenDungeon
         return null;
     }
 
-    private void placeBlock(Block[] blocks, byte[] metas, BlockPos pos, int cx, int cz, Block id, int meta)
+    private void placeBlock(ChunkPrimer primer, BlockPos pos, int cx, int cz, Block id, int meta)
     {
         if (MapGenDungeon.useArrays)
         {
@@ -544,8 +545,9 @@ public class MapGenDungeon
                 return;
             }
             final int index = this.getIndex(pos);
-            blocks[index] = id;
-            metas[index] = (byte) meta;
+            primer.setBlockState(index, id.getStateFromMeta(meta));
+//            blocks[index] = id;
+//            metas[index] = (byte) meta;
         }
         else
         {
@@ -553,7 +555,7 @@ public class MapGenDungeon
         }
     }
 
-    private Block getBlock(Block[] blocks, BlockPos pos, int cx, int cz)
+    private Block getBlock(ChunkPrimer primer, BlockPos pos, int cx, int cz)
     {
         if (MapGenDungeon.useArrays)
         {
@@ -564,7 +566,8 @@ public class MapGenDungeon
             {
                 return Blocks.air;
             }
-            return blocks[this.getIndex(pos)];
+            return primer.getBlockState(this.getIndex(pos)).getBlock();
+//            return blocks[this.getIndex(pos)];
         }
         else
         {

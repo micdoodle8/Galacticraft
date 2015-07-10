@@ -1,6 +1,10 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.pattern.BlockHelper;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenMinable;
@@ -23,7 +27,7 @@ public class WorldGenMinableMeta extends WorldGenMinable
 
     public WorldGenMinableMeta(Block par1, int par2, int par3, boolean par4, Block id, int meta)
     {
-        super(par1, par3, par2, id);
+        super(par1.getStateFromMeta(par3), par2, BlockHelper.forBlock(id));
         this.minableBlockId = par1;
         this.numberOfBlocks = par2;
         this.metadata = par3;
@@ -33,17 +37,17 @@ public class WorldGenMinableMeta extends WorldGenMinable
     }
 
     @Override
-    public boolean generate(World par1World, Random par2Random, int px, int py, int pz)
+    public boolean generate(World par1World, Random par2Random, BlockPos pos)
     {
         final float f = par2Random.nextFloat() * (float) Math.PI;
         final float sinf = MathHelper.sin(f) * this.numberOfBlocks / 8.0F;
         final float cosf = MathHelper.cos(f) * this.numberOfBlocks / 8.0F;
-        final float x1 = px + 8 + sinf;
+        final float x1 = pos.getX() + 8 + sinf;
         final float x2 = -2F * sinf;
-        final float z1 = pz + 8 + cosf;
+        final float z1 = pos.getZ() + 8 + cosf;
         final float z2 = -2F * cosf;
-        final float y1 = py + par2Random.nextInt(3) - 2;
-        final float y2 = py + par2Random.nextInt(3) - 2 - y1;
+        final float y1 = pos.getY() + par2Random.nextInt(3) - 2;
+        final float y2 = pos.getY() + par2Random.nextInt(3) - 2 - y1;
 
         for (int l = 0; l <= this.numberOfBlocks; ++l)
         {
@@ -78,15 +82,16 @@ public class WorldGenMinableMeta extends WorldGenMinable
                                 float dz = (iz + 0.5F - cz) / size;
                                 dz *= dz;
 
-                                if (dx + dy + dz < 1.0F && par1World.getBlock(ix, iy, iz) == this.fillerID && par1World.getBlockMetadata(ix, iy, iz) == this.fillerMetadata)
+                                IBlockState state = par1World.getBlockState(new BlockPos(ix, iy, iz));
+                                if (dx + dy + dz < 1.0F && state.getBlock() == this.fillerID && state.getBlock().getMetaFromState(state) == this.fillerMetadata)
                                 {
                                     if (!this.usingMetadata)
                                     {
-                                        par1World.setBlock(ix, iy, iz, this.minableBlockId, 0, 3);
+                                        par1World.setBlockState(new BlockPos(ix, iy, iz), this.minableBlockId.getStateFromMeta(0), 3);
                                     }
                                     else
                                     {
-                                        par1World.setBlock(ix, iy, iz, this.minableBlockId, this.metadata, 3);
+                                        par1World.setBlockState(new BlockPos(ix, iy, iz), this.minableBlockId.getStateFromMeta(this.metadata), 3);
                                     }
                                 }
                             }

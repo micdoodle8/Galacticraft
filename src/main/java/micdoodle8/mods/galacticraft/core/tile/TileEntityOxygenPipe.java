@@ -38,12 +38,12 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
         return false;
     }
 
-    @Override
-    public boolean canUpdate()
-    {
-        return this.worldObj == null || !this.worldObj.isRemote;
-
-    }
+//    @Override
+//    public boolean canUpdate()
+//    {
+//        return this.worldObj == null || !this.worldObj.isRemote;
+//
+//    }
 
     @Override
     public void update()

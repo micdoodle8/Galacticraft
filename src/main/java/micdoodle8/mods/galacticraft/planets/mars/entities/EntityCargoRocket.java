@@ -11,12 +11,15 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.util.MarsUtil;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -171,7 +174,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
 
         if (this.landing && this.targetVec != null)
         {
-            double modifier = this.posY - this.targetVec.y;
+            double modifier = this.posY - this.targetVec.getY();
             modifier = Math.max(modifier, 1.0);
             x1 *= modifier / 60.0D;
             y1 *= modifier / 60.0D;
@@ -226,25 +229,25 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
 
         if (this.targetVec != null)
         {
-            if (this.targetDimension != this.worldObj.provider.dimensionId)
+            if (this.targetDimension != this.worldObj.provider.getDimensionId())
             {
                 World worldServer = GalacticraftCore.proxy.getWorldForID(this.targetDimension);
 
                 if (!this.worldObj.isRemote && worldServer != null)
                 {
-                    this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
+                    this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
                     Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (WorldServer) worldServer, false, null);
 
                     if (e instanceof EntityCargoRocket)
                     {
-                        e.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
+                        e.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
                         ((EntityCargoRocket) e).landing = true;
                     }
                 }
             }
             else
             {
-                this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
+                this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
                 this.landing = true;
             }
         }
@@ -299,7 +302,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     {
         if (this.targetVec != null)
         {
-            this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
+            this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
             this.landing = true;
         }
         else
@@ -380,5 +383,35 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     public double getOnPadYOffset()
     {
     	return 0D;//-0.25D;
+    }
+
+    @Override
+    public IUpdatePlayerListBox getSoundUpdater() {
+        return null;
+    }
+
+    @Override
+    public ISound setSoundUpdater(EntityPlayerSP player) {
+        return null;
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
     }
 }

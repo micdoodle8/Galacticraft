@@ -1,6 +1,9 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import com.google.common.base.Predicate;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -22,6 +25,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fluids.FluidStack;
 
+import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.List;
 
@@ -36,7 +40,12 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 
         if (!this.worldObj.isRemote)
         {
-            final List<?> list = this.worldObj.getEntitiesWithinAABB(IFuelable.class, AxisAlignedBB.fromBounds(this.getPos().getX() - 0.5D, this.getPos().getY(), this.getPos().getZ() - 0.5D, this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D));
+            final List<?> list = this.worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.fromBounds(this.getPos().getX() - 0.5D, this.getPos().getY(), this.getPos().getZ() - 0.5D, this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D), new Predicate() {
+                @Override
+                public boolean apply(Object input) {
+                    return input instanceof IFuelable;
+                }
+            });
 
             boolean docked = false;
 
@@ -84,7 +93,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
     }
 
     @Override
-    public void onCreate(BlockPos placedPosition)
+    public void onCreate(World world, BlockPos placedPosition)
     {
         this.mainBlockPosition = placedPosition;
         this.markDirty();
@@ -97,7 +106,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 
                 if (!vecToAdd.equals(placedPosition))
                 {
-                    ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, worldObj.getBlockState(vecToAdd).getBlock().getStateFromMeta(2));
+                    ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, vecToAdd, placedPosition, 2);
                 }
             }
         }

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
@@ -35,7 +36,7 @@ public class GuiRocketInventory extends GuiContainerGC
 
     public GuiRocketInventory(IInventory par1IInventory, IInventory par2IInventory, EnumRocketType rocketType)
     {
-        super(new ContainerRocketInventory(par1IInventory, par2IInventory, rocketType));
+        super(new ContainerRocketInventory(par1IInventory, par2IInventory, rocketType, FMLClientHandler.instance().getClient().thePlayer));
         this.upperChestInventory = par1IInventory;
         this.allowUserInput = false;
         this.ySize = rocketType.getInventorySpace() <= 3 ? 132 : 145 + rocketType.getInventorySpace() * 2;

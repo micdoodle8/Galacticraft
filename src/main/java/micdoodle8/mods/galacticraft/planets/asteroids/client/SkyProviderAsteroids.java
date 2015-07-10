@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client;
 
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -41,7 +42,8 @@ public class SkyProviderAsteroids extends IRenderHandler
         this.renderStars();
         GL11.glEndList();
         GL11.glPopMatrix();
-        final Tessellator tessellator = Tessellator.instance;
+        final Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
         this.glSkyList = this.starGLCallList + 1;
         GL11.glNewList(this.glSkyList, GL11.GL_COMPILE);
         final byte byte2 = 64;
@@ -52,11 +54,11 @@ public class SkyProviderAsteroids extends IRenderHandler
         {
             for (int l = -byte2 * i; l <= byte2 * i; l += byte2)
             {
-                tessellator.startDrawingQuads();
-                tessellator.addVertex(j + 0, f, l + 0);
-                tessellator.addVertex(j + byte2, f, l + 0);
-                tessellator.addVertex(j + byte2, f, l + byte2);
-                tessellator.addVertex(j + 0, f, l + byte2);
+                worldRenderer.startDrawingQuads();
+                worldRenderer.addVertex(j + 0, f, l + 0);
+                worldRenderer.addVertex(j + byte2, f, l + 0);
+                worldRenderer.addVertex(j + byte2, f, l + byte2);
+                worldRenderer.addVertex(j + 0, f, l + byte2);
                 tessellator.draw();
             }
         }
@@ -65,16 +67,16 @@ public class SkyProviderAsteroids extends IRenderHandler
         this.glSkyList2 = this.starGLCallList + 2;
         GL11.glNewList(this.glSkyList2, GL11.GL_COMPILE);
         f = -16F;
-        tessellator.startDrawingQuads();
+        worldRenderer.startDrawingQuads();
 
         for (int k = -byte2 * i; k <= byte2 * i; k += byte2)
         {
             for (int i1 = -byte2 * i; i1 <= byte2 * i; i1 += byte2)
             {
-                tessellator.addVertex(k + byte2, f, i1 + 0);
-                tessellator.addVertex(k + 0, f, i1 + 0);
-                tessellator.addVertex(k + 0, f, i1 + byte2);
-                tessellator.addVertex(k + byte2, f, i1 + byte2);
+                worldRenderer.addVertex(k + byte2, f, i1 + 0);
+                worldRenderer.addVertex(k + 0, f, i1 + 0);
+                worldRenderer.addVertex(k + 0, f, i1 + byte2);
+                worldRenderer.addVertex(k + byte2, f, i1 + byte2);
             }
         }
 
@@ -88,7 +90,8 @@ public class SkyProviderAsteroids extends IRenderHandler
         float var10;
         float var11;
         float var12;
-        final Tessellator var23 = Tessellator.instance;
+        final Tessellator var23 = Tessellator.getInstance();
+        WorldRenderer worldRenderer = var23.getWorldRenderer();
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
@@ -118,11 +121,11 @@ public class SkyProviderAsteroids extends IRenderHandler
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);        
         var12 = this.sunSize / 4.2F;
-        var23.startDrawingQuads();
-        var23.addVertex(-var12, 90.0D, -var12);
-        var23.addVertex(var12, 90.0D, -var12);
-        var23.addVertex(var12, 90.0D, var12);
-        var23.addVertex(-var12, 90.0D, var12);
+        worldRenderer.startDrawingQuads();
+        worldRenderer.addVertex(-var12, 90.0D, -var12);
+        worldRenderer.addVertex(var12, 90.0D, -var12);
+        worldRenderer.addVertex(var12, 90.0D, var12);
+        worldRenderer.addVertex(-var12, 90.0D, var12);
         var23.draw();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
@@ -130,11 +133,11 @@ public class SkyProviderAsteroids extends IRenderHandler
         var12 = this.sunSize / 1.2F;
         //110 distance instead of the normal 100, because there is no atmosphere to make the disk seem larger
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(SkyProviderAsteroids.sunTexture);
-        var23.startDrawingQuads();
-        var23.addVertexWithUV(-var12, 90.0D, -var12, 0.0D, 0.0D);
-        var23.addVertexWithUV(var12, 90.0D, -var12, 1.0D, 0.0D);
-        var23.addVertexWithUV(var12, 90.0D, var12, 1.0D, 1.0D);
-        var23.addVertexWithUV(-var12, 90.0D, var12, 0.0D, 1.0D);
+        worldRenderer.startDrawingQuads();
+        worldRenderer.addVertexWithUV(-var12, 90.0D, -var12, 0.0D, 0.0D);
+        worldRenderer.addVertexWithUV(var12, 90.0D, -var12, 1.0D, 0.0D);
+        worldRenderer.addVertexWithUV(var12, 90.0D, var12, 1.0D, 1.0D);
+        worldRenderer.addVertexWithUV(-var12, 90.0D, var12, 0.0D, 1.0D);
         var23.draw();
 
         GL11.glPopMatrix();
@@ -148,11 +151,11 @@ public class SkyProviderAsteroids extends IRenderHandler
         GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1F);
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(SkyProviderAsteroids.overworldTexture);
-        var23.startDrawingQuads();
-        var23.addVertexWithUV(-var12, -100.0D, var12, 0, 1);
-        var23.addVertexWithUV(var12, -100.0D, var12, 1, 1);
-        var23.addVertexWithUV(var12, -100.0D, -var12, 1, 0);
-        var23.addVertexWithUV(-var12, -100.0D, -var12, 0, 0);
+        worldRenderer.startDrawingQuads();
+        worldRenderer.addVertexWithUV(-var12, -100.0D, var12, 0, 1);
+        worldRenderer.addVertexWithUV(var12, -100.0D, var12, 1, 1);
+        worldRenderer.addVertexWithUV(var12, -100.0D, -var12, 1, 0);
+        worldRenderer.addVertexWithUV(-var12, -100.0D, -var12, 0, 0);
         var23.draw();
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -163,7 +166,7 @@ public class SkyProviderAsteroids extends IRenderHandler
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glColor3f(0.0F, 0.0F, 0.0F);
-        final double var25 = mc.thePlayer.getPosition(partialTicks).yCoord - world.getHorizon();
+        final double var25 = mc.thePlayer.getPosition().getY() - world.getHorizon();
 
         //		if (var25 < 0.0D)
         //		{
@@ -212,8 +215,9 @@ public class SkyProviderAsteroids extends IRenderHandler
     private void renderStars()
     {
         final Random var1 = new Random(10842L);
-        final Tessellator var2 = Tessellator.instance;
-        var2.startDrawingQuads();
+        final Tessellator var2 = Tessellator.getInstance();
+        WorldRenderer worldRenderer = var2.getWorldRenderer();
+        worldRenderer.startDrawingQuads();
 
         for (int var3 = 0; var3 < (ConfigManagerCore.moreStars ? 35000 : 6000); ++var3)
         {
@@ -252,7 +256,7 @@ public class SkyProviderAsteroids extends IRenderHandler
                     final double dX = var55 * var22 - var49 * var24;
                     final double dZ = var49 * var22 + var55 * var24;
                     final double dY = var47 * var28;
-                    var2.addVertex(pX + dX, pY + dY, pZ + dZ);
+                    worldRenderer.addVertex(pX + dX, pY + dY, pZ + dZ);
                 }
             }
         }
@@ -262,7 +266,7 @@ public class SkyProviderAsteroids extends IRenderHandler
 
     private Vec3 getCustomSkyColor()
     {
-        return Vec3.createVectorHelper(0.26796875D, 0.1796875D, 0.0D);
+        return new Vec3(0.26796875D, 0.1796875D, 0.0D);
     }
 
     public float getSkyBrightness(float par1)

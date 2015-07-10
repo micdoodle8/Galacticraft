@@ -15,15 +15,18 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+
+import java.io.IOException;
 
 public class GuiSlimelingInventory extends GuiContainer
 {
     private static final ResourceLocation slimelingPanelGui = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/slimelingPanel2.png");
     private final EntitySlimeling slimeling;
 
-    public static RenderItem drawItems = new RenderItem();
+//    public static RenderItem drawItems = new RenderItem();
 
     private int invX;
     private int invY;
@@ -32,7 +35,7 @@ public class GuiSlimelingInventory extends GuiContainer
 
     public GuiSlimelingInventory(EntityPlayer player, EntitySlimeling slimeling)
     {
-        super(new ContainerSlimeling(player.inventory, slimeling));
+        super(new ContainerSlimeling(player.inventory, slimeling, FMLClientHandler.instance().getClient().thePlayer));
         this.slimeling = slimeling;
         this.xSize = 176;
         this.ySize = 210;
@@ -69,7 +72,7 @@ public class GuiSlimelingInventory extends GuiContainer
     }
 
     @Override
-    protected void mouseClicked(int px, int py, int par3)
+    protected void mouseClicked(int px, int py, int par3) throws IOException
     {
         if (px >= this.invX && px < this.invX + this.invWidth && py >= this.invY && py < this.invY + this.invHeight)
         {
@@ -100,9 +103,9 @@ public class GuiSlimelingInventory extends GuiContainer
         slimeling.rotationYaw = (float) Math.atan(par4 / 40.0F) * 40.0F;
         slimeling.rotationPitch = -((float) Math.atan(par5 / 40.0F)) * 20.0F;
         slimeling.rotationYawHead = slimeling.rotationYaw;
-        GL11.glTranslatef(0.0F, slimeling.yOffset, 0.0F);
-        RenderManager.instance.playerViewY = 180.0F;
-        RenderManager.instance.renderEntityWithPosYaw(slimeling, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+        GL11.glTranslatef(0.0F, (float)slimeling.getYOffset(), 0.0F);
+        FMLClientHandler.instance().getClient().getRenderManager().playerViewY = 180.0F;
+        FMLClientHandler.instance().getClient().getRenderManager().renderEntityWithPosYaw(slimeling, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
         slimeling.renderYawOffset = f2;
         slimeling.rotationYaw = f3;
         slimeling.rotationPitch = f4;

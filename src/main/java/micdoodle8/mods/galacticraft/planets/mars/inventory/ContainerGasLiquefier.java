@@ -16,7 +16,7 @@ public class ContainerGasLiquefier extends Container
 {
     private final TileEntityGasLiquefier tileEntity;
 
-    public ContainerGasLiquefier(InventoryPlayer par1InventoryPlayer, TileEntityGasLiquefier tileEntity)
+    public ContainerGasLiquefier(InventoryPlayer par1InventoryPlayer, TileEntityGasLiquefier tileEntity, EntityPlayer player)
     {
         this.tileEntity = tileEntity;
 
@@ -44,14 +44,14 @@ public class ContainerGasLiquefier extends Container
             this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 144));
         }
 
-        tileEntity.openInventory();
+        tileEntity.openInventory(player);
     }
 
     @Override
     public void onContainerClosed(EntityPlayer entityplayer)
     {
         super.onContainerClosed(entityplayer);
-        this.tileEntity.closeInventory();
+        this.tileEntity.closeInventory(entityplayer);
     }
 
     @Override

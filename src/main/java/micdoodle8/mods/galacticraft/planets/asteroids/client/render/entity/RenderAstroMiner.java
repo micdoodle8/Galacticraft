@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -117,22 +118,22 @@ public class RenderAstroMiner extends Render
         float partBlock;
         switch (astroMiner.facing)
         {
-        case 0:
+        case DOWN:
         	partBlock = (float) (astroMiner.posY % 1D);
         	break;
-        case 1:
+        case UP:
         	partBlock = 1F - (float) (astroMiner.posY % 1D);
         	break;
-        case 2:
+        case NORTH:
         	partBlock = (float) (astroMiner.posZ % 1D);
         	break;
-        case 3:
+        case SOUTH:
         	partBlock = 1F - (float) (astroMiner.posZ % 1D);
         	break;
-        case 4:
+        case WEST:
         	partBlock = (float) (astroMiner.posX % 1D);
         	break;
-        case 5:
+        case EAST:
         	partBlock = 1F - (float) (astroMiner.posX % 1D);
         	break;
         default:
@@ -381,12 +382,12 @@ public class RenderAstroMiner extends Render
         
         float xx, yy, zz;
         
-        if (entity.facing > 3)
+        if (entity.facing.getIndex() > EnumFacing.SOUTH.getIndex())
         {
             xx = ((xD < 0) ? cA : cB);
             drawLaserX(mainLaserX, mainLaserY, mainLaserZ, xx, 0.5F, 0.5F);
         }
-        else if (entity.facing < 2)
+        else if (entity.facing.getIndex() <= EnumFacing.UP.getIndex())
         {
             yy = ((yD < 0) ? cA : cB);
             drawLaserY(mainLaserX, mainLaserY, mainLaserZ, 0.5F, yy, 0.5F);

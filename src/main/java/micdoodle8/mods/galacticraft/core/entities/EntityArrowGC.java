@@ -205,7 +205,7 @@
 //            block.setBlockBoundsBasedOnState(this.worldObj, this.xTile, this.yTile, this.zTile);
 //            AxisAlignedBB axisalignedbb = block.getCollisionBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
 //
-//            if (axisalignedbb != null && axisalignedbb.isVecInside(Vec3.createVectorHelper(this.posX, this.posY, this.posZ)))
+//            if (axisalignedbb != null && axisalignedbb.func_175898_b(Vec3.createVectorHelper(this.posX, this.posY, this.posZ)))
 //            {
 //                this.inGround = true;
 //            }

@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -41,7 +43,7 @@ public class GuiGasLiquefier extends GuiContainerGC
 
     public GuiGasLiquefier(InventoryPlayer par1InventoryPlayer, TileEntityGasLiquefier tileEntity)
     {
-        super(new ContainerGasLiquefier(par1InventoryPlayer, tileEntity));
+        super(new ContainerGasLiquefier(par1InventoryPlayer, tileEntity, FMLClientHandler.instance().getClient().thePlayer));
         this.tileEntity = tileEntity;
         this.ySize = 168;
     }
@@ -104,7 +106,7 @@ public class GuiGasLiquefier extends GuiContainerGC
         switch (par1GuiButton.id)
         {
         case 0:
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.tileEntity.xCoord, this.tileEntity.yCoord, this.tileEntity.zCoord, 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.tileEntity.getPos(), 0 }));
             break;
         }
     }

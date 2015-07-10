@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
@@ -74,7 +75,7 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
     }
 
     @Override
-    public void onCreate(BlockPos placedPosition)
+    public void onCreate(World world, BlockPos placedPosition)
     {
         this.mainBlockPosition = placedPosition;
         this.markDirty();
@@ -87,7 +88,7 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
 
                 if (!vecToAdd.equals(placedPosition))
                 {
-                    ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 6);
+                    ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, vecToAdd, placedPosition, 6);
                 }
             }
         }

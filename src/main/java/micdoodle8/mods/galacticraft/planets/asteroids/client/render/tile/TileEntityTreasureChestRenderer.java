@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile;
 
-import micdoodle8.mods.galacticraft.core.blocks.BlockTier3TreasureChest;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.client.model.block.ModelTreasureChest;

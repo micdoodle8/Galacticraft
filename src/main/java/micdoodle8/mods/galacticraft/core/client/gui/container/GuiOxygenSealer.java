@@ -15,6 +15,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
@@ -44,7 +46,7 @@ public class GuiOxygenSealer extends GuiContainerGC
         switch (par1GuiButton.id)
         {
         case 0:
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.sealer.xCoord, this.sealer.yCoord, this.sealer.zCoord, 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.sealer.getPos(), 0 }));
             break;
         }
     }
@@ -104,9 +106,10 @@ public class GuiOxygenSealer extends GuiContainerGC
 
     private String getStatus()
     {
-        Block blockAbove = this.sealer.getWorldObj().getBlock(this.sealer.xCoord, this.sealer.yCoord + 1, this.sealer.zCoord);
+        BlockPos blockPosAbove = this.sealer.getPos().up();
+        Block blockAbove = this.sealer.getWorld().getBlockState(blockPosAbove).getBlock();
 
-        if (!(blockAbove.isAir(this.sealer.getWorldObj(), this.sealer.xCoord, this.sealer.yCoord + 1, this.sealer.zCoord)) && !OxygenPressureProtocol.canBlockPassAir(this.sealer.getWorldObj(), blockAbove, new BlockVec3(this.sealer.xCoord, this.sealer.yCoord + 1, this.sealer.zCoord), 1))
+        if (!(blockAbove.isAir(this.sealer.getWorld(), blockPosAbove)) && !OxygenPressureProtocol.canBlockPassAir(this.sealer.getWorld(), blockAbove, blockPosAbove, EnumFacing.UP))
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.sealerblocked.name");
         }

@@ -68,7 +68,7 @@ public class EntityMeteorChunk extends Entity implements IProjectile
 
         this.posY = shootingEntity.posY + shootingEntity.getEyeHeight() - 0.10000000149011612D;
         double d0 = target.posX - shootingEntity.posX;
-        double d1 = target.getBoundingBox().minY + target.height / 3.0F - this.posY;
+        double d1 = target.getEntityBoundingBox().minY + target.height / 3.0F - this.posY;
         double d2 = target.posZ - shootingEntity.posZ;
         double d3 = MathHelper.sqrt_double(d0 * d0 + d2 * d2);
 
@@ -230,7 +230,7 @@ public class EntityMeteorChunk extends Entity implements IProjectile
             this.rotationPitch += 1F;
 
             Entity entity = null;
-            List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+            List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
             double d0 = 0.0D;
             int l;
             float f1;
@@ -242,7 +242,7 @@ public class EntityMeteorChunk extends Entity implements IProjectile
                 if (entity1.canBeCollidedWith() && (entity1 != this.shootingEntity || this.ticksInAir >= 5))
                 {
                     f1 = 0.3F;
-                    AxisAlignedBB axisalignedbb1 = entity1.getBoundingBox().expand(f1, f1, f1);
+                    AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().expand(f1, f1, f1);
                     MovingObjectPosition movingobjectposition1 = axisalignedbb1.calculateIntercept(vec3, vec31);
 
                     if (movingobjectposition1 != null)

@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -30,16 +31,18 @@ public class BlockAirLockFrame extends BlockAdvancedTile implements ItemBlockDes
     /*@SideOnly(Side.CLIENT)
     private IIcon[] airLockIcons;*/
 
-    private enum EnumAirLockType
+    private enum EnumAirLockType implements IStringSerializable
     {
-        AIR_LOCK_FRAME(0),
-        AIR_LOCK_CONTROLLER(1);
+        AIR_LOCK_FRAME(0, "air_lock_frame"),
+        AIR_LOCK_CONTROLLER(1, "air_lock_controller");
 
         private final int meta;
+        private final String name;
 
-        private EnumAirLockType(int meta)
+        private EnumAirLockType(int meta, String name)
         {
             this.meta = meta;
+            this.name = name;
         }
 
         public int getMeta()
@@ -50,6 +53,11 @@ public class BlockAirLockFrame extends BlockAdvancedTile implements ItemBlockDes
         public static EnumAirLockType byMetadata(int meta)
         {
             return values()[meta];
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
         }
     }
 
@@ -335,9 +343,8 @@ public class BlockAirLockFrame extends BlockAdvancedTile implements ItemBlockDes
     }
 
     @Override
-    public boolean onMachineActivated(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        IBlockState state = world.getBlockState(pos);
         TileEntity tile = world.getTileEntity(pos);
 
         if (((EnumAirLockType)state.getValue(AIR_LOCK_TYPE)).getMeta() == EnumAirLockType.AIR_LOCK_CONTROLLER.getMeta() && tile instanceof TileEntityAirLockController)

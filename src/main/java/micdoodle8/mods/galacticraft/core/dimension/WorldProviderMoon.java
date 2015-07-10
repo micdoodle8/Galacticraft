@@ -68,7 +68,7 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
 //    @Override
 //	public void setDimension(int var1)
 //	{
-//		this.dimensionId = var1;
+//		this.getDimensionId() = var1;
 //		super.setDimension(var1);
 //	}
 
@@ -316,5 +316,10 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
     public float getWindLevel()
     {
         return 0;
+    }
+
+    @Override
+    public String getInternalNameSuffix() {
+        return "_moon";
     }
 }

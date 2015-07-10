@@ -231,7 +231,7 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
 
         if (var8 instanceof IMultiBlock)
         {
-            ((IMultiBlock) var8).onCreate(pos);
+            ((IMultiBlock) var8).onCreate(worldIn, pos);
         }
 
         if (metadata >= BlockMachineMars.LAUNCH_CONTROLLER_METADATA)

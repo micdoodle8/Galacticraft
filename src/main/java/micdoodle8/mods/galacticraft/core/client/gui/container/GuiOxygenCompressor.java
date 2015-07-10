@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class GuiOxygenCompressor extends GuiContainerGC
 
     public GuiOxygenCompressor(InventoryPlayer par1InventoryPlayer, TileEntityOxygenCompressor par2TileEntityAirDistributor)
     {
-        super(new ContainerOxygenCompressor(par1InventoryPlayer, par2TileEntityAirDistributor));
+        super(new ContainerOxygenCompressor(par1InventoryPlayer, par2TileEntityAirDistributor, FMLClientHandler.instance().getClient().thePlayer));
         this.compressor = par2TileEntityAirDistributor;
         this.ySize = 180;
     }

@@ -15,8 +15,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
@@ -24,7 +26,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TileEntityArclamp extends TileEntity
+public class TileEntityArclamp extends TileEntity implements IUpdatePlayerListBox
 {
     private int ticks = 0;
     private int sideRear = 0;
@@ -37,14 +39,12 @@ public class TileEntityArclamp extends TileEntity
 	public boolean updateClientFlag;
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
-
         boolean firstTick = false;
         if (this.updateClientFlag)
         {
-        	GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.facing } ), this.worldObj.provider.dimensionId);
+        	GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.facing } ), this.worldObj.provider.getDimensionId());
         	this.updateClientFlag = false;
         }
 
@@ -110,7 +110,7 @@ public class TileEntityArclamp extends TileEntity
 
             if (this.worldObj.rand.nextInt(20) == 0)
             {
-                List<Entity> moblist = this.worldObj.getEntitiesWithinAABBExcludingEntity(null, this.thisAABB, IMob.mobSelector);
+                List<Entity> moblist = this.worldObj.func_175674_a(null, this.thisAABB, IMob.mobSelector);
 
                 if (!moblist.isEmpty())
                 {
@@ -139,11 +139,11 @@ public class TileEntityArclamp extends TileEntity
                         {
                             vecOldTarget = nav.getPath().getPosition(e);
                         }
-                        double distanceNew = vecNewTarget.squareDistanceTo(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
+                        double distanceNew = vecNewTarget.distanceTo(new Vec3(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()));
 
                         if (distanceNew > e.getDistanceSq(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()))
                         {
-                            if (vecOldTarget == null || distanceNew > vecOldTarget.squareDistanceTo(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()))
+                            if (vecOldTarget == null || distanceNew > vecOldTarget.squareDistanceTo(new Vec3(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ())))
                             {
                                 e.getNavigator().tryMoveToXYZ(vecNewTarget.xCoord, vecNewTarget.yCoord, vecNewTarget.zCoord, 0.3D);
                                 //System.out.println("Debug: Arclamp repelling entity: "+e.getClass().getSimpleName());
@@ -160,7 +160,7 @@ public class TileEntityArclamp extends TileEntity
     @Override
     public void validate()
     {
-        this.thisPos = Vec3.createVectorHelper(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D);
+        this.thisPos = new Vec3(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D);
         this.ticks = 0;
         this.thisAABB = null;
         this.isActive = true;
@@ -231,13 +231,14 @@ public class TileEntityArclamp extends TileEntity
                     if (!vec.sideDone[side])
                     {
                         BlockVec3 sideVec = vec.newVecSide(side);
+                        BlockPos sideVecPos = sideVec.toBlockPos();
 
                         if (!checked.contains(sideVec))
                         {
                             checked.add(sideVec);
 
                             Block b = sideVec.getBlockIDsafe_noChunkLoad(world);
-                            if (b.isAir(world, sideVec.x, sideVec.y, sideVec.z))
+                            if (b.isAir(world, sideVecPos))
                             {
                                 if (side != sideskip1 && side != sideskip2)
                                 {
@@ -247,7 +248,7 @@ public class TileEntityArclamp extends TileEntity
                             else
                             {
                                 allAir = false;
-                                if (b != null && b.getLightOpacity(world, sideVec.x, sideVec.y, sideVec.z) == 0)
+                                if (b != null && b.getLightOpacity(world, sideVecPos) == 0)
                                 {
                                     if (side != sideskip1 && side != sideskip2)
                                     {
@@ -264,17 +265,17 @@ public class TileEntityArclamp extends TileEntity
                 if (!allAir)
                 {
                     Block id = vec.getBlockIDsafe_noChunkLoad(world);
-                    if (id.isAir(world, vec.x, vec.y, vec.z))
+                    if (id.isAir(world, vec.toBlockPos()))
                     {
                         if (Blocks.air == id)
                         {
-                            world.setBlock(vec.x, vec.y, vec.z, brightAir, 0, 2);
+                            world.setBlockState(vec.toBlockPos(), brightAir.getDefaultState(), 2);
                             this.airToRestore.add(vec);
                             this.markDirty();
                         }
                         else if (id == breatheableAirID)
                         {
-                            world.setBlock(vec.x, vec.y, vec.z, brightBreatheableAir, 0, 2);
+                            world.setBlockState(vec.toBlockPos(), brightBreatheableAir.getDefaultState(), 2);
                             this.airToRestore.add(vec);
                             this.markDirty();
                         }
@@ -340,7 +341,7 @@ public class TileEntityArclamp extends TileEntity
             //facing sequence: 0 - 3 - 1 - 2
         }
 
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.facing } ), this.worldObj.provider.dimensionId);
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.facing } ), this.worldObj.provider.getDimensionId());
         this.thisAABB = null;
         this.revertAir();
         this.markDirty();
@@ -355,11 +356,11 @@ public class TileEntityArclamp extends TileEntity
             Block b = vec.getBlock(this.worldObj);
             if (b == brightAir)
             {
-                this.worldObj.setBlock(vec.x, vec.y, vec.z, Blocks.air, 0, 2);
+                this.worldObj.setBlockState(vec.toBlockPos(), Blocks.air.getDefaultState(), 2);
             }
             else if (b == brightBreatheableAir)
             {
-                this.worldObj.setBlock(vec.x, vec.y, vec.z, GCBlocks.breatheableAir, 0, 2);
+                this.worldObj.setBlockState(vec.toBlockPos(), GCBlocks.breatheableAir.getDefaultState(), 2);
                 //No block update - not necessary for changing air to air, also must not trigger a sealer edge check
             }
         }

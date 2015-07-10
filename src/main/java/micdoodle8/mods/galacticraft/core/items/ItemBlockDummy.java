@@ -21,7 +21,7 @@ public class ItemBlockDummy extends ItemBlock
 //    @SideOnly(Side.CLIENT)
 //    public IIcon getIconFromDamage(int par1)
 //    {
-//        return this.field_150939_a.getIcon(0, par1);
+//        return this.getBlock().getIcon(0, par1);
 //    }
 
     @Override

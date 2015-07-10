@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -25,17 +26,18 @@ public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer
         TileEntityBeamReceiverRenderer.receiverModel = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/receiver.obj"));
     }
 
-    public void renderModelAt(TileEntityBeamReceiver tileEntity, double d, double d1, double d2, float f)
+    public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f1, int f2)
     {
+        TileEntityBeamReceiver tileEntity = (TileEntityBeamReceiver) tile;
         // Texture file
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityBeamReceiverRenderer.receiverTexture);
 
         GL11.glPushMatrix();
 
-        GL11.glTranslatef((float) d + 0.5F, (float) d1, (float) d2 + 0.5F);
+        GL11.glTranslatef((float) x + 0.5F, (float) y, (float) z + 0.5F);
         GL11.glScalef(0.85F, 0.85F, 0.85F);
 
-        switch (EnumFacing.getFront(tileEntity.facing))
+        switch (tileEntity.facing)
         {
         case DOWN:
             GL11.glTranslatef(0.7F, -0.15F, 0.0F);
@@ -100,11 +102,5 @@ public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer
         TileEntityBeamReceiverRenderer.receiverModel.renderPart("Ring");
 
         GL11.glPopMatrix();
-    }
-
-    @Override
-    public void renderTileEntityAt(TileEntity tileEntity, double var2, double var4, double var6, float var8)
-    {
-        this.renderModelAt((TileEntityBeamReceiver) tileEntity, var2, var4, var6, var8);
     }
 }

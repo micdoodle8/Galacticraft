@@ -16,31 +16,31 @@ public class CommandPlanetTeleport extends CommandBase
     @Override
     public String getCommandUsage(ICommandSender var1)
     {
-        return "/" + this.getCommandName() + " [<player>]";
+        return "/" + this.getName() + " [<player>]";
     }
 
     @Override
-    public String getCommandName()
+    public String getName()
     {
         return "dimensiontp";
     }
 
     @Override
-    public void processCommand(ICommandSender icommandsender, String[] astring)
+    public void execute(ICommandSender sender, String[] args) throws CommandException
     {
         EntityPlayerMP playerBase = null;
 
-        if (astring.length < 2)
+        if (args.length < 2)
         {
             try
             {
-                if (astring.length == 1)
+                if (args.length == 1)
                 {
-                    playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(astring[0], true);
+                    playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(args[0], true);
                 }
                 else
                 {
-                    playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(icommandsender.getCommandSenderName(), true);
+                    playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(sender.getName(), true);
                 }
 
                 if (playerBase != null)
@@ -53,11 +53,11 @@ public class CommandPlanetTeleport extends CommandBase
 
                     WorldUtil.toCelestialSelection(playerBase, stats, Integer.MAX_VALUE);
 
-                    VersionUtil.notifyAdmins(icommandsender, this, "commands.dimensionteleport", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getCommandSenderName()), "]" });
+                    VersionUtil.notifyAdmins(sender, this, "commands.dimensionteleport", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getName()), "]" });
                 }
                 else
                 {
-                    throw new Exception("Could not find player with name: " + astring[0]);
+                    throw new Exception("Could not find player with name: " + args[0]);
                 }
             }
             catch (final Exception var6)
@@ -67,7 +67,7 @@ public class CommandPlanetTeleport extends CommandBase
         }
         else
         {
-            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.dimensiontp.tooMany", this.getCommandUsage(icommandsender)), new Object[0]);
+            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.dimensiontp.tooMany", this.getCommandUsage(sender)), new Object[0]);
         }
     }
 }

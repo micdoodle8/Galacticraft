@@ -421,7 +421,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             this.posX += this.motionX;
             this.posY += this.motionY;
             this.posZ += this.motionZ;
-            setEntityBoundingBox(getBoundingBox().offset(this.motionX, this.motionY, this.motionZ));
+            setEntityBoundingBox(getEntityBoundingBox().offset(this.motionX, this.motionY, this.motionZ));
             this.setRotation(this.rotationYaw, this.rotationPitch);
     		if (this.AIstate == AISTATE_MINING && this.ticksExisted % 2 == 0)
     		{
@@ -580,7 +580,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         this.posX += this.motionX;
         this.posY += this.motionY;
         this.posZ += this.motionZ;
-        setEntityBoundingBox(getBoundingBox().offset(this.motionX, this.motionY, this.motionZ));
+        setEntityBoundingBox(getEntityBoundingBox().offset(this.motionX, this.motionY, this.motionZ));
 /*        if (this.dataWatcher.getWatchableObjectInt(this.timeSinceHit) > 0)
         {
             this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.timeSinceHit) - 1));
@@ -1759,7 +1759,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     @Override
     public void setPosition(double p_70107_1_, double p_70107_3_, double p_70107_5_)
     {
-        this.setEntityBoundingBox(this.getBoundingBox().offset(p_70107_1_ - this.posX, p_70107_3_ - this.posY, p_70107_5_ - this.posZ));
+        this.setEntityBoundingBox(this.getEntityBoundingBox().offset(p_70107_1_ - this.posX, p_70107_3_ - this.posY, p_70107_5_ - this.posZ));
         this.posX = p_70107_1_;
         this.posY = p_70107_3_;
         this.posZ = p_70107_5_;

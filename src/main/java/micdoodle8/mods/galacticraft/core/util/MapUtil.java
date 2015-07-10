@@ -27,11 +27,13 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -102,9 +104,9 @@ public class MapUtil
                     {
                         for (int x = 0; x < 16; x++)
                         {
-                            int l4 = chunk.getHeightValue(x, z) + 1;
+                            int l4 = chunk.getHeight(x, z) + 1;
                             Block block = Blocks.air;
-                            int i5 = 0;
+                            IBlockState i5 = null;
 
                             if (l4 > 1)
                             {
@@ -112,7 +114,7 @@ public class MapUtil
                                 {
                                     --l4;
                                     block = chunk.getBlock(x, l4, z);
-                                    i5 = chunk.getBlockMetadata(x, l4, z);
+                                    i5 = chunk.getBlockState(new BlockPos(x, l4, z));
                                 }
                                 while (block.getMapColor(i5) == MapColor.airColor && l4 > 0);
                             }
@@ -130,7 +132,7 @@ public class MapUtil
 	{
     	doneOverworldTexture = true;
     	if (doneOverworldTexture) return;
-		World world = WorldUtil.getProviderForDimension(0).worldObj;
+		World world = GalacticraftCore.proxy.getWorldForID(0);
     	if (world == null) return;
     	if (calculatingMap.getAndSet(true)) return;
     	biomeMapWCM = world.getWorldChunkManager();
@@ -696,8 +698,8 @@ public class MapUtil
                     for (int z = -b0; z <= b0; ++z)
                     {
                         BiomeGenBase biomegenbase1 = biomesGrid[xx + x + 2 + (zz + z + 2) * 10];
-                        float f3 = biomegenbase1.rootHeight;
-                        float f4 = biomegenbase1.heightVariation;
+                        float f3 = biomegenbase1.minHeight;
+                        float f4 = biomegenbase1.maxHeight;
 
                         if (field_147435_p == WorldType.AMPLIFIED && f3 > 0.0F)
                         {
@@ -707,7 +709,7 @@ public class MapUtil
 
                         float f5 = parabolicField[x + 2 + (z + 2) * 5] / (f3 + 2.0F);
 
-                        if (biomegenbase1.rootHeight > biomegenbase.rootHeight)
+                        if (biomegenbase1.minHeight > biomegenbase.minHeight)
                         {
                             f5 /= 2.0F;
                         }

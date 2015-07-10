@@ -9,6 +9,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 public class ContainerSchematicAstroMiner extends Container
@@ -17,7 +18,7 @@ public class ContainerSchematicAstroMiner extends Container
     public IInventory craftResult = new InventoryCraftResult();
     private final World worldObj;
 
-    public ContainerSchematicAstroMiner(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
+    public ContainerSchematicAstroMiner(InventoryPlayer par1InventoryPlayer, BlockPos pos)
     {
         this.worldObj = par1InventoryPlayer.player.worldObj;
         this.addSlotToContainer(new SlotRocketBenchResult(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 142, 72 + 26));
@@ -27,20 +28,20 @@ public class ContainerSchematicAstroMiner extends Container
 
         // Miner top layer
         for (i = 0; i < 4; i++)
-        this.addSlotToContainer(new SlotSchematicAstroMiner(this.craftMatrix, count++, 27 + i * 18, 35 + 26, x, y, z, par1InventoryPlayer.player));
+        this.addSlotToContainer(new SlotSchematicAstroMiner(this.craftMatrix, count++, 27 + i * 18, 35 + 26, pos, par1InventoryPlayer.player));
 
         // Miner mid layer
         for (i = 0; i < 5; i++)
-        this.addSlotToContainer(new SlotSchematicAstroMiner(this.craftMatrix, count++, 16 + i * 18, 53 + 26, x, y, z, par1InventoryPlayer.player));
+        this.addSlotToContainer(new SlotSchematicAstroMiner(this.craftMatrix, count++, 16 + i * 18, 53 + 26, pos, par1InventoryPlayer.player));
 
         // Miner bottom layer
         for (i = 0; i < 3; i++)
-        this.addSlotToContainer(new SlotSchematicAstroMiner(this.craftMatrix, count++, 44 + i * 18, 71 + 26, x, y, z, par1InventoryPlayer.player));
+        this.addSlotToContainer(new SlotSchematicAstroMiner(this.craftMatrix, count++, 44 + i * 18, 71 + 26, pos, par1InventoryPlayer.player));
 
         // Laser
         for (i = 0; i < 2; ++i)
         {
-            this.addSlotToContainer(new SlotSchematicAstroMiner(this.craftMatrix, count++, 8 + i * 18, 77 + 26, x, y, z, par1InventoryPlayer.player));
+            this.addSlotToContainer(new SlotSchematicAstroMiner(this.craftMatrix, count++, 8 + i * 18, 77 + 26, pos, par1InventoryPlayer.player));
         }
 
         // Player inv:

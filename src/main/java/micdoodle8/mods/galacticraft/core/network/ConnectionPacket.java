@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.network;
 
+import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
@@ -89,7 +90,7 @@ public class ConnectionPacket
 
 	public static FMLProxyPacket createPacket(byte packetId, Collection<Integer> data)
 	{
-		ByteBuf payload = Unpooled.buffer();
+        PacketBuffer payload = new PacketBuffer(Unpooled.buffer());
 
 		payload.writeByte(packetId);
 		payload.writeInt(data.size());
@@ -103,7 +104,7 @@ public class ConnectionPacket
 
 	public static FMLProxyPacket createConfigPacket(List<Object> data)
 	{
-		ByteBuf payload = Unpooled.buffer();
+        PacketBuffer payload = new PacketBuffer(Unpooled.buffer());
 		payload.writeByte(103);
         try
         {

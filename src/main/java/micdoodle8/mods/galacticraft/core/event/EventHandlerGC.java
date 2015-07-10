@@ -136,7 +136,7 @@ public class EventHandlerGC
 
                 if (event.entityLiving.worldObj instanceof WorldServer)
                 {
-                    ((WorldServer) event.entityLiving.worldObj).spawnParticle(EnumParticleTypes.SMOKE_NORMAL, event.entityLiving.posX, event.entityLiving.posY + event.entityLiving.getBoundingBox().maxY - event.entityLiving.getBoundingBox().minY, event.entityLiving.posZ, 50, 0.0, 0.05, 0.0, 0.001);
+                    ((WorldServer) event.entityLiving.worldObj).spawnParticle(EnumParticleTypes.SMOKE_NORMAL, event.entityLiving.posX, event.entityLiving.posY + event.entityLiving.getEntityBoundingBox().maxY - event.entityLiving.getEntityBoundingBox().minY, event.entityLiving.posZ, 50, 0.0, 0.05, 0.0, 0.001);
                 }
 
                 event.entityLiving.extinguish();
@@ -168,7 +168,7 @@ public class EventHandlerGC
     public void onPlayerClicked(PlayerInteractEvent event)
     {
         //Skip events triggered from Thaumcraft Golems and other non-players
-    	if (event.entityPlayer == null || event.entityPlayer.inventory == null) return;
+    	if (event.entityPlayer == null || event.entityPlayer.inventory == null || event.pos == null || (event.pos.getX() == 0 && event.pos.getY() == 0 && event.pos.getZ() == 0)) return;
         
     	final ItemStack heldStack = event.entityPlayer.inventory.getCurrentItem();
         final TileEntity tileClicked = event.entityPlayer.worldObj.getTileEntity(event.pos);

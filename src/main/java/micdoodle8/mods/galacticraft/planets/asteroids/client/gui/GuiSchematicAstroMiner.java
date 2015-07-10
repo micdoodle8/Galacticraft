@@ -10,6 +10,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -20,9 +21,9 @@ public class GuiSchematicAstroMiner extends GuiContainer implements ISchematicRe
 
     private int pageIndex;
 
-    public GuiSchematicAstroMiner(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
+    public GuiSchematicAstroMiner(InventoryPlayer par1InventoryPlayer, BlockPos pos)
     {
-        super(new ContainerSchematicAstroMiner(par1InventoryPlayer, x, y, z));
+        super(new ContainerSchematicAstroMiner(par1InventoryPlayer, pos));
         this.ySize = 221;
     }
 

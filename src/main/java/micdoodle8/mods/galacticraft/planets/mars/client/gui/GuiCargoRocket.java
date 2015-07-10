@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
@@ -46,7 +47,7 @@ public class GuiCargoRocket extends GuiContainerGC
 
     public GuiCargoRocket(IInventory par1IInventory, EntityCargoRocket rocket, EnumRocketType rocketType)
     {
-        super(new ContainerRocketInventory(par1IInventory, rocket, rocketType));
+        super(new ContainerRocketInventory(par1IInventory, rocket, rocketType, FMLClientHandler.instance().getClient().thePlayer));
         this.upperChestInventory = par1IInventory;
         this.rocket = rocket;
         this.allowUserInput = false;

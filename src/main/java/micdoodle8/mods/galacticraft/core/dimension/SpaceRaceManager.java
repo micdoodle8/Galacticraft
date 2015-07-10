@@ -58,7 +58,7 @@ public class SpaceRaceManager
 
                     if (race.getPlayerNames().contains(player.getGameProfile().getName()))
                     {
-                        CelestialBody body = GalaxyRegistry.getCelestialBodyFromDimensionID(player.worldObj.provider.dimensionId);
+                        CelestialBody body = GalaxyRegistry.getCelestialBodyFromDimensionID(player.worldObj.provider.getDimensionId());
 
                         if (body != null)
                         {

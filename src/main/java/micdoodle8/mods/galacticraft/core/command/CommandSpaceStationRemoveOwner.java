@@ -10,6 +10,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 
 import java.util.ArrayList;
@@ -21,34 +22,34 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
     @Override
     public String getCommandUsage(ICommandSender var1)
     {
-        return "/" + this.getCommandName() + " <player>";
+        return "/" + this.getName() + " <player>";
     }
 
     @Override
-    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
+    public boolean canCommandSenderUse(ICommandSender par1ICommandSender)
     {
         return true;
     }
 
     @Override
-    public String getCommandName()
+    public String getName()
     {
         return "ssuninvite";
     }
 
     @Override
-    public void processCommand(ICommandSender icommandsender, String[] astring)
+    public void execute(ICommandSender sender, String[] args) throws CommandException
     {
         String var3 = null;
         EntityPlayerMP playerBase = null;
 
-        if (astring.length > 0)
+        if (args.length > 0)
         {
-            var3 = astring[0];
+            var3 = args[0];
 
             try
             {
-                playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(icommandsender.getCommandSenderName(), false);
+                playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(sender.getName(), false);
 
                 if (playerBase != null)
                 {
@@ -92,7 +93,7 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
         }
         else
         {
-            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssinvite.wrongUsage", this.getCommandUsage(icommandsender)), new Object[0]);
+            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssinvite.wrongUsage", this.getCommandUsage(sender)), new Object[0]);
         }
 
         if (playerBase != null)
@@ -103,14 +104,14 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
 
 
     @Override
-    public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
+    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos)
     {
-        return par2ArrayOfStr.length == 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, this.getPlayers(par1ICommandSender)) : null;
+        return args.length == 1 ? getListOfStringsMatchingLastWord(args, this.getPlayers(sender)) : null;
     }
 
-    protected String[] getPlayers(ICommandSender icommandsender)
+    protected String[] getPlayers(ICommandSender sender)
     {
-        EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(icommandsender.getCommandSenderName(), false);
+        EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(sender.getName(), false);
 
         if (playerBase != null)
         {

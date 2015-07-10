@@ -29,17 +29,17 @@ public class StructureComponentVillageStartPiece extends StructureComponentVilla
     }
 
     @Override
-    protected void func_143012_a(NBTTagCompound nbt)
+    protected void writeStructureToNBT(NBTTagCompound nbt)
     {
-        super.func_143012_a(nbt);
+        super.writeStructureToNBT(nbt);
 
         nbt.setInteger("TerrainType", this.terrainType);
     }
 
     @Override
-    protected void func_143011_b(NBTTagCompound nbt)
+    protected void readStructureFromNBT(NBTTagCompound nbt)
     {
-        super.func_143011_b(nbt);
+        super.readStructureFromNBT(nbt);
 
         this.terrainType = nbt.getInteger("TerrainType");
     }

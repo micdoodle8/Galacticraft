@@ -31,10 +31,10 @@ public class BlockCheese extends Block implements ItemBlockDesc.IBlockShiftDesc
     public BlockCheese()
     {
         super(Material.cake);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(BITES, Integer.valueOf(0)));
         this.setTickRandomly(true);
         this.disableStats();
         this.setHardness(0.5F);
+        this.setDefaultState(this.blockState.getBaseState().withProperty(BITES, Integer.valueOf(0)));
         this.setStepSound(Block.soundTypeCloth);
         this.setUnlocalizedName("cheeseBlock");
     }

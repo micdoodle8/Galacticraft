@@ -14,7 +14,7 @@ public class CommandKeepDim extends CommandBase
     @Override
     public String getCommandUsage(ICommandSender var1)
     {
-        return "/" + this.getCommandName() + " <dimension id>";
+        return "/" + this.getName() + " <dimension id>";
     }
 
     @Override
@@ -24,39 +24,39 @@ public class CommandKeepDim extends CommandBase
     }
 
     @Override
-    public String getCommandName()
+    public String getName()
     {
         return "gckeeploaded";
     }
 
     @Override
-    public void processCommand(ICommandSender icommandsender, String[] astring)
+    public void execute(ICommandSender sender, String[] args) throws CommandException
     {
         EntityPlayerMP playerBase;
 
-        if (astring.length > 1)
+        if (args.length > 1)
         {
-            throw new WrongUsageException("Too many command arguments! Usage: " + this.getCommandUsage(icommandsender), new Object[0]);
+            throw new WrongUsageException("Too many command arguments! Usage: " + this.getCommandUsage(sender), new Object[0]);
         }
         else
         {
             try
             {
-                playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(icommandsender.getCommandSenderName(), true);
+                playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(sender.getName(), true);
 
                 if (playerBase != null)
                 {
                     int dimID;
 
-                    if (astring.length == 0)
+                    if (args.length == 0)
                     {
                         dimID = playerBase.dimension;
                     }
                     else
                     {
                     	try {
-                    		dimID = CommandBase.parseInt(icommandsender, astring[0]);
-                    	} catch (Exception e) { throw new WrongUsageException("Needs a dimension number! Usage: " + this.getCommandUsage(icommandsender), new Object[0]); }
+                    		dimID = CommandBase.parseInt(args[0]);
+                    	} catch (Exception e) { throw new WrongUsageException("Needs a dimension number! Usage: " + this.getCommandUsage(sender), new Object[0]); }
                     }
 
                     if (ConfigManagerCore.setLoaded(dimID))

@@ -13,6 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
@@ -33,24 +34,26 @@ public class BlockBasic extends Block implements IDetectableResource
 
     public static final PropertyEnum BASIC_TYPE = PropertyEnum.create("basicType", EnumBlockBasic.class);
 
-    private enum EnumBlockBasic
+    private enum EnumBlockBasic implements IStringSerializable
     {
-        ALUMINUM_DECORATION_BLOCK_0(3),
-        ALUMINUM_DECORATION_BLOCK_1(4),
-        ORE_COPPER(5),
-        ORE_TIN(6),
-        ORE_ALUMINUM(7),
-        ORE_SILICON(8),
-        DECO_BLOCK_COPPER(9),
-        DECO_BLOCK_TIN(10),
-        DECO_BLOCK_ALUMINUM(11),
-        DECO_BLOCK_METEOR_IRON(12);
+        ALUMINUM_DECORATION_BLOCK_0(3, "deco_block_0"),
+        ALUMINUM_DECORATION_BLOCK_1(4, "deco_block_1"),
+        ORE_COPPER(5, "ore_copper_gc"),
+        ORE_TIN(6, "ore_tin_gc"),
+        ORE_ALUMINUM(7, "ore_aluminum_gc"),
+        ORE_SILICON(8, "ore_silicon"),
+        DECO_BLOCK_COPPER(9, "block_copper_gc"),
+        DECO_BLOCK_TIN(10, "block_tin_gc"),
+        DECO_BLOCK_ALUMINUM(11, "block_aluminum_gc"),
+        DECO_BLOCK_METEOR_IRON(12, "block_meteoric_iron_gc");
 
         private final int meta;
+        private final String name;
 
-        private EnumBlockBasic(int meta)
+        private EnumBlockBasic(int meta, String name)
         {
             this.meta = meta;
+            this.name = name;
         }
 
         public int getMeta()
@@ -61,6 +64,11 @@ public class BlockBasic extends Block implements IDetectableResource
         public static EnumBlockBasic byMetadata(int meta)
         {
             return values()[meta - 3];
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
         }
     }
 

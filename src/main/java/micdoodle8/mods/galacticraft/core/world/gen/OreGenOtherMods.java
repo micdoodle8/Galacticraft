@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import micdoodle8.mods.galacticraft.api.event.wgen.GCCoreEventPopulate;
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
@@ -222,7 +223,7 @@ public class OreGenOtherMods
             final int var7 = this.randomGenerator.nextInt(maxY - minY) + minY;
             if (var7 < 0) continue;
             final int var8 = this.chunkZ + this.randomGenerator.nextInt(16);
-            worldGenerator.generate(this.worldObj, this.randomGenerator, var6, var7, var8);
+            worldGenerator.generate(this.worldObj, this.randomGenerator, new BlockPos(var6, var7, var8));
         }
     }
     

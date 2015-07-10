@@ -734,7 +734,7 @@ public class Vector3 implements Cloneable
             if (entityHit != null && entityHit.canBeCollidedWith() && entityHit.getBoundingBox() != null)
             {
                 float border = entityHit.getCollisionBorderSize();
-                AxisAlignedBB aabb = entityHit.getBoundingBox().expand(border, border, border);
+                AxisAlignedBB aabb = entityHit.getEntityBoundingBox().expand(border, border, border);
                 MovingObjectPosition hitMOP = aabb.calculateIntercept(startingPosition, reachPoint);
 
                 if (hitMOP != null)

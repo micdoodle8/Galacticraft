@@ -45,7 +45,7 @@ public class ChunkLoadingCallback implements LoadingCallback
                 int tileX = nbt.getInteger("ChunkLoaderTileX");
                 int tileY = nbt.getInteger("ChunkLoaderTileY");
                 int tileZ = nbt.getInteger("ChunkLoaderTileZ");
-                TileEntity tile = world.getTileEntity(tileX, tileY, tileZ);
+                TileEntity tile = world.getTileEntity(new BlockPos(tileX, tileY, tileZ));
 
                 if (tile instanceof IChunkLoader)
                 {
@@ -94,7 +94,7 @@ public class ChunkLoadingCallback implements LoadingCallback
             ChunkLoadingCallback.chunkLoaderList.put(playerName, dimensionMap);
         }
 
-        HashSet<BlockPos> chunkLoaders = dimensionMap.get(world.provider.dimensionId);
+        HashSet<BlockPos> chunkLoaders = dimensionMap.get(world.provider.getDimensionId());
 
         if (chunkLoaders == null)
         {
@@ -102,7 +102,7 @@ public class ChunkLoadingCallback implements LoadingCallback
         }
 
         chunkLoaders.add(new BlockPos(x, y, z));
-        dimensionMap.put(world.provider.dimensionId, chunkLoaders);
+        dimensionMap.put(world.provider.getDimensionId(), chunkLoaders);
         ChunkLoadingCallback.chunkLoaderList.put(playerName, dimensionMap);
     }
 
@@ -117,7 +117,7 @@ public class ChunkLoadingCallback implements LoadingCallback
         // if (tile instanceof IChunkLoader)
         // {
         // IChunkLoader chunkLoader = (IChunkLoader) tile;
-        // int dimID = world.provider.dimensionId;
+        // int dimID = world.provider.getDimensionId();
         //
         // HashSet<IChunkLoader> chunkList = loadedChunks.get(dimID);
         //
@@ -184,9 +184,9 @@ public class ChunkLoadingCallback implements LoadingCallback
 	
 		                    for (BlockPos coords : dimensionEntry.getValue())
 		                    {
-		                        dataStream.writeInt(coords.posX);
-		                        dataStream.writeInt(coords.posY);
-		                        dataStream.writeInt(coords.posZ);
+		                        dataStream.writeInt(coords.getX());
+		                        dataStream.writeInt(coords.getY());
+		                        dataStream.writeInt(coords.getZ());
 		                    }
 		                }
 		            }

@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
@@ -55,7 +57,7 @@ public class TickHandlerServer
 {
     private static Map<Integer, CopyOnWriteArrayList<ScheduledBlockChange>> scheduledBlockChanges = new ConcurrentHashMap<Integer, CopyOnWriteArrayList<ScheduledBlockChange>>();
     private static Map<Integer, CopyOnWriteArrayList<BlockVec3>> scheduledTorchUpdates = new ConcurrentHashMap<Integer, CopyOnWriteArrayList<BlockVec3>>();
-    private static Map<Integer, List<BlockVec3>> edgeChecks = new HashMap<Integer, List<BlockVec3>>();
+    private static Map<Integer, List<BlockPos>> edgeChecks = new HashMap<Integer, List<BlockPos>>();
     private static LinkedList<EnergyNetwork> networkTicks = new LinkedList<EnergyNetwork>();
     public static Map<Integer, Map<Long, List<Footprint>>> serverFootprintMap = new HashMap<Integer, Map<Long, List<Footprint>>>();
     public static List<NetworkRegistry.TargetPoint> footprintRefreshList = Lists.newArrayList();
@@ -161,20 +163,20 @@ public class TickHandlerServer
         TickHandlerServer.scheduledTorchUpdates.put(dimID, updateList);
     }
 
-    public static void scheduleNewEdgeCheck(int dimID, BlockVec3 edgeBlock)
+    public static void scheduleNewEdgeCheck(int dimID, BlockPos edgeBlock)
     {
-        List<BlockVec3> updateList = TickHandlerServer.edgeChecks.get(dimID);
+        List<BlockPos> updateList = TickHandlerServer.edgeChecks.get(dimID);
 
         if (updateList == null)
         {
-            updateList = new ArrayList<BlockVec3>();
+            updateList = new ArrayList<BlockPos>();
         }
 
         updateList.add(edgeBlock);
         TickHandlerServer.edgeChecks.put(dimID, updateList);
     }
 
-    public static boolean scheduledForChange(int dimID, BlockVec3 test)
+    public static boolean scheduledForChange(int dimID, BlockPos test)
     {
         CopyOnWriteArrayList<ScheduledBlockChange> changeList = TickHandlerServer.scheduledBlockChanges.get(dimID);
 
@@ -217,12 +219,12 @@ public class TickHandlerServer
         	if (TickHandlerServer.spaceRaceData == null)
             {
                 World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
-                TickHandlerServer.spaceRaceData = (WorldDataSpaceRaces) world.mapStorage.loadData(WorldDataSpaceRaces.class, WorldDataSpaceRaces.saveDataID);
+                TickHandlerServer.spaceRaceData = (WorldDataSpaceRaces) world.getMapStorage().loadData(WorldDataSpaceRaces.class, WorldDataSpaceRaces.saveDataID);
 
                 if (TickHandlerServer.spaceRaceData == null)
                 {
                     TickHandlerServer.spaceRaceData = new WorldDataSpaceRaces(WorldDataSpaceRaces.saveDataID);
-                    world.mapStorage.setData(WorldDataSpaceRaces.saveDataID, TickHandlerServer.spaceRaceData);
+                    world.getMapStorage().setData(WorldDataSpaceRaces.saveDataID, TickHandlerServer.spaceRaceData);
                 }
             }
 
@@ -237,7 +239,7 @@ public class TickHandlerServer
                     WorldServer world = worlds[i];
                     ChunkProviderServer chunkProviderServer = world.theChunkProviderServer;
 
-                    Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(world.provider.dimensionId);
+                    Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(world.provider.getDimensionId());
 
                     if (footprintMap != null)
                     {
@@ -276,14 +278,14 @@ public class TickHandlerServer
                                     footprintMap.put(chunkKey, footprints);
                                     mapChanged = true;
 
-                                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_FOOTPRINT_LIST, new Object[] { chunkKey, footprints.toArray(new Footprint[footprints.size()]) }), worlds[i].provider.dimensionId);
+                                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_FOOTPRINT_LIST, new Object[] { chunkKey, footprints.toArray(new Footprint[footprints.size()]) }), worlds[i].provider.getDimensionId());
                                 }
                             }
                         }
 
                         if (mapChanged)
                         {
-                            TickHandlerServer.serverFootprintMap.put(world.provider.dimensionId, footprintMap);
+                            TickHandlerServer.serverFootprintMap.put(world.provider.getDimensionId(), footprintMap);
                         }
                     }
                 }
@@ -298,10 +300,10 @@ public class TickHandlerServer
                     {
                         WorldServer world = worlds[i];
 
-                        if (world.provider.dimensionId == targetPoint.dimension)
+                        if (world.provider.getDimensionId() == targetPoint.dimension)
                         {
                             long chunkKey = ChunkCoordIntPair.chunkXZ2Int((int)targetPoint.x >> 4, (int)targetPoint.z >> 4);
-                            Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(world.provider.dimensionId);
+                            Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(world.provider.getDimensionId());
 
                             if (footprintMap != null && !footprintMap.isEmpty())
                             {
@@ -337,9 +339,9 @@ public class TickHandlerServer
                                     {
                                         for (int x = 0; x < 16; x++)
                                         {
-                                            int l4 = chunk.getHeightValue(x, z) + 1;
+                                            int l4 = chunk.getHeight(x, z) + 1;
                                             Block block = Blocks.air;
-                                            int i5 = 0;
+                                            IBlockState i5 = null;
 
                                             if (l4 > 1)
                                             {
@@ -347,7 +349,7 @@ public class TickHandlerServer
                                                 {
                                                     --l4;
                                                     block = chunk.getBlock(x, l4, z);
-                                                    i5 = chunk.getBlockMetadata(x, l4, z);
+                                                    i5 = chunk.getBlockState(new BlockPos(x, l4, z));
                                                 }
                                                 while (block.getMapColor(i5) == MapColor.airColor && l4 > 0);
                                             }
@@ -477,7 +479,7 @@ public class TickHandlerServer
         {
             final WorldServer world = (WorldServer) event.world;
 
-            CopyOnWriteArrayList<ScheduledBlockChange> changeList = TickHandlerServer.scheduledBlockChanges.get(world.provider.dimensionId);
+            CopyOnWriteArrayList<ScheduledBlockChange> changeList = TickHandlerServer.scheduledBlockChanges.get(world.provider.getDimensionId());
 
             if (changeList != null && !changeList.isEmpty())
             {
@@ -495,22 +497,22 @@ public class TickHandlerServer
                     {
 	                    if (change != null)
 	                    {
-	                        BlockVec3 changePosition = change.getChangePosition();
+	                        BlockPos changePosition = change.getChangePosition();
 	                        //Only replace blocks of type BlockAir - this is to prevent accidents where other mods have moved blocks
-	                        if (changePosition != null && world.getBlock(changePosition.x, changePosition.y, changePosition.z).isAir(world, changePosition.x, changePosition.y, changePosition.z))
+	                        if (world.getBlockState(changePosition).getBlock().isAir(world, changePosition))
 	                        {
-	                            world.setBlock(changePosition.x, changePosition.y, changePosition.z, change.getChangeID(), change.getChangeMeta(), 2);
+	                            world.setBlockState(changePosition, change.getChangeID().getStateFromMeta(change.getChangeMeta()), 2);
 	                        }
 	                    }
                     }
                 }
 
                 changeList.clear();
-                TickHandlerServer.scheduledBlockChanges.remove(world.provider.dimensionId);
-                if (newList.size() > 0) TickHandlerServer.scheduledBlockChanges.put(world.provider.dimensionId, newList);
+                TickHandlerServer.scheduledBlockChanges.remove(world.provider.getDimensionId());
+                if (newList.size() > 0) TickHandlerServer.scheduledBlockChanges.put(world.provider.getDimensionId(), newList);
             }
 
-            CopyOnWriteArrayList<BlockVec3> torchList = TickHandlerServer.scheduledTorchUpdates.get(world.provider.dimensionId);
+            CopyOnWriteArrayList<BlockVec3> torchList = TickHandlerServer.scheduledTorchUpdates.get(world.provider.getDimensionId());
 
             if (torchList != null && !torchList.isEmpty())
             {
@@ -518,16 +520,17 @@ public class TickHandlerServer
                 {
                     if (torch != null)
                     {
-                        Block b = world.getBlock(torch.x, torch.y, torch.z); 
+                        BlockPos pos = new BlockPos(torch.x, torch.y, torch.z);
+                        Block b = world.getBlockState(pos).getBlock();
                     	if (b instanceof BlockUnlitTorch)
                         {
-                            world.scheduleBlockUpdateWithPriority(torch.x, torch.y, torch.z, b, 2 + world.rand.nextInt(30), 0);
+                            world.scheduleUpdate(pos, b, 2 + world.rand.nextInt(30));
                         }
                     }
                 }
 
                 torchList.clear();
-                TickHandlerServer.scheduledTorchUpdates.remove(world.provider.dimensionId);
+                TickHandlerServer.scheduledTorchUpdates.remove(world.provider.getDimensionId());
             }
 
             if (world.provider instanceof IOrbitDimension)
@@ -546,7 +549,7 @@ public class TickHandlerServer
 
                             if (e.posY <= dimension.getYCoordToTeleportToPlanet())
                             {
-                                final Integer dim = WorldUtil.getProviderForName(dimension.getPlanetToOrbit()).dimensionId;
+                                final Integer dim = WorldUtil.getProviderForName(dimension.getPlanetToOrbit()).getDimensionId();
 
                                 WorldUtil.transferEntityToDimension(e, dim, world, false, null);
                             }
@@ -559,18 +562,18 @@ public class TickHandlerServer
         {
             final WorldServer world = (WorldServer) event.world;
 
-            List<BlockVec3> edgesList = TickHandlerServer.edgeChecks.get(world.provider.dimensionId);
+            List<BlockPos> edgesList = TickHandlerServer.edgeChecks.get(world.provider.getDimensionId());
             final HashSet<BlockVec3> checkedThisTick = new HashSet();
 
             if (edgesList != null && !edgesList.isEmpty())
             {
-                List<BlockVec3> edgesListCopy = new ArrayList();
+                List<BlockPos> edgesListCopy = new ArrayList();
                 edgesListCopy.addAll(edgesList);
-                for (BlockVec3 edgeBlock : edgesListCopy)
+                for (BlockPos edgeBlock : edgesListCopy)
                 {
                     if (edgeBlock != null && !checkedThisTick.contains(edgeBlock))
                     {
-                        if (TickHandlerServer.scheduledForChange(world.provider.dimensionId, edgeBlock))
+                        if (TickHandlerServer.scheduledForChange(world.provider.getDimensionId(), edgeBlock))
                         {
                             continue;
                         }
@@ -580,7 +583,7 @@ public class TickHandlerServer
                     }
                 }
 
-                TickHandlerServer.edgeChecks.remove(world.provider.dimensionId);
+                TickHandlerServer.edgeChecks.remove(world.provider.getDimensionId());
             }
         }
     }

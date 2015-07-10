@@ -12,6 +12,7 @@ import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -20,10 +21,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.*;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
@@ -44,30 +42,32 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
 
     public static final PropertyEnum BASIC_TYPE_MOON = PropertyEnum.create("basicTypeMoon", EnumBlockBasicMoon.class);
 
-    private enum EnumBlockBasicMoon
+    private enum EnumBlockBasicMoon implements IStringSerializable
     {
-        ORE_COPPER_MOON(0),
-        ORE_TIN_MOON(1),
-        ORE_CHEESE_MOON(2),
-        MOON_DIRT(3),
-        MOON_STONE(4),
-        MOON_TURF_0(5),
-        MOON_TURF_1(6),
-        MOON_TURF_2(7),
-        MOON_TURF_3(8),
-        MOON_TURF_4(9),
-        MOON_TURF_5(10),
-        MOON_TURF_6(11),
-        MOON_TURF_7(12),
-        MOON_TURF_8(13),
-        MOON_DUNGEON_BRICK(15),
-        MOON_BOSS_SPAWNER(16);
+        ORE_COPPER_MOON(0, "ore_copper_moon"),
+        ORE_TIN_MOON(1, "ore_tin_moon"),
+        ORE_CHEESE_MOON(2, "ore_cheese_moon"),
+        MOON_DIRT(3, "moon_dirt_moon"),
+        MOON_STONE(4, "moon_stone"),
+        MOON_TURF_0(5, "moon_turf_0"),
+        MOON_TURF_1(6, "moon_turf_1"),
+        MOON_TURF_2(7, "moon_turf_2"),
+        MOON_TURF_3(8, "moon_turf_3"),
+        MOON_TURF_4(9, "moon_turf_4"),
+        MOON_TURF_5(10, "moon_turf_5"),
+        MOON_TURF_6(11, "moon_turf_6"),
+        MOON_TURF_7(12, "moon_turf_7"),
+        MOON_TURF_8(13, "moon_turf_8"),
+        MOON_DUNGEON_BRICK(14, "moon_dungeon_brick"),
+        MOON_BOSS_SPAWNER(15, "moon_boss_spawner");
 
         private final int meta;
+        private final String name;
 
-        private EnumBlockBasicMoon(int meta)
+        private EnumBlockBasicMoon(int meta, String name)
         {
             this.meta = meta;
+            this.name = name;
         }
 
         public int getMeta()
@@ -86,6 +86,11 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
             }
 
             return null;
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
         }
     }
 
@@ -500,5 +505,20 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
         if (target != Blocks.stone) return false;
     	int meta = getMetaFromState(world.getBlockState(pos));
     	return (meta == 3 || meta == 4);
+    }
+
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(BASIC_TYPE_MOON, EnumBlockBasicMoon.byMetadata(meta));
+    }
+
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumBlockBasicMoon)state.getValue(BASIC_TYPE_MOON)).getMeta();
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, BASIC_TYPE_MOON);
     }
 }

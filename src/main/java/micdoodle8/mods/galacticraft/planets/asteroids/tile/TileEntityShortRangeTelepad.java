@@ -282,9 +282,9 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     }
 
     @Override
-    public void onCreate(BlockPos placedPosition)
+    public void onCreate(World world, BlockPos placedPosition)
     {
-        int buildHeight = this.worldObj.getHeight() - 1;
+        int buildHeight = world.getHeight() - 1;
         for (int y = 0; y < 3; y += 2)
         {
         	if (placedPosition.getY() + y > buildHeight) return;
@@ -296,7 +296,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
 
                     if (!vecToAdd.equals(placedPosition))
                     {
-                        ((BlockTelepadFake) AsteroidBlocks.fakeTelepad).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, getBlockType().getStateFromMeta(y == 0 ? 1 : 0));
+                        ((BlockTelepadFake) AsteroidBlocks.fakeTelepad).makeFakeBlock(world, vecToAdd, placedPosition, AsteroidBlocks.fakeTelepad.getStateFromMeta(y == 0 ? 1 : 0));
                     }
                 }
             }

@@ -412,11 +412,11 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                 {
                 	this.motionY = Math.max(-2.0F, (this.posY - this.getOnPadYOffset() - 0.4D - this.targetVec.getY()) / -70.0D);
                 	
-                	if (this.getBoundingBox().minY - this.targetVec.getY() < 0.5F)
+                	if (this.getEntityBoundingBox().minY - this.targetVec.getY() < 0.5F)
 	                {
 	                    for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
 	                    {
-	                        for (int y = MathHelper.floor_double(this.getBoundingBox().minY - this.getOnPadYOffset() - 0.45D) - 1; y <= MathHelper.floor_double(this.getBoundingBox().maxY) + 1; y++)
+	                        for (int y = MathHelper.floor_double(this.getEntityBoundingBox().minY - this.getOnPadYOffset() - 0.45D) - 1; y <= MathHelper.floor_double(this.getEntityBoundingBox().maxY) + 1; y++)
 	                        {
 	                            for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
 	                            {

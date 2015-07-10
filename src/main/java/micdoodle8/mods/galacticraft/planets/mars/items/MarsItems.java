@@ -29,7 +29,7 @@ public class MarsItems
     public static Item carbonFragments;
     public static Item bucketSludge;
 
-    public static ArmorMaterial ARMORDESH = EnumHelper.addArmorMaterial("DESH", 42, new int[] { 4, 9, 7, 4 }, 12);
+    public static ArmorMaterial ARMORDESH = EnumHelper.addArmorMaterial("DESH", "", 42, new int[] { 4, 9, 7, 4 }, 12);
     public static ToolMaterial TOOLDESH = EnumHelper.addToolMaterial("DESH", 3, 1024, 5.0F, 2.5F, 8);
 
 
@@ -50,7 +50,7 @@ public class MarsItems
         MarsItems.key = new ItemKeyMars().setUnlocalizedName("key");
         MarsItems.schematic = new ItemSchematicTier2().setUnlocalizedName("schematic");
         MarsItems.carbonFragments = new ItemCarbonFragments().setUnlocalizedName("carbonFragments");
-		MarsItems.bucketSludge = new ItemBucketGC(MarsBlocks.blockSludge, MarsModule.TEXTURE_PREFIX).setUnlocalizedName("bucketSludge");
+		MarsItems.bucketSludge = new ItemBucketGC(MarsBlocks.blockSludge).setUnlocalizedName("bucketSludge");
 
         MarsItems.registerItems();
         MarsItems.registerHarvestLevels();

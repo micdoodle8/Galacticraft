@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -50,7 +51,7 @@ public class StructureVillagePiecesMoon
         return var1 ? var2 : -1;
     }
 
-    private static StructureComponentVillage func_75083_a(StructureComponentVillageStartPiece par0ComponentVillageStartPiece, StructureVillagePieceWeightMoon par1StructureVillagePieceWeight, List<StructureComponent> par2List, Random par3Random, int par4, int par5, int par6, int par7, int par8)
+    private static StructureComponentVillage func_75083_a(StructureComponentVillageStartPiece par0ComponentVillageStartPiece, StructureVillagePieceWeightMoon par1StructureVillagePieceWeight, List<StructureComponent> par2List, Random par3Random, int par4, int par5, int par6, EnumFacing par7, int par8)
     {
         final Class<?> var9 = par1StructureVillagePieceWeight.villagePieceClass;
         Object var10 = null;
@@ -71,7 +72,7 @@ public class StructureVillagePiecesMoon
         return (StructureComponentVillage) var10;
     }
 
-    private static StructureComponentVillage getNextVillageComponent(StructureComponentVillageStartPiece par0ComponentVillageStartPiece, List<StructureComponent> par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
+    private static StructureComponentVillage getNextVillageComponent(StructureComponentVillageStartPiece par0ComponentVillageStartPiece, List<StructureComponent> par1List, Random par2Random, int par3, int par4, int par5, EnumFacing par6, int par7)
     {
         final int var8 = StructureVillagePiecesMoon.func_75079_a(par0ComponentVillageStartPiece.structureVillageWeightedPieceList);
 
@@ -136,7 +137,7 @@ public class StructureVillagePiecesMoon
      * attempts to find a next Structure Component to be spawned, private
      * Village function
      */
-    private static StructureComponent getNextVillageStructureComponent(StructureComponentVillageStartPiece par0ComponentVillageStartPiece, List<StructureComponent> par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
+    private static StructureComponent getNextVillageStructureComponent(StructureComponentVillageStartPiece par0ComponentVillageStartPiece, List<StructureComponent> par1List, Random par2Random, int par3, int par4, int par5, EnumFacing par6, int par7)
     {
         if (par7 > 50)
         {
@@ -161,7 +162,7 @@ public class StructureVillagePiecesMoon
         }
     }
 
-    private static StructureComponent getNextComponentVillagePath(StructureComponentVillageStartPiece par0ComponentVillageStartPiece, List<StructureComponent> par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
+    private static StructureComponent getNextComponentVillagePath(StructureComponentVillageStartPiece par0ComponentVillageStartPiece, List<StructureComponent> par1List, Random par2Random, int par3, int par4, int par5, EnumFacing par6, int par7)
     {
         if (par7 > 3 + par0ComponentVillageStartPiece.terrainType)
         {
@@ -191,12 +192,12 @@ public class StructureVillagePiecesMoon
     /**
      * attempts to find a next Structure Component to be spawned
      */
-    static StructureComponent getNextStructureComponent(StructureComponentVillageStartPiece par0ComponentVillageStartPiece, List<StructureComponent> par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
+    static StructureComponent getNextStructureComponent(StructureComponentVillageStartPiece par0ComponentVillageStartPiece, List<StructureComponent> par1List, Random par2Random, int par3, int par4, int par5, EnumFacing par6, int par7)
     {
         return StructureVillagePiecesMoon.getNextVillageStructureComponent(par0ComponentVillageStartPiece, par1List, par2Random, par3, par4, par5, par6, par7);
     }
 
-    static StructureComponent getNextStructureComponentVillagePath(StructureComponentVillageStartPiece par0ComponentVillageStartPiece, List<StructureComponent> par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
+    static StructureComponent getNextStructureComponentVillagePath(StructureComponentVillageStartPiece par0ComponentVillageStartPiece, List<StructureComponent> par1List, Random par2Random, int par3, int par4, int par5, EnumFacing par6, int par7)
     {
         return StructureVillagePiecesMoon.getNextComponentVillagePath(par0ComponentVillageStartPiece, par1List, par2Random, par3, par4, par5, par6, par7);
     }

@@ -46,7 +46,7 @@ public class TileEntityLandingPadSingle extends TileEntity implements IUpdatePla
 	
 	            if (tilePadFull != null)
 	            {
-	                tilePadFull.onCreate(this.getPos());
+	                tilePadFull.onCreate(worldObj, this.getPos());
 	            }
 	        }
         }

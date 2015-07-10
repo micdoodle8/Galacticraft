@@ -83,7 +83,7 @@ public class ItemBuggy extends Item implements IHoldableItem
             final Vec3 var25 = par3EntityPlayer.getLook(var4);
             boolean var26 = false;
             final float var27 = 1.0F;
-            final List<?> var28 = par2World.getEntitiesWithinAABBExcludingEntity(par3EntityPlayer, par3EntityPlayer.getBoundingBox().addCoord(var25.xCoord * var21, var25.yCoord * var21, var25.zCoord * var21).expand(var27, var27, var27));
+            final List<?> var28 = par2World.getEntitiesWithinAABBExcludingEntity(par3EntityPlayer, par3EntityPlayer.getEntityBoundingBox().addCoord(var25.xCoord * var21, var25.yCoord * var21, var25.zCoord * var21).expand(var27, var27, var27));
             int var29;
 
             for (var29 = 0; var29 < var28.size(); ++var29)
@@ -93,7 +93,7 @@ public class ItemBuggy extends Item implements IHoldableItem
                 if (var30.canBeCollidedWith())
                 {
                     final float var31 = var30.getCollisionBorderSize();
-                    final AxisAlignedBB var32 = var30.getBoundingBox().expand(var31, var31, var31);
+                    final AxisAlignedBB var32 = var30.getEntityBoundingBox().expand(var31, var31, var31);
 
                     if (var32.isVecInside(var13))
                     {
@@ -121,7 +121,7 @@ public class ItemBuggy extends Item implements IHoldableItem
 
                     final EntityBuggy var35 = new EntityBuggy(par2World, var29 + 0.5F, var33 + 1.0F, var34 + 0.5F, par1ItemStack.getItemDamage());
 
-                    if (!par2World.getCollidingBoundingBoxes(var35, var35.getBoundingBox().expand(-0.1D, -0.1D, -0.1D)).isEmpty())
+                    if (!par2World.getCollidingBoundingBoxes(var35, var35.getEntityBoundingBox().expand(-0.1D, -0.1D, -0.1D)).isEmpty())
                     {
                         return par1ItemStack;
                     }

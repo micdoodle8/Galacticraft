@@ -1,5 +1,10 @@
 package micdoodle8.mods.galacticraft.core.network;
 
+import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
+import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
+import net.minecraft.block.BlockPortal;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -20,6 +25,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -165,6 +171,17 @@ public class NetworkUtil
                     ByteBufUtils.writeUTF8String(buffer, array[i].owner);
                 }
             }
+            else if (dataValue instanceof EnumFacing)
+            {
+                buffer.writeInt(((EnumFacing) dataValue).getIndex());
+            }
+            else if (dataValue instanceof BlockPos)
+            {
+                BlockPos pos = (BlockPos) dataValue;
+                buffer.writeInt(pos.getX());
+                buffer.writeInt(pos.getY());
+                buffer.writeInt(pos.getZ());
+            }
             else
             {
                 if (dataValue == null)
@@ -295,6 +312,14 @@ public class NetworkUtil
                     objList.add(new Footprint(buffer.readInt(), new Vector3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat()), buffer.readFloat(), buffer.readShort(), ByteBufUtils.readUTF8String(buffer)));
                 }
             }
+            else if (clazz.equals(EnumFacing.class))
+            {
+                objList.add(EnumFacing.getFront(buffer.readInt()));
+            }
+            else if (clazz.equals(BlockPos.class))
+            {
+                objList.add(new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt()));
+            }
         }
 
         return objList;
@@ -374,6 +399,14 @@ public class NetworkUtil
             storage.setEnergyStored(buffer.readFloat());
             return storage;
         }
+        else if (dataValue.equals(EnumFacing.class))
+        {
+            return EnumFacing.getFront(buffer.readInt());
+        }
+        else if (dataValue.equals(BlockPos.class))
+        {
+            return new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
+        }
         else
         {
             Class<?> c = dataValue;
@@ -402,7 +435,7 @@ public class NetworkUtil
             byte stackSize = buffer.readByte();
             short meta = buffer.readShort();
             itemstack = new ItemStack(Item.getItemById(itemID), stackSize, meta);
-            itemstack.stackTagCompound = NetworkUtil.readNBTTagCompound(buffer);
+            itemstack.setTagCompound(readNBTTagCompound(buffer));
         }
 
         return itemstack;
@@ -423,7 +456,7 @@ public class NetworkUtil
 
             if (itemStack.getItem().isDamageable() || itemStack.getItem().getShareTag())
             {
-                nbttagcompound = itemStack.stackTagCompound;
+                nbttagcompound = itemStack.getTagCompound();
             }
 
             NetworkUtil.writeNBTTagCompound(nbttagcompound, buffer);
@@ -442,7 +475,9 @@ public class NetworkUtil
         {
             byte[] compressedNBT = new byte[dataLength];
             buffer.readBytes(compressedNBT);
-            return VersionUtil.decompressNBT(compressedNBT);
+            ByteArrayInputStream stream = new ByteArrayInputStream(compressedNBT);
+            return CompressedStreamTools.readCompressed(stream);
+//            return VersionUtil.decompressNBT(compressedNBT);
         }
     }
 
@@ -454,9 +489,11 @@ public class NetworkUtil
         }
         else
         {
-            byte[] compressedNBT = CompressedStreamTools.compress(nbt);
-            buffer.writeShort((short) compressedNBT.length);
-            buffer.writeBytes(compressedNBT);
+            ByteOutputStream stream = new ByteOutputStream();
+            CompressedStreamTools.writeCompressed(nbt, stream);
+            buffer.writeShort((short) stream.getBytes().length);
+            buffer.writeBytes(stream.getBytes());
+            stream.close();
         }
     }
 
@@ -471,7 +508,7 @@ public class NetworkUtil
         else
         {
             buffer.writeInt(fluidTank.getCapacity());
-            buffer.writeInt(fluidTank.getFluid() == null ? -1 : fluidTank.getFluid().fluidID);
+            buffer.writeInt(fluidTank.getFluid() == null ? -1 : fluidTank.getFluid().getFluidID());
             buffer.writeInt(fluidTank.getFluidAmount());
         }
     }

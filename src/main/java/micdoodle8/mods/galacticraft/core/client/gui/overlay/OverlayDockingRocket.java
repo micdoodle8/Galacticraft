@@ -36,9 +36,9 @@ public class OverlayDockingRocket extends Overlay
 
             if (rocket.landing && rocket.targetVec != null)
             {
-                double dX = Math.round((rocket.posX - rocket.targetVec.x) * 100.0D) / 100.0D;
-                double dY = Math.round((rocket.posY - rocket.targetVec.y) * 100.0D) / 100.0D;
-                double dZ = Math.round((rocket.posZ - rocket.targetVec.z) * 100.0D) / 100.0D;
+                double dX = Math.round((rocket.posX - rocket.targetVec.getX()) * 100.0D) / 100.0D;
+                double dY = Math.round((rocket.posY - rocket.targetVec.getY()) * 100.0D) / 100.0D;
+                double dZ = Math.round((rocket.posZ - rocket.targetVec.getZ()) * 100.0D) / 100.0D;
                 String dXStr = String.valueOf(dX);
                 String dYStr = String.valueOf(dY);
                 String dZStr = String.valueOf(dZ);
@@ -46,7 +46,7 @@ public class OverlayDockingRocket extends Overlay
                 String warning = GCCoreUtil.translateWithFormat("gui.dockingRocket.warning.name.0", GameSettings.getKeyDisplayString(KeyHandlerClient.spaceKey.getKeyCode()));
                 String warning2 = GCCoreUtil.translateWithFormat("gui.dockingRocket.warning.name.1", GameSettings.getKeyDisplayString(KeyHandlerClient.leftShiftKey.getKeyCode()));
 
-                double targetMotionY = Math.round(Math.max((rocket.posY - rocket.targetVec.y) / -100.0D, -0.9D) * 100.0D) / 100.0D;
+                double targetMotionY = Math.round(Math.max((rocket.posY - rocket.targetVec.getY()) / -100.0D, -0.9D) * 100.0D) / 100.0D;
                 double currentMotionY = Math.round(rocket.motionY * 100.0D) / 100.0D;
                 double dMY = Math.floor((targetMotionY - currentMotionY) * 300);
                 int dMotionY = (int) Math.max(1, Math.min(255, dMY));

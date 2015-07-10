@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.entities;
 
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -40,7 +41,7 @@ public class EntityTerraformBubble extends EntityAdvanced implements IBubble
     }
 
     @Override
-    protected boolean func_145771_j(double x, double y, double z)
+    protected boolean pushOutOfBlocks(double x, double y, double z)
     {
     	return false;
     }
@@ -66,8 +67,8 @@ public class EntityTerraformBubble extends EntityAdvanced implements IBubble
     @SideOnly(Side.CLIENT)
     public void func_180426_a(double x, double y, double z, float yaw, float pitch, int i, boolean b)
     {
-        this.setPosition(par1, par3, par5);
-        this.setRotation(par7, par8);
+        this.setPosition(x, y, z);
+        this.setRotation(yaw, pitch);
     }
 
     @Override
@@ -84,7 +85,7 @@ public class EntityTerraformBubble extends EntityAdvanced implements IBubble
 
         super.onUpdate();
 
-        final TileEntity tileAt = this.worldObj.getTileEntity(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1.0), MathHelper.floor_double(this.posZ));
+        final TileEntity tileAt = this.worldObj.getTileEntity(new BlockPos(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1.0), MathHelper.floor_double(this.posZ)));
 
         if (tileAt instanceof TileEntityTerraformer)
         {

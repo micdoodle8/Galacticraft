@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -30,7 +31,7 @@ public class GuiParaChest extends GuiContainerGC
 
     public GuiParaChest(IInventory par1IInventory, IInventory par2IInventory)
     {
-        super(new ContainerParaChest(par1IInventory, par2IInventory));
+        super(new ContainerParaChest(par1IInventory, par2IInventory, FMLClientHandler.instance().getClient().thePlayer));
         this.upperChestInventory = par1IInventory;
         this.lowerChestInventory = par2IInventory;
         this.allowUserInput = false;

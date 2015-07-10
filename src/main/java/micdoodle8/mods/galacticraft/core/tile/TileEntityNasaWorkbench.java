@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -24,11 +25,11 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
     }
 
     @Override
-    public void onCreate(BlockPos placedPosition)
+    public void onCreate(World world, BlockPos placedPosition)
     {
         this.mainBlockPosition = placedPosition;
         this.markDirty();
-        int buildHeight = this.worldObj.getHeight() - 1;
+        int buildHeight = world.getHeight() - 1;
         
         for (int y = 1; y < 3; y++)
         {
@@ -44,7 +45,7 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
                     {
                         if (Math.abs(x) != 1 || Math.abs(z) != 1)
                         {
-                            ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);
+                            ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, vecToAdd, placedPosition, 3);
                         }
                     }
                 }

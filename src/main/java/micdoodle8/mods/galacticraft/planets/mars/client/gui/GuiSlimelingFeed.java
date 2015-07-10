@@ -19,7 +19,7 @@ public class GuiSlimelingFeed extends GuiScreen
     private static final ResourceLocation slimelingPanelGui = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/slimelingPanel1.png");
     private final EntitySlimeling slimeling;
 
-    public static RenderItem drawItems = new RenderItem();
+//    public static RenderItem drawItems = new RenderItem();
 
     public long timeBackspacePressed;
     public int cursorPulse;
@@ -74,7 +74,7 @@ public class GuiSlimelingFeed extends GuiScreen
             case 1:
                 if (!this.slimeling.isInLove() && this.slimeling.isOwner(this.mc.thePlayer) && this.slimeling.worldObj.isRemote)
                 {
-                    this.slimeling.func_146082_f(this.mc.thePlayer);
+                    this.slimeling.setInLove(this.mc.thePlayer);
                 }
 
                 GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, new Object[] { this.slimeling.getEntityId(), 3, "" }));

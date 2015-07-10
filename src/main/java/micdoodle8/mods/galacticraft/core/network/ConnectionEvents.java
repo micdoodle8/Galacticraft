@@ -25,8 +25,8 @@ public class ConnectionEvents
 
     static
     {
-        EnumConnectionState.field_150761_f.put(PacketSimple.class, EnumConnectionState.PLAY);
-        EnumConnectionState.PLAY.field_150770_i.put(2515, PacketSimple.class);
+        EnumConnectionState.STATES_BY_CLASS.put(PacketSimple.class, EnumConnectionState.PLAY);
+        EnumConnectionState.PLAY.directionMaps.put(2515, PacketSimple.class);
     }
 
     @SubscribeEvent
@@ -68,9 +68,9 @@ public class ConnectionEvents
         	}
         	GCLog.info("Galacticraft server sending dimension IDs to connecting client: "+ ids);
         }
-        event.manager.scheduleOutboundPacket(ConnectionPacket.createDimPacket(WorldUtil.getPlanetListInts()));
-        event.manager.scheduleOutboundPacket(ConnectionPacket.createSSPacket(WorldUtil.getSpaceStationListInts()));
-        event.manager.scheduleOutboundPacket(ConnectionPacket.createConfigPacket(ConfigManagerCore.getServerConfigOverride()));
+        event.manager.sendPacket(ConnectionPacket.createDimPacket(WorldUtil.getPlanetListInts()));
+        event.manager.sendPacket(ConnectionPacket.createSSPacket(WorldUtil.getSpaceStationListInts()));
+        event.manager.sendPacket(ConnectionPacket.createConfigPacket(ConfigManagerCore.getServerConfigOverride()));
     }
 
     @SubscribeEvent

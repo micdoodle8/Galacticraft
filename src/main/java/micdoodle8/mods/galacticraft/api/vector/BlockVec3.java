@@ -41,6 +41,11 @@ public class BlockVec3 implements Cloneable
         this(0, 0, 0);
     }
 
+    public BlockVec3(BlockPos pos)
+    {
+        this(pos.getX(), pos.getY(), pos.getZ());
+    }
+
     public BlockVec3(int x, int y, int z)
     {
         this.x = x;
@@ -69,6 +74,11 @@ public class BlockVec3 implements Cloneable
     public final BlockVec3 clone()
     {
         return new BlockVec3(this.x, this.y, this.z);
+    }
+
+    public BlockPos toBlockPos()
+    {
+        return new BlockPos(this.x, this.y, this.z);
     }
 
     /**
@@ -521,9 +531,10 @@ public class BlockVec3 implements Cloneable
         }
     }
 
-    public IBlockState getBlockMetadata(IBlockAccess world)
+    public int getBlockMetadata(IBlockAccess world)
     {
-        return world.getBlockState(new BlockPos(x, y, z));
+        IBlockState state = world.getBlockState(new BlockPos(x, y, z));
+        return state.getBlock().getMetaFromState(state);
     }
 
     public static BlockVec3 readFromNBT(NBTTagCompound nbtCompound)

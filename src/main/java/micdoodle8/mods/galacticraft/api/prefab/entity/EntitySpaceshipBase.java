@@ -286,7 +286,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
         AxisAlignedBB box = null;
 
-        box = this.getBoundingBox().expand(0.2D, 0.2D, 0.2D);
+        box = this.getEntityBoundingBox().expand(0.2D, 0.2D, 0.2D);
 
         final List<?> var15 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, box);
 
@@ -362,7 +362,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
             GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.getDimensionId());
             // PacketDispatcher.sendPacketToAllInDimension(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES,
             // this, this.getNetworkedData(new ArrayList())),
-            // this.worldObj.provider.dimensionId);
+            // this.worldObj.provider.getDimensionId());
         }
     }
 

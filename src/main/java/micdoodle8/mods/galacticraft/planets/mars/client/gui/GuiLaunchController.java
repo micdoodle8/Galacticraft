@@ -61,7 +61,7 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
 
     public GuiLaunchController(InventoryPlayer playerInventory, TileEntityLaunchController launchController)
     {
-        super(new ContainerLaunchController(playerInventory, launchController));
+        super(new ContainerLaunchController(playerInventory, launchController, FMLClientHandler.instance().getClient().thePlayer));
         this.ySize = 209;
         this.launchController = launchController;
     }

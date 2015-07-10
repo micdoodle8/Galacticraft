@@ -42,32 +42,32 @@ public class ItemUniversalWrench extends Item
         return ClientProxyCore.galacticraftItem;
     }
 
-    @RuntimeInterface(clazz = "buildcraft.api.tools.IToolWrench", modID = "BuildCraft|Core")
-    public boolean canWrench(EntityPlayer entityPlayer, int x, int y, int z)
-    {
-        return true;
-    }
-
-    @RuntimeInterface(clazz = "buildcraft.api.tools.IToolWrench", modID = "BuildCraft|Core")
-    public void wrenchUsed(EntityPlayer entityPlayer, int x, int y, int z)
-    {
-        ItemStack stack = entityPlayer.inventory.getCurrentItem();
-
-        if (stack != null)
-        {
-            stack.damageItem(1, entityPlayer);
-
-            if (stack.getItemDamage() >= stack.getMaxDamage())
-            {
-                stack.stackSize--;
-            }
-
-            if (stack.stackSize <= 0)
-            {
-                entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, null);
-            }
-        }
-    }
+//    @RuntimeInterface(clazz = "buildcraft.api.tools.IToolWrench", modID = "BuildCraft|Core")
+//    public boolean canWrench(EntityPlayer entityPlayer, int x, int y, int z)
+//    {
+//        return true;
+//    }
+//
+//    @RuntimeInterface(clazz = "buildcraft.api.tools.IToolWrench", modID = "BuildCraft|Core")
+//    public void wrenchUsed(EntityPlayer entityPlayer, int x, int y, int z)
+//    {
+//        ItemStack stack = entityPlayer.inventory.getCurrentItem();
+//
+//        if (stack != null)
+//        {
+//            stack.damageItem(1, entityPlayer);
+//
+//            if (stack.getItemDamage() >= stack.getMaxDamage())
+//            {
+//                stack.stackSize--;
+//            }
+//
+//            if (stack.stackSize <= 0)
+//            {
+//                entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, null);
+//            }
+//        }
+//    }
 
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
@@ -99,15 +99,8 @@ public class ItemUniversalWrench extends Item
         {
         	int metadata = blockID.getMetaFromState(state);
 
-            int[] rotationMatrix = { 1, 2, 3, 4, 5, 0 };
-
-            if (blockID == Blocks.furnace || blockID == Blocks.lit_furnace)
-            {
-                rotationMatrix = EnumFacing.ROTATION_MATRIX[0];
-            }
-
-            world.setBlockMetadataWithNotify(x, y, z, EnumFacing.getFront(rotationMatrix[metadata]).ordinal(), 3);
-            this.wrenchUsed(entityPlayer, x, y, z);
+            world.setBlockState(pos, blockID.getStateFromMeta(EnumFacing.getHorizontal((metadata + 1) % 4).ordinal()), 3);
+//            this.wrenchUsed(pos, player);
 
             return true;
         }

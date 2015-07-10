@@ -182,35 +182,35 @@ public class TickHandlerClient
                 ClientProxyCore.playerRotationPitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * event.renderTickTime;
             }
 
-            if (player != null && player.ridingEntity != null && player.ridingEntity instanceof EntityTier1Rocket)
-            {
-                float f = (((EntityTier1Rocket) player.ridingEntity).timeSinceLaunch - 250F) / 175F;
-
-                if (f < 0)
-                {
-                    f = 0F;
-                }
-
-                if (f > 1)
-                {
-                    f = 1F;
-                }
-
-                final ScaledResolution scaledresolution = ClientUtil.getScaledRes(minecraft, minecraft.displayWidth, minecraft.displayHeight);
-                scaledresolution.getScaledWidth();
-                scaledresolution.getScaledHeight();
-                minecraft.entityRenderer.setupOverlayRendering();
-                GL11.glEnable(GL11.GL_BLEND);
-                GL11.glDisable(GL11.GL_DEPTH_TEST);
-                GL11.glDepthMask(false);
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, f);
-                GL11.glDisable(GL11.GL_ALPHA_TEST);
-                GL11.glDepthMask(true);
-                GL11.glEnable(GL11.GL_DEPTH_TEST);
-                GL11.glEnable(GL11.GL_ALPHA_TEST);
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            }
+//            if (player != null && player.ridingEntity != null && player.ridingEntity instanceof EntityTier1Rocket)
+//            {
+//                float f = (((EntityTier1Rocket) player.ridingEntity).timeSinceLaunch - 250F) / 175F;
+//
+//                if (f < 0)
+//                {
+//                    f = 0F;
+//                }
+//
+//                if (f > 1)
+//                {
+//                    f = 1F;
+//                }
+//
+//                final ScaledResolution scaledresolution = ClientUtil.getScaledRes(minecraft, minecraft.displayWidth, minecraft.displayHeight);
+//                scaledresolution.getScaledWidth();
+//                scaledresolution.getScaledHeight();
+//                minecraft.entityRenderer.setupOverlayRendering();
+//                GL11.glEnable(GL11.GL_BLEND);
+//                GL11.glDisable(GL11.GL_DEPTH_TEST);
+//                GL11.glDepthMask(false);
+//                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+//                GL11.glColor4f(1.0F, 1.0F, 1.0F, f);
+//                GL11.glDisable(GL11.GL_ALPHA_TEST);
+//                GL11.glDepthMask(true);
+//                GL11.glEnable(GL11.GL_DEPTH_TEST);
+//                GL11.glEnable(GL11.GL_ALPHA_TEST);
+//                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//            }
 
             if (minecraft.currentScreen == null && player != null && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI)
             {
@@ -256,12 +256,12 @@ public class TickHandlerClient
             {
                 OverlayOxygenWarning.renderOxygenWarningOverlay();
             }
-            
+
             try {
             	Class clazz = Class.forName("micdoodle8.mods.galacticraft.core.atoolkit.ProcessGraphic");
             	clazz.getMethod("onTick").invoke(null);
             } catch (Exception e) { }
-        }       
+        }
     }
 
 //    @SubscribeEvent
@@ -505,22 +505,22 @@ public class TickHandlerClient
                 }
             }
 
-            if (world != null)
-            {
-                List entityList = world.loadedEntityList;
-                for (Object e : entityList)
-                {
-                    if (e instanceof IEntityNoisy)
-                    {
-                        IEntityNoisy vehicle = (IEntityNoisy)e; 
-                    	if (vehicle.getSoundUpdater() == null)
-                        {
-                        	ISound noise = vehicle.setSoundUpdater(FMLClientHandler.instance().getClient().thePlayer);
-							FMLClientHandler.instance().getClient().getSoundHandler().playSound(noise);
-                        }
-                    }
-                }
-            }
+//            if (world != null)
+//            {
+//                List entityList = world.loadedEntityList;
+//                for (Object e : entityList)
+//                {
+//                    if (e instanceof IEntityNoisy)
+//                    {
+//                        IEntityNoisy vehicle = (IEntityNoisy)e;
+//                    	if (vehicle.getSoundUpdater() == null)
+//                        {
+//                        	ISound noise = vehicle.setSoundUpdater(FMLClientHandler.instance().getClient().thePlayer);
+//							FMLClientHandler.instance().getClient().getSoundHandler().playSound(noise);
+//                        }
+//                    } TODO Fix sound updaters
+//                }
+//            }
 
             if (FMLClientHandler.instance().getClient().currentScreen instanceof GuiCelestialSelection)
             {
@@ -532,12 +532,14 @@ public class TickHandlerClient
                 world.setRainStrength(0.0F);
             }
 
-            if (!KeyHandlerClient.spaceKey.isPressed())
+            boolean isPressed = KeyHandlerClient.spaceKey.isPressed();
+
+            if (!isPressed)
             {
                 ClientProxyCore.lastSpacebarDown = false;
             }
 
-            if (player != null && player.ridingEntity != null && KeyHandlerClient.spaceKey.isPressed() && !ClientProxyCore.lastSpacebarDown)
+            if (player != null && player.ridingEntity != null && isPressed && !ClientProxyCore.lastSpacebarDown)
             {
                 GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_IGNITE_ROCKET, new Object[] { }));
                 ClientProxyCore.lastSpacebarDown = true;

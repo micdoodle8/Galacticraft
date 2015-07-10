@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
+import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -33,7 +34,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-    	return AxisAlignedBB.fromBounds(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 3, zCoord + 2);
+    	return AxisAlignedBB.fromBounds(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 3, getPos().getZ() + 2);
     }
 
     @Override
@@ -87,8 +88,8 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
 
         entityPlayer.setPosition(this.getPos().getX() + 0.5F, this.getPos().getY() + 1.9F, this.getPos().getZ() + 0.5F);
 
-        entityPlayer.sleeping = true;
-        entityPlayer.sleepTimer = 0;
+//        entityPlayer.sleeping = true;
+//        entityPlayer.sleepTimer = 0; TODO access transformer
         entityPlayer.playerLocation = new BlockPos(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
         entityPlayer.motionX = entityPlayer.motionZ = entityPlayer.motionY = 0.0D;
 
@@ -100,20 +101,20 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
         return EnumStatus.OK;
     }
 
+//    @Override
+//    public boolean canUpdate()
+//    {
+//        return true;
+//    }
+
     @Override
-    public boolean canUpdate()
+    public void update()
     {
-        return true;
+        super.update();
     }
 
     @Override
-    public void updateEntity()
-    {
-        super.updateEntity();
-    }
-
-    @Override
-    public void onCreate(BlockVec3 placedPosition)
+    public void onCreate(World world, BlockPos placedPosition)
     {
         this.mainBlockPosition = placedPosition;
         this.markDirty();
@@ -121,12 +122,12 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
 
         for (int y = 0; y < 3; y++)
         {
-            if (placedPosition.y + y > buildHeight) return;
-            final BlockVec3 vecToAdd = new BlockVec3(placedPosition.x, placedPosition.y + y, placedPosition.z);
+            if (placedPosition.getY() + y > buildHeight) return;
+            final BlockPos vecToAdd = new BlockPos(placedPosition.getX(), placedPosition.getY() + y, placedPosition.getZ());
 
             if (!vecToAdd.equals(placedPosition))
             {
-                ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 5);
+                ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, vecToAdd, placedPosition, 5);
             }
         }
     }
@@ -144,7 +145,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
                 continue;
             }
 
-            if (this.worldObj.getBlock(thisBlock.x, thisBlock.y + y, thisBlock.z) == GCBlocks.fakeBlock)
+            if (this.worldObj.getBlockState(new BlockPos(thisBlock.x, thisBlock.y + y, thisBlock.z)) == GCBlocks.fakeBlock)
             {
                 fakeBlockCount++;
             }
@@ -159,9 +160,10 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
         {
             if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
             {
-                FMLClientHandler.instance().getClient().effectRenderer.func_180533_a(thisBlock.x, thisBlock.y + y, thisBlock.z, MarsBlocks.machine, Block.getIdFromBlock(MarsBlocks.machine) >> 12 & 255);
+                BlockPos pos1 = new BlockPos(thisBlock.x, thisBlock.y + y, thisBlock.z);
+                FMLClientHandler.instance().getClient().effectRenderer.func_180533_a(pos1, worldObj.getBlockState(pos1));
             }
-            this.worldObj.destroyBlock(thisBlock.x, thisBlock.y + y, thisBlock.z, true);
+            this.worldObj.destroyBlock(new BlockPos(thisBlock.x, thisBlock.y + y, thisBlock.z), true);
         }
     }
 

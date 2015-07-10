@@ -14,7 +14,7 @@ public class ContainerLaunchController extends Container
 {
     private final TileEntityLaunchController tileEntity;
 
-    public ContainerLaunchController(InventoryPlayer par1InventoryPlayer, TileEntityLaunchController tileEntity)
+    public ContainerLaunchController(InventoryPlayer par1InventoryPlayer, TileEntityLaunchController tileEntity, EntityPlayer player)
     {
         this.tileEntity = tileEntity;
         tileEntity.checkDestFrequencyValid();
@@ -37,14 +37,14 @@ public class ContainerLaunchController extends Container
             this.addSlotToContainer(new Slot(par1InventoryPlayer, var6, 8 + var6 * 18, 185));
         }
 
-        tileEntity.openInventory();
+        tileEntity.openInventory(player);
     }
 
     @Override
     public void onContainerClosed(EntityPlayer entityplayer)
     {
         super.onContainerClosed(entityplayer);
-        this.tileEntity.closeInventory();
+        this.tileEntity.closeInventory(entityplayer);
     }
 
     @Override

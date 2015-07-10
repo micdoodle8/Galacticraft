@@ -109,7 +109,7 @@ public class EnergyNetwork implements IElectricityNetwork
                     if (wire instanceof TileBaseUniversalConductor)
                     {
                         //This will call getRequest() but that's no problem, on the second call it will just return the totalRequested
-                        ((TileBaseUniversalConductor) wire).reconfigureBC();
+//                        ((TileBaseUniversalConductor) wire).reconfigureBC(); TODO
                     }
                 }
             }

@@ -28,12 +28,12 @@ public class AsteroidsTickHandlerServer
             if (AsteroidsTickHandlerServer.spaceRaceData == null)
             {
                 World world = server.worldServerForDimension(0);
-                AsteroidsTickHandlerServer.spaceRaceData = (ShortRangeTelepadHandler) world.mapStorage.loadData(ShortRangeTelepadHandler.class, ShortRangeTelepadHandler.saveDataID);
+                AsteroidsTickHandlerServer.spaceRaceData = (ShortRangeTelepadHandler) world.getMapStorage().loadData(ShortRangeTelepadHandler.class, ShortRangeTelepadHandler.saveDataID);
 
                 if (AsteroidsTickHandlerServer.spaceRaceData == null)
                 {
                     AsteroidsTickHandlerServer.spaceRaceData = new ShortRangeTelepadHandler(ShortRangeTelepadHandler.saveDataID);
-                    world.mapStorage.setData(ShortRangeTelepadHandler.saveDataID, AsteroidsTickHandlerServer.spaceRaceData);
+                    world.getMapStorage().setData(ShortRangeTelepadHandler.saveDataID, AsteroidsTickHandlerServer.spaceRaceData);
                 }
             }
         }

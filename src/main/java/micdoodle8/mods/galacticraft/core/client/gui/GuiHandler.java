@@ -43,20 +43,21 @@ public class GuiHandler implements IGuiHandler
 
         if (ID == GuiIdsCore.ROCKET_INVENTORY && player.ridingEntity instanceof EntityTieredRocket)
         {
-            return new ContainerRocketInventory(player.inventory, (EntityTieredRocket) player.ridingEntity, ((EntityTieredRocket) player.ridingEntity).getType());
+            return new ContainerRocketInventory(player.inventory, (EntityTieredRocket) player.ridingEntity, ((EntityTieredRocket) player.ridingEntity).getType(), player);
         }
         else if (ID == GuiIdsCore.EXTENDED_INVENTORY)
         {
             return new ContainerExtendedInventory(player, stats.extendedInventory);
         }
 
-        TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
+        BlockPos pos = new BlockPos(x, y, z);
+        TileEntity tile = world.getTileEntity(pos);
 
         if (tile != null)
         {
             if (tile instanceof TileEntityRefinery)
             {
-                return new ContainerRefinery(player.inventory, (TileEntityRefinery) tile);
+                return new ContainerRefinery(player.inventory, (TileEntityRefinery) tile, player);
             }
             else if (tile instanceof TileEntityOxygenCollector)
             {
@@ -84,7 +85,7 @@ public class GuiHandler implements IGuiHandler
             }
             else if (tile instanceof TileEntityParaChest)
             {
-                return new ContainerParaChest(player.inventory, (TileEntityParaChest) tile);
+                return new ContainerParaChest(player.inventory, (TileEntityParaChest) tile, player);
             }
             else if (tile instanceof TileEntitySolar)
             {
@@ -120,11 +121,11 @@ public class GuiHandler implements IGuiHandler
             }
             else if (tile instanceof TileEntityOxygenCompressor)
             {
-                return new ContainerOxygenCompressor(player.inventory, (TileEntityOxygenCompressor) tile);
+                return new ContainerOxygenCompressor(player.inventory, (TileEntityOxygenCompressor) tile, player);
             }
             else if (tile instanceof TileEntityOxygenDecompressor)
             {
-                return new ContainerOxygenDecompressor(player.inventory, (TileEntityOxygenDecompressor) tile);
+                return new ContainerOxygenDecompressor(player.inventory, (TileEntityOxygenDecompressor) tile, player);
             }
         }
 

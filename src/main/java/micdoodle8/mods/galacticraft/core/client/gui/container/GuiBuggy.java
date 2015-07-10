@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -33,7 +34,7 @@ public class GuiBuggy extends GuiContainerGC
 
     public GuiBuggy(IInventory par1IInventory, IInventory par2IInventory, int type)
     {
-        super(new ContainerBuggy(par1IInventory, par2IInventory, type));
+        super(new ContainerBuggy(par1IInventory, par2IInventory, type, FMLClientHandler.instance().getClient().thePlayer));
         this.upperChestInventory = par1IInventory;
         this.allowUserInput = false;
         this.type = type;

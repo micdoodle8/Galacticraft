@@ -16,6 +16,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -28,16 +29,18 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     /*private static IIcon[] blockIcons;*/
     public static final PropertyEnum WIRE_TYPE = PropertyEnum.create("wireType", EnumWireType.class);
 
-    private enum EnumWireType
+    private enum EnumWireType implements IStringSerializable
     {
-        ALUMINUM_WIRE(0),
-        ALUMINUM_WIRE_HEAVY(1);
+        ALUMINUM_WIRE(0, "alu_wire"),
+        ALUMINUM_WIRE_HEAVY(1, "alu_wire_heavy");
 
         private final int meta;
+        private final String name;
 
-        private EnumWireType(int meta)
+        private EnumWireType(int meta, String name)
         {
             this.meta = meta;
+            this.name = name;
         }
 
         public int getMeta()
@@ -48,6 +51,11 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
         public static EnumWireType byMetadata(int meta)
         {
             return values()[meta];
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
         }
     }
 

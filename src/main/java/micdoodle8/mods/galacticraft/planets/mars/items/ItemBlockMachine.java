@@ -34,7 +34,7 @@ public class ItemBlockMachine extends ItemBlockDesc implements IHoldableItem
         int index = 0;
         int typenum = itemstack.getItemDamage() & 12;
 
-        if (this.field_150939_a == MarsBlocks.machine)
+        if (this.getBlock() == MarsBlocks.machine)
         {
             if (typenum == BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
             {
@@ -45,7 +45,7 @@ public class ItemBlockMachine extends ItemBlockDesc implements IHoldableItem
                 index = 1;
             }
         }
-        else if (this.field_150939_a == MarsBlocks.machineT2)
+        else if (this.getBlock() == MarsBlocks.machineT2)
         {
             if (typenum == BlockMachineMarsT2.GAS_LIQUEFIER)
             {
@@ -61,7 +61,7 @@ public class ItemBlockMachine extends ItemBlockDesc implements IHoldableItem
             }
         }
 
-        return this.field_150939_a.getUnlocalizedName() + "." + index;
+        return this.getBlock().getUnlocalizedName() + "." + index;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class ItemBlockMachine extends ItemBlockDesc implements IHoldableItem
     @Override
     public String getUnlocalizedName()
     {
-        return this.field_150939_a.getUnlocalizedName() + ".0";
+        return this.getBlock().getUnlocalizedName() + ".0";
     }
 
     @Override
@@ -82,7 +82,7 @@ public class ItemBlockMachine extends ItemBlockDesc implements IHoldableItem
     {
         ItemStack currentStack = player.getCurrentEquippedItem();
 
-        return currentStack != null && this.field_150939_a == MarsBlocks.machine && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
+        return currentStack != null && this.getBlock() == MarsBlocks.machine && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
 
     }
 
@@ -91,7 +91,7 @@ public class ItemBlockMachine extends ItemBlockDesc implements IHoldableItem
     {
         ItemStack currentStack = player.getCurrentEquippedItem();
 
-        return currentStack != null && this.field_150939_a == MarsBlocks.machine && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
+        return currentStack != null && this.getBlock() == MarsBlocks.machine && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
 
     }
 

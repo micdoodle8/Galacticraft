@@ -91,7 +91,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
         }
         BlockPos posAbove = new BlockPos(this.getPos().getX(), this.getPos().getY() + 1, this.getPos().getZ());
         Block blockAbove = this.worldObj.getBlockState(posAbove).getBlock();
-        if (!(blockAbove.isAir(this.worldObj, posAbove)) && !OxygenPressureProtocol.canBlockPassAir(this.worldObj, blockAbove, new BlockVec3(this.getPos().getX(), this.getPos().getY() + 1, this.getPos().getZ()), 1))
+        if (!(blockAbove.isAir(this.worldObj, posAbove)) && !OxygenPressureProtocol.canBlockPassAir(this.worldObj, blockAbove, this.getPos().up(), EnumFacing.UP))
         {
             // The vent is blocked
             return 0;

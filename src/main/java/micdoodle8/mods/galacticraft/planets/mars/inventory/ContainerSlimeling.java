@@ -13,7 +13,7 @@ public class ContainerSlimeling extends Container
 {
     private final InventorySlimeling slimelingInventory;
 
-    public ContainerSlimeling(InventoryPlayer playerInventory, EntitySlimeling slimeling)
+    public ContainerSlimeling(InventoryPlayer playerInventory, EntitySlimeling slimeling, EntityPlayer player)
     {
         this.slimelingInventory = slimeling.slimelingInventory;
         this.slimelingInventory.currentContainer = this;
@@ -21,7 +21,7 @@ public class ContainerSlimeling extends Container
         ContainerSlimeling.addSlots(this, playerInventory, slimeling);
         ContainerSlimeling.addAdditionalSlots(this, slimeling, slimeling.getCargoSlot());
 
-        this.slimelingInventory.openInventory();
+        this.slimelingInventory.openInventory(player);
     }
 
     public static void addSlots(ContainerSlimeling container, InventoryPlayer playerInventory, EntitySlimeling slimeling)
@@ -65,7 +65,7 @@ public class ContainerSlimeling extends Container
                     Slot slot = new Slot(slimeling.slimelingInventory, var4 + var3 * 9 + 2, 8 + var4 * 18, 54 + var3 * 18);
                     slot.slotNumber = container.inventorySlots.size();
                     container.inventorySlots.add(slot);
-                    container.inventoryItemStacks.add((Object) null);
+                    container.inventoryItemStacks.add(null);
                 }
             }
         }
@@ -74,7 +74,7 @@ public class ContainerSlimeling extends Container
     @Override
     public void onContainerClosed(EntityPlayer entityplayer)
     {
-        this.slimelingInventory.closeInventory();
+        this.slimelingInventory.closeInventory(entityplayer);
     }
 
     @Override

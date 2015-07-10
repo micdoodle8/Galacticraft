@@ -52,11 +52,11 @@ public class NetworkHelper
         final Set<IElectricityNetwork> connectedNetworks = new HashSet<IElectricityNetwork>();
 
         BlockVec3 tileVec = new BlockVec3(tileEntity);
-        for (EnumFacing side : EnumFacing.VALID_DIRECTIONS)
+        for (EnumFacing side : EnumFacing.values())
         {
             if (approachingDirection.contains(side))
             {
-                TileEntity outputConductor = tileVec.getTileEntityOnSide(tileEntity.getWorldObj(), side);
+                TileEntity outputConductor = tileVec.getTileEntityOnSide(tileEntity.getWorld(), side);
                 IElectricityNetwork electricityNetwork = NetworkHelper.getElectricalNetworkFromTileEntity(outputConductor, side);
 
                 if (electricityNetwork != null)
@@ -74,7 +74,7 @@ public class NetworkHelper
      * to see if it is a conductor. All machines should use this function to
      * search for a connecting conductor around it.
      *
-     * @param conductor         - The TileEntity conductor
+     * @param tileEntity         - The TileEntity conductor
      * @param approachDirection - The direction you are approaching this wire from.
      * @return The ElectricityNetwork or null if not found.
      */

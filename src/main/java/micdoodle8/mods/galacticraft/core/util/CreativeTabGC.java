@@ -26,7 +26,7 @@ public class CreativeTabGC extends CreativeTabs
 
     @Override
     @SideOnly(Side.CLIENT)
-    public int func_151243_f()
+    public int getIconItemDamage()
     {
         return this.metaForTab;
     }

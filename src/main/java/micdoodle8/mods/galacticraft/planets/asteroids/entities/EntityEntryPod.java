@@ -20,7 +20,7 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
 {
     public EntityEntryPod(World var1)
     {
-        super(var1, 0.0F);
+        super(var1);
         this.setSize(1.5F, 3.0F);
     }
 
@@ -195,5 +195,25 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
     public boolean shouldIgnoreShiftExit()
     {
         return !this.onGround;
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
     }
 }

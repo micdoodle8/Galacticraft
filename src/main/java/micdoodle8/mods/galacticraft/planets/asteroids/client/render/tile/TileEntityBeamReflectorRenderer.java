@@ -24,8 +24,10 @@ public class TileEntityBeamReflectorRenderer extends TileEntitySpecialRenderer
         TileEntityBeamReflectorRenderer.reflectorModel = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/reflector.obj"));
     }
 
-    public void renderModelAt(TileEntityBeamReflector tileEntity, double d, double d1, double d2, float f)
+    @Override
+    public void renderTileEntityAt(TileEntity tile, double d, double d1, double d2, float f, int i)
     {
+        TileEntityBeamReflector tileEntity = (TileEntityBeamReflector) tile;
         // Texture file
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityBeamReflectorRenderer.reflectorTexture);
 
@@ -50,11 +52,5 @@ public class TileEntityBeamReflectorRenderer extends TileEntitySpecialRenderer
         TileEntityBeamReflectorRenderer.reflectorModel.renderPart("Ring");
 
         GL11.glPopMatrix();
-    }
-
-    @Override
-    public void renderTileEntityAt(TileEntity tileEntity, double var2, double var4, double var6, float var8)
-    {
-        this.renderModelAt((TileEntityBeamReflector) tileEntity, var2, var4, var6, var8);
     }
 }

@@ -63,8 +63,8 @@ public class MarsBlocks
         setHarvestLevel(MarsBlocks.marsBlock, "shovel", 0, 5); //Top dirt
         setHarvestLevel(MarsBlocks.marsBlock, "shovel", 0, 6); //Dirt
         setHarvestLevel(MarsBlocks.rock, "pickaxe", 3);
-        setHarvestLevel(MarsBlocks.marsCobblestoneStairs, "pickaxe", 0);
-        setHarvestLevel(MarsBlocks.marsBricksStairs, "pickaxe", 3);
+//        setHarvestLevel(MarsBlocks.marsCobblestoneStairs, "pickaxe", 0);
+//        setHarvestLevel(MarsBlocks.marsBricksStairs, "pickaxe", 3);
     }
 
     public static void registerBlocks()
@@ -76,8 +76,8 @@ public class MarsBlocks
         GameRegistry.registerBlock(MarsBlocks.creeperEgg, ItemBlockDesc.class, MarsBlocks.creeperEgg.getUnlocalizedName());
         GameRegistry.registerBlock(MarsBlocks.machine, ItemBlockMachine.class, MarsBlocks.machine.getUnlocalizedName());
         GameRegistry.registerBlock(MarsBlocks.machineT2, ItemBlockMachine.class, MarsBlocks.machineT2.getUnlocalizedName());
-        GameRegistry.registerBlock(MarsBlocks.marsCobblestoneStairs, ItemBlockGC.class, MarsBlocks.marsCobblestoneStairs.getUnlocalizedName());
-        GameRegistry.registerBlock(MarsBlocks.marsBricksStairs, ItemBlockGC.class, MarsBlocks.marsBricksStairs.getUnlocalizedName());
+//        GameRegistry.registerBlock(MarsBlocks.marsCobblestoneStairs, ItemBlockGC.class, MarsBlocks.marsCobblestoneStairs.getUnlocalizedName());
+//        GameRegistry.registerBlock(MarsBlocks.marsBricksStairs, ItemBlockGC.class, MarsBlocks.marsBricksStairs.getUnlocalizedName());
         GameRegistry.registerBlock(MarsBlocks.hydrogenPipe, ItemBlockDesc.class, MarsBlocks.hydrogenPipe.getUnlocalizedName());
     }
     

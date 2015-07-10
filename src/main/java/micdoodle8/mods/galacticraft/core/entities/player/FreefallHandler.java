@@ -23,7 +23,7 @@ public class FreefallHandler {
 	public static boolean testFreefall(EntityPlayer player)
 	{
         //Test whether feet are on a block, also stops the login glitch
-        int playerFeetOnY = (int) (player.getBoundingBox().minY - 0.001D);
+        int playerFeetOnY = (int) (player.getEntityBoundingBox().minY - 0.001D);
         int xx = MathHelper.floor_double(player.posX);
         int zz = MathHelper.floor_double(player.posZ);
         BlockPos pos = new BlockPos(xx, playerFeetOnY, zz);
@@ -32,7 +32,7 @@ public class FreefallHandler {
         if (b.getMaterial() != Material.air && !(b instanceof BlockLiquid))
         {
         	double blockYmax = playerFeetOnY + b.getBlockBoundsMaxY();
-            if (player.getBoundingBox().minY - blockYmax < 0.001D && player.getBoundingBox().minY - blockYmax > -0.5D)
+            if (player.getEntityBoundingBox().minY - blockYmax < 0.001D && player.getEntityBoundingBox().minY - blockYmax > -0.5D)
             {
                 player.onGround = true;
                 if (b.canCollideCheck(player.worldObj.getBlockState(new BlockPos(xx, playerFeetOnY, zz)), false))
@@ -40,8 +40,8 @@ public class FreefallHandler {
                     AxisAlignedBB collisionBox = b.getCollisionBoundingBox(player.worldObj, new BlockPos(xx, playerFeetOnY, zz), state);
                     if (collisionBox != null && collisionBox.intersectsWith(player.getBoundingBox()))
                     {
-                        player.posY -= player.getBoundingBox().minY - blockYmax;
-	                    player.getBoundingBox().offset(0, blockYmax - player.getBoundingBox().minY, 0);
+                        player.posY -= player.getEntityBoundingBox().minY - blockYmax;
+	                    player.getEntityBoundingBox().offset(0, blockYmax - player.getEntityBoundingBox().minY, 0);
                     }
                 }
                 return false;

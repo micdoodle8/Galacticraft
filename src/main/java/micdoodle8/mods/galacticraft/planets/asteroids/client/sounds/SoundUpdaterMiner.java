@@ -30,9 +30,9 @@ public class SoundUpdaterMiner extends MovingSound
         this.volume = 0.00001F;  //If it's zero it won't start playing
         this.targetVolume = 0.6F;
         this.targetPitch = 1.0F;
-        this.field_147663_c = 1.0F;  //pitch
+        this.pitch = 1.0F;  //pitch
         this.repeat = true;
-        this.field_147665_h = 0;  //repeat delay
+        this.repeatDelay = 0;  //repeat delay
         this.updateSoundLocation(par2Entity);
 	}
 
@@ -66,17 +66,17 @@ public class SoundUpdaterMiner extends MovingSound
         		if (this.volume < this.targetVolume)
         			this.volume = this.targetVolume;
         	}
-			if (this.field_147663_c < this.targetPitch)
+			if (this.pitch < this.targetPitch)
         	{
-        		this.field_147663_c += 0.05F;
-        		if (this.field_147663_c > this.targetPitch)
-        			this.field_147663_c = this.targetPitch;
+        		this.pitch += 0.05F;
+        		if (this.pitch > this.targetPitch)
+        			this.pitch = this.targetPitch;
         	}
-        	else if (this.field_147663_c > this.targetPitch)
+        	else if (this.pitch > this.targetPitch)
         	{
-        		this.field_147663_c -= 0.05F;
-        		if (this.field_147663_c < this.targetPitch)
-        			this.field_147663_c = this.targetPitch;
+        		this.pitch -= 0.05F;
+        		if (this.pitch < this.targetPitch)
+        			this.pitch = this.targetPitch;
         	}
    			this.updateSoundLocation(this.theRocket);
         }

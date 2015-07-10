@@ -80,7 +80,7 @@ public class BlockSpaceStationBase extends BlockContainer implements ITileEntity
 
         if (tile instanceof IMultiBlock)
         {
-            ((IMultiBlock) tile).onCreate(pos);
+            ((IMultiBlock) tile).onCreate(worldIn, pos);
         }
     }
 }

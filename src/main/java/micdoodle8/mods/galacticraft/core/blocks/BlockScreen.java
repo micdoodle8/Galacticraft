@@ -154,7 +154,7 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
     }
 
     @Override
-    public boolean onMachineActivated(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof TileEntityScreen)

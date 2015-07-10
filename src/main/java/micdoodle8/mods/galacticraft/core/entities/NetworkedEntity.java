@@ -24,7 +24,7 @@ public abstract class NetworkedEntity extends Entity implements IPacketReceiver
             GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, this.getPacketRange()));
             // PacketDispatcher.sendPacketToAllAround(this.posX, this.posY,
             // this.posZ, this.getPacketRange(),
-            // this.worldObj.provider.dimensionId,
+            // this.worldObj.provider.getDimensionId(),
             // GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES,
             // this, this.getNetworkedData(new ArrayList<Object>())));
         }

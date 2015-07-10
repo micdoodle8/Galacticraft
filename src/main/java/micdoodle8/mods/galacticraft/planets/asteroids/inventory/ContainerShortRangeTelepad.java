@@ -14,7 +14,7 @@ public class ContainerShortRangeTelepad extends Container
 {
     private final TileEntityShortRangeTelepad tileEntity;
 
-    public ContainerShortRangeTelepad(InventoryPlayer par1InventoryPlayer, TileEntityShortRangeTelepad tileEntity)
+    public ContainerShortRangeTelepad(InventoryPlayer par1InventoryPlayer, TileEntityShortRangeTelepad tileEntity, EntityPlayer player)
     {
         this.tileEntity = tileEntity;
 
@@ -36,14 +36,14 @@ public class ContainerShortRangeTelepad extends Container
             this.addSlotToContainer(new Slot(par1InventoryPlayer, var6, 8 + var6 * 18, 185));
         }
 
-        tileEntity.openInventory();
+        tileEntity.openInventory(player);
     }
 
     @Override
     public void onContainerClosed(EntityPlayer entityplayer)
     {
         super.onContainerClosed(entityplayer);
-        this.tileEntity.closeInventory();
+        this.tileEntity.closeInventory(entityplayer);
     }
 
     @Override

@@ -134,7 +134,7 @@ public class BlockShortRangeTelepad extends BlockTileGC implements ItemBlockDesc
 
         if (tile instanceof TileEntityShortRangeTelepad)
         {
-            ((TileEntityShortRangeTelepad) tile).onCreate(pos);
+            ((TileEntityShortRangeTelepad) tile).onCreate(worldIn, pos);
             ((TileEntityShortRangeTelepad) tile).setOwner(((EntityPlayer) placer).getGameProfile().getName());
         }
     }

@@ -181,7 +181,7 @@ public class BlockSolar extends BlockTileGC implements ItemBlockDesc.IBlockShift
 
         if (tile instanceof TileEntitySolar)
         {
-            ((TileEntitySolar) tile).onCreate(pos);
+            ((TileEntitySolar) tile).onCreate(worldIn, pos);
         }
     }
 

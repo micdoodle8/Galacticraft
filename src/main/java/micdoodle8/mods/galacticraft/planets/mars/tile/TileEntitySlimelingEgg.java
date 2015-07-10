@@ -2,22 +2,22 @@ package micdoodle8.mods.galacticraft.planets.mars.tile;
 
 import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 
-public class TileEntitySlimelingEgg extends TileEntity
+public class TileEntitySlimelingEgg extends TileEntity implements IUpdatePlayerListBox
 {
     public int timeToHatch = -1;
     public String lastTouchedPlayerUUID = "";
     public String lastTouchedPlayerName = "";
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
-
         if (!this.worldObj.isRemote)
         {
             if (this.timeToHatch > 0)
@@ -26,7 +26,8 @@ public class TileEntitySlimelingEgg extends TileEntity
             }
             else if (this.timeToHatch == 0 && lastTouchedPlayerUUID != null && lastTouchedPlayerUUID.length() > 0)
             {
-                int metadata = this.worldObj.getBlockMetadata(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()) % 3;
+                IBlockState state = this.worldObj.getBlockState(this.getPos());
+                int metadata = state.getBlock().getMetaFromState(state) % 3;
 
                 float colorRed = 0.0F;
                 float colorGreen = 0.0F;
@@ -58,11 +59,11 @@ public class TileEntitySlimelingEgg extends TileEntity
                 }
 
                 slimeling.setTamed(true);
-                slimeling.setPathToEntity((PathEntity) null);
+                slimeling.getNavigator().clearPathEntity();
                 slimeling.setAttackTarget((EntityLivingBase) null);
                 slimeling.setHealth(20.0F);
 
-                this.worldObj.setBlockToAir(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
+                this.worldObj.setBlockToAir(this.getPos());
             }
         }
     }

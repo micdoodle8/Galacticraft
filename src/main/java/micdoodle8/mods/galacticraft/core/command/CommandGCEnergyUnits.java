@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -31,7 +32,7 @@ public class CommandGCEnergyUnits extends CommandBase
             options = options + "|J";
         }
         options = options + "|RF";
-        return "/" + this.getCommandName() + options + "]";
+        return "/" + this.getName() + options + "]";
     }
 
     @Override
@@ -41,29 +42,29 @@ public class CommandGCEnergyUnits extends CommandBase
     }
 
     @Override
-    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
+    public boolean canCommandSenderUse(ICommandSender par1ICommandSender)
     {
         return true;
     }
 
     @Override
-    public String getCommandName()
+    public String getName()
     {
         return "gcenergyunits";
     }
 
     @Override
-    public void processCommand(ICommandSender icommandsender, String[] astring)
+    public void execute(ICommandSender sender, String[] args) throws CommandException
     {
-        EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(icommandsender.getCommandSenderName(), true);
+        EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(sender.getName(), true);
         if (playerBase == null)
         {
             return;
         }
 
-        if (astring.length == 1)
+        if (args.length == 1)
         {
-            String param = astring[0].toLowerCase();
+            String param = args[0].toLowerCase();
             if (param.length() <= 2)
             {
                 int paramvalue = 0;
@@ -96,10 +97,10 @@ public class CommandGCEnergyUnits extends CommandBase
 
             }
 
-            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.gcenergyunits.invalidUnits", this.getCommandUsage(icommandsender)), new Object[0]);
+            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.gcenergyunits.invalidUnits", this.getCommandUsage(sender)), new Object[0]);
         }
 
-        throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.gcenergyunits.noUnits", this.getCommandUsage(icommandsender)), new Object[0]);
+        throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.gcenergyunits.noUnits", this.getCommandUsage(sender)), new Object[0]);
     }
 
 

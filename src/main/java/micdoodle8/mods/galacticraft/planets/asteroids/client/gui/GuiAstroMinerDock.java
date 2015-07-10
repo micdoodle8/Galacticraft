@@ -16,12 +16,14 @@ import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,7 +85,7 @@ public class GuiAstroMinerDock extends GuiContainerGC
     }
 
     @Override
-    protected void mouseClicked(int px, int py, int par3)
+    protected void mouseClicked(int px, int py, int par3) throws IOException
     {
         super.mouseClicked(px, py, par3);
     }
@@ -96,7 +98,7 @@ public class GuiAstroMinerDock extends GuiContainerGC
             switch (par1GuiButton.id)
             {
             case 0:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.tile.xCoord, this.tile.yCoord, this.tile.zCoord, 0 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.tile.getPos(), 0 }));
                 break;
             default:
                 break;
@@ -114,9 +116,9 @@ public class GuiAstroMinerDock extends GuiContainerGC
     {
         this.fontRendererObj.drawString(this.tile.getName(), 7, 6, 4210752);
         this.fontRendererObj.drawString(this.getStatus(), 177, 141, 4210752);
-        if (this.extraLines) this.fontRendererObj.drawString("\u0394x: " + getDeltaString((MathHelper.floor_double(this.tile.linkedMiner.posX) - this.tile.xCoord - 1)), 186, 152, 2536735);
-        if (this.extraLines) this.fontRendererObj.drawString("\u0394y: " + getDeltaString((MathHelper.floor_double(this.tile.linkedMiner.posY) - this.tile.yCoord)), 186, 162, 2536735);
-        if (this.extraLines) this.fontRendererObj.drawString("\u0394z: " + getDeltaString((MathHelper.floor_double(this.tile.linkedMiner.posZ) - this.tile.zCoord - 1)), 186, 172, 2536735);
+        if (this.extraLines) this.fontRendererObj.drawString("\u0394x: " + getDeltaString((MathHelper.floor_double(this.tile.linkedMiner.posX) - this.tile.getPos().getX() - 1)), 186, 152, 2536735);
+        if (this.extraLines) this.fontRendererObj.drawString("\u0394y: " + getDeltaString((MathHelper.floor_double(this.tile.linkedMiner.posY) - this.tile.getPos().getY())), 186, 162, 2536735);
+        if (this.extraLines) this.fontRendererObj.drawString("\u0394z: " + getDeltaString((MathHelper.floor_double(this.tile.linkedMiner.posZ) - this.tile.getPos().getZ() - 1)), 186, 172, 2536735);
         if (this.extraLines) this.fontRendererObj.drawString(GCCoreUtil.translate("gui.miner.mined")+ ": " + this.tile.linkedMiner.mineCount, 177, 183, 2536735);
         this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 7, this.ySize - 92, 4210752);
     }
@@ -177,16 +179,17 @@ public class GuiAstroMinerDock extends GuiContainerGC
     {
         float f = 0.00390625F;
         float f1 = 0.00390625F;
-        Tessellator tessellator = Tessellator.instance;
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-        tessellator.startDrawingQuads();
-        tessellator.setColorOpaque_I(color);
-        tessellator.addVertex((double)(p_73729_1_ + 0), (double)(p_73729_2_ + p_73729_6_), (double)this.zLevel);
-        tessellator.addVertex((double)(p_73729_1_ + p_73729_5_), (double)(p_73729_2_ + p_73729_6_), (double)this.zLevel);
-        tessellator.addVertex((double)(p_73729_1_ + p_73729_5_), (double)(p_73729_2_ + 0), (double)this.zLevel);
-        tessellator.addVertex((double)(p_73729_1_ + 0), (double)(p_73729_2_ + 0), (double)this.zLevel);
+        worldRenderer.startDrawingQuads();
+        worldRenderer.setColorOpaque_I(color);
+        worldRenderer.addVertex((double)(p_73729_1_ + 0), (double)(p_73729_2_ + p_73729_6_), (double)this.zLevel);
+        worldRenderer.addVertex((double)(p_73729_1_ + p_73729_5_), (double)(p_73729_2_ + p_73729_6_), (double)this.zLevel);
+        worldRenderer.addVertex((double)(p_73729_1_ + p_73729_5_), (double)(p_73729_2_ + 0), (double)this.zLevel);
+        worldRenderer.addVertex((double)(p_73729_1_ + 0), (double)(p_73729_2_ + 0), (double)this.zLevel);
         tessellator.draw();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_BLEND);

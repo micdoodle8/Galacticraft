@@ -163,7 +163,7 @@ public class PlayerServer implements IPlayerServer
 
         if (c != null)
         {
-            EventWakePlayer event = new EventWakePlayer(player, c.posX, c.posY, c.posZ, par1, par2, par3, bypass);
+            EventWakePlayer event = new EventWakePlayer(player, c, par1, par2, par3, bypass);
             MinecraftForge.EVENT_BUS.post(event);
 
             if (bypass || event.result == null || event.result == EntityPlayer.EnumStatus.OK)

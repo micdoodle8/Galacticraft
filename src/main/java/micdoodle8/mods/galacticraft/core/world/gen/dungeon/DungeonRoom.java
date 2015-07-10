@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.ChunkPrimer;
 
 import java.util.Random;
 
@@ -31,7 +32,7 @@ public abstract class DungeonRoom
         this.entranceDir = entranceDir;
     }
 
-    public abstract void generate(Block[] chunk, byte[] meta, int cx, int cz);
+    public abstract void generate(ChunkPrimer primer, int cx, int cz);
 
     public abstract DungeonBoundingBox getBoundingBox();
 
@@ -54,7 +55,7 @@ public abstract class DungeonRoom
         return dungeon.treasureRooms.get(rand.nextInt(dungeon.treasureRooms.size())).makeRoom(dungeon, x, y, z, dir);
     }
 
-    protected boolean placeBlock(Block[] blocks, byte[] metas, int x, int y, int z, int cx, int cz, Block id, int meta)
+    protected boolean placeBlock(ChunkPrimer primer, int x, int y, int z, int cx, int cz, Block id, int meta)
     {
         if (MapGenDungeon.useArrays)
         {
@@ -67,8 +68,9 @@ public abstract class DungeonRoom
                 return false;
             }
             final int index = this.getIndex(x, y, z);
-            blocks[index] = id;
-            metas[index] = (byte) meta;
+            primer.setBlockState(index, id.getStateFromMeta(meta));
+//            blocks[index] = id;
+//            metas[index] = (byte) meta;
         }
         else
         {

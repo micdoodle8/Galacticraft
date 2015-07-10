@@ -393,7 +393,7 @@ public class ConfigManagerCore
                 FMLLog.severe("[Galacticraft] It appears you have installed the 'Dev' version of Galacticraft instead of the regular version (or vice versa).  Please re-install.");
             }
 
-            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "External Detectable IDs", new String[] { GameData.getBlockRegistry().getNameForObject(Blocks.coal_ore), GameData.getBlockRegistry().getNameForObject(Blocks.diamond_ore), GameData.getBlockRegistry().getNameForObject(Blocks.gold_ore), GameData.getBlockRegistry().getNameForObject(Blocks.iron_ore), GameData.getBlockRegistry().getNameForObject(Blocks.lapis_ore), GameData.getBlockRegistry().getNameForObject(Blocks.redstone_ore), GameData.getBlockRegistry().getNameForObject(Blocks.lit_redstone_ore) });
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "External Detectable IDs", new String[] { (String)GameData.getBlockRegistry().getNameForObject(Blocks.coal_ore), (String)GameData.getBlockRegistry().getNameForObject(Blocks.diamond_ore), (String)GameData.getBlockRegistry().getNameForObject(Blocks.gold_ore), (String)GameData.getBlockRegistry().getNameForObject(Blocks.iron_ore), (String)GameData.getBlockRegistry().getNameForObject(Blocks.lapis_ore), (String)GameData.getBlockRegistry().getNameForObject(Blocks.redstone_ore), (String)GameData.getBlockRegistry().getNameForObject(Blocks.lit_redstone_ore) });
             prop.comment = "List blocks from other mods that the Sensor Glasses should recognize as solid blocks. Format is BlockName or BlockName:metadata.";
             prop.setLanguageKey("gc.configgui.detectableIDs").setRequiresMcRestart(true);
             detectableIDs = prop.getStringList();
@@ -649,7 +649,7 @@ public class ConfigManagerCore
         try
         {
             Integer.parseInt(name);
-            String bName = GameData.getBlockRegistry().getNameForObject(block);
+            String bName = (String)GameData.getBlockRegistry().getNameForObject(block);
             if (logging) GCLog.info("[config] " + caller + ": the use of numeric IDs is discouraged, please use " + bName + " instead of " + name);
         }
         catch (NumberFormatException ex) { }

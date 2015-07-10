@@ -841,6 +841,7 @@ public class PacketSimple implements IPacket
 
                 if (!ship.landing)
                 {
+                    System.err.println(ConfigManagerCore.rocketFuelFactor);
                     if (ship.hasValidFuel())
                     {
                         ItemStack stack2 = stats.extendedInventory.getStackInSlot(4);

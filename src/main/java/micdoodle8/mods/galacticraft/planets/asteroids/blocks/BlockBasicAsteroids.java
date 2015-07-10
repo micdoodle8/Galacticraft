@@ -16,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -33,20 +34,22 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
 //    private IIcon[] blockIcons;
     public static final PropertyEnum BASIC_TYPE = PropertyEnum.create("basicTypeAsteroids", EnumBlockBasic.class);
 
-    private enum EnumBlockBasic
+    private enum EnumBlockBasic implements IStringSerializable
     {
-        ASTEROID_0(0),
-        ASTEROID_1(1),
-        ASTEROID_3(2),
-        ORE_ALUMINUM(3),
-        ORE_ILMENITE(4),
-        ORE_IRON(5);
+        ASTEROID_0(0, "asteroid_rock_0"),
+        ASTEROID_1(1, "asteroid_rock_1"),
+        ASTEROID_2(2, "asteroid_rock_2"),
+        ORE_ALUMINUM(3, "ore_aluminum_asteroids"),
+        ORE_ILMENITE(4, "ore_ilmenite_asteroids"),
+        ORE_IRON(5, "ore_iron_asteroids");
 
         private final int meta;
+        private final String name;
 
-        private EnumBlockBasic(int meta)
+        private EnumBlockBasic(int meta, String name)
         {
             this.meta = meta;
+            this.name = name;
         }
 
         public int getMeta()
@@ -57,6 +60,11 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
         public static EnumBlockBasic byMetadata(int meta)
         {
             return values()[meta];
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
         }
     }
 

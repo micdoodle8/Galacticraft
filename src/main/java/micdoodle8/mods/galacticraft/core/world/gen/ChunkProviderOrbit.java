@@ -8,9 +8,11 @@ import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
 
@@ -26,7 +28,7 @@ public class ChunkProviderOrbit extends ChunkProviderGenerate
 
     public ChunkProviderOrbit(World par1World, long par2, boolean par4)
     {
-        super(par1World, par2, par4);
+        super(par1World, par2, par4, "");
         this.rand = new Random(par2);
         this.worldObj = par1World;
     }
@@ -58,12 +60,10 @@ public class ChunkProviderOrbit extends ChunkProviderGenerate
     @Override
     public Chunk provideChunk(int par1, int par2)
     {
+        ChunkPrimer chunkprimer = new ChunkPrimer();
         this.rand.setSeed(par1 * 341873128712L + par2 * 132897987541L);
-        final Block[] ids = new Block[32768];
-        Arrays.fill(ids, Blocks.air);
-        final byte[] meta = new byte[32768];
 
-        final Chunk var4 = new Chunk(this.worldObj, ids, meta, par1, par2);
+        final Chunk var4 = new Chunk(this.worldObj, chunkprimer, par1, par2);
 
         final byte[] biomesArray = var4.getBiomeArray();
         for (int i = 0; i < biomesArray.length; ++i)
@@ -94,16 +94,17 @@ public class ChunkProviderOrbit extends ChunkProviderGenerate
         this.rand.setSeed(par2 * i1 + par3 * j1 ^ this.worldObj.getSeed());
         if (k == 0 && l == 0)
         {
-            this.worldObj.setBlock(k, 64, l, GCBlocks.spaceStationBase, 0, 3);
+            BlockPos pos = new BlockPos(k, 64, l);
+            this.worldObj.setBlockState(pos, GCBlocks.spaceStationBase.getDefaultState(), 3);
 
-            final TileEntity var8 = this.worldObj.getTileEntity(k, 64, l);
+            final TileEntity var8 = this.worldObj.getTileEntity(pos);
 
             if (var8 instanceof IMultiBlock)
             {
-                ((IMultiBlock) var8).onCreate(new BlockVec3(k, 64, l));
+                ((IMultiBlock) var8).onCreate(this.worldObj, pos);
             }
 
-            new WorldGenSpaceStation().generate(this.worldObj, this.rand, k - 10, 62, l - 3);
+            new WorldGenSpaceStation().generate(this.worldObj, this.rand, new BlockPos(k - 10, 62, l - 3));
         }
         BlockFalling.fallInstantly = false;
     }
@@ -112,11 +113,5 @@ public class ChunkProviderOrbit extends ChunkProviderGenerate
     public String makeString()
     {
         return "OrbitLevelSource";
-    }
-
-    @Override
-    public List<?> getPossibleCreatures(EnumCreatureType par1EnumCreatureType, int i, int j, int k)
-    {
-        return null;
     }
 }

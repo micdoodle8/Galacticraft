@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.schematic;
 
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
@@ -36,15 +37,15 @@ public class SchematicAstroMiner implements ISchematicPage
 
     @SideOnly(Side.CLIENT)
     @Override
-    public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z)
+    public GuiScreen getResultScreen(EntityPlayer player, BlockPos pos)
     {
-        return new GuiSchematicAstroMiner(player.inventory, x, y, z);
+        return new GuiSchematicAstroMiner(player.inventory, pos);
     }
 
     @Override
-    public Container getResultContainer(EntityPlayer player, int x, int y, int z)
+    public Container getResultContainer(EntityPlayer player, BlockPos pos)
     {
-        return new ContainerSchematicAstroMiner(player.inventory, x, y, z);
+        return new ContainerSchematicAstroMiner(player.inventory, pos);
     }
 
     @Override

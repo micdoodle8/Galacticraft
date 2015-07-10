@@ -34,7 +34,7 @@ public class GCCoreUtil
         player.closeContainer();
         int id = player.currentWindowId;
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, new Object[] { id, 0, 0 }), player);
-        player.openContainer = new ContainerBuggy(player.inventory, buggyInv, type);
+        player.openContainer = new ContainerBuggy(player.inventory, buggyInv, type, player);
         player.openContainer.windowId = id;
         player.openContainer.addCraftingToCrafters(player);
     }
@@ -45,7 +45,7 @@ public class GCCoreUtil
         player.closeContainer();
         int windowId = player.currentWindowId;
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, new Object[] { windowId, 1, landerInv.getEntityId() }), player);
-        player.openContainer = new ContainerParaChest(player.inventory, landerInv);
+        player.openContainer = new ContainerParaChest(player.inventory, landerInv, player);
         player.openContainer.windowId = windowId;
         player.openContainer.addCraftingToCrafters(player);
     }

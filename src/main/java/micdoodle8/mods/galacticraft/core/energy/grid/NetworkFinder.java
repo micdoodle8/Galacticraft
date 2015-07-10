@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.energy.grid;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.HashSet;
@@ -53,7 +54,7 @@ public class NetworkFinder
 			{
     			iterated.add(obj);
     			
-    			TileEntity tileEntity = worldObj.getTileEntity(obj.x, obj.y, obj.z);
+    			TileEntity tileEntity = worldObj.getTileEntity(new BlockPos(obj.x, obj.y, obj.z));
 				
 				if(tileEntity instanceof IConductor)
 				{

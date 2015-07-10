@@ -1,11 +1,13 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
@@ -22,7 +24,6 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderOrbit;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -71,12 +72,12 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
     private int ssBoundsMaxZ;
     private int ssBoundsMinZ;
 
-    private LinkedList<BlockVec3> thrustersPlus = new LinkedList();
-    private LinkedList<BlockVec3> thrustersMinus = new LinkedList();
-    private BlockVec3 oneSSBlock;
-    //private HashSet<BlockVec3> stationBlocks = new HashSet();
+    private LinkedList<BlockPos> thrustersPlus = new LinkedList();
+    private LinkedList<BlockPos> thrustersMinus = new LinkedList();
+    private BlockPos oneSSBlock;
+    //private HashSet<BlockPos> stationBlocks = new HashSet();
 
-    private HashSet<BlockVec3> checked = new HashSet<BlockVec3>();
+    private HashSet<BlockPos> checked = new HashSet<BlockPos>();
 
     private float artificialG;
     //Used to make continuous particles + thrust sounds at the spin thrusters in this dimension
@@ -307,26 +308,28 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                     if ((e instanceof EntityItem || e instanceof EntityLivingBase && !(e instanceof EntityPlayer) || e instanceof EntityTNTPrimed || e instanceof EntityFallingBlock) && !e.onGround)
                     {
                         boolean freefall = true;
-                        if (e.boundingBox.maxX >= this.ssBoundsMinX && e.boundingBox.minX <= this.ssBoundsMaxX && e.boundingBox.maxY >= this.ssBoundsMinY && e.boundingBox.minY <= this.ssBoundsMaxY && e.boundingBox.maxZ >= this.ssBoundsMinZ && e.boundingBox.minZ <= this.ssBoundsMaxZ)
+                        if (e.getEntityBoundingBox().maxX >= this.ssBoundsMinX && e.getEntityBoundingBox().minX <= this.ssBoundsMaxX && e.getEntityBoundingBox().maxY >= this.ssBoundsMinY &&
+                                e.getEntityBoundingBox().minY <= this.ssBoundsMaxY && e.getEntityBoundingBox().maxZ >= this.ssBoundsMinZ && e.getEntityBoundingBox().minZ <= this.ssBoundsMaxZ)
                         {
                             //Entity is somewhere within the space station boundaries
 
                             //Check if the entity's bounding box is in the same block coordinates as any non-vacuum block (including torches etc)
                             //If so, it's assumed the entity has something close enough to catch onto, so is not in freefall
                             //Note: breatheable air here means the entity is definitely not in freefall
-                            int xmx = MathHelper.floor_double(e.boundingBox.maxX + 0.2D);
-                            int ym = MathHelper.floor_double(e.boundingBox.minY - 0.1D);
-                            int yy = MathHelper.floor_double(e.boundingBox.maxY + 0.1D);
-                            int zm = MathHelper.floor_double(e.boundingBox.minZ - 0.2D);
-                            int zz = MathHelper.floor_double(e.boundingBox.maxZ + 0.2D);
+                            int xmx = MathHelper.floor_double(e.getEntityBoundingBox().maxX + 0.2D);
+                            int ym = MathHelper.floor_double(e.getEntityBoundingBox().minY - 0.1D);
+                            int yy = MathHelper.floor_double(e.getEntityBoundingBox().maxY + 0.1D);
+                            int zm = MathHelper.floor_double(e.getEntityBoundingBox().minZ - 0.2D);
+                            int zz = MathHelper.floor_double(e.getEntityBoundingBox().maxZ + 0.2D);
                             BLOCKCHECK:
-                            for (int x = MathHelper.floor_double(e.boundingBox.minX - 0.2D); x <= xmx; x++)
+                            for (int x = MathHelper.floor_double(e.getEntityBoundingBox().minX - 0.2D); x <= xmx; x++)
                             {
                                 for (int y = ym; y <= yy; y++)
                                 {
                                     for (int z = zm; z <= zz; z++)
                                     {
-                                        if (this.worldObj.blockExists(x, y, z) && Blocks.air != this.worldObj.getBlock(x, y, z))
+                                        BlockPos pos = new BlockPos(x, y, z);
+                                        if (this.worldObj.isBlockLoaded(pos) && Blocks.air != this.worldObj.getBlockState(pos).getBlock())
                                         {
                                             freefall = false;
                                             break BLOCKCHECK;
@@ -367,12 +370,12 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                                 e.lastTickPosZ += offsetZ;
 
                                 //Rotated into an unloaded chunk (probably also drifted out to there): byebye
-                                if (!this.worldObj.blockExists(MathHelper.floor_double(e.posX), 64, MathHelper.floor_double(e.posZ)))
+                                if (!this.worldObj.isBlockLoaded(new BlockPos(MathHelper.floor_double(e.posX), 64, MathHelper.floor_double(e.posZ))))
                                 {
                                     e.setDead();
                                 }
 
-                                e.boundingBox.offset(offsetX, 0.0D, offsetZ);
+                                e.getEntityBoundingBox().offset(offsetX, 0.0D, offsetZ);
                                 //TODO check for block collisions here - if so move the entity appropriately and apply fall damage
                                 //Moving the entity = slide along / down
                                 e.rotationYaw += this.skyAngularVelocity;
@@ -579,7 +582,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
     {
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
         boolean freefall = stats.inFreefall;
-        if (freefall) p.ySize = 0F;  //Undo the sneak height adjust
+//        if (freefall) p.ySize = 0F;  //Undo the sneak height adjust TODO Fix this for 1.8
         freefall = this.testFreefall(p, freefall);
         stats.inFreefall = freefall;
         stats.inFreefallFirstCheck = true;
@@ -619,13 +622,13 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 
                 //Check for block collisions here - if so move the player appropriately
                 //First check that there are no existing collisions where the player is now (TODO: bounce the player away)
-                if (this.worldObj.getCollidingBoundingBoxes(p, p.boundingBox).size() == 0)
+                if (this.worldObj.getCollidingBoundingBoxes(p, p.getBoundingBox()).size() == 0)
                 {
                     //Now check for collisions in the new direction and if there are some, try reducing the movement
                     int collisions = 0;
                     do
                     {
-                        List<AxisAlignedBB> list = this.worldObj.getCollidingBoundingBoxes(p, p.boundingBox.addCoord(offsetX, 0.0D, offsetZ));
+                        List<AxisAlignedBB> list = this.worldObj.getCollidingBoundingBoxes(p, p.getEntityBoundingBox().addCoord(offsetX, 0.0D, offsetZ));
                         collisions = list.size();
                         if (collisions > 0)
                         {
@@ -652,7 +655,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 
                     p.posX += offsetX;
                     p.posZ += offsetZ;
-                    p.boundingBox.offset(offsetX, 0.0D, offsetZ);
+                    p.getEntityBoundingBox().offset(offsetX, 0.0D, offsetZ);
                 }
 
                 p.rotationYaw += this.skyAngularVelocity;
@@ -747,7 +750,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                     p.motionY -= 0.015D;
                     p.onGround = false;
                     p.posY -= 0.1D;
-                    p.boundingBox.offset(0, -0.1D, 0);
+                    p.getEntityBoundingBox().offset(0, -0.1D, 0);
                 }
                 else
                 {
@@ -849,7 +852,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
     		if (rY < 170F && rY > 10F) xreach = 0.2D;
     		if (rY < 260F && rY > 100F) zreach = -0.2D;
     		if (rY < 350F && rY > 190F) xreach = -0.2D;
-        	AxisAlignedBB playerReach = p.boundingBox.addCoord(xreach, 0, zreach);            
+        	AxisAlignedBB playerReach = p.getEntityBoundingBox().addCoord(xreach, 0, zreach);
             
         	if (playerReach.maxX >= this.ssBoundsMinX && playerReach.minX <= this.ssBoundsMaxX && playerReach.maxY >= this.ssBoundsMinY && playerReach.minY <= this.ssBoundsMaxY && playerReach.maxZ >= this.ssBoundsMinZ && playerReach.minZ <= this.ssBoundsMaxZ)
 	        //Player is somewhere within the space station boundaries
@@ -870,7 +873,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 	                    for (int z = zm; z <= zz; z++)
 	                    {
 	                        //Blocks.air is hard vacuum - we want to check for that, here
-	                    	Block b = this.worldObj.getBlock(x, y, z);
+	                    	Block b = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
 	                        if (Blocks.air != b && GCBlocks.brightAir != b)
 	                        {
 	                            return false;
@@ -1017,7 +1020,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         this.ssBoundsMaxZ = zz;
     }
 
-    public void addThruster(BlockVec3 thruster, boolean positive)
+    public void addThruster(BlockPos thruster, boolean positive)
     {
         if (positive)
         {
@@ -1031,7 +1034,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         }
     }
 
-    public void removeThruster(BlockVec3 thruster, boolean positive)
+    public void removeThruster(BlockPos thruster, boolean positive)
     {
         if (positive)
         {
@@ -1060,45 +1063,45 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
      * @param baseBlock
      * @return
      */
-    public boolean checkSS(BlockVec3 baseBlock, boolean placingThruster)
+    public boolean checkSS(BlockPos baseBlock, boolean placingThruster)
     {
-        if (this.oneSSBlock == null || this.oneSSBlock.getBlockID(this.worldObj).isAir(worldObj, this.oneSSBlock.x, this.oneSSBlock.y, this.oneSSBlock.z))
+        if (this.oneSSBlock == null || this.worldObj.getBlockState(this.oneSSBlock).getBlock().isAir(worldObj, this.oneSSBlock))
         {
             if (baseBlock != null)
             {
-                this.oneSSBlock = baseBlock.clone();
+                this.oneSSBlock = baseBlock;
             }
             else
             {
-                this.oneSSBlock = new BlockVec3(0, 64, 0);
+                this.oneSSBlock = new BlockPos(0, 64, 0);
             }
         }
 
         // Find contiguous blocks using an algorithm like the oxygen sealer one
         List<BlockVec3> currentLayer = new LinkedList<BlockVec3>();
         List<BlockVec3> nextLayer = new LinkedList<BlockVec3>();
-        final List<BlockVec3> foundThrusters = new LinkedList<BlockVec3>();
+        final List<BlockPos> foundThrusters = new LinkedList<BlockPos>();
 
         this.checked.clear();
-        currentLayer.add(this.oneSSBlock.clone());
-        this.checked.add(this.oneSSBlock.clone());
-        Block bStart = this.oneSSBlock.getBlockID(this.worldObj);
+        currentLayer.add(new BlockVec3(this.oneSSBlock));
+        this.checked.add(this.oneSSBlock);
+        Block bStart = this.worldObj.getBlockState(this.oneSSBlock).getBlock();
         if (bStart instanceof BlockSpinThruster)
         {
             foundThrusters.add(this.oneSSBlock);
         }
 
         float thismass = 0.1F; //Mass of a thruster
-        float thismassCentreX = 0.1F * this.oneSSBlock.x;
-        float thismassCentreY = 0.1F * this.oneSSBlock.y;
-        float thismassCentreZ = 0.1F * this.oneSSBlock.z;
+        float thismassCentreX = 0.1F * this.oneSSBlock.getX();
+        float thismassCentreY = 0.1F * this.oneSSBlock.getY();
+        float thismassCentreZ = 0.1F * this.oneSSBlock.getZ();
         float thismoment = 0F;
-        int thisssBoundsMaxX = this.oneSSBlock.x;
-        int thisssBoundsMinX = this.oneSSBlock.x;
-        int thisssBoundsMaxY = this.oneSSBlock.y;
-        int thisssBoundsMinY = this.oneSSBlock.y;
-        int thisssBoundsMaxZ = this.oneSSBlock.z;
-        int thisssBoundsMinZ = this.oneSSBlock.z;
+        int thisssBoundsMaxX = this.oneSSBlock.getX();
+        int thisssBoundsMinX = this.oneSSBlock.getX();
+        int thisssBoundsMaxY = this.oneSSBlock.getY();
+        int thisssBoundsMinY = this.oneSSBlock.getY();
+        int thisssBoundsMaxZ = this.oneSSBlock.getZ();
+        int thisssBoundsMinZ = this.oneSSBlock.getZ();
 
         while (currentLayer.size() > 0)
         {
@@ -1139,14 +1142,14 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 
                     if (!this.checked.contains(sideVec))
                     {
-                        this.checked.add(sideVec);
+                        this.checked.add(sideVec.toBlockPos());
                         Block b = sideVec.getBlockID(this.worldObj);
-                        if (!(b.isAir(worldObj, sideVec.x, sideVec.y, sideVec.z)) && b != null)
+                        if (!(b.isAir(worldObj, sideVec.toBlockPos())) && b != null)
                         {
                             nextLayer.add(sideVec);
-                            if (bStart.isAir(worldObj, this.oneSSBlock.x, this.oneSSBlock.y, this.oneSSBlock.z))
+                            if (bStart.isAir(worldObj, this.oneSSBlock))
                             {
-                                this.oneSSBlock = sideVec.clone();
+                                this.oneSSBlock = sideVec.toBlockPos();
                                 bStart = b;
                             }
                             float m = 1.0F;
@@ -1154,7 +1157,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                             if (!(b instanceof BlockLiquid))
                             {
                                 //For most blocks, hardness gives a good idea of mass
-                                m = b.getBlockHardness(this.worldObj, sideVec.x, sideVec.y, sideVec.z);
+                                m = b.getBlockHardness(this.worldObj, sideVec.toBlockPos());
                                 if (m < 0.1F)
                                 {
                                     m = 0.1F;
@@ -1179,7 +1182,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                             thismoment += m * (sideVec.x * sideVec.x + sideVec.z * sideVec.z);
                             if (b instanceof BlockSpinThruster)
                             {
-                                foundThrusters.add(sideVec);
+                                foundThrusters.add(sideVec.toBlockPos());
                             }
                         }
                     }
@@ -1197,7 +1200,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                 //The thruster was not placed on the existing contiguous space station: it must be.
                 if (ConfigManagerCore.enableDebug)
                 {
-                    GCLog.info("Thruster placed on wrong part of space station: base at " + this.oneSSBlock.x + "," + this.oneSSBlock.y + "," + this.oneSSBlock.z + " - baseBlock was " + baseBlock.x + "," + baseBlock.y + "," + baseBlock.z + " - found " + foundThrusters.size());
+                    GCLog.info("Thruster placed on wrong part of space station: base at " + this.oneSSBlock + " - baseBlock was " + baseBlock + " - found " + foundThrusters.size());
                 }
                 return false;
             }
@@ -1207,8 +1210,8 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
             //(This first check prevents an infinite loop)
             if (!this.oneSSBlock.equals(baseBlock))
             {
-                this.oneSSBlock = baseBlock.clone();
-                if (this.oneSSBlock.getBlockID(this.worldObj).getMaterial() != Material.air)
+                this.oneSSBlock = baseBlock;
+                if (this.worldObj.getBlockState(this.oneSSBlock).getBlock().getMaterial() != Material.air)
                 {
                     return this.checkSS(baseBlock, true);
                 }
@@ -1221,16 +1224,17 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         // Update thruster lists based on what was found
         this.thrustersPlus.clear();
         this.thrustersMinus.clear();
-        for (BlockVec3 thruster : foundThrusters)
+        for (BlockPos thruster : foundThrusters)
         {
-            int facing = thruster.getBlockMetadata(this.worldObj) & 8;
+            IBlockState state = this.worldObj.getBlockState(thruster);
+            int facing = state.getBlock().getMetaFromState(state) & 8;
             if (facing == 0)
             {
-                this.thrustersPlus.add(thruster.clone());
+                this.thrustersPlus.add(thruster);
             }
             else
             {
-                this.thrustersMinus.add(thruster.clone());
+                this.thrustersMinus.add(thruster);
             }
         }
 
@@ -1295,17 +1299,17 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
             int countThrusters = 0;
             int countThrustersReverse = 0;
 
-            for (BlockVec3 thruster : this.thrustersPlus)
+            for (BlockPos thruster : this.thrustersPlus)
             {
-                float xx = thruster.x - this.massCentreX;
-                float zz = thruster.z - this.massCentreZ;
+                float xx = thruster.getX() - this.massCentreX;
+                float zz = thruster.getZ() - this.massCentreZ;
                 netTorque += MathHelper.sqrt_float(xx * xx + zz * zz);
                 countThrusters++;
             }
-            for (BlockVec3 thruster : this.thrustersMinus)
+            for (BlockPos thruster : this.thrustersMinus)
             {
-                float xx = thruster.x - this.massCentreX;
-                float zz = thruster.z - this.massCentreZ;
+                float xx = thruster.getX() - this.massCentreX;
+                float zz = thruster.getZ() - this.massCentreZ;
                 netTorque -= MathHelper.sqrt_float(xx * xx + zz * zz);
                 countThrustersReverse++;
             }
@@ -1383,7 +1387,8 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         NBTTagCompound oneBlock = (NBTTagCompound) nbt.getTag("oneBlock");
         if (oneBlock != null)
         {
-            this.oneSSBlock = BlockVec3.readFromNBT(oneBlock);
+//            this.oneSSBlock = BlockVec3.readFromNBT(oneBlock);
+            this.oneSSBlock = new BlockPos(oneBlock.getInteger("x"), oneBlock.getInteger("y"), oneBlock.getInteger("z"));
         }
         else
         {
@@ -1424,7 +1429,9 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         if (this.oneSSBlock != null)
         {
             NBTTagCompound oneBlock = new NBTTagCompound();
-            this.oneSSBlock.writeToNBT(oneBlock);
+            oneBlock.setInteger("x", this.oneSSBlock.getX());
+            oneBlock.setInteger("y", this.oneSSBlock.getY());
+            oneBlock.setInteger("z", this.oneSSBlock.getZ());
             nbt.setTag("oneBlock", oneBlock);
         }
     }
@@ -1469,5 +1476,10 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
     public float getWindLevel()
     {
         return 0.1F;
+    }
+
+    @Override
+    public String getInternalNameSuffix() {
+        return "_orbit";
     }
 }

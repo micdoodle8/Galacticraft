@@ -43,14 +43,14 @@ public class OrbitSpinSaveData extends WorldSavedData
             world.setItemData(OrbitSpinSaveData.saveDataID, worldData);
             if (world.provider instanceof WorldProviderOrbit)
             {
-                worldData.dim = world.provider.dimensionId;
+                worldData.dim = world.provider.getDimensionId();
                 ((WorldProviderOrbit) world.provider).writeToNBT(worldData.datacompound);
             }
             worldData.markDirty();
         }
         else if (world.provider instanceof WorldProviderOrbit)
         {
-            worldData.dim = world.provider.dimensionId;
+            worldData.dim = world.provider.getDimensionId();
 
             worldData.datacompound = null;
             if (worldData.alldata != null)

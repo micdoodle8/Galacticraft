@@ -166,7 +166,7 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
 
         if (var8 instanceof IMultiBlock)
         {
-            ((IMultiBlock) var8).onCreate(pos);
+            ((IMultiBlock) var8).onCreate(worldIn, pos);
         }
 
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);

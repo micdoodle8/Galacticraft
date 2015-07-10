@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
@@ -22,9 +23,9 @@ public class GuiSchematicInput extends GuiContainerGC implements ISchematicResul
 
     private int pageIndex;
 
-    public GuiSchematicInput(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
+    public GuiSchematicInput(InventoryPlayer par1InventoryPlayer, BlockPos pos)
     {
-        super(new ContainerSchematic(par1InventoryPlayer, x, y, z));
+        super(new ContainerSchematic(par1InventoryPlayer, pos));
     }
 
     @SuppressWarnings("unchecked")

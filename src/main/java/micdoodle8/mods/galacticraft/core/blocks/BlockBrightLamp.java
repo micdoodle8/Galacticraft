@@ -7,7 +7,9 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -64,7 +66,9 @@ public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlo
     {
         for (EnumFacing side : EnumFacing.values())
         {
-            if (WorldUtil.blockOnSideHasSolidFace(worldIn, pos, side))
+            BlockPos offsetPos = pos.offset(side);
+            IBlockState state = worldIn.getBlockState(offsetPos);
+            if (state.getBlock().isSideSolid(worldIn, offsetPos, EnumFacing.getFront(side.getIndex() ^ 1)))
             {
                 return true;
             }
@@ -76,7 +80,9 @@ public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlo
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         EnumFacing opposite = EnumFacing.values()[facing.getIndex() ^ 1];
-        if (WorldUtil.blockOnSideHasSolidFace(worldIn, pos, opposite))
+        BlockPos offsetPos = pos.offset(opposite);
+        IBlockState state = worldIn.getBlockState(offsetPos);
+        if (state.getBlock().isSideSolid(worldIn, offsetPos, facing))
         {
             return this.getDefaultState().withProperty(FACING, opposite);
         }
@@ -94,7 +100,9 @@ public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlo
     {
         EnumFacing side = (EnumFacing)state.getValue(FACING);
 
-        if (WorldUtil.blockOnSideHasSolidFace(worldIn, pos, side))
+        BlockPos offsetPos = pos.offset(side);
+        IBlockState state1 = worldIn.getBlockState(offsetPos);
+        if (state1.getBlock().isSideSolid(worldIn, offsetPos, EnumFacing.getFront(side.getIndex() ^ 1)))
         {
             return;
         }
@@ -177,5 +185,27 @@ public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlo
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    public IBlockState getStateFromMeta(int meta)
+    {
+        EnumFacing enumfacing = EnumFacing.getFront(meta);
+
+        if (enumfacing.getAxis() == EnumFacing.Axis.Y)
+        {
+            enumfacing = EnumFacing.NORTH;
+        }
+
+        return this.getDefaultState().withProperty(FACING, enumfacing);
+    }
+
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumFacing)state.getValue(FACING)).getIndex();
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, new IProperty[] {FACING});
     }
 }

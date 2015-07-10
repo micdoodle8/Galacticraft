@@ -34,7 +34,7 @@ public class ChunkPowerHandler
             try
             {
                 ArrayList<Object> tileList = Lists.newArrayList();
-                tileList.addAll(event.getChunk().chunkTileEntityMap.values());
+                tileList.addAll(event.getChunk().getTileEntityMap().values());
 
                 for (Object o : tileList)
                 {
@@ -54,7 +54,7 @@ public class ChunkPowerHandler
                 e.printStackTrace();
             }
             
-            if (ConfigManagerCore.retrogenOil && event.world.provider.dimensionId == 0)
+            if (ConfigManagerCore.retrogenOil && event.world.provider.getDimensionId() == 0)
             {
             	EventHandlerGC.retrogenOil(event.world, event.getChunk());
             }

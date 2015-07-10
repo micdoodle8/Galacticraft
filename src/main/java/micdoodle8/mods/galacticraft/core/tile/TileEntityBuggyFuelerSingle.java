@@ -44,7 +44,7 @@ public class TileEntityBuggyFuelerSingle extends TileEntity implements IUpdatePl
 	
 	            if (tile != null)
 	            {
-	                tile.onCreate(this.getPos());
+	                tile.onCreate(worldObj, this.getPos());
 	            }
 	        }
         }

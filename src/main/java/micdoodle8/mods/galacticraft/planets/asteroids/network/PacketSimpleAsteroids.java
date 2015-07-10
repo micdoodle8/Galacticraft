@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.network;
 
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
@@ -144,7 +145,7 @@ public class PacketSimpleAsteroids implements IPacket
         	int facingNew = (Integer) this.data.get(3);
         	if (tile instanceof TileEntityMinerBase)
         	{
-        		((TileEntityMinerBase)tile).facing = facingNew;
+        		((TileEntityMinerBase)tile).facing = EnumFacing.getFront(facingNew);
         		((TileEntityMinerBase)tile).setMainBlockPos((Integer) this.data.get(4), (Integer) this.data.get(5), (Integer) this.data.get(6));
             	int link = (Integer) this.data.get(7);
             	if (link > 0) ((TileEntityMinerBase)tile).linkedMinerID = UUID.randomUUID();

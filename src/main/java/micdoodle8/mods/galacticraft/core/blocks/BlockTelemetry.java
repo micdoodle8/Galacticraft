@@ -137,7 +137,7 @@ public class BlockTelemetry extends BlockAdvancedTile implements ItemBlockDesc.I
     }
 
     @Override
-    public boolean onMachineActivated(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if (!world.isRemote)
         {

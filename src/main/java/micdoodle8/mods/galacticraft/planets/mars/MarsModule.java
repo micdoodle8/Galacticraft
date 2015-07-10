@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars;
 
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -221,29 +222,30 @@ public class MarsModule implements IPlanetsModule
     {
         if (side == Side.SERVER)
         {
-            TileEntity tile = world.getTileEntity(x, y, z);
+            BlockPos pos = new BlockPos(x, y, z);
+            TileEntity tile = world.getTileEntity(pos);
 
             if (ID == GuiIdsPlanets.MACHINE_MARS)
             {
                 if (tile instanceof TileEntityTerraformer)
                 {
-                    return new ContainerTerraformer(player.inventory, (TileEntityTerraformer) tile);
+                    return new ContainerTerraformer(player.inventory, (TileEntityTerraformer) tile, player);
                 }
                 else if (tile instanceof TileEntityLaunchController)
                 {
-                    return new ContainerLaunchController(player.inventory, (TileEntityLaunchController) tile);
+                    return new ContainerLaunchController(player.inventory, (TileEntityLaunchController) tile, player);
                 }
                 else if (tile instanceof TileEntityElectrolyzer)
                 {
-                    return new ContainerElectrolyzer(player.inventory, (TileEntityElectrolyzer) tile);
+                    return new ContainerElectrolyzer(player.inventory, (TileEntityElectrolyzer) tile, player);
                 }
                 else if (tile instanceof TileEntityGasLiquefier)
                 {
-                    return new ContainerGasLiquefier(player.inventory, (TileEntityGasLiquefier) tile);
+                    return new ContainerGasLiquefier(player.inventory, (TileEntityGasLiquefier) tile, player);
                 }
                 else if (tile instanceof TileEntityMethaneSynthesizer)
                 {
-                    return new ContainerMethaneSynthesizer(player.inventory, (TileEntityMethaneSynthesizer) tile);
+                    return new ContainerMethaneSynthesizer(player.inventory, (TileEntityMethaneSynthesizer) tile, player);
                 }
             }
         }

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids;
 
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -261,7 +262,7 @@ public class AsteroidsModule implements IPlanetsModule
     {
         if (side == Side.SERVER)
         {
-	        TileEntity tile = world.getTileEntity(x, y, z);
+	        TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
 	
 	        switch (ID)
 	        {
@@ -269,7 +270,7 @@ public class AsteroidsModule implements IPlanetsModule
 	
 	            if (tile instanceof TileEntityShortRangeTelepad)
 	            {
-	                return new ContainerShortRangeTelepad(player.inventory, ((TileEntityShortRangeTelepad) tile));
+	                return new ContainerShortRangeTelepad(player.inventory, ((TileEntityShortRangeTelepad) tile), player);
 	            }
 	            if (tile instanceof TileEntityMinerBase)
 	            {
