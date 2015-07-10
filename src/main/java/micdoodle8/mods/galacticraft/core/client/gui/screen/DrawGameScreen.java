@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
@@ -154,7 +154,7 @@ public class DrawGameScreen extends IScreenManager
 	public WorldProvider getWorldProvider()
 	{
 		if (this.driver != null)
-			return driver.getWorldObj().provider;
+			return driver.getWorld().provider;
 		
 		return null;
 	}    

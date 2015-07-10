@@ -38,9 +38,9 @@ public class TileEntityDungeonSpawner extends TileEntityAdvanced
 
     @SuppressWarnings("unchecked")
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
 
         if (this.roomCoords == null)
         {
@@ -50,7 +50,7 @@ public class TileEntityDungeonSpawner extends TileEntityAdvanced
         if (!this.worldObj.isRemote)
         {
             final Vector3 thisVec = new Vector3(this);
-            final List<Entity> l = this.worldObj.getEntitiesWithinAABB(this.bossClass, AxisAlignedBB.getBoundingBox(thisVec.x - 15, thisVec.y - 15, thisVec.z - 15, thisVec.x + 15, thisVec.y + 15, thisVec.z + 15));
+            final List<Entity> l = this.worldObj.getEntitiesWithinAABB(this.bossClass, AxisAlignedBB.fromBounds(thisVec.x - 15, thisVec.y - 15, thisVec.z - 15, thisVec.x + 15, thisVec.y + 15, thisVec.z + 15));
 
             for (final Entity e : l)
             {
@@ -63,7 +63,7 @@ public class TileEntityDungeonSpawner extends TileEntityAdvanced
                 }
             }
 
-            List<Entity> entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityMob.class, AxisAlignedBB.getBoundingBox(this.roomCoords.intX() - 4, this.roomCoords.intY() - 4, this.roomCoords.intZ() - 4, this.roomCoords.intX() + this.roomSize.intX() + 3, this.roomCoords.intY() + this.roomSize.intY() + 3, this.roomCoords.intZ() + this.roomSize.intZ() + 3));
+            List<Entity> entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityMob.class, AxisAlignedBB.fromBounds(this.roomCoords.intX() - 4, this.roomCoords.intY() - 4, this.roomCoords.intZ() - 4, this.roomCoords.intX() + this.roomSize.intX() + 3, this.roomCoords.intY() + this.roomSize.intY() + 3, this.roomCoords.intZ() + this.roomSize.intZ() + 3));
 
             for (Entity mob : entitiesWithin)
             {
@@ -79,7 +79,7 @@ public class TileEntityDungeonSpawner extends TileEntityAdvanced
                 {
                     Constructor<?> c = this.bossClass.getConstructor(new Class[] { World.class });
                     this.boss = (IBoss) c.newInstance(new Object[] { this.worldObj });
-                    ((Entity) this.boss).setPosition(this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord + 0.5);
+                    ((Entity) this.boss).setPosition(this.getPos().getX() + 0.5, this.getPos().getY() + 1.0, this.getPos().getZ() + 0.5);
                     this.boss.setRoom(this.roomCoords, this.roomSize);
                 }
                 catch (Exception e)
@@ -88,7 +88,7 @@ public class TileEntityDungeonSpawner extends TileEntityAdvanced
                 }
             }
 
-            entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(this.roomCoords.intX() - 1, this.roomCoords.intY() - 1, this.roomCoords.intZ() - 1, this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ()));
+            entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.fromBounds(this.roomCoords.intX() - 1, this.roomCoords.intY() - 1, this.roomCoords.intZ() - 1, this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ()));
 
             if (this.playerCheated)
             {

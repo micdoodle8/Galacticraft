@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.blocks.BlockTier3TreasureChest;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.client.model.block.ModelTreasureChest;
 import micdoodle8.mods.galacticraft.core.client.model.block.ModelTreasureChestLarge;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
-import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockTier3TreasureChest;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityTreasureChestAsteroids;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -23,38 +23,40 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer
     private final ModelTreasureChest chestModel = new ModelTreasureChest();
     private final ModelTreasureChestLarge largeChestModel = new ModelTreasureChestLarge();
 
-    public void renderGCTileEntityTreasureChestAt(TileEntityTreasureChestAsteroids par1GCTileEntityTreasureChest, double par2, double par4, double par6, float par8)
+    @Override
+    public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float par5, int par6)
     {
-        if (par1GCTileEntityTreasureChest.getWorldObj() != null)
+        TileEntityTreasureChestAsteroids chestAsteroids = (TileEntityTreasureChestAsteroids) tileEntity;
+        if (chestAsteroids.getWorld() != null)
         	GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         else
         	GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         int var9;
 
-        if (!par1GCTileEntityTreasureChest.hasWorldObj())
+        if (!chestAsteroids.hasWorldObj())
         {
             var9 = 0;
         }
         else
         {
-            final Block var10 = par1GCTileEntityTreasureChest.getBlockType();
-            var9 = par1GCTileEntityTreasureChest.getBlockMetadata();
+            final Block var10 = chestAsteroids.getBlockType();
+            var9 = chestAsteroids.getBlockMetadata();
 
             if (var10 != null && var9 == 0)
             {
-                ((BlockTier3TreasureChest) var10).unifyAdjacentChests(par1GCTileEntityTreasureChest.getWorldObj(), par1GCTileEntityTreasureChest.xCoord, par1GCTileEntityTreasureChest.yCoord, par1GCTileEntityTreasureChest.zCoord);
-                var9 = par1GCTileEntityTreasureChest.getBlockMetadata();
+//                ((BlockTier3TreasureChest) var10).unifyAdjacentChests(par1GCTileEntityTreasureChest.getWorld(), par1GCTileEntityTreasureChest.getPos()); TODO
+                var9 = chestAsteroids.getBlockMetadata();
             }
 
-            par1GCTileEntityTreasureChest.checkForAdjacentChests();
+            chestAsteroids.checkForAdjacentChests();
         }
 
-        if (par1GCTileEntityTreasureChest.adjacentChestZNeg == null && par1GCTileEntityTreasureChest.adjacentChestXNeg == null)
+        if (chestAsteroids.adjacentChestZNeg == null && chestAsteroids.adjacentChestXNeg == null)
         {
             ModelTreasureChest var14 = null;
             ModelTreasureChestLarge var14b = null;
 
-            if (par1GCTileEntityTreasureChest.adjacentChestXPos == null && par1GCTileEntityTreasureChest.adjacentChestZPos == null)
+            if (chestAsteroids.adjacentChestXPos == null && chestAsteroids.adjacentChestZPos == null)
             {
                 var14 = this.chestModel;
                 this.bindTexture(TileEntityTreasureChestRenderer.treasureChestTexture);
@@ -67,7 +69,7 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer
 
             GL11.glPushMatrix();
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GL11.glTranslatef((float) par2, (float) par4 + 1.0F, (float) par6 + 1.0F);
+            GL11.glTranslatef((float) x, (float) y + 1.0F, (float) z + 1.0F);
             GL11.glScalef(1.0F, -1.0F, -1.0F);
             GL11.glTranslatef(0.5F, 0.5F, 0.5F);
             short var11 = 0;
@@ -92,25 +94,25 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer
                 var11 = -90;
             }
 
-            if (var9 == 2 && par1GCTileEntityTreasureChest.adjacentChestXPos != null)
+            if (var9 == 2 && chestAsteroids.adjacentChestXPos != null)
             {
                 GL11.glTranslatef(1.0F, 0.0F, 0.0F);
             }
 
-            if (var9 == 5 && par1GCTileEntityTreasureChest.adjacentChestZPos != null)
+            if (var9 == 5 && chestAsteroids.adjacentChestZPos != null)
             {
                 GL11.glTranslatef(0.0F, 0.0F, -1.0F);
             }
 
             GL11.glRotatef(var11, 0.0F, 1.0F, 0.0F);
             GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-            float var12 = par1GCTileEntityTreasureChest.prevLidAngle + (par1GCTileEntityTreasureChest.lidAngle - par1GCTileEntityTreasureChest.prevLidAngle) * par8;
+            float var12 = chestAsteroids.prevLidAngle + (chestAsteroids.lidAngle - chestAsteroids.prevLidAngle) * par6;
 
             float var13;
 
-            if (par1GCTileEntityTreasureChest.adjacentChestZNeg != null)
+            if (chestAsteroids.adjacentChestZNeg != null)
             {
-                var13 = par1GCTileEntityTreasureChest.adjacentChestZNeg.prevLidAngle + (par1GCTileEntityTreasureChest.adjacentChestZNeg.lidAngle - par1GCTileEntityTreasureChest.adjacentChestZNeg.prevLidAngle) * par8;
+                var13 = chestAsteroids.adjacentChestZNeg.prevLidAngle + (chestAsteroids.adjacentChestZNeg.lidAngle - chestAsteroids.adjacentChestZNeg.prevLidAngle) * par6;
 
                 if (var13 > var12)
                 {
@@ -118,9 +120,9 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer
                 }
             }
 
-            if (par1GCTileEntityTreasureChest.adjacentChestXNeg != null)
+            if (chestAsteroids.adjacentChestXNeg != null)
             {
-                var13 = par1GCTileEntityTreasureChest.adjacentChestXNeg.prevLidAngle + (par1GCTileEntityTreasureChest.adjacentChestXNeg.lidAngle - par1GCTileEntityTreasureChest.adjacentChestXNeg.prevLidAngle) * par8;
+                var13 = chestAsteroids.adjacentChestXNeg.prevLidAngle + (chestAsteroids.adjacentChestXNeg.lidAngle - chestAsteroids.adjacentChestXNeg.prevLidAngle) * par6;
 
                 if (var13 > var12)
                 {
@@ -134,23 +136,17 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer
             if (var14 != null)
             {
                 var14.chestLid.rotateAngleX = -(var12 * (float) Math.PI / 4.0F);
-                var14.renderAll(!par1GCTileEntityTreasureChest.locked);
+                var14.renderAll(!chestAsteroids.locked);
             }
 
             if (var14b != null)
             {
                 var14b.chestLid.rotateAngleX = -(var12 * (float) Math.PI / 4.0F);
-                var14b.renderAll(!par1GCTileEntityTreasureChest.locked);
+                var14b.renderAll(!chestAsteroids.locked);
             }
 
             GL11.glPopMatrix();
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         }
-    }
-
-    @Override
-    public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8)
-    {
-        this.renderGCTileEntityTreasureChestAt((TileEntityTreasureChestAsteroids) par1TileEntity, par2, par4, par6, par8);
     }
 }

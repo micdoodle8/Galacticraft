@@ -4,9 +4,11 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 
 public class FreefallHandler {
@@ -21,23 +23,25 @@ public class FreefallHandler {
 	public static boolean testFreefall(EntityPlayer player)
 	{
         //Test whether feet are on a block, also stops the login glitch
-        int playerFeetOnY = (int) (player.boundingBox.minY - 0.001D);
+        int playerFeetOnY = (int) (player.getBoundingBox().minY - 0.001D);
         int xx = MathHelper.floor_double(player.posX);
         int zz = MathHelper.floor_double(player.posZ);
-        Block b = player.worldObj.getBlock(xx, playerFeetOnY, zz);
+        BlockPos pos = new BlockPos(xx, playerFeetOnY, zz);
+        IBlockState state = player.worldObj.getBlockState(pos);
+        Block b = state.getBlock();
         if (b.getMaterial() != Material.air && !(b instanceof BlockLiquid))
         {
         	double blockYmax = playerFeetOnY + b.getBlockBoundsMaxY();
-            if (player.boundingBox.minY - blockYmax < 0.001D && player.boundingBox.minY - blockYmax > -0.5D)
+            if (player.getBoundingBox().minY - blockYmax < 0.001D && player.getBoundingBox().minY - blockYmax > -0.5D)
             {
                 player.onGround = true;
-                if (b.canCollideCheck(player.worldObj.getBlockMetadata(xx, playerFeetOnY, zz), false))
+                if (b.canCollideCheck(player.worldObj.getBlockState(new BlockPos(xx, playerFeetOnY, zz)), false))
                 {
-                    AxisAlignedBB collisionBox = b.getCollisionBoundingBoxFromPool(player.worldObj, xx, playerFeetOnY, zz);
-                    if (collisionBox != null && collisionBox.intersectsWith(player.boundingBox))
+                    AxisAlignedBB collisionBox = b.getCollisionBoundingBox(player.worldObj, new BlockPos(xx, playerFeetOnY, zz), state);
+                    if (collisionBox != null && collisionBox.intersectsWith(player.getBoundingBox()))
                     {
-                        player.posY -= player.boundingBox.minY - blockYmax;
-	                    player.boundingBox.offset(0, blockYmax - player.boundingBox.minY, 0);
+                        player.posY -= player.getBoundingBox().minY - blockYmax;
+	                    player.getBoundingBox().offset(0, blockYmax - player.getBoundingBox().minY, 0);
                     }
                 }
                 return false;

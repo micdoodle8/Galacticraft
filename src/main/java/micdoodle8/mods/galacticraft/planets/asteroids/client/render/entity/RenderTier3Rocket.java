@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.IModelCustom;
+import micdoodle8.mods.galacticraft.core.client.objload.IModelCustom;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -24,6 +24,7 @@ public class RenderTier3Rocket extends Render
 
     public RenderTier3Rocket(IModelCustom spaceshipModel, String textureDomain, String texture)
     {
+        super(FMLClientHandler.instance().getClient().getRenderManager());
         this.rocketModelObj = spaceshipModel;
         this.rocketTexture = new ResourceLocation(textureDomain, "textures/model/" + texture + ".png");
         this.shadowSize = 2F;
@@ -65,7 +66,7 @@ public class RenderTier3Rocket extends Render
         GL11.glScalef(0.9F, 0.9F, 0.9F);
 
         this.rocketModelObj.renderOnly("Boosters", "Rocket");
-        Vector3 teamColor = ClientUtil.updateTeamColor(FMLClientHandler.instance().getClient().thePlayer.getCommandSenderName(), true);
+        Vector3 teamColor = ClientUtil.updateTeamColor(FMLClientHandler.instance().getClient().thePlayer.getName(), true);
         if (teamColor != null)
         {
             GL11.glColor3f(teamColor.floatX(), teamColor.floatY(), teamColor.floatZ());

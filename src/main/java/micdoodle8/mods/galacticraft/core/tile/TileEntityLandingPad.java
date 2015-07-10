@@ -1,8 +1,9 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.entity.IFuelable;
@@ -29,13 +30,13 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
     private IDockable dockedEntity;
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
 
         if (!this.worldObj.isRemote)
         {
-            final List<?> list = this.worldObj.getEntitiesWithinAABB(IFuelable.class, AxisAlignedBB.getBoundingBox(this.xCoord - 0.5D, this.yCoord, this.zCoord - 0.5D, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D));
+            final List<?> list = this.worldObj.getEntitiesWithinAABB(IFuelable.class, AxisAlignedBB.fromBounds(this.getPos().getX() - 0.5D, this.getPos().getY(), this.getPos().getZ() - 0.5D, this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D));
 
             boolean docked = false;
 
@@ -51,7 +52,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
                     {
                         if (fuelable instanceof ILandable)
                         {
-                        	((ILandable) fuelable).landEntity(this.xCoord, this.yCoord, this.zCoord);
+                        	((ILandable) fuelable).landEntity(this.getPos());
                         }
                         else
                         {
@@ -70,11 +71,11 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
         }
     }
 
-    @Override
-    public boolean canUpdate()
-    {
-        return true;
-    }
+//    @Override
+//    public boolean canUpdate()
+//    {
+//        return true;
+//    }
 
     @Override
     public boolean onActivated(EntityPlayer entityPlayer)
@@ -83,7 +84,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
     }
 
     @Override
-    public void onCreate(BlockVec3 placedPosition)
+    public void onCreate(BlockPos placedPosition)
     {
         this.mainBlockPosition = placedPosition;
         this.markDirty();
@@ -92,11 +93,11 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
         {
             for (int z = -1; z < 2; z++)
             {
-                final BlockVec3 vecToAdd = new BlockVec3(placedPosition.x + x, placedPosition.y, placedPosition.z + z);
+                final BlockPos vecToAdd = new BlockPos(placedPosition.getX() + x, placedPosition.getY(), placedPosition.getZ() + z);
 
                 if (!vecToAdd.equals(placedPosition))
                 {
-                    ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 2);
+                    ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, worldObj.getBlockState(vecToAdd).getBlock().getStateFromMeta(2));
                 }
             }
         }
@@ -105,20 +106,21 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
     @Override
     public void onDestroy(TileEntity callingBlock)
     {
-        final BlockVec3 thisBlock = new BlockVec3(this);
+        final BlockPos thisBlock = getPos();
 
-        this.worldObj.func_147480_a(thisBlock.x, thisBlock.y, thisBlock.z, true);
+        this.worldObj.destroyBlock(thisBlock, true);
 
         for (int x = -1; x < 2; x++)
         {
             for (int z = -1; z < 2; z++)
             {
+                BlockPos pos = new BlockPos(thisBlock.getX() + x, thisBlock.getY(), thisBlock.getZ() + z);
                 if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
                 {
-                    FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.x + x, thisBlock.y, thisBlock.z + z, GCBlocks.landingPad, Block.getIdFromBlock(GCBlocks.landingPad) >> 12 & 255);
+                    FMLClientHandler.instance().getClient().effectRenderer.func_180533_a(pos, GCBlocks.landingPad.getDefaultState());
                 }
 
-                this.worldObj.func_147480_a(thisBlock.x + x, thisBlock.y, thisBlock.z + z, false);
+                this.worldObj.destroyBlock(pos, false);
             }
         }
 
@@ -165,9 +167,9 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
                 {
                     if (Math.abs(x) != Math.abs(z))
                     {
-                        final TileEntity tile = this.worldObj.getTileEntity(this.xCoord + x, this.yCoord, this.zCoord + z);
+                        final TileEntity tile = this.worldObj.getTileEntity(new BlockPos(this.getPos().getX() + x, this.getPos().getY(), this.getPos().getZ() + z));
 
-                        if (tile != null && tile instanceof ILandingPadAttachable && ((ILandingPadAttachable) tile).canAttachToLandingPad(this.worldObj, this.xCoord, this.yCoord, this.zCoord))
+                        if (tile != null && tile instanceof ILandingPadAttachable && ((ILandingPadAttachable) tile).canAttachToLandingPad(this.worldObj, this.getPos()))
                         {
                             connectedTiles.add((ILandingPadAttachable) tile);
                         }
@@ -205,17 +207,17 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-    	return AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 0.4D, zCoord + 2);
+    	return AxisAlignedBB.fromBounds(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 0.4D, getPos().getZ() + 2);
     }
 
     @Override
-    public boolean isBlockAttachable(IBlockAccess world, int x, int y, int z)
+    public boolean isBlockAttachable(IBlockAccess world, BlockPos pos)
     {
-        TileEntity tile = world.getTileEntity(x, y, z);
+        TileEntity tile = world.getTileEntity(pos);
 
         if (tile != null && tile instanceof ILandingPadAttachable)
         {
-            return ((ILandingPadAttachable) tile).canAttachToLandingPad(world, this.xCoord, this.yCoord, this.zCoord);
+            return ((ILandingPadAttachable) tile).canAttachToLandingPad(world, this.getPos());
         }
 
         return false;

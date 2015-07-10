@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
@@ -60,21 +60,21 @@ public class OverlayDockingRocket extends Overlay
 
                 if (dMY > 25)
                 {
-                    OverlayDockingRocket.minecraft.fontRenderer.drawString(warning, width / 2 - OverlayDockingRocket.minecraft.fontRenderer.getStringWidth(warning) / 2, height / 3 - 50, green);
+                    OverlayDockingRocket.minecraft.fontRendererObj.drawString(warning, width / 2 - OverlayDockingRocket.minecraft.fontRendererObj.getStringWidth(warning) / 2, height / 3 - 50, green);
                 }
 
                 if (dMY < -25)
                 {
-                    OverlayDockingRocket.minecraft.fontRenderer.drawString(warning2, width / 2 - OverlayDockingRocket.minecraft.fontRenderer.getStringWidth(warning2) / 2, height / 3 - 35, red);
+                    OverlayDockingRocket.minecraft.fontRendererObj.drawString(warning2, width / 2 - OverlayDockingRocket.minecraft.fontRendererObj.getStringWidth(warning2) / 2, height / 3 - 35, red);
                 }
 
-                OverlayDockingRocket.minecraft.fontRenderer.drawString(targetMotionYStr, width - OverlayDockingRocket.minecraft.fontRenderer.getStringWidth(targetMotionYStr) - 50, height / 3 + 50, grey);
-                OverlayDockingRocket.minecraft.fontRenderer.drawString(currentMotionYStr, width - OverlayDockingRocket.minecraft.fontRenderer.getStringWidth(currentMotionYStr) - 50, height / 3 + 35, grey);
+                OverlayDockingRocket.minecraft.fontRendererObj.drawString(targetMotionYStr, width - OverlayDockingRocket.minecraft.fontRendererObj.getStringWidth(targetMotionYStr) - 50, height / 3 + 50, grey);
+                OverlayDockingRocket.minecraft.fontRendererObj.drawString(currentMotionYStr, width - OverlayDockingRocket.minecraft.fontRendererObj.getStringWidth(currentMotionYStr) - 50, height / 3 + 35, grey);
 
-                OverlayDockingRocket.minecraft.fontRenderer.drawString(GCCoreUtil.translate("gui.dockingRocket.distanceFrom.name"), 50, height / 3 + 15, grey);
-                OverlayDockingRocket.minecraft.fontRenderer.drawString("X: " + dXStr, 50, height / 3 + 35, Math.abs(dX) > 15 ? red : grey);
-                OverlayDockingRocket.minecraft.fontRenderer.drawString("Y: " + dYStr, 50, height / 3 + 45, Math.abs(dY) > 50 || Math.abs(dY) < 1.9 ? grey : OverlayDockingRocket.screenTicks / 10 % 2 == 0 ? red : grey);
-                OverlayDockingRocket.minecraft.fontRenderer.drawString("Z: " + dZStr, 50, height / 3 + 55, Math.abs(dZ) > 15 ? red : grey);
+                OverlayDockingRocket.minecraft.fontRendererObj.drawString(GCCoreUtil.translate("gui.dockingRocket.distanceFrom.name"), 50, height / 3 + 15, grey);
+                OverlayDockingRocket.minecraft.fontRendererObj.drawString("X: " + dXStr, 50, height / 3 + 35, Math.abs(dX) > 15 ? red : grey);
+                OverlayDockingRocket.minecraft.fontRendererObj.drawString("Y: " + dYStr, 50, height / 3 + 45, Math.abs(dY) > 50 || Math.abs(dY) < 1.9 ? grey : OverlayDockingRocket.screenTicks / 10 % 2 == 0 ? red : grey);
+                OverlayDockingRocket.minecraft.fontRendererObj.drawString("Z: " + dZStr, 50, height / 3 + 55, Math.abs(dZ) > 15 ? red : grey);
             }
         }
     }

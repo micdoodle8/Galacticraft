@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
@@ -10,6 +9,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockWalkway;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockTier2TreasureChest;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class AsteroidBlocks
@@ -67,15 +67,25 @@ public class AsteroidBlocks
        	GameRegistry.registerBlock(AsteroidBlocks.blockMinerBase, ItemBlockDesc.class, AsteroidBlocks.blockMinerBase.getUnlocalizedName());
        	GameRegistry.registerBlock(AsteroidBlocks.minerBaseFull, ItemBlockDesc.class, AsteroidBlocks.minerBaseFull.getUnlocalizedName());
     }
+
+    private static void setHarvestLevel(Block block, String toolClass, int level, int meta)
+    {
+        block.setHarvestLevel(toolClass, level, block.getStateFromMeta(meta));
+    }
+
+    private static void setHarvestLevel(Block block, String toolClass, int level)
+    {
+        block.setHarvestLevel(toolClass, level);
+    }
     
     public static void setHarvestLevels()
     {
-    	AsteroidBlocks.blockBasic.setHarvestLevel("pickaxe", 0, 0);   //Rock
-    	AsteroidBlocks.blockBasic.setHarvestLevel("pickaxe", 0, 1);   //Rock
-    	AsteroidBlocks.blockBasic.setHarvestLevel("pickaxe", 0, 2);   //Rock
-    	AsteroidBlocks.blockBasic.setHarvestLevel("pickaxe", 2, 3);   //Aluminium
-    	AsteroidBlocks.blockBasic.setHarvestLevel("pickaxe", 3, 4);   //Ilmenite
-    	AsteroidBlocks.blockBasic.setHarvestLevel("pickaxe", 2, 5);   //Iron
+        setHarvestLevel(AsteroidBlocks.blockBasic, "pickaxe", 0, 0);   //Rock
+        setHarvestLevel(AsteroidBlocks.blockBasic, "pickaxe", 0, 1);   //Rock
+        setHarvestLevel(AsteroidBlocks.blockBasic, "pickaxe", 0, 2);   //Rock
+        setHarvestLevel(AsteroidBlocks.blockBasic, "pickaxe", 2, 3);   //Aluminium
+        setHarvestLevel(AsteroidBlocks.blockBasic, "pickaxe", 3, 4);   //Ilmenite
+        setHarvestLevel(AsteroidBlocks.blockBasic, "pickaxe", 2, 5);   //Iron
     }
 
     public static void oreDictRegistration()

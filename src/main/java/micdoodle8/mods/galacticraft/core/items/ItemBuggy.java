@@ -1,7 +1,8 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.*;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
@@ -14,11 +15,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -30,7 +27,7 @@ public class ItemBuggy extends Item implements IHoldableItem
     {
         super();
         this.setUnlocalizedName(assetName);
-        this.setTextureName("arrow");
+        //this.setTextureName("arrow");
         this.setMaxStackSize(1);
     }
 
@@ -64,9 +61,9 @@ public class ItemBuggy extends Item implements IHoldableItem
         final float var5 = par3EntityPlayer.prevRotationPitch + (par3EntityPlayer.rotationPitch - par3EntityPlayer.prevRotationPitch) * var4;
         final float var6 = par3EntityPlayer.prevRotationYaw + (par3EntityPlayer.rotationYaw - par3EntityPlayer.prevRotationYaw) * var4;
         final double var7 = par3EntityPlayer.prevPosX + (par3EntityPlayer.posX - par3EntityPlayer.prevPosX) * var4;
-        final double var9 = par3EntityPlayer.prevPosY + (par3EntityPlayer.posY - par3EntityPlayer.prevPosY) * var4 + 1.62D - par3EntityPlayer.yOffset;
+        final double var9 = par3EntityPlayer.prevPosY + (par3EntityPlayer.posY - par3EntityPlayer.prevPosY) * var4 + 1.62D - par3EntityPlayer.getYOffset();
         final double var11 = par3EntityPlayer.prevPosZ + (par3EntityPlayer.posZ - par3EntityPlayer.prevPosZ) * var4;
-        final Vec3 var13 = Vec3.createVectorHelper(var7, var9, var11);
+        final Vec3 var13 = new Vec3(var7, var9, var11);
         final float var14 = MathHelper.cos(-var6 * 0.017453292F - (float) Math.PI);
         final float var15 = MathHelper.sin(-var6 * 0.017453292F - (float) Math.PI);
         final float var16 = -MathHelper.cos(-var5 * 0.017453292F);
@@ -86,7 +83,7 @@ public class ItemBuggy extends Item implements IHoldableItem
             final Vec3 var25 = par3EntityPlayer.getLook(var4);
             boolean var26 = false;
             final float var27 = 1.0F;
-            final List<?> var28 = par2World.getEntitiesWithinAABBExcludingEntity(par3EntityPlayer, par3EntityPlayer.boundingBox.addCoord(var25.xCoord * var21, var25.yCoord * var21, var25.zCoord * var21).expand(var27, var27, var27));
+            final List<?> var28 = par2World.getEntitiesWithinAABBExcludingEntity(par3EntityPlayer, par3EntityPlayer.getBoundingBox().addCoord(var25.xCoord * var21, var25.yCoord * var21, var25.zCoord * var21).expand(var27, var27, var27));
             int var29;
 
             for (var29 = 0; var29 < var28.size(); ++var29)
@@ -96,7 +93,7 @@ public class ItemBuggy extends Item implements IHoldableItem
                 if (var30.canBeCollidedWith())
                 {
                     final float var31 = var30.getCollisionBorderSize();
-                    final AxisAlignedBB var32 = var30.boundingBox.expand(var31, var31, var31);
+                    final AxisAlignedBB var32 = var30.getBoundingBox().expand(var31, var31, var31);
 
                     if (var32.isVecInside(var13))
                     {
@@ -113,18 +110,18 @@ public class ItemBuggy extends Item implements IHoldableItem
             {
                 if (var24.typeOfHit == MovingObjectType.BLOCK)
                 {
-                    var29 = var24.blockX;
-                    int var33 = var24.blockY;
-                    final int var34 = var24.blockZ;
+                    var29 = var24.getBlockPos().getX();
+                    int var33 = var24.getBlockPos().getY();
+                    final int var34 = var24.getBlockPos().getZ();
 
-                    if (par2World.getBlock(var29, var33, var34) == Blocks.snow)
+                    if (par2World.getBlockState(new BlockPos(var29, var33, var34)) == Blocks.snow)
                     {
                         --var33;
                     }
 
                     final EntityBuggy var35 = new EntityBuggy(par2World, var29 + 0.5F, var33 + 1.0F, var34 + 0.5F, par1ItemStack.getItemDamage());
 
-                    if (!par2World.getCollidingBoundingBoxes(var35, var35.boundingBox.expand(-0.1D, -0.1D, -0.1D)).isEmpty())
+                    if (!par2World.getCollidingBoundingBoxes(var35, var35.getBoundingBox().expand(-0.1D, -0.1D, -0.1D)).isEmpty())
                     {
                         return par1ItemStack;
                     }

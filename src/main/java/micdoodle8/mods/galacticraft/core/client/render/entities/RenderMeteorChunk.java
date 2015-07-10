@@ -1,12 +1,13 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.objload.AdvancedModelLoader;
+import micdoodle8.mods.galacticraft.core.client.objload.IModelCustom;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteorChunk;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 
 public class RenderMeteorChunk extends Render
@@ -18,6 +19,7 @@ public class RenderMeteorChunk extends Render
 
     public RenderMeteorChunk()
     {
+        super(FMLClientHandler.instance().getClient().getRenderManager());
         this.shadowSize = 0.1F;
     }
 

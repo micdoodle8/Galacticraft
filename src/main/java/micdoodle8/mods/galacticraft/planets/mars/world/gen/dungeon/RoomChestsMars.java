@@ -6,10 +6,10 @@ import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -20,9 +20,9 @@ public class RoomChestsMars extends DungeonRoom
     int sizeY;
     int sizeZ;
 
-    private final ArrayList<ChunkCoordinates> chests = new ArrayList<ChunkCoordinates>();
+    private final ArrayList<BlockPos> chests = new ArrayList<BlockPos>();
 
-    public RoomChestsMars(MapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
+    public RoomChestsMars(MapGenDungeon dungeon, int posX, int posY, int posZ, EnumFacing entranceDir)
     {
         super(dungeon, posX, posY, posZ, entranceDir);
         if (this.worldObj != null)
@@ -58,7 +58,7 @@ public class RoomChestsMars extends DungeonRoom
         final int hz = (this.posZ + this.posZ + this.sizeZ) / 2;
         if (this.placeBlock(chunk, meta, hx, this.posY, hz, cx, cz, Blocks.chest, 0))
         {
-            this.chests.add(new ChunkCoordinates(hx, this.posY, hz));
+            this.chests.add(new BlockPos(hx, this.posY, hz));
         }
     }
 
@@ -69,7 +69,7 @@ public class RoomChestsMars extends DungeonRoom
     }
 
     @Override
-    protected DungeonRoom makeRoom(MapGenDungeon dungeon, int x, int y, int z, ForgeDirection dir)
+    protected DungeonRoom makeRoom(MapGenDungeon dungeon, int x, int y, int z, EnumFacing dir)
     {
         return new RoomChestsMars(dungeon, x, y, z, dir);
     }
@@ -79,8 +79,8 @@ public class RoomChestsMars extends DungeonRoom
     {
         if (!this.chests.isEmpty())
         {
-            this.worldObj.setBlock(this.chests.get(0).posX, this.chests.get(0).posY, this.chests.get(0).posZ, Blocks.chest, 0, 2);
-            TileEntityChest chest = (TileEntityChest) this.worldObj.getTileEntity(this.chests.get(0).posX, this.chests.get(0).posY, this.chests.get(0).posZ);
+            this.worldObj.setBlockState(this.chests.get(0), Blocks.chest.getDefaultState(), 2);
+            TileEntityChest chest = (TileEntityChest) this.worldObj.getTileEntity(this.chests.get(0));
 
             if (chest != null)
             {

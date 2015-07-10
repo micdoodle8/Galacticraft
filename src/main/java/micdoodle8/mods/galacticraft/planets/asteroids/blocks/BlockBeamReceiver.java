@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
@@ -13,17 +10,23 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
@@ -32,8 +35,7 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
     public BlockBeamReceiver(String assetName)
     {
         super(Material.iron);
-        this.setBlockName(assetName);
-        this.setBlockTextureName("stone");
+        this.setUnlocalizedName(assetName);
         this.setStepSound(Block.soundTypeMetal);
     }
 
@@ -45,48 +47,48 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
     }
 
     @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
+    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
     {
-        int oldMeta = world.getBlockMetadata(x, y, z);
-        int meta = this.getMetadataFromAngle(world, x, y, z, ForgeDirection.getOrientation(oldMeta).getOpposite().ordinal());
+        int oldMeta = getMetaFromState(worldIn.getBlockState(pos));
+        int meta = this.getMetadataFromAngle(worldIn, pos, EnumFacing.getFront(oldMeta).getOpposite());
 
         if (meta == -1)
         {
-            world.func_147480_a(x, y, z, true);
+            worldIn.destroyBlock(pos, true);
         }
 
         if (meta != oldMeta)
         {
-            world.setBlockMetadataWithNotify(x, y, z, meta, 3);
-            TileEntity thisTile = world.getTileEntity(x, y, z);
+            worldIn.setBlockState(pos, getStateFromMeta(meta), 3);
+            TileEntity thisTile = worldIn.getTileEntity(pos);
             if (thisTile instanceof TileEntityBeamReceiver)
             {
             	TileEntityBeamReceiver thisReceiver = (TileEntityBeamReceiver) thisTile; 
-                thisReceiver.setFacing(ForgeDirection.getOrientation(meta));
+                thisReceiver.setFacing(EnumFacing.getFront(meta));
                 thisReceiver.invalidateReflector();
                 thisReceiver.initiateReflector();
             }
         }
 
-        super.onNeighborBlockChange(world, x, y, z, block);
+        super.onNeighborBlockChange(worldIn, pos, state, neighborBlock);
     }
 
     @Override
-    public void onBlockAdded(World world, int x, int y, int z)
+    public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
-        TileEntity thisTile = world.getTileEntity(x, y, z);
+        TileEntity thisTile = world.getTileEntity(pos);
         if (thisTile instanceof TileEntityBeamReceiver)
-        	((TileEntityBeamReceiver)thisTile).setFacing(ForgeDirection.getOrientation(world.getBlockMetadata(x, y, z)));
+        	((TileEntityBeamReceiver)thisTile).setFacing(EnumFacing.getFront(getMetaFromState(state)));
     }
 
     @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
+    public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos)
     {
-        int meta = world.getBlockMetadata(x, y, z);
+        int meta = getMetaFromState(world.getBlockState(pos));
 
         if (meta != -1)
         {
-            ForgeDirection dir = ForgeDirection.getOrientation(meta);
+            EnumFacing dir = EnumFacing.getFront(meta);
 
             switch (dir)
             {
@@ -116,17 +118,17 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
 
     @SuppressWarnings("rawtypes")
     @Override
-    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, List list, Entity entity)
+    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
     {
-        this.setBlockBoundsBasedOnState(world, x, y, z);
-        super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
+        this.setBlockBoundsBasedOnState(worldIn, pos);
+        super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
     }
 
-    private int getMetadataFromAngle(World world, int x, int y, int z, int side)
+    private int getMetadataFromAngle(World world, BlockPos pos, EnumFacing side)
     {
-        ForgeDirection direction = ForgeDirection.getOrientation(side).getOpposite();
+        EnumFacing direction = side.getOpposite();
 
-        TileEntity tileAt = world.getTileEntity(x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ);
+        TileEntity tileAt = world.getTileEntity(pos.add(direction.getFrontOffsetX(), direction.getFrontOffsetY(), direction.getFrontOffsetZ()));
 
         if (tileAt instanceof EnergyStorageTile)
         {
@@ -143,10 +145,10 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
         if (EnergyUtil.otherModCanReceive(tileAt, direction.getOpposite()))
         	return direction.ordinal();
 
-        for (ForgeDirection adjacentDir : ForgeDirection.VALID_DIRECTIONS)
+        for (EnumFacing adjacentDir : EnumFacing.values())
         {
             if (adjacentDir == direction) continue;
-        	tileAt = world.getTileEntity(x + adjacentDir.offsetX, y + adjacentDir.offsetY, z + adjacentDir.offsetZ);
+        	tileAt = world.getTileEntity(pos.add(adjacentDir.getFrontOffsetX(), adjacentDir.getFrontOffsetY(), adjacentDir.getFrontOffsetZ()));
 
             if (tileAt instanceof EnergyStorageTile && ((EnergyStorageTile) tileAt).getModeFromDirection(adjacentDir.getOpposite()) != null)
             {
@@ -161,20 +163,20 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
     }
 
     @Override
-    public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta)
+    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return this.getMetadataFromAngle(world, x, y, z, side);
+        return getStateFromMeta(this.getMetadataFromAngle(worldIn, pos, facing));
     }
 
     @Override
-    public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
+    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side)
     {
-        if (this.getMetadataFromAngle(world, x, y, z, side) != -1)
+        if (this.getMetadataFromAngle(worldIn, pos, side) != -1)
         {
             return true;
         }
 
-        if (world.isRemote)
+        if (worldIn.isRemote)
         {
             this.sendIncorrectSideMessage();
         }
@@ -195,7 +197,7 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
     }
 
     @Override
-    public boolean renderAsNormalBlock()
+    public boolean isFullCube()
     {
         return false;
     }
@@ -207,13 +209,13 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
     }
 
     @Override
-    public int damageDropped(int metadata)
+    public int damageDropped(IBlockState metadata)
     {
         return 0;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata)
+    public TileEntity createTileEntity(World world, IBlockState metadata)
     {
         return new TileEntityBeamReceiver();
     }
@@ -227,13 +229,13 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
     }
 
     @Override
-    public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        TileEntity tile = world.getTileEntity(x, y, z);
+        TileEntity tile = worldIn.getTileEntity(pos);
 
         if (tile instanceof TileEntityBeamReceiver)
         {
-            return ((TileEntityBeamReceiver) tile).onMachineActivated(world, x, y, z, entityPlayer, side, hitX, hitY, hitZ);
+            return ((TileEntityBeamReceiver) tile).onMachineActivated(worldIn, pos, state, playerIn, side, hitX, hitY, hitZ);
         }
 
         return false;

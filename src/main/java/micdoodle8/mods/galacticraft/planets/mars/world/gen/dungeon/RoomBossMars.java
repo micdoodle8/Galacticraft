@@ -10,8 +10,8 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityDungeonSpawnerMa
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 
 import java.util.Random;
 
@@ -21,9 +21,9 @@ public class RoomBossMars extends DungeonRoom
     public int sizeY;
     public int sizeZ;
     Random rand;
-    ChunkCoordinates spawnerCoords;
+    BlockPos spawnerCoords;
 
-    public RoomBossMars(MapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
+    public RoomBossMars(MapGenDungeon dungeon, int posX, int posY, int posZ, EnumFacing entranceDir)
     {
         super(dungeon, posX, posY, posZ, entranceDir);
         if (this.worldObj != null)
@@ -69,7 +69,7 @@ public class RoomBossMars extends DungeonRoom
 
         final int hx = (this.posX + this.posX + this.sizeX) / 2;
         final int hz = (this.posZ + this.posZ + this.sizeZ) / 2;
-        this.spawnerCoords = new ChunkCoordinates(hx, this.posY + 2, hz);
+        this.spawnerCoords = new BlockPos(hx, this.posY + 2, hz);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class RoomBossMars extends DungeonRoom
     }
 
     @Override
-    protected DungeonRoom makeRoom(MapGenDungeon dungeon, int x, int y, int z, ForgeDirection dir)
+    protected DungeonRoom makeRoom(MapGenDungeon dungeon, int x, int y, int z, EnumFacing dir)
     {
         return new RoomBossMars(dungeon, x, y, z, dir);
     }
@@ -92,15 +92,15 @@ public class RoomBossMars extends DungeonRoom
             return;
         }
 
-        this.worldObj.setBlock(this.spawnerCoords.posX, this.spawnerCoords.posY, this.spawnerCoords.posZ, MarsBlocks.marsBlock, 10, 3);
+        this.worldObj.setBlockState(this.spawnerCoords, MarsBlocks.marsBlock.getStateFromMeta(10), 3);
 
-        final TileEntity tile = this.worldObj.getTileEntity(this.spawnerCoords.posX, this.spawnerCoords.posY, this.spawnerCoords.posZ);
+        final TileEntity tile = this.worldObj.getTileEntity(this.spawnerCoords);
 
         if (tile == null || !(tile instanceof TileEntityDungeonSpawnerMars))
         {
             TileEntityDungeonSpawner spawner = new TileEntityDungeonSpawnerMars();
             spawner.setRoom(new Vector3(this.posX, this.posY, this.posZ), new Vector3(this.sizeX, this.sizeY, this.sizeZ));
-            this.worldObj.setTileEntity(this.spawnerCoords.posX, this.spawnerCoords.posY, this.spawnerCoords.posZ, spawner);
+            this.worldObj.setTileEntity(this.spawnerCoords, spawner);
         }
         else if (tile instanceof TileEntityDungeonSpawner)
         {

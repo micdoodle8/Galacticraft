@@ -1,13 +1,19 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.event.oxygen.GCCoreOxygenSuffocationEvent;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
@@ -31,9 +37,7 @@ import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
-import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import net.minecraft.block.Block;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -42,7 +46,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
@@ -112,9 +115,9 @@ public class GCPlayerHandler
     @SideOnly(Side.CLIENT)
     public void onEntityConstructingClient(EntityEvent.EntityConstructing event)
     {
-        if (event.entity instanceof EntityClientPlayerMP && GCPlayerStatsClient.get((EntityClientPlayerMP) event.entity) == null)
+        if (event.entity instanceof EntityPlayerSP && GCPlayerStatsClient.get((EntityPlayerSP) event.entity) == null)
         {
-            GCPlayerStatsClient.register((EntityClientPlayerMP) event.entity);
+            GCPlayerStatsClient.register((EntityPlayerSP) event.entity);
         }
     }
 
@@ -478,12 +481,12 @@ public class GCPlayerHandler
 
                 if (playerStats.thermalLevel < -15)
                 {
-                    player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 5, 2, true));
+                    player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 5, 2, true, true));
                 }
 
                 if (playerStats.thermalLevel > 15)
                 {
-                    player.addPotionEffect(new PotionEffect(Potion.confusion.id, 5, 2, true));
+                    player.addPotionEffect(new PotionEffect(Potion.confusion.id, 5, 2, true, true));
 
                 }
             }
@@ -781,10 +784,11 @@ public class GCPlayerHandler
             int iPosZ = MathHelper.floor_double(player.posZ);
 
             // If the block below is the moon block
-            if (player.worldObj.getBlock(iPosX, iPosY, iPosZ) == GCBlocks.blockMoon)
+            IBlockState state = player.worldObj.getBlockState(new BlockPos(iPosX, iPosY, iPosZ));
+            if (state.getBlock() == GCBlocks.blockMoon)
             {
                 // And is the correct metadata (moon turf)
-                if (player.worldObj.getBlockMetadata(iPosX, iPosY, iPosZ) == 5)
+                if (state.getBlock().getMetaFromState(state) == 5)
                 {
                     GCPlayerStats playerStats = GCPlayerStats.get(player);
                     // If it has been long enough since the last step
@@ -811,7 +815,7 @@ public class GCPlayerHandler
                         pos = WorldUtil.getFootprintPosition(player.worldObj, rotation, pos, new BlockVec3(player));
 
                         long chunkKey = ChunkCoordIntPair.chunkXZ2Int(pos.intX() >> 4, pos.intZ() >> 4);
-                        TickHandlerServer.addFootprint(chunkKey, new Footprint(player.worldObj.provider.dimensionId, pos, rotation, player.getCommandSenderName()), player.worldObj.provider.dimensionId);
+                        TickHandlerServer.addFootprint(chunkKey, new Footprint(player.worldObj.provider.getDimensionId(), pos, rotation, player.getName()), player.worldObj.provider.getDimensionId());
 
                         // Increment and cap step counter at 1
                         playerStats.lastStep++;
@@ -851,7 +855,7 @@ public class GCPlayerHandler
         }
     }
 
-    public static class ThermalArmorEvent extends cpw.mods.fml.common.eventhandler.Event
+    public static class ThermalArmorEvent extends Event
     {
         public ArmorAddResult armorResult = ArmorAddResult.NOTHING;
         public final int armorIndex;
@@ -914,7 +918,7 @@ public class GCPlayerHandler
     	MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
     	if (theServer != null && PlayerUtil.getPlayerForUsernameVanilla(theServer, player.getGameProfile().getName()) != null)
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, new Object[] { player.getGameProfile().getName(), gearType.ordinal(), -1 }), new TargetPoint(player.worldObj.provider.dimensionId, player.posX, player.posY, player.posZ, 50.0D));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, new Object[] { player.getGameProfile().getName(), gearType.ordinal(), -1 }), new TargetPoint(player.worldObj.provider.getDimensionId(), player.posX, player.posY, player.posZ, 50.0D));
         }
     }
 
@@ -923,7 +927,7 @@ public class GCPlayerHandler
     	MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
     	if (theServer != null && PlayerUtil.getPlayerForUsernameVanilla(theServer, player.getGameProfile().getName()) != null)
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, new Object[] { player.getGameProfile().getName(), gearType.ordinal(), subtype }), new TargetPoint(player.worldObj.provider.dimensionId, player.posX, player.posY, player.posZ, 50.0D));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, new Object[] { player.getGameProfile().getName(), gearType.ordinal(), subtype }), new TargetPoint(player.worldObj.provider.getDimensionId(), player.posX, player.posY, player.posZ, 50.0D));
         }
     }
 
@@ -1070,14 +1074,14 @@ public class GCPlayerHandler
                 GCPlayer.justLanded = false;
 
                 //Set spawn point here if just descended from a lander for the first time
-                if (player.getBedLocation(player.worldObj.provider.dimensionId) == null)
+                if (player.getBedLocation(player.worldObj.provider.getDimensionId()) == null)
                 {
                     int i = 30000000;
                     int j = Math.min(i, Math.max(-i, MathHelper.floor_double(player.posX + 0.5D)));
                     int k = Math.min(256, Math.max(0, MathHelper.floor_double(player.posY + 1.5D)));
                     int l = Math.min(i, Math.max(-i, MathHelper.floor_double(player.posZ + 0.5D)));
-                    ChunkCoordinates coords = new ChunkCoordinates(j, k, l);
-                    player.setSpawnChunk(coords, true, player.worldObj.provider.dimensionId);
+                    BlockPos coords = new BlockPos(j, k, l);
+                    player.setSpawnChunk(coords, true, player.worldObj.provider.getDimensionId());
                 }
 
                 GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, new Object[] { }), player);

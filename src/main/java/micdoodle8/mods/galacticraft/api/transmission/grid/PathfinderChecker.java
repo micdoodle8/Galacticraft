@@ -5,8 +5,8 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -30,7 +30,7 @@ public class PathfinderChecker extends Pathfinder
 
                 for (int i = 0; i < 6; i++)
                 {
-                    ForgeDirection direction = ForgeDirection.getOrientation(i);
+                    EnumFacing direction = EnumFacing.getFront(i);
                     BlockVec3 position = currentNode.clone().modifyPositionFromSide(direction);
                     TileEntity connectedBlock = position.getTileEntity(world);
 

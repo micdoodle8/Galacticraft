@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.block.ModelParaChestTile;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
@@ -19,22 +19,24 @@ public class TileEntityParachestRenderer extends TileEntitySpecialRenderer
 
     private final ModelParaChestTile chestModel = new ModelParaChestTile();
 
-    public void renderGCTileEntityTreasureChestAt(TileEntityParaChest tile, double par2, double par4, double par6, float par8)
+    @Override
+    public void renderTileEntityAt(TileEntity tile, double par2, double par4, double par6, float partialTickTime, int par9)
     {
+        TileEntityParaChest paraChest = (TileEntityParaChest) tile;
         int var9;
 
-        if (!tile.hasWorldObj())
+        if (!paraChest.hasWorldObj())
         {
             var9 = 0;
         }
         else
         {
-            final Block var10 = tile.getBlockType();
-            var9 = tile.getBlockMetadata();
+            final Block var10 = paraChest.getBlockType();
+            var9 = paraChest.getBlockMetadata();
 
             if (var10 != null && var9 == 0)
             {
-                var9 = tile.getBlockMetadata();
+                var9 = paraChest.getBlockMetadata();
             }
         }
 
@@ -70,7 +72,7 @@ public class TileEntityParachestRenderer extends TileEntitySpecialRenderer
 
         GL11.glRotatef(var11, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        float var12 = tile.prevLidAngle + (tile.lidAngle - tile.prevLidAngle) * par8;
+        float var12 = paraChest.prevLidAngle + (paraChest.lidAngle - paraChest.prevLidAngle) * partialTickTime;
 
         var12 = 1.0F - var12;
         var12 = 1.0F - var12 * var12 * var12;
@@ -81,11 +83,5 @@ public class TileEntityParachestRenderer extends TileEntitySpecialRenderer
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         GL11.glPopMatrix();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    }
-
-    @Override
-    public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8)
-    {
-        this.renderGCTileEntityTreasureChestAt((TileEntityParaChest) par1TileEntity, par2, par4, par6, par8);
     }
 }

@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -45,20 +45,18 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
 
     protected boolean lastOnGround;
 
-    public EntityAdvancedMotion(World world, float yOffset)
+    public EntityAdvancedMotion(World world)
     {
         super(world);
         this.preventEntitySpawning = true;
         this.ignoreFrustumCheck = true;
         this.isImmuneToFire = true;
-        this.yOffset = yOffset;
     }
 
-    public EntityAdvancedMotion(World world, float yOffset, double var2, double var4, double var6)
+    public EntityAdvancedMotion(World world, double var2, double var4, double var6)
     {
-        this(world, yOffset);
-        this.yOffset = yOffset;
-        this.setPosition(var2, var4 + this.yOffset, var6);
+        this(world);
+        this.setPosition(var2, var4, var6);
     }
 
     @Override
@@ -70,12 +68,6 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
     protected boolean canTriggerWalking()
     {
         return false;
-    }
-
-    @Override
-    public AxisAlignedBB getBoundingBox()
-    {
-        return this.boundingBox;
     }
 
     @Override
@@ -159,7 +151,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
         else
         {
         	Entity e = var1.getEntity(); 
-            if (this.isEntityInvulnerable() || this.posY > 300 || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)))
+            if (this.isEntityInvulnerable(var1) || this.posY > 300 || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)))
             {
                 return false;
             }
@@ -255,7 +247,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
     }
 
     @Override
-    public void setPositionAndRotation2(double d, double d1, double d2, float f, float f1, int i)
+    public void func_180426_a(double x, double y, double z, float yaw, float pitch, int i, boolean b)
     {
         if (this.riddenByEntity != null)
         {
@@ -265,11 +257,11 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
             else
             {
                 this.posRotIncrements = i + 5;
-                this.advancedPositionX = d;
-                this.advancedPositionY = d1 + (this.riddenByEntity == null ? 1 : 0);
-                this.advancedPositionZ = d2;
-                this.advancedYaw = f;
-                this.advancedPitch = f1;
+                this.advancedPositionX = x;
+                this.advancedPositionY = y + (this.riddenByEntity == null ? 1 : 0);
+                this.advancedPositionZ = z;
+                this.advancedYaw = yaw;
+                this.advancedPitch = pitch;
             }
         }
     }
@@ -373,13 +365,13 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
 
             if (!this.worldObj.isRemote && this.ticks % 5 == 0)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketEntityUpdate(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 50.0D));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketEntityUpdate(this), new TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 50.0D));
             }
         }
 
         if (!this.worldObj.isRemote && this.ticks % 5 == 0)
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 50.0D));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 50.0D));
         }
 
         if (this.worldObj.isRemote && this.ticks % 5 == 0)
@@ -427,7 +419,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
     {
         final Minecraft mc = FMLClientHandler.instance().getClient();
 
-        if (mc != null && mc.renderViewEntity != null && mc.effectRenderer != null)
+        if (mc != null && mc.getRenderViewEntity() != null && mc.effectRenderer != null)
         {
             if (fx != null)
             {

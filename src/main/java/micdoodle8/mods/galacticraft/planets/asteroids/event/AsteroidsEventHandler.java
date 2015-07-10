@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.event;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler.ThermalArmorEvent;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 

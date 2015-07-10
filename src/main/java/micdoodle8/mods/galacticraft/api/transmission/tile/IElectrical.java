@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.api.transmission.tile;
 
-import net.minecraftforge.common.util.ForgeDirection;
+
+import net.minecraft.util.EnumFacing;
 
 /**
  * Applied to all TileEntities that can interact with electricity.
@@ -20,7 +21,7 @@ public interface IElectrical extends IConnector
      * @param doReceive    If false, the charge will only be simulated.
      * @return Amount of energy that was accepted by the block.
      */
-    public float receiveElectricity(ForgeDirection from, float receive, int tierProduced, boolean doReceive);
+    public float receiveElectricity(EnumFacing from, float receive, int tierProduced, boolean doReceive);
 
     /**
      * Adds electricity to an block. Returns the ElectricityPack, the
@@ -32,17 +33,17 @@ public interface IElectrical extends IConnector
      * @param doReceive If false, the charge will only be simulated.
      * @return Amount of energy that was given out by the block.
      */
-    public float provideElectricity(ForgeDirection from, float request, boolean doProvide);
+    public float provideElectricity(EnumFacing from, float request, boolean doProvide);
 
     /**
      * @return How much energy does this TileEntity want?
      */
-    public float getRequest(ForgeDirection direction);
+    public float getRequest(EnumFacing direction);
 
     /**
      * @return How much energy does this TileEntity want to provide?
      */
-    public float getProvide(ForgeDirection direction);
+    public float getProvide(EnumFacing direction);
 
     /**
      * Gets the tier of this TileEntity.

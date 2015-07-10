@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.entities;
 
+import com.google.common.base.Predicate;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -18,9 +19,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityHorse;
-import net.minecraft.entity.passive.EntityTameable;
+import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -58,7 +57,6 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
     {
         super(par1World);
         this.setSize(0.25F, 0.7F);
-        this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.aiSit = new EntityAISitGC(this);
         this.tasks.addTask(2, this.aiSit);
@@ -72,7 +70,17 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(4, new EntityAITargetNonTamed(this, EntitySludgeling.class, 200, false));
+        this.targetTasks.addTask(4, new EntityAITargetNonTamed(this, EntitySludgeling.class, false, new Predicate()
+        {
+            public boolean func_180094_a(Entity p_180094_1_)
+            {
+                return p_180094_1_ instanceof EntitySludgeling;
+            }
+            public boolean apply(Object p_apply_1_)
+            {
+                return this.func_180094_a((Entity)p_apply_1_);
+            }
+        }));
         this.setTamed(false);
 
         switch (this.rand.nextInt(3))
@@ -140,13 +148,13 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
             this.favFoodID = Item.getIdFromItem(Items.gunpowder);
             break;
         case 5:
-            this.favFoodID = Item.getIdFromItem(Items.wooden_door);
+            this.favFoodID = Item.getIdFromItem(Items.wooden_hoe);
             break;
         case 6:
             this.favFoodID = Item.getIdFromItem(Items.emerald);
             break;
         case 7:
-            this.favFoodID = Item.getIdFromItem(Items.cooked_fished);
+            this.favFoodID = Item.getIdFromItem(Items.fish);
             break;
         case 8:
             this.favFoodID = Item.getIdFromItem(Items.repeater);
@@ -173,11 +181,11 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.getMaxHealthSlimeling());
     }
 
-    @Override
-    public boolean isAIEnabled()
-    {
-        return true;
-    }
+//    @Override
+//    public boolean isAIEnabled()
+//    {
+//        return true;
+//    }
 
     @Override
     protected void updateAITick()
@@ -310,11 +318,11 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 
             if (this.getOwnerUsername().isEmpty())
             {
-                EntityLivingBase owner = this.getOwner();
+                Entity owner = this.getOwner();
 
                 if (owner != null)
                 {
-                    this.setOwnerUsername(owner.getCommandSenderName());
+                    this.setOwnerUsername(owner.getName());
                 }
             }
         }
@@ -341,7 +349,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
     @Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
-        if (this.isEntityInvulnerable())
+        if (this.isEntityInvulnerable(par1DamageSource))
         {
             return false;
         }
@@ -456,12 +464,12 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
                 if (this.rand.nextInt(3) == 0)
                 {
                     this.setTamed(true);
-                    this.setPathToEntity((PathEntity) null);
-                    this.setAttackTarget((EntityLivingBase) null);
+                    this.getNavigator().clearPathEntity();
+                    this.setAttackTarget(null);
                     this.setSittingAI(true);
                     this.setHealth(20.0F);
-                    VersionUtil.setSlimelingOwner(this, VersionUtil.mcVersionMatches("1.7.10") ? par1EntityPlayer.getUniqueID().toString() : (VersionUtil.mcVersionMatches("1.7.2") ? par1EntityPlayer.getCommandSenderName() : ""));
-                    this.setOwnerUsername(par1EntityPlayer.getCommandSenderName());
+                    this.setOwnerId(par1EntityPlayer.getUniqueID().toString());
+                    this.setOwnerUsername(par1EntityPlayer.getName());
                     this.playTameEffect(true);
                     this.worldObj.setEntityState(this, (byte) 7);
                 }
@@ -743,8 +751,13 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
             }
             else
             {
-                EntityLivingBase entitylivingbase = this.theEntity.getOwner();
-                return entitylivingbase == null ? true : (this.theEntity.getDistanceSqToEntity(entitylivingbase) < 144.0D && entitylivingbase.getAITarget() != null ? false : this.isSitting);
+                Entity e = this.theEntity.getOwner();
+                if (e instanceof EntityLivingBase)
+                {
+                    EntityLivingBase living = (EntityLivingBase) e;
+                    return living == null ? true : (this.theEntity.getDistanceSqToEntity(living) < 144.0D && living.getAITarget() != null ? false : this.isSitting);
+                }
+                return false;
             }
         }
 

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.api.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 
 /**
  * Implement into tile entities that do something upon being activated by a key
@@ -21,7 +22,7 @@ public interface IKeyable
      * @param face the block face clicked
      * @return true if something was done, false if not
      */
-    public boolean onValidKeyActivated(EntityPlayer player, ItemStack key, int face);
+    public boolean onValidKeyActivated(EntityPlayer player, ItemStack key, EnumFacing face);
 
     /**
      * called when player is not holding correct tier of key, or any key at all
@@ -29,7 +30,7 @@ public interface IKeyable
      * @param key the key itemstack
      * @return true if something was done, false if not
      */
-    public boolean onActivatedWithoutKey(EntityPlayer player, int face);
+    public boolean onActivatedWithoutKey(EntityPlayer player, EnumFacing face);
 
     public boolean canBreak();
 }

@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedCreeper;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
@@ -29,7 +29,7 @@ public class RenderEvolvedCreeper extends RenderCreeper
 
     public RenderEvolvedCreeper()
     {
-        super();
+        super(FMLClientHandler.instance().getClient().getRenderManager());
         this.mainModel = new ModelEvolvedCreeper();
     }
 
@@ -112,58 +112,58 @@ public class RenderEvolvedCreeper extends RenderCreeper
         return this.updateCreeperColorMultiplier((EntityCreeper) par1EntityLiving, par2, par3);
     }
 
-    @Override
-    protected int shouldRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3)
-    {
-        EntityEvolvedCreeper creeper = (EntityEvolvedCreeper) par1EntityLiving;
-        final Minecraft minecraft = FMLClientHandler.instance().getClient();
-
-        final EntityPlayerSP player = minecraft.thePlayer;
-
-        ItemStack helmetSlot = null;
-
-        if (player != null && player.inventory.armorItemInSlot(3) != null)
-        {
-            helmetSlot = player.inventory.armorItemInSlot(3);
-        }
-
-        if (helmetSlot != null && helmetSlot.getItem() instanceof ItemSensorGlasses && minecraft.currentScreen == null)
-        {
-            if (par2 == 1)
-            {
-                final float var4 = creeper.ticksExisted * 2 + par3;
-                this.bindTexture(RenderEvolvedCreeper.powerTexture);
-                GL11.glMatrixMode(GL11.GL_TEXTURE);
-                GL11.glLoadIdentity();
-                final float var5 = var4 * 0.01F;
-                final float var6 = var4 * 0.01F;
-                GL11.glTranslatef(var5, var6, 0.0F);
-                this.setRenderPassModel(this.creeperModel);
-                GL11.glMatrixMode(GL11.GL_MODELVIEW);
-                GL11.glEnable(GL11.GL_BLEND);
-                final float var7 = 0.5F;
-                GL11.glColor4f(var7, var7, var7, 1.0F);
-                GL11.glDisable(GL11.GL_LIGHTING);
-                GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-                return 1;
-            }
-
-            if (par2 == 2)
-            {
-                GL11.glMatrixMode(GL11.GL_TEXTURE);
-                GL11.glLoadIdentity();
-                GL11.glMatrixMode(GL11.GL_MODELVIEW);
-                GL11.glEnable(GL11.GL_LIGHTING);
-                GL11.glDisable(GL11.GL_BLEND);
-            }
-        }
-
-        return super.shouldRenderPass(creeper, par2, par3);
-    }
-
-    @Override
-    protected int inheritRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3)
-    {
-        return this.func_77061_b((EntityCreeper) par1EntityLiving, par2, par3);
-    }
+//    @Override
+//    protected int shouldRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3)
+//    {
+//        EntityEvolvedCreeper creeper = (EntityEvolvedCreeper) par1EntityLiving;
+//        final Minecraft minecraft = FMLClientHandler.instance().getClient();
+//
+//        final EntityPlayerSP player = minecraft.thePlayer;
+//
+//        ItemStack helmetSlot = null;
+//
+//        if (player != null && player.inventory.armorItemInSlot(3) != null)
+//        {
+//            helmetSlot = player.inventory.armorItemInSlot(3);
+//        }
+//
+//        if (helmetSlot != null && helmetSlot.getItem() instanceof ItemSensorGlasses && minecraft.currentScreen == null)
+//        {
+//            if (par2 == 1)
+//            {
+//                final float var4 = creeper.ticksExisted * 2 + par3;
+//                this.bindTexture(RenderEvolvedCreeper.powerTexture);
+//                GL11.glMatrixMode(GL11.GL_TEXTURE);
+//                GL11.glLoadIdentity();
+//                final float var5 = var4 * 0.01F;
+//                final float var6 = var4 * 0.01F;
+//                GL11.glTranslatef(var5, var6, 0.0F);
+//                this.setRenderPassModel(this.creeperModel);
+//                GL11.glMatrixMode(GL11.GL_MODELVIEW);
+//                GL11.glEnable(GL11.GL_BLEND);
+//                final float var7 = 0.5F;
+//                GL11.glColor4f(var7, var7, var7, 1.0F);
+//                GL11.glDisable(GL11.GL_LIGHTING);
+//                GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+//                return 1;
+//            }
+//
+//            if (par2 == 2)
+//            {
+//                GL11.glMatrixMode(GL11.GL_TEXTURE);
+//                GL11.glLoadIdentity();
+//                GL11.glMatrixMode(GL11.GL_MODELVIEW);
+//                GL11.glEnable(GL11.GL_LIGHTING);
+//                GL11.glDisable(GL11.GL_BLEND);
+//            }
+//        }
+//
+//        return super.shouldRenderPass(creeper, par2, par3);
+//    } TODO
+//
+//    @Override
+//    protected int inheritRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3)
+//    {
+//        return this.func_77061_b((EntityCreeper) par1EntityLiving, par2, par3);
+//    }
 }

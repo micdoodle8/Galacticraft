@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import com.google.common.base.Predicate;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
@@ -12,11 +11,10 @@ import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityDungeonSpawnerMars;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,20 +23,23 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 import java.util.Random;
 
 public class BlockBasicMars extends Block implements IDetectableResource, IPlantableBlock, ITileEntityProvider, ITerraformableBlock
 {
-    @SideOnly(Side.CLIENT)
-    private IIcon[] marsBlockIcons;
+//    @SideOnly(Side.CLIENT)
+//    private IIcon[] marsBlockIcons;
 
     //Metadata values:
     //0 copper ore, 1 tin ore, 2 desh ore, 3 iron ore
@@ -60,38 +61,41 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
         }
     }
 
-    public BlockBasicMars()
+    public BlockBasicMars(String assetName)
     {
         super(Material.rock);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
     {
-        if (world.getBlockMetadata(x, y, z) == 10)
+        if (state.getBlock().getMetaFromState(state) == 10)
         {
             return null;
         }
 
-        return super.getCollisionBoundingBoxFromPool(world, x, y, z);
+        return super.getCollisionBoundingBox(worldIn, pos, state);
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
-    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z)
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
     {
-        if (world.getBlockMetadata(x, y, z) == 10)
+        IBlockState state = worldIn.getBlockState(pos);
+        if (state.getBlock().getMetaFromState(state) == 10)
         {
-            return AxisAlignedBB.getBoundingBox(x + 0.0D, y + 0.0D, z + 0.0D, x + 0.0D, y + 0.0D, z + 0.0D);
+            return AxisAlignedBB.fromBounds(pos.getX() + 0.0D, pos.getY() + 0.0D, pos.getZ() + 0.0D, pos.getX() + 0.0D, pos.getY() + 0.0D, pos.getZ() + 0.0D);
         }
 
-        return super.getSelectedBoundingBoxFromPool(world, x, y, z);
+        return super.getSelectedBoundingBox(worldIn, pos);
     }
 
     @Override
-    public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
+    public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion)
     {
-        int metadata = world.getBlockMetadata(x, y, z);
+        IBlockState state = world.getBlockState(pos);
+        int metadata = state.getBlock().getMetaFromState(state);
 
         if (metadata == 10)
         {
@@ -103,10 +107,10 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
             return 40.0F;
         }
 
-        return super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ);
+        return super.getExplosionResistance(world, pos, exploder, explosion);
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
@@ -122,7 +126,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
         this.marsBlockIcons[8] = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "bottom");
         this.marsBlockIcons[9] = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "iron");
         this.marsBlockIcons[10] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "blank");
-    }
+    }*/
 
     @SideOnly(Side.CLIENT)
     @Override
@@ -132,9 +136,10 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public float getBlockHardness(World par1World, int par2, int par3, int par4)
+    public float getBlockHardness(World worldIn, BlockPos pos)
     {
-        final int meta = par1World.getBlockMetadata(par2, par3, par4);
+        IBlockState state = worldIn.getBlockState(pos);
+        final int meta = state.getBlock().getMetaFromState(state);
 
         if (meta == 7)
         {
@@ -150,9 +155,9 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
-        if (metadata == 10)
+        if (state.getBlock().getMetaFromState(state) == 10)
         {
             return new TileEntityDungeonSpawnerMars();
         }
@@ -167,17 +172,19 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public boolean canHarvestBlock(EntityPlayer player, int meta)
+    public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player)
     {
+        IBlockState state = world.getBlockState(pos);
+        int meta = state.getBlock().getMetaFromState(state);
         if (meta == 10)
         {
             return false;
         }
 
-        return super.canHarvestBlock(player, meta);
+        return super.canHarvestBlock(world, pos, player);
     }
 
-    @Override
+    /*@Override
     public IIcon getIcon(int side, int meta)
     {
         switch (meta)
@@ -207,11 +214,12 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
         }
 
         return this.marsBlockIcons[1];
-    }
+    }*/
 
     @Override
-    public Item getItemDropped(int meta, Random random, int par3)
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
+        int meta = state.getBlock().getMetaFromState(state);
         if (meta == 2)
         {
             return MarsItems.marsItemBasic;
@@ -225,8 +233,9 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public int damageDropped(int meta)
+    public int damageDropped(IBlockState state)
     {
+        int meta = state.getBlock().getMetaFromState(state);
         if (meta == 9)
         {
             return 4;
@@ -242,14 +251,9 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public int getDamageValue(World p_149643_1_, int p_149643_2_, int p_149643_3_, int p_149643_4_)
+    public int quantityDropped(IBlockState state, int fortune, Random random)
     {
-    	return p_149643_1_.getBlockMetadata(p_149643_2_, p_149643_3_, p_149643_4_);    	
-    }
-
-    @Override
-    public int quantityDropped(int meta, int fortune, Random random)
-    {
+        int meta = state.getBlock().getMetaFromState(state);
         if (meta == 10)
         {
             return 0;
@@ -297,7 +301,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
+    public boolean canSustainPlant(IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable)
     {
         return false;
     }
@@ -315,40 +319,43 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public void randomDisplayTick(World world, int x, int y, int z, Random rand)
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
         if (rand.nextInt(10) == 0)
         {
-            int metadata = world.getBlockMetadata(x, y, z);
+            int metadata = state.getBlock().getMetaFromState(state);
 
             if (metadata == 7)
             {
-                GalacticraftPlanets.spawnParticle("sludgeDrip", new Vector3(x + rand.nextDouble(), y, z + rand.nextDouble()), new Vector3(0, 0, 0));
+                GalacticraftPlanets.spawnParticle("sludgeDrip", new Vector3(pos.getX() + rand.nextDouble(), pos.getY(), pos.getZ() + rand.nextDouble()), new Vector3(0, 0, 0));
 
                 if (rand.nextInt(100) == 0)
                 {
-                    world.playSound(x, y, z, GalacticraftCore.TEXTURE_PREFIX + "ambience.singledrip", 1, 0.8F + rand.nextFloat() / 5.0F, false);
+                    worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), GalacticraftCore.TEXTURE_PREFIX + "ambience.singledrip", 1, 0.8F + rand.nextFloat() / 5.0F, false);
                 }
             }
         }
     }
 
     @Override
-    public boolean isTerraformable(World world, int x, int y, int z)
+    public boolean isTerraformable(World world, BlockPos pos)
     {
-        return world.getBlockMetadata(x, y, z) == 5 && !world.getBlock(x, y + 1, z).isOpaqueCube();
+        IBlockState state = world.getBlockState(pos);
+        return state.getBlock().getMetaFromState(state) == 5 && !world.getBlockState(pos.up()).getBlock().isFullCube();
     }
 
     @Override
-    public boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata)
+    public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player)
     {
-        return metadata < 10;
+        return state.getBlock().getMetaFromState(state) < 10;
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
     {
-        int metadata = world.getBlockMetadata(x, y, z);
+        IBlockState state = world.getBlockState(pos);
+        int metadata = state.getBlock().getMetaFromState(state);
         if (metadata == 2)
         {
             return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
@@ -362,20 +369,21 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
             return null;
         }
 
-        return super.getPickBlock(target, world, x, y, z);
+        return super.getPickBlock(target, world, pos, player);
     }
     
     @Override
-    public boolean isReplaceableOreGen(World world, int x, int y, int z, Block target)
+    public boolean isReplaceableOreGen(World world, BlockPos pos, Predicate<IBlockState> target)
     {
         if (target != Blocks.stone) return false;
-    	int meta = world.getBlockMetadata(x, y, z);
+        IBlockState state = world.getBlockState(pos);
+    	int meta = state.getBlock().getMetaFromState(state);
     	return (meta == 6 || meta == 9);
     }
     
     @Override
-    public boolean hasTileEntity(int metadata)
+    public boolean hasTileEntity(IBlockState state)
     {
-        return metadata == 10;
+        return state.getBlock().getMetaFromState(state) == 10;
     }
 }

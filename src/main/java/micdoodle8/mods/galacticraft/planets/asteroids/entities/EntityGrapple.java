@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -104,7 +104,7 @@ public class EntityGrapple extends Entity implements IProjectile
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
+    public void func_180426_a(double x, double y, double z, float yaw, float pitch, int i, boolean b)
     {
         this.setPosition(par1, par3, par5);
         this.setRotation(par7, par8);
@@ -398,7 +398,7 @@ public class EntityGrapple extends Entity implements IProjectile
             }
 
             this.setPosition(this.posX, this.posY, this.posZ);
-            this.func_145775_I();
+            this.doBlockCollisions();
         }
 
         if (!this.worldObj.isRemote && (this.ticksInGround - 1) % 10 == 0)

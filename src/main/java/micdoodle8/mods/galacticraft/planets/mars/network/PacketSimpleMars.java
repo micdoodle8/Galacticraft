@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.planets.mars.network;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -18,12 +20,11 @@ import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityCryogenicChamber;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
 import micdoodle8.mods.galacticraft.planets.mars.util.MarsUtil;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.io.IOException;
@@ -37,7 +38,7 @@ public class PacketSimpleMars implements IPacket
         // SERVER
         S_UPDATE_SLIMELING_DATA(Side.SERVER, Integer.class, Integer.class, String.class),
         S_WAKE_PLAYER(Side.SERVER),
-        S_UPDATE_ADVANCED_GUI(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
+        S_UPDATE_ADVANCED_GUI(Side.SERVER, Integer.class, BlockPos.class, Integer.class),
         S_UPDATE_CARGO_ROCKET_STATUS(Side.SERVER, Integer.class, Integer.class),
         // CLIENT
         C_OPEN_CUSTOM_GUI(Side.CLIENT, Integer.class, Integer.class, Integer.class),
@@ -117,11 +118,11 @@ public class PacketSimpleMars implements IPacket
     @Override
     public void handleClientSide(EntityPlayer player)
     {
-        EntityClientPlayerMP playerBaseClient = null;
+        EntityPlayerSP playerBaseClient = null;
 
-        if (player instanceof EntityClientPlayerMP)
+        if (player instanceof EntityPlayerSP)
         {
-            playerBaseClient = (EntityClientPlayerMP) player;
+            playerBaseClient = (EntityPlayerSP) player;
         }
 
         switch (this.type)
@@ -156,7 +157,7 @@ public class PacketSimpleMars implements IPacket
                 break;
             }
         case C_BEGIN_CRYOGENIC_SLEEP:
-            TileEntity tile = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
+            TileEntity tile = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
 
             if (tile instanceof TileEntityCryogenicChamber)
             {
@@ -191,8 +192,7 @@ public class PacketSimpleMars implements IPacket
                     {
                         slimeling.setSittingAI(!slimeling.isSitting());
                         slimeling.setJumping(false);
-                        slimeling.setPathToEntity(null);
-                        slimeling.setTarget(null);
+                        slimeling.getNavigator().clearPathEntity();
                         slimeling.setAttackTarget(null);
                     }
                     break;
@@ -212,7 +212,7 @@ public class PacketSimpleMars implements IPacket
                 case 3:
                     if (!slimeling.isInLove() && player == slimeling.getOwner() && !slimeling.worldObj.isRemote)
                     {
-                        slimeling.func_146082_f(playerBase);
+                        slimeling.setInLove(playerBase);
                     }
                     break;
                 case 4:
@@ -237,17 +237,17 @@ public class PacketSimpleMars implements IPacket
             }
             break;
         case S_WAKE_PLAYER:
-            ChunkCoordinates c = playerBase.playerLocation;
+            BlockPos c = playerBase.playerLocation;
 
             if (c != null)
             {
-                EventWakePlayer event = new EventWakePlayer(playerBase, c.posX, c.posY, c.posZ, false, true, true, true);
+                EventWakePlayer event = new EventWakePlayer(playerBase, c, false, true, true, true);
                 MinecraftForge.EVENT_BUS.post(event);
                 playerBase.wakeUpPlayer(false, true, true);
             }
             break;
         case S_UPDATE_ADVANCED_GUI:
-            TileEntity tile = player.worldObj.getTileEntity((Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3));
+            TileEntity tile = player.worldObj.getTileEntity((BlockPos) this.data.get(1));
 
             switch ((Integer) this.data.get(0))
             {
@@ -255,35 +255,35 @@ public class PacketSimpleMars implements IPacket
                 if (tile instanceof TileEntityLaunchController)
                 {
                     TileEntityLaunchController launchController = (TileEntityLaunchController) tile;
-                    launchController.setFrequency((Integer) this.data.get(4));
+                    launchController.setFrequency((Integer) this.data.get(2));
                 }
                 break;
             case 1:
                 if (tile instanceof TileEntityLaunchController)
                 {
                     TileEntityLaunchController launchController = (TileEntityLaunchController) tile;
-                    launchController.setLaunchDropdownSelection((Integer) this.data.get(4));
+                    launchController.setLaunchDropdownSelection((Integer) this.data.get(2));
                 }
                 break;
             case 2:
                 if (tile instanceof TileEntityLaunchController)
                 {
                     TileEntityLaunchController launchController = (TileEntityLaunchController) tile;
-                    launchController.setDestinationFrequency((Integer) this.data.get(4));
+                    launchController.setDestinationFrequency((Integer) this.data.get(2));
                 }
                 break;
             case 3:
                 if (tile instanceof TileEntityLaunchController)
                 {
                     TileEntityLaunchController launchController = (TileEntityLaunchController) tile;
-                    launchController.launchPadRemovalDisabled = (Integer) this.data.get(4) == 1;
+                    launchController.launchPadRemovalDisabled = (Integer) this.data.get(2) == 1;
                 }
                 break;
             case 4:
                 if (tile instanceof TileEntityLaunchController)
                 {
                     TileEntityLaunchController launchController = (TileEntityLaunchController) tile;
-                    launchController.setLaunchSchedulingEnabled((Integer) this.data.get(4) == 1);
+                    launchController.setLaunchSchedulingEnabled((Integer) this.data.get(2) == 1);
                 }
                 break;
             case 5:

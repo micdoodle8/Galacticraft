@@ -1,7 +1,8 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
@@ -43,7 +44,7 @@ public class EntityBubble extends EntityAdvanced implements IPacketReceiver, IBu
 
     //This is pushOutOfBlocks
     @Override
-    protected boolean func_145771_j(double par1, double par3, double par5)
+    protected boolean pushOutOfBlocks(double x, double y, double z)
     {
     	return false;
     }
@@ -67,10 +68,10 @@ public class EntityBubble extends EntityAdvanced implements IPacketReceiver, IBu
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
+    public void func_180426_a(double x, double y, double z, float yaw, float pitch, int i, boolean b)
     {
-        this.setPosition(par1, par3, par5);
-        this.setRotation(par7, par8);
+        this.setPosition(x, y, z);
+        this.setRotation(yaw, pitch);
     }
 
     @Override
@@ -87,7 +88,7 @@ public class EntityBubble extends EntityAdvanced implements IPacketReceiver, IBu
 
         super.onEntityUpdate();
 
-        final TileEntity tileAt = this.worldObj.getTileEntity(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1.0), MathHelper.floor_double(this.posZ));
+        final TileEntity tileAt = this.worldObj.getTileEntity(new BlockPos(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1.0), MathHelper.floor_double(this.posZ)));
 
         if (tileAt instanceof TileEntityOxygenDistributor)
         {
@@ -180,7 +181,7 @@ public class EntityBubble extends EntityAdvanced implements IPacketReceiver, IBu
     @Override
     protected void readEntityFromNBT(NBTTagCompound nbt)
     {
-        if (nbt.func_150296_c().contains("bubbleSize"))
+        if (nbt.getKeySet().contains("bubbleSize"))
         {
             this.size = (float) nbt.getDouble("bubbleSize");
         }

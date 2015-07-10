@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
@@ -20,22 +18,24 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityCryogenicChamber
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTerraformer;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Type;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
@@ -45,20 +45,21 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
     public static final int CRYOGENIC_CHAMBER_METADATA = 4;
     public static final int LAUNCH_CONTROLLER_METADATA = 8;
 
-    private IIcon iconMachineSide;
-    private IIcon iconInput;
+//    private IIcon iconMachineSide;
+//    private IIcon iconInput;
+//
+//    private IIcon iconTerraformer;
+//    private IIcon iconLaunchController;
+//    private IIcon iconCryochamber;
 
-    private IIcon iconTerraformer;
-    private IIcon iconLaunchController;
-    private IIcon iconCryochamber;
-
-    public BlockMachineMars()
+    public BlockMachineMars(String assetName)
     {
         super(GCBlocks.machine);
 		this.setStepSound(soundTypeMetal);
+        this.setUnlocalizedName(assetName);
     }
 
-    @Override
+    /*@Override
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
         this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
@@ -68,19 +69,19 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
         this.iconTerraformer = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "terraformer_0");
         this.iconLaunchController = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "launchController");
         this.iconCryochamber = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "cryoDummy");
-    }
+    }*/
 
     @Override
-    public void breakBlock(World var1, int var2, int var3, int var4, Block var5, int var6)
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        final TileEntity var9 = var1.getTileEntity(var2, var3, var4);
+        final TileEntity var9 = worldIn.getTileEntity(pos);
 
         if (var9 instanceof IMultiBlock)
         {
             ((IMultiBlock) var9).onDestroy(var9);
         }
 
-        super.breakBlock(var1, var2, var3, var4, var5, var6);
+        super.breakBlock(worldIn, pos, state);
     }
 
     @SideOnly(Side.CLIENT)
@@ -90,7 +91,7 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
-    @Override
+    /*@Override
     public IIcon getIcon(int side, int metadata)
     {
         if (side == 0 || side == 1)
@@ -135,17 +136,17 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
                 return this.iconTerraformer;
             }
         }
-    }
+    }*/
 
     /**
      * Called when the block is placed in the world.
      */
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        int metadata = world.getBlockMetadata(x, y, z);
+        int metadata = getMetaFromState(state);
 
-        int angle = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         int change = 0;
 
         switch (angle)
@@ -182,21 +183,21 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
                 break;
             }
 
-            world.setBlockMetadataWithNotify(x, y, z, BlockMachineMars.LAUNCH_CONTROLLER_METADATA + change, 3);
+            worldIn.setBlockState(pos, getStateFromMeta(BlockMachineMars.LAUNCH_CONTROLLER_METADATA + change), 3);
         }
         else if (metadata >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
         {
-            if (!this.canPlaceChamberAt(world, x, y, z, entityLiving))
+            if (!this.canPlaceChamberAt(worldIn, pos, placer))
             {
-                if (entityLiving instanceof EntityPlayer)
+                if (placer instanceof EntityPlayer)
                 {
-                    if (!world.isRemote)
+                    if (!worldIn.isRemote)
                     {
-                        ((EntityPlayer) entityLiving).addChatMessage(new ChatComponentText(EnumColor.RED + GCCoreUtil.translate("gui.warning.noroom")));
+                        ((EntityPlayer) placer).addChatMessage(new ChatComponentText(EnumColor.RED + GCCoreUtil.translate("gui.warning.noroom")));
                     }
 
-                    world.setBlockToAir(x, y, z);
-                    ((EntityPlayer) entityLiving).inventory.addItemStackToInventory(new ItemStack(Item.getItemFromBlock(MarsBlocks.machine), 1, BlockMachineMars.CRYOGENIC_CHAMBER_METADATA));
+                    worldIn.setBlockToAir(pos);
+                    ((EntityPlayer) placer).inventory.addItemStackToInventory(new ItemStack(Item.getItemFromBlock(MarsBlocks.machine), 1, BlockMachineMars.CRYOGENIC_CHAMBER_METADATA));
                     return;
                 }
             }
@@ -218,19 +219,19 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
                     break;
                 }
 
-                world.setBlockMetadataWithNotify(x, y, z, BlockMachineMars.CRYOGENIC_CHAMBER_METADATA + change, 3);
+                worldIn.setBlockState(pos, getStateFromMeta(BlockMachineMars.CRYOGENIC_CHAMBER_METADATA + change), 3);
             }
         }
         else
         {
-            world.setBlockMetadataWithNotify(x, y, z, BlockMachineMars.TERRAFORMER_METADATA + change, 3);
+            worldIn.setBlockState(pos, getStateFromMeta(BlockMachineMars.TERRAFORMER_METADATA + change), 3);
         }
 
-        TileEntity var8 = world.getTileEntity(x, y, z);
+        TileEntity var8 = worldIn.getTileEntity(pos);
 
         if (var8 instanceof IMultiBlock)
         {
-            ((IMultiBlock) var8).onCreate(new BlockVec3(x, y, z));
+            ((IMultiBlock) var8).onCreate(pos);
         }
 
         if (metadata >= BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
@@ -239,31 +240,33 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
             {
                 for (int dZ = -2; dZ < 3; dZ++)
                 {
-                    final Block id = world.getBlock(x + dX, y, z + dZ);
+                    BlockPos pos1 = pos.add(dX, 0, dZ);
+                    final Block id = worldIn.getBlockState(pos1).getBlock();
 
                     if (id == GCBlocks.landingPadFull)
                     {
-                        world.markBlockForUpdate(x + dX, y, z + dZ);
+                        worldIn.markBlockForUpdate(pos1);
                     }
                 }
             }
         }
 
-        if (var8 instanceof IChunkLoader && !var8.getWorldObj().isRemote && ConfigManagerMars.launchControllerChunkLoad && entityLiving instanceof EntityPlayer)
+        if (var8 instanceof IChunkLoader && !var8.getWorld().isRemote && ConfigManagerMars.launchControllerChunkLoad && placer instanceof EntityPlayer)
         {
-            ((IChunkLoader) var8).setOwnerName(((EntityPlayer) entityLiving).getGameProfile().getName());
-            ((IChunkLoader) var8).onTicketLoaded(ForgeChunkManager.requestTicket(GalacticraftCore.instance, var8.getWorldObj(), Type.NORMAL), true);
+            ((IChunkLoader) var8).setOwnerName(((EntityPlayer) placer).getGameProfile().getName());
+            ((IChunkLoader) var8).onTicketLoaded(ForgeChunkManager.requestTicket(GalacticraftCore.instance, var8.getWorld(), Type.NORMAL), true);
         }
-        else if (var8 instanceof TileEntityLaunchController && entityLiving instanceof EntityPlayer)
+        else if (var8 instanceof TileEntityLaunchController && placer instanceof EntityPlayer)
         {
-            ((TileEntityLaunchController) var8).setOwnerName(((EntityPlayer) entityLiving).getGameProfile().getName());
+            ((TileEntityLaunchController) var8).setOwnerName(((EntityPlayer) placer).getGameProfile().getName());
         }
     }
 
     @Override
-    public boolean onUseWrench(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        int metadata = par1World.getBlockMetadata(x, y, z);
+        IBlockState state = world.getBlockState(pos);
+        int metadata = getMetaFromState(state);
         int original = metadata;
 
         int change = 0;
@@ -301,38 +304,35 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
 
         if (metadata >= BlockMachineMars.LAUNCH_CONTROLLER_METADATA || metadata < BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
         {
-            TileEntity te = par1World.getTileEntity(x, y, z);
+            TileEntity te = world.getTileEntity(pos);
             if (te instanceof TileBaseUniversalElectrical)
             {
                 ((TileBaseUniversalElectrical) te).updateFacing();
             }
         }
 
-        par1World.setBlockMetadataWithNotify(x, y, z, change, 3);
+        world.setBlockState(pos, getStateFromMeta(change), 3);
         return true;
     }
 
-    /**
-     * Called when the block is right clicked by the player
-     */
     @Override
-    public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        int metadata = world.getBlockMetadata(x, y, z);
+        int metadata = getMetaFromState(worldIn.getBlockState(pos));
 
         if (metadata >= BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
         {
-            par5EntityPlayer.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_MARS, world, x, y, z);
+            playerIn.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_MARS, worldIn, pos.getX(), pos.getY(), pos.getZ());
             return true;
         }
         else if (metadata >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
         {
-            ((IMultiBlock) world.getTileEntity(x, y, z)).onActivated(par5EntityPlayer);
+            ((IMultiBlock) worldIn.getTileEntity(pos)).onActivated(playerIn);
             return true;
         }
         else
         {
-            par5EntityPlayer.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_MARS, world, x, y, z);
+            playerIn.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_MARS, worldIn, pos.getX(), pos.getY(), pos.getZ());
             return true;
         }
     }
@@ -344,14 +344,15 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
     }
 
     @Override
-    public boolean renderAsNormalBlock()
+    public boolean isFullCube()
     {
         return false;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
+        int metadata = getMetaFromState(state);
         if (metadata >= BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
         {
             return new TileEntityLaunchController();
@@ -367,21 +368,22 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
     }
 
     @Override
-    public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int par5)
+    public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state)
     {
-        super.onBlockDestroyedByPlayer(world, x, y, z, par5);
+        super.onBlockDestroyedByPlayer(worldIn, pos, state);
 
-        if (world.getBlockMetadata(x, y, z) >= BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
+        if (getMetaFromState(worldIn.getBlockState(pos)) >= BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
         {
             for (int dX = -2; dX < 3; dX++)
             {
                 for (int dZ = -2; dZ < 3; dZ++)
                 {
-                    final Block id = world.getBlock(x + dX, y, z + dZ);
+                    BlockPos pos1 = pos.add(dX, 0, dZ);
+                    final Block id = worldIn.getBlockState(pos1).getBlock();
 
                     if (id == GCBlocks.landingPadFull)
                     {
-                        world.markBlockForUpdate(x + dX, y, z + dZ);
+                        worldIn.markBlockForUpdate(pos1);
                     }
                 }
             }
@@ -412,12 +414,12 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
         par3List.add(this.getLaunchController());
     }
 
-    private boolean canPlaceChamberAt(World world, int x0, int y0, int z0, EntityLivingBase player)
+    private boolean canPlaceChamberAt(World world, BlockPos pos, EntityLivingBase player)
     {
         for (int y = 0; y < 3; y++)
         {
-            Block blockAt = world.getBlock(x0, y0 + y, z0);
-            int metaAt = world.getBlockMetadata(x0, y0 + y, z0);
+            Block blockAt = world.getBlockState(pos.add(0, y, 0)).getBlock();
+            int metaAt = getMetaFromState(world.getBlockState(pos));
 
             if (y == 0 && blockAt == MarsBlocks.machine && metaAt >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && metaAt < BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
             {
@@ -432,8 +434,9 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
     }
 
     @Override
-    public int damageDropped(int metadata)
+    public int damageDropped(IBlockState state)
     {
+        int metadata = getMetaFromState(state);
         if (metadata >= BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
         {
             return BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
@@ -455,21 +458,21 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
     }
 
     @Override
-    public boolean isBed(IBlockAccess world, int x, int y, int z, EntityLivingBase player)
+    public boolean isBed(IBlockAccess world, BlockPos pos, Entity player)
     {
-        return world.getBlockMetadata(x, y, z) >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA;
+        return getMetaFromState(world.getBlockState(pos)) >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA;
     }
 
     @Override
-    public ChunkCoordinates getBedSpawnPosition(IBlockAccess world, int x, int y, int z, EntityPlayer player)
+    public BlockPos getBedSpawnPosition(IBlockAccess world, BlockPos pos, EntityPlayer player)
     {
-        return new ChunkCoordinates(x, y + 1, z);
+        return pos.up();
     }
 
     @Override
-    public void setBedOccupied(IBlockAccess world, int x, int y, int z, EntityPlayer player, boolean occupied)
+    public void setBedOccupied(IBlockAccess world, BlockPos pos, EntityPlayer player, boolean occupied)
     {
-        TileEntity tile = world.getTileEntity(x, y, z);
+        TileEntity tile = world.getTileEntity(pos);
 
         if (tile instanceof TileEntityCryogenicChamber)
         {
@@ -477,39 +480,39 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
         }
     }
 
-    public static ChunkCoordinates getNearestEmptyChunkCoordinates(World par0World, int par1, int par2, int par3, int par4)
-    {
-        for (int k1 = 0; k1 <= 1; ++k1)
-        {
-            int l1 = par1 - 1;
-            int i2 = par3 - 1;
-            int j2 = l1 + 2;
-            int k2 = i2 + 2;
-
-            for (int l2 = l1; l2 <= j2; ++l2)
-            {
-                for (int i3 = i2; i3 <= k2; ++i3)
-                {
-                    if (World.doesBlockHaveSolidTopSurface(par0World, l2, par2 - 1, i3) && !par0World.getBlock(l2, par2, i3).getMaterial().isOpaque() && !par0World.getBlock(l2, par2 + 1, i3).getMaterial().isOpaque())
-                    {
-                        if (par4 <= 0)
-                        {
-                            return new ChunkCoordinates(l2, par2, i3);
-                        }
-
-                        --par4;
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
+//    public static BlockPos getNearestEmptyBlockPos(World par0World, int par1, int par2, int par3, int par4)
+//    {
+//        for (int k1 = 0; k1 <= 1; ++k1)
+//        {
+//            int l1 = par1 - 1;
+//            int i2 = par3 - 1;
+//            int j2 = l1 + 2;
+//            int k2 = i2 + 2;
+//
+//            for (int l2 = l1; l2 <= j2; ++l2)
+//            {
+//                for (int i3 = i2; i3 <= k2; ++i3)
+//                {
+//                    if (World.doesBlockHaveSolidTopSurface(par0World, l2, par2 - 1, i3) && !par0World.getBlock(l2, par2, i3).getMaterial().isOpaque() && !par0World.getBlock(l2, par2 + 1, i3).getMaterial().isOpaque())
+//                    {
+//                        if (par4 <= 0)
+//                        {
+//                            return new BlockPos(l2, par2, i3);
+//                        }
+//
+//                        --par4;
+//                    }
+//                }
+//            }
+//        }
+//
+//        return null;
+//    }
 
     @Override
-    public int getBedDirection(IBlockAccess world, int x, int y, int z)
+    public EnumFacing getBedDirection(IBlockAccess world, BlockPos pos)
     {
-        return 0;
+        return EnumFacing.DOWN;
     }
 
     @Override

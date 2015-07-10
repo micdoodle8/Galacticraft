@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.api.prefab.entity;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
@@ -112,7 +112,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         {
 			boolean flag = par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer)par1DamageSource.getEntity()).capabilities.isCreativeMode;
         	Entity e = par1DamageSource.getEntity(); 
-            if (this.isEntityInvulnerable() || this.posY > 300 || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)))
+            if (this.isEntityInvulnerable(par1DamageSource) || this.posY > 300 || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)))
             {
                 return false;
             }
@@ -286,7 +286,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
         AxisAlignedBB box = null;
 
-        box = this.boundingBox.expand(0.2D, 0.2D, 0.2D);
+        box = this.getBoundingBox().expand(0.2D, 0.2D, 0.2D);
 
         final List<?> var15 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, box);
 
@@ -359,7 +359,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
         if (!this.worldObj.isRemote && this.ticks % 3 == 0)
         {
-            GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.dimensionId);
+            GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.getDimensionId());
             // PacketDispatcher.sendPacketToAllInDimension(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES,
             // this, this.getNetworkedData(new ArrayList())),
             // this.worldObj.provider.dimensionId);
@@ -418,9 +418,9 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
+    public void func_180426_a(double x, double y, double z, float yaw, float pitch, int i, boolean b)
     {
-        this.setRotation(par7, par8);
+        this.setRotation(yaw, pitch);
     }
 
     @Override
@@ -449,7 +449,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         boolean hasOldTags = false;
 
         // Backwards compatibility:
-        if (nbt.func_150296_c().contains("launched"))
+        if (nbt.getKeySet().contains("launched"))
         {
             hasOldTags = true;
 
@@ -462,7 +462,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         }
 
         // Backwards compatibility:
-        if (nbt.func_150296_c().contains("ignite"))
+        if (nbt.getKeySet().contains("ignite"))
         {
             hasOldTags = true;
 

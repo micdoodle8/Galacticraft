@@ -1,7 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelParaChest;
 import micdoodle8.mods.galacticraft.core.entities.EntityParachest;
@@ -19,6 +20,7 @@ public class RenderParaChest extends Render
 
     public RenderParaChest()
     {
+        super(FMLClientHandler.instance().getClient().getRenderManager());
         this.shadowSize = 1F;
         this.chestModel = new ModelParaChest();
     }

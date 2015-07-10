@@ -1,13 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.RenderHelper;
@@ -17,9 +14,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IRenderHandler;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
-
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.glu.Project;
@@ -54,7 +49,7 @@ public class SkyProviderOverworld extends IRenderHandler
         this.renderStars();
         GL11.glEndList();
         GL11.glPopMatrix();
-        final Tessellator tessellator = Tessellator.instance;
+        final Tessellator tessellator = Tessellator.getInstance();
         this.glSkyList = this.starGLCallList + 1;
         GL11.glNewList(this.glSkyList, GL11.GL_COMPILE);
         final byte byte2 = 5;
@@ -65,11 +60,11 @@ public class SkyProviderOverworld extends IRenderHandler
         {
             for (int l = -byte2 * i; l <= byte2 * i; l += byte2)
             {
-                tessellator.startDrawingQuads();
-                tessellator.addVertex(j + 0, f, l + 0);
-                tessellator.addVertex(j + byte2, f, l + 0);
-                tessellator.addVertex(j + byte2, f, l + byte2);
-                tessellator.addVertex(j + 0, f, l + byte2);
+                tessellator.getWorldRenderer().startDrawingQuads();
+                tessellator.getWorldRenderer().addVertex(j + 0, f, l + 0);
+                tessellator.getWorldRenderer().addVertex(j + byte2, f, l + 0);
+                tessellator.getWorldRenderer().addVertex(j + byte2, f, l + byte2);
+                tessellator.getWorldRenderer().addVertex(j + 0, f, l + byte2);
                 tessellator.draw();
             }
         }
@@ -78,16 +73,16 @@ public class SkyProviderOverworld extends IRenderHandler
         this.glSkyList2 = this.starGLCallList + 2;
         GL11.glNewList(this.glSkyList2, GL11.GL_COMPILE);
         f = -16F;
-        tessellator.startDrawingQuads();
+        tessellator.getWorldRenderer().startDrawingQuads();
 
         for (int k = -byte2 * i; k <= byte2 * i; k += byte2)
         {
             for (int i1 = -byte2 * i; i1 <= byte2 * i; i1 += byte2)
             {
-                tessellator.addVertex(k + byte2, f, i1 + 0);
-                tessellator.addVertex(k + 0, f, i1 + 0);
-                tessellator.addVertex(k + 0, f, i1 + byte2);
-                tessellator.addVertex(k + byte2, f, i1 + byte2);
+                tessellator.getWorldRenderer().addVertex(k + byte2, f, i1 + 0);
+                tessellator.getWorldRenderer().addVertex(k + 0, f, i1 + 0);
+                tessellator.getWorldRenderer().addVertex(k + 0, f, i1 + byte2);
+                tessellator.getWorldRenderer().addVertex(k + byte2, f, i1 + byte2);
             }
         }
 
@@ -155,7 +150,7 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         RenderHelper.enableStandardItemLighting();
-        final Vec3 var2 = this.minecraft.theWorld.getSkyColor(this.minecraft.renderViewEntity, partialTicks);
+        final Vec3 var2 = this.minecraft.theWorld.getSkyColor(this.minecraft.getRenderViewEntity(), partialTicks);
         float var3 = (float) var2.xCoord * var21;
         float var4 = (float) var2.yCoord * var21;
         float var5 = (float) var2.zCoord * var21;
@@ -172,7 +167,7 @@ public class SkyProviderOverworld extends IRenderHandler
         }
 
         GL11.glColor3f(var3, var4, var5);
-        final Tessellator var23 = Tessellator.instance;
+        final Tessellator var23 = Tessellator.getInstance();
         GL11.glDepthMask(false);
         GL11.glEnable(GL11.GL_FOG);
         GL11.glColor3f(var3, var4, var5);
@@ -217,19 +212,19 @@ public class SkyProviderOverworld extends IRenderHandler
                 var10 = var13;
             }
 
-            var23.startDrawing(6);
+            var23.getWorldRenderer().startDrawing(6);
 
-            var23.setColorRGBA_F(var8 * sunsetModInv, var9 * sunsetModInv, var10 * sunsetModInv, var24[3]);
-            var23.addVertex(0.0D, 100.0D, 0.0D);
+            var23.getWorldRenderer().setColorRGBA_F(var8 * sunsetModInv, var9 * sunsetModInv, var10 * sunsetModInv, var24[3]);
+            var23.getWorldRenderer().addVertex(0.0D, 100.0D, 0.0D);
             final byte var26 = 16;
-            var23.setColorRGBA_F(var24[0] * sunsetModInv, var24[1] * sunsetModInv, var24[2] * sunsetModInv, 0.0F);
+            var23.getWorldRenderer().setColorRGBA_F(var24[0] * sunsetModInv, var24[1] * sunsetModInv, var24[2] * sunsetModInv, 0.0F);
 
             for (int var27 = 0; var27 <= var26; ++var27)
             {
                 var13 = var27 * (float) Math.PI * 2.0F / var26;
                 final float var14 = MathHelper.sin(var13);
                 final float var15 = MathHelper.cos(var13);
-                var23.addVertex(var14 * 120.0F, var15 * 120.0F, -var15 * 40.0F * var24[3]);
+                var23.getWorldRenderer().addVertex(var14 * 120.0F, var15 * 120.0F, -var15 * 40.0F * var24[3]);
             }
 
             var23.draw();
@@ -252,22 +247,22 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glRotatef(this.minecraft.theWorld.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
         var12 = 30.0F;
         this.minecraft.renderEngine.bindTexture(SkyProviderOverworld.sunTexture);
-        var23.startDrawingQuads();
-        var23.addVertexWithUV(-var12, 100.0D, -var12, 0.0D, 0.0D);
-        var23.addVertexWithUV(var12, 100.0D, -var12, 1.0D, 0.0D);
-        var23.addVertexWithUV(var12, 100.0D, var12, 1.0D, 1.0D);
-        var23.addVertexWithUV(-var12, 100.0D, var12, 0.0D, 1.0D);
+        var23.getWorldRenderer().startDrawingQuads();
+        var23.getWorldRenderer().addVertexWithUV(-var12, 100.0D, -var12, 0.0D, 0.0D);
+        var23.getWorldRenderer().addVertexWithUV(var12, 100.0D, -var12, 1.0D, 0.0D);
+        var23.getWorldRenderer().addVertexWithUV(var12, 100.0D, var12, 1.0D, 1.0D);
+        var23.getWorldRenderer().addVertexWithUV(-var12, 100.0D, var12, 0.0D, 1.0D);
         var23.draw();
 
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);        
         var12 = 11.3F;
-        var23.startDrawingQuads();
-        var23.addVertex(-var12, -99.9D, var12);
-        var23.addVertex(var12, -99.9D, var12);
-        var23.addVertex(var12, -99.9D, -var12);
-        var23.addVertex(-var12, -99.9D, -var12);
+        var23.getWorldRenderer().startDrawingQuads();
+        var23.getWorldRenderer().addVertex(-var12, -99.9D, var12);
+        var23.getWorldRenderer().addVertex(var12, -99.9D, var12);
+        var23.getWorldRenderer().addVertex(var12, -99.9D, -var12);
+        var23.getWorldRenderer().addVertex(-var12, -99.9D, -var12);
         var23.draw();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
@@ -281,11 +276,11 @@ public class SkyProviderOverworld extends IRenderHandler
         final float var17 = (var29 + 0) / 2.0F;
         final float var18 = (var30 + 1) / 4.0F;
         final float var19 = (var29 + 1) / 2.0F;
-        var23.startDrawingQuads();
-        var23.addVertexWithUV(-var12, -100.0D, var12, var18, var19);
-        var23.addVertexWithUV(var12, -100.0D, var12, var16, var19);
-        var23.addVertexWithUV(var12, -100.0D, -var12, var16, var17);
-        var23.addVertexWithUV(-var12, -100.0D, -var12, var18, var17);
+        var23.getWorldRenderer().startDrawingQuads();
+        var23.getWorldRenderer().addVertexWithUV(-var12, -100.0D, var12, var18, var19);
+        var23.getWorldRenderer().addVertexWithUV(var12, -100.0D, var12, var16, var19);
+        var23.getWorldRenderer().addVertexWithUV(var12, -100.0D, -var12, var16, var17);
+        var23.getWorldRenderer().addVertexWithUV(-var12, -100.0D, -var12, var18, var17);
         var23.draw();
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -329,16 +324,16 @@ public class SkyProviderOverworld extends IRenderHandler
 	        var10 = 1.0F;
 	
 	        GL11.glColor4f(var22, var22, var22, 1.0F);
-	        var23.startDrawingQuads();
+	        var23.getWorldRenderer().startDrawingQuads();
 	
 	        float zoomIn = (1F - (float) var25 / 768F) / 5.86F;
 	        if (zoomIn < 0F) zoomIn = 0F;
 	        zoomIn = 0.0F;
 	        float cornerB = 1.0F - zoomIn;
-	        var23.addVertexWithUV(-var10, 0, var10, zoomIn, cornerB);
-	        var23.addVertexWithUV(var10, 0, var10, cornerB, cornerB);
-	        var23.addVertexWithUV(var10, 0, -var10, cornerB, zoomIn);
-	        var23.addVertexWithUV(-var10, 0, -var10, zoomIn, zoomIn);
+	        var23.getWorldRenderer().addVertexWithUV(-var10, 0, var10, zoomIn, cornerB);
+	        var23.getWorldRenderer().addVertexWithUV(var10, 0, var10, cornerB, cornerB);
+	        var23.getWorldRenderer().addVertexWithUV(var10, 0, -var10, cornerB, zoomIn);
+	        var23.getWorldRenderer().addVertexWithUV(-var10, 0, -var10, zoomIn, zoomIn);
 	        var23.draw();
 	        GL11.glDisable(GL11.GL_TEXTURE_2D);
 	        GL11.glPopMatrix();
@@ -378,8 +373,8 @@ public class SkyProviderOverworld extends IRenderHandler
     private void renderStars()
     {
         final Random var1 = new Random(10842L);
-        final Tessellator var2 = Tessellator.instance;
-        var2.startDrawingQuads();
+        final Tessellator var2 = Tessellator.getInstance();
+        var2.getWorldRenderer().startDrawingQuads();
 
         for (int var3 = 0; var3 < (ConfigManagerCore.moreStars ? 20000 : 6000); ++var3)
         {
@@ -419,7 +414,7 @@ public class SkyProviderOverworld extends IRenderHandler
                     final double var55 = var39 * var28 - var47 * var30;
                     final double var57 = var55 * var22 - var49 * var24;
                     final double var61 = var49 * var22 + var55 * var24;
-                    var2.addVertex(var14 + var57, var16 + var53, var18 + var61);
+                    var2.getWorldRenderer().addVertex(var14 + var57, var16 + var53, var18 + var61);
                 }
             }
         }

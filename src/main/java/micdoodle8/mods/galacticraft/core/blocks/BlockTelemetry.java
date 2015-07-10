@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
@@ -10,7 +8,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,8 +16,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
@@ -27,8 +26,8 @@ import java.util.UUID;
 
 public class BlockTelemetry extends BlockAdvancedTile implements ItemBlockDesc.IBlockShiftDesc
 {
-    private IIcon iconFront;
-    private IIcon iconSide;
+    /*private IIcon iconFront;
+    private IIcon iconSide;*/
 	
 	//Metadata: 0-3 = orientation;  bits 2,3 = reserved for future use
 	protected BlockTelemetry(String assetName)
@@ -36,8 +35,8 @@ public class BlockTelemetry extends BlockAdvancedTile implements ItemBlockDesc.I
         super(Material.iron);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeMetal);
-        this.setBlockTextureName("iron_block");
-        this.setBlockName(assetName);
+        //this.setBlockTextureName("iron_block");
+        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -46,7 +45,7 @@ public class BlockTelemetry extends BlockAdvancedTile implements ItemBlockDesc.I
         return GalacticraftCore.proxy.getBlockRender(this);
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
@@ -63,14 +62,14 @@ public class BlockTelemetry extends BlockAdvancedTile implements ItemBlockDesc.I
         }
 
         return this.iconFront;
-    }
+    }*/
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
         int metadata = 0;
 
-        int angle = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         int change = 0;
 
         switch (angle)
@@ -89,13 +88,13 @@ public class BlockTelemetry extends BlockAdvancedTile implements ItemBlockDesc.I
             break;
         }
 
-        world.setBlockMetadataWithNotify(x, y, z, change, 3);
+        worldIn.setBlockState(pos, getStateFromMeta(change), 3);
     }
 
     @Override
-    public boolean onUseWrench(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        final int metadata = world.getBlockMetadata(x, y, z);
+        final int metadata = getMetaFromState(world.getBlockState(pos));
         final int facing = metadata & 3;
         int change = 0;
         
@@ -120,7 +119,7 @@ public class BlockTelemetry extends BlockAdvancedTile implements ItemBlockDesc.I
         		change = 0;       		
         }
         change += (12 & metadata);
-        world.setBlockMetadataWithNotify(x, y, z, change, 2);
+        world.setBlockState(pos, getStateFromMeta(change), 2);
 
         return true;
     }
@@ -138,27 +137,27 @@ public class BlockTelemetry extends BlockAdvancedTile implements ItemBlockDesc.I
     }
 
     @Override
-    public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
+    public boolean onMachineActivated(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if (!world.isRemote)
         {
-        	TileEntity tile = world.getTileEntity(x, y, z);
+        	TileEntity tile = world.getTileEntity(pos);
         	if (tile instanceof TileEntityTelemetry)
         	{
-        		ItemStack held = player.inventory.getCurrentItem();
+        		ItemStack held = entityPlayer.inventory.getCurrentItem();
         		//Look for Frequency Module
         		if (held != null && held.getItem() == GCItems.basicItem && held.getItemDamage() == 19)
         		{
-        			NBTTagCompound fmData = held.stackTagCompound;
+        			NBTTagCompound fmData = held.getTagCompound();
         			if (fmData != null && fmData.hasKey("linkedUUIDMost") && fmData.hasKey("linkedUUIDLeast"))
         			{
         				UUID uuid = new UUID(fmData.getLong("linkedUUIDMost"), fmData.getLong("linkedUUIDLeast"));
         				((TileEntityTelemetry) tile).addTrackedEntity(uuid);
-        	    		player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetrySucceed.message")));
+                        entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetrySucceed.message")));
         			}
         			else
         			{
-        	    		player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetryFail.message")));
+                        entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetryFail.message")));
 
         				if (fmData == null)
             			{
@@ -166,21 +165,21 @@ public class BlockTelemetry extends BlockAdvancedTile implements ItemBlockDesc.I
             				held.setTagCompound(fmData);
             			}
         			}
-        			fmData.setInteger("teCoordX", x);
-        			fmData.setInteger("teCoordY", y);
-        			fmData.setInteger("teCoordZ", z);
-        			fmData.setInteger("teDim", world.provider.dimensionId);
+        			fmData.setInteger("teCoordX", pos.getX());
+        			fmData.setInteger("teCoordY", pos.getY());
+        			fmData.setInteger("teCoordZ", pos.getZ());
+        			fmData.setInteger("teDim", world.provider.getDimensionId());
         			return true;
         		}
 
-        		ItemStack wearing = GCPlayerStats.get((EntityPlayerMP)player).frequencyModuleInSlot; 
+        		ItemStack wearing = GCPlayerStats.get((EntityPlayerMP)entityPlayer).frequencyModuleInSlot;
         		if (wearing != null)
         		{
         			if (wearing.hasTagCompound() && wearing.getTagCompound().hasKey("teDim")) return false;
-        			player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetryFailWearingIt.message")));
+                    entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetryFailWearingIt.message")));
         		}
         		else
-        			player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetryFailNoFrequencyModule.message")));
+                    entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetryFailNoFrequencyModule.message")));
         	}
         }
     	return false;

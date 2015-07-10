@@ -1,7 +1,8 @@
 package micdoodle8.mods.galacticraft.api.recipe;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -35,22 +36,18 @@ public interface ISchematicPage extends Comparable<ISchematicPage>
      * The resulting client-side GUI for this page
      *
      * @param player The player opening this GUI
-     * @param x      X-Coord of the NASA Workbench
-     * @param y      Y-Coord of the NASA Workbench
-     * @param z      Z-Coord of the NASA Workbench
+     * @param pos    Coordinates of the NASA Workbench
      * @return the GUI to be opened with this schematic
      */
     @SideOnly(Side.CLIENT)
-    public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z);
+    public GuiScreen getResultScreen(EntityPlayer player, BlockPos pos);
 
     /**
      * The resulting container for this page
      *
      * @param player The player opening this GUI
-     * @param x      X-Coord of the NASA Workbench
-     * @param y      Y-Coord of the NASA Workbench
-     * @param z      Z-Coord of the NASA Workbench
+     * @param pos    Coordinates of the NASA Workbench
      * @return the container to be opened with this schematic
      */
-    public Container getResultContainer(EntityPlayer player, int x, int y, int z);
+    public Container getResultContainer(EntityPlayer player, BlockPos pos);
 }

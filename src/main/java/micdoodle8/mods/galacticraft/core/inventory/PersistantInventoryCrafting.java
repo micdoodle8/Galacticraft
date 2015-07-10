@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IChatComponent;
 
 public class PersistantInventoryCrafting implements IInventory
 {
@@ -69,7 +70,7 @@ public class PersistantInventoryCrafting implements IInventory
      * Returns the name of the inventory.
      */
     @Override
-    public String getInventoryName()
+    public String getName()
     {
         return "container.crafting";
     }
@@ -80,7 +81,7 @@ public class PersistantInventoryCrafting implements IInventory
      * used directly.
      */
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return false;
     }
@@ -195,12 +196,12 @@ public class PersistantInventoryCrafting implements IInventory
     }
 
     @Override
-    public void openInventory()
+    public void openInventory(EntityPlayer player)
     {
     }
 
     @Override
-    public void closeInventory()
+    public void closeInventory(EntityPlayer player)
     {
     }
 
@@ -212,5 +213,30 @@ public class PersistantInventoryCrafting implements IInventory
     public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return true;
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return null;
     }
 }

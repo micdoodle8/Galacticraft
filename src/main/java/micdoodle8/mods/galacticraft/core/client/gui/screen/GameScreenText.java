@@ -2,9 +2,11 @@ package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
 import java.nio.DoubleBuffer;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.api.entity.ITelemetry;
@@ -99,16 +101,16 @@ public class GameScreenText implements IGameScreen
 	        		if (telemeter.clientClass == EntityPlayerMP.class)
 	        		{
 	        			strName = telemeter.clientName;
-	        			entity = new EntityOtherPlayerMP(screen.driver.getWorldObj(), telemeter.clientGameProfile);
-	        			renderEntity = (Render) RenderManager.instance.entityRenderMap.get(EntityPlayer.class);
+	        			entity = new EntityOtherPlayerMP(screen.driver.getWorld(), telemeter.clientGameProfile);
+	        			renderEntity = (Render) FMLClientHandler.instance().getClient().getRenderManager().entityRenderMap.get(EntityPlayer.class);
 	        		}
 	        		else
 	        		{
 		        		try {
-		        			entity = (Entity) telemeter.clientClass.getConstructor(World.class).newInstance(screen.driver.getWorldObj());
+		        			entity = (Entity) telemeter.clientClass.getConstructor(World.class).newInstance(screen.driver.getWorld());
 		        		} catch (Exception ex) { }
-		        		if (entity != null) strName = entity.getCommandSenderName();
-		        		renderEntity = (Render) RenderManager.instance.entityRenderMap.get(telemeter.clientClass);
+		        		if (entity != null) strName = entity.getName();
+		        		renderEntity = (Render) FMLClientHandler.instance().getClient().getRenderManager().entityRenderMap.get(telemeter.clientClass);
 	        		}	        		
         		}
         	}
@@ -158,7 +160,7 @@ public class GameScreenText implements IGameScreen
     	else
     	{
     		//Default - draw a simple time display just to show the Display Screen is working
-			World w1 = screen.driver.getWorldObj();
+			World w1 = screen.driver.getWorld();
     		int time1 = w1 != null ? (int) ((w1.getWorldTime() + 6000L) % 24000L) : 0;
     		str[2] = makeTimeString(time1 * 360);
         }
@@ -279,7 +281,7 @@ public class GameScreenText implements IGameScreen
 
     private void drawText(String str, int colour)
     {
-    	Minecraft.getMinecraft().fontRenderer.drawString(str, 0, yPos, colour, false);
+    	Minecraft.getMinecraft().fontRendererObj.drawString(str, 0, yPos, colour, false);
     	yPos += 10;
     }
 
@@ -287,14 +289,14 @@ public class GameScreenText implements IGameScreen
     {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        final Tessellator tess = Tessellator.instance;
+        final Tessellator tess = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tess.getWorldRenderer();
         GL11.glColor4f(greyLevel, greyLevel, greyLevel, 1.0F);
-        tess.startDrawingQuads();
-        
-        tess.addVertex(frameA, frameBy, 0.005F);
-        tess.addVertex(frameBx, frameBy, 0.005F);
-        tess.addVertex(frameBx, frameA, 0.005F);
-        tess.addVertex(frameA, frameA, 0.005F);
+        worldRenderer.startDrawingQuads();
+        worldRenderer.addVertex(frameA, frameBy, 0.005F);
+        worldRenderer.addVertex(frameBx, frameBy, 0.005F);
+        worldRenderer.addVertex(frameBx, frameA, 0.005F);
+        worldRenderer.addVertex(frameA, frameA, 0.005F);
         tess.draw();   	
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

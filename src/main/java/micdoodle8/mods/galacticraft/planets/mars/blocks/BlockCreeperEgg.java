@@ -1,37 +1,38 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.block.BlockDragonEgg;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockCreeperEgg extends BlockDragonEgg implements ItemBlockDesc.IBlockShiftDesc
 {
-    public BlockCreeperEgg()
+    public BlockCreeperEgg(String assetName)
     {
         super();
+        this.setUnlocalizedName(assetName);
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister)
     {
         this.blockIcon = iconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "creeperEgg");
-    }
+    }*/
 
     @Override
     public boolean isOpaqueCube()
@@ -47,7 +48,7 @@ public class BlockCreeperEgg extends BlockDragonEgg implements ItemBlockDesc.IBl
     }
 
     @Override
-    public boolean renderAsNormalBlock()
+    public boolean isFullCube()
     {
         return false;
     }
@@ -59,37 +60,37 @@ public class BlockCreeperEgg extends BlockDragonEgg implements ItemBlockDesc.IBl
     }
 
     @Override
-    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         return false;
     }
 
     @Override
-    public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
+    public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn)
     {
 
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
     {
         return null;
     }
 
     @Override
-    public void onBlockExploded(World world, int x, int y, int z, Explosion explosion)
+    public void onBlockExploded(World world, BlockPos pos, Explosion explosion)
     {
         if (!world.isRemote)
         {
             EntityEvolvedCreeper creeper = new EntityEvolvedCreeper(world);
-            creeper.setPosition(x + 0.5, y + 3, z + 0.5);
+            creeper.setPosition(pos.getX() + 0.5, pos.getY() + 3, pos.getZ() + 0.5);
             creeper.setChild(true);
             world.spawnEntityInWorld(creeper);
         }
 
-        world.setBlockToAir(x, y, z);
-        this.onBlockDestroyedByExplosion(world, x, y, z, explosion);
+        world.setBlockToAir(pos);
+        this.onBlockDestroyedByExplosion(world, pos, explosion);
     }
 
     public boolean canDropFromExplosion(Explosion explose)
@@ -99,7 +100,7 @@ public class BlockCreeperEgg extends BlockDragonEgg implements ItemBlockDesc.IBl
 
     //Can only be harvested with a Sticky Desh Pickaxe
     @Override
-    public boolean canHarvestBlock(EntityPlayer player, int metadata)
+    public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player)
     {
         ItemStack stack = player.inventory.getCurrentItem();
         if (stack == null)
@@ -109,22 +110,22 @@ public class BlockCreeperEgg extends BlockDragonEgg implements ItemBlockDesc.IBl
         return stack.getItem() == MarsItems.deshPickSlime;
     }
 
-    public float getPlayerRelativeBlockHardness(EntityPlayer player, World p_149737_2_, int p_149737_3_, int p_149737_4_, int p_149737_5_)
+    public float getPlayerRelativeBlockHardness(EntityPlayer playerIn, World worldIn, BlockPos pos)
     {
-        ItemStack stack = player.inventory.getCurrentItem();
+        ItemStack stack = playerIn.inventory.getCurrentItem();
         if (stack != null && stack.getItem() == MarsItems.deshPickSlime)
         {
             return 0.2F;
         }
-        return ForgeHooks.blockStrength(this, player, p_149737_2_, p_149737_3_, p_149737_4_, p_149737_5_);
+        return super.getPlayerRelativeBlockHardness(playerIn, worldIn, pos);
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public Item getItem(World par1World, int par2, int par3, int par4)
-    {
-        return Item.getItemFromBlock(this);
-    }
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    public Item getItem(World worldIn, BlockPos pos)
+//    {
+//        return Item.getItemFromBlock(this);
+//    }
 
     @Override
     public String getShiftDescription(int meta)

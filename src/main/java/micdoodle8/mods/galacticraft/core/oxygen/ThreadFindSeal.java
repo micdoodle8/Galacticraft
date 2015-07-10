@@ -13,7 +13,6 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -570,8 +569,8 @@ public class ThreadFindSeal
                     //This is also used to skip looking on the solid sides of partially sealable blocks
                     if (!vec.sideDone[side])
                     {
-                        // The sides 0 to 5 correspond with the ForgeDirections
-                        // but saves a bit of time not to call ForgeDirection
+                        // The sides 0 to 5 correspond with the EnumFacings
+                        // but saves a bit of time not to call EnumFacing
                         BlockVec3 sideVec = vec.newVecSide(side);
 
                         if (!checkedLocal.contains(sideVec))
@@ -685,8 +684,8 @@ public class ThreadFindSeal
                     //This is also used to skip looking on the solid sides of partially sealable blocks
                     if (!vec.sideDone[side])
                     {
-                        // The sides 0 to 5 correspond with the ForgeDirections
-                        // but saves a bit of time not to call ForgeDirection
+                        // The sides 0 to 5 correspond with the EnumFacings
+                        // but saves a bit of time not to call EnumFacing
                         BlockVec3 sideVec = vec.newVecSide(side);
 
                         if (!checkedLocal.contains(sideVec))
@@ -810,7 +809,7 @@ public class ThreadFindSeal
         if (block instanceof IPartialSealableBlock)
         {
             IPartialSealableBlock blockPartial = (IPartialSealableBlock) block;
-            if (blockPartial.isSealed(this.world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side)))
+            if (blockPartial.isSealed(this.world, vec.x, vec.y, vec.z, EnumFacing.getFront(side)))
             {
                 // If a partial block checks as solid, allow it to be tested
                 // again from other directions
@@ -828,7 +827,7 @@ public class ThreadFindSeal
                 {
                     continue;
                 }
-                if (blockPartial.isSealed(this.world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(i)))
+                if (blockPartial.isSealed(this.world, vec.x, vec.y, vec.z, EnumFacing.getFront(i)))
                 {
                     vec.setSideDone(i ^ 1);
                 }
@@ -896,10 +895,10 @@ public class ThreadFindSeal
         //General case - this should cover any block which correctly implements isBlockSolidOnSide
         //including most modded blocks - Forge microblocks in particular is covered by this.
         // ### Any exceptions in mods should implement the IPartialSealableBlock interface ###
-        if (block.isSideSolid(this.world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side ^ 1)))
+        if (block.isSideSolid(this.world, vec.x, vec.y, vec.z, EnumFacing.getFront(side ^ 1)))
         {
             //Solid on all sides
-            if (block.getMaterial().blocksMovement() && block.renderAsNormalBlock())
+            if (block.getMaterial().blocksMovement() && block.isFullCube())
             {
                 return false;
             }
@@ -923,7 +922,7 @@ public class ThreadFindSeal
             {
                 continue;
             }
-            if (block.isSideSolid(this.world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(i)))
+            if (block.isSideSolid(this.world, vec.x, vec.y, vec.z, EnumFacing.getFront(i)))
             {
                 vec.setSideDone(i);
             }

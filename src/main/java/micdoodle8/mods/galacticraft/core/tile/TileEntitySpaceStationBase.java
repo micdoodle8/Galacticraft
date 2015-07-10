@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 
 public class TileEntitySpaceStationBase extends TileEntityMulti implements IMultiBlock
 {
@@ -42,14 +43,14 @@ public class TileEntitySpaceStationBase extends TileEntityMulti implements IMult
     }
 
     @Override
-    public void onCreate(BlockVec3 placedPosition)
+    public void onCreate(BlockPos placedPosition)
     {
         this.mainBlockPosition = placedPosition;
         this.markDirty();
 
         for (int y = 1; y < 3; y++)
         {
-            final BlockVec3 vecToAdd = new BlockVec3(placedPosition.x, placedPosition.y + y, placedPosition.z);
+            final BlockPos vecToAdd = new BlockPos(placedPosition.getX(), placedPosition.getY() + y, placedPosition.getZ());
 
             if (!vecToAdd.equals(placedPosition))
             {
@@ -64,7 +65,7 @@ public class TileEntitySpaceStationBase extends TileEntityMulti implements IMult
     {
         for (int y = 0; y < 3; y++)
         {
-            this.worldObj.func_147480_a(this.xCoord, this.yCoord + y, this.zCoord, false);
+            this.worldObj.destroyBlock(this.getPos().add(0, y, 0), false);
         }
     }
 }

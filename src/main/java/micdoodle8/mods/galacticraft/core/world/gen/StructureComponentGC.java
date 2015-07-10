@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -43,14 +45,15 @@ public abstract class StructureComponentGC extends StructureComponent
         final int var9 = this.getYWithOffset(var4);
         final int var10 = this.getZWithOffset(var3, var5);
 
-        if (var7.isVecInside(var8, var9, var10) && var1.getBlock(var8, var9, var10) != Blocks.mob_spawner)
+        BlockPos pos = new BlockPos(var8, var9, var10);
+        if (var7.func_175898_b(pos) && var1.getBlockState(pos).getBlock() != Blocks.mob_spawner)
         {
-            var1.setBlock(var8, var9, var10, Blocks.mob_spawner, 0, 3);
-            final TileEntityMobSpawner var11 = (TileEntityMobSpawner) var1.getTileEntity(var8, var9, var10);
+            var1.setBlockState(pos, Blocks.mob_spawner.getDefaultState(), 3);
+            final TileEntityMobSpawner var11 = (TileEntityMobSpawner) var1.getTileEntity(pos);
 
             if (var11 != null)
             {
-                var11.func_145881_a().setEntityName(var6);
+                var11.getSpawnerBaseLogic().setEntityName(var6);
             }
         }
     }
@@ -63,22 +66,22 @@ public abstract class StructureComponentGC extends StructureComponent
         return var5 == 0 ? new int[] { var6 + 1, var7 - 1, var8 - var4 / 2 } : var5 == 1 ? new int[] { var6 + var4 / 2, var7 - 1, var8 + 1 } : var5 == 2 ? new int[] { var6 - 1, var7 - 1, var8 + var4 / 2 } : var5 == 3 ? new int[] { var6 - var4 / 2, var7 - 1, var8 - 1 } : new int[] { var1, var2, var3 };
     }
 
-    public int[] getOffsetAsIfRotated(int[] var1, int var2)
+    public int[] getOffsetAsIfRotated(int[] var1, EnumFacing var2)
     {
-        final int var3 = this.getCoordBaseMode();
+        final EnumFacing var3 = coordBaseMode;
         final int[] var4 = new int[3];
-        this.setCoordBaseMode(var2);
+        this.coordBaseMode = var2;
         var4[0] = this.getXWithOffset(var1[0], var1[2]);
         var4[1] = this.getYWithOffset(var1[1]);
         var4[2] = this.getZWithOffset(var1[0], var1[2]);
-        this.setCoordBaseMode(var3);
+        this.coordBaseMode = var3;
         return var4;
     }
 
     @Override
     protected int getXWithOffset(int var1, int var2)
     {
-        switch (this.getCoordBaseMode())
+        switch (coordBaseMode.getHorizontalIndex())
         {
         case 0:
             return this.boundingBox.minX + var1;
@@ -100,7 +103,7 @@ public abstract class StructureComponentGC extends StructureComponent
     @Override
     protected int getZWithOffset(int var1, int var2)
     {
-        switch (this.getCoordBaseMode())
+        switch (coordBaseMode.getHorizontalIndex())
         {
         case 0:
             return this.boundingBox.minZ + var2;
@@ -123,27 +126,5 @@ public abstract class StructureComponentGC extends StructureComponent
     protected int getYWithOffset(int var1)
     {
         return super.getYWithOffset(var1);
-    }
-
-    public int getCoordBaseMode()
-    {
-        return this.coordBaseMode;
-    }
-
-    public void setCoordBaseMode(int var1)
-    {
-        this.coordBaseMode = var1;
-    }
-
-    @Override
-    protected Block getBlockAtCurrentPosition(World var1, int var2, int var3, int var4, StructureBoundingBox var5)
-    {
-        return super.getBlockAtCurrentPosition(var1, var2, var3, var4, var5);
-    }
-
-    @Override
-    protected void placeBlockAtCurrentPosition(World world, Block blockID, int meta, int x, int y, int z, StructureBoundingBox bb)
-    {
-        super.placeBlockAtCurrentPosition(world, blockID, meta, x, y, z, bb);
     }
 }

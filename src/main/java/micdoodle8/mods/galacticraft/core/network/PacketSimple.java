@@ -5,11 +5,13 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import cpw.mods.fml.server.FMLServerHandler;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.util.*;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.server.FMLServerHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
@@ -55,7 +57,6 @@ import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.settings.GameSettings;
@@ -73,10 +74,6 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.S07PacketRespawn;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
@@ -88,7 +85,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public class PacketSimple extends Packet implements IPacket
+public class PacketSimple implements IPacket
 {
     public static enum EnumSimplePacket
     {
@@ -103,12 +100,12 @@ public class PacketSimple extends Packet implements IPacket
         S_SET_ENTITY_FIRE(Side.SERVER, Integer.class),
         S_BIND_SPACE_STATION_ID(Side.SERVER, Integer.class),
         S_UNLOCK_NEW_SCHEMATIC(Side.SERVER),
-        S_UPDATE_DISABLEABLE_BUTTON(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class),
+        S_UPDATE_DISABLEABLE_BUTTON(Side.SERVER, BlockPos.class, Integer.class),
         S_ON_FAILED_CHEST_UNLOCK(Side.SERVER, Integer.class),
         S_RENAME_SPACE_STATION(Side.SERVER, String.class, Integer.class),
         S_OPEN_EXTENDED_INVENTORY(Side.SERVER),
-        S_ON_ADVANCED_GUI_CLICKED_INT(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
-        S_ON_ADVANCED_GUI_CLICKED_STRING(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class, String.class),
+        S_ON_ADVANCED_GUI_CLICKED_INT(Side.SERVER, Integer.class, BlockPos.class, Integer.class),
+        S_ON_ADVANCED_GUI_CLICKED_STRING(Side.SERVER, Integer.class, BlockPos.class, String.class),
         S_UPDATE_SHIP_MOTION_Y(Side.SERVER, Integer.class, Boolean.class),
         S_START_NEW_SPACE_RACE(Side.SERVER, Integer.class, String.class, FlagData.class, Vector3.class, String[].class),
         S_REQUEST_FLAG_DATA(Side.SERVER, String.class),
@@ -249,12 +246,12 @@ public class PacketSimple extends Packet implements IPacket
     @Override
     public void handleClientSide(EntityPlayer player)
     {
-        EntityClientPlayerMP playerBaseClient = null;
+        EntityPlayerSP playerBaseClient = null;
         GCPlayerStatsClient stats = null;
 
-        if (player instanceof EntityClientPlayerMP)
+        if (player instanceof EntityPlayerSP)
         {
-            playerBaseClient = (EntityClientPlayerMP) player;
+            playerBaseClient = (EntityPlayerSP) player;
             stats = GCPlayerStatsClient.get(playerBaseClient);
         }
         else
@@ -340,7 +337,7 @@ public class PacketSimple extends Packet implements IPacket
 
             for (int i = 0; i < 4; i++)
             {
-                if (mc != null && mc.renderViewEntity != null && mc.effectRenderer != null && mc.theWorld != null)
+                if (mc != null && mc.getRenderViewEntity() != null && mc.effectRenderer != null && mc.theWorld != null)
                 {
                     final EntityFX fx = new EntityFXSparks(mc.theWorld, x - 0.15 + 0.5, y + 1.2, z + 0.15 + 0.5, mc.theWorld.rand.nextDouble() / 20 - mc.theWorld.rand.nextDouble() / 20, mc.theWorld.rand.nextDouble() / 20 - mc.theWorld.rand.nextDouble() / 20);
 
@@ -550,12 +547,12 @@ public class PacketSimple extends Packet implements IPacket
             }
             break;
         case C_UPDATE_WIRE_BOUNDS:
-            TileEntity tile = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
+            TileEntity tile = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
 
             if (tile instanceof TileBaseConductor)
             {
                 ((TileBaseConductor) tile).adjacentConnections = null;
-                player.worldObj.getBlock(tile.xCoord, tile.yCoord, tile.zCoord).setBlockBoundsBasedOnState(player.worldObj, tile.xCoord, tile.yCoord, tile.zCoord);
+                player.worldObj.getBlockState(tile.getPos()).getBlock().setBlockBoundsBasedOnState(player.worldObj, tile.getPos());
             }
             break;
         case C_OPEN_SPACE_RACE_GUI:
@@ -597,7 +594,7 @@ public class PacketSimple extends Packet implements IPacket
             for (int i = 1; i < this.data.size(); i++)
             {
                 Footprint print = (Footprint) this.data.get(i);
-                if (!print.owner.equals(player.getCommandSenderName()))
+                if (!print.owner.equals(player.getName()))
                 {
                     printList.add(print);
                 }
@@ -661,7 +658,7 @@ public class PacketSimple extends Packet implements IPacket
             break;
         case C_RESPAWN_PLAYER:
             final WorldProvider provider = WorldUtil.getProviderForName((String) this.data.get(0));
-            final int dimID = provider.dimensionId;
+            final int dimID = provider.getDimensionId();
             if (ConfigManagerCore.enableDebug)
             {
                 GCLog.info("DEBUG: Client receiving respawn packet for dim " + dimID);
@@ -672,7 +669,7 @@ public class PacketSimple extends Packet implements IPacket
             WorldUtil.forceRespawnClient(dimID, par2, par3, par4);
             break;
         case C_UPDATE_ARCLAMP_FACING:
-        	tile = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
+        	tile = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
         	int facingNew = (Integer) this.data.get(3);
         	if (tile instanceof TileEntityArclamp)
         	{
@@ -683,7 +680,7 @@ public class PacketSimple extends Packet implements IPacket
         	stats.buildFlags = (Integer) this.data.get(0);
         	break;
         case C_UPDATE_VIEWSCREEN:
-        	tile = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
+        	tile = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
         	if (tile instanceof TileEntityScreen)
         	{
             	TileEntityScreen screenTile = (TileEntityScreen)tile; 
@@ -698,7 +695,7 @@ public class PacketSimple extends Packet implements IPacket
         	}      	
         	break;
         case C_UPDATE_TELEMETRY:
-        	tile = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
+        	tile = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
         	if (tile instanceof TileEntityTelemetry)
         	{
         		String name = (String) this.data.get(3);
@@ -812,13 +809,13 @@ public class PacketSimple extends Packet implements IPacket
         switch (this.type)
         {
         case S_RESPAWN_PLAYER:
-            playerBase.playerNetServerHandler.sendPacket(new S07PacketRespawn(player.dimension, player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), playerBase.theItemInWorldManager.getGameType()));
+            playerBase.playerNetServerHandler.sendPacket(new S07PacketRespawn(player.dimension, player.worldObj.getDifficulty(), player.worldObj.getWorldInfo().getTerrainType(), playerBase.theItemInWorldManager.getGameType()));
             break;
         case S_TELEPORT_ENTITY:
             try
             {
                 final WorldProvider provider = WorldUtil.getProviderForName((String) this.data.get(0));
-                final Integer dim = provider.dimensionId;
+                final Integer dim = provider.getDimensionId();
                 GCLog.info("Found matching world (" + dim.toString() + ") for name: " + (String) this.data.get(0));
 
                 if (playerBase.worldObj instanceof WorldServer)
@@ -955,7 +952,7 @@ public class PacketSimple extends Packet implements IPacket
             }
             break;
         case S_UPDATE_DISABLEABLE_BUTTON:
-            final TileEntity tileAt = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
+            final TileEntity tileAt = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
 
             if (tileAt instanceof IDisableableMachine)
             {
@@ -984,7 +981,7 @@ public class PacketSimple extends Packet implements IPacket
             player.openGui(GalacticraftCore.instance, GuiIdsCore.EXTENDED_INVENTORY, player.worldObj, 0, 0, 0);
             break;
         case S_ON_ADVANCED_GUI_CLICKED_INT:
-            TileEntity tile1 = player.worldObj.getTileEntity((Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3));
+            TileEntity tile1 = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3)));
 
             switch ((Integer) this.data.get(0))
             {
@@ -1043,7 +1040,7 @@ public class PacketSimple extends Packet implements IPacket
             }
             break;
         case S_ON_ADVANCED_GUI_CLICKED_STRING:
-            TileEntity tile2 = player.worldObj.getTileEntity((Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3));
+            TileEntity tile2 = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3)));
 
             switch ((Integer) this.data.get(0))
             {
@@ -1227,7 +1224,7 @@ public class PacketSimple extends Packet implements IPacket
             }
             break;
         case S_REQUEST_ARCLAMP_FACING:
-        	TileEntity tileAL = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
+        	TileEntity tileAL = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
         	if (tileAL instanceof TileEntityArclamp)
         	{
             	((TileEntityArclamp)tileAL).updateClientFlag = true; 
@@ -1238,7 +1235,7 @@ public class PacketSimple extends Packet implements IPacket
         	break;
         case S_UPDATE_VIEWSCREEN_REQUEST:
         	int screenDim = (Integer) this.data.get(0);
-        	TileEntity tile = player.worldObj.getTileEntity((Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3));
+        	TileEntity tile = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3)));
         	if (tile instanceof TileEntityScreen)
         	{
             	((TileEntityScreen)tile).updateClients(); 
@@ -1288,7 +1285,7 @@ public class PacketSimple extends Packet implements IPacket
             break;
         case S_REQUEST_PLAYERSKIN:
         	String strName = (String) this.data.get(0);
-        	EntityPlayerMP playerRequested = FMLServerHandler.instance().getServer().getConfigurationManager().func_152612_a(strName);
+        	EntityPlayerMP playerRequested = FMLServerHandler.instance().getServer().getConfigurationManager().getPlayerByUsername(strName);
         	
         	//Player not online
         	if (playerRequested == null) return;
@@ -1316,32 +1313,32 @@ public class PacketSimple extends Packet implements IPacket
 	 * 
 	 */
 
-    @Override
-    public void readPacketData(PacketBuffer var1)
-    {
-        this.decodeInto(null, var1);
-    }
-
-    @Override
-    public void writePacketData(PacketBuffer var1)
-    {
-        this.encodeInto(null, var1);
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void processPacket(INetHandler var1)
-    {
-        if (this.type != EnumSimplePacket.C_UPDATE_SPACESTATION_LIST && this.type != EnumSimplePacket.C_UPDATE_PLANETS_LIST && this.type != EnumSimplePacket.C_UPDATE_CONFIGS)
-        {
-            return;
-        }
-
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-        {
-            this.handleClientSide(FMLClientHandler.instance().getClientPlayerEntity());
-        }
-    }
+//    @Override
+//    public void readPacketData(PacketBuffer var1)
+//    {
+//        this.decodeInto(null, var1);
+//    }
+//
+//    @Override
+//    public void writePacketData(PacketBuffer var1)
+//    {
+//        this.encodeInto(null, var1);
+//    }
+//
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    public void processPacket(INetHandler var1)
+//    {
+//        if (this.type != EnumSimplePacket.C_UPDATE_SPACESTATION_LIST && this.type != EnumSimplePacket.C_UPDATE_PLANETS_LIST && this.type != EnumSimplePacket.C_UPDATE_CONFIGS)
+//        {
+//            return;
+//        }
+//
+//        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+//        {
+//            this.handleClientSide(FMLClientHandler.instance().getClientPlayerEntity());
+//        }
+//    } TODO
 
 	/*
 	 * 

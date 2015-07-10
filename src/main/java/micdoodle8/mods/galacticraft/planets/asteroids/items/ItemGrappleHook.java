@@ -1,12 +1,11 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -23,7 +22,7 @@ public class ItemGrappleHook extends ItemBow
         super();
         this.setUnlocalizedName(assetName);
         this.setMaxStackSize(1);
-        this.setTextureName("arrow");
+        //this.setTextureName("arrow");
     }
 
     @SideOnly(Side.CLIENT)
@@ -68,9 +67,9 @@ public class ItemGrappleHook extends ItemBow
     }
 
     @Override
-    public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityPlayer playerIn)
     {
-        return par1ItemStack;
+        return stack;
     }
 
     @Override
@@ -82,7 +81,7 @@ public class ItemGrappleHook extends ItemBow
     @Override
     public EnumAction getItemUseAction(ItemStack par1ItemStack)
     {
-        return EnumAction.bow;
+        return EnumAction.BOW;
     }
 
     @Override
@@ -92,9 +91,9 @@ public class ItemGrappleHook extends ItemBow
         return par1ItemStack;
     }
 
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister iconRegister)
-    {
-        this.itemIcon = iconRegister.registerIcon("arrow");
-    }
+//    @SideOnly(Side.CLIENT)
+//    public void registerIcons(IIconRegister iconRegister)
+//    {
+//        this.itemIcon = iconRegister.registerIcon("arrow");
+//    }
 }

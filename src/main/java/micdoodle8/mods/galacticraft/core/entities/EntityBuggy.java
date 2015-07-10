@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
@@ -24,7 +21,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -33,6 +29,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -68,7 +67,6 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     {
         super(var1);
         this.setSize(0.98F, 1F);
-        this.yOffset = 2.5F;
         this.currentDamage = 18;
         this.timeSinceHit = 19;
         this.rockDirection = 20;
@@ -84,7 +82,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     public EntityBuggy(World var1, double var2, double var4, double var6, int type)
     {
         this(var1);
-        this.setPosition(var2, var4 + this.yOffset, var6);
+        this.setPosition(var2, var4, var6);
         this.setBuggyType(type);
         this.cargoItems = new ItemStack[this.buggyType * 18];
     }
@@ -121,12 +119,6 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     protected boolean canTriggerWalking()
     {
         return false;
-    }
-
-    @Override
-    public AxisAlignedBB getBoundingBox()
-    {
-        return this.boundingBox;
     }
 
     @Override
@@ -208,7 +200,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         	Entity e = var1.getEntity(); 
 			boolean flag = var1.getEntity() instanceof EntityPlayer && ((EntityPlayer)var1.getEntity()).capabilities.isCreativeMode;
 
-            if (this.isEntityInvulnerable() || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)))
+            if (this.isEntityInvulnerable(var1) || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)))
             {
                 return false;
             }
@@ -296,7 +288,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     }
 
     @Override
-    public void setPositionAndRotation2(double d, double d1, double d2, float f, float f1, int i)
+    public void func_180426_a(double x, double y, double z, float yaw, float pitch, int i, boolean b)
     {
         if (this.riddenByEntity != null)
         {
@@ -306,11 +298,11 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
             else
             {
                 this.boatPosRotationIncrements = i + 5;
-                this.boatX = d;
-                this.boatY = d1 + (this.riddenByEntity == null ? 1 : 0);
-                this.boatZ = d2;
-                this.boatYaw = f;
-                this.boatPitch = f1;
+                this.boatX = x;
+                this.boatY = y + (this.riddenByEntity == null ? 1 : 0);
+                this.boatZ = z;
+                this.boatYaw = yaw;
+                this.boatPitch = pitch;
             }
         }
     }
@@ -440,8 +432,8 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         }
         else if (this.ticks % 5 == 0)
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketEntityUpdate(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 50.0D));
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 50.0D));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketEntityUpdate(this), new TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 50.0D));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 50.0D));
         }
     }
 
@@ -591,7 +583,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
         return "Buggy";
     }
@@ -614,12 +606,12 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     }
 
     @Override
-    public void openInventory()
+    public void openInventory(EntityPlayer player)
     {
     }
 
     @Override
-    public void closeInventory()
+    public void closeInventory(EntityPlayer player)
     {
     }
 
@@ -833,7 +825,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     }
 
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return true;
     }
@@ -847,5 +839,25 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         }
 
         return this.riddenByEntity != null ? ((EntityPlayer) this.riddenByEntity).getPersistentID() : null;
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
     }
 }

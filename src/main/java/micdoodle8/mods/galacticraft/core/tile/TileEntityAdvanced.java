@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.server.gui.IUpdatePlayerListBox;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
@@ -17,14 +19,16 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class TileEntityAdvanced extends TileEntity implements IPacketReceiver
+public abstract class TileEntityAdvanced extends TileEntity implements IPacketReceiver, IUpdatePlayerListBox
 {
     public long ticks = 0;
     private LinkedHashSet<Field> fieldCacheClient;
     private LinkedHashSet<Field> fieldCacheServer;
+    @NetworkedField(targetSide = Side.CLIENT)
+    public EnumFacing facing = EnumFacing.NORTH;
 
     @Override
-    public void updateEntity()
+    public void update()
     {
         if (this.ticks == 0)
         {
@@ -58,7 +62,7 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
             }
             else if (!this.worldObj.isRemote && this.fieldCacheClient.size() > 0)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, this.getPacketRange()));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.getDimensionId(), getPos().getX(), getPos().getY(), getPos().getZ(), this.getPacketRange()));
             }
         }
     }
@@ -94,12 +98,10 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
 
     public void addExtraNetworkedData(List<Object> networkedList)
     {
-
     }
 
     public void readExtraNetworkedData(ByteBuf dataStream)
     {
-
     }
 
     public void initiate()
@@ -202,5 +204,13 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
     public void handlePacketData(Side side, EntityPlayer player)
     {
 
+    }
+
+    public EnumFacing getFacing() {
+        return facing;
+    }
+
+    public void setFacing(EnumFacing facing) {
+        this.facing = facing;
     }
 }

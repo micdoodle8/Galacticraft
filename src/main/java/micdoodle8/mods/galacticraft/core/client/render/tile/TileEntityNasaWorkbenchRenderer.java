@@ -14,7 +14,7 @@ public class TileEntityNasaWorkbenchRenderer extends TileEntitySpecialRenderer
     public ModelNasaWorkbench model = new ModelNasaWorkbench();
 
     @Override
-    public void renderTileEntityAt(TileEntity var1, double par2, double par4, double par6, float var8)
+    public void renderTileEntityAt(TileEntity tile, double par2, double par4, double par6, float partialTickTime, int par9)
     {
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);

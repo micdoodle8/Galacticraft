@@ -48,7 +48,7 @@ public class InventorySchematicTier3Rocket implements IInventory
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
         return "container.crafting";
     }
@@ -126,17 +126,17 @@ public class InventorySchematicTier3Rocket implements IInventory
     }
 
     @Override
-    public void openInventory()
+    public void openInventory(EntityPlayer player)
     {
     }
 
     @Override
-    public void closeInventory()
+    public void closeInventory(EntityPlayer player)
     {
     }
 
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return false;
     }

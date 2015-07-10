@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -38,9 +39,9 @@ public class GuiElementSlider extends GuiButton
     {
         if (this.visible)
         {
-            this.field_146123_n = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
+            this.hovered = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
 
-            if (Mouse.isButtonDown(0) && this.field_146123_n)
+            if (Mouse.isButtonDown(0) && this.hovered)
             {
                 if (this.isVertical)
                 {
@@ -58,53 +59,54 @@ public class GuiElementSlider extends GuiButton
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             OpenGlHelper.glBlendFunc(770, 771, 1, 0);
             GL11.glShadeModel(GL11.GL_SMOOTH);
-            Tessellator tessellator = Tessellator.instance;
+            Tessellator tessellator = Tessellator.getInstance();
+            WorldRenderer worldRenderer = tessellator.getWorldRenderer();
 
             if (this.isVertical)
             {
-                tessellator.startDrawingQuads();
-                tessellator.setColorRGBA_F(0, 0, 0, 1.0F);
-                tessellator.addVertex((double) this.xPosition + this.width, this.yPosition, this.zLevel);
-                tessellator.addVertex(this.xPosition, this.yPosition, this.zLevel);
-                tessellator.addVertex(this.xPosition, (double) this.yPosition + this.height, this.zLevel);
-                tessellator.addVertex((double) this.xPosition + this.width, (double) this.yPosition + this.height, this.zLevel);
+                worldRenderer.startDrawingQuads();
+                worldRenderer.setColorRGBA_F(0, 0, 0, 1.0F);
+                worldRenderer.addVertex((double) this.xPosition + this.width, this.yPosition, this.zLevel);
+                worldRenderer.addVertex(this.xPosition, this.yPosition, this.zLevel);
+                worldRenderer.addVertex(this.xPosition, (double) this.yPosition + this.height, this.zLevel);
+                worldRenderer.addVertex((double) this.xPosition + this.width, (double) this.yPosition + this.height, this.zLevel);
                 tessellator.draw();
 
-                tessellator.startDrawingQuads();
-                tessellator.setColorRGBA_F(this.firstColor.floatX(), this.firstColor.floatY(), this.firstColor.floatZ(), 1.0F);
-                tessellator.addVertex((double) this.xPosition + this.width - 1, (double) this.yPosition + 1, this.zLevel);
-                tessellator.addVertex((double) this.xPosition + 1, (double) this.yPosition + 1, this.zLevel);
-                tessellator.setColorRGBA_F(this.lastColor.floatX(), this.lastColor.floatY(), this.lastColor.floatZ(), 1.0F);
-                tessellator.addVertex((double) this.xPosition + 1, (double) this.yPosition + this.height - 1, this.zLevel);
-                tessellator.addVertex((double) this.xPosition + this.width - 1, (double) this.yPosition + this.height - 1, this.zLevel);
+                worldRenderer.startDrawingQuads();
+                worldRenderer.setColorRGBA_F(this.firstColor.floatX(), this.firstColor.floatY(), this.firstColor.floatZ(), 1.0F);
+                worldRenderer.addVertex((double) this.xPosition + this.width - 1, (double) this.yPosition + 1, this.zLevel);
+                worldRenderer.addVertex((double) this.xPosition + 1, (double) this.yPosition + 1, this.zLevel);
+                worldRenderer.setColorRGBA_F(this.lastColor.floatX(), this.lastColor.floatY(), this.lastColor.floatZ(), 1.0F);
+                worldRenderer.addVertex((double) this.xPosition + 1, (double) this.yPosition + this.height - 1, this.zLevel);
+                worldRenderer.addVertex((double) this.xPosition + this.width - 1, (double) this.yPosition + this.height - 1, this.zLevel);
                 tessellator.draw();
 
-                tessellator.startDrawingQuads();
-                tessellator.setColorRGBA_F(1, 1, 1, 1.0F);
-                tessellator.addVertex((double) this.xPosition + this.width, (double) this.yPosition + this.sliderPos - 1, this.zLevel);
-                tessellator.addVertex(this.xPosition, (double) this.yPosition + this.sliderPos - 1, this.zLevel);
-                tessellator.addVertex(this.xPosition, (double) this.yPosition + this.sliderPos + 1, this.zLevel);
-                tessellator.addVertex((double) this.xPosition + this.width, (double) this.yPosition + this.sliderPos + 1, this.zLevel);
+                worldRenderer.startDrawingQuads();
+                worldRenderer.setColorRGBA_F(1, 1, 1, 1.0F);
+                worldRenderer.addVertex((double) this.xPosition + this.width, (double) this.yPosition + this.sliderPos - 1, this.zLevel);
+                worldRenderer.addVertex(this.xPosition, (double) this.yPosition + this.sliderPos - 1, this.zLevel);
+                worldRenderer.addVertex(this.xPosition, (double) this.yPosition + this.sliderPos + 1, this.zLevel);
+                worldRenderer.addVertex((double) this.xPosition + this.width, (double) this.yPosition + this.sliderPos + 1, this.zLevel);
                 tessellator.draw();
             }
             else
             {
-                tessellator.startDrawingQuads();
-                tessellator.setColorRGBA_F(0, 0, 0, 1.0F);
-                tessellator.addVertex((double) this.xPosition + this.width, this.yPosition, this.zLevel);
-                tessellator.addVertex(this.xPosition, this.yPosition, this.zLevel);
-                tessellator.addVertex(this.xPosition, (double) this.yPosition + this.height, this.zLevel);
-                tessellator.addVertex((double) this.xPosition + this.width, (double) this.yPosition + this.height, this.zLevel);
+                worldRenderer.startDrawingQuads();
+                worldRenderer.setColorRGBA_F(0, 0, 0, 1.0F);
+                worldRenderer.addVertex((double) this.xPosition + this.width, this.yPosition, this.zLevel);
+                worldRenderer.addVertex(this.xPosition, this.yPosition, this.zLevel);
+                worldRenderer.addVertex(this.xPosition, (double) this.yPosition + this.height, this.zLevel);
+                worldRenderer.addVertex((double) this.xPosition + this.width, (double) this.yPosition + this.height, this.zLevel);
                 tessellator.draw();
 
-                tessellator.startDrawingQuads();
-                tessellator.setColorRGBA_F(this.lastColor.floatX(), this.lastColor.floatY(), this.lastColor.floatZ(), 1.0F);
-                tessellator.addVertex((double) this.xPosition + this.width - 1, (double) this.yPosition + 1, this.zLevel);
-                tessellator.setColorRGBA_F(this.firstColor.floatX(), this.firstColor.floatY(), this.firstColor.floatZ(), 1.0F);
-                tessellator.addVertex((double) this.xPosition + 1, (double) this.yPosition + 1, this.zLevel);
-                tessellator.addVertex((double) this.xPosition + 1, (double) this.yPosition + this.height - 1, this.zLevel);
-                tessellator.setColorRGBA_F(this.lastColor.floatX(), this.lastColor.floatY(), this.lastColor.floatZ(), 1.0F);
-                tessellator.addVertex((double) this.xPosition + this.width - 1, (double) this.yPosition + this.height - 1, this.zLevel);
+                worldRenderer.startDrawingQuads();
+                worldRenderer.setColorRGBA_F(this.lastColor.floatX(), this.lastColor.floatY(), this.lastColor.floatZ(), 1.0F);
+                worldRenderer.addVertex((double) this.xPosition + this.width - 1, (double) this.yPosition + 1, this.zLevel);
+                worldRenderer.setColorRGBA_F(this.firstColor.floatX(), this.firstColor.floatY(), this.firstColor.floatZ(), 1.0F);
+                worldRenderer.addVertex((double) this.xPosition + 1, (double) this.yPosition + 1, this.zLevel);
+                worldRenderer.addVertex((double) this.xPosition + 1, (double) this.yPosition + this.height - 1, this.zLevel);
+                worldRenderer.setColorRGBA_F(this.lastColor.floatX(), this.lastColor.floatY(), this.lastColor.floatZ(), 1.0F);
+                worldRenderer.addVertex((double) this.xPosition + this.width - 1, (double) this.yPosition + this.height - 1, this.zLevel);
                 tessellator.draw();
 
                 GL11.glShadeModel(GL11.GL_FLAT);
@@ -129,12 +131,12 @@ public class GuiElementSlider extends GuiButton
                 OpenGlHelper.glBlendFunc(770, 771, 1, 0);
                 GL11.glShadeModel(GL11.GL_SMOOTH);
 
-                tessellator.startDrawingQuads();
-                tessellator.setColorRGBA_F(1, 1, 1, 1.0F);
-                tessellator.addVertex((double) this.xPosition + this.sliderPos + 1, this.yPosition, this.zLevel);
-                tessellator.addVertex((double) this.xPosition + this.sliderPos - 1, this.yPosition, this.zLevel);
-                tessellator.addVertex((double) this.xPosition + this.sliderPos - 1, (double) this.yPosition + this.height, this.zLevel);
-                tessellator.addVertex((double) this.xPosition + this.sliderPos + 1, (double) this.yPosition + this.height, this.zLevel);
+                worldRenderer.startDrawingQuads();
+                worldRenderer.setColorRGBA_F(1, 1, 1, 1.0F);
+                worldRenderer.addVertex((double) this.xPosition + this.sliderPos + 1, this.yPosition, this.zLevel);
+                worldRenderer.addVertex((double) this.xPosition + this.sliderPos - 1, this.yPosition, this.zLevel);
+                worldRenderer.addVertex((double) this.xPosition + this.sliderPos - 1, (double) this.yPosition + this.height, this.zLevel);
+                worldRenderer.addVertex((double) this.xPosition + this.sliderPos + 1, (double) this.yPosition + this.height, this.zLevel);
                 tessellator.draw();
             }
 

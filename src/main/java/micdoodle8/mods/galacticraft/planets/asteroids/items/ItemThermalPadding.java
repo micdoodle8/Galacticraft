@@ -1,23 +1,21 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 import java.util.List;
 
 public class ItemThermalPadding extends Item
 {
     public static String[] names = { "thermalHelm", "thermalChestplate", "thermalLeggings", "thermalBoots", "thermalHelm0", "thermalChestplate0", "thermalLeggings0", "thermalBoots0" };
-    protected IIcon[] icons = new IIcon[ItemThermalPadding.names.length];
+//    protected IIcon[] icons = new IIcon[ItemThermalPadding.names.length];
 
     public ItemThermalPadding(String assetName)
     {
@@ -28,7 +26,7 @@ public class ItemThermalPadding extends Item
         this.setUnlocalizedName(assetName);
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamageForRenderPass(int damage, int pass)
     {
@@ -41,14 +39,14 @@ public class ItemThermalPadding extends Item
         }
 
         return this.getIconFromDamage(damage);
-    }
+    }*/
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean requiresMultipleRenderPasses()
-    {
-        return true;
-    }
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public boolean requiresMultipleRenderPasses()
+//    {
+//        return true;
+//    }
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -64,7 +62,7 @@ public class ItemThermalPadding extends Item
         return GalacticraftCore.galacticraftItemsTab;
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
@@ -85,7 +83,7 @@ public class ItemThermalPadding extends Item
         }
 
         return super.getIconFromDamage(damage);
-    }
+    }*/
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
@@ -100,7 +98,7 @@ public class ItemThermalPadding extends Item
     @Override
     public String getUnlocalizedName(ItemStack par1ItemStack)
     {
-        if (this.icons.length > par1ItemStack.getItemDamage())
+        if (names.length > par1ItemStack.getItemDamage())
         {
             return "item." + ItemThermalPadding.names[par1ItemStack.getItemDamage()];
         }

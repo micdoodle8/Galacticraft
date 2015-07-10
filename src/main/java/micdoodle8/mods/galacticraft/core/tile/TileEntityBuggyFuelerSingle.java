@@ -3,24 +3,26 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.init.Blocks;
+import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 
 import java.util.ArrayList;
 
-public class TileEntityBuggyFuelerSingle extends TileEntity
+public class TileEntityBuggyFuelerSingle extends TileEntity implements IUpdatePlayerListBox
 {
     @Override
-    public void updateEntity()
+    public void update()
     {
         if (!this.worldObj.isRemote)
         {
 	        final ArrayList<TileEntity> attachedLaunchPads = new ArrayList<TileEntity>();
 	
-	        for (int x = this.xCoord - 1; x < this.xCoord + 2; x++)
+	        for (int x = this.getPos().getX() - 1; x < this.getPos().getX() + 2; x++)
 	        {
-	            for (int z = this.zCoord - 1; z < this.zCoord + 2; z++)
+	            for (int z = this.getPos().getZ() - 1; z < this.getPos().getZ() + 2; z++)
 	            {
-	                final TileEntity tile = this.worldObj.getTileEntity(x, this.yCoord, z);
+	                final TileEntity tile = this.worldObj.getTileEntity(new BlockPos(x, this.getPos().getY(), z));
 	
 	                if (tile instanceof TileEntityBuggyFuelerSingle)
 	                {
@@ -34,15 +36,15 @@ public class TileEntityBuggyFuelerSingle extends TileEntity
 	            for (final TileEntity tile : attachedLaunchPads)
 	            {
 	                tile.invalidate();
-	                tile.getWorldObj().setBlock(tile.xCoord, tile.yCoord, tile.zCoord, Blocks.air, 0, 3);
+	                tile.getWorld().setBlockState(tile.getPos(), Blocks.air.getDefaultState(), 3);
 	            }
 	
-	            this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, GCBlocks.landingPadFull, 1, 3);
-	            final TileEntityBuggyFueler tile = (TileEntityBuggyFueler) this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord);
+	            this.worldObj.setBlockState(this.getPos(), GCBlocks.landingPadFull.getDefaultState(), 3);
+	            final TileEntityBuggyFueler tile = (TileEntityBuggyFueler) this.worldObj.getTileEntity(this.getPos());
 	
 	            if (tile != null)
 	            {
-	                tile.onCreate(new BlockVec3(this.xCoord, this.yCoord, this.zCoord));
+	                tile.onCreate(this.getPos());
 	            }
 	        }
         }

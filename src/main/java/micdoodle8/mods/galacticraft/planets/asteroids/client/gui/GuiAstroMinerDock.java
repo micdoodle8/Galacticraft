@@ -112,7 +112,7 @@ public class GuiAstroMinerDock extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString(this.tile.getInventoryName(), 7, 6, 4210752);
+        this.fontRendererObj.drawString(this.tile.getName(), 7, 6, 4210752);
         this.fontRendererObj.drawString(this.getStatus(), 177, 141, 4210752);
         if (this.extraLines) this.fontRendererObj.drawString("\u0394x: " + getDeltaString((MathHelper.floor_double(this.tile.linkedMiner.posX) - this.tile.xCoord - 1)), 186, 152, 2536735);
         if (this.extraLines) this.fontRendererObj.drawString("\u0394y: " + getDeltaString((MathHelper.floor_double(this.tile.linkedMiner.posY) - this.tile.yCoord)), 186, 162, 2536735);

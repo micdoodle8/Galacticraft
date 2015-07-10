@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteorChunk;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -30,7 +30,7 @@ public class ItemMeteorChunk extends Item
         this.setHasSubtypes(true);
         this.maxStackSize = 16;
         this.setCreativeTab(CreativeTabs.tabMaterials);
-        this.setTextureName("arrow");
+        //this.setTextureName("arrow");
     }
 
     @Override
@@ -56,7 +56,7 @@ public class ItemMeteorChunk extends Item
                 else
                 {
                     itemstack.setItemDamage(0);
-                    itemstack.stackTagCompound = null;
+                    itemstack.setTagCompound(null);
                 }
             }
             else

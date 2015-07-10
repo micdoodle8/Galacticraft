@@ -6,12 +6,14 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
@@ -39,37 +41,39 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
         return true;
     }
 
-    @Override
-    protected boolean isAIEnabled()
+    /*@Override
+    public boolean isAIEnabled()
     {
         return false;
-    }
+    }*/
     
     @Override
-	public IEntityLivingData onSpawnWithEgg(IEntityLivingData livingData)
+    public IEntityLivingData func_180482_a(DifficultyInstance diff, IEntityLivingData livingData)
 	{
-		if (this.worldObj.rand.nextInt(100) == 0)
-		{
-			EntityEvolvedSkeleton skeleton = new EntityEvolvedSkeleton(this.worldObj);
-			skeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
-			skeleton.onSpawnWithEgg(null);
-			this.worldObj.spawnEntityInWorld(skeleton);
-			skeleton.mountEntity(this);
-		}
+        Object p_180482_2_1 = super.func_180482_a(diff, livingData);
 
-        if (livingData == null)
+        if (this.worldObj.rand.nextInt(100) == 0)
         {
-            livingData = new EntityEvolvedSpider.GroupData();
+            EntitySkeleton entityskeleton = new EntitySkeleton(this.worldObj);
+            entityskeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
+            entityskeleton.func_180482_a(diff, (IEntityLivingData)null);
+            this.worldObj.spawnEntityInWorld(entityskeleton);
+            entityskeleton.mountEntity(this);
+        }
 
-            if (this.worldObj.difficultySetting == EnumDifficulty.HARD && this.worldObj.rand.nextFloat() < 0.1F * this.worldObj.func_147462_b(this.posX, this.posY, this.posZ))
+        if (p_180482_2_1 == null)
+        {
+            p_180482_2_1 = new EntitySpider.GroupData();
+
+            if (this.worldObj.getDifficulty() == EnumDifficulty.HARD && this.worldObj.rand.nextFloat() < 0.1F * diff.getClampedAdditionalDifficulty())
             {
-                ((EntityEvolvedSpider.GroupData)livingData).func_111104_a(this.worldObj.rand);
+                ((EntitySpider.GroupData)p_180482_2_1).func_111104_a(this.worldObj.rand);
             }
         }
 
-        if (livingData instanceof EntityEvolvedSpider.GroupData)
+        if (p_180482_2_1 instanceof EntitySpider.GroupData)
         {
-            int i = ((EntityEvolvedSpider.GroupData)livingData).field_111105_a;
+            int i = ((EntitySpider.GroupData)p_180482_2_1).field_111105_a;
 
             if (i > 0 && Potion.potionTypes[i] != null)
             {
@@ -77,7 +81,7 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
             }
         }
 
-		return livingData;
+        return (IEntityLivingData)p_180482_2_1;
 	}
     
     @Override
@@ -103,8 +107,13 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
     }
 
     @Override
-    protected void dropRareDrop(int p_70600_1_)
+    protected void dropFewItems(boolean b, int i)
     {
+        if (this.rand.nextInt(200) - i >= 5)
+        {
+            return;
+        }
+
         switch (this.rand.nextInt(10))
         {
             case 0:

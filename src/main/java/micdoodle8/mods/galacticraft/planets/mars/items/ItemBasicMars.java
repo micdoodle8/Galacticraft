@@ -1,25 +1,23 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 import java.util.List;
 
 public class ItemBasicMars extends Item
 {
     public static String[] names = { "rawDesh", "deshStick", "ingotDesh", "reinforcedPlateT2", "slimelingCargo", "compressedDesh", "fluidManip" };
-    protected IIcon[] icons = new IIcon[ItemBasicMars.names.length];
+//    protected IIcon[] icons = new IIcon[ItemBasicMars.names.length];
 
     public ItemBasicMars()
     {
@@ -42,7 +40,7 @@ public class ItemBasicMars extends Item
         return ClientProxyCore.galacticraftItem;
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
@@ -63,7 +61,7 @@ public class ItemBasicMars extends Item
         }
 
         return super.getIconFromDamage(damage);
-    }
+    }*/
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
@@ -78,7 +76,7 @@ public class ItemBasicMars extends Item
     @Override
     public String getUnlocalizedName(ItemStack par1ItemStack)
     {
-        if (this.icons.length > par1ItemStack.getItemDamage())
+        if (names.length > par1ItemStack.getItemDamage())
         {
             return "item." + ItemBasicMars.names[par1ItemStack.getItemDamage()];
         }

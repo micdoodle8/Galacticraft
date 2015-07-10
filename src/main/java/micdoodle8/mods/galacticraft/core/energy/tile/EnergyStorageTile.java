@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.power.EnergySource;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
@@ -10,7 +11,6 @@ import micdoodle8.mods.galacticraft.core.tile.ReceiverMode;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class EnergyStorageTile extends TileEntityAdvanced implements IEnergyHandlerGC, IElectrical
 {
@@ -35,7 +35,7 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
         this.storage.writeToNBT(nbt);
     }
 
-    public abstract ReceiverMode getModeFromDirection(ForgeDirection direction);
+    public abstract ReceiverMode getModeFromDirection(EnumFacing direction);
 
     @Override
     public float receiveEnergyGC(EnergySource from, float amount, boolean simulate)
@@ -83,33 +83,33 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
     }
 
     @Override
-    public boolean canConnect(ForgeDirection direction, NetworkType type)
+    public boolean canConnect(EnumFacing direction, NetworkType type)
     {
         return false;
     }
 
     //Five methods for compatibility with basic electricity
     @Override
-    public float receiveElectricity(ForgeDirection from, float receive, int tier, boolean doReceive)
+    public float receiveElectricity(EnumFacing from, float receive, int tier, boolean doReceive)
     {
         this.poweredByTierGC = tier;
         return this.storage.receiveEnergyGC(receive, !doReceive);
     }
 
     @Override
-    public float provideElectricity(ForgeDirection from, float request, boolean doProvide)
+    public float provideElectricity(EnumFacing from, float request, boolean doProvide)
     {
         return this.storage.extractEnergyGC(request, !doProvide);
     }
 
     @Override
-    public float getRequest(ForgeDirection direction)
+    public float getRequest(EnumFacing direction)
     {
         return Math.min(this.storage.getCapacityGC() - this.storage.getEnergyStoredGC(), this.storage.getMaxReceive());
     }
 
     @Override
-    public float getProvide(ForgeDirection direction)
+    public float getProvide(EnumFacing direction)
     {
         return 0;
     }

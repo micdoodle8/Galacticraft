@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.objload.AdvancedModelLoader;
+import micdoodle8.mods.galacticraft.core.client.objload.IModelCustom;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDish;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -8,13 +10,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 public class TileEntityDishRenderer extends TileEntitySpecialRenderer
 {
@@ -27,9 +27,9 @@ public class TileEntityDishRenderer extends TileEntitySpecialRenderer
     private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
 
     @Override
-    public void renderTileEntityAt(TileEntity var1, double par2, double par4, double par6, float partialTickTime)
+    public void renderTileEntityAt(TileEntity tile, double par2, double par4, double par6, float partialTickTime, int par9)
     {
-        TileEntityDish dish = (TileEntityDish) var1;
+        TileEntityDish dish = (TileEntityDish) tile;
         float time = (dish.ticks + partialTickTime) % 1440F;
         final EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
         

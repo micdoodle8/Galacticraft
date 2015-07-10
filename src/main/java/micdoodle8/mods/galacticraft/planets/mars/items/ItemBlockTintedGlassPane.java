@@ -1,14 +1,13 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 public class ItemBlockTintedGlassPane extends ItemBlock
 {
@@ -25,17 +24,17 @@ public class ItemBlockTintedGlassPane extends ItemBlock
         return damage;
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int par1)
     {
         return this.field_150939_a.getIcon(0, par1);
-    }
+    }*/
 
     @Override
     public String getUnlocalizedName(ItemStack itemstack)
     {
-        return this.field_150939_a.getUnlocalizedName() + "." + ItemDye.field_150921_b[~itemstack.getItemDamage() & 15];
+        return this.getBlock().getUnlocalizedName() + "." + ItemDye.dyeColors[~itemstack.getItemDamage() & 15];
     }
 
     @Override
@@ -48,6 +47,6 @@ public class ItemBlockTintedGlassPane extends ItemBlock
     @Override
     public String getUnlocalizedName()
     {
-        return this.field_150939_a.getUnlocalizedName() + ".0";
+        return this.getBlock().getUnlocalizedName() + ".0";
     }
 }

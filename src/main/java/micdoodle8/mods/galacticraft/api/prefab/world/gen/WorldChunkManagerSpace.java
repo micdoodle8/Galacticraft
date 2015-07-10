@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 
-import net.minecraft.world.ChunkPosition;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.biome.BiomeCache;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
@@ -29,13 +29,12 @@ public abstract class WorldChunkManagerSpace extends WorldChunkManager
     }
 
     @Override
-    public List<BiomeGenBase> getBiomesToSpawnIn()
+    public List getBiomesToSpawnIn()
     {
         return this.biomesToSpawnIn;
     }
 
-    @Override
-    public BiomeGenBase getBiomeGenAt(int par1, int par2)
+    public BiomeGenBase func_180300_a(BlockPos p_180300_1_, BiomeGenBase p_180300_2_)
     {
         return this.getBiome();
     }
@@ -83,29 +82,29 @@ public abstract class WorldChunkManagerSpace extends WorldChunkManager
     }
 
     @Override
-    public BiomeGenBase[] getBiomeGenAt(BiomeGenBase[] par1ArrayOfBiomeGenBase, int par2, int par3, int par4, int par5, boolean par6)
+    public BiomeGenBase[] getBiomeGenAt(BiomeGenBase[] listToReuse, int x, int z, int width, int length, boolean cacheFlag)
     {
         IntCache.resetIntCache();
 
-        if (par1ArrayOfBiomeGenBase == null || par1ArrayOfBiomeGenBase.length < par4 * par5)
+        if (listToReuse == null || listToReuse.length < width * length)
         {
-            par1ArrayOfBiomeGenBase = new BiomeGenBase[par4 * par5];
+            listToReuse = new BiomeGenBase[width * length];
         }
 
-        if (par6 && par4 == 16 && par5 == 16 && (par2 & 15) == 0 && (par3 & 15) == 0)
+        if (cacheFlag && width == 16 && length == 16 && (x & 15) == 0 && (z & 15) == 0)
         {
-            final BiomeGenBase[] var9 = this.biomeCache.getCachedBiomes(par2, par3);
-            System.arraycopy(var9, 0, par1ArrayOfBiomeGenBase, 0, par4 * par5);
-            return par1ArrayOfBiomeGenBase;
+            final BiomeGenBase[] var9 = this.biomeCache.getCachedBiomes(x, z);
+            System.arraycopy(var9, 0, listToReuse, 0, width * length);
+            return listToReuse;
         }
         else
         {
-            for (int var8 = 0; var8 < par4 * par5; ++var8)
+            for (int var8 = 0; var8 < width * length; ++var8)
             {
-                par1ArrayOfBiomeGenBase[var8] = this.getBiome();
+                listToReuse[var8] = this.getBiome();
             }
 
-            return par1ArrayOfBiomeGenBase;
+            return listToReuse;
         }
     }
 
@@ -118,7 +117,7 @@ public abstract class WorldChunkManagerSpace extends WorldChunkManager
 
     @SuppressWarnings("rawtypes")
     @Override
-    public ChunkPosition findBiomePosition(int par1, int par2, int par3, List par4List, Random par5Random)
+    public BlockPos findBiomePosition(int par1, int par2, int par3, List par4List, Random par5Random)
     {
         final int var6 = par1 - par3 >> 2;
         final int var7 = par2 - par3 >> 2;
@@ -128,7 +127,7 @@ public abstract class WorldChunkManagerSpace extends WorldChunkManager
         final int var16 = var6 + 0 % var10 << 2;
         final int var17 = var7 + 0 / var10 << 2;
 
-        return new ChunkPosition(var16, 0, var17);
+        return new BlockPos(var16, 0, var17);
     }
 
     @Override

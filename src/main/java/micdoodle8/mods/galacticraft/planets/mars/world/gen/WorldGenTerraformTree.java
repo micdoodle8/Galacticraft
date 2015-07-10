@@ -1,10 +1,13 @@
 package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
-import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockVine;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
@@ -32,47 +35,37 @@ public class WorldGenTerraformTree extends WorldGenerator
     }
 
     @Override
-    public boolean generate(World par1World, Random par2Random, int x, int y, int z)
+    public boolean generate(World worldIn, Random p_180709_2_, BlockPos p_180709_3_)
     {
-        int l = par2Random.nextInt(3) + this.minTreeHeight;
+        int i = p_180709_2_.nextInt(3) + this.minTreeHeight;
         boolean flag = true;
 
-        if (y >= 1 && y + l + 1 <= 256)
+        if (p_180709_3_.getY() >= 1 && p_180709_3_.getY() + i + 1 <= 256)
         {
-            int i1;
             byte b0;
-            int j1;
-            int k1;
-            int k2;
+            int l;
 
-            for (i1 = y; i1 <= y + 1 + l; ++i1)
+            for (int j = p_180709_3_.getY(); j <= p_180709_3_.getY() + 1 + i; ++j)
             {
                 b0 = 1;
 
-                if (i1 == y)
+                if (j == p_180709_3_.getY())
                 {
                     b0 = 0;
                 }
 
-                if (i1 >= y + 1 + l - 2)
+                if (j >= p_180709_3_.getY() + 1 + i - 2)
                 {
                     b0 = 2;
                 }
 
-                b0 += 5;
-
-                for (int l1 = x - b0; l1 <= x + b0 && flag; ++l1)
+                for (int k = p_180709_3_.getX() - b0; k <= p_180709_3_.getX() + b0 && flag; ++k)
                 {
-                    for (j1 = z - b0; j1 <= z + b0 && flag; ++j1)
+                    for (l = p_180709_3_.getZ() - b0; l <= p_180709_3_.getZ() + b0 && flag; ++l)
                     {
-                        if (i1 >= 0 && i1 < 256)
+                        if (j >= 0 && j < 256)
                         {
-                            Block k1b = par1World.getBlock(l1, i1, j1);
-                            k2 = par1World.getBlockMetadata(l1, i1, j1);
-
-                            boolean isAir = par1World.isAirBlock(l1, i1, j1);
-
-                            if (!isAir && k1b != Blocks.grass && k1b != Blocks.water && k1b != Blocks.flowing_water && k1b != MarsBlocks.marsBlock && k2 != 5)
+                            if (!this.isReplaceable(worldIn, new BlockPos(k, j, l)))
                             {
                                 flag = false;
                             }
@@ -91,67 +84,77 @@ public class WorldGenTerraformTree extends WorldGenerator
             }
             else
             {
-                if (y < 256 - l - 1)
+                BlockPos down = p_180709_3_.down();
+                Block block1 = worldIn.getBlockState(down).getBlock();
+                boolean isSoil = block1.canSustainPlant(worldIn, down, net.minecraft.util.EnumFacing.UP, (net.minecraft.block.BlockSapling)Blocks.sapling);
+
+                if (isSoil && p_180709_3_.getY() < 256 - i - 1)
                 {
+                    block1.onPlantGrow(worldIn, down, p_180709_3_);
                     b0 = 3;
                     byte b1 = 0;
-                    int i2;
-                    int j2;
+                    int i1;
+                    int j1;
+                    int k1;
+                    int l1;
+                    BlockPos blockpos1;
 
-                    for (j1 = y - b0 + l; j1 <= y + l; ++j1)
+                    for (l = p_180709_3_.getY() - b0 + i; l <= p_180709_3_.getY() + i; ++l)
                     {
-                        k1 = j1 - (y + l);
-                        i2 = b1 + 1 - k1 / 2;
+                        i1 = l - (p_180709_3_.getY() + i);
+                        j1 = b1 + 1 - i1 / 2;
 
-                        for (j2 = x - i2; j2 <= x + i2; ++j2)
+                        for (k1 = p_180709_3_.getX() - j1; k1 <= p_180709_3_.getX() + j1; ++k1)
                         {
-                            k2 = j2 - x;
+                            l1 = k1 - p_180709_3_.getX();
 
-                            for (int l2 = z - i2; l2 <= z + i2; ++l2)
+                            for (int i2 = p_180709_3_.getZ() - j1; i2 <= p_180709_3_.getZ() + j1; ++i2)
                             {
-                                int i3 = l2 - z;
+                                int j2 = i2 - p_180709_3_.getZ();
 
-                                if (Math.abs(k2) != i2 || Math.abs(i3) != i2 || par2Random.nextInt(2) != 0 && k1 != 0)
+                                if (Math.abs(l1) != j1 || Math.abs(j2) != j1 || p_180709_2_.nextInt(2) != 0 && i1 != 0)
                                 {
-                                    Block block = par1World.getBlock(j2, j1, l2);
+                                    blockpos1 = new BlockPos(k1, l, i2);
+                                    Block block = worldIn.getBlockState(blockpos1).getBlock();
 
-                                    if (block == null || block.canBeReplacedByLeaves(par1World, j2, j1, l2))
+                                    if (block.isAir(worldIn, blockpos1) || block.isLeaves(worldIn, blockpos1) || block.getMaterial() == Material.vine)
                                     {
-                                        this.setBlockAndNotifyAdequately(par1World, j2, j1, l2, Blocks.leaves, this.metaLeaves);
+                                        this.func_175905_a(worldIn, blockpos1, Blocks.leaves, this.metaLeaves);
                                     }
                                 }
                             }
                         }
                     }
 
-                    for (j1 = 0; j1 < l; ++j1)
+                    for (l = 0; l < i; ++l)
                     {
-                        Block block = par1World.getBlock(x, y + j1, z);
+                        BlockPos upN = p_180709_3_.up(l);
+                        Block block2 = worldIn.getBlockState(upN).getBlock();
 
-                        if (block.isAir(par1World, x, y + j1, z) || block.isLeaves(par1World, x, y + j1, z))
+                        if (block2.isAir(worldIn, upN) || block2.isLeaves(worldIn, upN) || block2.getMaterial() == Material.vine)
                         {
-                            this.setBlockAndNotifyAdequately(par1World, x, y + j1, z, Blocks.log, this.metaWood);
+                            this.func_175905_a(worldIn, p_180709_3_.up(l), Blocks.log, this.metaWood);
 
-                            if (this.vinesGrow && j1 > 0)
+                            if (this.vinesGrow && l > 0)
                             {
-                                if (par2Random.nextInt(3) > 0 && par1World.isAirBlock(x - 1, y + j1, z))
+                                if (p_180709_2_.nextInt(3) > 0 && worldIn.isAirBlock(p_180709_3_.add(-1, l, 0)))
                                 {
-                                    this.setBlockAndNotifyAdequately(par1World, x - 1, y + j1, z, Blocks.vine, 8);
+                                    this.func_175905_a(worldIn, p_180709_3_.add(-1, l, 0), Blocks.vine, BlockVine.EAST_FLAG);
                                 }
 
-                                if (par2Random.nextInt(3) > 0 && par1World.isAirBlock(x + 1, y + j1, z))
+                                if (p_180709_2_.nextInt(3) > 0 && worldIn.isAirBlock(p_180709_3_.add(1, l, 0)))
                                 {
-                                    this.setBlockAndNotifyAdequately(par1World, x + 1, y + j1, z, Blocks.vine, 2);
+                                    this.func_175905_a(worldIn, p_180709_3_.add(1, l, 0), Blocks.vine, BlockVine.WEST_FLAG);
                                 }
 
-                                if (par2Random.nextInt(3) > 0 && par1World.isAirBlock(x, y + j1, z - 1))
+                                if (p_180709_2_.nextInt(3) > 0 && worldIn.isAirBlock(p_180709_3_.add(0, l, -1)))
                                 {
-                                    this.setBlockAndNotifyAdequately(par1World, x, y + j1, z - 1, Blocks.vine, 1);
+                                    this.func_175905_a(worldIn, p_180709_3_.add(0, l, -1), Blocks.vine, BlockVine.SOUTH_FLAG);
                                 }
 
-                                if (par2Random.nextInt(3) > 0 && par1World.isAirBlock(x, y + j1, z + 1))
+                                if (p_180709_2_.nextInt(3) > 0 && worldIn.isAirBlock(p_180709_3_.add(0, l, 1)))
                                 {
-                                    this.setBlockAndNotifyAdequately(par1World, x, y + j1, z + 1, Blocks.vine, 4);
+                                    this.func_175905_a(worldIn, p_180709_3_.add(0, l, 1), Blocks.vine, BlockVine.NORTH_FLAG);
                                 }
                             }
                         }
@@ -159,52 +162,59 @@ public class WorldGenTerraformTree extends WorldGenerator
 
                     if (this.vinesGrow)
                     {
-                        for (j1 = y - 3 + l; j1 <= y + l; ++j1)
+                        for (l = p_180709_3_.getY() - 3 + i; l <= p_180709_3_.getY() + i; ++l)
                         {
-                            k1 = j1 - (y + l);
-                            i2 = 2 - k1 / 2;
+                            i1 = l - (p_180709_3_.getY() + i);
+                            j1 = 2 - i1 / 2;
 
-                            for (j2 = x - i2; j2 <= x + i2; ++j2)
+                            for (k1 = p_180709_3_.getX() - j1; k1 <= p_180709_3_.getX() + j1; ++k1)
                             {
-                                for (k2 = z - i2; k2 <= z + i2; ++k2)
+                                for (l1 = p_180709_3_.getZ() - j1; l1 <= p_180709_3_.getZ() + j1; ++l1)
                                 {
-                                    Block block = par1World.getBlock(j2, j1, k2);
-                                    if (block != null && block.isLeaves(par1World, j2, j1, k2))
+                                    BlockPos blockpos3 = new BlockPos(k1, l, l1);
+
+                                    if (worldIn.getBlockState(blockpos3).getBlock().isLeaves(worldIn, blockpos3))
                                     {
-                                        if (par2Random.nextInt(4) == 0 && par1World.isAirBlock(j2 - 1, j1, k2))
+                                        BlockPos blockpos4 = blockpos3.west();
+                                        blockpos1 = blockpos3.east();
+                                        BlockPos blockpos5 = blockpos3.north();
+                                        BlockPos blockpos2 = blockpos3.south();
+
+                                        if (p_180709_2_.nextInt(4) == 0 && worldIn.getBlockState(blockpos4).getBlock().isAir(worldIn, blockpos4))
                                         {
-                                            this.growVines(par1World, j2 - 1, j1, k2, 8);
+                                            this.func_175923_a(worldIn, blockpos4, BlockVine.EAST_FLAG);
                                         }
 
-                                        if (par2Random.nextInt(4) == 0 && par1World.isAirBlock(j2 + 1, j1, k2))
+                                        if (p_180709_2_.nextInt(4) == 0 && worldIn.getBlockState(blockpos1).getBlock().isAir(worldIn, blockpos1))
                                         {
-                                            this.growVines(par1World, j2 + 1, j1, k2, 2);
+                                            this.func_175923_a(worldIn, blockpos1, BlockVine.WEST_FLAG);
                                         }
 
-                                        if (par2Random.nextInt(4) == 0 && par1World.isAirBlock(j2, j1, k2 - 1))
+                                        if (p_180709_2_.nextInt(4) == 0 && worldIn.getBlockState(blockpos5).getBlock().isAir(worldIn, blockpos5))
                                         {
-                                            this.growVines(par1World, j2, j1, k2 - 1, 1);
+                                            this.func_175923_a(worldIn, blockpos5, BlockVine.SOUTH_FLAG);
                                         }
 
-                                        if (par2Random.nextInt(4) == 0 && par1World.isAirBlock(j2, j1, k2 + 1))
+                                        if (p_180709_2_.nextInt(4) == 0 && worldIn.getBlockState(blockpos2).getBlock().isAir(worldIn, blockpos2))
                                         {
-                                            this.growVines(par1World, j2, j1, k2 + 1, 4);
+                                            this.func_175923_a(worldIn, blockpos2, BlockVine.NORTH_FLAG);
                                         }
                                     }
                                 }
                             }
                         }
 
-                        if (par2Random.nextInt(5) == 0 && l > 5)
+                        if (p_180709_2_.nextInt(5) == 0 && i > 5)
                         {
-                            for (j1 = 0; j1 < 2; ++j1)
+                            for (l = 0; l < 2; ++l)
                             {
-                                for (k1 = 0; k1 < 4; ++k1)
+                                for (i1 = 0; i1 < 4; ++i1)
                                 {
-                                    if (par2Random.nextInt(4 - j1) == 0)
+                                    if (p_180709_2_.nextInt(4 - l) == 0)
                                     {
-                                        i2 = par2Random.nextInt(3);
-                                        this.setBlockAndNotifyAdequately(par1World, x + Direction.offsetX[Direction.rotateOpposite[k1]], y + l - 5 + j1, z + Direction.offsetZ[Direction.rotateOpposite[k1]], Blocks.cocoa, i2 << 2 | k1);
+                                        j1 = p_180709_2_.nextInt(3);
+                                        EnumFacing enumfacing = EnumFacing.getHorizontal(i1).getOpposite();
+                                        this.func_175905_a(worldIn, p_180709_3_.add(enumfacing.getFrontOffsetX(), i - 5 + l, enumfacing.getFrontOffsetZ()), Blocks.cocoa, j1 << 2 | EnumFacing.getHorizontal(i1).getHorizontalIndex());
                                     }
                                 }
                             }
@@ -229,22 +239,46 @@ public class WorldGenTerraformTree extends WorldGenerator
      * Grows vines downward from the given block for a given length. Args:
      * World, x, starty, z, vine-length
      */
-    private void growVines(World par1World, int x, int y, int z, int meta)
+    private void growVines(World par1World, BlockPos pos, IBlockState state)
     {
-        this.setBlockAndNotifyAdequately(par1World, x, y, z, Blocks.vine, meta);
+        this.func_175903_a(par1World, pos, state);
         int i1 = 4;
+        int y = pos.getY();
 
         while (true)
         {
             --y;
 
-            if (!par1World.isAirBlock(x, y, z) || i1 <= 0)
+            if (!par1World.isAirBlock(new BlockPos(pos.getX(), y, pos.getZ())) || i1 <= 0)
             {
                 return;
             }
 
-            this.setBlockAndNotifyAdequately(par1World, x, y, z, Blocks.vine, meta);
+            this.func_175903_a(par1World, new BlockPos(pos.getX(), y, pos.getZ()), state);
             --i1;
         }
+    }
+
+    private void func_175923_a(World worldIn, BlockPos p_175923_2_, int p_175923_3_)
+    {
+        this.func_175905_a(worldIn, p_175923_2_, Blocks.vine, p_175923_3_);
+        int j = 4;
+
+        for (p_175923_2_ = p_175923_2_.down(); worldIn.getBlockState(p_175923_2_).getBlock().isAir(worldIn, p_175923_2_) && j > 0; --j)
+        {
+            this.func_175905_a(worldIn, p_175923_2_, Blocks.vine, p_175923_3_);
+            p_175923_2_ = p_175923_2_.down();
+        }
+    }
+
+    protected boolean func_150523_a(Block p_150523_1_)
+    {
+        return p_150523_1_.getMaterial() == Material.air || p_150523_1_.getMaterial() == Material.leaves || p_150523_1_ == Blocks.grass || p_150523_1_ == Blocks.dirt || p_150523_1_ == Blocks.log || p_150523_1_ == Blocks.log2 || p_150523_1_ == Blocks.sapling || p_150523_1_ == Blocks.vine;
+    }
+
+    public boolean isReplaceable(World world, BlockPos pos)
+    {
+        IBlockState state = world.getBlockState(pos);
+        return state.getBlock().isAir(world, pos) || state.getBlock().isLeaves(world, pos) || state.getBlock().isWood(world, pos) || func_150523_a(state.getBlock());
     }
 }

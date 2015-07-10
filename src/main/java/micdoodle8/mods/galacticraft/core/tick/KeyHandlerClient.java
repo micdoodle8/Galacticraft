@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
-import cpw.mods.fml.common.gameevent.TickEvent.Type;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.Constants;
@@ -16,7 +17,6 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 
@@ -70,7 +70,7 @@ public class KeyHandlerClient extends KeyHandler
     {
         if (KeyHandlerClient.mc.thePlayer != null && tickEnd)
         {
-            EntityClientPlayerMP playerBase = PlayerUtil.getPlayerBaseClientFromPlayer(KeyHandlerClient.mc.thePlayer, false);
+            EntityPlayerSP playerBase = PlayerUtil.getPlayerBaseClientFromPlayer(KeyHandlerClient.mc.thePlayer, false);
             
             if (playerBase == null)
             {

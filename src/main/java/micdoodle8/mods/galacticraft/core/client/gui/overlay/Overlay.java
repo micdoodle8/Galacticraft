@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class Overlay
@@ -36,13 +37,14 @@ public class Overlay
     {
         final float var7 = 0.00390625F;
         final float var8 = 0.00390625F;
-        final Tessellator var9 = Tessellator.instance;
-        var9.startDrawingQuads();
-        var9.addVertexWithUV(par1 + 0, par2 + par6, 0.0, (par3 + 0) * var7, (par4 + par6) * var8);
-        var9.addVertexWithUV(par1 + par5, par2 + par6, 0.0, (par3 + par5) * var7, (par4 + par6) * var8);
-        var9.addVertexWithUV(par1 + par5, par2 + 0, 0.0, (par3 + par5) * var7, (par4 + 0) * var8);
-        var9.addVertexWithUV(par1 + 0, par2 + 0, 0.0, (par3 + 0) * var7, (par4 + 0) * var8);
-        var9.draw();
+        final Tessellator tess = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tess.getWorldRenderer();
+        worldRenderer.startDrawingQuads();
+        worldRenderer.addVertexWithUV(par1 + 0, par2 + par6, 0.0, (par3 + 0) * var7, (par4 + par6) * var8);
+        worldRenderer.addVertexWithUV(par1 + par5, par2 + par6, 0.0, (par3 + par5) * var7, (par4 + par6) * var8);
+        worldRenderer.addVertexWithUV(par1 + par5, par2 + 0, 0.0, (par3 + par5) * var7, (par4 + 0) * var8);
+        worldRenderer.addVertexWithUV(par1 + 0, par2 + 0, 0.0, (par3 + 0) * var7, (par4 + 0) * var8);
+        tess.draw();
     }
 
     /**
@@ -58,12 +60,13 @@ public class Overlay
     {
         var7 *= 0.5D;
         var9 *= 0.5D;
-        final Tessellator t = Tessellator.instance;
-        t.startDrawingQuads();
-        t.addVertexWithUV(var1 - var7, var3 + var9, var5, 0.0D, 1.0D);
-        t.addVertexWithUV(var1 + var7, var3 + var9, var5, 1.0D, 1.0D);
-        t.addVertexWithUV(var1 + var7, var3 - var9, var5, 1.0D, 0.0D);
-        t.addVertexWithUV(var1 - var7, var3 - var9, var5, 0.0D, 0.0D);
-        t.draw();
+        final Tessellator tess = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tess.getWorldRenderer();
+        worldRenderer.startDrawingQuads();
+        worldRenderer.addVertexWithUV(var1 - var7, var3 + var9, var5, 0.0D, 1.0D);
+        worldRenderer.addVertexWithUV(var1 + var7, var3 + var9, var5, 1.0D, 1.0D);
+        worldRenderer.addVertexWithUV(var1 + var7, var3 - var9, var5, 1.0D, 0.0D);
+        worldRenderer.addVertexWithUV(var1 - var7, var3 - var9, var5, 0.0D, 0.0D);
+        tess.draw();
     }
 }

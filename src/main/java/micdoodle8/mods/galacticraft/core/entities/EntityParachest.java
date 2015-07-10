@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -99,11 +100,12 @@ public class EntityParachest extends Entity
                     final int y = MathHelper.floor_double(this.posY);
                     final int z = MathHelper.floor_double(this.posZ);
 
-                    Block block = this.worldObj.getBlock(x, y + i, z);
+                    BlockPos pos = new BlockPos(x, y + i, z);
+                    Block block = this.worldObj.getBlockState(pos).getBlock();
 
                     if (block.getMaterial().isReplaceable())
                     {
-                        if (this.placeChest(x, y + i, z))
+                        if (this.placeChest(pos))
                         {
                             this.setDead();
                             return;
@@ -139,10 +141,10 @@ public class EntityParachest extends Entity
         }
     }
 
-    private boolean placeChest(int x, int y, int z)
+    private boolean placeChest(BlockPos pos)
     {
-        this.worldObj.setBlock(x, y, z, GCBlocks.parachest, 0, 3);
-        final TileEntity te = this.worldObj.getTileEntity(x, y, z);
+        this.worldObj.setBlockState(pos, GCBlocks.parachest.getDefaultState(), 3);
+        final TileEntity te = this.worldObj.getTileEntity(pos);
 
         if (te instanceof TileEntityParaChest && this.cargo != null)
         {

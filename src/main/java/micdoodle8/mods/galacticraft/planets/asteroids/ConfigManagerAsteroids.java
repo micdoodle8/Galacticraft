@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids;
 
-import cpw.mods.fml.common.FMLLog;
+import net.minecraftforge.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;

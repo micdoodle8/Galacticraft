@@ -44,7 +44,7 @@ public class TileEntityArclamp extends TileEntity
         boolean firstTick = false;
         if (this.updateClientFlag)
         {
-        	GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, new Object[] { this.xCoord, this.yCoord, this.zCoord, this.facing } ), this.worldObj.provider.dimensionId);
+        	GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.facing } ), this.worldObj.provider.dimensionId);
         	this.updateClientFlag = false;
         }
 
@@ -59,12 +59,12 @@ public class TileEntityArclamp extends TileEntity
                 case 0:
                     this.sideRear = side; //Down
                     this.facingSide = this.facing + 2;
-                    this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 8, this.zCoord - 20, this.xCoord + 20, this.yCoord + 20, this.zCoord + 20);
+                    this.thisAABB = AxisAlignedBB.fromBounds(this.getPos().getX() - 20, this.getPos().getY() - 8, this.getPos().getZ() - 20, this.getPos().getX() + 20, this.getPos().getY() + 20, this.getPos().getZ() + 20);
                     break;
                 case 1:
                     this.sideRear = side; //Up
                     this.facingSide = this.facing + 2;
-                    this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 20, this.zCoord - 20, this.xCoord + 20, this.yCoord + 8, this.zCoord + 20);
+                    this.thisAABB = AxisAlignedBB.fromBounds(this.getPos().getX() - 20, this.getPos().getY() - 20, this.getPos().getZ() - 20, this.getPos().getX() + 20, this.getPos().getY() + 8, this.getPos().getZ() + 20);
                     break;
                 case 2:
                     this.sideRear = side; //North
@@ -73,7 +73,7 @@ public class TileEntityArclamp extends TileEntity
                     {
                         this.facingSide = 7 - this.facing;
                     }
-                    this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 20, this.zCoord - 8, this.xCoord + 20, this.yCoord + 20, this.zCoord + 20);
+                    this.thisAABB = AxisAlignedBB.fromBounds(this.getPos().getX() - 20, this.getPos().getY() - 20, this.getPos().getZ() - 8, this.getPos().getX() + 20, this.getPos().getY() + 20, this.getPos().getZ() + 20);
                     break;
                 case 3:
                     this.sideRear = side; //South
@@ -82,12 +82,12 @@ public class TileEntityArclamp extends TileEntity
                     {
                         this.facingSide += 2;
                     }
-                    this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 20, this.zCoord - 20, this.xCoord + 20, this.yCoord + 20, this.zCoord + 8);
+                    this.thisAABB = AxisAlignedBB.fromBounds(this.getPos().getX() - 20, this.getPos().getY() - 20, this.getPos().getZ() - 20, this.getPos().getX() + 20, this.getPos().getY() + 20, this.getPos().getZ() + 8);
                     break;
                 case 4:
                     this.sideRear = side; //West
                     this.facingSide = this.facing;
-                    this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 8, this.yCoord - 20, this.zCoord - 20, this.xCoord + 20, this.yCoord + 20, this.zCoord + 20);
+                    this.thisAABB = AxisAlignedBB.fromBounds(this.getPos().getX() - 8, this.getPos().getY() - 20, this.getPos().getZ() - 20, this.getPos().getX() + 20, this.getPos().getY() + 20, this.getPos().getZ() + 20);
                     break;
                 case 5:
                     this.sideRear = side; //East
@@ -96,7 +96,7 @@ public class TileEntityArclamp extends TileEntity
                     {
                         this.facingSide = 5 - this.facing;
                     }
-                    this.thisAABB = AxisAlignedBB.getBoundingBox(this.xCoord - 20, this.yCoord - 20, this.zCoord - 20, this.xCoord + 8, this.yCoord + 20, this.zCoord + 20);
+                    this.thisAABB = AxisAlignedBB.fromBounds(this.getPos().getX() - 20, this.getPos().getY() - 20, this.getPos().getZ() - 20, this.getPos().getX() + 8, this.getPos().getY() + 20, this.getPos().getZ() + 20);
                     break;
                 default:
                     return;
@@ -139,11 +139,11 @@ public class TileEntityArclamp extends TileEntity
                         {
                             vecOldTarget = nav.getPath().getPosition(e);
                         }
-                        double distanceNew = vecNewTarget.squareDistanceTo(this.xCoord, this.yCoord, this.zCoord);
+                        double distanceNew = vecNewTarget.squareDistanceTo(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
 
-                        if (distanceNew > e.getDistanceSq(this.xCoord, this.yCoord, this.zCoord))
+                        if (distanceNew > e.getDistanceSq(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()))
                         {
-                            if (vecOldTarget == null || distanceNew > vecOldTarget.squareDistanceTo(this.xCoord, this.yCoord, this.zCoord))
+                            if (vecOldTarget == null || distanceNew > vecOldTarget.squareDistanceTo(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()))
                             {
                                 e.getNavigator().tryMoveToXYZ(vecNewTarget.xCoord, vecNewTarget.yCoord, vecNewTarget.zCoord, 0.3D);
                                 //System.out.println("Debug: Arclamp repelling entity: "+e.getClass().getSimpleName());
@@ -160,13 +160,13 @@ public class TileEntityArclamp extends TileEntity
     @Override
     public void validate()
     {
-        this.thisPos = Vec3.createVectorHelper(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D);
+        this.thisPos = Vec3.createVectorHelper(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D);
         this.ticks = 0;
         this.thisAABB = null;
         this.isActive = true;
         if (this.worldObj.isRemote)
         {
-        	GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_ARCLAMP_FACING, new Object[] { this.xCoord, this.yCoord, this.zCoord } ));
+        	GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_ARCLAMP_FACING, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ() } ));
         }
     }
 
@@ -340,7 +340,7 @@ public class TileEntityArclamp extends TileEntity
             //facing sequence: 0 - 3 - 1 - 2
         }
 
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, new Object[] { this.xCoord, this.yCoord, this.zCoord, this.facing } ), this.worldObj.provider.dimensionId);
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.facing } ), this.worldObj.provider.dimensionId);
         this.thisAABB = null;
         this.revertAir();
         this.markDirty();

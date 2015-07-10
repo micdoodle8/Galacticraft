@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.blocks.BlockAdvancedTile;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -44,9 +44,9 @@ public class ItemBlockDesc extends ItemBlockGC
     	//The player could be a FakePlayer made by another mod e.g. LogisticsPipes
     	if (player instanceof EntityPlayerSP)
     	{
-	        if (this.field_150939_a == GCBlocks.fuelLoader) 
+	        if (this.getBlock() == GCBlocks.fuelLoader)
 	        	ClientProxyCore.playerClientHandler.onBuild(4, (EntityPlayerSP) player);
-	        else if (this.field_150939_a == GCBlocks.fuelLoader) 
+	        else if (this.getBlock() == GCBlocks.fuelLoader)
 	        	ClientProxyCore.playerClientHandler.onBuild(6, (EntityPlayerSP) player);
     	}
     }
@@ -55,17 +55,17 @@ public class ItemBlockDesc extends ItemBlockGC
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean advanced)
     {
-        if (this.field_150939_a instanceof IBlockShiftDesc && ((IBlockShiftDesc) this.field_150939_a).showDescription(stack.getItemDamage()))
+        if (this.getBlock() instanceof IBlockShiftDesc && ((IBlockShiftDesc) this.getBlock()).showDescription(stack.getItemDamage()))
         {
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
             {
-                info.addAll(FMLClientHandler.instance().getClient().fontRenderer.listFormattedStringToWidth(((IBlockShiftDesc) this.field_150939_a).getShiftDescription(stack.getItemDamage()), 150));
+                info.addAll(FMLClientHandler.instance().getClient().fontRendererObj.listFormattedStringToWidth(((IBlockShiftDesc) this.getBlock()).getShiftDescription(stack.getItemDamage()), 150));
             }
             else
             {
-                if (this.field_150939_a instanceof BlockTileGC)
+                if (this.getBlock() instanceof BlockTileGC)
                 {
-                    TileEntity te = ((BlockTileGC) this.field_150939_a).createTileEntity(null, stack.getItemDamage() & 12);
+                    TileEntity te = ((BlockTileGC) this.getBlock()).createTileEntity(null, getBlock().getStateFromMeta(stack.getItemDamage() & 12));
                     if (te instanceof TileBaseElectricBlock)
                     {
                         float powerDrawn = ((TileBaseElectricBlock) te).storage.getMaxExtract();
@@ -75,9 +75,9 @@ public class ItemBlockDesc extends ItemBlockGC
                         }
                     }
                 }
-                else if (this.field_150939_a instanceof BlockAdvancedTile)
+                else if (this.getBlock() instanceof BlockAdvancedTile)
                 {
-                    TileEntity te = ((BlockAdvancedTile) this.field_150939_a).createTileEntity(player.worldObj, stack.getItemDamage() & 12);
+                    TileEntity te = ((BlockAdvancedTile) this.getBlock()).createTileEntity(player.worldObj, getBlock().getStateFromMeta(stack.getItemDamage() & 12));
                     if (te instanceof TileBaseElectricBlock)
                     {
                         float powerDrawn = ((TileBaseElectricBlock) te).storage.getMaxExtract();

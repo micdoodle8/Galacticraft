@@ -1,15 +1,15 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.client.objload.AdvancedModelLoader;
+import micdoodle8.mods.galacticraft.core.client.objload.IModelCustom;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 
 import org.lwjgl.opengl.GL11;
 
@@ -61,8 +61,8 @@ public class TileEntityShortRangeTelepadRenderer extends TileEntitySpecialRender
     }
 
     @Override
-    public void renderTileEntityAt(TileEntity tileEntity, double var2, double var4, double var6, float var8)
+    public void renderTileEntityAt(TileEntity tileEntity, double posX, double posY, double posZ, float var5, int var6)
     {
-        this.renderModelAt((TileEntityShortRangeTelepad) tileEntity, var2, var4, var6, var8);
+        this.renderModelAt((TileEntityShortRangeTelepad) tileEntity, posX, posY, posZ, var5);
     }
 }

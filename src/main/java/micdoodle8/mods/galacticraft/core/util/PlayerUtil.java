@@ -1,15 +1,14 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import com.mojang.authlib.GameProfile;
-
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -49,7 +48,7 @@ public class PlayerUtil
 
                     entityplayermp = (EntityPlayerMP) iterator.next();
                 }
-                while (!entityplayermp.getCommandSenderName().equalsIgnoreCase(username));
+                while (!entityplayermp.getName().equalsIgnoreCase(username));
 
                 return entityplayermp;
             }
@@ -72,13 +71,13 @@ public class PlayerUtil
             return (EntityPlayerMP) player;
         }
 
-        return PlayerUtil.getPlayerBaseServerFromPlayerUsername(player.getCommandSenderName(), ignoreCase);
+        return PlayerUtil.getPlayerBaseServerFromPlayerUsername(player.getName(), ignoreCase);
     }
 
     @SideOnly(Side.CLIENT)
-    public static EntityClientPlayerMP getPlayerBaseClientFromPlayer(EntityPlayer player, boolean ignoreCase)
+    public static EntityPlayerSP getPlayerBaseClientFromPlayer(EntityPlayer player, boolean ignoreCase)
     {
-        EntityClientPlayerMP clientPlayer = FMLClientHandler.instance().getClientPlayerEntity();
+        EntityPlayerSP clientPlayer = FMLClientHandler.instance().getClientPlayerEntity();
 
         if (clientPlayer == null && player != null)
         {

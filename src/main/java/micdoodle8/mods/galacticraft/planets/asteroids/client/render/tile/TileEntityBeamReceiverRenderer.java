@@ -1,17 +1,16 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.tile.ReceiverMode;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
-import net.minecraftforge.common.util.ForgeDirection;
+import micdoodle8.mods.galacticraft.core.client.objload.AdvancedModelLoader;
+import micdoodle8.mods.galacticraft.core.client.objload.IModelCustom;
 
 import org.lwjgl.opengl.GL11;
 
@@ -36,7 +35,7 @@ public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer
         GL11.glTranslatef((float) d + 0.5F, (float) d1, (float) d2 + 0.5F);
         GL11.glScalef(0.85F, 0.85F, 0.85F);
 
-        switch (ForgeDirection.getOrientation(tileEntity.facing))
+        switch (EnumFacing.getFront(tileEntity.facing))
         {
         case DOWN:
             GL11.glTranslatef(0.7F, -0.15F, 0.0F);

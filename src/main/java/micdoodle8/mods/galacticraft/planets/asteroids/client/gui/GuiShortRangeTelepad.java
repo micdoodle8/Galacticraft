@@ -139,7 +139,7 @@ public class GuiShortRangeTelepad extends GuiContainerGC implements ITextBoxCall
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        String displayString = this.telepad.getInventoryName();
+        String displayString = this.telepad.getName();
         this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 5, 4210752);
 
         this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, 115, 4210752);

@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -14,38 +12,34 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityHydrogenPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockHydrogenPipe extends BlockTransmitter implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {
-    private IIcon pipeIcon;
+//    private IIcon pipeIcon;
 
     public BlockHydrogenPipe(String assetName)
     {
         super(Material.glass);
         this.setHardness(0.3F);
         this.setStepSound(Block.soundTypeGlass);
-        this.setBlockName(assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override
-    public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6)
+    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
     {
-        super.breakBlock(par1World, par2, par3, par4, par5, par6);
-    }
-
-    @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
-    {
-        super.onNeighborBlockChange(world, x, y, z, block);
-        world.func_147479_m(x, y, z);
+        super.onNeighborBlockChange(worldIn, pos, state, neighborBlock);
+        worldIn.notifyLightSet(pos);
     }
 
     @Override
@@ -54,7 +48,7 @@ public class BlockHydrogenPipe extends BlockTransmitter implements ITileEntityPr
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(IBlockAccess par1IBlockAccess, int x, int y, int z, int par5)
     {
@@ -67,7 +61,7 @@ public class BlockHydrogenPipe extends BlockTransmitter implements ITileEntityPr
         }
 
         return this.pipeIcon;
-    }
+    }*/
 
     @Override
     public int getRenderType()
@@ -75,17 +69,17 @@ public class BlockHydrogenPipe extends BlockTransmitter implements ITileEntityPr
         return GalacticraftPlanets.getBlockRenderID(this);
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
         this.pipeIcon = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "pipe_hydrogen");
 
         this.blockIcon = this.pipeIcon;
-    }
+    }*/
 
     @Override
-    public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
     {
         return true;
     }
@@ -97,7 +91,7 @@ public class BlockHydrogenPipe extends BlockTransmitter implements ITileEntityPr
     }
 
     @Override
-    public boolean renderAsNormalBlock()
+    public boolean isFullCube()
     {
         return false;
     }
@@ -110,9 +104,9 @@ public class BlockHydrogenPipe extends BlockTransmitter implements ITileEntityPr
 
     @SideOnly(Side.CLIENT)
     @Override
-    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k)
+    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
     {
-        return this.getCollisionBoundingBoxFromPool(world, i, j, k);
+        return this.getCollisionBoundingBox(worldIn, pos, worldIn.getBlockState(pos));
     }
 
     @Override
