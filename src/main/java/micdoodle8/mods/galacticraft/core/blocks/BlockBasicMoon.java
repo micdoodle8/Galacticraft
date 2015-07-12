@@ -97,11 +97,13 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
     /*@SideOnly(Side.CLIENT)
     private IIcon[] moonBlockIcons;*/
 
-    public BlockBasicMoon()
+    public BlockBasicMoon(String assetName)
     {
         super(Material.rock);
         this.blockHardness = 1.5F;
         this.blockResistance = 2.5F;
+        this.setDefaultState(this.blockState.getBaseState().withProperty(BASIC_TYPE_MOON, EnumBlockBasicMoon.ORE_COPPER_MOON));
+        this.setUnlocalizedName(assetName);
         /*this.setUnlocalizedName("moonBlock");*/
     }
 

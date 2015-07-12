@@ -32,6 +32,7 @@ public class ConnectionPacket
 	{
 		int packetId = payload.readByte();
 		List<Object> data = new ArrayList<Object>();
+        System.err.println(packetId);
 		switch (packetId)
 		{
 		case 101:
@@ -108,6 +109,7 @@ public class ConnectionPacket
 		payload.writeByte(103);
         try
         {
+            System.err.println("findthis1 " + data);
     		NetworkUtil.encodeData(payload, data);
         }
         catch (IOException e)

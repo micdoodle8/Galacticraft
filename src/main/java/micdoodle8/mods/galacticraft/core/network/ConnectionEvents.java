@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.network;
 
+import net.minecraft.network.EnumPacketDirection;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
@@ -26,7 +27,7 @@ public class ConnectionEvents
     static
     {
         EnumConnectionState.STATES_BY_CLASS.put(PacketSimple.class, EnumConnectionState.PLAY);
-        EnumConnectionState.PLAY.directionMaps.put(2515, PacketSimple.class);
+        EnumConnectionState.PLAY.directionMaps.put(EnumPacketDirection.CLIENTBOUND, PacketSimple.class);
     }
 
     @SubscribeEvent

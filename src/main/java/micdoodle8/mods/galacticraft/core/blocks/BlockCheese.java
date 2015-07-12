@@ -28,7 +28,7 @@ public class BlockCheese extends Block implements ItemBlockDesc.IBlockShiftDesc
     public static final PropertyInteger BITES = PropertyInteger.create("bites", 0, 6);
     // IIcon[] cheeseIcons;
 
-    public BlockCheese()
+    public BlockCheese(String assetName)
     {
         super(Material.cake);
         this.setTickRandomly(true);
@@ -36,7 +36,7 @@ public class BlockCheese extends Block implements ItemBlockDesc.IBlockShiftDesc
         this.setHardness(0.5F);
         this.setDefaultState(this.blockState.getBaseState().withProperty(BITES, Integer.valueOf(0)));
         this.setStepSound(Block.soundTypeCloth);
-        this.setUnlocalizedName("cheeseBlock");
+        this.setUnlocalizedName(assetName);
     }
 
     /*@Override

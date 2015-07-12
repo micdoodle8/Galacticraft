@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "normal": { "model": "galacticraftcore:rocket_workbench_model" }
+    }
+}

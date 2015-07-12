@@ -62,8 +62,8 @@ public class PacketDynamicInventory implements IPacket
             break;
         case 1:
             buffer.writeInt(((BlockPos) this.data[0]).getX());
-            buffer.writeInt(((BlockPos) this.data[1]).getY());
-            buffer.writeInt(((BlockPos) this.data[2]).getZ());
+            buffer.writeInt(((BlockPos) this.data[0]).getY());
+            buffer.writeInt(((BlockPos) this.data[0]).getZ());
             break;
         }
 
@@ -95,9 +95,7 @@ public class PacketDynamicInventory implements IPacket
             break;
         case 1:
             this.data = new Object[3];
-            this.data[0] = buffer.readInt();
-            this.data[1] = buffer.readInt();
-            this.data[2] = buffer.readInt();
+            this.data[0] = new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
             break;
         }
 

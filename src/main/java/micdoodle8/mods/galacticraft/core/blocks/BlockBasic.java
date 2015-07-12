@@ -77,6 +77,7 @@ public class BlockBasic extends Block implements IDetectableResource
         super(Material.rock);
         this.setHardness(1.0F);
         this.blockResistance = 15F;
+        this.setDefaultState(this.blockState.getBaseState().withProperty(BASIC_TYPE, EnumBlockBasic.ALUMINUM_DECORATION_BLOCK_0));
         //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }

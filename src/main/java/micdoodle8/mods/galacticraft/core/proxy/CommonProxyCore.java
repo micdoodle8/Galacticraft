@@ -32,7 +32,7 @@ public class CommonProxyCore
 
     public int getBlockRender(Block blockID)
     {
-        return -1;
+        return 3;
     }
 
     public int getTitaniumArmorRenderIndex()

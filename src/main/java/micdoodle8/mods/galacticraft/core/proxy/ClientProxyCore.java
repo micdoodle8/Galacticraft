@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -34,10 +35,17 @@ import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.block.model.ModelBlockDefinition;
 import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.tileentity.TileEntity;
@@ -47,6 +55,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
@@ -63,6 +72,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
@@ -70,7 +80,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -138,6 +147,8 @@ public class ClientProxyCore extends CommonProxyCore
     public static DynamicTexture overworldTextureLocal;
     public static boolean overworldTextureRequestSent;
 
+    public static byte[] overworldImageBytes = null;
+
     private static float PLAYER_Y_OFFSET = 1.6200000047683716F;
     
     private static final ResourceLocation saturnRingTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/saturnRings.png");    
@@ -167,6 +178,7 @@ public class ClientProxyCore extends CommonProxyCore
     @Override
     public void init(FMLInitializationEvent event)
     {
+        ClientProxyCore.registerBlockRenderers();
         Class[][] commonTypes =
                 {
                         { MusicTicker.MusicType.class, ResourceLocation.class, int.class, int.class },
@@ -184,6 +196,11 @@ public class ClientProxyCore extends CommonProxyCore
         ClientProxyCore.registerInventoryTabs();
         ClientProxyCore.registerEntityRenderers();
         ClientProxyCore.registerItemRenderers();
+
+        Item itemBlockVariants = GameRegistry.findItem(Constants.MOD_ID_CORE, "air_lock_frame");
+        ModelBakery.addVariantName(itemBlockVariants, "galacticraftcore:air_lock_frame",
+                "galacticraftcore:air_lock_controller");
+
 //        MinecraftForge.EVENT_BUS.register(new TabRegistry());
         //ClientProxyCore.playerList = GLAllocation.generateDisplayLists(1);
         
@@ -251,9 +268,64 @@ public class ClientProxyCore extends CommonProxyCore
         MinecraftForge.EVENT_BUS.register(GalacticraftCore.proxy);
     }
 
+    private static void registerBlockJson(Block block)
+    {
+        registerBlockJson(block, 0, block.getUnlocalizedName().substring(5));
+    }
+
+    private static void registerBlockJson(Block block, int meta, String name)
+    {
+        mc.getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(block), meta, new ModelResourceLocation(GalacticraftCore.TEXTURE_PREFIX + name, "inventory"));
+    }
+
+    public static void registerBlockRenderers()
+    {
+        registerBlockJson(GCBlocks.breatheableAir);
+        registerBlockJson(GCBlocks.brightAir);
+        registerBlockJson(GCBlocks.brightBreatheableAir);
+        registerBlockJson(GCBlocks.brightLamp);
+        registerBlockJson(GCBlocks.treasureChestTier1);
+        registerBlockJson(GCBlocks.landingPad);
+        registerBlockJson(GCBlocks.unlitTorch);
+        registerBlockJson(GCBlocks.unlitTorchLit);
+        registerBlockJson(GCBlocks.oxygenDistributor);
+        registerBlockJson(GCBlocks.oxygenPipe);
+        registerBlockJson(GCBlocks.oxygenCollector);
+        registerBlockJson(GCBlocks.oxygenCompressor);
+        registerBlockJson(GCBlocks.oxygenSealer);
+        registerBlockJson(GCBlocks.oxygenDetector);
+        registerBlockJson(GCBlocks.nasaWorkbench);
+        registerBlockJson(GCBlocks.fallenMeteor);
+        registerBlockJson(GCBlocks.basicBlock);
+        registerBlockJson(GCBlocks.airLockFrame, 0, "air_lock_frame");
+        registerBlockJson(GCBlocks.airLockFrame, 1, "air_lock_controller");
+        registerBlockJson(GCBlocks.airLockSeal);
+        registerBlockJson(GCBlocks.crudeOilStill);
+        registerBlockJson(GCBlocks.fuelStill);
+        registerBlockJson(GCBlocks.refinery);
+        registerBlockJson(GCBlocks.fuelLoader);
+        registerBlockJson(GCBlocks.landingPadFull);
+        registerBlockJson(GCBlocks.spaceStationBase);
+        registerBlockJson(GCBlocks.fakeBlock);
+        registerBlockJson(GCBlocks.sealableBlock);
+        registerBlockJson(GCBlocks.cargoLoader);
+        registerBlockJson(GCBlocks.parachest);
+        registerBlockJson(GCBlocks.solarPanel);
+        registerBlockJson(GCBlocks.machineBase);
+        registerBlockJson(GCBlocks.machineBase2);
+        registerBlockJson(GCBlocks.machineTiered);
+        registerBlockJson(GCBlocks.aluminumWire);
+        registerBlockJson(GCBlocks.glowstoneTorch);
+        registerBlockJson(GCBlocks.blockMoon);
+        registerBlockJson(GCBlocks.cheeseBlock);
+        registerBlockJson(GCBlocks.spinThruster);
+        registerBlockJson(GCBlocks.screen);
+        registerBlockJson(GCBlocks.telemetry);
+    }
+
     public static void registerTileEntityRenderers()
     {
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAluminumWire.class, new TileEntityAluminumWireRenderer());
+//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAluminumWire.class, new TileEntityAluminumWireRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChest.class, new TileEntityTreasureChestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityParaChest.class, new TileEntityParachestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNasaWorkbench.class, new TileEntityNasaWorkbenchRenderer());
@@ -425,44 +497,44 @@ public class ClientProxyCore extends CommonProxyCore
     @Override
     public int getBlockRender(Block blockID)
     {
-        if (blockID == GCBlocks.breatheableAir || blockID == GCBlocks.brightBreatheableAir)
-        {
-            return ClientProxyCore.renderIdBreathableAir;
-        }
-        else if (blockID == GCBlocks.oxygenPipe)
-        {
-            return ClientProxyCore.renderIdOxygenPipe;
-        }
-        else if (blockID == GCBlocks.fallenMeteor)
-        {
-            return ClientProxyCore.renderIdMeteor;
-        }
-        else if (blockID == GCBlocks.nasaWorkbench)
-        {
-            return ClientProxyCore.renderIdCraftingTable;
-        }
-        else if (blockID == GCBlocks.landingPadFull)
-        {
-            return ClientProxyCore.renderIdLandingPad;
-        }
-        else if (blockID instanceof BlockUnlitTorch || blockID == GCBlocks.glowstoneTorch)
-        {
-            return ClientProxyCore.renderIdTorchUnlit;
-        }
-        else if (blockID == GCBlocks.fuelLoader || blockID == GCBlocks.cargoLoader || blockID == GCBlocks.machineBase || blockID == GCBlocks.machineBase2 || blockID == GCBlocks.machineTiered || blockID == GCBlocks.oxygenCollector || blockID == GCBlocks.oxygenCompressor || blockID == GCBlocks.oxygenDetector || blockID == GCBlocks.oxygenDistributor || blockID == GCBlocks.oxygenSealer || blockID == GCBlocks.refinery || blockID == GCBlocks.telemetry)
-        {
-            return ClientProxyCore.renderIdMachine;
-        }
-        else if (blockID == GCBlocks.treasureChestTier1)
-        {
-            return ClientProxyCore.renderIdTreasureChest;
-        }
-        else if (blockID == GCBlocks.parachest)
-        {
-            return ClientProxyCore.renderIdParachest;
-        }
+//        if (blockID == GCBlocks.breatheableAir || blockID == GCBlocks.brightBreatheableAir)
+//        {
+//            return ClientProxyCore.renderIdBreathableAir;
+//        }
+//        else if (blockID == GCBlocks.oxygenPipe)
+//        {
+//            return ClientProxyCore.renderIdOxygenPipe;
+//        }
+//        else if (blockID == GCBlocks.fallenMeteor)
+//        {
+//            return ClientProxyCore.renderIdMeteor;
+//        }
+//        else if (blockID == GCBlocks.nasaWorkbench)
+//        {
+//            return ClientProxyCore.renderIdCraftingTable;
+//        }
+//        else if (blockID == GCBlocks.landingPadFull)
+//        {
+//            return ClientProxyCore.renderIdLandingPad;
+//        }
+//        else if (blockID instanceof BlockUnlitTorch || blockID == GCBlocks.glowstoneTorch)
+//        {
+//            return ClientProxyCore.renderIdTorchUnlit;
+//        }
+//        else if (blockID == GCBlocks.fuelLoader || blockID == GCBlocks.cargoLoader || blockID == GCBlocks.machineBase || blockID == GCBlocks.machineBase2 || blockID == GCBlocks.machineTiered || blockID == GCBlocks.oxygenCollector || blockID == GCBlocks.oxygenCompressor || blockID == GCBlocks.oxygenDetector || blockID == GCBlocks.oxygenDistributor || blockID == GCBlocks.oxygenSealer || blockID == GCBlocks.refinery || blockID == GCBlocks.telemetry)
+//        {
+//            return ClientProxyCore.renderIdMachine;
+//        }
+//        else if (blockID == GCBlocks.treasureChestTier1)
+//        {
+//            return ClientProxyCore.renderIdTreasureChest;
+//        }
+//        else if (blockID == GCBlocks.parachest)
+//        {
+//            return ClientProxyCore.renderIdParachest;
+//        }
 
-        return -1;
+        return 3;
     }
 
     @Override

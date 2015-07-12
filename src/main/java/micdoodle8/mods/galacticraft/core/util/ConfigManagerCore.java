@@ -2,8 +2,10 @@ package micdoodle8.mods.galacticraft.core.util;
 
 import com.google.common.primitives.Ints;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.common.ModAPIManager;
 import net.minecraftforge.fml.common.registry.GameData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -108,9 +110,6 @@ public class ConfigManagerCore
     public static int keyOverrideToggleAdvGogglesI;
 	
     public static ArrayList<Object> clientSave = null;
-
-
-
 
     public static void initialize(File file)
     {
@@ -393,7 +392,14 @@ public class ConfigManagerCore
                 FMLLog.severe("[Galacticraft] It appears you have installed the 'Dev' version of Galacticraft instead of the regular version (or vice versa).  Please re-install.");
             }
 
-            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "External Detectable IDs", new String[] { (String)GameData.getBlockRegistry().getNameForObject(Blocks.coal_ore), (String)GameData.getBlockRegistry().getNameForObject(Blocks.diamond_ore), (String)GameData.getBlockRegistry().getNameForObject(Blocks.gold_ore), (String)GameData.getBlockRegistry().getNameForObject(Blocks.iron_ore), (String)GameData.getBlockRegistry().getNameForObject(Blocks.lapis_ore), (String)GameData.getBlockRegistry().getNameForObject(Blocks.redstone_ore), (String)GameData.getBlockRegistry().getNameForObject(Blocks.lit_redstone_ore) });
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "External Detectable IDs", new String[] {
+                    ((ResourceLocation)GameData.getBlockRegistry().getNameForObject(Blocks.coal_ore)).getResourcePath(),
+                    ((ResourceLocation)GameData.getBlockRegistry().getNameForObject(Blocks.diamond_ore)).getResourcePath(),
+                    ((ResourceLocation)GameData.getBlockRegistry().getNameForObject(Blocks.gold_ore)).getResourcePath(),
+                    ((ResourceLocation)GameData.getBlockRegistry().getNameForObject(Blocks.iron_ore)).getResourcePath(),
+                    ((ResourceLocation)GameData.getBlockRegistry().getNameForObject(Blocks.lapis_ore)).getResourcePath(),
+                    ((ResourceLocation)GameData.getBlockRegistry().getNameForObject(Blocks.redstone_ore)).getResourcePath(),
+                    ((ResourceLocation)GameData.getBlockRegistry().getNameForObject(Blocks.lit_redstone_ore)).getResourcePath() });
             prop.comment = "List blocks from other mods that the Sensor Glasses should recognize as solid blocks. Format is BlockName or BlockName:metadata.";
             prop.setLanguageKey("gc.configgui.detectableIDs").setRequiresMcRestart(true);
             detectableIDs = prop.getStringList();
@@ -520,6 +526,7 @@ public class ConfigManagerCore
         catch (final Exception e)
         {
             GCLog.severe("Problem loading core config (\"core.conf\")");
+            e.printStackTrace();
         }
     }
 

@@ -21,7 +21,8 @@ public class PlayerUtil
 	
 	public static EntityPlayerMP getPlayerForUsernameVanilla(MinecraftServer server, String username)
     {
-        return VersionUtil.getPlayerForUsername(server, username);
+        return server.getConfigurationManager().getPlayerByUsername(username);
+//        return VersionUtil.getPlayerForUsername(server, username);
     }
 
     public static EntityPlayerMP getPlayerBaseServerFromPlayerUsername(String username, boolean ignoreCase)

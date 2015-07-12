@@ -85,7 +85,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public class PacketSimple implements IPacket
+public class PacketSimple implements IPacket, Packet
 {
     public static enum EnumSimplePacket
     {
@@ -741,53 +741,7 @@ public class PacketSimple implements IPacket
         	gp.getProperties().put("textures", new Property("textures", s1, s2));
         	break;
         case C_SEND_OVERWORLD_IMAGE:
-            try
-            {
-                byte[] bytes = (byte[]) this.data.get(0);
-                
-                //Class c = Launch.classLoader.loadClass("org.apache.commons.codec.binary.Base64");
-                //if (c != null)
-                {
-                    //byte[] bytes = (byte[])c.getMethod("decodeBase64", byte[].class).invoke(null, base64);
-                    File folder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/temp");
-
-                    try
-                    {
-                        if (folder.exists() || folder.mkdir())
-                        {
-                            File file0 = new File(folder, "overworldLocal.png");
-
-                            if (!file0.exists() || (file0.canRead() && file0.canWrite()))
-                            {
-                                FileUtils.writeByteArrayToFile(file0, bytes);
-
-                                BufferedImage img = ImageIO.read(file0);
-
-                                if (img != null)
-                                {
-                                    ClientProxyCore.overworldTextureLocal = new DynamicTexture(img);
-                                }
-                            }
-                            else
-                            {
-                                System.err.println("Cannot read/write to file %minecraftDir%/assets/temp/overworldLocal.png");
-                            }
-                        }
-                        else
-                        {
-                            System.err.println("Cannot create directory %minecraftDir%/assets/temp!");
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                ;
-            }
+            ClientProxyCore.overworldImageBytes = (byte[]) this.data.get(0);
             break;
         default:
             break;
@@ -1041,7 +995,7 @@ public class PacketSimple implements IPacket
             }
             break;
         case S_ON_ADVANCED_GUI_CLICKED_STRING:
-            TileEntity tile2 = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3)));
+            TileEntity tile2 = player.worldObj.getTileEntity((BlockPos)this.data.get(1));
 
             switch ((Integer) this.data.get(0))
             {
@@ -1049,7 +1003,7 @@ public class PacketSimple implements IPacket
                 if (tile2 instanceof TileEntityAirLockController)
                 {
                     TileEntityAirLockController airlockController = (TileEntityAirLockController) tile2;
-                    airlockController.playerToOpenFor = (String) this.data.get(4);
+                    airlockController.playerToOpenFor = (String) this.data.get(2);
                 }
                 break;
             default:
@@ -1314,32 +1268,32 @@ public class PacketSimple implements IPacket
 	 * 
 	 */
 
-//    @Override
-//    public void readPacketData(PacketBuffer var1)
-//    {
-//        this.decodeInto(null, var1);
-//    }
-//
-//    @Override
-//    public void writePacketData(PacketBuffer var1)
-//    {
-//        this.encodeInto(null, var1);
-//    }
-//
-//    @SideOnly(Side.CLIENT)
-//    @Override
-//    public void processPacket(INetHandler var1)
-//    {
-//        if (this.type != EnumSimplePacket.C_UPDATE_SPACESTATION_LIST && this.type != EnumSimplePacket.C_UPDATE_PLANETS_LIST && this.type != EnumSimplePacket.C_UPDATE_CONFIGS)
-//        {
-//            return;
-//        }
-//
-//        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-//        {
-//            this.handleClientSide(FMLClientHandler.instance().getClientPlayerEntity());
-//        }
-//    } TODO
+    @Override
+    public void readPacketData(PacketBuffer var1)
+    {
+        this.decodeInto(null, var1);
+    }
+
+    @Override
+    public void writePacketData(PacketBuffer var1)
+    {
+        this.encodeInto(null, var1);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void processPacket(INetHandler var1)
+    {
+        if (this.type != EnumSimplePacket.C_UPDATE_SPACESTATION_LIST && this.type != EnumSimplePacket.C_UPDATE_PLANETS_LIST && this.type != EnumSimplePacket.C_UPDATE_CONFIGS)
+        {
+            return;
+        }
+
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        {
+            this.handleClientSide(FMLClientHandler.instance().getClientPlayerEntity());
+        }
+    }
 
 	/*
 	 * 

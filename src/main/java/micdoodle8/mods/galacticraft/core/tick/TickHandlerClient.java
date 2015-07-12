@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -63,10 +64,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
+import org.apache.commons.io.FileUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -316,6 +321,55 @@ public class TickHandlerClient
                         }
             		}
             	}
+            }
+
+            if (ClientProxyCore.overworldImageBytes != null && ClientProxyCore.overworldImageBytes.length > 0)
+            {
+                try
+                {
+                    //Class c = Launch.classLoader.loadClass("org.apache.commons.codec.binary.Base64");
+                    //if (c != null)
+                    {
+                        //byte[] bytes = (byte[])c.getMethod("decodeBase64", byte[].class).invoke(null, base64);
+                        File folder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/temp");
+
+                        try
+                        {
+                            if (folder.exists() || folder.mkdir())
+                            {
+                                File file0 = new File(folder, "overworldLocal.png");
+
+                                if (!file0.exists() || (file0.canRead() && file0.canWrite()))
+                                {
+                                    FileUtils.writeByteArrayToFile(file0, ClientProxyCore.overworldImageBytes);
+
+                                    BufferedImage img = ImageIO.read(file0);
+
+                                    if (img != null)
+                                    {
+                                        ClientProxyCore.overworldTextureLocal = new DynamicTexture(img);
+                                    }
+                                }
+                                else
+                                {
+                                    System.err.println("Cannot read/write to file %minecraftDir%/assets/temp/overworldLocal.png");
+                                }
+                            }
+                            else
+                            {
+                                System.err.println("Cannot create directory %minecraftDir%/assets/temp!");
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    ;
+                }
             }
 
             if (TickHandlerClient.tickCount % 20 == 0)
