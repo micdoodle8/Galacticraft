@@ -8,6 +8,8 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPadSingle;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -15,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -25,10 +28,42 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
 {
     //private IIcon[] icons = new IIcon[3];
 
+    public static final PropertyEnum PAD_TYPE = PropertyEnum.create("type", EnumLandingPadType.class);
+
+    public enum EnumLandingPadType implements IStringSerializable
+    {
+        ROCKET_PAD(0, "rocket"),
+        BUGGY_PAD(1, "buggy");
+
+        private final int meta;
+        private final String name;
+
+        private EnumLandingPadType(int meta, String name)
+        {
+            this.meta = meta;
+            this.name = name;
+        }
+
+        public int getMeta()
+        {
+            return this.meta;
+        }
+
+        public static EnumLandingPadType byMetadata(int meta)
+        {
+            return values()[meta];
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
+        }
+    }
+
     public BlockLandingPad(String assetName)
     {
         super(Material.iron);
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
+        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 3 / 16.0F, 1.0F);
         this.setHardness(1.0F);
         this.setResistance(10.0F);
         this.setStepSound(Block.soundTypeStone);
@@ -174,5 +209,20 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(PAD_TYPE, EnumLandingPadType.byMetadata(meta));
+    }
+
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumLandingPadType)state.getValue(PAD_TYPE)).getMeta();
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, PAD_TYPE);
     }
 }

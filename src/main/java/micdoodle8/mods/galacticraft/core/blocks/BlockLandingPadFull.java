@@ -7,14 +7,14 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFueler;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.*;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -26,6 +26,38 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
 {
     //private IIcon[] icons = new IIcon[3];
 
+    public static final PropertyEnum PAD_TYPE = PropertyEnum.create("type", EnumLandingPadFullType.class);
+
+    public enum EnumLandingPadFullType implements IStringSerializable
+    {
+        ROCKET_PAD(0, "rocket"),
+        BUGGY_PAD(1, "buggy");
+
+        private final int meta;
+        private final String name;
+
+        private EnumLandingPadFullType(int meta, String name)
+        {
+            this.meta = meta;
+            this.name = name;
+        }
+
+        public int getMeta()
+        {
+            return this.meta;
+        }
+
+        public static EnumLandingPadFullType byMetadata(int meta)
+        {
+            return values()[meta];
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
+        }
+    }
+
     public BlockLandingPadFull(String assetName)
     {
         super(Material.rock);
@@ -34,7 +66,7 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
         this.setStepSound(Block.soundTypeStone);
         //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
-        this.maxY = 0.39D;
+        this.maxY = 0.25F;
     }
 
     @Override
@@ -76,9 +108,9 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
         case 0:
             return AxisAlignedBB.fromBounds(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ,
                     pos.getX() + this.maxX, pos.getY() + this.maxY, pos.getZ() + this.maxZ);
-        case 2:
-            return AxisAlignedBB.fromBounds(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ,
-                    pos.getX() + this.maxX, pos.getY() + this.maxY, pos.getZ() + this.maxZ);
+//        case 2:
+//            return AxisAlignedBB.fromBounds(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ,
+//                    pos.getX() + this.maxX, pos.getY() + this.maxY, pos.getZ() + this.maxZ);
         default:
             return AxisAlignedBB.fromBounds(pos.getX() + 0.0D, pos.getY() + 0.0D, pos.getZ() + 0.0D,
                     pos.getX() + 1.0D, pos.getY() + 0.2D, pos.getZ() + 1.0D);
@@ -94,9 +126,9 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
         case 0:
             return AxisAlignedBB.fromBounds(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ,
                     pos.getX() + this.maxX, pos.getY() + this.maxY, pos.getZ() + this.maxZ);
-        case 2:
-            return AxisAlignedBB.fromBounds(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ,
-                    pos.getX() + this.maxX, pos.getY() + this.maxY, pos.getZ() + this.maxZ);
+//        case 2:
+//            return AxisAlignedBB.fromBounds(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ,
+//                    pos.getX() + this.maxX, pos.getY() + this.maxY, pos.getZ() + this.maxZ);
         default:
             return AxisAlignedBB.fromBounds(pos.getX() + 0.0D, pos.getY() + 0.0D, pos.getZ() + 0.0D,
                     pos.getX() + 1.0D, pos.getY() + 0.2D, pos.getZ() + 1.0D);
@@ -207,9 +239,24 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
     {
         int metadata = getMetaFromState(world.getBlockState(pos));
         return new ItemStack(Item.getItemFromBlock(GCBlocks.landingPad), 1, metadata);
+    }
+
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(PAD_TYPE, EnumLandingPadFullType.byMetadata(meta));
+    }
+
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumLandingPadFullType)state.getValue(PAD_TYPE)).getMeta();
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, PAD_TYPE);
     }
 }

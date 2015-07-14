@@ -9,6 +9,8 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -27,6 +29,8 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
     public static final int ELECTRIC_COMPRESSOR_METADATA = 0;
     public static final int CIRCUIT_FABRICATOR_METADATA = 4;
     public static final int OXYGEN_STORAGE_MODULE_METADATA = 8;
+
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     /*private IIcon iconMachineSide;
     private IIcon iconInput;
@@ -430,5 +434,21 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    public IBlockState getStateFromMeta(int meta)
+    {
+        EnumFacing enumfacing = EnumFacing.getHorizontal(meta);
+        return this.getDefaultState().withProperty(FACING, enumfacing);
+    }
+
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, FACING);
     }
 }

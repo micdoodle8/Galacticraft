@@ -149,8 +149,14 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
     @Override
     public int getRenderType()
     {
-        return GalacticraftCore.proxy.getBlockRender(this);
+        return -1;
     }
+
+//    @Override
+//    public int getRenderType()
+//    {
+//        return GalacticraftCore.proxy.getBlockRender(this);
+//    }
 
     /*@Override
     @SideOnly(Side.CLIENT)

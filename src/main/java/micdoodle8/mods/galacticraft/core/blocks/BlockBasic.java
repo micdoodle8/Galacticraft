@@ -10,6 +10,7 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
@@ -34,7 +35,7 @@ public class BlockBasic extends Block implements IDetectableResource
 
     public static final PropertyEnum BASIC_TYPE = PropertyEnum.create("basicType", EnumBlockBasic.class);
 
-    private enum EnumBlockBasic implements IStringSerializable
+    public enum EnumBlockBasic implements IStringSerializable
     {
         ALUMINUM_DECORATION_BLOCK_0(3, "deco_block_0"),
         ALUMINUM_DECORATION_BLOCK_1(4, "deco_block_1"),
@@ -253,7 +254,7 @@ public class BlockBasic extends Block implements IDetectableResource
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
     {
         int metadata = getMetaFromState(world.getBlockState(pos));
 
@@ -262,7 +263,7 @@ public class BlockBasic extends Block implements IDetectableResource
             return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
         }
 
-        return super.getPickBlock(target, world, pos);
+        return super.getPickBlock(target, world, pos, player);
     }
 
     public IBlockState getStateFromMeta(int meta)

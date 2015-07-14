@@ -24,8 +24,6 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
     public long ticks = 0;
     private LinkedHashSet<Field> fieldCacheClient;
     private LinkedHashSet<Field> fieldCacheServer;
-    @NetworkedField(targetSide = Side.CLIENT)
-    public EnumFacing facing = EnumFacing.NORTH;
 
     @Override
     public void update()
@@ -204,13 +202,5 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
     public void handlePacketData(Side side, EntityPlayer player)
     {
 
-    }
-
-    public EnumFacing getFacing() {
-        return facing;
-    }
-
-    public void setFacing(EnumFacing facing) {
-        this.facing = facing;
     }
 }

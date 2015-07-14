@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSolar;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -359,6 +360,11 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     public EnumSet<EnumFacing> getElectricalInputDirections()
     {
         return EnumSet.noneOf(EnumFacing.class);
+    }
+
+    private EnumFacing getFacing()
+    {
+        return ((EnumFacing) this.worldObj.getBlockState(getPos()).getValue(BlockSolar.FACING));
     }
 
     @Override

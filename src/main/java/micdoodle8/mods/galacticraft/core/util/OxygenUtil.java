@@ -439,17 +439,17 @@ public class OxygenUtil
 
 	public static boolean inOxygenBubble(World worldObj, double avgX, double avgY, double avgZ)
 	{
-        for (final BlockVec3Dim blockVec : new ArrayList<BlockVec3Dim>(TileEntityOxygenDistributor.loadedTiles))
-        {
-            if (blockVec.dim == worldObj.provider.getDimensionId())
-            {
-            	TileEntity tile = worldObj.getTileEntity(blockVec.toBlockPos());
-            	if (tile instanceof TileEntityOxygenDistributor)
-            	{
-	            	if (((TileEntityOxygenDistributor) tile).inBubble(avgX, avgY, avgZ)) return true;
-            	}
-            }
-        }
+//        for (final BlockVec3Dim blockVec : new ArrayList<BlockVec3Dim>(TileEntityOxygenDistributor.loadedTiles))
+//        {
+//            if (blockVec.dim == worldObj.provider.getDimensionId())
+//            {
+//            	TileEntity tile = worldObj.getTileEntity(blockVec.toBlockPos());
+//            	if (tile instanceof TileEntityOxygenDistributor)
+//            	{
+//	            	if (((TileEntityOxygenDistributor) tile).inBubble(avgX, avgY, avgZ)) return true;
+//            	}
+//            }
+//        } TODO Fix oxygen bubble
 
 		return false;
 	}

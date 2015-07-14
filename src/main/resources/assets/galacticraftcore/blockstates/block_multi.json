@@ -1,0 +1,11 @@
+{
+    "variants": {
+        "type=solar": { "model": "galacticraftcore:block_multi_model" },
+        "type=ss_base": { "model": "galacticraftcore:block_multi_model" },
+        "type=rocket_pad": { "model": "galacticraftcore:landing_pad_model" },
+        "type=nasa_workbench": { "model": "galacticraftcore:block_multi_model" },
+        "type=solar_panel": { "model": "galacticraftcore:block_multi_model" },
+        "type=cryo_chamber": { "model": "galacticraftcore:block_multi_model" },
+        "type=buggy_pad": { "model": "galacticraftcore:buggy_pad_model" }
+    }
+}

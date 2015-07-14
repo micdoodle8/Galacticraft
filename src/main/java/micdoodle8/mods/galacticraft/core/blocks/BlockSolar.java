@@ -8,6 +8,8 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -29,6 +31,8 @@ public class BlockSolar extends BlockTileGC implements ItemBlockDesc.IBlockShift
 {
     public static final int BASIC_METADATA = 0;
     public static final int ADVANCED_METADATA = 4;
+
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     public static String[] names = { "basic", "advanced" };
 
@@ -318,5 +322,21 @@ public class BlockSolar extends BlockTileGC implements ItemBlockDesc.IBlockShift
     public boolean isSealed(World worldIn, BlockPos pos, EnumFacing direction)
     {
         return true;
+    }
+
+    public IBlockState getStateFromMeta(int meta)
+    {
+        EnumFacing enumfacing = EnumFacing.getHorizontal(meta);
+        return this.getDefaultState().withProperty(FACING, enumfacing);
+    }
+
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, FACING);
     }
 }

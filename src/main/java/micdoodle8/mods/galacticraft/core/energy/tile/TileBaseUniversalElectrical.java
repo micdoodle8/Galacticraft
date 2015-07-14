@@ -164,78 +164,77 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
         //		nbt.setFloat("energyStored", this.energyStored);
     }
 
-    /**
-     * Discharges electric item.
-     */
-    @VersionSpecific(version = "[1.7.2]")
+//    /**
+//     * Discharges electric item.
+//     */
+//    @VersionSpecific(version = "[1.7.2]")
+//    public void discharge(ItemStack itemStack)
+//    {
+//        if (itemStack != null)
+//        {
+//            Item item = itemStack.getItem();
+//            float energyToDischarge = this.getRequest(null);
+//
+//            if (item instanceof IItemElectric)
+//            {
+//                this.storage.receiveEnergyGC(ElectricItemHelper.dischargeItem(itemStack, energyToDischarge));
+//            }
+//            else if (EnergyConfigHandler.isIndustrialCraft2Loaded())
+//            {
+////                if (item instanceof IElectricItem)
+////                {
+////                    IElectricItem electricItem = (IElectricItem) item;
+////                    if (electricItem.canProvideEnergy(itemStack))
+////                    {
+////                        double result = 0;
+////                        int energyDischargeIC2 = (int) (energyToDischarge / EnergyConfigHandler.IC2_RATIO);
+////                        try
+////                        {
+////                            Class<?> clazz = Class.forName("ic2.api.item.IElectricItemManager");
+////                            Method dischargeMethod = clazz.getMethod("discharge", ItemStack.class, int.class, int.class, boolean.class, boolean.class);
+////                            result = (Integer) dischargeMethod.invoke(ic2.api.item.ElectricItem.manager, itemStack, energyDischargeIC2, 4, false, false);
+////                        }
+////                        catch (Exception e)
+////                        {
+////                            e.printStackTrace();
+////                        }
+////                        float energyDischarged = (float) result * EnergyConfigHandler.IC2_RATIO;
+////                        this.storage.receiveEnergyGC(energyDischarged);
+////                    }
+////                }
+////                else if (item instanceof ISpecialElectricItem)
+////                {
+////                    ISpecialElectricItem electricItem = (ISpecialElectricItem) item;
+////                    if (electricItem.canProvideEnergy(itemStack))
+////                    {
+////                        double result = 0;
+////                        int energyDischargeIC2 = (int) (energyToDischarge / EnergyConfigHandler.IC2_RATIO);
+////                        //Do this by reflection:
+////                        //result = electricItem.getManager(itemStack).discharge(itemStack, energyDischargeIC2, 4, false, false, false)
+////                        try
+////                        {
+////                            Class<?> clazz = Class.forName("ic2.api.item.IElectricItemManager");
+////                            Method dischargeMethod = clazz.getMethod("discharge", ItemStack.class, int.class, int.class, boolean.class, boolean.class);
+////                            result = (Integer) dischargeMethod.invoke(electricItem.getManager(itemStack), itemStack, energyDischargeIC2, 4, false, false);
+////                        }
+////                        catch (Exception e)
+////                        {
+////                            e.printStackTrace();
+////                        }
+////                        float energyDischarged = (float) result * EnergyConfigHandler.IC2_RATIO;
+////                        this.storage.receiveEnergyGC(energyDischarged);
+////                    }
+////                } // TODO
+//            }
+//            //			else if (GCCoreCompatibilityManager.isTELoaded() && itemStack.getItem() instanceof IEnergyContainerItem)
+//            //			{
+//            //				float given = ((IEnergyContainerItem) itemStack.getItem()).extractEnergy(itemStack, (int) Math.floor(this.getRequest(EnumFacing.UNKNOWN) * EnergyConfigHandler.TO_TE_RATIO), false);
+//            //				this.receiveElectricity(given * EnergyConfigHandler.TE_RATIO, true);
+//            //			}
+//        }
+//    }
+
     public void discharge(ItemStack itemStack)
-    {
-        if (itemStack != null)
-        {
-            Item item = itemStack.getItem();
-            float energyToDischarge = this.getRequest(null);
-
-            if (item instanceof IItemElectric)
-            {
-                this.storage.receiveEnergyGC(ElectricItemHelper.dischargeItem(itemStack, energyToDischarge));
-            }
-            else if (EnergyConfigHandler.isIndustrialCraft2Loaded())
-            {
-//                if (item instanceof IElectricItem)
-//                {
-//                    IElectricItem electricItem = (IElectricItem) item;
-//                    if (electricItem.canProvideEnergy(itemStack))
-//                    {
-//                        double result = 0;
-//                        int energyDischargeIC2 = (int) (energyToDischarge / EnergyConfigHandler.IC2_RATIO);
-//                        try
-//                        {
-//                            Class<?> clazz = Class.forName("ic2.api.item.IElectricItemManager");
-//                            Method dischargeMethod = clazz.getMethod("discharge", ItemStack.class, int.class, int.class, boolean.class, boolean.class);
-//                            result = (Integer) dischargeMethod.invoke(ic2.api.item.ElectricItem.manager, itemStack, energyDischargeIC2, 4, false, false);
-//                        }
-//                        catch (Exception e)
-//                        {
-//                            e.printStackTrace();
-//                        }
-//                        float energyDischarged = (float) result * EnergyConfigHandler.IC2_RATIO;
-//                        this.storage.receiveEnergyGC(energyDischarged);
-//                    }
-//                }
-//                else if (item instanceof ISpecialElectricItem)
-//                {
-//                    ISpecialElectricItem electricItem = (ISpecialElectricItem) item;
-//                    if (electricItem.canProvideEnergy(itemStack))
-//                    {
-//                        double result = 0;
-//                        int energyDischargeIC2 = (int) (energyToDischarge / EnergyConfigHandler.IC2_RATIO);
-//                        //Do this by reflection:
-//                        //result = electricItem.getManager(itemStack).discharge(itemStack, energyDischargeIC2, 4, false, false, false)
-//                        try
-//                        {
-//                            Class<?> clazz = Class.forName("ic2.api.item.IElectricItemManager");
-//                            Method dischargeMethod = clazz.getMethod("discharge", ItemStack.class, int.class, int.class, boolean.class, boolean.class);
-//                            result = (Integer) dischargeMethod.invoke(electricItem.getManager(itemStack), itemStack, energyDischargeIC2, 4, false, false);
-//                        }
-//                        catch (Exception e)
-//                        {
-//                            e.printStackTrace();
-//                        }
-//                        float energyDischarged = (float) result * EnergyConfigHandler.IC2_RATIO;
-//                        this.storage.receiveEnergyGC(energyDischarged);
-//                    }
-//                } // TODO
-            }
-            //			else if (GCCoreCompatibilityManager.isTELoaded() && itemStack.getItem() instanceof IEnergyContainerItem)
-            //			{
-            //				float given = ((IEnergyContainerItem) itemStack.getItem()).extractEnergy(itemStack, (int) Math.floor(this.getRequest(EnumFacing.UNKNOWN) * EnergyConfigHandler.TO_TE_RATIO), false);
-            //				this.receiveElectricity(given * EnergyConfigHandler.TE_RATIO, true);
-            //			}
-        }
-    }
-
-    @AltForVersion(version = "[1.7.10]")
-    public void dischargeB(ItemStack itemStack)
     {
         if (itemStack != null)
         {

@@ -8,6 +8,9 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDecompressor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,10 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -27,6 +27,39 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements ItemBloc
 {
     public static final int OXYGEN_COMPRESSOR_METADATA = 0;
     public static final int OXYGEN_DECOMPRESSOR_METADATA = 4;
+
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumCompressorType.class);
+
+    public enum EnumCompressorType implements IStringSerializable
+    {
+        COMPRESSOR(0, "compressor"),
+        DECOMPRESSOR(1, "decompressor");
+
+        private final int meta;
+        private final String name;
+
+        private EnumCompressorType(int meta, String name)
+        {
+            this.meta = meta;
+            this.name = name;
+        }
+
+        public int getMeta()
+        {
+            return this.meta;
+        }
+
+        public static EnumCompressorType byMetadata(int meta)
+        {
+            return values()[meta];
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
+        }
+    }
 
     /*private IIcon iconMachineSide;
     private IIcon iconCompressor1;
@@ -208,23 +241,7 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements ItemBloc
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
         final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        int change = 0;
-
-        switch (angle)
-        {
-        case 0:
-            change = 3;
-            break;
-        case 1:
-            change = 1;
-            break;
-        case 2:
-            change = 2;
-            break;
-        case 3:
-            change = 0;
-            break;
-        }
+        int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
 
         if (stack.getItemDamage() >= BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
         {
@@ -265,10 +282,9 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements ItemBloc
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
     {
         int metadata = this.getDamageValue(world, pos);
-
         return new ItemStack(this, 1, metadata);
     }
 
@@ -289,5 +305,22 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements ItemBloc
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    public IBlockState getStateFromMeta(int meta)
+    {
+        EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
+        EnumCompressorType type = EnumCompressorType.byMetadata((int)Math.floor(meta / 4.0));
+        return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
+    }
+
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex() + ((EnumCompressorType)state.getValue(TYPE)).getMeta() * 4;
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, FACING, TYPE);
     }
 }

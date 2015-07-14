@@ -80,7 +80,7 @@ public class GCBlocks
         GCBlocks.unlitTorchLit = new BlockUnlitTorch(true, "unlit_torch_lit");
         GCBlocks.oxygenDistributor = new BlockOxygenDistributor("distributor");
         GCBlocks.oxygenPipe = new BlockOxygenPipe("oxygen_pipe");
-        GCBlocks.oxygenCollector = new Block(Material.cake).setUnlocalizedName("collector");
+        GCBlocks.oxygenCollector = new BlockOxygenCollector("collector");
         GCBlocks.nasaWorkbench = new BlockNasaWorkbench("rocket_workbench");
         GCBlocks.fallenMeteor = new BlockFallenMeteor("fallen_meteor");
         GCBlocks.basicBlock = new BlockBasic("basic_block_core");
@@ -90,7 +90,7 @@ public class GCBlocks
         GCBlocks.oxygenCompressor = new BlockOxygenCompressor(false, "oxygen_compressor");
         GCBlocks.fuelLoader = new BlockFuelLoader("fuel_loader");
         GCBlocks.spaceStationBase = new BlockSpaceStationBase("space_station_base");
-        GCBlocks.fakeBlock = new BlockMulti("dummyblock");
+        GCBlocks.fakeBlock = new BlockMulti("block_multi");
         GCBlocks.oxygenSealer = new BlockOxygenSealer("sealer");
         GCBlocks.sealableBlock = new BlockEnclosed("enclosed");
         GCBlocks.oxygenDetector = new BlockOxygenDetector("oxygen_detector");

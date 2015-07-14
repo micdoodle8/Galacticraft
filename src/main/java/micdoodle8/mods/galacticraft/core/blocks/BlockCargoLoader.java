@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -55,7 +57,7 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
 
         public static EnumLoaderType byMetadata(int meta)
         {
-            return values()[(int)Math.floor(meta / 4.0)];
+            return values()[meta];
         }
 
         public static EnumLoaderType byIndex(int index)
@@ -69,7 +71,7 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
         }
     }
 
-    public static final PropertyEnum LOADER_TYPE = PropertyEnum.create("loaderType", EnumLoaderType.class);
+    public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumLoaderType.class);
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     public static final int METADATA_CARGO_LOADER = 0;
@@ -254,50 +256,32 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        /*final int angle = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        final int metadata = world.getBlockMetadata(x, y, z);
-        int change = 0;
-        int baseMeta = 0;
+        final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
 
-        if (metadata >= BlockCargoLoader.METADATA_CARGO_UNLOADER)
+        if (stack.getItemDamage() >= METADATA_CARGO_UNLOADER)
         {
-            baseMeta = BlockCargoLoader.METADATA_CARGO_UNLOADER;
+            change += METADATA_CARGO_UNLOADER;
         }
-        else if (metadata >= BlockCargoLoader.METADATA_CARGO_LOADER)
+        else if (stack.getItemDamage() >= METADATA_CARGO_LOADER)
         {
-            baseMeta = BlockCargoLoader.METADATA_CARGO_LOADER;
+            change += METADATA_CARGO_LOADER;
         }
 
-        switch (angle)
-        {
-        case 0:
-            change = 3;
-            break;
-        case 1:
-            change = 1;
-            break;
-        case 2:
-            change = 2;
-            break;
-        case 3:
-            change = 0;
-            break;
-        }
-
-        world.setBlockMetadataWithNotify(x, y, z, baseMeta + change, 3);
+        worldIn.setBlockState(pos, getStateFromMeta(change), 3);
 
         for (int dX = -2; dX < 3; dX++)
         {
             for (int dZ = -2; dZ < 3; dZ++)
             {
-                final Block block = world.getBlock(x + dX, y, z + dZ);
+                final Block block = worldIn.getBlockState(pos.add(dX, 0, dZ)).getBlock();
 
                 if (block == GCBlocks.landingPadFull)
                 {
-                    world.markBlockForUpdate(x + dX, y, z + dZ);
+                    worldIn.markBlockForUpdate(pos.add(dX, 0, dZ));
                 }
             }
-        }*/
+        }
     }
 
     @Override
@@ -323,16 +307,7 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
     @Override
     public int damageDropped(IBlockState state)
     {
-        /*if (metadata >= BlockCargoLoader.METADATA_CARGO_UNLOADER)
-        {
-            return BlockCargoLoader.METADATA_CARGO_UNLOADER;
-        }
-        else if (metadata >= BlockCargoLoader.METADATA_CARGO_LOADER)
-        {
-            return BlockCargoLoader.METADATA_CARGO_LOADER;
-        }*/
-
-        return 0;
+        return getMetaFromState(state);
     }
 
     @Override
@@ -352,5 +327,23 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    public IBlockState getStateFromMeta(int meta)
+    {
+        EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
+        EnumLoaderType type = EnumLoaderType.byMetadata((int)Math.floor(meta / 4.0));
+
+        return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
+    }
+
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex() + ((EnumLoaderType)state.getValue(TYPE)).getMeta() * 4;
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, FACING, TYPE);
     }
 }

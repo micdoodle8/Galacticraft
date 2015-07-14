@@ -7,6 +7,9 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,10 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -26,6 +26,41 @@ public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBl
 {
     public static final int STORAGE_MODULE_METADATA = 0;
     public static final int ELECTRIC_FURNACE_METADATA = 4;
+
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumTieredMachineType.class);
+
+    public enum EnumTieredMachineType implements IStringSerializable
+    {
+        STORAGE_MODULE(0, "energy_storage"),
+        ELECTRIC_FURNACE(1, "electric_furnace"),
+        STORAGE_CLUSTER(2, "cluster_storage"),
+        ARC_FURNACE(3, "arc_furnace");
+
+        private final int meta;
+        private final String name;
+
+        private EnumTieredMachineType(int meta, String name)
+        {
+            this.meta = meta;
+            this.name = name;
+        }
+
+        public int getMeta()
+        {
+            return this.meta;
+        }
+
+        public static EnumTieredMachineType byMetadata(int meta)
+        {
+            return values()[meta];
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
+        }
+    }
 
     /*private IIcon iconMachineSide;
     private IIcon iconInput;
@@ -365,7 +400,7 @@ public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBl
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
     {
         int metadata = this.getDamageValue(world, pos);
 
@@ -390,5 +425,22 @@ public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBl
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    public IBlockState getStateFromMeta(int meta)
+    {
+        EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
+        EnumTieredMachineType type = EnumTieredMachineType.byMetadata((int)Math.floor(meta / 4.0));
+        return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
+    }
+
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex() + ((EnumTieredMachineType)state.getValue(TYPE)).getMeta() * 4;
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, FACING, TYPE);
     }
 }

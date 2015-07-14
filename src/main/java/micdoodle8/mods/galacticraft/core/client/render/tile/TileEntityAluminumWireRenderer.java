@@ -43,7 +43,7 @@ public class TileEntityAluminumWireRenderer extends TileEntitySpecialRenderer
         IBlockState blockState = aluminumWire.getWorld().getBlockState(aluminumWire.getPos());
         int metadata = blockState.getBlock().getMetaFromState(blockState);
 
-        IModelCustom model = null;
+        IModelCustom model;
 
         if (metadata == 0)
         {

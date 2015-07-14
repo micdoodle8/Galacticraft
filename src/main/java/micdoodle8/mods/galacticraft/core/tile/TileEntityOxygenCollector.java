@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
+import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenCollector;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -383,6 +385,11 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
     public boolean shouldUseEnergy()
     {
         return this.storedOxygen > 0F;
+    }
+
+    private EnumFacing getFacing()
+    {
+        return ((EnumFacing) this.worldObj.getBlockState(getPos()).getValue(BlockOxygenCollector.FACING));
     }
 
     @Override

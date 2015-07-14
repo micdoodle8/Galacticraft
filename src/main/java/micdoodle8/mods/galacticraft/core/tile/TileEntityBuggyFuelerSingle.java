@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPad;
+import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
@@ -39,7 +41,7 @@ public class TileEntityBuggyFuelerSingle extends TileEntity implements IUpdatePl
 	                tile.getWorld().setBlockState(tile.getPos(), Blocks.air.getDefaultState(), 3);
 	            }
 	
-	            this.worldObj.setBlockState(this.getPos(), GCBlocks.landingPadFull.getDefaultState(), 3);
+	            this.worldObj.setBlockState(this.getPos(), GCBlocks.landingPadFull.getStateFromMeta(BlockLandingPadFull.EnumLandingPadFullType.BUGGY_PAD.getMeta()), 3);
 	            final TileEntityBuggyFueler tile = (TileEntityBuggyFueler) this.worldObj.getTileEntity(this.getPos());
 	
 	            if (tile != null)

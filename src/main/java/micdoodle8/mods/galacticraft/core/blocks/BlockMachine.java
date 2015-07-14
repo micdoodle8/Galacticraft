@@ -9,6 +9,9 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityIngotCompressor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -32,6 +35,44 @@ public class BlockMachine extends BlockTileGC implements ItemBlockDesc.IBlockShi
 
     private IIcon iconCoalGenerator;
     private IIcon iconCompressor;*/
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumMachineType.class);
+
+    public enum EnumMachineType implements IStringSerializable
+    {
+        COAL_GENERATOR(0, "coal_generator"),
+        COMPRESSOR(3, "ingot_compressor"); // 3 for backwards compatibility
+
+        private final int meta;
+        private final String name;
+
+        private EnumMachineType(int meta, String name)
+        {
+            this.meta = meta;
+            this.name = name;
+        }
+
+        public int getMeta()
+        {
+            return this.meta;
+        }
+
+        public static EnumMachineType byMetadata(int meta)
+        {
+            switch (meta)
+            {
+            case 3:
+                return COMPRESSOR;
+            default:
+                return COAL_GENERATOR;
+            }
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
+        }
+    }
 
     public BlockMachine(String assetName)
     {
@@ -288,7 +329,7 @@ public class BlockMachine extends BlockTileGC implements ItemBlockDesc.IBlockShi
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
     {
         int metadata = this.getDamageValue(world, pos);
 
@@ -312,5 +353,22 @@ public class BlockMachine extends BlockTileGC implements ItemBlockDesc.IBlockShi
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    public IBlockState getStateFromMeta(int meta)
+    {
+        EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
+        EnumMachineType type = EnumMachineType.byMetadata((int)Math.floor(meta / 4));
+        return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
+    }
+
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex() + ((EnumMachineType)state.getValue(TYPE)).getMeta() * 4;
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, FACING, TYPE);
     }
 }

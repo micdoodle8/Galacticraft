@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
+import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDistributor;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -351,13 +353,13 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
     @Override
     public EnumSet<EnumFacing> getElectricalOutputDirections()
     {
-        return EnumSet.of(this.getFacing());
+        return EnumSet.of(this.getElectricalOutputDirectionMain());
     }
 
     @Override
     public EnumFacing getElectricalOutputDirectionMain()
     {
-        return this.getFacing();
+        return ((EnumFacing) this.worldObj.getBlockState(getPos()).getValue(BlockMachine.FACING));
     }
 
     @Override

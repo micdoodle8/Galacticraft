@@ -69,7 +69,7 @@ public class ItemBlockEnclosed extends ItemBlockDesc
         default:
             try
             {
-                name = BlockEnclosed.getTypeFromMeta(par1ItemStack.getItemDamage()).getPipeClass();
+                name = BlockEnclosed.EnumEnclosedBlock.getTypeFromMeta(par1ItemStack.getItemDamage()).getPipeClass();
             }
             catch (Exception e)
             {
@@ -85,7 +85,7 @@ public class ItemBlockEnclosed extends ItemBlockDesc
     public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         int metadata = this.getMetadata(stack.getItemDamage());
-        EnumEnclosedBlock type = BlockEnclosed.getTypeFromMeta(metadata);
+        EnumEnclosedBlock type = BlockEnclosed.EnumEnclosedBlock.getTypeFromMeta(metadata);
 
         if (type != null && type.getPipeClass() != null)
         {

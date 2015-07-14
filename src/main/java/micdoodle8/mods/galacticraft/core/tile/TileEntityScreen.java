@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
+import micdoodle8.mods.galacticraft.core.blocks.BlockScreen;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -68,6 +70,11 @@ public class TileEntityScreen extends TileEntityAdvanced
 		this.breakScreen(meta);
 	}
 
+    private EnumFacing getFacing()
+    {
+        return ((EnumFacing) this.worldObj.getBlockState(getPos()).getValue(BlockScreen.FACING));
+    }
+
 	/**
 	 * Call when a screen (which maybe part of a multiscreen) is either
 	 * broken or rotated.
@@ -97,7 +104,7 @@ public class TileEntityScreen extends TileEntityAdvanced
     			if (x == 0 && z == 0) this.resetToSingle();
     			else
     			{
-	    			BlockVec3 newVec = vec.clone().modifyPositionFromSide(facing, x).modifyPositionFromSide(EnumFacing.DOWN, z);
+	    			BlockVec3 newVec = vec.clone().modifyPositionFromSide(facingRight, x).modifyPositionFromSide(EnumFacing.DOWN, z);
 	    			tile = newVec.getTileEntity(this.worldObj);
 	    			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta)
 	    			{

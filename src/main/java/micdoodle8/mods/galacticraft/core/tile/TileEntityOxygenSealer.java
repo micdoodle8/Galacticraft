@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDistributor;
+import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenSealer;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.core.oxygen.ThreadFindSeal;
@@ -360,7 +362,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     @Override
     public EnumFacing getElectricInputDirection()
     {
-        return getFacing();
+        return ((EnumFacing) this.worldObj.getBlockState(getPos()).getValue(BlockOxygenSealer.FACING)).rotateY();
 //        return EnumFacing.getFront(this.getBlockMetadata() + 2);
     }
 

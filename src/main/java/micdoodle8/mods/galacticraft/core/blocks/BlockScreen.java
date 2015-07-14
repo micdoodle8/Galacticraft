@@ -7,6 +7,8 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,6 +23,8 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
 {
     /*private IIcon iconFront;
     private IIcon iconSide;*/
+
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	
 	//Metadata: 0-5 = direction of screen back;  bit 3 = reserved for future use
 	protected BlockScreen(String assetName)
@@ -223,5 +227,21 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
         }
 
         return super.collisionRayTrace(worldIn, pos, start, end);
+    }
+
+    public IBlockState getStateFromMeta(int meta)
+    {
+        EnumFacing enumfacing = EnumFacing.getHorizontal(meta);
+        return this.getDefaultState().withProperty(FACING, enumfacing);
+    }
+
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, FACING);
     }
 }

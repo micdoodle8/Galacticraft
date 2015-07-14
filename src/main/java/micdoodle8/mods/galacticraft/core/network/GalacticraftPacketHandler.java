@@ -18,6 +18,11 @@ public class GalacticraftPacketHandler extends SimpleChannelInboundHandler<IPack
         INetHandler netHandler = ctx.channel().attr(NetworkRegistry.NET_HANDLER).get();
         EntityPlayer player = GalacticraftCore.proxy.getPlayerFromNetHandler(netHandler);
 
+        if (player == null)
+        {
+            return;
+        }
+
         switch (FMLCommonHandler.instance().getEffectiveSide())
         {
         case CLIENT:

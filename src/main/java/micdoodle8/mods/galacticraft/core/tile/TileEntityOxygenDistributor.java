@@ -1,12 +1,11 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.entities.EntityBubble;
 import micdoodle8.mods.galacticraft.core.entities.IBubble;
@@ -25,9 +24,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.Iterator;
 import java.util.List;
 
 public class TileEntityOxygenDistributor extends TileEntityOxygen implements IInventory, ISidedInventory, IBubbleProvider
@@ -37,7 +34,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 
     private ItemStack[] containingItems = new ItemStack[2];
     public EntityBubble oxygenBubble;
-    public static ArrayList<BlockVec3Dim> loadedTiles = Lists.newArrayList();
+//    public static ArrayList<BlockVec3Dim> loadedTiles = Lists.newArrayList();
     /**
      * Used for saving/loading old oxygen bubbles
      */
@@ -53,21 +50,21 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     public void validate()
     {
     	super.validate();
-        if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.add(new BlockVec3Dim(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.worldObj.provider.getDimensionId()));
+//        if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.add(new BlockVec3Dim(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.worldObj.provider.getDimensionId()));
     }
 
     @Override
     public void onChunkUnload()
     {
-    	Iterator<BlockVec3Dim> i = loadedTiles.iterator();
-    	while (i.hasNext())
-    	{
-    		BlockVec3Dim vec = i.next();
-    		if (vec.dim == this.worldObj.provider.getDimensionId() && getPos().getX() == vec.x && getPos().getY() == vec.y && getPos().getZ() == vec.z)
-    		{
-    			i.remove();
-    		}
-    	}
+//    	Iterator<BlockVec3Dim> i = loadedTiles.iterator();
+//    	while (i.hasNext())
+//    	{
+//    		BlockVec3Dim vec = i.next();
+//    		if (vec.dim == this.worldObj.provider.getDimensionId() && getPos().getX() == vec.x && getPos().getY() == vec.y && getPos().getZ() == vec.z)
+//    		{
+//    			i.remove();
+//    		}
+//    	}
     	super.onChunkUnload();
     }
 
@@ -98,7 +95,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
         	this.oxygenBubble.setDead();
         }
 
-        if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.remove(this);
+//        if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.remove(this);
         super.invalidate();
     }
 
@@ -111,31 +108,31 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
             {
                 networkedList.add(this.oxygenBubble.getEntityId());
             }
-            networkedList.add(loadedTiles.size());
-            for (BlockVec3Dim distributor : new ArrayList<BlockVec3Dim>(loadedTiles))
-            {
-            	networkedList.add(distributor.x);
-            	networkedList.add(distributor.y);
-            	networkedList.add(distributor.z);
-            	networkedList.add(distributor.dim);
-            }
+//            networkedList.add(loadedTiles.size());
+//            for (BlockVec3Dim distributor : new ArrayList<BlockVec3Dim>(loadedTiles))
+//            {
+//            	networkedList.add(distributor.x);
+//            	networkedList.add(distributor.y);
+//            	networkedList.add(distributor.z);
+//            	networkedList.add(distributor.dim);
+//            }
         }
     }
 
     public void readExtraNetworkedData(ByteBuf dataStream)
     {
-    	loadedTiles.clear();
+//    	loadedTiles.clear();
         if (this.worldObj.isRemote)
         {
             if (dataStream.readBoolean())
             {
                 this.oxygenBubble = (EntityBubble) worldObj.getEntityByID(dataStream.readInt());
             }
-            int size = dataStream.readInt();
-            for (int i = 0; i < size; ++i)
-            {
-            	this.loadedTiles.add(new BlockVec3Dim(dataStream.readInt(), dataStream.readInt(), dataStream.readInt(), dataStream.readInt()));
-            }
+//            int size = dataStream.readInt();
+//            for (int i = 0; i < size; ++i)
+//            {
+//            	this.loadedTiles.add(new BlockVec3Dim(dataStream.readInt(), dataStream.readInt(), dataStream.readInt(), dataStream.readInt()));
+//            }
         }
     }
 
@@ -422,7 +419,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     @Override
     public EnumFacing getElectricInputDirection()
     {
-        return getFacing();
+        return ((EnumFacing) this.worldObj.getBlockState(getPos()).getValue(BlockOxygenDistributor.FACING)).rotateY();
 //        return EnumFacing.getFront(this.getBlockMetadata() + 2);
     }
 

@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "type=enclosed_oxygen_pipe": { "model": "galacticraftcore:enclosed_oxygen_pipe_model" },
+        "type=enclosed_aluminum_wire": { "model": "galacticraftcore:enclosed_aluminum_wire_model" },
+        "type=enclosed_heavy_aluminum_wire": { "model": "galacticraftcore:enclosed_heavy_aluminum_wire_model" }
+    }
+}

@@ -1,11 +1,12 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.entity.Entity;
@@ -13,10 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.*;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -39,6 +37,43 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
     //  5 : Cryogenic chamber
     //  6 : Buggy fueling pad
     //  7 unused
+
+    public static final PropertyEnum MULTI_TYPE = PropertyEnum.create("type", EnumBlockMultiType.class);
+
+    public enum EnumBlockMultiType implements IStringSerializable
+    {
+        SOLAR_PANEL_0(0, "solar"),
+        SPACE_STATION_BASE(1, "ss_base"),
+        ROCKET_PAD(2, "rocket_pad"),
+        NASA_WORKBENCH(3, "nasa_workbench"),
+        SOLAR_PANEL_1(4, "solar_panel"),
+        CRYO_CHAMBER(5, "cryo_chamber"),
+        BUGGY_FUEL_PAD(6, "buggy_pad");
+
+        private final int meta;
+        private final String name;
+
+        private EnumBlockMultiType(int meta, String name)
+        {
+            this.meta = meta;
+            this.name = name;
+        }
+
+        public int getMeta()
+        {
+            return this.meta;
+        }
+
+        public static EnumBlockMultiType byMetadata(int meta)
+        {
+            return values()[meta];
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
+        }
+    }
 
     public BlockMulti(String assetName)
     {
@@ -260,7 +295,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
     @Override
     public int getRenderType()
     {
-        return -1;
+        return 3;
     }
 
     @Override
@@ -371,5 +406,20 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
     public boolean addDestroyEffects(World world, BlockPos pos, net.minecraft.client.particle.EffectRenderer effectRenderer)
     {
         return super.addDestroyEffects(world, pos, effectRenderer);
+    }
+
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(MULTI_TYPE, EnumBlockMultiType.byMetadata(meta));
+    }
+
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumBlockMultiType)state.getValue(MULTI_TYPE)).getMeta();
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, MULTI_TYPE);
     }
 }

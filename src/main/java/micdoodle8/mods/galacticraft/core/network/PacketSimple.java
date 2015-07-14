@@ -936,7 +936,7 @@ public class PacketSimple implements IPacket, Packet
             player.openGui(GalacticraftCore.instance, GuiIdsCore.EXTENDED_INVENTORY, player.worldObj, 0, 0, 0);
             break;
         case S_ON_ADVANCED_GUI_CLICKED_INT:
-            TileEntity tile1 = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3)));
+            TileEntity tile1 = player.worldObj.getTileEntity((BlockPos) this.data.get(1));
 
             switch ((Integer) this.data.get(0))
             {
@@ -944,14 +944,14 @@ public class PacketSimple implements IPacket, Packet
                 if (tile1 instanceof TileEntityAirLockController)
                 {
                     TileEntityAirLockController airlockController = (TileEntityAirLockController) tile1;
-                    airlockController.redstoneActivation = (Integer) this.data.get(4) == 1;
+                    airlockController.redstoneActivation = (Integer) this.data.get(2) == 1;
                 }
                 break;
             case 1:
                 if (tile1 instanceof TileEntityAirLockController)
                 {
                     TileEntityAirLockController airlockController = (TileEntityAirLockController) tile1;
-                    airlockController.playerDistanceActivation = (Integer) this.data.get(4) == 1;
+                    airlockController.playerDistanceActivation = (Integer) this.data.get(2) == 1;
                 }
                 break;
             case 2:
@@ -965,14 +965,14 @@ public class PacketSimple implements IPacket, Packet
                 if (tile1 instanceof TileEntityAirLockController)
                 {
                     TileEntityAirLockController airlockController = (TileEntityAirLockController) tile1;
-                    airlockController.playerNameMatches = (Integer) this.data.get(4) == 1;
+                    airlockController.playerNameMatches = (Integer) this.data.get(2) == 1;
                 }
                 break;
             case 4:
                 if (tile1 instanceof TileEntityAirLockController)
                 {
                     TileEntityAirLockController airlockController = (TileEntityAirLockController) tile1;
-                    airlockController.invertSelection = (Integer) this.data.get(4) == 1;
+                    airlockController.invertSelection = (Integer) this.data.get(2) == 1;
                 }
                 break;
             case 5:
@@ -980,14 +980,14 @@ public class PacketSimple implements IPacket, Packet
                 {
                     TileEntityAirLockController airlockController = (TileEntityAirLockController) tile1;
                     airlockController.lastHorizontalModeEnabled = airlockController.horizontalModeEnabled;
-                    airlockController.horizontalModeEnabled = (Integer) this.data.get(4) == 1;
+                    airlockController.horizontalModeEnabled = (Integer) this.data.get(2) == 1;
                 }
                 break;
             case 6:
                 if (tile1 instanceof IBubbleProvider)
                 {
                     IBubbleProvider distributor = (IBubbleProvider) tile1;
-                    distributor.setBubbleVisible((Integer) this.data.get(4) == 1);
+                    distributor.setBubbleVisible((Integer) this.data.get(2) == 1);
                 }
                 break;
             default:

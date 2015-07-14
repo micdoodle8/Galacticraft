@@ -13,6 +13,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -20,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -32,7 +35,9 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 {
     //private IIcon[] enclosedIcons;
 
-    public enum EnumEnclosedBlock
+    public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumEnclosedBlock.class);
+
+    public enum EnumEnclosedBlock implements IStringSerializable
     {
         TE_CONDUIT(0, 2, null, "enclosed_te_conduit"),
         OXYGEN_PIPE(1, -1, null, "enclosed_oxygen_pipe"),
@@ -54,14 +59,14 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         int metadata;
         int subMeta;
         String pipeClass;
-        String texture;
+        String name;
 
-        EnumEnclosedBlock(int metadata, int subMeta, String pipeClass, String texture)
+        EnumEnclosedBlock(int metadata, int subMeta, String pipeClass, String name)
         {
             this.metadata = metadata;
             this.subMeta = subMeta;
             this.pipeClass = pipeClass;
-            this.texture = texture;
+            this.name = name;
         }
 
         public int getMetadata()
@@ -81,21 +86,26 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 
         public String getTexture()
         {
-            return this.texture;
+            return this.name;
         }
-    }
 
-    public static EnumEnclosedBlock getTypeFromMeta(int metadata)
-    {
-        for (EnumEnclosedBlock type : EnumEnclosedBlock.values())
+        public static EnumEnclosedBlock getTypeFromMeta(int metadata)
         {
-            if (type.getMetadata() == metadata)
+            for (EnumEnclosedBlock type : EnumEnclosedBlock.values())
             {
-                return type;
+                if (type.getMetadata() == metadata)
+                {
+                    return type;
+                }
             }
+
+            return null;
         }
 
-        return null;
+        @Override
+        public String getName() {
+            return this.name;
+        }
     }
 
     public BlockEnclosed(String assetName)
@@ -106,6 +116,12 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         this.setStepSound(Block.soundTypeStone);
         //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
+    }
+
+    @Override
+    public int getRenderType()
+    {
+        return 3;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -373,7 +389,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 
                     constructor.setAccessible(true);
 
-                    returnTile = (TileEntity) constructor.newInstance((short) BlockEnclosed.getTypeFromMeta(metadata).getSubMetaValue());
+                    returnTile = (TileEntity) constructor.newInstance((short) EnumEnclosedBlock.getTypeFromMeta(metadata).getSubMetaValue());
                 }
                 catch (Exception e)
                 {
@@ -458,5 +474,21 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    public IBlockState getStateFromMeta(int meta)
+    {
+        EnumEnclosedBlock type = EnumEnclosedBlock.getTypeFromMeta(meta);
+        return this.getDefaultState().withProperty(TYPE, type);
+    }
+
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumEnclosedBlock)state.getValue(TYPE)).getMetadata();
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, TYPE);
     }
 }

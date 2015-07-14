@@ -2,6 +2,9 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
+import micdoodle8.mods.galacticraft.core.blocks.BlockRefinery;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
@@ -345,6 +348,16 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
 
         return false;
 
+    }
+
+    private EnumFacing getFacing()
+    {
+        if (getBlockType() instanceof BlockMachine) {
+            return ((EnumFacing) this.worldObj.getBlockState(getPos()).getValue(BlockMachine.FACING));
+        } else if (getBlockType() instanceof BlockMachineTiered) {
+            return ((EnumFacing) this.worldObj.getBlockState(getPos()).getValue(BlockMachineTiered.FACING));
+        }
+        return EnumFacing.NORTH;
     }
 
     @Override

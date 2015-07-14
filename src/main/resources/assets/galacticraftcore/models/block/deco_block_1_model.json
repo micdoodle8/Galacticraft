@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube_all",
+    "textures": {
+        "down": "galacticraftcore:blocks/deco_block_up",
+        "up": "galacticraftcore:blocks/deco_block",
+        "north": "galacticraftcore:blocks/deco_block_side",
+        "south": "galacticraftcore:blocks/deco_block_side",
+        "west": "galacticraftcore:blocks/deco_block_side",
+        "east": "galacticraftcore:blocks/deco_block_side",
+        "particle": "galacticraftcore:blocks/deco_block"
+    }
+}

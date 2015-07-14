@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.blocks.BlockBasic;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -32,43 +33,7 @@ public class ItemBlockBase extends ItemBlockDesc
     @Override
     public String getUnlocalizedName(ItemStack itemstack)
     {
-        String name = "";
-
-        switch (itemstack.getItemDamage())
-        {
-        case 3:
-            name = "decoblock1";
-            break;
-        case 4:
-            name = "decoblock2";
-            break;
-        case 5:
-            name = "oreCopper";
-            break;
-        case 6:
-            name = "oreTin";
-            break;
-        case 7:
-            name = "oreAluminum";
-            break;
-        case 8:
-            name = "oreSilicon";
-            break;
-        case 9:
-            name = "copperBlock";
-            break;
-        case 10:
-            name = "tinBlock";
-            break;
-        case 11:
-            name = "aluminumBlock";
-            break;
-        case 12:
-            name = "meteorironBlock";
-            break;
-        default:
-            name = "null";
-        }
+        String name = BlockBasic.EnumBlockBasic.values()[itemstack.getItemDamage() - 3].getName();
 
         return this.getBlock().getUnlocalizedName() + "." + name;
     }

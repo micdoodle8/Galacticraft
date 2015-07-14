@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "galacticraftcore:refinery_model" },
+        "facing=east":  { "model": "galacticraftcore:refinery_model", "y": 90 },
+        "facing=west":  { "model": "galacticraftcore:refinery_model", "y": 270 },
+        "facing=south": { "model": "galacticraftcore:refinery_model", "y": 180 }
+    }
+}

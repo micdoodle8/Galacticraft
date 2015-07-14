@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
+import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenSealer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -479,7 +481,8 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     @Override
     public EnumFacing getElectricInputDirection()
     {
-        return this.getFacing();
+        return ((EnumFacing) this.worldObj.getBlockState(getPos()).getValue(BlockMachine2.FACING));
+//        return this.getFacing();
     }
 
     @Override

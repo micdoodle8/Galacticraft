@@ -112,7 +112,7 @@ public class PacketDynamic implements IPacket
 
             break;
         case 1:
-            this.data = new Object[3];
+            this.data = new Object[1];
             this.data[0] = new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
 
             if (world != null)

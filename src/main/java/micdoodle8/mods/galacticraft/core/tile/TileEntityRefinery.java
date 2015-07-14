@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDistributor;
+import micdoodle8.mods.galacticraft.core.blocks.BlockRefinery;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
@@ -296,6 +298,11 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     public EnumFacing getElectricInputDirection()
     {
         return EnumFacing.UP;
+    }
+
+    private EnumFacing getFacing()
+    {
+        return ((EnumFacing) this.worldObj.getBlockState(getPos()).getValue(BlockRefinery.FACING));
     }
 
     @Override

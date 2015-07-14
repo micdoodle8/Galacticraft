@@ -1,0 +1,24 @@
+{
+    "elements": [
+        {   "from": [ 0, 0, 0 ],
+            "to": [ 16, 4, 16 ],
+            "faces": {
+                "down":  { "texture": "#down", "cullface": "down" },
+                "up":    { "texture": "#up", "cullface": "up" },
+                "north": { "texture": "#north", "cullface": "north" },
+                "south": { "texture": "#south", "cullface": "south" },
+                "west":  { "texture": "#west", "cullface": "west" },
+                "east":  { "texture": "#east", "cullface": "east" }
+            }
+        }
+    ],
+    "textures": {
+        "particle": "galacticraftcore:blocks/landing_pad",
+        "down": "galacticraftcore:blocks/landing_pad",
+        "up": "galacticraftcore:blocks/landing_pad",
+        "north": "galacticraftcore:blocks/landing_pad",
+        "east": "galacticraftcore:blocks/landing_pad",
+        "south": "galacticraftcore:blocks/landing_pad",
+        "west": "galacticraftcore:blocks/landing_pad"
+    }
+}

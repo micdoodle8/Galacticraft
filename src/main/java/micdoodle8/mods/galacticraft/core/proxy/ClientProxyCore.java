@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
 import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
@@ -190,6 +191,12 @@ public class ClientProxyCore extends CommonProxyCore
         ClientProxyCore.setupCapes();
     }
 
+    private void addVariants(String name, String... variants)
+    {
+        Item itemBlockVariants = GameRegistry.findItem(Constants.MOD_ID_CORE, name);
+        ModelBakery.addVariantName(itemBlockVariants, variants);
+    }
+
     @Override
     public void postInit(FMLPostInitializationEvent event)
     {
@@ -197,9 +204,29 @@ public class ClientProxyCore extends CommonProxyCore
         ClientProxyCore.registerEntityRenderers();
         ClientProxyCore.registerItemRenderers();
 
-        Item itemBlockVariants = GameRegistry.findItem(Constants.MOD_ID_CORE, "air_lock_frame");
-        ModelBakery.addVariantName(itemBlockVariants, "galacticraftcore:air_lock_frame",
+        addVariants("air_lock_frame", "galacticraftcore:air_lock_frame",
                 "galacticraftcore:air_lock_controller");
+        addVariants("basic_block_core", "galacticraftcore:deco_block_0",
+                "galacticraftcore:deco_block_1",
+                "galacticraftcore:ore_copper_gc",
+                "galacticraftcore:ore_tin_gc",
+                "galacticraftcore:ore_aluminum_gc",
+                "galacticraftcore:ore_silicon",
+                "galacticraftcore:block_copper_gc",
+                "galacticraftcore:block_tin_gc",
+                "galacticraftcore:block_aluminum_gc",
+                "galacticraftcore:block_meteoric_iron_gc");
+        addVariants("air_lock_frame", "galacticraftcore:air_lock_frame",
+                "galacticraftcore:air_lock_controller");
+        addVariants("landing_pad", "galacticraftcore:landing_pad",
+                "galacticraftcore:buggy_pad");
+        addVariants("oxygen_compressor", "galacticraftcore:oxygen_compressor",
+                "galacticraftcore:oxygen_decompressor");
+        addVariants("cargo", "galacticraftcore:cargo_loader",
+                "galacticraftcore:cargo_unloader");
+        addVariants("enclosed", "galacticraftcore:enclosed_oxygen_pipe",
+                "galacticraftcore:enclosed_aluminum_wire",
+                "galacticraftcore:enclosed_heavy_aluminum_wire");
 
 //        MinecraftForge.EVENT_BUS.register(new TabRegistry());
         //ClientProxyCore.playerList = GLAllocation.generateDisplayLists(1);
@@ -280,23 +307,36 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static void registerBlockRenderers()
     {
+        registerBlockJson(GCBlocks.crudeOilStill);
+        registerBlockJson(GCBlocks.fuelStill);
         registerBlockJson(GCBlocks.breatheableAir);
         registerBlockJson(GCBlocks.brightAir);
         registerBlockJson(GCBlocks.brightBreatheableAir);
         registerBlockJson(GCBlocks.brightLamp);
         registerBlockJson(GCBlocks.treasureChestTier1);
-        registerBlockJson(GCBlocks.landingPad);
+        registerBlockJson(GCBlocks.landingPad, 0, "landing_pad");
+        registerBlockJson(GCBlocks.landingPad, 1, "buggy_pad");
         registerBlockJson(GCBlocks.unlitTorch);
         registerBlockJson(GCBlocks.unlitTorchLit);
         registerBlockJson(GCBlocks.oxygenDistributor);
         registerBlockJson(GCBlocks.oxygenPipe);
         registerBlockJson(GCBlocks.oxygenCollector);
-        registerBlockJson(GCBlocks.oxygenCompressor);
+        registerBlockJson(GCBlocks.oxygenCompressor, 0, "oxygen_compressor");
+        registerBlockJson(GCBlocks.oxygenCompressor, 4, "oxygen_decompressor");
         registerBlockJson(GCBlocks.oxygenSealer);
         registerBlockJson(GCBlocks.oxygenDetector);
         registerBlockJson(GCBlocks.nasaWorkbench);
         registerBlockJson(GCBlocks.fallenMeteor);
-        registerBlockJson(GCBlocks.basicBlock);
+        registerBlockJson(GCBlocks.basicBlock, 3, "deco_block_0");
+        registerBlockJson(GCBlocks.basicBlock, 4, "deco_block_1");
+        registerBlockJson(GCBlocks.basicBlock, 5, "ore_copper_gc");
+        registerBlockJson(GCBlocks.basicBlock, 6, "ore_tin_gc");
+        registerBlockJson(GCBlocks.basicBlock, 7, "ore_aluminum_gc");
+        registerBlockJson(GCBlocks.basicBlock, 8, "ore_silicon");
+        registerBlockJson(GCBlocks.basicBlock, 9, "block_copper_gc");
+        registerBlockJson(GCBlocks.basicBlock, 10, "block_tin_gc");
+        registerBlockJson(GCBlocks.basicBlock, 11, "block_aluminum_gc");
+        registerBlockJson(GCBlocks.basicBlock, 12, "block_meteoric_iron_gc");
         registerBlockJson(GCBlocks.airLockFrame, 0, "air_lock_frame");
         registerBlockJson(GCBlocks.airLockFrame, 1, "air_lock_controller");
         registerBlockJson(GCBlocks.airLockSeal);
@@ -304,11 +344,15 @@ public class ClientProxyCore extends CommonProxyCore
         registerBlockJson(GCBlocks.fuelStill);
         registerBlockJson(GCBlocks.refinery);
         registerBlockJson(GCBlocks.fuelLoader);
-        registerBlockJson(GCBlocks.landingPadFull);
+        registerBlockJson(GCBlocks.landingPadFull, 0, "landing_pad_full");
+        registerBlockJson(GCBlocks.landingPadFull, 1, "buggy_pad_full");
         registerBlockJson(GCBlocks.spaceStationBase);
         registerBlockJson(GCBlocks.fakeBlock);
-        registerBlockJson(GCBlocks.sealableBlock);
-        registerBlockJson(GCBlocks.cargoLoader);
+        registerBlockJson(GCBlocks.sealableBlock, 1, "enclosed_oxygen_pipe");
+        registerBlockJson(GCBlocks.sealableBlock, 14, "enclosed_aluminum_wire");
+        registerBlockJson(GCBlocks.sealableBlock, 15, "enclosed_heavy_aluminum_wire");
+        registerBlockJson(GCBlocks.cargoLoader, 0, "cargo_loader");
+        registerBlockJson(GCBlocks.cargoLoader, 4, "cargo_unloader");
         registerBlockJson(GCBlocks.parachest);
         registerBlockJson(GCBlocks.solarPanel);
         registerBlockJson(GCBlocks.machineBase);
@@ -325,7 +369,7 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static void registerTileEntityRenderers()
     {
-//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAluminumWire.class, new TileEntityAluminumWireRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAluminumWire.class, new TileEntityAluminumWireRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChest.class, new TileEntityTreasureChestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityParaChest.class, new TileEntityParachestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNasaWorkbench.class, new TileEntityNasaWorkbenchRenderer());
@@ -334,6 +378,7 @@ public class ClientProxyCore extends CommonProxyCore
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityThruster.class, new TileEntityThrusterRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArclamp.class, new TileEntityArclampRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityScreen.class, new TileEntityScreenRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenPipe.class, new TileEntityOxygenPipeRenderer());
     }
 
     public static void registerBlockHandlers()

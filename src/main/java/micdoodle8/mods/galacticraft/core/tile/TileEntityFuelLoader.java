@@ -4,6 +4,8 @@ import micdoodle8.mods.galacticraft.api.entity.IFuelable;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockFuelLoader;
+import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
@@ -264,7 +266,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
         int used = 0;
 
 //        if (from.equals(EnumFacing.getFront(this.getBlockMetadata() + 2).getOpposite()))
-        if (from.equals(getFacing()))
+        if (from.equals(this.worldObj.getBlockState(getPos()).getValue(BlockFuelLoader.FACING)))
         {
             final String liquidName = FluidRegistry.getFluidName(resource);
 

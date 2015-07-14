@@ -1,0 +1,6 @@
+{
+    "parent": "block/cube_all",
+    "textures": {
+        "all": "galacticraftcore:blocks/enclosed_heavy_aluminum_wire"
+    }
+}

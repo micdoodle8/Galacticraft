@@ -118,7 +118,7 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     @Override
     public int getRenderType()
     {
-        return 3;
+        return -1;
     }
 
     @Override
