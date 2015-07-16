@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -41,7 +42,8 @@ public class OverlayOxygenTanks extends Overlay
         WorldRenderer worldRenderer = tessellator.getWorldRenderer();
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
-        GL11.glDisable(GL11.GL_LIGHTING);
+//        GL11.glDisable(GL11.GL_LIGHTING);
+        GlStateManager.disableLighting();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int minLeftX = 0;
@@ -168,6 +170,7 @@ public class OverlayOxygenTanks extends Overlay
             OverlayOxygenTanks.minecraft.fontRendererObj.drawString(value, minLeftX - 18 - OverlayOxygenTanks.minecraft.fontRendererObj.getStringWidth(value), (int) bottomY - heatLevelScaled - OverlayOxygenTanks.minecraft.fontRendererObj.FONT_HEIGHT / 2 - 1, ColorUtil.to32BitColor(255, 255, 10, 10));
         }
         
-        GL11.glEnable(GL11.GL_LIGHTING);
+//        GL11.glEnable(GL11.GL_LIGHTING);
+        GlStateManager.enableLighting();
     }
 }

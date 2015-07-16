@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -31,6 +32,38 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
     public static final int OXYGEN_STORAGE_MODULE_METADATA = 8;
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumMachineExtendedType.class);
+
+    public enum EnumMachineExtendedType implements IStringSerializable
+    {
+        ELECTRIC_COMPRESSOR(0, "electric_compressor"),
+        CIRCUIT_FABRICATOR(1, "circuit_fabricator"),
+        OXYGEN_STORAGE(2, "oxygen_storage");
+
+        private final int meta;
+        private final String name;
+
+        private EnumMachineExtendedType(int meta, String name)
+        {
+            this.meta = meta;
+            this.name = name;
+        }
+
+        public int getMeta()
+        {
+            return this.meta;
+        }
+
+        public static EnumMachineExtendedType byMetadata(int meta)
+        {
+            return values()[meta];
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
+        }
+    }
 
     /*private IIcon iconMachineSide;
     private IIcon iconInput;
@@ -78,7 +111,20 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
     @Override
     public int getRenderType()
     {
-        return GalacticraftCore.proxy.getBlockRender(this);
+//        return GalacticraftCore.proxy.getBlockRender(this);
+        return -1;
+    }
+
+    @Override
+    public boolean isOpaqueCube()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isFullCube()
+    {
+        return false;
     }
 
     @Override
@@ -230,24 +276,8 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
     {
         int metadata = getMetaFromState(state);
 
-        int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        int change = 0;
-
-        switch (angle)
-        {
-        case 0:
-            change = 3;
-            break;
-        case 1:
-            change = 1;
-            break;
-        case 2:
-            change = 2;
-            break;
-        case 3:
-            change = 0;
-            break;
-        }
+        final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
 
         if (metadata >= BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
         {
@@ -408,7 +438,7 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
     {
         int metadata = this.getDamageValue(world, pos);
 
@@ -438,17 +468,18 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
 
     public IBlockState getStateFromMeta(int meta)
     {
-        EnumFacing enumfacing = EnumFacing.getHorizontal(meta);
-        return this.getDefaultState().withProperty(FACING, enumfacing);
+        EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
+        EnumMachineExtendedType type = EnumMachineExtendedType.byMetadata((int)Math.floor(meta / 4.0));
+        return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
     }
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
+        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex() + ((EnumMachineExtendedType)state.getValue(TYPE)).getMeta() * 4;
     }
 
     protected BlockState createBlockState()
     {
-        return new BlockState(this, FACING);
+        return new BlockState(this, FACING, TYPE);
     }
 }

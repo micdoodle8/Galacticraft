@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -17,10 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -33,8 +31,39 @@ public class BlockSolar extends BlockTileGC implements ItemBlockDesc.IBlockShift
     public static final int ADVANCED_METADATA = 4;
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumSolarType.class);
 
-    public static String[] names = { "basic", "advanced" };
+    public enum EnumSolarType implements IStringSerializable
+    {
+        BASIC_SOLAR(0, "basic_solar"),
+        ADVANCED_SOLAR(1, "advanced_solar"); // 3 for backwards compatibility
+
+        private final int meta;
+        private final String name;
+
+        private EnumSolarType(int meta, String name)
+        {
+            this.meta = meta;
+            this.name = name;
+        }
+
+        public int getMeta()
+        {
+            return this.meta;
+        }
+
+        public static EnumSolarType byMetadata(int meta)
+        {
+            return values()[meta];
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
+        }
+    }
+
+//    public static String[] names = { "basic", "advanced" };
 
     // private IIcon[] icons = new IIcon[6];
 
@@ -151,35 +180,49 @@ public class BlockSolar extends BlockTileGC implements ItemBlockDesc.IBlockShift
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        int metadata = getMetaFromState(state);
+        final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
 
-        int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        int change = 0;
-
-        switch (angle)
+        if (stack.getItemDamage() >= ADVANCED_METADATA)
         {
-        case 0:
-            change = 1;
-            break;
-        case 1:
-            change = 2;
-            break;
-        case 2:
-            change = 0;
-            break;
-        case 3:
-            change = 3;
-            break;
+            change += ADVANCED_METADATA;
+        }
+        else if (stack.getItemDamage() >= BASIC_METADATA)
+        {
+            change += BASIC_METADATA;
         }
 
-        if (metadata >= BlockSolar.ADVANCED_METADATA)
-        {
-            worldIn.setBlockState(pos, getStateFromMeta(BlockSolar.ADVANCED_METADATA + change), 3);
-        }
-        else
-        {
-            worldIn.setBlockState(pos, getStateFromMeta(BlockSolar.BASIC_METADATA + change), 3);
-        }
+        worldIn.setBlockState(pos, getStateFromMeta(change), 3);
+
+//        int metadata = getMetaFromState(state);
+//
+//        int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+//        int change = 0;
+//
+//        switch (angle)
+//        {
+//        case 0:
+//            change = 1;
+//            break;
+//        case 1:
+//            change = 2;
+//            break;
+//        case 2:
+//            change = 0;
+//            break;
+//        case 3:
+//            change = 3;
+//            break;
+//        }
+//
+//        if (metadata >= BlockSolar.ADVANCED_METADATA)
+//        {
+//            worldIn.setBlockState(pos, getStateFromMeta(BlockSolar.ADVANCED_METADATA + change), 3);
+//        }
+//        else
+//        {
+//            worldIn.setBlockState(pos, getStateFromMeta(BlockSolar.BASIC_METADATA + change), 3);
+//        }
 
         TileEntity tile = worldIn.getTileEntity(pos);
 
@@ -267,7 +310,7 @@ public class BlockSolar extends BlockTileGC implements ItemBlockDesc.IBlockShift
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
     {
         int metadata = this.getDamageValue(world, pos);
 
@@ -326,17 +369,18 @@ public class BlockSolar extends BlockTileGC implements ItemBlockDesc.IBlockShift
 
     public IBlockState getStateFromMeta(int meta)
     {
-        EnumFacing enumfacing = EnumFacing.getHorizontal(meta);
-        return this.getDefaultState().withProperty(FACING, enumfacing);
+        EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
+        EnumSolarType type = EnumSolarType.byMetadata((int)Math.floor(meta / 4.0));
+        return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
     }
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
+        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex() + ((EnumSolarType)state.getValue(TYPE)).getMeta() * 4;
     }
 
     protected BlockState createBlockState()
     {
-        return new BlockState(this, FACING);
+        return new BlockState(this, FACING, TYPE);
     }
 }

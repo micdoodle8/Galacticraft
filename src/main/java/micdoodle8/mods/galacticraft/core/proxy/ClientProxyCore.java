@@ -227,6 +227,13 @@ public class ClientProxyCore extends CommonProxyCore
         addVariants("enclosed", "galacticraftcore:enclosed_oxygen_pipe",
                 "galacticraftcore:enclosed_aluminum_wire",
                 "galacticraftcore:enclosed_heavy_aluminum_wire");
+        addVariants("solar", "galacticraftcore:advanced_solar",
+                "galacticraftcore:basic_solar");
+        addVariants("machine", "galacticraftcore:coal_generator",
+                "galacticraftcore:ingot_compressor");
+        addVariants("machine2", "galacticraftcore:circuit_fabricator",
+                "galacticraftcore:oxygen_storage_module",
+                "galacticraftcore:electric_ingot_compressor");
 
 //        MinecraftForge.EVENT_BUS.register(new TabRegistry());
         //ClientProxyCore.playerList = GLAllocation.generateDisplayLists(1);
@@ -354,9 +361,13 @@ public class ClientProxyCore extends CommonProxyCore
         registerBlockJson(GCBlocks.cargoLoader, 0, "cargo_loader");
         registerBlockJson(GCBlocks.cargoLoader, 4, "cargo_unloader");
         registerBlockJson(GCBlocks.parachest);
-        registerBlockJson(GCBlocks.solarPanel);
-        registerBlockJson(GCBlocks.machineBase);
-        registerBlockJson(GCBlocks.machineBase2);
+        registerBlockJson(GCBlocks.solarPanel, 0, "basic_solar");
+        registerBlockJson(GCBlocks.solarPanel, 4, "advanced_solar");
+        registerBlockJson(GCBlocks.machineBase, 0, "coal_generator");
+        registerBlockJson(GCBlocks.machineBase, 12, "ingot_compressor");
+        registerBlockJson(GCBlocks.machineBase2, 0, "electric_ingot_compressor");
+        registerBlockJson(GCBlocks.machineBase2, 4, "circuit_fabricator");
+        registerBlockJson(GCBlocks.machineBase2, 8, "oxygen_storage_module");
         registerBlockJson(GCBlocks.machineTiered);
         registerBlockJson(GCBlocks.aluminumWire);
         registerBlockJson(GCBlocks.glowstoneTorch);
@@ -379,6 +390,9 @@ public class ClientProxyCore extends CommonProxyCore
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArclamp.class, new TileEntityArclampRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityScreen.class, new TileEntityScreenRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenPipe.class, new TileEntityOxygenPipeRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenStorageModule.class, new TileEntityMachineRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCircuitFabricator.class, new TileEntityMachineRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityElectricIngotCompressor.class, new TileEntityMachineRenderer());
     }
 
     public static void registerBlockHandlers()

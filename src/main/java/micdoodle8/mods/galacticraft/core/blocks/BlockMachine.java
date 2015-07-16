@@ -198,24 +198,8 @@ public class BlockMachine extends BlockTileGC implements ItemBlockDesc.IBlockShi
     {
         int metadata = getMetaFromState(state);
 
-        int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        int change = 0;
-
-        switch (angle)
-        {
-        case 0:
-            change = 3;
-            break;
-        case 1:
-            change = 1;
-            break;
-        case 2:
-            change = 2;
-            break;
-        case 3:
-            change = 0;
-            break;
-        }
+        final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
 
         worldIn.setBlockState(pos, getStateFromMeta((metadata & 12) + change), 3);
     }
@@ -358,7 +342,7 @@ public class BlockMachine extends BlockTileGC implements ItemBlockDesc.IBlockShi
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
-        EnumMachineType type = EnumMachineType.byMetadata((int)Math.floor(meta / 4));
+        EnumMachineType type = EnumMachineType.byMetadata((int)Math.floor(meta / 4.0));
         return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
     }
 
