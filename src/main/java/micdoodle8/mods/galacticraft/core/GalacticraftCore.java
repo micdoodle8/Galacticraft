@@ -424,7 +424,7 @@ public class GalacticraftCore
 	        writeParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
 	        writeParam.setCompressionQuality(1.0f);
 	        enableJPEG = true;
-        } catch (Exception e)
+        } catch (UnsatisfiedLinkError e)
         {
         	GCLog.severe("Error initialising JPEG compressor - this is likely caused by a known bug in OpenJDK.");
         	e.printStackTrace();
