@@ -2,7 +2,7 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=Raketa Ranga 3
-item.itemAstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+item.itemAstroMiner.name=Astro Rudar
 item.heavyNoseCone.name=Snažni Nos Rakete
 item.compressedTitanium.name=Prerađeni Titanium
 item.ingotTitanium.name=Poluga Titanuma
@@ -15,7 +15,7 @@ item.grapple.name=Kuka
 item.atmosphericValve.name=Atmosferski Ventil
 item.thermalCloth.name=Termalna Odječa
 item.beamCore.name=Jezgra
-item.orionDrive.name=Orion Drive ##NEEDS TRANSLATE##
+item.orionDrive.name=Orion Disk
 item.tier3.desc=Rang 3
 
 # TOOLS
@@ -92,7 +92,7 @@ tile.walkwayWire.name=Staza s Cijevima za Strujom
 tile.walkwayOxygenPipe.name=Staza s Cijevima za Zrakom
 tile.treasureT3.name=Rang 3 Škrinje s Blagom
 tile.denseIce.name=Gusti Led
-tile.minerBase.name=Astro Miner Base ##NEEDS TRANSLATE##
+tile.minerBase.name=Astro Rudarska Baza
 
 # GUI
 planet.asteroids=Asteroidi
@@ -114,26 +114,26 @@ gui.message.range.name=Daleko: %dm
 gui.message.notEnoughEnergy.name=Nema Dovoljno Energije!
 gui.message.targetNoEnergy.name=Meta nema Energije!
 gui.message.grapple.fail=Trebam niti da mogu baciti!
-gui.message.astroMiner.fail=This base already has an Astro Miner! ##NEEDS TRANSLATE##
-gui.message.astroMiner1.fail=The docking area is blocked by: ##NEEDS TRANSLATE##
-gui.message.astroMiner1A.fail=The Astro Miner's route is blocked by: ##NEEDS TRANSLATE##
-gui.message.astroMiner2.fail=That would be one Astro Miner too many! ##NEEDS TRANSLATE##
-gui.message.astroMiner3.fail=The Astro Miner's base was removed! ##NEEDS TRANSLATE##
-gui.message.astroMiner4.fail=The Astro Miner ran out of energy and cannot get back to base! ##NEEDS TRANSLATE##
-gui.message.astroMiner5.fail=The Astro Miner's route into its base seems to be blocked! ##NEEDS TRANSLATE##
-gui.message.astroMiner6.fail=The Astro Miner has finished mining the area, and will now stop! ##NEEDS TRANSLATE##
-gui.message.astroMiner7.fail=There's nothing for an Astro Miner to mine on a space station! ##NEEDS TRANSLATE##
-gui.message.astroMiner8.fail=A second Astro Miner was detected at the same base, the first will now freeze. ##NEEDS TRANSLATE##
-gui.button.recall.name=Recall ##NEEDS TRANSLATE##
-gui.miner.outOfRange=Out of range ##NEEDS TRANSLATE##
-gui.miner.offline=Offline ##NEEDS TRANSLATE##
-gui.miner.stuck=Stuck at: ##NEEDS TRANSLATE##
-gui.miner.docked=Docked ##NEEDS TRANSLATE##
-gui.miner.travelling=Travelling ##NEEDS TRANSLATE##
-gui.miner.mining=Mining ##NEEDS TRANSLATE##
-gui.miner.returning=Returning ##NEEDS TRANSLATE##
-gui.miner.docking=Docking ##NEEDS TRANSLATE##
-gui.miner.mined=Mined ##NEEDS TRANSLATE##
+gui.message.astroMiner.fail=Ova baza već ima Astro Rudara!
+gui.message.astroMiner1.fail=Mjesto za parkiranje je zauzeto:
+gui.message.astroMiner1A.fail=Astro Rudareva ruta je blokirana:
+gui.message.astroMiner2.fail=To bi bio jedan Astro Rudar previše!
+gui.message.astroMiner3.fail=Astro Rudareva baza je obrisana!
+gui.message.astroMiner4.fail=Astro Rudar nema više energije i nemože se vratiti u bazu!
+gui.message.astroMiner5.fail=Astro Rudareva ruta do baze je blokirana!
+gui.message.astroMiner6.fail=Astro Rudar je gotov sa kopanjem, i sada će stati!
+gui.message.astroMiner7.fail=Nema ničega da Astro Rudar kopa u svemirskoj stanici!
+gui.message.astroMiner8.fail=Drugi Astro Rudar detektiran je u bazi, prvi če se sada zalediti.
+gui.button.recall.name=Opoziv
+gui.miner.outOfRange=Izvan dometa
+gui.miner.offline=Ugašen
+gui.miner.stuck=Zapeo:
+gui.miner.docked=Parkiran
+gui.miner.travelling=Putuj
+gui.miner.mining=Kopa
+gui.miner.returning=Dolazi
+gui.miner.docking=Parkira
+gui.miner.mined=Iskopano
 tile.treasureT3.description=Rang 3 Škrinja s blagom se mogu pronači u asteroidskoj dimenziji u tamnicama.
 tile.walkway.description=Staze se koriste za dekorativne svrhe te za pokretanje energije/zraka ispod igrača.
 tile.walkwayAluminumWire.description=Staze s cijevima za struju se koriste za pokretanje struje ispod potpuno čvrste prohodne površine.
@@ -141,17 +141,17 @@ tile.walkwayOxygenPipe.description=Staze s cijevima za kisik se koriste za pokre
 tile.beamReflector.description=Reflektori se koriste za preusmjeravanje energije zrake od izvora do odredišta. Može se kliknuti na njega da ode na drugi cilj.
 tile.beamReceiver.description=Prijemnici su povezani s ulazom stroja, za prijenos energije pomoću zrake.
 tile.telepadShort.description=Teleporter s malom daljinom se koristi za prijenos igrača i bića na male daljine (250 blokova) kada je povezan s drugim teleporterom.
-tile.minerBase.description=The Astro Miner Base is the docking point for an Astro Miner.  It's big ... try making a 2 x 2 x 2 cube with these. ##NEEDS TRANSLATE##
-schematic.astroMiner.name=Astro Miner ##NEEDS TRANSLATE##
-schematic.ionDrive.name=Ion Drive ##NEEDS TRANSLATE##
+tile.minerBase.description=Astro Rudareva baza je mjesto gdje če se on parkirati.  Veliko je ...probaj 2 x 2 x 2 blokove s njima.
+schematic.astroMiner.name=Astro Rudar
+schematic.ionDrive.name=Ion Disk
 # SCHEMATICS
 
 # ENTITIES
 entity.SmallAsteroidGC.name=Mali Asteroid
 entity.GrappleHookGC.name=Kuka
 entity.Tier3RocketGC.name=Rang 3 Raketa
-entity.EntryPodAsteroids.name=Entry Pod ##NEEDS TRANSLATE##
-entity.AstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+entity.EntryPodAsteroids.name=Kapsula za ulaz
+entity.AstroMiner.name=Astro Rudar
 
 # CONTAINERS
 container.shortRangeTelepad.name=Teleporter s Malom Daljinom
