@@ -15,6 +15,12 @@ import java.io.IOException;
 
 public class MCDataOutputWrapper implements MCDataOutput
 {
+    public DataOutput dataout;
+
+    public MCDataOutputWrapper(DataOutput out) {
+        dataout = out;
+    }
+
     /**
      * Mimics ByteBufUtils
      * Write an integer using variable length encoding.
@@ -60,12 +66,6 @@ public class MCDataOutputWrapper implements MCDataOutput
         Validate.isTrue(ByteBufUtils.varIntByteCount(utf8Bytes.length) < 3, "The string is too long for this encoding.");
         writeVarInt(to, utf8Bytes.length);
         to.write(utf8Bytes);
-    }
-
-    public DataOutput dataout;
-
-    public MCDataOutputWrapper(DataOutput out) {
-        dataout = out;
     }
 
     public MCDataOutputWrapper writeBoolean(boolean b) {
@@ -232,7 +232,7 @@ public class MCDataOutputWrapper implements MCDataOutput
         if (fluid == null) {
             writeShort(-1);
         } else {
-            writeShort(fluid.fluidID);
+            writeShort(fluid.getFluidID());
             writeVarInt(fluid.amount);
             writeNBTTagCompound(fluid.tag);
         }

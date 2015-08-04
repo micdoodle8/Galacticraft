@@ -23,9 +23,8 @@ public class RenderEvolvedSkeleton extends RenderBiped
 {
     private static final ResourceLocation skeletonTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/skeleton.png");
     private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/power.png");
-
-    private final ModelEvolvedSkeleton model = new ModelEvolvedSkeleton(0.2F);
     private static int isBG2Loaded = 0;
+    private final ModelEvolvedSkeleton model = new ModelEvolvedSkeleton(0.2F);
 
     public RenderEvolvedSkeleton()
     {
@@ -66,7 +65,7 @@ public class RenderEvolvedSkeleton extends RenderBiped
     {
         if (RenderEvolvedSkeleton.isBG2Loaded > 0)
         {
-            if (entity.getDataWatcher().getWatchableObjectInt(RenderEvolvedSkeleton.isBG2Loaded) == null)
+            if (entity.getDataWatcher().getWatchedObject(RenderEvolvedSkeleton.isBG2Loaded) == null)
             {
                 entity.getDataWatcher().addObject(RenderEvolvedSkeleton.isBG2Loaded, (byte) -1);
             }
