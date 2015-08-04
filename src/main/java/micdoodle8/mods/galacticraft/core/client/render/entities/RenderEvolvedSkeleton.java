@@ -62,13 +62,13 @@ public class RenderEvolvedSkeleton extends RenderBiped
     }
 
     @Override
-    protected void renderEquippedItems(EntityLivingBase par1EntityLiving, float par2)
+    protected void renderEquippedItems(EntityLivingBase entity, float par2)
     {
         if (RenderEvolvedSkeleton.isBG2Loaded > 0)
         {
-            if (par1EntityLiving.getDataWatcher().getWatchedObject(RenderEvolvedSkeleton.isBG2Loaded) == null)
+            if (entity.getDataWatcher().getWatchableObjectInt(RenderEvolvedSkeleton.isBG2Loaded) == null)
             {
-                par1EntityLiving.getDataWatcher().addObject(RenderEvolvedSkeleton.isBG2Loaded, (byte) -1);
+                entity.getDataWatcher().addObject(RenderEvolvedSkeleton.isBG2Loaded, (byte) -1);
             }
         }
 
@@ -79,7 +79,7 @@ public class RenderEvolvedSkeleton extends RenderBiped
         GL11.glRotatef(-20, 1.0F, 0.0F, 0.0F);
         GL11.glRotatef(-20, 0.0F, 0.0F, 1.0F);
         GL11.glScalef(0.5F, 0.5F, 0.5F);
-        this.renderManager.itemRenderer.renderItem(par1EntityLiving, new ItemStack(Items.bow), 0);
+        this.renderManager.itemRenderer.renderItem(entity, new ItemStack(Items.bow), 0);
         GL11.glPopMatrix();
 
         GL11.glPushMatrix();
@@ -89,10 +89,10 @@ public class RenderEvolvedSkeleton extends RenderBiped
         GL11.glRotatef(-20, 1.0F, 0.0F, 0.0F);
         GL11.glRotatef(-20, 0.0F, 0.0F, 1.0F);
         GL11.glScalef(0.5F, 0.5F, 0.5F);
-        this.renderManager.itemRenderer.renderItem(par1EntityLiving, new ItemStack(Items.bow), 0);
+        this.renderManager.itemRenderer.renderItem(entity, new ItemStack(Items.bow), 0);
         GL11.glPopMatrix();
 
-        super.renderEquippedItems(par1EntityLiving, par2);
+        super.renderEquippedItems(entity, par2);
     }
 
     @Override

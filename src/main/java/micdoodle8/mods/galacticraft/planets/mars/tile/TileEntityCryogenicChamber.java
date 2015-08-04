@@ -86,9 +86,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
         }
 
         entityPlayer.setPosition(this.xCoord + 0.5F, this.yCoord + 1.9F, this.zCoord + 0.5F);
-
-        entityPlayer.sleeping = true;
-        entityPlayer.sleepTimer = 0;
+        entityPlayer.sleepInBedAt(xCoord, yCoord, zCoord);
         entityPlayer.playerLocation = new ChunkCoordinates(this.xCoord, this.yCoord, this.zCoord);
         entityPlayer.motionX = entityPlayer.motionZ = entityPlayer.motionY = 0.0D;
 
