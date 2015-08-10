@@ -86,3 +86,4 @@ buddy1913:capeOrange
 JacobiCarter:capeLime
 afoolishmoon:capeBrown
 LokeYourLord:capeRainbow
+JBoyJr:capeRainbow
