@@ -35,7 +35,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 
         if (!this.worldObj.isRemote)
         {
-            final List<?> list = this.worldObj.getEntitiesWithinAABB(IFuelable.class, AxisAlignedBB.getBoundingBox(this.xCoord - 0.5D, this.yCoord, this.zCoord - 0.5D, this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D));
+            final List<?> list = this.worldObj.getEntitiesWithinAABB(IFuelable.class, AxisAlignedBB.getBoundingBox(this.xCoord - 0.5D, this.yCoord, this.zCoord - 0.5D, this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D));
 
             boolean docked = false;
 
