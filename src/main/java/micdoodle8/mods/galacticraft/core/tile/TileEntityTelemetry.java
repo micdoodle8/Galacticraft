@@ -224,7 +224,7 @@ public class TileEntityTelemetry extends TileEntity
 			int y = fmData.getInteger("teCoordY");
 			int z = fmData.getInteger("teCoordZ");
 			WorldProvider wp = WorldUtil.getProviderForDimension(dim);
-			if (wp == null) 
+			if (wp == null || wp.worldObj == null)
 				System.out.println("Frequency module worn: world provider is null.  This is a bug. "+dim);
 			else
 			{
