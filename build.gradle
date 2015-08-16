@@ -41,8 +41,8 @@ group= "micdoodle8.mods.galacticraft"
 archivesBaseName = "GalacticraftCoreAll"
 	
 minecraft {
-    version = "1.7.10-10.13.0.1180" // Forge version
-    assetDir = "eclipse/assets" // This is where forge will download Minecraft assets
+    version = "1.7.10-10.13.4.1448" // Forge version
+    runDir = "eclipse/assets" // This is where forge will download Minecraft assets
 }
 
 // Keep a list of dependencies files/directories for easy jar packing
