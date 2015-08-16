@@ -47,7 +47,7 @@ public class DrawGameScreen extends IScreenManager
     
     public void drawScreen(int type, float ticks, boolean cornerBlock)
     {
-    	if (type >= TileEntityScreen.maxTypes)
+    	if (type >= GalacticraftRegistry.getMaxScreenTypes())
     	{
     		System.out.println("Wrong gamescreen type detected - this is a bug."+type);
     		return;

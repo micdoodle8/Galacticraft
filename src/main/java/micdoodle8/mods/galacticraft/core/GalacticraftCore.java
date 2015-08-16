@@ -11,6 +11,7 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Moon;
@@ -26,6 +27,8 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockFluidGC;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.MaterialOleaginous;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiHandler;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.GameScreenBasic;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.GameScreenCelestial;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GameScreenText;
 import micdoodle8.mods.galacticraft.core.command.CommandGCEnergyUnits;
 import micdoodle8.mods.galacticraft.core.command.CommandGCHelp;
@@ -356,9 +359,20 @@ public class GalacticraftCore
         }
 
         FMLInterModComms.sendMessage("OpenBlocks", "donateUrl", "http://www.patreon.com/micdoodle8");
-    	GalacticraftRegistry.registerCoreGameScreens();
+    	registerCoreGameScreens();
     	
     	MinecraftForge.EVENT_BUS.register(new OreGenOtherMods());
+    }
+
+    public static void registerCoreGameScreens()
+    {
+        IGameScreen rendererBasic = new GameScreenBasic();
+        IGameScreen rendererCelest = new GameScreenCelestial();
+        GalacticraftRegistry.registerScreen(rendererBasic);  //Type 0 - blank
+        GalacticraftRegistry.registerScreen(rendererBasic);  //Type 1 - local satellite view
+        GalacticraftRegistry.registerScreen(rendererCelest);  //Type 2 - solar system
+        GalacticraftRegistry.registerScreen(rendererCelest);  //Type 3 - local planet
+        GalacticraftRegistry.registerScreen(rendererCelest);  //Type 4 - render test
     }
 
 	@EventHandler
