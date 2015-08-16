@@ -42,13 +42,13 @@ public class ExtendedFluidTank implements IFluidTank
 
     public boolean canAccept(FluidStack type)
     {
-        return type == null || type.fluidID <= 0 || (fluid.amount == 0 && changeType) || fluid.isFluidEqual(type);
+        return type == null || type.getFluidID() <= 0 || (fluid.amount == 0 && changeType) || fluid.isFluidEqual(type);
     }
 
     @Override
     public int fill(FluidStack resource, boolean doFill)
     {
-        if(resource == null || resource.fluidID <= 0)
+        if (resource == null || resource.getFluidID() <= 0)
             return 0;
 
         if(!canAccept(resource))

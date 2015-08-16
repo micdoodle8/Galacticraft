@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -16,17 +17,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-
 import org.lwjgl.opengl.GL11;
-import cpw.mods.fml.common.Loader;
+
+import java.lang.reflect.Field;
 
 public class RenderPlayerGC extends RenderPlayer
 {
     public static ModelBiped modelThermalPadding;
     public static ModelBiped modelThermalPaddingHelmet;
+    public static boolean flagThermalOverride = false;
     private static ResourceLocation thermalPaddingTexture0;
     private static ResourceLocation thermalPaddingTexture1;
-    public static boolean flagThermalOverride = false;
     private static Boolean isSmartRenderLoaded = null;
     
     static
@@ -48,27 +49,13 @@ public class RenderPlayerGC extends RenderPlayer
             RenderPlayerGC.thermalPaddingTexture0 = new ResourceLocation("galacticraftasteroids", "textures/misc/thermalPadding_0.png");
             RenderPlayerGC.thermalPaddingTexture1 = new ResourceLocation("galacticraftasteroids", "textures/misc/thermalPadding_1.png");
         }
-    }
 
-    @Override
-    protected void rotateCorpse(EntityLivingBase entity, float x, float y, float z)
-    {
-    	if (entity instanceof EntityPlayer && Minecraft.getMinecraft().gameSettings.thirdPersonView != 0)
-    	{
-            final EntityPlayer player = (EntityPlayer)entity;
-
-            if (player.ridingEntity instanceof EntityTieredRocket)
-            {
-                EntityTieredRocket rocket = (EntityTieredRocket) player.ridingEntity;
-                GL11.glTranslatef(0, -rocket.getRotateOffset(), 0);
-                float anglePitch = rocket.prevRotationPitch;
-                float angleYaw = rocket.prevRotationYaw;
-                GL11.glRotatef(-angleYaw, 0.0F, 1.0F, 0.0F);
-                GL11.glRotatef(anglePitch, 0.0F, 0.0F, 1.0F);
-                GL11.glTranslatef(0, rocket.getRotateOffset(), 0);
-            }
-    	}
-    	super.rotateCorpse(entity, x, y, z);
+        try {
+            Field modelBase = RendererLivingEntity.class.getDeclaredField("mainModel");
+            modelBase.setAccessible(true);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void renderModelS(RendererLivingEntity inst, EntityLivingBase par1EntityLivingBase, float par2, float par3, float par4, float par5, float par6, float par7)
@@ -76,12 +63,12 @@ public class RenderPlayerGC extends RenderPlayer
     	if (inst instanceof RenderPlayer)
     	{
     		RenderPlayer thisInst = (RenderPlayer)inst;
-    		
+
     		if (isSmartRenderLoaded == null)
     		{
     			isSmartRenderLoaded = Loader.isModLoaded("SmartRender");
     		}
-    		
+
             if (RenderPlayerGC.thermalPaddingTexture0 != null && !isSmartRenderLoaded)
             {
                 PlayerGearData gearData = ClientProxyCore.playerItemData.get(par1EntityLivingBase.getCommandSenderName());
@@ -114,7 +101,7 @@ public class RenderPlayerGC extends RenderPlayer
                             modelBiped.bipedLeftArm.showModel = i == 1;
                             modelBiped.bipedRightLeg.showModel = i == 2 || i == 3;
                             modelBiped.bipedLeftLeg.showModel = i == 2 || i == 3;
-                            
+
                             modelBiped.onGround = thisInst.mainModel.onGround;
                             modelBiped.isRiding = thisInst.mainModel.isRiding;
                             modelBiped.isChild = thisInst.mainModel.isChild;
@@ -169,6 +156,24 @@ public class RenderPlayerGC extends RenderPlayer
                 }
             }
     	}
+    }
+
+    @Override
+    protected void rotateCorpse(EntityLivingBase entity, float x, float y, float z) {
+        if (entity instanceof EntityPlayer && Minecraft.getMinecraft().gameSettings.thirdPersonView != 0) {
+            final EntityPlayer player = (EntityPlayer) entity;
+
+            if (player.ridingEntity instanceof EntityTieredRocket) {
+                EntityTieredRocket rocket = (EntityTieredRocket) player.ridingEntity;
+                GL11.glTranslatef(0, -rocket.getRotateOffset(), 0);
+                float anglePitch = rocket.prevRotationPitch;
+                float angleYaw = rocket.prevRotationYaw;
+                GL11.glRotatef(-angleYaw, 0.0F, 1.0F, 0.0F);
+                GL11.glRotatef(anglePitch, 0.0F, 0.0F, 1.0F);
+                GL11.glTranslatef(0, rocket.getRotateOffset(), 0);
+            }
+        }
+        super.rotateCorpse(entity, x, y, z);
     }
 
     @Override

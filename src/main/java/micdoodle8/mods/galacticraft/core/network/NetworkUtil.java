@@ -471,7 +471,7 @@ public class NetworkUtil
         else
         {
             buffer.writeInt(fluidTank.getCapacity());
-            buffer.writeInt(fluidTank.getFluid() == null ? -1 : fluidTank.getFluid().fluidID);
+            buffer.writeInt(fluidTank.getFluid() == null ? -1 : fluidTank.getFluid().getFluidID());
             buffer.writeInt(fluidTank.getFluidAmount());
         }
     }

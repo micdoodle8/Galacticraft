@@ -371,7 +371,7 @@ public final class PacketCustom implements MCDataInput, MCDataOutput
         if (fluid == null) {
             writeShort(-1);
         } else {
-            writeShort(fluid.fluidID);
+            writeShort(fluid.getFluidID());
             writeVarInt(fluid.amount);
             writeNBTTagCompound(fluid.tag);
         }
