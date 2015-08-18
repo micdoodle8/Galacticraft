@@ -88,3 +88,5 @@ afoolishmoon:capeBrown
 LokeYourLord:capeRainbow
 JBoyJr:capeRainbow
 ma10as234:capeLime
+kimwy:capeRainbow
+PrezGman:capeLightBlue
