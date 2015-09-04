@@ -30,8 +30,6 @@ import java.util.Random;
 
 public class BlockBasicAsteroids extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock
 {
-    @SideOnly(Side.CLIENT)
-//    private IIcon[] blockIcons;
     public static final PropertyEnum BASIC_TYPE = PropertyEnum.create("basicTypeAsteroids", EnumBlockBasic.class);
 
     private enum EnumBlockBasic implements IStringSerializable
