@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.network;
 
+import com.google.common.math.DoubleMath;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -494,5 +495,61 @@ public class NetworkUtil
         }
 
         return fluidTank;
+    }
+
+    public static boolean fuzzyEquals(Object a, Object b)
+    {
+        if ((a == null) != (b == null))
+        {
+            return false;
+        }
+        else if (a == null)
+        {
+            return true;
+        }
+        else if (a instanceof Float && b instanceof Float)
+        {
+            return DoubleMath.fuzzyEquals((Float) a, (Float) b, 0.01);
+        }
+        else if (a instanceof Double && b instanceof Double)
+        {
+            return DoubleMath.fuzzyEquals((Double) a, (Double) b, 0.01);
+        }
+        else if (a instanceof Entity && b instanceof Entity)
+        {
+            Entity a2 = (Entity) a;
+            Entity b2 = (Entity) b;
+            return fuzzyEquals(a2.getEntityId(), b2.getEntityId());
+        }
+        else if (a instanceof Vector3 && b instanceof Vector3)
+        {
+            Vector3 a2 = (Vector3) a;
+            Vector3 b2 = (Vector3) b;
+            return fuzzyEquals(a2.x, b2.x) &&
+                    fuzzyEquals(a2.y, b2.y) &&
+                    fuzzyEquals(a2.z, b2.z);
+        }
+        else if (a instanceof EnergyStorage && b instanceof EnergyStorage)
+        {
+            EnergyStorage a2 = (EnergyStorage) a;
+            EnergyStorage b2 = (EnergyStorage) b;
+            return fuzzyEquals(a2.getCapacityGC(), b2.getCapacityGC()) &&
+                    fuzzyEquals(a2.getMaxReceive(), b2.getMaxReceive()) &&
+                    fuzzyEquals(a2.getMaxExtract(), b2.getMaxExtract());
+        }
+        else if (a instanceof FluidTank && b instanceof FluidTank)
+        {
+            FluidTank a2 = (FluidTank) a;
+            FluidTank b2 = (FluidTank) b;
+            FluidStack fluidA = a2.getFluid();
+            FluidStack fluidB = b2.getFluid();
+            return fuzzyEquals(a2.getCapacity(), b2.getCapacity()) &&
+                    fuzzyEquals(fluidA != null ? fluidA.fluidID : -1, fluidB != null ? fluidB.fluidID : -1) &&
+                    fuzzyEquals(a2.getFluidAmount(), b2.getFluidAmount());
+        }
+        else
+        {
+            return a.equals(b);
+        }
     }
 }
