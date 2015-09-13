@@ -267,7 +267,6 @@ task packApi(type: Jar, dependsOn: "classes") {
 		includes.addAll('LICENSE.txt')
 		excludes.addAll(project.ext.micdoodleCoreFiles)
 		excludes.addAll(project.ext.planetsFiles)
-		excludes.addAll(project.ext.coreFiles)
 		excludes.addAll(project.ext.dependencies)
 		excludes.addAll('**/*.info')
 		excludes.addAll('assets')
