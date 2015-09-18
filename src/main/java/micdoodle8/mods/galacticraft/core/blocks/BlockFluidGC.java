@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.material.Material;
@@ -82,6 +83,13 @@ public class BlockFluidGC extends BlockFluidClassic
         {
             worldIn.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, "liquid.lava", rand.nextFloat() * 0.25F + 0.75F, 0.00001F + rand.nextFloat() * 0.5F, false);
         }
+		if (this.fluidName.equals("oil") && rand.nextInt(10) == 0)
+		{
+			if (World.doesBlockHaveSolidTopSurface(worldIn, pos.down()) && !worldIn.getBlockState(pos.down(2)).getBlock().getMaterial().blocksMovement())
+			{
+				GalacticraftCore.proxy.spawnParticle("oilDrip", new Vector3(pos.getX() + rand.nextFloat(), pos.getY() - 1.05D, pos.getZ() + rand.nextFloat()), new Vector3(0, 0, 0), new Object[] {});
+			}
+		}
     }
 
     @Override

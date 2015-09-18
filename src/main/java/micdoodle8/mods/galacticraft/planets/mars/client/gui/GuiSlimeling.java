@@ -273,7 +273,7 @@ public class GuiSlimeling extends GuiScreen
         this.fontRendererObj.drawString(str, var5 + 145 - this.fontRendererObj.getStringWidth(str) / 2, var6 + 112, 0x404040);
         str = GCCoreUtil.translate("gui.slimeling.damage") + ": " + Math.round(this.slimeling.getDamage() * 100.0F) / 100.0F;
         this.fontRendererObj.drawString(str, dX + var5 + 55, dY + var6 + 33 + 13, 0x404040);
-        str = GCCoreUtil.translate("gui.slimeling.food");
+        str = GCCoreUtil.translate("gui.slimeling.food") + ": ";
         this.fontRendererObj.drawString(str, dX + var5 + 55, dY + var6 + 46 + 13, 0x404040);
 
         RenderHelper.enableGUIStandardItemLighting();

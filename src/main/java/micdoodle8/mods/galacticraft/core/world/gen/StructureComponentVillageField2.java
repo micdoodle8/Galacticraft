@@ -104,11 +104,11 @@ public class StructureComponentVillageField2 extends StructureComponentVillage
         this.func_175804_a(par1World, par3StructureBoundingBox, 4, 0, 1, 5, 0, 7, Blocks.farmland.getDefaultState(), Blocks.farmland.getDefaultState(), false);
         this.func_175804_a(par1World, par3StructureBoundingBox, 7, 0, 1, 8, 0, 7, Blocks.farmland.getDefaultState(), Blocks.farmland.getDefaultState(), false);
         this.func_175804_a(par1World, par3StructureBoundingBox, 10, 0, 1, 11, 0, 7, Blocks.farmland.getDefaultState(), Blocks.farmland.getDefaultState(), false);
-        this.func_175804_a(par1World, par3StructureBoundingBox, 0, 0, 0, 0, 0, 8, Blocks.planks.getDefaultState(), Blocks.planks.getDefaultState(), false);
-        this.func_175804_a(par1World, par3StructureBoundingBox, 6, 0, 0, 6, 0, 8, Blocks.planks.getDefaultState(), Blocks.planks.getDefaultState(), false);
-        this.func_175804_a(par1World, par3StructureBoundingBox, 12, 0, 0, 12, 0, 8, Blocks.planks.getDefaultState(), Blocks.planks.getDefaultState(), false);
-        this.func_175804_a(par1World, par3StructureBoundingBox, 1, 0, 0, 11, 0, 0, Blocks.planks.getDefaultState(), Blocks.planks.getDefaultState(), false);
-        this.func_175804_a(par1World, par3StructureBoundingBox, 1, 0, 8, 11, 0, 8, Blocks.planks.getDefaultState(), Blocks.planks.getDefaultState(), false);
+        this.func_175804_a(par1World, par3StructureBoundingBox, 0, 0, 0, 0, 0, 8, Blocks.log.getDefaultState(), Blocks.log.getDefaultState(), false);
+        this.func_175804_a(par1World, par3StructureBoundingBox, 6, 0, 0, 6, 0, 8, Blocks.log.getDefaultState(), Blocks.log.getDefaultState(), false);
+        this.func_175804_a(par1World, par3StructureBoundingBox, 12, 0, 0, 12, 0, 8, Blocks.log.getDefaultState(), Blocks.log.getDefaultState(), false);
+        this.func_175804_a(par1World, par3StructureBoundingBox, 1, 0, 0, 11, 0, 0, Blocks.log.getDefaultState(), Blocks.log.getDefaultState(), false);
+        this.func_175804_a(par1World, par3StructureBoundingBox, 1, 0, 8, 11, 0, 8, Blocks.log.getDefaultState(), Blocks.log.getDefaultState(), false);
         this.func_175804_a(par1World, par3StructureBoundingBox, 3, 0, 1, 3, 0, 7, Blocks.flowing_water.getDefaultState(), Blocks.flowing_water.getDefaultState(), false);
         this.func_175804_a(par1World, par3StructureBoundingBox, 9, 0, 1, 9, 0, 7, Blocks.flowing_water.getDefaultState(), Blocks.flowing_water.getDefaultState(), false);
         int i;

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -99,21 +100,11 @@ public class StructureComponentVillageWell extends StructureComponentVillage
             {
                 if (var5 == 0 || var5 == 5 || var4 == 0 || var4 == 5)
                 {
-                    this.func_175811_a(par1World, Blocks.gravel.getDefaultState(), var5, 11, var4, par3StructureBoundingBox);
+                    this.func_175811_a(par1World, Blocks.planks.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.SPRUCE), var5, 11, var4, par3StructureBoundingBox);
                     this.clearCurrentPositionBlocksUpwards(par1World, var5, 12, var4, par3StructureBoundingBox);
                 }
             }
         }
-
         return true;
     }
-
-//    protected void func_175804_a(World worldIn, StructureBoundingBox p_175804_2_, int p_175804_3_, int p_175804_4_, int p_175804_5_, int p_175804_6_, int p_175804_7_, int p_175804_8_, IBlockState p_175804_9_, IBlockState p_175804_10_, boolean p_175804_11_)
-//    {
-//        final Block var12 = this.getBiomeSpecificBlock(par9, 0);
-//        final int var13 = this.getBiomeSpecificBlockMetadata(par9, 0);
-//        final Block var14 = this.getBiomeSpecificBlock(par10, 0);
-//        final int var15 = this.getBiomeSpecificBlockMetadata(par10, 0);
-//        super.fillWithMetadataBlocks(par1World, par2StructureBoundingBox, par3, par4, par5, par6, par7, par8, var12, var13, var14, var15, par11);
-//    }
 }

@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySludgeling;
 import net.minecraft.block.state.IBlockState;
@@ -112,5 +114,12 @@ public class BlockSludge extends BlockFluidClassic
         {
             worldIn.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, "liquid.lava", rand.nextFloat() * 0.25F + 0.75F, 0.00001F + rand.nextFloat() * 0.5F, false);
         }
+		if (rand.nextInt(10) == 0)
+		{
+			if (World.doesBlockHaveSolidTopSurface(worldIn, pos.down()) && !worldIn.getBlockState(pos.down(2)).getBlock().getMaterial().blocksMovement())
+			{
+				GalacticraftPlanets.spawnParticle("bacterialDrip", new Vector3(pos.getX() + rand.nextFloat(), pos.getY() - 1.05D, pos.getZ() + rand.nextFloat()), new Vector3(0, 0, 0));
+			}
+		}
     }
 }
