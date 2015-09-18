@@ -56,6 +56,10 @@ public class EffectHandler
 //            {
 //                particle = new EntitySmokeFX(mc.theWorld, position.x, position.y, position.z, motion.x, motion.y, motion.z, 2.5F);
 //            }
+			else if (particleID.equals("oilDrip"))
+			{
+				particle = new EntityFXOilDrip(mc.theWorld, position.x, position.y, position.z);
+			}
 
             if (dX * dX + dY * dY + dZ * dZ < viewDistance * viewDistance)
             {
