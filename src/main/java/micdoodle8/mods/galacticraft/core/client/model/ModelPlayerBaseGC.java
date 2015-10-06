@@ -275,61 +275,64 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
     {
         super.afterSetRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);
 
-        if (this.oxygenMask == null)
-        {
-            init();
-        }
+	    if (par7Entity instanceof EntityPlayer)
+	    {
+	        if (this.oxygenMask == null)
+	        {
+	            init();
+	        }
 
-        final EntityPlayer player = (EntityPlayer) par7Entity;
-        final ItemStack currentItemStack = player.inventory.getCurrentItem();
+	        final EntityPlayer player = (EntityPlayer) par7Entity;
+	        final ItemStack currentItemStack = player.inventory.getCurrentItem();
 
-        if (!player.capabilities.isCreativeMode && !par7Entity.onGround && par7Entity.worldObj.provider instanceof IGalacticraftWorldProvider && !(currentItemStack != null && currentItemStack.getItem() instanceof IHoldableItem))
-        {
-            float speedModifier = 0.1162F * 2;
+	        if (!player.capabilities.isCreativeMode && !par7Entity.onGround && par7Entity.worldObj.provider instanceof IGalacticraftWorldProvider && !(currentItemStack != null && currentItemStack.getItem() instanceof IHoldableItem))
+	        {
+	            float speedModifier = 0.1162F * 2;
 
-            float angularSwingArm = MathHelper.cos(par1 * (speedModifier / 2));
-            this.modelPlayer.bipedRightArm.rotateAngleX = -angularSwingArm * 4.0F * par2 * 0.5F;
-            this.modelPlayer.bipedLeftArm.rotateAngleX = angularSwingArm * 4.0F * par2 * 0.5F;
-            this.modelPlayer.bipedLeftLeg.rotateAngleX = MathHelper.cos(par1 * 0.1162F * 2 + (float)Math.PI) * 1.4F * par2;
-            this.modelPlayer.bipedRightLeg.rotateAngleX = MathHelper.cos(par1 * 0.1162F * 2) * 1.4F * par2;
-        }
+	            float angularSwingArm = MathHelper.cos(par1 * (speedModifier / 2));
+	            this.modelPlayer.bipedRightArm.rotateAngleX = -angularSwingArm * 4.0F * par2 * 0.5F;
+	            this.modelPlayer.bipedLeftArm.rotateAngleX = angularSwingArm * 4.0F * par2 * 0.5F;
+	            this.modelPlayer.bipedLeftLeg.rotateAngleX = MathHelper.cos(par1 * 0.1162F * 2 + (float)Math.PI) * 1.4F * par2;
+	            this.modelPlayer.bipedRightLeg.rotateAngleX = MathHelper.cos(par1 * 0.1162F * 2) * 1.4F * par2;
+	        }
 
-        if (usingParachute)
-        {
-            this.modelPlayer.bipedLeftArm.rotateAngleX += (float) Math.PI;
-            this.modelPlayer.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
-            this.modelPlayer.bipedRightArm.rotateAngleX += (float) Math.PI;
-            this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
-        }
+	        if (usingParachute)
+	        {
+	            this.modelPlayer.bipedLeftArm.rotateAngleX += (float) Math.PI;
+	            this.modelPlayer.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
+	            this.modelPlayer.bipedRightArm.rotateAngleX += (float) Math.PI;
+	            this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
+	        }
 
-        if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof IHoldableItem)
-        {
-            IHoldableItem holdableItem = (IHoldableItem) player.inventory.getCurrentItem().getItem();
+	        if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof IHoldableItem)
+	        {
+	            IHoldableItem holdableItem = (IHoldableItem) player.inventory.getCurrentItem().getItem();
 
-            if (holdableItem.shouldHoldLeftHandUp(player))
-            {
-                this.modelPlayer.bipedLeftArm.rotateAngleX = 0;
-                this.modelPlayer.bipedLeftArm.rotateAngleZ = 0;
+	            if (holdableItem.shouldHoldLeftHandUp(player))
+	            {
+	                this.modelPlayer.bipedLeftArm.rotateAngleX = 0;
+	                this.modelPlayer.bipedLeftArm.rotateAngleZ = 0;
 
-                this.modelPlayer.bipedLeftArm.rotateAngleX += (float) Math.PI + 0.3;
-                this.modelPlayer.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
-            }
+	                this.modelPlayer.bipedLeftArm.rotateAngleX += (float) Math.PI + 0.3;
+	                this.modelPlayer.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
+	            }
 
-            if (holdableItem.shouldHoldRightHandUp(player))
-            {
-                this.modelPlayer.bipedRightArm.rotateAngleX = 0;
-                this.modelPlayer.bipedRightArm.rotateAngleZ = 0;
+	            if (holdableItem.shouldHoldRightHandUp(player))
+	            {
+	                this.modelPlayer.bipedRightArm.rotateAngleX = 0;
+	                this.modelPlayer.bipedRightArm.rotateAngleZ = 0;
 
-                this.modelPlayer.bipedRightArm.rotateAngleX += (float) Math.PI + 0.3;
-                this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
-            }
+	                this.modelPlayer.bipedRightArm.rotateAngleX += (float) Math.PI + 0.3;
+	                this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
+	            }
 
-            if (player.onGround && holdableItem.shouldCrouch(player))
-            {
-                this.modelPlayer.bipedBody.rotateAngleX = 0.35F;
-                this.modelPlayer.bipedRightLeg.rotationPointZ = 4.0F;
-                this.modelPlayer.bipedLeftLeg.rotationPointZ = 4.0F;
-            }
-        }
+	            if (player.onGround && holdableItem.shouldCrouch(player))
+	            {
+	                this.modelPlayer.bipedBody.rotateAngleX = 0.35F;
+	                this.modelPlayer.bipedRightLeg.rotationPointZ = 4.0F;
+	                this.modelPlayer.bipedLeftLeg.rotationPointZ = 4.0F;
+	            }
+	        }
+	    }
     }
 }
