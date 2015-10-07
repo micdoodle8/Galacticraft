@@ -299,7 +299,7 @@ public class ConfigManagerCore
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Copper Ore Gen on Moon", false);
-            prop.comment = "Disable Tin Ore Gen on Moon.";
+            prop.comment = "Disable Copper Ore Gen on Moon.";
             prop.setLanguageKey("gc.configgui.disableCopperMoon");
             disableCopperMoon = prop.getBoolean(false);
             propOrder.add(prop.getName());
