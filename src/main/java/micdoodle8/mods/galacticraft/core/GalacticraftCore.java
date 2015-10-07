@@ -231,8 +231,14 @@ public class GalacticraftCore
 
         String nameOil = "oil";
         String nameFuel = "fuel"; 
-        if (FluidRegistry.getFluid(nameOil) != null) nameOil = "oilgc";
-        if (FluidRegistry.getFluid(nameFuel) != null) nameFuel = "fuelgc";        
+        if (CompatibilityManager.isBCraftLoaded() || CompatibilityManager.isPneumaticCraftLoaded()) // Mods known to add oil should go here
+        {
+            nameOil = "oilgc";
+        }
+        if (CompatibilityManager.isBCraftLoaded()) // Mods known to add fuel should go here
+        {
+            nameFuel = "fuelgc";
+        }
         GalacticraftCore.gcFluidOil = new Fluid(nameOil).setDensity(800).setViscosity(1500);
         GalacticraftCore.gcFluidFuel = new Fluid(nameFuel).setDensity(400).setViscosity(900);
         FluidRegistry.registerFluid(GalacticraftCore.gcFluidOil);
