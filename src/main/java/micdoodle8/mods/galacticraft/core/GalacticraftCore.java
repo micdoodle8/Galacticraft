@@ -235,7 +235,7 @@ public class GalacticraftCore
         {
             nameOil = "oilgc";
         }
-        if (CompatibilityManager.isBCraftLoaded()) // Mods known to add fuel should go here
+        if (CompatibilityManager.isBCraftLoaded() || CompatibilityManager.isPneumaticCraftLoaded()) // Mods known to add fuel should go here
         {
             nameFuel = "fuelgc";
         }
