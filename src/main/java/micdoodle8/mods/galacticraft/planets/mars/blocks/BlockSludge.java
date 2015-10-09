@@ -51,7 +51,7 @@ public class BlockSludge extends BlockFluidClassic
 
     public BlockSludge()
     {
-        super(MarsModule.SLUDGE, MarsModule.sludgeMaterial);
+        super(MarsModule.sludge, MarsModule.sludgeMaterial);
         this.setQuantaPerBlock(9);
         this.setRenderPass(1);
         this.setLightLevel(1.0F);
@@ -78,8 +78,8 @@ public class BlockSludge extends BlockFluidClassic
     {
         this.stillIcon = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "sludge_still");
         this.flowingIcon = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "sludge_flow");
-        MarsModule.SLUDGE.setStillIcon(this.stillIcon);
-        MarsModule.SLUDGE.setFlowingIcon(this.flowingIcon);
+        MarsModule.sludge.setStillIcon(this.stillIcon);
+        MarsModule.sludge.setFlowingIcon(this.flowingIcon);
     }
 
     @Override

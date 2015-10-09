@@ -34,8 +34,8 @@ public class GCBlocks
     public static Block basicBlock;
     public static Block airLockFrame;
     public static Block airLockSeal;
-    public static Block crudeOilStill;
-    public static Block fuelStill;
+    public static Block crudeOil;
+    public static Block fuel;
     public static Block refinery;
     public static Block fuelLoader;
     public static Block landingPadFull;

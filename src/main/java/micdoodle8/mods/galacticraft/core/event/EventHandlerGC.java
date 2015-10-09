@@ -85,6 +85,8 @@ import java.util.*;
 
 public class EventHandlerGC
 {
+    public static Map<Block, Item> bucketList = new HashMap<Block, Item>();
+
     @SubscribeEvent
     public void onRocketLaunch(EntitySpaceshipBase.RocketLaunchEvent event)
     {
@@ -267,83 +269,35 @@ public class EventHandlerGC
         }
     }
 
+    private ItemStack fillBucket(World world, MovingObjectPosition position)
+    {
+        Block block = world.getBlock(position.blockX, position.blockY, position.blockZ);
+
+        Item bucket = bucketList.get(block);
+
+        if (bucket != null && world.getBlockMetadata(position.blockX, position.blockY, position.blockZ) == 0)
+        {
+            world.setBlockToAir(position.blockX, position.blockY, position.blockZ);
+            return new ItemStack(bucket);
+        }
+
+        return null;
+    }
+
     @SubscribeEvent
     public void onBucketFill(FillBucketEvent event)
     {
-        Class<?> buildCraftClass = null;
-
-        Block bcOilID1 = null;
-        Block bcOilID2 = null;
-        Block bcFuelID1 = null;
-        Block bcFuelID2 = null;
-        Item bcOilBucket = null;
-        Item bcFuelBucket = null;
-
-        try
-        {
-            if ((buildCraftClass = Class.forName("buildcraft.BuildCraftEnergy")) != null)
-            {
-                for (final Field f : buildCraftClass.getFields())
-                {
-                    if (f.getName().equals("oilMoving"))
-                    {
-                        bcOilID1 = (Block) f.get(null);
-                    }
-                    else if (f.getName().equals("oilStill"))
-                    {
-                        bcOilID2 = (Block) f.get(null);
-                    }
-                    if (f.getName().equals("fuelMoving"))
-                    {
-                        bcFuelID1 = (Block) f.get(null);
-                    }
-                    else if (f.getName().equals("fuelStill"))
-                    {
-                        bcFuelID2 = (Block) f.get(null);
-                    }
-                    else if (f.getName().equals("bucketOil"))
-                    {
-                        bcOilBucket = (Item) f.get(null);
-                    }
-                    else if (f.getName().equals("bucketFuel"))
-                    {
-                        bcFuelBucket = (Item) f.get(null);
-                    }
-                }
-            }
-        }
-        catch (final Throwable cnfe)
-        {
-
-        }
-
         MovingObjectPosition pos = event.target;
-    	final Block blockID = event.world.getBlock(pos.blockX, pos.blockY, pos.blockZ);
 
-        if (GalacticraftCore.isPlanetsLoaded && blockID == MarsBlocks.blockSludge && event.world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0)
+        ItemStack ret = fillBucket(event.world, pos);
+
+        if (ret == null)
         {
-        	event.world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
-            event.result = new ItemStack(MarsItems.bucketSludge);
-            event.setResult(Result.ALLOW);
+            return;
         }
-        else if (bcOilBucket != null && (blockID == bcOilID1 || blockID == bcOilID2 || blockID == GCBlocks.crudeOilStill) && event.world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0)
-        {
-            event.world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
-            event.result = new ItemStack(bcOilBucket);
-            event.setResult(Result.ALLOW);
-        }
-        else if (bcFuelBucket != null && (blockID == bcFuelID1 || blockID == bcFuelID2 || blockID == GCBlocks.fuelStill) && event.world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0)
-        {
-            event.world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
-            event.result = new ItemStack(bcFuelBucket);
-            event.setResult(Result.ALLOW);
-        }
-        else if ((blockID == GCBlocks.crudeOilStill || blockID == GCBlocks.fuelStill) && event.world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0)
-        {
-           event.setCanceled(true);
-        }
-        
-        return;
+
+        event.result = ret;
+        event.setResult(Result.ALLOW);
     }
 
     @SubscribeEvent
@@ -453,7 +407,7 @@ public class EventHandlerGC
                             if (EventHandlerGC.checkBlockAbove(world, bx + x, by + cy + 1, bz + z))
                                 continue;
 
-                            world.setBlock(bx + x, by + cy, bz + z, GCBlocks.crudeOilStill, 0, 2);
+                            world.setBlock(bx + x, by + cy, bz + z, GCBlocks.crudeOil, 0, 2);
                         }
                     }
                 }
@@ -488,7 +442,7 @@ public class EventHandlerGC
                         if (EventHandlerGC.checkBlockAbove(world, bx + x, by + cy + 1, bz + z))
                             continue;
 
-                        if (world.getBlock(bx + x, by + cy, bz + z) == GCBlocks.crudeOilStill)
+                        if (world.getBlock(bx + x, by + cy, bz + z) == GCBlocks.crudeOil)
                         	return true;
                     }
                 }
@@ -513,7 +467,7 @@ public class EventHandlerGC
         {
             return true;
         }
-        return b instanceof BlockLiquid && b != GCBlocks.crudeOilStill;
+        return b instanceof BlockLiquid && b != GCBlocks.crudeOil;
     }
 
     private static boolean checkBlockAbove(World w, int x, int y, int z)

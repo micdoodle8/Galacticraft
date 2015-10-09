@@ -59,6 +59,8 @@ public class GCItems
     public static Item cheeseCurd;
     public static Item meteoricIronRaw;
     public static Item meteoricIronIngot;
+    public static Item bucketOil;
+    public static Item bucketFuel;
 //	public static Item cheeseBlock;
 
     public static ArmorMaterial ARMOR_SENSOR_GLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] { 0, 0, 0, 0 }, 0);
@@ -115,6 +117,8 @@ public class GCItems
 //		GCItems.cheeseBlock = new ItemBlockCheese(GCBlocks.cheeseBlock, "cheeseBlock");
         GCItems.meteoricIronRaw = new ItemMeteoricIron("meteoricIronRaw");
         GCItems.meteoricIronIngot = new ItemMoon("meteoricIronIngot");
+
+        hiddenItems.add(GCItems.oilExtractor);
 
         GCItems.registerHarvestLevels();
 
@@ -300,7 +304,7 @@ public class GCItems
         GCItems.registerItem(GCItems.parachute);
     }
 
-    private static void registerItem(Item item)
+    public static void registerItem(Item item)
     {
         GameRegistry.registerItem(item, item.getUnlocalizedName(), Constants.MOD_ID_CORE);
     }

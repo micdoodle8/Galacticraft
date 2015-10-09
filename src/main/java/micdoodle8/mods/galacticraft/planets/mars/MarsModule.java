@@ -14,7 +14,13 @@ import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockFluidGC;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
+import micdoodle8.mods.galacticraft.core.items.ItemBucketGC;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -22,6 +28,7 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModule;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockSludge;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.TeleportTypeMars;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
@@ -61,7 +68,8 @@ public class MarsModule implements IPlanetsModule
     public static final String ASSET_PREFIX = "galacticraftmars";
     public static final String TEXTURE_PREFIX = MarsModule.ASSET_PREFIX + ":";
 
-    public static Fluid SLUDGE;
+    public static Fluid sludge;
+    public static Fluid sludgeGC;
     public static Material sludgeMaterial = new MaterialLiquid(MapColor.foliageColor);
 
     public static Planet planetMars;
@@ -72,22 +80,45 @@ public class MarsModule implements IPlanetsModule
         MinecraftForge.EVENT_BUS.register(new EventHandlerMars());
         new ConfigManagerMars(new File(event.getModConfigurationDirectory(), "Galacticraft/mars.conf"));
 
-        MarsModule.SLUDGE = new Fluid("bacterialsludge").setViscosity(3000).setDensity(1001);
-        if (!FluidRegistry.registerFluid(MarsModule.SLUDGE))
+        if (!FluidRegistry.isFluidRegistered("bacterialsludge"))
         {
-            GCLog.info("\"bacterialsludge\" has already been registered as a fluid, ignoring...");
+            sludgeGC = new Fluid("bacterialsludge").setDensity(800).setViscosity(1500);
+            FluidRegistry.registerFluid(sludgeGC);
         }
+        else
+        {
+            GCLog.info("Galacticraft sludge is not default, issues may occur.");
+        }
+
+        sludge = FluidRegistry.getFluid("bacterialsludge");
+
+        if (sludge.getBlock() == null)
+        {
+            MarsBlocks.blockSludge = new BlockSludge().setBlockName("sludge");
+            ((BlockSludge) MarsBlocks.blockSludge).setQuantaPerBlock(3);
+            GameRegistry.registerBlock(MarsBlocks.blockSludge, ItemBlockDesc.class, MarsBlocks.blockSludge.getUnlocalizedName());
+            sludge.setBlock(MarsBlocks.blockSludge);
+        }
+        else
+        {
+            MarsBlocks.blockSludge = sludge.getBlock();
+        }
+
+        if (MarsBlocks.blockSludge != null)
+        {
+            MarsItems.bucketSludge = new ItemBucketGC(MarsBlocks.blockSludge, MarsModule.TEXTURE_PREFIX).setUnlocalizedName("bucketSludge");
+            MarsItems.registerItem(MarsItems.bucketSludge);
+            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack("bacterialsludge", FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(MarsItems.bucketSludge), new ItemStack(Items.bucket));
+        }
+
+        EventHandlerGC.bucketList.put(MarsBlocks.blockSludge, MarsItems.bucketSludge);
 
         MarsBlocks.initBlocks();
         MarsBlocks.registerBlocks();
         MarsBlocks.setHarvestLevels();
         MarsBlocks.oreDictRegistration();
 
-        MarsModule.SLUDGE.setBlock(MarsBlocks.blockSludge);
-
         MarsItems.initItems();
-
-		FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(MarsModule.SLUDGE, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(MarsItems.bucketSludge), new ItemStack(Items.bucket)));
     }
 
     @Override

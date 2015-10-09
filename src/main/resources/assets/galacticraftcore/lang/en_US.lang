@@ -85,6 +85,8 @@ item.basicItem.dehydratedPotato.name=Dehydrated Potatoes
 item.basicItem.cannedFood.name=Can of Food
 item.basicItem.frequencyModule.name=Frequency Module
 item.standardWrench.name=Standard Wrench
+item.bucketOil.name=Oil Bucket
+item.bucketFuel.name=Fuel Bucket
 
 # TOOLS
 item.steel_pickaxe.name=Heavy Duty Pickaxe

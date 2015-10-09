@@ -65,6 +65,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
+import micdoodle8.mods.galacticraft.core.items.ItemBucketGC;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.network.ConnectionEvents;
 import micdoodle8.mods.galacticraft.core.network.ConnectionPacket;
@@ -129,6 +130,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -229,42 +231,114 @@ public class GalacticraftCore
         EnergyConfigHandler.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.POWER_CONFIG_FILE));
         ChunkLoadingCallback.loadConfig(new File(event.getModConfigurationDirectory(), GalacticraftCore.CHUNKLOADER_CONFIG_FILE));
 
-        String nameOil = "oil";
-        String nameFuel = "fuel"; 
-        if (CompatibilityManager.isBCraftLoaded() || CompatibilityManager.isPneumaticCraftLoaded()) // Mods known to add oil should go here
+        // Oil:
+        if (!FluidRegistry.isFluidRegistered("oil"))
         {
-            nameOil = "oilgc";
+            gcFluidOil = new Fluid("oil").setDensity(800).setViscosity(1500);
+            FluidRegistry.registerFluid(gcFluidOil);
         }
-        if (CompatibilityManager.isBCraftLoaded() || CompatibilityManager.isPneumaticCraftLoaded()) // Mods known to add fuel should go here
+        else
         {
-            nameFuel = "fuelgc";
-        }
-        GalacticraftCore.gcFluidOil = new Fluid(nameOil).setDensity(800).setViscosity(1500);
-        GalacticraftCore.gcFluidFuel = new Fluid(nameFuel).setDensity(400).setViscosity(900);
-        FluidRegistry.registerFluid(GalacticraftCore.gcFluidOil);
-        FluidRegistry.registerFluid(GalacticraftCore.gcFluidFuel);
-        GalacticraftCore.gcFluidOil = FluidRegistry.getFluid(nameOil); 
-        GalacticraftCore.gcFluidFuel = FluidRegistry.getFluid(nameFuel);
-        GalacticraftCore.fluidOil = FluidRegistry.getFluid("oil"); 
-        GalacticraftCore.fluidFuel = FluidRegistry.getFluid("fuel");
-
-        GCBlocks.crudeOilStill = new BlockFluidGC(GalacticraftCore.gcFluidOil, "oil");
-        ((BlockFluidGC) GCBlocks.crudeOilStill).setQuantaPerBlock(3);
-        GCBlocks.crudeOilStill.setBlockName("crudeOilStill");
-        GameRegistry.registerBlock(GCBlocks.crudeOilStill, ItemBlockGC.class, GCBlocks.crudeOilStill.getUnlocalizedName());
-        if (GalacticraftCore.gcFluidOil.getBlock() == null)
-        {
-            GalacticraftCore.gcFluidOil.setBlock(GCBlocks.crudeOilStill);
+            GCLog.info("Galacticraft oil is not default, issues may occur.");
         }
 
-        GCBlocks.fuelStill = new BlockFluidGC(GalacticraftCore.gcFluidFuel, "fuel");
-        ((BlockFluidGC) GCBlocks.fuelStill).setQuantaPerBlock(6);
-        GCBlocks.fuelStill.setBlockName("fuel");
-        GameRegistry.registerBlock(GCBlocks.fuelStill, ItemBlockGC.class, GCBlocks.fuelStill.getUnlocalizedName());
-        if (GalacticraftCore.gcFluidFuel.getBlock() == null)
+        fluidOil = FluidRegistry.getFluid("oil");
+
+        if (fluidOil.getBlock() == null)
         {
-            GalacticraftCore.gcFluidFuel.setBlock(GCBlocks.fuelStill);
+            GCBlocks.crudeOil = new BlockFluidGC(fluidOil, "oil");
+            ((BlockFluidGC) GCBlocks.crudeOil).setQuantaPerBlock(3);
+            GCBlocks.crudeOil.setBlockName("crudeOil");
+            GameRegistry.registerBlock(GCBlocks.crudeOil, ItemBlockGC.class, GCBlocks.crudeOil.getUnlocalizedName());
+            fluidOil.setBlock(GCBlocks.crudeOil);
         }
+        else
+        {
+            GCBlocks.crudeOil = fluidOil.getBlock();
+        }
+
+        if (GCBlocks.crudeOil != null)
+        {
+            GCItems.bucketOil = new ItemBucketGC(GCBlocks.crudeOil, GalacticraftCore.TEXTURE_PREFIX);
+            GCItems.bucketOil.setUnlocalizedName("bucketOil");
+            GCItems.registerItem(GCItems.bucketOil);
+            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack("oil", FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(GCItems.bucketOil), new ItemStack(Items.bucket));
+        }
+
+        EventHandlerGC.bucketList.put(GCBlocks.crudeOil, GCItems.bucketOil);
+
+        // Fuel:
+        if (!FluidRegistry.isFluidRegistered("fuel"))
+        {
+            gcFluidFuel = new Fluid("fuel").setDensity(400).setViscosity(900);
+            FluidRegistry.registerFluid(gcFluidFuel);
+        }
+        else
+        {
+            GCLog.info("Galacticraft fuel is not default, issues may occur.");
+        }
+
+        fluidFuel = FluidRegistry.getFluid("fuel");
+
+        if (fluidFuel.getBlock() == null)
+        {
+            GCBlocks.fuel = new BlockFluidGC(fluidFuel, "fuel");
+            ((BlockFluidGC) GCBlocks.fuel).setQuantaPerBlock(3);
+            GCBlocks.fuel.setBlockName("fuelBlock");
+            GameRegistry.registerBlock(GCBlocks.fuel, ItemBlockGC.class, GCBlocks.fuel.getUnlocalizedName());
+            fluidFuel.setBlock(GCBlocks.fuel);
+        }
+        else
+        {
+            GCBlocks.fuel = fluidFuel.getBlock();
+        }
+
+        if (GCBlocks.fuel != null)
+        {
+            GCItems.bucketFuel = new ItemBucketGC(GCBlocks.fuel, GalacticraftCore.TEXTURE_PREFIX);
+            GCItems.bucketFuel.setUnlocalizedName("bucketFuel");
+            GCItems.registerItem(GCItems.bucketFuel);
+            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack("fuel", FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(GCItems.bucketFuel), new ItemStack(Items.bucket));
+        }
+
+        EventHandlerGC.bucketList.put(GCBlocks.fuel, GCItems.bucketFuel);
+
+//        String nameOil = "oil";
+//        String nameFuel = "fuel";
+//        if (CompatibilityManager.isBCraftLoaded() || CompatibilityManager.isPneumaticCraftLoaded()) // Mods known to add oil should go here
+//        {
+//            nameOil = "oilgc";
+//        }
+//        if (CompatibilityManager.isBCraftLoaded() || CompatibilityManager.isPneumaticCraftLoaded()) // Mods known to add fuel should go here
+//        {
+//            nameFuel = "fuelgc";
+//        }
+//        GalacticraftCore.gcFluidOil = new Fluid(nameOil).setDensity(800).setViscosity(1500);
+//        GalacticraftCore.gcFluidFuel = new Fluid(nameFuel).setDensity(400).setViscosity(900);
+//        FluidRegistry.registerFluid(GalacticraftCore.gcFluidOil);
+//        FluidRegistry.registerFluid(GalacticraftCore.gcFluidFuel);
+//        GalacticraftCore.gcFluidOil = FluidRegistry.getFluid(nameOil);
+//        GalacticraftCore.gcFluidFuel = FluidRegistry.getFluid(nameFuel);
+//        GalacticraftCore.fluidOil = FluidRegistry.getFluid("oil");
+//        GalacticraftCore.fluidFuel = FluidRegistry.getFluid("fuel");
+//
+//        GCBlocks.crudeOil = new BlockFluidGC(GalacticraftCore.gcFluidOil, "oil");
+//        ((BlockFluidGC) GCBlocks.crudeOil).setQuantaPerBlock(3);
+//        GCBlocks.crudeOil.setBlockName("crudeOil");
+//        GameRegistry.registerBlock(GCBlocks.crudeOil, ItemBlockGC.class, GCBlocks.crudeOil.getUnlocalizedName());
+//        if (GalacticraftCore.gcFluidOil.getBlock() == null)
+//        {
+//            GalacticraftCore.gcFluidOil.setBlock(GCBlocks.crudeOil);
+//        }
+//
+//        GCBlocks.fuel = new BlockFluidGC(GalacticraftCore.gcFluidFuel, "fuel");
+//        ((BlockFluidGC) GCBlocks.fuel).setQuantaPerBlock(6);
+//        GCBlocks.fuel.setBlockName("fuel");
+//        GameRegistry.registerBlock(GCBlocks.fuel, ItemBlockGC.class, GCBlocks.fuel.getUnlocalizedName());
+//        if (GalacticraftCore.gcFluidFuel.getBlock() == null)
+//        {
+//            GalacticraftCore.gcFluidFuel.setBlock(GCBlocks.fuel);
+//        }
 
         if (Loader.isModLoaded("PlayerAPI"))
         {
@@ -274,18 +348,18 @@ public class GalacticraftCore
         GCBlocks.initBlocks();
         GCItems.initItems();
 
-        FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidFuel, 1000), new ItemStack(GCItems.fuelCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
-        FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidOil, 1000), new ItemStack(GCItems.oilCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
-        if (!nameOil.equals("oil"))
-        {
-            FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.gcFluidOil, 1000), new ItemStack(GCItems.oilCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
-            if (CompatibilityManager.isBCraftLoaded())
-            {
-            	FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.gcFluidOil, 1000), GameRegistry.findItemStack("BuildCraft|Core", "bucketOil", 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
-            }
-        }
-        if (!nameFuel.equals("fuel"))
-        	FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.gcFluidFuel, 1000), new ItemStack(GCItems.fuelCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
+//        FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidFuel, 1000), new ItemStack(GCItems.fuelCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
+//        FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidOil, 1000), new ItemStack(GCItems.oilCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
+//        if (!nameOil.equals("oil"))
+//        {
+//            FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.gcFluidOil, 1000), new ItemStack(GCItems.oilCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
+//            if (CompatibilityManager.isBCraftLoaded())
+//            {
+//            	FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.gcFluidOil, 1000), GameRegistry.findItemStack("BuildCraft|Core", "bucketOil", 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
+//            }
+//        }
+//        if (!nameFuel.equals("fuel"))
+//        	FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.gcFluidFuel, 1000), new ItemStack(GCItems.fuelCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
     }
 
     @EventHandler
