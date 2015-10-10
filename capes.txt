@@ -92,3 +92,4 @@ kimwy:capeRainbow
 PrezGman:capeLightBlue
 creeperchick15:capePurple
 sonic5223:capeBlue
+mads4444:capeRainbow
