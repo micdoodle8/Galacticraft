@@ -65,7 +65,7 @@ public class GCPlayerBaseSP extends ClientPlayerBase
     public void onUpdate()
     {
         this.getClientHandler().onUpdate(this.player);
-        super.onUpdate();
+        playerAPI.localOnUpdate();
     }
 
     @Override
