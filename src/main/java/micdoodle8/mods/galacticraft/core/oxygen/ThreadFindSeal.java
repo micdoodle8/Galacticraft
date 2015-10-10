@@ -421,8 +421,9 @@ public class ThreadFindSeal
                             }
                             else if (id == fireBlock)
                             {
-                                nextLayer.add(sideVec);
                                 this.breatheableToReplace.add(sideVec);
+                                nextLayer.add(sideVec);
+                                checkedLocal.add(sideVec);
                             }
                             else if (id == oxygenSealerID)
                             {
@@ -507,6 +508,7 @@ public class ThreadFindSeal
                         {
                             nextLayer.add(sideVec);
                             this.breatheableToReplace.add(sideVec);
+                            checkedLocal.add(sideVec);
                         }
                         else if (id == oxygenSealerID)
                         {
