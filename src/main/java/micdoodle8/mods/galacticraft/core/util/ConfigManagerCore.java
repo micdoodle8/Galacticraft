@@ -92,7 +92,9 @@ public class ConfigManagerCore
     public static boolean disableMoonVillageGen;
     public static String[] oregenIDs = { };
     public static boolean enableOtherModsFeatures;
-    
+    public static boolean useOldOilFluidID;
+    public static boolean useOldFuelFluidID;
+
     //COMPATIBILITY
     public static String[] sealableIDs = { };
     public static String[] detectableIDs = { };
@@ -332,6 +334,18 @@ public class ConfigManagerCore
             prop.comment = "Enter IDs of other mods' ores here for Galacticraft to generate them on the Moon and other planets. Format is BlockName or BlockName:metadata. Use optional parameters at end of each line: /RARE /UNCOMMON or /COMMON for rarity in a chunk; /DEEP /SHALLOW or /BOTH for height; /SINGLE /STANDARD or /LARGE for clump size; /XTRARANDOM for ores sometimes there sometimes not at all.  /ONLYMOON or /ONLYMARS if wanted on one planet only.  If nothing specified, defaults are /COMMON, /BOTH and /STANDARD.  Repeat lines to generate a huge quantity of ores.";
             prop.setLanguageKey("gc.configgui.otherModOreGenIDs");
             oregenIDs = prop.getStringList();
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Use legacy \"oilgc\" fluid registration", false);
+            prop.comment = "Set to true to make Galacticraft oil register as \"oilgc\", for backwards compatibility with previously generated worlds.";
+            prop.setLanguageKey("gc.configgui.useOldOilFluidID");
+            useOldOilFluidID = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Use legacy \"fuelgc\" fluid registration", false);
+            prop.comment = "Set to true to make Galacticraft fuel register as \"fuelgc\", for backwards compatibility with previously generated worlds.";
+            prop.setLanguageKey("gc.configgui.useOldFuelFluidID");
+            useOldFuelFluidID = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
 //Debug
