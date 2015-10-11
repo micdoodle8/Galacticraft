@@ -43,8 +43,8 @@ item.steelPole.name=เสาเหล็กกล้า
 item.canvas.name=ผ้าใบ
 item.buggy.name=บักกี้
 item.emptyLiquidCanister.name=กระป๋องเปล่า
-item.oilCanisterPartial.name=กระป๋องที่เต็มไปด้วยน้ำมันบางส่วน
-item.fuelCanisterPartial.name=กระป๋องที่เต็มไปด้วยเชื้อเพลิงบางส่วน
+item.oilCanisterPartial.name=กระป๋องที่มีน้ำมันบางส่วน
+item.fuelCanisterPartial.name=กระป๋องที่มีเชื้อเพลิงบางส่วน
 item.oilCanister.name=กระป๋องที่เต็มไปด้วยน้ำมัน
 item.fuelCanister.name=กระป๋องที่เต็มไปด้วยเชื้อเพลิง
 item.oilExtractor.name=เครื่องสกัดน้ำมัน
@@ -230,7 +230,7 @@ death.attack.thermal=%1$s ลืมใส่เกราะกันอุณห
 
 # GALAXIES
 galaxy.blockyway.name=กาแลคซีบล็อกกี้เวย์
-galaxy.milkyWay=ทางช้างเผือก
+galaxy.milkyWay=กาแลคซีทางช้างเผือก
 
 # OTHER
 newversion.failed.name=ตรวจสอบการอัพเดทกาแลคติคคราฟล้มเหลว! ลองอีกครั้งใน 15 วินาที
