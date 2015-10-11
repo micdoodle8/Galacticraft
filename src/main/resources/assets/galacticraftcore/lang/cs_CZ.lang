@@ -102,6 +102,9 @@ item.basicItem.dehydratedPotato.name=Dehydrované rajče
 item.basicItem.cannedFood.name=Jídlo v plechovce
 item.basicItem.frequencyModule.name=Frekvenční modul
 item.standardWrench.name=Standardní klíč
+item.bucketOil.name=Kbelík s ropou
+item.bucketFuel.name=Kbelík s palivem
+item.basicItem.ambientThermalController.name=Teplotní regulátor
 
 # TOOLS
 item.steel_pickaxe.name=Ocelový krumpáč
@@ -556,6 +559,15 @@ gui.spaceRace.chat.notFound=Hráč jménem: %s nenalezen.
 gui.spaceRace.chat.alreadyPart=Už jsi součástí vesmírného závodu!
 gui.spaceRace.unnamed=Nepojmenovaný tým
 gui.spaceRace.comingSoon=Již brzy!
+
+gui.message.thermalStatus.name=
+gui.status.on.name=Zapnuto
+gui.status.off.name=Vypnuto
+gui.status.notAvailable.name=N/A
+gui.thermalSlot.desc.0=Slot na teplotni regulator
+gui.thermalSlot.desc.1=tepelný regulátor' zde (volitelně)
+gui.thermalSlot.desc.2= 
+
 
 # DIMENSIONS
 dimension.Overworld.name=Zemský povrh
