@@ -85,6 +85,8 @@ item.basicItem.dehydratedPotato.name=มันฝรั่งแห้ง
 item.basicItem.cannedFood.name=กระป๋องอาหาร
 item.basicItem.frequencyModule.name=โมดูลวัดความถี่
 item.standardWrench.name=ประแจ
+item.bucketOil.name=ถังน้ำมัน
+item.bucketFuel.name=ถังเชื้อเพลิง
 
 # TOOLS
 item.steel_pickaxe.name=อีเต้อแบบทนทาน
@@ -360,6 +362,8 @@ gui.button.unlockschematic.name=ปลดล็อคแผนผัง
 gui.button.stoprefine.name=หยุดกลั่น
 gui.button.enable.name=เปิดใช้งาน
 gui.button.disable.name=ปิดใช้งาน
+gui.button.hideDest.name=ซ่อน
+gui.button.unhideDest.name=เลิกซ่อน
 
 gui.choosePlanet.desc.overworld=เต็มไปด้วยสิ่งมีชีวิต#อาศัยอยู่ได้#แรงโน้มถ่วง: 100%
 gui.warning=คำเตือน!
@@ -692,5 +696,7 @@ gc.configgui.mapScrollSensitivity=ความไวของเม้าส์�
 gc.configgui.overrideMap=ตั้งค่าปุ่ม: แผนที่กาแลคซี
 gc.configgui.keyOverrideFuelLevel=ตั้งค่าปุ่ม: GUI เชื้อเพลิงจรวด
 gc.configgui.keyOverrideToggleAdvGoggles=ตั้งค่าปุ่ม: เปิดใช้งานแว่นเซนเซอร์ขั้นสูง
+gc.configgui.meteorSpawnMod=ปรับแต่งการเกิดของอุกกาบาต
+gc.configgui.meteorBlockDamage=เปิดใช้งานการทำลายของอุกกาบาต
 
 gc.configgui.title=ตั้งค่ากาแลคติคคราฟ
