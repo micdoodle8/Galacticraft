@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -284,8 +285,8 @@ public class GCBlocks
     {
         GameRegistry.registerBlock(GCBlocks.landingPad, ItemBlockLandingPad.class, GCBlocks.landingPad.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.landingPadFull, ItemBlockGC.class, GCBlocks.landingPadFull.getUnlocalizedName());
-        GameRegistry.registerBlock(GCBlocks.unlitTorch, ItemBlockGC.class, GCBlocks.unlitTorch.getUnlocalizedName());
-        GameRegistry.registerBlock(GCBlocks.unlitTorchLit, ItemBlockGC.class, GCBlocks.unlitTorchLit.getUnlocalizedName());
+        GameRegistry.registerBlock(GCBlocks.unlitTorch, ItemBlock.class, GCBlocks.unlitTorch.getUnlocalizedName());
+        GameRegistry.registerBlock(GCBlocks.unlitTorchLit, ItemBlock.class, GCBlocks.unlitTorchLit.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.breatheableAir, ItemBlockGC.class, GCBlocks.breatheableAir.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.brightAir, ItemBlockGC.class, GCBlocks.brightAir.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.brightBreatheableAir, ItemBlockGC.class, GCBlocks.brightBreatheableAir.getUnlocalizedName());
