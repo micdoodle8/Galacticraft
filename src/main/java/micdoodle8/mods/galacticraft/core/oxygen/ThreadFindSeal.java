@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -36,8 +37,10 @@ public class ThreadFindSeal
     private List<BlockVec3> breatheableToReplace;
     private List<BlockVec3> airToReplaceBright;
     private List<BlockVec3> breatheableToReplaceBright;
+    private List<BlockVec3> ambientThermalTracked;
     private List<TileEntityOxygenSealer> otherSealers;
     private List<BlockVec3> torchesToUpdate;
+    private boolean foundAmbientThermal;
 
     public ThreadFindSeal(TileEntityOxygenSealer sealer)
     {
@@ -51,6 +54,7 @@ public class ThreadFindSeal
         this.head = head;
         this.checkCount = checkCount;
         this.sealers = sealers;
+        this.foundAmbientThermal = false;
         this.checked = new HashSet<BlockVec3>();
         this.torchesToUpdate = new LinkedList<BlockVec3>();
 
@@ -126,10 +130,13 @@ public class ThreadFindSeal
         long time1 = System.nanoTime();
 
         this.sealed = true;
+        TileEntity tile = this.head.getTileEntityOnSide(world, ForgeDirection.DOWN);
+        this.foundAmbientThermal = tile instanceof TileEntityOxygenSealer && ((TileEntityOxygenSealer) tile).thermalControlEnabled();
         this.checked.add(this.head.clone());
         this.currentLayer = new LinkedList<BlockVec3>();
         this.airToReplace = new LinkedList<BlockVec3>();
         this.airToReplaceBright = new LinkedList<BlockVec3>();
+        this.ambientThermalTracked = new LinkedList<BlockVec3>();
 
         if (this.checkCount > 0)
         {
@@ -176,7 +183,7 @@ public class ThreadFindSeal
 
         if (this.sealed)
         {
-        	this.makeSealGood();
+        	this.makeSealGood(this.foundAmbientThermal);
         }
         else
         {
@@ -219,6 +226,10 @@ public class ThreadFindSeal
                         this.checkCount = otherSealer.getFindSealChecks();
                         this.sealers = new LinkedList<TileEntityOxygenSealer>();
                         this.sealers.add(otherSealer);
+                        if (otherSealer.thermalControlEnabled())
+                        {
+                            foundAmbientThermal = true;
+                        }
                         this.checked = new HashSet<BlockVec3>();
                         this.checked.add(newhead);
                         this.currentLayer.clear();
@@ -249,6 +260,10 @@ public class ThreadFindSeal
                                 if (!this.sealers.contains(oldHead))
                                 {
                                     this.sealers.add(oldHead);
+                                    if (oldHead.thermalControlEnabled())
+                                    {
+                                        foundAmbientThermal = true;
+                                    }
                                 }
                             }
                             this.head = newhead.clone();
@@ -276,7 +291,7 @@ public class ThreadFindSeal
                 else
                 {
                     //If the second search sealed the area, there may also be air or torches to update
-                	this.makeSealGood();
+                	this.makeSealGood(foundAmbientThermal);
                 }
             }
             this.checked = checkedSave;
@@ -338,21 +353,31 @@ public class ThreadFindSeal
         this.sealedFinal.set(this.sealed);
     }
 
-    private void makeSealGood()
+    private void makeSealGood(boolean ambientThermal)
     {
-        if (!this.airToReplace.isEmpty() || !this.airToReplaceBright.isEmpty())
+        if (!this.airToReplace.isEmpty() || !this.airToReplaceBright.isEmpty() || !ambientThermalTracked.isEmpty())
         {
             List<ScheduledBlockChange> changeList = new LinkedList<ScheduledBlockChange>();
             Block breatheableAirID = GCBlocks.breatheableAir;
+            int metadata = 0;
+            if (ambientThermal)
+            {
+                metadata = 1;
+            }
             for (BlockVec3 checkedVec : this.airToReplace)
             {
                 //No block update for performance reasons; deal with unlit torches separately
-                changeList.add(new ScheduledBlockChange(checkedVec.clone(), breatheableAirID, 0));
+                changeList.add(new ScheduledBlockChange(checkedVec.clone(), breatheableAirID, metadata, 2));
             }
             for (BlockVec3 checkedVec : this.airToReplaceBright)
             {
-                changeList.add(new ScheduledBlockChange(checkedVec.clone(), GCBlocks.brightBreatheableAir, 0));
+                changeList.add(new ScheduledBlockChange(checkedVec.clone(), GCBlocks.brightBreatheableAir, metadata, 2));
             }
+            for (BlockVec3 checkedVec : this.ambientThermalTracked)
+            {
+                changeList.add(new ScheduledBlockChange(checkedVec.clone(), checkedVec.getBlock(world), metadata, 3));
+            }
+
             TickHandlerServer.scheduleNewBlockChange(this.world.provider.dimensionId, changeList);
         }
         if (!this.torchesToUpdate.isEmpty())
@@ -368,11 +393,11 @@ public class ThreadFindSeal
             List<ScheduledBlockChange> changeList = new LinkedList<ScheduledBlockChange>();
             for (BlockVec3 checkedVec : this.breatheableToReplace)
             {
-                changeList.add(new ScheduledBlockChange(checkedVec.clone(), Blocks.air, 0));
+                changeList.add(new ScheduledBlockChange(checkedVec.clone(), Blocks.air, 0, 2));
             }
             for (BlockVec3 checkedVec : this.breatheableToReplaceBright)
             {
-                changeList.add(new ScheduledBlockChange(checkedVec.clone(), GCBlocks.brightAir, 0));
+                changeList.add(new ScheduledBlockChange(checkedVec.clone(), GCBlocks.brightAir, 0, 2));
             }
             TickHandlerServer.scheduleNewBlockChange(this.world.provider.dimensionId, changeList);
         }
@@ -588,6 +613,7 @@ public class ThreadFindSeal
                                 if (id == breatheableAirID)
                                 {
                                     nextLayer.add(sideVec);
+                                    this.ambientThermalTracked.add(sideVec);
                                 }
                                 else if (id == airID)
                                 {
@@ -597,6 +623,7 @@ public class ThreadFindSeal
                                 else if (id == breatheableAirIDBright)
                                 {
                                     nextLayer.add(sideVec);
+                                    this.ambientThermalTracked.add(sideVec);
                                 }
                                 else if (id == airIDBright)
                                 {
@@ -625,6 +652,10 @@ public class ThreadFindSeal
                                         if (side == 0)
                                         {
                                             this.sealers.add(sealer);
+                                            if (sealer.thermalControlEnabled())
+                                            {
+                                                foundAmbientThermal = true;
+                                            }
                                             this.checkCount += sealer.getFindSealChecks();
                                         }
                                         else
@@ -703,6 +734,7 @@ public class ThreadFindSeal
                                 if (id == breatheableAirID)
                                 {
                                     nextLayer.add(sideVec);
+                                    this.ambientThermalTracked.add(sideVec);
                                 }
                                 else if (id == airID)
                                 {
@@ -712,6 +744,7 @@ public class ThreadFindSeal
                                 else if (id == breatheableAirIDBright)
                                 {
                                     nextLayer.add(sideVec);
+                                    this.ambientThermalTracked.add(sideVec);
                                 }
                                 else if (id == airIDBright)
                                 {
@@ -740,6 +773,10 @@ public class ThreadFindSeal
                                         if (side == 0)
                                         {
                                             this.sealers.add(sealer);
+                                            if (sealer.thermalControlEnabled())
+                                            {
+                                                foundAmbientThermal = true;
+                                            }
                                             this.checkCount += sealer.getFindSealChecks();
                                         }
                                         else

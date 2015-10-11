@@ -500,7 +500,7 @@ public class TickHandlerServer
 	                        //Only replace blocks of type BlockAir or fire - this is to prevent accidents where other mods have moved blocks
 	                        if (changePosition != null && (block.isAir(world, changePosition.x, changePosition.y, changePosition.z) || block == Blocks.fire))
 	                        {
-	                            world.setBlock(changePosition.x, changePosition.y, changePosition.z, change.getChangeID(), change.getChangeMeta(), 2);
+	                            world.setBlock(changePosition.x, changePosition.y, changePosition.z, change.getChangeID(), change.getChangeMeta(), change.getChangeUpdateFlag());
 	                        }
 	                    }
                     }

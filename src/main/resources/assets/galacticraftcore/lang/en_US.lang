@@ -87,6 +87,7 @@ item.basicItem.frequencyModule.name=Frequency Module
 item.standardWrench.name=Standard Wrench
 item.bucketOil.name=Oil Bucket
 item.bucketFuel.name=Fuel Bucket
+item.basicItem.ambientThermalController.name=Ambient Thermal Controller
 
 # TOOLS
 item.steel_pickaxe.name=Heavy Duty Pickaxe
@@ -304,6 +305,7 @@ gui.message.help2=For Space Program guidance
 gui.message.help3=For help with oil
 gui.message.prelaunch=Pre-launch checklist
 gui.message.clicklink=Click for Galacticraft Wiki
+gui.message.thermalStatus.name=Thermal Control
 
 gui.status.active.name=Active
 gui.status.missingleaves.name=Not Enough Leaf Blocks
@@ -344,6 +346,9 @@ gui.status.compressing.name=Compressing
 gui.status.collecting.name=Collecting
 gui.status.tankEmpty.name=Oxygen Tank Empty
 gui.status.sunVisible.name=Sun Visible
+gui.status.on.name=ON
+gui.status.off.name=OFF
+gui.status.notAvailable.name=N/A
 
 gui.button.enableseal.name=Enable Seal
 gui.button.disableseal.name=Disable Seal
@@ -495,7 +500,9 @@ gui.player.health=Health
 gui.player.food=Food
 gui.player.bpm=bpm
 gui.player.ouch=ouch!!!!
-
+gui.thermalSlot.desc.0=Thermal attachment slot, place 'Ambient
+gui.thermalSlot.desc.1=Thermal Controller' here (optional)
+gui.thermalSlot.desc.2=Note: Uses more energy!
 
 gui.spaceRace.create.close.name=Close
 gui.spaceRace.create.back.name=Back

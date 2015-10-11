@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -15,11 +16,12 @@ public class ContainerOxygenSealer extends Container
 {
     private TileBaseElectricBlock tileEntity;
 
-    public ContainerOxygenSealer(InventoryPlayer par1InventoryPlayer, TileEntityOxygenSealer distributor)
+    public ContainerOxygenSealer(InventoryPlayer par1InventoryPlayer, TileEntityOxygenSealer sealer)
     {
-        this.tileEntity = distributor;
-        this.addSlotToContainer(new SlotSpecific(distributor, 0, 47, 27, ItemElectricBase.class));
-        this.addSlotToContainer(new SlotSpecific(distributor, 1, 17, 27, IItemOxygenSupply.class));
+        this.tileEntity = sealer;
+        this.addSlotToContainer(new SlotSpecific(sealer, 0, 33, 27, ItemElectricBase.class));
+        this.addSlotToContainer(new SlotSpecific(sealer, 1, 10, 27, IItemOxygenSupply.class));
+        this.addSlotToContainer(new SlotSpecific(sealer, 2, 56, 27, new ItemStack(GCItems.basicItem, 1, 20)));
 
         int var6;
         int var7;
@@ -58,7 +60,7 @@ public class ContainerOxygenSealer extends Container
             final ItemStack stack = slot.getStack();
             var2 = stack.copy();
 
-            if (par1 < 2)
+            if (par1 <= 2)
             {
                 if (!this.mergeItemStack(stack, b - 36, b, true))
                 {
@@ -77,6 +79,13 @@ public class ContainerOxygenSealer extends Container
                 else if (stack.getItem() instanceof IItemOxygenSupply)
                 {
                     if (!this.mergeItemStack(stack, 1, 2, false))
+                    {
+                        return null;
+                    }
+                }
+                else if (stack.getItem() == GCItems.basicItem && stack.getItemDamage() == 20)
+                {
+                    if (!this.mergeItemStack(stack, 2, 3, false))
                     {
                         return null;
                     }
