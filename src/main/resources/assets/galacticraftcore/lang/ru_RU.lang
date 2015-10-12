@@ -85,6 +85,9 @@ item.basicItem.dehydratedPotato.name=Дегидратированный карт
 item.basicItem.cannedFood.name=Консервированная еда
 item.basicItem.frequencyModule.name=Частотный модуль
 item.standardWrench.name=Обычный гаечный ключ
+item.bucketOil.name=Ведро нефти
+item.bucketFuel.name=Ведро топлива
+item.basicItem.ambientThermalController.name=Тепловой контроллер
 
 # TOOLS
 item.steel_pickaxe.name=Кирка со сверхпрочным покрытием
@@ -197,6 +200,8 @@ tile.slabGCHalf.moonSlab.name=Плита из лунного камня
 tile.moonBricksStairs.name=Ступеньки из кирпича лунной сокровищницы
 tile.wallGC.moonBricks.name=Стена из кирпича лунной сокровищницы
 tile.slabGCHalf.moonBricksSlab.name=Плита из кирпича лунной сокровищницы
+tile.crudeOil.name=Нефть
+tile.fuelBlock.name=Топливо
 
 # ENTITIES
 entity.EvolvedSpider.name=Эволюционировавший паук
@@ -302,6 +307,7 @@ gui.message.help2=Для помощи по космической програм
 gui.message.help3=Для помощи по добычи нефти, напечатайте
 gui.message.prelaunch=Контрольный список
 gui.message.clicklink=Нажмите, чтобы попасть на Galacticraft Wiki
+gui.message.thermalStatus.name=Тепловой контроль
 
 gui.status.active.name=Активно
 gui.status.missingleaves.name=Отсутствуют блоки листвы
@@ -342,6 +348,9 @@ gui.status.compressing.name=Сжатие
 gui.status.collecting.name=Сбор
 gui.status.tankEmpty.name=Кислородный баллон пуст
 gui.status.sunVisible.name=Видимость Солнца
+gui.status.on.name=Вкл.
+gui.status.off.name=Выкл.
+gui.status.notAvailable.name=N/A
 
 gui.button.enableseal.name=Запустить уплотнитель
 gui.button.disableseal.name=Отключить уплотнитель
@@ -360,6 +369,8 @@ gui.button.unlockschematic.name=Разблокировать схему
 gui.button.stoprefine.name=Остановить очистку
 gui.button.enable.name=Включить
 gui.button.disable.name=Выключить
+gui.button.hideDest.name=Спрятать
+gui.button.unhideDest.name=Показать
 
 gui.choosePlanet.desc.overworld=Полна жизни#Обитаема#Гравитация: 100%
 gui.warning=ОПАСНОСТЬ!
@@ -491,6 +502,9 @@ gui.player.health=Здоровье
 gui.player.food=Еда
 gui.player.bpm=bpm
 gui.player.ouch=ой!!!!
+gui.thermalSlot.desc.0=Слот для Теплового контроллера. Положите
+gui.thermalSlot.desc.1='Тепловой контроллер' сюда (необязательно).
+gui.thermalSlot.desc.2=Примечание: Потребляет больше энергии.
 
 gui.spaceRace.create.close.name=Закрыть
 gui.spaceRace.create.back.name=Назад
