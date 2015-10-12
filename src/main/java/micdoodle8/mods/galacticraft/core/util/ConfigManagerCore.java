@@ -336,14 +336,14 @@ public class ConfigManagerCore
             oregenIDs = prop.getStringList();
             propOrder.add(prop.getName());
 
-            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Use legacy \"oilgc\" fluid registration", false);
-            prop.comment = "Set to true to make Galacticraft oil register as \"oilgc\", for backwards compatibility with previously generated worlds.";
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Use legacy oilgc fluid registration", false);
+            prop.comment = "Set to true to make Galacticraft oil register as oilgc, for backwards compatibility with previously generated worlds.";
             prop.setLanguageKey("gc.configgui.useOldOilFluidID");
             useOldOilFluidID = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
-            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Use legacy \"fuelgc\" fluid registration", false);
-            prop.comment = "Set to true to make Galacticraft fuel register as \"fuelgc\", for backwards compatibility with previously generated worlds.";
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Use legacy fuelgc fluid registration", false);
+            prop.comment = "Set to true to make Galacticraft fuel register as fuelgc, for backwards compatibility with previously generated worlds.";
             prop.setLanguageKey("gc.configgui.useOldFuelFluidID");
             useOldFuelFluidID = prop.getBoolean(false);
             propOrder.add(prop.getName());
