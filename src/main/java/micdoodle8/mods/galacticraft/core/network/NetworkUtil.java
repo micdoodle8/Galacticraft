@@ -544,7 +544,7 @@ public class NetworkUtil
             FluidStack fluidA = a2.getFluid();
             FluidStack fluidB = b2.getFluid();
             return fuzzyEquals(a2.getCapacity(), b2.getCapacity()) &&
-                    fuzzyEquals(fluidA != null ? fluidA.fluidID : -1, fluidB != null ? fluidB.fluidID : -1) &&
+                    fuzzyEquals(fluidA != null ? fluidA.getFluidID() : -1, fluidB != null ? fluidB.getFluidID() : -1) &&
                     fuzzyEquals(a2.getFluidAmount(), b2.getFluidAmount());
         }
         else
