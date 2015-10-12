@@ -475,7 +475,7 @@ gui.fuelTank.desc.1=palivové čerpadlo.
 gui.fuelTank.desc.2=Ale může být také naplněna
 gui.fuelTank.desc.3=pomocí plechovek.
 gui.fuelTank.desc.4=Palivová nádrž
-gui.oilTank.desc.0=Nádrž na roku, může být naplněna
+gui.oilTank.desc.0=Nádrž na ropu, může být naplněna
 gui.oilTank.desc.1=pomocí plechovek.
 gui.infiniteBattery.desc=Nevyčerpatelná
 gui.batterySlot.desc.0=Slot na baterii, vložte ji
@@ -560,13 +560,13 @@ gui.spaceRace.chat.alreadyPart=Už jsi součástí vesmírného závodu!
 gui.spaceRace.unnamed=Nepojmenovaný tým
 gui.spaceRace.comingSoon=Již brzy!
 
-gui.message.thermalStatus.name=
+gui.message.thermalStatus.name=Teplotní regulátor
 gui.status.on.name=Zapnuto
 gui.status.off.name=Vypnuto
 gui.status.notAvailable.name=N/A
 gui.thermalSlot.desc.0=Slot na teplotni regulator
 gui.thermalSlot.desc.1=tepelný regulátor' zde (volitelně)
-gui.thermalSlot.desc.2= 
+gui.thermalSlot.desc.2=Poznámka: Využívá hodně energie
 
 
 # DIMENSIONS
@@ -692,15 +692,15 @@ gc.configgui.oxygenIndicatorLeft=Posunout indikátor kyslíku vlevo
 gc.configgui.oxygenIndicatorBottom=Posunout indikátor kyslíku dolu
 gc.configgui.oilGenFactor=Četnost ropy
 gc.configgui.externalOilGen=Četnost externí ropy
-gc.configgui.enableRetrogenOil=Retrogen Overworld Oil
+gc.configgui.enableRetrogenOil=Vytvářet na Zemi Retrogen Oil
 gc.configgui.enableCopperOreGen=Četnost mědi
 gc.configgui.enableTinOreGen=Četnost cínu
 gc.configgui.enableAluminumOreGen=Četnost hliníku
 gc.configgui.enableSiliconOreGen=Četnost silikonu
-gc.configgui.disableCheeseMoon=Nevitvářet měsíční sýr
-gc.configgui.disableTinMoon=Nevitvářet měsíční cín
-gc.configgui.disableCopperMoon=Nevitvářet měsíční měď
-gc.configgui.disableMoonVillageGen=Nevitvářet mimozemšťany
+gc.configgui.disableCheeseMoon=Nevytvářet měsíční sýr
+gc.configgui.disableTinMoon=Nevytvářet měsíční cín
+gc.configgui.disableCopperMoon=Nevytvářet měsíční měď
+gc.configgui.disableMoonVillageGen=Nevytvářet mimozemšťany
 gc.configgui.enableOtherModsFeatures=Povolit externí generátory terénu
 gc.configgui.whitelistCoFHCoreGen=Povolené položky CoFHCore generátoru terénu
 gc.configgui.enableThaumCraftNodes=Povolit ThaumCraft Nodes na planetách
@@ -720,14 +720,14 @@ gc.configgui.enableSealerEdgeChecks=Ověřování vzduchového uzávěru
 gc.configgui.alternateCanisterRecipe=Alternativní láhve
 gc.configgui.oreDictSilicon=OreDict název silikonu v ostatních módech
 gc.configgui.rocketFuelFactor=Účinnost raketového paliva
-gc.configgui.dungeonBossHealthMod=Dungeon Boss Health Modifier
-gc.configgui.hardMode=Harder Difficulty
+gc.configgui.dungeonBossHealthMod=Modifikátor života (boss)
+gc.configgui.hardMode=Vyšší obtížnost
 gc.configgui.quickMode=Rychlá hra (snazší)
 gc.configgui.mapScrollInvert=Invertovat přibližování kolečkem na mapě
-gc.configgui.mapScrollSensitivity=Ciltivost kolačka na mapě
-gc.configgui.overrideMap=Set key: Galaxy Map
-gc.configgui.keyOverrideFuelLevel=Set key: Rocket Fuel GUI
-gc.configgui.keyOverrideToggleAdvGoggles=Set key: Advanced Goggles
+gc.configgui.mapScrollSensitivity=Ciltivost kolečka na mapě
+gc.configgui.overrideMap=Klávesa mapy galaxie
+gc.configgui.keyOverrideFuelLevel=Klávesa stavu paliva
+gc.configgui.keyOverrideToggleAdvGoggles=Klávesa brýlí
 gc.configgui.title=Nastavení jádra Galacticraftu
 
 # </file>
