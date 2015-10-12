@@ -14,8 +14,10 @@ import net.minecraft.world.World;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public abstract class EntityAdvanced extends Entity implements IPacketReceiver
@@ -23,6 +25,8 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
     protected long ticks = 0;
     private LinkedHashSet<Field> fieldCacheClient;
     private LinkedHashSet<Field> fieldCacheServer;
+    private Map<Field, Object> lastSentData = new HashMap<Field, Object>();
+    private boolean networkDataChanged = false;
 
     public EntityAdvanced(World world)
     {
@@ -114,7 +118,11 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
                     }
                 }
 
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, this.getPacketRange()));
+                PacketDynamic packet = new PacketDynamic(this);
+                if (networkDataChanged)
+                {
+                    GalacticraftCore.packetPipeline.sendToAllAround(packet, new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, this.getPacketRange()));
+                }
             }
 
             if (this.worldObj.isRemote && this.ticks % this.getPacketCooldown(Side.SERVER) == 0)
@@ -131,7 +139,11 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
                     }
                 }
 
-                GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
+                PacketDynamic packet = new PacketDynamic(this);
+                if (networkDataChanged)
+                {
+                    GalacticraftCore.packetPipeline.sendToServer(packet);
+                }
             }
         }
     }
@@ -163,6 +175,7 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
     public void getNetworkedData(ArrayList<Object> sendData)
     {
         Set<Field> fieldList = null;
+        boolean changed = false;
 
         if (this.worldObj.isRemote)
         {
@@ -177,7 +190,20 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
         {
             try
             {
-                sendData.add(f.get(this));
+                Object data = f.get(this);
+
+                if (!changed)
+                {
+                    Object lastData = lastSentData.get(f);
+
+                    if (!NetworkUtil.fuzzyEquals(lastData, data))
+                    {
+                        changed = true;
+                    }
+                }
+
+                sendData.add(data);
+                lastSentData.put(f, data);
             }
             catch (Exception e)
             {
@@ -185,7 +211,23 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
             }
         }
 
-        this.addExtraNetworkedData(sendData);
+        if (changed)
+        {
+            this.addExtraNetworkedData(sendData);
+        }
+        else
+        {
+            ArrayList<Object> prevSendData = new ArrayList<Object>(sendData);
+
+            this.addExtraNetworkedData(sendData);
+
+            if (!prevSendData.equals(sendData))
+            {
+                changed = true;
+            }
+        }
+
+        networkDataChanged = changed;
     }
 
     @Override

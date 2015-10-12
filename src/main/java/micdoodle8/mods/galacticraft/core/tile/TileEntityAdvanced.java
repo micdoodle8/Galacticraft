@@ -13,8 +13,10 @@ import net.minecraft.tileentity.TileEntity;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public abstract class TileEntityAdvanced extends TileEntity implements IPacketReceiver
@@ -22,6 +24,8 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
     public long ticks = 0;
     private LinkedHashSet<Field> fieldCacheClient;
     private LinkedHashSet<Field> fieldCacheServer;
+    private Map<Field, Object> lastSentData = new HashMap<Field, Object>();
+    private boolean networkDataChanged = false;
 
     @Override
     public void updateEntity()
@@ -54,11 +58,19 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
 
             if (this.worldObj.isRemote && this.fieldCacheServer.size() > 0)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
+                PacketDynamic packet = new PacketDynamic(this);
+                if (networkDataChanged)
+                {
+                    GalacticraftCore.packetPipeline.sendToServer(packet);
+                }
             }
             else if (!this.worldObj.isRemote && this.fieldCacheClient.size() > 0)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, this.getPacketRange()));
+                PacketDynamic packet = new PacketDynamic(this);
+                if (networkDataChanged)
+                {
+                    GalacticraftCore.packetPipeline.sendToAllAround(packet, new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, this.getPacketRange()));
+                }
             }
         }
     }
@@ -110,6 +122,7 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
     public void getNetworkedData(ArrayList<Object> sendData)
     {
         Set<Field> fieldList = null;
+        boolean changed = false;
 
         if (this.fieldCacheClient == null || this.fieldCacheServer == null)
         {
@@ -136,7 +149,20 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
         {
             try
             {
-                sendData.add(f.get(this));
+                Object data = f.get(this);
+
+                if (!changed)
+                {
+                    Object lastData = lastSentData.get(f);
+
+                    if (!NetworkUtil.fuzzyEquals(lastData, data))
+                    {
+                        changed = true;
+                    }
+                }
+
+                sendData.add(data);
+                lastSentData.put(f, data);
             }
             catch (Exception e)
             {
@@ -144,7 +170,23 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
             }
         }
 
-        this.addExtraNetworkedData(sendData);
+        if (changed)
+        {
+            this.addExtraNetworkedData(sendData);
+        }
+        else
+        {
+            ArrayList<Object> prevSendData = new ArrayList<Object>(sendData);
+
+            this.addExtraNetworkedData(sendData);
+
+            if (!prevSendData.equals(sendData))
+            {
+                changed = true;
+            }
+        }
+
+        networkDataChanged = changed;
     }
 
     @Override
