@@ -86,7 +86,7 @@ public class RecipeManagerAsteroids
         RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.beamReflector), new Object[] { " Y ", " XZ", "XXX", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 6), 'Y', new ItemStack(AsteroidsItems.basicItem, 1, 8), 'Z', Blocks.lever });
 
         RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.blockMinerBase, 4, 0), new Object[] { "XCX", "W W", "XBX", 'X', "compressedDesh", 'W', new ItemStack(AsteroidsItems.basicItem, 1, 8), 'C', new ItemStack(Blocks.chest), 'B', new ItemStack(GCBlocks.machineTiered, 1, BlockMachineTiered.STORAGE_MODULE_METADATA) });
-        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.orionDrive, 1, 0), new Object[] { "ABC", "DOE", "FGH", 'A', "oreDiamond", 'B', "oreLapis", 'C', "oreGold", 'D', "oreRedstone", 'E', "oreCoal", 'F', new ItemStack(GCBlocks.blockMoon, 1, 2), 'G', new ItemStack(MarsBlocks.marsBlock, 1, 2), 'H', new ItemStack(AsteroidBlocks.blockBasic, 1, 4), 'O', new ItemStack(AsteroidsItems.basicItem, 1, 8) });
+        RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.orionDrive, 1, 0), new Object[] { "ABC", "DOE", "FGH", 'A', "oreDiamond", 'B', "oreLapis", 'C', "oreGold", 'D', "oreRedstone", 'E', "oreCoal", 'F', "oreCheese", 'G', "oreDesh", 'H', new ItemStack(AsteroidBlocks.blockBasic, 1, 4), 'O', new ItemStack(AsteroidsItems.basicItem, 1, 8) });
         
         if (OreDictionary.getOres("ingotTitanium").size() > 0)
         {
