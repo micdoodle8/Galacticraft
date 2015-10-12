@@ -76,6 +76,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fluids.FluidStack;
 
 //import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 
@@ -90,6 +91,11 @@ public class WorldUtil
     private static IWorldGenerator generatorAE2meteors = null;
     private static Method generateTCAuraNodes = null;
     private static boolean generatorsInitialised = false;
+
+    private static boolean oldFluidIDMethod = true;
+    private static Class<?> fluidStackClass = null;
+    private static Method getFluidMethod = null;
+    private static Field fluidIdField = null;
 	
     public static double getGravityForEntity(Entity entity)
     {
@@ -556,6 +562,51 @@ public class WorldUtil
                 GCLog.severe("Dimension already registered to another mod: unable to register planet dimension " + dimID);
             }
         }
+    }
+
+    public static int getFluidID(FluidStack stack)
+    {
+        try
+        {
+            if (oldFluidIDMethod)
+            {
+                try
+                {
+                    if (getFluidMethod == null)
+                    {
+                        if (fluidStackClass == null)
+                        {
+                            fluidStackClass = Class.forName("net.minecraftforge.fluids.FluidStack");
+                        }
+                        getFluidMethod = fluidStackClass.getDeclaredMethod("getFluidID");
+                    }
+                    return (Integer) getFluidMethod.invoke(stack);
+                }
+                catch (NoSuchMethodError error)
+                {
+                    oldFluidIDMethod = false;
+                    getFluidID(stack);
+                }
+            }
+            else
+            {
+                if (fluidIdField == null)
+                {
+                    if (fluidStackClass == null)
+                    {
+                        fluidStackClass = Class.forName("net.minecraftforge.fluids.FluidStack");
+                    }
+                    fluidIdField = fluidStackClass.getDeclaredField("fluidID");
+                }
+                return fluidIdField.getInt(stack);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return -1;
     }
     
     /**
