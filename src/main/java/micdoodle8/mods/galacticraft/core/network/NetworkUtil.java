@@ -534,7 +534,8 @@ public class NetworkUtil
         {
             EnergyStorage a2 = (EnergyStorage) a;
             EnergyStorage b2 = (EnergyStorage) b;
-            return fuzzyEquals(a2.getCapacityGC(), b2.getCapacityGC()) &&
+            return fuzzyEquals(a2.getEnergyStoredGC(), b2.getEnergyStoredGC()) &&
+                    fuzzyEquals(a2.getCapacityGC(), b2.getCapacityGC()) &&
                     fuzzyEquals(a2.getMaxReceive(), b2.getMaxReceive()) &&
                     fuzzyEquals(a2.getMaxExtract(), b2.getMaxExtract());
         }
@@ -551,6 +552,28 @@ public class NetworkUtil
         else
         {
             return a.equals(b);
+        }
+    }
+
+    public static Object cloneNetworkedObject(Object a)
+    {
+        // We only need to clone mutable objects
+        if (a instanceof EnergyStorage)
+        {
+            EnergyStorage prevStorage = (EnergyStorage)a;
+            EnergyStorage storage = new EnergyStorage(prevStorage.getCapacityGC(), prevStorage.getMaxReceive(), prevStorage.getMaxExtract());
+            storage.setEnergyStored(prevStorage.getEnergyStoredGC());
+            return storage;
+        }
+        else if (a instanceof FluidTank)
+        {
+            FluidTank prevTank = (FluidTank)a;
+            FluidTank tank = new FluidTank(prevTank.getFluid(), prevTank.getCapacity());
+            return tank;
+        }
+        else
+        {
+            return a;
         }
     }
 }

@@ -188,27 +188,30 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
 
         for (Field f : fieldList)
         {
+            boolean fieldChanged = false;
             try
             {
                 Object data = f.get(this);
+                Object lastData = lastSentData.get(f);
 
-                if (!changed)
+                if (!NetworkUtil.fuzzyEquals(lastData, data))
                 {
-                    Object lastData = lastSentData.get(f);
-
-                    if (!NetworkUtil.fuzzyEquals(lastData, data))
-                    {
-                        changed = true;
-                    }
+                    fieldChanged = true;
                 }
 
                 sendData.add(data);
-                lastSentData.put(f, data);
+
+                if (fieldChanged)
+                {
+                    lastSentData.put(f, NetworkUtil.cloneNetworkedObject(data));
+                }
             }
             catch (Exception e)
             {
                 e.printStackTrace();
             }
+
+            changed |= fieldChanged;
         }
 
         if (changed)

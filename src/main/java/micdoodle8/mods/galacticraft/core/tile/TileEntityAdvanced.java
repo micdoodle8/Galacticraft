@@ -4,6 +4,7 @@ import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorage;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
@@ -147,27 +148,30 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
 
         for (Field f : fieldList)
         {
+            boolean fieldChanged = false;
             try
             {
                 Object data = f.get(this);
+                Object lastData = lastSentData.get(f);
 
-                if (!changed)
+                if (!NetworkUtil.fuzzyEquals(lastData, data))
                 {
-                    Object lastData = lastSentData.get(f);
-
-                    if (!NetworkUtil.fuzzyEquals(lastData, data))
-                    {
-                        changed = true;
-                    }
+                    fieldChanged = true;
                 }
 
                 sendData.add(data);
-                lastSentData.put(f, data);
+
+                if (fieldChanged)
+                {
+                    lastSentData.put(f, NetworkUtil.cloneNetworkedObject(data));
+                }
             }
             catch (Exception e)
             {
                 e.printStackTrace();
             }
+
+            changed |= fieldChanged;
         }
 
         if (changed)
