@@ -1,21 +1,19 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Random;
-import java.util.Set;
 
+import com.google.common.collect.Maps;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IAntiGrav;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
+import micdoodle8.mods.galacticraft.api.galaxies.Satellite;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
@@ -48,6 +46,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.S07PacketRespawn;
 import net.minecraft.network.play.server.S1DPacketEntityEffect;
@@ -82,7 +81,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class WorldUtil
 {
-    public static List<Integer> registeredSpaceStations;
+    public static HashMap<Integer, Integer> registeredSpaceStations;
     public static List<Integer> registeredPlanets;
     private static IWorldGenerator generatorGCGreg = null;
     private static IWorldGenerator generatorCoFH = null;
@@ -315,7 +314,7 @@ public class WorldUtil
             }
         }
 
-        for (Integer element : WorldUtil.registeredSpaceStations)
+        for (Integer element : WorldUtil.registeredSpaceStations.keySet())
         {
         	WorldProvider provider = WorldUtil.getProviderForDimension(element);
 
@@ -416,7 +415,7 @@ public class WorldUtil
 
                     if (!ConfigManagerCore.spaceStationsRequirePermission || data.getAllowedPlayers().contains(playerBase.getGameProfile().getName()) || VersionUtil.isPlayerOpped(playerBase))
                     {
-                        map.put(celestialBody.getName() + "$" + data.getOwner() + "$" + data.getSpaceStationName() + "$" + provider.dimensionId, provider.dimensionId);
+                        map.put(celestialBody.getName() + "$" + data.getOwner() + "$" + data.getSpaceStationName() + "$" + provider.dimensionId + "$" + data.getHomePlanet(), provider.dimensionId);
                     }
                 }
             }
@@ -462,7 +461,7 @@ public class WorldUtil
     {
         if (WorldUtil.registeredSpaceStations != null)
         {
-            for (Integer registeredID : WorldUtil.registeredSpaceStations)
+            for (Integer registeredID : WorldUtil.registeredSpaceStations.keySet())
             {
                 DimensionManager.unregisterDimension(registeredID);
             }
@@ -473,31 +472,85 @@ public class WorldUtil
 
     public static void registerSpaceStations(File spaceStationList)
     {
-        WorldUtil.registeredSpaceStations = WorldUtil.getExistingSpaceStationList(spaceStationList);
+//        WorldUtil.registeredSpaceStations = WorldUtil.getExistingSpaceStationList(spaceStationList);
+        WorldUtil.registeredSpaceStations = Maps.newHashMap();
     	MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
     	if (theServer == null) return;
 
-        for (Integer registeredID : WorldUtil.registeredSpaceStations)
-        {
-            int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, registeredID);
+        final File[] var2 = spaceStationList.listFiles();
 
-            if (!DimensionManager.isDimensionRegistered(registeredID))
+        if (var2 != null)
+        {
+            for (File var5 : var2)
             {
-	            if (id >= 0)
-	            {
-	                DimensionManager.registerDimension(registeredID, ConfigManagerCore.idDimensionOverworldOrbitStatic);
-	                theServer.worldServerForDimension(registeredID);
+                if (var5.getName().contains("spacestation_"))
+                {
+                    try
+                    {
+                        // Note: this is kind of a hacky way of doing this, loading the NBT from each space station file
+                        // during dimension registration, to find out what each space station's provider IDs are.
+
+                        String name = var5.getName();
+                        SpaceStationWorldData worldDataTemp = new SpaceStationWorldData(name);
+                        name = name.substring(13, name.length() - 4);
+                        int registeredID = Integer.parseInt(name);
+
+                        FileInputStream fileinputstream = new FileInputStream(var5);
+                        NBTTagCompound nbttagcompound = CompressedStreamTools.readCompressed(fileinputstream);
+                        fileinputstream.close();
+                        worldDataTemp.readFromNBT(nbttagcompound.getCompoundTag("data"));
+
+                        // Search for id in server-defined statically loaded dimensions
+                        int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, registeredID);
+
+                        if (!DimensionManager.isDimensionRegistered(registeredID))
+                        {
+                            if (id >= 0)
+                            {
+                                DimensionManager.registerDimension(registeredID, worldDataTemp.getDimensionIdStatic());
+                                WorldUtil.registeredSpaceStations.put(registeredID, worldDataTemp.getDimensionIdStatic());
+                                theServer.worldServerForDimension(registeredID);
+                            }
+                            else
+                            {
+                                DimensionManager.registerDimension(registeredID, worldDataTemp.getDimensionIdDynamic());
+                                WorldUtil.registeredSpaceStations.put(registeredID, worldDataTemp.getDimensionIdDynamic());
+                            }
+                        }
+                        else
+                        {
+                            GCLog.severe("Dimension already registered to another mod: unable to register space station dimension " + registeredID);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
                 }
-	            else
-	            {
-	                DimensionManager.registerDimension(registeredID, ConfigManagerCore.idDimensionOverworldOrbit);
-	            }
-            }
-            else
-            {
-                GCLog.severe("Dimension already registered to another mod: unable to register space station dimension " + registeredID);
             }
         }
+
+//        for (Integer registeredID : WorldUtil.registeredSpaceStations)
+//        {
+//            int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, registeredID);
+//
+//            if (!DimensionManager.isDimensionRegistered(registeredID))
+//            {
+//	            if (id >= 0)
+//	            {
+//	                DimensionManager.registerDimension(registeredID, ConfigManagerCore.idDimensionOverworldOrbitStatic);
+//	                theServer.worldServerForDimension(registeredID);
+//                }
+//	            else
+//	            {
+//	                DimensionManager.registerDimension(registeredID, ConfigManagerCore.idDimensionOverworldOrbit);
+//	            }
+//            }
+//            else
+//            {
+//                GCLog.severe("Dimension already registered to another mod: unable to register space station dimension " + registeredID);
+//            }
+//        }
     }
 
     /**
@@ -625,7 +678,7 @@ public class WorldUtil
         }
 
         if (WorldUtil.registeredSpaceStations != null)
-        	for (final Integer i : WorldUtil.registeredSpaceStations)
+        	for (final Integer i : WorldUtil.registeredSpaceStations.keySet())
 	        {
 	            temp.add(i);
 	        }
@@ -642,30 +695,45 @@ public class WorldUtil
         return finalArray;
     }
 
-    public static SpaceStationWorldData bindSpaceStationToNewDimension(World world, EntityPlayerMP player)
+    public static SpaceStationWorldData bindSpaceStationToNewDimension(World world, EntityPlayerMP player, int homePlanetID)
     {
+        int dynamicProviderID = -1;
+        int staticProviderID = -1;
+        for (Satellite satellite : GalaxyRegistry.getRegisteredSatellites().values())
+        {
+            if (satellite.getParentPlanet().getDimensionID() == homePlanetID)
+            {
+                dynamicProviderID = satellite.getDimensionID();
+                staticProviderID = satellite.getDimensionIdStatic();
+            }
+        }
+        if (dynamicProviderID == -1 || staticProviderID == -1)
+        {
+            throw new RuntimeException("Space station being bound on bad provider IDs!");
+        }
         int newID = DimensionManager.getNextFreeDimId();
-        SpaceStationWorldData data = WorldUtil.createSpaceStation(world, newID, player);
+        SpaceStationWorldData data = WorldUtil.createSpaceStation(world, newID, homePlanetID, dynamicProviderID, staticProviderID, player);
         GCPlayerStats stats = GCPlayerStats.get(player);
-        stats.spaceStationDimensionID = newID;
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, new Object[] { newID }), player);
+        stats.spaceStationDimensionData.put(homePlanetID, newID);
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, new Object[] { WorldUtil.spaceStationDataToString(stats.spaceStationDimensionData) }), player);
         return data;
     }
 
-    public static SpaceStationWorldData createSpaceStation(World world, int dimID, EntityPlayerMP player)
+    public static SpaceStationWorldData createSpaceStation(World world, int dimID, int homePlanetID, int dynamicProviderID, int staticProviderID, EntityPlayerMP player)
     {
-        WorldUtil.registeredSpaceStations.add(dimID);
         int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, dimID);
 
         if (!DimensionManager.isDimensionRegistered(dimID))
         {
 	        if (id >= 0)
 	        {
-	            DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbitStatic);
+	            DimensionManager.registerDimension(dimID, staticProviderID);
+                WorldUtil.registeredSpaceStations.put(dimID, staticProviderID);
 	        }
 	        else
 	        {
-	            DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbit);
+	            DimensionManager.registerDimension(dimID, dynamicProviderID);
+                WorldUtil.registeredSpaceStations.put(dimID, dynamicProviderID);
 	        }
         }
         else
@@ -674,7 +742,7 @@ public class WorldUtil
         }
 
         GalacticraftCore.packetPipeline.sendToAll(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_LIST, WorldUtil.getSpaceStationList()));
-        return SpaceStationWorldData.getStationData(world, dimID, player);
+        return SpaceStationWorldData.getStationData(world, dimID, homePlanetID, dynamicProviderID, staticProviderID, player);
     }
 
     public static Entity transferEntityToDimension(Entity entity, int dimensionID, WorldServer world)
@@ -788,9 +856,8 @@ public class WorldUtil
                 }
                 player.playerNetServerHandler.sendPacket(new S07PacketRespawn(dimID, player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
 
-                if (worldNew.provider instanceof WorldProviderOrbit)
-                {
-                    if (WorldUtil.registeredSpaceStations.contains(dimID))
+                if (worldNew.provider instanceof WorldProviderOrbit) {
+                    if (WorldUtil.registeredSpaceStations.containsKey(dimID))
                     //TODO This has never been effective before due to the earlier bug - what does it actually do?
                     {
                         NBTTagCompound var2 = new NBTTagCompound();
@@ -1072,7 +1139,7 @@ public class WorldUtil
             if (data.size() > 0)
             {
             	//Start the provider index at offset 2 to skip the two Overworld Orbit dimensions
-            	int providerIndex = 2;
+            	int providerIndex = GalaxyRegistry.getRegisteredSatellites().size() * 2;
                 if (data.get(0) instanceof Integer)
                 {
                 	for (Object o : data)
@@ -1118,12 +1185,20 @@ public class WorldUtil
 
     public static Integer[] getSpaceStationListInts()
     {
-        Integer[] iArray = new Integer[WorldUtil.registeredSpaceStations.size()];
+        Integer[] iArray = new Integer[WorldUtil.registeredSpaceStations.size() * 2];
 
-        for (int i = 0; i < iArray.length; i++)
+        int i = 0;
+        for (Map.Entry<Integer, Integer> e : WorldUtil.registeredSpaceStations.entrySet())
         {
-            iArray[i] = WorldUtil.registeredSpaceStations.get(i);
+            iArray[i] = e.getKey();
+            iArray[i + 1] = e.getValue();
+            i += 2;
         }
+
+//        for (int i = 0; i < iArray.length; i++)
+//        {
+//            iArray[i] = WorldUtil.registeredSpaceStations.get(i);
+//        }
 
         return iArray;
     }
@@ -1134,28 +1209,38 @@ public class WorldUtil
         {
             if (WorldUtil.registeredSpaceStations != null)
             {
-                for (Integer registeredID : WorldUtil.registeredSpaceStations)
+                for (Integer registeredID : WorldUtil.registeredSpaceStations.keySet())
                 {
                     DimensionManager.unregisterDimension(registeredID);
                 }
             }
-            WorldUtil.registeredSpaceStations = new ArrayList<Integer>();
+            WorldUtil.registeredSpaceStations = Maps.newHashMap();
 
             if (data.size() > 0)
             {
+                System.err.println("" + data.size());
                 if (data.get(0) instanceof Integer)
                 {
-                    for (Object dimID : data)
+                    for (int i = 0; i < data.size(); i += 2)
                     {
-                        registerSSdim((Integer) dimID);
+                        registerSSdim((Integer) data.get(i), (Integer) data.get(i + 1));
                     }
+//                    for (Object dimID : data)
+//                    {
+//                        registerSSdim((Integer) dimID);
+//                    }
                 }
                 else if (data.get(0) instanceof Integer[])
                 {
-                    for (Object dimID : (Integer[]) data.get(0))
+                    Integer[] array = ((Integer[]) data.get(0));
+                    for (int i = 0; i < array.length; i += 2)
                     {
-                        registerSSdim((Integer) dimID);
+                        registerSSdim(array[i], array[i + 1]);
                     }
+//                    for (Object dimID : (Integer[]) data.get(0))
+//                    {
+//                        registerSSdim((Integer) dimID);
+//                    }
                 }
             }
         }
@@ -1165,14 +1250,14 @@ public class WorldUtil
         }
     }
 
-    private static void registerSSdim(Integer dimID)
+    private static void registerSSdim(Integer dimID, Integer providerKey)
     {
-	    if (!WorldUtil.registeredSpaceStations.contains(dimID))
+	    if (!WorldUtil.registeredSpaceStations.containsKey(dimID))
 	    {
-	        WorldUtil.registeredSpaceStations.add(dimID);
 	        if (!DimensionManager.isDimensionRegistered(dimID))
 	        {
-	            DimensionManager.registerDimension(dimID, ConfigManagerCore.idDimensionOverworldOrbit);
+                WorldUtil.registeredSpaceStations.put(dimID, providerKey);
+	            DimensionManager.registerDimension(dimID, providerKey);
 	        }
 	        else
 	        {
@@ -1418,5 +1503,38 @@ public class WorldUtil
         }
 
         return position;
+    }
+
+    public static String spaceStationDataToString(HashMap<Integer, Integer> data)
+    {
+        StringBuilder builder = new StringBuilder();
+        Iterator<Map.Entry<Integer, Integer>> it = data.entrySet().iterator();
+        while (it.hasNext())
+        {
+            Map.Entry<Integer, Integer> e = it.next();
+            builder.append(e.getKey());
+            builder.append("$");
+            builder.append(e.getValue());
+            if (it.hasNext())
+            {
+                builder.append("?");
+            }
+        }
+        return builder.toString();
+    }
+
+    public static HashMap<Integer, Integer> stringToSpaceStationData(String input)
+    {
+        HashMap<Integer, Integer> data = Maps.newHashMap();
+        if (!input.isEmpty())
+        {
+            String[] str0 = input.split("\\?");
+            for (int i = 0; i < str0.length; ++i)
+            {
+                String[] str1 = str0[i].split("\\$");
+                data.put(Integer.parseInt(str1[0]), Integer.parseInt(str1[1]));
+            }
+        }
+        return data;
     }
 }

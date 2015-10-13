@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
+import com.google.common.collect.Maps;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -7,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.command.CommandGCInv;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -15,10 +17,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
+import scala.Int;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
 public class GCPlayerStats implements IExtendedEntityProperties
 {
@@ -98,7 +100,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
     public double coordsTeleportedFromX;
     public double coordsTeleportedFromZ;
 
-    public int spaceStationDimensionID = -1;
+    public HashMap<Integer, Integer> spaceStationDimensionData = Maps.newHashMap();
 
     public boolean oxygenSetupValid;
     public boolean lastOxygenSetupValid;
@@ -138,7 +140,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
         nbt.setInteger("teleportCooldown", this.teleportCooldown);
         nbt.setDouble("coordsTeleportedFromX", this.coordsTeleportedFromX);
         nbt.setDouble("coordsTeleportedFromZ", this.coordsTeleportedFromZ);
-        nbt.setInteger("spaceStationDimensionID", this.spaceStationDimensionID);
+        nbt.setString("spaceStationDimensionInfo", WorldUtil.spaceStationDataToString(this.spaceStationDimensionData));
         nbt.setInteger("thermalLevel", this.thermalLevel);
 
         Collections.sort(this.unlockedSchematics);
@@ -253,7 +255,15 @@ public class GCPlayerStats implements IExtendedEntityProperties
         this.teleportCooldown = nbt.getInteger("teleportCooldown");
         this.coordsTeleportedFromX = nbt.getDouble("coordsTeleportedFromX");
         this.coordsTeleportedFromZ = nbt.getDouble("coordsTeleportedFromZ");
-        this.spaceStationDimensionID = nbt.getInteger("spaceStationDimensionID");
+        if (nbt.hasKey("spaceStationDimensionID"))
+        {
+            // If loading from an old save file, the home space station is always the overworld, so use 0 as home planet
+            this.spaceStationDimensionData = WorldUtil.stringToSpaceStationData("0$" + nbt.getInteger("spaceStationDimensionID"));
+        }
+        else
+        {
+            this.spaceStationDimensionData = WorldUtil.stringToSpaceStationData(nbt.getString("spaceStationDimensionInfo"));
+        }
 
         if (nbt.getBoolean("usingPlanetSelectionGui"))
         {
@@ -351,7 +361,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
             this.extendedInventory.copyInventory(oldData.extendedInventory);
         }
 
-        this.spaceStationDimensionID = oldData.spaceStationDimensionID;
+        this.spaceStationDimensionData = oldData.spaceStationDimensionData;
         this.unlockedSchematics = oldData.unlockedSchematics;
         this.receivedSoundWarning = oldData.receivedSoundWarning;
         this.openedSpaceRaceManager = oldData.openedSpaceRaceManager;

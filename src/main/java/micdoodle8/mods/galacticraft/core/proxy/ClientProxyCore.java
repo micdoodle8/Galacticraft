@@ -206,7 +206,7 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static boolean lastSpacebarDown;
 
-    public static int clientSpaceStationID = 0;
+    public static HashMap<Integer, Integer> clientSpaceStationID = Maps.newHashMap();
 
     public static MusicTicker.MusicType MUSIC_TYPE_MARS;
 

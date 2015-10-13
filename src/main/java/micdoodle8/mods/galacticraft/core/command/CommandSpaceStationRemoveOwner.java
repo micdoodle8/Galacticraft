@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.command;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -12,9 +14,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class CommandSpaceStationRemoveOwner extends CommandBase
 {
@@ -54,32 +54,35 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
                 {
                     GCPlayerStats stats = GCPlayerStats.get(playerBase);
 
-                    if (stats.spaceStationDimensionID <= 0)
+                    if (stats.spaceStationDimensionData.isEmpty())
                     {
                         throw new WrongUsageException(GCCoreUtil.translate("commands.ssinvite.notFound"), new Object[0]);
                     }
                     else
                     {
-                        final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, stats.spaceStationDimensionID, playerBase);
-
-                        String str = null;
-                        for (String player : data.getAllowedPlayers())
+                        for (Map.Entry<Integer, Integer> e : stats.spaceStationDimensionData.entrySet())
                         {
-                            if (player.equalsIgnoreCase(var3))
+                            final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, e.getValue(), playerBase);
+
+                            String str = null;
+                            for (String player : data.getAllowedPlayers())
                             {
-                                str = player;
-                                break;
+                                if (player.equalsIgnoreCase(var3))
+                                {
+                                    str = player;
+                                    break;
+                                }
                             }
-                        }
 
-                        if (str != null)
-                        {
-                            data.getAllowedPlayers().remove(str);
-                            data.markDirty();
-                        }
-                        else
-                        {
-                            throw new CommandException(GCCoreUtil.translateWithFormat("commands.ssuninvite.noPlayer", "\"" + var3 + "\""), new Object[0]);
+                            if (str != null)
+                            {
+                                data.getAllowedPlayers().remove(str);
+                                data.markDirty();
+                            }
+                            else
+                            {
+                                throw new CommandException(GCCoreUtil.translateWithFormat("commands.ssuninvite.noPlayer", "\"" + var3 + "\""), new Object[0]);
+                            }
                         }
                     }
                 }
@@ -115,25 +118,30 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
         if (playerBase != null)
         {
             GCPlayerStats stats = GCPlayerStats.get(playerBase);
-            int ssdim = stats.spaceStationDimensionID;
-            if (ssdim > 0)
+            if (!stats.spaceStationDimensionData.isEmpty())
             {
-                final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, ssdim, playerBase);
                 String[] allNames = MinecraftServer.getServer().getAllUsernames();
                 //data.getAllowedPlayers may include some in lowercase
                 //Convert to correct case at least for those players who are online
-                ArrayList<String> allowedNames = new ArrayList(data.getAllowedPlayers());
+                HashSet<String> allowedNames = Sets.newHashSet();
+
+                for (Map.Entry<Integer, Integer> e : stats.spaceStationDimensionData.entrySet())
+                {
+                    final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, e.getValue(), playerBase);
+                    allowedNames.addAll(data.getAllowedPlayers());
+                }
+
                 Iterator<String> itName = allowedNames.iterator();
-                ArrayList<String> replaceNames = new ArrayList();
+                ArrayList<String> replaceNames = new ArrayList<String>();
                 while (itName.hasNext())
                 {
                     String name = itName.next();
-                    for (int j = 0; j < allNames.length; j++)
+                    for (String allEntry : allNames)
                     {
-                        if (name.equalsIgnoreCase(allNames[j]))
+                        if (name.equalsIgnoreCase(allEntry))
                         {
                             itName.remove();
-                            replaceNames.add(allNames[j]);
+                            replaceNames.add(allEntry);
                         }
                     }
                 }

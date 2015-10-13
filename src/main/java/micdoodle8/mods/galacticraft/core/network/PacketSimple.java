@@ -14,6 +14,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
+import micdoodle8.mods.galacticraft.api.galaxies.Satellite;
 import micdoodle8.mods.galacticraft.api.galaxies.SolarSystem;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
@@ -78,6 +79,7 @@ import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import org.apache.commons.io.FileUtils;
@@ -131,7 +133,7 @@ public class PacketSimple extends Packet implements IPacket
         C_RESET_THIRD_PERSON(Side.CLIENT),
         C_UPDATE_SPACESTATION_LIST(Side.CLIENT, Integer[].class),
         C_UPDATE_SPACESTATION_DATA(Side.CLIENT, Integer.class, NBTTagCompound.class),
-        C_UPDATE_SPACESTATION_CLIENT_ID(Side.CLIENT, Integer.class),
+        C_UPDATE_SPACESTATION_CLIENT_ID(Side.CLIENT, String.class),
         C_UPDATE_PLANETS_LIST(Side.CLIENT, Integer[].class),
         C_UPDATE_CONFIGS(Side.CLIENT, Integer.class, Double.class, Integer.class, Integer.class, Integer.class, String.class, Float.class, Float.class, Float.class, Float.class, Integer.class, String[].class),
         C_UPDATE_STATS(Side.CLIENT, Integer.class),
@@ -288,8 +290,10 @@ public class PacketSimple extends Packet implements IPacket
                 }
                 final String[] destinations = dimensionList.split("\\?");
                 List<CelestialBody> possibleCelestialBodies = Lists.newArrayList();
-                Map<String, String> spaceStationNames = Maps.newHashMap();
-                Map<String, Integer> spaceStationIDs = Maps.newHashMap();
+                Map<Integer, Map<String, GuiCelestialSelection.StationDataGUI>> spaceStationData = Maps.newHashMap();
+//                Map<String, String> spaceStationNames = Maps.newHashMap();
+//                Map<String, Integer> spaceStationIDs = Maps.newHashMap();
+//                Map<String, Integer> spaceStationHomes = Maps.newHashMap();
 
                 for (String str : destinations)
                 {
@@ -297,12 +301,29 @@ public class PacketSimple extends Packet implements IPacket
 
                     if (celestialBody == null && str.contains("$"))
                     {
-                        celestialBody = GalacticraftCore.satelliteSpaceStation;
-
                         String[] values = str.split("\\$");
 
-                        spaceStationNames.put(values[1], values[2]);
-                        spaceStationIDs.put(values[1], Integer.parseInt(values[3]));
+                        int homePlanetID = Integer.parseInt(values[4]);
+
+                        for (Satellite satellite : GalaxyRegistry.getRegisteredSatellites().values())
+                        {
+                            if (satellite.getParentPlanet().getDimensionID() == homePlanetID)
+                            {
+                                celestialBody = satellite;
+                                break;
+                            }
+                        }
+
+                        if (!spaceStationData.containsKey(homePlanetID))
+                        {
+                            spaceStationData.put(homePlanetID, new HashMap<String, GuiCelestialSelection.StationDataGUI>());
+                        }
+
+                        spaceStationData.get(homePlanetID).put(values[1], new GuiCelestialSelection.StationDataGUI(values[2], Integer.parseInt(values[3])));
+
+//                        spaceStationNames.put(values[1], values[2]);
+//                        spaceStationIDs.put(values[1], Integer.parseInt(values[3]));
+//                        spaceStationHomes.put(values[1], Integer.parseInt(values[4]));
                     }
 
                     if (celestialBody != null)
@@ -316,15 +337,17 @@ public class PacketSimple extends Packet implements IPacket
                     if (!(FMLClientHandler.instance().getClient().currentScreen instanceof GuiCelestialSelection))
                     {
                         GuiCelestialSelection gui = new GuiCelestialSelection(false, possibleCelestialBodies);
-                        gui.spaceStationNames = spaceStationNames;
-                        gui.spaceStationIDs = spaceStationIDs;
+                        gui.spaceStationMap = spaceStationData;
+//                        gui.spaceStationNames = spaceStationNames;
+//                        gui.spaceStationIDs = spaceStationIDs;
                         FMLClientHandler.instance().getClient().displayGuiScreen(gui);
                     }
                     else
                     {
                         ((GuiCelestialSelection) FMLClientHandler.instance().getClient().currentScreen).possibleBodies = possibleCelestialBodies;
-                        ((GuiCelestialSelection) FMLClientHandler.instance().getClient().currentScreen).spaceStationNames = spaceStationNames;
-                        ((GuiCelestialSelection) FMLClientHandler.instance().getClient().currentScreen).spaceStationIDs = spaceStationIDs;
+                        ((GuiCelestialSelection) FMLClientHandler.instance().getClient().currentScreen).spaceStationMap = spaceStationData;
+//                        ((GuiCelestialSelection) FMLClientHandler.instance().getClient().currentScreen).spaceStationNames = spaceStationNames;
+//                        ((GuiCelestialSelection) FMLClientHandler.instance().getClient().currentScreen).spaceStationIDs = spaceStationIDs;
                     }
                 }
             }
@@ -479,7 +502,7 @@ public class PacketSimple extends Packet implements IPacket
             var4.readFromNBT((NBTTagCompound) this.data.get(1));
             break;
         case C_UPDATE_SPACESTATION_CLIENT_ID:
-            ClientProxyCore.clientSpaceStationID = (Integer) this.data.get(0);
+            ClientProxyCore.clientSpaceStationID = WorldUtil.stringToSpaceStationData((String) this.data.get(0));
             break;
         case C_UPDATE_PLANETS_LIST:
         	WorldUtil.decodePlanetsListClient(data);
@@ -917,11 +940,14 @@ public class PacketSimple extends Packet implements IPacket
             }
             break;
         case S_BIND_SPACE_STATION_ID:
-            if ((stats.spaceStationDimensionID == -1 || stats.spaceStationDimensionID == 0) && !ConfigManagerCore.disableSpaceStationCreation)
+            int homeID = (Integer) this.data.get(0);
+            if ((!stats.spaceStationDimensionData.containsKey(homeID) || stats.spaceStationDimensionData.get(homeID) == -1 || stats.spaceStationDimensionData.get(homeID) == 0)
+                    && !ConfigManagerCore.disableSpaceStationCreation)
             {
-                WorldUtil.bindSpaceStationToNewDimension(playerBase.worldObj, playerBase);
-
-                WorldUtil.getSpaceStationRecipe((Integer) this.data.get(0)).matches(playerBase, true);
+                if (WorldUtil.getSpaceStationRecipe(homeID).matches(playerBase, true))
+                {
+                    WorldUtil.bindSpaceStationToNewDimension(playerBase.worldObj, playerBase, homeID);
+                }
             }
             break;
         case S_UNLOCK_NEW_SCHEMATIC:
