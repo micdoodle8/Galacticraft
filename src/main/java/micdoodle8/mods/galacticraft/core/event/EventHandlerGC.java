@@ -736,11 +736,14 @@ public class EventHandlerGC
         	{
         		PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getGameProfile().getName());
 
-        		if (gearData == null || gearData.getFrequencyModule() == -1)
+                float x = event.sound.getXPosF();
+                float y = event.sound.getYPosF();
+                float z = event.sound.getZPosF();
+
+                // If the player doesn't have a frequency module, and the player isn't in an oxygenated environment
+                // Note: this is a very simplistic approach, and nowhere near realistic, but required for performance reasons
+        		if ((gearData == null || gearData.getFrequencyModule() == -1) && (!OxygenUtil.isAABBInBreathableAirBlock(player) || !OxygenUtil.isAABBInBreathableAirBlock(player.worldObj, AxisAlignedBB.getBoundingBox(x, y, z, x, y, z))))
         		{
-        			float x = event.sound.getXPosF();
-        			float y = event.sound.getYPosF();
-        			float z = event.sound.getZPosF();
         			float volume = event.sound.getVolume();
         			for (int i = 0; i < this.soundPlayList.size(); i++)
         			{
