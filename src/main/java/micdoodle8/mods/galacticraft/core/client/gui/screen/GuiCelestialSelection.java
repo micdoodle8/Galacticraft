@@ -7,9 +7,11 @@ import com.ibm.icu.text.ArabicShapingException;
 import com.ibm.icu.text.Bidi;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
+import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -447,6 +449,25 @@ public class GuiCelestialSelection extends GuiScreen
 
     private boolean canCreateSpaceStation(int atPlanet)
     {
+        if (this.mapMode)
+        {
+            return false;
+        }
+
+        boolean foundRecipe = false;
+        for (SpaceStationType type : GalacticraftRegistry.getSpaceStationData())
+        {
+            if (type.getWorldToOrbitID() == atPlanet)
+            {
+                foundRecipe = true;
+            }
+        }
+
+        if (!foundRecipe)
+        {
+            return false;
+        }
+
         if (!ClientProxyCore.clientSpaceStationID.containsKey(atPlanet))
         {
             return true;
@@ -460,7 +481,7 @@ public class GuiCelestialSelection extends GuiScreen
             return false;
         }
 
-        return !this.mapMode;
+        return true;
     }
 
     private void unselectCelestialBody()
