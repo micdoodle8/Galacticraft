@@ -74,6 +74,7 @@ public class ConfigManagerCore
     public static boolean invertMapMouseScroll;
     public static double meteorSpawnMod;
     public static boolean meteorBlockDamageEnabled;
+    public static boolean disableUpdateCheck;
 //    public static int mapfactor;
 //    public static int mapsize;
 	
@@ -522,6 +523,12 @@ public class ConfigManagerCore
             prop.comment = "Set to false to stop meteors from breaking blocks on contact.";
             prop.setLanguageKey("gc.configgui.meteorBlockDamage");
             meteorBlockDamageEnabled = prop.getBoolean(true);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Update Check", false);
+            prop.comment = "Update check will not run if this is set to true.";
+            prop.setLanguageKey("gc.configgui.disableUpdateCheck");
+            disableUpdateCheck = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
             config.setCategoryPropertyOrder(CATEGORY_GENERAL, propOrder);
