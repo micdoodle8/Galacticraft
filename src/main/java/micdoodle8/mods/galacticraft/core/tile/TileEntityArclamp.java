@@ -237,7 +237,7 @@ public class TileEntityArclamp extends TileEntity
                             checked.add(sideVec);
 
                             Block b = sideVec.getBlockIDsafe_noChunkLoad(world);
-                            if (b.isAir(world, sideVec.x, sideVec.y, sideVec.z))
+                            if (b != null && b.isAir(world, sideVec.x, sideVec.y, sideVec.z))
                             {
                                 if (side != sideskip1 && side != sideskip2)
                                 {
