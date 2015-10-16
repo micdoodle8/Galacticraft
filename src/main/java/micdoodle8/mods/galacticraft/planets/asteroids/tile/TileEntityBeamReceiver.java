@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceWireless;
 import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 import micdoodle8.mods.galacticraft.api.power.ILaserNode;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
@@ -142,6 +143,12 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
         if (tile == null || tile.isInvalid())
         {
             this.setFacing(ForgeDirection.UNKNOWN);
+        }
+
+        if (tile instanceof IConductor)
+        {
+            this.setFacing(ForgeDirection.UNKNOWN);
+            return null;
         }
 
         if (tile instanceof EnergyStorageTile)
