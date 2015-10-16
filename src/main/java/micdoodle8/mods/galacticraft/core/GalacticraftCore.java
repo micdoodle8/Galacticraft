@@ -46,7 +46,6 @@ import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.grid.ChunkPowerHandler;
 import micdoodle8.mods.galacticraft.core.entities.EntityAlienVillager;
-import micdoodle8.mods.galacticraft.core.entities.EntityBubble;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
@@ -666,7 +665,7 @@ public class GalacticraftCore
         GCCoreUtil.registerGalacticraftNonMobEntity(EntityBuggy.class, "Buggy", 150, 5, true);
         GCCoreUtil.registerGalacticraftNonMobEntity(EntityFlag.class, "GCFlag", 150, 5, true);
         GCCoreUtil.registerGalacticraftNonMobEntity(EntityParachest.class, "ParaChest", 150, 5, true);
-        GCCoreUtil.registerGalacticraftNonMobEntity(EntityBubble.class, "OxygenBubble", 150, 20, false);
+//        GCCoreUtil.registerGalacticraftNonMobEntity(EntityBubble.class, "OxygenBubble", 150, 20, false);
         GCCoreUtil.registerGalacticraftNonMobEntity(EntityLander.class, "Lander", 150, 5, false);
         GCCoreUtil.registerGalacticraftNonMobEntity(EntityMeteorChunk.class, "MeteorChunk", 150, 5, true);
         GCCoreUtil.registerGalacticraftNonMobEntity(EntityCelestialFake.class, "CelestialScreen", 150, 5, false);

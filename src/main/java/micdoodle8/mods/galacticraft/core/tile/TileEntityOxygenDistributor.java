@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
@@ -7,11 +9,11 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
-import micdoodle8.mods.galacticraft.core.entities.EntityBubble;
 import micdoodle8.mods.galacticraft.core.entities.IBubble;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -19,6 +21,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -35,17 +38,15 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     public boolean lastActive;
 
     private ItemStack[] containingItems = new ItemStack[2];
-    public EntityBubble oxygenBubble;
     public static ArrayList<BlockVec3Dim> loadedTiles = Lists.newArrayList();
-    /**
-     * Used for saving/loading old oxygen bubbles
-     */
-    private boolean hasValidBubble;
+    public float bubbleSize;
+    @NetworkedField(targetSide = Side.CLIENT)
+    public boolean shouldRenderBubble = true;
 
     public TileEntityOxygenDistributor()
     {
         super(6000, 8);
-        this.oxygenBubble = null;
+//        this.oxygenBubble = null;
     }
 
     @Override
@@ -73,11 +74,10 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     @Override
     public void invalidate()
     {
-        if (!this.worldObj.isRemote && this.oxygenBubble != null)
+        if (!this.worldObj.isRemote/* && this.oxygenBubble != null*/)
         {
-            double size = this.oxygenBubble.getSize();
-        	int bubbleR = MathHelper.ceiling_double_int(size);
-            int bubbleR2 = (int) (size * size);
+        	int bubbleR = MathHelper.ceiling_double_int(bubbleSize);
+            int bubbleR2 = (int) (bubbleSize * bubbleSize);
         	for (int x = this.xCoord - bubbleR; x < this.xCoord + bubbleR; x++)
             {
                 for (int y = this.yCoord - bubbleR; y < this.yCoord + bubbleR; y++)
@@ -93,22 +93,28 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
                     }
                 }
             }
-        	this.oxygenBubble.setDead();
+//        	this.oxygenBubble.setDead();
         }
 
         if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.remove(this);
         super.invalidate();
     }
 
+    @Override
+    public double getPacketRange()
+    {
+        return 64.0F;
+    }
+
     public void addExtraNetworkedData(List<Object> networkedList)
     {
         if (!this.worldObj.isRemote)
         {
-            networkedList.add(this.oxygenBubble != null);
-            if (this.oxygenBubble != null)
-            {
-                networkedList.add(this.oxygenBubble.getEntityId());
-            }
+//            networkedList.add(this.oxygenBubble != null);
+//            if (this.oxygenBubble != null)
+//            {
+//                networkedList.add(this.oxygenBubble.getEntityId());
+//            }
             networkedList.add(loadedTiles.size());
             for (BlockVec3Dim distributor : new ArrayList<BlockVec3Dim>(loadedTiles))
             {
@@ -117,23 +123,33 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
             	networkedList.add(distributor.z);
             	networkedList.add(distributor.dim);
             }
+            networkedList.add(this.bubbleSize);
         }
     }
 
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return AxisAlignedBB.getBoundingBox(this.xCoord - this.bubbleSize, this.yCoord - this.bubbleSize, this.zCoord - this.bubbleSize, this.xCoord + this.bubbleSize, this.yCoord + this.bubbleSize, this.zCoord + this.bubbleSize);
+    }
+
+    @Override
     public void readExtraNetworkedData(ByteBuf dataStream)
     {
     	loadedTiles.clear();
         if (this.worldObj.isRemote)
         {
-            if (dataStream.readBoolean())
-            {
-                this.oxygenBubble = (EntityBubble) worldObj.getEntityByID(dataStream.readInt());
-            }
+//            if (dataStream.readBoolean())
+//            {
+//                this.oxygenBubble = (EntityBubble) worldObj.getEntityByID(dataStream.readInt());
+//            }
             int size = dataStream.readInt();
             for (int i = 0; i < size; ++i)
             {
             	this.loadedTiles.add(new BlockVec3Dim(dataStream.readInt(), dataStream.readInt(), dataStream.readInt(), dataStream.readInt()));
             }
+            this.bubbleSize = dataStream.readFloat();
         }
     }
 
@@ -159,27 +175,41 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 	    		if (this.storedOxygen > this.maxOxygen) this.storedOxygen = this.maxOxygen;
 	    	}
         }
-    	
+
     	super.updateEntity();
 
-        if (!hasValidBubble && !this.worldObj.isRemote && (this.oxygenBubble == null || this.ticks < 25))
+        if (!this.worldObj.isRemote)
         {
-            //Check it's a world without a breathable atmosphere
-        	if (this.oxygenBubble == null && this.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider)this.worldObj.provider).hasBreathableAtmosphere())
+            if (this.getEnergyStoredGC() > 0.0F && this.storedOxygen > this.oxygenPerTick)
             {
-                this.oxygenBubble = new EntityBubble(this.worldObj, new Vector3(this), this);
-                this.hasValidBubble = true;
-                this.worldObj.spawnEntityInWorld(this.oxygenBubble);
+                this.bubbleSize += 0.01F;
             }
+            else
+            {
+                this.bubbleSize -= 0.1F;
+            }
+
+            this.bubbleSize = Math.min(Math.max(this.bubbleSize, 0.0F), 10.0F);
         }
 
-        if (!this.worldObj.isRemote && this.oxygenBubble != null)
+//        if (!hasValidBubble && !this.worldObj.isRemote && (this.oxygenBubble == null || this.ticks < 25))
+//        {
+//            //Check it's a world without a breathable atmosphere
+//        	if (this.oxygenBubble == null && this.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider)this.worldObj.provider).hasBreathableAtmosphere())
+//            {
+//                this.oxygenBubble = new EntityBubble(this.worldObj, new Vector3(this), this);
+//                this.hasValidBubble = true;
+//                this.worldObj.spawnEntityInWorld(this.oxygenBubble);
+//            }
+//        }
+
+        if (!this.worldObj.isRemote/* && this.oxygenBubble != null*/)
         {
-            this.active = this.oxygenBubble.getSize() >= 1 && this.hasEnoughEnergyToRun && this.storedOxygen > this.oxygenPerTick;
+            this.active = bubbleSize >= 1 && this.hasEnoughEnergyToRun && this.storedOxygen > this.oxygenPerTick;
 
             if (this.ticks % (this.active ? 20 : 4) == 0)
 	        {
-                double size = this.oxygenBubble.getSize();
+                double size = bubbleSize;
                 int bubbleR = MathHelper.floor_double(size) + 4;
                 int bubbleR2 = (int) (size * size);
             	for (int x = this.xCoord - bubbleR; x <= this.xCoord + bubbleR; x++)
@@ -216,7 +246,11 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     {
         super.readFromNBT(nbt);
 
-        this.hasValidBubble = nbt.getBoolean("hasValidBubble");
+        if (nbt.func_150296_c().contains("bubbleSize"))
+        {
+            this.bubbleSize = nbt.getFloat("bubbleSize");
+        }
+//        this.hasValidBubble = nbt.getBoolean("hasValidBubble");
 
         final NBTTagList var2 = nbt.getTagList("Items", 10);
         this.containingItems = new ItemStack[this.getSizeInventory()];
@@ -238,7 +272,8 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     {
         super.writeToNBT(nbt);
 
-        nbt.setBoolean("hasValidBubble", this.hasValidBubble);
+        nbt.setFloat("bubbleSize", this.bubbleSize);
+//        nbt.setBoolean("hasValidBubble", this.hasValidBubble);
 
         final NBTTagList list = new NBTTagList();
 
@@ -446,38 +481,36 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
         return EnumSet.noneOf(ForgeDirection.class);
     }
 
-    @Override
-    public IBubble getBubble()
-    {
-        return this.oxygenBubble;
-    }
+//    @Override
+//    public IBubble getBubble()
+//    {
+//        return this.oxygenBubble;
+//    }
 
     public boolean inBubble(double pX, double pY, double pZ)
     {
-		if (this.oxygenBubble != null)
-		{
-	        double r = this.oxygenBubble.getSize();
-	        r *= r;
-	        double d3 = this.xCoord + 0.5D - pX;
-	        d3 *= d3;
-	        if (d3 > r) return false;
-	        double d4 = this.zCoord + 0.5D - pZ;
-	        d4 *= d4;
-	        if (d3 + d4 > r) return false;
-	        double d5 = this.yCoord + 0.5D - pY;
-	        return d3 + d4 + d5 * d5 < r;
-		}
-		return false;
+        double r = bubbleSize;
+        r *= r;
+        double d3 = this.xCoord + 0.5D - pX;
+        d3 *= d3;
+        if (d3 > r) return false;
+        double d4 = this.zCoord + 0.5D - pZ;
+        d4 *= d4;
+        if (d3 + d4 > r) return false;
+        double d5 = this.yCoord + 0.5D - pY;
+        return d3 + d4 + d5 * d5 < r;
     }
     
     @Override
     public void setBubbleVisible(boolean shouldRender)
     {
-        if (this.oxygenBubble == null)
-        {
-            return;
-        }
+        this.shouldRenderBubble = shouldRender;
+//        this.oxygenBubble.setShouldRender(shouldRender);
+    }
 
-        this.oxygenBubble.setShouldRender(shouldRender);
+    @Override
+    public float getBubbleSize()
+    {
+        return this.bubbleSize;
     }
 }
