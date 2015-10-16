@@ -26,7 +26,7 @@ public class FluidUtil
     		return var4.getItem() == GCItems.fuelCanister && var4.getItemDamage() < var4.getMaxDamage();
 
     	FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(var4);
-        return liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("fuel");
+        return liquid != null && FluidRegistry.getFluidName(liquid).startsWith("fuel");
 	}
 
 	/**
@@ -41,7 +41,7 @@ public class FluidUtil
     		return var4.getItem() == GCItems.oilCanister && var4.getItemDamage() < var4.getMaxDamage();
 
     	FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(var4);
-        return liquid != null && (FluidRegistry.getFluidName(liquid).equalsIgnoreCase("oil") || FluidRegistry.getFluidName(liquid).equalsIgnoreCase("oilgc"));
+        return liquid != null && FluidRegistry.getFluidName(liquid).startsWith("oil");
 	}
 
 	/**

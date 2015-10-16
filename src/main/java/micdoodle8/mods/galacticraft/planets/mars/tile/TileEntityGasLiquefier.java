@@ -56,7 +56,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 
     public enum TankGases
     {
-        METHANE(0, "methane", "fuel"),
+        METHANE(0, "methane", ConfigManagerCore.useOldFuelFluidID ? "fuelgc" : "fuel"),
         OXYGEN(1, "oxygen", "liquidoxygen"),
         NITROGEN(2, "nitrogen", "liquidnitrogen"),
         ARGON(3, "argon", "liquidargon"),

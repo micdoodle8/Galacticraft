@@ -194,7 +194,7 @@ public class ItemOilExtractor extends Item
 
             	if (fluidHit != null)
             	{
-            		if (fluidHit.getName().equalsIgnoreCase("oil"))
+            		if (fluidHit.getName().startsWith("oil"))
             		{
             			flag = true;
             		}

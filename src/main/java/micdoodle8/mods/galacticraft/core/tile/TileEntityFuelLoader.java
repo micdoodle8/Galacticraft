@@ -71,9 +71,8 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
                 	if (liquid != null)
                 	{
                 		boolean isFuel = false;
-                		if (FluidRegistry.getFluidName(liquid).equalsIgnoreCase("fuel")) isFuel = true;
-                		if (FluidRegistry.getFluidName(liquid).equalsIgnoreCase("rocket_fuel")) isFuel = true;
-                		if (FluidRegistry.getFluidName(liquid).equalsIgnoreCase("fuelgc")) isFuel = true;
+                		if (FluidRegistry.getFluidName(liquid).startsWith("fuel")) isFuel = true;
+                		else if (FluidRegistry.getFluidName(liquid).equalsIgnoreCase("rocket_fuel")) isFuel = true;
 
                 		if (isFuel)
                 		{

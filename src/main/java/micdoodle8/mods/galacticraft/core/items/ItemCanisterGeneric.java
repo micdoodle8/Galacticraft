@@ -107,8 +107,6 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
         }
         
         String fluidName = resource.getFluid().getName();
-        if (fluidName.equals("oilgc")) fluidName = "oil";
-        if (fluidName.equals("fuelgc")) fluidName = "fuel";
         if (container.getItemDamage() == ItemCanisterGeneric.EMPTY)
         {
         	//Empty canister - find a new canister to match the fluid

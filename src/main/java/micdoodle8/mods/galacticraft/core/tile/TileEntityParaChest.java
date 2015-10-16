@@ -312,7 +312,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 			{
 				String liquidname = liquid.getFluid().getName();
 
-				if (liquidname.equals("fuel"))
+				if (liquidname.startsWith("fuel"))
 				{
 					FluidUtil.tryFillContainer(tank, liquid, this.chestContents, slot, GCItems.fuelCanister);
 				}
