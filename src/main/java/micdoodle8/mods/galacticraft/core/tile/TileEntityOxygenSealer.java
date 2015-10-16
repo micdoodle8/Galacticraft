@@ -49,7 +49,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 
     public TileEntityOxygenSealer()
     {
-        super(10000, 16);
+        super(10000, 6);
     }
 
     @Override
