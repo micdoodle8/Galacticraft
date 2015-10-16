@@ -60,7 +60,7 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
             if (this.worldObj.isRemote && this.fieldCacheServer.size() > 0)
             {
                 PacketDynamic packet = new PacketDynamic(this);
-                if (networkDataChanged)
+//                if (networkDataChanged)
                 {
                     GalacticraftCore.packetPipeline.sendToServer(packet);
                 }
@@ -68,7 +68,7 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
             else if (!this.worldObj.isRemote && this.fieldCacheClient.size() > 0)
             {
                 PacketDynamic packet = new PacketDynamic(this);
-                if (networkDataChanged)
+//                if (networkDataChanged)
                 {
                     GalacticraftCore.packetPipeline.sendToAllAround(packet, new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, this.getPacketRange()));
                 }
