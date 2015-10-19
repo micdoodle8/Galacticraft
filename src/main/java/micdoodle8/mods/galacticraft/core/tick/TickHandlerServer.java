@@ -481,9 +481,9 @@ public class TickHandlerServer
 
             if (changeList != null && !changeList.isEmpty())
             {
-                CopyOnWriteArrayList<ScheduledBlockChange> newList = new CopyOnWriteArrayList<ScheduledBlockChange>();
                 int blockCount = 0;
                 int blockCountMax = Math.max(this.MAX_BLOCKS_PER_TICK, changeList.size() / 4);
+                List<ScheduledBlockChange> newList = new ArrayList<ScheduledBlockChange>(Math.max(0, changeList.size() - blockCountMax));
 
                 for (ScheduledBlockChange change : changeList)
                 {
@@ -508,7 +508,7 @@ public class TickHandlerServer
 
                 changeList.clear();
                 TickHandlerServer.scheduledBlockChanges.remove(world.provider.dimensionId);
-                if (newList.size() > 0) TickHandlerServer.scheduledBlockChanges.put(world.provider.dimensionId, newList);
+                if (newList.size() > 0) TickHandlerServer.scheduledBlockChanges.put(world.provider.dimensionId, new CopyOnWriteArrayList<ScheduledBlockChange>(newList));
             }
 
             CopyOnWriteArrayList<BlockVec3> torchList = TickHandlerServer.scheduledTorchUpdates.get(world.provider.dimensionId);
