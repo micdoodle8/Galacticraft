@@ -45,6 +45,7 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -227,8 +228,7 @@ public class MarsModule implements IPlanetsModule
 
     public void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int back, int fore)
     {
-        int newID = EntityRegistry.instance().findGlobalUniqueEntityId();
-        EntityRegistry.registerGlobalEntityID(var0, var1, newID, back, fore);
+        EntityList.stringToClassMapping.put(var1, var0);
         EntityRegistry.registerModEntity(var0, var1, GCCoreUtil.nextInternalID(), GalacticraftPlanets.instance, 80, 3, true);
     }
 

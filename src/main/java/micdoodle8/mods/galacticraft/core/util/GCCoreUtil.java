@@ -15,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.Language;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -58,8 +59,7 @@ public class GCCoreUtil
     
     public static void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int back, int fore)
     {
-        int newID = EntityRegistry.instance().findGlobalUniqueEntityId();
-        EntityRegistry.registerGlobalEntityID(var0, var1, newID, back, fore);
+        EntityList.stringToClassMapping.put(var1, var0);
         EntityRegistry.registerModEntity(var0, var1, nextInternalID(), GalacticraftCore.instance, 80, 3, true);
     }
 
