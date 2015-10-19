@@ -635,7 +635,7 @@ public class WorldUtil
                     }
                     return (Integer) getFluidMethod.invoke(stack);
                 }
-                catch (NoSuchMethodError error)
+                catch (NoSuchMethodException error)
                 {
                     oldFluidIDMethod = false;
                     getFluidID(stack);
