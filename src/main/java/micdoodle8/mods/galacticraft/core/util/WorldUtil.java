@@ -1187,12 +1187,9 @@ public class WorldUtil
     {
         Integer[] iArray = new Integer[WorldUtil.registeredSpaceStations.size() * 2];
 
-        System.out.println("Getting space station list integers:");
-
         int i = 0;
         for (Map.Entry<Integer, Integer> e : WorldUtil.registeredSpaceStations.entrySet())
         {
-            System.out.println("\t" + e.getKey() + " : " + e.getValue());
             iArray[i] = e.getKey();
             iArray[i + 1] = e.getValue();
             i += 2;
@@ -1208,8 +1205,6 @@ public class WorldUtil
 
     public static void decodeSpaceStationListClient(List<Object> data)
     {
-        System.err.println("Decoding space station list on Client: ");
-
         try
         {
             if (WorldUtil.registeredSpaceStations != null)
@@ -1227,7 +1222,6 @@ public class WorldUtil
                 {
                     for (int i = 0; i < data.size(); i += 2)
                     {
-                        System.err.println("\t" + data.get(i) + " : " + data.get(i + 1));
                         registerSSdim((Integer) data.get(i), (Integer) data.get(i + 1));
                     }
 //                    for (Object dimID : data)
@@ -1240,7 +1234,6 @@ public class WorldUtil
                     Integer[] array = ((Integer[]) data.get(0));
                     for (int i = 0; i < array.length; i += 2)
                     {
-                        System.err.println("\t" + array[i] + " : " + array[i + 1]);
                         registerSSdim(array[i], array[i + 1]);
                     }
 //                    for (Object dimID : (Integer[]) data.get(0))
