@@ -513,4 +513,10 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     {
         return this.bubbleSize;
     }
+
+    @Override
+    public boolean getBubbleVisible()
+    {
+        return this.shouldRenderBubble;
+    }
 }

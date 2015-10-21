@@ -34,6 +34,11 @@ public class TileEntityBubbleProviderRenderer extends TileEntitySpecialRenderer
     {
         IBubbleProvider provider = (IBubbleProvider) tileEntity;
 
+        if (!provider.getBubbleVisible())
+        {
+            return;
+        }
+
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glTranslatef((float) x + 0.5F, (float) y + 1.0F, (float) z + 0.5F);

@@ -659,4 +659,10 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     {
         return this.bubbleSize;
     }
+
+    @Override
+    public boolean getBubbleVisible()
+    {
+        return this.shouldRenderBubble;
+    }
 }

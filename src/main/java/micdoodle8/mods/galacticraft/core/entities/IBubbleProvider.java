@@ -6,4 +6,6 @@ public interface IBubbleProvider
     float getBubbleSize();
 
     void setBubbleVisible(boolean shouldRender);
+
+    boolean getBubbleVisible();
 }
