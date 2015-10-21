@@ -22,6 +22,8 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.fx.EntityFXSparks;
@@ -150,6 +152,7 @@ public class PacketSimple extends Packet implements IPacket
         C_UPDATE_SPACE_RACE_DATA(Side.CLIENT, Integer.class, String.class, FlagData.class, Vector3.class, String[].class),
         C_OPEN_JOIN_RACE_GUI(Side.CLIENT, Integer.class),
         C_UPDATE_FOOTPRINT_LIST(Side.CLIENT, Long.class, Footprint[].class),
+        C_FOOTPRINTS_REMOVED(Side.CLIENT, Long.class, BlockVec3.class),
         C_UPDATE_STATION_SPIN(Side.CLIENT, Float.class, Boolean.class),
         C_UPDATE_STATION_DATA(Side.CLIENT, Double.class, Double.class),
         C_UPDATE_STATION_BOX(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
@@ -626,6 +629,24 @@ public class PacketSimple extends Packet implements IPacket
                 }
             }
             ClientProxyCore.footprintRenderer.setFootprints(chunkKey, printList);
+            break;
+        case C_FOOTPRINTS_REMOVED:
+            long chunkKey0 = (Long) this.data.get(0);
+            BlockVec3 position = (BlockVec3) this.data.get(1);
+            List<Footprint> footprintList = ClientProxyCore.footprintRenderer.footprints.get(chunkKey0);
+            List<Footprint> toRemove = new ArrayList<Footprint>();
+
+            for (Footprint footprint : footprintList)
+            {
+                if (footprint.position.x > position.x && footprint.position.x < position.x + 1 &&
+                        footprint.position.z > position.z && footprint.position.z < position.z + 1)
+                {
+                    toRemove.add(footprint);
+                }
+            }
+
+            footprintList.removeAll(toRemove);
+            ClientProxyCore.footprintRenderer.footprints.put(chunkKey0, footprintList);
             break;
         case C_UPDATE_STATION_SPIN:
             if (playerBaseClient.worldObj.provider instanceof WorldProviderOrbit)
