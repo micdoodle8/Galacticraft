@@ -237,15 +237,15 @@ public class MarsModuleClient implements IPlanetsModuleClient
             {
                 if (world.provider instanceof WorldProviderMars)
                 {
-//                    if (world.provider.getSkyRenderer() == null)
-//                    {
-//                        world.provider.setSkyRenderer(new SkyProviderMars((IGalacticraftWorldProvider) world.provider));
-//                    }
-//
-//                    if (world.provider.getCloudRenderer() == null)
-//                    {
-//                        world.provider.setCloudRenderer(new CloudRenderer());
-//                    }
+                    if (world.provider.getSkyRenderer() == null)
+                    {
+                        world.provider.setSkyRenderer(new SkyProviderMars((IGalacticraftWorldProvider) world.provider));
+                    }
+
+                    if (world.provider.getCloudRenderer() == null)
+                    {
+                        world.provider.setCloudRenderer(new CloudRenderer());
+                    }
                 }
             }
         }
