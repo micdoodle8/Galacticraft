@@ -439,6 +439,13 @@ public class GCPlayerHandler
                         return;
                     }
 
+                    if (OxygenUtil.isAABBInBreathableAirBlock(player, true))
+                    {
+                        this.normaliseThermalLevel(player, playerStats, 1);
+                        // If player is in ambient thermal area, slowly reset to normal
+                        return;
+                    }
+
                     if (thermalPaddingHelm != null)
                     {
                         thermalLevelTickCooldown += thermalLevelCooldownBase;
