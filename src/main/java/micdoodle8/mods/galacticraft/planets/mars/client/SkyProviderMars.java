@@ -310,6 +310,7 @@ public class SkyProviderMars extends IRenderHandler
         GL11.glCallList(this.glSkyList2);
         GL11.glPopMatrix();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glDepthMask(true);
     }
 
