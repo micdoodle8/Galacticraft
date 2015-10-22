@@ -87,9 +87,9 @@ jar
 }
 
 task moveCoreMcmodInfo(type: Copy, dependsOn: "reobf") {
-	from 'src/main/resources/assets/galacticraftcore/mcmod.info'
 	from 'LICENSE.txt'
 	from(zipTree(project.ext.coreJar))
+	from 'src/main/resources/assets/galacticraftcore/mcmod.info'
 	into 'temporary'
 }
 
