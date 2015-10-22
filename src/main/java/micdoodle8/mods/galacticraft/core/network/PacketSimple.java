@@ -636,17 +636,23 @@ public class PacketSimple extends Packet implements IPacket
             List<Footprint> footprintList = ClientProxyCore.footprintRenderer.footprints.get(chunkKey0);
             List<Footprint> toRemove = new ArrayList<Footprint>();
 
-            for (Footprint footprint : footprintList)
+            if (footprintList != null)
             {
-                if (footprint.position.x > position.x && footprint.position.x < position.x + 1 &&
-                        footprint.position.z > position.z && footprint.position.z < position.z + 1)
+                for (Footprint footprint : footprintList)
                 {
-                    toRemove.add(footprint);
+                    if (footprint.position.x > position.x && footprint.position.x < position.x + 1 &&
+                            footprint.position.z > position.z && footprint.position.z < position.z + 1)
+                    {
+                        toRemove.add(footprint);
+                    }
                 }
             }
 
-            footprintList.removeAll(toRemove);
-            ClientProxyCore.footprintRenderer.footprints.put(chunkKey0, footprintList);
+            if (!toRemove.isEmpty())
+            {
+                footprintList.removeAll(toRemove);
+                ClientProxyCore.footprintRenderer.footprints.put(chunkKey0, footprintList);
+            }
             break;
         case C_UPDATE_STATION_SPIN:
             if (playerBaseClient.worldObj.provider instanceof WorldProviderOrbit)
