@@ -742,7 +742,10 @@ public class EventHandlerGC
 
                 // If the player doesn't have a frequency module, and the player isn't in an oxygenated environment
                 // Note: this is a very simplistic approach, and nowhere near realistic, but required for performance reasons
-        		if ((gearData == null || gearData.getFrequencyModule() == -1) && (!OxygenUtil.isAABBInBreathableAirBlock(player) || !OxygenUtil.isAABBInBreathableAirBlock(player.worldObj, AxisAlignedBB.getBoundingBox(x, y, z, x, y, z))))
+                AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(x - 0.0015D, y - 0.0015D, z - 0.0015D, x + 0.0015D, y + 0.0015D, z + 0.0015D);
+                boolean playerInAtmosphere = OxygenUtil.isAABBInBreathableAirBlock(player);
+                boolean soundInAtmosphere = OxygenUtil.isAABBInBreathableAirBlock(player.worldObj, bb);
+        		if ((gearData == null || gearData.getFrequencyModule() == -1) && (!playerInAtmosphere || !soundInAtmosphere))
         		{
         			float volume = event.sound.getVolume();
         			for (int i = 0; i < this.soundPlayList.size(); i++)
