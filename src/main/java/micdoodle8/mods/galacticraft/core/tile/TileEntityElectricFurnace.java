@@ -169,17 +169,17 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
                 {
                     String nameSmelted = this.containingItems[1].getUnlocalizedName().toLowerCase();
                     if (resultItemStack.getUnlocalizedName().toLowerCase().contains("ingot") && (nameSmelted.contains("ore") || nameSmelted.contains("raw") || nameSmelted.contains("moon") || nameSmelted.contains("mars") || nameSmelted.contains("shard")))
-                        this.containingItems[2].stackSize++;
+                        this.containingItems[2].stackSize += resultItemStack.stackSize;
                 }
             }
             else if (this.containingItems[2].isItemEqual(resultItemStack))
             {
-                this.containingItems[2].stackSize++;
+                this.containingItems[2].stackSize += resultItemStack.stackSize;
                 if (this.tierGC > 1)
                 {
                     String nameSmelted = this.containingItems[1].getUnlocalizedName().toLowerCase();
                     if (resultItemStack.getUnlocalizedName().toLowerCase().contains("ingot") && (nameSmelted.contains("ore") || nameSmelted.contains("raw")  || nameSmelted.contains("moon") || nameSmelted.contains("mars") || nameSmelted.contains("shard")))
-                        this.containingItems[2].stackSize++;
+                        this.containingItems[2].stackSize += resultItemStack.stackSize;
                 }
             }
 
