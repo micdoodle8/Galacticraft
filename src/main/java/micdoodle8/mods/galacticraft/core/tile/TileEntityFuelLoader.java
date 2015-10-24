@@ -254,7 +254,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
         {
             final String liquidName = FluidRegistry.getFluidName(resource);
 
-            if (liquidName != null && liquidName.equalsIgnoreCase("Fuel"))
+            if (liquidName != null && liquidName.startsWith("fuel"))
             {
                 used = this.fuelTank.fill(resource, doFill);
             }
