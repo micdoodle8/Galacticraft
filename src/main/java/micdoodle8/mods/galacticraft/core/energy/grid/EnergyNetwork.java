@@ -290,11 +290,11 @@ public class EnergyNetwork implements IElectricityNetwork
                     {
                         e = (float) ((((IStrictEnergyAcceptor) acceptor).getMaxEnergy() - ((IStrictEnergyAcceptor) acceptor).getEnergy()) / EnergyConfigHandler.TO_MEKANISM_RATIO);
                     }
-                    else if (isRF1Loaded && !EnergyConfigHandler.disableRFInput && acceptor instanceof IEnergyHandler)
+                    else if (isRF1Loaded && !EnergyConfigHandler.disableRFOutput && acceptor instanceof IEnergyHandler)
 					{
 						e = ((IEnergyHandler) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) / EnergyConfigHandler.TO_RF_RATIO;
 					}
-                    else if (isRF2Loaded && !EnergyConfigHandler.disableRFInput && acceptor instanceof IEnergyReceiver)
+                    else if (isRF2Loaded && !EnergyConfigHandler.disableRFOutput && acceptor instanceof IEnergyReceiver)
 					{
 						e = ((IEnergyReceiver) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) / EnergyConfigHandler.TO_RF_RATIO;
 					}
