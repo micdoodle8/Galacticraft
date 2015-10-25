@@ -109,6 +109,7 @@ public class AsteroidsModule implements IPlanetsModule
         AsteroidsModule.fluidLiquidNitrogen = FluidRegistry.getFluid("liquidnitrogen");
         AsteroidsModule.fluidLiquidArgon = FluidRegistry.getFluid("liquidargon");
         AsteroidsModule.fluidNitrogenGas = FluidRegistry.getFluid("nitrogen");
+
         //AsteroidsModule.fluidCO2Gas = FluidRegistry.getFluid("carbondioxide");
 
         AsteroidBlocks.initBlocks();
