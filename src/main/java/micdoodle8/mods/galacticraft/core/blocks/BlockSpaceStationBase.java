@@ -15,6 +15,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 public class BlockSpaceStationBase extends BlockContainer implements ITileEntityProvider
@@ -88,5 +89,11 @@ public class BlockSpaceStationBase extends BlockContainer implements ITileEntity
         {
             ((IMultiBlock) tile).onCreate(new BlockVec3(x, y, z));
         }
+    }
+
+    @Override
+    public ItemStack getPickBlock(MovingObjectPosition moving, World world, int x, int y, int z)
+    {
+    	return null;
     }
 }
