@@ -14,7 +14,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IRenderHandler;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -92,7 +91,6 @@ public class SkyProviderAsteroids extends IRenderHandler
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        RenderHelper.enableStandardItemLighting();
         GL11.glColor3f(1F, 1F, 1F);
         GL11.glDepthMask(false);
         GL11.glEnable(GL11.GL_FOG);
@@ -207,6 +205,9 @@ public class SkyProviderAsteroids extends IRenderHandler
         //		GL11.glPopMatrix();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDepthMask(true);
+
+        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
+        GL11.glDisable(GL11.GL_FOG);
     }
 
     private void renderStars()

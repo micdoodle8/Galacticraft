@@ -97,7 +97,6 @@ public class SkyProviderMars extends IRenderHandler
     {
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        RenderHelper.enableStandardItemLighting();
         Vec3 vec3 = world.getSkyColor(mc.renderViewEntity, partialTicks);
         float f1 = (float) vec3.xCoord;
         float f2 = (float) vec3.yCoord;
