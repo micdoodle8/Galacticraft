@@ -202,7 +202,7 @@ public class OxygenUtil
      * air-reachable blocks (up to 5 blocks away) and return true if breathable air is found
      * in one of them, or false if not.
      */
-    public static int testContactWithBreathableAir(World world, Block block, int x, int y, int z, int limitCount)
+    private static int testContactWithBreathableAir(World world, Block block, int x, int y, int z, int limitCount)
     {
         BlockVec3 vec = new BlockVec3(x, y, z);
         checked.add(vec);
