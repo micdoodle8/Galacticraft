@@ -163,6 +163,23 @@ public class WorldUtil
         }
     }
 
+    public static float getRainStrength(World world, float partialTicks)
+    {
+        if (world.isRemote)
+        {
+            if (world.provider.dimensionId == 0)
+            {
+                if (FMLClientHandler.instance().getClient().thePlayer.ridingEntity instanceof EntitySpaceshipBase &&
+                        FMLClientHandler.instance().getClient().thePlayer.posY > 200)
+                {
+                    return 0.0F;
+                }
+            }
+        }
+
+        return world.prevRainingStrength + (world.rainingStrength - world.prevRainingStrength) * partialTicks;
+    }
+
     public static boolean shouldRenderFire(Entity entity)
     {
         if (entity.worldObj == null || !(entity.worldObj.provider instanceof IGalacticraftWorldProvider)) return entity.isBurning();
