@@ -249,7 +249,10 @@ public class WorldUtil
 
     public static Vec3 getFogColorHook(World world)
     {
-        if (world.provider instanceof WorldProviderSurface && FMLClientHandler.instance().getClient().thePlayer.posY >= 200)
+        if (world.provider instanceof WorldProviderSurface &&
+                FMLClientHandler.instance().getClient().thePlayer != null &&
+                FMLClientHandler.instance().getClient().thePlayer.ridingEntity instanceof EntitySpaceshipBase &&
+                FMLClientHandler.instance().getClient().thePlayer.ridingEntity.posY >= 200)
         {
             float var20 = (float) (FMLClientHandler.instance().getClient().thePlayer.posY - 200.0F) / 1000.0F;
             final float var21 = Math.max(1.0F - var20 * 50.0F, 0.0F);
