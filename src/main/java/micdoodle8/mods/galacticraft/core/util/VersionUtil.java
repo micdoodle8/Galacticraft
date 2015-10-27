@@ -15,6 +15,7 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntitySlimelingEgg;
 import micdoodle8.mods.miccore.MicdoodleTransformer;
 import micdoodle8.mods.miccore.MicdoodleTransformer.MethodObfuscationEntry;
 import micdoodle8.mods.miccore.MicdoodleTransformer.ObfuscationEntry;
+import micdoodle8.mods.miccore.MicdoodleTransformer.FieldObfuscationEntry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.ScaledResolution;
@@ -60,7 +61,13 @@ public class VersionUtil
     public static final String KEY_FIELD_FLOATINGTICKCOUNT = "floatingTickCount";
     public static final String KEY_FIELD_BIOMEINDEXLAYER = "biomeIndexLayer";
 	public static final String KEY_FIELD_MUSICTICKER = "mcMusicTicker";
-	
+
+	public static final String KEY_FIELD_CAMERA_ZOOM = "cameraZoom";
+	public static final String KEY_FIELD_CAMERA_YAW = "cameraYaw";
+	public static final String KEY_FIELD_CAMERA_PITCH = "cameraPitch";
+
+	public static final String KEY_METHOD_ORIENT_CAMERA = "orientCamera";
+
     static
     {
         mcVersion = new DefaultArtifactVersion((String) FMLInjectionData.data()[4]);
@@ -132,6 +139,12 @@ public class VersionUtil
         nodemap.put(KEY_FIELD_FLOATINGTICKCOUNT, new ObfuscationEntry("floatingTickCount", "field_147365_f"));
         nodemap.put(KEY_FIELD_BIOMEINDEXLAYER, new ObfuscationEntry("biomeIndexLayer", "field_76945_e"));
         nodemap.put(KEY_FIELD_MUSICTICKER, new ObfuscationEntry("mcMusicTicker", "field_147126_aw"));
+
+        nodemap.put(KEY_FIELD_CAMERA_ZOOM, new FieldObfuscationEntry("cameraZoom", "field_78503_V"));
+        nodemap.put(KEY_FIELD_CAMERA_YAW, new FieldObfuscationEntry("cameraYaw", "field_78502_W"));
+        nodemap.put(KEY_FIELD_CAMERA_PITCH, new FieldObfuscationEntry("cameraPitch", "field_78509_X"));
+
+        nodemap.put(KEY_METHOD_ORIENT_CAMERA, new MethodObfuscationEntry("orientCamera", "func_78467_g", ""));
     }
 
     public static boolean mcVersionMatches(String version)

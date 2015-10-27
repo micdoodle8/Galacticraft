@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
@@ -111,13 +112,13 @@ public class SkyProviderOverworld extends IRenderHandler
 	        try
 	        {
 	        	Class<?> c = mc.entityRenderer.getClass();
-	        	Field cameraZoom = c.getDeclaredField("cameraZoom");
+	        	Field cameraZoom = c.getDeclaredField(VersionUtil.getNameDynamic(VersionUtil.KEY_FIELD_CAMERA_ZOOM));
 	        	cameraZoom.setAccessible(true);
 	        	zoom = cameraZoom.getDouble(mc.entityRenderer);
-	        	Field cameraYaw = c.getDeclaredField("cameraYaw");
+	        	Field cameraYaw = c.getDeclaredField(VersionUtil.getNameDynamic(VersionUtil.KEY_FIELD_CAMERA_YAW));
 	        	cameraYaw.setAccessible(true);
 	        	yaw = cameraYaw.getDouble(mc.entityRenderer);
-	        	Field cameraPitch = c.getDeclaredField("cameraPitch");
+	        	Field cameraPitch = c.getDeclaredField(VersionUtil.getNameDynamic(VersionUtil.KEY_FIELD_CAMERA_PITCH));
 	        	cameraPitch.setAccessible(true);
 	        	pitch = cameraPitch.getDouble(mc.entityRenderer);
 	        	
@@ -134,7 +135,7 @@ public class SkyProviderOverworld extends IRenderHandler
 	            GL11.glMatrixMode(GL11.GL_MODELVIEW);
 	            GL11.glLoadIdentity();
             
-	        	m = c.getDeclaredMethod("orientCamera", float.class);
+	        	m = c.getDeclaredMethod(VersionUtil.getNameDynamic(VersionUtil.KEY_METHOD_ORIENT_CAMERA), float.class);
 	        	m.setAccessible(true);
 	        	m.invoke(mc.entityRenderer, mc.gameSettings.fovSetting);
 	        }
