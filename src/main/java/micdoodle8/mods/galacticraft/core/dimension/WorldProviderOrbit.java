@@ -1141,7 +1141,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                     {
                         this.checked.add(sideVec);
                         Block b = sideVec.getBlockID(this.worldObj);
-                        if (!(b.isAir(worldObj, sideVec.x, sideVec.y, sideVec.z)) && b != null)
+                        if (b != null && !b.isAir(worldObj, sideVec.x, sideVec.y, sideVec.z))
                         {
                             nextLayer.add(sideVec);
                             if (bStart.isAir(worldObj, this.oneSSBlock.x, this.oneSSBlock.y, this.oneSSBlock.z))
