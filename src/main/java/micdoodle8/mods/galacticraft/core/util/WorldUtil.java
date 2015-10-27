@@ -168,7 +168,8 @@ public class WorldUtil
         {
             if (world.provider.getDimensionId() == 0)
             {
-                if (FMLClientHandler.instance().getClient().thePlayer.ridingEntity instanceof EntitySpaceshipBase &&
+                if (FMLClientHandler.instance().getClient().thePlayer != null &&
+                        FMLClientHandler.instance().getClient().thePlayer.ridingEntity instanceof EntitySpaceshipBase &&
                         FMLClientHandler.instance().getClient().thePlayer.posY > 200)
                 {
                     return 0.0F;
