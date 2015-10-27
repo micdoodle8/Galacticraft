@@ -37,7 +37,7 @@ public class ThreadVersionCheck extends Thread
     {
         final Side sideToCheck = FMLCommonHandler.instance().getSide();
 
-        if (sideToCheck == null)
+        if (sideToCheck == null || ConfigManagerCore.disableUpdateCheck)
         {
             return;
         }

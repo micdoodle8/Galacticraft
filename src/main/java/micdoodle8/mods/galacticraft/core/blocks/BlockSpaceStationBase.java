@@ -83,4 +83,10 @@ public class BlockSpaceStationBase extends BlockContainer implements ITileEntity
             ((IMultiBlock) tile).onCreate(worldIn, pos);
         }
     }
+
+    @Override
+    public ItemStack getPickBlock(MovingObjectPosition moving, World world, int x, int y, int z)
+    {
+    	return null;
+    }
 }

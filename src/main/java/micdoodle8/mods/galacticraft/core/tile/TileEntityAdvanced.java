@@ -6,6 +6,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorage;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
@@ -15,8 +16,10 @@ import net.minecraft.tileentity.TileEntity;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public abstract class TileEntityAdvanced extends TileEntity implements IPacketReceiver, IUpdatePlayerListBox
@@ -24,6 +27,8 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
     public long ticks = 0;
     private LinkedHashSet<Field> fieldCacheClient;
     private LinkedHashSet<Field> fieldCacheServer;
+    private Map<Field, Object> lastSentData = new HashMap<Field, Object>();
+    private boolean networkDataChanged = false;
 
     @Override
     public void update()
@@ -56,11 +61,19 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
 
             if (this.worldObj.isRemote && this.fieldCacheServer.size() > 0)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
+                PacketDynamic packet = new PacketDynamic(this);
+//                if (networkDataChanged)
+                {
+                    GalacticraftCore.packetPipeline.sendToServer(packet);
+                }
             }
             else if (!this.worldObj.isRemote && this.fieldCacheClient.size() > 0)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.getDimensionId(), getPos().getX(), getPos().getY(), getPos().getZ(), this.getPacketRange()));
+                PacketDynamic packet = new PacketDynamic(this);
+//                if (networkDataChanged)
+                {
+                    GalacticraftCore.packetPipeline.sendToAllAround(packet, new TargetPoint(this.worldObj.provider.getDimensionId(), getPos().getX(), getPos().getY(), getPos().getZ(), this.getPacketRange()));
+                }
             }
         }
     }
@@ -110,6 +123,7 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
     public void getNetworkedData(ArrayList<Object> sendData)
     {
         Set<Field> fieldList = null;
+        boolean changed = false;
 
         if (this.fieldCacheClient == null || this.fieldCacheServer == null)
         {
@@ -134,17 +148,49 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
 
         for (Field f : fieldList)
         {
+            boolean fieldChanged = false;
             try
             {
-                sendData.add(f.get(this));
+                Object data = f.get(this);
+                Object lastData = lastSentData.get(f);
+
+                if (!NetworkUtil.fuzzyEquals(lastData, data))
+                {
+                    fieldChanged = true;
+                }
+
+                sendData.add(data);
+
+                if (fieldChanged)
+                {
+                    lastSentData.put(f, NetworkUtil.cloneNetworkedObject(data));
+                }
             }
             catch (Exception e)
             {
                 e.printStackTrace();
             }
+
+            changed |= fieldChanged;
         }
 
-        this.addExtraNetworkedData(sendData);
+        if (changed)
+        {
+            this.addExtraNetworkedData(sendData);
+        }
+        else
+        {
+            ArrayList<Object> prevSendData = new ArrayList<Object>(sendData);
+
+            this.addExtraNetworkedData(sendData);
+
+            if (!prevSendData.equals(sendData))
+            {
+                changed = true;
+            }
+        }
+
+        networkDataChanged = changed;
     }
 
     @Override

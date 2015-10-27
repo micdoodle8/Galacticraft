@@ -30,10 +30,9 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     private final int tankCapacity = 12000;
     @NetworkedField(targetSide = Side.CLIENT)
     public FluidTank fuelTank = new FluidTank(this.tankCapacity);
-
     private ItemStack[] containingItems = new ItemStack[2];
-
     public IFuelable attachedFuelable;
+    private boolean loadedFuelLastTick = false;
 
     public TileEntityFuelLoader()
     {
@@ -54,6 +53,8 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
 
         if (!this.worldObj.isRemote)
         {
+            this.loadedFuelLastTick = false;
+
             if (this.containingItems[1] != null)
             {
                 if (this.containingItems[1].getItem() instanceof ItemCanisterGeneric)
@@ -75,9 +76,8 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
                 	if (liquid != null)
                 	{
                 		boolean isFuel = false;
-                		if (FluidRegistry.getFluidName(liquid).equalsIgnoreCase("fuel")) isFuel = true;
-                		if (FluidRegistry.getFluidName(liquid).equalsIgnoreCase("rocket_fuel")) isFuel = true;
-                		if (FluidRegistry.getFluidName(liquid).equalsIgnoreCase("fuelgc")) isFuel = true;
+                		if (FluidRegistry.getFluidName(liquid).startsWith("fuel")) isFuel = true;
+                		else if (FluidRegistry.getFluidName(liquid).equalsIgnoreCase("rocket_fuel")) isFuel = true;
 
                 		if (isFuel)
                 		{
@@ -139,10 +139,9 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
 
                 if (this.attachedFuelable != null && this.hasEnoughEnergyToRun && !this.disabled)
                 {
-                    if (liquid != null)
-                    {
-                        this.fuelTank.drain(this.attachedFuelable.addFuel(liquid, true), true);
-                    }
+                    int filled = this.attachedFuelable.addFuel(liquid, true);
+                    this.loadedFuelLastTick = filled > 0;
+                    this.fuelTank.drain(filled, true);
                 }
             }
         }
@@ -270,7 +269,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
         {
             final String liquidName = FluidRegistry.getFluidName(resource);
 
-            if (liquidName != null && liquidName.equalsIgnoreCase("Fuel"))
+            if (liquidName != null && liquidName.startsWith("fuel"))
             {
                 used = this.fuelTank.fill(resource, doFill);
             }
@@ -288,7 +287,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     @Override
     public boolean shouldUseEnergy()
     {
-        return this.fuelTank.getFluid() != null && this.fuelTank.getFluid().amount > 0 && !this.getDisabled(0);
+        return this.fuelTank.getFluid() != null && this.fuelTank.getFluid().amount > 0 && !this.getDisabled(0) && loadedFuelLastTick;
     }
 
     @Override

@@ -154,7 +154,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
 			{
 				String liquidname = liquid.getFluid().getName();
 
-				if (liquidname.equals("fuel"))
+				if (liquidname.startsWith("fuel"))
 				{
 					FluidUtil.tryFillContainer(tank, liquid, this.containedItems, slot, GCItems.fuelCanister);
 				}

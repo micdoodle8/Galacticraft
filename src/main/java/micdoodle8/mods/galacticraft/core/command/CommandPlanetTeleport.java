@@ -51,7 +51,15 @@ public class CommandPlanetTeleport extends CommandBase
                     stats.rocketItem = GCItems.rocketTier1;
                     stats.fuelLevel = 1000;
 
-                    WorldUtil.toCelestialSelection(playerBase, stats, Integer.MAX_VALUE);
+                    try
+                    {
+                        WorldUtil.toCelestialSelection(playerBase, stats, Integer.MAX_VALUE);
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                        throw e;
+                    }
 
                     VersionUtil.notifyAdmins(sender, this, "commands.dimensionteleport", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getName()), "]" });
                 }

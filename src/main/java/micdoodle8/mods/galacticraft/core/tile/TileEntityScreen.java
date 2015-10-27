@@ -1,19 +1,19 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
-import micdoodle8.mods.galacticraft.core.blocks.BlockScreen;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockScreen;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.DrawGameScreen;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,7 +22,6 @@ public class TileEntityScreen extends TileEntityAdvanced
 {   
     public static float FRAMEBORDER = 0.098F;  //used for rendering
     public int imageType;
-    public static int maxTypes;
 	public DrawGameScreen screen;
 	public boolean connectedUp;
 	public boolean connectedDown;
@@ -256,7 +255,7 @@ public class TileEntityScreen extends TileEntityAdvanced
 	{
 		if (!this.worldObj.isRemote)
 		{
-			if (++this.imageType >= maxTypes)
+			if (++this.imageType >= GalacticraftRegistry.getMaxScreenTypes())
 				this.imageType = 0;
 
 			boolean flag = false;

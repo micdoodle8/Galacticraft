@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
@@ -493,11 +494,11 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
                     {
                         footprintList.removeAll(toRemove);
                         footprintChunkMap.put(chunkKey, footprintList);
-                        TickHandlerServer.serverFootprintMap.put(worldIn.provider.getDimensionId(), footprintChunkMap);
-                        TickHandlerServer.footprintRefreshList.add(new NetworkRegistry.TargetPoint(worldIn.provider.getDimensionId(), pos.getX(), pos.getY(), pos.getZ(), 50));
                     }
                 }
             }
+
+            TickHandlerServer.footprintBlockChanges.add(new BlockVec3Dim(x, y, z, world.provider.dimensionId));
         }
     }
     

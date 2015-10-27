@@ -150,7 +150,7 @@ tile.creeperEgg.description=Kriperska jaja će se stvarati u Marsovskim tamnicam
 tile.gasLiquefier.description=Ukapljeni plinovi, bilo od atmosfere ili iz spremnika. Ukapljeni metan čini dobro raketno gorivo!
 tile.methaneSynthesizer.description=S izvorom vodika i izvora ugljika, to proizvodi metan za daljnju obradu u ukapljenom plinu.
 tile.electrolyzer.description=Pretvara vodu u vodik (korisno za metan sintisajzer) i kisik.
-tile.hydrogenPipe.description=Hydrogen Pipe will transfer hydrogen from one machine's internal gas tank to another. ##NEEDS TRANSLATE##
+tile.hydrogenPipe.description=Cijev za hidrogen če prenesti gorivo iz jedne mašine u drugu.
 
 gui.slimeling.chat.wrongPlayer=Ovo nije moj Sludeling!
 gui.cryogenic.chat.cantUse=Nemogu koristiti ovo jos %d sekundi
@@ -175,7 +175,7 @@ entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Evoulirani Šef Kripera
 entity.SpaceshipT2.name=Raketa Ranga 2
 entity.CargoRocket.name=Teretna Raketa
-entity.LandingBalloons.name=Landing Balloons ##NEEDS TRANSLATE##
+entity.LandingBalloons.name=Baloni za sletanje
 
 # CONTAINERS
 container.launchcontroller.name=Kontroler Lansiranja

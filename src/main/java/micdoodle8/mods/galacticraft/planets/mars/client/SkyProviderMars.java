@@ -11,7 +11,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IRenderHandler;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -96,7 +95,6 @@ public class SkyProviderMars extends IRenderHandler
     {
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        RenderHelper.enableStandardItemLighting();
         Vec3 vec3 = world.getSkyColor(mc.getRenderViewEntity(), partialTicks);
         float f1 = (float) vec3.xCoord;
         float f2 = (float) vec3.yCoord;
@@ -309,6 +307,10 @@ public class SkyProviderMars extends IRenderHandler
         GL11.glCallList(this.glSkyList2);
         GL11.glPopMatrix();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
+        GL11.glDisable(GL11.GL_FOG);
+        OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
         GL11.glDepthMask(true);
     }
 

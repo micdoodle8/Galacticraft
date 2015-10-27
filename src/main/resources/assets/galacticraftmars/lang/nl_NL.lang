@@ -115,24 +115,24 @@ gui.status.tanksfull.name=Tanks vol
 gui.message.lowEnergy.name=Lage Energie
 gui.button.liquefy.name=Process ##NEEDS TRANSLATE##
 gui.button.liquefyStop.name=Stop
-gui.gasInput.desc.0=Try placing a Methane$Gas Canister here ##NEEDS TRANSLATE##
-gui.gasInput.desc.1=(Perhaps alternatively,$an Atmospheric Valve) ##NEEDS TRANSLATE##
-gui.hydrogenInput.desc.0=This takes a hydrogen tank ##NEEDS TRANSLATE##
-gui.hydrogenInput.desc.1=or an Atmospheric Valve ##NEEDS TRANSLATE##
-gui.liquidOutput.desc.2=liquefied gas tank ##NEEDS TRANSLATE##
-gui.methaneOutput.desc.2=methane tank ##NEEDS TRANSLATE##
-gui.message.withAtmosphere0.name=on a planet with plenty of ##NEEDS TRANSLATE##
-gui.message.withAtmosphere1.name=in the atmosphere ##NEEDS TRANSLATE##
-item.carbonFragments.name=Fragmented Carbon ##NEEDS TRANSLATE##
-gui.carbonSlot.desc.0=Fragmented Carbon can go here ##NEEDS TRANSLATE##
-gui.waterBucketSlot.desc=Place water buckets here ##NEEDS TRANSLATE##
+gui.gasInput.desc.0=Probeer een Methaan$Gas bus hier te plaatsen
+gui.gasInput.desc.1=(Misschien als alternatief,$een Atmosferische  Sluis)
+gui.hydrogenInput.desc.0=Dit Neemt een Waterstof Tank
+gui.hydrogenInput.desc.1=Of een Atmosferische  Sluis
+gui.liquidOutput.desc.2=Vloeibare Gas Tank
+gui.methaneOutput.desc.2=Methaan Tank
+gui.message.withAtmosphere0.name=Op een Planeet met genoeg on a planet with plenty of ##NEEDS TRANSLATE##
+gui.message.withAtmosphere1.name=in de Atmosfeer
+item.carbonFragments.name=Gefragmenteerde Koolstof
+gui.carbonSlot.desc.0=Gefragmenteerde Koolstof kan hiernaar toe
+gui.waterBucketSlot.desc=Plaats water emmers hier
 
-gui.cargorocket.status.waiting.0=Waiting for ##NEEDS TRANSLATE##
-gui.cargorocket.status.waiting.1=ignition ##NEEDS TRANSLATE##
-gui.cargorocket.status.launched.0=Already ##NEEDS TRANSLATE##
-gui.cargorocket.status.launched.1=Launched ##NEEDS TRANSLATE##
+gui.cargorocket.status.waiting.0=Wachten Voor
+gui.cargorocket.status.waiting.1=Ontsteking ##NEEDS TRANSLATE##
+gui.cargorocket.status.launched.0=Al
+gui.cargorocket.status.launched.1=Gelanceerd
 
-gas.carbondioxide.name=Carbon Dioxide ##NEEDS TRANSLATE##
+gas.carbondioxide.name=Koolstof Dioxide
 gas.oxygen.name=Zuurstof
 gas.nitrogen.name=Stikstof
 
@@ -140,11 +140,11 @@ gui.desc.reinforcedPlateT2.name=Tier 2
 dimension.Mars.name=Mars
 planet.mars=Mars
 
-tile.treasureT2.description=Tier 2 Treasure Chests will generate in Mars Dungeons. They are unlockable after defeating the final boss. ##NEEDS TRANSLATE##
-tile.cavernVines.description=Cavernous Vines are dangerous to living creatures, entangling them and dragging them upwards. ##NEEDS TRANSLATE##
+tile.treasureT2.description=Tier 2 Schatkist Zullen Genereren in Mars Kerkers. Je kunt ze openen als je de Eindbaas heb Verslagen.
+tile.cavernVines.description=Grotten Lianen zijn Gevaarlijk Voor levende Wezens, je Word Verwikkeld en Omhoog Geslepen.
 tile.slimelingEgg.description=Slimeling Eggs, once cracked with a player's bare hands, will soon hatch into a pet. ##NEEDS TRANSLATE##
 tile.cryoChamber.description=Cryogenic Chambers will allow a player to sleep during the day, healing a small amount of health, but has a cooldown. ##NEEDS TRANSLATE##
-tile.launchController.description=Launch Controllers are used to customize launch behaviour, including launch criteria and destination launch pad for auto launches. ##NEEDS TRANSLATE##
+tile.launchController.description=Lanceer Controleurs Worden Gebruikt om het aanpassen van lanceer Gebruik, waaronder de lanceer criteria en de bestemming van Automatische Lanceringen
 tile.terraformer.description=Terraformers are used to add some greenery to distant planets, adding grass, trees and water when given the correct materials. ##NEEDS TRANSLATE##
 tile.creeperEgg.description=Creeper Eggs will spawn in Mars dungeons, spawning a sneaky predator upon exploding. ##NEEDS TRANSLATE##
 tile.gasLiquefier.description=Liquefies gases, either from the atmosphere or from canisters. Liquefied methane makes a good rocket fuel! ##NEEDS TRANSLATE##
@@ -153,40 +153,40 @@ tile.electrolyzer.description=Transforms water into hydrogen (useful for the Met
 tile.hydrogenPipe.description=Hydrogen Pipe will transfer hydrogen from one machine's internal gas tank to another. ##NEEDS TRANSLATE##
 
 gui.slimeling.chat.wrongPlayer=This isn't my Slimeling! ##NEEDS TRANSLATE##
-gui.cryogenic.chat.cantUse=I can't use this for another %d seconds ##NEEDS TRANSLATE##
-gui.slimeling.name=Name ##NEEDS TRANSLATE##
-gui.slimeling.owner=Owner ##NEEDS TRANSLATE##
-gui.slimeling.kills=Kills ##NEEDS TRANSLATE##
-gui.slimeling.scale=Scale ##NEEDS TRANSLATE##
-gui.slimeling.button.sit=Sit ##NEEDS TRANSLATE##
-gui.slimeling.button.follow=Follow ##NEEDS TRANSLATE##
-gui.slimeling.sitting=Sitting ##NEEDS TRANSLATE##
-gui.slimeling.following=Following ##NEEDS TRANSLATE##
-gui.slimeling.damage=Attack Damage ##NEEDS TRANSLATE##
-gui.slimeling.food=Favorite food ##NEEDS TRANSLATE##
+gui.cryogenic.chat.cantUse=Ik kan dit niet gebruiken voor %d Seconden 
+gui.slimeling.name=Naam
+gui.slimeling.owner=Eigenaar
+gui.slimeling.kills=Kills
+gui.slimeling.scale=Schaal
+gui.slimeling.button.sit=Zit
+gui.slimeling.button.follow=Volg
+gui.slimeling.sitting=Zitten
+gui.slimeling.following=Volgen
+gui.slimeling.damage=Aanval Schade
+gui.slimeling.food=Favoriete Voedsel
 
 # SCHEMATICS
 schematic.rocketT3.name=Tier 3 Raket
-schematic.cargoRocket.name=Automatic Cargo Rocket ##NEEDS TRANSLATE##
+schematic.cargoRocket.name=Automatische Vracht Raket
 
 # ENTITIES
 entity.Sludgeling.name=Sludgeling ##NEEDS TRANSLATE##
 entity.Slimeling.name=Slimeling ##NEEDS TRANSLATE##
-entity.CreeperBoss.name=Evolved Creeper Boss ##NEEDS TRANSLATE##
-entity.SpaceshipT2.name=Tier 2 Rocket ##NEEDS TRANSLATE##
-entity.CargoRocket.name=Cargo Rocket ##NEEDS TRANSLATE##
-entity.LandingBalloons.name=Landing Balloons ##NEEDS TRANSLATE##
+entity.CreeperBoss.name=Geëvolueerde Creeper Baas
+entity.SpaceshipT2.name=Tier 2 Raket
+entity.CargoRocket.name=Vracht Raket
+entity.LandingBalloons.name=Landing Balonnen
 
 # CONTAINERS
-container.launchcontroller.name=Launch Controller ##NEEDS TRANSLATE##
-container.tileTerraformer.name=Terraformer ##NEEDS TRANSLATE##
-container.marsLander.name=Landing Balloons ##NEEDS TRANSLATE##
+container.launchcontroller.name=Lanceer Controleur
+container.tileTerraformer.name=Terraformer
+container.marsLander.name=Landing Balonnen
 
 # CONFIG GUI
-gc.configgui.dimensionIDMars=Mars Dimension ID
-gc.configgui.idSchematicRocketT2=Tier 2 Rocket Schematic ID
-gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID
-gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
-gc.configgui.launchControllerAllDims=Launch Controller All Dimensions
+gc.configgui.dimensionIDMars=Mars Dimensie ID
+gc.configgui.idSchematicRocketT2=Tier 2 Raket Schematic ID
+gc.configgui.idSchematicCargoRocket=Vracht Raket Schematic ID
+gc.configgui.launchControllerChunkLoad=Lanceer Controleur Chunkloading
+gc.configgui.launchControllerAllDims=Lanceer Controleur alle Dimensies
 
-gc.configgui.planets.title=Galacticraft Planets Config
+gc.configgui.planets.title=Galacticraft Planeten Configuratie

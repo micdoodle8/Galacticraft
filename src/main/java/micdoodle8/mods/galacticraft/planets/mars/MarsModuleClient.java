@@ -5,8 +5,8 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
 import micdoodle8.mods.galacticraft.core.client.objload.AdvancedModelLoader;
 import micdoodle8.mods.galacticraft.core.client.objload.IModelCustom;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderBubble;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderTier1Rocket;
+import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityBubbleProviderRenderer;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
@@ -82,13 +82,14 @@ public class MarsModuleClient implements IPlanetsModuleClient
         // Tile Entity Renderers
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChestMars.class, new TileEntityTreasureChestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCryogenicChamber.class, new TileEntityCryogenicChamberRenderer(chamberModel));
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTerraformer.class, new TileEntityBubbleProviderRenderer(0.25F, 1.0F, 0.25F));
 
         // Entities
         RenderingRegistry.registerEntityRenderingHandler(EntitySludgeling.class, new RenderSludgeling());
         RenderingRegistry.registerEntityRenderingHandler(EntitySlimeling.class, new RenderSlimeling());
         RenderingRegistry.registerEntityRenderingHandler(EntityCreeperBoss.class, new RenderCreeperBoss());
         RenderingRegistry.registerEntityRenderingHandler(EntityTier2Rocket.class, new RenderTier1Rocket(new ModelTier2Rocket(), MarsModule.ASSET_PREFIX, "rocketT2"));
-        RenderingRegistry.registerEntityRenderingHandler(EntityTerraformBubble.class, new RenderBubble(0.25F, 1.0F, 0.25F));
+//        RenderingRegistry.registerEntityRenderingHandler(EntityTerraformBubble.class, new RenderBubble(0.25F, 1.0F, 0.25F));
         RenderingRegistry.registerEntityRenderingHandler(EntityProjectileTNT.class, new RenderProjectileTNT());
         RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, new RenderLandingBalloons());
         RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, new RenderLandingBalloons());

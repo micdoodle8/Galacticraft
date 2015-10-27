@@ -53,7 +53,7 @@ public class BlockSludge extends BlockFluidClassic
 
     public BlockSludge(String assetName)
     {
-        super(MarsModule.SLUDGE, MarsModule.sludgeMaterial);
+        super(MarsModule.sludge, MarsModule.sludgeMaterial);
         this.setQuantaPerBlock(9);
         this.setLightLevel(1.0F);
         this.needsRandomTick = true;

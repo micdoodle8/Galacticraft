@@ -41,8 +41,8 @@ group= "micdoodle8.mods.galacticraft"
 archivesBaseName = "GalacticraftCoreAll"
 	
 minecraft {
-    version = "1.7.10-10.13.0.1180" // Forge version
-    assetDir = "eclipse/assets" // This is where forge will download Minecraft assets
+    version = "1.8-11.14.3.1487"
+    runDir = "eclipse/assets"
 }
 
 // Keep a list of dependencies files/directories for easy jar packing
@@ -87,9 +87,9 @@ jar
 }
 
 task moveCoreMcmodInfo(type: Copy, dependsOn: "reobf") {
-	from 'src/main/resources/assets/galacticraftcore/mcmod.info'
 	from 'LICENSE.txt'
 	from(zipTree(project.ext.coreJar))
+	from 'src/main/resources/assets/galacticraftcore/mcmod.info'
 	into 'temporary'
 }
 
@@ -267,7 +267,6 @@ task packApi(type: Jar, dependsOn: "classes") {
 		includes.addAll('LICENSE.txt')
 		excludes.addAll(project.ext.micdoodleCoreFiles)
 		excludes.addAll(project.ext.planetsFiles)
-		excludes.addAll(project.ext.coreFiles)
 		excludes.addAll(project.ext.dependencies)
 		excludes.addAll('**/*.info')
 		excludes.addAll('assets')

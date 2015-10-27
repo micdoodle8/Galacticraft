@@ -173,7 +173,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
     }
 
 //    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyEmitter", modID = "IC2")
-//    public boolean emitsEnergyTo(TileEntity receiver, EnumFacing direction)
+//    public boolean emitsEnergyTo(TileEntity receiver, ForgeDirection direction)
 //    {
 //        //Don't add connection to IC2 grid if it's a Galacticraft tile
 //        if (receiver instanceof IElectrical || receiver instanceof IConductor)
@@ -199,12 +199,22 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
 //    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySource", modID = "IC2")
 //    public double getOfferedEnergy()
 //    {
-//        return this.getProvide(null) * EnergyConfigHandler.TO_IC2_RATIO;
+//        if (EnergyConfigHandler.disableIC2Output)
+//        {
+//            return 0.0;
+//        }
+//
+//        return this.getProvide(ForgeDirection.UNKNOWN) * EnergyConfigHandler.TO_IC2_RATIO;
 //    }
 //
 //    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySource", modID = "IC2")
 //    public void drawEnergy(double amount)
 //    {
+//        if (EnergyConfigHandler.disableIC2Output)
+//        {
+//            return;
+//        }
+//
 //        this.storage.extractEnergyGC((float) amount / EnergyConfigHandler.TO_IC2_RATIO, false);
 //    }
 //
@@ -216,7 +226,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
 //    }
 //
 //    @RuntimeInterface(clazz = "mekanism.api.energy.ICableOutputter", modID = "Mekanism")
-//    public boolean canOutputTo(EnumFacing side)
+//    public boolean canOutputTo(ForgeDirection side)
 //    {
 //        return this.getElectricalOutputDirections().contains(side);
 //    }
@@ -248,15 +258,20 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
     }
 
 //    @RuntimeInterface(clazz = "buildcraft.api.power.IPowerEmitter", modID = "")
-//    public boolean canEmitPowerFrom(EnumFacing side)
+//    public boolean canEmitPowerFrom(ForgeDirection side)
 //    {
 //        return this.getElectricalOutputDirections().contains(side);
 //    }
 //
 //    @Override
 //    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
-//    public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate)
+//    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
 //    {
+//        if (EnergyConfigHandler.disableRFOutput)
+//        {
+//            return 0;
+//        }
+//
 //    	if (!this.getElectricalOutputDirections().contains(from))
 //    	{
 //    		return 0;

@@ -9,8 +9,6 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
-import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
 import micdoodle8.mods.galacticraft.core.client.fx.EffectHandler;
@@ -36,17 +34,13 @@ import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.block.model.ModelBlockDefinition;
 import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.tileentity.TileEntity;
@@ -56,7 +50,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
@@ -119,7 +112,7 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static boolean lastSpacebarDown;
 
-    public static int clientSpaceStationID = 0;
+    public static HashMap<Integer, Integer> clientSpaceStationID = Maps.newHashMap();
 
     public static MusicTicker.MusicType MUSIC_TYPE_MARS;
 
@@ -262,7 +255,7 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerEntityRenderingHandler(EntityFlag.class, new RenderFlag());
         RenderingRegistry.registerEntityRenderingHandler(EntityParachest.class, new RenderParaChest());
         RenderingRegistry.registerEntityRenderingHandler(EntityAlienVillager.class, new RenderAlienVillager());
-        RenderingRegistry.registerEntityRenderingHandler(EntityBubble.class, new RenderBubble(0.25F, 0.25F, 1.0F));
+//        RenderingRegistry.registerEntityRenderingHandler(EntityBubble.class, new RenderBubble(0.25F, 0.25F, 1.0F));
         RenderingRegistry.registerEntityRenderingHandler(EntityLander.class, new RenderLander());
         RenderingRegistry.registerEntityRenderingHandler(EntityCelestialFake.class, new RenderEntityFake());
 
@@ -314,8 +307,8 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static void registerBlockRenderers()
     {
-        registerBlockJson(GCBlocks.crudeOilStill);
-        registerBlockJson(GCBlocks.fuelStill);
+        registerBlockJson(GCBlocks.crudeOil);
+        registerBlockJson(GCBlocks.fuel);
         registerBlockJson(GCBlocks.breatheableAir);
         registerBlockJson(GCBlocks.brightAir);
         registerBlockJson(GCBlocks.brightBreatheableAir);
@@ -347,8 +340,6 @@ public class ClientProxyCore extends CommonProxyCore
         registerBlockJson(GCBlocks.airLockFrame, 0, "air_lock_frame");
         registerBlockJson(GCBlocks.airLockFrame, 1, "air_lock_controller");
         registerBlockJson(GCBlocks.airLockSeal);
-        registerBlockJson(GCBlocks.crudeOilStill);
-        registerBlockJson(GCBlocks.fuelStill);
         registerBlockJson(GCBlocks.refinery);
         registerBlockJson(GCBlocks.fuelLoader);
         registerBlockJson(GCBlocks.landingPadFull, 0, "landing_pad_full");
@@ -385,6 +376,7 @@ public class ClientProxyCore extends CommonProxyCore
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityParaChest.class, new TileEntityParachestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNasaWorkbench.class, new TileEntityNasaWorkbenchRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolar.class, new TileEntitySolarPanelRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenDistributor.class, new TileEntityBubbleProviderRenderer(0.25F, 0.25F, 1.0F));
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDish.class, new TileEntityDishRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityThruster.class, new TileEntityThrusterRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArclamp.class, new TileEntityArclampRenderer());
@@ -622,7 +614,7 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static void renderLiquidOverlays(float partialTicks)
     {
-        if (ClientProxyCore.isInsideOfFluid(ClientProxyCore.mc.thePlayer, GalacticraftCore.gcFluidOil))
+        if (ClientProxyCore.isInsideOfFluid(ClientProxyCore.mc.thePlayer, GalacticraftCore.fluidOil))
         {
         	ClientProxyCore.mc.getTextureManager().bindTexture(ClientProxyCore.underOilTexture);
         }

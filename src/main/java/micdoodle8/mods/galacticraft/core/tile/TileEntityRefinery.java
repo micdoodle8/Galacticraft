@@ -63,9 +63,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
 	
 	                if (liquid != null)
 	                {
-	                	boolean isOil = false;
-		                if (FluidRegistry.getFluidName(liquid).equalsIgnoreCase("oil")) isOil = true;
-		                if (FluidRegistry.getFluidName(liquid).equalsIgnoreCase("oilgc")) isOil = true;
+	                	boolean isOil = FluidRegistry.getFluidName(liquid).startsWith("oil");
 		
 		                if (isOil)
 		                {
@@ -127,7 +125,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
             if (liquid != null && liquid.amount > 0)
             {
                 String liquidname = liquid.getFluid().getName();
-                if (liquidname.equals("fuel"))
+                if (liquidname.startsWith("fuel"))
                 {
                     FluidUtil.tryFillContainer(tank, liquid, this.containingItems, slot, GCItems.fuelCanister);
                 }
@@ -166,7 +164,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
             final int amountToDrain = Math.min(Math.min(oilAmount, fuelSpace), TileEntityRefinery.OUTPUT_PER_SECOND);
 
             this.oilTank.drain(amountToDrain, true);
-            this.fuelTank.fill(FluidRegistry.getFluidStack("fuel", amountToDrain), true);
+            this.fuelTank.fill(FluidRegistry.getFluidStack(ConfigManagerCore.useOldFuelFluidID ? "fuelgc" : "fuel", amountToDrain), true);
         }
     }
 
@@ -363,14 +361,14 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
         {
             final String liquidName = FluidRegistry.getFluidName(resource);
 
-            if (liquidName != null && liquidName.equalsIgnoreCase("oil"))
+            if (liquidName != null && liquidName.startsWith("oil"))
             {
                 used = this.oilTank.fill(resource, doFill);
-            } else
-            if (liquidName != null && liquidName.equalsIgnoreCase("oilgc"))
-            {
-                used = this.oilTank.fill(new FluidStack(GalacticraftCore.fluidOil, resource.amount), doFill);
-            }            	
+            }
+//            else if (liquidName != null && liquidName.equalsIgnoreCase("oilgc"))
+//            {
+//                used = this.oilTank.fill(new FluidStack(GalacticraftCore.fluidOil, resource.amount), doFill);
+//            }
         }
 
         return used;

@@ -149,7 +149,6 @@ public class SkyProviderOverworld extends IRenderHandler
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        RenderHelper.enableStandardItemLighting();
         final Vec3 var2 = this.minecraft.theWorld.getSkyColor(this.minecraft.getRenderViewEntity(), partialTicks);
         float var3 = (float) var2.xCoord * var21;
         float var4 = (float) var2.yCoord * var21;
@@ -368,6 +367,7 @@ public class SkyProviderOverworld extends IRenderHandler
 	        	e.printStackTrace();
 	        }
         }
+        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
     }
 
     private void renderStars()

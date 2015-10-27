@@ -16,7 +16,6 @@ public class FluidTexturesGC
         MinecraftForge.EVENT_BUS.register(new FluidTexturesGC());
     }
 
-
 //    @SubscribeEvent
 //    public void onStitch(TextureStitchEvent.Pre event)
 //    {
@@ -31,7 +30,9 @@ public class FluidTexturesGC
 //            AsteroidsModule.fluidLiquidArgon.setIcons(event.map.registerIcon(AsteroidsModule.ASSET_PREFIX + ":fluids/LiquidArgon"));
 //            AsteroidsModule.fluidNitrogenGas.setIcons(event.map.registerIcon(AsteroidsModule.ASSET_PREFIX + ":fluids/NitrogenGas"));
 //            FluidRegistry.getFluid("hydrogen").setIcons(event.map.registerIcon(AsteroidsModule.ASSET_PREFIX + ":fluids/HydrogenGas"));
+//            FluidRegistry.getFluid("helium").setIcons(event.map.registerIcon(AsteroidsModule.ASSET_PREFIX + ":fluids/HeliumGas"));
+//            FluidRegistry.getFluid("argon").setIcons(event.map.registerIcon(AsteroidsModule.ASSET_PREFIX + ":fluids/ArgonGas"));
+//            FluidRegistry.getFluid("carbondioxide").setIcons(event.map.registerIcon(AsteroidsModule.ASSET_PREFIX + ":fluids/CarbonDioxideGas"));
 //        }
-//    } TODO
-
+//    }
 }

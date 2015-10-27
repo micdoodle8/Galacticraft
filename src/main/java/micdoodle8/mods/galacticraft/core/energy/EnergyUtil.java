@@ -143,7 +143,7 @@ public class EnergyUtil
     
     public static float otherModsEnergyTransfer(TileEntity tileAdj, EnumFacing inputAdj, float toSend, boolean simulate)
     {
-//        if (isMekLoaded && tileAdj instanceof IStrictEnergyAcceptor)
+//        if (isMekLoaded && !EnergyConfigHandler.disableMekanismOutput && tileAdj instanceof IStrictEnergyAcceptor)
 //        {
 //            IStrictEnergyAcceptor tileMek = (IStrictEnergyAcceptor) tileAdj;
 //            if (tileMek.canReceiveEnergy(inputAdj))
@@ -156,7 +156,7 @@ public class EnergyUtil
 //                return transferredMek / EnergyConfigHandler.TO_MEKANISM_RATIO;
 //            }
 //        }
-//        else if (isIC2Loaded && tileAdj instanceof IEnergySink)
+//        else if (isIC2Loaded && !EnergyConfigHandler.disableIC2Output && tileAdj instanceof IEnergySink)
 //        {
 //            double demanded = 0;
 //        	try
@@ -199,15 +199,15 @@ public class EnergyUtil
 //                return (float) result / EnergyConfigHandler.TO_IC2_RATIO;
 //            }
 //        }
-//        else if (isRF1Loaded && tileAdj instanceof IEnergyHandler)
+//        else if (isRF1Loaded && !EnergyConfigHandler.disableRFOutput && tileAdj instanceof IEnergyHandler)
 //        {
 //        	return ((IEnergyHandler)tileAdj).receiveEnergy(inputAdj, MathHelper.floor_float(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
 //        }
-//        else if (isRF2Loaded && tileAdj instanceof IEnergyReceiver)
+//        else if (isRF2Loaded && !EnergyConfigHandler.disableRFOutput && tileAdj instanceof IEnergyReceiver)
 //        {
 //        	return ((IEnergyReceiver)tileAdj).receiveEnergy(inputAdj, MathHelper.floor_float(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
 //        }
-//        else if (isBC6Loaded && MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, inputAdj) != null)
+//        else if (isBC6Loaded && !EnergyConfigHandler.disableBuildCraftOutput && MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, inputAdj) != null)
 //        //New BC API
 //        {
 //            double toSendBC = Math.min(toSend * EnergyConfigHandler.TO_BC_RATIO, MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, inputAdj).getEnergyRequested());
@@ -217,7 +217,7 @@ public class EnergyUtil
 //            }
 //            return (float) MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, inputAdj).addEnergy(toSendBC) / EnergyConfigHandler.TO_BC_RATIO;
 //        }
-//        else if (isBCLoaded && tileAdj instanceof IPowerReceptor)
+//        else if (isBCLoaded && !EnergyConfigHandler.disableBuildCraftOutput && tileAdj instanceof IPowerReceptor)
 //        //Legacy BC API
 //        {
 //            PowerReceiver receiver = ((IPowerReceptor) tileAdj).getPowerReceiver(inputAdj);
@@ -232,7 +232,7 @@ public class EnergyUtil
 //                return rec / EnergyConfigHandler.TO_BC_RATIO;
 //            }
 //        }
-        
+
         return 0F;
     }
 

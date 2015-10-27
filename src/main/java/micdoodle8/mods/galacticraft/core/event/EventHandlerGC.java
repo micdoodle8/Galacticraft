@@ -82,6 +82,8 @@ import java.util.*;
 
 public class EventHandlerGC
 {
+    public static Map<Block, Item> bucketList = new HashMap<Block, Item>();
+
     @SubscribeEvent
     public void onRocketLaunch(EntitySpaceshipBase.RocketLaunchEvent event)
     {
@@ -264,85 +266,34 @@ public class EventHandlerGC
         }
     }
 
+    private ItemStack fillBucket(World world, MovingObjectPosition position)
+    {
+        Block block = world.getBlock(position.blockX, position.blockY, position.blockZ);
+
+        Item bucket = bucketList.get(block);
+
+        if (bucket != null && world.getBlockMetadata(position.blockX, position.blockY, position.blockZ) == 0)
+        {
+            world.setBlockToAir(position.blockX, position.blockY, position.blockZ);
+            return new ItemStack(bucket);
+        }
+
+        return null;
+    }
+
     @SubscribeEvent
     public void onBucketFill(FillBucketEvent event)
     {
-        Class<?> buildCraftClass = null;
-
-        Block bcOilID1 = null;
-        Block bcOilID2 = null;
-        Block bcFuelID1 = null;
-        Block bcFuelID2 = null;
-        Item bcOilBucket = null;
-        Item bcFuelBucket = null;
-
-        try
-        {
-            if ((buildCraftClass = Class.forName("buildcraft.BuildCraftEnergy")) != null)
-            {
-                for (final Field f : buildCraftClass.getFields())
-                {
-                    if (f.getName().equals("oilMoving"))
-                    {
-                        bcOilID1 = (Block) f.get(null);
-                    }
-                    else if (f.getName().equals("oilStill"))
-                    {
-                        bcOilID2 = (Block) f.get(null);
-                    }
-                    if (f.getName().equals("fuelMoving"))
-                    {
-                        bcFuelID1 = (Block) f.get(null);
-                    }
-                    else if (f.getName().equals("fuelStill"))
-                    {
-                        bcFuelID2 = (Block) f.get(null);
-                    }
-                    else if (f.getName().equals("bucketOil"))
-                    {
-                        bcOilBucket = (Item) f.get(null);
-                    }
-                    else if (f.getName().equals("bucketFuel"))
-                    {
-                        bcFuelBucket = (Item) f.get(null);
-                    }
-                }
-            }
-        }
-        catch (final Throwable cnfe)
-        {
-
-        }
-
         MovingObjectPosition pos = event.target;
-        IBlockState state = event.world.getBlockState(pos.getBlockPos());
-    	final Block blockID = state.getBlock();
-        int meta = blockID.getMetaFromState(state);
+        ItemStack ret = fillBucket(event.world, pos);
 
-        if (GalacticraftCore.isPlanetsLoaded && blockID == MarsBlocks.blockSludge && meta == 0)
+        if (ret == null)
         {
-        	event.world.setBlockToAir(pos.getBlockPos());
-            event.result = new ItemStack(MarsItems.bucketSludge);
-            event.setResult(Result.ALLOW);
+            return;
         }
-        else if (bcOilBucket != null && (blockID == bcOilID1 || blockID == bcOilID2 || blockID == GCBlocks.crudeOilStill) && meta == 0)
-        {
-            event.world.setBlockToAir(pos.getBlockPos());
-            event.result = new ItemStack(bcOilBucket);
-            event.setResult(Result.ALLOW);
-        }
-        else if (bcFuelBucket != null && (blockID == bcFuelID1 || blockID == bcFuelID2 || blockID == GCBlocks.fuelStill) && meta == 0)
-        {
-            event.world.setBlockToAir(pos.getBlockPos());
-            event.result = new ItemStack(bcFuelBucket);
-            event.setResult(Result.ALLOW);
-        }
-        else if ((blockID == GCBlocks.crudeOilStill || blockID == GCBlocks.fuelStill) && meta == 0)
-        {
-           event.setCanceled(true);
-        }
-        
-        return;
+
+        event.result = ret;
+        event.setResult(Result.ALLOW);
     }
 
     @SubscribeEvent
@@ -452,7 +403,7 @@ public class EventHandlerGC
                             if (EventHandlerGC.checkBlockAbove(world, new BlockPos(bx + x, by + cy + 1, bz + z)))
                                 continue;
 
-                            world.setBlockState(new BlockPos(bx + x, by + cy, bz + z), GCBlocks.crudeOilStill.getDefaultState(), 2);
+                            world.setBlockState(new BlockPos(bx + x, by + cy, bz + z), GCBlocks.crudeOil.getDefaultState(), 2);
                         }
                     }
                 }
@@ -487,7 +438,7 @@ public class EventHandlerGC
                         if (EventHandlerGC.checkBlockAbove(world, new BlockPos(bx + x, by + cy + 1, bz + z)))
                             continue;
 
-                        if (world.getBlockState(new BlockPos(bx + x, by + cy, bz + z)).getBlock() == GCBlocks.crudeOilStill)
+                        if (world.getBlockState(new BlockPos(bx + x, by + cy, bz + z)).getBlock() == GCBlocks.crudeOil)
                         	return true;
                     }
                 }
@@ -512,7 +463,7 @@ public class EventHandlerGC
         {
             return true;
         }
-        return b instanceof BlockLiquid && b != GCBlocks.crudeOilStill;
+        return b instanceof BlockLiquid && b != GCBlocks.crudeOil;
     }
 
     private static boolean checkBlockAbove(World w, BlockPos pos)
@@ -781,11 +732,17 @@ public class EventHandlerGC
         	{
         		PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getGameProfile().getName());
 
-        		if (gearData == null || gearData.getFrequencyModule() == -1)
+                float x = event.sound.getXPosF();
+                float y = event.sound.getYPosF();
+                float z = event.sound.getZPosF();
+
+                // If the player doesn't have a frequency module, and the player isn't in an oxygenated environment
+                // Note: this is a very simplistic approach, and nowhere near realistic, but required for performance reasons
+                AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(x - 0.0015D, y - 0.0015D, z - 0.0015D, x + 0.0015D, y + 0.0015D, z + 0.0015D);
+                boolean playerInAtmosphere = OxygenUtil.isAABBInBreathableAirBlock(player);
+                boolean soundInAtmosphere = OxygenUtil.isAABBInBreathableAirBlock(player.worldObj, bb);
+        		if ((gearData == null || gearData.getFrequencyModule() == -1) && (!playerInAtmosphere || !soundInAtmosphere))
         		{
-        			float x = event.sound.getXPosF();
-        			float y = event.sound.getYPosF();
-        			float z = event.sound.getZPosF();
         			float volume = event.sound.getVolume();
         			for (int i = 0; i < this.soundPlayList.size(); i++)
         			{

@@ -77,6 +77,14 @@ public class AsteroidsModule implements IPlanetsModule
     public static Fluid fluidAtmosphericGases;
     //public static Fluid fluidCO2Gas;
 
+    private void registerFluid(String fluidName, int density, int viscosity, int temperature, boolean gaseous)
+    {
+        if (FluidRegistry.getFluid(fluidName) == null)
+        {
+            FluidRegistry.registerFluid(new Fluid(fluidName).setDensity(density).setViscosity(viscosity).setTemperature(temperature).setGaseous(gaseous));
+        }
+    }
+
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
@@ -89,19 +97,19 @@ public class AsteroidsModule implements IPlanetsModule
         FMLCommonHandler.instance().bus().register(eventHandler);
         RecipeSorter.register("galacticraftmars:canisterRecipe", CanisterRecipes.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
 
-        FluidRegistry.registerFluid(new Fluid("methane").setDensity(1).setViscosity(11).setGaseous(true));
-        FluidRegistry.registerFluid(new Fluid("atmosphericgases").setDensity(1).setViscosity(13).setGaseous(true));
-        FluidRegistry.registerFluid(new Fluid("liquidmethane").setDensity(450).setViscosity(120).setTemperature(109));
+        registerFluid("methane", 1, 11, 0, true);
+        registerFluid("atmosphericgases", 1, 13, 0, true);
+        registerFluid("liquidmethane", 450, 120, 109, false);
         //Data source for liquid methane: http://science.nasa.gov/science-news/science-at-nasa/2005/25feb_titan2/
-        FluidRegistry.registerFluid(new Fluid("liquidoxygen").setDensity(1141).setViscosity(140).setTemperature(90));
-        FluidRegistry.registerFluid(new Fluid("oxygen").setDensity(1).setViscosity(13).setGaseous(true));
-        FluidRegistry.registerFluid(new Fluid("liquidnitrogen").setDensity(808).setViscosity(130).setTemperature(90));
-        FluidRegistry.registerFluid(new Fluid("nitrogen").setDensity(1).setViscosity(12).setGaseous(true));
-        FluidRegistry.registerFluid(new Fluid("carbondioxide").setDensity(2).setViscosity(20).setGaseous(true));
-        FluidRegistry.registerFluid(new Fluid("hydrogen").setDensity(1).setViscosity(1).setGaseous(true));
-        FluidRegistry.registerFluid(new Fluid("argon").setDensity(1).setViscosity(4).setGaseous(true));
-        FluidRegistry.registerFluid(new Fluid("liquidargon").setDensity(900).setViscosity(100).setTemperature(87));
-        FluidRegistry.registerFluid(new Fluid("helium").setDensity(1).setViscosity(1).setGaseous(true));
+        registerFluid("liquidoxygen", 1141, 140, 90, false);
+        registerFluid("oxygen", 1, 13, 0, true);
+        registerFluid("liquidnitrogen", 808, 130, 90, false);
+        registerFluid("nitrogen", 1, 12, 0, true);
+        registerFluid("carbondioxide", 2, 20, 0, true);
+        registerFluid("hydrogen", 1, 1, 0, true);
+        registerFluid("argon", 1, 4, 0, true);
+        registerFluid("liquidargon", 900, 100, 87, false);
+        registerFluid("helium", 1, 1, 0, true);
         AsteroidsModule.fluidMethaneGas = FluidRegistry.getFluid("methane");
         AsteroidsModule.fluidAtmosphericGases = FluidRegistry.getFluid("atmosphericgases");
         AsteroidsModule.fluidLiquidMethane = FluidRegistry.getFluid("liquidmethane");
@@ -110,6 +118,7 @@ public class AsteroidsModule implements IPlanetsModule
         AsteroidsModule.fluidLiquidNitrogen = FluidRegistry.getFluid("liquidnitrogen");
         AsteroidsModule.fluidLiquidArgon = FluidRegistry.getFluid("liquidargon");
         AsteroidsModule.fluidNitrogenGas = FluidRegistry.getFluid("nitrogen");
+
         //AsteroidsModule.fluidCO2Gas = FluidRegistry.getFluid("carbondioxide");
 
         AsteroidBlocks.initBlocks();

@@ -437,6 +437,11 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
 //    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 //    public double getDemandedEnergy()
 //    {
+//        if (EnergyConfigHandler.disableIC2Input)
+//        {
+//            return 0.0;
+//        }
+//
 //        try
 //        {
 //            if (this.IC2surplusInGJ < 0.001F)
@@ -462,6 +467,11 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
 //    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
 //    public double demandedEnergyUnits()
 //    {
+//        if (EnergyConfigHandler.disableIC2Input)
+//        {
+//            return 0.0;
+//        }
+//
 //        try
 //        {
 //            if (this.IC2surplusInGJ < 0.001F)
@@ -485,9 +495,9 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
 //
 //    @VersionSpecific(version = "[1.7.10]")
 //    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
-//    public double injectEnergy(EnumFacing direction, double amount, double voltage)
+//    public double injectEnergy(ForgeDirection direction, double amount, double voltage)
 //    {
-//        if (direction == null || this.getElectricalInputDirections().contains(direction))
+//        if (!EnergyConfigHandler.disableIC2Input && (direction == ForgeDirection.UNKNOWN || this.getElectricalInputDirections().contains(direction)))
 //        {
 //            float convertedEnergy = (float) amount * EnergyConfigHandler.IC2_RATIO;
 //            int tierFromIC2 = ((int) voltage > 120) ? 2 : 1;
@@ -511,9 +521,9 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
 //
 //    @VersionSpecific(version = "[1.7.2]")
 //    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
-//    public double injectEnergyUnits(EnumFacing direction, double amount)
+//    public double injectEnergyUnits(ForgeDirection direction, double amount)
 //    {
-//        if (direction == null || this.getElectricalInputDirections().contains(direction))
+//        if (!EnergyConfigHandler.disableIC2Input && (direction == ForgeDirection.UNKNOWN || this.getElectricalInputDirections().contains(direction)))
 //        {
 //            float convertedEnergy = (float) amount * EnergyConfigHandler.IC2_RATIO;
 //            int tierFromIC2 = (amount >= 128) ? 2 : 1;
@@ -550,7 +560,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
 //    }
 //
 //    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyAcceptor", modID = "IC2")
-//    public boolean acceptsEnergyFrom(TileEntity emitter, EnumFacing direction)
+//    public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction)
 //    {
 //        //Don't add connection to IC2 grid if it's a Galacticraft tile
 //        if (emitter instanceof IElectrical || emitter instanceof IConductor)
@@ -590,7 +600,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
 //    }
 //
 //    @RuntimeInterface(clazz = "buildcraft.api.power.IPowerReceptor", modID = "")
-//    public PowerReceiver getPowerReceiver(EnumFacing side)
+//    public PowerReceiver getPowerReceiver(ForgeDirection side)
 //    {
 //        if (this.getElectricalInputDirections().contains(side))
 //        {
@@ -614,7 +624,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
 //    }
 //
 //    @RuntimeInterface(clazz = "buildcraft.api.mj.ISidedBatteryProvider", modID = "")
-//    public IBatteryObject getMjBattery(String kind, EnumFacing direction)
+//    public IBatteryObject getMjBattery(String kind, ForgeDirection direction)
 //    {
 //        if (this.getElectricalInputDirections().contains(direction))
 //        {
@@ -627,7 +637,12 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
 //    @RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "")
 //    public double getEnergyRequested()
 //    {
-//        float requested = this.getRequest(EnumFacing.UNKNOWN) / EnergyConfigHandler.BC3_RATIO;
+//        if (EnergyConfigHandler.disableBuildCraftInput)
+//        {
+//            return 0.0;
+//        }
+//
+//        float requested = this.getRequest(ForgeDirection.UNKNOWN) / EnergyConfigHandler.BC3_RATIO;
 //        if (requested < 0.1F) requested = 0F;
 //        return requested;
 //    }
@@ -636,7 +651,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
 //    public double addEnergy(double mj)
 //    {
 //        float convertedEnergy = (float) mj * EnergyConfigHandler.BC3_RATIO;
-//        float used = this.receiveElectricity(EnumFacing.UNKNOWN, convertedEnergy, 1, true);
+//        float used = this.receiveElectricity(ForgeDirection.UNKNOWN, convertedEnergy, 1, true);
 //        return used / EnergyConfigHandler.BC3_RATIO;
 //    }
 //
@@ -644,7 +659,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
 //    public double addEnergy(double mj, boolean ignoreCycleLimit)
 //    {
 //        float convertedEnergy = (float) mj * EnergyConfigHandler.BC3_RATIO;
-//        float used = this.receiveElectricity(EnumFacing.UNKNOWN, convertedEnergy, 1, true);
+//        float used = this.receiveElectricity(ForgeDirection.UNKNOWN, convertedEnergy, 1, true);
 //        return used / EnergyConfigHandler.BC3_RATIO;
 //    }
 //
@@ -691,8 +706,13 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
 //    }
 //
 //    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
-//    public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate)
+//    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
 //    {
+//        if (EnergyConfigHandler.disableRFInput)
+//        {
+//            return 0;
+//        }
+//
 //    	if (!this.getElectricalInputDirections().contains(from))
 //    	{
 //    		return 0;
@@ -702,32 +722,37 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
 //    }
 //
 //    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
-//    public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate)
+//    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
 //    {
 //    	return 0;
 //    }
 //
 //    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
-//    public boolean canConnectEnergy(EnumFacing from)
+//    public boolean canConnectEnergy(ForgeDirection from)
 //    {
 //    	return this.getElectricalInputDirections().contains(from) || this.getElectricalOutputDirections().contains(from);
 //    }
 //
 //    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
-//    public int getEnergyStored(EnumFacing from)
+//    public int getEnergyStored(ForgeDirection from)
 //    {
 //    	return MathHelper.floor_float(this.getEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
 //    }
 //
 //    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
-//    public int getMaxEnergyStored(EnumFacing from)
+//    public int getMaxEnergyStored(ForgeDirection from)
 //    {
 //    	return MathHelper.floor_float(this.getMaxEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
 //    }
 //
 //    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-//    public double transferEnergyToAcceptor(EnumFacing from, double amount)
+//    public double transferEnergyToAcceptor(ForgeDirection from, double amount)
 //    {
+//        if (EnergyConfigHandler.disableMekanismInput)
+//        {
+//            return 0;
+//        }
+//
 //        if (!this.getElectricalInputDirections().contains(from))
 //        {
 //            return 0;
@@ -737,7 +762,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
 //    }
 //
 //    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-//    public boolean canReceiveEnergy(EnumFacing side)
+//    public boolean canReceiveEnergy(ForgeDirection side)
 //    {
 //        return this.getElectricalInputDirections().contains(side);
 //    }
@@ -745,26 +770,41 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
 //    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
 //    public double getEnergy()
 //    {
+//        if (EnergyConfigHandler.disableMekanismInput)
+//        {
+//            return 0.0;
+//        }
+//
 //        return this.getEnergyStoredGC() / EnergyConfigHandler.MEKANISM_RATIO;
 //    }
 //
 //    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
 //    public void setEnergy(double energy)
 //    {
+//        if (EnergyConfigHandler.disableMekanismInput)
+//        {
+//            return;
+//        }
+//
 //        this.storage.setEnergyStored((float) energy * EnergyConfigHandler.MEKANISM_RATIO);
 //    }
 //
 //    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
 //    public double getMaxEnergy()
 //    {
+//        if (EnergyConfigHandler.disableMekanismInput)
+//        {
+//            return 0.0;
+//        }
+//
 //        return this.getMaxEnergyStoredGC() / EnergyConfigHandler.MEKANISM_RATIO;
 //    }
 //
 //    @RuntimeInterface(clazz = "mekanism.api.energy.ICableOutputter", modID = "Mekanism")
-//    public boolean canOutputTo(EnumFacing side)
+//    public boolean canOutputTo(ForgeDirection side)
 //    {
 //        return false;
-//    } TODO
+//    }
 
     @Override
     public ReceiverMode getModeFromDirection(EnumFacing direction)

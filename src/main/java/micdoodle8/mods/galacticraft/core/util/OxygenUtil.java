@@ -65,6 +65,11 @@ public class OxygenUtil
 
     public static boolean isAABBInBreathableAirBlock(EntityLivingBase entity)
     {
+        return isAABBInBreathableAirBlock(entity, false);
+    }
+
+    public static boolean isAABBInBreathableAirBlock(EntityLivingBase entity, boolean testThermal)
+    {
         double y = entity.posY + entity.getEyeHeight();
         double x = entity.posX;
         double z = entity.posZ;
@@ -79,14 +84,28 @@ public class OxygenUtil
         return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, AxisAlignedBB.fromBounds(x - smin, y - smin, z - smin, x + smin, y + smin, z + smin));
     }
 
-    @SuppressWarnings("rawtypes")
     public static boolean isAABBInBreathableAirBlock(World world, AxisAlignedBB bb)
+    {
+        return isAABBInBreathableAirBlock(world, bb, false);
+    }
+
+    @SuppressWarnings("rawtypes")
+    public static boolean isAABBInBreathableAirBlock(World world, AxisAlignedBB bb, boolean testThermal)
     {
         final double avgX = (bb.minX + bb.maxX) / 2.0D;
         final double avgY = (bb.minY + bb.maxY) / 2.0D;
         final double avgZ = (bb.minZ + bb.maxZ) / 2.0D;
 
-        if (OxygenUtil.inOxygenBubble(world, avgX, avgY, avgZ)) return true;
+        if (testThermal)
+        {
+            return OxygenUtil.isInOxygenAndThermalBlock(world, bb.contract(0.001D, 0.001D, 0.001D));
+        }
+
+        if (OxygenUtil.inOxygenBubble(world, avgX, avgY, avgZ))
+        {
+            return true;
+        }
+
         return OxygenUtil.isInOxygenBlock(world, bb.contract(0.001D, 0.001D, 0.001D));
     }
 
@@ -110,7 +129,39 @@ public class OxygenUtil
                     {
                         BlockPos pos = new BlockPos(x, y, z);
                         Block block = world.getBlockState(pos).getBlock();
-                        if (OxygenUtil.testContactWithBreathableAir(world, block, pos, 0))
+                        if (OxygenUtil.testContactWithBreathableAir(world, block, pos, 0) >= 0)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean isInOxygenAndThermalBlock(World world, AxisAlignedBB bb)
+    {
+        int i = MathHelper.floor_double(bb.minX);
+        int j = MathHelper.floor_double(bb.maxX);
+        int k = MathHelper.floor_double(bb.minY);
+        int l = MathHelper.floor_double(bb.maxY);
+        int i1 = MathHelper.floor_double(bb.minZ);
+        int j1 = MathHelper.floor_double(bb.maxZ);
+
+        OxygenUtil.checked = new HashSet();
+        if (world.isAreaLoaded(new BlockPos(i, k, i1), new BlockPos(j, l, j1)))
+        {
+            for (int x = i; x <= j; ++x)
+            {
+                for (int y = k; y <= l; ++y)
+                {
+                    for (int z = i1; z <= j1; ++z)
+                    {
+                        BlockPos pos = new BlockPos(x, y, z);
+                        Block block = world.getBlockState(pos).getBlock();
+                        if (OxygenUtil.testContactWithBreathableAir(world, block, pos, 0) == 1) // Thermal air has metadata 1
                         {
                             return true;
                         }
@@ -136,7 +187,7 @@ public class OxygenUtil
         {
             BlockVec3 sidevec = vec.newVecSide(side);
             Block newblock = sidevec.getBlockID_noChunkLoad(world);
-            if (OxygenUtil.testContactWithBreathableAir(world, newblock, new BlockPos(sidevec.x, sidevec.y, sidevec.z), 1))
+            if (OxygenUtil.testContactWithBreathableAir(world, newblock, sidevec.toBlockPos(), 1) >= 0)
             {
                 return true;
             }
@@ -152,17 +203,17 @@ public class OxygenUtil
      * air-reachable blocks (up to 5 blocks away) and return true if breathable air is found
      * in one of them, or false if not.
      */
-    public static boolean testContactWithBreathableAir(World world, Block block, BlockPos pos, int limitCount)
+    private static int testContactWithBreathableAir(World world, Block block, BlockPos pos, int limitCount)
     {
         checked.add(pos);
         if (block == GCBlocks.breatheableAir || block == GCBlocks.brightBreatheableAir)
         {
-            return true;
+            return block.getMetaFromState(world.getBlockState(pos));
         }
 
         if (block == null || block.getMaterial() == Material.air)
         {
-            return false;
+            return -1;
         }
 
         //Test for non-sided permeable or solid blocks first
@@ -177,16 +228,16 @@ public class OxygenUtil
                 }
                 else
                 {
-                    return false;
+                    return -1;
                 }
             }
             else if (block instanceof BlockGlass || block instanceof BlockStainedGlass)
             {
-                return false;
+                return -1;
             }
             else if (block instanceof BlockLiquid)
             {
-                return false;
+                return -1;
             }
             else if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(block))
             {
@@ -194,7 +245,7 @@ public class OxygenUtil
                 IBlockState state = world.getBlockState(pos);
                 if (metaList.contains(Integer.valueOf(-1)) || metaList.contains(state.getBlock().getMetaFromState(state)))
                 {
-                    return false;
+                    return -1;
                 }
             }
         }
@@ -214,16 +265,17 @@ public class OxygenUtil
                     if (!checked.contains(sidevec))
                     {
                         Block newblock = world.getBlockState(sidevec).getBlock();
-                        if (OxygenUtil.testContactWithBreathableAir(world, newblock, sidevec, limitCount + 1))
+                        int adjResult = OxygenUtil.testContactWithBreathableAir(world, newblock, sidevec, limitCount + 1);
+                        if (adjResult >= 0)
                         {
-                            return true;
+                            return adjResult;
                         }
                     }
                 }
             }
         }
 
-        return false;
+        return -1;
     }
     //TODO - performance, could add a 'safe' version of this code (inside world borders)
 

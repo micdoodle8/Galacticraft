@@ -14,6 +14,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 
 import java.util.List;
+import java.util.Map;
 
 public class CommandSpaceStationAddOwner extends CommandBase
 {
@@ -53,18 +54,21 @@ public class CommandSpaceStationAddOwner extends CommandBase
                 {
                     GCPlayerStats stats = GCPlayerStats.get(playerBase);
 
-                    if (stats.spaceStationDimensionID <= 0)
+                    if (stats.spaceStationDimensionData.isEmpty())
                     {
                         throw new WrongUsageException(GCCoreUtil.translate("commands.ssinvite.notFound"), new Object[0]);
                     }
                     else
                     {
-                        final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, stats.spaceStationDimensionID, playerBase);
-
-                        if (!data.getAllowedPlayers().contains(var3))
+                        for (Map.Entry<Integer, Integer> e : stats.spaceStationDimensionData.entrySet())
                         {
-                            data.getAllowedPlayers().add(var3);
-                            data.markDirty();
+                            final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, e.getValue(), playerBase);
+
+                            if (!data.getAllowedPlayers().contains(var3))
+                            {
+                                data.getAllowedPlayers().add(var3);
+                                data.markDirty();
+                            }
                         }
                     }
 

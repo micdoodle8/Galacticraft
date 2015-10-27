@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
+import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
@@ -149,6 +150,11 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
         {
             if (adjacentDir == direction) continue;
         	tileAt = world.getTileEntity(pos.add(adjacentDir.getFrontOffsetX(), adjacentDir.getFrontOffsetY(), adjacentDir.getFrontOffsetZ()));
+
+            if (tileAt instanceof IConductor)
+            {
+                continue;
+            }
 
             if (tileAt instanceof EnergyStorageTile && ((EnergyStorageTile) tileAt).getModeFromDirection(adjacentDir.getOpposite()) != null)
             {

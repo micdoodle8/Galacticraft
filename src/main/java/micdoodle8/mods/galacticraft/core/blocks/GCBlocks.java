@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -34,8 +33,8 @@ public class GCBlocks
     public static Block basicBlock;
     public static Block airLockFrame;
     public static Block airLockSeal;
-    public static Block crudeOilStill;
-    public static Block fuelStill;
+    public static Block crudeOil;
+    public static Block fuel;
     public static Block refinery;
     public static Block fuelLoader;
     public static Block landingPadFull;

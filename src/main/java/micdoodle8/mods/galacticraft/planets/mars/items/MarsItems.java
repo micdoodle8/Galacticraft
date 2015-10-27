@@ -50,7 +50,6 @@ public class MarsItems
         MarsItems.key = new ItemKeyMars().setUnlocalizedName("key");
         MarsItems.schematic = new ItemSchematicTier2().setUnlocalizedName("schematic");
         MarsItems.carbonFragments = new ItemCarbonFragments().setUnlocalizedName("carbonFragments");
-		MarsItems.bucketSludge = new ItemBucketGC(MarsBlocks.blockSludge).setUnlocalizedName("bucketSludge");
 
         MarsItems.registerItems();
         MarsItems.registerHarvestLevels();
@@ -81,10 +80,9 @@ public class MarsItems
         MarsItems.registerItem(MarsItems.spaceship);
         MarsItems.registerItem(MarsItems.key);
         MarsItems.registerItem(MarsItems.schematic);
-        MarsItems.registerItem(MarsItems.bucketSludge);
     }
 
-    private static void registerItem(Item item)
+    public static void registerItem(Item item)
     {
         GameRegistry.registerItem(item, item.getUnlocalizedName(), Constants.MOD_ID_PLANETS);
     }

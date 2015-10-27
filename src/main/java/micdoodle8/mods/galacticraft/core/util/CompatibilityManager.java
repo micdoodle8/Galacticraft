@@ -13,6 +13,7 @@ public class CompatibilityManager
     private static boolean modAetherIILoaded;
     private static boolean modBasicComponentsLoaded;
     private static boolean modAppEngLoaded;
+    private static boolean modPneumaticCraftLoaded;
     public static Method methodBCBlockPipe_getPipe = null;
 
     public static void checkForCompatibleMods()
@@ -74,6 +75,11 @@ public class CompatibilityManager
         {
             CompatibilityManager.modAppEngLoaded = true;
         }
+
+        if (Loader.isModLoaded("PneumaticCraft"))
+        {
+            CompatibilityManager.modPneumaticCraftLoaded = true;
+        }
     }
 
     public static boolean isIc2Loaded()
@@ -109,5 +115,10 @@ public class CompatibilityManager
     public static boolean isAppEngLoaded()
     {
         return CompatibilityManager.modAppEngLoaded;
+    }
+
+    public static boolean isPneumaticCraftLoaded()
+    {
+        return CompatibilityManager.modPneumaticCraftLoaded;
     }
 }

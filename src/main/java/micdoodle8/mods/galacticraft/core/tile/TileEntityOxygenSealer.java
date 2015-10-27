@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenSealer;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.core.oxygen.ThreadFindSeal;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
@@ -35,7 +36,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean active;
-    private ItemStack[] containingItems = new ItemStack[2];
+    private ItemStack[] containingItems = new ItemStack[3];
     public ThreadFindSeal threadSeal;
     @NetworkedField(targetSide = Side.CLIENT)
     public int stopSealThreadCooldown;
@@ -52,7 +53,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 
     public TileEntityOxygenSealer()
     {
-        super(10000, 16);
+        super(10000, 6);
     }
 
     @Override
@@ -102,6 +103,12 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
         return 1250;
     }
 
+    public boolean thermalControlEnabled()
+    {
+        ItemStack oxygenItemStack = this.getStackInSlot(2);
+        return oxygenItemStack != null && oxygenItemStack.getItem() == GCItems.basicItem && oxygenItemStack.getItemDamage() == 20 && this.hasEnoughEnergyToRun && !this.disabled;
+    }
+
     @Override
     public void update()
     {
@@ -115,6 +122,18 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 	    		this.storedOxygen += oxygenItem.discharge(oxygenItemStack, oxygenDraw);
 	    		if (this.storedOxygen > this.maxOxygen) this.storedOxygen = this.maxOxygen;
 	    	}
+
+            if (this.thermalControlEnabled())
+            {
+                if (this.storage.getMaxExtract() != 20.0F)
+                {
+                    this.storage.setMaxExtract(20.0F);
+                }
+            }
+            else if (this.storage.getMaxExtract() != 10.0F)
+            {
+                this.storage.setMaxExtract(10.0F);
+            }
         }
     	
         super.update();
@@ -317,6 +336,8 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
                 return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) > 0;
             case 1:
             	return itemstack.getItemDamage() < itemstack.getItem().getMaxDamage();
+            case 2:
+                return itemstack.getItem() == GCItems.basicItem && itemstack.getItemDamage() == 20;
             default:
                 return false;
             }
@@ -350,6 +371,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     	if (itemstack == null) return false; 
     	if (slotID == 0) return ItemElectricBase.isElectricItem(itemstack.getItem());
         if (slotID == 1) return itemstack.getItem() instanceof IItemOxygenSupply;
+        if (slotID == 2) return itemstack.getItem() == GCItems.basicItem && itemstack.getItemDamage() == 20;
         return false;
     }
 

@@ -85,6 +85,9 @@ item.basicItem.dehydratedPotato.name=Dehydrierte Kartoffel
 item.basicItem.cannedFood.name=Dose mit Nahrung
 item.basicItem.frequencyModule.name=Frequenzmodul
 item.standardWrench.name=Standard-Schraubenschlüssel
+item.bucketOil.name=Öleimer
+item.bucketFuel.name=Treibstoffeimer
+item.basicItem.ambientThermalController.name=Umgebungstemperatur-Controller
 
 # TOOLS
 item.steel_pickaxe.name=Robuste Spitzhacke
@@ -197,6 +200,8 @@ tile.slabGCHalf.moonSlab.name=Mondsteinstufe
 tile.moonBricksStairs.name=Monddungeonziegeltreppe
 tile.wallGC.moonBricks.name=Monddungeonmauer
 tile.slabGCHalf.moonBricksSlab.name=Monddungeonziegelstufe
+tile.crudeOil.name=Öl
+tile.fuelBlock.name=Treibstoff
 
 # ENTITIES
 entity.EvolvedSpider.name=Entwickelte Spinne
@@ -301,7 +306,8 @@ gui.message.help1a=Um diese Meldung erneut anzuzeigen, benutze:
 gui.message.help2=Für die Weltraumprogrammanleitung 
 gui.message.help3=Für Hilfe bezüglich Öl
 gui.message.prelaunch=Vor dem Start - Checkliste
-gui.message.clicklink=Klicke um zum Galacticraft Wiki zu gelangen
+gui.message.clicklink=Klicke, um zum Galacticraft Wiki zu gelangen
+gui.message.thermalStatus.name=Temperaturkontrolle
 
 gui.status.active.name=Aktiv
 gui.status.missingleaves.name=Nicht genug Blätter
@@ -342,6 +348,9 @@ gui.status.compressing.name=Komprimiert
 gui.status.collecting.name=Sammelt
 gui.status.tankEmpty.name=Sauerstofftank leer
 gui.status.sunVisible.name=Sonne sichtbar
+gui.status.on.name=AN
+gui.status.off.name=AUS
+gui.status.notAvailable.name=N/A
 
 gui.button.enableseal.name=Aktiviere Siegel
 gui.button.disableseal.name=Deaktiviere Siegel
@@ -360,6 +369,8 @@ gui.button.unlockschematic.name=Bauplan freischalten
 gui.button.stoprefine.name=Stoppe Raffinieren
 gui.button.enable.name=Aktiviere
 gui.button.disable.name=Deaktiviere
+gui.button.hideDest.name=Verstecken
+gui.button.unhideDest.name=Einblenden
 
 gui.choosePlanet.desc.overworld=Bewohnt#Bewohnbar#Gravitation: 100%
 gui.warning=WARNUNG!
@@ -491,7 +502,9 @@ gui.player.health=Gesundheit
 gui.player.food=Hunger
 gui.player.bpm=bpm
 gui.player.ouch=Aua!!!!
-
+gui.thermalSlot.desc.0=Temperaturkontrolle-Slot, platziere einen
+gui.thermalSlot.desc.1=Umgebungstemperatur-Controller hier (optional)
+gui.thermalSlot.desc.2=Achtung: Verbraucht mehr Energie!
 
 gui.spaceRace.create.close.name=Schließen
 gui.spaceRace.create.back.name=Zurück
@@ -692,5 +705,7 @@ gc.configgui.mapScrollSensitivity=Map Scroll Mouse Sensitivity
 gc.configgui.overrideMap=Set key: Galaxy Map
 gc.configgui.keyOverrideFuelLevel=Set key: Rocket Fuel GUI
 gc.configgui.keyOverrideToggleAdvGoggles=Set key: Advanced Goggles
+gc.configgui.meteorSpawnMod=Meteor Spawn Modifier
+gc.configgui.meteorBlockDamage=Meteor Block Damage Enabled
 
 gc.configgui.title=Galacticraft Core-Konfiguration

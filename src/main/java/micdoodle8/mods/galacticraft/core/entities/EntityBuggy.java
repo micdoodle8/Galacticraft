@@ -686,7 +686,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     {
         final FluidStack liquidInTank = this.buggyFuelTank.getFluid();
 
-        if (liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("Fuel") && this.landingPad != null)
+        if (liquid != null && FluidRegistry.getFluidName(liquid).startsWith("fuel") && this.landingPad != null)
         {
             if (liquidInTank == null || liquidInTank.amount + liquid.amount <= this.buggyFuelTank.getCapacity())
             {

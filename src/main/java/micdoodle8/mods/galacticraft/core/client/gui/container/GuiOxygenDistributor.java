@@ -142,17 +142,14 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
 //			electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energyStorage.desc.1") + ((int) Math.floor(this.distributor.getEnergyStoredGC()) + " / " + (int) Math.floor(this.distributor.getMaxEnergyStoredGC())));
             this.electricInfoRegion.tooltipStrings = electricityDesc;
 
-            if (this.distributor.oxygenBubble != null)
-            {
-                this.checkboxRenderBubble.isSelected = this.distributor.oxygenBubble.shouldRender();
-            }
+            this.checkboxRenderBubble.isSelected = this.distributor.shouldRenderBubble;
         }
     }
 
     @Override
     public void onSelectionChanged(GuiElementCheckbox checkbox, boolean newSelected)
     {
-        if (this.distributor.oxygenBubble != null) this.distributor.oxygenBubble.setShouldRender(newSelected);
+        this.distributor.setBubbleVisible(newSelected);
         GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 6, this.distributor.getPos(), newSelected ? 1 : 0 }));
     }
 
@@ -165,7 +162,7 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
     @Override
     public boolean getInitiallySelected(GuiElementCheckbox checkbox)
     {
-        return this.distributor.oxygenBubble != null ? this.distributor.oxygenBubble.shouldRender() : false;
+        return this.distributor.shouldRenderBubble;
     }
 
     @Override

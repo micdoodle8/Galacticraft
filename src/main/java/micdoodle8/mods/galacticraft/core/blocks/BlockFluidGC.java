@@ -67,7 +67,7 @@ public class BlockFluidGC extends BlockFluidClassic
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-    	if (worldIn.isRemote && this.fluidName.equals("oil") && playerIn instanceof EntityPlayerSP)
+    	if (worldIn.isRemote && this.fluidName.startsWith("oil") && playerIn instanceof EntityPlayerSP)
         	ClientProxyCore.playerClientHandler.onBuild(7, (EntityPlayerSP) playerIn);
 
     	return super.onBlockActivated(worldIn, pos, state, playerIn, side, hitX, hitY, hitZ);
@@ -79,7 +79,7 @@ public class BlockFluidGC extends BlockFluidClassic
     {
         super.randomDisplayTick(worldIn, pos, state, rand);
 
-        if (this.fluidName.equals("oil") && rand.nextInt(1200) == 0)
+        if (this.fluidName.startsWith("oil") && rand.nextInt(1200) == 0)
         {
             worldIn.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, "liquid.lava", rand.nextFloat() * 0.25F + 0.75F, 0.00001F + rand.nextFloat() * 0.5F, false);
         }

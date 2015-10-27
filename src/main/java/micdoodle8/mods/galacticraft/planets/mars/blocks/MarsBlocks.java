@@ -28,7 +28,6 @@ public class MarsBlocks
     public static void initBlocks()
     {
     	MarsBlocks.marsBlock = new BlockBasicMars("mars").setHardness(2.2F);
-        MarsBlocks.blockSludge = new BlockSludge("sludge");
         MarsBlocks.vine = new BlockCavernousVine("cavernVines").setHardness(0.1F);
         MarsBlocks.rock = new BlockSlimelingEgg("slimelingEgg").setHardness(0.75F);
         MarsBlocks.tier2TreasureChest = AsteroidBlocks.treasureChestTier2;
@@ -70,7 +69,6 @@ public class MarsBlocks
     public static void registerBlocks()
     {
         GameRegistry.registerBlock(MarsBlocks.marsBlock, ItemBlockMars.class, MarsBlocks.marsBlock.getUnlocalizedName());
-        GameRegistry.registerBlock(MarsBlocks.blockSludge, ItemBlockDesc.class, MarsBlocks.blockSludge.getUnlocalizedName());
         GameRegistry.registerBlock(MarsBlocks.vine, ItemBlockDesc.class, MarsBlocks.vine.getUnlocalizedName());
         GameRegistry.registerBlock(MarsBlocks.rock, ItemBlockEgg.class, MarsBlocks.rock.getUnlocalizedName());
         GameRegistry.registerBlock(MarsBlocks.creeperEgg, ItemBlockDesc.class, MarsBlocks.creeperEgg.getUnlocalizedName());
@@ -86,5 +84,6 @@ public class MarsBlocks
         OreDictionary.registerOre("oreCopper", new ItemStack(MarsBlocks.marsBlock, 1, 0));
         OreDictionary.registerOre("oreTin", new ItemStack(MarsBlocks.marsBlock, 1, 1));
         OreDictionary.registerOre("oreIron", new ItemStack(MarsBlocks.marsBlock, 1, 3));
+        OreDictionary.registerOre("oreDesh", new ItemStack(MarsBlocks.marsBlock, 1, 2));
     }
 }
