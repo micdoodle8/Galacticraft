@@ -235,13 +235,10 @@ public class GCItems
 
         for (int i = 0; i < ItemBasic.names.length; i++)
         {
-            boolean registered = false;
             if (ItemBasic.names[i].contains("ingot") || ItemBasic.names[i].contains("compressed") || ItemBasic.names[i].contains("wafer"))
             {
-                registered = true;
                 OreDictionary.registerOre(ItemBasic.names[i], new ItemStack(GCItems.basicItem, 1, i));
             }
-            System.out.println("Found ItemBasic Name: " + ItemBasic.names[i] + " registered in oreDict: " + registered);
         }
 
         OreDictionary.registerOre("compressedMeteoricIron", new ItemStack(GCItems.meteoricIronIngot, 1, 1));
