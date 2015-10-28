@@ -92,6 +92,21 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
         this.setRandomFavFood();
     }
 
+    @Override
+    public EntityLivingBase getOwner()
+    {
+        EntityLivingBase owner = super.getOwner();
+        if (owner == null)
+        {
+            String ownerName = getOwnerUsername();
+            if (ownerName != null)
+            {
+                return this.worldObj.getPlayerEntityByName(ownerName);
+            }
+        }
+        return owner;
+    }
+
     public boolean isOwner(EntityLivingBase entityLivingBase)
     {
         return entityLivingBase == this.getOwner();
