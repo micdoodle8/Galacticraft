@@ -75,6 +75,7 @@ public class ConfigManagerCore
     public static double meteorSpawnMod;
     public static boolean meteorBlockDamageEnabled;
     public static boolean disableUpdateCheck;
+    public static boolean disableBiomeTypeRegistrations;
 //    public static int mapfactor;
 //    public static int mapsize;
 	
@@ -529,6 +530,12 @@ public class ConfigManagerCore
             prop.comment = "Update check will not run if this is set to true.";
             prop.setLanguageKey("gc.configgui.disableUpdateCheck");
             disableUpdateCheck = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Biome Type Registrations", false);
+            prop.comment = "Biome Types will not be registered in the BiomeDictionary if this is set to true.";
+            prop.setLanguageKey("gc.configgui.disableBiomeTypeRegistrations");
+            disableBiomeTypeRegistrations = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
             config.setCategoryPropertyOrder(CATEGORY_GENERAL, propOrder);
