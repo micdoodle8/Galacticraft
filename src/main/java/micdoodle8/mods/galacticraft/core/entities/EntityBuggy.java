@@ -245,7 +245,10 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 					else
 					{
 						this.setDead();
-						this.dropBuggyAsItem();
+                        if (!this.worldObj.isRemote)
+                        {
+                            this.dropBuggyAsItem();
+                        }
 					}
 	                this.setDead();
 	            }
