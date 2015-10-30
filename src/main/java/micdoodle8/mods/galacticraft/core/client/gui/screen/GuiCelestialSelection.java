@@ -447,17 +447,23 @@ public class GuiCelestialSelection extends GuiScreen
         return ChatAllowedCharacters.isAllowedCharacter(string.charAt(string.length() - 1));
     }
 
-    private boolean canCreateSpaceStation(int atPlanet)
+    private boolean canCreateSpaceStation(CelestialBody atBody)
     {
         if (this.mapMode)
         {
             return false;
         }
 
+        if (!atBody.getReachable() || (this.possibleBodies != null && !this.possibleBodies.contains(atBody)))
+        {
+            // If parent body is unreachable, the satellite is also unreachable
+            return false;
+        }
+
         boolean foundRecipe = false;
         for (SpaceStationType type : GalacticraftRegistry.getSpaceStationData())
         {
-            if (type.getWorldToOrbitID() == atPlanet)
+            if (type.getWorldToOrbitID() == atBody.getDimensionID())
             {
                 foundRecipe = true;
             }
@@ -468,12 +474,12 @@ public class GuiCelestialSelection extends GuiScreen
             return false;
         }
 
-        if (!ClientProxyCore.clientSpaceStationID.containsKey(atPlanet))
+        if (!ClientProxyCore.clientSpaceStationID.containsKey(atBody.getDimensionID()))
         {
             return true;
         }
 
-        int resultID = ClientProxyCore.clientSpaceStationID.get(atPlanet);
+        int resultID = ClientProxyCore.clientSpaceStationID.get(atBody.getDimensionID());
 
         if (resultID != 0 && resultID != -1)
 //        if (ClientProxyCore.clientSpaceStationID != 0 && ClientProxyCore.clientSpaceStationID != -1)
@@ -669,7 +675,7 @@ public class GuiCelestialSelection extends GuiScreen
                 if (this.selectedBody != null)
                 {
                     SpaceStationRecipe recipe = WorldUtil.getSpaceStationRecipe(this.selectedBody.getDimensionID());
-                    if (recipe != null && this.canCreateSpaceStation(this.selectedBody.getDimensionID()))
+                    if (recipe != null && this.canCreateSpaceStation(this.selectedBody))
                     {
                         if (recipe.matches(this.mc.thePlayer, false))
                         {
@@ -1654,7 +1660,7 @@ public class GuiCelestialSelection extends GuiScreen
                     if (this.spaceStationMap.get(getSatelliteParentID(selectedSatellite)).get(this.selectedStationOwner) == null)
                     {
                         str = GCCoreUtil.translate("gui.message.selectSS.name");
-                        this.drawSplitString(str, width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 47, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 20, 91, ColorUtil.to32BitColor(255, 255, 255, 255));
+                        this.drawSplitString(str, width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 47, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 20, 91, ColorUtil.to32BitColor(255, 255, 255, 255), false, false);
                     }
                     else
                     {
@@ -1707,11 +1713,19 @@ public class GuiCelestialSelection extends GuiScreen
                     this.drawTexturedModalRect(width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 96, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH, 96, 139, 63, 0, 96, 139, false, false);
                 }
 
-                if (this.canCreateSpaceStation(this.selectedBody.getDimensionID()) && (!(this.selectedBody instanceof Satellite)))
+                if (this.canCreateSpaceStation(this.selectedBody) && (!(this.selectedBody instanceof Satellite)))
                 {
                     GL11.glColor4f(0.0F, 0.6F, 1.0F, 1);
                     this.mc.renderEngine.bindTexture(GuiCelestialSelection.guiMain1);
-                    this.drawTexturedModalRect(width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 95, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 134, 93, 47, 159, 102, 93, 47, false, false);
+                    int canCreateLength = Math.max(0, this.drawSplitString(GCCoreUtil.translate("gui.message.canCreateSpaceStation.name"), 0, 0, 91, 0, true, true) - 2);
+                    int canCreateOffset = canCreateLength * this.smallFontRenderer.FONT_HEIGHT;
+
+                    this.drawTexturedModalRect(width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 95, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 134, 93, 4, 159, 102, 93, 4, false, false);
+                    for (int barY = 0; barY < canCreateLength; ++barY)
+                    {
+                        this.drawTexturedModalRect(width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 95, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 138 + barY * this.smallFontRenderer.FONT_HEIGHT, 93, this.smallFontRenderer.FONT_HEIGHT, 159, 106, 93, this.smallFontRenderer.FONT_HEIGHT, false, false);
+                    }
+                    this.drawTexturedModalRect(width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 95, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 138 + canCreateOffset, 93, 43, 159, 106, 93, 43, false, false);
                     this.drawTexturedModalRect(width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 79, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 129, 61, 4, 0, 170, 61, 4, false, false);
 
                     SpaceStationRecipe recipe = WorldUtil.getSpaceStationRecipe(this.selectedBody.getDimensionID());
@@ -1725,7 +1739,7 @@ public class GuiCelestialSelection extends GuiScreen
                         {
                             Object next = e.getKey();
                             int xPos = (int)(width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 95 + i * 93 / (double)recipe.getInput().size() + 5);
-                            int yPos = GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 154;
+                            int yPos = GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 154 + canCreateOffset;
 
                             if (next instanceof ItemStack)
                             {
@@ -1781,7 +1795,7 @@ public class GuiCelestialSelection extends GuiScreen
                                     validInputMaterials = false;
                                 }
                                 int color = valid ? ColorUtil.to32BitColor(255, 0, 255, 0) : ColorUtil.to32BitColor(255, 255, 0, 0);
-                                this.smallFontRenderer.drawString(str, xPos + 8 - this.smallFontRenderer.getStringWidth(str) / 2, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 170, color);
+                                this.smallFontRenderer.drawString(str, xPos + 8 - this.smallFontRenderer.getStringWidth(str) / 2, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 170 + canCreateOffset, color);
                             }
                             else if (next instanceof ArrayList)
                             {
@@ -1846,7 +1860,7 @@ public class GuiCelestialSelection extends GuiScreen
                                     validInputMaterials = false;
                                 }
                                 int color = valid ? ColorUtil.to32BitColor(255, 0, 255, 0) : ColorUtil.to32BitColor(255, 255, 0, 0);
-                                this.smallFontRenderer.drawString(str, xPos + 8 - this.smallFontRenderer.getStringWidth(str) / 2, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 170, color);
+                                this.smallFontRenderer.drawString(str, xPos + 8 - this.smallFontRenderer.getStringWidth(str) / 2, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 170 + canCreateOffset, color);
                             }
 
                             i++;
@@ -1865,25 +1879,25 @@ public class GuiCelestialSelection extends GuiScreen
 
                         if (!this.mapMode)
                         {
-                            if (mousePosX >= width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 95 && mousePosX <= width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH && mousePosY >= GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 182 && mousePosY <= GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 182 + 12)
+                            if (mousePosX >= width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 95 && mousePosX <= width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH && mousePosY >= GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 182 + canCreateOffset && mousePosY <= GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 182 + 12 + canCreateOffset)
                             {
-                                this.drawTexturedModalRect(width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 95, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 182, 93, 12, 0, 174, 93, 12, false, false);
+                                this.drawTexturedModalRect(width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 95, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 182 + canCreateOffset, 93, 12, 0, 174, 93, 12, false, false);
                             }
                         }
 
-                        this.drawTexturedModalRect(width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 95, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 182, 93, 12, 0, 174, 93, 12, false, false);
+                        this.drawTexturedModalRect(width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 95, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 182 + canCreateOffset, 93, 12, 0, 174, 93, 12, false, false);
 
                         int color = (int)((Math.sin(this.ticksSinceMenuOpen / 5.0) * 0.5 + 0.5) * 255);
-                        this.drawSplitString(GCCoreUtil.translate("gui.message.canCreateSpaceStation.name"), width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 48, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 137, 91, ColorUtil.to32BitColor(255, color, 255, color), true);
+                        this.drawSplitString(GCCoreUtil.translate("gui.message.canCreateSpaceStation.name"), width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 48, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 137, 91, ColorUtil.to32BitColor(255, color, 255, color), true, false);
 
                         if (!mapMode)
                         {
-                            this.drawSplitString(GCCoreUtil.translate("gui.message.createSS.name").toUpperCase(), width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 48, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 185, 91, ColorUtil.to32BitColor(255, 255, 255, 255));
+                            this.drawSplitString(GCCoreUtil.translate("gui.message.createSS.name").toUpperCase(), width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 48, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 185 + canCreateOffset, 91, ColorUtil.to32BitColor(255, 255, 255, 255), false, false);
                         }
                     }
                     else
                     {
-                        this.drawSplitString(GCCoreUtil.translate("gui.message.cannotCreateSpaceStation.name"), width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 48, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 138, 91, ColorUtil.to32BitColor(255, 255, 255, 255));
+                        this.drawSplitString(GCCoreUtil.translate("gui.message.cannotCreateSpaceStation.name"), width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 48, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 138, 91, ColorUtil.to32BitColor(255, 255, 255, 255), true, false);
                     }
                 }
 
@@ -1982,19 +1996,19 @@ public class GuiCelestialSelection extends GuiScreen
                     boolean flag1 = this.selectedBody instanceof Planet ? GalaxyRegistry.getMoonsForPlanet((Planet) this.selectedBody).size() > 0 : false;
                     if (flag0 && flag1)
                     {
-                        this.drawSplitString(GCCoreUtil.translate("gui.message.clickAgain.0.name"), width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 182 + 41, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 1 - 38 + sliderPos, 79, ColorUtil.to32BitColor(255, 150, 150, 150));
+                        this.drawSplitString(GCCoreUtil.translate("gui.message.clickAgain.0.name"), width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 182 + 41, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 1 - 38 + sliderPos, 79, ColorUtil.to32BitColor(255, 150, 150, 150), false, false);
                     }
                     else if (!flag0 && flag1)
                     {
-                        this.drawSplitString(GCCoreUtil.translate("gui.message.clickAgain.1.name"), width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 182 + 41, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 5 - 38 + sliderPos, 79, ColorUtil.to32BitColor(255, 150, 150, 150));
+                        this.drawSplitString(GCCoreUtil.translate("gui.message.clickAgain.1.name"), width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 182 + 41, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 5 - 38 + sliderPos, 79, ColorUtil.to32BitColor(255, 150, 150, 150), false, false);
                     }
                     else if (flag0)
                     {
-                        this.drawSplitString(GCCoreUtil.translate("gui.message.clickAgain.2.name"), width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 182 + 41, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 5 - 38 + sliderPos, 79, ColorUtil.to32BitColor(255, 150, 150, 150));
+                        this.drawSplitString(GCCoreUtil.translate("gui.message.clickAgain.2.name"), width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 182 + 41, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 5 - 38 + sliderPos, 79, ColorUtil.to32BitColor(255, 150, 150, 150), false, false);
                     }
                     else
                     {
-                        this.drawSplitString(GCCoreUtil.translate("gui.message.clickAgain.3.name"), width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 182 + 41, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 10 - 38 + sliderPos, 79, ColorUtil.to32BitColor(255, 150, 150, 150));
+                        this.drawSplitString(GCCoreUtil.translate("gui.message.clickAgain.3.name"), width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 182 + 41, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 10 - 38 + sliderPos, 79, ColorUtil.to32BitColor(255, 150, 150, 150), false, false);
                     }
 
                 }
@@ -2067,17 +2081,12 @@ public class GuiCelestialSelection extends GuiScreen
         return amountInInv;
     }
 
-    public void drawSplitString(String par1Str, int par2, int par3, int par4, int par5)
+    public int drawSplitString(String par1Str, int par2, int par3, int par4, int par5, boolean small, boolean simulate)
     {
-        this.drawSplitString(par1Str, par2, par3, par4, par5, false);
+        return this.renderSplitString(par1Str, par2, par3, par4, false, par5, small, simulate);
     }
 
-    public void drawSplitString(String par1Str, int par2, int par3, int par4, int par5, boolean small)
-    {
-        this.renderSplitString(par1Str, par2, par3, par4, false, par5, small);
-    }
-
-    private void renderSplitString(String par1Str, int par2, int par3, int par4, boolean par5, int par6, boolean small)
+    private int renderSplitString(String par1Str, int par2, int par3, int par4, boolean par5, int par6, boolean small, boolean simulate)
     {
         if (small)
         {
@@ -2086,8 +2095,13 @@ public class GuiCelestialSelection extends GuiScreen
             for (Iterator iterator = list.iterator(); iterator.hasNext(); par3 += this.smallFontRenderer.FONT_HEIGHT)
             {
                 String s1 = (String) iterator.next();
-                this.renderStringAligned(s1, par2, par3, par4, par6, par5, small);
+                if (!simulate)
+                {
+                    this.renderStringAligned(s1, par2, par3, par4, par6, par5, small);
+                }
             }
+
+            return list.size();
         }
         else
         {
@@ -2096,8 +2110,13 @@ public class GuiCelestialSelection extends GuiScreen
             for (Iterator iterator = list.iterator(); iterator.hasNext(); par3 += this.fontRendererObj.FONT_HEIGHT)
             {
                 String s1 = (String) iterator.next();
-                this.renderStringAligned(s1, par2, par3, par4, par6, par5, small);
+                if (!simulate)
+                {
+                    this.renderStringAligned(s1, par2, par3, par4, par6, par5, small);
+                }
             }
+
+            return list.size();
         }
     }
 
