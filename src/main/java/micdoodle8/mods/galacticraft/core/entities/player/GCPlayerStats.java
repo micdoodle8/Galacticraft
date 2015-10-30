@@ -34,6 +34,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
     public int airRemaining2;
 
     public int thermalLevel;
+    public boolean thermalLevelNormalising;
 
     public int damageCounter;
 

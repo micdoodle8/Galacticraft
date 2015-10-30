@@ -9,6 +9,7 @@ import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.event.oxygen.GCCoreOxygenSuffocationEvent;
+import micdoodle8.mods.galacticraft.api.item.IItemThermal;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
@@ -419,6 +420,27 @@ public class GCPlayerHandler
         ItemStack thermalPaddingChestplate = playerStats.extendedInventory.getStackInSlot(7);
         ItemStack thermalPaddingLeggings = playerStats.extendedInventory.getStackInSlot(8);
         ItemStack thermalPaddingBoots = playerStats.extendedInventory.getStackInSlot(9);
+        float lowestThermalStrength = 0.0F;
+        if (thermalPaddingHelm != null && thermalPaddingChestplate != null && thermalPaddingLeggings != null && thermalPaddingBoots != null)
+        {
+            if (thermalPaddingHelm.getItem() instanceof IItemThermal)
+            {
+                lowestThermalStrength += ((IItemThermal) thermalPaddingHelm.getItem()).getThermalStrength();
+            }
+            if (thermalPaddingChestplate.getItem() instanceof IItemThermal)
+            {
+                lowestThermalStrength += ((IItemThermal) thermalPaddingChestplate.getItem()).getThermalStrength();
+            }
+            if (thermalPaddingLeggings.getItem() instanceof IItemThermal)
+            {
+                lowestThermalStrength += ((IItemThermal) thermalPaddingLeggings.getItem()).getThermalStrength();
+            }
+            if (thermalPaddingBoots.getItem() instanceof IItemThermal)
+            {
+                lowestThermalStrength += ((IItemThermal) thermalPaddingBoots.getItem()).getThermalStrength();
+            }
+            lowestThermalStrength /= 4.0F;
+        }
 
         if (player.worldObj.provider instanceof IGalacticraftWorldProvider && !player.capabilities.isCreativeMode)
         {
@@ -427,82 +449,101 @@ public class GCPlayerHandler
 
             if (thermalLevelMod != 0)
             {
-                int thermalLevelCooldownBase = (int) Math.floor(1 / (thermalLevelMod * (thermalLevelMod > 0 ? 1 : -1)) * 200);
+                int thermalLevelCooldownBase = (int) Math.abs(Math.floor(200 / thermalLevelMod));
+                int normaliseCooldown = (int) Math.abs(Math.floor(150 / lowestThermalStrength));
                 int thermalLevelTickCooldown = thermalLevelCooldownBase;
 
-                if (GalacticraftCore.isPlanetsLoaded)
+                if (thermalPaddingHelm != null && thermalPaddingChestplate != null && thermalPaddingLeggings != null && thermalPaddingBoots != null)
                 {
-                    if (thermalPaddingHelm != null && thermalPaddingChestplate != null && thermalPaddingLeggings != null && thermalPaddingBoots != null)
-                    {
-                    	this.normaliseThermalLevel(player, playerStats, 1);
-                        // Player is wearing all required thermal padding items
-                        return;
-                    }
-
-                    if (OxygenUtil.isAABBInBreathableAirBlock(player, true))
+                    thermalLevelMod /= Math.max(1.0F, lowestThermalStrength / 2.0F);
+                    normaliseCooldown /= Math.abs(Math.floor(thermalLevelMod));
+                    // Player is wearing all required thermal padding items
+                    if ((player.ticksExisted - 1) % normaliseCooldown == 0)
                     {
                         this.normaliseThermalLevel(player, playerStats, 1);
-                        // If player is in ambient thermal area, slowly reset to normal
-                        return;
-                    }
-
-                    if (thermalPaddingHelm != null)
-                    {
-                        thermalLevelTickCooldown += thermalLevelCooldownBase;
-                    }
-
-                    if (thermalPaddingChestplate != null)
-                    {
-                        thermalLevelTickCooldown += thermalLevelCooldownBase;
-                    }
-
-                    if (thermalPaddingLeggings != null)
-                    {
-                        thermalLevelTickCooldown += thermalLevelCooldownBase;
-                    }
-
-                    if (thermalPaddingBoots != null)
-                    {
-                        thermalLevelTickCooldown += thermalLevelCooldownBase;
                     }
                 }
 
-                if ((player.ticksExisted - 1) % thermalLevelTickCooldown == 0)
+                if (OxygenUtil.isAABBInBreathableAirBlock(player, true))
+                {
+                    playerStats.thermalLevelNormalising = true;
+                    this.normaliseThermalLevel(player, playerStats, 1);
+                    // If player is in ambient thermal area, slowly reset to normal
+                    return;
+                }
+
+                // For each piece of thermal equipment being used, slow down the the harmful thermal change slightly
+                if (thermalPaddingHelm != null)
+                {
+                    thermalLevelTickCooldown += thermalLevelCooldownBase;
+                }
+                if (thermalPaddingChestplate != null)
+                {
+                    thermalLevelTickCooldown += thermalLevelCooldownBase;
+                }
+                if (thermalPaddingLeggings != null)
+                {
+                    thermalLevelTickCooldown += thermalLevelCooldownBase;
+                }
+                if (thermalPaddingBoots != null)
+                {
+                    thermalLevelTickCooldown += thermalLevelCooldownBase;
+                }
+
+                // Instead of increasing/decreasing the thermal level by a large amount every ~200 ticks, increase/decrease
+                //      by a small amount each time (still the same average increase/decrease)
+                int thermalLevelTickCooldownSingle = (int)Math.floor(thermalLevelTickCooldown / Math.abs(thermalLevelMod));
+
+                if ((player.ticksExisted - 1) % thermalLevelTickCooldownSingle == 0)
                 {
                     int last = playerStats.thermalLevel;
-                    playerStats.thermalLevel = (int) Math.min(Math.max(playerStats.thermalLevel + thermalLevelMod, -22), 22);
+                    playerStats.thermalLevel = (int) Math.min(Math.max(playerStats.thermalLevel + (thermalLevelMod < 0 ? -1 : 1), -22), 22);
 
                     if (playerStats.thermalLevel != last)
                     {
                         this.sendThermalLevelPacket(player, playerStats);
                     }
+                }
 
-                    if (Math.abs(playerStats.thermalLevel) >= 22)
+                // If the normalisation is outpacing the freeze/overheat
+                playerStats.thermalLevelNormalising = thermalLevelTickCooldownSingle > normaliseCooldown &&
+                                                thermalPaddingHelm != null &&
+                                                thermalPaddingChestplate != null &&
+                                                thermalPaddingLeggings != null &&
+                                                thermalPaddingBoots != null;
+
+                if (!playerStats.thermalLevelNormalising)
+                {
+                    if ((player.ticksExisted - 1) % thermalLevelTickCooldown == 0)
                     {
-                        player.attackEntityFrom(DamageSourceGC.thermal, 1.5F); // TODO New thermal damage source
+                        if (Math.abs(playerStats.thermalLevel) >= 22)
+                        {
+                            player.attackEntityFrom(DamageSourceGC.thermal, 1.5F);
+                        }
                     }
-                }
 
-                if (playerStats.thermalLevel < -15)
-                {
-                    player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 5, 2, true));
-                }
+                    if (playerStats.thermalLevel < -15)
+                    {
+                        player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 5, 2, true));
+                    }
 
-                if (playerStats.thermalLevel > 15)
-                {
-                    player.addPotionEffect(new PotionEffect(Potion.confusion.id, 5, 2, true));
-
+                    if (playerStats.thermalLevel > 15)
+                    {
+                        player.addPotionEffect(new PotionEffect(Potion.confusion.id, 5, 2, true));
+                    }
                 }
             }
             else
             //Normalise thermal level if on Space Station or non-modifier planet
             {
+                playerStats.thermalLevelNormalising = true;
             	this.normaliseThermalLevel(player, playerStats, 2);
             }
         }
         else
         //Normalise thermal level if on Overworld or any non-GC dimension
         {
+            playerStats.thermalLevelNormalising = true;
         	this.normaliseThermalLevel(player, playerStats, 3);
         }        	
     }
@@ -913,7 +954,7 @@ public class GCPlayerHandler
 
     protected void sendThermalLevelPacket(EntityPlayerMP player, GCPlayerStats playerStats)
     {
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_THERMAL_LEVEL, new Object[] { playerStats.thermalLevel }), player);
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_THERMAL_LEVEL, new Object[] { playerStats.thermalLevel, playerStats.thermalLevelNormalising }), player);
     }
 
     public static void sendGearUpdatePacket(EntityPlayerMP player, EnumModelPacket gearType)

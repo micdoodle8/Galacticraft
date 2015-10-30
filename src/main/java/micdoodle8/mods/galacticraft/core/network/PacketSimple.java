@@ -156,7 +156,7 @@ public class PacketSimple extends Packet implements IPacket
         C_UPDATE_STATION_SPIN(Side.CLIENT, Float.class, Boolean.class),
         C_UPDATE_STATION_DATA(Side.CLIENT, Double.class, Double.class),
         C_UPDATE_STATION_BOX(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
-        C_UPDATE_THERMAL_LEVEL(Side.CLIENT, Integer.class),
+        C_UPDATE_THERMAL_LEVEL(Side.CLIENT, Integer.class, Boolean.class),
         C_DISPLAY_ROCKET_CONTROLS(Side.CLIENT),
         C_GET_CELESTIAL_BODY_LIST(Side.CLIENT),
         C_UPDATE_ENERGYUNITS(Side.CLIENT, Integer.class),
@@ -674,6 +674,7 @@ public class PacketSimple extends Packet implements IPacket
             break;
         case C_UPDATE_THERMAL_LEVEL:
             stats.thermalLevel = (Integer) this.data.get(0);
+            stats.thermalLevelNormalising = (Boolean) this.data.get(1);
             break;
         case C_DISPLAY_ROCKET_CONTROLS:
             player.addChatMessage(new ChatComponentText(GameSettings.getKeyDisplayString(KeyHandlerClient.spaceKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.rocket.launch.name")));
