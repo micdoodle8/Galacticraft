@@ -233,6 +233,8 @@ public class GCItems
         GCCoreUtil.registerGalacticraftItem("meteorThrowableHot", GCItems.meteorChunk, 1);
         GCCoreUtil.registerGalacticraftItem("standardWrench", GCItems.wrench);
 
+        GCItems.registerItems();
+
         for (int i = 0; i < ItemBasic.names.length; i++)
         {
             if (ItemBasic.names[i].contains("ingot") || ItemBasic.names[i].contains("compressed") || ItemBasic.names[i].contains("wafer"))
@@ -243,8 +245,6 @@ public class GCItems
 
         OreDictionary.registerOre("compressedMeteoricIron", new ItemStack(GCItems.meteoricIronIngot, 1, 1));
         OreDictionary.registerOre("ingotMeteoricIron", new ItemStack(GCItems.meteoricIronIngot, 1, 0));
-
-        GCItems.registerItems();
     }
 
     public static void registerHarvestLevels()
