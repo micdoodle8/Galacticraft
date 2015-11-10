@@ -104,7 +104,7 @@ public class PacketSimple implements IPacket, Packet
         S_SET_ENTITY_FIRE(Side.SERVER, Integer.class),
         S_BIND_SPACE_STATION_ID(Side.SERVER, Integer.class),
         S_UNLOCK_NEW_SCHEMATIC(Side.SERVER),
-        S_UPDATE_DISABLEABLE_BUTTON(Side.SERVER, BlockPos.class, Integer.class),
+        S_UPDATE_DISABLEABLE_BUTTON(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class),
         S_ON_FAILED_CHEST_UNLOCK(Side.SERVER, Integer.class),
         S_RENAME_SPACE_STATION(Side.SERVER, String.class, Integer.class),
         S_OPEN_EXTENDED_INVENTORY(Side.SERVER),
