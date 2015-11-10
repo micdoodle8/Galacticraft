@@ -21,6 +21,7 @@ import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.client.SkyProviderMars;
+import micdoodle8.mods.galacticraft.planets.mars.client.fx.EntityBacterialDripFX;
 import micdoodle8.mods.galacticraft.planets.mars.client.gui.*;
 import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelTier2Rocket;
 import micdoodle8.mods.galacticraft.planets.mars.client.render.block.*;
@@ -192,6 +193,10 @@ public class MarsModuleClient implements IPlanetsModuleClient
                 {
                     particle = new EntityDropParticleFX(mc.theWorld, position.x, position.y, position.z, Material.water);
                 }
+				else if (particleID.equals("bacterialDrip"))
+    			{
+    				particle = new EntityBacterialDripFX(mc.theWorld, position.x, position.y, position.z);
+    			}
             }
 
             if (particle != null)
