@@ -54,12 +54,6 @@ public class BlockCreeperEgg extends BlockDragonEgg implements ItemBlockDesc.IBl
     }
 
     @Override
-    public int getRenderType()
-    {
-        return 27;
-    }
-
-    @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         return false;

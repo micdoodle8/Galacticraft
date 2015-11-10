@@ -149,12 +149,6 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, Ite
         return this.icons[metadata % 6];
     }*/
 
-    @Override
-    public int getRenderType()
-    {
-        return GalacticraftPlanets.getBlockRenderID(this);
-    }
-
     @SideOnly(Side.CLIENT)
     @Override
     public CreativeTabs getCreativeTabToDisplayOn()

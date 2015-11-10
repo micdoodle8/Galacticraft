@@ -76,12 +76,6 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
-    @Override
-    public int getRenderType()
-    {
-        return GalacticraftPlanets.getBlockRenderID(this);
-    }
-
     /*@Override
     public IIcon getIcon(int side, int metadata)
     {
