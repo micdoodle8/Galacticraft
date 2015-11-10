@@ -171,9 +171,9 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
     }
 
     @Override
-    public boolean isValueable(int metadata)
+    public boolean isValueable(IBlockState state)
     {
-        switch (metadata)
+        switch (this.getMetaFromState(state))
         {
         case 3:
         case 4:

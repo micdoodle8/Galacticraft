@@ -248,9 +248,17 @@ public class BlockBasic extends Block implements IDetectableResource
     }
 
     @Override
-    public boolean isValueable(int metadata)
+    public boolean isValueable(IBlockState state)
     {
-        return metadata >= 5 && metadata <= 8;
+    	switch (this.getMetaFromState(state))
+    	{
+    	case 5:
+    	case 6:
+    	case 7:
+    	case 8:
+    		return true;
+    	}
+        return false;
     }
 
     @Override

@@ -283,16 +283,13 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public boolean isValueable(int metadata)
+    public boolean isValueable(IBlockState state)
     {
-        switch (metadata)
+        switch (this.getMetaFromState(state))
         {
         case 0:
-            return true;
         case 1:
-            return true;
         case 2:
-            return true;
         case 3:
             return true;
         default:
