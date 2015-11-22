@@ -10,6 +10,9 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.WorldServer;
 
 public class CommandPlanetTeleport extends CommandBase
 {
@@ -45,11 +48,16 @@ public class CommandPlanetTeleport extends CommandBase
 
                 if (playerBase != null)
                 {
+                    MinecraftServer server = MinecraftServer.getServer();
+                    WorldServer worldserver = server.worldServerForDimension(server.worldServers[0].provider.dimensionId);
+                    ChunkCoordinates chunkcoordinates = worldserver.getSpawnPoint();
                     GCPlayerStats stats = GCPlayerStats.get(playerBase);
                     stats.rocketStacks = new ItemStack[2];
                     stats.rocketType = IRocketType.EnumRocketType.DEFAULT.ordinal();
                     stats.rocketItem = GCItems.rocketTier1;
                     stats.fuelLevel = 1000;
+                    stats.coordsTeleportedFromX = chunkcoordinates.posX;
+                    stats.coordsTeleportedFromZ = chunkcoordinates.posZ;
 
                     try
                     {
