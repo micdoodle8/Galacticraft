@@ -11,8 +11,6 @@ import java.util.Random;
 
 public class MapGenCavesMoon extends MapGenBaseMeta
 {
-    public static final int BREAK_THROUGH_CHANCE = 25; // 1 in n chance
-
     protected void generateLargeCaveNode(long par1, int par3, int par4, Block[] blockIdArray, byte[] metaArray, double par6, double par8, double par10)
     {
         this.generateCaveNode(par1, par3, par4, blockIdArray, metaArray, par6, par8, par10, 1.0F + this.rand.nextFloat() * 6.0F, 0.0F, 0.0F, -1, -1, 0.5D);
@@ -175,7 +173,7 @@ public class MapGenCavesMoon extends MapGenBaseMeta
                                                 {
                                                     blockIdArray[coords] = Blocks.air;
                                                 }
-                                                else if (metaArray[coords] == 5 && random.nextInt(MapGenCavesMoon.BREAK_THROUGH_CHANCE) == 0)
+                                                else if (metaArray[coords] == 5)
                                                 {
                                                     blockIdArray[coords] = Blocks.air;
                                                 }
