@@ -12,8 +12,8 @@ item.key.T2.name=Tier 2 Zindan Anahtarı
 item.compressedDesh.name=Sıkıştırılmış Desh
 item.spaceshipTier2.cargoRocket.name=Kargo Roketi
 item.fluidManip.name=Sıvı Manipülatör
-item.bucketSludge.name=Bacterial Sludge Bucket ##NEEDS TRANSLATE##
-fluid.bacterialsludge=Bacterial Sludge ##NEEDS TRANSLATE##
+item.bucketSludge.name=Bakteriyel Çamur Kovası
+fluid.bacterialsludge=Bakteriyel Çamur
 
 # TOOLS
 item.deshPick.name=Desh Kazma
@@ -34,12 +34,12 @@ tile.mars.deshmars.name=Desh Cevheri
 tile.mars.coppermars.name=Bakır Cevheri
 tile.mars.tinmars.name=Kalay Cevheri
 tile.mars.ironmars.name=Demir Cevheri
-tile.mars.marscobblestone.name=Kırıktaş
+tile.mars.marscobblestone.name=Mars Kırık Taşı
 tile.mars.marsstone.name=Mars Taşı
 tile.mars.marsdirt.name=Mars Yeraltı Kayası
 tile.mars.marsgrass.name=Mars Yüzey Kayası
 tile.mars.marsdeco.name=Desh Bloğu
-tile.mars.marsdungeon.name=Zindan Duvarı
+tile.mars.marsdungeon.name=Mars Zindan Tuğlası
 tile.treasureT2.name=Tier 2 Hazine Sandığı
 tile.slimelingEgg.redEgg.name=Kırmızı Slimeling Yumurtası
 tile.slimelingEgg.blueEgg.name=Mavi Slimeling Yumurtası
@@ -50,18 +50,18 @@ tile.marsMachine.2.name=Fırlatma Kontrollü
 tile.marsMachine.4.name=Gaz Sıvılaştırıcı
 tile.marsMachine.5.name=Metan Birleştirici
 tile.marsMachine.6.name=Su Elektroliz Cihazı
-tile.hydrogenPipe.name=Hydrogen Pipe ##NEEDS TRANSLATE##
+tile.hydrogenPipe.name=Hidrojen Borusu
 tile.sludge.name=Bakteriyelli Çamur
 tile.creeperEgg.name=Creeper Yumurtası
 tile.cavernVines.name=Cavernous Vines
 
 # DECOBLOCKS
-tile.marsCobblestoneStairs.name=Mars Cobblestone Stairs ##NEEDS TRANSLATE##
-tile.wallGC.mars.name=Mars Cobblestone Wall ##NEEDS TRANSLATE##
-tile.slabGCHalf.marsSlab.name=Mars Cobblestone Slab ##NEEDS TRANSLATE##
-tile.marsDungeonBricksStairs.name=Mars Dungeon Brick Stairs ##NEEDS TRANSLATE##
-tile.wallGC.marsBricks.name=Mars Dungeon Brick Wall ##NEEDS TRANSLATE##
-tile.slabGCHalf.marsBricksSlab.name=Mars Dungeon Brick Slab ##NEEDS TRANSLATE##
+tile.marsCobblestoneStairs.name=Mars Kırık Taş Merdiveni
+tile.wallGC.mars.name=Mars Kırık Taş Duvarı
+tile.slabGCHalf.marsSlab.name=Mars Kırık Taş Basamağı
+tile.marsDungeonBricksStairs.name=Mars Zindan Tuğla Merdiveni
+tile.wallGC.marsBricks.name=Mars Zindan Tuğla Duvarı
+tile.slabGCHalf.marsBricksSlab.name=Mars Zindan Tuğla Basamağı
 
 # GUI
 gui.choosePlanet.desc.mars=Yaşanabilir#Oksijen Bulunmuyor#Yerçekimi: %38
@@ -80,7 +80,7 @@ gui.message.trees.name=Ağaçlar
 gui.message.grass.name=Çimler
 gui.message.invalidFreq.name=Yanlış Frekans
 gui.message.frequency.name=Frekans 
-gui.message.destFrequency.name=Frekans Hedefi
+gui.message.destFrequency.name=Fre.Hedefi
 gui.message.removePad.name=Pedi Sil
 gui.message.launchWhen.name=Fırlatmak için
 gui.message.cargoUnloaded.name=Kargo Boşalınca
@@ -94,17 +94,18 @@ gui.message.redstoneSig.name=Kızıltaş Sinyali
 gui.message.notSet.name=Belirtilmemiş
 gui.message.notEnough.name=Yeterli Değil
 gui.message.success.name=Başarılı
-gui.message.zeroWater.name=No water! ##NEEDS TRANSLATE##
+gui.message.zeroWater.name=Su yok!
 
     # Dollar sign ($) will split text onto a new line
 gui.launchController.desc.0=Fırlatıcı kontrollünün frekansı
 gui.launchController.desc.1=Fırlatılacak roketin karşı frekansı
 gui.launchController.desc.2=Roket fırlatma pedi$kalkışta silinecek.
 gui.launchController.desc.3=Roket fırlatmak için,$ayarlar
+gui.launchController.desc.4=Hedef Frekansı diğer$oyunculardan sakla
 gui.terraformer.desc.0=Su Tankı
 
 gui.gasTank.desc.0=Gaz Deposu
-gui.gasTankCompressed.desc.0=Gas Storage (Compressed) ##NEEDS TRANSLATE##
+gui.gasTankCompressed.desc.0=Gaz Deposu (Sıkıştırılmış)
 gui.liquidTank.desc.0=Sıvı Tankı
 gui.status.nogas.name=Gaz Yok
 gui.status.liquefying.name=Sıvılaştırılıyor
@@ -124,13 +125,13 @@ gui.methaneOutput.desc.2=metan gazı tankı
 gui.message.withAtmosphere0.name=gezegenin atmosferinde
 gui.message.withAtmosphere1.name=bulunabilir
 item.carbonFragments.name=Parçalanmış Karbon
-gui.carbonSlot.desc.0=Fragmented Carbon can go here ##NEEDS TRANSLATE##
-gui.waterBucketSlot.desc=Place water buckets here ##NEEDS TRANSLATE##
+gui.carbonSlot.desc.0=Parçalanmış Karbonu buraya koyun
+gui.waterBucketSlot.desc=Su kovalarını buraya koyun
 
-gui.cargorocket.status.waiting.0=Waiting for ##NEEDS TRANSLATE##
-gui.cargorocket.status.waiting.1=ignition ##NEEDS TRANSLATE##
-gui.cargorocket.status.launched.0=Already ##NEEDS TRANSLATE##
-gui.cargorocket.status.launched.1=Launched ##NEEDS TRANSLATE##
+gui.cargorocket.status.waiting.0=Ateşleme için
+gui.cargorocket.status.waiting.1=bekleniyor
+gui.cargorocket.status.launched.0=Zaten
+gui.cargorocket.status.launched.1=Fırlatıldı
 
 gas.carbondioxide.name=Karbondioksit
 gas.oxygen.name=Oksijen
@@ -149,21 +150,21 @@ tile.terraformer.description=Terraformer gezegenlere yeşillik katar, çim, ağa
 tile.creeperEgg.description=Creeper Yumurtası Mars zindanlarında bulunur, spawnlanınca büyük bir patlama oluşur. 
 tile.gasLiquefier.description=Gaz Sıvılaştırıcı, metan gazını atmosferden veya teneke kutudan alarak iyi bir roket yakıtı yapın.
 tile.methaneSynthesizer.description=Karbon ve hidrojenin ana kaynağı. Gaz sıvılaştırıcı için metan gazı sağlar.
-tile.electrolyzer.description=Transforms water into hydrogen (useful for the Methane Synthesizer) and oxygen. ##NEEDS TRANSLATE##
-tile.hydrogenPipe.description=Hydrogen Pipe will transfer hydrogen from one machine's internal gas tank to another. ##NEEDS TRANSLATE##
+tile.electrolyzer.description=Suyu hidrojen (metan sentezinde de kullanılabilir) ve oksijene çevirir.
+tile.hydrogenPipe.description=Hidrojen borusu makinelere hidrojen taşır.
 
-gui.slimeling.chat.wrongPlayer=This isn't my Slimeling! ##NEEDS TRANSLATE##
-gui.cryogenic.chat.cantUse=I can't use this for another %d seconds ##NEEDS TRANSLATE##
-gui.slimeling.name=Name ##NEEDS TRANSLATE##
-gui.slimeling.owner=Owner ##NEEDS TRANSLATE##
-gui.slimeling.kills=Kills ##NEEDS TRANSLATE##
-gui.slimeling.scale=Scale ##NEEDS TRANSLATE##
-gui.slimeling.button.sit=Sit ##NEEDS TRANSLATE##
-gui.slimeling.button.follow=Follow ##NEEDS TRANSLATE##
-gui.slimeling.sitting=Sitting ##NEEDS TRANSLATE##
-gui.slimeling.following=Following ##NEEDS TRANSLATE##
-gui.slimeling.damage=Attack Damage ##NEEDS TRANSLATE##
-gui.slimeling.food=Favorite food ##NEEDS TRANSLATE##
+gui.slimeling.chat.wrongPlayer=Bu benim Slimeling'im değil!
+gui.cryogenic.chat.cantUse=Bunu %d saniye boyunca kullanamam
+gui.slimeling.name=Adı
+gui.slimeling.owner=Sahibi
+gui.slimeling.kills=Öldürülen
+gui.slimeling.scale=Seviye
+gui.slimeling.button.sit=Oturt
+gui.slimeling.button.follow=Takip Ettir
+gui.slimeling.sitting=Oturuyor
+gui.slimeling.following=Takip Ediyor
+gui.slimeling.damage=Saldırı Hasarı
+gui.slimeling.food=Favori Besini
 
 # SCHEMATICS
 schematic.rocketT3.name=Tier 3 Roketi
@@ -175,18 +176,18 @@ entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Evrimleşmiş Creeper Patronu
 entity.SpaceshipT2.name=Tier 2 Roketi
 entity.CargoRocket.name=Kargo Roketi
-entity.LandingBalloons.name=Landing Balloons ##NEEDS TRANSLATE##
+entity.LandingBalloons.name=Landing Balonları
 
 # CONTAINERS
 container.launchcontroller.name=Fırlatma Kontrollü
 container.tileTerraformer.name=Terraformer
-container.marsLander.name=Landing Balloons ##NEEDS TRANSLATE##
+container.marsLander.name=Landing Balonları
 
 # CONFIG GUI
-gc.configgui.dimensionIDMars=Mars Dimension ID
-gc.configgui.idSchematicRocketT2=Tier 2 Rocket Schematic ID
-gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID
-gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
-gc.configgui.launchControllerAllDims=Launch Controller All Dimensions
+gc.configgui.dimensionIDMars=Mars Boyut ID'si
+gc.configgui.idSchematicRocketT2=Tier 2 Roketi Şematiği ID
+gc.configgui.idSchematicCargoRocket=Kargo Roketi Şematiği ID
+gc.configgui.launchControllerChunkLoad=Fırlatma Kontrolü Chunk Yükleme
+gc.configgui.launchControllerAllDims=Fırlatma Kontrolü Tüm Boyutlar İçin
 
-gc.configgui.planets.title=Galacticraft Planets Config
+gc.configgui.planets.title=Galacticraft Planets Ayarları

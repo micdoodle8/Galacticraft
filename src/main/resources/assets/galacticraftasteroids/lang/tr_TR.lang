@@ -2,7 +2,7 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=Tier 3 Roket
-item.itemAstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+item.itemAstroMiner.name=Astro Maden Makinesi 
 item.heavyNoseCone.name=Ağır Roket Burnu
 item.compressedTitanium.name=Sıkıştırılmış Titanyum
 item.ingotTitanium.name=Titanyum Külçesi
@@ -15,7 +15,7 @@ item.grapple.name=Kanca
 item.atmosphericValve.name=Atmosferik Valf
 item.thermalCloth.name=Termal Kumaş
 item.beamCore.name=Işın Çekirdeği
-item.orionDrive.name=Orion Drive ##NEEDS TRANSLATE##
+item.orionDrive.name=Orion Sürücüsü
 item.tier3.desc=Tier 3
 
 # TOOLS
@@ -80,7 +80,7 @@ tile.walkwayWire.name=Yürüme Bloğu
 tile.walkwayOxygenPipe.name=Yürüme Bloğu
 tile.treasureT3.name=Tier 3 Hazine Sandığı
 tile.denseIce.name=Yoğun Buz
-tile.minerBase.name=Astro Miner Base ##NEEDS TRANSLATE##
+tile.minerBase.name=Astro Maden Makinesi Üssü
 
 # GUI
 planet.asteroids=Asteroit
@@ -101,27 +101,27 @@ gui.message.sendingActive.name=Gönderme Aktif
 gui.message.range.name=Menzil: %dm
 gui.message.notEnoughEnergy.name=Enerji Yetersiz!
 gui.message.targetNoEnergy.name=Hedefin Enerjisi Yetersiz!
-gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook! ##NEEDS TRANSLATE##
-gui.message.astroMiner.fail=This base already has an Astro Miner! ##NEEDS TRANSLATE##
-gui.message.astroMiner1.fail=The docking area is blocked by: ##NEEDS TRANSLATE##
-gui.message.astroMiner1A.fail=The Astro Miner's route is blocked by: ##NEEDS TRANSLATE##
-gui.message.astroMiner2.fail=That would be one Astro Miner too many! ##NEEDS TRANSLATE##
-gui.message.astroMiner3.fail=The Astro Miner's base was removed! ##NEEDS TRANSLATE##
-gui.message.astroMiner4.fail=The Astro Miner ran out of energy and cannot get back to base! ##NEEDS TRANSLATE##
-gui.message.astroMiner5.fail=The Astro Miner's route into its base seems to be blocked! ##NEEDS TRANSLATE##
-gui.message.astroMiner6.fail=The Astro Miner has finished mining the area, and will now stop! ##NEEDS TRANSLATE##
-gui.message.astroMiner7.fail=There's nothing for an Astro Miner to mine on a space station! ##NEEDS TRANSLATE##
-gui.message.astroMiner8.fail=A second Astro Miner was detected at the same base, the first will now freeze. ##NEEDS TRANSLATE##
-gui.button.recall.name=Recall ##NEEDS TRANSLATE##
-gui.miner.outOfRange=Out of range ##NEEDS TRANSLATE##
-gui.miner.offline=Offline ##NEEDS TRANSLATE##
-gui.miner.stuck=Stuck at: ##NEEDS TRANSLATE##
-gui.miner.docked=Docked ##NEEDS TRANSLATE##
-gui.miner.travelling=Travelling ##NEEDS TRANSLATE##
-gui.miner.mining=Mining ##NEEDS TRANSLATE##
-gui.miner.returning=Returning ##NEEDS TRANSLATE##
-gui.miner.docking=Docking ##NEEDS TRANSLATE##
-gui.miner.mined=Mined ##NEEDS TRANSLATE##
+gui.message.grapple.fail=Kancayı kullanmak istiyorsam biraz ipe ihtiyacım var!
+gui.message.astroMiner.fail=Bu üs Astro Maden Makinesine sahip!
+gui.message.astroMiner1.fail=Kazma alanı şu maddeden dolayı tıkalı:
+gui.message.astroMiner1A.fail=Astro Maden Makinesinin rotası şu maddeden dolayı tıkalı:
+gui.message.astroMiner2.fail=Astro Maden Makinesinden daha fazla sahip olamazsınız!
+gui.message.astroMiner3.fail=Astro Maden Makinesinin üssü yok edildi!
+gui.message.astroMiner4.fail=Astro Maden Makinesinin gücü az ve üsse geri dönemiyor!
+gui.message.astroMiner5.fail=Astro Maden Makinesinin üs yolunda bir yere sıkıştı!
+gui.message.astroMiner6.fail=Astro Maden Makinesi kazma alanını bitirdiği için çalışmayı bırakıcak!
+gui.message.astroMiner7.fail=Uzay İstasyonunda maden bulumadığı için Astro Maden Makinesi bir şey yapmayacaktır!
+gui.message.astroMiner8.fail=Aynı üste iki adet Astro Maden Makinesi tespit edildi, birinci makine donduruluyor.
+gui.button.recall.name=Geri Çağır
+gui.miner.outOfRange=Kapsama Dışı
+gui.miner.offline=Kapalı
+gui.miner.stuck=Sıkıştı:
+gui.miner.docked=Kenetlendi
+gui.miner.travelling=Geziyor
+gui.miner.mining=Kazıyor
+gui.miner.returning=Dönüyor
+gui.miner.docking=Kenetleniyor
+gui.miner.mined=Kazılan
 
 tile.treasureT3.description=Tier 3 Hazine Sandığı şu anlık kullanılmıyor.
 tile.walkway.description=Yürüme Bloğu dekoratif amaçlıdır, diğer bloklara bağlanarak uzay teması oluşur.
@@ -130,27 +130,24 @@ tile.walkwayOxygenPipe.description=Oksijen Borusu Yürüme Bloğu boruların alt
 tile.beamReflector.description=Işın Reflektörü ışın enerjisini kaynaktan gönderir. Sağ tıklayarak hedefi değiştirebilirsiniz.
 tile.beamReceiver.description=Işın alıcısı enerji makinelerin giriş ve çıkışına bağlanarak enerjiyi transfer etmekte kullanılır.
 tile.telepadShort.description=Kısa Menzilli Telepad oyuncuları ışınlamaya ve kısa mesafe (250 blok) gitmeye yarar.
-tile.minerBase.description=The Astro Miner Base is the docking point for an Astro Miner.  It's big ... try making a 2 x 2 x 2 cube with these. ##NEEDS TRANSLATE##
-schematic.astroMiner.name=Astro Miner ##NEEDS TRANSLATE##
-schematic.ionDrive.name=Ion Drive ##NEEDS TRANSLATE##
+tile.minerBase.description=Astro Maden Makinesinin üssü ve yerleşme yeridir. Bu üs aşırı büyüktür ... 2 x 2 x 2 küp yapın.
 
 # SCHEMATICS
+schematic.astroMiner.name=Astro Maden Makinesi
 
 # ENTITIES
 entity.SmallAsteroidGC.name=Küçük Asteroit
 entity.GrappleHookGC.name=Çeneli Kanca
 entity.Tier3RocketGC.name=Tier 3 Roket
-entity.EntryPodAsteroids.name=Entry Pod ##NEEDS TRANSLATE##
-entity.AstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+entity.EntryPodAsteroids.name=Giriş Bölmesi
+entity.AstroMiner.name=Astro Maden Makinesi
 
 # CONTAINERS
 container.shortRangeTelepad.name=Kısa Menzilli Telepad
 container.entryPod.name=Giriş Bölmesi
-gc.configgui.dimensionIDAsteroids=Asteroids Dimension ID
-gc.configgui.idEntitySmallAsteroid=Small Asteroid Entity ID
-gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID
-gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID
-gc.configgui.idEntityEntryPod=Entry Pod Entity ID
-gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID
-gc.configgui.disableGalacticraftHelium=Disable Helium gas registration
-gc.configgui.astroMinersMax=Maximum number of Astro Miners per player
+
+# CONFIG GUI
+gc.configgui.dimensionIDAsteroids=Asteroit Boyut ID'si
+gc.configgui.idSchematicRocketT3=Tier 3 Roket Şematik ID'si
+gc.configgui.disableGalacticraftHelium=Helyum Gaz Kaydını Kapat
+gc.configgui.astroMinersMax=Oyuncu Başına Düşen Maksimum Astro Maden Makinesi
