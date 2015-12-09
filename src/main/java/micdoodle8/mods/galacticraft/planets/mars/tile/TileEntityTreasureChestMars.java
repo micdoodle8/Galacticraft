@@ -575,7 +575,7 @@ public class TileEntityTreasureChestMars extends TileEntityAdvanced implements I
                     this.adjacentChestZPos.locked = false;
                 }
 
-                if (--player.inventory.getCurrentItem().stackSize == 0)
+                if (!player.capabilities.isCreativeMode && --player.inventory.getCurrentItem().stackSize == 0)
                 {
                     player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
                 }
