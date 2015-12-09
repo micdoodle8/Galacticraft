@@ -165,7 +165,7 @@ public class PacketSimpleAsteroids implements IPacket
         switch (this.type)
         {
         case S_UPDATE_ADVANCED_GUI:
-            TileEntity tile = player.worldObj.getTileEntity((BlockPos) this.data.get(1));
+            TileEntity tile = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3)));
 
             switch ((Integer) this.data.get(0))
             {
@@ -173,14 +173,14 @@ public class PacketSimpleAsteroids implements IPacket
                 if (tile instanceof TileEntityShortRangeTelepad)
                 {
                     TileEntityShortRangeTelepad launchController = (TileEntityShortRangeTelepad) tile;
-                    launchController.setAddress((Integer) this.data.get(2));
+                    launchController.setAddress((Integer) this.data.get(4));
                 }
                 break;
             case 1:
                 if (tile instanceof TileEntityShortRangeTelepad)
                 {
                     TileEntityShortRangeTelepad launchController = (TileEntityShortRangeTelepad) tile;
-                    launchController.setTargetAddress((Integer) this.data.get(2));
+                    launchController.setTargetAddress((Integer) this.data.get(4));
                 }
                 break;
             default:

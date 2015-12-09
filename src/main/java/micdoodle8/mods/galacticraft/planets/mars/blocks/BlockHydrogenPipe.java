@@ -63,12 +63,6 @@ public class BlockHydrogenPipe extends BlockTransmitter implements ITileEntityPr
         return this.pipeIcon;
     }*/
 
-    @Override
-    public int getRenderType()
-    {
-        return GalacticraftPlanets.getBlockRenderID(this);
-    }
-
     /*@Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister)

@@ -413,7 +413,7 @@ public class TickHandlerClient
                                             ClientProxyCore.valueableBlocks.add(new Vector3(x, y, z));
                                         }
                                     }
-                                    else if (block instanceof IDetectableResource && ((IDetectableResource) block).isValueable(metadata))
+                                    else if (block instanceof IDetectableResource && ((IDetectableResource) block).isValueable(state))
                                     {
                                         if (!this.alreadyContainsBlock(x, y, z))
                                         {
@@ -559,22 +559,22 @@ public class TickHandlerClient
                 }
             }
 
-//            if (world != null)
-//            {
-//                List entityList = world.loadedEntityList;
-//                for (Object e : entityList)
-//                {
-//                    if (e instanceof IEntityNoisy)
-//                    {
-//                        IEntityNoisy vehicle = (IEntityNoisy)e;
-//                    	if (vehicle.getSoundUpdater() == null)
-//                        {
-//                        	ISound noise = vehicle.setSoundUpdater(FMLClientHandler.instance().getClient().thePlayer);
-//							FMLClientHandler.instance().getClient().getSoundHandler().playSound(noise);
-//                        }
-//                    } TODO Fix sound updaters
-//                }
-//            }
+            if (world != null)
+            {
+                List entityList = world.loadedEntityList;
+                for (Object e : entityList)
+                {
+                    if (e instanceof IEntityNoisy)
+                    {
+                        IEntityNoisy vehicle = (IEntityNoisy)e;
+                    	if (vehicle.getSoundUpdater() == null)
+                        {
+                        	ISound noise = vehicle.setSoundUpdater(FMLClientHandler.instance().getClient().thePlayer);
+							FMLClientHandler.instance().getClient().getSoundHandler().playSound(noise);
+                        }
+                    }
+                }
+            }
 
             if (FMLClientHandler.instance().getClient().currentScreen instanceof GuiCelestialSelection)
             {

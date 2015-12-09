@@ -452,12 +452,6 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
     }
 
     @Override
-    public int getRenderType()
-    {
-        return GalacticraftPlanets.getBlockRenderID(this);
-    }
-
-    @Override
     public boolean isBed(IBlockAccess world, BlockPos pos, Entity player)
     {
         return getMetaFromState(world.getBlockState(pos)) >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA;

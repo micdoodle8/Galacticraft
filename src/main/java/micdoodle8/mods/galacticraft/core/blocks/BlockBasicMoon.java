@@ -390,14 +390,12 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
     }
 
     @Override
-    public boolean isValueable(int metadata)
+    public boolean isValueable(IBlockState state)
     {
-        switch (metadata)
+        switch (this.getMetaFromState(state))
         {
         case 0:
-            return true;
         case 1:
-            return true;
         case 2:
             return true;
         default:

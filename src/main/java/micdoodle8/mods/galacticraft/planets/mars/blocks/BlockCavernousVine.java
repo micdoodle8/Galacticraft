@@ -135,12 +135,6 @@ public class BlockCavernousVine extends Block implements IShearable, ItemBlockDe
     }
 
     @Override
-    public int getRenderType()
-    {
-        return GalacticraftPlanets.getBlockRenderID(this);
-    }
-
-    @Override
     public boolean isOpaqueCube()
     {
         return false;
