@@ -202,11 +202,12 @@ public class ContainerTerraformer extends Container
     private static void initSaplingList()
     {
     	ContainerTerraformer.saplingList = new LinkedList();
-        Iterator iterator = Block.blockRegistry.getKeys().iterator();
+        Iterator iterator = Block.blockRegistry.iterator();
     
         while (iterator.hasNext())
         {
-            Block b = (Block) Block.blockRegistry.getObject((String)iterator.next());
+            Block b = (Block) iterator.next();
+
             if (b instanceof BlockBush)
             {
                 try 
