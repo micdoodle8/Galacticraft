@@ -280,11 +280,6 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
         {
             this.setBlockBounds(0.5F - var8, 0.2F, 1.0F - var8 * 2.0F, 0.5F + var8, 0.8F, 1.0F);
         }
-        else
-        {
-            var8 = 0.1F;
-            this.setBlockBounds(0.5F - var8, 0.0F, 0.5F - var8, 0.5F + var8, 0.6F, 0.5F + var8);
-        }
 
         return super.collisionRayTrace(par1World, x, y, z, par5Vec3, par6Vec3);
     }
