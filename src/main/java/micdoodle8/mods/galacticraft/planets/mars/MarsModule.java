@@ -229,7 +229,23 @@ public class MarsModule implements IPlanetsModule
     public void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int back, int fore)
     {
         EntityList.stringToClassMapping.put(var1, var0);
-        EntityRegistry.registerModEntity(var0, var1, GCCoreUtil.nextInternalID(), GalacticraftPlanets.instance, 80, 3, true);
+        MarsModule.registerGalacticraftNonMobEntity(var0, var1, 80, 3, true);
+        int nextEggID = getNextValidEggID();
+        EntityList.IDtoClassMapping.put(nextEggID, var0);
+        EntityList.entityEggs.put(nextEggID, new EntityList.EntityEggInfo(nextEggID, back, fore));
+    }
+
+    private static int getNextValidEggID()
+    {
+        int eggID = 120;
+
+        do
+        {
+            eggID++;
+        }
+        while (EntityList.getStringFromID(eggID) != null);
+
+        return eggID;
     }
 
     public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
