@@ -21,6 +21,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderOrbit;
+import micdoodle8.mods.galacticraft.core.world.gen.WorldChunkManagerOrbit;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
@@ -209,7 +210,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
     @Override
     public Class<? extends WorldChunkManager> getWorldChunkManagerClass()
     {
-        return null;
+        return WorldChunkManagerOrbit.class;
     }
 
     public boolean isDaytime()
