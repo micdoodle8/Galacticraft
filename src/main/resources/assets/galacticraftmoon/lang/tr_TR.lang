@@ -14,17 +14,18 @@ item.cheeseBlock.name=Peynir Bloğu
 # ARMOR
 
 # BLOCKS
-tile.moonBlock.moonstone.name=Taş
-tile.moonBlock.moondirt.name=Toprak
-tile.moonBlock.moongrass.name=Ay Toprağı
+tile.moonBlock.moonstone.name=Ay Taşı
+tile.moonBlock.moondirt.name=Ay Toprağı
+tile.moonBlock.moongrass.name=Ay Çimeni
 tile.moonBlock.tinmoon.name=Kalay Cevheri
 tile.moonBlock.coppermoon.name=Bakır Cevheri
 tile.moonBlock.cheesestone.name=Peynir Cevheri
-tile.moonBlock.bricks.name=Tuğla
+tile.moonBlock.bricks.name=Ay Zindan Tuğlası
 tile.cheeseBlock.name=Peynir Bloğu
 
 # GUI
 gui.choosePlanet.desc.moon=Yaşanabilir#Oksijen Bulunmuyor#Yerçekimi: %18
-container.lander.name=Lander ##NEEDS TRANSLATE##
 
+# OTHER
+container.lander.name=Lander
 dimension.Moon.name=Ay

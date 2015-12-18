@@ -31,12 +31,12 @@ public class BlockFluidGC extends BlockFluidClassic
 
     public BlockFluidGC(Fluid fluid, String assetName)
     {
-        super(fluid, (assetName.equals("oil") || assetName.equals("fuel")) ? GalacticraftCore.materialOil : Material.water);
+        super(fluid, (assetName.startsWith("oil") || assetName.startsWith("fuel")) ? GalacticraftCore.materialOil : Material.water);
         this.setRenderPass(1);
         this.fluidName = assetName;
         this.fluid = fluid;
 
-        if (assetName.equals("oil"))
+        if (assetName.startsWith("oil"))
         {
             this.needsRandomTick = true;
         }

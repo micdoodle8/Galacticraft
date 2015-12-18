@@ -494,6 +494,12 @@ public class GCPlayerHandler
                 //      by a small amount each time (still the same average increase/decrease)
                 int thermalLevelTickCooldownSingle = (int)Math.floor(thermalLevelTickCooldown / Math.abs(thermalLevelMod));
 
+                // Prevent "thermalLevelTickCooldownSingle" be less then 1
+                //      and prevent "/ 0" exception to be thrown in the next if statement
+                if (thermalLevelTickCooldownSingle == 0) {
+                    thermalLevelTickCooldownSingle = 1;
+                }
+
                 if ((player.ticksExisted - 1) % thermalLevelTickCooldownSingle == 0)
                 {
                     int last = playerStats.thermalLevel;
