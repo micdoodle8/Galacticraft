@@ -54,8 +54,8 @@ item.key.T1.name=1티어 던전 열쇠
 item.buggymat.wheel.name=버기 바퀴
 item.buggymat.seat.name=버기 시트
 item.buggymat.storage.name=버기 상자
-item.basicItem.solar_module_0.name=태양열 모듈
-item.basicItem.solar_module_1.name=태양열 전지판
+item.basicItem.solar_module_0.name=태양광 모듈
+item.basicItem.solar_module_1.name=태양광 전지판
 item.basicItem.ingotCopper.name=구리 주괴
 item.basicItem.ingotTin.name=주석 주괴
 item.basicItem.ingotAluminum.name=알루미늄 주괴
@@ -146,8 +146,8 @@ tile.enclosed.PipeFluidsCobblestone.name=밀봉형 조약돌 유체이송 파이
 tile.enclosed.PipeFluidsStone.name=밀봉형 석재 유체이송 파이프
 tile.enclosed.PipePowerStone.name=밀봉형 석재 전력공급 파이프
 tile.enclosed.PipePowerGold.name=밀봉형 금재 전력공급 파이프
-tile.solar.basic.name=기초 태양열 전지판
-tile.solar.advanced.name=고급 태양열 전지판
+tile.solar.basic.name=기초 태양광 전지판
+tile.solar.advanced.name=고급 태양광 전지판
 tile.parachest.name=낙하상자
 tile.oreCopper.name=구리 광석
 tile.oreTin.name=주석 광석
@@ -170,7 +170,7 @@ tile.airLockController.name=에어락 제어기
 tile.dummyblock.spaceStationBase.name=우주정거장 본부
 tile.dummyblock.launchPad.name=로켓 발사대
 tile.dummyblock.nasaWorkbench.name=NASA 작업대
-tile.dummyblock.solar.name=태양열 발전기
+tile.dummyblock.solar.name=태양광 발전기
 tile.dummyblock.cryogenicChamber.name=극저온실
 tile.gcBlockCore.copperBlock.name=구리 블록
 tile.gcBlockCore.tinBlock.name=주석 블록
@@ -184,7 +184,7 @@ tile.spinThruster.name=회전반동 추력기
 tile.viewScreen.name=표시 화면
 tile.telemetry.name=원격측정 유닛
 tile.spaceStationBase.name=우주정거장 도착장
-tile.dish.name=Communications Dish ##NEEDS TRANSLATE##
+tile.dish.name=접시 안테나
 
 # DECOBLOCKS
 tile.tinStairs1.name=장식형 주석 계단
@@ -229,7 +229,7 @@ death.attack.oxygenSuffocation=%1$s 님이 산소 부족으로 그만...
 death.attack.thermal=%1$s 님, 열보호 장비를 잊으셨군요.
 
 # GALAXIES
-galaxy.blockyway.name=믄하수 (블록 은하)
+galaxy.blockyway.name=은하수 (블록 은하)
 galaxy.milkyWay=은하수 (우리 은하)
 
 # OTHER
@@ -482,15 +482,15 @@ gui.oxygenCompressor.slot.desc.0=압축기 탱크 슬롯: 이곳에서 산소
 gui.oxygenCompressor.slot.desc.1=탱크를 충전 시킬 수 있습니다.
 gui.oxygenDecompressor.slot.desc.0=감압기 탱크 슬롯: 이곳에서 산소
 gui.oxygenDecompressor.slot.desc.1=탱크를 비울 수 있습니다.
-gui.rocket.onLaunchpad=On launchpad ##NEEDS TRANSLATE##
-gui.rocket.countdown=Countdown ##NEEDS TRANSLATE##
-gui.rocket.launched=Launched ##NEEDS TRANSLATE##
-gui.rocket.height=Height ##NEEDS TRANSLATE##
-gui.rocket.speed=Speed ##NEEDS TRANSLATE##
-gui.player.health=Health ##NEEDS TRANSLATE##
-gui.player.food=Food ##NEEDS TRANSLATE##
-gui.player.bpm=bpm ##NEEDS TRANSLATE##
-gui.player.ouch=ouch!!!! ##NEEDS TRANSLATE##
+gui.rocket.onLaunchpad=발사 준비
+gui.rocket.countdown=카운트다운
+gui.rocket.launched=발사
+gui.rocket.height=높이
+gui.rocket.speed=속도
+gui.player.health=체력
+gui.player.food=음식
+gui.player.bpm=심박수
+gui.player.ouch=아야!!!!
 
 gui.spaceRace.create.close.name=닫기
 gui.spaceRace.create.back.name=뒤로
@@ -590,7 +590,7 @@ tile.spinThruster.description=회전반동 추진기는 우주정거장을 회�
 tile.arclamp.description=아크 램프는 주변지역에 굉장히 강력한 불빛을 제공함과 동시에 주변 몹을 쫒아냅니다.
 tile.viewScreen.description=표시 화면은 우주정거장의 가장 마지막을 "장식"합니다. 오른쪽 클릭으로 화면에 표시되는 정보를 바꿀 수 있습니다.
 tile.telemetry.description=링크된 로켓, 플레이어 혹은 다른 몬스터에게서 유용한 정보를 얻을 수 있습니다. 표시 화면 옆에 배치 하는게 좋습니다. 주파수 모듈을 이용해 링크를 활성화 하십시오.
-tile.dish.description=The Communications Dish can track the position of space stations and receive communications from your remote space bases. ##NEEDS TRANSLATE##
+tile.dish.description=접시 안테나는 우주 정거장의 위치를 추적하고 원격으로 우주 기지에서 통신을 수신 할 수 있습니다.
 
 # CONTAINERS
 container.cargoloader.name=화물 적재기
