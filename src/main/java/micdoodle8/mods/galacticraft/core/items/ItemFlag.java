@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -71,6 +72,7 @@ public class ItemFlag extends Item implements IHoldableItem
                     par2World.spawnEntityInWorld(flag);
                     flag.setType(par1ItemStack.getItemDamage());
                     flag.setOwner(par3EntityPlayer.getGameProfile().getName());
+                    par2World.playSoundEffect(x, y, z, Block.soundTypeMetal.getBreakSound(), Block.soundTypeMetal.getVolume(), Block.soundTypeMetal.getPitch() + 2.0F);
                     placed = true;
                 }
                 else
