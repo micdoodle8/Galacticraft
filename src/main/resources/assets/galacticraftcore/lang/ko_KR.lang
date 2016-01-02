@@ -571,8 +571,8 @@ tile.enclosed.description=밀봉 블록은 우주정거장과 같이 공기가 �
 tile.cargoLoader.description=화물 적재기는 블록이나 아이템을 화물칸이 설치된 로켓 혹은 다른 차량에 실어줍니다. 발사대 혹은 연료패드에 부착해야 합니다.
 tile.cargoUnloader.description=화물 적하기는 블록이나 아이템을 화물칸이 설치된 로켓 혹은 다른 차량에서 내려줍니다. 발사대 혹은 연료패드에 부착해야 합니다.
 tile.parachest.description=낙하상자는 지구와 같은 특정 행성이나 달에 착륙시 같이 떨어집니다. 전 발사때의 로켓과 연료 그리고 화물을 포함합니다.
-tile.solarBasic.description=기초 태양열 전지판은 태양으로 부터 에너지를 저장합니다. 대부분의 에너지는 낮에 충전됩니다 (조정 불가능).
-tile.solarAdv.description=고급 태양열 전지판은 태양으로 부터 에너지를 저장합니다. 최적의 기능을 위해 각도가 자동으로 조절됩니다.
+tile.solarBasic.description=기초 태양광 전지판은 태양으로 부터 에너지를 저장합니다. 대부분의 에너지는 낮에 충전됩니다 (조정 불가능).
+tile.solarAdv.description=고급 태양광 전지판은 태양으로 부터 에너지를 저장합니다. 최적의 기능을 위해 각도가 자동으로 조절됩니다.
 tile.coalGenerator.description=석탄 발전기는 석탄을 태워 얻는 열 에너지를 저장합니다. 가장 쉽지만 가장 효율이 떨어지는 방법입니다.
 tile.compressor.description=압축기는 광물 주괴를 압축시킵니다. Galacticraft의 가장 중요한 기계라고 볼 수 있죠!
 tile.compressorElectric.description=전기 압축기는 광물 주괴를 압축시킵니다. 일반 압축기 보다 효율적으로 두개의 주괴를 한번에 가공합니다.
@@ -605,8 +605,8 @@ container.refinery.name=정제기
 container.treasurechest.name=보물상자
 container.lander.name=착륙기
 container.spaceship.name=1티어 로켓
-container.solarbasic.name=기초 태양열 전지판
-container.solaradvanced.name=고급 태양열 전지판
+container.solarbasic.name=기초 태양광 전지판
+container.solaradvanced.name=고급 태양광 전지판
 container.oxygendecompressor.name=산소 감압기
 
 # DIMENSIONS
