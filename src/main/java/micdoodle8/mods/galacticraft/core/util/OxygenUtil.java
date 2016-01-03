@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import mekanism.api.gas.IGasTransmitter;
 import mekanism.api.gas.ITubeConnection;
 import mekanism.api.transmitters.TransmissionType;
@@ -43,6 +45,7 @@ public class OxygenUtil
 {
     private static HashSet<BlockVec3> checked;
 
+    @SideOnly(Side.CLIENT)
     public static boolean shouldDisplayTankGui(GuiScreen gui)
     {
         if (FMLClientHandler.instance().getClient().gameSettings.hideGUI)
