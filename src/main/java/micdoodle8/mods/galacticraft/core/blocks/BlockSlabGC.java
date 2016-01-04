@@ -196,6 +196,6 @@ public class BlockSlabGC extends BlockSlab
 
 	private static int getTypeFromMeta(int meta)
 	{
-		return meta & 7;
+		return Math.max(5, meta & 7);
 	}
 }
