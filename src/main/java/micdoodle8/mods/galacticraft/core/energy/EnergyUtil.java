@@ -37,6 +37,7 @@ public class EnergyUtil
     public static Method injectEnergyIC2 = null;
     private static Class<?> clazzMekCable = null;
     public static Class<?> clazzEnderIOCable = null;
+    public static Class<?> clazzMFRRednetEnergyCable = null;
     private static Class<?> clazzPipeTile = null;
     private static Class<?> clazzPipeWood = null;  
     public static boolean initialisedIC2Methods = EnergyUtil.initialiseIC2Methods();
@@ -76,8 +77,26 @@ public class EnergyUtil
                 {
                     adjacentConnections[direction.ordinal()] = tileEntity;
                 }
+                continue;
             }
-            else if (isRFLoaded && tileEntity instanceof IEnergyConnection)
+            
+            if (isBCReallyLoaded)
+            {
+                //Do not connect GC wires directly to BC pipes of any type 
+                try
+                {
+                    if (clazzPipeTile.isInstance(tileEntity))
+                    {
+//                        Object pipe = clazzPipeTile.getField("pipe").get(tileEntity);
+//                        if (clazzPipeWood.isInstance(pipe))
+//                        {
+                          continue;
+//                        }
+                    }
+                } catch (Exception e) { }
+            }
+            
+            if (isRFLoaded && tileEntity instanceof IEnergyConnection)
             {
                 if (isRF1Loaded && tileEntity instanceof IEnergyHandler || isRF2Loaded && (tileEntity instanceof IEnergyProvider || tileEntity instanceof IEnergyReceiver))
                 {
@@ -87,13 +106,18 @@ public class EnergyUtil
                         {
                             continue;
                         }
+                        if (clazzMFRRednetEnergyCable != null && clazzMFRRednetEnergyCable.isInstance(tileEntity))
+                        {
+                            continue;
+                        }
                     } catch (Exception e) { }
 	                if (((IEnergyConnection)tileEntity).canConnectEnergy(direction.getOpposite()))
 	                	adjacentConnections[direction.ordinal()] = tileEntity;
                 }
                 continue;
             }
-            else if (isIC2Loaded && tileEntity instanceof IEnergyTile)
+            
+            if (isIC2Loaded && tileEntity instanceof IEnergyTile)
             {
                 if (tileEntity instanceof IEnergyConductor)
                 {
@@ -117,26 +141,13 @@ public class EnergyUtil
                     }
                 }
             }
-            else if (isBCLoaded)
+            
+            if (isBCLoaded)
             {
-                if (isBCReallyLoaded)
-                {
-                    //Do not connect GC wires to BC wooden power pipes
-                    try
-                    {
-                        if (clazzPipeTile.isInstance(tileEntity))
-                        {
-                            Object pipe = clazzPipeTile.getField("pipe").get(tileEntity);
-                            if (clazzPipeWood.isInstance(pipe))
-                            {
-                                continue;
-                            }
-                        }
-                    } catch (Exception e) { e.printStackTrace(); }
-                }
-
-                //New BC API
-                if (EnergyConfigHandler.getBuildcraftVersion() == 6 && MjAPI.getMjBattery(tileEntity, MjAPI.DEFAULT_POWER_FRAMEWORK, direction.getOpposite()) != null)
+                //Compatibility for pre-RF versions of Buildcraft: these may still be installed alongside Galacticraft, who knows?
+            	
+            	//BC6 API
+                if (isBC6Loaded && MjAPI.getMjBattery(tileEntity, MjAPI.DEFAULT_POWER_FRAMEWORK, direction.getOpposite()) != null)
                 {
                     adjacentConnections[direction.ordinal()] = tileEntity;
                 }
@@ -290,6 +301,9 @@ public class EnergyUtil
         } catch (Exception e) { }
         try {
         	clazzEnderIOCable = Class.forName("crazypants.enderio.conduit.TileConduitBundle");
+        } catch (Exception e) { }
+        try {
+        	clazzMFRRednetEnergyCable = Class.forName("powercrystals.minefactoryreloaded.tile.rednet.TileEntityRedNetEnergy");
         } catch (Exception e) { }
         try {
         	clazzPipeTile = Class.forName("buildcraft.transport.TileGenericPipe");
