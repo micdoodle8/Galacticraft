@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
@@ -225,7 +226,7 @@ public class TileEntityTelemetry extends TileEntity
 			int z = fmData.getInteger("teCoordZ");
 			WorldProvider wp = WorldUtil.getProviderForDimension(dim);
 			if (wp == null || wp.worldObj == null)
-				System.out.println("Frequency module worn: world provider is null.  This is a bug. "+dim);
+				if (ConfigManagerCore.enableDebug) System.out.println("Frequency module worn: world provider is null.  This is a bug. "+dim);
 			else
 			{
 				TileEntity te = wp.worldObj.getTileEntity(x, y, z);

@@ -36,7 +36,11 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
      */
     public float produce()
     {
-        return this.extractEnergyGC(null, this.produce(false), false);
+        this.storage.maxExtractRemaining = this.storage.maxExtract;
+    	float produced = this.extractEnergyGC(null, this.produce(false), false);
+        this.storage.maxExtractRemaining -= produced;
+        if (this.storage.maxExtractRemaining < 0) this.storage.maxExtractRemaining = 0;
+        return produced;
     }
 
     /*

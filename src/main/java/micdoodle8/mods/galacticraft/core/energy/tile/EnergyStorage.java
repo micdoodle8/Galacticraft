@@ -9,6 +9,7 @@ public class EnergyStorage implements IEnergyStorageGC
     protected float capacity;
     protected float maxReceive;
     protected float maxExtract;
+    protected float maxExtractRemaining;
 
     public EnergyStorage(float capacity)
     {
@@ -25,6 +26,7 @@ public class EnergyStorage implements IEnergyStorageGC
         this.capacity = capacity;
         this.maxReceive = maxReceive;
         this.maxExtract = maxExtract;
+        this.maxExtractRemaining = maxExtract;
     }
 
     public EnergyStorage readFromNBT(NBTTagCompound nbt)
@@ -78,6 +80,7 @@ public class EnergyStorage implements IEnergyStorageGC
     public void setMaxExtract(float maxExtract)
     {
         this.maxExtract = maxExtract;
+        this.maxExtractRemaining = maxExtract;
         this.maxReceive = 2.5F * maxExtract;
     }
 
@@ -119,7 +122,7 @@ public class EnergyStorage implements IEnergyStorageGC
     @Override
     public float extractEnergyGC(float maxExtract, boolean simulate)
     {
-        float energyExtracted = Math.min(this.energy, Math.min(this.maxExtract, maxExtract));
+        float energyExtracted = Math.min(this.energy, Math.min(this.maxExtractRemaining, maxExtract));
 
         if (!simulate)
         {
