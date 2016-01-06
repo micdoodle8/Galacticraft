@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.command;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;

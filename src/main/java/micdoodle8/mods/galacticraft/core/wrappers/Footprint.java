@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.wrappers;
 
-import java.util.UUID;
-
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 
 public class Footprint

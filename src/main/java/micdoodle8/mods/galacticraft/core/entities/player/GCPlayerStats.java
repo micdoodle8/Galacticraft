@@ -17,8 +17,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
-import scala.Int;
-
 import java.lang.ref.WeakReference;
 import java.util.*;
 
