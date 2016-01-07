@@ -13,6 +13,8 @@ import mekanism.api.energy.IStrictEnergyAcceptor;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.tileentity.TileEntity;
@@ -223,11 +225,15 @@ public class EnergyUtil
         }
         else if (isRF1Loaded && !EnergyConfigHandler.disableRFOutput && tileAdj instanceof IEnergyHandler)
         {
-        	return ((IEnergyHandler)tileAdj).receiveEnergy(inputAdj, MathHelper.floor_float(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
+        	float sent = ((IEnergyHandler)tileAdj).receiveEnergy(inputAdj, MathHelper.floor_float(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
+        	GCLog.debug("Beam/storage offering RF1 up to " + toSend + " into pipe, it accepted " + sent);
+        	return sent;
         }
         else if (isRF2Loaded && !EnergyConfigHandler.disableRFOutput && tileAdj instanceof IEnergyReceiver)
         {
-        	return ((IEnergyReceiver)tileAdj).receiveEnergy(inputAdj, MathHelper.floor_float(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
+        	float sent = ((IEnergyReceiver)tileAdj).receiveEnergy(inputAdj, MathHelper.floor_float(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
+        	GCLog.debug("Beam/storage offering RF2 up to " + toSend + " into pipe, it accepted " + sent);
+        	return sent;
         }
         else if (isBC6Loaded && !EnergyConfigHandler.disableBuildCraftOutput && MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, inputAdj) != null)
         //New BC API
@@ -237,7 +243,9 @@ public class EnergyUtil
             {
                 return (float) toSendBC / EnergyConfigHandler.TO_BC_RATIO;
             }
-            return (float) MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, inputAdj).addEnergy(toSendBC) / EnergyConfigHandler.TO_BC_RATIO;
+            float sent = (float) MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, inputAdj).addEnergy(toSendBC) / EnergyConfigHandler.TO_BC_RATIO;
+            GCLog.debug("Beam/storage offering BC up to " + toSend + " into pipe, it accepted " + sent);
+            return sent;
         }
         else if (isBCLoaded && !EnergyConfigHandler.disableBuildCraftOutput && tileAdj instanceof IPowerReceptor)
         //Legacy BC API
@@ -267,7 +275,10 @@ public class EnergyUtil
      */
 	public static boolean otherModCanReceive(TileEntity tileAdj, ForgeDirection inputAdj)
 	{
-        if (isMekLoaded && tileAdj instanceof IStrictEnergyAcceptor)
+        if (tileAdj instanceof TileBaseConductor || tileAdj instanceof EnergyStorageTile)
+        	return false;  //Do not try using other mods' methods to connect to GC's own tiles
+        
+		if (isMekLoaded && tileAdj instanceof IStrictEnergyAcceptor)
         {
             return ((IStrictEnergyAcceptor) tileAdj).canReceiveEnergy(inputAdj);
         }
@@ -314,18 +325,13 @@ public class EnergyUtil
 
         if (isIC2Loaded)
         {
-            if (ConfigManagerCore.enableDebug)
-            {
-                GCLog.info("Debug: Initialising IC2 methods OK");
-            }
+        	GCLog.debug("Initialising IC2 methods OK");
+            
             try
             {
                 Class<?> clazz = Class.forName("ic2.api.energy.tile.IEnergySink");
 
-                if (ConfigManagerCore.enableDebug)
-                {
-                    GCLog.info("Debug: Found IC2 IEnergySink class OK");
-                }
+                GCLog.debug("Found IC2 IEnergySink class OK");
 
                 try
                 {
@@ -345,19 +351,13 @@ public class EnergyUtil
                     }
                 }
 
-                if (ConfigManagerCore.enableDebug)
-                {
-                    GCLog.info("Debug: Set IC2 demandedEnergy method OK");
-                }
+                GCLog.debug("Set IC2 demandedEnergy method OK");
 
                 try
                 {
                     //1.7.2 version
                     EnergyUtil.injectEnergyIC2 = clazz.getMethod("injectEnergyUnits", ForgeDirection.class, double.class);
-                    if (ConfigManagerCore.enableDebug)
-                    {
-                        GCLog.info("Debug: IC2 inject 1.7.2 succeeded");
-                    }
+                    GCLog.debug("IC2 inject 1.7.2 succeeded");
                 }
                 catch (Exception e)
                 {
@@ -366,10 +366,7 @@ public class EnergyUtil
                     {
                         EnergyUtil.injectEnergyIC2 = clazz.getMethod("injectEnergy", ForgeDirection.class, double.class, double.class);
                         EnergyUtil.voltageParameterIC2 = true;
-                        if (ConfigManagerCore.enableDebug)
-                        {
-                            GCLog.info("Debug: IC2 inject 1.7.10 succeeded");
-                        }
+                        GCLog.debug("IC2 inject 1.7.10 succeeded");
                     }
                     catch (Exception ee)
                     {

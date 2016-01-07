@@ -28,7 +28,8 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     @NetworkedField(targetSide = Side.CLIENT)
     public int facing = ForgeDirection.UNKNOWN.ordinal();
     private int preLoadFacing = -1;
-    private EnergyStorage storage = new EnergyStorage(Integer.MAX_VALUE, 1500);
+    private float maxRate = 1500;
+    private EnergyStorage storage = new EnergyStorage(20 * maxRate, maxRate);  //In broken circuits, Beam Receiver will accept energy for 1s (30000gJ max) then stop
     @NetworkedField(targetSide = Side.CLIENT)
     public int modeReceive = ReceiverMode.UNDEFINED.ordinal();
     public Vector3 color = new Vector3(0, 1, 0);
@@ -66,18 +67,19 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 
             if (this.modeReceive == ReceiverMode.RECEIVE.ordinal() && this.storage.getEnergyStoredGC() > 0)
             {
-                TileEntity tileAdj = this.getAttachedTile();
+            	float maxTransfer = Math.max(this.storage.getEnergyStoredGC(), maxRate + maxRate);
+            	TileEntity tileAdj = this.getAttachedTile();
 
                 if (tileAdj instanceof TileBaseUniversalElectrical)
                 {
                     TileBaseUniversalElectrical electricalTile = (TileBaseUniversalElectrical) tileAdj;
                     EnergySourceAdjacent source = new EnergySourceAdjacent(ForgeDirection.getOrientation(this.facing ^ 1));
-                    this.storage.extractEnergyGC(electricalTile.receiveEnergyGC(source, this.storage.getEnergyStoredGC(), false), false);
+                    this.storage.extractEnergyGC(electricalTile.receiveEnergyGC(source, maxTransfer, false), false);
                 }
                 else if (!(tileAdj instanceof TileBaseConductor))  //Dont use other mods to connect receivers to GC's own wires
                 {
                     ForgeDirection inputAdj = ForgeDirection.getOrientation(this.facing);
-                	float otherModTransfer = EnergyUtil.otherModsEnergyTransfer(tileAdj, inputAdj, this.storage.getEnergyStoredGC(), false);
+                	float otherModTransfer = EnergyUtil.otherModsEnergyTransfer(tileAdj, inputAdj, maxTransfer, false);
                 	if (otherModTransfer > 0F)
                 	{
                 		this.storage.extractEnergyGC(otherModTransfer, false);
