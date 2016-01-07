@@ -59,22 +59,28 @@ public class GCCoreUtil
     
     public static void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int back, int fore)
     {
-        EntityList.stringToClassMapping.put(var1, var0);
         registerGalacticraftNonMobEntity(var0, var1, 80, 3, true);
         int nextEggID = getNextValidEggID();
-        EntityList.IDtoClassMapping.put(nextEggID, var0);
-        EntityList.entityEggs.put(nextEggID, new EntityList.EntityEggInfo(nextEggID, back, fore));
+        if (nextEggID < 65536)
+        {
+	        EntityList.IDtoClassMapping.put(nextEggID, var0);
+	        EntityList.classToIDMapping.put(var0, nextEggID);
+	        EntityList.entityEggs.put(nextEggID, new EntityList.EntityEggInfo(nextEggID, back, fore));
+        }
     }
 
     private static int getNextValidEggID()
     {
-        int eggID = 120;
+        int eggID = 255;
+        
+        //Non-global entity IDs - for egg ID purposes - can be greater than 255
+        //The spawn egg will have this metadata.  Metadata up to 65535 is acceptable (see potions).
 
         do
         {
             eggID++;
         }
-        while (EntityList.getStringFromID(eggID) != null);
+        while (EntityList.getClassFromID(eggID) != null);
 
         return eggID;
     }
