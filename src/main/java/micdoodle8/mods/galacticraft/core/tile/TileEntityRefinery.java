@@ -132,20 +132,23 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
 
     public int getScaledOilLevel(int i)
     {
-        return this.oilTank.getFluid() != null ? this.oilTank.getFluid().amount * i / this.oilTank.getCapacity() : 0;
+        return this.oilTank.getFluidAmount() * i / this.oilTank.getCapacity();
     }
 
     public int getScaledFuelLevel(int i)
     {
-        return this.fuelTank.getFluid() != null ? this.fuelTank.getFluid().amount * i / this.fuelTank.getCapacity() : 0;
+        return this.fuelTank.getFluidAmount() * i / this.fuelTank.getCapacity();
     }
 
     public boolean canProcess()
     {
-        if (this.oilTank.getFluid() == null || this.oilTank.getFluid().amount <= 0)
+        if (this.oilTank.getFluidAmount() <= 0)
         {
             return false;
         }
+
+        if (this.fuelTank.getFluidAmount() >= this.fuelTank.getCapacity())
+        	return false;
 
         return !this.getDisabled(0);
 
@@ -155,8 +158,8 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     {
         if (this.canProcess())
         {
-            final int oilAmount = this.oilTank.getFluid().amount;
-            final int fuelSpace = this.fuelTank.getCapacity() - (this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount);
+            final int oilAmount = this.oilTank.getFluidAmount();
+            final int fuelSpace = this.fuelTank.getCapacity() - this.fuelTank.getFluidAmount();
 
             final int amountToDrain = Math.min(Math.min(oilAmount, fuelSpace), TileEntityRefinery.OUTPUT_PER_SECOND);
 
