@@ -40,6 +40,7 @@ public class EnergyUtil
     private static Class<?> clazzMekCable = null;
     public static Class<?> clazzEnderIOCable = null;
     public static Class<?> clazzMFRRednetEnergyCable = null;
+    public static Class<?> clazzRailcraftEngine = null;
     private static Class<?> clazzPipeTile = null;
     private static Class<?> clazzPipeWood = null;  
     public static boolean initialisedIC2Methods = EnergyUtil.initialiseIC2Methods();
@@ -100,7 +101,7 @@ public class EnergyUtil
             
             if (isRFLoaded && tileEntity instanceof IEnergyConnection)
             {
-                if (isRF1Loaded && tileEntity instanceof IEnergyHandler || isRF2Loaded && (tileEntity instanceof IEnergyProvider || tileEntity instanceof IEnergyReceiver))
+                if (isRF1Loaded && tileEntity instanceof IEnergyHandler || isRF2Loaded && (tileEntity instanceof IEnergyProvider || tileEntity instanceof IEnergyReceiver) || clazzRailcraftEngine != null && clazzRailcraftEngine.isInstance(tileEntity))
                 {
                     //Do not connect GC wires directly to power conduits
                     try {
@@ -113,6 +114,7 @@ public class EnergyUtil
                             continue;
                         }
                     } catch (Exception e) { }
+                    
 	                if (((IEnergyConnection)tileEntity).canConnectEnergy(direction.getOpposite()))
 	                	adjacentConnections[direction.ordinal()] = tileEntity;
                 }
@@ -315,6 +317,9 @@ public class EnergyUtil
         } catch (Exception e) { }
         try {
         	clazzMFRRednetEnergyCable = Class.forName("powercrystals.minefactoryreloaded.tile.rednet.TileEntityRedNetEnergy");
+        } catch (Exception e) { }
+        try {
+        	clazzRailcraftEngine = Class.forName("mods.railcraft.common.blocks.machine.beta.TileEngine");
         } catch (Exception e) { }
         try {
         	clazzPipeTile = Class.forName("buildcraft.transport.TileGenericPipe");
