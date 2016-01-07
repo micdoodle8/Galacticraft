@@ -65,6 +65,7 @@ import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
 import micdoodle8.mods.galacticraft.core.items.ItemBucketGC;
+import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.network.ConnectionEvents;
 import micdoodle8.mods.galacticraft.core.network.ConnectionPacket;
 import micdoodle8.mods.galacticraft.core.network.GalacticraftChannelHandler;
@@ -138,7 +139,9 @@ import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import api.player.server.ServerPlayerAPI;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -195,8 +198,6 @@ public class GalacticraftCore
     public static String TEXTURE_PREFIX = GalacticraftCore.ASSET_PREFIX + ":";
     public static String PREFIX = "micdoodle8.";  
 
-    public static Fluid gcFluidOil;
-    public static Fluid gcFluidFuel;
     public static Fluid fluidOil;
     public static Fluid fluidFuel;
 	public static Material materialOil = new MaterialOleaginous(MapColor.brownColor);
@@ -241,7 +242,7 @@ public class GalacticraftCore
         // Oil:
         if (!FluidRegistry.isFluidRegistered(oilID))
         {
-            gcFluidOil = new Fluid(oilID).setDensity(800).setViscosity(1500);
+            Fluid gcFluidOil = new Fluid(oilID).setDensity(800).setViscosity(1500);
             FluidRegistry.registerFluid(gcFluidOil);
         }
         else
@@ -277,7 +278,7 @@ public class GalacticraftCore
         // Fuel:
         if (!FluidRegistry.isFluidRegistered(fuelID))
         {
-            gcFluidFuel = new Fluid(fuelID).setDensity(400).setViscosity(900);
+            Fluid gcFluidFuel = new Fluid(fuelID).setDensity(400).setViscosity(900);
             FluidRegistry.registerFluid(gcFluidFuel);
         }
         else
@@ -355,18 +356,25 @@ public class GalacticraftCore
         GCBlocks.initBlocks();
         GCItems.initItems();
 
-//        FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidFuel, 1000), new ItemStack(GCItems.fuelCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
-//        FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidOil, 1000), new ItemStack(GCItems.oilCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
-//        if (!nameOil.equals("oil"))
-//        {
-//            FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.gcFluidOil, 1000), new ItemStack(GCItems.oilCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
-//            if (CompatibilityManager.isBCraftLoaded())
-//            {
-//            	FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.gcFluidOil, 1000), GameRegistry.findItemStack("BuildCraft|Core", "bucketOil", 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
-//            }
-//        }
-//        if (!nameFuel.equals("fuel"))
-//        	FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.gcFluidFuel, 1000), new ItemStack(GCItems.fuelCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
+        //Allow canisters to be filled from other mods' tanks of fuel / oil
+        FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidFuel, 1000), new ItemStack(GCItems.fuelCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
+        if (ConfigManagerCore.useOldFuelFluidID && FluidRegistry.isFluidRegistered("fuel"))
+        {
+        	//If the GC fuel fluid is registered as fuelgc and there is also "fuel" from another mod in the game, we want to be able to fill canisters with that as well
+        	FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(FluidRegistry.getFluid("fuel"), 1000), new ItemStack(GCItems.fuelCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
+        }
+
+        FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidOil, 1000), new ItemStack(GCItems.oilCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
+        if (ConfigManagerCore.useOldOilFluidID && FluidRegistry.isFluidRegistered("oil"))
+        {
+        	//If the GC oil fluid is registered as oilgc and there is also "oil" from another mod in the game, we want to be able to fill canisters with that as well
+        	FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(FluidRegistry.getFluid("oil"), 1000), new ItemStack(GCItems.oilCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
+        	//And allow Buildcraft oil buckets to be filled with oilgc
+        	if (CompatibilityManager.isBCraftLoaded())
+        	{
+        		FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidOil, 1000), GameRegistry.findItemStack("BuildCraft|Core", "bucketOil", 1), new ItemStack(Items.bucket)));
+        	}
+        }        
     }
 
     @EventHandler
