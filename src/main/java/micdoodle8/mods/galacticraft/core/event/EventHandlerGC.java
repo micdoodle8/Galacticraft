@@ -83,6 +83,7 @@ import java.util.*;
 public class EventHandlerGC
 {
     public static Map<Block, Item> bucketList = new HashMap<Block, Item>();
+	public static boolean bedActivated;
 
     @SubscribeEvent
     public void onRocketLaunch(EntitySpaceshipBase.RocketLaunchEvent event)
@@ -172,13 +173,22 @@ public class EventHandlerGC
         //Skip events triggered from Thaumcraft Golems and other non-players
     	if (event.entityPlayer == null || event.entityPlayer.inventory == null) return;
         
+    	final World worldObj = event.entityPlayer.worldObj;
+    	if (worldObj == null) return;
+    	
+        final Block idClicked = worldObj.getBlock(event.x, event.y, event.z);
+        
+        if (idClicked == Blocks.bed && worldObj.provider instanceof IGalacticraftWorldProvider && !worldObj.isRemote)
+        {
+        	EventHandlerGC.bedActivated = true;
+        	return;
+        }
+
     	final ItemStack heldStack = event.entityPlayer.inventory.getCurrentItem();
-        final TileEntity tileClicked = event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z);
+        final TileEntity tileClicked = worldObj.getTileEntity(event.x, event.y, event.z);
 
         if (heldStack != null)
         {
-            final Block idClicked = event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z);
-
             if (tileClicked != null && tileClicked instanceof IKeyable)
             {
                 if (event.action.equals(PlayerInteractEvent.Action.LEFT_CLICK_BLOCK))
@@ -208,9 +218,9 @@ public class EventHandlerGC
 
             if (heldStack.getItem() instanceof ItemFlintAndSteel)
             {
-                if (!event.entity.worldObj.isRemote && event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK))
+                if (!worldObj.isRemote && event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK))
                 {
-                    if (idClicked != Blocks.tnt  && OxygenUtil.noAtmosphericCombustion(event.entityPlayer.worldObj.provider) && !OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, AxisAlignedBB.getBoundingBox(event.x, event.y, event.z, event.x + 1, event.y + 2, event.z + 1)))
+                    if (idClicked != Blocks.tnt  && OxygenUtil.noAtmosphericCombustion(worldObj.provider) && !OxygenUtil.isAABBInBreathableAirBlock(worldObj, AxisAlignedBB.getBoundingBox(event.x, event.y, event.z, event.x + 1, event.y + 2, event.z + 1)))
                     {
                         event.setCanceled(true);
                     }

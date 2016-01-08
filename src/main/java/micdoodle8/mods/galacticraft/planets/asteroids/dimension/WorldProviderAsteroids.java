@@ -7,11 +7,13 @@ import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
+import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.WorldChunkManagerAsteroids;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.biome.WorldChunkManager;
@@ -129,6 +131,34 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     public boolean canCoordinateBeSpawn(int var1, int var2)
     {
         return true;
+    }
+
+	//Overriding only in case the Galacticraft API is not up-to-date
+    //(with up-to-date API this makes zero difference)
+    @Override
+    public boolean isSurfaceWorld()
+    {
+        return (this.worldObj == null) ? false : this.worldObj.isRemote;
+    }
+
+	//Overriding to allow beds to set spawn position on Asteroids
+	@Override
+	public boolean canRespawnHere()
+	{
+		if (EventHandlerGC.bedActivated)
+		{
+			EventHandlerGC.bedActivated = false;
+			return true;
+		}
+		return false;
+	}
+	
+	//Overriding only in case the Galacticraft API is not up-to-date
+    //(with up-to-date API this makes zero difference)
+    @Override
+    public int getRespawnDimension(EntityPlayerMP player)
+    {
+        return this.shouldForceRespawn() ? this.dimensionId : 0;
     }
 
     @Override

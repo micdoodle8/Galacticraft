@@ -24,6 +24,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.biome.BiomeGenBase;
 
 public class TileEntityCryogenicChamber extends TileEntityMulti implements IMultiBlock
 {
@@ -69,7 +70,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
                 return EnumStatus.OTHER_PROBLEM;
             }
 
-            if (!this.worldObj.provider.isSurfaceWorld())
+            if (this.worldObj.getBiomeGenForCoords(par1, par3) == BiomeGenBase.hell)
             {
                 return EnumStatus.NOT_POSSIBLE_HERE;
             }

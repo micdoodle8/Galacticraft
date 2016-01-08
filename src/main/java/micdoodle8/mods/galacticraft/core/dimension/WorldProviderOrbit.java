@@ -435,24 +435,35 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
     }
 
     @Override
-    public boolean isSurfaceWorld()
-    {
-        return true;
-    }
-
-
-    @Override
     public boolean canCoordinateBeSpawn(int var1, int var2)
     {
         return true;
     }
 
-//	@Override
-//	public boolean canRespawnHere()
-//	{
-//		return !ConfigManagerCore.forceOverworldRespawn;
-//	}
-//
+	//Overriding only in case the Galacticraft API is not up-to-date
+    //(with up-to-date API this makes zero difference)
+    @Override
+    public boolean isSurfaceWorld()
+    {
+        return (this.worldObj == null) ? false : this.worldObj.isRemote;
+    }
+
+	//Overriding only in case the Galacticraft API is not up-to-date
+    //(with up-to-date API this makes zero difference)
+	@Override
+	public boolean canRespawnHere()
+	{
+		return false;
+	}
+	
+	//Overriding only in case the Galacticraft API is not up-to-date
+    //(with up-to-date API this makes zero difference)
+    @Override
+    public int getRespawnDimension(EntityPlayerMP player)
+    {
+        return this.shouldForceRespawn() ? this.dimensionId : 0;
+    }
+
 //	@Override
 //	public String getWelcomeMessage()
 //	{
