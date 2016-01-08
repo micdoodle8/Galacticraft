@@ -18,6 +18,7 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
 import micdoodle8.mods.galacticraft.core.tile.ReceiverMode;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -60,6 +61,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
                         EnergySourceAdjacent source = new EnergySourceAdjacent(ForgeDirection.getOrientation(this.facing ^ 1));
                         float toSend = Math.min(electricalTile.storage.getMaxExtract(), electricalTile.storage.getEnergyStoredGC());
                         float transmitted = this.getTarget().receiveEnergyGC(new EnergySourceWireless(Lists.newArrayList((ILaserNode) this)), toSend, false);
+                        GCLog.debug("Beam transmitter sent " + transmitted + " gJ to a beam receiver");
                         electricalTile.extractEnergyGC(source, transmitted, false);
                     }
                 }
@@ -67,24 +69,32 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 
             if (this.modeReceive == ReceiverMode.RECEIVE.ordinal() && this.storage.getEnergyStoredGC() > 0)
             {
-            	float maxTransfer = Math.max(this.storage.getEnergyStoredGC(), maxRate + maxRate);
-            	TileEntity tileAdj = this.getAttachedTile();
-
-                if (tileAdj instanceof TileBaseUniversalElectrical)
-                {
-                    TileBaseUniversalElectrical electricalTile = (TileBaseUniversalElectrical) tileAdj;
-                    EnergySourceAdjacent source = new EnergySourceAdjacent(ForgeDirection.getOrientation(this.facing ^ 1));
-                    this.storage.extractEnergyGC(electricalTile.receiveEnergyGC(source, maxTransfer, false), false);
-                }
-                else if (!(tileAdj instanceof TileBaseConductor))  //Dont use other mods to connect receivers to GC's own wires
-                {
-                    ForgeDirection inputAdj = ForgeDirection.getOrientation(this.facing);
-                	float otherModTransfer = EnergyUtil.otherModsEnergyTransfer(tileAdj, inputAdj, maxTransfer, false);
-                	if (otherModTransfer > 0F)
-                	{
-                		this.storage.extractEnergyGC(otherModTransfer, false);
-                	}
-                }
+            	float maxTransfer = Math.min(this.storage.getEnergyStoredGC(), maxRate * 5);
+            	if (maxTransfer < 0.01F)
+            	{
+            		//De minimis
+            		this.storage.extractEnergyGCnoMax(maxTransfer, false);
+            	}
+            	else
+            	{
+	            	TileEntity tileAdj = this.getAttachedTile();
+	
+	                if (tileAdj instanceof TileBaseUniversalElectrical)
+	                {
+	                    TileBaseUniversalElectrical electricalTile = (TileBaseUniversalElectrical) tileAdj;
+	                    EnergySourceAdjacent source = new EnergySourceAdjacent(ForgeDirection.getOrientation(this.facing ^ 1));
+	                    this.storage.extractEnergyGCnoMax(electricalTile.receiveEnergyGC(source, maxTransfer, false), false);
+	                }
+	                else if (!(tileAdj instanceof TileBaseConductor))  //Dont use other mods to connect receivers to GC's own wires
+	                {
+	                    ForgeDirection inputAdj = ForgeDirection.getOrientation(this.facing);
+	                	float otherModTransferred = EnergyUtil.otherModsEnergyTransfer(tileAdj, inputAdj, maxTransfer, false);
+	                	if (otherModTransferred > 0F)
+	                	{
+	                		this.storage.extractEnergyGCnoMax(otherModTransferred, false);
+	                	}
+	                }
+            	}
             }
         }
     }
