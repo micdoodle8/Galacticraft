@@ -24,13 +24,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
+@SuppressWarnings("unused")
 public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEnergyHandlerGC, ILaserNode
 {
     @NetworkedField(targetSide = Side.CLIENT)
     public int facing = ForgeDirection.UNKNOWN.ordinal();
     private int preLoadFacing = -1;
     private float maxRate = 1500;
-    private EnergyStorage storage = new EnergyStorage(10 * maxRate, maxRate);  //In broken circuits, Beam Receiver will accept energy for 1s (30000gJ max) then stop
+    private EnergyStorage storage = new EnergyStorage(10 * maxRate, maxRate);  //In broken circuits, Beam Receiver will accept energy for 0.5s (15000gJ max) then stop
     @NetworkedField(targetSide = Side.CLIENT)
     public int modeReceive = ReceiverMode.UNDEFINED.ordinal();
     public Vector3 color = new Vector3(0, 1, 0);
@@ -54,7 +55,8 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 
                 if (tile instanceof TileBaseUniversalElectricalSource)
                 {
-                    TileBaseUniversalElectricalSource electricalTile = (TileBaseUniversalElectricalSource) tile;
+                    //GC energy source
+                	TileBaseUniversalElectricalSource electricalTile = (TileBaseUniversalElectricalSource) tile;
 
                     if (electricalTile.storage.getEnergyStoredGC() > 0)
                     {
@@ -63,15 +65,28 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
                         float transmitted = this.getTarget().receiveEnergyGC(new EnergySourceWireless(Lists.newArrayList((ILaserNode) this)), toSend, false);
                         electricalTile.extractEnergyGC(source, transmitted, false);
                     }
+                } else if (!(tile instanceof EnergyStorageTile) && !(tile instanceof TileBaseConductor))
+                	  //Another mod's energy source
+                	  //But don't use other mods methods to connect Beam Receivers to GC's own wires or machines
+                {
+                    ForgeDirection inputAdj = ForgeDirection.getOrientation(this.facing);
+                	float availableToSend = EnergyUtil.otherModsEnergyExtract(tile, inputAdj, this.maxRate, true);
+                	if (availableToSend > 0F)
+                	{
+                        float transmitted = this.getTarget().receiveEnergyGC(new EnergySourceWireless(Lists.newArrayList((ILaserNode) this)), availableToSend, false);
+                        EnergyUtil.otherModsEnergyExtract(tile, inputAdj, transmitted, false);
+                	}               	
                 }
             }
 
             if (this.modeReceive == ReceiverMode.RECEIVE.ordinal() && this.storage.getEnergyStoredGC() > 0)
             {
+            	//One Beam Receiver might be powered by multiple transmitters - allow for 5 at maximum transfer rate
             	float maxTransfer = Math.min(this.storage.getEnergyStoredGC(), maxRate * 5);
+            	
             	if (maxTransfer < 0.01F)
+            		//Stop updating this when de minimis energy remains
             	{
-            		//De minimis
             		this.storage.extractEnergyGCnoMax(maxTransfer, false);
             	}
             	else
@@ -84,7 +99,8 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 	                    EnergySourceAdjacent source = new EnergySourceAdjacent(ForgeDirection.getOrientation(this.facing ^ 1));
 	                    this.storage.extractEnergyGCnoMax(electricalTile.receiveEnergyGC(source, maxTransfer, false), false);
 	                }
-	                else if (!(tileAdj instanceof TileBaseConductor))  //Dont use other mods to connect receivers to GC's own wires
+	                else if (!(tileAdj instanceof EnergyStorageTile) && !(tileAdj instanceof TileBaseConductor))
+	                	  //Dont use other mods methods to connect Beam Receivers to GC's own wires or machines
 	                {
 	                    ForgeDirection inputAdj = ForgeDirection.getOrientation(this.facing);
 	                	float otherModTransferred = EnergyUtil.otherModsEnergyTransfer(tileAdj, inputAdj, maxTransfer, false);
@@ -296,6 +312,10 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
                 else if (EnergyUtil.otherModCanReceive(tile, newDirection.getOpposite()))
                 {
                 	this.modeReceive = ReceiverMode.RECEIVE.ordinal();
+                }
+                else if (EnergyUtil.otherModCanProduce(tile, newDirection.getOpposite()))
+                {
+                	this.modeReceive = ReceiverMode.EXTRACT.ordinal();
                 }
             }
         }
