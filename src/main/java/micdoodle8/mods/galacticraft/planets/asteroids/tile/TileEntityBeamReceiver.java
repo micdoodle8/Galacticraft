@@ -30,7 +30,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     public int facing = ForgeDirection.UNKNOWN.ordinal();
     private int preLoadFacing = -1;
     private float maxRate = 1500;
-    private EnergyStorage storage = new EnergyStorage(20 * maxRate, maxRate);  //In broken circuits, Beam Receiver will accept energy for 1s (30000gJ max) then stop
+    private EnergyStorage storage = new EnergyStorage(10 * maxRate, maxRate);  //In broken circuits, Beam Receiver will accept energy for 1s (30000gJ max) then stop
     @NetworkedField(targetSide = Side.CLIENT)
     public int modeReceive = ReceiverMode.UNDEFINED.ordinal();
     public Vector3 color = new Vector3(0, 1, 0);
@@ -61,7 +61,6 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
                         EnergySourceAdjacent source = new EnergySourceAdjacent(ForgeDirection.getOrientation(this.facing ^ 1));
                         float toSend = Math.min(electricalTile.storage.getMaxExtract(), electricalTile.storage.getEnergyStoredGC());
                         float transmitted = this.getTarget().receiveEnergyGC(new EnergySourceWireless(Lists.newArrayList((ILaserNode) this)), toSend, false);
-                        GCLog.debug("Beam transmitter sent " + transmitted + " gJ to a beam receiver");
                         electricalTile.extractEnergyGC(source, transmitted, false);
                     }
                 }
