@@ -34,6 +34,7 @@ import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -115,8 +116,9 @@ public class GCPlayerHandler
     {
         if (event.entity instanceof EntityClientPlayerMP && GCPlayerStatsClient.get((EntityClientPlayerMP) event.entity) == null)
         {
-            GCPlayerStatsClient.register((EntityClientPlayerMP) event.entity);
+            GCPlayerStatsClient.register((EntityClientPlayerMP) event.entity);          
         }
+        Minecraft.getMinecraft().gameSettings.sendSettingsToServer();
     }
 
     private void onPlayerLogin(EntityPlayerMP player)
