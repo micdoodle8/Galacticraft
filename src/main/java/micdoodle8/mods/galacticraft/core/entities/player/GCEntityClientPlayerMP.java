@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.client.Minecraft;
@@ -92,4 +93,13 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 //    	super.setVelocity(xx, yy, zz);
 //    }
 //
+
+    @Override
+    public void setInPortal()
+    {
+    	if (!(this.worldObj.provider instanceof IGalacticraftWorldProvider))
+    	{
+    		super.setInPortal();
+    	}
+    }
 }
