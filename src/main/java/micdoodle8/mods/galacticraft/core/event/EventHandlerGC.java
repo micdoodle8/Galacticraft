@@ -53,6 +53,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFlintAndSteel;
+import net.minecraft.item.ItemFireball;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -236,7 +237,7 @@ public class EventHandlerGC
                 }
             }
 
-            if (heldStack.getItem() instanceof ItemFlintAndSteel)
+            if (heldStack.getItem() instanceof ItemFlintAndSteel || heldStack.getItem() instanceof ItemFireball)
             {
                 if (!worldObj.isRemote && event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK))
                 {
