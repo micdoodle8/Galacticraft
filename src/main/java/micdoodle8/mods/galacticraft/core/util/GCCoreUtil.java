@@ -64,7 +64,8 @@ public class GCCoreUtil
         if (nextEggID < 65536)
         {
 	        EntityList.IDtoClassMapping.put(nextEggID, var0);
-	        EntityList.classToIDMapping.put(var0, nextEggID);
+	        VersionUtil.putClassToIDMapping(var0, nextEggID);
+	        //EntityList.classToIDMapping.put(var0, nextEggID);
 	        EntityList.entityEggs.put(nextEggID, new EntityList.EntityEggInfo(nextEggID, back, fore));
         }
     }

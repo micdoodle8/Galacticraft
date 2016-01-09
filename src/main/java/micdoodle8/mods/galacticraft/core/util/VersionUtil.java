@@ -28,8 +28,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class VersionUtil
@@ -46,6 +48,7 @@ public class VersionUtil
     private static final String KEY_CLASS_COMMAND_BASE = "commandBase";
     private static final String KEY_CLASS_SCALED_RES = "scaledResolution";
     private static final String KEY_CLASS_RENDER_PLAYER = "renderPlayer";
+    private static final String KEY_CLASS_ENTITYLIST = "entityList";
 
     private static final String KEY_METHOD_SET_OWNER = "setOwner";
     private static final String KEY_METHOD_GET_OWNER = "getOwnerName";
@@ -65,6 +68,7 @@ public class VersionUtil
 	public static final String KEY_FIELD_CAMERA_ZOOM = "cameraZoom";
 	public static final String KEY_FIELD_CAMERA_YAW = "cameraYaw";
 	public static final String KEY_FIELD_CAMERA_PITCH = "cameraPitch";
+	public static final String KEY_FIELD_CLASSTOIDMAPPING = "classToIDMapping";
 
 	public static final String KEY_METHOD_ORIENT_CAMERA = "orientCamera";
 
@@ -96,6 +100,7 @@ public class VersionUtil
             nodemap.put(KEY_CLASS_COMMAND_BASE, new ObfuscationEntry("net/minecraft/command/CommandBase"));
             nodemap.put(KEY_CLASS_SCALED_RES, new ObfuscationEntry("net/minecraft/client/gui/ScaledResolution"));
             nodemap.put(KEY_CLASS_RENDER_PLAYER, new ObfuscationEntry("net/minecraft/client/renderer/entity/RenderPlayer"));
+            nodemap.put(KEY_CLASS_ENTITYLIST, new ObfuscationEntry("net/minecraft/entity/EntityList"));
 
             // Method descriptions are empty, since they are not needed for reflection.
             nodemap.put(KEY_METHOD_SET_OWNER, new MethodObfuscationEntry("func_152115_b", "func_152115_b", ""));
@@ -123,6 +128,7 @@ public class VersionUtil
             nodemap.put(KEY_CLASS_COMMAND_BASE, new ObfuscationEntry("net/minecraft/command/CommandBase"));
             nodemap.put(KEY_CLASS_SCALED_RES, new ObfuscationEntry("net/minecraft/client/gui/ScaledResolution"));
             nodemap.put(KEY_CLASS_RENDER_PLAYER, new ObfuscationEntry("net/minecraft/client/renderer/entity/RenderPlayer"));
+            nodemap.put(KEY_CLASS_ENTITYLIST, new ObfuscationEntry("net/minecraft/entity/EntityList"));
 
             nodemap.put(KEY_METHOD_SET_OWNER, new MethodObfuscationEntry("setOwner", "func_70910_a", ""));
             nodemap.put(KEY_METHOD_GET_OWNER, new MethodObfuscationEntry("getOwnerName", "func_70905_p", ""));
@@ -143,7 +149,8 @@ public class VersionUtil
         nodemap.put(KEY_FIELD_CAMERA_ZOOM, new FieldObfuscationEntry("cameraZoom", "field_78503_V"));
         nodemap.put(KEY_FIELD_CAMERA_YAW, new FieldObfuscationEntry("cameraYaw", "field_78502_W"));
         nodemap.put(KEY_FIELD_CAMERA_PITCH, new FieldObfuscationEntry("cameraPitch", "field_78509_X"));
-
+        nodemap.put(KEY_FIELD_CLASSTOIDMAPPING, new FieldObfuscationEntry("classToIDMapping", "field_75624_e"));
+        
         nodemap.put(KEY_METHOD_ORIENT_CAMERA, new MethodObfuscationEntry("orientCamera", "func_78467_g", ""));
     }
 
@@ -529,6 +536,28 @@ public class VersionUtil
         }
 
         return null;
+    }
+
+    public static void putClassToIDMapping(Class mobClazz, int id)
+    {
+        //Achieves this, with private field:
+        //    EntityList.classToIDMapping.put(mobClazz, id);
+    	try
+        {
+            Class<?> c = Class.forName(getNameDynamic(KEY_CLASS_ENTITYLIST).replace('/', '.'));
+            Field f = c.getField(getNameDynamic(KEY_FIELD_CLASSTOIDMAPPING));
+            f.setAccessible(true);
+            Map classToIDMapping = (Map) f.get(null);
+            classToIDMapping.put(mobClazz, id);
+
+            return;
+        }
+        catch (Throwable t)
+        {
+            t.printStackTrace();
+        }
+
+        return;
     }
 
     private static String getName(String keyName)
