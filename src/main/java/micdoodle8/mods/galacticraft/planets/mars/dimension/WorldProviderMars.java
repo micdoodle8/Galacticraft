@@ -172,7 +172,7 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     @Override
     public int getAverageGroundLevel()
     {
-        return 44;
+        return 76;
     }
 
     @Override
@@ -189,7 +189,7 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
         return (this.worldObj == null) ? false : this.worldObj.isRemote;
     }
 
-	//Overriding to allow beds to set spawn position on Mars
+	//Overriding so that beds do not explode on Mars
 	@Override
 	public boolean canRespawnHere()
 	{

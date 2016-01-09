@@ -185,7 +185,7 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
     @Override
     public int getAverageGroundLevel()
     {
-        return 44;
+        return 68;
     }
 
     @Override
@@ -202,7 +202,7 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
         return (this.worldObj == null) ? false : this.worldObj.isRemote;
     }
 
-	//Overriding to allow beds to set spawn position on Moon
+	//Overriding  so that beds do not explode on Moon
 	@Override
 	public boolean canRespawnHere()
 	{

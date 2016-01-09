@@ -431,7 +431,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
     @Override
     public int getAverageGroundLevel()
     {
-        return 44;
+        return 64;
     }
 
     @Override

@@ -22,6 +22,7 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -83,7 +84,7 @@ import java.util.*;
 public class EventHandlerGC
 {
     public static Map<Block, Item> bucketList = new HashMap<Block, Item>();
-	public static boolean bedActivated;
+    public static boolean bedActivated;
 
     @SubscribeEvent
     public void onRocketLaunch(EntitySpaceshipBase.RocketLaunchEvent event)
@@ -180,8 +181,27 @@ public class EventHandlerGC
         
         if (idClicked == Blocks.bed && worldObj.provider instanceof IGalacticraftWorldProvider && !worldObj.isRemote)
         {
-        	EventHandlerGC.bedActivated = true;
-        	return;
+        	if (GalacticraftCore.isPlanetsLoaded) GCPlayerStats.tryBedWarning((EntityPlayerMP) event.entityPlayer);
+
+        	if (worldObj.provider instanceof WorldProviderOrbit)
+        	{        		
+            	//On space stations simply block the bed activation => no explosion
+            	event.setCanceled(true);
+            	return;
+        	}
+        		
+
+        	//Optionally prevent beds from exploding - depends on canRespawnHere() in the WorldProvider interacting with this
+       		EventHandlerGC.bedActivated = true;
+       		if (worldObj.provider.canRespawnHere() && !EventHandlerGC.bedActivated)
+       		{
+           		EventHandlerGC.bedActivated = true;
+       			
+            	//On planets allow the bed to be used to designate a player spawn point
+            	event.entityPlayer.setSpawnChunk(new ChunkCoordinates(event.x, event.y, event.z), false);
+       		}
+       		else
+       			EventHandlerGC.bedActivated = false;
         }
 
     	final ItemStack heldStack = event.entityPlayer.inventory.getCurrentItem();

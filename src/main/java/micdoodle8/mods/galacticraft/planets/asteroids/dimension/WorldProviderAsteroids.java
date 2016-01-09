@@ -124,7 +124,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     @Override
     public int getAverageGroundLevel()
     {
-        return 44;
+        return 96;
     }
 
     @Override
@@ -141,7 +141,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
         return (this.worldObj == null) ? false : this.worldObj.isRemote;
     }
 
-	//Overriding to allow beds to set spawn position on Asteroids
+	//Overriding so that beds do not explode on Asteroids
 	@Override
 	public boolean canRespawnHere()
 	{
