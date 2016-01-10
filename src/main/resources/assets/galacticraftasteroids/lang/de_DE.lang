@@ -51,7 +51,7 @@ item.canister.liquidArgon.name=Flüssigk.    #short name for Liquid Argon conten
 item.emptyGasCanister.name=Leerer Gaskanister
 
 # FLUIDS AND GASES
-fluid.methane=Methangas
+fluid.methane=Methan
 fluid.oxygen=Sauerstoff
 fluid.nitrogen=Stickstoff
 fluid.hydrogen=Wasserstoff
@@ -66,9 +66,9 @@ fluid.liquidargon=Flüssiges Argon
 fluid.fuel=Treibstoff
 
 # BLOCKS
-tile.asteroidsBlock.asteroid0.name=Asteroidgestein
-tile.asteroidsBlock.asteroid1.name=Asteroidgestein
-tile.asteroidsBlock.asteroid2.name=Asteroidgestein
+tile.asteroidsBlock.asteroid0.name=Asteroidengestein
+tile.asteroidsBlock.asteroid1.name=Asteroidengestein
+tile.asteroidsBlock.asteroid2.name=Asteroidengestein
 tile.asteroidsBlock.oreIron.name=Eisenerz
 tile.asteroidsBlock.oreIlmenite.name=Ilmeniterz
 tile.asteroidsBlock.oreAluminum.name=Aluminiumerz
@@ -88,7 +88,7 @@ planet.asteroids=Asteroiden
 	# Dollar sign ($) will split text onto a new line
 	# Do not remove %s or %d, since that will be replaced in-game
 gui.telepad.desc.0=Dies ist die einzigartige$Adresse des Telepads
-gui.telepad.desc.1=Adresse eines anderen Telepads.$Entities werden dort hin gesendet.
+gui.telepad.desc.1=Adresse eines anderen Telepads.$Lebewesen werden dort hin gesendet.
 gui.message.address.name=Adresse
 gui.message.destAddress.name=Zieladresse
 gui.message.invalidAddress.name=Ungültige einzigartige Adresse
@@ -130,7 +130,7 @@ tile.walkwayOxygenPipe.description=Sauerstoffleitungsgehwege werden benutzt, um 
 tile.beamReflector.description=Strahlenreflektoren werden benutzt, um Energiestrahlen von der Quelle zum Ziel weiterzuleiten. Rechtsklick um das Ziel umzuschalten.
 tile.beamReceiver.description=Strahlenempfänger werden mit den Energieein- und ausgängen von Maschinen verbunden, um Energie über Strahlen zu übertragen.
 tile.telepadShort.description=Kurzreichweiten-Telepads werden benutzt, um Spieler und andere Lebewesen über kurze Distanzen (250 Blöcke) zu teleportieren, wenn sie mit anderen Telepads verbunden sind.
-tile.minerBase.description=Die Astrominer-Basis ist die Andockstelle für einen Astrominer. Sie ist groß ... versuche, einen 2 x 2 x 2-Würfel mit ihr zu bauen.
+tile.minerBase.description=Die Astrominer-Basis ist die Andockstelle für einen Astrominer. Sie ist groß ... versuche, einen 2 x 2 x 2-Würfel mit den Blöcken zu bauen.
 
 # SCHEMATICS
 schematic.astroMiner.name=Astrominer
@@ -147,7 +147,7 @@ container.shortRangeTelepad.name=Kurzreichweiten-Telepad
 container.entryPod.name=Eintrittskapsel
 
 # CONFIG GUI
-gc.configgui.dimensionIDAsteroids=Asteroids Dimension ID
-gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID
-gc.configgui.disableGalacticraftHelium=Disable Helium gas registration
-gc.configgui.astroMinersMax=Maximum number of Astro Miners per player
+gc.configgui.dimensionIDAsteroids=Asteroiden -  Dimensions-ID
+gc.configgui.idSchematicRocketT3=Rakete (Stufe 3) - Schematic-ID
+gc.configgui.disableGalacticraftHelium=Helium-Registrierung deaktivieren
+gc.configgui.astroMinersMax=Maximale Anzahl an Astrominern pro Spieler
