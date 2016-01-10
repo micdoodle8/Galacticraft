@@ -755,51 +755,57 @@ public class EventHandlerGC
     @SubscribeEvent
     public void onSoundPlayed(PlaySoundEvent17 event)
     {
+    	//The event.result starts off equal to event.sound, but could have been altered or set to null by another mod
+    	if (event.result == null) return;
+    	
     	EntityPlayerSP player = FMLClientHandler.instance().getClient().thePlayer;
 
-    	if (player != null && player.worldObj != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && event != null && event.sound != null)
+    	if (player != null && player.worldObj != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && event != null)
     	{
         	//Only modify standard game sounds, not music
-    		if (event.sound.getAttenuationType() != ISound.AttenuationType.NONE)
-        	{
-        		PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getGameProfile().getName());
+    		if (event.result.getAttenuationType() != ISound.AttenuationType.NONE)
+    		{
+    			PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getGameProfile().getName());
 
-                float x = event.sound.getXPosF();
-                float y = event.sound.getYPosF();
-                float z = event.sound.getZPosF();
+    			float x = event.result.getXPosF();
+    			float y = event.result.getYPosF();
+    			float z = event.result.getZPosF();
 
-                // If the player doesn't have a frequency module, and the player isn't in an oxygenated environment
-                // Note: this is a very simplistic approach, and nowhere near realistic, but required for performance reasons
-                AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(x - 0.0015D, y - 0.0015D, z - 0.0015D, x + 0.0015D, y + 0.0015D, z + 0.0015D);
-                boolean playerInAtmosphere = OxygenUtil.isAABBInBreathableAirBlock(player);
-                boolean soundInAtmosphere = OxygenUtil.isAABBInBreathableAirBlock(player.worldObj, bb);
-        		if ((gearData == null || gearData.getFrequencyModule() == -1) && (!playerInAtmosphere || !soundInAtmosphere))
-        		{
-        			float volume = event.sound.getVolume();
-        			for (int i = 0; i < this.soundPlayList.size(); i++)
-        			{
-        				SoundPlayEntry entry = this.soundPlayList.get(i);
+    			if (gearData == null || gearData.getFrequencyModule() == -1)
+    			{
+    				// If the player doesn't have a frequency module, and the player isn't in an oxygenated environment
+    				// Note: this is a very simplistic approach, and nowhere near realistic, but required for performance reasons
+    				AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(x - 0.0015D, y - 0.0015D, z - 0.0015D, x + 0.0015D, y + 0.0015D, z + 0.0015D);
+    				boolean playerInAtmosphere = OxygenUtil.isAABBInBreathableAirBlock(player);
+    				boolean soundInAtmosphere = OxygenUtil.isAABBInBreathableAirBlock(player.worldObj, bb);
+    				if ((!playerInAtmosphere || !soundInAtmosphere))
+    				{
+    					float volume = event.result.getVolume();
 
-        				if (entry.name.equals(event.name) && entry.x == x && entry.y == y && entry.z == z && entry.volume == volume)
-        				{
-        					this.soundPlayList.remove(i);
-        					event.result = event.sound;
-        					return;
-        				}
-        			}
+    					//First check for duplicate firing of PlaySoundEvent17 on this handler's own playing of a reduced volume sound (see below) 
+    					for (int i = 0; i < this.soundPlayList.size(); i++)
+    					{
+    						SoundPlayEntry entry = this.soundPlayList.get(i);
 
-        			float newVolume = volume / Math.max(0.01F, ((IGalacticraftWorldProvider) player.worldObj.provider).getSoundVolReductionAmount());
+    						if (entry.name.equals(event.name) && entry.x == x && entry.y == y && entry.z == z && entry.volume == volume)
+    						{
+    							this.soundPlayList.remove(i);
+    							return;
+    						}
+    					}
 
-        			this.soundPlayList.add(new SoundPlayEntry(event.name, x, y, z, newVolume));
-        			ISound newSound = new PositionedSoundRecord(event.sound.getPositionedSoundLocation(), newVolume, event.sound.getPitch(), x, y, z);
-        			event.manager.playSound(newSound);
-        			event.result = null;
-        			return;
-        		}
+    					//If it's not a duplicate: play the same sound but at reduced volume
+    					float newVolume = volume / Math.max(0.01F, ((IGalacticraftWorldProvider) player.worldObj.provider).getSoundVolReductionAmount());
+
+    					this.soundPlayList.add(new SoundPlayEntry(event.name, x, y, z, newVolume));
+    					ISound newSound = new PositionedSoundRecord(event.result.getPositionedSoundLocation(), newVolume, event.result.getPitch(), x, y, z);
+    					event.manager.playSound(newSound);
+    					event.result = null;
+    					return;
+    				}
+                }
         	}
     	}
-
-    	event.result = event.sound;
     }
 
     private static class SoundPlayEntry
