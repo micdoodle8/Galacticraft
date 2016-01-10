@@ -64,7 +64,7 @@ public class BlockBreathableAir extends BlockAir
         }
         else
         {
-            return block.isAir(par1IBlockAccess, par2, par3, par4) && par5 >= 0 && par5 <= 5;
+            return (block==null || block.isAir(par1IBlockAccess, par2, par3, par4)) && par5 >= 0 && par5 <= 5;
         }
     }
 

@@ -181,7 +181,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
                     {
                         Block blockAt = this.worldObj.getBlock(x, y, z);
 
-                        if (blockAt.isAir(this.worldObj, x, y, z))
+                        if (blockAt != null && blockAt.isAir(this.worldObj, x, y, z))
                         {
                             this.worldObj.setBlock(x, this.protocol.minY, z, GCBlocks.airLockSeal, 0, 3);
                         }
@@ -199,7 +199,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
                     {
                         Block blockAt = this.worldObj.getBlock(x, y, z);
 
-                        if (blockAt.isAir(this.worldObj, x, y, z))
+                        if (blockAt != null && blockAt.isAir(this.worldObj, x, y, z))
                         {
                             this.worldObj.setBlock(x, y, this.protocol.minZ, GCBlocks.airLockSeal, 0, 3);
                         }
@@ -214,7 +214,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
                     {
                         Block block = this.worldObj.getBlock(x, y, z);
 
-                        if (block.isAir(this.worldObj, x, y, z))
+                        if (block != null && block.isAir(this.worldObj, x, y, z))
                         {
                             this.worldObj.setBlock(this.protocol.minX, y, z, GCBlocks.airLockSeal, 0, 3);
                         }

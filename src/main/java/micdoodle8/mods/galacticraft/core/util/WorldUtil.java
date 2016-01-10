@@ -35,6 +35,7 @@ import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
@@ -1462,19 +1463,22 @@ public class WorldUtil
         int mainPosZ = position.intZ();
 
         // If the footprint is hovering over air...
-        if (world.getBlock(mainPosX, mainPosY, mainPosZ).isAir(world, mainPosX, mainPosY, mainPosZ))
+        Block b1 = world.getBlock(mainPosX, mainPosY, mainPosZ);
+        if (b1 != null && b1.isAir(world, mainPosX, mainPosY, mainPosZ))
         {
             position.x += (playerCenter.x - mainPosX);
             position.z += (playerCenter.z - mainPosZ);
 
             // If the footprint is still over air....
-            if (world.getBlock(position.intX(), position.intY(), position.intZ()).isAir(world, position.intX(), position.intY(), position.intZ()))
+            Block b2 = world.getBlock(position.intX(), position.intY(), position.intZ());
+            if (b2 != null && b2.isAir(world, position.intX(), position.intY(), position.intZ()))
             {
                 for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
                 {
                     if (direction != ForgeDirection.DOWN && direction != ForgeDirection.UP)
                     {
-                        if (!world.getBlock(mainPosX + direction.offsetX, mainPosY, mainPosZ + direction.offsetZ).isAir(world, mainPosX + direction.offsetX, mainPosY, mainPosZ + direction.offsetZ))
+                    	Block b3 = world.getBlock(mainPosX + direction.offsetX, mainPosY, mainPosZ + direction.offsetZ);
+                        if (b3 != null && !b3.isAir(world, mainPosX + direction.offsetX, mainPosY, mainPosZ + direction.offsetZ))
                         {
                             position.x += direction.offsetX;
                             position.z += direction.offsetZ;

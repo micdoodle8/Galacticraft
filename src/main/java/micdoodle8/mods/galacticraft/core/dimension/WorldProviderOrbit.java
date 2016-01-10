@@ -23,6 +23,7 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderOrbit;
 import micdoodle8.mods.galacticraft.core.world.gen.WorldChunkManagerOrbit;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -1073,7 +1074,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
      */
     public boolean checkSS(BlockVec3 baseBlock, boolean placingThruster)
     {
-        if (this.oneSSBlock == null || this.oneSSBlock.getBlockID(this.worldObj).isAir(worldObj, this.oneSSBlock.x, this.oneSSBlock.y, this.oneSSBlock.z))
+        if (this.oneSSBlock == null || this.oneSSBlock.getBlockID(this.worldObj) instanceof BlockAir)
         {
             if (baseBlock != null)
             {
