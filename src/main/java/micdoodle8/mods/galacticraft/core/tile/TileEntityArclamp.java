@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.RandomPositionGenerator;
@@ -236,7 +237,7 @@ public class TileEntityArclamp extends TileEntity
                             checked.add(sideVec);
 
                             Block b = sideVec.getBlockIDsafe_noChunkLoad(world);
-                            if (b != null && b.isAir(world, sideVec.x, sideVec.y, sideVec.z))
+                            if (b instanceof BlockAir)
                             {
                                 if (side != sideskip1 && side != sideskip2)
                                 {
@@ -263,20 +264,17 @@ public class TileEntityArclamp extends TileEntity
                 if (!allAir)
                 {
                     Block id = vec.getBlockIDsafe_noChunkLoad(world);
-                    if (id.isAir(world, vec.x, vec.y, vec.z))
+                    if (Blocks.air == id)
                     {
-                        if (Blocks.air == id)
-                        {
-                            world.setBlock(vec.x, vec.y, vec.z, brightAir, 0, 2);
-                            this.airToRestore.add(vec);
-                            this.markDirty();
-                        }
-                        else if (id == breatheableAirID)
-                        {
-                            world.setBlock(vec.x, vec.y, vec.z, brightBreatheableAir, 0, 2);
-                            this.airToRestore.add(vec);
-                            this.markDirty();
-                        }
+                        world.setBlock(vec.x, vec.y, vec.z, brightAir, 0, 2);
+                        this.airToRestore.add(vec);
+                        this.markDirty();
+                    }
+                    else if (id == breatheableAirID)
+                    {
+                        world.setBlock(vec.x, vec.y, vec.z, brightBreatheableAir, 0, 2);
+                        this.airToRestore.add(vec);
+                        this.markDirty();
                     }
                 }
             }

@@ -13,6 +13,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
@@ -652,10 +653,10 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 
                     worldObj.setBlock(px, y, pz, block, meta, 2);
                     int count = 7;
-                    if (!(worldObj.getBlock(px - 1,  y, pz).isAir(worldObj, px - 1, y, pz))) count = 1;
-                    else if (!(worldObj.getBlock(px - 2,  y, pz).isAir(worldObj, px - 2, y, pz))) count = 3;
-                    else if (!(worldObj.getBlock(px - 3,  y, pz).isAir(worldObj, px - 3,  y, pz))) count = 5;
-                    else if (!(worldObj.getBlock(px - 4,  y, pz).isAir(worldObj, px - 4,  y, pz))) count = 6;
+                    if (!(worldObj.getBlock(px - 1,  y, pz) instanceof BlockAir)) count = 1;
+                    else if (!(worldObj.getBlock(px - 2,  y, pz) instanceof BlockAir)) count = 3;
+                    else if (!(worldObj.getBlock(px - 3,  y, pz) instanceof BlockAir)) count = 5;
+                    else if (!(worldObj.getBlock(px - 4,  y, pz) instanceof BlockAir)) count = 6;
                     worldObj.setLightValue(EnumSkyBlock.Block, px, y, pz, count);
                 }
             }
@@ -797,29 +798,29 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
     			{
     				for (int y = yMin; y < yMax; y++)
     				{
-    					if (chunk.getBlock(x - 1, y, z).isAir(w, x - 1, y, z) && !(chunk.getBlock(x, y, z).isAir(w, x, y, z)))
+    					if (chunk.getBlock(x - 1, y, z) instanceof BlockAir && !(chunk.getBlock(x, y, z) instanceof BlockAir))
     					{
     						int count = 2;
     						 
     						if (x > 1)
     						{
-    							if ((chunk.getBlock(x - 2, y, z).isAir(w, x - 2, y, z))) count+=2;
+    							if ((chunk.getBlock(x - 2, y, z) instanceof BlockAir)) count+=2;
     						}
     						if (x > 2)
     						{
-    							if ((chunk.getBlock(x - 3, y, z).isAir(w, x - 3, y, z))) count+=2;
-    							if ((chunk.getBlock(x - 3, y + 1, z).isAir(w, x - 3, y + 1, z))) count++;
-    							if ((chunk.getBlock(x - 3, y + 1, z).isAir(w, x - 3, y + 1, z))) count++;
-    							if ((z > 0 /*|| ((xPos & 15) > 2 ? flagZDChunk : flagXZDChunk)*/) && (chunk.getBlock(x - 3, y, z - 1).isAir(w, x - 3, y, z - 1))) count++;
-    							if ((z < 15/* || ((xPos & 15) > 2 ? flagZUChunk : flagXZUChunk)*/) && (chunk.getBlock(x - 3, y, z + 1).isAir(w, x - 3, y, z + 1))) count++;
+    							if ((chunk.getBlock(x - 3, y, z) instanceof BlockAir)) count+=2;
+    							if ((chunk.getBlock(x - 3, y + 1, z) instanceof BlockAir)) count++;
+    							if ((chunk.getBlock(x - 3, y + 1, z) instanceof BlockAir)) count++;
+    							if ((z > 0 /*|| ((xPos & 15) > 2 ? flagZDChunk : flagXZDChunk)*/) && (chunk.getBlock(x - 3, y, z - 1) instanceof BlockAir)) count++;
+    							if ((z < 15/* || ((xPos & 15) > 2 ? flagZUChunk : flagXZUChunk)*/) && (chunk.getBlock(x - 3, y, z + 1) instanceof BlockAir)) count++;
     						}
     						if (/*flagXChunk || */x > 3)
     						{
-    							if ((chunk.getBlock(x - 4, y, z).isAir(w, x - 4, y, z))) count+=2;
-    							if ((chunk.getBlock(x - 4, y + 1, z).isAir(w, x - 4, y + 1, z))) count++;
-    							if ((chunk.getBlock(x - 4, y + 1, z).isAir(w, x - 4, y + 1, z))) count++;
-    							if ((z > 0/* || ((xPos & 15) > 3 ? flagZDChunk : flagXZDChunk)*/) && !(chunk.getBlock(x - 4, y, z - 1).isAir(w, x - 4, y, z - 1))) count++;
-    							if ((z < 15/* || ((xPos & 15) > 3 ? flagZUChunk : flagXZUChunk)*/) && !(chunk.getBlock(x - 4, y, z + 1).isAir(w, x - 4, y, z + 1))) count++;
+    							if ((chunk.getBlock(x - 4, y, z) instanceof BlockAir)) count+=2;
+    							if ((chunk.getBlock(x - 4, y + 1, z) instanceof BlockAir)) count++;
+    							if ((chunk.getBlock(x - 4, y + 1, z) instanceof BlockAir)) count++;
+    							if ((z > 0/* || ((xPos & 15) > 3 ? flagZDChunk : flagXZDChunk)*/) && !(chunk.getBlock(x - 4, y, z - 1) instanceof BlockAir)) count++;
+    							if ((z < 15/* || ((xPos & 15) > 3 ? flagZUChunk : flagXZUChunk)*/) && !(chunk.getBlock(x - 4, y, z + 1) instanceof BlockAir)) count++;
     						}
     						if (count > 12) count = 12;
     						chunk.func_150807_a(x - 1, y & 15, z, GCBlocks.brightAir, 15 - count);

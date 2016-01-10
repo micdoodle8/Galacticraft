@@ -31,6 +31,7 @@ import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityHydrogenPipe;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -504,7 +505,7 @@ public class TickHandlerServer
 	                        BlockVec3 changePosition = change.getChangePosition();
                             Block block = world.getBlock(changePosition.x, changePosition.y, changePosition.z);
 	                        //Only replace blocks of type BlockAir or fire - this is to prevent accidents where other mods have moved blocks
-	                        if (changePosition != null && (block.isAir(world, changePosition.x, changePosition.y, changePosition.z) || block == Blocks.fire))
+	                        if (changePosition != null && (block instanceof BlockAir || block == Blocks.fire))
 	                        {
 	                            world.setBlock(changePosition.x, changePosition.y, changePosition.z, change.getChangeID(), change.getChangeMeta(), change.getChangeUpdateFlag());
 	                        }

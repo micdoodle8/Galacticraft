@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -157,7 +158,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
                                         // Test for the two most common blocks (air
                                         // and breatheable air) without looking up
                                         // in the blocksList
-                                        if (!(block.isAir(this.worldObj, intrachunkx, y, z & 15)))
+                                        if (!(block instanceof BlockAir))
                                         {
                                             if (block.isLeaves(this.worldObj, x, y, z) || block instanceof IPlantable && ((IPlantable) block).getPlantType(this.worldObj, x, y, z) == EnumPlantType.Crop)
                                             {
