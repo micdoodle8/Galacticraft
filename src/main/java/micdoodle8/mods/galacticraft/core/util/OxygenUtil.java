@@ -326,12 +326,7 @@ public class OxygenUtil
             return 0;
         }
 
-        if (tank1Valid && !tank2Valid || !tank1Valid && tank2Valid)
-        {
-            return 9;
-        }
-
-        return 18;
+        return 9;
     }
 
     public static boolean hasValidOxygenSetup(EntityPlayerMP player)

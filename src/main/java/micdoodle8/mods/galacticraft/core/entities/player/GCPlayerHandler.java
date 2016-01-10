@@ -598,25 +598,32 @@ public class GCPlayerHandler
             {
                 if ((player.ticksExisted - 1) % drainSpacing == 0 && !OxygenUtil.isAABBInBreathableAirBlock(player) && !playerStats.usingPlanetSelectionGui)
                 {
-                    if (tankInSlot != null && tankInSlot.getMaxDamage() - tankInSlot.getItemDamage() > 0)
+                    if (tankInSlot != null)
+                    {
+                        playerStats.airRemaining = tankInSlot.getMaxDamage() - tankInSlot.getItemDamage();
+                    }
+
+                    if (tankInSlot2 != null)
+                    {
+                        playerStats.airRemaining2 = tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage();
+                    }
+
+                    int toTake = 1;
+                    //Take 1 oxygen from Tank 1
+                    if (playerStats.airRemaining > 0)
                     {
                         tankInSlot.damageItem(1, player);
+                        playerStats.airRemaining--;
+                        toTake = 0;
                     }
-
-                    if (tankInSlot2 != null && tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage() > 0)
+                    
+                    //Alternatively, take 1 oxygen from Tank 2
+                    if (toTake > 0 && playerStats.airRemaining2 > 0)
                     {
                         tankInSlot2.damageItem(1, player);
+                        playerStats.airRemaining2--;
+                        toTake = 0;      
                     }
-                }
-
-                if (tankInSlot != null)
-                {
-                    playerStats.airRemaining = tankInSlot.getMaxDamage() - tankInSlot.getItemDamage();
-                }
-
-                if (tankInSlot2 != null)
-                {
-                    playerStats.airRemaining2 = tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage();
                 }
             }
             else
@@ -639,12 +646,12 @@ public class GCPlayerHandler
                     {
                         if (playerStats.airRemaining > 0)
                         {
-                            playerStats.airRemaining = Math.max(playerStats.airRemaining - 1, 0);
+                            playerStats.airRemaining--;
                         }
 
                         if (playerStats.airRemaining2 > 0)
                         {
-                            playerStats.airRemaining2 = Math.max(playerStats.airRemaining2 - 1, 0);
+                            playerStats.airRemaining2--;
                         }
                     }
                 }
