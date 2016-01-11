@@ -82,7 +82,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class WorldUtil
 {
-    public static HashMap<Integer, Integer> registeredSpaceStations;
+    public static HashMap<Integer, Integer> registeredSpaceStations;  //Dimension IDs and providers (providers are -26 or -27 by default)
     public static List<Integer> registeredPlanets;
     private static IWorldGenerator generatorGCGreg = null;
     private static IWorldGenerator generatorCoFH = null;
@@ -435,7 +435,7 @@ public class WorldUtil
                 {
                     final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, id, playerBase);
 
-                    if (!ConfigManagerCore.spaceStationsRequirePermission || data.getAllowedPlayers().contains(playerBase.getGameProfile().getName()) || VersionUtil.isPlayerOpped(playerBase))
+                    if (!ConfigManagerCore.spaceStationsRequirePermission || data.getAllowedAll() || data.getAllowedPlayers().contains(playerBase.getGameProfile().getName()) || VersionUtil.isPlayerOpped(playerBase))
                     {
                         map.put(celestialBody.getName() + "$" + data.getOwner() + "$" + data.getSpaceStationName() + "$" + provider.dimensionId + "$" + data.getHomePlanet(), provider.dimensionId);
                     }

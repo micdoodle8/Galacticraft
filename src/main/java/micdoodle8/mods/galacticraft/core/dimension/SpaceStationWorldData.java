@@ -2,9 +2,12 @@ package micdoodle8.mods.galacticraft.core.dimension;
 
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Satellite;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
@@ -18,6 +21,7 @@ public class SpaceStationWorldData extends WorldSavedData
     private String spaceStationName = "NoName";
     private String owner = "NoOwner";
     private ArrayList<String> allowedPlayers;
+    private boolean allowAllPlayers;
     private int homePlanet;
     private int dimensionIdDynamic;
     private int dimensionIdStatic;
@@ -56,9 +60,26 @@ public class SpaceStationWorldData extends WorldSavedData
         return this.allowedPlayers;
     }
 
+    public boolean getAllowedAll()
+    {
+        return this.allowAllPlayers;
+    }
+
+    public void setAllowedAll(boolean b)
+    {
+    	this.allowAllPlayers = b;
+        this.markDirty();
+    }
+
     public String getOwner()
     {
         return this.owner;
+    }
+
+    public void setOwner(String name)
+    {
+        this.owner = name.replace(".", "");
+        this.markDirty();
     }
 
     public String getSpaceStationName()
@@ -141,6 +162,8 @@ public class SpaceStationWorldData extends WorldSavedData
             this.dimensionIdDynamic = ConfigManagerCore.idDimensionOverworldOrbit;
         }
 
+        this.allowAllPlayers = nbttagcompound.getBoolean("allowedAll");
+        	
         final NBTTagList var2 = nbttagcompound.getTagList("allowedPlayers", 10);
         this.allowedPlayers.clear();
 
@@ -165,6 +188,7 @@ public class SpaceStationWorldData extends WorldSavedData
         nbttagcompound.setInteger("dimensionIdDynamic", this.dimensionIdDynamic);
         nbttagcompound.setInteger("dimensionIdStatic", this.dimensionIdStatic);
         nbttagcompound.setTag("dataCompound", this.dataCompound);
+        nbttagcompound.setBoolean("allowedAll", this.allowAllPlayers);
 
         final NBTTagList var2 = new NBTTagList();
 
@@ -194,7 +218,7 @@ public class SpaceStationWorldData extends WorldSavedData
     /**
      * Retrieve a space station data entry, creating if necessary (with provided data)
      */
-    public static SpaceStationWorldData getStationData(World world, int stationID, int homeID, int providerIdDynamic, int providerIdStatic, EntityPlayer player)
+    public static SpaceStationWorldData getStationData(World world, int stationID, int homeID, int providerIdDynamic, int providerIdStatic, EntityPlayer owner)
     {
         int providerType = DimensionManager.getProviderType(stationID);
 
@@ -226,16 +250,16 @@ public class SpaceStationWorldData extends WorldSavedData
                 world.setItemData(stationIdentifier, stationData);
                 stationData.dataCompound = new NBTTagCompound();
 
-                if (player != null)
+                if (owner != null)
                 {
-                    stationData.owner = player.getGameProfile().getName().replace(".", "");
+                    stationData.owner = owner.getGameProfile().getName().replace(".", "");
                 }
 
                 stationData.spaceStationName = "Station: " + stationData.owner;
 
-                if (player != null)
+                if (owner != null)
                 {
-                    stationData.allowedPlayers.add(player.getGameProfile().getName());
+                    stationData.allowedPlayers.add(owner.getGameProfile().getName());
                 }
 
                 if (homeID == -1)
@@ -273,6 +297,8 @@ public class SpaceStationWorldData extends WorldSavedData
     public static SpaceStationWorldData getMPSpaceStationData(World var0, int var1, EntityPlayer player)
     {
         final String var2 = SpaceStationWorldData.getSpaceStationID(var1);
+        if (var0 == null)
+        	var0 = DimensionManager.getProvider(0).worldObj;
         SpaceStationWorldData var3 = (SpaceStationWorldData) var0.loadItemData(SpaceStationWorldData.class, var2);
 
         if (var3 == null)
@@ -309,4 +335,38 @@ public class SpaceStationWorldData extends WorldSavedData
     {
         return "spacestation_" + dimID;
     }
+    
+	public static void updateSSOwnership(EntityPlayerMP player, String playerName, GCPlayerStats stats, int stationID, SpaceStationWorldData stationData)
+	{
+		System.out.println("Checking SS: " + playerName + " " + stationID);
+		if (stationData == null)
+			stationData = SpaceStationWorldData.getMPSpaceStationData(null, stationID, null);
+		
+		if (stationData.owner.equals(playerName))
+		{
+			System.out.println("Player owns station: " + stationData.getSpaceStationName() + " with home planet " + stationData.getHomePlanet());
+			//This player is the owner of the station - ensure stats data matches
+            if (!(stats.spaceStationDimensionData.values().contains(stationID)))
+            {
+            	stats.spaceStationDimensionData.put(stationData.getHomePlanet(), stationID);
+            }
+		}
+		else
+		{
+			System.out.println("Player does not own station: " + stationData.getSpaceStationName() + " with home planet " + stationData.getHomePlanet());
+			//This player is the owner of the station - remove from stats data
+			int planetID = stationData.getHomePlanet();
+            if (stats.spaceStationDimensionData.get(planetID) == stationID)
+            {
+            	stats.spaceStationDimensionData.remove(planetID);
+            }		
+		}		
+	}
+
+	public static void checkAllStations(EntityPlayerMP thePlayer, GCPlayerStats stats)
+	{
+		String name = thePlayer.getGameProfile().getName().replace(".", "");
+		for (int id : WorldUtil.registeredSpaceStations.keySet())
+			SpaceStationWorldData.updateSSOwnership(thePlayer, name, stats, id, null);		
+	}
 }

@@ -20,7 +20,7 @@ public class CommandSpaceStationAddOwner extends CommandBase
     @Override
     public String getCommandUsage(ICommandSender var1)
     {
-        return "/" + this.getCommandName() + " <player>";
+        return "/" + this.getCommandName() + " [ <player> | +all | -all ]";
     }
 
     @Override
@@ -59,10 +59,23 @@ public class CommandSpaceStationAddOwner extends CommandBase
                     }
                     else
                     {
-                        for (Map.Entry<Integer, Integer> e : stats.spaceStationDimensionData.entrySet())
+                        for (Map.Entry<Integer, Integer> ownedStations : stats.spaceStationDimensionData.entrySet())
                         {
-                            final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, e.getValue(), playerBase);
+                            final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, ownedStations.getValue(), playerBase);
 
+                            if (var3.equalsIgnoreCase("+all"))
+                            {
+                            	data.setAllowedAll(true);
+                                playerBase.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.spacestation.allowAllTrue")));
+                                return;
+                            }
+                            if (var3.equalsIgnoreCase("-all"))
+                            {
+                            	data.setAllowedAll(false);
+                                playerBase.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.spacestation.allowAllFalse", var3)));
+                                return;
+                            }
+                            
                             if (!data.getAllowedPlayers().contains(var3))
                             {
                                 data.getAllowedPlayers().add(var3);

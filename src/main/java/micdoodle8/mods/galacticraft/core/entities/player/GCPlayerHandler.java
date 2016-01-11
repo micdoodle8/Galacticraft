@@ -957,6 +957,7 @@ public class GCPlayerHandler
         {
             GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { player.getGameProfile().getName(), temp }), player);
             playerStats.savedPlanetList = new String(temp);
+            //GCLog.debug("Sending to " + player.getGameProfile().getName() + ": " + temp);
         }
     }
 

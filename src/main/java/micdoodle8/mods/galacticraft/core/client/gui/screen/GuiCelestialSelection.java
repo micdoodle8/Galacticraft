@@ -677,7 +677,7 @@ public class GuiCelestialSelection extends GuiScreen
                     SpaceStationRecipe recipe = WorldUtil.getSpaceStationRecipe(this.selectedBody.getDimensionID());
                     if (recipe != null && this.canCreateSpaceStation(this.selectedBody))
                     {
-                        if (recipe.matches(this.mc.thePlayer, false))
+                        if (recipe.matches(this.mc.thePlayer, false) || this.mc.thePlayer.capabilities.isCreativeMode)
                         {
                             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BIND_SPACE_STATION_ID, new Object[] { this.selectedBody.getDimensionID() }));
                             //Zoom in on Overworld to show the new SpaceStation if not already zoomed
@@ -1866,7 +1866,7 @@ public class GuiCelestialSelection extends GuiScreen
                             i++;
                         }
 
-                        if (validInputMaterials)
+                        if (validInputMaterials || this.mc.thePlayer.capabilities.isCreativeMode)
                         {
                             GL11.glColor4f(0.0F, 1.0F, 0.1F, 1);
                         }

@@ -970,7 +970,7 @@ public class PacketSimple extends Packet implements IPacket
             if ((!stats.spaceStationDimensionData.containsKey(homeID) || stats.spaceStationDimensionData.get(homeID) == -1 || stats.spaceStationDimensionData.get(homeID) == 0)
                     && !ConfigManagerCore.disableSpaceStationCreation)
             {
-                if (WorldUtil.getSpaceStationRecipe(homeID).matches(playerBase, true))
+                if (playerBase.capabilities.isCreativeMode || WorldUtil.getSpaceStationRecipe(homeID).matches(playerBase, true))
                 {
                     WorldUtil.bindSpaceStationToNewDimension(playerBase.worldObj, playerBase, homeID);
                 }

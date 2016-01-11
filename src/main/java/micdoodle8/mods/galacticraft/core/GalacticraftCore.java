@@ -37,6 +37,7 @@ import micdoodle8.mods.galacticraft.core.command.CommandJoinSpaceRace;
 import micdoodle8.mods.galacticraft.core.command.CommandKeepDim;
 import micdoodle8.mods.galacticraft.core.command.CommandPlanetTeleport;
 import micdoodle8.mods.galacticraft.core.command.CommandSpaceStationAddOwner;
+import micdoodle8.mods.galacticraft.core.command.CommandSpaceStationChangeOwner;
 import micdoodle8.mods.galacticraft.core.command.CommandSpaceStationRemoveOwner;
 import micdoodle8.mods.galacticraft.core.dimension.TeleportTypeMoon;
 import micdoodle8.mods.galacticraft.core.dimension.TeleportTypeOrbit;
@@ -544,6 +545,7 @@ public class GalacticraftCore
     public void serverStarting(FMLServerStartingEvent event)
     {
         event.registerServerCommand(new CommandSpaceStationAddOwner());
+        event.registerServerCommand(new CommandSpaceStationChangeOwner());
         event.registerServerCommand(new CommandSpaceStationRemoveOwner());
         event.registerServerCommand(new CommandPlanetTeleport());
         event.registerServerCommand(new CommandKeepDim());
