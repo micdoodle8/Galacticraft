@@ -942,7 +942,7 @@ public class GCPlayerHandler
 
     protected void sendPlanetList(EntityPlayerMP player, GCPlayerStats playerStats)
     {
-        HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(playerStats.spaceshipTier), player);
+        HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(playerStats.spaceshipTier, player);
 
         String temp = "";
         int count = 0;

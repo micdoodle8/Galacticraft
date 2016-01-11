@@ -307,7 +307,16 @@ public class WorldUtil
         return null;
     }
 
-    public static List<Integer> getPossibleDimensionsForSpaceshipTier(int tier)
+    /**
+     * This will *load* all the GC dimensions which the player has access to (taking account of space station permissions).
+     * Loading the dimensions through Forge activates any chunk loaders or forced chunks in that dimension,
+     * if the dimension was not previously loaded.  This may place load on the server.
+     * 
+     * @param tier - the rocket tier to test
+     * @param playerBase - the player who will be riding the rocket (needed for space station permissions)
+     * @return a List of integers which are the dimension IDs
+     */
+    public static List<Integer> getPossibleDimensionsForSpaceshipTier(int tier, EntityPlayerMP playerBase)
     {
         List<Integer> temp = new ArrayList<Integer>();
 
@@ -338,21 +347,26 @@ public class WorldUtil
 
         for (Integer element : WorldUtil.registeredSpaceStations.keySet())
         {
-        	WorldProvider provider = WorldUtil.getProviderForDimension(element);
+            final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, element, null);
 
-            if (provider != null)
+            if (!ConfigManagerCore.spaceStationsRequirePermission || data.getAllowedAll() || data.getAllowedPlayers().contains(playerBase.getGameProfile().getName()) || VersionUtil.isPlayerOpped(playerBase))
             {
-                if (provider instanceof IGalacticraftWorldProvider)
-                {
-                    if (((IGalacticraftWorldProvider) provider).canSpaceshipTierPass(tier))
-                    {
-                        temp.add(element);
-                    }
-                }
-                else
-                {
-                    temp.add(element);
-                }
+	        	WorldProvider provider = WorldUtil.getProviderForDimension(element);
+	
+	            if (provider != null)
+	            {
+	                if (provider instanceof IGalacticraftWorldProvider)
+	                {
+	                    if (((IGalacticraftWorldProvider) provider).canSpaceshipTierPass(tier))
+	                    {
+	                        temp.add(element);
+	                    }
+	                }
+	                else
+	                {
+	                    temp.add(element);
+	                }
+	            }
             }
         }
 
@@ -411,9 +425,19 @@ public class WorldUtil
     	return provider;
     }
     
-    public static HashMap<String, Integer> getArrayOfPossibleDimensions(List<Integer> ids, EntityPlayerMP playerBase)
+    /**
+     * This will *load* all the GC dimensions which the player has access to (taking account of space station permissions).
+     * Loading the dimensions through Forge activates any chunk loaders or forced chunks in that dimension,
+     * if the dimension was not previously loaded.  This may place load on the server.
+     * 
+     * @param tier - the rocket tier to test
+     * @param playerBase - the player who will be riding the rocket (needed for checking space station permissions)
+     * @return a Map of the names of the dimension vs. the dimension IDs
+     */
+    public static HashMap<String, Integer> getArrayOfPossibleDimensions(int tier, EntityPlayerMP playerBase)
     {
-        final HashMap<String, Integer> map = new HashMap<String, Integer>();
+    	List<Integer> ids = WorldUtil.getPossibleDimensionsForSpaceshipTier(tier, playerBase);
+    	final HashMap<String, Integer> map = new HashMap<String, Integer>();
 
         for (Integer id : ids)
         {
@@ -433,12 +457,8 @@ public class WorldUtil
                 }
                 else if (playerBase != null && provider instanceof IOrbitDimension)
                 {
-                    final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, id, playerBase);
-
-                    if (!ConfigManagerCore.spaceStationsRequirePermission || data.getAllowedAll() || data.getAllowedPlayers().contains(playerBase.getGameProfile().getName()) || VersionUtil.isPlayerOpped(playerBase))
-                    {
-                        map.put(celestialBody.getName() + "$" + data.getOwner() + "$" + data.getSpaceStationName() + "$" + provider.dimensionId + "$" + data.getHomePlanet(), provider.dimensionId);
-                    }
+                    final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, id, null);
+                    map.put(celestialBody.getName() + "$" + data.getOwner() + "$" + data.getSpaceStationName() + "$" + provider.dimensionId + "$" + data.getHomePlanet(), provider.dimensionId);
                 }
             }
         }
@@ -686,7 +706,7 @@ public class WorldUtil
     
     /**
      * This doesn't check if player is using the correct rocket, this is just a
-     * total list of all space dimensions.
+     * total list of all space dimensions.  It does not load the dimensions.
      */
     public static Integer[] getArrayOfPossibleDimensions()
     {
@@ -1436,7 +1456,7 @@ public class WorldUtil
         player.mountEntity(null);
         stats.spaceshipTier = tier;
 
-        HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(WorldUtil.getPossibleDimensionsForSpaceshipTier(tier), player);
+        HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(tier, player);
         String dimensionList = "";
         int count = 0;
         for (Entry<String, Integer> entry : map.entrySet())
