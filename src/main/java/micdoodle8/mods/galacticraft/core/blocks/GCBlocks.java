@@ -68,6 +68,7 @@ public class GCBlocks
     public static final Material machine = new Material(MapColor.ironColor);
 
     public static ArrayList<Block> hiddenBlocks = new ArrayList<Block>();
+    public static ArrayList<Block> otherModTorchesLit = new ArrayList<Block>();
 
     public static void initBlocks()
     {
@@ -229,6 +230,7 @@ public class GCBlocks
 		        torchLit = new BlockUnlitTorch(true, "unlitTorchLit_Stone");
 		        GCBlocks.hiddenBlocks.add(torch);
 		        GCBlocks.hiddenBlocks.add(torchLit);
+		        GCBlocks.otherModTorchesLit.add(torchLit);
 		        GameRegistry.registerBlock(torch, ItemBlockGC.class, torch.getUnlocalizedName());
 		        GameRegistry.registerBlock(torchLit, ItemBlockGC.class, torchLit.getUnlocalizedName());
 		        BlockUnlitTorch.register(torch, torchLit, modTorch);

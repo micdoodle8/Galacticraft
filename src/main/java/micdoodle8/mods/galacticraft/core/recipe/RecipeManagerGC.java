@@ -13,7 +13,9 @@ import micdoodle8.mods.galacticraft.core.items.ItemBasic;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -22,6 +24,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -42,6 +45,8 @@ public class RecipeManagerGC
         }
 
         RecipeManagerGC.addUniversalRecipes();
+        
+        RecipeManagerGC.addExNihiloRecipes();
     }
 
     @SuppressWarnings("unchecked")
@@ -629,5 +634,18 @@ public class RecipeManagerGC
         // {
         // e.printStackTrace();
         // } TODO IC2 recipes
+    }
+   
+    private static void addExNihiloRecipes()
+    {
+    	try {
+    		Class registry = Class.forName("exnihilo.registries.HeatRegistry");
+    		Method m = registry.getMethod("register", Block.class, float.class);
+    		m.invoke(null, GCBlocks.unlitTorchLit, 0.1F);
+    		for (Block torch : GCBlocks.otherModTorchesLit)
+    			m.invoke(null, torch, 0.1F);
+    		GCLog.info("Successfully added space torches as heat sources for Ex Nihilo crucibles etc");
+    	}
+         catch (Throwable e) { }
     }
 }
