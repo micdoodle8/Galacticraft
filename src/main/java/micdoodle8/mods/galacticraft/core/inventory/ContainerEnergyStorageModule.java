@@ -17,9 +17,9 @@ public class ContainerEnergyStorageModule extends Container
     {
         this.tileEntity = batteryBox;
         // Top slot for battery output
-        this.addSlotToContainer(new SlotSpecific(batteryBox, 0, 33, 24, ItemElectricBase.class));
+        this.addSlotToContainer(new SlotSpecific(batteryBox, 0, 33, 24, ItemElectricBase.class, IItemElectric.class));
         // Bottom slot for batter input
-        this.addSlotToContainer(new SlotSpecific(batteryBox, 1, 33, 48, ItemElectricBase.class));
+        this.addSlotToContainer(new SlotSpecific(batteryBox, 1, 33, 48, ItemElectricBase.class, IItemElectric.class));
         int var3;
 
         for (var3 = 0; var3 < 3; ++var3)
