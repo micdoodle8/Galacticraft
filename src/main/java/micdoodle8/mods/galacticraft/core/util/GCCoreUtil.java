@@ -11,7 +11,11 @@ import micdoodle8.mods.galacticraft.core.inventory.ContainerParaChest;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.resources.Language;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -55,9 +59,31 @@ public class GCCoreUtil
     
     public static void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int back, int fore)
     {
-        int newID = EntityRegistry.instance().findGlobalUniqueEntityId();
-        EntityRegistry.registerGlobalEntityID(var0, var1, newID, back, fore);
-        EntityRegistry.registerModEntity(var0, var1, nextInternalID(), GalacticraftCore.instance, 80, 3, true);
+        registerGalacticraftNonMobEntity(var0, var1, 80, 3, true);
+        int nextEggID = getNextValidEggID();
+        if (nextEggID < 65536)
+        {
+	        EntityList.IDtoClassMapping.put(nextEggID, var0);
+	        VersionUtil.putClassToIDMapping(var0, nextEggID);
+	        //EntityList.classToIDMapping.put(var0, nextEggID);
+	        EntityList.entityEggs.put(nextEggID, new EntityList.EntityEggInfo(nextEggID, back, fore));
+        }
+    }
+
+    private static int getNextValidEggID()
+    {
+        int eggID = 255;
+        
+        //Non-global entity IDs - for egg ID purposes - can be greater than 255
+        //The spawn egg will have this metadata.  Metadata up to 65535 is acceptable (see potions).
+
+        do
+        {
+            eggID++;
+        }
+        while (EntityList.getClassFromID(eggID) != null);
+
+        return eggID;
     }
 
     public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
@@ -120,4 +146,21 @@ public class GCCoreUtil
         int comment = result.indexOf('#');
         return (comment > 0) ? result.substring(0, comment).trim() : result;
     }
+
+	public static void drawStringRightAligned(String string, int x, int y, int color, FontRenderer fontRendererObj)
+	{
+        fontRendererObj.drawString(string, x - fontRendererObj.getStringWidth(string), y, color);
+	}
+
+	public static void drawStringCentered(String string, int x, int y, int color, FontRenderer fontRendererObj)
+	{
+        fontRendererObj.drawString(string, x - fontRendererObj.getStringWidth(string) / 2, y, color);
+	}
+
+	public static String lowerCaseNoun(String string)
+	{
+		Language l = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage();
+		if (l.getLanguageCode().equals("de_DE")) return string;
+		return GCCoreUtil.translate(string).toLowerCase();
+	}
 }

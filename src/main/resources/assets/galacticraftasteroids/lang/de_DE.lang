@@ -15,6 +15,7 @@ item.grapple.name=Greifhaken
 item.atmosphericValve.name=Atmosphärenventil
 item.thermalCloth.name=Thermalstoff
 item.beamCore.name=Strahlenkern
+item.orionDrive.name=Ionenantrieb
 item.tier3.desc=Stufe 3
 
 # TOOLS
@@ -50,7 +51,7 @@ item.canister.liquidArgon.name=Flüssigk.    #short name for Liquid Argon conten
 item.emptyGasCanister.name=Leerer Gaskanister
 
 # FLUIDS AND GASES
-fluid.methane=Methangas
+fluid.methane=Methan
 fluid.oxygen=Sauerstoff
 fluid.nitrogen=Stickstoff
 fluid.hydrogen=Wasserstoff
@@ -65,9 +66,9 @@ fluid.liquidargon=Flüssiges Argon
 fluid.fuel=Treibstoff
 
 # BLOCKS
-tile.asteroidsBlock.asteroid0.name=Asteroidgestein
-tile.asteroidsBlock.asteroid1.name=Asteroidgestein
-tile.asteroidsBlock.asteroid2.name=Asteroidgestein
+tile.asteroidsBlock.asteroid0.name=Asteroidengestein
+tile.asteroidsBlock.asteroid1.name=Asteroidengestein
+tile.asteroidsBlock.asteroid2.name=Asteroidengestein
 tile.asteroidsBlock.oreIron.name=Eisenerz
 tile.asteroidsBlock.oreIlmenite.name=Ilmeniterz
 tile.asteroidsBlock.oreAluminum.name=Aluminiumerz
@@ -86,15 +87,15 @@ planet.asteroids=Asteroiden
 
 	# Dollar sign ($) will split text onto a new line
 	# Do not remove %s or %d, since that will be replaced in-game
-gui.telepad.desc.0=Dies ist die eindeutige$Adresse des Telepads
-gui.telepad.desc.1=Adresse eines anderen Telepads.$Entities werden dort hin gesendet.
+gui.telepad.desc.0=Dies ist die einzigartige$Adresse des Telepads
+gui.telepad.desc.1=Adresse eines anderen Telepads.$Lebewesen werden dort hin gesendet.
 gui.message.address.name=Adresse
 gui.message.destAddress.name=Zieladresse
-gui.message.invalidAddress.name=Ungültige eindeutige Adresse
+gui.message.invalidAddress.name=Ungültige einzigartige Adresse
 gui.message.invalidTargetAddress.name=Ungültige Zieladresse
 gui.message.receivingActive.name=Empfangen aktiviert
 gui.message.telepadTooFar.name=Ziel zu weit weg! (Max %d) 
-gui.message.telepadWrongDim.name=Das Ziel ist in der falschen Dimension!
+gui.message.telepadWrongDim.name=Ziel ist in der falschen Dimension!
 gui.message.telepadNotFound.name=Telepad nicht gefunden!
 gui.message.sendingActive.name=Senden aktiviert
 gui.message.range.name=Reichweite: %dm
@@ -103,37 +104,50 @@ gui.message.targetNoEnergy.name=Ziel hat nicht genügend Energie!
 gui.message.grapple.fail=Ich brauche einen Faden, wenn ich den Greifhaken werfen will!
 gui.message.astroMiner.fail=Diese Basis hat schon einen Astrominer!
 gui.message.astroMiner1.fail=Der Andockbereich ist versperrt durch:
+gui.message.astroMiner1A.fail=Die Route des Astrominers wird blockiert durch:
 gui.message.astroMiner2.fail=Das wäre ein Astrominer zu viel!
+gui.message.astroMiner3.fail=Die Astrominer-Basis wurde entfernt!
+gui.message.astroMiner4.fail=Der Astrominer hat keine Energie mehr und kann nicht zur Basis zurückkehren!
+gui.message.astroMiner5.fail=Die Route des Astrominers zurück zur Basis ist versperrt!
+gui.message.astroMiner6.fail=Der Astrominer ist mit dem Abbauen fertig und wird jetzt aufhören!
+gui.message.astroMiner7.fail=Auf einer Raumstation gibt es für den Astrominer nichts zum Abbauen!
+gui.message.astroMiner8.fail=Ein zweiter Astrominer wurde auf der selben Basis erkannt, der erste wird nun einfrieren.
+gui.button.recall.name=Zurückrufen
+gui.miner.outOfRange=Außer Reichweite
+gui.miner.offline=Offline
+gui.miner.stuck=Steckt fest an:
+gui.miner.docked=Angedockt
+gui.miner.travelling=Reist
+gui.miner.mining=Baut ab
+gui.miner.returning=Kehrt zurück
+gui.miner.docking=Dockt an
+gui.miner.mined=Abgebaut
 
 tile.treasureT3.description=Schatztruhen der Stufe 3 werden zur Zeit nicht benutzt.
 tile.walkway.description=Gehwege können für Dekorationszwecke benutzt werden und um Blöcke zu verbinden.
-tile.walkwayAluminumWire.description=Aluminumkabelgehwege werden benutzt um Kabel unter einer vollständig begehbaren Oberfläche zu verlegen.
-tile.walkwayOxygenPipe.description=Sauerstoffleitungsgehwege werden benutzt um Sauerstoffleitungen unter einer vollständig begehbaren Oberfläche zu verlegen.
-tile.beamReflector.description=Strahlenreflektoren werden benutzt um Energiestrahlen von der Quelle zum Ziel weiterzuleiten. Rechtsklick um das Ziel umzuschalten.
-tile.beamReceiver.description=Strahlenempfänger werden mit den Energieein- und ausgängen von Maschinen verbunden um Energie über Strahlen zu übertragen.
-tile.telepadShort.description=Kurzreichweiten-Telepads werden benutzt um Spieler und andere Lebewesen über kurze Distanzen (250 Blöcke) zu teleportieren, wenn sie mit anderen Telepads verbunden sind.
-tile.minerBase.description=Die Astrominer-Basis ist die Andockstelle für einen Astrominer. Sie ist groß ... versuche einen 2 x 2 x 2-Würfel mit ihr zu machen.
-schematic.astroMiner.name=Astrominer
-schematic.ionDrive.name=Ionenantrieb
+tile.walkwayAluminumWire.description=Aluminumkabelgehwege werden benutzt, um Kabel unter einer vollständig begehbaren Oberfläche zu verlegen.
+tile.walkwayOxygenPipe.description=Sauerstoffleitungsgehwege werden benutzt, um Sauerstoffleitungen unter einer vollständig begehbaren Oberfläche zu verlegen.
+tile.beamReflector.description=Strahlenreflektoren werden benutzt, um Energiestrahlen von der Quelle zum Ziel weiterzuleiten. Rechtsklick um das Ziel umzuschalten.
+tile.beamReceiver.description=Strahlenempfänger werden mit den Energieein- und ausgängen von Maschinen verbunden, um Energie über Strahlen zu übertragen.
+tile.telepadShort.description=Kurzreichweiten-Telepads werden benutzt, um Spieler und andere Lebewesen über kurze Distanzen (250 Blöcke) zu teleportieren, wenn sie mit anderen Telepads verbunden sind.
+tile.minerBase.description=Die Astrominer-Basis ist die Andockstelle für einen Astrominer. Sie ist groß ... versuche, einen 2 x 2 x 2-Würfel mit den Blöcken zu bauen.
 
 # SCHEMATICS
+schematic.astroMiner.name=Astrominer
 
 # ENTITIES
 entity.SmallAsteroidGC.name=Kleiner Asteroid
 entity.GrappleHookGC.name=Greifhaken
 entity.Tier3RocketGC.name=Rakete (Stufe 3)
-entity.EntryPodAsteroids.name=Eintritts-Pod
+entity.EntryPodAsteroids.name=Eintrittskapsel
 entity.AstroMiner.name=Astrominer
 
 # CONTAINERS
 container.shortRangeTelepad.name=Kurzreichweiten-Telepad
-container.entryPod.name=Eintritts-Pod
+container.entryPod.name=Eintrittskapsel
 
 # CONFIG GUI
-gc.configgui.dimensionIDAsteroids=Asteroids Dimension ID
-gc.configgui.idEntitySmallAsteroid=Small Asteroid Entity ID
-gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID
-gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID
-gc.configgui.idEntityEntryPod=Entry Pod Entity ID
-gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID
-gc.configgui.disableGalacticraftHelium=Disable Helium gas registration
+gc.configgui.dimensionIDAsteroids=Asteroiden -  Dimensions-ID
+gc.configgui.idSchematicRocketT3=Rakete (Stufe 3) - Schematic-ID
+gc.configgui.disableGalacticraftHelium=Helium-Registrierung deaktivieren
+gc.configgui.astroMinersMax=Maximale Anzahl an Astrominern pro Spieler

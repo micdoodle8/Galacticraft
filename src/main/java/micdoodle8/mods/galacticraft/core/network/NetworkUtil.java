@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.network;
 
+import com.google.common.math.DoubleMath;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -7,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorage;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.VersionUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.entity.Entity;
@@ -162,6 +164,7 @@ public class NetworkUtil
                     buffer.writeFloat((float) array[i].position.z);
                     buffer.writeFloat(array[i].rotation);
                     buffer.writeShort(array[i].age);
+                    ByteBufUtils.writeUTF8String(buffer, array[i].owner);
                 }
             }
             else
@@ -291,7 +294,7 @@ public class NetworkUtil
 
                 for (int i = 0; i < size; i++)
                 {
-                    objList.add(new Footprint(buffer.readInt(), new Vector3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat()), buffer.readFloat(), buffer.readShort()));
+                    objList.add(new Footprint(buffer.readInt(), new Vector3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat()), buffer.readFloat(), buffer.readShort(), ByteBufUtils.readUTF8String(buffer)));
                 }
             }
         }
@@ -470,7 +473,7 @@ public class NetworkUtil
         else
         {
             buffer.writeInt(fluidTank.getCapacity());
-            buffer.writeInt(fluidTank.getFluid() == null ? -1 : fluidTank.getFluid().fluidID);
+            buffer.writeInt(fluidTank.getFluid() == null ? -1 : WorldUtil.getFluidID(fluidTank.getFluid()));
             buffer.writeInt(fluidTank.getFluidAmount());
         }
     }
@@ -493,5 +496,84 @@ public class NetworkUtil
         }
 
         return fluidTank;
+    }
+
+    public static boolean fuzzyEquals(Object a, Object b)
+    {
+        if ((a == null) != (b == null))
+        {
+            return false;
+        }
+        else if (a == null)
+        {
+            return true;
+        }
+        else if (a instanceof Float && b instanceof Float)
+        {
+            return DoubleMath.fuzzyEquals((Float) a, (Float) b, 0.01);
+        }
+        else if (a instanceof Double && b instanceof Double)
+        {
+            return DoubleMath.fuzzyEquals((Double) a, (Double) b, 0.01);
+        }
+        else if (a instanceof Entity && b instanceof Entity)
+        {
+            Entity a2 = (Entity) a;
+            Entity b2 = (Entity) b;
+            return fuzzyEquals(a2.getEntityId(), b2.getEntityId());
+        }
+        else if (a instanceof Vector3 && b instanceof Vector3)
+        {
+            Vector3 a2 = (Vector3) a;
+            Vector3 b2 = (Vector3) b;
+            return fuzzyEquals(a2.x, b2.x) &&
+                    fuzzyEquals(a2.y, b2.y) &&
+                    fuzzyEquals(a2.z, b2.z);
+        }
+        else if (a instanceof EnergyStorage && b instanceof EnergyStorage)
+        {
+            EnergyStorage a2 = (EnergyStorage) a;
+            EnergyStorage b2 = (EnergyStorage) b;
+            return fuzzyEquals(a2.getEnergyStoredGC(), b2.getEnergyStoredGC()) &&
+                    fuzzyEquals(a2.getCapacityGC(), b2.getCapacityGC()) &&
+                    fuzzyEquals(a2.getMaxReceive(), b2.getMaxReceive()) &&
+                    fuzzyEquals(a2.getMaxExtract(), b2.getMaxExtract());
+        }
+        else if (a instanceof FluidTank && b instanceof FluidTank)
+        {
+            FluidTank a2 = (FluidTank) a;
+            FluidTank b2 = (FluidTank) b;
+            FluidStack fluidA = a2.getFluid();
+            FluidStack fluidB = b2.getFluid();
+            return fuzzyEquals(a2.getCapacity(), b2.getCapacity()) &&
+                    fuzzyEquals(fluidA != null ? WorldUtil.getFluidID(fluidA) : -1, fluidB != null ? WorldUtil.getFluidID(fluidB) : -1) &&
+                    fuzzyEquals(a2.getFluidAmount(), b2.getFluidAmount());
+        }
+        else
+        {
+            return a.equals(b);
+        }
+    }
+
+    public static Object cloneNetworkedObject(Object a)
+    {
+        // We only need to clone mutable objects
+        if (a instanceof EnergyStorage)
+        {
+            EnergyStorage prevStorage = (EnergyStorage)a;
+            EnergyStorage storage = new EnergyStorage(prevStorage.getCapacityGC(), prevStorage.getMaxReceive(), prevStorage.getMaxExtract());
+            storage.setEnergyStored(prevStorage.getEnergyStoredGC());
+            return storage;
+        }
+        else if (a instanceof FluidTank)
+        {
+            FluidTank prevTank = (FluidTank)a;
+            FluidTank tank = new FluidTank(prevTank.getFluid(), prevTank.getCapacity());
+            return tank;
+        }
+        else
+        {
+            return a;
+        }
     }
 }

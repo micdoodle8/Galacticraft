@@ -10,8 +10,8 @@ import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
-import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
@@ -22,7 +22,6 @@ import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.WorldProvider;
@@ -134,37 +133,18 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
 
     private void checkFluidTankTransfer(int slot, FluidTank tank)
     {
-        if (this.containingItems[slot] != null && FluidContainerRegistry.isContainer(this.containingItems[slot]))
+        if (FluidUtil.isValidContainer(this.containingItems[slot]))
         {
             final FluidStack liquid = tank.getFluid();
 
             if (liquid != null)
             {
-                tryFillContainer(tank, liquid, slot, AsteroidsItems.methaneCanister);
+                FluidUtil.tryFillContainer(tank, liquid, this.containingItems, slot, AsteroidsItems.methaneCanister);
             }
         }
         else if (this.containingItems[slot] != null && this.containingItems[slot].getItem() instanceof ItemAtmosphericValve)
         {
             tank.drain(4, true);
-        }
-    }
-
-    private void tryFillContainer(FluidTank tank, FluidStack liquid, int slot, Item canister)
-    {
-        ItemStack slotItem = this.containingItems[slot];
-        boolean isCanister = slotItem.getItem() instanceof ItemCanisterGeneric && slotItem.getItemDamage() > 1;
-        final int amountToFill = Math.min(liquid.amount, isCanister ? slotItem.getItemDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
-
-        if (isCanister && amountToFill > 0)
-        {
-            this.containingItems[slot] = new ItemStack(canister, 1, slotItem.getItemDamage() - amountToFill);
-            tank.drain(amountToFill, true);
-        }
-        else if (amountToFill == FluidContainerRegistry.BUCKET_VOLUME)
-        {
-            this.containingItems[slot] = FluidContainerRegistry.fillFluidContainer(liquid, this.containingItems[slot]);
-            if (this.containingItems[slot] == null) this.containingItems[slot] = slotItem;
-            else tank.drain(amountToFill, true);
         }
     }
 
@@ -337,7 +317,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
             case 3:
                 return itemstack.getItem() == MarsItems.carbonFragments;
             case 4:
-                return FluidContainerRegistry.isEmptyContainer(itemstack);
+                return FluidUtil.isEmptyContainer(itemstack, AsteroidsItems.methaneCanister);
             default:
                 return false;
             }
@@ -355,7 +335,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
             case 0:
                 return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
             case 4:
-                return FluidContainerRegistry.isFilledContainer(itemstack);
+                return FluidUtil.isFullContainer(itemstack);
             default:
                 return false;
             }
@@ -377,7 +357,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
         case 3:
             return itemstack.getItem() == MarsItems.carbonFragments;
         case 4:
-            return itemstack.getItem() instanceof ItemCanisterGeneric;
+            return FluidUtil.isValidContainer(itemstack);
         }
 
         return false;

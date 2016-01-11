@@ -36,7 +36,11 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
      */
     public float produce()
     {
-        return this.extractEnergyGC(null, this.produce(false), false);
+        this.storage.maxExtractRemaining = this.storage.maxExtract;
+    	float produced = this.extractEnergyGC(null, this.produce(false), false);
+        this.storage.maxExtractRemaining -= produced;
+        if (this.storage.maxExtractRemaining < 0) this.storage.maxExtractRemaining = 0;
+        return produced;
     }
 
     /*
@@ -207,12 +211,22 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySource", modID = "IC2")
     public double getOfferedEnergy()
     {
+        if (EnergyConfigHandler.disableIC2Output)
+        {
+            return 0.0;
+        }
+
         return this.getProvide(ForgeDirection.UNKNOWN) * EnergyConfigHandler.TO_IC2_RATIO;
     }
 
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySource", modID = "IC2")
     public void drawEnergy(double amount)
     {
+        if (EnergyConfigHandler.disableIC2Output)
+        {
+            return;
+        }
+
         this.storage.extractEnergyGC((float) amount / EnergyConfigHandler.TO_IC2_RATIO, false);
     }
 
@@ -265,6 +279,11 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
     public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
     {
+        if (EnergyConfigHandler.disableRFOutput)
+        {
+            return 0;
+        }
+
     	if (!this.getElectricalOutputDirections().contains(from))
     	{
     		return 0;

@@ -1,18 +1,20 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
+import java.nio.DoubleBuffer;
+
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
-import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.api.entity.ITelemetry;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -22,7 +24,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 public class GameScreenText implements IGameScreen
 {
@@ -30,7 +34,16 @@ public class GameScreenText implements IGameScreen
     private float frameBx;
     private float frameBy;
     private int yPos;
+    private DoubleBuffer planes;
 
+    public GameScreenText()
+    {
+		if (FMLCommonHandler.instance().getEffectiveSide().isClient())
+		{
+			planes = BufferUtils.createDoubleBuffer(4 * Double.SIZE);
+		}
+    }
+    
 	public void setFrameSize(float frameSize)
 	{
 		this.frameA = frameSize;
@@ -44,17 +57,25 @@ public class GameScreenText implements IGameScreen
 		frameBx = sizeX - frameA;
     	frameBy = sizeY - frameA;
     	drawBlackBackground(0.0F);
+    	planeEquation(frameA,frameA,0,frameA,frameBy,0,frameA,frameBy,1);
+    	GL11.glClipPlane(GL11.GL_CLIP_PLANE0, planes);
+    	GL11.glEnable(GL11.GL_CLIP_PLANE0);
+    	planeEquation(frameBx,frameBy,0,frameBx,frameA,0,frameBx,frameA,1);
+    	GL11.glClipPlane(GL11.GL_CLIP_PLANE1, planes);
+    	GL11.glEnable(GL11.GL_CLIP_PLANE1);
+    	planeEquation(frameA,frameBy,0,frameBx,frameBy,0,frameBx,frameBy,1);
+    	GL11.glClipPlane(GL11.GL_CLIP_PLANE2, planes);
+    	GL11.glEnable(GL11.GL_CLIP_PLANE2);
+    	planeEquation(frameBx,frameA,0,frameA,frameA,0,frameA,frameA,1);
+    	GL11.glClipPlane(GL11.GL_CLIP_PLANE3, planes);
+    	GL11.glEnable(GL11.GL_CLIP_PLANE3);
     	yPos = 0;
 
     	TileEntityTelemetry telemeter = TileEntityTelemetry.getNearest(screen.driver);
     	//Make the text to draw.  To look good it's important the width and height
     	//of the whole text box are correctly set here.
     	String strName = "";
-    	String str0 = "No link";
-    	String str1 = "";
-    	String str2 = "";
-    	String str3 = "";
-    	String str4 = "";
+    	String[] str = { "No link", "", "", "", "" };
     	Render renderEntity = null;
     	Entity entity = null;
     	float Xmargin = 0;
@@ -92,7 +113,11 @@ public class GameScreenText implements IGameScreen
         		}
         	}
         	
-        	if (entity instanceof EntityLivingBase)
+        	if (entity instanceof ITelemetry)
+         	{
+         		((ITelemetry)entity).receiveData(telemeter.clientData, str);
+         	}
+         	else if (entity instanceof EntityLivingBase)
         	{
         		//Living entity:
         		//  data0 = time to show red damage
@@ -100,81 +125,34 @@ public class GameScreenText implements IGameScreen
         		//  data2 = pulse
         		//  data3 = hunger
         		//  data4 = oxygen
-        		str0 = telemeter.clientData[0] > 0 ? "ouch!!!!" : "";
+        		str[0] = telemeter.clientData[0] > 0 ? GCCoreUtil.translate("gui.player.ouch") : "";
 	    		if (telemeter.clientData[1] >= 0)
 	        	{
-	        		str1 = "Health: " + telemeter.clientData[1] + "%";
+	        		str[1] = GCCoreUtil.translate("gui.player.health") + ": " + telemeter.clientData[1] + "%";
 	        	}
 	    		else
-	    			str1 = "";
-	    		str2 = "" + telemeter.clientData[2] + " bpm";
+	    			str[1] = "";
+	    		str[2] = "" + telemeter.clientData[2] + " " + GCCoreUtil.translate("gui.player.bpm");
 	    		if (telemeter.clientData[3] > -1)
 	        	{
-	        		str3 = "Food: "  + telemeter.clientData[3] + "%";
+	        		str[3] = GCCoreUtil.translate("gui.player.food") + ": "  + telemeter.clientData[3] + "%";
 	        	}
 	    		if (telemeter.clientData[4] > -1)
 	        	{
 	        		int oxygen = telemeter.clientData[4];
 	        		oxygen = (oxygen % 4096) + (oxygen / 4096);
 	        		if (oxygen == 180 || oxygen == 90)
-	        			str4 = "Oxygen: OK";
+	        			str[4] = GCCoreUtil.translate("gui.oxygenStorage.desc.1") + ": OK";
 	        		else
-	        			str4 = "Oxygen: " + this.makeOxygenString(oxygen)  + GCCoreUtil.translate("gui.seconds");
+	        			str[4] = GCCoreUtil.translate("gui.oxygenStorage.desc.1") + ": " + this.makeOxygenString(oxygen) + GCCoreUtil.translate("gui.seconds");
 	        	} 
-        	}
-        	else if (entity instanceof EntitySpaceshipBase)
-        	{
-        		//Spaceships:
-        		//  data0 = launch countdown
-        		//  data1 = height
-        		//  data2 = speed
-        		//  data3 = fuel remaining
-        		//  data4 = pitch angle
-        		int countdown = telemeter.clientData[0];
-        		str0 = "";
-        		str1 = (countdown == 400) ? "On launchpad" : ((countdown > 0) ? "Countdown: " + countdown / 20 : "Launched");
-        		str2 = "Height: " + telemeter.clientData[1];
-        		str3 = "Speed: " + this.makeSpeedString(telemeter.clientData[2]);
-        		str4 = "Fuel: " + telemeter.clientData[3] + "%";
-        	}
-        	else if (GalacticraftCore.isPlanetsLoaded && entity instanceof EntityAstroMiner)
-        	{
-        		str0 = "";
-        		str1 = "";
-        		switch (telemeter.clientData[4])
-        		{
-        			case EntityAstroMiner.AISTATE_STUCK:
-        				str1 = "Out of energy!";
-        				break;
-        			case EntityAstroMiner.AISTATE_ATBASE:
-        				str1 = "Charging";
-        				break;
-        			case EntityAstroMiner.AISTATE_TRAVELLING:
-        				str1 = "Travelling";
-        				break;
-        			case EntityAstroMiner.AISTATE_MINING:
-        				str1 = "Mining";
-        				break;
-        			case EntityAstroMiner.AISTATE_RETURNING:
-        				str1 = "Returning";
-        				break;
-        			case EntityAstroMiner.AISTATE_DOCKING:
-        				str1 = "Docking";
-        				break;
-        			case EntityAstroMiner.AISTATE_OFFLINE:
-        				str1 = "Offline";
-        				break;
-        		}
-        		str2 = "dy: " + telemeter.clientData[1];
-        		str3 = "dx: " + telemeter.clientData[2];
-        		str4 = "Energy: " + telemeter.clientData[3];        		
         	}
         	else
         	//Generic - could be boats or minecarts etc - just show the speed
         	//TODO  can add more here, e.g. position data?
         	if (telemeter.clientData[2] >= 0)
         	{
-        		str2 = "Speed: " + makeSpeedString(telemeter.clientData[2]);
+        		str[2] = makeSpeedString(telemeter.clientData[2]);
         	}
     	}
     	else
@@ -182,13 +160,13 @@ public class GameScreenText implements IGameScreen
     		//Default - draw a simple time display just to show the Display Screen is working
 			World w1 = screen.driver.getWorldObj();
     		int time1 = w1 != null ? (int) ((w1.getWorldTime() + 6000L) % 24000L) : 0;
-    		str2 = makeTimeString(time1 * 360);
+    		str[2] = makeTimeString(time1 * 360);
         }
     	
     	int textWidthPixels = 155;
     	int textHeightPixels = 60;  //1 lines
-    	if (str3.isEmpty()) textHeightPixels -= 10; 
-    	if (str4.isEmpty()) textHeightPixels -= 10; 
+    	if (str[3].isEmpty()) textHeightPixels -= 10; 
+    	if (str[4].isEmpty()) textHeightPixels -= 10; 
 
     	//First pass - approximate border size
     	float borders = frameA * 2 + 0.05F * Math.min(sizeX, sizeY);
@@ -220,11 +198,11 @@ public class GameScreenText implements IGameScreen
         //Actually draw the text
         int whiteColour = ColorUtil.to32BitColor(255, 240, 216, 255);
         drawText(strName, whiteColour);
-        drawText(str0, whiteColour);
-        drawText(str1, whiteColour);
-        drawText(str2, whiteColour);
-        drawText(str3, whiteColour);
-        drawText(str4, whiteColour);
+        drawText(str[0], whiteColour);
+        drawText(str[1], whiteColour);
+        drawText(str[2], whiteColour);
+        drawText(str[3], whiteColour);
+        drawText(str[4], whiteColour);
 
         //If there is an entity to render, draw it on the left of the text
         if (renderEntity != null && entity != null ) 
@@ -234,14 +212,17 @@ public class GameScreenText implements IGameScreen
         	GL11.glScalef(scalefactor, scalefactor, 0.0015F);
         	GL11.glRotatef(180F, 0, 0, 1);
         	GL11.glRotatef(180F, 0, 1, 0);
-        	if (entity instanceof EntitySpaceshipBase)
+        	if (entity instanceof ITelemetry)
         	{
-            	GL11.glRotatef(telemeter.clientData[4], -1, 0, 0);
-            	GL11.glTranslatef(0, entity.height / 4, 0);
+            	((ITelemetry)entity).adjustDisplay(telemeter.clientData);
         	}
         	RenderPlayerGC.flagThermalOverride = true;
         	renderEntity.doRender(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
             RenderPlayerGC.flagThermalOverride = false;
+            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+            OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
         }
 
         //TODO  Cross-dimensional tracking (i.e. old entity setDead, new entity created)
@@ -251,6 +232,10 @@ public class GameScreenText implements IGameScreen
         screen.telemetryLastEntity = entity;
         screen.telemetryLastRender = renderEntity;
         screen.telemetryLastName = strName;
+    	GL11.glDisable(GL11.GL_CLIP_PLANE3);
+    	GL11.glDisable(GL11.GL_CLIP_PLANE2);
+    	GL11.glDisable(GL11.GL_CLIP_PLANE1);
+    	GL11.glDisable(GL11.GL_CLIP_PLANE0);
     }
     
     private String makeTimeString(int l)
@@ -264,22 +249,22 @@ public class GameScreenText implements IGameScreen
     	return hrsStr + ":" + minsStr + ":" + secsStr;
     }
 
-    private String makeSpeedString(int speed100)
+    public static String makeSpeedString(int speed100)
     { 	
     	int sp1 = speed100 / 100;
     	int sp2 = (speed100 % 100);
-    	String spStr1 = "" + sp1;
-    	String spStr2 = (sp2 > 9 ? "" : "0") + sp2;
-    	return spStr1 + "." + spStr2 + " " + GCCoreUtil.translate("gui.lander.velocityu");
+    	String spstr1 = GCCoreUtil.translate("gui.rocket.speed") + ": " + sp1;
+    	String spstr2 = (sp2 > 9 ? "" : "0") + sp2;
+    	return spstr1 + "." + spstr2 + " " + GCCoreUtil.translate("gui.lander.velocityu");
     }
 
     private String makeHealthString(int hearts2)
     { 	
     	int sp1 = hearts2 / 2;
     	int sp2 = (hearts2 % 2) * 5;
-    	String spStr1 = "" + sp1;
-    	String spStr2 = "" + sp2;
-    	return spStr1 + "." + spStr2 + " hearts";
+    	String spstr1 = "" + sp1;
+    	String spstr2 = "" + sp2;
+    	return spstr1 + "." + spstr2 + " hearts";
     }
 
     private String makeOxygenString(int oxygen)
@@ -287,9 +272,9 @@ public class GameScreenText implements IGameScreen
     	//Server takes 1 air away every 9 ticks (OxygenUtil.getDrainSpacing)
     	int sp1 = oxygen * 9 / 20;
     	int sp2 = ((oxygen * 9) % 20) / 2;
-    	String spStr1 = "" + sp1;
-    	String spStr2 = "" + sp2;
-    	return spStr1 + "." + spStr2;
+    	String spstr1 = "" + sp1;
+    	String spstr2 = "" + sp2;
+    	return spstr1 + "." + spstr2;
     }
 
     private void drawText(String str, int colour)
@@ -314,5 +299,16 @@ public class GameScreenText implements IGameScreen
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
+    }
+
+    private void planeEquation(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3)
+    {
+    	double[] result = new double[4];
+    	result[0] = y1 * (z2 - z3) + y2 * (z3 - z1) + y3 * (z1 - z2);
+    	result[1] = z1 * (x2 - x3) + z2 * (x3 - x1) + z3 * (x1 - x2);
+    	result[2] = x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2);
+    	result[3] = - (x1 * (y2 * z3 - y3 * z2) + x2 * (y3 * z1 - y1 * z3) + x3 * (y1 * z2 - y2 * z1));
+    	planes.put(result, 0, 4);
+    	planes.position(0);
     }
 }

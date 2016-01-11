@@ -15,6 +15,7 @@ item.grapple.name=Крюк
 item.atmosphericValve.name=Атмосферный клапан
 item.thermalCloth.name=Теплоустойчивая ткань
 item.beamCore.name=Лучевое ядро
+item.orionDrive.name=Привод Ориона
 item.tier3.desc=3-ий уровень
 
 # TOOLS
@@ -100,10 +101,27 @@ gui.message.sendingActive.name=Отправка начата
 gui.message.range.name=Дальность: %dm
 gui.message.notEnoughEnergy.name=Недостаточно энергии!
 gui.message.targetNoEnergy.name=У цели не хватает энергии!
-gui.message.grapple.fail=Мне нужно немного ниток, если я хочу метнуть этот крюк!
-gui.message.astroMiner.fail=У этой базы уже есть астрономический шахтёр!
+gui.message.grapple.fail=Мне нужно немного ниток, если я хочу кинуть этот крюк!
+gui.message.astroMiner.fail=У этой базы уже есть астрошахтёр!
 gui.message.astroMiner1.fail=Область стыковки заблокирована: 
-gui.message.astroMiner2.fail=That would be one Astro Miner too many! ##NEEDS TRANSLATE##
+gui.message.astroMiner1A.fail=Путь астрошахтёра преграждён: 
+gui.message.astroMiner2.fail=Достигнут лимит астрошахтёров!
+gui.message.astroMiner3.fail=Основание астрошахтёра было демонтировано!
+gui.message.astroMiner4.fail=У астрошахтёра кончилась энергия и он не может вернуться на базу!
+gui.message.astroMiner5.fail=Путь астрошахтёра до базы, кажется, преграждён!
+gui.message.astroMiner6.fail=Астрошахтёр закончил добычу и остановился!
+gui.message.astroMiner7.fail=Астрошахтёру нечего добывать на космической станции!
+gui.message.astroMiner8.fail=Второй астрошахтёр был обнаружен на одной и той же базе, первый остановится.
+gui.button.recall.name=Отозвать
+gui.miner.outOfRange=Вне зоны действия
+gui.miner.offline=Вне сети
+gui.miner.stuck=Застрял на: 
+gui.miner.docked=Состыкован с
+gui.miner.travelling=Перемещение
+gui.miner.mining=Добыча
+gui.miner.returning=Возвращение
+gui.miner.docking=Состыковка
+gui.miner.mined=Добыто
 
 tile.treasureT3.description=Сундуки с сокровищами 3-го уровня сейчас бесполезны.
 tile.walkway.description=Дорожки используются в декоративных целях, для соединения блоков, чтобы сохранить тему космоса.
@@ -116,7 +134,6 @@ tile.minerBase.description=Основание астрономического �
 
 # SCHEMATICS
 schematic.astroMiner.name=Астрономический шахтёр
-schematic.ionDrive.name=Ионный привод
 
 # ENTITIES
 entity.SmallAsteroidGC.name=Малый астероид
@@ -131,9 +148,6 @@ container.entryPod.name=Посадочный модуль
 
 # CONFIG GUI
 gc.configgui.dimensionIDAsteroids=ID измерения: Астероиды
-gc.configgui.idEntitySmallAsteroid=ID сущности: Малый астероид
-gc.configgui.idEntityGrappleHook=ID сущности: Крюк
-gc.configgui.idEntityTier3Rocket=ID сущности: Ракета 3-го уровня
-gc.configgui.idEntityEntryPod=ID сущности: Entry Pod
 gc.configgui.idSchematicRocketT3=ID схемы: Ракета 3-го уровня
 gc.configgui.disableGalacticraftHelium=Отключение регистрации гелия
+gc.configgui.astroMinersMax=Макс. кол-во астрошахтёров на игрока

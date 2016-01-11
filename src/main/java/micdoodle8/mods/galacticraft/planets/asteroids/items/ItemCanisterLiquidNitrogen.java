@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
@@ -12,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -132,15 +130,7 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric
                 Block result = this.canFreeze(b, meta);
                 if (result != null)
                 {
-                    itemStack.setItemDamage(damage);
-            		if (damage >= ItemCanisterGeneric.EMPTY)
-            		{
-                    	NBTTagCompound tag = new NBTTagCompound();
-            			tag.setShort("id", (short)Item.getIdFromItem(GCItems.oilCanister));
-            	        tag.setByte("Count", (byte)1);
-            	        tag.setShort("Damage", (short)ItemCanisterGeneric.EMPTY);
-            			itemStack.readFromNBT(tag);
-            		}
+	                this.setNewDamage(itemStack, damage);
                     par2World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "fire.ignite", 1.0F, Item.itemRand.nextFloat() * 0.4F + 0.8F);
                     par2World.setBlock(x, y, z, result, 0, 3);
                     return itemStack;

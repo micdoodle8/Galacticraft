@@ -5,25 +5,38 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IRenderHandler;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+import org.lwjgl.util.glu.Project;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Random;
 
 public class SkyProviderOverworld extends IRenderHandler
 {
     private static final ResourceLocation moonTexture = new ResourceLocation("textures/environment/moon_phases.png");
     private static final ResourceLocation sunTexture = new ResourceLocation("textures/environment/sun.png");
+    
+    private static boolean optifinePresent = false;
+    
+    static
+    {
+        try {
+            optifinePresent = Launch.classLoader.getClassBytes("CustomColorizer") != null;
+        } catch (final Exception e) { }
+    }
 
     public int starGLCallList = GLAllocation.generateDisplayLists(3);
     public int glSkyList;
@@ -88,13 +101,55 @@ public class SkyProviderOverworld extends IRenderHandler
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, new Object[] {}));
             ClientProxyCore.overworldTextureRequestSent = true;
         }
+        
+        double zoom = 0.0;
+        double yaw = 0.0;
+        double pitch = 0.0;
+        Method m = null;
+        
+        if (!optifinePresent)
+        {
+	        try
+	        {
+	        	Class<?> c = mc.entityRenderer.getClass();
+	        	Field cameraZoom = c.getDeclaredField(VersionUtil.getNameDynamic(VersionUtil.KEY_FIELD_CAMERA_ZOOM));
+	        	cameraZoom.setAccessible(true);
+	        	zoom = cameraZoom.getDouble(mc.entityRenderer);
+	        	Field cameraYaw = c.getDeclaredField(VersionUtil.getNameDynamic(VersionUtil.KEY_FIELD_CAMERA_YAW));
+	        	cameraYaw.setAccessible(true);
+	        	yaw = cameraYaw.getDouble(mc.entityRenderer);
+	        	Field cameraPitch = c.getDeclaredField(VersionUtil.getNameDynamic(VersionUtil.KEY_FIELD_CAMERA_PITCH));
+	        	cameraPitch.setAccessible(true);
+	        	pitch = cameraPitch.getDouble(mc.entityRenderer);
+	        	
+	            GL11.glMatrixMode(GL11.GL_PROJECTION);
+	            GL11.glLoadIdentity();
+	
+	            if (zoom != 1.0D)
+	            {
+	                GL11.glTranslatef((float)yaw, (float)(-pitch), 0.0F);
+	                GL11.glScaled(zoom, zoom, 1.0D);
+	            }
 
+	            Project.gluPerspective(mc.gameSettings.fovSetting, (float)mc.displayWidth / (float)mc.displayHeight, 0.05F, 1400.0F);
+	            GL11.glMatrixMode(GL11.GL_MODELVIEW);
+	            GL11.glLoadIdentity();
+            
+	        	m = c.getDeclaredMethod(VersionUtil.getNameDynamic(VersionUtil.KEY_METHOD_ORIENT_CAMERA), float.class);
+	        	m.setAccessible(true);
+	        	m.invoke(mc.entityRenderer, mc.gameSettings.fovSetting);
+	        }
+	        catch(Exception e)
+	        {
+	        	e.printStackTrace();
+	        }
+        }
+        
         float var20 = (float) (mc.thePlayer.posY - 200.0F) / 1000.0F;
         final float var21 = Math.max(1.0F - var20 * 4.0F, 0.0F);
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        RenderHelper.enableStandardItemLighting();
         final Vec3 var2 = this.minecraft.theWorld.getSkyColor(this.minecraft.renderViewEntity, partialTicks);
         float var3 = (float) var2.xCoord * var21;
         float var4 = (float) var2.yCoord * var21;
@@ -116,7 +171,10 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glDepthMask(false);
         GL11.glEnable(GL11.GL_FOG);
         GL11.glColor3f(var3, var4, var5);
-        GL11.glCallList(this.glSkyList);
+        if (mc.thePlayer.posY < 214)
+        {
+            GL11.glCallList(this.glSkyList);
+        }
         GL11.glDisable(GL11.GL_FOG);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_BLEND);
@@ -128,17 +186,20 @@ public class SkyProviderOverworld extends IRenderHandler
         float var11;
         float var12;
 
-        if (var24 != null)
+        if (var24 != null && mc.thePlayer.posY < 250)
         {
+            float sunsetMod = (float) (FMLClientHandler.instance().getClient().thePlayer.posY - 200.0F) / 1000.0F;
+            final float sunsetModInv = Math.min(1.0F, Math.max(1.0F - var20 * 50.0F, 0.0F));
+            
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glShadeModel(GL11.GL_SMOOTH);
             GL11.glPushMatrix();
             GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(MathHelper.sin(this.minecraft.theWorld.getCelestialAngleRadians(partialTicks)) < 0.0F ? 180.0F : 0.0F, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(90.0F, 0.0F, 0.0F, 1.0F);
-            var8 = var24[0];
-            var9 = var24[1];
-            var10 = var24[2];
+            var8 = var24[0] * sunsetModInv;
+            var9 = var24[1] * sunsetModInv;
+            var10 = var24[2] * sunsetModInv;
             float var13;
 
             if (this.minecraft.gameSettings.anaglyph)
@@ -153,10 +214,10 @@ public class SkyProviderOverworld extends IRenderHandler
 
             var23.startDrawing(6);
 
-            var23.setColorRGBA_F(var8 * var21, var9 * var21, var10 * var21, var24[3] * var21);
+            var23.setColorRGBA_F(var8 * sunsetModInv, var9 * sunsetModInv, var10 * sunsetModInv, var24[3]);
             var23.addVertex(0.0D, 100.0D, 0.0D);
             final byte var26 = 16;
-            var23.setColorRGBA_F(var24[0] * var21, var24[1] * var21, var24[2] * var21, 0.0F);
+            var23.setColorRGBA_F(var24[0] * sunsetModInv, var24[1] * sunsetModInv, var24[2] * sunsetModInv, 0.0F);
 
             for (int var27 = 0; var27 <= var26; ++var27)
             {
@@ -170,9 +231,10 @@ public class SkyProviderOverworld extends IRenderHandler
             GL11.glPopMatrix();
             GL11.glShadeModel(GL11.GL_FLAT);
         }
-
+        
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+        
         GL11.glPushMatrix();
         var8 = 1.0F - this.minecraft.theWorld.getRainStrength(partialTicks);
         var9 = 0.0F;
@@ -234,56 +296,79 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glColor3f(0.0F, 0.0F, 0.0F);
 
+        //TODO get exact height figure here
         double var25 = this.minecraft.thePlayer.posY - 64;
 
-        //TODO get exact figure here based on view distance setting
-        if (var25 > 256)
+        if (var25 > this.minecraft.gameSettings.renderDistanceChunks * 16)
         {
-        var20 *= 400.0F;
-
-        final float var22 = Math.max(Math.min(var20 / 100.0F - 0.2F, 1.0F), 0.0F);
-
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glTranslatef(0.0F, -var20 / 10 - 5, 0.0F);
-        float scale = 100 * (0.25F - var20 / 10000.0F);
-        scale = Math.max(scale, 0.2F);
-        GL11.glScalef(scale, 0.0F, scale);
-        GL11.glTranslatef(0.0F, -var20, 0.0F);
-        if (ClientProxyCore.overworldTextureLocal != null)
-        {
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureLocal.getGlTextureId());
-        }
-        else
-        {
-            this.minecraft.renderEngine.bindTexture(this.planetToRender);
-        }
-
-        var10 = 1.0F;
-
-        GL11.glColor4f(var22, var22, var22, var22);
-        var23.startDrawingQuads();
-
-        float zoomIn = (1F - (float) var25 / 768F) / 5.86F;
-        if (zoomIn < 0F) zoomIn = 0F;
-        float cornerB = 1.0F - zoomIn;
-        var23.addVertexWithUV(-var10, 0, var10, zoomIn, cornerB);
-        var23.addVertexWithUV(var10, 0, var10, cornerB, cornerB);
-        var23.addVertexWithUV(var10, 0, -var10, cornerB, zoomIn);
-        var23.addVertexWithUV(-var10, 0, -var10, zoomIn, zoomIn);
-        var23.draw();
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glPopMatrix();
+	        var20 *= 400.0F;
+	
+	        final float var22 = Math.max(Math.min(var20 / 100.0F - 0.2F, 0.5F), 0.0F);
+	
+	        GL11.glPushMatrix();
+	        GL11.glEnable(GL11.GL_TEXTURE_2D);
+	        GL11.glDisable(GL11.GL_FOG);
+	        float scale = 850 * (0.25F - var20 / 10000.0F);
+	        scale = Math.max(scale, 0.2F);
+	        GL11.glScalef(scale, 1.0F, scale);
+	        GL11.glTranslatef(0.0F, -(float)mc.thePlayer.posY, 0.0F);
+	        if (ClientProxyCore.overworldTextureLocal != null)
+	        {
+	            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureLocal.getGlTextureId());
+	        }
+	        else
+	        {
+	            this.minecraft.renderEngine.bindTexture(this.planetToRender);
+	        }
+	
+	        var10 = 1.0F;
+	
+	        GL11.glColor4f(var22, var22, var22, 1.0F);
+	        var23.startDrawingQuads();
+	
+	        float zoomIn = (1F - (float) var25 / 768F) / 5.86F;
+	        if (zoomIn < 0F) zoomIn = 0F;
+	        zoomIn = 0.0F;
+	        float cornerB = 1.0F - zoomIn;
+	        var23.addVertexWithUV(-var10, 0, var10, zoomIn, cornerB);
+	        var23.addVertexWithUV(var10, 0, var10, cornerB, cornerB);
+	        var23.addVertexWithUV(var10, 0, -var10, cornerB, zoomIn);
+	        var23.addVertexWithUV(-var10, 0, -var10, zoomIn, zoomIn);
+	        var23.draw();
+	        GL11.glDisable(GL11.GL_TEXTURE_2D);
+	        GL11.glPopMatrix();
         }
 
         GL11.glColor3f(0.0f, 0.0f, 0.0f);
 
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0.0F, -((float) (var25 - 16.0D)), 0.0F);
-        GL11.glCallList(this.glSkyList2);
-        GL11.glPopMatrix();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDepthMask(true);
+
+        if (!optifinePresent && m != null)
+        {
+	        try
+	        {
+	            GL11.glMatrixMode(GL11.GL_PROJECTION);
+	            GL11.glLoadIdentity();
+	
+	            if (zoom != 1.0D)
+	            {
+	                GL11.glTranslatef((float)yaw, (float)(-pitch), 0.0F);
+	                GL11.glScaled(zoom, zoom, 1.0D);
+	            }
+	            
+	            Project.gluPerspective(mc.gameSettings.fovSetting, (float)mc.displayWidth / (float)mc.displayHeight, 0.05F, this.minecraft.gameSettings.renderDistanceChunks * 16 * 2.0F);
+	            GL11.glMatrixMode(GL11.GL_MODELVIEW);
+	            GL11.glLoadIdentity();
+            
+	        	m.invoke(mc.entityRenderer, mc.gameSettings.fovSetting);
+	        }
+	        catch(Exception e)
+	        {
+	        	e.printStackTrace();
+	        }
+        }
+        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
     }
 
     private void renderStars()

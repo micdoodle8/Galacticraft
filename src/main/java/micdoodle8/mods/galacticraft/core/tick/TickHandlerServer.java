@@ -9,9 +9,10 @@ import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.WorldDataSpaceRaces;
@@ -24,6 +25,7 @@ import micdoodle8.mods.galacticraft.core.oxygen.ThreadFindSeal;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenTransmitter;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.MapUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
@@ -57,7 +59,7 @@ public class TickHandlerServer
     private static Map<Integer, List<BlockVec3>> edgeChecks = new HashMap<Integer, List<BlockVec3>>();
     private static LinkedList<EnergyNetwork> networkTicks = new LinkedList<EnergyNetwork>();
     public static Map<Integer, Map<Long, List<Footprint>>> serverFootprintMap = new HashMap<Integer, Map<Long, List<Footprint>>>();
-    public static List<NetworkRegistry.TargetPoint> footprintRefreshList = Lists.newArrayList();
+    public static List<BlockVec3Dim> footprintBlockChanges = Lists.newArrayList();
     public static WorldDataSpaceRaces spaceRaceData = null;
     public static ArrayList<EntityPlayerMP> playersRequestingMapData = Lists.newArrayList();
     private static long tickCount;
@@ -73,6 +75,11 @@ public class TickHandlerServer
         TickHandlerServer.edgeChecks.clear();
         TickHandlerServer.networkTicks.clear();
         TickHandlerServer.serverFootprintMap.clear();
+        TickHandlerServer.oxygenTransmitterUpdates.clear();
+        TickHandlerServer.hydrogenTransmitterUpdates.clear();
+        TickHandlerServer.energyTransmitterUpdates.clear();
+        TickHandlerServer.playersRequestingMapData.clear();
+        TickHandlerServer.networkTicks.clear();
 
         for (SpaceRace race : SpaceRaceManager.getSpaceRaces())
         {
@@ -81,6 +88,8 @@ public class TickHandlerServer
 
         TickHandlerServer.spaceRaceData = null;
         TickHandlerServer.tickCount = 0L;
+        MapUtil.calculatingMap.set(false);
+        MapUtil.doneOverworldTexture = false;
     }
 
     public static void addFootprint(long chunkKey, Footprint print, int dimID)
@@ -196,9 +205,17 @@ public class TickHandlerServer
     @SubscribeEvent
     public void onServerTick(ServerTickEvent event)
     {
-        if (event.phase == Phase.START)
-        {
-            if (TickHandlerServer.spaceRaceData == null)
+    	MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+    	//Prevent issues when clients switch to LAN servers
+    	if (server == null) return;
+
+    	if (event.phase == Phase.START)
+        {       	
+        	if (MapUtil.calculatingMap.get()) MapUtil.BiomeMapNextTick();
+            else if (!MapUtil.doneOverworldTexture) MapUtil.makeOverworldTexture();
+
+            
+        	if (TickHandlerServer.spaceRaceData == null)
             {
                 World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
                 TickHandlerServer.spaceRaceData = (WorldDataSpaceRaces) world.mapStorage.loadData(WorldDataSpaceRaces.class, WorldDataSpaceRaces.saveDataID);
@@ -214,7 +231,7 @@ public class TickHandlerServer
 
             if (TickHandlerServer.tickCount % 100 == 0)
             {
-                WorldServer[] worlds = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers;
+                WorldServer[] worlds = server.worldServers;
 
                 for (int i = 0; i < worlds.length; i++)
                 {
@@ -272,9 +289,10 @@ public class TickHandlerServer
                     }
                 }
             }
-            else if (!footprintRefreshList.isEmpty())
+
+            if (!footprintBlockChanges.isEmpty())
             {
-                for (NetworkRegistry.TargetPoint targetPoint : footprintRefreshList)
+                for (BlockVec3Dim targetPoint : footprintBlockChanges)
                 {
                     WorldServer[] worlds = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers;
 
@@ -282,20 +300,25 @@ public class TickHandlerServer
                     {
                         WorldServer world = worlds[i];
 
-                        if (world.provider.dimensionId == targetPoint.dimension)
+                        if (world.provider.dimensionId == targetPoint.dim)
                         {
                             long chunkKey = ChunkCoordIntPair.chunkXZ2Int((int)targetPoint.x >> 4, (int)targetPoint.z >> 4);
-                            Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(world.provider.dimensionId);
+                            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_FOOTPRINTS_REMOVED, new Object[] { chunkKey, new BlockVec3(targetPoint.x, targetPoint.y, targetPoint.z) }), new NetworkRegistry.TargetPoint(targetPoint.dim, targetPoint.x, targetPoint.y, targetPoint.z, 50));
 
-                            if (footprintMap != null && !footprintMap.isEmpty())
-                            {
-                                List<Footprint> footprints = footprintMap.get(chunkKey);
-                                if (footprints != null)
-                                	GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_FOOTPRINT_LIST, new Object[] { chunkKey, footprints.toArray(new Footprint[footprints.size()]) }), targetPoint);
-                            }
+
+//                            Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(world.provider.dimensionId);
+//
+//                            if (footprintMap != null && !footprintMap.isEmpty())
+//                            {
+//                                List<Footprint> footprints = footprintMap.get(chunkKey);
+//                                if (footprints != null)
+//                                	GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_FOOTPRINT_LIST, new Object[] { chunkKey, footprints.toArray(new Footprint[footprints.size()]) }), new NetworkRegistry.TargetPoint(targetPoint.dim, targetPoint.x, targetPoint.y, targetPoint.z, 50));
+//                            }
                         }
                     }
                 }
+
+                footprintBlockChanges.clear();
             }
 
             if (tickCount % 20 == 0)
@@ -465,9 +488,9 @@ public class TickHandlerServer
 
             if (changeList != null && !changeList.isEmpty())
             {
-                CopyOnWriteArrayList<ScheduledBlockChange> newList = new CopyOnWriteArrayList<ScheduledBlockChange>();
                 int blockCount = 0;
                 int blockCountMax = Math.max(this.MAX_BLOCKS_PER_TICK, changeList.size() / 4);
+                List<ScheduledBlockChange> newList = new ArrayList<ScheduledBlockChange>(Math.max(0, changeList.size() - blockCountMax));
 
                 for (ScheduledBlockChange change : changeList)
                 {
@@ -480,10 +503,11 @@ public class TickHandlerServer
 	                    if (change != null)
 	                    {
 	                        BlockVec3 changePosition = change.getChangePosition();
-	                        //Only replace blocks of type BlockAir - this is to prevent accidents where other mods have moved blocks
-	                        if (changePosition != null && world.getBlock(changePosition.x, changePosition.y, changePosition.z) instanceof BlockAir)
+                            Block block = world.getBlock(changePosition.x, changePosition.y, changePosition.z);
+	                        //Only replace blocks of type BlockAir or fire - this is to prevent accidents where other mods have moved blocks
+	                        if (changePosition != null && (block instanceof BlockAir || block == Blocks.fire))
 	                        {
-	                            world.setBlock(changePosition.x, changePosition.y, changePosition.z, change.getChangeID(), change.getChangeMeta(), 2);
+	                            world.setBlock(changePosition.x, changePosition.y, changePosition.z, change.getChangeID(), change.getChangeMeta(), change.getChangeUpdateFlag());
 	                        }
 	                    }
                     }
@@ -491,7 +515,7 @@ public class TickHandlerServer
 
                 changeList.clear();
                 TickHandlerServer.scheduledBlockChanges.remove(world.provider.dimensionId);
-                if (newList.size() > 0) TickHandlerServer.scheduledBlockChanges.put(world.provider.dimensionId, newList);
+                if (newList.size() > 0) TickHandlerServer.scheduledBlockChanges.put(world.provider.dimensionId, new CopyOnWriteArrayList<ScheduledBlockChange>(newList));
             }
 
             CopyOnWriteArrayList<BlockVec3> torchList = TickHandlerServer.scheduledTorchUpdates.get(world.provider.dimensionId);
@@ -502,13 +526,10 @@ public class TickHandlerServer
                 {
                     if (torch != null)
                     {
-                        if (world.getBlock(torch.x, torch.y, torch.z) == GCBlocks.unlitTorch)
+                        Block b = world.getBlock(torch.x, torch.y, torch.z); 
+                    	if (b instanceof BlockUnlitTorch)
                         {
-                            world.scheduleBlockUpdateWithPriority(torch.x, torch.y, torch.z, GCBlocks.unlitTorch, 2 + world.rand.nextInt(30), 0);
-                        }
-                        else if (world.getBlock(torch.x, torch.y, torch.z) == GCBlocks.unlitTorchLit)
-                        {
-                            world.scheduleBlockUpdateWithPriority(torch.x, torch.y, torch.z, GCBlocks.unlitTorchLit, 2 + world.rand.nextInt(30), 0);
+                            world.scheduleBlockUpdateWithPriority(torch.x, torch.y, torch.z, b, 2 + world.rand.nextInt(30), 0);
                         }
                     }
                 }

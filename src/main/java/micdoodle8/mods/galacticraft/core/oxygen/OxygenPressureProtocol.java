@@ -79,7 +79,10 @@ public class OxygenPressureProtocol
 
     public static boolean canBlockPassAir(World world, Block block, BlockVec3 vec, int side)
     {
-        //Check leaves first, because their isOpaqueCube() test depends on graphics settings
+        if (block == null)
+        	return true;
+    	
+    	//Check leaves first, because their isOpaqueCube() test depends on graphics settings
         //(See net.minecraft.block.BlockLeaves.isOpaqueCube()!)
         if (block instanceof BlockLeavesBase)
         {

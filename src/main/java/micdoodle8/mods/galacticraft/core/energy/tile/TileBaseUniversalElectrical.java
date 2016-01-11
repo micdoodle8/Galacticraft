@@ -447,6 +447,11 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
     public double getDemandedEnergy()
     {
+        if (EnergyConfigHandler.disableIC2Input)
+        {
+            return 0.0;
+        }
+
         try
         {
             if (this.IC2surplusInGJ < 0.001F)
@@ -472,6 +477,11 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
     public double demandedEnergyUnits()
     {
+        if (EnergyConfigHandler.disableIC2Input)
+        {
+            return 0.0;
+        }
+
         try
         {
             if (this.IC2surplusInGJ < 0.001F)
@@ -497,7 +507,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
     public double injectEnergy(ForgeDirection direction, double amount, double voltage)
     {
-        if (direction == ForgeDirection.UNKNOWN || this.getElectricalInputDirections().contains(direction))
+        if (!EnergyConfigHandler.disableIC2Input && (direction == ForgeDirection.UNKNOWN || this.getElectricalInputDirections().contains(direction)))
         {
             float convertedEnergy = (float) amount * EnergyConfigHandler.IC2_RATIO;
             int tierFromIC2 = ((int) voltage > 120) ? 2 : 1;
@@ -523,7 +533,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
     public double injectEnergyUnits(ForgeDirection direction, double amount)
     {
-        if (direction == ForgeDirection.UNKNOWN || this.getElectricalInputDirections().contains(direction))
+        if (!EnergyConfigHandler.disableIC2Input && (direction == ForgeDirection.UNKNOWN || this.getElectricalInputDirections().contains(direction)))
         {
             float convertedEnergy = (float) amount * EnergyConfigHandler.IC2_RATIO;
             int tierFromIC2 = (amount >= 128) ? 2 : 1;
@@ -637,6 +647,11 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
     @RuntimeInterface(clazz = "buildcraft.api.mj.IBatteryObject", modID = "")
     public double getEnergyRequested()
     {
+        if (EnergyConfigHandler.disableBuildCraftInput)
+        {
+            return 0.0;
+        }
+
         float requested = this.getRequest(ForgeDirection.UNKNOWN) / EnergyConfigHandler.BC3_RATIO;
         if (requested < 0.1F) requested = 0F;
         return requested;
@@ -703,6 +718,11 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
     public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
     {
+        if (EnergyConfigHandler.disableRFInput)
+        {
+            return 0;
+        }
+
     	if (!this.getElectricalInputDirections().contains(from))
     	{
     		return 0;
@@ -738,6 +758,11 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
     public double transferEnergyToAcceptor(ForgeDirection from, double amount)
     {
+        if (EnergyConfigHandler.disableMekanismInput)
+        {
+            return 0;
+        }
+
         if (!this.getElectricalInputDirections().contains(from))
         {
             return 0;
@@ -755,18 +780,33 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
     public double getEnergy()
     {
+        if (EnergyConfigHandler.disableMekanismInput)
+        {
+            return 0.0;
+        }
+
         return this.getEnergyStoredGC() / EnergyConfigHandler.MEKANISM_RATIO;
     }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
     public void setEnergy(double energy)
     {
+        if (EnergyConfigHandler.disableMekanismInput)
+        {
+            return;
+        }
+
         this.storage.setEnergyStored((float) energy * EnergyConfigHandler.MEKANISM_RATIO);
     }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
     public double getMaxEnergy()
     {
+        if (EnergyConfigHandler.disableMekanismInput)
+        {
+            return 0.0;
+        }
+
         return this.getMaxEnergyStoredGC() / EnergyConfigHandler.MEKANISM_RATIO;
     }
 

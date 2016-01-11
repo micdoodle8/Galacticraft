@@ -8,24 +8,24 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
 {
     public boolean lit;
-
-    public static IIcon[] torchIcons = new IIcon[2];
-
+    public Block litVersion;
+    public Block unlitVersion;
+    public Block fallback;
+    
     protected BlockUnlitTorch(boolean lit, String assetName)
     {
         super(Material.circuits);
@@ -37,41 +37,29 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
         this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setBlockName(assetName);
     }
+    
+    public static void register(BlockUnlitTorch unlittorch, BlockUnlitTorch littorch, Block vanillatorch)
+    {
+    	littorch.litVersion = littorch;
+    	littorch.unlitVersion = unlittorch;
+    	littorch.fallback = vanillatorch;
+    	unlittorch.litVersion = littorch;
+    	unlittorch.unlitVersion = unlittorch;
+    	unlittorch.fallback = vanillatorch;
+    	GalacticraftCore.handler.registerTorchType(littorch, vanillatorch);
+    }
+
+    public Block changeState()
+    {
+    	if (this.lit)
+    		return this.litVersion;
+    	else
+    		return this.unlitVersion;
+    }
 
     private static boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection direction, boolean nope)
     {
         return world.getBlock(x, y, z).isSideSolid(world, x, y, z, direction);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
-    {
-        if (this == GCBlocks.unlitTorch)
-        {
-            return BlockUnlitTorch.torchIcons[1];
-        }
-        else if (this == GCBlocks.unlitTorchLit)
-        {
-            return BlockUnlitTorch.torchIcons[0];
-        }
-
-        return BlockUnlitTorch.torchIcons[0];
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2)
-    {
-        return BlockUnlitTorch.torchIcons[0];
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        BlockUnlitTorch.torchIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "unlitTorchLit");
-        BlockUnlitTorch.torchIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "unlitTorch");
     }
 
     @Override
@@ -153,16 +141,14 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
     @Override
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
-        super.updateTick(par1World, par2, par3, par4, par5Random);
-
-        if (par1World.getBlockMetadata(par2, par3, par4) == 0)
-        {
-            this.onBlockAdded(par1World, par2, par3, par4);
-        }
-        else
-        {
-            this.checkOxygen(par1World, par2, par3, par4);
-        }
+    	if (par1World.getBlockMetadata(par2, par3, par4) == 0)
+    	{
+    		this.onBlockAdded(par1World, par2, par3, par4);
+    	}
+    	else
+    	{
+    		this.checkOxygen(par1World, par2, par3, par4);
+    	}
     }
 
     @Override
@@ -260,6 +246,10 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
             {
                 this.onOxygenRemoved(world, x, y, z);
             }
+        }
+        else
+        {
+            world.setBlock(x, y, z, this.fallback, world.getBlockMetadata(x, y, z), 2);
         }
     }
 
@@ -371,11 +361,7 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
     {
         if (world.provider instanceof IGalacticraftWorldProvider)
         {
-            world.setBlock(x, y, z, GCBlocks.unlitTorch, world.getBlockMetadata(x, y, z), 2);
-        }
-        else
-        {
-            world.setBlock(x, y, z, Blocks.torch, world.getBlockMetadata(x, y, z), 2);
+            world.setBlock(x, y, z, this.unlitVersion, world.getBlockMetadata(x, y, z), 2);
         }
     }
 
@@ -384,11 +370,15 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
     {
         if (world.provider instanceof IGalacticraftWorldProvider)
         {
-            world.setBlock(x, y, z, GCBlocks.unlitTorchLit, world.getBlockMetadata(x, y, z), 2);
+            world.setBlock(x, y, z, this.litVersion, world.getBlockMetadata(x, y, z), 2);
         }
-        else
-        {
-            world.setBlock(x, y, z, Blocks.torch, world.getBlockMetadata(x, y, z), 2);
-        }
+    }
+
+    @Override
+    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
+    {
+        ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+        ret.add(new ItemStack(this.litVersion));
+        return ret;
     }
 }

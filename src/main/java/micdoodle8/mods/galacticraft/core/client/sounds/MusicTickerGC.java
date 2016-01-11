@@ -15,10 +15,11 @@ public class MusicTickerGC extends MusicTicker
         super(mc);
     }
 
+    @Override
     public void update()
     {
         MusicTicker.MusicType musictype = this.field_147677_b.func_147109_W();
-
+        
         if (FMLClientHandler.instance().getWorldClient() != null && FMLClientHandler.instance().getWorldClient().provider instanceof IGalacticraftWorldProvider)
         {
             musictype = ClientProxyCore.MUSIC_TYPE_MARS;

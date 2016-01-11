@@ -22,6 +22,7 @@ public class ItemOxygenTank extends Item
         this.setMaxDamage(tier * 900);
         this.setUnlocalizedName(assetName);
         this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setNoRepair();
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

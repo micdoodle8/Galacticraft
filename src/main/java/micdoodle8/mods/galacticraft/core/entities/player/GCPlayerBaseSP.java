@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 import api.player.client.ClientPlayerAPI;
 import api.player.client.ClientPlayerBase;
 import cpw.mods.fml.common.Loader;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 
@@ -65,6 +66,18 @@ public class GCPlayerBaseSP extends ClientPlayerBase
     {
         this.getClientHandler().onUpdate(this.player);
         super.onUpdate();
+    }
+
+    @Override
+    public boolean isSneaking()
+    {
+        if (this.player.worldObj.provider instanceof WorldProviderOrbit)
+    	{
+	        GCPlayerStatsClient stats = GCPlayerStatsClient.get(this.player);
+	    	if (!this.player.onGround) return false;
+	    	if (stats.landingTicks > 0) return true;
+    	}
+        return super.isSneaking();
     }
 
 //    @Override

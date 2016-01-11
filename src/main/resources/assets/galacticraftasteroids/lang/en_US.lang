@@ -15,6 +15,7 @@ item.grapple.name=Grapple
 item.atmosphericValve.name=Atmospheric Valve
 item.thermalCloth.name=Thermal Cloth
 item.beamCore.name=Beam Core
+item.orionDrive.name=Orion Drive
 item.tier3.desc=Tier 3
 
 # TOOLS
@@ -103,11 +104,24 @@ gui.message.targetNoEnergy.name=Target doesn't have enough Energy!
 gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook!
 gui.message.astroMiner.fail=This base already has an Astro Miner!
 gui.message.astroMiner1.fail=The docking area is blocked by:
+gui.message.astroMiner1A.fail=The Astro Miner's route is blocked by:
 gui.message.astroMiner2.fail=That would be one Astro Miner too many!
 gui.message.astroMiner3.fail=The Astro Miner's base was removed!
-gui.message.astroMiner4.fail=The Astro Miner ran out of energy and cannot get back to base!
+gui.message.astroMiner4.fail=The Astro Miner is low on energy and cannot get back to base!
 gui.message.astroMiner5.fail=The Astro Miner's route into its base seems to be blocked!
 gui.message.astroMiner6.fail=The Astro Miner has finished mining the area, and will now stop!
+gui.message.astroMiner7.fail=There's nothing for an Astro Miner to mine on a space station!
+gui.message.astroMiner8.fail=A second Astro Miner was detected at the same base, the first will now freeze.
+gui.button.recall.name=Recall
+gui.miner.outOfRange=Out of range
+gui.miner.offline=Offline
+gui.miner.stuck=Stuck at:
+gui.miner.docked=Docked
+gui.miner.travelling=Traveling
+gui.miner.mining=Mining
+gui.miner.returning=Returning
+gui.miner.docking=Docking
+gui.miner.mined=Mined
 
 tile.treasureT3.description=Tier 3 Treasure Chests are currently unused.
 tile.walkway.description=Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme.
@@ -120,7 +134,6 @@ tile.minerBase.description=The Astro Miner Base is the docking point for an Astr
 
 # SCHEMATICS
 schematic.astroMiner.name=Astro Miner
-schematic.ionDrive.name=Ion Drive
 
 # ENTITIES
 entity.SmallAsteroidGC.name=Small Asteroid

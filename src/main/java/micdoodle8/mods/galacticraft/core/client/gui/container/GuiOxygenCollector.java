@@ -54,16 +54,11 @@ public class GuiOxygenCollector extends GuiContainerGC
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.fontRendererObj.drawString(this.collector.getInventoryName(), 8, 10, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.out.name") + ":", 81, 25, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.in.name") + ":", 87, 37, 4210752);
-        String status = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();
-        this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 50, 4210752);
-        status = GCCoreUtil.translate("gui.status.collecting.name") + ": " + (int) (0.5F + Math.min(this.collector.lastOxygenCollected * 20F, TileEntityOxygenCollector.OUTPUT_PER_TICK * 20F)) + GCCoreUtil.translate("gui.perSecond");
-        this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 60, 4210752);
-//		status = EnergyDisplayHelper.getEnergyDisplayS(TileEntityOxygenCollector.WATTS_PER_TICK) + "gJ/t";
-//		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 70, 4210752);
-        //		status = ElectricityDisplay.getDisplay(this.collector.getVoltage(), ElectricUnit.VOLTAGE);
-//		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 80, 4210752);
+        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.out.name") + ":", 99, 25, 4210752, this.fontRendererObj);
+        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 37, 4210752, this.fontRendererObj);
+        GCCoreUtil.drawStringCentered(GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus(), this.xSize / 2, 50, 4210752, this.fontRendererObj);
+        String status = GCCoreUtil.translate("gui.status.collecting.name") + ": " + (int) (0.5F + Math.min(this.collector.lastOxygenCollected * 20F, TileEntityOxygenCollector.OUTPUT_PER_TICK * 20F)) + GCCoreUtil.translate("gui.perSecond");
+        GCCoreUtil.drawStringCentered(status, this.xSize / 2, 60, 4210752, this.fontRendererObj);
         this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 90 + 2, 4210752);
     }
 

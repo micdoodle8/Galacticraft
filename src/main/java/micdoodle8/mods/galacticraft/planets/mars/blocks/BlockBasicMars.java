@@ -12,7 +12,6 @@ import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityDungeonSpawnerMars;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -242,6 +241,12 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     }
 
     @Override
+    public int getDamageValue(World p_149643_1_, int p_149643_2_, int p_149643_3_, int p_149643_4_)
+    {
+    	return p_149643_1_.getBlockMetadata(p_149643_2_, p_149643_3_, p_149643_4_);    	
+    }
+
+    @Override
     public int quantityDropped(int meta, int fortune, Random random)
     {
         if (meta == 10)
@@ -330,7 +335,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     @Override
     public boolean isTerraformable(World world, int x, int y, int z)
     {
-        return world.getBlockMetadata(x, y, z) == 5 && world.getBlock(x, y + 1, z) instanceof BlockAir;
+        return world.getBlockMetadata(x, y, z) == 5 && !world.getBlock(x, y + 1, z).isOpaqueCube();
     }
 
     @Override

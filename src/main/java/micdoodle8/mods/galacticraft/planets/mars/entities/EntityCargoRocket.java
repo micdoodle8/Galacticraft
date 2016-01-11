@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.entities;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
@@ -19,6 +18,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
@@ -33,6 +33,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     public EntityCargoRocket(World par1World)
     {
         super(par1World);
+        this.setSize(0.98F, 2F);
     }
 
     public EntityCargoRocket(World par1World, double par2, double par4, double par6, EnumRocketType rocketType)
@@ -40,6 +41,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
         super(par1World, par2, par4, par6);
         this.rocketType = rocketType;
         this.cargoItems = new ItemStack[this.getSizeInventory()];
+        this.setSize(0.98F, 2F);
     }
 
     @Override
@@ -63,10 +65,16 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
         return weight;
     }
 
+	@Override
+	public ItemStack getPickedResult(MovingObjectPosition target)
+	{
+	return new ItemStack(MarsItems.spaceship, 1, this.rocketType.getIndex() + 10);
+	}
+
     @Override
     public void onUpdate()
     {
-        if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal() && this.hasValidFuel() && !this.worldObj.isRemote)
+        if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal() && this.hasValidFuel())
         {
             double motionScalar = this.timeSinceLaunch / 250;
 
@@ -102,7 +110,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
 					this.stopRocketSound();
             }
         }
-        else if (!this.hasValidFuel() && this.getLaunched() && !this.worldObj.isRemote)
+        else if (!this.hasValidFuel() && this.getLaunched())
         {
             if (Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 10 != 0.0)
             {
@@ -147,6 +155,12 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
                 this.spawnParticles(this.getLaunched());
             }
         }
+    }
+
+    @Override
+    protected boolean shouldMoveClientSide()
+    {
+        return true;
     }
 
     protected void spawnParticles(boolean launched)
@@ -214,12 +228,12 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
         {
             if (this.targetDimension != this.worldObj.provider.dimensionId)
             {
-                WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(this.targetDimension);
+                World worldServer = GalacticraftCore.proxy.getWorldForID(this.targetDimension);
 
                 if (!this.worldObj.isRemote && worldServer != null)
                 {
                     this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
-                    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, worldServer, false, null);
+                    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (WorldServer) worldServer, false, null);
 
                     if (e instanceof EntityCargoRocket)
                     {

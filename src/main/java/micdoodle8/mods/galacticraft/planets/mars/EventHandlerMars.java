@@ -123,6 +123,10 @@ public class EventHandlerMars
         {
             event.shouldRotate = false;
         }
+        else
+        {
+        	event.vanillaOverride = true;
+        }
     }
 
     private WorldGenerator eggGenerator;

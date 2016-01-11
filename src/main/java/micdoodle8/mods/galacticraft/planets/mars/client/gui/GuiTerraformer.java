@@ -158,7 +158,7 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
             return EnumColor.RED + GCCoreUtil.translate("gui.message.noSaplings.name");
         }
 
-        if (this.terraformer.terraformBubble.getSize() < this.terraformer.MAX_SIZE - 0.5)
+        if (this.terraformer.getBubbleSize() < this.terraformer.MAX_SIZE - 0.5)
         {
             return EnumColor.YELLOW + GCCoreUtil.translate("gui.message.bubbleExp.name");
         }
@@ -201,16 +201,14 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
 
         waterLevel = this.terraformer.getScaledWaterLevel(26);
         this.drawTexturedModalRect((this.width - this.xSize) / 2 + 56, (this.height - this.ySize) / 2 + 17 + 27 - waterLevel, 176, 26 - waterLevel, 39, waterLevel);
-        if (this.terraformer.getBubble() != null)
-        {
-            this.checkboxRenderBubble.isSelected = this.terraformer.getBubble().shouldRender();
-        }
+
+        this.checkboxRenderBubble.isSelected = this.terraformer.shouldRenderBubble;
     }
 
     @Override
     public void onSelectionChanged(GuiElementCheckbox checkbox, boolean newSelected)
     {
-        this.terraformer.terraformBubble.setShouldRender(newSelected);
+        this.terraformer.shouldRenderBubble = newSelected;
         GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 6, this.terraformer.xCoord, this.terraformer.yCoord, this.terraformer.zCoord, newSelected ? 1 : 0 }));
     }
 
@@ -223,12 +221,7 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
     @Override
     public boolean getInitiallySelected(GuiElementCheckbox checkbox)
     {
-        if (this.terraformer.terraformBubble == null)
-        {
-            return false;
-        }
-
-        return this.terraformer.terraformBubble.shouldRender();
+        return this.terraformer.shouldRenderBubble;
     }
 
     @Override

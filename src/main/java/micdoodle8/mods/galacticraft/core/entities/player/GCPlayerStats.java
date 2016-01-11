@@ -1,24 +1,26 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
+import com.google.common.collect.Maps;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.command.CommandGCInv;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
-
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
 public class GCPlayerStats implements IExtendedEntityProperties
 {
@@ -32,6 +34,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
     public int airRemaining2;
 
     public int thermalLevel;
+    public boolean thermalLevelNormalising;
 
     public int damageCounter;
 
@@ -98,7 +101,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
     public double coordsTeleportedFromX;
     public double coordsTeleportedFromZ;
 
-    public int spaceStationDimensionID = -1;
+    public HashMap<Integer, Integer> spaceStationDimensionData = Maps.newHashMap();
 
     public boolean oxygenSetupValid;
     public boolean lastOxygenSetupValid;
@@ -114,7 +117,9 @@ public class GCPlayerStats implements IExtendedEntityProperties
     public int cryogenicChamberCooldown;
 
     public boolean receivedSoundWarning;
+    public boolean receivedBedWarning;
     public boolean openedSpaceRaceManager = false;
+	public boolean sentFlags = false;
 	public boolean newInOrbit = true;
 	public int buildFlags = 0;
 
@@ -137,7 +142,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
         nbt.setInteger("teleportCooldown", this.teleportCooldown);
         nbt.setDouble("coordsTeleportedFromX", this.coordsTeleportedFromX);
         nbt.setDouble("coordsTeleportedFromZ", this.coordsTeleportedFromZ);
-        nbt.setInteger("spaceStationDimensionID", this.spaceStationDimensionID);
+        nbt.setString("spaceStationDimensionInfo", WorldUtil.spaceStationDataToString(this.spaceStationDimensionData));
         nbt.setInteger("thermalLevel", this.thermalLevel);
 
         Collections.sort(this.unlockedSchematics);
@@ -191,10 +196,10 @@ public class GCPlayerStats implements IExtendedEntityProperties
 
         nbt.setInteger("CryogenicChamberCooldown", this.cryogenicChamberCooldown);
         nbt.setBoolean("ReceivedSoundWarning", this.receivedSoundWarning);
+        nbt.setBoolean("ReceivedBedWarning", this.receivedBedWarning);
         nbt.setInteger("BuildFlags", this.buildFlags);
         nbt.setBoolean("ShownSpaceRace", this.openedSpaceRaceManager);
-        if (ConfigManagerCore.enableDebug) GCLog.info("Saving GC player data for " + player.get().getGameProfile().getName()  + " : " + this.buildFlags);
-        nbt.setInteger("AstroMinerCount", this.astroMinerCount);
+        nbt.setInteger("AstroMinerCount", this.astroMinerCount);       
     }
 
     @Override
@@ -218,10 +223,14 @@ public class GCPlayerStats implements IExtendedEntityProperties
         // inventory, load it now
         // (if there was no offline load, then the dontload flag in doLoad()
         // will make sure nothing happens)
-        ItemStack[] saveinv = CommandGCInv.getSaveData(this.player.get().getGameProfile().getName().toLowerCase());
-        if (saveinv != null)
+        EntityPlayerMP p = this.player.get();
+        if (p != null)
         {
-            CommandGCInv.doLoad(this.player.get());
+	        ItemStack[] saveinv = CommandGCInv.getSaveData(p.getGameProfile().getName().toLowerCase());
+	        if (saveinv != null)
+	        {
+	            CommandGCInv.doLoad(p);
+	        }
         }
 
         if (nbt.hasKey("SpaceshipTier"))
@@ -249,7 +258,15 @@ public class GCPlayerStats implements IExtendedEntityProperties
         this.teleportCooldown = nbt.getInteger("teleportCooldown");
         this.coordsTeleportedFromX = nbt.getDouble("coordsTeleportedFromX");
         this.coordsTeleportedFromZ = nbt.getDouble("coordsTeleportedFromZ");
-        this.spaceStationDimensionID = nbt.getInteger("spaceStationDimensionID");
+        if (nbt.hasKey("spaceStationDimensionID"))
+        {
+            // If loading from an old save file, the home space station is always the overworld, so use 0 as home planet
+            this.spaceStationDimensionData = WorldUtil.stringToSpaceStationData("0$" + nbt.getInteger("spaceStationDimensionID"));
+        }
+        else
+        {
+            this.spaceStationDimensionData = WorldUtil.stringToSpaceStationData(nbt.getString("spaceStationDimensionInfo"));
+        }
 
         if (nbt.getBoolean("usingPlanetSelectionGui"))
         {
@@ -277,13 +294,16 @@ public class GCPlayerStats implements IExtendedEntityProperties
 
         this.unlockedSchematics = new ArrayList<ISchematicPage>();
 
-        for (int i = 0; i < nbt.getTagList("Schematics", 10).tagCount(); ++i)
+        if (p != null)
         {
-            final NBTTagCompound nbttagcompound = nbt.getTagList("Schematics", 10).getCompoundTagAt(i);
-
-            final int j = nbttagcompound.getInteger("UnlockedPage");
-
-            SchematicRegistry.addUnlockedPage(this.player.get(), SchematicRegistry.getMatchingRecipeForID(j));
+	        for (int i = 0; i < nbt.getTagList("Schematics", 10).tagCount(); ++i)
+	        {
+	            final NBTTagCompound nbttagcompound = nbt.getTagList("Schematics", 10).getCompoundTagAt(i);
+	
+	            final int j = nbttagcompound.getInteger("UnlockedPage");
+	
+	            SchematicRegistry.addUnlockedPage(p, SchematicRegistry.getMatchingRecipeForID(j));
+	        }
         }
 
         Collections.sort(this.unlockedSchematics);
@@ -293,6 +313,10 @@ public class GCPlayerStats implements IExtendedEntityProperties
         if (nbt.hasKey("ReceivedSoundWarning"))
         {
             this.receivedSoundWarning = nbt.getBoolean("ReceivedSoundWarning");
+        }
+        if (nbt.hasKey("ReceivedBedWarning"))
+        {
+            this.receivedBedWarning = nbt.getBoolean("ReceivedBedWarning");
         }
 
         if (nbt.hasKey("LaunchpadStack"))
@@ -318,6 +342,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
         if (nbt.hasKey("AstroMinerCount"))
         	this.astroMinerCount = nbt.getInteger("AstroMinerCount");
 
+        this.sentFlags = false;
         if (ConfigManagerCore.enableDebug) GCLog.info("Loading GC player data for " + player.get().getGameProfile().getName() + " : " + this.buildFlags);
     }
 
@@ -336,6 +361,16 @@ public class GCPlayerStats implements IExtendedEntityProperties
         return (GCPlayerStats) player.getExtendedProperties(GCPlayerStats.GC_PLAYER_PROP);
     }
 
+    public static void tryBedWarning(EntityPlayerMP player)
+    {
+		final GCPlayerStats GCPlayer = GCPlayerStats.get(player); 
+    	if (!GCPlayer.receivedBedWarning)
+		{
+			player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.bedFail.message")));
+			GCPlayer.receivedBedWarning = true;
+		}
+    }
+
     public void copyFrom(GCPlayerStats oldData, boolean keepInv)
     {
         if (keepInv)
@@ -343,12 +378,14 @@ public class GCPlayerStats implements IExtendedEntityProperties
             this.extendedInventory.copyInventory(oldData.extendedInventory);
         }
 
-        this.spaceStationDimensionID = oldData.spaceStationDimensionID;
+        this.spaceStationDimensionData = oldData.spaceStationDimensionData;
         this.unlockedSchematics = oldData.unlockedSchematics;
         this.receivedSoundWarning = oldData.receivedSoundWarning;
+        this.receivedBedWarning = oldData.receivedBedWarning;
         this.openedSpaceRaceManager = oldData.openedSpaceRaceManager;
         this.spaceRaceInviteTeamID = oldData.spaceRaceInviteTeamID;
         this.buildFlags = oldData.buildFlags;
         this.astroMinerCount = oldData.astroMinerCount;
+        this.sentFlags = false;
     }
 }

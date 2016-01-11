@@ -6,23 +6,30 @@ import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
+import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
+import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.WorldChunkManagerAsteroids;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.TreeMap;
 
-public class WorldProviderAsteroids extends WorldProviderSpace
+public class WorldProviderAsteroids extends WorldProviderSpace implements ISolarLevel
 {
     //Used to list asteroid centres to external code that needs to know them
     private HashSet<BlockVec3> asteroidCentres = new HashSet();
     private boolean dataNotLoaded = true;
     private AsteroidSaveData datafile;
+	private double solarMultiplier = -1D;
 
     //	@Override
 //	public void registerWorldChunkManager()
@@ -64,6 +71,11 @@ public class WorldProviderAsteroids extends WorldProviderSpace
     public long getDayLength()
     {
         return 0;
+    }
+
+    public boolean isDaytime()
+    {
+        return true;
     }
 
     @Override
@@ -112,7 +124,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace
     @Override
     public int getAverageGroundLevel()
     {
-        return 44;
+        return 96;
     }
 
     @Override
@@ -121,16 +133,38 @@ public class WorldProviderAsteroids extends WorldProviderSpace
         return true;
     }
 
+	//Overriding only in case the Galacticraft API is not up-to-date
+    //(with up-to-date API this makes zero difference)
+    @Override
+    public boolean isSurfaceWorld()
+    {
+        return (this.worldObj == null) ? false : this.worldObj.isRemote;
+    }
+
+	//Overriding so that beds do not explode on Asteroids
+	@Override
+	public boolean canRespawnHere()
+	{
+		if (EventHandlerGC.bedActivated)
+		{
+			EventHandlerGC.bedActivated = false;
+			return true;
+		}
+		return false;
+	}
+	
+	//Overriding only in case the Galacticraft API is not up-to-date
+    //(with up-to-date API this makes zero difference)
+    @Override
+    public int getRespawnDimension(EntityPlayerMP player)
+    {
+        return this.shouldForceRespawn() ? this.dimensionId : 0;
+    }
+
     @Override
     public float getGravity()
     {
         return 0.072F;
-    }
-
-    @Override
-    public int getHeight()
-    {
-        return 800;
     }
 
     @Override
@@ -267,7 +301,11 @@ public class WorldProviderAsteroids extends WorldProviderSpace
 
     public BlockVec3 getClosestAsteroidXZ(int x, int y, int z)
     {
-        BlockVec3 target = new BlockVec3(x, y, z);
+        if (this.dataNotLoaded)
+        {
+            this.loadAsteroidSavedData();
+        }
+
         if (this.asteroidCentres.size() == 0)
         {
             return null;
@@ -278,47 +316,92 @@ public class WorldProviderAsteroids extends WorldProviderSpace
 
         for (BlockVec3 test : this.asteroidCentres)
         {
-            int dx = target.x - test.x;
-            int dz = target.z - test.z;
+            int dx = x - test.x;
+            int dz = z - test.z;
             int a = dx * dx + dz * dz;
             if (a < lowestDistance)
             {
                 lowestDistance = a;
-                result = test.clone();
+                result = test;
             }
         }
 
-        return result;
+        return result.clone();
     }
 
-/*    public BlockVec3[] getClosestAsteroidsXZ(int x, int y, int z, int facing, int count)
+    public ArrayList<BlockVec3> getClosestAsteroidsXZ(int x, int y, int z, int facing, int count)
     {
+        if (this.dataNotLoaded)
+        {
+            this.loadAsteroidSavedData();
+        }
+
         if (this.asteroidCentres.size() == 0)
         {
-            return new BlockVec3[0];
+            return null;
         }
 
-        BlockVec3 target[] = new BlockVec3[count];
-        int dist[] = new int[count];
+        TreeMap<Integer, BlockVec3> targets = new TreeMap();
         
-        for (int i = 0; i < count; i++)
-        	dist[i] = Integer.MAX_VALUE;
-
         for (BlockVec3 test : this.asteroidCentres)
         {
-            int dx = target.x - test.x;
-            int dz = target.z - test.z;
-            int a = dx * dx + dz * dz;
-            if (a < lowestDistance)
+            switch (facing)
             {
-                lowestDistance = a;
-                result = test.clone();
+            case 2:
+            	if (z - 16 < test.z)
+            		continue;
+            	break;
+            case 3:
+            	if (z + 16 > test.z)
+            		continue;
+            	break;
+            case 4:
+            	if (x - 16 < test.x)
+            		continue;
+            	break;
+            case 5:
+            	if (x + 16 > test.x)
+            		continue;
+            	break;
             }
+        	int dx = x - test.x;
+            int dz = z - test.z;
+            int a = dx * dx + dz * dz;
+            if (a < 262144) targets.put(a, test);
         }
 
-        return result;
+        int max = Math.max(count,  targets.size());
+        if (max <= 0) return null;
+        
+        ArrayList<BlockVec3> returnValues = new ArrayList();
+        int i = 0;
+        int offset = EntityAstroMiner.MINE_LENGTH_AST / 2;
+        for (BlockVec3 target : targets.values())
+        {
+        	BlockVec3 coords = target.clone();
+        	System.out.println("Found nearby asteroid at "+ target.toString());
+            switch (facing)
+            {
+            case 2:
+            	coords.z += offset;
+            	break;
+            case 3:
+            	coords.z -= offset;
+            	break;
+            case 4:
+            	coords.x += offset;
+            	break;
+            case 5:
+            	coords.x -= offset;
+            	break;
+            }
+        	returnValues.add(coords);
+        	if (++i >= count) break; 
+        }
+        
+        return returnValues;
     }
-*/
+
     
     @Override
     public float getWindLevel()
@@ -338,4 +421,15 @@ public class WorldProviderAsteroids extends WorldProviderSpace
         super.registerWorldChunkManager();
         this.hasNoSky = true;
     }
+
+	@Override
+	public double getSolarEnergyMultiplier()
+	{
+		if (this.solarMultiplier < 0D)
+		{
+			double s = this.getSolarSize();
+			this.solarMultiplier = s * s * s * ConfigManagerCore.spaceStationEnergyScalar;
+		}
+		return this.solarMultiplier;
+	}
 }

@@ -1,17 +1,24 @@
 package micdoodle8.mods.galacticraft.core;
 
-import api.player.server.ServerPlayerAPI;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
+import java.io.File;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
-import micdoodle8.mods.galacticraft.api.galaxies.*;
+import micdoodle8.mods.galacticraft.api.client.IGameScreen;
+import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
+import micdoodle8.mods.galacticraft.api.galaxies.Moon;
+import micdoodle8.mods.galacticraft.api.galaxies.Planet;
+import micdoodle8.mods.galacticraft.api.galaxies.Satellite;
+import micdoodle8.mods.galacticraft.api.galaxies.SolarSystem;
+import micdoodle8.mods.galacticraft.api.galaxies.Star;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -20,17 +27,46 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockFluidGC;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.MaterialOleaginous;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiHandler;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.GameScreenBasic;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.GameScreenCelestial;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GameScreenText;
-import micdoodle8.mods.galacticraft.core.command.*;
-import micdoodle8.mods.galacticraft.core.dimension.*;
+import micdoodle8.mods.galacticraft.core.command.CommandGCEnergyUnits;
+import micdoodle8.mods.galacticraft.core.command.CommandGCHelp;
+import micdoodle8.mods.galacticraft.core.command.CommandGCInv;
+import micdoodle8.mods.galacticraft.core.command.CommandJoinSpaceRace;
+import micdoodle8.mods.galacticraft.core.command.CommandKeepDim;
+import micdoodle8.mods.galacticraft.core.command.CommandPlanetTeleport;
+import micdoodle8.mods.galacticraft.core.command.CommandSpaceStationAddOwner;
+import micdoodle8.mods.galacticraft.core.command.CommandSpaceStationChangeOwner;
+import micdoodle8.mods.galacticraft.core.command.CommandSpaceStationRemoveOwner;
+import micdoodle8.mods.galacticraft.core.dimension.TeleportTypeMoon;
+import micdoodle8.mods.galacticraft.core.dimension.TeleportTypeOrbit;
+import micdoodle8.mods.galacticraft.core.dimension.TeleportTypeOverworld;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.grid.ChunkPowerHandler;
-import micdoodle8.mods.galacticraft.core.entities.*;
+import micdoodle8.mods.galacticraft.core.entities.EntityAlienVillager;
+import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
+import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
+import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
+import micdoodle8.mods.galacticraft.core.entities.EntityLander;
+import micdoodle8.mods.galacticraft.core.entities.EntityMeteor;
+import micdoodle8.mods.galacticraft.core.entities.EntityMeteorChunk;
+import micdoodle8.mods.galacticraft.core.entities.EntityParachest;
+import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
+import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerBaseMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
+import micdoodle8.mods.galacticraft.core.items.ItemBucketGC;
+import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.network.ConnectionEvents;
 import micdoodle8.mods.galacticraft.core.network.ConnectionPacket;
 import micdoodle8.mods.galacticraft.core.network.GalacticraftChannelHandler;
@@ -40,8 +76,53 @@ import micdoodle8.mods.galacticraft.core.schematic.SchematicAdd;
 import micdoodle8.mods.galacticraft.core.schematic.SchematicMoonBuggy;
 import micdoodle8.mods.galacticraft.core.schematic.SchematicRocketT1;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
-import micdoodle8.mods.galacticraft.core.tile.*;
-import micdoodle8.mods.galacticraft.core.util.*;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLock;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFueler;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFuelerSingle;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoLoader;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoUnloader;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityDish;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityFallenMeteor;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityIngotCompressor;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPadSingle;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityNasaWorkbench;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenCollector;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenCompressor;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDecompressor;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDetector;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenPipe;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityRefinery;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
+import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
+import micdoodle8.mods.galacticraft.core.tile.TileEntitySpaceStationBase;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityThruster;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
+import micdoodle8.mods.galacticraft.core.util.ColorUtil;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.CreativeTabGC;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.ThreadRequirementMissing;
+import micdoodle8.mods.galacticraft.core.util.ThreadVersionCheck;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.world.gen.OreGenOtherMods;
 import micdoodle8.mods.galacticraft.core.world.gen.OverworldGenerator;
@@ -49,6 +130,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -61,16 +143,22 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-
-import javax.imageio.ImageIO;
-import javax.imageio.ImageWriteParam;
-import javax.imageio.ImageWriter;
-
-import java.io.File;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import api.player.server.ServerPlayerAPI;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppedEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(name = GalacticraftCore.NAME, version = Constants.LOCALMAJVERSION + "." + Constants.LOCALMINVERSION + "." + Constants.LOCALBUILDVERSION, useMetadata = true, modid = Constants.MOD_ID_CORE, dependencies = "required-after:Forge@[10.12.2.1147,); required-after:FML@[7.2.217.1147,); required-after:Micdoodlecore; after:IC2; after:BuildCraft|Core; after:BuildCraft|Energy; after:IC2", guiFactory = "micdoodle8.mods.galacticraft.core.client.gui.screen.ConfigGuiFactoryCore")
 public class GalacticraftCore
@@ -86,6 +174,7 @@ public class GalacticraftCore
     public static boolean isPlanetsLoaded;
     
     public static GalacticraftChannelHandler packetPipeline;
+    public static GCPlayerHandler handler;
 
     public static CreativeTabs galacticraftBlocksTab;
     public static CreativeTabs galacticraftItemsTab;
@@ -110,8 +199,6 @@ public class GalacticraftCore
     public static String TEXTURE_PREFIX = GalacticraftCore.ASSET_PREFIX + ":";
     public static String PREFIX = "micdoodle8.";  
 
-    public static Fluid gcFluidOil;
-    public static Fluid gcFluidFuel;
     public static Fluid fluidOil;
     public static Fluid fluidFuel;
 	public static Material materialOil = new MaterialOleaginous(MapColor.brownColor);
@@ -130,7 +217,7 @@ public class GalacticraftCore
     	GCCoreUtil.nextID = 0;
     	
     	MinecraftForge.EVENT_BUS.register(new EventHandlerGC());
-        GCPlayerHandler handler = new GCPlayerHandler();
+        handler = new GCPlayerHandler();
         MinecraftForge.EVENT_BUS.register(handler);
         FMLCommonHandler.instance().bus().register(handler);
         GalacticraftCore.proxy.preInit(event);
@@ -142,36 +229,125 @@ public class GalacticraftCore
         EnergyConfigHandler.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.POWER_CONFIG_FILE));
         ChunkLoadingCallback.loadConfig(new File(event.getModConfigurationDirectory(), GalacticraftCore.CHUNKLOADER_CONFIG_FILE));
 
-        String nameOil = "oil";
-        String nameFuel = "fuel"; 
-        if (FluidRegistry.getFluid(nameOil) != null) nameOil = "oilgc";
-        if (FluidRegistry.getFluid(nameFuel) != null) nameFuel = "fuelgc";        
-        GalacticraftCore.gcFluidOil = new Fluid(nameOil).setDensity(800).setViscosity(1500);
-        GalacticraftCore.gcFluidFuel = new Fluid(nameFuel).setDensity(400).setViscosity(900);
-        FluidRegistry.registerFluid(GalacticraftCore.gcFluidOil);
-        FluidRegistry.registerFluid(GalacticraftCore.gcFluidFuel);
-        GalacticraftCore.gcFluidOil = FluidRegistry.getFluid(nameOil); 
-        GalacticraftCore.gcFluidFuel = FluidRegistry.getFluid(nameFuel);
-        GalacticraftCore.fluidOil = FluidRegistry.getFluid("oil"); 
-        GalacticraftCore.fluidFuel = FluidRegistry.getFluid("fuel");
-
-        GCBlocks.crudeOilStill = new BlockFluidGC(GalacticraftCore.gcFluidOil, "oil");
-        ((BlockFluidGC) GCBlocks.crudeOilStill).setQuantaPerBlock(3);
-        GCBlocks.crudeOilStill.setBlockName("crudeOilStill");
-        GameRegistry.registerBlock(GCBlocks.crudeOilStill, ItemBlockGC.class, GCBlocks.crudeOilStill.getUnlocalizedName());
-        if (GalacticraftCore.gcFluidOil.getBlock() == null)
+        String oilID = "oil";
+        String fuelID = "fuel";
+        if (ConfigManagerCore.useOldOilFluidID)
         {
-            GalacticraftCore.gcFluidOil.setBlock(GCBlocks.crudeOilStill);
+            oilID = "oilgc";
+        }
+        if (ConfigManagerCore.useOldFuelFluidID)
+        {
+            fuelID = "fuelgc";
         }
 
-        GCBlocks.fuelStill = new BlockFluidGC(GalacticraftCore.gcFluidFuel, "fuel");
-        ((BlockFluidGC) GCBlocks.fuelStill).setQuantaPerBlock(6);
-        GCBlocks.fuelStill.setBlockName("fuel");
-        GameRegistry.registerBlock(GCBlocks.fuelStill, ItemBlockGC.class, GCBlocks.fuelStill.getUnlocalizedName());
-        if (GalacticraftCore.gcFluidFuel.getBlock() == null)
+        // Oil:
+        if (!FluidRegistry.isFluidRegistered(oilID))
         {
-            GalacticraftCore.gcFluidFuel.setBlock(GCBlocks.fuelStill);
+            Fluid gcFluidOil = new Fluid(oilID).setDensity(800).setViscosity(1500);
+            FluidRegistry.registerFluid(gcFluidOil);
         }
+        else
+        {
+            GCLog.info("Galacticraft oil is not default, issues may occur.");
+        }
+
+        fluidOil = FluidRegistry.getFluid(oilID);
+
+        if (fluidOil.getBlock() == null)
+        {
+            GCBlocks.crudeOil = new BlockFluidGC(fluidOil, "oil");
+            ((BlockFluidGC) GCBlocks.crudeOil).setQuantaPerBlock(3);
+            GCBlocks.crudeOil.setBlockName("crudeOilStill");
+            GameRegistry.registerBlock(GCBlocks.crudeOil, ItemBlockGC.class, GCBlocks.crudeOil.getUnlocalizedName());
+            fluidOil.setBlock(GCBlocks.crudeOil);
+        }
+        else
+        {
+            GCBlocks.crudeOil = fluidOil.getBlock();
+        }
+
+        if (GCBlocks.crudeOil != null)
+        {
+            GCItems.bucketOil = new ItemBucketGC(GCBlocks.crudeOil, GalacticraftCore.TEXTURE_PREFIX);
+            GCItems.bucketOil.setUnlocalizedName("bucketOil");
+            GCItems.registerItem(GCItems.bucketOil);
+            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(oilID, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(GCItems.bucketOil), new ItemStack(Items.bucket));
+        }
+
+        EventHandlerGC.bucketList.put(GCBlocks.crudeOil, GCItems.bucketOil);
+
+        // Fuel:
+        if (!FluidRegistry.isFluidRegistered(fuelID))
+        {
+            Fluid gcFluidFuel = new Fluid(fuelID).setDensity(400).setViscosity(900);
+            FluidRegistry.registerFluid(gcFluidFuel);
+        }
+        else
+        {
+            GCLog.info("Galacticraft fuel is not default, issues may occur.");
+        }
+
+        fluidFuel = FluidRegistry.getFluid(fuelID);
+
+        if (fluidFuel.getBlock() == null)
+        {
+            GCBlocks.fuel = new BlockFluidGC(fluidFuel, "fuel");
+            ((BlockFluidGC) GCBlocks.fuel).setQuantaPerBlock(3);
+            GCBlocks.fuel.setBlockName("fuel");
+            GameRegistry.registerBlock(GCBlocks.fuel, ItemBlockGC.class, GCBlocks.fuel.getUnlocalizedName());
+            fluidFuel.setBlock(GCBlocks.fuel);
+        }
+        else
+        {
+            GCBlocks.fuel = fluidFuel.getBlock();
+        }
+
+        if (GCBlocks.fuel != null)
+        {
+            GCItems.bucketFuel = new ItemBucketGC(GCBlocks.fuel, GalacticraftCore.TEXTURE_PREFIX);
+            GCItems.bucketFuel.setUnlocalizedName("bucketFuel");
+            GCItems.registerItem(GCItems.bucketFuel);
+            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(fuelID, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(GCItems.bucketFuel), new ItemStack(Items.bucket));
+        }
+
+        EventHandlerGC.bucketList.put(GCBlocks.fuel, GCItems.bucketFuel);
+
+//        String nameOil = "oil";
+//        String nameFuel = "fuel";
+//        if (CompatibilityManager.isBCraftLoaded() || CompatibilityManager.isPneumaticCraftLoaded()) // Mods known to add oil should go here
+//        {
+//            nameOil = "oilgc";
+//        }
+//        if (CompatibilityManager.isBCraftLoaded() || CompatibilityManager.isPneumaticCraftLoaded()) // Mods known to add fuel should go here
+//        {
+//            nameFuel = "fuelgc";
+//        }
+//        GalacticraftCore.gcFluidOil = new Fluid(nameOil).setDensity(800).setViscosity(1500);
+//        GalacticraftCore.gcFluidFuel = new Fluid(nameFuel).setDensity(400).setViscosity(900);
+//        FluidRegistry.registerFluid(GalacticraftCore.gcFluidOil);
+//        FluidRegistry.registerFluid(GalacticraftCore.gcFluidFuel);
+//        GalacticraftCore.gcFluidOil = FluidRegistry.getFluid(nameOil);
+//        GalacticraftCore.gcFluidFuel = FluidRegistry.getFluid(nameFuel);
+//        GalacticraftCore.fluidOil = FluidRegistry.getFluid("oil");
+//        GalacticraftCore.fluidFuel = FluidRegistry.getFluid("fuel");
+//
+//        GCBlocks.crudeOil = new BlockFluidGC(GalacticraftCore.gcFluidOil, "oil");
+//        ((BlockFluidGC) GCBlocks.crudeOil).setQuantaPerBlock(3);
+//        GCBlocks.crudeOil.setBlockName("crudeOil");
+//        GameRegistry.registerBlock(GCBlocks.crudeOil, ItemBlockGC.class, GCBlocks.crudeOil.getUnlocalizedName());
+//        if (GalacticraftCore.gcFluidOil.getBlock() == null)
+//        {
+//            GalacticraftCore.gcFluidOil.setBlock(GCBlocks.crudeOil);
+//        }
+//
+//        GCBlocks.fuel = new BlockFluidGC(GalacticraftCore.gcFluidFuel, "fuel");
+//        ((BlockFluidGC) GCBlocks.fuel).setQuantaPerBlock(6);
+//        GCBlocks.fuel.setBlockName("fuel");
+//        GameRegistry.registerBlock(GCBlocks.fuel, ItemBlockGC.class, GCBlocks.fuel.getUnlocalizedName());
+//        if (GalacticraftCore.gcFluidFuel.getBlock() == null)
+//        {
+//            GalacticraftCore.gcFluidFuel.setBlock(GCBlocks.fuel);
+//        }
 
         if (Loader.isModLoaded("PlayerAPI"))
         {
@@ -180,6 +356,26 @@ public class GalacticraftCore
 
         GCBlocks.initBlocks();
         GCItems.initItems();
+
+        //Allow canisters to be filled from other mods' tanks of fuel / oil
+        FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidFuel, 1000), new ItemStack(GCItems.fuelCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
+        if (ConfigManagerCore.useOldFuelFluidID && FluidRegistry.isFluidRegistered("fuel"))
+        {
+        	//If the GC fuel fluid is registered as fuelgc and there is also "fuel" from another mod in the game, we want to be able to fill canisters with that as well
+        	FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(FluidRegistry.getFluid("fuel"), 1000), new ItemStack(GCItems.fuelCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
+        }
+
+        FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidOil, 1000), new ItemStack(GCItems.oilCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
+        if (ConfigManagerCore.useOldOilFluidID && FluidRegistry.isFluidRegistered("oil"))
+        {
+        	//If the GC oil fluid is registered as oilgc and there is also "oil" from another mod in the game, we want to be able to fill canisters with that as well
+        	FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(FluidRegistry.getFluid("oil"), 1000), new ItemStack(GCItems.oilCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
+        	//And allow Buildcraft oil buckets to be filled with oilgc
+        	if (CompatibilityManager.isBCraftLoaded())
+        	{
+        		FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidOil, 1000), GameRegistry.findItemStack("BuildCraft|Core", "bucketOil", 1), new ItemStack(Items.bucket)));
+        	}
+        }        
     }
 
     @EventHandler
@@ -206,21 +402,11 @@ public class GalacticraftCore
         GalacticraftCore.moonMoon.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/moon.png"));
 
         GalacticraftCore.satelliteSpaceStation = (Satellite) new Satellite("spaceStation.overworld").setParentBody(GalacticraftCore.planetOverworld).setRelativeSize(0.2667F).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(9F, 9F)).setRelativeOrbitTime(1 / 0.05F);
-        GalacticraftCore.satelliteSpaceStation.setDimensionInfo(ConfigManagerCore.idDimensionOverworldOrbit, WorldProviderOrbit.class, false).setTierRequired(1);
+        GalacticraftCore.satelliteSpaceStation.setDimensionInfo(ConfigManagerCore.idDimensionOverworldOrbit, ConfigManagerCore.idDimensionOverworldOrbitStatic, WorldProviderOrbit.class).setTierRequired(1);
         GalacticraftCore.satelliteSpaceStation.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/spaceStation.png"));
 
         ForgeChunkManager.setForcedChunkLoadingCallback(GalacticraftCore.instance, new ChunkLoadingCallback());
         FMLCommonHandler.instance().bus().register(new ConnectionEvents());
-
-        for (int i = GCItems.fuelCanister.getMaxDamage() - 1; i > 0; i--)
-        {
-            FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidFuel, GCItems.fuelCanister.getMaxDamage() - i), new ItemStack(GCItems.fuelCanister, 1, i), new ItemStack(GCItems.oilCanister, 1, GCItems.fuelCanister.getMaxDamage())));
-        }
-
-        for (int i = GCItems.oilCanister.getMaxDamage() - 1; i > 0; i--)
-        {
-            FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidOil, GCItems.oilCanister.getMaxDamage() - i), new ItemStack(GCItems.oilCanister, 1, i), new ItemStack(GCItems.oilCanister, 1, GCItems.fuelCanister.getMaxDamage())));
-        }
 
         SchematicRegistry.registerSchematicRecipe(new SchematicRocketT1());
         SchematicRegistry.registerSchematicRecipe(new SchematicMoonBuggy());
@@ -269,9 +455,20 @@ public class GalacticraftCore
         }
 
         FMLInterModComms.sendMessage("OpenBlocks", "donateUrl", "http://www.patreon.com/micdoodle8");
-    	GalacticraftRegistry.registerCoreGameScreens();
+    	registerCoreGameScreens();
     	
     	MinecraftForge.EVENT_BUS.register(new OreGenOtherMods());
+    }
+
+    public static void registerCoreGameScreens()
+    {
+        IGameScreen rendererBasic = new GameScreenBasic();
+        IGameScreen rendererCelest = new GameScreenCelestial();
+        GalacticraftRegistry.registerScreen(rendererBasic);  //Type 0 - blank
+        GalacticraftRegistry.registerScreen(rendererBasic);  //Type 1 - local satellite view
+        GalacticraftRegistry.registerScreen(rendererCelest);  //Type 2 - solar system
+        GalacticraftRegistry.registerScreen(rendererCelest);  //Type 3 - local planet
+        GalacticraftRegistry.registerScreen(rendererCelest);  //Type 4 - render test
     }
 
 	@EventHandler
@@ -329,7 +526,7 @@ public class GalacticraftCore
 
         ThreadVersionCheck.startCheck();
         TickHandlerServer.restart();
-        BlockVec3.chunkCacheDim = Integer.MAX_VALUE;
+        BlockVec3.chunkCacheDim = Integer.MAX_VALUE;       
         
         try {
 	        jpgWriter = ImageIO.getImageWritersByFormatName("jpg").next();
@@ -337,7 +534,7 @@ public class GalacticraftCore
 	        writeParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
 	        writeParam.setCompressionQuality(1.0f);
 	        enableJPEG = true;
-        } catch (Exception e)
+        } catch (UnsatisfiedLinkError e)
         {
         	GCLog.severe("Error initialising JPEG compressor - this is likely caused by a known bug in OpenJDK.");
         	e.printStackTrace();
@@ -348,6 +545,7 @@ public class GalacticraftCore
     public void serverStarting(FMLServerStartingEvent event)
     {
         event.registerServerCommand(new CommandSpaceStationAddOwner());
+        event.registerServerCommand(new CommandSpaceStationChangeOwner());
         event.registerServerCommand(new CommandSpaceStationRemoveOwner());
         event.registerServerCommand(new CommandPlanetTeleport());
         event.registerServerCommand(new CommandKeepDim());
@@ -473,7 +671,7 @@ public class GalacticraftCore
         GCCoreUtil.registerGalacticraftNonMobEntity(EntityBuggy.class, "Buggy", 150, 5, true);
         GCCoreUtil.registerGalacticraftNonMobEntity(EntityFlag.class, "GCFlag", 150, 5, true);
         GCCoreUtil.registerGalacticraftNonMobEntity(EntityParachest.class, "ParaChest", 150, 5, true);
-        GCCoreUtil.registerGalacticraftNonMobEntity(EntityBubble.class, "OxygenBubble", 150, 20, false);
+//        GCCoreUtil.registerGalacticraftNonMobEntity(EntityBubble.class, "OxygenBubble", 150, 20, false);
         GCCoreUtil.registerGalacticraftNonMobEntity(EntityLander.class, "Lander", 150, 5, false);
         GCCoreUtil.registerGalacticraftNonMobEntity(EntityMeteorChunk.class, "MeteorChunk", 150, 5, true);
         GCCoreUtil.registerGalacticraftNonMobEntity(EntityCelestialFake.class, "CelestialScreen", 150, 5, false);

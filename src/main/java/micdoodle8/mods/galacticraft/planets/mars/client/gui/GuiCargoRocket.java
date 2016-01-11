@@ -104,32 +104,32 @@ public class GuiCargoRocket extends GuiContainerGC
         this.fontRendererObj.drawString(str, 40 - this.fontRendererObj.getStringWidth(str) / 2, 9, 4210752);
 
         String[] spltString = { "" };
+        String colour = EnumColor.YELLOW.toString();
 
         if (this.rocket.statusMessageCooldown == 0 || this.rocket.statusMessage == null)
         {
             spltString = new String[2];
-            spltString[0] = EnumColor.YELLOW + GCCoreUtil.translate("gui.cargorocket.status.waiting.0");
-            spltString[1] = EnumColor.YELLOW + GCCoreUtil.translate("gui.cargorocket.status.waiting.1");
+            spltString[0] = GCCoreUtil.translate("gui.cargorocket.status.waiting.0");
+            spltString[1] = GCCoreUtil.translate("gui.cargorocket.status.waiting.1");
 
             if (this.rocket.launchPhase != EnumLaunchPhase.UNIGNITED.ordinal())
             {
                 spltString = new String[2];
-                spltString[0] = EnumColor.YELLOW + GCCoreUtil.translate("gui.cargorocket.status.launched.0");
-                spltString[1] = EnumColor.YELLOW + GCCoreUtil.translate("gui.cargorocket.status.launched.1");
+                spltString[0] = GCCoreUtil.translate("gui.cargorocket.status.launched.0");
+                spltString[1] = GCCoreUtil.translate("gui.cargorocket.status.launched.1");
                 this.launchButton.enabled = false;
             }
         }
         else
         {
             spltString = this.rocket.statusMessage.split("#");
+            colour = this.rocket.statusColour;
         }
 
         int y = 2;
         for (String splitString : spltString)
         {
-            color = splitString.substring(0, 6);
-            str = splitString.substring(6, splitString.length());
-            this.fontRendererObj.drawString(color + str, 30 - this.fontRendererObj.getStringWidth(str) / 2, 9 * y, 4210752);
+            this.fontRendererObj.drawString(colour + splitString, 35 - this.fontRendererObj.getStringWidth(splitString) / 2, 9 * y, 4210752);
             y++;
         }
 

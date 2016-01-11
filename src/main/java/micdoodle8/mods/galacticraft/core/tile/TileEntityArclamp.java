@@ -264,20 +264,17 @@ public class TileEntityArclamp extends TileEntity
                 if (!allAir)
                 {
                     Block id = vec.getBlockIDsafe_noChunkLoad(world);
-                    if (id instanceof BlockAir)
+                    if (Blocks.air == id)
                     {
-                        if (Blocks.air == id)
-                        {
-                            world.setBlock(vec.x, vec.y, vec.z, brightAir, 0, 2);
-                            this.airToRestore.add(vec);
-                            this.markDirty();
-                        }
-                        else if (id == breatheableAirID)
-                        {
-                            world.setBlock(vec.x, vec.y, vec.z, brightBreatheableAir, 0, 2);
-                            this.airToRestore.add(vec);
-                            this.markDirty();
-                        }
+                        world.setBlock(vec.x, vec.y, vec.z, brightAir, 0, 2);
+                        this.airToRestore.add(vec);
+                        this.markDirty();
+                    }
+                    else if (id == breatheableAirID)
+                    {
+                        world.setBlock(vec.x, vec.y, vec.z, brightBreatheableAir, 0, 2);
+                        this.airToRestore.add(vec);
+                        this.markDirty();
                     }
                 }
             }

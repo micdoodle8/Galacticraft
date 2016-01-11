@@ -27,7 +27,7 @@ public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlo
     {
         super(Material.glass);
         this.setHardness(0.1F);
-        this.setStepSound(Block.soundTypeWood);
+        this.setStepSound(Block.soundTypeMetal);
         this.setBlockTextureName("stone");
         this.setBlockName(assetName);
         this.setLightLevel(1.0F);

@@ -1,0 +1,154 @@
+# Galacticraft Asteroids Language File = ITALIAN
+#Translation by QuodQuaeris
+
+# GENERAL ITEMS
+item.itemTier3Rocket.t3Rocket.name=Razzo Livello 3
+item.itemAstroMiner.name=Astro Miner
+item.heavyNoseCone.name=Punta del Razzo Rinforzata
+item.compressedTitanium.name=Titanio Compresso
+item.ingotTitanium.name=Lingotto di Titanio
+item.shardTitanium.name=Frammento di Titanio
+item.shardIron.name=Frammento di Ferro
+item.rocketFinsT2.name=Ali rinforzate del razzo
+item.engineT2.name=Motore Rinforzato del Razzo
+item.reinforcedPlateT3.name=Piastre Rinforzate
+item.grapple.name=Rampino
+item.atmosphericValve.name=Valvola atmosferica
+item.thermalCloth.name=Abiti termali
+item.beamCore.name=Reattore del fascio
+item.orionDrive.name=Orion Drive
+item.tier3.desc=Livello 3
+
+# TOOLS
+item.titanium_pickaxe.name=Piccone di Titanio
+item.titanium_axe.name=Ascia di Titanio
+item.titanium_hoe.name=Zappa di Titanio
+item.titanium_shovel.name=Pala di Titanio
+item.titanium_sword.name=Spada di Titanio
+
+# ARMOR
+item.thermalHelm.name=Elmetto Termico
+item.thermalChestplate.name=Armatura Termica
+item.thermalLeggings.name=Pantaloni Termici
+item.thermalBoots.name=Scarpe Termiche
+item.titanium_helmet.name=Elmo di Titanio
+item.titanium_chestplate.name=Armatura di Titanio
+item.titanium_leggings.name=Gambali in Titanio
+item.titanium_boots.name=Stivali in Titanio
+
+# CANISTERS ETC
+item.methaneCanisterPartial.name=Capsula di Metano
+item.methaneCanister.name=Capsula di Metano piena
+item.canister.gas.name=Gas                  #short name for Methane Gas contents level
+item.canister.LOX.partial.name=Capsula di Ossigeno Liquido
+item.canister.LOX.full.name=Capsula di Ossigeno piena
+item.canister.LOX.name=LOX                  #short name for Liquid Oxygen contents level
+item.canister.liquidNitrogen.partial.name=Capsula di Azoto Liquido
+item.canister.liquidNitrogen.full.name=Capsula di Azoto Liquido piena
+item.canister.liquidNitrogen.name=Liquido    #short name for Liquid Nitrogen contents level
+item.canister.liquidArgon.partial.name=Capsula di Argon Liquido
+item.canister.liquidArgon.full.name=Capsula di Argon Liquido piena
+item.canister.liquidArgon.name=Liquido       #short name for Liquid Argon contents level
+item.emptyGasCanister.name=Capsula per gas vuota
+
+# FLUIDS AND GASES
+fluid.methane=Metano
+fluid.oxygen=Ossigeno
+fluid.nitrogen=Azoto
+fluid.hydrogen=Idrogeno
+fluid.carbondioxide=Anidride Carbonica
+fluid.helium=Elio
+fluid.argon=Argon
+fluid.atmosphericgases=Gas Atmosferici
+fluid.liquidmethane=Metano Liquido
+fluid.liquidoxygen=Ossigeno Liquido
+fluid.liquidnitrogen=Azoto Liquido
+fluid.liquidargon=Argon Liquido
+fluid.fuel=Carburante
+
+# BLOCKS
+tile.asteroidsBlock.asteroid0.name=Roccia Di Asteroide
+tile.asteroidsBlock.asteroid1.name=Roccia Di Asteroide
+tile.asteroidsBlock.asteroid2.name=Roccia Di Asteroide
+tile.asteroidsBlock.oreIron.name=Minerale di Ferro
+tile.asteroidsBlock.oreIlmenite.name=Minerale di Ilmenite
+tile.asteroidsBlock.oreAluminum.name=Minerale di Alluminio
+tile.beamReflector.name=Riflettore del Fascio Di Energia
+tile.beamReceiver.name=Ricevitore del Fascio Di Energia
+tile.telepadShort.name=Teletrasportatore a corto raggio
+tile.walkway.name=Strada
+tile.walkwayWire.name=Strada
+tile.walkwayOxygenPipe.name=Strada
+tile.treasureT3.name=Cassa Del Tesoro di Livello 3
+tile.denseIce.name=Ghiaccio denso
+tile.minerBase.name=Astro Miner Base
+
+# GUI
+planet.asteroids=Asteroids
+
+	# Dollar sign ($) will split text onto a new line
+	# Do not remove %s or %d, since that will be replaced in-game
+gui.telepad.desc.0=Questo è l'unico indirizzo$del telepad
+gui.telepad.desc.1=Address of another Telepad.$Entities will be sent there.
+gui.message.address.name=Indirizzo
+gui.message.destAddress.name=Indirizzo del Destinatario
+gui.message.invalidAddress.name=Indirizzo non valido
+gui.message.invalidTargetAddress.name=Indirizzo del destinatario non valido
+gui.message.receivingActive.name=Receiving Active
+gui.message.telepadTooFar.name=Bersaglio troppo lontano(Massimo %d)
+gui.message.telepadWrongDim.name=Il target non è in questa dimensione!
+gui.message.telepadNotFound.name=Telepad non trovato!
+gui.message.sendingActive.name=Sending Active
+gui.message.range.name=Range: %dm
+gui.message.notEnoughEnergy.name=Non c'è abbastanza energia
+gui.message.targetNoEnergy.name=Il ricevente non ha abbastanza energia!
+gui.message.grapple.fail=Ho bisogno di corda se voglio usare questo rampino!
+gui.message.astroMiner.fail=This base already has an Astro Miner!
+gui.message.astroMiner1.fail=L'area di atterraggio è bloccata da:
+gui.message.astroMiner1A.fail=The Astro Miner's route is blocked by:
+gui.message.astroMiner2.fail=That would be one Astro Miner too many!
+gui.message.astroMiner3.fail=The Astro Miner's base was removed!
+gui.message.astroMiner4.fail=The Astro Miner is low on energy and cannot get back to base!
+gui.message.astroMiner5.fail=The Astro Miner's route into its base seems to be blocked!
+gui.message.astroMiner6.fail=The Astro Miner has finished mining the area, and will now stop!
+gui.message.astroMiner7.fail=There's nothing for an Astro Miner to mine on a space station!
+gui.message.astroMiner8.fail=A second Astro Miner was detected at the same base, the first will now freeze.
+gui.button.recall.name=Recall
+gui.miner.outOfRange=Fuori range
+gui.miner.offline=Offline
+gui.miner.stuck=Fermo a:
+gui.miner.docked=Atterrato
+gui.miner.travelling=Viaggiando
+gui.miner.mining=Minando
+gui.miner.returning=Ritornando
+gui.miner.docking=Atterrando
+gui.miner.mined=Minato
+
+tile.treasureT3.description=Tier 3 Treasure Chests are currently unused.
+tile.walkway.description=Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme.
+tile.walkwayAluminumWire.description=Aluminum Wire Walkways are used for running wire underneath a fully walkable surface.
+tile.walkwayOxygenPipe.description=Oxygen Pipe Walkways are used for running pipes underneath a fully walkable surface.
+tile.beamReflector.description=Beam Reflectors are used to redirect energy beams from source to destination. Can be right-clicked to cycle through targets.
+tile.beamReceiver.description=Beam Receivers are connected to energy machine input and output, to transfer energy using beams.
+tile.telepadShort.description=Short Range Telepads are used to transfer players and other living creatures short distances (250 Blocks) when linked to other telepads.
+tile.minerBase.description=The Astro Miner Base is the docking point for an Astro Miner.  It's big ... try making a 2 x 2 x 2 cube with these.
+
+# SCHEMATICS
+schematic.astroMiner.name=Astro Miner
+
+# ENTITIES
+entity.SmallAsteroidGC.name=Asteroide Piccolo
+entity.GrappleHookGC.name=Uncino del Rampino
+entity.Tier3RocketGC.name=Razzo di Livello 3
+entity.EntryPodAsteroids.name=Entry Pod
+entity.AstroMiner.name=Astro Miner
+
+# CONTAINERS
+container.shortRangeTelepad.name=Teletrasportatore a corto raggio
+container.entryPod.name=Entry Pod
+
+# CONFIG GUI
+gc.configgui.dimensionIDAsteroids=Asteroids Dimension ID
+gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID
+gc.configgui.disableGalacticraftHelium=Disable Helium gas registration
+gc.configgui.astroMinersMax=Maximum number of Astro Miners per player

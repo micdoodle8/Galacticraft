@@ -13,13 +13,14 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 
 import java.util.List;
+import java.util.Map;
 
 public class CommandSpaceStationAddOwner extends CommandBase
 {
     @Override
     public String getCommandUsage(ICommandSender var1)
     {
-        return "/" + this.getCommandName() + " [player]";
+        return "/" + this.getCommandName() + " [ <player> | +all | -all ]";
     }
 
     @Override
@@ -52,18 +53,34 @@ public class CommandSpaceStationAddOwner extends CommandBase
                 {
                     GCPlayerStats stats = GCPlayerStats.get(playerBase);
 
-                    if (stats.spaceStationDimensionID <= 0)
+                    if (stats.spaceStationDimensionData.isEmpty())
                     {
                         throw new WrongUsageException(GCCoreUtil.translate("commands.ssinvite.notFound"), new Object[0]);
                     }
                     else
                     {
-                        final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, stats.spaceStationDimensionID, playerBase);
-
-                        if (!data.getAllowedPlayers().contains(var3))
+                        for (Map.Entry<Integer, Integer> ownedStations : stats.spaceStationDimensionData.entrySet())
                         {
-                            data.getAllowedPlayers().add(var3);
-                            data.markDirty();
+                            final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, ownedStations.getValue(), playerBase);
+
+                            if (var3.equalsIgnoreCase("+all"))
+                            {
+                            	data.setAllowedAll(true);
+                                playerBase.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.spacestation.allowAllTrue")));
+                                return;
+                            }
+                            if (var3.equalsIgnoreCase("-all"))
+                            {
+                            	data.setAllowedAll(false);
+                                playerBase.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.spacestation.allowAllFalse", var3)));
+                                return;
+                            }
+                            
+                            if (!data.getAllowedPlayers().contains(var3))
+                            {
+                                data.getAllowedPlayers().add(var3);
+                                data.markDirty();
+                            }
                         }
                     }
 

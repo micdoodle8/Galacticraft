@@ -1,11 +1,14 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import micdoodle8.mods.galacticraft.core.items.*;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -32,8 +35,8 @@ public class GCBlocks
     public static Block basicBlock;
     public static Block airLockFrame;
     public static Block airLockSeal;
-    public static Block crudeOilStill;
-    public static Block fuelStill;
+    public static Block crudeOil;
+    public static Block fuel;
     public static Block refinery;
     public static Block fuelLoader;
     public static Block landingPadFull;
@@ -65,6 +68,7 @@ public class GCBlocks
     public static final Material machine = new Material(MapColor.ironColor);
 
     public static ArrayList<Block> hiddenBlocks = new ArrayList<Block>();
+    public static ArrayList<Block> otherModTorchesLit = new ArrayList<Block>();
 
     public static void initBlocks()
     {
@@ -170,7 +174,7 @@ public class GCBlocks
         GCCoreUtil.registerGalacticraftBlock("telemetry", GCBlocks.telemetry);
         GCCoreUtil.registerGalacticraftBlock("arclamp", GCBlocks.brightLamp);
         GCCoreUtil.registerGalacticraftBlock("treasureChestTier1", GCBlocks.treasureChestTier1);
-
+       
         // Hide certain items from NEI
         GCBlocks.hiddenBlocks.add(GCBlocks.airLockSeal);
         GCBlocks.hiddenBlocks.add(GCBlocks.breatheableAir);
@@ -187,6 +191,10 @@ public class GCBlocks
         GCBlocks.registerBlocks();
         GCBlocks.setHarvestLevels();
 
+        //Complete registration of various types of torches
+        BlockUnlitTorch.register((BlockUnlitTorch)GCBlocks.unlitTorch, (BlockUnlitTorch)GCBlocks.unlitTorchLit, Blocks.torch);
+        GCBlocks.doOtherModsTorches();
+
         OreDictionary.registerOre("oreCopper", new ItemStack(GCBlocks.basicBlock, 1, 5));
         OreDictionary.registerOre("oreCopper", new ItemStack(GCBlocks.blockMoon, 1, 0));
         OreDictionary.registerOre("oreTin", new ItemStack(GCBlocks.basicBlock, 1, 6));
@@ -196,9 +204,41 @@ public class GCBlocks
         OreDictionary.registerOre("oreNaturalAluminum", new ItemStack(GCBlocks.basicBlock, 1, 7));
         OreDictionary.registerOre("oreSilicon", new ItemStack(GCBlocks.basicBlock, 1, 8));
         OreDictionary.registerOre("oreCheese", new ItemStack(GCBlocks.blockMoon, 1, 2));
+
+        OreDictionary.registerOre("blockCopper", new ItemStack(GCBlocks.basicBlock, 1, 9));
+        OreDictionary.registerOre("blockTin", new ItemStack(GCBlocks.basicBlock, 1, 10));
+        OreDictionary.registerOre("blockAluminum", new ItemStack(GCBlocks.basicBlock, 1, 11));
+        OreDictionary.registerOre("blockAluminium", new ItemStack(GCBlocks.basicBlock, 1, 11));
     }
 
-    public static void setHarvestLevels()
+    private static void doOtherModsTorches()
+    {
+        BlockUnlitTorch torch;
+        BlockUnlitTorch torchLit;
+        
+        if (Loader.isModLoaded("TConstruct"))
+        {
+	    	Block modTorch = null; 
+	    	try {
+	    		//tconstruct.world.TinkerWorld.stoneTorch
+	    		Class clazz = Class.forName("tconstruct.world.TinkerWorld");
+	    		modTorch = (Block) clazz.getField("stoneTorch").get(null);
+	    	} catch (Exception e) { }
+	    	if (modTorch != null)
+	    	{
+	        	torch = new BlockUnlitTorch(false, "unlitTorch_Stone");
+		        torchLit = new BlockUnlitTorch(true, "unlitTorchLit_Stone");
+		        GCBlocks.hiddenBlocks.add(torch);
+		        GCBlocks.hiddenBlocks.add(torchLit);
+		        GCBlocks.otherModTorchesLit.add(torchLit);
+		        GameRegistry.registerBlock(torch, ItemBlockGC.class, torch.getUnlocalizedName());
+		        GameRegistry.registerBlock(torchLit, ItemBlockGC.class, torchLit.getUnlocalizedName());
+		        BlockUnlitTorch.register(torch, torchLit, modTorch);
+	    	}
+        }
+	}
+
+	public static void setHarvestLevels()
     {
         GCBlocks.basicBlock.setHarvestLevel("pickaxe", 2, 5); //Copper ore
         GCBlocks.basicBlock.setHarvestLevel("pickaxe", 2, 6); //Tin ore
@@ -247,8 +287,8 @@ public class GCBlocks
     {
         GameRegistry.registerBlock(GCBlocks.landingPad, ItemBlockLandingPad.class, GCBlocks.landingPad.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.landingPadFull, ItemBlockGC.class, GCBlocks.landingPadFull.getUnlocalizedName());
-        GameRegistry.registerBlock(GCBlocks.unlitTorch, ItemBlockGC.class, GCBlocks.unlitTorch.getUnlocalizedName());
-        GameRegistry.registerBlock(GCBlocks.unlitTorchLit, ItemBlockGC.class, GCBlocks.unlitTorchLit.getUnlocalizedName());
+        GameRegistry.registerBlock(GCBlocks.unlitTorch, ItemBlock.class, GCBlocks.unlitTorch.getUnlocalizedName());
+        GameRegistry.registerBlock(GCBlocks.unlitTorchLit, ItemBlock.class, GCBlocks.unlitTorchLit.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.breatheableAir, ItemBlockGC.class, GCBlocks.breatheableAir.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.brightAir, ItemBlockGC.class, GCBlocks.brightAir.getUnlocalizedName());
         GameRegistry.registerBlock(GCBlocks.brightBreatheableAir, ItemBlockGC.class, GCBlocks.brightBreatheableAir.getUnlocalizedName());

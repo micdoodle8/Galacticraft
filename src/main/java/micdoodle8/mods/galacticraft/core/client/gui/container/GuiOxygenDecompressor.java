@@ -67,8 +67,8 @@ public class GuiOxygenDecompressor extends GuiContainerGC
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.fontRendererObj.drawString(this.decompressor.getInventoryName(), 8, 10, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.in.name") + ":", 87, 26, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.in.name") + ":", 87, 38, 4210752);
+        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 26, 4210752, this.fontRendererObj);
+        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 38, 4210752, this.fontRendererObj);
         String status = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();
         this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 50, 4210752);
         status = GCCoreUtil.translate("gui.maxOutput.desc") + ": " + TileEntityOxygenDecompressor.OUTPUT_PER_TICK * 20 + GCCoreUtil.translate("gui.perSecond");

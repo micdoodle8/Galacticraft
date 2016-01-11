@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import com.mojang.authlib.GameProfile;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+import micdoodle8.mods.galacticraft.api.entity.ITelemetry;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
@@ -11,16 +11,15 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
-import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldProvider;
@@ -37,7 +36,6 @@ public class TileEntityTelemetry extends TileEntity
 	public GameProfile clientGameProfile = null;
 
 	public static HashSet<BlockVec3Dim> loadedList = new HashSet<BlockVec3Dim>();
-	private MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
 	public Entity linkedEntity;
 	private UUID toUpdate = null;
 	private int pulseRate = 400;
@@ -76,11 +74,7 @@ public class TileEntityTelemetry extends TileEntity
 			}
 			
 			String name;
-			int data0 = -1;
-			int data1 = -1;
-			int data2 = -1;
-			int data3 = -1;
-			int data4 = -1;
+			int[] data = { -1, -1, -1, -1, -1 };
 			String strUUID = "";
 			if (linkedEntity != null && !linkedEntity.isDead)
 			{
@@ -96,55 +90,43 @@ public class TileEntityTelemetry extends TileEntity
 				double xmotion = linkedEntity.motionX;
 				double ymotion = linkedEntity instanceof EntityLivingBase ? linkedEntity.motionY + 0.078D : linkedEntity.motionY;
 				double zmotion = linkedEntity.motionZ;
-				data2 = (int) (MathHelper.sqrt_double(xmotion * xmotion + ymotion * ymotion + zmotion * zmotion) * 2000D);
-				if (linkedEntity instanceof EntityLivingBase)
+				data[2] = (int) (MathHelper.sqrt_double(xmotion * xmotion + ymotion * ymotion + zmotion * zmotion) * 2000D);
+				if (linkedEntity instanceof ITelemetry)
+				{
+					((ITelemetry)linkedEntity).transmitData(data);
+				}  
+				else if (linkedEntity instanceof EntityLivingBase)
 				{
 					EntityLivingBase eLiving = (EntityLivingBase)linkedEntity;
-					data0 = eLiving.hurtTime;
+					data[0] = eLiving.hurtTime;
 					
 					//Calculate a "pulse rate" based on motion and taking damage
 					this.pulseRate--;
 					if (eLiving.hurtTime > this.lastHurttime) this.pulseRate += 100;
 					this.lastHurttime = eLiving.hurtTime;
-					if (eLiving.ridingEntity != null) data2 /= 4;  //reduced pulse effect if riding a vehicle
-					else if (data2 > 1) this.pulseRate+=2;
-					this.pulseRate += Math.max(data2 - pulseRate, 0) / 4;
+					if (eLiving.ridingEntity != null) data[2] /= 4;  //reduced pulse effect if riding a vehicle
+					else if (data[2] > 1) this.pulseRate+=2;
+					this.pulseRate += Math.max(data[2] - pulseRate, 0) / 4;
 					if (this.pulseRate > 2000) this.pulseRate = 2000;
 					if (this.pulseRate < 400) this.pulseRate = 400;
-					data2 = this.pulseRate / 10;
+					data[2] = this.pulseRate / 10;
 					
-					data1 =  (int) (eLiving.getHealth() * 100 / eLiving.getMaxHealth());
+					data[1] =  (int) (eLiving.getHealth() * 100 / eLiving.getMaxHealth());
 					if (eLiving instanceof EntityPlayerMP)
 					{
-						data3 = ((EntityPlayerMP) eLiving).getFoodStats().getFoodLevel() * 5;
+						data[3] = ((EntityPlayerMP) eLiving).getFoodStats().getFoodLevel() * 5;
 						GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) eLiving);
-						data4 = stats.airRemaining * 4096 + stats.airRemaining2;
+						data[4] = stats.airRemaining * 4096 + stats.airRemaining2;
 						UUID uuid = ((EntityPlayerMP) eLiving).getUniqueID();
 						if (uuid != null) strUUID = uuid.toString();
 					}
-				}
-				else if (linkedEntity instanceof EntitySpaceshipBase)
-				{
-					EntitySpaceshipBase eShip = (EntitySpaceshipBase)linkedEntity; 
-					data0 = eShip.timeUntilLaunch;
-					data1 = (int) eShip.posY;
-					data3 = eShip.getScaledFuelLevel(100);
-					data4 = (int) eShip.rotationPitch;
-				}
-				else if (GalacticraftCore.isPlanetsLoaded && linkedEntity instanceof EntityAstroMiner)
-				{
-					EntityAstroMiner eShip = (EntityAstroMiner)linkedEntity; 
-					data1 = (int) (eShip.posY);// - eShip.prevPosY) * 100;
-					data2 = (int) (eShip.posX - eShip.prevPosX) * 100;;
-					data3 = eShip.energyLevel;
-					data4 = eShip.AIstate;
 				}
 			}
 			else
 			{
 				name = "";
 			}
-			GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, new Object[] { this.xCoord, this.yCoord, this.zCoord, name, data0, data1, data2, data3, data4, strUUID } ), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 320D));
+			GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, new Object[] { this.xCoord, this.yCoord, this.zCoord, name, data[0], data[1], data[2], data[3], data[4], strUUID } ), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 320D));
 		}
 	}
 	
@@ -243,8 +225,8 @@ public class TileEntityTelemetry extends TileEntity
 			int y = fmData.getInteger("teCoordY");
 			int z = fmData.getInteger("teCoordZ");
 			WorldProvider wp = WorldUtil.getProviderForDimension(dim);
-			if (wp == null) 
-				System.out.println("Frequency module worn: world provider is null.  This is a bug. "+dim);
+			if (wp == null || wp.worldObj == null)
+				if (ConfigManagerCore.enableDebug) System.out.println("Frequency module worn: world provider is null.  This is a bug. "+dim);
 			else
 			{
 				TileEntity te = wp.worldObj.getTileEntity(x, y, z);

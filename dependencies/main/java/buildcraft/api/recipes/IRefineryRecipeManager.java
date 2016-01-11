@@ -16,6 +16,8 @@ public interface IRefineryRecipeManager {
 
 	void addRecipe(FluidStack ingredient, FluidStack result, int energy, int delay);
 
+	void addRecipe(String id, FluidStack ingredient, FluidStack result, int energy, int delay);
+	
 	void addRecipe(FluidStack ingredient1, FluidStack ingredient2, FluidStack result, int energy, int delay);
 
 	SortedSet<? extends IRefineryRecipe> getRecipes();

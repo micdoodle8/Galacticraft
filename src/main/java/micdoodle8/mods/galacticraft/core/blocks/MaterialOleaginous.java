@@ -5,6 +5,7 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.MaterialLiquid;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 //This avoids water and oil mixing, by being a different material
 public class MaterialOleaginous extends MaterialLiquid
@@ -22,18 +23,7 @@ public class MaterialOleaginous extends MaterialLiquid
     //Water and other liquids cannot displace oil, but solid blocks can
 	public boolean blocksMovement()
     {
-		StackTraceElement[] st = Thread.currentThread().getStackTrace();
-		int imax = st.length;
-		if (imax > 5) imax = 5;
-        for (int i = 1; i < imax; i++)
-        {
-            String ste = st[i].getClassName();
-            if (ste.equals(blockLiquidName) || ste.equals(blockLiquidStaticName) || ste.equals(blockLiquidDynamicName))
-            {
-                return true;
-            }
-        }
-
-        return false;
+        String string = ExceptionUtils.getStackTrace(new Throwable());
+        return string.contains(blockLiquidName) || string.contains(blockLiquidStaticName) || string.contains(blockLiquidDynamicName);
     }
 }

@@ -9,6 +9,7 @@ public class EnergyStorage implements IEnergyStorageGC
     protected float capacity;
     protected float maxReceive;
     protected float maxExtract;
+    protected float maxExtractRemaining;
 
     public EnergyStorage(float capacity)
     {
@@ -25,6 +26,7 @@ public class EnergyStorage implements IEnergyStorageGC
         this.capacity = capacity;
         this.maxReceive = maxReceive;
         this.maxExtract = maxExtract;
+        this.maxExtractRemaining = maxExtract;
     }
 
     public EnergyStorage readFromNBT(NBTTagCompound nbt)
@@ -78,6 +80,7 @@ public class EnergyStorage implements IEnergyStorageGC
     public void setMaxExtract(float maxExtract)
     {
         this.maxExtract = maxExtract;
+        this.maxExtractRemaining = maxExtract;
         this.maxReceive = 2.5F * maxExtract;
     }
 
@@ -109,17 +112,17 @@ public class EnergyStorage implements IEnergyStorageGC
         return energyReceived;
     }
 
-    public float receiveEnergyGC(float maxReceive)
+    public float receiveEnergyGC(float amount)
     {
-        float energyReceived = Math.min(this.capacity - this.energy, Math.min(this.maxReceive, maxReceive));
+        float energyReceived = Math.min(this.capacity - this.energy, Math.min(this.maxReceive, amount));
         this.energy += energyReceived;
         return energyReceived;
     }
 
     @Override
-    public float extractEnergyGC(float maxExtract, boolean simulate)
+    public float extractEnergyGC(float amount, boolean simulate)
     {
-        float energyExtracted = Math.min(this.energy, Math.min(this.maxExtract, maxExtract));
+        float energyExtracted = Math.min(this.energy, Math.min(this.maxExtractRemaining, amount));
 
         if (!simulate)
         {
@@ -129,6 +132,17 @@ public class EnergyStorage implements IEnergyStorageGC
         return energyExtracted;
     }
 
+    public float extractEnergyGCnoMax(float amount, boolean simulate)
+    {
+        float energyExtracted = Math.min(this.energy, amount);
+
+        if (!simulate)
+        {
+            this.energy -= energyExtracted;
+        }
+
+        return energyExtracted;
+    }
     @Override
     public float getEnergyStoredGC()
     {
@@ -139,5 +153,21 @@ public class EnergyStorage implements IEnergyStorageGC
     public float getCapacityGC()
     {
         return this.capacity;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj == null)
+            return false;
+        if (obj instanceof EnergyStorage)
+        {
+            EnergyStorage storage = (EnergyStorage)obj;
+            return (storage.getEnergyStoredGC() == energy &&
+                    storage.getCapacityGC() == capacity &&
+                    storage.getMaxReceive() == maxReceive &&
+                    storage.getMaxExtract() == maxExtract);
+        }
+        return false;
     }
 }

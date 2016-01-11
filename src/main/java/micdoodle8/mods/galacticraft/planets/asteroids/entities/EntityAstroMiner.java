@@ -7,26 +7,38 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.api.entity.IAntiGrav;
+import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
+import micdoodle8.mods.galacticraft.api.entity.ITelemetry;
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.sounds.SoundUpdaterMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockFlowerPot;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -39,6 +51,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
@@ -51,14 +64,14 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fluids.IFluidBlock;
 
-public class EntityAstroMiner extends Entity implements IInventory, IPacketReceiver
+public class EntityAstroMiner extends Entity implements IInventory, IPacketReceiver, IEntityNoisy, IAntiGrav, ITelemetry
 {
 	public static final int MINE_LENGTH = 24;
-	private static final int MINE_LENGTH_AST = 24;
-    private static final int MAXENERGY = 10000;
+	public static final int MINE_LENGTH_AST = 12;
+    private static final int MAXENERGY = 12000;
     private static final int RETURNENERGY = 1000;
     private static final int RETURNDROPS = 10;
-    private static final int INV_SIZE = 27;
+    private static final int INV_SIZE = 227;
     private static final float cLENGTH = 3.6F;
     private static final float cWIDTH = 1.8F;
     private static final float cHEIGHT = 1.7F;
@@ -72,6 +85,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     public static final int AISTATE_RETURNING = 4;
     public static final int AISTATE_DOCKING = 5;
     
+    public static final int FAIL_BASEDESTROYED = 3;
+    public static final int FAIL_OUTOFENERGY = 4;
+    public static final int FAIL_RETURNPATHBLOCKED = 5;
+    public static final int FAIL_ANOTHERWASLINKED = 8;
+    
     private boolean TEMPDEBUG = false;
     private boolean TEMPFAST = false;
 
@@ -84,7 +102,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     
     public int AIstate;
     public int timeInCurrentState = 0;
-	private EntityPlayerMP playerMP = null;
+	public EntityPlayerMP playerMP = null;
 	private UUID playerUUID;
 	private BlockVec3 posTarget;
     private BlockVec3 posBase;
@@ -112,13 +130,17 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     	new BlockVec3(2, 0, 0)    };
 
     private final int baseSafeRadius = 32;
-    private final double speed = TEMPFAST ? 0.15D : 0.02D;
-    private final float rotSpeed = TEMPFAST ? 8F : 1.5F;
+    private final double speedbase = TEMPFAST ? 0.16D : 0.022D;
+    private double speed = speedbase;
+    private final float rotSpeedBase = TEMPFAST ? 8F : 1.5F;
+    private float rotSpeed = rotSpeedBase;
+    private double speedup = SPEEDUP;
     private boolean noSpeedup = false;  //This stops the miner getting stuck at turning points
     public float shipDamage;
     public int currentDamage;
     public int timeSinceHit;
     private boolean flagLink = false;
+    private boolean flagCheckPlayer = false;
 
     //To do:
     //   break the entity drops it as an item
@@ -142,7 +164,16 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
     private static ArrayList<Block> noMineList = new ArrayList();
     public static BlockTuple blockingBlock = new BlockTuple(Blocks.air, 0);
-    private boolean givenFailMessage6 = false;
+    private int givenFailMessage = 0;
+	private BlockVec3 mineLast = null;
+	private int mineCountDown = 0;
+	private int pathBlockedCount = 0;
+	public LinkedList<BlockVec3> laserBlocks = new LinkedList();
+	public LinkedList<Integer> laserTimes = new LinkedList();
+	public float retraction = 1F;
+	protected IUpdatePlayerListBox soundUpdater;
+	private boolean soundToStop = false;
+	private boolean spawnedInCreative = false;
     
     static
     {
@@ -156,6 +187,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		noMineList.add(Blocks.mossy_cobblestone);
 		noMineList.add(Blocks.end_portal);
 		noMineList.add(Blocks.end_portal_frame);
+		noMineList.add(Blocks.portal);
 		noMineList.add(Blocks.stonebrick);
 		noMineList.add(Blocks.farmland);
 		noMineList.add(Blocks.rail);
@@ -311,8 +343,9 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         return true;
     }
     
-	private void emptyInventory(TileEntityMinerBase minerBase)
+	private boolean emptyInventory(TileEntityMinerBase minerBase)
 	{
+		boolean doneOne = false;
 		for (int i = 0; i < this.cargoItems.length; i++)
 		{
 			ItemStack stack = this.cargoItems[i];
@@ -323,15 +356,24 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 				this.cargoItems[i] = null;
 				continue;
 			}
+			int sizeprev = stack.stackSize;
 			minerBase.addToInventory(stack);
 			if (stack == null || stack.stackSize == 0)
 			{
 				this.cargoItems[i] = null;
+				this.markDirty();
+				return true;
 			}
-			else
+			else if (stack.stackSize < sizeprev)
+			{
 				this.cargoItems[i] = stack;
+				this.markDirty();
+				//Something was transferred although some stacks remaining
+				return true;
+			}
 		}
-		this.markDirty();
+		//No stacks were transferred
+		return false;
 	}
 
     @Override
@@ -348,33 +390,44 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             this.setDamage(this.getDamage() - 1.0F);
         }
 
-		stopForTurn = !this.checkRotation();
+        stopForTurn = !this.checkRotation();
         this.facing = this.getFacingFromRotation();
     	this.setBoundingBoxForFacing();
 
     	if (this.worldObj.isRemote)
         {
-            if (this.turnProgress == 0)
+            //CLIENT CODE
+    		if (this.turnProgress == 0)
             {
-	            this.turnProgress++;
-	            double diffX = this.minecartX - this.posX;
-	            double diffY = this.minecartY - this.posY;
-	            double diffZ = this.minecartZ - this.posZ;
-            	if (Math.abs(diffX) > 1.0D || Math.abs(diffY) > 1.0D || Math.abs(diffZ) > 1.0D)
-            	{
-            		this.posX = this.minecartX;
+            	this.turnProgress++;
+	            if (this.AIstate < AISTATE_TRAVELLING)
+	            {
+            		//It should be stationary, so this deals with the spooky movement (due to minor differences between server and client position)
+	            	this.posX = this.minecartX;
             		this.posY = this.minecartY;
-            		this.posZ = this.minecartZ;
-            	}
-            	else
-            	{
-		            if (Math.abs(diffX) > Math.abs(this.motionX))
-		            		this.motionX += diffX / 10D;
-		            if (Math.abs(diffY) > Math.abs(this.motionY))
-		            		this.motionY += diffY / 10D;
-		            if (Math.abs(diffZ) > Math.abs(this.motionZ))
-		            		this.motionZ += diffZ / 10D;
-            	}
+            		this.posZ = this.minecartZ;            	
+	            }
+	            else
+	            {
+		            double diffX = this.minecartX - this.posX;
+		            double diffY = this.minecartY - this.posY;
+		            double diffZ = this.minecartZ - this.posZ;
+	            	if (Math.abs(diffX) > 1.0D || Math.abs(diffY) > 1.0D || Math.abs(diffZ) > 1.0D)
+	            	{
+	            		this.posX = this.minecartX;
+	            		this.posY = this.minecartY;
+	            		this.posZ = this.minecartZ;
+	            	}
+	            	else
+	            	{
+			            if (Math.abs(diffX) > Math.abs(this.motionX))
+			            		this.motionX += diffX / 10D;
+			            if (Math.abs(diffY) > Math.abs(this.motionY))
+			            		this.motionY += diffY / 10D;
+			            if (Math.abs(diffZ) > Math.abs(this.motionZ))
+			            		this.motionZ += diffZ / 10D;
+	            	}
+	            }
             }
             this.posX += this.motionX;
             this.boundingBox.minX += this.motionX;
@@ -386,42 +439,71 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             this.boundingBox.minZ += this.motionZ;
             this.boundingBox.maxZ += this.motionZ;
             this.setRotation(this.rotationYaw, this.rotationPitch);
+    		if (this.AIstate == AISTATE_MINING && this.ticksExisted % 2 == 0)
+    		{
+    			this.prepareMoveClient(TEMPFAST ? 8 : 1, 2);
+    		}
+
+    		//Sound updates on client
+    		if (this.AIstate < AISTATE_ATBASE)
+            {
+           		this.stopRocketSound();
+            }
         	return;
         }
         
-    	if (this.ticksExisted % 10 == 0)
-    	{
-    		if (this.playerMP == null) 
-	    	{
-    			 if (this.playerUUID != null) this.playerMP = PlayerUtil.getPlayerByUUID(this.playerUUID);
-	    	}
-	    	else
-	    	{
-	    		if (!PlayerUtil.isPlayerOnline(this.playerMP)) this.playerMP = null;
-	    	}
-    	}
-    	
-        if (flagLink)
-        {
-	    	TileEntity tileEntity = posBase.getTileEntity(this.worldObj);
-			if (tileEntity instanceof TileEntityMinerBase)
+        //SERVER CODE
+    	if (this.ticksExisted % 10 == 0 || this.flagLink)
+    	{       	
+           	this.flagLink = false;
+           	this.checkPlayer();
+    		TileEntity tileEntity = posBase.getTileEntity(this.worldObj);    		
+        	if (tileEntity instanceof TileEntityMinerBase && ((TileEntityMinerBase)tileEntity).isMaster && !tileEntity.isInvalid())
 			{
-				((TileEntityMinerBase) tileEntity).linkMiner(this);
+    			//Create link with base on loading the EntityAstroMiner
+    			UUID linker = ((TileEntityMinerBase) tileEntity).getLinkedMiner();
+    			if (!this.getUniqueID().equals(linker))
+				{
+    				if (linker == null)
+    				{
+    					((TileEntityMinerBase) tileEntity).linkMiner(this);
+    				}
+    				else
+    				{
+    					this.freeze(FAIL_ANOTHERWASLINKED);
+    					return;
+    				}
+    			}
+    			else if (((TileEntityMinerBase) tileEntity).linkedMiner != this)
+					((TileEntityMinerBase) tileEntity).linkMiner(this);
 			}
-        	flagLink = false;
-        }
+        	else
+    		{
+    			if (this.playerMP != null && (this.givenFailMessage & (1 << FAIL_BASEDESTROYED)) == 0)
+    			{
+    				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner"+FAIL_BASEDESTROYED+".fail")));
+    				this.givenFailMessage += (1 << FAIL_BASEDESTROYED);
+    				//Continue mining even though base was destroyed - maybe it will be replaced
+    			}
+    		}
+    	}
+    	else if (this.flagCheckPlayer)
+		{
+			this.checkPlayer();
+		}
         
         if (this.playerMP == null)
         {
             //Go into dormant state if player is offline
+        	//but do not actually set the dormant state on the server, so can resume immediately if player comes online
         	this.motionX = 0;
         	this.motionY = 0;
         	this.motionZ = 0;
         	GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.dimensionId);
             return;
         }
-        
-    	if (this.lastFacing != this.facingAI)
+
+        if (this.lastFacing != this.facingAI)
     	{
     		this.lastFacing = this.facingAI;
     		this.prepareMove(12, 0);
@@ -438,22 +520,35 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         this.prevRotationPitch = this.rotationPitch;
         this.prevRotationYaw = this.rotationYaw;
 
-    	if (this.energyLevel <= 0)
-    	{
-    		if (this.AIstate > AISTATE_ATBASE)
-    		{
-    			this.AIstate = AISTATE_STUCK;
-    			if (this.playerMP != null)
-    				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner4.fail")));
+		if (this.AIstate > AISTATE_ATBASE)
+		{
+	    	if (this.energyLevel <= 0)
+	    	{
+    			this.freeze(FAIL_OUTOFENERGY);
     		}
+	    	else if (!(this.worldObj.provider instanceof WorldProviderAsteroids) && this.ticksExisted % 2 == 0) this.energyLevel--;
+			//No energy consumption when moving in space in Asteroids dimension (this reduces the risk of the Astro Miner becoming stranded!)
     	}
-    	else if (this.ticksExisted % 2 == 0) this.energyLevel--;
     	
     	switch (this.AIstate)
     	{
     	case AISTATE_STUCK:
-    		//TODO blinking distress light or something
-    		//TODO: check close to base and if so, reverse in slowly
+    		//TODO blinking distress light or something?
+    		//Attempt to re-start every 30 seconds or so
+    		if (this.ticksExisted % 600 == 0)
+    		{
+    			if ((this.givenFailMessage & 8) > 0)
+    			{
+    				//The base was destroyed - see if it has been replaced?
+    				this.atBase();
+    			}
+    			else
+    			{
+    				//See if the return path has been unblocked, and give a small amount of backup energy to try to get home
+	    			this.AIstate = AISTATE_RETURNING;
+	    			if (this.energyLevel <= 0) this.energyLevel = 20;
+    			}
+    		}
     		break;
     	case AISTATE_ATBASE:
     		this.atBase();
@@ -476,12 +571,16 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     	case AISTATE_DOCKING:
     		if (this.waypointBase != null)
     		{	
+    			this.speed = speedbase / 1.6;
+    			this.rotSpeed = rotSpeedBase / 1.6F;
     			if (this.moveToPos(this.waypointBase, true))
     			{
     				this.AIstate = AISTATE_ATBASE;
     				this.motionX = 0;
     				this.motionY = 0;
     				this.motionZ = 0;
+    	    		this.speed = speedbase;
+    	    		this.rotSpeed = rotSpeedBase;
     			}
     		}
     		else
@@ -511,10 +610,34 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         if (this.dataWatcher.getWatchableObjectInt(this.currentDamage) > 0)
         {
             this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage) - 1));
-        }
-        
-*/    
+        }       
+*/
     }
+
+    private void checkPlayer()
+    {
+		if (this.playerMP == null) 
+    	{
+			 if (this.playerUUID != null) this.playerMP = PlayerUtil.getPlayerByUUID(this.playerUUID);
+    	}
+    	else
+    	{
+    		 if (!PlayerUtil.isPlayerOnline(this.playerMP)) this.playerMP = null;
+    	}
+    }
+    	
+	private void freeze(int i)
+	{
+		this.AIstate = AISTATE_STUCK;
+		this.motionX = 0;
+		this.motionY = 0;
+		this.motionZ = 0;
+		if (this.playerMP != null && (this.givenFailMessage & (1 << i)) == 0)
+		{
+			this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner"+i+".fail")));
+			this.givenFailMessage += (1 << i);
+		}
+	}
 
 	//packet with AIstate, energy, rotationP + Y, mining data count
     @Override
@@ -525,6 +648,18 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         this.targetPitch = buffer.readFloat();
         this.targetYaw = buffer.readFloat();
         this.mineCount = buffer.readInt();
+        int x = buffer.readInt();
+        int y = buffer.readInt();
+        int z = buffer.readInt();
+        if (this.worldObj.blockExists(x, y, z))
+        {
+        	TileEntity tile = this.worldObj.getTileEntity(x, y, z);
+        	if (tile instanceof TileEntityMinerBase)
+        	{
+        		((TileEntityMinerBase)tile).linkedMiner = this;
+        		((TileEntityMinerBase)tile).linkCountDown = 20;
+        	}
+        }
     }
 
     @Override
@@ -535,11 +670,23 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         list.add(this.targetPitch);
         list.add(this.targetYaw);
         list.add(this.mineCount);
+        list.add(this.posBase.x);
+        list.add(this.posBase.y);
+        list.add(this.posBase.z);
     }
 
     @Override
     public void handlePacketData(Side side, EntityPlayer player)
     {
+    }
+    
+    public void recall()
+    {
+		if (this.AIstate > this.AISTATE_ATBASE && this.AIstate < this.AISTATE_RETURNING)
+		{	
+			AIstate = AISTATE_RETURNING;
+			this.pathBlockedCount = 0;
+		}
     }
 
 	private int getFacingFromRotation()
@@ -563,42 +710,44 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	{
 		TileEntity tileEntity = posBase.getTileEntity(this.worldObj);
 		
-		if (!(tileEntity instanceof TileEntityMinerBase) || tileEntity.isInvalid())
+		if (!(tileEntity instanceof TileEntityMinerBase) || tileEntity.isInvalid() || !((TileEntityMinerBase)tileEntity).isMaster)
 		{
-			if (this.playerMP != null)
-				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner3.fail")));
-			this.AIstate = AISTATE_STUCK;
+			this.freeze(FAIL_BASEDESTROYED);
 			return;
 		}
 		
 		TileEntityMinerBase minerBase = (TileEntityMinerBase) tileEntity;
+		//If it's successfully reached its base, clear all fail messages except number 6, which is that all mining areas are finished (see below)
+		this.givenFailMessage &= 64;
 		this.wayPoints.clear();
 		
-		this.emptyInventory(minerBase);
+		boolean somethingTransferred = true;
+		if (this.ticksExisted % 5 == 0) somethingTransferred = this.emptyInventory(minerBase);
 		this.inventoryDrops = 0;
 		
 		// Recharge
 		if (minerBase.hasEnoughEnergyToRun && this.energyLevel < MAXENERGY)
 		{
-			this.energyLevel += 100;
+			this.energyLevel += 16;
 			minerBase.storage.extractEnergyGC(minerBase.storage.getMaxExtract(), false);
 		}
 		
 		// When fully charged, set off again
-		if (this.energyLevel >= MAXENERGY && this.hasHoldSpace())
+		if (this.energyLevel >= MAXENERGY && !somethingTransferred && this.hasHoldSpace())
 		{
 			this.energyLevel = MAXENERGY;
 			if (this.findNextTarget(minerBase))
 			{
 				this.AIstate = AISTATE_TRAVELLING;
 				this.wayPoints.add(this.waypointBase.clone());
+				this.mineCount = 0;
 			}
 			else
 			{
-    			if (this.playerMP != null && !this.givenFailMessage6)
+    			if (this.playerMP != null && (this.givenFailMessage & 64) == 0)
     			{
     				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner6.fail")));
-    				this.givenFailMessage6 = true;
+    				this.givenFailMessage += 64;
     			}
 			}
 		}
@@ -620,14 +769,17 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
 	private boolean findNextTarget(TileEntityMinerBase minerBase)
 	{
-		if (!this.minePoints.isEmpty())
+		//If mining has finished, or path has been blocked two or more times, try mining elsewhere
+		if (!this.minePoints.isEmpty() && this.pathBlockedCount < 2)
 		{	
 			this.posTarget = this.minePoints.getFirst().clone();
 			if (ConfigManagerCore.enableDebug) System.out.println("Still mining at: " + posTarget.toString() + " Remaining shafts: " + this.minePoints.size());
 			return true;
 		}
+		
 		// Target is completely mined: change target
 		this.posTarget = minerBase.findNextTarget();
+		this.pathBlockedCount = 0;
 					
 		//No more mining targets, the whole area is mined
 		if (this.posTarget == null)
@@ -647,6 +799,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		if (this.energyLevel < this.RETURNENERGY || this.inventoryDrops > this.RETURNDROPS)
 		{
 			AIstate = AISTATE_RETURNING;
+			this.pathBlockedCount = 0;
 			return true;		
 		}
 		
@@ -749,6 +902,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 				this.minePoints.addFirst(this.minePointCurrent);
 			}
 			AIstate = AISTATE_RETURNING;
+			this.pathBlockedCount = 0;
 			if (ConfigManagerCore.enableDebug) System.out.println("Miner going home: "+this.posBase.toString() + " " + this.minePoints.size() + " shafts still to be mined");
 			return true;		
 		}
@@ -785,9 +939,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		}
 		else
 		{
-			this.AIstate = AISTATE_STUCK;
-			if (this.playerMP != null)
-				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner5.fail")));
+			this.freeze(FAIL_RETURNPATHBLOCKED);
 		}
 	}
 
@@ -800,6 +952,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	 */
 	private boolean prepareMove(int limit, int dist)
 	{
+		if (this.mineCountDown > 0)
+		{
+			this.mineCountDown--;
+			return false;
+		}
 		BlockVec3 inFront = new BlockVec3(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 1.5D), MathHelper.floor_double(this.posZ + 0.5D));
 		if (dist == 2) inFront.add(headings2[this.facingAI]);
 		else
@@ -807,6 +964,14 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 			if ((this.facingAI & 1) == 0) dist++; 
 			if (dist > 0) inFront.add(headings[this.facingAI].clone().scale(dist));
 		}
+		
+		if (!inFront.equals(this.mineLast) && this.AIstate != AISTATE_ATBASE)
+		{
+			this.mineCountDown = 3;
+			this.mineLast = inFront;
+			return false;
+		}
+		
 		int x = inFront.x;
 		int y = inFront.y;
 		int z = inFront.z;
@@ -873,26 +1038,119 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		//If it is obstructed, return to base, or stand still if that is impossible
 		if (wayBarred)
 		{
+			if (this.playerMP != null)
+				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner1A.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
 			this.motionX = 0;
 			this.motionY = 0;
 			this.motionZ = 0;
 			this.tryBlockLimit = 0;
-			if (this.AIstate == AISTATE_TRAVELLING || this.AIstate == AISTATE_MINING) this.AIstate = AISTATE_RETURNING;
+			if (this.AIstate == AISTATE_TRAVELLING)
+			{
+				this.AIstate = AISTATE_RETURNING;
+			}
+			else if (AIstate == AISTATE_MINING)
+			{
+				this.pathBlockedCount++;
+				this.AIstate = AISTATE_RETURNING;
+			}
 			else if (this.AIstate == AISTATE_RETURNING)
 				this.tryBackIn();
 			else
 			{
-				this.AIstate = AISTATE_STUCK;
-				if (this.playerMP != null)
-					this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner5.fail")));
+				this.freeze(FAIL_RETURNPATHBLOCKED);
 			}
 		}
 		
 		if (this.tryBlockLimit == limit && !this.noSpeedup)
 		{
-			this.motionX *= SPEEDUP;
-			this.motionY *= SPEEDUP;
-			this.motionZ *= SPEEDUP;
+			this.motionX *= this.speedup;
+			this.motionY *= this.speedup;
+			this.motionZ *= this.speedup;
+		}
+		
+		return wayBarred;
+	}
+
+	private boolean prepareMoveClient(int limit, int dist)
+	{
+		BlockVec3 inFront = new BlockVec3(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 1.5D), MathHelper.floor_double(this.posZ + 0.5D));
+		if (dist == 2) inFront.add(headings2[this.facing]);
+		else
+		{	
+			if ((this.facing & 1) == 0) dist++; 
+			if (dist > 0) inFront.add(headings[this.facing].clone().scale(dist));
+		}
+		if (inFront.equals(this.mineLast))
+		{
+			return false;
+		}
+		
+		int x = inFront.x;
+		int y = inFront.y;
+		int z = inFront.z;
+		
+		boolean wayBarred = false;
+		this.tryBlockLimit = limit;
+
+		//Check not obstructed by something immovable e.g. bedrock
+		//Mine out the 12 blocks in front of it in direction of travel when getting close
+		//There are 12 blocks around ... and 12 in front.  One block per tick?  
+		//(That means can move at 5/6 block per second when mining, and 1.67 bps when traveling)
+		switch (this.facing & 6)
+		{
+		case 0:
+			if (tryBlockClient(x, y, z)) wayBarred = true;
+			if (tryBlockClient(x + 1, y, z)) wayBarred = true;
+			if (tryBlockClient(x + 1, y, z - 1)) wayBarred = true;
+			if (tryBlockClient(x, y, z - 1)) wayBarred = true;
+			if (tryBlockClient(x, y, z - 2)) wayBarred = true;
+			if (tryBlockClient(x - 1, y, z - 2)) wayBarred = true;
+			if (tryBlockClient(x - 1, y, z - 1)) wayBarred = true;
+			if (tryBlockClient(x - 2, y, z - 1)) wayBarred = true;
+			if (tryBlockClient(x - 2, y, z)) wayBarred = true;
+			if (tryBlockClient(x - 1, y, z)) wayBarred = true;
+			if (tryBlockClient(x - 1, y, z + 1)) wayBarred = true;
+			if (tryBlockClient(x, y, z + 1)) wayBarred = true;
+			break;
+		case 2:
+			if (tryBlockClient(x, y - 2, z)) wayBarred = true;
+			if (tryBlockClient(x - 1, y - 2, z)) wayBarred = true;
+			if (tryBlockClient(x, y - 1, z)) wayBarred = true;
+			if (tryBlockClient(x - 1, y - 1, z)) wayBarred = true;
+			if (tryBlockClient(x + 1, y - 1, z)) wayBarred = true;
+			if (tryBlockClient(x - 2, y - 1, z)) wayBarred = true;
+			if (tryBlockClient(x + 1, y, z)) wayBarred = true;
+			if (tryBlockClient(x - 2, y, z)) wayBarred = true;
+			if (tryBlockClient(x, y, z)) wayBarred = true;
+			if (tryBlockClient(x - 1, y, z)) wayBarred = true;
+			if (tryBlockClient(x, y + 1, z)) wayBarred = true;
+			if (tryBlockClient(x - 1, y + 1, z)) wayBarred = true;
+			break;
+		case 4:
+			if (tryBlockClient(x, y - 2, z - 1)) wayBarred = true;
+			if (tryBlockClient(x, y - 1, z)) wayBarred = true;
+			if (tryBlockClient(x, y - 1, z - 1)) wayBarred = true;
+			if (tryBlockClient(x, y - 1, z + 1)) wayBarred = true;
+			if (tryBlockClient(x, y - 1, z - 2)) wayBarred = true;
+			if (tryBlockClient(x, y, z + 1)) wayBarred = true;
+			if (tryBlockClient(x, y, z - 2)) wayBarred = true;
+			if (tryBlockClient(x, y, z - 1)) wayBarred = true;
+			if (tryBlockClient(x, y - 2, z)) wayBarred = true;
+			if (tryBlockClient(x, y + 1, z - 1)) wayBarred = true;
+			if (tryBlockClient(x, y, z)) wayBarred = true;
+			if (tryBlockClient(x, y + 1, z)) wayBarred = true;
+			break;
+		}
+		
+		//If it is obstructed, return to base, or stand still if that is impossible
+		if (wayBarred)
+		{
+			this.tryBlockLimit = 0;
+		}
+		
+		if (this.tryBlockLimit == limit)
+		{
+			this.mineLast = inFront; 
 		}
 		
 		return wayBarred;
@@ -912,23 +1170,26 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		}
 		if (b instanceof BlockLiquid) return false;
 		if (b instanceof IFluidBlock) return false;
-		if (b instanceof IPlantable)
+		if (b != GCBlocks.fallenMeteor)
 		{
-			blockingBlock.block = b;
-			blockingBlock.meta = this.worldObj.getBlockMetadata(x, y, z);
-			return true;
-		}
-		int meta = this.worldObj.getBlockMetadata(x, y, z);
-		if (b.hasTileEntity(meta) || b.getBlockHardness(this.worldObj,  x,  y,  z) < 0)
-		{
-			blockingBlock.block = b;
-			blockingBlock.meta = meta;
-			return true;
+			if (b instanceof IPlantable && b!=Blocks.tallgrass && b!=Blocks.deadbush && b!=Blocks.double_plant && b!=Blocks.waterlily && !(b instanceof BlockFlower))
+			{
+				blockingBlock.block = b;
+				blockingBlock.meta = this.worldObj.getBlockMetadata(x, y, z);
+				return true;
+			}
+			int meta = this.worldObj.getBlockMetadata(x, y, z);
+			if (b.hasTileEntity(meta) || b.getBlockHardness(this.worldObj,  x,  y,  z) < 0)
+			{
+				blockingBlock.block = b;
+				blockingBlock.meta = meta;
+				return true;
+			}
 		}
 		
 		if (this.tryBlockLimit == 0) return false;
         BlockEvent.BreakEvent event = ForgeHooks.onBlockBreakEvent(this.worldObj, this.playerMP.theItemInWorldManager.getGameType(), this.playerMP, x, y, z);
-        if (event.isCanceled()) return false;
+        if (event.isCanceled()) return true;
 
 		this.tryBlockLimit--;
 		
@@ -950,9 +1211,45 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		return false;
 	}
 
+	private boolean tryBlockClient(int x, int y, int z)
+	{
+		BlockVec3 bv = new BlockVec3(x, y, z);
+		if (this.laserBlocks.contains(bv)) return false;
+
+		//Add minable blocks to the laser fx list
+		Block b = this.worldObj.getBlock(x, y, z);
+		if (b.getMaterial() == Material.air) return false;
+		if (noMineList.contains(b)) return true;
+		if (b instanceof BlockLiquid) return false;
+		if (b instanceof IFluidBlock) return false;
+		if (b instanceof IPlantable) return true;
+		int meta = this.worldObj.getBlockMetadata(x, y, z);
+		if (b.hasTileEntity(meta) || b.getBlockHardness(this.worldObj,  x,  y,  z) < 0) return true;
+		if (this.tryBlockLimit == 0) return false;
+		
+		this.tryBlockLimit--;
+		
+		this.laserBlocks.add(bv);
+		this.laserTimes.add(this.ticksExisted);
+		return false;
+	}
+
+
+	public void removeLaserBlocks(int removeCount)
+	{
+		for (int i = 0; i < removeCount; i++)
+		{
+			this.laserBlocks.removeFirst();
+			this.laserTimes.removeFirst();
+		}
+	}
+
 	private ItemStack getPickBlock(World world, int x, int y, int z, Block b)
 	{
-        Item item = Item.getItemById(Block.getIdFromBlock(b));
+		if (b == GCBlocks.fallenMeteor)
+			return new ItemStack(GCItems.meteoricIronRaw);
+
+		Item item = Item.getItemById(Block.getIdFromBlock(b));
         
 		if (item == null)
         {
@@ -1019,7 +1316,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             }
         }
 
-		this.markDirty();
+		if (flag1)
+		{	
+			this.markDirty();
+			this.mineCount++;
+		}
         return flag1;
 	}
 
@@ -1089,7 +1390,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	        	this.targetYaw = 270;
         	this.motionX = -this.speed;
         	//TODO some acceleration and deceleration
-        	if (this.motionX * SPEEDUP <= x - this.posX)
+        	if (this.motionX * speedup <= x - this.posX)
         	{
         		this.motionX = x - this.posX;
         		this.noSpeedup = true;
@@ -1101,7 +1402,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	        if (this.AIstate != AISTATE_DOCKING)
 	        	this.targetYaw = 90;
 			this.motionX = this.speed;
-        	if (this.motionX * SPEEDUP >= x - this.posX)
+        	if (this.motionX * speedup >= x - this.posX)
         	{
         		this.motionX = x - this.posX;
 	    		this.noSpeedup = true;
@@ -1122,7 +1423,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		{
         	this.targetPitch = -90;
 			this.motionY = -this.speed;
-        	if (this.motionY * SPEEDUP <= y - this.posY)
+        	if (this.motionY * speedup <= y - this.posY)
         	{
         		this.motionY = y - this.posY;
         		this.noSpeedup = true;
@@ -1133,7 +1434,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		{
         	this.targetPitch = 90;
 			this.motionY = this.speed;
-        	if (this.motionY * SPEEDUP >= y - this.posY)
+        	if (this.motionY * speedup >= y - this.posY)
         	{
         		this.motionY = y - this.posY;
         		this.noSpeedup = true;
@@ -1160,7 +1461,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	        	this.targetYaw = 180;
         	this.motionZ = -this.speed;
         	//TODO some acceleration and deceleration
-        	if (this.motionZ * SPEEDUP <= z - this.posZ)
+        	if (this.motionZ * speedup <= z - this.posZ)
         	{
         		this.motionZ = z - this.posZ;
         		this.noSpeedup = true;
@@ -1172,7 +1473,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	        if (this.AIstate != AISTATE_DOCKING)
 	        	this.targetYaw = 0;
 			this.motionZ = this.speed;
-        	if (this.motionZ * SPEEDUP >= z - this.posZ)
+        	if (this.motionZ * speedup >= z - this.posZ)
         	{
         		this.motionZ = z - this.posZ;
         		this.noSpeedup = true;
@@ -1254,6 +1555,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         if (world.isRemote) return true;
 		final EntityAstroMiner miner = new EntityAstroMiner(world, new ItemStack[EntityAstroMiner.INV_SIZE], 0);
 		miner.setPlayer(player);
+		if (player.capabilities.isCreativeMode) miner.spawnedInCreative = true;
         miner.waypointBase = new BlockVec3(x, y, z).modifyPositionFromSide(ForgeDirection.getOrientation(facing), 1);
         miner.setPosition(miner.waypointBase.x, miner.waypointBase.y - 1, miner.waypointBase.z);
         miner.baseFacing = facing;
@@ -1284,20 +1586,23 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         miner.AIstate = AISTATE_ATBASE;
         miner.posBase = base;
 
+        //Increase motion speed when moving in empty space between asteroids
+		miner.speedup = (world.provider instanceof WorldProviderAsteroids) ? SPEEDUP * 1.6D : SPEEDUP;
+
         //Clear blocks, and test to see if its movement area in front of the base is blocked
         if (miner.prepareMove(12, 0))
         {
-           	miner.kill();
+        	miner.isDead = true;
            	return false;
         }
         if (miner.prepareMove(12, 1))
         {
-           	miner.kill();
+        	miner.isDead = true;
            	return false;
         }
         if (miner.prepareMove(12, 2))
         {
-           	miner.kill();
+        	miner.isDead = true;
            	return false;
         }
 
@@ -1354,7 +1659,17 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
         if (!this.worldObj.isRemote)
         {
-        	Entity e = par1DamageSource.getEntity(); 
+        	Entity e = par1DamageSource.getEntity();
+        	
+        	//If creative mode player, kill the entity (even if player owner is offline) and drop nothing
+        	if (e instanceof EntityPlayer && ((EntityPlayer)e).capabilities.isCreativeMode)
+        	{
+                if (this.playerMP == null && !this.spawnedInCreative)
+                	((EntityPlayer)e).addChatMessage(new ChatComponentText("WARNING: that Astro Miner belonged to an offline player, cannot reset player's Astro Miner count."));
+        		this.kill();
+                return true;
+        	}
+        	
         	//Invulnerable to mobs
         	if (this.isEntityInvulnerable() || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)))
             {
@@ -1369,12 +1684,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
                 if (e instanceof EntityPlayer)
                 {
-                    if (((EntityPlayer) par1DamageSource.getEntity()).capabilities.isCreativeMode) this.shipDamage = 100;
-                    else this.shipDamage += par2 * 21;
+                    this.shipDamage += par2 * 21;
 //                    this.dataWatcher.updateObject(this.currentDamage, 100);
                 }
 
-                if (this.shipDamage > 90 && !this.worldObj.isRemote)
+                if (this.shipDamage > 90)
                 {
                     this.kill();
                     this.dropShipAsItem();
@@ -1478,9 +1792,15 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     }
 
     @Override
-    protected void kill()
+    public void setDead()
     {
-        this.setDead();
+    	if (!this.worldObj.isRemote && this.playerMP != null && !this.spawnedInCreative)
+        {
+        	int astroCount = GCPlayerStats.get(this.playerMP).astroMinerCount;
+        	if (astroCount > 0) GCPlayerStats.get(this.playerMP).astroMinerCount--;        	
+        }
+
+        super.setDead();
     	if (posBase != null)
     	{
     		TileEntity tileEntity = posBase.getTileEntity(this.worldObj);
@@ -1489,6 +1809,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 				((TileEntityMinerBase) tileEntity).unlinkMiner();
 			}
     	}
+
+        if (this.soundUpdater != null)
+        {
+            this.soundUpdater.update();
+        }
     }
 
     public boolean isEntityInvulnerable()
@@ -1516,12 +1841,6 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             return;
         }
 
-        if (this.playerMP != null)
-        {
-        	int astroCount = GCPlayerStats.get(this.playerMP).astroMinerCount;
-        	if (astroCount > 0) GCPlayerStats.get(this.playerMP).astroMinerCount--;        	
-        }
-        
         for (final ItemStack item : this.getItemsDropped(new ArrayList<ItemStack>()))
         {
             EntityItem entityItem = this.entityDropItem(item, 0);
@@ -1531,6 +1850,76 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
                 entityItem.getEntityItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());
             }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public IUpdatePlayerListBox getSoundUpdater()
+    {
+    	return this.soundUpdater;
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public ISound setSoundUpdater(EntityPlayerSP player)
+    {
+    	this.soundUpdater = new SoundUpdaterMiner(player, this);
+    	return (ISound) this.soundUpdater;
+    }
+
+    public void stopRocketSound()
+    {
+        if (this.soundUpdater != null)
+        {
+        	((SoundUpdaterMiner) this.soundUpdater).stopRocketSound();
+        }
+        this.soundToStop = false;
+    }
+
+    public void transmitData(int[] data)
+    {
+    	data[0] = (int) (this.posX);
+    	data[1] = (int) (this.posY);
+		data[2] = (int) (this.posZ);
+		data[3] = this.energyLevel;
+		data[4] = this.AIstate;
+    }
+	
+    public void receiveData(int[] data, String[] str)
+    {
+		str[0] = "";
+		str[1] = "x: " + data[0];
+		str[2] = "y: " + data[1];
+		str[3] = "z: " + data[2];
+		int energyPerCent = data[3] / 120;
+		str[4] = GCCoreUtil.translate("gui.energyStorage.desc.1") + ": " + energyPerCent + "%";
+		switch (data[4])
+		{
+			case EntityAstroMiner.AISTATE_STUCK:
+				str[0] = GCCoreUtil.translate("gui.message.noEnergy.name");
+				break;
+			case EntityAstroMiner.AISTATE_ATBASE:
+				str[0] = GCCoreUtil.translate("gui.miner.docked");
+				break;
+			case EntityAstroMiner.AISTATE_TRAVELLING:
+				str[0] = GCCoreUtil.translate("gui.miner.travelling");
+				break;
+			case EntityAstroMiner.AISTATE_MINING:
+				str[0] = GCCoreUtil.translate("gui.miner.mining");
+				break;
+			case EntityAstroMiner.AISTATE_RETURNING:
+				str[0] = GCCoreUtil.translate("gui.miner.returning");
+				break;
+			case EntityAstroMiner.AISTATE_DOCKING:
+				str[0] = GCCoreUtil.translate("gui.miner.docking");
+				break;
+			case EntityAstroMiner.AISTATE_OFFLINE:
+				str[0] = GCCoreUtil.translate("gui.miner.offline");
+				break;
+		}
+    }
+
+    public void adjustDisplay(int[] data)
+    {
+    	GL11.glScalef(0.9F, 0.9F, 0.9F);
     }
 
     @Override
@@ -1598,6 +1987,15 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         	System.out.println("[Galacticraft] Please break and replace any AstroMiner placed in the world prior to build 3.0.11.317.");
         	this.playerUUID = null;
         }
+        if (nbt.hasKey("speedup"))
+        {
+        	this.speedup = nbt.getDouble("speedup");
+        }
+        else this.speedup = (WorldUtil.getProviderForDimension(this.dimension) instanceof WorldProviderAsteroids) ? SPEEDUP * 1.6D : SPEEDUP;
+
+        this.pathBlockedCount = nbt.getInteger("pathBlockedCount");
+        this.spawnedInCreative = nbt.getBoolean("spawnedInCreative");
+        this.flagCheckPlayer = true;
     }
 
     @Override
@@ -1668,7 +2066,10 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         {
 	        nbt.setLong("playerUUIDMost", this.playerUUID.getMostSignificantBits());
 	        nbt.setLong("playerUUIDLeast", this.playerUUID.getLeastSignificantBits());
-        }        
+        }
+        nbt.setDouble("speedup", this.speedup);
+        nbt.setInteger("pathBlockedCount", this.pathBlockedCount);
+        nbt.setBoolean("spawnedInCreative", this.spawnedInCreative);
     }
 }
 

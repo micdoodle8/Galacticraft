@@ -22,6 +22,7 @@ public class AsteroidsItems
     //public static Item canisterLAr;
     public static Item atmosphericValve;
     public static ItemHeavyNoseCone heavyNoseCone;
+    public static Item orionDrive;
     public static Item titaniumHelmet;
     public static Item titaniumChestplate;
     public static Item titaniumLeggings;
@@ -48,6 +49,7 @@ public class AsteroidsItems
         //AsteroidsItems.canisterLAr = new ItemCanisterLiquidArgon("canisterPartialLAr");
         AsteroidsItems.atmosphericValve = new ItemAtmosphericValve("atmosphericValve");
         AsteroidsItems.heavyNoseCone = new ItemHeavyNoseCone("heavyNoseCone");
+        AsteroidsItems.orionDrive = new ItemOrionDrive("orionDrive");
         AsteroidsItems.titaniumHelmet = new ItemArmorAsteroids(0, "helmet");
         AsteroidsItems.titaniumChestplate = new ItemArmorAsteroids(1, "chestplate");
         AsteroidsItems.titaniumLeggings = new ItemArmorAsteroids(2, "leggings");
@@ -79,6 +81,7 @@ public class AsteroidsItems
         //registerItem(AsteroidsItems.canisterLAr);
         registerItem(AsteroidsItems.atmosphericValve);
         registerItem(AsteroidsItems.heavyNoseCone);
+        registerItem(AsteroidsItems.orionDrive);
         registerItem(AsteroidsItems.titaniumHelmet);
         registerItem(AsteroidsItems.titaniumChestplate);
         registerItem(AsteroidsItems.titaniumLeggings);

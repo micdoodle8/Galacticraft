@@ -38,6 +38,12 @@ public class ConfigManagerMars
     public static boolean launchControllerChunkLoad;
     public static boolean launchControllerAllDims;
 
+    // WGEN
+    public static boolean disableDeshGen;
+    public static boolean disableTinGen;
+    public static boolean disableCopperGen;
+    public static boolean disableIronGen;
+
     public static void syncConfig(boolean load)
     {
         List<String> propOrder = new ArrayList<String>();
@@ -86,6 +92,30 @@ public class ConfigManagerMars
             prop.comment = "May rarely cause issues if enabled, depends on how the other mod's dimensions are.";
             prop.setLanguageKey("gc.configgui.launchControllerAllDims");
             launchControllerAllDims = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Desh Ore Gen on Mars", false);
+            prop.comment = "Disable Desh Ore Gen on Mars.";
+            prop.setLanguageKey("gc.configgui.disableDeshGenMars");
+            disableDeshGen = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Tin Ore Gen on Mars", false);
+            prop.comment = "Disable Tin Ore Gen on Mars.";
+            prop.setLanguageKey("gc.configgui.disableTinGenMars");
+            disableTinGen = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Copper Ore Gen on Mars", false);
+            prop.comment = "Disable Copper Ore Gen on Mars.";
+            prop.setLanguageKey("gc.configgui.disableCopperGenMars");
+            disableCopperGen = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Iron Ore Gen on Mars", false);
+            prop.comment = "Disable Iron Ore Gen on Mars.";
+            prop.setLanguageKey("gc.configgui.disableIronGenMars");
+            disableIronGen = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
             config.setCategoryPropertyOrder(CATEGORY_GENERAL, propOrder);

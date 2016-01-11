@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import com.mojang.authlib.GameProfile;
+
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import net.minecraft.entity.Entity;
@@ -11,6 +13,11 @@ import net.minecraft.server.management.ItemInWorldManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.WorldServer;
 
+/**
+ * Do not reference this or test 'intance of' this in your code:
+ * if PlayerAPI is installed, GCEntityPlayerMP will not be used.
+ * 
+ */
 public class GCEntityPlayerMP extends EntityPlayerMP
 {
     public GCEntityPlayerMP(MinecraftServer server, WorldServer world, GameProfile profile, ItemInWorldManager itemInWorldManager)
@@ -77,5 +84,14 @@ public class GCEntityPlayerMP extends EntityPlayerMP
     public void knockBack(Entity p_70653_1_, float p_70653_2_, double impulseX, double impulseZ)
     {
         GalacticraftCore.proxy.player.knockBack(this, p_70653_1_, p_70653_2_, impulseX, impulseZ);
+    }
+    
+    @Override
+    public void setInPortal()
+    {
+    	if (!(this.worldObj.provider instanceof IGalacticraftWorldProvider))
+    	{
+    		super.setInPortal();
+    	}
     }
 }

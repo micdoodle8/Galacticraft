@@ -80,6 +80,11 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     {
         if (this.worldObj.isRemote)
         {
+            if (!this.onGround)
+            {
+                return false;
+            }
+
             if (this.riddenByEntity != null)
             {
                 this.riddenByEntity.mountEntity(this);
@@ -95,6 +100,11 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
         }
         else if (var1 instanceof EntityPlayerMP)
         {
+            if (!this.onGround)
+            {
+                return false;
+            }
+
             var1.mountEntity(null);
             return true;
         }

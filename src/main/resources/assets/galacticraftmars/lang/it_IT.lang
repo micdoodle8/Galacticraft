@@ -1,0 +1,193 @@
+# Galacticraft Mars Language File = ITALIAN
+# Translation by QuodQuaeris
+
+# GENERAL ITEMS
+item.rawDesh.name=Desh Non Lavorato
+item.deshStick.name=Bastoncino di Desh
+item.ingotDesh.name=Lingotto Di Desh
+item.spaceshipTier2.t2Rocket.name=Razzo di Livello 2
+item.reinforcedPlateT2.name=Piastra Rinforzata
+item.tier2.desc=Livello 2
+item.slimelingCargo.name=Zaino per Slimeling
+item.key.T2.name=Chiave Delle Segrete Livello 2
+item.compressedDesh.name=Desh Compresso
+item.spaceshipTier2.cargoRocket.name=Razzo-Cargo
+item.fluidManip.name=Manipolatore di Fluidi
+item.bucketSludge.name=Secchio di Fango Batterico
+fluid.bacterialsludge=Fango Batterico
+
+# TOOLS
+item.deshPick.name=Piccone Di Desh
+item.deshPickSlime.name=Piccone Di Desh Appiccicoso
+item.deshAxe.name=Ascia Di Desh
+item.deshHoe.name=Zappa di Desh
+item.deshSpade.name=Pala Di Desh
+item.deshSword.name=Spada Di Desh
+
+# ARMOR
+item.deshHelmet.name=Elmetto di Desh
+item.deshChestplate.name=Corazza di Desh
+item.deshLeggings.name=Gambali Di Desh
+item.deshBoots.name=Stivali Di Desh
+
+# BLOCKS
+tile.mars.deshmars.name=Minerale Di Desh
+tile.mars.coppermars.name=Minerale Di Rame
+tile.mars.tinmars.name=Minerale Di Stagno
+tile.mars.ironmars.name=Minerale Di Ferro
+tile.mars.marscobblestone.name=Pietrisco Di Marte
+tile.mars.marsstone.name=Pietra Di Marte
+tile.mars.marsdirt.name=Roccia Sotterranea Di Marte
+tile.mars.marsgrass.name=Roccia Di Marte
+tile.mars.marsdeco.name=Blocco Di Desh
+tile.mars.marsdungeon.name=Mattoni Delle Segrete Di Marte
+tile.treasureT2.name=Cassa Del Tesoro Di Livello 2
+tile.slimelingEgg.redEgg.name=Uovo Di Slimeling Rosso
+tile.slimelingEgg.blueEgg.name=Uovo Di Slimeling Blu
+tile.slimelingEgg.yellowEgg.name=Uovo Di Slimeling Giallo
+tile.marsMachine.0.name=Terraformer
+tile.marsMachine.1.name=Camera Criogenica
+tile.marsMachine.2.name=Launch Controller
+tile.marsMachine.4.name=Liquidificatore Di Gas
+tile.marsMachine.5.name=Sintetizzatore di Metano
+tile.marsMachine.6.name=Elettrizzatore Di Acqua
+tile.hydrogenPipe.name=Tubo Per L'Idrogeno
+tile.sludge.name=Fango Batterico
+tile.creeperEgg.name=Uovo Di Creeper
+tile.cavernVines.name=Liane Delle Caverne
+
+# DECOBLOCKS
+tile.marsCobblestoneStairs.name=Scale In Pietrisco Di Marte
+tile.wallGC.mars.name=Muro In Pietrisco Di Marte
+tile.slabGCHalf.marsSlab.name=Scalino In Pietrisco Di Marte
+tile.marsDungeonBricksStairs.name=Scale In Mattoni Delle Segrete Di Marte
+tile.wallGC.marsBricks.name=Muro In Mattone Delle Segrete Di Marte
+tile.slabGCHalf.marsBricksSlab.name=Scalino In Mattoni Delle Segrete Di Marte
+
+# GUI
+gui.choosePlanet.desc.mars=Abitabile#Privo Di Ossigen#Gravità: 38%
+item.deshPickSlime.description.name=Può distruggere le uova di creeper
+gui.message.noEnergy.name=Non c'è più energia!
+gui.message.noWater.name=Non c'è abbastanza acqua!
+gui.message.noBonemeal.name=Non c'è abbastanza farina di ossa!
+gui.message.noSeeds.name=Non ci sono abbastanza semi!
+gui.message.noSaplings.name=Non ci sono abbastanza alberelli!
+gui.message.bubbleExp.name=Espansione della bolla
+gui.message.noValidBlocks.name=Non ci sono blocchi validi nella bolla
+gui.message.terraforming.name=Terraforming
+gui.message.enableTrees.name=Abilita alberi
+gui.message.enableGrass.name=Abilita erba
+gui.message.trees.name=Alberi
+gui.message.grass.name=Erba
+gui.message.invalidFreq.name=Frequenza Invalida
+gui.message.frequency.name=Frequenza
+gui.message.destFrequency.name=Frequenza di Destinazione
+gui.message.removePad.name=Rimuovi la Piattaforma
+gui.message.launchWhen.name=Lancia Quando
+gui.message.cargoUnloaded.name=Il cargo è scarico
+gui.message.cargoFull.name=Il cargo è pieno
+gui.message.fullyFueled.name=Serbatoio Pieno
+gui.message.instant.name=Instantaneamente
+gui.message.tenSec.name=10 Secondi
+gui.message.thirtySec.name=30 Secondi
+gui.message.oneMin.name=1 Minuto
+gui.message.redstoneSig.name=Segnale Di Pietrarossa
+gui.message.notSet.name=Non Configurato
+gui.message.notEnough.name=Non abbastanza
+gui.message.success.name=Successo
+gui.message.zeroWater.name=Non c'è Acqua!
+
+	# Dollar sign ($) will split text onto a new line
+gui.launchController.desc.0=Questa è l'unica frequenza$del Launch Controller
+gui.launchController.desc.1=Frequenza per lanciare il razzo verso
+gui.launchController.desc.2=Whether the launch pad should$be removed on launch
+gui.launchController.desc.3=When this criteria is met,$rocket will launch
+gui.terraformer.desc.0=Tanica di Acqua
+
+gui.gasTank.desc.0=Deposito Di Gas
+gui.gasTankCompressed.desc.0=Deposito Di Gas (Compresso)
+gui.liquidTank.desc.0=Tanica Di Liquidi
+gui.status.nogas.name=Non c'è gas
+gui.status.liquefying.name=Liquidificando
+gui.status.processing.name=Sintetizzando
+gui.status.needsCarbon.name=C'è bisogno di carbone
+gui.status.tankfull.name=Tanica piena
+gui.status.tanksfull.name=Tanica piena
+gui.message.lowEnergy.name=Energia bassa
+gui.button.liquefy.name=Lavorare
+gui.button.liquefyStop.name=Stop
+gui.gasInput.desc.0=Try placing a Methane$Gas Canister here
+gui.gasInput.desc.1=(Perhaps alternatively,$an Atmospheric Valve)
+gui.hydrogenInput.desc.0=Ha bisogno di una tanica di idrogeno
+gui.hydrogenInput.desc.1=o una valvola atmosferica
+gui.liquidOutput.desc.2=tanica di gas liquefatto
+gui.methaneOutput.desc.2=tanica di metano
+gui.message.withAtmosphere0.name=on a planet with plenty of
+gui.message.withAtmosphere1.name=in the atmosphere
+item.carbonFragments.name=Carbone frammentato
+gui.carbonSlot.desc.0=Il carbone frammentato va qui
+gui.waterBucketSlot.desc=Posiziona secchi d'acqua in questo slot
+
+gui.cargorocket.status.waiting.0=Aspettando
+gui.cargorocket.status.waiting.1=Accensone
+gui.cargorocket.status.launched.0=Già
+gui.cargorocket.status.launched.1=Lanciato
+
+gas.carbondioxide.name=Anidride Carbone
+gas.oxygen.name=Ossigeno
+gas.nitrogen.name=Azoto
+
+gui.desc.reinforcedPlateT2.name=Livello 2
+dimension.Mars.name=Marte
+planet.mars=Marte
+
+tile.treasureT2.description=Le Casse Del Tesoro Di Livello 2 spawneranno nelle Segrete Di Marte. Sono sbloccabili dopo aver sconfitto in boss finale.
+tile.cavernVines.description=Le Liane delle Caverne sono pericolose per le creature, impigliandole e trascinandole verso l'alto.
+tile.slimelingEgg.description=Uova di Slimeling, una volta rotte con le mani nude, libereranno un animale.
+tile.cryoChamber.description=Le Camere Criogeniche permettono al player di dormire durante il giorno, curandoli, ma ha un tempo di ricarica.
+tile.launchController.description=I controllori del lancio sono utilizzati per personalizzare il comportamente del lancio, compresi i criteri di lancio e piattaforme-destinatarie di lancio per lanci automatici.
+tile.terraformer.description=I terraformers vengono utilizzati per aggiungere un po' di verde a pianeti lontani , l'aggiunta di erba, alberi e acqua se vengono somministrati i materiali corretti.
+tile.creeperEgg.description=Le uova di creeper si trovano nelle segrete di Marte, spawnando una creatura che esploderà.
+tile.gasLiquefier.description=Gas liquefatti, provenienti dall'atmosfera o dalle capsule. Il metano liquido è un buon carburante per il razzo!
+tile.methaneSynthesizer.description=Con una sorgente di idrogeno e una sorgente di carbonio, produce metano per essere lavorato in un Liquidificatore di Gas.
+tile.electrolyzer.description=Trasforma l'acqua in idrogeno(utile per il Sintetizzatore di Metano) e ossigeno.
+tile.hydrogenPipe.description=I tubi di idrogeno trasferiscono idrogeno da una macchina all'altra.
+
+gui.slimeling.chat.wrongPlayer=Questo non è il mio Slimeling.
+gui.cryogenic.chat.cantUse=Non posso usarlo per altri %d secondi
+gui.slimeling.name=Nome
+gui.slimeling.owner=Proprietario
+gui.slimeling.kills=Uccisioni
+gui.slimeling.scale=Ingrandimento
+gui.slimeling.button.sit=Siedi
+gui.slimeling.button.follow=Segui
+gui.slimeling.sitting=Sedendo
+gui.slimeling.following=Seguendo
+gui.slimeling.damage=Danno da Attacco
+gui.slimeling.food=Cibo Preferito
+
+# SCHEMATICS
+schematic.rocketT3.name=Razzo di Livello 3
+schematic.cargoRocket.name=Razzo-Cargo automatico
+
+# ENTITIES
+entity.Sludgeling.name=Sludgeling
+entity.Slimeling.name=Slimeling
+entity.CreeperBoss.name=Creeper Boss Evoluto
+entity.SpaceshipT2.name=Razzo di Livello 2
+entity.CargoRocket.name=Razzo-Cargo
+entity.LandingBalloons.name=Palloni da Atterraggio
+
+# CONTAINERS
+container.launchcontroller.name=Controllore del lancio
+container.tileTerraformer.name=Terraformer
+container.marsLander.name=Palloni da Atterraggio
+
+# CONFIG GUI
+gc.configgui.dimensionIDMars=Mars Dimension ID
+gc.configgui.idSchematicRocketT2=Tier 2 Rocket Schematic ID
+gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID
+gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
+gc.configgui.launchControllerAllDims=Launch Controller All Dimensions
+
+gc.configgui.planets.title=Galacticraft Planets Config

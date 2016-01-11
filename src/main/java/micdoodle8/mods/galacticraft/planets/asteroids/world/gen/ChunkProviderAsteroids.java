@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Billowed;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
+import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import net.minecraft.block.Block;
@@ -625,14 +626,29 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
                     if (this.rand.nextInt(ILMENITE_CHANCE) == 0)
                     {
                         meta = 4;
+
+                        if (ConfigManagerAsteroids.disableIlmeniteGen)
+                        {
+                            continue;
+                        }
                     }
                     else if (this.rand.nextInt(IRON_CHANCE) == 0)
                     {
                         meta = 5;
+
+                        if (ConfigManagerAsteroids.disableIronGen)
+                        {
+                            continue;
+                        }
                     }
                     else if (this.rand.nextInt(ALUMINUM_CHANCE) == 0)
                     {
                         meta = 3;
+
+                        if (ConfigManagerAsteroids.disableAluminumGen)
+                        {
+                            continue;
+                        }
                     }
 
                     worldObj.setBlock(px, y, pz, block, meta, 2);

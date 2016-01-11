@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -24,8 +25,8 @@ public class EntityTier2Rocket extends EntityTieredRocket
     public EntityTier2Rocket(World par1World)
     {
         super(par1World);
-        this.setSize(1.2F, 5.5F);
-        this.yOffset = this.height / 2.0F;
+        this.setSize(1.2F, 4.0F);
+        this.yOffset = 1.5F;
     }
 
     public EntityTier2Rocket(World par1World, double par2, double par4, double par6, EnumRocketType rocketType)
@@ -33,6 +34,8 @@ public class EntityTier2Rocket extends EntityTieredRocket
         super(par1World, par2, par4, par6);
         this.rocketType = rocketType;
         this.cargoItems = new ItemStack[this.getSizeInventory()];
+        this.setSize(1.2F, 4.0F);
+        this.yOffset = 1.5F;
     }
 
     public EntityTier2Rocket(World par1World, double par2, double par4, double par6, boolean reversed, EnumRocketType rocketType, ItemStack[] inv)
@@ -46,6 +49,12 @@ public class EntityTier2Rocket extends EntityTieredRocket
     {
         super.entityInit();
     }
+
+	@Override
+	public ItemStack getPickedResult(MovingObjectPosition target)
+	{
+	return new ItemStack(MarsItems.spaceship, 1, this.rocketType.getIndex());
+	}
 
     @Override
     public double getMountedYOffset()

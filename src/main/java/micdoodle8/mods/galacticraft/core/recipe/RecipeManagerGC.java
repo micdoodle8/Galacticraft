@@ -13,7 +13,9 @@ import micdoodle8.mods.galacticraft.core.items.ItemBasic;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -22,6 +24,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -42,6 +45,8 @@ public class RecipeManagerGC
         }
 
         RecipeManagerGC.addUniversalRecipes();
+        
+        RecipeManagerGC.addExNihiloRecipes();
     }
 
     @SuppressWarnings("unchecked")
@@ -370,7 +375,10 @@ public class RecipeManagerGC
 
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.airLockFrame, 1, 1), new Object[] { "YYY", "WZW", "YYY", 'W', "compressedMeteoricIron", 'Y', "compressedSteel", 'Z', new ItemStack(GCItems.basicItem, 1, 13) });
 
-        RecipeUtil.addRecipe(new ItemStack(GCItems.oilExtractor), new Object[] { "X  ", " XY", "ZYY", 'X', "compressedSteel", 'Y', "compressedBronze", 'Z', Items.redstone });
+        // Disable oil extractor:
+        // RecipeUtil.addRecipe(new ItemStack(GCItems.oilExtractor), new Object[] { "X  ", " XY", "ZYY", 'X', "compressedSteel", 'Y', "compressedBronze", 'Z', Items.redstone });
+
+        RecipeUtil.addRecipe(new ItemStack(GCItems.basicItem, 1, 20), new Object[] { "WVW", "YXY", "YZY", 'X', "compressedSteel", 'Y', "compressedBronze", 'Z', "waferBasic", 'W', Items.redstone, 'V', GCItems.oxygenVent });
 
         RecipeUtil.addRecipe(new ItemStack(GCItems.oilCanister, 1, GCItems.oilCanister.getMaxDamage()), new Object[] { "WXW", "WYW", "WZW", 'X', "compressedSteel", 'Y', Blocks.glass, 'Z', new ItemStack(GCItems.canister, 1, 0), 'W', "compressedTin" });
 
@@ -400,6 +408,8 @@ public class RecipeManagerGC
 
         RecipeUtil.addRecipe(new ItemStack(GCItems.wrench), new Object[] { "  Y", " X ", "X  ", 'X', "compressedBronze", 'Y', "compressedSteel" });
 
+        RecipeUtil.addRecipe(new ItemStack(Blocks.lit_pumpkin), new Object[] { "P  ", "T  ", "   ", 'P', new ItemStack(Blocks.pumpkin), 'T', new ItemStack(GCBlocks.unlitTorch) });
+        
         if (GalacticraftCore.isPlanetsLoaded)
         {
             RecipeUtil.addRecipe(new ItemStack(GCBlocks.brightLamp), new Object[] { "XYX", "YZY", "XYX", 'X', "ingotDesh", 'Y', Items.glowstone_dust, 'Z', new ItemStack(GCItems.battery, 1, 0) });
@@ -523,8 +533,44 @@ public class RecipeManagerGC
 
     private static void addBuildCraftCraftingRecipes()
     {
+//        boolean refineryDone = false;
+//        boolean newBCAPI = false;
+//    	try
+//        {
+//    		Class<?> clazz = Class.forName("buildcraft.api.recipes.IRefineryRecipeManager");
+//    		Method[] mzz = clazz.getMethods();
+//    		for (Method m : mzz)
+//    		{
+//    			if (m.getName().equals("addRecipe"))
+//    			{
+//    				if (m.getParameterTypes()[0].equals(String.class))
+//    				{
+//    		    		newBCAPI = true;
+//    		    		break;
+//    				}
+//    			}
+//    		}
+//
+//    		if (newBCAPI)
+//    		{
+//	    		//Newer Buildcraft API versions
+//	        	BuildcraftRecipeRegistry.refinery.addRecipe("buildcraft:fuel", new FluidStack(GalacticraftCore.gcFluidOil, 1), new FluidStack(FluidRegistry.getFluid("fuel"), 1), 120, 1);
+//	        	refineryDone = true;
+//    		}
+//    		else
+//    		{
+//	    		//Older Buildcraft API versions
+//	        	BuildcraftRecipes.refinery.addRecipe(new FluidStack(GalacticraftCore.gcFluidOil, 1), new FluidStack(FluidRegistry.getFluid("fuel"), 1), 120, 1);
+//	        	refineryDone = true;    			
+//    		}
+//        }
+//        catch (Exception e) { }
+//       
+//    	if (refineryDone)
+//    		GCLog.info("Successfully added GC oil to Buildcraft Refinery recipes.");
+    	
         try
-        {
+        {           
             Class<?> clazz = Class.forName("buildcraft.BuildCraftTransport");
 
             Object pipeItemsStone = clazz.getField("pipeItemsStone").get(null);
@@ -588,5 +634,18 @@ public class RecipeManagerGC
         // {
         // e.printStackTrace();
         // } TODO IC2 recipes
+    }
+   
+    private static void addExNihiloRecipes()
+    {
+    	try {
+    		Class registry = Class.forName("exnihilo.registries.HeatRegistry");
+    		Method m = registry.getMethod("register", Block.class, float.class);
+    		m.invoke(null, GCBlocks.unlitTorchLit, 0.1F);
+    		for (Block torch : GCBlocks.otherModTorchesLit)
+    			m.invoke(null, torch, 0.1F);
+    		GCLog.info("Successfully added space torches as heat sources for Ex Nihilo crucibles etc");
+    	}
+         catch (Throwable e) { }
     }
 }
