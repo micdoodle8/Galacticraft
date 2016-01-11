@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
-import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
+import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -36,7 +36,7 @@ public class SlotSpecific extends Slot
     public SlotSpecific(IInventory par2IInventory, int par3, int par4, int par5, Class... validClasses)
     {
         super(par2IInventory, par3, par4, par5);
-        if (validClasses != null && Arrays.asList(validClasses).contains(ItemElectricBase.class))
+        if (validClasses != null && Arrays.asList(validClasses).contains(IItemElectric.class))
         {
             if (EnergyConfigHandler.isIndustrialCraft2Loaded())
             {

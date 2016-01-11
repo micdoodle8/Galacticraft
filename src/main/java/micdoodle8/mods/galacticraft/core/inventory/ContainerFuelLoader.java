@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
-import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
@@ -18,7 +17,7 @@ public class ContainerFuelLoader extends Container
     public ContainerFuelLoader(InventoryPlayer par1InventoryPlayer, TileEntityFuelLoader fuelLoader)
     {
         this.tileEntity = fuelLoader;
-        this.addSlotToContainer(new SlotSpecific(fuelLoader, 0, 51, 55, ItemElectricBase.class));
+        this.addSlotToContainer(new SlotSpecific(fuelLoader, 0, 51, 55, IItemElectric.class));
         this.addSlotToContainer(new Slot(fuelLoader, 1, 7, 12));
 
         int var6;
