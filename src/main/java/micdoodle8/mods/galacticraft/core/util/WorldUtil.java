@@ -415,6 +415,13 @@ public class WorldUtil
         return null;
     }
 
+    /**
+     * CAUTION: this loads the dimension if t is not already loaded.  This can cause
+     * server load if used too frequently or with a list of multiple dimensions.
+     * 
+     * @param id
+     * @return
+     */
     public static WorldProvider getProviderForDimension(int id)
     {
     	WorldProvider provider = null;
