@@ -215,6 +215,8 @@ tile.slabGCHalf.moonSlab.name=Podlaha z měsíčního kamene
 tile.moonBricksStairs.name=Schody z měsíčního kamene (dungeon)
 tile.wallGC.moonBricks.name=Stěna z měsíčního kamene (dungeon)
 tile.slabGCHalf.moonBricksSlab.name=Podlaha z měsíčního kamene (dungeon)
+tile.crudeOil.name=Oil ##NEEDS TRANSLATE##
+tile.fuelBlock.name=Fuel ##NEEDS TRANSLATE##
 
 # ENTITIES
 entity.EvolvedSpider.name=Vyvinutý pavouk
@@ -394,6 +396,8 @@ gui.button.unlockschematic.name=Odemknout další
 gui.button.stoprefine.name=Zastavit
 gui.button.enable.name=Zapnout
 gui.button.disable.name=Vypnout
+gui.button.hideDest.name=Hide ##NEEDS TRANSLATE##
+gui.button.unhideDest.name=Unhide ##NEEDS TRANSLATE##
 
 gui.choosePlanet.desc.overworld=Plná života#Obyvatelná#Gravitace: 100%
 gui.warning=Varování!
@@ -437,6 +441,7 @@ gui.rocket.warning.nogyroscope=Záhadné síly si s tebou hrají a gyroskopy se 
 gui.rocket.warning.noparachute=Nemám padák! Pokud stisknu znovu start, tak není cesta zpět!
 gui.rocket.warning.nofuel=Nejdříve potřebuji nějaké palivo!
 gui.chest.warning.wrongkey=Budu potřebovat klíč typu %s abych to odemknul!
+gui.bedFail.message=Uh oh, what if the oxygen runs out when I am asleep?  I'll need a Cryogenic Chamber to sleep in space! ##NEEDS TRANSLATE##
 gui.frequencymodule.warning0=Nejspíš budu potřebovat
 gui.frequencymodule.warning1=pokud tady budu chtít něco slyšet.
 gui.tracking.message=Navazuji spojení. Klikněte pravým tlačítkem na jednotku telemetrie pro navázání spojení.
@@ -456,6 +461,9 @@ gui.spacestation.toAllowEntry=aby jste mu umožnil/a vstup na stanici.
 gui.spacestation.added=%s tě označil jako oprávněného uživatele jeho/její vesmírné stanice.
 gui.spacestation.addsuccess=%s úspěšně přidán(a) do seznamu oprávněných uživatelů stanice.
 gui.spacestation.removesuccess=%s úspěšně odebrán(a) ze seznamu oprávněných uživatelů stanice.
+gui.spacestation.allowAllTrue=Your Space Stations are now open to all players!  (Use /ssinvite -all to undo this.) ##NEEDS TRANSLATE##
+gui.spacestation.allowAllFalse=Your Space Stations are no longer open to all players! ##NEEDS TRANSLATE##
+gui.spacestation.changesuccess=Changed Space Station owner from %s to new owner %s. ##NEEDS TRANSLATE##
 
 gui.skeletonBoss.message=Boss zmizel, neopouštějte místnost během boje! Vstupem do místnosti se boss znovu objeví.
 gui.warning.noroom=Nedostatek místa!
@@ -657,6 +665,7 @@ commands.joinrace.noTeam=Je potřeba uvést tým! Použití: %s
 commands.dimensiontp.tooMany=Příliž mnoho argumentů! Použití: %s
 commands.ssinvite.notFound=Nemohu najít vesmírnou stanici s tvým jménem, musíš se tam nejdříve vypravit!
 commands.ssinvite.wrongUsage=Příliž málo argumentů! Použití: %s
+commands.ssnewowner.wrongUsage=Cannot recognise Space Station ID# - does it even exist? Usage: %s ##NEEDS TRANSLATE##
 commands.ssuninvite.noPlayer=%s není na seznamu oprávněných uživatelů stanice!
 command.gcastrominer.count=Hráč %s má  %s těžebních souprav.
 gc.configgui.idDimensionMoon=Číslo měsíční dimenze
@@ -728,6 +737,8 @@ gc.configgui.mapScrollSensitivity=Ciltivost kolečka na mapě
 gc.configgui.overrideMap=Klávesa mapy galaxie
 gc.configgui.keyOverrideFuelLevel=Klávesa stavu paliva
 gc.configgui.keyOverrideToggleAdvGoggles=Klávesa brýlí
+gc.configgui.meteorSpawnMod=Meteor Spawn Modifier
+gc.configgui.meteorBlockDamage=Meteor Block Damage Enabled
 gc.configgui.title=Nastavení jádra Galacticraftu
 
 # </file>

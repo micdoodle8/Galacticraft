@@ -102,6 +102,9 @@ item.basicItem.dehydratedPotato.name=Dehydrated Mashed Potato
 item.basicItem.cannedFood.name=Can of Food
 item.basicItem.frequencyModule.name=Frequency Module
 item.standardWrench.name=Standard Wrench
+item.bucketOil.name=Oil Bucket ##NEEDS TRANSLATE##
+item.bucketFuel.name=Fuel Bucket ##NEEDS TRANSLATE##
+item.basicItem.ambientThermalController.name=Ambient Thermal Controller ##NEEDS TRANSLATE##
 
 # TOOLS
 item.steel_pickaxe.name=Heavy Duty Pickaxe
@@ -212,6 +215,8 @@ tile.slabGCHalf.moonSlab.name=Moon Rock Slab
 tile.moonBricksStairs.name=Moon Dungeon Brick Stairs
 tile.wallGC.moonBricks.name=Moon Dungeon Brick Wall
 tile.slabGCHalf.moonBricksSlab.name=Moon Dungeon Brick Slab
+tile.crudeOil.name=Oil ##NEEDS TRANSLATE##
+tile.fuelBlock.name=Fuel ##NEEDS TRANSLATE##
 
 # ENTITIES
 entity.EvolvedSpider.name=Evolved Spider
@@ -333,6 +338,7 @@ gui.message.help2=For Space Programme guidance
 gui.message.help3=For help with oil
 gui.message.prelaunch=Pre-launch checklist
 gui.message.clicklink=Click for Galacticraft Wiki
+gui.message.thermalStatus.name=Thermal Control ##NEEDS TRANSLATE##
 
 gui.status.active.name=Active
 gui.status.missingleaves.name=Not Enough Leaf Blocks
@@ -373,6 +379,9 @@ gui.status.compressing.name=Compressing
 gui.status.collecting.name=Collecting
 gui.status.tankEmpty.name=Oxygen Tank Empty
 gui.status.sunVisible.name=Sun Visible
+gui.status.on.name=ON ##NEEDS TRANSLATE##
+gui.status.off.name=OFF ##NEEDS TRANSLATE##
+gui.status.notAvailable.name=N/A ##NEEDS TRANSLATE##
 
 gui.button.enableseal.name=Enable Seal
 gui.button.disableseal.name=Disable Seal
@@ -391,6 +400,8 @@ gui.button.unlockschematic.name=Unlock Schematic
 gui.button.stoprefine.name=Stop Refining
 gui.button.enable.name=Enable
 gui.button.disable.name=Disable
+gui.button.hideDest.name=Hide ##NEEDS TRANSLATE##
+gui.button.unhideDest.name=Unhide ##NEEDS TRANSLATE##
 
 gui.choosePlanet.desc.overworld=Full of Life#Habitable#Gravity: 100%
 gui.warning=WARNING!
@@ -435,6 +446,7 @@ gui.rocket.warning.nogyroscope=Mysterious forces are at play and the gyroscopes 
 gui.rocket.warning.noparachute=I don't have a parachute! If I press launch again, there's no going back!
 gui.rocket.warning.nofuel=I'll need to load in some rocket fuel first!
 gui.chest.warning.wrongkey=I'll probably need a Tier %s Dungeon key to unlock this!
+gui.bedFail.message=Uh oh, what if the oxygen runs out when I am asleep?  I'll need a Cryogenic Chamber to sleep in space! ##NEEDS TRANSLATE##
 gui.frequencymodule.warning0=I'll probably need a
 gui.frequencymodule.warning1=if I want to hear properly here.
 gui.tracking.message=Tracking activated. Now I'll need to right-click this on a Telemetry Unit to complete the link.
@@ -454,6 +466,9 @@ gui.spacestation.toAllowEntry=to allow another player to enter this space statio
 gui.spacestation.added=You've been added to %s's Space Station accepted players!
 gui.spacestation.addsuccess=Successfully added %s to Space Station list!
 gui.spacestation.removesuccess=Successfully removed %s from Space Station list!
+gui.spacestation.allowAllTrue=Your Space Stations are now open to all players!  (Use /ssinvite -all to undo this.) ##NEEDS TRANSLATE##
+gui.spacestation.allowAllFalse=Your Space Stations are no longer open to all players! ##NEEDS TRANSLATE##
+gui.spacestation.changesuccess=Changed Space Station owner from %s to new owner %s. ##NEEDS TRANSLATE##
 
 gui.skeletonBoss.message=Boss despawned, don't leave the boss room while fighting! Re-enter room to respawn boss.
 gui.warning.noroom=Not enough room!
@@ -522,6 +537,9 @@ gui.player.health=Health
 gui.player.food=Food
 gui.player.bpm=bpm
 gui.player.ouch=ouch!!!!
+gui.thermalSlot.desc.0=Thermal attachment slot, place 'Ambient ##NEEDS TRANSLATE##
+gui.thermalSlot.desc.1=Thermal Controller' here (optional) ##NEEDS TRANSLATE##
+gui.thermalSlot.desc.2=Note: Uses more energy! ##NEEDS TRANSLATE##
 
 gui.spaceRace.create.close.name=Close
 gui.spaceRace.create.back.name=Back
@@ -646,6 +664,7 @@ commands.joinrace.noTeam=The team needs to be specified! Usage: %s
 commands.dimensiontp.tooMany=Too many command arguments! Usage: %s
 commands.ssinvite.notFound=Could not find that you even have a space station, you need to create one first!
 commands.ssinvite.wrongUsage=Not enough command arguments! Usage: %s
+commands.ssnewowner.wrongUsage=Cannot recognise Space Station ID# - does it even exist? Usage: %s ##NEEDS TRANSLATE##
 commands.ssuninvite.noPlayer=Couldn't find player with username %s on your Space Station list!
 command.gcastrominer.count=The Astro Miner count for player %s is %s
 gc.configgui.idDimensionMoon=Moon Dimension ID
@@ -717,6 +736,8 @@ gc.configgui.mapScrollSensitivity=Map Scroll Mouse Sensitivity
 gc.configgui.overrideMap=Set key: Galaxy Map
 gc.configgui.keyOverrideFuelLevel=Set key: Rocket Fuel GUI
 gc.configgui.keyOverrideToggleAdvGoggles=Set key: Advanced Goggles
+gc.configgui.meteorSpawnMod=Meteor Spawn Modifier
+gc.configgui.meteorBlockDamage=Meteor Block Damage Enabled
 gc.configgui.title=Galacticraft Core Config
 
 # </file>

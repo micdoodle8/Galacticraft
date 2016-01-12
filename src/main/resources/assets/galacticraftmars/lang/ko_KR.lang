@@ -101,6 +101,7 @@ gui.launchController.desc.0=발사 통제기의$고유 주파수
 gui.launchController.desc.1=로켓 발사 방향 (목적지) 주파수
 gui.launchController.desc.2=로켓 발사시$발사대 제거 여부
 gui.launchController.desc.3=현재 조건이 만족될 경우$로켓이 발사됩니다
+gui.launchController.desc.4=Hide destination frequency$from other players ##NEEDS TRANSLATE##
 gui.terraformer.desc.0=물 탱크
 
 gui.gasTank.desc.0=가스 저장고

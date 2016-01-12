@@ -101,6 +101,7 @@ gui.launchController.desc.0=Ésta es la única frecuencia del$Controlador de Lan
 gui.launchController.desc.1=Frecuencia donde lanzar el Cohete
 gui.launchController.desc.2=Cuando la plataforma de lanzamiento debe$ser eliminada o lanzada
 gui.launchController.desc.3=Cuando esto se cumpla,$se lanzará el Cohete
+gui.launchController.desc.4=Hide destination frequency$from other players ##NEEDS TRANSLATE##
 gui.terraformer.desc.0=Tanque de Aqua
 
 gui.gasTank.desc.0=Almacenamiento de Gas

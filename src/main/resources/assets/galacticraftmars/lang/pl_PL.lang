@@ -101,6 +101,7 @@ gui.launchController.desc.0=To jest unikalna częstotliwość$Kontrolera Startu.
 gui.launchController.desc.1=Częstotliwość do której mają lecieć rakiety.
 gui.launchController.desc.2=Platforma Startowa pozostanie na miejscu$gdy opcja jest zaznaczona.
 gui.launchController.desc.3=Gdy podane kryteria zostaną spełnione,$rakieta wystartuje.
+gui.launchController.desc.4=Hide destination frequency$from other players ##NEEDS TRANSLATE##
 gui.terraformer.desc.0=Zbiornik Wody
 
 gui.gasTank.desc.0=Zbiornik Gazu

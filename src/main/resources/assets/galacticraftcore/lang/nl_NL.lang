@@ -122,6 +122,9 @@ item.basicItem.dehydratedPotato.name=Uitgedroogde Aardappelen
 item.basicItem.cannedFood.name=Kan Van Voedsel
 item.basicItem.frequencyModule.name=Frequentie Module
 item.standardWrench.name=Standaard Moersleutel
+item.bucketOil.name=Oil Bucket ##NEEDS TRANSLATE##
+item.bucketFuel.name=Fuel Bucket ##NEEDS TRANSLATE##
+item.basicItem.ambientThermalController.name=Ambient Thermal Controller ##NEEDS TRANSLATE##
 
 # TOOLS
 item.steel_pickaxe.name=Stalen pikhouweel
@@ -236,6 +239,8 @@ tile.slabGCHalf.moonSlab.name=Maan Stenen Plaat
 tile.moonBricksStairs.name=Maan Kerker Bakstenen Treden
 tile.wallGC.moonBricks.name=Maan Kerker Bakstenen Muur
 tile.slabGCHalf.moonBricksSlab.name=Maan Kerker Bakstenen Plaat
+tile.crudeOil.name=Oil ##NEEDS TRANSLATE##
+tile.fuelBlock.name=Fuel ##NEEDS TRANSLATE##
 
 # ENTITIES
 entity.EvolvedSpider.name=Geëvolueerde Spin
@@ -365,6 +370,7 @@ gui.message.help2=Voor Ruimte Programma Begeleiding
 gui.message.help3=Voor Help Met olie
 gui.message.prelaunch=Voor Lancering Checklist
 gui.message.clicklink=Klik Voor Galacticraft Wiki
+gui.message.thermalStatus.name=Thermal Control ##NEEDS TRANSLATE##
 
 gui.status.active.name=Actief
 gui.status.missingleaves.name=Niet genoeg bladeren
@@ -405,6 +411,9 @@ gui.status.compressing.name=Samenpersen
 gui.status.collecting.name=Verzamelen
 gui.status.tankEmpty.name=Zuurstof Tank Leeg
 gui.status.sunVisible.name=Zon Zichtbaar
+gui.status.on.name=ON ##NEEDS TRANSLATE##
+gui.status.off.name=OFF ##NEEDS TRANSLATE##
+gui.status.notAvailable.name=N/A ##NEEDS TRANSLATE##
 
 gui.button.enableseal.name=Enable Seal
 gui.button.disableseal.name=Disable Seal
@@ -423,6 +432,8 @@ gui.button.unlockschematic.name=Unlock Schematic
 gui.button.stoprefine.name=Stop Raffinage
 gui.button.enable.name=Inschakelen
 gui.button.disable.name=Uitschakelen
+gui.button.hideDest.name=Hide ##NEEDS TRANSLATE##
+gui.button.unhideDest.name=Unhide ##NEEDS TRANSLATE##
 
 gui.choosePlanet.desc.overworld=Vol met leven#Bewoonbaar#Zwaartekracht: 100%
 gui.warning=WAARSCHUWING!
@@ -465,6 +476,7 @@ gui.rocket.warning.nogyroscope=Mysterieuze krachten zijn aanwezig en de gyroscoo
 gui.rocket.warning.noparachute=Ik heb geen Parachute! Als ik weer op Lanceren Druk, Dan kan ik niet meer terug!
 gui.rocket.warning.nofuel=Ik moet eerst Raket brandstof laden!
 gui.chest.warning.wrongkey=Ik heb misschien een Tier %s Kerker sleutel nodig om dit te openen! 
+gui.bedFail.message=Uh oh, what if the oxygen runs out when I am asleep?  I'll need a Cryogenic Chamber to sleep in space! ##NEEDS TRANSLATE##
 gui.frequencymodule.warning0=Ik heb misschien een Frequentie eenheid nodig
 gui.frequencymodule.warning1=Als ik hier wil horen.
 gui.tracking.message=Opsporing Geactiveerd. Nu moet ik Met de Rechter-muisknop op de telemetrie eenheid klikken om de link te Creëren.
@@ -482,6 +494,9 @@ gui.spacestation.toAllowEntry=Om een ander Speler Toe te laten in het ruimtestat
 gui.spacestation.added=Je bent Toegevoegd bij %s's geaccepteerde spelers van het ruimtestation!
 gui.spacestation.addsuccess=%s is Succesvol toegevoegd bij de lijst van geaccepteerde Spelers! 
 gui.spacestation.removesuccess=%s Is succesvol Verwijderd van de ruimtestation lijst!
+gui.spacestation.allowAllTrue=Your Space Stations are now open to all players!  (Use /ssinvite -all to undo this.) ##NEEDS TRANSLATE##
+gui.spacestation.allowAllFalse=Your Space Stations are no longer open to all players! ##NEEDS TRANSLATE##
+gui.spacestation.changesuccess=Changed Space Station owner from %s to new owner %s. ##NEEDS TRANSLATE##
 gui.skeletonBoss.message=Baas despawned, Ga niet uit de baas kamer tijdens het vechten! Ga opnieuw in de kamer om de baas te laten respawnen.
 gui.warning.noroom=Niet genoeg Ruimte!
 gui.flag.alreadyPlaced=Vlag is hier al geplaatst!
@@ -548,6 +563,9 @@ gui.player.health=Gezondheid
 gui.player.food=Voedsel
 gui.player.bpm=BPM
 gui.player.ouch=AU!!!!
+gui.thermalSlot.desc.0=Thermal attachment slot, place 'Ambient ##NEEDS TRANSLATE##
+gui.thermalSlot.desc.1=Thermal Controller' here (optional) ##NEEDS TRANSLATE##
+gui.thermalSlot.desc.2=Note: Uses more energy! ##NEEDS TRANSLATE##
 gui.spaceRace.create.close.name=Sluiten
 gui.spaceRace.create.back.name=Terug
 gui.spaceRace.create.rename.name=Hernoem Team
@@ -667,6 +685,7 @@ commands.joinrace.noTeam=The team needs to be specified! Usage: %s ##NEEDS TRANS
 commands.dimensiontp.tooMany=Too many command arguments! Usage: %s ##NEEDS TRANSLATE##
 commands.ssinvite.notFound=Could not find space station for your username, you need to travel there first! ##NEEDS TRANSLATE##
 commands.ssinvite.wrongUsage=Not enough command arguments! Usage: %s ##NEEDS TRANSLATE##
+commands.ssnewowner.wrongUsage=Cannot recognise Space Station ID# - does it even exist? Usage: %s ##NEEDS TRANSLATE##
 commands.ssuninvite.noPlayer=Kon de speler met de gebruikersnaam %s niet vinden op je ruimte station lijst!
 command.gcastrominer.count=The Astro Miner count for player %s is %s ##NEEDS TRANSLATE##
 gc.configgui.idDimensionMoon=Moon Dimension ID
@@ -738,6 +757,8 @@ gc.configgui.mapScrollSensitivity=Map Scroll Mouse Sensitivity
 gc.configgui.overrideMap=Set key: Galaxy Map
 gc.configgui.keyOverrideFuelLevel=Set key: Rocket Fuel GUI
 gc.configgui.keyOverrideToggleAdvGoggles=Set key: Advanced Goggles
+gc.configgui.meteorSpawnMod=Meteor Spawn Modifier
+gc.configgui.meteorBlockDamage=Meteor Block Damage Enabled
 gc.configgui.title=Galacticraft Core Configuratie
 
 # </file>

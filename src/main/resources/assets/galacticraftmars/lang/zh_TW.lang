@@ -101,6 +101,7 @@ gui.launchController.desc.0=這是發射控制器的$唯一頻率
 gui.launchController.desc.1=火箭發射頻率,火箭前往
 gui.launchController.desc.2=發射臺是否$在發射時移除
 gui.launchController.desc.3=當這個條件達到時,$火箭就會發射
+gui.launchController.desc.4=Hide destination frequency$from other players ##NEEDS TRANSLATE##
 gui.terraformer.desc.0=水箱
 
 gui.gasTank.desc.0=氣體貯存模塊

@@ -101,6 +101,7 @@ gui.launchController.desc.0=Ceci est la fréquence unique du controlleur
 gui.launchController.desc.1=Fréquence du controlleur vers lequel les fusée seront envoyées 
 gui.launchController.desc.2=Si la rampe de lancement doit être enlevée ou non
 gui.launchController.desc.3=Quand ces critères seront remplis,la fusée sera lancée
+gui.launchController.desc.4=Hide destination frequency$from other players ##NEEDS TRANSLATE##
 gui.terraformer.desc.0=Réservoir d'eau
 
 gui.gasTank.desc.0=Réservoir à gaz

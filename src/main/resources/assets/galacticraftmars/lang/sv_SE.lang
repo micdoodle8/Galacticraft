@@ -101,6 +101,7 @@ gui.launchController.desc.0=Fjärrstyrarens inställda frekvens
 gui.launchController.desc.1=Koordinatfrekvens raketen ska$avfyras till
 gui.launchController.desc.2=Om raketrampen ska tas$bortvid uppskjutning
 gui.launchController.desc.3=När detta vilkor uppnås$avfyras raketen
+gui.launchController.desc.4=Hide destination frequency$from other players ##NEEDS TRANSLATE##
 gui.terraformer.desc.0=Vattenkärl
 
 gui.gasTank.desc.0=Gaskärl

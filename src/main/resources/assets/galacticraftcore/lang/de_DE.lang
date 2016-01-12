@@ -435,6 +435,9 @@ gui.spacestation.toAllowEntry=ein, um einem anderen Spieler zu ermöglichen, die
 gui.spacestation.added=Dir ist es nun erlaubt, die Raumstation von %s zu betreten!
 gui.spacestation.addsuccess=%s wurde erfolgreich zur Raumstation-Liste hinzugefügt!
 gui.spacestation.removesuccess=%s wurde erfolgreich von der Raumstation-Liste entfernt!
+gui.spacestation.allowAllTrue=Your Space Stations are now open to all players!  (Use /ssinvite -all to undo this.) ##NEEDS TRANSLATE##
+gui.spacestation.allowAllFalse=Your Space Stations are no longer open to all players! ##NEEDS TRANSLATE##
+gui.spacestation.changesuccess=Changed Space Station owner from %s to new owner %s. ##NEEDS TRANSLATE##
 
 gui.skeletonBoss.message=Der Boss ist verschwunden, verlasse den Boss-Raum nicht, während du kämpfst! Betrete den Raum erneut, um von vorne zu beginnen.
 gui.warning.noroom=Nicht genug Platz!
@@ -648,6 +651,7 @@ commands.joinrace.noTeam=Das Team muss festgelegt werden! Handhabung: %s
 commands.dimensiontp.tooMany=Dieser Befehl enthält zu viele Argumente! Handhabung: %s 
 commands.ssinvite.notFound=Konnte keine Weltraumstation für dich finden, du musst zuerst einmal dorthin reisen
 commands.ssinvite.wrongUsage=Dieser Befehl enthält nicht genügend Argumente! Handhabung: %s
+commands.ssnewowner.wrongUsage=Cannot recognise Space Station ID# - does it even exist? Usage: %s ##NEEDS TRANSLATE##
 commands.ssuninvite.noPlayer=Der Spieler mit dem Namen %s konnte auf deiner Weltraumstation-Liste nicht gefunden werden
 command.gcastrominer.count=Die Astromineranzahl von Spieler %s ist %s
 

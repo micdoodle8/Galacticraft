@@ -106,6 +106,9 @@ item.basicItem.dehydratedPotato.name=Odwodnione Ziemniaki
 item.basicItem.cannedFood.name=Puszka Jedzenia
 item.basicItem.frequencyModule.name=Moduł Częstotliwości
 item.standardWrench.name=Standardowy Klucz
+item.bucketOil.name=Oil Bucket ##NEEDS TRANSLATE##
+item.bucketFuel.name=Fuel Bucket ##NEEDS TRANSLATE##
+item.basicItem.ambientThermalController.name=Ambient Thermal Controller ##NEEDS TRANSLATE##
 
 # TOOLS
 item.steel_pickaxe.name=Stalowy Kilof
@@ -221,6 +224,8 @@ tile.slabGCHalf.moonSlab.name=Półblok z Skały Księżycowej
 tile.moonBricksStairs.name=Schody z Księżycowych Lochów
 tile.wallGC.moonBricks.name=Ściana z Księżycowych Lochów
 tile.slabGCHalf.moonBricksSlab.name=Półblok z Księżycowych Lochów
+tile.crudeOil.name=Oil ##NEEDS TRANSLATE##
+tile.fuelBlock.name=Fuel ##NEEDS TRANSLATE##
 
 # ENTITIES
 entity.EvolvedSpider.name=Kosmiczny Pająk
@@ -350,6 +355,7 @@ gui.message.help2=Przewodnik po Programie Kosmicznym
 gui.message.help3=Pomoc z ropą
 gui.message.prelaunch=lista Przedstartowa
 gui.message.clicklink=Kliknij by zobaczyć na Wiki
+gui.message.thermalStatus.name=Thermal Control ##NEEDS TRANSLATE##
 
 gui.status.active.name=Aktywne
 gui.status.missingleaves.name=Za Mało Bloków  Liści
@@ -390,6 +396,9 @@ gui.status.compressing.name=Kompresowanie
 gui.status.collecting.name=Zbieranie
 gui.status.tankEmpty.name=Zbiornik Tlenu Pusty
 gui.status.sunVisible.name=Słońce Widoczne
+gui.status.on.name=ON ##NEEDS TRANSLATE##
+gui.status.off.name=OFF ##NEEDS TRANSLATE##
+gui.status.notAvailable.name=N/A ##NEEDS TRANSLATE##
 
 gui.button.enableseal.name=Aktywuj
 gui.button.disableseal.name=Dezaktywuj
@@ -408,6 +417,8 @@ gui.button.unlockschematic.name=Odblokuj Schemat
 gui.button.stoprefine.name=Zatrzymaj
 gui.button.enable.name=Aktywuj
 gui.button.disable.name=Dezaktywuj
+gui.button.hideDest.name=Hide ##NEEDS TRANSLATE##
+gui.button.unhideDest.name=Unhide ##NEEDS TRANSLATE##
 
 gui.choosePlanet.desc.overworld=Pełna Życia#Nadająca się do Zamieszkania#Grawitacja: 100%
 gui.warning=OSTRZEŻENIE!
@@ -450,6 +461,7 @@ gui.rocket.warning.nogyroscope=Tajemnicze siły działają a żyroskopy kręcą 
 gui.rocket.warning.noparachute=Nie mam spadochronu! Jeśli znowu wcisnę start, nie będzie odwrotu!
 gui.rocket.warning.nofuel=Muszę najpierw zatankować paliwo rakietowe!
 gui.chest.warning.wrongkey=Zgaduje że potrzebuje klucz lochu poziomu %s by to otworzyć!
+gui.bedFail.message=Uh oh, what if the oxygen runs out when I am asleep?  I'll need a Cryogenic Chamber to sleep in space! ##NEEDS TRANSLATE##
 gui.frequencymodule.warning0=Pewnie potrzebuje
 gui.frequencymodule.warning1=żeby tu dobrze słyszeć.
 gui.tracking.message=Śledzenie aktywne. Teraz muszę kliknąć prawym przyciskiem myszy na Urządzeniu Telemetrycznym żeby zakończyć połączenie.
@@ -467,6 +479,9 @@ gui.spacestation.toAllowEntry=by pozwolić graczowi wejść na twoją stacje kos
 gui.spacestation.added=Zostałeś dodany do Stacji Kosmicznej gracza %s
 gui.spacestation.addsuccess=Dodano gracza %s do twojej Stacji Kosmicznej!
 gui.spacestation.removesuccess=Usunięto gracza %s z twojej Stacji Kosmicznej!
+gui.spacestation.allowAllTrue=Your Space Stations are now open to all players!  (Use /ssinvite -all to undo this.) ##NEEDS TRANSLATE##
+gui.spacestation.allowAllFalse=Your Space Stations are no longer open to all players! ##NEEDS TRANSLATE##
+gui.spacestation.changesuccess=Changed Space Station owner from %s to new owner %s. ##NEEDS TRANSLATE##
 gui.skeletonBoss.message=Boss usunięty, nie opuszczaj pomieszczenia podczas walki! Wejdź do pomieszczenia by przyzwać Bossa.
 gui.warning.noroom=Za mało miejsca!
 gui.flag.alreadyPlaced=Flaga jest już postawiona!
@@ -533,6 +548,9 @@ gui.player.health=Zdrowie
 gui.player.food=Żywność
 gui.player.bpm=bpm
 gui.player.ouch=ał!!!!
+gui.thermalSlot.desc.0=Thermal attachment slot, place 'Ambient ##NEEDS TRANSLATE##
+gui.thermalSlot.desc.1=Thermal Controller' here (optional) ##NEEDS TRANSLATE##
+gui.thermalSlot.desc.2=Note: Uses more energy! ##NEEDS TRANSLATE##
 gui.spaceRace.create.close.name=Zamknij
 gui.spaceRace.create.back.name=Wróć
 gui.spaceRace.create.rename.name=Zmień Nazwę Drużyny
@@ -652,6 +670,7 @@ commands.joinrace.noTeam=Drużyna musi być określona! Wykorzystanie: %s
 commands.dimensiontp.tooMany=Za dużo argumentów w komendzie! Wykorzystanie: %s
 commands.ssinvite.notFound=Nie znaleziono stacji kosmicznej z twoim imieniem. Musisz się tam najpierw wybrać!
 commands.ssinvite.wrongUsage=Za mało argumentów w komendzie! Wykorzystanie: %s
+commands.ssnewowner.wrongUsage=Cannot recognise Space Station ID# - does it even exist? Usage: %s ##NEEDS TRANSLATE##
 commands.ssuninvite.noPlayer=Nie znaleziono gracza o imieniu %s na twojej liście Stacji Kosmicznej!
 command.gcastrominer.count=Maksymalna liczba Dronów Górniczych dla gracza %s wynosi %s
 gc.configgui.idDimensionMoon=ID Wymiaru Księżyca
@@ -723,6 +742,8 @@ gc.configgui.mapScrollSensitivity=Czułość przewijania mapy
 gc.configgui.overrideMap=Set key: Galaxy Map
 gc.configgui.keyOverrideFuelLevel=Set key: Rocket Fuel GUI
 gc.configgui.keyOverrideToggleAdvGoggles=Set key: Advanced Goggles
+gc.configgui.meteorSpawnMod=Meteor Spawn Modifier
+gc.configgui.meteorBlockDamage=Meteor Block Damage Enabled
 gc.configgui.title=Konfiguracja Głównego Galacticraft
 
 # </file>
