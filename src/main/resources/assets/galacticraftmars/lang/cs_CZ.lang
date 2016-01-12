@@ -101,7 +101,7 @@ gui.launchController.desc.0=Unikátní frekvence$tohoto odpalovace
 gui.launchController.desc.1=Frekvence pro vypuštení rakety na
 gui.launchController.desc.2=Má býd odstranen$po odpálení rakety
 gui.launchController.desc.3=Po splnení kritérií$bude vypuštena raketa
-gui.launchController.desc.4=Hide destination frequency$from other players ##NEEDS TRANSLATE##
+gui.launchController.desc.4=Skrýt cílové frekvence$ostatních hráčů
 gui.terraformer.desc.0=Nadrž na vodu
 
 gui.gasTank.desc.0=Plynová nádrž
