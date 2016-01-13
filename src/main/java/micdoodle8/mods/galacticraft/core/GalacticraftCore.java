@@ -401,6 +401,7 @@ public class GalacticraftCore
         GalacticraftCore.moonMoon.setDimensionInfo(ConfigManagerCore.idDimensionMoon, WorldProviderMoon.class).setTierRequired(1);
         GalacticraftCore.moonMoon.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/moon.png"));
 
+        //Satellites must always have a WorldProvider implementing IOrbitDimension
         GalacticraftCore.satelliteSpaceStation = (Satellite) new Satellite("spaceStation.overworld").setParentBody(GalacticraftCore.planetOverworld).setRelativeSize(0.2667F).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(9F, 9F)).setRelativeOrbitTime(1 / 0.05F);
         GalacticraftCore.satelliteSpaceStation.setDimensionInfo(ConfigManagerCore.idDimensionOverworldOrbit, ConfigManagerCore.idDimensionOverworldOrbitStatic, WorldProviderOrbit.class).setTierRequired(1);
         GalacticraftCore.satelliteSpaceStation.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/spaceStation.png"));
@@ -501,7 +502,8 @@ public class GalacticraftCore
             {
                 int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, body.getDimensionID());
                 //It's important this is done in the same order as planets will be registered by WorldUtil.registerPlanet();
-                GalacticraftRegistry.registerProvider(body.getDimensionID(), body.getWorldProvider(), body.getForceStaticLoad() || id < 0);
+                if (!GalacticraftRegistry.registerProvider(body.getDimensionID(), body.getWorldProvider(), body.getForceStaticLoad() || id < 0))
+                	body.setUnreachable();
             }
         }
 
@@ -554,6 +556,7 @@ public class GalacticraftCore
         event.registerServerCommand(new CommandGCEnergyUnits());
         event.registerServerCommand(new CommandJoinSpaceRace());
 
+        WorldUtil.initialiseDimensionNames();
         WorldUtil.registerSpaceStations(event.getServer().worldServerForDimension(0).getSaveHandler().getMapFileFromName("dummy").getParentFile());
 
         ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
@@ -564,12 +567,8 @@ public class GalacticraftCore
         {
             if (body.shouldAutoRegister())
             {
-                int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, body.getDimensionID());
-                WorldUtil.registerPlanet(body.getDimensionID(), true);
-                if (id >= 0)
-                {
-                    FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(body.getDimensionID());
-                }
+                if (!WorldUtil.registerPlanet(body.getDimensionID(), body.getReachable()))
+                	body.setUnreachable();
             }
         }
     }
