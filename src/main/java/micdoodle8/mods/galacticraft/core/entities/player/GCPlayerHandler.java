@@ -946,7 +946,8 @@ public class GCPlayerHandler
     		//Check for genuine update - e.g. maybe some other player created a space station or changed permissions
     		//CAUTION: possible server load due to dimension loading, if any planets or moons were (contrary to GC default) set to hotload
     		map = WorldUtil.getArrayOfPossibleDimensions(playerStats.spaceshipTier, player);
-    	map = WorldUtil.getArrayOfPossibleDimensionsAgain(playerStats.spaceshipTier, player);
+    	else
+    		map = WorldUtil.getArrayOfPossibleDimensionsAgain(playerStats.spaceshipTier, player);
 
         String temp = "";
         int count = 0;
