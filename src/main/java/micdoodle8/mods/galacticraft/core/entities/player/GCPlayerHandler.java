@@ -941,7 +941,12 @@ public class GCPlayerHandler
 
     protected void sendPlanetList(EntityPlayerMP player, GCPlayerStats playerStats)
     {
-        HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(playerStats.spaceshipTier, player);
+    	HashMap<String, Integer> map;
+    	if (player.ticksExisted % 50 == 0)
+    		//Check for genuine update - e.g. maybe some other player created a space station or changed permissions
+    		//CAUTION: possible server load due to dimension loading, if any planets or moons were (contrary to GC default) set to hotload
+    		map = WorldUtil.getArrayOfPossibleDimensions(playerStats.spaceshipTier, player);
+    	map = WorldUtil.getArrayOfPossibleDimensionsAgain(playerStats.spaceshipTier, player);
 
         String temp = "";
         int count = 0;
@@ -952,7 +957,7 @@ public class GCPlayerHandler
             count++;
         }
 
-        if (!temp.equals(playerStats.savedPlanetList) || (player.ticksExisted % 5 == 0))
+        if (!temp.equals(playerStats.savedPlanetList) || (player.ticksExisted % 100 == 0))
         {
             GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { player.getGameProfile().getName(), temp }), player);
             playerStats.savedPlanetList = new String(temp);
@@ -1093,7 +1098,9 @@ public class GCPlayerHandler
 
         if (GCPlayer.usingPlanetSelectionGui)
         {
-            this.sendPlanetList(player, GCPlayer);
+            //This sends the planets list again periodically (forcing the Celestial Selection screen to open) in case of server/client lag
+        	//#PACKETSPAM
+        	this.sendPlanetList(player, GCPlayer);
         }
 
 		/*		if (isInGCDimension || player.usingPlanetSelectionGui)

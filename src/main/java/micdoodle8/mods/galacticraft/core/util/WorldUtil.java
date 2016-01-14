@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.Map.Entry;
 
+import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IAntiGrav;
@@ -84,6 +85,7 @@ public class WorldUtil
 {
     public static HashMap<Integer, Integer> registeredSpaceStations;  //Dimension IDs and providers (providers are -26 or -27 by default)
     public static Map<Integer, String> dimNames = new TreeMap();  //Dimension IDs and provider names
+    public static Map<EntityPlayerMP, HashMap<String, Integer>> celestialMapCache = new MapMaker().weakKeys().makeMap();
     public static List<Integer> registeredPlanets;
     private static IWorldGenerator generatorGCGreg = null;
     private static IWorldGenerator generatorCoFH = null;
@@ -333,6 +335,7 @@ public class WorldUtil
 
         for (Integer element : WorldUtil.registeredPlanets)
         {
+        	if (element == 0) continue;
         	WorldProvider provider = WorldUtil.getProviderForDimension(element);
 
             if (provider != null)
@@ -516,9 +519,26 @@ public class WorldUtil
             }
         }
 
+        WorldUtil.celestialMapCache.put(playerBase, map);
         return map;
     }
 
+    /**
+     * Get the cached version of getArrayOfPossibleDimensions() to reduce server load + unwanted dimension loading
+     * The cache will be updated every time the 'proper' version of getArrayOfPossibleDimensions is called. 
+     * 
+     * 
+     * @param tier - the rocket tier to test
+     * @param playerBase - the player who will be riding the rocket (needed for checking space station permissions)
+     * @return a Map of the names of the dimension vs. the dimension IDs
+     */
+    public static HashMap<String, Integer> getArrayOfPossibleDimensionsAgain(int tier, EntityPlayerMP playerBase)
+    {
+    	HashMap<String, Integer> map = WorldUtil.celestialMapCache.get(playerBase);
+    	if (map != null) return map;
+    	return getArrayOfPossibleDimensions(tier, playerBase);
+    }
+    
     private static List<Integer> getExistingSpaceStationList(File var0)
     {
         final ArrayList<Integer> var1 = new ArrayList<Integer>();
@@ -655,24 +675,28 @@ public class WorldUtil
             WorldUtil.registeredPlanets = new ArrayList<Integer>();
         }
 
-        WorldUtil.registeredPlanets.add(planetID);
-
         if (initialiseDimensionAtServerInit)
         {
             if (!DimensionManager.isDimensionRegistered(planetID))
             {
 	            DimensionManager.registerDimension(planetID, planetID);
 	            GCLog.info("Registered Dimension: " + planetID);
+	            WorldUtil.registeredPlanets.add(planetID);
             }
             else
             {
                 GCLog.severe("Dimension already registered to another mod: unable to register planet dimension " + planetID);
+                //Add 0 to the list to preserve the correct order of the other planets (e.g. if server/client initialise with different dimension IDs in configs, the order becomes important for figuring out what is going on)
+                WorldUtil.registeredPlanets.add(0);
                 return false;
             }
             World w = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(planetID);
             WorldUtil.dimNames.put(planetID, new String(w.provider.getDimensionName()));
+            return true;
         }
 
+        //Not to be initialised - still add to the registered planets list (for hotloading later?)
+        WorldUtil.registeredPlanets.add(planetID);
         return true;
     }
 
