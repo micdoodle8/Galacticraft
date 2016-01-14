@@ -180,7 +180,7 @@ public class EventHandlerGC
     	
         final Block idClicked = worldObj.getBlock(event.x, event.y, event.z);
         
-        if (idClicked == Blocks.bed && worldObj.provider instanceof IGalacticraftWorldProvider && !worldObj.isRemote)
+        if (idClicked == Blocks.bed && worldObj.provider instanceof IGalacticraftWorldProvider && event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) && !worldObj.isRemote && !((IGalacticraftWorldProvider)worldObj.provider).hasBreathableAtmosphere())
         {
         	if (GalacticraftCore.isPlanetsLoaded) GCPlayerStats.tryBedWarning((EntityPlayerMP) event.entityPlayer);
 
