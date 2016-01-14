@@ -448,17 +448,21 @@ public class GCPlayerHandler
         {
             IGalacticraftWorldProvider provider = (IGalacticraftWorldProvider) player.worldObj.provider;
             float thermalLevelMod = provider.getThermalLevelModifier();
-
-            if (thermalLevelMod != 0)
+            double absThermalLevelMod = Math.abs(thermalLevelMod);
+            
+            if (absThermalLevelMod > 0D)
             {
-                int thermalLevelCooldownBase = (int) Math.abs(Math.floor(200 / thermalLevelMod));
-                int normaliseCooldown = (int) Math.abs(Math.floor(150 / lowestThermalStrength));
+                int thermalLevelCooldownBase = Math.abs(MathHelper.floor_double(200 / thermalLevelMod));
+                int normaliseCooldown = Math.abs(MathHelper.floor_double(150 / lowestThermalStrength));
                 int thermalLevelTickCooldown = thermalLevelCooldownBase;
+                if (thermalLevelTickCooldown < 1) thermalLevelTickCooldown = 1;   //Prevent divide by zero errors
 
                 if (thermalPaddingHelm != null && thermalPaddingChestplate != null && thermalPaddingLeggings != null && thermalPaddingBoots != null)
                 {
                     thermalLevelMod /= Math.max(1.0F, lowestThermalStrength / 2.0F);
-                    normaliseCooldown /= Math.abs(Math.floor(thermalLevelMod));
+                    absThermalLevelMod = Math.abs(thermalLevelMod);
+                    normaliseCooldown = MathHelper.floor_double(normaliseCooldown / absThermalLevelMod);
+                    if (normaliseCooldown < 1) normaliseCooldown = 1;   //Prevent divide by zero errors
                     // Player is wearing all required thermal padding items
                     if ((player.ticksExisted - 1) % normaliseCooldown == 0)
                     {
@@ -494,13 +498,8 @@ public class GCPlayerHandler
 
                 // Instead of increasing/decreasing the thermal level by a large amount every ~200 ticks, increase/decrease
                 //      by a small amount each time (still the same average increase/decrease)
-                int thermalLevelTickCooldownSingle = (int)Math.floor(thermalLevelTickCooldown / Math.abs(thermalLevelMod));
-
-                // Prevent "thermalLevelTickCooldownSingle" be less then 1
-                //      and prevent "/ 0" exception to be thrown in the next if statement
-                if (thermalLevelTickCooldownSingle == 0) {
-                    thermalLevelTickCooldownSingle = 1;
-                }
+                int thermalLevelTickCooldownSingle = MathHelper.floor_double(thermalLevelTickCooldown / absThermalLevelMod);
+                if (thermalLevelTickCooldownSingle < 1) thermalLevelTickCooldownSingle = 1;   //Prevent divide by zero errors
 
                 if ((player.ticksExisted - 1) % thermalLevelTickCooldownSingle == 0)
                 {
