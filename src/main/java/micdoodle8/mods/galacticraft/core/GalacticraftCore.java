@@ -502,7 +502,7 @@ public class GalacticraftCore
             {
                 int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, body.getDimensionID());
                 //It's important this is done in the same order as planets will be registered by WorldUtil.registerPlanet();
-                if (!GalacticraftRegistry.registerProvider(body.getDimensionID(), body.getWorldProvider(), body.getForceStaticLoad() || id < 0))
+                if (!GalacticraftRegistry.registerProvider(body.getDimensionID(), body.getWorldProvider(), body.getForceStaticLoad() || id < 0, 0))
                 	body.setUnreachable();
             }
         }
@@ -567,7 +567,7 @@ public class GalacticraftCore
         {
             if (body.shouldAutoRegister())
             {
-                if (!WorldUtil.registerPlanet(body.getDimensionID(), body.getReachable()))
+                if (!WorldUtil.registerPlanet(body.getDimensionID(), body.getReachable(), 0))
                 	body.setUnreachable();
             }
         }

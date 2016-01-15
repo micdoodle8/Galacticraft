@@ -668,7 +668,7 @@ public class WorldUtil
      * IMPORTANT: GalacticraftRegistry.registerProvider() must always be called in parallel with this
      * meaning the CelestialBodies are iterated in the same order when registered there and here.
      */
-    public static boolean registerPlanet(int planetID, boolean initialiseDimensionAtServerInit)
+    public static boolean registerPlanet(int planetID, boolean initialiseDimensionAtServerInit, int defaultID)
     {
         if (WorldUtil.registeredPlanets == null)
         {
@@ -687,7 +687,7 @@ public class WorldUtil
             {
                 GCLog.severe("Dimension already registered to another mod: unable to register planet dimension " + planetID);
                 //Add 0 to the list to preserve the correct order of the other planets (e.g. if server/client initialise with different dimension IDs in configs, the order becomes important for figuring out what is going on)
-                WorldUtil.registeredPlanets.add(0);
+                WorldUtil.registeredPlanets.add(defaultID);
                 return false;
             }
             World w = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(planetID);
@@ -713,6 +713,20 @@ public class WorldUtil
             WorldUtil.registeredPlanets = null;
         }
         WorldUtil.dimNames.clear();
+    }
+    
+    /**
+     * You should now use WorldUtil.registerPlanet(int planetID, boolean initialiseDimensionAtServerInit, int defaultID)
+     * which returns a boolean indicating that the dimension could be successfully created (if initialiseDimensionAtServerInit is true).
+     * Always returns true if if initialiseDimensionAtServerInit is false. 
+     * 
+     * @param planetID
+     * @param initialiseDimensionAtServerInit
+     */
+    @Deprecated
+    public static void registerPlanet(int planetID, boolean initialiseDimensionAtServerInit)
+    {
+    	WorldUtil.registerPlanet(planetID, initialiseDimensionAtServerInit, 0);
     }
 
     public static void registerPlanetClient(Integer dimID, int providerIndex)
