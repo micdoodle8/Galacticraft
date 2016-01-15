@@ -1,19 +1,19 @@
-# Archivo es_ES, traducción por Jaski
+# Galacticraft Moon Language File = SPAIN SPANISH. (Collaborators: Jaski)
 
-# GENERAL ITEMS
+# OBJETOS GENERALES
 item.meteoricIronRaw.name=Hierro meteórico en bruto
 item.compressedMeteoricIron.name=Hierro meteórico comprimido
 item.meteoricIronIngot.name=Lingote de hierro meteórico
 
-# FOOD
+# ALIMENTOS
 item.cheeseCurd.name=Queso en grano
 item.cheeseBlock.name=Bloque de queso
 
-# TOOLS
+# HERRAMIENTAS
 
-# ARMOR
+# ARMADURA
 
-# BLOCKS
+# BLOQUES
 tile.moonBlock.moonstone.name=Piedra
 tile.moonBlock.moondirt.name=Tierra
 tile.moonBlock.moongrass.name=Césped lunar
@@ -25,6 +25,7 @@ tile.cheeseBlock.name=Bloque de queso
 
 # GUI
 gui.choosePlanet.desc.moon=Habitable#Sin oxígeno#Gravedad: 18%
-container.lander.name=Aterrizador
 
+# OTROS
+container.lander.name=Aterrizador
 dimension.Moon.name=Luna
