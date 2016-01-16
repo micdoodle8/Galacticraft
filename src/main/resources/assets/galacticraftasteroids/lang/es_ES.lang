@@ -1,6 +1,6 @@
-# Archivo es_ES, traducción por Jaski
+# Galacticraft Asteroids Language File = SPAIN SPANISH. (Collaborators: Jaski)
 
-# GENERAL ITEMS
+# OBJETOS GENERALES
 item.itemTier3Rocket.t3Rocket.name=Cohete nivel 3
 item.itemAstroMiner.name=AstroMinador
 item.heavyNoseCone.name=Ojiva grande
@@ -18,14 +18,14 @@ item.beamCore.name=Núcleo del haz
 item.orionDrive.name=Propulsor menaiónico
 item.tier3.desc=Nivel 3
 
-# TOOLS
+# HERRAMIENTAS
 item.titanium_pickaxe.name=Pico de titanio
 item.titanium_axe.name=Hacha de titanio
 item.titanium_hoe.name=Azada de titanio
 item.titanium_shovel.name=Pala de titanio
 item.titanium_sword.name=Espada de titanio
 
-# ARMOR
+# ARMADURAS
 item.thermalHelm.name=Gorro térmico
 item.thermalChestplate.name=Suéter térmico
 item.thermalLeggings.name=Leggings térmicos
@@ -35,27 +35,27 @@ item.titanium_chestplate.name=Peto de titanio
 item.titanium_leggings.name=Grebas de titanio
 item.titanium_boots.name=Botas de titanio
 
-# CANISTERS ETC
+# ENVASES Y ETC
 item.methaneCanisterPartial.name=Bote de metano
 item.methaneCanister.name=Bote de metano lleno
-item.canister.gas.name=Gas                  #short name for Methane Gas contents level
+item.canister.gas.name=Gas                  #nombre corto para el nivel de gas
 item.canister.LOX.partial.name=Bote de oxígeno líquido
 item.canister.LOX.full.name=Bote de oxígeno líquido lleno
-item.canister.LOX.name=LOX                  #short name for Liquid Oxygen contents level
+item.canister.LOX.name=LOX                  #nombre corto para el nivel de oxígeno líquido
 item.canister.liquidNitrogen.partial.name=Bote de nitrógeno líquido
 item.canister.liquidNitrogen.full.name=Bote de nitrógeno líquido lleno
-item.canister.liquidNitrogen.name=Líquido    #short name for Liquid Nitrogen contents level
+item.canister.liquidNitrogen.name=LIN    #nombre corto para el nivel de nitrógeno líquido
 item.canister.liquidArgon.partial.name=Bote de argón líquido
 item.canister.liquidArgon.full.name=Bote de Argón Líquido Lleno
-item.canister.liquidArgon.name=Líquido       #short name for Liquid Argon contents level
+item.canister.liquidArgon.name=LAR       #nombre corto para el nivel de argón líquido
 item.emptyGasCanister.name=Bote de gas vacío
 
-# FLUIDS AND GASES
+# FLUIDOS Y GASES
 fluid.methane=Metano
 fluid.oxygen=Oxígeno
 fluid.nitrogen=Nítrogeno
 fluid.hydrogen=Hidrógeno
-fluid.carbondioxide=CO2
+fluid.carbondioxide=Dióxido de carbono
 fluid.helium=Helio
 fluid.argon=Argón
 fluid.atmosphericgases=Gases atmosféricos
@@ -65,7 +65,7 @@ fluid.liquidnitrogen=Nítrogeno líquido
 fluid.liquidargon=Argón líquido
 fluid.fuel=Combustible
 
-# BLOCKS
+# BLOQUES
 tile.asteroidsBlock.asteroid0.name=Roca de asteroide
 tile.asteroidsBlock.asteroid1.name=Roca de asteroide
 tile.asteroidsBlock.asteroid2.name=Roca de asteroide
@@ -85,13 +85,13 @@ tile.minerBase.name=Base del AstroMinador
 # GUI
 planet.asteroids=Asteroides
 
-	# Dollar sign ($) will split text onto a new line
-	# Do not remove %s or %d, since that will be replaced in-game
+	# El signo del dólar ($) cortará el texto en una nueva línea
+	# No eliminar %s o %d, ya que estos son reemplazados dentro del juego
 gui.telepad.desc.0=Esta es la única dirección$del teletransportador
 gui.telepad.desc.1=Dirección de otro teletransportador.$Las entidades se enviarán allí.
 gui.message.address.name=Dirección
 gui.message.destAddress.name=Dirección de destino
-gui.message.invalidAddress.name=Dirección única invalida
+gui.message.invalidAddress.name=Dirección única inválida
 gui.message.invalidTargetAddress.name=Dirección de destino inválida
 gui.message.receivingActive.name=Recepción activa
 gui.message.telepadTooFar.name=¡Objetivo muy lejos! (Máximo %d)
@@ -131,21 +131,23 @@ tile.beamReflector.description=Los refletores se usan para redirigir rayos de en
 tile.beamReceiver.description=Los receptores se conectan en la entrada o salida de energía de una máquina, para transferir energía por medio del rayo.
 tile.telepadShort.description=Los teletransportadores se usan para enviar a jugadores y otras criaturas a cortas distancias (250 bloques) cuando está conectado a otro teletransportador.
 tile.minerBase.description=La base AstroMinador es el punto de anclado para un AstroMinador.  Es grande... intenta crear un cubo 2 x 2 x 2 para ello.
+
+# ESQUEMAS
 schematic.astroMiner.name=AstroMinador
 schematic.ionDrive.name=Propulsor menaiónico
 
-# SCHEMATICS
-
-# ENTITIES
+# ENTIDADES
 entity.SmallAsteroidGC.name=Asteroide pequeño
 entity.GrappleHookGC.name=Gancho
 entity.Tier3RocketGC.name=Cohete nivel 3
 entity.EntryPodAsteroids.name=Cápsula de entrada
 entity.AstroMiner.name=AstroMinador
 
-# CONTAINERS
+# ENVASES
 container.shortRangeTelepad.name=Teletransportador de corto alcance
 container.entryPod.name=Cápsula de entrada
+
+# CONFIGURACION DE GUI
 gc.configgui.dimensionIDAsteroids=ID de dimensión asteroides
 gc.configgui.idEntitySmallAsteroid=ID de entidad asteroide pequeño
 gc.configgui.idEntityGrappleHook=ID de entidad gancho
