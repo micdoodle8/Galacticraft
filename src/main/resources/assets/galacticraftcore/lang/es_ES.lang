@@ -1,6 +1,6 @@
-# Archivo es_ES, traducción por Jaski
+# Galacticraft Core Language File = SPAIN SPANISH. (Collaborators: Jaski)
 
-# GENERAL ITEMS
+# OBJETOS GENERALES
 item.oxygenTankLightFull.name=Tanque pequeño de oxígeno
 item.oxygenTankLightEmpty.name=Tanque pequeño de oxígeno vacío
 item.oxygenTankMedFull.name=Tanque mediano de oxígeno
@@ -85,6 +85,9 @@ item.basicItem.dehydratedPotato.name=Patatas deshidratadas
 item.basicItem.cannedFood.name=Lata de comida
 item.basicItem.frequencyModule.name=Módulo de frecuencia
 item.standardWrench.name=Llave inglesa
+item.bucketOil.name=Cubo de petróleo
+item.bucketFuel.name=Cubo de combustible
+item.basicItem.ambientThermalController.name=Controlador térmico ambiental
 
 # TOOLS
 item.steel_pickaxe.name=Pico de acero
@@ -157,7 +160,7 @@ tile.machine.2.name=Horno eléctrico
 tile.machine.3.name=Compresor
 tile.machine2.4.name=Compresor eléctrico
 tile.machine2.5.name=Fabricador de circuito
-tile.machine2.6.name=Modulo de almacenamiento de oxígeno
+tile.machine2.6.name=Módulo de almacenamiento de oxígeno
 tile.machine.7.name=Horno de arco eléctrico
 tile.machine.8.name=Cluster de almacenamiento de energía
 tile.aluminumWire.name=Cable de aluminio
@@ -185,6 +188,8 @@ tile.viewScreen.name=Monitor de datos
 tile.telemetry.name=Unidad de telemetría
 tile.spaceStationBase.name=Bloque de entrada de estación espacial
 tile.dish.name=Antena de comunicaciones
+
+# BLOQUES DECORATIVOS
 tile.tinStairs1.name=Escaleras decorativas de estaño
 tile.tinStairs2.name=Escaleras decorativas de estaño
 tile.wallGC.tin.name=Muro decorativo de estaño
@@ -195,8 +200,10 @@ tile.slabGCHalf.moonSlab.name=Losa de roca lunar
 tile.moonBricksStairs.name=Escaleras de ladrillos de mazmorra lunar
 tile.wallGC.moonBricks.name=Muro de ladrillos de mazmorra lunar
 tile.slabGCHalf.moonBricksSlab.name=Losa de ladrillos de mazmorra lunar
+tile.crudeOil.name=Petróleo
+tile.fuelBlock.name=Combustible
 
-# ENTITIES
+# ENTIDADES
 entity.EvolvedSpider.name=Araña evolucionada
 entity.EvolvedZombie.name=Zombie evolucionado
 entity.EvolvedCreeper.name=Creeper evolucionado
@@ -214,38 +221,38 @@ entity.Lander.name=Aterrizador
 entity.GCFlag.name=Bandera
 entity.MeteorChunk.name=Trozo de meteorito
 
-# SCHEMATICS
+# ESQUEMAS
 schematic.moonbuggy.name=Buggy lunar
 schematic.rocketT1.name=Cohete nivel 1
 schematic.rocketT2.name=Cohete nivel 2
 
-# DEATH MESSAGES
+# MENSAJES DE MUERTE
 death.attack.spaceshipExplosion=¡El cohete de %1$s funciona mal!
 death.attack.spaceshipExplosionB=¡%1$s murió en un desafortunado accidente!
 death.attack.spaceshipCrash=El cohete de %1$s se estrelló contra el suelo. Oops.
 death.attack.oxygenSuffocation=¡%1$s se quedó sin oxígeno!
-death.attack.thermal=%1$s olvidó la protección termal
+death.attack.thermal=%1$s olvidó la protección térmica
 
-# GALAXIES
+# GALAXIAS
 galaxy.blockyway.name=La Vía de Bloques
 galaxy.milkyWay=Vía Láctea
 
-# OTHER
-newversion.failed.name=¡Fallo de comprobación de actualización para Galacticraft! Intentando en 15 segundos
+# OTROS
+newversion.failed.name=¡Fallo de comprobación de actualización para Galacticraft! Reintentando en 15 segundos
 newversion.success.name=Galacticraft versión remota encontrada:
 
-# KEYBINDINGS
+# CONTROLES
 keybind.map.name=[GC] Mapa de la galaxia
 keybind.spaceshipinv.name=[GC] Abrir inventario del cohete
-keybind.sensortoggle.name=[GC] Activar modo gafas con sensores
-keybind.vehicleforward.name=[GC] Tecla de acelerar vehículo
-keybind.vehiclebackward.name=[GC] Tecla de marcha atrás del vehículo
-keybind.vehicleleft.name=[GC] Tecla moverse a la izquierda del vehículo
-keybind.vehicleright.name=[GC] Tecla moverse a la derecha del vehículo
+keybind.sensortoggle.name=[GC] Modo gafas con sensores
+keybind.vehicleforward.name=[GC] Tecla acelerar vehículo
+keybind.vehiclebackward.name=[GC] Tecla marcha atrás del vehículo
+keybind.vehicleleft.name=[GC] Tecla izquierda del vehículo
+keybind.vehicleright.name=[GC] Tecla derecha del vehículo
 keybind.vehicleup.name=[GC] Tecla arriba del vehículo
 keybind.vehicledown.name=[GC] Tecla abajo del vehículo
 
-# CREATIVE TABS
+# PESTAÑAS MODO CREATIVO
 itemGroup.GalacticraftBlocks=Bloques de Galacticraft
 itemGroup.GalacticraftItems=Objetos de Galacticraft
 
@@ -300,6 +307,7 @@ gui.message.help2=Para guía de programas espaciales
 gui.message.help3=Para ayuda con el petróleo
 gui.message.prelaunch=Lista de pre-lanzamiento
 gui.message.clicklink=Click para ver wiki de Galacticraft
+gui.message.thermalStatus.name=Control térmico
 
 gui.status.active.name=Activo
 gui.status.missingleaves.name=No hay suficientes hojas
@@ -340,6 +348,9 @@ gui.status.compressing.name=Comprimiendo
 gui.status.collecting.name=Recolectando
 gui.status.tankEmpty.name=Tanque de oxígeno vacío
 gui.status.sunVisible.name=Sol visible
+gui.status.on.name=ON
+gui.status.off.name=OFF
+gui.status.notAvailable.name=N/A
 
 gui.button.enableseal.name=Activar sellado
 gui.button.disableseal.name=Desactivar sellado
@@ -358,9 +369,11 @@ gui.button.unlockschematic.name=Desbloquear plano
 gui.button.stoprefine.name=Parar de refinar
 gui.button.enable.name=Activar
 gui.button.disable.name=Desactivar
+gui.button.hideDest.name=Ocultar
+gui.button.unhideDest.name=Mostrar
 
 gui.choosePlanet.desc.overworld=Lleno de vida#Habitable#Gravedad: 100%
-gui.warning=¡PRECAUCIÓN!
+gui.warning=¡ALERTA!
 gui.lander.warning2=¡Mantén "
 gui.lander.warning3=" para desacelerar!
 gui.lander.velocity=Velocidad de Entrada
@@ -400,8 +413,9 @@ gui.rocket.inv.name=Inventario / Combustible
 
 gui.rocket.warning.nogyroscope=¡Fuerzas misteriosas están en juego y los giroscopios estan girando salvajemente!
 gui.rocket.warning.noparachute=¡No tengo paracaídas! Si presiono lanzar otra vez, no hay vuelta atrás
-gui.rocket.warning.nofuel=Necesitaré llenarlo con combustible primero
+gui.rocket.warning.nofuel=Primero necesitaré llenarlo con combustible
 gui.chest.warning.wrongkey=Probablemente necesite una llave de mazmorra nivel %s para desbloquear esto
+gui.bedFail.message=Oh oh... ¿Y si el oxígeno se agota mientras estoy dormido? ¡Necesitaré una cámara criogénica para dormir en el espacio!
 gui.frequencymodule.warning0=Probablemente necesite un
 gui.frequencymodule.warning1=si quiero escuchar algo aquí
 gui.tracking.message=Seguimiento activado. Ahora necesirarás hacer click derecho sobre esto en una unidad de telemetría para completar el enlace.
@@ -421,12 +435,15 @@ gui.spacestation.toAllowEntry=para permitir a otro jugador entrar en esta estaci
 gui.spacestation.added=¡Has sido añadido a los jugadores aceptados en la estación espacial %s!
 gui.spacestation.addsuccess=¡Se ha añadido a %s a la lista de la estación espacial!
 gui.spacestation.removesuccess=¡Se ha eliminado %s de la lista de la estación espacial!
+gui.spacestation.allowAllTrue=¡Tu estación espacial está ahora abierta a todos los jugadores!  (Usa /ssinvite -all para deshacer esto.)
+gui.spacestation.allowAllFalse=¡Tu estación espacial ya no está abierta a todos los jugadores!
+gui.spacestation.changesuccess=Cambiado el propietario de la estación espacial de %s al nuevo propietario %s.
 
 gui.skeletonBoss.message=Jefe despawneado, ¡no dejes la habitación del jefe mientras luchas! Vuelve a entrar para spawnear al jefe
 gui.warning.noroom=Espacio insuficiente
 gui.flag.alreadyPlaced=¡La bandera ya se ha puesto aquí!
 gui.receiver.cannotAttach=¡No se puede colocar el receptor aqui!
-gui.warning.invalidThermal=Protección termal inválida
+gui.warning.invalidThermal=Protección térmica inválida
 
 gui.tank.oxygenRemaining=Oxígeno restante
 gui.buggy.storageSpace=Espacio de almacenamiento
@@ -488,18 +505,21 @@ gui.rocket.speed=Velocidad
 gui.player.health=Salud
 gui.player.food=Alimentos
 gui.player.bpm=bpm
-gui.player.ouch=ouch!!!!
+gui.player.ouch=¡¡¡Ouch!!!
+gui.thermalSlot.desc.0=Casilla térmica, emplaza el 'controlador
+gui.thermalSlot.desc.1=térmico ambiental' aquí (opcional)
+gui.thermalSlot.desc.2=Nota: ¡Usa más energía!
 
 gui.spaceRace.create.close.name=Cerrar
 gui.spaceRace.create.back.name=Volver
 gui.spaceRace.create.rename.name=Renombrar equipo
-gui.spaceRace.create.brushRadius.name=Radio pincel
-gui.spaceRace.create.eraserRadius.name=Radio goma
+gui.spaceRace.create.brushRadius.name=Radio del pincel
+gui.spaceRace.create.eraserRadius.name=Radio de la goma
 gui.spaceRace.create.brushSize.name=Tamaño del pincel
 gui.spaceRace.create.eraserSize.name=Tamaño del borrador
 gui.spaceRace.create.title.name=Manager de la carrera espacial
 gui.spaceRace.create.title.name.0=Manager de la
-gui.spaceRace.create.title.name.1=Carrera espacial
+gui.spaceRace.create.title.name.1=carrera espacial
 gui.spaceRace.create.invitePlayer.name=Invitar jugador
 gui.spaceRace.create.playerRadius.name=Nota: los jugadores tienen que estar cerca (25 bloques)
 gui.spaceRace.create.removePlayer.name=Quitar jugador
@@ -517,12 +537,12 @@ gui.spaceRace.join.title.name=Unirse a la carrera espacial
 gui.spaceRace.join.owner.name=Dueño
 gui.spaceRace.join.memberCount.name=%d miembros
 gui.spaceRace.chat.addSuccess=¡%s ha entrado a la carrera espacial!
-gui.spaceRace.chat.removeSuccess=%s ha sido eliminado de la Carrera Espacial.
+gui.spaceRace.chat.removeSuccess=%s ha sido eliminado de la carrera espacial.
 gui.spaceRace.chat.inviteReceived=Recibida invitación de %s para su equipo de carrera espacial.
 gui.spaceRace.chat.toJoin=Para unirte a %s usa el comando %s
 gui.spaceRace.chat.notFound=No se encuentra jugador con nombre: %s
-gui.spaceRace.chat.alreadyPart=¡Ya eres parte de esta Carrera Espacial!
-gui.spaceRace.unnamed=Equipo Sin nombre
+gui.spaceRace.chat.alreadyPart=¡Ya eres parte de esta carrera espacial!
+gui.spaceRace.unnamed=Equipo sin nombre
 gui.spaceRace.comingSoon=Próximamente
 
 gui.message.moon.daynightcycle.0.name=29.5 días terrestres
@@ -550,9 +570,9 @@ gui.message.overworld.meansurfacetemp.1.name=
 itemDesc.powerdraw.name=Energía necesaria: %s /s
 itemDesc.shift.name=Pulsa %s para mas info
 
-tile.oxygenDetector.description=El detector de oxígeno emite una señal de redstone cuando esta rodeado de oxígeno.
-tile.oxygenCollector.description=El recolector de oxígeno almacena el oxígeno obtenido de las hojas del area cercana.
-tile.oxygenCompressor.description=El compresor de oxígeno llena un Bote con el oxigeno almacenado internamente.
+tile.oxygenDetector.description=El detector de oxígeno emite una señal de redstone cuando está rodeado de oxígeno.
+tile.oxygenCollector.description=El recolector de oxígeno almacenará el oxígeno obtenido de las hojas del area cercana.
+tile.oxygenCompressor.description=El compresor de oxígeno llena un bote con el oxigeno almacenado internamente.
 tile.oxygenDecompressor.description=El descompresor de oxígeno vacía un bote de oxígeno en el almacenamiento interno.
 tile.distributor.description=El distribuidor de oxígeno emite una burbuja de oxígeno desde el bloque central, usando un almacenamiento interno. Esto permite respirar de forma segura dentro de la burbuja.
 tile.sealer.description=El sellador de oxígeno comprobará que haya un espacio cerrado. Si lo encuentra, el espacio se llenará con aire respirable.
@@ -590,7 +610,7 @@ tile.viewScreen.description=Los monitores de datos le dan el toque final a tu ba
 tile.telemetry.description=Esto reune información útil de cohetes enlazados, jugadores y mobs. El mejor emplazamiento es cerca de un monitor de datos. Usa un módulo de frecuencia para establecer enlaces de datos.
 tile.dish.description=La antena de comunicaciones puede rastrear la posición de estaciones espaciales y recibir comunicaciones de bases espaciales remotas.
 
-# CONTAINERS
+# CONTENEDORES
 container.cargoloader.name=Plataforma de carga
 container.cargounloader.name=Plataforma de descarga
 container.fuelloader.name=Cargador de combustible
@@ -607,7 +627,7 @@ container.solarbasic.name=Panel solar básico
 container.solaradvanced.name=Panel solar avanzado
 container.oxygendecompressor.name=Descompresor de oxígeno
 
-# DIMENSIONS
+# DIMENSIONES
 dimension.Overworld.name=Mundo principal
 dimension.Moon.name=Luna
 dimension.Sun.name=Sol
@@ -631,75 +651,66 @@ commands.joinrace.noTeam=El equipo debe ser especificado! Uso: %s
 commands.dimensiontp.tooMany=Demasiados argumentos de comando! Uso: %s
 commands.ssinvite.notFound=¡No se encuentran estaciones espaciales para tu nombre de usuario, necesitas viajar a ellas primero!
 commands.ssinvite.wrongUsage=¡Argumentos de comando insuficientes! Uso: %s
+commands.ssnewowner.wrongUsage=No se reconoce ID de estación espacial# -¿Realmente existe? Uso: %s
 commands.ssuninvite.noPlayer=¡No se encuentra jugador con nombre %s en tu lista de estación espacial!
 command.gcastrominer.count=El contador de astro miner para el jugador %s es %s
+
+# CONFIGURACION DE GUI
 gc.configgui.idDimensionMoon=ID de dimensión de la Luna
 gc.configgui.idDimensionOverworldOrbit=ID de dimensión de estación espacial
 gc.configgui.idDimensionOverworldOrbitStatic=ID de la dimensión de estación espacial estátitca
-gc.configgui.biomeIDBase=BiomeID Base for GC
+gc.configgui.biomeIDBase=ID base para biomas de GC
 gc.configgui.staticLoadedDimensions=Dimensiones estáticas cargadas
 gc.configgui.rocketDisableOverworldReturn=Desactivar cohete de retorno al overworld
-gc.configgui.rocketDisabledDimensions=Rocket Disabled Dimensions
-gc.configgui.forceOverworldRespawn=Force Overworld Respawn
-gc.configgui.idSchematicRocketT1=Schematic ID Tier 1 Rocket
-gc.configgui.idSchematicMoonBuggy=Schematic ID Moon Buggy
-gc.configgui.idSchematicAddSchematic=Schematic ID "Add Schematic"
-gc.configgui.idAchievBase=Base Achievement ID
-gc.configgui.idEntityEvolvedSpider=Entity ID Evolved Spider
-gc.configgui.idEntityEvolvedCreeper=Entity ID Evolved Creeper
-gc.configgui.idEntityEvolvedZombie=Entity ID Evolved Zombie
-gc.configgui.idEntityEvolvedSkeleton=Entity ID Evolved Skeleton
-gc.configgui.idEntitySpaceship=Entity ID Tier 1 Rocket
-gc.configgui.idEntityMeteor=Entity ID Meteor
-gc.configgui.idEntityBuggy=Entity ID Buggy
-gc.configgui.idEntityFlag=Entity ID Flag
-gc.configgui.idEntityParaChest=Entity ID Parachest
-gc.configgui.idEntityAlienVillager=Entity ID Alien Villager
-gc.configgui.idEntityOxygenBubble=Entity ID Oxygen Bubble
-gc.configgui.idEntityLander=Entity ID Moon Lander
-gc.configgui.idEntityEvolvedSkeletonBoss=Entity ID Evolved Skeleton Boss
-gc.configgui.idEntityCelestialScreen=Entity ID Celestial Screen
-gc.configgui.idEntityMeteorChunk=Entity ID Throwable Meteor Chunk
-gc.configgui.moreStars=Show More Stars
-gc.configgui.disableSpaceshipParticles=Disable Rocket Particles
-gc.configgui.oxygenIndicatorLeft=Move Oxygen Indicator Left
-gc.configgui.oxygenIndicatorBottom=Move Oxygen Indicator Down
-gc.configgui.oilGenFactor=Oil Gen Factor
-gc.configgui.externalOilGen=External Oil Gen
-gc.configgui.enableRetrogenOil=Retrogen Overworld Oil
-gc.configgui.enableCopperOreGen=Overworld Copper Gen
-gc.configgui.enableTinOreGen=Overworld Tin Gen
-gc.configgui.enableAluminumOreGen=Overworld Aluminum Gen
-gc.configgui.enableSiliconOreGen=Overworld Silicon Gen
-gc.configgui.disableCheeseMoon=Disable Moon Cheese Gen
-gc.configgui.disableTinMoon=Disable Moon Tin Gen
-gc.configgui.disableCopperMoon=Disable Moon Copper Gen
-gc.configgui.disableMoonVillageGen=Disable Moon Village Gen
-gc.configgui.enableOtherModsFeatures=Enable External Mod World Gen
-gc.configgui.whitelistCoFHCoreGen=Whitelist CoFHCore World Gen
-gc.configgui.enableThaumCraftNodes=Enable ThaumCraft Nodes on planets
-gc.configgui.otherModOreGenIDs=Other Mod Ores to Generate on Planets
-gc.configgui.enableDebug=Show Debug Messages in Console
-gc.configgui.disableLander=Disable lander on Moon, use parachute instead
-gc.configgui.disableSpaceshipGrief=Disable Rocket Explosions
-gc.configgui.spaceStationsRequirePermission=Space Stations Permissions
-gc.configgui.disableSpaceStationCreation=Disable Space Station Creation
+gc.configgui.rocketDisabledDimensions=Dimensiones desactivadas para el cohete
+gc.configgui.forceOverworldRespawn=Forzar respawn en el mundo principal
+gc.configgui.idSchematicRocketT1=ID de esquema de cohete nivel 1
+gc.configgui.idSchematicMoonBuggy=ID de esquema de buggy
+gc.configgui.idSchematicAddSchematic=ID de esquema "Añadir esquema"
+gc.configgui.idAchievBase=ID base de los logros
+gc.configgui.moreStars=Mostrar más estrellas
+gc.configgui.disableSpaceshipParticles=Desactivar partículas del cohete
+gc.configgui.oxygenIndicatorLeft=Mover indicador de oxígeno hacia la izquierda
+gc.configgui.oxygenIndicatorBottom=Mover indicador de oxígeno hacia abajo
+gc.configgui.oilGenFactor=Factor de generación de petróleo
+gc.configgui.externalOilGen=Generador externo de petróleo
+gc.configgui.enableRetrogenOil=Retrogenerar petróleo en el mundo principal
+gc.configgui.enableCopperOreGen=Generación de cobre en el mundo principal
+gc.configgui.enableTinOreGen=Generación de estaño en el mundo principal
+gc.configgui.enableAluminumOreGen=Generación de aluminio en el mundo principal
+gc.configgui.enableSiliconOreGen=Generación de silicio en el mundo principal
+gc.configgui.disableCheeseMoon=Desactivar generación de queso en la Luna
+gc.configgui.disableTinMoon=Desactivar generación de estaño en la Luna
+gc.configgui.disableCopperMoon=Desactivar generación de cobre en la Luna
+gc.configgui.disableMoonVillageGen=Desactivar generación de poblados en la Luna
+gc.configgui.enableOtherModsFeatures=Activar generador de mundo de otro mod
+gc.configgui.whitelistCoFHCoreGen=Lista blanca del generador de mundo de CoFHCore
+gc.configgui.enableThaumCraftNodes=Activar nodos de ThaumCraft en planetas
+gc.configgui.otherModOreGenIDs=Menas de otros mods para generar en planetas
+gc.configgui.enableDebug=Mostrar mensajes de depuración en consola
+gc.configgui.disableLander=Desactivar lander en la Luna, usar paracaídas en su lugar
+gc.configgui.disableSpaceshipGrief=Desactivar explosiones de cohetes
+gc.configgui.spaceStationsRequirePermission=Permisos de estación espacial
+gc.configgui.disableSpaceStationCreation=Desactivar creación de estación espacial
 gc.configgui.overrideCapes=Donor Capes Override
-gc.configgui.spaceStationEnergyScalar=Space Station Energy Modifier
-gc.configgui.sealableIDs=Sealable Blocks
-gc.configgui.detectableIDs=Detectable IDs
-gc.configgui.suffocationCooldown=Suffocation Cooldown
-gc.configgui.suffocationDamage=Suffocation Damage
+gc.configgui.spaceStationEnergyScalar=Modificador de energía de estación espacial
+gc.configgui.sealableIDs=Bloques precintables
+gc.configgui.detectableIDs=IDs detectables
+gc.configgui.suffocationCooldown=Enfriamiento de asfixia
+gc.configgui.suffocationDamage=Daño de asfixia
 gc.configgui.enableSealerEdgeChecks=Sealer Edge Checks
-gc.configgui.alternateCanisterRecipe=Alternate Canister Recipe
-gc.configgui.oreDictSilicon=OreDict name of silicon in other mods
+gc.configgui.alternateCanisterRecipe=Alternar receta de bote
+gc.configgui.oreDictSilicon=Nombre en OreDict del silicio en otros mods
 gc.configgui.rocketFuelFactor=Rocket Fuel Factor
-gc.configgui.dungeonBossHealthMod=Dungeon Boss Health Modifier
-gc.configgui.hardMode=Harder Difficulty
-gc.configgui.quickMode=Quick Game (easier)
-gc.configgui.mapScrollInvert=Invert Map Scroll
-gc.configgui.mapScrollSensitivity=Map Scroll Mouse Sensitivity
-gc.configgui.overrideMap=Estlabecer tecla: Mapa de galaxia
-gc.configgui.keyOverrideFuelLevel=Set key: Rocket Fuel GUI
-gc.configgui.keyOverrideToggleAdvGoggles=Set key: Advanced Goggles
-gc.configgui.title=Galacticraft Core Config
+gc.configgui.dungeonBossHealthMod=Modificador de vida de jefe de mazmorra
+gc.configgui.hardMode=Mayor nivel de dificultad
+gc.configgui.quickMode=Juego rápido (más fácil)
+gc.configgui.mapScrollInvert=Invertir scroll de mapa
+gc.configgui.mapScrollSensitivity=Sensibilidad de ratón en scroll de mapa
+gc.configgui.overrideMap=Establecer tecla: Mapa de galaxia
+gc.configgui.keyOverrideFuelLevel=Establecer tecla: GUI de combustible de cohete
+gc.configgui.keyOverrideToggleAdvGoggles=Establecer tecla: Gafas avanzadas
+gc.configgui.meteorSpawnMod=Modificador de generación de meteoritos
+gc.configgui.meteorBlockDamage=Activado daño por caída de meteorito
+
+gc.configgui.title=Configuración de Galacticraft Core
