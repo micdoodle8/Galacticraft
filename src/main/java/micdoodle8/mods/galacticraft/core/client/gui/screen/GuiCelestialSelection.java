@@ -585,7 +585,7 @@ public class GuiCelestialSelection extends GuiScreen
                             return false;
                         }
                         int spacestationID = mapping;
-                        WorldProvider spacestation = WorldUtil.getProviderForDimension(spacestationID);
+                        WorldProvider spacestation = WorldUtil.getProviderForDimensionClient(spacestationID);
                         if (spacestation != null)
                         {
                             dimension = spacestation.getDimensionName();
@@ -598,7 +598,7 @@ public class GuiCelestialSelection extends GuiScreen
                     }
                     else
                     {
-                        dimension = WorldUtil.getProviderForDimension(this.selectedBody.getDimensionID()).getDimensionName();
+                        dimension = WorldUtil.getProviderForDimensionClient(this.selectedBody.getDimensionID()).getDimensionName();
                     }
 
                     if (dimension.contains("$"))

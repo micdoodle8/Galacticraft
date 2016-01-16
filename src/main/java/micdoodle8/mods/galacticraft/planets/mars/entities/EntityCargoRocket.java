@@ -235,35 +235,32 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
         	if (this.targetDimension != this.worldObj.provider.dimensionId)
             {
                 GCLog.debug("Destination is in different dimension: " + this.targetDimension);
-                WorldProvider targetDim = WorldUtil.getProviderForDimension(this.targetDimension);               
+                WorldProvider targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);               
                 if (targetDim != null && targetDim.worldObj instanceof WorldServer)
                 {
                 	GCLog.debug("Loaded destination dimension " + this.targetDimension);
-                	WorldServer worldServer = (WorldServer) targetDim.worldObj;
-                    if (worldServer != null)
-                    {
-                		this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
-                		Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, worldServer, false, null);
+            		this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
+            		Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (WorldServer) targetDim.worldObj, false, null);
 
-                		if (e instanceof EntityCargoRocket)
-                		{
-                        	GCLog.debug("Cargo rocket arrived at destination dimension, going into landing mode.");
-                			e.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
-                			((EntityCargoRocket) e).landing = true;
-                			if (e != this)
-                				this.setDead();
-                		}
-                		else
-                		{
-                			GCLog.info("Error: failed to recreate the cargo rocket in landing mode on target planet.");
-                			e.setDead();
-                			this.setDead();
-                		}
-                		return;
-                	}
-                	GCLog.info("Error: the server failed to load the dimension the cargo rocket is supposed to land in.");
-                	this.setDead();
-               }
+            		if (e instanceof EntityCargoRocket)
+            		{
+                    	GCLog.debug("Cargo rocket arrived at destination dimension, going into landing mode.");
+            			e.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
+            			((EntityCargoRocket) e).landing = true;
+            			if (e != this)
+            				this.setDead();
+            		}
+            		else
+            		{
+            			GCLog.info("Error: failed to recreate the cargo rocket in landing mode on target planet.");
+            			e.setDead();
+            			this.setDead();
+            		}
+            		return;
+                }
+                GCLog.info("Error: the server failed to load the dimension the cargo rocket is supposed to land in. Destroying rocket!");
+                this.setDead();
+                return;
             }
             else
             {

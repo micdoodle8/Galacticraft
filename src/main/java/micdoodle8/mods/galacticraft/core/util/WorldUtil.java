@@ -35,6 +35,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -284,7 +285,7 @@ public class WorldUtil
         return world.getSkyColor(FMLClientHandler.instance().getClient().renderViewEntity, 1.0F);
     }
 
-    public static WorldProvider getProviderForName(String par1String)
+    public static WorldProvider getProviderForNameServer(String par1String)
     {
         String nameToFind = par1String;
         if (par1String.contains("$"))
@@ -301,7 +302,32 @@ public class WorldUtil
         {
         	if (nameToFind.equals(element.getValue()))
             {
-                return WorldUtil.getProviderForDimension(element.getKey());
+                return WorldUtil.getProviderForDimensionServer(element.getKey());
+            }
+        }
+
+        GCLog.info("Failed to find matching world for '" + par1String + "'");
+        return null;
+    }
+
+    public static WorldProvider getProviderForNameClient(String par1String)
+    {
+        String nameToFind = par1String;
+        if (par1String.contains("$"))
+        {
+            final String[] twoDimensions = par1String.split("\\$");
+            nameToFind = twoDimensions[0];
+        }
+        if (nameToFind == null)
+        {
+            return null;
+        }
+
+        for (Map.Entry<Integer, String> element : WorldUtil.dimNames.entrySet())
+        {
+        	if (nameToFind.equals(element.getValue()))
+            {
+                return WorldUtil.getProviderForDimensionClient(element.getKey());
             }
         }
 
@@ -311,7 +337,7 @@ public class WorldUtil
 
     public static void initialiseDimensionNames()
     {
-    	WorldProvider provider = WorldUtil.getProviderForDimension(0);
+    	WorldProvider provider = WorldUtil.getProviderForDimensionServer(0);
     	WorldUtil.dimNames.put(0, new String(provider.getDimensionName()));
     }
     
@@ -336,7 +362,7 @@ public class WorldUtil
         for (Integer element : WorldUtil.registeredPlanets)
         {
         	if (element == 0) continue;
-        	WorldProvider provider = WorldUtil.getProviderForDimension(element);
+        	WorldProvider provider = WorldUtil.getProviderForDimensionServer(element);
 
             if (provider != null)
             {
@@ -383,7 +409,7 @@ public class WorldUtil
             	}
 
             	//Testing dimension is a satellite, but with a different homeworld - test its tier
-            	WorldProvider homeWorld = WorldUtil.getProviderForDimension(data.getHomePlanet());
+            	WorldProvider homeWorld = WorldUtil.getProviderForDimensionServer(data.getHomePlanet());
 	
 	            if (homeWorld != null)
 	            {
@@ -454,14 +480,27 @@ public class WorldUtil
      * @param id
      * @return
      */
-    public static WorldProvider getProviderForDimension(int id)
+    public static WorldProvider getProviderForDimensionServer(int id)
     {
-    	WorldProvider provider = null;
-    	World ws = GalacticraftCore.proxy.getWorldForID(id);
-   		if (ws != null)
-   			provider = ws.provider;
-    	if (provider == null) provider = WorldProvider.getProviderForDimension(id);
-    	return provider;
+    	MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance(); 
+    	if (theServer == null)
+    	{
+    		GCLog.debug("Called WorldUtil server side method but FML returned no server - is this a bug?");
+    		return null;
+    	}
+    	World ws = theServer.worldServerForDimension(id);
+    	if (ws != null) return ws.provider;
+    	return null;
+    }
+
+    public static WorldProvider getProviderForDimensionClient(int id)
+    {
+    	World ws = ClientProxyCore.mc.theWorld;
+    	if (ws != null && ws.provider.dimensionId == id)
+    	{
+    		return ws.provider;
+    	}
+    	return WorldProvider.getProviderForDimension(id);
     }
     
     /**
@@ -496,7 +535,7 @@ public class WorldUtil
             else
             //It's a planet or moon
             {
-            	WorldProvider provider = WorldUtil.getProviderForDimension(id);
+            	WorldProvider provider = WorldUtil.getProviderForDimensionServer(id);
             	if (celestialBody != null && provider != null)
             	{
             		if (provider instanceof IGalacticraftWorldProvider && !(provider instanceof IOrbitDimension) || provider.dimensionId == 0)
@@ -1297,11 +1336,11 @@ public class WorldUtil
             if (ConfigManagerCore.enableDebug)
             {
             	GCLog.debug("GC clientside planet dimensions registered: "+ids);
-            	WorldProvider dimMoon = WorldUtil.getProviderForName("moon.moon");
+            	WorldProvider dimMoon = WorldUtil.getProviderForNameClient("moon.moon");
             	if (dimMoon != null) GCLog.debug("Crosscheck: Moon is "+dimMoon.dimensionId);
-            	WorldProvider dimMars = WorldUtil.getProviderForName("planet.mars");
+            	WorldProvider dimMars = WorldUtil.getProviderForNameClient("planet.mars");
             	if (dimMars != null) GCLog.debug("Crosscheck: Mars is "+dimMars.dimensionId);
-            	WorldProvider dimAst = WorldUtil.getProviderForName("planet.asteroids");
+            	WorldProvider dimAst = WorldUtil.getProviderForNameClient("planet.asteroids");
             	if (dimAst != null) GCLog.debug("Crosscheck: Asteroids is "+dimAst.dimensionId);
             }
         }

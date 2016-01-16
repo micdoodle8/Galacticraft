@@ -709,7 +709,7 @@ public class PacketSimple extends Packet implements IPacket
             CommandGCEnergyUnits.handleParamClientside((Integer) this.data.get(0));
             break;
         case C_RESPAWN_PLAYER:
-            final WorldProvider provider = WorldUtil.getProviderForName((String) this.data.get(0));
+            final WorldProvider provider = WorldUtil.getProviderForNameClient((String) this.data.get(0));
             final int dimID = provider.dimensionId;
             if (ConfigManagerCore.enableDebug)
             {
@@ -866,7 +866,7 @@ public class PacketSimple extends Packet implements IPacket
         case S_TELEPORT_ENTITY:
             try
             {
-                final WorldProvider provider = WorldUtil.getProviderForName((String) this.data.get(0));
+                final WorldProvider provider = WorldUtil.getProviderForNameServer((String) this.data.get(0));
                 final Integer dim = provider.dimensionId;
                 GCLog.info("Found matching world (" + dim.toString() + ") for name: " + (String) this.data.get(0));
 

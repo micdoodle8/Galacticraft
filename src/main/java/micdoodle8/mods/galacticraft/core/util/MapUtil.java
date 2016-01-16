@@ -130,7 +130,7 @@ public class MapUtil
 	{
     	doneOverworldTexture = true;
     	if (doneOverworldTexture) return;
-		World world = WorldUtil.getProviderForDimension(0).worldObj;
+		World world = WorldUtil.getProviderForDimensionServer(0).worldObj;
     	if (world == null) return;
     	if (calculatingMap.getAndSet(true)) return;
     	biomeMapWCM = world.getWorldChunkManager();
@@ -240,6 +240,13 @@ public class MapUtil
 		}
 		writeOutputFile(biomeMapImage, true);
 		calculatingMap.set(false);
+		//Help the garbage collector
+		biomeMapWCM = null;
+		biomeMapImage = null;
+		biomeMapFile = null;
+		biomeMapPlayerBase = null;
+		biomeMapWorld = null;
+	    biomeMapGenLayer = null;
 	}
 	
 
