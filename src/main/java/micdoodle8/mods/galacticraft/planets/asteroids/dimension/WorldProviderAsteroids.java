@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids;
@@ -379,7 +380,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
         for (BlockVec3 target : targets.values())
         {
         	BlockVec3 coords = target.clone();
-        	System.out.println("Found nearby asteroid at "+ target.toString());
+        	GCLog.debug("Found nearby asteroid at "+ target.toString());
             switch (facing)
             {
             case 2:

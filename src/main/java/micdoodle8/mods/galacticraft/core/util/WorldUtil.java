@@ -1296,13 +1296,13 @@ public class WorldUtil
             }
             if (ConfigManagerCore.enableDebug)
             {
-            	System.out.println("GC clientside planet dimensions registered: "+ids);
+            	GCLog.debug("GC clientside planet dimensions registered: "+ids);
             	WorldProvider dimMoon = WorldUtil.getProviderForName("moon.moon");
-            	if (dimMoon != null) System.out.println("Crosscheck: Moon is "+dimMoon.dimensionId);
+            	if (dimMoon != null) GCLog.debug("Crosscheck: Moon is "+dimMoon.dimensionId);
             	WorldProvider dimMars = WorldUtil.getProviderForName("planet.mars");
-            	if (dimMoon != null) System.out.println("Crosscheck: Mars is "+dimMars.dimensionId);
+            	if (dimMars != null) GCLog.debug("Crosscheck: Mars is "+dimMars.dimensionId);
             	WorldProvider dimAst = WorldUtil.getProviderForName("planet.asteroids");
-            	if (dimMoon != null) System.out.println("Crosscheck: Asteroids is "+dimAst.dimensionId);
+            	if (dimAst != null) GCLog.debug("Crosscheck: Asteroids is "+dimAst.dimensionId);
             }
         }
         catch (final Exception e)

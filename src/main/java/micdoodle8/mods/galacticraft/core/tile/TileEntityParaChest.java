@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -70,7 +71,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     {
         if ((size - 3) % 18 != 0)
         {
-            System.out.println("Strange TileEntityParachest inventory size received from server " + size);
+        	GCLog.debug("Strange TileEntityParachest inventory size received from server " + size);
         }
         this.chestContents = new ItemStack[size];
     }

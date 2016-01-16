@@ -1274,10 +1274,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         // TODO break blocks which are outside SS (not in checked)
         // TODO prevent spin if there is a huge number of blocks outside SS
 
-        if (ConfigManagerCore.enableDebug)
-        {
-            System.out.println("MoI = " + this.momentOfInertia + " CoMx = " + this.massCentreX + " CoMz = " + this.massCentreZ);
-        }
+        GCLog.debug("MoI = " + this.momentOfInertia + " CoMx = " + this.massCentreX + " CoMz = " + this.massCentreZ);
 
         //Send packets to clients in this dimension
         List<Object> objList = new ArrayList<Object>();

@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -142,8 +143,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
                 stats.rocketStacks = this.cargoItems;
                 if ((this.cargoItems.length - 2) % 18 != 0)
                 {
-                    System.out.println("Strange rocket inventory size " + this.cargoItems.length);
-                    int fail = 1 / 0;
+                	GCLog.debug("Strange rocket inventory size " + this.cargoItems.length);
                 }
             }
 

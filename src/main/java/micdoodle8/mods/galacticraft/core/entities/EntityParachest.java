@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.entities;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -149,6 +150,7 @@ public class EntityParachest extends Entity
             final TileEntityParaChest chest = (TileEntityParaChest) te;
 
             chest.chestContents = new ItemStack[this.cargo.length + 1];
+            GCLog.debug("Creating parachest with inventory size " + this.cargo.length + 1);
 
             for (int i = 0; i < this.cargo.length; i++)
             {

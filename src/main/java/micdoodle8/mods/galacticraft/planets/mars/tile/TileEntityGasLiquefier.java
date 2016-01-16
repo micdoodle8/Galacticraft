@@ -164,7 +164,6 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 	
 	                    if (canisterGas != null)
 		                {
-		                	System.out.println("GasTankType " + this.gasTankType);
 		                	int used = this.gasTank.fill(canisterGas, true) / factor;
 		                	if (used == amount)
 		                		this.containingItems[1] = new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY);

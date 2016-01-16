@@ -142,7 +142,7 @@ public class MapUtil
     	if (biomeMapGenLayer == null)
     	{
     		calculatingMap.set(false);
-        	if (ConfigManagerCore.enableDebug) System.out.println("Failed to get gen layer from World Chunk Manager.");
+    		GCLog.debug("Failed to get gen layer from World Chunk Manager.");
     		return;
     	}
         File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
@@ -165,7 +165,7 @@ public class MapUtil
 //			biomeMapFile.renameTo(new File("OWdiffread.jpg"));
 //		} catch (Exception e) { e.printStackTrace(); }
 
-    	if (ConfigManagerCore.enableDebug) System.out.println("Starting overworld generation centered at " + 0 + "," + 0);
+        GCLog.debug("Starting overworld generation centered at " + 0 + "," + 0);
     	ix = 0;
     	iz = 0;
     	biomeMapCx = 0;
@@ -188,7 +188,7 @@ public class MapUtil
 	public static void getBiomeMapForCoords(World world, int cx, int cz, int scale, int size, File outputFile, EntityPlayerMP player)
     {
     	if (calculatingMap.getAndSet(true)) return;
-    	if (ConfigManagerCore.enableDebug) System.out.println("Starting map generation centered at " + cx + "," + cz);
+    	GCLog.debug("Starting map generation centered at " + cx + "," + cz);
     	ix = 0;
     	iz = 0;
     	biomeMapCx = cx;
@@ -386,7 +386,7 @@ public class MapUtil
     	if (iz > biomeMapSizeZ - imagefactor)
     	{
         	iz = 0;
-        	if (ConfigManagerCore.enableDebug) System.out.println("Finished map column " + ix);
+        	GCLog.debug("Finished map column " + ix);
         	ix += imagefactor;
         	biomeMapz0 = biomeMapz00;
         	biomeMapx0 += multifactor;
