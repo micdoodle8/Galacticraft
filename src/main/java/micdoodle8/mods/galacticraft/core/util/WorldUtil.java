@@ -310,6 +310,7 @@ public class WorldUtil
         return null;
     }
 
+    @SideOnly(Side.CLIENT)
     public static WorldProvider getProviderForNameClient(String par1String)
     {
         String nameToFind = par1String;
@@ -493,6 +494,7 @@ public class WorldUtil
     	return null;
     }
 
+    @SideOnly(Side.CLIENT)
     public static WorldProvider getProviderForDimensionClient(int id)
     {
     	World ws = ClientProxyCore.mc.theWorld;
