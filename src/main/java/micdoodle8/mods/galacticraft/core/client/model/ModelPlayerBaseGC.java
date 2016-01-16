@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.model;
 import api.player.model.ModelPlayer;
 import api.player.model.ModelPlayerAPI;
 import api.player.model.ModelPlayerBase;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -22,10 +23,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModelCustom;
 import net.smart.render.playerapi.SmartRender;
 
 import java.lang.reflect.Constructor;
+
+import org.lwjgl.opengl.GL11;
 
 public class ModelPlayerBaseGC extends ModelPlayerBase
 {
@@ -42,7 +46,11 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
     protected static IModelCustom frequencyModule;
     public static AbstractClientPlayer playerRendering;
     protected static PlayerGearData currentGearData;
-    
+
+    public static final ResourceLocation oxygenMaskTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/oxygen.png");
+    public static final ResourceLocation playerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/player.png");
+    public static final ResourceLocation frequencyModuleTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/frequencyModule.png");
+
     private static boolean isSmartMovingLoaded;
     private static Class modelRotationGCSmartMoving;
     private static Constructor modelRotationGCSmartMovingInit;
@@ -87,11 +95,11 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
     {
         float var1 = 0.0F;
 
-        final Class<?> entityClass = EntityClientPlayerMP.class;
-        final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
-        final ModelBiped modelBipedMain = ((RenderPlayer) render).modelBipedMain;
+//      final Class<?> entityClass = EntityClientPlayerMP.class;
+//      final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
+//      final ModelBiped modelBipedMain = ((RenderPlayer) render).modelBipedMain;
         
-        if (this.modelPlayer.equals(modelBipedMain))
+//      if (this.modelPlayer.equals(modelBipedMain))
         {
             this.oxygenMask = createModelRenderer(this.modelPlayer, 0, 0, 0);
             this.oxygenMask.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, 1);
@@ -229,17 +237,19 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
             this.redOxygenTanks[1].setRotationPoint(-2F, 2F, 3.8F);
             this.redOxygenTanks[1].mirror = true;
 
+            /*
             ModelRenderer fModule = createModelRenderer(this.modelPlayer, 0, 0, 9);
             fModule.addBox(0, 0, 0, 1, 1, 1, var1);
             fModule.setRotationPoint(-2F, 2F, 3.8F);
             fModule.mirror = true;
+            */
         }
     }
 
     @Override
     public void beforeRender(Entity var1, float var2, float var3, float var4, float var5, float var6, float var7)
     {
-        usingParachute = false;
+    	usingParachute = false;
 
         final EntityPlayer player = (EntityPlayer) var1;
         PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getCommandSenderName());
@@ -273,7 +283,7 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
     @Override
     public void afterSetRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
     {
-        super.afterSetRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);
+    	super.afterSetRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);
 
 	    if (par7Entity instanceof EntityPlayer)
 	    {
@@ -295,6 +305,9 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
 	            this.modelPlayer.bipedLeftLeg.rotateAngleX = MathHelper.cos(par1 * 0.1162F * 2 + (float)Math.PI) * 1.4F * par2;
 	            this.modelPlayer.bipedRightLeg.rotateAngleX = MathHelper.cos(par1 * 0.1162F * 2) * 1.4F * par2;
 	        }
+
+	        this.oxygenMask.rotateAngleY = this.modelPlayer.bipedHead.rotateAngleY;
+	        this.oxygenMask.rotateAngleX = this.modelPlayer.bipedHead.rotateAngleX;
 
 	        if (usingParachute)
 	        {
@@ -334,5 +347,151 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
 	            }
 	        }
 	    }
+    }
+    
+    @Override
+    public void afterRender(Entity var1, float var2, float var3, float var4, float var5, float var6, float var7)
+    {
+        final Class<?> entityClass = EntityClientPlayerMP.class;
+        final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
+        final ModelBiped modelBipedMain = ((RenderPlayer) render).modelBipedMain;
+
+        this.usingParachute = false;
+        boolean wearingMask = false;
+        boolean wearingGear = false;
+        boolean wearingLeftTankGreen = false;
+        boolean wearingLeftTankOrange = false;
+        boolean wearingLeftTankRed = false;
+        boolean wearingRightTankGreen = false;
+        boolean wearingRightTankOrange = false;
+        boolean wearingRightTankRed = false;
+        boolean wearingFrequencyModule = false;
+
+        final EntityPlayer player = (EntityPlayer) var1;
+        PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getCommandSenderName());
+
+        if (gearData != null)
+        {
+            usingParachute = gearData.getParachute() != null;
+            wearingMask = gearData.getMask() > -1;
+            wearingGear = gearData.getGear() > -1;
+            wearingLeftTankGreen = gearData.getLeftTank() == 0;
+            wearingLeftTankOrange = gearData.getLeftTank() == 1;
+            wearingLeftTankRed = gearData.getLeftTank() == 2;
+            wearingRightTankGreen = gearData.getRightTank() == 0;
+            wearingRightTankOrange = gearData.getRightTank() == 1;
+            wearingRightTankRed = gearData.getRightTank() == 2;
+            wearingFrequencyModule = gearData.getFrequencyModule() > -1;
+        }
+
+        if (var1 instanceof AbstractClientPlayer)
+        {
+            if (gearData != null)
+            {
+                if (wearingMask)
+                {
+                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerBaseGC.oxygenMaskTexture);
+                    GL11.glPushMatrix();
+                    GL11.glScalef(1.05F, 1.05F, 1.05F);
+                    this.oxygenMask.render(var7);
+                    GL11.glScalef(1F, 1F, 1F);
+                    GL11.glPopMatrix();
+                }
+
+                //
+/*
+                if (wearingFrequencyModule)
+                {
+                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerBaseGC.frequencyModuleTexture);
+                    GL11.glPushMatrix();
+                    GL11.glRotatef(180, 1, 0, 0);
+
+                    GL11.glRotatef((float) (this.modelPlayer.bipedHeadwear.rotateAngleY * (-180.0F / Math.PI)), 0, 1, 0);
+                    GL11.glRotatef((float) (this.modelPlayer.bipedHeadwear.rotateAngleX * (180.0F / Math.PI)), 1, 0, 0);
+                    GL11.glScalef(0.3F, 0.3F, 0.3F);
+                    GL11.glTranslatef(-1.1F, 1.2F, 0);
+                    this.frequencyModule.renderPart("Main");
+                    GL11.glTranslatef(0, 1.2F, 0);
+                    GL11.glRotatef((float) (Math.sin(var1.ticksExisted * 0.05) * 50.0F), 1, 0, 0);
+                    GL11.glRotatef((float) (Math.cos(var1.ticksExisted * 0.1) * 50.0F), 0, 1, 0);
+                    GL11.glTranslatef(0, -1.2F, 0);
+                    this.frequencyModule.renderPart("Radar");
+                    GL11.glPopMatrix();
+                }
+*/
+                //
+
+                FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerBaseGC.playerTexture);
+
+                if (wearingGear)
+                {
+                    for (int i = 0; i < 7; i++)
+                    {
+                        for (int k = 0; k < 2; k++)
+                        {
+                            this.tubes[k][i].render(var7);
+                        }
+                    }
+                }
+
+                //
+
+                if (wearingLeftTankRed)
+                {
+                    this.redOxygenTanks[0].render(var7);
+                }
+
+                //
+
+                if (wearingLeftTankOrange)
+                {
+                    this.orangeOxygenTanks[0].render(var7);
+                }
+
+                //
+
+                if (wearingLeftTankGreen)
+                {
+                    this.greenOxygenTanks[0].render(var7);
+                }
+
+                //
+
+                if (wearingRightTankRed)
+                {
+                    this.redOxygenTanks[1].render(var7);
+                }
+
+                //
+
+                if (wearingRightTankOrange)
+                {
+                    this.orangeOxygenTanks[1].render(var7);
+                }
+
+                //
+
+                if (wearingRightTankGreen)
+                {
+                    this.greenOxygenTanks[1].render(var7);
+                }
+
+                //
+
+                if (usingParachute)
+                {
+                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(gearData.getParachute());
+
+                    this.parachute[0].render(var7);
+                    this.parachute[1].render(var7);
+                    this.parachute[2].render(var7);
+
+                    this.parachuteStrings[0].render(var7);
+                    this.parachuteStrings[1].render(var7);
+                    this.parachuteStrings[2].render(var7);
+                    this.parachuteStrings[3].render(var7);
+                }
+            }
+        }
     }
 }
