@@ -4,6 +4,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -14,6 +15,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSpinThruster;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOrbit;
+import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.player.FreefallHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -845,6 +847,17 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         if (this.pjumpticks > 0 || (this.pWasOnGround && p.movementInput.jump))
         {
             return false;
+        }
+        
+        if (p.ridingEntity != null)
+        {
+        	Entity e = p.ridingEntity;
+        	if (e instanceof EntitySpaceshipBase)
+        		return ((EntitySpaceshipBase)e).getLaunched();
+        	if (e instanceof EntityLanderBase)
+        		return false;
+        	//TODO: should check whether lander has landed (whatever that means)
+        	//TODO: could check other ridden entities - every entity should have its own freefall check :(
         }
 
         //This is an "on the ground" check
