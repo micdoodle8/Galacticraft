@@ -232,6 +232,8 @@ public class ModelPlayerGC extends ModelBiped
                     FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.oxygenMaskTexture);
                     GL11.glPushMatrix();
                     GL11.glScalef(1.05F, 1.05F, 1.05F);
+                    this.oxygenMask.rotateAngleY = this.bipedHead.rotateAngleY;
+                    this.oxygenMask.rotateAngleX = this.bipedHead.rotateAngleX;
                     this.oxygenMask.render(var7);
                     GL11.glScalef(1F, 1F, 1F);
                     GL11.glPopMatrix();
@@ -360,9 +362,6 @@ public class ModelPlayerGC extends ModelBiped
             this.bipedRightLeg.rotateAngleX -= MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
             this.bipedRightLeg.rotateAngleX += MathHelper.cos(par1 * 0.1162F * 2) * 1.4F * par2;
         }
-
-        this.oxygenMask.rotateAngleY = this.bipedHead.rotateAngleY;
-        this.oxygenMask.rotateAngleX = this.bipedHead.rotateAngleX;
 
         if (usingParachute)
         {

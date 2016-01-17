@@ -18,8 +18,7 @@ import java.lang.reflect.Method;
 public class ModelRotationRendererGC extends ModelRotationRenderer
 {
     private int type;
-    public static boolean doIt;
-
+ 
     public ModelRotationRendererGC(ModelBase modelBase, int i, int j, ModelRenderer baseRenderer, int type)
     {
         super(modelBase, i, j, (ModelRotationRenderer)baseRenderer);
@@ -73,8 +72,6 @@ public class ModelRotationRendererGC extends ModelRotationRenderer
     @Override
     public void doRender(float f, boolean useParentTransformations)
     {
-    	boolean fromModelPlayerBase = doIt;
-    	if (fromModelPlayerBase) doIt = false;
     	if (this.preRender(f))
         {
             switch (type)
@@ -95,10 +92,7 @@ public class ModelRotationRendererGC extends ModelRotationRenderer
 
             if (type != 9)
             {
-                if (type == 0 && fromModelPlayerBase)
-                	super.doRender(f, useParentTransformations);
-                else if (type > 0 && !fromModelPlayerBase)
-                	super.doRender(f, useParentTransformations);               	
+            	super.doRender(f, useParentTransformations);               	
             }
             else
             {

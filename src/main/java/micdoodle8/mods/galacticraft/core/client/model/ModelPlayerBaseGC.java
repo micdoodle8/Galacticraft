@@ -250,6 +250,7 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
     @Override
     public void beforeRender(Entity var1, float var2, float var3, float var4, float var5, float var6, float var7)
     {
+        if (!(var1 instanceof EntityPlayer)) return;  //Deal with RenderPlayerAPIEnhancer calling this for skeletons etc
     	usingParachute = false;
 
         final EntityPlayer player = (EntityPlayer) var1;
@@ -285,13 +286,11 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
     public void afterSetRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
     {
     	//super.afterSetRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);
+        if (!(par7Entity instanceof EntityPlayer)) return;  //Deal with RenderPlayerAPIEnhancer calling this for skeletons etc
     	final Class<?> entityClass = EntityClientPlayerMP.class;
         final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
         final ModelBiped modelBipedMain = ((RenderPlayer) render).modelBipedMain;
         if (!this.modelPlayer.equals(modelBipedMain)) return;
-
-        //donenow = true;
-    	//System.out.println("AFERSRA " + this.modelPlayer.bipedHead.rotateAngleY + " " + this.modelPlayer.bipedHead.rotateAngleX);
 
     	if (this.oxygenMask == null)
     	{
@@ -311,9 +310,6 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
     		this.modelPlayer.bipedLeftLeg.rotateAngleX = MathHelper.cos(par1 * 0.1162F * 2 + (float)Math.PI) * 1.4F * par2;
     		this.modelPlayer.bipedRightLeg.rotateAngleX = MathHelper.cos(par1 * 0.1162F * 2) * 1.4F * par2;
     	}
-
-    	this.oxygenMask.rotateAngleY = this.modelPlayer.bipedHead.rotateAngleY;
-    	this.oxygenMask.rotateAngleX = this.modelPlayer.bipedHead.rotateAngleX;
 
     	if (usingParachute)
     	{
@@ -357,6 +353,8 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
     @Override
     public void afterRender(Entity var1, float var2, float var3, float var4, float var5, float var6, float var7)
     {
+        if (ModelPlayerBaseGC.isSmartMovingLoaded) return;
+    	if (!(var1 instanceof EntityPlayer)) return;  //Deal with RenderPlayerAPIEnhancer calling this for skeletons etc
     	final Class<?> entityClass = EntityClientPlayerMP.class;
         final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
         final ModelBiped modelBipedMain = ((RenderPlayer) render).modelBipedMain;
@@ -383,7 +381,8 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
             	FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerBaseGC.oxygenMaskTexture);
             	GL11.glPushMatrix();
             	GL11.glScalef(1.05F, 1.05F, 1.05F);
-            	ModelRotationRendererGC.doIt = true;
+            	this.oxygenMask.rotateAngleY = this.modelPlayer.bipedHead.rotateAngleY;
+            	this.oxygenMask.rotateAngleX = this.modelPlayer.bipedHead.rotateAngleX;
             	this.oxygenMask.render(var7);
             	GL11.glScalef(1F, 1F, 1F);
             	GL11.glPopMatrix();
@@ -420,7 +419,6 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
             	{
             		for (int k = 0; k < 2; k++)
             		{
-                    	ModelRotationRendererGC.doIt = true;
             			this.tubes[k][i].render(var7);
             		}
             	}
@@ -428,37 +426,31 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
 
             if (wearingLeftTankRed)
             {
-            	ModelRotationRendererGC.doIt = true;
             	this.redOxygenTanks[0].render(var7);
             }
 
             if (wearingLeftTankOrange)
             {
-            	ModelRotationRendererGC.doIt = true;
             	this.orangeOxygenTanks[0].render(var7);
             }
 
             if (wearingLeftTankGreen)
             {
-            	ModelRotationRendererGC.doIt = true;
             	this.greenOxygenTanks[0].render(var7);
             }
 
             if (wearingRightTankRed)
             {
-            	ModelRotationRendererGC.doIt = true;
             	this.redOxygenTanks[1].render(var7);
             }
 
             if (wearingRightTankOrange)
             {
-            	ModelRotationRendererGC.doIt = true;
             	this.orangeOxygenTanks[1].render(var7);
             }
 
             if (wearingRightTankGreen)
             {
-            	ModelRotationRendererGC.doIt = true;
             	this.greenOxygenTanks[1].render(var7);
             }
 
@@ -466,20 +458,13 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
             {
             	FMLClientHandler.instance().getClient().renderEngine.bindTexture(gearData.getParachute());
 
-            	ModelRotationRendererGC.doIt = true;
             	this.parachute[0].render(var7);
-            	ModelRotationRendererGC.doIt = true;
             	this.parachute[1].render(var7);
-            	ModelRotationRendererGC.doIt = true;
             	this.parachute[2].render(var7);
 
-            	ModelRotationRendererGC.doIt = true;
             	this.parachuteStrings[0].render(var7);
-            	ModelRotationRendererGC.doIt = true;
             	this.parachuteStrings[1].render(var7);
-            	ModelRotationRendererGC.doIt = true;
             	this.parachuteStrings[2].render(var7);
-            	ModelRotationRendererGC.doIt = true;
             	this.parachuteStrings[3].render(var7);
             }
         }
