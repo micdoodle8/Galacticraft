@@ -22,6 +22,7 @@ import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModule;
@@ -222,24 +223,14 @@ public class MarsModule implements IPlanetsModule
 
     public void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int back, int fore)
     {
-        EntityList.stringToClassMapping.put(var1, var0);
-        MarsModule.registerGalacticraftNonMobEntity(var0, var1, 80, 3, true);
-        int nextEggID = getNextValidEggID();
-        EntityList.IDtoClassMapping.put(nextEggID, var0);
-        EntityList.entityEggs.put(nextEggID, new EntityList.EntityEggInfo(nextEggID, back, fore));
-    }
-
-    private static int getNextValidEggID()
-    {
-        int eggID = 120;
-
-        do
+    	MarsModule.registerGalacticraftNonMobEntity(var0, var1, 80, 3, true);
+        int nextEggID = GCCoreUtil.getNextValidEggID();
+        if (nextEggID < 65536)
         {
-            eggID++;
-        }
-        while (EntityList.getStringFromID(eggID) != null);
-
-        return eggID;
+	        EntityList.IDtoClassMapping.put(nextEggID, var0);
+	        VersionUtil.putClassToIDMapping(var0, nextEggID);
+	        EntityList.entityEggs.put(nextEggID, new EntityList.EntityEggInfo(nextEggID, back, fore));
+        } 
     }
 
     public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
