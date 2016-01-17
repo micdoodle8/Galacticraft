@@ -51,7 +51,7 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
     public static final ResourceLocation playerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/player.png");
     public static final ResourceLocation frequencyModuleTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/frequencyModule.png");
 
-    private static boolean isSmartMovingLoaded;
+    public static boolean isSmartMovingLoaded;
     private static Class modelRotationGCSmartMoving;
     private static Constructor modelRotationGCSmartMovingInit;
 
@@ -274,7 +274,7 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
             }
         }
 
-//        super.beforeRender(var1, var2, var3, var4, var5, var6, var7);
+        super.beforeRender(var1, var2, var3, var4, var5, var6, var7);
 
         if (this.oxygenMask == null)
         {
@@ -285,7 +285,7 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
     @Override
     public void afterSetRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
     {
-    	//super.afterSetRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);
+    	super.afterSetRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);
         if (!(par7Entity instanceof EntityPlayer)) return;  //Deal with RenderPlayerAPIEnhancer calling this for skeletons etc
     	final Class<?> entityClass = EntityClientPlayerMP.class;
         final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
@@ -353,6 +353,7 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
     @Override
     public void afterRender(Entity var1, float var2, float var3, float var4, float var5, float var6, float var7)
     {
+        super.afterRender(var1, var2, var3, var4, var5, var6, var7);
         if (ModelPlayerBaseGC.isSmartMovingLoaded) return;
     	if (!(var1 instanceof EntityPlayer)) return;  //Deal with RenderPlayerAPIEnhancer calling this for skeletons etc
     	final Class<?> entityClass = EntityClientPlayerMP.class;

@@ -160,9 +160,9 @@ public class RenderPlayerGC extends RenderPlayer
 
                             GL11.glColor4f(r, g, b, 0.4F * sTime);
                             modelBiped.render(par1EntityLivingBase, par2, par3, par4, par5, par6, par7);
+                            GL11.glColor4f(1, 1, 1, 1);
                             GL11.glDisable(GL11.GL_BLEND);
                             GL11.glEnable(GL11.GL_ALPHA_TEST);
-                            GL11.glColor4f(1, 1, 1, 1);
                             GL11.glEnable(GL11.GL_LIGHTING);
                         }
                     }
