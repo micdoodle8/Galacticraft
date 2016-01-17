@@ -66,6 +66,15 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
 	    }
     }
 
+    /**
+     * This is used in place of ModelPlayerGC whenever RenderPlayerAPI is installed
+     * It adjusts player limb positions to match Galacticraft movement, arms overhead etc
+     * (the arm adjustments take effect even when Smart Moving is installed)
+     * 
+     * It also renders the Galacticraft equipment, if RenderPlayerAPI but not Smart Moving is installed
+     * 
+     * @param modelPlayerAPI
+     */
     public ModelPlayerBaseGC(ModelPlayerAPI modelPlayerAPI)
     {
         super(modelPlayerAPI);
@@ -238,6 +247,7 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
             this.redOxygenTanks[1].setRotationPoint(-2F, 2F, 3.8F);
             this.redOxygenTanks[1].mirror = true;
 
+            //TODO: Frequency module
             /*
             ModelRenderer fModule = createModelRenderer(this.modelPlayer, 0, 0, 9);
             fModule.addBox(0, 0, 0, 1, 1, 1, var1);
@@ -251,7 +261,7 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
     public void beforeRender(Entity var1, float var2, float var3, float var4, float var5, float var6, float var7)
     {
         if (!(var1 instanceof EntityPlayer)) return;  //Deal with RenderPlayerAPIEnhancer calling this for skeletons etc
-    	usingParachute = false;
+        usingParachute = false;
 
         final EntityPlayer player = (EntityPlayer) var1;
         PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getCommandSenderName());
@@ -354,8 +364,9 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
     public void afterRender(Entity var1, float var2, float var3, float var4, float var5, float var6, float var7)
     {
         super.afterRender(var1, var2, var3, var4, var5, var6, var7);
-        if (ModelPlayerBaseGC.isSmartMovingLoaded) return;
+        if (ModelPlayerBaseGC.isSmartMovingLoaded) return; //Smart Moving will render through ModelRotationRendererGC instead
     	if (!(var1 instanceof EntityPlayer)) return;  //Deal with RenderPlayerAPIEnhancer calling this for skeletons etc
+
     	final Class<?> entityClass = EntityClientPlayerMP.class;
         final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
         final ModelBiped modelBipedMain = ((RenderPlayer) render).modelBipedMain;
@@ -389,7 +400,7 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
             	GL11.glPopMatrix();
             }
 
-            //
+            //TODO: Frequency module
             /*
                 if (wearingFrequencyModule)
                 {

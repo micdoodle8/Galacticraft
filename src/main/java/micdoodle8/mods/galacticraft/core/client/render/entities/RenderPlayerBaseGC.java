@@ -6,6 +6,7 @@ import api.player.render.RenderPlayerBase;
 import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC.RotatePlayerEvent;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -13,7 +14,6 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import org.lwjgl.opengl.GL11;
 
 public class RenderPlayerBaseGC extends RenderPlayerBase
@@ -23,6 +23,12 @@ public class RenderPlayerBaseGC extends RenderPlayerBase
     private static ResourceLocation thermalPaddingTexture0;
     private static ResourceLocation thermalPaddingTexture1;
 
+    /**
+     * This is used in place of RenderPlayerGC only if RenderPlayerAPI is installed
+     * It renders the thermal armor (also does something connected with rotating a sleeping player) 
+     * 
+     * @param renderPlayerAPI
+     */
     public RenderPlayerBaseGC(RenderPlayerAPI renderPlayerAPI)
     {
         super(renderPlayerAPI);
@@ -64,7 +70,8 @@ public class RenderPlayerBaseGC extends RenderPlayerBase
 
                     if (padding >= 0 && !par1EntityLivingBase.isInvisible())
                     {
-                        GL11.glColor4f(1, 1, 1, 1);
+                        // First draw the thermal armor without any color tinting
+                    	GL11.glColor4f(1, 1, 1, 1);
                         FMLClientHandler.instance().getClient().getTextureManager().bindTexture(thermalPaddingTexture1);
                         modelBiped.bipedHead.showModel = i == 0;
                         modelBiped.bipedHeadwear.showModel = i == 0;
@@ -86,7 +93,8 @@ public class RenderPlayerBaseGC extends RenderPlayerBase
                         modelBiped.setLivingAnimations(par1EntityLivingBase, par2, par3, 0.0F);
                         modelBiped.render(par1EntityLivingBase, par2, par3, par4, par5, par6, par7);
 
-                        // Start alpha render
+                        // Then overlay the same again, with color tinting:
+                        //Start alpha render
                         GL11.glDisable(GL11.GL_LIGHTING);
                         FMLClientHandler.instance().getClient().getTextureManager().bindTexture(thermalPaddingTexture0);
                         GL11.glEnable(GL11.GL_ALPHA_TEST);
@@ -144,16 +152,6 @@ public class RenderPlayerBaseGC extends RenderPlayerBase
         else
         {
             super.rotatePlayer(par1AbstractClientPlayer, par2, par3, par4);
-        }
-    }
-
-    public static class RotatePlayerEvent extends PlayerEvent
-    {
-        public Boolean shouldRotate = null;
-
-        public RotatePlayerEvent(AbstractClientPlayer player)
-        {
-            super(player);
         }
     }
 }

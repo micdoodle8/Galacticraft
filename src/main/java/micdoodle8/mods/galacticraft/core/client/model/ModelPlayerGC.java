@@ -28,6 +28,13 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
+/**
+ * This renders the Galacticraft equipment, if RenderPlayerAPI / Smart Moving are not installed.
+ *
+ * This also adjusts player limb positions (etc) of the vanilla player prior to rendering the player.
+ * for example holding both hands overhead when holding a rocket.
+ *
+ */
 public class ModelPlayerGC extends ModelBiped
 {
     public static final ResourceLocation oxygenMaskTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/oxygen.png");

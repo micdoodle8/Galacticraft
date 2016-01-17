@@ -20,6 +20,16 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.common.Loader;
 
+/**
+ * This renders the thermal armor (unless RenderPlayerAPI is installed).
+ * The thermal armor render is done after the corresponding body part of the player is drawn.
+ * This ALSO patches RenderPlayer so that it uses ModelPlayerGC in place of ModelPlayer to draw the player.
+ * 
+ * Finally, this also adds a hook into rotateCorpse so as to fire a RotatePlayerEvent - used by the Cryogenic Chamber
+ * 
+ * @author User
+ *
+ */
 public class RenderPlayerGC extends RenderPlayer
 {
     public static ModelBiped modelThermalPadding;
