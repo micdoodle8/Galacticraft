@@ -78,10 +78,11 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
         	try {
 	        	switch (type)
 	            {
+	        	//Helmet and Frequency Module are head modules
 	            case 0:
-	                return (ModelRenderer)modelRotationGCSmartMovingInit.newInstance(player, texOffsetX, texOffsetY, SmartRender.getPlayerBase(this.modelPlayer).getHead(), type);
 	            case 9:
 	                return (ModelRenderer)modelRotationGCSmartMovingInit.newInstance(player, texOffsetX, texOffsetY, SmartRender.getPlayerBase(this.modelPlayer).getHead(), type);
+	            //Oxygen gear etc are body
 	            default:
 	                return (ModelRenderer)modelRotationGCSmartMovingInit.newInstance(player, texOffsetX, texOffsetY, SmartRender.getPlayerBase(this.modelPlayer).getBody(), type);
 	            }
@@ -95,11 +96,11 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
     {
         float var1 = 0.0F;
 
-//      final Class<?> entityClass = EntityClientPlayerMP.class;
-//      final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
-//      final ModelBiped modelBipedMain = ((RenderPlayer) render).modelBipedMain;
-        
-//      if (this.modelPlayer.equals(modelBipedMain))
+//        final Class<?> entityClass = EntityClientPlayerMP.class;
+//        final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
+//        final ModelBiped modelBipedMain = ((RenderPlayer) render).modelBipedMain;
+//
+//        if (this.modelPlayer.equals(modelBipedMain))
         {
             this.oxygenMask = createModelRenderer(this.modelPlayer, 0, 0, 0);
             this.oxygenMask.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, 1);
@@ -272,7 +273,7 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
             }
         }
 
-        super.beforeRender(var1, var2, var3, var4, var5, var6, var7);
+//        super.beforeRender(var1, var2, var3, var4, var5, var6, var7);
 
         if (this.oxygenMask == null)
         {
@@ -283,123 +284,113 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
     @Override
     public void afterSetRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
     {
-    	super.afterSetRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);
+    	//super.afterSetRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);
+    	final Class<?> entityClass = EntityClientPlayerMP.class;
+        final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
+        final ModelBiped modelBipedMain = ((RenderPlayer) render).modelBipedMain;
+        if (!this.modelPlayer.equals(modelBipedMain)) return;
 
-	    if (par7Entity instanceof EntityPlayer)
-	    {
-	        if (this.oxygenMask == null)
-	        {
-	            init();
-	        }
+        //donenow = true;
+    	//System.out.println("AFERSRA " + this.modelPlayer.bipedHead.rotateAngleY + " " + this.modelPlayer.bipedHead.rotateAngleX);
 
-	        final EntityPlayer player = (EntityPlayer) par7Entity;
-	        final ItemStack currentItemStack = player.inventory.getCurrentItem();
+    	if (this.oxygenMask == null)
+    	{
+    		init();
+    	}
 
-	        if (!player.capabilities.isCreativeMode && !par7Entity.onGround && par7Entity.worldObj.provider instanceof IGalacticraftWorldProvider && !(currentItemStack != null && currentItemStack.getItem() instanceof IHoldableItem))
-	        {
-	            float speedModifier = 0.1162F * 2;
+    	final EntityPlayer player = (EntityPlayer) par7Entity;
+    	final ItemStack currentItemStack = player.inventory.getCurrentItem();
 
-	            float angularSwingArm = MathHelper.cos(par1 * (speedModifier / 2));
-	            this.modelPlayer.bipedRightArm.rotateAngleX = -angularSwingArm * 4.0F * par2 * 0.5F;
-	            this.modelPlayer.bipedLeftArm.rotateAngleX = angularSwingArm * 4.0F * par2 * 0.5F;
-	            this.modelPlayer.bipedLeftLeg.rotateAngleX = MathHelper.cos(par1 * 0.1162F * 2 + (float)Math.PI) * 1.4F * par2;
-	            this.modelPlayer.bipedRightLeg.rotateAngleX = MathHelper.cos(par1 * 0.1162F * 2) * 1.4F * par2;
-	        }
+    	if (!player.capabilities.isCreativeMode && !par7Entity.onGround && par7Entity.worldObj.provider instanceof IGalacticraftWorldProvider && !(currentItemStack != null && currentItemStack.getItem() instanceof IHoldableItem))
+    	{
+    		float speedModifier = 0.1162F * 2;
 
-	        this.oxygenMask.rotateAngleY = this.modelPlayer.bipedHead.rotateAngleY;
-	        this.oxygenMask.rotateAngleX = this.modelPlayer.bipedHead.rotateAngleX;
+    		float angularSwingArm = MathHelper.cos(par1 * (speedModifier / 2));
+    		this.modelPlayer.bipedRightArm.rotateAngleX = -angularSwingArm * 4.0F * par2 * 0.5F;
+    		this.modelPlayer.bipedLeftArm.rotateAngleX = angularSwingArm * 4.0F * par2 * 0.5F;
+    		this.modelPlayer.bipedLeftLeg.rotateAngleX = MathHelper.cos(par1 * 0.1162F * 2 + (float)Math.PI) * 1.4F * par2;
+    		this.modelPlayer.bipedRightLeg.rotateAngleX = MathHelper.cos(par1 * 0.1162F * 2) * 1.4F * par2;
+    	}
 
-	        if (usingParachute)
-	        {
-	            this.modelPlayer.bipedLeftArm.rotateAngleX += (float) Math.PI;
-	            this.modelPlayer.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
-	            this.modelPlayer.bipedRightArm.rotateAngleX += (float) Math.PI;
-	            this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
-	        }
+    	this.oxygenMask.rotateAngleY = this.modelPlayer.bipedHead.rotateAngleY;
+    	this.oxygenMask.rotateAngleX = this.modelPlayer.bipedHead.rotateAngleX;
 
-	        if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof IHoldableItem)
-	        {
-	            IHoldableItem holdableItem = (IHoldableItem) player.inventory.getCurrentItem().getItem();
+    	if (usingParachute)
+    	{
+    		this.modelPlayer.bipedLeftArm.rotateAngleX += (float) Math.PI;
+    		this.modelPlayer.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
+    		this.modelPlayer.bipedRightArm.rotateAngleX += (float) Math.PI;
+    		this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
+    	}
 
-	            if (holdableItem.shouldHoldLeftHandUp(player))
-	            {
-	                this.modelPlayer.bipedLeftArm.rotateAngleX = 0;
-	                this.modelPlayer.bipedLeftArm.rotateAngleZ = 0;
+    	if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof IHoldableItem)
+    	{
+    		IHoldableItem holdableItem = (IHoldableItem) player.inventory.getCurrentItem().getItem();
 
-	                this.modelPlayer.bipedLeftArm.rotateAngleX += (float) Math.PI + 0.3;
-	                this.modelPlayer.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
-	            }
+    		if (holdableItem.shouldHoldLeftHandUp(player))
+    		{
+    			this.modelPlayer.bipedLeftArm.rotateAngleX = 0;
+    			this.modelPlayer.bipedLeftArm.rotateAngleZ = 0;
 
-	            if (holdableItem.shouldHoldRightHandUp(player))
-	            {
-	                this.modelPlayer.bipedRightArm.rotateAngleX = 0;
-	                this.modelPlayer.bipedRightArm.rotateAngleZ = 0;
+    			this.modelPlayer.bipedLeftArm.rotateAngleX += (float) Math.PI + 0.3;
+    			this.modelPlayer.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
+    		}
 
-	                this.modelPlayer.bipedRightArm.rotateAngleX += (float) Math.PI + 0.3;
-	                this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
-	            }
+    		if (holdableItem.shouldHoldRightHandUp(player))
+    		{
+    			this.modelPlayer.bipedRightArm.rotateAngleX = 0;
+    			this.modelPlayer.bipedRightArm.rotateAngleZ = 0;
 
-	            if (player.onGround && holdableItem.shouldCrouch(player))
-	            {
-	                this.modelPlayer.bipedBody.rotateAngleX = 0.35F;
-	                this.modelPlayer.bipedRightLeg.rotationPointZ = 4.0F;
-	                this.modelPlayer.bipedLeftLeg.rotationPointZ = 4.0F;
-	            }
-	        }
-	    }
+    			this.modelPlayer.bipedRightArm.rotateAngleX += (float) Math.PI + 0.3;
+    			this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
+    		}
+
+    		if (player.onGround && holdableItem.shouldCrouch(player))
+    		{
+    			this.modelPlayer.bipedBody.rotateAngleX = 0.35F;
+    			this.modelPlayer.bipedRightLeg.rotationPointZ = 4.0F;
+    			this.modelPlayer.bipedLeftLeg.rotationPointZ = 4.0F;
+    		}
+    	}
     }
     
     @Override
     public void afterRender(Entity var1, float var2, float var3, float var4, float var5, float var6, float var7)
     {
-        final Class<?> entityClass = EntityClientPlayerMP.class;
+    	final Class<?> entityClass = EntityClientPlayerMP.class;
         final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
         final ModelBiped modelBipedMain = ((RenderPlayer) render).modelBipedMain;
-
-        this.usingParachute = false;
-        boolean wearingMask = false;
-        boolean wearingGear = false;
-        boolean wearingLeftTankGreen = false;
-        boolean wearingLeftTankOrange = false;
-        boolean wearingLeftTankRed = false;
-        boolean wearingRightTankGreen = false;
-        boolean wearingRightTankOrange = false;
-        boolean wearingRightTankRed = false;
-        boolean wearingFrequencyModule = false;
+        if (!this.modelPlayer.equals(modelBipedMain)) return;
 
         final EntityPlayer player = (EntityPlayer) var1;
         PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getCommandSenderName());
 
-        if (gearData != null)
+        if (var1 instanceof AbstractClientPlayer && gearData != null)
         {
-            usingParachute = gearData.getParachute() != null;
-            wearingMask = gearData.getMask() > -1;
-            wearingGear = gearData.getGear() > -1;
-            wearingLeftTankGreen = gearData.getLeftTank() == 0;
-            wearingLeftTankOrange = gearData.getLeftTank() == 1;
-            wearingLeftTankRed = gearData.getLeftTank() == 2;
-            wearingRightTankGreen = gearData.getRightTank() == 0;
-            wearingRightTankOrange = gearData.getRightTank() == 1;
-            wearingRightTankRed = gearData.getRightTank() == 2;
-            wearingFrequencyModule = gearData.getFrequencyModule() > -1;
-        }
+            this.usingParachute = gearData.getParachute() != null;
+            boolean wearingMask = gearData.getMask() > -1;
+            boolean wearingGear = gearData.getGear() > -1;
+            boolean wearingLeftTankGreen = gearData.getLeftTank() == 0;
+            boolean wearingLeftTankOrange = gearData.getLeftTank() == 1;
+            boolean wearingLeftTankRed = gearData.getLeftTank() == 2;
+            boolean wearingRightTankGreen = gearData.getRightTank() == 0;
+            boolean wearingRightTankOrange = gearData.getRightTank() == 1;
+            boolean wearingRightTankRed = gearData.getRightTank() == 2;
+            //boolean wearingFrequencyModule = gearData.getFrequencyModule() > -1;
 
-        if (var1 instanceof AbstractClientPlayer)
-        {
-            if (gearData != null)
+            if (wearingMask)
             {
-                if (wearingMask)
-                {
-                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerBaseGC.oxygenMaskTexture);
-                    GL11.glPushMatrix();
-                    GL11.glScalef(1.05F, 1.05F, 1.05F);
-                    this.oxygenMask.render(var7);
-                    GL11.glScalef(1F, 1F, 1F);
-                    GL11.glPopMatrix();
-                }
+            	FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerBaseGC.oxygenMaskTexture);
+            	GL11.glPushMatrix();
+            	GL11.glScalef(1.05F, 1.05F, 1.05F);
+            	ModelRotationRendererGC.doIt = true;
+            	this.oxygenMask.render(var7);
+            	GL11.glScalef(1F, 1F, 1F);
+            	GL11.glPopMatrix();
+            }
 
-                //
-/*
+            //
+            /*
                 if (wearingFrequencyModule)
                 {
                     FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerBaseGC.frequencyModuleTexture);
@@ -418,79 +409,78 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
                     this.frequencyModule.renderPart("Radar");
                     GL11.glPopMatrix();
                 }
-*/
-                //
+             */
+            //
 
-                FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerBaseGC.playerTexture);
+            FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerBaseGC.playerTexture);
 
-                if (wearingGear)
-                {
-                    for (int i = 0; i < 7; i++)
-                    {
-                        for (int k = 0; k < 2; k++)
-                        {
-                            this.tubes[k][i].render(var7);
-                        }
-                    }
-                }
+            if (wearingGear)
+            {
+            	for (int i = 0; i < 7; i++)
+            	{
+            		for (int k = 0; k < 2; k++)
+            		{
+                    	ModelRotationRendererGC.doIt = true;
+            			this.tubes[k][i].render(var7);
+            		}
+            	}
+            }
 
-                //
+            if (wearingLeftTankRed)
+            {
+            	ModelRotationRendererGC.doIt = true;
+            	this.redOxygenTanks[0].render(var7);
+            }
 
-                if (wearingLeftTankRed)
-                {
-                    this.redOxygenTanks[0].render(var7);
-                }
+            if (wearingLeftTankOrange)
+            {
+            	ModelRotationRendererGC.doIt = true;
+            	this.orangeOxygenTanks[0].render(var7);
+            }
 
-                //
+            if (wearingLeftTankGreen)
+            {
+            	ModelRotationRendererGC.doIt = true;
+            	this.greenOxygenTanks[0].render(var7);
+            }
 
-                if (wearingLeftTankOrange)
-                {
-                    this.orangeOxygenTanks[0].render(var7);
-                }
+            if (wearingRightTankRed)
+            {
+            	ModelRotationRendererGC.doIt = true;
+            	this.redOxygenTanks[1].render(var7);
+            }
 
-                //
+            if (wearingRightTankOrange)
+            {
+            	ModelRotationRendererGC.doIt = true;
+            	this.orangeOxygenTanks[1].render(var7);
+            }
 
-                if (wearingLeftTankGreen)
-                {
-                    this.greenOxygenTanks[0].render(var7);
-                }
+            if (wearingRightTankGreen)
+            {
+            	ModelRotationRendererGC.doIt = true;
+            	this.greenOxygenTanks[1].render(var7);
+            }
 
-                //
+            if (usingParachute)
+            {
+            	FMLClientHandler.instance().getClient().renderEngine.bindTexture(gearData.getParachute());
 
-                if (wearingRightTankRed)
-                {
-                    this.redOxygenTanks[1].render(var7);
-                }
+            	ModelRotationRendererGC.doIt = true;
+            	this.parachute[0].render(var7);
+            	ModelRotationRendererGC.doIt = true;
+            	this.parachute[1].render(var7);
+            	ModelRotationRendererGC.doIt = true;
+            	this.parachute[2].render(var7);
 
-                //
-
-                if (wearingRightTankOrange)
-                {
-                    this.orangeOxygenTanks[1].render(var7);
-                }
-
-                //
-
-                if (wearingRightTankGreen)
-                {
-                    this.greenOxygenTanks[1].render(var7);
-                }
-
-                //
-
-                if (usingParachute)
-                {
-                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(gearData.getParachute());
-
-                    this.parachute[0].render(var7);
-                    this.parachute[1].render(var7);
-                    this.parachute[2].render(var7);
-
-                    this.parachuteStrings[0].render(var7);
-                    this.parachuteStrings[1].render(var7);
-                    this.parachuteStrings[2].render(var7);
-                    this.parachuteStrings[3].render(var7);
-                }
+            	ModelRotationRendererGC.doIt = true;
+            	this.parachuteStrings[0].render(var7);
+            	ModelRotationRendererGC.doIt = true;
+            	this.parachuteStrings[1].render(var7);
+            	ModelRotationRendererGC.doIt = true;
+            	this.parachuteStrings[2].render(var7);
+            	ModelRotationRendererGC.doIt = true;
+            	this.parachuteStrings[3].render(var7);
             }
         }
     }

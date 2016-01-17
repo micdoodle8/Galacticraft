@@ -18,6 +18,7 @@ import java.lang.reflect.Method;
 public class ModelRotationRendererGC extends ModelRotationRenderer
 {
     private int type;
+    public static boolean doIt;
 
     public ModelRotationRendererGC(ModelBase modelBase, int i, int j, ModelRenderer baseRenderer, int type)
     {
@@ -72,12 +73,14 @@ public class ModelRotationRendererGC extends ModelRotationRenderer
     @Override
     public void doRender(float f, boolean useParentTransformations)
     {
-        if (this.preRender(f))
+    	boolean fromModelPlayerBase = doIt;
+    	if (fromModelPlayerBase) doIt = false;
+    	if (this.preRender(f))
         {
             switch (type)
             {
             case 0:
-                FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.oxygenMaskTexture);
+            	FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.oxygenMaskTexture);
                 break;
             case 1:
                 FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerBaseGC.currentGearData.getParachute());
@@ -92,7 +95,10 @@ public class ModelRotationRendererGC extends ModelRotationRenderer
 
             if (type != 9)
             {
-                super.doRender(f, useParentTransformations);
+                if (type == 0 && fromModelPlayerBase)
+                	super.doRender(f, useParentTransformations);
+                else if (type > 0 && !fromModelPlayerBase)
+                	super.doRender(f, useParentTransformations);               	
             }
             else
             {

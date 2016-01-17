@@ -105,26 +105,29 @@ public class PlayerClient implements IPlayerClient
         if (player.worldObj.provider instanceof WorldProviderOrbit)
         {
             ((WorldProviderOrbit) player.worldObj.provider).postVanillaMotion(player);
-        }
 
-        if (stats.inFreefall)
-        {
-            //No limb swing
-            player.limbSwing -= player.limbSwingAmount;
-            player.limbSwingAmount = player.prevLimbSwingAmount;
-            float adjust = Math.min(Math.abs(player.limbSwing), Math.abs(player.limbSwingAmount) / 3);
-            if (player.limbSwing < 0) player.limbSwing += adjust;
-            else if (player.limbSwing > 0) player.limbSwing -= adjust;
-            player.limbSwingAmount *= 0.9;
-        } else
-        {
-	    	if (stats.inFreefallLast && this.downMot2 < -0.01D)
-	    	{
-	    		stats.landingTicks = 2 - (int)(Math.min(this.downMot2, stats.downMotionLast) * 75);
-	    		if (stats.landingTicks > 6) stats.landingTicks = 6;
-	    	}
+	        if (stats.inFreefall)
+	        {
+	            //No limb swing
+	            player.limbSwing -= player.limbSwingAmount;
+	            player.limbSwingAmount = player.prevLimbSwingAmount;
+	            float adjust = Math.min(Math.abs(player.limbSwing), Math.abs(player.limbSwingAmount) / 3);
+	            if (player.limbSwing < 0) player.limbSwing += adjust;
+	            else if (player.limbSwing > 0) player.limbSwing -= adjust;
+	            player.limbSwingAmount *= 0.9;
+	        } else
+	        {
+		    	if (stats.inFreefallLast && this.downMot2 < -0.01D)
+		    	{
+		    		stats.landingTicks = 2 - (int)(Math.min(this.downMot2, stats.downMotionLast) * 75);
+		    		if (stats.landingTicks > 6) stats.landingTicks = 6;
+		    	}
+	        }
+
+	        if (stats.landingTicks > 0) stats.landingTicks--;
         }
-        if (stats.landingTicks > 0) stats.landingTicks--;
+        else
+        	stats.inFreefall = false;
 
         boolean ridingThirdPersonEntity = player.ridingEntity instanceof ICameraZoomEntity && ((ICameraZoomEntity) player.ridingEntity).defaultThirdPerson();
 
