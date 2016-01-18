@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -118,6 +119,11 @@ public class TileEntityTelemetry extends TileEntity
 						data[4] = stats.airRemaining * 4096 + stats.airRemaining2;
 						UUID uuid = ((EntityPlayerMP) eLiving).getUniqueID();
 						if (uuid != null) strUUID = uuid.toString();
+					} else
+					if (eLiving instanceof EntityHorse)
+					{
+						data[3] = ((EntityHorse) eLiving).getHorseType();
+						data[4] = ((EntityHorse) eLiving).getHorseVariant();
 					}
 				}
 			}

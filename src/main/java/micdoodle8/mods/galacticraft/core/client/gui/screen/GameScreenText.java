@@ -20,6 +20,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
@@ -102,6 +103,17 @@ public class GameScreenText implements IGameScreen
 	        			entity = new EntityOtherPlayerMP(screen.driver.getWorldObj(), telemeter.clientGameProfile);
 	        			renderEntity = (Render) RenderManager.instance.entityRenderMap.get(EntityPlayer.class);
 	        		}
+	        		else if (telemeter.clientClass == EntityHorse.class)
+	        		{
+		        		entity = new EntityHorse(screen.driver.getWorldObj());
+		        		if (entity != null)
+		        		{
+		        			strName = entity.getCommandSenderName();
+		        			((EntityHorse)entity).setHorseType(telemeter.clientData[3]);
+		        			((EntityHorse)entity).setHorseVariant(telemeter.clientData[4]);
+		        		}
+		        		renderEntity = (Render) RenderManager.instance.entityRenderMap.get(telemeter.clientClass);        			
+	        		}
 	        		else
 	        		{
 		        		try {
@@ -123,8 +135,8 @@ public class GameScreenText implements IGameScreen
         		//  data0 = time to show red damage
         		//  data1 = health in half-hearts
         		//  data2 = pulse
-        		//  data3 = hunger
-        		//  data4 = oxygen
+        		//  data3 = hunger (for player); horsetype (for horse)
+        		//  data4 = oxygen (for player); horsevariant (for horse)
         		str[0] = telemeter.clientData[0] > 0 ? GCCoreUtil.translate("gui.player.ouch") : "";
 	    		if (telemeter.clientData[1] >= 0)
 	        	{
