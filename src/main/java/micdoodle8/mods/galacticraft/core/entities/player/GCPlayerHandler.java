@@ -114,11 +114,15 @@ public class GCPlayerHandler
     @SideOnly(Side.CLIENT)
     public void onEntityConstructingClient(EntityEvent.EntityConstructing event)
     {
-        if (event.entity instanceof EntityClientPlayerMP && GCPlayerStatsClient.get((EntityClientPlayerMP) event.entity) == null)
-        {
-            GCPlayerStatsClient.register((EntityClientPlayerMP) event.entity);          
-        }
-        Minecraft.getMinecraft().gameSettings.sendSettingsToServer();
+    	if (event.entity instanceof EntityClientPlayerMP)
+    	{
+    		if (GCPlayerStatsClient.get((EntityClientPlayerMP) event.entity) == null)
+    		{
+    			GCPlayerStatsClient.register((EntityClientPlayerMP) event.entity);          
+    		}
+
+    		Minecraft.getMinecraft().gameSettings.sendSettingsToServer();
+    	}
     }
 
     private void onPlayerLogin(EntityPlayerMP player)
