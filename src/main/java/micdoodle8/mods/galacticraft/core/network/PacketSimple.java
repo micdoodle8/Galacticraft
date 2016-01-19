@@ -766,7 +766,7 @@ public class PacketSimple extends Packet implements IPacket
             				String strUUID = (String) this.data.get(9);
             				profile = PlayerUtil.makeOtherPlayerProfile(strName, strUUID);
             			}
-            			if (VersionUtil.mcVersionMatches("1.7.10") && !profile.getProperties().containsKey("textures"))
+            			if (VersionUtil.mcVersion1_7_10 && !profile.getProperties().containsKey("textures"))
             				GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_PLAYERSKIN, new Object[] { strName }));
         			}
         			((TileEntityTelemetry)tile).clientGameProfile = profile;

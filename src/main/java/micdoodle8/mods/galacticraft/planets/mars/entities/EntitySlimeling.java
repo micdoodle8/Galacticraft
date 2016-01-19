@@ -481,7 +481,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
                     this.setAttackTarget((EntityLivingBase) null);
                     this.setSittingAI(true);
                     this.setHealth(20.0F);
-                    VersionUtil.setSlimelingOwner(this, VersionUtil.mcVersionMatches("1.7.10") ? par1EntityPlayer.getUniqueID().toString() : (VersionUtil.mcVersionMatches("1.7.2") ? par1EntityPlayer.getCommandSenderName() : ""));
+                    VersionUtil.setSlimelingOwner(this, VersionUtil.mcVersion1_7_10 ? par1EntityPlayer.getUniqueID().toString() : (VersionUtil.mcVersion1_7_2 ? par1EntityPlayer.getCommandSenderName() : ""));
                     this.setOwnerUsername(par1EntityPlayer.getCommandSenderName());
                     this.playTameEffect(true);
                     this.worldObj.setEntityState(this, (byte) 7);

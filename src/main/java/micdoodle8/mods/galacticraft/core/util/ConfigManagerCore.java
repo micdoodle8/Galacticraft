@@ -532,10 +532,12 @@ public class ConfigManagerCore
             disableUpdateCheck = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
-            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Biome Type Registrations", false);
-            prop.comment = "Biome Types will not be registered in the BiomeDictionary if this is set to true.";
+            boolean thisIsMC172 = VersionUtil.mcVersion1_7_2; 
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Biome Type Registrations", thisIsMC172);
+            prop.comment = "Biome Types will not be registered in the BiomeDictionary if this is set to true. Ignored (always true) for MC 1.7.2.";
             prop.setLanguageKey("gc.configgui.disableBiomeTypeRegistrations");
-            disableBiomeTypeRegistrations = prop.getBoolean(false);
+            disableBiomeTypeRegistrations = prop.getBoolean(thisIsMC172);
+            if (thisIsMC172) disableBiomeTypeRegistrations = true; 
             propOrder.add(prop.getName());
 
             config.setCategoryPropertyOrder(CATEGORY_GENERAL, propOrder);

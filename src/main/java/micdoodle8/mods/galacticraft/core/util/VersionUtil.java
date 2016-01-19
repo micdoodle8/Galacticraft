@@ -37,6 +37,8 @@ import java.util.UUID;
 public class VersionUtil
 {
     private static DefaultArtifactVersion mcVersion = null;
+    public static boolean mcVersion1_7_2 = false;
+    public static boolean mcVersion1_7_10 = false;
     private static boolean deobfuscated = true;
     private static HashMap<String, MicdoodleTransformer.ObfuscationEntry> nodemap = Maps.newHashMap();
     private static HashMap<Integer, Object> reflectionCache = Maps.newHashMap();
@@ -76,6 +78,8 @@ public class VersionUtil
     static
     {
         mcVersion = new DefaultArtifactVersion((String) FMLInjectionData.data()[4]);
+        mcVersion1_7_2 = VersionUtil.mcVersionMatches("1.7.2");
+        mcVersion1_7_10 = VersionUtil.mcVersionMatches("1.7.10");
 
         try
         {
@@ -86,7 +90,7 @@ public class VersionUtil
             e.printStackTrace();
         }
 
-        if (mcVersionMatches("1.7.10"))
+        if (mcVersion1_7_10)
         {
 //            nodemap.put(KEY_CLASS_COMPRESSED_STREAM_TOOLS, new ObfuscationEntry("net/minecraft/nbt/CompressedStreamTools", "du"));
 //            nodemap.put(KEY_CLASS_NBT_SIZE_TRACKER, new ObfuscationEntry("net/minecraft/nbt/NBTSizeTracker", "ds"));
@@ -114,7 +118,7 @@ public class VersionUtil
             nodemap.put(KEY_METHOD_PLAYER_IS_OPPED, new MethodObfuscationEntry("func_152596_g", "func_152596_g", ""));
             nodemap.put(KEY_METHOD_PLAYER_TEXTURE, new MethodObfuscationEntry("getEntityTexture", "func_110775_a", ""));
         }
-        else if (mcVersionMatches("1.7.2"))
+        else if (mcVersion1_7_2)
         {
 //            nodemap.put(KEY_CLASS_COMPRESSED_STREAM_TOOLS, new ObfuscationEntry("net/minecraft/nbt/CompressedStreamTools", "dr"));
 //            nodemap.put(KEY_CLASS_NBT_SIZE_TRACKER, new ObfuscationEntry("", "")); // Not part of 1.7.2
@@ -214,7 +218,7 @@ public class VersionUtil
             }
             else
             {
-                if (mcVersionMatches("1.7.10"))
+                if (mcVersion1_7_10)
                 {
                     Method m = (Method) reflectionCache.get(2);
 
@@ -245,7 +249,7 @@ public class VersionUtil
     {
         try
         {
-            if (mcVersionMatches("1.7.10"))
+            if (mcVersion1_7_10)
             {
                 Class<?> c0 = (Class<?>) reflectionCache.get(4);
                 Method m = (Method) reflectionCache.get(6);
@@ -266,7 +270,7 @@ public class VersionUtil
                 Object nbtSizeTracker = c0.getConstructor(long.class).newInstance(2097152L);
                 return (NBTTagCompound) m.invoke(null, compressedNBT, nbtSizeTracker);
             }
-            else if (mcVersionMatches("1.7.2"))
+            else if (mcVersion1_7_2)
             {
                 Method m = (Method) reflectionCache.get(6);
 
@@ -292,7 +296,7 @@ public class VersionUtil
     {
         try
         {
-            if (mcVersionMatches("1.7.10"))
+            if (mcVersion1_7_10)
             {
                 Method m = (Method) reflectionCache.get(8);
 
@@ -305,7 +309,7 @@ public class VersionUtil
 
                 m.invoke(null, b0, b1, 1.0F);
             }
-            else if (mcVersionMatches("1.7.2"))
+            else if (mcVersion1_7_2)
             {
                 Method m = (Method) reflectionCache.get(8);
 
@@ -329,7 +333,7 @@ public class VersionUtil
     {
         try
         {
-            if (mcVersionMatches("1.7.10"))
+            if (mcVersion1_7_10)
             {
                 Method m = (Method) reflectionCache.get(10);
 
@@ -342,7 +346,7 @@ public class VersionUtil
 
                 m.invoke(null, sender, command, name, objects);
             }
-            else if (mcVersionMatches("1.7.2"))
+            else if (mcVersion1_7_2)
             {
                 Method m = (Method) reflectionCache.get(10);
 
@@ -389,7 +393,7 @@ public class VersionUtil
     {
         try
         {
-            if (mcVersionMatches("1.7.10"))
+            if (mcVersion1_7_10)
             {
                 Method m = (Method) reflectionCache.get(14);
 
@@ -402,7 +406,7 @@ public class VersionUtil
 
                 return (Boolean) m.invoke(player.mcServer.getConfigurationManager(), player.getGameProfile());
             }
-            else if (mcVersionMatches("1.7.2"))
+            else if (mcVersion1_7_2)
             {
                 Method m = (Method) reflectionCache.get(14);
 
@@ -429,7 +433,7 @@ public class VersionUtil
     {
         try
         {
-            if (mcVersionMatches("1.7.10"))
+            if (mcVersion1_7_10)
             {
                 Constructor m = (Constructor) reflectionCache.get(16);
 
@@ -442,7 +446,7 @@ public class VersionUtil
 
                 return (ScaledResolution) m.newInstance(mc, width, height);
             }
-            else if (mcVersionMatches("1.7.2"))
+            else if (mcVersion1_7_2)
             {
                 Constructor m = (Constructor) reflectionCache.get(16);
 
@@ -551,12 +555,12 @@ public class VersionUtil
 	            reflectionCache.put(19, c);
 	        }
 			
-			if (mcVersionMatches("1.7.10"))
+			if (mcVersion1_7_10)
 	        {
 				return (GameProfile) c.getConstructor(UUID.class, String.class).newInstance(uuid, strName);
 	        }
 	        
-			if (mcVersionMatches("1.7.2"))
+			if (mcVersion1_7_2)
 	        {
 	        	return (GameProfile) c.getConstructor(String.class, String.class).newInstance(uuid.toString().replaceAll("-", ""), strName);
 	        }
