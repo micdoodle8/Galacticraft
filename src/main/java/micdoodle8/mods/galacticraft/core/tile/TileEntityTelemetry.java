@@ -16,7 +16,13 @@ import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -124,6 +130,34 @@ public class TileEntityTelemetry extends TileEntity
 					{
 						data[3] = ((EntityHorse) eLiving).getHorseType();
 						data[4] = ((EntityHorse) eLiving).getHorseVariant();
+					} else
+					if (eLiving instanceof EntityVillager)
+					{
+						data[3] = ((EntityVillager) eLiving).getProfession();
+						data[4] = ((EntityVillager) eLiving).getGrowingAge();
+					} else
+					if (eLiving instanceof EntityWolf)
+					{
+						data[3] = ((EntityWolf) eLiving).getCollarColor();
+						data[4] = ((EntityWolf) eLiving).func_70922_bv() ? 1 : 0;
+					} else
+					if (eLiving instanceof EntitySheep)
+					{
+						data[3] = ((EntitySheep) eLiving).getFleeceColor();
+						data[4] = ((EntitySheep) eLiving).getSheared() ? 1 : 0;
+					} else
+					if (eLiving instanceof EntityOcelot)
+					{
+						data[3] = ((EntityOcelot) eLiving).getTameSkin();
+					} else
+					if (eLiving instanceof EntitySkeleton)
+					{
+						data[3] = ((EntitySkeleton) eLiving).getSkeletonType();
+					} else
+					if (eLiving instanceof EntityZombie)
+					{
+						data[3] = ((EntityZombie) eLiving).isVillager() ? 1 : 0;
+						data[4] = ((EntityZombie) eLiving).isChild() ? 1 : 0;
 					}
 				}
 			}

@@ -20,7 +20,13 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
@@ -103,26 +109,52 @@ public class GameScreenText implements IGameScreen
 	        			entity = new EntityOtherPlayerMP(screen.driver.getWorldObj(), telemeter.clientGameProfile);
 	        			renderEntity = (Render) RenderManager.instance.entityRenderMap.get(EntityPlayer.class);
 	        		}
-	        		else if (telemeter.clientClass == EntityHorse.class)
-	        		{
-		        		entity = new EntityHorse(screen.driver.getWorldObj());
-		        		if (entity != null)
-		        		{
-		        			strName = entity.getCommandSenderName();
-		        			((EntityHorse)entity).setHorseType(telemeter.clientData[3]);
-		        			((EntityHorse)entity).setHorseVariant(telemeter.clientData[4]);
-		        		}
-		        		renderEntity = (Render) RenderManager.instance.entityRenderMap.get(telemeter.clientClass);        			
-	        		}
 	        		else
 	        		{
 		        		try {
 		        			entity = (Entity) telemeter.clientClass.getConstructor(World.class).newInstance(screen.driver.getWorldObj());
 		        		} catch (Exception ex) { }
-		        		if (entity != null) strName = entity.getCommandSenderName();
+		        		if (entity != null)
+		        			strName = entity.getCommandSenderName();
 		        		renderEntity = (Render) RenderManager.instance.entityRenderMap.get(telemeter.clientClass);
 	        		}	        		
         		}
+
+        		//Setup special visual types from data sent by Telemetry
+        		if (entity instanceof EntityHorse)
+    			{
+        			((EntityHorse)entity).setHorseType(telemeter.clientData[3]);
+        			((EntityHorse)entity).setHorseVariant(telemeter.clientData[4]);
+    			}
+				if (entity instanceof EntityVillager)
+				{
+					((EntityVillager) entity).setProfession(telemeter.clientData[3]);
+					((EntityVillager) entity).setGrowingAge(telemeter.clientData[4]);
+				} else
+				if (entity instanceof EntityWolf)
+				{
+					((EntityWolf) entity).setCollarColor(telemeter.clientData[3]);
+					((EntityWolf) entity).func_70918_i(telemeter.clientData[4] == 1);
+				} else
+				if (entity instanceof EntitySheep)
+				{
+					((EntitySheep) entity).setFleeceColor(telemeter.clientData[3]);
+					((EntitySheep) entity).setSheared(telemeter.clientData[4] == 1);
+				} else
+				if (entity instanceof EntityOcelot)
+				{
+					((EntityOcelot) entity).setTameSkin(telemeter.clientData[3]);
+				} else
+				if (entity instanceof EntitySkeleton)
+				{
+					((EntitySkeleton) entity).setSkeletonType(telemeter.clientData[3]);
+				} else
+				if (entity instanceof EntityZombie)
+				{
+					((EntityZombie) entity).setVillager(telemeter.clientData[3] == 1);
+					((EntityZombie) entity).setChild(telemeter.clientData[4] == 1);
+				}
+
         	}
         	
         	if (entity instanceof ITelemetry)
