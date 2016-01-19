@@ -34,6 +34,7 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
         this.tasks.addTask(6, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+        this.setSize(0.7F, 2.5F);
     }
 
     @Override

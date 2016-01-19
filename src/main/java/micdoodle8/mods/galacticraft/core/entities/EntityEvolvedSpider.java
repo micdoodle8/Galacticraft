@@ -21,7 +21,7 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
     public EntityEvolvedSpider(World par1World)
     {
         super(par1World);
-        this.setSize(1.4F, 0.9F);
+        this.setSize(1.5F, 1.0F);
     }
 
     @Override

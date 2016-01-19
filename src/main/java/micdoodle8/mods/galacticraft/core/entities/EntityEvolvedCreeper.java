@@ -40,7 +40,7 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
         this.tasks.addTask(6, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
         this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
-        this.setSize(0.6F, 1.8F);
+        this.setSize(0.7F, 2.2F);
     }
 
     protected void entityInit()
