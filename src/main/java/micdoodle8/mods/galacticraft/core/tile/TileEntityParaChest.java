@@ -305,20 +305,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     
     private void checkFluidTankTransfer(int slot, FluidTank tank)
 	{
-		if (FluidUtil.isValidContainer(this.chestContents[slot]))
-		{
-			final FluidStack liquid = tank.getFluid();
-
-			if (liquid != null && liquid.amount > 0)
-			{
-				String liquidname = liquid.getFluid().getName();
-
-				if (liquidname.startsWith("fuel"))
-				{
-					FluidUtil.tryFillContainer(tank, liquid, this.chestContents, slot, GCItems.fuelCanister);
-				}
-			}
-		}
+    	FluidUtil.tryFillContainerFuel(tank, this.chestContents, slot);
 	}
 	
 

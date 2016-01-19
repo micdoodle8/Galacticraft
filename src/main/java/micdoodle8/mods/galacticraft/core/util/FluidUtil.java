@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
@@ -11,6 +12,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.IFluidContainerItem;
 
 public class FluidUtil
 {
@@ -26,10 +28,60 @@ public class FluidUtil
     		return var4.getItem() == GCItems.fuelCanister && var4.getItemDamage() < var4.getMaxDamage();
 
     	FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(var4);
-        return liquid != null && FluidRegistry.getFluidName(liquid).startsWith("fuel");
+        return liquid != null && FluidUtil.testFuel(FluidRegistry.getFluidName(liquid));
 	}
 
+    /**
+     * Tests whether the named liquid is fuel / fuelgc
+     * or rocket fuel from another mod, for compatibility (includes RotaryCraft Jet Fuel)
+     * 
+     * @param name - which MUST be in lowercase, as always returned by FluidRegistry.getFluidName 
+     * @return true if a type of recognised fuel, false if not
+     */
+	public static boolean testFuel(String name)
+    {
+		if (name.startsWith("fuel")) return true;
+		
+		if (name.contains("rocket") && name.contains("fuel")) return true;
+		
+		if (name.equals("rc jet fuel")) return true;
+		
+		return false;
+    }
+    
 	/**
+	 *  Fill Galacticraft entities (e.g. rockets, buggies) with Galacticraft fuel.
+	 *  For legacy reasons, accepts either "fuel" or "fuelgc".
+	 *  Auto-converts either one to the same type of fuel as is already contained.
+	 *    
+	 * @param tank    The tank
+	 * @param liquid   A FluidStack being the fuel offered
+	 * @param doFill   True if this is not a simulation / tank capacity test
+	 * @return         The amount filled
+	 */
+	public static int fillWithGCFuel(FluidTank tank, FluidStack liquid, boolean doFill)
+	{
+		if (liquid != null && testFuel(FluidRegistry.getFluidName(liquid)))
+		{
+			final FluidStack liquidInTank = tank.getFluid();
+			
+			//If the tank is empty, fill it with the current type of GC fuel
+			if (liquidInTank == null)
+			{
+				return tank.fill(new FluidStack(GalacticraftCore.fluidFuel, liquid.amount), doFill);
+			}
+			
+			//If the tank already contains something, fill it with more of the same 
+			if (liquidInTank.amount + liquid.amount <= tank.getCapacity())
+			{
+				return tank.fill(new FluidStack(liquidInTank, liquid.amount), doFill);
+			}
+		}
+		
+		return 0;
+	}
+
+    /**
 	 * This looks for any type of filled or partly filled container of "oil"
 	 * or the alternative fluid "oilgc" which may be present if Buildcraft was installed on top of a GC world
 	 * @param var4  The ItemStack being examined
@@ -106,6 +158,7 @@ public class FluidUtil
 
 			if (inventory[slot] == null)
 			{
+				//Failed to fill container: restore item that was there before
 				inventory[slot] = slotItem;
 			}
 			else
@@ -115,6 +168,45 @@ public class FluidUtil
 		}
 	}
 
+    /**
+     * 
+     * @param tank
+     * @param inventory
+     * @param slot
+     */
+    public static void tryFillContainerFuel(FluidTank tank, ItemStack[] inventory, int slot)
+    {
+    	if (FluidUtil.isValidContainer(inventory[slot]))
+		{
+			FluidStack liquid = tank.getFluid();
+
+			if (liquid != null && liquid.amount > 0)
+			{
+				String liquidname = liquid.getFluid().getName();
+
+				//Test for the GC fuels (though anything similarly named would also pass here)
+				if (liquidname.startsWith("fuel"))
+				{
+					//Make sure it is the current GC fuel
+					if (!liquidname.equals(GalacticraftCore.fluidFuel.getName()))
+						liquid = new FluidStack(GalacticraftCore.fluidFuel, liquid.amount);
+					
+					//But match any existing fuel fluid in the container
+					ItemStack stack = inventory[slot];
+					//We know it is not a null ItemStack thanks to the isValidContainer() check above
+					if (stack.getItem() instanceof IFluidContainerItem)
+					{
+						FluidStack existingFluid = ((IFluidContainerItem)stack.getItem()).getFluid(stack); 
+						if (existingFluid != null && !existingFluid.getFluid().getName().equals(GalacticraftCore.fluidFuel.getName()))
+							liquid = new FluidStack(existingFluid, liquid.amount);
+					}
+					
+					FluidUtil.tryFillContainer(tank, liquid, inventory, slot, GCItems.fuelCanister);
+				}
+			}
+		}
+    }
+    
 	/**
 	 * Tests for any type of container with some space in it
 	 * It can be either an empty container, or a Galacticraft canister
