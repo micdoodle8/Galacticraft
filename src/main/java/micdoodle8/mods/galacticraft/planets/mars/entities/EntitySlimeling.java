@@ -57,7 +57,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
     public EntitySlimeling(World par1World)
     {
         super(par1World);
-        this.setSize(0.25F, 0.7F);
+        this.setSize(0.45F, 0.7F);
         this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.aiSit = new EntityAISitGC(this);
@@ -280,6 +280,12 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
     protected Item getDropItem()
     {
         return Items.slime_ball;
+    }
+
+    @Override
+    protected int getExperiencePoints(EntityPlayer player)
+    {
+        return 1 + this.worldObj.rand.nextInt(3);
     }
 
     @Override

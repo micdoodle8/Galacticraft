@@ -38,6 +38,7 @@ public class EntityParachest extends Entity
     public EntityParachest(World world)
     {
         super(world);
+        this.setSize(1.0F, 1.0F);
     }
 
     @Override

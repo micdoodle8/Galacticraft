@@ -71,7 +71,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     private static final int RETURNENERGY = 1000;
     private static final int RETURNDROPS = 10;
     private static final int INV_SIZE = 227;
-    private static final float cLENGTH = 3.6F;
+    private static final float cLENGTH = 2.6F;
     private static final float cWIDTH = 1.8F;
     private static final float cHEIGHT = 1.7F;
     private static final double SPEEDUP = 2.5D;
