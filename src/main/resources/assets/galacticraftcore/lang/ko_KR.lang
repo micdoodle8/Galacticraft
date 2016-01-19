@@ -41,7 +41,7 @@ item.parachute_teal.name=청록색 낙하산
 item.parachute_yellow.name=노란색 낙하산
 item.steelPole.name=강철 장대
 item.canvas.name=캔버스
-item.buggy.name=버기
+item.buggy.name=월면차
 item.emptyLiquidCanister.name=빈 깡통
 item.oilCanisterPartial.name=부분 기름통
 item.fuelCanisterPartial.name=부분 연료통
@@ -51,9 +51,9 @@ item.oilExtractor.name=휴대용 기름추출기
 item.schematic.name=NASA 작업대 설계도
 item.fuel.name=로켓 연료
 item.key.T1.name=1티어 던전 열쇠
-item.buggymat.wheel.name=버기 바퀴
-item.buggymat.seat.name=버기 시트
-item.buggymat.storage.name=버기 상자
+item.buggymat.wheel.name=월면차 바퀴
+item.buggymat.seat.name=월면차 시트
+item.buggymat.storage.name=월면차 상자
 item.basicItem.solar_module_0.name=태양광 모듈
 item.basicItem.solar_module_1.name=태양광 전지판
 item.basicItem.ingotCopper.name=구리 주괴
@@ -85,9 +85,9 @@ item.basicItem.dehydratedPotato.name=건조 감자
 item.basicItem.cannedFood.name=통조림
 item.basicItem.frequencyModule.name=주파수 모듈
 item.standardWrench.name=표준 스패너
-item.bucketOil.name=Oil Bucket ##NEEDS TRANSLATE##
-item.bucketFuel.name=Fuel Bucket ##NEEDS TRANSLATE##
-item.basicItem.ambientThermalController.name=Ambient Thermal Controller ##NEEDS TRANSLATE##
+item.bucketOil.name=기름 양동이
+item.bucketFuel.name=연료 양동이
+item.basicItem.ambientThermalController.name=주변 열 제어기
 
 # TOOLS
 item.steel_pickaxe.name=강화 곡괭이
@@ -200,8 +200,8 @@ tile.slabGCHalf.moonSlab.name=월석 반 블록
 tile.moonBricksStairs.name=달 던전 벽돌 계단
 tile.wallGC.moonBricks.name=달 던전 벽돌 담장
 tile.slabGCHalf.moonBricksSlab.name=달 던전 벽돌 반 블록
-tile.crudeOil.name=Oil ##NEEDS TRANSLATE##
-tile.fuelBlock.name=Fuel ##NEEDS TRANSLATE##
+tile.crudeOil.name=기름
+tile.fuelBlock.name=연료
 
 # ENTITIES
 entity.EvolvedSpider.name=진화한 거미
@@ -222,7 +222,7 @@ entity.GCFlag.name=깃발
 entity.MeteorChunk.name=운석 덩어리
 
 # SCHEMATICS
-schematic.moonbuggy.name=달 버기
+schematic.moonbuggy.name=월면차
 schematic.rocketT1.name=1티어 로켓
 schematic.rocketT2.name=2티어 로켓
 
@@ -307,7 +307,7 @@ gui.message.help2=우주 여행에 대한 가이드
 gui.message.help3=기름에 대한 도움말
 gui.message.prelaunch=발사전 체크리스트
 gui.message.clicklink=Galacticraft 위키를 보시려면 클릭 (영문)
-gui.message.thermalStatus.name=Thermal Control ##NEEDS TRANSLATE##
+gui.message.thermalStatus.name=열 제어
 
 gui.status.active.name=활성
 gui.status.missingleaves.name=나뭇잎 블록 부족
@@ -348,9 +348,9 @@ gui.status.compressing.name=압축 중
 gui.status.collecting.name=충전 중
 gui.status.tankEmpty.name=산소 탱크 비었음
 gui.status.sunVisible.name=맑음
-gui.status.on.name=ON ##NEEDS TRANSLATE##
-gui.status.off.name=OFF ##NEEDS TRANSLATE##
-gui.status.notAvailable.name=N/A ##NEEDS TRANSLATE##
+gui.status.on.name=켜짐
+gui.status.off.name=꺼짐
+gui.status.notAvailable.name=N/A
 
 gui.button.enableseal.name=밀봉 가동하기
 gui.button.disableseal.name=밀봉 파기하기
@@ -369,8 +369,8 @@ gui.button.unlockschematic.name=설계도 잠금해제
 gui.button.stoprefine.name=정제 멈추기
 gui.button.enable.name=가동하기
 gui.button.disable.name=멈추기
-gui.button.hideDest.name=Hide ##NEEDS TRANSLATE##
-gui.button.unhideDest.name=Unhide ##NEEDS TRANSLATE##
+gui.button.hideDest.name=숨기기
+gui.button.unhideDest.name=보이기
 
 gui.choosePlanet.desc.overworld=생명으로 가득함#거주 가능#중력: 100%
 gui.warning=경고!
@@ -506,9 +506,9 @@ gui.player.health=체력
 gui.player.food=음식
 gui.player.bpm=심박수
 gui.player.ouch=아야!!!!
-gui.thermalSlot.desc.0=Thermal attachment slot, place 'Ambient ##NEEDS TRANSLATE##
-gui.thermalSlot.desc.1=Thermal Controller' here (optional) ##NEEDS TRANSLATE##
-gui.thermalSlot.desc.2=Note: Uses more energy! ##NEEDS TRANSLATE##
+gui.thermalSlot.desc.0=열 제어 슬롯, 이곳에
+gui.thermalSlot.desc.1='주변 열 제어기'를 장착하시오 (선택적)
+gui.thermalSlot.desc.2=메모: 더 많은 에너지를 사용합니다!
 
 gui.spaceRace.create.close.name=닫기
 gui.spaceRace.create.back.name=뒤로
