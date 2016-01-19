@@ -193,7 +193,7 @@ public class FluidUtil
 					
 					//But match any existing fuel fluid in the container
 					ItemStack stack = inventory[slot];
-					//We know it is not a null ItemStack thanks to the isValidContainer() check above
+					//(No null check necessary here: it cannot be a null ItemStack thanks to the .isValidContainer() check above
 					if (stack.getItem() instanceof IFluidContainerItem)
 					{
 						FluidStack existingFluid = ((IFluidContainerItem)stack.getItem()).getFluid(stack); 

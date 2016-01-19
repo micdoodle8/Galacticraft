@@ -229,90 +229,7 @@ public class GalacticraftCore
         EnergyConfigHandler.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.POWER_CONFIG_FILE));
         ChunkLoadingCallback.loadConfig(new File(event.getModConfigurationDirectory(), GalacticraftCore.CHUNKLOADER_CONFIG_FILE));
 
-        String oilID = "oil";
-        String fuelID = "fuel";
-        if (ConfigManagerCore.useOldOilFluidID)
-        {
-            oilID = "oilgc";
-        }
-        if (ConfigManagerCore.useOldFuelFluidID)
-        {
-            fuelID = "fuelgc";
-        }
-
-        //NOTE: the way this operates will depend on the order in which different mods initialize (normally alphabetical order)
-        //Galacticraft can handle things OK if another mod registers oil or fuel first.  The other mod may not be so happy if GC registers oil or fuel first.
-        // Oil:
-        if (!FluidRegistry.isFluidRegistered(oilID))
-        {
-            Fluid gcFluidOil = new Fluid(oilID).setDensity(800).setViscosity(1500);
-            FluidRegistry.registerFluid(gcFluidOil);
-        }
-        else
-        {
-            GCLog.info("Galacticraft oil is not default, issues may occur.");
-        }
-
-        fluidOil = FluidRegistry.getFluid(oilID);
-
-        if (fluidOil.getBlock() == null)
-        {
-            GCBlocks.crudeOil = new BlockFluidGC(fluidOil, "oil");
-            ((BlockFluidGC) GCBlocks.crudeOil).setQuantaPerBlock(3);
-            GCBlocks.crudeOil.setBlockName("crudeOilStill");
-            GameRegistry.registerBlock(GCBlocks.crudeOil, ItemBlockGC.class, GCBlocks.crudeOil.getUnlocalizedName());
-            fluidOil.setBlock(GCBlocks.crudeOil);
-        }
-        else
-        {
-            GCBlocks.crudeOil = fluidOil.getBlock();
-        }
-
-        if (GCBlocks.crudeOil != null)
-        {
-            GCItems.bucketOil = new ItemBucketGC(GCBlocks.crudeOil, GalacticraftCore.TEXTURE_PREFIX);
-            GCItems.bucketOil.setUnlocalizedName("bucketOil");
-            GCItems.registerItem(GCItems.bucketOil);
-            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(oilID, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(GCItems.bucketOil), new ItemStack(Items.bucket));
-        }
-
-        EventHandlerGC.bucketList.put(GCBlocks.crudeOil, GCItems.bucketOil);
-
-        // Fuel:
-        if (!FluidRegistry.isFluidRegistered(fuelID))
-        {
-            Fluid gcFluidFuel = new Fluid(fuelID).setDensity(400).setViscosity(900);
-            FluidRegistry.registerFluid(gcFluidFuel);
-        }
-        else
-        {
-            GCLog.info("Galacticraft fuel is not default, issues may occur.");
-        }
-
-        fluidFuel = FluidRegistry.getFluid(fuelID);
-
-        if (fluidFuel.getBlock() == null)
-        {
-            GCBlocks.fuel = new BlockFluidGC(fluidFuel, "fuel");
-            ((BlockFluidGC) GCBlocks.fuel).setQuantaPerBlock(3);
-            GCBlocks.fuel.setBlockName("fuel");
-            GameRegistry.registerBlock(GCBlocks.fuel, ItemBlockGC.class, GCBlocks.fuel.getUnlocalizedName());
-            fluidFuel.setBlock(GCBlocks.fuel);
-        }
-        else
-        {
-            GCBlocks.fuel = fluidFuel.getBlock();
-        }
-
-        if (GCBlocks.fuel != null)
-        {
-            GCItems.bucketFuel = new ItemBucketGC(GCBlocks.fuel, GalacticraftCore.TEXTURE_PREFIX);
-            GCItems.bucketFuel.setUnlocalizedName("bucketFuel");
-            GCItems.registerItem(GCItems.bucketFuel);
-            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(fuelID, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(GCItems.bucketFuel), new ItemStack(Items.bucket));
-        }
-
-        EventHandlerGC.bucketList.put(GCBlocks.fuel, GCItems.bucketFuel);
+        this.registerOilandFuel();
 
         if (Loader.isModLoaded("PlayerAPI"))
         {
@@ -412,12 +329,10 @@ public class GalacticraftCore
     	//If any other mod has registered "fuel" or "oil" and GC has not, then allow GC's appropriate canisters to be fillable with that one as well
         if (ConfigManagerCore.useOldFuelFluidID && FluidRegistry.isFluidRegistered("fuel"))
         {
-        	//If the GC fuel fluid is registered as fuelgc and there is also "fuel" from another mod in the game, we want to be able to fill canisters with that as well
         	FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(FluidRegistry.getFluid("fuel"), 1000), new ItemStack(GCItems.fuelCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
         }
         if (ConfigManagerCore.useOldOilFluidID && FluidRegistry.isFluidRegistered("oil"))
         {
-        	//If the GC oil fluid is registered as oilgc and there is also "oil" from another mod in the game, we want to be able to fill canisters with that as well
         	FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(FluidRegistry.getFluid("oil"), 1000), new ItemStack(GCItems.oilCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
         	//And allow Buildcraft oil buckets to be filled with oilgc
         	if (CompatibilityManager.isBCraftLoaded())
@@ -428,7 +343,7 @@ public class GalacticraftCore
        
     	//Register now any unregistered "oil", "fuel", "oilgc" and "fuelgc" fluids
     	//This is for legacy compatibility with any 'in the world' tanks and items filled in different GC versions or with different GC config
-    	//In those cases, FluidUtil methods (and TileEntityRefinery) will still try to fresh containers/tanks with the current fuel or oil type
+    	//In those cases, FluidUtil methods (and TileEntityRefinery) will attempt to fresh containers/tanks with the current fuel or oil type
         if (!FluidRegistry.isFluidRegistered("oil"))
         {
             FluidRegistry.registerFluid(new Fluid("oil").setDensity(800).setViscosity(1500));
@@ -447,6 +362,95 @@ public class GalacticraftCore
         }
     }
 
+    private void registerOilandFuel()
+    {
+        //NOTE: the way this operates will depend on the order in which different mods initialize (normally alphabetical order)
+        //Galacticraft can handle things OK if another mod registers oil or fuel first.  The other mod may not be so happy if GC registers oil or fuel first.
+
+    	String oilID = "oil";
+        String fuelID = "fuel";
+        if (ConfigManagerCore.useOldOilFluidID)
+        {
+            oilID = "oilgc";
+        }
+        if (ConfigManagerCore.useOldFuelFluidID)
+        {
+            fuelID = "fuelgc";
+        }
+
+        // Oil:
+        if (!FluidRegistry.isFluidRegistered(oilID))
+        {
+            Fluid gcFluidOil = new Fluid(oilID).setDensity(800).setViscosity(1500);
+            FluidRegistry.registerFluid(gcFluidOil);
+        }
+        else
+        {
+            GCLog.info("Galacticraft oil is not default, issues may occur.");
+        }
+
+        fluidOil = FluidRegistry.getFluid(oilID);
+
+        if (fluidOil.getBlock() == null)
+        {
+            GCBlocks.crudeOil = new BlockFluidGC(fluidOil, "oil");
+            ((BlockFluidGC) GCBlocks.crudeOil).setQuantaPerBlock(3);
+            GCBlocks.crudeOil.setBlockName("crudeOilStill");
+            GameRegistry.registerBlock(GCBlocks.crudeOil, ItemBlockGC.class, GCBlocks.crudeOil.getUnlocalizedName());
+            fluidOil.setBlock(GCBlocks.crudeOil);
+        }
+        else
+        {
+            GCBlocks.crudeOil = fluidOil.getBlock();
+        }
+
+        if (GCBlocks.crudeOil != null)
+        {
+            GCItems.bucketOil = new ItemBucketGC(GCBlocks.crudeOil, GalacticraftCore.TEXTURE_PREFIX);
+            GCItems.bucketOil.setUnlocalizedName("bucketOil");
+            GCItems.registerItem(GCItems.bucketOil);
+            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(oilID, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(GCItems.bucketOil), new ItemStack(Items.bucket));
+        }
+
+        EventHandlerGC.bucketList.put(GCBlocks.crudeOil, GCItems.bucketOil);
+
+        // Fuel:
+        if (!FluidRegistry.isFluidRegistered(fuelID))
+        {
+            Fluid gcFluidFuel = new Fluid(fuelID).setDensity(400).setViscosity(900);
+            FluidRegistry.registerFluid(gcFluidFuel);
+        }
+        else
+        {
+            GCLog.info("Galacticraft fuel is not default, issues may occur.");
+        }
+
+        fluidFuel = FluidRegistry.getFluid(fuelID);
+
+        if (fluidFuel.getBlock() == null)
+        {
+            GCBlocks.fuel = new BlockFluidGC(fluidFuel, "fuel");
+            ((BlockFluidGC) GCBlocks.fuel).setQuantaPerBlock(3);
+            GCBlocks.fuel.setBlockName("fuel");
+            GameRegistry.registerBlock(GCBlocks.fuel, ItemBlockGC.class, GCBlocks.fuel.getUnlocalizedName());
+            fluidFuel.setBlock(GCBlocks.fuel);
+        }
+        else
+        {
+            GCBlocks.fuel = fluidFuel.getBlock();
+        }
+
+        if (GCBlocks.fuel != null)
+        {
+            GCItems.bucketFuel = new ItemBucketGC(GCBlocks.fuel, GalacticraftCore.TEXTURE_PREFIX);
+            GCItems.bucketFuel.setUnlocalizedName("bucketFuel");
+            GCItems.registerItem(GCItems.bucketFuel);
+            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(fuelID, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(GCItems.bucketFuel), new ItemStack(Items.bucket));
+        }
+
+        EventHandlerGC.bucketList.put(GCBlocks.fuel, GCItems.bucketFuel);
+    }
+    
     public static void registerCoreGameScreens()
     {
         IGameScreen rendererBasic = new GameScreenBasic();
