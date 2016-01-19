@@ -745,7 +745,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 
     	for (int j = 0; j < 16; j++)
     	{
-    		if (chunk.getBlockStorageArray()[j] == null) chunk.getBlockStorageArray()[j] = new ExtendedBlockStorage(j, false);
+    		if (chunk.getBlockStorageArray()[j] == null) chunk.getBlockStorageArray()[j] = new ExtendedBlockStorage(j << 4, false);
     	}
 
     	int i = chunk.getTopFilledSegment();
