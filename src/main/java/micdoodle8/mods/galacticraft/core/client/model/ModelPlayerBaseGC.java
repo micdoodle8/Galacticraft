@@ -105,11 +105,11 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
     {
         float var1 = 0.0F;
 
-//        final Class<?> entityClass = EntityClientPlayerMP.class;
-//        final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
-//        final ModelBiped modelBipedMain = ((RenderPlayer) render).modelBipedMain;
-//
-//        if (this.modelPlayer.equals(modelBipedMain))
+        //Do not add GC equipment to the model for armor model - only actual player model
+        final Render render = RenderManager.instance.getEntityClassRenderObject(EntityClientPlayerMP.class);
+        final ModelBiped modelBipedMain = ((RenderPlayer) render).modelBipedMain;
+
+        if (this.modelPlayer.equals(modelBipedMain))
         {
             this.oxygenMask = createModelRenderer(this.modelPlayer, 0, 0, 0);
             this.oxygenMask.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, 1);
@@ -297,20 +297,11 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
     {
     	super.afterSetRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);
         if (!(par7Entity instanceof EntityPlayer)) return;  //Deal with RenderPlayerAPIEnhancer calling this for skeletons etc
-    	final Class<?> entityClass = EntityClientPlayerMP.class;
-        final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
-        final ModelBiped modelBipedMain = ((RenderPlayer) render).modelBipedMain;
-        if (!this.modelPlayer.equals(modelBipedMain)) return;
-
-    	if (this.oxygenMask == null)
-    	{
-    		init();
-    	}
 
     	final EntityPlayer player = (EntityPlayer) par7Entity;
     	final ItemStack currentItemStack = player.inventory.getCurrentItem();
 
-    	if (!player.capabilities.isCreativeMode && !par7Entity.onGround && par7Entity.worldObj.provider instanceof IGalacticraftWorldProvider && !(currentItemStack != null && currentItemStack.getItem() instanceof IHoldableItem))
+    	if (!par7Entity.onGround && par7Entity.worldObj.provider instanceof IGalacticraftWorldProvider && par7Entity.ridingEntity == null && !(currentItemStack != null && currentItemStack.getItem() instanceof IHoldableItem))
     	{
     		float speedModifier = 0.1162F * 2;
 
@@ -364,13 +355,18 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
     public void afterRender(Entity var1, float var2, float var3, float var4, float var5, float var6, float var7)
     {
         super.afterRender(var1, var2, var3, var4, var5, var6, var7);
-        if (ModelPlayerBaseGC.isSmartMovingLoaded) return; //Smart Moving will render through ModelRotationRendererGC instead
-    	if (!(var1 instanceof EntityPlayer)) return;  //Deal with RenderPlayerAPIEnhancer calling this for skeletons etc
 
-    	final Class<?> entityClass = EntityClientPlayerMP.class;
-        final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
-        final ModelBiped modelBipedMain = ((RenderPlayer) render).modelBipedMain;
-        if (!this.modelPlayer.equals(modelBipedMain)) return;
+        //Smart Moving will render through ModelRotationRendererGC instead
+        if (ModelPlayerBaseGC.isSmartMovingLoaded)
+        	return; 
+
+        //Deal with RenderPlayerAPIEnhancer calling this for skeletons etc
+        if (!(var1 instanceof EntityPlayer))
+        	return;  
+
+        //Do not render GC equipment on top of armor - only on top of player - see .init() method
+        if (this.oxygenMask == null)
+        	return;
 
         final EntityPlayer player = (EntityPlayer) var1;
         PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getCommandSenderName());

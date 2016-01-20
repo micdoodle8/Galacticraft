@@ -354,7 +354,7 @@ public class ModelPlayerGC extends ModelBiped
         final EntityPlayer player = (EntityPlayer) par7Entity;
         final ItemStack currentItemStack = player.inventory.getCurrentItem();
 
-        if (!par7Entity.onGround && par7Entity.worldObj.provider instanceof IGalacticraftWorldProvider && !(currentItemStack != null && currentItemStack.getItem() instanceof IHoldableItem))
+        if (!par7Entity.onGround && par7Entity.worldObj.provider instanceof IGalacticraftWorldProvider && par7Entity.ridingEntity == null && !(currentItemStack != null && currentItemStack.getItem() instanceof IHoldableItem))
         {
             float speedModifier = 0.1162F * 2;
 
