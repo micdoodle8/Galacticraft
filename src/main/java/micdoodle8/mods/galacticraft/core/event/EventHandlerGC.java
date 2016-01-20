@@ -43,10 +43,12 @@ import net.minecraft.block.BlockGravel;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -55,16 +57,20 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemFireball;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenDesert;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
 import net.minecraftforge.client.event.sound.PlaySoundEvent17;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -81,6 +87,8 @@ import net.minecraftforge.event.world.ChunkEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
 
 import java.util.*;
+
+import org.lwjgl.opengl.GL11;
 
 public class EventHandlerGC
 {
@@ -747,6 +755,26 @@ public class EventHandlerGC
                 event.setResult(Result.DENY);
             }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void overrideSkyColor(FogColors event)
+    {
+    	//Disable any night vision effects on the sky, if the planet has no atmosphere
+    	if (event.entity.isPotionActive(Potion.nightVision))
+    	{
+    		WorldClient worldclient = Minecraft.getMinecraft().theWorld;
+
+    		if (worldclient.provider instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider)worldclient.provider).getCelestialBody().atmosphere.size() == 0 && event.block.getMaterial() == Material.air && !((IGalacticraftWorldProvider)worldclient.provider).hasBreathableAtmosphere())
+    		{
+    			Vec3 vec = worldclient.getFogColor(1.0F);
+    			event.red = (float) vec.xCoord;
+    			event.green = (float) vec.yCoord;
+    			event.blue = (float) vec.zCoord;
+    			return;
+    		}
+    	}
     }
 
     private List<SoundPlayEntry> soundPlayList = new ArrayList<SoundPlayEntry>();
