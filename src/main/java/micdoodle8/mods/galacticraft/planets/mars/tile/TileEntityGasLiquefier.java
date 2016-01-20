@@ -259,7 +259,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
             if (liquid != null && liquid.amount > 0)
             {
                 String liquidname = liquid.getFluid().getName();
-                if (liquidname.equals(TankGases.METHANE.liquid))
+                if (liquidname.startsWith("fuel"))
                 {
                     FluidUtil.tryFillContainerFuel(tank, this.containingItems, slot);
                 }
