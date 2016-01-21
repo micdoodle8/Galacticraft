@@ -85,31 +85,37 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
     @Override
     protected void dropRareDrop(int p_70600_1_)
     {
-        switch (this.rand.nextInt(10))
+        switch (this.rand.nextInt(18))
         {
             case 0:
             case 1:
-            case 9:
+            case 2:
             	//Dehydrated carrot
                 this.entityDropItem(new ItemStack(GCItems.basicItem, 1, 16), 0.0F);
                 break;
-            case 2:
             case 3:
-                this.dropItem(GCItems.meteoricIronRaw, 1);
-                break;
             case 4:
+            case 17:
+            	this.dropItem(GCItems.meteoricIronRaw, 1);
+                break;
             case 5:
+            case 16:
+            	//Dehydrated potato
                 this.entityDropItem(new ItemStack(GCItems.basicItem, 1, 18), 0.0F);
                 break;
             case 6:
+            case 7:
             	//Oxygen tank half empty or less
                 this.entityDropItem(new ItemStack(GCItems.oxTankMedium, 1, 901 + this.rand.nextInt(900)), 0.0F);
                 break;
-            case 7:
+            case 8:
                 this.dropItem(GCItems.oxMask, 1);
                 break;
-            case 8:
+            case 9:
                 this.dropItem(GCItems.oxygenVent, 1);
+                break;
+            default:
+                this.entityDropItem(new ItemStack(GCItems.basicItem, 1, 3), 0.0F);
                 break;
         }
     }

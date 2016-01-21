@@ -31,11 +31,27 @@ public class ConfigManagerCore
 {
     static Configuration config;
 
-    // DIMENSIONS
+    // GAME CONTROL
+    public static boolean forceOverworldRespawn;
+    public static boolean hardMode;
+    public static boolean quickMode;
+	public static boolean asteroidsStart;
+    public static boolean disableRocketsToOverworld;
+    public static boolean disableSpaceStationCreation;
+    public static boolean spaceStationsRequirePermission;
+    public static boolean disableUpdateCheck;
+    public static boolean enableDebug;
+    public static boolean enableSealerEdgeChecks;
+    public static boolean disableLander;
+//    public static int mapfactor;
+//    public static int mapsize;
+    
+	// DIMENSIONS
     public static int idDimensionOverworldOrbit;
     public static int idDimensionOverworldOrbitStatic;
     public static int idDimensionMoon;
     public static int biomeIDbase = 102;
+    public static boolean disableBiomeTypeRegistrations;
     public static int[] staticLoadDimensions = { };
     public static int[] disableRocketLaunchDimensions = { -1, 1 };
 
@@ -53,67 +69,53 @@ public class ConfigManagerCore
     public static boolean oxygenIndicatorLeft;
     public static boolean oxygenIndicatorBottom;
     public static boolean overrideCapes;
-    
-    // GENERAL
-    public static boolean disableSpaceshipGrief;
-    public static boolean spaceStationsRequirePermission;
-    public static boolean disableSpaceStationCreation;
-    public static boolean disableLander;
-    public static boolean disableRocketsToOverworld;
-    public static boolean forceOverworldRespawn;
-    public static boolean hardMode;
-    public static boolean quickMode;
+
+    //DIFFICULTY
     public static double dungeonBossHealthMod;
     public static int suffocationCooldown;
     public static int suffocationDamage;
-    public static boolean enableSealerEdgeChecks;
-    public static double spaceStationEnergyScalar;
     public static int rocketFuelFactor;
-    public static boolean enableDebug;
-    public static float mapMouseScrollSensitivity;
-    public static boolean invertMapMouseScroll;
     public static double meteorSpawnMod;
     public static boolean meteorBlockDamageEnabled;
-    public static boolean disableUpdateCheck;
-    public static boolean disableBiomeTypeRegistrations;
-//    public static int mapfactor;
-//    public static int mapsize;
-	
+    public static boolean disableSpaceshipGrief;
+    public static double spaceStationEnergyScalar;
     
     // WORLDGEN
     public static boolean enableCopperOreGen;
     public static boolean enableTinOreGen;
     public static boolean enableAluminumOreGen;
     public static boolean enableSiliconOreGen;
-    public static int[] externalOilGen;
-    public static double oilGenFactor;
-	public static boolean retrogenOil;
     public static boolean disableCheeseMoon;
     public static boolean disableTinMoon;
     public static boolean disableCopperMoon;
     public static boolean disableMoonVillageGen;
+    public static int[] externalOilGen;
+    public static double oilGenFactor;
+	public static boolean retrogenOil;
     public static String[] oregenIDs = { };
     public static boolean enableOtherModsFeatures;
-    public static boolean useOldOilFluidID;
-    public static boolean useOldFuelFluidID;
+    public static boolean whitelistCoFHCoreGen;
+	public static boolean enableThaumCraftNodes;
 
     //COMPATIBILITY
     public static String[] sealableIDs = { };
     public static String[] detectableIDs = { };
-    public static boolean whitelistCoFHCoreGen;
-	public static boolean enableThaumCraftNodes;
     public static boolean alternateCanisterRecipe;
     public static String otherModsSilicon;
+    public static boolean useOldOilFluidID;
+    public static boolean useOldFuelFluidID;
+
+    //KEYBOARD AND MOUSE
     public static String keyOverrideMap;
     public static String keyOverrideFuelLevel;
     public static String keyOverrideToggleAdvGoggles;
     public static int keyOverrideMapI;
     public static int keyOverrideFuelLevelI;
     public static int keyOverrideToggleAdvGogglesI;
+    public static float mapMouseScrollSensitivity;
+    public static boolean invertMapMouseScroll;
 	
     public static ArrayList<Object> clientSave = null;
-
-
 
 
     public static void initialize(File file)

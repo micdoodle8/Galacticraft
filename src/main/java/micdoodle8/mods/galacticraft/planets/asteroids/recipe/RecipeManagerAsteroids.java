@@ -86,7 +86,19 @@ public class RecipeManagerAsteroids
 
         RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.blockMinerBase, 4, 0), new Object[] { "XCX", "W W", "XBX", 'X', "compressedDesh", 'W', new ItemStack(AsteroidsItems.basicItem, 1, 8), 'C', new ItemStack(Blocks.chest), 'B', new ItemStack(GCBlocks.machineTiered, 1, BlockMachineTiered.STORAGE_MODULE_METADATA) });
         RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.orionDrive, 1, 0), new Object[] { "ABC", "DOE", "FGH", 'A', "oreDiamond", 'B', "oreLapis", 'C', "oreGold", 'D', "oreRedstone", 'E', "oreCoal", 'F', "oreCheese", 'G', "oreDesh", 'H', "oreIlmenite", 'O', new ItemStack(AsteroidsItems.basicItem, 1, 8) });
-        
+
+        //Cobblestone recipe
+        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(Blocks.cobblestone, 2), new ItemStack(AsteroidBlocks.blockBasic, 1, 0), new ItemStack(AsteroidBlocks.blockBasic, 1, 1));
+        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(Blocks.cobblestone, 2), new ItemStack(AsteroidBlocks.blockBasic, 1, 0), new ItemStack(AsteroidBlocks.blockBasic, 1, 2));
+        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(Blocks.cobblestone, 2), new ItemStack(AsteroidBlocks.blockBasic, 1, 1), new ItemStack(AsteroidBlocks.blockBasic, 1, 2));
+
+        //Charcoal into coal
+    	CompressorRecipes.addShapelessRecipe(new ItemStack(Items.coal, 2, 0), new ItemStack(Items.coal, 1, 1), new ItemStack(AsteroidBlocks.blockBasic, 1, 0), new ItemStack(Items.coal, 1, 1));
+    	CompressorRecipes.addShapelessRecipe(new ItemStack(Items.coal, 2, 0), new ItemStack(Items.coal, 1, 1), new ItemStack(AsteroidBlocks.blockBasic, 1, 1), new ItemStack(Items.coal, 1, 1));
+    	CompressorRecipes.addShapelessRecipe(new ItemStack(Items.coal, 2, 0), new ItemStack(Items.coal, 1, 1), new ItemStack(AsteroidBlocks.blockBasic, 1, 2), new ItemStack(Items.coal, 1, 1));
+    	//Splintered ice into Ice
+    	CompressorRecipes.addShapelessRecipe(new ItemStack(Blocks.ice), new ItemStack(AsteroidBlocks.blockDenseIce), new ItemStack(AsteroidBlocks.blockDenseIce));
+    	
         if (OreDictionary.getOres("ingotTitanium").size() > 0)
         {
             for (ItemStack stack : OreDictionary.getOres("ingotTitanium"))
