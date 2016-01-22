@@ -39,4 +39,10 @@ public class TeleportTypeOrbit implements ITeleportType
     public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player, boolean ridingAutoRocket)
     {
     }
+
+	@Override
+	public void setupAdventureSpawn(EntityPlayerMP player) {
+		// TODO Auto-generated method stub
+		
+	}
 }

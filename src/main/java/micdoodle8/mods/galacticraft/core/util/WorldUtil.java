@@ -1225,6 +1225,20 @@ public class WorldUtil
         return entity;
     }
 
+    public static WorldServer getStartWorld(WorldServer worldOld)
+    {
+        if (ConfigManagerCore.startAsteroids)
+        {
+        	WorldProvider wp = WorldUtil.getProviderForNameServer("planet.asteroids");
+        	WorldServer worldNew = (wp == null) ? null : (WorldServer) wp.worldObj;
+        	if (worldNew != null)
+        	{
+        		return worldNew;
+        	}
+        }
+        return worldOld;
+    }
+    
     @SideOnly(Side.CLIENT)
     public static EntityPlayer forceRespawnClient(int dimID, int par2, String par3, int par4)
     {

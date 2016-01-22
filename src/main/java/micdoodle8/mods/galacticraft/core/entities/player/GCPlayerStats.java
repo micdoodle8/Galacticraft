@@ -125,6 +125,8 @@ public class GCPlayerStats implements IExtendedEntityProperties
 
 	public int incrementalDamage = 0;
 
+	public String startDimension = "";
+
     public GCPlayerStats(EntityPlayerMP player)
     {
         this.player = new WeakReference<EntityPlayerMP>(player);
@@ -142,6 +144,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
         nbt.setInteger("teleportCooldown", this.teleportCooldown);
         nbt.setDouble("coordsTeleportedFromX", this.coordsTeleportedFromX);
         nbt.setDouble("coordsTeleportedFromZ", this.coordsTeleportedFromZ);
+        nbt.setString("startDimension", this.startDimension);
         nbt.setString("spaceStationDimensionInfo", WorldUtil.spaceStationDataToString(this.spaceStationDimensionData));
         nbt.setInteger("thermalLevel", this.thermalLevel);
 
@@ -258,6 +261,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
         this.teleportCooldown = nbt.getInteger("teleportCooldown");
         this.coordsTeleportedFromX = nbt.getDouble("coordsTeleportedFromX");
         this.coordsTeleportedFromZ = nbt.getDouble("coordsTeleportedFromZ");
+       	this.startDimension = nbt.hasKey("startDimension") ? nbt.getString("startDimension") : "";
         if (nbt.hasKey("spaceStationDimensionID"))
         {
             // If loading from an old save file, the home space station is always the overworld, so use 0 as home planet
@@ -388,4 +392,9 @@ public class GCPlayerStats implements IExtendedEntityProperties
         this.astroMinerCount = oldData.astroMinerCount;
         this.sentFlags = false;
     }
+
+	public void startAdventure(String worldName)
+	{
+		this.startDimension = worldName;
+	}
 }

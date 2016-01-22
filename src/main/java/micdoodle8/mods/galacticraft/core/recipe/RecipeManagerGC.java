@@ -512,7 +512,7 @@ public class RecipeManagerGC
             steelDone = true;
         }
         
-        if (ConfigManagerCore.asteroidsStart || !ConfigManagerCore.hardMode || !steelDone)
+        if (ConfigManagerCore.startAsteroids || !ConfigManagerCore.hardMode || !steelDone)
         	CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 9), Items.coal, new ItemStack(GCItems.basicItem, 1, 11), Items.coal);
         
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 10), new ItemStack(GCItems.basicItem, 1, 6), new ItemStack(GCItems.basicItem, 1, 7));

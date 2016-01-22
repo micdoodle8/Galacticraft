@@ -47,4 +47,10 @@ public class TeleportTypeSpaceStation implements ITeleportType
             player.addChatMessage(new ChatComponentText(EnumColor.YELLOW + GCCoreUtil.translate("gui.spacestation.typeCommand") + " " + EnumColor.AQUA + "/ssinvite " + GCCoreUtil.translate("gui.spacestation.playername") + " " + EnumColor.YELLOW + GCCoreUtil.translate("gui.spacestation.toAllowEntry")));
         }
     }
+
+	@Override
+	public void setupAdventureSpawn(EntityPlayerMP player) {
+		// TODO Auto-generated method stub
+		
+	}
 }

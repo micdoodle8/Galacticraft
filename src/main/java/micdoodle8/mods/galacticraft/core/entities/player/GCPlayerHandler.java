@@ -8,6 +8,7 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.event.oxygen.GCCoreOxygenSuffocationEvent;
 import micdoodle8.mods.galacticraft.api.item.IItemThermal;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
@@ -16,6 +17,7 @@ import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -48,6 +50,7 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
 
@@ -1034,6 +1037,20 @@ public class GCPlayerHandler
 
         //This will speed things up a little
         final GCPlayerStats GCPlayer = GCPlayerStats.get(player);
+        if (GCPlayer.startDimension.length() > 0)
+        {
+        	GCPlayer.startDimension = "";
+        	
+        	//This is a mini version of the code at WorldUtil.teleportEntity
+            final ITeleportType type = GalacticraftRegistry.getTeleportTypeForDimension(player.worldObj.provider.getClass());
+            Vector3 spawnPos = type.getPlayerSpawnLocation((WorldServer) player.worldObj, player);
+            ChunkCoordIntPair pair = player.worldObj.getChunkFromChunkCoords(spawnPos.intX(), spawnPos.intZ()).getChunkCoordIntPair();
+            GCLog.debug("Loading first chunk in new dimension.");
+            ((WorldServer)player.worldObj).theChunkProviderServer.loadChunk(pair.chunkXPos, pair.chunkZPos);
+            player.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, player.rotationYaw, player.rotationPitch);
+            type.setupAdventureSpawn(player);
+            type.onSpaceDimensionChanged(player.worldObj, player, false);
+        }
         final boolean isInGCDimension = player.worldObj.provider instanceof IGalacticraftWorldProvider;
 
         if (tick >= 25)
