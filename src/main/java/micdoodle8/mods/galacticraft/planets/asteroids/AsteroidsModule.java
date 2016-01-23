@@ -53,7 +53,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.oredict.RecipeSorter;
 
-import java.io.File;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
@@ -87,7 +86,6 @@ public class AsteroidsModule implements IPlanetsModule
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
-        new ConfigManagerAsteroids(new File(event.getModConfigurationDirectory(), "Galacticraft/asteroids.conf"));
         playerHandler = new AsteroidsPlayerHandler();
         MinecraftForge.EVENT_BUS.register(playerHandler);
         FMLCommonHandler.instance().bus().register(playerHandler);
@@ -358,6 +356,6 @@ public class AsteroidsModule implements IPlanetsModule
     @Override
     public void syncConfig()
     {
-        ConfigManagerAsteroids.syncConfig(false);
+        ConfigManagerAsteroids.syncConfig(false, false);
     }
 }

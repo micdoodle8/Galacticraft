@@ -14,5 +14,6 @@ public class Constants
     public static final String CONFIG_CATEGORY_ENTITIES = "entities";
     public static final String CONFIG_CATEGORY_SCHEMATIC = "schematic";
     public static final String CONFIG_CATEGORY_GENERAL = "general";
+    public static final String CONFIG_CATEGORY_WORLDGEN = "worldgen";
     public static final String CONFIG_CATEGORY_ACHIEVEMENTS = "achievements";
 }

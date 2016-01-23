@@ -55,7 +55,6 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
-import java.io.File;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -74,7 +73,6 @@ public class MarsModule implements IPlanetsModule
     public void preInit(FMLPreInitializationEvent event)
     {
         MinecraftForge.EVENT_BUS.register(new EventHandlerMars());
-        new ConfigManagerMars(new File(event.getModConfigurationDirectory(), "Galacticraft/mars.conf"));
 
         if (!FluidRegistry.isFluidRegistered("bacterialsludge"))
         {
@@ -292,6 +290,6 @@ public class MarsModule implements IPlanetsModule
     @Override
     public void syncConfig()
     {
-        ConfigManagerMars.syncConfig(false);
+        ConfigManagerMars.syncConfig(false, false);
     }
 }
