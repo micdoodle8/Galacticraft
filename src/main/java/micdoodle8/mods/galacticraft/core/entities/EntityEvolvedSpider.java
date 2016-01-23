@@ -130,6 +130,10 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
             case 11:
                 this.dropItem(GCItems.oxygenConcentrator, 1);
                 break;
+            case 12:
+            case 13:
+            	if (ConfigManagerCore.adventureMode) this.dropItem(Items.nether_wart, 1);
+            	break;
         }
     }
 }

@@ -92,10 +92,16 @@ public class RecipeManagerAsteroids
         CraftingManager.getInstance().addShapelessRecipe(new ItemStack(Blocks.cobblestone, 2), new ItemStack(AsteroidBlocks.blockBasic, 1, 0), new ItemStack(AsteroidBlocks.blockBasic, 1, 2));
         CraftingManager.getInstance().addShapelessRecipe(new ItemStack(Blocks.cobblestone, 2), new ItemStack(AsteroidBlocks.blockBasic, 1, 1), new ItemStack(AsteroidBlocks.blockBasic, 1, 2));
 
+        //Cobblestone->Gravel, Gravel->Sand, Sand->Clay
+    	CompressorRecipes.addShapelessAdventure(new ItemStack(Blocks.gravel, 9, 0), new ItemStack(Blocks.cobblestone, 9));
+    	CompressorRecipes.addShapelessAdventure(new ItemStack(Blocks.sand, 9, 0), new ItemStack(Blocks.gravel, 9));
+    	CompressorRecipes.addRecipeAdventure(new ItemStack(Blocks.clay, 8, 0), "XXX", "XBX", "XXX", 'X', new ItemStack(Blocks.sand), 'B', new ItemStack(Items.water_bucket));
+    	CompressorRecipes.addRecipeAdventure(new ItemStack(Blocks.soul_sand, 4, 0), "XFX", "FEF", "XFX", 'X', new ItemStack(Blocks.sand), 'F', new ItemStack(Items.rotten_flesh), 'E', new ItemStack(Items.fermented_spider_eye));
+    	CompressorRecipes.addRecipeAdventure(new ItemStack(Blocks.obsidian, 1, 0), "XXX", "XBX", "XXX", 'X', new ItemStack(Blocks.stone), 'B', new ItemStack(Items.blaze_rod));
         //Charcoal into coal
-    	CompressorRecipes.addShapelessRecipe(new ItemStack(Items.coal, 2, 0), new ItemStack(Items.coal, 1, 1), new ItemStack(AsteroidBlocks.blockBasic, 1, 0), new ItemStack(Items.coal, 1, 1));
-    	CompressorRecipes.addShapelessRecipe(new ItemStack(Items.coal, 2, 0), new ItemStack(Items.coal, 1, 1), new ItemStack(AsteroidBlocks.blockBasic, 1, 1), new ItemStack(Items.coal, 1, 1));
-    	CompressorRecipes.addShapelessRecipe(new ItemStack(Items.coal, 2, 0), new ItemStack(Items.coal, 1, 1), new ItemStack(AsteroidBlocks.blockBasic, 1, 2), new ItemStack(Items.coal, 1, 1));
+    	CompressorRecipes.addShapelessAdventure(new ItemStack(Items.coal, 2, 0), new ItemStack(Items.coal, 1, 1), new ItemStack(AsteroidBlocks.blockBasic, 1, 0), new ItemStack(Items.coal, 1, 1));
+    	CompressorRecipes.addShapelessAdventure(new ItemStack(Items.coal, 2, 0), new ItemStack(Items.coal, 1, 1), new ItemStack(AsteroidBlocks.blockBasic, 1, 1), new ItemStack(Items.coal, 1, 1));
+    	CompressorRecipes.addShapelessAdventure(new ItemStack(Items.coal, 2, 0), new ItemStack(Items.coal, 1, 1), new ItemStack(AsteroidBlocks.blockBasic, 1, 2), new ItemStack(Items.coal, 1, 1));
     	//Splintered ice into Ice
     	CompressorRecipes.addShapelessRecipe(new ItemStack(Blocks.ice), new ItemStack(AsteroidBlocks.blockDenseIce), new ItemStack(AsteroidBlocks.blockDenseIce));
     	

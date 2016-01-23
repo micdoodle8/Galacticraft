@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
@@ -168,7 +169,9 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
     @Override
     protected Item getDropItem()
     {
-        return Items.redstone;
+        if (this.isBurning())
+        	return Items.blaze_rod;
+    	return Items.redstone;
     }
 
     @Override
@@ -193,8 +196,13 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
         	break;
         case 8:
         case 9:
-                this.entityDropItem(new ItemStack(Blocks.ice), 0.0F);
-                break;
+            this.entityDropItem(new ItemStack(Blocks.ice), 0.0F);
+            break;
+        case 10:
+        case 11:
+        case 12:
+        	if (ConfigManagerCore.adventureMode) this.dropItem(Items.reeds, 1);
+        	break;
         }
     }
 }

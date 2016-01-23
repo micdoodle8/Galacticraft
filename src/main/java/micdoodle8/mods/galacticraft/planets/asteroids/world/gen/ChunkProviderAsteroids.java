@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Billowed;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
@@ -495,7 +496,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 
     private final int getTerrainHeightFor(float yMod, int asteroidY, int asteroidSize)
     {
-        return (int)(((asteroidY - (asteroidSize / 4)) - (-yMod * 1.5)));
+        return (int)(asteroidY - asteroidSize / 4 + yMod * 1.5F);
     }
 
     private final int getTerrainHeightAt(int x, int z, float[] yModArray, int xMin, int zMin, int zSize, int asteroidY, int asteroidSize)
@@ -682,14 +683,21 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
                 int zSize = asteroidIndex.zSizeArray;
                 int asteroidY = asteroidIndex.asteroidYArray;
                 int asteroidSize = asteroidIndex.asteroidSizeArray;
+                boolean treesdone = false;
                 
-                if(rand.nextInt(ChunkProviderAsteroids.TREE_CHANCE) == 0)
+                if(ConfigManagerCore.adventureMode || rand.nextInt(ChunkProviderAsteroids.TREE_CHANCE) == 0)
                 {
-                    int i = rand.nextInt(16) + x + 8;
-                    int k = rand.nextInt(16) + z + 8;
-                    new WorldGenTrees(false).generate(worldObj, rand, i, this.getTerrainHeightAt(i - x, k - z, sizeYArray, xMin, zMin, zSize, asteroidY, asteroidSize), k);
+                	WorldGenTrees wg = new WorldGenTrees(false); 
+                	for (int tries = 0; tries < 5; tries++)
+                    {
+	                	int i = rand.nextInt(16) + x + 8;
+	                    int k = rand.nextInt(16) + z + 8;
+	                    if (wg.generate(worldObj, rand, i, this.getTerrainHeightAt(i - x, k - z, sizeYArray, xMin, zMin, zSize, asteroidY, asteroidSize), k))
+	                    	break;
+                    }
+                    treesdone = true;
                 }
-                if(rand.nextInt(ChunkProviderAsteroids.TALL_GRASS_CHANCE) == 0)
+                if(!treesdone || rand.nextInt(ChunkProviderAsteroids.TALL_GRASS_CHANCE) == 0)
                 {
                     int i = rand.nextInt(16) + x + 8;
                     int k = rand.nextInt(16) + z + 8;

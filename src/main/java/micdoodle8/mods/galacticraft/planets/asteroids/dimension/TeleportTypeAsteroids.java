@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.dimension;
 
 import cpw.mods.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
+import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
@@ -12,11 +13,11 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityEntryPod;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
+import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -311,29 +312,30 @@ public class TeleportTypeAsteroids implements ITeleportType
 	public void setupAdventureSpawn(EntityPlayerMP player)
 	{
         GCPlayerStats stats = GCPlayerStats.get(player);
+        SchematicRegistry.unlockNewPage(player, new ItemStack(GCItems.schematic, 1, ConfigManagerMars.idSchematicRocketT2));
         stats.rocketStacks = new ItemStack[20];
         stats.fuelLevel = 1000;
-        stats.rocketStacks[19] = new ItemStack(MarsItems.spaceship, 1, IRocketType.EnumRocketType.INVENTORY36.ordinal());
-        stats.rocketStacks[0] = new ItemStack(GCItems.oxMask);
-        stats.rocketStacks[1] = new ItemStack(GCItems.oxygenGear);
-        stats.rocketStacks[2] = new ItemStack(GCItems.oxTankMedium);
-        stats.rocketStacks[3] = new ItemStack(GCItems.oxTankMedium);
-        stats.rocketStacks[4] = new ItemStack(GCItems.oxTankHeavy);
-        stats.rocketStacks[5] = new ItemStack(GCItems.oxTankHeavy);
-        stats.rocketStacks[6] = new ItemStack(AsteroidsItems.canisterLOX);
-        stats.rocketStacks[7] = new ItemStack(AsteroidsItems.canisterLOX);
-        stats.rocketStacks[8] = new ItemStack(AsteroidsItems.basicItem, 24, 7);
-        stats.rocketStacks[9] = new ItemStack(Blocks.glass_pane, 16);
-        stats.rocketStacks[10] = new ItemStack(Blocks.planks, 32, 2);
-        stats.rocketStacks[11] = new ItemStack(GCItems.basicItem, 1, 3); //1 Copper Ingot
-        stats.rocketStacks[11] = new ItemStack(MarsItems.marsItemBasic, 16, 2); //Desh ingot
-        stats.rocketStacks[12] = new ItemStack(GCItems.basicItem, 8, 13); //Basic Wafer
-        stats.rocketStacks[13] = new ItemStack(GCItems.basicItem, 2, 1); //Solar Panels
-        stats.rocketStacks[18] = new ItemStack(Items.potionitem, 4, 8262); //Night Vision Potion
-        stats.rocketStacks[14] = new ItemStack(GCItems.basicItem, 16, 15);  //Canned food
-        stats.rocketStacks[15] = new ItemStack(Items.egg, 12);
-        stats.rocketStacks[16] = new ItemStack(Items.spawn_egg, 2, (Integer) EntityList.classToIDMapping.get(EntitySheep.class));       
-        stats.rocketStacks[17] = new ItemStack(Items.spawn_egg, 2, (Integer) EntityList.classToIDMapping.get(EntityCow.class));       
+        int i = 0;
+        stats.rocketStacks[i++] = new ItemStack(GCItems.oxMask);
+        stats.rocketStacks[i++] = new ItemStack(GCItems.oxygenGear);
+        stats.rocketStacks[i++] = new ItemStack(GCItems.oxTankMedium);
+        stats.rocketStacks[i++] = new ItemStack(GCItems.oxTankMedium);
+        stats.rocketStacks[i++] = new ItemStack(GCItems.oxTankHeavy);
+        stats.rocketStacks[i++] = new ItemStack(GCItems.oxTankHeavy);
+        stats.rocketStacks[i++] = new ItemStack(AsteroidsItems.canisterLOX);
+        stats.rocketStacks[i++] = new ItemStack(AsteroidsItems.canisterLOX);
+        stats.rocketStacks[i++] = new ItemStack(AsteroidsItems.basicItem, 24, 7);
+        stats.rocketStacks[i++] = new ItemStack(Blocks.glass_pane, 16);
+        stats.rocketStacks[i++] = new ItemStack(Blocks.planks, 32, 2);
+        stats.rocketStacks[i++] = new ItemStack(MarsItems.marsItemBasic, 16, 2); //Desh ingot
+        stats.rocketStacks[i++] = new ItemStack(GCItems.basicItem, 8, 13); //Basic Wafer
+        stats.rocketStacks[i++] = new ItemStack(GCItems.basicItem, 2, 1); //Solar Panels
+        stats.rocketStacks[i++] = new ItemStack(GCItems.basicItem, 16, 15);  //Canned food
+        stats.rocketStacks[i++] = new ItemStack(Items.egg, 12);
+        stats.rocketStacks[i++] = new ItemStack(Items.spawn_egg, 2, (Integer) EntityList.classToIDMapping.get(EntityCow.class));
+        stats.rocketStacks[i++] = new ItemStack(Items.potionitem, 4, 8262); //Night Vision Potion
+        i++;
+        stats.rocketStacks[i++] = new ItemStack(MarsItems.spaceship, 1, IRocketType.EnumRocketType.INVENTORY36.ordinal());
       //stats.rocketStacks[15] = new ItemStack(GCBlocks.brightLamp, 4);
       //stats.rocketStacks[16] = new ItemStack(GCBlocks.aluminumWire, 32);
 	}

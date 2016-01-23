@@ -10,6 +10,7 @@ import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
@@ -95,7 +96,6 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
                 break;
             case 3:
             case 4:
-            case 17:
             	this.dropItem(GCItems.meteoricIronRaw, 1);
                 break;
             case 5:
@@ -114,6 +114,16 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
             case 9:
                 this.dropItem(GCItems.oxygenVent, 1);
                 break;
+            case 10:
+            case 11:
+            case 12:
+            	this.dropItem(Items.carrot, 1);
+            	break;
+            case 13:
+            case 14:
+            case 15:
+            	if (ConfigManagerCore.adventureMode) this.dropItem(Items.melon_seeds, 1);
+            	break;
             default:
                 this.entityDropItem(new ItemStack(GCItems.basicItem, 1, 3), 0.0F);
                 break;

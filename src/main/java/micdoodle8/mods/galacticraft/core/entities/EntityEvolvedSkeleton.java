@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.entities;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -112,7 +113,6 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
         {
             case 0:
             case 1:
-            case 9:
             	this.dropItem(Items.arrow, 1);
                 break;
             case 2:
@@ -128,10 +128,14 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
                 this.entityDropItem(new ItemStack(GCItems.oxTankMedium, 1, 901 + this.rand.nextInt(900)), 0.0F);
                 break;
             case 7:
-                this.dropItem(GCItems.canister, 1);
+            	if (ConfigManagerCore.adventureMode) this.dropItem(Items.pumpkin_seeds, 1);
+            	else this.dropItem(GCItems.canister, 1);
                 break;
             case 8:
                 this.entityDropItem(new ItemStack(GCBlocks.oxygenPipe), 0.0F);
+                break;
+            case 9:
+            	if (ConfigManagerCore.adventureMode) this.dropItem(Items.pumpkin_seeds, 1);
                 break;
         }
     }
