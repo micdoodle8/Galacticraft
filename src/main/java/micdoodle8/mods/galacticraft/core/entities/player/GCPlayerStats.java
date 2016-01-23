@@ -121,6 +121,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
     public boolean openedSpaceRaceManager = false;
 	public boolean sentFlags = false;
 	public boolean newInOrbit = true;
+	public boolean newAdventureSpawn;
 	public int buildFlags = 0;
 
 	public int incrementalDamage = 0;

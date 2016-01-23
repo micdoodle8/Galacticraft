@@ -1050,6 +1050,8 @@ public class GCPlayerHandler
             player.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, player.rotationYaw, player.rotationPitch);
             type.setupAdventureSpawn(player);
             type.onSpaceDimensionChanged(player.worldObj, player, false);
+            player.setSpawnChunk(new ChunkCoordinates(spawnPos.intX(), spawnPos.intY(), spawnPos.intZ()), true, player.worldObj.provider.dimensionId);
+            GCPlayer.newAdventureSpawn = true;
         }
         final boolean isInGCDimension = player.worldObj.provider instanceof IGalacticraftWorldProvider;
 
@@ -1162,7 +1164,7 @@ public class GCPlayerHandler
                 GCPlayer.justLanded = false;
 
                 //Set spawn point here if just descended from a lander for the first time
-                if (player.getBedLocation(player.worldObj.provider.dimensionId) == null)
+                if (player.getBedLocation(player.worldObj.provider.dimensionId) == null || GCPlayer.newAdventureSpawn)
                 {
                     int i = 30000000;
                     int j = Math.min(i, Math.max(-i, MathHelper.floor_double(player.posX + 0.5D)));
@@ -1170,6 +1172,7 @@ public class GCPlayerHandler
                     int l = Math.min(i, Math.max(-i, MathHelper.floor_double(player.posZ + 0.5D)));
                     ChunkCoordinates coords = new ChunkCoordinates(j, k, l);
                     player.setSpawnChunk(coords, true, player.worldObj.provider.dimensionId);
+                    GCPlayer.newAdventureSpawn = false;
                 }
 
                 GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, new Object[] { }), player);
