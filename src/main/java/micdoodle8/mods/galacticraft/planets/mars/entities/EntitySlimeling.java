@@ -283,12 +283,6 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
     }
 
     @Override
-    protected int getExperiencePoints(EntityPlayer player)
-    {
-        return 1 + this.worldObj.rand.nextInt(3);
-    }
-
-    @Override
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
