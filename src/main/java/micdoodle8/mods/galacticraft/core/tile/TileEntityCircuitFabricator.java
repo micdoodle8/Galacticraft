@@ -4,6 +4,8 @@ import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.items.ItemBasic;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -108,11 +110,21 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     {
         if (this.canCompress())
         {
-            ItemStack resultItemStack = this.producingStack;
+            ItemStack resultItemStack = this.producingStack.copy();
+            if (ConfigManagerCore.quickMode)
+            {
+	            if (resultItemStack.getItem() == GCItems.basicItem)
+	            {
+	            	if (resultItemStack.getItemDamage() == ItemBasic.WAFER_BASIC)
+	            		resultItemStack.stackSize = 5;
+	            	else if (resultItemStack.getItemDamage() == ItemBasic.WAFER_ADVANCED)
+	            		resultItemStack.stackSize = 2;
+	            }
+            }
 
             if (this.containingItems[6] == null)
             {
-                this.containingItems[6] = resultItemStack.copy();
+                this.containingItems[6] = resultItemStack;
             }
             else if (this.containingItems[6].isItemEqual(resultItemStack))
             {
@@ -130,9 +142,10 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
 
                         this.worldObj.spawnEntityInWorld(entityitem);
                     }
+                    this.containingItems[6].stackSize = 64;
                 }
-
-                this.containingItems[6].stackSize += resultItemStack.stackSize;
+                else
+                	this.containingItems[6].stackSize += resultItemStack.stackSize;
             }
         }
 

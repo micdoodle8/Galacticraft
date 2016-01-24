@@ -144,32 +144,38 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     {
         if (this.canCompress())
         {
-            ItemStack resultItemStack = this.producingStack;
-
-            if (this.containingItems[slot] == null)
+            ItemStack resultItemStack = this.producingStack.copy();
+            if (ConfigManagerCore.quickMode)
             {
-                this.containingItems[slot] = resultItemStack.copy();
+            	if (resultItemStack.getItem().getUnlocalizedName(resultItemStack).contains("compressed"))
+            		resultItemStack.stackSize *= 2;
             }
-            else if (this.containingItems[slot].isItemEqual(resultItemStack))
-            {
-                if (this.containingItems[slot].stackSize + resultItemStack.stackSize > 64)
-                {
-                    for (int i = 0; i < this.containingItems[slot].stackSize + resultItemStack.stackSize - 64; i++)
-                    {
-                        float var = 0.7F;
-                        double dx = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        double dy = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        double dz = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        EntityItem entityitem = new EntityItem(this.worldObj, this.xCoord + dx, this.yCoord + dy, this.zCoord + dz, new ItemStack(resultItemStack.getItem(), 1, resultItemStack.getItemDamage()));
 
-                        entityitem.delayBeforeCanPickup = 10;
+        	if (this.containingItems[slot] == null)
+        	{
+        		this.containingItems[slot] = resultItemStack;
+        	}
+        	else if (this.containingItems[slot].isItemEqual(resultItemStack))
+        	{
+        		if (this.containingItems[slot].stackSize + resultItemStack.stackSize > 64)
+        		{
+        			for (int i = 0; i < this.containingItems[slot].stackSize + resultItemStack.stackSize - 64; i++)
+        			{
+        				float var = 0.7F;
+        				double dx = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+        				double dy = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+        				double dz = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+        				EntityItem entityitem = new EntityItem(this.worldObj, this.xCoord + dx, this.yCoord + dy, this.zCoord + dz, new ItemStack(resultItemStack.getItem(), 1, resultItemStack.getItemDamage()));
 
-                        this.worldObj.spawnEntityInWorld(entityitem);
-                    }
-                }
+        				entityitem.delayBeforeCanPickup = 10;
 
-                this.containingItems[slot].stackSize += resultItemStack.stackSize;
-            }
+        				this.worldObj.spawnEntityInWorld(entityitem);
+        			}
+        			this.containingItems[slot].stackSize = 64;
+        		}
+        		else
+        			this.containingItems[slot].stackSize += resultItemStack.stackSize;
+        	}
 
             for (int i = 0; i < this.compressingCraftMatrix.getSizeInventory(); i++)
             {

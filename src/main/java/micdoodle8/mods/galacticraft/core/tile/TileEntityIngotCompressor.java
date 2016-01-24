@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.item.EntityItem;
@@ -209,31 +210,37 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
         if (this.canSmelt())
         {
             ItemStack resultItemStack = this.producingStack;
-
-            if (this.containingItems[1] == null)
+            if (ConfigManagerCore.quickMode)
             {
-                this.containingItems[1] = resultItemStack.copy();
+            	if (resultItemStack.getItem().getUnlocalizedName(resultItemStack).contains("compressed"))
+            		resultItemStack.stackSize *= 2;
             }
-            else if (this.containingItems[1].isItemEqual(resultItemStack))
-            {
-                if (this.containingItems[1].stackSize + resultItemStack.stackSize > 64)
-                {
-                    for (int i = 0; i < this.containingItems[1].stackSize + resultItemStack.stackSize - 64; i++)
-                    {
-                        float var = 0.7F;
-                        double dx = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        double dy = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        double dz = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        EntityItem entityitem = new EntityItem(this.worldObj, this.xCoord + dx, this.yCoord + dy, this.zCoord + dz, new ItemStack(resultItemStack.getItem(), 1, resultItemStack.getItemDamage()));
+ 
+        	if (this.containingItems[1] == null)
+        	{
+        		this.containingItems[1] = resultItemStack.copy();
+        	}
+        	else if (this.containingItems[1].isItemEqual(resultItemStack))
+        	{
+        		if (this.containingItems[1].stackSize + resultItemStack.stackSize > 64)
+        		{
+        			for (int i = 0; i < this.containingItems[1].stackSize + resultItemStack.stackSize - 64; i++)
+        			{
+        				float var = 0.7F;
+        				double dx = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+        				double dy = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+        				double dz = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+        				EntityItem entityitem = new EntityItem(this.worldObj, this.xCoord + dx, this.yCoord + dy, this.zCoord + dz, new ItemStack(resultItemStack.getItem(), 1, resultItemStack.getItemDamage()));
 
-                        entityitem.delayBeforeCanPickup = 10;
+        				entityitem.delayBeforeCanPickup = 10;
 
-                        this.worldObj.spawnEntityInWorld(entityitem);
-                    }
-                }
-
-                this.containingItems[1].stackSize += resultItemStack.stackSize;
-            }
+        				this.worldObj.spawnEntityInWorld(entityitem);
+        			}
+        			this.containingItems[1].stackSize = 64;
+        		}
+        		else
+        			this.containingItems[1].stackSize += resultItemStack.stackSize;
+        	}
 
             for (int i = 0; i < this.compressingCraftMatrix.getSizeInventory(); i++)
             {
