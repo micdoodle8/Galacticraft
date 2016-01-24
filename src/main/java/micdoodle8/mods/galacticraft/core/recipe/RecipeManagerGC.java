@@ -272,7 +272,7 @@ public class RecipeManagerGC
 
         RecipeUtil.addRecipe(new ItemStack(GCItems.partNoseCone, 1), new Object[] { " Y ", " X ", "X X", 'X', GCItems.heavyPlatingTier1, 'Y', Blocks.redstone_torch });
 
-        RecipeUtil.addRecipe(new ItemStack(GCBlocks.oxygenPipe, 4), new Object[] { "XXX", "   ", "XXX", 'X', Blocks.glass_pane });
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.oxygenPipe, 6), new Object[] { "XXX", "   ", "XXX", 'X', Blocks.glass_pane });
 
         RecipeUtil.addRecipe(new ItemStack(GCItems.oxTankLight, 1, GCItems.oxTankLight.getMaxDamage()), new Object[] { "Z", "X", "Y", 'X', new ItemStack(GCItems.canister, 1, 0), 'Y', "compressedCopper", 'Z', new ItemStack(Blocks.wool, 1, 5) });
 

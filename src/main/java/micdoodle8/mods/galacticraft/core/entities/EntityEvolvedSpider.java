@@ -105,33 +105,30 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
     @Override
     protected void dropRareDrop(int p_70600_1_)
     {
-        switch (this.rand.nextInt(20))
+        switch (this.rand.nextInt(14))
         {
             case 0:
             case 1:
             case 2:
-            case 3:
             	this.dropItem(GCItems.cheeseCurd, 1);
                 break;
+            case 3:
             case 4:
             case 5:
-            case 6:
-            case 7:
             	this.dropItem(Items.fermented_spider_eye, 1);
                 break;
-            case 8:
-            case 9:
+            case 6:
+            case 7:
             	//Oxygen tank half empty or less
                 this.entityDropItem(new ItemStack(GCItems.oxTankMedium, 1, 901 + this.rand.nextInt(900)), 0.0F);
                 break;
-            case 10:
+            case 8:
                 this.dropItem(GCItems.oxygenGear, 1);
                 break;
-            case 11:
+            case 9:
                 this.dropItem(GCItems.oxygenConcentrator, 1);
                 break;
-            case 12:
-            case 13:
+            default:
             	if (ConfigManagerCore.adventureMode) this.dropItem(Items.nether_wart, 1);
             	break;
         }

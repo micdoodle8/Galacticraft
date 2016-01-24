@@ -177,30 +177,27 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
     @Override
     protected void dropRareDrop(int p_70600_1_)
     {
-        switch (this.rand.nextInt(20))
+        switch (this.rand.nextInt(12))
         {
         case 0:
+        case 1:
         case 2:
         case 3:
-        case 4:
-        case 5:
         	this.entityDropItem(new ItemStack(Blocks.sand), 0.0F);
         	break;
-        case 1:
-        case 6:
+        case 4:
+        case 5:
         	//Oxygen tank half empty or less
         	this.entityDropItem(new ItemStack(GCItems.oxTankMedium, 1, 901 + this.rand.nextInt(900)), 0.0F);
         	break;
-        case 7:
+        case 6:
         	this.dropItem(GCItems.oxygenGear, 1);
         	break;
+        case 7:
         case 8:
-        case 9:
             this.entityDropItem(new ItemStack(Blocks.ice), 0.0F);
             break;
-        case 10:
-        case 11:
-        case 12:
+        default:
         	if (ConfigManagerCore.adventureMode) this.dropItem(Items.reeds, 1);
         	break;
         }

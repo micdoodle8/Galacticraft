@@ -319,12 +319,12 @@ public class TeleportTypeAsteroids implements ITeleportType
         stats.rocketStacks[i++] = new ItemStack(GCItems.oxMask);
         stats.rocketStacks[i++] = new ItemStack(GCItems.oxygenGear);
         stats.rocketStacks[i++] = new ItemStack(GCItems.oxTankMedium);
-        stats.rocketStacks[i++] = new ItemStack(GCItems.oxTankMedium);
         stats.rocketStacks[i++] = new ItemStack(GCItems.oxTankHeavy);
         stats.rocketStacks[i++] = new ItemStack(GCItems.oxTankHeavy);
         stats.rocketStacks[i++] = new ItemStack(AsteroidsItems.canisterLOX);
         stats.rocketStacks[i++] = new ItemStack(AsteroidsItems.canisterLOX);
-        stats.rocketStacks[i++] = new ItemStack(AsteroidsItems.basicItem, 24, 7);
+        stats.rocketStacks[i++] = new ItemStack(AsteroidsItems.canisterLOX);
+        stats.rocketStacks[i++] = new ItemStack(AsteroidsItems.basicItem, 32, 7);
         stats.rocketStacks[i++] = new ItemStack(Blocks.glass_pane, 16);
         stats.rocketStacks[i++] = new ItemStack(Blocks.planks, 32, 2);
         stats.rocketStacks[i++] = new ItemStack(MarsItems.marsItemBasic, 16, 2); //Desh ingot
