@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -244,7 +245,10 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 
             for (int i = 0; i < this.compressingCraftMatrix.getSizeInventory(); i++)
             {
-                this.compressingCraftMatrix.decrStackSize(i, 1);
+                if (this.compressingCraftMatrix.getStackInSlot(i).getItem() == Items.water_bucket)
+                	this.compressingCraftMatrix.setInventorySlotContentsNoUpdate(i, new ItemStack(Items.bucket));
+                else
+                	this.compressingCraftMatrix.decrStackSize(i, 1);
             }
             this.updateInput();
         }

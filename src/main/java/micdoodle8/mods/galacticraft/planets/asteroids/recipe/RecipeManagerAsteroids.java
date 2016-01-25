@@ -91,7 +91,7 @@ public class RecipeManagerAsteroids
         CraftingManager.getInstance().addShapelessRecipe(new ItemStack(Blocks.cobblestone, 2), new ItemStack(AsteroidBlocks.blockBasic, 1, 0), new ItemStack(AsteroidBlocks.blockBasic, 1, 2));
         CraftingManager.getInstance().addShapelessRecipe(new ItemStack(Blocks.cobblestone, 2), new ItemStack(AsteroidBlocks.blockBasic, 1, 1), new ItemStack(AsteroidBlocks.blockBasic, 1, 2));
         //Green dye from yellow and blue
-        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(Items.dye, 1, 2), new ItemStack(Items.dye, 1, 11), new ItemStack(Items.dye, 1, 4));
+        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(Items.dye, 2, 2), new ItemStack(Items.dye, 1, 11), new ItemStack(Items.dye, 1, 4));
 
         //Cobblestone->Gravel, Gravel->Sand, Sand->Clay
     	CompressorRecipes.addRecipeAdventure(new ItemStack(Blocks.gravel, 9, 0), "XXX", "XXX", "XXX", 'X', new ItemStack(Blocks.cobblestone, 1));
