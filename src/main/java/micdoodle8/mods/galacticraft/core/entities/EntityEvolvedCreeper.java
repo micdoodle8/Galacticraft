@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.entities;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
@@ -183,7 +184,7 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
         case 1:
         case 2:
         case 3:
-        	this.entityDropItem(new ItemStack(Blocks.sand), 0.0F);
+        	this.entityDropItem(new ItemStack(VersionUtil.sand), 0.0F);
         	break;
         case 4:
         case 5:

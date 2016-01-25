@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
+import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
@@ -95,10 +96,10 @@ public class RecipeManagerAsteroids
 
         //Cobblestone->Gravel, Gravel->Sand, Sand->Clay
     	CompressorRecipes.addRecipeAdventure(new ItemStack(Blocks.gravel, 9, 0), "XXX", "XXX", "XXX", 'X', new ItemStack(Blocks.cobblestone, 1));
-    	CompressorRecipes.addRecipeAdventure(new ItemStack(Blocks.sand, 9, 0), "XXX", "XXX", "XXX", 'X', new ItemStack(Blocks.gravel, 1));
-    	CompressorRecipes.addRecipeAdventure(new ItemStack(Blocks.clay, 8, 0), "XXX", "XBX", "XXX", 'X', new ItemStack(Blocks.sand), 'B', new ItemStack(Items.water_bucket));
-    	CompressorRecipes.addRecipeAdventure(new ItemStack(Blocks.soul_sand, 4, 0), "XFX", "FEF", "XFX", 'X', new ItemStack(Blocks.sand), 'F', new ItemStack(GCItems.cheeseCurd), 'E', new ItemStack(Items.fermented_spider_eye));
-    	CompressorRecipes.addRecipeAdventure(new ItemStack(Blocks.obsidian, 1, 0), "XXX", "XBX", "XXX", 'X', new ItemStack(Blocks.stone), 'B', new ItemStack(Items.blaze_rod));
+    	CompressorRecipes.addRecipeAdventure(new ItemStack(VersionUtil.sand, 9, 0), "XXX", "XXX", "XXX", 'X', new ItemStack(Blocks.gravel, 1));
+    	CompressorRecipes.addRecipeAdventure(new ItemStack(Blocks.clay, 8, 0), "XXX", "XBX", "XXX", 'X', new ItemStack(VersionUtil.sand), 'B', new ItemStack(Items.water_bucket));
+    	CompressorRecipes.addRecipeAdventure(new ItemStack(Blocks.soul_sand, 4, 0), "XFX", "FEF", "XFX", 'X', new ItemStack(VersionUtil.sand), 'F', new ItemStack(Items.rotten_flesh), 'E', new ItemStack(Items.fermented_spider_eye));
+    	CompressorRecipes.addRecipeAdventure(new ItemStack(Blocks.obsidian, 1, 0), "XXX", "XBX", "XXX", 'X', new ItemStack(Blocks.stone), 'B', new ItemStack(Items.blaze_powder));
         //Charcoal into coal
     	CompressorRecipes.addShapelessAdventure(new ItemStack(Items.coal, 2, 0), new ItemStack(Items.coal, 1, 1), new ItemStack(AsteroidBlocks.blockBasic, 1, 0), new ItemStack(Items.coal, 1, 1));
     	CompressorRecipes.addShapelessAdventure(new ItemStack(Items.coal, 2, 0), new ItemStack(Items.coal, 1, 1), new ItemStack(AsteroidBlocks.blockBasic, 1, 1), new ItemStack(Items.coal, 1, 1));

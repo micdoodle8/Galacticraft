@@ -16,6 +16,7 @@ import micdoodle8.mods.miccore.MicdoodleTransformer;
 import micdoodle8.mods.miccore.MicdoodleTransformer.MethodObfuscationEntry;
 import micdoodle8.mods.miccore.MicdoodleTransformer.ObfuscationEntry;
 import micdoodle8.mods.miccore.MicdoodleTransformer.FieldObfuscationEntry;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.ScaledResolution;
@@ -23,6 +24,7 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -78,6 +80,7 @@ public class VersionUtil
 	public static final String KEY_FIELD_CHUNKCACHE_WORLDOBJ = "chunkCacheWorldObj";
 
 	public static final String KEY_METHOD_ORIENT_CAMERA = "orientCamera";
+	public static Block sand;
 
     static
     {
@@ -121,6 +124,7 @@ public class VersionUtil
             nodemap.put(KEY_METHOD_PLAYER_FOR_NAME, new MethodObfuscationEntry("func_152612_a", "func_152612_a", ""));
             nodemap.put(KEY_METHOD_PLAYER_IS_OPPED, new MethodObfuscationEntry("func_152596_g", "func_152596_g", ""));
             nodemap.put(KEY_METHOD_PLAYER_TEXTURE, new MethodObfuscationEntry("getEntityTexture", "func_110775_a", ""));
+            sand = Blocks.sand;
         }
         else if (mcVersion1_7_2)
         {
@@ -148,6 +152,11 @@ public class VersionUtil
             nodemap.put(KEY_METHOD_PLAYER_FOR_NAME, new MethodObfuscationEntry("getPlayerForUsername", "func_72361_f", ""));
             nodemap.put(KEY_METHOD_PLAYER_IS_OPPED, new MethodObfuscationEntry("isPlayerOpped", "func_72353_e", ""));
             nodemap.put(KEY_METHOD_PLAYER_TEXTURE, new MethodObfuscationEntry("getEntityTexture", "func_110775_a", ""));
+            
+            try {
+				Field sandField = Blocks.class.getField(deobfuscated ? "sand" : "field_150354_m");
+				sand = (Block) sandField.get(null);
+			} catch (Exception e) { e.printStackTrace(); }
         }
 
         //Same for both versions

@@ -129,8 +129,7 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
                 this.entityDropItem(new ItemStack(GCItems.oxTankMedium, 1, 901 + this.rand.nextInt(900)), 0.0F);
                 break;
             case 7:
-            	if (ConfigManagerCore.adventureMode) this.dropItem(Items.pumpkin_seeds, 1);
-            	else this.dropItem(GCItems.canister, 1);
+            	this.dropItem(GCItems.canister, 1);
                 break;
             case 8:
                 this.entityDropItem(new ItemStack(GCBlocks.oxygenPipe), 0.0F);
