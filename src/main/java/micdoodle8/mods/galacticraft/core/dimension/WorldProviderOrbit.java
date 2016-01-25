@@ -1202,7 +1202,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                             thismassCentreZ += m * sideVec.z;
                             thismass += m;
                             thismoment += m * (sideVec.x * sideVec.x + sideVec.z * sideVec.z);
-                            if (b instanceof BlockSpinThruster)
+                            if (b instanceof BlockSpinThruster && this.worldObj.getBlockPowerInput(sideVec.x, sideVec.y, sideVec.z) == 0)
                             {
                                 foundThrusters.add(sideVec);
                             }

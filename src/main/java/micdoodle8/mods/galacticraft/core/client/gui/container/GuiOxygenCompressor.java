@@ -91,11 +91,6 @@ public class GuiOxygenCompressor extends GuiContainerGC
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingtank.name");
         }
 
-        if (this.compressor.getEnergyStoredGC() == 0)
-        {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingpower.name");
-        }
-
         if (this.compressor.getStackInSlot(0) != null && this.compressor.getStackInSlot(0).getItemDamage() == 0)
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.fulltank.name");
@@ -106,7 +101,7 @@ public class GuiOxygenCompressor extends GuiContainerGC
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingoxygen.name");
         }
 
-        return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.active.name");
+        return this.compressor.getGUIstatus();
     }
 
     @Override

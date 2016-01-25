@@ -26,6 +26,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.ChunkCache;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -72,6 +75,7 @@ public class VersionUtil
 	public static final String KEY_FIELD_CAMERA_YAW = "cameraYaw";
 	public static final String KEY_FIELD_CAMERA_PITCH = "cameraPitch";
 	public static final String KEY_FIELD_CLASSTOIDMAPPING = "classToIDMapping";
+	public static final String KEY_FIELD_CHUNKCACHE_WORLDOBJ = "chunkCacheWorldObj";
 
 	public static final String KEY_METHOD_ORIENT_CAMERA = "orientCamera";
 
@@ -155,6 +159,7 @@ public class VersionUtil
         nodemap.put(KEY_FIELD_CAMERA_YAW, new FieldObfuscationEntry("cameraYaw", "field_78502_W"));
         nodemap.put(KEY_FIELD_CAMERA_PITCH, new FieldObfuscationEntry("cameraPitch", "field_78509_X"));
         nodemap.put(KEY_FIELD_CLASSTOIDMAPPING, new FieldObfuscationEntry("classToIDMapping", "field_75624_e"));
+        nodemap.put(KEY_FIELD_CHUNKCACHE_WORLDOBJ, new FieldObfuscationEntry("worldObj", "field_72815_e"));
         
         nodemap.put(KEY_METHOD_ORIENT_CAMERA, new MethodObfuscationEntry("orientCamera", "func_78467_g", ""));
     }
@@ -571,5 +576,32 @@ public class VersionUtil
         }
 
         return null;
+	}
+
+	public static World getWorld(IBlockAccess world)
+	{
+        if (world instanceof World)
+        	return (World) world;
+        
+        if (world instanceof ChunkCache)
+		try
+        {
+			Field f = (Field) reflectionCache.get(20);
+	        if (f == null)
+	        {
+	            Class c = Class.forName("net.minecraft.world.ChunkCache");
+	            f = c.getDeclaredField(getNameDynamic(KEY_FIELD_CHUNKCACHE_WORLDOBJ));
+	            f.setAccessible(true);
+	            reflectionCache.put(20, f);
+	        }
+	        
+	        return (World) f.get(world);
+        }
+        catch (Throwable t)
+        {
+            t.printStackTrace();
+        }
+		
+		return null;
 	}
 }

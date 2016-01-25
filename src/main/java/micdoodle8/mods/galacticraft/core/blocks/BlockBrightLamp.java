@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -15,6 +16,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlockShiftDesc
@@ -31,6 +33,23 @@ public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlo
         this.setBlockTextureName("stone");
         this.setBlockName(assetName);
         this.setLightLevel(1.0F);
+    }
+
+    public int getLightValue(IBlockAccess world, int x, int y, int z)
+    {
+        Block block = world.getBlock(x, y, z);
+        if (block != this)
+        {
+            return block.getLightValue(world, x, y, z);
+        }
+        /**
+         * Gets the light value of the specified block coords. Args: x, y, z
+         */
+        int redstone = 0;
+        World w = VersionUtil.getWorld(world);
+        if (w != null)
+        	redstone = w.getBlockPowerInput(x, y, z);
+        return redstone == 0 ? this.getLightValue() : 0;
     }
 
     @Override

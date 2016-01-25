@@ -128,6 +128,11 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
 
     private String getStatus()
     {
+        if (this.terraformer.getWorldObj().getBlockPowerInput(this.terraformer.xCoord, this.terraformer.yCoord, this.terraformer.zCoord) > 0)
+        {
+        	return EnumColor.RED + GCCoreUtil.translate("gui.status.off.name");
+        }
+
         if (this.terraformer.getEnergyStoredGC() <= 0.0F)
         {
             return EnumColor.RED + GCCoreUtil.translate("gui.message.noEnergy.name");

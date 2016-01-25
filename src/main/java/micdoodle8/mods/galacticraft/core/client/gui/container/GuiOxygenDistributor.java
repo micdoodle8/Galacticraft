@@ -92,17 +92,12 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
 
     private String getStatus()
     {
-        if (this.distributor.getEnergyStoredGC() == 0)
-        {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingpower.name");
-        }
-
         if (this.distributor.storedOxygen < this.distributor.oxygenPerTick)
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingoxygen.name");
         }
 
-        return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.active.name");
+        return this.distributor.getGUIstatus();
     }
 
     @Override
