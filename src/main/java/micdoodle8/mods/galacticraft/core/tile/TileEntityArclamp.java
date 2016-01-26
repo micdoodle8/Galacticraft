@@ -179,7 +179,8 @@ public class TileEntityArclamp extends TileEntity
     @Override
     public void validate()
     {
-        this.thisPos = Vec3.createVectorHelper(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D);
+        super.validate();
+    	this.thisPos = Vec3.createVectorHelper(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D);
         this.ticks = 0;
         this.thisAABB = null;
         if (this.worldObj.isRemote)

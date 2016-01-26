@@ -318,7 +318,8 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
    @Override
     public void validate()
     {
-	    if (this.worldObj.isRemote)
+	   super.validate(); 
+	   if (this.worldObj.isRemote)
 	    {
 	    	GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.S_REQUEST_MINERBASE_FACING, new Object[] { this.xCoord, this.yCoord, this.zCoord } ));
 	    }
