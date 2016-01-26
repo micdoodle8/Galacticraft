@@ -65,6 +65,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     public TileEntityLaunchController()
     {
         this.storage.setMaxExtract(10);
+        this.noRedstoneControl = true;
     }
 
     @Override

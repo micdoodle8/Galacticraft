@@ -28,6 +28,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     public int disableCooldown = 0;
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean hasEnoughEnergyToRun = false;
+    public boolean noRedstoneControl = false;
 
     public boolean shouldPullEnergy()
     {
@@ -96,7 +97,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
                 this.discharge(this.getBatteryInSlot());
             }
 
-            if (this.getEnergyStoredGC(null) > this.storage.getMaxExtract() && this.worldObj.getBlockPowerInput(this.xCoord, this.yCoord, this.zCoord) == 0)
+            if (this.getEnergyStoredGC(null) > this.storage.getMaxExtract() && (this.noRedstoneControl || this.worldObj.getBlockPowerInput(this.xCoord, this.yCoord, this.zCoord) == 0))
             {
                 this.hasEnoughEnergyToRun = true;
                 if (this.shouldUseEnergy())
