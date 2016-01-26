@@ -17,6 +17,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.EnumSkyBlock;
@@ -96,7 +97,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
     private static final int CHUNK_SIZE_Y = 256;
     private static final int CHUNK_SIZE_Z = 16;
 
-    private static final int MAX_ASTEROID_RADIUS = 20;
+    private static final int MAX_ASTEROID_RADIUS = 25;
     private static final int MIN_ASTEROID_RADIUS = 5;
 
     private static final int MAX_ASTEROID_SKEW = 8;
@@ -178,8 +179,8 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
         this.coreHandler.addBlock(new SpecialAsteroidBlock(GCBlocks.basicBlock, (byte) 12, 2, .13));
         this.coreHandler.addBlock(new SpecialAsteroidBlock(Blocks.diamond_ore, (byte) 0, 1, .1));
         this.shellHandler = new SpecialAsteroidBlockHandler();
-        this.shellHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, this.ASTEROID_STONE_META_1, 3, .15));
         this.shellHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, this.ASTEROID_STONE_META_0, 1, .15));
+        this.shellHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, this.ASTEROID_STONE_META_1, 3, .15));
         this.shellHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, this.ASTEROID_STONE_META_2, 1, .15));
         this.shellHandler.addBlock(new SpecialAsteroidBlock(AsteroidBlocks.blockDenseIce, (byte) 0, 1, .15));
     }
@@ -204,6 +205,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
                 int maxZ = minZ + ChunkProviderAsteroids.CHUNK_SIZE_Z;
 
                 //NOTE: IF UPDATING THIS CODE also update addLargeAsteroids() which is the same algorithm
+                //??? ^^ this now seems redundant
                 for (int x = minX; x < maxX; x+=2)
                 {
                     for (int z = minZ; z < maxZ; z+=2)
@@ -215,8 +217,6 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
                             int y = random.nextInt(rangeY) + ChunkProviderAsteroids.MIN_ASTEROID_Y;
                             int size = random.nextInt(rangeSize) + ChunkProviderAsteroids.MIN_ASTEROID_RADIUS;
 
-                            //Add to the list of asteroids for external use
-                            ((WorldProviderAsteroids) this.worldObj.provider).addAsteroid(x, y, z);
                             //Generate the parts of the asteroid which are in this chunk
                             this.generateAsteroid(random, x, y, z, chunkX << 4, chunkZ << 4, size, idArray, metaArray, flagDataOnly);
                             this.largeCount++;
@@ -229,11 +229,12 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 
     private void generateAsteroid(Random rand, int asteroidX, int asteroidY, int asteroidZ, int chunkX, int chunkZ, int size, Block[] blockArray, byte[] metaArray, boolean flagDataOnly)
     {
-        SpecialAsteroidBlock core = this.coreHandler.getBlock(rand);
+        SpecialAsteroidBlock core = this.coreHandler.getBlock(rand, size);
+
         SpecialAsteroidBlock shell = null;           
         if (rand.nextInt(ChunkProviderAsteroids.ASTEROID_SHELL_CHANCE) == 0)
         {
-            shell = this.shellHandler.getBlock(rand);
+            shell = this.shellHandler.getBlock(rand, size);
         }
 
         boolean isHollow = false;
@@ -243,6 +244,9 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
             isHollow = true;
             shell = new SpecialAsteroidBlock(AsteroidBlocks.blockDenseIce, (byte) 0, 1, .15);
         }
+        
+        //Add to the list of asteroids for external use
+        ((WorldProviderAsteroids) this.worldObj.provider).addAsteroid(asteroidX, asteroidY, asteroidZ, size, isHollow ? -1 : core.index);
 
         final int xMin = this.clamp(Math.max(chunkX, asteroidX - size - ChunkProviderAsteroids.MAX_ASTEROID_SKEW - 2) - chunkX, 0, 16);
         final int zMin = this.clamp(Math.max(chunkZ, asteroidZ - size - ChunkProviderAsteroids.MAX_ASTEROID_SKEW - 2) - chunkZ, 0, 16);
@@ -687,7 +691,9 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
                 
                 if(ConfigManagerCore.adventureMode || rand.nextInt(ChunkProviderAsteroids.TREE_CHANCE) == 0)
                 {
-                	WorldGenTrees wg = new WorldGenTrees(false); 
+                	int treeType = rand.nextInt(3);
+                	if (treeType == 1) treeType = 0;
+                	WorldGenTrees wg = new WorldGenTrees(false, 2, 0, 0, false); 
                 	for (int tries = 0; tries < 5; tries++)
                     {
 	                	int i = rand.nextInt(16) + x + 8;
@@ -875,6 +881,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
             monsters.add(new SpawnListEntry(EntityEvolvedSpider.class, 2000, 1, 2));
             monsters.add(new SpawnListEntry(EntityEvolvedSkeleton.class, 1500, 1, 1));
             monsters.add(new SpawnListEntry(EntityEvolvedCreeper.class, 2000, 1, 1));
+            if (ConfigManagerCore.adventureMode) monsters.add(new SpawnListEntry(EntityEnderman.class, 250, 1, 1));
             return monsters;
         }
         else

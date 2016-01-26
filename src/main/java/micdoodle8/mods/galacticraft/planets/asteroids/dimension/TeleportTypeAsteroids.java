@@ -13,7 +13,6 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityEntryPod;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
-import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.entity.Entity;
@@ -313,7 +312,9 @@ public class TeleportTypeAsteroids implements ITeleportType
 	public void setupAdventureSpawn(EntityPlayerMP player)
 	{
         GCPlayerStats stats = GCPlayerStats.get(player);
-        SchematicRegistry.unlockNewPage(player, new ItemStack(GCItems.schematic, 1, ConfigManagerMars.idSchematicRocketT2));
+        SchematicRegistry.unlockNewPage(player, new ItemStack(GCItems.schematic, 1, 1)); //Knows how to build T2 rocket
+        SchematicRegistry.unlockNewPage(player, new ItemStack(MarsItems.schematic, 1, 0)); //Knows how to build T3 rocket
+        SchematicRegistry.unlockNewPage(player, new ItemStack(MarsItems.schematic, 1, 2)); //Knows how to build Astro Miner
         stats.rocketStacks = new ItemStack[20];
         stats.fuelLevel = 1000;
         int i = 0;

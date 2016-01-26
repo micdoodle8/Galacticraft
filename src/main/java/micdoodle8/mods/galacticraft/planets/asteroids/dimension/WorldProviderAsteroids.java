@@ -27,7 +27,7 @@ import java.util.TreeMap;
 public class WorldProviderAsteroids extends WorldProviderSpace implements ISolarLevel
 {
     //Used to list asteroid centres to external code that needs to know them
-    private HashSet<BlockVec3> asteroidCentres = new HashSet();
+    private HashSet<AsteroidData> asteroids = new HashSet();
     private boolean dataNotLoaded = true;
     private AsteroidSaveData datafile;
 	private double solarMultiplier = -1D;
@@ -210,29 +210,29 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
         return -1.5F;
     }
 
-    public void addAsteroid(int x, int y, int z)
+    public void addAsteroid(int x, int y, int z, int size, int core)
     {
-        BlockVec3 coords = new BlockVec3(x, y, z);
-        if (!this.asteroidCentres.contains(coords))
+        AsteroidData coords = new AsteroidData(x, y, z, size, core);
+        if (!this.asteroids.contains(coords))
         {
             if (this.dataNotLoaded)
             {
                 this.loadAsteroidSavedData();
             }
-            if (!this.asteroidCentres.contains(coords))
+            if (!this.asteroids.contains(coords))
             {
                 this.addToNBT(this.datafile.datacompound, coords);
-                this.asteroidCentres.add(coords);
+                this.asteroids.add(coords);
             }
         }
     }
 
     public void removeAsteroid(int x, int y, int z)
     {
-        BlockVec3 coords = new BlockVec3(x, y, z);
-        if (this.asteroidCentres.contains(coords))
+    	AsteroidData coords = new AsteroidData(x, y, z);
+        if (this.asteroids.contains(coords))
         {
-            this.asteroidCentres.remove(coords);
+            this.asteroids.remove(coords);
 
             if (this.dataNotLoaded)
             {
@@ -271,7 +271,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
 
                 if (tag1 != null)
                 {
-                    this.asteroidCentres.add(BlockVec3.readFromNBT(tag1));
+                    this.asteroids.add(AsteroidData.readFromNBT(tag1));
                 }
             }
         }
@@ -280,7 +280,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     private void writeToNBT(NBTTagCompound nbt)
     {
         NBTTagList coordList = new NBTTagList();
-        for (BlockVec3 coords : this.asteroidCentres)
+        for (AsteroidData coords : this.asteroids)
         {
             NBTTagCompound tag = new NBTTagCompound();
             coords.writeToNBT(tag);
@@ -290,7 +290,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
         this.datafile.markDirty();
     }
 
-    private void addToNBT(NBTTagCompound nbt, BlockVec3 coords)
+    private void addToNBT(NBTTagCompound nbt, AsteroidData coords)
     {
         NBTTagList coordList = nbt.getTagList("coords", 10);
         NBTTagCompound tag = new NBTTagCompound();
@@ -307,26 +307,36 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
             this.loadAsteroidSavedData();
         }
 
-        if (this.asteroidCentres.size() == 0)
+        if (this.asteroids.size() == 0)
         {
             return null;
         }
 
         BlockVec3 result = null;
+        AsteroidData resultRoid = null;
         int lowestDistance = Integer.MAX_VALUE;
 
-        for (BlockVec3 test : this.asteroidCentres)
+        for (AsteroidData test : this.asteroids)
         {
-            int dx = x - test.x;
-            int dz = z - test.z;
+            if ((test.sizeAndLandedFlag & 128) > 0)
+            	continue;
+
+            int dx = x - test.centre.x;
+            int dz = z - test.centre.z;
             int a = dx * dx + dz * dz;
             if (a < lowestDistance)
             {
                 lowestDistance = a;
-                result = test;
+                result = test.centre;
+                resultRoid = test;
             }
         }
 
+        if (result == null)
+        	return null;
+        
+        resultRoid.sizeAndLandedFlag |= 128;
+        this.writeToNBT(this.datafile.datacompound);
         return result.clone();
     }
 
@@ -337,16 +347,17 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
             this.loadAsteroidSavedData();
         }
 
-        if (this.asteroidCentres.size() == 0)
+        if (this.asteroids.size() == 0)
         {
             return null;
         }
 
         TreeMap<Integer, BlockVec3> targets = new TreeMap();
         
-        for (BlockVec3 test : this.asteroidCentres)
+        for (AsteroidData roid : this.asteroids)
         {
-            switch (facing)
+            BlockVec3 test = roid.centre;
+        	switch (facing)
             {
             case 2:
             	if (z - 16 < test.z)
@@ -402,7 +413,6 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
         
         return returnValues;
     }
-
     
     @Override
     public float getWindLevel()
@@ -432,5 +442,82 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
 			this.solarMultiplier = s * s * s * ConfigManagerCore.spaceStationEnergyScalar;
 		}
 		return this.solarMultiplier;
+	}
+	
+	private static class AsteroidData
+	{
+		protected BlockVec3 centre;
+		protected int sizeAndLandedFlag = 15;
+		protected int coreAndSpawnedFlag = -2;
+
+		public AsteroidData(int x, int y, int z)
+		{
+			this.centre = new BlockVec3(x, y, z);
+		}
+		
+		public AsteroidData(int x, int y, int z, int size, int core)
+		{
+			this.centre = new BlockVec3(x, y, z);
+			this.sizeAndLandedFlag = size;
+			this.coreAndSpawnedFlag = core;
+		}
+		
+		public AsteroidData(BlockVec3 bv)
+		{
+			this.centre = bv;
+		}
+		
+	    @Override
+	    public int hashCode()
+	    {
+	    	if (this.centre != null)
+	    		return this.centre.hashCode();
+	    	else
+	    		return 0;
+	    }
+	    
+	    @Override
+	    public boolean equals(Object o)
+	    {
+	        if (o instanceof AsteroidData)
+	        {
+	            BlockVec3 vector = ((AsteroidData) o).centre;
+	            return this.centre.x == vector.x && this.centre.y == vector.y && this.centre.z == vector.z;
+	        }
+	        
+	        if (o instanceof BlockVec3)
+	        {
+	            BlockVec3 vector = (BlockVec3) o;
+	            return this.centre.x == vector.x && this.centre.y == vector.y && this.centre.z == vector.z;
+	        }
+
+	        return false;
+	    }
+	    
+	    public NBTTagCompound writeToNBT(NBTTagCompound tag)
+	    {
+	        tag.setInteger("x", this.centre.x);
+	        tag.setInteger("y", this.centre.y);
+	        tag.setInteger("z", this.centre.z);
+	        tag.setInteger("coreAndFlag", this.coreAndSpawnedFlag);
+	        tag.setInteger("sizeAndFlag", this.sizeAndLandedFlag);
+	        return tag;
+	    }
+
+	    public static AsteroidData readFromNBT(NBTTagCompound tag)
+	    {
+	        BlockVec3 tempVector = new BlockVec3();
+	        tempVector.x = tag.getInteger("x");
+	        tempVector.y = tag.getInteger("y");
+	        tempVector.z = tag.getInteger("z");
+	        
+	        AsteroidData roid = new AsteroidData(tempVector);
+	    	if (tag.hasKey("coreAndFlag"))
+	    		roid.coreAndSpawnedFlag = tag.getInteger("coreAndFlag");
+	    	if (tag.hasKey("sizeAndFlag"))
+	    		roid.sizeAndLandedFlag = tag.getInteger("sizeAndFlag");
+
+	    	return roid;
+	    }
 	}
 }
