@@ -198,6 +198,7 @@ public class TileEntityArclamp extends TileEntity
             this.revertAir();
         }
         this.isActive = false;
+        super.invalidate();
     }
 
     public void lightArea()
