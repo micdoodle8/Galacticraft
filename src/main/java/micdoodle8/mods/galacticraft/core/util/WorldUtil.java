@@ -1227,7 +1227,7 @@ public class WorldUtil
 
     public static WorldServer getStartWorld(WorldServer worldOld)
     {
-        if (ConfigManagerCore.adventureMode)
+        if (ConfigManagerCore.challengeMode)
         {
         	WorldProvider wp = WorldUtil.getProviderForNameServer("planet.asteroids");
         	WorldServer worldNew = (wp == null) ? null : (WorldServer) wp.worldObj;

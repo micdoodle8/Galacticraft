@@ -36,7 +36,7 @@ public class ConfigManagerCore
     public static boolean forceOverworldRespawn;
     public static boolean hardMode;
     public static boolean quickMode;
-	public static boolean adventureMode;
+	public static boolean challengeMode;
     public static boolean disableRocketsToOverworld;
     public static boolean disableSpaceStationCreation;
     public static boolean spaceStationsRequirePermission;
@@ -451,8 +451,8 @@ public class ConfigManagerCore
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Adventure Game Mode", false);
             prop.comment = "Set this to true for a challenging adventure where the player starts the game stranded in the Asteroids dimension with low resources (only effective if Galacticraft Planets installed).";
             prop.setLanguageKey("gc.configgui.asteroidsStart");
-            adventureMode = prop.getBoolean(false);
-            if (!GalacticraftCore.isPlanetsLoaded) adventureMode = false;
+            challengeMode = prop.getBoolean(false);
+            if (!GalacticraftCore.isPlanetsLoaded) challengeMode = false;
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Enable Sealed edge checks", true);
@@ -707,7 +707,7 @@ public class ConfigManagerCore
     	ArrayList<Object> returnList = new ArrayList();
     	int modeFlags = ConfigManagerCore.hardMode ? 1 : 0;
     	modeFlags += ConfigManagerCore.quickMode ? 2 : 0;
-    	modeFlags += ConfigManagerCore.adventureMode ? 4 : 0;
+    	modeFlags += ConfigManagerCore.challengeMode ? 4 : 0;
     	returnList.add(modeFlags);
     	returnList.add(ConfigManagerCore.dungeonBossHealthMod);
     	returnList.add(ConfigManagerCore.suffocationDamage);
@@ -728,7 +728,7 @@ public class ConfigManagerCore
     	int modeFlag = (Integer) configs.get(0);
     	ConfigManagerCore.hardMode = (modeFlag & 1) != 0;
     	ConfigManagerCore.quickMode = (modeFlag & 2) != 0;
-    	ConfigManagerCore.adventureMode = (modeFlag & 4) != 0;
+    	ConfigManagerCore.challengeMode = (modeFlag & 4) != 0;
     	ConfigManagerCore.dungeonBossHealthMod = (Double) configs.get(1);
     	ConfigManagerCore.suffocationDamage = (Integer) configs.get(2);
     	ConfigManagerCore.suffocationCooldown = (Integer) configs.get(3);

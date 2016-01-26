@@ -135,7 +135,7 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
                 this.entityDropItem(new ItemStack(GCBlocks.oxygenPipe), 0.0F);
                 break;
             default:
-            	if (ConfigManagerCore.adventureMode) this.dropItem(Items.pumpkin_seeds, 1);
+            	if (ConfigManagerCore.challengeMode) this.dropItem(Items.pumpkin_seeds, 1);
                 break;
         }
     }
@@ -160,7 +160,7 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
         }
         
         //Drop lapis as semi-rare drop if player hit and if dropping bones
-        if (p_70628_1_ && ConfigManagerCore.adventureMode && j > 0 && this.rand.nextInt(12) == 0)
+        if (p_70628_1_ && ConfigManagerCore.challengeMode && j > 0 && this.rand.nextInt(12) == 0)
         	this.entityDropItem(new ItemStack(Items.dye, 1, 4), 0.0F);
     }
 

@@ -705,6 +705,7 @@ gc.configgui.rocketFuelFactor=Rocket Fuel Factor
 gc.configgui.dungeonBossHealthMod=Dungeon Boss Health Modifier
 gc.configgui.hardMode=Harder Difficulty
 gc.configgui.quickMode=Quick Game (easier)
+gc.configgui.asteroidsStart=Challenge Mode (Asteroids start)
 gc.configgui.mapScrollInvert=Invert Map Scroll
 gc.configgui.mapScrollSensitivity=Map Scroll Mouse Sensitivity
 gc.configgui.overrideMap=Set key: Galaxy Map

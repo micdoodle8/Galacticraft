@@ -50,6 +50,7 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -282,7 +283,12 @@ public class EventHandlerGC
             {
                 if (!(entityLiving instanceof EntityPlayer) && (!(entityLiving instanceof IEntityBreathable) || !((IEntityBreathable) entityLiving).canBreath()) && !((IGalacticraftWorldProvider)entityLiving.worldObj.provider).hasBreathableAtmosphere())
                 {
-                    if (!OxygenUtil.isAABBInBreathableAirBlock(entityLiving))
+                    if (ConfigManagerCore.challengeMode && entityLiving instanceof EntityEnderman)
+                    {
+                    	return;
+                    }
+                    
+                	if (!OxygenUtil.isAABBInBreathableAirBlock(entityLiving))
                     {
                         GCCoreOxygenSuffocationEvent suffocationEvent = new GCCoreOxygenSuffocationEvent.Pre(entityLiving);
                         MinecraftForge.EVENT_BUS.post(suffocationEvent);
