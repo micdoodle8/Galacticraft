@@ -42,6 +42,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.S07PacketRespawn;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
@@ -51,6 +52,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
 
@@ -1037,9 +1039,39 @@ public class GCPlayerHandler
 
         //This will speed things up a little
         final GCPlayerStats GCPlayer = GCPlayerStats.get(player);
-        if (GCPlayer.startDimension.length() > 0)
+
+        if (ConfigManagerCore.challengeMode && GCPlayer.unlockedSchematics.size() == 0)
         {
-        	GCPlayer.startDimension = "";
+        	if (GCPlayer.startDimension.length() > 0)
+        		GCPlayer.startDimension = "";
+        	else
+        	{
+        		//PlayerAPI is installed
+        		WorldServer worldOld = (WorldServer) player.worldObj;
+                try {
+                	worldOld.getPlayerManager().removePlayer(player);
+                } catch (Exception e) {  }
+                worldOld.playerEntities.remove(player);
+                worldOld.updateAllPlayersSleepingFlag();
+                worldOld.loadedEntityList.remove(player);
+                worldOld.onEntityRemoved(player);
+                if (player.addedToChunk && worldOld.getChunkProvider().chunkExists(player.chunkCoordX, player.chunkCoordZ))
+                {
+                    Chunk chunkOld = worldOld.getChunkFromChunkCoords(player.chunkCoordX, player.chunkCoordZ);
+                    chunkOld.removeEntity(player);
+                    chunkOld.isModified = true;
+                }
+
+                WorldServer worldNew = WorldUtil.getStartWorld(worldOld);
+                int dimID = worldNew.provider.dimensionId;
+                player.dimension = dimID;
+                GCLog.debug("DEBUG: Sending respawn packet to player for dim " + dimID);
+                player.playerNetServerHandler.sendPacket(new S07PacketRespawn(dimID, player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
+
+                if (worldNew.provider instanceof WorldProviderOrbit) GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, new Object[] { }), player);
+                worldNew.spawnEntityInWorld(player);
+                player.setWorld(worldNew);
+        	}
         	
         	//This is a mini version of the code at WorldUtil.teleportEntity
             final ITeleportType type = GalacticraftRegistry.getTeleportTypeForDimension(player.worldObj.provider.getClass());
