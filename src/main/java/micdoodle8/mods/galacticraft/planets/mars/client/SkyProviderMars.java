@@ -31,6 +31,10 @@ public class SkyProviderMars extends IRenderHandler
 {
     private static final ResourceLocation overworldTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png");
     private static final ResourceLocation sunTexture = new ResourceLocation("textures/environment/sun.png");
+    
+    private static final ResourceLocation phobosTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/phobos.png");
+    private static final ResourceLocation deimosTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/deimos.png");
+    
 
     public int starList;
     public int glSkyList;
@@ -131,10 +135,17 @@ public class SkyProviderMars extends IRenderHandler
 
         float f18 = world.getStarBrightness(partialTicks);
 
+
         if (f18 > 0.0F)
         {
-            GL11.glColor4f(f18, f18, f18, f18);
-            GL11.glCallList(this.starList);
+            //Rotation stars. It looks very nice. Thanks SteveKunG.
+            GL11.glPushMatrix();
+       	 	GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F); 
+       	 	GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
+       	 	GL11.glRotatef(-19.0F, 0, 1.0F, 0);
+       	 	GL11.glColor4f(f18, f18, f18, f18);
+       	 	GL11.glCallList(this.starList);
+       	 	GL11.glPopMatrix();
         }
 
         float[] afloat = new float[4];
@@ -242,6 +253,34 @@ public class SkyProviderMars extends IRenderHandler
         GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1F);
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(SkyProviderMars.overworldTexture);
+        tessellator1.startDrawingQuads();
+        tessellator1.addVertexWithUV(-f10, -100.0D, f10, 0, 1);
+        tessellator1.addVertexWithUV(f10, -100.0D, f10, 1, 1);
+        tessellator1.addVertexWithUV(f10, -100.0D, -f10, 1, 0);
+        tessellator1.addVertexWithUV(-f10, -100.0D, -f10, 0, 0);
+        tessellator1.draw();
+        
+        // Render phobos
+        f10 = 1.5F;
+        GL11.glScalef(0.6F, 0.6F, 0.6F);
+        GL11.glRotatef(60.0F, 0.0F, 0.0F, 1.0F);
+        GL11.glRotatef(360F, 1.0F, 0.0F, 0.0F);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1F);
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(SkyProviderMars.phobosTexture);
+        tessellator1.startDrawingQuads();
+        tessellator1.addVertexWithUV(-f10, -100.0D, f10, 0, 1);
+        tessellator1.addVertexWithUV(f10, -100.0D, f10, 1, 1);
+        tessellator1.addVertexWithUV(f10, -100.0D, -f10, 1, 0);
+        tessellator1.addVertexWithUV(-f10, -100.0D, -f10, 0, 0);
+        tessellator1.draw();
+
+        // Render deimos
+        f10 = 1.5F;
+        GL11.glScalef(0.6F, 0.6F, 0.6F);
+        GL11.glRotatef(80.0F, 0.0F, 0.0F, 1.0F);
+        GL11.glRotatef(20F, 1.0F, 0.0F, 0.0F);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1F);
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(SkyProviderMars.deimosTexture);
         tessellator1.startDrawingQuads();
         tessellator1.addVertexWithUV(-f10, -100.0D, f10, 0, 1);
         tessellator1.addVertexWithUV(f10, -100.0D, f10, 1, 1);
