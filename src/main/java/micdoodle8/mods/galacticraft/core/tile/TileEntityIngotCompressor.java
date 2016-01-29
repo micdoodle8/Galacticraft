@@ -245,7 +245,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 
             for (int i = 0; i < this.compressingCraftMatrix.getSizeInventory(); i++)
             {
-                if (this.compressingCraftMatrix.getStackInSlot(i).getItem() == Items.water_bucket)
+                if (this.compressingCraftMatrix.getStackInSlot(i) != null && this.compressingCraftMatrix.getStackInSlot(i).getItem() == Items.water_bucket)
                 	this.compressingCraftMatrix.setInventorySlotContentsNoUpdate(i, new ItemStack(Items.bucket));
                 else
                 	this.compressingCraftMatrix.decrStackSize(i, 1);
