@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -145,7 +146,7 @@ public class SkyProviderOverworld extends IRenderHandler
 	        }
         }
         
-        float var20 = (float) (mc.thePlayer.posY - 200.0F) / 1000.0F;
+        float var20 = MathHelper.sqrt_float(((float) (mc.thePlayer.posY) - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F);
         final float var21 = Math.max(1.0F - var20 * 4.0F, 0.0F);
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -186,9 +187,8 @@ public class SkyProviderOverworld extends IRenderHandler
         float var11;
         float var12;
 
-        if (var24 != null && mc.thePlayer.posY < 250)
+        if (var24 != null)
         {
-            float sunsetMod = (float) (FMLClientHandler.instance().getClient().thePlayer.posY - 200.0F) / 1000.0F;
             final float sunsetModInv = Math.min(1.0F, Math.max(1.0F - var20 * 50.0F, 0.0F));
             
             GL11.glDisable(GL11.GL_TEXTURE_2D);

@@ -22,6 +22,7 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
@@ -35,6 +36,7 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
@@ -777,6 +779,15 @@ public class EventHandlerGC
     			event.blue = (float) vec.zCoord;
     			return;
     		}
+    	
+	    	if (worldclient.provider.getSkyRenderer() instanceof SkyProviderOverworld && event.entity.posY > Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
+	    	{
+				Vec3 vec = WorldUtil.getFogColorHook(event.entity.worldObj);
+				event.red = (float) vec.xCoord;
+				event.green = (float) vec.yCoord;
+				event.blue = (float) vec.zCoord;
+				return;
+	    	}
     	}
     }
 

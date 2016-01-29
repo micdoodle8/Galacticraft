@@ -24,7 +24,9 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
@@ -39,6 +41,7 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -62,12 +65,12 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
-import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -172,14 +175,9 @@ public class WorldUtil
     {
         if (world.isRemote)
         {
-            if (world.provider.dimensionId == 0)
+        	if (world.provider.getSkyRenderer() instanceof SkyProviderOverworld)
             {
-                if (FMLClientHandler.instance().getClient().thePlayer != null &&
-                        FMLClientHandler.instance().getClient().thePlayer.ridingEntity instanceof EntitySpaceshipBase &&
-                        FMLClientHandler.instance().getClient().thePlayer.posY > 200)
-                {
-                    return 0.0F;
-                }
+                return 0.0F;
             }
         }
 
@@ -254,17 +252,16 @@ public class WorldUtil
 
     public static Vec3 getFogColorHook(World world)
     {
-        if (world.provider instanceof WorldProviderSurface &&
-                FMLClientHandler.instance().getClient().thePlayer != null &&
-                FMLClientHandler.instance().getClient().thePlayer.ridingEntity instanceof EntitySpaceshipBase &&
-                FMLClientHandler.instance().getClient().thePlayer.ridingEntity.posY >= 200)
+    	EntityClientPlayerMP player = FMLClientHandler.instance().getClient().thePlayer;
+    	if (world.provider.getSkyRenderer() instanceof SkyProviderOverworld)
         {
-            float var20 = (float) (FMLClientHandler.instance().getClient().thePlayer.posY - 200.0F) / 1000.0F;
-            final float var21 = Math.max(1.0F - var20 * 50.0F, 0.0F);
+            float var20 = ((float) (player.posY) - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F;
+            var20 = MathHelper.sqrt_float(var20);
+            final float var21 = Math.max(1.0F - var20 * 40.0F, 0.0F);
 
             Vec3 vec = world.getFogColor(1.0F);
 
-            return Vec3.createVectorHelper(vec.xCoord * var21, vec.yCoord * var21, vec.zCoord * var21);
+            return Vec3.createVectorHelper(vec.xCoord * Math.max(1.0F - var20 * 1.29F, 0.0F), vec.yCoord * Math.max(1.0F - var20 * 1.29F, 0.0F), vec.zCoord * Math.max(1.0F - var20 * 1.29F, 0.0F));
         }
 
         return world.getFogColor(1.0F);
@@ -272,14 +269,50 @@ public class WorldUtil
 
     public static Vec3 getSkyColorHook(World world)
     {
-        if (world.provider instanceof WorldProviderSurface && FMLClientHandler.instance().getClient().thePlayer.posY >= 200)
+    	EntityClientPlayerMP player = FMLClientHandler.instance().getClient().thePlayer;
+    	if (world.provider.getSkyRenderer() instanceof SkyProviderOverworld || ( player != null && player.posY > Constants.OVERWORLD_CLOUD_HEIGHT && player.ridingEntity instanceof EntitySpaceshipBase))
         {
-            float var20 = (float) (FMLClientHandler.instance().getClient().thePlayer.posY - 200.0F) / 1000.0F;
-            final float var21 = Math.max(1.0F - var20 * 2.0F, 0.0F);
+            float f1 = world.getCelestialAngle(1.0F);
+            float f2 = MathHelper.cos(f1 * (float)Math.PI * 2.0F) * 2.0F + 0.5F;
 
-            Vec3 vec = world.getSkyColor(FMLClientHandler.instance().getClient().renderViewEntity, 1.0F);
+            if (f2 < 0.0F)
+            {
+                f2 = 0.0F;
+            }
 
-            return Vec3.createVectorHelper(vec.xCoord * var21, vec.yCoord * var21, vec.zCoord * var21);
+            if (f2 > 1.0F)
+            {
+                f2 = 1.0F;
+            }
+
+            int i = MathHelper.floor_double(player.posX);
+            int j = MathHelper.floor_double(player.posY);
+            int k = MathHelper.floor_double(player.posZ);
+            int l = ForgeHooksClient.getSkyBlendColour(world, i, j, k);
+            float f4 = (float)(l >> 16 & 255) / 255.0F;
+            float f5 = (float)(l >> 8 & 255) / 255.0F;
+            float f6 = (float)(l & 255) / 255.0F;
+            f4 *= f2;
+            f5 *= f2;
+            f6 *= f2;
+
+            if (player.posY <= Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
+            {
+	            Vec3 vec = world.getSkyColor(FMLClientHandler.instance().getClient().renderViewEntity, 1.0F);
+	            double blend = (player.posY - Constants.OVERWORLD_CLOUD_HEIGHT) / (Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT - Constants.OVERWORLD_CLOUD_HEIGHT);
+	            double ablend = 1 - blend;
+	            return Vec3.createVectorHelper(f4 * blend + vec.xCoord * ablend, f5 * blend + vec.yCoord * ablend, f6 * blend + vec.zCoord * ablend);
+            }
+            else
+            {
+//	            float blackness = ((float) (player.posY) - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F;
+//	            final float var21 = Math.max(1.0F - blackness * blackness * 4.0F, 0.0F);
+//	            return Vec3.createVectorHelper(f4 * var21, f5 * var21, f6 * var21);
+	            double blend = Math.min(1.0D, (player.posY - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 300.0D);
+	            double ablend = 1.0D - blend;
+	            blend /= 255.0D;
+	            return Vec3.createVectorHelper(f4 * ablend + blend * 31.0D, f5 * ablend + blend * 8.0D, f6 * ablend + blend * 99.0D);
+            }
         }
 
         return world.getSkyColor(FMLClientHandler.instance().getClient().renderViewEntity, 1.0F);
