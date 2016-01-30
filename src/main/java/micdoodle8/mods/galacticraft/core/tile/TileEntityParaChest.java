@@ -10,7 +10,6 @@ import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -69,7 +68,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     {
         if ((size - 3) % 18 != 0)
         {
-        	GCLog.debug("Strange TileEntityParachest inventory size received from server " + size);
+        	size += 18 - ((size - 3) % 18);
         }
         this.chestContents = new ItemStack[size];
     }
@@ -159,7 +158,12 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
         super.readFromNBT(nbt);
         NBTTagList nbttaglist = nbt.getTagList("Items", 10);
 
-        this.chestContents = new ItemStack[nbt.getInteger("chestContentLength")];
+        int size = nbt.getInteger("chestContentLength");
+        if ((size - 3) % 18 != 0)
+        {
+        	size += 18 - ((size - 3) % 18);
+        }
+        this.chestContents = new ItemStack[size];
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
