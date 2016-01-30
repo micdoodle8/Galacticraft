@@ -459,6 +459,7 @@ public class ModelPlayerGC extends ModelBiped
                 {
                     this.bipedRightArm.rotateAngleZ -= (float) (Math.PI / 8) + MathHelper.sin(par3 * 0.9F) * 0.2F;
                     this.bipedRightArm.rotateAngleX = (float) Math.PI;
+                    break;
                 }
             }
         }

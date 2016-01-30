@@ -6,6 +6,7 @@ import api.player.model.ModelPlayerBase;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -22,12 +23,14 @@ import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModelCustom;
 import net.smart.render.playerapi.SmartRender;
 
 import java.lang.reflect.Constructor;
+import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
@@ -358,13 +361,32 @@ public class ModelPlayerBaseGC extends ModelPlayerBase
     			this.modelPlayer.bipedLeftLeg.rotationPointZ = 4.0F;
     		}
     	}
+    	
+        final List<?> l = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, AxisAlignedBB.getBoundingBox(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
+
+        for (int i = 0; i < l.size(); i++)
+        {
+            final Entity e = (Entity) l.get(i);
+
+            if (e instanceof EntityTieredRocket)
+            {
+                final EntityTieredRocket ship = (EntityTieredRocket) e;
+
+                if (ship.riddenByEntity != null && !(ship.riddenByEntity).equals(player) && (ship.getLaunched() || ship.timeUntilLaunch < 390))
+                {
+                    this.modelPlayer.bipedRightArm.rotateAngleZ -= (float) (Math.PI / 8) + MathHelper.sin(par3 * 0.9F) * 0.2F;
+                    this.modelPlayer.bipedRightArm.rotateAngleX = (float) Math.PI;
+                    break;
+                }
+            }
+        }
     }
     
     @Override
     public void afterRender(Entity var1, float var2, float var3, float var4, float var5, float var6, float var7)
     {
         super.afterRender(var1, var2, var3, var4, var5, var6, var7);
-
+        
         //Smart Moving will render through ModelRotationRendererGC instead
         if (ModelPlayerBaseGC.isSmartMovingLoaded)
         	return; 
