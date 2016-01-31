@@ -22,6 +22,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.lang.reflect.Method;
 import java.util.EnumSet;
 
+import cofh.api.energy.IEnergyContainerItem;
+
 public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectrical
 {
     /*
@@ -114,6 +116,10 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
             if (item instanceof IItemElectric)
             {
                 this.storage.extractEnergyGC(ElectricItemHelper.chargeItem(itemStack, energyToCharge), false);
+            }
+            else if (EnergyConfigHandler.isRFAPILoaded() && item instanceof IEnergyContainerItem)
+            {
+                this.storage.extractEnergyGC(((IEnergyContainerItem)item).receiveEnergy(itemStack, (int) (energyToCharge * EnergyConfigHandler.TO_RF_RATIO), false) / EnergyConfigHandler.TO_RF_RATIO, false);
             }
             else if (EnergyConfigHandler.isMekanismLoaded() && item instanceof IEnergizedItem && ((IEnergizedItem) item).canReceive(itemStack))
             {

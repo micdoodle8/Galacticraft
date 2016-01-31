@@ -32,6 +32,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.EnumSet;
 
+import cofh.api.energy.IEnergyContainerItem;
+
 public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //implements IElectrical, IElectricalStorage
 {
     protected boolean isAddedToEnergyNet;
@@ -254,6 +256,10 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
             if (item instanceof IItemElectric)
             {
                 this.storage.receiveEnergyGC(ElectricItemHelper.dischargeItem(itemStack, energyToDischarge));
+            }
+            else if (EnergyConfigHandler.isRFAPILoaded() && item instanceof IEnergyContainerItem)
+            {
+                this.storage.receiveEnergyGC(((IEnergyContainerItem)item).extractEnergy(itemStack, (int) (energyToDischarge / EnergyConfigHandler.RF_RATIO), false) * EnergyConfigHandler.RF_RATIO);
             }
             else if (EnergyConfigHandler.isMekanismLoaded() && item instanceof IEnergizedItem && ((IEnergizedItem) item).canSend(itemStack))
             {
