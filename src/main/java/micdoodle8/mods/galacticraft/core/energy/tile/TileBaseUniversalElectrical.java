@@ -715,7 +715,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
         return MjAPI.DEFAULT_POWER_FRAMEWORK;
     }
 
-    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
+    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyReceiver", modID = "")
     public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
     {
         if (EnergyConfigHandler.disableRFInput)
