@@ -46,6 +46,11 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     public int processTicks = -10;
     private ItemStack[] containingItems = new ItemStack[4];
     private int airProducts = -1;
+    // how much air is produced per updateEntity. Can be a fraction
+    private float airUnitsProducedPerTick = -1;
+    // this is to keep track how much fractional air units have been produced so far.
+    // actual fluid stacks are generated when this reaches 1 or greater
+    private float airUnitsFraction = 0;
 
     @NetworkedField(targetSide = Side.CLIENT)
     public int gasTankType = -1;
@@ -97,6 +102,10 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
             this.airProducts = this.getAirProducts();
         }
 
+        if (this.airUnitsProducedPerTick == -1)
+        {
+            this.airUnitsProducedPerTick = this.getNrAirUnitsProduced();
+        }
         if (!this.worldObj.isRemote)
         {
             FluidStack currentgas = this.gasTank.getFluid();
@@ -129,9 +138,15 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                         Block blockAbove = this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord);
                         if (blockAbove != null && blockAbove.getMaterial() == Material.air && blockAbove!=GCBlocks.breatheableAir && blockAbove!=GCBlocks.brightBreatheableAir)
                         {
-                            FluidStack gcAtmosphere = FluidRegistry.getFluidStack(TankGases.AIR.gas, 4);
-                            this.gasTank.fill(gcAtmosphere, true);
-                            this.gasTankType = TankGases.AIR.index;
+                            this.airUnitsFraction += this.airUnitsProducedPerTick;
+                            if (this.airUnitsFraction >= 1) {
+                                // if at least one whole unit has been filled up by now, actually add it to the tank
+                                int actualAirProduction = (int) this.airUnitsFraction;
+                                this.airUnitsFraction -= actualAirProduction;
+                                FluidStack gcAtmosphere = FluidRegistry.getFluidStack(TankGases.AIR.gas, actualAirProduction);
+                                this.gasTank.fill(gcAtmosphere, true);
+                                this.gasTankType = TankGases.AIR.index;
+                            }
                         }
                     }
                 }
@@ -353,6 +368,20 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         return false;
     }
 
+    /**
+     * Returns the amount of "air" gas produced in the current atmosphere
+     * @return
+     */
+    public float getNrAirUnitsProduced()
+    {
+        float pressure = 1.0F;
+        WorldProvider WP = this.worldObj.provider;
+        if (WP instanceof WorldProviderSpace)
+        {
+             pressure = ((WorldProviderSpace)WP).getCelestialBody().getAtmosphericPressure();
+        }
+        return 4.0F*pressure;
+    }
     public int getAirProducts()
     {
         WorldProvider WP = this.worldObj.provider;
@@ -444,6 +473,9 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         this.processTicks = nbt.getInteger("smeltingTicks");
         this.containingItems = this.readStandardItemsFromNBT(nbt);
 
+        if (nbt.hasKey("airFraction")) {
+            this.airUnitsFraction = nbt.getFloat("airFraction");
+        }
         if (nbt.hasKey("gasTank"))
         {
             this.gasTank.readFromNBT(nbt.getCompoundTag("gasTank"));
@@ -466,6 +498,9 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         nbt.setInteger("smeltingTicks", this.processTicks);
         this.writeStandardItemsToNBT(nbt);
 
+        if (this.airUnitsFraction > 0) {
+            nbt.setFloat("airFraction", this.airUnitsFraction);
+        }
         if (this.gasTank.getFluid() != null)
         {
             nbt.setTag("gasTank", this.gasTank.writeToNBT(new NBTTagCompound()));
