@@ -528,6 +528,28 @@ public class VersionUtil
         return;
     }
 
+    public static int getClassToIDMapping(Class mobClazz)
+    {
+        //Achieves this, with private field:
+        //    EntityList.classToIDMapping.put(mobClazz, id);
+    	try
+        {
+            Class<?> c = Class.forName(getNameDynamic(KEY_CLASS_ENTITYLIST).replace('/', '.'));
+            Field f = c.getField(getNameDynamic(KEY_FIELD_CLASSTOIDMAPPING));
+            f.setAccessible(true);
+            Map classToIDMapping = (Map) f.get(null);
+            Integer i = (Integer) classToIDMapping.get(mobClazz);
+            
+            return i != null ? i : 0;
+        }
+        catch (Throwable t)
+        {
+            t.printStackTrace();
+        }
+
+        return 0;
+    }
+
     private static String getName(String keyName)
     {
         return nodemap.get(keyName).name;
