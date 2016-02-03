@@ -10,6 +10,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.event.oxygen.GCCoreOxygenSuffocationEvent;
+import micdoodle8.mods.galacticraft.api.item.IItemPressurized;
 import micdoodle8.mods.galacticraft.api.item.IItemThermal;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
@@ -123,7 +124,7 @@ public class GCPlayerHandler
     	{
     		if (GCPlayerStatsClient.get((EntityClientPlayerMP) event.entity) == null)
     		{
-    			GCPlayerStatsClient.register((EntityClientPlayerMP) event.entity);          
+    		    GCPlayerStatsClient.register((EntityClientPlayerMP) event.entity);
     		}
 
     		Minecraft.getMinecraft().gameSettings.sendSettingsToServer();
@@ -425,15 +426,18 @@ public class GCPlayerHandler
         }
     }
 
-    protected void checkThermalStatus(EntityPlayerMP player, GCPlayerStats playerStats)
+    protected void checkThermalAndPressureStatus(EntityPlayerMP player, GCPlayerStats playerStats)
     {
         ItemStack thermalPaddingHelm = playerStats.extendedInventory.getStackInSlot(6);
         ItemStack thermalPaddingChestplate = playerStats.extendedInventory.getStackInSlot(7);
         ItemStack thermalPaddingLeggings = playerStats.extendedInventory.getStackInSlot(8);
         ItemStack thermalPaddingBoots = playerStats.extendedInventory.getStackInSlot(9);
         float lowestThermalStrength = 0.0F;
+        float maxPressureProtection = 0.0F;
+        // float minPressureProtection = 0.0F;
         if (thermalPaddingHelm != null && thermalPaddingChestplate != null && thermalPaddingLeggings != null && thermalPaddingBoots != null)
         {
+            // thermal
             if (thermalPaddingHelm.getItem() instanceof IItemThermal)
             {
                 lowestThermalStrength += ((IItemThermal) thermalPaddingHelm.getItem()).getThermalStrength();
@@ -451,14 +455,50 @@ public class GCPlayerHandler
                 lowestThermalStrength += ((IItemThermal) thermalPaddingBoots.getItem()).getThermalStrength();
             }
             lowestThermalStrength /= 4.0F;
+
+            // pressure
+            if (thermalPaddingHelm.getItem() instanceof IItemPressurized)
+            {
+                maxPressureProtection += ((IItemPressurized) thermalPaddingHelm.getItem()).getMaxPressure();
+                // minPressureProtection += ((IItemPressurized) thermalPaddingHelm.getItem()).getMinPressure();
+            }
+            if (thermalPaddingChestplate.getItem() instanceof IItemPressurized)
+            {
+                maxPressureProtection += ((IItemPressurized) thermalPaddingChestplate.getItem()).getMaxPressure();
+                // minPressureProtection += ((IItemPressurized) thermalPaddingChestplate.getItem()).getMinPressure();
+            }
+            if (thermalPaddingLeggings.getItem() instanceof IItemPressurized)
+            {
+                maxPressureProtection += ((IItemPressurized) thermalPaddingLeggings.getItem()).getMaxPressure();
+                // minPressureProtection += ((IItemPressurized) thermalPaddingLeggings.getItem()).getMinPressure();
+            }
+            if (thermalPaddingBoots.getItem() instanceof IItemPressurized)
+            {
+                maxPressureProtection += ((IItemPressurized) thermalPaddingBoots.getItem()).getMaxPressure();
+                // minPressureProtection += ((IItemPressurized) thermalPaddingBoots.getItem()).getMinPressure();
+            }
+
+
         }
 
         if (player.worldObj.provider instanceof IGalacticraftWorldProvider && !player.capabilities.isCreativeMode)
         {
             IGalacticraftWorldProvider provider = (IGalacticraftWorldProvider) player.worldObj.provider;
             float thermalLevelMod = provider.getThermalLevelModifier();
+            float pressure = provider.getCelestialBody().getAtmosphericPressure();
             double absThermalLevelMod = Math.abs(thermalLevelMod);
-            
+
+            if(pressure > (maxPressureProtection+1.2F) && !OxygenUtil.isAABBInBreathableAirBlock(player, false)) {
+
+                int pressureDamageCooldown = Math.abs(MathHelper.floor_double(200 / pressure));
+                if ((player.ticksExisted - 1) % pressureDamageCooldown == 0) {
+                    // do damage
+                    player.attackEntityFrom(DamageSourceGC.pressure, 1.0F);
+                }
+
+            }
+
+
             if (absThermalLevelMod > 0D)
             {
                 int thermalLevelCooldownBase = Math.abs(MathHelper.floor_double(200 / thermalLevelMod));
@@ -561,7 +601,7 @@ public class GCPlayerHandler
         {
             playerStats.thermalLevelNormalising = true;
         	this.normaliseThermalLevel(player, playerStats, 3);
-        }        	
+        }
     }
 
     public void normaliseThermalLevel(EntityPlayerMP player, GCPlayerStats playerStats, int increment)
@@ -580,7 +620,7 @@ public class GCPlayerHandler
         if (playerStats.thermalLevel != last)
         {
             this.sendThermalLevelPacket(player, playerStats);
-        }		
+        }
 	}
 
 	protected void checkOxygen(EntityPlayerMP player, GCPlayerStats playerStats)
@@ -624,13 +664,13 @@ public class GCPlayerHandler
                         playerStats.airRemaining--;
                         toTake = 0;
                     }
-                    
+
                     //Alternatively, take 1 oxygen from Tank 2
                     if (toTake > 0 && playerStats.airRemaining2 > 0)
                     {
                         tankInSlot2.damageItem(1, player);
                         playerStats.airRemaining2--;
-                        toTake = 0;      
+                        toTake = 0;
                     }
                 }
             }
@@ -812,7 +852,7 @@ public class GCPlayerHandler
 	        }
         }
     }
-    
+
     public void registerTorchType(BlockUnlitTorch spaceTorch, Block vanillaTorch)
     {
     	//Space Torch registration must be unique; there may be multiple mappings for vanillaTorch
@@ -1072,7 +1112,7 @@ public class GCPlayerHandler
                 worldNew.spawnEntityInWorld(player);
                 player.setWorld(worldNew);
         	}
-        	
+
         	//This is a mini version of the code at WorldUtil.teleportEntity
             final ITeleportType type = GalacticraftRegistry.getTeleportTypeForDimension(player.worldObj.provider.getClass());
             Vector3 spawnPos = type.getPlayerSpawnLocation((WorldServer) player.worldObj, player);
@@ -1162,7 +1202,7 @@ public class GCPlayerHandler
 		/*		if (isInGCDimension || player.usingPlanetSelectionGui)
                 {
 					player.playerNetServerHandler.ticksForFloatKick = 0;
-				}	
+				}
 		*/
         if (GCPlayer.damageCounter > 0)
         {
@@ -1231,7 +1271,7 @@ public class GCPlayerHandler
             else
             {
             	GCPlayer.newInOrbit = true;
-            	
+
                 if (GalacticraftCore.isPlanetsLoaded && player.worldObj.provider instanceof WorldProviderAsteroids)
                 {
                     player.fallDistance = 0.0F;
@@ -1280,7 +1320,7 @@ public class GCPlayerHandler
             GCPlayer.launchAttempts = 0;
         }
 
-        this.checkThermalStatus(player, GCPlayer);
+        this.checkThermalAndPressureStatus(player, GCPlayer);
         this.checkOxygen(player, GCPlayer);
 
         if (isInGCDimension && (GCPlayer.oxygenSetupValid != GCPlayer.lastOxygenSetupValid || tick % 100 == 0))

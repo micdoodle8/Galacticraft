@@ -232,6 +232,7 @@ death.attack.spaceshipExplosionB=%1$s died in an unfortunate spaceship accident!
 death.attack.spaceshipCrash=%1$s's rocket smashed itself into the ground. Oops.
 death.attack.oxygenSuffocation=%1$s ran out of oxygen!
 death.attack.thermal=%1$s forgot thermal protection
+death.attack.pressure=%1$s couldn't handle the pressure
 
 # GALAXIES
 galaxy.blockyway.name=The Blocky Way

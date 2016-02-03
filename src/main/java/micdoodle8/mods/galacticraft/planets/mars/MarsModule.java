@@ -131,7 +131,7 @@ public class MarsModule implements IPlanetsModule
         MarsModule.planetMars.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/mars.png"));
         MarsModule.planetMars.setDimensionInfo(ConfigManagerMars.dimensionIDMars, WorldProviderMars.class).setTierRequired(2);
         MarsModule.planetMars.atmosphereComponent(IAtmosphericGas.CO2).atmosphereComponent(IAtmosphericGas.ARGON).atmosphereComponent(IAtmosphericGas.NITROGEN);
-        MarsModule.planetMars.setAtmosphericPressure(0.02F); // actual value is about 0.0063F, but with this, gas liquefaction on mars is extremely slow
+        MarsModule.planetMars.setAtmosphericPressure(0.0063F);
 
         GalaxyRegistry.registerPlanet(MarsModule.planetMars);
         GalacticraftRegistry.registerTeleportType(WorldProviderMars.class, new TeleportTypeMars());
@@ -228,7 +228,7 @@ public class MarsModule implements IPlanetsModule
 	        EntityList.IDtoClassMapping.put(nextEggID, var0);
 	        VersionUtil.putClassToIDMapping(var0, nextEggID);
 	        EntityList.entityEggs.put(nextEggID, new EntityList.EntityEggInfo(nextEggID, back, fore));
-        } 
+        }
     }
 
     public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
