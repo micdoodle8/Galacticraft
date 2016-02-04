@@ -695,6 +695,8 @@ public class GCPlayerHandler
             				GCCoreOxygenSuffocationEvent suffocationEventPost = new GCCoreOxygenSuffocationEvent.Post(player);
             				MinecraftForge.EVENT_BUS.post(suffocationEventPost);
             			}
+            			else
+            				playerStats.oxygenSetupValid = true;
             		}
             	}
         		else
