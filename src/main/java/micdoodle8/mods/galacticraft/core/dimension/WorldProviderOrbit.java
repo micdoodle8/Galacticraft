@@ -793,7 +793,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         }
 
         //Artificial gravity
-        if (doGravity)
+        if (doGravity && !p.onGround)
         {
             int quadrant = 0;
             double xd = p.posX - this.spinCentreX;
