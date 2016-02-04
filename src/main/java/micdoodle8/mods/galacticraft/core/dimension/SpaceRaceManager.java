@@ -174,7 +174,7 @@ public class SpaceRaceManager
 
         List<String> playerList = new ArrayList<String>();
         playerList.add(player);
-        SpaceRace newRace = SpaceRaceManager.addSpaceRace(new SpaceRace(playerList, GCCoreUtil.translate("gui.spaceRace.unnamed"), new FlagData(48, 32), new Vector3(1, 1, 1)));
+        SpaceRace newRace = SpaceRaceManager.addSpaceRace(new SpaceRace(playerList, "gui.spaceRace.unnamed", new FlagData(48, 32), new Vector3(1, 1, 1)));
         EntityPlayerMP playerToRemove = PlayerUtil.getPlayerBaseServerFromPlayerUsername(player, true);
 
         if (playerToRemove != null)
