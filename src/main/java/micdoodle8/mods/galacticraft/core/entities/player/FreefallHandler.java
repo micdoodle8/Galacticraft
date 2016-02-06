@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.core.entities.player;
+ package micdoodle8.mods.galacticraft.core.entities.player;
 
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.block.Block;
@@ -12,11 +12,11 @@ import net.minecraft.util.MathHelper;
 public class FreefallHandler {
 
 	private static double pPrevMotionX;
-	private static double pPrevMotionY;
+	public static double pPrevMotionY;
 	private static double pPrevMotionZ;
 	private static float jetpackBoost;
 	private static double pPrevdY;
-	private static boolean sneakLast;
+	public static boolean sneakLast;
 
 	public static boolean testFreefall(EntityPlayer player)
 	{

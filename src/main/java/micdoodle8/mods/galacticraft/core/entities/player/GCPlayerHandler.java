@@ -149,7 +149,6 @@ public class GCPlayerHandler
 
     private void onPlayerLogout(EntityPlayerMP player)
     {
-
     }
 
     private void onPlayerRespawn(EntityPlayerMP player)
