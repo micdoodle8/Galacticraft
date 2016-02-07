@@ -83,7 +83,7 @@ public class CompatibilityManager
             CompatibilityManager.modBasicComponentsLoaded = true;
         }
 
-        if (Loader.isModLoaded("AppliedEnergistics"))
+        if (Loader.isModLoaded("appliedenergistics2"))
         {
             CompatibilityManager.modAppEngLoaded = true;
         }
