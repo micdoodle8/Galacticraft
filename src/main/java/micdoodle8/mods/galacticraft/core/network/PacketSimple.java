@@ -59,7 +59,6 @@ import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -84,8 +83,6 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import org.apache.commons.io.FileUtils;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -807,22 +804,17 @@ public class PacketSimple extends Packet implements IPacket
                     {
                         if (folder.exists() || folder.mkdir())
                         {
-                            File file0 = new File(folder, "overworldLocal.png");
+                            File file0 = new File(folder, "overworldRaw.bin");//"overworldLocal.png");
 
                             if (!file0.exists() || (file0.canRead() && file0.canWrite()))
                             {
                                 FileUtils.writeByteArrayToFile(file0, bytes);
 
-                                BufferedImage img = ImageIO.read(file0);
-
-                                if (img != null)
-                                {
-                                    ClientProxyCore.overworldTextureLocal = new DynamicTexture(img);
-                                }
+                                MapUtil.getOverworldImageFromRaw(bytes);
                             }
                             else
                             {
-                                System.err.println("Cannot read/write to file %minecraftDir%/assets/temp/overworldLocal.png");
+                                System.err.println("Cannot read/write to file %minecraftDir%/assets/temp/overworldRaw.bin");
                             }
                         }
                         else
@@ -1308,7 +1300,7 @@ public class PacketSimple extends Packet implements IPacket
                 	GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
                 }
             }
-            File outputFile = new File(baseFolder, "" + chunkCoordIntPair.chunkXPos + "_" + chunkCoordIntPair.chunkZPos + ".jpg");
+            File outputFile = new File(baseFolder, "" + chunkCoordIntPair.chunkXPos + "_" + chunkCoordIntPair.chunkZPos + ".bin");
             boolean success = true;
 
             if (!outputFile.exists() || !outputFile.isFile())
