@@ -57,7 +57,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
     public EntitySlimeling(World par1World)
     {
         super(par1World);
-        this.setSize(0.25F, 0.7F);
+        this.setSize(0.45F, 0.7F);
         this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.aiSit = new EntityAISitGC(this);
@@ -90,6 +90,21 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
         }
 
         this.setRandomFavFood();
+    }
+
+    @Override
+    public EntityLivingBase getOwner()
+    {
+        EntityLivingBase owner = super.getOwner();
+        if (owner == null)
+        {
+            String ownerName = getOwnerUsername();
+            if (ownerName != null)
+            {
+                return this.worldObj.getPlayerEntityByName(ownerName);
+            }
+        }
+        return owner;
     }
 
     public boolean isOwner(EntityLivingBase entityLivingBase)
@@ -250,7 +265,8 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
     @Override
     protected String getHurtSound()
     {
-        return null;
+		this.playSound("mob.slime.small", this.getSoundVolume(), 1.1F);
+		return null;
     }
 
     @Override
@@ -459,7 +475,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
                     this.setAttackTarget((EntityLivingBase) null);
                     this.setSittingAI(true);
                     this.setHealth(20.0F);
-                    VersionUtil.setSlimelingOwner(this, VersionUtil.mcVersionMatches("1.7.10") ? par1EntityPlayer.getUniqueID().toString() : (VersionUtil.mcVersionMatches("1.7.2") ? par1EntityPlayer.getCommandSenderName() : ""));
+                    VersionUtil.setSlimelingOwner(this, VersionUtil.mcVersion1_7_10 ? par1EntityPlayer.getUniqueID().toString() : (VersionUtil.mcVersion1_7_2 ? par1EntityPlayer.getCommandSenderName() : ""));
                     this.setOwnerUsername(par1EntityPlayer.getCommandSenderName());
                     this.playTameEffect(true);
                     this.worldObj.setEntityState(this, (byte) 7);

@@ -2,9 +2,6 @@ package micdoodle8.mods.galacticraft.planets.mars.items;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.items.ItemBucketGC;
-import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
-import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
@@ -50,7 +47,6 @@ public class MarsItems
         MarsItems.key = new ItemKeyMars().setUnlocalizedName("key");
         MarsItems.schematic = new ItemSchematicTier2().setUnlocalizedName("schematic");
         MarsItems.carbonFragments = new ItemCarbonFragments().setUnlocalizedName("carbonFragments");
-		MarsItems.bucketSludge = new ItemBucketGC(MarsBlocks.blockSludge, MarsModule.TEXTURE_PREFIX).setUnlocalizedName("bucketSludge");
 
         MarsItems.registerItems();
         MarsItems.registerHarvestLevels();
@@ -81,10 +77,9 @@ public class MarsItems
         MarsItems.registerItem(MarsItems.spaceship);
         MarsItems.registerItem(MarsItems.key);
         MarsItems.registerItem(MarsItems.schematic);
-        MarsItems.registerItem(MarsItems.bucketSludge);
     }
 
-    private static void registerItem(Item item)
+    public static void registerItem(Item item)
     {
         GameRegistry.registerItem(item, item.getUnlocalizedName(), Constants.MOD_ID_PLANETS);
     }

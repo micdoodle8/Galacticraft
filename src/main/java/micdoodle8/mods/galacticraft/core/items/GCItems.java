@@ -59,6 +59,8 @@ public class GCItems
     public static Item cheeseCurd;
     public static Item meteoricIronRaw;
     public static Item meteoricIronIngot;
+    public static Item bucketOil;
+    public static Item bucketFuel;
 //	public static Item cheeseBlock;
 
     public static ArmorMaterial ARMOR_SENSOR_GLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] { 0, 0, 0, 0 }, 0);
@@ -115,6 +117,8 @@ public class GCItems
 //		GCItems.cheeseBlock = new ItemBlockCheese(GCBlocks.cheeseBlock, "cheeseBlock");
         GCItems.meteoricIronRaw = new ItemMeteoricIron("meteoricIronRaw");
         GCItems.meteoricIronIngot = new ItemMoon("meteoricIronIngot");
+
+        hiddenItems.add(GCItems.oilExtractor);
 
         GCItems.registerHarvestLevels();
 
@@ -229,6 +233,8 @@ public class GCItems
         GCCoreUtil.registerGalacticraftItem("meteorThrowableHot", GCItems.meteorChunk, 1);
         GCCoreUtil.registerGalacticraftItem("standardWrench", GCItems.wrench);
 
+        GCItems.registerItems();
+
         for (int i = 0; i < ItemBasic.names.length; i++)
         {
             if (ItemBasic.names[i].contains("ingot") || ItemBasic.names[i].contains("compressed") || ItemBasic.names[i].contains("wafer"))
@@ -239,8 +245,6 @@ public class GCItems
 
         OreDictionary.registerOre("compressedMeteoricIron", new ItemStack(GCItems.meteoricIronIngot, 1, 1));
         OreDictionary.registerOre("ingotMeteoricIron", new ItemStack(GCItems.meteoricIronIngot, 1, 0));
-
-        GCItems.registerItems();
     }
 
     public static void registerHarvestLevels()
@@ -300,7 +304,7 @@ public class GCItems
         GCItems.registerItem(GCItems.parachute);
     }
 
-    private static void registerItem(Item item)
+    public static void registerItem(Item item)
     {
         GameRegistry.registerItem(item, item.getUnlocalizedName(), Constants.MOD_ID_CORE);
     }

@@ -232,7 +232,7 @@ public class MCDataOutputWrapper implements MCDataOutput
         if (fluid == null) {
             writeShort(-1);
         } else {
-            writeShort(fluid.fluidID);
+            writeShort(fluid.getFluidID());
             writeVarInt(fluid.amount);
             writeNBTTagCompound(fluid.tag);
         }

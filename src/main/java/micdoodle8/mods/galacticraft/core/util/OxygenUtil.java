@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import mekanism.api.gas.IGasTransmitter;
 import mekanism.api.gas.ITubeConnection;
 import mekanism.api.transmitters.TransmissionType;
@@ -10,6 +12,7 @@ import micdoodle8.mods.galacticraft.api.item.IBreathableArmor.EnumGearType;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -42,6 +45,7 @@ public class OxygenUtil
 {
     private static HashSet<BlockVec3> checked;
 
+    @SideOnly(Side.CLIENT)
     public static boolean shouldDisplayTankGui(GuiScreen gui)
     {
         if (FMLClientHandler.instance().getClient().gameSettings.hideGUI)
@@ -65,6 +69,11 @@ public class OxygenUtil
 
     public static boolean isAABBInBreathableAirBlock(EntityLivingBase entity)
     {
+        return isAABBInBreathableAirBlock(entity, false);
+    }
+
+    public static boolean isAABBInBreathableAirBlock(EntityLivingBase entity, boolean testThermal)
+    {
         double y = entity.posY + entity.getEyeHeight();
         double x = entity.posX;
         double z = entity.posZ;
@@ -76,21 +85,31 @@ public class OxygenUtil
         //A good first estimate of head size is that it's the smallest of the entity's 3 dimensions (e.g. front to back, for Steve)
         double smin = Math.min(sx, Math.min(sy, sz)) / 2;
 
-        return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, AxisAlignedBB.getBoundingBox(x - smin, y - smin, z - smin, x + smin, y + smin, z + smin));
+        return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, AxisAlignedBB.getBoundingBox(x - smin, y - smin, z - smin, x + smin, y + smin, z + smin), testThermal);
+    }
+
+    public static boolean isAABBInBreathableAirBlock(World world, AxisAlignedBB bb)
+    {
+        return isAABBInBreathableAirBlock(world, bb, false);
     }
 
     @SuppressWarnings("rawtypes")
-    public static boolean isAABBInBreathableAirBlock(World world, AxisAlignedBB bb)
+    public static boolean isAABBInBreathableAirBlock(World world, AxisAlignedBB bb, boolean testThermal)
     {
-        if (!world.isRemote)
+        final double avgX = (bb.minX + bb.maxX) / 2.0D;
+        final double avgY = (bb.minY + bb.maxY) / 2.0D;
+        final double avgZ = (bb.minZ + bb.maxZ) / 2.0D;
+
+        if (testThermal)
         {
-
-            final double avgX = (bb.minX + bb.maxX) / 2.0D;
-            final double avgY = (bb.minY + bb.maxY) / 2.0D;
-            final double avgZ = (bb.minZ + bb.maxZ) / 2.0D;
-
-            if (OxygenUtil.inOxygenBubble(world, avgX, avgY, avgZ)) return true;
+            return OxygenUtil.isInOxygenAndThermalBlock(world, bb.copy().contract(0.001D, 0.001D, 0.001D));
         }
+
+        if (OxygenUtil.inOxygenBubble(world, avgX, avgY, avgZ))
+        {
+            return true;
+        }
+
         return OxygenUtil.isInOxygenBlock(world, bb.copy().contract(0.001D, 0.001D, 0.001D));
     }
 
@@ -113,7 +132,38 @@ public class OxygenUtil
                     for (int z = i1; z <= j1; ++z)
                     {
                         Block block = world.getBlock(x, y, z);
-                        if (OxygenUtil.testContactWithBreathableAir(world, block, x, y, z, 0))
+                        if (OxygenUtil.testContactWithBreathableAir(world, block, x, y, z, 0) >= 0)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean isInOxygenAndThermalBlock(World world, AxisAlignedBB bb)
+    {
+        int i = MathHelper.floor_double(bb.minX);
+        int j = MathHelper.floor_double(bb.maxX);
+        int k = MathHelper.floor_double(bb.minY);
+        int l = MathHelper.floor_double(bb.maxY);
+        int i1 = MathHelper.floor_double(bb.minZ);
+        int j1 = MathHelper.floor_double(bb.maxZ);
+
+        OxygenUtil.checked = new HashSet();
+        if (world.checkChunksExist(i, k, i1, j, l, j1))
+        {
+            for (int x = i; x <= j; ++x)
+            {
+                for (int y = k; y <= l; ++y)
+                {
+                    for (int z = i1; z <= j1; ++z)
+                    {
+                        Block block = world.getBlock(x, y, z);
+                        if (OxygenUtil.testContactWithBreathableAir(world, block, x, y, z, 0) == 1) // Thermal air has metadata 1
                         {
                             return true;
                         }
@@ -132,13 +182,14 @@ public class OxygenUtil
      */
     public static boolean checkTorchHasOxygen(World world, Block block, int x, int y, int z)
     {
-        OxygenUtil.checked = new HashSet();
+    	if (OxygenUtil.inOxygenBubble(world, x + 0.5D, y + 0.6D, z + 0.5D)) return true;
+    	OxygenUtil.checked = new HashSet();
         BlockVec3 vec = new BlockVec3(x, y, z);
         for (int side = 0; side < 6; side++)
         {
             BlockVec3 sidevec = vec.newVecSide(side);
             Block newblock = sidevec.getBlockID_noChunkLoad(world);
-            if (OxygenUtil.testContactWithBreathableAir(world, newblock, sidevec.x, sidevec.y, sidevec.z, 1))
+            if (OxygenUtil.testContactWithBreathableAir(world, newblock, sidevec.x, sidevec.y, sidevec.z, 1) >= 0)
             {
                 return true;
             }
@@ -154,18 +205,18 @@ public class OxygenUtil
      * air-reachable blocks (up to 5 blocks away) and return true if breathable air is found
      * in one of them, or false if not.
      */
-    public static boolean testContactWithBreathableAir(World world, Block block, int x, int y, int z, int limitCount)
+    private static int testContactWithBreathableAir(World world, Block block, int x, int y, int z, int limitCount)
     {
         BlockVec3 vec = new BlockVec3(x, y, z);
         checked.add(vec);
         if (block == GCBlocks.breatheableAir || block == GCBlocks.brightBreatheableAir)
         {
-            return true;
+            return world.getBlockMetadata(x, y, z);
         }
 
-        if (block.getMaterial() == Material.air)
+        if (block == null || block.getMaterial() == Material.air)
         {
-            return false;
+            return -1;
         }
 
         //Test for non-sided permeable or solid blocks first
@@ -180,23 +231,23 @@ public class OxygenUtil
                 }
                 else
                 {
-                    return false;
+                    return -1;
                 }
             }
             else if (block instanceof BlockGlass || block instanceof BlockStainedGlass)
             {
-                return false;
+                return -1;
             }
             else if (block instanceof BlockLiquid)
             {
-                return false;
+                return -1;
             }
             else if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(block))
             {
                 ArrayList<Integer> metaList = OxygenPressureProtocol.nonPermeableBlocks.get(block);
                 if (metaList.contains(Integer.valueOf(-1)) || metaList.contains(world.getBlockMetadata(x, y, z)))
                 {
-                    return false;
+                    return -1;
                 }
             }
         }
@@ -216,16 +267,17 @@ public class OxygenUtil
                     if (!checked.contains(sidevec))
                     {
                         Block newblock = sidevec.getBlockID_noChunkLoad(world);
-                        if (OxygenUtil.testContactWithBreathableAir(world, newblock, sidevec.x, sidevec.y, sidevec.z, limitCount + 1))
+                        int adjResult = OxygenUtil.testContactWithBreathableAir(world, newblock, sidevec.x, sidevec.y, sidevec.z, limitCount + 1);
+                        if (adjResult >= 0)
                         {
-                            return true;
+                            return adjResult;
                         }
                     }
                 }
             }
         }
 
-        return false;
+        return -1;
     }
     //TODO - performance, could add a 'safe' version of this code (inside world borders)
 
@@ -274,12 +326,7 @@ public class OxygenUtil
             return 0;
         }
 
-        if (tank1Valid && !tank2Valid || !tank1Valid && tank2Valid)
-        {
-            return 9;
-        }
-
-        return 18;
+        return 9;
     }
 
     public static boolean hasValidOxygenSetup(EntityPlayerMP player)
@@ -439,17 +486,15 @@ public class OxygenUtil
 
 	public static boolean inOxygenBubble(World worldObj, double avgX, double avgY, double avgZ)
 	{
-        for (final TileEntityOxygenDistributor distributor : new ArrayList<TileEntityOxygenDistributor>(TileEntityOxygenDistributor.loadedTiles))
+        for (final BlockVec3Dim blockVec : new ArrayList<BlockVec3Dim>(TileEntityOxygenDistributor.loadedTiles))
         {
-            if (distributor.getWorld() == worldObj && distributor.oxygenBubble != null)
+            if (blockVec.dim == worldObj.provider.dimensionId)
             {
-                final double dist = distributor.getDistanceFromServer(avgX, avgY, avgZ);
-                double r = distributor.oxygenBubble.getSize();
-
-                if (dist < r * r)
-                {
-                    return true;
-                }
+            	TileEntity tile = worldObj.getTileEntity(blockVec.x, blockVec.y, blockVec.z);
+            	if (tile instanceof TileEntityOxygenDistributor)
+            	{
+	            	if (((TileEntityOxygenDistributor) tile).inBubble(avgX, avgY, avgZ)) return true;
+            	}
             }
         }
 

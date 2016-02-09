@@ -77,14 +77,14 @@ public class ContainerSchematic extends Container
             final ItemStack var5 = var4.getStack();
             var3 = var5.copy();
 
-            if (par2 < 27)
+            if (par2 < 1)
             {
-                if (!this.mergeItemStack(var5, 27, this.inventorySlots.size(), true))
+                if (!this.mergeItemStack(var5, 1, this.inventorySlots.size(), true))
                 {
                     return null;
                 }
             }
-            else if (!this.mergeItemStack(var5, 0, 27, false))
+            else if (!this.mergeItemStack(var5, 0, 1, false))
             {
                 return null;
             }

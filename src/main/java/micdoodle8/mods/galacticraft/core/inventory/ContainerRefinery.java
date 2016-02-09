@@ -1,16 +1,14 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
-import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityRefinery;
+import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class ContainerRefinery extends Container
 {
@@ -21,7 +19,7 @@ public class ContainerRefinery extends Container
         this.tileEntity = tileEntity;
 
         // Electric Input Slot
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 50, 51, ItemElectricBase.class));
+        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 50, 51, IItemElectric.class));
 
         // To be smelted
         this.addSlotToContainer(new Slot(tileEntity, 1, 7, 7));
@@ -97,15 +95,14 @@ public class ContainerRefinery extends Container
                 }
                 else
                 {
-                    FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(var4);
-                    if (liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("Oil"))
-                    {
+                	if (FluidUtil.isOilContainerAny(var4))
+                	{
                         if (!this.mergeItemStack(var4, 1, 2, false))
                         {
                             return null;
                         }
                     }
-                    else if (FluidContainerRegistry.isEmptyContainer(var4))
+                    else if (FluidUtil.isEmptyContainer(var4, GCItems.fuelCanister))
                     {
                         if (!this.mergeItemStack(var4, 2, 3, false))
                         {

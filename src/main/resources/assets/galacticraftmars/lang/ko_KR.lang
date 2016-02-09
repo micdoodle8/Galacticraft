@@ -50,7 +50,7 @@ tile.marsMachine.2.name=발사 통제기
 tile.marsMachine.4.name=가스 액화기
 tile.marsMachine.5.name=메탄 합성기
 tile.marsMachine.6.name=전기 분해기
-tile.hydrogenPipe.name=Hydrogen Pipe ##NEEDS TRANSLATE##
+tile.hydrogenPipe.name=수소 파이프
 tile.sludge.name=세균 슬러지
 tile.creeperEgg.name=크리퍼 알
 tile.cavernVines.name=동굴 넝굴
@@ -101,6 +101,7 @@ gui.launchController.desc.0=발사 통제기의$고유 주파수
 gui.launchController.desc.1=로켓 발사 방향 (목적지) 주파수
 gui.launchController.desc.2=로켓 발사시$발사대 제거 여부
 gui.launchController.desc.3=현재 조건이 만족될 경우$로켓이 발사됩니다
+gui.launchController.desc.4=다른 플레이어들로부터$목적지 주파수를 숨깁니다
 gui.terraformer.desc.0=물 탱크
 
 gui.gasTank.desc.0=가스 저장고
@@ -150,7 +151,7 @@ tile.creeperEgg.description=폭발하며 크리퍼를 부화시키는 크리퍼 
 tile.gasLiquefier.description=대기 혹은 플레이어에 의해 주어진 기체를 액체화 시킵니다. (팁: 액체메탄 로켓 연료)
 tile.methaneSynthesizer.description=수소와 탄소를 이용해 가스 액화기에서 가공 가능한 메탄을 합성합니다.
 tile.electrolyzer.description=(메탄 합성기에 유용한) 수소와 산소를 물에서 부터 전기분해합니다.
-tile.hydrogenPipe.description=Hydrogen Pipe will transfer hydrogen from one machine's internal gas tank to another.  ##NEEDS TRANSLATE##
+tile.hydrogenPipe.description=수소 파이프는 수소를 한 기기에서 다른 기기로 수송 할 시 필요합니다.
 
 gui.slimeling.chat.wrongPlayer=어라? 내 슬라임링이 아니잖아!
 gui.cryogenic.chat.cantUse=%d 초 뒤에 다시 사용할 수 있습니다
@@ -175,7 +176,7 @@ entity.Slimeling.name=슬라임링
 entity.CreeperBoss.name=진화한 크리퍼 보스
 entity.SpaceshipT2.name=2티어 로켓
 entity.CargoRocket.name=화물 로켓
-entity.LandingBalloons.name=Landing Balloons ##NEEDS TRANSLATE##
+entity.LandingBalloons.name=착륙 기구
 
 # CONTAINERS
 container.launchcontroller.name=발사 통제기

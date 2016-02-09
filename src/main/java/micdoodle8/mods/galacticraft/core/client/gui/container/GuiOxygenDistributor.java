@@ -77,8 +77,8 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.fontRendererObj.drawString(this.distributor.getInventoryName(), 8, 10, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.in.name") + ":", 87, 26, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.in.name") + ":", 87, 38, 4210752);
+        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 26, 4210752, this.fontRendererObj);
+        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 38, 4210752, this.fontRendererObj);
         String status = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();
         this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 50, 4210752);
         status = GCCoreUtil.translate("gui.oxygenUse.desc") + ": " + this.distributor.oxygenPerTick * 20 + GCCoreUtil.translate("gui.perSecond");
@@ -92,17 +92,12 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
 
     private String getStatus()
     {
-        if (this.distributor.getEnergyStoredGC() == 0)
-        {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingpower.name");
-        }
-
         if (this.distributor.storedOxygen < this.distributor.oxygenPerTick)
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingoxygen.name");
         }
 
-        return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.active.name");
+        return this.distributor.getGUIstatus();
     }
 
     @Override
@@ -142,17 +137,14 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
 //			electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energyStorage.desc.1") + ((int) Math.floor(this.distributor.getEnergyStoredGC()) + " / " + (int) Math.floor(this.distributor.getMaxEnergyStoredGC())));
             this.electricInfoRegion.tooltipStrings = electricityDesc;
 
-            if (this.distributor.oxygenBubble != null)
-            {
-                this.checkboxRenderBubble.isSelected = this.distributor.oxygenBubble.shouldRender();
-            }
+            this.checkboxRenderBubble.isSelected = this.distributor.shouldRenderBubble;
         }
     }
 
     @Override
     public void onSelectionChanged(GuiElementCheckbox checkbox, boolean newSelected)
     {
-        if (this.distributor.oxygenBubble != null) this.distributor.oxygenBubble.setShouldRender(newSelected);
+        this.distributor.setBubbleVisible(newSelected);
         GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 6, this.distributor.xCoord, this.distributor.yCoord, this.distributor.zCoord, newSelected ? 1 : 0 }));
     }
 
@@ -165,7 +157,7 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
     @Override
     public boolean getInitiallySelected(GuiElementCheckbox checkbox)
     {
-        return this.distributor.oxygenBubble != null ? this.distributor.oxygenBubble.shouldRender() : false;
+        return this.distributor.shouldRenderBubble;
     }
 
     @Override

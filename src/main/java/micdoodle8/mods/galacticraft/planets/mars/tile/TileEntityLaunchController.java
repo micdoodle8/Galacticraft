@@ -4,6 +4,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
+import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
@@ -55,6 +56,8 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     public int launchDropdownSelection;
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean launchSchedulingEnabled;
+    @NetworkedField(targetSide = Side.CLIENT)
+    public boolean hideTargetDestination = true;
     public boolean requiresClientUpdate;
     public Object attachedDock = null;
     private boolean frequencyCheckNeeded = false;
@@ -62,6 +65,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     public TileEntityLaunchController()
     {
         this.storage.setMaxExtract(10);
+        this.noRedstoneControl = true;
     }
 
     @Override
@@ -214,6 +218,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         this.frequencyCheckNeeded = true;
         this.launchPadRemovalDisabled = nbt.getBoolean("LaunchPadRemovalDisabled");
         this.launchSchedulingEnabled = nbt.getBoolean("LaunchPadSchedulingEnabled");
+        this.hideTargetDestination = nbt.getBoolean("HideTargetDestination");
         this.requiresClientUpdate = true;
     }
 
@@ -228,6 +233,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         nbt.setInteger("TargetFrequency", this.destFrequency);
         nbt.setBoolean("LaunchPadRemovalDisabled", this.launchPadRemovalDisabled);
         nbt.setBoolean("LaunchPadSchedulingEnabled", this.launchSchedulingEnabled);
+        nbt.setBoolean("HideTargetDestination", this.hideTargetDestination);
     }
 
     @Override
@@ -292,6 +298,10 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
             case 1:
                 this.launchSchedulingEnabled = disabled;
                 break;
+            case 2:
+            	this.hideTargetDestination = disabled;
+                this.disableCooldown = 10;
+            	break;
             }
         }
     }
@@ -305,6 +315,8 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
             return this.disabled;
         case 1:
             return this.launchSchedulingEnabled;
+        case 2:
+        	return this.hideTargetDestination;
         }
 
         return true;
@@ -322,7 +334,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     {
         this.frequency = frequency;
 
-        if (this.frequency >= 0)
+        if (this.frequency >= 0 && FMLCommonHandler.instance().getMinecraftServerInstance() != null)
         {
             this.frequencyValid = true;
             WorldServer[] servers = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers;
@@ -372,7 +384,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 
     public void checkDestFrequencyValid()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.worldObj.isRemote && FMLCommonHandler.instance().getMinecraftServerInstance() != null)
         {
             this.destFrequencyValid = false;
             if (this.destFrequency >= 0)
@@ -435,7 +447,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 
     public void updateRocketOnDockSettings()
     {
-        if (this.attachedDock instanceof TileEntityLandingPad)
+    	if (this.attachedDock instanceof TileEntityLandingPad)
         {
             TileEntityLandingPad pad = ((TileEntityLandingPad) this.attachedDock);
             IDockable rocket = pad.getDockedEntity();
@@ -445,4 +457,9 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
             }
         }
     }
+
+	public void setAttachedPad(IFuelDock pad)
+	{
+		this.attachedDock = pad;
+	}
 }

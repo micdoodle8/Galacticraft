@@ -62,6 +62,12 @@ public class GuiSlimelingFeed extends GuiScreen
     }
 
     @Override
+    protected void keyTyped(char keyChar, int keyID)
+    {
+        return;
+    }
+
+    @Override
     protected void actionPerformed(GuiButton par1GuiButton)
     {
         if (par1GuiButton.enabled)

@@ -55,6 +55,7 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
     public BlockMachineMars()
     {
         super(GCBlocks.machine);
+		this.setStepSound(soundTypeMetal);
     }
 
     @Override
@@ -413,81 +414,20 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
 
     private boolean canPlaceChamberAt(World world, int x0, int y0, int z0, EntityLivingBase player)
     {
-        int angle = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-
-        int meta = 0;
-
-        switch (angle)
+        for (int y = 0; y < 3; y++)
         {
-        case 0:
-            meta = 3;
-            break;
-        case 1:
-            meta = 1;
-            break;
-        case 2:
-            meta = 2;
-            break;
-        case 3:
-            meta = 0;
-            break;
-        }
+            Block blockAt = world.getBlock(x0, y0 + y, z0);
+            int metaAt = world.getBlockMetadata(x0, y0 + y, z0);
 
-        int x1 = 0;
-        int x2 = 0;
-        int z1 = 0;
-        int z2 = 0;
-
-        switch (meta)
-        {
-        case 0:
-            x1 = 0;
-            x2 = 0;
-            z1 = -1;
-            z2 = 1;
-            break;
-        case 1:
-            x1 = 0;
-            x2 = 0;
-            z1 = -1;
-            z2 = 1;
-            break;
-        case 2:
-            x1 = -1;
-            x2 = 1;
-            z1 = 0;
-            z2 = 0;
-            break;
-        case 3:
-            x1 = -1;
-            x2 = 1;
-            z1 = 0;
-            z2 = 0;
-            break;
-        }
-
-        for (int x = x1; x <= x2; x++)
-        {
-            for (int z = z1; z <= z2; z++)
+            if (y == 0 && blockAt == MarsBlocks.machine && metaAt >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && metaAt < BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
             {
-                for (int y = 0; y < 4; y++)
-                {
-                    Block blockAt = world.getBlock(x0 + x, y0 + y, z0 + z);
-                    int metaAt = world.getBlockMetadata(x0 + x, y0 + y, z0 + z);
-
-                    if (x == 0 && y == 0 && z == 0 && blockAt == MarsBlocks.machine && metaAt >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && metaAt < BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
-                    {
-                        continue;
-                    }
-
-                    if (!blockAt.getMaterial().isReplaceable())
-                    {
-                        return false;
-                    }
-                }
+                continue;
+            }
+            if (!blockAt.getMaterial().isReplaceable())
+            {
+                return false;
             }
         }
-
         return true;
     }
 
@@ -589,6 +529,13 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
 
     @Override
     public boolean showDescription(int meta)
+    {
+        return true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         return true;
     }

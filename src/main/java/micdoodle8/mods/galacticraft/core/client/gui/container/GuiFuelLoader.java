@@ -88,22 +88,7 @@ public class GuiFuelLoader extends GuiContainerGC
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.nofuel.name");
         }
 
-        if (this.fuelLoader.getStackInSlot(0) == null && this.fuelLoader.getEnergyStoredGC() == 0)
-        {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingpower.name");
-        }
-
-        if (this.fuelLoader.getDisabled(0))
-        {
-            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready.name");
-        }
-
-        if (this.fuelLoader.getEnergyStoredGC() > 0)
-        {
-            return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.active.name");
-        }
-
-        return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready.name");
+        return this.fuelLoader.getGUIstatus();
     }
 
     @Override

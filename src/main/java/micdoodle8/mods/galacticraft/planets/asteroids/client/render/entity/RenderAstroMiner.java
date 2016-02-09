@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity;
 
+import java.util.ArrayList;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
@@ -23,15 +25,22 @@ import cpw.mods.fml.client.FMLClientHandler;
 
 public class RenderAstroMiner extends Render
 {
-	private static ResourceLocation scanTexture;
+	private static final float LSIZE = 0.12F;
+	private static final float RETRACTIONSPEED = 0.02F;
     private RenderBlocks blockRenderer = new RenderBlocks();
     private float spin;
     private float lastPartTime;
 
-    private ResourceLocation modelTexture;
-    private ResourceLocation modelTextureFX;
-    private ResourceLocation modelTextureOff;
-    protected IModelCustom modelObj;
+	public static ResourceLocation scanTexture;
+    public static ResourceLocation modelTexture;
+    public static ResourceLocation modelTextureFX;
+    public static ResourceLocation modelTextureOff;
+    public static IModelCustom modelObj;
+    public static IModelCustom modellaser1;
+    public static IModelCustom modellaser2;
+    public static IModelCustom modellaser3;
+    public static IModelCustom modellasergl;
+    public static IModelCustom modellasergr;
 
     private final NoiseModule wobbleX;
     private final NoiseModule wobbleY;
@@ -40,13 +49,22 @@ public class RenderAstroMiner extends Render
     private final NoiseModule wobbleYY;
     private final NoiseModule wobbleZZ;
 
+    static
+    {
+		modelObj = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMiner.obj"));
+		modellaser1 = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerLaserFront.obj"));
+		modellaser2 = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerLaserBottom.obj"));
+		modellaser3 = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerLaserCenter.obj"));
+		modellasergl = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerLeftGuard.obj"));
+		modellasergr = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerRightGuard.obj"));
+	    modelTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/astroMiner.png");
+	    modelTextureFX = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/astroMinerFX.png");
+	    modelTextureOff = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/astroMiner_off.png");
+	    scanTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/misc/gradient.png");
+    }
+    
     public RenderAstroMiner()
     {
-    	this.modelObj = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMiner.obj"));
-        this.modelTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/astroMiner.png");
-        this.modelTextureFX = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/astroMinerFX.png");
-        this.modelTextureOff = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/astroMiner_off.png");
-        this.scanTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/misc/gradient.png");
         this.shadowSize = 2F;
         
         Random rand = new Random();
@@ -98,7 +116,7 @@ public class RenderAstroMiner extends Render
         final float rotPitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTickTime;
         final float rotYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTickTime;
 
-        GL11.glTranslatef((float)x, (float)y + 1.55F, (float)z);
+        GL11.glTranslatef((float)x, (float)y + 1.4F, (float)z);
         float partBlock;
         switch (astroMiner.facing)
         {
@@ -138,15 +156,18 @@ public class RenderAstroMiner extends Render
         	GL11.glRotatef(rotPitch / 4F, 1, 0, 0);
             GL11.glTranslatef(0.65F, 0.65F, 0);
         }
-        GL11.glTranslatef(0F, -0.35F, 0.25F);
-        GL11.glScalef(0.05F, 0.05F, 0.05F);
+
+        GL11.glTranslatef(0F, -0.42F, 0.28F);
+        GL11.glScalef(0.0495F, 0.0495F, 0.0495F);
         GL11.glTranslatef(wx, wy, wz);
 
         if (active)
         {
             FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.modelTexture);
 	        this.modelObj.renderAllExcept("Hoverpad_Front_Left_Top", "Hoverpad_Front_Right_Top", "Hoverpad_Front_Left_Bottom", "Hoverpad_Front_Right_Bottom", "Hoverpad_Rear_Right", "Hoverpad_Rear_Left", "Hoverpad_Heavy_Right", "Hoverpad_Heavy_Left", "Hoverpad_Heavy_Rear", "Hoverpad_Front_Left_Top_Glow", "Hoverpad_Front_Right_Top_Glow", "Hoverpad_Front_Left_Bottom_Glow", "Hoverpad_Front_Right_Bottom_Glow", "Hoverpad_Rear_Right_Glow", "Hoverpad_Rear_Left_Glow", "Hoverpad_Heavy___Glow002", "Hoverpad_Heavy___Glow001", "Hoverpad_Heavy___Glow003");
-	
+
+	        renderLaserModel(astroMiner.retraction);
+	        
 	        float lightMapSaveX = OpenGlHelper.lastBrightnessX;
 	        float lightMapSaveY = OpenGlHelper.lastBrightnessY;
 	        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
@@ -182,6 +203,45 @@ public class RenderAstroMiner extends Render
 		        tess.addVertexWithUV(-37.8F, -32.6F, -45F - partBlock, 1D, 1D);
 		        tess.addVertexWithUV(-15.6F, -0.7F, -20F, 0D, 1D);
 		        tess.draw();
+		        
+		        int removeCount = 0;
+		        int afterglowCount = 0;
+		        GL11.glPopMatrix();
+		        GL11.glPushMatrix();
+		        GL11.glTranslatef((float)(x - astroMiner.posX), (float)(y - astroMiner.posY), (float)(z - astroMiner.posZ));
+		        for (Integer blockTime : new ArrayList<Integer>(astroMiner.laserTimes))
+		        {
+		        	if (blockTime < astroMiner.ticksExisted - 19) removeCount++;
+		        	else if (blockTime < astroMiner.ticksExisted - 3) afterglowCount++;
+		        }
+		        if (removeCount > 0) astroMiner.removeLaserBlocks(removeCount);
+		        int count = 0;
+		        for (BlockVec3 blockLaser : new ArrayList<BlockVec3>(astroMiner.laserBlocks))
+		        {
+		        	if (count < afterglowCount)
+		        	{
+			        	int fade = astroMiner.ticksExisted - astroMiner.laserTimes.get(count) - 8;
+			        	if (fade < 0) fade = 0;
+		        		doAfterGlow(blockLaser, fade);
+		        	}
+		        	else doLaser(astroMiner, blockLaser);
+		        	count ++;
+		        }
+		        if (astroMiner.retraction > 0F)
+		        {	
+		        	astroMiner.retraction -= RETRACTIONSPEED * partTime;
+		        	if (astroMiner.retraction < 0F) astroMiner.retraction = 0F; 
+		        }
+		        GL11.glPopMatrix();
+	        }
+	        else
+	        {
+		        if (astroMiner.retraction < 1F)
+		        {
+		        	astroMiner.retraction += RETRACTIONSPEED * partTime;
+		        	if (astroMiner.retraction > 1F) astroMiner.retraction = 1F; 
+		        }
+		        GL11.glPopMatrix();
 	        }
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
@@ -198,8 +258,268 @@ public class RenderAstroMiner extends Render
         {
             this.bindEntityTexture(astroMiner);
             this.modelObj.renderAllExcept("Hoverpad_Front_Left_Top_Glow", "Hoverpad_Front_Right_Top_Glow", "Hoverpad_Front_Left_Bottom_Glow", "Hoverpad_Front_Right_Bottom_Glow", "Hoverpad_Rear_Right_Glow", "Hoverpad_Rear_Left_Glow", "Hoverpad_Heavy___Glow002", "Hoverpad_Heavy___Glow001", "Hoverpad_Heavy___Glow003");
+	        renderLaserModel(astroMiner.retraction);
+	        if (astroMiner.retraction < 1F)
+	        {
+	        	astroMiner.retraction += RETRACTIONSPEED * partTime;
+	        	if (astroMiner.retraction > 1F) astroMiner.retraction = 1F; 
+	        }
+            GL11.glPopMatrix();
         }
+    }
+
+	private void doAfterGlow(BlockVec3 blockLaser, int level)
+    {
+        GL11.glPushMatrix();
+        GL11.glTranslatef(blockLaser.x, blockLaser.y, blockLaser.z);
+        final Tessellator tess = Tessellator.instance;
+        GL11.glColor4f(1.0F, 0.7F, 0.7F, 0.016667F * (12 - level));
+        float cA = -0.01F;
+        float cB = 1.01F;
+        tess.startDrawingQuads();
+        tess.addVertexWithUV(cA, cB, cA, 0D, 1D);
+        tess.addVertexWithUV(cB, cB, cA, 1D, 1D);
+        tess.addVertexWithUV(cB, cB, cB, 1D, 0D);
+        tess.addVertexWithUV(cA, cB, cB, 0D, 0D);
+        tess.draw();
+        tess.startDrawingQuads();
+        tess.addVertexWithUV(cA, cA, cA, 0D, 0D);
+        tess.addVertexWithUV(cA, cA, cB, 0D, 1D);
+        tess.addVertexWithUV(cB, cA, cB, 1D, 1D);
+        tess.addVertexWithUV(cB, cA, cA, 1D, 0D);
+        tess.draw();
+        tess.startDrawingQuads();
+        tess.addVertexWithUV(cA, cA, cA, 1D, 0D);
+        tess.addVertexWithUV(cA, cB, cA, 0D, 0D);
+        tess.addVertexWithUV(cA, cB, cB, 0D, 1D);
+        tess.addVertexWithUV(cA, cA, cB, 1D, 1D);
+        tess.draw();
+        tess.startDrawingQuads();
+        tess.addVertexWithUV(cB, cA, cA, 1D, 1D);
+        tess.addVertexWithUV(cB, cA, cB, 1D, 0D);
+        tess.addVertexWithUV(cB, cB, cB, 0D, 0D);
+        tess.addVertexWithUV(cB, cB, cA, 0D, 1D);
+        tess.draw();   	
+        tess.startDrawingQuads();
+        tess.addVertexWithUV(cA, cA, cA, 1D, 0D);
+        tess.addVertexWithUV(1F, cA, cA, 0D, 0D);
+        tess.addVertexWithUV(1F, 1F, cA, 0D, 1D);
+        tess.addVertexWithUV(cA, 1F, cA, 1D, 1D);
+        tess.draw();
+        tess.startDrawingQuads();
+        tess.addVertexWithUV(1F, cA, 1F, 1D, 1D);
+        tess.addVertexWithUV(cA, cA, 1F, 1D, 0D);
+        tess.addVertexWithUV(cA, 1F, 1F, 0D, 0D);
+        tess.addVertexWithUV(1F, 1F, 1F, 0D, 1D);
+        tess.draw();   	
         
+    	
+        GL11.glPopMatrix();
+	}
+
+    private void doLaser(EntityAstroMiner entity, BlockVec3 blockLaser)
+    {
+        GL11.glPushMatrix();
+        GL11.glTranslatef(blockLaser.x, blockLaser.y, blockLaser.z);
+        final Tessellator tess = Tessellator.instance;
+        GL11.glColor4f(1.0F, 0.7F, 0.7F, 0.2F);
+        float cA = -0.01F;
+        float cB = 1.01F;
+        tess.startDrawingQuads(); 
+        tess.addVertexWithUV(cA, cB, cA, 0D, 1D);
+        tess.addVertexWithUV(cB, cB, cA, 1D, 1D);
+        tess.addVertexWithUV(cB, cB, cB, 1D, 0D);
+        tess.addVertexWithUV(cA, cB, cB, 0D, 0D);
+        tess.draw();
+        tess.startDrawingQuads();
+        tess.addVertexWithUV(cA, cA, cA, 0D, 0D);
+        tess.addVertexWithUV(cA, cA, cB, 0D, 1D);
+        tess.addVertexWithUV(cB, cA, cB, 1D, 1D);
+        tess.addVertexWithUV(cB, cA, cA, 1D, 0D);
+        tess.draw();
+        tess.startDrawingQuads();
+        tess.addVertexWithUV(cA, cA, cA, 1D, 0D);
+        tess.addVertexWithUV(cA, cB, cA, 0D, 0D);
+        tess.addVertexWithUV(cA, cB, cB, 0D, 1D);
+        tess.addVertexWithUV(cA, cA, cB, 1D, 1D);
+        tess.draw();
+        tess.startDrawingQuads();
+        tess.addVertexWithUV(cB, cA, cA, 1D, 1D);
+        tess.addVertexWithUV(cB, cA, cB, 1D, 0D);
+        tess.addVertexWithUV(cB, cB, cB, 0D, 0D);
+        tess.addVertexWithUV(cB, cB, cA, 0D, 1D);
+        tess.draw();   	
+        tess.startDrawingQuads();
+        tess.addVertexWithUV(cA, cA, cA, 1D, 0D);
+        tess.addVertexWithUV(1F, cA, cA, 0D, 0D);
+        tess.addVertexWithUV(1F, 1F, cA, 0D, 1D);
+        tess.addVertexWithUV(cA, 1F, cA, 1D, 1D);
+        tess.draw();
+        tess.startDrawingQuads();
+        tess.addVertexWithUV(1F, cA, 1F, 1D, 1D);
+        tess.addVertexWithUV(cA, cA, 1F, 1D, 0D);
+        tess.addVertexWithUV(cA, 1F, 1F, 0D, 0D);
+        tess.addVertexWithUV(1F, 1F, 1F, 0D, 1D);
+        tess.draw();
+        
+        GL11.glColor4f(1.0F, 0.79F, 0.79F, 0.17F);
+        float bb = 1.7F;
+        float cc = 0.4F;
+        float radiansYaw = entity.rotationYaw * 0.017453292F;
+        float radiansPitch = entity.rotationPitch * 0.017453292F / 4F;
+        float mainLaserX = bb * MathHelper.sin(radiansYaw) * MathHelper.cos(radiansPitch);
+        float mainLaserY = cc + bb * MathHelper.sin(radiansPitch);
+        float mainLaserZ = bb * MathHelper.cos(radiansYaw) * MathHelper.cos(radiansPitch);
+        
+        mainLaserX += entity.posX - blockLaser.x;
+        mainLaserY += entity.posY - blockLaser.y;
+        mainLaserZ += entity.posZ - blockLaser.z;
+        
+        float xD = (mainLaserX - 0.5F);
+        float yD = (mainLaserY - 0.5F);
+        float zD = (mainLaserZ - 0.5F);
+        float xDa = Math.abs(xD);
+        float yDa = Math.abs(yD);
+        float zDa = Math.abs(zD);
+        
+        float xx, yy, zz;
+        
+        if (entity.facing > 3)
+        {
+            xx = ((xD < 0) ? cA : cB);
+            drawLaserX(mainLaserX, mainLaserY, mainLaserZ, xx, 0.5F, 0.5F);
+        }
+        else if (entity.facing < 2)
+        {
+            yy = ((yD < 0) ? cA : cB);
+            drawLaserY(mainLaserX, mainLaserY, mainLaserZ, 0.5F, yy, 0.5F);
+        }
+        else
+        {
+            zz = ((zD < 0) ? cA : cB);
+            drawLaserZ(mainLaserX, mainLaserY, mainLaserZ, 0.5F, 0.5F, zz);
+        }
+    	
+        GL11.glPopMatrix();
+   	}
+    
+    private void drawLaserX(float x1, float y1, float z1, float x2, float y2, float z2)
+    {
+        final Tessellator tess = Tessellator.instance;
+        tess.startDrawingQuads();
+        tess.addVertex(x1, y1 - 0.01F, z1 - 0.01F);
+        tess.addVertex(x2, y2 - LSIZE, z2 - LSIZE);
+        tess.addVertex(x2, y2 + LSIZE, z2 - LSIZE);
+        tess.addVertex(x1, y1 + 0.01F, z1 - 0.01F);
+        tess.draw();   	
+        tess.startDrawingQuads();
+        tess.addVertex(x1, y1 - 0.01F, z1 + 0.01F);
+        tess.addVertex(x2, y2 - LSIZE, z2 + LSIZE);
+        tess.addVertex(x2, y2 + LSIZE, z2 + LSIZE);
+        tess.addVertex(x1, y1 + 0.01F, z1 + 0.01F);
+        tess.draw();   	
+        tess.startDrawingQuads();
+        tess.addVertex(x1, y1 - 0.01F, z1 - 0.01F);
+        tess.addVertex(x2, y2 - LSIZE, z2 - LSIZE);
+        tess.addVertex(x2, y2 - LSIZE, z2 + LSIZE);
+        tess.addVertex(x1, y1 - 0.01F, z1 + 0.01F);
+        tess.draw();   	
+        tess.startDrawingQuads();
+        tess.addVertex(x1, y1 + 0.01F, z1 + 0.01F);
+        tess.addVertex(x2, y2 + LSIZE, z2 + LSIZE);
+        tess.addVertex(x2, y2 + LSIZE, z2 - LSIZE);
+        tess.addVertex(x1, y1 + 0.01F, z1 - 0.01F);
+        tess.draw();
+    }
+
+    private void drawLaserY(float x1, float y1, float z1, float x2, float y2, float z2)
+    {
+        final Tessellator tess = Tessellator.instance;
+        tess.startDrawingQuads();
+        tess.addVertex(x1 - 0.01F, y1, z1 - 0.01F);
+        tess.addVertex(x2 - LSIZE, y2, z2 - LSIZE);
+        tess.addVertex(x2 + LSIZE, y2, z2 - LSIZE);
+        tess.addVertex(x1 + 0.01F, y1, z1 - 0.01F);
+        tess.draw();   	
+        tess.startDrawingQuads();
+        tess.addVertex(x1 - 0.01F, y1, z1 + 0.01F);
+        tess.addVertex(x2 - LSIZE, y2, z2 + LSIZE);
+        tess.addVertex(x2 + LSIZE, y2, z2 + LSIZE);
+        tess.addVertex(x1 + 0.01F, y1, z1 + 0.01F);
+        tess.draw();   	
+        tess.startDrawingQuads();
+        tess.addVertex(x1 - 0.01F, y1, z1 - 0.01F);
+        tess.addVertex(x2 - LSIZE, y2, z2 - LSIZE);
+        tess.addVertex(x2 - LSIZE, y2, z2 + LSIZE);
+        tess.addVertex(x1 - 0.01F, y1, z1 + 0.01F);
+        tess.draw();   	
+        tess.startDrawingQuads();
+        tess.addVertex(x1 + 0.01F, y1, z1 + 0.01F);
+        tess.addVertex(x2 + LSIZE, y2, z2 + LSIZE);
+        tess.addVertex(x2 + LSIZE, y2, z2 - LSIZE);
+        tess.addVertex(x1 + 0.01F, y1, z1 - 0.01F);
+        tess.draw();
+    }
+
+    private void drawLaserZ(float x1, float y1, float z1, float x2, float y2, float z2)
+    {
+        final Tessellator tess = Tessellator.instance;
+        tess.startDrawingQuads();
+        tess.addVertex(x1 - 0.01F, y1 - 0.01F, z1);
+        tess.addVertex(x2 - LSIZE, y2 - LSIZE, z2);
+        tess.addVertex(x2 - LSIZE, y2 + LSIZE, z2);
+        tess.addVertex(x1 - 0.01F, y1 + 0.01F, z1);
+        tess.draw();   	
+        tess.startDrawingQuads();
+        tess.addVertex(x1 + 0.01F, y1 - 0.01F, z1);
+        tess.addVertex(x2 + LSIZE, y2 - LSIZE, z2);
+        tess.addVertex(x2 + LSIZE, y2 + LSIZE, z2);
+        tess.addVertex(x1 + 0.01F, y1 + 0.01F, z1);
+        tess.draw();   	
+        tess.startDrawingQuads();
+        tess.addVertex(x1 - 0.01F, y1 - 0.01F, z1);
+        tess.addVertex(x2 - LSIZE, y2 - LSIZE, z2);
+        tess.addVertex(x2 + LSIZE, y2 - LSIZE, z2);
+        tess.addVertex(x1 + 0.01F, y1 - 0.01F, z1);
+        tess.draw();   	
+        tess.startDrawingQuads();
+        tess.addVertex(x1, y1 + 0.01F, z1 + 0.01F);
+        tess.addVertex(x2, y2 + LSIZE, z2 + LSIZE);
+        tess.addVertex(x2, y2 + LSIZE, z2 - LSIZE);
+        tess.addVertex(x1, y1 + 0.01F, z1 - 0.01F);
+        tess.draw();
+    }
+
+    private void renderLaserModel(float retraction)
+    {
+    	float laserretraction = retraction / 0.8F;
+    	if (laserretraction > 1F) laserretraction = 1F;
+    	float guardmovement = (retraction - 0.6F) / 0.4F * 1.875F;
+    	if (guardmovement < 0F) guardmovement = 0F;
+    	GL11.glPushMatrix();       
+    	float zadjust = laserretraction * 5F;
+    	float yadjust = zadjust;
+    	
+    	if (yadjust > 0.938F)
+    	{	
+    		yadjust = 0.938F;
+    		zadjust = (zadjust - yadjust) * 2.5F + yadjust;
+    	}
+        GL11.glTranslatef(0F, yadjust, zadjust);
+	    this.modellaser1.renderAll();
+	    this.modellaser2.renderAll();
+	    if (yadjust == 0.938F)
+	    {
+	        //Do not move laser centre into body
+	    	GL11.glTranslatef(0F, 0F, -zadjust + 0.938F);
+	    }
+	    this.modellaser3.renderAll();
+    	GL11.glPopMatrix();
+        GL11.glPushMatrix();
+        GL11.glTranslatef(guardmovement, 0F, 0F);
+	    this.modellasergl.renderAll();
+        GL11.glTranslatef(-2 * guardmovement, 0F, 0F);
+	    this.modellasergr.renderAll();
         GL11.glPopMatrix();
     }
 

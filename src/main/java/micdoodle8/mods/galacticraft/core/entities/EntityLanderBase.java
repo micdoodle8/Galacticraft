@@ -5,15 +5,13 @@ import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
-import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
+import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -21,7 +19,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
@@ -148,53 +145,8 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     
     private void checkFluidTankTransfer(int slot, FluidTank tank)
 	{
-		ItemStack slotItem = this.containedItems[slot];
-		if (slotItem != null && slotItem.stackSize == 1 && FluidContainerRegistry.isContainer(slotItem))
-		{
-			final FluidStack liquid = tank.getFluid();
-
-			if (liquid != null && liquid.amount > 0)
-			{
-				String liquidname = liquid.getFluid().getName();
-
-				if (liquidname.equals("fuel"))
-				{
-					tryFillContainer(tank, liquid, slot, GCItems.fuelCanister);
-				}
-			}
-		}
+		FluidUtil.tryFillContainerFuel(tank, this.containedItems, slot);
 	}
-	
-
-    private void tryFillContainer(FluidTank tank, FluidStack liquid, int slot, Item fuelCanister)
-	{
-		ItemStack slotItem = this.containedItems[slot];
-		boolean isCanister = slotItem.getItem() instanceof ItemCanisterGeneric;
-		final int amountToFill = Math.min(liquid.amount, isCanister ? slotItem.getItemDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
-
-		if (amountToFill <= 0 || (isCanister && slotItem.getItem() != fuelCanister && slotItem.getItemDamage() != slotItem.getMaxDamage()))
-			return;
-		
-		if (isCanister)
-		{
-			this.containedItems[slot] = new ItemStack(fuelCanister, 1, slotItem.getItemDamage() - amountToFill);
-			tank.drain(amountToFill, true);
-		}
-		else if (amountToFill == FluidContainerRegistry.BUCKET_VOLUME)
-		{
-			this.containedItems[slot] = FluidContainerRegistry.fillFluidContainer(liquid, this.containedItems[slot]);
-
-			if (this.containedItems[slot] == null)
-			{
-				this.containedItems[slot] = slotItem;
-			}
-			else
-			{
-				tank.drain(amountToFill, true);
-			}
-		}
-	}
-
 
     private void pushEntityAway(Entity entityToPush)
     {

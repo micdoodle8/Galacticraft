@@ -74,8 +74,8 @@ public class AsteroidBlocks
     	AsteroidBlocks.blockBasic.setHarvestLevel("pickaxe", 0, 1);   //Rock
     	AsteroidBlocks.blockBasic.setHarvestLevel("pickaxe", 0, 2);   //Rock
     	AsteroidBlocks.blockBasic.setHarvestLevel("pickaxe", 2, 3);   //Aluminium
-    	AsteroidBlocks.blockBasic.setHarvestLevel("pickaxe", 3, 4);   //Ilmenite
-    	AsteroidBlocks.blockBasic.setHarvestLevel("pickaxe", 2, 5);   //Iron
+    	AsteroidBlocks.blockBasic.setHarvestLevel("pickaxe", 2, 4);   //Ilmenite
+    	AsteroidBlocks.blockBasic.setHarvestLevel("pickaxe", 1, 5);   //Iron
     }
 
     public static void oreDictRegistration()
@@ -83,6 +83,7 @@ public class AsteroidBlocks
         OreDictionary.registerOre("oreAluminum", new ItemStack(AsteroidBlocks.blockBasic, 1, 3));
         OreDictionary.registerOre("oreAluminium", new ItemStack(AsteroidBlocks.blockBasic, 1, 3));
         OreDictionary.registerOre("oreNaturalAluminum", new ItemStack(AsteroidBlocks.blockBasic, 1, 3));
+		OreDictionary.registerOre("oreIlmenite", new ItemStack(AsteroidBlocks.blockBasic, 1, 4));
         OreDictionary.registerOre("oreIron", new ItemStack(AsteroidBlocks.blockBasic, 1, 5));
     }
 }

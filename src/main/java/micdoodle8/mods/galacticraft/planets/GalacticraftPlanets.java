@@ -16,10 +16,13 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
+import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
+import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.config.ConfigElement;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +49,19 @@ public class GalacticraftPlanets
     public void preInit(FMLPreInitializationEvent event)
     {
         FMLCommonHandler.instance().bus().register(this);
+        
+        //Initialise configs, converting mars.conf + asteroids.conf to planets.conf if necessary
+        File oldMarsConf = new File(event.getModConfigurationDirectory(), "Galacticraft/mars.conf");
+        File newPlanetsConf = new File(event.getModConfigurationDirectory(), "Galacticraft/planets.conf");
+        boolean update = false;
+        if (oldMarsConf.exists())
+        {
+        	oldMarsConf.renameTo(newPlanetsConf);
+        	update = true;
+        }
+        new ConfigManagerMars(newPlanetsConf, update);
+        new ConfigManagerAsteroids(new File(event.getModConfigurationDirectory(), "Galacticraft/asteroids.conf"));
+
         GalacticraftPlanets.commonModules.put(GalacticraftPlanets.MODULE_KEY_MARS, new MarsModule());
         GalacticraftPlanets.commonModules.put(GalacticraftPlanets.MODULE_KEY_ASTEROIDS, new AsteroidsModule());
         GalacticraftPlanets.proxy.preInit(event);

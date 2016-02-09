@@ -6,20 +6,16 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockParaChest;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerParaChest;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
-import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
+import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
 import java.util.Iterator;
@@ -72,7 +68,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     {
         if ((size - 3) % 18 != 0)
         {
-            System.out.println("Strange TileEntityParachest inventory size received from server " + size);
+        	size += 18 - ((size - 3) % 18);
         }
         this.chestContents = new ItemStack[size];
     }
@@ -162,7 +158,12 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
         super.readFromNBT(nbt);
         NBTTagList nbttaglist = nbt.getTagList("Items", 10);
 
-        this.chestContents = new ItemStack[nbt.getInteger("chestContentLength")];
+        int size = nbt.getInteger("chestContentLength");
+        if ((size - 3) % 18 != 0)
+        {
+        	size += 18 - ((size - 3) % 18);
+        }
+        this.chestContents = new ItemStack[size];
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
@@ -306,50 +307,9 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     
     private void checkFluidTankTransfer(int slot, FluidTank tank)
 	{
-		if (this.chestContents[slot] != null && this.chestContents[slot].stackSize == 1 && FluidContainerRegistry.isContainer(this.chestContents[slot]))
-		{
-			final FluidStack liquid = tank.getFluid();
-
-			if (liquid != null && liquid.amount > 0)
-			{
-				String liquidname = liquid.getFluid().getName();
-
-				if (liquidname.equals("fuel"))
-				{
-					tryFillContainer(tank, liquid, slot, GCItems.fuelCanister);
-				}
-			}
-		}
+    	FluidUtil.tryFillContainerFuel(tank, this.chestContents, slot);
 	}
 	
-	private void tryFillContainer(FluidTank tank, FluidStack liquid, int slot, Item fuelCanister)
-	{
-		ItemStack slotItem = this.chestContents[slot];
-		boolean isCanister = slotItem.getItem() instanceof ItemCanisterGeneric;
-		final int amountToFill = Math.min(liquid.amount, isCanister ? slotItem.getItemDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
-
-		if (amountToFill <= 0 || (isCanister && slotItem.getItem() != fuelCanister && slotItem.getItemDamage() != slotItem.getMaxDamage()))
-			return;
-		
-		if (isCanister)
-		{
-			this.chestContents[slot] = new ItemStack(fuelCanister, 1, slotItem.getItemDamage() - amountToFill);
-			tank.drain(amountToFill, true);
-		}
-		else if (amountToFill == FluidContainerRegistry.BUCKET_VOLUME)
-		{
-			this.chestContents[slot] = FluidContainerRegistry.fillFluidContainer(liquid, this.chestContents[slot]);
-
-			if (this.chestContents[slot] == null)
-			{
-				this.chestContents[slot] = slotItem;
-			}
-			else
-			{
-				tank.drain(amountToFill, true);
-			}
-		}
-	}
 
     @Override
     public boolean receiveClientEvent(int par1, int par2)

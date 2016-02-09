@@ -101,6 +101,7 @@ gui.launchController.desc.0=Ez A Távvezérlo Saját $ Frekvenziája
 gui.launchController.desc.1=A Célpontnak A Frekvenciája, $ Ahova A Rakéta Küldve Lesz.
 gui.launchController.desc.2=Magával Vigye-e A Rakéta $ A Kilövoállást
 gui.launchController.desc.3=Amikor Ez Teljesül, $ A Kilövés Megkezdodik
+gui.launchController.desc.4=Hide destination frequency$from other players ##NEEDS TRANSLATE##
 gui.terraformer.desc.0=Víztartály
 
 gui.gasTank.desc.0=Gázraktár
@@ -189,4 +190,4 @@ gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID
 gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
 gc.configgui.launchControllerAllDims=Launch Controller All Dimensions
 
-gc.configgui.planets.title=Galacticraft Planets Config ##NEEDS TRANSLATE##
+gc.configgui.planets.title=Galacticraft Planets Config

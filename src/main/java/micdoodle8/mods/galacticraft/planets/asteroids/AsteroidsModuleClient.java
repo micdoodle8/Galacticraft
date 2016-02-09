@@ -15,6 +15,7 @@ import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.FluidTexturesGC;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.fx.EntityFXTeleport;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.gui.GuiAstroMinerDock;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.gui.GuiShortRangeTelepad;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.block.BlockRendererTier3TreasureChest;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.block.BlockRendererWalkway;
@@ -130,6 +131,10 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
             if (tile instanceof TileEntityShortRangeTelepad)
             {
                 return new GuiShortRangeTelepad(player.inventory, ((TileEntityShortRangeTelepad) tile));
+            }
+            if (tile instanceof TileEntityMinerBase)
+            {
+            	return new GuiAstroMinerDock(player.inventory, (TileEntityMinerBase) tile);
             }
 
             break;

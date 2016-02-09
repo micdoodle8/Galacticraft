@@ -179,7 +179,7 @@ public class EntityMeteorChunk extends Entity implements IProjectile
 
         Block block = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
 
-        if (!block.isAir(this.worldObj, this.xTile, this.yTile, this.zTile))
+        if (block != null && !block.isAir(this.worldObj, this.xTile, this.yTile, this.zTile))
         {
             block.setBlockBoundsBasedOnState(this.worldObj, this.xTile, this.yTile, this.zTile);
             AxisAlignedBB axisalignedbb = block.getCollisionBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);

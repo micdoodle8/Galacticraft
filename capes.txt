@@ -1,4 +1,5 @@
 micdoodle8:capeOrange
+radfast:capeLightGray
 JTE:capeLime
 ajmski:capeLime
 Azeryuu:capeLime
@@ -48,7 +49,7 @@ atomicpichu:capeRainbow
 Pig_Rider273:capeMagenta
 so2ro:capeOrange
 Sir_Killz:capeBlue
-TheDestroyer4000:capeRainbow
+Takos:capeRainbow
 Kingdom_Hearts12:capeRainbow
 alfiethomas102:capeLime
 MattRockSolid:capeBlue
@@ -85,3 +86,12 @@ Strachey:capeYellow
 buddy1913:capeOrange
 JacobiCarter:capeLime
 afoolishmoon:capeBrown
+LokeYourLord:capeRainbow
+JBoyJr:capeRainbow
+ma10as234:capeLime
+kimwy:capeRainbow
+PrezGman:capeLightBlue
+creeperchick15:capePurple
+sonic5223:capeBlue
+mads4444:capeRainbow
+urix123:capePurple

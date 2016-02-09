@@ -3,15 +3,22 @@ package micdoodle8.mods.galacticraft.planets.mars.entities;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
+import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
+import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.entities.EntityAIArrowAttack;
 import micdoodle8.mods.galacticraft.core.entities.IBoss;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
+import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTreasureChestMars;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -25,6 +32,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -55,7 +63,7 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
     public EntityCreeperBoss(World par1World)
     {
         super(par1World);
-        this.setSize(1.5F, 7.0F);
+        this.setSize(2.0F, 7.0F);
         this.isImmuneToFire = true;
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIArrowAttack(this, 1.0D, 25, 20.0F));
@@ -399,7 +407,33 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
     public ItemStack getGuaranteedLoot(Random rand)
     {
         List<ItemStack> stackList = GalacticraftRegistry.getDungeonLoot(2);
-        return stackList.get(rand.nextInt(stackList.size())).copy();
+        int range = 2;
+        //If player seems to have Tier 3 rocket already then add Astro Miner to the loot
+        final EntityPlayer player = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0);
+        if (player != null)
+        {
+	        GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) player);
+	        if (stats != null)
+	        {
+		        for (ISchematicPage page : stats.unlockedSchematics)
+		        {
+		        	if (page.getPageID() == ConfigManagerAsteroids.idSchematicRocketT3)
+		        	{
+		        		range = 3;
+		        		break;
+		        	}
+		        }
+		        if (stats.rocketItem == AsteroidsItems.tier3Rocket)
+		        	range = 3;
+	        }
+	        if (range == 2)
+	        {
+	        	SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(player.getGameProfile().getName());
+	        	if (race != null && race.getCelestialBodyStatusList().containsKey(AsteroidsModule.planetAsteroids))
+	        		range = 3;        	
+	        }
+        }
+        return stackList.get(rand.nextInt(range)).copy();
     }
 
     @Override

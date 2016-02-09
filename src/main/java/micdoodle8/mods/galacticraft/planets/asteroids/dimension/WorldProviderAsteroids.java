@@ -6,23 +6,31 @@ import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
+import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
+import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.WorldChunkManagerAsteroids;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.TreeMap;
 
-public class WorldProviderAsteroids extends WorldProviderSpace
+public class WorldProviderAsteroids extends WorldProviderSpace implements ISolarLevel
 {
     //Used to list asteroid centres to external code that needs to know them
-    private HashSet<BlockVec3> asteroidCentres = new HashSet();
+    private HashSet<AsteroidData> asteroids = new HashSet();
     private boolean dataNotLoaded = true;
     private AsteroidSaveData datafile;
+	private double solarMultiplier = -1D;
 
     //	@Override
 //	public void registerWorldChunkManager()
@@ -64,6 +72,11 @@ public class WorldProviderAsteroids extends WorldProviderSpace
     public long getDayLength()
     {
         return 0;
+    }
+
+    public boolean isDaytime()
+    {
+        return true;
     }
 
     @Override
@@ -112,7 +125,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace
     @Override
     public int getAverageGroundLevel()
     {
-        return 44;
+        return 96;
     }
 
     @Override
@@ -121,16 +134,38 @@ public class WorldProviderAsteroids extends WorldProviderSpace
         return true;
     }
 
+	//Overriding only in case the Galacticraft API is not up-to-date
+    //(with up-to-date API this makes zero difference)
+    @Override
+    public boolean isSurfaceWorld()
+    {
+        return (this.worldObj == null) ? false : this.worldObj.isRemote;
+    }
+
+	//Overriding so that beds do not explode on Asteroids
+	@Override
+	public boolean canRespawnHere()
+	{
+		if (EventHandlerGC.bedActivated)
+		{
+			EventHandlerGC.bedActivated = false;
+			return true;
+		}
+		return false;
+	}
+	
+	//Overriding only in case the Galacticraft API is not up-to-date
+    //(with up-to-date API this makes zero difference)
+    @Override
+    public int getRespawnDimension(EntityPlayerMP player)
+    {
+        return this.shouldForceRespawn() ? this.dimensionId : 0;
+    }
+
     @Override
     public float getGravity()
     {
         return 0.072F;
-    }
-
-    @Override
-    public int getHeight()
-    {
-        return 800;
     }
 
     @Override
@@ -175,29 +210,29 @@ public class WorldProviderAsteroids extends WorldProviderSpace
         return -1.5F;
     }
 
-    public void addAsteroid(int x, int y, int z)
+    public void addAsteroid(int x, int y, int z, int size, int core)
     {
-        BlockVec3 coords = new BlockVec3(x, y, z);
-        if (!this.asteroidCentres.contains(coords))
+        AsteroidData coords = new AsteroidData(x, y, z, size, core);
+        if (!this.asteroids.contains(coords))
         {
             if (this.dataNotLoaded)
             {
                 this.loadAsteroidSavedData();
             }
-            if (!this.asteroidCentres.contains(coords))
+            if (!this.asteroids.contains(coords))
             {
                 this.addToNBT(this.datafile.datacompound, coords);
-                this.asteroidCentres.add(coords);
+                this.asteroids.add(coords);
             }
         }
     }
 
     public void removeAsteroid(int x, int y, int z)
     {
-        BlockVec3 coords = new BlockVec3(x, y, z);
-        if (this.asteroidCentres.contains(coords))
+    	AsteroidData coords = new AsteroidData(x, y, z);
+        if (this.asteroids.contains(coords))
         {
-            this.asteroidCentres.remove(coords);
+            this.asteroids.remove(coords);
 
             if (this.dataNotLoaded)
             {
@@ -236,7 +271,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace
 
                 if (tag1 != null)
                 {
-                    this.asteroidCentres.add(BlockVec3.readFromNBT(tag1));
+                    this.asteroids.add(AsteroidData.readFromNBT(tag1));
                 }
             }
         }
@@ -245,7 +280,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace
     private void writeToNBT(NBTTagCompound nbt)
     {
         NBTTagList coordList = new NBTTagList();
-        for (BlockVec3 coords : this.asteroidCentres)
+        for (AsteroidData coords : this.asteroids)
         {
             NBTTagCompound tag = new NBTTagCompound();
             coords.writeToNBT(tag);
@@ -255,7 +290,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace
         this.datafile.markDirty();
     }
 
-    private void addToNBT(NBTTagCompound nbt, BlockVec3 coords)
+    private void addToNBT(NBTTagCompound nbt, AsteroidData coords)
     {
         NBTTagList coordList = nbt.getTagList("coords", 10);
         NBTTagCompound tag = new NBTTagCompound();
@@ -267,58 +302,117 @@ public class WorldProviderAsteroids extends WorldProviderSpace
 
     public BlockVec3 getClosestAsteroidXZ(int x, int y, int z)
     {
-        BlockVec3 target = new BlockVec3(x, y, z);
-        if (this.asteroidCentres.size() == 0)
+        if (this.dataNotLoaded)
+        {
+            this.loadAsteroidSavedData();
+        }
+
+        if (this.asteroids.size() == 0)
         {
             return null;
         }
 
         BlockVec3 result = null;
+        AsteroidData resultRoid = null;
         int lowestDistance = Integer.MAX_VALUE;
 
-        for (BlockVec3 test : this.asteroidCentres)
+        for (AsteroidData test : this.asteroids)
         {
-            int dx = target.x - test.x;
-            int dz = target.z - test.z;
+            if ((test.sizeAndLandedFlag & 128) > 0)
+            	continue;
+
+            int dx = x - test.centre.x;
+            int dz = z - test.centre.z;
             int a = dx * dx + dz * dz;
             if (a < lowestDistance)
             {
                 lowestDistance = a;
-                result = test.clone();
+                result = test.centre;
+                resultRoid = test;
             }
         }
 
-        return result;
-    }
-
-/*    public BlockVec3[] getClosestAsteroidsXZ(int x, int y, int z, int facing, int count)
-    {
-        if (this.asteroidCentres.size() == 0)
-        {
-            return new BlockVec3[0];
-        }
-
-        BlockVec3 target[] = new BlockVec3[count];
-        int dist[] = new int[count];
+        if (result == null)
+        	return null;
         
-        for (int i = 0; i < count; i++)
-        	dist[i] = Integer.MAX_VALUE;
+        resultRoid.sizeAndLandedFlag |= 128;
+        this.writeToNBT(this.datafile.datacompound);
+        return result.clone();
+    }
 
-        for (BlockVec3 test : this.asteroidCentres)
+    public ArrayList<BlockVec3> getClosestAsteroidsXZ(int x, int y, int z, int facing, int count)
+    {
+        if (this.dataNotLoaded)
         {
-            int dx = target.x - test.x;
-            int dz = target.z - test.z;
-            int a = dx * dx + dz * dz;
-            if (a < lowestDistance)
-            {
-                lowestDistance = a;
-                result = test.clone();
-            }
+            this.loadAsteroidSavedData();
         }
 
-        return result;
+        if (this.asteroids.size() == 0)
+        {
+            return null;
+        }
+
+        TreeMap<Integer, BlockVec3> targets = new TreeMap();
+        
+        for (AsteroidData roid : this.asteroids)
+        {
+            BlockVec3 test = roid.centre;
+        	switch (facing)
+            {
+            case 2:
+            	if (z - 16 < test.z)
+            		continue;
+            	break;
+            case 3:
+            	if (z + 16 > test.z)
+            		continue;
+            	break;
+            case 4:
+            	if (x - 16 < test.x)
+            		continue;
+            	break;
+            case 5:
+            	if (x + 16 > test.x)
+            		continue;
+            	break;
+            }
+        	int dx = x - test.x;
+            int dz = z - test.z;
+            int a = dx * dx + dz * dz;
+            if (a < 262144) targets.put(a, test);
+        }
+
+        int max = Math.max(count,  targets.size());
+        if (max <= 0) return null;
+        
+        ArrayList<BlockVec3> returnValues = new ArrayList();
+        int i = 0;
+        int offset = EntityAstroMiner.MINE_LENGTH_AST / 2;
+        for (BlockVec3 target : targets.values())
+        {
+        	BlockVec3 coords = target.clone();
+        	GCLog.debug("Found nearby asteroid at "+ target.toString());
+            switch (facing)
+            {
+            case 2:
+            	coords.z += offset;
+            	break;
+            case 3:
+            	coords.z -= offset;
+            	break;
+            case 4:
+            	coords.x += offset;
+            	break;
+            case 5:
+            	coords.x -= offset;
+            	break;
+            }
+        	returnValues.add(coords);
+        	if (++i >= count) break; 
+        }
+        
+        return returnValues;
     }
-*/
     
     @Override
     public float getWindLevel()
@@ -338,4 +432,92 @@ public class WorldProviderAsteroids extends WorldProviderSpace
         super.registerWorldChunkManager();
         this.hasNoSky = true;
     }
+
+	@Override
+	public double getSolarEnergyMultiplier()
+	{
+		if (this.solarMultiplier < 0D)
+		{
+			double s = this.getSolarSize();
+			this.solarMultiplier = s * s * s * ConfigManagerCore.spaceStationEnergyScalar;
+		}
+		return this.solarMultiplier;
+	}
+	
+	private static class AsteroidData
+	{
+		protected BlockVec3 centre;
+		protected int sizeAndLandedFlag = 15;
+		protected int coreAndSpawnedFlag = -2;
+
+		public AsteroidData(int x, int y, int z)
+		{
+			this.centre = new BlockVec3(x, y, z);
+		}
+		
+		public AsteroidData(int x, int y, int z, int size, int core)
+		{
+			this.centre = new BlockVec3(x, y, z);
+			this.sizeAndLandedFlag = size;
+			this.coreAndSpawnedFlag = core;
+		}
+		
+		public AsteroidData(BlockVec3 bv)
+		{
+			this.centre = bv;
+		}
+		
+	    @Override
+	    public int hashCode()
+	    {
+	    	if (this.centre != null)
+	    		return this.centre.hashCode();
+	    	else
+	    		return 0;
+	    }
+	    
+	    @Override
+	    public boolean equals(Object o)
+	    {
+	        if (o instanceof AsteroidData)
+	        {
+	            BlockVec3 vector = ((AsteroidData) o).centre;
+	            return this.centre.x == vector.x && this.centre.y == vector.y && this.centre.z == vector.z;
+	        }
+	        
+	        if (o instanceof BlockVec3)
+	        {
+	            BlockVec3 vector = (BlockVec3) o;
+	            return this.centre.x == vector.x && this.centre.y == vector.y && this.centre.z == vector.z;
+	        }
+
+	        return false;
+	    }
+	    
+	    public NBTTagCompound writeToNBT(NBTTagCompound tag)
+	    {
+	        tag.setInteger("x", this.centre.x);
+	        tag.setInteger("y", this.centre.y);
+	        tag.setInteger("z", this.centre.z);
+	        tag.setInteger("coreAndFlag", this.coreAndSpawnedFlag);
+	        tag.setInteger("sizeAndFlag", this.sizeAndLandedFlag);
+	        return tag;
+	    }
+
+	    public static AsteroidData readFromNBT(NBTTagCompound tag)
+	    {
+	        BlockVec3 tempVector = new BlockVec3();
+	        tempVector.x = tag.getInteger("x");
+	        tempVector.y = tag.getInteger("y");
+	        tempVector.z = tag.getInteger("z");
+	        
+	        AsteroidData roid = new AsteroidData(tempVector);
+	    	if (tag.hasKey("coreAndFlag"))
+	    		roid.coreAndSpawnedFlag = tag.getInteger("coreAndFlag");
+	    	if (tag.hasKey("sizeAndFlag"))
+	    		roid.sizeAndLandedFlag = tag.getInteger("sizeAndFlag");
+
+	    	return roid;
+	    }
+	}
 }

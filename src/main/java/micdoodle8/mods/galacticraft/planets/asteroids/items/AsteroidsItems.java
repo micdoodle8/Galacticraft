@@ -22,6 +22,7 @@ public class AsteroidsItems
     //public static Item canisterLAr;
     public static Item atmosphericValve;
     public static ItemHeavyNoseCone heavyNoseCone;
+    public static Item orionDrive;
     public static Item titaniumHelmet;
     public static Item titaniumChestplate;
     public static Item titaniumLeggings;
@@ -48,6 +49,7 @@ public class AsteroidsItems
         //AsteroidsItems.canisterLAr = new ItemCanisterLiquidArgon("canisterPartialLAr");
         AsteroidsItems.atmosphericValve = new ItemAtmosphericValve("atmosphericValve");
         AsteroidsItems.heavyNoseCone = new ItemHeavyNoseCone("heavyNoseCone");
+        AsteroidsItems.orionDrive = new ItemOrionDrive("orionDrive");
         AsteroidsItems.titaniumHelmet = new ItemArmorAsteroids(0, "helmet");
         AsteroidsItems.titaniumChestplate = new ItemArmorAsteroids(1, "chestplate");
         AsteroidsItems.titaniumLeggings = new ItemArmorAsteroids(2, "leggings");
@@ -64,6 +66,15 @@ public class AsteroidsItems
         OreDictionary.registerOre("ingotTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 5));
         OreDictionary.registerOre("shardTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 4));
         OreDictionary.registerOre("shardIron", new ItemStack(AsteroidsItems.basicItem, 1, 3));
+
+        AsteroidsItems.registerHarvestLevels();
+    }
+
+    public static void registerHarvestLevels()
+    {
+    	AsteroidsItems.titaniumPickaxe.setHarvestLevel("pickaxe", 5);
+        AsteroidsItems.titaniumAxe.setHarvestLevel("axe", 5);
+        AsteroidsItems.titaniumSpade.setHarvestLevel("shovel", 5);
     }
 
     private static void registerItems()
@@ -79,6 +90,7 @@ public class AsteroidsItems
         //registerItem(AsteroidsItems.canisterLAr);
         registerItem(AsteroidsItems.atmosphericValve);
         registerItem(AsteroidsItems.heavyNoseCone);
+        registerItem(AsteroidsItems.orionDrive);
         registerItem(AsteroidsItems.titaniumHelmet);
         registerItem(AsteroidsItems.titaniumChestplate);
         registerItem(AsteroidsItems.titaniumLeggings);

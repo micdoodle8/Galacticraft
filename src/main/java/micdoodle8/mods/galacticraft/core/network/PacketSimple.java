@@ -14,6 +14,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
+import micdoodle8.mods.galacticraft.api.galaxies.Satellite;
 import micdoodle8.mods.galacticraft.api.galaxies.SolarSystem;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
@@ -21,6 +22,7 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.fx.EntityFXSparks;
@@ -54,19 +56,15 @@ import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -83,14 +81,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.chunk.Chunk;
 import org.apache.commons.io.FileUtils;
 
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
-import javax.imageio.stream.FileImageOutputStream;
-import javax.imageio.stream.ImageOutputStream;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -138,7 +130,7 @@ public class PacketSimple extends Packet implements IPacket
         C_RESET_THIRD_PERSON(Side.CLIENT),
         C_UPDATE_SPACESTATION_LIST(Side.CLIENT, Integer[].class),
         C_UPDATE_SPACESTATION_DATA(Side.CLIENT, Integer.class, NBTTagCompound.class),
-        C_UPDATE_SPACESTATION_CLIENT_ID(Side.CLIENT, Integer.class),
+        C_UPDATE_SPACESTATION_CLIENT_ID(Side.CLIENT, String.class),
         C_UPDATE_PLANETS_LIST(Side.CLIENT, Integer[].class),
         C_UPDATE_CONFIGS(Side.CLIENT, Integer.class, Double.class, Integer.class, Integer.class, Integer.class, String.class, Float.class, Float.class, Float.class, Float.class, Integer.class, String[].class),
         C_UPDATE_STATS(Side.CLIENT, Integer.class),
@@ -155,10 +147,11 @@ public class PacketSimple extends Packet implements IPacket
         C_UPDATE_SPACE_RACE_DATA(Side.CLIENT, Integer.class, String.class, FlagData.class, Vector3.class, String[].class),
         C_OPEN_JOIN_RACE_GUI(Side.CLIENT, Integer.class),
         C_UPDATE_FOOTPRINT_LIST(Side.CLIENT, Long.class, Footprint[].class),
+        C_FOOTPRINTS_REMOVED(Side.CLIENT, Long.class, BlockVec3.class),
         C_UPDATE_STATION_SPIN(Side.CLIENT, Float.class, Boolean.class),
         C_UPDATE_STATION_DATA(Side.CLIENT, Double.class, Double.class),
         C_UPDATE_STATION_BOX(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
-        C_UPDATE_THERMAL_LEVEL(Side.CLIENT, Integer.class),
+        C_UPDATE_THERMAL_LEVEL(Side.CLIENT, Integer.class, Boolean.class),
         C_DISPLAY_ROCKET_CONTROLS(Side.CLIENT),
         C_GET_CELESTIAL_BODY_LIST(Side.CLIENT),
         C_UPDATE_ENERGYUNITS(Side.CLIENT, Integer.class),
@@ -295,8 +288,10 @@ public class PacketSimple extends Packet implements IPacket
                 }
                 final String[] destinations = dimensionList.split("\\?");
                 List<CelestialBody> possibleCelestialBodies = Lists.newArrayList();
-                Map<String, String> spaceStationNames = Maps.newHashMap();
-                Map<String, Integer> spaceStationIDs = Maps.newHashMap();
+                Map<Integer, Map<String, GuiCelestialSelection.StationDataGUI>> spaceStationData = Maps.newHashMap();
+//                Map<String, String> spaceStationNames = Maps.newHashMap();
+//                Map<String, Integer> spaceStationIDs = Maps.newHashMap();
+//                Map<String, Integer> spaceStationHomes = Maps.newHashMap();
 
                 for (String str : destinations)
                 {
@@ -304,12 +299,29 @@ public class PacketSimple extends Packet implements IPacket
 
                     if (celestialBody == null && str.contains("$"))
                     {
-                        celestialBody = GalacticraftCore.satelliteSpaceStation;
-
                         String[] values = str.split("\\$");
 
-                        spaceStationNames.put(values[1], values[2]);
-                        spaceStationIDs.put(values[1], Integer.parseInt(values[3]));
+                        int homePlanetID = Integer.parseInt(values[4]);
+
+                        for (Satellite satellite : GalaxyRegistry.getRegisteredSatellites().values())
+                        {
+                            if (satellite.getParentPlanet().getDimensionID() == homePlanetID)
+                            {
+                                celestialBody = satellite;
+                                break;
+                            }
+                        }
+
+                        if (!spaceStationData.containsKey(homePlanetID))
+                        {
+                            spaceStationData.put(homePlanetID, new HashMap<String, GuiCelestialSelection.StationDataGUI>());
+                        }
+
+                        spaceStationData.get(homePlanetID).put(values[1], new GuiCelestialSelection.StationDataGUI(values[2], Integer.parseInt(values[3])));
+
+//                        spaceStationNames.put(values[1], values[2]);
+//                        spaceStationIDs.put(values[1], Integer.parseInt(values[3]));
+//                        spaceStationHomes.put(values[1], Integer.parseInt(values[4]));
                     }
 
                     if (celestialBody != null)
@@ -323,15 +335,17 @@ public class PacketSimple extends Packet implements IPacket
                     if (!(FMLClientHandler.instance().getClient().currentScreen instanceof GuiCelestialSelection))
                     {
                         GuiCelestialSelection gui = new GuiCelestialSelection(false, possibleCelestialBodies);
-                        gui.spaceStationNames = spaceStationNames;
-                        gui.spaceStationIDs = spaceStationIDs;
+                        gui.spaceStationMap = spaceStationData;
+//                        gui.spaceStationNames = spaceStationNames;
+//                        gui.spaceStationIDs = spaceStationIDs;
                         FMLClientHandler.instance().getClient().displayGuiScreen(gui);
                     }
                     else
                     {
                         ((GuiCelestialSelection) FMLClientHandler.instance().getClient().currentScreen).possibleBodies = possibleCelestialBodies;
-                        ((GuiCelestialSelection) FMLClientHandler.instance().getClient().currentScreen).spaceStationNames = spaceStationNames;
-                        ((GuiCelestialSelection) FMLClientHandler.instance().getClient().currentScreen).spaceStationIDs = spaceStationIDs;
+                        ((GuiCelestialSelection) FMLClientHandler.instance().getClient().currentScreen).spaceStationMap = spaceStationData;
+//                        ((GuiCelestialSelection) FMLClientHandler.instance().getClient().currentScreen).spaceStationNames = spaceStationNames;
+//                        ((GuiCelestialSelection) FMLClientHandler.instance().getClient().currentScreen).spaceStationIDs = spaceStationIDs;
                     }
                 }
             }
@@ -486,7 +500,7 @@ public class PacketSimple extends Packet implements IPacket
             var4.readFromNBT((NBTTagCompound) this.data.get(1));
             break;
         case C_UPDATE_SPACESTATION_CLIENT_ID:
-            ClientProxyCore.clientSpaceStationID = (Integer) this.data.get(0);
+            ClientProxyCore.clientSpaceStationID = WorldUtil.stringToSpaceStationData((String) this.data.get(0));
             break;
         case C_UPDATE_PLANETS_LIST:
         	WorldUtil.decodePlanetsListClient(data);
@@ -604,9 +618,36 @@ public class PacketSimple extends Packet implements IPacket
             for (int i = 1; i < this.data.size(); i++)
             {
                 Footprint print = (Footprint) this.data.get(i);
-                printList.add(print);
+                if (!print.owner.equals(player.getCommandSenderName()))
+                {
+                    printList.add(print);
+                }
             }
             ClientProxyCore.footprintRenderer.setFootprints(chunkKey, printList);
+            break;
+        case C_FOOTPRINTS_REMOVED:
+            long chunkKey0 = (Long) this.data.get(0);
+            BlockVec3 position = (BlockVec3) this.data.get(1);
+            List<Footprint> footprintList = ClientProxyCore.footprintRenderer.footprints.get(chunkKey0);
+            List<Footprint> toRemove = new ArrayList<Footprint>();
+
+            if (footprintList != null)
+            {
+                for (Footprint footprint : footprintList)
+                {
+                    if (footprint.position.x > position.x && footprint.position.x < position.x + 1 &&
+                            footprint.position.z > position.z && footprint.position.z < position.z + 1)
+                    {
+                        toRemove.add(footprint);
+                    }
+                }
+            }
+
+            if (!toRemove.isEmpty())
+            {
+                footprintList.removeAll(toRemove);
+                ClientProxyCore.footprintRenderer.footprints.put(chunkKey0, footprintList);
+            }
             break;
         case C_UPDATE_STATION_SPIN:
             if (playerBaseClient.worldObj.provider instanceof WorldProviderOrbit)
@@ -628,6 +669,7 @@ public class PacketSimple extends Packet implements IPacket
             break;
         case C_UPDATE_THERMAL_LEVEL:
             stats.thermalLevel = (Integer) this.data.get(0);
+            stats.thermalLevelNormalising = (Boolean) this.data.get(1);
             break;
         case C_DISPLAY_ROCKET_CONTROLS:
             player.addChatMessage(new ChatComponentText(GameSettings.getKeyDisplayString(KeyHandlerClient.spaceKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.rocket.launch.name")));
@@ -664,7 +706,7 @@ public class PacketSimple extends Packet implements IPacket
             CommandGCEnergyUnits.handleParamClientside((Integer) this.data.get(0));
             break;
         case C_RESPAWN_PLAYER:
-            final WorldProvider provider = WorldUtil.getProviderForName((String) this.data.get(0));
+            final WorldProvider provider = WorldUtil.getProviderForNameClient((String) this.data.get(0));
             final int dimID = provider.dimensionId;
             if (ConfigManagerCore.enableDebug)
             {
@@ -721,7 +763,7 @@ public class PacketSimple extends Packet implements IPacket
             				String strUUID = (String) this.data.get(9);
             				profile = PlayerUtil.makeOtherPlayerProfile(strName, strUUID);
             			}
-            			if (VersionUtil.mcVersionMatches("1.7.10") && !profile.getProperties().containsKey("textures"))
+            			if (VersionUtil.mcVersion1_7_10 && !profile.getProperties().containsKey("textures"))
             				GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_PLAYERSKIN, new Object[] { strName }));
         			}
         			((TileEntityTelemetry)tile).clientGameProfile = profile;
@@ -762,22 +804,17 @@ public class PacketSimple extends Packet implements IPacket
                     {
                         if (folder.exists() || folder.mkdir())
                         {
-                            File file0 = new File(folder, "overworldLocal.png");
+                            File file0 = new File(folder, "overworldRaw.bin");//"overworldLocal.png");
 
                             if (!file0.exists() || (file0.canRead() && file0.canWrite()))
                             {
                                 FileUtils.writeByteArrayToFile(file0, bytes);
 
-                                BufferedImage img = ImageIO.read(file0);
-
-                                if (img != null)
-                                {
-                                    ClientProxyCore.overworldTextureLocal = new DynamicTexture(img);
-                                }
+                                MapUtil.getOverworldImageFromRaw(bytes);
                             }
                             else
                             {
-                                System.err.println("Cannot read/write to file %minecraftDir%/assets/temp/overworldLocal.png");
+                                System.err.println("Cannot read/write to file %minecraftDir%/assets/temp/overworldRaw.bin");
                             }
                         }
                         else
@@ -821,7 +858,7 @@ public class PacketSimple extends Packet implements IPacket
         case S_TELEPORT_ENTITY:
             try
             {
-                final WorldProvider provider = WorldUtil.getProviderForName((String) this.data.get(0));
+                final WorldProvider provider = WorldUtil.getProviderForNameServer((String) this.data.get(0));
                 final Integer dim = provider.dimensionId;
                 GCLog.info("Found matching world (" + dim.toString() + ") for name: " + (String) this.data.get(0));
 
@@ -921,11 +958,14 @@ public class PacketSimple extends Packet implements IPacket
             }
             break;
         case S_BIND_SPACE_STATION_ID:
-            if ((stats.spaceStationDimensionID == -1 || stats.spaceStationDimensionID == 0) && !ConfigManagerCore.disableSpaceStationCreation)
+            int homeID = (Integer) this.data.get(0);
+            if ((!stats.spaceStationDimensionData.containsKey(homeID) || stats.spaceStationDimensionData.get(homeID) == -1 || stats.spaceStationDimensionData.get(homeID) == 0)
+                    && !ConfigManagerCore.disableSpaceStationCreation)
             {
-                WorldUtil.bindSpaceStationToNewDimension(playerBase.worldObj, playerBase);
-
-                WorldUtil.getSpaceStationRecipe((Integer) this.data.get(0)).matches(playerBase, true);
+                if (playerBase.capabilities.isCreativeMode || WorldUtil.getSpaceStationRecipe(homeID).matches(playerBase, true))
+                {
+                    WorldUtil.bindSpaceStationToNewDimension(playerBase.worldObj, playerBase, homeID);
+                }
             }
             break;
         case S_UNLOCK_NEW_SCHEMATIC:
@@ -1260,64 +1300,17 @@ public class PacketSimple extends Packet implements IPacket
                 	GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
                 }
             }
-            File outputFile = new File(baseFolder, "" + chunkCoordIntPair.chunkXPos + "_" + chunkCoordIntPair.chunkZPos + ".jpg");
+            File outputFile = new File(baseFolder, "" + chunkCoordIntPair.chunkXPos + "_" + chunkCoordIntPair.chunkZPos + ".bin");
             boolean success = true;
 
             if (!outputFile.exists() || !outputFile.isFile())
             {
                 success = false;
-                BufferedImage image = new BufferedImage(400, 400, BufferedImage.TYPE_INT_RGB);
-
-                for (int x0 = -12; x0 <= 12; x0++)
-                {
-                    for (int z0 = -12; z0 <= 12; z0++)
-                    {
-                        Chunk chunk = MinecraftServer.getServer().worldServerForDimension(0).getChunkFromChunkCoords(chunkCoordIntPair.chunkXPos + x0, chunkCoordIntPair.chunkZPos + z0);
-
-                        if (chunk != null)
-                        {
-                            for (int z = 0; z < 16; z++)
-                            {
-                                for (int x = 0; x < 16; x++)
-                                {
-                                    int l4 = chunk.getHeightValue(x, z) + 1;
-                                    Block block = Blocks.air;
-                                    int i5 = 0;
-
-                                    if (l4 > 1)
-                                    {
-                                        do
-                                        {
-                                            --l4;
-                                            block = chunk.getBlock(x, l4, z);
-                                            i5 = chunk.getBlockMetadata(x, l4, z);
-                                        }
-                                        while (block.getMapColor(i5) == MapColor.airColor && l4 > 0);
-                                    }
-
-                                    int col = block.getMapColor(i5).colorValue;
-                                    image.setRGB(x + (x0 + 12) * 16, z + (z0 + 12) * 16, col);
-                                }
-                            }
-                        }
-                    }
-                }
-
-                try
-                {
-                    if (!outputFile.exists() || (outputFile.canWrite() && outputFile.canRead()))
-                    {
-                    	ImageOutputStream outputStream = new FileImageOutputStream(outputFile);  
-                    	GalacticraftCore.jpgWriter.setOutput(outputStream);
-                    	GalacticraftCore.jpgWriter.write(null, new IIOImage(image, null, null), GalacticraftCore.writeParam);
-                    	outputStream.close();
-                        success = true;
-                    }
-                }
-                catch (IOException ex)
-                {
-                    ex.printStackTrace();
-                }
+                //BufferedImage image = new BufferedImage(400, 400, BufferedImage.TYPE_INT_RGB);
+                //MapUtil.getLocalMap(MinecraftServer.getServer().worldServerForDimension(0), chunkCoordIntPair.chunkXPos, chunkCoordIntPair.chunkZPos, image);
+                int scale = 4;
+                //ConfigManagerCore.mapsize
+                MapUtil.getBiomeMapForCoords(MinecraftServer.getServer().worldServerForDimension(0), chunkCoordIntPair.chunkXPos, chunkCoordIntPair.chunkZPos, scale, 64, 64, outputFile, playerBase);
             }
 
             if (success)
@@ -1334,10 +1327,6 @@ public class PacketSimple extends Packet implements IPacket
                     System.err.println("Error sending overworld image to player.");
                     ex.printStackTrace();
                 }
-            }
-            else
-            {
-                System.err.println("[Galacticraft] Error creating player's overworld texture, please report this as a bug!");
             }
         	}
             break;

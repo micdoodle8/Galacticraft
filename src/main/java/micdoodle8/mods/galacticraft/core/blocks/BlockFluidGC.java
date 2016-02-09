@@ -2,10 +2,10 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -31,12 +31,12 @@ public class BlockFluidGC extends BlockFluidClassic
 
     public BlockFluidGC(Fluid fluid, String assetName)
     {
-        super(fluid, (assetName.equals("oil") || assetName.equals("fuel")) ? GalacticraftCore.materialOil : Material.water);
+        super(fluid, (assetName.startsWith("oil") || assetName.startsWith("fuel")) ? GalacticraftCore.materialOil : Material.water);
         this.setRenderPass(1);
         this.fluidName = assetName;
         this.fluid = fluid;
 
-        if (assetName.equals("oil"))
+        if (assetName.startsWith("oil"))
         {
             this.needsRandomTick = true;
         }
@@ -68,7 +68,7 @@ public class BlockFluidGC extends BlockFluidClassic
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
     {
-    	if (world.isRemote && this.fluidName.equals("oil") && entityPlayer instanceof EntityPlayerSP)
+    	if (world.isRemote && this.fluidName.startsWith("oil") && entityPlayer instanceof EntityPlayerSP)
         	ClientProxyCore.playerClientHandler.onBuild(7, (EntityPlayerSP) entityPlayer);
 
     	return super.onBlockActivated(world, x, y, z, entityPlayer, side, hitX, hitY, hitZ);	
@@ -80,10 +80,17 @@ public class BlockFluidGC extends BlockFluidClassic
     {
         super.randomDisplayTick(world, x, y, z, rand);
 
-        if (this.fluidName.equals("oil") && rand.nextInt(1200) == 0)
+        if (this.fluidName.startsWith("oil") && rand.nextInt(1200) == 0)
         {
             world.playSound(x + 0.5F, y + 0.5F, z + 0.5F, "liquid.lava", rand.nextFloat() * 0.25F + 0.75F, 0.00001F + rand.nextFloat() * 0.5F, false);
         }
+		if (this.fluidName.equals("oil") && rand.nextInt(10) == 0)
+		{
+			if (World.doesBlockHaveSolidTopSurface(world, x, y - 1, z) && !world.getBlock(x, y - 2, z).getMaterial().blocksMovement())
+			{
+				GalacticraftCore.proxy.spawnParticle("oilDrip", new Vector3(x + rand.nextFloat(), y - 1.05D, z + rand.nextFloat()), new Vector3(0, 0, 0), new Object[] {});
+			}
+		}
     }
 
     @Override
@@ -143,11 +150,12 @@ public class BlockFluidGC extends BlockFluidClassic
     @Override
     public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side)
     {
-        Block block = world.getBlock(x, y, z);
-        if (block != this)
-        {
-            return !block.isOpaqueCube();
-        }
-        return side == 0 && this.minY > 0.0D ? true : (side == 1 && this.maxY < 1.0D ? true : (side == 2 && this.minZ > 0.0D ? true : (side == 3 && this.maxZ < 1.0D ? true : (side == 4 && this.minX > 0.0D ? true : (side == 5 && this.maxX < 1.0D ? true : !block.isOpaqueCube())))));
-    }
+//    	Block block = world.getBlock(x, y, z);
+//    	if (block != this)
+//    	{
+//    		return !block.isOpaqueCube();
+//    	}
+//    	return side == 0 && this.minY > 0.0D ? true : (side == 1 && this.maxY < 1.0D ? true : (side == 2 && this.minZ > 0.0D ? true : (side == 3 && this.maxZ < 1.0D ? true : (side == 4 && this.minX > 0.0D ? true : (side == 5 && this.maxX < 1.0D ? true : !block.isOpaqueCube())))));    	
+    	return super.shouldSideBeRendered(world, x, y, z, side);
+	}
 }

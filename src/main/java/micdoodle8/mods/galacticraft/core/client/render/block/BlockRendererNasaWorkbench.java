@@ -20,8 +20,6 @@ public class BlockRendererNasaWorkbench implements ISimpleBlockRenderingHandler
 
     public void renderNasaBench(RenderBlocks renderBlocks, IBlockAccess iblockaccess, Block par1Block, int par2, int par3, int par4)
     {
-        renderBlocks.overrideBlockTexture = par1Block.getIcon(iblockaccess, par2, par3, par4, 0);
-
         renderBlocks.setRenderBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.92F, 1.0F);
         renderBlocks.renderStandardBlock(par1Block, par2, par3, par4);
 

@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 
 public class FlagData
 {
@@ -154,4 +155,18 @@ public class FlagData
         }
         return image;
     }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FlagData flagData = (FlagData) o;
+
+        if (height != flagData.height) return false;
+        if (width != flagData.width) return false;
+        return Arrays.deepEquals(color, flagData.color);
+    }
+
 }

@@ -6,6 +6,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
+import micdoodle8.mods.galacticraft.core.entities.player.FreefallHandler;
 import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -44,7 +46,7 @@ public class EntityGrapple extends Entity implements IProjectile
         this.renderDistanceWeight = 10.0D;
         this.ignoreFrustumCheck = false;
         this.yOffset = -1.5F;
-        this.setSize(2.1F, 2.1F);
+        this.setSize(0.75F, 0.75F);
     }
 
     public EntityGrapple(World par1World, EntityPlayer shootingEntity, float par3)
@@ -52,7 +54,7 @@ public class EntityGrapple extends Entity implements IProjectile
         super(par1World);
         this.renderDistanceWeight = 10.0D;
         this.shootingEntity = shootingEntity;
-        this.setSize(2.1F, 2.1F);
+        this.setSize(0.75F, 0.75F);
 
         if (shootingEntity != null)
         {
@@ -175,6 +177,10 @@ public class EntityGrapple extends Entity implements IProjectile
                 if (shootingEntity != null)
                 {
                     shootingEntity.setVelocity((this.posX - shootingEntity.posX) / 12.0F, (this.posY - shootingEntity.posY) / 12.0F, (this.posZ - shootingEntity.posZ) / 12.0F);
+                    if (shootingEntity.worldObj.isRemote && shootingEntity.worldObj.provider instanceof WorldProviderOrbit)
+                    {
+                    	FreefallHandler.updateFreefall(shootingEntity);
+                    }
                 }
             }
         }

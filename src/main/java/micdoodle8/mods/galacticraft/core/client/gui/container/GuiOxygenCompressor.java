@@ -71,8 +71,8 @@ public class GuiOxygenCompressor extends GuiContainerGC
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.fontRendererObj.drawString(this.compressor.getInventoryName(), 8, 10, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.in.name") + ":", 87, 26, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.in.name") + ":", 87, 38, 4210752);
+        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 26, 4210752, this.fontRendererObj);
+        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 38, 4210752, this.fontRendererObj);
         String status = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();
         this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 50, 4210752);
         status = GCCoreUtil.translate("gui.oxygenUse.desc") + ": " + TileEntityOxygenCompressor.TANK_TRANSFER_SPEED * 20 + GCCoreUtil.translate("gui.perSecond");
@@ -91,11 +91,6 @@ public class GuiOxygenCompressor extends GuiContainerGC
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingtank.name");
         }
 
-        if (this.compressor.getEnergyStoredGC() == 0)
-        {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingpower.name");
-        }
-
         if (this.compressor.getStackInSlot(0) != null && this.compressor.getStackInSlot(0).getItemDamage() == 0)
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.fulltank.name");
@@ -106,7 +101,7 @@ public class GuiOxygenCompressor extends GuiContainerGC
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingoxygen.name");
         }
 
-        return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.active.name");
+        return this.compressor.getGUIstatus();
     }
 
     @Override

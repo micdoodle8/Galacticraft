@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.network.*;
 import micdoodle8.mods.galacticraft.core.network.PacketEntityUpdate.IEntityFullSync;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFueler;
+import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.client.model.ModelBase;
@@ -28,8 +29,8 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
@@ -99,6 +100,12 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     {
         return null;
     }
+	
+	@Override
+	public ItemStack getPickedResult(MovingObjectPosition target)
+	{
+		return new ItemStack(GCItems.buggy, 1, this.buggyType);
+	}
 
     public int getType()
     {
@@ -199,6 +206,8 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         else
         {
         	Entity e = var1.getEntity(); 
+			boolean flag = var1.getEntity() instanceof EntityPlayer && ((EntityPlayer)var1.getEntity()).capabilities.isCreativeMode;
+
             if (this.isEntityInvulnerable() || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)))
             {
                 return false;
@@ -215,7 +224,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 	                this.dataWatcher.updateObject(this.currentDamage, 100);
 	            }
 	
-	            if (this.dataWatcher.getWatchableObjectInt(this.currentDamage) > 2)
+	            if (flag || this.dataWatcher.getWatchableObjectInt(this.currentDamage) > 2)
 	            {
 	                if (this.riddenByEntity != null)
 	                {
@@ -228,10 +237,19 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 	                    {
 	                        this.riddenByEntity.mountEntity(this);
 	                    }
-	
-	                    this.dropBuggyAsItem();
-	                }
-	
+					}
+					if (flag)
+					{
+						this.setDead();
+					}
+					else
+					{
+						this.setDead();
+                        if (!this.worldObj.isRemote)
+                        {
+                            this.dropBuggyAsItem();
+                        }
+					}
 	                this.setDead();
 	            }
 	
@@ -677,15 +695,8 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     @Override
     public int addFuel(FluidStack liquid, boolean doDrain)
     {
-        final FluidStack liquidInTank = this.buggyFuelTank.getFluid();
-
-        if (liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("Fuel") && this.landingPad != null)
-        {
-            if (liquidInTank == null || liquidInTank.amount + liquid.amount <= this.buggyFuelTank.getCapacity())
-            {
-                return this.buggyFuelTank.fill(liquid, doDrain);
-            }
-        }
+        if (this.landingPad != null)
+        	return FluidUtil.fillWithGCFuel(this.buggyFuelTank, liquid, doDrain);
 
         return 0;
     }

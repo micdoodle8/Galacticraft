@@ -111,6 +111,8 @@ public class RenderSlimeling extends RenderLiving
         }
 
         super.passSpecialRender(par1EntityLivingBase, par2, par4, par6);
+        GL11.glDisable(GL11.GL_NORMALIZE);
+        GL11.glDisable(GL11.GL_BLEND);
     }
 
     protected void renderLivingLabelWithColor(EntityLivingBase par1EntityLivingBase, String par2Str, double par3, double par5, double par7, int par9, float cR, float cG, float cB)

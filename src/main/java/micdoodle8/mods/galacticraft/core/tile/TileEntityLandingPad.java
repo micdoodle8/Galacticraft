@@ -6,11 +6,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.entity.IFuelable;
+import micdoodle8.mods.galacticraft.api.entity.ILandable;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -33,7 +36,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 
         if (!this.worldObj.isRemote)
         {
-            final List<?> list = this.worldObj.getEntitiesWithinAABB(IFuelable.class, AxisAlignedBB.getBoundingBox(this.xCoord - 0.5D, this.yCoord, this.zCoord - 0.5D, this.xCoord + 0.5D, this.yCoord + 2.0D, this.zCoord + 0.5D));
+            final List<?> list = this.worldObj.getEntitiesWithinAABB(IFuelable.class, AxisAlignedBB.getBoundingBox(this.xCoord - 0.5D, this.yCoord, this.zCoord - 0.5D, this.xCoord + 0.5D, this.yCoord + 1.0D, this.zCoord + 0.5D));
 
             boolean docked = false;
 
@@ -47,7 +50,14 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 
                     if (fuelable != this.dockedEntity && fuelable.isDockValid(this))
                     {
-                        fuelable.setPad(this);
+                        if (fuelable instanceof ILandable)
+                        {
+                        	((ILandable) fuelable).landEntity(this.xCoord, this.yCoord, this.zCoord);
+                        }
+                        else
+                        {
+                            fuelable.setPad(this);
+                        }
                     }
 
                     break;
@@ -109,7 +119,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
                     FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.x + x, thisBlock.y, thisBlock.z + z, GCBlocks.landingPad, Block.getIdFromBlock(GCBlocks.landingPad) >> 12 & 255);
                 }
 
-                this.worldObj.setBlockToAir(thisBlock.x + x, thisBlock.y, thisBlock.z + z);
+                this.worldObj.func_147480_a(thisBlock.x + x, thisBlock.y, thisBlock.z + z, false);
             }
         }
 
@@ -161,6 +171,8 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
                         if (tile != null && tile instanceof ILandingPadAttachable && ((ILandingPadAttachable) tile).canAttachToLandingPad(this.worldObj, this.xCoord, this.yCoord, this.zCoord))
                         {
                             connectedTiles.add((ILandingPadAttachable) tile);
+                            if (GalacticraftCore.isPlanetsLoaded && tile instanceof TileEntityLaunchController)
+                            	((TileEntityLaunchController) tile).setAttachedPad(this);
                         }
                     }
                 }

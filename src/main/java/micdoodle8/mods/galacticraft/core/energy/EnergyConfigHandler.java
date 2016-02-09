@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The Universal Electricity compatibility module allows your mod to be
- * compatible with most major power systems in Minecraft.
+ * The universal energy compatibility module allows Galacticraft to be
+ * compatible with most other major power systems in Minecraft as well.
  *
- * @author Calclavia, Micdoodle
+ * @author Calclavia, Micdoodle, radfast
  */
 public class EnergyConfigHandler
 {
@@ -107,6 +107,14 @@ public class EnergyConfigHandler
     
     private static boolean disableMJinterface = false;
 
+    public static boolean disableBuildCraftInput = false;
+    public static boolean disableBuildCraftOutput = false;
+    public static boolean disableRFInput = false;
+    public static boolean disableRFOutput = false;
+    public static boolean disableIC2Input = false;
+    public static boolean disableIC2Output = false;
+    public static boolean disableMekanismInput = false;
+    public static boolean disableMekanismOutput = false;
 
     /**
      * You must call this function to enable the Universal Network module.
@@ -135,6 +143,15 @@ public class EnergyConfigHandler
         EnergyConfigHandler.displayEnergyUnitsRF = EnergyConfigHandler.config.get("Display", "Show Galacticraft machines energy in RF instead of gJ?", false).getBoolean(false);
 
         EnergyConfigHandler.disableMJinterface = EnergyConfigHandler.config.get("Compatibility", "Disable old Buildcraft API (MJ) interfacing completely?", false).getBoolean(false);
+
+        EnergyConfigHandler.disableBuildCraftInput = EnergyConfigHandler.config.get("Compatibility", "Disable INPUT of BuildCraft energy", false).getBoolean(false);
+        EnergyConfigHandler.disableBuildCraftOutput = EnergyConfigHandler.config.get("Compatibility", "Disable OUTPUT of BuildCraft energy", false).getBoolean(false);
+        EnergyConfigHandler.disableRFInput = EnergyConfigHandler.config.get("Compatibility", "Disable INPUT of RF energy", false).getBoolean(false);
+        EnergyConfigHandler.disableRFOutput = EnergyConfigHandler.config.get("Compatibility", "Disable OUTPUT of RF energy", false).getBoolean(false);
+        EnergyConfigHandler.disableIC2Input = EnergyConfigHandler.config.get("Compatibility", "Disable INPUT of IC2 energy", false).getBoolean(false);
+        EnergyConfigHandler.disableIC2Output = EnergyConfigHandler.config.get("Compatibility", "Disable OUTPUT of IC2 energy", false).getBoolean(false);
+        EnergyConfigHandler.disableMekanismInput = EnergyConfigHandler.config.get("Compatibility", "Disable INPUT of Mekanism energy", false).getBoolean(false);
+        EnergyConfigHandler.disableMekanismOutput = EnergyConfigHandler.config.get("Compatibility", "Disable OUTPUT of Mekanism energy", false).getBoolean(false);
 
         if (!EnergyConfigHandler.isBuildcraftLoaded())
         {

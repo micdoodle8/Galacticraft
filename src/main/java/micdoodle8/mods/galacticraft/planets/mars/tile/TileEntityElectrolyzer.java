@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithIn
 import micdoodle8.mods.galacticraft.core.oxygen.NetworkHelper;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
@@ -70,19 +71,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
                     {
                         this.waterTank.fill(liquid, true);
 
-                        if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
-                        {
-                            this.containingItems[1] = new ItemStack(Items.bucket, this.containingItems[1].stackSize);
-                        }
-                        else
-                        {
-                            this.containingItems[1].stackSize--;
-
-                            if (this.containingItems[1].stackSize == 0)
-                            {
-                                this.containingItems[1] = null;
-                            }
-                        }
+                        this.containingItems[1] = FluidUtil.getUsedContainer(this.containingItems[1]);
                     }
                 }
             }

@@ -32,6 +32,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
     private ItemStack[] containingItems = new ItemStack[1];
     private boolean noAtmosphericOxygen = true;
     private boolean isInitialised = false;
+    private boolean producedLastTick = false;
 
     public TileEntityOxygenCollector()
     {
@@ -51,7 +52,10 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 
         if (!this.worldObj.isRemote)
         {
+            producedLastTick = this.storedOxygen < this.maxOxygen;
+
             this.produceOxygen();
+
             // if (this.getEnergyStored() > 0)
             // {
             // int gasToSend = Math.min(this.storedOxygen,
@@ -97,7 +101,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
                 {
                     // The later calculations are more efficient if power is a float, so
                     // there are fewer casts
-                    float power = 0;
+                    float nearbyLeaves = 0;
 
                     if (!this.isInitialised)
                     {
@@ -158,7 +162,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
                                         {
                                             if (block.isLeaves(this.worldObj, x, y, z) || block instanceof IPlantable && ((IPlantable) block).getPlantType(this.worldObj, x, y, z) == EnumPlantType.Crop)
                                             {
-                                                power += 0.075F * 10F;
+                                                nearbyLeaves += 0.075F * 10F;
                                             }
                                         }
                                     }
@@ -168,14 +172,14 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
                     }
                     else
                     {
-                        power = 9.3F * 10F;
+                        nearbyLeaves = 9.3F * 10F;
                     }
 
-                    power = (float) Math.floor(power);
+                    nearbyLeaves = (float) Math.floor(nearbyLeaves);
 
-                    this.lastOxygenCollected = power / 10F;
+                    this.lastOxygenCollected = nearbyLeaves / 10F;
 
-                    this.storedOxygen = (int) Math.max(Math.min(this.storedOxygen + power, this.maxOxygen), 0);
+                    this.storedOxygen = (int) Math.max(Math.min(this.storedOxygen + nearbyLeaves, this.maxOxygen), 0);
                 }
                 else
                 {
@@ -360,7 +364,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
     @Override
     public boolean shouldUseEnergy()
     {
-        return this.storedOxygen > 0F;
+        return this.storedOxygen > 0F && producedLastTick;
     }
 
     @Override

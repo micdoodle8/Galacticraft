@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.block;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -114,16 +112,6 @@ public class BlockRendererUnlitTorch implements ISimpleBlockRenderingHandler
         {
             final Tessellator tessellator = Tessellator.instance;
             IIcon icon = renderBlocks.getBlockIconFromSideAndMetadata(par1Block, 0, 0);
-
-            if (par1Block == GCBlocks.unlitTorch)
-            {
-                icon = BlockUnlitTorch.torchIcons[1];
-            }
-
-            if (par1Block == GCBlocks.unlitTorchLit)
-            {
-                icon = BlockUnlitTorch.torchIcons[0];
-            }
 
             final double d5 = icon.getMinU();
             final double d6 = icon.getMinV();

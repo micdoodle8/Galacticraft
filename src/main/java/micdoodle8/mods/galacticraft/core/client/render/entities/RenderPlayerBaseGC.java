@@ -4,16 +4,19 @@ import api.player.model.ModelPlayer;
 import api.player.render.RenderPlayerAPI;
 import api.player.render.RenderPlayerBase;
 import cpw.mods.fml.client.FMLClientHandler;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC.RotatePlayerEvent;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import org.lwjgl.opengl.GL11;
 
 public class RenderPlayerBaseGC extends RenderPlayerBase
@@ -23,6 +26,12 @@ public class RenderPlayerBaseGC extends RenderPlayerBase
     private static ResourceLocation thermalPaddingTexture0;
     private static ResourceLocation thermalPaddingTexture1;
 
+    /**
+     * This is used in place of RenderPlayerGC only if RenderPlayerAPI is installed
+     * It renders the thermal armor (also does something connected with rotating a sleeping player) 
+     * 
+     * @param renderPlayerAPI
+     */
     public RenderPlayerBaseGC(RenderPlayerAPI renderPlayerAPI)
     {
         super(renderPlayerAPI);
@@ -64,7 +73,8 @@ public class RenderPlayerBaseGC extends RenderPlayerBase
 
                     if (padding >= 0 && !par1EntityLivingBase.isInvisible())
                     {
-                        GL11.glColor4f(1, 1, 1, 1);
+                        // First draw the thermal armor without any color tinting
+                    	GL11.glColor4f(1, 1, 1, 1);
                         FMLClientHandler.instance().getClient().getTextureManager().bindTexture(thermalPaddingTexture1);
                         modelBiped.bipedHead.showModel = i == 0;
                         modelBiped.bipedHeadwear.showModel = i == 0;
@@ -86,7 +96,8 @@ public class RenderPlayerBaseGC extends RenderPlayerBase
                         modelBiped.setLivingAnimations(par1EntityLivingBase, par2, par3, 0.0F);
                         modelBiped.render(par1EntityLivingBase, par2, par3, par4, par5, par6, par7);
 
-                        // Start alpha render
+                        // Then overlay the same again, with color tinting:
+                        //Start alpha render
                         GL11.glDisable(GL11.GL_LIGHTING);
                         FMLClientHandler.instance().getClient().getTextureManager().bindTexture(thermalPaddingTexture0);
                         GL11.glEnable(GL11.GL_ALPHA_TEST);
@@ -118,9 +129,9 @@ public class RenderPlayerBaseGC extends RenderPlayerBase
 
                         GL11.glColor4f(r, g, b, 0.4F * sTime);
                         modelBiped.render(par1EntityLivingBase, par2, par3, par4, par5, par6, par7);
+                        GL11.glColor4f(1, 1, 1, 1);
                         GL11.glDisable(GL11.GL_BLEND);
                         GL11.glEnable(GL11.GL_ALPHA_TEST);
-                        GL11.glColor4f(1, 1, 1, 1);
                         GL11.glEnable(GL11.GL_LIGHTING);
                     }
                 }
@@ -143,17 +154,22 @@ public class RenderPlayerBaseGC extends RenderPlayerBase
         }
         else
         {
+        	if (par1AbstractClientPlayer instanceof EntityPlayer && Minecraft.getMinecraft().gameSettings.thirdPersonView != 0)
+        	{
+                final EntityPlayer player = (EntityPlayer)par1AbstractClientPlayer;
+
+                if (player.ridingEntity instanceof EntityTieredRocket)
+                {
+                    EntityTieredRocket rocket = (EntityTieredRocket) player.ridingEntity;
+                    GL11.glTranslatef(0, -rocket.getRotateOffset(), 0);
+                    float anglePitch = rocket.prevRotationPitch;
+                    float angleYaw = rocket.prevRotationYaw;
+                    GL11.glRotatef(-angleYaw, 0.0F, 1.0F, 0.0F);
+                    GL11.glRotatef(anglePitch, 0.0F, 0.0F, 1.0F);
+                    GL11.glTranslatef(0, rocket.getRotateOffset(), 0);
+                }
+        	}
             super.rotatePlayer(par1AbstractClientPlayer, par2, par3, par4);
-        }
-    }
-
-    public static class RotatePlayerEvent extends PlayerEvent
-    {
-        public Boolean shouldRotate = null;
-
-        public RotatePlayerEvent(AbstractClientPlayer player)
-        {
-            super(player);
         }
     }
 }

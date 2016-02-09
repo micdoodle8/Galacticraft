@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
@@ -11,6 +13,8 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
@@ -40,7 +44,7 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
         this.tasks.addTask(6, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
         this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
-        this.setSize(0.6F, 1.8F);
+        this.setSize(0.7F, 2.2F);
     }
 
     protected void entityInit()
@@ -164,30 +168,39 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
     }
 
     @Override
+    protected Item getDropItem()
+    {
+        if (this.isBurning())
+        	return Items.blaze_rod;
+    	return Items.redstone;
+    }
+
+    @Override
     protected void dropRareDrop(int p_70600_1_)
     {
-        switch (this.rand.nextInt(10))
+        switch (this.rand.nextInt(12))
         {
-            case 0:
-            case 1:
-            case 9:
-            case 2:
-            case 3:
-                break;
-            case 4:
-            case 5:
-                this.entityDropItem(new ItemStack(Blocks.sand), 0.0F);
-                break;
-            case 6:
-            	//Oxygen tank half empty or less
-                this.entityDropItem(new ItemStack(GCItems.oxTankMedium, 1, 901 + this.rand.nextInt(900)), 0.0F);
-                break;
-            case 7:
-                this.dropItem(GCItems.oxygenGear, 1);
-                break;
-            case 8:
-                this.entityDropItem(new ItemStack(Blocks.ice), 0.0F);
-                break;
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        	this.entityDropItem(new ItemStack(VersionUtil.sand), 0.0F);
+        	break;
+        case 4:
+        case 5:
+        	//Oxygen tank half empty or less
+        	this.entityDropItem(new ItemStack(GCItems.oxTankMedium, 1, 901 + this.rand.nextInt(900)), 0.0F);
+        	break;
+        case 6:
+        	this.dropItem(GCItems.oxygenGear, 1);
+        	break;
+        case 7:
+        case 8:
+            this.entityDropItem(new ItemStack(Blocks.ice), 0.0F);
+            break;
+        default:
+        	if (ConfigManagerCore.challengeMode) this.dropItem(Items.reeds, 1);
+        	break;
         }
     }
 }

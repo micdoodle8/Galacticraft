@@ -80,7 +80,7 @@ gui.message.trees.name=Trees
 gui.message.grass.name=Grass
 gui.message.invalidFreq.name=Invalid Frequency
 gui.message.frequency.name=Frequency
-gui.message.destFrequency.name=Destination Frequency
+gui.message.destFrequency.name=Target
 gui.message.removePad.name=Remove Pad
 gui.message.launchWhen.name=Launch When
 gui.message.cargoUnloaded.name=Cargo is Unloaded
@@ -101,6 +101,7 @@ gui.launchController.desc.0=This is the Launch Controller's$unique frequency
 gui.launchController.desc.1=Frequency to launch rockets towards
 gui.launchController.desc.2=Whether the launch pad should$be removed on launch
 gui.launchController.desc.3=When this criteria is met,$rocket will launch
+gui.launchController.desc.4=Hide destination frequency$from other players
 gui.terraformer.desc.0=Water Tank
 
 gui.gasTank.desc.0=Gas Storage

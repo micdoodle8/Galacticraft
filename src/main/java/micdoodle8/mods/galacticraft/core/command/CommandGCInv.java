@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.command;
 
-import cpw.mods.fml.common.FMLCommonHandler;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -25,7 +25,7 @@ public class CommandGCInv extends CommandBase
     @Override
     public String getCommandUsage(ICommandSender var1)
     {
-        return "/" + this.getCommandName() + " [save/restore/drop/clear] playername";
+        return "/" + this.getCommandName() + " [save|restore|drop|clear] <playername>";
     }
 
     @Override
@@ -145,14 +145,8 @@ public class CommandGCInv extends CommandBase
                         if (saveinv != null)
                         {
                             System.out.println("[GCInv] Restore command for offline player " + astring[1] + ", setting to restore GCInv on next login.");
-                            CommandGCInv.dontload.remove(astring[1].toLowerCase()); // Now
-                            // it
-                            // can
-                            // autoload
-                            // on
-                            // next
-                            // player
-                            // logon
+                            CommandGCInv.dontload.remove(astring[1].toLowerCase());
+                            // Now it can autoload on next player logon
                             return;
                         }
                     }
@@ -183,12 +177,9 @@ public class CommandGCInv extends CommandBase
     public static void doLoad(EntityPlayerMP thePlayer)
     {
         String theName = thePlayer.getGameProfile().getName().toLowerCase();
-        if (!CommandGCInv.dontload.contains(theName)) // This is a simple
-        // flag: if the
-        // playername is in
-        // dontload then no
-        // restore command
-        // has yet been run.
+        if (!CommandGCInv.dontload.contains(theName))
+        // This is a simple flag: if the playername is in dontload then no
+        // restore command has yet been run.
         // Dontload resets to nothing on server restart so that all will
         // auto-restore on a server restart.
         {
@@ -217,7 +208,8 @@ public class CommandGCInv extends CommandBase
 
     private static void initialise()
     {
-        World world0 = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
+   		World world0 = GalacticraftCore.proxy.getWorldForID(0);
+   		if (world0 == null) return;
         CommandGCInv.savefile = (GCInvSaveData) world0.loadItemData(GCInvSaveData.class, GCInvSaveData.SAVE_ID);
         if (CommandGCInv.savefile == null)
         {

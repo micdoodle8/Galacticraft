@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -8,14 +9,15 @@ import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
+import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderMoon;
@@ -25,7 +27,6 @@ import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.*;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiNewSpaceRace;
-import micdoodle8.mods.galacticraft.core.client.sounds.SoundUpdaterRocket;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
@@ -39,6 +40,7 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
+import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -58,11 +60,13 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 public class TickHandlerClient
@@ -226,7 +230,7 @@ public class TickHandlerClient
                 OverlayLaunchCountdown.renderCountdownOverlay();
             }
 
-            if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && OxygenUtil.shouldDisplayTankGui(minecraft.currentScreen))
+            if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && OxygenUtil.shouldDisplayTankGui(minecraft.currentScreen) && OxygenUtil.noAtmosphericCombustion(player.worldObj.provider))
             {
                 int var6 = (TickHandlerClient.airRemaining - 90) * -1;
 
@@ -243,10 +247,10 @@ public class TickHandlerClient
                 }
 
                 int thermalLevel = stats.thermalLevel + 22;
-                OverlayOxygenTanks.renderOxygenTankIndicator(thermalLevel, var6, var7, !ConfigManagerCore.oxygenIndicatorLeft, !ConfigManagerCore.oxygenIndicatorBottom, Math.abs(thermalLevel - 22) >= 10);
+                OverlayOxygenTanks.renderOxygenTankIndicator(thermalLevel, var6, var7, !ConfigManagerCore.oxygenIndicatorLeft, !ConfigManagerCore.oxygenIndicatorBottom, Math.abs(thermalLevel - 22) >= 10 && !stats.thermalLevelNormalising);
             }
 
-            if (playerBaseClient != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && !stats.oxygenSetupValid && minecraft.currentScreen == null && !playerBaseClient.capabilities.isCreativeMode)
+            if (playerBaseClient != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && !stats.oxygenSetupValid && OxygenUtil.noAtmosphericCombustion(player.worldObj.provider) && minecraft.currentScreen == null && !playerBaseClient.capabilities.isCreativeMode)
             {
                 OverlayOxygenWarning.renderOxygenWarningOverlay();
             }
@@ -287,12 +291,30 @@ public class TickHandlerClient
 
         if (event.phase == Phase.START)
         {
-            if (TickHandlerClient.tickCount >= Long.MAX_VALUE)
+        	if (TickHandlerClient.tickCount >= Long.MAX_VALUE)
             {
                 TickHandlerClient.tickCount = 0;
             }
 
             TickHandlerClient.tickCount++;
+            
+            if (TickHandlerClient.tickCount % 20 == 0)
+            {
+            	for (List<Footprint> fpList : ClientProxyCore.footprintRenderer.footprints.values())
+            	{
+            		Iterator<Footprint> fpIt = fpList.iterator();
+            		while (fpIt.hasNext())
+            		{
+            			Footprint fp = fpIt.next();
+            			fp.age += 20;
+
+                        if (fp.age >= Footprint.MAX_AGE)
+                        {
+                            fpIt.remove();
+                        }
+            		}
+            	}
+            }
 
             if (TickHandlerClient.tickCount % 20 == 0)
             {
@@ -369,9 +391,9 @@ public class TickHandlerClient
                 }
             }
 
-            if (minecraft.currentScreen != null && minecraft.currentScreen instanceof GuiMainMenu)
+            if (minecraft.currentScreen instanceof GuiMainMenu)
             {
-                ClientProxyCore.playerItemData.clear();
+                ClientProxyCore.reset();
 
                 if (TickHandlerClient.missingRequirementThread == null)
                 {
@@ -401,11 +423,13 @@ public class TickHandlerClient
             {
                 if (world.provider instanceof WorldProviderSurface)
                 {
-                    if (world.provider.getSkyRenderer() == null && player.ridingEntity != null && player.ridingEntity.posY >= 200)
+                    if (world.provider.getSkyRenderer() == null &&
+                            player.ridingEntity instanceof EntitySpaceshipBase &&
+                            player.ridingEntity.posY > Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
                     {
                         world.provider.setSkyRenderer(new SkyProviderOverworld());
                     }
-                    else if (world.provider.getSkyRenderer() != null && world.provider.getSkyRenderer() instanceof SkyProviderOverworld && (player.ridingEntity == null || player.ridingEntity.posY < 200))
+                    else if (world.provider.getSkyRenderer() instanceof SkyProviderOverworld && player.posY <= Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
                     {
                         world.provider.setSkyRenderer(null);
                     }
@@ -481,16 +505,16 @@ public class TickHandlerClient
 
             if (world != null)
             {
-                List entityList = world.loadedEntityList;             
+                List entityList = world.loadedEntityList;
                 for (Object e : entityList)
                 {
-                    if (e instanceof EntityAutoRocket)
+                    if (e instanceof IEntityNoisy)
                     {
-                        if (((EntityAutoRocket) e).rocketSoundUpdater == null)
+                        IEntityNoisy vehicle = (IEntityNoisy)e; 
+                    	if (vehicle.getSoundUpdater() == null)
                         {
-                        	EntityAutoRocket eship = (EntityAutoRocket) e;
-                        	eship.rocketSoundUpdater = new SoundUpdaterRocket(FMLClientHandler.instance().getClient().thePlayer, eship);
-							FMLClientHandler.instance().getClient().getSoundHandler().playSound((ISound) eship.rocketSoundUpdater);
+                        	ISound noise = vehicle.setSoundUpdater(FMLClientHandler.instance().getClient().thePlayer);
+							FMLClientHandler.instance().getClient().getSoundHandler().playSound(noise);
                         }
                     }
                 }
@@ -501,7 +525,7 @@ public class TickHandlerClient
                 player.motionY = 0;
             }
 
-            if (world != null && world.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider)world.provider).hasBreathableAtmosphere() && !((IGalacticraftWorldProvider)world.provider).isGasPresent(IAtmosphericGas.OXYGEN))
+            if (world != null && world.provider instanceof IGalacticraftWorldProvider && OxygenUtil.noAtmosphericCombustion(world.provider))
             {
                 world.setRainStrength(0.0F);
             }

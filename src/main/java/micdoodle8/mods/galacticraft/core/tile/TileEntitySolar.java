@@ -26,6 +26,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.EnumSet;
@@ -230,7 +231,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
 
         float difference = (180.0F - Math.abs(this.currentAngle % 180 - celestialAngle)) / 180.0F;
 
-        return (int) Math.floor(1 / 100.0F * difference * difference * (this.solarStrength * (Math.abs(difference) * 500.0F)) * this.getSolarBoost());
+        return MathHelper.floor_float(0.01F * difference * difference * (this.solarStrength * (Math.abs(difference) * 500.0F)) * this.getSolarBoost());
     }
 
     public float getSolarBoost()
@@ -253,10 +254,13 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     @Override
     public void onCreate(BlockVec3 placedPosition)
     {
-        final BlockVec3 vecStrut = new BlockVec3(placedPosition.x, placedPosition.y + 1, placedPosition.z);
-
+        int buildHeight = this.worldObj.getHeight() - 1;
+        
+    	if (placedPosition.y + 1 > buildHeight) return;
+    	final BlockVec3 vecStrut = new BlockVec3(placedPosition.x, placedPosition.y + 1, placedPosition.z);
         ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecStrut, placedPosition, 0);
 
+        if (placedPosition.y + 2 > buildHeight) return;
         for (int x = -1; x < 2; x++)
         {
             for (int z = -1; z < 2; z++)

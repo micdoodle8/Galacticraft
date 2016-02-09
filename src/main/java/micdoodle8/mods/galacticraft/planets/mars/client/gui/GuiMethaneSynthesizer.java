@@ -94,14 +94,14 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
         fuelSlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.hydrogenInput.desc.0"));
         fuelSlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.hydrogenInput.desc.1"));
         fuelSlotDesc.add("(" + GCCoreUtil.translate("gui.message.withAtmosphere0.name"));
-        fuelSlotDesc.add(GCCoreUtil.translate("fluid.hydrogen"));
+        fuelSlotDesc.add(GCCoreUtil.lowerCaseNoun("fluid.hydrogen"));
         fuelSlotDesc.add(GCCoreUtil.translate("gui.message.withAtmosphere1.name") + ")");
         this.infoRegions.add(new GuiElementInfoRegion(edgeLeft + 6, edgeTop + 6, 18, 18, fuelSlotDesc, this.width, this.height, this));
 
         fuelSlotDesc = new ArrayList<String>();
         fuelSlotDesc.add(GCCoreUtil.translate("item.atmosphericValve.name"));
         fuelSlotDesc.add("(" + GCCoreUtil.translate("gui.message.withAtmosphere0.name"));
-        fuelSlotDesc.add(GCCoreUtil.translate("gas.carbondioxide.name"));
+        fuelSlotDesc.add(GCCoreUtil.lowerCaseNoun("gas.carbondioxide.name"));
         fuelSlotDesc.add(GCCoreUtil.translate("gui.message.withAtmosphere1.name") + ")");
         this.infoRegions.add(new GuiElementInfoRegion(edgeLeft + 27, edgeTop + 6, 18, 18, fuelSlotDesc, this.width, this.height, this));
 
@@ -145,6 +145,10 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
         else if (this.tileEntity.gasTank.getFluidAmount() > 0 && this.tileEntity.disabled)
         {
             displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready.name");
+        }
+        else if (this.tileEntity.getWorldObj().getBlockPowerInput(this.tileEntity.xCoord, this.tileEntity.yCoord, this.tileEntity.zCoord) > 0)
+        {
+        	displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.off.name");
         }
         else if (!this.tileEntity.hasEnoughEnergyToRun)
         {

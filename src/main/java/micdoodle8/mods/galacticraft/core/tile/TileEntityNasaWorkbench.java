@@ -27,11 +27,14 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
     {
         this.mainBlockPosition = placedPosition;
         this.markDirty();
-
-        for (int x = -1; x < 2; x++)
+        int buildHeight = this.worldObj.getHeight() - 1;
+        
+        for (int y = 1; y < 3; y++)
         {
-            for (int y = 1; y < 3; y++)
-            {
+        	if (placedPosition.y + y > buildHeight) return;
+
+	        for (int x = -1; x < 2; x++)
+	        {
                 for (int z = -1; z < 2; z++)
                 {
                     final BlockVec3 vecToAdd = new BlockVec3(placedPosition.x + x, placedPosition.y + y, placedPosition.z + z);
@@ -47,6 +50,7 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
             }
         }
 
+    	if (placedPosition.y + 3 > buildHeight) return;
         final BlockVec3 vecToAdd = new BlockVec3(placedPosition.x, placedPosition.y + 3, placedPosition.z);
         ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);       
     }

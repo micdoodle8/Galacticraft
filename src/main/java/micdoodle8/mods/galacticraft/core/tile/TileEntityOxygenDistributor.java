@@ -1,14 +1,16 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
-import micdoodle8.mods.galacticraft.core.entities.EntityBubble;
-import micdoodle8.mods.galacticraft.core.entities.IBubble;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
+import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -16,13 +18,16 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.Iterator;
 import java.util.List;
+
+import com.google.common.collect.Lists;
 
 public class TileEntityOxygenDistributor extends TileEntityOxygen implements IInventory, ISidedInventory, IBubbleProvider
 {
@@ -30,87 +35,126 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     public boolean lastActive;
 
     private ItemStack[] containingItems = new ItemStack[2];
-    public EntityBubble oxygenBubble;
-    public static ArrayList<TileEntityOxygenDistributor> loadedTiles = new ArrayList();
-    /**
-     * Used for saving/loading old oxygen bubbles
-     */
-    private boolean hasValidBubble;
+    public static ArrayList<BlockVec3Dim> loadedTiles = Lists.newArrayList();
+    public float bubbleSize;
+    @NetworkedField(targetSide = Side.CLIENT)
+    public boolean shouldRenderBubble = true;
 
     public TileEntityOxygenDistributor()
     {
         super(6000, 8);
-        this.oxygenBubble = null;
+//        this.oxygenBubble = null;
     }
 
     @Override
     public void validate()
     {
     	super.validate();
-        if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.add(this);
+        if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.add(new BlockVec3Dim(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId));
     }
 
     @Override
     public void onChunkUnload()
     {
-        if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.add(this);
+    	Iterator<BlockVec3Dim> i = loadedTiles.iterator();
+    	while (i.hasNext())
+    	{
+    		BlockVec3Dim vec = i.next();
+    		if (vec.dim == this.worldObj.provider.dimensionId && xCoord == vec.x && yCoord == vec.y && zCoord == vec.z)
+    		{
+    			i.remove();
+    		}
+    	}
     	super.onChunkUnload();
     }
 
     @Override
     public void invalidate()
     {
-        if (this.oxygenBubble != null)
+        if (!this.worldObj.isRemote/* && this.oxygenBubble != null*/)
         {
-            for (int x = (int) Math.floor(this.xCoord - this.oxygenBubble.getSize()); x < Math.ceil(this.xCoord + this.oxygenBubble.getSize()); x++)
+        	int bubbleR = MathHelper.ceiling_double_int(bubbleSize);
+            int bubbleR2 = (int) (bubbleSize * bubbleSize);
+        	for (int x = this.xCoord - bubbleR; x < this.xCoord + bubbleR; x++)
             {
-                for (int y = (int) Math.floor(this.yCoord - this.oxygenBubble.getSize()); y < Math.ceil(this.yCoord + this.oxygenBubble.getSize()); y++)
+                for (int y = this.yCoord - bubbleR; y < this.yCoord + bubbleR; y++)
                 {
-                    for (int z = (int) Math.floor(this.zCoord - this.oxygenBubble.getSize()); z < Math.ceil(this.zCoord + this.oxygenBubble.getSize()); z++)
+                    for (int z = this.zCoord - bubbleR; z < this.zCoord + bubbleR; z++)
                     {
                         Block block = this.worldObj.getBlock(x, y, z);
 
-                        if (block instanceof IOxygenReliantBlock)
+                        if (block instanceof IOxygenReliantBlock && this.getDistanceFromServer(x, y, z) <= bubbleR2)
                         {
-                            ((IOxygenReliantBlock) block).onOxygenRemoved(this.worldObj, x, y, z);
+                        	this.worldObj.scheduleBlockUpdateWithPriority(x, y, z, block, 1, 0);
                         }
                     }
                 }
             }
+//        	this.oxygenBubble.setDead();
         }
 
         if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.remove(this);
         super.invalidate();
     }
 
+    @Override
+    public double getPacketRange()
+    {
+        return 64.0F;
+    }
+
     public void addExtraNetworkedData(List<Object> networkedList)
     {
         if (!this.worldObj.isRemote)
         {
-            networkedList.add(this.oxygenBubble != null);
-            if (this.oxygenBubble != null)
+//            networkedList.add(this.oxygenBubble != null);
+//            if (this.oxygenBubble != null)
+//            {
+//                networkedList.add(this.oxygenBubble.getEntityId());
+//            }
+            networkedList.add(loadedTiles.size());
+            for (BlockVec3Dim distributor : new ArrayList<BlockVec3Dim>(loadedTiles))
             {
-                networkedList.add(this.oxygenBubble.getEntityId());
+            	networkedList.add(distributor.x);
+            	networkedList.add(distributor.y);
+            	networkedList.add(distributor.z);
+            	networkedList.add(distributor.dim);
             }
+            networkedList.add(this.bubbleSize);
         }
     }
 
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return AxisAlignedBB.getBoundingBox(this.xCoord - this.bubbleSize, this.yCoord - this.bubbleSize, this.zCoord - this.bubbleSize, this.xCoord + this.bubbleSize, this.yCoord + this.bubbleSize, this.zCoord + this.bubbleSize);
+    }
+
+    @Override
     public void readExtraNetworkedData(ByteBuf dataStream)
     {
+    	loadedTiles.clear();
         if (this.worldObj.isRemote)
         {
-            if (dataStream.readBoolean())
+//            if (dataStream.readBoolean())
+//            {
+//                this.oxygenBubble = (EntityBubble) worldObj.getEntityByID(dataStream.readInt());
+//            }
+            int size = dataStream.readInt();
+            for (int i = 0; i < size; ++i)
             {
-                this.oxygenBubble = (EntityBubble) worldObj.getEntityByID(dataStream.readInt());
+            	this.loadedTiles.add(new BlockVec3Dim(dataStream.readInt(), dataStream.readInt(), dataStream.readInt(), dataStream.readInt()));
             }
+            this.bubbleSize = dataStream.readFloat();
         }
     }
 
-    public double getDistanceFromServer(double par1, double par3, double par5)
+    public int getDistanceFromServer(int par1, int par3, int par5)
     {
-        final double d3 = this.xCoord + 0.5D - par1;
-        final double d4 = this.yCoord + 0.5D - par3;
-        final double d5 = this.zCoord + 0.5D - par5;
+        final int d3 = this.xCoord - par1;
+        final int d4 = this.yCoord - par3;
+        final int d5 = this.zCoord - par5;
         return d3 * d3 + d4 * d4 + d5 * d5;
     }
 
@@ -128,31 +172,43 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 	    		if (this.storedOxygen > this.maxOxygen) this.storedOxygen = this.maxOxygen;
 	    	}
         }
-    	
+
     	super.updateEntity();
 
-        if (!hasValidBubble && !this.worldObj.isRemote && (this.oxygenBubble == null || this.ticks < 25))
+        if (!this.worldObj.isRemote)
         {
-            if (this.oxygenBubble == null)
+            if (this.getEnergyStoredGC() > 0.0F && this.storedOxygen > this.oxygenPerTick)
             {
-                this.oxygenBubble = new EntityBubble(this.worldObj, new Vector3(this), this);
-                this.hasValidBubble = true;
-                this.worldObj.spawnEntityInWorld(this.oxygenBubble);
+                this.bubbleSize += 0.01F;
             }
-        }
-
-        if (!this.worldObj.isRemote && this.oxygenBubble != null)
-        {
-            this.active = this.oxygenBubble.getSize() >= 1 && this.hasEnoughEnergyToRun;
-        }
-
-        if (!this.worldObj.isRemote && (this.active != this.lastActive || this.ticks % 20 == 0))
-        {
-            if (this.active && this.oxygenBubble != null)
+            else
             {
-                double bubbleR2 = this.oxygenBubble.getSize() - 0.5D;
-                bubbleR2 *= bubbleR2;
-                int bubbleR = MathHelper.floor_double(this.oxygenBubble.getSize() + 4);
+                this.bubbleSize -= 0.1F;
+            }
+
+            this.bubbleSize = Math.min(Math.max(this.bubbleSize, 0.0F), 10.0F);
+        }
+
+//        if (!hasValidBubble && !this.worldObj.isRemote && (this.oxygenBubble == null || this.ticks < 25))
+//        {
+//            //Check it's a world without a breathable atmosphere
+//        	if (this.oxygenBubble == null && this.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider)this.worldObj.provider).hasBreathableAtmosphere())
+//            {
+//                this.oxygenBubble = new EntityBubble(this.worldObj, new Vector3(this), this);
+//                this.hasValidBubble = true;
+//                this.worldObj.spawnEntityInWorld(this.oxygenBubble);
+//            }
+//        }
+
+        if (!this.worldObj.isRemote/* && this.oxygenBubble != null*/)
+        {
+            this.active = bubbleSize >= 1 && this.hasEnoughEnergyToRun && this.storedOxygen > this.oxygenPerTick;
+
+            if (this.ticks % (this.active ? 20 : 4) == 0)
+	        {
+                double size = bubbleSize;
+                int bubbleR = MathHelper.floor_double(size) + 4;
+                int bubbleR2 = (int) (size * size);
             	for (int x = this.xCoord - bubbleR; x <= this.xCoord + bubbleR; x++)
                 {
                     for (int y = this.yCoord - bubbleR; y <= this.yCoord + bubbleR; y++)
@@ -163,13 +219,14 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 
                             if (block instanceof IOxygenReliantBlock)
                             {
-                            	if (this.getDistanceFromServer(x, y, z) < bubbleR2)
+                            	if (this.getDistanceFromServer(x, y, z) <= bubbleR2)
                                 {
                                     ((IOxygenReliantBlock) block).onOxygenAdded(this.worldObj, x, y, z);
                                 }
                                 else
                                 {
-                                    ((IOxygenReliantBlock) block).onOxygenRemoved(this.worldObj, x, y, z);
+                                	//Do not necessarily extinguish it - it might be inside another oxygen system
+                                	this.worldObj.scheduleBlockUpdateWithPriority(x, y, z, block, 1, 0);
                                 }
                             }
                         }
@@ -186,7 +243,11 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     {
         super.readFromNBT(nbt);
 
-        this.hasValidBubble = nbt.getBoolean("hasValidBubble");
+        if (nbt.func_150296_c().contains("bubbleSize"))
+        {
+            this.bubbleSize = nbt.getFloat("bubbleSize");
+        }
+//        this.hasValidBubble = nbt.getBoolean("hasValidBubble");
 
         final NBTTagList var2 = nbt.getTagList("Items", 10);
         this.containingItems = new ItemStack[this.getSizeInventory()];
@@ -208,7 +269,8 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     {
         super.writeToNBT(nbt);
 
-        nbt.setBoolean("hasValidBubble", this.hasValidBubble);
+        nbt.setFloat("bubbleSize", this.bubbleSize);
+//        nbt.setBoolean("hasValidBubble", this.hasValidBubble);
 
         final NBTTagList list = new NBTTagList();
 
@@ -347,7 +409,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     	case 0:
     		return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
     	case 1:
-    		return FluidContainerRegistry.isEmptyContainer(itemstack);
+    		return FluidUtil.isEmptyContainer(itemstack);
     	default:
     		return false;
     	}
@@ -416,20 +478,42 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
         return EnumSet.noneOf(ForgeDirection.class);
     }
 
-    @Override
-    public IBubble getBubble()
-    {
-        return this.oxygenBubble;
-    }
+//    @Override
+//    public IBubble getBubble()
+//    {
+//        return this.oxygenBubble;
+//    }
 
+    public boolean inBubble(double pX, double pY, double pZ)
+    {
+        double r = bubbleSize;
+        r *= r;
+        double d3 = this.xCoord + 0.5D - pX;
+        d3 *= d3;
+        if (d3 > r) return false;
+        double d4 = this.zCoord + 0.5D - pZ;
+        d4 *= d4;
+        if (d3 + d4 > r) return false;
+        double d5 = this.yCoord + 0.5D - pY;
+        return d3 + d4 + d5 * d5 < r;
+    }
+    
     @Override
     public void setBubbleVisible(boolean shouldRender)
     {
-        if (this.oxygenBubble == null)
-        {
-            return;
-        }
+        this.shouldRenderBubble = shouldRender;
+//        this.oxygenBubble.setShouldRender(shouldRender);
+    }
 
-        this.oxygenBubble.setShouldRender(shouldRender);
+    @Override
+    public float getBubbleSize()
+    {
+        return this.bubbleSize;
+    }
+
+    @Override
+    public boolean getBubbleVisible()
+    {
+        return this.shouldRenderBubble;
     }
 }

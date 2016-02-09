@@ -67,9 +67,9 @@ public class ItemRendererWalkway implements IItemRenderer
 
         if (type == ItemRenderType.EQUIPPED_FIRST_PERSON)
         {
-            GL11.glScalef(1.6F, 1.6F, 1.6F);
-            GL11.glTranslatef(-0.1F, 0.4F, 0.35F);
-            GL11.glRotatef(180, 0, 0, 1);
+			GL11.glTranslatef(-0.1F, 0.5F, 0.6F);
+			GL11.glScalef(1.6F, 1.6F, 1.6F);
+			GL11.glRotatef(180, 0, 0, 1);
         }
 
         GL11.glScalef(-0.2F, -0.2F, 0.2F);

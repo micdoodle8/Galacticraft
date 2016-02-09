@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
@@ -23,6 +21,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAstero
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -31,7 +30,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.EnumSet;
@@ -138,7 +136,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
 
                     if (finalPos != null)
                     {
-                        TileEntity tileAt = finalPos.getTileEntity(this.worldObj);
+                        TileEntity tileAt = finalPos.getTileEntityForce(this.worldObj);
                         List<EntityLivingBase> containedEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 2, this.zCoord + 1));
 
                         if (tileAt != null && tileAt instanceof TileEntityShortRangeTelepad)
@@ -150,6 +148,11 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                                 for (EntityLivingBase e : containedEntities)
                                 {
                                     e.setPosition(finalPos.x + 0.5F, finalPos.y + 1.0F, finalPos.z + 0.5F);
+                                    this.worldObj.updateEntityWithOptionalForce(e, true);
+                                    if (e instanceof EntityPlayerMP)
+                                    {
+                                        ((EntityPlayerMP)e).playerNetServerHandler.setPlayerLocation(finalPos.x, finalPos.y, finalPos.z, e.rotationYaw, e.rotationPitch);
+                                    }
                                     GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_TELEPAD_SEND, new Object[] { finalPos, e.getEntityId() }), this.worldObj.provider.dimensionId);
                                 }
 
@@ -285,8 +288,10 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     @Override
     public void onCreate(BlockVec3 placedPosition)
     {
+        int buildHeight = this.worldObj.getHeight() - 1;
         for (int y = 0; y < 3; y += 2)
         {
+        	if (placedPosition.y + y > buildHeight) return;
             for (int x = -1; x <= 1; x++)
             {
                 for (int z = -1; z <= 1; z++)
@@ -452,75 +457,47 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         }
     }
 
-    public TileEntityShortRangeTelepad updateTarget()
+    public boolean updateTarget()
     {
         if (this.targetAddress >= 0 && !this.worldObj.isRemote)
         {
             this.targetAddressResult = EnumTelepadSearchResult.NOT_FOUND;
 
             ShortRangeTelepadHandler.TelepadEntry addressResult = ShortRangeTelepadHandler.getLocationFromAddress(this.targetAddress);
-            TileEntityShortRangeTelepad foundTelepad = null;
 
             if (addressResult != null)
             {
-                WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(addressResult.dimensionID);
-
-                TileEntity tile2 = addressResult.position.getTileEntity(world);
-
-                if (tile2 == null)
+                if (this.worldObj.provider.dimensionId == addressResult.dimensionID)
                 {
-                    FMLLog.severe("Bad TileEntity in Telepad Handler: address(" + this.targetAddress + ") x" + addressResult.position.x + " y" + addressResult.position.y + " z" + addressResult.position.z);
-                }
-                else
-                {
-                    if (this != tile2)
-                    {
-                        if (tile2 instanceof TileEntityShortRangeTelepad)
-                        {
-                            TileEntityShortRangeTelepad launchController2 = (TileEntityShortRangeTelepad) tile2;
-
-                            if (launchController2.address == this.targetAddress && launchController2.addressValid)
-                            {
-                                foundTelepad = launchController2;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (foundTelepad != null)
-            {
-                if (this.worldObj.provider.dimensionId == foundTelepad.worldObj.provider.dimensionId)
-                {
-                    double distance = this.getDistanceFrom(foundTelepad.xCoord + 0.5F, foundTelepad.yCoord + 0.5F, foundTelepad.zCoord + 0.5F);
+                    double distance = this.getDistanceFrom(addressResult.position.x + 0.5F, addressResult.position.y + 0.5F, addressResult.position.z + 0.5F);
 
                     if (distance < TELEPORTER_RANGE * TELEPORTER_RANGE)
                     {
                         this.targetAddressResult = EnumTelepadSearchResult.VALID;
-                        return foundTelepad;
+                        return true;
                     }
                     else
                     {
                         this.targetAddressResult = EnumTelepadSearchResult.TOO_FAR;
-                        return null;
+                        return false;
                     }
                 }
                 else
                 {
                     this.targetAddressResult = EnumTelepadSearchResult.WRONG_DIM;
-                    return null;
+                    return false;
                 }
             }
             else
             {
                 this.targetAddressResult = EnumTelepadSearchResult.NOT_FOUND;
-                return null;
+                return false;
             }
         }
         else
         {
             this.targetAddressResult = EnumTelepadSearchResult.NOT_FOUND;
-            return null;
+            return false;
         }
     }
 

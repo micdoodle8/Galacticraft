@@ -6,17 +6,22 @@ import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
+import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.ChunkProviderMars;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.WorldChunkManagerMars;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
 
-public class WorldProviderMars extends WorldProviderSpace implements IGalacticraftWorldProvider
+public class WorldProviderMars extends WorldProviderSpace implements IGalacticraftWorldProvider, ISolarLevel
 {
-    @Override
+    private double solarMultiplier = -1D;
+
+	@Override
     public Vector3 getFogColor()
     {
         float f = 1.0F - this.getStarBrightness(1.0F);
@@ -167,14 +172,8 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     @Override
     public int getAverageGroundLevel()
     {
-        return 44;
+        return 76;
     }
-
-//	@Override
-//	public boolean isSurfaceWorld()
-//	{
-//		return true;
-//	}
 
     @Override
     public boolean canCoordinateBeSpawn(int var1, int var2)
@@ -182,11 +181,33 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
         return true;
     }
 
-//	@Override
-//	public boolean canRespawnHere()
-//	{
-//		return !ConfigManagerCore.forceOverworldRespawn;
-//	}
+	//Overriding only in case the Galacticraft API is not up-to-date
+    //(with up-to-date API this makes zero difference)
+    @Override
+    public boolean isSurfaceWorld()
+    {
+        return (this.worldObj == null) ? false : this.worldObj.isRemote;
+    }
+
+	//Overriding so that beds do not explode on Mars
+	@Override
+	public boolean canRespawnHere()
+	{
+		if (EventHandlerGC.bedActivated)
+		{
+			EventHandlerGC.bedActivated = false;
+			return true;
+		}
+		return false;
+	}
+	
+	//Overriding only in case the Galacticraft API is not up-to-date
+    //(with up-to-date API this makes zero difference)
+    @Override
+    public int getRespawnDimension(EntityPlayerMP player)
+    {
+        return this.shouldForceRespawn() ? this.dimensionId : 0;
+    }
 
 //	@Override
 //	public String getSaveFolder()
@@ -243,12 +264,6 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     }
 
     @Override
-    public int getHeight()
-    {
-        return 800;
-    }
-
-    @Override
     public double getMeteorFrequency()
     {
         return 10.0D;
@@ -301,4 +316,15 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     {
         return 0.3F;
     }
+
+	@Override
+	public double getSolarEnergyMultiplier()
+	{
+		if (this.solarMultiplier < 0D)
+		{
+			double s = this.getSolarSize(); 
+			this.solarMultiplier = s * s * s;
+		}
+		return this.solarMultiplier;
+	}
 }

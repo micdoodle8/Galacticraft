@@ -22,7 +22,7 @@ public class RenderLandingBalloons extends Render
 
     public RenderLandingBalloons()
     {
-        this.shadowSize = 2F;
+        this.shadowSize = 1.2F;
         this.landerModel = AdvancedModelLoader.loadModel(new ResourceLocation(MarsModule.ASSET_PREFIX, "models/landingBalloon.obj"));
     }
 
