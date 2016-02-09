@@ -20,6 +20,16 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.common.Loader;
 
+/**
+ * This renders the thermal armor (unless RenderPlayerAPI is installed).
+ * The thermal armor render is done after the corresponding body part of the player is drawn.
+ * This ALSO patches RenderPlayer so that it uses ModelPlayerGC in place of ModelPlayer to draw the player.
+ * 
+ * Finally, this also adds a hook into rotateCorpse so as to fire a RotatePlayerEvent - used by the Cryogenic Chamber
+ * 
+ * @author User
+ *
+ */
 public class RenderPlayerGC extends RenderPlayer
 {
     public static ModelBiped modelThermalPadding;
@@ -48,27 +58,6 @@ public class RenderPlayerGC extends RenderPlayer
             RenderPlayerGC.thermalPaddingTexture0 = new ResourceLocation("galacticraftasteroids", "textures/misc/thermalPadding_0.png");
             RenderPlayerGC.thermalPaddingTexture1 = new ResourceLocation("galacticraftasteroids", "textures/misc/thermalPadding_1.png");
         }
-    }
-
-    @Override
-    protected void rotateCorpse(EntityLivingBase entity, float x, float y, float z)
-    {
-    	if (entity instanceof EntityPlayer && Minecraft.getMinecraft().gameSettings.thirdPersonView != 0)
-    	{
-            final EntityPlayer player = (EntityPlayer)entity;
-
-            if (player.ridingEntity instanceof EntityTieredRocket)
-            {
-                EntityTieredRocket rocket = (EntityTieredRocket) player.ridingEntity;
-                GL11.glTranslatef(0, -rocket.getRotateOffset(), 0);
-                float anglePitch = rocket.prevRotationPitch;
-                float angleYaw = rocket.prevRotationYaw;
-                GL11.glRotatef(-angleYaw, 0.0F, 1.0F, 0.0F);
-                GL11.glRotatef(anglePitch, 0.0F, 0.0F, 1.0F);
-                GL11.glTranslatef(0, rocket.getRotateOffset(), 0);
-            }
-    	}
-    	super.rotateCorpse(entity, x, y, z);
     }
 
     public static void renderModelS(RendererLivingEntity inst, EntityLivingBase par1EntityLivingBase, float par2, float par3, float par4, float par5, float par6, float par7)
@@ -160,9 +149,9 @@ public class RenderPlayerGC extends RenderPlayer
 
                             GL11.glColor4f(r, g, b, 0.4F * sTime);
                             modelBiped.render(par1EntityLivingBase, par2, par3, par4, par5, par6, par7);
+                            GL11.glColor4f(1, 1, 1, 1);
                             GL11.glDisable(GL11.GL_BLEND);
                             GL11.glEnable(GL11.GL_ALPHA_TEST);
-                            GL11.glColor4f(1, 1, 1, 1);
                             GL11.glEnable(GL11.GL_LIGHTING);
                         }
                     }
@@ -190,7 +179,22 @@ public class RenderPlayerGC extends RenderPlayer
         }
         else
         {
-            super.rotateCorpse(par1AbstractClientPlayer, par2, par3, par4);
+          	if (Minecraft.getMinecraft().gameSettings.thirdPersonView != 0)
+        	{
+                final EntityPlayer player = (EntityPlayer)par1AbstractClientPlayer;
+
+                if (player.ridingEntity instanceof EntityTieredRocket)
+                {
+                    EntityTieredRocket rocket = (EntityTieredRocket) player.ridingEntity;
+                    GL11.glTranslatef(0, -rocket.getRotateOffset(), 0);
+                    float anglePitch = rocket.prevRotationPitch;
+                    float angleYaw = rocket.prevRotationYaw;
+                    GL11.glRotatef(-angleYaw, 0.0F, 1.0F, 0.0F);
+                    GL11.glRotatef(anglePitch, 0.0F, 0.0F, 1.0F);
+                    GL11.glTranslatef(0, rocket.getRotateOffset(), 0);
+                }
+        	}
+          	super.rotateCorpse(par1AbstractClientPlayer, par2, par3, par4);
         }
     }
 

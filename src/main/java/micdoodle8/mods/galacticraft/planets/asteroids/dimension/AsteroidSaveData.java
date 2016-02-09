@@ -7,7 +7,6 @@ public class AsteroidSaveData extends WorldSavedData
 {
     public static final String saveDataID = "GCAsteroidData";
     public NBTTagCompound datacompound;
-    private NBTTagCompound alldata;
 
     public AsteroidSaveData(String s)
     {

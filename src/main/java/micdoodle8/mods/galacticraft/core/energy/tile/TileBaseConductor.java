@@ -112,12 +112,11 @@ public abstract class TileBaseConductor extends TileEntityAdvanced implements IC
             BlockVec3 thisVec = new BlockVec3(this);
             for (int i = 0; i < 6; i++)
             {
-                ForgeDirection side = ForgeDirection.getOrientation(i);
-                TileEntity tileEntity = thisVec.getTileEntityOnSide(this.worldObj, side);
+                TileEntity tileEntity = thisVec.getTileEntityOnSide(this.worldObj, i);
 
                 if (tileEntity instanceof IConnector)
                 {
-                    if (((IConnector) tileEntity).canConnect(side.getOpposite(), NetworkType.POWER))
+                    if (((IConnector) tileEntity).canConnect(ForgeDirection.getOrientation(i ^ 1), NetworkType.POWER))
                     {
                         this.adjacentConnections[i] = tileEntity;
                     }

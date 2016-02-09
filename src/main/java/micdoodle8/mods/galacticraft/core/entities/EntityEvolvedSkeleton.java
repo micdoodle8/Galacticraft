@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.entities;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -14,6 +15,7 @@ import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
@@ -34,6 +36,7 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
         this.tasks.addTask(6, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+        this.setSize(0.7F, 2.5F);
     }
 
     @Override
@@ -107,11 +110,10 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
             return;
         }
 
-        switch (this.rand.nextInt(10))
+        switch (this.rand.nextInt(12))
         {
             case 0:
             case 1:
-            case 9:
             	this.dropItem(Items.arrow, 1);
                 break;
             case 2:
@@ -127,11 +129,39 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
                 this.entityDropItem(new ItemStack(GCItems.oxTankMedium, 1, 901 + this.rand.nextInt(900)), 0.0F);
                 break;
             case 7:
-                this.dropItem(GCItems.canister, 1);
+            	this.dropItem(GCItems.canister, 1);
                 break;
             case 8:
                 this.entityDropItem(new ItemStack(GCBlocks.oxygenPipe), 0.0F);
                 break;
+            default:
+            	if (ConfigManagerCore.challengeMode) this.dropItem(Items.pumpkin_seeds, 1);
+                break;
         }
     }
+    
+    protected void dropFewItems(boolean p_70628_1_, int p_70628_2_)
+    {
+        Item item = this.getDropItem();
+
+        int j = this.rand.nextInt(3);
+
+        if (item != null)
+        {
+            if (p_70628_2_ > 0)
+            {
+                j += this.rand.nextInt(p_70628_2_ + 1);
+            }
+
+            for (int k = 0; k < j; ++k)
+            {
+                this.dropItem(item, 1);
+            }
+        }
+        
+        //Drop lapis as semi-rare drop if player hit and if dropping bones
+        if (p_70628_1_ && ConfigManagerCore.challengeMode && j > 0 && this.rand.nextInt(12) == 0)
+        	this.entityDropItem(new ItemStack(Items.dye, 1, 4), 0.0F);
+    }
+
 }

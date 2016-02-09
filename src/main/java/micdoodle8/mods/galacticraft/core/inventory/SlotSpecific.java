@@ -38,6 +38,20 @@ public class SlotSpecific extends Slot
         super(par2IInventory, par3, par4, par5);
         if (validClasses != null && Arrays.asList(validClasses).contains(IItemElectric.class))
         {
+            if (EnergyConfigHandler.isRFAPILoaded())
+            {
+                try
+                {
+                    Class<?> itemElectricRF = Class.forName("cofh.api.energy.IEnergyContainerItem");
+                    ArrayList<Class> existing = new ArrayList(Arrays.asList(validClasses));
+                    existing.add(itemElectricRF);
+                    validClasses = existing.toArray(new Class[existing.size()]);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
             if (EnergyConfigHandler.isIndustrialCraft2Loaded())
             {
                 try

@@ -139,14 +139,24 @@ public class GuiOxygenSealer extends GuiContainerGC
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.sealerblocked.name");
         }
 
-        if (this.sealer.disabled)
+        if (this.sealer.getWorldObj().getBlockPowerInput(this.sealer.xCoord, this.sealer.yCoord, this.sealer.zCoord) > 0)
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.disabled.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.off.name");
         }
 
+        if (this.sealer.disabled)
+        {
+            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled.name");
+        }
+        
         if (this.sealer.getEnergyStoredGC() == 0)
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingpower.name");
+        }
+
+        if (this.sealer.getEnergyStoredGC() < this.sealer.storage.getMaxExtract())
+        {
+            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.missingpower.name");
         }
 
         if (this.sealer.storedOxygen < 1)

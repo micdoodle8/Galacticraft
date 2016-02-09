@@ -152,8 +152,8 @@ public class PersistantInventoryCrafting implements IInventory
     }
 
     /**
-     * Sets the given item stack to the specified slot in the inventory (can be
-     * crafting or armor sections).
+     * Sets the given item stack to the specified slot in the crafting inventory
+     * Updates recipe matching in the containing machine.
      */
     @Override
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
@@ -164,6 +164,15 @@ public class PersistantInventoryCrafting implements IInventory
         {
             this.eventHandler.onCraftMatrixChanged(this);
         }
+    }
+
+    /**
+     * Sets the given item stack to the specified slot in the crafting inventory.
+     * No update to the containing machine.
+     */
+    public void setInventorySlotContentsNoUpdate(int par1, ItemStack par2ItemStack)
+    {
+        this.stackList[par1] = par2ItemStack;
     }
 
     /**

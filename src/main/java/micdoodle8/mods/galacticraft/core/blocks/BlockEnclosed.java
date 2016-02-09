@@ -146,7 +146,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 
         if (CompatibilityManager.isAppEngLoaded())
         {
-            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.ME_CABLE.getMetadata()));
+//            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.ME_CABLE.getMetadata()));
         }
     }
 
@@ -344,15 +344,15 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         }
         else if (metadata <= EnumEnclosedBlock.ME_CABLE.getMetadata())
         {
-            if (CompatibilityManager.isAppEngLoaded())
-            {
-                try
-                {
-                    Class<?> clazz = Class.forName("appeng.me.tile.TileCable");
-                    return (TileEntity) clazz.newInstance();
-                }
-                catch (Exception e) { e.printStackTrace(); }
-            }
+//            if (CompatibilityManager.isAppEngLoaded())
+//            {
+//                try
+//                {
+//                    Class<?> clazz = Class.forName("appeng.tile.networking.TileCableBus");
+//                    return (TileEntity) clazz.newInstance();
+//                }
+//                catch (Exception e) { e.printStackTrace(); }
+//            }
         }
         else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata())
         {

@@ -39,16 +39,16 @@ item.titanium_boots.name=Stivali in Titanio
 # CANISTERS ETC
 item.methaneCanisterPartial.name=Capsula di Metano
 item.methaneCanister.name=Capsula di Metano piena
-item.canister.gas.name=Gas                  #short name for Methane Gas contents level
+item.canister.gas.name=Metano                #short name for Methane Gas contents level
 item.canister.LOX.partial.name=Capsula di Ossigeno Liquido
 item.canister.LOX.full.name=Capsula di Ossigeno piena
-item.canister.LOX.name=LOX                  #short name for Liquid Oxygen contents level
+item.canister.LOX.name=Ossigeno Liquido                  #short name for Liquid Oxygen contents level
 item.canister.liquidNitrogen.partial.name=Capsula di Azoto Liquido
 item.canister.liquidNitrogen.full.name=Capsula di Azoto Liquido piena
-item.canister.liquidNitrogen.name=Liquido    #short name for Liquid Nitrogen contents level
+item.canister.liquidNitrogen.name=Azoto Liquido    #short name for Liquid Nitrogen contents level
 item.canister.liquidArgon.partial.name=Capsula di Argon Liquido
 item.canister.liquidArgon.full.name=Capsula di Argon Liquido piena
-item.canister.liquidArgon.name=Liquido       #short name for Liquid Argon contents level
+item.canister.liquidArgon.name=Argon Liquido       #short name for Liquid Argon contents level
 item.emptyGasCanister.name=Capsula per gas vuota
 
 # FLUIDS AND GASES

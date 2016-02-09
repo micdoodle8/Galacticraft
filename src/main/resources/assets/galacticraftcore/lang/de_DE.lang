@@ -434,7 +434,10 @@ gui.spacestation.playername=<spielername>
 gui.spacestation.toAllowEntry=ein, um einem anderen Spieler zu ermöglichen, diese Raumstation zu betreten!
 gui.spacestation.added=Dir ist es nun erlaubt, die Raumstation von %s zu betreten!
 gui.spacestation.addsuccess=%s wurde erfolgreich zur Raumstation-Liste hinzugefügt!
-gui.spacestation.removesuccess=%s wurde erfolgreich von der Raumstation-Liste entfernt!
+gui.spacestation.removesuccess=%s wurde erfolgreich von der Raumstation-Liste entfernt
+gui.spacestation.allowAllTrue=Alle Spieler dürfen nun deine Raumstationen betreten! (Benutze /ssinvite -all um dies rückgängig zu machen)
+gui.spacestation.allowAllFalse=Es dürfen nicht mehr alle Spieler deine Raumstationen betreten!
+gui.spacestation.changesuccess=Die Raumstation von %s gehört nun %s.
 
 gui.skeletonBoss.message=Der Boss ist verschwunden, verlasse den Boss-Raum nicht, während du kämpfst! Betrete den Raum erneut, um von vorne zu beginnen.
 gui.warning.noroom=Nicht genug Platz!
@@ -646,9 +649,10 @@ commands.gcenergyunits.invalidUnits=Ungültige Einheit im Befehl /GCEnergyUnits.
 commands.gcenergyunits.noUnits=Die Einheit muss festgelegt werden! Handhabung: %s
 commands.joinrace.noTeam=Das Team muss festgelegt werden! Handhabung: %s 
 commands.dimensiontp.tooMany=Dieser Befehl enthält zu viele Argumente! Handhabung: %s 
-commands.ssinvite.notFound=Konnte keine Weltraumstation für dich finden, du musst zuerst einmal dorthin reisen
+commands.ssinvite.notFound=Konnte keine Raumstation für dich finden, du musst zuerst einmal dorthin reisen!
 commands.ssinvite.wrongUsage=Dieser Befehl enthält nicht genügend Argumente! Handhabung: %s
-commands.ssuninvite.noPlayer=Der Spieler mit dem Namen %s konnte auf deiner Weltraumstation-Liste nicht gefunden werden
+commands.ssnewowner.wrongUsage=Die Raumstation-ID konnte nicht erkannt werden - existiert sie überhaupt? Handhabung: %s
+commands.ssuninvite.noPlayer=Der Spieler mit dem Namen %s konnte auf deiner Raumstation-Liste nicht gefunden werden!
 command.gcastrominer.count=Die Astromineranzahl von Spieler %s ist %s
 
 # CONFIG GUI
@@ -657,7 +661,7 @@ gc.configgui.idDimensionOverworldOrbit=Raumstation - Dimensions-ID
 gc.configgui.idDimensionOverworldOrbitStatic=Statische Raumstation - Dimensions-ID
 gc.configgui.biomeIDBase=Basis-Biom-ID
 gc.configgui.staticLoadedDimensions=Statisch geladene Dimensionen
-gc.configgui.rocketDisableOverworldReturn=Rakete - Zurückkehr auf die Oberwelt deaktivieren
+gc.configgui.rocketDisableOverworldReturn=Rakete - Rückkehr auf die Oberwelt deaktivieren
 gc.configgui.rocketDisabledDimensions=Rakete - Deaktivierte Dimensionen
 gc.configgui.forceOverworldRespawn=Oberwelt-Respawn erzwingen
 gc.configgui.idSchematicRocketT1=Rakete (Stufe 1) - Schematic-ID

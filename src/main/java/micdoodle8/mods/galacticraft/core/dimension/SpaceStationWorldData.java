@@ -338,27 +338,26 @@ public class SpaceStationWorldData extends WorldSavedData
     
 	public static void updateSSOwnership(EntityPlayerMP player, String playerName, GCPlayerStats stats, int stationID, SpaceStationWorldData stationData)
 	{
-		System.out.println("Checking SS: " + playerName + " " + stationID);
 		if (stationData == null)
 			stationData = SpaceStationWorldData.getMPSpaceStationData(null, stationID, null);
 		
 		if (stationData.owner.equals(playerName))
 		{
-			System.out.println("Player owns station: " + stationData.getSpaceStationName() + " with home planet " + stationData.getHomePlanet());
 			//This player is the owner of the station - ensure stats data matches
             if (!(stats.spaceStationDimensionData.values().contains(stationID)))
             {
+    			GCLog.debug("Player owns station: " + stationData.getSpaceStationName() + " with home planet " + stationData.getHomePlanet());
             	stats.spaceStationDimensionData.put(stationData.getHomePlanet(), stationID);
             }
 		}
 		else
 		{
-			System.out.println("Player does not own station: " + stationData.getSpaceStationName() + " with home planet " + stationData.getHomePlanet());
 			//This player is the owner of the station - remove from stats data
-			int planetID = stationData.getHomePlanet();
-            if (stats.spaceStationDimensionData.get(planetID) == stationID)
+			Integer savedOwned = stats.spaceStationDimensionData.get(stationData.getHomePlanet());
+            if (savedOwned != null && savedOwned == stationID)
             {
-            	stats.spaceStationDimensionData.remove(planetID);
+    			GCLog.debug("Player does not own station: " + stationData.getSpaceStationName() + " with home planet " + stationData.getHomePlanet());
+            	stats.spaceStationDimensionData.remove(savedOwned);
             }		
 		}		
 	}

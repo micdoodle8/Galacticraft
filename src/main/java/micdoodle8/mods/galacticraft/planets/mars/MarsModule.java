@@ -19,9 +19,9 @@ import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.items.ItemBucketGC;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModule;
@@ -54,7 +54,6 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
-import java.io.File;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -73,7 +72,6 @@ public class MarsModule implements IPlanetsModule
     public void preInit(FMLPreInitializationEvent event)
     {
         MinecraftForge.EVENT_BUS.register(new EventHandlerMars());
-        new ConfigManagerMars(new File(event.getModConfigurationDirectory(), "Galacticraft/mars.conf"));
 
         if (!FluidRegistry.isFluidRegistered("bacterialsludge"))
         {
@@ -143,7 +141,7 @@ public class MarsModule implements IPlanetsModule
         GalacticraftRegistry.addDungeonLoot(3, new ItemStack(MarsItems.schematic, 1, 2));
 
         CompressorRecipes.addShapelessRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 3), new ItemStack(GCItems.heavyPlatingTier1), new ItemStack(GCItems.meteoricIronIngot, 1, 1));
-        CompressorRecipes.addShapelessRecipe(new ItemStack(MarsItems.marsItemBasic, ConfigManagerCore.quickMode ? 2 : 1, 5), new ItemStack(MarsItems.marsItemBasic, 1, 2));
+        CompressorRecipes.addShapelessRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 5), new ItemStack(MarsItems.marsItemBasic, 1, 2));
     }
 
     @Override
@@ -222,24 +220,14 @@ public class MarsModule implements IPlanetsModule
 
     public void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int back, int fore)
     {
-        EntityList.stringToClassMapping.put(var1, var0);
-        MarsModule.registerGalacticraftNonMobEntity(var0, var1, 80, 3, true);
-        int nextEggID = getNextValidEggID();
-        EntityList.IDtoClassMapping.put(nextEggID, var0);
-        EntityList.entityEggs.put(nextEggID, new EntityList.EntityEggInfo(nextEggID, back, fore));
-    }
-
-    private static int getNextValidEggID()
-    {
-        int eggID = 120;
-
-        do
+    	MarsModule.registerGalacticraftNonMobEntity(var0, var1, 80, 3, true);
+        int nextEggID = GCCoreUtil.getNextValidEggID();
+        if (nextEggID < 65536)
         {
-            eggID++;
-        }
-        while (EntityList.getStringFromID(eggID) != null);
-
-        return eggID;
+	        EntityList.IDtoClassMapping.put(nextEggID, var0);
+	        VersionUtil.putClassToIDMapping(var0, nextEggID);
+	        EntityList.entityEggs.put(nextEggID, new EntityList.EntityEggInfo(nextEggID, back, fore));
+        } 
     }
 
     public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
@@ -301,6 +289,6 @@ public class MarsModule implements IPlanetsModule
     @Override
     public void syncConfig()
     {
-        ConfigManagerMars.syncConfig(false);
+        ConfigManagerMars.syncConfig(false, false);
     }
 }

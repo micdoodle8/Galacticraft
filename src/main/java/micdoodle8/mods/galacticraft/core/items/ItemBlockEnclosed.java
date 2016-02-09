@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import java.lang.reflect.Method;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
@@ -12,6 +14,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class ItemBlockEnclosed extends ItemBlockDesc
 {
@@ -146,6 +149,18 @@ public class ItemBlockEnclosed extends ItemBlockDesc
                         {
                             BlockEnclosed.initialiseBCPipe(world, i, j, k, metadata);
                         }
+                    }
+                    
+                    else if (metadata == EnumEnclosedBlock.ME_CABLE.getMetadata())
+                    {
+//                    	ItemStack itemME = new ItemStack(Block.getBlockFromName("appliedenergistics2:tile.BlockCableBus"), 16);
+//                    	try
+//                    	{
+//                    		Class clazz = Class.forName("appeng.tile.networking.TileCableBus");
+//                    		Method m = clazz.getMethod("addPart", ItemStack.class, ForgeDirection.class, EntityPlayer.class);
+//                    		m.invoke(world.getTileEntity(i, j, k), itemME, ForgeDirection.UNKNOWN, entityplayer);
+//                    	}
+//                    	catch (Exception e) { e.printStackTrace(); }
                     }
                 }
 

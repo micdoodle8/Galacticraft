@@ -19,6 +19,7 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.lang.reflect.Method;
@@ -49,12 +50,13 @@ public class EnergyUtil
     
     public static TileEntity[] getAdjacentPowerConnections(TileEntity tile)
     {
-        TileEntity[] adjacentConnections = new TileEntity[6];
+        final TileEntity[] adjacentConnections = new TileEntity[6];
         
-        BlockVec3 thisVec = new BlockVec3(tile);
+        final BlockVec3 thisVec = new BlockVec3(tile);
+        final World world = tile.getWorldObj(); 
         for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
         {
-            TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorldObj(), direction);
+            TileEntity tileEntity = thisVec.getTileEntityOnSide(world, direction);
 
             if (tileEntity instanceof IConnector)
             {
@@ -64,7 +66,28 @@ public class EnergyUtil
                 }
                 continue;
             }
-            else if (isMekLoaded && (tileEntity instanceof IStrictEnergyAcceptor || tileEntity instanceof ICableOutputter))
+            
+            if (isRFLoaded && tileEntity instanceof IEnergyConnection)
+            {
+                if (isRF2Loaded && (tileEntity instanceof IEnergyProvider || tileEntity instanceof IEnergyReceiver) || isRF1Loaded && tileEntity instanceof IEnergyHandler || clazzRailcraftEngine != null && clazzRailcraftEngine.isInstance(tileEntity))
+                {
+                    //Do not connect GC wires directly to power conduits
+                    if (clazzEnderIOCable != null && clazzEnderIOCable.isInstance(tileEntity))
+                    {
+                        continue;
+                    }
+                    if (clazzMFRRednetEnergyCable != null && clazzMFRRednetEnergyCable.isInstance(tileEntity))
+                    {
+                        continue;
+                    }
+                    
+	                if (((IEnergyConnection)tileEntity).canConnectEnergy(direction.getOpposite()))
+	                	adjacentConnections[direction.ordinal()] = tileEntity;
+                }
+                continue;
+            }
+            
+            if (isMekLoaded && (tileEntity instanceof IStrictEnergyAcceptor || tileEntity instanceof ICableOutputter))
             {
                 //Do not connect GC wires directly to Mek Universal Cables
                 try {
@@ -101,28 +124,6 @@ public class EnergyUtil
                 } catch (Exception e) { }
             }
             
-            if (isRFLoaded && tileEntity instanceof IEnergyConnection)
-            {
-                if (isRF1Loaded && tileEntity instanceof IEnergyHandler || isRF2Loaded && (tileEntity instanceof IEnergyProvider || tileEntity instanceof IEnergyReceiver) || clazzRailcraftEngine != null && clazzRailcraftEngine.isInstance(tileEntity))
-                {
-                    //Do not connect GC wires directly to power conduits
-                    try {
-                        if (clazzEnderIOCable != null && clazzEnderIOCable.isInstance(tileEntity))
-                        {
-                            continue;
-                        }
-                        if (clazzMFRRednetEnergyCable != null && clazzMFRRednetEnergyCable.isInstance(tileEntity))
-                        {
-                            continue;
-                        }
-                    } catch (Exception e) { }
-                    
-	                if (((IEnergyConnection)tileEntity).canConnectEnergy(direction.getOpposite()))
-	                	adjacentConnections[direction.ordinal()] = tileEntity;
-                }
-                continue;
-            }
-            
             if (isIC2Loaded && tileEntity instanceof IEnergyTile)
             {
                 if (tileEntity instanceof IEnergyConductor)
@@ -135,16 +136,16 @@ public class EnergyUtil
                     if (((IEnergyAcceptor) tileEntity).acceptsEnergyFrom(tile, direction.getOpposite()))
                     {
                         adjacentConnections[direction.ordinal()] = tileEntity;
-                        continue;
                     }
+                    continue;
                 }
                 if (tileEntity instanceof IEnergyEmitter)
                 {
                     if (((IEnergyEmitter) tileEntity).emitsEnergyTo(tile, direction.getOpposite()))
                     {
                         adjacentConnections[direction.ordinal()] = tileEntity;
-                        continue;
                     }
+                    continue;
                 }
             }
             
@@ -156,6 +157,7 @@ public class EnergyUtil
                 if (isBC6Loaded && MjAPI.getMjBattery(tileEntity, MjAPI.DEFAULT_POWER_FRAMEWORK, direction.getOpposite()) != null)
                 {
                     adjacentConnections[direction.ordinal()] = tileEntity;
+                    continue;
                 }
 
                 //Legacy BC API
@@ -171,7 +173,19 @@ public class EnergyUtil
     
     public static float otherModsEnergyTransfer(TileEntity tileAdj, ForgeDirection inputAdj, float toSend, boolean simulate)
     {
-        if (isMekLoaded && !EnergyConfigHandler.disableMekanismOutput && tileAdj instanceof IStrictEnergyAcceptor)
+        if (isRF1Loaded && !EnergyConfigHandler.disableRFOutput && tileAdj instanceof IEnergyHandler)
+        {
+        	float sent = ((IEnergyHandler)tileAdj).receiveEnergy(inputAdj, MathHelper.floor_float(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
+//        	GCLog.debug("Beam/storage offering RF1 up to " + toSend + " into pipe, it accepted " + sent);
+        	return sent;
+        }
+        else if (isRF2Loaded && !EnergyConfigHandler.disableRFOutput && tileAdj instanceof IEnergyReceiver)
+        {
+        	float sent = ((IEnergyReceiver)tileAdj).receiveEnergy(inputAdj, MathHelper.floor_float(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
+//        	GCLog.debug("Beam/storage offering RF2 up to " + toSend + " into pipe, it accepted " + sent);
+        	return sent;
+        }
+        else if (isMekLoaded && !EnergyConfigHandler.disableMekanismOutput && tileAdj instanceof IStrictEnergyAcceptor)
         {
             IStrictEnergyAcceptor tileMek = (IStrictEnergyAcceptor) tileAdj;
             if (tileMek.canReceiveEnergy(inputAdj))
@@ -228,18 +242,6 @@ public class EnergyUtil
                 return (float) result / EnergyConfigHandler.TO_IC2_RATIO;
             }
         }
-        else if (isRF1Loaded && !EnergyConfigHandler.disableRFOutput && tileAdj instanceof IEnergyHandler)
-        {
-        	float sent = ((IEnergyHandler)tileAdj).receiveEnergy(inputAdj, MathHelper.floor_float(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
-        	GCLog.debug("Beam/storage offering RF1 up to " + toSend + " into pipe, it accepted " + sent);
-        	return sent;
-        }
-        else if (isRF2Loaded && !EnergyConfigHandler.disableRFOutput && tileAdj instanceof IEnergyReceiver)
-        {
-        	float sent = ((IEnergyReceiver)tileAdj).receiveEnergy(inputAdj, MathHelper.floor_float(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
-        	GCLog.debug("Beam/storage offering RF2 up to " + toSend + " into pipe, it accepted " + sent);
-        	return sent;
-        }
         else if (isBC6Loaded && !EnergyConfigHandler.disableBuildCraftOutput && MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, inputAdj) != null)
         //New BC API
         {
@@ -249,7 +251,7 @@ public class EnergyUtil
                 return (float) toSendBC / EnergyConfigHandler.TO_BC_RATIO;
             }
             float sent = (float) MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, inputAdj).addEnergy(toSendBC) / EnergyConfigHandler.TO_BC_RATIO;
-            GCLog.debug("Beam/storage offering BC up to " + toSend + " into pipe, it accepted " + sent);
+//            GCLog.debug("Beam/storage offering BC up to " + toSend + " into pipe, it accepted " + sent);
             return sent;
         }
         else if (isBCLoaded && !EnergyConfigHandler.disableBuildCraftOutput && tileAdj instanceof IPowerReceptor)
@@ -273,6 +275,16 @@ public class EnergyUtil
 
     public static float otherModsEnergyExtract(TileEntity tileAdj, ForgeDirection inputAdj, float toPull, boolean simulate)
     {
+        if (isRF2Loaded && !EnergyConfigHandler.disableRFInput && tileAdj instanceof IEnergyProvider)
+        {
+        	float sent = ((IEnergyProvider)tileAdj).extractEnergy(inputAdj, MathHelper.floor_float(toPull * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
+        	return sent;
+        }
+        else if (isRF1Loaded && !EnergyConfigHandler.disableRFInput && tileAdj instanceof IEnergyHandler)
+        {
+        	float sent = ((IEnergyHandler)tileAdj).extractEnergy(inputAdj, MathHelper.floor_float(toPull * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
+        	return sent;
+        }
         if (isIC2Loaded && !EnergyConfigHandler.disableIC2Input && tileAdj instanceof IEnergySource)
         {
             double offered = 0;
@@ -306,16 +318,6 @@ public class EnergyUtil
                 }
                 return (float) resultIC2 / EnergyConfigHandler.TO_IC2_RATIO;
             }
-        }
-        else if (isRF1Loaded && !EnergyConfigHandler.disableRFInput && tileAdj instanceof IEnergyHandler)
-        {
-        	float sent = ((IEnergyHandler)tileAdj).extractEnergy(inputAdj, MathHelper.floor_float(toPull * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
-        	return sent;
-        }
-        else if (isRF2Loaded && !EnergyConfigHandler.disableRFInput && tileAdj instanceof IEnergyProvider)
-        {
-        	float sent = ((IEnergyProvider)tileAdj).extractEnergy(inputAdj, MathHelper.floor_float(toPull * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
-        	return sent;
         }
         
         return 0F;

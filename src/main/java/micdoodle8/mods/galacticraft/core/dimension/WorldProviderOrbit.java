@@ -4,6 +4,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -14,6 +15,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSpinThruster;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOrbit;
+import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.player.FreefallHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -775,8 +777,18 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                 if (!p.onGround)
                 {
                     p.motionY -= 0.015D;
+                    if (!FreefallHandler.sneakLast )
+                    {
+                    	p.boundingBox.offset(0D, 0.0268D, 0D);
+                    	FreefallHandler.sneakLast = true;
+                    }
                 }
                 this.pjumpticks = 0;
+            }
+            else if (FreefallHandler.sneakLast)
+            {
+            	FreefallHandler.sneakLast = false;
+            	p.boundingBox.offset(0D, -0.0268D, 0D);
             }
 
             if (this.pjumpticks > 0)
@@ -791,7 +803,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         }
 
         //Artificial gravity
-        if (doGravity)
+        if (doGravity && !p.onGround)
         {
             int quadrant = 0;
             double xd = p.posX - this.spinCentreX;
@@ -845,6 +857,17 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         if (this.pjumpticks > 0 || (this.pWasOnGround && p.movementInput.jump))
         {
             return false;
+        }
+        
+        if (p.ridingEntity != null)
+        {
+        	Entity e = p.ridingEntity;
+        	if (e instanceof EntitySpaceshipBase)
+        		return ((EntitySpaceshipBase)e).getLaunched();
+        	if (e instanceof EntityLanderBase)
+        		return false;
+        	//TODO: should check whether lander has landed (whatever that means)
+        	//TODO: could check other ridden entities - every entity should have its own freefall check :(
         }
 
         //This is an "on the ground" check
@@ -1189,7 +1212,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                             thismassCentreZ += m * sideVec.z;
                             thismass += m;
                             thismoment += m * (sideVec.x * sideVec.x + sideVec.z * sideVec.z);
-                            if (b instanceof BlockSpinThruster)
+                            if (b instanceof BlockSpinThruster && this.worldObj.getBlockPowerInput(sideVec.x, sideVec.y, sideVec.z) == 0)
                             {
                                 foundThrusters.add(sideVec);
                             }
@@ -1274,10 +1297,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         // TODO break blocks which are outside SS (not in checked)
         // TODO prevent spin if there is a huge number of blocks outside SS
 
-        if (ConfigManagerCore.enableDebug)
-        {
-            System.out.println("MoI = " + this.momentOfInertia + " CoMx = " + this.massCentreX + " CoMz = " + this.massCentreZ);
-        }
+        GCLog.debug("MoI = " + this.momentOfInertia + " CoMx = " + this.massCentreX + " CoMz = " + this.massCentreZ);
 
         //Send packets to clients in this dimension
         List<Object> objList = new ArrayList<Object>();

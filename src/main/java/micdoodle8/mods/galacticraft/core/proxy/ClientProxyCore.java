@@ -209,7 +209,7 @@ public class ClientProxyCore extends CommonProxyCore
     private static Map<String, ResourceLocation> capesMap = Maps.newHashMap();
 
     public static IPlayerClient playerClientHandler = new PlayerClient();
-    private static Minecraft mc = FMLClientHandler.instance().getClient();
+    public static Minecraft mc = FMLClientHandler.instance().getClient();
     public static List<String> gearDataRequests = Lists.newArrayList();
     //private static int playerList;
 
@@ -217,7 +217,7 @@ public class ClientProxyCore extends CommonProxyCore
     public static DynamicTexture overworldTextureLocal;
     public static boolean overworldTextureRequestSent;
 
-    private static float PLAYER_Y_OFFSET = 1.6200000047683716F;
+    public static float PLAYER_Y_OFFSET = 1.6200000047683716F;
     
     private static final ResourceLocation saturnRingTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/saturnRings.png");    
     private static final ResourceLocation uranusRingTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/uranusRings.png");

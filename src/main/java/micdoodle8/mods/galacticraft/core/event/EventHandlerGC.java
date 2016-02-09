@@ -22,6 +22,7 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
@@ -35,6 +36,7 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
@@ -43,11 +45,14 @@ import net.minecraft.block.BlockGravel;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -55,16 +60,19 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemFireball;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenDesert;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
 import net.minecraftforge.client.event.sound.PlaySoundEvent17;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -180,7 +188,7 @@ public class EventHandlerGC
     	
         final Block idClicked = worldObj.getBlock(event.x, event.y, event.z);
         
-        if (idClicked == Blocks.bed && worldObj.provider instanceof IGalacticraftWorldProvider && !worldObj.isRemote)
+        if (idClicked == Blocks.bed && worldObj.provider instanceof IGalacticraftWorldProvider && event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) && !worldObj.isRemote && !((IGalacticraftWorldProvider)worldObj.provider).hasBreathableAtmosphere())
         {
         	if (GalacticraftCore.isPlanetsLoaded) GCPlayerStats.tryBedWarning((EntityPlayerMP) event.entityPlayer);
 
@@ -277,7 +285,12 @@ public class EventHandlerGC
             {
                 if (!(entityLiving instanceof EntityPlayer) && (!(entityLiving instanceof IEntityBreathable) || !((IEntityBreathable) entityLiving).canBreath()) && !((IGalacticraftWorldProvider)entityLiving.worldObj.provider).hasBreathableAtmosphere())
                 {
-                    if (!OxygenUtil.isAABBInBreathableAirBlock(entityLiving))
+                    if (ConfigManagerCore.challengeMode && entityLiving instanceof EntityEnderman)
+                    {
+                    	return;
+                    }
+                    
+                	if (!OxygenUtil.isAABBInBreathableAirBlock(entityLiving))
                     {
                         GCCoreOxygenSuffocationEvent suffocationEvent = new GCCoreOxygenSuffocationEvent.Pre(entityLiving);
                         MinecraftForge.EVENT_BUS.post(suffocationEvent);
@@ -747,6 +760,35 @@ public class EventHandlerGC
                 event.setResult(Result.DENY);
             }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void overrideSkyColor(FogColors event)
+    {
+    	//Disable any night vision effects on the sky, if the planet has no atmosphere
+    	if (event.entity.isPotionActive(Potion.nightVision))
+    	{
+    		WorldClient worldclient = Minecraft.getMinecraft().theWorld;
+
+    		if (worldclient.provider instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider)worldclient.provider).getCelestialBody().atmosphere.size() == 0 && event.block.getMaterial() == Material.air && !((IGalacticraftWorldProvider)worldclient.provider).hasBreathableAtmosphere())
+    		{
+    			Vec3 vec = worldclient.getFogColor(1.0F);
+    			event.red = (float) vec.xCoord;
+    			event.green = (float) vec.yCoord;
+    			event.blue = (float) vec.zCoord;
+    			return;
+    		}
+    	
+	    	if (worldclient.provider.getSkyRenderer() instanceof SkyProviderOverworld && event.entity.posY > Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
+	    	{
+				Vec3 vec = WorldUtil.getFogColorHook(event.entity.worldObj);
+				event.red = (float) vec.xCoord;
+				event.green = (float) vec.yCoord;
+				event.blue = (float) vec.zCoord;
+				return;
+	    	}
+    	}
     }
 
     private List<SoundPlayEntry> soundPlayList = new ArrayList<SoundPlayEntry>();

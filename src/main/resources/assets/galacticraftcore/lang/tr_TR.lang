@@ -415,6 +415,7 @@ gui.rocket.warning.nogyroscope=Jiroskop çılgınca dönerken gizemli güçler d
 gui.rocket.warning.noparachute=Paraşütünüz bulunmuyor. Fırlat tuşuna tekrar basarak uçabilirsiniz ama sorun olabilir! 
 gui.rocket.warning.nofuel=Yakıtınız bulunmuyor. En yakın zamanda yakıt doldurun.
 gui.chest.warning.wrongkey=Tier %s için zindandan yeni bir şematik bulun!
+gui.bedFail.message=Uh oh, what if the oxygen runs out when I am asleep?  I'll need a Cryogenic Chamber to sleep in space! ##NEEDS TRANSLATE##
 gui.frequencymodule.warning0=Burada düzgün duymak için
 gui.frequencymodule.warning1=gerekir. 
 gui.tracking.message=Bağlantı başladı. Şimdi, bağlantıyı tamamlamak için Telemetri Ünitesine sağ tıklamam lazım.
@@ -434,6 +435,9 @@ gui.spacestation.toAllowEntry=Başka bir oyuncu sizin uzay istasyonunuza giriyor
 gui.spacestation.added=İstasyonunuza %s adlı kişiyi eklediniz. 
 gui.spacestation.addsuccess=İstasyon listensine %s adlı kişi başarıyla eklendi. 
 gui.spacestation.removesuccess=İstasyon listesinden %s adlı kişiyi sildiniz. 
+gui.spacestation.allowAllTrue=Your Space Stations are now open to all players!  (Use /ssinvite -all to undo this.) ##NEEDS TRANSLATE##
+gui.spacestation.allowAllFalse=Your Space Stations are no longer open to all players! ##NEEDS TRANSLATE##
+gui.spacestation.changesuccess=Changed Space Station owner from %s to new owner %s. ##NEEDS TRANSLATE##
 
 gui.skeletonBoss.message=Yaratık yok oldu, yaratık ile savaşırken odadan ayrılmayın! Odaya tekrar girerek savaşa devam edebilirsiniz.
 gui.warning.noroom=Oda Yetersiz!
@@ -647,6 +651,7 @@ commands.joinrace.noTeam=Takımı belirtmeniz gerekir! Kullanımı: %s
 commands.dimensiontp.tooMany=Çok fazla komut var! Kullanımı: %s 
 commands.ssinvite.notFound=Adınıza ait Uzay İstasyonu bulunamadı, ilk önce seyahat et! 
 commands.ssinvite.wrongUsage=Çok az komut var! Kullanımı: %s
+commands.ssnewowner.wrongUsage=Cannot recognise Space Station ID# - does it even exist? Usage: %s ##NEEDS TRANSLATE##
 commands.ssuninvite.noPlayer=%s adlı kişi İstasyon listenizde bulunmuyor! 
 command.gcastrominer.count=%s adlı kişinin Astro Madenci Makinesi adeti: %s
 

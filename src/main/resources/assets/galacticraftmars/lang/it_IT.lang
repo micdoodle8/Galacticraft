@@ -102,6 +102,7 @@ gui.launchController.desc.0=Questa è l'unica frequenza$del Launch Controller
 gui.launchController.desc.1=Frequenza per lanciare il razzo verso
 gui.launchController.desc.2=Whether the launch pad should$be removed on launch
 gui.launchController.desc.3=When this criteria is met,$rocket will launch
+gui.launchController.desc.4=Nascondi la frequenza della destinazione$da altri giocatori
 gui.terraformer.desc.0=Tanica di Acqua
 
 gui.gasTank.desc.0=Deposito Di Gas

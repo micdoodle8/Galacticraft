@@ -164,7 +164,6 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 	
 	                    if (canisterGas != null)
 		                {
-		                	System.out.println("GasTankType " + this.gasTankType);
 		                	int used = this.gasTank.fill(canisterGas, true) / factor;
 		                	if (used == amount)
 		                		this.containingItems[1] = new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY);
@@ -260,9 +259,9 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
             if (liquid != null && liquid.amount > 0)
             {
                 String liquidname = liquid.getFluid().getName();
-                if (liquidname.equals(TankGases.METHANE.liquid))
+                if (liquidname.startsWith("fuel"))
                 {
-                    FluidUtil.tryFillContainer(tank, liquid, this.containingItems, slot, GCItems.fuelCanister);
+                    FluidUtil.tryFillContainerFuel(tank, this.containingItems, slot);
                 }
                 else if (liquidname.equals(TankGases.OXYGEN.liquid))
                 {

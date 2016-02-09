@@ -585,7 +585,7 @@ public class GuiCelestialSelection extends GuiScreen
                             return false;
                         }
                         int spacestationID = mapping;
-                        WorldProvider spacestation = WorldUtil.getProviderForDimension(spacestationID);
+                        WorldProvider spacestation = WorldUtil.getProviderForDimensionClient(spacestationID);
                         if (spacestation != null)
                         {
                             dimension = spacestation.getDimensionName();
@@ -598,7 +598,7 @@ public class GuiCelestialSelection extends GuiScreen
                     }
                     else
                     {
-                        dimension = WorldUtil.getProviderForDimension(this.selectedBody.getDimensionID()).getDimensionName();
+                        dimension = WorldUtil.getProviderForDimensionClient(this.selectedBody.getDimensionID()).getDimensionName();
                     }
 
                     if (dimension.contains("$"))
@@ -1794,7 +1794,7 @@ public class GuiCelestialSelection extends GuiScreen
                                 {
                                     validInputMaterials = false;
                                 }
-                                int color = valid ? ColorUtil.to32BitColor(255, 0, 255, 0) : ColorUtil.to32BitColor(255, 255, 0, 0);
+                                int color = valid | this.mc.thePlayer.capabilities.isCreativeMode ? ColorUtil.to32BitColor(255, 0, 255, 0) : ColorUtil.to32BitColor(255, 255, 0, 0);
                                 this.smallFontRenderer.drawString(str, xPos + 8 - this.smallFontRenderer.getStringWidth(str) / 2, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 170 + canCreateOffset, color);
                             }
                             else if (next instanceof ArrayList)
@@ -1859,7 +1859,7 @@ public class GuiCelestialSelection extends GuiScreen
                                 {
                                     validInputMaterials = false;
                                 }
-                                int color = valid ? ColorUtil.to32BitColor(255, 0, 255, 0) : ColorUtil.to32BitColor(255, 255, 0, 0);
+                                int color = valid | this.mc.thePlayer.capabilities.isCreativeMode ? ColorUtil.to32BitColor(255, 0, 255, 0) : ColorUtil.to32BitColor(255, 255, 0, 0);
                                 this.smallFontRenderer.drawString(str, xPos + 8 - this.smallFontRenderer.getStringWidth(str) / 2, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 170 + canCreateOffset, color);
                             }
 
