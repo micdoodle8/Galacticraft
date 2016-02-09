@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.network.*;
 import micdoodle8.mods.galacticraft.core.network.PacketEntityUpdate.IEntityFullSync;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFueler;
+import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.client.model.ModelBase;
@@ -30,7 +31,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
@@ -695,15 +695,8 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     @Override
     public int addFuel(FluidStack liquid, boolean doDrain)
     {
-        final FluidStack liquidInTank = this.buggyFuelTank.getFluid();
-
-        if (liquid != null && FluidRegistry.getFluidName(liquid).startsWith("fuel") && this.landingPad != null)
-        {
-            if (liquidInTank == null || liquidInTank.amount + liquid.amount <= this.buggyFuelTank.getCapacity())
-            {
-                return this.buggyFuelTank.fill(liquid, doDrain);
-            }
-        }
+        if (this.landingPad != null)
+        	return FluidUtil.fillWithGCFuel(this.buggyFuelTank, liquid, doDrain);
 
         return 0;
     }

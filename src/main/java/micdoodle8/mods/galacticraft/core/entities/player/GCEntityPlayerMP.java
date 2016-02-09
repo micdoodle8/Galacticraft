@@ -5,6 +5,7 @@ import com.mojang.authlib.GameProfile;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -22,9 +23,13 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 {
     public GCEntityPlayerMP(MinecraftServer server, WorldServer world, GameProfile profile, ItemInWorldManager itemInWorldManager)
     {
-        super(server, world, profile, itemInWorldManager);
+        super(server, WorldUtil.getStartWorld(world), profile, itemInWorldManager);
+        if (this.worldObj != world)
+        {
+        	GCPlayerStats.get(this).startAdventure(this.worldObj.provider.getDimensionName());
+        }
     }
-
+    
     //Server-only method
     @Override
     public void clonePlayer(EntityPlayer oldPlayer, boolean keepInv)

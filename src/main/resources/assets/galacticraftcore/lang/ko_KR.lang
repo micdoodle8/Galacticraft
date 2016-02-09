@@ -41,7 +41,7 @@ item.parachute_teal.name=청록색 낙하산
 item.parachute_yellow.name=노란색 낙하산
 item.steelPole.name=강철 장대
 item.canvas.name=캔버스
-item.buggy.name=버기
+item.buggy.name=월면차
 item.emptyLiquidCanister.name=빈 깡통
 item.oilCanisterPartial.name=부분 기름통
 item.fuelCanisterPartial.name=부분 연료통
@@ -51,9 +51,9 @@ item.oilExtractor.name=휴대용 기름추출기
 item.schematic.name=NASA 작업대 설계도
 item.fuel.name=로켓 연료
 item.key.T1.name=1티어 던전 열쇠
-item.buggymat.wheel.name=버기 바퀴
-item.buggymat.seat.name=버기 시트
-item.buggymat.storage.name=버기 상자
+item.buggymat.wheel.name=월면차 바퀴
+item.buggymat.seat.name=월면차 시트
+item.buggymat.storage.name=월면차 상자
 item.basicItem.solar_module_0.name=태양광 모듈
 item.basicItem.solar_module_1.name=태양광 전지판
 item.basicItem.ingotCopper.name=구리 주괴
@@ -85,6 +85,9 @@ item.basicItem.dehydratedPotato.name=건조 감자
 item.basicItem.cannedFood.name=통조림
 item.basicItem.frequencyModule.name=주파수 모듈
 item.standardWrench.name=표준 스패너
+item.bucketOil.name=기름 양동이
+item.bucketFuel.name=연료 양동이
+item.basicItem.ambientThermalController.name=주변 열 제어기
 
 # TOOLS
 item.steel_pickaxe.name=강화 곡괭이
@@ -197,6 +200,8 @@ tile.slabGCHalf.moonSlab.name=월석 반 블록
 tile.moonBricksStairs.name=달 던전 벽돌 계단
 tile.wallGC.moonBricks.name=달 던전 벽돌 담장
 tile.slabGCHalf.moonBricksSlab.name=달 던전 벽돌 반 블록
+tile.crudeOil.name=기름
+tile.fuelBlock.name=연료
 
 # ENTITIES
 entity.EvolvedSpider.name=진화한 거미
@@ -217,7 +222,7 @@ entity.GCFlag.name=깃발
 entity.MeteorChunk.name=운석 덩어리
 
 # SCHEMATICS
-schematic.moonbuggy.name=달 버기
+schematic.moonbuggy.name=월면차
 schematic.rocketT1.name=1티어 로켓
 schematic.rocketT2.name=2티어 로켓
 
@@ -302,6 +307,7 @@ gui.message.help2=우주 여행에 대한 가이드
 gui.message.help3=기름에 대한 도움말
 gui.message.prelaunch=발사전 체크리스트
 gui.message.clicklink=Galacticraft 위키를 보시려면 클릭 (영문)
+gui.message.thermalStatus.name=열 제어
 
 gui.status.active.name=활성
 gui.status.missingleaves.name=나뭇잎 블록 부족
@@ -342,6 +348,9 @@ gui.status.compressing.name=압축 중
 gui.status.collecting.name=충전 중
 gui.status.tankEmpty.name=산소 탱크 비었음
 gui.status.sunVisible.name=맑음
+gui.status.on.name=켜짐
+gui.status.off.name=꺼짐
+gui.status.notAvailable.name=N/A
 
 gui.button.enableseal.name=밀봉 가동하기
 gui.button.disableseal.name=밀봉 파기하기
@@ -360,6 +369,8 @@ gui.button.unlockschematic.name=설계도 잠금해제
 gui.button.stoprefine.name=정제 멈추기
 gui.button.enable.name=가동하기
 gui.button.disable.name=멈추기
+gui.button.hideDest.name=숨기기
+gui.button.unhideDest.name=보이기
 
 gui.choosePlanet.desc.overworld=생명으로 가득함#거주 가능#중력: 100%
 gui.warning=경고!
@@ -404,6 +415,7 @@ gui.rocket.warning.nogyroscope=수상한 힘이 감지되었습니다. 회전계
 gui.rocket.warning.noparachute=낙하산이 없네요! 다시 한번 발사를 누를경우, 다시 돌아올수 없는 길을 가게됩니다!
 gui.rocket.warning.nofuel=먼저 연료를 주입해야합니다!
 gui.chest.warning.wrongkey=이 상자를 열려면 아마 %s티어 던전 열쇠가 필요할거야
+gui.bedFail.message=Uh oh, what if the oxygen runs out when I am asleep?  I'll need a Cryogenic Chamber to sleep in space! ##NEEDS TRANSLATE##
 gui.frequencymodule.warning0=작동시:
 gui.frequencymodule.warning1=이와 같은 요구조건을 필요로 합니다.
 gui.tracking.message=추적 활성화 완료. 링크를 활성하기위해 원격측정 유닛을 오른쪽 클릭해야 합니다.
@@ -423,6 +435,9 @@ gui.spacestation.toAllowEntry=을 입력하여 당신의 우주정거장에 입�
 gui.spacestation.added=당신은 %s의 우주 정거장에 입장할 수 있는 허가를 받았습니다!
 gui.spacestation.addsuccess=%s 를(을) 우주정거장 리스트에 성공적으로 추가 하였습니다!
 gui.spacestation.removesuccess=%s 를(을) 우주정거장 리스트에서 성공적으로 제거 하였습니다!
+gui.spacestation.allowAllTrue=Your Space Stations are now open to all players!  (Use /ssinvite -all to undo this.) ##NEEDS TRANSLATE##
+gui.spacestation.allowAllFalse=Your Space Stations are no longer open to all players! ##NEEDS TRANSLATE##
+gui.spacestation.changesuccess=Changed Space Station owner from %s to new owner %s. ##NEEDS TRANSLATE##
 
 gui.skeletonBoss.message=보스 소멸: 전투중에 보스방을 나가지 마십시오! 보스를 소환하려면 다시 방에 들어가십시오.
 gui.warning.noroom=공간이 부족합니다!
@@ -491,6 +506,9 @@ gui.player.health=체력
 gui.player.food=음식
 gui.player.bpm=심박수
 gui.player.ouch=아야!!!!
+gui.thermalSlot.desc.0=열 제어 슬롯, 이곳에
+gui.thermalSlot.desc.1='주변 열 제어기'를 장착하시오 (선택적)
+gui.thermalSlot.desc.2=메모: 더 많은 에너지를 사용합니다!
 
 gui.spaceRace.create.close.name=닫기
 gui.spaceRace.create.back.name=뒤로
@@ -633,6 +651,7 @@ commands.joinrace.noTeam=팀이 구체적으로 명시되어야 합니다! 사�
 commands.dimensiontp.tooMany=명령어 인수가 너무 많습니다! 사용법: %s
 commands.ssinvite.notFound=당신의 플레이어 이름으로 정거장을 찾을 수 없습니다. 먼저 그곳에 직접 도착해야 합니다!
 commands.ssinvite.wrongUsage=명령어 인수가 부족합니다! 사용법: %s
+commands.ssnewowner.wrongUsage=Cannot recognise Space Station ID# - does it even exist? Usage: %s ##NEEDS TRANSLATE##
 commands.ssuninvite.noPlayer=%s 플레이어를 우주정거장 리스트에서 찾을 수 없습니다!
 command.gcastrominer.count=The Astro Miner count for player %s is %s ##NEEDS TRANSLATE##
 
@@ -706,5 +725,7 @@ gc.configgui.mapScrollSensitivity=Map Scroll Mouse Sensitivity
 gc.configgui.overrideMap=Set key: Galaxy Map
 gc.configgui.keyOverrideFuelLevel=Set key: Rocket Fuel GUI
 gc.configgui.keyOverrideToggleAdvGoggles=Set key: Advanced Goggles
+gc.configgui.meteorSpawnMod=Meteor Spawn Modifier
+gc.configgui.meteorBlockDamage=Meteor Block Damage Enabled
 
 gc.configgui.title=Galacticraft Core 커스터마이징

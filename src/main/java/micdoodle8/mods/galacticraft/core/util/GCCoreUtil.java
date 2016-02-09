@@ -65,12 +65,11 @@ public class GCCoreUtil
         {
 	        EntityList.IDtoClassMapping.put(nextEggID, var0);
 	        VersionUtil.putClassToIDMapping(var0, nextEggID);
-	        //EntityList.classToIDMapping.put(var0, nextEggID);
 	        EntityList.entityEggs.put(nextEggID, new EntityList.EntityEggInfo(nextEggID, back, fore));
         }
     }
 
-    private static int getNextValidEggID()
+    public static int getNextValidEggID()
     {
         int eggID = 255;
         

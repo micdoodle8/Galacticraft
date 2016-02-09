@@ -24,6 +24,7 @@ public class EntityMeteor extends Entity
     public EntityMeteor(World world)
     {
         super(world);
+        this.setSize(1.0F, 1.0F);
     }
 
     public EntityMeteor(World world, double x, double y, double z, double motX, double motY, double motZ, int size)

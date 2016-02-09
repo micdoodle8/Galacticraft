@@ -59,7 +59,6 @@ import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -84,8 +83,6 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import org.apache.commons.io.FileUtils;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -709,7 +706,7 @@ public class PacketSimple extends Packet implements IPacket
             CommandGCEnergyUnits.handleParamClientside((Integer) this.data.get(0));
             break;
         case C_RESPAWN_PLAYER:
-            final WorldProvider provider = WorldUtil.getProviderForName((String) this.data.get(0));
+            final WorldProvider provider = WorldUtil.getProviderForNameClient((String) this.data.get(0));
             final int dimID = provider.dimensionId;
             if (ConfigManagerCore.enableDebug)
             {
@@ -766,7 +763,7 @@ public class PacketSimple extends Packet implements IPacket
             				String strUUID = (String) this.data.get(9);
             				profile = PlayerUtil.makeOtherPlayerProfile(strName, strUUID);
             			}
-            			if (VersionUtil.mcVersionMatches("1.7.10") && !profile.getProperties().containsKey("textures"))
+            			if (VersionUtil.mcVersion1_7_10 && !profile.getProperties().containsKey("textures"))
             				GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_PLAYERSKIN, new Object[] { strName }));
         			}
         			((TileEntityTelemetry)tile).clientGameProfile = profile;
@@ -807,22 +804,17 @@ public class PacketSimple extends Packet implements IPacket
                     {
                         if (folder.exists() || folder.mkdir())
                         {
-                            File file0 = new File(folder, "overworldLocal.png");
+                            File file0 = new File(folder, "overworldRaw.bin");//"overworldLocal.png");
 
                             if (!file0.exists() || (file0.canRead() && file0.canWrite()))
                             {
                                 FileUtils.writeByteArrayToFile(file0, bytes);
 
-                                BufferedImage img = ImageIO.read(file0);
-
-                                if (img != null)
-                                {
-                                    ClientProxyCore.overworldTextureLocal = new DynamicTexture(img);
-                                }
+                                MapUtil.getOverworldImageFromRaw(bytes);
                             }
                             else
                             {
-                                System.err.println("Cannot read/write to file %minecraftDir%/assets/temp/overworldLocal.png");
+                                System.err.println("Cannot read/write to file %minecraftDir%/assets/temp/overworldRaw.bin");
                             }
                         }
                         else
@@ -866,7 +858,7 @@ public class PacketSimple extends Packet implements IPacket
         case S_TELEPORT_ENTITY:
             try
             {
-                final WorldProvider provider = WorldUtil.getProviderForName((String) this.data.get(0));
+                final WorldProvider provider = WorldUtil.getProviderForNameServer((String) this.data.get(0));
                 final Integer dim = provider.dimensionId;
                 GCLog.info("Found matching world (" + dim.toString() + ") for name: " + (String) this.data.get(0));
 
@@ -1308,7 +1300,7 @@ public class PacketSimple extends Packet implements IPacket
                 	GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
                 }
             }
-            File outputFile = new File(baseFolder, "" + chunkCoordIntPair.chunkXPos + "_" + chunkCoordIntPair.chunkZPos + ".jpg");
+            File outputFile = new File(baseFolder, "" + chunkCoordIntPair.chunkXPos + "_" + chunkCoordIntPair.chunkZPos + ".bin");
             boolean success = true;
 
             if (!outputFile.exists() || !outputFile.isFile())
@@ -1318,7 +1310,7 @@ public class PacketSimple extends Packet implements IPacket
                 //MapUtil.getLocalMap(MinecraftServer.getServer().worldServerForDimension(0), chunkCoordIntPair.chunkXPos, chunkCoordIntPair.chunkZPos, image);
                 int scale = 4;
                 //ConfigManagerCore.mapsize
-                MapUtil.getBiomeMapForCoords(MinecraftServer.getServer().worldServerForDimension(0), chunkCoordIntPair.chunkXPos, chunkCoordIntPair.chunkZPos, scale, 64, outputFile, playerBase);
+                MapUtil.getBiomeMapForCoords(MinecraftServer.getServer().worldServerForDimension(0), chunkCoordIntPair.chunkXPos, chunkCoordIntPair.chunkZPos, scale, 64, 64, outputFile, playerBase);
             }
 
             if (success)

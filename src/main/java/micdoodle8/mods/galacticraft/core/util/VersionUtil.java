@@ -16,6 +16,7 @@ import micdoodle8.mods.miccore.MicdoodleTransformer;
 import micdoodle8.mods.miccore.MicdoodleTransformer.MethodObfuscationEntry;
 import micdoodle8.mods.miccore.MicdoodleTransformer.ObfuscationEntry;
 import micdoodle8.mods.miccore.MicdoodleTransformer.FieldObfuscationEntry;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.ScaledResolution;
@@ -23,9 +24,13 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.ChunkCache;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -37,6 +42,8 @@ import java.util.UUID;
 public class VersionUtil
 {
     private static DefaultArtifactVersion mcVersion = null;
+    public static boolean mcVersion1_7_2 = false;
+    public static boolean mcVersion1_7_10 = false;
     private static boolean deobfuscated = true;
     private static HashMap<String, MicdoodleTransformer.ObfuscationEntry> nodemap = Maps.newHashMap();
     private static HashMap<Integer, Object> reflectionCache = Maps.newHashMap();
@@ -70,12 +77,16 @@ public class VersionUtil
 	public static final String KEY_FIELD_CAMERA_YAW = "cameraYaw";
 	public static final String KEY_FIELD_CAMERA_PITCH = "cameraPitch";
 	public static final String KEY_FIELD_CLASSTOIDMAPPING = "classToIDMapping";
+	public static final String KEY_FIELD_CHUNKCACHE_WORLDOBJ = "chunkCacheWorldObj";
 
 	public static final String KEY_METHOD_ORIENT_CAMERA = "orientCamera";
+	public static Block sand;
 
     static
     {
         mcVersion = new DefaultArtifactVersion((String) FMLInjectionData.data()[4]);
+        mcVersion1_7_2 = VersionUtil.mcVersionMatches("1.7.2");
+        mcVersion1_7_10 = VersionUtil.mcVersionMatches("1.7.10");
 
         try
         {
@@ -86,7 +97,7 @@ public class VersionUtil
             e.printStackTrace();
         }
 
-        if (mcVersionMatches("1.7.10"))
+        if (mcVersion1_7_10)
         {
 //            nodemap.put(KEY_CLASS_COMPRESSED_STREAM_TOOLS, new ObfuscationEntry("net/minecraft/nbt/CompressedStreamTools", "du"));
 //            nodemap.put(KEY_CLASS_NBT_SIZE_TRACKER, new ObfuscationEntry("net/minecraft/nbt/NBTSizeTracker", "ds"));
@@ -113,8 +124,9 @@ public class VersionUtil
             nodemap.put(KEY_METHOD_PLAYER_FOR_NAME, new MethodObfuscationEntry("func_152612_a", "func_152612_a", ""));
             nodemap.put(KEY_METHOD_PLAYER_IS_OPPED, new MethodObfuscationEntry("func_152596_g", "func_152596_g", ""));
             nodemap.put(KEY_METHOD_PLAYER_TEXTURE, new MethodObfuscationEntry("getEntityTexture", "func_110775_a", ""));
+            sand = Blocks.sand;
         }
-        else if (mcVersionMatches("1.7.2"))
+        else if (mcVersion1_7_2)
         {
 //            nodemap.put(KEY_CLASS_COMPRESSED_STREAM_TOOLS, new ObfuscationEntry("net/minecraft/nbt/CompressedStreamTools", "dr"));
 //            nodemap.put(KEY_CLASS_NBT_SIZE_TRACKER, new ObfuscationEntry("", "")); // Not part of 1.7.2
@@ -140,6 +152,11 @@ public class VersionUtil
             nodemap.put(KEY_METHOD_PLAYER_FOR_NAME, new MethodObfuscationEntry("getPlayerForUsername", "func_72361_f", ""));
             nodemap.put(KEY_METHOD_PLAYER_IS_OPPED, new MethodObfuscationEntry("isPlayerOpped", "func_72353_e", ""));
             nodemap.put(KEY_METHOD_PLAYER_TEXTURE, new MethodObfuscationEntry("getEntityTexture", "func_110775_a", ""));
+            
+            try {
+				Field sandField = Blocks.class.getField(deobfuscated ? "sand" : "field_150354_m");
+				sand = (Block) sandField.get(null);
+			} catch (Exception e) { e.printStackTrace(); }
         }
 
         //Same for both versions
@@ -151,6 +168,7 @@ public class VersionUtil
         nodemap.put(KEY_FIELD_CAMERA_YAW, new FieldObfuscationEntry("cameraYaw", "field_78502_W"));
         nodemap.put(KEY_FIELD_CAMERA_PITCH, new FieldObfuscationEntry("cameraPitch", "field_78509_X"));
         nodemap.put(KEY_FIELD_CLASSTOIDMAPPING, new FieldObfuscationEntry("classToIDMapping", "field_75624_e"));
+        nodemap.put(KEY_FIELD_CHUNKCACHE_WORLDOBJ, new FieldObfuscationEntry("worldObj", "field_72815_e"));
         
         nodemap.put(KEY_METHOD_ORIENT_CAMERA, new MethodObfuscationEntry("orientCamera", "func_78467_g", ""));
     }
@@ -214,7 +232,7 @@ public class VersionUtil
             }
             else
             {
-                if (mcVersionMatches("1.7.10"))
+                if (mcVersion1_7_10)
                 {
                     Method m = (Method) reflectionCache.get(2);
 
@@ -245,7 +263,7 @@ public class VersionUtil
     {
         try
         {
-            if (mcVersionMatches("1.7.10"))
+            if (mcVersion1_7_10)
             {
                 Class<?> c0 = (Class<?>) reflectionCache.get(4);
                 Method m = (Method) reflectionCache.get(6);
@@ -266,7 +284,7 @@ public class VersionUtil
                 Object nbtSizeTracker = c0.getConstructor(long.class).newInstance(2097152L);
                 return (NBTTagCompound) m.invoke(null, compressedNBT, nbtSizeTracker);
             }
-            else if (mcVersionMatches("1.7.2"))
+            else if (mcVersion1_7_2)
             {
                 Method m = (Method) reflectionCache.get(6);
 
@@ -292,7 +310,7 @@ public class VersionUtil
     {
         try
         {
-            if (mcVersionMatches("1.7.10"))
+            if (mcVersion1_7_10)
             {
                 Method m = (Method) reflectionCache.get(8);
 
@@ -305,7 +323,7 @@ public class VersionUtil
 
                 m.invoke(null, b0, b1, 1.0F);
             }
-            else if (mcVersionMatches("1.7.2"))
+            else if (mcVersion1_7_2)
             {
                 Method m = (Method) reflectionCache.get(8);
 
@@ -329,7 +347,7 @@ public class VersionUtil
     {
         try
         {
-            if (mcVersionMatches("1.7.10"))
+            if (mcVersion1_7_10)
             {
                 Method m = (Method) reflectionCache.get(10);
 
@@ -342,7 +360,7 @@ public class VersionUtil
 
                 m.invoke(null, sender, command, name, objects);
             }
-            else if (mcVersionMatches("1.7.2"))
+            else if (mcVersion1_7_2)
             {
                 Method m = (Method) reflectionCache.get(10);
 
@@ -389,7 +407,7 @@ public class VersionUtil
     {
         try
         {
-            if (mcVersionMatches("1.7.10"))
+            if (mcVersion1_7_10)
             {
                 Method m = (Method) reflectionCache.get(14);
 
@@ -402,7 +420,7 @@ public class VersionUtil
 
                 return (Boolean) m.invoke(player.mcServer.getConfigurationManager(), player.getGameProfile());
             }
-            else if (mcVersionMatches("1.7.2"))
+            else if (mcVersion1_7_2)
             {
                 Method m = (Method) reflectionCache.get(14);
 
@@ -429,7 +447,7 @@ public class VersionUtil
     {
         try
         {
-            if (mcVersionMatches("1.7.10"))
+            if (mcVersion1_7_10)
             {
                 Constructor m = (Constructor) reflectionCache.get(16);
 
@@ -442,7 +460,7 @@ public class VersionUtil
 
                 return (ScaledResolution) m.newInstance(mc, width, height);
             }
-            else if (mcVersionMatches("1.7.2"))
+            else if (mcVersion1_7_2)
             {
                 Constructor m = (Constructor) reflectionCache.get(16);
 
@@ -495,7 +513,7 @@ public class VersionUtil
     	try
         {
             Class<?> c = Class.forName(getNameDynamic(KEY_CLASS_ENTITYLIST).replace('/', '.'));
-            Field f = c.getField(getNameDynamic(KEY_FIELD_CLASSTOIDMAPPING));
+            Field f = c.getDeclaredField(getNameDynamic(KEY_FIELD_CLASSTOIDMAPPING));
             f.setAccessible(true);
             Map classToIDMapping = (Map) f.get(null);
             classToIDMapping.put(mobClazz, id);
@@ -508,6 +526,28 @@ public class VersionUtil
         }
 
         return;
+    }
+
+    public static int getClassToIDMapping(Class mobClazz)
+    {
+        //Achieves this, with private field:
+        //    EntityList.classToIDMapping.put(mobClazz, id);
+    	try
+        {
+            Class<?> c = Class.forName(getNameDynamic(KEY_CLASS_ENTITYLIST).replace('/', '.'));
+            Field f = c.getDeclaredField(getNameDynamic(KEY_FIELD_CLASSTOIDMAPPING));
+            f.setAccessible(true);
+            Map classToIDMapping = (Map) f.get(null);
+            Integer i = (Integer) classToIDMapping.get(mobClazz);
+            
+            return i != null ? i : 0;
+        }
+        catch (Throwable t)
+        {
+            t.printStackTrace();
+        }
+
+        return 0;
     }
 
     private static String getName(String keyName)
@@ -551,12 +591,12 @@ public class VersionUtil
 	            reflectionCache.put(19, c);
 	        }
 			
-			if (mcVersionMatches("1.7.10"))
+			if (mcVersion1_7_10)
 	        {
 				return (GameProfile) c.getConstructor(UUID.class, String.class).newInstance(uuid, strName);
 	        }
 	        
-			if (mcVersionMatches("1.7.2"))
+			if (mcVersion1_7_2)
 	        {
 	        	return (GameProfile) c.getConstructor(String.class, String.class).newInstance(uuid.toString().replaceAll("-", ""), strName);
 	        }
@@ -567,5 +607,32 @@ public class VersionUtil
         }
 
         return null;
+	}
+
+	public static World getWorld(IBlockAccess world)
+	{
+        if (world instanceof World)
+        	return (World) world;
+        
+        if (world instanceof ChunkCache)
+		try
+        {
+			Field f = (Field) reflectionCache.get(20);
+	        if (f == null)
+	        {
+	            Class c = Class.forName("net.minecraft.world.ChunkCache");
+	            f = c.getDeclaredField(getNameDynamic(KEY_FIELD_CHUNKCACHE_WORLDOBJ));
+	            f.setAccessible(true);
+	            reflectionCache.put(20, f);
+	        }
+	        
+	        return (World) f.get(world);
+        }
+        catch (Throwable t)
+        {
+            t.printStackTrace();
+        }
+		
+		return null;
 	}
 }

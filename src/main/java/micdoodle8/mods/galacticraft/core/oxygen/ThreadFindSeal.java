@@ -350,6 +350,19 @@ public class ThreadFindSeal
             GCLog.info("   Looped through: " + this.checked.size() + " blocks");
         }
 
+        //Help the Garbage Collector
+        this.sealers.clear();
+        this.checked.clear();
+        this.sealersAround.clear();
+        this.currentLayer.clear();
+        this.airToReplace.clear();
+        this.airToReplaceBright.clear();
+        this.torchesToUpdate.clear();
+        this.ambientThermalTracked.clear();
+        if (this.breatheableToReplace != null) this.breatheableToReplace.clear();
+        if (this.breatheableToReplaceBright != null) this.breatheableToReplaceBright.clear();
+        if (this.otherSealers != null) this.otherSealers.clear();
+
         this.sealedFinal.set(this.sealed);
     }
 

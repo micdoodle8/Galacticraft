@@ -11,12 +11,18 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -76,49 +82,96 @@ public class TileEntityTelemetry extends TileEntity
 			String name;
 			int[] data = { -1, -1, -1, -1, -1 };
 			String strUUID = "";
-			if (linkedEntity != null && !linkedEntity.isDead)
+
+			if (linkedEntity != null)
 			{
-				if (linkedEntity instanceof EntityPlayerMP)
-					name = "$" + ((EntityPlayerMP) linkedEntity).getCommandSenderName();
-				else
-					name = (String) EntityList.classToStringMapping.get(linkedEntity.getClass());
-				if (name == null)
+				//Help the Garbage Collector
+				if (linkedEntity.isDead)
 				{
-					GCLog.info("Telemetry Unit: Error finding name for "+linkedEntity.getClass().getSimpleName());
+					linkedEntity = null;
 					name = "";
+					//TODO: track players after death and respawn? or not?
 				}
-				double xmotion = linkedEntity.motionX;
-				double ymotion = linkedEntity instanceof EntityLivingBase ? linkedEntity.motionY + 0.078D : linkedEntity.motionY;
-				double zmotion = linkedEntity.motionZ;
-				data[2] = (int) (MathHelper.sqrt_double(xmotion * xmotion + ymotion * ymotion + zmotion * zmotion) * 2000D);
-				if (linkedEntity instanceof ITelemetry)
+				else
 				{
-					((ITelemetry)linkedEntity).transmitData(data);
-				}  
-				else if (linkedEntity instanceof EntityLivingBase)
-				{
-					EntityLivingBase eLiving = (EntityLivingBase)linkedEntity;
-					data[0] = eLiving.hurtTime;
-					
-					//Calculate a "pulse rate" based on motion and taking damage
-					this.pulseRate--;
-					if (eLiving.hurtTime > this.lastHurttime) this.pulseRate += 100;
-					this.lastHurttime = eLiving.hurtTime;
-					if (eLiving.ridingEntity != null) data[2] /= 4;  //reduced pulse effect if riding a vehicle
-					else if (data[2] > 1) this.pulseRate+=2;
-					this.pulseRate += Math.max(data[2] - pulseRate, 0) / 4;
-					if (this.pulseRate > 2000) this.pulseRate = 2000;
-					if (this.pulseRate < 400) this.pulseRate = 400;
-					data[2] = this.pulseRate / 10;
-					
-					data[1] =  (int) (eLiving.getHealth() * 100 / eLiving.getMaxHealth());
-					if (eLiving instanceof EntityPlayerMP)
+					if (linkedEntity instanceof EntityPlayerMP)
+						name = "$" + ((EntityPlayerMP) linkedEntity).getCommandSenderName();
+					else
+						name = (String) EntityList.classToStringMapping.get(linkedEntity.getClass());
+
+					if (name == null)
 					{
-						data[3] = ((EntityPlayerMP) eLiving).getFoodStats().getFoodLevel() * 5;
-						GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) eLiving);
-						data[4] = stats.airRemaining * 4096 + stats.airRemaining2;
-						UUID uuid = ((EntityPlayerMP) eLiving).getUniqueID();
-						if (uuid != null) strUUID = uuid.toString();
+						GCLog.info("Telemetry Unit: Error finding name for "+linkedEntity.getClass().getSimpleName());
+						name = "";
+					}
+
+					double xmotion = linkedEntity.motionX;
+					double ymotion = linkedEntity instanceof EntityLivingBase ? linkedEntity.motionY + 0.078D : linkedEntity.motionY;
+					double zmotion = linkedEntity.motionZ;
+					data[2] = (int) (MathHelper.sqrt_double(xmotion * xmotion + ymotion * ymotion + zmotion * zmotion) * 2000D);
+
+					if (linkedEntity instanceof ITelemetry)
+					{
+						((ITelemetry)linkedEntity).transmitData(data);
+					}  
+					else if (linkedEntity instanceof EntityLivingBase)
+					{
+						EntityLivingBase eLiving = (EntityLivingBase)linkedEntity;
+						data[0] = eLiving.hurtTime;
+
+						//Calculate a "pulse rate" based on motion and taking damage
+						this.pulseRate--;
+						if (eLiving.hurtTime > this.lastHurttime) this.pulseRate += 100;
+						this.lastHurttime = eLiving.hurtTime;
+						if (eLiving.ridingEntity != null) data[2] /= 4;  //reduced pulse effect if riding a vehicle
+						else if (data[2] > 1) this.pulseRate+=2;
+						this.pulseRate += Math.max(data[2] - pulseRate, 0) / 4;
+						if (this.pulseRate > 2000) this.pulseRate = 2000;
+						if (this.pulseRate < 400) this.pulseRate = 400;
+						data[2] = this.pulseRate / 10;
+
+						data[1] =  (int) (eLiving.getHealth() * 100 / eLiving.getMaxHealth());
+						if (eLiving instanceof EntityPlayerMP)
+						{
+							data[3] = ((EntityPlayerMP) eLiving).getFoodStats().getFoodLevel() * 5;
+							GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) eLiving);
+							data[4] = stats.airRemaining * 4096 + stats.airRemaining2;
+							UUID uuid = ((EntityPlayerMP) eLiving).getUniqueID();
+							if (uuid != null) strUUID = uuid.toString();
+						}
+						else if (eLiving instanceof EntityHorse)
+						{
+							data[3] = ((EntityHorse) eLiving).getHorseType();
+							data[4] = ((EntityHorse) eLiving).getHorseVariant();
+						}
+						else if (eLiving instanceof EntityVillager)
+						{
+							data[3] = ((EntityVillager) eLiving).getProfession();
+							data[4] = ((EntityVillager) eLiving).getGrowingAge();
+						}
+						else if (eLiving instanceof EntityWolf)
+						{
+							data[3] = ((EntityWolf) eLiving).getCollarColor();
+							data[4] = ((EntityWolf) eLiving).func_70922_bv() ? 1 : 0;
+						}
+						else if (eLiving instanceof EntitySheep)
+						{
+							data[3] = ((EntitySheep) eLiving).getFleeceColor();
+							data[4] = ((EntitySheep) eLiving).getSheared() ? 1 : 0;
+						}
+						else if (eLiving instanceof EntityOcelot)
+						{
+							data[3] = ((EntityOcelot) eLiving).getTameSkin();
+						}
+						else if (eLiving instanceof EntitySkeleton)
+						{
+							data[3] = ((EntitySkeleton) eLiving).getSkeletonType();
+						}
+						else if (eLiving instanceof EntityZombie)
+						{
+							data[3] = ((EntityZombie) eLiving).isVillager() ? 1 : 0;
+							data[4] = ((EntityZombie) eLiving).isChild() ? 1 : 0;
+						}
 					}
 				}
 			}
@@ -224,9 +277,10 @@ public class TileEntityTelemetry extends TileEntity
 			int x = fmData.getInteger("teCoordX");
 			int y = fmData.getInteger("teCoordY");
 			int z = fmData.getInteger("teCoordZ");
-			WorldProvider wp = WorldUtil.getProviderForDimension(dim);
+			WorldProvider wp = WorldUtil.getProviderForDimensionServer(dim);
+			//TODO
 			if (wp == null || wp.worldObj == null)
-				if (ConfigManagerCore.enableDebug) System.out.println("Frequency module worn: world provider is null.  This is a bug. "+dim);
+				GCLog.debug("Frequency module worn: world provider is null.  This is a bug. "+dim);
 			else
 			{
 				TileEntity te = wp.worldObj.getTileEntity(x, y, z);

@@ -147,7 +147,7 @@ public class ItemMeteorChunk extends Item
                 meteor.setFire(20);
                 meteor.isHot = true;
             }
-
+            meteor.canBePickedUp = player.capabilities.isCreativeMode ? 2 : 1;
             world.spawnEntityInWorld(meteor);
         }
 

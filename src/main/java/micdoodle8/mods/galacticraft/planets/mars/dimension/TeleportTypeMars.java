@@ -64,4 +64,10 @@ public class TeleportTypeMars implements ITeleportType
             GCPlayerStats.get(player).teleportCooldown = 10;
         }
     }
+
+	@Override
+	public void setupAdventureSpawn(EntityPlayerMP player) {
+		// TODO Auto-generated method stub
+		
+	}
 }

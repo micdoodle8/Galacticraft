@@ -28,6 +28,13 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
+/**
+ * This renders the Galacticraft equipment, if RenderPlayerAPI / Smart Moving are not installed.
+ *
+ * This also adjusts player limb positions (etc) of the vanilla player prior to rendering the player.
+ * for example holding both hands overhead when holding a rocket.
+ *
+ */
 public class ModelPlayerGC extends ModelBiped
 {
     public static final ResourceLocation oxygenMaskTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/oxygen.png");
@@ -232,6 +239,8 @@ public class ModelPlayerGC extends ModelBiped
                     FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.oxygenMaskTexture);
                     GL11.glPushMatrix();
                     GL11.glScalef(1.05F, 1.05F, 1.05F);
+                    this.oxygenMask.rotateAngleY = this.bipedHead.rotateAngleY;
+                    this.oxygenMask.rotateAngleX = this.bipedHead.rotateAngleX;
                     this.oxygenMask.render(var7);
                     GL11.glScalef(1F, 1F, 1F);
                     GL11.glPopMatrix();
@@ -345,7 +354,7 @@ public class ModelPlayerGC extends ModelBiped
         final EntityPlayer player = (EntityPlayer) par7Entity;
         final ItemStack currentItemStack = player.inventory.getCurrentItem();
 
-        if (!par7Entity.onGround && par7Entity.worldObj.provider instanceof IGalacticraftWorldProvider && !(currentItemStack != null && currentItemStack.getItem() instanceof IHoldableItem))
+        if (!par7Entity.onGround && par7Entity.worldObj.provider instanceof IGalacticraftWorldProvider && par7Entity.ridingEntity == null && !(currentItemStack != null && currentItemStack.getItem() instanceof IHoldableItem))
         {
             float speedModifier = 0.1162F * 2;
 
@@ -360,9 +369,6 @@ public class ModelPlayerGC extends ModelBiped
             this.bipedRightLeg.rotateAngleX -= MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
             this.bipedRightLeg.rotateAngleX += MathHelper.cos(par1 * 0.1162F * 2) * 1.4F * par2;
         }
-
-        this.oxygenMask.rotateAngleY = this.bipedHead.rotateAngleY;
-        this.oxygenMask.rotateAngleX = this.bipedHead.rotateAngleX;
 
         if (usingParachute)
         {
@@ -453,6 +459,7 @@ public class ModelPlayerGC extends ModelBiped
                 {
                     this.bipedRightArm.rotateAngleZ -= (float) (Math.PI / 8) + MathHelper.sin(par3 * 0.9F) * 0.2F;
                     this.bipedRightArm.rotateAngleX = (float) Math.PI;
+                    break;
                 }
             }
         }

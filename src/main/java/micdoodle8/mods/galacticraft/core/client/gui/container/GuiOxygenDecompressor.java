@@ -87,17 +87,12 @@ public class GuiOxygenDecompressor extends GuiContainerGC
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingtank.name");
         }
 
-        if (this.decompressor.getEnergyStoredGC() == 0)
-        {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingpower.name");
-        }
-
         if (this.decompressor.getStackInSlot(0) != null && this.decompressor.getStackInSlot(0).getItemDamage() == this.decompressor.getStackInSlot(0).getMaxDamage())
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.tankEmpty.name");
         }
 
-        return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.active.name");
+        return this.decompressor.getGUIstatus();
     }
 
     @Override

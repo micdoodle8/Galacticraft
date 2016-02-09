@@ -115,19 +115,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
 
     private void checkFluidTankTransfer(int slot, FluidTank tank)
     {
-        if (FluidUtil.isValidContainer(this.containingItems[slot]))
-        {
-            final FluidStack liquid = tank.getFluid();
-
-            if (liquid != null && liquid.amount > 0)
-            {
-                String liquidname = liquid.getFluid().getName();
-                if (liquidname.startsWith("fuel"))
-                {
-                    FluidUtil.tryFillContainer(tank, liquid, this.containingItems, slot, GCItems.fuelCanister);
-                }
-            }
-        }
+    	FluidUtil.tryFillContainerFuel(tank, this.containingItems, slot);
     }
 
     public int getScaledOilLevel(int i)
@@ -353,7 +341,10 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
 
             if (liquidName != null && liquidName.startsWith("oil"))
             {
-                used = this.oilTank.fill(resource, doFill);
+                if (liquidName.equals(GalacticraftCore.fluidOil.getName()))
+                	used = this.oilTank.fill(resource, doFill);
+                else
+                	used = this.oilTank.fill(new FluidStack(GalacticraftCore.fluidOil, resource.amount), doFill);
             }
 //            else if (liquidName != null && liquidName.equalsIgnoreCase("oilgc"))
 //            {

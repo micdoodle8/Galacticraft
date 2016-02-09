@@ -85,6 +85,9 @@ item.basicItem.dehydratedPotato.name=脱水马铃薯
 item.basicItem.cannedFood.name=罐装食物
 item.basicItem.frequencyModule.name=频率模块
 item.standardWrench.name=标准扳手
+item.bucketOil.name=Oil Bucket ##NEEDS TRANSLATE##
+item.bucketFuel.name=Fuel Bucket ##NEEDS TRANSLATE##
+item.basicItem.ambientThermalController.name=Ambient Thermal Controller ##NEEDS TRANSLATE##
 
 # TOOLS
 item.steel_pickaxe.name=重镐
@@ -197,6 +200,8 @@ tile.slabGCHalf.moonSlab.name=月岩台阶
 tile.moonBricksStairs.name=月球地牢砖块楼梯
 tile.wallGC.moonBricks.name=月球地牢砖块墙
 tile.slabGCHalf.moonBricksSlab.name=月球地牢砖块台阶
+tile.crudeOil.name=Oil ##NEEDS TRANSLATE##
+tile.fuelBlock.name=Fuel ##NEEDS TRANSLATE##
 
 # ENTITIES
 entity.EvolvedSpider.name=蜘蛛(进化体)
@@ -302,6 +307,7 @@ gui.message.help2=寻求有关太空计划的指导
 gui.message.help3=寻求关于石油的帮助信息
 gui.message.prelaunch=发射前检查表
 gui.message.clicklink=点击查看星系Mod的wiki
+gui.message.thermalStatus.name=Thermal Control ##NEEDS TRANSLATE##
 
 gui.status.active.name=活动的
 gui.status.missingleaves.name=树叶不足
@@ -342,6 +348,9 @@ gui.status.compressing.name=正在压缩
 gui.status.collecting.name=正在收集
 gui.status.tankEmpty.name=氧气筒已空
 gui.status.sunVisible.name=可看见太阳
+gui.status.on.name=ON ##NEEDS TRANSLATE##
+gui.status.off.name=OFF ##NEEDS TRANSLATE##
+gui.status.notAvailable.name=N/A ##NEEDS TRANSLATE##
 
 gui.button.enableseal.name=密闭启动
 gui.button.disableseal.name=禁用密闭
@@ -360,6 +369,8 @@ gui.button.unlockschematic.name=解锁设计图
 gui.button.stoprefine.name=停止精炼
 gui.button.enable.name=开启
 gui.button.disable.name=关闭
+gui.button.hideDest.name=Hide ##NEEDS TRANSLATE##
+gui.button.unhideDest.name=Unhide ##NEEDS TRANSLATE##
 
 gui.choosePlanet.desc.overworld=生机勃勃#宜居#重力: 100%
 gui.warning=警告！
@@ -404,6 +415,7 @@ gui.rocket.warning.nogyroscope=神秘的力量在起作用, 陀螺仪疯狂旋�
 gui.rocket.warning.noparachute=我没有降落伞!如果我再次按发射,就没法回去了!
 gui.rocket.warning.nofuel=我需要先装入一些火箭燃料!
 gui.chest.warning.wrongkey=我可能需要一个%s阶的地牢钥匙来解锁这个宝箱!
+gui.bedFail.message=Uh oh, what if the oxygen runs out when I am asleep?  I'll need a Cryogenic Chamber to sleep in space! ##NEEDS TRANSLATE##
 gui.frequencymodule.warning0=我可能需要一个
 gui.frequencymodule.warning1=如果我想在这清楚的听到声音.
 gui.tracking.message=追踪已激活.现需右击一个遥感装置来完成连接.
@@ -423,6 +435,9 @@ gui.spacestation.toAllowEntry=允许其他玩家进入这个空间站!
 gui.spacestation.added=你已被加入可自由进出%s的空间站的玩家列表!
 gui.spacestation.addsuccess=已成功添加%s至空间站名单!
 gui.spacestation.removesuccess=已成功将%s从空间站名单中移除!
+gui.spacestation.allowAllTrue=Your Space Stations are now open to all players!  (Use /ssinvite -all to undo this.) ##NEEDS TRANSLATE##
+gui.spacestation.allowAllFalse=Your Space Stations are no longer open to all players! ##NEEDS TRANSLATE##
+gui.spacestation.changesuccess=Changed Space Station owner from %s to new owner %s. ##NEEDS TRANSLATE##
 
 gui.skeletonBoss.message=Boss消失,战斗时不要离开这个Boss的房间!重新进入这个房间会重新生成Boss. 
 gui.warning.noroom=空间不足!
@@ -491,6 +506,9 @@ gui.player.health=生命
 gui.player.food=食物
 gui.player.bpm=心率
 gui.player.ouch=哎哟!!!!
+gui.thermalSlot.desc.0=Thermal attachment slot, place 'Ambient ##NEEDS TRANSLATE##
+gui.thermalSlot.desc.1=Thermal Controller' here (optional) ##NEEDS TRANSLATE##
+gui.thermalSlot.desc.2=Note: Uses more energy! ##NEEDS TRANSLATE##
 
 gui.spaceRace.create.close.name=关闭
 gui.spaceRace.create.back.name=后退
@@ -633,6 +651,7 @@ commands.joinrace.noTeam=队伍需被指定!用法: %s
 commands.dimensiontp.tooMany=命令参数太多了!用法: %s
 commands.ssinvite.notFound=无法在空间站里找到你的用户名,你需要先到那里走走!
 commands.ssinvite.wrongUsage=命令参数不足!用法: %s
+commands.ssnewowner.wrongUsage=Cannot recognise Space Station ID# - does it even exist? Usage: %s ##NEEDS TRANSLATE##
 commands.ssuninvite.noPlayer=在你的空间站名单里无法找到名为%s的玩家!
 command.gcastrominer.count=The Astro Miner count for player %s is %s ##NEEDS TRANSLATE##
 
@@ -691,5 +710,7 @@ gc.configgui.mapScrollSensitivity=Map Scroll Mouse Sensitivity
 gc.configgui.overrideMap=Set key: Galaxy Map
 gc.configgui.keyOverrideFuelLevel=Set key: Rocket Fuel GUI
 gc.configgui.keyOverrideToggleAdvGoggles=Set key: Advanced Goggles
+gc.configgui.meteorSpawnMod=Meteor Spawn Modifier
+gc.configgui.meteorBlockDamage=Meteor Block Damage Enabled
 
 gc.configgui.title=Galacticraft Core Config(星系核心配置文件)

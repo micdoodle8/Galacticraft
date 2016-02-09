@@ -4,6 +4,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
+import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
@@ -64,6 +65,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     public TileEntityLaunchController()
     {
         this.storage.setMaxExtract(10);
+        this.noRedstoneControl = true;
     }
 
     @Override
@@ -445,7 +447,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 
     public void updateRocketOnDockSettings()
     {
-        if (this.attachedDock instanceof TileEntityLandingPad)
+    	if (this.attachedDock instanceof TileEntityLandingPad)
         {
             TileEntityLandingPad pad = ((TileEntityLandingPad) this.attachedDock);
             IDockable rocket = pad.getDockedEntity();
@@ -455,4 +457,9 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
             }
         }
     }
+
+	public void setAttachedPad(IFuelDock pad)
+	{
+		this.attachedDock = pad;
+	}
 }
