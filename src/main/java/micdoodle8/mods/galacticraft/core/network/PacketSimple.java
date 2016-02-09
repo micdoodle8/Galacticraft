@@ -1310,7 +1310,7 @@ public class PacketSimple extends Packet implements IPacket
                 //MapUtil.getLocalMap(MinecraftServer.getServer().worldServerForDimension(0), chunkCoordIntPair.chunkXPos, chunkCoordIntPair.chunkZPos, image);
                 int scale = 4;
                 //ConfigManagerCore.mapsize
-                MapUtil.getBiomeMapForCoords(MinecraftServer.getServer().worldServerForDimension(0), chunkCoordIntPair.chunkXPos, chunkCoordIntPair.chunkZPos, scale, 64, outputFile, playerBase);
+                MapUtil.getBiomeMapForCoords(MinecraftServer.getServer().worldServerForDimension(0), chunkCoordIntPair.chunkXPos, chunkCoordIntPair.chunkZPos, scale, 64, 64, outputFile, playerBase);
             }
 
             if (success)

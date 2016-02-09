@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Random;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -21,8 +22,6 @@ import javax.imageio.stream.ImageOutputStream;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
@@ -39,8 +38,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 
-import org.apache.commons.io.FileUtils;
-
 import cpw.mods.fml.client.FMLClientHandler;
 
 public class MapUtil
@@ -51,10 +48,12 @@ public class MapUtil
     public static final float[] parabolicField = new float[25];
     private static MapGen currentMap;
     private static Random rand = new Random();
-    public static int WORLD_BORDER = 14992;
+//    public static int WORLD_BORDER = 14992;
+    private static LinkedList<MapGen> queuedMaps = new LinkedList();
     
 	static
 	{
+		//TODO: Deal with mods like ExtraBiomes
 		setupColours();
 
         for (int j = -2; j <= 2; ++j)
@@ -114,14 +113,13 @@ public class MapUtil
     	if (doneOverworldTexture) return;
 		World world = WorldUtil.getProviderForDimensionServer(0).worldObj;
     	if (world == null) return;
-    	if (calculatingMap.getAndSet(true)) return;
-        File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
+
+    	File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
         if (!baseFolder.exists())
         {
             if (!baseFolder.mkdirs())
             {
             	GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
-        		calculatingMap.set(false);
         		return;            	
             }
         }
@@ -137,37 +135,50 @@ public class MapUtil
 //		} catch (Exception e) { e.printStackTrace(); }
 
         File outputFile = new File(baseFolder, "Overworld192x48.bin");
-        if (!outputFile.exists())
-        {
-	        MapGen overworldGen = new MapGen(world, 0, 384, 96, 64);
-        	GCLog.debug("Starting overworld generation centered at " + 0 + "," + 0);
-        	overworldGen.biomeMapCx = 3;
-        	overworldGen.biomeMapCz = 3;
-	    	overworldGen.biomeMapFile = outputFile;
-	    	currentMap = overworldGen;
-        }
-        else
-        {
-    		calculatingMap.set(false);
-    		byte[] toSend;
-			try {
-				toSend = FileUtils.readFileToByteArray(outputFile);
-				GalacticraftCore.packetPipeline.sendToAll(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { toSend } ));
-			} catch (IOException e) { e.printStackTrace(); }
-        }
+        if (MapUtil.getBiomeMapForCoords(world, 0, 0, 6, 384, 96, outputFile, null))
+        	doneOverworldTexture = true;
 	}
 	
-	public static void getBiomeMapForCoords(World world, int cx, int cz, int scale, int size, File outputFile, EntityPlayerMP player)
+	public static boolean getBiomeMapForCoords(World world, int cx, int cz, int scale, int sizeX, int sizeZ, File outputFile, EntityPlayerMP player)
     {
-    	if (calculatingMap.getAndSet(true)) return;
-    	GCLog.debug("Starting map generation centered at " + cx + "," + cz);
-    	MapGen newGen = new MapGen(world, 2, size, size, 1 << scale);
-    	newGen.biomeMapCx = cx;
-    	newGen.biomeMapCz = cz;
-    	newGen.biomeMapFile = outputFile;
-    	newGen.biomeMapPlayerBase = player;
-	}
+    	MapGen newGen = new MapGen(world, sizeX, sizeZ, cx, cz, 1 << scale, outputFile);
+    	if (newGen.calculatingMap)
+    	{
+	    	newGen.biomeMapPlayerBase = player;
+	    	if (calculatingMap.getAndSet(true))
+	    		queuedMaps.add(newGen);
+	    	else
+	    		currentMap = newGen;
+	    	return false;
+    	}
+    	return true;
+   	}
 
+	public static void BiomeMapNextTick()
+	{
+		if (currentMap == null)
+			return;
+		
+		int j = 48;
+		while (j > 0)
+		{
+			if (currentMap.BiomeMapOneTick())
+			{
+				//Finished
+				currentMap.writeOutputFile(true);
+				if (currentMap.biomeMapFile.getName().equals("Overworld192x48.bin"))
+					doneOverworldTexture = true;
+				currentMap = null;
+				if (queuedMaps.size() > 0)
+					currentMap = queuedMaps.removeFirst();
+				else
+					calculatingMap.set(false);
+				return;
+			}
+			j--;
+		}
+    }
+	
 	/**
 	 * Converts a 48px high image to a 12px high image with a palette chosen only from the colours in the paletteImage
 	 * 
@@ -273,16 +284,20 @@ public class MapUtil
 			{
 				for (int z = 0; z < 48; z++)
 				{
-					int biome = ((int) raw[x * 96 + z + z]) & 255;
-					int height = ((int) raw[x * 96 + z + z + 36864]) & 255;
+					int arrayIndex = (x * 96 + z) * 4;
+					int biome = ((int) raw[arrayIndex]) & 255;
+					int height = ((int) raw[arrayIndex + 1]) & 255;
 
-					if (height < 63)
+					if (height < 63 && biome != 10)
+						biome = 0;
+					if (height < 56 && biome == 0)
 						biome = 24;
 
 					worldImage.setRGB(x, z, convertBiomeColour(biome, height));
 				}
 			}
 			
+			//Temporary to check everything is working
 			ImageOutputStream outputStreamA = new FileImageOutputStream(new File(folder, "overworldLarge.jpg"));  
 			GalacticraftCore.jpgWriter.setOutput(outputStreamA);
 			GalacticraftCore.jpgWriter.write(null, new IIOImage(worldImage, null, null), GalacticraftCore.writeParam);
@@ -315,56 +330,6 @@ public class MapUtil
 		}
 	}
 
-	private static void writeOutputFile(MapGen map, boolean flag)
-	{
-		byte[] toSend = new byte[map.biomeArray.length + map.heightArray.length];
-		System.arraycopy(map.biomeArray, 0, toSend, 0, map.biomeArray.length);
-		System.arraycopy(map.heightArray, 0, toSend, map.biomeArray.length, map.heightArray.length);
-		try
-		{
-			if (!map.biomeMapFile.exists() || (map.biomeMapFile.canWrite() && map.biomeMapFile.canRead()))
-			{
-				FileUtils.writeByteArrayToFile(map.biomeMapFile, toSend);
-			}
-		}
-		catch (IOException ex)
-		{
-			ex.printStackTrace();
-		}
-		if (flag)
-		{
-			try
-			{
-				GalacticraftCore.packetPipeline.sendToAll(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { toSend } ));
-			}
-			catch (Exception ex)
-			{
-				System.err.println("Error sending overworld image to player.");
-				ex.printStackTrace();
-			}
-		}
-	}
-
-	public static void BiomeMapNextTick()
-	{
-		int j = 48;
-		while (j > 0)
-		{
-			if (currentMap.BiomeMapOneTick())
-			{
-				//Finished
-				writeOutputFile(currentMap, true);
-				calculatingMap.set(false);
-				if (currentMap.gentype == 0)
-				{
-					doneOverworldTexture = true;
-				}
-				return;
-			}
-			j--;
-		}
-    }
-	
     public static int convertBiomeColour(int in, int height)
     {
     	int rv;
@@ -393,7 +358,7 @@ public class MapUtil
     private static void setupColours()
     {
     	//ocean = Ocean(0) colour(112) "Ocean"
-    	MapUtil.biomeColours.add(new BlockVec3(0x497436, 0, 0));
+    	MapUtil.biomeColours.add(new BlockVec3(Material.water.getMaterialMapColor().colorValue, 0, 0));
     	//plains = Plains(1) colour(9286496) "Plains"
     	MapUtil.biomeColours.add(new BlockVec3(0x497436, 0, 0));
     	//desert = Desert(2) colour(16421912) "Desert"
@@ -439,7 +404,7 @@ public class MapUtil
     	//jungleEdge = Jungle(23, true) colour(6458135) "JungleEdge"
     	MapUtil.biomeColours.add(new BlockVec3(0x176c03, 0x0f4502, 25));
     	//deepOcean = Ocean(24) colour(48) "Deep Ocean"
-    	MapUtil.biomeColours.add(new BlockVec3(Material.water.getMaterialMapColor().colorValue, 0, 0));
+    	MapUtil.biomeColours.add(new BlockVec3(0x2f2fd4, 0, 0));
     	//stoneBeach = StoneBeach(25) colour(10658436) "Stone Beach"
     	MapUtil.biomeColours.add(new BlockVec3(Material.rock.getMaterialMapColor().colorValue, 0, 0));
     	//coldBeach = Beach(26) colour(16445632) "Cold Beach"
