@@ -80,7 +80,7 @@ gui.message.trees.name=Trees ##NEEDS TRANSLATE##
 gui.message.grass.name=Grass ##NEEDS TRANSLATE##
 gui.message.invalidFreq.name=Invalid Frequency ##NEEDS TRANSLATE##
 gui.message.frequency.name=Frequency ##NEEDS TRANSLATE##
-gui.message.destFrequency.name=Destination Frequency ##NEEDS TRANSLATE##
+gui.message.destFrequency.name=Target ##NEEDS TRANSLATE##
 gui.message.removePad.name=Remove Pad ##NEEDS TRANSLATE##
 gui.message.launchWhen.name=Launch When ##NEEDS TRANSLATE##
 gui.message.cargoUnloaded.name=Cargo is Unloaded ##NEEDS TRANSLATE##
@@ -101,6 +101,7 @@ gui.launchController.desc.0=This is the Launch Controller's$unique frequency ##N
 gui.launchController.desc.1=Frequency to launch rockets towards ##NEEDS TRANSLATE##
 gui.launchController.desc.2=Whether the launch pad should$be removed on launch ##NEEDS TRANSLATE##
 gui.launchController.desc.3=When this criteria is met,$rocket will launch ##NEEDS TRANSLATE##
+gui.launchController.desc.4=Hide destination frequency$from other players ##NEEDS TRANSLATE##
 gui.terraformer.desc.0=Water Tank ##NEEDS TRANSLATE##
 
 gui.gasTank.desc.0=Gas storage ##NEEDS TRANSLATE##
@@ -189,4 +190,4 @@ gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID
 gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
 gc.configgui.launchControllerAllDims=Launch Controller All Dimensions
 
-gc.configgui.planets.title=Galacticraft Planets Config ##NEEDS TRANSLATE##
+gc.configgui.planets.title=Galacticraft Planets Config

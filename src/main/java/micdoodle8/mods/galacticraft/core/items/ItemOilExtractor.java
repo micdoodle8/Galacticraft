@@ -6,9 +6,9 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumAction;
@@ -23,6 +23,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidBlock;
 
+import java.util.List;
+
 public class ItemOilExtractor extends Item
 {
     protected IIcon[] icons = new IIcon[5];
@@ -36,9 +38,10 @@ public class ItemOilExtractor extends Item
     }
 
     @Override
-    public CreativeTabs getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
+    public void addInformation(ItemStack item, EntityPlayer player, List info, boolean advanced) {
+        super.addInformation(item, player, info, advanced);
+        info.add(EnumColor.RED + "[deprecated]");
+        info.add(EnumColor.RED + "Use regular buckets instead!");
     }
 
     @Override
@@ -180,7 +183,7 @@ public class ItemOilExtractor extends Item
         {
             IFluidBlock fluidBlockHit = (IFluidBlock) block;
             boolean flag = false;
-            if (block == GCBlocks.crudeOilStill)
+            if (block == GCBlocks.crudeOil)
             {
             	flag = true;
             }
@@ -190,7 +193,7 @@ public class ItemOilExtractor extends Item
 
             	if (fluidHit != null)
             	{
-            		if (fluidHit.getName().equalsIgnoreCase("oil"))
+            		if (fluidHit.getName().startsWith("oil"))
             		{
             			flag = true;
             		}

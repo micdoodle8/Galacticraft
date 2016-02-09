@@ -101,6 +101,7 @@ gui.launchController.desc.0=This is the Launch Controller's$unique frequency ##N
 gui.launchController.desc.1=Frequency to launch rockets towards ##NEEDS TRANSLATE##
 gui.launchController.desc.2=Whether the launch pad should$be removed on launch ##NEEDS TRANSLATE##
 gui.launchController.desc.3=When this criteria is met,$rocket will launch ##NEEDS TRANSLATE##
+gui.launchController.desc.4=Hide destination frequency$from other players ##NEEDS TRANSLATE##
 gui.terraformer.desc.0=Tanque de Água
 
 gui.gasTank.desc.0=Gas storage ##NEEDS TRANSLATE##

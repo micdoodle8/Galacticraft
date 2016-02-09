@@ -34,6 +34,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
         this.setHardness(1.0F);
         this.setBlockTextureName(AsteroidsModule.TEXTURE_PREFIX + "walkway");
         this.setBlockName(assetName);
+        this.setStepSound(Block.soundTypeMetal);
         this.isBlockContainer = true;
         this.minVector = new Vector3(0.0, 0.32, 0.0);
         this.maxVector = new Vector3(1.0, 1.0, 1.0);

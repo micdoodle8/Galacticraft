@@ -38,6 +38,7 @@ public class BlockShortRangeTelepad extends BlockTileGC implements ItemBlockDesc
         this.blockHardness = 3.0F;
         this.setBlockName(assetName);
         this.setBlockTextureName("stone");
+        this.setStepSound(Block.soundTypeMetal);
     }
 
     @SideOnly(Side.CLIENT)
@@ -166,10 +167,13 @@ public class BlockShortRangeTelepad extends BlockTileGC implements ItemBlockDesc
             }
         }
 
-        if (fakeBlockCount > 0 && tileAt instanceof TileEntityShortRangeTelepad)
+        if (tileAt instanceof TileEntityShortRangeTelepad)
         {
-            ((TileEntityShortRangeTelepad) tileAt).onDestroy(tileAt);
-            ShortRangeTelepadHandler.removeShortRangeTeleporter((TileEntityShortRangeTelepad) tileAt);
+        	if (fakeBlockCount > 0)
+        	{
+        		((TileEntityShortRangeTelepad) tileAt).onDestroy(tileAt);
+        	}
+        	ShortRangeTelepadHandler.removeShortRangeTeleporter((TileEntityShortRangeTelepad) tileAt);
         }
 
         super.breakBlock(world, x0, y0, z0, var5, var6);

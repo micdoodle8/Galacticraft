@@ -41,18 +41,37 @@ public class TileEntityArclamp extends TileEntity
     {
         super.updateEntity();
 
-        boolean firstTick = false;
+        if (this.worldObj.isRemote)
+        	return;
+
+        boolean initialLight = false;
         if (this.updateClientFlag)
         {
         	GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, new Object[] { this.xCoord, this.yCoord, this.zCoord, this.facing } ), this.worldObj.provider.dimensionId);
         	this.updateClientFlag = false;
         }
 
-        if (!this.worldObj.isRemote && this.isActive)
+        if (this.worldObj.getBlockPowerInput(this.xCoord, this.yCoord, this.zCoord) > 0)
         {
-            if (this.thisAABB == null)
+        	if (this.isActive)
+        	{
+        		this.isActive = false;
+        		this.revertAir();
+        		this.markDirty();
+        	}
+        }
+        else if (!this.isActive)
+        {
+        	this.isActive = true;
+        	initialLight = true;
+        }
+            
+        if (this.isActive)
+        {     
+        	//Test for first tick after placement
+        	if (this.thisAABB == null)
             {
-                firstTick = true;
+        		initialLight = true;
                 int side = this.getBlockMetadata();
                 switch (side)
                 {
@@ -103,7 +122,7 @@ public class TileEntityArclamp extends TileEntity
                 }
             }
 
-            if (firstTick || this.ticks % 100 == 0)
+            if (initialLight || this.ticks % 100 == 0)
             {
                 this.lightArea();
             }
@@ -160,14 +179,16 @@ public class TileEntityArclamp extends TileEntity
     @Override
     public void validate()
     {
-        this.thisPos = Vec3.createVectorHelper(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D);
+        super.validate();
+    	this.thisPos = Vec3.createVectorHelper(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D);
         this.ticks = 0;
         this.thisAABB = null;
-        this.isActive = true;
         if (this.worldObj.isRemote)
         {
         	GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_ARCLAMP_FACING, new Object[] { this.xCoord, this.yCoord, this.zCoord } ));
         }
+        else
+            this.isActive = true;
     }
 
     @Override
@@ -178,6 +199,7 @@ public class TileEntityArclamp extends TileEntity
             this.revertAir();
         }
         this.isActive = false;
+        super.invalidate();
     }
 
     public void lightArea()
@@ -264,20 +286,17 @@ public class TileEntityArclamp extends TileEntity
                 if (!allAir)
                 {
                     Block id = vec.getBlockIDsafe_noChunkLoad(world);
-                    if (id instanceof BlockAir)
+                    if (Blocks.air == id)
                     {
-                        if (Blocks.air == id)
-                        {
-                            world.setBlock(vec.x, vec.y, vec.z, brightAir, 0, 2);
-                            this.airToRestore.add(vec);
-                            this.markDirty();
-                        }
-                        else if (id == breatheableAirID)
-                        {
-                            world.setBlock(vec.x, vec.y, vec.z, brightBreatheableAir, 0, 2);
-                            this.airToRestore.add(vec);
-                            this.markDirty();
-                        }
+                        world.setBlock(vec.x, vec.y, vec.z, brightAir, 0, 2);
+                        this.airToRestore.add(vec);
+                        this.markDirty();
+                    }
+                    else if (id == breatheableAirID)
+                    {
+                        world.setBlock(vec.x, vec.y, vec.z, brightBreatheableAir, 0, 2);
+                        this.airToRestore.add(vec);
+                        this.markDirty();
                     }
                 }
             }
@@ -365,4 +384,9 @@ public class TileEntityArclamp extends TileEntity
         }
         this.airToRestore.clear();
     }
+
+	public boolean getEnabled()
+	{
+		return this.worldObj.getBlockPowerInput(this.xCoord, this.yCoord, this.zCoord) == 0;
+	}
 }

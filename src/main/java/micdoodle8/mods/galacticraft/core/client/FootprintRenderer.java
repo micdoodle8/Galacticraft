@@ -8,10 +8,12 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -89,13 +91,13 @@ public class FootprintRenderer
             footprintList = new ArrayList<Footprint>();
         }
 
-        footprintList.add(new Footprint(footprint.dimension, footprint.position, footprint.rotation));
+        footprintList.add(new Footprint(footprint.dimension, footprint.position, footprint.rotation, footprint.owner));
         this.footprints.put(chunkKey, footprintList);
     }
 
-    public void addFootprint(long chunkKey, int dimension, Vector3 position, float rotation)
+    public void addFootprint(long chunkKey, int dimension, Vector3 position, float rotation, String owner)
     {
-        this.addFootprint(chunkKey, new Footprint(dimension, position, rotation));
+        this.addFootprint(chunkKey, new Footprint(dimension, position, rotation, owner));
     }
 
     public void setFootprints(long chunkKey, List<Footprint> prints)
@@ -106,8 +108,17 @@ public class FootprintRenderer
         {
             footprintList = new ArrayList<Footprint>();
         }
+        
+        Iterator<Footprint> i = footprintList.iterator();
+        while (i.hasNext())
+        {
+        	Footprint print = i.next();
+        	if (!print.owner.equals(FMLClientHandler.instance().getClient().thePlayer.getCommandSenderName()))
+        	{
+        		i.remove();
+        	}
+        }
 
-        footprintList.clear();
         footprintList.addAll(prints);
         this.footprints.put(chunkKey, footprintList);
     }

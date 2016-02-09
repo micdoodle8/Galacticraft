@@ -5,6 +5,8 @@ import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,6 +28,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     public int disableCooldown = 0;
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean hasEnoughEnergyToRun = false;
+    public boolean noRedstoneControl = false;
 
     public boolean shouldPullEnergy()
     {
@@ -92,24 +95,22 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
             if (this.shouldPullEnergy() && this.getEnergyStoredGC(null) < this.getMaxEnergyStoredGC(null) && this.getBatteryInSlot() != null && this.getElectricInputDirection() != null)
             {
                 this.discharge(this.getBatteryInSlot());
-                // this.receiveElectricity(this.getElectricInputDirection(),
-                // ElectricityPack.getFromWatts(ElectricItemHelper.dischargeItem(this.getBatteryInSlot(),
-                // this.getRequest(ForgeDirection.UNKNOWN)), this.getVoltage()),
-                // true);
             }
 
-            if (this.getEnergyStoredGC(null) > this.storage.getMaxExtract())
+            if (this.getEnergyStoredGC(null) > this.storage.getMaxExtract() && (this.noRedstoneControl || this.worldObj.getBlockPowerInput(this.xCoord, this.yCoord, this.zCoord) == 0))
             {
                 this.hasEnoughEnergyToRun = true;
                 if (this.shouldUseEnergy())
                 {
                     this.storage.extractEnergyGC(this.storage.getMaxExtract(), false);
                 }
+                else
+                	this.slowDischarge();
             }
             else
             {
                 this.hasEnoughEnergyToRun = false;
-                if (this.getEnergyStoredGC(null) > 0) this.storage.extractEnergyGC(5F, false);
+            	this.slowDischarge();
             }
         }
 
@@ -124,6 +125,11 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
         }
     }
 
+    public void slowDischarge()
+    {
+       	this.storage.extractEnergyGC(0.5F, false);
+    }
+    
     @Override
     public void writeToNBT(NBTTagCompound nbt)
     {
@@ -217,5 +223,30 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
         }
 
         return direction == this.getElectricInputDirection();
+    }
+    
+    public String getGUIstatus()
+    {
+        if (this.getEnergyStoredGC() == 0)
+        {
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingpower.name");
+        }
+
+        if (this.worldObj.getBlockPowerInput(this.xCoord, this.yCoord, this.zCoord) > 0)
+        {
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.off.name");
+        }
+
+        if (this.getDisabled(0))
+        {
+            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready.name");
+        }
+
+        if (this.getEnergyStoredGC() < this.storage.getMaxExtract())
+        {
+            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.missingpower.name");
+        }
+
+       	return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.active.name");
     }
 }

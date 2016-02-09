@@ -4,6 +4,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBaseSingle;
 import net.minecraft.block.material.Material;
@@ -16,7 +18,7 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class BlockMinerBase extends BlockTileGC 
+public class BlockMinerBase extends BlockTileGC implements ItemBlockDesc.IBlockShiftDesc
 {
     public BlockMinerBase(String assetName)
     {
@@ -87,6 +89,18 @@ public class BlockMinerBase extends BlockTileGC
 
     @Override
     public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
+    {
+        return true;
+    }
+    
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+    }
+
+    @Override
+    public boolean showDescription(int meta)
     {
         return true;
     }

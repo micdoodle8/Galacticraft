@@ -1,0 +1,31 @@
+# Galacticraft Moon Language File = SWEDEN SWEDISH
+
+# GENERAL ITEMS
+item.meteoricIronRaw.name=Meteoritmalm
+item.compressedMeteoricIron.name=Meteoritjärnplåt
+item.meteoricIronIngot.name=Meteoritjärntacka
+
+# FOOD
+item.cheeseCurd.name=Månkesella
+item.cheeseBlock.name=Månostkaka
+
+# TOOLS
+
+# ARMOR
+
+# BLOCKS
+tile.moonBlock.moonstone.name=Månsten
+tile.moonBlock.moondirt.name=Månjord
+tile.moonBlock.moongrass.name=Månmark
+tile.moonBlock.tinmoon.name=Tennmalm
+tile.moonBlock.coppermoon.name=Kopparmalm
+tile.moonBlock.cheesestone.name=Ostmalm
+tile.moonBlock.bricks.name=Månhåletegel
+tile.cheeseBlock.name=Månostkaka
+
+# GUI
+gui.choosePlanet.desc.moon=Habitable#No Oxygen#Gravity: 18%
+
+# OTHER
+container.lander.name=Månlandare
+dimension.Moon.name=Månen

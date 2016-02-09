@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
@@ -34,6 +35,7 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
         super(Material.iron);
         this.setBlockName(assetName);
         this.setBlockTextureName("stone");
+        this.setStepSound(Block.soundTypeMetal);
     }
 
     @SideOnly(Side.CLIENT)
@@ -146,6 +148,11 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
         {
             if (adjacentDir == direction) continue;
         	tileAt = world.getTileEntity(x + adjacentDir.offsetX, y + adjacentDir.offsetY, z + adjacentDir.offsetZ);
+
+            if (tileAt instanceof IConductor)
+            {
+                continue;
+            }
 
             if (tileAt instanceof EnergyStorageTile && ((EnergyStorageTile) tileAt).getModeFromDirection(adjacentDir.getOpposite()) != null)
             {

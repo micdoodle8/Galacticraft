@@ -45,6 +45,7 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
                 PositionedStack inputItem = input.getValue().copy();
                 //TODO  Find a way to draw 2 of each input item
                 inputItem.item.stackSize = 2;
+                inputItem.setMaxSize(2);
             	inputStacks.add(inputItem);
             }
 

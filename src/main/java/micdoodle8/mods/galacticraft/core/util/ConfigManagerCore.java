@@ -9,6 +9,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import net.minecraft.block.Block;
@@ -31,11 +32,27 @@ public class ConfigManagerCore
 {
     static Configuration config;
 
-    // DIMENSIONS
+    // GAME CONTROL
+    public static boolean forceOverworldRespawn;
+    public static boolean hardMode;
+    public static boolean quickMode;
+	public static boolean challengeMode;
+    public static boolean disableRocketsToOverworld;
+    public static boolean disableSpaceStationCreation;
+    public static boolean spaceStationsRequirePermission;
+    public static boolean disableUpdateCheck;
+    public static boolean enableDebug;
+    public static boolean enableSealerEdgeChecks;
+    public static boolean disableLander;
+//    public static int mapfactor;
+//    public static int mapsize;
+    
+	// DIMENSIONS
     public static int idDimensionOverworldOrbit;
     public static int idDimensionOverworldOrbitStatic;
     public static int idDimensionMoon;
     public static int biomeIDbase = 102;
+    public static boolean disableBiomeTypeRegistrations;
     public static int[] staticLoadDimensions = { };
     public static int[] disableRocketLaunchDimensions = { -1, 1 };
 
@@ -53,52 +70,52 @@ public class ConfigManagerCore
     public static boolean oxygenIndicatorLeft;
     public static boolean oxygenIndicatorBottom;
     public static boolean overrideCapes;
-    
-    // GENERAL
-    public static boolean disableSpaceshipGrief;
-    public static boolean spaceStationsRequirePermission;
-    public static boolean disableSpaceStationCreation;
-    public static boolean disableLander;
-    public static boolean disableRocketsToOverworld;
-    public static boolean forceOverworldRespawn;
-    public static boolean hardMode;
-    public static boolean quickMode;
+
+    //DIFFICULTY
     public static double dungeonBossHealthMod;
     public static int suffocationCooldown;
     public static int suffocationDamage;
-    public static boolean enableSealerEdgeChecks;
-    public static double spaceStationEnergyScalar;
     public static int rocketFuelFactor;
-    public static boolean enableDebug;
+    public static double meteorSpawnMod;
+    public static boolean meteorBlockDamageEnabled;
+    public static boolean disableSpaceshipGrief;
+    public static double spaceStationEnergyScalar;
     
     // WORLDGEN
     public static boolean enableCopperOreGen;
     public static boolean enableTinOreGen;
     public static boolean enableAluminumOreGen;
     public static boolean enableSiliconOreGen;
-    public static int[] externalOilGen;
-    public static double oilGenFactor;
-	public static boolean retrogenOil;
     public static boolean disableCheeseMoon;
     public static boolean disableTinMoon;
     public static boolean disableCopperMoon;
     public static boolean disableMoonVillageGen;
+    public static int[] externalOilGen;
+    public static double oilGenFactor;
+	public static boolean retrogenOil;
     public static String[] oregenIDs = { };
     public static boolean enableOtherModsFeatures;
-    
+    public static boolean whitelistCoFHCoreGen;
+	public static boolean enableThaumCraftNodes;
+
     //COMPATIBILITY
     public static String[] sealableIDs = { };
     public static String[] detectableIDs = { };
-	public static boolean enableThaumCraftNodes;
     public static boolean alternateCanisterRecipe;
     public static String otherModsSilicon;
+    public static boolean useOldOilFluidID;
+    public static boolean useOldFuelFluidID;
+
+    //KEYBOARD AND MOUSE
     public static String keyOverrideMap;
     public static String keyOverrideFuelLevel;
     public static String keyOverrideToggleAdvGoggles;
     public static int keyOverrideMapI;
     public static int keyOverrideFuelLevelI;
     public static int keyOverrideToggleAdvGogglesI;
-    
+    public static float mapMouseScrollSensitivity;
+    public static boolean invertMapMouseScroll;
+	
     public static ArrayList<Object> clientSave = null;
 
 
@@ -289,7 +306,7 @@ public class ConfigManagerCore
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Copper Ore Gen on Moon", false);
-            prop.comment = "Disable Tin Ore Gen on Moon.";
+            prop.comment = "Disable Copper Ore Gen on Moon.";
             prop.setLanguageKey("gc.configgui.disableCopperMoon");
             disableCopperMoon = prop.getBoolean(false);
             propOrder.add(prop.getName());
@@ -300,10 +317,16 @@ public class ConfigManagerCore
             disableMoonVillageGen = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
-            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Generate other mods features on planets", false);
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Generate all other mods features on planets", false);
             prop.comment = "If this is enabled, other mods' standard ores and all other features (eg. plants) can generate on the Moon and planets. Apart from looking wrong, this make cause 'Already Decorating!' type crashes.  NOT RECOMMENDED!  See Wiki.";
             prop.setLanguageKey("gc.configgui.enableOtherModsFeatures");
             enableOtherModsFeatures = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Whitelist CoFHCore worldgen to generate its ores and lakes on planets", false);
+            prop.comment = "If generate other mods features is disabled as recommended, this setting can whitelist CoFHCore custom worldgen on planets.";
+            prop.setLanguageKey("gc.configgui.whitelistCoFHCoreGen");
+            whitelistCoFHCoreGen = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Generate ThaumCraft wild nodes on planetary surfaces", true);
@@ -316,6 +339,18 @@ public class ConfigManagerCore
             prop.comment = "Enter IDs of other mods' ores here for Galacticraft to generate them on the Moon and other planets. Format is BlockName or BlockName:metadata. Use optional parameters at end of each line: /RARE /UNCOMMON or /COMMON for rarity in a chunk; /DEEP /SHALLOW or /BOTH for height; /SINGLE /STANDARD or /LARGE for clump size; /XTRARANDOM for ores sometimes there sometimes not at all.  /ONLYMOON or /ONLYMARS if wanted on one planet only.  If nothing specified, defaults are /COMMON, /BOTH and /STANDARD.  Repeat lines to generate a huge quantity of ores.";
             prop.setLanguageKey("gc.configgui.otherModOreGenIDs");
             oregenIDs = prop.getStringList();
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Use legacy oilgc fluid registration", false);
+            prop.comment = "Set to true to make Galacticraft oil register as oilgc, for backwards compatibility with previously generated worlds.";
+            prop.setLanguageKey("gc.configgui.useOldOilFluidID");
+            useOldOilFluidID = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Use legacy fuelgc fluid registration", false);
+            prop.comment = "Set to true to make Galacticraft fuel register as fuelgc, for backwards compatibility with previously generated worlds.";
+            prop.setLanguageKey("gc.configgui.useOldFuelFluidID");
+            useOldFuelFluidID = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
 //Debug
@@ -413,6 +448,13 @@ public class ConfigManagerCore
             quickMode = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Adventure Game Mode", false);
+            prop.comment = "Set this to true for a challenging adventure where the player starts the game stranded in the Asteroids dimension with low resources (only effective if Galacticraft Planets installed).";
+            prop.setLanguageKey("gc.configgui.asteroidsStart");
+            challengeMode = prop.getBoolean(false);
+            if (!GalacticraftCore.isPlanetsLoaded) challengeMode = false;
+            propOrder.add(prop.getName());
+
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Enable Sealed edge checks", true);
             prop.comment = "If this is enabled, areas sealed by Oxygen Sealers will run a seal check when the player breaks or places a block (or on block updates).  This should be enabled for a 100% accurate sealed status, but can be disabled on servers for performance reasons.";
             prop.setLanguageKey("gc.configgui.enableSealerEdgeChecks");
@@ -431,21 +473,21 @@ public class ConfigManagerCore
             otherModsSilicon = prop.getString();
             propOrder.add(prop.getName());
 
-            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Default key for opening in-game galaxy map - Useful for modpacks", "KEY_M");
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Open Galaxy Map", "KEY_M");
             prop.comment = "Leave 'KEY_' value, adding the intended keyboard character to replace the letter. Values 0-9 and A-Z are accepted";
             prop.setLanguageKey("gc.configgui.overrideMap").setRequiresMcRestart(true);
             keyOverrideMap = prop.getString();
             keyOverrideMapI = parseKeyValue(keyOverrideMap);
             propOrder.add(prop.getName());
 
-            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Default key for opening fuel levels gui - Useful for modpacks", "KEY_F");
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Open Fuel GUI", "KEY_F");
             prop.comment = "Leave 'KEY_' value, adding the intended keyboard character to replace the letter. Values 0-9 and A-Z are accepted";
             prop.setLanguageKey("gc.configgui.keyOverrideFuelLevel").setRequiresMcRestart(true);
             keyOverrideFuelLevel = prop.getString();
             keyOverrideFuelLevelI = parseKeyValue(keyOverrideFuelLevel);
             propOrder.add(prop.getName());
 
-            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Default key to toggle advanced goggles behaviour - Useful for modpacks", "KEY_K");
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Toggle Advanced Goggles", "KEY_K");
             prop.comment = "Leave 'KEY_' value, adding the intended keyboard character to replace the letter. Values 0-9 and A-Z are accepted";
             prop.setLanguageKey("gc.configgui.keyOverrideToggleAdvGoggles").setRequiresMcRestart(true);
             keyOverrideToggleAdvGoggles = prop.getString();
@@ -456,6 +498,56 @@ public class ConfigManagerCore
             prop.comment = "The normal factor is 1.  Increase this to 2 - 5 if other mods with a lot of oil (e.g. BuildCraft) are installed to increase GC rocket fuel requirement.";
             prop.setLanguageKey("gc.configgui.rocketFuelFactor");
             rocketFuelFactor = prop.getInt(1);
+            propOrder.add(prop.getName());
+            
+//            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Map factor", 1);
+//            prop.comment = "Allowed values 1-4 etc";
+//            prop.setLanguageKey("gc.configgui.mapFactor");
+//            mapfactor = prop.getInt(1);
+//            propOrder.add(prop.getName());
+//            
+//            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Map size", 400);
+//            prop.comment = "Suggested value 400";
+//            prop.setLanguageKey("gc.configgui.mapSize");
+//            mapsize = prop.getInt(400);
+//            propOrder.add(prop.getName());
+//            
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Map Scroll Mouse Sensitivity", 1.0);
+            prop.comment = "Increase to make the mouse drag scroll more sensitive, decrease to lower sensitivity.";
+            prop.setLanguageKey("gc.configgui.mapScrollSensitivity");
+            mapMouseScrollSensitivity = (float)prop.getDouble(1.0);
+            propOrder.add(prop.getName());
+            
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Map Scroll Mouse Invert", false);
+            prop.comment = "Set to true to invert the mouse scroll feature on the galaxy map.";
+            prop.setLanguageKey("gc.configgui.mapScrollInvert");
+            invertMapMouseScroll = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+            
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Meteor Spawn Modifier", 1.0);
+            prop.comment = "Set to a value between 0.0 and 1.0 to decrease meteor spawn chance (all dimensions).";
+            prop.setLanguageKey("gc.configgui.meteorSpawnMod");
+            meteorSpawnMod = prop.getDouble(1.0);
+            propOrder.add(prop.getName());
+            
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Meteor Block Damage Enabled", true);
+            prop.comment = "Set to false to stop meteors from breaking blocks on contact.";
+            prop.setLanguageKey("gc.configgui.meteorBlockDamage");
+            meteorBlockDamageEnabled = prop.getBoolean(true);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Update Check", false);
+            prop.comment = "Update check will not run if this is set to true.";
+            prop.setLanguageKey("gc.configgui.disableUpdateCheck");
+            disableUpdateCheck = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+
+            boolean thisIsMC172 = VersionUtil.mcVersion1_7_2; 
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Biome Type Registrations", thisIsMC172);
+            prop.comment = "Biome Types will not be registered in the BiomeDictionary if this is set to true. Ignored (always true) for MC 1.7.2.";
+            prop.setLanguageKey("gc.configgui.disableBiomeTypeRegistrations");
+            disableBiomeTypeRegistrations = prop.getBoolean(thisIsMC172);
+            if (thisIsMC172) disableBiomeTypeRegistrations = true; 
             propOrder.add(prop.getName());
 
             config.setCategoryPropertyOrder(CATEGORY_GENERAL, propOrder);
@@ -615,6 +707,7 @@ public class ConfigManagerCore
     	ArrayList<Object> returnList = new ArrayList();
     	int modeFlags = ConfigManagerCore.hardMode ? 1 : 0;
     	modeFlags += ConfigManagerCore.quickMode ? 2 : 0;
+    	modeFlags += ConfigManagerCore.challengeMode ? 4 : 0;
     	returnList.add(modeFlags);
     	returnList.add(ConfigManagerCore.dungeonBossHealthMod);
     	returnList.add(ConfigManagerCore.suffocationDamage);
@@ -635,6 +728,7 @@ public class ConfigManagerCore
     	int modeFlag = (Integer) configs.get(0);
     	ConfigManagerCore.hardMode = (modeFlag & 1) != 0;
     	ConfigManagerCore.quickMode = (modeFlag & 2) != 0;
+    	ConfigManagerCore.challengeMode = (modeFlag & 4) != 0;
     	ConfigManagerCore.dungeonBossHealthMod = (Double) configs.get(1);
     	ConfigManagerCore.suffocationDamage = (Integer) configs.get(2);
     	ConfigManagerCore.suffocationCooldown = (Integer) configs.get(3);

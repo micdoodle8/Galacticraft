@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.planets.mars.nei;
 
+import static codechicken.lib.gui.GuiDraw.getMousePosition;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
@@ -11,12 +13,16 @@ import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 
+import java.awt.Point;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -92,7 +98,7 @@ public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
         {
             String gasname = GCCoreUtil.translate("gas.carbondioxide.name");
             String text1 = " * " + GCCoreUtil.translate("gui.message.withAtmosphere0.name");
-            String text2 = " " + gasname;
+            String text2 = " " + GCCoreUtil.lowerCaseNoun(gasname);
             String text3 = GCCoreUtil.translate("gui.message.withAtmosphere1.name");
             this.fontRendererObj.drawString(text1, 4, 85, 4210752);
             this.fontRendererObj.drawString(text2, 18, 95, 4210752);
@@ -249,5 +255,23 @@ public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
     @Override
     public void drawForeground(int recipe)
     {
+    }
+
+    @Override
+    public List<String> handleTooltip(GuiRecipe gui, List<String> currenttip, int recipe)
+    {
+        Point mousePos = getMousePosition();
+    	try {
+        	Class clazz = GuiContainer.class;       	
+        	mousePos.x -= (Integer) clazz.getField("field_147003_i").get(gui);
+        	mousePos.y -= (Integer) clazz.getField("field_147009_r").get(gui);
+    	}  catch (Exception ee) { ee.printStackTrace(); }
+
+        if (mousePos.x < 23 && mousePos.x > 6 && mousePos.y < 78 && mousePos.y > 39)
+        	currenttip.add(GCCoreUtil.translate("fluid.hydrogen"));
+        else if (mousePos.x < 44 && mousePos.x > 27 && mousePos.y < 60 && mousePos.y > 39)
+    		currenttip.add(GCCoreUtil.translate("gas.carbondioxide.name"));
+        
+        return currenttip;
     }
 }

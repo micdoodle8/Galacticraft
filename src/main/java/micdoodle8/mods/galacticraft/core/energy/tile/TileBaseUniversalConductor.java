@@ -376,7 +376,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         return this.getWorldObj();
     }
 
-    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
+    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyReceiver", modID = "")
     public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
     {
     	if (this.getNetwork() == null)
@@ -384,7 +384,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
     		return 0;
     	}
         float receiveGC = maxReceive * EnergyConfigHandler.RF_RATIO;
-        float sentGC = receiveGC - this.getNetwork().produce(receiveGC, !simulate, 1, this);
+        float sentGC = receiveGC - this.getNetwork().produce(receiveGC, !simulate, 1);
     	return MathHelper.floor_float(sentGC / EnergyConfigHandler.RF_RATIO);
     }
 

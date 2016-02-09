@@ -20,9 +20,6 @@ import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,7 +29,10 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class PlayerClient implements IPlayerClient
 {
-    @Override
+    private boolean saveSneak;
+	private double downMot2;
+
+	@Override
     public void moveEntity(EntityPlayerSP player, double par1, double par3, double par5)
     {
         this.updateFeet(player, par1, par5);
@@ -61,7 +61,12 @@ public class PlayerClient implements IPlayerClient
     @Override
     public boolean isEntityInsideOpaqueBlock(EntityPlayerSP player, boolean vanillaInside)
     {
-        return !(player.ridingEntity instanceof EntityLanderBase) && vanillaInside;
+        if (vanillaInside && GCPlayerStatsClient.get(player).inFreefall)
+        {
+        	GCPlayerStatsClient.get(player).inFreefall = false;
+        	return false;
+        }
+    	return !(player.ridingEntity instanceof EntityLanderBase) && vanillaInside;
     }
 
     @Override
@@ -71,46 +76,28 @@ public class PlayerClient implements IPlayerClient
 
         if (player.worldObj.provider instanceof IGalacticraftWorldProvider)
         {
-            //Test whether feet are on a block, also stops the login glitch
-            boolean freefall = true;
-            int playerFeetOnY = (int) (player.boundingBox.minY - 0.001D);
-            int xx = MathHelper.floor_double(player.posX);
-            int zz = MathHelper.floor_double(player.posZ);
-            Block b = player.worldObj.getBlock(xx, playerFeetOnY, zz);
-            if (b.getMaterial() != Material.air && !(b instanceof BlockLiquid))
-            {
-            	double blockYmax = playerFeetOnY + b.getBlockBoundsMaxY();
-                if (player.boundingBox.minY - blockYmax < 0.001D && player.boundingBox.minY - blockYmax > -0.5D)
-                {
-                    player.onGround = true;
-                    if (b.canCollideCheck(player.worldObj.getBlockMetadata(xx, playerFeetOnY, zz), false))
-                    {
-                        AxisAlignedBB collisionBox = b.getCollisionBoundingBoxFromPool(player.worldObj, xx, playerFeetOnY, zz);
-                        if (collisionBox != null && collisionBox.intersectsWith(player.boundingBox))
-                        {
-	                        player.posY -= player.boundingBox.minY - blockYmax;
-		                    player.boundingBox.offset(0, blockYmax - player.boundingBox.minY, 0);
-                        }
-                    }
-                    freefall = false;
-                }
-            }
-
+            stats.inFreefallLast = stats.inFreefall;
+        	stats.inFreefall = FreefallHandler.testFreefall(player);
             if (player.worldObj.provider instanceof WorldProviderOrbit)
             {
-                ((WorldProviderOrbit) player.worldObj.provider).spinUpdate(player, freefall);
+            	this.downMot2 = stats.downMotionLast;
+            	stats.downMotionLast = player.motionY;
+                ((WorldProviderOrbit) player.worldObj.provider).preVanillaMotion(player);
             }
         }
 
-        if (player.boundingBox != null && stats.boundingBoxBefore == null)
-        {
-            stats.boundingBoxBefore = player.boundingBox;
-            player.boundingBox.setBounds(stats.boundingBoxBefore.minX + 0.4, stats.boundingBoxBefore.minY + 0.9, stats.boundingBoxBefore.minZ + 0.4, stats.boundingBoxBefore.maxX - 0.4, stats.boundingBoxBefore.maxY - 0.9, stats.boundingBoxBefore.maxZ - 0.4);
-        }
-        else if (player.boundingBox != null && stats.boundingBoxBefore != null)
-        {
-            player.boundingBox.setBB(stats.boundingBoxBefore);
-        }
+//        if (player.boundingBox != null && stats.boundingBoxBefore == null)
+//        {
+//            GCLog.debug("Changed player BB from " + player.boundingBox.minY);
+//            stats.boundingBoxBefore = player.boundingBox;
+//            player.boundingBox.setBounds(stats.boundingBoxBefore.minX + 0.4, stats.boundingBoxBefore.minY + 0.9, stats.boundingBoxBefore.minZ + 0.4, stats.boundingBoxBefore.maxX - 0.4, stats.boundingBoxBefore.maxY - 0.9, stats.boundingBoxBefore.maxZ - 0.4);
+//            GCLog.debug("Changed player BB to " + player.boundingBox.minY);
+//        }
+//        else if (player.boundingBox != null && stats.boundingBoxBefore != null)
+//        {
+//            player.boundingBox.setBB(stats.boundingBoxBefore);
+//            GCLog.debug("Changed player BB to " + player.boundingBox.minY);
+//        }
     }
 
     @Override
@@ -118,15 +105,32 @@ public class PlayerClient implements IPlayerClient
     {
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
-        if (stats.inFreefall)
+        if (player.worldObj.provider instanceof WorldProviderOrbit)
         {
-            player.limbSwing -= player.limbSwingAmount;
-            player.limbSwingAmount = player.prevLimbSwingAmount;
-        } else
-        {
-	    	if (stats.inFreefallLast) stats.landingTicks = 6;
+            ((WorldProviderOrbit) player.worldObj.provider).postVanillaMotion(player);
+
+	        if (stats.inFreefall)
+	        {
+	            //No limb swing
+	            player.limbSwing -= player.limbSwingAmount;
+	            player.limbSwingAmount = player.prevLimbSwingAmount;
+	            float adjust = Math.min(Math.abs(player.limbSwing), Math.abs(player.limbSwingAmount) / 3);
+	            if (player.limbSwing < 0) player.limbSwing += adjust;
+	            else if (player.limbSwing > 0) player.limbSwing -= adjust;
+	            player.limbSwingAmount *= 0.9;
+	        } else
+	        {
+		    	if (stats.inFreefallLast && this.downMot2 < -0.01D)
+		    	{
+		    		stats.landingTicks = 2 - (int)(Math.min(this.downMot2, stats.downMotionLast) * 75);
+		    		if (stats.landingTicks > 6) stats.landingTicks = 6;
+		    	}
+	        }
+
+	        if (stats.landingTicks > 0) stats.landingTicks--;
         }
-        if (stats.landingTicks > 0) stats.landingTicks--;
+        else
+        	stats.inFreefall = false;
 
         boolean ridingThirdPersonEntity = player.ridingEntity instanceof ICameraZoomEntity && ((ICameraZoomEntity) player.ridingEntity).defaultThirdPerson();
 
@@ -160,6 +164,15 @@ public class PlayerClient implements IPlayerClient
         if (gearData != null)
         {
             stats.usingParachute = gearData.getParachute() != null;
+            if (gearData.getMask() >= 0)
+            {
+            	player.height = 1.9375F;
+            }
+            else
+            {
+            	player.height = 1.8F;
+            }
+        	player.boundingBox.maxY = player.boundingBox.minY + (double)player.height;
         }
 
         if (stats.usingParachute && player.onGround)
@@ -249,7 +262,7 @@ public class PlayerClient implements IPlayerClient
                         pos = WorldUtil.getFootprintPosition(player.worldObj, player.rotationYaw - 180, pos, new BlockVec3(player));
 
                         long chunkKey = ChunkCoordIntPair.chunkXZ2Int(pos.intX() >> 4, pos.intZ() >> 4);
-                        ClientProxyCore.footprintRenderer.addFootprint(chunkKey, player.worldObj.provider.dimensionId, pos, player.rotationYaw);
+                        ClientProxyCore.footprintRenderer.addFootprint(chunkKey, player.worldObj.provider.dimensionId, pos, player.rotationYaw, player.getCommandSenderName());
 
                         // Increment and cap step counter at 1
                         stats.lastStep++;

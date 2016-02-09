@@ -125,6 +125,12 @@ public class BlockBasic extends Block implements IDetectableResource
     }
 
     @Override
+    public int getDamageValue(World p_149643_1_, int p_149643_2_, int p_149643_3_, int p_149643_4_)
+    {
+    	return p_149643_1_.getBlockMetadata(p_149643_2_, p_149643_3_, p_149643_4_);    	
+    }
+
+    @Override
     public int quantityDropped(int meta, int fortune, Random random)
     {
         if (fortune > 0 && Item.getItemFromBlock(this) != this.getItemDropped(meta, random, fortune))

@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -69,16 +70,28 @@ public class ItemAstroMiner extends Item implements IHoldableItem
 
         	if (tile instanceof TileEntityMinerBase)
         	{
+    			if (par3World.provider instanceof WorldProviderOrbit)
+    			{
+        			par2EntityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner7.fail")));
+        			return false;    				
+    			}
+    			
         		if (((TileEntityMinerBase)tile).getLinkedMiner() != null)
         		{
         			par2EntityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner.fail")));
         			return false;
         		}
         		
+        		//Gives a chance for any loaded Astro Miner to link itself
+        		if (((TileEntityMinerBase) tile).ticks < 15L)
+        		{
+        			return false;
+        		}
+        		
         		EntityPlayerMP playerMP = (EntityPlayerMP) par2EntityPlayer;
         		
                	int astroCount = GCPlayerStats.get(playerMP).astroMinerCount;
-               	if (astroCount >= ConfigManagerAsteroids.astroMinerMax)
+               	if (astroCount >= ConfigManagerAsteroids.astroMinerMax && (!par2EntityPlayer.capabilities.isCreativeMode))
                	{	
                		par2EntityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner2.fail")));
                		return false;
@@ -90,11 +103,10 @@ public class ItemAstroMiner extends Item implements IHoldableItem
         			return false;
         		}
         	        			
-        		GCPlayerStats.get(playerMP).astroMinerCount++;
-        		
                 if (!par2EntityPlayer.capabilities.isCreativeMode)
                 {
-                    --par1ItemStack.stackSize;
+                	GCPlayerStats.get(playerMP).astroMinerCount++;
+                	--par1ItemStack.stackSize;
                 }
         		return true;
         	}

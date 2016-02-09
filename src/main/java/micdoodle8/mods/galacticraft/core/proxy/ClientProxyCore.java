@@ -1,30 +1,31 @@
 package micdoodle8.mods.galacticraft.core.proxy;
 
-import api.player.client.ClientPlayerAPI;
-import api.player.model.ModelPlayerAPI;
-import api.player.render.RenderPlayerAPI;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.eventhandler.Event;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
 import micdoodle8.mods.galacticraft.core.client.fx.EffectHandler;
@@ -33,13 +34,59 @@ import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticr
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerBaseGC;
 import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
 import micdoodle8.mods.galacticraft.core.client.render.ThreadDownloadImageDataGC;
-import micdoodle8.mods.galacticraft.core.client.render.block.*;
-import micdoodle8.mods.galacticraft.core.client.render.entities.*;
-import micdoodle8.mods.galacticraft.core.client.render.item.*;
+import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererBreathableAir;
+import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererLandingPad;
+import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererMachine;
+import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererMeteor;
+import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererNasaWorkbench;
+import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererOxygenPipe;
+import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererParachest;
+import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererTreasureChest;
+import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererUnlitTorch;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderAlienVillager;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderBuggy;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEntityFake;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedCreeper;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedSkeleton;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedSkeletonBoss;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedSpider;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedZombie;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderFlag;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderLander;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderMeteor;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderMeteorChunk;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderParaChest;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerBaseGC;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderTier1Rocket;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererArclamp;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererBuggy;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererFlag;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererKey;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererMeteorChunk;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererScreen;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererThruster;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererTier1Rocket;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererUnlitTorch;
 import micdoodle8.mods.galacticraft.core.client.render.tile.*;
+import micdoodle8.mods.galacticraft.core.client.sounds.MusicTickerGC;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
-import micdoodle8.mods.galacticraft.core.entities.*;
+import micdoodle8.mods.galacticraft.core.entities.EntityAlienVillager;
+import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
+import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
+import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
+import micdoodle8.mods.galacticraft.core.entities.EntityLander;
+import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
+import micdoodle8.mods.galacticraft.core.entities.EntityMeteor;
+import micdoodle8.mods.galacticraft.core.entities.EntityMeteorChunk;
+import micdoodle8.mods.galacticraft.core.entities.EntityParachest;
+import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
+import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerBaseSP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.entities.player.IPlayerClient;
@@ -51,6 +98,7 @@ import micdoodle8.mods.galacticraft.core.recipe.craftguide.CraftGuideIntegration
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.*;
+import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.block.Block;
@@ -88,20 +136,25 @@ import org.lwjgl.opengl.GL11;
 
 import tconstruct.client.tabs.InventoryTabVanilla;
 import tconstruct.client.tabs.TabRegistry;
+import api.player.client.ClientPlayerAPI;
+import api.player.model.ModelPlayerAPI;
+import api.player.render.RenderPlayerAPI;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.FloatBuffer;
-import java.util.*;
-import java.util.List;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.eventhandler.Event;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class ClientProxyCore extends CommonProxyCore
 {
@@ -135,7 +188,7 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static boolean lastSpacebarDown;
 
-    public static int clientSpaceStationID = 0;
+    public static HashMap<Integer, Integer> clientSpaceStationID = Maps.newHashMap();
 
     public static MusicTicker.MusicType MUSIC_TYPE_MARS;
 
@@ -156,18 +209,25 @@ public class ClientProxyCore extends CommonProxyCore
     private static Map<String, ResourceLocation> capesMap = Maps.newHashMap();
 
     public static IPlayerClient playerClientHandler = new PlayerClient();
-    private static Minecraft mc = FMLClientHandler.instance().getClient();
+    public static Minecraft mc = FMLClientHandler.instance().getClient();
     public static List<String> gearDataRequests = Lists.newArrayList();
     //private static int playerList;
 
     public static DynamicTexture overworldTextureClient;
     public static DynamicTexture overworldTextureLocal;
-    public static boolean overworldTextureRequestSent = false;
+    public static boolean overworldTextureRequestSent;
 
-    private static float PLAYER_Y_OFFSET = 1.6200000047683716F;
+    public static float PLAYER_Y_OFFSET = 1.6200000047683716F;
     
     private static final ResourceLocation saturnRingTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/saturnRings.png");    
     private static final ResourceLocation uranusRingTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/uranusRings.png");
+    
+    public static void reset()
+    {
+        ClientProxyCore.playerItemData.clear();
+        ClientProxyCore.overworldTextureRequestSent = false;
+        ClientProxyCore.flagRequestsSent.clear();
+    }
     
     @Override
     public void preInit(FMLPreInitializationEvent event)
@@ -208,6 +268,12 @@ public class ClientProxyCore extends CommonProxyCore
         
         if (Loader.isModLoaded("craftguide"))
         	CraftGuideIntegration.register();
+        
+        try {
+			Field ftc = Minecraft.getMinecraft().getClass().getDeclaredField(VersionUtil.getNameDynamic(VersionUtil.KEY_FIELD_MUSICTICKER));
+			ftc.setAccessible(true);
+			ftc.set(Minecraft.getMinecraft(), new MusicTickerGC(Minecraft.getMinecraft()));
+        } catch (Exception e) {e.printStackTrace();} 
     }
 
     public static void registerEntityRenderers()
@@ -224,7 +290,7 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerEntityRenderingHandler(EntityFlag.class, new RenderFlag());
         RenderingRegistry.registerEntityRenderingHandler(EntityParachest.class, new RenderParaChest());
         RenderingRegistry.registerEntityRenderingHandler(EntityAlienVillager.class, new RenderAlienVillager());
-        RenderingRegistry.registerEntityRenderingHandler(EntityBubble.class, new RenderBubble(0.25F, 0.25F, 1.0F));
+//        RenderingRegistry.registerEntityRenderingHandler(EntityBubble.class, new RenderBubble(0.25F, 0.25F, 1.0F));
         RenderingRegistry.registerEntityRenderingHandler(EntityLander.class, new RenderLander());
         RenderingRegistry.registerEntityRenderingHandler(EntityCelestialFake.class, new RenderEntityFake());
 
@@ -271,6 +337,7 @@ public class ClientProxyCore extends CommonProxyCore
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityParaChest.class, new TileEntityParachestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNasaWorkbench.class, new TileEntityNasaWorkbenchRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolar.class, new TileEntitySolarPanelRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenDistributor.class, new TileEntityBubbleProviderRenderer(0.25F, 0.25F, 1.0F));
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDish.class, new TileEntityDishRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityThruster.class, new TileEntityThrusterRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArclamp.class, new TileEntityArclampRenderer());
@@ -458,7 +525,7 @@ public class ClientProxyCore extends CommonProxyCore
         {
             return ClientProxyCore.renderIdLandingPad;
         }
-        else if (blockID == GCBlocks.unlitTorch || blockID == GCBlocks.unlitTorchLit || blockID == GCBlocks.glowstoneTorch)
+        else if (blockID instanceof BlockUnlitTorch || blockID == GCBlocks.glowstoneTorch)
         {
             return ClientProxyCore.renderIdTorchUnlit;
         }
@@ -504,7 +571,7 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static void renderLiquidOverlays(float partialTicks)
     {
-        if (ClientProxyCore.isInsideOfFluid(ClientProxyCore.mc.thePlayer, GalacticraftCore.gcFluidOil))
+        if (ClientProxyCore.isInsideOfFluid(ClientProxyCore.mc.thePlayer, GalacticraftCore.fluidOil))
         {
         	ClientProxyCore.mc.getTextureManager().bindTexture(ClientProxyCore.underOilTexture);
         }

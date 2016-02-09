@@ -96,20 +96,21 @@ public class ContainerRocketInventory extends Container
     {
         ItemStack var3 = null;
         final Slot var4 = (Slot) this.inventorySlots.get(par2);
+        final int b = this.inventorySlots.size()-36;
 
         if (var4 != null && var4.getHasStack())
         {
             final ItemStack var5 = var4.getStack();
             var3 = var5.copy();
 
-            if (par2 < 27)
+            if (par2 < b)
             {
-                if (!this.mergeItemStack(var5, 27, this.inventorySlots.size(), true))
+                if (!this.mergeItemStack(var5, b, b+36, true))
                 {
                     return null;
                 }
             }
-            else if (!this.mergeItemStack(var5, 0, 27, false))
+            else if (!this.mergeItemStack(var5, 0, b, false))
             {
                 return null;
             }

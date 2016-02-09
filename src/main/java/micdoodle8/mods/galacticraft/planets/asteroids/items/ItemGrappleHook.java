@@ -22,7 +22,7 @@ public class ItemGrappleHook extends ItemBow
     {
         super();
         this.setUnlocalizedName(assetName);
-        this.setMaxStackSize(16);
+        this.setMaxStackSize(1);
         this.setTextureName("arrow");
     }
 
@@ -57,6 +57,7 @@ public class ItemGrappleHook extends ItemBow
             }
 
             par1ItemStack.damageItem(1, par3EntityPlayer);
+            grapple.canBePickedUp = par3EntityPlayer.capabilities.isCreativeMode ? 2 : 1;
 
             if (!par3EntityPlayer.capabilities.isCreativeMode)
             {

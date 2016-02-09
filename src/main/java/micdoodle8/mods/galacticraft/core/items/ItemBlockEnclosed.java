@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import java.lang.reflect.Method;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
@@ -10,12 +12,9 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-
-import java.lang.reflect.Method;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class ItemBlockEnclosed extends ItemBlockDesc
 {
@@ -64,9 +63,10 @@ public class ItemBlockEnclosed extends ItemBlockDesc
             name = "aluminumWireHeavy";
             break;
         default:
+        	//The BuildCraft pipes
             try
             {
-                name = BlockEnclosed.getTypeFromMeta(par1ItemStack.getItemDamage()).getPipeClass();
+                name = BlockEnclosed.getTypeFromMeta(par1ItemStack.getItemDamage()).getPipeType();
             }
             catch (Exception e)
             {
@@ -84,7 +84,7 @@ public class ItemBlockEnclosed extends ItemBlockDesc
         int metadata = this.getMetadata(itemstack.getItemDamage());
         EnumEnclosedBlock type = BlockEnclosed.getTypeFromMeta(metadata);
 
-        if (type != null && type.getPipeClass() != null)
+        if (type != null && type.getPipeType() != null)
         {
             Block block = world.getBlock(i, j, k);
 
@@ -147,57 +147,20 @@ public class ItemBlockEnclosed extends ItemBlockDesc
                     {
                         if (CompatibilityManager.isBCraftLoaded())
                         {
-                            try
-                            {
-                                //------
-                                //This section makes these three calls to initialise the TileEntity:
-                                //	Pipe pipe = BlockGenericPipe.createPipe(Item);
-                                //  tilePipe.initialize(pipe);
-                                //	tilePipe.sendUpdateToClient();
-
-                                Class<?> clazzBC = Class.forName("buildcraft.BuildCraftTransport");
-                                Class<?> clazzBlockPipe = Class.forName("buildcraft.transport.BlockGenericPipe");
-                                Class<?> clazzTilePipe = Class.forName("buildcraft.transport.TileGenericPipe");
-                                TileEntity tilePipe = world.getTileEntity(i, j, k);
-
-                                String pipeName = EnumEnclosedBlock.values()[metadata].getPipeClass();
-                                pipeName = pipeName.substring(0, 1).toLowerCase() + pipeName.substring(1);
-
-                                Item pipeItem = (Item) clazzBC.getField(pipeName).get(null);
-                                Method createPipe = null;
-                                for (Method m : clazzBlockPipe.getDeclaredMethods())
-                                {
-                                    if (m.getName().equals("createPipe") && m.getParameterTypes().length == 1)
-                                    {
-                                        createPipe = m;
-                                        break;
-                                    }
-                                }
-                                if (createPipe != null)
-                                {
-                                    Object pipe = createPipe.invoke(null, pipeItem);
-                                    Method initializePipe = null;
-                                    for (Method m : clazzTilePipe.getDeclaredMethods())
-                                    {
-                                        if (m.getName().equals("initialize") && m.getParameterTypes().length == 1)
-                                        {
-                                            initializePipe = m;
-                                            break;
-                                        }
-                                    }
-                                    if (initializePipe != null)
-                                    {
-                                        initializePipe.invoke(tilePipe, pipe);
-                                        clazzTilePipe.getMethod("sendUpdateToClient").invoke(tilePipe);
-                                    }
-                                }
-                                //------
-                            }
-                            catch (Exception e)
-                            {
-                                e.printStackTrace();
-                            }
+                            BlockEnclosed.initialiseBCPipe(world, i, j, k, metadata);
                         }
+                    }
+                    
+                    else if (metadata == EnumEnclosedBlock.ME_CABLE.getMetadata())
+                    {
+//                    	ItemStack itemME = new ItemStack(Block.getBlockFromName("appliedenergistics2:tile.BlockCableBus"), 16);
+//                    	try
+//                    	{
+//                    		Class clazz = Class.forName("appeng.tile.networking.TileCableBus");
+//                    		Method m = clazz.getMethod("addPart", ItemStack.class, ForgeDirection.class, EntityPlayer.class);
+//                    		m.invoke(world.getTileEntity(i, j, k), itemME, ForgeDirection.UNKNOWN, entityplayer);
+//                    	}
+//                    	catch (Exception e) { e.printStackTrace(); }
                     }
                 }
 

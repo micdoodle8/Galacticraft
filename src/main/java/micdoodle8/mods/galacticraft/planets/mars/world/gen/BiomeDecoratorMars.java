@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeDecoratorSpace;
 import micdoodle8.mods.galacticraft.core.world.gen.WorldGenMinableMeta;
+import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
@@ -32,10 +33,10 @@ public class BiomeDecoratorMars extends BiomeDecoratorSpace
     {
         this.generateOre(4, this.iceGen, 60, 120);
         this.generateOre(20, this.dirtGen, 0, 200);
-        this.generateOre(15, this.deshGen, 20, 64);
-        this.generateOre(26, this.copperGen, 0, 60);
-        this.generateOre(23, this.tinGen, 0, 60);
-        this.generateOre(20, this.ironGen, 0, 64);
+        if (!ConfigManagerMars.disableDeshGen) this.generateOre(15, this.deshGen, 20, 64);
+        if (!ConfigManagerMars.disableCopperGen) this.generateOre(26, this.copperGen, 0, 60);
+        if (!ConfigManagerMars.disableTinGen) this.generateOre(23, this.tinGen, 0, 60);
+        if (!ConfigManagerMars.disableIronGen) this.generateOre(20, this.ironGen, 0, 64);
     }
     
     protected void setCurrentWorld(World world)

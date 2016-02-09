@@ -1,17 +1,14 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
-import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
+import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class ContainerFuelLoader extends Container
 {
@@ -20,7 +17,7 @@ public class ContainerFuelLoader extends Container
     public ContainerFuelLoader(InventoryPlayer par1InventoryPlayer, TileEntityFuelLoader fuelLoader)
     {
         this.tileEntity = fuelLoader;
-        this.addSlotToContainer(new SlotSpecific(fuelLoader, 0, 51, 55, ItemElectricBase.class));
+        this.addSlotToContainer(new SlotSpecific(fuelLoader, 0, 51, 55, IItemElectric.class));
         this.addSlotToContainer(new Slot(fuelLoader, 1, 7, 12));
 
         int var6;
@@ -77,8 +74,7 @@ public class ContainerFuelLoader extends Container
                 }
                 else
                 {
-                    FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(var5);
-                    if (liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("Fuel"))
+                    if (FluidUtil.isFuelContainerAny(var5))
                     {
                         if (!this.mergeItemStack(var5, 1, 2, false))
                         {

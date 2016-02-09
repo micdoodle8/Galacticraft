@@ -124,6 +124,10 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
         {
             displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.running.name");
         }
+        else if (this.tileEntity.getWorldObj().getBlockPowerInput(this.tileEntity.xCoord, this.tileEntity.yCoord, this.tileEntity.zCoord) > 0)
+        {
+        	displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.off.name");
+        }
         else if (!this.tileEntity.hasEnoughEnergyToRun)
         {
             displayText = EnumColor.RED + GCCoreUtil.translate("gui.message.lowEnergy.name");

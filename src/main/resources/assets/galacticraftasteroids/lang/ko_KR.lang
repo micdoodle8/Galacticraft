@@ -2,7 +2,7 @@
 
 # GENERAL ITEMS
 item.itemTier3Rocket.t3Rocket.name=3티어 로켓
-item.itemAstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+item.itemAstroMiner.name=천체 광업기계
 item.heavyNoseCone.name=중형 머리원뿔
 item.compressedTitanium.name=압축된 티타늄
 item.ingotTitanium.name=티타늄 주괴
@@ -15,6 +15,7 @@ item.grapple.name=그래플
 item.atmosphericValve.name=대기 밸브
 item.thermalCloth.name=열보호 직물
 item.beamCore.name=광선 핵
+item.orionDrive.name=오리온 드라이브
 item.tier3.desc=3티어
 
 # TOOLS
@@ -79,7 +80,7 @@ tile.walkwayWire.name=통로
 tile.walkwayOxygenPipe.name=통로
 tile.treasureT3.name=3티어 보물상자
 tile.denseIce.name=두꺼운 얼음
-tile.minerBase.name=Astro Miner Base ##NEEDS TRANSLATE##
+tile.minerBase.name=천체 광업기계 근거지
 
 # GUI
 planet.asteroids=소행성대
@@ -101,9 +102,26 @@ gui.message.range.name=거리: %d미터
 gui.message.notEnoughEnergy.name=에너지 부족!
 gui.message.targetNoEnergy.name=타겟 에너지 부족!
 gui.message.grapple.fail=그래플을 작동시키려면 줄이 필요합니다!
-gui.message.astroMiner.fail=This base already has an Astro Miner! ##NEEDS TRANSLATE##
+gui.message.astroMiner.fail=이 근거지에는 이미 천체 광업기계가 있습니다!
 gui.message.astroMiner1.fail=The docking area is blocked by: ##NEEDS TRANSLATE##
+gui.message.astroMiner1A.fail=천체 광업기계의 경로가 막혔습니다. 막힌 블럭:
 gui.message.astroMiner2.fail=That would be one Astro Miner too many! ##NEEDS TRANSLATE##
+gui.message.astroMiner3.fail=천체 광업기계의 근거지가 파괴되었습니다! 
+gui.message.astroMiner4.fail=The Astro Miner ran out of energy and cannot get back to base! ##NEEDS TRANSLATE##
+gui.message.astroMiner5.fail=천체 광업기계의 근거지 경로가 막혔습니다!
+gui.message.astroMiner6.fail=The Astro Miner has finished mining the area, and will now stop! ##NEEDS TRANSLATE##
+gui.message.astroMiner7.fail=There's nothing for an Astro Miner to mine on a space station! ##NEEDS TRANSLATE##
+gui.message.astroMiner8.fail=A second Astro Miner was detected at the same base, the first will now freeze. ##NEEDS TRANSLATE##
+gui.button.recall.name=복귀
+gui.miner.outOfRange=범위를 벗어남
+gui.miner.offline=오프라인
+gui.miner.stuck=막힘:
+gui.miner.docked=도킹됨
+gui.miner.travelling=이동 중
+gui.miner.mining=채굴 중
+gui.miner.returning=돌아오는 중
+gui.miner.docking=도킹 중
+gui.miner.mined=채굴됨
 
 tile.treasureT3.description=3티어 보물상자는 현재 사용할 수 없습니다.
 tile.walkway.description=통로는 우주 테마 장식용 블록입니다.
@@ -111,10 +129,10 @@ tile.walkwayAluminumWire.description=알루미늄 전선 통로는 전선 기능
 tile.walkwayOxygenPipe.description=산소 파이프 통로는 전선 기능을 하는 동시에 위로 걷는 통로를 제공하는 다중 기능성 블록입니다.
 tile.beamReflector.description=에너지빔 반사장치는 에너지 광선(빔)의 방향을 바꾸어 목적지에 도달할 수 있게 해주는 기기입니다. 오른쪽 클릭을 통해 목표 타켓을 변경할 수 있습니다.
 tile.beamReceiver.description=에너지빔 수신기는 기계의 전력/에너지 입출력을 도와 에너지를 송수신 할 수 있게 해주는 기기입니다.
-tile.telepadShort.description=단거리 텔레포터는 플레이어와 다른 생명체의 빠른 단거리 이동을 도와주는 기기입니다 (250 Blocks). 최소한 두개의 기기가 서로 연결되어야 합니다.
-tile.minerBase.description=The Astro Miner Base is the docking point for an Astro Miner.  It's big ... try making a 2 x 2 x 2 cube with these. ##NEEDS TRANSLATE##
-schematic.astroMiner.name=Astro Miner ##NEEDS TRANSLATE##
-schematic.ionDrive.name=Ion Drive ##NEEDS TRANSLATE##
+tile.telepadShort.description=단거리 텔레포터는 플레이어와 다른 생명체의 빠른 단거리 이동을 도와주는 기기입니다 (250 블럭). 최소한 두개의 기기가 서로 연결되어야 합니다.
+tile.minerBase.description=천체 광업기계 근거지는 천체 광업기계를 위한 도킹 지점입니다. 그것은 큽니다 ... 2 x 2 x 2 크기의 큐브를 만들어야합니다.
+schematic.astroMiner.name=천체 광업기계
+schematic.ionDrive.name=이온 드라이브
 
 # SCHEMATICS
 
@@ -122,8 +140,8 @@ schematic.ionDrive.name=Ion Drive ##NEEDS TRANSLATE##
 entity.SmallAsteroidGC.name=작은 소행성
 entity.GrappleHookGC.name=그래플
 entity.Tier3RocketGC.name=3티어 로켓
-entity.EntryPodAsteroids.name=Entry Pod ##NEEDS TRANSLATE##
-entity.AstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+entity.EntryPodAsteroids.name=진입 캡슐
+entity.AstroMiner.name=천체 광업기계
 
 # CONTAINERS
 container.shortRangeTelepad.name=단거리 텔레포터
@@ -136,4 +154,5 @@ gc.configgui.idEntityGrappleHook=그래플 엔티티 ID
 gc.configgui.idEntityTier3Rocket=3티어 로켓 엔티티 ID
 gc.configgui.idEntityEntryPod=진입 캡슐 엔티티 ID
 gc.configgui.idSchematicRocketT3=3티어 로켓 설계도 ID
-gc.configgui.disableGalacticraftHelium=Disable Helium gas registration ##NEEDS TRANSLATE##
+gc.configgui.disableGalacticraftHelium=Disable Helium gas registration
+gc.configgui.astroMinersMax=Maximum number of Astro Miners per player

@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.items;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,7 +19,7 @@ public class ItemFuelCanister extends ItemCanisterGeneric
     public ItemFuelCanister(String assetName)
     {
         super(assetName);
-        this.setAllowedFluid("fuel");
+        this.setAllowedFluid(ConfigManagerCore.useOldFuelFluidID ? "fuelgc" : "fuel");
         this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }
 

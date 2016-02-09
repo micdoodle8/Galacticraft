@@ -116,7 +116,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     {
         TileEntity tileEntity = par1World.getTileEntity(par2, par3, par4);
 
-        if (tileEntity != null)
+        if (tileEntity instanceof TileEntityTelepadFake)
         {
             BlockVec3 mainBlockPosition = ((TileEntityTelepadFake) tileEntity).mainBlockPosition;
 

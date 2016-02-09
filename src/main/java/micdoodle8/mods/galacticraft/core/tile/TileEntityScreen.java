@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.DrawGameScreen;
@@ -20,7 +21,6 @@ public class TileEntityScreen extends TileEntity
 {   
     public static float FRAMEBORDER = 0.098F;  //used for rendering
     public int imageType;
-    public static int maxTypes;
 	public DrawGameScreen screen;
 	public boolean connectedUp;
 	public boolean connectedDown;
@@ -249,7 +249,7 @@ public class TileEntityScreen extends TileEntity
 	{
 		if (!this.worldObj.isRemote)
 		{
-			if (++this.imageType >= maxTypes)
+			if (++this.imageType >= GalacticraftRegistry.getMaxScreenTypes())
 				this.imageType = 0;
 
 			boolean flag = false;

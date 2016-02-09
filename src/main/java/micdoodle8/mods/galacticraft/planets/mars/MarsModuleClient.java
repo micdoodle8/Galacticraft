@@ -14,13 +14,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderBubble;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderTier1Rocket;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererKey;
+import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityBubbleProviderRenderer;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.client.SkyProviderMars;
+import micdoodle8.mods.galacticraft.planets.mars.client.fx.EntityBacterialDripFX;
 import micdoodle8.mods.galacticraft.planets.mars.client.gui.*;
 import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelTier2Rocket;
 import micdoodle8.mods.galacticraft.planets.mars.client.render.block.*;
@@ -89,13 +90,14 @@ public class MarsModuleClient implements IPlanetsModuleClient
         // Tile Entity Renderers
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChestMars.class, new TileEntityTreasureChestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCryogenicChamber.class, new TileEntityCryogenicChamberRenderer(chamberModel));
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTerraformer.class, new TileEntityBubbleProviderRenderer(0.25F, 1.0F, 0.25F));
 
         // Entities
         RenderingRegistry.registerEntityRenderingHandler(EntitySludgeling.class, new RenderSludgeling());
         RenderingRegistry.registerEntityRenderingHandler(EntitySlimeling.class, new RenderSlimeling());
         RenderingRegistry.registerEntityRenderingHandler(EntityCreeperBoss.class, new RenderCreeperBoss());
         RenderingRegistry.registerEntityRenderingHandler(EntityTier2Rocket.class, new RenderTier1Rocket(new ModelTier2Rocket(), MarsModule.ASSET_PREFIX, "rocketT2"));
-        RenderingRegistry.registerEntityRenderingHandler(EntityTerraformBubble.class, new RenderBubble(0.25F, 1.0F, 0.25F));
+//        RenderingRegistry.registerEntityRenderingHandler(EntityTerraformBubble.class, new RenderBubble(0.25F, 1.0F, 0.25F));
         RenderingRegistry.registerEntityRenderingHandler(EntityProjectileTNT.class, new RenderProjectileTNT());
         RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, new RenderLandingBalloons());
         RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, new RenderLandingBalloons());
@@ -191,6 +193,10 @@ public class MarsModuleClient implements IPlanetsModuleClient
                 {
                     particle = new EntityDropParticleFX(mc.theWorld, position.x, position.y, position.z, Material.water);
                 }
+				else if (particleID.equals("bacterialDrip"))
+    			{
+    				particle = new EntityBacterialDripFX(mc.theWorld, position.x, position.y, position.z);
+    			}
             }
 
             if (particle != null)

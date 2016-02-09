@@ -71,7 +71,7 @@ gui.message.noWater.name=Pas assez d'eau
 gui.message.noBonemeal.name=Pas assez de poudre d'os
 gui.message.noSeeds.name=Pas assez de graines
 gui.message.noSaplings.name=Pas assez de pousses d'arbre
-gui.message.bubbleExp.name=BubbleExpanding ##NEEDS TRANSLATE##
+gui.message.bubbleExp.name=Expansion de bulle
 gui.message.noValidBlocks.name=Pas de blocs valides dans la bulle
 gui.message.terraforming.name=Terraformation
 gui.message.enableTrees.name=Activer les arbres
@@ -101,6 +101,7 @@ gui.launchController.desc.0=Ceci est la fréquence unique du controlleur
 gui.launchController.desc.1=Fréquence du controlleur vers lequel les fusée seront envoyées 
 gui.launchController.desc.2=Si la rampe de lancement doit être enlevée ou non
 gui.launchController.desc.3=Quand ces critères seront remplis,la fusée sera lancée
+gui.launchController.desc.4=Hide destination frequency$from other players ##NEEDS TRANSLATE##
 gui.terraformer.desc.0=Réservoir d'eau
 
 gui.gasTank.desc.0=Réservoir à gaz
@@ -140,7 +141,7 @@ gui.desc.reinforcedPlateT2.name=Niveau 2
 dimension.Mars.name=Mars
 planet.mars=Mars
 
-tile.treasureT2.description=Tier 2 Treasure Chests will generate in Mars Dungeons. They are unlockable after defeating the final boss. ##NEEDS TRANSLATE##
+tile.treasureT2.description=Les coffre au trésor de niveau 2 seront généré dans les donjons de Mars. ils se débloquent après la défaite du boss final.
 tile.cavernVines.description=Cavernous Vines are dangerous to living creatures, entangling them and dragging them upwards. ##NEEDS TRANSLATE##
 tile.slimelingEgg.description=Slimeling Eggs, once cracked with a player's bare hands, will soon hatch into a pet. ##NEEDS TRANSLATE##
 tile.cryoChamber.description=Cryogenic Chambers will allow a player to sleep during the day, healing a small amount of health, but has a cooldown. ##NEEDS TRANSLATE##
@@ -175,7 +176,7 @@ entity.Slimeling.name=Vaseux
 entity.CreeperBoss.name=Boss Creeper évolué
 entity.SpaceshipT2.name=Fusée de niveau 2
 entity.CargoRocket.name=Fusée de transport de marchandise
-entity.LandingBalloons.name=Landing Balloons ##NEEDS TRANSLATE##
+entity.LandingBalloons.name=Ballons d'atterissage
 
 # CONTAINERS
 container.launchcontroller.name=Contrôleur de lancement
@@ -183,10 +184,10 @@ container.tileTerraformer.name=Terraformeur
 container.marsLander.name=Ballons d'atterissage
 
 # CONFIG GUI
-gc.configgui.dimensionIDMars=Mars Dimension ID
-gc.configgui.idSchematicRocketT2=Tier 2 Rocket Schematic ID
-gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID
+gc.configgui.dimensionIDMars=ID dimension Mars
+gc.configgui.idSchematicRocketT2=ID schéma fusée niveau 2
+gc.configgui.idSchematicCargoRocket=ID schéma fusée cargo
 gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
 gc.configgui.launchControllerAllDims=Launch Controller All Dimensions
 
-gc.configgui.planets.title=Configuration de planetes Galacticraft
+gc.configgui.planets.title=Configuration des planètes Galacticraft

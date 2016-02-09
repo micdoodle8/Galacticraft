@@ -50,7 +50,7 @@ tile.marsMachine.2.name=Kontroler Startu
 tile.marsMachine.4.name=Skraplacz Gazu
 tile.marsMachine.5.name=Syntezator Metanu
 tile.marsMachine.6.name=Elektrolizer Wodny
-tile.hydrogenPipe.name=Hydrogen Pipe ##NEEDS TRANSLATE##
+tile.hydrogenPipe.name=Rura Wodorowa
 tile.sludge.name=Szlam Bakteryjny
 tile.creeperEgg.name=Jajo Creepera
 tile.cavernVines.name=Trujące Pnącza
@@ -101,6 +101,7 @@ gui.launchController.desc.0=To jest unikalna częstotliwość$Kontrolera Startu.
 gui.launchController.desc.1=Częstotliwość do której mają lecieć rakiety.
 gui.launchController.desc.2=Platforma Startowa pozostanie na miejscu$gdy opcja jest zaznaczona.
 gui.launchController.desc.3=Gdy podane kryteria zostaną spełnione,$rakieta wystartuje.
+gui.launchController.desc.4=Ukryj częstotliwość docelową$przed innymi graczami.
 gui.terraformer.desc.0=Zbiornik Wody
 
 gui.gasTank.desc.0=Zbiornik Gazu
@@ -150,7 +151,7 @@ tile.creeperEgg.description=Jaja Creepera powstają w lochach Marsa. Tworzą Cre
 tile.gasLiquefier.description=Skrapla gazy, zarówno z atmosfery jak i z kanistrów. Skroplony Metan jest świetnym paliwem rakietowym!
 tile.methaneSynthesizer.description=Z źródłem wodoru i węgla, Syntezator Metanu łączy oba pierwiastki tworząc metan przeznaczony do dalszej obróbki w Skraplaczu Gazów.
 tile.electrolyzer.description=Przemienia wode ma wodór (używany w Syntezatorze Metanu) i tlen.
-tile.hydrogenPipe.description=Hydrogen Pipe will transfer hydrogen from one machine's internal gas tank to another.  ##NEEDS TRANSLATE##
+tile.hydrogenPipe.description=Rura Wodorowa przenosi wodór.
 
 gui.slimeling.chat.wrongPlayer=To nie jest mój Slimeling!
 gui.cryogenic.chat.cantUse=Nie mogę tego użyć przez następne %d sekundy,
@@ -175,7 +176,7 @@ entity.Slimeling.name=Slimeling
 entity.CreeperBoss.name=Kosmiczny Creeper Boss
 entity.SpaceshipT2.name=Rakieta Poziomu 2
 entity.CargoRocket.name=Rakieta Transportowa
-entity.LandingBalloons.name=Landing Balloons ##NEEDS TRANSLATE##
+entity.LandingBalloons.name=Balony Lądujące
 
 # CONTAINERS
 container.launchcontroller.name=Kontroler Startu

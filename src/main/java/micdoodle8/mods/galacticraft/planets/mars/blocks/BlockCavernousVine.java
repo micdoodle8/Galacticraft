@@ -215,7 +215,7 @@ public class BlockCavernousVine extends Block implements IShearable, ItemBlockDe
             {
                 Block blockID = world.getBlock(x, y2, z);
 
-                if (!blockID.isAir(world, x, y, z))
+                if (blockID == null || !blockID.isAir(world, x, y, z))
                 {
                     return;
                 }

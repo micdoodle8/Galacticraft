@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
-import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenCompressor;
@@ -20,7 +19,7 @@ public class ContainerOxygenCompressor extends Container
     {
         this.tileEntity = compressor;
         this.addSlotToContainer(new Slot(compressor, 0, 133, 71));
-        this.addSlotToContainer(new SlotSpecific(compressor, 1, 47, 27, ItemElectricBase.class));
+        this.addSlotToContainer(new SlotSpecific(compressor, 1, 47, 27, IItemElectric.class));
         this.addSlotToContainer(new SlotSpecific(compressor, 2, 17, 27, IItemOxygenSupply.class));
 
         int var3;

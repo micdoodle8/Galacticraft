@@ -119,7 +119,9 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer
         GL11.glScalef(0.048F, 0.048F, 0.048F);
         TileEntityArclampRenderer.lampMetal.renderAll();
        
-    	//Save the lighting state
+        int whiteLevel = tileEntity.getEnabled() ? 255 : 26;
+        
+        //Save the lighting state
         float lightMapSaveX = OpenGlHelper.lastBrightnessX;
         float lightMapSaveY = OpenGlHelper.lastBrightnessY;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
@@ -128,7 +130,7 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer
         this.renderEngine.bindTexture(TileEntityArclampRenderer.lightTexture);
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawing(GL11.GL_QUADS);
-        tessellator.setColorRGBA(255, 255, 255, 255);
+        tessellator.setColorRGBA(whiteLevel, whiteLevel, whiteLevel, 255);
         ((WavefrontObject) TileEntityArclampRenderer.lampLight).tessellateAll(tessellator);
         tessellator.draw();
 
