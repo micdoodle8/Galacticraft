@@ -20,8 +20,16 @@ import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
 
+import org.apache.commons.io.FileUtils;
+
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
@@ -38,8 +46,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 
-import cpw.mods.fml.client.FMLClientHandler;
-
 public class MapUtil
 {
     public static AtomicBoolean calculatingMap = new AtomicBoolean();
@@ -49,7 +55,10 @@ public class MapUtil
     private static MapGen currentMap;
     private static Random rand = new Random();
 //    public static int WORLD_BORDER = 14992;
+    private static final int SIZE_STD = 176;
+    private static final int SIZE_STD2 = SIZE_STD * 2;
     private static LinkedList<MapGen> queuedMaps = new LinkedList();
+    public static LinkedList<String> clientRequests = new LinkedList();
     
 	static
 	{
@@ -64,6 +73,27 @@ public class MapUtil
                 parabolicField[j + 2 + (k + 2) * 5] = f;
             }
         }
+	}
+	
+	public static void reset()
+	{
+		currentMap = null;
+		queuedMaps.clear();
+		calculatingMap.set(false);
+		doneOverworldTexture = false;
+	}
+	
+	public static void resetClient()
+	{
+		ClientProxyCore.overworldTextureRequestSent = false;
+		clientRequests.clear();
+        File baseFolder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/temp");
+        if (baseFolder.exists() && baseFolder.isDirectory())
+        {
+        	for (File f : baseFolder.listFiles())
+        	     if (f.isFile()) f.delete();        	
+        }
+		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, new Object[] {}));
 	}
 	
 	/**
@@ -115,13 +145,11 @@ public class MapUtil
     	if (world == null) return;
 
     	File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
-        if (!baseFolder.exists())
+        if (!baseFolder.exists() && !baseFolder.mkdirs())
         {
-            if (!baseFolder.mkdirs())
-            {
-            	GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
-        		return;            	
-            }
+        	GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
+    		doneOverworldTexture = true;
+        	return;            	
         }
 
 //		try {
@@ -134,17 +162,79 @@ public class MapUtil
 //			biomeMapFile.renameTo(new File("OWdiffread.jpg"));
 //		} catch (Exception e) { e.printStackTrace(); }
 
-        File outputFile = new File(baseFolder, "Overworld192x48.bin");
-        if (MapUtil.getBiomeMapForCoords(world, 0, 0, 6, 384, 96, outputFile, null))
+        if (MapUtil.getBiomeMapForCoords(world, 0, 0, 6, 384, 96, baseFolder))
         	doneOverworldTexture = true;
 	}
 	
-	public static boolean getBiomeMapForCoords(World world, int cx, int cz, int scale, int sizeX, int sizeZ, File outputFile, EntityPlayerMP player)
+	public static void sendOverworldToClient(EntityPlayerMP client)
+	{
+		if (doneOverworldTexture)
+		{
+			try
+			{
+		    	File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
+		        if (!baseFolder.exists())
+		        {
+		        	GCLog.severe("Base folder missing: " + baseFolder.getAbsolutePath());
+		        	return;            	
+		        }
+				File file = new File(baseFolder, "Overworld192x48.bin");
+		        if (!file.exists())
+		        {
+		        	GCLog.severe("File missing: " + file.getAbsolutePath());
+		        	return;            	
+		        }
+				GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { 0, 0, FileUtils.readFileToByteArray(file) } ), client);
+			}
+			catch (Exception ex)
+			{
+				System.err.println("Error sending overworld image to player.");
+				ex.printStackTrace();
+			}	
+		}
+	}
+
+	public static boolean buildMaps(World world, int x, int z)
+	{
+    	File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
+        if (!baseFolder.exists() && !baseFolder.mkdirs())
+        {
+        	GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
+    		return false;            	
+        }
+        int cx = convertMap(x);
+        int cz = convertMap(z);
+		getBiomeMapForCoords(world, cx, cz, 1, SIZE_STD, SIZE_STD, baseFolder);
+		getBiomeMapForCoords(world, cx + SIZE_STD2, cz, 1, SIZE_STD, SIZE_STD, baseFolder);
+		getBiomeMapForCoords(world, cx, cz + SIZE_STD2, 1, SIZE_STD, SIZE_STD, baseFolder);
+		getBiomeMapForCoords(world, cx - SIZE_STD2, cz, 1, SIZE_STD, SIZE_STD, baseFolder);
+		getBiomeMapForCoords(world, cx, cz - SIZE_STD2, 1, SIZE_STD, SIZE_STD, baseFolder);
+		getBiomeMapForCoords(world, cx + SIZE_STD2, cz + SIZE_STD2, 1, SIZE_STD, SIZE_STD, baseFolder);
+		getBiomeMapForCoords(world, cx - SIZE_STD2, cz + SIZE_STD2, 1, SIZE_STD, SIZE_STD, baseFolder);
+		getBiomeMapForCoords(world, cx - SIZE_STD2, cz - SIZE_STD2, 1, SIZE_STD, SIZE_STD, baseFolder);
+		getBiomeMapForCoords(world, cx + SIZE_STD2, cz - SIZE_STD2, 1, SIZE_STD, SIZE_STD, baseFolder);
+		return true;
+	}
+	
+	private static int convertMap(int x)
+	{
+        int cx = x + SIZE_STD;
+        if (cx < 0) cx-= SIZE_STD2 - 1;
+    	cx /= SIZE_STD2;
+        return cx * SIZE_STD2;
+	}
+	
+	public static boolean getBiomeMapForCoords(World world, int cx, int cz, int scale, int sizeX, int sizeZ, File baseFolder)
     {
-    	MapGen newGen = new MapGen(world, sizeX, sizeZ, cx, cz, 1 << scale, outputFile);
+        File outputFile;
+        if (sizeX != sizeZ)
+        	outputFile = new File(baseFolder, "Overworld192x48.bin");
+        else
+        	outputFile = getFile(baseFolder, cx, cz);
+		
+		MapGen newGen = new MapGen(world, sizeX, sizeZ, cx, cz, 1 << scale, outputFile);
     	if (newGen.calculatingMap)
     	{
-	    	newGen.biomeMapPlayerBase = player;
 	    	if (calculatingMap.getAndSet(true))
 	    		queuedMaps.add(newGen);
 	    	else
@@ -159,7 +249,7 @@ public class MapUtil
 		if (currentMap == null)
 			return;
 		
-		int j = 48;
+		int j = 12;
 		while (j > 0)
 		{
 			if (currentMap.BiomeMapOneTick())
@@ -266,13 +356,23 @@ public class MapUtil
 		return b;
 	}
 
-    //This runs on the client
-	public static void getOverworldImageFromRaw(byte[] raw) throws IOException
+    @SideOnly(Side.CLIENT)
+	public static void getOverworldImageFromRaw(File folder, int cx, int cz, byte[] raw) throws IOException
 	{
 		if (raw.length == 18432 * 4)
 		{
+            File file0 = new File(folder, "overworldRaw.bin");
+
+            if (!file0.exists() || (file0.canRead() && file0.canWrite()))
+            {
+                FileUtils.writeByteArrayToFile(file0, raw);
+            }
+            else
+            {
+                System.err.println("Cannot read/write to file %minecraftDir%/assets/temp/overworldRaw.bin");
+            }
+
 			//raw is a 192 x 48 byte array of biome types, followed by a 192 x 48 byte array of heights
-			File folder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/temp");
 			File fileImg = new File(folder, "overworldLocal.jpg");
 			if (fileImg.exists()) fileImg.delete();
 
@@ -324,13 +424,85 @@ public class MapUtil
 				ClientProxyCore.overworldTextureLocal = new DynamicTexture(result);
 			}
 		}
-		else if (raw.length == 8192)
+		else
 		{
+            File file0 = getFile(folder, cx, cz);
 
+            if (!file0.exists() || (file0.canRead() && file0.canWrite()))
+            {
+                FileUtils.writeByteArrayToFile(file0, raw);
+            }
 		}
 	}
+	
+    @SideOnly(Side.CLIENT)
+	public static BufferedImage getMap(World world, int xCoord, int zCoord)
+	{
+        int cx = convertMap(xCoord);
+        int cz = convertMap(zCoord);
 
-    public static int convertBiomeColour(int in, int height)
+        File baseFolder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/temp");
+        if (!baseFolder.exists() && !baseFolder.mkdirs())
+        {
+        	GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
+    		return null;            	
+        }
+
+        File filename = getFile(baseFolder, cx, cz);
+        if (!filename.exists())
+        {
+        	if (clientRequests.contains(filename.getName()))
+        		GCLog.debug("Still waiting for file " + filename.getName());
+        	else
+        	{
+        		clientRequests.add(filename.getName());
+        		GCLog.debug("Client requested file" + filename.getName());
+        		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_MAP_IMAGE, new Object[] {world.provider.dimensionId, xCoord, zCoord}));
+        	}
+        	return null;
+        }
+
+        byte[] raw = null;
+        try {
+        	raw = FileUtils.readFileToByteArray(filename);
+		} catch (IOException e)
+		{
+        	GCLog.severe("Problem reading map file: " + baseFolder.getAbsolutePath() + filename.getName());
+        	return null;
+		}
+        if (raw == null || raw.length != SIZE_STD * SIZE_STD * 2)
+        {
+        	GCLog.debug("map size is " + raw.length);
+        	return null;
+        }
+
+        //Quick and dirty: just return the centered image
+        BufferedImage image = new BufferedImage(SIZE_STD, SIZE_STD, BufferedImage.TYPE_INT_RGB);
+        for (int x = 0; x < SIZE_STD; x++)
+        {
+        	for (int z = 0; z < SIZE_STD; z++)
+        	{
+        		int arrayIndex = (x * SIZE_STD + z) * 2;
+        		int biome = ((int) raw[arrayIndex]) & 255;
+        		int height = ((int) raw[arrayIndex + 1]) & 255;
+
+        		if (height < 63 && biome != 10)
+        			biome = 0;
+        		if (height < 56 && biome == 0)
+        			biome = 24;
+
+        		image.setRGB(x, z, convertBiomeColour(biome, height));
+        	}
+        }
+        return image;
+	}
+	
+	private static File getFile(File folder, int cx, int cz)
+	{
+		return new File(folder, "overworld" + cx / SIZE_STD2 + "_" + cz / SIZE_STD2 + ".bin");
+	}
+
+	public static int convertBiomeColour(int in, int height)
     {
     	int rv;
     	int s = MapUtil.biomeColours.size();

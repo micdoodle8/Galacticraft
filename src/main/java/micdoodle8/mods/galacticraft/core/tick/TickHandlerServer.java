@@ -88,8 +88,7 @@ public class TickHandlerServer
 
         TickHandlerServer.spaceRaceData = null;
         TickHandlerServer.tickCount = 0L;
-        MapUtil.calculatingMap.set(false);
-        MapUtil.doneOverworldTexture = false;
+        MapUtil.reset();
     }
 
     public static void addFootprint(long chunkKey, Footprint print, int dimID)

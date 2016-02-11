@@ -335,7 +335,7 @@ public class GameScreenCelestial implements IGameScreen
         GL11.glPopMatrix();
     }
     
-    private void drawTexturedRectUV(float x, float y, float width, float height, float ticks)
+    public static void drawTexturedRectUV(float x, float y, float width, float height, float ticks)
     {
     	for (int ysect = 0; ysect < 6; ysect ++)
     	{
@@ -345,7 +345,7 @@ public class GameScreenCelestial implements IGameScreen
     	}
     }    	
 
-    private void drawTexturedRectUVSixth(float x, float y, float width, float height, float prog, float y0)
+    public static void drawTexturedRectUVSixth(float x, float y, float width, float height, float prog, float y0)
     {
     	y0 /= 2;
     	prog = 1.0F - prog;
