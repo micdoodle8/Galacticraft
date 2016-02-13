@@ -144,10 +144,16 @@ public class RenderPlayerBaseGC extends RenderPlayerBase
     {
         if (par1AbstractClientPlayer.isEntityAlive() && par1AbstractClientPlayer.isPlayerSleeping())
         {
-            RotatePlayerEvent event = new RotatePlayerEvent(par1AbstractClientPlayer);
+        	RotatePlayerEvent event = new RotatePlayerEvent(par1AbstractClientPlayer);
             MinecraftForge.EVENT_BUS.post(event);
 
-            if (event.shouldRotate == null || event.shouldRotate)
+            if (!event.vanillaOverride)
+            {
+                GL11.glRotatef(par1AbstractClientPlayer.getBedOrientationInDegrees(), 0.0F, 1.0F, 0.0F);
+                GL11.glRotatef(this.getDeathMaxRotation(par1AbstractClientPlayer), 0.0F, 0.0F, 1.0F);
+                GL11.glRotatef(270.0F, 0.0F, 1.0F, 0.0F);
+            }
+            else if (event.shouldRotate == null || event.shouldRotate)
             {
                 GL11.glRotatef(par1AbstractClientPlayer.getBedOrientationInDegrees(), 0.0F, 1.0F, 0.0F);
             }
