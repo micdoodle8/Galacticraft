@@ -119,8 +119,13 @@ public class SkyProviderMoon extends IRenderHandler
 
         if (var20 > 0.0F)
         {
+            GL11.glPushMatrix();
+            GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(-19.0F, 0, 1.0F, 0);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, var20);
             GL11.glCallList(this.starGLCallList);
+            GL11.glPopMatrix();
         }
 
         GL11.glEnable(GL11.GL_TEXTURE_2D);
