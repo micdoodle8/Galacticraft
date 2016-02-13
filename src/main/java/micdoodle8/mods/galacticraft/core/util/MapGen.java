@@ -157,7 +157,7 @@ public class MapGen
 	
 	private void biomeMapOneChunk(int x0, int z0, int ix, int iz, int factor)
 	{
-        IntCache.resetIntCache();
+//      IntCache.resetIntCache();
 //		int[] biomesGrid = biomeMapGenLayer.getInts(x0 << 4, z0 << 4, 16, 16);
 //		TODO: For some reason getInts() may not work in Minecraft 1.7.2, gives a banded result where part of the array is 0
 		biomesGrid = biomeMapWCM.getBiomeGenAt(biomesGrid, x0 << 4, z0 << 4, 16, 16, false);

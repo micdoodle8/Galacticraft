@@ -533,6 +533,7 @@ gui.spaceRace.create.addPlayers.name=Add Player(s)
 gui.spaceRace.create.remPlayers.name=Remove Player(s)
 gui.spaceRace.create.sendInvite.name=Send Invite
 gui.spaceRace.create.remove.name=Remove
+gui.spaceRace.join.name=Join
 gui.spaceRace.join.title.name=Join Space Race
 gui.spaceRace.join.owner.name=Owner
 gui.spaceRace.join.memberCount.name=%d members
