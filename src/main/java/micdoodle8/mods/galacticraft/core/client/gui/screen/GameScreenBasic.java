@@ -23,7 +23,6 @@ public class GameScreenBasic implements IGameScreen
     private float textureAy = 0F;
     private float textureBx = 1.0F;
     private float textureBy = 1.0F;
-    //private DynamicTexture localMap;
 
     public GameScreenBasic()
     {
@@ -74,17 +73,22 @@ public class GameScreenBasic implements IGameScreen
 //        	ClientProxyCore.overworldTextureLocal = null;
         	break;
         case 1:
-        	if (scr instanceof DrawGameScreen && ((DrawGameScreen)scr).localMap != null)
+        	if (scr instanceof DrawGameScreen && ((DrawGameScreen)scr).mapDone)
 	        {
-	            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ((DrawGameScreen)scr).localMap.getGlTextureId());
+        		GL11.glBindTexture(GL11.GL_TEXTURE_2D, DrawGameScreen.reusableMap.getGlTextureId());
 		        draw2DTexture();
 	        }
 	        else if (ClientProxyCore.overworldTextureLocal != null)
 	        {
+	            GL11.glPushMatrix();
+	        	float centreX = scaleX / 2;
+	        	float centreY = scaleY / 2;
+	            GL11.glTranslatef(centreX, centreY, 0F);
 	        	GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureLocal.getGlTextureId());
-		    	float relSize = 8F;
-		    	float size = relSize / 70 * (Math.max(scaleX, scaleY) - 0.2F);    	
+		    	float relSize = 45F;
+		    	float size = relSize / 70 * (Math.min(scaleX, scaleY) - 0.2F);    	
 		    	GameScreenCelestial.drawTexturedRectUV(- size / 2, -size / 2, size, size, ticks);
+		        GL11.glPopMatrix();
 	        }
 	        else
 	        {

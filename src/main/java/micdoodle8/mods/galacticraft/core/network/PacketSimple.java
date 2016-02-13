@@ -1317,9 +1317,9 @@ public class PacketSimple extends Packet implements IPacket
             break;
         case S_REQUEST_MAP_IMAGE:
         	int dim = (Integer) this.data.get(0);
-        	int xCoord = (Integer) this.data.get(1);
-        	int zCoord = (Integer) this.data.get(2);
-        	MapUtil.buildMaps(WorldUtil.getProviderForDimensionServer(dim).worldObj, xCoord, zCoord);
+        	int cx = (Integer) this.data.get(1);
+        	int cz = (Integer) this.data.get(2);
+        	MapUtil.sendOrCreateMap(WorldUtil.getProviderForDimensionServer(dim).worldObj, cx, cz, playerBase);
         	break;
         case S_REQUEST_PLAYERSKIN:
         	String strName = (String) this.data.get(0);

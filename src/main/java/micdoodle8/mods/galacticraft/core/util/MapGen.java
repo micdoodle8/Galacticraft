@@ -51,14 +51,13 @@ public class MapGen
     
     public MapGen(World world, int sx, int sz, int cx, int cz, int scale, File file)
     {
-    	this.biomeMapCx = cx;
-    	this.biomeMapCz = cz;
+    	this.biomeMapCx = cx >> 4;
+    	this.biomeMapCz = cz >> 4;
     	if (file.exists())
         {
-			try {
-				GCLog.debug("Sending to client: " + file.getName());
-				this.sendToClient(FileUtils.readFileToByteArray(file));
-			} catch (IOException e) { e.printStackTrace(); }
+//			try {
+//				this.sendToClient(FileUtils.readFileToByteArray(file));
+//			} catch (IOException e) { e.printStackTrace(); }
 			return;
         }
 
@@ -70,7 +69,7 @@ public class MapGen
     	int limitX = biomeMapSizeX * biomeMapFactor / 32;
     	int limitZ = biomeMapSizeZ * biomeMapFactor / 32;
     	this.biomeMapz00 = -limitZ;
-    	this.biomeMapx0 = -limitZ;
+    	this.biomeMapx0 = -limitX;
     	this.biomeMapz0 = this.biomeMapz00;
     	this.ix = 0;
     	this.iz = 0;
@@ -88,7 +87,7 @@ public class MapGen
     		return;
     	}
     	
-    	GCLog.debug("Starting map generation centered at " + cx + "," + cz);
+    	GCLog.debug("Starting map generation " + file.getName() + " top left " + ((biomeMapCx - limitX) * 16) + "," + ((biomeMapCz - limitZ) * 16));
         field_147435_p = world.getWorldInfo().getTerrainType();
     	this.initialise(world.getSeed());
     }
@@ -119,11 +118,11 @@ public class MapGen
 	{
 		try
 		{
-			GalacticraftCore.packetPipeline.sendToAll(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { this.biomeMapCx, this.biomeMapCz, toSend } ));
+			GalacticraftCore.packetPipeline.sendToAll(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { this.biomeMapCx << 4, this.biomeMapCz << 4, toSend } ));
 		}
 		catch (Exception ex)
 		{
-			System.err.println("Error sending overworld image to player.");
+			System.err.println("Error sending map image to player.");
 			ex.printStackTrace();
 		}	
 	}
@@ -216,7 +215,7 @@ public class MapGen
     			}
     			int arrayIndex = (ix * biomeMapSizeZ + iz) * 2;
     			this.biomeAndHeightArray[arrayIndex] = (byte) (cols.get(maxindex).intValue());
-    			this.biomeAndHeightArray[arrayIndex + 1] = (byte) (avgHeight / divisor);
+    			this.biomeAndHeightArray[arrayIndex + 1] = (byte) ((avgHeight + (divisor + 1) / 2)/ divisor);
     			iz++;
     		}
     		iz = izstore;

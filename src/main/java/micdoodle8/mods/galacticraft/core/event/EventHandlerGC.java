@@ -31,7 +31,6 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
@@ -98,13 +97,13 @@ public class EventHandlerGC
     @SubscribeEvent
     public void onRocketLaunch(EntitySpaceshipBase.RocketLaunchEvent event)
     {
-        if (!event.entity.worldObj.isRemote && event.entity.worldObj.provider.dimensionId == 0)
-        {
-            if (event.rocket.riddenByEntity instanceof EntityPlayerMP)
-            {
-                TickHandlerServer.playersRequestingMapData.add((EntityPlayerMP) event.rocket.riddenByEntity);
-            }
-        }
+//        if (!event.entity.worldObj.isRemote && event.entity.worldObj.provider.dimensionId == 0)
+//        {
+//            if (event.rocket.riddenByEntity instanceof EntityPlayerMP)
+//            {
+//                TickHandlerServer.playersRequestingMapData.add((EntityPlayerMP) event.rocket.riddenByEntity);
+//            }
+//        }
     }
 
     @SubscribeEvent

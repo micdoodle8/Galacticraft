@@ -32,7 +32,6 @@ import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityHydrogenPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -43,11 +42,8 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkProviderServer;
 
-import javax.imageio.ImageIO;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -324,74 +320,22 @@ public class TickHandlerServer
             {
                 if (!playersRequestingMapData.isEmpty())
                 {
-                    ArrayList<EntityPlayerMP> copy = new ArrayList<EntityPlayerMP>(playersRequestingMapData);
-                    for (EntityPlayerMP playerMP : copy)
+                    File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
+                    if (!baseFolder.exists() && !baseFolder.mkdirs())
                     {
-                        GCPlayerStats stats = GCPlayerStats.get(playerMP);
-                        ChunkCoordIntPair chunkCoordIntPair = new ChunkCoordIntPair((int)Math.floor(stats.coordsTeleportedFromX) >> 4, (int)Math.floor(stats.coordsTeleportedFromZ) >> 4);
-                        BufferedImage image = new BufferedImage(400, 400, BufferedImage.TYPE_INT_RGB);
-
-                        for (int x0 = -12; x0 <= 12; x0++)
-                        {
-                            for (int z0 = -12; z0 <= 12; z0++)
-                            {
-                                Chunk chunk = MinecraftServer.getServer().worldServerForDimension(0).getChunkFromChunkCoords(chunkCoordIntPair.chunkXPos + x0, chunkCoordIntPair.chunkZPos + z0);
-
-                                if (chunk != null)
-                                {
-                                    for (int z = 0; z < 16; z++)
-                                    {
-                                        for (int x = 0; x < 16; x++)
-                                        {
-                                            int l4 = chunk.getHeightValue(x, z) + 1;
-                                            Block block = Blocks.air;
-                                            int i5 = 0;
-
-                                            if (l4 > 1)
-                                            {
-                                                do
-                                                {
-                                                    --l4;
-                                                    block = chunk.getBlock(x, l4, z);
-                                                    i5 = chunk.getBlockMetadata(x, l4, z);
-                                                }
-                                                while (block.getMapColor(i5) == MapColor.airColor && l4 > 0);
-                                            }
-
-                                            int col = block.getMapColor(i5).colorValue;
-                                            image.setRGB(x + (x0 + 12) * 16, z + (z0 + 12) * 16, col);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        try
-                        {
-                            File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
-
-                            if (!baseFolder.exists())
-                            {
-                                if (!baseFolder.mkdirs())
-                                {
-                                	GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
-                                }
-                            }
-
-                            File outputFile = new File(baseFolder, "" + chunkCoordIntPair.chunkXPos + "_" + chunkCoordIntPair.chunkZPos + ".jpg");
-
-                            if (!outputFile.exists() || (outputFile.canWrite() && outputFile.canRead()))
-                            {
-                                ImageIO.write(image, "jpg", outputFile);
-                            }
-                        }
-                        catch (IOException e)
-                        {
-                            e.printStackTrace();
-                        }
+                    	GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
                     }
-
-                    playersRequestingMapData.removeAll(copy);
+                    else
+                    {
+	                	ArrayList<EntityPlayerMP> copy = new ArrayList<EntityPlayerMP>(playersRequestingMapData);
+	                    BufferedImage reusable = new BufferedImage(400, 400, BufferedImage.TYPE_INT_RGB);
+	                    for (EntityPlayerMP playerMP : copy)
+	                    {
+	                        GCPlayerStats stats = GCPlayerStats.get(playerMP);
+	                    	MapUtil.makeVanillaMap(playerMP.dimension, (int)Math.floor(stats.coordsTeleportedFromX) >> 4, (int)Math.floor(stats.coordsTeleportedFromZ) >> 4, baseFolder, reusable);
+	                    }
+	                    playersRequestingMapData.removeAll(copy);
+                    }
                 }
             }
 
