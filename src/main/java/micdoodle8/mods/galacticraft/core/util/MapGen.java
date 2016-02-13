@@ -23,6 +23,7 @@ import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 
+@SuppressWarnings("unused")
 public class MapGen
 {
     public boolean calculatingMap = false;
@@ -38,22 +39,25 @@ public class MapGen
     private static GenLayer biomeMapGenLayer;
 	public File biomeMapFile;
 	private byte[] biomeAndHeightArray = null;
-	public EntityPlayerMP biomeMapPlayerBase = null;
 	private int biomeMapSizeX;
 	private int biomeMapSizeZ;
 	private Random rand = new Random();
 //	private WeakReference<World> biomeMapWorld;
     private int[] heights = null;
     private double[] heighttemp = null;
-    private WorldType field_147435_p = WorldType.DEFAULT;      
-
+    private WorldType field_147435_p = WorldType.DEFAULT;
+    private BiomeGenBase[] biomesGrid = null;  //Memory efficient to keep re-using the same one.
+    private BiomeGenBase[] biomesGridHeights = null;
+    
     public MapGen(World world, int sx, int sz, int cx, int cz, int scale, File file)
     {
+    	this.biomeMapCx = cx >> 4;
+    	this.biomeMapCz = cz >> 4;
     	if (file.exists())
         {
-			try {
-				this.sendToClient(FileUtils.readFileToByteArray(file));
-			} catch (IOException e) { e.printStackTrace(); }
+//			try {
+//				this.sendToClient(FileUtils.readFileToByteArray(file));
+//			} catch (IOException e) { e.printStackTrace(); }
 			return;
         }
 
@@ -65,14 +69,12 @@ public class MapGen
     	int limitX = biomeMapSizeX * biomeMapFactor / 32;
     	int limitZ = biomeMapSizeZ * biomeMapFactor / 32;
     	this.biomeMapz00 = -limitZ;
-    	this.biomeMapx0 = -limitZ;
+    	this.biomeMapx0 = -limitX;
     	this.biomeMapz0 = this.biomeMapz00;
     	this.ix = 0;
     	this.iz = 0;
     	this.biomeMapWCM = world.getWorldChunkManager();
   //  	this.biomeMapWorld = new WeakReference<World>(world);
-    	this.biomeMapCx = cx;
-    	this.biomeMapCz = cz;
     	try {
     		Field bil = biomeMapWCM.getClass().getDeclaredField(VersionUtil.getNameDynamic(VersionUtil.KEY_FIELD_BIOMEINDEXLAYER));
     		bil.setAccessible(true);
@@ -85,7 +87,7 @@ public class MapGen
     		return;
     	}
     	
-    	GCLog.debug("Starting map generation centered at " + cx + "," + cz);
+    	GCLog.debug("Starting map generation " + file.getName() + " top left " + ((biomeMapCx - limitX) * 16) + "," + ((biomeMapCz - limitZ) * 16));
         field_147435_p = world.getWorldInfo().getTerrainType();
     	this.initialise(world.getSeed());
     }
@@ -116,11 +118,11 @@ public class MapGen
 	{
 		try
 		{
-			GalacticraftCore.packetPipeline.sendToAll(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { toSend } ));
+			GalacticraftCore.packetPipeline.sendToAll(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { this.biomeMapCx << 4, this.biomeMapCz << 4, toSend } ));
 		}
 		catch (Exception ex)
 		{
-			System.err.println("Error sending overworld image to player.");
+			System.err.println("Error sending map image to player.");
 			ex.printStackTrace();
 		}	
 	}
@@ -156,9 +158,9 @@ public class MapGen
 	private void biomeMapOneChunk(int x0, int z0, int ix, int iz, int factor)
 	{
         IntCache.resetIntCache();
-		int[] biomesGrid = biomeMapGenLayer.getInts(x0 << 4, z0 << 4, 16, 16);
+//		int[] biomesGrid = biomeMapGenLayer.getInts(x0 << 4, z0 << 4, 16, 16);
 //		TODO: For some reason getInts() may not work in Minecraft 1.7.2, gives a banded result where part of the array is 0
-//		BiomeGenBase[] biomesGrid = biomeMapWCM.getBiomeGenAt(null, x0 << 4, z0 << 4, 16, 16, false);
+		biomesGrid = biomeMapWCM.getBiomeGenAt(biomesGrid, x0 << 4, z0 << 4, 16, 16, false);
     	if (biomesGrid == null) return;
     	getHeightMap(x0, z0);
     	int limit = Math.min(factor, 16);
@@ -190,7 +192,7 @@ public class MapGen
         				int height = heights[hidx + zz];
         				avgHeight += height;
         				divisor ++;
-        				biome = biomesGrid[xx + x + ((zz + z) << 4)];   //.biomeID;
+        				biome = biomesGrid[xx + x + ((zz + z) << 4)].biomeID;
         				if (biome != lastcol)
         				{
             				idx = cols.indexOf(biome);
@@ -213,7 +215,7 @@ public class MapGen
     			}
     			int arrayIndex = (ix * biomeMapSizeZ + iz) * 2;
     			this.biomeAndHeightArray[arrayIndex] = (byte) (cols.get(maxindex).intValue());
-    			this.biomeAndHeightArray[arrayIndex + 1] = (byte) (avgHeight / divisor);
+    			this.biomeAndHeightArray[arrayIndex + 1] = (byte) ((avgHeight + (divisor + 1) / 2)/ divisor);
     			iz++;
     		}
     		iz = izstore;
@@ -224,8 +226,8 @@ public class MapGen
     public void getHeightMap(int cx, int cz)
     {
     	rand.setSeed((long)cx * 341873128712L + (long)cz * 132897987541L);
-        byte seaLevel = 63;
-        func_147423_a(this.biomeMapWCM.getBiomesForGeneration(null, cx * 4 - 2, cz * 4 - 2, 10, 10), cx * 4, 0, cz * 4);
+    	biomesGridHeights = this.biomeMapWCM.getBiomesForGeneration(biomesGridHeights, cx * 4 - 2, cz * 4 - 2, 10, 10); 
+        func_147423_a(cx * 4, 0, cz * 4);
 
         final double d0 = 0.125D;
         final double d9 = 0.25D;
@@ -242,7 +244,7 @@ public class MapGen
                 int ba = (xb + zz) * 33;
                 int bb = ba + 33;
 
-                for (int yy = 0; yy < 32; ++yy)
+                for (int yy = 2; yy < 18; ++yy)
                 {
                     double d1 = heighttemp[aa + yy];
                     double d2 = heighttemp[ab + yy];
@@ -296,9 +298,7 @@ public class MapGen
     private NoiseGeneratorOctaves noiseGen1;
     private NoiseGeneratorOctaves noiseGen2;
     private NoiseGeneratorOctaves noiseGen3;
-    private NoiseGeneratorPerlin noiseGen4;
-    public NoiseGeneratorOctaves noiseGen5;
-    public NoiseGeneratorOctaves noiseGen6;
+    public NoiseGeneratorOctaves noiseGen4;
     
     public void initialise(long seed)
     {
@@ -306,24 +306,22 @@ public class MapGen
 	    noiseGen1 = new NoiseGeneratorOctaves(rand, 16);
 	    noiseGen2 = new NoiseGeneratorOctaves(rand, 16);
 	    noiseGen3 = new NoiseGeneratorOctaves(rand, 8);
-	    noiseGen4 = new NoiseGeneratorPerlin(rand, 4);
-	    noiseGen5 = new NoiseGeneratorOctaves(rand, 10);
-	    noiseGen6 = new NoiseGeneratorOctaves(rand, 16);
+	    noiseGen4 = new NoiseGeneratorOctaves(rand, 16);
     }
 
-    private void func_147423_a(BiomeGenBase[] biomesGrid, int p_147423_1_, int p_147423_2_, int p_147423_3_)
+    private void func_147423_a(int cx, int cy, int cz)
     {
         double d0 = 684.412D;
         double d1 = 684.412D;
         double d2 = 512.0D;
         double d3 = 512.0D;
-        noiseField4 = noiseGen6.generateNoiseOctaves(noiseField4, p_147423_1_, p_147423_3_, 5, 5, 200.0D, 200.0D, 0.5D);
-        noiseField3 = noiseGen3.generateNoiseOctaves(noiseField3, p_147423_1_, p_147423_2_, p_147423_3_, 5, 33, 5, 8.555150000000001D, 4.277575000000001D, 8.555150000000001D);
-        noiseField1 = noiseGen1.generateNoiseOctaves(noiseField1, p_147423_1_, p_147423_2_, p_147423_3_, 5, 33, 5, 684.412D, 684.412D, 684.412D);
-        noiseField2 = noiseGen2.generateNoiseOctaves(noiseField2, p_147423_1_, p_147423_2_, p_147423_3_, 5, 33, 5, 684.412D, 684.412D, 684.412D);
+        noiseField4 = noiseGen4.generateNoiseOctaves(noiseField4, cx, cz, 5, 5, 200.0D, 200.0D, 0.5D);
+        noiseField3 = noiseGen3.generateNoiseOctaves(noiseField3, cx, cy, cz, 5, 33, 5, 8.555150000000001D, 4.277575000000001D, 8.555150000000001D);
+        noiseField1 = noiseGen1.generateNoiseOctaves(noiseField1, cx, cy, cz, 5, 33, 5, 684.412D, 684.412D, 684.412D);
+        noiseField2 = noiseGen2.generateNoiseOctaves(noiseField2, cx, cy, cz, 5, 33, 5, 684.412D, 684.412D, 684.412D);
         boolean flag1 = false;
         boolean flag = false;
-        int l = 0;
+        int l = 2;
         int i1 = 0;
         double d4 = 8.5D;
         boolean amplified = field_147435_p == WorldType.AMPLIFIED;
@@ -335,14 +333,14 @@ public class MapGen
                 float f = 0.0F;
                 float f1 = 0.0F;
                 float f2 = 0.0F;
-                BiomeGenBase biomegenbase = biomesGrid[xx + 22 + zz * 10];
+                BiomeGenBase biomegenbase = biomesGridHeights[xx + 22 + zz * 10];
 
                 for (int x = -2; x <= 2; ++x)
                 {
                     int baseIndex = xx + x + 22 + zz * 10;
                 	for (int z = -2; z <= 2; ++z)
                     {
-                        BiomeGenBase biomegenbase1 = biomesGrid[baseIndex + z * 10];
+                        BiomeGenBase biomegenbase1 = biomesGridHeights[baseIndex + z * 10];
                         float f3 = biomegenbase1.rootHeight;
                         float f4 = biomegenbase1.heightVariation;
 
@@ -402,15 +400,14 @@ public class MapGen
 
                 ++i1;
                 double d13 = (double)f1;
-                double d14 = (double)f;
+                final double d14 = (double)f / 6.0D;
                 d13 += d12 * 0.2D;
                 d13 = d13 * 8.5D / 8.0D;
                 double d5 = 8.5D + d13 * 4.0D;
 
-                for (int j2 = 0; j2 < 33; ++j2)
+                for (int j2 = 2; j2 < 19; ++j2)
                 {
-                    double d6 = ((double)j2 - d5) * 12.0D * 128.0D / 256.0D / d14;
-
+                    double d6 = ((double)j2 - d5) / d14;
                     if (d6 < 0.0D)
                     {
                         d6 *= 4.0D;
@@ -419,17 +416,10 @@ public class MapGen
                     double d7 = noiseField1[l] / 512.0D;
                     double d8 = noiseField2[l] / 512.0D;
                     double d9 = (noiseField3[l] / 10.0D + 1.0D) / 2.0D;
-                    double d10 = MathHelper.denormalizeClamp(d7, d8, d9) - d6;
-
-                    if (j2 > 29)
-                    {
-                        double d11 = (double)((float)(j2 - 29) / 3.0F);
-                        d10 = d10 * (1.0D - d11) + -10.0D * d11;
-                    }
-
-                    heighttemp[l] = d10;
+                    heighttemp[l] = MathHelper.denormalizeClamp(d7, d8, d9) - d6;
                     ++l;
                 }
+                l += 16;
             }
         }
     }
