@@ -533,6 +533,7 @@ gui.spaceRace.create.addPlayers.name=เพิ่มผู้เล่น
 gui.spaceRace.create.remPlayers.name=ลบผู้เล่น
 gui.spaceRace.create.sendInvite.name=ส่งคำขอ
 gui.spaceRace.create.remove.name=ลบออก
+gui.spaceRace.join.name=เข้าร่วม
 gui.spaceRace.join.title.name=เข้าร่วมการแข่งขันบนอวกาศ
 gui.spaceRace.join.owner.name=เจ้าของ
 gui.spaceRace.join.memberCount.name=%d สมาชิก
