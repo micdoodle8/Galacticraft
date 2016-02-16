@@ -14,6 +14,8 @@ import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
@@ -683,8 +685,16 @@ public class ConfigManagerCore
         Block block = Block.getBlockFromName(name);
         if (block == null)
         {
-            if (logging) GCLog.severe("[config] " + caller + ": unrecognised block name '" + s + "'.");
-            return null;
+        	Item item = (Item)Item.itemRegistry.getObject(name);
+        	if (item instanceof ItemBlock)
+        	{
+        		block = ((ItemBlock)item).field_150939_a;
+        	}
+        	if (block == null)
+        	{
+	        	if (logging) GCLog.severe("[config] " + caller + ": unrecognised block name '" + s + "'.");
+	            return null;
+        	}
         }
         try
         {
