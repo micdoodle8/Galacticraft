@@ -28,6 +28,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.DynamicTextureProper;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.DrawGameScreen;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -87,6 +88,7 @@ public class MapUtil
 	public static void resetClient()
 	{
 		ClientProxyCore.overworldTextureRequestSent = false;
+		ClientProxyCore.overworldTexturesValid = false;
 		clientRequests.clear();
         File baseFolder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/temp");
         if (baseFolder.exists() && baseFolder.isDirectory())
@@ -416,14 +418,15 @@ public class MapUtil
 
 			//raw is a 384 x 96 byte array of biome types followed by heights
 			BufferedImage worldImage = new BufferedImage(192, 48, BufferedImage.TYPE_INT_RGB);
+			BufferedImage worldImageLarge = new BufferedImage(384 * 2, 96 * 2, BufferedImage.TYPE_INT_RGB);
 			ArrayList<Integer> cols = new ArrayList<Integer>();
 			int lastcol = -1;
 			int idx = 0;
-			for (int x = 0; x < 192; x++)
+			for (int x = 0; x < 384; x++)
 			{
-				for (int z = 0; z < 48; z++)
+				for (int z = 0; z < 96; z++)
 				{
-					int arrayIndex = (x * 96 + z) * 4;
+					int arrayIndex = (x * 96 + z) * 2;
 					int biome = ((int) raw[arrayIndex]) & 255;
 					int height = ((int) raw[arrayIndex + 1]) & 255;
 
@@ -432,9 +435,20 @@ public class MapUtil
 					if (height < 56 && biome == 0)
 						biome = 24;
 
-					worldImage.setRGB(x, z, convertBiomeColour(biome, height));
+					worldImageLarge.setRGB(x * 2, z * 2, convertBiomeColour(biome, height));
+					worldImageLarge.setRGB(x * 2, z * 2 + 1, convertBiomeColour(biome, height));
+					worldImageLarge.setRGB(x * 2 + 1, z * 2, convertBiomeColour(biome, height));
+					worldImageLarge.setRGB(x * 2 + 1, z * 2 + 1, convertBiomeColour(biome, height));
+
+					if (x % 2 == 0 && z % 2 == 0)
+						worldImage.setRGB(x / 2, z / 2, convertBiomeColour(biome, height));
 				}
 			}
+
+			ImageOutputStream outputStream = new FileImageOutputStream(new File(folder, "large.jpg"));  
+			GalacticraftCore.jpgWriter.setOutput(outputStream);
+			GalacticraftCore.jpgWriter.write(null, new IIOImage(worldImageLarge, null, null), GalacticraftCore.writeParam);
+			outputStream.close();
 			
 			IResourceManager rm = Minecraft.getMinecraft().getResourceManager();			
 			BufferedImage paletteImage = null;
@@ -446,14 +460,19 @@ public class MapUtil
 			} catch (Exception e) { e.printStackTrace(); return;  }
 
 			BufferedImage result = convertTo12pxTexture(worldImage, paletteImage);
-//			ImageOutputStream outputStream = new FileImageOutputStream(fileImg);  
-//			GalacticraftCore.jpgWriter.setOutput(outputStream);
-//			GalacticraftCore.jpgWriter.write(null, new IIOImage(result, null, null), GalacticraftCore.writeParam);
-//			outputStream.close();
 
 			if (result != null)
 			{
-				ClientProxyCore.overworldTextureLocal = new DynamicTexture(result);
+				if (ClientProxyCore.overworldTextureWide == null)
+					ClientProxyCore.overworldTextureWide = new DynamicTextureProper(192,48);
+				if (ClientProxyCore.overworldTextureClient == null)
+					ClientProxyCore.overworldTextureClient = new DynamicTextureProper(48,48);
+				if (ClientProxyCore.overworldTextureLarge == null)
+					ClientProxyCore.overworldTextureLarge = new DynamicTextureProper(768,192);
+				ClientProxyCore.overworldTextureWide.update(result);
+				ClientProxyCore.overworldTextureClient.update(result);
+				ClientProxyCore.overworldTextureLarge.update(worldImageLarge);
+				ClientProxyCore.overworldTexturesValid = true;
 			}
 		}
 		else
@@ -491,7 +510,6 @@ public class MapUtil
         if (makeRGBimage(image, baseFolder, cx + SIZE_STD2, cz - SIZE_STD2, SIZE_STD2, 0, xCoord, zCoord, dim, result)) result = false;
         if (makeRGBimage(image, baseFolder, cx + SIZE_STD2, cz, SIZE_STD2, SIZE_STD, xCoord, zCoord, dim, result)) result = false;
         if (makeRGBimage(image, baseFolder, cx + SIZE_STD2, cz + SIZE_STD2, SIZE_STD2, SIZE_STD2, xCoord, zCoord, dim, result)) result = false;
-        if (result) GCLog.debug("Image success");
         return result;
 	}
 
@@ -532,7 +550,6 @@ public class MapUtil
 
         int xstart = Math.max(0, -offsetX -ox);
         int zstart = Math.max(0, -offsetZ -oz);
-		GCLog.debug("Image " + xstart + "," + zstart + " offsetX=" + offsetX + " offsetZ = " + offsetZ + " ox=" + ox + " oz=" + oz);
     	for (int x = xstart; x < SIZE_STD; x++)
     	{
     		int imagex = x + offsetX + ox; 

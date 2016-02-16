@@ -27,6 +27,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.client.DynamicTextureProper;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
 import micdoodle8.mods.galacticraft.core.client.fx.EffectHandler;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
@@ -111,7 +112,6 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.IImageBuffer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -214,9 +214,11 @@ public class ClientProxyCore extends CommonProxyCore
     public static List<String> gearDataRequests = Lists.newArrayList();
     //private static int playerList;
 
-    public static DynamicTexture overworldTextureClient;
-    public static DynamicTexture overworldTextureLocal;
+    public static DynamicTextureProper overworldTextureClient;
+    public static DynamicTextureProper overworldTextureWide;
+    public static DynamicTextureProper overworldTextureLarge;
     public static boolean overworldTextureRequestSent;
+    public static boolean overworldTexturesValid;
 
     public static float PLAYER_Y_OFFSET = 1.6200000047683716F;
     
@@ -1250,7 +1252,7 @@ public class ClientProxyCore extends CommonProxyCore
                 ClientProxyCore.overworldTextureRequestSent = true;
             }
 
-            if (ClientProxyCore.overworldTextureClient != null)
+            if (ClientProxyCore.overworldTexturesValid)
             {
                 event.celestialBodyTexture = null;
                 GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureClient.getGlTextureId());

@@ -79,13 +79,13 @@ public class GameScreenBasic implements IGameScreen
         		GL11.glBindTexture(GL11.GL_TEXTURE_2D, DrawGameScreen.reusableMap.getGlTextureId());
 		        draw2DTexture();
 	        }
-	        else if (ClientProxyCore.overworldTextureLocal != null)
+	        else if (ClientProxyCore.overworldTexturesValid)
 	        {
 	            GL11.glPushMatrix();
 	        	float centreX = scaleX / 2;
 	        	float centreY = scaleY / 2;
 	            GL11.glTranslatef(centreX, centreY, 0F);
-	            RenderPlanet.renderPlanet(ClientProxyCore.overworldTextureLocal.getGlTextureId(), Math.min(scaleX, scaleY) - 0.2F, ticks, 45F);
+	            RenderPlanet.renderPlanet(ClientProxyCore.overworldTextureWide.getGlTextureId(), Math.min(scaleX, scaleY) - 0.2F, ticks, 45F);
 		        GL11.glPopMatrix();
 	        }
 	        else
