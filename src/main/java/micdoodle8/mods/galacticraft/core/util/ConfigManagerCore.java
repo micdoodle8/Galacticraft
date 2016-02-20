@@ -57,6 +57,7 @@ public class ConfigManagerCore
     public static boolean disableBiomeTypeRegistrations;
     public static int[] staticLoadDimensions = { };
     public static int[] disableRocketLaunchDimensions = { -1, 1 };
+    public static boolean disableRocketLaunchAllNonGC;
 
     // SCHEMATICS
     public static int idSchematicRocketT1;
@@ -148,6 +149,12 @@ public class ConfigManagerCore
                 }
             }
 
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Enable Debug Messages", false);
+            prop.comment = "If this is enabled, debug messages will appear in the console. This is useful for finding bugs in the mod.";
+            prop.setLanguageKey("gc.configgui.enableDebug");
+            enableDebug = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+
             prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "idDimensionMoon", -28);
             prop.comment = "Dimension ID for the Moon";
             prop.setLanguageKey("gc.configgui.idDimensionMoon").setRequiresMcRestart(true);
@@ -179,10 +186,11 @@ public class ConfigManagerCore
             staticLoadDimensions = prop.getIntList();
             propOrder.add(prop.getName());
 
-            prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "Dimensions where rockets cannot launch", ConfigManagerCore.disableRocketLaunchDimensions);
+            prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "Dimensions where rockets cannot launch", new String[] {"1", "-1"} );
             prop.comment = "IDs of dimensions where rockets should not launch - this should always include the Nether.";
             prop.setLanguageKey("gc.configgui.rocketDisabledDimensions");
             disableRocketLaunchDimensions = prop.getIntList();
+            disableRocketLaunchAllNonGC = searchAsterisk(prop.getStringList());
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "Disable rockets from returning to Overworld", false);
@@ -353,14 +361,6 @@ public class ConfigManagerCore
             prop.comment = "Set to true to make Galacticraft fuel register as fuelgc, for backwards compatibility with previously generated worlds.";
             prop.setLanguageKey("gc.configgui.useOldFuelFluidID");
             useOldFuelFluidID = prop.getBoolean(false);
-            propOrder.add(prop.getName());
-
-//Debug
-
-            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Enable Debug Messages", false);
-            prop.comment = "If this is enabled, debug messages will appear in the console. This is useful for finding bugs in the mod.";
-            prop.setLanguageKey("gc.configgui.enableDebug");
-            enableDebug = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable lander on Moon and other planets", false);
@@ -645,6 +645,20 @@ public class ConfigManagerCore
         }
 
         return foundCount > 0;
+    }
+
+    /**
+     * Note for this to be effective, the prop = config.get() call has to provide a String[] as the default values
+     * If you use an Integer[] then the config parser deletes all non-numerical lines from the config before GC even sees them
+     */
+    private static boolean searchAsterisk(String[] strings)
+    {
+    	for (String s : strings)
+    	{
+    		if (s != null && "*".equals(s.trim()))
+    			return true;
+    	}
+    	return false;
     }
 
     public static List<IConfigElement> getConfigElements()
