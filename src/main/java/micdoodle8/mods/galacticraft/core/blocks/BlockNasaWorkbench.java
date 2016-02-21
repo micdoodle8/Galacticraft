@@ -111,9 +111,9 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int x0, int y0, int z0, EntityLivingBase entity, ItemStack var6)
+    public void onBlockPlacedBy(World world, int x0, int y0, int z0, EntityLivingBase entity, ItemStack stack)
     {
-        final TileEntity var8 = world.getTileEntity(x0, y0, z0);
+        final TileEntity tile = world.getTileEntity(x0, y0, z0);
 
         boolean validSpot = true;
 
@@ -157,21 +157,24 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
             {
                 EntityPlayerMP player = (EntityPlayerMP) entity;
                 player.addChatMessage(new ChatComponentText(EnumColor.RED + GCCoreUtil.translate("gui.warning.noroom")));
-                ItemStack itemstack = new ItemStack(this, 1, 0);
-                EntityItem entityitem = player.dropPlayerItemWithRandomChoice(itemstack, false);
-                entityitem.delayBeforeCanPickup = 0;
-                entityitem.func_145797_a(player.getCommandSenderName());
+                if (!player.capabilities.isCreativeMode)
+                {
+                    final ItemStack nasaWorkbench = new ItemStack(this, 1, 0);
+                    final EntityItem entityitem = player.dropPlayerItemWithRandomChoice(nasaWorkbench, false);
+                    entityitem.delayBeforeCanPickup = 0;
+                    entityitem.func_145797_a(player.getCommandSenderName());
+                }
             }
 
             return;
         }
 
-        if (var8 instanceof IMultiBlock)
+        if (tile instanceof IMultiBlock)
         {
-            ((IMultiBlock) var8).onCreate(new BlockVec3(x0, y0, z0));
+            ((IMultiBlock) tile).onCreate(new BlockVec3(x0, y0, z0));
         }
 
-        super.onBlockPlacedBy(world, x0, y0, z0, entity, var6);
+        super.onBlockPlacedBy(world, x0, y0, z0, entity, stack);
     }
 
     @Override
