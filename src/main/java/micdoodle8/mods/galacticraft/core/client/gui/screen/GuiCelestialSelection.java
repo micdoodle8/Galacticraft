@@ -449,7 +449,7 @@ public class GuiCelestialSelection extends GuiScreen
 
     protected boolean canCreateSpaceStation(CelestialBody atBody)
     {
-        if (this.mapMode)
+        if (this.mapMode || ConfigManagerCore.disableSpaceStationCreation)
         {
             return false;
         }
