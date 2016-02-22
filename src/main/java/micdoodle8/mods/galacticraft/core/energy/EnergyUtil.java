@@ -111,22 +111,25 @@ public class EnergyUtil
                     continue;
                 }
 
+                boolean doneIC2 = false;
                 if (tileEntity instanceof IEnergyAcceptor)
                 {
-                    if (((IEnergyAcceptor) tileEntity).acceptsEnergyFrom(tile, direction.getOpposite()))
+                    doneIC2 = true;
+                	if (((IEnergyAcceptor) tileEntity).acceptsEnergyFrom(tile, direction.getOpposite()))
                     {
                         adjacentConnections[direction.ordinal()] = tileEntity;
                     }
-                    continue;
                 }
                 if (tileEntity instanceof IEnergyEmitter)
                 {
+                    doneIC2 = true;
                     if (((IEnergyEmitter) tileEntity).emitsEnergyTo(tile, direction.getOpposite()))
                     {
                         adjacentConnections[direction.ordinal()] = tileEntity;
                     }
-                    continue;
                 }
+
+                if (doneIC2) continue;
             }
             
             if (isRFLoaded && tileEntity instanceof IEnergyConnection)
