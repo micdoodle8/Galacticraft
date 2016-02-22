@@ -1,3 +1,20 @@
+// ==================================================================
+// This file is part of Smart Render.
+//
+// Smart Render is free software: you can redistribute it and/or
+// modify it under the terms of the GNU General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// Smart Render is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Smart Render. If not, see <http://www.gnu.org/licenses/>.
+// ==================================================================
+
 package net.smart.render.playerapi;
 
 import net.minecraft.client.entity.*;
@@ -25,11 +42,13 @@ public class SmartRenderRenderPlayerBase extends RenderPlayerBase implements IRe
 		return render;
 	}
 
+	@Override
 	public IModelPlayer createModel(ModelBiped existing, float f)
 	{
 		return SmartRender.getPlayerBase((api.player.model.ModelPlayer)existing);
 	}
 
+	@Override
 	public void initialize(ModelBiped modelBipedMain, ModelBiped modelArmorChestplate, ModelBiped modelArmor, float shadowSize)
 	{
 		renderPlayerAPI.setMainModelField(modelBipedMain);
@@ -46,6 +65,7 @@ public class SmartRenderRenderPlayerBase extends RenderPlayerBase implements IRe
 		getRenderRender().renderPlayer(entityplayer, d, d1, d2, f, renderPartialTicks);
 	}
 
+	@Override
 	public void superRenderPlayer(AbstractClientPlayer entityplayer, double d, double d1, double d2, float f, float renderPartialTicks)
 	{
 		super.renderPlayer(entityplayer, d, d1, d2, f, renderPartialTicks);
@@ -57,6 +77,7 @@ public class SmartRenderRenderPlayerBase extends RenderPlayerBase implements IRe
 		getRenderRender().drawFirstPersonHand(entityPlayer);
 	}
 
+	@Override
 	public void superDrawFirstPersonHand(EntityPlayer entityPlayer)
 	{
 		super.renderFirstPersonArm(entityPlayer);
@@ -68,6 +89,7 @@ public class SmartRenderRenderPlayerBase extends RenderPlayerBase implements IRe
 		getRenderRender().rotatePlayer(entityplayer, totalTime, actualRotation, f2);
 	}
 
+	@Override
 	public void superRotatePlayer(AbstractClientPlayer entityplayer, float totalTime, float actualRotation, float f2)
 	{
 		super.rotatePlayer(entityplayer, totalTime, actualRotation, f2);
@@ -79,6 +101,7 @@ public class SmartRenderRenderPlayerBase extends RenderPlayerBase implements IRe
 		getRenderRender().renderSpecials(entityplayer, f);
 	}
 
+	@Override
 	public void superRenderSpecials(AbstractClientPlayer entityplayer, float f)
 	{
 		super.renderSpecials(entityplayer, f);
@@ -91,31 +114,36 @@ public class SmartRenderRenderPlayerBase extends RenderPlayerBase implements IRe
 	}
 
 	@Override
-	 public void afterHandleRotationFloat(EntityLivingBase entityliving, float f)
-    {
+	public void afterHandleRotationFloat(EntityLivingBase entityliving, float f)
+	{
 		getRenderRender().afterHandleRotationFloat(entityliving, f);
-    }
+	}
 
+	@Override
 	public RenderManager getRenderManager()
 	{
 		return renderPlayerAPI.getRenderManagerField();
 	}
 
+	@Override
 	public ModelBiped getModelBipedMain()
 	{
 		return renderPlayerAPI.getModelBipedMainField();
 	}
 
+	@Override
 	public ModelBiped getModelArmorChestplate()
 	{
 		return renderPlayerAPI.getModelArmorChestplateField();
 	}
 
+	@Override
 	public ModelBiped getModelArmor()
 	{
 		return renderPlayerAPI.getModelArmorField();
 	}
 
+	@Override
 	public IModelPlayer[] getRenderModels()
 	{
 		api.player.model.ModelPlayer[] modelPlayers = api.player.model.ModelPlayerAPI.getAllInstances();

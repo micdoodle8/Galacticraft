@@ -1,3 +1,20 @@
+// ==================================================================
+// This file is part of Smart Render.
+//
+// Smart Render is free software: you can redistribute it and/or
+// modify it under the terms of the GNU General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// Smart Render is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Smart Render. If not, see <http://www.gnu.org/licenses/>.
+// ==================================================================
+
 package net.smart.render.statistics;
 
 import net.minecraft.entity.player.*;
@@ -12,7 +29,7 @@ public class SmartStatistics extends SmartStatisticsContext
 	public int ticksRiding;
 	public float prevHorizontalAngle = Float.NaN;
 
-	private final static SmartStatisticsDatas dummy = new SmartStatisticsDatas(); 
+	private final static SmartStatisticsDatas dummy = new SmartStatisticsDatas();
 	private final SmartStatisticsDatas[] datas = new SmartStatisticsDatas[10];
 	private int currentDataIndex = -1;
 
@@ -21,7 +38,7 @@ public class SmartStatistics extends SmartStatisticsContext
 		this.sp = sp;
 	}
 
-	public void calculateAllStats()
+	public void calculateAllStats(boolean remote)
 	{
 		double diffX = sp.posX - sp.prevPosX;
 		double diffY = sp.posY - sp.prevPosY;
@@ -42,7 +59,7 @@ public class SmartStatistics extends SmartStatisticsContext
 		data.vertical.calcualte((float)Math.abs(diffY));
 		tickDistance = data.all.calcualte(MathHelper.sqrt_double(diffX * diffX + diffY * diffY + diffZ * diffZ));
 
-		if(calculateHorizontalStats)
+		if(calculateHorizontalStats && !remote)
 			data.horizontal.apply(sp);
 	}
 
@@ -102,7 +119,7 @@ public class SmartStatistics extends SmartStatisticsContext
 
 	private SmartStatisticsDatas get(float renderPartialTicks)
 	{
-		SmartStatisticsDatas data = get();;
+		SmartStatisticsDatas data = get();
 		data.setReady(renderPartialTicks);
 		return data;
 	}

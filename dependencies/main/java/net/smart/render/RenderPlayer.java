@@ -1,6 +1,22 @@
+// ==================================================================
+// This file is part of Smart Render.
+//
+// Smart Render is free software: you can redistribute it and/or
+// modify it under the terms of the GNU General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// Smart Render is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Smart Render. If not, see <http://www.gnu.org/licenses/>.
+// ==================================================================
+
 package net.smart.render;
 
-import net.smart.utilities.*;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.*;
 import net.minecraft.client.renderer.entity.*;
@@ -9,27 +25,26 @@ import net.minecraft.entity.player.*;
 
 public class RenderPlayer extends net.minecraft.client.renderer.entity.RenderPlayer implements IRenderPlayer
 {
-	private ModelBiped modelArmorChestplate;
-    private ModelBiped modelArmor;
-
 	public RenderPlayer()
 	{
 		render = new SmartRenderRender(this);
 	}
 
+	@Override
 	public IModelPlayer createModel(ModelBiped existing, float f)
 	{
 		return new ModelPlayer(f);
 	}
 
+	@Override
 	public void initialize(ModelBiped modelBipedMain, ModelBiped modelArmorChestplate, ModelBiped modelArmor, float shadowSize)
 	{
 		this.mainModel = modelBipedMain;
 		this.shadowSize = shadowSize;
 
-		Reflect.SetField(net.minecraft.client.renderer.entity.RenderPlayer.class, this, SmartRenderInstall.RenderPlayer_modelBipedMain, modelBipedMain);
-		Reflect.SetField(net.minecraft.client.renderer.entity.RenderPlayer.class, this, SmartRenderInstall.RenderPlayer_modelArmorChestplate, this.modelArmorChestplate = modelArmorChestplate);
-		Reflect.SetField(net.minecraft.client.renderer.entity.RenderPlayer.class, this, SmartRenderInstall.RenderPlayer_modelArmor, this.modelArmor = modelArmor);
+		this.modelBipedMain = modelBipedMain;
+		this.modelArmorChestplate = modelArmorChestplate;
+		this.modelArmor = modelArmor;
 	}
 
 	@Override
@@ -38,6 +53,7 @@ public class RenderPlayer extends net.minecraft.client.renderer.entity.RenderPla
 		render.renderPlayer(entityplayer, d, d1, d2, f, renderPartialTicks);
 	}
 
+	@Override
 	public void superRenderPlayer(AbstractClientPlayer entityplayer, double d, double d1, double d2, float f, float renderPartialTicks)
 	{
 		super.doRender(entityplayer, d, d1, d2, f, renderPartialTicks);
@@ -49,6 +65,7 @@ public class RenderPlayer extends net.minecraft.client.renderer.entity.RenderPla
 		render.drawFirstPersonHand(entityPlayer);
 	}
 
+	@Override
 	public void superDrawFirstPersonHand(EntityPlayer entityPlayer)
 	{
 		super.renderFirstPersonArm(entityPlayer);
@@ -60,6 +77,7 @@ public class RenderPlayer extends net.minecraft.client.renderer.entity.RenderPla
 		render.rotatePlayer(entityplayer, totalTime, actualRotation, f2);
 	}
 
+	@Override
 	public void superRotatePlayer(AbstractClientPlayer entityplayer, float totalTime, float actualRotation, float f2)
 	{
 		super.rotateCorpse(entityplayer, totalTime, actualRotation, f2);
@@ -71,6 +89,7 @@ public class RenderPlayer extends net.minecraft.client.renderer.entity.RenderPla
 		render.renderSpecials(entityplayer, f);
 	}
 
+	@Override
 	public void superRenderSpecials(AbstractClientPlayer entityplayer, float f)
 	{
 		super.preRenderCallback(entityplayer, f);
@@ -85,21 +104,25 @@ public class RenderPlayer extends net.minecraft.client.renderer.entity.RenderPla
 		return result;
 	}
 
+	@Override
 	public RenderManager getRenderManager()
 	{
 		return renderManager;
 	}
 
+	@Override
 	public ModelBiped getModelBipedMain()
 	{
 		return (ModelBiped)mainModel;
 	}
 
+	@Override
 	public ModelBiped getModelArmorChestplate()
 	{
 		return modelArmorChestplate;
 	}
 
+	@Override
 	public ModelBiped getModelArmor()
 	{
 		return modelArmor;
@@ -120,6 +143,7 @@ public class RenderPlayer extends net.minecraft.client.renderer.entity.RenderPla
 		return (ModelPlayer)getModelArmor();
 	}
 
+	@Override
 	public IModelPlayer[] getRenderModels()
 	{
 		if(allIModelPlayers == null)
