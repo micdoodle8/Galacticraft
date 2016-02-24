@@ -509,6 +509,7 @@ gui.player.ouch=โอ้ย!!!!
 gui.thermalSlot.desc.0=ช่องของเครื่องควบคุมอุณหภูมิ วางเครื่องควบคุม
 gui.thermalSlot.desc.1=อุณหภูมิโดยรอบตรงนี้ (ไม่บังคับ)
 gui.thermalSlot.desc.2=หมายเหตุ: ใช้พลังงานจำนวนมาก!
+gui.display.nolink=ไม่ได้เชื่อมต่อ
 
 gui.spaceRace.create.close.name=ปิด
 gui.spaceRace.create.back.name=กลับ
@@ -533,6 +534,7 @@ gui.spaceRace.create.addPlayers.name=เพิ่มผู้เล่น
 gui.spaceRace.create.remPlayers.name=ลบผู้เล่น
 gui.spaceRace.create.sendInvite.name=ส่งคำขอ
 gui.spaceRace.create.remove.name=ลบออก
+gui.spaceRace.join.name=เข้าร่วม
 gui.spaceRace.join.title.name=เข้าร่วมการแข่งขันบนอวกาศ
 gui.spaceRace.join.owner.name=เจ้าของ
 gui.spaceRace.join.memberCount.name=%d สมาชิก

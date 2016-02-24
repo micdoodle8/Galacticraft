@@ -509,6 +509,7 @@ gui.player.ouch=ouch!!!!
 gui.thermalSlot.desc.0=Thermal attachment slot, place 'Ambient
 gui.thermalSlot.desc.1=Thermal Controller' here (optional)
 gui.thermalSlot.desc.2=Note: Uses more energy!
+gui.display.nolink=No link
 
 gui.spaceRace.create.close.name=Close
 gui.spaceRace.create.back.name=Back
@@ -533,6 +534,7 @@ gui.spaceRace.create.addPlayers.name=Add Player(s)
 gui.spaceRace.create.remPlayers.name=Remove Player(s)
 gui.spaceRace.create.sendInvite.name=Send Invite
 gui.spaceRace.create.remove.name=Remove
+gui.spaceRace.join.name=Join
 gui.spaceRace.join.title.name=Join Space Race
 gui.spaceRace.join.owner.name=Owner
 gui.spaceRace.join.memberCount.name=%d members
