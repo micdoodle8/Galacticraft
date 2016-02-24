@@ -509,6 +509,7 @@ gui.player.ouch=โอ้ย!!!!
 gui.thermalSlot.desc.0=ช่องของเครื่องควบคุมอุณหภูมิ วางเครื่องควบคุม
 gui.thermalSlot.desc.1=อุณหภูมิโดยรอบตรงนี้ (ไม่บังคับ)
 gui.thermalSlot.desc.2=หมายเหตุ: ใช้พลังงานจำนวนมาก!
+gui.display.nolink=ไม่ได้เชื่อมต่อ
 
 gui.spaceRace.create.close.name=ปิด
 gui.spaceRace.create.back.name=กลับ
