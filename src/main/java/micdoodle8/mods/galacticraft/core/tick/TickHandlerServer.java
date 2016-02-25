@@ -208,7 +208,6 @@ public class TickHandlerServer
         {       	
         	if (MapUtil.calculatingMap.get()) MapUtil.BiomeMapNextTick();
             else if (!MapUtil.doneOverworldTexture) MapUtil.makeOverworldTexture();
-
             
         	if (TickHandlerServer.spaceRaceData == null)
             {

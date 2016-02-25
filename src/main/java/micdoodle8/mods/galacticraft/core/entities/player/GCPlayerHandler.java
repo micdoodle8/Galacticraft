@@ -439,34 +439,34 @@ public class GCPlayerHandler
 
     protected void checkThermalStatus(EntityPlayerMP player, GCPlayerStats playerStats)
     {
-        ItemStack thermalPaddingHelm = playerStats.extendedInventory.getStackInSlot(6);
-        ItemStack thermalPaddingChestplate = playerStats.extendedInventory.getStackInSlot(7);
-        ItemStack thermalPaddingLeggings = playerStats.extendedInventory.getStackInSlot(8);
-        ItemStack thermalPaddingBoots = playerStats.extendedInventory.getStackInSlot(9);
-        float lowestThermalStrength = 0.0F;
-        if (thermalPaddingHelm != null && thermalPaddingChestplate != null && thermalPaddingLeggings != null && thermalPaddingBoots != null)
-        {
-            if (thermalPaddingHelm.getItem() instanceof IItemThermal)
-            {
-                lowestThermalStrength += ((IItemThermal) thermalPaddingHelm.getItem()).getThermalStrength();
-            }
-            if (thermalPaddingChestplate.getItem() instanceof IItemThermal)
-            {
-                lowestThermalStrength += ((IItemThermal) thermalPaddingChestplate.getItem()).getThermalStrength();
-            }
-            if (thermalPaddingLeggings.getItem() instanceof IItemThermal)
-            {
-                lowestThermalStrength += ((IItemThermal) thermalPaddingLeggings.getItem()).getThermalStrength();
-            }
-            if (thermalPaddingBoots.getItem() instanceof IItemThermal)
-            {
-                lowestThermalStrength += ((IItemThermal) thermalPaddingBoots.getItem()).getThermalStrength();
-            }
-            lowestThermalStrength /= 4.0F;
-        }
-
         if (player.worldObj.provider instanceof IGalacticraftWorldProvider && !player.capabilities.isCreativeMode)
         {
+        	final ItemStack thermalPaddingHelm = playerStats.extendedInventory.getStackInSlot(6);
+        	final ItemStack thermalPaddingChestplate = playerStats.extendedInventory.getStackInSlot(7);
+        	final ItemStack thermalPaddingLeggings = playerStats.extendedInventory.getStackInSlot(8);
+        	final ItemStack thermalPaddingBoots = playerStats.extendedInventory.getStackInSlot(9);
+            float lowestThermalStrength = 0.0F;
+            if (thermalPaddingHelm != null && thermalPaddingChestplate != null && thermalPaddingLeggings != null && thermalPaddingBoots != null)
+            {
+                if (thermalPaddingHelm.getItem() instanceof IItemThermal)
+                {
+                    lowestThermalStrength += ((IItemThermal) thermalPaddingHelm.getItem()).getThermalStrength();
+                }
+                if (thermalPaddingChestplate.getItem() instanceof IItemThermal)
+                {
+                    lowestThermalStrength += ((IItemThermal) thermalPaddingChestplate.getItem()).getThermalStrength();
+                }
+                if (thermalPaddingLeggings.getItem() instanceof IItemThermal)
+                {
+                    lowestThermalStrength += ((IItemThermal) thermalPaddingLeggings.getItem()).getThermalStrength();
+                }
+                if (thermalPaddingBoots.getItem() instanceof IItemThermal)
+                {
+                    lowestThermalStrength += ((IItemThermal) thermalPaddingBoots.getItem()).getThermalStrength();
+                }
+                lowestThermalStrength /= 4.0F;
+            }
+
             IGalacticraftWorldProvider provider = (IGalacticraftWorldProvider) player.worldObj.provider;
             float thermalLevelMod = provider.getThermalLevelModifier();
             double absThermalLevelMod = Math.abs(thermalLevelMod);
@@ -578,7 +578,7 @@ public class GCPlayerHandler
 
     public void normaliseThermalLevel(EntityPlayerMP player, GCPlayerStats playerStats, int increment)
     {
-        int last = playerStats.thermalLevel;
+        final int last = playerStats.thermalLevel;
 
         if (playerStats.thermalLevel < 0)
         {
@@ -597,13 +597,13 @@ public class GCPlayerHandler
 
 	protected void checkOxygen(EntityPlayerMP player, GCPlayerStats playerStats)
     {
-        final ItemStack tankInSlot = playerStats.extendedInventory.getStackInSlot(2);
-        final ItemStack tankInSlot2 = playerStats.extendedInventory.getStackInSlot(3);
-
-        final int drainSpacing = OxygenUtil.getDrainSpacing(tankInSlot, tankInSlot2);
-
         if ((player.dimension == 0 || player.worldObj.provider instanceof IGalacticraftWorldProvider) && (!(player.dimension == 0 || ((IGalacticraftWorldProvider) player.worldObj.provider).hasBreathableAtmosphere()) || player.posY > GCPlayerHandler.OXYGENHEIGHTLIMIT) && !player.capabilities.isCreativeMode && !(player.ridingEntity instanceof EntityLanderBase) && !(player.ridingEntity instanceof EntityAutoRocket) && !(player.ridingEntity instanceof EntityCelestialFake))
         {
+            final ItemStack tankInSlot = playerStats.extendedInventory.getStackInSlot(2);
+            final ItemStack tankInSlot2 = playerStats.extendedInventory.getStackInSlot(3);
+
+            final int drainSpacing = OxygenUtil.getDrainSpacing(tankInSlot, tankInSlot2);
+
         	if (tankInSlot == null)
             {
                 playerStats.airRemaining = 0;
