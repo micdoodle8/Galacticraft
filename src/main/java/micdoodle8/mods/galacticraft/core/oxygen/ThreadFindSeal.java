@@ -429,21 +429,24 @@ public class ThreadFindSeal
         Block fireBlock = Blocks.fire;
         HashSet<BlockVec3> checkedLocal = this.checked;
         LinkedList nextLayer = new LinkedList<BlockVec3>();
+        World world = this.world;
+        int side, bits;
 
         while (this.currentLayer.size() > 0)
         {
             for (BlockVec3 vec : this.currentLayer)
             {
-                int side = 0;
+                side = 0;
+                bits = vec.sideDoneBits;
                 do
                 {
-                    if (!vec.sideDone[side])
+                    if ((bits & (1 << side)) == 0)
                     {
                         BlockVec3 sideVec = vec.newVecSide(side);
 
                         if (!checkedLocal.contains(sideVec))
                         {
-                            Block id = sideVec.getBlockIDsafe_noChunkLoad(this.world);
+                            Block id = sideVec.getBlockIDsafe_noChunkLoad(world);
 
                             if (id == breatheableAirID)
                             {
@@ -513,14 +516,16 @@ public class ThreadFindSeal
         Block fireBlock = Blocks.fire;
         HashSet<BlockVec3> checkedLocal = this.checked;
         LinkedList nextLayer = new LinkedList<BlockVec3>();
+        int bits;
 
         while (this.currentLayer.size() > 0)
         {
             for (BlockVec3 vec : this.currentLayer)
             {
+                bits = vec.sideDoneBits;
                 for (int side = 0; side < 6; side++)
                 {
-                    if (vec.sideDone[side])
+                    if ((bits & (1 << side)) == 1)
                     {
                         continue;
                     }
@@ -596,19 +601,21 @@ public class ThreadFindSeal
         Block oxygenSealerID = GCBlocks.oxygenSealer;
         HashSet<BlockVec3> checkedLocal = this.checked;
         LinkedList nextLayer = new LinkedList<BlockVec3>();
-
+        World world = this.world;
+        int side, bits;
+        
         while (this.sealed && this.currentLayer.size() > 0)
         {
-            int side;
             for (BlockVec3 vec : this.currentLayer)
             {
                 //This is for side = 0 to 5 - but using do...while() is fractionally quicker
                 side = 0;
+                bits = vec.sideDoneBits;
                 do
                 {
                     //Skip the side which this was entered from
                     //This is also used to skip looking on the solid sides of partially sealable blocks
-                    if (!vec.sideDone[side])
+                    if ((bits & (1 << side)) == 0)
                     {
                         // The sides 0 to 5 correspond with the ForgeDirections
                         // but saves a bit of time not to call ForgeDirection
@@ -621,7 +628,7 @@ public class ThreadFindSeal
                                 this.checkCount--;
                                 checkedLocal.add(sideVec);
 
-                                Block id = sideVec.getBlockIDsafe_noChunkLoad(this.world);
+                                Block id = sideVec.getBlockIDsafe_noChunkLoad(world);
                                 // The most likely case
                                 if (id == breatheableAirID)
                                 {
@@ -717,19 +724,22 @@ public class ThreadFindSeal
         Block oxygenSealerID = GCBlocks.oxygenSealer;
         HashSet<BlockVec3> checkedLocal = this.checked;
         LinkedList nextLayer = new LinkedList<BlockVec3>();
-
+        int side;
+        int bits;
+        
         while (this.sealed && this.currentLayer.size() > 0)
         {
-            int side;
+
             for (BlockVec3 vec : this.currentLayer)
             {
                 //This is for side = 0 to 5 - but using do...while() is fractionally quicker
                 side = 0;
+                bits = vec.sideDoneBits;
                 do
                 {
                     //Skip the side which this was entered from
                     //This is also used to skip looking on the solid sides of partially sealable blocks
-                    if (!vec.sideDone[side])
+                    if ((bits & (1 << side)) == 0)
                     {
                         // The sides 0 to 5 correspond with the ForgeDirections
                         // but saves a bit of time not to call ForgeDirection
