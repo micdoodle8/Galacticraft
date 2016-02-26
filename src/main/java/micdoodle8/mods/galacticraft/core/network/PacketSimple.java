@@ -375,14 +375,15 @@ public class PacketSimple extends Packet implements IPacket
             int subtype = (Integer) this.data.get(2);
             EntityPlayer gearDataPlayer = null;
             MinecraftServer server = MinecraftServer.getServer();
+            String gearName = (String) this.data.get(0); 
 
             if (server != null)
             {
-                gearDataPlayer = PlayerUtil.getPlayerForUsernameVanilla(server, (String) this.data.get(0));
+                gearDataPlayer = PlayerUtil.getPlayerForUsernameVanilla(server, gearName);
             }
             else
             {
-                gearDataPlayer = player.worldObj.getPlayerEntityByName((String) this.data.get(0));
+                gearDataPlayer = player.worldObj.getPlayerEntityByName(gearName);
             }
 
             if (gearDataPlayer != null)
@@ -392,7 +393,14 @@ public class PacketSimple extends Packet implements IPacket
                 if (gearData == null)
                 {
                     gearData = new PlayerGearData(player);
+                    if (!ClientProxyCore.gearDataRequests.contains(gearName))
+                    {
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA, new Object[] { gearName }));
+                        ClientProxyCore.gearDataRequests.add(gearName);
+                    }
                 }
+                else
+                	ClientProxyCore.gearDataRequests.remove(gearName);
 
                 EnumModelPacket type = EnumModelPacket.values()[(Integer) this.data.get(1)];
 
@@ -480,8 +488,7 @@ public class PacketSimple extends Packet implements IPacket
                     break;
                 }
 
-                ClientProxyCore.playerItemData.put((String) this.data.get(0), gearData);
-                ClientProxyCore.gearDataRequests.remove(this.data.get(0));
+                ClientProxyCore.playerItemData.put(gearName, gearData);
             }
 
             break;

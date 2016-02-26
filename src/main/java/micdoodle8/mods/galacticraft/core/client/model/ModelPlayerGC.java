@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -227,6 +228,17 @@ public class ModelPlayerGC extends ModelBiped
             wearingRightTankRed = gearData.getRightTank() == 2;
             wearingFrequencyModule = gearData.getFrequencyModule() > -1;
         }
+        else
+        {
+            String id = player.getGameProfile().getName();
+
+            if (!ClientProxyCore.gearDataRequests.contains(id))
+            {
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA, new Object[] { id }));
+                ClientProxyCore.gearDataRequests.add(id);
+            }
+        }
+
 
         this.setRotationAngles(var2, var3, var4, var5, var6, var7, var1);
 
