@@ -17,17 +17,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.*;
 
 /**
- * An Oxygen Network specifies a wire connection. Each wire connection line will
- * have its own oxygen network.
- * <p/>
- * !! Do not include this class if you do not intend to have custom wires in
- * your mod. This will increase future compatibility. !!
- *
- * @author Calclavia
+ * An Oxygen Network comprised of ITransmitter which can transmit oxygen
  */
 public class OxygenNetwork implements IOxygenNetwork
 {
-    public Map<TileEntity, ForgeDirection> oxygenTiles = new HashMap<TileEntity, ForgeDirection>();
+    public Map<TileEntity, ForgeDirection> oxygenTiles;
 
     private final Set<ITransmitter> pipes = new HashSet<ITransmitter>();
 
@@ -36,7 +30,7 @@ public class OxygenNetwork implements IOxygenNetwork
     {
         float remainingUsableOxygen = totalOxygen;
 
-        if (this.oxygenTiles.isEmpty())
+        if (this.oxygenTiles == null || this.oxygenTiles.isEmpty())
         	this.refreshOxygenTiles();
 
         if (!this.oxygenTiles.isEmpty())
@@ -115,7 +109,7 @@ public class OxygenNetwork implements IOxygenNetwork
     {
         List<Float> requests = new ArrayList<Float>();
         
-        if (this.oxygenTiles.isEmpty())
+        if (this.oxygenTiles == null || this.oxygenTiles.isEmpty())
         	this.refreshOxygenTiles();
 
         List<TileEntity> ignoreTilesList = Arrays.asList(ignoreTiles);
@@ -167,7 +161,7 @@ public class OxygenNetwork implements IOxygenNetwork
     @Override
     public void refresh()
     {
-    	this.oxygenTiles.clear();
+    	if (this.oxygenTiles != null) this.oxygenTiles.clear();
 
         try
         {
@@ -205,6 +199,11 @@ public class OxygenNetwork implements IOxygenNetwork
 
     public void refreshOxygenTiles()
     {
+    	if (this.oxygenTiles == null)
+    		this.oxygenTiles = new HashMap<TileEntity, ForgeDirection>();
+    	else
+    		this.oxygenTiles.clear();
+    	
     	try
     	{
     		Iterator<ITransmitter> it = this.pipes.iterator();
@@ -226,14 +225,14 @@ public class OxygenNetwork implements IOxygenNetwork
                     continue;
                 }
 */ 			
-    			for (int i = 0; i < transmitter.getAdjacentConnections().length; i++)
+    			int i = 0;
+                for (TileEntity acceptor : transmitter.getAdjacentConnections())
     			{
-    				TileEntity acceptor = transmitter.getAdjacentConnections()[i];
-
     				if (!(acceptor instanceof ITransmitter) && acceptor instanceof IConnector)
     				{
     					this.oxygenTiles.put(acceptor, ForgeDirection.getOrientation(i));
     				}
+    				i++;
     			}
     		}
     	}
@@ -343,6 +342,6 @@ public class OxygenNetwork implements IOxygenNetwork
     @Override
     public String toString()
     {
-        return "OxygenNetwork[" + this.hashCode() + "|Pipes:" + this.pipes.size() + "|Acceptors:" + this.oxygenTiles.size() + "]";
+        return "OxygenNetwork[" + this.hashCode() + "|Pipes:" + this.pipes.size() + "|Acceptors:" + (this.oxygenTiles == null ? 0 : this.oxygenTiles.size()) + "]";
     }
 }
