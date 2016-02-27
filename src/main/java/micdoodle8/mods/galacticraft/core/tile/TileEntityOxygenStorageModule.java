@@ -29,13 +29,13 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     public int scaledOxygenLevel;
     private int lastScaledOxygenLevel;
 
-    public static final int OUTPUT_PER_TICK = 1000;
+    public static final int OUTPUT_PER_TICK = 500;
     public static final int OXYGEN_CAPACITY = 60000;
     private ItemStack[] containingItems = new ItemStack[1];
 
     public TileEntityOxygenStorageModule()
     {
-        super(OXYGEN_CAPACITY, 16);
+        super(OXYGEN_CAPACITY, 40);
         this.storage.setCapacity(0);
         this.storage.setMaxExtract(0);
     }

@@ -58,7 +58,7 @@ public class OxygenNetwork implements IOxygenNetwork
 	
 	                                    if (this.pipes.contains(tile))
 	                                    {
-	                                        float oxygenToSend = Math.max(totalOxygen, totalOxygen * (oxygenTile.getOxygenRequest(direction) / totalOxygenRequest));
+	                                        float oxygenToSend = Math.min(remainingUsableOxygen, totalOxygen * (oxygenTile.getOxygenRequest(direction) / totalOxygenRequest));
 	
 	                                        if (oxygenToSend > 0)
 	                                        {
