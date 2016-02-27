@@ -50,7 +50,7 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
     {
         super.updateEntity();
 
-        if (!this.worldObj.isRemote && this.ticks % 60 == 0 && this.lastPipeColor != this.getColor())
+        if (this.ticks % 60 == 0 && this.lastPipeColor != this.getColor() && !this.worldObj.isRemote)
         {
             GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.dimensionId);
             this.lastPipeColor = this.getColor();
@@ -66,7 +66,7 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
     @Override
     public int getPacketCooldown()
     {
-        return 1;
+        return 5;
     }
 
     @Override
@@ -82,8 +82,7 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
 
         if (this.worldObj != null && this.worldObj.isRemote)
         {
-            final BlockVec3 thisVec = new BlockVec3(this);
-            this.worldObj.func_147479_m(thisVec.x, thisVec.y, thisVec.z);
+            this.worldObj.func_147479_m(this.xCoord, this.yCoord, this.zCoord);
         }
     }
 
@@ -97,8 +96,7 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
         {
             if (this.worldObj.isRemote)
             {
-                final BlockVec3 thisVec = new BlockVec3(this);
-                this.worldObj.func_147479_m(thisVec.x, thisVec.y, thisVec.z);
+                this.worldObj.func_147479_m(this.xCoord, this.yCoord, this.zCoord);
             }
             else
             {
@@ -106,7 +104,6 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
                 this.resetNetwork();
             }
         }
-
     }
 
     @Override
@@ -131,8 +128,7 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
     {
         super.readFromNBT(par1NBTTagCompound);
 
-        final byte by = par1NBTTagCompound.getByte("pipeColor");
-        this.setColor(by);
+        this.setColor(par1NBTTagCompound.getByte("pipeColor"));
     }
 
     @Override
