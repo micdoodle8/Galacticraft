@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
+import micdoodle8.mods.galacticraft.core.recipe.RecipeManagerGC;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -778,6 +779,8 @@ public class ConfigManagerCore
     		}
         	TickHandlerClient.registerDetectableBlocks(false);
     	}
+    	
+    	RecipeManagerGC.setConfigurableRecipes();
     }
     
     public static void saveClientConfigOverrideable()

@@ -261,7 +261,7 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         silicons[0] = new ItemStack(GCItems.basicItem, 1, 2);
         for (int j = 0; j < siliconCount; j++)
         {
-        	silicons[j + 1] = OreDictionary.getOres("itemSilicon").get(j); 
+        	silicons[j + 1] = OreDictionary.getOres(ConfigManagerCore.otherModsSilicon).get(j); 
         }	
         input1.put(1, new PositionedStack(silicons, 69, 51));
         input1.put(2, new PositionedStack(silicons, 69, 69));      	
@@ -308,7 +308,14 @@ public class NEIGalacticraftConfig implements IConfigureNEI
                 }
             }
 
-            this.registerIngotCompressorRecipe(input1, new PositionedStack(rec.getRecipeOutput(), 140, 46));
+            ItemStack resultItemStack = rec.getRecipeOutput();
+            if (ConfigManagerCore.quickMode)
+            {
+            	if (resultItemStack.getItem().getUnlocalizedName(resultItemStack).contains("compressed"))
+            		resultItemStack.stackSize *= 2;
+            }
+
+            this.registerIngotCompressorRecipe(input1, new PositionedStack(resultItemStack, 140, 46));
         }
     }
 }
