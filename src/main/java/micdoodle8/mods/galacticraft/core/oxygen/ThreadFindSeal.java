@@ -41,6 +41,7 @@ public class ThreadFindSeal
     private List<TileEntityOxygenSealer> otherSealers;
     private List<BlockVec3> torchesToUpdate;
     private boolean foundAmbientThermal;
+    public List<BlockVec3> leakTrace;
 
     public ThreadFindSeal(TileEntityOxygenSealer sealer)
     {
@@ -184,6 +185,7 @@ public class ThreadFindSeal
         if (this.sealed)
         {
         	this.makeSealGood(this.foundAmbientThermal);
+        	this.leakTrace = null;
         }
         else
         {
@@ -308,6 +310,8 @@ public class ThreadFindSeal
                 }
                 this.makeSealBad();
             }
+            else
+            	this.leakTrace = null;
         }
 
         // Set any sealers found which are not the head sealer, not to run their
@@ -351,17 +355,17 @@ public class ThreadFindSeal
         }
 
         //Help the Garbage Collector
-        this.sealers.clear();
-        this.checked.clear();
-        this.sealersAround.clear();
-        this.currentLayer.clear();
-        this.airToReplace.clear();
-        this.airToReplaceBright.clear();
-        this.torchesToUpdate.clear();
-        this.ambientThermalTracked.clear();
-        if (this.breatheableToReplace != null) this.breatheableToReplace.clear();
-        if (this.breatheableToReplaceBright != null) this.breatheableToReplaceBright.clear();
-        if (this.otherSealers != null) this.otherSealers.clear();
+//        this.sealers.clear();
+//        this.checked.clear();
+//        this.sealersAround.clear();
+//        this.currentLayer.clear();
+//        this.airToReplace.clear();
+//        this.airToReplaceBright.clear();
+//        this.torchesToUpdate.clear();
+//        this.ambientThermalTracked.clear();
+//        if (this.breatheableToReplace != null) this.breatheableToReplace.clear();
+//        if (this.breatheableToReplaceBright != null) this.breatheableToReplaceBright.clear();
+//        if (this.otherSealers != null) this.otherSealers.clear();
 
         this.sealedFinal.set(this.sealed);
     }
@@ -627,6 +631,7 @@ public class ThreadFindSeal
                             {
                                 this.checkCount--;
                                 checkedLocal.add(sideVec);
+//                                GCLog.debug("Checking vec " + sideVec.toString() + " : " + (sideVec.sideDoneBits >> 6) + " @ " + this.checkCount);
 
                                 Block id = sideVec.getBlockIDsafe_noChunkLoad(world);
                                 // The most likely case
@@ -698,6 +703,7 @@ public class ThreadFindSeal
                                 if (id == null || id == airID || id == breatheableAirID || id == airIDBright || id == breatheableAirIDBright || this.canBlockPassAirCheck(id, sideVec, side))
                                 {
                                     this.sealed = false;
+                                    if (this.sealers.size() > 0) traceLeak(vec);
                                     return;
                                 }
                             }
@@ -837,7 +843,63 @@ public class ThreadFindSeal
             nextLayer = new LinkedList<BlockVec3>();
         }
     }
+    
+    private void traceLeak(BlockVec3 tracer)
+    {
+    	GCLog.debug("Leak tracing test length = " + this.checked.size());
+    	ArrayList<BlockVec3> route = new ArrayList();
+    	BlockVec3 start = this.head.clone().translate(0, 1, 0);
+    	int count = 0;
+    	while (!tracer.equals(start) && count < 25)
+    	{
+	    	route.add(tracer);
+	    	int x = tracer.x;
+	    	int y = tracer.y;
+	    	int z = tracer.z;
+    		switch(tracer.sideDoneBits >> 6)
+	    	{
+		    	case 1: y--;
+		    	break;
+		    	case 0: y++;
+		    	break;
+		    	case 3: z--;
+		    	break;
+		    	case 2: z++;
+		    	break;
+		    	case 5: x--;
+		    	break;
+		    	case 4: x++;
+		    	break;   	
+	    	}
+    		boolean flag = false;
+	    	for (BlockVec3 test : this.checked)
+	    	{
+	    		if (test.x == x && test.y == y && test.z == z)
+	    		{
+	    			tracer = test;
+	    			flag = true;
+	    			break;
+	    		}
+	    	}
+	    	if (!flag) return;
+	    	count ++;
+    	}
+    	
+    	this.leakTrace = new ArrayList();
+    	this.leakTrace.add(start);
+    	for (int j = route.size() - 1; j >= 0; j--)
+    	{
+    		this.leakTrace.add(route.get(j));
+    	}
+    }
 
+    /**
+     * 
+     * @param block - the block ID, already taken from the world (can't be null or air here)
+     * @param vec - the position of the block to check: metadata might be needed
+     * @param side - this is the side approached from, e.g. 1 means this was approached from beneath
+     * @return
+     */
     private boolean canBlockPassAirCheck(Block block, BlockVec3 vec, int side)
     {
         //Check leaves first, because their isOpaqueCube() test depends on graphics settings
