@@ -59,14 +59,7 @@ public class ThreadFindSeal
         this.checked = new HashSet<BlockVec3>();
         this.torchesToUpdate = new LinkedList<BlockVec3>();
 
-        this.sealersAround = new HashMap<BlockVec3, TileEntityOxygenSealer>();
-        for (TileEntityOxygenSealer tile : new ArrayList<TileEntityOxygenSealer>(TileEntityOxygenSealer.loadedTiles))
-        {
-            if (tile.getWorldObj() == world && tile.getDistanceFrom(head.x, head.y, head.z) < 1024 * 1024)
-            {
-                this.sealersAround.put(new BlockVec3(tile.xCoord, tile.yCoord, tile.zCoord), tile);
-            }
-        }
+        this.sealersAround = TileEntityOxygenSealer.getSealersAround(world, head.x, head.y, head.z, 1024 * 1024);
 
         //If called by a sealer test the head block and if partiallySealable mark its sides done as required
         if (!sealers.isEmpty())
