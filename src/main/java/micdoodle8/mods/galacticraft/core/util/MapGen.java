@@ -9,6 +9,8 @@ import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
 
+import cpw.mods.fml.common.FMLLog;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -48,6 +50,7 @@ public class MapGen
     private WorldType field_147435_p = WorldType.DEFAULT;
     private BiomeGenBase[] biomesGrid = null;  //Memory efficient to keep re-using the same one.
     private BiomeGenBase[] biomesGridHeights = null;
+	private int[] biomeCount = null;
     
     public MapGen(World world, int sx, int sz, int cx, int cz, int scale, File file)
     {
@@ -129,17 +132,19 @@ public class MapGen
 
 	public boolean BiomeMapOneTick()
 	{
+    	int limit = Math.min(biomeMapFactor, 16);
 		if (this.biomeAndHeightArray == null)
 		{
 	    	this.biomeAndHeightArray = new byte[biomeMapSizeX * biomeMapSizeZ * 2];
 	    	this.heights = new int[256];
 	    	this.heighttemp = new double[825];
+	    	this.biomeCount  = new int[limit * limit];
 		}
 		int multifactor = biomeMapFactor >> 4;
 		if (multifactor < 1) multifactor = 1;
 		int imagefactor = 16 / biomeMapFactor;
 		if (imagefactor < 1) imagefactor = 1;
-    	biomeMapOneChunk(biomeMapCx + biomeMapx0, biomeMapCz + biomeMapz0, ix, iz, biomeMapFactor);
+    	biomeMapOneChunk(biomeMapCx + biomeMapx0, biomeMapCz + biomeMapz0, ix, iz, biomeMapFactor, limit);
     	biomeMapz0 += multifactor;
     	iz += imagefactor;
     	if (iz > biomeMapSizeZ - imagefactor)
@@ -155,7 +160,7 @@ public class MapGen
     	return false;
 	}
 	
-	private void biomeMapOneChunk(int x0, int z0, int ix, int iz, int factor)
+	private void biomeMapOneChunk(int x0, int z0, int ix, int iz, int factor, int limit)
 	{
 //      IntCache.resetIntCache();
 //		int[] biomesGrid = biomeMapGenLayer.getInts(x0 << 4, z0 << 4, 16, 16);
@@ -163,18 +168,16 @@ public class MapGen
 		biomesGrid = biomeMapWCM.getBiomeGenAt(biomesGrid, x0 << 4, z0 << 4, 16, 16, false);
     	if (biomesGrid == null) return;
     	getHeightMap(x0, z0);
-    	int limit = Math.min(factor, 16);
 		int halfFactor = limit * limit / 2;
 		ArrayList<Integer> cols = new ArrayList<Integer>();
-		int[] count = new int[limit * limit];
+		for (int j = 0; j < biomeCount.length; j++)
+			biomeCount[j] = 0;
     	for (int x = 0; x < 16; x += factor)
     	{
     		int izstore = iz;
     		for (int z = 0; z < 16; z += factor)
     		{
     			cols.clear();
-    			for (int j = 0; j < count.length; j++)
-    				count[j] = 0;
     			int maxcount = 0;
     			int maxindex = -1;
     			int biome = -1;
@@ -192,7 +195,11 @@ public class MapGen
         				int height = heights[hidx + zz];
         				avgHeight += height;
         				divisor ++;
-        				biome = biomesGrid[xx + x + ((zz + z) << 4)].biomeID;
+        				BiomeGenBase theBiome = biomesGrid[xx + x + ((zz + z) << 4)];
+        				if (theBiome != null)
+        					biome = theBiome.biomeID;
+        				else
+        					biome = 9;
         				if (biome != lastcol)
         				{
             				idx = cols.indexOf(biome);
@@ -203,16 +210,19 @@ public class MapGen
             				}
             				lastcol = biome;
         				}
-        				//TODO: reduce prevalence of water at height 62-63
-        				count[idx]++;
-        				if (count[idx] > maxcount)
+        				biomeCount[idx]++;
+        				if (biomeCount[idx] > maxcount)
         				{
-        					maxcount = count[idx];
+        					maxcount = biomeCount[idx];
         					maxindex = idx;
         					if (maxcount > halfFactor) break BIOMEDONE;
         				}                				
         			}
     			}
+    			//Clear the array for next time
+    			for (int j = cols.size() - 1; j >= 0; j--)
+    				biomeCount[j] = 0;
+
     			int arrayIndex = (ix * biomeMapSizeZ + iz) * 2;
     			this.biomeAndHeightArray[arrayIndex] = (byte) (cols.get(maxindex).intValue());
     			this.biomeAndHeightArray[arrayIndex + 1] = (byte) ((avgHeight + (divisor + 1) / 2)/ divisor);

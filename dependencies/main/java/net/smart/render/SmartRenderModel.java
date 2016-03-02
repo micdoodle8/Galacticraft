@@ -1,3 +1,20 @@
+// ==================================================================
+// This file is part of Smart Render.
+//
+// Smart Render is free software: you can redistribute it and/or
+// modify it under the terms of the GNU General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// Smart Render is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Smart Render. If not, see <http://www.gnu.org/licenses/>.
+// ==================================================================
+
 package net.smart.render;
 
 import java.util.*;
@@ -12,7 +29,7 @@ public class SmartRenderModel extends SmartRenderContext
 	public IModelPlayer imp;
 	public ModelBiped mp;
 
-	public SmartRenderModel(float f, ModelBiped mp, IModelPlayer imp, ModelRenderer originalBipedBody, ModelRenderer originalBipedCloak, ModelRenderer originalBipedHead, ModelRenderer originalBipedEars, ModelRenderer originalBipedHeadwear, ModelRenderer originalBipedRightArm, ModelRenderer originalBipedLeftArm, ModelRenderer originalBipedRightLeg, ModelRenderer originalBipedLeftLeg)
+	public SmartRenderModel(ModelBiped mp, IModelPlayer imp, ModelRenderer originalBipedBody, ModelRenderer originalBipedCloak, ModelRenderer originalBipedHead, ModelRenderer originalBipedEars, ModelRenderer originalBipedHeadwear, ModelRenderer originalBipedRightArm, ModelRenderer originalBipedLeftArm, ModelRenderer originalBipedRightLeg, ModelRenderer originalBipedLeftLeg)
 	{
 		this.imp = imp;
 		this.mp = mp;
@@ -70,6 +87,29 @@ public class SmartRenderModel extends SmartRenderContext
 		bipedLeftLeg.setRotationPoint(2.0F, 0.0F, 0.0F);
 
 		imp.initialize(bipedBody, bipedCloak, bipedHead, bipedEars, bipedHeadwear, bipedRightArm, bipedLeftArm, bipedRightLeg, bipedLeftLeg);
+
+		if(SmartRenderRender.CurrentMainModel != null)
+		{
+			isInventory = SmartRenderRender.CurrentMainModel.isInventory;
+
+			totalVerticalDistance = SmartRenderRender.CurrentMainModel.totalVerticalDistance;
+			currentVerticalSpeed = SmartRenderRender.CurrentMainModel.currentVerticalSpeed;
+			totalDistance = SmartRenderRender.CurrentMainModel.totalDistance;
+			currentSpeed = SmartRenderRender.CurrentMainModel.currentSpeed;
+
+			distance = SmartRenderRender.CurrentMainModel.distance;
+			verticalDistance = SmartRenderRender.CurrentMainModel.verticalDistance;
+			horizontalDistance = SmartRenderRender.CurrentMainModel.horizontalDistance;
+			currentCameraAngle = SmartRenderRender.CurrentMainModel.currentCameraAngle;
+			currentVerticalAngle = SmartRenderRender.CurrentMainModel.currentVerticalAngle;
+			currentHorizontalAngle = SmartRenderRender.CurrentMainModel.currentHorizontalAngle;
+			prevOuterRenderData = SmartRenderRender.CurrentMainModel.prevOuterRenderData;
+			isSleeping = SmartRenderRender.CurrentMainModel.isSleeping;
+
+			actualRotation = SmartRenderRender.CurrentMainModel.actualRotation;
+			forwardRotation = SmartRenderRender.CurrentMainModel.forwardRotation;
+			workingAngle = SmartRenderRender.CurrentMainModel.workingAngle;
+		}
 	}
 
 	private ModelRotationRenderer create(int i, int j, ModelRotationRenderer base)
@@ -84,7 +124,7 @@ public class SmartRenderModel extends SmartRenderContext
 		return local;
 	}
 
-	private void copy(ModelRotationRenderer local, ModelRenderer original)
+	private static void copy(ModelRotationRenderer local, ModelRenderer original)
 	{
 		if(original.childModels != null)
 			for(Object childModel : original.childModels)
@@ -93,6 +133,8 @@ public class SmartRenderModel extends SmartRenderContext
 			for(Object cube : original.cubeList)
 				local.cubeList.add(cube);
 		local.mirror = original.mirror;
+		local.isHidden = original.isHidden;
+		local.showModel = original.showModel;
 	}
 
 	public void render(Entity entity, float totalHorizontalDistance, float currentHorizontalSpeed, float totalTime, float viewHorizontalAngelOffset, float viewVerticalAngelOffset, float factor)
@@ -151,7 +193,7 @@ public class SmartRenderModel extends SmartRenderContext
 			bipedLeftLeg.setRotationPoint(2.0F, 12F, 0.0F);
 
 			imp.superSetRotationAngles(totalHorizontalDistance, currentHorizontalSpeed, totalTime, viewHorizontalAngelOffset, viewVerticalAngelOffset, factor, entity);
-	 		return;
+			return;
 		}
 
 		if(isSleeping)
@@ -346,8 +388,8 @@ public class SmartRenderModel extends SmartRenderContext
 	}
 
 	public ModelRenderer getRandomBox(Random par1Random)
-    {
-		List boxList = mp.boxList;
+	{
+		List<?> boxList = mp.boxList;
 		int size = boxList.size();
 		int renderersWithBoxes = 0;
 
@@ -362,7 +404,7 @@ public class SmartRenderModel extends SmartRenderContext
 		{
 			int random = par1Random.nextInt(renderersWithBoxes);
 			renderersWithBoxes = -1;
-	
+
 			for(int i=0; i<size; i++)
 			{
 				ModelRenderer renderer = (ModelRenderer)boxList.get(i);

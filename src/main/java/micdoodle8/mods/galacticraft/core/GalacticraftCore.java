@@ -561,6 +561,8 @@ public class GalacticraftCore
                 	body.setUnreachable();
             }
         }
+        
+        RecipeManagerGC.setConfigurableRecipes();
     }
 
     @EventHandler

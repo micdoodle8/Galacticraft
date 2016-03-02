@@ -22,6 +22,7 @@ import java.util.Set;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -176,9 +177,10 @@ public class ClientProxyCore extends CommonProxyCore
     private static int renderIndexHeavyArmor;
     private static int renderIndexSensorGlasses;
 
-    public static Set<Vector3> valueableBlocks = Sets.newHashSet();
+    public static Set<BlockVec3> valueableBlocks = Sets.newHashSet();
     public static HashSet<BlockMetaList> detectableBlocks = Sets.newHashSet();
-
+	public static List<BlockVec3> leakTrace;
+	
     public static Map<String, PlayerGearData> playerItemData = Maps.newHashMap();
 
     public static double playerPosX;

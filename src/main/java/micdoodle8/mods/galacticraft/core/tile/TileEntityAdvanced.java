@@ -35,10 +35,11 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
             this.initiate();
         }
 
-        if (this.ticks >= Long.MAX_VALUE)
-        {
-            this.ticks = 1;
-        }
+        //Who coded this?  A server would need to run in excess of 14 billion years to reach this value
+//        if (this.ticks >= Long.MAX_VALUE)
+//        {
+//            this.ticks = 1;
+//        }
 
         this.ticks++;
 

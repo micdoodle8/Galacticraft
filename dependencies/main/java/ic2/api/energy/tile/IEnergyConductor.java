@@ -1,10 +1,11 @@
 package ic2.api.energy.tile;
 
 /**
- * Tile entities which conduct energy pulses without buffering (mostly cables) have to implement this
- * interface.
+ * Tile entities which conduct energy pulses without buffering (mostly cables)
+ * have to implement this interface.
  * 
- * See ic2/api/energy/usage.txt for an overall description of the energy net api.
+ * See ic2/api/energy/usage.txt for an overall description of the energy net
+ * api.
  */
 public interface IEnergyConductor extends IEnergyAcceptor, IEnergyEmitter {
 	/**
@@ -15,7 +16,8 @@ public interface IEnergyConductor extends IEnergyAcceptor, IEnergyEmitter {
 	double getConductionLoss();
 
 	/**
-	 * Amount of energy the insulation will handle before shocking nearby players and mobs.
+	 * Amount of energy the insulation will handle before shocking nearby
+	 * players and mobs.
 	 * 
 	 * @return Insulation energy absorption in EU
 	 */
@@ -23,8 +25,9 @@ public interface IEnergyConductor extends IEnergyAcceptor, IEnergyEmitter {
 
 	/**
 	 * Amount of energy the insulation will handle before it is destroyed.
-	 * Ensure that this value is greater than the insulation energy absorption + 64.
-	 *
+	 * Ensure that this value is greater than the insulation energy absorption +
+	 * 64.
+	 * 
 	 * @return Insulation-destroying energy in EU
 	 */
 	double getInsulationBreakdownEnergy();
@@ -37,7 +40,8 @@ public interface IEnergyConductor extends IEnergyAcceptor, IEnergyEmitter {
 	double getConductorBreakdownEnergy();
 
 	/**
-	 * Remove the conductor's insulation if the insulation breakdown energy was exceeded.
+	 * Remove the conductor's insulation if the insulation breakdown energy was
+	 * exceeded.
 	 * 
 	 * @see #getInsulationBreakdownEnergy()
 	 */
@@ -50,4 +54,3 @@ public interface IEnergyConductor extends IEnergyAcceptor, IEnergyEmitter {
 	 */
 	void removeConductor();
 }
-
