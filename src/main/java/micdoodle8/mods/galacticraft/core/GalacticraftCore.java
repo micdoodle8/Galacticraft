@@ -402,7 +402,7 @@ public class GalacticraftCore
             GCBlocks.crudeOil = fluidOil.getBlock();
         }
 
-        if (GCBlocks.crudeOil != null)
+        if (GCBlocks.crudeOil != null && Item.itemRegistry.getObject("buildcraftenergy:items/bucketOil") == null)
         {
             GCItems.bucketOil = new ItemBucketGC(GCBlocks.crudeOil, GalacticraftCore.TEXTURE_PREFIX);
             GCItems.bucketOil.setUnlocalizedName("bucketOil");
@@ -438,7 +438,7 @@ public class GalacticraftCore
             GCBlocks.fuel = fluidFuel.getBlock();
         }
 
-        if (GCBlocks.fuel != null)
+        if (GCBlocks.fuel != null && Item.itemRegistry.getObject("buildcraftenergy:items/bucketFuel") == null)
         {
             GCItems.bucketFuel = new ItemBucketGC(GCBlocks.fuel, GalacticraftCore.TEXTURE_PREFIX);
             GCItems.bucketFuel.setUnlocalizedName("bucketFuel");
