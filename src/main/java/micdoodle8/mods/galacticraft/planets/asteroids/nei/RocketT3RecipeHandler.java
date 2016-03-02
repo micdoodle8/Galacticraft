@@ -4,6 +4,7 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -35,22 +36,11 @@ public class RocketT3RecipeHandler extends TemplateRecipeHandler
     }
 
     @Override
-    public void drawBackground(int i)
+    public void drawBackground(int recipe)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GuiDraw.changeTexture(RocketT3RecipeHandler.rocketGuiTexture);
         GuiDraw.drawTexturedModalRect(0, -8, 3, 4, 168, 140);
-    }
-
-    @Override
-    public void drawExtras(int i)
-    {
-    }
-
-    @Override
-    public void onUpdate()
-    {
-        super.onUpdate();
     }
 
     @Override
@@ -135,7 +125,7 @@ public class RocketT3RecipeHandler extends TemplateRecipeHandler
     @Override
     public String getRecipeName()
     {
-        return "NASA Workbench";
+        return GCCoreUtil.translate("tile.rocketWorkbench.name");
     }
 
     @Override
