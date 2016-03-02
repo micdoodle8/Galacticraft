@@ -168,7 +168,7 @@ public class RenderPlayerGC extends RenderPlayer
             RotatePlayerEvent event = new RotatePlayerEvent(par1AbstractClientPlayer);
             MinecraftForge.EVENT_BUS.post(event);
             
-            if (event.vanillaOverride)
+            if (!event.vanillaOverride)
             {
                 super.rotateCorpse(par1AbstractClientPlayer, par2, par3, par4);
             }

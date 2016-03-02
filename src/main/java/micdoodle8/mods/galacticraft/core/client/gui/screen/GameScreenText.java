@@ -82,7 +82,7 @@ public class GameScreenText implements IGameScreen
     	//Make the text to draw.  To look good it's important the width and height
     	//of the whole text box are correctly set here.
     	String strName = "";
-    	String[] str = { "No link", "", "", "", "" };
+    	String[] str = { GCCoreUtil.translate("gui.display.nolink"), "", "", "", "" };
     	Render renderEntity = null;
     	Entity entity = null;
     	float Xmargin = 0;

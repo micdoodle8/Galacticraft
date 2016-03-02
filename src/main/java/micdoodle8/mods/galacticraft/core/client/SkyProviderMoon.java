@@ -170,9 +170,9 @@ public class SkyProviderMoon extends IRenderHandler
         GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1F);
 
-        if (ClientProxyCore.overworldTextureClient != null)
+        if (ClientProxyCore.overworldTexturesValid)
         {
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureClient.getGlTextureId());
+        	GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureClient.getGlTextureId());
         }
         else
         {

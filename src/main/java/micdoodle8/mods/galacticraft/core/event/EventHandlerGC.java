@@ -270,7 +270,7 @@ public class EventHandlerGC
     @SubscribeEvent
     public void entityLivingEvent(LivingUpdateEvent event)
     {
-        EntityLivingBase entityLiving = event.entityLiving; 
+        final EntityLivingBase entityLiving = event.entityLiving; 
     	if (entityLiving instanceof EntityPlayerMP)
         {
                 GalacticraftCore.handler.onPlayerUpdate((EntityPlayerMP) entityLiving);

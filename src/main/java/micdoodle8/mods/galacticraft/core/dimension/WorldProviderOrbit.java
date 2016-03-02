@@ -1137,9 +1137,11 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 
         while (currentLayer.size() > 0)
         {
-            for (BlockVec3 vec : currentLayer)
+            int bits;
+        	for (BlockVec3 vec : currentLayer)
             {
-                if (vec.x < thisssBoundsMinX)
+                bits = vec.sideDoneBits;
+        		if (vec.x < thisssBoundsMinX)
                 {
                     thisssBoundsMinX = vec.x;
                 }
@@ -1166,7 +1168,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 
                 for (int side = 0; side < 6; side++)
                 {
-                    if (vec.sideDone[side])
+                    if ((bits & (1 << side)) == 1)
                     {
                         continue;
                     }

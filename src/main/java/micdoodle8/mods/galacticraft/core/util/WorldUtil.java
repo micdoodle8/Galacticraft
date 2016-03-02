@@ -127,8 +127,8 @@ public class WorldUtil
                         ItemStack armorPiece = player.getCurrentArmor(i);
                         if (armorPiece != null && armorPiece.getItem() instanceof IArmorGravity)
                         {
-                            armorModLowGrav -= ((IArmorGravity)armorPiece.getItem()).gravityOverrideIfLow();
-                            armorModHighGrav -= ((IArmorGravity)armorPiece.getItem()).gravityOverrideIfHigh();
+                            armorModLowGrav -= ((IArmorGravity)armorPiece.getItem()).gravityOverrideIfLow(player);
+                            armorModHighGrav -= ((IArmorGravity)armorPiece.getItem()).gravityOverrideIfHigh(player);
                         }
                     }
             		if (armorModLowGrav > 100) armorModLowGrav = 100;

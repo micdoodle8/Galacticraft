@@ -1,3 +1,20 @@
+// ==================================================================
+// This file is part of Smart Render.
+//
+// Smart Render is free software: you can redistribute it and/or
+// modify it under the terms of the GNU General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// Smart Render is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Smart Render. If not, see <http://www.gnu.org/licenses/>.
+// ==================================================================
+
 package net.smart.render;
 
 import java.util.*;
@@ -7,11 +24,12 @@ import net.minecraft.client.entity.*;
 import net.minecraft.client.gui.inventory.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.*;
-
 import net.smart.render.statistics.*;
 
 public class SmartRenderRender extends SmartRenderContext
 {
+	public static SmartRenderModel CurrentMainModel;
+
 	public IRenderPlayer irp;
 
 	public SmartRenderRender(IRenderPlayer irp)
@@ -96,7 +114,9 @@ public class SmartRenderRender extends SmartRenderContext
 			}
 		}
 
+		CurrentMainModel = modelBipedMain;
 		irp.superRenderPlayer(entityplayer, d, d1, d2, f, renderPartialTicks);
+		CurrentMainModel = null;
 	}
 
 	public void drawFirstPersonHand(EntityPlayer entityPlayer)
@@ -159,6 +179,7 @@ public class SmartRenderRender extends SmartRenderContext
 		modelBipedMain.bipedEars.afterRender();
 	}
 
+	@SuppressWarnings({ "static-method" })
 	public void beforeHandleRotationFloat(EntityLivingBase entityliving, float f)
 	{
 		if(entityliving instanceof EntityPlayer)
@@ -169,21 +190,22 @@ public class SmartRenderRender extends SmartRenderContext
 		}
 	}
 
-    public void afterHandleRotationFloat(EntityLivingBase entityliving, float f)
-    {
-    	if(entityliving instanceof EntityPlayer)
+	@SuppressWarnings({ "static-method" })
+	public void afterHandleRotationFloat(EntityLivingBase entityliving, float f)
+	{
+		if(entityliving instanceof EntityPlayer)
 		{
 			SmartStatistics statistics = SmartStatisticsFactory.getInstance((EntityPlayer)entityliving);
 			if (statistics != null)
 				entityliving.ticksExisted -= statistics.ticksRiding;
 		}
-    }
+	}
 
 	public static RendererData getPreviousRendererData(EntityPlayer entityplayer)
 	{
 		if(++previousRendererDataAccessCounter > 1000)
 		{
-			List players = Minecraft.getMinecraft().theWorld.playerEntities;
+			List<?> players = Minecraft.getMinecraft().theWorld.playerEntities;
 
 			Iterator<EntityPlayer> iterator = previousRendererData.keySet().iterator();
 			while(iterator.hasNext())

@@ -448,9 +448,10 @@ public class OxygenUtil
         boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
 
         BlockVec3 thisVec = new BlockVec3(tile);
+        World world = tile.getWorldObj();
         for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
         {
-            TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorldObj(), direction);
+            TileEntity tileEntity = thisVec.getTileEntityOnSide(world, direction);
 
             if (tileEntity instanceof IConnector)
             {

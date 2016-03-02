@@ -25,6 +25,7 @@ import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -47,7 +48,7 @@ public class VersionUtil
     private static boolean deobfuscated = true;
     private static HashMap<String, MicdoodleTransformer.ObfuscationEntry> nodemap = Maps.newHashMap();
     private static HashMap<Integer, Object> reflectionCache = Maps.newHashMap();
-    //Note: in reflectionCache, currently positions 3, 5, 7, 11, 13, 15, 17 are unused and 20 onwards are also free.
+    //Note: in reflectionCache, currently positions 3, 5, 7, 11, 13, 15, 17 are unused and 21 onwards are also free.
 
     private static final String KEY_CLASS_COMPRESSED_STREAM_TOOLS = "compressedStreamTools";
     private static final String KEY_CLASS_NBT_SIZE_TRACKER = "nbtSizeTracker";
@@ -634,5 +635,36 @@ public class VersionUtil
         }
 		
 		return null;
+	}
+	
+	public static ItemStack createStack(Block block, int meta)
+	{
+		try
+        {
+			Method m = (Method) reflectionCache.get(3);
+	        if (m == null)
+	        {
+	            Class c = Class.forName("net.minecraft.block.Block");
+	            Method mm[] = c.getDeclaredMethods();
+	            for (Method testMethod : mm)
+	            {
+	            	if (testMethod.getName().equals("func_149644_j"))
+	            	{
+	            		m = testMethod;
+	            		break;
+	            	}
+	            }
+	            m.setAccessible(true);
+	            reflectionCache.put(3, m);
+	        }
+	        
+	        return (ItemStack) m.invoke(block,  meta);
+        }
+        catch (Throwable t)
+        {
+            t.printStackTrace();
+        }
+		
+		return null;	
 	}
 }

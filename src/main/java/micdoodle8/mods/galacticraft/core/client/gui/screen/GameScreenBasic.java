@@ -5,6 +5,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.render.RenderPlanet;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.client.renderer.Tessellator;
@@ -78,16 +79,13 @@ public class GameScreenBasic implements IGameScreen
         		GL11.glBindTexture(GL11.GL_TEXTURE_2D, DrawGameScreen.reusableMap.getGlTextureId());
 		        draw2DTexture();
 	        }
-	        else if (ClientProxyCore.overworldTextureLocal != null)
+	        else if (ClientProxyCore.overworldTexturesValid)
 	        {
 	            GL11.glPushMatrix();
 	        	float centreX = scaleX / 2;
 	        	float centreY = scaleY / 2;
 	            GL11.glTranslatef(centreX, centreY, 0F);
-	        	GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureLocal.getGlTextureId());
-		    	float relSize = 45F;
-		    	float size = relSize / 70 * (Math.min(scaleX, scaleY) - 0.2F);    	
-		    	GameScreenCelestial.drawTexturedRectUV(- size / 2, -size / 2, size, size, ticks);
+	            RenderPlanet.renderPlanet(ClientProxyCore.overworldTextureWide.getGlTextureId(), Math.min(scaleX, scaleY) - 0.2F, ticks, 45F);
 		        GL11.glPopMatrix();
 	        }
 	        else

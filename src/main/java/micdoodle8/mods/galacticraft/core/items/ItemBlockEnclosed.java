@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+@SuppressWarnings("unused")
 public class ItemBlockEnclosed extends ItemBlockDesc
 {
     public ItemBlockEnclosed(Block block)

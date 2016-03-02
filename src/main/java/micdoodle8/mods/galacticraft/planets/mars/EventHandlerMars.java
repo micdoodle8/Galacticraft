@@ -121,10 +121,7 @@ public class EventHandlerMars
 
         if (block == MarsBlocks.machine && metadata >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
         {
-            event.shouldRotate = false;
-        }
-        else
-        {
+            event.shouldRotate = true;
         	event.vanillaOverride = true;
         }
     }

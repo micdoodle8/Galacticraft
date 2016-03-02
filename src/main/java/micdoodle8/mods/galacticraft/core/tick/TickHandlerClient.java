@@ -15,7 +15,7 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -37,6 +37,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketRotateRocket;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
@@ -324,12 +325,12 @@ public class TickHandlerClient
 
                     for (int i = -4; i < 5; i++)
                     {
+                        int x = MathHelper.floor_double(player.posX + i);
                         for (int j = -4; j < 5; j++)
                         {
+                            int y = MathHelper.floor_double(player.posY + j);
                             for (int k = -4; k < 5; k++)
                             {
-                                int x = MathHelper.floor_double(player.posX + i);
-                                int y = MathHelper.floor_double(player.posY + j);
                                 int z = MathHelper.floor_double(player.posZ + k);
 
                                 final Block block = player.worldObj.getBlock(x, y, z);
@@ -348,45 +349,19 @@ public class TickHandlerClient
                                         }
                                     }
 
-                                    if (isDetectable)
+                                    if (isDetectable || (block instanceof IDetectableResource && ((IDetectableResource) block).isValueable(metadata)))
                                     {
-                                        if (!this.alreadyContainsBlock(x, y, z))
-                                        {
-                                            ClientProxyCore.valueableBlocks.add(new Vector3(x, y, z));
-                                        }
-                                    }
-                                    else if (block instanceof IDetectableResource && ((IDetectableResource) block).isValueable(metadata))
-                                    {
-                                        if (!this.alreadyContainsBlock(x, y, z))
-                                        {
-                                            ClientProxyCore.valueableBlocks.add(new Vector3(x, y, z));
-                                        }
-
-                                        List<Integer> metaList = null;
-
-                                        for (BlockMetaList blockMetaList : ClientProxyCore.detectableBlocks)
-                                        {
-                                            if (blockMetaList.getBlock() == block)
-                                            {
-                                                metaList = blockMetaList.getMetaList();
-                                                if (!metaList.contains(metadata))
-                                                {
-                                                    metaList.add(metadata);
-                                                }
-                                                break;
-                                            }
-                                        }
-
-                                        if (metaList == null)
-                                        {
-                                            metaList = Lists.newArrayList();
-                                            metaList.add(metadata);
-                                            ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
-                                        }
+                                        ClientProxyCore.valueableBlocks.add(new BlockVec3(x, y, z));
                                     }
                                 }
                             }
                         }
+                    }
+                    
+                    TileEntityOxygenSealer nearestSealer = TileEntityOxygenSealer.getNearestSealer(world, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY), MathHelper.floor_double(player.posZ));
+                    if (nearestSealer != null && nearestSealer.threadSeal != null)
+                    {
+                    	ClientProxyCore.leakTrace = nearestSealer.threadSeal.leakTrace;
                     }
                 }
             }
@@ -555,7 +530,7 @@ public class TickHandlerClient
 
     private boolean alreadyContainsBlock(int x1, int y1, int z1)
     {
-        return ClientProxyCore.valueableBlocks.contains(new Vector3(x1, y1, z1));
+        return ClientProxyCore.valueableBlocks.contains(new BlockVec3(x1, y1, z1));
     }
 
     public static void zoom(float value)

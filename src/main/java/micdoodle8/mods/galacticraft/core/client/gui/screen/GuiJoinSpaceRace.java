@@ -83,7 +83,7 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
 
             this.buttonList.add(new GuiElementGradientButton(0, this.width / 2 - this.width / 3 + 15, this.height / 2 - this.height / 4 - 15, 50, 15, GCCoreUtil.translate("gui.spaceRace.create.close.name")));
             int width = (int) (var5 / 1.0F);
-            this.buttonList.add(new GuiElementGradientButton(1, this.width / 2 - width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 60, width, 20, "Join " + this.spaceRaceData.getTeamName()));
+            this.buttonList.add(new GuiElementGradientButton(1, this.width / 2 - width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 60, width, 20, GCCoreUtil.translateWithFormat("gui.spaceRace.join.name", this.spaceRaceData.getTeamName())));
         }
     }
 

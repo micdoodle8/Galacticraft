@@ -19,11 +19,11 @@ import java.util.Map.Entry;
 
 public class SpaceRace
 {
-    public static final String DEFAULT_NAME = GCCoreUtil.translate("gui.spaceRace.unnamed");
+    public static final String DEFAULT_NAME = "gui.spaceRace.unnamed";
     private static int lastSpaceRaceID = 0;
     private int spaceRaceID;
     private List<String> playerNames = Lists.newArrayList();
-    private String teamName;
+    public String teamName;
     private FlagData flagData;
     private Vector3 teamColor;
     private int ticksSpent;
@@ -115,7 +115,10 @@ public class SpaceRace
 
     public String getTeamName()
     {
-        return this.teamName;
+        String ret = this.teamName;
+        if (SpaceRace.DEFAULT_NAME.equals(ret))
+        	ret = GCCoreUtil.translate(SpaceRace.DEFAULT_NAME);
+        return ret;
     }
 
     public List<String> getPlayerNames()

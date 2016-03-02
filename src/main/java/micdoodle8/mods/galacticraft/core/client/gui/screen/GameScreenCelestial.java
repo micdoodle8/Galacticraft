@@ -8,10 +8,9 @@ import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.render.RenderPlanet;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -297,108 +296,7 @@ public class GameScreenCelestial implements IGameScreen
         GL11.glTranslatef(centreX, centreY, 0F);
 
     	int id = (int) (ticks / 600F) % 5;
-    	String testname = "";
-    	switch (id)
-    	{
-			case 0: testname = "Europa";
-			break;
-			case 1: testname = "Ganymede";
-			break;
-			case 2: testname = "Io";
-			break;
-			case 3: testname = "Jupiter";
-			break;
-			case 4: testname = "Saturn";
-			break;
-    	}
-    	if (id == 3)  //Jupiter
-    	{
-	    	float relSize = 48F;
-	    	float size = relSize / 70 * scale;    	
-	    	ResourceLocation texture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/misc/planets/jupiterInner.png");
-	    	this.renderEngine.bindTexture(texture);
-	    	this.drawTexturedRectUV(- size / 2, -size / 2, size, size, ticks);
-	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-	    	texture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/misc/planets/jupiterUpper.png");
-	        GL11.glTranslatef(0, 0, -0.001F);
-	    	this.renderEngine.bindTexture(texture);
-	    	this.drawTexturedRectUV(- size / 2, -size / 2, size, size, ticks * 0.85F);    		
-    	}
-    	else
-    	{
-	    	ResourceLocation texture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/misc/planets/" + testname.toLowerCase() + ".png");
-	    	this.renderEngine.bindTexture(texture);
-	    	float relSize = 8F;
-	    	float size = relSize / 70 * scale;    	
-	    	this.drawTexturedRectUV(- size / 2, -size / 2, size, size, ticks);
-    	}
+    	RenderPlanet.renderID(id, scale, ticks);
         GL11.glPopMatrix();
-    }
-    
-    public static void drawTexturedRectUV(float x, float y, float width, float height, float ticks)
-    {
-    	for (int ysect = 0; ysect < 6; ysect ++)
-    	{
-//    		drawTexturedRectUVSixth(x, y, width, height, (ticks / 600F) % 1F, ysect / 6F);
-    		float angle = 7.5F + 15F * ysect;
-    		drawTexturedRectUVSixth(x, y, width, height, (ticks / (900F - 80F * MathHelper.cos(angle))) % 1F, ysect / 6F);
-    	}
-    }    	
-
-    public static void drawTexturedRectUVSixth(float x, float y, float width, float height, float prog, float y0)
-    {
-    	y0 /= 2;
-    	prog = 1.0F - prog;
-    	float y1 = y0 + 1/12F;
-    	float y2 = 1F - y1;
-    	float y3 = 1F - y0;
-    	float yaa = y + height * y0;
-    	float yab = y + height * y1;
-    	float yba = y + height * y2;
-    	float ybb = y + height * y3;
-    	Tessellator tessellator = Tessellator.instance;
-    	if (prog <= 0.75F)
-    	{
-        	tessellator.startDrawingQuads();
-	    	tessellator.addVertexWithUV(x, yab, 0F, prog, y1);
-	    	tessellator.addVertexWithUV(x + width, yab, 0F, prog + 0.25F, y1);
-	    	tessellator.addVertexWithUV(x + width, yaa, 0F, prog + 0.25F, y0);
-	    	tessellator.addVertexWithUV(x, yaa, 0F, prog, y0);
-	    	tessellator.draw();
-        	tessellator.startDrawingQuads();
-	    	tessellator.addVertexWithUV(x, ybb, 0F, prog, y3);
-	    	tessellator.addVertexWithUV(x + width, ybb, 0F, prog + 0.25F, y3);
-	    	tessellator.addVertexWithUV(x + width, yba, 0F, prog + 0.25F, y2);
-	    	tessellator.addVertexWithUV(x, yba, 0F, prog, y2);
-	    	tessellator.draw();
-    	}
-    	else
-    	{
-    		double xp = x + width * (1F - prog) / 0.25F;
-        	tessellator.startDrawingQuads();
-    		tessellator.addVertexWithUV(x, yab, 0F, prog, y1);
-    		tessellator.addVertexWithUV(xp, yab, 0F, 1.0F, y1);
-    		tessellator.addVertexWithUV(xp, yaa, 0F, 1.0F, y0);
-    		tessellator.addVertexWithUV(x, yaa, 0F, prog, y0);
-        	tessellator.draw();
-        	tessellator.startDrawingQuads();
-    		tessellator.addVertexWithUV(x, ybb, 0F, prog, y3);
-    		tessellator.addVertexWithUV(xp, ybb, 0F, 1.0F, y3);
-    		tessellator.addVertexWithUV(xp, yba, 0F, 1.0F, y2);
-    		tessellator.addVertexWithUV(x, yba, 0F, prog, y2);
-        	tessellator.draw();
-        	tessellator.startDrawingQuads();
-    		tessellator.addVertexWithUV(xp, yab, 0F, 0F, y1);
-    		tessellator.addVertexWithUV(x + width, yab, 0F, prog - 0.75F, y1);
-    		tessellator.addVertexWithUV(x + width, yaa, 0F, prog - 0.75F, y0);
-    		tessellator.addVertexWithUV(xp, yaa, 0F, 0F, y0);
-        	tessellator.draw();
-        	tessellator.startDrawingQuads();
-    		tessellator.addVertexWithUV(xp, ybb, 0F, 0F, y3);
-    		tessellator.addVertexWithUV(x + width, ybb, 0F, prog - 0.75F, y3);
-    		tessellator.addVertexWithUV(x + width, yba, 0F, prog - 0.75F, y2);
-    		tessellator.addVertexWithUV(xp, yba, 0F, 0F, y2);
-        	tessellator.draw();
-    	}    		
-    }    	
+    }   
 }

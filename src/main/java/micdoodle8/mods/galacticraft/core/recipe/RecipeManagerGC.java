@@ -503,35 +503,44 @@ public class RecipeManagerGC
             CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 10), "ingotBronze", "ingotBronze");
         }
 
-        boolean steelDone = false;
-        if (OreDictionary.getOres("ingotSteel").size() > 0)
-        {
-            CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 9), "ingotSteel", "ingotSteel");
-            steelDone = true;
-        }
-        
-        if (!ConfigManagerCore.hardMode || !steelDone)
-        	CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 9), Items.coal, new ItemStack(GCItems.basicItem, 1, 11), Items.coal);
-        else
-        	CompressorRecipes.addShapelessAdventure(new ItemStack(GCItems.basicItem, 1, 9), Items.coal, new ItemStack(GCItems.basicItem, 1, 11), Items.coal);
-        
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 10), new ItemStack(GCItems.basicItem, 1, 6), new ItemStack(GCItems.basicItem, 1, 7));
-
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 11), Items.iron_ingot, Items.iron_ingot);
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.meteoricIronIngot, 1, 1), "ingotMeteoricIron");
-
         CompressorRecipes.addRecipe(new ItemStack(GCItems.heavyPlatingTier1, 2, 0), "XYZ", "XYZ", 'X', new ItemStack(GCItems.basicItem, 1, 9), 'Y', new ItemStack(GCItems.basicItem, 1, 8), 'Z', new ItemStack(GCItems.basicItem, 1, 10));
+    }
+    
+    public static void setConfigurableRecipes()
+    {
+    	ItemStack solarPanels = new ItemStack(GCItems.basicItem, 9, 12);
+    	ItemStack basicWafers = new ItemStack(GCItems.basicItem, 3, 13);
+    	ItemStack advancedWafers = new ItemStack(GCItems.basicItem, 1, 14);
+    	
+    	CircuitFabricatorRecipes.removeRecipe(solarPanels);
+    	CircuitFabricatorRecipes.removeRecipe(basicWafers);
+    	CircuitFabricatorRecipes.removeRecipe(advancedWafers);
+    	ArrayList<ItemStack> silicons = OreDictionary.getOres(ConfigManagerCore.otherModsSilicon);
+    	int siliconCount = silicons.size();
+    	for (int j = 0; j <= siliconCount; j++)
+    	{
+    		ItemStack silicon;
+    		if (j == 0) silicon = new ItemStack(GCItems.basicItem, 1, 2);
+    		else silicon = silicons.get(j - 1); 
+    		CircuitFabricatorRecipes.addRecipe(solarPanels, new ItemStack[] { new ItemStack(Items.diamond), silicon, silicon, new ItemStack(Items.redstone), new ItemStack(Items.dye, 1, 4) });
+    		CircuitFabricatorRecipes.addRecipe(basicWafers, new ItemStack[] { new ItemStack(Items.diamond), silicon, silicon, new ItemStack(Items.redstone), new ItemStack(Blocks.redstone_torch) });
+    		CircuitFabricatorRecipes.addRecipe(advancedWafers, new ItemStack[] { new ItemStack(Items.diamond), silicon, silicon, new ItemStack(Items.redstone), new ItemStack(Items.repeater) });
+    	}
 
-        int siliconCount = OreDictionary.getOres(ConfigManagerCore.otherModsSilicon).size();
-        for (int j = 0; j <= siliconCount; j++)
-        {
-        	ItemStack silicon;
-        	if (j == 0) silicon = new ItemStack(GCItems.basicItem, 1, 2);
-        	else silicon = OreDictionary.getOres("itemSilicon").get(j - 1); 
-	        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCItems.basicItem, 9, 12), new ItemStack[] { new ItemStack(Items.diamond), silicon, silicon, new ItemStack(Items.redstone), new ItemStack(Items.dye, 1, 4) });
-	        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCItems.basicItem, 3, 13), new ItemStack[] { new ItemStack(Items.diamond), silicon, silicon, new ItemStack(Items.redstone), new ItemStack(Blocks.redstone_torch) });
-	        CircuitFabricatorRecipes.addRecipe(new ItemStack(GCItems.basicItem, 1, 14), new ItemStack[] { new ItemStack(Items.diamond), silicon, silicon, new ItemStack(Items.redstone), new ItemStack(Items.repeater) });
-        }
+    	CompressorRecipes.removeRecipe(new ItemStack(GCItems.basicItem, 1, 9));
+    	boolean steelDone = false;
+    	if (OreDictionary.getOres("ingotSteel").size() > 0)
+    	{
+    		CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 9), "ingotSteel", "ingotSteel");
+    		steelDone = true;
+    	}
+    	if (!ConfigManagerCore.hardMode || !steelDone)
+    		CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 9), Items.coal, new ItemStack(GCItems.basicItem, 1, 11), Items.coal);
+    	else
+    		CompressorRecipes.addShapelessAdventure(new ItemStack(GCItems.basicItem, 1, 9), Items.coal, new ItemStack(GCItems.basicItem, 1, 11), Items.coal);
     }
 
     private static void addBuildCraftCraftingRecipes()
