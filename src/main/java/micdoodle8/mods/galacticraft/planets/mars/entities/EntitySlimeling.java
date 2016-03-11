@@ -215,7 +215,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
         this.dataWatcher.addObject(26, new Integer(this.kills));
         this.dataWatcher.addObject(27, new ItemStack(Blocks.stone));
         this.dataWatcher.addObject(28, "");
-        this.setName("Unnamed");
+        this.setName(GCCoreUtil.translate("gui.message.unnamed.name"));
     }
 
     @Override

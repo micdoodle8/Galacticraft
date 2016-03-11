@@ -324,8 +324,6 @@ public class GalacticraftCore
         FMLInterModComms.sendMessage("OpenBlocks", "donateUrl", "http://www.patreon.com/micdoodle8");
     	registerCoreGameScreens();
     	
-    	MinecraftForge.EVENT_BUS.register(new OreGenOtherMods());
-
     	//If any other mod has registered "fuel" or "oil" and GC has not, then allow GC's appropriate canisters to be fillable with that one as well
         if (ConfigManagerCore.useOldFuelFluidID && FluidRegistry.isFluidRegistered("fuel"))
         {
@@ -404,7 +402,7 @@ public class GalacticraftCore
             GCBlocks.crudeOil = fluidOil.getBlock();
         }
 
-        if (GCBlocks.crudeOil != null)
+        if (GCBlocks.crudeOil != null && Item.itemRegistry.getObject("buildcraftenergy:items/bucketOil") == null)
         {
             GCItems.bucketOil = new ItemBucketGC(GCBlocks.crudeOil, GalacticraftCore.TEXTURE_PREFIX);
             GCItems.bucketOil.setUnlocalizedName("bucketOil");
@@ -440,7 +438,7 @@ public class GalacticraftCore
             GCBlocks.fuel = fluidFuel.getBlock();
         }
 
-        if (GCBlocks.fuel != null)
+        if (GCBlocks.fuel != null && Item.itemRegistry.getObject("buildcraftenergy:items/bucketFuel") == null)
         {
             GCItems.bucketFuel = new ItemBucketGC(GCBlocks.fuel, GalacticraftCore.TEXTURE_PREFIX);
             GCItems.bucketFuel.setUnlocalizedName("bucketFuel");
@@ -480,6 +478,8 @@ public class GalacticraftCore
         GalacticraftCore.planetNeptune = makeUnreachablePlanet("neptune", GalacticraftCore.solarSystemSol);
         if (GalacticraftCore.planetNeptune != null) GalacticraftCore.planetNeptune.setRingColorRGB(0.1F, 0.9F, 0.6F).setPhaseShift(1.0F).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(2.25F, 2.25F)).setRelativeOrbitTime(164.84118291347207009857612267251F);
 
+    	MinecraftForge.EVENT_BUS.register(new OreGenOtherMods());
+
         GalacticraftCore.proxy.postInit(event);
 
         ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
@@ -506,6 +506,18 @@ public class GalacticraftCore
     	GalacticraftRegistry.registerScreen(new GameScreenText());  //Screen API demo
     	//Note: add-ons can register their own screens in postInit by calling GalacticraftRegistry.registerScreen(IGameScreen) like this.
     	//[Called on both client and server: do not include any client-specific code in the new game screen's constructor method.]
+
+        try {
+	        jpgWriter = ImageIO.getImageWritersByFormatName("jpg").next();
+	        writeParam = jpgWriter.getDefaultWriteParam();
+	        writeParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+	        writeParam.setCompressionQuality(1.0f);
+	        enableJPEG = true;
+        } catch (UnsatisfiedLinkError e)
+        {
+        	GCLog.severe("Error initialising JPEG compressor - this is likely caused by a known bug in OpenJDK.");
+        	e.printStackTrace();
+        }
     }
 
     @EventHandler
@@ -519,18 +531,6 @@ public class GalacticraftCore
         ThreadVersionCheck.startCheck();
         TickHandlerServer.restart();
         BlockVec3.chunkCacheDim = Integer.MAX_VALUE;       
-        
-        try {
-	        jpgWriter = ImageIO.getImageWritersByFormatName("jpg").next();
-	        writeParam = jpgWriter.getDefaultWriteParam();
-	        writeParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-	        writeParam.setCompressionQuality(1.0f);
-	        enableJPEG = true;
-        } catch (UnsatisfiedLinkError e)
-        {
-        	GCLog.severe("Error initialising JPEG compressor - this is likely caused by a known bug in OpenJDK.");
-        	e.printStackTrace();
-        }
     }
 
     @EventHandler
@@ -561,6 +561,8 @@ public class GalacticraftCore
                 	body.setUnreachable();
             }
         }
+        
+        RecipeManagerGC.setConfigurableRecipes();
     }
 
     @EventHandler

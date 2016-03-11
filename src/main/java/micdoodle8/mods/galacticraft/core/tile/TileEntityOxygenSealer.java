@@ -18,9 +18,11 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 
 public class TileEntityOxygenSealer extends TileEntityOxygen implements IInventory, ISidedInventory
 {
@@ -405,4 +407,40 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     {
         return EnumSet.noneOf(ForgeDirection.class);
     }
+
+	public static HashMap<BlockVec3, TileEntityOxygenSealer> getSealersAround(World world, int x, int y, int z, int rSquared)
+	{
+		HashMap<BlockVec3, TileEntityOxygenSealer> ret = new HashMap<BlockVec3, TileEntityOxygenSealer>();
+		
+		for (TileEntityOxygenSealer tile : new ArrayList<TileEntityOxygenSealer>(TileEntityOxygenSealer.loadedTiles))
+		{
+			if (tile != null && tile.getWorldObj() == world && tile.getDistanceFrom(x, y, z) < rSquared)
+			{
+				ret.put(new BlockVec3(tile.xCoord, tile.yCoord, tile.zCoord), tile);
+			}
+		}
+		
+		return ret;
+	}
+
+	public static TileEntityOxygenSealer getNearestSealer(World world, double x, double y, double z)
+	{
+		TileEntityOxygenSealer ret = null;
+		double dist = 96 * 96D;
+		
+		for (Object tile : world.loadedTileEntityList)
+		{
+			if (tile instanceof TileEntityOxygenSealer)
+			{
+				double testDist = ((TileEntityOxygenSealer) tile).getDistanceFrom(x, y, z);
+				if (testDist < dist)
+				{
+					dist = testDist;
+					ret = (TileEntityOxygenSealer) tile;			
+				}
+			}
+		}
+		
+		return ret;
+	}
 }

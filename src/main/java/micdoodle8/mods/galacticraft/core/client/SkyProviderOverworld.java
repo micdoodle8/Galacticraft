@@ -355,11 +355,11 @@ public class SkyProviderOverworld extends IRenderHandler
 	        scale = Math.max(scale, 0.2F);
 	        GL11.glScalef(scale, 1.0F, scale);
 	        GL11.glTranslatef(0.0F, -(float)mc.thePlayer.posY, 0.0F);
-	        if (ClientProxyCore.overworldTextureLocal != null)
-	        {
-	            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureLocal.getGlTextureId());
-	        }
-	        else
+//	        if (ClientProxyCore.overworldTextureLocal != null)
+//	        {
+//	            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureLocal.getGlTextureId());
+//	        }
+//	        else
 	        {
 	            this.minecraft.renderEngine.bindTexture(this.planetToRender);
 	        }

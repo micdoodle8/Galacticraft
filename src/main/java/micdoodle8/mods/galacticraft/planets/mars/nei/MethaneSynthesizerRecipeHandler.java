@@ -54,7 +54,7 @@ public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
     }
 
     @Override
-    public void drawBackground(int i)
+    public void drawBackground(int recipe)
     {
         int progress = this.ticksPassed % 144;
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -243,7 +243,7 @@ public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
     @Override
     public String getRecipeName()
     {
-        return "Methane Synthesizer";
+        return GCCoreUtil.translate("tile.marsMachine.5.name");
     }
 
     @Override
@@ -262,7 +262,7 @@ public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
     {
         Point mousePos = getMousePosition();
     	try {
-        	Class clazz = GuiContainer.class;       	
+        	Class<GuiContainer> clazz = GuiContainer.class;       	
         	mousePos.x -= (Integer) clazz.getField("field_147003_i").get(gui);
         	mousePos.y -= (Integer) clazz.getField("field_147009_r").get(gui);
     	}  catch (Exception ee) { ee.printStackTrace(); }

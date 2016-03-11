@@ -15,6 +15,7 @@ import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Satellite;
+import micdoodle8.mods.galacticraft.api.item.IArmorGravity;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
@@ -114,6 +115,33 @@ public class WorldUtil
         	}
         	
             final IGalacticraftWorldProvider customProvider = (IGalacticraftWorldProvider) entity.worldObj.provider;
+            if (entity instanceof EntityPlayer)
+            {
+                EntityPlayer player = (EntityPlayer)entity;
+            	if (player.inventory != null)
+                {
+                    int armorModLowGrav = 100;
+                    int armorModHighGrav = 100;
+            		for (int i = 0; i < 4; i++)
+                    {
+                        ItemStack armorPiece = player.getCurrentArmor(i);
+                        if (armorPiece != null && armorPiece.getItem() instanceof IArmorGravity)
+                        {
+                            armorModLowGrav -= ((IArmorGravity)armorPiece.getItem()).gravityOverrideIfLow(player);
+                            armorModHighGrav -= ((IArmorGravity)armorPiece.getItem()).gravityOverrideIfHigh(player);
+                        }
+                    }
+            		if (armorModLowGrav > 100) armorModLowGrav = 100;
+            		if (armorModHighGrav > 100) armorModHighGrav = 100;
+            		if (armorModLowGrav < 0) armorModLowGrav = 0;
+            		if (armorModHighGrav < 0) armorModHighGrav = 0;
+            		if (customProvider.getGravity() > 0)
+            		{
+            			return 0.08D - (customProvider.getGravity() * armorModLowGrav) / 100;
+            		}
+           			return 0.08D - (customProvider.getGravity() * armorModHighGrav) / 100;
+                }
+            }
             return 0.08D - customProvider.getGravity();
         }
         else if (entity instanceof IAntiGrav)

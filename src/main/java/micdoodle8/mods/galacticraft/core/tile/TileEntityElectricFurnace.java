@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
+import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -50,18 +51,22 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
      */
     public TileEntityElectricFurnace(int tier)
     {
+        this.initialised = true;
         if (tier == 1)
         {
             this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 60 : 45);
             return;
         }
 
-        //tier == 2
+        this.setTier2();
+    }
+    
+    private void setTier2()
+    {
         this.storage.setCapacity(25000);
         this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 60);
         this.processTimeRequired = 100;
-        this.setTierGC(2);
-        this.initialised = true;
+        this.setTierGC(2);   	
     }
 
     @Override
@@ -78,10 +83,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
             }
             else if (metadata >= 8)
             {
-                this.storage.setCapacity(25000);
-                this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 60);
-                this.processTimeRequired = 100;
-                this.setTierGC(2);
+            	this.setTier2();
             }
             this.initialised = true;
         }
@@ -196,15 +198,23 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
+        if (this.storage.getEnergyStoredGC() > EnergyStorageTile.STANDARD_CAPACITY)
+        {
+        	this.setTier2();
+        	this.initialised = true;
+        }
+        else
+        	this.initialised = false;
         this.processTicks = par1NBTTagCompound.getInteger("smeltingTicks");
         this.containingItems = this.readStandardItemsFromNBT(par1NBTTagCompound);
-        this.initialised = false;
     }
 
     @Override
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
-        super.writeToNBT(par1NBTTagCompound);
+        if (this.tierGC == 1 && this.storage.getEnergyStoredGC() > EnergyStorageTile.STANDARD_CAPACITY)
+        	this.storage.setEnergyStored(EnergyStorageTile.STANDARD_CAPACITY);
+    	super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setInteger("smeltingTicks", this.processTicks);
         this.writeStandardItemsToNBT(par1NBTTagCompound);
     }

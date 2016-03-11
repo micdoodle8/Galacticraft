@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenReceiver;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
@@ -692,7 +693,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
             {
                 if (type > 0)
                 {
-	            	float conversion = 10F / 54F;
+	            	float conversion = 2F * Constants.LOX_GAS_RATIO;
 	                FluidStack fluidToFill = new FluidStack(resource.getFluid(), (int) (resource.amount * conversion));
 	            	used = MathHelper.ceiling_float_int(this.gasTank.fill(fluidToFill, doFill) / conversion);
                 }
@@ -749,7 +750,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 	{
 		if (from.ordinal() == this.getBlockMetadata() + 2 && this.shouldPullOxygen())
     	{
-			float conversion = 10F / 54F;
+			float conversion = 2F * Constants.LOX_GAS_RATIO;
 	        FluidStack fluidToFill = new FluidStack(AsteroidsModule.fluidOxygenGas, (int) (receive * conversion));
 	    	int used = MathHelper.ceiling_float_int(this.gasTank.fill(fluidToFill, doReceive) / conversion);
 			return used;

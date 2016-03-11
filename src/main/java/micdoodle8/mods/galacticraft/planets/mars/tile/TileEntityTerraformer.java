@@ -450,6 +450,11 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         {
             this.waterTank.readFromNBT(nbt.getCompoundTag("waterTank"));
         }
+
+        if (nbt.hasKey("bubbleVisible"))
+        {
+            this.setBubbleVisible(nbt.getBoolean("bubbleVisible"));
+        }
     }
 
     @Override
@@ -464,6 +469,8 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         {
             nbt.setTag("waterTank", this.waterTank.writeToNBT(new NBTTagCompound()));
         }
+
+        nbt.setBoolean("bubbleVisible", this.shouldRenderBubble);
     }
 
     @Override

@@ -24,7 +24,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     public FluidTank oilTank = new FluidTank(this.tankCapacity);
     @NetworkedField(targetSide = Side.CLIENT)
     public FluidTank fuelTank = new FluidTank(this.tankCapacity);
-
+    
     public static final int PROCESS_TIME_REQUIRED = 2;
     public static final int OUTPUT_PER_SECOND = 1;
     @NetworkedField(targetSide = Side.CLIENT)
@@ -34,6 +34,8 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     public TileEntityRefinery()
     {
         this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 60);
+        this.oilTank.setFluid(new FluidStack(GalacticraftCore.fluidOil, 0));
+        this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, 0));
     }
 
     @Override
@@ -167,11 +169,16 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
         {
             this.oilTank.readFromNBT(nbt.getCompoundTag("oilTank"));
         }
+        if (this.oilTank.getFluid() != null && this.oilTank.getFluid().getFluid() != GalacticraftCore.fluidOil)
+            this.oilTank.setFluid(new FluidStack(GalacticraftCore.fluidOil, this.oilTank.getFluidAmount()));
+        
 
         if (nbt.hasKey("fuelTank"))
         {
             this.fuelTank.readFromNBT(nbt.getCompoundTag("fuelTank"));
         }
+        if (this.fuelTank.getFluid() != null && this.fuelTank.getFluid().getFluid() != GalacticraftCore.fluidFuel)
+            this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, this.fuelTank.getFluidAmount()));
     }
 
     @Override
@@ -289,9 +296,9 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     @Override
     public boolean canDrain(ForgeDirection from, Fluid fluid)
     {
-        if (from.equals(ForgeDirection.getOrientation((this.getBlockMetadata() + 2) ^ 1)))
+    	if (from.equals(ForgeDirection.getOrientation((this.getBlockMetadata() + 2) ^ 1)))
         {
-            return this.fuelTank.getFluid() != null && this.fuelTank.getFluidAmount() > 0;
+        	return this.fuelTank.getFluid() != null && this.fuelTank.getFluidAmount() > 0;
         }
 
         return false;
@@ -300,9 +307,9 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
     {
-        if (from.equals(ForgeDirection.getOrientation((this.getBlockMetadata() + 2) ^ 1)))
+    	if (from.equals(ForgeDirection.getOrientation((this.getBlockMetadata() + 2) ^ 1)))
         {
-            return this.fuelTank.drain(resource.amount, doDrain);
+        	return this.fuelTank.drain(resource.amount, doDrain);
         }
 
         return null;
@@ -311,7 +318,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
     {
-        if (from.equals(ForgeDirection.getOrientation((this.getBlockMetadata() + 2) ^ 1)))
+    	if (from.equals(ForgeDirection.getOrientation((this.getBlockMetadata() + 2) ^ 1)))
         {
             return this.drain(from, new FluidStack(GalacticraftCore.fluidFuel, maxDrain), doDrain);
         }
@@ -366,7 +373,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
         }
         else if (from == ForgeDirection.getOrientation((this.getBlockMetadata() + 2) ^ 1))
         {
-            tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.fuelTank) };
+        	tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.fuelTank) };
         }
 
         return tankInfo;

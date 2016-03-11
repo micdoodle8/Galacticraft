@@ -238,19 +238,21 @@ public class TileEntityArclamp extends TileEntity
                 currentLayer.add(inFront);
             }
         }
+        
+        int side, bits;
 
         for (int count = 0; count < 14; count++)
         {
-            int side;
             for (BlockVec3 vec : currentLayer)
             {
                 side = 0;
+                bits = vec.sideDoneBits;
                 boolean allAir = true;
                 do
                 {
                     //Skip the side which this was entered from
                     //and never go 'backwards'
-                    if (!vec.sideDone[side])
+                    if ((bits & (1 << side)) == 0)
                     {
                         BlockVec3 sideVec = vec.newVecSide(side);
 

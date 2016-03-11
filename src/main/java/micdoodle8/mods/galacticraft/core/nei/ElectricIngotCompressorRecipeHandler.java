@@ -5,6 +5,7 @@ import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -42,11 +43,10 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
 
             for (Map.Entry<Integer, PositionedStack> input : stack.getKey().entrySet())
             {
-                PositionedStack inputItem = input.getValue().copy();
-                //TODO  Find a way to draw 2 of each input item
-                inputItem.item.stackSize = 2;
-                inputItem.setMaxSize(2);
-            	inputStacks.add(inputItem);
+                PositionedStack inputStack = input.getValue().copy();
+                for (ItemStack inputItemStack : inputStack.items)
+                	inputItemStack.stackSize = 2;
+            	inputStacks.add(inputStack);
             }
 
             recipes.put(inputStacks, stack.getValue());
@@ -56,7 +56,7 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
     }
 
     @Override
-    public void drawBackground(int i)
+    public void drawBackground(int recipe)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GuiDraw.changeTexture(ElectricIngotCompressorRecipeHandler.ingotCompressorTexture);
@@ -170,7 +170,6 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
             for (PositionedStack stack : pstack1)
             {
                 PositionedStack stack2 = stack.copy();
-                stack2.item.stackSize *= 2;
                 ingred.add(stack2);
             }
 
@@ -201,7 +200,7 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
     @Override
     public String getRecipeName()
     {
-        return "El. Ingot Compressor";
+        return GCCoreUtil.translate("tile.machine2.4.name");
     }
 
     @Override

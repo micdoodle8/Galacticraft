@@ -243,6 +243,11 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     {
         super.readFromNBT(nbt);
 
+        if (nbt.func_150296_c().contains("bubbleVisible"))
+        {
+            this.setBubbleVisible(nbt.getBoolean("bubbleVisible"));
+        }
+
         if (nbt.func_150296_c().contains("bubbleSize"))
         {
             this.bubbleSize = nbt.getFloat("bubbleSize");
@@ -269,6 +274,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     {
         super.writeToNBT(nbt);
 
+        nbt.setBoolean("bubbleVisible", this.shouldRenderBubble);
         nbt.setFloat("bubbleSize", this.bubbleSize);
 //        nbt.setBoolean("hasValidBubble", this.hasValidBubble);
 

@@ -1,19 +1,36 @@
+// ==================================================================
+// This file is part of Smart Render.
+//
+// Smart Render is free software: you can redistribute it and/or
+// modify it under the terms of the GNU General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// Smart Render is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Smart Render. If not, see <http://www.gnu.org/licenses/>.
+// ==================================================================
+
 package net.smart.render;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+
 import java.lang.reflect.*;
 import java.nio.FloatBuffer;
 
 import net.minecraft.client.model.*;
-
 import net.smart.utilities.*;
 
 public class ModelRotationRenderer extends ModelRenderer
 {
-	protected final static float RadiantToAngle = SmartRenderContext.RadiantToAngle;
-	protected final static float Whole = SmartRenderContext.Whole;
-	protected final static float Half = SmartRenderContext.Half;
+	protected final static float RadiantToAngle = SmartRenderUtilities.RadiantToAngle;
+	protected final static float Whole = SmartRenderUtilities.Whole;
+	protected final static float Half = SmartRenderUtilities.Half;
 
 	public ModelRotationRenderer(ModelBase modelBase, int i, int j, ModelRotationRenderer baseRenderer)
 	{
@@ -32,6 +49,7 @@ public class ModelRotationRenderer extends ModelRenderer
 		fadeEnabled = false;
 	}
 
+	@Override
 	public void render(float f)
 	{
 		if((!ignoreRender && !ignoreBase) || forceRender)
@@ -199,6 +217,7 @@ public class ModelRotationRenderer extends ModelRenderer
 		previous = null;
 	}
 
+	@Override
 	public void renderWithRotation(float f)
 	{
 		boolean update = !compiled;
@@ -207,6 +226,7 @@ public class ModelRotationRenderer extends ModelRenderer
 			UpdateLocals();
 	}
 
+	@Override
 	public void postRender(float f)
 	{
 		boolean update = !compiled;
@@ -253,10 +273,6 @@ public class ModelRotationRenderer extends ModelRenderer
 
 	public boolean ignoreBase;
 	public boolean ignoreSuperRotation;
-
-	public float offsetX;
-	public float offsetY;
-	public float offsetZ;
 
 	public static int XYZ = 0;
 	public static int XZY = 1;
@@ -314,12 +330,13 @@ public class ModelRotationRenderer extends ModelRenderer
 		}
 	}
 
+	@SuppressWarnings("static-method")
 	public boolean canBeRandomBoxSource()
 	{
 		return true;
 	}
 
-	private float GetIntermediatePosition(float prevPosition, float shouldPosition, boolean fade, float lastTotalTime, float totalTime)
+	private static float GetIntermediatePosition(float prevPosition, float shouldPosition, boolean fade, float lastTotalTime, float totalTime)
 	{
 		if(!fade || shouldPosition == prevPosition)
 			return shouldPosition;
@@ -327,7 +344,7 @@ public class ModelRotationRenderer extends ModelRenderer
 		return prevPosition + (shouldPosition - prevPosition) * (totalTime - lastTotalTime) * 0.2F;
 	}
 
-	private float GetIntermediateAngle(float prevAngle, float shouldAngle, boolean fade, float lastTotalTime, float totalTime)
+	private static float GetIntermediateAngle(float prevAngle, float shouldAngle, boolean fade, float lastTotalTime, float totalTime)
 	{
 		if(!fade || shouldAngle == prevAngle)
 			return shouldAngle;

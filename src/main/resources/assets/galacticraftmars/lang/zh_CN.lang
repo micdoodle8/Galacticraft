@@ -101,7 +101,7 @@ gui.launchController.desc.0=这是发射控制器的$唯一频率
 gui.launchController.desc.1=火箭发射频率,火箭前往
 gui.launchController.desc.2=发射台是否$在发射时移除
 gui.launchController.desc.3=当这个条件达到时,$火箭就会发射
-gui.launchController.desc.4=Hide destination frequency$from other players ##NEEDS TRANSLATE##
+gui.launchController.desc.4=隐藏频率$对其他玩家
 gui.terraformer.desc.0=水箱
 
 gui.gasTank.desc.0=气体贮存

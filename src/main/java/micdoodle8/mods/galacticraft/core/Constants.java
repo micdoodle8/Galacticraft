@@ -19,4 +19,6 @@ public class Constants
     
     public static final int OVERWORLD_SKYPROVIDER_STARTHEIGHT = 200;
     public static final int OVERWORLD_CLOUD_HEIGHT = 130;
+    
+    public static final float LOX_GAS_RATIO = 5F / 54; 
 }

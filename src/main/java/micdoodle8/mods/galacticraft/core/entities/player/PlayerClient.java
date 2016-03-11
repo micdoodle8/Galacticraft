@@ -86,15 +86,18 @@ public class PlayerClient implements IPlayerClient
             }
         }
 
-        if (player.boundingBox != null && stats.boundingBoxBefore == null)
-        {
-            stats.boundingBoxBefore = player.boundingBox;
-            player.boundingBox.setBounds(stats.boundingBoxBefore.minX + 0.4, stats.boundingBoxBefore.minY + 0.9, stats.boundingBoxBefore.minZ + 0.4, stats.boundingBoxBefore.maxX - 0.4, stats.boundingBoxBefore.maxY - 0.9, stats.boundingBoxBefore.maxZ - 0.4);
-        }
-        else if (player.boundingBox != null && stats.boundingBoxBefore != null)
-        {
-            player.boundingBox.setBB(stats.boundingBoxBefore);
-        }
+//        if (player.boundingBox != null && stats.boundingBoxBefore == null)
+//        {
+//            GCLog.debug("Changed player BB from " + player.boundingBox.minY);
+//            stats.boundingBoxBefore = player.boundingBox;
+//            player.boundingBox.setBounds(stats.boundingBoxBefore.minX + 0.4, stats.boundingBoxBefore.minY + 0.9, stats.boundingBoxBefore.minZ + 0.4, stats.boundingBoxBefore.maxX - 0.4, stats.boundingBoxBefore.maxY - 0.9, stats.boundingBoxBefore.maxZ - 0.4);
+//            GCLog.debug("Changed player BB to " + player.boundingBox.minY);
+//        }
+//        else if (player.boundingBox != null && stats.boundingBoxBefore != null)
+//        {
+//            player.boundingBox.setBB(stats.boundingBoxBefore);
+//            GCLog.debug("Changed player BB to " + player.boundingBox.minY);
+//        }
     }
 
     @Override
@@ -161,6 +164,15 @@ public class PlayerClient implements IPlayerClient
         if (gearData != null)
         {
             stats.usingParachute = gearData.getParachute() != null;
+            if (gearData.getMask() >= 0)
+            {
+            	player.height = 1.9375F;
+            }
+            else
+            {
+            	player.height = 1.8F;
+            }
+        	player.boundingBox.maxY = player.boundingBox.minY + (double)player.height;
         }
 
         if (stats.usingParachute && player.onGround)

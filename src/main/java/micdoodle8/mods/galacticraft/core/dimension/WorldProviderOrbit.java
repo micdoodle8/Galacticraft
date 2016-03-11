@@ -777,8 +777,18 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                 if (!p.onGround)
                 {
                     p.motionY -= 0.015D;
+                    if (!FreefallHandler.sneakLast )
+                    {
+                    	p.boundingBox.offset(0D, 0.0268D, 0D);
+                    	FreefallHandler.sneakLast = true;
+                    }
                 }
                 this.pjumpticks = 0;
+            }
+            else if (FreefallHandler.sneakLast)
+            {
+            	FreefallHandler.sneakLast = false;
+            	p.boundingBox.offset(0D, -0.0268D, 0D);
             }
 
             if (this.pjumpticks > 0)
@@ -793,7 +803,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         }
 
         //Artificial gravity
-        if (doGravity)
+        if (doGravity && !p.onGround)
         {
             int quadrant = 0;
             double xd = p.posX - this.spinCentreX;
@@ -1127,9 +1137,11 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 
         while (currentLayer.size() > 0)
         {
-            for (BlockVec3 vec : currentLayer)
+            int bits;
+        	for (BlockVec3 vec : currentLayer)
             {
-                if (vec.x < thisssBoundsMinX)
+                bits = vec.sideDoneBits;
+        		if (vec.x < thisssBoundsMinX)
                 {
                     thisssBoundsMinX = vec.x;
                 }
@@ -1156,7 +1168,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 
                 for (int side = 0; side < 6; side++)
                 {
-                    if (vec.sideDone[side])
+                    if ((bits & (1 << side)) == 1)
                     {
                         continue;
                     }

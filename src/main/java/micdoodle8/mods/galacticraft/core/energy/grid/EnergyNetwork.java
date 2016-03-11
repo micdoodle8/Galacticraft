@@ -277,18 +277,10 @@ public class EnergyNetwork implements IElectricityNetwork
                     {
                         e = ((IElectrical) acceptor).getRequest(sideFrom);
                     }
-                    else if (isRF2Loaded && acceptor instanceof IEnergyReceiver)
-					{
-						e = ((IEnergyReceiver) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) / EnergyConfigHandler.TO_RF_RATIO;
-					}
                     else if (isMekLoaded && acceptor instanceof IStrictEnergyAcceptor)
                     {
                         e = (float) ((((IStrictEnergyAcceptor) acceptor).getMaxEnergy() - ((IStrictEnergyAcceptor) acceptor).getEnergy()) / EnergyConfigHandler.TO_MEKANISM_RATIO);
                     }
-                    else if (isRF1Loaded && acceptor instanceof IEnergyHandler)
-					{
-						e = ((IEnergyHandler) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) / EnergyConfigHandler.TO_RF_RATIO;
-					}
                     else if (isIC2Loaded && acceptor instanceof IEnergySink)
                     {
                         double result = 0;
@@ -307,6 +299,14 @@ public class EnergyNetwork implements IElectricityNetwork
                         result = Math.max(result, (this.networkTierGC == 2) ? 256D : 128D);
                         e = (float) result/ EnergyConfigHandler.TO_IC2_RATIO;
                     }
+                    else if (isRF2Loaded && acceptor instanceof IEnergyReceiver)
+					{
+						e = ((IEnergyReceiver) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) / EnergyConfigHandler.TO_RF_RATIO;
+					}
+                    else if (isRF1Loaded && acceptor instanceof IEnergyHandler)
+					{
+						e = ((IEnergyHandler) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) / EnergyConfigHandler.TO_RF_RATIO;
+					}
                     else if (isBCLoaded && EnergyConfigHandler.getBuildcraftVersion() == 6 && MjAPI.getMjBattery(acceptor, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom) != null)
                     //New BC API
                     {
@@ -411,20 +411,10 @@ public class EnergyNetwork implements IElectricityNetwork
                 {
                     sentToAcceptor = ((IElectrical) tileEntity).receiveElectricity(sideFrom, currentSending, tierProduced, true);
                 }
-				else if (isRF2Loaded && tileEntity instanceof IEnergyReceiver)
-				{
-					final int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / EnergyConfigHandler.TO_RF_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * EnergyConfigHandler.TO_RF_RATIO);
-					sentToAcceptor = ((IEnergyReceiver) tileEntity).receiveEnergy(sideFrom, currentSendinginRF, false) / EnergyConfigHandler.TO_RF_RATIO;
-				}
                 else if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
                 {
                     sentToAcceptor = (float) ((IStrictEnergyAcceptor) tileEntity).transferEnergyToAcceptor(sideFrom, currentSending * EnergyConfigHandler.TO_MEKANISM_RATIO) / EnergyConfigHandler.TO_MEKANISM_RATIO;
                 }
-				else if (isRF1Loaded && tileEntity instanceof IEnergyHandler)
-				{
-					final int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / EnergyConfigHandler.TO_RF_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * EnergyConfigHandler.TO_RF_RATIO);
-					sentToAcceptor = ((IEnergyHandler) tileEntity).receiveEnergy(sideFrom, currentSendinginRF, false) / EnergyConfigHandler.TO_RF_RATIO;
-				}
                 else if (isIC2Loaded && tileEntity instanceof IEnergySink)
                 {
                     double energySendingIC2 = currentSending * EnergyConfigHandler.TO_IC2_RATIO;
@@ -460,6 +450,16 @@ public class EnergyNetwork implements IElectricityNetwork
                         sentToAcceptor = 0F;
                     }
                 }
+				else if (isRF2Loaded && tileEntity instanceof IEnergyReceiver)
+				{
+					final int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / EnergyConfigHandler.TO_RF_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * EnergyConfigHandler.TO_RF_RATIO);
+					sentToAcceptor = ((IEnergyReceiver) tileEntity).receiveEnergy(sideFrom, currentSendinginRF, false) / EnergyConfigHandler.TO_RF_RATIO;
+				}
+				else if (isRF1Loaded && tileEntity instanceof IEnergyHandler)
+				{
+					final int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / EnergyConfigHandler.TO_RF_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * EnergyConfigHandler.TO_RF_RATIO);
+					sentToAcceptor = ((IEnergyHandler) tileEntity).receiveEnergy(sideFrom, currentSendinginRF, false) / EnergyConfigHandler.TO_RF_RATIO;
+				}
                 else if (isBCLoaded && EnergyConfigHandler.getBuildcraftVersion() == 6 && MjAPI.getMjBattery(tileEntity, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom) != null)
                 //New BC API
                 {
@@ -645,14 +645,6 @@ public class EnergyNetwork implements IElectricityNetwork
                                 this.connectedDirections.add(sideFrom);
                             }
                         }
-						else if ((isRF2Loaded && acceptor instanceof IEnergyReceiver) || (isRF1Loaded && acceptor instanceof IEnergyHandler))
-						{
-							if (((IEnergyConnection) acceptor).canConnectEnergy(sideFrom))
-							{
-								this.connectedAcceptors.add(acceptor);
-								this.connectedDirections.add(sideFrom);
-							}
-						}
                         else if (isMekLoaded && acceptor instanceof IStrictEnergyAcceptor)
                         {
                             if (((IStrictEnergyAcceptor) acceptor).canReceiveEnergy(sideFrom))
@@ -669,6 +661,14 @@ public class EnergyNetwork implements IElectricityNetwork
                                 this.connectedDirections.add(sideFrom);
                             }
                         }
+						else if ((isRF2Loaded && acceptor instanceof IEnergyReceiver) || (isRF1Loaded && acceptor instanceof IEnergyHandler))
+						{
+							if (((IEnergyConnection) acceptor).canConnectEnergy(sideFrom))
+							{
+								this.connectedAcceptors.add(acceptor);
+								this.connectedDirections.add(sideFrom);
+							}
+						}
                         else if (isBCLoaded && EnergyConfigHandler.getBuildcraftVersion() == 6 && MjAPI.getMjBattery(acceptor, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom) != null)
                         {
                             this.connectedAcceptors.add(acceptor);

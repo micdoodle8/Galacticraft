@@ -59,7 +59,6 @@ import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -79,13 +78,9 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
-import org.apache.commons.io.FileUtils;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -119,10 +114,11 @@ public class PacketSimple extends Packet implements IPacket
         S_ADD_RACE_PLAYER(Side.SERVER, String.class, Integer.class),
         S_COMPLETE_CBODY_HANDSHAKE(Side.SERVER, String.class),
         S_REQUEST_GEAR_DATA(Side.SERVER, String.class),
-        S_REQUEST_ARCLAMP_FACING(Side.CLIENT, Integer.class, Integer.class, Integer.class), 
+        S_REQUEST_ARCLAMP_FACING(Side.SERVER, Integer.class, Integer.class, Integer.class), 
         S_REQUEST_OVERWORLD_IMAGE(Side.SERVER),
+        S_REQUEST_MAP_IMAGE(Side.SERVER, Integer.class, Integer.class, Integer.class),
         S_REQUEST_PLAYERSKIN(Side.SERVER, String.class),
-        S_UPDATE_VIEWSCREEN_REQUEST(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class),
+        S_UPDATE_VIEWSCREEN_REQUEST(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class),
         S_BUILDFLAGS_UPDATE(Side.SERVER, Integer.class),
         // CLIENT
         C_AIR_REMAINING(Side.CLIENT, Integer.class, Integer.class, String.class),
@@ -163,7 +159,7 @@ public class PacketSimple extends Packet implements IPacket
         C_UPDATE_VIEWSCREEN(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
         C_UPDATE_TELEMETRY(Side.CLIENT, Integer.class, Integer.class, Integer.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, String.class),
         C_SEND_PLAYERSKIN(Side.CLIENT, String.class, String.class, String.class, String.class),
-        C_SEND_OVERWORLD_IMAGE(Side.CLIENT, byte[].class);
+        C_SEND_OVERWORLD_IMAGE(Side.CLIENT, Integer.class, Integer.class, byte[].class);
         
         private Side targetSide;
         private Class<?>[] decodeAs;
@@ -379,14 +375,15 @@ public class PacketSimple extends Packet implements IPacket
             int subtype = (Integer) this.data.get(2);
             EntityPlayer gearDataPlayer = null;
             MinecraftServer server = MinecraftServer.getServer();
+            String gearName = (String) this.data.get(0); 
 
             if (server != null)
             {
-                gearDataPlayer = PlayerUtil.getPlayerForUsernameVanilla(server, (String) this.data.get(0));
+                gearDataPlayer = PlayerUtil.getPlayerForUsernameVanilla(server, gearName);
             }
             else
             {
-                gearDataPlayer = player.worldObj.getPlayerEntityByName((String) this.data.get(0));
+                gearDataPlayer = player.worldObj.getPlayerEntityByName(gearName);
             }
 
             if (gearDataPlayer != null)
@@ -396,7 +393,14 @@ public class PacketSimple extends Packet implements IPacket
                 if (gearData == null)
                 {
                     gearData = new PlayerGearData(player);
+                    if (!ClientProxyCore.gearDataRequests.contains(gearName))
+                    {
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA, new Object[] { gearName }));
+                        ClientProxyCore.gearDataRequests.add(gearName);
+                    }
                 }
+                else
+                	ClientProxyCore.gearDataRequests.remove(gearName);
 
                 EnumModelPacket type = EnumModelPacket.values()[(Integer) this.data.get(1)];
 
@@ -484,8 +488,7 @@ public class PacketSimple extends Packet implements IPacket
                     break;
                 }
 
-                ClientProxyCore.playerItemData.put((String) this.data.get(0), gearData);
-                ClientProxyCore.gearDataRequests.remove(this.data.get(0));
+                ClientProxyCore.playerItemData.put(gearName, gearData);
             }
 
             break;
@@ -795,45 +798,25 @@ public class PacketSimple extends Packet implements IPacket
         case C_SEND_OVERWORLD_IMAGE:
             try
             {
-                byte[] bytes = (byte[]) this.data.get(0);
+                int cx = (Integer) this.data.get(0);
+                int cz = (Integer) this.data.get(1);
+            	byte[] bytes = (byte[]) this.data.get(2);
                 
-                //Class c = Launch.classLoader.loadClass("org.apache.commons.codec.binary.Base64");
-                //if (c != null)
+                try
                 {
-                    //byte[] bytes = (byte[])c.getMethod("decodeBase64", byte[].class).invoke(null, base64);
                     File folder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/temp");
-
-                    try
+                    if (folder.exists() || folder.mkdir())
                     {
-                        if (folder.exists() || folder.mkdir())
-                        {
-                            File file0 = new File(folder, "overworldLocal.png");
-
-                            if (!file0.exists() || (file0.canRead() && file0.canWrite()))
-                            {
-                                FileUtils.writeByteArrayToFile(file0, bytes);
-
-                                BufferedImage img = ImageIO.read(file0);
-
-                                if (img != null)
-                                {
-                                    ClientProxyCore.overworldTextureLocal = new DynamicTexture(img);
-                                }
-                            }
-                            else
-                            {
-                                System.err.println("Cannot read/write to file %minecraftDir%/assets/temp/overworldLocal.png");
-                            }
-                        }
-                        else
-                        {
-                            System.err.println("Cannot create directory %minecraftDir%/assets/temp!");
-                        }
+                        MapUtil.getOverworldImageFromRaw(folder, cx, cz, bytes);
                     }
-                    catch (Exception e)
+                    else
                     {
-                        e.printStackTrace();
+                        System.err.println("Cannot create directory %minecraftDir%/assets/temp!");
                     }
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
                 }
             }
             catch (Exception e)
@@ -1297,47 +1280,54 @@ public class PacketSimple extends Packet implements IPacket
         	}
         	break;
         case S_REQUEST_OVERWORLD_IMAGE:
-        	if (GalacticraftCore.enableJPEG)
-        	{
-            ChunkCoordIntPair chunkCoordIntPair = new ChunkCoordIntPair((int)Math.floor(stats.coordsTeleportedFromX) >> 4, (int)Math.floor(stats.coordsTeleportedFromZ) >> 4);
-            File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
-            if (!baseFolder.exists())
-            {
-                if (!baseFolder.mkdirs())
-                {
-                	GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
-                }
-            }
-            File outputFile = new File(baseFolder, "" + chunkCoordIntPair.chunkXPos + "_" + chunkCoordIntPair.chunkZPos + ".jpg");
-            boolean success = true;
-
-            if (!outputFile.exists() || !outputFile.isFile())
-            {
-                success = false;
-                //BufferedImage image = new BufferedImage(400, 400, BufferedImage.TYPE_INT_RGB);
-                //MapUtil.getLocalMap(MinecraftServer.getServer().worldServerForDimension(0), chunkCoordIntPair.chunkXPos, chunkCoordIntPair.chunkZPos, image);
-                int scale = 4;
-                //ConfigManagerCore.mapsize
-                MapUtil.getBiomeMapForCoords(MinecraftServer.getServer().worldServerForDimension(0), chunkCoordIntPair.chunkXPos, chunkCoordIntPair.chunkZPos, scale, 64, outputFile, playerBase);
-            }
-
-            if (success)
-            {
-                try
-                {
-                    byte[] bytes = FileUtils.readFileToByteArray(outputFile);
-                    //Class c = Launch.classLoader.loadClass("org.apache.commons.codec.binary.Base64");
-                    //byte[] bytes64 = (byte[])c.getMethod("encodeBase64", byte[].class).invoke(null, bytes);
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { bytes } ), playerBase);
-                }
-                catch (Exception ex)
-                {
-                    System.err.println("Error sending overworld image to player.");
-                    ex.printStackTrace();
-                }
-            }
-        	}
+        	MapUtil.sendOverworldToClient(playerBase);
+//        	if (GalacticraftCore.enableJPEG)
+//        	{
+//            ChunkCoordIntPair chunkCoordIntPair = new ChunkCoordIntPair((int)Math.floor(stats.coordsTeleportedFromX) >> 4, (int)Math.floor(stats.coordsTeleportedFromZ) >> 4);
+//            File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
+//            if (!baseFolder.exists())
+//            {
+//                if (!baseFolder.mkdirs())
+//                {
+//                	GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
+//                }
+//            }
+//            File outputFile = new File(baseFolder, "" + chunkCoordIntPair.chunkXPos + "_" + chunkCoordIntPair.chunkZPos + ".bin");
+//            boolean success = true;
+//
+//            if (!outputFile.exists() || !outputFile.isFile())
+//            {
+//                success = false;
+//                //BufferedImage image = new BufferedImage(400, 400, BufferedImage.TYPE_INT_RGB);
+//                //MapUtil.getLocalMap(MinecraftServer.getServer().worldServerForDimension(0), chunkCoordIntPair.chunkXPos, chunkCoordIntPair.chunkZPos, image);
+//                int scale = 4;
+//                //ConfigManagerCore.mapsize
+//                MapUtil.getBiomeMapForCoords(MinecraftServer.getServer().worldServerForDimension(0), chunkCoordIntPair.chunkXPos, chunkCoordIntPair.chunkZPos, scale, 64, 64, outputFile, playerBase);
+//            }
+//
+//            if (success)
+//            {
+//                try
+//                {
+//                    byte[] bytes = FileUtils.readFileToByteArray(outputFile);
+//                    //Class c = Launch.classLoader.loadClass("org.apache.commons.codec.binary.Base64");
+//                    //byte[] bytes64 = (byte[])c.getMethod("encodeBase64", byte[].class).invoke(null, bytes);
+//                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { bytes } ), playerBase);
+//                }
+//                catch (Exception ex)
+//                {
+//                    System.err.println("Error sending overworld image to player.");
+//                    ex.printStackTrace();
+//                }
+//            }
+//        	}
             break;
+        case S_REQUEST_MAP_IMAGE:
+        	int dim = (Integer) this.data.get(0);
+        	int cx = (Integer) this.data.get(1);
+        	int cz = (Integer) this.data.get(2);
+        	MapUtil.sendOrCreateMap(WorldUtil.getProviderForDimensionServer(dim).worldObj, cx, cz, playerBase);
+        	break;
         case S_REQUEST_PLAYERSKIN:
         	String strName = (String) this.data.get(0);
         	EntityPlayerMP playerRequested = FMLServerHandler.instance().getServer().getConfigurationManager().func_152612_a(strName);

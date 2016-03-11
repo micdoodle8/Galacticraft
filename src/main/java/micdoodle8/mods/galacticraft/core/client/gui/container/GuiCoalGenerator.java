@@ -19,28 +19,26 @@ public class GuiCoalGenerator extends GuiContainer
 
     private TileEntityCoalGenerator tileEntity;
 
-    public GuiCoalGenerator(InventoryPlayer par1InventoryPlayer, TileEntityCoalGenerator tileEntity)
+    public GuiCoalGenerator(InventoryPlayer playerInventory, TileEntityCoalGenerator tileEntity)
     {
-        super(new ContainerCoalGenerator(par1InventoryPlayer, tileEntity));
+        super(new ContainerCoalGenerator(playerInventory, tileEntity));
         this.tileEntity = tileEntity;
     }
 
-    /**
-     * Draw the foreground layer for the GuiContainer (everything in front of
-     * the items)
-     */
     @Override
-    protected void drawGuiContainerForegroundLayer(int par1, int par2)
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
         this.fontRendererObj.drawString(this.tileEntity.getInventoryName(), 55, 6, 4210752);
         String displayText = GCCoreUtil.translate("gui.status.generating.name");
-        this.fontRendererObj.drawString(displayText, 122 - this.fontRendererObj.getStringWidth(displayText) / 2, 33, 4210752);
 
-        if (this.tileEntity.heatGJperTick <= 0)
+        if (this.tileEntity.heatGJperTick <= 0 || this.tileEntity.heatGJperTick < TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK)
         {
             displayText = GCCoreUtil.translate("gui.status.notGenerating.name");
         }
-        else if (this.tileEntity.heatGJperTick < TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK)
+        
+        this.fontRendererObj.drawString(displayText, 122 - this.fontRendererObj.getStringWidth(displayText) / 2, 33, 4210752);
+        
+        if (this.tileEntity.heatGJperTick < TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK)
         {
             displayText = GCCoreUtil.translate("gui.status.hullHeat.name") + ": " + (int) (this.tileEntity.heatGJperTick / TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK * 100) + "%";
         }
@@ -50,17 +48,11 @@ public class GuiCoalGenerator extends GuiContainer
         }
 
         this.fontRendererObj.drawString(displayText, 122 - this.fontRendererObj.getStringWidth(displayText) / 2, 45, 4210752);
-        //		displayText = "Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F);
-        //		this.fontRendererObj.drawString(displayText, 122 - this.fontRendererObj.getStringWidth(displayText) / 2, 60, 4210752);
         this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
     }
 
-    /**
-     * Draw the background layer for the GuiContainer (everything behind the
-     * items)
-     */
     @Override
-    protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
+    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
         this.mc.renderEngine.bindTexture(GuiCoalGenerator.coalGeneratorTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

@@ -25,6 +25,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.sounds.SoundUpdaterMiner;
@@ -33,7 +34,6 @@ import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlower;
-import net.minecraft.block.BlockFlowerPot;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.ISound;
@@ -45,8 +45,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -991,46 +989,46 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		switch (this.facingAI & 6)
 		{
 		case 0:
-			if (tryBlock(x, y, z)) wayBarred = true;
-			if (tryBlock(x + 1, y, z)) wayBarred = true;
-			if (tryBlock(x + 1, y, z - 1)) wayBarred = true;
-			if (tryBlock(x, y, z - 1)) wayBarred = true;
-			if (tryBlock(x, y, z - 2)) wayBarred = true;
-			if (tryBlock(x - 1, y, z - 2)) wayBarred = true;
-			if (tryBlock(x - 1, y, z - 1)) wayBarred = true;
-			if (tryBlock(x - 2, y, z - 1)) wayBarred = true;
-			if (tryBlock(x - 2, y, z)) wayBarred = true;
-			if (tryBlock(x - 1, y, z)) wayBarred = true;
-			if (tryBlock(x - 1, y, z + 1)) wayBarred = true;
-			if (tryBlock(x, y, z + 1)) wayBarred = true;
+			if (tryMineBlock(x, y, z)) wayBarred = true;
+			if (tryMineBlock(x + 1, y, z)) wayBarred = true;
+			if (tryMineBlock(x + 1, y, z - 1)) wayBarred = true;
+			if (tryMineBlock(x, y, z - 1)) wayBarred = true;
+			if (tryMineBlock(x, y, z - 2)) wayBarred = true;
+			if (tryMineBlock(x - 1, y, z - 2)) wayBarred = true;
+			if (tryMineBlock(x - 1, y, z - 1)) wayBarred = true;
+			if (tryMineBlock(x - 2, y, z - 1)) wayBarred = true;
+			if (tryMineBlock(x - 2, y, z)) wayBarred = true;
+			if (tryMineBlock(x - 1, y, z)) wayBarred = true;
+			if (tryMineBlock(x - 1, y, z + 1)) wayBarred = true;
+			if (tryMineBlock(x, y, z + 1)) wayBarred = true;
 			break;
 		case 2:
-			if (tryBlock(x, y - 2, z)) wayBarred = true;
-			if (tryBlock(x - 1, y - 2, z)) wayBarred = true;
-			if (tryBlock(x, y - 1, z)) wayBarred = true;
-			if (tryBlock(x - 1, y - 1, z)) wayBarred = true;
-			if (tryBlock(x + 1, y - 1, z)) wayBarred = true;
-			if (tryBlock(x - 2, y - 1, z)) wayBarred = true;
-			if (tryBlock(x + 1, y, z)) wayBarred = true;
-			if (tryBlock(x - 2, y, z)) wayBarred = true;
-			if (tryBlock(x, y, z)) wayBarred = true;
-			if (tryBlock(x - 1, y, z)) wayBarred = true;
-			if (tryBlock(x, y + 1, z)) wayBarred = true;
-			if (tryBlock(x - 1, y + 1, z)) wayBarred = true;
+			if (tryMineBlock(x, y - 2, z)) wayBarred = true;
+			if (tryMineBlock(x - 1, y - 2, z)) wayBarred = true;
+			if (tryMineBlock(x, y - 1, z)) wayBarred = true;
+			if (tryMineBlock(x - 1, y - 1, z)) wayBarred = true;
+			if (tryMineBlock(x + 1, y - 1, z)) wayBarred = true;
+			if (tryMineBlock(x - 2, y - 1, z)) wayBarred = true;
+			if (tryMineBlock(x + 1, y, z)) wayBarred = true;
+			if (tryMineBlock(x - 2, y, z)) wayBarred = true;
+			if (tryMineBlock(x, y, z)) wayBarred = true;
+			if (tryMineBlock(x - 1, y, z)) wayBarred = true;
+			if (tryMineBlock(x, y + 1, z)) wayBarred = true;
+			if (tryMineBlock(x - 1, y + 1, z)) wayBarred = true;
 			break;
 		case 4:
-			if (tryBlock(x, y - 2, z - 1)) wayBarred = true;
-			if (tryBlock(x, y - 1, z)) wayBarred = true;
-			if (tryBlock(x, y - 1, z - 1)) wayBarred = true;
-			if (tryBlock(x, y - 1, z + 1)) wayBarred = true;
-			if (tryBlock(x, y - 1, z - 2)) wayBarred = true;
-			if (tryBlock(x, y, z + 1)) wayBarred = true;
-			if (tryBlock(x, y, z - 2)) wayBarred = true;
-			if (tryBlock(x, y, z - 1)) wayBarred = true;
-			if (tryBlock(x, y - 2, z)) wayBarred = true;
-			if (tryBlock(x, y + 1, z - 1)) wayBarred = true;
-			if (tryBlock(x, y, z)) wayBarred = true;
-			if (tryBlock(x, y + 1, z)) wayBarred = true;
+			if (tryMineBlock(x, y - 2, z - 1)) wayBarred = true;
+			if (tryMineBlock(x, y - 1, z)) wayBarred = true;
+			if (tryMineBlock(x, y - 1, z - 1)) wayBarred = true;
+			if (tryMineBlock(x, y - 1, z + 1)) wayBarred = true;
+			if (tryMineBlock(x, y - 1, z - 2)) wayBarred = true;
+			if (tryMineBlock(x, y, z + 1)) wayBarred = true;
+			if (tryMineBlock(x, y, z - 2)) wayBarred = true;
+			if (tryMineBlock(x, y, z - 1)) wayBarred = true;
+			if (tryMineBlock(x, y - 2, z)) wayBarred = true;
+			if (tryMineBlock(x, y + 1, z - 1)) wayBarred = true;
+			if (tryMineBlock(x, y, z)) wayBarred = true;
+			if (tryMineBlock(x, y + 1, z)) wayBarred = true;
 			break;
 		}
 		
@@ -1155,7 +1153,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		return wayBarred;
 	}
 
-	private boolean tryBlock(int x, int y, int z)
+	private boolean tryMineBlock(int x, int y, int z)
 	{
 		//Check things to avoid in front of it (see static list for list) including base type things
 		//Can move through liquids including flowing lava
@@ -1248,15 +1246,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		if (b == GCBlocks.fallenMeteor)
 			return new ItemStack(GCItems.meteoricIronRaw);
 
-		Item item = Item.getItemById(Block.getIdFromBlock(b));
-        
-		if (item == null)
-        {
-            return null;
-        }
-
-        Block block = item instanceof ItemBlock && !(b instanceof BlockFlowerPot) ? Block.getBlockFromItem(item) : b;
-        return new ItemStack(item, 1, block.getDamageValue(world, x, y, z));
+		return VersionUtil.createStack(b, world.getBlockMetadata(x, y, z));
     }
 
 	private boolean addToInventory(ItemStack itemstack)

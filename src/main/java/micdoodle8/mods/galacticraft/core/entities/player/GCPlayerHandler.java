@@ -25,6 +25,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
+import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteor;
 import micdoodle8.mods.galacticraft.core.entities.EntityParachest;
@@ -150,7 +151,6 @@ public class GCPlayerHandler
 
     private void onPlayerLogout(EntityPlayerMP player)
     {
-
     }
 
     private void onPlayerRespawn(EntityPlayerMP player)
@@ -238,6 +238,8 @@ public class GCPlayerHandler
             if (GCPlayer.tankInSlot1 == null)
             {
                 GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVE_LEFT_TANK);
+                GCPlayer.airRemaining = 0;
+                GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
             }
             else if (GCPlayer.lastTankInSlot1 == null || forceSend)
             {
@@ -253,6 +255,8 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDLEFTREDTANK);
                 }
+                GCPlayer.airRemaining = GCPlayer.tankInSlot1.getMaxDamage() - GCPlayer.tankInSlot1.getItemDamage();
+                GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
             }
             //if the else is reached then both tankInSlot and lastTankInSlot are non-null
             else if (GCPlayer.tankInSlot1.getItem() != GCPlayer.lastTankInSlot1.getItem())
@@ -269,6 +273,8 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDLEFTREDTANK);
                 }
+                GCPlayer.airRemaining = GCPlayer.tankInSlot1.getMaxDamage() - GCPlayer.tankInSlot1.getItemDamage();
+                GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
             }
 
             GCPlayer.lastTankInSlot1 = GCPlayer.tankInSlot1;
@@ -281,6 +287,8 @@ public class GCPlayerHandler
             if (GCPlayer.tankInSlot2 == null)
             {
                 GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVE_RIGHT_TANK);
+                GCPlayer.airRemaining2 = 0;
+                GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
             }
             else if (GCPlayer.lastTankInSlot2 == null || forceSend)
             {
@@ -296,6 +304,8 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDRIGHTREDTANK);
                 }
+                GCPlayer.airRemaining2 = GCPlayer.tankInSlot2.getMaxDamage() - GCPlayer.tankInSlot2.getItemDamage();
+                GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
             }
             //if the else is reached then both tankInSlot and lastTankInSlot are non-null
             else if (GCPlayer.tankInSlot2.getItem() != GCPlayer.lastTankInSlot2.getItem())
@@ -312,6 +322,8 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDRIGHTREDTANK);
                 }
+                GCPlayer.airRemaining2 = GCPlayer.tankInSlot2.getMaxDamage() - GCPlayer.tankInSlot2.getItemDamage();
+                GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
             }
 
             GCPlayer.lastTankInSlot2 = GCPlayer.tankInSlot2;
@@ -428,61 +440,60 @@ public class GCPlayerHandler
 
     protected void checkThermalAndPressureStatus(EntityPlayerMP player, GCPlayerStats playerStats)
     {
-        ItemStack thermalPaddingHelm = playerStats.extendedInventory.getStackInSlot(6);
-        ItemStack thermalPaddingChestplate = playerStats.extendedInventory.getStackInSlot(7);
-        ItemStack thermalPaddingLeggings = playerStats.extendedInventory.getStackInSlot(8);
-        ItemStack thermalPaddingBoots = playerStats.extendedInventory.getStackInSlot(9);
-        float lowestThermalStrength = 0.0F;
-        float maxPressureProtection = 0.0F;
-        // float minPressureProtection = 0.0F;
-        if (thermalPaddingHelm != null && thermalPaddingChestplate != null && thermalPaddingLeggings != null && thermalPaddingBoots != null)
-        {
-            // thermal
-            if (thermalPaddingHelm.getItem() instanceof IItemThermal)
-            {
-                lowestThermalStrength += ((IItemThermal) thermalPaddingHelm.getItem()).getThermalStrength();
-            }
-            if (thermalPaddingChestplate.getItem() instanceof IItemThermal)
-            {
-                lowestThermalStrength += ((IItemThermal) thermalPaddingChestplate.getItem()).getThermalStrength();
-            }
-            if (thermalPaddingLeggings.getItem() instanceof IItemThermal)
-            {
-                lowestThermalStrength += ((IItemThermal) thermalPaddingLeggings.getItem()).getThermalStrength();
-            }
-            if (thermalPaddingBoots.getItem() instanceof IItemThermal)
-            {
-                lowestThermalStrength += ((IItemThermal) thermalPaddingBoots.getItem()).getThermalStrength();
-            }
-            lowestThermalStrength /= 4.0F;
-
-            // pressure
-            if (thermalPaddingHelm.getItem() instanceof IItemPressurized)
-            {
-                maxPressureProtection += ((IItemPressurized) thermalPaddingHelm.getItem()).getMaxPressure();
-                // minPressureProtection += ((IItemPressurized) thermalPaddingHelm.getItem()).getMinPressure();
-            }
-            if (thermalPaddingChestplate.getItem() instanceof IItemPressurized)
-            {
-                maxPressureProtection += ((IItemPressurized) thermalPaddingChestplate.getItem()).getMaxPressure();
-                // minPressureProtection += ((IItemPressurized) thermalPaddingChestplate.getItem()).getMinPressure();
-            }
-            if (thermalPaddingLeggings.getItem() instanceof IItemPressurized)
-            {
-                maxPressureProtection += ((IItemPressurized) thermalPaddingLeggings.getItem()).getMaxPressure();
-                // minPressureProtection += ((IItemPressurized) thermalPaddingLeggings.getItem()).getMinPressure();
-            }
-            if (thermalPaddingBoots.getItem() instanceof IItemPressurized)
-            {
-                maxPressureProtection += ((IItemPressurized) thermalPaddingBoots.getItem()).getMaxPressure();
-                // minPressureProtection += ((IItemPressurized) thermalPaddingBoots.getItem()).getMinPressure();
-            }
-
-
-        }
-
         if (player.worldObj.provider instanceof IGalacticraftWorldProvider && !player.capabilities.isCreativeMode)
         {
+        	final ItemStack thermalPaddingHelm = playerStats.extendedInventory.getStackInSlot(6);
+        	final ItemStack thermalPaddingChestplate = playerStats.extendedInventory.getStackInSlot(7);
+        	final ItemStack thermalPaddingLeggings = playerStats.extendedInventory.getStackInSlot(8);
+        	final ItemStack thermalPaddingBoots = playerStats.extendedInventory.getStackInSlot(9);
+            float lowestThermalStrength = 0.0F;
+            float maxPressureProtection = 0.0F;
+            // float minPressureProtection = 0.0F;
+            if (thermalPaddingHelm != null && thermalPaddingChestplate != null && thermalPaddingLeggings != null && thermalPaddingBoots != null)
+            {
+                // thermal
+                if (thermalPaddingHelm.getItem() instanceof IItemThermal)
+                {
+                    lowestThermalStrength += ((IItemThermal) thermalPaddingHelm.getItem()).getThermalStrength();
+                }
+                if (thermalPaddingChestplate.getItem() instanceof IItemThermal)
+                {
+                    lowestThermalStrength += ((IItemThermal) thermalPaddingChestplate.getItem()).getThermalStrength();
+                }
+                if (thermalPaddingLeggings.getItem() instanceof IItemThermal)
+                {
+                    lowestThermalStrength += ((IItemThermal) thermalPaddingLeggings.getItem()).getThermalStrength();
+                }
+                if (thermalPaddingBoots.getItem() instanceof IItemThermal)
+                {
+                    lowestThermalStrength += ((IItemThermal) thermalPaddingBoots.getItem()).getThermalStrength();
+                }
+                lowestThermalStrength /= 4.0F;
+                
+                // pressure
+                if (thermalPaddingHelm.getItem() instanceof IItemPressurized)
+                {
+                    maxPressureProtection += ((IItemPressurized) thermalPaddingHelm.getItem()).getMaxPressure();
+                    // minPressureProtection += ((IItemPressurized) thermalPaddingHelm.getItem()).getMinPressure();
+                }
+                if (thermalPaddingChestplate.getItem() instanceof IItemPressurized)
+                {
+                    maxPressureProtection += ((IItemPressurized) thermalPaddingChestplate.getItem()).getMaxPressure();
+                    // minPressureProtection += ((IItemPressurized) thermalPaddingChestplate.getItem()).getMinPressure();
+                }
+                if (thermalPaddingLeggings.getItem() instanceof IItemPressurized)
+                {
+                    maxPressureProtection += ((IItemPressurized) thermalPaddingLeggings.getItem()).getMaxPressure();
+                    // minPressureProtection += ((IItemPressurized) thermalPaddingLeggings.getItem()).getMinPressure();
+                }
+                if (thermalPaddingBoots.getItem() instanceof IItemPressurized)
+                {
+                    maxPressureProtection += ((IItemPressurized) thermalPaddingBoots.getItem()).getMaxPressure();
+                    // minPressureProtection += ((IItemPressurized) thermalPaddingBoots.getItem()).getMinPressure();
+                }
+            }
+
+
             IGalacticraftWorldProvider provider = (IGalacticraftWorldProvider) player.worldObj.provider;
             float thermalLevelMod = provider.getThermalLevelModifier();
             float pressure = provider.getCelestialBody().getAtmosphericPressure();
@@ -606,7 +617,7 @@ public class GCPlayerHandler
 
     public void normaliseThermalLevel(EntityPlayerMP player, GCPlayerStats playerStats, int increment)
     {
-        int last = playerStats.thermalLevel;
+        final int last = playerStats.thermalLevel;
 
         if (playerStats.thermalLevel < 0)
         {
@@ -625,37 +636,31 @@ public class GCPlayerHandler
 
 	protected void checkOxygen(EntityPlayerMP player, GCPlayerStats playerStats)
     {
-        final ItemStack tankInSlot = playerStats.extendedInventory.getStackInSlot(2);
-        final ItemStack tankInSlot2 = playerStats.extendedInventory.getStackInSlot(3);
-
-        final int drainSpacing = OxygenUtil.getDrainSpacing(tankInSlot, tankInSlot2);
-
-        if ((player.dimension == 0 || player.worldObj.provider instanceof IGalacticraftWorldProvider) && (!(player.dimension == 0 || ((IGalacticraftWorldProvider) player.worldObj.provider).hasBreathableAtmosphere()) || player.posY > GCPlayerHandler.OXYGENHEIGHTLIMIT) && !player.capabilities.isCreativeMode && !(player.ridingEntity instanceof EntityLanderBase) && !(player.ridingEntity instanceof EntityAutoRocket))
+        if ((player.dimension == 0 || player.worldObj.provider instanceof IGalacticraftWorldProvider) && (!(player.dimension == 0 || ((IGalacticraftWorldProvider) player.worldObj.provider).hasBreathableAtmosphere()) || player.posY > GCPlayerHandler.OXYGENHEIGHTLIMIT) && !player.capabilities.isCreativeMode && !(player.ridingEntity instanceof EntityLanderBase) && !(player.ridingEntity instanceof EntityAutoRocket) && !(player.ridingEntity instanceof EntityCelestialFake))
         {
+            final ItemStack tankInSlot = playerStats.extendedInventory.getStackInSlot(2);
+            final ItemStack tankInSlot2 = playerStats.extendedInventory.getStackInSlot(3);
+
+            final int drainSpacing = OxygenUtil.getDrainSpacing(tankInSlot, tankInSlot2);
+
         	if (tankInSlot == null)
             {
                 playerStats.airRemaining = 0;
             }
+        	else
+                playerStats.airRemaining = tankInSlot.getMaxDamage() - tankInSlot.getItemDamage();
 
             if (tankInSlot2 == null)
             {
                 playerStats.airRemaining2 = 0;
             }
+            else
+                playerStats.airRemaining2 = tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage();
 
             if (drainSpacing > 0)
             {
                 if ((player.ticksExisted - 1) % drainSpacing == 0 && !OxygenUtil.isAABBInBreathableAirBlock(player) && !playerStats.usingPlanetSelectionGui)
                 {
-                    if (tankInSlot != null)
-                    {
-                        playerStats.airRemaining = tankInSlot.getMaxDamage() - tankInSlot.getItemDamage();
-                    }
-
-                    if (tankInSlot2 != null)
-                    {
-                        playerStats.airRemaining2 = tankInSlot2.getMaxDamage() - tankInSlot2.getItemDamage();
-                    }
-
                     int toTake = 1;
                     //Take 1 oxygen from Tank 1
                     if (playerStats.airRemaining > 0)
@@ -735,6 +740,8 @@ public class GCPlayerHandler
             				GCCoreOxygenSuffocationEvent suffocationEventPost = new GCCoreOxygenSuffocationEvent.Post(player);
             				MinecraftForge.EVENT_BUS.post(suffocationEventPost);
             			}
+            			else
+            				playerStats.oxygenSetupValid = true;
             		}
             	}
         		else
@@ -1015,10 +1022,10 @@ public class GCPlayerHandler
         }
     }
 
-    protected void sendAirRemainingPacket(EntityPlayerMP player, GCPlayerStats playerStats)
+    protected static void sendAirRemainingPacket(EntityPlayerMP player, GCPlayerStats playerStats)
     {
-        final float f1 = Float.valueOf(playerStats.tankInSlot1 == null ? 0.0F : playerStats.tankInSlot1.getMaxDamage() / 90.0F);
-        final float f2 = Float.valueOf(playerStats.tankInSlot2 == null ? 0.0F : playerStats.tankInSlot2.getMaxDamage() / 90.0F);
+        final float f1 = playerStats.tankInSlot1 == null ? 0.0F : playerStats.tankInSlot1.getMaxDamage() / 90.0F;
+        final float f2 = playerStats.tankInSlot2 == null ? 0.0F : playerStats.tankInSlot2.getMaxDamage() / 90.0F;
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_AIR_REMAINING, new Object[] { MathHelper.floor_float(playerStats.airRemaining / f1), MathHelper.floor_float(playerStats.airRemaining2 / f2), player.getGameProfile().getName() }), player);
     }
 
@@ -1133,7 +1140,7 @@ public class GCPlayerHandler
             {
                 SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(player.getGameProfile().getName());
 
-                if (race == null || race.getTeamName().equals(SpaceRace.DEFAULT_NAME))
+                if (race == null || race.teamName.equals(SpaceRace.DEFAULT_NAME))
                 {
                     GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_SPACE_RACE_GUI, new Object[] { }), player);
                 }
@@ -1213,7 +1220,7 @@ public class GCPlayerHandler
         {
             if (tick % 30 == 0)
             {
-                this.sendAirRemainingPacket(player, GCPlayer);
+                GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
                 this.sendThermalLevelPacket(player, GCPlayer);
             }
 

@@ -1,33 +1,41 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TileEntityOxygenStorageModule extends TileEntityOxygen implements IPacketReceiver, ISidedInventory
+public class TileEntityOxygenStorageModule extends TileEntityOxygen implements IPacketReceiver, ISidedInventory, IFluidHandler
 {
     public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
     public int scaledOxygenLevel;
     private int lastScaledOxygenLevel;
 
-    public static final int OUTPUT_PER_TICK = 100;
+    public static final int OUTPUT_PER_TICK = 500;
+    public static final int OXYGEN_CAPACITY = 60000;
     private ItemStack[] containingItems = new ItemStack[1];
 
     public TileEntityOxygenStorageModule()
     {
-        super(60000, 16);
+        super(OXYGEN_CAPACITY, 40);
         this.storage.setCapacity(0);
         this.storage.setMaxExtract(0);
     }
@@ -58,7 +66,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
 
         this.lastScaledOxygenLevel = this.scaledOxygenLevel;
 
-        this.produceOxygen();
+        this.produceOxygen(ForgeDirection.getOrientation((this.getBlockMetadata() - BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2) ^ 1));
 
         // if (!this.worldObj.isRemote)
         // {
@@ -187,7 +195,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     @Override
     public float getOxygenProvide(ForgeDirection direction)
     {
-        return this.getOxygenOutputDirections().contains(direction) ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getOxygenStored()) : 0.0F;
+        return this.getOxygenOutputDirection() == direction ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getOxygenStored()) : 0.0F;
     }
 
     @Override
@@ -199,7 +207,12 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     @Override
     public EnumSet<ForgeDirection> getOxygenOutputDirections()
     {
-        return EnumSet.of(ForgeDirection.getOrientation(this.getBlockMetadata() - BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2).getOpposite());
+        return EnumSet.of(ForgeDirection.getOrientation((this.getBlockMetadata() - BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2) ^ 1));
+    }
+    
+    public ForgeDirection getOxygenOutputDirection()
+    {
+        return ForgeDirection.getOrientation((this.getBlockMetadata() - BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2) ^ 1);
     }
     
     @Override
@@ -336,5 +349,63 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     		return FluidUtil.isEmptyContainer(itemstack);
         }
         return false;
+    }
+    
+    //IFluidHandler methods - to allow this to accept Liquid Oxygen
+    @Override
+    public boolean canDrain(ForgeDirection from, Fluid fluid)
+    {
+        return false;
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
+    {
+        return null;
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
+    {
+        return null;
+    }
+
+    @Override
+    public boolean canFill(ForgeDirection from, Fluid fluid)
+    {
+        if (from.ordinal() == this.getBlockMetadata() - BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2 && GalacticraftCore.isPlanetsLoaded)
+        {
+            //Can fill with LOX only
+            return fluid != null && fluid.getName().equals(AsteroidsModule.fluidLiquidOxygen.getName());
+        }
+
+        return false;
+    }
+
+    @Override
+    public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
+    {
+        int used = 0;
+
+        if (resource != null && this.canFill(from, resource.getFluid()))
+        {
+            used = (int) (this.receiveOxygen(resource.amount / Constants.LOX_GAS_RATIO, doFill) * Constants.LOX_GAS_RATIO);
+        }
+
+        return used;
+    }
+
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection from)
+    {
+        FluidTankInfo[] tankInfo = new FluidTankInfo[] {};
+        int metaside = this.getBlockMetadata() - BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2;
+        int side = from.ordinal();
+
+        if (metaside == side && GalacticraftCore.isPlanetsLoaded)
+        {
+            tankInfo = new FluidTankInfo[] { new FluidTankInfo(new FluidStack(AsteroidsModule.fluidLiquidOxygen, (int) (this.getOxygenStored() * Constants.LOX_GAS_RATIO)), (int) (OXYGEN_CAPACITY * Constants.LOX_GAS_RATIO)) };
+        }
+        return tankInfo;
     }
 }

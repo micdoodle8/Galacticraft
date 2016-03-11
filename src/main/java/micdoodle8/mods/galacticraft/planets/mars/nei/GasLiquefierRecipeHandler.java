@@ -49,7 +49,7 @@ public class GasLiquefierRecipeHandler extends TemplateRecipeHandler
     }
 
     @Override
-    public void drawBackground(int i)
+    public void drawBackground(int recipe)
     {
         int progress = this.ticksPassed % 144;
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -259,7 +259,7 @@ public class GasLiquefierRecipeHandler extends TemplateRecipeHandler
     @Override
     public String getRecipeName()
     {
-        return "Gas Liquefier";
+        return GCCoreUtil.translate("tile.marsMachine.4.name");
     }
 
     @Override

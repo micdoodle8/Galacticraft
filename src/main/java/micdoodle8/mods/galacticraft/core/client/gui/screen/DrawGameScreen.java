@@ -3,10 +3,14 @@ package micdoodle8.mods.galacticraft.core.client.gui.screen;
 import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.MapUtil;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.WorldProvider;
@@ -18,6 +22,7 @@ public class DrawGameScreen extends IScreenManager
 {
     private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
     private static FloatBuffer colorBuffer = GLAllocation.createDirectFloatBuffer(16);
+    private static int texCount = 1;
 
     private float tickDrawn = -1F;
     public boolean initialise = true;
@@ -25,6 +30,7 @@ public class DrawGameScreen extends IScreenManager
     private boolean readyToInitialise = false;
     private int tileCount = 0;
     private int callCount = 0;
+    private int tickMapDone = -1;
     
     private float scaleX;
     private float scaleZ;
@@ -34,16 +40,40 @@ public class DrawGameScreen extends IScreenManager
     public String telemetryLastName;
     public Entity telemetryLastEntity;
     public Render telemetryLastRender;
-    
-
+    public static DynamicTexture reusableMap;// = new DynamicTexture(MapUtil.SIZE_STD2, MapUtil.SIZE_STD2);
+    public int[] localMap = null;
+    public boolean mapDone = false;
+    public boolean mapFirstTick = false;
 
     public DrawGameScreen(float scaleXparam, float scaleZparam, TileEntity te)
     {
     	this.scaleX = scaleXparam;
     	this.scaleZ = scaleZparam;
     	this.driver = te;
+    	this.mapFirstTick = true;
     }
     
+    public boolean check(float scaleXparam, float scaleZparam)
+    {
+    	if (this.mapDone)
+    		return this.scaleX == scaleXparam && this.scaleZ == scaleZparam;
+
+    	return false;
+    }
+
+    private void makeMap()
+    {
+    	if (this.mapDone || this.reusableMap == null || this.driver.getWorldObj().provider.dimensionId != 0) return;
+    	this.localMap = new int[MapUtil.SIZE_STD2 * MapUtil.SIZE_STD2];
+		boolean result = MapUtil.getMap(this.localMap, this.driver.getWorldObj(), this.driver.xCoord, this.driver.zCoord);
+		if (result)
+		{
+			TextureUtil.uploadTexture(reusableMap.getGlTextureId(), this.localMap, MapUtil.SIZE_STD2, MapUtil.SIZE_STD2);
+			mapDone = true;
+			GCLog.debug("Created texture no:" + texCount++);
+		}
+    }
+
     public void drawScreen(int type, float ticks, boolean cornerBlock)
     {
     	if (type >= GalacticraftRegistry.getMaxScreenTypes())
@@ -51,9 +81,18 @@ public class DrawGameScreen extends IScreenManager
     		System.out.println("Wrong gamescreen type detected - this is a bug."+type);
     		return;
     	}
-
+    	
 		if (cornerBlock)
 		{
+	    	if ((this.mapFirstTick || ((int) ticks) % 400 == 0) && !mapDone)
+	    	{
+	    		if (this.tickMapDone != (int) ticks)
+	    		{
+	    			this.tickMapDone = (int) ticks;
+	    			this.makeMap();
+	    			this.mapFirstTick = false;
+	    		}
+	    	}
 			this.doDraw(type, ticks);
 			this.initialise = true;
 			this.initialiseLast = false;
