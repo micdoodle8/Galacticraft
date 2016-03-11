@@ -249,7 +249,8 @@ public class TickHandlerClient
                 }
 
                 int thermalLevel = stats.thermalLevel + 22;
-                OverlayOxygenTanks.renderOxygenTankIndicator(thermalLevel, var6, var7, !ConfigManagerCore.oxygenIndicatorLeft, !ConfigManagerCore.oxygenIndicatorBottom, Math.abs(thermalLevel - 22) >= 10 && !stats.thermalLevelNormalising);
+                int pressureLevel = stats.pressureLevel;
+                OverlayOxygenTanks.renderOxygenTankIndicator(pressureLevel, thermalLevel, var6, var7, !ConfigManagerCore.oxygenIndicatorLeft, !ConfigManagerCore.oxygenIndicatorBottom, Math.abs(thermalLevel - 22) >= 10 && !stats.thermalLevelNormalising);
             }
 
             if (playerBaseClient != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && !stats.oxygenSetupValid && OxygenUtil.noAtmosphericCombustion(player.worldObj.provider) && minecraft.currentScreen == null && !playerBaseClient.capabilities.isCreativeMode)
