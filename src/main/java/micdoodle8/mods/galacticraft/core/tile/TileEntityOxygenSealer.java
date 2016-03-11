@@ -414,7 +414,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 		
 		for (TileEntityOxygenSealer tile : new ArrayList<TileEntityOxygenSealer>(TileEntityOxygenSealer.loadedTiles))
 		{
-			if (tile.getWorldObj() == world && tile.getDistanceFrom(x, y, z) < rSquared)
+			if (tile != null && tile.getWorldObj() == world && tile.getDistanceFrom(x, y, z) < rSquared)
 			{
 				ret.put(new BlockVec3(tile.xCoord, tile.yCoord, tile.zCoord), tile);
 			}
