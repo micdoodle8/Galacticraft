@@ -428,15 +428,15 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 		TileEntityOxygenSealer ret = null;
 		double dist = 96 * 96D;
 		
-		for (TileEntityOxygenSealer tile : new ArrayList<TileEntityOxygenSealer>(TileEntityOxygenSealer.loadedTiles))
+		for (Object tile : world.loadedTileEntityList)
 		{
-			if (tile.getWorldObj() == world)
+			if (tile instanceof TileEntityOxygenSealer)
 			{
-				double testDist = tile.getDistanceFrom(x, y, z);
+				double testDist = ((TileEntityOxygenSealer) tile).getDistanceFrom(x, y, z);
 				if (testDist < dist)
 				{
 					dist = testDist;
-					ret = tile;			
+					ret = (TileEntityOxygenSealer) tile;			
 				}
 			}
 		}
