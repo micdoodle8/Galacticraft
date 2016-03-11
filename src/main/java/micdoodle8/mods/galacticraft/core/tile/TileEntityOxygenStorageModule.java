@@ -389,7 +389,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
 
         if (resource != null && this.canFill(from, resource.getFluid()))
         {
-            used = (int) (this.receiveOxygen(resource.amount * Constants.LOX_GAS_RATIO, doFill) / Constants.LOX_GAS_RATIO);
+            used = (int) (this.receiveOxygen(resource.amount / Constants.LOX_GAS_RATIO, doFill) * Constants.LOX_GAS_RATIO);
         }
 
         return used;
@@ -404,7 +404,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
 
         if (metaside == side && GalacticraftCore.isPlanetsLoaded)
         {
-            tankInfo = new FluidTankInfo[] { new FluidTankInfo(new FluidStack(AsteroidsModule.fluidLiquidOxygen, (int) (this.getOxygenStored() / Constants.LOX_GAS_RATIO)), (int) (OXYGEN_CAPACITY / Constants.LOX_GAS_RATIO)) };
+            tankInfo = new FluidTankInfo[] { new FluidTankInfo(new FluidStack(AsteroidsModule.fluidLiquidOxygen, (int) (this.getOxygenStored() * Constants.LOX_GAS_RATIO)), (int) (OXYGEN_CAPACITY * Constants.LOX_GAS_RATIO)) };
         }
         return tankInfo;
     }

@@ -104,7 +104,7 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
 		int damage = itemStack.getItemDamage();
 		int used = Math.min((int) (amount * Constants.LOX_GAS_RATIO), ItemCanisterGeneric.EMPTY - damage);
 		this.setNewDamage(itemStack, damage + used);
-		return used * 10.8F;
+		return used / Constants.LOX_GAS_RATIO;
 	}
 
 	@Override
