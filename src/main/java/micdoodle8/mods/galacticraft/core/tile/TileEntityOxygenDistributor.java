@@ -22,12 +22,10 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.List;
-
-import com.google.common.collect.Lists;
+import java.util.TreeSet;
 
 public class TileEntityOxygenDistributor extends TileEntityOxygen implements IInventory, ISidedInventory, IBubbleProvider
 {
@@ -35,7 +33,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     public boolean lastActive;
 
     private ItemStack[] containingItems = new ItemStack[2];
-    public static ArrayList<BlockVec3Dim> loadedTiles = Lists.newArrayList();
+    public static HashSet<BlockVec3Dim> loadedTiles = new HashSet();
     public float bubbleSize;
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean shouldRenderBubble = true;
@@ -56,15 +54,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     @Override
     public void onChunkUnload()
     {
-    	Iterator<BlockVec3Dim> i = loadedTiles.iterator();
-    	while (i.hasNext())
-    	{
-    		BlockVec3Dim vec = i.next();
-    		if (vec.dim == this.worldObj.provider.dimensionId && xCoord == vec.x && yCoord == vec.y && zCoord == vec.z)
-    		{
-    			i.remove();
-    		}
-    	}
+        TileEntityOxygenDistributor.loadedTiles.remove(new BlockVec3Dim(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId));
     	super.onChunkUnload();
     }
 
@@ -91,9 +81,9 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
                 }
             }
 //        	this.oxygenBubble.setDead();
+            TileEntityOxygenDistributor.loadedTiles.remove(new BlockVec3Dim(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId));
         }
 
-        if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.remove(this);
         super.invalidate();
     }
 
@@ -105,20 +95,32 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 
     public void addExtraNetworkedData(List<Object> networkedList)
     {
-        if (!this.worldObj.isRemote)
+        if (!this.worldObj.isRemote && !this.isInvalid())
         {
 //            networkedList.add(this.oxygenBubble != null);
 //            if (this.oxygenBubble != null)
 //            {
 //                networkedList.add(this.oxygenBubble.getEntityId());
 //            }
-            networkedList.add(loadedTiles.size());
-            for (BlockVec3Dim distributor : new ArrayList<BlockVec3Dim>(loadedTiles))
+            TreeSet<BlockVec3Dim> tempTiles = new TreeSet<BlockVec3Dim>(loadedTiles);
+        	networkedList.add(tempTiles.size());
+        	//TODO: Limit this to ones in the same dimension as this tile?
+            for (BlockVec3Dim distributor : tempTiles)
             {
-            	networkedList.add(distributor.x);
-            	networkedList.add(distributor.y);
-            	networkedList.add(distributor.z);
-            	networkedList.add(distributor.dim);
+            	if (distributor == null)
+            	{
+            		networkedList.add(-1);
+            		networkedList.add(-1);
+            		networkedList.add(-1);
+            		networkedList.add(-1);
+            	}
+            	else
+            	{
+	            	networkedList.add(distributor.x);
+	            	networkedList.add(distributor.y);
+	            	networkedList.add(distributor.z);
+	            	networkedList.add(distributor.dim);
+            	}
             }
             networkedList.add(this.bubbleSize);
         }
@@ -144,7 +146,12 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
             int size = dataStream.readInt();
             for (int i = 0; i < size; ++i)
             {
-            	this.loadedTiles.add(new BlockVec3Dim(dataStream.readInt(), dataStream.readInt(), dataStream.readInt(), dataStream.readInt()));
+            	int i1 = dataStream.readInt();
+            	int i2 = dataStream.readInt();
+            	int i3 = dataStream.readInt();
+            	int i4 = dataStream.readInt();
+            	if (i1 == -1 && i2 == -1 && i3 == -1 && i4 == -1) continue;
+            	this.loadedTiles.add(new BlockVec3Dim(i1, i2, i3, i4));
             }
             this.bubbleSize = dataStream.readFloat();
         }
