@@ -793,7 +793,7 @@ public class WorldUtil
                 return false;
             }
             World w = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(planetID);
-            WorldUtil.dimNames.put(planetID, new String(w.provider.getDimensionName()));
+            WorldUtil.dimNames.put(planetID, new String(getDimensionName(w.provider)));
             return true;
         }
 
@@ -1790,4 +1790,14 @@ public class WorldUtil
         }
         return data;
     }
+
+	public static String getDimensionName(WorldProvider wp)
+	{
+		if (wp instanceof IGalacticraftWorldProvider)
+		{
+			return ((IGalacticraftWorldProvider)wp).getCelestialBody().getUnlocalizedName();
+		}
+
+		return wp.getDimensionName();
+	}
 }

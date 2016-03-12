@@ -829,7 +829,6 @@ public class ClientProxyCore extends CommonProxyCore
         }
     }
 
-
     public static void adjustRenderPos(Entity entity, double offsetX, double offsetY, double offsetZ)
     {
         GL11.glPushMatrix();

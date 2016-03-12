@@ -47,6 +47,13 @@ public abstract class TileEntityOxygenTransmitter extends TileEntityAdvanced imp
     }
 
     @Override
+    public void onChunkUnload()
+    {
+        super.invalidate();
+    	super.onChunkUnload();
+    }
+
+    @Override
     public boolean canUpdate()
     {
         return false;

@@ -6,6 +6,7 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -37,7 +38,7 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler
     }
 
     @Override
-    public void drawBackground(int i)
+    public void drawBackground(int recipe)
     {
         int progress = this.ticksPassed % 144;
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -168,7 +169,7 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler
     @Override
     public String getRecipeName()
     {
-        return "Refinery";
+        return GCCoreUtil.translate("tile.refinery.name");
     }
 
     @Override

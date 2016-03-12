@@ -37,7 +37,7 @@ public class OverlaySensorGlasses extends Overlay
      */
     public static void renderSensorGlassesMain(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks, boolean hasScreen, int mouseX, int mouseY)
     {
-        OverlaySensorGlasses.zoom++;
+    	OverlaySensorGlasses.zoom++;
 
         final float f = MathHelper.sin(OverlaySensorGlasses.zoom / 80.0F) * 0.1F + 0.1F;
 

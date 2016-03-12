@@ -48,6 +48,14 @@ public abstract class TileBaseConductor extends TileEntityAdvanced implements IC
 
         super.invalidate();
     }
+    
+    @Override
+    public void onChunkUnload()
+    {
+        super.invalidate();
+    	super.onChunkUnload();
+    }
+
 
     @Override
     public boolean canUpdate()

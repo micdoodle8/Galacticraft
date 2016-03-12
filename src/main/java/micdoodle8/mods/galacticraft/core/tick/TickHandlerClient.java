@@ -66,6 +66,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -357,11 +358,13 @@ public class TickHandlerClient
                             }
                         }
                     }
-                    
                     TileEntityOxygenSealer nearestSealer = TileEntityOxygenSealer.getNearestSealer(world, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY), MathHelper.floor_double(player.posZ));
-                    if (nearestSealer != null && nearestSealer.threadSeal != null)
+                    //TODO: revert. Correct code is temporarily commented out for testing render
+                    if (nearestSealer != null)// && nearestSealer.threadSeal != null)
                     {
-                    	ClientProxyCore.leakTrace = nearestSealer.threadSeal.leakTrace;
+                    	ClientProxyCore.leakTrace = new ArrayList();//nearestSealer.threadSeal.leakTrace;
+                    	//TODO: revert. Temporarily for testing purposes any sealer should show a leak block directly above itself
+                    	ClientProxyCore.leakTrace.add(new BlockVec3(nearestSealer).translate(0,1,0));
                     }
                 }
             }
