@@ -18,6 +18,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -101,26 +102,31 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 //            {
 //                networkedList.add(this.oxygenBubble.getEntityId());
 //            }
-            HashSet<BlockVec3Dim> tempTiles = new HashSet<BlockVec3Dim>(loadedTiles);
-        	networkedList.add(tempTiles.size());
-        	//TODO: Limit this to ones in the same dimension as this tile?
-            for (BlockVec3Dim distributor : tempTiles)
-            {
-            	if (distributor == null)
-            	{
-            		networkedList.add(-1);
-            		networkedList.add(-1);
-            		networkedList.add(-1);
-            		networkedList.add(-1);
-            	}
-            	else
-            	{
-	            	networkedList.add(distributor.x);
-	            	networkedList.add(distributor.y);
-	            	networkedList.add(distributor.z);
-	            	networkedList.add(distributor.dim);
-            	}
-            }
+        	if (MinecraftServer.getServer().isDedicatedServer())
+        	{
+        		networkedList.add(loadedTiles.size());
+        		//TODO: Limit this to ones in the same dimension as this tile?
+        		for (BlockVec3Dim distributor : loadedTiles)
+        		{
+        			if (distributor == null)
+        			{
+        				networkedList.add(-1);
+        				networkedList.add(-1);
+        				networkedList.add(-1);
+        				networkedList.add(-1);
+        			}
+        			else
+        			{
+        				networkedList.add(distributor.x);
+        				networkedList.add(distributor.y);
+        				networkedList.add(distributor.z);
+        				networkedList.add(distributor.dim);
+        			}
+        		}
+        	}
+        	else
+        		//Signal integrated server, do not clear loadedTiles
+        		networkedList.add(-1);
             networkedList.add(this.bubbleSize);
         }
     }
@@ -135,7 +141,6 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     @Override
     public void readExtraNetworkedData(ByteBuf dataStream)
     {
-    	loadedTiles.clear();
         if (this.worldObj.isRemote)
         {
 //            if (dataStream.readBoolean())
@@ -143,14 +148,18 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 //                this.oxygenBubble = (EntityBubble) worldObj.getEntityByID(dataStream.readInt());
 //            }
             int size = dataStream.readInt();
-            for (int i = 0; i < size; ++i)
+            if (size >= 0)
             {
-            	int i1 = dataStream.readInt();
-            	int i2 = dataStream.readInt();
-            	int i3 = dataStream.readInt();
-            	int i4 = dataStream.readInt();
-            	if (i1 == -1 && i2 == -1 && i3 == -1 && i4 == -1) continue;
-            	this.loadedTiles.add(new BlockVec3Dim(i1, i2, i3, i4));
+            	loadedTiles.clear();
+	            for (int i = 0; i < size; ++i)
+	            {
+	            	int i1 = dataStream.readInt();
+	            	int i2 = dataStream.readInt();
+	            	int i3 = dataStream.readInt();
+	            	int i4 = dataStream.readInt();
+	            	if (i1 == -1 && i2 == -1 && i3 == -1 && i4 == -1) continue;
+	            	this.loadedTiles.add(new BlockVec3Dim(i1, i2, i3, i4));
+	            }
             }
             this.bubbleSize = dataStream.readFloat();
         }
