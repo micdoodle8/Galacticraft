@@ -52,6 +52,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     public TileEntityOxygenSealer()
     {
         super(10000, 6);
+        this.noRedstoneControl = true;
     }
 
     @Override
@@ -110,7 +111,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     @Override
     public void updateEntity()
     {
-        if (!this.worldObj.isRemote)
+    	if (!this.worldObj.isRemote)
         {
 	    	ItemStack oxygenItemStack = this.getStackInSlot(1);
 	    	if (oxygenItemStack != null && oxygenItemStack.getItem() instanceof IItemOxygenSupply)
@@ -135,7 +136,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
         }
     	
         super.updateEntity();
-
+        
         if (!this.worldObj.isRemote)
         {
             // Some code to count the number of Oxygen Sealers being updated,
