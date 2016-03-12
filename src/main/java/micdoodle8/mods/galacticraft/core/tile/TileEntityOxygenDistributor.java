@@ -25,7 +25,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
-import java.util.TreeSet;
 
 public class TileEntityOxygenDistributor extends TileEntityOxygen implements IInventory, ISidedInventory, IBubbleProvider
 {
@@ -102,7 +101,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 //            {
 //                networkedList.add(this.oxygenBubble.getEntityId());
 //            }
-            TreeSet<BlockVec3Dim> tempTiles = new TreeSet<BlockVec3Dim>(loadedTiles);
+            HashSet<BlockVec3Dim> tempTiles = new HashSet<BlockVec3Dim>(loadedTiles);
         	networkedList.add(tempTiles.size());
         	//TODO: Limit this to ones in the same dimension as this tile?
             for (BlockVec3Dim distributor : tempTiles)

@@ -40,7 +40,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.TreeSet;
 
 public class OxygenUtil
 {
@@ -488,7 +487,7 @@ public class OxygenUtil
 
 	public static boolean inOxygenBubble(World worldObj, double avgX, double avgY, double avgZ)
 	{
-        for (final BlockVec3Dim blockVec : new TreeSet<BlockVec3Dim>(TileEntityOxygenDistributor.loadedTiles))
+        for (final BlockVec3Dim blockVec : new HashSet<BlockVec3Dim>(TileEntityOxygenDistributor.loadedTiles))
         {
             if (blockVec != null && blockVec.dim == worldObj.provider.dimensionId)
             {
