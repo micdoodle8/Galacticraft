@@ -22,6 +22,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderOrbit;
 import micdoodle8.mods.galacticraft.core.world.gen.WorldChunkManagerOrbit;
 import net.minecraft.block.Block;
@@ -1214,7 +1215,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                             thismassCentreZ += m * sideVec.z;
                             thismass += m;
                             thismoment += m * (sideVec.x * sideVec.x + sideVec.z * sideVec.z);
-                            if (b instanceof BlockSpinThruster && this.worldObj.getBlockPowerInput(sideVec.x, sideVec.y, sideVec.z) == 0)
+                            if (b instanceof BlockSpinThruster && !RedstoneUtil.isBlockReceivingRedstone(this.worldObj, sideVec.x, sideVec.y, sideVec.z))
                             {
                                 foundThrusters.add(sideVec);
                             }
