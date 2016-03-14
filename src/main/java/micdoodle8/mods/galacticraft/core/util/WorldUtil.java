@@ -1744,7 +1744,9 @@ public class WorldUtil
 	{
 		if (wp instanceof IGalacticraftWorldProvider)
 		{
-			return ((IGalacticraftWorldProvider)wp).getCelestialBody().getUnlocalizedName();
+			CelestialBody cb = ((IGalacticraftWorldProvider)wp).getCelestialBody();
+			if (cb != null && !(cb instanceof Satellite))
+				return cb.getUnlocalizedName();
 		}
 
 		return wp.getDimensionName();
