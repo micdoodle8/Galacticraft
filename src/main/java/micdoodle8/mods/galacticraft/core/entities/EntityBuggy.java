@@ -63,6 +63,8 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     public double boatPitch;
     public int boatPosRotationIncrements;
     private IFuelDock landingPad;
+    private int timeClimbing;
+    private boolean shouldClimb;
 
     public EntityBuggy(World var1)
     {
@@ -406,10 +408,21 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
             this.speed = this.maxSpeed;
         }
 
-        if (this.isCollidedHorizontally)
+        if (this.isCollidedHorizontally && this.shouldClimb)
         {
             this.speed *= 0.9;
-            this.motionY = 0.15D;
+            this.motionY = 0.15D * ((-Math.pow((this.timeClimbing) - 1, 2)) / 250.0F) + 0.15F;
+            this.motionY = Math.max(-0.15, this.motionY);
+            this.shouldClimb = false;
+        }
+
+        if ((this.motionX == 0 || this.motionZ == 0) && !this.onGround)
+        {
+            this.timeClimbing++;
+        }
+        else
+        {
+            this.timeClimbing = 0;
         }
 
         if (this.worldObj.isRemote && this.buggyFuelTank.getFluid() != null && this.buggyFuelTank.getFluid().amount > 0)
@@ -669,9 +682,11 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         {
         case 0: // Accelerate
             this.speed += this.accel / 20D;
+            this.shouldClimb = true;
             return true;
         case 1: // Deccelerate
             this.speed -= this.accel / 20D;
+            this.shouldClimb = true;
             return true;
         case 2: // Left
             this.rotationYaw -= 0.5F * this.turnFactor;
