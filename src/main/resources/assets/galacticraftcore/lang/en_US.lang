@@ -715,5 +715,6 @@ gc.configgui.keyOverrideFuelLevel=Set key: Rocket Fuel GUI
 gc.configgui.keyOverrideToggleAdvGoggles=Set key: Advanced Goggles
 gc.configgui.meteorSpawnMod=Meteor Spawn Modifier
 gc.configgui.meteorBlockDamage=Meteor Block Damage Enabled
+gc.configgui.disableUpdateCheck=Disable Update Check
 
 gc.configgui.title=Galacticraft Core Config

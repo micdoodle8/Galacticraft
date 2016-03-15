@@ -44,6 +44,7 @@ public class ConfigManagerCore
     public static boolean disableSpaceStationCreation;
     public static boolean spaceStationsRequirePermission;
     public static boolean disableUpdateCheck;
+    public static boolean enableSpaceRaceManagerPopup;
     public static boolean enableDebug;
     public static boolean enableSealerEdgeChecks;
     public static boolean disableLander;
@@ -551,6 +552,12 @@ public class ConfigManagerCore
             prop.setLanguageKey("gc.configgui.disableBiomeTypeRegistrations");
             disableBiomeTypeRegistrations = prop.getBoolean(thisIsMC172);
             if (thisIsMC172) disableBiomeTypeRegistrations = true; 
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Enable Space Race Manager Popup", false);
+            prop.comment = "Space Race Manager will show on-screen after login, if enabled.";
+            prop.setLanguageKey("gc.configgui.enableSpaceRaceManagerPopup");
+            enableSpaceRaceManagerPopup = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
             config.setCategoryPropertyOrder(CATEGORY_GENERAL, propOrder);
