@@ -394,7 +394,7 @@ public class WorldUtil
     public static void initialiseDimensionNames()
     {
     	WorldProvider provider = WorldUtil.getProviderForDimensionServer(0);
-    	WorldUtil.dimNames.put(0, new String(provider.getDimensionName()));
+    	WorldUtil.dimNames.put(ConfigManagerCore.idDimensionOverworld, new String(provider.getDimensionName()));
     }
     
     /**
@@ -412,12 +412,12 @@ public class WorldUtil
 
         if (!ConfigManagerCore.disableRocketsToOverworld)
         {
-            temp.add(0);
+            temp.add(ConfigManagerCore.idDimensionOverworld);
         }
 
         for (Integer element : WorldUtil.registeredPlanets)
         {
-        	if (element == 0) continue;
+        	if (element == ConfigManagerCore.idDimensionOverworld) continue;
         	WorldProvider provider = WorldUtil.getProviderForDimensionServer(element);
 
             if (provider != null)
@@ -592,13 +592,18 @@ public class WorldUtil
             else
             //It's a planet or moon
             {
-            	WorldProvider provider = WorldUtil.getProviderForDimensionServer(id);
-            	if (celestialBody != null && provider != null)
+            	if (celestialBody == GalacticraftCore.planetOverworld)
+        			map.put(celestialBody.getName(), id);
+            	else
             	{
-            		if (provider instanceof IGalacticraftWorldProvider && !(provider instanceof IOrbitDimension) || provider.dimensionId == 0)
-            		{
-            			map.put(celestialBody.getName(), provider.dimensionId);
-            		}
+	            	WorldProvider provider = WorldUtil.getProviderForDimensionServer(id);
+	            	if (celestialBody != null && provider != null)
+	            	{
+	            		if (provider instanceof IGalacticraftWorldProvider && !(provider instanceof IOrbitDimension) || provider.dimensionId == 0)
+	            		{
+	            			map.put(celestialBody.getName(), provider.dimensionId);
+	            		}
+	            	}
             	}
             }
         }
@@ -855,7 +860,7 @@ public class WorldUtil
     {
         final ArrayList<Integer> temp = new ArrayList<Integer>();
 
-        temp.add(0);
+        temp.add(ConfigManagerCore.idDimensionOverworld);
 
         for (final Integer i : WorldUtil.registeredPlanets)
         {
@@ -1748,6 +1753,9 @@ public class WorldUtil
 			if (cb != null && !(cb instanceof Satellite))
 				return cb.getUnlocalizedName();
 		}
+		
+		if (wp.dimensionId == ConfigManagerCore.idDimensionOverworld)
+			return "Overworld";
 
 		return wp.getDimensionName();
 	}

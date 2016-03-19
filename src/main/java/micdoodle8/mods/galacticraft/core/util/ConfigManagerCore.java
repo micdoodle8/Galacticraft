@@ -52,6 +52,7 @@ public class ConfigManagerCore
 //    public static int mapsize;
     
 	// DIMENSIONS
+    public static int idDimensionOverworld;
     public static int idDimensionOverworldOrbit;
     public static int idDimensionOverworldOrbitStatic;
     public static int idDimensionMoon;
@@ -157,6 +158,12 @@ public class ConfigManagerCore
             enableDebug = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
+            prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "idDimensionOverworld", 0);
+            prop.comment = "Dimension ID for the Overworld (as seen in the Celestial Map)";
+            prop.setLanguageKey("gc.configgui.idDimensionOverworld").setRequiresMcRestart(true);
+            idDimensionOverworld = prop.getInt();
+            propOrder.add(prop.getName());
+
             prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "idDimensionMoon", -28);
             prop.comment = "Dimension ID for the Moon";
             prop.setLanguageKey("gc.configgui.idDimensionMoon").setRequiresMcRestart(true);
@@ -164,13 +171,13 @@ public class ConfigManagerCore
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "idDimensionOverworldOrbit", -27);
-            prop.comment = "Dimension ID for Overworld Space Stations";
+            prop.comment = "WorldProvider ID for Overworld Space Stations (advanced: do not change unless you have conflicts)";
             prop.setLanguageKey("gc.configgui.idDimensionOverworldOrbit").setRequiresMcRestart(true);
             idDimensionOverworldOrbit = prop.getInt();
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "idDimensionOverworldOrbitStatic", -26);
-            prop.comment = "Dimension ID for Static Overworld Space Stations";
+            prop.comment = "WorldProvider ID for Static Space Stations (advanced: do not change unless you have conflicts)";
             prop.setLanguageKey("gc.configgui.idDimensionOverworldOrbitStatic").setRequiresMcRestart(true);
             idDimensionOverworldOrbitStatic = prop.getInt();
             propOrder.add(prop.getName());
