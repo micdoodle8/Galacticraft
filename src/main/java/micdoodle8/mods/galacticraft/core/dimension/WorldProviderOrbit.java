@@ -1261,7 +1261,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         this.thrustersMinus.clear();
         for (BlockVec3 thruster : foundThrusters)
         {
-            int facing = thruster.getBlockMetadata(this.worldObj) & 8;
+        	int facing = thruster.getBlockMetadata(this.worldObj) & 8;
             if (facing == 0)
             {
                 this.thrustersPlus.add(thruster.clone());
