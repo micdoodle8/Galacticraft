@@ -1,21 +1,18 @@
 package micdoodle8.mods.galacticraft.api;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
-import micdoodle8.mods.galacticraft.core.client.gui.screen.GameScreenBasic;
-import micdoodle8.mods.galacticraft.core.client.gui.screen.GameScreenCelestial;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
-import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +33,7 @@ public class GalacticraftRegistry
     private static Map<Integer, List<ItemStack>> dungeonLootMap = new HashMap<Integer, List<ItemStack>>();
     private static List<Integer> worldProviderIDs = new ArrayList<Integer>();
     private static List<IGameScreen> gameScreens = new ArrayList<IGameScreen>();
+    private static int maxScreenTypes;
 
     /**
      * Register a new Teleport type for the world provider passed
@@ -135,6 +133,14 @@ public class GalacticraftRegistry
 
     public static void registerSpaceStation(SpaceStationType type)
     {
+        for (SpaceStationType type1 : GalacticraftRegistry.spaceStations)
+        {
+            if (type1.getWorldToOrbitID() == type.getWorldToOrbitID())
+            {
+                throw new RuntimeException("Two space station types registered with the same home planet ID: " + type.getWorldToOrbitID());
+            }
+        }
+
         GalacticraftRegistry.spaceStations.add(type);
     }
 
@@ -193,16 +199,43 @@ public class GalacticraftRegistry
         return GalacticraftRegistry.dungeonLootMap.get(tier);
     }
     
-    public static void registerProvider(int id, Class<? extends WorldProvider> provider, boolean keepLoaded)
+    /***
+     * Now returns a boolean to indicate whether registration of the WorldProvider type was successful.
+     * (If it failed, you should probably set the CelestialBody as unreachable.)
+     * 
+     * @param id
+     * @param provider
+     * @param keepLoaded
+     * @return <boolean> success
+     */
+    public static boolean registerProvider(int id, Class<? extends WorldProvider> provider, boolean keepLoaded, int defaultID)
     {
     	boolean flag = DimensionManager.registerProviderType(id, provider, keepLoaded);
     	if (flag)
+    	{
     		GalacticraftRegistry.worldProviderIDs.add(id);
+    		return true;
+    	}
     	else
     	{
-    		GalacticraftRegistry.worldProviderIDs.add(0);
-    		GCLog.severe("Could not register dimension " + id + " - does it clash with another mod?  Change the ID in config.");
+    		GalacticraftRegistry.worldProviderIDs.add(defaultID);  //Adding the 0 here preserves the order, important for network compatibility between GC versions
+    		FMLLog.severe("Could not register dimension " + id + " - does it clash with another mod?  Change the ID in config.");
+    		return false;
     	}
+    }
+
+    /**
+     * You should now use GalacticraftRegistry.registerProvider(int id, Class<? extends WorldProvider> provider, boolean keepLoaded, int defaultID)
+     * which returns a boolean indicating if the Provider was registered OK.
+     * 
+     * @param id
+     * @param provider
+     * @param keepLoaded
+     */
+    @Deprecated
+    public static void registerProvider(int id, Class<? extends WorldProvider> provider, boolean keepLoaded)
+    {
+    	GalacticraftRegistry.registerProvider(id, provider, keepLoaded, 0);
     }
     
     public static int getProviderID(int index)
@@ -219,24 +252,17 @@ public class GalacticraftRegistry
     public static int registerScreen(IGameScreen screen)
     {
     	GalacticraftRegistry.gameScreens.add(screen);
-        TileEntityScreen.maxTypes++;
-    	screen.setFrameSize(TileEntityScreen.FRAMEBORDER);
-    	return TileEntityScreen.maxTypes - 1;
+        maxScreenTypes++;
+    	screen.setFrameSize(0.098F);
+    	return maxScreenTypes - 1;
+    }
+
+    public static int getMaxScreenTypes() {
+        return maxScreenTypes;
     }
 
     public static IGameScreen getGameScreen(int type)
     {
     	return GalacticraftRegistry.gameScreens.get(type);
-    }
-    
-    public static void registerCoreGameScreens()
-    {
-        IGameScreen rendererBasic = new GameScreenBasic();
-        IGameScreen rendererCelest = new GameScreenCelestial();
-        registerScreen(rendererBasic);  //Type 0 - blank
-        registerScreen(rendererBasic);  //Type 1 - local satellite view
-        registerScreen(rendererCelest);  //Type 2 - solar system
-        registerScreen(rendererCelest);  //Type 3 - local planet
-        registerScreen(rendererCelest);  //Type 4 - render test
     }
 }

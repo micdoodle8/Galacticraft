@@ -19,7 +19,7 @@ public class CommandGCAstroMiner extends CommandBase
     @Override
     public String getCommandUsage(ICommandSender var1)
     {
-        return "/" + this.getName() + " [show|reset|set<number>] <playername>";
+        return "/" + this.getCommandName() + " [show|reset|set<number>] <playername>";
     }
 
     @Override
@@ -29,13 +29,13 @@ public class CommandGCAstroMiner extends CommandBase
     }
 
     @Override
-    public boolean canCommandSenderUse(ICommandSender par1ICommandSender)
+    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
         return true;
     }
 
     @Override
-    public String getName()
+    public String getCommandName()
     {
         return "gcastrominer";
     }
@@ -66,7 +66,7 @@ public class CommandGCAstroMiner extends CommandBase
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws CommandException
+    public void processCommand(ICommandSender sender, String[] args) throws CommandException
     {
     	if (args.length > 2)
     	{

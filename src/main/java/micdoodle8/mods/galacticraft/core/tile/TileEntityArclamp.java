@@ -15,10 +15,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
@@ -26,7 +26,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TileEntityArclamp extends TileEntity implements IUpdatePlayerListBox
+public class TileEntityArclamp extends TileEntity implements ITickable
 {
     private int ticks = 0;
     private int sideRear = 0;
@@ -110,7 +110,7 @@ public class TileEntityArclamp extends TileEntity implements IUpdatePlayerListBo
 
             if (this.worldObj.rand.nextInt(20) == 0)
             {
-                List<Entity> moblist = this.worldObj.func_175674_a(null, this.thisAABB, IMob.mobSelector);
+                List<Entity> moblist = this.worldObj.getEntitiesInAABBexcluding(null, this.thisAABB, IMob.mobSelector);
 
                 if (!moblist.isEmpty())
                 {

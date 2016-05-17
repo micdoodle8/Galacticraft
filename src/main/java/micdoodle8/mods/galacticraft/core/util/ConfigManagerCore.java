@@ -677,7 +677,7 @@ public class ConfigManagerCore
         try
         {
             Integer.parseInt(name);
-            String bName = (String)GameData.getBlockRegistry().getNameForObject(block);
+            String bName = (String)GameData.getBlockRegistry().getNameForObject(block).toString();
             if (logging) GCLog.info("[config] " + caller + ": the use of numeric IDs is discouraged, please use " + bName + " instead of " + name);
         }
         catch (NumberFormatException ex) { }

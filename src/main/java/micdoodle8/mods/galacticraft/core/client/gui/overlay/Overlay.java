@@ -3,7 +3,9 @@ package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
+import org.lwjgl.opengl.GL11;
 
 public class Overlay
 {
@@ -39,11 +41,11 @@ public class Overlay
         final float var8 = 0.00390625F;
         final Tessellator tess = Tessellator.getInstance();
         WorldRenderer worldRenderer = tess.getWorldRenderer();
-        worldRenderer.startDrawingQuads();
-        worldRenderer.addVertexWithUV(par1 + 0, par2 + par6, 0.0, (par3 + 0) * var7, (par4 + par6) * var8);
-        worldRenderer.addVertexWithUV(par1 + par5, par2 + par6, 0.0, (par3 + par5) * var7, (par4 + par6) * var8);
-        worldRenderer.addVertexWithUV(par1 + par5, par2 + 0, 0.0, (par3 + par5) * var7, (par4 + 0) * var8);
-        worldRenderer.addVertexWithUV(par1 + 0, par2 + 0, 0.0, (par3 + 0) * var7, (par4 + 0) * var8);
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        worldRenderer.pos(par1 + 0, par2 + par6, 0.0).tex((par3 + 0) * var7, (par4 + par6) * var8).endVertex();
+        worldRenderer.pos(par1 + par5, par2 + par6, 0.0).tex((par3 + par5) * var7, (par4 + par6) * var8).endVertex();
+        worldRenderer.pos(par1 + par5, par2 + 0, 0.0).tex((par3 + par5) * var7, (par4 + 0) * var8).endVertex();
+        worldRenderer.pos(par1 + 0, par2 + 0, 0.0).tex((par3 + 0) * var7, (par4 + 0) * var8).endVertex();
         tess.draw();
     }
 
@@ -62,11 +64,11 @@ public class Overlay
         var9 *= 0.5D;
         final Tessellator tess = Tessellator.getInstance();
         WorldRenderer worldRenderer = tess.getWorldRenderer();
-        worldRenderer.startDrawingQuads();
-        worldRenderer.addVertexWithUV(var1 - var7, var3 + var9, var5, 0.0D, 1.0D);
-        worldRenderer.addVertexWithUV(var1 + var7, var3 + var9, var5, 1.0D, 1.0D);
-        worldRenderer.addVertexWithUV(var1 + var7, var3 - var9, var5, 1.0D, 0.0D);
-        worldRenderer.addVertexWithUV(var1 - var7, var3 - var9, var5, 0.0D, 0.0D);
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        worldRenderer.pos(var1 - var7, var3 + var9, var5).tex(0.0D, 1.0D).endVertex();
+        worldRenderer.pos(var1 + var7, var3 + var9, var5).tex(1.0D, 1.0D).endVertex();
+        worldRenderer.pos(var1 + var7, var3 - var9, var5).tex(1.0D, 0.0D).endVertex();
+        worldRenderer.pos(var1 - var7, var3 - var9, var5).tex(0.0D, 0.0D).endVertex();
         tess.draw();
     }
 }

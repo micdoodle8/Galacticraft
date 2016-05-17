@@ -47,7 +47,7 @@ public class EntityFXLaunchSmoke extends EntityFX
     }
 
     @Override
-    public void func_180434_a(WorldRenderer worldRenderer, Entity entity, float f0, float f1, float f2, float f3, float f4, float f5)
+    public void renderParticle(WorldRenderer worldRenderer, Entity entity, float f0, float f1, float f2, float f3, float f4, float f5)
     {
         GL11.glPushMatrix();
         GL11.glDepthMask(false);
@@ -65,7 +65,7 @@ public class EntityFXLaunchSmoke extends EntityFX
         }
 
         this.particleScale = this.smokeParticleScale * var8;
-        super.func_180434_a(worldRenderer, entity, f0, f1, f2, f3, f4, f5);
+        super.renderParticle(worldRenderer, entity, f0, f1, f2, f3, f4, f5);
 
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(true);

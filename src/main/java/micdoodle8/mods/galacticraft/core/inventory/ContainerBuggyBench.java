@@ -77,7 +77,7 @@ public class ContainerBuggyBench extends Container
         {
             for (int var2 = 1; var2 < this.craftMatrix.getSizeInventory(); ++var2)
             {
-                final ItemStack slot = this.craftMatrix.getStackInSlotOnClosing(var2);
+                final ItemStack slot = this.craftMatrix.removeStackFromSlot(var2);
 
                 if (slot != null)
                 {

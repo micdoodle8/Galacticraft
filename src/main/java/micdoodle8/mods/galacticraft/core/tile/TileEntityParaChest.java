@@ -116,7 +116,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int par1)
+    public ItemStack removeStackFromSlot(int par1)
     {
         if (this.chestContents[par1] != null)
         {

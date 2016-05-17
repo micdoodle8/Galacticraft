@@ -176,7 +176,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 	            switch (this.worldObj.rand.nextInt(40))
 	            {
 	            case 0:
-	                if (this.worldObj.func_175665_u(new BlockPos(vec.getX() - 1, vec.getY(), vec.getZ())) && this.worldObj.func_175665_u(new BlockPos(vec.getX() + 1, vec.getY(), vec.getZ())) && this.worldObj.func_175665_u(new BlockPos(vec.getX(), vec.getY(), vec.getZ() - 1)) && this.worldObj.func_175665_u(new BlockPos(vec.getX(), vec.getY(), vec.getZ() + 1)))
+	                if (this.worldObj.isBlockFullCube(new BlockPos(vec.getX() - 1, vec.getY(), vec.getZ())) && this.worldObj.isBlockFullCube(new BlockPos(vec.getX() + 1, vec.getY(), vec.getZ())) && this.worldObj.isBlockFullCube(new BlockPos(vec.getX(), vec.getY(), vec.getZ() - 1)) && this.worldObj.isBlockFullCube(new BlockPos(vec.getX(), vec.getY(), vec.getZ() + 1)))
 	                {
 	                    id = Blocks.flowing_water;
 	                }

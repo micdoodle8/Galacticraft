@@ -1,13 +1,13 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
-import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ITickable;
 
 import java.util.ArrayList;
 
-public class TileEntityMinerBaseSingle extends TileEntity implements IUpdatePlayerListBox
+public class TileEntityMinerBaseSingle extends TileEntity implements ITickable
 {
     @Override
     public void update()

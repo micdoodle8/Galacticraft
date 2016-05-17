@@ -532,7 +532,7 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
 
     @SideOnly(Side.CLIENT)
     @Override
-    public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
     {
         return true;
     }

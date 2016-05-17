@@ -52,7 +52,7 @@ public class InventoryBuggyBench implements IInventory
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int par1)
+    public ItemStack removeStackFromSlot(int par1)
     {
         if (this.stackList[par1] != null)
         {

@@ -35,18 +35,7 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
         this.tasks.taskEntries.clear();
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAICreeperSwell(this));
-        this.tasks.addTask(2, this.field_175455_a);
-        this.tasks.addTask(3, new EntityAIAvoidEntity(this, new Predicate()
-        {
-            public boolean func_179958_a(Entity p_179958_1_)
-            {
-                return p_179958_1_ instanceof EntityOcelot;
-            }
-            public boolean apply(Object p_apply_1_)
-            {
-                return this.func_179958_a((Entity)p_apply_1_);
-            }
-        }, 6.0F, 1.0D, 1.2D));
+        this.tasks.addTask(3, new EntityAIAvoidEntity(this, EntityOcelot.class, 6.0F, 1.0D, 1.2D));
         this.tasks.addTask(4, new EntityAIAttackOnCollide(this, 1.0D, false));
         this.tasks.addTask(5, new EntityAIWander(this, 0.8D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));

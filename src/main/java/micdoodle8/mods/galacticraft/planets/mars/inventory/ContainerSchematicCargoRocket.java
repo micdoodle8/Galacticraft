@@ -91,7 +91,7 @@ public class ContainerSchematicCargoRocket extends Container
         {
             for (int var2 = 1; var2 < this.craftMatrix.getSizeInventory(); ++var2)
             {
-                final ItemStack var3 = this.craftMatrix.getStackInSlotOnClosing(var2);
+                final ItemStack var3 = this.craftMatrix.removeStackFromSlot(var2);
 
                 if (var3 != null)
                 {

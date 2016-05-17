@@ -1,0 +1,6 @@
+Much of this code was originally adapted from Universal Electricity, with thanks to the Calclavia and the rest of the Universal Electricity development team.
+https://github.com/Universal-Electricity/Universal-Electricity
+
+Over time, it has evolved into something more specific to Galacticraft's needs.
+
+This code is meant for internal use in Galacticraft and NOT meant to be used as a general purpose electricity library.

@@ -264,7 +264,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int par1)
+    public ItemStack removeStackFromSlot(int par1)
     {
         if (this.containingItems[par1] != null)
         {

@@ -496,7 +496,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
                 }
             }
 
-            TickHandlerServer.footprintBlockChanges.add(new BlockVec3Dim(x, y, z, world.provider.dimensionId));
+            TickHandlerServer.footprintBlockChanges.add(new BlockVec3Dim(pos, worldIn.provider.getDimensionId()));
         }
     }
     

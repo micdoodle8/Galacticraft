@@ -136,7 +136,7 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
     }
 
     @Override
-    public void func_180517_a(int par1, int par2, ChunkPrimer primer, BiomeGenBase[] par4ArrayOfBiomeGenBase)
+    public void replaceBlocksForBiome(int par1, int par2, ChunkPrimer primer, BiomeGenBase[] par4ArrayOfBiomeGenBase)
     {
         final int var5 = 20;
         for (int var8 = 0; var8 < 16; ++var8)
@@ -228,7 +228,7 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
         this.generateTerrain(par1, par2, primer);
         this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
         this.createCraters(par1, par2, primer);
-        this.func_180517_a(par1, par2, primer, this.biomesForGeneration);
+        this.replaceBlocksForBiome(par1, par2, primer, this.biomesForGeneration);
         this.caveGenerator.generate(this, this.worldObj, par1, par2, primer);
         this.dungeonGenerator.generateUsingArrays(this.worldObj, this.worldObj.getSeed(), par1 * 16, 25, par2 * 16, par1, par2, primer);
 
@@ -354,7 +354,7 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
 
         if (!ConfigManagerCore.disableMoonVillageGen)
         {
-            this.villageGenerator.func_175794_a(this.worldObj, this.rand, new ChunkCoordIntPair(par2, par3));
+            this.villageGenerator.generateStructure(this.worldObj, this.rand, new ChunkCoordIntPair(par2, par3));
         }
 
         this.decoratePlanet(this.worldObj, this.rand, var4, var5);
@@ -381,9 +381,9 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public List func_177458_a(EnumCreatureType par1EnumCreatureType, BlockPos pos)
+    public List<BiomeGenBase.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
     {
-        if (par1EnumCreatureType == EnumCreatureType.MONSTER)
+        if (creatureType == EnumCreatureType.MONSTER)
         {
             final List monsters = new ArrayList();
             monsters.add(new SpawnListEntry(EntityEvolvedZombie.class, 8, 2, 3));
@@ -403,7 +403,7 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
     {
         if (!ConfigManagerCore.disableMoonVillageGen)
         {
-            this.villageGenerator.func_175792_a(this, this.worldObj, x, z, null);
+            this.villageGenerator.generate(this, this.worldObj, x, z, null);
         }
     }
 }

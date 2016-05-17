@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -81,32 +82,32 @@ public class OverlayOxygenTanks extends Overlay
         bottomY = topY + 46.5;
 
         float texMod = 0.00390625F;
-        worldRenderer.startDrawingQuads();
-        worldRenderer.addVertexWithUV(minLeftX, bottomY, zLevel, 66 * texMod, 47 * texMod);
-        worldRenderer.addVertexWithUV(minLeftX + 9, bottomY, zLevel, (66 + 9) * texMod, 47 * texMod);
-        worldRenderer.addVertexWithUV(minLeftX + 9, topY, zLevel, (66 + 9) * texMod, 47 * 2 * texMod);
-        worldRenderer.addVertexWithUV(minLeftX, topY, zLevel, 66 * texMod, 47 * 2 * texMod);
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        worldRenderer.pos(minLeftX, bottomY, zLevel).tex(66 * texMod, 47 * texMod).endVertex();
+        worldRenderer.pos(minLeftX + 9, bottomY, zLevel).tex((66 + 9) * texMod, 47 * texMod).endVertex();
+        worldRenderer.pos(minLeftX + 9, topY, zLevel).tex((66 + 9) * texMod, 47 * 2 * texMod).endVertex();
+        worldRenderer.pos(minLeftX, topY, zLevel).tex(66 * texMod, 47 * 2 * texMod).endVertex();
         tessellator.draw();
 
         int heatLevelScaled = Math.min(Math.max(heatLevel, 1), 45);
         int heatLeveLScaledMax = Math.min(heatLevelScaled + 2, 45);
         int heatLevelScaledMin = Math.max(heatLeveLScaledMax - 2, 0);
 
-        worldRenderer.startDrawingQuads();
-        worldRenderer.addVertexWithUV(minLeftX + 1, bottomY - heatLevelScaledMin, zLevel, 76 * texMod, (48 + 45 - heatLevelScaled) * texMod);
-        worldRenderer.addVertexWithUV(minLeftX + 8, bottomY - heatLevelScaledMin, zLevel, (76 + 7) * texMod, (48 + 45 - heatLevelScaled) * texMod);
-        worldRenderer.addVertexWithUV(minLeftX + 8, bottomY - heatLeveLScaledMax, zLevel, (76 + 7) * texMod, (48 + 45 - heatLevelScaled) * texMod);
-        worldRenderer.addVertexWithUV(minLeftX + 1, bottomY - heatLeveLScaledMax, zLevel, 76 * texMod, (48 + 45 - heatLevelScaled) * texMod);
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        worldRenderer.pos(minLeftX + 1, bottomY - heatLevelScaledMin, zLevel).tex(76 * texMod, (48 + 45 - heatLevelScaled) * texMod).endVertex();
+        worldRenderer.pos(minLeftX + 8, bottomY - heatLevelScaledMin, zLevel).tex((76 + 7) * texMod, (48 + 45 - heatLevelScaled) * texMod).endVertex();
+        worldRenderer.pos(minLeftX + 8, bottomY - heatLeveLScaledMax, zLevel).tex((76 + 7) * texMod, (48 + 45 - heatLevelScaled) * texMod).endVertex();
+        worldRenderer.pos(minLeftX + 1, bottomY - heatLeveLScaledMax, zLevel).tex(76 * texMod, (48 + 45 - heatLevelScaled) * texMod).endVertex();
         tessellator.draw();
 
         if (invalid)
         {
             GL11.glColor3f(1, 0, 0);
-            worldRenderer.startDrawingQuads();
-            worldRenderer.addVertexWithUV(minLeftX - 5, bottomY - heatLevelScaledMin + 3, zLevel, 84 * texMod, 47 * texMod);
-            worldRenderer.addVertexWithUV(minLeftX - 1, bottomY - heatLevelScaledMin + 3, zLevel, (84 + 5) * texMod, 47 * texMod);
-            worldRenderer.addVertexWithUV(minLeftX - 1, bottomY - heatLeveLScaledMax - 3, zLevel, (84 + 5) * texMod, (47 + 9) * texMod);
-            worldRenderer.addVertexWithUV(minLeftX - 5, bottomY - heatLeveLScaledMax - 3, zLevel, 84 * texMod, (47 + 9) * texMod);
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+            worldRenderer.pos(minLeftX - 5, bottomY - heatLevelScaledMin + 3, zLevel).tex(84 * texMod, 47 * texMod).endVertex();
+            worldRenderer.pos(minLeftX - 1, bottomY - heatLevelScaledMin + 3, zLevel).tex((84 + 5) * texMod, 47 * texMod).endVertex();
+            worldRenderer.pos(minLeftX - 1, bottomY - heatLeveLScaledMax - 3, zLevel).tex((84 + 5) * texMod, (47 + 9) * texMod).endVertex();
+            worldRenderer.pos(minLeftX - 5, bottomY - heatLeveLScaledMax - 3, zLevel).tex(84 * texMod, (47 + 9) * texMod).endVertex();
             tessellator.draw();
             GL11.glColor3f(1, 1, 1);
         }
@@ -116,51 +117,51 @@ public class OverlayOxygenTanks extends Overlay
         minRightX += 10;
         maxRightX += 10;
 
-        worldRenderer.startDrawingQuads();
-        worldRenderer.addVertexWithUV(minRightX, bottomY, zLevel, 85 * texMod, 47 * texMod);
-        worldRenderer.addVertexWithUV(maxRightX, bottomY, zLevel, (85 + 19) * texMod, 47 * texMod);
-        worldRenderer.addVertexWithUV(maxRightX, topY, zLevel, (85 + 19) * texMod, 0 * texMod);
-        worldRenderer.addVertexWithUV(minRightX, topY, zLevel, 85 * texMod, 0 * texMod);
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        worldRenderer.pos(minRightX, bottomY, zLevel).tex(85 * texMod, 47 * texMod).endVertex();
+        worldRenderer.pos(maxRightX, bottomY, zLevel).tex((85 + 19) * texMod, 47 * texMod).endVertex();
+        worldRenderer.pos(maxRightX, topY, zLevel).tex((85 + 19) * texMod, 0 * texMod).endVertex();
+        worldRenderer.pos(minRightX, topY, zLevel).tex(85 * texMod, 0 * texMod).endVertex();
         tessellator.draw();
-        worldRenderer.startDrawingQuads();
-        worldRenderer.addVertexWithUV(minLeftX, bottomY, zLevel, 85 * texMod, 47 * texMod);
-        worldRenderer.addVertexWithUV(maxLeftX, bottomY, zLevel, (85 + 19) * texMod, 47 * texMod);
-        worldRenderer.addVertexWithUV(maxLeftX, topY, zLevel, (85 + 19) * texMod, 0 * texMod);
-        worldRenderer.addVertexWithUV(minLeftX, topY, zLevel, 85 * texMod, 0 * texMod);
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        worldRenderer.pos(minLeftX, bottomY, zLevel).tex(85 * texMod, 47 * texMod).endVertex();
+        worldRenderer.pos(maxLeftX, bottomY, zLevel).tex((85 + 19) * texMod, 47 * texMod).endVertex();
+        worldRenderer.pos(maxLeftX, topY, zLevel).tex((85 + 19) * texMod, 0 * texMod).endVertex();
+        worldRenderer.pos(minLeftX, topY, zLevel).tex(85 * texMod, 0 * texMod).endVertex();
         tessellator.draw();
         GL11.glDepthMask(true);
 
         if (oxygenInTank1 > 0)
         {
-            worldRenderer.startDrawingQuads();
-            worldRenderer.addVertexWithUV(minLeftX + 1, topY + 1 + oxygenInTank1 / 2, zLevel, 105 * 0.00390625F, oxygenInTank1 / 2 * 0.00390625F);
-            worldRenderer.addVertexWithUV(maxLeftX - 1, topY + 1 + oxygenInTank1 / 2, zLevel, (105 + 17) * 0.00390625F, oxygenInTank1 / 2 * 0.00390625F);
-            worldRenderer.addVertexWithUV(maxLeftX - 1, topY + 1, zLevel, (105 + 17) * 0.00390625F, 1 * 0.00390625F);
-            worldRenderer.addVertexWithUV(minLeftX + 1, topY + 1, zLevel, 105 * 0.00390625F, 1 * 0.00390625F);
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+            worldRenderer.pos(minLeftX + 1, topY + 1 + oxygenInTank1 / 2, zLevel).tex(105 * 0.00390625F, oxygenInTank1 / 2 * 0.00390625F).endVertex();
+            worldRenderer.pos(maxLeftX - 1, topY + 1 + oxygenInTank1 / 2, zLevel).tex((105 + 17) * 0.00390625F, oxygenInTank1 / 2 * 0.00390625F).endVertex();
+            worldRenderer.pos(maxLeftX - 1, topY + 1, zLevel).tex((105 + 17) * 0.00390625F, 1 * 0.00390625F).endVertex();
+            worldRenderer.pos(minLeftX + 1, topY + 1, zLevel).tex(105 * 0.00390625F, 1 * 0.00390625F).endVertex();
             tessellator.draw();
 
-            worldRenderer.startDrawingQuads();
-            worldRenderer.addVertexWithUV(minLeftX, topY + 1 + oxygenInTank1 / 2, zLevel, 66 * 0.00390625F, oxygenInTank1 / 2 * 0.00390625F);
-            worldRenderer.addVertexWithUV(maxLeftX - 1, topY + 1 + oxygenInTank1 / 2, zLevel, (66 + 17) * 0.00390625F, oxygenInTank1 / 2 * 0.00390625F);
-            worldRenderer.addVertexWithUV(maxLeftX - 1, topY + 1 + oxygenInTank1 / 2 - 1, zLevel, (66 + 17) * 0.00390625F, 1 * 0.00390625F);
-            worldRenderer.addVertexWithUV(minLeftX, topY + 1 + oxygenInTank1 / 2 - 1, zLevel, 66 * 0.00390625F, 1 * 0.00390625F);
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+            worldRenderer.pos(minLeftX, topY + 1 + oxygenInTank1 / 2, zLevel).tex(66 * 0.00390625F, oxygenInTank1 / 2 * 0.00390625F).endVertex();
+            worldRenderer.pos(maxLeftX - 1, topY + 1 + oxygenInTank1 / 2, zLevel).tex((66 + 17) * 0.00390625F, oxygenInTank1 / 2 * 0.00390625F).endVertex();
+            worldRenderer.pos(maxLeftX - 1, topY + 1 + oxygenInTank1 / 2 - 1, zLevel).tex((66 + 17) * 0.00390625F, 1 * 0.00390625F).endVertex();
+            worldRenderer.pos(minLeftX, topY + 1 + oxygenInTank1 / 2 - 1, zLevel).tex(66 * 0.00390625F, 1 * 0.00390625F).endVertex();
             tessellator.draw();
         }
 
         if (oxygenInTank2 > 0)
         {
-            worldRenderer.startDrawingQuads();
-            worldRenderer.addVertexWithUV(minRightX + 1, topY + 1 + oxygenInTank2 / 2, 0, 105 * 0.00390625F, oxygenInTank2 / 2 * 0.00390625F);
-            worldRenderer.addVertexWithUV(maxRightX - 1, topY + 1 + oxygenInTank2 / 2, 0, (105 + 17) * 0.00390625F, oxygenInTank2 / 2 * 0.00390625F);
-            worldRenderer.addVertexWithUV(maxRightX - 1, topY + 1, 0, (105 + 17) * 0.00390625F, 1 * 0.00390625F);
-            worldRenderer.addVertexWithUV(minRightX + 1, topY + 1, 0, 105 * 0.00390625F, 1 * 0.00390625F);
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+            worldRenderer.pos(minRightX + 1, topY + 1 + oxygenInTank2 / 2, 0).tex(105 * 0.00390625F, oxygenInTank2 / 2 * 0.00390625F).endVertex();
+            worldRenderer.pos(maxRightX - 1, topY + 1 + oxygenInTank2 / 2, 0).tex((105 + 17) * 0.00390625F, oxygenInTank2 / 2 * 0.00390625F).endVertex();
+            worldRenderer.pos(maxRightX - 1, topY + 1, 0).tex((105 + 17) * 0.00390625F, 1 * 0.00390625F).endVertex();
+            worldRenderer.pos(minRightX + 1, topY + 1, 0).tex(105 * 0.00390625F, 1 * 0.00390625F).endVertex();
             tessellator.draw();
 
-            worldRenderer.startDrawingQuads();
-            worldRenderer.addVertexWithUV(minRightX, topY + 1 + oxygenInTank2 / 2, 0, 66 * 0.00390625F, oxygenInTank2 / 2 * 0.00390625F);
-            worldRenderer.addVertexWithUV(maxRightX - 1, topY + 1 + oxygenInTank2 / 2, 0, (66 + 17) * 0.00390625F, oxygenInTank2 / 2 * 0.00390625F);
-            worldRenderer.addVertexWithUV(maxRightX - 1, topY + 1 + oxygenInTank2 / 2 - 1, 0, (66 + 17) * 0.00390625F, oxygenInTank2 / 2 * 0.00390625F);
-            worldRenderer.addVertexWithUV(minRightX, topY + 1 + oxygenInTank2 / 2 - 1, 0, 66 * 0.00390625F, oxygenInTank2 / 2 * 0.00390625F);
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+            worldRenderer.pos(minRightX, topY + 1 + oxygenInTank2 / 2, 0).tex(66 * 0.00390625F, oxygenInTank2 / 2 * 0.00390625F).endVertex();
+            worldRenderer.pos(maxRightX - 1, topY + 1 + oxygenInTank2 / 2, 0).tex((66 + 17) * 0.00390625F, oxygenInTank2 / 2 * 0.00390625F).endVertex();
+            worldRenderer.pos(maxRightX - 1, topY + 1 + oxygenInTank2 / 2 - 1, 0).tex((66 + 17) * 0.00390625F, oxygenInTank2 / 2 * 0.00390625F).endVertex();
+            worldRenderer.pos(minRightX, topY + 1 + oxygenInTank2 / 2 - 1, 0).tex(66 * 0.00390625F, oxygenInTank2 / 2 * 0.00390625F).endVertex();
             tessellator.draw();
         }
 

@@ -87,12 +87,12 @@ public class PlayerClient implements IPlayerClient
             }
         }
 
-        if (player.getBoundingBox() != null && stats.boundingBoxBefore == null)
+        if (player.getCollisionBoundingBox() != null && stats.boundingBoxBefore == null)
         {
-            stats.boundingBoxBefore = player.getBoundingBox();
+            stats.boundingBoxBefore = player.getCollisionBoundingBox();
             player.setEntityBoundingBox(AxisAlignedBB.fromBounds(stats.boundingBoxBefore.minX + 0.4, stats.boundingBoxBefore.minY + 0.9, stats.boundingBoxBefore.minZ + 0.4, stats.boundingBoxBefore.maxX - 0.4, stats.boundingBoxBefore.maxY - 0.9, stats.boundingBoxBefore.maxZ - 0.4));
         }
-        else if (player.getBoundingBox() != null && stats.boundingBoxBefore != null)
+        else if (player.getCollisionBoundingBox() != null && stats.boundingBoxBefore != null)
         {
             player.setEntityBoundingBox(stats.boundingBoxBefore);
         }

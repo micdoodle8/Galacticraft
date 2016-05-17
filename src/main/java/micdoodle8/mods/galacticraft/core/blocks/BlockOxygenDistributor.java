@@ -21,6 +21,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockOxygenDistributor extends BlockAdvancedTile implements ItemBlockDesc.IBlockShiftDesc
 {
@@ -41,7 +43,7 @@ public class BlockOxygenDistributor extends BlockAdvancedTile implements ItemBlo
     }
 
     @Override
-    public boolean renderAsNormalBlock()
+    public boolean isFullCube()
     {
         return false;
     }
@@ -54,7 +56,7 @@ public class BlockOxygenDistributor extends BlockAdvancedTile implements ItemBlo
 
     @SideOnly(Side.CLIENT)
     @Override
-    public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
     {
         return true;
     }

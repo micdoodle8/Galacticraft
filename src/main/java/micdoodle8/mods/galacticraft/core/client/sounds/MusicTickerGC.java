@@ -1,3 +1,4 @@
+/*
 package micdoodle8.mods.galacticraft.core.client.sounds;
 
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -48,3 +49,4 @@ public class MusicTickerGC extends MusicTicker
 		}
 	}
 }
+*/

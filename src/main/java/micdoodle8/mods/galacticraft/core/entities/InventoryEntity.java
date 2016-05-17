@@ -91,7 +91,7 @@ public abstract class InventoryEntity extends NetworkedEntity implements IInvent
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int slotIndex)
+    public ItemStack removeStackFromSlot(int slotIndex)
     {
         if (this.containedItems[slotIndex] != null)
         {

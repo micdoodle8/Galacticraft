@@ -19,7 +19,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.gui.IUpdatePlayerListBox;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -386,7 +386,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     }
 
     @Override
-    public IUpdatePlayerListBox getSoundUpdater() {
+    public ITickable getSoundUpdater() {
         return null;
     }
 

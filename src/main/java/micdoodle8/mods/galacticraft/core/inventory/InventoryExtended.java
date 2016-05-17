@@ -55,7 +55,7 @@ public class InventoryExtended implements IInventoryGC
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int i)
+    public ItemStack removeStackFromSlot(int i)
     {
         return null;
     }

@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import com.google.common.base.Predicate;
 import net.minecraft.entity.Entity;
-import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity;
@@ -25,7 +25,7 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.HashSet;
 import java.util.List;
 
-public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBlock, IFuelable, IFuelDock, ICargoEntity, IUpdatePlayerListBox
+public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBlock, IFuelable, IFuelDock, ICargoEntity, ITickable
 {
     private IDockable dockedEntity;
 
@@ -116,7 +116,7 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
 
                 if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
                 {
-                    FMLClientHandler.instance().getClient().effectRenderer.func_180533_a(pos, this.worldObj.getBlockState(pos));
+                    FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, this.worldObj.getBlockState(pos));
                 }
 
                 this.worldObj.destroyBlock(pos, false);

@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerExtendedInventory;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import net.minecraft.client.Minecraft;
@@ -9,7 +8,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
@@ -17,8 +15,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import net.minecraftforge.fml.common.Loader;
-import tconstruct.client.tabs.AbstractTab;
-import tconstruct.client.tabs.TabRegistry;
 
 public class GuiExtendedInventory extends InventoryEffectRenderer
 {
@@ -56,8 +52,8 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         int cornerX = this.guiLeft;
         int cornerY = this.guiTop;
 
-        TabRegistry.updateTabValues(cornerX, cornerY, InventoryTabGalacticraft.class);
-        TabRegistry.addTabsToList(this.buttonList);
+        //TabRegistry.updateTabValues(cornerX, cornerY, InventoryTabGalacticraft.class);
+        //TabRegistry.addTabsToList(this.buttonList); TODO
 
         this.buttonList.add(new GuiButton(0, this.guiLeft + 10, this.guiTop + 71, 7, 7, ""));
         this.buttonList.add(new GuiButton(1, this.guiLeft + 51, this.guiTop + 71, 7, 7, ""));
@@ -99,7 +95,7 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
 			for (int k = 0; k < this.buttonList.size(); ++k)
 	        {
 	        	GuiButton b = (GuiButton) this.buttonList.get(k);
-	        	if (!(b instanceof AbstractTab)) b.xPosition += diff;	        	
+	        	//if (!(b instanceof AbstractTab)) b.xPosition += diff; TODO
 	        }
 		}
         super.drawScreen(par1, par2, par3);

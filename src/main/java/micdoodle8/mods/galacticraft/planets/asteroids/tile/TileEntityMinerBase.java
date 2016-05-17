@@ -649,14 +649,14 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
    }
 
    @Override
-   public ItemStack getStackInSlotOnClosing(int par1)
+   public ItemStack removeStackFromSlot(int par1)
    {
        if (this.isMaster)
-    	   return super.getStackInSlotOnClosing(par1);
+    	   return super.removeStackFromSlot(par1);
        TileEntityMinerBase master = this.getMaster();
        if (master != null)
        {
-    	   return master.getStackInSlotOnClosing(par1);
+    	   return master.removeStackFromSlot(par1);
        }
 
        return null;    	   

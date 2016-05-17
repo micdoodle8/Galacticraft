@@ -10,6 +10,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 public class BlockSpaceStationBase extends BlockContainer implements ITileEntityProvider
@@ -85,7 +86,7 @@ public class BlockSpaceStationBase extends BlockContainer implements ITileEntity
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition moving, World world, int x, int y, int z)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos)
     {
     	return null;
     }

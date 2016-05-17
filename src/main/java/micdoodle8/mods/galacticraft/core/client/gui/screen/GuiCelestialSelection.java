@@ -8,6 +8,7 @@ import com.ibm.icu.text.Bidi;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
@@ -2158,15 +2159,15 @@ public class GuiCelestialSelection extends GuiScreen
         float texModY = 1F / texSizeY;
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldRenderer = tessellator.getWorldRenderer();
-        worldRenderer.startDrawingQuads();
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         float height0 = invertY ? 0 : vHeight;
         float height1 = invertY ? vHeight : 0;
         float width0 = invertX ? uWidth : 0;
         float width1 = invertX ? 0 : uWidth;
-        worldRenderer.addVertexWithUV(x, y + height, this.zLevel, (u + width0) * texModX, (v + height0) * texModY);
-        worldRenderer.addVertexWithUV(x + width, y + height, this.zLevel, (u + width1) * texModX, (v + height0) * texModY);
-        worldRenderer.addVertexWithUV(x + width, y, this.zLevel, (u + width1) * texModX, (v + height1) * texModY);
-        worldRenderer.addVertexWithUV(x, y, this.zLevel, (u + width0) * texModX, (v + height1) * texModY);
+        worldRenderer.pos(x, y + height, this.zLevel).tex((u + width0) * texModX, (v + height0) * texModY).endVertex();
+        worldRenderer.pos(x + width, y + height, this.zLevel).tex((u + width1) * texModX, (v + height0) * texModY).endVertex();
+        worldRenderer.pos(x + width, y, this.zLevel).tex((u + width1) * texModX, (v + height1) * texModY).endVertex();
+        worldRenderer.pos(x, y, this.zLevel).tex((u + width0) * texModX, (v + height1) * texModY).endVertex();
         tessellator.draw();
     }
 
@@ -2180,11 +2181,11 @@ public class GuiCelestialSelection extends GuiScreen
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldRenderer = tessellator.getWorldRenderer();
         GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);
-        worldRenderer.startDrawingQuads();
-        worldRenderer.addVertex(0.0D, height, -90.0D);
-        worldRenderer.addVertex(width, height, -90.0D);
-        worldRenderer.addVertex(width, 0.0D, -90.0D);
-        worldRenderer.addVertex(0.0D, 0.0D, -90.0D);
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(0.0D, height, -90.0D).endVertex();
+        worldRenderer.pos(width, height, -90.0D).endVertex();
+        worldRenderer.pos(width, 0.0D, -90.0D).endVertex();
+        worldRenderer.pos(0.0D, 0.0D, -90.0D).endVertex();
         tessellator.draw();
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glDisable(GL11.GL_ALPHA_TEST);

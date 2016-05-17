@@ -34,7 +34,7 @@ public abstract class DungeonRoom
 
     public abstract void generate(ChunkPrimer primer, int cx, int cz);
 
-    public abstract DungeonBoundingBox getBoundingBox();
+    public abstract DungeonBoundingBox getCollisionBoundingBox();
 
     protected abstract DungeonRoom makeRoom(MapGenDungeon dungeon, int x, int y, int z, EnumFacing dir);
 

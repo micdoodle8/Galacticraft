@@ -6,16 +6,14 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-public class TileEntityBubbleProviderRenderer extends TileEntitySpecialRenderer
+public class TileEntityBubbleProviderRenderer<E extends TileEntity & IBubbleProvider> extends TileEntitySpecialRenderer<E>
 {
     private static final ResourceLocation oxygenBubbleTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/bubble.png");
 
-    private static IModelCustom sphere;
+    //private static IModelCustom sphere;
 
     private final float colorRed;
     private final float colorGreen;
@@ -23,17 +21,15 @@ public class TileEntityBubbleProviderRenderer extends TileEntitySpecialRenderer
 
     public TileEntityBubbleProviderRenderer(float colorRed, float colorGreen, float colorBlue)
     {
-        sphere = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/sphere.obj"));
+        //sphere = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/sphere.obj"));
         this.colorRed = colorRed;
         this.colorGreen = colorGreen;
         this.colorBlue = colorBlue;
     }
 
     @Override
-    public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float var8)
+    public void renderTileEntityAt(E provider, double x, double y, double z, float partialTicks, int destroyStage)
     {
-        IBubbleProvider provider = (IBubbleProvider) tileEntity;
-
         if (!provider.getBubbleVisible())
         {
             return;
@@ -60,7 +56,7 @@ public class TileEntityBubbleProviderRenderer extends TileEntitySpecialRenderer
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
         GL11.glScalef(provider.getBubbleSize(), provider.getBubbleSize(), provider.getBubbleSize());
 
-        sphere.renderAll();
+        //sphere.renderAll();
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glMatrixMode(GL11.GL_TEXTURE);

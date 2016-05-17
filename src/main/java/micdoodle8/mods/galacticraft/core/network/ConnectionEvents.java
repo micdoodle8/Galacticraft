@@ -1,6 +1,9 @@
 package micdoodle8.mods.galacticraft.core.network;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import net.minecraft.network.EnumPacketDirection;
+import net.minecraft.network.Packet;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
@@ -19,6 +22,7 @@ import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.EnumConnectionState;
+import org.apache.logging.log4j.LogManager;
 
 public class ConnectionEvents
 {
@@ -27,7 +31,30 @@ public class ConnectionEvents
     static
     {
         EnumConnectionState.STATES_BY_CLASS.put(PacketSimple.class, EnumConnectionState.PLAY);
-        EnumConnectionState.PLAY.directionMaps.put(EnumPacketDirection.CLIENTBOUND, PacketSimple.class);
+        registerPacket(EnumPacketDirection.CLIENTBOUND, PacketSimple.class);
+    }
+
+    protected static EnumConnectionState registerPacket(EnumPacketDirection direction, Class <? extends Packet> packetClass)
+    {
+        BiMap<Integer, Class <? extends Packet >> bimap = (BiMap)EnumConnectionState.PLAY.directionMaps.get(direction);
+
+        if (bimap == null)
+        {
+            bimap = HashBiMap. < Integer, Class <? extends Packet >> create();
+            EnumConnectionState.PLAY.directionMaps.put(direction, bimap);
+        }
+
+        if (bimap.containsValue(packetClass))
+        {
+            String s = direction + " packet " + packetClass + " is already known to ID " + bimap.inverse().get(packetClass);
+            LogManager.getLogger().fatal(s);
+            throw new IllegalArgumentException(s);
+        }
+        else
+        {
+            bimap.put(Integer.valueOf(bimap.size()), packetClass);
+            return EnumConnectionState.PLAY;
+        }
     }
 
     @SubscribeEvent

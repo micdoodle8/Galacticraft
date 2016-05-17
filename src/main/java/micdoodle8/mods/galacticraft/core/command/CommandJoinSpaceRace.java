@@ -24,17 +24,17 @@ public class CommandJoinSpaceRace extends CommandBase
     @Override
     public String getCommandUsage(ICommandSender var1)
     {
-        return "/" + this.getName();
+        return "/" + this.getCommandName();
     }
 
     @Override
-    public String getName()
+    public String getCommandName()
     {
         return "joinrace";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws CommandException
+    public void processCommand(ICommandSender sender, String[] args) throws CommandException
     {
         EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(sender.getName(), true);
 

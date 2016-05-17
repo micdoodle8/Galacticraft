@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client;
 
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -44,6 +46,7 @@ public class SkyProviderOrbit extends IRenderHandler
         GL11.glEndList();
         GL11.glPopMatrix();
         final Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
         this.glSkyList = this.starGLCallList + 1;
         GL11.glNewList(this.glSkyList, GL11.GL_COMPILE);
         final byte byte2 = 64;
@@ -54,11 +57,11 @@ public class SkyProviderOrbit extends IRenderHandler
         {
             for (int l = -byte2 * i; l <= byte2 * i; l += byte2)
             {
-                tessellator.getWorldRenderer().startDrawingQuads();
-                tessellator.getWorldRenderer().addVertex(j + 0, f, l + 0);
-                tessellator.getWorldRenderer().addVertex(j + byte2, f, l + 0);
-                tessellator.getWorldRenderer().addVertex(j + byte2, f, l + byte2);
-                tessellator.getWorldRenderer().addVertex(j + 0, f, l + byte2);
+                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+                worldRenderer.pos(j + 0, f, l + 0).endVertex();
+                worldRenderer.pos(j + byte2, f, l + 0).endVertex();
+                worldRenderer.pos(j + byte2, f, l + byte2).endVertex();
+                worldRenderer.pos(j + 0, f, l + byte2).endVertex();
                 tessellator.draw();
             }
         }
@@ -67,16 +70,16 @@ public class SkyProviderOrbit extends IRenderHandler
         this.glSkyList2 = this.starGLCallList + 2;
         GL11.glNewList(this.glSkyList2, GL11.GL_COMPILE);
         f = -16F;
-        tessellator.getWorldRenderer().startDrawingQuads();
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 
         for (int k = -byte2 * i; k <= byte2 * i; k += byte2)
         {
             for (int i1 = -byte2 * i; i1 <= byte2 * i; i1 += byte2)
             {
-                tessellator.getWorldRenderer().addVertex(k + byte2, f, i1 + 0);
-                tessellator.getWorldRenderer().addVertex(k + 0, f, i1 + 0);
-                tessellator.getWorldRenderer().addVertex(k + 0, f, i1 + byte2);
-                tessellator.getWorldRenderer().addVertex(k + byte2, f, i1 + byte2);
+                worldRenderer.pos(k + byte2, f, i1 + 0).endVertex();
+                worldRenderer.pos(k + 0, f, i1 + 0).endVertex();
+                worldRenderer.pos(k + 0, f, i1 + byte2).endVertex();
+                worldRenderer.pos(k + byte2, f, i1 + byte2).endVertex();
             }
         }
 
@@ -154,18 +157,19 @@ public class SkyProviderOrbit extends IRenderHandler
                 var10 = var13;
             }
 
-            var23.getWorldRenderer().startDrawing(6);
-            var23.getWorldRenderer().setColorRGBA_F(var8, var9, var10, var24[3]);
-            var23.getWorldRenderer().addVertex(0.0D, 100.0D, 0.0D);
+            WorldRenderer worldRenderer = var23.getWorldRenderer();
+            worldRenderer.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR);
+            worldRenderer.color(var8, var9, var10, var24[3]);
+            worldRenderer.pos(0.0D, 100.0D, 0.0D).endVertex();
             final byte var26 = 16;
-            var23.getWorldRenderer().setColorRGBA_F(var24[0], var24[1], var24[2], 0.0F);
+            worldRenderer.color(var24[0], var24[1], var24[2], 0.0F);
 
             for (int var27 = 0; var27 <= var26; ++var27)
             {
                 var13 = var27 * (float) Math.PI * 2.0F / var26;
                 final float var14 = MathHelper.sin(var13);
                 final float var15 = MathHelper.cos(var13);
-                var23.getWorldRenderer().addVertex(var14 * 120.0F, var15 * 120.0F, -var15 * 40.0F * var24[3]);
+                worldRenderer.pos(var14 * 120.0F, var15 * 120.0F, -var15 * 40.0F * var24[3]).endVertex();
             }
 
             var23.draw();
@@ -217,22 +221,23 @@ public class SkyProviderOrbit extends IRenderHandler
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);        
             var12 = 8.0F;
-            var23.getWorldRenderer().startDrawingQuads();
-            var23.getWorldRenderer().addVertex(-var12, 99.9D, -var12);
-            var23.getWorldRenderer().addVertex(var12, 99.9D, -var12);
-            var23.getWorldRenderer().addVertex(var12, 99.9D, var12);
-            var23.getWorldRenderer().addVertex(-var12, 99.9D, var12);
+            WorldRenderer worldRenderer = var23.getWorldRenderer();
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+            worldRenderer.pos(-var12, 99.9D, -var12).endVertex();
+            worldRenderer.pos(var12, 99.9D, -var12).endVertex();
+            worldRenderer.pos(var12, 99.9D, var12).endVertex();
+            worldRenderer.pos(-var12, 99.9D, var12).endVertex();
             var23.draw();
             GL11.glEnable(GL11.GL_TEXTURE_2D);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             var12 = 28.0F;
             this.minecraft.renderEngine.bindTexture(SkyProviderOrbit.sunTexture);
-            var23.getWorldRenderer().startDrawingQuads();
-            var23.getWorldRenderer().addVertexWithUV(-var12, 100.0D, -var12, 0.0D, 0.0D);
-            var23.getWorldRenderer().addVertexWithUV(var12, 100.0D, -var12, 1.0D, 0.0D);
-            var23.getWorldRenderer().addVertexWithUV(var12, 100.0D, var12, 1.0D, 1.0D);
-            var23.getWorldRenderer().addVertexWithUV(-var12, 100.0D, var12, 0.0D, 1.0D);
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+            worldRenderer.pos(-var12, 100.0D, -var12).tex(0.0D, 0.0D).endVertex();
+            worldRenderer.pos(var12, 100.0D, -var12).tex(1.0D, 0.0D).endVertex();
+            worldRenderer.pos(var12, 100.0D, var12).tex(1.0D, 1.0D).endVertex();
+            worldRenderer.pos(-var12, 100.0D, var12).tex(0.0D, 1.0D).endVertex();
             var23.draw();
         }
 
@@ -242,11 +247,12 @@ public class SkyProviderOrbit extends IRenderHandler
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);        
             var12 = 11.3F;
-            var23.getWorldRenderer().startDrawingQuads();
-            var23.getWorldRenderer().addVertex(-var12, -99.9D, var12);
-            var23.getWorldRenderer().addVertex(var12, -99.9D, var12);
-            var23.getWorldRenderer().addVertex(var12, -99.9D, -var12);
-            var23.getWorldRenderer().addVertex(-var12, -99.9D, -var12);
+            WorldRenderer worldRenderer = var23.getWorldRenderer();
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+            worldRenderer.pos(-var12, -99.9D, var12).endVertex();
+            worldRenderer.pos(var12, -99.9D, var12).endVertex();
+            worldRenderer.pos(var12, -99.9D, -var12).endVertex();
+            worldRenderer.pos(-var12, -99.9D, -var12).endVertex();
             var23.draw();
             GL11.glEnable(GL11.GL_TEXTURE_2D);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
@@ -260,11 +266,11 @@ public class SkyProviderOrbit extends IRenderHandler
             final float var17 = (var29 + 0) / 2.0F;
             final float var18 = (var30 + 1) / 4.0F;
             final float var19 = (var29 + 1) / 2.0F;
-            var23.getWorldRenderer().startDrawingQuads();
-            var23.getWorldRenderer().addVertexWithUV(-var12, -100.0D, var12, var18, var19);
-            var23.getWorldRenderer().addVertexWithUV(var12, -100.0D, var12, var16, var19);
-            var23.getWorldRenderer().addVertexWithUV(var12, -100.0D, -var12, var16, var17);
-            var23.getWorldRenderer().addVertexWithUV(-var12, -100.0D, -var12, var18, var17);
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+            worldRenderer.pos(-var12, -100.0D, var12).tex(var18, var19).endVertex();
+            worldRenderer.pos(var12, -100.0D, var12).tex(var16, var19).endVertex();
+            worldRenderer.pos(var12, -100.0D, -var12).tex(var16, var17).endVertex();
+            worldRenderer.pos(-var12, -100.0D, -var12).tex(var18, var17).endVertex();
             var23.draw();
         }
 
@@ -285,11 +291,12 @@ public class SkyProviderOrbit extends IRenderHandler
             var10 = 1.0F;
             final float alpha = 0.5F;
             GL11.glColor4f(Math.min(alpha, 1.0F), Math.min(alpha, 1.0F), Math.min(alpha, 1.0F), Math.min(alpha, 1.0F));
-            var23.getWorldRenderer().startDrawingQuads();
-            var23.getWorldRenderer().addVertexWithUV(-var10, 0, var10, 0.0F, 1.0F);
-            var23.getWorldRenderer().addVertexWithUV(var10, 0, var10, 1.0F, 1.0F);
-            var23.getWorldRenderer().addVertexWithUV(var10, 0, -var10, 1.0F, 0.0F);
-            var23.getWorldRenderer().addVertexWithUV(-var10, 0, -var10, 0.0F, 0.0F);
+            WorldRenderer worldRenderer = var23.getWorldRenderer();
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+            worldRenderer.pos(-var10, 0, var10).tex(0.0F, 1.0F).endVertex();
+            worldRenderer.pos(var10, 0, var10).tex(1.0F, 1.0F).endVertex();
+            worldRenderer.pos(var10, 0, -var10).tex(1.0F, 0.0F).endVertex();
+            worldRenderer.pos(-var10, 0, -var10).tex(0.0F, 0.0F).endVertex();
             var23.draw();
             GL11.glPopMatrix();
         }
@@ -367,7 +374,7 @@ public class SkyProviderOrbit extends IRenderHandler
     {
         final Random var1 = new Random(10842L);
         final Tessellator var2 = Tessellator.getInstance();
-        var2.getWorldRenderer().startDrawingQuads();
+        var2.getWorldRenderer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 
         for (int var3 = 0; var3 < (ConfigManagerCore.moreStars ? 20000 : 6000); ++var3)
         {
@@ -407,7 +414,7 @@ public class SkyProviderOrbit extends IRenderHandler
                     final double var55 = var39 * var28 - var47 * var30;
                     final double var57 = var55 * var22 - var49 * var24;
                     final double var61 = var49 * var22 + var55 * var24;
-                    var2.getWorldRenderer().addVertex(var14 + var57, var16 + var53, var18 + var61);
+                    var2.getWorldRenderer().pos(var14 + var57, var16 + var53, var18 + var61).endVertex();
                 }
             }
         }

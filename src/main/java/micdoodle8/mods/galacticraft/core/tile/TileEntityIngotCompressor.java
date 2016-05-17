@@ -362,11 +362,11 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int par1)
+    public ItemStack removeStackFromSlot(int par1)
     {
         if (par1 >= this.containingItems.length)
         {
-            return this.compressingCraftMatrix.getStackInSlotOnClosing(par1 - this.containingItems.length);
+            return this.compressingCraftMatrix.removeStackFromSlot(par1 - this.containingItems.length);
         }
 
         if (this.containingItems[par1] != null)

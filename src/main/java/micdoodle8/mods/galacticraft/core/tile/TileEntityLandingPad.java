@@ -40,7 +40,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 
         if (!this.worldObj.isRemote)
         {
-            final List<?> list = this.worldObj.getEntitiesWithinAABB(IFuelable.class, AxisAlignedBB.fromBounds(this.getPos().getX() - 0.5D, this.getPos().getY(), this.getPos().getZ() - 0.5D, this.getPos().getX() + 0.5D, this.getPos().getY() + 1.0D, this.getPos().getZ() + 0.5D));
+            final List<Entity> list = this.worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.fromBounds(this.getPos().getX() - 0.5D, this.getPos().getY(), this.getPos().getZ() - 0.5D, this.getPos().getX() + 0.5D, this.getPos().getY() + 1.0D, this.getPos().getZ() + 0.5D));
 
             boolean docked = false;
 
@@ -121,7 +121,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
                 BlockPos pos = new BlockPos(thisBlock.getX() + x, thisBlock.getY(), thisBlock.getZ() + z);
                 if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
                 {
-                    FMLClientHandler.instance().getClient().effectRenderer.func_180533_a(pos, GCBlocks.landingPad.getDefaultState());
+                    FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, GCBlocks.landingPad.getDefaultState());
                 }
 
                 this.worldObj.destroyBlock(pos, false);

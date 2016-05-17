@@ -27,7 +27,7 @@ public class CommandGCInv extends CommandBase
     @Override
     public String getCommandUsage(ICommandSender var1)
     {
-        return "/" + this.getName() + " [save|restore|drop|clear] <playername>";
+        return "/" + this.getCommandName() + " [save|restore|drop|clear] <playername>";
     }
 
     @Override
@@ -37,13 +37,13 @@ public class CommandGCInv extends CommandBase
     }
 
     @Override
-    public boolean canCommandSenderUse(ICommandSender par1ICommandSender)
+    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
         return true;
     }
 
     @Override
-    public String getName()
+    public String getCommandName()
     {
         return "gcinv";
     }
@@ -74,7 +74,7 @@ public class CommandGCInv extends CommandBase
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws CommandException
+    public void processCommand(ICommandSender sender, String[] args) throws CommandException
     {
         if (CommandGCInv.firstuse)
         {

@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import com.mojang.authlib.GameProfile;
 
-import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import micdoodle8.mods.galacticraft.api.entity.ITelemetry;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
-public class TileEntityTelemetry extends TileEntity implements IUpdatePlayerListBox
+public class TileEntityTelemetry extends TileEntity implements ITickable
 {   
 	public Class clientClass;
 	public int[] clientData = { -1 };
@@ -226,7 +226,7 @@ public class TileEntityTelemetry extends TileEntity implements IUpdatePlayerList
 			int y = fmData.getInteger("teCoordY");
 			int z = fmData.getInteger("teCoordZ");
 			WorldProvider wp = WorldUtil.getProviderForDimension(dim);
-			if (wp == null || wp.worldObj == null)
+			if (wp == null/* || wp.worldObj == null TODO */)
 				System.out.println("Frequency module worn: world provider is null.  This is a bug. "+dim);
 			else
 			{

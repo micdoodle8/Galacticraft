@@ -272,7 +272,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox()
+    public AxisAlignedBB getCollisionBoundingBox()
     {
         return null;
     }

@@ -1,12 +1,10 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import net.minecraft.server.gui.IUpdatePlayerListBox;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorage;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
@@ -22,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class TileEntityAdvanced extends TileEntity implements IPacketReceiver, IUpdatePlayerListBox
+public abstract class TileEntityAdvanced extends TileEntity implements IPacketReceiver, ITickable
 {
     public long ticks = 0;
     private LinkedHashSet<Field> fieldCacheClient;

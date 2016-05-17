@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client;
 
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -56,7 +58,8 @@ public class FootprintRenderer
                 {
                     GL11.glPushMatrix();
                     float ageScale = footprint.age / (float) Footprint.MAX_AGE;
-                    tessellator.getWorldRenderer().startDrawingQuads();
+                    WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+                    worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
                     float f11 = (float) (footprint.position.x - interpPosX);
                     float f12 = (float) (footprint.position.y - interpPosY) + 0.001F;
@@ -64,13 +67,14 @@ public class FootprintRenderer
 
                     GL11.glTranslatef(f11, f12, f13);
 
-                    tessellator.getWorldRenderer().setBrightness((int) (100 + ageScale * 155));
+                    int brightness = (int) (100 + ageScale * 155);
+                    worldRenderer.putBrightness4(brightness, brightness, brightness, brightness);
                     GL11.glColor4f(1 - ageScale, 1 - ageScale, 1 - ageScale, 1 - ageScale);
                     double footprintScale = 0.5F;
-                    tessellator.getWorldRenderer().addVertexWithUV(0 + Math.sin((45 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, 0, 0 + Math.cos((45 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, f7, f9);
-                    tessellator.getWorldRenderer().addVertexWithUV(0 + Math.sin((135 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, 0, 0 + Math.cos((135 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, f7, f8);
-                    tessellator.getWorldRenderer().addVertexWithUV(0 + Math.sin((225 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, 0, 0 + Math.cos((225 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, f6, f8);
-                    tessellator.getWorldRenderer().addVertexWithUV(0 + Math.sin((315 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, 0, 0 + Math.cos((315 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, f6, f9);
+                    worldRenderer.pos(0 + Math.sin((45 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, 0, 0 + Math.cos((45 - footprint.rotation) * Math.PI / 180.0D) * footprintScale).tex(f7, f9).endVertex();
+                    worldRenderer.pos(0 + Math.sin((135 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, 0, 0 + Math.cos((135 - footprint.rotation) * Math.PI / 180.0D) * footprintScale).tex(f7, f8).endVertex();
+                    worldRenderer.pos(0 + Math.sin((225 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, 0, 0 + Math.cos((225 - footprint.rotation) * Math.PI / 180.0D) * footprintScale).tex(f6, f8).endVertex();
+                    worldRenderer.pos(0 + Math.sin((315 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, 0, 0 + Math.cos((315 - footprint.rotation) * Math.PI / 180.0D) * footprintScale).tex(f6, f9).endVertex();
 
                     tessellator.draw();
                     GL11.glPopMatrix();

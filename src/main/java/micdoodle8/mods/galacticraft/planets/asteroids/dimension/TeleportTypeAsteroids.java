@@ -297,4 +297,10 @@ public class TeleportTypeAsteroids implements ITeleportType
             }
         }
     }
+
+    @Override
+    public void setupAdventureSpawn(EntityPlayerMP player)
+    {
+
+    }
 }

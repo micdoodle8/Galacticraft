@@ -38,20 +38,10 @@ public class EntityAlienVillager extends EntityAgeable implements IEntityBreatha
     {
         super(par1World);
         this.setSize(0.6F, 1.8F);
-        ((PathNavigateGround)this.getNavigator()).func_179688_b(true);
-        ((PathNavigateGround)this.getNavigator()).func_179690_a(true);
+        ((PathNavigateGround)this.getNavigator()).setBreakDoors(true);
+        ((PathNavigateGround)this.getNavigator()).setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIAvoidEntity(this, new Predicate()
-        {
-            public boolean func_179530_a(Entity p_179530_1_)
-            {
-                return p_179530_1_ instanceof EntityZombie;
-            }
-            public boolean apply(Object p_apply_1_)
-            {
-                return this.func_179530_a((Entity)p_apply_1_);
-            }
-        }, 8.0F, 0.6D, 0.6D));
+        this.tasks.addTask(1, new EntityAIAvoidEntity(this, EntityZombie.class, 8.0F, 0.6D, 0.6D));
         this.tasks.addTask(2, new EntityAIMoveIndoors(this));
         this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
         this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
@@ -267,7 +257,7 @@ public class EntityAlienVillager extends EntityAgeable implements IEntityBreatha
     }
 
     @SideOnly(Side.CLIENT)
-    public void handleHealthUpdate(byte p_70103_1_)
+    public void handleStatusUpdate(byte p_70103_1_)
     {
         if (p_70103_1_ == 12)
         {
@@ -283,7 +273,7 @@ public class EntityAlienVillager extends EntityAgeable implements IEntityBreatha
         }
         else
         {
-            super.handleHealthUpdate(p_70103_1_);
+            super.handleStatusUpdate(p_70103_1_);
         }
     }
 

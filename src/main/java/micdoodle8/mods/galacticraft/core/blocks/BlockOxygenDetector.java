@@ -88,7 +88,7 @@ public class BlockOxygenDetector extends BlockContainer implements ITileEntityPr
     }
 
     @Override
-    public int isProvidingWeakPower(IBlockAccess worldIn, BlockPos pos, IBlockState state, EnumFacing side)
+    public int getWeakPower(IBlockAccess worldIn, BlockPos pos, IBlockState state, EnumFacing side)
     {
         return getMetaFromState(worldIn.getBlockState(pos)) == 1 ? 15 : 0;
     }

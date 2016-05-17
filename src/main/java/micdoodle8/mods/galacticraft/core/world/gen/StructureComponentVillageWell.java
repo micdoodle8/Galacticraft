@@ -79,20 +79,20 @@ public class StructureComponentVillageWell extends StructureComponentVillage
             this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 3, 0);
         }
 
-        this.func_175804_a(par1World, par3StructureBoundingBox, 1, 0, 1, 4, 12, 4, GCBlocks.basicBlock.getStateFromMeta(4), Blocks.flowing_water.getDefaultState(), false);
-        this.func_175811_a(par1World, Blocks.air.getDefaultState(), 2, 12, 2, par3StructureBoundingBox);
-        this.func_175811_a(par1World, Blocks.air.getDefaultState(), 3, 12, 2, par3StructureBoundingBox);
-        this.func_175811_a(par1World, Blocks.air.getDefaultState(), 2, 12, 3, par3StructureBoundingBox);
-        this.func_175811_a(par1World, Blocks.air.getDefaultState(), 3, 12, 3, par3StructureBoundingBox);
-        this.func_175811_a(par1World, Blocks.dark_oak_fence.getDefaultState(), 1, 13, 1, par3StructureBoundingBox);
-        this.func_175811_a(par1World, Blocks.dark_oak_fence.getDefaultState(), 1, 14, 1, par3StructureBoundingBox);
-        this.func_175811_a(par1World, Blocks.dark_oak_fence.getDefaultState(), 4, 13, 1, par3StructureBoundingBox);
-        this.func_175811_a(par1World, Blocks.dark_oak_fence.getDefaultState(), 4, 14, 1, par3StructureBoundingBox);
-        this.func_175811_a(par1World, Blocks.dark_oak_fence.getDefaultState(), 1, 13, 4, par3StructureBoundingBox);
-        this.func_175811_a(par1World, Blocks.dark_oak_fence.getDefaultState(), 1, 14, 4, par3StructureBoundingBox);
-        this.func_175811_a(par1World, Blocks.dark_oak_fence.getDefaultState(), 4, 13, 4, par3StructureBoundingBox);
-        this.func_175811_a(par1World, Blocks.dark_oak_fence.getDefaultState(), 4, 14, 4, par3StructureBoundingBox);
-        this.func_175804_a(par1World, par3StructureBoundingBox, 1, 15, 1, 4, 15, 4, GCBlocks.basicBlock.getStateFromMeta(4), GCBlocks.basicBlock.getStateFromMeta(4), false);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 0, 1, 4, 12, 4, GCBlocks.basicBlock.getStateFromMeta(4), Blocks.flowing_water.getDefaultState(), false);
+        this.setBlockState(par1World, Blocks.air.getDefaultState(), 2, 12, 2, par3StructureBoundingBox);
+        this.setBlockState(par1World, Blocks.air.getDefaultState(), 3, 12, 2, par3StructureBoundingBox);
+        this.setBlockState(par1World, Blocks.air.getDefaultState(), 2, 12, 3, par3StructureBoundingBox);
+        this.setBlockState(par1World, Blocks.air.getDefaultState(), 3, 12, 3, par3StructureBoundingBox);
+        this.setBlockState(par1World, Blocks.dark_oak_fence.getDefaultState(), 1, 13, 1, par3StructureBoundingBox);
+        this.setBlockState(par1World, Blocks.dark_oak_fence.getDefaultState(), 1, 14, 1, par3StructureBoundingBox);
+        this.setBlockState(par1World, Blocks.dark_oak_fence.getDefaultState(), 4, 13, 1, par3StructureBoundingBox);
+        this.setBlockState(par1World, Blocks.dark_oak_fence.getDefaultState(), 4, 14, 1, par3StructureBoundingBox);
+        this.setBlockState(par1World, Blocks.dark_oak_fence.getDefaultState(), 1, 13, 4, par3StructureBoundingBox);
+        this.setBlockState(par1World, Blocks.dark_oak_fence.getDefaultState(), 1, 14, 4, par3StructureBoundingBox);
+        this.setBlockState(par1World, Blocks.dark_oak_fence.getDefaultState(), 4, 13, 4, par3StructureBoundingBox);
+        this.setBlockState(par1World, Blocks.dark_oak_fence.getDefaultState(), 4, 14, 4, par3StructureBoundingBox);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 15, 1, 4, 15, 4, GCBlocks.basicBlock.getStateFromMeta(4), GCBlocks.basicBlock.getStateFromMeta(4), false);
 
         for (int var4 = 0; var4 <= 5; ++var4)
         {
@@ -100,7 +100,7 @@ public class StructureComponentVillageWell extends StructureComponentVillage
             {
                 if (var5 == 0 || var5 == 5 || var4 == 0 || var4 == 5)
                 {
-                    this.func_175811_a(par1World, Blocks.planks.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.SPRUCE), var5, 11, var4, par3StructureBoundingBox);
+                    this.setBlockState(par1World, Blocks.planks.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.SPRUCE), var5, 11, var4, par3StructureBoundingBox);
                     this.clearCurrentPositionBlocksUpwards(par1World, var5, 12, var4, par3StructureBoundingBox);
                 }
             }

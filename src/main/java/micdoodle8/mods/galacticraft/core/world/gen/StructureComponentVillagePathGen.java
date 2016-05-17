@@ -119,7 +119,7 @@ public class StructureComponentVillagePathGen extends StructureComponentVillageR
     {
         for (int var7 = 7 * MathHelper.getRandomIntegerInRange(par2Random, 3, 5); var7 >= 7; var7 -= 7)
         {
-            final StructureBoundingBox var8 = StructureBoundingBox.func_175897_a(par3, par4, par5, 0, 0, 0, 3, 3, var7, par6);
+            final StructureBoundingBox var8 = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 3, 3, var7, par6);
 
             if (StructureComponent.findIntersecting(par1List, var8) == null)
             {
@@ -145,7 +145,7 @@ public class StructureComponentVillagePathGen extends StructureComponentVillageR
             {
                 BlockPos pos = new BlockPos(var5, par1World.getTopSolidOrLiquidBlock(new BlockPos(var5, 0, var6)).getY() - 1, var6);
                 IBlockState state = par1World.getBlockState(pos);
-                if (par3StructureBoundingBox.func_175898_b(new BlockPos(var5, 64, var6)) && (state.getBlock() == GCBlocks.blockMoon && state.getBlock().getMetaFromState(state) == 5 || Blocks.air == state.getBlock()))
+                if (par3StructureBoundingBox.isVecInside(new BlockPos(var5, 64, var6)) && (state.getBlock() == GCBlocks.blockMoon && state.getBlock().getMetaFromState(state) == 5 || Blocks.air == state.getBlock()))
                 {
                     final int var7 = par1World.getTopSolidOrLiquidBlock(new BlockPos(var5, 0, var6)).getY() - 1;
                     par1World.setBlockState(new BlockPos(var5, var7, var6), var4.getStateFromMeta(1), 3);

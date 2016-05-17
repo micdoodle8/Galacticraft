@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -55,11 +56,11 @@ public class OverlaySensorGlasses extends Overlay
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(OverlaySensorGlasses.hudTexture);
         final Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldRenderer = tessellator.getWorldRenderer();
-        worldRenderer.startDrawingQuads();
-        worldRenderer.addVertexWithUV(i / 2 - 2 * k - f * 80, k + f * 40, -90D, 0.0D, 1.0D);
-        worldRenderer.addVertexWithUV(i / 2 + 2 * k + f * 80, k + f * 40, -90D, 1.0D, 1.0D);
-        worldRenderer.addVertexWithUV(i / 2 + 2 * k + f * 80, 0.0D - f * 40, -90D, 1.0D, 0.0D);
-        worldRenderer.addVertexWithUV(i / 2 - 2 * k - f * 80, 0.0D - f * 40, -90D, 0.0D, 0.0D);
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        worldRenderer.pos(i / 2 - 2 * k - f * 80, k + f * 40, -90D).tex(0.0D, 1.0D).endVertex();
+        worldRenderer.pos(i / 2 + 2 * k + f * 80, k + f * 40, -90D).tex(1.0D, 1.0D).endVertex();
+        worldRenderer.pos(i / 2 + 2 * k + f * 80, 0.0D - f * 40, -90D).tex(1.0D, 0.0D).endVertex();
+        worldRenderer.pos(i / 2 - 2 * k - f * 80, 0.0D - f * 40, -90D).tex(0.0D, 0.0D).endVertex();
         tessellator.draw();
 
         GL11.glDepthMask(true);

@@ -570,21 +570,21 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
     }
 
     @Override
-    public boolean func_142018_a(EntityLivingBase par1EntityLivingBase, EntityLivingBase par2EntityLivingBase)
+    public boolean shouldAttackEntity(EntityLivingBase toAttack, EntityLivingBase owner)
     {
-        if (!(par1EntityLivingBase instanceof EntityCreeper) && !(par1EntityLivingBase instanceof EntityGhast))
+        if (!(toAttack instanceof EntityCreeper) && !(toAttack instanceof EntityGhast))
         {
-            if (par1EntityLivingBase instanceof EntitySlimeling)
+            if (toAttack instanceof EntitySlimeling)
             {
-                EntitySlimeling slimeling = (EntitySlimeling) par1EntityLivingBase;
+                EntitySlimeling slimeling = (EntitySlimeling) toAttack;
 
-                if (slimeling.isTamed() && slimeling.getOwner() == par2EntityLivingBase)
+                if (slimeling.isTamed() && slimeling.getOwner() == owner)
                 {
                     return false;
                 }
             }
 
-            return !(par1EntityLivingBase instanceof EntityPlayer && par2EntityLivingBase instanceof EntityPlayer && !((EntityPlayer) par2EntityLivingBase).canAttackPlayer((EntityPlayer) par1EntityLivingBase)) && (!(par1EntityLivingBase instanceof EntityHorse) || !((EntityHorse) par1EntityLivingBase).isTame());
+            return !(toAttack instanceof EntityPlayer && owner instanceof EntityPlayer && !((EntityPlayer) owner).canAttackPlayer((EntityPlayer) toAttack)) && (!(toAttack instanceof EntityHorse) || !((EntityHorse) toAttack).isTame());
         }
         else
         {

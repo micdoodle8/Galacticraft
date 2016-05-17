@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -74,11 +75,11 @@ public class GuiElementCheckbox extends GuiButton
         float f1 = 0.00390625F;
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldRenderer = tessellator.getWorldRenderer();
-        worldRenderer.startDrawingQuads();
-        worldRenderer.addVertexWithUV(par1 + 0, par2 + par6, this.zLevel, (par3 + 0) * f, (par4 + this.texHeight) * f1);
-        worldRenderer.addVertexWithUV(par1 + par5, par2 + par6, this.zLevel, (par3 + this.texWidth) * f, (par4 + this.texHeight) * f1);
-        worldRenderer.addVertexWithUV(par1 + par5, par2 + 0, this.zLevel, (par3 + this.texWidth) * f, (par4 + 0) * f1);
-        worldRenderer.addVertexWithUV(par1 + 0, par2 + 0, this.zLevel, (par3 + 0) * f, (par4 + 0) * f1);
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        worldRenderer.pos(par1 + 0, par2 + par6, this.zLevel).tex((par3 + 0) * f, (par4 + this.texHeight) * f1).endVertex();
+        worldRenderer.pos(par1 + par5, par2 + par6, this.zLevel).tex((par3 + this.texWidth) * f, (par4 + this.texHeight) * f1).endVertex();
+        worldRenderer.pos(par1 + par5, par2 + 0, this.zLevel).tex((par3 + this.texWidth) * f, (par4 + 0) * f1).endVertex();
+        worldRenderer.pos(par1 + 0, par2 + 0, this.zLevel).tex((par3 + 0) * f, (par4 + 0) * f1).endVertex();
         tessellator.draw();
     }
 

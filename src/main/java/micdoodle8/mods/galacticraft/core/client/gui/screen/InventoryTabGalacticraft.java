@@ -1,3 +1,4 @@
+/*
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -29,3 +30,4 @@ public class InventoryTabGalacticraft extends AbstractTab
         return true;
     }
 }
+*/

@@ -139,7 +139,7 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox()
+    public AxisAlignedBB getCollisionBoundingBox()
     {
         return null;
     }

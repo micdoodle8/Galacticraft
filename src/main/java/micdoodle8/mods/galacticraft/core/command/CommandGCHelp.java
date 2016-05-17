@@ -16,7 +16,7 @@ public class CommandGCHelp extends CommandBase
     @Override
     public String getCommandUsage(ICommandSender var1)
     {
-        return "/" + this.getName();
+        return "/" + this.getCommandName();
     }
 
     @Override
@@ -26,19 +26,19 @@ public class CommandGCHelp extends CommandBase
     }
 
     @Override
-    public boolean canCommandSenderUse(ICommandSender par1ICommandSender)
+    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
         return true;
     }
 
     @Override
-    public String getName()
+    public String getCommandName()
     {
         return "gchelp";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws CommandException
+    public void processCommand(ICommandSender sender, String[] args) throws CommandException
     {
         EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(sender.getName(), true);
 		if (playerBase == null)

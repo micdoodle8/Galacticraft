@@ -39,9 +39,9 @@ public class RenderEvolvedCreeper extends RenderCreeper
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(EntityCreeper entity)
     {
-        return this.func_110779_a((EntityCreeper) par1Entity);
+        return this.func_110779_a(entity);
     }
 
     protected void updateCreeperScale(EntityCreeper par1GCEntityCreeper, float par2)
@@ -101,15 +101,15 @@ public class RenderEvolvedCreeper extends RenderCreeper
     }
 
     @Override
-    protected void preRenderCallback(EntityLivingBase par1EntityLiving, float par2)
+    protected void preRenderCallback(EntityCreeper entitylivingbaseIn, float partialTickTime)
     {
-        this.updateCreeperScale((EntityCreeper) par1EntityLiving, par2);
+        this.updateCreeperScale(entitylivingbaseIn, partialTickTime);
     }
 
     @Override
-    protected int getColorMultiplier(EntityLivingBase par1EntityLiving, float par2, float par3)
+    protected int getColorMultiplier(EntityCreeper entitylivingbaseIn, float lightBrightness, float partialTickTime)
     {
-        return this.updateCreeperColorMultiplier((EntityCreeper) par1EntityLiving, par2, par3);
+        return this.updateCreeperColorMultiplier(entitylivingbaseIn, lightBrightness, partialTickTime);
     }
 
 //    @Override

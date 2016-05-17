@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -34,8 +35,8 @@ public class RenderGrapple extends Render
             Tessellator tessellator = Tessellator.getInstance();
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glDisable(GL11.GL_LIGHTING);
-            tessellator.getWorldRenderer().startDrawing(GL11.GL_LINE_STRIP);
-            tessellator.getWorldRenderer().setColorOpaque_F(203.0F / 255.0F, 203.0F / 255.0F, 192.0F / 255.0F);
+            tessellator.getWorldRenderer().begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
+            tessellator.getWorldRenderer().color(203.0F / 255.0F, 203.0F / 255.0F, 192.0F / 255.0F, 1.0F);
             byte b2 = 16;
 
             double d14 = grapple.prevPosX + (grapple.posX - grapple.prevPosX) * partialTicks;
@@ -49,7 +50,7 @@ public class RenderGrapple extends Render
             for (int i = 0; i <= b2; ++i)
             {
                 float f12 = (float) i / (float) b2;
-                tessellator.getWorldRenderer().addVertex(x + d11 * f12, y + d12 * (f12 * f12 + f12) * 0.5D + 0.15D, z + d13 * f12);
+                tessellator.getWorldRenderer().pos(x + d11 * f12, y + d12 * (f12 * f12 + f12) * 0.5D + 0.15D, z + d13 * f12).endVertex();
             }
 
             tessellator.draw();

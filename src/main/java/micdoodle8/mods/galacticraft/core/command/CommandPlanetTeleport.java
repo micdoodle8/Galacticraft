@@ -16,17 +16,17 @@ public class CommandPlanetTeleport extends CommandBase
     @Override
     public String getCommandUsage(ICommandSender var1)
     {
-        return "/" + this.getName() + " [<player>]";
+        return "/" + this.getCommandName() + " [<player>]";
     }
 
     @Override
-    public String getName()
+    public String getCommandName()
     {
         return "dimensiontp";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws CommandException
+    public void processCommand(ICommandSender sender, String[] args) throws CommandException
     {
         EntityPlayerMP playerBase = null;
 

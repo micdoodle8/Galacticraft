@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import micdoodle8.mods.galacticraft.core.client.objload.IModelCustom;
+import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -18,18 +18,11 @@ public class RenderTier1Rocket extends Render
     private ResourceLocation spaceshipTexture;
 
     protected ModelBase modelSpaceship;
-    protected IModelCustom modelSpaceshipObj;
 
     public RenderTier1Rocket(ModelBase spaceshipModel, String textureDomain, String texture)
     {
         this(new ResourceLocation(textureDomain, "textures/model/" + texture + ".png"));
         this.modelSpaceship = spaceshipModel;
-    }
-
-    public RenderTier1Rocket(IModelCustom spaceshipModel, String textureDomain, String texture)
-    {
-        this(new ResourceLocation(textureDomain, "textures/model/" + texture + ".png"));
-        this.modelSpaceshipObj = spaceshipModel;
     }
 
     private RenderTier1Rocket(ResourceLocation texture)
@@ -77,15 +70,7 @@ public class RenderTier1Rocket extends Render
 
         this.bindEntityTexture(entity);
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
-
-        if (this.modelSpaceshipObj != null)
-        {
-            this.modelSpaceshipObj.renderAll();
-        }
-        else
-        {
-            this.modelSpaceship.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
-        }
+        this.modelSpaceship.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
         GL11.glPopMatrix();
     }

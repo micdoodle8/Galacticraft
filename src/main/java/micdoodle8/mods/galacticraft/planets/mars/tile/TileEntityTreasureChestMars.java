@@ -151,7 +151,7 @@ public class TileEntityTreasureChestMars extends TileEntityAdvanced implements I
      * GUI.
      */
     @Override
-    public ItemStack getStackInSlotOnClosing(int par1)
+    public ItemStack removeStackFromSlot(int par1)
     {
         if (this.chestContents[par1] != null)
         {

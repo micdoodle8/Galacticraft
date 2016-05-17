@@ -14,6 +14,8 @@ import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.BlockPos;
@@ -114,8 +116,9 @@ public class GuiOxygenSealer extends GuiContainerGC
 
     private String getThermalStatus()
     {
-        Block blockAbove = this.sealer.getWorldObj().getBlock(this.sealer.xCoord, this.sealer.yCoord + 1, this.sealer.zCoord);
-        int metadata = this.sealer.getWorldObj().getBlockMetadata(this.sealer.xCoord, this.sealer.yCoord + 1, this.sealer.zCoord);
+        IBlockState stateAbove = this.sealer.getWorld().getBlockState(this.sealer.getPos().up());
+        Block blockAbove = stateAbove.getBlock();
+        int metadata = blockAbove.getMetaFromState(stateAbove);
 
         if (blockAbove == GCBlocks.breatheableAir || blockAbove == GCBlocks.brightBreatheableAir)
         {

@@ -7,6 +7,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import org.lwjgl.opengl.GL11;
 
@@ -93,15 +94,15 @@ public class ModelFlag extends ModelBase
 
                     Tessellator tess = Tessellator.getInstance();
                     WorldRenderer worldRenderer = tess.getWorldRenderer();
-                    worldRenderer.startDrawing(GL11.GL_TRIANGLES);
+                    worldRenderer.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION);
 
-                    worldRenderer.addVertex(i / 24.0F + 0.0 / 24.0F, j / 24.0F + 0.0 / 24.0F + offset, offset);
-                    worldRenderer.addVertex(i / 24.0F + 0.0 / 24.0F, j / 24.0F + 1.0 / 24.0F + offset, offset);
-                    worldRenderer.addVertex(i / 24.0F + 1.0 / 24.0F, j / 24.0F + 1.0 / 24.0F + offsetAhead, offsetAhead);
+                    worldRenderer.pos(i / 24.0F + 0.0 / 24.0F, j / 24.0F + 0.0 / 24.0F + offset, offset).endVertex();
+                    worldRenderer.pos(i / 24.0F + 0.0 / 24.0F, j / 24.0F + 1.0 / 24.0F + offset, offset).endVertex();
+                    worldRenderer.pos(i / 24.0F + 1.0 / 24.0F, j / 24.0F + 1.0 / 24.0F + offsetAhead, offsetAhead).endVertex();
 
-                    worldRenderer.addVertex(i / 24.0F + 0.0 / 24.0F, j / 24.0F + 0.0 / 24.0F + offset, offset);
-                    worldRenderer.addVertex(i / 24.0F + 1.0 / 24.0F, j / 24.0F + 1.0 / 24.0F + offsetAhead, offsetAhead);
-                    worldRenderer.addVertex(i / 24.0F + 1.0 / 24.0F, j / 24.0F + 0.0 / 24.0F + offsetAhead, offsetAhead);
+                    worldRenderer.pos(i / 24.0F + 0.0 / 24.0F, j / 24.0F + 0.0 / 24.0F + offset, offset).endVertex();
+                    worldRenderer.pos(i / 24.0F + 1.0 / 24.0F, j / 24.0F + 1.0 / 24.0F + offsetAhead, offsetAhead).endVertex();
+                    worldRenderer.pos(i / 24.0F + 1.0 / 24.0F, j / 24.0F + 0.0 / 24.0F + offsetAhead, offsetAhead).endVertex();
 
                     tess.draw();
 

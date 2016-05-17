@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.api.event.wgen.GCCoreEventPopulate;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC.RotatePlayerEvent;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC.OrientCameraEvent;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
@@ -113,24 +112,24 @@ public class EventHandlerMars
         }
     }
 
-    @SideOnly(Side.CLIENT)
-    @SubscribeEvent
-    public void onPlayerRotate(RotatePlayerEvent event)
-    {
-        BlockPos c = event.entityPlayer.playerLocation;
-        IBlockState state = event.entityPlayer.getEntityWorld().getBlockState(c.down().down());
-        Block block = state.getBlock();
-        int metadata = block.getMetaFromState(state);
-
-        if (block == MarsBlocks.machine && metadata >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
-        {
-            event.shouldRotate = false;
-        }
-        else
-        {
-        	event.vanillaOverride = true;
-        }
-    }
+//    @SideOnly(Side.CLIENT)
+//    @SubscribeEvent
+//    public void onPlayerRotate(RotatePlayerEvent event)
+//    {
+//        BlockPos c = event.entityPlayer.playerLocation;
+//        IBlockState state = event.entityPlayer.getEntityWorld().getBlockState(c.down().down());
+//        Block block = state.getBlock();
+//        int metadata = block.getMetaFromState(state);
+//
+//        if (block == MarsBlocks.machine && metadata >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
+//        {
+//            event.shouldRotate = false;
+//        }
+//        else
+//        {
+//        	event.vanillaOverride = true;
+//        }
+//    } TODO
 
     private WorldGenerator eggGenerator;
 

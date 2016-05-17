@@ -97,7 +97,7 @@ public abstract class StructureComponentVillage extends StructureComponent
         {
             for (int var6 = this.boundingBox.minX; var6 <= this.boundingBox.maxX; ++var6)
             {
-                if (par2StructureBoundingBox.func_175898_b(new BlockPos(var6, 64, var5)))
+                if (par2StructureBoundingBox.isVecInside(new BlockPos(var6, 64, var5)))
                 {
                     var3 += Math.max(par1World.getTopSolidOrLiquidBlock(new BlockPos(var6, 64, var5)).getY(), par1World.provider.getAverageGroundLevel());
                     ++var4;
@@ -133,7 +133,7 @@ public abstract class StructureComponentVillage extends StructureComponent
                 var8 += par1World.rand.nextInt(3) - 1;
                 var10 += par1World.rand.nextInt(3) - 1;
 
-                if (!par2StructureBoundingBox.func_175898_b(new BlockPos(var8, var9, var10)))
+                if (!par2StructureBoundingBox.isVecInside(new BlockPos(var8, var9, var10)))
                 {
                     break;
                 }
@@ -144,23 +144,5 @@ public abstract class StructureComponentVillage extends StructureComponent
                 par1World.spawnEntityInWorld(var11);
             }
         }
-    }
-
-    @Override
-    protected void func_175811_a(World worldIn, IBlockState p_175811_2_, int p_175811_3_, int p_175811_4_, int p_175811_5_, StructureBoundingBox p_175811_6_)
-    {
-        super.func_175811_a(worldIn, p_175811_2_, p_175811_3_, p_175811_4_, p_175811_5_, p_175811_6_);
-    }
-
-    @Override
-    protected void func_175804_a(World worldIn, StructureBoundingBox p_175804_2_, int p_175804_3_, int p_175804_4_, int p_175804_5_, int p_175804_6_, int p_175804_7_, int p_175804_8_, IBlockState p_175804_9_, IBlockState p_175804_10_, boolean p_175804_11_)
-    {
-        super.func_175804_a(worldIn, p_175804_2_, p_175804_3_, p_175804_4_, p_175804_5_, p_175804_6_, p_175804_7_, p_175804_8_, p_175804_9_, p_175804_10_, p_175804_11_);
-    }
-
-    @Override
-    protected void func_175808_b(World worldIn, IBlockState p_175808_2_, int p_175808_3_, int p_175808_4_, int p_175808_5_, StructureBoundingBox p_175808_6_)
-    {
-        super.func_175808_b(worldIn, p_175808_2_, p_175808_3_, p_175808_4_, p_175808_5_, p_175808_6_);
     }
 }

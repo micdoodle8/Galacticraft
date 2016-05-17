@@ -94,7 +94,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox()
+    public AxisAlignedBB getCollisionBoundingBox()
     {
         return null;
     }
@@ -418,7 +418,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void func_180426_a(double x, double y, double z, float yaw, float pitch, int i, boolean b)
+    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
     {
         this.setRotation(yaw, pitch);
     }

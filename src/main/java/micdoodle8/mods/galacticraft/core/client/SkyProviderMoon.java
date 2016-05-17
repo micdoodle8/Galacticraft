@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client;
 
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
@@ -42,16 +45,17 @@ public class SkyProviderMoon extends IRenderHandler
         final byte byte2 = 64;
         final int i = 256 / byte2 + 2;
         float f = 16F;
+        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
 
         for (int j = -byte2 * i; j <= byte2 * i; j += byte2)
         {
             for (int l = -byte2 * i; l <= byte2 * i; l += byte2)
             {
-                tessellator.getWorldRenderer().startDrawingQuads();
-                tessellator.getWorldRenderer().addVertex(j + 0, f, l + 0);
-                tessellator.getWorldRenderer().addVertex(j + byte2, f, l + 0);
-                tessellator.getWorldRenderer().addVertex(j + byte2, f, l + byte2);
-                tessellator.getWorldRenderer().addVertex(j + 0, f, l + byte2);
+                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+                worldRenderer.pos(j + 0, f, l + 0).endVertex();
+                worldRenderer.pos(j + byte2, f, l + 0).endVertex();
+                worldRenderer.pos(j + byte2, f, l + byte2).endVertex();
+                worldRenderer.pos(j + 0, f, l + byte2).endVertex();
                 tessellator.draw();
             }
         }
@@ -60,16 +64,16 @@ public class SkyProviderMoon extends IRenderHandler
         this.glSkyList2 = this.starGLCallList + 2;
         GL11.glNewList(this.glSkyList2, GL11.GL_COMPILE);
         f = -16F;
-        tessellator.getWorldRenderer().startDrawingQuads();
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 
         for (int k = -byte2 * i; k <= byte2 * i; k += byte2)
         {
             for (int i1 = -byte2 * i; i1 <= byte2 * i; i1 += byte2)
             {
-                tessellator.getWorldRenderer().addVertex(k + byte2, f, i1 + 0);
-                tessellator.getWorldRenderer().addVertex(k + 0, f, i1 + 0);
-                tessellator.getWorldRenderer().addVertex(k + 0, f, i1 + byte2);
-                tessellator.getWorldRenderer().addVertex(k + byte2, f, i1 + byte2);
+                worldRenderer.pos(k + byte2, f, i1 + 0).endVertex();
+                worldRenderer.pos(k + 0, f, i1 + 0).endVertex();
+                worldRenderer.pos(k + 0, f, i1 + byte2).endVertex();
+                worldRenderer.pos(k + byte2, f, i1 + byte2).endVertex();
             }
         }
 
@@ -138,22 +142,23 @@ public class SkyProviderMoon extends IRenderHandler
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);        
         var12 = 20.0F / 3.5F;
-        var23.getWorldRenderer().startDrawingQuads();
-        var23.getWorldRenderer().addVertex(-var12, 99.9D, -var12);
-        var23.getWorldRenderer().addVertex(var12, 99.9D, -var12);
-        var23.getWorldRenderer().addVertex(var12, 99.9D, var12);
-        var23.getWorldRenderer().addVertex(-var12, 99.9D, var12);
+        WorldRenderer worldRenderer = var23.getWorldRenderer();
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(-var12, 99.9D, -var12).endVertex();
+        worldRenderer.pos(var12, 99.9D, -var12).endVertex();
+        worldRenderer.pos(var12, 99.9D, var12).endVertex();
+        worldRenderer.pos(-var12, 99.9D, var12).endVertex();
         var23.draw();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         var12 = 20.0F;
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(SkyProviderMoon.sunTexture);
-        var23.getWorldRenderer().startDrawingQuads();
-        var23.getWorldRenderer().addVertexWithUV(-var12, 100.0D, -var12, 0.0D, 0.0D);
-        var23.getWorldRenderer().addVertexWithUV(var12, 100.0D, -var12, 1.0D, 0.0D);
-        var23.getWorldRenderer().addVertexWithUV(var12, 100.0D, var12, 1.0D, 1.0D);
-        var23.getWorldRenderer().addVertexWithUV(-var12, 100.0D, var12, 0.0D, 1.0D);
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        worldRenderer.pos(-var12, 100.0D, -var12).tex(0.0D, 0.0D).endVertex();
+        worldRenderer.pos(var12, 100.0D, -var12).tex(1.0D, 0.0D).endVertex();
+        worldRenderer.pos(var12, 100.0D, var12).tex(1.0D, 1.0D).endVertex();
+        worldRenderer.pos(-var12, 100.0D, var12).tex(0.0D, 1.0D).endVertex();
         var23.draw();
 
         GL11.glPopMatrix();
@@ -179,11 +184,11 @@ public class SkyProviderMoon extends IRenderHandler
             FMLClientHandler.instance().getClient().renderEngine.bindTexture(SkyProviderMoon.overworldTexture);
         }
         world.getMoonPhase();
-        var23.getWorldRenderer().startDrawingQuads();
-        var23.getWorldRenderer().addVertexWithUV(-var12, -100.0D, var12, 0, 1);
-        var23.getWorldRenderer().addVertexWithUV(var12, -100.0D, var12, 1, 1);
-        var23.getWorldRenderer().addVertexWithUV(var12, -100.0D, -var12, 1, 0);
-        var23.getWorldRenderer().addVertexWithUV(-var12, -100.0D, -var12, 0, 0);
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        worldRenderer.pos(-var12, -100.0D, var12).tex(0, 1).endVertex();
+        worldRenderer.pos(var12, -100.0D, var12).tex(1, 1).endVertex();
+        worldRenderer.pos(var12, -100.0D, -var12).tex(1, 0).endVertex();
+        worldRenderer.pos(-var12, -100.0D, -var12).tex(0, 0).endVertex();
         var23.draw();
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -204,28 +209,28 @@ public class SkyProviderMoon extends IRenderHandler
             var10 = 1.0F;
             var11 = -((float) (var25 + 65.0D));
             var12 = -var10;
-            var23.getWorldRenderer().startDrawingQuads();
-            var23.getWorldRenderer().setColorRGBA_I(0, 255);
-            var23.getWorldRenderer().addVertex(-var10, var11, var10);
-            var23.getWorldRenderer().addVertex(var10, var11, var10);
-            var23.getWorldRenderer().addVertex(var10, var12, var10);
-            var23.getWorldRenderer().addVertex(-var10, var12, var10);
-            var23.getWorldRenderer().addVertex(-var10, var12, -var10);
-            var23.getWorldRenderer().addVertex(var10, var12, -var10);
-            var23.getWorldRenderer().addVertex(var10, var11, -var10);
-            var23.getWorldRenderer().addVertex(-var10, var11, -var10);
-            var23.getWorldRenderer().addVertex(var10, var12, -var10);
-            var23.getWorldRenderer().addVertex(var10, var12, var10);
-            var23.getWorldRenderer().addVertex(var10, var11, var10);
-            var23.getWorldRenderer().addVertex(var10, var11, -var10);
-            var23.getWorldRenderer().addVertex(-var10, var11, -var10);
-            var23.getWorldRenderer().addVertex(-var10, var11, var10);
-            var23.getWorldRenderer().addVertex(-var10, var12, var10);
-            var23.getWorldRenderer().addVertex(-var10, var12, -var10);
-            var23.getWorldRenderer().addVertex(-var10, var12, -var10);
-            var23.getWorldRenderer().addVertex(-var10, var12, var10);
-            var23.getWorldRenderer().addVertex(var10, var12, var10);
-            var23.getWorldRenderer().addVertex(var10, var12, -var10);
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+            worldRenderer.color(0, 0, 0, 1.0F);
+            worldRenderer.pos(-var10, var11, var10).endVertex();
+            worldRenderer.pos(var10, var11, var10).endVertex();
+            worldRenderer.pos(var10, var12, var10).endVertex();
+            worldRenderer.pos(-var10, var12, var10).endVertex();
+            worldRenderer.pos(-var10, var12, -var10).endVertex();
+            worldRenderer.pos(var10, var12, -var10).endVertex();
+            worldRenderer.pos(var10, var11, -var10).endVertex();
+            worldRenderer.pos(-var10, var11, -var10).endVertex();
+            worldRenderer.pos(var10, var12, -var10).endVertex();
+            worldRenderer.pos(var10, var12, var10).endVertex();
+            worldRenderer.pos(var10, var11, var10).endVertex();
+            worldRenderer.pos(var10, var11, -var10).endVertex();
+            worldRenderer.pos(-var10, var11, -var10).endVertex();
+            worldRenderer.pos(-var10, var11, var10).endVertex();
+            worldRenderer.pos(-var10, var12, var10).endVertex();
+            worldRenderer.pos(-var10, var12, -var10).endVertex();
+            worldRenderer.pos(-var10, var12, -var10).endVertex();
+            worldRenderer.pos(-var10, var12, var10).endVertex();
+            worldRenderer.pos(var10, var12, var10).endVertex();
+            worldRenderer.pos(var10, var12, -var10).endVertex();
             var23.draw();
         }
 
@@ -245,7 +250,8 @@ public class SkyProviderMoon extends IRenderHandler
     {
         final Random var1 = new Random(10842L);
         final Tessellator var2 = Tessellator.getInstance();
-        var2.getWorldRenderer().startDrawingQuads();
+        WorldRenderer worldRenderer = var2.getWorldRenderer();
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 
         for (int var3 = 0; var3 < (ConfigManagerCore.moreStars ? 20000 : 6000); ++var3)
         {
@@ -285,7 +291,7 @@ public class SkyProviderMoon extends IRenderHandler
                     final double var55 = var39 * var28 - var47 * var30;
                     final double var57 = var55 * var22 - var49 * var24;
                     final double var61 = var49 * var22 + var55 * var24;
-                    var2.getWorldRenderer().addVertex(var14 + var57, var16 + var53, var18 + var61);
+                    worldRenderer.pos(var14 + var57, var16 + var53, var18 + var61);
                 }
             }
         }

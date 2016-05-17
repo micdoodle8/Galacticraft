@@ -76,7 +76,7 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
                         {
                             if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.05D)
                             {
-                                FMLClientHandler.instance().getClient().effectRenderer.func_180533_a(pos, this.worldObj.getBlockState(pos));
+                                FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, this.worldObj.getBlockState(pos));
                             }
 
                             this.worldObj.destroyBlock(pos, y == 0);
@@ -85,7 +85,7 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
                         {
                             if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.05D)
                             {
-                                FMLClientHandler.instance().getClient().effectRenderer.func_180533_a(pos, this.worldObj.getBlockState(pos));
+                                FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, this.worldObj.getBlockState(pos));
                             }
 
                             this.worldObj.setBlockToAir(pos);

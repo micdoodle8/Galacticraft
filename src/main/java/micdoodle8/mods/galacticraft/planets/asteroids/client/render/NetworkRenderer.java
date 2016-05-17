@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamOutput;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -68,12 +69,12 @@ public class NetworkRenderer
             GL11.glRotatef(tileEntity.ticks * 10, 0, 0, 1);
 
             GL11.glColor4f(tileEntity.getColor().floatX(), tileEntity.getColor().floatY(), tileEntity.getColor().floatZ(), 1.0F);
-            tess.getWorldRenderer().startDrawing(GL11.GL_LINES);
+            tess.getWorldRenderer().begin(GL11.GL_LINES, DefaultVertexFormats.POSITION);
 
             for (EnumFacing dir : EnumFacing.values())
             {
-                tess.getWorldRenderer().addVertex(dir.getFrontOffsetX() / 40.0F, dir.getFrontOffsetY() / 40.0F, dir.getFrontOffsetZ() / 40.0F);
-                tess.getWorldRenderer().addVertex(dir.getFrontOffsetX() / 40.0F, dir.getFrontOffsetY() / 40.0F, directionLength + dir.getFrontOffsetZ() / 40.0F);
+                tess.getWorldRenderer().pos(dir.getFrontOffsetX() / 40.0F, dir.getFrontOffsetY() / 40.0F, dir.getFrontOffsetZ() / 40.0F).endVertex();
+                tess.getWorldRenderer().pos(dir.getFrontOffsetX() / 40.0F, dir.getFrontOffsetY() / 40.0F, directionLength + dir.getFrontOffsetZ() / 40.0F).endVertex();
             }
 
             tess.draw();

@@ -64,7 +64,7 @@ public class RoomChestsMars extends DungeonRoom
     }
 
     @Override
-    public DungeonBoundingBox getBoundingBox()
+    public DungeonBoundingBox getCollisionBoundingBox()
     {
         return new DungeonBoundingBox(this.posX, this.posZ, this.posX + this.sizeX, this.posZ + this.sizeZ);
     }

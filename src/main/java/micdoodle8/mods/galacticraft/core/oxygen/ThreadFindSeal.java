@@ -13,6 +13,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -131,7 +132,7 @@ public class ThreadFindSeal
         long time1 = System.nanoTime();
 
         this.sealed = true;
-        TileEntity tile = this.head.getTileEntityOnSide(world, ForgeDirection.DOWN);
+        TileEntity tile = this.head.getTileEntityOnSide(world, EnumFacing.DOWN);
         this.foundAmbientThermal = tile instanceof TileEntityOxygenSealer && ((TileEntityOxygenSealer) tile).thermalControlEnabled();
         this.checked.add(this.head.clone());
         this.currentLayer = new LinkedList<BlockVec3>();

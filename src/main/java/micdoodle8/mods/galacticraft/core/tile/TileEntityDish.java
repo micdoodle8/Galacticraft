@@ -138,7 +138,7 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
 
                     if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
                     {
-                        FMLClientHandler.instance().getClient().effectRenderer.func_180533_a(pos, this.worldObj.getBlockState(pos));
+                        FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, this.worldObj.getBlockState(pos));
                     }
 
                     this.worldObj.setBlockToAir(pos);
@@ -293,7 +293,7 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int par1)
+    public ItemStack removeStackFromSlot(int par1)
     {
         if (this.containingItems[par1] != null)
         {

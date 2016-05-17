@@ -38,7 +38,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
@@ -161,7 +160,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 	public LinkedList<BlockVec3> laserBlocks = new LinkedList();
 	public LinkedList<Integer> laserTimes = new LinkedList();
 	public float retraction = 1F;
-	protected IUpdatePlayerListBox soundUpdater;
+	protected ITickable soundUpdater;
 	private boolean soundToStop = false;
 	private boolean spawnedInCreative = false;
     
@@ -262,7 +261,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int var1)
+    public ItemStack removeStackFromSlot(int var1)
     {
         if (this.cargoItems[var1] != null)
         {
@@ -1687,7 +1686,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     @Override
     public AxisAlignedBB getCollisionBox(Entity par1Entity)
     {
-        return par1Entity.getBoundingBox();
+        return par1Entity.getCollisionBoundingBox();
     }
 
     @Override
@@ -1827,7 +1826,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     }
 
     @SideOnly(Side.CLIENT)
-    public IUpdatePlayerListBox getSoundUpdater()
+    public ITickable getSoundUpdater()
     {
     	return this.soundUpdater;
     }

@@ -84,7 +84,9 @@ public class MarsModule implements IPlanetsModule
 
         if (!FluidRegistry.isFluidRegistered("bacterialsludge"))
         {
-            sludgeGC = new Fluid("bacterialsludge").setDensity(800).setViscosity(1500);
+            ResourceLocation stillIcon = new ResourceLocation(MarsModule.TEXTURE_PREFIX + "sludge_still");
+            ResourceLocation flowingIcon = new ResourceLocation(MarsModule.TEXTURE_PREFIX + "sludge_flow");
+            sludgeGC = new Fluid("bacterialsludge", stillIcon, flowingIcon).setDensity(800).setViscosity(1500);
             FluidRegistry.registerFluid(sludgeGC);
         }
         else
@@ -96,7 +98,7 @@ public class MarsModule implements IPlanetsModule
 
         if (sludge.getBlock() == null)
         {
-            MarsBlocks.blockSludge = new BlockSludge().setBlockName("sludge");
+            MarsBlocks.blockSludge = new BlockSludge("sludge");
             ((BlockSludge) MarsBlocks.blockSludge).setQuantaPerBlock(3);
             GameRegistry.registerBlock(MarsBlocks.blockSludge, ItemBlockDesc.class, MarsBlocks.blockSludge.getUnlocalizedName());
             sludge.setBlock(MarsBlocks.blockSludge);
@@ -108,7 +110,7 @@ public class MarsModule implements IPlanetsModule
 
         if (MarsBlocks.blockSludge != null)
         {
-            MarsItems.bucketSludge = new ItemBucketGC(MarsBlocks.blockSludge, MarsModule.TEXTURE_PREFIX).setUnlocalizedName("bucketSludge");
+            MarsItems.bucketSludge = new ItemBucketGC(MarsBlocks.blockSludge).setUnlocalizedName("bucketSludge");
             MarsItems.registerItem(MarsItems.bucketSludge);
             FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack("bacterialsludge", FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(MarsItems.bucketSludge), new ItemStack(Items.bucket));
         }

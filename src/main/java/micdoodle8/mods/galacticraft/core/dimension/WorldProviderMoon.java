@@ -322,4 +322,6 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
     public String getInternalNameSuffix() {
         return "_moon";
     }
+
+
 }

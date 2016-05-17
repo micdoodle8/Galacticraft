@@ -32,7 +32,7 @@ public class CommandGCEnergyUnits extends CommandBase
             options = options + "|J";
         }
         options = options + "|RF";
-        return "/" + this.getName() + options + "]";
+        return "/" + this.getCommandName() + options + "]";
     }
 
     @Override
@@ -42,19 +42,19 @@ public class CommandGCEnergyUnits extends CommandBase
     }
 
     @Override
-    public boolean canCommandSenderUse(ICommandSender par1ICommandSender)
+    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
         return true;
     }
 
     @Override
-    public String getName()
+    public String getCommandName()
     {
         return "gcenergyunits";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws CommandException
+    public void processCommand(ICommandSender sender, String[] args) throws CommandException
     {
         EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(sender.getName(), true);
         if (playerBase == null)

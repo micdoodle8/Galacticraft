@@ -247,7 +247,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
     }
 
     @Override
-    public void func_180426_a(double x, double y, double z, float yaw, float pitch, int i, boolean b)
+    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
     {
         if (this.riddenByEntity != null)
         {
@@ -256,7 +256,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
             }
             else
             {
-                this.posRotIncrements = i + 5;
+                this.posRotIncrements = posRotationIncrements + 5;
                 this.advancedPositionX = x;
                 this.advancedPositionY = y + (this.riddenByEntity == null ? 1 : 0);
                 this.advancedPositionZ = z;

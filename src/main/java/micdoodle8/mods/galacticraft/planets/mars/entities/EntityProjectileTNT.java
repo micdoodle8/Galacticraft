@@ -48,7 +48,7 @@ public class EntityProjectileTNT extends EntityFireball
                 movingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), ConfigManagerCore.hardMode ? 12.0F : 6.0F);
             }
 
-            this.worldObj.newExplosion((Entity) null, this.posX, this.posY, this.posZ, 1.0F, false, this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"));
+            this.worldObj.newExplosion((Entity) null, this.posX, this.posY, this.posZ, 1.0F, false, this.worldObj.getGameRules().getBoolean("mobGriefing"));
             this.setDead();
         }
     }

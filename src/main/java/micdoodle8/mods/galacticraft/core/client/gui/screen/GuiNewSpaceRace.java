@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.vector.Vector2;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -695,11 +696,11 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
                     {
                         Vector3 color = this.spaceRaceData.getFlagData().getColorAt(x, y);
                         GL11.glColor4f(color.floatX(), color.floatY(), color.floatZ(), 1.0F);
-                        worldRenderer.startDrawingQuads();
-                        worldRenderer.addVertex(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY + y * this.flagDesignerScale.y + 1 * this.flagDesignerScale.y, 0.0D);
-                        worldRenderer.addVertex(this.flagDesignerMinX + x * this.flagDesignerScale.x + 1 * this.flagDesignerScale.x, this.flagDesignerMinY + y * this.flagDesignerScale.y + 1 * this.flagDesignerScale.y, 0.0D);
-                        worldRenderer.addVertex(this.flagDesignerMinX + x * this.flagDesignerScale.x + 1 * this.flagDesignerScale.x, this.flagDesignerMinY + y * this.flagDesignerScale.y, 0.0D);
-                        worldRenderer.addVertex(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY + y * this.flagDesignerScale.y, 0.0D);
+                        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+                        worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY + y * this.flagDesignerScale.y + 1 * this.flagDesignerScale.y, 0.0D).endVertex();
+                        worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x + 1 * this.flagDesignerScale.x, this.flagDesignerMinY + y * this.flagDesignerScale.y + 1 * this.flagDesignerScale.y, 0.0D).endVertex();
+                        worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x + 1 * this.flagDesignerScale.x, this.flagDesignerMinY + y * this.flagDesignerScale.y, 0.0D).endVertex();
+                        worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY + y * this.flagDesignerScale.y, 0.0D).endVertex();
                         tessellator.draw();
                     }
                 }
@@ -708,33 +709,33 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
                 {
                     for (int x = 0; x <= this.spaceRaceData.getFlagData().getWidth(); x++)
                     {
-                        worldRenderer.startDrawing(GL11.GL_LINES);
-                        worldRenderer.setColorRGBA_F(0.0F, 0.0F, 0.0F, 1.0F);
-                        worldRenderer.addVertex(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY, this.zLevel);
-                        worldRenderer.addVertex(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY + this.flagDesignerHeight, this.zLevel);
+                        worldRenderer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
+                        worldRenderer.color(0.0F, 0.0F, 0.0F, 1.0F);
+                        worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY, this.zLevel).endVertex();
+                        worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY + this.flagDesignerHeight, this.zLevel).endVertex();
                         tessellator.draw();
                     }
 
                     for (int y = 0; y <= this.spaceRaceData.getFlagData().getHeight(); y++)
                     {
-                        worldRenderer.startDrawing(GL11.GL_LINES);
-                        worldRenderer.setColorRGBA_F(0.0F, 0.0F, 0.0F, 1.0F);
-                        worldRenderer.addVertex(this.flagDesignerMinX, this.flagDesignerMinY + y * this.flagDesignerScale.y, this.zLevel);
-                        worldRenderer.addVertex(this.flagDesignerMinX + this.flagDesignerWidth, this.flagDesignerMinY + y * this.flagDesignerScale.y, this.zLevel);
+                        worldRenderer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
+                        worldRenderer.color(0.0F, 0.0F, 0.0F, 1.0F);
+                        worldRenderer.pos(this.flagDesignerMinX, this.flagDesignerMinY + y * this.flagDesignerScale.y, this.zLevel).endVertex();
+                        worldRenderer.pos(this.flagDesignerMinX + this.flagDesignerWidth, this.flagDesignerMinY + y * this.flagDesignerScale.y, this.zLevel).endVertex();
                         tessellator.draw();
                     }
                 }
 
                 if (!(this.lastMousePressed && this.checkboxSelector.isSelected != null && this.checkboxSelector.isSelected) && this.selectionMaxX - this.selectionMinX > 0 && this.selectionMaxY - this.selectionMinY > 0)
                 {
-                    worldRenderer.startDrawing(GL11.GL_LINE_STRIP);
+                    worldRenderer.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
                     float col = (float) (Math.sin(this.ticksPassed * 0.3) * 0.4 + 0.1);
-                    worldRenderer.setColorRGBA_F(col, col, col, 1.0F);
-                    worldRenderer.addVertex(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.zLevel);
-                    worldRenderer.addVertex(this.flagDesignerMinX + this.selectionMaxX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.zLevel);
-                    worldRenderer.addVertex(this.flagDesignerMinX + this.selectionMaxX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMaxY * this.flagDesignerScale.y, this.zLevel);
-                    worldRenderer.addVertex(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMaxY * this.flagDesignerScale.y, this.zLevel);
-                    worldRenderer.addVertex(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.zLevel);
+                    worldRenderer.color(col, col, col, 1.0F);
+                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.zLevel).endVertex();
+                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMaxX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.zLevel).endVertex();
+                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMaxX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMaxY * this.flagDesignerScale.y, this.zLevel).endVertex();
+                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMaxY * this.flagDesignerScale.y, this.zLevel).endVertex();
+                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.zLevel).endVertex();
                     tessellator.draw();
                 }
 
@@ -745,20 +746,20 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
                 float y1 = guiBottom - 10 - (x2 - x1);
                 float y2 = guiBottom - 10;
 
-                worldRenderer.startDrawingQuads();
-                worldRenderer.setColorRGBA_F(0, 0, 0, 1.0F);
-                worldRenderer.addVertex(x2, y1, this.zLevel);
-                worldRenderer.addVertex(x1, y1, this.zLevel);
-                worldRenderer.addVertex(x1, y2, this.zLevel);
-                worldRenderer.addVertex(x2, y2, this.zLevel);
+                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+                worldRenderer.color(0, 0, 0, 1.0F);
+                worldRenderer.pos(x2, y1, this.zLevel).endVertex();
+                worldRenderer.pos(x1, y1, this.zLevel).endVertex();
+                worldRenderer.pos(x1, y2, this.zLevel).endVertex();
+                worldRenderer.pos(x2, y2, this.zLevel).endVertex();
                 tessellator.draw();
 
-                worldRenderer.startDrawingQuads();
-                worldRenderer.setColorRGBA_F(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F);
-                worldRenderer.addVertex((double) x2 - 1, (double) y1 + 1, this.zLevel);
-                worldRenderer.addVertex((double) x1 + 1, (double) y1 + 1, this.zLevel);
-                worldRenderer.addVertex((double) x1 + 1, (double) y2 - 1, this.zLevel);
-                worldRenderer.addVertex((double) x2 - 1, (double) y2 - 1, this.zLevel);
+                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+                worldRenderer.color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F);
+                worldRenderer.pos((double) x2 - 1, (double) y1 + 1, this.zLevel).endVertex();
+                worldRenderer.pos((double) x1 + 1, (double) y1 + 1, this.zLevel).endVertex();
+                worldRenderer.pos((double) x1 + 1, (double) y2 - 1, this.zLevel).endVertex();
+                worldRenderer.pos((double) x2 - 1, (double) y2 - 1, this.zLevel).endVertex();
                 tessellator.draw();
 
                 GL11.glShadeModel(GL11.GL_FLAT);
@@ -793,12 +794,12 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 
                 tessellator = Tessellator.getInstance();
                 worldRenderer = tessellator.getWorldRenderer();
-                worldRenderer.startDrawingQuads();
-                worldRenderer.setColorRGBA_F(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F);
-                worldRenderer.addVertex((double) x2 - 1, (double) y1 + 1, this.zLevel);
-                worldRenderer.addVertex((double) x1 + 1, (double) y1 + 1, this.zLevel);
-                worldRenderer.addVertex((double) x1 + 1, (double) y2 - 1, this.zLevel);
-                worldRenderer.addVertex((double) x2 - 1, (double) y2 - 1, this.zLevel);
+                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+                worldRenderer.color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F);
+                worldRenderer.pos((double) x2 - 1, (double) y1 + 1, this.zLevel).endVertex();
+                worldRenderer.pos((double) x1 + 1, (double) y1 + 1, this.zLevel).endVertex();
+                worldRenderer.pos((double) x1 + 1, (double) y2 - 1, this.zLevel).endVertex();
+                worldRenderer.pos((double) x2 - 1, (double) y2 - 1, this.zLevel).endVertex();
                 tessellator.draw();
 
                 this.spaceRaceData.setTeamColor(new Vector3(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue()));

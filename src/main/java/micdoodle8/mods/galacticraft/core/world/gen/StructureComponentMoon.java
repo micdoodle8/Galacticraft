@@ -50,7 +50,7 @@ public abstract class StructureComponentMoon extends StructureComponent
         final int var10 = this.getYWithOffset(var4);
         final int var11 = this.getZWithOffset(var3, var5);
 
-        if (var7.func_175898_b(new BlockPos(var9, var10, var11)) && var1.getBlockState(new BlockPos(var9, var10, var11)).getBlock() != Blocks.mob_spawner)
+        if (var7.isVecInside(new BlockPos(var9, var10, var11)) && var1.getBlockState(new BlockPos(var9, var10, var11)).getBlock() != Blocks.mob_spawner)
         {
             var1.setBlockState(new BlockPos(var9, var10, var11), Blocks.mob_spawner.getDefaultState(), 3);
             var8 = (TileEntityMobSpawner) var1.getTileEntity(new BlockPos(var9, var10, var11));
@@ -202,7 +202,7 @@ public abstract class StructureComponentMoon extends StructureComponent
         final int var10 = this.getYWithOffset(var5);
         final int var11 = this.getZWithOffsetAsIfRotated(var4, var6, var7);
 
-        if (var8.func_175898_b(new BlockPos(var9, var10, var11)))
+        if (var8.isVecInside(new BlockPos(var9, var10, var11)))
         {
             var1.setBlockState(new BlockPos(var9, var10, var11), var2.getStateFromMeta(var3), 3);
         }

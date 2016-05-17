@@ -6,10 +6,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathEntity;
-import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 
-public class TileEntitySlimelingEgg extends TileEntity implements IUpdatePlayerListBox
+public class TileEntitySlimelingEgg extends TileEntity implements ITickable
 {
     public int timeToHatch = -1;
     public String lastTouchedPlayerUUID = "";

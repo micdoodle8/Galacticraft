@@ -104,7 +104,7 @@ public class MapUtil
                     {
                         for (int x = 0; x < 16; x++)
                         {
-                            int l4 = chunk.getHeight(x, z) + 1;
+                            int l4 = chunk.getHeight(new BlockPos(x, 0, z)) + 1;
                             Block block = Blocks.air;
                             IBlockState i5 = null;
 

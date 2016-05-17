@@ -49,7 +49,7 @@
 //    }
 //
 //    @Override
-//    public AxisAlignedBB getBoundingBox()
+//    public AxisAlignedBB getCollisionBoundingBox()
 //    {
 //        return null;
 //    }

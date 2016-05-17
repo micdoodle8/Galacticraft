@@ -6,6 +6,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
@@ -30,11 +31,11 @@ public abstract class GuiStarBackground extends GuiScreen
         this.mc.getTextureManager().bindTexture(GuiStarBackground.blackTexture);
         final Tessellator tess = Tessellator.getInstance();
         WorldRenderer worldRenderer = tess.getWorldRenderer();
-        worldRenderer.startDrawingQuads();
-        worldRenderer.addVertexWithUV(0.0D, var7, -90.0D, 0.0D, 1.0D);
-        worldRenderer.addVertexWithUV(var6, var7, -90.0D, 1.0D, 1.0D);
-        worldRenderer.addVertexWithUV(var6, 0.0D, -90.0D, 1.0D, 0.0D);
-        worldRenderer.addVertexWithUV(0.0D, 0.0D, -90.0D, 0.0D, 0.0D);
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        worldRenderer.pos(0.0D, var7, -90.0D).tex(0.0D, 1.0D).endVertex();
+        worldRenderer.pos(var6, var7, -90.0D).tex(1.0D, 1.0D).endVertex();
+        worldRenderer.pos(var6, 0.0D, -90.0D).tex(1.0D, 0.0D).endVertex();
+        worldRenderer.pos(0.0D, 0.0D, -90.0D).tex(0.0D, 0.0D).endVertex();
         tess.draw();
         GL11.glDepthMask(true);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -130,12 +131,12 @@ public abstract class GuiStarBackground extends GuiScreen
                 }
 
                 this.mc.getTextureManager().bindTexture(GuiStarBackground.backgroundTexture);
-                worldRenderer.startDrawingQuads();
-                worldRenderer.setColorRGBA_I(16777215, 255 / (var6 + 1));
-                worldRenderer.addVertexWithUV(-1.0D, -1.0D, 1.0D, 0.0F + 1, 0.0F + 1);
-                worldRenderer.addVertexWithUV(1.0D, -1.0D, 1.0D, 1.0F - 1, 0.0F + 1);
-                worldRenderer.addVertexWithUV(1.0D, 1.0D, 1.0D, 1.0F - 1, 1.0F - 1);
-                worldRenderer.addVertexWithUV(-1.0D, 1.0D, 1.0D, 0.0F + 1, 1.0F - 1);
+                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+                worldRenderer.color(1.0F, 1.0F, 1.0F, 1.0F / (var6 + 1));
+                worldRenderer.pos(-1.0D, -1.0D, 1.0D).tex(0.0F + 1, 0.0F + 1).endVertex();
+                worldRenderer.pos(1.0D, -1.0D, 1.0D).tex(1.0F - 1, 0.0F + 1).endVertex();
+                worldRenderer.pos(1.0D, 1.0D, 1.0D).tex(1.0F - 1, 1.0F - 1).endVertex();
+                worldRenderer.pos(-1.0D, 1.0D, 1.0D).tex(0.0F + 1, 1.0F - 1).endVertex();
                 tess.draw();
                 GL11.glPopMatrix();
             }
@@ -231,12 +232,12 @@ public abstract class GuiStarBackground extends GuiScreen
                 }
 
                 this.mc.getTextureManager().bindTexture(GuiStarBackground.backgroundTexture);
-                worldRenderer.startDrawingQuads();
-                worldRenderer.setColorRGBA_I(16777215, 255 / (var6 + 1));
-                worldRenderer.addVertexWithUV(-1.0D, -1.0D, 1.0D, 0.0F + 1, 0.0F + 1);
-                worldRenderer.addVertexWithUV(1.0D, -1.0D, 1.0D, 1.0F - 1, 0.0F + 1);
-                worldRenderer.addVertexWithUV(1.0D, 1.0D, 1.0D, 1.0F - 1, 1.0F - 1);
-                worldRenderer.addVertexWithUV(-1.0D, 1.0D, 1.0D, 0.0F + 1, 1.0F - 1);
+                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+                worldRenderer.color(1.0F, 1.0F, 1.0F, 1.0F / (var6 + 1));
+                worldRenderer.pos(-1.0D, -1.0D, 1.0D).tex(0.0F + 1, 0.0F + 1).endVertex();
+                worldRenderer.pos(1.0D, -1.0D, 1.0D).tex(1.0F - 1, 0.0F + 1).endVertex();
+                worldRenderer.pos(1.0D, 1.0D, 1.0D).tex(1.0F - 1, 1.0F - 1).endVertex();
+                worldRenderer.pos(-1.0D, 1.0D, 1.0D).tex(0.0F + 1, 1.0F - 1).endVertex();
                 tess.draw();
                 GL11.glPopMatrix();
             }
@@ -278,19 +279,19 @@ public abstract class GuiStarBackground extends GuiScreen
         this.rotateAndBlurSkybox();
         final Tessellator tess = Tessellator.getInstance();
         WorldRenderer worldRenderer = tess.getWorldRenderer();
-        worldRenderer.startDrawingQuads();
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
         final float var5 = this.width > this.height ? 120.0F / this.width : 120.0F / this.height;
         final float var6 = this.height * var5 / 256.0F;
         final float var7 = this.width * var5 / 256.0F;
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-        worldRenderer.setColorRGBA_F(1.0F, 1.0F, 1.0F, 1.0F);
+        worldRenderer.color(1.0F, 1.0F, 1.0F, 1.0F);
         final int var8 = this.width;
         final int var9 = this.height;
-        worldRenderer.addVertexWithUV(0.0D, var9, this.zLevel, 0.5F - var6, 0.5F + var7);
-        worldRenderer.addVertexWithUV(var8, var9, this.zLevel, 0.5F - var6, 0.5F - var7);
-        worldRenderer.addVertexWithUV(var8, 0.0D, this.zLevel, 0.5F + var6, 0.5F - var7);
-        worldRenderer.addVertexWithUV(0.0D, 0.0D, this.zLevel, 0.5F + var6, 0.5F + var7);
+        worldRenderer.pos(0.0D, var9, this.zLevel).tex(0.5F - var6, 0.5F + var7).endVertex();
+        worldRenderer.pos(var8, var9, this.zLevel).tex(0.5F - var6, 0.5F - var7).endVertex();
+        worldRenderer.pos(var8, 0.0D, this.zLevel).tex(0.5F + var6, 0.5F - var7).endVertex();
+        worldRenderer.pos(0.0D, 0.0D, this.zLevel).tex(0.5F + var6, 0.5F + var7).endVertex();
         tess.draw();
         GL11.glPopMatrix();
     }

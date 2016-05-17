@@ -323,8 +323,8 @@ public class EntityMeteorChunk extends Entity implements IProjectile
 
                             if (this.shootingEntity != null)
                             {
-                                EnchantmentHelper.func_151384_a(entitylivingbase, this.shootingEntity);
-                                EnchantmentHelper.func_151385_b((EntityLivingBase) this.shootingEntity, entitylivingbase);
+                                EnchantmentHelper.applyThornEnchantments(entitylivingbase, this.shootingEntity);
+                                EnchantmentHelper.applyArthropodEnchantments((EntityLivingBase) this.shootingEntity, entitylivingbase);
                             }
 
                             if (this.shootingEntity != null && movingobjectposition.entityHit != this.shootingEntity && movingobjectposition.entityHit instanceof EntityPlayer && this.shootingEntity instanceof EntityPlayerMP)

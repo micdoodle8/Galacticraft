@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.screen;
 import java.nio.DoubleBuffer;
 
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -10,7 +11,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.api.entity.ITelemetry;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -218,9 +218,9 @@ public class GameScreenText implements IGameScreen
         	{
             	((ITelemetry)entity).adjustDisplay(telemeter.clientData);
         	}
-        	RenderPlayerGC.flagThermalOverride = true;
-        	renderEntity.doRender(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
-            RenderPlayerGC.flagThermalOverride = false;
+//        	RenderPlayerGC.flagThermalOverride = true;
+//        	renderEntity.doRender(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F); TODO
+//            RenderPlayerGC.flagThermalOverride = false;
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
             GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -292,11 +292,11 @@ public class GameScreenText implements IGameScreen
         final Tessellator tess = Tessellator.getInstance();
         WorldRenderer worldRenderer = tess.getWorldRenderer();
         GL11.glColor4f(greyLevel, greyLevel, greyLevel, 1.0F);
-        worldRenderer.startDrawingQuads();
-        worldRenderer.addVertex(frameA, frameBy, 0.005F);
-        worldRenderer.addVertex(frameBx, frameBy, 0.005F);
-        worldRenderer.addVertex(frameBx, frameA, 0.005F);
-        worldRenderer.addVertex(frameA, frameA, 0.005F);
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(frameA, frameBy, 0.005F).endVertex();
+        worldRenderer.pos(frameBx, frameBy, 0.005F).endVertex();
+        worldRenderer.pos(frameBx, frameA, 0.005F).endVertex();
+        worldRenderer.pos(frameA, frameA, 0.005F).endVertex();
         tess.draw();   	
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

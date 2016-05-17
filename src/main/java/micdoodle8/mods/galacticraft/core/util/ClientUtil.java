@@ -18,7 +18,7 @@ public class ClientUtil
 {
     public static ScaledResolution getScaledRes(Minecraft minecraft, int width, int height)
     {
-        return new ScaledResolution(minecraft, width, height);
+        return new ScaledResolution(minecraft);
 //        return VersionUtil.getScaledRes(minecraft, width, height);
     }
 

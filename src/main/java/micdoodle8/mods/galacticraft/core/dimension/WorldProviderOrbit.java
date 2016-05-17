@@ -622,7 +622,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 
                 //Check for block collisions here - if so move the player appropriately
                 //First check that there are no existing collisions where the player is now (TODO: bounce the player away)
-                if (this.worldObj.getCollidingBoundingBoxes(p, p.getBoundingBox()).size() == 0)
+                if (this.worldObj.getCollidingBoundingBoxes(p, p.getCollisionBoundingBox()).size() == 0)
                 {
                     //Now check for collisions in the new direction and if there are some, try reducing the movement
                     int collisions = 0;

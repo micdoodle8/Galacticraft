@@ -144,7 +144,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 
         if (tile instanceof IConductor)
         {
-            this.setFacing(ForgeDirection.UNKNOWN);
+            this.setFacing(null /* TODO */);
             return null;
         }
 

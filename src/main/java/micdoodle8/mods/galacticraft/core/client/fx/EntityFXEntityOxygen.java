@@ -36,14 +36,14 @@ public class EntityFXEntityOxygen extends EntityFX
     }
 
     @Override
-    public void func_180434_a(WorldRenderer worldRenderer, Entity entity, float f0, float f1, float f2, float f3, float f4, float f5)
+    public void renderParticle(WorldRenderer worldRenderer, Entity entity, float f0, float f1, float f2, float f3, float f4, float f5)
     {
         float var8 = (this.particleAge + f0) / this.particleMaxAge;
         var8 = 1.0F - var8;
         var8 *= var8;
         var8 = 1.0F - var8;
         this.particleScale = this.portalParticleScale * var8;
-        super.func_180434_a(worldRenderer, entity, f0, f1, f2, f3, f4, f5);
+        super.renderParticle(worldRenderer, entity, f0, f1, f2, f3, f4, f5);
     }
 
     @Override

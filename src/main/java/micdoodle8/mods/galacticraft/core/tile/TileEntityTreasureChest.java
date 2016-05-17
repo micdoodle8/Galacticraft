@@ -13,16 +13,16 @@ import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityLockable;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityTreasureChest extends TileEntityLockable implements IUpdatePlayerListBox, IInventory
+public class TileEntityTreasureChest extends TileEntityLockable implements ITickable, IInventory
 {
     private ItemStack[] chestContents = new ItemStack[27];
     public boolean adjacentChestChecked;
@@ -104,7 +104,7 @@ public class TileEntityTreasureChest extends TileEntityLockable implements IUpda
      * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
      * like when you close a workbench GUI.
      */
-    public ItemStack getStackInSlotOnClosing(int index)
+    public ItemStack removeStackFromSlot(int index)
     {
         if (this.chestContents[index] != null)
         {

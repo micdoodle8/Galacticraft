@@ -33,19 +33,8 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
         this.targetTasks.taskEntries.clear();
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIRestrictSun(this));
-        this.tasks.addTask(2, this.field_175455_a);
         this.tasks.addTask(3, new EntityAIFleeSun(this, 1.0D));
-        this.tasks.addTask(3, new EntityAIAvoidEntity(this, new Predicate()
-        {
-            public boolean func_179945_a(Entity p_179945_1_)
-            {
-                return p_179945_1_ instanceof EntityWolf;
-            }
-            public boolean apply(Object p_apply_1_)
-            {
-                return this.func_179945_a((Entity)p_apply_1_);
-            }
-        }, 6.0F, 1.0D, 1.2D));
+        this.tasks.addTask(3, new EntityAIAvoidEntity(this, EntityWolf.class, 6.0F, 1.0D, 1.2D));
         this.tasks.addTask(4, new EntityAIWander(this, 1.0D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));

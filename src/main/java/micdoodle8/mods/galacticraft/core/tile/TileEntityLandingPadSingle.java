@@ -3,13 +3,13 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.init.Blocks;
-import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ITickable;
 
 import java.util.ArrayList;
 
-public class TileEntityLandingPadSingle extends TileEntity implements IUpdatePlayerListBox
+public class TileEntityLandingPadSingle extends TileEntity implements ITickable
 {
     @Override
     public void update()

@@ -35,6 +35,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
@@ -51,6 +52,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.Fluid;
@@ -250,8 +252,8 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSkeleton.class, new RenderEvolvedSkeleton());
         RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonBoss.class, new RenderEvolvedSkeletonBoss());
         RenderingRegistry.registerEntityRenderingHandler(EntityMeteor.class, new RenderMeteor());
-        RenderingRegistry.registerEntityRenderingHandler(EntityBuggy.class, new RenderBuggy());
-        RenderingRegistry.registerEntityRenderingHandler(EntityMeteorChunk.class, new RenderMeteorChunk());
+//            RenderingRegistry.registerEntityRenderingHandler(EntityBuggy.class, new RenderBuggy());
+//            RenderingRegistry.registerEntityRenderingHandler(EntityMeteorChunk.class, new RenderMeteorChunk());
         RenderingRegistry.registerEntityRenderingHandler(EntityFlag.class, new RenderFlag());
         RenderingRegistry.registerEntityRenderingHandler(EntityParachest.class, new RenderParaChest());
         RenderingRegistry.registerEntityRenderingHandler(EntityAlienVillager.class, new RenderAlienVillager());
@@ -266,7 +268,7 @@ public class ClientProxyCore extends CommonProxyCore
         }
         else
         {
-            RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new RenderPlayerGC());
+//            RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new RenderPlayerGC());
         }
     }
 
@@ -371,20 +373,20 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static void registerTileEntityRenderers()
     {
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAluminumWire.class, new TileEntityAluminumWireRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAluminumWire.class, new TileEntityAluminumWireRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChest.class, new TileEntityTreasureChestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityParaChest.class, new TileEntityParachestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNasaWorkbench.class, new TileEntityNasaWorkbenchRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolar.class, new TileEntitySolarPanelRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenDistributor.class, new TileEntityBubbleProviderRenderer(0.25F, 0.25F, 1.0F));
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDish.class, new TileEntityDishRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityThruster.class, new TileEntityThrusterRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArclamp.class, new TileEntityArclampRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityScreen.class, new TileEntityScreenRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenPipe.class, new TileEntityOxygenPipeRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenStorageModule.class, new TileEntityMachineRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCircuitFabricator.class, new TileEntityMachineRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityElectricIngotCompressor.class, new TileEntityMachineRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDish.class, new TileEntityDishRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityThruster.class, new TileEntityThrusterRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArclamp.class, new TileEntityArclampRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityScreen.class, new TileEntityScreenRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenPipe.class, new TileEntityOxygenPipeRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenStorageModule.class, new TileEntityMachineRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCircuitFabricator.class, new TileEntityMachineRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityElectricIngotCompressor.class, new TileEntityMachineRenderer());
     }
 
     public static void registerBlockHandlers()
@@ -637,11 +639,12 @@ public class ClientProxyCore extends CommonProxyCore
         float f7 = -0.5F;
         float f8 = -ClientProxyCore.mc.thePlayer.rotationYaw / 64.0F;
         float f9 = ClientProxyCore.mc.thePlayer.rotationPitch / 64.0F;
-        tessellator.getWorldRenderer().startDrawingQuads();
-        tessellator.getWorldRenderer().addVertexWithUV(f3, f5, f7, f2 + f8, f2 + f9);
-        tessellator.getWorldRenderer().addVertexWithUV(f4, f5, f7, 0.0F + f8, f2 + f9);
-        tessellator.getWorldRenderer().addVertexWithUV(f4, f6, f7, 0.0F + f8, 0.0F + f9);
-        tessellator.getWorldRenderer().addVertexWithUV(f3, f6, f7, f2 + f8, 0.0F + f9);
+        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        worldRenderer.pos(f3, f5, f7).tex(f2 + f8, f2 + f9).endVertex();
+        worldRenderer.pos(f4, f5, f7).tex(0.0F + f8, f2 + f9).endVertex();
+        worldRenderer.pos(f4, f6, f7).tex(0.0F + f8, 0.0F + f9).endVertex();
+        worldRenderer.pos(f3, f6, f7).tex(f2 + f8, 0.0F + f9).endVertex();
         tessellator.draw();
         GL11.glPopMatrix();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

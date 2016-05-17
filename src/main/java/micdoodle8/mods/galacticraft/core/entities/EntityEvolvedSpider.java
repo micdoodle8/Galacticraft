@@ -48,15 +48,15 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
     }*/
     
     @Override
-    public IEntityLivingData func_180482_a(DifficultyInstance diff, IEntityLivingData livingData)
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata)
 	{
-        Object p_180482_2_1 = super.func_180482_a(diff, livingData);
+        Object p_180482_2_1 = super.onInitialSpawn(difficulty, livingdata);
 
         if (this.worldObj.rand.nextInt(100) == 0)
         {
             EntitySkeleton entityskeleton = new EntitySkeleton(this.worldObj);
             entityskeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
-            entityskeleton.func_180482_a(diff, (IEntityLivingData)null);
+            entityskeleton.onInitialSpawn(difficulty, (IEntityLivingData)null);
             this.worldObj.spawnEntityInWorld(entityskeleton);
             entityskeleton.mountEntity(this);
         }
@@ -65,7 +65,7 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
         {
             p_180482_2_1 = new EntitySpider.GroupData();
 
-            if (this.worldObj.getDifficulty() == EnumDifficulty.HARD && this.worldObj.rand.nextFloat() < 0.1F * diff.getClampedAdditionalDifficulty())
+            if (this.worldObj.getDifficulty() == EnumDifficulty.HARD && this.worldObj.rand.nextFloat() < 0.1F * difficulty.getClampedAdditionalDifficulty())
             {
                 ((EntitySpider.GroupData)p_180482_2_1).func_111104_a(this.worldObj.rand);
             }
@@ -73,7 +73,7 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
 
         if (p_180482_2_1 instanceof EntitySpider.GroupData)
         {
-            int i = ((EntitySpider.GroupData)p_180482_2_1).field_111105_a;
+            int i = ((EntitySpider.GroupData)p_180482_2_1).potionEffectId;
 
             if (i > 0 && Potion.potionTypes[i] != null)
             {

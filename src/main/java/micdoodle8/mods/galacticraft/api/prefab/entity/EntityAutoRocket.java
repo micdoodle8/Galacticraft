@@ -1,17 +1,18 @@
 package micdoodle8.mods.galacticraft.api.prefab.entity;
 
-import net.minecraft.util.BlockPos;
+import micdoodle8.mods.galacticraft.core.client.sounds.SoundUpdaterRocket;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.util.*;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
 import micdoodle8.mods.galacticraft.api.entity.ILandable;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -26,8 +27,6 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
-import net.minecraft.client.audio.ISound;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -35,11 +34,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.WorldServer;
@@ -47,6 +42,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -75,7 +71,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     protected double lastMotionY;
     protected double lastLastMotionY;
     private boolean waitForPlayer;
-    protected IUpdatePlayerListBox rocketSoundUpdater;
+    protected ITickable rocketSoundUpdater;
     private boolean rocketSoundToStop = false;
 
     public EntityAutoRocket(World world)
@@ -1174,7 +1170,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int par1)
+    public ItemStack removeStackFromSlot(int par1)
     {
         if (this.cargoItems[par1] != null)
         {
@@ -1312,16 +1308,16 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         }
     }
 
-//    @SideOnly(Side.CLIENT)
-//    public IUpdatePlayerListBox getSoundUpdater()
-//    {
-//    	return this.rocketSoundUpdater;
-//    }
-//
-//    @SideOnly(Side.CLIENT)
-//    public ISound setSoundUpdater(EntityPlayerSP player)
-//    {
-////    	this.rocketSoundUpdater = new SoundUpdaterRocket(player, this);
-//    	return (ISound) this.rocketSoundUpdater;
-//    } TODO
+    @SideOnly(Side.CLIENT)
+    public ITickable getSoundUpdater()
+    {
+    	return this.rocketSoundUpdater;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public ISound setSoundUpdater(EntityPlayerSP player)
+    {
+    	this.rocketSoundUpdater = new SoundUpdaterRocket(player, this);
+    	return (ISound) this.rocketSoundUpdater;
+    }
 }

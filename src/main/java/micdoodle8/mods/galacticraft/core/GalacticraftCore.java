@@ -245,7 +245,9 @@ public class GalacticraftCore
         // Oil:
         if (!FluidRegistry.isFluidRegistered(oilID))
         {
-            gcFluidOil = new Fluid(oilID).setDensity(800).setViscosity(1500);
+            ResourceLocation stillIcon = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "oil_still");
+            ResourceLocation flowIcon = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "oil_flow");
+            gcFluidOil = new Fluid(oilID, stillIcon, flowIcon).setDensity(800).setViscosity(1500);
             FluidRegistry.registerFluid(gcFluidOil);
         }
         else
@@ -259,7 +261,7 @@ public class GalacticraftCore
         {
             GCBlocks.crudeOil = new BlockFluidGC(fluidOil, "oil");
             ((BlockFluidGC) GCBlocks.crudeOil).setQuantaPerBlock(3);
-            GCBlocks.crudeOil.setBlockName("crudeOilStill");
+            GCBlocks.crudeOil.setUnlocalizedName("crudeOilStill");
             GameRegistry.registerBlock(GCBlocks.crudeOil, ItemBlockGC.class, GCBlocks.crudeOil.getUnlocalizedName());
             fluidOil.setBlock(GCBlocks.crudeOil);
         }
@@ -270,7 +272,7 @@ public class GalacticraftCore
 
         if (GCBlocks.crudeOil != null)
         {
-            GCItems.bucketOil = new ItemBucketGC(GCBlocks.crudeOil, GalacticraftCore.TEXTURE_PREFIX);
+            GCItems.bucketOil = new ItemBucketGC(GCBlocks.crudeOil);
             GCItems.bucketOil.setUnlocalizedName("bucketOil");
             GCItems.registerItem(GCItems.bucketOil);
             FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(oilID, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(GCItems.bucketOil), new ItemStack(Items.bucket));
@@ -281,7 +283,9 @@ public class GalacticraftCore
         // Fuel:
         if (!FluidRegistry.isFluidRegistered(fuelID))
         {
-            gcFluidFuel = new Fluid(fuelID).setDensity(400).setViscosity(900);
+            ResourceLocation stillIcon = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "fuel_still");
+            ResourceLocation flowIcon = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "fuel_flow");
+            gcFluidFuel = new Fluid(fuelID, stillIcon, flowIcon).setDensity(400).setViscosity(900);
             FluidRegistry.registerFluid(gcFluidFuel);
         }
         else
@@ -295,7 +299,7 @@ public class GalacticraftCore
         {
             GCBlocks.fuel = new BlockFluidGC(fluidFuel, "fuel");
             ((BlockFluidGC) GCBlocks.fuel).setQuantaPerBlock(3);
-            GCBlocks.fuel.setBlockName("fuel");
+            GCBlocks.fuel.setUnlocalizedName("fuel");
             GameRegistry.registerBlock(GCBlocks.fuel, ItemBlockGC.class, GCBlocks.fuel.getUnlocalizedName());
             fluidFuel.setBlock(GCBlocks.fuel);
         }
@@ -306,7 +310,7 @@ public class GalacticraftCore
 
         if (GCBlocks.fuel != null)
         {
-            GCItems.bucketFuel = new ItemBucketGC(GCBlocks.fuel, GalacticraftCore.TEXTURE_PREFIX);
+            GCItems.bucketFuel = new ItemBucketGC(GCBlocks.fuel);
             GCItems.bucketFuel.setUnlocalizedName("bucketFuel");
             GCItems.registerItem(GCItems.bucketFuel);
             FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(fuelID, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(GCItems.bucketFuel), new ItemStack(Items.bucket));

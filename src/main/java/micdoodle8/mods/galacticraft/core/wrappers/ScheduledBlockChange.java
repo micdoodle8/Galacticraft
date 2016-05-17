@@ -11,14 +11,14 @@ public class ScheduledBlockChange
     private int changeMeta;
     private int changeUpdateFlag;
 
-    public ScheduledBlockChange(BlockPos changePosition, Block change, int changeMeta)
+    public ScheduledBlockChange(BlockVec3 changePosition, Block change, int changeMeta)
     {
         this(changePosition, change, changeMeta, 3);
     }
 
     public ScheduledBlockChange(BlockVec3 changePosition, Block change, int changeMeta, int changeUpdateFlag)
     {
-        this.changePosition = changePosition;
+        this.changePosition = changePosition.toBlockPos();
         this.change = change;
         this.changeMeta = changeMeta;
         this.changeUpdateFlag = changeUpdateFlag;

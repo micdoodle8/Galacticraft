@@ -345,7 +345,7 @@ public class TickHandlerServer
                                     {
                                         for (int x = 0; x < 16; x++)
                                         {
-                                            int l4 = chunk.getHeight(x, z) + 1;
+                                            int l4 = chunk.getHeight(new BlockPos(x, 0, z)) + 1;
                                             Block block = Blocks.air;
                                             IBlockState i5 = null;
 
@@ -516,7 +516,7 @@ public class TickHandlerServer
 
                 changeList.clear();
                 TickHandlerServer.scheduledBlockChanges.remove(world.provider.getDimensionId());
-                if (newList.size() > 0) TickHandlerServer.scheduledBlockChanges.put(world.provider.dimensionId, new CopyOnWriteArrayList<ScheduledBlockChange>(newList));
+                if (newList.size() > 0) TickHandlerServer.scheduledBlockChanges.put(world.provider.getDimensionId(), new CopyOnWriteArrayList<ScheduledBlockChange>(newList));
             }
 
             CopyOnWriteArrayList<BlockVec3> torchList = TickHandlerServer.scheduledTorchUpdates.get(world.provider.getDimensionId());

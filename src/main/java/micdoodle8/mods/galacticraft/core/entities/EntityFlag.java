@@ -121,7 +121,7 @@ public class EntityFlag extends Entity
     @Override
     public AxisAlignedBB getCollisionBox(Entity par1Entity)
     {
-        return par1Entity.getBoundingBox();
+        return par1Entity.getCollisionBoundingBox();
     }
 
     @Override

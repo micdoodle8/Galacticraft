@@ -99,7 +99,7 @@ public class WorldUtil
     {
         if (entity.worldObj.provider instanceof IGalacticraftWorldProvider)
         {
-        	if (entity instanceof EntityChicken && !OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, entity.getBoundingBox()))
+        	if (entity instanceof EntityChicken && !OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, entity.getCollisionBoundingBox()))
         	{
         		return 0.08D;
         	}
@@ -192,7 +192,7 @@ public class WorldUtil
     	if (entity.isBurning())
     	{
 	        if (OxygenUtil.noAtmosphericCombustion(entity.worldObj.provider))
-	        	return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, entity.getBoundingBox());
+	        	return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, entity.getCollisionBoundingBox());
 	        else
 	        	return true;
 	        //Disable fire on Galacticraft worlds with no oxygen
@@ -909,7 +909,7 @@ public class WorldUtil
                 worldNew.updateEntityWithOptionalForce(entity, false);
                 entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
 
-                player.mcServer.getConfigurationManager().func_72375_a(player, (WorldServer) worldNew);
+                player.mcServer.getConfigurationManager().preparePlayer(player, (WorldServer) worldNew);
                 player.playerNetServerHandler.setPlayerLocation(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
                 //worldNew.updateEntityWithOptionalForce(entity, false);
 

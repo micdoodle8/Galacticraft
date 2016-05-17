@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
@@ -98,13 +99,12 @@ public class GameScreenBasic implements IGameScreen
         final Tessellator tess = Tessellator.getInstance();
         WorldRenderer worldRenderer = tess.getWorldRenderer();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        worldRenderer.setColorRGBA(255, 255, 255, 255);
-        worldRenderer.startDrawingQuads();
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
-        worldRenderer.addVertexWithUV(frameA, frameBy, 0F, textureAx, textureBy);
-        worldRenderer.addVertexWithUV(frameBx, frameBy, 0F, textureBx, textureBy);
-        worldRenderer.addVertexWithUV(frameBx, frameA, 0F, textureBx, textureAy);
-        worldRenderer.addVertexWithUV(frameA, frameA, 0F, textureAx, textureAy);
+        worldRenderer.pos(frameA, frameBy, 0F).tex(textureAx, textureBy).endVertex();
+        worldRenderer.pos(frameBx, frameBy, 0F).tex(textureBx, textureBy).endVertex();
+        worldRenderer.pos(frameBx, frameA, 0F).tex(textureBx, textureAy).endVertex();
+        worldRenderer.pos(frameA, frameA, 0F).tex(textureAx, textureAy).endVertex();
         tess.draw();   	
     }
 
@@ -115,12 +115,12 @@ public class GameScreenBasic implements IGameScreen
         final Tessellator tess = Tessellator.getInstance();
         WorldRenderer worldRenderer = tess.getWorldRenderer();
         GL11.glColor4f(greyLevel, greyLevel, greyLevel, 1.0F);
-        worldRenderer.startDrawingQuads();
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 
-        worldRenderer.addVertex(frameA, frameBy, 0.005F);
-        worldRenderer.addVertex(frameBx, frameBy, 0.005F);
-        worldRenderer.addVertex(frameBx, frameA, 0.005F);
-        worldRenderer.addVertex(frameA, frameA, 0.005F);
+        worldRenderer.pos(frameA, frameBy, 0.005F).endVertex();
+        worldRenderer.pos(frameBx, frameBy, 0.005F).endVertex();
+        worldRenderer.pos(frameBx, frameA, 0.005F).endVertex();
+        worldRenderer.pos(frameA, frameA, 0.005F).endVertex();
         tess.draw();   	
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

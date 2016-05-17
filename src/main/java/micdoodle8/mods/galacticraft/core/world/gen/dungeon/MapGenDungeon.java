@@ -70,7 +70,7 @@ public class MapGenDungeon
         DungeonRoom currentRoom = DungeonRoom.makeRoom(this, rand, x, y, z, EnumFacing.DOWN);
         currentRoom.generate(primer, chunkX, chunkZ);
         this.rooms.add(currentRoom);
-        final DungeonBoundingBox cbb = currentRoom.getBoundingBox();
+        final DungeonBoundingBox cbb = currentRoom.getCollisionBoundingBox();
         boundingBoxes.add(cbb);
         this.generateEntranceCrater(primer, x + (cbb.maxX - cbb.minX) / 2, y, z + (cbb.maxZ - cbb.minZ) / 2, chunkX, chunkZ);
 
@@ -162,8 +162,8 @@ public class MapGenDungeon
                 {
                     possibleRoom = DungeonRoom.makeTreasureRoom(this, rand, currentRoom.posX + offsetX, y, currentRoom.posZ + offsetZ, entranceDir.getOpposite()); // this.getOppositeDir(entranceDir));
                 }
-                final DungeonBoundingBox possibleRoomBb = possibleRoom.getBoundingBox();
-                final DungeonBoundingBox currentRoomBb = currentRoom.getBoundingBox();
+                final DungeonBoundingBox possibleRoomBb = possibleRoom.getCollisionBoundingBox();
+                final DungeonBoundingBox currentRoomBb = currentRoom.getCollisionBoundingBox();
                 if (!this.isIntersecting(possibleRoomBb, boundingBoxes))
                 {
                     final int curCenterX = (currentRoomBb.minX + currentRoomBb.maxX) / 2;

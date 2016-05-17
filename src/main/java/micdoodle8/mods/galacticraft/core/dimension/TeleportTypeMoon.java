@@ -73,4 +73,10 @@ public class TeleportTypeMoon implements ITeleportType
             stats.teleportCooldown = 10;
         }
     }
+
+    @Override
+    public void setupAdventureSpawn(EntityPlayerMP player)
+    {
+
+    }
 }

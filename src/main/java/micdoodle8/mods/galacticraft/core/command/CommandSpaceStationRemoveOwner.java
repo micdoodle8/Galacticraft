@@ -22,23 +22,23 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
     @Override
     public String getCommandUsage(ICommandSender var1)
     {
-        return "/" + this.getName() + " <player>";
+        return "/" + this.getCommandName() + " <player>";
     }
 
     @Override
-    public boolean canCommandSenderUse(ICommandSender par1ICommandSender)
+    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
         return true;
     }
 
     @Override
-    public String getName()
+    public String getCommandName()
     {
         return "ssuninvite";
     }
 
     @Override
-    public void execute(ICommandSender sender, String[] args) throws CommandException
+    public void processCommand(ICommandSender sender, String[] args) throws CommandException
     {
         String var3 = null;
         EntityPlayerMP playerBase = null;

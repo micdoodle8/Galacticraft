@@ -95,7 +95,7 @@ public abstract class TileBaseElectricBlockWithInventory extends TileBaseElectri
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int par1)
+    public ItemStack removeStackFromSlot(int par1)
     {
         ItemStack containingItems[] = this.getContainingItems();
         if (containingItems[par1] != null)

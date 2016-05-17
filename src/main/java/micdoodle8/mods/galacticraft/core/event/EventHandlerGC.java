@@ -133,7 +133,7 @@ public class EventHandlerGC
         {
             if (OxygenUtil.noAtmosphericCombustion(event.entityLiving.worldObj.provider))
             {
-    	        if (OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, event.entityLiving.getBoundingBox()))
+    	        if (OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, event.entityLiving.getCollisionBoundingBox()))
     	        	return;
 
                 if (event.entityLiving.worldObj instanceof WorldServer)
@@ -227,6 +227,8 @@ public class EventHandlerGC
 
             event.setCanceled(((IKeyable) tileClicked).onActivatedWithoutKey(event.entityPlayer, event.face));
         }
+
+        System.err.println(event.getResult() + " " + event.isCanceled());
     }
 
     @SubscribeEvent
@@ -268,13 +270,14 @@ public class EventHandlerGC
 
     private ItemStack fillBucket(World world, MovingObjectPosition position)
     {
-        Block block = world.getBlock(position.blockX, position.blockY, position.blockZ);
+        IBlockState state = world.getBlockState(position.getBlockPos());
+        Block block = state.getBlock();
 
         Item bucket = bucketList.get(block);
 
-        if (bucket != null && world.getBlockMetadata(position.blockX, position.blockY, position.blockZ) == 0)
+        if (bucket != null && block.getMetaFromState(state) == 0)
         {
-            world.setBlockToAir(position.blockX, position.blockY, position.blockZ);
+            world.setBlockToAir(position.getBlockPos());
             return new ItemStack(bucket);
         }
 
@@ -611,7 +614,7 @@ public class EventHandlerGC
         if (event.entityLiving instanceof EntityPlayerMP)
         {
             GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) event.entityLiving);
-            if (!event.entityLiving.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
+            if (!event.entityLiving.worldObj.getGameRules().getBoolean("keepInventory"))
             {
             	event.entityLiving.captureDrops = true;
                 for (int i = stats.extendedInventory.getSizeInventory() - 1; i >= 0; i--)
@@ -738,7 +741,7 @@ public class EventHandlerGC
 
                 // If the player doesn't have a frequency module, and the player isn't in an oxygenated environment
                 // Note: this is a very simplistic approach, and nowhere near realistic, but required for performance reasons
-                AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(x - 0.0015D, y - 0.0015D, z - 0.0015D, x + 0.0015D, y + 0.0015D, z + 0.0015D);
+                AxisAlignedBB bb = AxisAlignedBB.fromBounds(x - 0.0015D, y - 0.0015D, z - 0.0015D, x + 0.0015D, y + 0.0015D, z + 0.0015D);
                 boolean playerInAtmosphere = OxygenUtil.isAABBInBreathableAirBlock(player);
                 boolean soundInAtmosphere = OxygenUtil.isAABBInBreathableAirBlock(player.worldObj, bb);
         		if ((gearData == null || gearData.getFrequencyModule() == -1) && (!playerInAtmosphere || !soundInAtmosphere))

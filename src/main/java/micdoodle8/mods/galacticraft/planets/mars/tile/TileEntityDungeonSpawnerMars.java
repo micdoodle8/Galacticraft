@@ -12,13 +12,8 @@ import net.minecraft.entity.EntityLiving;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileEntityDungeonSpawnerMars extends TileEntityDungeonSpawner
+public class TileEntityDungeonSpawnerMars extends TileEntityDungeonSpawner<EntityCreeperBoss>
 {
-    public TileEntityDungeonSpawnerMars()
-    {
-        super(EntityCreeperBoss.class);
-    }
-
     @Override
     public List<Class<? extends EntityLiving>> getDisabledCreatures()
     {

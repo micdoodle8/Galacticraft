@@ -148,7 +148,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
     }
 
     @Override
-    public void func_180517_a(int par1, int par2, ChunkPrimer primer, BiomeGenBase[] par4ArrayOfBiomeGenBase)
+    public void replaceBlocksForBiome(int par1, int par2, ChunkPrimer primer, BiomeGenBase[] par4ArrayOfBiomeGenBase)
     {
         final int var5 = 20;
         final float var6 = 0.03125F;
@@ -242,7 +242,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
         this.generateTerrain(par1, par2, primer);
         this.createCraters(par1, par2, primer);
         this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
-        this.func_180517_a(par1, par2, primer, this.biomesForGeneration);
+        this.replaceBlocksForBiome(par1, par2, primer, this.biomesForGeneration);
 
         if (this.worldGenerators == null)
         {
@@ -386,11 +386,10 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
         return "RandomLevelSource";
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public List func_177458_a(EnumCreatureType type, BlockPos pos)
+    public List<BiomeGenBase.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
     {
-        if (type == EnumCreatureType.MONSTER)
+        if (creatureType == EnumCreatureType.MONSTER)
         {
             final List monsters = new ArrayList();
 
@@ -401,7 +400,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
 
             return monsters;
         }
-        else if (type == EnumCreatureType.CREATURE)
+        else if (creatureType == EnumCreatureType.CREATURE)
         {
             final List creatures = new ArrayList();
 

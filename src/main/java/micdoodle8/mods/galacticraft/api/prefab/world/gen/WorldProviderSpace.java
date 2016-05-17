@@ -268,4 +268,9 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     {
         return 1.0F / this.getCelestialBody().getRelativeDistanceFromCenter().unScaledDistance;
     }
+
+    @Override
+    public boolean netherPortalsOperational() {
+        return false;
+    }
 }

@@ -37,7 +37,7 @@ public class GCCoreUtil
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, new Object[] { id, 0, 0 }), player);
         player.openContainer = new ContainerBuggy(player.inventory, buggyInv, type, player);
         player.openContainer.windowId = id;
-        player.openContainer.addCraftingToCrafters(player);
+        player.openContainer.onCraftGuiOpened(player);
     }
 
     public static void openParachestInv(EntityPlayerMP player, EntityLanderBase landerInv)
@@ -48,7 +48,7 @@ public class GCCoreUtil
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, new Object[] { windowId, 1, landerInv.getEntityId() }), player);
         player.openContainer = new ContainerParaChest(player.inventory, landerInv, player);
         player.openContainer.windowId = windowId;
-        player.openContainer.addCraftingToCrafters(player);
+        player.openContainer.onCraftGuiOpened(player);
     }
 
     public static int nextInternalID()
@@ -62,7 +62,7 @@ public class GCCoreUtil
         EntityList.stringToClassMapping.put(var1, var0);
         registerGalacticraftNonMobEntity(var0, var1, 80, 3, true);
         int nextEggID = getNextValidEggID();
-        EntityList.IDtoClassMapping.put(nextEggID, var0);
+        EntityList.idToClassMapping.put(nextEggID, var0);
         EntityList.entityEggs.put(nextEggID, new EntityList.EntityEggInfo(nextEggID, back, fore));
     }
 

@@ -45,7 +45,7 @@ public class StructureComponentVillageTorch extends StructureComponentVillage
     @SuppressWarnings("rawtypes")
     public static StructureBoundingBox func_74904_a(StructureComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, EnumFacing par6)
     {
-        final StructureBoundingBox var7 = StructureBoundingBox.func_175897_a(par3, par4, par5, 0, 0, 0, 3, 4, 2, par6);
+        final StructureBoundingBox var7 = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 3, 4, 2, par6);
         return StructureComponent.findIntersecting(par1List, var7) != null ? null : var7;
     }
 
@@ -68,15 +68,15 @@ public class StructureComponentVillageTorch extends StructureComponentVillage
             this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 4 - 1, 0);
         }
 
-        this.func_175804_a(par1World, par3StructureBoundingBox, 0, 0, 0, 2, 3, 1, Blocks.air.getDefaultState(), Blocks.air.getDefaultState(), false);
-        this.func_175811_a(par1World, Blocks.dark_oak_fence.getDefaultState(), 1, 0, 0, par3StructureBoundingBox);
-        this.func_175811_a(par1World, Blocks.dark_oak_fence.getDefaultState(), 1, 1, 0, par3StructureBoundingBox);
-        this.func_175811_a(par1World, Blocks.dark_oak_fence.getDefaultState(), 1, 2, 0, par3StructureBoundingBox);
-        this.func_175811_a(par1World, Blocks.wool.getStateFromMeta(15), 1, 3, 0, par3StructureBoundingBox);
-        this.func_175811_a(par1World, GCBlocks.glowstoneTorch.getStateFromMeta(0), 0, 3, 0, par3StructureBoundingBox);
-        this.func_175811_a(par1World, GCBlocks.glowstoneTorch.getStateFromMeta(0), 1, 3, 1, par3StructureBoundingBox);
-        this.func_175811_a(par1World, GCBlocks.glowstoneTorch.getStateFromMeta(0), 2, 3, 0, par3StructureBoundingBox);
-        this.func_175811_a(par1World, GCBlocks.glowstoneTorch.getStateFromMeta(0), 1, 3, -1, par3StructureBoundingBox);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 0, 0, 2, 3, 1, Blocks.air.getDefaultState(), Blocks.air.getDefaultState(), false);
+        this.setBlockState(par1World, Blocks.dark_oak_fence.getDefaultState(), 1, 0, 0, par3StructureBoundingBox);
+        this.setBlockState(par1World, Blocks.dark_oak_fence.getDefaultState(), 1, 1, 0, par3StructureBoundingBox);
+        this.setBlockState(par1World, Blocks.dark_oak_fence.getDefaultState(), 1, 2, 0, par3StructureBoundingBox);
+        this.setBlockState(par1World, Blocks.wool.getStateFromMeta(15), 1, 3, 0, par3StructureBoundingBox);
+        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getStateFromMeta(0), 0, 3, 0, par3StructureBoundingBox);
+        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getStateFromMeta(0), 1, 3, 1, par3StructureBoundingBox);
+        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getStateFromMeta(0), 2, 3, 0, par3StructureBoundingBox);
+        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getStateFromMeta(0), 1, 3, -1, par3StructureBoundingBox);
         return true;
     }
 }

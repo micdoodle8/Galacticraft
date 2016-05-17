@@ -20,6 +20,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
@@ -872,9 +873,9 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public List func_177458_a(EnumCreatureType type, BlockPos pos)
+    public List<BiomeGenBase.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
     {
-        if (type == EnumCreatureType.MONSTER)
+        if (creatureType == EnumCreatureType.MONSTER)
         {
             final List monsters = new ArrayList();
             monsters.add(new SpawnListEntry(EntityEvolvedZombie.class, 2000, 1, 1));

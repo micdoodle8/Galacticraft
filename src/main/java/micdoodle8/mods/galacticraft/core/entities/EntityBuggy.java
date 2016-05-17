@@ -288,7 +288,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     }
 
     @Override
-    public void func_180426_a(double x, double y, double z, float yaw, float pitch, int i, boolean b)
+    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
     {
         if (this.riddenByEntity != null)
         {
@@ -297,7 +297,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
             }
             else
             {
-                this.boatPosRotationIncrements = i + 5;
+                this.boatPosRotationIncrements = posRotationIncrements + 5;
                 this.boatX = x;
                 this.boatY = y + (this.riddenByEntity == null ? 1 : 0);
                 this.boatZ = z;
@@ -557,7 +557,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int var1)
+    public ItemStack removeStackFromSlot(int var1)
     {
         if (this.cargoItems[var1] != null)
         {

@@ -66,6 +66,11 @@ public class BlockVec3Dim implements Cloneable
         this.dim = par1.getWorld().provider.getDimensionId();
     }
 
+    public BlockVec3Dim(BlockPos pos, int dimensionId)
+    {
+        this(pos.getX(), pos.getY(), pos.getZ(), dimensionId);
+    }
+
     /**
      * Makes a new copy of this Vector. Prevents variable referencing problems.
      */
