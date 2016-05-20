@@ -21,6 +21,7 @@ public class GCPlayerStatsClient implements IExtendedEntityProperties
     public boolean lastUsingParachute;
     public boolean usingAdvancedGoggles;
     public int thermalLevel;
+    public boolean thermalLevelNormalising;
     public int thirdPersonView = 0;
     public long tick;
     public boolean oxygenSetupValid = true;

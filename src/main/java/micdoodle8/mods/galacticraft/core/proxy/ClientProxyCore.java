@@ -6,10 +6,12 @@ import com.google.common.collect.Sets;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.client.DynamicTextureProper;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
 import micdoodle8.mods.galacticraft.core.client.fx.EffectHandler;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
@@ -34,7 +36,6 @@ import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -52,7 +53,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.Fluid;
@@ -101,9 +101,10 @@ public class ClientProxyCore extends CommonProxyCore
     private static int renderIndexHeavyArmor;
     private static int renderIndexSensorGlasses;
 
-    public static Set<Vector3> valueableBlocks = Sets.newHashSet();
+    public static Set<BlockVec3> valueableBlocks = Sets.newHashSet();
     public static HashSet<BlockMetaList> detectableBlocks = Sets.newHashSet();
-
+	public static List<BlockVec3> leakTrace;
+	
     public static Map<String, PlayerGearData> playerItemData = Maps.newHashMap();
 
     public static double playerPosX;
@@ -135,18 +136,18 @@ public class ClientProxyCore extends CommonProxyCore
     private static Map<String, ResourceLocation> capesMap = Maps.newHashMap();
 
     public static IPlayerClient playerClientHandler = new PlayerClient();
-    private static Minecraft mc = FMLClientHandler.instance().getClient();
+    public static Minecraft mc = FMLClientHandler.instance().getClient();
     public static List<String> gearDataRequests = Lists.newArrayList();
     //private static int playerList;
 
-    public static DynamicTexture overworldTextureClient;
-    public static DynamicTexture overworldTextureLocal;
+    public static DynamicTextureProper overworldTextureClient;
+    public static DynamicTextureProper overworldTextureWide;
+    public static DynamicTextureProper overworldTextureLarge;
     public static boolean overworldTextureRequestSent;
+    public static boolean overworldTexturesValid;
 
-    public static byte[] overworldImageBytes = null;
+    public static float PLAYER_Y_OFFSET = 1.6200000047683716F;
 
-    private static float PLAYER_Y_OFFSET = 1.6200000047683716F;
-    
     private static final ResourceLocation saturnRingTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/saturnRings.png");    
     private static final ResourceLocation uranusRingTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/uranusRings.png");
     
@@ -268,7 +269,8 @@ public class ClientProxyCore extends CommonProxyCore
         }
         else
         {
-//            RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new RenderPlayerGC());
+//        	RenderingRegistry.registerEntityRenderingHandler(EntityPlayerSP.class, new RenderPlayerGC());
+//        	RenderingRegistry.registerEntityRenderingHandler(EntityOtherPlayerMP.class, new RenderPlayerGC());
         }
     }
 
@@ -870,7 +872,6 @@ public class ClientProxyCore extends CommonProxyCore
 //        }
     }
 
-
     public static void adjustRenderPos(Entity entity, double offsetX, double offsetY, double offsetZ)
     {
         GL11.glPushMatrix();
@@ -1295,7 +1296,7 @@ public class ClientProxyCore extends CommonProxyCore
                 ClientProxyCore.overworldTextureRequestSent = true;
             }
 
-            if (ClientProxyCore.overworldTextureClient != null)
+            if (ClientProxyCore.overworldTexturesValid)
             {
                 event.celestialBodyTexture = null;
                 GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureClient.getGlTextureId());

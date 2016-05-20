@@ -110,14 +110,13 @@ public class PlayerUtil
 				}
 			}
 		}
-		if (profile == null) 
-			try {
-				UUID uuid = strUUID.isEmpty() ? UUID.randomUUID() : UUID.fromString(strUUID);
-				profile = VersionUtil.constructGameProfile(uuid, strName);
-			} catch (Exception e) { e.printStackTrace(); }
-		if (profile == null) profile = VersionUtil.constructGameProfile(UUID.randomUUID(), strName);
-		
-		PlayerUtil.knownSkins.put(strName, profile); 
+		if (profile == null)
+        {
+            UUID uuid = strUUID.isEmpty() ? UUID.randomUUID() : UUID.fromString(strUUID);
+            profile = new GameProfile(uuid, strName);
+        }
+
+		PlayerUtil.knownSkins.put(strName, profile);
 		return profile;
 	}
     

@@ -106,12 +106,10 @@ public class GuiElementInfoRegion extends Gui
                 i1 -= 28 + k;
             }
 
-            if (j1 + k1 + 6 > this.parentHeight)
+            if (this.parentGui.getTooltipOffset(par2, par3) > 0)
             {
-                j1 = this.parentHeight - k1 - 6;
+                j1 -= k1 + 9;
             }
-
-            j1 += this.parentGui.getTooltipOffset(par2, par3);
 
             this.zLevel = 300.0F;
 //            GuiElementInfoRegion.itemRenderer.zLevel = 300.0F;

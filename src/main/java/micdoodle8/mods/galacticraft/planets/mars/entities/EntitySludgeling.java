@@ -24,7 +24,7 @@ public class EntitySludgeling extends EntityMob implements IEntityBreathable
     public EntitySludgeling(World par1World)
     {
         super(par1World);
-        this.setSize(0.2F, 0.2F);
+        this.setSize(0.3F, 0.2F);
         this.tasks.taskEntries.clear();
         this.targetTasks.taskEntries.clear();
         this.tasks.addTask(1, new EntityAIAttackOnCollide(this, 0.25F, true));

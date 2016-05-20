@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
-import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
@@ -19,7 +18,7 @@ public class ContainerOxygenSealer extends Container
     public ContainerOxygenSealer(InventoryPlayer par1InventoryPlayer, TileEntityOxygenSealer sealer)
     {
         this.tileEntity = sealer;
-        this.addSlotToContainer(new SlotSpecific(sealer, 0, 33, 27, ItemElectricBase.class));
+        this.addSlotToContainer(new SlotSpecific(sealer, 0, 33, 27, IItemElectric.class));
         this.addSlotToContainer(new SlotSpecific(sealer, 1, 10, 27, IItemOxygenSupply.class));
         this.addSlotToContainer(new SlotSpecific(sealer, 2, 56, 27, new ItemStack(GCItems.basicItem, 1, 20)));
 

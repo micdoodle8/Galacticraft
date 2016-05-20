@@ -206,6 +206,11 @@ public class GalaxyRegistry
             return false;
         }
 
+        if (satellite.getParentPlanet() == null)
+        {
+            throw new RuntimeException("Registering satellite without a parent!!!");
+        }
+
         GalaxyRegistry.satellites.put(satellite.getName(), satellite);
         GalaxyRegistry.satelliteIDs.put(satellite.getName(), ++GalaxyRegistry.maxSatelliteID);
 

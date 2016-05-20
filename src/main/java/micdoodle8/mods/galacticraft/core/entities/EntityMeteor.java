@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -26,6 +25,7 @@ public class EntityMeteor extends Entity
     public EntityMeteor(World world)
     {
         super(world);
+        this.setSize(1.0F, 1.0F);
     }
 
     public EntityMeteor(World world, double x, double y, double z, double motX, double motY, double motZ, int size)

@@ -38,7 +38,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     {
     	this.storage.setMaxExtract(30);
     }
-
+ 
     public int getScaledFuelLevel(int i)
     {
         final double fuelLevel = this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount;
@@ -75,9 +75,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
 
                 	if (liquid != null)
                 	{
-                		boolean isFuel = false;
-                		if (FluidRegistry.getFluidName(liquid).startsWith("fuel")) isFuel = true;
-                		else if (FluidRegistry.getFluidName(liquid).equalsIgnoreCase("rocket_fuel")) isFuel = true;
+                		boolean isFuel = FluidUtil.testFuel(FluidRegistry.getFluidName(liquid)); 
 
                 		if (isFuel)
                 		{
@@ -267,9 +265,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
 //        if (from.equals(EnumFacing.getFront(this.getBlockMetadata() + 2).getOpposite()))
         if (from.equals(this.worldObj.getBlockState(getPos()).getValue(BlockFuelLoader.FACING)))
         {
-            final String liquidName = FluidRegistry.getFluidName(resource);
-
-            if (liquidName != null && liquidName.startsWith("fuel"))
+            if (FluidUtil.testFuel(FluidRegistry.getFluidName(resource)))
             {
                 used = this.fuelTank.fill(resource, doFill);
             }

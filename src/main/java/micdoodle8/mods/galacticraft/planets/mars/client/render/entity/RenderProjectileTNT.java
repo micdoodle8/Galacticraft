@@ -27,37 +27,21 @@ public class RenderProjectileTNT extends Render
 
     public void renderProjectileTNT(EntityProjectileTNT entity, double x, double y, double z, float par8, float partialTicks)
     {
-        BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
-        GlStateManager.pushMatrix();
-        GlStateManager.translate((float) x, (float) y + 0.5F, (float) z);
-        float f2;
-
-        if ((float)entity.ticksExisted - partialTicks + 1.0F < 10.0F)
-        {
-            f2 = 1.0F - ((float)entity.ticksExisted - partialTicks + 1.0F) / 10.0F;
-            f2 = MathHelper.clamp_float(f2, 0.0F, 1.0F);
-            f2 *= f2;
-            f2 *= f2;
-            float f3 = 1.0F + f2 * 0.3F;
-            GlStateManager.scale(f3, f3, f3);
-        }
-
-        f2 = (1.0F - ((float)entity.ticksExisted - partialTicks + 1.0F) / 100.0F) * 0.8F;
-        this.bindEntityTexture(entity);
-        GlStateManager.translate(-0.5F, -0.5F, 0.5F);
-        blockrendererdispatcher.renderBlockBrightness(Blocks.tnt.getDefaultState(), entity.getBrightness(partialTicks));
-        GlStateManager.translate(0.0F, 0.0F, 1.0F);
-
-        if (entity.ticksExisted / 5 % 2 == 0)
+        GL11.glPushMatrix();
+        GL11.glTranslatef((float) x, (float) y + 0.5F, (float) z);
+        this.bindTexture(TextureMap.locationBlocksTexture);
+        final Block var10 = Blocks.tnt;
+        GL11.glDisable(GL11.GL_LIGHTING);
+        if (var10 != null)
         {
             GlStateManager.disableTexture2D();
             GlStateManager.disableLighting();
             GlStateManager.enableBlend();
             GlStateManager.blendFunc(770, 772);
-            GlStateManager.color(1.0F, 1.0F, 1.0F, f2);
+            GlStateManager.color(1.0F, 1.0F, 1.0F, partialTicks);
             GlStateManager.doPolygonOffset(-3.0F, -3.0F);
             GlStateManager.enablePolygonOffset();
-            blockrendererdispatcher.renderBlockBrightness(Blocks.tnt.getDefaultState(), 1.0F);
+//            blockrendererdispatcher.renderBlockBrightness(Blocks.tnt.getDefaultState(), 1.0F);
             GlStateManager.doPolygonOffset(0.0F, 0.0F);
             GlStateManager.disablePolygonOffset();
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

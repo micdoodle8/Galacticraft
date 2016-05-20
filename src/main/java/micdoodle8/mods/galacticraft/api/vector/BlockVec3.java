@@ -15,6 +15,7 @@ import net.minecraft.util.ReportedException;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.ChunkProviderServer;
 
 /* BlockVec3 is similar to galacticraft.api.vector.Vector3?
  * 
@@ -28,7 +29,7 @@ public class BlockVec3 implements Cloneable
     public int x;
     public int y;
     public int z;
-    public boolean[] sideDone = { false, false, false, false, false, false };
+    public int sideDoneBits = 0;
     private static Chunk chunkCached;
     public static int chunkCacheDim = Integer.MAX_VALUE;
     private static int chunkCacheX = 1876000; // outside the world edge
@@ -310,7 +311,7 @@ public class BlockVec3 implements Cloneable
     public BlockVec3 newVecSide(int side)
     {
         BlockVec3 vec = new BlockVec3(this.x, this.y, this.z);
-        vec.sideDone[side ^ 1] = true;
+        vec.sideDoneBits = (1 << (side ^ 1)) + (side << 6);
         switch (side)
         {
         case 0:
@@ -599,6 +600,18 @@ public class BlockVec3 implements Cloneable
 
     public void setSideDone(int side)
     {
-        this.sideDone[side] = true;
+        this.sideDoneBits |= 1 << side;
     }
+
+	public TileEntity getTileEntityForce(World world)
+	{
+        int chunkx = this.x >> 4;
+        int chunkz = this.z >> 4;
+		
+		if (world.getChunkProvider().chunkExists(chunkx, chunkz))
+			return world.getTileEntity(this.toBlockPos());
+		
+		Chunk chunk = ((ChunkProviderServer) world.getChunkProvider()).originalLoadChunk(chunkx, chunkz);
+		return chunk.getTileEntity(new BlockPos(this.x & 15, this.y, this.z & 15), Chunk.EnumCreateEntityType.IMMEDIATE);
+	}
 }

@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerTerraformer;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTerraformer;
@@ -129,6 +130,11 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
 
     private String getStatus()
     {
+        if (RedstoneUtil.isBlockReceivingRedstone(this.terraformer.getWorld(), this.terraformer.getPos()))
+        {
+        	return EnumColor.RED + GCCoreUtil.translate("gui.status.off.name");
+        }
+
         if (this.terraformer.getEnergyStoredGC() <= 0.0F)
         {
             return EnumColor.RED + GCCoreUtil.translate("gui.message.noEnergy.name");

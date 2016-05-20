@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.BiomeDictionary;
 
 public class BiomeGenBaseAsteroids extends BiomeGenBase
 {
@@ -19,6 +20,10 @@ public class BiomeGenBaseAsteroids extends BiomeGenBase
         this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedZombie.class, 10, 4, 4));
         this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedSpider.class, 10, 4, 4));
         this.rainfall = 0F;
+        if (!ConfigManagerCore.disableBiomeTypeRegistrations)
+        {
+            BiomeDictionary.registerBiomeType(this, BiomeDictionary.Type.COLD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SPOOKY);
+        }
     }
 
     @Override

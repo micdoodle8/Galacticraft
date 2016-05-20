@@ -317,6 +317,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
 //                            metaArray[this.getIndex(x, y, z)] = 0;
                             helper++;
                         }
+
                         if (helper > yDev)
                         {
                             break;

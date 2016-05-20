@@ -14,7 +14,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SuppressWarnings({ "unchecked", "rawtypes" })
 public abstract class TileEntityOxygenTransmitter extends TileEntityAdvanced implements ITransmitter
 {
     private IGridNetwork network;
@@ -40,6 +39,13 @@ public abstract class TileEntityOxygenTransmitter extends TileEntityAdvanced imp
         }
 
         super.invalidate();
+    }
+
+    @Override
+    public void onChunkUnload()
+    {
+        super.invalidate();
+    	super.onChunkUnload();
     }
 
 //    @Override

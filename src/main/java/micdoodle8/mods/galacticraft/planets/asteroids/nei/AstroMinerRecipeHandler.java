@@ -4,6 +4,7 @@
 //import codechicken.nei.NEIServerUtils;
 //import codechicken.nei.PositionedStack;
 //import codechicken.nei.recipe.TemplateRecipeHandler;
+//import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 //import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 //import micdoodle8.mods.galacticraft.planets.asteroids.client.gui.GuiSchematicAstroMiner;
 //import net.minecraft.item.ItemStack;
@@ -37,22 +38,11 @@
 //    }
 //
 //    @Override
-//    public void drawBackground(int i)
+//    public void drawBackground(int recipe)
 //    {
 //        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 //        GuiDraw.changeTexture(AstroMinerRecipeHandler.rocketGuiTexture);
 //        GuiDraw.drawTexturedModalRect(0, -8, 3, 32, 168, 104);
-//    }
-//
-//    @Override
-//    public void drawExtras(int i)
-//    {
-//    }
-//
-//    @Override
-//    public void onUpdate()
-//    {
-//        super.onUpdate();
 //    }
 //
 //    @Override
@@ -137,7 +127,7 @@
 //    @Override
 //    public String getRecipeName()
 //    {
-//        return "NASA Workbench";
+//        return GCCoreUtil.translate("tile.rocketWorkbench.name");
 //    }
 //
 //    @Override

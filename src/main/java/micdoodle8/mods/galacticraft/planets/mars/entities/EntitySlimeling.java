@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModuleClient;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.InventorySlimeling;
@@ -30,6 +29,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
@@ -56,7 +56,8 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
     public EntitySlimeling(World par1World)
     {
         super(par1World);
-        this.setSize(0.25F, 0.7F);
+        this.setSize(0.45F, 0.7F);
+        ((PathNavigateGround)this.getNavigator()).setAvoidsWater(true);
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.aiSit = new EntityAISitGC(this);
         this.tasks.addTask(2, this.aiSit);
@@ -98,6 +99,21 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
         }
 
         this.setRandomFavFood();
+    }
+
+    @Override
+    public EntityLivingBase getOwner()
+    {
+        EntityLivingBase owner = super.getOwner();
+        if (owner == null)
+        {
+            String ownerName = getOwnerUsername();
+            if (ownerName != null)
+            {
+                return this.worldObj.getPlayerEntityByName(ownerName);
+            }
+        }
+        return owner;
     }
 
     public boolean isOwner(EntityLivingBase entityLivingBase)
@@ -208,7 +224,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
         this.dataWatcher.addObject(26, new Integer(this.kills));
         this.dataWatcher.addObject(27, new ItemStack(Blocks.stone));
         this.dataWatcher.addObject(28, "");
-        this.setName("Unnamed");
+        this.setName(GCCoreUtil.translate("gui.message.unnamed.name"));
     }
 
     @Override
@@ -522,23 +538,12 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
             newColor.z = Math.max(Math.min(newColor.z, 1.0F), 0);
             EntitySlimeling newSlimeling = new EntitySlimeling(this.worldObj, (float) newColor.x, (float) newColor.y, (float) newColor.z);
 
-            String s = VersionUtil.getSlimelingOwner(this);
+            String s = this.getOwnerId();
 
             if (s != null && s.trim().length() > 0)
             {
-                VersionUtil.setSlimelingOwner(newSlimeling, s);
-                newSlimeling.setOwnerUsername(this.getOwnerUsername());
+                newSlimeling.setOwnerId(s);
                 newSlimeling.setTamed(true);
-            }
-            else
-            {
-                s = VersionUtil.getSlimelingOwner(otherSlimeling);
-                if (s != null && s.trim().length() > 0)
-                {
-                    VersionUtil.setSlimelingOwner(newSlimeling, s);
-                    newSlimeling.setOwnerUsername(this.getOwnerUsername());
-                    newSlimeling.setTamed(true);
-                }
             }
 
             return newSlimeling;

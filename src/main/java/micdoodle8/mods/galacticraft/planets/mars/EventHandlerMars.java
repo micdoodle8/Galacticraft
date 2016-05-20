@@ -116,20 +116,16 @@ public class EventHandlerMars
 //    @SubscribeEvent
 //    public void onPlayerRotate(RotatePlayerEvent event)
 //    {
-//        BlockPos c = event.entityPlayer.playerLocation;
-//        IBlockState state = event.entityPlayer.getEntityWorld().getBlockState(c.down().down());
-//        Block block = state.getBlock();
-//        int metadata = block.getMetaFromState(state);
+//        ChunkCoordinates c = event.entityPlayer.playerLocation;
+//        Block block = event.entityPlayer.worldObj.getBlock(c.posX, c.posY - 2, c.posZ);
+//        int metadata = event.entityPlayer.worldObj.getBlockMetadata(c.posX, c.posY - 2, c.posZ);
 //
 //        if (block == MarsBlocks.machine && metadata >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
 //        {
-//            event.shouldRotate = false;
-//        }
-//        else
-//        {
+//            event.shouldRotate = true;
 //        	event.vanillaOverride = true;
 //        }
-//    } TODO
+//    }
 
     private WorldGenerator eggGenerator;
 

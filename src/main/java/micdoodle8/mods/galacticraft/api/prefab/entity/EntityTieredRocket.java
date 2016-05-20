@@ -79,7 +79,8 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     @Override
     public void setDead()
     {
-        super.setDead();
+        if (!this.isDead)
+        	super.setDead();
 
 	//TODO reimplement once Resonant Engine comes out of alpha, bug Dark for info
         //if (Loader.isModLoaded("ICBM|Explosion"))
@@ -224,14 +225,17 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     {
 	                	BlockVec3 coords = this.preGenIterator.next();
 	                    World w = mcserver.worldServerForDimension(coords.y);
-	                    w.getChunkFromChunkCoords(coords.x, coords.z);
-	                    //Pregen a second chunk if still on launchpad (low strain on server)
-	                    if (this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal() && this.preGenIterator.hasNext())
-	                    {
-	                        coords = this.preGenIterator.next();
-	                        w = mcserver.worldServerForDimension(coords.y);
-	                        w.getChunkFromChunkCoords(coords.x, coords.z);
-	                    }
+                        if (w != null)
+                        {
+                            w.getChunkFromChunkCoords(coords.x, coords.z);
+                            //Pregen a second chunk if still on launchpad (low strain on server)
+                            if (this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal() && this.preGenIterator.hasNext())
+                            {
+                                coords = this.preGenIterator.next();
+                                w = mcserver.worldServerForDimension(coords.y);
+                                w.getChunkFromChunkCoords(coords.x, coords.z);
+                            }
+                        }
                     }
                 }
                 else
@@ -326,9 +330,8 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         {
             if (this.worldObj.isRemote)
             {
-            	//reset the sounds on the client
+            	//stop the sounds on the client - but do not reset, the rocket may start again
             	this.stopRocketSound();
-            	this.rocketSoundUpdater = null;
                 return;
             }
 
@@ -338,45 +341,56 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             {
                 if (this.targetDimension != this.worldObj.provider.getDimensionId())
                 {
-                    WorldProvider targetDim = WorldUtil.getProviderForDimension(this.targetDimension);                   
-                    MinecraftServer mcserver = FMLCommonHandler.instance().getMinecraftServerInstance();
-                    if (targetDim != null && mcserver != null)
+                    WorldProvider targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);               
+                    if (targetDim != null && targetDim.worldObj instanceof WorldServer)
                     {
-                    	WorldServer worldServer = mcserver.worldServerForDimension(this.targetDimension);
-                        if (worldServer != null)
-                        {
-	                        boolean dimensionAllowed = this.targetDimension == 0;
-	
-	                        if (targetDim instanceof IGalacticraftWorldProvider)
-	                        {
-	                        	if (((IGalacticraftWorldProvider) targetDim).canSpaceshipTierPass(this.getRocketTier()))
-	                        		dimensionAllowed = true;
-	                        	else
-	                        		dimensionAllowed = false;
-                        	}
-	                        else
-	                        //No rocket flight to non-Galacticraft dimensions other than the Overworld allowed unless config
-	                        if (this.targetDimension > 1 || this.targetDimension < -1)
-	                        {
-	                            try {
-		                        	Class<?> marsConfig = Class.forName("micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars");
-		                        	if (marsConfig.getField("launchControllerAllDims").getBoolean(null))
-		                        		dimensionAllowed = true;
-	                            } catch (Exception e) { e.printStackTrace(); }
-	                        }
-	
-	                    	if (dimensionAllowed)
-	                    	{
-	                            if (this.riddenByEntity != null)
-	                            {
-	                                WorldUtil.transferEntityToDimension(this.riddenByEntity, this.targetDimension, worldServer, false, this);
-	                            }
-	
-	                            return;
-	                    	}
-                        }
+                    	boolean dimensionAllowed = this.targetDimension == 0;
+
+                    	if (targetDim instanceof IGalacticraftWorldProvider)
+                    	{
+                    		if (((IGalacticraftWorldProvider) targetDim).canSpaceshipTierPass(this.getRocketTier()))
+                    			dimensionAllowed = true;
+                    		else
+                    			dimensionAllowed = false;
+                    	}
+                    	else
+                    		//No rocket flight to non-Galacticraft dimensions other than the Overworld allowed unless config
+                    		if (this.targetDimension > 1 || this.targetDimension < -1)
+                    		{
+                    			try {
+                    				Class<?> marsConfig = Class.forName("micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars");
+                    				if (marsConfig.getField("launchControllerAllDims").getBoolean(null))
+                    					dimensionAllowed = true;
+                    			} catch (Exception e) { e.printStackTrace(); }
+                    		}
+
+                    	if (dimensionAllowed)
+                    	{
+                    		if (this.riddenByEntity != null)
+                    		{
+                    			WorldUtil.transferEntityToDimension(this.riddenByEntity, this.targetDimension, (WorldServer) targetDim.worldObj, false, this);
+                                        //Now destroy the rocket entity, the rider is switching dimensions
+                                        this.setDead();
+                    		}
+                                else {
+                                    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (WorldServer)targetDim.worldObj, false, null);
+                                    if(e instanceof EntityAutoRocket) {
+                                        e.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5f);
+                                        ((EntityAutoRocket)e).landing = true;
+                                        ((EntityAutoRocket)e).setWaitForPlayer(false);
+                                        if(e != this)
+                                            this.setDead();
+                                    }
+                                    else {
+                                        GCLog.info("Error: failed to recreate the unmanned rocket in landing mode on target planet.");
+                                        e.setDead();
+                                        this.setDead();
+                                    }
+                                }
+                    		return;
+                    	}
                     }
-                    //No return - in this situation continue into regular take-off
+                    //No destination world found - in this situation continue into regular take-off (as if Not launch controlled)
                 }
                 else
                 {
@@ -388,12 +402,15 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                         if (ConfigManagerCore.enableDebug) GCLog.info("Rocket repositioned, waiting for player");
                     }
                     this.landing = true;
+                    //Do not destroy the rocket, we still need it!
                     return;
                 }
             }
             else
             {
-                this.setDead();
+                //Launch controlled launch but no valid target frequency = rocket loss [INVESTIGATE]
+            	GCLog.info("Error: the launch controlled rocket failed to find a valid landing spot when it reached space.");
+            	this.setDead();
                 return;
             }
         }
@@ -408,13 +425,11 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                 this.onTeleport(player);
                 GCPlayerStats stats = GCPlayerStats.get(player);
                 WorldUtil.toCelestialSelection(player, stats, this.getRocketTier());
-
-                if (!this.isDead)
-                {
-                    this.setDead();
-                }
             }
         }
+        
+        //Destroy any rocket which reached the top of the atmosphere and is not controlled by a Launch Controller
+        this.setDead();
     }
 
     @Override

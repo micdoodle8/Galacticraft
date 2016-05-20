@@ -62,12 +62,58 @@
 //    }
 //
 //    @Override
+//    public boolean isEntityInsideOpaqueBlock()
+//    {
+//        return this.getClientHandler().isEntityInsideOpaqueBlock(this.player, super.isEntityInsideOpaqueBlock());
+//    }
+//
+//    @Override
+//    public void onLivingUpdate()
+//    {
+//        this.getClientHandler().onLivingUpdatePre(this.player);
+//        super.onLivingUpdate();
+//        this.getClientHandler().onLivingUpdatePost(this.player);
+//    }
+//
+//    @Override
+//    public void moveEntity(double par1, double par3, double par5)
+//    {
+//        super.moveEntity(par1, par3, par5);
+//        this.getClientHandler().moveEntity(this.player, par1, par3, par5);
+//    }
+//
+//    @Override
+//    public void afterMoveEntityWithHeading(float paramFloat1, float paramFloat2)
+//    {
+//        super.afterMoveEntityWithHeading(paramFloat1, paramFloat2);
+//
+//        if (Loader.isModLoaded("SmartMoving") && !this.player.capabilities.isFlying)
+//        {
+//            this.player.motionY += 0.080000000000000002D;
+//            this.player.motionY -= WorldUtil.getGravityForEntity(this.player);
+//        }
+//    }
+//
+//    @Override
 //    public void onUpdate()
 //    {
 //        this.getClientHandler().onUpdate(this.player);
 //        super.onUpdate();
 //    }
 //
+//    @Override
+//    public boolean isSneaking()
+//    {
+//        if (this.player.worldObj.provider instanceof WorldProviderOrbit)
+//    	{
+//	        if (FreefallHandler.testFreefall(this.player)) return false;
+//        	GCPlayerStatsClient stats = GCPlayerStatsClient.get(this.player);
+//	    	if (!this.player.onGround) return false;
+//	    	if (stats.landingTicks > 0) return true;
+//    	}
+//        return super.isSneaking();
+//    }
+
 //    @Override
 //    public boolean isSneaking()
 //    {

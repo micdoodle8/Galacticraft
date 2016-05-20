@@ -101,6 +101,7 @@ gui.launchController.desc.0=Ovo je Glavna Kontrolna Frekvencija$Frekvencija
 gui.launchController.desc.1=Frekvencija lansirati raketu prema
 gui.launchController.desc.2=Ukloniti Lansirnu Rampu$Ukloniti Lansirnu Rampu
 gui.launchController.desc.3=Kada su te kriterije ispunjene,$raketa će se lansirati
+gui.launchController.desc.4=Hide destination frequency$from other players ##NEEDS TRANSLATE##
 gui.terraformer.desc.0=Vodeni Tank
 
 gui.gasTank.desc.0=Gas Skladište

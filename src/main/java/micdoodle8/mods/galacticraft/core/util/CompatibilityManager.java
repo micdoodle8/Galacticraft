@@ -4,6 +4,8 @@ import net.minecraftforge.fml.common.Loader;
 
 import java.lang.reflect.Method;
 
+import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
+
 public class CompatibilityManager
 {
     private static boolean modIc2Loaded;
@@ -14,6 +16,7 @@ public class CompatibilityManager
     private static boolean modBasicComponentsLoaded;
     private static boolean modAppEngLoaded;
     private static boolean modPneumaticCraftLoaded;
+    public static Class<?> classBCBlockGenericPipe = null;
     public static Method methodBCBlockPipe_getPipe = null;
 
     public static void checkForCompatibleMods()
@@ -31,6 +34,16 @@ public class CompatibilityManager
         if (Loader.isModLoaded("IC2"))
         {
             CompatibilityManager.modIc2Loaded = true;
+            
+            try {
+            	Class<?> clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
+            	if (clazz != null)
+            	{
+            		BlockEnclosed.onBlockNeighbourChangeIC2 = clazz.getMethod("onNeighborBlockChange");
+            	}
+            }
+            catch (Exception e) { e.printStackTrace(); }
+
         }
 
         if (Loader.isModLoaded("BuildCraft|Core"))
@@ -39,9 +52,9 @@ public class CompatibilityManager
 
             try
             {
-                Class<?> clazzPipeBlock = Class.forName("buildcraft.transport.BlockGenericPipe");
+            	classBCBlockGenericPipe = Class.forName("buildcraft.transport.BlockGenericPipe");
 
-                for (Method m : clazzPipeBlock.getDeclaredMethods())
+                for (Method m : classBCBlockGenericPipe.getDeclaredMethods())
                 {
                     if (m.getName().equals("getPipe"))
                     {
@@ -50,10 +63,9 @@ public class CompatibilityManager
                     }
                 }
             }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
+            catch (Exception e) { e.printStackTrace(); }
+            
+            BlockEnclosed.initialiseBC();
 
             if (CompatibilityManager.methodBCBlockPipe_getPipe == null)
             {
@@ -71,7 +83,7 @@ public class CompatibilityManager
             CompatibilityManager.modBasicComponentsLoaded = true;
         }
 
-        if (Loader.isModLoaded("AppliedEnergistics"))
+        if (Loader.isModLoaded("appliedenergistics2"))
         {
             CompatibilityManager.modAppEngLoaded = true;
         }

@@ -136,6 +136,7 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
+        RenderHelper.enableGUIStandardItemLighting();
     }
 	
 	public int getPotionOffset()

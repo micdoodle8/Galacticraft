@@ -1,8 +1,9 @@
 //package micdoodle8.mods.galacticraft.core.client.render.tile;
 //
+//import cpw.mods.fml.client.FMLClientHandler;
+//import cpw.mods.fml.relauncher.Side;
+//import cpw.mods.fml.relauncher.SideOnly;
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-//import micdoodle8.mods.galacticraft.core.client.objload.AdvancedModelLoader;
-//import micdoodle8.mods.galacticraft.core.client.objload.IModelCustom;
 //import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
 //import net.minecraft.client.renderer.OpenGlHelper;
 //import net.minecraft.client.renderer.Tessellator;
@@ -10,9 +11,9 @@
 //import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 //import net.minecraft.tileentity.TileEntity;
 //import net.minecraft.util.ResourceLocation;
-//import net.minecraftforge.fml.client.FMLClientHandler;
-//import net.minecraftforge.fml.relauncher.Side;
-//import net.minecraftforge.fml.relauncher.SideOnly;
+//import net.minecraftforge.client.model.AdvancedModelLoader;
+//import net.minecraftforge.client.model.IModelCustom;
+//import net.minecraftforge.client.model.obj.WavefrontObject;
 //import org.lwjgl.opengl.GL11;
 //
 //@SideOnly(Side.CLIENT)
@@ -25,12 +26,10 @@
 //    public static final IModelCustom lampBase = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/arclampBase.obj"));
 //    private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
 //
-//    @Override
-//    public void renderTileEntityAt(TileEntity tile, double par2, double par4, double par6, float par8, int par9)
+//    public void renderModelAt(TileEntityArclamp tileEntity, double d, double d1, double d2, float f)
 //    {
-//        TileEntityArclamp arclamp = (TileEntityArclamp) tile;
-//        int side = arclamp.getBlockMetadata();
-//        int metaFacing = arclamp.facing;
+//        int side = tileEntity.getBlockMetadata();
+//        int metaFacing = tileEntity.facing;
 //
 //        //int facing;
 //        /*switch (side)
@@ -59,7 +58,7 @@
 //		}*/
 //
 //        GL11.glPushMatrix();
-//        GL11.glTranslatef((float) par2 + 0.5F, (float) par4 + 0.5F, (float) par6 + 0.5F);
+//        GL11.glTranslatef((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
 //
 //        switch (side)
 //        {
@@ -120,17 +119,19 @@
 //        GL11.glScalef(0.048F, 0.048F, 0.048F);
 //        TileEntityArclampRenderer.lampMetal.renderAll();
 //
-//    	//Save the lighting state
+//        int whiteLevel = tileEntity.getEnabled() ? 255 : 26;
+//
+//        //Save the lighting state
 //        float lightMapSaveX = OpenGlHelper.lastBrightnessX;
 //        float lightMapSaveY = OpenGlHelper.lastBrightnessY;
 //        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
 //        GL11.glDisable(GL11.GL_LIGHTING);
 //
 //        this.renderEngine.bindTexture(TileEntityArclampRenderer.lightTexture);
-//        Tessellator tessellator = Tessellator.getInstance();
-//        //tessellator.getWorldRenderer().startDrawing(GL11.GL_QUADS);
-//        //tessellator.getWorldRenderer().setColorRGBA(255, 255, 255, 255);
-//        //((WavefrontObject) TileEntityArclampRenderer.lampLight).tessellateAll(tessellator.getWorldRenderer());
+//        Tessellator tessellator = Tessellator.instance;
+//        tessellator.startDrawing(GL11.GL_QUADS);
+//        tessellator.setColorRGBA(whiteLevel, whiteLevel, whiteLevel, 255);
+//        ((WavefrontObject) TileEntityArclampRenderer.lampLight).tessellateAll(tessellator);
 //        tessellator.draw();
 //
 //        //Restore the lighting state
@@ -138,5 +139,11 @@
 //        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
 //
 //        GL11.glPopMatrix();
+//    }
+//
+//    @Override
+//    public void renderTileEntityAt(TileEntity tileEntity, double var2, double var4, double var6, float var8)
+//    {
+//        this.renderModelAt((TileEntityArclamp) tileEntity, var2, var4, var6, var8);
 //    }
 //}

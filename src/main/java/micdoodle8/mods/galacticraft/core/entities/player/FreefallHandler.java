@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.core.entities.player;
+ package micdoodle8.mods.galacticraft.core.entities.player;
 
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.block.Block;
@@ -14,16 +14,16 @@ import net.minecraft.util.MathHelper;
 public class FreefallHandler {
 
 	private static double pPrevMotionX;
-	private static double pPrevMotionY;
+	public static double pPrevMotionY;
 	private static double pPrevMotionZ;
 	private static float jetpackBoost;
 	private static double pPrevdY;
-	private static boolean sneakLast;
+	public static boolean sneakLast;
 
 	public static boolean testFreefall(EntityPlayer player)
 	{
         //Test whether feet are on a block, also stops the login glitch
-        int playerFeetOnY = (int) (player.getEntityBoundingBox().minY - 0.001D);
+        int playerFeetOnY = (int) (player.getEntityBoundingBox().minY - 0.01D);
         int xx = MathHelper.floor_double(player.posX);
         int zz = MathHelper.floor_double(player.posZ);
         BlockPos pos = new BlockPos(xx, playerFeetOnY, zz);
@@ -32,10 +32,15 @@ public class FreefallHandler {
         if (b.getMaterial() != Material.air && !(b instanceof BlockLiquid))
         {
         	double blockYmax = playerFeetOnY + b.getBlockBoundsMaxY();
-            if (player.getEntityBoundingBox().minY - blockYmax < 0.001D && player.getEntityBoundingBox().minY - blockYmax > -0.5D)
+            if (player.getEntityBoundingBox().minY - blockYmax < 0.01D && player.getEntityBoundingBox().minY - blockYmax > -0.5D)
             {
                 player.onGround = true;
-                if (b.canCollideCheck(player.worldObj.getBlockState(new BlockPos(xx, playerFeetOnY, zz)), false))
+                if (player.getEntityBoundingBox().minY - blockYmax > 0D)
+                {
+                    player.posY -= player.getEntityBoundingBox().minY - blockYmax;
+                    player.getEntityBoundingBox().offset(0, blockYmax - player.getEntityBoundingBox().minY, 0);
+                }
+                else if (b.canCollideCheck(player.worldObj.getBlockState(new BlockPos(xx, playerFeetOnY, zz)), false))
                 {
                     AxisAlignedBB collisionBox = b.getCollisionBoundingBox(player.worldObj, new BlockPos(xx, playerFeetOnY, zz), state);
                     if (collisionBox != null && collisionBox.intersectsWith(player.getCollisionBoundingBox()))
@@ -73,7 +78,7 @@ public class FreefallHandler {
         //if (p.capabilities.isFlying)
 
         ///Undo whatever vanilla tried to do to our y motion
-        if (dY < 0D)
+        if (dY < 0D && p.motionY != 0.0D)
         {
         	p.motionY = pPrevMotionY;
         }

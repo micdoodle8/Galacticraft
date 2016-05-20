@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
-import micdoodle8.mods.galacticraft.core.entities.IBubble;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -24,9 +23,12 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 
 public class TileEntityOxygenDistributor extends TileEntityOxygen implements IInventory, ISidedInventory, IBubbleProvider
@@ -35,7 +37,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     public boolean lastActive;
 
     private ItemStack[] containingItems = new ItemStack[2];
-    public static ArrayList<BlockVec3Dim> loadedTiles = Lists.newArrayList();
+    public static HashSet<BlockVec3Dim> loadedTiles = new HashSet();
     public float bubbleSize;
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean shouldRenderBubble = true;
@@ -56,15 +58,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     @Override
     public void onChunkUnload()
     {
-//    	Iterator<BlockVec3Dim> i = loadedTiles.iterator();
-//    	while (i.hasNext())
-//    	{
-//    		BlockVec3Dim vec = i.next();
-//    		if (vec.dim == this.worldObj.provider.getDimensionId() && getPos().getX() == vec.x && getPos().getY() == vec.y && getPos().getZ() == vec.z)
-//    		{
-//    			i.remove();
-//    		}
-//    	}
+        TileEntityOxygenDistributor.loadedTiles.remove(new BlockVec3Dim(this));
     	super.onChunkUnload();
     }
 
@@ -92,9 +86,9 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
                 }
             }
 //        	this.oxygenBubble.setDead();
+            TileEntityOxygenDistributor.loadedTiles.remove(new BlockVec3Dim(this));
         }
 
-//        if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.remove(this);
         super.invalidate();
     }
 
@@ -106,21 +100,38 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 
     public void addExtraNetworkedData(List<Object> networkedList)
     {
-        if (!this.worldObj.isRemote)
+        if (!this.worldObj.isRemote && !this.isInvalid())
         {
 //            networkedList.add(this.oxygenBubble != null);
 //            if (this.oxygenBubble != null)
 //            {
 //                networkedList.add(this.oxygenBubble.getEntityId());
 //            }
-            networkedList.add(loadedTiles.size());
-            for (BlockVec3Dim distributor : new ArrayList<BlockVec3Dim>(loadedTiles))
-            {
-            	networkedList.add(distributor.x);
-            	networkedList.add(distributor.y);
-            	networkedList.add(distributor.z);
-            	networkedList.add(distributor.dim);
-            }
+        	if (MinecraftServer.getServer().isDedicatedServer())
+        	{
+        		networkedList.add(loadedTiles.size());
+        		//TODO: Limit this to ones in the same dimension as this tile?
+        		for (BlockVec3Dim distributor : loadedTiles)
+        		{
+        			if (distributor == null)
+        			{
+        				networkedList.add(-1);
+        				networkedList.add(-1);
+        				networkedList.add(-1);
+        				networkedList.add(-1);
+        			}
+        			else
+        			{
+        				networkedList.add(distributor.x);
+        				networkedList.add(distributor.y);
+        				networkedList.add(distributor.z);
+        				networkedList.add(distributor.dim);
+        			}
+        		}
+        	}
+        	else
+        		//Signal integrated server, do not clear loadedTiles
+        		networkedList.add(-1);
             networkedList.add(this.bubbleSize);
         }
     }
@@ -135,7 +146,6 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     @Override
     public void readExtraNetworkedData(ByteBuf dataStream)
     {
-//    	loadedTiles.clear();
         if (this.worldObj.isRemote)
         {
 //            if (dataStream.readBoolean())
@@ -143,9 +153,18 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 //                this.oxygenBubble = (EntityBubble) worldObj.getEntityByID(dataStream.readInt());
 //            }
             int size = dataStream.readInt();
-            for (int i = 0; i < size; ++i)
+            if (size >= 0)
             {
-            	this.loadedTiles.add(new BlockVec3Dim(dataStream.readInt(), dataStream.readInt(), dataStream.readInt(), dataStream.readInt()));
+            	loadedTiles.clear();
+	            for (int i = 0; i < size; ++i)
+	            {
+	            	int i1 = dataStream.readInt();
+	            	int i2 = dataStream.readInt();
+	            	int i3 = dataStream.readInt();
+	            	int i4 = dataStream.readInt();
+	            	if (i1 == -1 && i2 == -1 && i3 == -1 && i4 == -1) continue;
+	            	this.loadedTiles.add(new BlockVec3Dim(i1, i2, i3, i4));
+	            }
             }
             this.bubbleSize = dataStream.readFloat();
         }
@@ -245,6 +264,11 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     {
         super.readFromNBT(nbt);
 
+        if (nbt.hasKey("bubbleVisible"))
+        {
+            this.setBubbleVisible(nbt.getBoolean("bubbleVisible"));
+        }
+
         if (nbt.hasKey("bubbleSize"))
         {
             this.bubbleSize = nbt.getFloat("bubbleSize");
@@ -271,6 +295,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     {
         super.writeToNBT(nbt);
 
+        nbt.setBoolean("bubbleVisible", this.shouldRenderBubble);
         nbt.setFloat("bubbleSize", this.bubbleSize);
 //        nbt.setBoolean("hasValidBubble", this.hasValidBubble);
 

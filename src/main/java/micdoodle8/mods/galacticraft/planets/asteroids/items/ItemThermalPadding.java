@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.api.item.IItemThermal;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
@@ -12,7 +13,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemThermalPadding extends Item
+public class ItemThermalPadding extends Item implements IItemThermal
 {
     public static String[] names = { "thermalHelm", "thermalChestplate", "thermalLeggings", "thermalBoots", "thermalHelm0", "thermalChestplate0", "thermalLeggings0", "thermalBoots0" };
 //    protected IIcon[] icons = new IIcon[ItemThermalPadding.names.length];
@@ -110,5 +111,17 @@ public class ItemThermalPadding extends Item
     public int getMetadata(int par1)
     {
         return par1;
+    }
+
+    @Override
+    public int getThermalStrength()
+    {
+        return 1;
+    }
+
+    @Override
+    public boolean isValidForSlot(ItemStack stack, int armorSlot)
+    {
+        return stack.getItemDamage() == armorSlot;
     }
 }

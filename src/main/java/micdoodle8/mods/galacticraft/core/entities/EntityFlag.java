@@ -57,6 +57,7 @@ public class EntityFlag extends Entity
             {
                 this.setBeenAttacked();
                 this.setDamage(this.getDamage() + par2 * 10);
+                this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, Block.soundTypeMetal.getBreakSound(), Block.soundTypeMetal.getVolume(), Block.soundTypeMetal.getFrequency() + 1.0F);
 
                 if (par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer) par1DamageSource.getEntity()).capabilities.isCreativeMode)
                 {

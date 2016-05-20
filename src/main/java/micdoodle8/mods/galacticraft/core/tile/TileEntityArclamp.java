@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.entity.Entity;
@@ -41,18 +42,37 @@ public class TileEntityArclamp extends TileEntity implements ITickable
     @Override
     public void update()
     {
-        boolean firstTick = false;
+        if (this.worldObj.isRemote)
+        	return;
+
+        boolean initialLight = false;
         if (this.updateClientFlag)
         {
         	GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.facing } ), this.worldObj.provider.getDimensionId());
         	this.updateClientFlag = false;
         }
 
-        if (!this.worldObj.isRemote && this.isActive)
+        if (RedstoneUtil.isBlockReceivingRedstone(this.worldObj, this.getPos()))
         {
-            if (this.thisAABB == null)
+        	if (this.isActive)
+        	{
+        		this.isActive = false;
+        		this.revertAir();
+        		this.markDirty();
+        	}
+        }
+        else if (!this.isActive)
+        {
+        	this.isActive = true;
+        	initialLight = true;
+        }
+            
+        if (this.isActive)
+        {     
+        	//Test for first tick after placement
+        	if (this.thisAABB == null)
             {
-                firstTick = true;
+        		initialLight = true;
                 int side = this.getBlockMetadata();
                 switch (side)
                 {
@@ -103,7 +123,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
                 }
             }
 
-            if (firstTick || this.ticks % 100 == 0)
+            if (initialLight || this.ticks % 100 == 0)
             {
                 this.lightArea();
             }
@@ -160,14 +180,16 @@ public class TileEntityArclamp extends TileEntity implements ITickable
     @Override
     public void validate()
     {
+        super.validate();
         this.thisPos = new Vec3(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D);
         this.ticks = 0;
         this.thisAABB = null;
-        this.isActive = true;
         if (this.worldObj.isRemote)
         {
         	GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_ARCLAMP_FACING, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ() } ));
         }
+        else
+            this.isActive = true;
     }
 
     @Override
@@ -178,6 +200,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
             this.revertAir();
         }
         this.isActive = false;
+        super.invalidate();
     }
 
     public void lightArea()
@@ -216,19 +239,21 @@ public class TileEntityArclamp extends TileEntity implements ITickable
                 currentLayer.add(inFront);
             }
         }
+        
+        int side, bits;
 
         for (int count = 0; count < 14; count++)
         {
-            int side;
             for (BlockVec3 vec : currentLayer)
             {
                 side = 0;
+                bits = vec.sideDoneBits;
                 boolean allAir = true;
                 do
                 {
                     //Skip the side which this was entered from
                     //and never go 'backwards'
-                    if (!vec.sideDone[side])
+                    if ((bits & (1 << side)) == 0)
                     {
                         BlockVec3 sideVec = vec.newVecSide(side);
                         BlockPos sideVecPos = sideVec.toBlockPos();
@@ -238,7 +263,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
                             checked.add(sideVec);
 
                             Block b = sideVec.getBlockIDsafe_noChunkLoad(world);
-                            if (b.isAir(world, sideVecPos))
+                            if (b instanceof BlockAir)
                             {
                                 if (side != sideskip1 && side != sideskip2)
                                 {
@@ -366,4 +391,9 @@ public class TileEntityArclamp extends TileEntity implements ITickable
         }
         this.airToRestore.clear();
     }
+
+	public boolean getEnabled()
+	{
+		return !RedstoneUtil.isBlockReceivingRedstone(this.worldObj, this.getPos());
+	}
 }

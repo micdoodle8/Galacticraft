@@ -1,9 +1,11 @@
 package micdoodle8.mods.galacticraft.core.client;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
@@ -39,7 +41,7 @@ public class SkyProviderOverworld extends IRenderHandler
         } catch (final Exception e) { }
     }
 
-    public int starGLCallList = GLAllocation.generateDisplayLists(3);
+    public int starGLCallList = GLAllocation.generateDisplayLists(7);
     public int glSkyList;
     public int glSkyList2;
     private final ResourceLocation planetToRender = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png");
@@ -47,8 +49,21 @@ public class SkyProviderOverworld extends IRenderHandler
     public SkyProviderOverworld()
     {
         GL11.glPushMatrix();
+        final Random rand = new Random(10842L);
         GL11.glNewList(this.starGLCallList, GL11.GL_COMPILE);
-        this.renderStars();
+        this.renderStars(rand);
+        GL11.glEndList();
+        GL11.glNewList(this.starGLCallList + 1, GL11.GL_COMPILE);
+        this.renderStars(rand);
+        GL11.glEndList();
+        GL11.glNewList(this.starGLCallList + 2, GL11.GL_COMPILE);
+        this.renderStars(rand);
+        GL11.glEndList();
+        GL11.glNewList(this.starGLCallList + 3, GL11.GL_COMPILE);
+        this.renderStars(rand);
+        GL11.glEndList();
+        GL11.glNewList(this.starGLCallList + 4, GL11.GL_COMPILE);
+        this.renderStars(rand);
         GL11.glEndList();
         GL11.glPopMatrix();
         final Tessellator tessellator = Tessellator.getInstance();
@@ -73,7 +88,7 @@ public class SkyProviderOverworld extends IRenderHandler
         }
 
         GL11.glEndList();
-        this.glSkyList2 = this.starGLCallList + 2;
+        this.glSkyList2 = this.starGLCallList + 6;
         GL11.glNewList(this.glSkyList2, GL11.GL_COMPILE);
         f = -16F;
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
@@ -114,15 +129,9 @@ public class SkyProviderOverworld extends IRenderHandler
 	        try
 	        {
 	        	Class<?> c = mc.entityRenderer.getClass();
-	        	Field cameraZoom = c.getDeclaredField("cameraZoom");
-	        	cameraZoom.setAccessible(true);
-	        	zoom = cameraZoom.getDouble(mc.entityRenderer);
-	        	Field cameraYaw = c.getDeclaredField("cameraYaw");
-	        	cameraYaw.setAccessible(true);
-	        	yaw = cameraYaw.getDouble(mc.entityRenderer);
-	        	Field cameraPitch = c.getDeclaredField("cameraPitch");
-	        	cameraPitch.setAccessible(true);
-	        	pitch = cameraPitch.getDouble(mc.entityRenderer);
+	        	zoom = mc.entityRenderer.cameraZoom;
+	        	yaw = mc.entityRenderer.cameraYaw;
+	        	pitch = mc.entityRenderer.cameraPitch;
 	        	
 	            GL11.glMatrixMode(GL11.GL_PROJECTION);
 	            GL11.glLoadIdentity();
@@ -136,10 +145,8 @@ public class SkyProviderOverworld extends IRenderHandler
 	            Project.gluPerspective(mc.gameSettings.fovSetting, (float)mc.displayWidth / (float)mc.displayHeight, 0.05F, 1400.0F);
 	            GL11.glMatrixMode(GL11.GL_MODELVIEW);
 	            GL11.glLoadIdentity();
-            
-	        	m = c.getDeclaredMethod("orientCamera", float.class);
-	        	m.setAccessible(true);
-	        	m.invoke(mc.entityRenderer, mc.gameSettings.fovSetting);
+
+                mc.entityRenderer.orientCamera(partialTicks);
 	        }
 	        catch(Exception e)
 	        {
@@ -147,32 +154,33 @@ public class SkyProviderOverworld extends IRenderHandler
 	        }
         }
         
-        float var20 = (float) (mc.thePlayer.posY - 200.0F) / 1000.0F;
-        final float var21 = Math.max(1.0F - var20 * 4.0F, 0.0F);
+        float theta = MathHelper.sqrt_float(((float) (mc.thePlayer.posY) - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F);
+        final float var21 = Math.max(1.0F - theta * 4.0F, 0.0F);
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         final Vec3 var2 = this.minecraft.theWorld.getSkyColor(this.minecraft.getRenderViewEntity(), partialTicks);
-        float var3 = (float) var2.xCoord * var21;
-        float var4 = (float) var2.yCoord * var21;
+        float i = (float) var2.xCoord * var21;
+        float x = (float) var2.yCoord * var21;
         float var5 = (float) var2.zCoord * var21;
-        float var8;
+        float z;
 
         if (this.minecraft.gameSettings.anaglyph)
         {
-            final float var6 = (var3 * 30.0F + var4 * 59.0F + var5 * 11.0F) / 100.0F;
-            final float var7 = (var3 * 30.0F + var4 * 70.0F) / 100.0F;
-            var8 = (var3 * 30.0F + var5 * 70.0F) / 100.0F;
-            var3 = var6;
-            var4 = var7;
-            var5 = var8;
+            final float y = (i * 30.0F + x * 59.0F + var5 * 11.0F) / 100.0F;
+            final float var7 = (i * 30.0F + x * 70.0F) / 100.0F;
+            z = (i * 30.0F + var5 * 70.0F) / 100.0F;
+            i = y;
+            x = var7;
+            var5 = z;
         }
 
-        GL11.glColor3f(var3, var4, var5);
+        GL11.glColor3f(i, x, var5);
         final Tessellator var23 = Tessellator.getInstance();
+        WorldRenderer worldRenderer = var23.getWorldRenderer();
         GL11.glDepthMask(false);
         GL11.glEnable(GL11.GL_FOG);
-        GL11.glColor3f(var3, var4, var5);
+        GL11.glColor3f(i, x, var5);
         if (mc.thePlayer.posY < 214)
         {
             GL11.glCallList(this.glSkyList);
@@ -182,16 +190,15 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         RenderHelper.disableStandardItemLighting();
-        final float[] var24 = this.minecraft.theWorld.provider.calcSunriseSunsetColors(this.minecraft.theWorld.getCelestialAngle(partialTicks), partialTicks);
+        final float[] costh = this.minecraft.theWorld.provider.calcSunriseSunsetColors(this.minecraft.theWorld.getCelestialAngle(partialTicks), partialTicks);
         float var9;
-        float var10;
-        float var11;
-        float var12;
+        float size;
+        float rand1;
+        float r;
 
-        if (var24 != null && mc.thePlayer.posY < 250)
+        if (costh != null)
         {
-            float sunsetMod = (float) (FMLClientHandler.instance().getClient().thePlayer.posY - 200.0F) / 1000.0F;
-            final float sunsetModInv = Math.min(1.0F, Math.max(1.0F - var20 * 50.0F, 0.0F));
+            final float sunsetModInv = Math.min(1.0F, Math.max(1.0F - theta * 50.0F, 0.0F));
             
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glShadeModel(GL11.GL_SMOOTH);
@@ -199,35 +206,32 @@ public class SkyProviderOverworld extends IRenderHandler
             GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(MathHelper.sin(this.minecraft.theWorld.getCelestialAngleRadians(partialTicks)) < 0.0F ? 180.0F : 0.0F, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(90.0F, 0.0F, 0.0F, 1.0F);
-            var8 = var24[0] * sunsetModInv;
-            var9 = var24[1] * sunsetModInv;
-            var10 = var24[2] * sunsetModInv;
-            float var13;
+            z = costh[0] * sunsetModInv;
+            var9 = costh[1] * sunsetModInv;
+            size = costh[2] * sunsetModInv;
+            float rand3;
 
             if (this.minecraft.gameSettings.anaglyph)
             {
-                var11 = (var8 * 30.0F + var9 * 59.0F + var10 * 11.0F) / 100.0F;
-                var12 = (var8 * 30.0F + var9 * 70.0F) / 100.0F;
-                var13 = (var8 * 30.0F + var10 * 70.0F) / 100.0F;
-                var8 = var11;
-                var9 = var12;
-                var10 = var13;
+                rand1 = (z * 30.0F + var9 * 59.0F + size * 11.0F) / 100.0F;
+                r = (z * 30.0F + var9 * 70.0F) / 100.0F;
+                rand3 = (z * 30.0F + size * 70.0F) / 100.0F;
+                z = rand1;
+                var9 = r;
+                size = rand3;
             }
 
-            WorldRenderer worldRenderer = var23.getWorldRenderer();
             worldRenderer.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR);
 
-            worldRenderer.color(var8 * sunsetModInv, var9 * sunsetModInv, var10 * sunsetModInv, var24[3]);
-            worldRenderer.pos(0.0D, 100.0D, 0.0D).endVertex();
-            final byte var26 = 16;
-            worldRenderer.color(var24[0] * sunsetModInv, var24[1] * sunsetModInv, var24[2] * sunsetModInv, 0.0F);
+            worldRenderer.pos(0.0D, 100.0D, 0.0D).color(z * sunsetModInv, var9 * sunsetModInv, size * sunsetModInv, costh[3]).endVertex();
+            final byte phi = 16;
 
-            for (int var27 = 0; var27 <= var26; ++var27)
+            for (int var27 = 0; var27 <= phi; ++var27)
             {
-                var13 = var27 * (float) Math.PI * 2.0F / var26;
-                final float var14 = MathHelper.sin(var13);
-                final float var15 = MathHelper.cos(var13);
-                worldRenderer.pos(var14 * 120.0F, var15 * 120.0F, -var15 * 40.0F * var24[3]).endVertex();
+                rand3 = var27 * (float) Math.PI * 2.0F / phi;
+                final float xx = MathHelper.sin(rand3);
+                final float rand5 = MathHelper.cos(rand3);
+                worldRenderer.pos(xx * 120.0F, rand5 * 120.0F, -rand5 * 40.0F * costh[3]).color(costh[0] * sunsetModInv, costh[1] * sunsetModInv, costh[2] * sunsetModInv, 0.0F).endVertex();
             }
 
             var23.draw();
@@ -239,58 +243,86 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         
         GL11.glPushMatrix();
-        var8 = 1.0F - this.minecraft.theWorld.getRainStrength(partialTicks);
+        z = 1.0F - this.minecraft.theWorld.getRainStrength(partialTicks);
         var9 = 0.0F;
-        var10 = 0.0F;
-        var11 = 0.0F;
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, var8);
-        GL11.glTranslatef(var9, var10, var11);
+        size = 0.0F;
+        rand1 = 0.0F;
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, z);
+        GL11.glTranslatef(var9, size, rand1);
         GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
 
         GL11.glRotatef(this.minecraft.theWorld.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
-        var12 = 30.0F;
-        this.minecraft.renderEngine.bindTexture(SkyProviderOverworld.sunTexture);
-        WorldRenderer worldRenderer = var23.getWorldRenderer();
-        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        worldRenderer.pos(-var12, 100.0D, -var12).tex(0.0D, 0.0D).endVertex();
-        worldRenderer.pos(var12, 100.0D, -var12).tex(1.0D, 0.0D).endVertex();
-        worldRenderer.pos(var12, 100.0D, var12).tex(1.0D, 1.0D).endVertex();
-        worldRenderer.pos(-var12, 100.0D, var12).tex(0.0D, 1.0D).endVertex();
-        var23.draw();
-
+        double playerHeight = this.minecraft.thePlayer.posY;
+        
+        //Draw stars
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);        
-        var12 = 11.3F;
-        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
-        worldRenderer.pos(-var12, -99.9D, var12).endVertex();
-        worldRenderer.pos(var12, -99.9D, var12).endVertex();
-        worldRenderer.pos(var12, -99.9D, -var12).endVertex();
-        worldRenderer.pos(-var12, -99.9D, -var12).endVertex();
-        var23.draw();
+        float threshold;
+        Vec3 vec = WorldUtil.getFogColorHook(this.minecraft.theWorld);
+        threshold = Math.max(0.1F, (float) vec.lengthVector() - 0.1F);
+        float var20 = ((float) playerHeight - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F;
+        var20 = MathHelper.sqrt_float(var20);
+        float bright1 = Math.min(0.9F, var20 * 3);
+        float bright2 = Math.min(0.85F, var20 * 2.5F);
+        float bright3 = Math.min(0.8F, var20 * 2);
+        float bright4 = Math.min(0.75F, var20 * 1.5F);
+        float bright5 = Math.min(0.7F, var20 * 0.75F);
+        if (bright1 > threshold)
+        {
+	        GL11.glColor4f(bright1, bright1, bright1, 1.0F);
+	        GL11.glCallList(this.starGLCallList);
+        }
+        if (bright2 > threshold)
+        {
+	        GL11.glColor4f(bright2, bright2, bright2, 1.0F);
+	        GL11.glCallList(this.starGLCallList + 1);
+        }
+        if (bright3 > threshold)
+        {
+	        GL11.glColor4f(bright3, bright3, bright3, 1.0F);
+	        GL11.glCallList(this.starGLCallList + 2);
+        }
+        if (bright4 > threshold)
+        {
+	        GL11.glColor4f(bright4, bright4, bright4, 1.0F);
+	        GL11.glCallList(this.starGLCallList + 3);
+        }
+        if (bright5 > threshold)
+        {
+	        GL11.glColor4f(bright5, bright5, bright5, 1.0F);
+	        GL11.glCallList(this.starGLCallList + 4);
+        }
+
+        //Draw sun
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+        r = 30.0F;
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        var12 = 40.0F;
-        this.minecraft.renderEngine.bindTexture(SkyProviderOverworld.moonTexture);
-        float var28 = this.minecraft.theWorld.getMoonPhase();
-        final int var30 = (int) (var28 % 4);
-        final int var29 = (int) (var28 / 4 % 2);
-        final float var16 = (var30 + 0) / 4.0F;
-        final float var17 = (var29 + 0) / 2.0F;
-        final float var18 = (var30 + 1) / 4.0F;
-        final float var19 = (var29 + 1) / 2.0F;
+        this.minecraft.renderEngine.bindTexture(SkyProviderOverworld.sunTexture);
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        worldRenderer.pos(-var12, -100.0D, var12).tex(var18, var19).endVertex();
-        worldRenderer.pos(var12, -100.0D, var12).tex(var16, var19).endVertex();
-        worldRenderer.pos(var12, -100.0D, -var12).tex(var16, var17).endVertex();
-        worldRenderer.pos(-var12, -100.0D, -var12).tex(var18, var17).endVertex();
+        worldRenderer.pos(-r, 100.0D, -r).tex(0.0D, 0.0D).endVertex();
+        worldRenderer.pos(r, 100.0D, -r).tex(1.0D, 0.0D).endVertex();
+        worldRenderer.pos(r, 100.0D, r).tex(1.0D, 1.0D).endVertex();
+        worldRenderer.pos(-r, 100.0D, r).tex(0.0D, 1.0D).endVertex();
         var23.draw();
 
+        //Draw moon
+        r = 40.0F;
+        this.minecraft.renderEngine.bindTexture(SkyProviderOverworld.moonTexture);
+        float sinphi = this.minecraft.theWorld.getMoonPhase();
+        final int cosphi = (int) (sinphi % 4);
+        final int var29 = (int) (sinphi / 4 % 2);
+        final float yy = (cosphi + 0) / 4.0F;
+        final float rand7 = (var29 + 0) / 2.0F;
+        final float zz = (cosphi + 1) / 4.0F;
+        final float rand9 = (var29 + 1) / 2.0F;
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        worldRenderer.pos(-r, -100.0D, r).tex(zz, rand9).endVertex();
+        worldRenderer.pos(r, -100.0D, r).tex(yy, rand9).endVertex();
+        worldRenderer.pos(r, -100.0D, -r).tex(yy, rand7).endVertex();
+        worldRenderer.pos(-r, -100.0D, -r).tex(zz, rand7).endVertex();
+        var23.draw();      
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glCallList(this.starGLCallList);
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_BLEND);
@@ -301,43 +333,43 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glColor3f(0.0F, 0.0F, 0.0F);
 
         //TODO get exact height figure here
-        double var25 = this.minecraft.thePlayer.posY - 64;
+        double var25 = playerHeight - 64;
 
         if (var25 > this.minecraft.gameSettings.renderDistanceChunks * 16)
         {
-	        var20 *= 400.0F;
+	        theta *= 400.0F;
 	
-	        final float var22 = Math.max(Math.min(var20 / 100.0F - 0.2F, 0.5F), 0.0F);
+	        final float sinth = Math.max(Math.min(theta / 100.0F - 0.2F, 0.5F), 0.0F);
 	
 	        GL11.glPushMatrix();
 	        GL11.glEnable(GL11.GL_TEXTURE_2D);
 	        GL11.glDisable(GL11.GL_FOG);
-	        float scale = 850 * (0.25F - var20 / 10000.0F);
+	        float scale = 850 * (0.25F - theta / 10000.0F);
 	        scale = Math.max(scale, 0.2F);
 	        GL11.glScalef(scale, 1.0F, scale);
 	        GL11.glTranslatef(0.0F, -(float)mc.thePlayer.posY, 0.0F);
-	        if (ClientProxyCore.overworldTextureLocal != null)
-	        {
-	            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureLocal.getGlTextureId());
-	        }
-	        else
+//	        if (ClientProxyCore.overworldTextureLocal != null)
+//	        {
+//	            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureLocal.getGlTextureId());
+//	        }
+//	        else
 	        {
 	            this.minecraft.renderEngine.bindTexture(this.planetToRender);
 	        }
 	
-	        var10 = 1.0F;
+	        size = 1.0F;
 	
-	        GL11.glColor4f(var22, var22, var22, 1.0F);
+	        GL11.glColor4f(sinth, sinth, sinth, 1.0F);
             worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-	
+
 	        float zoomIn = (1F - (float) var25 / 768F) / 5.86F;
 	        if (zoomIn < 0F) zoomIn = 0F;
 	        zoomIn = 0.0F;
 	        float cornerB = 1.0F - zoomIn;
-	        worldRenderer.pos(-var10, 0, var10).tex(zoomIn, cornerB).endVertex();
-	        worldRenderer.pos(var10, 0, var10).tex(cornerB, cornerB).endVertex();
-	        worldRenderer.pos(var10, 0, -var10).tex(cornerB, zoomIn).endVertex();
-	        worldRenderer.pos(-var10, 0, -var10).tex(zoomIn, zoomIn).endVertex();
+	        worldRenderer.pos(-size, 0, size).tex(zoomIn, cornerB).endVertex();
+	        worldRenderer.pos(size, 0, size).tex(cornerB, cornerB).endVertex();
+	        worldRenderer.pos(size, 0, -size).tex(cornerB, zoomIn).endVertex();
+	        worldRenderer.pos(-size, 0, -size).tex(zoomIn, zoomIn).endVertex();
 	        var23.draw();
 	        GL11.glDisable(GL11.GL_TEXTURE_2D);
 	        GL11.glPopMatrix();
@@ -375,52 +407,53 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
     }
 
-    private void renderStars()
+    private void renderStars(Random rand)
     {
-        final Random var1 = new Random(10842L);
         final Tessellator var2 = Tessellator.getInstance();
         WorldRenderer worldRenderer = var2.getWorldRenderer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 
-        for (int var3 = 0; var3 < (ConfigManagerCore.moreStars ? 20000 : 6000); ++var3)
+        for (int i = 0; i < (ConfigManagerCore.moreStars ? 4000 : 1200); ++i)
         {
-            double var4 = var1.nextFloat() * 2.0F - 1.0F;
-            double var6 = var1.nextFloat() * 2.0F - 1.0F;
-            double var8 = var1.nextFloat() * 2.0F - 1.0F;
-            final double var10 = 0.15F + var1.nextFloat() * 0.1F;
-            double var12 = var4 * var4 + var6 * var6 + var8 * var8;
+            double x = rand.nextFloat() * 2.0F - 1.0F;
+            double y = rand.nextFloat() * 2.0F - 1.0F;
+            double z = rand.nextFloat() * 2.0F - 1.0F;
+            final double size = 0.15F + rand.nextFloat() * 0.1F;
+            double r = x * x + y * y + z * z;
 
-            if (var12 < 1.0D && var12 > 0.01D)
+            if (r < 1.0D && r > 0.01D)
             {
-                var12 = 1.0D / Math.sqrt(var12);
-                var4 *= var12;
-                var6 *= var12;
-                var8 *= var12;
-                final double var14 = var4 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 100D + 150D : 100.0D);
-                final double var16 = var6 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 100D + 150D : 100.0D);
-                final double var18 = var8 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 100D + 150D : 100.0D);
-                final double var20 = Math.atan2(var4, var8);
-                final double var22 = Math.sin(var20);
-                final double var24 = Math.cos(var20);
-                final double var26 = Math.atan2(Math.sqrt(var4 * var4 + var8 * var8), var6);
-                final double var28 = Math.sin(var26);
-                final double var30 = Math.cos(var26);
-                final double var32 = var1.nextDouble() * Math.PI * 2.0D;
-                final double var34 = Math.sin(var32);
-                final double var36 = Math.cos(var32);
+                r = 1.0D / Math.sqrt(r);
+                x *= r;
+                y *= r;
+                z *= r;
+                final double xx = x * (ConfigManagerCore.moreStars ? rand.nextDouble() * 100D + 150D : 100.0D);
+                final double zz = z * (ConfigManagerCore.moreStars ? rand.nextDouble() * 100D + 150D : 100.0D);
+                if (Math.abs(xx) < 29D && Math.abs(zz) < 29D)
+                	continue;
+                final double yy = y * (ConfigManagerCore.moreStars ? rand.nextDouble() * 100D + 150D : 100.0D);
+                final double theta = Math.atan2(x, z);
+                final double sinth = Math.sin(theta);
+                final double costh = Math.cos(theta);
+                final double phi = Math.atan2(Math.sqrt(x * x + z * z), y);
+                final double sinphi = Math.sin(phi);
+                final double cosphi = Math.cos(phi);
+                final double rho = rand.nextDouble() * Math.PI * 2.0D;
+                final double sinrho = Math.sin(rho);
+                final double cosrho = Math.cos(rho);
 
-                for (int var38 = 0; var38 < 4; ++var38)
+                for (int j = 0; j < 4; ++j)
                 {
-                    final double var39 = 0.0D;
-                    final double var41 = ((var38 & 2) - 1) * var10;
-                    final double var43 = ((var38 + 1 & 2) - 1) * var10;
-                    final double var47 = var41 * var36 - var43 * var34;
-                    final double var49 = var43 * var36 + var41 * var34;
-                    final double var53 = var47 * var28 + var39 * var30;
-                    final double var55 = var39 * var28 - var47 * var30;
-                    final double var57 = var55 * var22 - var49 * var24;
-                    final double var61 = var49 * var22 + var55 * var24;
-                    worldRenderer.pos(var14 + var57, var16 + var53, var18 + var61).endVertex();
+                    final double a = 0.0D;
+                    final double b = ((j & 2) - 1) * size;
+                    final double c = ((j + 1 & 2) - 1) * size;
+                    final double d = b * cosrho - c * sinrho;
+                    final double e = c * cosrho + b * sinrho;
+                    final double dy = d * sinphi + a * cosphi;
+                    final double ff = a * sinphi - d * cosphi;
+                    final double dx = ff * sinth - e * costh;
+                    final double dz = e * sinth + ff * costh;
+                    worldRenderer.pos(xx + dx, yy + dy, zz + dz).endVertex();
                 }
             }
         }

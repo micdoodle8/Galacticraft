@@ -7,6 +7,7 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -65,6 +66,7 @@ public class GCBlocks
     public static final Material machine = new Material(MapColor.ironColor);
 
     public static ArrayList<Block> hiddenBlocks = new ArrayList<Block>();
+    public static ArrayList<Block> otherModTorchesLit = new ArrayList<Block>();
 
     public static void initBlocks()
     {
@@ -203,8 +205,30 @@ public class GCBlocks
 
     private static void setHarvestLevel(Block block, String toolClass, int level)
     {
-        block.setHarvestLevel(toolClass, level);
-    }
+        BlockUnlitTorch torch;
+        BlockUnlitTorch torchLit;
+        
+        if (Loader.isModLoaded("TConstruct"))
+        {
+	    	Block modTorch = null; 
+	    	try {
+	    		//tconstruct.world.TinkerWorld.stoneTorch
+	    		Class clazz = Class.forName("tconstruct.world.TinkerWorld");
+	    		modTorch = (Block) clazz.getField("stoneTorch").get(null);
+	    	} catch (Exception e) { }
+	    	if (modTorch != null)
+	    	{
+	        	torch = new BlockUnlitTorch(false, "unlitTorch_Stone");
+		        torchLit = new BlockUnlitTorch(true, "unlitTorchLit_Stone");
+		        GCBlocks.hiddenBlocks.add(torch);
+		        GCBlocks.hiddenBlocks.add(torchLit);
+		        GCBlocks.otherModTorchesLit.add(torchLit);
+		        GameRegistry.registerBlock(torch, ItemBlockGC.class, torch.getUnlocalizedName());
+		        GameRegistry.registerBlock(torchLit, ItemBlockGC.class, torchLit.getUnlocalizedName());
+		        BlockUnlitTorch.register(torch, torchLit, modTorch);
+	    	}
+        }
+	}
 
     public static void setHarvestLevels()
     {

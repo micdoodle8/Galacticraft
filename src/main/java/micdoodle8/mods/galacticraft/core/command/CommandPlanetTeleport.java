@@ -10,6 +10,9 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.WorldServer;
 
 public class CommandPlanetTeleport extends CommandBase
 {
@@ -45,11 +48,16 @@ public class CommandPlanetTeleport extends CommandBase
 
                 if (playerBase != null)
                 {
+                    MinecraftServer server = MinecraftServer.getServer();
+                    WorldServer worldserver = server.worldServerForDimension(server.worldServers[0].provider.getDimensionId());
+                    BlockPos spawnPoint = worldserver.getSpawnPoint();
                     GCPlayerStats stats = GCPlayerStats.get(playerBase);
                     stats.rocketStacks = new ItemStack[2];
                     stats.rocketType = IRocketType.EnumRocketType.DEFAULT.ordinal();
                     stats.rocketItem = GCItems.rocketTier1;
                     stats.fuelLevel = 1000;
+                    stats.coordsTeleportedFromX = spawnPoint.getX();
+                    stats.coordsTeleportedFromZ = spawnPoint.getZ();
 
                     try
                     {
@@ -61,7 +69,7 @@ public class CommandPlanetTeleport extends CommandBase
                         throw e;
                     }
 
-                    VersionUtil.notifyAdmins(sender, this, "commands.dimensionteleport", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getName()), "]" });
+                    CommandBase.notifyOperators(sender, this, "commands.dimensionteleport", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getName()), "]" });
                 }
                 else
                 {

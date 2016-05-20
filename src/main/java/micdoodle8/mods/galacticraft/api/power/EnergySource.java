@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.api.power;
 
-
 import net.minecraft.util.EnumFacing;
 
 import java.util.List;

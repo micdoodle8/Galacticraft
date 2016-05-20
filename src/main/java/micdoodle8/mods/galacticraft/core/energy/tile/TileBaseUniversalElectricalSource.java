@@ -28,7 +28,11 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
      */
     public float produce()
     {
-        return this.extractEnergyGC(null, this.produce(false), false);
+        this.storage.maxExtractRemaining = this.storage.maxExtract;
+    	float produced = this.extractEnergyGC(null, this.produce(false), false);
+        this.storage.maxExtractRemaining -= produced;
+        if (this.storage.maxExtractRemaining < 0) this.storage.maxExtractRemaining = 0;
+        return produced;
     }
 
     /*
@@ -103,6 +107,10 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
             {
                 this.storage.extractEnergyGC(ElectricItemHelper.chargeItem(itemStack, energyToCharge), false);
             }
+//            else if (EnergyConfigHandler.isRFAPILoaded() && item instanceof IEnergyContainerItem)
+//            {
+//                this.storage.extractEnergyGC(((IEnergyContainerItem)item).receiveEnergy(itemStack, (int) (energyToCharge * EnergyConfigHandler.TO_RF_RATIO), false) / EnergyConfigHandler.TO_RF_RATIO, false);
+//            }
 //            else if (EnergyConfigHandler.isMekanismLoaded() && item instanceof IEnergizedItem && ((IEnergizedItem) item).canReceive(itemStack))
 //            {
 //                this.storage.extractEnergyGC((float) EnergizedItemManager.charge(itemStack, energyToCharge * EnergyConfigHandler.TO_MEKANISM_RATIO) / EnergyConfigHandler.TO_MEKANISM_RATIO, false);
@@ -122,7 +130,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
 //                        Method getMan = itemElectricIC2.getMethod("getManager", ItemStack.class);
 //                        Object IC2manager = getMan.invoke(IC2item, itemStack);
 //                        double result;
-//                        if (VersionUtil.mcVersionMatches("1.7.2"))
+//                        if (VersionUtil.mcVersion1_7_2)
 //                        {
 //                            Method methodCharge = itemManagerIC2.getMethod("charge", ItemStack.class, int.class, int.class, boolean.class, boolean.class);
 //                            result = (Integer) methodCharge.invoke(IC2manager, itemStack, (int) (energyToCharge * EnergyConfigHandler.TO_IC2_RATIO), this.tierGC + 1, false, false);
@@ -140,7 +148,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
 //                        Class<?> electricItemIC2 = Class.forName("ic2.api.item.ElectricItem");
 //                        Object IC2manager = electricItemIC2.getField("manager").get(null);
 //                        double result;
-//                        if (VersionUtil.mcVersionMatches("1.7.2"))
+//                        if (VersionUtil.mcVersion1_7_2)
 //                        {
 //                            Method methodCharge = itemManagerIC2.getMethod("charge", ItemStack.class, int.class, int.class, boolean.class, boolean.class);
 //                            result = (Integer) methodCharge.invoke(IC2manager, itemStack, (int) (energyToCharge * EnergyConfigHandler.TO_IC2_RATIO), this.tierGC + 1, false, false);

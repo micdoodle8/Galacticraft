@@ -1,17 +1,28 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.dimension;
 
+import net.minecraft.entity.EntityList;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.FMLLog;
+import micdoodle8.mods.galacticraft.api.entity.IRocketType;
+import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityEntryPod;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
+import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -298,9 +309,38 @@ public class TeleportTypeAsteroids implements ITeleportType
         }
     }
 
-    @Override
-    public void setupAdventureSpawn(EntityPlayerMP player)
-    {
-
-    }
+	@Override
+	public void setupAdventureSpawn(EntityPlayerMP player)
+	{
+        GCPlayerStats stats = GCPlayerStats.get(player);
+        SchematicRegistry.unlockNewPage(player, new ItemStack(GCItems.schematic, 1, 1)); //Knows how to build T2 rocket
+        SchematicRegistry.unlockNewPage(player, new ItemStack(MarsItems.schematic, 1, 0)); //Knows how to build T3 rocket
+        SchematicRegistry.unlockNewPage(player, new ItemStack(MarsItems.schematic, 1, 2)); //Knows how to build Astro Miner
+        stats.rocketStacks = new ItemStack[20];
+        stats.fuelLevel = 1000;
+        int i = 0;
+        stats.rocketStacks[i++] = new ItemStack(GCItems.oxMask);
+        stats.rocketStacks[i++] = new ItemStack(GCItems.oxygenGear);
+        stats.rocketStacks[i++] = new ItemStack(GCItems.oxTankMedium);
+        stats.rocketStacks[i++] = new ItemStack(GCItems.oxTankHeavy);
+        stats.rocketStacks[i++] = new ItemStack(GCItems.oxTankHeavy);
+        stats.rocketStacks[i++] = new ItemStack(AsteroidsItems.canisterLOX);
+        stats.rocketStacks[i++] = new ItemStack(AsteroidsItems.canisterLOX);
+        stats.rocketStacks[i++] = new ItemStack(AsteroidsItems.canisterLOX);
+        stats.rocketStacks[i++] = new ItemStack(AsteroidsItems.basicItem, 32, 7);
+        stats.rocketStacks[i++] = new ItemStack(Blocks.glass_pane, 16);
+        stats.rocketStacks[i++] = new ItemStack(Blocks.planks, 32, 2);
+        stats.rocketStacks[i++] = new ItemStack(MarsItems.marsItemBasic, 16, 2); //Desh ingot
+        stats.rocketStacks[i++] = new ItemStack(GCItems.basicItem, 8, 13); //Basic Wafer
+        stats.rocketStacks[i++] = new ItemStack(GCItems.basicItem, 2, 1); //Solar Panels
+        stats.rocketStacks[i++] = new ItemStack(GCItems.basicItem, 16, 15);  //Canned food
+        stats.rocketStacks[i++] = new ItemStack(Items.egg, 12);
+        
+        stats.rocketStacks[i++] = new ItemStack(Items.spawn_egg, 2, EntityList.classToIDMapping.get(EntityCow.class));
+        stats.rocketStacks[i++] = new ItemStack(Items.potionitem, 4, 8262); //Night Vision Potion
+        stats.rocketStacks[i++] = new ItemStack(MarsBlocks.machine, 1, 4); //Cryogenic Chamber
+        stats.rocketStacks[i++] = new ItemStack(MarsItems.spaceship, 1, IRocketType.EnumRocketType.INVENTORY36.ordinal());
+      //stats.rocketStacks[15] = new ItemStack(GCBlocks.brightLamp, 4);
+      //stats.rocketStacks[16] = new ItemStack(GCBlocks.aluminumWire, 32);
+	}
 }

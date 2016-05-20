@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.api.item.IItemThermal;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenMask;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
@@ -54,22 +54,9 @@ public class SlotExtendedInventory extends Slot
 
     public boolean thermalArmorSlotValid(ItemStack stack, int slotIndex)
     {
-        if (GalacticraftCore.isPlanetsLoaded)
+        if (stack.getItem() instanceof IItemThermal)
         {
-            try
-            {
-                Class<?> clazz = Class.forName("micdoodle8.mods.galacticraft.planets.asteroids.items.ItemThermalPadding");
-
-                if (clazz.isInstance(stack.getItem()))
-                {
-                    return stack.getItemDamage() == slotIndex;
-                }
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-                return false;
-            }
+            return ((IItemThermal) stack.getItem()).isValidForSlot(stack, slotIndex);
         }
 
         return false;

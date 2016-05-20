@@ -1,18 +1,20 @@
 //package micdoodle8.mods.galacticraft.core.client.model;
 //
+//import cpw.mods.fml.client.FMLClientHandler;
+//import cpw.mods.fml.common.Loader;
 //import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 //import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 //import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-//import micdoodle8.mods.galacticraft.core.client.objload.AdvancedModelLoader;
-//import micdoodle8.mods.galacticraft.core.client.objload.IModelCustom;
+//import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 //import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 //import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 //import net.minecraft.client.entity.AbstractClientPlayer;
-//import net.minecraft.client.entity.EntityPlayerSP;
+//import net.minecraft.client.entity.EntityClientPlayerMP;
 //import net.minecraft.client.model.ModelBiped;
 //import net.minecraft.client.model.ModelRenderer;
 //import net.minecraft.client.renderer.entity.Render;
+//import net.minecraft.client.renderer.entity.RenderManager;
 //import net.minecraft.client.renderer.entity.RenderPlayer;
 //import net.minecraft.entity.Entity;
 //import net.minecraft.entity.player.EntityPlayer;
@@ -20,12 +22,20 @@
 //import net.minecraft.util.AxisAlignedBB;
 //import net.minecraft.util.MathHelper;
 //import net.minecraft.util.ResourceLocation;
-//import net.minecraftforge.fml.client.FMLClientHandler;
-//import net.minecraftforge.fml.common.Loader;
+//import net.minecraftforge.client.model.AdvancedModelLoader;
+//import net.minecraftforge.client.model.IModelCustom;
+//
 //import org.lwjgl.opengl.GL11;
 //
 //import java.util.List;
 //
+///**
+// * This renders the Galacticraft equipment, if RenderPlayerAPI / Smart Moving are not installed.
+// *
+// * This also adjusts player limb positions (etc) of the vanilla player prior to rendering the player.
+// * for example holding both hands overhead when holding a rocket.
+// *
+// */
 //public class ModelPlayerGC extends ModelBiped
 //{
 //    public static final ResourceLocation oxygenMaskTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/oxygen.png");
@@ -187,9 +197,9 @@
 //    @Override
 //    public void render(Entity var1, float var2, float var3, float var4, float var5, float var6, float var7)
 //    {
-//        final Class<? extends Entity> entityClass = EntityPlayerSP.class;
-//        final Render render = FMLClientHandler.instance().getClient().getRenderManager().getEntityClassRenderObject(entityClass);
-//        final ModelBiped modelBipedMain = ((RenderPlayer) render).getMainModel();
+//        final Class<?> entityClass = EntityClientPlayerMP.class;
+//        final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
+//        final ModelBiped modelBipedMain = ((RenderPlayer) render).modelBipedMain;
 //
 //        this.usingParachute = false;
 //        boolean wearingMask = false;
@@ -203,7 +213,7 @@
 //        boolean wearingFrequencyModule = false;
 //
 //        final EntityPlayer player = (EntityPlayer) var1;
-//        PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getName());
+//        PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getCommandSenderName());
 //
 //        if (gearData != null)
 //        {
@@ -218,6 +228,17 @@
 //            wearingRightTankRed = gearData.getRightTank() == 2;
 //            wearingFrequencyModule = gearData.getFrequencyModule() > -1;
 //        }
+//        else
+//        {
+//            String id = player.getGameProfile().getName();
+//
+//            if (!ClientProxyCore.gearDataRequests.contains(id))
+//            {
+//                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA, new Object[] { id }));
+//                ClientProxyCore.gearDataRequests.add(id);
+//            }
+//        }
+//
 //
 //        this.setRotationAngles(var2, var3, var4, var5, var6, var7, var1);
 //
@@ -230,6 +251,8 @@
 //                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.oxygenMaskTexture);
 //                    GL11.glPushMatrix();
 //                    GL11.glScalef(1.05F, 1.05F, 1.05F);
+//                    this.oxygenMask.rotateAngleY = this.bipedHead.rotateAngleY;
+//                    this.oxygenMask.rotateAngleX = this.bipedHead.rotateAngleX;
 //                    this.oxygenMask.render(var7);
 //                    GL11.glScalef(1F, 1F, 1F);
 //                    GL11.glPopMatrix();
@@ -343,7 +366,7 @@
 //        final EntityPlayer player = (EntityPlayer) par7Entity;
 //        final ItemStack currentItemStack = player.inventory.getCurrentItem();
 //
-//        if (!par7Entity.onGround && par7Entity.worldObj.provider instanceof IGalacticraftWorldProvider && !(currentItemStack != null && currentItemStack.getItem() instanceof IHoldableItem))
+//        if (!par7Entity.onGround && par7Entity.worldObj.provider instanceof IGalacticraftWorldProvider && par7Entity.ridingEntity == null && !(currentItemStack != null && currentItemStack.getItem() instanceof IHoldableItem))
 //        {
 //            float speedModifier = 0.1162F * 2;
 //
@@ -358,9 +381,6 @@
 //            this.bipedRightLeg.rotateAngleX -= MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
 //            this.bipedRightLeg.rotateAngleX += MathHelper.cos(par1 * 0.1162F * 2) * 1.4F * par2;
 //        }
-//
-//        this.oxygenMask.rotateAngleY = this.bipedHead.rotateAngleY;
-//        this.oxygenMask.rotateAngleX = this.bipedHead.rotateAngleX;
 //
 //        if (usingParachute)
 //        {
@@ -437,7 +457,7 @@
 //        this.redOxygenTanks[1].rotateAngleY = this.bipedBody.rotateAngleY;
 //        this.redOxygenTanks[1].rotateAngleZ = this.bipedBody.rotateAngleZ;
 //
-//        final List<?> l = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, AxisAlignedBB.fromBounds(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
+//        final List<?> l = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, AxisAlignedBB.getBoundingBox(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
 //
 //        for (int i = 0; i < l.size(); i++)
 //        {
@@ -451,6 +471,7 @@
 //                {
 //                    this.bipedRightArm.rotateAngleZ -= (float) (Math.PI / 8) + MathHelper.sin(par3 * 0.9F) * 0.2F;
 //                    this.bipedRightArm.rotateAngleX = (float) Math.PI;
+//                    break;
 //                }
 //            }
 //        }

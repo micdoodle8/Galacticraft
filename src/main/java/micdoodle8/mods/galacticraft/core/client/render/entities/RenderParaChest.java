@@ -39,7 +39,7 @@ public class RenderParaChest extends Render
     public void doRenderParaChest(EntityParachest entity, double par2, double par4, double par6, float par8, float par9)
     {
         GL11.glPushMatrix();
-        GL11.glTranslatef((float) par2, (float) par4, (float) par6);
+        GL11.glTranslatef((float) par2 - 0.5F, (float) par4, (float) par6);
 
         this.bindEntityTexture(entity);
 

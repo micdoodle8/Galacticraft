@@ -7,6 +7,7 @@
 //import codechicken.nei.recipe.FurnaceRecipeHandler.FuelPair;
 //import codechicken.nei.recipe.TemplateRecipeHandler;
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+//import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 //import net.minecraft.block.Block;
 //import net.minecraft.init.Blocks;
 //import net.minecraft.item.Item;
@@ -56,7 +57,7 @@
 //    }
 //
 //    @Override
-//    public void drawBackground(int i)
+//    public void drawBackground(int recipe)
 //    {
 //        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 //        GuiDraw.changeTexture(IngotCompressorRecipeHandler.ingotCompressorTexture);
@@ -239,7 +240,7 @@
 //    @Override
 //    public String getRecipeName()
 //    {
-//        return "Ingot Compressor";
+//        return GCCoreUtil.translate("tile.machine.3.name");
 //    }
 //
 //    @Override

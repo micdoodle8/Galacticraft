@@ -20,9 +20,9 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderMoon;
@@ -42,6 +42,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketRotateRocket;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
@@ -73,6 +74,7 @@ import org.lwjgl.opengl.GL11;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -238,7 +240,7 @@ public class TickHandlerClient
                 OverlayLaunchCountdown.renderCountdownOverlay();
             }
 
-            if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && OxygenUtil.shouldDisplayTankGui(minecraft.currentScreen))
+            if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && OxygenUtil.shouldDisplayTankGui(minecraft.currentScreen) && OxygenUtil.noAtmosphericCombustion(player.worldObj.provider))
             {
                 int var6 = (TickHandlerClient.airRemaining - 90) * -1;
 
@@ -255,10 +257,10 @@ public class TickHandlerClient
                 }
 
                 int thermalLevel = stats.thermalLevel + 22;
-                OverlayOxygenTanks.renderOxygenTankIndicator(thermalLevel, var6, var7, !ConfigManagerCore.oxygenIndicatorLeft, !ConfigManagerCore.oxygenIndicatorBottom, Math.abs(thermalLevel - 22) >= 10);
+                OverlayOxygenTanks.renderOxygenTankIndicator(thermalLevel, var6, var7, !ConfigManagerCore.oxygenIndicatorLeft, !ConfigManagerCore.oxygenIndicatorBottom, Math.abs(thermalLevel - 22) >= 10 && !stats.thermalLevelNormalising);
             }
 
-            if (playerBaseClient != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && !stats.oxygenSetupValid && minecraft.currentScreen == null && !playerBaseClient.capabilities.isCreativeMode)
+            if (playerBaseClient != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && !stats.oxygenSetupValid && OxygenUtil.noAtmosphericCombustion(player.worldObj.provider) && minecraft.currentScreen == null && !playerBaseClient.capabilities.isCreativeMode)
             {
                 OverlayOxygenWarning.renderOxygenWarningOverlay();
             }
@@ -324,55 +326,6 @@ public class TickHandlerClient
             	}
             }
 
-            if (ClientProxyCore.overworldImageBytes != null && ClientProxyCore.overworldImageBytes.length > 0)
-            {
-                try
-                {
-                    //Class c = Launch.classLoader.loadClass("org.apache.commons.codec.binary.Base64");
-                    //if (c != null)
-                    {
-                        //byte[] bytes = (byte[])c.getMethod("decodeBase64", byte[].class).invoke(null, base64);
-                        File folder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/temp");
-
-                        try
-                        {
-                            if (folder.exists() || folder.mkdir())
-                            {
-                                File file0 = new File(folder, "overworldLocal.png");
-
-                                if (!file0.exists() || (file0.canRead() && file0.canWrite()))
-                                {
-                                    FileUtils.writeByteArrayToFile(file0, ClientProxyCore.overworldImageBytes);
-
-                                    BufferedImage img = ImageIO.read(file0);
-
-                                    if (img != null)
-                                    {
-                                        ClientProxyCore.overworldTextureLocal = new DynamicTexture(img);
-                                    }
-                                }
-                                else
-                                {
-                                    System.err.println("Cannot read/write to file %minecraftDir%/assets/temp/overworldLocal.png");
-                                }
-                            }
-                            else
-                            {
-                                System.err.println("Cannot create directory %minecraftDir%/assets/temp!");
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    ;
-                }
-            }
-
             if (TickHandlerClient.tickCount % 20 == 0)
             {
                 if (player != null && player.inventory.armorItemInSlot(3) != null && player.inventory.armorItemInSlot(3).getItem() instanceof ItemSensorGlasses)
@@ -381,12 +334,12 @@ public class TickHandlerClient
 
                     for (int i = -4; i < 5; i++)
                     {
+                        int x = MathHelper.floor_double(player.posX + i);
                         for (int j = -4; j < 5; j++)
                         {
+                            int y = MathHelper.floor_double(player.posY + j);
                             for (int k = -4; k < 5; k++)
                             {
-                                int x = MathHelper.floor_double(player.posX + i);
-                                int y = MathHelper.floor_double(player.posY + j);
                                 int z = MathHelper.floor_double(player.posZ + k);
                                 BlockPos pos = new BlockPos(x, y, z);
 
@@ -407,45 +360,21 @@ public class TickHandlerClient
                                         }
                                     }
 
-                                    if (isDetectable)
+                                    if (isDetectable || (block instanceof IDetectableResource && ((IDetectableResource) block).isValueable(state)))
                                     {
-                                        if (!this.alreadyContainsBlock(x, y, z))
-                                        {
-                                            ClientProxyCore.valueableBlocks.add(new Vector3(x, y, z));
-                                        }
-                                    }
-                                    else if (block instanceof IDetectableResource && ((IDetectableResource) block).isValueable(state))
-                                    {
-                                        if (!this.alreadyContainsBlock(x, y, z))
-                                        {
-                                            ClientProxyCore.valueableBlocks.add(new Vector3(x, y, z));
-                                        }
-
-                                        List<Integer> metaList = null;
-
-                                        for (BlockMetaList blockMetaList : ClientProxyCore.detectableBlocks)
-                                        {
-                                            if (blockMetaList.getBlock() == block)
-                                            {
-                                                metaList = blockMetaList.getMetaList();
-                                                if (!metaList.contains(metadata))
-                                                {
-                                                    metaList.add(metadata);
-                                                }
-                                                break;
-                                            }
-                                        }
-
-                                        if (metaList == null)
-                                        {
-                                            metaList = Lists.newArrayList();
-                                            metaList.add(metadata);
-                                            ClientProxyCore.detectableBlocks.add(new BlockMetaList(block, metaList));
-                                        }
+                                        ClientProxyCore.valueableBlocks.add(new BlockVec3(x, y, z));
                                     }
                                 }
                             }
                         }
+                    }
+                    TileEntityOxygenSealer nearestSealer = TileEntityOxygenSealer.getNearestSealer(world, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY), MathHelper.floor_double(player.posZ));
+                    //TODO: revert. Correct code is temporarily commented out for testing render
+                    if (nearestSealer != null)// && nearestSealer.threadSeal != null)
+                    {
+                    	ClientProxyCore.leakTrace = new ArrayList();//nearestSealer.threadSeal.leakTrace;
+                    	//TODO: revert. Temporarily for testing purposes any sealer should show a leak block directly above itself
+                    	ClientProxyCore.leakTrace.add(new BlockVec3(nearestSealer).translate(0,1,0));
                     }
                 }
             }
@@ -461,7 +390,7 @@ public class TickHandlerClient
                 }
             }
 
-            if (world != null && TickHandlerClient.spaceRaceGuiScheduled && minecraft.currentScreen == null)
+            if (world != null && TickHandlerClient.spaceRaceGuiScheduled && minecraft.currentScreen == null && ConfigManagerCore.enableSpaceRaceManagerPopup)
             {
                 player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_START, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
                 TickHandlerClient.spaceRaceGuiScheduled = false;
@@ -482,11 +411,13 @@ public class TickHandlerClient
             {
                 if (world.provider instanceof WorldProviderSurface)
                 {
-                    if (world.provider.getSkyRenderer() == null && player.ridingEntity != null && player.ridingEntity.posY > 200)
+                    if (world.provider.getSkyRenderer() == null &&
+                            player.ridingEntity instanceof EntitySpaceshipBase &&
+                            player.ridingEntity.posY > Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
                     {
                         world.provider.setSkyRenderer(new SkyProviderOverworld());
                     }
-                    else if (world.provider.getSkyRenderer() != null && world.provider.getSkyRenderer() instanceof SkyProviderOverworld && (player.ridingEntity == null || player.ridingEntity.posY <= 200))
+                    else if (world.provider.getSkyRenderer() instanceof SkyProviderOverworld && player.posY <= Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
                     {
                         world.provider.setSkyRenderer(null);
                     }
@@ -582,7 +513,7 @@ public class TickHandlerClient
                 player.motionY = 0;
             }
 
-            if (world != null && world.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider)world.provider).hasBreathableAtmosphere() && !((IGalacticraftWorldProvider)world.provider).isGasPresent(IAtmosphericGas.OXYGEN))
+            if (world != null && world.provider instanceof IGalacticraftWorldProvider && OxygenUtil.noAtmosphericCombustion(world.provider))
             {
                 world.setRainStrength(0.0F);
             }
@@ -614,7 +545,7 @@ public class TickHandlerClient
 
     private boolean alreadyContainsBlock(int x1, int y1, int z1)
     {
-        return ClientProxyCore.valueableBlocks.contains(new Vector3(x1, y1, z1));
+        return ClientProxyCore.valueableBlocks.contains(new BlockVec3(x1, y1, z1));
     }
 
     public static void zoom(float value)

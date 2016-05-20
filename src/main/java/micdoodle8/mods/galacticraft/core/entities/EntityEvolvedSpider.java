@@ -23,7 +23,7 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
     public EntityEvolvedSpider(World par1World)
     {
         super(par1World);
-        this.setSize(1.4F, 0.9F);
+        this.setSize(1.5F, 1.0F);
     }
 
     @Override
@@ -109,35 +109,32 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
     @Override
     protected void dropFewItems(boolean b, int i)
     {
-        if (this.rand.nextInt(200) - i >= 5)
-        {
-            return;
-        }
-
-        switch (this.rand.nextInt(10))
+        switch (this.rand.nextInt(14))
         {
             case 0:
             case 1:
-            case 9:
-                break;
             case 2:
-            case 3:
             	this.dropItem(GCItems.cheeseCurd, 1);
                 break;
+            case 3:
             case 4:
             case 5:
             	this.dropItem(Items.fermented_spider_eye, 1);
                 break;
             case 6:
+            case 7:
             	//Oxygen tank half empty or less
                 this.entityDropItem(new ItemStack(GCItems.oxTankMedium, 1, 901 + this.rand.nextInt(900)), 0.0F);
                 break;
-            case 7:
+            case 8:
                 this.dropItem(GCItems.oxygenGear, 1);
                 break;
-            case 8:
+            case 9:
                 this.dropItem(GCItems.oxygenConcentrator, 1);
                 break;
+            default:
+            	if (ConfigManagerCore.challengeMode) this.dropItem(Items.nether_wart, 1);
+            	break;
         }
     }
 }

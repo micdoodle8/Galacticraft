@@ -44,7 +44,7 @@ public class EntityGrapple extends Entity implements IProjectile
         this.renderDistanceWeight = 10.0D;
         this.ignoreFrustumCheck = false;
 //        this.yOffset = -1.5F;
-        this.setSize(2.1F, 2.1F);
+        this.setSize(0.75F, 0.75F);
     }
 
     public EntityGrapple(World par1World, EntityPlayer shootingEntity, float par3)
@@ -52,7 +52,7 @@ public class EntityGrapple extends Entity implements IProjectile
         super(par1World);
         this.renderDistanceWeight = 10.0D;
         this.shootingEntity = shootingEntity;
-        this.setSize(2.1F, 2.1F);
+        this.setSize(0.75F, 0.75F);
 
         if (shootingEntity != null)
         {

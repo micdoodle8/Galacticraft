@@ -54,7 +54,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.oredict.RecipeSorter;
 
-import java.io.File;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
@@ -77,19 +76,21 @@ public class AsteroidsModule implements IPlanetsModule
     public static Fluid fluidAtmosphericGases;
     //public static Fluid fluidCO2Gas;
 
-    private void registerFluid(String fluidName, int density, int viscosity, int temperature, boolean gaseous, String fluidTexture)
+    private Fluid registerFluid(String fluidName, int density, int viscosity, int temperature, boolean gaseous, String fluidTexture)
     {
-        if (FluidRegistry.getFluid(fluidName) == null)
+        Fluid returnFluid = FluidRegistry.getFluid(fluidName);
+    	if (returnFluid == null)
         {
             ResourceLocation texture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX + ":fluids/" + fluidTexture);
-            FluidRegistry.registerFluid(new Fluid(fluidName, texture, texture).setDensity(density).setViscosity(viscosity).setTemperature(temperature).setGaseous(gaseous));
+    		FluidRegistry.registerFluid(new Fluid(fluidName, texture, texture).setDensity(density).setViscosity(viscosity).setTemperature(temperature).setGaseous(gaseous));
+    		returnFluid = FluidRegistry.getFluid(fluidName);
         }
+    	return returnFluid;
     }
 
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
-        new ConfigManagerAsteroids(new File(event.getModConfigurationDirectory(), "Galacticraft/asteroids.conf"));
         playerHandler = new AsteroidsPlayerHandler();
         MinecraftForge.EVENT_BUS.register(playerHandler);
         FMLCommonHandler.instance().bus().register(playerHandler);
@@ -360,6 +361,6 @@ public class AsteroidsModule implements IPlanetsModule
     @Override
     public void syncConfig()
     {
-        ConfigManagerAsteroids.syncConfig(false);
+        ConfigManagerAsteroids.syncConfig(false, false);
     }
 }

@@ -111,7 +111,7 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        final TileEntity var8 = worldIn.getTileEntity(pos);
+        final TileEntity tile = worldIn.getTileEntity(pos);
 
         boolean validSpot = true;
 
@@ -155,18 +155,21 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
             {
                 EntityPlayerMP player = (EntityPlayerMP) placer;
                 player.addChatMessage(new ChatComponentText(EnumColor.RED + GCCoreUtil.translate("gui.warning.noroom")));
-                ItemStack itemstack = new ItemStack(this, 1, 0);
-                EntityItem entityitem = player.dropPlayerItemWithRandomChoice(itemstack, false);
-                entityitem.setPickupDelay(0);
-                entityitem.setOwner(player.getName());
+                if (!player.capabilities.isCreativeMode)
+                {
+                    final ItemStack nasaWorkbench = new ItemStack(this, 1, 0);
+                    final EntityItem entityitem = player.dropPlayerItemWithRandomChoice(nasaWorkbench, false);
+                    entityitem.setPickupDelay(0);
+                    entityitem.setOwner(player.getName());
+                }
             }
 
             return;
         }
 
-        if (var8 instanceof IMultiBlock)
+        if (tile instanceof IMultiBlock)
         {
-            ((IMultiBlock) var8).onCreate(worldIn, pos);
+            ((IMultiBlock) tile).onCreate(worldIn, pos);
         }
 
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);

@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.network.*;
 import micdoodle8.mods.galacticraft.core.network.PacketEntityUpdate.IEntityFullSync;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFueler;
+import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.client.model.ModelBase;
@@ -26,7 +27,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -62,6 +62,8 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     public double boatPitch;
     public int boatPosRotationIncrements;
     private IFuelDock landingPad;
+    private int timeClimbing;
+    private boolean shouldClimb;
 
     public EntityBuggy(World var1)
     {
@@ -237,7 +239,10 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 					else
 					{
 						this.setDead();
-						this.dropBuggyAsItem();
+                        if (!this.worldObj.isRemote)
+                        {
+                            this.dropBuggyAsItem();
+                        }
 					}
 	                this.setDead();
 	            }
@@ -395,10 +400,21 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
             this.speed = this.maxSpeed;
         }
 
-        if (this.isCollidedHorizontally)
+        if (this.isCollidedHorizontally && this.shouldClimb)
         {
             this.speed *= 0.9;
-            this.motionY = 0.15D;
+            this.motionY = 0.15D * ((-Math.pow((this.timeClimbing) - 1, 2)) / 250.0F) + 0.15F;
+            this.motionY = Math.max(-0.15, this.motionY);
+            this.shouldClimb = false;
+        }
+
+        if ((this.motionX == 0 || this.motionZ == 0) && !this.onGround)
+        {
+            this.timeClimbing++;
+        }
+        else
+        {
+            this.timeClimbing = 0;
         }
 
         if (this.worldObj.isRemote && this.buggyFuelTank.getFluid() != null && this.buggyFuelTank.getFluid().amount > 0)
@@ -658,9 +674,11 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         {
         case 0: // Accelerate
             this.speed += this.accel / 20D;
+            this.shouldClimb = true;
             return true;
         case 1: // Deccelerate
             this.speed -= this.accel / 20D;
+            this.shouldClimb = true;
             return true;
         case 2: // Left
             this.rotationYaw -= 0.5F * this.turnFactor;
@@ -684,15 +702,8 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     @Override
     public int addFuel(FluidStack liquid, boolean doDrain)
     {
-        final FluidStack liquidInTank = this.buggyFuelTank.getFluid();
-
-        if (liquid != null && FluidRegistry.getFluidName(liquid).startsWith("fuel") && this.landingPad != null)
-        {
-            if (liquidInTank == null || liquidInTank.amount + liquid.amount <= this.buggyFuelTank.getCapacity())
-            {
-                return this.buggyFuelTank.fill(liquid, doDrain);
-            }
-        }
+        if (this.landingPad != null)
+        	return FluidUtil.fillWithGCFuel(this.buggyFuelTank, liquid, doDrain);
 
         return 0;
     }

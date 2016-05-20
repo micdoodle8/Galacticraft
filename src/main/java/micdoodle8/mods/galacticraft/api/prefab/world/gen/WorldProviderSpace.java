@@ -7,6 +7,12 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import net.minecraft.entity.Entity;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -47,11 +53,6 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
      */
     public abstract long getDayLength();
 
-    /**
-     * Whether or not the player will respawn in this dimension.
-     */
-    public abstract boolean shouldForceRespawn();
-
     public abstract Class<? extends IChunkProvider> getChunkProviderClass();
 
     public abstract Class<? extends WorldChunkManager> getWorldChunkManagerClass();
@@ -66,7 +67,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     @Override
     public String getDimensionName()
     {
-        return this.getCelestialBody().getUnlocalizedName();
+        return this.getCelestialBody().getLocalizedName();
     }
 
     @Override
@@ -109,12 +110,6 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     public String getDepartMessage()
     {
         return "Leaving " + this.getCelestialBody().getLocalizedName();
-    }
-
-    @Override
-    public boolean isSurfaceWorld()
-    {
-        return true;
     }
 
     @Override
@@ -183,16 +178,74 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
         return true;
     }
 
+    /**
+     * Do not override this.
+     * 
+     * Returns true on clients (to allow rendering of sky etc, maybe even clouds).
+     * Returns false on servers (to disable Nether Portal mob spawning and sleeping in beds).
+     */
     @Override
-    public boolean canRespawnHere()
+    public boolean isSurfaceWorld()
     {
-        return this.shouldForceRespawn();
+        return (this.worldObj == null) ? false : this.worldObj.isRemote;
+    }
+
+    /**
+     * This must normally return false, so that if the dimension is set for 'static' loading
+     * it will not keep chunks around the dimension spawn position permanently loaded.
+     * It is also needed to be false so that the 'Force Overworld Respawn' setting in core.conf
+     * will work correctly - see also WorldProviderS[ace.getRespawnDimension(). 
+     * 
+     * But: returning 'false' will cause beds to explode in this dimension.
+     * If you want beds NOT to explode, you can override this, like in WorldProviderMoon.
+     */
+	@Override
+	public boolean canRespawnHere()
+	{
+		return false;
+	}
+	
+    /**
+     * Do NOT override this in your add-ons.
+     * 
+     * This controls whether the player will respawn in the space dimension or the Overworld
+     * in accordance with the 'Force Overworld Respawn' setting on core.conf.
+     */
+    @Override
+    public int getRespawnDimension(EntityPlayerMP player)
+    {
+        return this.shouldForceRespawn() ? this.dimensionId : 0;
+    }
+
+    /**
+     * If true, the the player should respawn in this dimension upon death.
+     * 
+     * Obeying the 'Force Overworld Respawn' setting from core.conf is an important protection
+     * for players are endlessly dying in a space dimension: for example respawning
+     * in an airless environment with no oxygen tanks and no oxygen machinery.       
+     */
+    public boolean shouldForceRespawn()
+    {
+        return !ConfigManagerCore.forceOverworldRespawn;
     }
 
     @Override
     public boolean hasBreathableAtmosphere()
     {
         return this.isGasPresent(IAtmosphericGas.OXYGEN) && !this.isGasPresent(IAtmosphericGas.CO2);
+    }
+
+    /**
+     * If false (the default) then Nether Portals will have no function on this world.
+     * Nether Portals can still be constructed, if the player can make fire, they just
+     * won't do anything.
+     * 
+     * @return True if Nether Portals should work like on the Overworld.
+     */
+    @Override
+    public boolean netherPortalsOperational()
+    {
+        return false;
     }
 
     @Override
@@ -267,10 +320,5 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     public float getSolarSize()
     {
         return 1.0F / this.getCelestialBody().getRelativeDistanceFromCenter().unScaledDistance;
-    }
-
-    @Override
-    public boolean netherPortalsOperational() {
-        return false;
     }
 }

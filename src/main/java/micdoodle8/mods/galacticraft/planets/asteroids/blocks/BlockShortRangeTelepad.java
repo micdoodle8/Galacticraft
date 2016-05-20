@@ -169,10 +169,13 @@ public class BlockShortRangeTelepad extends BlockTileGC implements ItemBlockDesc
             }
         }
 
-        if (fakeBlockCount > 0 && tileAt instanceof TileEntityShortRangeTelepad)
+        if (tileAt instanceof TileEntityShortRangeTelepad)
         {
-            ((TileEntityShortRangeTelepad) tileAt).onDestroy(tileAt);
-            ShortRangeTelepadHandler.removeShortRangeTeleporter((TileEntityShortRangeTelepad) tileAt);
+        	if (fakeBlockCount > 0)
+        	{
+        		((TileEntityShortRangeTelepad) tileAt).onDestroy(tileAt);
+        	}
+        	ShortRangeTelepadHandler.removeShortRangeTeleporter((TileEntityShortRangeTelepad) tileAt);
         }
 
         super.breakBlock(worldIn, pos, state);

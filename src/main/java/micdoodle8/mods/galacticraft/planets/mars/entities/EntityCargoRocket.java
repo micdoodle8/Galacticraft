@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.util.MarsUtil;
@@ -23,6 +24,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 
 import java.util.ArrayList;
@@ -222,37 +224,58 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     {
         if (this.worldObj.isRemote)
         {
-            return;
+        	//stop the sounds on the client - but do not reset, the rocket may start again
+        	this.stopRocketSound();
+        	return;
         }
 
+        GCLog.debug("[Serverside] Cargo rocket reached space, heading to " + this.destinationFrequency);
         this.setTarget(true, this.destinationFrequency);
 
         if (this.targetVec != null)
         {
-            if (this.targetDimension != this.worldObj.provider.getDimensionId())
+            GCLog.debug("Destination location = " + this.targetVec.toString());
+        	if (this.targetDimension != this.worldObj.provider.getDimensionId())
             {
-                World worldServer = GalacticraftCore.proxy.getWorldForID(this.targetDimension);
-
-                if (!this.worldObj.isRemote && worldServer != null)
+                GCLog.debug("Destination is in different dimension: " + this.targetDimension);
+                WorldProvider targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);               
+                if (targetDim != null && targetDim.worldObj instanceof WorldServer)
                 {
-                    this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
-                    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (WorldServer) worldServer, false, null);
+                	GCLog.debug("Loaded destination dimension " + this.targetDimension);
+            		this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
+            		Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (WorldServer) targetDim.worldObj, false, null);
 
-                    if (e instanceof EntityCargoRocket)
-                    {
-                        e.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
-                        ((EntityCargoRocket) e).landing = true;
-                    }
+            		if (e instanceof EntityCargoRocket)
+            		{
+                    	GCLog.debug("Cargo rocket arrived at destination dimension, going into landing mode.");
+            			e.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
+            			((EntityCargoRocket) e).landing = true;
+            			if (e != this)
+            				this.setDead();
+            		}
+            		else
+            		{
+            			GCLog.info("Error: failed to recreate the cargo rocket in landing mode on target planet.");
+            			e.setDead();
+            			this.setDead();
+            		}
+            		return;
                 }
+                GCLog.info("Error: the server failed to load the dimension the cargo rocket is supposed to land in. Destroying rocket!");
+                this.setDead();
+                return;
             }
             else
             {
-                this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
+                GCLog.debug("Cargo rocket going into landing mode in same destination.");
+            	this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
                 this.landing = true;
+                return;
             }
         }
         else
         {
+        	GCLog.info("Error: the cargo rocket failed to find a valid landing spot when it reached space.");
             this.setDead();
         }
     }

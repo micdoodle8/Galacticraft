@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.dimension;
 
 import com.google.common.collect.Maps;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerServer;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
 import net.minecraft.nbt.NBTTagCompound;
@@ -55,6 +56,7 @@ public class ShortRangeTelepadHandler extends WorldSavedData
     public void readFromNBT(NBTTagCompound nbt)
     {
         NBTTagList tagList = nbt.getTagList("TelepadList", 10);
+        tileMap.clear();
 
         for (int i = 0; i < tagList.tagCount(); i++)
         {
@@ -76,11 +78,11 @@ public class ShortRangeTelepadHandler extends WorldSavedData
         for (Map.Entry<Integer, TelepadEntry> e : tileMap.entrySet())
         {
             NBTTagCompound nbt2 = new NBTTagCompound();
-            nbt.setInteger("Address", e.getKey());
-            nbt.setInteger("DimID", e.getValue().dimensionID);
-            nbt.setInteger("PosX", e.getValue().position.x);
-            nbt.setInteger("PosY", e.getValue().position.y);
-            nbt.setInteger("PosZ", e.getValue().position.z);
+            nbt2.setInteger("Address", e.getKey());
+            nbt2.setInteger("DimID", e.getValue().dimensionID);
+            nbt2.setInteger("PosX", e.getValue().position.x);
+            nbt2.setInteger("PosY", e.getValue().position.y);
+            nbt2.setInteger("PosZ", e.getValue().position.z);
             tagList.appendTag(nbt2);
         }
 
@@ -91,14 +93,18 @@ public class ShortRangeTelepadHandler extends WorldSavedData
     {
         if (!telepad.getWorld().isRemote)
         {
-            if (telepad.addressValid)
+            GCLog.debug("Adding telepad with address "+telepad.address);
+        	if (telepad.addressValid)
             {
                 TelepadEntry newEntry = new TelepadEntry(telepad.getWorld().provider.getDimensionId(), new BlockVec3(telepad));
                 TelepadEntry previous = tileMap.put(telepad.address, newEntry);
+                GCLog.debug("Added telepad.");
 
                 if (previous == null || !previous.equals(newEntry))
                 {
                     AsteroidsTickHandlerServer.spaceRaceData.setDirty(true);
+                    GCLog.debug("Marked dirty.");
+
                 }
             }
         }

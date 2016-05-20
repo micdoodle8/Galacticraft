@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -39,7 +39,7 @@ public class OverlaySensorGlasses extends Overlay
      */
     public static void renderSensorGlassesMain(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks)
     {
-        OverlaySensorGlasses.zoom++;
+    	OverlaySensorGlasses.zoom++;
 
         final float f = MathHelper.sin(OverlaySensorGlasses.zoom / 80.0F) * 0.1F + 0.1F;
 
@@ -71,7 +71,7 @@ public class OverlaySensorGlasses extends Overlay
 
     public static void renderSensorGlassesValueableBlocks(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks)
     {
-        final Iterator<Vector3> var51 = ClientProxyCore.valueableBlocks.iterator();
+        final Iterator<BlockVec3> var51 = ClientProxyCore.valueableBlocks.iterator();
         double var52;
         double var58;
         double var59;
@@ -81,7 +81,7 @@ public class OverlaySensorGlasses extends Overlay
 
         while (var51.hasNext())
         {
-            Vector3 coords = var51.next();
+            BlockVec3 coords = var51.next();
 
             var52 = ClientProxyCore.playerPosX - coords.x - 0.5D;
             var58 = ClientProxyCore.playerPosY - coords.y - 0.5D;

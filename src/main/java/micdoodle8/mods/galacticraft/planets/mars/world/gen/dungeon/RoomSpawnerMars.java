@@ -101,15 +101,15 @@ public class RoomSpawnerMars extends DungeonRoom
         switch (rand.nextInt(6))
         {
         case 0:
-            return "EvolvedSpider";
+            return "GalacticraftCore.EvolvedSpider";
         case 1:
-            return "EvolvedZombie";
+            return "GalacticraftCore.EvolvedZombie";
         case 2:
-            return "EvolvedCreeper";
+            return "GalacticraftCore.EvolvedCreeper";
         case 3:
-            return "EvolvedSkeleton";
+            return "GalacticraftCore.EvolvedSkeleton";
         default:
-            return "EvolvedCreeper";
+            return "GalacticraftCore.EvolvedCreeper";
         }
     }
 }

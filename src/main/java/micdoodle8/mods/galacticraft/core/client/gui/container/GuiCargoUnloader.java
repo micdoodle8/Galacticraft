@@ -96,22 +96,7 @@ public class GuiCargoUnloader extends GuiContainerGC
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.noinvtarget.name");
         }
 
-        if (this.cargoUnloader.getStackInSlot(0) == null && this.cargoUnloader.getEnergyStoredGC() == 0)
-        {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingpower.name");
-        }
-
-        if (this.cargoUnloader.getDisabled(0))
-        {
-            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready.name");
-        }
-
-        if (this.cargoUnloader.getEnergyStoredGC() > 0)
-        {
-            return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.active.name");
-        }
-
-        return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready.name");
+        return this.cargoUnloader.getGUIstatus();
     }
 
     @Override

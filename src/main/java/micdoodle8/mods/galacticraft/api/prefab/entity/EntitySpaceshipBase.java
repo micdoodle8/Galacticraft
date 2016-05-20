@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.api.prefab.entity;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
@@ -36,6 +34,8 @@ import net.minecraftforge.event.entity.EntityEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 /**

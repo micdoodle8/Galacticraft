@@ -23,8 +23,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fml.relauncher.Side;
 
+import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 
 public class TileEntityOxygenSealer extends TileEntityOxygen implements IInventory, ISidedInventory
 {
@@ -54,13 +56,15 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     public TileEntityOxygenSealer()
     {
         super(10000, 6);
+        this.noRedstoneControl = true;
     }
 
     @Override
     public void validate()
     {
     	super.validate();
-        if (!this.worldObj.isRemote) TileEntityOxygenSealer.loadedTiles.add(this);
+        if (!this.worldObj.isRemote)
+        	if (!TileEntityOxygenSealer.loadedTiles.contains(this)) TileEntityOxygenSealer.loadedTiles.add(this);
     }
 
     @Override
@@ -112,7 +116,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     @Override
     public void update()
     {
-        if (!this.worldObj.isRemote)
+    	if (!this.worldObj.isRemote)
         {
 	    	ItemStack oxygenItemStack = this.getStackInSlot(1);
 	    	if (oxygenItemStack != null && oxygenItemStack.getItem() instanceof IItemOxygenSupply)
@@ -436,4 +440,40 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     public IChatComponent getDisplayName() {
         return null;
     }
+
+	public static HashMap<BlockVec3, TileEntityOxygenSealer> getSealersAround(World world, BlockPos pos, int rSquared)
+	{
+		HashMap<BlockVec3, TileEntityOxygenSealer> ret = new HashMap<BlockVec3, TileEntityOxygenSealer>();
+		
+		for (TileEntityOxygenSealer tile : new ArrayList<TileEntityOxygenSealer>(TileEntityOxygenSealer.loadedTiles))
+		{
+			if (tile != null && tile.getWorld() == world && tile.getDistanceSq(pos.getX(), pos.getY(), pos.getZ()) < rSquared)
+			{
+				ret.put(new BlockVec3(tile.getPos()), tile);
+			}
+		}
+		
+		return ret;
+	}
+
+	public static TileEntityOxygenSealer getNearestSealer(World world, double x, double y, double z)
+	{
+		TileEntityOxygenSealer ret = null;
+		double dist = 96 * 96D;
+		
+		for (Object tile : world.loadedTileEntityList)
+		{
+			if (tile instanceof TileEntityOxygenSealer)
+			{
+				double testDist = ((TileEntityOxygenSealer) tile).getDistanceSq(x, y, z);
+				if (testDist < dist)
+				{
+					dist = testDist;
+					ret = (TileEntityOxygenSealer) tile;			
+				}
+			}
+		}
+		
+		return ret;
+	}
 }

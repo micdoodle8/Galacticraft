@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The Universal Electricity compatibility module allows your mod to be
- * compatible with most major power systems in Minecraft.
+ * The universal energy compatibility module allows Galacticraft to be
+ * compatible with most other major power systems in Minecraft as well.
  *
- * @author Calclavia, Micdoodle
+ * @author Calclavia, Micdoodle, radfast
  */
 public class EnergyConfigHandler
 {

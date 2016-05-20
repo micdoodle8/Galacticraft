@@ -27,7 +27,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     public EntityLander(World world)
     {
         super(world);
-        this.setSize(3.0F, 3.0F);
+        this.setSize(3.0F, 4.25F);
     }
 
     public EntityLander(EntityPlayerMP player)

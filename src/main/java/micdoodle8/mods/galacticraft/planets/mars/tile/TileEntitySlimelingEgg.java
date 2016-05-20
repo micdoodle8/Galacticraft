@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
-import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 
@@ -50,7 +50,7 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickable
                 EntitySlimeling slimeling = new EntitySlimeling(this.worldObj, colorRed, colorGreen, colorBlue);
 
                 slimeling.setPosition(this.getPos().getX() + 0.5, this.getPos().getY() + 1.0, this.getPos().getZ() + 0.5);
-                VersionUtil.setSlimelingOwner(slimeling, this.lastTouchedPlayerUUID);
+                slimeling.setOwnerId(this.lastTouchedPlayerUUID);
                 slimeling.setOwnerUsername(this.lastTouchedPlayerName);
 
                 if (!this.worldObj.isRemote)
@@ -73,7 +73,22 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickable
     {
         super.readFromNBT(nbt);
         this.timeToHatch = nbt.getInteger("TimeToHatch");
-        VersionUtil.readSlimelingEggFromNBT(this, nbt);
+
+        String uuid;
+        if (nbt.hasKey("OwnerUUID", 8))
+        {
+            uuid = nbt.getString("OwnerUUID");
+        }
+        else
+        {
+            uuid = PreYggdrasilConverter.getStringUUIDFromName(nbt.getString("Owner"));
+        }
+
+        if (uuid.length() > 0)
+        {
+            lastTouchedPlayerUUID = uuid;
+        }
+
         this.lastTouchedPlayerName = nbt.getString("OwnerUsername");
     }
 

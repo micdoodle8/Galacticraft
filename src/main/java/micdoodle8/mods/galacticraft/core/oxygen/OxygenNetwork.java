@@ -14,17 +14,11 @@ import net.minecraft.tileentity.TileEntity;
 import java.util.*;
 
 /**
- * An Oxygen Network specifies a wire connection. Each wire connection line will
- * have its own oxygen network.
- * <p/>
- * !! Do not include this class if you do not intend to have custom wires in
- * your mod. This will increase future compatibility. !!
- *
- * @author Calclavia
+ * An Oxygen Network comprised of ITransmitter which can transmit oxygen
  */
 public class OxygenNetwork implements IOxygenNetwork
 {
-    public Map<TileEntity, EnumFacing> oxygenTiles = new HashMap<TileEntity, EnumFacing>();
+    public Map<TileEntity, EnumFacing> oxygenTiles;
 
     private final Set<ITransmitter> pipes = new HashSet<ITransmitter>();
 
@@ -33,7 +27,7 @@ public class OxygenNetwork implements IOxygenNetwork
     {
         float remainingUsableOxygen = totalOxygen;
 
-        if (this.oxygenTiles.isEmpty())
+        if (this.oxygenTiles == null || this.oxygenTiles.isEmpty())
         	this.refreshOxygenTiles();
 
         if (!this.oxygenTiles.isEmpty())
@@ -55,16 +49,19 @@ public class OxygenNetwork implements IOxygenNetwork
                             {
                                 for (EnumFacing direction : EnumFacing.values())
                                 {
-                                    TileEntity tile = new BlockVec3(tileEntity).modifyPositionFromSide(direction, 1).getTileEntity(tileEntity.getWorld());
-
-                                    if (oxygenTile.canConnect(direction, NetworkType.OXYGEN) && this.pipes.contains(tile))
+                                    if (oxygenTile.canConnect(direction, NetworkType.OXYGEN))
                                     {
-                                        float oxygenToSend = Math.max(totalOxygen, totalOxygen * (oxygenTile.getOxygenRequest(direction) / totalOxygenRequest));
-
-                                        if (oxygenToSend > 0)
-                                        {
-                                            remainingUsableOxygen -= oxygenTile.receiveOxygen(direction, oxygenToSend, true);
-                                        }
+	                                	TileEntity tile = new BlockVec3(tileEntity).getTileEntityOnSide(tileEntity.getWorld(), direction);
+	
+	                                    if (this.pipes.contains(tile))
+	                                    {
+	                                        float oxygenToSend = Math.min(remainingUsableOxygen, totalOxygen * (oxygenTile.getOxygenRequest(direction) / totalOxygenRequest));
+	
+	                                        if (oxygenToSend > 0)
+	                                        {
+	                                            remainingUsableOxygen -= oxygenTile.receiveOxygen(direction, oxygenToSend, true);
+	                                        }
+	                                    }
                                     }
                                 }
                             }
@@ -73,20 +70,23 @@ public class OxygenNetwork implements IOxygenNetwork
 //                        {
 //                            IGasHandler gasHandler = (IGasHandler) tileEntity;
 //
-//                            for (EnumFacing direction : EnumFacing.VALID_DIRECTIONS)
+//                            for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
 //                            {
-//                                TileEntity tile = new BlockVec3(tileEntity).getTileEntityOnSide(tileEntity.getWorldObj(), direction);
-//
-//                                if (gasHandler.canReceiveGas(direction, (Gas) EnergyConfigHandler.gasOxygen) && this.getTransmitters().contains(tile))
+//                                if (gasHandler.canReceiveGas(direction, (Gas) EnergyConfigHandler.gasOxygen))
 //                                {
-//                                    int oxygenToSend = (int) Math.floor(totalOxygen / this.oxygenTiles.size());
+//                                	TileEntity tile = new BlockVec3(tileEntity).getTileEntityOnSide(tileEntity.getWorldObj(), direction);
 //
-//                                    if (oxygenToSend > 0)
-//                                    {
-//                                    	try {
-//                                    		remainingUsableOxygen -= gasHandler.receiveGas(direction, (new GasStack((Gas) EnergyConfigHandler.gasOxygen, oxygenToSend)));
-//                                        } catch (Exception e) { }
-//                                    }
+//                                	if (this.getTransmitters().contains(tile))
+//                                	{
+//                                		int oxygenToSend = (int) Math.floor(totalOxygen / this.oxygenTiles.size());
+//
+//                                		if (oxygenToSend > 0)
+//                                		{
+//                                			try {
+//                                				remainingUsableOxygen -= gasHandler.receiveGas(direction, (new GasStack((Gas) EnergyConfigHandler.gasOxygen, oxygenToSend)));
+//                                			} catch (Exception e) { }
+//                                		}
+//                                	}
 //                                }
 //                            }
 //                        }
@@ -106,7 +106,7 @@ public class OxygenNetwork implements IOxygenNetwork
     {
         List<Float> requests = new ArrayList<Float>();
         
-        if (this.oxygenTiles.isEmpty())
+        if (this.oxygenTiles == null || this.oxygenTiles.isEmpty())
         	this.refreshOxygenTiles();
 
         List<TileEntity> ignoreTilesList = Arrays.asList(ignoreTiles);
@@ -117,20 +117,24 @@ public class OxygenNetwork implements IOxygenNetwork
                 continue;
             }
 
-            if (tileEntity instanceof IOxygenReceiver && ((IOxygenReceiver) tileEntity).shouldPullOxygen())
+            if (tileEntity instanceof IOxygenReceiver && !tileEntity.isInvalid())
             {
-                if (!tileEntity.isInvalid())
+                IOxygenReceiver oxygenTile = (IOxygenReceiver) tileEntity;
+
+                if (oxygenTile.shouldPullOxygen())
                 {
                     if (tileEntity.getWorld().getTileEntity(tileEntity.getPos()) == tileEntity)
                     {
                         for (EnumFacing direction : EnumFacing.values())
                         {
-                            BlockVec3 tileVec = new BlockVec3(tileEntity);
-                            TileEntity tile = tileVec.modifyPositionFromSide(direction, 1).getTileEntity(tileEntity.getWorld());
-
-                            if (((IOxygenReceiver) tileEntity).canConnect(direction, NetworkType.OXYGEN) && this.pipes.contains(tile))
+                            if (oxygenTile.canConnect(direction, NetworkType.OXYGEN))
                             {
-                                requests.add(((IOxygenReceiver) tileEntity).getOxygenRequest(direction));
+                            	TileEntity tile = new BlockVec3(tileEntity).getTileEntityOnSide(tileEntity.getWorld(), direction);
+
+                            	if (this.pipes.contains(tile))
+                            	{
+                            		requests.add(((IOxygenReceiver) tileEntity).getOxygenRequest(direction));
+                            	}
                             }
                         }
                     }
@@ -154,7 +158,7 @@ public class OxygenNetwork implements IOxygenNetwork
     @Override
     public void refresh()
     {
-    	this.oxygenTiles.clear();
+    	if (this.oxygenTiles != null) this.oxygenTiles.clear();
 
         try
         {
@@ -192,6 +196,11 @@ public class OxygenNetwork implements IOxygenNetwork
 
     public void refreshOxygenTiles()
     {
+    	if (this.oxygenTiles == null)
+    		this.oxygenTiles = new HashMap<TileEntity, EnumFacing>();
+    	else
+    		this.oxygenTiles.clear();
+    	
     	try
     	{
     		Iterator<ITransmitter> it = this.pipes.iterator();
@@ -213,14 +222,14 @@ public class OxygenNetwork implements IOxygenNetwork
                     continue;
                 }
 */ 			
-    			for (int i = 0; i < transmitter.getAdjacentConnections().length; i++)
+    			int i = 0;
+                for (TileEntity acceptor : transmitter.getAdjacentConnections())
     			{
-    				TileEntity acceptor = transmitter.getAdjacentConnections()[i];
-
     				if (!(acceptor instanceof ITransmitter) && acceptor instanceof IConnector)
     				{
     					this.oxygenTiles.put(acceptor, EnumFacing.getFront(i));
     				}
+    				i++;
     			}
     		}
     	}
@@ -330,6 +339,6 @@ public class OxygenNetwork implements IOxygenNetwork
     @Override
     public String toString()
     {
-        return "OxygenNetwork[" + this.hashCode() + "|Pipes:" + this.pipes.size() + "|Acceptors:" + this.oxygenTiles.size() + "]";
+        return "OxygenNetwork[" + this.hashCode() + "|Pipes:" + this.pipes.size() + "|Acceptors:" + (this.oxygenTiles == null ? 0 : this.oxygenTiles.size()) + "]";
     }
 }

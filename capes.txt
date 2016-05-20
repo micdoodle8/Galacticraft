@@ -1,4 +1,5 @@
 micdoodle8:capeOrange
+radfast:capeLightGray
 JTE:capeLime
 ajmski:capeLime
 Azeryuu:capeLime
@@ -93,3 +94,5 @@ PrezGman:capeLightBlue
 creeperchick15:capePurple
 sonic5223:capeBlue
 mads4444:capeRainbow
+urix123:capePurple
+Monkeypants_271:capeLime

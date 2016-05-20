@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.api.prefab.entity;
 
 import micdoodle8.mods.galacticraft.core.client.sounds.SoundUpdaterRocket;
+import micdoodle8.mods.galacticraft.core.util.*;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.util.*;
@@ -13,6 +14,7 @@ import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
 import micdoodle8.mods.galacticraft.api.entity.ILandable;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -23,9 +25,6 @@ import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -201,6 +200,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                                     if (foundPad)
                                     {
                                         this.destinationFrequency = controllerFrequency;
+                                        GCLog.debug("Rocket under launch control: going to target frequency " + controllerFrequency);
                                         return true;
                                     }
                                 }
@@ -606,7 +606,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     {
         if (this.rocketSoundUpdater != null)
         {
-//        	((SoundUpdaterRocket) this.rocketSoundUpdater).stopRocketSound();
+        	((SoundUpdaterRocket) this.rocketSoundUpdater).stopRocketSound();
         }
         this.rocketSoundToStop = false;
     }
@@ -796,22 +796,33 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         return this.fuelTank.getFluidAmount() > 0;
     }
 
+    public void cancelLaunch()
+    {
+        this.setLaunchPhase(EnumLaunchPhase.UNIGNITED);
+        this.timeUntilLaunch = 0;
+        if (!this.worldObj.isRemote && this.riddenByEntity instanceof EntityPlayerMP)
+        {
+            ((EntityPlayerMP) this.riddenByEntity).addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.rocket.warning.nogyroscope")));
+        }
+    }
+    
     @Override
     public void onLaunch()
     {
-        if (!(this.worldObj.provider instanceof WorldProviderSurface || this.worldObj.provider instanceof IGalacticraftWorldProvider))
+        if (!(this.worldObj.provider.getDimensionId() == GalacticraftCore.planetOverworld.getDimensionID() || this.worldObj.provider instanceof IGalacticraftWorldProvider))
         {
-            for (int i = ConfigManagerCore.disableRocketLaunchDimensions.length - 1; i >= 0; i--)
+            if (ConfigManagerCore.disableRocketLaunchAllNonGC)
+            {
+            	this.cancelLaunch();
+            	return;
+            }
+        	
+            //No rocket flight in the Nether, the End etc
+        	for (int i = ConfigManagerCore.disableRocketLaunchDimensions.length - 1; i >= 0; i--)
             {
                 if (ConfigManagerCore.disableRocketLaunchDimensions[i] == this.worldObj.provider.getDimensionId())
                 {
-                    //No rocket flight in the Nether, the End etc
-                    this.setLaunchPhase(EnumLaunchPhase.UNIGNITED);
-                    this.timeUntilLaunch = 0;
-                    if (!this.worldObj.isRemote && this.riddenByEntity instanceof EntityPlayerMP)
-                    {
-                        ((EntityPlayerMP) this.riddenByEntity).addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.rocket.warning.nogyroscope")));
-                    }
+                	this.cancelLaunch();
                     return;
                 }
             }
@@ -963,12 +974,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     @Override
     public int addFuel(FluidStack liquid, boolean doFill)
     {
-        if (liquid != null && FluidRegistry.getFluidName(liquid).equalsIgnoreCase("fuel"))
-        {
-            return this.fuelTank.fill(liquid, doFill);
-        }
-
-        return 0;
+    	return FluidUtil.fillWithGCFuel(this.fuelTank, liquid, doFill);
     }
 
     @Override

@@ -226,6 +226,14 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
                 worldIn.setBlockToAir(pos);
             }
         }
+
+        if (!worldIn.isRemote)
+        {
+            if (worldIn.provider instanceof WorldProviderOrbit)
+            {
+                ((WorldProviderOrbit) worldIn.provider).checkSS(pos, true);
+            }
+        }
     }
 
     /**
@@ -276,11 +284,6 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
         else if (var7 == 4)
         {
             this.setBlockBounds(0.5F - var8, 0.2F, 1.0F - var8 * 2.0F, 0.5F + var8, 0.8F, 1.0F);
-        }
-        else
-        {
-            var8 = 0.1F;
-            this.setBlockBounds(0.5F - var8, 0.0F, 0.5F - var8, 0.5F + var8, 0.6F, 0.5F + var8);
         }
 
         return super.collisionRayTrace(worldIn, pos, start, end);

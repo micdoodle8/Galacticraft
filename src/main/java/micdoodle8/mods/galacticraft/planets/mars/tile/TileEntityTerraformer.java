@@ -140,6 +140,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                         {
                             BlockPos pos = new BlockPos(x, y, z);
                             Block blockID = this.worldObj.getBlockState(pos).getBlock();
+                            if (blockID == null) continue;
 
                             if (!(blockID.isAir(this.worldObj, pos)) && this.getDistanceFromServer(x, y, z) < bubbleSizeSq)
                             {
@@ -454,6 +455,11 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         {
             this.waterTank.readFromNBT(nbt.getCompoundTag("waterTank"));
         }
+
+        if (nbt.hasKey("bubbleVisible"))
+        {
+            this.setBubbleVisible(nbt.getBoolean("bubbleVisible"));
+        }
     }
 
     @Override
@@ -468,6 +474,8 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         {
             nbt.setTag("waterTank", this.waterTank.writeToNBT(new NBTTagCompound()));
         }
+
+        nbt.setBoolean("bubbleVisible", this.shouldRenderBubble);
     }
 
     @Override

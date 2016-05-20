@@ -5,6 +5,7 @@
 //import codechicken.nei.PositionedStack;
 //import codechicken.nei.recipe.TemplateRecipeHandler;
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+//import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 //import net.minecraft.item.ItemStack;
 //import net.minecraft.util.ResourceLocation;
 //import org.lwjgl.opengl.GL11;
@@ -50,22 +51,11 @@
 //    }
 //
 //    @Override
-//    public void drawBackground(int i)
+//    public void drawBackground(int recipe)
 //    {
 //        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 //        GuiDraw.changeTexture(RocketT1RecipeHandler.rocketGuiTexture);
 //        GuiDraw.drawTexturedModalRect(0, 0, 3, 4, 168, 130);
-//    }
-//
-//    @Override
-//    public void drawExtras(int i)
-//    {
-//    }
-//
-//    @Override
-//    public void onUpdate()
-//    {
-//        super.onUpdate();
 //    }
 //
 //    @Override
@@ -150,7 +140,7 @@
 //    @Override
 //    public String getRecipeName()
 //    {
-//        return "NASA Workbench";
+//        return GCCoreUtil.translate("tile.rocketWorkbench.name");
 //    }
 //
 //    @Override

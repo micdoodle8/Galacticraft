@@ -128,7 +128,7 @@
 //
 //        input1 = new ArrayList<PositionedStack>();
 //        Collection<ItemStack> amRecipe = GalacticraftRegistry.getAstroMinerRecipes().get(0).getRecipeInput().values();
-//        Iterator iter = amRecipe.iterator();
+//        Iterator<ItemStack> iter = amRecipe.iterator();
 //        int dx = -3;
 //        int dy = -40;
 //        input1.add(new PositionedStack(iter.next(), 27 + dx, 61 + dy));

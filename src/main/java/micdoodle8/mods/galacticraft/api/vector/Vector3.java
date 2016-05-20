@@ -721,7 +721,6 @@ public class Vector3 implements Cloneable
         double checkBorder = 1.1 * reachDistance;
         AxisAlignedBB boxToScan = AxisAlignedBB.fromBounds(-checkBorder, -checkBorder, -checkBorder, checkBorder, checkBorder, checkBorder).offset(this.x, this.y, this.z);
 
-        @SuppressWarnings("unchecked")
         List<Entity> entitiesHit = world.getEntitiesWithinAABBExcludingEntity(null, boxToScan);
         double closestEntity = reachDistance;
 

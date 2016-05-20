@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
-import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,7 +17,7 @@ public class ContainerAstroMinerDock extends Container
     public ContainerAstroMinerDock(InventoryPlayer par1InventoryPlayer, IInventory tile)
     {
         this.tileEntity = (TileEntityMinerBase) tile;
-        this.addSlotToContainer(new SlotSpecific(tile, 0, 230, 108, ItemElectricBase.class));
+        this.addSlotToContainer(new SlotSpecific(tile, 0, 230, 108, IItemElectric.class));
 
         int i;
         int j;

@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.Block;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
@@ -15,6 +16,15 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ReportedException;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /* BlockVec3 is similar to galacticraft.api.vector.Vector3?
  * 
@@ -29,7 +39,7 @@ public class BlockVec3Dim implements Cloneable
     public int y;
     public int z;
     public int dim;
-    public boolean[] sideDone = { false, false, false, false, false, false };
+
     private static Chunk chunkCached;
     public static int chunkCacheDim = Integer.MAX_VALUE;
     private static int chunkCacheX = 1876000; // outside the world edge
@@ -94,7 +104,7 @@ public class BlockVec3Dim implements Cloneable
             return null;
         }
 
-   		World world = GalacticraftCore.proxy.getWorldForID(this.dim);
+   		World world = getWorldForId(this.dim);
    		if (world == null) return null;
    
    		int chunkx = this.x >> 4;
@@ -142,7 +152,7 @@ public class BlockVec3Dim implements Cloneable
             return null;
         }
 
-   		World world = GalacticraftCore.proxy.getWorldForID(this.dim);
+   		World world = getWorldForId(this.dim);
    		if (world == null) return null;
 
    		int chunkx = this.x >> 4;
@@ -216,7 +226,6 @@ public class BlockVec3Dim implements Cloneable
     public BlockVec3Dim newVecSide(int side)
     {
         BlockVec3Dim vec = new BlockVec3Dim(this.x, this.y, this.z, this.dim);
-        vec.sideDone[side ^ 1] = true;
         switch (side)
         {
         case 0:
@@ -249,7 +258,7 @@ public class BlockVec3Dim implements Cloneable
     @Override
     public int hashCode()
     {
-        return (((this.dim * 431 + this.y) * 379 + this.x) * 373 + this.z) * 7;
+        return (((this.z * 431 + this.x) * 379 + this.y) * 373 + this.dim) * 7;
     }
 
     @Override
@@ -338,11 +347,6 @@ public class BlockVec3Dim implements Cloneable
         return world.isBlockLoaded(new BlockPos(this.x, this.y, this.z));
     }
 
-    public void setSideDone(int side)
-    {
-        this.sideDone[side] = true;
-    }
-
     /**
      * It is up to the calling method to check that the dimension matches
      * 
@@ -360,5 +364,32 @@ public class BlockVec3Dim implements Cloneable
     public BlockPos toBlockPos()
     {
         return new BlockPos(x, y, z);
+    }
+
+    private World getWorldForId(int dimensionID)
+    {
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
+        {
+            MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
+            if (theServer == null) return null;
+            return theServer.worldServerForDimension(dimensionID);
+        }
+        else
+        {
+            return getWorldForIdClient(dimensionID);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private World getWorldForIdClient(int dimensionID)
+    {
+        World world = FMLClientHandler.instance().getClient().theWorld;
+
+        if (world != null && world.provider.getDimensionId() == dimensionID)
+        {
+            return world;
+        }
+
+        return null;
     }
 }

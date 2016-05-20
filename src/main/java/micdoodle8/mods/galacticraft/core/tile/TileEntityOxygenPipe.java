@@ -50,7 +50,7 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
     {
         super.update();
 
-        if (!this.worldObj.isRemote && this.ticks % 60 == 0 && this.lastPipeColor != this.getColor())
+        if (this.ticks % 60 == 0 && this.lastPipeColor != this.getColor() && !this.worldObj.isRemote)
         {
             GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.getDimensionId());
             this.lastPipeColor = this.getColor();
@@ -66,7 +66,7 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
     @Override
     public int getPacketCooldown()
     {
-        return 1;
+        return 5;
     }
 
     @Override
@@ -104,7 +104,6 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
                 this.resetNetwork();
             }
         }
-
     }
 
     @Override
@@ -129,8 +128,7 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
     {
         super.readFromNBT(par1NBTTagCompound);
 
-        final byte by = par1NBTTagCompound.getByte("pipeColor");
-        this.setColor(by);
+        this.setColor(par1NBTTagCompound.getByte("pipeColor"));
     }
 
     @Override

@@ -5,7 +5,6 @@ import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
@@ -146,20 +145,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     
     private void checkFluidTankTransfer(int slot, FluidTank tank)
 	{
-		if (FluidUtil.isValidContainer(this.containedItems[slot]))
-		{
-			final FluidStack liquid = tank.getFluid();
-
-			if (liquid != null && liquid.amount > 0)
-			{
-				String liquidname = liquid.getFluid().getName();
-
-				if (liquidname.startsWith("fuel"))
-				{
-					FluidUtil.tryFillContainer(tank, liquid, this.containedItems, slot, GCItems.fuelCanister);
-				}
-			}
-		}
+		FluidUtil.tryFillContainerFuel(tank, this.containedItems, slot);
 	}
 
     private void pushEntityAway(Entity entityToPush)
@@ -198,7 +184,9 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     {
         final NBTTagList var2 = nbt.getTagList("Items", 10);
 
-        this.containedItems = new ItemStack[nbt.getInteger("rocketStacksLength")];
+        int invSize = nbt.getInteger("rocketStacksLength");
+        if (invSize < 3) invSize = 3;
+        this.containedItems = new ItemStack[invSize];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
         {

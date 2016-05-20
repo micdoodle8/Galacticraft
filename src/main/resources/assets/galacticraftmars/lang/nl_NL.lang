@@ -101,6 +101,7 @@ gui.launchController.desc.0=Dit is de lanceer controleur's$unieke frequentie
 gui.launchController.desc.1=Frequentie om de raket te lanceren naar
 gui.launchController.desc.2=Of zou het lanceerplatform$Moeten worden verwijderd tijdens de lancering
 gui.launchController.desc.3=Wanneer deze criteria er is,$Zak de raket lanceren
+gui.launchController.desc.4=Hide destination frequency$from other players ##NEEDS TRANSLATE##
 gui.terraformer.desc.0=Water Tank
 
 gui.gasTank.desc.0=Gas Opslag

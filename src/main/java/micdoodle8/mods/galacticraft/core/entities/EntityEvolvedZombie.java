@@ -12,6 +12,8 @@ import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.Potion;
@@ -86,37 +88,43 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
     @Override
     protected void dropFewItems(boolean b, int i)
     {
-        if (this.rand.nextInt(200) - i >= 5)
-        {
-            return;
-        }
-
-        switch (this.rand.nextInt(10))
+        switch (this.rand.nextInt(16))
         {
             case 0:
             case 1:
-            case 9:
+            case 2:
             	//Dehydrated carrot
                 this.entityDropItem(new ItemStack(GCItems.basicItem, 1, 16), 0.0F);
                 break;
-            case 2:
             case 3:
-                this.dropItem(GCItems.meteoricIronRaw, 1);
-                break;
             case 4:
+            	this.dropItem(GCItems.meteoricIronRaw, 1);
+                break;
             case 5:
+            case 6:
+            	//Dehydrated potato
                 this.entityDropItem(new ItemStack(GCItems.basicItem, 1, 18), 0.0F);
                 break;
-            case 6:
+            case 7:
+            case 8:
             	//Oxygen tank half empty or less
                 this.entityDropItem(new ItemStack(GCItems.oxTankMedium, 1, 901 + this.rand.nextInt(900)), 0.0F);
                 break;
-            case 7:
+            case 9:
                 this.dropItem(GCItems.oxMask, 1);
                 break;
-            case 8:
+            case 10:
                 this.dropItem(GCItems.oxygenVent, 1);
                 break;
+            case 11:
+            case 12:
+            	this.dropItem(Items.carrot, 1);
+            	break;
+            case 13:
+            case 14:
+            case 15:
+            	if (ConfigManagerCore.challengeMode) this.dropItem(Items.melon_seeds, 1);
+            	break;
         }
     }
 }

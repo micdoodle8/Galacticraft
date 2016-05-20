@@ -29,15 +29,12 @@ public class EntityParachest extends Entity
         this.cargo = cargo.clone();
         this.placedChest = false;
         this.fuelLevel = fuelLevel;
-        if ((cargo.length - 2) % 18 != 0)
-        {
-            throw new RuntimeException("Strange EntityParachest inventory size " + cargo.length);
-        }
     }
 
     public EntityParachest(World world)
     {
         super(world);
+        this.setSize(1.0F, 1.0F);
     }
 
     @Override
@@ -49,7 +46,10 @@ public class EntityParachest extends Entity
     protected void readEntityFromNBT(NBTTagCompound nbt)
     {
         final NBTTagList var2 = nbt.getTagList("Items", 10);
-        this.cargo = new ItemStack[27];
+        int size = 56;
+        if (nbt.hasKey("CargoLength"))
+        	size = nbt.getInteger("CargoLength");
+        this.cargo = new ItemStack[size];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
         {
@@ -69,8 +69,9 @@ public class EntityParachest extends Entity
     @Override
     protected void writeEntityToNBT(NBTTagCompound nbt)
     {
-        final NBTTagList var2 = new NBTTagList();
+        nbt.setInteger("CargoLength", this.cargo.length);
 
+        final NBTTagList var2 = new NBTTagList();
         for (int var3 = 0; var3 < this.cargo.length; ++var3)
         {
             if (this.cargo[var3] != null)
@@ -81,8 +82,8 @@ public class EntityParachest extends Entity
                 var2.appendTag(var4);
             }
         }
-
         nbt.setTag("Items", var2);
+
         nbt.setBoolean("placedChest", this.placedChest);
         nbt.setInteger("FuelLevel", this.fuelLevel);
     }

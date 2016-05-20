@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.api.recipe;
 
+import micdoodle8.mods.galacticraft.api.GalacticraftConfigAccess;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -10,6 +11,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,6 +20,10 @@ import java.util.List;
 public class CompressorRecipes
 {
     private static List<IRecipe> recipes = new ArrayList<IRecipe>();
+    private static List<IRecipe> recipesAdventure = new ArrayList<IRecipe>();
+    private static boolean adventureOnly = false;
+    private static Field adventureFlag;
+    private static boolean flagNotCached = true;
 
     public static ShapedRecipes addRecipe(ItemStack output, Object... inputList)
     {
@@ -88,7 +94,8 @@ public class CompressorRecipes
         }
 
         ShapedRecipes shapedrecipes = new ShapedRecipes(j, k, aitemstack, output);
-        CompressorRecipes.recipes.add(shapedrecipes);
+        if (!adventureOnly) CompressorRecipes.recipes.add(shapedrecipes);
+        CompressorRecipes.recipesAdventure.add(shapedrecipes);
         return shapedrecipes;
     }
 
@@ -124,9 +131,27 @@ public class CompressorRecipes
             }
         }
 
-        CompressorRecipes.recipes.add(new ShapelessOreRecipe(par1ItemStack, arraylist.toArray()));
+        IRecipe toAdd = new ShapelessOreRecipe(par1ItemStack, arraylist.toArray());
+        if (!adventureOnly) CompressorRecipes.recipes.add(toAdd);
+        CompressorRecipes.recipesAdventure.add(toAdd);
     }
 
+    public static ShapedRecipes addRecipeAdventure(ItemStack output, Object... inputList)
+    {
+    	adventureOnly = true; 
+    	ShapedRecipes returnValue = CompressorRecipes.addRecipe(output, inputList);
+    	adventureOnly = false;
+    	return returnValue;
+    }
+    
+    public static void addShapelessAdventure(ItemStack par1ItemStack, Object... par2ArrayOfObj)
+    {
+    	adventureOnly = true;
+    	CompressorRecipes.addShapelessRecipe(par1ItemStack, par2ArrayOfObj);
+    	adventureOnly = false;
+    	return;
+    }
+    
     public static ItemStack findMatchingRecipe(IInventory inventory, World par2World)
     {
         int i = 0;
@@ -170,9 +195,11 @@ public class CompressorRecipes
         }
         else
         {
-            for (j = 0; j < CompressorRecipes.recipes.size(); ++j)
+            List<IRecipe> theRecipes = CompressorRecipes.getRecipeList();
+        	
+        	for (j = 0; j < theRecipes.size(); ++j)
             {
-                IRecipe irecipe = CompressorRecipes.recipes.get(j);
+                IRecipe irecipe = theRecipes.get(j);
 
                 if (irecipe instanceof ShapedRecipes && CompressorRecipes.matches((ShapedRecipes) irecipe, inventory, par2World))
                 {
@@ -314,6 +341,16 @@ public class CompressorRecipes
 
     public static List<IRecipe> getRecipeList()
     {
-        return CompressorRecipes.recipes;
+    	return GalacticraftConfigAccess.getChallengeMode() ? CompressorRecipes.recipesAdventure : CompressorRecipes.recipes;
+    }
+    
+    public static void removeRecipe(ItemStack match)
+    {
+    	for (Iterator<IRecipe> it = CompressorRecipes.getRecipeList().iterator(); it.hasNext(); )
+        {
+            IRecipe irecipe = it.next();
+            if (ItemStack.areItemStacksEqual(match, irecipe.getRecipeOutput()))
+            	it.remove();
+        }
     }
 }

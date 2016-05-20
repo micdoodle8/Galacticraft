@@ -4,6 +4,7 @@ import java.nio.DoubleBuffer;
 
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -22,6 +23,13 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
@@ -77,7 +85,7 @@ public class GameScreenText implements IGameScreen
     	//Make the text to draw.  To look good it's important the width and height
     	//of the whole text box are correctly set here.
     	String strName = "";
-    	String[] str = { "No link", "", "", "", "" };
+    	String[] str = { GCCoreUtil.translate("gui.display.nolink"), "", "", "", "" };
     	Render renderEntity = null;
     	Entity entity = null;
     	float Xmargin = 0;
@@ -113,6 +121,42 @@ public class GameScreenText implements IGameScreen
 		        		renderEntity = (Render) FMLClientHandler.instance().getClient().getRenderManager().entityRenderMap.get(telemeter.clientClass);
 	        		}	        		
         		}
+
+        		//Setup special visual types from data sent by Telemetry
+        		if (entity instanceof EntityHorse)
+    			{
+        			((EntityHorse)entity).setHorseType(telemeter.clientData[3]);
+        			((EntityHorse)entity).setHorseVariant(telemeter.clientData[4]);
+    			}
+				if (entity instanceof EntityVillager)
+				{
+					((EntityVillager) entity).setProfession(telemeter.clientData[3]);
+					((EntityVillager) entity).setGrowingAge(telemeter.clientData[4]);
+				} else
+				if (entity instanceof EntityWolf)
+				{
+					((EntityWolf) entity).setCollarColor(EnumDyeColor.byDyeDamage(telemeter.clientData[3]));
+					((EntityWolf) entity).setBegging(telemeter.clientData[4] == 1);
+				} else
+				if (entity instanceof EntitySheep)
+				{
+					((EntitySheep) entity).setFleeceColor(EnumDyeColor.byDyeDamage(telemeter.clientData[3]));
+					((EntitySheep) entity).setSheared(telemeter.clientData[4] == 1);
+				} else
+				if (entity instanceof EntityOcelot)
+				{
+					((EntityOcelot) entity).setTameSkin(telemeter.clientData[3]);
+				} else
+				if (entity instanceof EntitySkeleton)
+				{
+					((EntitySkeleton) entity).setSkeletonType(telemeter.clientData[3]);
+				} else
+				if (entity instanceof EntityZombie)
+				{
+					((EntityZombie) entity).setVillager(telemeter.clientData[3] == 1);
+					((EntityZombie) entity).setChild(telemeter.clientData[4] == 1);
+				}
+
         	}
         	
         	if (entity instanceof ITelemetry)
@@ -125,8 +169,8 @@ public class GameScreenText implements IGameScreen
         		//  data0 = time to show red damage
         		//  data1 = health in half-hearts
         		//  data2 = pulse
-        		//  data3 = hunger
-        		//  data4 = oxygen
+        		//  data3 = hunger (for player); horsetype (for horse)
+        		//  data4 = oxygen (for player); horsevariant (for horse)
         		str[0] = telemeter.clientData[0] > 0 ? GCCoreUtil.translate("gui.player.ouch") : "";
 	    		if (telemeter.clientData[1] >= 0)
 	        	{

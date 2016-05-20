@@ -5,6 +5,7 @@
 //import codechicken.nei.PositionedStack;
 //import codechicken.nei.recipe.TemplateRecipeHandler;
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+//import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 //import net.minecraft.item.ItemStack;
 //import net.minecraft.util.ResourceLocation;
 //import org.lwjgl.opengl.GL11;
@@ -51,7 +52,7 @@
 //    }
 //
 //    @Override
-//    public void drawBackground(int i)
+//    public void drawBackground(int recipe)
 //    {
 //        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 //        GuiDraw.changeTexture(CircuitFabricatorRecipeHandler.circuitFabricatorTexture);
@@ -166,7 +167,7 @@
 //    @Override
 //    public String getRecipeName()
 //    {
-//        return "Circuit Fabricator";
+//        return GCCoreUtil.translate("tile.machine2.5.name");
 //    }
 //
 //    @Override

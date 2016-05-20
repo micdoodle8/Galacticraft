@@ -2,8 +2,10 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 
 import com.mojang.authlib.GameProfile;
 
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -21,9 +23,13 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 {
     public GCEntityPlayerMP(MinecraftServer server, WorldServer world, GameProfile profile, ItemInWorldManager itemInWorldManager)
     {
-        super(server, world, profile, itemInWorldManager);
+        super(server, WorldUtil.getStartWorld(world), profile, itemInWorldManager);
+        if (this.worldObj != world)
+        {
+        	GCPlayerStats.get(this).startAdventure(WorldUtil.getDimensionName(this.worldObj.provider));
+        }
     }
-
+    
     //Server-only method
     @Override
     public void clonePlayer(EntityPlayer oldPlayer, boolean keepInv)
@@ -84,4 +90,13 @@ public class GCEntityPlayerMP extends EntityPlayerMP
     {
         GalacticraftCore.proxy.player.knockBack(this, p_70653_1_, p_70653_2_, impulseX, impulseZ);
     }
+    
+    /*@Override
+    public void setInPortal()
+    {
+    	if (!(this.worldObj.provider instanceof IGalacticraftWorldProvider))
+    	{
+    		super.setInPortal();
+    	}
+    } TODO Fix disable of portal */
 }

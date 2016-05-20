@@ -66,6 +66,15 @@ public class AsteroidsItems
         OreDictionary.registerOre("ingotTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 5));
         OreDictionary.registerOre("shardTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 4));
         OreDictionary.registerOre("shardIron", new ItemStack(AsteroidsItems.basicItem, 1, 3));
+
+        AsteroidsItems.registerHarvestLevels();
+    }
+
+    public static void registerHarvestLevels()
+    {
+    	AsteroidsItems.titaniumPickaxe.setHarvestLevel("pickaxe", 5);
+        AsteroidsItems.titaniumAxe.setHarvestLevel("axe", 5);
+        AsteroidsItems.titaniumSpade.setHarvestLevel("shovel", 5);
     }
 
     private static void registerItems()

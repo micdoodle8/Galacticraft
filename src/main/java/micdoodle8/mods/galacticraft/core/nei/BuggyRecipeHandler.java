@@ -5,6 +5,7 @@
 //import codechicken.nei.PositionedStack;
 //import codechicken.nei.recipe.TemplateRecipeHandler;
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+//import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 //import net.minecraft.item.ItemStack;
 //import net.minecraft.util.ResourceLocation;
 //import org.lwjgl.opengl.GL11;
@@ -50,17 +51,11 @@
 //    }
 //
 //    @Override
-//    public void drawBackground(int i)
+//    public void drawBackground(int recipe)
 //    {
 //        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 //        GuiDraw.changeTexture(BuggyRecipeHandler.buggyGuiTexture);
 //        GuiDraw.drawTexturedModalRect(0, 0, 3, 4, 168, 130);
-//    }
-//
-//    @Override
-//    public void onUpdate()
-//    {
-//        super.onUpdate();
 //    }
 //
 //    @Override
@@ -75,7 +70,7 @@
 //        {
 //            for (final Map.Entry<ArrayList<PositionedStack>, PositionedStack> irecipe : this.getRecipes())
 //            {
-//                this.arecipes.add(new CachedRocketRecipe(irecipe));
+//                this.arecipes.add(new CachedBuggyRecipe(irecipe));
 //            }
 //        }
 //        else
@@ -91,7 +86,7 @@
 //        {
 //            if (NEIServerUtils.areStacksSameTypeCrafting(irecipe.getValue().item, result))
 //            {
-//                this.arecipes.add(new CachedRocketRecipe(irecipe));
+//                this.arecipes.add(new CachedBuggyRecipe(irecipe));
 //            }
 //        }
 //    }
@@ -105,14 +100,14 @@
 //            {
 //                if (NEIServerUtils.areStacksSameTypeCrafting(ingredient, pstack.item))
 //                {
-//                    this.arecipes.add(new CachedRocketRecipe(irecipe));
+//                    this.arecipes.add(new CachedBuggyRecipe(irecipe));
 //                    break;
 //                }
 //            }
 //        }
 //    }
 //
-//    public class CachedRocketRecipe extends TemplateRecipeHandler.CachedRecipe
+//    public class CachedBuggyRecipe extends TemplateRecipeHandler.CachedRecipe
 //    {
 //        public ArrayList<PositionedStack> input;
 //        public PositionedStack output;
@@ -129,14 +124,14 @@
 //            return this.output;
 //        }
 //
-//        public CachedRocketRecipe(ArrayList<PositionedStack> pstack1, PositionedStack pstack2)
+//        public CachedBuggyRecipe(ArrayList<PositionedStack> pstack1, PositionedStack pstack2)
 //        {
 //            super();
 //            this.input = pstack1;
 //            this.output = pstack2;
 //        }
 //
-//        public CachedRocketRecipe(Map.Entry<ArrayList<PositionedStack>, PositionedStack> recipe)
+//        public CachedBuggyRecipe(Map.Entry<ArrayList<PositionedStack>, PositionedStack> recipe)
 //        {
 //            this(recipe.getKey(), recipe.getValue());
 //        }
@@ -145,7 +140,7 @@
 //    @Override
 //    public String getRecipeName()
 //    {
-//        return "NASA Workbench";
+//        return GCCoreUtil.translate("tile.rocketWorkbench.name");
 //    }
 //
 //    @Override

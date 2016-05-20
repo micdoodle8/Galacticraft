@@ -11,9 +11,9 @@ import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorage;
+import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.VersionUtil;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.entity.Entity;
@@ -504,13 +504,13 @@ public class NetworkUtil
         if (fluidTank == null)
         {
             buffer.writeInt(0);
-            buffer.writeInt(-1);
+            ByteBufUtils.writeUTF8String(buffer, "");
             buffer.writeInt(0);
         }
         else
         {
             buffer.writeInt(fluidTank.getCapacity());
-            buffer.writeInt(fluidTank.getFluid() == null ? -1 : WorldUtil.getFluidID(fluidTank.getFluid()));
+            ByteBufUtils.writeUTF8String(buffer, fluidTank.getFluid() == null ? "" : fluidTank.getFluid().getFluid().getName());
             buffer.writeInt(fluidTank.getFluidAmount());
         }
     }
@@ -518,17 +518,17 @@ public class NetworkUtil
     public static FluidTank readFluidTank(ByteBuf buffer) throws IOException
     {
         int capacity = buffer.readInt();
-        int fluidID = buffer.readInt();
+        String fluidName = ByteBufUtils.readUTF8String(buffer);
         FluidTank fluidTank = new FluidTank(capacity);
         int amount = buffer.readInt();
 
-        if (fluidID == -1)
+        if (fluidName == "")
         {
             fluidTank.setFluid(null);
         }
         else
         {
-            Fluid fluid = FluidRegistry.getFluid(fluidID);
+            Fluid fluid = FluidRegistry.getFluid(fluidName);
             fluidTank.setFluid(new FluidStack(fluid, amount));
         }
 
@@ -583,7 +583,7 @@ public class NetworkUtil
             FluidStack fluidA = a2.getFluid();
             FluidStack fluidB = b2.getFluid();
             return fuzzyEquals(a2.getCapacity(), b2.getCapacity()) &&
-                    fuzzyEquals(fluidA != null ? WorldUtil.getFluidID(fluidA) : -1, fluidB != null ? WorldUtil.getFluidID(fluidB) : -1) &&
+                    fuzzyEquals(fluidA != null ? fluidA.getFluid().getName() : "", fluidB != null ? fluidB.getFluid().getName() : "") &&
                     fuzzyEquals(a2.getFluidAmount(), b2.getFluidAmount());
         }
         else

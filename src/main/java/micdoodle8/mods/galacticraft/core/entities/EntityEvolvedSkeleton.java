@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -18,6 +19,7 @@ import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
@@ -119,16 +121,10 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
             return;
         }
 
-        if (this.rand.nextInt(200) - i >= 5)
-        {
-            return;
-        }
-
-        switch (this.rand.nextInt(10))
+        switch (this.rand.nextInt(12))
         {
             case 0:
             case 1:
-            case 9:
             	this.dropItem(Items.arrow, 1);
                 break;
             case 2:
@@ -144,10 +140,13 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
                 this.entityDropItem(new ItemStack(GCItems.oxTankMedium, 1, 901 + this.rand.nextInt(900)), 0.0F);
                 break;
             case 7:
-                this.dropItem(GCItems.canister, 1);
+            	this.dropItem(GCItems.canister, 1);
                 break;
             case 8:
                 this.entityDropItem(new ItemStack(GCBlocks.oxygenPipe), 0.0F);
+                break;
+            default:
+            	if (ConfigManagerCore.challengeMode) this.dropItem(Items.pumpkin_seeds, 1);
                 break;
         }
     }

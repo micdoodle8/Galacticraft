@@ -154,16 +154,16 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     {
         if (receive > 0)
         {
-            float prevEnergyStored = this.getOxygenStored();
-            float newStoredEnergy = Math.min(prevEnergyStored + receive, this.getMaxOxygenStored());
+            float prevOxygenStored = this.getOxygenStored();
+            float newStoredOxygen = Math.min(prevOxygenStored + receive, this.getMaxOxygenStored());
 
             if (doReceive)
             {
                 TileEntityOxygen.timeSinceOxygenRequest = 20;
-                this.setOxygenStored(newStoredEnergy);
+                this.setOxygenStored(newStoredOxygen);
             }
 
-            return Math.max(newStoredEnergy - prevEnergyStored, 0);
+            return Math.max(newStoredOxygen - prevOxygenStored, 0);
         }
 
         return 0;
@@ -184,14 +184,14 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     {
         if (request > 0)
         {
-            float requestedEnergy = Math.min(request, this.storedOxygen);
+            float requestedOxygen = Math.min(request, this.storedOxygen);
 
             if (doProvide)
             {
-                this.setOxygenStored(this.storedOxygen - requestedEnergy);
+                this.setOxygenStored(this.storedOxygen - requestedOxygen);
             }
 
-            return requestedEnergy;
+            return requestedOxygen;
         }
 
         return 0;
@@ -215,9 +215,9 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     {
         float provide = this.getOxygenProvide(outputDirection);
 
-        if (provide > 0)
+        if (provide > 0F)
         {
-            TileEntity outputTile = new BlockVec3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.worldObj);
+            TileEntity outputTile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, outputDirection);
             IOxygenNetwork outputNetwork = NetworkHelper.getOxygenNetworkFromTileEntity(outputTile, outputDirection);
 
             if (outputNetwork != null)
@@ -226,21 +226,19 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
 
                 if (powerRequest > 0)
                 {
-                    float toSend = Math.min(this.getOxygenStored(), provide);
-                    float rejectedPower = outputNetwork.produce(toSend, this);
+                    float rejectedPower = outputNetwork.produce(provide, this);
 
-                    this.provideOxygen(Math.max(toSend - rejectedPower, 0), true);
+                    this.provideOxygen(Math.max(provide - rejectedPower, 0), true);
                     return true;
                 }
             }
             else if (outputTile instanceof IOxygenReceiver)
             {
-                float requestedEnergy = ((IOxygenReceiver) outputTile).getOxygenRequest(outputDirection.getOpposite());
+                float requestedOxygen = ((IOxygenReceiver) outputTile).getOxygenRequest(outputDirection.getOpposite());
 
-                if (requestedEnergy > 0)
+                if (requestedOxygen > 0)
                 {
-                    float toSend = Math.min(this.getOxygenStored(), provide);
-                    float acceptedOxygen = ((IOxygenReceiver) outputTile).receiveOxygen(outputDirection.getOpposite(), toSend, true);
+                    float acceptedOxygen = ((IOxygenReceiver) outputTile).receiveOxygen(outputDirection.getOpposite(), provide, true);
                     this.provideOxygen(acceptedOxygen, true);
                     return true;
                 }
@@ -253,7 +251,7 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
 //
 //                if (outputTile instanceof IGasHandler && ((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas) EnergyConfigHandler.gasOxygen))
 //                {
-//                    GasStack toSend = new GasStack((Gas) EnergyConfigHandler.gasOxygen, (int) Math.floor(Math.min(this.getOxygenStored(), provide)));
+//                    GasStack toSend = new GasStack((Gas) EnergyConfigHandler.gasOxygen, (int) Math.floor(provide));
 //                    int acceptedOxygen = 0;
 //                    try {
 //                    	acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
@@ -286,6 +284,11 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
         return this.storedOxygen < this.maxOxygen;
     }
 
+    /**
+     * Make sure this does not exceed the oxygen stored.
+     * This should return 0 if no oxygen is stored.
+     * Implementing tiles must respect this or you will generate infinite oxygen. 
+     */
     @Override
     public float getOxygenProvide(EnumFacing direction)
     {

@@ -64,17 +64,14 @@ public class GuiOxygenCollector extends GuiContainerGC
 
     private String getStatus()
     {
-        if (this.collector.getEnergyStoredGC() == 0)
-        {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingpower.name");
-        }
+    	String returnValue = this.collector.getGUIstatus();
 
-        if (this.collector.lastOxygenCollected <= 0.0F)
+        if (returnValue.equals(EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.active.name")) && this.collector.lastOxygenCollected <= 0.0F)
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingleaves.name");
         }
 
-        return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.active.name");
+        return returnValue;
     }
 
     @Override

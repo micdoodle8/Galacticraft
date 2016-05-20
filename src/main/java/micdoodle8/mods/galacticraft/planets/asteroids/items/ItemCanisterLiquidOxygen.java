@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.items;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.EntityPlayer;
@@ -98,9 +99,9 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
     public float discharge(ItemStack itemStack, float amount)
 	{
 		int damage = itemStack.getItemDamage();
-		int used = Math.min((int) (amount * 5 / 54), ItemCanisterGeneric.EMPTY - damage);
+		int used = Math.min((int) (amount * Constants.LOX_GAS_RATIO), ItemCanisterGeneric.EMPTY - damage);
 		this.setNewDamage(itemStack, damage + used);
-		return used * 10.8F;
+		return used / Constants.LOX_GAS_RATIO;
 	}
 
 	@Override

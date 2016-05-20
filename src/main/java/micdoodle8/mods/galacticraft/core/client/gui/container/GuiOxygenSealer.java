@@ -12,9 +12,8 @@ import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -146,14 +145,24 @@ public class GuiOxygenSealer extends GuiContainerGC
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.sealerblocked.name");
         }
 
-        if (this.sealer.disabled)
+        if (RedstoneUtil.isBlockReceivingRedstone(this.sealer.getWorld(), this.sealer.getPos()))
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.disabled.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.off.name");
         }
 
+        if (this.sealer.disabled)
+        {
+            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled.name");
+        }
+        
         if (this.sealer.getEnergyStoredGC() == 0)
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingpower.name");
+        }
+
+        if (this.sealer.getEnergyStoredGC() < this.sealer.storage.getMaxExtract())
+        {
+            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.missingpower.name");
         }
 
         if (this.sealer.storedOxygen < 1)

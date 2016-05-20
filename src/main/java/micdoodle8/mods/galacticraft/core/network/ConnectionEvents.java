@@ -13,11 +13,13 @@ import net.minecraftforge.fml.common.network.FMLNetworkEvent.ServerConnectionFro
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
+import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.MapUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -72,6 +74,7 @@ public class ConnectionEvents
         {
         	EntityPlayerMP thePlayer = (EntityPlayerMP) event.player;
         	GCPlayerStats stats = GCPlayerStats.get(thePlayer);
+        	SpaceStationWorldData.checkAllStations(thePlayer, stats);
             GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, new Object[] { WorldUtil.spaceStationDataToString(stats.spaceStationDimensionData) }), thePlayer);
             SpaceRace raceForPlayer = SpaceRaceManager.getSpaceRaceFromPlayer(thePlayer.getGameProfile().getName());
             if (raceForPlayer != null) SpaceRaceManager.sendSpaceRaceData(thePlayer, raceForPlayer);
@@ -108,6 +111,7 @@ public class ConnectionEvents
         {
             ConnectionEvents.clientConnected = true;
         }
+        MapUtil.resetClient();
     }
 
     @SubscribeEvent

@@ -7,6 +7,8 @@ import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -18,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -63,7 +66,7 @@ public class GuiSlimeling extends GuiScreen
         this.buttonList.clear();
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
-        this.stayButton = new GuiButton(0, var5 + 120, var6 + 122, 50, 20, "Stay");
+        this.stayButton = new GuiButton(0, var5 + 120, var6 + 122, 50, 20, "");
         this.stayButton.enabled = slimeling.isOwner(this.mc.thePlayer);
         this.buttonList.add(this.stayButton);
         this.invX = var5 + 151;
@@ -181,6 +184,7 @@ public class GuiSlimeling extends GuiScreen
 
         if (px >= this.invX && px < this.invX + this.invWidth && py >= this.invY && py < this.invY + this.invHeight)
         {
+            Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, new Object[] { this.slimeling.getEntityId(), 6, "" }));
         }
 
@@ -277,11 +281,13 @@ public class GuiSlimeling extends GuiScreen
         this.fontRendererObj.drawString(str, dX + var5 + 55, dY + var6 + 46 + 13, 0x404040);
 
         RenderHelper.enableGUIStandardItemLighting();
-//        FMLClientHandler.instance().getClient().getItemRenderer().renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.renderEngine, new ItemStack(this.slimeling.getFavoriteFood()), dX + var5 + 55 + this.fontRendererObj.getStringWidth(str), dY + var6 + 41 + 14);
-        // TODO
-
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+//        TODO GuiSlimeling.drawItems.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.renderEngine, new ItemStack(this.slimeling.getFavoriteFood()), dX + var5 + 55 + this.fontRendererObj.getStringWidth(str), dY + var6 + 41 + 14);
+        GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glPopMatrix();
-        
+
         try {
         	Class clazz = Class.forName("micdoodle8.mods.galacticraft.core.atoolkit.ProcessGraphic");
         	clazz.getMethod("go").invoke(null);

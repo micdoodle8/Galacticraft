@@ -63,7 +63,7 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
     public EntityCreeperBoss(World par1World)
     {
         super(par1World);
-        this.setSize(1.5F, 7.0F);
+        this.setSize(2.0F, 7.0F);
         this.isImmuneToFire = true;
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIArrowAttack(this, 1.0D, 25, 20.0F));

@@ -11,10 +11,14 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
+import micdoodle8.mods.galacticraft.core.recipe.RecipeManagerGC;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
@@ -33,13 +37,32 @@ public class ConfigManagerCore
 {
     static Configuration config;
 
-    // DIMENSIONS
+    // GAME CONTROL
+    public static boolean forceOverworldRespawn;
+    public static boolean hardMode;
+    public static boolean quickMode;
+	public static boolean challengeMode;
+    public static boolean disableRocketsToOverworld;
+    public static boolean disableSpaceStationCreation;
+    public static boolean spaceStationsRequirePermission;
+    public static boolean disableUpdateCheck;
+    public static boolean enableSpaceRaceManagerPopup;
+    public static boolean enableDebug;
+    public static boolean enableSealerEdgeChecks;
+    public static boolean disableLander;
+//    public static int mapfactor;
+//    public static int mapsize;
+    
+	// DIMENSIONS
+    public static int idDimensionOverworld;
     public static int idDimensionOverworldOrbit;
     public static int idDimensionOverworldOrbitStatic;
     public static int idDimensionMoon;
     public static int biomeIDbase = 102;
+    public static boolean disableBiomeTypeRegistrations;
     public static int[] staticLoadDimensions = { };
     public static int[] disableRocketLaunchDimensions = { -1, 1 };
+    public static boolean disableRocketLaunchAllNonGC;
 
     // SCHEMATICS
     public static int idSchematicRocketT1;
@@ -55,62 +78,51 @@ public class ConfigManagerCore
     public static boolean oxygenIndicatorLeft;
     public static boolean oxygenIndicatorBottom;
     public static boolean overrideCapes;
-    
-    // GENERAL
-    public static boolean disableSpaceshipGrief;
-    public static boolean spaceStationsRequirePermission;
-    public static boolean disableSpaceStationCreation;
-    public static boolean disableLander;
-    public static boolean disableRocketsToOverworld;
-    public static boolean forceOverworldRespawn;
-    public static boolean hardMode;
-    public static boolean quickMode;
+
+    //DIFFICULTY
     public static double dungeonBossHealthMod;
     public static int suffocationCooldown;
     public static int suffocationDamage;
-    public static boolean enableSealerEdgeChecks;
-    public static double spaceStationEnergyScalar;
     public static int rocketFuelFactor;
-    public static boolean enableDebug;
-    public static float mapMouseScrollSensitivity;
-    public static boolean invertMapMouseScroll;
     public static double meteorSpawnMod;
     public static boolean meteorBlockDamageEnabled;
-    public static boolean disableUpdateCheck;
-//    public static int mapfactor;
-//    public static int mapsize;
-	
+    public static boolean disableSpaceshipGrief;
+    public static double spaceStationEnergyScalar;
     
     // WORLDGEN
     public static boolean enableCopperOreGen;
     public static boolean enableTinOreGen;
     public static boolean enableAluminumOreGen;
     public static boolean enableSiliconOreGen;
-    public static int[] externalOilGen;
-    public static double oilGenFactor;
-	public static boolean retrogenOil;
     public static boolean disableCheeseMoon;
     public static boolean disableTinMoon;
     public static boolean disableCopperMoon;
     public static boolean disableMoonVillageGen;
+    public static int[] externalOilGen;
+    public static double oilGenFactor;
+	public static boolean retrogenOil;
     public static String[] oregenIDs = { };
     public static boolean enableOtherModsFeatures;
-    public static boolean useOldOilFluidID;
-    public static boolean useOldFuelFluidID;
+    public static boolean whitelistCoFHCoreGen;
+	public static boolean enableThaumCraftNodes;
 
     //COMPATIBILITY
     public static String[] sealableIDs = { };
     public static String[] detectableIDs = { };
-    public static boolean whitelistCoFHCoreGen;
-	public static boolean enableThaumCraftNodes;
     public static boolean alternateCanisterRecipe;
     public static String otherModsSilicon;
+    public static boolean useOldOilFluidID;
+    public static boolean useOldFuelFluidID;
+
+    //KEYBOARD AND MOUSE
     public static String keyOverrideMap;
     public static String keyOverrideFuelLevel;
     public static String keyOverrideToggleAdvGoggles;
     public static int keyOverrideMapI;
     public static int keyOverrideFuelLevelI;
     public static int keyOverrideToggleAdvGogglesI;
+    public static float mapMouseScrollSensitivity;
+    public static boolean invertMapMouseScroll;
 	
     public static ArrayList<Object> clientSave = null;
 
@@ -141,6 +153,18 @@ public class ConfigManagerCore
                 }
             }
 
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Enable Debug Messages", false);
+            prop.comment = "If this is enabled, debug messages will appear in the console. This is useful for finding bugs in the mod.";
+            prop.setLanguageKey("gc.configgui.enableDebug");
+            enableDebug = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "idDimensionOverworld", 0);
+            prop.comment = "Dimension ID for the Overworld (as seen in the Celestial Map)";
+            prop.setLanguageKey("gc.configgui.idDimensionOverworld").setRequiresMcRestart(true);
+            idDimensionOverworld = prop.getInt();
+            propOrder.add(prop.getName());
+
             prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "idDimensionMoon", -28);
             prop.comment = "Dimension ID for the Moon";
             prop.setLanguageKey("gc.configgui.idDimensionMoon").setRequiresMcRestart(true);
@@ -148,13 +172,13 @@ public class ConfigManagerCore
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "idDimensionOverworldOrbit", -27);
-            prop.comment = "Dimension ID for Overworld Space Stations";
+            prop.comment = "WorldProvider ID for Overworld Space Stations (advanced: do not change unless you have conflicts)";
             prop.setLanguageKey("gc.configgui.idDimensionOverworldOrbit").setRequiresMcRestart(true);
             idDimensionOverworldOrbit = prop.getInt();
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "idDimensionOverworldOrbitStatic", -26);
-            prop.comment = "Dimension ID for Static Overworld Space Stations";
+            prop.comment = "WorldProvider ID for Static Space Stations (advanced: do not change unless you have conflicts)";
             prop.setLanguageKey("gc.configgui.idDimensionOverworldOrbitStatic").setRequiresMcRestart(true);
             idDimensionOverworldOrbitStatic = prop.getInt();
             propOrder.add(prop.getName());
@@ -172,10 +196,11 @@ public class ConfigManagerCore
             staticLoadDimensions = prop.getIntList();
             propOrder.add(prop.getName());
 
-            prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "Dimensions where rockets cannot launch", ConfigManagerCore.disableRocketLaunchDimensions);
+            prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "Dimensions where rockets cannot launch", new String[] {"1", "-1"} );
             prop.comment = "IDs of dimensions where rockets should not launch - this should always include the Nether.";
             prop.setLanguageKey("gc.configgui.rocketDisabledDimensions");
             disableRocketLaunchDimensions = prop.getIntList();
+            disableRocketLaunchAllNonGC = searchAsterisk(prop.getStringList());
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "Disable rockets from returning to Overworld", false);
@@ -348,14 +373,6 @@ public class ConfigManagerCore
             useOldFuelFluidID = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
-//Debug
-
-            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Enable Debug Messages", false);
-            prop.comment = "If this is enabled, debug messages will appear in the console. This is useful for finding bugs in the mod.";
-            prop.setLanguageKey("gc.configgui.enableDebug");
-            enableDebug = prop.getBoolean(false);
-            propOrder.add(prop.getName());
-
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable lander on Moon and other planets", false);
             prop.comment = "If this is true, the player will parachute onto the Moon instead - use only in debug situations.";
             prop.setLanguageKey("gc.configgui.disableLander");
@@ -450,6 +467,13 @@ public class ConfigManagerCore
             quickMode = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Adventure Game Mode", false);
+            prop.comment = "Set this to true for a challenging adventure where the player starts the game stranded in the Asteroids dimension with low resources (only effective if Galacticraft Planets installed).";
+            prop.setLanguageKey("gc.configgui.asteroidsStart");
+            challengeMode = prop.getBoolean(false);
+            if (!GalacticraftCore.isPlanetsLoaded) challengeMode = false;
+            propOrder.add(prop.getName());
+
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Enable Sealed edge checks", true);
             prop.comment = "If this is enabled, areas sealed by Oxygen Sealers will run a seal check when the player breaks or places a block (or on block updates).  This should be enabled for a 100% accurate sealed status, but can be disabled on servers for performance reasons.";
             prop.setLanguageKey("gc.configgui.enableSealerEdgeChecks");
@@ -535,6 +559,18 @@ public class ConfigManagerCore
             prop.comment = "Update check will not run if this is set to true.";
             prop.setLanguageKey("gc.configgui.disableUpdateCheck");
             disableUpdateCheck = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Biome Type Registrations", false);
+            prop.comment = "Biome Types will not be registered in the BiomeDictionary if this is set to true. Ignored (always true) for MC 1.7.2.";
+            prop.setLanguageKey("gc.configgui.disableBiomeTypeRegistrations");
+            disableBiomeTypeRegistrations = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Enable Space Race Manager Popup", false);
+            prop.comment = "Space Race Manager will show on-screen after login, if enabled.";
+            prop.setLanguageKey("gc.configgui.enableSpaceRaceManagerPopup");
+            enableSpaceRaceManagerPopup = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
             config.setCategoryPropertyOrder(CATEGORY_GENERAL, propOrder);
@@ -633,6 +669,20 @@ public class ConfigManagerCore
         return foundCount > 0;
     }
 
+    /**
+     * Note for this to be effective, the prop = config.get() call has to provide a String[] as the default values
+     * If you use an Integer[] then the config parser deletes all non-numerical lines from the config before GC even sees them
+     */
+    private static boolean searchAsterisk(String[] strings)
+    {
+    	for (String s : strings)
+    	{
+    		if (s != null && "*".equals(s.trim()))
+    			return true;
+    	}
+    	return false;
+    }
+
     public static List<IConfigElement> getConfigElements()
     {
         List<IConfigElement> list = new ArrayList<IConfigElement>();
@@ -671,8 +721,16 @@ public class ConfigManagerCore
         Block block = Block.getBlockFromName(name);
         if (block == null)
         {
-            if (logging) GCLog.severe("[config] " + caller + ": unrecognised block name '" + s + "'.");
-            return null;
+        	Item item = (Item)Item.itemRegistry.getObject(new ResourceLocation(name));
+        	if (item instanceof ItemBlock)
+        	{
+        		block = ((ItemBlock)item).block;
+        	}
+        	if (block == null)
+        	{
+	        	if (logging) GCLog.severe("[config] " + caller + ": unrecognised block name '" + s + "'.");
+	            return null;
+        	}
         }
         try
         {
@@ -695,6 +753,8 @@ public class ConfigManagerCore
     	ArrayList<Object> returnList = new ArrayList();
     	int modeFlags = ConfigManagerCore.hardMode ? 1 : 0;
     	modeFlags += ConfigManagerCore.quickMode ? 2 : 0;
+    	modeFlags += ConfigManagerCore.challengeMode ? 4 : 0;
+    	modeFlags += ConfigManagerCore.disableSpaceStationCreation ? 8 : 0;
     	returnList.add(modeFlags);
     	returnList.add(ConfigManagerCore.dungeonBossHealthMod);
     	returnList.add(ConfigManagerCore.suffocationDamage);
@@ -715,6 +775,8 @@ public class ConfigManagerCore
     	int modeFlag = (Integer) configs.get(0);
     	ConfigManagerCore.hardMode = (modeFlag & 1) != 0;
     	ConfigManagerCore.quickMode = (modeFlag & 2) != 0;
+    	ConfigManagerCore.challengeMode = (modeFlag & 4) != 0;
+    	ConfigManagerCore.disableSpaceStationCreation = (modeFlag & 8) != 0;
     	ConfigManagerCore.dungeonBossHealthMod = (Double) configs.get(1);
     	ConfigManagerCore.suffocationDamage = (Integer) configs.get(2);
     	ConfigManagerCore.suffocationCooldown = (Integer) configs.get(3);
@@ -738,6 +800,8 @@ public class ConfigManagerCore
     		}
         	TickHandlerClient.registerDetectableBlocks(false);
     	}
+    	
+    	RecipeManagerGC.setConfigurableRecipes();
     }
     
     public static void saveClientConfigOverrideable()

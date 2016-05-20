@@ -608,7 +608,9 @@ public class TileEntityScreen extends TileEntityAdvanced
 		{
 			if (bottomLeft instanceof TileEntityScreen)  //It always will be if reached this far
 			{
-				newScreen = new DrawGameScreen(1.0F + left + right, 1.0F + up + down, bottomLeft);				
+				newScreen = ((TileEntityScreen)bottomLeft).screen;
+				if (!newScreen.check(1.0F + left + right, 1.0F + up + down))
+ 					newScreen = new DrawGameScreen(1.0F + left + right, 1.0F + up + down, bottomLeft);				
 			}
 			serverside = false;
 		}

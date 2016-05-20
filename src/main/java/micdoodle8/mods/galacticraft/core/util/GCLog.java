@@ -16,4 +16,12 @@ public class GCLog
     {
         FMLRelaunchLog.log(Constants.MOD_NAME_SIMPLE, Level.ERROR, message);
     }
+    
+    public static void debug(String message)
+    {
+        if (ConfigManagerCore.enableDebug)
+        {
+        	FMLRelaunchLog.log(Constants.MOD_NAME_SIMPLE, Level.INFO, "Debug: " + message);
+        }
+    }
 }

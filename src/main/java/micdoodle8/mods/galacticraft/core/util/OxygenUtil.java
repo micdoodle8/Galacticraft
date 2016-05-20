@@ -34,6 +34,8 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -42,6 +44,7 @@ public class OxygenUtil
 {
     private static HashSet<BlockPos> checked;
 
+    @SideOnly(Side.CLIENT)
     public static boolean shouldDisplayTankGui(GuiScreen gui)
     {
         if (FMLClientHandler.instance().getClient().gameSettings.hideGUI)
@@ -178,11 +181,11 @@ public class OxygenUtil
      * all 6 sides of the given block (because a torch can pass air on all sides)
      * Used in BlockUnlitTorch.
      */
-    public static boolean checkTorchHasOxygen(World world, Block block, int x, int y, int z)
+    public static boolean checkTorchHasOxygen(World world, BlockPos pos)
     {
-    	if (OxygenUtil.inOxygenBubble(world, x + 0.5D, y + 0.6D, z + 0.5D)) return true;
+    	if (OxygenUtil.inOxygenBubble(world, pos.getX() + 0.5D, pos.getY() + 0.6D, pos.getZ() + 0.5D)) return true;
     	OxygenUtil.checked = new HashSet();
-        BlockVec3 vec = new BlockVec3(x, y, z);
+        BlockVec3 vec = new BlockVec3(pos);
         for (int side = 0; side < 6; side++)
         {
             BlockVec3 sidevec = vec.newVecSide(side);
@@ -326,12 +329,7 @@ public class OxygenUtil
             return 0;
         }
 
-        if (tank1Valid && !tank2Valid || !tank1Valid && tank2Valid)
-        {
-            return 9;
-        }
-
-        return 18;
+        return 9;
     }
 
     public static boolean hasValidOxygenSetup(EntityPlayerMP player)
@@ -491,17 +489,17 @@ public class OxygenUtil
 
 	public static boolean inOxygenBubble(World worldObj, double avgX, double avgY, double avgZ)
 	{
-//        for (final BlockVec3Dim blockVec : new ArrayList<BlockVec3Dim>(TileEntityOxygenDistributor.loadedTiles))
-//        {
-//            if (blockVec.dim == worldObj.provider.getDimensionId())
-//            {
-//            	TileEntity tile = worldObj.getTileEntity(blockVec.toBlockPos());
-//            	if (tile instanceof TileEntityOxygenDistributor)
-//            	{
-//	            	if (((TileEntityOxygenDistributor) tile).inBubble(avgX, avgY, avgZ)) return true;
-//            	}
-//            }
-//        } TODO Fix oxygen bubble
+        for (final BlockVec3Dim blockVec : TileEntityOxygenDistributor.loadedTiles)
+        {
+            if (blockVec != null && blockVec.dim == worldObj.provider.getDimensionId())
+            {
+            	TileEntity tile = blockVec.getTileEntity();
+            	if (tile instanceof TileEntityOxygenDistributor)
+            	{
+	            	if (((TileEntityOxygenDistributor) tile).inBubble(avgX, avgY, avgZ)) return true;
+            	}
+            }
+        }
 
 		return false;
 	}

@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
-import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -29,7 +28,7 @@ public class ContainerElectricIngotCompressor extends Container
         }
 
         // Battery Slot
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 55, 75, ItemElectricBase.class));
+        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 55, 75, IItemElectric.class));
 
         // Smelting result
         this.addSlotToContainer(new SlotFurnaceOutput(par1InventoryPlayer.player, tileEntity, 1, 138, 30));

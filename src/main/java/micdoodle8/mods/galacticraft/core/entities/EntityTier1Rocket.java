@@ -143,11 +143,6 @@ public class EntityTier1Rocket extends EntityTieredRocket
             else
             {
                 stats.rocketStacks = this.cargoItems;
-                if ((this.cargoItems.length - 2) % 18 != 0)
-                {
-                    System.out.println("Strange rocket inventory size " + this.cargoItems.length);
-                    int fail = 1 / 0;
-                }
             }
 
             stats.rocketType = this.rocketType.getIndex();

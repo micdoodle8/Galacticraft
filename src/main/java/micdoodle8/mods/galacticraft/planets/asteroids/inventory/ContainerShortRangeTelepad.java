@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
-import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,7 +17,7 @@ public class ContainerShortRangeTelepad extends Container
     {
         this.tileEntity = tileEntity;
 
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 152, 105, ItemElectricBase.class));
+        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 152, 105, IItemElectric.class));
 
         int var6;
         int var7;

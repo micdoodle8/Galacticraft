@@ -179,7 +179,7 @@ public class MapGenCavesMoon extends MapGenBaseMeta
                                                     primer.setBlockState(coords, Blocks.air.getDefaultState());
 //                                                    blockIdArray[coords] = Blocks.air;
                                                 }
-                                                else if (state.getBlock().getMetaFromState(state) == 5 && random.nextInt(MapGenCavesMoon.BREAK_THROUGH_CHANCE) == 0)
+                                                else if (state.getBlock().getMetaFromState(state) == 5)
                                                 {
                                                     primer.setBlockState(coords, Blocks.air.getDefaultState());
 //                                                    blockIdArray[coords] = Blocks.air;

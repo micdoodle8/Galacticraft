@@ -66,6 +66,18 @@
 //        {
 //            return new ItemStack(GCBlocks.blockMoon, 1, 2);
 //        }
+//        if (b == GCBlocks.fakeBlock && meta == 1)
+//        {
+//            return new ItemStack(GCBlocks.spaceStationBase, 1, 0);
+//        }
+//        if (b == GCBlocks.fakeBlock && meta == 2)
+//        {
+//            return new ItemStack(GCBlocks.landingPad, 1, 0);
+//        }
+//        if (b == GCBlocks.fakeBlock && meta == 6)
+//        {
+//            return new ItemStack(GCBlocks.landingPad, 1, 1);
+//        }
 //        return null;
 //    }
 //}

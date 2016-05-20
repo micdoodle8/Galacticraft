@@ -22,7 +22,7 @@ public class RenderSmallAsteroid extends Render
         EntitySmallAsteroid asteroid = (EntitySmallAsteroid) entity;
 
         GL11.glPushMatrix();
-        GL11.glTranslatef((float) x, (float) y, (float) z);
+        GL11.glTranslatef((float) x, (float) y + 0.5F, (float) z);
         GL11.glRotatef(asteroid.rotationPitch, 1, 0, 0);
         GL11.glRotatef(asteroid.rotationYaw, 0, 1, 0);
 

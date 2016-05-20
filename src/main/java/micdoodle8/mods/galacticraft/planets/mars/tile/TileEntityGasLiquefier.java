@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenReceiver;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
@@ -165,7 +166,6 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 	
 	                    if (canisterGas != null)
 		                {
-		                	System.out.println("GasTankType " + this.gasTankType);
 		                	int used = this.gasTank.fill(canisterGas, true) / factor;
 		                	if (used == amount)
 		                		this.containingItems[1] = new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY);
@@ -261,9 +261,9 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
             if (liquid != null && liquid.amount > 0)
             {
                 String liquidname = liquid.getFluid().getName();
-                if (liquidname.equals(TankGases.METHANE.liquid))
+                if (liquidname.startsWith("fuel"))
                 {
-                    FluidUtil.tryFillContainer(tank, liquid, this.containingItems, slot, GCItems.fuelCanister);
+                    FluidUtil.tryFillContainerFuel(tank, this.containingItems, slot);
                 }
                 else if (liquidname.equals(TankGases.OXYGEN.liquid))
                 {
@@ -673,7 +673,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
             {
                 if (type > 0)
                 {
-	            	float conversion = 10F / 54F;
+	            	float conversion = 2F * Constants.LOX_GAS_RATIO;
 	                FluidStack fluidToFill = new FluidStack(resource.getFluid(), (int) (resource.amount * conversion));
 	            	used = MathHelper.ceiling_float_int(this.gasTank.fill(fluidToFill, doFill) / conversion);
                 }
@@ -725,7 +725,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 	{
 		if (from.ordinal() == this.getBlockMetadata() + 2 && this.shouldPullOxygen())
     	{
-			float conversion = 10F / 54F;
+			float conversion = 2F * Constants.LOX_GAS_RATIO;
 	        FluidStack fluidToFill = new FluidStack(AsteroidsModule.fluidOxygenGas, (int) (receive * conversion));
 	    	int used = MathHelper.ceiling_float_int(this.gasTank.fill(fluidToFill, doReceive) / conversion);
 			return used;

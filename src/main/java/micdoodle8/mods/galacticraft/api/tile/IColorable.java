@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.api.tile;
 
-
 import net.minecraft.util.EnumFacing;
 
 /**

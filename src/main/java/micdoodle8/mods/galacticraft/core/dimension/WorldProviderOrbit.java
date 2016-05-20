@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
@@ -16,13 +17,16 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSpinThruster;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOrbit;
+import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.player.FreefallHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderOrbit;
+import micdoodle8.mods.galacticraft.core.world.gen.WorldChunkManagerOrbit;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -210,7 +214,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
     @Override
     public Class<? extends WorldChunkManager> getWorldChunkManagerClass()
     {
-        return null;
+        return WorldChunkManagerOrbit.class;
     }
 
     public boolean isDaytime()
@@ -434,15 +438,8 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
     @Override
     public int getAverageGroundLevel()
     {
-        return 44;
+        return 64;
     }
-
-    @Override
-    public boolean isSurfaceWorld()
-    {
-        return true;
-    }
-
 
     @Override
     public boolean canCoordinateBeSpawn(int var1, int var2)
@@ -450,12 +447,30 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         return true;
     }
 
-//	@Override
-//	public boolean canRespawnHere()
-//	{
-//		return !ConfigManagerCore.forceOverworldRespawn;
-//	}
-//
+	//Overriding only in case the Galacticraft API is not up-to-date
+    //(with up-to-date API this makes zero difference)
+    @Override
+    public boolean isSurfaceWorld()
+    {
+        return (this.worldObj == null) ? false : this.worldObj.isRemote;
+    }
+
+	//Overriding only in case the Galacticraft API is not up-to-date
+    //(with up-to-date API this makes zero difference)
+	@Override
+	public boolean canRespawnHere()
+	{
+		return false;
+	}
+	
+	//Overriding only in case the Galacticraft API is not up-to-date
+    //(with up-to-date API this makes zero difference)
+    @Override
+    public int getRespawnDimension(EntityPlayerMP player)
+    {
+        return this.shouldForceRespawn() ? this.dimensionId : 0;
+    }
+
 //	@Override
 //	public String getWelcomeMessage()
 //	{
@@ -766,8 +781,18 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                 if (!p.onGround)
                 {
                     p.motionY -= 0.015D;
+                    if (!FreefallHandler.sneakLast )
+                    {
+                    	p.getEntityBoundingBox().offset(0D, 0.0268D, 0D);
+                    	FreefallHandler.sneakLast = true;
+                    }
                 }
                 this.pjumpticks = 0;
+            }
+            else if (FreefallHandler.sneakLast)
+            {
+            	FreefallHandler.sneakLast = false;
+            	p.getEntityBoundingBox().offset(0D, -0.0268D, 0D);
             }
 
             if (this.pjumpticks > 0)
@@ -782,7 +807,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         }
 
         //Artificial gravity
-        if (doGravity)
+        if (doGravity && !p.onGround)
         {
             int quadrant = 0;
             double xd = p.posX - this.spinCentreX;
@@ -836,6 +861,17 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         if (this.pjumpticks > 0 || (this.pWasOnGround && p.movementInput.jump))
         {
             return false;
+        }
+        
+        if (p.ridingEntity != null)
+        {
+        	Entity e = p.ridingEntity;
+        	if (e instanceof EntitySpaceshipBase)
+        		return ((EntitySpaceshipBase)e).getLaunched();
+        	if (e instanceof EntityLanderBase)
+        		return false;
+        	//TODO: should check whether lander has landed (whatever that means)
+        	//TODO: could check other ridden entities - every entity should have its own freefall check :(
         }
 
         //This is an "on the ground" check
@@ -1105,9 +1141,11 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 
         while (currentLayer.size() > 0)
         {
-            for (BlockVec3 vec : currentLayer)
+            int bits;
+        	for (BlockVec3 vec : currentLayer)
             {
-                if (vec.x < thisssBoundsMinX)
+                bits = vec.sideDoneBits;
+        		if (vec.x < thisssBoundsMinX)
                 {
                     thisssBoundsMinX = vec.x;
                 }
@@ -1134,7 +1172,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 
                 for (int side = 0; side < 6; side++)
                 {
-                    if (vec.sideDone[side])
+                    if ((bits & (1 << side)) == 1)
                     {
                         continue;
                     }
@@ -1180,7 +1218,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                             thismassCentreZ += m * sideVec.z;
                             thismass += m;
                             thismoment += m * (sideVec.x * sideVec.x + sideVec.z * sideVec.z);
-                            if (b instanceof BlockSpinThruster)
+                            if (b instanceof BlockSpinThruster && !RedstoneUtil.isBlockReceivingRedstone(this.worldObj, sideVec.toBlockPos()))
                             {
                                 foundThrusters.add(sideVec.toBlockPos());
                             }
@@ -1266,10 +1304,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         // TODO break blocks which are outside SS (not in checked)
         // TODO prevent spin if there is a huge number of blocks outside SS
 
-        if (ConfigManagerCore.enableDebug)
-        {
-            System.out.println("MoI = " + this.momentOfInertia + " CoMx = " + this.massCentreX + " CoMz = " + this.massCentreZ);
-        }
+        GCLog.debug("MoI = " + this.momentOfInertia + " CoMx = " + this.massCentreX + " CoMz = " + this.massCentreZ);
 
         //Send packets to clients in this dimension
         List<Object> objList = new ArrayList<Object>();

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
@@ -10,10 +11,9 @@ import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.render.RenderPlanet;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -301,41 +301,7 @@ public class GameScreenCelestial implements IGameScreen
         GL11.glTranslatef(centreX, centreY, 0F);
 
     	int id = (int) (ticks / 600F) % 5;
-    	String testname = "";
-    	switch (id)
-    	{
-			case 0: testname = "Europa";
-			break;
-			case 1: testname = "Ganymede";
-			break;
-			case 2: testname = "Io";
-			break;
-			case 3: testname = "Jupiter";
-			break;
-			case 4: testname = "Saturn";
-			break;
-    	}
-    	if (id == 3)  //Jupiter
-    	{
-	    	float relSize = 48F;
-	    	float size = relSize / 70 * scale;    	
-	    	ResourceLocation texture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/misc/planets/jupiterInner.png");
-	    	this.renderEngine.bindTexture(texture);
-	    	this.drawTexturedRectUV(- size / 2, -size / 2, size, size, ticks);
-	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-	    	texture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/misc/planets/jupiterUpper.png");
-	        GL11.glTranslatef(0, 0, -0.001F);
-	    	this.renderEngine.bindTexture(texture);
-	    	this.drawTexturedRectUV(- size / 2, -size / 2, size, size, ticks * 0.85F);    		
-    	}
-    	else
-    	{
-	    	ResourceLocation texture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/misc/planets/" + testname.toLowerCase() + ".png");
-	    	this.renderEngine.bindTexture(texture);
-	    	float relSize = 8F;
-	    	float size = relSize / 70 * scale;    	
-	    	this.drawTexturedRectUV(- size / 2, -size / 2, size, size, ticks);
-    	}
+    	RenderPlanet.renderID(id, scale, ticks);
         GL11.glPopMatrix();
     }
     

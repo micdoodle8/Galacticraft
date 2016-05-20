@@ -4,6 +4,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.client.Minecraft;
@@ -67,7 +68,8 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
     {
         if (this.worldObj.provider instanceof WorldProviderOrbit)
     	{
-	        GCPlayerStatsClient stats = GCPlayerStatsClient.get(this);
+	        if (FreefallHandler.testFreefall(this)) return false;
+        	GCPlayerStatsClient stats = GCPlayerStatsClient.get(this);
 	    	if (stats.inFreefall) return false;
 	    	if (stats.landingTicks > 0) return true;
     	}
@@ -92,4 +94,13 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
 //    	super.setVelocity(xx, yy, zz);
 //    }
 //
+
+    /*@Override
+    public void setInPortal()
+    {
+    	if (!(this.worldObj.provider instanceof IGalacticraftWorldProvider))
+    	{
+    		super.setInPortal();
+    	}
+    } TODO Fix disable of portal */
 }

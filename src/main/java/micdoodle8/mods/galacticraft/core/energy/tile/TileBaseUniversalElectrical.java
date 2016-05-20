@@ -23,6 +23,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.EnumSet;
 
+
 public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //implements IElectrical, IElectricalStorage
 {
     protected boolean isAddedToEnergyNet;
@@ -245,6 +246,10 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
             {
                 this.storage.receiveEnergyGC(ElectricItemHelper.dischargeItem(itemStack, energyToDischarge));
             }
+//            else if (EnergyConfigHandler.isRFAPILoaded() && item instanceof IEnergyContainerItem)
+//            {
+//                this.storage.receiveEnergyGC(((IEnergyContainerItem)item).extractEnergy(itemStack, (int) (energyToDischarge / EnergyConfigHandler.RF_RATIO), false) * EnergyConfigHandler.RF_RATIO);
+//            }
 //            else if (EnergyConfigHandler.isMekanismLoaded() && item instanceof IEnergizedItem && ((IEnergizedItem) item).canSend(itemStack))
 //            {
 //                this.storage.receiveEnergyGC((float) EnergizedItemManager.discharge(itemStack, energyToDischarge / EnergyConfigHandler.MEKANISM_RATIO) * EnergyConfigHandler.MEKANISM_RATIO);
@@ -297,7 +302,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
 //                        this.storage.receiveEnergyGC(energyDischarged);
 //                    }
 //                }
-//            } TODO
+//            }
             //			else if (GCCoreCompatibilityManager.isTELoaded() && itemStack.getItem() instanceof IEnergyContainerItem)
             //			{
             //				float given = ((IEnergyContainerItem) itemStack.getItem()).extractEnergy(itemStack, (int) Math.floor(this.getRequest(EnumFacing.UNKNOWN) * EnergyConfigHandler.TO_TE_RATIO), false);
@@ -705,7 +710,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
 //        return MjAPI.DEFAULT_POWER_FRAMEWORK;
 //    }
 //
-//    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
+//    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyReceiver", modID = "")
 //    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
 //    {
 //        if (EnergyConfigHandler.disableRFInput)

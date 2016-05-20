@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.mars.tile;
 
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
+import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
@@ -67,6 +68,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     public TileEntityLaunchController()
     {
         this.storage.setMaxExtract(10);
+        this.noRedstoneControl = true;
     }
 
     @Override
@@ -448,7 +450,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 
     public void updateRocketOnDockSettings()
     {
-        if (this.attachedDock instanceof TileEntityLandingPad)
+    	if (this.attachedDock instanceof TileEntityLandingPad)
         {
             TileEntityLandingPad pad = ((TileEntityLandingPad) this.attachedDock);
             IDockable rocket = pad.getDockedEntity();
@@ -460,7 +462,13 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public IChatComponent getDisplayName()
+    {
         return null;
     }
+
+	public void setAttachedPad(IFuelDock pad)
+	{
+		this.attachedDock = pad;
+	}
 }

@@ -13,8 +13,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -22,7 +20,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -33,19 +30,20 @@ import java.util.List;
 
 public class BlockEnclosed extends BlockContainer implements IPartialSealableBlock, ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {
-    //private IIcon[] enclosedIcons;
+//    private IIcon[] enclosedIcons;
+    public static Item[] pipeItemsBC = new Item[6];
+    public static BlockContainer blockPipeBC = null;
+    public static Method onBlockNeighbourChangeIC2 = null;
 
-    public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumEnclosedBlock.class);
-
-    public enum EnumEnclosedBlock implements IStringSerializable
+    public enum EnumEnclosedBlock
     {
-        TE_CONDUIT(0, 2, null, "enclosed_te_conduit"),
+        TE_CONDUIT(4, 2, null, "enclosed_te_conduit"), //CURRENTLY UNUSED
         OXYGEN_PIPE(1, -1, null, "enclosed_oxygen_pipe"),
         IC2_COPPER_CABLE(2, 0, null, "enclosed_copper_cable"),
         IC2_GOLD_CABLE(3, 3, null, "enclosed_gold_cable"),
-        IC2_HV_CABLE(4, 6, null, "enclosed_hv_cable"),
+        IC2_HV_CABLE(0, 6, null, "enclosed_hv_cable"),
         IC2_GLASS_FIBRE_CABLE(5, 9, null, "enclosed_glassfibre_cable"),
-        IC2_LV_CABLE(6, 10, null, "enclosed_lv_cable"),
+        IC2_LV_CABLE(6, 13, null, "enclosed_lv_cable"),
         BC_ITEM_STONEPIPE(7, -1, "PipeItemsStone", "enclosed_itempipe_stone"),
         BC_ITEM_COBBLESTONEPIPE(8, -1, "PipeItemsCobblestone", "enclosed_itempipe_cobblestone"),
         BC_FLUIDS_STONEPIPE(9, -1, "PipeFluidsStone", "enclosed_liquidpipe_stone"),
@@ -58,15 +56,15 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 
         int metadata;
         int subMeta;
-        String pipeClass;
-        String name;
+        String pipeType;
+        String texture;
 
-        EnumEnclosedBlock(int metadata, int subMeta, String pipeClass, String name)
+        EnumEnclosedBlock(int metadata, int subMeta, String pipeTypeBC, String texture)
         {
             this.metadata = metadata;
             this.subMeta = subMeta;
-            this.pipeClass = pipeClass;
-            this.name = name;
+            this.pipeType = pipeTypeBC;
+            this.texture = texture;
         }
 
         public int getMetadata()
@@ -79,33 +77,28 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
             return this.subMeta;
         }
 
-        public String getPipeClass()
+        public String getPipeType()
         {
-            return this.pipeClass;
+            return this.pipeType;
         }
 
         public String getTexture()
         {
-            return this.name;
+            return this.texture;
         }
+    }
 
-        public static EnumEnclosedBlock getTypeFromMeta(int metadata)
+    public static EnumEnclosedBlock getTypeFromMeta(int metadata)
+    {
+        for (EnumEnclosedBlock type : EnumEnclosedBlock.values())
         {
-            for (EnumEnclosedBlock type : EnumEnclosedBlock.values())
+            if (type.getMetadata() == metadata)
             {
-                if (type.getMetadata() == metadata)
-                {
-                    return type;
-                }
+                return type;
             }
-
-            return null;
         }
 
-        @Override
-        public String getName() {
-            return this.name;
-        }
+        return null;
     }
 
     public BlockEnclosed(String assetName)
@@ -116,12 +109,6 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         this.setStepSound(Block.soundTypeStone);
         //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
-    }
-
-    @Override
-    public int getRenderType()
-    {
-        return 3;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -135,15 +122,14 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 
         if (CompatibilityManager.isTELoaded())
         {
-            // par3List.add(new ItemStack(par1, 1,
-            // EnumEnclosedBlock.TE_CONDUIT.getMetadata()));
+            // par3List.add(new ItemStack(par1, 1, 0));
         }
 
         if (CompatibilityManager.isIc2Loaded())
         {
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.IC2_COPPER_CABLE.getMetadata()));
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.IC2_GOLD_CABLE.getMetadata()));
-            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.IC2_HV_CABLE.getMetadata()));
+            par3List.add(new ItemStack(par1, 1, 4));  //Damage value not same as metadata for HV_CABLE
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.IC2_GLASS_FIBRE_CABLE.getMetadata()));
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.IC2_LV_CABLE.getMetadata()));
         }
@@ -160,7 +146,40 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 
         if (CompatibilityManager.isAppEngLoaded())
         {
-            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.ME_CABLE.getMetadata()));
+//            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.ME_CABLE.getMetadata()));
+        }
+    }
+
+    public static void initialiseBC()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            try {
+                Class<?> clazzBC = Class.forName("buildcraft.BuildCraftTransport");
+                String pipeName = EnumEnclosedBlock.values()[i+7].getPipeType();
+                pipeName = pipeName.substring(0, 1).toLowerCase() + pipeName.substring(1);
+                pipeItemsBC[i] = (Item) clazzBC.getField(pipeName).get(null);
+            }
+            catch (Exception e) { e.printStackTrace(); }
+        }
+        //Now update the cached classes in CompatibilityManager
+        //This is needed for BCCompat compatibility, as that overrides the basic BlockGenericPipe
+        if (pipeItemsBC[0] != null)
+        {
+            try {
+                Class<?> clazzBC = Class.forName("buildcraft.BuildCraftTransport");
+                blockPipeBC = (BlockContainer) clazzBC.getField("genericPipeBlock").get(null);
+                CompatibilityManager.classBCBlockGenericPipe = blockPipeBC.getClass();
+                for (Method m : CompatibilityManager.classBCBlockGenericPipe.getDeclaredMethods())
+                {
+                    if (m.getName().equals("getPipe"))
+                    {
+                        CompatibilityManager.methodBCBlockPipe_getPipe = m;
+                        break;
+                    }
+                }
+            }
+            catch (Exception e) { e.printStackTrace(); }
         }
     }
 
@@ -172,15 +191,20 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 
     /*@Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2)
+    public IIcon getIcon(int par1, int meta)
     {
-        return par2 >= this.enclosedIcons.length ? this.blockIcon : this.enclosedIcons[par2];
+        if (meta == 4) meta = 0;  //Deal with item rendering for the HV block
+        return meta >= this.enclosedIcons.length ? this.blockIcon : this.enclosedIcons[meta];
     }*/
 
     @Override
     public int damageDropped(IBlockState state)
     {
-        return getMetaFromState(state);
+        int meta = state.getBlock().getMetaFromState(state);
+        //TE_CONDUIT and HV_CABLE have had to have swapped metadata in 1.7.10 because IC2's TileCable tile entity doesn't like a block with metadata 4
+        if (meta == 0) return 4;
+        if (meta == 4) return 0;
+        return meta;
     }
 
     /*@Override
@@ -196,150 +220,65 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "" + EnumEnclosedBlock.OXYGEN_PIPE.getTexture());
     }*/
 
-    private void tileAdded(TileEntity tileEntity, int metadata)
-    {
-        if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
-        {
-
-        }
-        else if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
-        {
-            if (tileEntity instanceof INetworkConnection)
-            {
-//                ((INetworkConnection) tileEntity).refresh();
-            }
-        }
-        else if (metadata <= EnumEnclosedBlock.IC2_LV_CABLE.getMetadata())
-        {
-            if (CompatibilityManager.isIc2Loaded())
-            {
-                try
-                {
-                    Class<?> clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
-
-                    if (clazz != null && clazz.isInstance(tileEntity))
-                    {
-                        try
-                        {
-                            Method method = clazz.getMethod("onNeighborBlockChange");
-                            method.invoke(tileEntity);
-                        }
-                        catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
-        else if (metadata <= EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata())
-        {
-        }
-        else if (metadata <= EnumEnclosedBlock.ME_CABLE.getMetadata())
-        {
-        }
-        else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata())
-        {
-            if (tileEntity instanceof IConductor)
-            {
-//            	((IConductor) tileEntity).refresh();
-            }
-        }
-        else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE_HEAVY.getMetadata())
-        {
-            if (tileEntity instanceof IConductor)
-            {
-//                ((IConductor) tileEntity).refresh();
-            }
-        }  	
-    }
-
     @Override
-    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+    public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block block)
     {
-        super.onNeighborBlockChange(worldIn, pos, state, neighborBlock);
-
-        /*int metadata = world.getBlockMetadata(x, y, z);
-        final TileEntity tileEntity = world.getTileEntity(x, y, z);
+        int metadata = state.getBlock().getMetaFromState(state);
+        final TileEntity tileEntity = world.getTileEntity(pos);
 
         if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
         {
-
+            super.onNeighborBlockChange(world, pos, state, block);
         }
-        else if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
+        else if (metadata == EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
         {
+            super.onNeighborBlockChange(world, pos, state, block);
+
             if (tileEntity instanceof INetworkConnection)
             {
                 ((INetworkConnection) tileEntity).refresh();
             }
         }
-        else if (metadata <= EnumEnclosedBlock.IC2_LV_CABLE.getMetadata())
+        else if (metadata <= 6)
         {
-            if (CompatibilityManager.isIc2Loaded())
+            super.onNeighborBlockChange(world, pos, state, block);
+            if (CompatibilityManager.isIc2Loaded() && tileEntity != null)
             {
                 try
                 {
-                    Class<?> clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
-
-                    if (clazz != null && clazz.isInstance(tileEntity))
-                    {
-                        try
-                        {
-                            Method method = clazz.getMethod("onNeighborBlockChange");
-                            method.invoke(tileEntity);
-                        }
-                        catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
+                    onBlockNeighbourChangeIC2.invoke(tileEntity);
+                    return;
                 }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
+                catch (Exception e) { e.printStackTrace(); }
             }
         }
-        else if (metadata <= EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata())
+        else if (metadata <= 12)
         {
             if (CompatibilityManager.isBCraftLoaded())
             {
-                try
+                if (blockPipeBC != null)
                 {
-                    Class<?> clazzPipe = Class.forName("buildcraft.transport.Pipe");
-                    Class<?> clazzPipeTile = Class.forName("buildcraft.transport.TileGenericPipe");
-                    Class<?> clazzPipeBlock = Class.forName("buildcraft.transport.BlockGenericPipe");
-
-                    Object pipe = CompatibilityManager.methodBCBlockPipe_getPipe.invoke(null, world, x, y, z);
-                    Method isValid = clazzPipeBlock.getMethod("isValid", clazzPipe);
-                    Boolean valid = (Boolean) isValid.invoke(null, pipe);
-
-                    if (valid)
-                    {
-                        Method schedule = clazzPipeTile.getMethod("scheduleNeighborChange");
-                        Object container = clazzPipe.getField("container").get(pipe);
-                        schedule.invoke(container);
+                    try {
+                        blockPipeBC.onNeighborBlockChange(world, pos, state, block);
                     }
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
+                    catch (Exception e) { e.printStackTrace(); }
+                    return;
                 }
             }
+
+            super.onNeighborBlockChange(world, pos, state, block);
         }
         else if (metadata <= EnumEnclosedBlock.ME_CABLE.getMetadata())
         {
+            super.onNeighborBlockChange(world, pos, state, block);
             if (CompatibilityManager.isAppEngLoaded())
             {
-                world.markBlockForUpdate(x, y, z);
+                world.markBlockForUpdate(pos);
             }
         }
         else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata())
         {
+            super.onNeighborBlockChange(world, pos, state, block);
             if (tileEntity instanceof IConductor)
             {
                 ((IConductor) tileEntity).refresh();
@@ -347,27 +286,26 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         }
         else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE_HEAVY.getMetadata())
         {
+            super.onNeighborBlockChange(world, pos, state, block);
             if (tileEntity instanceof IConductor)
             {
                 ((IConductor) tileEntity).refresh();
             }
-        }*/
+        }
     }
 
     @Override
     public TileEntity createNewTileEntity(World world, int metadata)
     {
-        TileEntity returnTile = null;
-    	
-    	if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
+        if (metadata == EnumEnclosedBlock.TE_CONDUIT.getMetadata())
         {
-    		//TODO
+            //TODO
         }
-        else if (metadata > 0 && metadata <= EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
+        else if (metadata == EnumEnclosedBlock.OXYGEN_PIPE.getMetadata())
         {
-            returnTile = new TileEntityOxygenPipe();
+            return new TileEntityOxygenPipe();
         }
-        else if (metadata <= EnumEnclosedBlock.IC2_LV_CABLE.getMetadata())
+        else if (metadata <= 6)
         {
             if (CompatibilityManager.isIc2Loaded())
             {
@@ -389,77 +327,48 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 
                     constructor.setAccessible(true);
 
-                    returnTile = (TileEntity) constructor.newInstance((short) EnumEnclosedBlock.getTypeFromMeta(metadata).getSubMetaValue());
+                    return (TileEntity) constructor.newInstance((short) BlockEnclosed.getTypeFromMeta(metadata).getSubMetaValue());
                 }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
+                catch (Exception e) { e.printStackTrace(); }
             }
         }
-        else if (metadata <= EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata())
+        else if (metadata <= 12)
         {
             if (CompatibilityManager.isBCraftLoaded())
             {
                 try
                 {
-                    Class<?> clazzTilePipe = Class.forName("buildcraft.transport.TileGenericPipe");
-                    Constructor<?>[] constructors = clazzTilePipe.getDeclaredConstructors();
-                    Constructor<?> constructor = null;
-
-                    for (Constructor<?> constructor2 : constructors)
-                    {
-                        constructor = constructor2;
-
-                        if (constructor.getGenericParameterTypes().length == 0)
-                        {
-                            break;
-                        }
-                    }
-
-                    constructor.setAccessible(true);
-
-                    TileEntity tilePipe = (TileEntity) constructor.newInstance();
-
-                    returnTile = tilePipe;
+                    return blockPipeBC.createNewTileEntity(world, 0);
                 }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
+                catch (Exception e) { e.printStackTrace(); }
             }
         }
         else if (metadata <= EnumEnclosedBlock.ME_CABLE.getMetadata())
         {
-            if (CompatibilityManager.isAppEngLoaded())
-            {
-                try
-                {
-                    Class<?> clazz = Class.forName("appeng.me.tile.TileCable");
-                    returnTile = (TileEntity) clazz.newInstance();
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
+//            if (CompatibilityManager.isAppEngLoaded())
+//            {
+//                try
+//                {
+//                    Class<?> clazz = Class.forName("appeng.tile.networking.TileCableBus");
+//                    return (TileEntity) clazz.newInstance();
+//                }
+//                catch (Exception e) { e.printStackTrace(); }
+//            }
         }
         else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata())
         {
-            returnTile = new TileEntityAluminumWire(1);
+            return new TileEntityAluminumWire(1);
         }
         else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE_HEAVY.getMetadata())
         {
-            returnTile = new TileEntityAluminumWire(2);
+            return new TileEntityAluminumWire(2);
         }
 
-    	if (returnTile != null) this.tileAdded(returnTile, metadata);
-    	
-        return returnTile;
+        return null;
     }
 
     @Override
-    public boolean isSealed(World worldIn, BlockPos pos, EnumFacing direction)
+    public boolean isSealed(World world, BlockPos pos, EnumFacing direction)
     {
         return true;
     }
@@ -476,19 +385,60 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         return true;
     }
 
-    public IBlockState getStateFromMeta(int meta)
+    public static void initialiseBCPipe(World world, BlockPos pos, int metadata)
     {
-        EnumEnclosedBlock type = EnumEnclosedBlock.getTypeFromMeta(meta);
-        return this.getDefaultState().withProperty(TYPE, type);
-    }
+        try
+        {
+            //------
+            //This section makes these three calls to initialise the TileEntity:
+            //	Pipe pipe = BlockGenericPipe.createPipe(Item);
+            //  tilePipe.initialize(pipe);
+            //	and optionally: tilePipe.sendUpdateToClient();
 
-    public int getMetaFromState(IBlockState state)
-    {
-        return ((EnumEnclosedBlock)state.getValue(TYPE)).getMetadata();
-    }
+            Item pipeItem = pipeItemsBC[metadata-7];
+            Class<?> clazzBlockPipe = CompatibilityManager.classBCBlockGenericPipe;
+            TileEntity tilePipe = world.getTileEntity(pos);
+            Class<?> clazzTilePipe = tilePipe.getClass();
 
-    protected BlockState createBlockState()
-    {
-        return new BlockState(this, TYPE);
+            Method createPipe = null;
+            for (Method m : clazzBlockPipe.getDeclaredMethods())
+            {
+                if (m.getName().equals("createPipe") && m.getParameterTypes().length == 1)
+                {
+                    createPipe = m;
+                    break;
+                }
+            }
+            if (createPipe != null)
+            {
+                Object pipe = createPipe.invoke(null, pipeItem);
+                Method initializePipe = null;
+                for (Method m : clazzTilePipe.getDeclaredMethods())
+                {
+                    if (m.getName().equals("initialize") && m.getParameterTypes().length == 1)
+                    {
+                        initializePipe = m;
+                        break;
+                    }
+                }
+                if (initializePipe != null)
+                {
+                    initializePipe.invoke(tilePipe, pipe);
+
+                    //Legacy compatibility: TileGenericPipe.sendUpdateToClient() is not in recent BC versions
+                    Method m = null;
+                    try
+                    {
+                        m = clazzTilePipe.getMethod("sendUpdateToClient");
+                    }
+                    catch (Exception e) { }
+                    if (m != null) m.invoke(tilePipe);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }

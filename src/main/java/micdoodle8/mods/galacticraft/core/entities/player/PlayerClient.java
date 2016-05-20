@@ -87,15 +87,18 @@ public class PlayerClient implements IPlayerClient
             }
         }
 
-        if (player.getCollisionBoundingBox() != null && stats.boundingBoxBefore == null)
-        {
-            stats.boundingBoxBefore = player.getCollisionBoundingBox();
-            player.setEntityBoundingBox(AxisAlignedBB.fromBounds(stats.boundingBoxBefore.minX + 0.4, stats.boundingBoxBefore.minY + 0.9, stats.boundingBoxBefore.minZ + 0.4, stats.boundingBoxBefore.maxX - 0.4, stats.boundingBoxBefore.maxY - 0.9, stats.boundingBoxBefore.maxZ - 0.4));
-        }
-        else if (player.getCollisionBoundingBox() != null && stats.boundingBoxBefore != null)
-        {
-            player.setEntityBoundingBox(stats.boundingBoxBefore);
-        }
+//        if (player.boundingBox != null && stats.boundingBoxBefore == null)
+//        {
+//            GCLog.debug("Changed player BB from " + player.boundingBox.minY);
+//            stats.boundingBoxBefore = player.boundingBox;
+//            player.boundingBox.setBounds(stats.boundingBoxBefore.minX + 0.4, stats.boundingBoxBefore.minY + 0.9, stats.boundingBoxBefore.minZ + 0.4, stats.boundingBoxBefore.maxX - 0.4, stats.boundingBoxBefore.maxY - 0.9, stats.boundingBoxBefore.maxZ - 0.4);
+//            GCLog.debug("Changed player BB to " + player.boundingBox.minY);
+//        }
+//        else if (player.boundingBox != null && stats.boundingBoxBefore != null)
+//        {
+//            player.boundingBox.setBB(stats.boundingBoxBefore);
+//            GCLog.debug("Changed player BB to " + player.boundingBox.minY);
+//        }
     }
 
     @Override
@@ -106,26 +109,29 @@ public class PlayerClient implements IPlayerClient
         if (player.worldObj.provider instanceof WorldProviderOrbit)
         {
             ((WorldProviderOrbit) player.worldObj.provider).postVanillaMotion(player);
-        }
 
-        if (stats.inFreefall)
-        {
-            //No limb swing
-            player.limbSwing -= player.limbSwingAmount;
-            player.limbSwingAmount = player.prevLimbSwingAmount;
-            float adjust = Math.min(Math.abs(player.limbSwing), Math.abs(player.limbSwingAmount) / 3);
-            if (player.limbSwing < 0) player.limbSwing += adjust;
-            else if (player.limbSwing > 0) player.limbSwing -= adjust;
-            player.limbSwingAmount *= 0.9;
-        } else
-        {
-	    	if (stats.inFreefallLast && this.downMot2 < -0.01D)
-	    	{
-	    		stats.landingTicks = 2 - (int)(Math.min(this.downMot2, stats.downMotionLast) * 75);
-	    		if (stats.landingTicks > 6) stats.landingTicks = 6;
-	    	}
+	        if (stats.inFreefall)
+	        {
+	            //No limb swing
+	            player.limbSwing -= player.limbSwingAmount;
+	            player.limbSwingAmount = player.prevLimbSwingAmount;
+	            float adjust = Math.min(Math.abs(player.limbSwing), Math.abs(player.limbSwingAmount) / 3);
+	            if (player.limbSwing < 0) player.limbSwing += adjust;
+	            else if (player.limbSwing > 0) player.limbSwing -= adjust;
+	            player.limbSwingAmount *= 0.9;
+	        } else
+	        {
+		    	if (stats.inFreefallLast && this.downMot2 < -0.01D)
+		    	{
+		    		stats.landingTicks = 2 - (int)(Math.min(this.downMot2, stats.downMotionLast) * 75);
+		    		if (stats.landingTicks > 6) stats.landingTicks = 6;
+		    	}
+	        }
+
+	        if (stats.landingTicks > 0) stats.landingTicks--;
         }
-        if (stats.landingTicks > 0) stats.landingTicks--;
+        else
+        	stats.inFreefall = false;
 
         boolean ridingThirdPersonEntity = player.ridingEntity instanceof ICameraZoomEntity && ((ICameraZoomEntity) player.ridingEntity).defaultThirdPerson();
 
@@ -159,6 +165,16 @@ public class PlayerClient implements IPlayerClient
         if (gearData != null)
         {
             stats.usingParachute = gearData.getParachute() != null;
+            if (gearData.getMask() >= 0)
+            {
+            	player.height = 1.9375F;
+            }
+            else
+            {
+            	player.height = 1.8F;
+            }
+            AxisAlignedBB bounds = player.getEntityBoundingBox();
+            player.setEntityBoundingBox(new AxisAlignedBB(bounds.minX, bounds.minY, bounds.minZ, bounds.maxX, bounds.minY + (double)player.height, bounds.maxZ));
         }
 
         if (stats.usingParachute && player.onGround)
