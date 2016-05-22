@@ -77,7 +77,6 @@ public class BlockMachine extends BlockTileGC implements ItemBlockDesc.IBlockShi
     public BlockMachine(String assetName)
     {
         super(GCBlocks.machine);
-        this.setUnlocalizedName("basicMachine");
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeMetal);
         //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);

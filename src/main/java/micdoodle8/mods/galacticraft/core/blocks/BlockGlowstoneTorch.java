@@ -1,33 +1,43 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import com.google.common.base.Predicate;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
 public class BlockGlowstoneTorch extends Block implements ItemBlockDesc.IBlockShiftDesc
 {
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", new Predicate<EnumFacing>()
+    {
+        public boolean apply(EnumFacing facing)
+        {
+            return facing != EnumFacing.DOWN;
+        }
+    });
+
     protected BlockGlowstoneTorch(String assetName)
     {
         super(Material.circuits);
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
         this.setTickRandomly(true);
         //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
         this.setLightLevel(0.85F);
         this.setStepSound(Block.soundTypeWood);
-    }
-
-    private static boolean isBlockSolidOnSide(World world, BlockPos pos, EnumFacing direction, boolean nope)
-    {
-        return world.getBlockState(pos).getBlock().isSideSolid(world, pos, direction);
     }
 
     @Override
@@ -60,7 +70,28 @@ public class BlockGlowstoneTorch extends Block implements ItemBlockDesc.IBlockSh
         return GalacticraftCore.proxy.getBlockRender(this);
     }
 
-    private boolean canPlaceTorchOn(World worldIn, BlockPos pos)
+    @Override
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    {
+        for (EnumFacing enumfacing : FACING.getAllowedValues())
+        {
+            if (this.canPlaceAt(worldIn, pos, enumfacing))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean canPlaceAt(World worldIn, BlockPos pos, EnumFacing facing)
+    {
+        BlockPos blockpos = pos.offset(facing.getOpposite());
+        boolean flag = facing.getAxis().isHorizontal();
+        return flag && worldIn.isSideSolid(blockpos, facing, true) || facing.equals(EnumFacing.UP) && this.canPlaceOn(worldIn, blockpos);
+    }
+
+    private boolean canPlaceOn(World worldIn, BlockPos pos)
     {
         if (World.doesBlockHaveSolidTopSurface(worldIn, pos))
         {
@@ -68,53 +99,95 @@ public class BlockGlowstoneTorch extends Block implements ItemBlockDesc.IBlockSh
         }
         else
         {
-            Block l = worldIn.getBlockState(pos).getBlock();
-            return l.canPlaceTorchOnTop(worldIn, pos);
+            Block block = worldIn.getBlockState(pos).getBlock();
+            return block.canPlaceTorchOnTop(worldIn, pos);
         }
-    }
-
-    @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
-    {
-        return BlockGlowstoneTorch.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.WEST), EnumFacing.EAST, true)
-                || BlockGlowstoneTorch.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.EAST), EnumFacing.WEST, true)
-                || BlockGlowstoneTorch.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.NORTH), EnumFacing.SOUTH, true)
-                || BlockGlowstoneTorch.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.SOUTH), EnumFacing.NORTH, true)
-                || this.canPlaceTorchOn(worldIn, pos.offset(EnumFacing.DOWN));
     }
 
     @Override
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        /*int j1 = par9;
-
-        if (par5 == 1 && this.canPlaceTorchOn(par1World, par2, par3 - 1, par4))
+        if (this.canPlaceAt(worldIn, pos, facing))
         {
-            j1 = 5;
+            return this.getDefaultState().withProperty(FACING, facing);
         }
-
-        if (par5 == 2 && BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2, par3, par4 + 1, NORTH, true))
+        else
         {
-            j1 = 4;
-        }
+            for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL)
+            {
+                if (worldIn.isSideSolid(pos.offset(enumfacing.getOpposite()), enumfacing, true))
+                {
+                    return this.getDefaultState().withProperty(FACING, enumfacing);
+                }
+            }
 
-        if (par5 == 3 && BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2, par3, par4 - 1, SOUTH, true))
+            return this.getDefaultState();
+        }
+    }
+
+    @Override
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    {
+        this.checkForDrop(worldIn, pos, state);
+    }
+
+    @Override
+    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+    {
+        this.onNeighborChangeInternal(worldIn, pos, state);
+    }
+
+    protected boolean onNeighborChangeInternal(World worldIn, BlockPos pos, IBlockState state)
+    {
+        if (!this.checkForDrop(worldIn, pos, state))
         {
-            j1 = 3;
+            return true;
         }
-
-        if (par5 == 4 && BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2 + 1, par3, par4, WEST, true))
+        else
         {
-            j1 = 2;
-        }
+            EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+            EnumFacing.Axis enumfacing$axis = enumfacing.getAxis();
+            EnumFacing enumfacing1 = enumfacing.getOpposite();
+            boolean flag = false;
 
-        if (par5 == 5 && BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2 - 1, par3, par4, EAST, true))
+            if (enumfacing$axis.isHorizontal() && !worldIn.isSideSolid(pos.offset(enumfacing1), enumfacing, true))
+            {
+                flag = true;
+            }
+            else if (enumfacing$axis.isVertical() && !this.canPlaceOn(worldIn, pos.offset(enumfacing1)))
+            {
+                flag = true;
+            }
+
+            if (flag)
+            {
+                this.dropBlockAsItem(worldIn, pos, state, 0);
+                worldIn.setBlockToAir(pos);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+
+    protected boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state)
+    {
+        if (state.getBlock() == this && this.canPlaceAt(worldIn, pos, (EnumFacing)state.getValue(FACING)))
         {
-            j1 = 1;
+            return true;
         }
+        else
+        {
+            if (worldIn.getBlockState(pos).getBlock() == this)
+            {
+                this.dropBlockAsItem(worldIn, pos, state, 0);
+                worldIn.setBlockToAir(pos);
+            }
 
-        return j1;*/
-        return getDefaultState();
+            return false;
+        }
     }
 
     @Override
@@ -125,95 +198,6 @@ public class BlockGlowstoneTorch extends Block implements ItemBlockDesc.IBlockSh
         if (getMetaFromState(state) == 0)
         {
             this.onBlockAdded(worldIn, pos, state);
-        }
-    }
-
-    @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
-    {
-        /*if (worldIn.getBlockMetadata(par2, par3, par4) == 0)
-        {
-            if (BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2 - 1, par3, par4, EAST, true))
-            {
-                worldIn.setBlockMetadataWithNotify(par2, par3, par4, 1, 2);
-            }
-            else if (BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2 + 1, par3, par4, WEST, true))
-            {
-                worldIn.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
-            }
-            else if (BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2, par3, par4 - 1, SOUTH, true))
-            {
-                worldIn.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
-            }
-            else if (BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2, par3, par4 + 1, NORTH, true))
-            {
-                worldIn.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
-            }
-            else if (this.canPlaceTorchOn(par1World, par2, par3 - 1, par4))
-            {
-                worldIn.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
-            }
-        }
-
-        this.dropTorchIfCantStay(par1World, par2, par3, par4);*/
-    }
-
-    @Override
-    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
-    {
-        /*if (this.dropTorchIfCantStay(par1World, par2, par3, par4))
-        {
-            int i1 = par1World.getBlockMetadata(par2, par3, par4);
-            boolean flag = false;
-
-            if (!BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2 - 1, par3, par4, EAST, true) && i1 == 1)
-            {
-                flag = true;
-            }
-
-            if (!BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2 + 1, par3, par4, WEST, true) && i1 == 2)
-            {
-                flag = true;
-            }
-
-            if (!BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2, par3, par4 - 1, SOUTH, true) && i1 == 3)
-            {
-                flag = true;
-            }
-
-            if (!BlockGlowstoneTorch.isBlockSolidOnSide(par1World, par2, par3, par4 + 1, NORTH, true) && i1 == 4)
-            {
-                flag = true;
-            }
-
-            if (!this.canPlaceTorchOn(par1World, par2, par3 - 1, par4) && i1 == 5)
-            {
-                flag = true;
-            }
-
-            if (flag)
-            {
-                this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-                par1World.setBlockToAir(par2, par3, par4);
-            }
-        }*/
-    }
-
-    protected boolean dropTorchIfCantStay(World worldIn, BlockPos pos)
-    {
-        if (!this.canPlaceBlockAt(worldIn, pos))
-        {
-            if (worldIn.getBlockState(pos).getBlock() == this)
-            {
-                this.dropBlockAsItem(worldIn, pos, worldIn.getBlockState(pos), 0);
-                worldIn.setBlockToAir(pos);
-            }
-
-            return false;
-        }
-        else
-        {
-            return true;
         }
     }
 
@@ -246,6 +230,74 @@ public class BlockGlowstoneTorch extends Block implements ItemBlockDesc.IBlockSh
         }
 
         return super.collisionRayTrace(worldIn, pos, start, end);
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        IBlockState iblockstate = this.getDefaultState();
+
+        switch (meta)
+        {
+            case 1:
+                iblockstate = iblockstate.withProperty(FACING, EnumFacing.EAST);
+                break;
+            case 2:
+                iblockstate = iblockstate.withProperty(FACING, EnumFacing.WEST);
+                break;
+            case 3:
+                iblockstate = iblockstate.withProperty(FACING, EnumFacing.SOUTH);
+                break;
+            case 4:
+                iblockstate = iblockstate.withProperty(FACING, EnumFacing.NORTH);
+                break;
+            case 5:
+            default:
+                iblockstate = iblockstate.withProperty(FACING, EnumFacing.UP);
+        }
+
+        return iblockstate;
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        int i = 0;
+
+        switch ((EnumFacing)state.getValue(FACING))
+        {
+            case EAST:
+                i = i | 1;
+                break;
+            case WEST:
+                i = i | 2;
+                break;
+            case SOUTH:
+                i = i | 3;
+                break;
+            case NORTH:
+                i = i | 4;
+                break;
+            case DOWN:
+            case UP:
+            default:
+                i = i | 5;
+        }
+
+        return i;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumWorldBlockLayer getBlockLayer()
+    {
+        return EnumWorldBlockLayer.CUTOUT;
+    }
+
+    @Override
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, new IProperty[] {FACING});
     }
 
     @Override

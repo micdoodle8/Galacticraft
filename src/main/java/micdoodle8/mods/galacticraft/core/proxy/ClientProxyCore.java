@@ -13,6 +13,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.DynamicTextureProper;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
+import micdoodle8.mods.galacticraft.core.client.GalacticraftStateMapper;
 import micdoodle8.mods.galacticraft.core.client.fx.EffectHandler;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
@@ -53,6 +54,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.Fluid;
@@ -230,6 +232,17 @@ public class ClientProxyCore extends CommonProxyCore
         addVariants("machine2", "galacticraftcore:circuit_fabricator",
                 "galacticraftcore:oxygen_storage_module",
                 "galacticraftcore:electric_ingot_compressor");
+        addVariants("machine_tiered", "galacticraftcore:energy_storage",
+                "galacticraftcore:electric_furnace",
+                "galacticraftcore:cluster_storage",
+                "galacticraftcore:arc_furnace");
+        addVariants("basic_block_moon", "galacticraftcore:ore_copper_moon",
+                "galacticraftcore:ore_tin_moon",
+                "galacticraftcore:ore_cheese_moon",
+                "galacticraftcore:moon_dirt_moon",
+                "galacticraftcore:moon_stone",
+                "galacticraftcore:moon_turf_0",
+                "galacticraftcore:moon_dungeon_brick");
 
 //        MinecraftForge.EVENT_BUS.register(new TabRegistry());
         //ClientProxyCore.playerList = GLAllocation.generateDisplayLists(1);
@@ -242,6 +255,12 @@ public class ClientProxyCore extends CommonProxyCore
 //			ftc.setAccessible(true);
 //			ftc.set(Minecraft.getMinecraft(), new MusicTickerGC(Minecraft.getMinecraft()));
 //        } catch (Exception e) {e.printStackTrace();}
+    }
+
+    @Override
+    public void postRegisterBlock(Block block)
+    {
+        ModelLoader.setCustomStateMapper(block, GalacticraftStateMapper.INSTANCE);
     }
 
     public static void registerEntityRenderers()
@@ -363,10 +382,20 @@ public class ClientProxyCore extends CommonProxyCore
         registerBlockJson(GCBlocks.machineBase2, 0, "electric_ingot_compressor");
         registerBlockJson(GCBlocks.machineBase2, 4, "circuit_fabricator");
         registerBlockJson(GCBlocks.machineBase2, 8, "oxygen_storage_module");
-        registerBlockJson(GCBlocks.machineTiered);
-        registerBlockJson(GCBlocks.aluminumWire);
+        registerBlockJson(GCBlocks.machineTiered, 0, "energy_storage");
+        registerBlockJson(GCBlocks.machineTiered, 4, "electric_furnace");
+        registerBlockJson(GCBlocks.machineTiered, 8, "cluster_storage");
+        registerBlockJson(GCBlocks.machineTiered, 12, "arc_furnace");
+        registerBlockJson(GCBlocks.aluminumWire, 0, "aluminum_wire");
+        registerBlockJson(GCBlocks.aluminumWire, 1, "aluminum_wire");
         registerBlockJson(GCBlocks.glowstoneTorch);
-        registerBlockJson(GCBlocks.blockMoon);
+        registerBlockJson(GCBlocks.blockMoon, 0, "ore_copper_moon");
+        registerBlockJson(GCBlocks.blockMoon, 1, "ore_tin_moon");
+        registerBlockJson(GCBlocks.blockMoon, 2, "ore_cheese_moon");
+        registerBlockJson(GCBlocks.blockMoon, 3, "moon_dirt_moon");
+        registerBlockJson(GCBlocks.blockMoon, 4, "moon_stone");
+        registerBlockJson(GCBlocks.blockMoon, 5, "moon_turf_0");
+        registerBlockJson(GCBlocks.blockMoon, 14, "moon_dungeon_brick");
         registerBlockJson(GCBlocks.cheeseBlock);
         registerBlockJson(GCBlocks.spinThruster);
         registerBlockJson(GCBlocks.screen);

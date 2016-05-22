@@ -1,5 +1,6 @@
 {
     "variants": {
-        "normal": { "model": "galacticraftcore:aluminum_wire_model" }
+        "type=alu_wire": { "model": "galacticraftcore:aluminum_wire_model" },
+        "type=alu_wire_heavy": { "model": "galacticraftcore:aluminum_wire_model" }
     }
 }

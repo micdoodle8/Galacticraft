@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "galacticraftasteroids:blocks/machine",
+        "down": "galacticraftasteroids:blocks/machine",
+        "up": "galacticraftasteroids:blocks/machine",
+        "north": "galacticraftasteroids:blocks/energyStorageModule_0",
+        "east": "galacticraftasteroids:blocks/machine_output",
+        "south": "galacticraftasteroids:blocks/energyStorageModule_0",
+        "west": "galacticraftasteroids:blocks/machine_input"
+    }
+}

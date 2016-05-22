@@ -274,26 +274,25 @@ public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBl
     {
         int metadata = getMetaFromState(state);
 
-        int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        int change = 0;
+        final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
 
-        switch (angle)
+        if (metadata >= BlockMachineTiered.ELECTRIC_FURNACE_METADATA + 8)
         {
-        case 0:
-            change = 3;
-            break;
-        case 1:
-            change = 1;
-            break;
-        case 2:
-            change = 2;
-            break;
-        case 3:
-            change = 0;
-            break;
+            worldIn.setBlockState(pos, getStateFromMeta(BlockMachineTiered.ELECTRIC_FURNACE_METADATA + 8 + change), 3);
         }
-
-        worldIn.setBlockState(pos, getStateFromMeta((metadata & 12) + change), 3);
+        else if (metadata >= BlockMachineTiered.STORAGE_MODULE_METADATA + 8)
+        {
+            worldIn.setBlockState(pos, getStateFromMeta(BlockMachineTiered.STORAGE_MODULE_METADATA + 8 + change), 3);
+        }
+        else if (metadata >= BlockMachineTiered.ELECTRIC_FURNACE_METADATA)
+        {
+            worldIn.setBlockState(pos, getStateFromMeta(BlockMachineTiered.ELECTRIC_FURNACE_METADATA + change), 3);
+        }
+        else if (metadata >= BlockMachineTiered.STORAGE_MODULE_METADATA)
+        {
+            worldIn.setBlockState(pos, getStateFromMeta(BlockMachineTiered.STORAGE_MODULE_METADATA + change), 3);
+        }
     }
 
     @Override

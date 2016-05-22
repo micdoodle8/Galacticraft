@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityThruster;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -19,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IBlockShiftDesc
+public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IBlockShiftDesc, ITileEntityProvider
 {
     //public static IIcon thrusterIcon;
 

@@ -72,4 +72,6 @@ public class CommonProxyCore
             return null;
         }
     }
+
+    public void postRegisterBlock(Block block) { }
 }

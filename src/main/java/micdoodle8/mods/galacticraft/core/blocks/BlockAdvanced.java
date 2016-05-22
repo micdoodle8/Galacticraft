@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -15,7 +16,7 @@ import java.lang.reflect.Method;
 /**
  * An advanced block class that is to be extended for wrenching capabilities.
  */
-public abstract class BlockAdvanced extends BlockContainer
+public abstract class BlockAdvanced extends Block
 {
     public BlockAdvanced(Material material)
     {
