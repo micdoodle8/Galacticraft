@@ -36,7 +36,6 @@ public class RenderGrapple extends Render
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glDisable(GL11.GL_LIGHTING);
             tessellator.getWorldRenderer().begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
-            tessellator.getWorldRenderer().color(203.0F / 255.0F, 203.0F / 255.0F, 192.0F / 255.0F, 1.0F);
             byte b2 = 16;
 
             double d14 = grapple.prevPosX + (grapple.posX - grapple.prevPosX) * partialTicks;
@@ -50,7 +49,7 @@ public class RenderGrapple extends Render
             for (int i = 0; i <= b2; ++i)
             {
                 float f12 = (float) i / (float) b2;
-                tessellator.getWorldRenderer().pos(x + d11 * f12, y + d12 * (f12 * f12 + f12) * 0.5D + 0.15D, z + d13 * f12).endVertex();
+                tessellator.getWorldRenderer().pos(x + d11 * f12, y + d12 * (f12 * f12 + f12) * 0.5D + 0.15D, z + d13 * f12).color(203.0F / 255.0F, 203.0F / 255.0F, 192.0F / 255.0F, 1.0F).endVertex();
             }
 
             tessellator.draw();

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -96,7 +97,7 @@ public class RoomBossMoon extends DungeonRoom
 
         if (tile == null || !(tile instanceof TileEntityDungeonSpawner))
         {
-            TileEntityDungeonSpawner spawner = new TileEntityDungeonSpawner();
+            TileEntityDungeonSpawner spawner = new TileEntityDungeonSpawner(EntitySkeletonBoss.class);
             spawner.setRoom(new Vector3(this.posX, this.posY, this.posZ), new Vector3(this.sizeX, this.sizeY, this.sizeZ));
             this.worldObj.setTileEntity(this.spawnerCoords, spawner);
         }

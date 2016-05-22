@@ -26,6 +26,16 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
     private Vector3 roomCoords;
     private Vector3 roomSize;
 
+    public TileEntityDungeonSpawner()
+    {
+
+    }
+
+    public TileEntityDungeonSpawner(Class<E> bossClass)
+    {
+        this.bossClass = bossClass;
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public void update()
@@ -40,7 +50,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
         if (!this.worldObj.isRemote)
         {
             final Vector3 thisVec = new Vector3(this);
-            final List<E> l = this.worldObj.getEntitiesWithinAABB(this.bossClass, AxisAlignedBB.fromBounds(thisVec.x - 15, thisVec.y - 15, thisVec.z - 15, thisVec.x + 15, thisVec.y + 15, thisVec.z + 15));
+            final List<E> l = this.worldObj.getEntitiesWithinAABB(bossClass, AxisAlignedBB.fromBounds(thisVec.x - 15, thisVec.y - 15, thisVec.z - 15, thisVec.x + 15, thisVec.y + 15, thisVec.z + 15));
 
             for (final Entity e : l)
             {

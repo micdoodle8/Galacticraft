@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
@@ -187,6 +188,10 @@ public class GCBlocks
         GCBlocks.registerBlocks();
         GCBlocks.setHarvestLevels();
 
+        //Complete registration of various types of torches
+        BlockUnlitTorch.register((BlockUnlitTorch)GCBlocks.unlitTorch, (BlockUnlitTorch)GCBlocks.unlitTorchLit, Blocks.torch);
+        GCBlocks.doOtherModsTorches();
+
         OreDictionary.registerOre("oreCopper", new ItemStack(GCBlocks.basicBlock, 1, 5));
         OreDictionary.registerOre("oreCopper", new ItemStack(GCBlocks.blockMoon, 1, 0));
         OreDictionary.registerOre("oreTin", new ItemStack(GCBlocks.basicBlock, 1, 6));
@@ -196,6 +201,11 @@ public class GCBlocks
         OreDictionary.registerOre("oreNaturalAluminum", new ItemStack(GCBlocks.basicBlock, 1, 7));
         OreDictionary.registerOre("oreSilicon", new ItemStack(GCBlocks.basicBlock, 1, 8));
         OreDictionary.registerOre("oreCheese", new ItemStack(GCBlocks.blockMoon, 1, 2));
+
+        OreDictionary.registerOre("blockCopper", new ItemStack(GCBlocks.basicBlock, 1, 9));
+        OreDictionary.registerOre("blockTin", new ItemStack(GCBlocks.basicBlock, 1, 10));
+        OreDictionary.registerOre("blockAluminum", new ItemStack(GCBlocks.basicBlock, 1, 11));
+        OreDictionary.registerOre("blockAluminium", new ItemStack(GCBlocks.basicBlock, 1, 11));
     }
 
     private static void setHarvestLevel(Block block, String toolClass, int level, int meta)
@@ -203,32 +213,32 @@ public class GCBlocks
         block.setHarvestLevel(toolClass, level, block.getStateFromMeta(meta));
     }
 
-    private static void setHarvestLevel(Block block, String toolClass, int level)
+    private static void doOtherModsTorches()
     {
         BlockUnlitTorch torch;
         BlockUnlitTorch torchLit;
-        
+
         if (Loader.isModLoaded("TConstruct"))
         {
-	    	Block modTorch = null; 
-	    	try {
-	    		//tconstruct.world.TinkerWorld.stoneTorch
-	    		Class clazz = Class.forName("tconstruct.world.TinkerWorld");
-	    		modTorch = (Block) clazz.getField("stoneTorch").get(null);
-	    	} catch (Exception e) { }
-	    	if (modTorch != null)
-	    	{
-	        	torch = new BlockUnlitTorch(false, "unlitTorch_Stone");
-		        torchLit = new BlockUnlitTorch(true, "unlitTorchLit_Stone");
-		        GCBlocks.hiddenBlocks.add(torch);
-		        GCBlocks.hiddenBlocks.add(torchLit);
-		        GCBlocks.otherModTorchesLit.add(torchLit);
-		        GameRegistry.registerBlock(torch, ItemBlockGC.class, torch.getUnlocalizedName());
-		        GameRegistry.registerBlock(torchLit, ItemBlockGC.class, torchLit.getUnlocalizedName());
-		        BlockUnlitTorch.register(torch, torchLit, modTorch);
-	    	}
+            Block modTorch = null;
+            try {
+                //tconstruct.world.TinkerWorld.stoneTorch
+                Class clazz = Class.forName("tconstruct.world.TinkerWorld");
+                modTorch = (Block) clazz.getField("stoneTorch").get(null);
+            } catch (Exception e) { }
+            if (modTorch != null)
+            {
+                torch = new BlockUnlitTorch(false, "unlitTorch_Stone");
+                torchLit = new BlockUnlitTorch(true, "unlitTorchLit_Stone");
+                GCBlocks.hiddenBlocks.add(torch);
+                GCBlocks.hiddenBlocks.add(torchLit);
+                GCBlocks.otherModTorchesLit.add(torchLit);
+                GameRegistry.registerBlock(torch, ItemBlockGC.class, torch.getUnlocalizedName());
+                GameRegistry.registerBlock(torchLit, ItemBlockGC.class, torchLit.getUnlocalizedName());
+                BlockUnlitTorch.register(torch, torchLit, modTorch);
+            }
         }
-	}
+    }
 
     public static void setHarvestLevels()
     {
@@ -236,7 +246,7 @@ public class GCBlocks
         setHarvestLevel(GCBlocks.basicBlock, "pickaxe", 2, 6); //Tin ore
         setHarvestLevel(GCBlocks.basicBlock, "pickaxe", 2, 7); //Aluminium ore
         setHarvestLevel(GCBlocks.basicBlock, "pickaxe", 1, 8); //Silicon ore
-        setHarvestLevel(GCBlocks.fallenMeteor, "pickaxe", 3);
+        setHarvestLevel(GCBlocks.fallenMeteor, "pickaxe", 3, 0);
         setHarvestLevel(GCBlocks.blockMoon, "pickaxe", 2, 0); //Copper ore
         setHarvestLevel(GCBlocks.blockMoon, "pickaxe", 2, 1); //Tin ore
         setHarvestLevel(GCBlocks.blockMoon, "pickaxe", 1, 2); //Cheese ore

@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
+import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCreeperBoss;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityDungeonSpawnerMars;
 import net.minecraft.block.Block;
@@ -159,7 +160,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     {
         if (state.getBlock().getMetaFromState(state) == 10)
         {
-            return new TileEntityDungeonSpawnerMars();
+            return new TileEntityDungeonSpawnerMars(EntityCreeperBoss.class);
         }
 
         return null;

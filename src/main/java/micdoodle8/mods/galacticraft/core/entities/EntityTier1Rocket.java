@@ -45,9 +45,15 @@ public class EntityTier1Rocket extends EntityTieredRocket
     }
 
     @Override
+    public double getMountedYOffset()
+    {
+        return 0.6D;
+    }
+
+    @Override
     public float getRotateOffset()
     {
-        return -1.5F;
+        return 0.0F;
     }
 
 	@Override
@@ -325,7 +331,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
     @Override
     public double getOnPadYOffset()
     {
-    	return 1.5D;
+    	return 0.0D;
     }
 
     @Override

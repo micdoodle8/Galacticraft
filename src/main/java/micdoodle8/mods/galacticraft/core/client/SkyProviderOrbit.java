@@ -159,17 +159,15 @@ public class SkyProviderOrbit extends IRenderHandler
 
             WorldRenderer worldRenderer = var23.getWorldRenderer();
             worldRenderer.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR);
-            worldRenderer.color(var8, var9, var10, var24[3]);
-            worldRenderer.pos(0.0D, 100.0D, 0.0D).endVertex();
+            worldRenderer.pos(0.0D, 100.0D, 0.0D).color(var8, var9, var10, var24[3]).endVertex();
             final byte var26 = 16;
-            worldRenderer.color(var24[0], var24[1], var24[2], 0.0F);
 
             for (int var27 = 0; var27 <= var26; ++var27)
             {
                 var13 = var27 * (float) Math.PI * 2.0F / var26;
                 final float var14 = MathHelper.sin(var13);
                 final float var15 = MathHelper.cos(var13);
-                worldRenderer.pos(var14 * 120.0F, var15 * 120.0F, -var15 * 40.0F * var24[3]).endVertex();
+                worldRenderer.pos(var14 * 120.0F, var15 * 120.0F, -var15 * 40.0F * var24[3]).color(var24[0], var24[1], var24[2], 0.0F).endVertex();
             }
 
             var23.draw();

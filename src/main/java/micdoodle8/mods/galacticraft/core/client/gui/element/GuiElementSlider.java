@@ -66,48 +66,40 @@ public class GuiElementSlider extends GuiButton
             if (this.isVertical)
             {
                 worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-                worldRenderer.color(0, 0, 0, 1.0F);
-                worldRenderer.pos((double) this.xPosition + this.width, this.yPosition, this.zLevel).endVertex();
-                worldRenderer.pos(this.xPosition, this.yPosition, this.zLevel).endVertex();
-                worldRenderer.pos(this.xPosition, (double) this.yPosition + this.height, this.zLevel).endVertex();
-                worldRenderer.pos((double) this.xPosition + this.width, (double) this.yPosition + this.height, this.zLevel).endVertex();
+                worldRenderer.pos((double) this.xPosition + this.width, this.yPosition, this.zLevel).color(0, 0, 0, 1.0F).endVertex();
+                worldRenderer.pos(this.xPosition, this.yPosition, this.zLevel).color(0, 0, 0, 1.0F).endVertex();
+                worldRenderer.pos(this.xPosition, (double) this.yPosition + this.height, this.zLevel).color(0, 0, 0, 1.0F).endVertex();
+                worldRenderer.pos((double) this.xPosition + this.width, (double) this.yPosition + this.height, this.zLevel).color(0, 0, 0, 1.0F).endVertex();
                 tessellator.draw();
 
                 worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-                worldRenderer.color(this.firstColor.floatX(), this.firstColor.floatY(), this.firstColor.floatZ(), 1.0F);
-                worldRenderer.pos((double) this.xPosition + this.width - 1, (double) this.yPosition + 1, this.zLevel).endVertex();
-                worldRenderer.pos((double) this.xPosition + 1, (double) this.yPosition + 1, this.zLevel).endVertex();
-                worldRenderer.color(this.lastColor.floatX(), this.lastColor.floatY(), this.lastColor.floatZ(), 1.0F);
-                worldRenderer.pos((double) this.xPosition + 1, (double) this.yPosition + this.height - 1, this.zLevel).endVertex();
-                worldRenderer.pos((double) this.xPosition + this.width - 1, (double) this.yPosition + this.height - 1, this.zLevel).endVertex();
+                worldRenderer.pos((double) this.xPosition + this.width - 1, (double) this.yPosition + 1, this.zLevel).color(this.firstColor.floatX(), this.firstColor.floatY(), this.firstColor.floatZ(), 1.0F).endVertex();
+                worldRenderer.pos((double) this.xPosition + 1, (double) this.yPosition + 1, this.zLevel).color(this.firstColor.floatX(), this.firstColor.floatY(), this.firstColor.floatZ(), 1.0F).endVertex();
+                worldRenderer.pos((double) this.xPosition + 1, (double) this.yPosition + this.height - 1, this.zLevel).color(this.lastColor.floatX(), this.lastColor.floatY(), this.lastColor.floatZ(), 1.0F).endVertex();
+                worldRenderer.pos((double) this.xPosition + this.width - 1, (double) this.yPosition + this.height - 1, this.zLevel).color(this.lastColor.floatX(), this.lastColor.floatY(), this.lastColor.floatZ(), 1.0F).endVertex();
                 tessellator.draw();
 
                 worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-                worldRenderer.color(1, 1, 1, 1.0F);
-                worldRenderer.pos((double) this.xPosition + this.width, (double) this.yPosition + this.sliderPos - 1, this.zLevel).endVertex();
-                worldRenderer.pos(this.xPosition, (double) this.yPosition + this.sliderPos - 1, this.zLevel).endVertex();
-                worldRenderer.pos(this.xPosition, (double) this.yPosition + this.sliderPos + 1, this.zLevel).endVertex();
-                worldRenderer.pos((double) this.xPosition + this.width, (double) this.yPosition + this.sliderPos + 1, this.zLevel).endVertex();
+                worldRenderer.pos((double) this.xPosition + this.width, (double) this.yPosition + this.sliderPos - 1, this.zLevel).color(1, 1, 1, 1.0F).endVertex();
+                worldRenderer.pos(this.xPosition, (double) this.yPosition + this.sliderPos - 1, this.zLevel).color(1, 1, 1, 1.0F).endVertex();
+                worldRenderer.pos(this.xPosition, (double) this.yPosition + this.sliderPos + 1, this.zLevel).color(1, 1, 1, 1.0F).endVertex();
+                worldRenderer.pos((double) this.xPosition + this.width, (double) this.yPosition + this.sliderPos + 1, this.zLevel).color(1, 1, 1, 1.0F).endVertex();
                 tessellator.draw();
             }
             else
             {
                 worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-                worldRenderer.color(0, 0, 0, 1.0F);
-                worldRenderer.pos((double) this.xPosition + this.width, this.yPosition, this.zLevel).endVertex();
-                worldRenderer.pos(this.xPosition, this.yPosition, this.zLevel).endVertex();
-                worldRenderer.pos(this.xPosition, (double) this.yPosition + this.height, this.zLevel).endVertex();
-                worldRenderer.pos((double) this.xPosition + this.width, (double) this.yPosition + this.height, this.zLevel).endVertex();
+                worldRenderer.pos((double) this.xPosition + this.width, this.yPosition, this.zLevel).color(0, 0, 0, 1.0F).endVertex();
+                worldRenderer.pos(this.xPosition, this.yPosition, this.zLevel).color(0, 0, 0, 1.0F).endVertex();
+                worldRenderer.pos(this.xPosition, (double) this.yPosition + this.height, this.zLevel).color(0, 0, 0, 1.0F).endVertex();
+                worldRenderer.pos((double) this.xPosition + this.width, (double) this.yPosition + this.height, this.zLevel).color(0, 0, 0, 1.0F).endVertex();
                 tessellator.draw();
 
                 worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-                worldRenderer.color(this.lastColor.floatX(), this.lastColor.floatY(), this.lastColor.floatZ(), 1.0F);
-                worldRenderer.pos((double) this.xPosition + this.width - 1, (double) this.yPosition + 1, this.zLevel).endVertex();
-                worldRenderer.color(this.firstColor.floatX(), this.firstColor.floatY(), this.firstColor.floatZ(), 1.0F);
-                worldRenderer.pos((double) this.xPosition + 1, (double) this.yPosition + 1, this.zLevel).endVertex();
-                worldRenderer.pos((double) this.xPosition + 1, (double) this.yPosition + this.height - 1, this.zLevel).endVertex();
-                worldRenderer.color(this.lastColor.floatX(), this.lastColor.floatY(), this.lastColor.floatZ(), 1.0F);
-                worldRenderer.pos((double) this.xPosition + this.width - 1, (double) this.yPosition + this.height - 1, this.zLevel).endVertex();
+                worldRenderer.pos((double) this.xPosition + this.width - 1, (double) this.yPosition + 1, this.zLevel).color(this.lastColor.floatX(), this.lastColor.floatY(), this.lastColor.floatZ(), 1.0F).endVertex();
+                worldRenderer.pos((double) this.xPosition + 1, (double) this.yPosition + 1, this.zLevel).color(this.firstColor.floatX(), this.firstColor.floatY(), this.firstColor.floatZ(), 1.0F).endVertex();
+                worldRenderer.pos((double) this.xPosition + 1, (double) this.yPosition + this.height - 1, this.zLevel).color(this.firstColor.floatX(), this.firstColor.floatY(), this.firstColor.floatZ(), 1.0F).endVertex();
+                worldRenderer.pos((double) this.xPosition + this.width - 1, (double) this.yPosition + this.height - 1, this.zLevel).color(this.lastColor.floatX(), this.lastColor.floatY(), this.lastColor.floatZ(), 1.0F).endVertex();
                 tessellator.draw();
 
                 GL11.glShadeModel(GL11.GL_FLAT);
@@ -133,11 +125,10 @@ public class GuiElementSlider extends GuiButton
                 GL11.glShadeModel(GL11.GL_SMOOTH);
 
                 worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-                worldRenderer.color(1, 1, 1, 1.0F);
-                worldRenderer.pos((double) this.xPosition + this.sliderPos + 1, this.yPosition, this.zLevel).endVertex();
-                worldRenderer.pos((double) this.xPosition + this.sliderPos - 1, this.yPosition, this.zLevel).endVertex();
-                worldRenderer.pos((double) this.xPosition + this.sliderPos - 1, (double) this.yPosition + this.height, this.zLevel).endVertex();
-                worldRenderer.pos((double) this.xPosition + this.sliderPos + 1, (double) this.yPosition + this.height, this.zLevel).endVertex();
+                worldRenderer.pos((double) this.xPosition + this.sliderPos + 1, this.yPosition, this.zLevel).color(1, 1, 1, 1.0F).endVertex();
+                worldRenderer.pos((double) this.xPosition + this.sliderPos - 1, this.yPosition, this.zLevel).color(1, 1, 1, 1.0F).endVertex();
+                worldRenderer.pos((double) this.xPosition + this.sliderPos - 1, (double) this.yPosition + this.height, this.zLevel).color(1, 1, 1, 1.0F).endVertex();
+                worldRenderer.pos((double) this.xPosition + this.sliderPos + 1, (double) this.yPosition + this.height, this.zLevel).color(1, 1, 1, 1.0F).endVertex();
                 tessellator.draw();
             }
 

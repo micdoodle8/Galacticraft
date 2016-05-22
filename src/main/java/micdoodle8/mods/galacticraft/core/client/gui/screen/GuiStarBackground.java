@@ -132,11 +132,10 @@ public abstract class GuiStarBackground extends GuiScreen
 
                 this.mc.getTextureManager().bindTexture(GuiStarBackground.backgroundTexture);
                 worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-                worldRenderer.color(1.0F, 1.0F, 1.0F, 1.0F / (var6 + 1));
-                worldRenderer.pos(-1.0D, -1.0D, 1.0D).tex(0.0F + 1, 0.0F + 1).endVertex();
-                worldRenderer.pos(1.0D, -1.0D, 1.0D).tex(1.0F - 1, 0.0F + 1).endVertex();
-                worldRenderer.pos(1.0D, 1.0D, 1.0D).tex(1.0F - 1, 1.0F - 1).endVertex();
-                worldRenderer.pos(-1.0D, 1.0D, 1.0D).tex(0.0F + 1, 1.0F - 1).endVertex();
+                worldRenderer.pos(-1.0D, -1.0D, 1.0D).tex(0.0F + 1, 0.0F + 1).color(1.0F, 1.0F, 1.0F, 1.0F / (var6 + 1)).endVertex();
+                worldRenderer.pos(1.0D, -1.0D, 1.0D).tex(1.0F - 1, 0.0F + 1).color(1.0F, 1.0F, 1.0F, 1.0F / (var6 + 1)).endVertex();
+                worldRenderer.pos(1.0D, 1.0D, 1.0D).tex(1.0F - 1, 1.0F - 1).color(1.0F, 1.0F, 1.0F, 1.0F / (var6 + 1)).endVertex();
+                worldRenderer.pos(-1.0D, 1.0D, 1.0D).tex(0.0F + 1, 1.0F - 1).color(1.0F, 1.0F, 1.0F, 1.0F / (var6 + 1)).endVertex();
                 tess.draw();
                 GL11.glPopMatrix();
             }
@@ -233,11 +232,10 @@ public abstract class GuiStarBackground extends GuiScreen
 
                 this.mc.getTextureManager().bindTexture(GuiStarBackground.backgroundTexture);
                 worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-                worldRenderer.color(1.0F, 1.0F, 1.0F, 1.0F / (var6 + 1));
-                worldRenderer.pos(-1.0D, -1.0D, 1.0D).tex(0.0F + 1, 0.0F + 1).endVertex();
-                worldRenderer.pos(1.0D, -1.0D, 1.0D).tex(1.0F - 1, 0.0F + 1).endVertex();
-                worldRenderer.pos(1.0D, 1.0D, 1.0D).tex(1.0F - 1, 1.0F - 1).endVertex();
-                worldRenderer.pos(-1.0D, 1.0D, 1.0D).tex(0.0F + 1, 1.0F - 1).endVertex();
+                worldRenderer.pos(-1.0D, -1.0D, 1.0D).tex(0.0F + 1, 0.0F + 1).color(1.0F, 1.0F, 1.0F, 1.0F / (var6 + 1)).endVertex();
+                worldRenderer.pos(1.0D, -1.0D, 1.0D).tex(1.0F - 1, 0.0F + 1).color(1.0F, 1.0F, 1.0F, 1.0F / (var6 + 1)).endVertex();
+                worldRenderer.pos(1.0D, 1.0D, 1.0D).tex(1.0F - 1, 1.0F - 1).color(1.0F, 1.0F, 1.0F, 1.0F / (var6 + 1)).endVertex();
+                worldRenderer.pos(-1.0D, 1.0D, 1.0D).tex(0.0F + 1, 1.0F - 1).color(1.0F, 1.0F, 1.0F, 1.0F / (var6 + 1)).endVertex();
                 tess.draw();
                 GL11.glPopMatrix();
             }
@@ -285,13 +283,12 @@ public abstract class GuiStarBackground extends GuiScreen
         final float var7 = this.width * var5 / 256.0F;
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-        worldRenderer.color(1.0F, 1.0F, 1.0F, 1.0F);
         final int var8 = this.width;
         final int var9 = this.height;
-        worldRenderer.pos(0.0D, var9, this.zLevel).tex(0.5F - var6, 0.5F + var7).endVertex();
-        worldRenderer.pos(var8, var9, this.zLevel).tex(0.5F - var6, 0.5F - var7).endVertex();
-        worldRenderer.pos(var8, 0.0D, this.zLevel).tex(0.5F + var6, 0.5F - var7).endVertex();
-        worldRenderer.pos(0.0D, 0.0D, this.zLevel).tex(0.5F + var6, 0.5F + var7).endVertex();
+        worldRenderer.pos(0.0D, var9, this.zLevel).tex(0.5F - var6, 0.5F + var7).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
+        worldRenderer.pos(var8, var9, this.zLevel).tex(0.5F - var6, 0.5F - var7).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
+        worldRenderer.pos(var8, 0.0D, this.zLevel).tex(0.5F + var6, 0.5F - var7).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
+        worldRenderer.pos(0.0D, 0.0D, this.zLevel).tex(0.5F + var6, 0.5F + var7).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
         tess.draw();
         GL11.glPopMatrix();
     }

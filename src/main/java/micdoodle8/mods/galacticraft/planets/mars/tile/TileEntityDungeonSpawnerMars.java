@@ -14,6 +14,11 @@ import java.util.List;
 
 public class TileEntityDungeonSpawnerMars extends TileEntityDungeonSpawner<EntityCreeperBoss>
 {
+    public TileEntityDungeonSpawnerMars(Class<EntityCreeperBoss> bossClass)
+    {
+        super(EntityCreeperBoss.class);
+    }
+
     @Override
     public List<Class<? extends EntityLiving>> getDisabledCreatures()
     {

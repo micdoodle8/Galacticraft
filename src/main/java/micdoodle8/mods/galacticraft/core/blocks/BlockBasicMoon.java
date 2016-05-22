@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
@@ -383,7 +384,7 @@ public class BlockBasicMoon extends BlockAdvancedTile implements IDetectableReso
     {
         if (getMetaFromState(state) == 15)
         {
-            return new TileEntityDungeonSpawner();
+            return new TileEntityDungeonSpawner(EntitySkeletonBoss.class);
         }
 
         return null;

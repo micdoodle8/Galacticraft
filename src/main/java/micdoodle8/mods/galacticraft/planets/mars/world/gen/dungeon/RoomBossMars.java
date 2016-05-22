@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonBoundingBox;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonRoom;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
+import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCreeperBoss;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityDungeonSpawnerMars;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -99,7 +100,7 @@ public class RoomBossMars extends DungeonRoom
 
         if (tile == null || !(tile instanceof TileEntityDungeonSpawnerMars))
         {
-            TileEntityDungeonSpawner spawner = new TileEntityDungeonSpawnerMars();
+            TileEntityDungeonSpawner spawner = new TileEntityDungeonSpawnerMars(EntityCreeperBoss.class);
             spawner.setRoom(new Vector3(this.posX, this.posY, this.posZ), new Vector3(this.sizeX, this.sizeY, this.sizeZ));
             this.worldObj.setTileEntity(this.spawnerCoords, spawner);
         }

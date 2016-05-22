@@ -210,27 +210,26 @@ public class SkyProviderMoon extends IRenderHandler
             var11 = -((float) (var25 + 65.0D));
             var12 = -var10;
             worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-            worldRenderer.color(0, 0, 0, 1.0F);
-            worldRenderer.pos(-var10, var11, var10).endVertex();
-            worldRenderer.pos(var10, var11, var10).endVertex();
-            worldRenderer.pos(var10, var12, var10).endVertex();
-            worldRenderer.pos(-var10, var12, var10).endVertex();
-            worldRenderer.pos(-var10, var12, -var10).endVertex();
-            worldRenderer.pos(var10, var12, -var10).endVertex();
-            worldRenderer.pos(var10, var11, -var10).endVertex();
-            worldRenderer.pos(-var10, var11, -var10).endVertex();
-            worldRenderer.pos(var10, var12, -var10).endVertex();
-            worldRenderer.pos(var10, var12, var10).endVertex();
-            worldRenderer.pos(var10, var11, var10).endVertex();
-            worldRenderer.pos(var10, var11, -var10).endVertex();
-            worldRenderer.pos(-var10, var11, -var10).endVertex();
-            worldRenderer.pos(-var10, var11, var10).endVertex();
-            worldRenderer.pos(-var10, var12, var10).endVertex();
-            worldRenderer.pos(-var10, var12, -var10).endVertex();
-            worldRenderer.pos(-var10, var12, -var10).endVertex();
-            worldRenderer.pos(-var10, var12, var10).endVertex();
-            worldRenderer.pos(var10, var12, var10).endVertex();
-            worldRenderer.pos(var10, var12, -var10).endVertex();
+            worldRenderer.pos(-var10, var11, var10).color(0, 0, 0, 1.0F).endVertex();
+            worldRenderer.pos(var10, var11, var10).color(0, 0, 0, 1.0F).endVertex();
+            worldRenderer.pos(var10, var12, var10).color(0, 0, 0, 1.0F).endVertex();
+            worldRenderer.pos(-var10, var12, var10).color(0, 0, 0, 1.0F).endVertex();
+            worldRenderer.pos(-var10, var12, -var10).color(0, 0, 0, 1.0F).endVertex();
+            worldRenderer.pos(var10, var12, -var10).color(0, 0, 0, 1.0F).endVertex();
+            worldRenderer.pos(var10, var11, -var10).color(0, 0, 0, 1.0F).endVertex();
+            worldRenderer.pos(-var10, var11, -var10).color(0, 0, 0, 1.0F).endVertex();
+            worldRenderer.pos(var10, var12, -var10).color(0, 0, 0, 1.0F).endVertex();
+            worldRenderer.pos(var10, var12, var10).color(0, 0, 0, 1.0F).endVertex();
+            worldRenderer.pos(var10, var11, var10).color(0, 0, 0, 1.0F).endVertex();
+            worldRenderer.pos(var10, var11, -var10).color(0, 0, 0, 1.0F).endVertex();
+            worldRenderer.pos(-var10, var11, -var10).color(0, 0, 0, 1.0F).endVertex();
+            worldRenderer.pos(-var10, var11, var10).color(0, 0, 0, 1.0F).endVertex();
+            worldRenderer.pos(-var10, var12, var10).color(0, 0, 0, 1.0F).endVertex();
+            worldRenderer.pos(-var10, var12, -var10).color(0, 0, 0, 1.0F).endVertex();
+            worldRenderer.pos(-var10, var12, -var10).color(0, 0, 0, 1.0F).endVertex();
+            worldRenderer.pos(-var10, var12, var10).color(0, 0, 0, 1.0F).endVertex();
+            worldRenderer.pos(var10, var12, var10).color(0, 0, 0, 1.0F).endVertex();
+            worldRenderer.pos(var10, var12, -var10).color(0, 0, 0, 1.0F).endVertex();
             var23.draw();
         }
 
@@ -291,7 +290,7 @@ public class SkyProviderMoon extends IRenderHandler
                     final double var55 = var39 * var28 - var47 * var30;
                     final double var57 = var55 * var22 - var49 * var24;
                     final double var61 = var49 * var22 + var55 * var24;
-                    worldRenderer.pos(var14 + var57, var16 + var53, var18 + var61);
+                    worldRenderer.pos(var14 + var57, var16 + var53, var18 + var61).endVertex();
                 }
             }
         }

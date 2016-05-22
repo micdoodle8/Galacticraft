@@ -550,8 +550,8 @@ public class TickHandlerClient
 
     public static void zoom(float value)
     {
-//        FMLClientHandler.instance().getClient().entityRenderer.thirdPersonDistance = value;
-//        FMLClientHandler.instance().getClient().entityRenderer.thirdPersonDistanceTemp = value; TODO
+        FMLClientHandler.instance().getClient().entityRenderer.thirdPersonDistance = value;
+        FMLClientHandler.instance().getClient().entityRenderer.thirdPersonDistanceTemp = value;
     }
 
     private void drawGradientRect(int par1, int par2, int par3, int par4, int par5, int par6)
@@ -572,12 +572,10 @@ public class TickHandlerClient
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldRenderer = tessellator.getWorldRenderer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-        worldRenderer.color(f1, f2, f3, f);
-        worldRenderer.pos(par3, par2, 0.0D).endVertex();
-        worldRenderer.pos(par1, par2, 0.0D).endVertex();
-        worldRenderer.color(f5, f6, f7, f4);
-        worldRenderer.pos(par1, par4, 0.0D).endVertex();
-        worldRenderer.pos(par3, par4, 0.0D).endVertex();
+        worldRenderer.pos(par3, par2, 0.0D).color(f1, f2, f3, f).endVertex();
+        worldRenderer.pos(par1, par2, 0.0D).color(f1, f2, f3, f).endVertex();
+        worldRenderer.pos(par1, par4, 0.0D).color(f5, f6, f7, f4).endVertex();
+        worldRenderer.pos(par3, par4, 0.0D).color(f5, f6, f7, f4).endVertex();
         tessellator.draw();
         GL11.glShadeModel(GL11.GL_FLAT);
         GL11.glDisable(GL11.GL_BLEND);
