@@ -99,19 +99,19 @@ public class AsteroidsModule implements IPlanetsModule
         FMLCommonHandler.instance().bus().register(eventHandler);
         RecipeSorter.register("galacticraftmars:canisterRecipe", CanisterRecipes.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
 
-        registerFluid("methane", 1, 11, 0, true, "MethaneGas");
-        registerFluid("atmosphericgases", 1, 13, 0, true, "AtmosphericGases");
+        registerFluid("methane", 1, 11, 295, true, "MethaneGas");
+        registerFluid("atmosphericgases", 1, 13, 295, true, "AtmosphericGases");
         registerFluid("liquidmethane", 450, 120, 109, false, "LiquidMethane");
         //Data source for liquid methane: http://science.nasa.gov/science-news/science-at-nasa/2005/25feb_titan2/
         registerFluid("liquidoxygen", 1141, 140, 90, false, "LiquidOxygen");
-        registerFluid("oxygen", 1, 13, 0, true, "OxygenGas");
+        registerFluid("oxygen", 1, 13, 295, true, "OxygenGas");
         registerFluid("liquidnitrogen", 808, 130, 90, false, "LiquidNitrogen");
-        registerFluid("nitrogen", 1, 12, 0, true, "NitrogenGas");
-        registerFluid("carbondioxide", 2, 20, 0, true, "CarbonDioxideGas");
-        registerFluid("hydrogen", 1, 1, 0, true, "HydrogenGas");
-        registerFluid("argon", 1, 4, 0, true, "ArgonGas");
+        registerFluid("nitrogen", 1, 12, 295, true, "NitrogenGas");
+        registerFluid("carbondioxide", 2, 20, 295, true, "CarbonDioxideGas");
+        registerFluid("hydrogen", 1, 1, 295, true, "HydrogenGas");
+        registerFluid("argon", 1, 4, 295, true, "ArgonGas");
         registerFluid("liquidargon", 900, 100, 87, false, "LiquidArgon");
-        registerFluid("helium", 1, 1, 0, true, "HeliumGas");
+        registerFluid("helium", 1, 1, 295, true, "HeliumGas");
         AsteroidsModule.fluidMethaneGas = FluidRegistry.getFluid("methane");
         AsteroidsModule.fluidAtmosphericGases = FluidRegistry.getFluid("atmosphericgases");
         AsteroidsModule.fluidLiquidMethane = FluidRegistry.getFluid("liquidmethane");
