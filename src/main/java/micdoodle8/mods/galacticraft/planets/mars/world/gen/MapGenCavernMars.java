@@ -243,7 +243,7 @@ public class MapGenCavernMars extends MapGenBaseMeta
                                                 {
                                                     int modifier = 0;
 
-                                                    while (Blocks.air == blockBelow)
+                                                    while (Blocks.air == blockBelow && var50 - 1 + modifier > 0)
                                                     {
                                                         primer.setBlockState(coordsBelow, MarsBlocks.vine.getStateFromMeta(Math.abs(modifier) % 3));
 //                                                        arrayOfIDs[coordsBelow] = MarsBlocks.vine;

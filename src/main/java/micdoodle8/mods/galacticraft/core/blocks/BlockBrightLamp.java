@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
@@ -27,13 +28,14 @@ import java.lang.reflect.Field;
 public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlockShiftDesc, ITileEntityProvider
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
+    public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
     //Metadata: bits 0-2 are the side of the base plate using standard side convention (0-5)
 
     protected BlockBrightLamp(String assetName)
     {
         super(Material.glass);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP).withProperty(ACTIVE, true));
         this.setHardness(0.1F);
         this.setStepSound(Block.soundTypeWood);
         //this.setBlockTextureName("stone");
@@ -41,7 +43,7 @@ public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlo
         this.setLightLevel(1.0F);
     }
 
-
+    @Override
     public int getLightValue(IBlockAccess world, BlockPos pos)
     {
         Block block = world.getBlockState(pos).getBlock();
@@ -144,7 +146,7 @@ public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlo
     @Override
     public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end)
     {
-        EnumFacing side = (EnumFacing)worldIn.getBlockState(pos).getValue(FACING);
+        EnumFacing side = worldIn.getBlockState(pos).getValue(FACING);
         float var8 = 0.3F;
 
         if (side == EnumFacing.WEST)
@@ -213,6 +215,7 @@ public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlo
         return true;
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getFront(meta);
@@ -225,13 +228,21 @@ public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlo
         return this.getDefaultState().withProperty(FACING, enumfacing);
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing)state.getValue(FACING)).getIndex();
+        return (state.getValue(FACING)).getIndex();
     }
 
+    @Override
     protected BlockState createBlockState()
     {
-        return new BlockState(this, new IProperty[] {FACING});
+        return new BlockState(this, new IProperty[] {FACING, ACTIVE});
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        return state.withProperty(ACTIVE, ((TileEntityArclamp) worldIn.getTileEntity(pos)).getEnabled());
     }
 }

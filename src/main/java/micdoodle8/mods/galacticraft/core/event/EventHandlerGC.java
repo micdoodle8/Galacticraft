@@ -265,8 +265,6 @@ public class EventHandlerGC
 
             event.setCanceled(((IKeyable) tileClicked).onActivatedWithoutKey(event.entityPlayer, event.face));
         }
-
-        System.err.println(event.getResult() + " " + event.isCanceled());
     }
 
     @SubscribeEvent

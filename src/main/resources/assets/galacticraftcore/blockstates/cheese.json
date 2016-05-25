@@ -1,0 +1,11 @@
+{
+    "variants": {
+        "bites=0": { "model": "galacticraftcore:cheese_uneaten_model" },
+        "bites=1": { "model": "galacticraftcore:cheese_slice1_model" },
+        "bites=2": { "model": "galacticraftcore:cheese_slice2_model" },
+        "bites=3": { "model": "galacticraftcore:cheese_slice3_model" },
+        "bites=4": { "model": "galacticraftcore:cheese_slice4_model" },
+        "bites=5": { "model": "galacticraftcore:cheese_slice5_model" },
+        "bites=6": { "model": "galacticraftcore:cheese_slice6_model" }
+    }
+}

@@ -8,6 +8,8 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -23,6 +25,7 @@ import java.util.Random;
 public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IBlockShiftDesc, ITileEntityProvider
 {
     //public static IIcon thrusterIcon;
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     protected BlockSpinThruster(String assetName)
     {
@@ -31,6 +34,7 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
         this.setStepSound(Block.soundTypeWood);
         //this.setBlockTextureName("stone");
         this.setUnlocalizedName(assetName);
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }
 
     private static boolean isBlockSolidOnSide(World world, BlockPos pos, EnumFacing direction)
@@ -95,29 +99,7 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
     @Override
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        int var10 = 0;
-
-        if (facing == EnumFacing.NORTH && BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.SOUTH), EnumFacing.NORTH))
-        {
-            var10 = 4;
-        }
-
-        if (facing == EnumFacing.SOUTH && BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.NORTH), EnumFacing.SOUTH))
-        {
-            var10 = 3;
-        }
-
-        if (facing == EnumFacing.WEST && BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.EAST), EnumFacing.WEST))
-        {
-            var10 = 2;
-        }
-
-        if (facing == EnumFacing.EAST && BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.WEST), EnumFacing.EAST))
-        {
-            var10 = 1;
-        }
-
-        return getStateFromMeta(var10);
+        return getStateFromMeta(facing.getHorizontalIndex() + 1);
     }
 
     @Override
@@ -135,8 +117,8 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
         int metadata = getMetaFromState(state);
-        TileEntityThruster tile = (TileEntityThruster) worldIn.getTileEntity(pos);
-
+//        TileEntityThruster tile = (TileEntityThruster) worldIn.getTileEntity(pos);
+//
         if (metadata == 0)
         {
             if (BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.WEST), EnumFacing.EAST))
@@ -267,24 +249,24 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
     @Override
     public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end)
     {
-        final int var7 = getMetaFromState(worldIn.getBlockState(pos)) & 7;
         float var8 = 0.3F;
 
-        if (var7 == 1)
+        EnumFacing facing = worldIn.getBlockState(pos).getValue(BlockMachine.FACING);
+
+        switch (facing)
         {
-            this.setBlockBounds(0.0F, 0.2F, 0.5F - var8, var8 * 2.0F, 0.8F, 0.5F + var8);
-        }
-        else if (var7 == 2)
-        {
-            this.setBlockBounds(1.0F - var8 * 2.0F, 0.2F, 0.5F - var8, 1.0F, 0.8F, 0.5F + var8);
-        }
-        else if (var7 == 3)
-        {
-            this.setBlockBounds(0.5F - var8, 0.2F, 0.0F, 0.5F + var8, 0.8F, var8 * 2.0F);
-        }
-        else if (var7 == 4)
-        {
+        case NORTH:
             this.setBlockBounds(0.5F - var8, 0.2F, 1.0F - var8 * 2.0F, 0.5F + var8, 0.8F, 1.0F);
+            break;
+        case EAST:
+            this.setBlockBounds(0.0F, 0.2F, 0.5F - var8, var8 * 2.0F, 0.8F, 0.5F + var8);
+            break;
+        case SOUTH:
+            this.setBlockBounds(0.5F - var8, 0.2F, 0.0F, 0.5F + var8, 0.8F, var8 * 2.0F);
+            break;
+        case WEST:
+            this.setBlockBounds(1.0F - var8 * 2.0F, 0.2F, 0.5F - var8, 1.0F, 0.8F, 0.5F + var8);
+            break;
         }
 
         return super.collisionRayTrace(worldIn, pos, start, end);
@@ -383,5 +365,21 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    public IBlockState getStateFromMeta(int meta)
+    {
+        EnumFacing enumfacing = EnumFacing.getHorizontal(meta - 1);
+        return this.getDefaultState().withProperty(FACING, enumfacing);
+    }
+
+    public int getMetaFromState(IBlockState state)
+    {
+        return (state.getValue(FACING)).getHorizontalIndex() + 1;
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, FACING);
     }
 }

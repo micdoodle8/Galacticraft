@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "galacticraftcore:blocks/cargo_pad",
+        "down": "galacticraftcore:blocks/cargo_pad",
+        "up": "galacticraftcore:blocks/cargo_pad",
+        "north": "galacticraftcore:blocks/cargo_pad",
+        "east": "galacticraftcore:blocks/cargo_pad",
+        "south": "galacticraftcore:blocks/cargo_pad",
+        "west": "galacticraftcore:blocks/cargo_pad"
+    }
+}
